@@ -31,3 +31,14 @@
 #'   \item{pid_1 to pid_100}{Responses on each item}
 #' }
 "sim_pid5fsf"
+
+#' Real PID-5-FSF Data
+#'
+#' Real responses to items on the PID-5-FSF (with 100 items) from KU students.
+#'
+#' @format ## `ku_pid5fsf` A data frame with 386 rows and 101 columns.
+#' \describe{
+#'   \item{response_id}{An anonymized id for each participant}
+#'   \item{pid_1 to pid_100}{Responses on each item}
+#' }
+"ku_pid5fsf"

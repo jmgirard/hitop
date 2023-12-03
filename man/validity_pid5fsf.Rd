@@ -8,7 +8,7 @@ validity_pid5fsf(
   .data,
   items = NULL,
   id = NULL,
-  scales = c("RIS", "ORS"),
+  scales = c("PNA", "RIS", "ORS"),
   range = c(0, 3),
   tibble = FALSE
 )
@@ -26,9 +26,10 @@ integers) corresponding to variables from \code{.data} to keep in the output. If
 set to \code{NULL} (the default), no columns will be retained.}
 
 \item{scales}{An optional character vector indicating whether to calculate
-the response inconsistency scale (\code{"RIS"}) and/or the over-reporting scale
-(\code{"ORS"}). Cut scores are unvalidated for the PID-5-FSF but the equivalents
-to the PID-5 versions would be RIS >= 0.3 and ORS >= 0.2.}
+the percent of missing items (\code{"PNA"}), response inconsistency scale
+(\code{"RIS"}) and/or the over-reporting scale (\code{"ORS"}). Cut scores are
+unvalidated for the PID-5-FSF but the equivalents to the PID-5 versions
+would be RIS >= 0.3 and ORS >= 0.2.}
 
 \item{range}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}

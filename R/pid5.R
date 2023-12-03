@@ -47,7 +47,7 @@ score_pid5 <- function(.data,
   data_items <- .data[, c(items, id)]
 
   ## Reverse score the necessary items
-  pid_items <- utils::data(pid_items)
+  utils::data(pid_items)
   items_rev <- pid_items[pid_items$Reverse == TRUE, "PID5"]
 
   for (i in items_rev) {
@@ -59,7 +59,7 @@ score_pid5 <- function(.data,
   }
 
   ## Prepare output
-  out <- .data[, id]
+  out <- .data[, id, drop = FALSE]
 
   ## Calculate facet scores
   items_facets <- list(
@@ -154,10 +154,10 @@ score_pid5 <- function(.data,
 #'   integers) corresponding to variables from `.data` to keep in the output. If
 #'   set to `NULL` (the default), no columns will be retained.
 #' @param scales An optional character vector indicating whether to calculate
-#'   the response inconsistency scale (`"RIS"`) and/or the over-reporting scale
-#'   (`"ORS"`). A score of 0.3 or higher on the RIS is indicative of inconsistent
-#'   responding and a score of 0.2 or higher on the ORS is indicative of
-#'   overreporting.
+#'   the percent missing items (`"PNA"`), response inconsistency scale (`"RIS"`)
+#'   and/or the over-reporting scale (`"ORS"`). A score of 0.3 or higher on the
+#'   RIS is indicative of inconsistent responding and a score of 0.2 or higher
+#'   on the ORS is indicative of overreporting.
 #' @param range An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
@@ -176,7 +176,7 @@ score_pid5 <- function(.data,
 validity_pid5 <- function(.data,
                           items = NULL,
                           id = NULL,
-                          scales = c("RIS", "ORS"),
+                          scales = c("PNA", "RIS", "ORS"),
                           range = c(0, 3),
                           tibble = FALSE) {
 
@@ -196,8 +196,14 @@ validity_pid5 <- function(.data,
   data_items <- .data[, c(items, id)]
 
   ## Prepare output
-  out <- .data[, id]
-  pid_items <- utils::data(pid_items)
+  out <- .data[, id, drop = FALSE]
+  utils::data(pid_items)
+
+  ## Percent Missing Items
+  if ("PNA" %in% scales) {
+    pna_df <- rowMeans(is.na(data_items))
+    out <- cbind(out, v_pna = pna_df)
+  }
 
   ## Response Inconsistency Scale
   if ("RIS" %in% scales) {
@@ -220,6 +226,8 @@ validity_pid5 <- function(.data,
         )
       ) / diff(range)
 
+    ris_df[is.nan(ris_df)] <- NA_real_
+
     out <- cbind(out, v_ris = ris_df)
   }
 
@@ -227,6 +235,7 @@ validity_pid5 <- function(.data,
   if ("ORS" %in% scales) {
     ors_items <- pid_items[!is.na(pid_items$ORS), "PID5"]
     ors_df <- rowMeans(data_items[, ors_items] == range[[2]])
+    ors_df[is.nan(ors_df)] <- NA_real_
     out <- cbind(out, v_ors = ors_df)
   }
 

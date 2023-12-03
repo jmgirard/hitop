@@ -51,8 +51,8 @@ score_pid5fsf <- function(.data,
   data_items <- .data[, c(items, id)]
 
   ## Prepare output
-  out <- .data[, id]
-  pid_items <- utils::data(pid_items)
+  out <- .data[, id, drop = FALSE]
+  utils::data(pid_items)
 
   ## Calculate facet scores
   items_facets <- list(
@@ -148,9 +148,10 @@ score_pid5fsf <- function(.data,
 #'   integers) corresponding to variables from `.data` to keep in the output. If
 #'   set to `NULL` (the default), no columns will be retained.
 #' @param scales An optional character vector indicating whether to calculate
-#'   the response inconsistency scale (`"RIS"`) and/or the over-reporting scale
-#'   (`"ORS"`). Cut scores are unvalidated for the PID-5-FSF but the equivalents
-#'   to the PID-5 versions would be RIS >= 0.3 and ORS >= 0.2.
+#'   the percent of missing items (`"PNA"`), response inconsistency scale
+#'   (`"RIS"`) and/or the over-reporting scale (`"ORS"`). Cut scores are
+#'   unvalidated for the PID-5-FSF but the equivalents to the PID-5 versions
+#'   would be RIS >= 0.3 and ORS >= 0.2.
 #' @param range An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
@@ -169,7 +170,7 @@ score_pid5fsf <- function(.data,
 validity_pid5fsf <- function(.data,
                           items = NULL,
                           id = NULL,
-                          scales = c("RIS", "ORS"),
+                          scales = c("PNA", "RIS", "ORS"),
                           range = c(0, 3),
                           tibble = FALSE) {
 
@@ -189,8 +190,14 @@ validity_pid5fsf <- function(.data,
   data_items <- .data[, c(items, id)]
 
   ## Prepare output
-  out <- .data[, id]
-  pid_items <- utils::data(pid_items)
+  out <- .data[, id, drop = FALSE]
+  utils::data(pid_items)
+
+  ## Percent Missing Items
+  if ("PNA" %in% scales) {
+    pna_df <- rowMeans(is.na(data_items))
+    out <- cbind(out, v_pna = pna_df)
+  }
 
   ## Response Inconsistency Scale
   if ("RIS" %in% scales) {
@@ -215,6 +222,8 @@ validity_pid5fsf <- function(.data,
         na.rm = TRUE
       ) / diff(range)
 
+    ris_df[is.nan(ris_df)] <- NA_real_
+
     out <- cbind(out, v_ris = ris_df)
   }
 
@@ -222,6 +231,7 @@ validity_pid5fsf <- function(.data,
   if ("ORS" %in% scales) {
     ors_items <- drop_na(pid_items[!is.na(pid_items$ORS), "PID5FSF"])
     ors_df <- rowMeans(data_items[, ors_items] == range[[2]], na.rm = TRUE)
+    ors_df[is.nan(ors_df)] <- NA_real_
     out <- cbind(out, v_ors = ors_df)
   }
 
