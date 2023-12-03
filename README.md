@@ -50,19 +50,19 @@ score_pid5(sim_pid5, tibble = TRUE)
 #> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
 #> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
 validity_pid5(sim_pid5, tibble = TRUE)
-#> # A tibble: 100 × 2
-#>    v_ris v_ors
-#>    <dbl> <dbl>
-#>  1 0.483   0.1
-#>  2 0.483   0  
-#>  3 0.45    0.2
-#>  4 0.417   0.3
-#>  5 0.483   0.4
-#>  6 0.4     0.2
-#>  7 0.383   0.2
-#>  8 0.383   0.3
-#>  9 0.367   0.5
-#> 10 0.35    0.5
+#> # A tibble: 100 × 3
+#>    v_pna v_ris v_ors
+#>    <dbl> <dbl> <dbl>
+#>  1     0 0.483   0.1
+#>  2     0 0.483   0  
+#>  3     0 0.45    0.2
+#>  4     0 0.417   0.3
+#>  5     0 0.483   0.4
+#>  6     0 0.4     0.2
+#>  7     0 0.383   0.2
+#>  8     0 0.383   0.3
+#>  9     0 0.367   0.5
+#> 10     0 0.35    0.5
 #> # ℹ 90 more rows
 
 ## Score simulated PID-5-FSF data
@@ -89,57 +89,57 @@ score_pid5fsf(sim_pid5fsf, tibble = TRUE)
 #> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
 #> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
 validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
-#> # A tibble: 100 × 2
-#>    v_ris v_ors
-#>    <dbl> <dbl>
-#>  1 0.394 0.125
-#>  2 0.485 0.25 
-#>  3 0.697 0.25 
-#>  4 0.394 0.375
-#>  5 0.333 0.5  
-#>  6 0.545 0    
-#>  7 0.333 0.125
-#>  8 0.606 0.375
-#>  9 0.515 0.25 
-#> 10 0.424 0.375
+#> # A tibble: 100 × 3
+#>    v_pna v_ris v_ors
+#>    <dbl> <dbl> <dbl>
+#>  1     0 0.394 0.125
+#>  2     0 0.485 0.25 
+#>  3     0 0.697 0.25 
+#>  4     0 0.394 0.375
+#>  5     0 0.333 0.5  
+#>  6     0 0.545 0    
+#>  7     0 0.333 0.125
+#>  8     0 0.606 0.375
+#>  9     0 0.515 0.25 
+#> 10     0 0.424 0.375
 #> # ℹ 90 more rows
 
 ## Score real PID-5-FSF data
 data("ku_pid5fsf")
 score_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 #> # A tibble: 386 × 31
-#>    out   d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou f_attent
-#>    <chr>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
-#>  1 R_2B…    0        0        0.167    0        0         0        0        0   
-#>  2 R_Wr…    1.58     1.17     0.25     0.583    0.25      1        2        0.75
-#>  3 R_3O…    1.75     1.67     1.58     1.5      1.5       1.25     1.75     1.5 
-#>  4 R_3J…    1        2        1.08     0.833    2.25      2.75     0        2.5 
-#>  5 R_2C…    0.917    0.917    1        1.92     1.75      1        1.75     0.75
-#>  6 R_VJ…    0.833    0.167    0.25     0.333    0.5       0        0.75     0.75
-#>  7 R_6W…    1.17     1.17     0.75     0.667    1.25      1        2        0.5 
-#>  8 R_3p…    0.917    0.25     0.167    0.167    0.667     0        1.25     1.5 
-#>  9 R_1G…    0.75     0.5      0        0.75     0.333     0.75     1        1   
-#> 10 R_Dl…    2.17     1.42     1        0.667    0.25      0.75     2.75     1.5 
+#>    response_id    d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou
+#>    <chr>             <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
+#>  1 R_2BsNloyAVAk…    0        0        0.167    0        0         0        0   
+#>  2 R_WrIeYf92JAq…    1.58     1.17     0.25     0.583    0.25      1        2   
+#>  3 R_3OlvdFDleHT…    1.75     1.67     1.58     1.5      1.5       1.25     1.75
+#>  4 R_3JI4ceKdZSe…    1        2        1.08     0.833    2.25      2.75     0   
+#>  5 R_2CCf8JCtPLr…    0.917    0.917    1        1.92     1.75      1        1.75
+#>  6 R_VJQP3waDjzI…    0.833    0.167    0.25     0.333    0.5       0        0.75
+#>  7 R_6WqPyblq7lf…    1.17     1.17     0.75     0.667    1.25      1        2   
+#>  8 R_3p59ilU5u9h…    0.917    0.25     0.167    0.167    0.667     0        1.25
+#>  9 R_1GEzNhlFaoX…    0.75     0.5      0        0.75     0.333     0.75     1   
+#> 10 R_Dl45sKLgxFL…    2.17     1.42     1        0.667    0.25      0.75     2.75
 #> # ℹ 376 more rows
-#> # ℹ 22 more variables: f_callou <dbl>, f_deceit <dbl>, f_depres <dbl>,
-#> #   f_distra <dbl>, f_eccent <dbl>, f_emotio <dbl>, f_grandi <dbl>,
-#> #   f_hostil <dbl>, f_impuls <dbl>, f_intima <dbl>, f_irresp <dbl>,
-#> #   f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>, f_restri <dbl>,
-#> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
-#> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
+#> # ℹ 23 more variables: f_attent <dbl>, f_callou <dbl>, f_deceit <dbl>,
+#> #   f_depres <dbl>, f_distra <dbl>, f_eccent <dbl>, f_emotio <dbl>,
+#> #   f_grandi <dbl>, f_hostil <dbl>, f_impuls <dbl>, f_intima <dbl>,
+#> #   f_irresp <dbl>, f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>,
+#> #   f_restri <dbl>, f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>,
+#> #   f_submis <dbl>, f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
 validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
-#> # A tibble: 386 × 3
-#>    out               v_ris              v_ors
-#>    <chr>             <chr>              <chr>
-#>  1 R_2BsNloyAVAk3UnQ 0                  0    
-#>  2 R_WrIeYf92JAqCDE5 0.0909090909090909 0    
-#>  3 R_3OlvdFDleHTo9IE 0.272727272727273  0    
-#>  4 R_3JI4ceKdZSeoo6m 0.121212121212121  0.125
-#>  5 R_2CCf8JCtPLrwQfB 0.121212121212121  0.125
-#>  6 R_VJQP3waDjzIAStz 0.212121212121212  0    
-#>  7 R_6WqPyblq7lfVGzn 0.151515151515152  0    
-#>  8 R_3p59ilU5u9hxa7v 0.151515151515152  0    
-#>  9 R_1GEzNhlFaoXuAF6 0.151515151515152  0    
-#> 10 R_Dl45sKLgxFLJ67f 0.212121212121212  0    
+#> # A tibble: 386 × 4
+#>    response_id       v_pna  v_ris v_ors
+#>    <chr>             <dbl>  <dbl> <dbl>
+#>  1 R_2BsNloyAVAk3UnQ     0 0      0    
+#>  2 R_WrIeYf92JAqCDE5     0 0.0909 0    
+#>  3 R_3OlvdFDleHTo9IE     0 0.273  0    
+#>  4 R_3JI4ceKdZSeoo6m     0 0.121  0.125
+#>  5 R_2CCf8JCtPLrwQfB     0 0.121  0.125
+#>  6 R_VJQP3waDjzIAStz     0 0.212  0    
+#>  7 R_6WqPyblq7lfVGzn     0 0.152  0    
+#>  8 R_3p59ilU5u9hxa7v     0 0.152  0    
+#>  9 R_1GEzNhlFaoXuAF6     0 0.152  0    
+#> 10 R_Dl45sKLgxFLJ67f     0 0.212  0    
 #> # ℹ 376 more rows
 ```
