@@ -1,0 +1,45 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# hitop
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of hitop is to ...
+
+## Installation
+
+You can install the development version of hitop from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("jmgirard/hitop")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r example}
+library(hitop)
+data("sim_pid5")
+
+scales <- score_pid5(sim_pid5)
+head(scales)
+
+valids <- validity_pid5(sim_pid5)
+head(valids)
+```
