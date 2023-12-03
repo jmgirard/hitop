@@ -248,7 +248,7 @@ validity_pid5fsf <- function(.data,
   }
 
   # Positive Impression Management (PIM) Response Distortion Scale
-  if ("PRD" %in% scales) {
+  if ("PRDS" %in% scales) {
     prd_items <- drop_na(pid_items[!is.na(pid_items$PRD), "PID5FSF"])
     prd_df <- rowSums(data_items[, prd_items])
 
@@ -264,7 +264,7 @@ validity_pid5fsf <- function(.data,
   }
 
   # Social Desirability-Total Denial Scale
-  if ("PRDS" %in% scales) {
+  if ("SDTDS" %in% scales) {
     sdtd_items <- drop_na(pid_items[!is.na(pid_items$SDTD), "PID5FSF"])
     sdtd_df <- rowSums(data_items[, sdtd_items])
 
