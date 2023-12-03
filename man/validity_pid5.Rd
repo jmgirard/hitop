@@ -8,7 +8,7 @@ validity_pid5(
   .data,
   items = NULL,
   id = NULL,
-  scales = c("PNA", "RIS", "ORS"),
+  scales = c("PNA", "INC", "ORS", "PRD", "SDTD"),
   range = c(0, 3),
   tibble = FALSE
 )
@@ -25,11 +25,12 @@ order.}
 integers) corresponding to variables from \code{.data} to keep in the output. If
 set to \code{NULL} (the default), no columns will be retained.}
 
-\item{scales}{An optional character vector indicating whether to calculate
-the percent missing items (\code{"PNA"}), response inconsistency scale (\code{"RIS"})
-and/or the over-reporting scale (\code{"ORS"}). A score of 0.3 or higher on the
-RIS is indicative of inconsistent responding and a score of 0.2 or higher
-on the ORS is indicative of overreporting.}
+\item{scales}{An optional character vector indicating which of the following
+validity scales to calculate: percent missing items (\code{"PNA"}), response
+inconsistency scale (\code{"INC"}), overreporting scale (\code{"ORS"}), positive
+impression management response distortion scale (\code{"PRD"}), and social
+desirability-total denial scale (\code{"SDTD"}). See details below for
+interpretation guidance.}
 
 \item{range}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
@@ -39,10 +40,21 @@ converted to a \code{tibble::tibble()}.}
 }
 \value{
 A data frame containing any \code{id} variables as well any requested
-\code{scale} scores, calculated as means after removing missing values.
+\code{scale} scores.
 }
 \description{
 Create a data frame with scores on the full PID-5 validity scales.
+}
+\details{
+A score of 17 or higher on the INC is indicative of inconsistent
+responding. A score of 3 or higher on the ORS is indicative of
+overreporting. A score of 10 or lower on the PRD is indicative of positive
+impression management (underreporting rather than genuine responding)
+whereas a score of 21 or higher on the PRD is indicative of genuine
+responding (rather than positive impression management). A score of 11 or
+lower on the SDTD is indicative of social desirability (rather than
+defensiveness), whereas a score of 19 or higher on the SDTD is indicative
+of defensiveness (rather than social desirability).
 }
 \references{
 \itemize{
@@ -57,5 +69,20 @@ Personality Inventory for DSM-5. \emph{Journal of Personality Assessment,
 and validation of an overreporting scale for the Personality Inventory for
 DSM-5 (PID-5). \emph{Psychological Assessment, 30}(5), 582-593.
 \url{https://doi.org/10.1037/pas0000507}
+}
+
+\itemize{
+\item Bagby, R. M., & Sellbom, M. (2018). The Validity and Clinical
+Utility of the Personality Inventory for DSM–5 Response Inconsistency
+Scale. \emph{Journal of Personality Assessment, 100}(4), 398–405.
+\url{https://doi.org/10.1080/00223891.2017.1420659}
+}
+
+\itemize{
+\item Williams, M. M., Rogers, R., Sharf, A. J., & Ross, C. A.
+(2019). Faking Good: An Investigation of Social Desirability and
+Defensiveness in an Inpatient Sample With Personality Disorder Traits.
+\emph{Journal of Personality Assessment, 101}(3), 253–263.
+\url{https://doi.org/10.1080/00223891.2018.1455691}
 }
 }

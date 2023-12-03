@@ -8,7 +8,7 @@ validity_pid5fsf(
   .data,
   items = NULL,
   id = NULL,
-  scales = c("PNA", "RIS", "ORS"),
+  scales = c("PNA", "INCS", "ORSS"),
   range = c(0, 3),
   tibble = FALSE
 )
@@ -26,10 +26,10 @@ integers) corresponding to variables from \code{.data} to keep in the output. If
 set to \code{NULL} (the default), no columns will be retained.}
 
 \item{scales}{An optional character vector indicating whether to calculate
-the percent of missing items (\code{"PNA"}), response inconsistency scale
-(\code{"RIS"}) and/or the over-reporting scale (\code{"ORS"}). Cut scores are
-unvalidated for the PID-5-FSF but the equivalents to the PID-5 versions
-would be RIS >= 0.3 and ORS >= 0.2.}
+the percent of missing items (\code{"PNA"}), response inconsistency scale short
+form (\code{"INCS"}) and/or the over-reporting scale short form (\code{"ORSS"}).
+Scores of 8 or more on the INC-S are indicative of inconsistent responding.
+A cut-score for the ORS-S has not yet been validated.}
 
 \item{range}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
@@ -39,7 +39,7 @@ converted to a \code{tibble::tibble()}.}
 }
 \value{
 A data frame containing any \code{id} variables as well any requested
-\code{scale} scores, calculated as means after removing missing values.
+\code{scale} scores.
 }
 \description{
 Create a data frame with scores on the PID-5 Faceted Short Form validity
@@ -47,16 +47,10 @@ scales.
 }
 \references{
 \itemize{
-\item Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
-E. H. (2016). Development of a Response Inconsistency Scale for the
-Personality Inventory for DSM-5. \emph{Journal of Personality Assessment,
-98}(4), 351-359. \url{https://doi.org/10.1080/00223891.2016.1158719}
-}
-
-\itemize{
-\item Sellbom, M., Dhillon, S., & Bagby, R. M. (2018). Development
-and validation of an overreporting scale for the Personality Inventory for
-DSM-5 (PID-5). \emph{Psychological Assessment, 30}(5), 582-593.
-\url{https://doi.org/10.1037/pas0000507}
+\item Lowmaster, S. E., Hartman, M. J., Zimmermann, J., Baldock, Z.
+C., & Kurtz, J. E. (2020). Further Validation of the Response Inconsistency
+Scale for the Personality Inventory for DSM-5. \emph{Journal of Personality
+Assessment, 102}(6), 743–750.
+\cite{https://doi.org/10.1080/00223891.2019.1674320}
 }
 }

@@ -148,29 +148,26 @@ score_pid5fsf <- function(.data,
 #'   integers) corresponding to variables from `.data` to keep in the output. If
 #'   set to `NULL` (the default), no columns will be retained.
 #' @param scales An optional character vector indicating whether to calculate
-#'   the percent of missing items (`"PNA"`), response inconsistency scale
-#'   (`"RIS"`) and/or the over-reporting scale (`"ORS"`). Cut scores are
-#'   unvalidated for the PID-5-FSF but the equivalents to the PID-5 versions
-#'   would be RIS >= 0.3 and ORS >= 0.2.
+#'   the percent of missing items (`"PNA"`), response inconsistency scale short
+#'   form (`"INCS"`) and/or the over-reporting scale short form (`"ORSS"`).
+#'   Scores of 8 or more on the INC-S are indicative of inconsistent responding.
+#'   A cut-score for the ORS-S has not yet been validated.
 #' @param range An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`.
 #' @return A data frame containing any `id` variables as well any requested
-#'   `scale` scores, calculated as means after removing missing values.
-#' @references - Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
-#'   E. H. (2016). Development of a Response Inconsistency Scale for the
-#'   Personality Inventory for DSM-5. *Journal of Personality Assessment,
-#'   98*(4), 351-359. \url{https://doi.org/10.1080/00223891.2016.1158719}
-#' @references - Sellbom, M., Dhillon, S., & Bagby, R. M. (2018). Development
-#'   and validation of an overreporting scale for the Personality Inventory for
-#'   DSM-5 (PID-5). *Psychological Assessment, 30*(5), 582-593.
-#'   \url{https://doi.org/10.1037/pas0000507}
+#'   `scale` scores.
+#' @references - Lowmaster, S. E., Hartman, M. J., Zimmermann, J., Baldock, Z.
+#'   C., & Kurtz, J. E. (2020). Further Validation of the Response Inconsistency
+#'   Scale for the Personality Inventory for DSM-5. *Journal of Personality
+#'   Assessment, 102*(6), 743–750.
+#'   \cite{https://doi.org/10.1080/00223891.2019.1674320}
 #' @export
 validity_pid5fsf <- function(.data,
                           items = NULL,
                           id = NULL,
-                          scales = c("PNA", "RIS", "ORS"),
+                          scales = c("PNA", "INCS", "ORSS"),
                           range = c(0, 3),
                           tibble = FALSE) {
 
@@ -200,39 +197,48 @@ validity_pid5fsf <- function(.data,
   }
 
   ## Response Inconsistency Scale
-  if ("RIS" %in% scales) {
-    ris_items <- pid_items[!is.na(pid_items$RIS), c("PID5FSF", "RIS")]
-    ris_items <- ris_items[order(ris_items$RIS), , drop = FALSE]
-    ris_items$VAR <- rep(1:2, times = length(ris_items) / 2)
+  if ("INCS" %in% scales) {
+    inc_items <- pid_items[!is.na(pid_items$INC), c("PID5FSF", "INC")]
+    inc_items <- inc_items[order(inc_items$INC), , drop = FALSE]
+    inc_items$VAR <- rep(1:2, times = length(inc_items) / 2)
 
-    ris_items <- stats::reshape(
-      ris_items,
+    inc_items <- stats::reshape(
+      inc_items,
       v.names = "PID5FSF",
       timevar = "VAR",
-      idvar = "RIS",
+      idvar = "INC",
       direction = "wide"
     )
-    ris_items <- stats::na.omit(ris_items)
+    inc_items <- stats::na.omit(inc_items)
 
-    ris_df <-
-      rowMeans(
+    inc_df <-
+      rowSums(
         bind_columns(
-          lapply(1:nrow(ris_items), \(x) adiff(data_items, ris_items, x))
-        ),
-        na.rm = TRUE
-      ) / diff(range)
+          lapply(1:nrow(inc_items), \(x) adiff(data_items, inc_items, x))
+        )
+      )
 
-    ris_df[is.nan(ris_df)] <- NA_real_
+    inc_warns <- sum(inc_df >= 8, na.rm = TRUE)
+    if (inc_warns > 0) {
+      cli::cli_alert_warning('A total of {inc_warns} observations exceeded criteria for inconsistent responding.')
+      cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, v_incs < 8)}')
+    }
 
-    out <- cbind(out, v_ris = ris_df)
+    out <- cbind(out, v_incs = inc_df)
   }
 
   # Over-Reporting Scale
-  if ("ORS" %in% scales) {
+  if ("ORSS" %in% scales) {
     ors_items <- drop_na(pid_items[!is.na(pid_items$ORS), "PID5FSF"])
-    ors_df <- rowMeans(data_items[, ors_items] == range[[2]], na.rm = TRUE)
-    ors_df[is.nan(ors_df)] <- NA_real_
-    out <- cbind(out, v_ors = ors_df)
+    ors_df <- rowSums(data_items[, ors_items] == range[[2]])
+
+    # ors_warns <- sum(ors_df >= 3, na.rm = TRUE)
+    # if (ors_warns > 0) {
+    #   cli::cli_alert_warning('A total of {ors_warns} observations exceeded criteria for overreporting.')
+    #   cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, v_orss < 3)}')
+    # }
+
+    out <- cbind(out, v_orss = ors_df)
   }
 
   if (tibble == TRUE) {
