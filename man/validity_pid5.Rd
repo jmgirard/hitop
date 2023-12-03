@@ -9,7 +9,8 @@ validity_pid5(
   items = NULL,
   id = NULL,
   scales = c("RIS", "ORS"),
-  range = c(0, 3)
+  range = c(0, 3),
+  tibble = FALSE
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ overreporting.}
 
 \item{range}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
+
+\item{tibble}{An optional logical indicating whether the output should be
+converted to a \code{tibble::tibble()}.}
 }
 \value{
 A data frame containing any \code{id} variables as well any requested

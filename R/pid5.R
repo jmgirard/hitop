@@ -15,18 +15,21 @@
 #'   partial arguments such as "d" or "f" (default is both).
 #' @param range An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
+#' @param tibble An optional logical indicating whether the output should be
+#'   converted to a `tibble::tibble()`.
 #' @return A data frame containing any `id` variables as well any requested
 #'   `scale` scores, calculated using the DSM-5 algorithm.
 #' @export
 #' @references - Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 #'   Skodol, A. E. (2012). Initial construction of a maladaptive personality
-#'   trait model and inventory for DSM-5. *Psychological Medicine, 42*, 1879-1890.
-#'   \url{https://doi.org/10.1017/s0033291711002674}
+#'   trait model and inventory for DSM-5. *Psychological Medicine, 42*,
+#'   1879-1890. \url{https://doi.org/10.1017/s0033291711002674}
 score_pid5 <- function(.data,
                        items = NULL,
                        id = NULL,
                        scales = c("domains", "facets"),
-                       range = c(0, 3)) {
+                       range = c(0, 3),
+                       tibble = FALSE) {
 
   ## Assertions
   validate_data(.data)
@@ -34,6 +37,7 @@ score_pid5 <- function(.data,
   validate_id(id)
   scales <- match.arg(scales, several.ok = TRUE)
   validate_range(range)
+  stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
   if (is.null(items)) {
@@ -127,6 +131,11 @@ score_pid5 <- function(.data,
     out <- cbind(out, means_facets)
   }
 
+  if (tibble == TRUE) {
+    rlang::check_installed("tibble")
+    out <- tibble::as_tibble(out)
+  }
+
   ## Return output
   out
 }
@@ -151,6 +160,8 @@ score_pid5 <- function(.data,
 #'   overreporting.
 #' @param range An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
+#' @param tibble An optional logical indicating whether the output should be
+#'   converted to a `tibble::tibble()`.
 #' @return A data frame containing any `id` variables as well any requested
 #'   `scale` scores, calculated using the DSM-5 algorithm.
 #' @references - Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
@@ -166,7 +177,8 @@ validity_pid5 <- function(.data,
                           items = NULL,
                           id = NULL,
                           scales = c("RIS", "ORS"),
-                          range = c(0, 3)) {
+                          range = c(0, 3),
+                          tibble = FALSE) {
 
   # Assertions
   validate_data(.data)
@@ -174,6 +186,7 @@ validity_pid5 <- function(.data,
   validate_id(id)
   scales <- match.arg(scales, several.ok = TRUE)
   validate_range(range)
+  stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
   if (is.null(items)) {
@@ -233,6 +246,11 @@ validity_pid5 <- function(.data,
         )
       )
     out <- cbind(out, v_ors = ors_df)
+  }
+
+  if (tibble == TRUE) {
+    rlang::check_installed("tibble")
+    out <- tibble::as_tibble(out)
   }
 
   out

@@ -9,7 +9,8 @@ score_pid5(
   items = NULL,
   id = NULL,
   scales = c("domains", "facets"),
-  range = c(0, 3)
+  range = c(0, 3),
+  tibble = FALSE
 )
 }
 \arguments{
@@ -30,6 +31,9 @@ partial arguments such as "d" or "f" (default is both).}
 
 \item{range}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
+
+\item{tibble}{An optional logical indicating whether the output should be
+converted to a \code{tibble::tibble()}.}
 }
 \value{
 A data frame containing any \code{id} variables as well any requested
@@ -42,7 +46,7 @@ Create a data frame with scores on the full PID-5 domain and facet scales.
 \itemize{
 \item Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 Skodol, A. E. (2012). Initial construction of a maladaptive personality
-trait model and inventory for DSM-5. \emph{Psychological Medicine, 42}, 1879-1890.
-\url{https://doi.org/10.1017/s0033291711002674}
+trait model and inventory for DSM-5. \emph{Psychological Medicine, 42},
+1879-1890. \url{https://doi.org/10.1017/s0033291711002674}
 }
 }

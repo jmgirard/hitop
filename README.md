@@ -6,7 +6,8 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of hitop is to …
+The goal of hitop is to provide functions helpful for researchers
+working on the Hierarchical Taxonomy of Psychopathology (HiTOP).
 
 ## Installation
 
@@ -26,44 +27,41 @@ This is a basic example which shows you how to solve a common problem:
 library(hitop)
 data("sim_pid5")
 
-scales <- score_pid5(sim_pid5)
-head(scales)
-#>   d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou f_attent
-#> 1 1.867725 2.236111 1.777778 1.632275 2.110043    1.875 1.888889    2.000
-#> 2 1.767196 1.819444 1.911111 1.304233 2.155983    1.625 2.444444    1.625
-#> 3 1.264550 1.355556 2.755556 2.248677 1.737179    1.500 1.222222    2.375
-#> 4 1.777778 2.150000 1.555556 2.589947 2.320513    1.750 2.333333    2.000
-#> 5 1.873016 2.297222 2.433333 1.973545 2.347222    2.125 2.333333    1.625
-#> 6 1.820106 2.205556 1.822222 2.375661 2.263889    1.750 1.888889    1.750
-#>   f_callou f_deceit f_depres f_distra f_eccent  f_emotio f_grandi f_hostil
-#> 1 1.928571      1.6 1.928571 1.444444 2.538462 1.4285714 2.333333      2.7
-#> 2 2.357143      1.5 2.071429 1.222222 1.384615 1.7142857 1.833333      2.1
-#> 3 2.500000      2.7 2.142857 1.888889 2.461538 0.8571429 2.166667      2.0
-#> 4 1.928571      2.4 1.785714 2.222222 2.461538 1.0000000 1.666667      2.1
-#> 5 2.285714      2.5 2.500000 1.777778 2.000000 1.8571429 2.000000      2.3
-#> 6 1.571429      2.3 1.928571 2.222222 2.000000 1.2857143 2.166667      2.1
-#>    f_impuls  f_intima f_irresp f_manipu f_percep f_persev f_restri f_rigidp
-#> 1 1.1666667 2.3333333 2.285714      1.4 2.166667 1.777778 2.857143      2.2
-#> 2 0.8333333 1.8333333 1.857143      2.4 2.333333 2.111111 1.857143      2.2
-#> 3 3.0000000 0.6666667 1.857143      3.4 1.000000 2.444444 1.571429      2.8
-#> 4 2.8333333 2.5000000 2.714286      0.6 1.500000 2.333333 1.285714      2.5
-#> 5 2.0000000 3.1666667 2.142857      2.8 2.416667 2.333333 1.285714      1.3
-#> 6 2.3333333 2.1666667 2.571429      1.0 2.666667 1.777778 2.285714      2.9
-#>   f_riskta f_separa f_submis  f_suspis f_unusua f_withdr
-#> 1 1.500000 2.285714     2.75 0.7142857    1.625      2.5
-#> 2 1.285714 1.142857     0.75 1.4285714    2.750      2.0
-#> 3 1.714286 1.714286     3.00 1.7142857    1.750      1.9
-#> 4 1.000000 2.000000     2.00 1.4285714    3.000      2.2
-#> 5 1.357143 1.428571     1.75 1.7142857    2.625      1.6
-#> 6 1.928571 2.285714     1.50 1.0000000    2.125      2.7
+score_pid5(sim_pid5, tibble = TRUE)
+#> # A tibble: 100 × 30
+#>    d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou f_attent
+#>       <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
+#>  1     1.87     2.24     1.78     1.63     2.11     1.88     1.89     2   
+#>  2     1.77     1.82     1.91     1.30     2.16     1.62     2.44     1.62
+#>  3     1.26     1.36     2.76     2.25     1.74     1.5      1.22     2.38
+#>  4     1.78     2.15     1.56     2.59     2.32     1.75     2.33     2   
+#>  5     1.87     2.30     2.43     1.97     2.35     2.12     2.33     1.62
+#>  6     1.82     2.21     1.82     2.38     2.26     1.75     1.89     1.75
+#>  7     1.82     1.89     2.06     2.06     2.13     2        1.89     1.75
+#>  8     2.08     1.79     1.77     1.45     1.73     1.75     2.11     1.88
+#>  9     1.87     2.32     2.14     2.19     2.07     1.12     1.89     1.62
+#> 10     1.73     2.02     2.26     2.34     1.82     1.5      1.33     2.25
+#> # ℹ 90 more rows
+#> # ℹ 22 more variables: f_callou <dbl>, f_deceit <dbl>, f_depres <dbl>,
+#> #   f_distra <dbl>, f_eccent <dbl>, f_emotio <dbl>, f_grandi <dbl>,
+#> #   f_hostil <dbl>, f_impuls <dbl>, f_intima <dbl>, f_irresp <dbl>,
+#> #   f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>, f_restri <dbl>,
+#> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
+#> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
 
-valids <- validity_pid5(sim_pid5)
-head(valids)
-#>   v_ris v_ors
-#> 1    27     3
-#> 2    31     1
-#> 3    27     3
-#> 4    20     0
-#> 5    28     4
-#> 6    27     1
+validity_pid5(sim_pid5, tibble = TRUE)
+#> # A tibble: 100 × 2
+#>    v_ris v_ors
+#>    <dbl> <dbl>
+#>  1    27     3
+#>  2    31     1
+#>  3    27     3
+#>  4    20     0
+#>  5    28     4
+#>  6    27     1
+#>  7    38     4
+#>  8    26     2
+#>  9    31     3
+#> 10    28     3
+#> # ℹ 90 more rows
 ```
