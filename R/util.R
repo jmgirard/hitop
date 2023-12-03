@@ -15,24 +15,19 @@ bind_columns <- function(vector_list) {
   do.call(cbind, vector_list)
 }
 
-adiff <- function(df, x, y) {
-  abs(df[, x] - df[, y])
+adiff <- function(data, items, index) {
+  abs(data[, items[[index, 2]]] - data[, items[[index, 3]]])
 }
-
-highest <- function(df, x, range = c(0, 3)) {
-  as.integer(df[, x] == range[[2]])
-}
-
 
 validate_data <- function(x) {
   stopifnot(is.data.frame(x))
 }
 
-validate_items <- function(x) {
+validate_items <- function(x, n) {
   stopifnot(
     is.null(x) ||
-      rlang::is_character(x, n = 220) ||
-      rlang::is_integerish(x, n = 220)
+      rlang::is_character(x, n = n) ||
+      rlang::is_integerish(x, n = n)
   )
 }
 
@@ -47,4 +42,8 @@ validate_id <- function(x) {
 validate_range <- function(x) {
   stopifnot(rlang::is_integerish(x, n = 2))
   stopifnot(x[[2]] > x[[1]])
+}
+
+drop_na <- function(x) {
+  x[!is.na(x)]
 }

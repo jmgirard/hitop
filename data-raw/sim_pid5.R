@@ -1,5 +1,5 @@
 pidmat <- matrix(
-  sample(0:4, size = 100*220, replace = TRUE),
+  sample(0:3, size = 100*220, replace = TRUE),
   nrow = 100,
   ncol = 220
 )
