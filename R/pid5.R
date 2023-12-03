@@ -47,6 +47,7 @@ score_pid5 <- function(.data,
   data_items <- .data[, c(items, id)]
 
   ## Reverse score the necessary items
+  pid_items <- utils::data(pid_items)
   items_rev <- pid_items[pid_items$Reverse == TRUE, "PID5"]
 
   for (i in items_rev) {
@@ -196,6 +197,7 @@ validity_pid5 <- function(.data,
 
   ## Prepare output
   out <- .data[, id]
+  pid_items <- utils::data(pid_items)
 
   ## Response Inconsistency Scale
   if ("RIS" %in% scales) {
@@ -203,7 +205,7 @@ validity_pid5 <- function(.data,
     ris_items <- ris_items[order(ris_items$RIS), , drop = FALSE]
     ris_items$VAR <- rep(1:2, times = length(ris_items) / 2)
 
-    ris_items <- reshape(
+    ris_items <- stats::reshape(
       ris_items,
       v.names = "PID5",
       timevar = "VAR",

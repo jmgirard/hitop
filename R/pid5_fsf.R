@@ -52,6 +52,7 @@ score_pid5fsf <- function(.data,
 
   ## Prepare output
   out <- .data[, id]
+  pid_items <- utils::data(pid_items)
 
   ## Calculate facet scores
   items_facets <- list(
@@ -189,6 +190,7 @@ validity_pid5fsf <- function(.data,
 
   ## Prepare output
   out <- .data[, id]
+  pid_items <- utils::data(pid_items)
 
   ## Response Inconsistency Scale
   if ("RIS" %in% scales) {
@@ -196,14 +198,14 @@ validity_pid5fsf <- function(.data,
     ris_items <- ris_items[order(ris_items$RIS), , drop = FALSE]
     ris_items$VAR <- rep(1:2, times = length(ris_items) / 2)
 
-    ris_items <- reshape(
+    ris_items <- stats::reshape(
       ris_items,
       v.names = "PID5FSF",
       timevar = "VAR",
       idvar = "RIS",
       direction = "wide"
     )
-    ris_items <- na.omit(ris_items)
+    ris_items <- stats::na.omit(ris_items)
 
     ris_df <-
       rowMeans(
