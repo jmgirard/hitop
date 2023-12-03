@@ -276,7 +276,7 @@ validity_pid5 <- function(.data,
   # Positive Impression Management (PIM) Response Distortion Scale
   if ("PRD" %in% scales) {
     prd_items <- pid_items[!is.na(pid_items$PRD), "PID5"]
-    prd_df <- rowSums(data_items, prd_items)
+    prd_df <- rowSums(data_items[, prd_items])
 
     prd_warns <- sum(prd_df < 11, na.rm = TRUE)
     prd_warns_p <- sprintf("%.1f%%", prd_warns / length(prd_df) * 100)
@@ -292,7 +292,7 @@ validity_pid5 <- function(.data,
   # Social Desirability-Total Denial Scale
   if ("PRD" %in% scales) {
     sdtd_items <- pid_items[!is.na(pid_items$SDTD), "PID5"]
-    sdtd_df <- rowSums(data_items, sdtd_items)
+    sdtd_df <- rowSums(data_items[, sdtd_items])
 
     out <- cbind(out, v_sdtd = sdtd_df)
   }

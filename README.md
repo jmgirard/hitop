@@ -57,16 +57,16 @@ validity_pid5(sim_pid5, tibble = TRUE)
 #> # A tibble: 100 × 5
 #>    v_pna v_inc v_ors v_prd v_sdtd
 #>    <dbl> <dbl> <dbl> <dbl>  <dbl>
-#>  1     0    29     1   325    325
-#>  2     0    29     0   334    334
-#>  3     0    27     2   336    336
-#>  4     0    25     3   298    298
-#>  5     0    29     4   340    340
-#>  6     0    24     2   324    324
-#>  7     0    23     2   363    363
-#>  8     0    23     3   326    326
-#>  9     0    22     5   345    345
-#> 10     0    21     5   327    327
+#>  1     0    29     1    34     25
+#>  2     0    29     0    41     26
+#>  3     0    27     2    28     22
+#>  4     0    25     3    29     16
+#>  5     0    29     4    37     27
+#>  6     0    24     2    29     18
+#>  7     0    23     2    31     25
+#>  8     0    23     3    30     29
+#>  9     0    22     5    40     27
+#> 10     0    21     5    35     28
 #> # ℹ 90 more rows
 
 ## Score simulated PID-5-FSF data
@@ -93,21 +93,21 @@ score_pid5fsf(sim_pid5fsf, tibble = TRUE)
 #> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
 #> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
 validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
-#> ! A total of 97 observations exceeded criteria for inconsistent responding.
+#> ! A total of 97 observations (97.0%) met criteria for inconsistent responding (0 missing).
 #> ℹ Consider removing them with `dplyr::filter(df, v_incs < 8)`
-#> # A tibble: 100 × 3
-#>    v_pna v_incs v_orss
-#>    <dbl>  <dbl>  <dbl>
-#>  1     0     13      1
-#>  2     0     16      2
-#>  3     0     23      2
-#>  4     0     13      3
-#>  5     0     11      4
-#>  6     0     18      0
-#>  7     0     11      1
-#>  8     0     20      3
-#>  9     0     17      2
-#> 10     0     14      3
+#> # A tibble: 100 × 4
+#>    v_pna v_incs v_orss v_sdtds
+#>    <dbl>  <dbl>  <dbl>   <dbl>
+#>  1     0     13      1      10
+#>  2     0     16      2      16
+#>  3     0     23      2      13
+#>  4     0     13      3       8
+#>  5     0     11      4      11
+#>  6     0     18      0      13
+#>  7     0     11      1      13
+#>  8     0     20      3      14
+#>  9     0     17      2      11
+#> 10     0     14      3      11
 #> # ℹ 90 more rows
 
 ## Score real PID-5-FSF data
@@ -134,20 +134,20 @@ score_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 #> #   f_restri <dbl>, f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>,
 #> #   f_submis <dbl>, f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
 validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
-#> ! A total of 69 observations exceeded criteria for inconsistent responding.
+#> ! A total of 69 observations (17.9%) met criteria for inconsistent responding (5 missing).
 #> ℹ Consider removing them with `dplyr::filter(df, v_incs < 8)`
-#> # A tibble: 386 × 4
-#>    response_id       v_pna v_incs v_orss
-#>    <chr>             <dbl>  <dbl>  <dbl>
-#>  1 R_2BsNloyAVAk3UnQ     0      0      0
-#>  2 R_WrIeYf92JAqCDE5     0      3      0
-#>  3 R_3OlvdFDleHTo9IE     0      9      0
-#>  4 R_3JI4ceKdZSeoo6m     0      4      1
-#>  5 R_2CCf8JCtPLrwQfB     0      4      1
-#>  6 R_VJQP3waDjzIAStz     0      7      0
-#>  7 R_6WqPyblq7lfVGzn     0      5      0
-#>  8 R_3p59ilU5u9hxa7v     0      5      0
-#>  9 R_1GEzNhlFaoXuAF6     0      5      0
-#> 10 R_Dl45sKLgxFLJ67f     0      7      0
+#> # A tibble: 386 × 5
+#>    response_id       v_pna v_incs v_orss v_sdtds
+#>    <chr>             <dbl>  <dbl>  <dbl>   <dbl>
+#>  1 R_2BsNloyAVAk3UnQ     0      0      0       0
+#>  2 R_WrIeYf92JAqCDE5     0      3      0       7
+#>  3 R_3OlvdFDleHTo9IE     0      9      0      14
+#>  4 R_3JI4ceKdZSeoo6m     0      4      1      14
+#>  5 R_2CCf8JCtPLrwQfB     0      4      1       9
+#>  6 R_VJQP3waDjzIAStz     0      7      0       3
+#>  7 R_6WqPyblq7lfVGzn     0      5      0       8
+#>  8 R_3p59ilU5u9hxa7v     0      5      0       5
+#>  9 R_1GEzNhlFaoXuAF6     0      5      0       5
+#> 10 R_Dl45sKLgxFLJ67f     0      7      0       7
 #> # ℹ 376 more rows
 ```

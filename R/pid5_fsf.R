@@ -147,17 +147,21 @@ score_pid5fsf <- function(.data,
 #' @param id An optional vector of column names (as strings) or numbers (as
 #'   integers) corresponding to variables from `.data` to keep in the output. If
 #'   set to `NULL` (the default), no columns will be retained.
-#' @param scales An optional character vector indicating whether to calculate
-#'   the percent of missing items (`"PNA"`), response inconsistency scale short
-#'   form (`"INCS"`) and/or the over-reporting scale short form (`"ORSS"`).
-#'   Scores of 8 or more on the INC-S are indicative of inconsistent responding.
-#'   A cut-score for the ORS-S has not yet been validated.
+#' @param scales An optional character vector indicating which of the following
+#'   validity scales to calculate: percent of missing items (`"PNA"`), response
+#'   inconsistency scale short form (`"INCS"`), over-reporting scale short form
+#'   (`"ORSS"`), positive impression management response distortion scale short
+#'   form (`"PRDS"`), and social desirability-total denial short form
+#'   (`"SDTDS"`). See details below for interpretation guidance
 #' @param range An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`.
 #' @return A data frame containing any `id` variables as well any requested
 #'   `scale` scores.
+#' @details Scores of 8 or more on the INC-S are indicative of inconsistent
+#'   responding. Cut-scores for the ORS-S, PRD-S, and SD-TD-S have not yet been
+#'   validated.
 #' @references - Lowmaster, S. E., Hartman, M. J., Zimmermann, J., Baldock, Z.
 #'   C., & Kurtz, J. E. (2020). Further Validation of the Response Inconsistency
 #'   Scale for the Personality Inventory for DSM-5. *Journal of Personality
@@ -167,7 +171,7 @@ score_pid5fsf <- function(.data,
 validity_pid5fsf <- function(.data,
                           items = NULL,
                           id = NULL,
-                          scales = c("PNA", "INCS", "ORSS"),
+                          scales = c("PNA", "INCS", "ORSS", "PRDS", "SDTDS"),
                           range = c(0, 3),
                           tibble = FALSE) {
 
@@ -219,8 +223,10 @@ validity_pid5fsf <- function(.data,
       )
 
     inc_warns <- sum(inc_df >= 8, na.rm = TRUE)
+    inc_warns_p <- sprintf("%.1f%%", inc_warns / length(inc_df) * 100)
+    inc_nas <- sum(is.na(inc_df))
     if (inc_warns > 0) {
-      cli::cli_alert_warning('A total of {inc_warns} observations exceeded criteria for inconsistent responding.')
+      cli::cli_alert_warning('A total of {inc_warns} observations ({inc_warns_p}) met criteria for inconsistent responding ({inc_nas} missing).')
       cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, v_incs < 8)}')
     }
 
@@ -239,6 +245,30 @@ validity_pid5fsf <- function(.data,
     # }
 
     out <- cbind(out, v_orss = ors_df)
+  }
+
+  # Positive Impression Management (PIM) Response Distortion Scale
+  if ("PRD" %in% scales) {
+    prd_items <- drop_na(pid_items[!is.na(pid_items$PRD), "PID5FSF"])
+    prd_df <- rowSums(data_items[, prd_items])
+
+    # prd_warns <- sum(prd_df < 11, na.rm = TRUE)
+    # prd_warns_p <- sprintf("%.1f%%", prd_warns / length(prd_df) * 100)
+    # prd_nas <- sum(is.na(prd_df))
+    # if (prd_warns > 0) {
+    #   cli::cli_alert_warning('A total of {prd_warns} observations ({prd_warns_p}) met criteria for positive impression management ({prd_nas} missing).')
+    #   cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, v_prd >= 11)}')
+    # }
+
+    out <- cbind(out, v_prds = prd_df)
+  }
+
+  # Social Desirability-Total Denial Scale
+  if ("PRDS" %in% scales) {
+    sdtd_items <- drop_na(pid_items[!is.na(pid_items$SDTD), "PID5FSF"])
+    sdtd_df <- rowSums(data_items[, sdtd_items])
+
+    out <- cbind(out, v_sdtds = sdtd_df)
   }
 
   if (tibble == TRUE) {

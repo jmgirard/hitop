@@ -8,7 +8,7 @@ validity_pid5fsf(
   .data,
   items = NULL,
   id = NULL,
-  scales = c("PNA", "INCS", "ORSS"),
+  scales = c("PNA", "INCS", "ORSS", "PRDS", "SDTDS"),
   range = c(0, 3),
   tibble = FALSE
 )
@@ -25,11 +25,12 @@ order.}
 integers) corresponding to variables from \code{.data} to keep in the output. If
 set to \code{NULL} (the default), no columns will be retained.}
 
-\item{scales}{An optional character vector indicating whether to calculate
-the percent of missing items (\code{"PNA"}), response inconsistency scale short
-form (\code{"INCS"}) and/or the over-reporting scale short form (\code{"ORSS"}).
-Scores of 8 or more on the INC-S are indicative of inconsistent responding.
-A cut-score for the ORS-S has not yet been validated.}
+\item{scales}{An optional character vector indicating which of the following
+validity scales to calculate: percent of missing items (\code{"PNA"}), response
+inconsistency scale short form (\code{"INCS"}), over-reporting scale short form
+(\code{"ORSS"}), positive impression management response distortion scale short
+form (\code{"PRDS"}), and social desirability-total denial short form
+(\code{"SDTDS"}). See details below for interpretation guidance}
 
 \item{range}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
@@ -44,6 +45,11 @@ A data frame containing any \code{id} variables as well any requested
 \description{
 Create a data frame with scores on the PID-5 Faceted Short Form validity
 scales.
+}
+\details{
+Scores of 8 or more on the INC-S are indicative of inconsistent
+responding. Cut-scores for the ORS-S, PRD-S, and SD-TD-S have not yet been
+validated.
 }
 \references{
 \itemize{
