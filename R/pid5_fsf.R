@@ -210,7 +210,7 @@ validity_pid5fsf <- function(.data,
       inc_items,
       v.names = "PID5FSF",
       timevar = "VAR",
-      idvar = "INC",
+      idvar = "INCS",
       direction = "wide"
     )
     inc_items <- stats::na.omit(inc_items)

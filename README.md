@@ -93,21 +93,21 @@ score_pid5fsf(sim_pid5fsf, tibble = TRUE)
 #> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
 #> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
 validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
-#> ! A total of 97 observations (97.0%) met criteria for inconsistent responding (0 missing).
+#> ! A total of 96 observations (96.0%) met criteria for inconsistent responding (0 missing).
 #> ℹ Consider removing them with `dplyr::filter(df, v_incs < 8)`
 #> # A tibble: 100 × 5
 #>    v_pna v_incs v_orss v_prds v_sdtds
 #>    <dbl>  <dbl>  <dbl>  <dbl>   <dbl>
-#>  1     0     13      1     16      10
-#>  2     0     16      2     15      16
-#>  3     0     23      2     18      13
-#>  4     0     13      3     19       8
+#>  1     0     12      1     16      10
+#>  2     0     15      2     15      16
+#>  3     0     21      2     18      13
+#>  4     0     12      3     19       8
 #>  5     0     11      4     18      11
-#>  6     0     18      0     15      13
-#>  7     0     11      1     13      13
-#>  8     0     20      3     24      14
+#>  6     0     17      0     15      13
+#>  7     0     10      1     13      13
+#>  8     0     19      3     24      14
 #>  9     0     17      2     18      11
-#> 10     0     14      3     17      11
+#> 10     0     12      3     17      11
 #> # ℹ 90 more rows
 
 ## Score real PID-5-FSF data
@@ -134,19 +134,19 @@ score_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 #> #   f_restri <dbl>, f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>,
 #> #   f_submis <dbl>, f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
 validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
-#> ! A total of 69 observations (17.9%) met criteria for inconsistent responding (5 missing).
+#> ! A total of 51 observations (13.2%) met criteria for inconsistent responding (5 missing).
 #> ℹ Consider removing them with `dplyr::filter(df, v_incs < 8)`
 #> # A tibble: 386 × 6
 #>    response_id       v_pna v_incs v_orss v_prds v_sdtds
 #>    <chr>             <dbl>  <dbl>  <dbl>  <dbl>   <dbl>
 #>  1 R_2BsNloyAVAk3UnQ     0      0      0      0       0
-#>  2 R_WrIeYf92JAqCDE5     0      3      0      7       7
+#>  2 R_WrIeYf92JAqCDE5     0      2      0      7       7
 #>  3 R_3OlvdFDleHTo9IE     0      9      0     22      14
 #>  4 R_3JI4ceKdZSeoo6m     0      4      1     10      14
-#>  5 R_2CCf8JCtPLrwQfB     0      4      1     13       9
-#>  6 R_VJQP3waDjzIAStz     0      7      0      3       3
+#>  5 R_2CCf8JCtPLrwQfB     0      3      1     13       9
+#>  6 R_VJQP3waDjzIAStz     0      6      0      3       3
 #>  7 R_6WqPyblq7lfVGzn     0      5      0     10       8
-#>  8 R_3p59ilU5u9hxa7v     0      5      0      2       5
+#>  8 R_3p59ilU5u9hxa7v     0      4      0      2       5
 #>  9 R_1GEzNhlFaoXuAF6     0      5      0      5       5
 #> 10 R_Dl45sKLgxFLJ67f     0      7      0     14       7
 #> # ℹ 376 more rows
