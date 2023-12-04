@@ -202,7 +202,7 @@ validity_pid5fsf <- function(.data,
 
   ## Response Inconsistency Scale
   if ("INCS" %in% scales) {
-    inc_items <- pid_items[!is.na(pid_items$INC), c("PID5FSF", "INC")]
+    inc_items <- pid_items[!is.na(pid_items$INC), c("PID5FSF", "INCS")]
     inc_items <- inc_items[order(inc_items$INC), , drop = FALSE]
     inc_items$VAR <- rep(1:2, times = length(inc_items) / 2)
 

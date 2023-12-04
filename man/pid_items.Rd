@@ -10,8 +10,10 @@
 \describe{
 \item{PID5, PID5FSF, PID5BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
 \item{Reverse}{Whether the item needs to be reverse scored}
-\item{RIS}{Item number on the response inconsistency scale}
+\item{INC,INCS}{Item number on the response inconsistency scale full and short forms}
 \item{ORS}{Item number on the overreporting scale}
+\item{PRD}{Item number on the positive impression management response distortion scale}
+\item{SDTD}{Item number on the social desirability-total denial scale}
 \item{Facet}{Name of the facet}
 }
 }
