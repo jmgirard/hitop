@@ -5,7 +5,7 @@
 \alias{pid_items}
 \title{Personality Inventory for DSM-5 Item Data}
 \format{
-\subsection{\code{pid_items} A data frame with 220 rows and 7 columns:}{
+\subsection{\code{pid_items} A data frame with 220 rows and 12 columns:}{
 
 \describe{
 \item{PID5, PID5FSF, PID5BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
@@ -15,6 +15,8 @@
 \item{PRD}{Item number on the positive impression management response distortion scale}
 \item{SDTD}{Item number on the social desirability-total denial scale}
 \item{Facet}{Name of the facet}
+\item{Domain}{Name of the domain (for PID-5-BF items)}
+\item{Text}{Item text, copyright APA}
 }
 }
 }

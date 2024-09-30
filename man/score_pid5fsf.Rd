@@ -14,12 +14,13 @@ score_pid5fsf(
 )
 }
 \arguments{
-\item{.data}{A data frame containing all PID-5 items (numerically scored).}
+\item{.data}{A data frame containing all PID-5-FSF items (numerically
+scored).}
 
 \item{items}{An optional vector of column names (as strings) or numbers (as
-integers) corresponding to the 100 PID-5 items in order. If set to \code{NULL}
-(the default), all non-\code{id} columns will be assumed to be the \code{items} in
-order.}
+integers) corresponding to the 100 PID-5-FSF items in order. If set to
+\code{NULL} (the default), all non-\code{id} columns will be assumed to be the
+\code{items} in order.}
 
 \item{id}{An optional vector of column names (as strings) or numbers (as
 integers) corresponding to variables from \code{.data} to keep in the output. If
@@ -44,13 +45,11 @@ Create a data frame with scores on the PID-5 Faceted Short Form domain and
 facet scales.
 }
 \references{
-\itemize{
-\item Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W.
+Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W.
 L., Samuel, D. B., Williamson, R. L., Lynam, D. R., Widiger, T. A., Markon,
 K. E., Krueger, R. F., & Miller, J. D. (2015). Testing whether the DSM-5
 personality disorder trait model can be measured with a reduced set of
 items: An item response theory investigation of the personality inventory
 for DSM-5. \emph{Psychological Assessment, 27}(4), 1195-1210.
 \url{https://doi.org/10.1037/pas0000120}
-}
 }

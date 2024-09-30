@@ -3,11 +3,12 @@
 #' Create a data frame with scores on the PID-5 Faceted Short Form domain and
 #' facet scales.
 #'
-#' @param .data A data frame containing all PID-5 items (numerically scored).
+#' @param .data A data frame containing all PID-5-FSF items (numerically
+#'   scored).
 #' @param items An optional vector of column names (as strings) or numbers (as
-#'   integers) corresponding to the 100 PID-5 items in order. If set to `NULL`
-#'   (the default), all non-`id` columns will be assumed to be the `items` in
-#'   order.
+#'   integers) corresponding to the 100 PID-5-FSF items in order. If set to
+#'   `NULL` (the default), all non-`id` columns will be assumed to be the
+#'   `items` in order.
 #' @param id An optional vector of column names (as strings) or numbers (as
 #'   integers) corresponding to variables from `.data` to keep in the output. If
 #'   set to `NULL` (the default), no columns will be retained.
@@ -21,7 +22,7 @@
 #' @return A data frame containing any `id` variables as well any requested
 #'   `scale` scores, calculated using the DSM-5 algorithm.
 #' @export
-#' @references - Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W.
+#' @references Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W.
 #'   L., Samuel, D. B., Williamson, R. L., Lynam, D. R., Widiger, T. A., Markon,
 #'   K. E., Krueger, R. F., & Miller, J. D. (2015). Testing whether the DSM-5
 #'   personality disorder trait model can be measured with a reduced set of

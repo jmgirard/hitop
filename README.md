@@ -4,6 +4,7 @@
 # hitop
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 The goal of hitop is to provide functions helpful for researchers
@@ -19,15 +20,18 @@ You can install the development version of hitop from
 devtools::install_github("jmgirard/hitop")
 ```
 
-## Example
+## Examples
 
-This is a basic example which shows you how to solve a common problem:
+### Score simulated PID-5 data
+
+The full PID-5 has 220 items and yields 5 domain scores and 25 facet
+scores. We can demonstrate the ability of the `score_pid5()` function to
+calculate these scores using simulated (fake) data.
 
 ``` r
 library(hitop)
-
-## Score simulated PID-5 data
 data("sim_pid5")
+
 score_pid5(sim_pid5, tibble = TRUE)
 #> # A tibble: 100 × 30
 #>    d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou f_attent
@@ -49,6 +53,16 @@ score_pid5(sim_pid5, tibble = TRUE)
 #> #   f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>, f_restri <dbl>,
 #> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
 #> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
+```
+
+There are also several validity scales that have been developed for the
+full PID-5, including measures of overreporting, inconsistent
+responding, and positive impression management. We can demonstrate the
+ability of the `validity_pid5()` function to calculate these scores and
+flag issues using the same simulated data. Note that, because the data
+is fake, we would expect there to be lots of validity issues.
+
+``` r
 validity_pid5(sim_pid5, tibble = TRUE)
 #> ! A total of 99 observations (99.0%) met criteria for inconsistent responding (0 missing).
 #> ℹ Consider removing them with `dplyr::filter(df, v_inc < 17)`
@@ -68,9 +82,18 @@ validity_pid5(sim_pid5, tibble = TRUE)
 #>  9     0    22     5    40     27
 #> 10     0    21     5    35     28
 #> # ℹ 90 more rows
+```
 
-## Score simulated PID-5-FSF data
+### Score simulated PID-5-FSF data
+
+The PID-5-FSF is a shorter version with 100 items that still yields all
+domain and facet scores. The validity scales are still calculable but
+may have fewer items and their psychometric properties have not, to my
+knowledge, been examined with the FSF.
+
+``` r
 data("sim_pid5fsf")
+
 score_pid5fsf(sim_pid5fsf, tibble = TRUE)
 #> # A tibble: 100 × 30
 #>    d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou f_attent
@@ -92,6 +115,7 @@ score_pid5fsf(sim_pid5fsf, tibble = TRUE)
 #> #   f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>, f_restri <dbl>,
 #> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
 #> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
+
 validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
 #> ! A total of 96 observations (96.0%) met criteria for inconsistent responding (0 missing).
 #> ℹ Consider removing them with `dplyr::filter(df, v_incs < 8)`
@@ -109,9 +133,18 @@ validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
 #>  9     0     17      2     18      11
 #> 10     0     12      3     17      11
 #> # ℹ 90 more rows
+```
 
-## Score real PID-5-FSF data
+### Score real PID-5-FSF data
+
+We can repeat this process with real data that was collected at
+University of Kansas (KU). There should be fewer (but still some)
+validity problems since this is real data. We can also retain un-scored
+“ID” variables in the dataset.
+
+``` r
 data("ku_pid5fsf")
+
 score_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 #> # A tibble: 386 × 31
 #>    response_id    d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou
@@ -133,6 +166,7 @@ score_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 #> #   f_irresp <dbl>, f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>,
 #> #   f_restri <dbl>, f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>,
 #> #   f_submis <dbl>, f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
+
 validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 #> ! A total of 51 observations (13.2%) met criteria for inconsistent responding (5 missing).
 #> ℹ Consider removing them with `dplyr::filter(df, v_incs < 8)`
@@ -150,4 +184,29 @@ validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 #>  9 R_1GEzNhlFaoXuAF6     0      5      0      5       5
 #> 10 R_Dl45sKLgxFLJ67f     0      7      0     14       7
 #> # ℹ 376 more rows
+```
+
+### Score simulated PID-5-BF data
+
+Finally, the PID-5-BF is a brief version with 25 items that yields the
+domain scores only. The validity scales are not calculable with this
+subset of items.
+
+``` r
+data("sim_pid5bf")
+score_pid5bf(sim_pid5bf, tibble = TRUE)
+#> # A tibble: 100 × 5
+#>    d_negati d_detatc d_antago d_disinh d_psycho
+#>       <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
+#>  1      1.4      0.8      0.8      1.4      1.4
+#>  2      1.8      1.8      2.4      1        2  
+#>  3      2.2      1.6      1.4      1        0.4
+#>  4      2.2      2.2      1.4      1.2      1.2
+#>  5      2.4      2.2      0.8      1.6      2.2
+#>  6      1.2      1.8      1.2      2.2      1.6
+#>  7      1.4      1.6      1.2      1.8      2  
+#>  8      2.2      1.8      2.2      1.6      1.4
+#>  9      1.4      1.4      2.2      1.4      1.6
+#> 10      1.4      1.8      2        2.6      0.4
+#> # ℹ 90 more rows
 ```

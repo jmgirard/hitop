@@ -2,7 +2,7 @@
 #'
 #' Information about the items in different forms of the PID-5.
 #'
-#' @format ## `pid_items` A data frame with 220 rows and 7 columns:
+#' @format ## `pid_items` A data frame with 220 rows and 12 columns:
 #' \describe{
 #'   \item{PID5, PID5FSF, PID5BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
@@ -11,6 +11,8 @@
 #'   \item{PRD}{Item number on the positive impression management response distortion scale}
 #'   \item{SDTD}{Item number on the social desirability-total denial scale}
 #'   \item{Facet}{Name of the facet}
+#'   \item{Domain}{Name of the domain (for PID-5-BF items)}
+#'   \item{Text}{Item text, copyright APA}
 #' }
 "pid_items"
 
@@ -31,6 +33,16 @@
 #' @format ## `sim_pid5fsf` A data frame with 100 rows and 100 columns.
 #' \describe{
 #'   \item{pid_1 to pid_100}{Responses on each item}
+#' }
+"sim_pid5fsf"
+
+#' Simulated PID-5-BF Data
+#'
+#' Simulated responses to items on the PID-5-BF (with 25 items).
+#'
+#' @format ## `sim_pid5bf` A data frame with 100 rows and 25 columns.
+#' \describe{
+#'   \item{pid_1 to pid_25}{Responses on each item}
 #' }
 "sim_pid5fsf"
 
