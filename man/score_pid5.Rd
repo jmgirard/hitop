@@ -9,7 +9,7 @@ score_pid5(
   items = NULL,
   id = NULL,
   scales = c("domains", "facets"),
-  range = c(0, 3),
+  srange = c(0, 3),
   tibble = FALSE
 )
 }
@@ -29,7 +29,7 @@ set to \code{NULL} (the default), no columns will be retained.}
 domain scores, facets scores, or both. Matching allows users to specify
 partial arguments such as "d" or "f" (default is both).}
 
-\item{range}{An optional numeric vector specifying the minimum and maximum
+\item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
 
 \item{tibble}{An optional logical indicating whether the output should be

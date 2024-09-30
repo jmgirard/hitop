@@ -4,7 +4,7 @@
 \alias{score_pid5bf}
 \title{Score the PID-5-BF Domain Scales}
 \usage{
-score_pid5bf(.data, items = NULL, id = NULL, range = c(0, 3), tibble = FALSE)
+score_pid5bf(.data, items = NULL, id = NULL, tibble = FALSE)
 }
 \arguments{
 \item{.data}{A data frame containing all PID-5-BF items (numerically scored).}
@@ -17,9 +17,6 @@ order.}
 \item{id}{An optional vector of column names (as strings) or numbers (as
 integers) corresponding to variables from \code{.data} to keep in the output. If
 set to \code{NULL} (the default), no columns will be retained.}
-
-\item{range}{An optional numeric vector specifying the minimum and maximum
-values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
 
 \item{tibble}{An optional logical indicating whether the output should be
 converted to a \code{tibble::tibble()}.}

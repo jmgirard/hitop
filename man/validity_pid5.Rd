@@ -9,7 +9,7 @@ validity_pid5(
   items = NULL,
   id = NULL,
   scales = c("PNA", "INC", "ORS", "PRD", "SDTD"),
-  range = c(0, 3),
+  srange = c(0, 3),
   tibble = FALSE
 )
 }
@@ -32,7 +32,7 @@ impression management response distortion scale (\code{"PRD"}), and social
 desirability-total denial scale (\code{"SDTD"}). See details below for
 interpretation guidance.}
 
-\item{range}{An optional numeric vector specifying the minimum and maximum
+\item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
 
 \item{tibble}{An optional logical indicating whether the output should be

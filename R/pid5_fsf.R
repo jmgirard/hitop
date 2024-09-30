@@ -15,8 +15,6 @@
 #' @param scales An optional character vector indicating whether to calculate
 #'   domain scores, facets scores, or both. Matching allows users to specify
 #'   partial arguments such as "d" or "f" (default is both).
-#' @param range An optional numeric vector specifying the minimum and maximum
-#'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`.
 #' @return A data frame containing any `id` variables as well any requested
@@ -33,7 +31,6 @@ score_pid5fsf <- function(.data,
                        items = NULL,
                        id = NULL,
                        scales = c("domains", "facets"),
-                       range = c(0, 3),
                        tibble = FALSE) {
 
   ## Assertions
@@ -41,7 +38,6 @@ score_pid5fsf <- function(.data,
   validate_items(items, n = 100)
   validate_id(id)
   scales <- match.arg(scales, several.ok = TRUE)
-  validate_range(range)
   stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
@@ -50,6 +46,9 @@ score_pid5fsf <- function(.data,
     items <- items[!items %in% id]
   }
   data_items <- .data[, c(items, id)]
+
+  ## Coerce values to numbers
+  data_items[items] <- lapply(data_items[items], as.numeric)
 
   ## Prepare output
   out <- .data[, id, drop = FALSE]
@@ -154,7 +153,7 @@ score_pid5fsf <- function(.data,
 #'   (`"ORSS"`), positive impression management response distortion scale short
 #'   form (`"PRDS"`), and social desirability-total denial short form
 #'   (`"SDTDS"`). See details below for interpretation guidance
-#' @param range An optional numeric vector specifying the minimum and maximum
+#' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`.
@@ -173,7 +172,7 @@ validity_pid5fsf <- function(.data,
                           items = NULL,
                           id = NULL,
                           scales = c("PNA", "INCS", "ORSS", "PRDS", "SDTDS"),
-                          range = c(0, 3),
+                          srange = c(0, 3),
                           tibble = FALSE) {
 
   # Assertions
@@ -181,7 +180,6 @@ validity_pid5fsf <- function(.data,
   validate_items(items, n = 100)
   validate_id(id)
   scales <- match.arg(scales, several.ok = TRUE)
-  validate_range(range)
   stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
@@ -190,6 +188,9 @@ validity_pid5fsf <- function(.data,
     items <- items[!items %in% id]
   }
   data_items <- .data[, c(items, id)]
+
+  ## Coerce values to numbers
+  data_items[items] <- lapply(data_items[items], as.numeric)
 
   ## Prepare output
   out <- .data[, id, drop = FALSE]
@@ -237,7 +238,7 @@ validity_pid5fsf <- function(.data,
   # Over-Reporting Scale
   if ("ORSS" %in% scales) {
     ors_items <- drop_na(pid_items[!is.na(pid_items$ORS), "PID5FSF"])
-    ors_df <- rowSums(data_items[, ors_items] == range[[2]])
+    ors_df <- rowSums(data_items[, ors_items] == srange[[2]])
 
     # ors_warns <- sum(ors_df >= 3, na.rm = TRUE)
     # if (ors_warns > 0) {

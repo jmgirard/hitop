@@ -13,7 +13,7 @@
 #' @param scales An optional character vector indicating whether to calculate
 #'   domain scores, facets scores, or both. Matching allows users to specify
 #'   partial arguments such as "d" or "f" (default is both).
-#' @param range An optional numeric vector specifying the minimum and maximum
+#' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`.
@@ -28,7 +28,7 @@ score_pid5 <- function(.data,
                        items = NULL,
                        id = NULL,
                        scales = c("domains", "facets"),
-                       range = c(0, 3),
+                       srange = c(0, 3),
                        tibble = FALSE) {
 
   ## Assertions
@@ -36,7 +36,7 @@ score_pid5 <- function(.data,
   validate_items(items, n = 220)
   validate_id(id)
   scales <- match.arg(scales, several.ok = TRUE)
-  validate_range(range)
+  validate_range(srange)
   stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
@@ -46,17 +46,17 @@ score_pid5 <- function(.data,
   }
   data_items <- .data[, c(items, id)]
 
+  ## Coerce values to numbers
+  data_items[items] <- lapply(data_items[items], as.numeric)
+
   ## Reverse score the necessary items
   utils::data(pid_items)
   items_rev <- pid_items[pid_items$Reverse == TRUE, "PID5"]
 
-  for (i in items_rev) {
-    data_items[, i] <- reverse(
-      data_items[, i],
-      min = range[[1]],
-      max = range[[2]]
-    )
-  }
+  data_items[items_rev] <- lapply(
+    items_rev,
+    \(i) reverse(data_items[, i], min = srange[[1]], max = srange[[2]])
+  )
 
   ## Prepare output
   out <- .data[, id, drop = FALSE]
@@ -159,7 +159,7 @@ score_pid5 <- function(.data,
 #'   impression management response distortion scale (`"PRD"`), and social
 #'   desirability-total denial scale (`"SDTD"`). See details below for
 #'   interpretation guidance.
-#' @param range An optional numeric vector specifying the minimum and maximum
+#' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`.
@@ -197,7 +197,7 @@ validity_pid5 <- function(.data,
                           items = NULL,
                           id = NULL,
                           scales = c("PNA", "INC", "ORS", "PRD", "SDTD"),
-                          range = c(0, 3),
+                          srange = c(0, 3),
                           tibble = FALSE) {
 
   # Assertions
@@ -205,7 +205,7 @@ validity_pid5 <- function(.data,
   validate_items(items, n = 220)
   validate_id(id)
   scales <- match.arg(scales, several.ok = TRUE)
-  validate_range(range)
+  validate_range(srange)
   stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
@@ -260,7 +260,7 @@ validity_pid5 <- function(.data,
   # Over-Reporting Scale
   if ("ORS" %in% scales) {
     ors_items <- pid_items[!is.na(pid_items$ORS), "PID5"]
-    ors_df <- rowSums(data_items[, ors_items] == range[[2]])
+    ors_df <- rowSums(data_items[, ors_items] == srange[[2]])
 
     ors_warns <- sum(ors_df >= 3, na.rm = TRUE)
     ors_warns_p <- sprintf("%.1f%%", ors_warns / length(ors_df) * 100)

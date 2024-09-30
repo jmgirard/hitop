@@ -10,8 +10,6 @@
 #' @param id An optional vector of column names (as strings) or numbers (as
 #'   integers) corresponding to variables from `.data` to keep in the output. If
 #'   set to `NULL` (the default), no columns will be retained.
-#' @param range An optional numeric vector specifying the minimum and maximum
-#'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`.
 #' @return A data frame containing any `id` variables as well any requested
@@ -25,14 +23,12 @@
 score_pid5bf <- function(.data,
                        items = NULL,
                        id = NULL,
-                       range = c(0, 3),
                        tibble = FALSE) {
 
   ## Assertions
   validate_data(.data)
   validate_items(items, n = 25)
   validate_id(id)
-  validate_range(range)
   stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
@@ -41,6 +37,9 @@ score_pid5bf <- function(.data,
     items <- items[!items %in% id]
   }
   data_items <- .data[, c(items, id)]
+
+  ## Coerce values to numbers
+  data_items[items] <- lapply(data_items[items], as.numeric)
 
   ## Prepare output
   out <- .data[, id, drop = FALSE]

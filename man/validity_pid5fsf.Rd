@@ -9,7 +9,7 @@ validity_pid5fsf(
   items = NULL,
   id = NULL,
   scales = c("PNA", "INCS", "ORSS", "PRDS", "SDTDS"),
-  range = c(0, 3),
+  srange = c(0, 3),
   tibble = FALSE
 )
 }
@@ -32,7 +32,7 @@ inconsistency scale short form (\code{"INCS"}), over-reporting scale short form
 form (\code{"PRDS"}), and social desirability-total denial short form
 (\code{"SDTDS"}). See details below for interpretation guidance}
 
-\item{range}{An optional numeric vector specifying the minimum and maximum
+\item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
 
 \item{tibble}{An optional logical indicating whether the output should be
