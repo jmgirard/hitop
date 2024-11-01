@@ -5,7 +5,7 @@
 \title{Score the Full PID-5 Validity Scales}
 \usage{
 validity_pid5(
-  .data,
+  data,
   items = NULL,
   id = NULL,
   scales = c("PNA", "INC", "ORS", "PRD", "SDTD"),
@@ -14,8 +14,6 @@ validity_pid5(
 )
 }
 \arguments{
-\item{.data}{A data frame containing all PID-5 items (numerically scored).}
-
 \item{items}{An optional vector of column names (as strings) or numbers (as
 integers) corresponding to the 220 PID-5 items in order. If set to \code{NULL}
 (the default), all non-\code{id} columns will be assumed to be the \code{items} in
@@ -37,6 +35,8 @@ values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
 
 \item{tibble}{An optional logical indicating whether the output should be
 converted to a \code{tibble::tibble()}.}
+
+\item{.data}{A data frame containing all PID-5 items (numerically scored).}
 }
 \value{
 A data frame containing any \code{id} variables as well any requested

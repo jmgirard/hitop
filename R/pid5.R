@@ -2,17 +2,14 @@
 #'
 #' Create a data frame with scores on the full PID-5 domain and facet scales.
 #'
-#' @param .data A data frame containing all PID-5 items (numerically scored).
+#' @param data A data frame containing all PID-5 items (numerically scored).
 #' @param items An optional vector of column names (as strings) or numbers (as
 #'   integers) corresponding to the 220 PID-5 items in order. If set to `NULL`
 #'   (the default), all non-`id` columns will be assumed to be the `items` in
 #'   order.
 #' @param id An optional vector of column names (as strings) or numbers (as
-#'   integers) corresponding to variables from `.data` to keep in the output. If
+#'   integers) corresponding to variables from `data` to keep in the output. If
 #'   set to `NULL` (the default), no columns will be retained.
-#' @param scales An optional character vector indicating whether to calculate
-#'   domain scores, facets scores, or both. Matching allows users to specify
-#'   partial arguments such as "d" or "f" (default is both).
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param tibble An optional logical indicating whether the output should be
@@ -24,27 +21,27 @@
 #'   Skodol, A. E. (2012). Initial construction of a maladaptive personality
 #'   trait model and inventory for DSM-5. *Psychological Medicine, 42*,
 #'   1879-1890. \url{https://doi.org/10.1017/s0033291711002674}
-score_pid5 <- function(.data,
+score_pid5 <- function(data,
                        items = NULL,
                        id = NULL,
-                       scales = c("domains", "facets"),
                        srange = c(0, 3),
+                       calc_se = FALSE,
                        tibble = FALSE) {
 
   ## Assertions
-  validate_data(.data)
+  validate_data(data)
   validate_items(items, n = 220)
   validate_id(id)
-  scales <- match.arg(scales, several.ok = TRUE)
   validate_range(srange)
+  stopifnot(rlang::is_logical(calc_se, n = 1))
   stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
   if (is.null(items)) {
-    items <- colnames(.data)
+    items <- colnames(data)
     items <- items[!items %in% id]
   }
-  data_items <- .data[, c(items, id)]
+  data_items <- data[c(items, id)]
 
   ## Coerce values to numbers
   data_items[items] <- lapply(data_items[items], as.numeric)
@@ -55,82 +52,70 @@ score_pid5 <- function(.data,
 
   data_items[items_rev] <- lapply(
     items_rev,
-    \(i) reverse(data_items[, i], min = srange[[1]], max = srange[[2]])
+    function(i) reverse(data_items[i], min = srange[[1]], max = srange[[2]])
   )
 
   ## Prepare output
-  out <- .data[, id, drop = FALSE]
+  out <- data[id]
+  utils::data(pid_items)
 
-  ## Calculate facet scores
-  items_facets <- list(
-    f_anhedo = pid_items[pid_items$Facet == "Anhedonia", "PID5"],
-    f_anxiou = pid_items[pid_items$Facet == "Anxiousness", "PID5"],
-    f_attent = pid_items[pid_items$Facet == "Attention Seeking", "PID5"],
-    f_callou = pid_items[pid_items$Facet == "Callousness", "PID5"],
-    f_deceit = pid_items[pid_items$Facet == "Deceitfulness", "PID5"],
-    f_depres = pid_items[pid_items$Facet == "Depressivity", "PID5"],
-    f_distra = pid_items[pid_items$Facet == "Distractibility", "PID5"],
-    f_eccent = pid_items[pid_items$Facet == "Eccentricity", "PID5"],
-    f_emotio = pid_items[pid_items$Facet == "Emotional Lability", "PID5"],
-    f_grandi = pid_items[pid_items$Facet == "Grandiosity", "PID5"],
-    f_hostil = pid_items[pid_items$Facet == "Hostility", "PID5"],
-    f_impuls = pid_items[pid_items$Facet == "Impulsivity", "PID5"],
-    f_intima = pid_items[pid_items$Facet == "Intimacy Avoidance", "PID5"],
-    f_irresp = pid_items[pid_items$Facet == "Irresponsibility", "PID5"],
-    f_manipu = pid_items[pid_items$Facet == "Manipulativeness", "PID5"],
-    f_percep = pid_items[pid_items$Facet == "Perceptual Dysregulation", "PID5"],
-    f_persev = pid_items[pid_items$Facet == "Perseveration", "PID5"],
-    f_restri = pid_items[pid_items$Facet == "Restricted Affectivity", "PID5"],
-    f_rigidp = pid_items[pid_items$Facet == "Rigid Perfectionism", "PID5"],
-    f_riskta = pid_items[pid_items$Facet == "Risk Taking", "PID5"],
-    f_separa = pid_items[pid_items$Facet == "Separation Insecurity", "PID5"],
-    f_submis = pid_items[pid_items$Facet == "Submissiveness", "PID5"],
-    f_suspis = pid_items[pid_items$Facet == "Suspiciousness", "PID5"],
-    f_unusua = pid_items[pid_items$Facet == "Unusual Beliefs & Experiences", "PID5"],
-    f_withdr = pid_items[pid_items$Facet == "Withdrawal", "PID5"]
+  ## Calculate facet and domain scores
+  items_scales <- list(
+    f_anhedo = drop_na(pid_items[pid_items$Facet == "Anhedonia", "PID5FSF"]),
+    f_anxiou = drop_na(pid_items[pid_items$Facet == "Anxiousness", "PID5FSF"]),
+    f_attent = drop_na(pid_items[pid_items$Facet == "Attention Seeking", "PID5FSF"]),
+    f_callou = drop_na(pid_items[pid_items$Facet == "Callousness", "PID5FSF"]),
+    f_deceit = drop_na(pid_items[pid_items$Facet == "Deceitfulness", "PID5FSF"]),
+    f_depres = drop_na(pid_items[pid_items$Facet == "Depressivity", "PID5FSF"]),
+    f_distra = drop_na(pid_items[pid_items$Facet == "Distractibility", "PID5FSF"]),
+    f_eccent = drop_na(pid_items[pid_items$Facet == "Eccentricity", "PID5FSF"]),
+    f_emotio = drop_na(pid_items[pid_items$Facet == "Emotional Lability", "PID5FSF"]),
+    f_grandi = drop_na(pid_items[pid_items$Facet == "Grandiosity", "PID5FSF"]),
+    f_hostil = drop_na(pid_items[pid_items$Facet == "Hostility", "PID5FSF"]),
+    f_impuls = drop_na(pid_items[pid_items$Facet == "Impulsivity", "PID5FSF"]),
+    f_intima = drop_na(pid_items[pid_items$Facet == "Intimacy Avoidance", "PID5FSF"]),
+    f_irresp = drop_na(pid_items[pid_items$Facet == "Irresponsibility", "PID5FSF"]),
+    f_manipu = drop_na(pid_items[pid_items$Facet == "Manipulativeness", "PID5FSF"]),
+    f_percep = drop_na(pid_items[pid_items$Facet == "Perceptual Dysregulation", "PID5FSF"]),
+    f_persev = drop_na(pid_items[pid_items$Facet == "Perseveration", "PID5FSF"]),
+    f_restri = drop_na(pid_items[pid_items$Facet == "Restricted Affectivity", "PID5FSF"]),
+    f_rigidp = drop_na(pid_items[pid_items$Facet == "Rigid Perfectionism", "PID5FSF"]),
+    f_riskta = drop_na(pid_items[pid_items$Facet == "Risk Taking", "PID5FSF"]),
+    f_separa = drop_na(pid_items[pid_items$Facet == "Separation Insecurity", "PID5FSF"]),
+    f_submis = drop_na(pid_items[pid_items$Facet == "Submissiveness", "PID5FSF"]),
+    f_suspis = drop_na(pid_items[pid_items$Facet == "Suspiciousness", "PID5FSF"]),
+    f_unusua = drop_na(pid_items[pid_items$Facet == "Unusual Beliefs & Experiences", "PID5FSF"]),
+    f_withdr = drop_na(pid_items[pid_items$Facet == "Withdrawal", "PID5FSF"]),
+    d_negati = drop_na(pid_items[pid_items$Domain == "Negative affectivity", "PID5FSF"]),
+    d_detach = drop_na(pid_items[pid_items$Domain == "Detachment", "PID5FSF"]),
+    d_antago = drop_na(pid_items[pid_items$Domain == "Antagonism", "PID5FSF"]),
+    d_disinh = drop_na(pid_items[pid_items$Domain == "Disinhibition", "PID5FSF"]),
+    d_psycho = drop_na(pid_items[pid_items$Domain == "Psychoticism", "PID5FSF"])
   )
 
-  means_facets <-
+  means_scales <-
     bind_columns(
       lapply(
-        items_facets,
-        \(x) rowMeans(data_items[, x], na.rm = TRUE)
+        items_scales,
+        function(x) rowMeans(data_items[x], na.rm = TRUE)
       )
     )
 
-  ## Calculate domain scores
-  means_domains <- data.frame(
-    d_negati = rowMeans(
-      means_facets[, c("f_emotio", "f_anxiou", "f_separa")],
-      na.rm = TRUE
-    ),
-    d_detatc = rowMeans(
-      means_facets[, c("f_withdr", "f_anhedo", "f_intima")],
-      na.rm = TRUE
-    ),
-    d_antago = rowMeans(
-      means_facets[, c("f_manipu", "f_deceit", "f_grandi")],
-      na.rm = TRUE
-    ),
-    d_disinh = rowMeans(
-      means_facets[, c("f_irresp", "f_impuls", "f_distra")],
-      na.rm = TRUE
-    ),
-    d_psycho = rowMeans(
-      means_facets[, c("f_unusua", "f_eccent", "f_percep")],
-      na.rm = TRUE
-    )
-  )
+  out <- cbind(out, means_scales)
+
+  if (calc_se) {
+    sems_scales <-
+      bind_columns(
+        lapply(
+          items_scales,
+          function(x) apply(data_items[x], MARGIN = 1, FUN = calc_sem)
+        )
+      )
+    colnames(sems_scales) <- paste0(colnames(sems_scales), "_se")
+    out <- cbind(out, sems_scales)
+  }
 
   ## Update output
-  if ("domains" %in% scales) {
-    out <- cbind(out, means_domains)
-  }
-
-  if ("facets" %in% scales) {
-    out <- cbind(out, means_facets)
-  }
-
   if (tibble == TRUE) {
     rlang::check_installed("tibble")
     out <- tibble::as_tibble(out)
@@ -193,7 +178,7 @@ score_pid5 <- function(.data,
 #'   *Journal of Personality Assessment, 101*(3), 253–263.
 #'   \url{https://doi.org/10.1080/00223891.2018.1455691}
 #' @export
-validity_pid5 <- function(.data,
+validity_pid5 <- function(data,
                           items = NULL,
                           id = NULL,
                           scales = c("PNA", "INC", "ORS", "PRD", "SDTD"),
@@ -201,7 +186,7 @@ validity_pid5 <- function(.data,
                           tibble = FALSE) {
 
   # Assertions
-  validate_data(.data)
+  validate_data(data)
   validate_items(items, n = 220)
   validate_id(id)
   scales <- match.arg(scales, several.ok = TRUE)
@@ -210,13 +195,13 @@ validity_pid5 <- function(.data,
 
   ## Select items and id variables
   if (is.null(items)) {
-    items <- colnames(.data)
+    items <- colnames(data)
     items <- items[!items %in% id]
   }
-  data_items <- .data[, c(items, id)]
+  data_items <- data[, c(items, id)]
 
   ## Prepare output
-  out <- .data[, id, drop = FALSE]
+  out <- data[, id, drop = FALSE]
   utils::data(pid_items)
 
   ## Percent Missing Items

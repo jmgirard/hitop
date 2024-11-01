@@ -4,10 +4,10 @@
 \alias{score_pid5bf}
 \title{Score the PID-5-BF Domain Scales}
 \usage{
-score_pid5bf(.data, items = NULL, id = NULL, tibble = FALSE)
+score_pid5bf(data, items = NULL, id = NULL, calc_se = FALSE, tibble = FALSE)
 }
 \arguments{
-\item{.data}{A data frame containing all PID-5-BF items (numerically scored).}
+\item{data}{A data frame containing all PID-5-BF items (numerically scored).}
 
 \item{items}{An optional vector of column names (as strings) or numbers (as
 integers) corresponding to the 25 PID-5-BF items in order. If set to \code{NULL}
@@ -15,15 +15,15 @@ integers) corresponding to the 25 PID-5-BF items in order. If set to \code{NULL}
 order.}
 
 \item{id}{An optional vector of column names (as strings) or numbers (as
-integers) corresponding to variables from \code{.data} to keep in the output. If
+integers) corresponding to variables from \code{data} to keep in the output. If
 set to \code{NULL} (the default), no columns will be retained.}
 
 \item{tibble}{An optional logical indicating whether the output should be
 converted to a \code{tibble::tibble()}.}
 }
 \value{
-A data frame containing any \code{id} variables as well any requested
-\code{scale} scores, calculated using the DSM-5 algorithm.
+A data frame containing any \code{id} variables as well all domain scores,
+calculated using the DSM-5 algorithm and their SEs if requested.
 }
 \description{
 Create a data frame with scores on the PID-5 Brief Form domain scales.

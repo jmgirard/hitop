@@ -3,59 +3,57 @@
 #' Create a data frame with scores on the PID-5 Faceted Short Form domain and
 #' facet scales.
 #'
-#' @param .data A data frame containing all PID-5-FSF items (numerically
-#'   scored).
+#' @param data A data frame containing all PID-5-FSF items (numerically scored).
 #' @param items An optional vector of column names (as strings) or numbers (as
 #'   integers) corresponding to the 100 PID-5-FSF items in order. If set to
 #'   `NULL` (the default), all non-`id` columns will be assumed to be the
 #'   `items` in order.
 #' @param id An optional vector of column names (as strings) or numbers (as
-#'   integers) corresponding to variables from `.data` to keep in the output. If
+#'   integers) corresponding to variables from `data` to keep in the output. If
 #'   set to `NULL` (the default), no columns will be retained.
-#' @param scales An optional character vector indicating whether to calculate
-#'   domain scores, facets scores, or both. Matching allows users to specify
-#'   partial arguments such as "d" or "f" (default is both).
+#' @param calc_se An optional logical indicating whether to append a standard
+#'   error estimate for each scale score.
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`.
-#' @return A data frame containing any `id` variables as well any requested
-#'   `scale` scores, calculated using the DSM-5 algorithm.
+#' @return A data frame containing any `id` variables as well all facet and
+#'   domain scores, calculated using the DSM-5 algorithm.
 #' @export
-#' @references Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W.
-#'   L., Samuel, D. B., Williamson, R. L., Lynam, D. R., Widiger, T. A., Markon,
-#'   K. E., Krueger, R. F., & Miller, J. D. (2015). Testing whether the DSM-5
+#' @references Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W. L.,
+#'   Samuel, D. B., Williamson, R. L., Lynam, D. R., Widiger, T. A., Markon, K.
+#'   E., Krueger, R. F., & Miller, J. D. (2015). Testing whether the DSM-5
 #'   personality disorder trait model can be measured with a reduced set of
 #'   items: An item response theory investigation of the personality inventory
 #'   for DSM-5. *Psychological Assessment, 27*(4), 1195-1210.
 #'   \url{https://doi.org/10.1037/pas0000120}
-score_pid5fsf <- function(.data,
-                       items = NULL,
-                       id = NULL,
-                       scales = c("domains", "facets"),
-                       tibble = FALSE) {
+score_pid5fsf <- function(data,
+                          items = NULL,
+                          id = NULL,
+                          calc_se = FALSE,
+                          tibble = FALSE) {
 
   ## Assertions
-  validate_data(.data)
+  validate_data(data)
   validate_items(items, n = 100)
   validate_id(id)
-  scales <- match.arg(scales, several.ok = TRUE)
+  stopifnot(rlang::is_logical(calc_se, n = 1))
   stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
   if (is.null(items)) {
-    items <- colnames(.data)
+    items <- colnames(data)
     items <- items[!items %in% id]
   }
-  data_items <- .data[, c(items, id)]
+  data_items <- data[c(items, id)]
 
   ## Coerce values to numbers
   data_items[items] <- lapply(data_items[items], as.numeric)
 
   ## Prepare output
-  out <- .data[, id, drop = FALSE]
+  out <- data[id]
   utils::data(pid_items)
 
-  ## Calculate facet scores
-  items_facets <- list(
+  ## Calculate facet and domain scores
+  items_scales <- list(
     f_anhedo = drop_na(pid_items[pid_items$Facet == "Anhedonia", "PID5FSF"]),
     f_anxiou = drop_na(pid_items[pid_items$Facet == "Anxiousness", "PID5FSF"]),
     f_attent = drop_na(pid_items[pid_items$Facet == "Attention Seeking", "PID5FSF"]),
@@ -80,50 +78,37 @@ score_pid5fsf <- function(.data,
     f_submis = drop_na(pid_items[pid_items$Facet == "Submissiveness", "PID5FSF"]),
     f_suspis = drop_na(pid_items[pid_items$Facet == "Suspiciousness", "PID5FSF"]),
     f_unusua = drop_na(pid_items[pid_items$Facet == "Unusual Beliefs & Experiences", "PID5FSF"]),
-    f_withdr = drop_na(pid_items[pid_items$Facet == "Withdrawal", "PID5FSF"])
+    f_withdr = drop_na(pid_items[pid_items$Facet == "Withdrawal", "PID5FSF"]),
+    d_negati = drop_na(pid_items[pid_items$Domain == "Negative affectivity", "PID5FSF"]),
+    d_detach = drop_na(pid_items[pid_items$Domain == "Detachment", "PID5FSF"]),
+    d_antago = drop_na(pid_items[pid_items$Domain == "Antagonism", "PID5FSF"]),
+    d_disinh = drop_na(pid_items[pid_items$Domain == "Disinhibition", "PID5FSF"]),
+    d_psycho = drop_na(pid_items[pid_items$Domain == "Psychoticism", "PID5FSF"])
   )
 
-  means_facets <-
+  means_scales <-
     bind_columns(
       lapply(
-        items_facets,
-        \(x) rowMeans(data_items[, x], na.rm = TRUE)
+        items_scales,
+        function(x) rowMeans(data_items[x], na.rm = TRUE)
       )
     )
 
-  ## Calculate domain scores
-  means_domains <- data.frame(
-    d_negati = rowMeans(
-      means_facets[, c("f_emotio", "f_anxiou", "f_separa")],
-      na.rm = TRUE
-    ),
-    d_detatc = rowMeans(
-      means_facets[, c("f_withdr", "f_anhedo", "f_intima")],
-      na.rm = TRUE
-    ),
-    d_antago = rowMeans(
-      means_facets[, c("f_manipu", "f_deceit", "f_grandi")],
-      na.rm = TRUE
-    ),
-    d_disinh = rowMeans(
-      means_facets[, c("f_irresp", "f_impuls", "f_distra")],
-      na.rm = TRUE
-    ),
-    d_psycho = rowMeans(
-      means_facets[, c("f_unusua", "f_eccent", "f_percep")],
-      na.rm = TRUE
-    )
-  )
+  out <- cbind(out, means_scales)
+
+  if (calc_se) {
+    sems_scales <-
+      bind_columns(
+        lapply(
+          items_scales,
+          function(x) apply(data_items[x], MARGIN = 1, FUN = calc_sem)
+        )
+      )
+    colnames(sems_scales) <- paste0(colnames(sems_scales), "_se")
+    out <- cbind(out, sems_scales)
+  }
 
   ## Update output
-  if ("domains" %in% scales) {
-    out <- cbind(out, means_domains)
-  }
-
-  if ("facets" %in% scales) {
-    out <- cbind(out, means_facets)
-  }
-
   if (tibble == TRUE) {
     rlang::check_installed("tibble")
     out <- tibble::as_tibble(out)
@@ -139,13 +124,13 @@ score_pid5fsf <- function(.data,
 #' Create a data frame with scores on the PID-5 Faceted Short Form validity
 #' scales.
 #'
-#' @param .data A data frame containing all PID-5 items (numerically scored).
+#' @param data A data frame containing all PID-5 items (numerically scored).
 #' @param items An optional vector of column names (as strings) or numbers (as
 #'   integers) corresponding to the 100 PID-5 items in order. If set to `NULL`
 #'   (the default), all non-`id` columns will be assumed to be the `items` in
 #'   order.
 #' @param id An optional vector of column names (as strings) or numbers (as
-#'   integers) corresponding to variables from `.data` to keep in the output. If
+#'   integers) corresponding to variables from `data` to keep in the output. If
 #'   set to `NULL` (the default), no columns will be retained.
 #' @param scales An optional character vector indicating which of the following
 #'   validity scales to calculate: percent of missing items (`"PNA"`), response
@@ -168,15 +153,15 @@ score_pid5fsf <- function(.data,
 #'   Assessment, 102*(6), 743–750.
 #'   \cite{https://doi.org/10.1080/00223891.2019.1674320}
 #' @export
-validity_pid5fsf <- function(.data,
-                          items = NULL,
-                          id = NULL,
-                          scales = c("PNA", "INCS", "ORSS", "PRDS", "SDTDS"),
-                          srange = c(0, 3),
-                          tibble = FALSE) {
+validity_pid5fsf <- function(data,
+                             items = NULL,
+                             id = NULL,
+                             scales = c("PNA", "INCS", "ORSS", "PRDS", "SDTDS"),
+                             srange = c(0, 3),
+                             tibble = FALSE) {
 
   # Assertions
-  validate_data(.data)
+  validate_data(data)
   validate_items(items, n = 100)
   validate_id(id)
   scales <- match.arg(scales, several.ok = TRUE)
@@ -184,16 +169,16 @@ validity_pid5fsf <- function(.data,
 
   ## Select items and id variables
   if (is.null(items)) {
-    items <- colnames(.data)
+    items <- colnames(data)
     items <- items[!items %in% id]
   }
-  data_items <- .data[, c(items, id)]
+  data_items <- data[, c(items, id)]
 
   ## Coerce values to numbers
   data_items[items] <- lapply(data_items[items], as.numeric)
 
   ## Prepare output
-  out <- .data[, id, drop = FALSE]
+  out <- data[, id, drop = FALSE]
   utils::data(pid_items)
 
   ## Percent Missing Items

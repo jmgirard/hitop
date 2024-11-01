@@ -11,7 +11,7 @@
 #'   \item{PRD}{Item number on the positive impression management response distortion scale}
 #'   \item{SDTD}{Item number on the social desirability-total denial scale}
 #'   \item{Facet}{Name of the facet}
-#'   \item{Domain}{Name of the domain (for PID-5-BF items)}
+#'   \item{Domain}{Name of the domain}
 #'   \item{Text}{Item text, copyright APA}
 #' }
 "pid_items"

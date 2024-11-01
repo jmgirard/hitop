@@ -5,7 +5,7 @@
 \title{Score the PID-5-FSF Validity Scales}
 \usage{
 validity_pid5fsf(
-  .data,
+  data,
   items = NULL,
   id = NULL,
   scales = c("PNA", "INCS", "ORSS", "PRDS", "SDTDS"),
@@ -14,7 +14,7 @@ validity_pid5fsf(
 )
 }
 \arguments{
-\item{.data}{A data frame containing all PID-5 items (numerically scored).}
+\item{data}{A data frame containing all PID-5 items (numerically scored).}
 
 \item{items}{An optional vector of column names (as strings) or numbers (as
 integers) corresponding to the 100 PID-5 items in order. If set to \code{NULL}
@@ -22,7 +22,7 @@ integers) corresponding to the 100 PID-5 items in order. If set to \code{NULL}
 order.}
 
 \item{id}{An optional vector of column names (as strings) or numbers (as
-integers) corresponding to variables from \code{.data} to keep in the output. If
+integers) corresponding to variables from \code{data} to keep in the output. If
 set to \code{NULL} (the default), no columns will be retained.}
 
 \item{scales}{An optional character vector indicating which of the following

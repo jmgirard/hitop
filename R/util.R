@@ -47,3 +47,8 @@ validate_range <- function(x) {
 drop_na <- function(x) {
   x[!is.na(x)]
 }
+
+calc_sem <- function(x) {
+  xc <- x[!is.na(x)]
+  sd(xc) / sqrt(length(xc))
+}

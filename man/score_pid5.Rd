@@ -5,16 +5,16 @@
 \title{Score the Full PID-5 Domain and Facet Scales}
 \usage{
 score_pid5(
-  .data,
+  data,
   items = NULL,
   id = NULL,
-  scales = c("domains", "facets"),
   srange = c(0, 3),
+  calc_se = FALSE,
   tibble = FALSE
 )
 }
 \arguments{
-\item{.data}{A data frame containing all PID-5 items (numerically scored).}
+\item{data}{A data frame containing all PID-5 items (numerically scored).}
 
 \item{items}{An optional vector of column names (as strings) or numbers (as
 integers) corresponding to the 220 PID-5 items in order. If set to \code{NULL}
@@ -22,12 +22,8 @@ integers) corresponding to the 220 PID-5 items in order. If set to \code{NULL}
 order.}
 
 \item{id}{An optional vector of column names (as strings) or numbers (as
-integers) corresponding to variables from \code{.data} to keep in the output. If
+integers) corresponding to variables from \code{data} to keep in the output. If
 set to \code{NULL} (the default), no columns will be retained.}
-
-\item{scales}{An optional character vector indicating whether to calculate
-domain scores, facets scores, or both. Matching allows users to specify
-partial arguments such as "d" or "f" (default is both).}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
