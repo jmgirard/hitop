@@ -46,7 +46,8 @@ score_pid5fsf <- function(data,
   data_items <- data[c(items, id)]
 
   ## Coerce values to numbers
-  data_items[items] <- lapply(data_items[items], as.numeric)
+  data_items[seq_along(items)] <- 
+    lapply(data_items[seq_along(items)], as.numeric)
 
   ## Prepare output
   out <- data[id]
@@ -175,7 +176,8 @@ validity_pid5fsf <- function(data,
   data_items <- data[, c(items, id)]
 
   ## Coerce values to numbers
-  data_items[items] <- lapply(data_items[items], as.numeric)
+  data_items[seq_along(items)] <- 
+    lapply(data_items[seq_along(items)], as.numeric)
 
   ## Prepare output
   out <- data[, id, drop = FALSE]

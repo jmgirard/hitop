@@ -31,11 +31,22 @@ devtools::install_github("jmgirard/hitop")
 
 ## Examples
 
+### Score real HiTOP-PRO data
+
+The full HiTOP-PRO has 405 items and yields 76 scale scores. We can demonstrate the ability of the `score_hitop_pro()` function to calcualte these scores using real data that was collected at the University of Kansas (KU).
+
+```{r x1}
+library(hitop)
+data("ku_hitoppro")
+
+score_hitop_pro(ku_hitoppro, items = 3:407, id = 1:2, tibble = TRUE)
+```
+
 ### Score simulated PID-5 data
 
 The full PID-5 has 220 items and yields 5 domain scores and 25 facet scores. We can demonstrate the ability of the `score_pid5()` function to calculate these scores using simulated (fake) data.
 
-```{r x1a}
+```{r x2a}
 library(hitop)
 data("sim_pid5")
 
@@ -44,7 +55,7 @@ score_pid5(sim_pid5, tibble = TRUE)
 
 There are also several validity scales that have been developed for the full PID-5, including measures of overreporting, inconsistent responding, and positive impression management. We can demonstrate the ability of the `validity_pid5()` function to calculate these scores and flag issues using the same simulated data. Note that, because the data is fake, we would expect there to be lots of validity issues.
 
-```{r x1b}
+```{r x2b}
 validity_pid5(sim_pid5, tibble = TRUE)
 ```
 
@@ -64,7 +75,7 @@ validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
 
 We can repeat this process with real data that was collected at University of Kansas (KU). There should be fewer (but still some) validity problems since this is real data. We can also retain un-scored "ID" variables in the dataset.
 
-```{r x2}
+```{r x4}
 data("ku_pid5fsf")
 
 score_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
@@ -76,7 +87,7 @@ validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 
 Finally, the PID-5-BF is a brief version with 25 items that yields the domain scores only. The validity scales are not calculable with this subset of items. 
 
-```{r x4}
+```{r x5}
 data("sim_pid5bf")
 score_pid5bf(sim_pid5bf, tibble = TRUE)
 ```

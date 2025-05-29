@@ -17,6 +17,7 @@
 ku_pid5fsf
 }
 \description{
-Real responses to items on the PID-5-FSF (with 100 items) from KU students.
+Real responses to items on the PID-5-FSF (with 100 items) from University of
+Kansas students.
 }
 \keyword{datasets}

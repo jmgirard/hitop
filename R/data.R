@@ -16,6 +16,22 @@
 #' }
 "pid_items"
 
+#' HiTOP-PRO Item Data
+#' 
+#' Information about items in the HiTOP-PRO.
+#' 
+#' @format A data frame with 405 rows and 8 columns:
+#' \describe{
+#'   \item{PRO}{Item number on the full HiTOP-PRO}
+#'   \item{Reverse}{Whether the item needs to be reverse scored}
+#'   \item{Spectrum}{Name of the spectrum (level 4)}
+#'   \item{Subfactor}{Name of the subfactor (level 3)}
+#'   \item{Scale}{Name of the scale (level 2)}
+#'   \item{Subscale}{Name of the subscale (level 1)}
+#'   \item{Text}{Item text}
+#' }
+"hitop_pro_items"
+
 #' Simulated PID-5 Data
 #'
 #' Simulated responses to items on the full PID-5 (with 220 items).
@@ -48,7 +64,8 @@
 
 #' Real PID-5-FSF Data
 #'
-#' Real responses to items on the PID-5-FSF (with 100 items) from KU students.
+#' Real responses to items on the PID-5-FSF (with 100 items) from University of 
+#' Kansas students.
 #'
 #' @format ## `ku_pid5fsf` A data frame with 386 rows and 101 columns.
 #' \describe{
@@ -56,3 +73,15 @@
 #'   \item{pid_1 to pid_100}{Responses on each item}
 #' }
 "ku_pid5fsf"
+
+#' Real HiTOP-PRO Data
+#'
+#' Real responses to items on the HiTOP-PRO from University of Kansas students.
+#'
+#' @format A data frame with 131 rows and 407 columns.
+#' \describe{
+#'   \item{participant}{An anonymized id for each participant}
+#'   \item{biosex}{A factor indicating each participant's biological sex}
+#'   \item{hitop001 to hitop405}{Responses on each item}
+#' }
+"ku_hitoppro"

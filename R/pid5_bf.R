@@ -29,7 +29,7 @@ score_pid5bf <- function(data,
   validate_data(data)
   validate_items(items, n = 25)
   validate_id(id)
-  stopifnot(rlang::is_logical(tibble, n = 1))
+  stopifnot(rlang::is_bool(tibble))
 
   ## Select items and id variables
   if (is.null(items)) {
@@ -39,7 +39,8 @@ score_pid5bf <- function(data,
   data_items <- data[, c(items, id)]
 
   ## Coerce values to numbers
-  data_items[items] <- lapply(data_items[items], as.numeric)
+  data_items[seq_along(items)] <- 
+    lapply(data_items[seq_along(items)], as.numeric)
 
   ## Prepare output
   out <- data[id]

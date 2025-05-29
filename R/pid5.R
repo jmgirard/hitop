@@ -33,8 +33,8 @@ score_pid5 <- function(data,
   validate_items(items, n = 220)
   validate_id(id)
   validate_range(srange)
-  stopifnot(rlang::is_logical(calc_se, n = 1))
-  stopifnot(rlang::is_logical(tibble, n = 1))
+  stopifnot(rlang::is_bool(calc_se))
+  stopifnot(rlang::is_bool(tibble))
 
   ## Select items and id variables
   if (is.null(items)) {
@@ -44,7 +44,8 @@ score_pid5 <- function(data,
   data_items <- data[c(items, id)]
 
   ## Coerce values to numbers
-  data_items[items] <- lapply(data_items[items], as.numeric)
+  data_items[seq_along(items)] <- 
+    lapply(data_items[seq_along(items)], as.numeric)
 
   ## Reverse score the necessary items
   utils::data(pid_items)
