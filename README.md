@@ -22,6 +22,40 @@ devtools::install_github("jmgirard/hitop")
 
 ## Examples
 
+### Score real HiTOP-PRO data
+
+The full HiTOP-PRO has 405 items and yields 76 scale scores. We can
+demonstrate the ability of the `score_hitop_pro()` function to calcualte
+these scores using real data that was collected at the University of
+Kansas (KU).
+
+``` r
+library(hitop)
+data("ku_hitoppro")
+
+score_hitop_pro(ku_hitoppro, items = 3:407, id = 1:2, tibble = TRUE)
+#> # A tibble: 143 × 78
+#>    participant    biosex agoraphobia antisocialBehavior appetiteLoss bingeEating
+#>    <chr>          <fct>        <dbl>              <dbl>        <dbl>       <dbl>
+#>  1 R_3KOxNF2JCWC… female         1                 1            1           1   
+#>  2 R_1RLNDHA6qwM… female         1                 1.25         1           1.33
+#>  3 R_61bkFQweO6u… female         1                 1            1.33        1.67
+#>  4 R_3kO0nXySSg3… female         1.4               1            1.67        2   
+#>  5 R_5yGEvYGy4Yq… female         3.2               1.5          1.33        2.33
+#>  6 R_3Pv6gPT8dxY… female         1.4               1            1.33        1.67
+#>  7 R_3KBAdhGCuga… female         1.6               1.38         1.67        2   
+#>  8 R_5fkRaVh1ZiN… male           1                 1.12         1           1.33
+#>  9 R_5hbvtJ91lzo… male           3.2               1.38         1           1.33
+#> 10 R_5dWEI8k79ah… female         1                 1            1           1   
+#> # ℹ 133 more rows
+#> # ℹ 72 more variables: bodilyDistress <dbl>, bodyDissatisfaction <dbl>,
+#> #   bodyFocus <dbl>, callousness <dbl>, checking <dbl>, cleaning <dbl>,
+#> #   cognitiveProblems <dbl>, conversionSymptoms <dbl>, counting <dbl>,
+#> #   dietaryRestraint <dbl>, difficultiesReachingOrgasm <dbl>,
+#> #   diseaseConviction <dbl>, dishonesty <dbl>, disorganization <dbl>,
+#> #   dissociation <dbl>, distressDysphoria <dbl>, domineering <dbl>, …
+```
+
 ### Score simulated PID-5 data
 
 The full PID-5 has 220 items and yields 5 domain scores and 25 facet
@@ -34,25 +68,25 @@ data("sim_pid5")
 
 score_pid5(sim_pid5, tibble = TRUE)
 #> # A tibble: 100 × 30
-#>    d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou f_attent
+#>    f_anhedo f_anxiou f_attent f_callou f_deceit f_depres f_distra f_eccent
 #>       <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
-#>  1     1.39     1.54     2.03     1.67     1.37     1.62     1.89    1.62 
-#>  2     1.50     1.39     1.6      1.54     1.61     1.75     1.22    1.38 
-#>  3     1.51     1.56     1.54     1.28     1.69     1.75     1.67    2    
-#>  4     1.36     1.45     1.51     1.43     1.44     1.12     1.22    1.12 
-#>  5     1.76     1.33     1.63     1.12     1.73     1.12     2       0.875
-#>  6     1.59     1.46     1.36     1.51     1.64     1.62     1.33    0.625
-#>  7     1.63     2.08     1.42     1.53     1.52     1.5      1.89    2    
-#>  8     1.48     1.43     1.72     1.83     1.42     1.5      1       2.38 
-#>  9     1.59     1.71     1.5      2.07     1.24     1.38     1.78    1.88 
-#> 10     2.03     1.46     1.7      1.99     1.68     1.5      1.67    1.75 
+#>  1     1.25     2.75     1.5      1        0.5      1        0.75     1.25
+#>  2     1.25     1.75     1.75     2        0.75     0.75     0.5      1.25
+#>  3     1        1        1.75     1.5      1.25     1.5      1.25     1.25
+#>  4     0.5      1.25     1.25     2        1.75     0.25     1        1   
+#>  5     1.5      2.25     1.75     1.25     2        1        1        2   
+#>  6     1.5      1.75     2        2        1.5      1        1.25     1.25
+#>  7     1.75     0.5      2        2        2.5      1.25     1.75     2   
+#>  8     1.25     1.5      2        1        0.75     1.25     0.5      2   
+#>  9     2.75     1.5      1.25     1.25     1        2.25     1        1.25
+#> 10     1.25     2        1.25     1.5      2        0.75     0.5      2   
 #> # ℹ 90 more rows
-#> # ℹ 22 more variables: f_callou <dbl>, f_deceit <dbl>, f_depres <dbl>,
-#> #   f_distra <dbl>, f_eccent <dbl>, f_emotio <dbl>, f_grandi <dbl>,
-#> #   f_hostil <dbl>, f_impuls <dbl>, f_intima <dbl>, f_irresp <dbl>,
-#> #   f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>, f_restri <dbl>,
-#> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
-#> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
+#> # ℹ 22 more variables: f_emotio <dbl>, f_grandi <dbl>, f_hostil <dbl>,
+#> #   f_impuls <dbl>, f_intima <dbl>, f_irresp <dbl>, f_manipu <dbl>,
+#> #   f_percep <dbl>, f_persev <dbl>, f_restri <dbl>, f_rigidp <dbl>,
+#> #   f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>, f_suspis <dbl>,
+#> #   f_unusua <dbl>, f_withdr <dbl>, d_negati <dbl>, d_detach <dbl>,
+#> #   d_antago <dbl>, d_disinh <dbl>, d_psycho <dbl>
 ```
 
 There are also several validity scales that have been developed for the
@@ -96,25 +130,25 @@ data("sim_pid5fsf")
 
 score_pid5fsf(sim_pid5fsf, tibble = TRUE)
 #> # A tibble: 100 × 30
-#>    d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou f_attent
+#>    f_anhedo f_anxiou f_attent f_callou f_deceit f_depres f_distra f_eccent
 #>       <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
-#>  1     2.17     1.33     1       1.83      1.08     1.25     2.25     1.25
-#>  2     2        1.17     1.25    2.08      0.75     0.5      2.5      1.75
-#>  3     1.58     2        1.17    1.33      1.33     2.25     1.5      2.25
-#>  4     1.42     1.25     1.42    1.42      1.5      1        2.25     1.5 
-#>  5     1.67     1.33     1.33    2.25      1.5      0.75     1.75     0.25
-#>  6     1.5      1.83     1.83    1.75      1.67     2.25     1.5      1.25
-#>  7     1.33     1.5      1.92    0.917     1.25     1.25     1.25     0.75
-#>  8     1.92     1.75     1.42    1.92      1.08     2.25     2.5      1.25
-#>  9     1.42     1        1.67    1.83      1.25     0.75     1.75     2   
-#> 10     1.17     1.25     1       1.67      2        1        1.5      2.25
+#>  1     1.25     2.25     1.25     2.5      0.75     1.75     2        1   
+#>  2     0.5      2.5      1.75     1.25     2        0.75     1.75     1   
+#>  3     2.25     1.5      2.25     2.75     1.5      2        2        1.5 
+#>  4     1        2.25     1.5      1.25     1.75     2.25     2        1   
+#>  5     0.75     1.75     0.25     1.5      1        1        2.25     1.5 
+#>  6     2.25     1.5      1.25     1.25     2.25     1.25     2        2.25
+#>  7     1.25     1.25     0.75     1.25     1.25     1.5      0.5      1.75
+#>  8     2.25     2.5      1.25     1        0.75     2.5      2        0.75
+#>  9     0.75     1.75     2        1        1.25     2.5      2.25     1.25
+#> 10     1        1.5      2.25     1.75     1.5      2.25     1.5      1.25
 #> # ℹ 90 more rows
-#> # ℹ 22 more variables: f_callou <dbl>, f_deceit <dbl>, f_depres <dbl>,
-#> #   f_distra <dbl>, f_eccent <dbl>, f_emotio <dbl>, f_grandi <dbl>,
-#> #   f_hostil <dbl>, f_impuls <dbl>, f_intima <dbl>, f_irresp <dbl>,
-#> #   f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>, f_restri <dbl>,
-#> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
-#> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
+#> # ℹ 22 more variables: f_emotio <dbl>, f_grandi <dbl>, f_hostil <dbl>,
+#> #   f_impuls <dbl>, f_intima <dbl>, f_irresp <dbl>, f_manipu <dbl>,
+#> #   f_percep <dbl>, f_persev <dbl>, f_restri <dbl>, f_rigidp <dbl>,
+#> #   f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>, f_suspis <dbl>,
+#> #   f_unusua <dbl>, f_withdr <dbl>, d_negati <dbl>, d_detach <dbl>,
+#> #   d_antago <dbl>, d_disinh <dbl>, d_psycho <dbl>
 
 validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
 #> ! A total of 96 observations (96.0%) met criteria for inconsistent responding (0 missing).
@@ -147,25 +181,25 @@ data("ku_pid5fsf")
 
 score_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 #> # A tibble: 386 × 31
-#>    response_id    d_negati d_detatc d_antago d_disinh d_psycho f_anhedo f_anxiou
+#>    response_id    f_anhedo f_anxiou f_attent f_callou f_deceit f_depres f_distra
 #>    <chr>             <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>    <dbl>
-#>  1 R_2BsNloyAVAk…    0        0        0.167    0        0         0        0   
-#>  2 R_WrIeYf92JAq…    1.58     1.17     0.25     0.583    0.25      1        2   
-#>  3 R_3OlvdFDleHT…    1.75     1.67     1.58     1.5      1.5       1.25     1.75
-#>  4 R_3JI4ceKdZSe…    1        2        1.08     0.833    2.25      2.75     0   
-#>  5 R_2CCf8JCtPLr…    0.917    0.917    1        1.92     1.75      1        1.75
-#>  6 R_VJQP3waDjzI…    0.833    0.167    0.25     0.333    0.5       0        0.75
-#>  7 R_6WqPyblq7lf…    1.17     1.17     0.75     0.667    1.25      1        2   
-#>  8 R_3p59ilU5u9h…    0.917    0.25     0.167    0.167    0.667     0        1.25
-#>  9 R_1GEzNhlFaoX…    0.75     0.5      0        0.75     0.333     0.75     1   
-#> 10 R_Dl45sKLgxFL…    2.17     1.42     1        0.667    0.25      0.75     2.75
+#>  1 R_2BsNloyAVAk…     0        0        0        0        0        0        0   
+#>  2 R_WrIeYf92JAq…     1        2        0.75     0.5      0.25     1        1.5 
+#>  3 R_3OlvdFDleHT…     1.25     1.75     1.5      1.75     1.5      1.5      1   
+#>  4 R_3JI4ceKdZSe…     2.75     0        2.5      0.25     0.25     1.25     0.5 
+#>  5 R_2CCf8JCtPLr…     1        1.75     0.75     0.5      0.75     0.25     3   
+#>  6 R_VJQP3waDjzI…     0        0.75     0.75     0        0.5      0        0.25
+#>  7 R_6WqPyblq7lf…     1        2        0.5      0.25     1.5      0.5      1   
+#>  8 R_3p59ilU5u9h…     0        1.25     1.5      0        0.25     0.25     0   
+#>  9 R_1GEzNhlFaoX…     0.75     1        1        0        0        0.25     2   
+#> 10 R_Dl45sKLgxFL…     0.75     2.75     1.5      0.75     2        2.25     1.25
 #> # ℹ 376 more rows
-#> # ℹ 23 more variables: f_attent <dbl>, f_callou <dbl>, f_deceit <dbl>,
-#> #   f_depres <dbl>, f_distra <dbl>, f_eccent <dbl>, f_emotio <dbl>,
-#> #   f_grandi <dbl>, f_hostil <dbl>, f_impuls <dbl>, f_intima <dbl>,
-#> #   f_irresp <dbl>, f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>,
-#> #   f_restri <dbl>, f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>,
-#> #   f_submis <dbl>, f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>
+#> # ℹ 23 more variables: f_eccent <dbl>, f_emotio <dbl>, f_grandi <dbl>,
+#> #   f_hostil <dbl>, f_impuls <dbl>, f_intima <dbl>, f_irresp <dbl>,
+#> #   f_manipu <dbl>, f_percep <dbl>, f_persev <dbl>, f_restri <dbl>,
+#> #   f_rigidp <dbl>, f_riskta <dbl>, f_separa <dbl>, f_submis <dbl>,
+#> #   f_suspis <dbl>, f_unusua <dbl>, f_withdr <dbl>, d_negati <dbl>,
+#> #   d_detach <dbl>, d_antago <dbl>, d_disinh <dbl>, d_psycho <dbl>
 
 validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 #> ! A total of 51 observations (13.2%) met criteria for inconsistent responding (5 missing).
