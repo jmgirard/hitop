@@ -39,7 +39,7 @@ The full HiTOP-PRO has 405 items and yields 76 scale scores. We can demonstrate 
 library(hitop)
 data("ku_hitoppro")
 
-score_hitop_pro(ku_hitoppro, items = 3:407, id = 1:2, tibble = TRUE)
+score_hitop_pro(ku_hitoppro, id = c("participant", "biosex"), tibble = TRUE)
 ```
 
 ### Score simulated PID-5 data
@@ -47,7 +47,6 @@ score_hitop_pro(ku_hitoppro, items = 3:407, id = 1:2, tibble = TRUE)
 The full PID-5 has 220 items and yields 5 domain scores and 25 facet scores. We can demonstrate the ability of the `score_pid5()` function to calculate these scores using simulated (fake) data.
 
 ```{r x2a}
-library(hitop)
 data("sim_pid5")
 
 score_pid5(sim_pid5, tibble = TRUE)

@@ -33,19 +33,19 @@ Kansas (KU).
 library(hitop)
 data("ku_hitoppro")
 
-score_hitop_pro(ku_hitoppro, items = 3:407, id = 1:2, tibble = TRUE)
+score_hitop_pro(ku_hitoppro, id = c("participant", "biosex"), tibble = TRUE)
 #> # A tibble: 143 × 78
 #>    participant    biosex agoraphobia antisocialBehavior appetiteLoss bingeEating
 #>    <chr>          <fct>        <dbl>              <dbl>        <dbl>       <dbl>
-#>  1 R_3KOxNF2JCWC… female         1                 1            1           1   
-#>  2 R_1RLNDHA6qwM… female         1                 1.25         1           1.33
-#>  3 R_61bkFQweO6u… female         1                 1            1.33        1.67
-#>  4 R_3kO0nXySSg3… female         1.4               1            1.67        2   
-#>  5 R_5yGEvYGy4Yq… female         3.2               1.5          1.33        2.33
-#>  6 R_3Pv6gPT8dxY… female         1.4               1            1.33        1.67
-#>  7 R_3KBAdhGCuga… female         1.6               1.38         1.67        2   
-#>  8 R_5fkRaVh1ZiN… male           1                 1.12         1           1.33
-#>  9 R_5hbvtJ91lzo… male           3.2               1.38         1           1.33
+#>  1 R_3KOxNF2JCWC… female         1                 1            1           1.33
+#>  2 R_1RLNDHA6qwM… female         1.4               1            1.33        1   
+#>  3 R_61bkFQweO6u… female         1                 1            1.67        1.67
+#>  4 R_3kO0nXySSg3… female         1.2               1            2.33        3   
+#>  5 R_5yGEvYGy4Yq… female         3.2               1            2.67        1   
+#>  6 R_3Pv6gPT8dxY… female         1.2               1            2           1.33
+#>  7 R_3KBAdhGCuga… female         1.6               1.25         2.67        1.67
+#>  8 R_5fkRaVh1ZiN… male           1                 1.12         1           2.33
+#>  9 R_5hbvtJ91lzo… male           3                 1            1.33        2   
 #> 10 R_5dWEI8k79ah… female         1                 1            1           1   
 #> # ℹ 133 more rows
 #> # ℹ 72 more variables: bodilyDistress <dbl>, bodyDissatisfaction <dbl>,
@@ -63,7 +63,6 @@ scores. We can demonstrate the ability of the `score_pid5()` function to
 calculate these scores using simulated (fake) data.
 
 ``` r
-library(hitop)
 data("sim_pid5")
 
 score_pid5(sim_pid5, tibble = TRUE)
