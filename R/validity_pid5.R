@@ -1,3 +1,7 @@
+
+#TODO: Rebuild and condense
+
+
 #' Score the Full PID-5 Validity Scales
 #'
 #' Create a data frame with scores on the full PID-5 validity scales.
@@ -50,27 +54,24 @@
 #'   *Journal of Personality Assessment, 101*(3), 253–263.
 #'   \url{https://doi.org/10.1080/00223891.2018.1455691}
 #' @export
-validity_pid5 <- function(data,
-                          items = NULL,
-                          id = NULL,
-                          scales = c("PNA", "INC", "ORS", "PRD", "SDTD"),
-                          srange = c(0, 3),
-                          tibble = FALSE) {
+validity_pid5 <- function(
+  data,
+  items,
+  scales = c("PNA", "INC", "ORS", "PRD", "SDTD"),
+  srange = c(0, 3),
+  append = TRUE,
+  tibble = TRUE
+) {
 
   # Assertions
   validate_data(data)
   validate_items(items, n = 220)
-  validate_id(id)
   scales <- match.arg(scales, several.ok = TRUE)
   validate_range(srange)
   stopifnot(rlang::is_logical(tibble, n = 1))
 
   ## Select items and id variables
-  if (is.null(items)) {
-    items <- colnames(data)
-    items <- items[!items %in% id]
-  }
-  data_items <- data[, c(items, id)]
+  data_items <- data[items]
 
   ## Prepare output
   out <- data[, id, drop = FALSE]
