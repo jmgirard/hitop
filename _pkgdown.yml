@@ -1,4 +1,35 @@
 url: https://jmgirard.github.io/hitop/
+
+home:
+  title: Tools for the HiTOP Society
+
+authors:
+  Jeffrey Girard:
+    href: https://affcom.ku.edu/girard
+
 template:
   bootstrap: 5
+  math-rendering: mathjax
 
+development:
+  mode: auto
+
+reference:
+- title: Score
+  contents:
+  - score_hitop_pro
+  - score_pid5
+- title: Example Data
+  contents:
+  - ku_hitoppro
+  - ku_pid5fsf
+  - sim_hitoppro
+  - sim_pid5
+  - sim_pid5fsf
+  - sim_pid5bf
+- title: Instrument Data
+  - hitop_pro_items
+  - hitop_pro_scales
+  - hitop_pro_subscales
+  - pid_items
+  - pid_scales
