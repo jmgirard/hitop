@@ -7,3 +7,6 @@
 ^vignettes/\.quarto$
 ^vignettes/*_files$
 ^devel$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
