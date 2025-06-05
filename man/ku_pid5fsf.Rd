@@ -5,7 +5,7 @@
 \alias{ku_pid5fsf}
 \title{Real PID-5-FSF Data}
 \format{
-\subsection{\code{ku_pid5fsf} A tibble with 386 rows and 101 columns.}{
+\subsection{\code{ku_pid5fsf} A \link[tibble]{tibble} with 386 rows and 101 columns.}{
 
 \describe{
 \item{response_id}{An anonymized id for each participant}

@@ -1,10 +1,10 @@
 #' Personality Inventory for DSM-5 Item Data
 #'
-#' Information about the items in different forms of the PID-5.
+#' Information about the items in different versions of the PID-5.
 #'
-#' @format ## `pid_items` A tibble with 220 rows and 12 columns:
+#' @format ## `pid_items` A \link[tibble]{tibble} with 220 rows and 12 columns:
 #' \describe{
-#'   \item{PID5, PID5FSF, PID5BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
+#'   \item{FULL, FSF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{INC,INCS}{Item number on the response inconsistency scale full and short forms}
 #'   \item{ORS}{Item number on the overreporting scale}
@@ -16,11 +16,16 @@
 #' }
 "pid_items"
 
+#' Personality Inventory for DSM-5 Scale Data
+#'
+#' Information about the scales in different versions of the PID-5.
+"pid_scales"
+
 #' HiTOP-PRO Item Data
 #'
 #' Information about items in the HiTOP-PRO.
 #'
-#' @format A tibble with 405 rows and 8 columns:
+#' @format A \link[tibble]{tibble} with 405 rows and 8 columns:
 #' \describe{
 #'   \item{PRO}{Item number on the full HiTOP-PRO}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
@@ -32,11 +37,21 @@
 #' }
 "hitop_pro_items"
 
+#' HiTOP-PRO Scale Data
+#'
+#' Information about scales in the HiTOP-PRO.
+"hitop_pro_scales"
+
+#' HiTOP-PRO Subscale Data
+#'
+#' Information about subscales in the HiTOP-PRO.
+"hitop_pro_subscales"
+
 #' Simulated PID-5 Data
 #'
 #' Simulated responses to items on the full PID-5 (with 220 items).
 #'
-#' @format ## `sim_pid5` A tibble with 100 rows and 220 columns.
+#' @format ## `sim_pid5` A \link[tibble]{tibble} with 100 rows and 220 columns.
 #' \describe{
 #'   \item{pid_1 to pid_220}{Responses on each item}
 #' }
@@ -46,7 +61,7 @@
 #'
 #' Simulated responses to items on the PID-5-FSF (with 100 items).
 #'
-#' @format ## `sim_pid5fsf` A tibble with 100 rows and 100 columns.
+#' @format ## `sim_pid5fsf` A \link[tibble]{tibble} with 100 rows and 100 columns.
 #' \describe{
 #'   \item{pid_1 to pid_100}{Responses on each item}
 #' }
@@ -56,7 +71,7 @@
 #'
 #' Simulated responses to items on the PID-5-BF (with 25 items).
 #'
-#' @format ## `sim_pid5bf` A tibble with 100 rows and 25 columns.
+#' @format ## `sim_pid5bf` A \link[tibble]{tibble} with 100 rows and 25 columns.
 #' \describe{
 #'   \item{pid_1 to pid_25}{Responses on each item}
 #' }
@@ -67,7 +82,7 @@
 #' Real responses to items on the PID-5-FSF (with 100 items) from University of
 #' Kansas students.
 #'
-#' @format ## `ku_pid5fsf` A tibble with 386 rows and 101 columns.
+#' @format ## `ku_pid5fsf` A \link[tibble]{tibble} with 386 rows and 101 columns.
 #' \describe{
 #'   \item{response_id}{An anonymized id for each participant}
 #'   \item{pid_1 to pid_100}{Responses on each item}
@@ -78,7 +93,7 @@
 #'
 #' Real responses to items on the HiTOP-PRO from University of Kansas students.
 #'
-#' @format A tibble with 131 rows and 407 columns.
+#' @format A \link[tibble]{tibble} with 131 rows and 407 columns.
 #' \describe{
 #'   \item{participant}{An anonymized id for each participant}
 #'   \item{biosex}{A factor indicating each participant's biological sex}

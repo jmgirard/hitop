@@ -5,7 +5,7 @@ Authors@R:
     person("Jeffrey", "Girard", , "me@jmgirard.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7359-3746"))
 Description: What the package does (one paragraph).
-License: MIT
+License: MIT + file LICENSE.md
 Depends: 
     R (>= 3.5)
 Imports: 

@@ -5,14 +5,14 @@
 \alias{sim_pid5fsf}
 \title{Simulated PID-5-FSF Data}
 \format{
-\subsection{\code{sim_pid5fsf} A tibble with 100 rows and 100 columns.}{
+\subsection{\code{sim_pid5fsf} A \link[tibble]{tibble} with 100 rows and 100 columns.}{
 
 \describe{
 \item{pid_1 to pid_100}{Responses on each item}
 }
 }
 
-\subsection{\code{sim_pid5bf} A tibble with 100 rows and 25 columns.}{
+\subsection{\code{sim_pid5bf} A \link[tibble]{tibble} with 100 rows and 25 columns.}{
 
 \describe{
 \item{pid_1 to pid_25}{Responses on each item}

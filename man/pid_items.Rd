@@ -5,10 +5,10 @@
 \alias{pid_items}
 \title{Personality Inventory for DSM-5 Item Data}
 \format{
-\subsection{\code{pid_items} A tibble with 220 rows and 12 columns:}{
+\subsection{\code{pid_items} A \link[tibble]{tibble} with 220 rows and 12 columns:}{
 
 \describe{
-\item{PID5, PID5FSF, PID5BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
+\item{FULL, FSF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
 \item{Reverse}{Whether the item needs to be reverse scored}
 \item{INC,INCS}{Item number on the response inconsistency scale full and short forms}
 \item{ORS}{Item number on the overreporting scale}
@@ -24,6 +24,6 @@
 pid_items
 }
 \description{
-Information about the items in different forms of the PID-5.
+Information about the items in different versions of the PID-5.
 }
 \keyword{datasets}
