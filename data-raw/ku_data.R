@@ -1,10 +1,3 @@
-## PID-5-FSF
-ku_pid5fsf <- readr::read_csv("data-raw/ku_pid5fsf.csv", show_col_types = FALSE)
-colnames(ku_pid5fsf) <- c("response_id", paste0("pid_", 1:100))
-usethis::use_data(ku_pid5fsf, overwrite = TRUE)
-
-# ------------------------------------------------------------------------------
-
 ## HiTOP-PRO
 ku_hitoppro <-
   readr::read_csv("data-raw/study1.csv", show_col_types = FALSE) |>
@@ -21,3 +14,10 @@ ku_hitoppro <-
   ) |>
   dplyr::select(participant, biosex, starts_with("hitop"))
 usethis::use_data(ku_hitoppro, overwrite = TRUE)
+
+# ------------------------------------------------------------------------------
+
+## PID-5-FSF
+ku_pid5fsf <- readr::read_csv("data-raw/study2.csv", show_col_types = FALSE)
+colnames(ku_pid5fsf) <- c("response_id", paste0("pid_", 1:100))
+usethis::use_data(ku_pid5fsf, overwrite = TRUE)
