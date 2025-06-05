@@ -10,6 +10,13 @@ knitr:
     comment: '#>'
 ---
 
+```{r}
+#| include: false
+
+library(tibble)
+```
+
+
 The HiTOP-PRO instrument has 405 items and yields 76 scale scores. To demonstrate the ability of the package to calculate these scale scores, we can use real example data (n=143) that was collected at the University of Kansas (KU) by Girard & Gray in 2025. This data is stored in the package under the name `ku_hitoppro`.
 
 First, we load the package into memory using the `library()` function. If this doesn't work, make sure you installed the package properly (see the README on [GitHub](https://github.com/jmgirard/hitop)).
