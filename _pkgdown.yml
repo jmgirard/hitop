@@ -28,6 +28,7 @@ reference:
   - sim_pid5fsf
   - sim_pid5bf
 - title: Instrument Data
+  contents:
   - hitop_pro_items
   - hitop_pro_scales
   - hitop_pro_subscales
