@@ -1,3 +1,3 @@
 # hitop (development version)
 
-* Initial CRAN submission.
+* Initial development
