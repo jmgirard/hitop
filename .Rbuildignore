@@ -6,3 +6,4 @@
 ^README\.Rmd$
 ^vignettes/\.quarto$
 ^vignettes/*_files$
+^devel$

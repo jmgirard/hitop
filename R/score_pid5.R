@@ -27,18 +27,18 @@
 #' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 #'   Skodol, A. E. (2012). Initial construction of a maladaptive personality
 #'   trait model and inventory for DSM-5. *Psychological Medicine, 42*,
-#'   1879-1890. \url{https://doi.org/10.1017/s0033291711002674}
+#'   1879-1890. \doi{10.1017/s0033291711002674}
 #' @references Anderson, J. L., Sellbom, M., & Salekin, R. T. (2016). Utility of
 #'   the Personality Inventory for DSM-5-Brief Form (PID-5-BF) in the
 #'   measurement of maladaptive personality and psychopathology. *Assessment,
-#'   25*(5), 596–607. \url{https://doi.org/10.1177/1073191116676889}
+#'   25*(5), 596–607. \doi{10.1177/1073191116676889}
 #' @references Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W. L.,
 #'   Samuel, D. B., Williamson, R. L., Lynam, D. R., Widiger, T. A., Markon, K.
 #'   E., Krueger, R. F., & Miller, J. D. (2015). Testing whether the DSM-5
 #'   personality disorder trait model can be measured with a reduced set of
 #'   items: An item response theory investigation of the personality inventory
 #'   for DSM-5. *Psychological Assessment, 27*(4), 1195–1210.
-#'   \url{https://doi.org/10.1037/pas0000120}
+#'   \doi{10.1037/pas0000120}
 score_pid5 <- function(
     data,
     items,
