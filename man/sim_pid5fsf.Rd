@@ -11,22 +11,11 @@
 \item{pid_1 to pid_100}{Responses on each item}
 }
 }
-
-\subsection{\code{sim_pid5bf} A \link[tibble]{tibble} with 100 rows and 25 columns.}{
-
-\describe{
-\item{pid_1 to pid_25}{Responses on each item}
-}
-}
 }
 \usage{
-sim_pid5fsf
-
 sim_pid5fsf
 }
 \description{
 Simulated responses to items on the PID-5-FSF (with 100 items).
-
-Simulated responses to items on the PID-5-BF (with 25 items).
 }
 \keyword{datasets}

@@ -6,11 +6,11 @@
 \usage{
 validity_pid5(
   data,
-  items = NULL,
-  id = NULL,
+  items,
   scales = c("PNA", "INC", "ORS", "PRD", "SDTD"),
   srange = c(0, 3),
-  tibble = FALSE
+  append = TRUE,
+  tibble = TRUE
 )
 }
 \arguments{
@@ -18,10 +18,6 @@ validity_pid5(
 integers) corresponding to the 220 PID-5 items in order. If set to \code{NULL}
 (the default), all non-\code{id} columns will be assumed to be the \code{items} in
 order.}
-
-\item{id}{An optional vector of column names (as strings) or numbers (as
-integers) corresponding to variables from \code{.data} to keep in the output. If
-set to \code{NULL} (the default), no columns will be retained.}
 
 \item{scales}{An optional character vector indicating which of the following
 validity scales to calculate: percent missing items (\code{"PNA"}), response
@@ -37,6 +33,10 @@ values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
 converted to a \code{tibble::tibble()}.}
 
 \item{.data}{A data frame containing all PID-5 items (numerically scored).}
+
+\item{id}{An optional vector of column names (as strings) or numbers (as
+integers) corresponding to variables from \code{.data} to keep in the output. If
+set to \code{NULL} (the default), no columns will be retained.}
 }
 \value{
 A data frame containing any \code{id} variables as well any requested
