@@ -1,0 +1,10 @@
+pandoc: 3.1.11
+pkgdown: 2.1.3
+pkgdown_sha: ~
+articles:
+  hitop_scoring: hitop_scoring.html
+  pid5_scoring: pid5_scoring.html
+last_built: 2025-06-05T22:49Z
+urls:
+  reference: https://jmgirard.github.io/hitop/reference
+  article: https://jmgirard.github.io/hitop/articles
