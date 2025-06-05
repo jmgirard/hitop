@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 data-raw/study1.csv
+inst/doc
+**/.quarto/

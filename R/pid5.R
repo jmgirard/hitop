@@ -3,124 +3,95 @@
 #' Create a data frame with scores on the full PID-5 domain and facet scales.
 #'
 #' @param data A data frame containing all PID-5 items (numerically scored).
-#' @param items An optional vector of column names (as strings) or numbers (as
-#'   integers) corresponding to the 220 PID-5 items in order. If set to `NULL`
-#'   (the default), all non-`id` columns will be assumed to be the `items` in
-#'   order.
-#' @param id An optional vector of column names (as strings) or numbers (as
-#'   integers) corresponding to variables from `data` to keep in the output. If
-#'   set to `NULL` (the default), no columns will be retained.
+#' @param items A vector of column names (as strings) or numbers (as integers)
+#'   corresponding to the 220 PID-5 items in order.
 #' @param srange An optional numeric vector specifying the minimum and maximum
-#'   values of the PID-5 items, used for reverse-coding. (default = `c(0, 3)`)
+#'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
+#' @param prefix An optional string to add before each scale column name. If no
+#'   prefix is desired, set to an empty string `""`. (default = `"pro_"`)
+#' @param na.rm An optional logical indicating whether missing values should be
+#'   ignored when calculating scale scores. (default = `TRUE`)
+#' @param calc_se An optional logical indicating whether to calculate the
+#'   standard error of each scale score. (default = `FALSE`)
+#' @param append An optional logical indicating whether the new columns should
+#'   be added to the end of the `data` input. (default = `TRUE`)
 #' @param tibble An optional logical indicating whether the output should be
-#'   converted to a `tibble::tibble()`.
-#' @return A data frame containing any `id` variables as well any requested
-#'   `scale` scores, calculated using the DSM-5 algorithm.
+#'   converted to a `tibble::tibble()`. (default = `TRUE`)
+#' @return A data frame containing all scale scores and standard errors (if
+#'   requested) and all original `data` columns (if requested)
 #' @export
 #' @references - Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 #'   Skodol, A. E. (2012). Initial construction of a maladaptive personality
 #'   trait model and inventory for DSM-5. *Psychological Medicine, 42*,
 #'   1879-1890. \url{https://doi.org/10.1017/s0033291711002674}
-score_pid5 <- function(data,
-                       items = NULL,
-                       id = NULL,
-                       srange = c(0, 3),
-                       calc_se = FALSE,
-                       tibble = FALSE) {
+score_pid5 <- function(
+  data,
+  items,
+  srange = c(0, 3),
+  prefix = "pid_",
+  na.rm = TRUE,
+  calc_se = FALSE,
+  append = TRUE,
+  tibble = TRUE
+) {
 
   ## Assertions
   validate_data(data)
   validate_items(items, n = 220)
-  validate_id(id)
   validate_range(srange)
+  stopifnot(rlang::is_string(prefix))
+  stopifnot(rlang::is_bool(na.rm))
   stopifnot(rlang::is_bool(calc_se))
+  stopifnot(rlang::is_bool(append))
   stopifnot(rlang::is_bool(tibble))
 
-  ## Select items and id variables
-  if (is.null(items)) {
-    items <- colnames(data)
-    items <- items[!items %in% id]
-  }
-  data_items <- data[c(items, id)]
+  ## Extract item columns
+  data_items <- data[items]
 
   ## Coerce values to numbers
-  data_items[seq_along(items)] <- 
-    lapply(data_items[seq_along(items)], as.numeric)
+  data_items <- lapply(data_items, as.numeric)
 
   ## Reverse score the necessary items
   utils::data(pid_items)
-  items_rev <- pid_items[pid_items$Reverse == TRUE, "PID5"]
-
+  items_rev <- unlist(pid_items[pid_items$Reverse == TRUE, "PID5"])
   data_items[items_rev] <- lapply(
     items_rev,
-    function(i) reverse(data_items[i], min = srange[[1]], max = srange[[2]])
+    function(i) reverse(data_items[[i]], low = srange[[1]], high = srange[[2]])
   )
+  data_items <- bind_columns(data_items)
 
-  ## Prepare output
-  out <- data[id]
-  utils::data(pid_items)
+  ## Find items per scale
+  items_scales <- pid5_scales$itemNumbers
 
-  ## Calculate facet and domain scores
-  items_scales <- list(
-    f_anhedo = drop_na(pid_items[pid_items$Facet == "Anhedonia", "PID5FSF"]),
-    f_anxiou = drop_na(pid_items[pid_items$Facet == "Anxiousness", "PID5FSF"]),
-    f_attent = drop_na(pid_items[pid_items$Facet == "Attention Seeking", "PID5FSF"]),
-    f_callou = drop_na(pid_items[pid_items$Facet == "Callousness", "PID5FSF"]),
-    f_deceit = drop_na(pid_items[pid_items$Facet == "Deceitfulness", "PID5FSF"]),
-    f_depres = drop_na(pid_items[pid_items$Facet == "Depressivity", "PID5FSF"]),
-    f_distra = drop_na(pid_items[pid_items$Facet == "Distractibility", "PID5FSF"]),
-    f_eccent = drop_na(pid_items[pid_items$Facet == "Eccentricity", "PID5FSF"]),
-    f_emotio = drop_na(pid_items[pid_items$Facet == "Emotional Lability", "PID5FSF"]),
-    f_grandi = drop_na(pid_items[pid_items$Facet == "Grandiosity", "PID5FSF"]),
-    f_hostil = drop_na(pid_items[pid_items$Facet == "Hostility", "PID5FSF"]),
-    f_impuls = drop_na(pid_items[pid_items$Facet == "Impulsivity", "PID5FSF"]),
-    f_intima = drop_na(pid_items[pid_items$Facet == "Intimacy Avoidance", "PID5FSF"]),
-    f_irresp = drop_na(pid_items[pid_items$Facet == "Irresponsibility", "PID5FSF"]),
-    f_manipu = drop_na(pid_items[pid_items$Facet == "Manipulativeness", "PID5FSF"]),
-    f_percep = drop_na(pid_items[pid_items$Facet == "Perceptual Dysregulation", "PID5FSF"]),
-    f_persev = drop_na(pid_items[pid_items$Facet == "Perseveration", "PID5FSF"]),
-    f_restri = drop_na(pid_items[pid_items$Facet == "Restricted Affectivity", "PID5FSF"]),
-    f_rigidp = drop_na(pid_items[pid_items$Facet == "Rigid Perfectionism", "PID5FSF"]),
-    f_riskta = drop_na(pid_items[pid_items$Facet == "Risk Taking", "PID5FSF"]),
-    f_separa = drop_na(pid_items[pid_items$Facet == "Separation Insecurity", "PID5FSF"]),
-    f_submis = drop_na(pid_items[pid_items$Facet == "Submissiveness", "PID5FSF"]),
-    f_suspis = drop_na(pid_items[pid_items$Facet == "Suspiciousness", "PID5FSF"]),
-    f_unusua = drop_na(pid_items[pid_items$Facet == "Unusual Beliefs & Experiences", "PID5FSF"]),
-    f_withdr = drop_na(pid_items[pid_items$Facet == "Withdrawal", "PID5FSF"]),
-    d_negati = drop_na(pid_items[pid_items$Domain == "Negative affectivity", "PID5FSF"]),
-    d_detach = drop_na(pid_items[pid_items$Domain == "Detachment", "PID5FSF"]),
-    d_antago = drop_na(pid_items[pid_items$Domain == "Antagonism", "PID5FSF"]),
-    d_disinh = drop_na(pid_items[pid_items$Domain == "Disinhibition", "PID5FSF"]),
-    d_psycho = drop_na(pid_items[pid_items$Domain == "Psychoticism", "PID5FSF"])
-  )
-
-  means_scales <-
-    bind_columns(
-      lapply(
-        items_scales,
-        function(x) rowMeans(data_items[x], na.rm = TRUE)
-      )
+  ## Calculate mean scores per scale
+  out <- bind_columns(
+    lapply(
+      items_scales,
+      function(x) rowMeans(data_items[, x], na.rm = na.rm)
     )
+  )
 
-  out <- cbind(out, means_scales)
+  ## Apply prefix to scale column names
+  colnames(out) <- paste0(prefix, colnames(out))
 
+  ## Add standard errors to output if requested
   if (calc_se) {
     sems_scales <-
       bind_columns(
         lapply(
           items_scales,
-          function(x) apply(data_items[x], MARGIN = 1, FUN = calc_sem)
+          function(x) apply(data_items[, x], MARGIN = 1, FUN = calc_sem)
         )
       )
     colnames(sems_scales) <- paste0(colnames(sems_scales), "_se")
     out <- cbind(out, sems_scales)
   }
 
-  ## Update output
-  if (tibble == TRUE) {
-    rlang::check_installed("tibble")
-    out <- tibble::as_tibble(out)
-  }
+  ## Append output to input tibble if requested
+  if (append == TRUE) out <- cbind(data, out)
+
+  ## Coerce output to tibble if requested
+  if (tibble == TRUE) out <- tibble::as_tibble(out)
 
   ## Return output
   out
@@ -275,7 +246,7 @@ validity_pid5 <- function(data,
     out <- cbind(out, v_prd = prd_df)
   }
 
-  # Social Desirability-Total Denial Scale
+  ## Social Desirability-Total Denial Scale
   if ("PRD" %in% scales) {
     sdtd_items <- pid_items[!is.na(pid_items$SDTD), "PID5"]
     sdtd_df <- rowSums(data_items[, sdtd_items])
@@ -283,10 +254,12 @@ validity_pid5 <- function(data,
     out <- cbind(out, v_sdtd = sdtd_df)
   }
 
-  if (tibble == TRUE) {
-    rlang::check_installed("tibble")
-    out <- tibble::as_tibble(out)
-  }
+  ## Append output to input tibble if requested
+  if (append == TRUE) out <- cbind(data, out)
 
+  ## Coerce output to tibble if requested
+  if (tibble == TRUE) out <- tibble::as_tibble(out)
+
+  ## Return output
   out
 }

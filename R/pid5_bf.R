@@ -19,69 +19,66 @@
 #'   the Personality Inventory for DSM-5-Brief Form (PID-5-BF) in the
 #'   measurement of maladaptive personality and psychopathology. *Assessment,
 #'   25*(5), 596–607. \url{https://doi.org/10.1177/1073191116676889}
-score_pid5bf <- function(data,
-                         items = NULL,
-                         id = NULL,
-                         calc_se = FALSE,
-                         tibble = FALSE) {
+score_pid5bf <- function(
+  data,
+  items,
+  prefix = "pid_",
+  na.rm = TRUE,
+  calc_se = FALSE,
+  append = TRUE,
+  tibble = TRUE
+) {
 
   ## Assertions
   validate_data(data)
   validate_items(items, n = 25)
-  validate_id(id)
+  stopifnot(rlang::is_string(prefix))
+  stopifnot(rlang::is_bool(na.rm))
+  stopifnot(rlang::is_bool(calc_se))
+  stopifnot(rlang::is_bool(append))
   stopifnot(rlang::is_bool(tibble))
 
-  ## Select items and id variables
-  if (is.null(items)) {
-    items <- colnames(data)
-    items <- items[!items %in% id]
-  }
-  data_items <- data[, c(items, id)]
+  ## Extract item columns
+  data_items <- data[items]
 
   ## Coerce values to numbers
-  data_items[seq_along(items)] <- 
-    lapply(data_items[seq_along(items)], as.numeric)
+  data_items <- lapply(data_items, as.numeric)
+  data_items <- bind_columns(data_items)
 
-  ## Prepare output
-  out <- data[id]
-  utils::data(pid_items)
+  ## Find items per scale
+  items_scales <- pid5bf_scales$itemNumbers
 
-  ## Calculate domain scores
-  items_scales <- list(
-    d_negati = drop_na(pid_items[pid_items$Domain == "Negative affectivity", "PID5BF"]),
-    d_detatc = drop_na(pid_items[pid_items$Domain == "Detachment", "PID5BF"]),
-    d_antago = drop_na(pid_items[pid_items$Domain == "Antagonism", "PID5BF"]),
-    d_disinh = drop_na(pid_items[pid_items$Domain == "Disinhibition", "PID5BF"]),
-    d_psycho = drop_na(pid_items[pid_items$Domain == "Psychoticism", "PID5BF"])
+  ## Calculate mean scores per scale
+  out <- bind_columns(
+    lapply(
+      items_scales,
+      function(x) rowMeans(data_items[, x], na.rm = na.rm)
+    )
   )
 
-  means_scales <-
-    bind_columns(
-      lapply(
-        items_scales,
-        function(x) rowMeans(data_items[, x], na.rm = TRUE)
-      )
-    )
+  ## Apply prefix to scale column names
+  colnames(out) <- paste0(prefix, colnames(out))
 
-  out <- cbind(out, means_scales)
-
+  ## Add standard errors to output if requested
   if (calc_se) {
     sems_scales <-
       bind_columns(
         lapply(
           items_scales,
-          function(x) apply(data_items[x], MARGIN = 1, FUN = calc_sem)
+          function(x) apply(data_items[, x], MARGIN = 1, FUN = calc_sem)
         )
       )
-    colnames(sems_scales) <- paste0(colnames(sems_scales), "_se")
+    colnames(sems_scales) <- paste0(prefix, colnames(sems_scales), "_se")
     out <- cbind(out, sems_scales)
   }
 
-  if (tibble == TRUE) {
-    rlang::check_installed("tibble")
-    out <- tibble::as_tibble(out)
-  }
+  ## Append output to input tibble if requested
+  if (append == TRUE) out <- cbind(data, out)
+
+  ## Coerce output to tibble if requested
+  if (tibble == TRUE) out <- tibble::as_tibble(out)
 
   ## Return output
   out
+
 }

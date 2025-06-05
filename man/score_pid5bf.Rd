@@ -4,7 +4,15 @@
 \alias{score_pid5bf}
 \title{Score the PID-5-BF Domain Scales}
 \usage{
-score_pid5bf(data, items = NULL, id = NULL, calc_se = FALSE, tibble = FALSE)
+score_pid5bf(
+  data,
+  items = NULL,
+  prefix = "pid_",
+  na.rm = TRUE,
+  calc_se = FALSE,
+  append = TRUE,
+  tibble = TRUE
+)
 }
 \arguments{
 \item{data}{A data frame containing all PID-5-BF items (numerically scored).}
@@ -14,12 +22,12 @@ integers) corresponding to the 25 PID-5-BF items in order. If set to \code{NULL}
 (the default), all non-\code{id} columns will be assumed to be the \code{items} in
 order.}
 
+\item{tibble}{An optional logical indicating whether the output should be
+converted to a \code{tibble::tibble()}.}
+
 \item{id}{An optional vector of column names (as strings) or numbers (as
 integers) corresponding to variables from \code{data} to keep in the output. If
 set to \code{NULL} (the default), no columns will be retained.}
-
-\item{tibble}{An optional logical indicating whether the output should be
-converted to a \code{tibble::tibble()}.}
 }
 \value{
 A data frame containing any \code{id} variables as well all domain scores,

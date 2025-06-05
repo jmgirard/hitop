@@ -1,5 +1,5 @@
 Package: hitop
-Title: What the Package Does (One Line, Title Case)
+Title: Tools for the Hierarchical Taxonomy of Psychopathology society
 Version: 0.0.0.9000
 Authors@R: 
     person("Jeffrey", "Girard", , "me@jmgirard.com", role = c("aut", "cre"),
@@ -14,12 +14,15 @@ Imports:
     lifecycle,
     rlang,
     stats,
+    tibble,
     utils
 Suggests: 
     ggplot2,
-    snakecase,
-    tibble
+    knitr,
+    quarto,
+    snakecase
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+VignetteBuilder: quarto

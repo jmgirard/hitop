@@ -1,14 +1,13 @@
-reverse <- function(x, min = NULL, max = NULL) {
-
-  if (is.null(min)) {
-    min <- min(x, na.rm = TRUE)
+reverse <- function(x, low = NULL, high = NULL) {
+  if (is.null(low)) {
+    low <- min(x, na.rm = TRUE)
   }
 
-  if (is.null(max)) {
-    max <- max(x, na.rm = TRUE)
+  if (is.null(high)) {
+    high <- max(x, na.rm = TRUE)
   }
 
-  min + max - x
+  low + high - x
 }
 
 bind_columns <- function(vector_list) {

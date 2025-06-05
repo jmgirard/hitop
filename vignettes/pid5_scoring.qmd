@@ -1,0 +1,66 @@
+---
+title: "Scoring the PID-5"
+vignette: >
+  %\VignetteIndexEntry{Scoring the PID-5}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| label: setup
+
+library(hitop)
+```
+
+### Score simulated PID-5 data
+
+The full PID-5 has 220 items and yields 5 domain scores and 25 facet scores. We can demonstrate the ability of the `score_pid5()` function to calculate these scores using simulated (fake) data.
+
+```{r x2a}
+data("sim_pid5")
+
+score_pid5(sim_pid5, items = 1:220, calc_se = TRUE, append = FALSE)
+```
+
+There are also several validity scales that have been developed for the full PID-5, including measures of overreporting, inconsistent responding, and positive impression management. We can demonstrate the ability of the `validity_pid5()` function to calculate these scores and flag issues using the same simulated data. Note that, because the data is fake, we would expect there to be lots of validity issues.
+
+```{r x2b}
+#validity_pid5(sim_pid5, tibble = TRUE)
+```
+
+### Score simulated PID-5-FSF data
+
+The PID-5-FSF is a shorter version with 100 items that still yields all domain and facet scores. The validity scales are still calculable but may have fewer items and their psychometric properties have not, to my knowledge, been examined with the FSF.
+
+```{r x3}
+data("sim_pid5fsf")
+
+#score_pid5fsf(sim_pid5fsf, tibble = TRUE)
+
+#validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
+```
+
+### Score real PID-5-FSF data
+
+We can repeat this process with real data that was collected at University of Kansas (KU). There should be fewer (but still some) validity problems since this is real data. We can also retain un-scored "ID" variables in the dataset.
+
+```{r x4}
+data("ku_pid5fsf")
+
+#score_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
+
+#validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
+```
+
+### Score simulated PID-5-BF data
+
+Finally, the PID-5-BF is a brief version with 25 items that yields the domain scores only. The validity scales are not calculable with this subset of items. 
+
+```{r x5}
+data("sim_pid5bf")
+score_pid5bf(sim_pid5bf, items = 1:25, calc_se = TRUE, append = FALSE)
+```
