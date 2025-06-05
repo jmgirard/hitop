@@ -5,7 +5,7 @@
 \alias{ku_hitoppro}
 \title{Real HiTOP-PRO Data}
 \format{
-A data frame with 131 rows and 407 columns.
+A tibble with 131 rows and 407 columns.
 \describe{
 \item{participant}{An anonymized id for each participant}
 \item{biosex}{A factor indicating each participant's biological sex}

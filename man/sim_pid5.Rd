@@ -5,7 +5,7 @@
 \alias{sim_pid5}
 \title{Simulated PID-5 Data}
 \format{
-\subsection{\code{sim_pid5} A data frame with 100 rows and 220 columns.}{
+\subsection{\code{sim_pid5} A tibble with 100 rows and 220 columns.}{
 
 \describe{
 \item{pid_1 to pid_220}{Responses on each item}

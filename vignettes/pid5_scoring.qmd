@@ -23,7 +23,7 @@ The full PID-5 has 220 items and yields 5 domain scores and 25 facet scores. We 
 ```{r x2a}
 data("sim_pid5")
 
-score_pid5(sim_pid5, items = 1:220, calc_se = TRUE, append = FALSE)
+score_pid5(sim_pid5, items = 1:220, append = FALSE)
 ```
 
 There are also several validity scales that have been developed for the full PID-5, including measures of overreporting, inconsistent responding, and positive impression management. We can demonstrate the ability of the `validity_pid5()` function to calculate these scores and flag issues using the same simulated data. Note that, because the data is fake, we would expect there to be lots of validity issues.
@@ -39,7 +39,7 @@ The PID-5-FSF is a shorter version with 100 items that still yields all domain a
 ```{r x3}
 data("sim_pid5fsf")
 
-#score_pid5fsf(sim_pid5fsf, tibble = TRUE)
+score_pid5(sim_pid5fsf, items = 1:100, version = "FSF", append = FALSE)
 
 #validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
 ```
@@ -51,7 +51,7 @@ We can repeat this process with real data that was collected at University of Ka
 ```{r x4}
 data("ku_pid5fsf")
 
-#score_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
+score_pid5(ku_pid5fsf, items = paste0("pid_", 1:100), version = "FSF", append = FALSE)
 
 #validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
 ```
@@ -62,5 +62,5 @@ Finally, the PID-5-BF is a brief version with 25 items that yields the domain sc
 
 ```{r x5}
 data("sim_pid5bf")
-score_pid5bf(sim_pid5bf, items = 1:25, calc_se = TRUE, append = FALSE)
+score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
 ```

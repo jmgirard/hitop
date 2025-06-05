@@ -1,4 +1,4 @@
-#' Score the Full HiTOP-PRO Instrument
+#' Score the HiTOP-PRO Instrument
 #'
 #' Create a data frame with scores on all the HiTOP-PRO scales.
 #'
@@ -50,11 +50,18 @@ score_hitop_pro <- function(
 
   ## Reverse score the necessary items
   utils::data(hitop_pro_items)
-  items_rev <- hitop_pro_items[hitop_pro_items$Reverse == TRUE, "PRO"]
-  data_items[items_rev] <- lapply(
-    items_rev,
-    function(i) reverse(data_items[[i]], low = srange[[1]], high = srange[[2]])
-  )
+  items_rev <-
+    hitop_pro_items[hitop_pro_items$Reverse == TRUE, "PRO", drop = TRUE]
+  if (length(items_rev) > 0) {
+    data_items[items_rev] <- lapply(
+      items_rev,
+      function(i) reverse(
+        data_items[[i]],
+        low = srange[[1]],
+        high = srange[[2]]
+      )
+    )
+  }
   data_items <- bind_columns(data_items)
 
   ## Find items per scale

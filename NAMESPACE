@@ -2,8 +2,6 @@
 
 export(score_hitop_pro)
 export(score_pid5)
-export(score_pid5bf)
-export(score_pid5fsf)
 export(validity_pid5)
 export(validity_pid5fsf)
 import(rlang)

@@ -18,29 +18,37 @@ adiff <- function(data, items, index) {
   abs(data[, items[[index, 2]]] - data[, items[[index, 3]]])
 }
 
-validate_data <- function(x) {
-  stopifnot(is.data.frame(x))
+cli_assert <- function(condition, message) {
+  if (!condition) {
+    cli::cli_abort(message)
+  }
 }
 
-validate_items <- function(x, n) {
-  stopifnot(
-    is.null(x) ||
-      rlang::is_character(x, n = n) ||
-      rlang::is_integerish(x, n = n)
+validate_data <- function(x) {
+  cli_assert(
+    condition = is.data.frame(x),
+    message = "The `data` argument must be a data frame."
   )
 }
 
-validate_id <- function(x) {
-  stopifnot(
-    is.null(x) ||
-      rlang::is_character(x) ||
-      rlang::is_integerish(x)
+validate_items <- function(x, n) {
+  cli_assert(
+    condition = is.null(x) ||
+      rlang::is_character(x, n = n) ||
+      rlang::is_integerish(x, n = n),
+    message = "The `items` argument did not have the expected length."
   )
 }
 
 validate_range <- function(x) {
-  stopifnot(rlang::is_integerish(x, n = 2))
-  stopifnot(x[[2]] > x[[1]])
+  cli_assert(
+    condition = rlang::is_integerish(x, n = 2),
+    message = "The `srange` argument must contain two integerish values."
+  )
+  cli_assert(
+    condition = x[[2]] > x[[1]],
+    message = "The second `srange` value must be greater than the first."
+  )
 }
 
 drop_na <- function(x) {
@@ -49,5 +57,5 @@ drop_na <- function(x) {
 
 calc_sem <- function(x) {
   xc <- x[!is.na(x)]
-  sd(xc) / sqrt(length(xc))
+  stats::sd(xc) / sqrt(length(xc))
 }

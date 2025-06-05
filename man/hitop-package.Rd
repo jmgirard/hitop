@@ -4,7 +4,7 @@
 \name{hitop-package}
 \alias{hitop}
 \alias{hitop-package}
-\title{hitop: What the Package Does (One Line, Title Case)}
+\title{hitop: Tools for the Hierarchical Taxonomy of Psychopathology society}
 \description{
 What the package does (one paragraph).
 }

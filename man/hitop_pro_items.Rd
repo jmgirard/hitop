@@ -5,7 +5,7 @@
 \alias{hitop_pro_items}
 \title{HiTOP-PRO Item Data}
 \format{
-A data frame with 405 rows and 8 columns:
+A tibble with 405 rows and 8 columns:
 \describe{
 \item{PRO}{Item number on the full HiTOP-PRO}
 \item{Reverse}{Whether the item needs to be reverse scored}
