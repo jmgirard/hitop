@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   hitop_scoring: hitop_scoring.html
   pid5_scoring: pid5_scoring.html
-last_built: 2025-06-06T00:50Z
+last_built: 2025-06-06T03:04Z
 urls:
   reference: https://jmgirard.github.io/hitop/reference
   article: https://jmgirard.github.io/hitop/articles
