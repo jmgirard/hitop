@@ -7,8 +7,13 @@
 
 <!-- badges: end -->
 
-The goal of hitop is to provide functions helpful for researchers
-working on the Hierarchical Taxonomy of Psychopathology (HiTOP).
+The goal of *hitop* is to provide functions helpful for researchers
+working on the Hierarchical Taxonomy of Psychopathology (HiTOP). For
+now, this includes functions for scoring the PID-5 and HiTOP-PRO.
+However, more features will be added soon. Note that I recently
+refactored things so the `validity_pid5()` function is currently
+out-of-order; however, I should be able to fix this in the next few
+days.
 
 ## Installation
 

@@ -11,7 +11,9 @@ What the package does (one paragraph).
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://github.com/jmgirard/hitop}
   \item \url{https://jmgirard.github.io/hitop/}
+  \item Report bugs at \url{https://github.com/jmgirard/hitop/issues}
 }
 
 }
