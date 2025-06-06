@@ -2,88 +2,87 @@
 % Please edit documentation in R/validity_pid5.R
 \name{validity_pid5}
 \alias{validity_pid5}
-\title{Score the Full PID-5 Validity Scales}
+\title{Score the Personality Inventory for DSM-5 Validity Scales}
 \usage{
 validity_pid5(
   data,
   items,
-  scales = c("PNA", "INC", "ORS", "PRD", "SDTD"),
+  version = c("FULL", "FSF", "BF"),
   srange = c(0, 3),
+  prefix = "pid_",
   append = TRUE,
   tibble = TRUE
 )
 }
 \arguments{
-\item{items}{An optional vector of column names (as strings) or numbers (as
-integers) corresponding to the 220 PID-5 items in order. If set to \code{NULL}
-(the default), all non-\code{id} columns will be assumed to be the \code{items} in
-order.}
+\item{data}{A data frame containing (at least) all the PID items (numerically
+scored and in order).}
 
-\item{scales}{An optional character vector indicating which of the following
-validity scales to calculate: percent missing items (\code{"PNA"}), response
-inconsistency scale (\code{"INC"}), overreporting scale (\code{"ORS"}), positive
-impression management response distortion scale (\code{"PRD"}), and social
-desirability-total denial scale (\code{"SDTD"}). See details below for
-interpretation guidance.}
+\item{items}{A vector of column names (as strings) or numbers (as integers)
+corresponding to the PID items in order.}
+
+\item{version}{A string indicating the version of the PID to score: "FULL",
+"FSF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
-values of the PID-5 items, used for reverse-coding. (default = \code{c(0, 3)})}
+values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
+
+\item{prefix}{An optional string to add before each scale column name. If no
+prefix is desired, set to an empty string \code{""}. (default = \code{"pid_"})}
+
+\item{append}{An optional logical indicating whether the new columns should
+be added to the end of the \code{data} input. (default = \code{TRUE})}
 
 \item{tibble}{An optional logical indicating whether the output should be
-converted to a \code{tibble::tibble()}.}
-
-\item{.data}{A data frame containing all PID-5 items (numerically scored).}
-
-\item{id}{An optional vector of column names (as strings) or numbers (as
-integers) corresponding to variables from \code{.data} to keep in the output. If
-set to \code{NULL} (the default), no columns will be retained.}
+converted to a \link[tibble]{tibble}. (default = \code{TRUE})}
 }
 \value{
-A data frame containing any \code{id} variables as well any requested
-\code{scale} scores.
+A \link[tibble]{tibble} containing all validity scores and all
+original \code{data} columns (if requested)
 }
 \description{
-Create a data frame with scores on the full PID-5 validity scales.
+Calculate validity scale scores on the Personality Inventory for DSM-5: full
+version (PID-5, 220 items), faceted short form version (PID-5-FSF, 100
+items), or brief form version (PID-5-BF, 25 items) from item-level data and
+return alerts when when observations meet criteria for invalidity.
 }
 \details{
-A score of 17 or higher on the INC is indicative of inconsistent
-responding. A score of 3 or higher on the ORS is indicative of
-overreporting. A score of 10 or lower on the PRD is indicative of positive
-impression management (underreporting rather than genuine responding)
-whereas a score of 21 or higher on the PRD is indicative of genuine
-responding (rather than positive impression management). A score of 11 or
-lower on the SDTD is indicative of social desirability (rather than
-defensiveness), whereas a score of 19 or higher on the SDTD is indicative
-of defensiveness (rather than social desirability).
+For the full PID-5, a score of 17 or higher on the INC is indicative
+of inconsistent responding. A score of 3 or higher on the ORS is indicative
+of overreporting. A score of 10 or lower on the PRD is indicative of
+positive impression management (underreporting rather than genuine
+responding) whereas a score of 21 or higher on the PRD is indicative of
+genuine responding (rather than positive impression management). A score of
+11 or lower on the SD-TD is indicative of social desirability (rather than
+defensiveness), whereas a score of 19 or higher on the SD-TD is indicative
+of defensiveness (rather than social desirability). For the PID-5-FSF,
+scores of 8 or more on the INC-S are indicative of inconsistent responding.
+Cut-scores for the ORS-S, PRD-S, and SD-TD-S have not yet been validated.
 }
 \references{
-\itemize{
-\item Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
+Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
 E. H. (2016). Development of a Response Inconsistency Scale for the
 Personality Inventory for DSM-5. \emph{Journal of Personality Assessment,
-98}(4), 351-359. \url{https://doi.org/10.1080/00223891.2016.1158719}
-}
+98}(4), 351-359. \doi{10.1080/00223891.2016.1158719}
 
-\itemize{
-\item Sellbom, M., Dhillon, S., & Bagby, R. M. (2018). Development
-and validation of an overreporting scale for the Personality Inventory for
+Sellbom, M., Dhillon, S., & Bagby, R. M. (2018). Development and
+validation of an overreporting scale for the Personality Inventory for
 DSM-5 (PID-5). \emph{Psychological Assessment, 30}(5), 582-593.
-\url{https://doi.org/10.1037/pas0000507}
-}
+\doi{10.1037/pas0000507}
 
-\itemize{
-\item Bagby, R. M., & Sellbom, M. (2018). The Validity and Clinical
+Bagby, R. M., & Sellbom, M. (2018). The Validity and Clinical
 Utility of the Personality Inventory for DSM–5 Response Inconsistency
 Scale. \emph{Journal of Personality Assessment, 100}(4), 398–405.
-\url{https://doi.org/10.1080/00223891.2017.1420659}
-}
+\doi{10.1080/00223891.2017.1420659}
 
-\itemize{
-\item Williams, M. M., Rogers, R., Sharf, A. J., & Ross, C. A.
-(2019). Faking Good: An Investigation of Social Desirability and
-Defensiveness in an Inpatient Sample With Personality Disorder Traits.
+Williams, M. M., Rogers, R., Sharf, A. J., & Ross, C. A. (2019).
+Faking Good: An Investigation of Social Desirability and Defensiveness in
+an Inpatient Sample With Personality Disorder Traits.
 \emph{Journal of Personality Assessment, 101}(3), 253–263.
-\url{https://doi.org/10.1080/00223891.2018.1455691}
+\doi{10.1080/00223891.2018.1455691}
+
+Lowmaster, S. E., Hartman, M. J., Zimmermann, J., Baldock, Z. C.,
+& Kurtz, J. E. (2020). Further Validation of the Response Inconsistency
+Scale for the Personality Inventory for DSM-5. \emph{Journal of Personality
+Assessment, 102}(6), 743–750. \doi{10.1080/00223891.2019.1674320}
 }
-}
-\keyword{internal}

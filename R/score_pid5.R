@@ -4,7 +4,8 @@
 #' (PID-5, 220 items), faceted short form version (PID-5-FSF, 100 items), or
 #' brief form version (PID-5-BF, 25 items) from item-level data.
 #'
-#' @param data A data frame containing all PID-5 items (numerically scored).
+#' @param data A data frame containing (at least) all the PID items (numerically
+#'   scored and in order).
 #' @param items A vector of column names (as strings) or numbers (as integers)
 #'   corresponding to the PID items in order.
 #' @param version A string indicating the version of the PID to score: "FULL",
@@ -12,7 +13,7 @@
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param prefix An optional string to add before each scale column name. If no
-#'   prefix is desired, set to an empty string `""`. (default = `"pro_"`)
+#'   prefix is desired, set to an empty string `""`. (default = `"pid_"`)
 #' @param na.rm An optional logical indicating whether missing values should be
 #'   ignored when calculating scale scores. (default = `TRUE`)
 #' @param calc_se An optional logical indicating whether to calculate the
@@ -21,9 +22,8 @@
 #'   be added to the end of the `data` input. (default = `TRUE`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a \link[tibble]{tibble}. (default = `TRUE`)
-#' @return A data frame containing all scale scores and standard errors (if
-#'   requested) and all original `data` columns (if requested)
-#' @export
+#' @return A \link[tibble]{tibble} containing all scale scores and standard
+#'   errors (if requested) and all original `data` columns (if requested)
 #' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 #'   Skodol, A. E. (2012). Initial construction of a maladaptive personality
 #'   trait model and inventory for DSM-5. *Psychological Medicine, 42*,
@@ -39,6 +39,7 @@
 #'   items: An item response theory investigation of the personality inventory
 #'   for DSM-5. *Psychological Assessment, 27*(4), 1195–1210.
 #'   \doi{10.1037/pas0000120}
+#' @export
 score_pid5 <- function(
     data,
     items,
@@ -54,13 +55,13 @@ score_pid5 <- function(
   ## Assertions
   validate_data(data)
   version <- toupper(version)
-  version <- match.arg(version)
+  version <- match.arg(version, choices = c("FULL", "FSF", "BF"))
   n_items <- switch(
     version,
     "FULL" = 220,
     "FSF"  = 100,
     "BF"   = 25,
-    stop("Invalid version string")
+    cli::cli_abort("Invalid `version` argument")
   )
   validate_items(items, n = n_items)
   # TODO: validate that the requested items are possible to subset to

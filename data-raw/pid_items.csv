@@ -1,221 +1,221 @@
-FULL,FSF,BF,Reverse,INC,INCS,ORS,PRD,SDTD,Facet,Domain,Text
-1,,,FALSE,,,,,,Anhedonia,Detachment,I don't get as much pleasure out of things as others seem to
-2,1,,FALSE,,,1,1,1,Suspiciousness,,Plenty of people are out to get me
-3,,1,FALSE,,,,,,Risk Taking,Disinhibition,People would describe me as reckless
-4,2,2,FALSE,,,,,2,Impulsivity,Disinhibition,I feel like I act totally on impulse
-5,,,FALSE,,,,,,Eccentricity,Psychoticism,I often have ideas that are too unusual to explain to anyone
-6,,,FALSE,,,,,,Distractibility,Disinhibition,I lose track of conversations because other things catch my attention
-7,,,TRUE,,,,,,Risk Taking,,I avoid risky situations
-8,,,FALSE,,,2,,,Restricted Affectivity,,"When it comes to my emotions, people tell me I'm a ""cold fish"""
-9,3,,FALSE,,,,,,Submissiveness,,I change what I do depending on what others want
-10,,,FALSE,,,,,,Withdrawal,Detachment,I prefer not to get too close to people
-11,,,FALSE,,,,2,,Callousness,,I often get into physical fights
-12,,,FALSE,,,,,,Separation Insecurity,Negative affectivity,I dread being without someone to love me
-13,,,FALSE,,,,,,Callousness,,Being rude and unfriendly is just a part of who I am
-14,,,FALSE,,,,,,Attention Seeking,,I do things to make sure people notice me
-15,4,,FALSE,,,,,,Submissiveness,,I usually do what others think I should do
-16,5,,FALSE,,,,,,Impulsivity,Disinhibition,I usually do things on impulse without thinking about what might happen as a result
-17,6,3,FALSE,,,,,,Impulsivity,Disinhibition,"Even though I know better, I can't stop making rash decisions"
-18,,,FALSE,,,,,3,Emotional Lability,Negative affectivity,My emotions sometimes change for no good reason
-19,7,,FALSE,,,,,,Callousness,,I really don't care if I make other people suffer
-20,,,FALSE,,,,,,Withdrawal,Detachment,I keep to myself
-21,,,FALSE,16,,,,,Eccentricity,Psychoticism,I often say things that others find odd or strange
-22,8,,FALSE,,,,,,Impulsivity,Disinhibition,I always do things on the spur of the moment
-23,9,,FALSE,,,,,4,Anhedonia,Detachment,Nothing seems to interest me very much
-24,,,FALSE,17,,,,,Eccentricity,Psychoticism,Other people seem to think my behavior is weird
-25,10,,FALSE,17,,,,,Eccentricity,Psychoticism,People have told me that I think about things in a really strange way
-26,11,,FALSE,,,,,,Anhedonia,Detachment,I almost never enjoy life
-27,,4,FALSE,,,,,,Depressivity,Detachment,I often feel like nothing I do really matters
-28,,,FALSE,,,,,,Hostility,,I snap at people when they do little things that irritate me
-29,,,FALSE,,,,,,Distractibility,Disinhibition,I can't concentrate on anything
-30,,,TRUE,,,,,5,Anhedonia,Detachment,I'm an energetic person
-31,,5,FALSE,,,,,,Irresponsibility,Disinhibition,Others see me as irresponsible
-32,,,FALSE,,,,,,Hostility,,I can be mean when I need to be
-33,,,FALSE,,,,,,Eccentricity,Psychoticism,My thoughts often go off in odd or unusual directions
-34,,,FALSE,,,,,,Rigid Perfectionism,,I've been told that I spend too much time making sure things are exactly in place
-35,,,TRUE,,,,,,Risk Taking,,I avoid risky sports and activities
-36,,,FALSE,,,,3,,Perceptual Dysregulation,Psychoticism,I can have trouble telling the difference between dreams and waking life
-37,,,FALSE,,,,,,Perceptual Dysregulation,Psychoticism,Sometimes I get this weird feeling that parts of my body feel like they're dead or not really me
-38,12,,FALSE,6,,,4,6,Hostility,,I am easily angered
-39,13,,FALSE,,,3,,,Risk Taking,,I have no limits when it comes to doing dangerous things
-40,14,,FALSE,,,4,,,Grandiosity,Antagonism,"To be honest, I'm just more important than other people"
-41,,,FALSE,,,,,,Deceitfulness,Antagonism,I make up stories about things that happened that are totally untrue
-42,,,FALSE,,,,5,,Perceptual Dysregulation,Psychoticism,People often talk about me doing things I don't remember at all
-43,,,FALSE,,,,,,Attention Seeking,,I do things so that people just have to admire me
-44,15,,FALSE,,,5,,,Perceptual Dysregulation,Psychoticism,"It's weird, but sometimes ordinary objects seem to be a different shape than usual"
-45,,,FALSE,,,,,,Restricted Affectivity,,I don't have very long-lasting emotional reactions to things
-46,,,FALSE,,,,,,Perseveration,,"It is hard for me to stop an activity, even when it's time to do so"
-47,,6,FALSE,,,,6,,Distractibility,Disinhibition,I'm not good at planning ahead
-48,16,,FALSE,,,,,,Risk Taking,,I do a lot of things that others consider risky
-49,,,FALSE,,,,,,Rigid Perfectionism,,People tell me that I focus too much on minor details
-50,17,,FALSE,9,5,,,7,Separation Insecurity,Negative affectivity,I worry a lot about being alone
-51,,,FALSE,,,,,,Perseveration,,I've missed out on things because I was busy trying to get something I was doing exactly right
-52,,7,FALSE,18,,,,8,Eccentricity,Psychoticism,My thoughts often don't make sense to others
-53,18,,FALSE,,,,,,Deceitfulness,Antagonism,I often make up things about myself to help me get what I want
-54,,,FALSE,,,,,,Callousness,,It doesn't really bother me to see other people get hurt
-55,,,FALSE,16,,,,,Eccentricity,Psychoticism,People often look at me as if I'd said something really weird
-56,,,FALSE,,,,,,Deceitfulness,Antagonism,People don't realize that I'm flattering them to get something
-57,,,FALSE,,,,,9,Separation Insecurity,Negative affectivity,I'd rather be in a bad relationship than be alone
-58,,,TRUE,,,,,,Impulsivity,Disinhibition,I usually think before I act
-59,,,FALSE,,,,,,Perceptual Dysregulation,Psychoticism,I often see vivid dream-like images when I'm falling asleep or waking up
-60,19,,FALSE,,,,,,Perseveration,,"I keep approaching things the same way, even when it isn't working"
-61,,,FALSE,,,,,,Depressivity,,I'm very dissatisfied with myself
-62,,,FALSE,,,,,,Emotional Lability,Negative affectivity,I have much stronger emotional reactions than almost everyone else
-63,20,,FALSE,,,,,,Submissiveness,,I do what other people tell me to do
-64,,,FALSE,,,,,,Separation Insecurity,Negative affectivity,"I can't stand being left alone, even for a few hours"
-65,,,FALSE,,,,,,Grandiosity,Antagonism,I have outstanding qualities that few others possess
-66,,,FALSE,,,,,10,Depressivity,,The future looks really hopeless to me
-67,21,,FALSE,,,,,,Risk Taking,,I like to take risks
-68,,,FALSE,,,,,11,Distractibility,Disinhibition,I can't achieve goals because other things capture my attention
-69,,,FALSE,,,,,,Risk Taking,,"When I want to do something, I don't let the possibility that it might be risky stop me"
-70,22,,FALSE,19,,,,,Eccentricity,Psychoticism,Others seem to think I'm quite odd or unusual
-71,,,FALSE,19,,,,,Eccentricity,Psychoticism,My thoughts are strange and unpredictable
-72,,,FALSE,,,,,,Callousness,,I don't care about other people's feelings
-73,,,FALSE,,,,,,Callousness,,You need to step on some toes to get what you want in life
-74,23,,FALSE,10,6,,,,Attention Seeking,,I love getting the attention of other people
-75,,,FALSE,,,,,,Withdrawal,Detachment,I go out of my way to avoid any kind of group activity
-76,,,FALSE,,,,,,Deceitfulness,Antagonism,I can be sneaky if it means getting what I want
-77,,,FALSE,,,,,,Perceptual Dysregulation,Psychoticism,"Sometimes when I look at a familiar object, it's somehow like I'm seeing it for the first time"
-78,,,FALSE,,,,,,Perseveration,,It is hard for me to shift from one activity to another
-79,24,,FALSE,1,1,,,,Anxiousness,Negative affectivity,I worry a lot about terrible things that might happen
-80,25,,FALSE,7,3,,,12,Perseveration,,I have trouble changing how I'm doing something even if what I'm doing isn't going well
-81,26,,FALSE,,,,,,Depressivity,,The world would be better off if I were dead
-82,27,,FALSE,,,,,13,Withdrawal,Detachment,I keep my distance from people
-83,,,FALSE,,,,,,Perceptual Dysregulation,Psychoticism,I often can't control what I think about
-84,28,,FALSE,,,,,,Restricted Affectivity,,I don't get emotional
-85,,,FALSE,,,,,,Hostility,,"I resent being told what to do, even by people in charge"
-86,,,FALSE,,,,,,Depressivity,,I'm so ashamed by how I've let people down in lots of little ways
-87,,,TRUE,,,,,,Risk Taking,,I avoid anything that might be even a little bit dangerous
-88,,,FALSE,,,,,14,Distractibility,Disinhibition,I have trouble pursuing specific goals even for short periods of time
-89,29,,FALSE,14,9,,,,Intimacy Avoidance,Detachment,I prefer to keep romance out of my life
-90,,,TRUE,,,,,,Callousness,,I would never harm another person
-91,30,,FALSE,,,,,,Restricted Affectivity,,I don't show emotions strongly
-92,31,,FALSE,6,,,,,Hostility,,I have a very short temper
-93,,,FALSE,,,,,15,Anxiousness,Negative affectivity,I often worry that something bad will happen due to mistakes I made in the past
-94,,,FALSE,,,,,,Unusual Beliefs & Experiences,Psychoticism,"I have some unusual abilities, like sometimes knowing exactly what someone is thinking"
-95,,,FALSE,,,,,,Anxiousness,Negative affectivity,I get very nervous when I think about the future
-96,,,TRUE,,,,7,,Anxiousness,Negative affectivity,I rarely worry about things
-97,,,TRUE,,,,,,Intimacy Avoidance,Detachment,I enjoy being in love
-98,,,TRUE,,,,8,,Risk Taking,,I prefer to play it safe rather than take unnecessary chances
-99,,,FALSE,,,,,,Unusual Beliefs & Experiences,Psychoticism,I sometimes have heard things that others couldn't hear
-100,32,,FALSE,,,,,,Perseveration,,I get fixated on certain things and can't stop
-101,,,FALSE,,,,,,Restricted Affectivity,,People tell me it's difficult to know what I'm feeling
-102,,,FALSE,4,,,,,Emotional Lability,Negative affectivity,I am a highly emotional person
-103,,,FALSE,,,,,,Suspiciousness,,Others would take advantage of me if they could
-104,,,FALSE,,,,,,Depressivity,,I often feel like a failure
-105,33,,FALSE,8,4,,,,Rigid Perfectionism,,"If something I do isn't absolutely perfect, it's simply not acceptable"
-106,34,,FALSE,,,,9,,Unusual Beliefs & Experiences,Psychoticism,"I often have unusual experiences, such as sensing the presence of someone who isn't actually there"
-107,35,,FALSE,,,,,,Manipulativeness,Antagonism,I'm good at making people do what I want them to do
-108,,,FALSE,,,,,,Intimacy Avoidance,Detachment,I break off relationships if they start to get close
-109,36,,FALSE,2,,,,,Anxiousness,Negative affectivity,I'm always worrying about something
-110,,8,FALSE,2,,,,,Anxiousness,Negative affectivity,I worry about almost everything
-111,,,FALSE,,,,,,Attention Seeking,,I like standing out in a crowd
-112,,,FALSE,,,,,,Risk Taking,,I don't mind a little risk now and then
-113,,,FALSE,,,,,,Attention Seeking,,My behavior is often bold and grabs peoples' attention
-114,37,,FALSE,,,,,,Grandiosity,Antagonism,I'm better than almost everyone else
-115,,,FALSE,,,,,,Rigid Perfectionism,,People complain about my need to have everything all arranged
-116,,,FALSE,,,,,,Hostility,,I always make sure I get back at people who wrong me
-117,38,,FALSE,,,,,,Suspiciousness,,I'm always on my guard for someone trying to trick or harm me
-118,39,,FALSE,,,,,,Distractibility,Disinhibition,I have trouble keeping my mind focused on what needs to be done
-119,,,FALSE,,,,10,,Depressivity,,I talk about suicide a lot
-120,40,,FALSE,,,,,,Intimacy Avoidance,Detachment,I'm just not very interested in having sexual relationships
-121,,,FALSE,,,,,,Perseveration,,I get stuck on things a lot
-122,41,9,FALSE,4,,,11,,Emotional Lability,Negative affectivity,"I get emotional easily, often for very little reason"
-123,42,,FALSE,8,4,,,,Rigid Perfectionism,,"Even though it drives other people crazy, I insist on absolute perfection in everything I do"
-124,43,,FALSE,,,,,,Anhedonia,Detachment,I almost never feel happy about my day-to-day activities
-125,44,,FALSE,13,,,,,Manipulativeness,Antagonism,Sweet-talking others helps me get what I want
-126,,,FALSE,,,,,,Deceitfulness,Antagonism,Sometimes you need to exaggerate to get ahead
-127,45,10,FALSE,9,5,,,,Separation Insecurity,Negative affectivity,I fear being alone in life more than anything else
-128,46,11,FALSE,7,3,,,,Perseveration,Negative affectivity,"I get stuck on one way of doing things, even when it's clear it won't work"
-129,47,,FALSE,,,,,,Irresponsibility,Disinhibition,I'm often pretty careless with my own and others' things
-130,48,,FALSE,,,,,,Anxiousness,Negative affectivity,I am a very anxious person
-131,,,TRUE,,,,,,Suspiciousness,,People are basically trustworthy
-132,49,,FALSE,15,10,,,,Distractibility,Disinhibition,I am easily distracted
-133,50,,FALSE,,,,,,Suspiciousness,,"It seems like I'm always getting a ""raw deal"" from others"
-134,51,,FALSE,,,,,,Deceitfulness,Antagonism,I don't hesitate to cheat if it gets me ahead
-135,,,FALSE,,,,,,Rigid Perfectionism,,I check things several times to make sure they are perfect
-136,52,,FALSE,,,,12,,Withdrawal,Detachment,I don't like spending time with others
-137,,,FALSE,,,,,,Perseveration,,I feel compelled to go on with things even when it makes little sense to do so
-138,53,,FALSE,5,2,,,,Emotional Lability,Negative affectivity,I never know where my emotions will go from moment to moment
-139,54,12,FALSE,,,,,,Unusual Beliefs & Experiences,Psychoticism,I have seen things that weren't really there
-140,,,FALSE,,,,,,Rigid Perfectionism,,It is important to me that things are done in a certain way
-141,,,FALSE,,,,,,Anxiousness,Negative affectivity,I always expect the worst to happen
-142,,,TRUE,,,,,,Deceitfulness,Antagonism,I try to tell the truth even when it's hard
-143,,,FALSE,,,,,,Unusual Beliefs & Experiences,Psychoticism,I believe that some people can move things with their minds
-144,55,,FALSE,15,10,,,,Distractibility,Disinhibition,I can't focus on things for very long
-145,56,13,FALSE,14,9,,,,Intimacy Avoidance,Detachment,I steer clear of romantic relationships
-146,57,14,FALSE,,,,,,Withdrawal,Detachment,I'm not interested in making friends
-147,,,FALSE,,,,,,Withdrawal,Detachment,I say as little as possible when dealing with people
-148,,,FALSE,3,,,13,,Depressivity,,I'm useless as a person
-149,58,,FALSE,,,,,,Separation Insecurity,Negative affectivity,I'll do just about anything to keep someone from abandoning me
-150,59,,FALSE,,,6,,,Unusual Beliefs & Experiences,Psychoticism,Sometimes I can influence other people just by sending my thoughts to them
-151,60,,FALSE,,,,,,Depressivity,,Life looks pretty bleak to me
-152,61,,FALSE,18,,,,,Eccentricity,Psychoticism,I think about things in odd ways that don't make sense to most people
-153,62,,FALSE,12,8,,,,Callousness,,I don't care if my actions hurt others
-154,63,,FALSE,,,,14,,Perceptual Dysregulation,Psychoticism,"Sometimes I feel ""controlled"" by thoughts that belong to someone else"
-155,,,TRUE,,,,,,Anhedonia,Detachment,I really live life to the fullest
-156,64,,FALSE,,,,,,Irresponsibility,Disinhibition,I make promises that I don't really intend to keep
-157,65,,FALSE,,,,,,Anhedonia,Detachment,Nothing seems to make me feel good
-158,66,15,FALSE,,,,,,Hostility,Negative affectivity,I get irritated easily by all sorts of things
-159,67,,FALSE,,,,,,Risk Taking,,I do what I want regardless of how unsafe it might be
-160,68,,FALSE,,,,,,Irresponsibility,Disinhibition,I often forget to pay my bills
-161,,16,FALSE,,,,,,Withdrawal,Detachment,I don't like to get too close to people
-162,69,,FALSE,,,,15,,Manipulativeness,Antagonism,I'm good at conning people
-163,70,,FALSE,,,,16,,Depressivity,,Everything seems pointless to me
-164,,,TRUE,,,,,,Risk Taking,,I never take risks
-165,71,,FALSE,,,,,,Emotional Lability,Negative affectivity,I get emotional over every little thing
-166,72,17,FALSE,12,8,7,,,Callousness,Antagonism,It's no big deal if I hurt other peoples' feelings
-167,73,,FALSE,,,,,,Restricted Affectivity,,I never show emotions to others
-168,,,FALSE,,,,17,,Depressivity,,I often feel just miserable
-169,74,,FALSE,3,,,18,,Depressivity,,I have no worth as a person
-170,75,,FALSE,,,8,,,Hostility,,I am usually pretty hostile
-171,76,,FALSE,,,9,,,Irresponsibility,Disinhibition,I've skipped town to avoid responsibilities
-172,,,FALSE,20,,,,,Eccentricity,Psychoticism,I've been told more than once that I have a number of odd quirks or habits
-173,77,,FALSE,10,6,,,,Attention Seeking,,I like being a person who gets noticed
-174,78,,FALSE,1,1,,,,Anxiousness,Negative affectivity,I'm always fearful or on edge about bad things that might happen
-175,79,,FALSE,,,,,,Separation Insecurity,Negative affectivity,I never want to be alone
-176,80,,FALSE,,,,,,Rigid Perfectionism,,"I keep trying to make things perfect, even when I've gotten them as good as they're likely to get"
-177,,,TRUE,,,,,,Suspiciousness,,I rarely feel that people I know are trying to take advantage of me
-178,,,FALSE,,,10,,,Depressivity,,I know I'll commit suicide sooner or later
-179,,,FALSE,,,,,,Grandiosity,Antagonism,I've achieved far more than almost anyone I know
-180,,,FALSE,13,,,,,Manipulativeness,Antagonism,I can certainly turn on the charm if I need to get my way
-181,81,,FALSE,5,2,,,,Emotional Lability,Negative affectivity,My emotions are unpredictable
-182,,,FALSE,,,,,,Withdrawal,Detachment,I don't deal with people unless I have to
-183,82,,FALSE,,,,19,,Callousness,,I don't care about other peoples' problems
-184,83,,FALSE,,,,,,Restricted Affectivity,,I don't react much to things that seem to make others emotional
-185,,,FALSE,20,,,,,Eccentricity,Psychoticism,I have several habits that others find eccentric or strange
-186,84,,FALSE,,,,,,Withdrawal,Detachment,I avoid social events
-187,85,,FALSE,,,,,,Grandiosity,Antagonism,I deserve special treatment
-188,,,FALSE,,,,,,Hostility,,It makes me really angry when people insult me in even a minor way
-189,,18,FALSE,,,,,,Anhedonia,Detachment,I rarely get enthusiastic about anything
-190,86,,FALSE,,,,,,Suspiciousness,,"I suspect that even my so-called ""friends"" betray me a lot"
-191,87,19,FALSE,11,7,,,,Attention Seeking,Antagonism,I crave attention
-192,88,,FALSE,,,,20,,Perceptual Dysregulation,Psychoticism,Sometimes I think someone else is removing thoughts from my head
-193,,,FALSE,,,,,16,Perceptual Dysregulation,Psychoticism,I have periods in which I feel disconnected from the world or from myself
-194,,,FALSE,,,,,,Unusual Beliefs & Experiences,Psychoticism,I often see unusual connections between things that most people miss
-195,,,FALSE,,,,,,Risk Taking,,I don't think about getting hurt when I'm doing things that might be dangerous
-196,89,,FALSE,,,,,,Rigid Perfectionism,,I simply won't put up with things being out of their proper places
-197,90,20,FALSE,,,,,,Grandiosity,Antagonism,I often have to deal with people who are less important than me
-198,,,FALSE,,,,21,,Callousness,,I sometimes hit people to remind them who's in charge
-199,91,,FALSE,,,,22,,Distractibility,Disinhibition,I get pulled off-task by even minor distractions
-200,,,FALSE,,,,,,Callousness,,I enjoy making people in control look stupid
-201,,,FALSE,,,,,,Irresponsibility,Disinhibition,I just skip appointments or meetings if I'm not in the mood
-202,92,,FALSE,,,,,,Submissiveness,,I try to do what others want me to do
-203,93,,FALSE,,,,,,Intimacy Avoidance,Detachment,I prefer being alone to having a close romantic partner
-204,,,FALSE,,,,,,Impulsivity,Disinhibition,I am very impulsive
-205,94,21,FALSE,,,,,,Eccentricity,Psychoticism,I often have thoughts that make sense to me but that other people say are strange
-206,95,22,FALSE,,,,,,Deceitfulness,Antagonism,I use people to get what I want
-207,,,FALSE,,,,,,Callousness,,I don't see the point in feeling guilty about things I've done that have hurt other people
-208,,,FALSE,,,,,,Callousness,,Most of the time I don't see the point in being friendly
-209,96,,FALSE,,,,,17,Unusual Beliefs & Experiences,Psychoticism,I've had some really weird experiences that are very difficult to explain
-210,,,TRUE,,,,,,Irresponsibility,Disinhibition,I follow through on commitments
-211,97,,FALSE,11,7,,,,Attention Seeking,,I like to draw attention to myself
-212,,,FALSE,,,,,,Depressivity,,I feel guilty much of the time
-213,,23,FALSE,,,,,,Perceptual Dysregulation,Psychoticism,"I often ""zone out"" and then suddenly come to and realize that a lot of time has passed"
-214,,,FALSE,,,,,,Deceitfulness,Antagonism,Lying comes easily to me
-215,,,TRUE,,,,,,Risk Taking,,I hate to take chances
-216,,,FALSE,,,,,,Hostility,,I'm nasty and short to anybody who deserves it
-217,98,24,FALSE,,,,,,Perceptual Dysregulation,Psychoticism,"Things around me often feel unreal, or more real than usual"
-218,99,,FALSE,,,,,,Deceitfulness,Antagonism,I'll stretch the truth if it's to my advantage
-219,100,25,FALSE,,,,,,Manipulativeness,Antagonism,It is easy for me to take advantage of others
-220,,,FALSE,,,,,,Rigid Perfectionism,,I have a strict way of doing things
+FULL,FSF,BF,Reverse,INC,INCS,ORS,ORSS,PRD,PRDS,SDTD,SDTDS,Facet,Domain,Text
+1,,,FALSE,,,,,,,,,Anhedonia,Detachment,I don't get as much pleasure out of things as others seem to
+2,1,,FALSE,,,1,1,1,1,1,1,Suspiciousness,,Plenty of people are out to get me
+3,,1,FALSE,,,,,,,,,Risk Taking,Disinhibition,People would describe me as reckless
+4,2,2,FALSE,,,,,,,2,2,Impulsivity,Disinhibition,I feel like I act totally on impulse
+5,,,FALSE,,,,,,,,,Eccentricity,Psychoticism,I often have ideas that are too unusual to explain to anyone
+6,,,FALSE,,,,,,,,,Distractibility,Disinhibition,I lose track of conversations because other things catch my attention
+7,,,TRUE,,,,,,,,,Risk Taking,,I avoid risky situations
+8,,,FALSE,,,2,,,,,,Restricted Affectivity,,"When it comes to my emotions, people tell me I'm a ""cold fish"""
+9,3,,FALSE,,,,,,,,,Submissiveness,,I change what I do depending on what others want
+10,,,FALSE,,,,,,,,,Withdrawal,Detachment,I prefer not to get too close to people
+11,,,FALSE,,,,,2,,,,Callousness,,I often get into physical fights
+12,,,FALSE,,,,,,,,,Separation Insecurity,Negative affectivity,I dread being without someone to love me
+13,,,FALSE,,,,,,,,,Callousness,,Being rude and unfriendly is just a part of who I am
+14,,,FALSE,,,,,,,,,Attention Seeking,,I do things to make sure people notice me
+15,4,,FALSE,,,,,,,,,Submissiveness,,I usually do what others think I should do
+16,5,,FALSE,,,,,,,,,Impulsivity,Disinhibition,I usually do things on impulse without thinking about what might happen as a result
+17,6,3,FALSE,,,,,,,,,Impulsivity,Disinhibition,"Even though I know better, I can't stop making rash decisions"
+18,,,FALSE,,,,,,,3,,Emotional Lability,Negative affectivity,My emotions sometimes change for no good reason
+19,7,,FALSE,,,,,,,,,Callousness,,I really don't care if I make other people suffer
+20,,,FALSE,,,,,,,,,Withdrawal,Detachment,I keep to myself
+21,,,FALSE,16,,,,,,,,Eccentricity,Psychoticism,I often say things that others find odd or strange
+22,8,,FALSE,,,,,,,,,Impulsivity,Disinhibition,I always do things on the spur of the moment
+23,9,,FALSE,,,,,,,4,3,Anhedonia,Detachment,Nothing seems to interest me very much
+24,,,FALSE,17,,,,,,,,Eccentricity,Psychoticism,Other people seem to think my behavior is weird
+25,10,,FALSE,17,,,,,,,,Eccentricity,Psychoticism,People have told me that I think about things in a really strange way
+26,11,,FALSE,,,,,,,,,Anhedonia,Detachment,I almost never enjoy life
+27,,4,FALSE,,,,,,,,,Depressivity,Detachment,I often feel like nothing I do really matters
+28,,,FALSE,,,,,,,,,Hostility,,I snap at people when they do little things that irritate me
+29,,,FALSE,,,,,,,,,Distractibility,Disinhibition,I can't concentrate on anything
+30,,,TRUE,,,,,,,5,,Anhedonia,Detachment,I'm an energetic person
+31,,5,FALSE,,,,,,,,,Irresponsibility,Disinhibition,Others see me as irresponsible
+32,,,FALSE,,,,,,,,,Hostility,,I can be mean when I need to be
+33,,,FALSE,,,,,,,,,Eccentricity,Psychoticism,My thoughts often go off in odd or unusual directions
+34,,,FALSE,,,,,,,,,Rigid Perfectionism,,I've been told that I spend too much time making sure things are exactly in place
+35,,,TRUE,,,,,,,,,Risk Taking,,I avoid risky sports and activities
+36,,,FALSE,,,,,3,,,,Perceptual Dysregulation,Psychoticism,I can have trouble telling the difference between dreams and waking life
+37,,,FALSE,,,,,,,,,Perceptual Dysregulation,Psychoticism,Sometimes I get this weird feeling that parts of my body feel like they're dead or not really me
+38,12,,FALSE,6,,,,4,2,6,4,Hostility,,I am easily angered
+39,13,,FALSE,,,3,2,,,,,Risk Taking,,I have no limits when it comes to doing dangerous things
+40,14,,FALSE,,,4,3,,,,,Grandiosity,Antagonism,"To be honest, I'm just more important than other people"
+41,,,FALSE,,,,,,,,,Deceitfulness,Antagonism,I make up stories about things that happened that are totally untrue
+42,,,FALSE,,,,,5,,,,Perceptual Dysregulation,Psychoticism,People often talk about me doing things I don't remember at all
+43,,,FALSE,,,,,,,,,Attention Seeking,,I do things so that people just have to admire me
+44,15,,FALSE,,,5,4,,,,,Perceptual Dysregulation,Psychoticism,"It's weird, but sometimes ordinary objects seem to be a different shape than usual"
+45,,,FALSE,,,,,,,,,Restricted Affectivity,,I don't have very long-lasting emotional reactions to things
+46,,,FALSE,,,,,,,,,Perseveration,,"It is hard for me to stop an activity, even when it's time to do so"
+47,,6,FALSE,,,,,6,,,,Distractibility,Disinhibition,I'm not good at planning ahead
+48,16,,FALSE,,,,,,,,,Risk Taking,,I do a lot of things that others consider risky
+49,,,FALSE,,,,,,,,,Rigid Perfectionism,,People tell me that I focus too much on minor details
+50,17,,FALSE,9,5,,,,,7,5,Separation Insecurity,Negative affectivity,I worry a lot about being alone
+51,,,FALSE,,,,,,,,,Perseveration,,I've missed out on things because I was busy trying to get something I was doing exactly right
+52,,7,FALSE,18,,,,,,8,,Eccentricity,Psychoticism,My thoughts often don't make sense to others
+53,18,,FALSE,,,,,,,,,Deceitfulness,Antagonism,I often make up things about myself to help me get what I want
+54,,,FALSE,,,,,,,,,Callousness,,It doesn't really bother me to see other people get hurt
+55,,,FALSE,16,,,,,,,,Eccentricity,Psychoticism,People often look at me as if I'd said something really weird
+56,,,FALSE,,,,,,,,,Deceitfulness,Antagonism,People don't realize that I'm flattering them to get something
+57,,,FALSE,,,,,,,9,,Separation Insecurity,Negative affectivity,I'd rather be in a bad relationship than be alone
+58,,,TRUE,,,,,,,,,Impulsivity,Disinhibition,I usually think before I act
+59,,,FALSE,,,,,,,,,Perceptual Dysregulation,Psychoticism,I often see vivid dream-like images when I'm falling asleep or waking up
+60,19,,FALSE,,,,,,,,,Perseveration,,"I keep approaching things the same way, even when it isn't working"
+61,,,FALSE,,,,,,,,,Depressivity,,I'm very dissatisfied with myself
+62,,,FALSE,,,,,,,,,Emotional Lability,Negative affectivity,I have much stronger emotional reactions than almost everyone else
+63,20,,FALSE,,,,,,,,,Submissiveness,,I do what other people tell me to do
+64,,,FALSE,,,,,,,,,Separation Insecurity,Negative affectivity,"I can't stand being left alone, even for a few hours"
+65,,,FALSE,,,,,,,,,Grandiosity,Antagonism,I have outstanding qualities that few others possess
+66,,,FALSE,,,,,,,10,,Depressivity,,The future looks really hopeless to me
+67,21,,FALSE,,,,,,,,,Risk Taking,,I like to take risks
+68,,,FALSE,,,,,,,11,,Distractibility,Disinhibition,I can't achieve goals because other things capture my attention
+69,,,FALSE,,,,,,,,,Risk Taking,,"When I want to do something, I don't let the possibility that it might be risky stop me"
+70,22,,FALSE,19,,,,,,,,Eccentricity,Psychoticism,Others seem to think I'm quite odd or unusual
+71,,,FALSE,19,,,,,,,,Eccentricity,Psychoticism,My thoughts are strange and unpredictable
+72,,,FALSE,,,,,,,,,Callousness,,I don't care about other people's feelings
+73,,,FALSE,,,,,,,,,Callousness,,You need to step on some toes to get what you want in life
+74,23,,FALSE,10,6,,,,,,,Attention Seeking,,I love getting the attention of other people
+75,,,FALSE,,,,,,,,,Withdrawal,Detachment,I go out of my way to avoid any kind of group activity
+76,,,FALSE,,,,,,,,,Deceitfulness,Antagonism,I can be sneaky if it means getting what I want
+77,,,FALSE,,,,,,,,,Perceptual Dysregulation,Psychoticism,"Sometimes when I look at a familiar object, it's somehow like I'm seeing it for the first time"
+78,,,FALSE,,,,,,,,,Perseveration,,It is hard for me to shift from one activity to another
+79,24,,FALSE,1,1,,,,,,,Anxiousness,Negative affectivity,I worry a lot about terrible things that might happen
+80,25,,FALSE,7,3,,,,,12,6,Perseveration,,I have trouble changing how I'm doing something even if what I'm doing isn't going well
+81,26,,FALSE,,,,,,,,,Depressivity,,The world would be better off if I were dead
+82,27,,FALSE,,,,,,,13,7,Withdrawal,Detachment,I keep my distance from people
+83,,,FALSE,,,,,,,,,Perceptual Dysregulation,Psychoticism,I often can't control what I think about
+84,28,,FALSE,,,,,,,,,Restricted Affectivity,,I don't get emotional
+85,,,FALSE,,,,,,,,,Hostility,,"I resent being told what to do, even by people in charge"
+86,,,FALSE,,,,,,,,,Depressivity,,I'm so ashamed by how I've let people down in lots of little ways
+87,,,TRUE,,,,,,,,,Risk Taking,,I avoid anything that might be even a little bit dangerous
+88,,,FALSE,,,,,,,14,,Distractibility,Disinhibition,I have trouble pursuing specific goals even for short periods of time
+89,29,,FALSE,14,9,,,,,,,Intimacy Avoidance,Detachment,I prefer to keep romance out of my life
+90,,,TRUE,,,,,,,,,Callousness,,I would never harm another person
+91,30,,FALSE,,,,,,,,,Restricted Affectivity,,I don't show emotions strongly
+92,31,,FALSE,6,,,,,,,,Hostility,,I have a very short temper
+93,,,FALSE,,,,,,,15,,Anxiousness,Negative affectivity,I often worry that something bad will happen due to mistakes I made in the past
+94,,,FALSE,,,,,,,,,Unusual Beliefs & Experiences,Psychoticism,"I have some unusual abilities, like sometimes knowing exactly what someone is thinking"
+95,,,FALSE,,,,,,,,,Anxiousness,Negative affectivity,I get very nervous when I think about the future
+96,,,TRUE,,,,,7,,,,Anxiousness,Negative affectivity,I rarely worry about things
+97,,,TRUE,,,,,,,,,Intimacy Avoidance,Detachment,I enjoy being in love
+98,,,TRUE,,,,,8,,,,Risk Taking,,I prefer to play it safe rather than take unnecessary chances
+99,,,FALSE,,,,,,,,,Unusual Beliefs & Experiences,Psychoticism,I sometimes have heard things that others couldn't hear
+100,32,,FALSE,,,,,,,,,Perseveration,,I get fixated on certain things and can't stop
+101,,,FALSE,,,,,,,,,Restricted Affectivity,,People tell me it's difficult to know what I'm feeling
+102,,,FALSE,4,,,,,,,,Emotional Lability,Negative affectivity,I am a highly emotional person
+103,,,FALSE,,,,,,,,,Suspiciousness,,Others would take advantage of me if they could
+104,,,FALSE,,,,,,,,,Depressivity,,I often feel like a failure
+105,33,,FALSE,8,4,,,,,,,Rigid Perfectionism,,"If something I do isn't absolutely perfect, it's simply not acceptable"
+106,34,,FALSE,,,,,9,3,,,Unusual Beliefs & Experiences,Psychoticism,"I often have unusual experiences, such as sensing the presence of someone who isn't actually there"
+107,35,,FALSE,,,,,,,,,Manipulativeness,Antagonism,I'm good at making people do what I want them to do
+108,,,FALSE,,,,,,,,,Intimacy Avoidance,Detachment,I break off relationships if they start to get close
+109,36,,FALSE,2,,,,,,,,Anxiousness,Negative affectivity,I'm always worrying about something
+110,,8,FALSE,2,,,,,,,,Anxiousness,Negative affectivity,I worry about almost everything
+111,,,FALSE,,,,,,,,,Attention Seeking,,I like standing out in a crowd
+112,,,FALSE,,,,,,,,,Risk Taking,,I don't mind a little risk now and then
+113,,,FALSE,,,,,,,,,Attention Seeking,,My behavior is often bold and grabs peoples' attention
+114,37,,FALSE,,,,,,,,,Grandiosity,Antagonism,I'm better than almost everyone else
+115,,,FALSE,,,,,,,,,Rigid Perfectionism,,People complain about my need to have everything all arranged
+116,,,FALSE,,,,,,,,,Hostility,,I always make sure I get back at people who wrong me
+117,38,,FALSE,,,,,,,,,Suspiciousness,,I'm always on my guard for someone trying to trick or harm me
+118,39,,FALSE,,,,,,,,,Distractibility,Disinhibition,I have trouble keeping my mind focused on what needs to be done
+119,,,FALSE,,,,,10,,,,Depressivity,,I talk about suicide a lot
+120,40,,FALSE,,,,,,,,,Intimacy Avoidance,Detachment,I'm just not very interested in having sexual relationships
+121,,,FALSE,,,,,,,,,Perseveration,,I get stuck on things a lot
+122,41,9,FALSE,4,,,,11,4,,,Emotional Lability,Negative affectivity,"I get emotional easily, often for very little reason"
+123,42,,FALSE,8,4,,,,,,,Rigid Perfectionism,,"Even though it drives other people crazy, I insist on absolute perfection in everything I do"
+124,43,,FALSE,,,,,,,,,Anhedonia,Detachment,I almost never feel happy about my day-to-day activities
+125,44,,FALSE,13,,,,,,,,Manipulativeness,Antagonism,Sweet-talking others helps me get what I want
+126,,,FALSE,,,,,,,,,Deceitfulness,Antagonism,Sometimes you need to exaggerate to get ahead
+127,45,10,FALSE,9,5,,,,,,,Separation Insecurity,Negative affectivity,I fear being alone in life more than anything else
+128,46,11,FALSE,7,3,,,,,,,Perseveration,Negative affectivity,"I get stuck on one way of doing things, even when it's clear it won't work"
+129,47,,FALSE,,,,,,,,,Irresponsibility,Disinhibition,I'm often pretty careless with my own and others' things
+130,48,,FALSE,,,,,,,,,Anxiousness,Negative affectivity,I am a very anxious person
+131,,,TRUE,,,,,,,,,Suspiciousness,,People are basically trustworthy
+132,49,,FALSE,15,10,,,,,,,Distractibility,Disinhibition,I am easily distracted
+133,50,,FALSE,,,,,,,,,Suspiciousness,,"It seems like I'm always getting a ""raw deal"" from others"
+134,51,,FALSE,,,,,,,,,Deceitfulness,Antagonism,I don't hesitate to cheat if it gets me ahead
+135,,,FALSE,,,,,,,,,Rigid Perfectionism,,I check things several times to make sure they are perfect
+136,52,,FALSE,,,,,12,5,,,Withdrawal,Detachment,I don't like spending time with others
+137,,,FALSE,,,,,,,,,Perseveration,,I feel compelled to go on with things even when it makes little sense to do so
+138,53,,FALSE,5,2,,,,,,,Emotional Lability,Negative affectivity,I never know where my emotions will go from moment to moment
+139,54,12,FALSE,,,,,,,,,Unusual Beliefs & Experiences,Psychoticism,I have seen things that weren't really there
+140,,,FALSE,,,,,,,,,Rigid Perfectionism,,It is important to me that things are done in a certain way
+141,,,FALSE,,,,,,,,,Anxiousness,Negative affectivity,I always expect the worst to happen
+142,,,TRUE,,,,,,,,,Deceitfulness,Antagonism,I try to tell the truth even when it's hard
+143,,,FALSE,,,,,,,,,Unusual Beliefs & Experiences,Psychoticism,I believe that some people can move things with their minds
+144,55,,FALSE,15,10,,,,,,,Distractibility,Disinhibition,I can't focus on things for very long
+145,56,13,FALSE,14,9,,,,,,,Intimacy Avoidance,Detachment,I steer clear of romantic relationships
+146,57,14,FALSE,,,,,,,,,Withdrawal,Detachment,I'm not interested in making friends
+147,,,FALSE,,,,,,,,,Withdrawal,Detachment,I say as little as possible when dealing with people
+148,,,FALSE,3,,,,13,,,,Depressivity,,I'm useless as a person
+149,58,,FALSE,,,,,,,,,Separation Insecurity,Negative affectivity,I'll do just about anything to keep someone from abandoning me
+150,59,,FALSE,,,6,5,,,,,Unusual Beliefs & Experiences,Psychoticism,Sometimes I can influence other people just by sending my thoughts to them
+151,60,,FALSE,,,,,,,,,Depressivity,,Life looks pretty bleak to me
+152,61,,FALSE,18,,,,,,,,Eccentricity,Psychoticism,I think about things in odd ways that don't make sense to most people
+153,62,,FALSE,12,8,,,,,,,Callousness,,I don't care if my actions hurt others
+154,63,,FALSE,,,,,14,6,,,Perceptual Dysregulation,Psychoticism,"Sometimes I feel ""controlled"" by thoughts that belong to someone else"
+155,,,TRUE,,,,,,,,,Anhedonia,Detachment,I really live life to the fullest
+156,64,,FALSE,,,,,,,,,Irresponsibility,Disinhibition,I make promises that I don't really intend to keep
+157,65,,FALSE,,,,,,,,,Anhedonia,Detachment,Nothing seems to make me feel good
+158,66,15,FALSE,,,,,,,,,Hostility,Negative affectivity,I get irritated easily by all sorts of things
+159,67,,FALSE,,,,,,,,,Risk Taking,,I do what I want regardless of how unsafe it might be
+160,68,,FALSE,,,,,,,,,Irresponsibility,Disinhibition,I often forget to pay my bills
+161,,16,FALSE,,,,,,,,,Withdrawal,Detachment,I don't like to get too close to people
+162,69,,FALSE,,,,,15,7,,,Manipulativeness,Antagonism,I'm good at conning people
+163,70,,FALSE,,,,,16,8,,,Depressivity,,Everything seems pointless to me
+164,,,TRUE,,,,,,,,,Risk Taking,,I never take risks
+165,71,,FALSE,,,,,,,,,Emotional Lability,Negative affectivity,I get emotional over every little thing
+166,72,17,FALSE,12,8,7,6,,,,,Callousness,Antagonism,It's no big deal if I hurt other peoples' feelings
+167,73,,FALSE,,,,,,,,,Restricted Affectivity,,I never show emotions to others
+168,,,FALSE,,,,,17,,,,Depressivity,,I often feel just miserable
+169,74,,FALSE,3,,,,18,9,,,Depressivity,,I have no worth as a person
+170,75,,FALSE,,,8,7,,,,,Hostility,,I am usually pretty hostile
+171,76,,FALSE,,,9,8,,,,,Irresponsibility,Disinhibition,I've skipped town to avoid responsibilities
+172,,,FALSE,20,,,,,,,,Eccentricity,Psychoticism,I've been told more than once that I have a number of odd quirks or habits
+173,77,,FALSE,10,6,,,,,,,Attention Seeking,,I like being a person who gets noticed
+174,78,,FALSE,1,1,,,,,,,Anxiousness,Negative affectivity,I'm always fearful or on edge about bad things that might happen
+175,79,,FALSE,,,,,,,,,Separation Insecurity,Negative affectivity,I never want to be alone
+176,80,,FALSE,,,,,,,,,Rigid Perfectionism,,"I keep trying to make things perfect, even when I've gotten them as good as they're likely to get"
+177,,,TRUE,,,,,,,,,Suspiciousness,,I rarely feel that people I know are trying to take advantage of me
+178,,,FALSE,,,10,,,,,,Depressivity,,I know I'll commit suicide sooner or later
+179,,,FALSE,,,,,,,,,Grandiosity,Antagonism,I've achieved far more than almost anyone I know
+180,,,FALSE,13,,,,,,,,Manipulativeness,Antagonism,I can certainly turn on the charm if I need to get my way
+181,81,,FALSE,5,2,,,,,,,Emotional Lability,Negative affectivity,My emotions are unpredictable
+182,,,FALSE,,,,,,,,,Withdrawal,Detachment,I don't deal with people unless I have to
+183,82,,FALSE,,,,,19,10,,,Callousness,,I don't care about other peoples' problems
+184,83,,FALSE,,,,,,,,,Restricted Affectivity,,I don't react much to things that seem to make others emotional
+185,,,FALSE,20,,,,,,,,Eccentricity,Psychoticism,I have several habits that others find eccentric or strange
+186,84,,FALSE,,,,,,,,,Withdrawal,Detachment,I avoid social events
+187,85,,FALSE,,,,,,,,,Grandiosity,Antagonism,I deserve special treatment
+188,,,FALSE,,,,,,,,,Hostility,,It makes me really angry when people insult me in even a minor way
+189,,18,FALSE,,,,,,,,,Anhedonia,Detachment,I rarely get enthusiastic about anything
+190,86,,FALSE,,,,,,,,,Suspiciousness,,"I suspect that even my so-called ""friends"" betray me a lot"
+191,87,19,FALSE,11,7,,,,,,,Attention Seeking,Antagonism,I crave attention
+192,88,,FALSE,,,,,20,11,,,Perceptual Dysregulation,Psychoticism,Sometimes I think someone else is removing thoughts from my head
+193,,,FALSE,,,,,,,16,,Perceptual Dysregulation,Psychoticism,I have periods in which I feel disconnected from the world or from myself
+194,,,FALSE,,,,,,,,,Unusual Beliefs & Experiences,Psychoticism,I often see unusual connections between things that most people miss
+195,,,FALSE,,,,,,,,,Risk Taking,,I don't think about getting hurt when I'm doing things that might be dangerous
+196,89,,FALSE,,,,,,,,,Rigid Perfectionism,,I simply won't put up with things being out of their proper places
+197,90,20,FALSE,,,,,,,,,Grandiosity,Antagonism,I often have to deal with people who are less important than me
+198,,,FALSE,,,,,21,,,,Callousness,,I sometimes hit people to remind them who's in charge
+199,91,,FALSE,,,,,22,12,,,Distractibility,Disinhibition,I get pulled off-task by even minor distractions
+200,,,FALSE,,,,,,,,,Callousness,,I enjoy making people in control look stupid
+201,,,FALSE,,,,,,,,,Irresponsibility,Disinhibition,I just skip appointments or meetings if I'm not in the mood
+202,92,,FALSE,,,,,,,,,Submissiveness,,I try to do what others want me to do
+203,93,,FALSE,,,,,,,,,Intimacy Avoidance,Detachment,I prefer being alone to having a close romantic partner
+204,,,FALSE,,,,,,,,,Impulsivity,Disinhibition,I am very impulsive
+205,94,21,FALSE,,,,,,,,,Eccentricity,Psychoticism,I often have thoughts that make sense to me but that other people say are strange
+206,95,22,FALSE,,,,,,,,,Deceitfulness,Antagonism,I use people to get what I want
+207,,,FALSE,,,,,,,,,Callousness,,I don't see the point in feeling guilty about things I've done that have hurt other people
+208,,,FALSE,,,,,,,,,Callousness,,Most of the time I don't see the point in being friendly
+209,96,,FALSE,,,,,,,17,8,Unusual Beliefs & Experiences,Psychoticism,I've had some really weird experiences that are very difficult to explain
+210,,,TRUE,,,,,,,,,Irresponsibility,Disinhibition,I follow through on commitments
+211,97,,FALSE,11,7,,,,,,,Attention Seeking,,I like to draw attention to myself
+212,,,FALSE,,,,,,,,,Depressivity,,I feel guilty much of the time
+213,,23,FALSE,,,,,,,,,Perceptual Dysregulation,Psychoticism,"I often ""zone out"" and then suddenly come to and realize that a lot of time has passed"
+214,,,FALSE,,,,,,,,,Deceitfulness,Antagonism,Lying comes easily to me
+215,,,TRUE,,,,,,,,,Risk Taking,,I hate to take chances
+216,,,FALSE,,,,,,,,,Hostility,,I'm nasty and short to anybody who deserves it
+217,98,24,FALSE,,,,,,,,,Perceptual Dysregulation,Psychoticism,"Things around me often feel unreal, or more real than usual"
+218,99,,FALSE,,,,,,,,,Deceitfulness,Antagonism,I'll stretch the truth if it's to my advantage
+219,100,25,FALSE,,,,,,,,,Manipulativeness,Antagonism,It is easy for me to take advantage of others
+220,,,FALSE,,,,,,,,,Rigid Perfectionism,,I have a strict way of doing things

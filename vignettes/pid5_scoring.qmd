@@ -11,25 +11,57 @@ knitr:
 ---
 
 ```{r}
-#| label: setup
+#| include: false
 
+library(tibble)
+```
+
+The Personality Inventory for DSM-5 (PID-5) instrument has 220 items and yields 25 facet scales, 5 domain scales, and 5 validity scales. There are also two shorter versions: the Faceted Short Form (PID-5-FSF) with 100 items and the same number of scales, and the Brief Form (PID-5-BF) with 25 items and only 5 domain scales. To demonstrate the ability of the package to calculate these scale scores and interpret the validity scales, we can use a mix of real data collected at the University of Kansas (KU) by Girard and some simulated data. 
+
+First, we load the package into memory using the `library()` function. If this doesn't work, make sure you installed the package properly (see the README on [GitHub](https://github.com/jmgirard/hitop)).
+
+```{r}
 library(hitop)
 ```
 
 ### Score simulated PID-5 data
 
-The full PID-5 has 220 items and yields 5 domain scores and 25 facet scores. We can demonstrate the ability of the `score_pid5()` function to calculate these scores using simulated (fake) data.
+The `sim_pid5` dataset is built into the package and can be loaded using the `data()` function. It contains 100 rows (each representing a simulated participant) and 220 columns named `pid_1` to `pid_220` (each representing an item from the PID-5).
 
-```{r x2a}
+```{r}
 data("sim_pid5")
-
-score_pid5(sim_pid5, items = 1:220, append = FALSE)
+sim_pid5
 ```
 
-There are also several validity scales that have been developed for the full PID-5, including measures of overreporting, inconsistent responding, and positive impression management. We can demonstrate the ability of the `validity_pid5()` function to calculate these scores and flag issues using the same simulated data. Note that, because the data is fake, we would expect there to be lots of validity issues.
+To turn these item-level data into scale scores on the 25 facets and 5 domains, we can use the `score_pid5()` function. We will need to tell the function which columns contain our items and which version of the PID this is. There are several ways we can specify the items. First, we can provide the column numbers and use the `:` shortcut. In this tibble, the items are from column 1 to column 220 so we can use `items = 1:220`. I am going to also set `append = FALSE` so that you can quickly see the scale scores. I also can set the version to `"FULL"` (or leave that argument off, as that is the default, shown in the example example) to let it know we are using the full 220-item version.
+
+```{r}
+scores <- score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
+scores
+```
+
+If I had instead set `append = TRUE` (or left it off, as that is the default), we would get back the `sim_pid5` tibble with the scale scores added to the end as extra columns. Notice below how we now have 245 columns instead of 220 or 25.
+
+```{r}
+scores <- score_pid5(sim_pid5, items = 1:220)
+scores
+```
+
+Alternatively, we could provide the item column names as a character string. Typing out all 220 item names would be a hassle, but luckily this data named them consistently so we can build the names automatically using `sprintf()`. If we use the "pid_%d" format and apply that across the numbers 1 to 220, that will create the column names we need.
+
+```{r}
+scores <- score_pid5(sim_pid5, items = sprintf("pid_%d", 1:220))
+scores
+```
+
+There are other useful arguments to the function that you can read about using its documentation by typing the following into your R console: `?score_pid5` or through the [package website](https://jmgirard.github.io/hitop/reference/score_pid5.html).
+
+### Validity Scales for the PID-5
+
+There are also several validity scales that have been developed for the full PID-5, including measures of overreporting, inconsistent responding, and positive impression management. We can demonstrate the ability of the `validity_pid5()` function to calculate these scores and flag issues using the same simulated data. The function arguments will be consistent with what we just learned. Note that, because the data is fake, we would expect there to be lots of validity issues.
 
 ```{r x2b}
-#validity_pid5(sim_pid5, tibble = TRUE)
+validity_pid5(sim_pid5, items = 1:220, append = FALSE)
 ```
 
 ### Score simulated PID-5-FSF data
@@ -41,7 +73,7 @@ data("sim_pid5fsf")
 
 score_pid5(sim_pid5fsf, items = 1:100, version = "FSF", append = FALSE)
 
-#validity_pid5fsf(sim_pid5fsf, tibble = TRUE)
+validity_pid5(sim_pid5fsf, items = 1:100, version = "FSF", append = FALSE)
 ```
 
 ### Score real PID-5-FSF data
@@ -53,14 +85,17 @@ data("ku_pid5fsf")
 
 score_pid5(ku_pid5fsf, items = paste0("pid_", 1:100), version = "FSF", append = FALSE)
 
-#validity_pid5fsf(ku_pid5fsf, id = "response_id", tibble = TRUE)
+validity_pid5(ku_pid5fsf, items = paste0("pid_", 1:100), version = "FSF", append = FALSE)
 ```
 
 ### Score simulated PID-5-BF data
 
-Finally, the PID-5-BF is a brief version with 25 items that yields the domain scores only. The validity scales are not calculable with this subset of items. 
+Finally, the PID-5-BF is a brief version with 25 items that yields the domain scores only. The only validity scale that is calculable with this subset of items is the percentage of missing items (PNA). 
 
-```{r x5}
+```{r}
 data("sim_pid5bf")
+
 score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
+
+validity_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
 ```

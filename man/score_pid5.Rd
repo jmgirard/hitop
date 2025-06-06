@@ -17,7 +17,8 @@ score_pid5(
 )
 }
 \arguments{
-\item{data}{A data frame containing all PID-5 items (numerically scored).}
+\item{data}{A data frame containing (at least) all the PID items (numerically
+scored and in order).}
 
 \item{items}{A vector of column names (as strings) or numbers (as integers)
 corresponding to the PID items in order.}
@@ -29,7 +30,7 @@ corresponding to the PID items in order.}
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
 
 \item{prefix}{An optional string to add before each scale column name. If no
-prefix is desired, set to an empty string \code{""}. (default = \code{"pro_"})}
+prefix is desired, set to an empty string \code{""}. (default = \code{"pid_"})}
 
 \item{na.rm}{An optional logical indicating whether missing values should be
 ignored when calculating scale scores. (default = \code{TRUE})}
@@ -44,8 +45,8 @@ be added to the end of the \code{data} input. (default = \code{TRUE})}
 converted to a \link[tibble]{tibble}. (default = \code{TRUE})}
 }
 \value{
-A data frame containing all scale scores and standard errors (if
-requested) and all original \code{data} columns (if requested)
+A \link[tibble]{tibble} containing all scale scores and standard
+errors (if requested) and all original \code{data} columns (if requested)
 }
 \description{
 Calculate scale scores on the Personality Inventory for DSM-5: full version
