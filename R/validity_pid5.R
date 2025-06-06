@@ -140,7 +140,7 @@ validity_pid5 <- function(
     prd_warns_p <- sprintf("%.1f%%", prd_warns / length(prd_vec) * 100)
     prd_nas <- sum(is.na(prd_vec))
     if (prd_warns > 0) {
-      cli::cli_alert_warning('A total of {prd_warns} observations ({prd_warns_p}) met criteria for positive impression management ({prd_nas} missing).')
+      cli::cli_alert_warning('A total of {prd_warns} observations ({prd_warns_p}) met criteria for positive impression management on the {prd_var} ({prd_nas} missing).')
       cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, {prd_col} > {prd_cut})}')
     }
     out[[prd_col]] <- prd_vec
@@ -158,11 +158,11 @@ validity_pid5 <- function(
     sdtd_warns_high_p <- sprintf("%.1f%%", sdtd_warns_high / length(prd_vec) * 100)
     sdtd_nas <- sum(is.na(sdtd_vec))
     if (sdtd_warns_low > 0) {
-      cli::cli_alert_warning('A total of {sdtd_warns_low} observations ({sdtd_warns_low_p}) met criteria for social desirability ({sdtd_nas} missing).')
+      cli::cli_alert_warning('A total of {sdtd_warns_low} observations ({sdtd_warns_low_p}) met criteria for social desirability on the {sdtd_var} ({sdtd_nas} missing).')
       cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, {sdtd_col} > {sdtd_cut_low})}')
     }
     if (sdtd_warns_high > 0) {
-      cli::cli_alert_warning('A total of {sdtd_warns_high} observations ({sdtd_warns_high_p}) met criteria for defensiveness ({sdtd_nas} missing).')
+      cli::cli_alert_warning('A total of {sdtd_warns_high} observations ({sdtd_warns_high_p}) met criteria for defensiveness on the {sdtd_var} ({sdtd_nas} missing).')
       cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, {sdtd_col} < {sdtd_cut_high})}')
     }
     out[[sdtd_col]] <- sdtd_vec
