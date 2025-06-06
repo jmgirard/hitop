@@ -53,6 +53,7 @@
 #'   Defensiveness in an Inpatient Sample With Personality Disorder Traits.
 #'   *Journal of Personality Assessment, 101*(3), 253–263.
 #'   \url{https://doi.org/10.1080/00223891.2018.1455691}
+#' @keywords internal
 validity_pid5 <- function(
   data,
   items,
@@ -197,6 +198,7 @@ validity_pid5 <- function(
 #'   Scale for the Personality Inventory for DSM-5. *Journal of Personality
 #'   Assessment, 102*(6), 743–750.
 #'   \cite{https://doi.org/10.1080/00223891.2019.1674320}
+#' @keywords internal
 validity_pid5fsf <- function(data,
                              items = NULL,
                              id = NULL,
