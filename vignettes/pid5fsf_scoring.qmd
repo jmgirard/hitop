@@ -1,0 +1,46 @@
+---
+title: "Scoring the PID-5-FSF"
+vignette: >
+  %\VignetteIndexEntry{Scoring the PID-5-FSF}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hitop)
+```
+
+### Score simulated PID-5-FSF data
+
+The PID-5-FSF is a shorter version of the PID-5 with 100 items that still yields all domain and facet scores. The validity scales are still calculable but may have fewer items and their psychometric properties have not, to my knowledge, been examined with the FSF.
+
+```{r x3}
+data("sim_pid5fsf")
+
+score_pid5(sim_pid5fsf, items = 1:100, version = "FSF", append = FALSE)
+
+validity_pid5(sim_pid5fsf, items = 1:100, version = "FSF", append = FALSE)
+```
+
+### Score real PID-5-FSF data
+
+We can repeat this process with real data that was collected at University of Kansas (KU). There should be fewer (but still some) validity problems since this is real data. We can also retain un-scored "ID" variables in the dataset.
+
+```{r x4}
+data("ku_pid5fsf")
+
+score_pid5(ku_pid5fsf, items = paste0("pid_", 1:100), version = "FSF", append = FALSE)
+
+validity_pid5(ku_pid5fsf, items = paste0("pid_", 1:100), version = "FSF", append = FALSE)
+```

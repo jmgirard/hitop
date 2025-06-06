@@ -16,7 +16,7 @@ knitr:
 library(tibble)
 ```
 
-The Personality Inventory for DSM-5 (PID-5) instrument has 220 items and yields 25 facet scales, 5 domain scales, and 5 validity scales. There are also two shorter versions: the Faceted Short Form (PID-5-FSF) with 100 items and the same number of scales, and the Brief Form (PID-5-BF) with 25 items and only 5 domain scales. To demonstrate the ability of the package to calculate these scale scores and interpret the validity scales, we can use a mix of real data collected at the University of Kansas (KU) by Girard and some simulated data. 
+The Personality Inventory for DSM-5 (PID-5) instrument has 220 items and yields 25 facet scales, 5 domain scales, and 5 validity scales. We can demonstrate the package's functionality using some simulated data.
 
 First, we load the package into memory using the `library()` function. If this doesn't work, make sure you installed the package properly (see the README on [GitHub](https://github.com/jmgirard/hitop)).
 
@@ -62,40 +62,4 @@ There are also several validity scales that have been developed for the full PID
 
 ```{r x2b}
 validity_pid5(sim_pid5, items = 1:220, append = FALSE)
-```
-
-### Score simulated PID-5-FSF data
-
-The PID-5-FSF is a shorter version with 100 items that still yields all domain and facet scores. The validity scales are still calculable but may have fewer items and their psychometric properties have not, to my knowledge, been examined with the FSF.
-
-```{r x3}
-data("sim_pid5fsf")
-
-score_pid5(sim_pid5fsf, items = 1:100, version = "FSF", append = FALSE)
-
-validity_pid5(sim_pid5fsf, items = 1:100, version = "FSF", append = FALSE)
-```
-
-### Score real PID-5-FSF data
-
-We can repeat this process with real data that was collected at University of Kansas (KU). There should be fewer (but still some) validity problems since this is real data. We can also retain un-scored "ID" variables in the dataset.
-
-```{r x4}
-data("ku_pid5fsf")
-
-score_pid5(ku_pid5fsf, items = paste0("pid_", 1:100), version = "FSF", append = FALSE)
-
-validity_pid5(ku_pid5fsf, items = paste0("pid_", 1:100), version = "FSF", append = FALSE)
-```
-
-### Score simulated PID-5-BF data
-
-Finally, the PID-5-BF is a brief version with 25 items that yields the domain scores only. The only validity scale that is calculable with this subset of items is the percentage of missing items (PNA). 
-
-```{r}
-data("sim_pid5bf")
-
-score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
-
-validity_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
 ```

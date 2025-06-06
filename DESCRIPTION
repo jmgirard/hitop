@@ -22,9 +22,9 @@ Suggests:
     ggplot2,
     knitr,
     quarto,
+    rmarkdown,
     snakecase
-VignetteBuilder: 
-    quarto
+VignetteBuilder: quarto, knitr
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

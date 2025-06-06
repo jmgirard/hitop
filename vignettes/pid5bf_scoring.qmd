@@ -1,0 +1,34 @@
+---
+title: "Scoring the PID-5-BF"
+vignette: >
+  %\VignetteIndexEntry{Scoring the PID-5-BF}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hitop)
+```
+
+### Score simulated PID-5-BF data
+
+Finally, the PID-5-BF is a brief version with 25 items that yields the domain scores only. The only validity scale that is calculable with this subset of items is the percentage of missing items (PNA). 
+
+```{r}
+data("sim_pid5bf")
+
+score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
+
+validity_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
+```

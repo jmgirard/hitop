@@ -25,6 +25,7 @@ reference:
   contents:
   - score_hitop_pro
   - score_pid5
+  - validity_pid5
 - title: Example Data
   contents:
   - ku_hitoppro
