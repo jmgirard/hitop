@@ -47,6 +47,16 @@
 #' Information about subscales in the HiTOP-PRO.
 "hitop_pro_subscales"
 
+#' Simulated HiTOP-PRO Data
+#'
+#' Simulated responses to items on the full HiTOP-PRO (with 405 items).
+#'
+#' @format ## `sim_hitoppro` A \link[tibble]{tibble} with 100 rows and 405 columns.
+#' \describe{
+#'   \item{pro_1 to pro_405}{Responses on each item}
+#' }
+"sim_hitoppro"
+
 #' Simulated PID-5 Data
 #'
 #' Simulated responses to items on the full PID-5 (with 220 items).
