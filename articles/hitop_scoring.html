@@ -43,6 +43,8 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/hitop_scoring.html">Scoring the HiTOP-PRO</a></li>
     <li><a class="dropdown-item" href="../articles/pid5_scoring.html">Scoring the PID-5</a></li>
+    <li><a class="dropdown-item" href="../articles/pid5bf_scoring.html">Scoring the PID-5-BF</a></li>
+    <li><a class="dropdown-item" href="../articles/pid5fsf_scoring.html">Scoring the PID-5-FSF</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -83,7 +85,7 @@
 
 
 
-    <p>The HiTOP-PRO instrument has 405 items and yields 76 scale scores. To demonstrate the ability of the package to calculate these scale scores, we can use real example data (n=143) that was collected at the University of Kansas (KU) by Girard &amp; Gray in 2025. This data is stored in the package under the name <code>ku_hitoppro</code>.</p>
+    <p>The HiTOP-PRO instrument has 405 items and yields 76 scale scores. To demonstrate the ability of the package to calculate these scale scores, we can use real example data (n=143) that was collected at the University of Kansas (KU) by Girard &amp; Gray in 2024. This data is stored in the package under the name <code>ku_hitoppro</code>.</p>
 <p>First, we load the package into memory using the <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> function. If this doesn’t work, make sure you installed the package properly (see the README on <a href="https://github.com/jmgirard/hitop" class="external-link">GitHub</a>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
@@ -115,6 +117,8 @@
 <span><span class="co">#&gt; #   hitop022 &lt;dbl&gt;, hitop023 &lt;dbl&gt;, hitop024 &lt;dbl&gt;, hitop025 &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   hitop026 &lt;dbl&gt;, hitop027 &lt;dbl&gt;, hitop028 &lt;dbl&gt;, hitop029 &lt;dbl&gt;, …</span></span></code></pre></div>
 </div>
+<section class="level2"><h2 id="basic-scoring">Basic Scoring<a class="anchor" aria-label="anchor" href="#basic-scoring"></a>
+</h2>
 <p>To turn these item-level ratings into mean scores on the 76 scales, we can use the <code><a href="../reference/score_hitop_pro.html">score_hitop_pro()</a></code> function. It needs to know what object contains the data and which columns contain the item-level data. There are several ways we can specify the items. First, we can provide the column numbers and use the <code>:</code> shortcut. In this tibble, the items are from column 3 to column 407 so we can use <code>items = 3:407</code>. I am going to also set <code>append = FALSE</code> so that you can quickly see the scale scores.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
@@ -145,6 +149,8 @@
 <span><span class="co">#&gt; #   pro_dietaryRestraint &lt;dbl&gt;, pro_difficultiesReachingOrgasm &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   pro_diseaseConviction &lt;dbl&gt;, pro_dishonesty &lt;dbl&gt;, …</span></span></code></pre></div>
 </div>
+</section><section class="level2"><h2 id="appending">Appending<a class="anchor" aria-label="anchor" href="#appending"></a>
+</h2>
 <p>If I had instead set <code>append = TRUE</code> (or left it off, as that is the default), we would get back the <code>ku_hitoppro</code> tibble with the scale scores added to the end as extra columns. Notice below how we now have 483 columns instead of 407.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
@@ -174,6 +180,8 @@
 <span><span class="co">#&gt; #   hitop022 &lt;dbl&gt;, hitop023 &lt;dbl&gt;, hitop024 &lt;dbl&gt;, hitop025 &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   hitop026 &lt;dbl&gt;, hitop027 &lt;dbl&gt;, hitop028 &lt;dbl&gt;, hitop029 &lt;dbl&gt;, …</span></span></code></pre></div>
 </div>
+</section><section class="level2"><h2 id="items-as-strings">Items as Strings<a class="anchor" aria-label="anchor" href="#items-as-strings"></a>
+</h2>
 <p>Alternatively, we could provide the item column names as a character string. Typing out all 405 item names would be a hassle, but luckily this data named them consistently so we can build the names automatically using <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. If we use the “hitop%03d” format and apply that across the numbers 1 to 405, that will create the zero-padded column names we need.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
@@ -204,6 +212,8 @@
 <span><span class="co">#&gt; #   pro_dietaryRestraint &lt;dbl&gt;, pro_difficultiesReachingOrgasm &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   pro_diseaseConviction &lt;dbl&gt;, pro_dishonesty &lt;dbl&gt;, …</span></span></code></pre></div>
 </div>
+</section><section class="level2"><h2 id="scale-prefixes">Scale Prefixes<a class="anchor" aria-label="anchor" href="#scale-prefixes"></a>
+</h2>
 <p>Also note that each scale column has the prefix “pro_” in its name. You can change the prefix (e.g., setting it to <code>"htp_"</code>) or even turn it off (e.g., setting it to <code>""</code>) using the <code>prefix</code> argument.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
@@ -235,6 +245,8 @@
 <span><span class="co">#&gt; #   htp_dietaryRestraint &lt;dbl&gt;, htp_difficultiesReachingOrgasm &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   htp_diseaseConviction &lt;dbl&gt;, htp_dishonesty &lt;dbl&gt;, …</span></span></code></pre></div>
 </div>
+</section><section class="level2"><h2 id="simple-standard-errors">Simple Standard Errors<a class="anchor" aria-label="anchor" href="#simple-standard-errors"></a>
+</h2>
 <p>Finally, in addition to calculating each scale score as the mean of its corresponding items, we can also calculate each scale score’s standard error as the SD of its corresponding items divided by the square root of its number of items. These standard errors are especially useful when plotting the scores as they can be converted into confidence intervals. We turn this on using <code>calc_se</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
@@ -267,10 +279,7 @@
 <span><span class="co">#&gt; #   pro_diseaseConviction &lt;dbl&gt;, pro_dishonesty &lt;dbl&gt;, …</span></span></code></pre></div>
 </div>
 <p>Note how there are now 152 columns instead of 76. The extra columns aren’t shown in the preview above, but they are named with the <code>_se</code> suffix, e.g., <code>pro_agoraphobia_se</code>.</p>
-
-
-
-<script id="quarto-html-after-body" type="application/javascript">
+</section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -353,7 +362,8 @@
       }
     }
   });
-  </script></main>
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
