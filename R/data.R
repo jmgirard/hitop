@@ -76,6 +76,16 @@
 #' }
 "sim_hitoppro"
 
+#' Simulated B-HiTOP Data
+#'
+#' Simulated responses to items on the B-HiTOP (with 45 items).
+#'
+#' @format ## `sim_bhitop` A \link[tibble]{tibble} with 100 rows and 45 columns.
+#' \describe{
+#'   \item{bhitop_1 to bhitop_45}{Responses on each item}
+#' }
+"sim_bhitop"
+
 #' Simulated PID-5 Data
 #'
 #' Simulated responses to items on the full PID-5 (with 220 items).

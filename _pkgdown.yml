@@ -24,6 +24,7 @@ reference:
 - title: Score
   contents:
   - score_hitop_pro
+  - score_bhitop
   - score_pid5
   - validity_pid5
 - title: Example Data
@@ -31,6 +32,7 @@ reference:
   - ku_hitoppro
   - ku_pid5fsf
   - sim_hitoppro
+  - sim_bhitop
   - sim_pid5
   - sim_pid5fsf
   - sim_pid5bf
