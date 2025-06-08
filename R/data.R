@@ -47,6 +47,25 @@
 #' Information about subscales in the HiTOP-PRO.
 "hitop_pro_subscales"
 
+#' B-HiTOP Item Data
+#'
+#' Information about items in the B-HiTOP.
+#'
+#' @format A \link[tibble]{tibble} with 45 rows and 5 columns:
+#' \describe{
+#'   \item{BHITOP}{Item number on the B-HITOP}
+#'   \item{Reverse}{Whether the item needs to be reverse scored}
+#'   \item{Scale}{Name of the scale}
+#'   \item{PFactor}{Whether the item is part of the p-Factor scale}
+#'   \item{Text}{Item text}
+#' }
+"bhitop_items"
+
+#' B-HiTOP Scale Data
+#'
+#' Information about scales in the B-HiTOP.
+"bhitop_scales"
+
 #' Simulated HiTOP-PRO Data
 #'
 #' Simulated responses to items on the full HiTOP-PRO (with 405 items).

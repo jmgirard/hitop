@@ -36,4 +36,3 @@ hitop_pro_subscales <-
   )
 names(hitop_pro_subscales$itemNumbers) <- hitop_pro_subscales$camelCase
 usethis::use_data(hitop_pro_subscales, overwrite = TRUE)
-
