@@ -41,5 +41,7 @@ reference:
   - hitop_pro_items
   - hitop_pro_scales
   - hitop_pro_subscales
+  - bhitop_items
+  - bhitop_scales
   - pid_items
   - pid_scales
