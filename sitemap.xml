@@ -12,6 +12,8 @@
 <url><loc>https://jmgirard.github.io/hitop/authors.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/index.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/news/index.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/bhitop_items.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/bhitop_scales.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/hitop-package.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/hitop_pro_items.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/hitop_pro_scales.html</loc></url>
@@ -21,8 +23,10 @@
 <url><loc>https://jmgirard.github.io/hitop/reference/ku_pid5fsf.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/pid_items.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/pid_scales.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/score_bhitop.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/score_hitop_pro.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/score_pid5.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/sim_bhitop.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/sim_hitoppro.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/sim_pid5.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/sim_pid5bf.html</loc></url>
