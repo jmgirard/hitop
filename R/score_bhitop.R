@@ -86,7 +86,7 @@ score_bhitop <- function(
           function(x) apply(data_items[, x], MARGIN = 1, FUN = calc_sem)
         )
       )
-    colnames(sems_scales) <- paste0(colnames(sems_scales), "_se")
+    colnames(sems_scales) <- paste0(prefix, colnames(sems_scales), "_se")
     out <- cbind(out, sems_scales)
   }
 

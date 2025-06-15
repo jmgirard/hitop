@@ -21,7 +21,7 @@
 #' @return A data frame containing all scale scores and standard errors (if
 #'   requested) and all original `data` columns (if requested)
 #' @export
-score_hitop_pro <- function(
+score_hitoppro <- function(
   data,
   items,
   srange = c(1, 4),
@@ -87,7 +87,7 @@ score_hitop_pro <- function(
           function(x) apply(data_items[, x], MARGIN = 1, FUN = calc_sem)
         )
       )
-    colnames(sems_scales) <- paste0(colnames(sems_scales), "_se")
+    colnames(sems_scales) <- paste0(prefix, colnames(sems_scales), "_se")
     out <- cbind(out, sems_scales)
   }
 

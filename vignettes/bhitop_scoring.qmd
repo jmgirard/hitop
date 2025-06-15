@@ -1,0 +1,101 @@
+---
+title: "Scoring the B-HiTOP"
+vignette: >
+  %\VignetteIndexEntry{Scoring the B-HiTOP}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+```{r}
+#| include: false
+
+library(tibble)
+```
+
+
+The B-HiTOP instrument has 45 items and yields 7 scale scores. To demonstrate the ability of the package to calculate these scale scores, we can use real example data (n=143) that was collected at the University of Kansas (KU) by Girard & Gray in 2024. This data is stored in the package under the name `ku_bhitop`.
+
+First, we load the package into memory using the `library()` function. If this doesn't work, make sure you installed the package properly (see the README on [GitHub](https://github.com/jmgirard/hitop)).
+
+```{r}
+library(hitop)
+```
+
+Next, we can load the example dataset from the package using the `data()` function. It is a tibble that contains 45 columns numbered `bhitop01` to `bhitop45` containing each participant's rating on each item of the B-HiTOP (on a numerical scale from 1 to 4).
+
+```{r}
+data("ku_bhitop")
+ku_bhitop
+```
+
+## Basic Scoring
+
+To turn these item-level ratings into mean scores on the 7 scales, we can use the `score_bhitop()` function. It needs to know what object contains the data and which columns contain the item-level data. There are several ways we can specify the items. First, we can provide the column numbers and use the `:` shortcut. In this tibble, the items are from column 3 to column 47 so we can use `items = 3:47`. I am going to also set `append = FALSE` so that you can quickly see the scale scores.
+
+```{r}
+scores <- score_bhitop(
+  data = ku_bhitop,
+  items = 3:47,
+  append = FALSE
+)
+scores
+```
+
+## Appending
+
+If I had instead set `append = TRUE` (or left it off, as that is the default), we would get back the `ku_bhitop` tibble with the scale scores added to the end as extra columns. Notice below how we now have 54 columns instead of 47.
+
+```{r}
+scores <- score_bhitop(
+  data = ku_bhitop,
+  items = 3:47
+)
+scores
+```
+
+## Items as Strings
+
+Alternatively, we could provide the item column names as a character string. Typing out all 45 item names would be a hassle, but luckily this data named them consistently so we can build the names automatically using `sprintf()`. If we use the "bhitop%02d" format and apply that across the numbers 1 to 45, that will create the zero-padded column names we need. If there were no zero-padding, we could have just used "bhitop%d".
+
+```{r}
+scores <- score_bhitop(
+  data = ku_bhitop,
+  items = sprintf("bhitop%02d", 1:45),
+  append = FALSE
+)
+scores
+```
+
+## Scale Prefixes
+
+Also note that each scale column has the prefix "pro_" in its name. You can change the prefix (e.g., setting it to `"htp_"`) or even turn it off (e.g., setting it to `""`) using the `prefix` argument.
+
+```{r}
+scores <- score_bhitop(
+  data = ku_bhitop,
+  items = sprintf("bhitop%02d", 1:45),
+  prefix = "bh_",
+  append = FALSE
+)
+scores
+```
+
+## Simple Standard Errors
+
+Finally, in addition to calculating each scale score as the mean of its corresponding items, we can also calculate each scale score's standard error as the SD of its corresponding items divided by the square root of its number of items. These standard errors are especially useful when plotting the scores as they can be converted into confidence intervals. We turn this on using `calc_se`.
+
+```{r}
+scores <- score_bhitop(
+  data = ku_bhitop,
+  items = sprintf("bhitop%02d", 1:45),
+  calc_se = TRUE,
+  append = FALSE
+)
+scores
+```
+
+Note how there are now 14 columns instead of 7. The extra columns aren't shown in the preview above, but they are named with the `_se` suffix, e.g., `bhitop_somatoform_se`.

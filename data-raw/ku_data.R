@@ -17,6 +17,28 @@ usethis::use_data(ku_hitoppro, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------
 
+## B-HiTOP
+item_conversion <-
+  dplyr::full_join(hitoppro_items, bhitop_items, by = "Text") |>
+  dplyr::select(PRO, BHITOP) |>
+  tidyr::drop_na()
+
+ku_bhitop <-
+  ku_hitoppro |>
+  dplyr::select(
+    participant,
+    biosex,
+    sprintf("hitop%03d", item_conversion$PRO)
+  ) |>
+  setNames(c(
+    "participant",
+    "biosex",
+    sprintf("bhitop%02d", item_conversion$BHITOP)
+  ))
+usethis::use_data(ku_bhitop, overwrite = TRUE)
+
+# ------------------------------------------------------------------------------
+
 ## PID-5-FSF
 ku_pid5fsf <- readr::read_csv("data-raw/study2.csv", show_col_types = FALSE)
 colnames(ku_pid5fsf) <- c("response_id", paste0("pid_", 1:100))

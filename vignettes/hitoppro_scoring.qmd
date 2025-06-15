@@ -34,10 +34,10 @@ ku_hitoppro
 
 ## Basic Scoring
 
-To turn these item-level ratings into mean scores on the 76 scales, we can use the `score_hitop_pro()` function. It needs to know what object contains the data and which columns contain the item-level data. There are several ways we can specify the items. First, we can provide the column numbers and use the `:` shortcut. In this tibble, the items are from column 3 to column 407 so we can use `items = 3:407`. I am going to also set `append = FALSE` so that you can quickly see the scale scores.
+To turn these item-level ratings into mean scores on the 76 scales, we can use the `score_hitoppro()` function. It needs to know what object contains the data and which columns contain the item-level data. There are several ways we can specify the items. First, we can provide the column numbers and use the `:` shortcut. In this tibble, the items are from column 3 to column 407 so we can use `items = 3:407`. I am going to also set `append = FALSE` so that you can quickly see the scale scores.
 
 ```{r}
-scores <- score_hitop_pro(
+scores <- score_hitoppro(
   data = ku_hitoppro,
   items = 3:407,
   append = FALSE
@@ -50,7 +50,7 @@ scores
 If I had instead set `append = TRUE` (or left it off, as that is the default), we would get back the `ku_hitoppro` tibble with the scale scores added to the end as extra columns. Notice below how we now have 483 columns instead of 407.
 
 ```{r}
-scores <- score_hitop_pro(
+scores <- score_hitoppro(
   data = ku_hitoppro,
   items = 3:407
 )
@@ -62,7 +62,7 @@ scores
 Alternatively, we could provide the item column names as a character string. Typing out all 405 item names would be a hassle, but luckily this data named them consistently so we can build the names automatically using `sprintf()`. If we use the "hitop%03d" format and apply that across the numbers 1 to 405, that will create the zero-padded column names we need.
 
 ```{r}
-scores <- score_hitop_pro(
+scores <- score_hitoppro(
   data = ku_hitoppro,
   items = sprintf("hitop%03d", 1:405),
   append = FALSE
@@ -75,7 +75,7 @@ scores
 Also note that each scale column has the prefix "pro_" in its name. You can change the prefix (e.g., setting it to `"htp_"`) or even turn it off (e.g., setting it to `""`) using the `prefix` argument.
 
 ```{r}
-scores <- score_hitop_pro(
+scores <- score_hitoppro(
   data = ku_hitoppro,
   items = sprintf("hitop%03d", 1:405),
   prefix = "htp_",
@@ -89,7 +89,7 @@ scores
 Finally, in addition to calculating each scale score as the mean of its corresponding items, we can also calculate each scale score's standard error as the SD of its corresponding items divided by the square root of its number of items. These standard errors are especially useful when plotting the scores as they can be converted into confidence intervals. We turn this on using `calc_se`.
 
 ```{r}
-scores <- score_hitop_pro(
+scores <- score_hitoppro(
   data = ku_hitoppro,
   items = sprintf("hitop%03d", 1:405),
   calc_se = TRUE,

@@ -35,17 +35,17 @@
 #'   \item{Subscale}{Name of the subscale (level 1)}
 #'   \item{Text}{Item text}
 #' }
-"hitop_pro_items"
+"hitoppro_items"
 
 #' HiTOP-PRO Scale Data
 #'
 #' Information about scales in the HiTOP-PRO.
-"hitop_pro_scales"
+"hitoppro_scales"
 
 #' HiTOP-PRO Subscale Data
 #'
 #' Information about subscales in the HiTOP-PRO.
-"hitop_pro_subscales"
+"hitoppro_subscales"
 
 #' B-HiTOP Item Data
 #'
@@ -128,11 +128,24 @@
 #' }
 "ku_pid5fsf"
 
+#' Real B-HiTOP Data
+#'
+#' Real responses to items on the B-HiTOP from University of Kansas students.
+#'
+#' @format A \link[tibble]{tibble} with 143 rows and 47 columns.
+#' \describe{
+#'   \item{participant}{An anonymized id for each participant}
+#'   \item{biosex}{A factor indicating each participant's biological sex}
+#'   \item{bhitop01 to bhitop45}{Responses on each item}
+#' }
+"ku_bhitop"
+
+
 #' Real HiTOP-PRO Data
 #'
 #' Real responses to items on the HiTOP-PRO from University of Kansas students.
 #'
-#' @format A \link[tibble]{tibble} with 131 rows and 407 columns.
+#' @format A \link[tibble]{tibble} with 143 rows and 407 columns.
 #' \describe{
 #'   \item{participant}{An anonymized id for each participant}
 #'   \item{biosex}{A factor indicating each participant's biological sex}
