@@ -25,7 +25,7 @@ First, we load the package into memory using the `library()` function. If this d
 library(hitop)
 ```
 
-Next, we can load the example dataset from the package using the `data()` function. It is a tibble that contains 45 columns numbered `bhitop01` to `bhitop45` containing each participant's rating on each item of the B-HiTOP (on a numerical scale from 1 to 4).
+Next, we can load the example dataset from the package using the `data()` function. It is a large tibble that contains a `participant` column with a unique identifier for each participant, a `biosex` column indicating whether each participant is "female" or "male", and then 45 columns numbered `bhitop01` to `bhitop45` containing each participant's rating on each item of the B-HiTOP (on a numerical scale from 1 to 4).
 
 ```{r}
 data("ku_bhitop")
