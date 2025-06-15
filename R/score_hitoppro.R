@@ -49,9 +49,9 @@ score_hitoppro <- function(
   data_items <- lapply(data_items, as.numeric)
 
   ## Reverse score the necessary items
-  utils::data(hitop_pro_items)
+  utils::data(hitoppro_items)
   items_rev <-
-    hitop_pro_items[hitop_pro_items$Reverse == TRUE, "PRO", drop = TRUE]
+    hitoppro_items[hitoppro_items$Reverse == TRUE, "PRO", drop = TRUE]
   if (length(items_rev) > 0) {
     data_items[items_rev] <- lapply(
       items_rev,
@@ -65,7 +65,7 @@ score_hitoppro <- function(
   data_items <- bind_columns(data_items)
 
   ## Find items per scale
-  items_scales <- hitop_pro_scales$itemNumbers
+  items_scales <- hitoppro_scales$itemNumbers
 
   ## Calculate mean scores per scale
   out <- bind_columns(
