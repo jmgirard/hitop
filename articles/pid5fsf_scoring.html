@@ -19,6 +19,7 @@
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="pid5fsf_scoring_files/libs/quarto-html/popper.min.js"></script><script src="pid5fsf_scoring_files/libs/quarto-html/tippy.umd.min.js"></script><link href="pid5fsf_scoring_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="pid5fsf_scoring_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Scoring the PID-5-FSF">
+<meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -41,7 +42,8 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/hitop_scoring.html">Scoring the HiTOP-PRO</a></li>
+<li><a class="dropdown-item" href="../articles/bhitop_scoring.html">Scoring the B-HiTOP</a></li>
+    <li><a class="dropdown-item" href="../articles/hitoppro_scoring.html">Scoring the HiTOP-PRO</a></li>
     <li><a class="dropdown-item" href="../articles/pid5_scoring.html">Scoring the PID-5</a></li>
     <li><a class="dropdown-item" href="../articles/pid5bf_scoring.html">Scoring the PID-5-BF</a></li>
     <li><a class="dropdown-item" href="../articles/pid5fsf_scoring.html">Scoring the PID-5-FSF</a></li>
@@ -70,8 +72,7 @@
 </nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Scoring the PID-5-FSF</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Scoring the PID-5-FSF</h1>
 
 
 
@@ -100,16 +101,16 @@
 <span><span class="co">#&gt; # A tibble: 100 × 25</span></span>
 <span><span class="co">#&gt;    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness</span></span>
 <span><span class="co">#&gt;                 &lt;dbl&gt;           &lt;dbl&gt;              &lt;dbl&gt;           &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1               2.5             2                  1.75            1.5 </span></span>
-<span><span class="co">#&gt;  2               2.25            1                  1.5             1.75</span></span>
-<span><span class="co">#&gt;  3               0.75            1.5                1.75            1.5 </span></span>
-<span><span class="co">#&gt;  4               2.25            1.5                2.75            1.5 </span></span>
-<span><span class="co">#&gt;  5               1.25            2                  0.75            1.5 </span></span>
-<span><span class="co">#&gt;  6               1               1.75               1.25            1.75</span></span>
-<span><span class="co">#&gt;  7               2               1.25               0.75            1.75</span></span>
-<span><span class="co">#&gt;  8               1.25            2                  2.25            1.25</span></span>
-<span><span class="co">#&gt;  9               1.25            1.25               0.5             2   </span></span>
-<span><span class="co">#&gt; 10               0.5             1.25               2               2   </span></span>
+<span><span class="co">#&gt;  1               0.75            1.5                0.75            1.5 </span></span>
+<span><span class="co">#&gt;  2               1               1.75               0.25            0.75</span></span>
+<span><span class="co">#&gt;  3               1.5             0.75               0.75            1.75</span></span>
+<span><span class="co">#&gt;  4               2               1.75               1.75            1.75</span></span>
+<span><span class="co">#&gt;  5               1.75            1.25               1.25            1.75</span></span>
+<span><span class="co">#&gt;  6               1               0.75               1.75            1.75</span></span>
+<span><span class="co">#&gt;  7               1.25            0.75               1.25            0.5 </span></span>
+<span><span class="co">#&gt;  8               1.75            1.25               1.25            1   </span></span>
+<span><span class="co">#&gt;  9               1.5             1                  1.5             1.5 </span></span>
+<span><span class="co">#&gt; 10               0.25            2                  1.5             1.75</span></span>
 <span><span class="co">#&gt; # ℹ 90 more rows</span></span>
 <span><span class="co">#&gt; # ℹ 21 more variables: pid_anhedonia &lt;dbl&gt;, pid_eccentricity &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   pid_hostility &lt;dbl&gt;, pid_riskTaking &lt;dbl&gt;, pid_grandiosity &lt;dbl&gt;,</span></span>
@@ -119,22 +120,22 @@
 <span><span class="co">#&gt; #   pid_withdrawal &lt;dbl&gt;, pid_restrictedAffectivity &lt;dbl&gt;, …</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span><span class="va">sim_pid5fsf</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span>, version <span class="op">=</span> <span class="st">"FSF"</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; ! A total of 98 observations (98.0%) met criteria for inconsistent responding on the INCS (0 missing).</span></span>
+<span><span class="co">#&gt; ! A total of 92 observations (92.0%) met criteria for inconsistent responding on the INCS (0 missing).</span></span>
 <span><span class="co">#&gt; ℹ Consider removing them with `dplyr::filter(df, pid_INCS &lt; 8)`</span></span>
 <span><span class="co">#&gt; ! Cut scores for the ORS-S, PRD-S, and SDTD-S have not been developed.</span></span>
 <span><span class="co">#&gt; # A tibble: 100 × 5</span></span>
 <span><span class="co">#&gt;    pid_PNA pid_INCS pid_ORSS pid_PRDS pid_SDTDS</span></span>
 <span><span class="co">#&gt;      &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1       0       15        4       13         9</span></span>
-<span><span class="co">#&gt;  2       0       14        2       16        16</span></span>
-<span><span class="co">#&gt;  3       0       12        1       14        12</span></span>
-<span><span class="co">#&gt;  4       0       14        1       17        12</span></span>
-<span><span class="co">#&gt;  5       0       13        4       18        13</span></span>
-<span><span class="co">#&gt;  6       0        8        1       13        16</span></span>
-<span><span class="co">#&gt;  7       0       13        3       20        13</span></span>
-<span><span class="co">#&gt;  8       0       12        1       15         7</span></span>
-<span><span class="co">#&gt;  9       0       13        0       15        10</span></span>
-<span><span class="co">#&gt; 10       0       13        3       20        12</span></span>
+<span><span class="co">#&gt;  1       0       14        3       19        11</span></span>
+<span><span class="co">#&gt;  2       0        8        3        9        12</span></span>
+<span><span class="co">#&gt;  3       0       10        2       17        14</span></span>
+<span><span class="co">#&gt;  4       0       15        1       18        11</span></span>
+<span><span class="co">#&gt;  5       0        6        3       17        15</span></span>
+<span><span class="co">#&gt;  6       0       12        5       20         7</span></span>
+<span><span class="co">#&gt;  7       0       14        1       17         8</span></span>
+<span><span class="co">#&gt;  8       0       13        1       17        16</span></span>
+<span><span class="co">#&gt;  9       0        9        3       20        14</span></span>
+<span><span class="co">#&gt; 10       0       16        0       17        12</span></span>
 <span><span class="co">#&gt; # ℹ 90 more rows</span></span></code></pre></div>
 </div>
 </section><section class="level3"><h3 id="score-real-pid-5-fsf-data">Score real PID-5-FSF data<a class="anchor" aria-label="anchor" href="#score-real-pid-5-fsf-data"></a>
