@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# hitop
+# hitop <a href="https://jmgirard.github.io/hitop/"><img src="man/figures/logo.png" align="right" height="138" alt="hitop website" /></a>
 
 <!-- badges: start -->
 
