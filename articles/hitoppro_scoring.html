@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hitop</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -183,7 +183,7 @@
 </div>
 </section><section class="level2"><h2 id="items-as-strings">Items as Strings<a class="anchor" aria-label="anchor" href="#items-as-strings"></a>
 </h2>
-<p>Alternatively, we could provide the item column names as a character string. Typing out all 405 item names would be a hassle, but luckily this data named them consistently so we can build the names automatically using <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. If we use the “hitop%03d” format and apply that across the numbers 1 to 405, that will create the zero-padded column names we need. If there were no zero-padding, we could have just used “hitop%d”.</p>
+<p>Alternatively, we could provide the item column names as a character string. Typing out all 405 item names would be a hassle, but luckily this dataset named them consistently so we can build the names automatically using <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. If we use the “hitop%03d” format and apply that across the numbers 1 to 405, that will create the zero-padded column names we need. If there was no zero-padding, we could have just used “hitop%d”.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitoppro.html">score_hitoppro</a></span><span class="op">(</span></span>

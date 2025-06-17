@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hitop</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -201,7 +201,7 @@
 <p>There are other useful arguments to the function that you can read about using its documentation by typing the following into your R console: <code><a href="../reference/score_pid5.html">?score_pid5</a></code> or through the <a href="https://jmgirard.github.io/hitop/reference/score_pid5.html">package website</a>.</p>
 </section><section class="level3"><h3 id="validity-scales-for-the-pid-5">Validity Scales for the PID-5<a class="anchor" aria-label="anchor" href="#validity-scales-for-the-pid-5"></a>
 </h3>
-<p>There are also several validity scales that have been developed for the full PID-5, including measures of overreporting, inconsistent responding, and positive impression management. We can demonstrate the ability of the <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> function to calculate these scores and flag issues using the same simulated data. The function arguments will be consistent with what we just learned. Note that, because the data is fake, we would expect there to be lots of validity issues.</p>
+<p>There are also several validity scales that have been developed for the full PID-5, including measures of overreporting, inconsistent responding, and positive impression management. We can use the simulated data to demonstrate the ability of the <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> function to calculate these scores and flag issues. The function arguments will be consistent with what we just learned. Note that, because the data is fake, we would expect there to be lots of validity issues.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
