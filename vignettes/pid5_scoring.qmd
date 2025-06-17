@@ -58,7 +58,7 @@ There are other useful arguments to the function that you can read about using i
 
 ### Validity Scales for the PID-5
 
-There are also several validity scales that have been developed for the full PID-5, including measures of overreporting, inconsistent responding, and positive impression management. We can demonstrate the ability of the `validity_pid5()` function to calculate these scores and flag issues using the same simulated data. The function arguments will be consistent with what we just learned. Note that, because the data is fake, we would expect there to be lots of validity issues.
+There are also several validity scales that have been developed for the full PID-5, including measures of overreporting, inconsistent responding, and positive impression management. We can use the simulated data to demonstrate the ability of the `validity_pid5()` function to calculate these scores and flag issues. The function arguments will be consistent with what we just learned. Note that, because the data is fake, we would expect there to be lots of validity issues.
 
 ```{r x2b}
 validity_pid5(sim_pid5, items = 1:220, append = FALSE)

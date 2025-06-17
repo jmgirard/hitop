@@ -1,7 +1,8 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# hitop <a href="https://jmgirard.github.io/hitop/"><img src="man/figures/logo.png" align="right" height="138" alt="hitop website" /></a>
+# hitop <a href="https://jmgirard.github.io/hitop/"><img
+src="man/figures/logo.png" align="right" height="138" alt="hitop website" /></a>
 
 <!-- badges: start -->
 
@@ -9,10 +10,11 @@
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of *hitop* is to provide functions helpful for researchers
-working on the Hierarchical Taxonomy of Psychopathology (HiTOP). For
-now, this includes functions for scoring the PID-5 and HiTOP-PRO.
-However, more features will be added soon.
+The goal of *hitop* is to provide functions helpful for the Hierarchical
+Taxonomy of Psychopathology (HiTOP) Society. For now, this includes
+functions for scoring the PID-5 and HiTOP-PRO aimed primarily at
+researchers. However, more features will be added soon, including
+features aimed primarily at clinicians.
 
 ## Installation
 

@@ -59,7 +59,7 @@ scores
 
 ## Items as Strings
 
-Alternatively, we could provide the item column names as a character string. Typing out all 405 item names would be a hassle, but luckily this data named them consistently so we can build the names automatically using `sprintf()`. If we use the "hitop%03d" format and apply that across the numbers 1 to 405, that will create the zero-padded column names we need. If there were no zero-padding, we could have just used "hitop%d".
+Alternatively, we could provide the item column names as a character string. Typing out all 405 item names would be a hassle, but luckily this dataset named them consistently so we can build the names automatically using `sprintf()`. If we use the "hitop%03d" format and apply that across the numbers 1 to 405, that will create the zero-padded column names we need. If there was no zero-padding, we could have just used "hitop%d".
 
 ```{r}
 scores <- score_hitoppro(

@@ -21,6 +21,8 @@ knitr::opts_chunk$set(
 library(hitop)
 ```
 
+WORK IN PROGRESS
+
 ### Score simulated PID-5-BF data
 
 Finally, the PID-5-BF is a brief version with 25 items that yields the domain scores only. The only validity scale that is calculable with this subset of items is the percentage of missing items (PNA). 
