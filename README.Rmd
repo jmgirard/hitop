@@ -36,6 +36,14 @@ remotes::install_github("jmgirard/hitop")
 
 ## Development Progress
 
+```{=css}
+li > input[type=checkbox],
+li > input[type=checkbox] + * {
+  pointer-events: none;
+  cursor: default;
+}
+```
+
 ### Phase 1
 
 - [ ] Add Instrument Data

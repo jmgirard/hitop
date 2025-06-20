@@ -4,8 +4,6 @@ vignette: >
   %\VignetteIndexEntry{Scoring the B-HiTOP}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-pkgdown:
-  as_is: true
 knitr:
   opts_chunk:
     collapse: true
