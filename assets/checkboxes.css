@@ -1,5 +1,0 @@
-li > input[type=checkbox],
-li > input[type=checkbox] + * {
-  pointer-events: none;
-  cursor: default;
-}
