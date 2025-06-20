@@ -28,41 +28,50 @@ remotes::install_github("jmgirard/hitop")
 ## Development Progress
 
 <style>
-  input[type=checkbox] {
-    pointer-events: none;
-  }
+input[type=checkbox] {
+  pointer-events: none;
+}
 </style>
 
+### Phase 1
+
 - [ ] Add Instrument Data
-  - [x] ~~HiTOP-PRO (405)~~
-  - [x] ~~B-HiTOP (45)~~
-  - [x] ~~PID-5 (220)~~
-  - [x] ~~PID-5-FSF (100)~~
-  - [x] ~~PID-5-BF (25)~~
+  - [x] HiTOP-PRO (405)
+  - [x] B-HiTOP (45)
+  - [x] PID-5 (220)
+  - [x] PID-5-FSF (100)
+  - [x] PID-5-BF (25)
   - [ ] HiTOP-PRO Harmful Substance Use Module
   - [ ] PID-5-BFP (36)
 - [ ] Add Scoring Functions
-  - [x] ~~HiTOP-PRO (405)~~
-  - [x] ~~B-HiTOP (45)~~
-  - [x] ~~PID-5 (220)~~
-  - [x] ~~PID-5-FSF (100)~~
-  - [x] ~~PID-5-BF (25)~~
+  - [x] HiTOP-PRO (405)
+  - [x] B-HiTOP (45)
+  - [x] PID-5 (220)
+  - [x] PID-5-FSF (100)
+  - [x] PID-5-BF (25)
   - [ ] HiTOP-PRO Harmful Substance Use Module
   - [ ] PID-5-BFP (36)
 - [x] Add Validity Functions
-  - [x] ~~PID-5 (220)~~
-  - [x] ~~PID-5-FSF (100)~~
+  - [x] PID-5 (220)
+  - [x] PID-5-FSF (100)
 - [ ] Add Scoring Vignette
-  - [x] ~~HiTOP-PRO (405)~~
-  - [x] ~~B-HiTOP (45)~~
-  - [x] ~~PID-5 (220)~~
-  - [x] ~~PID-5-FSF (100)~~
-  - [x] ~~PID-5-BF (25)~~
+  - [x] HiTOP-PRO (405)
+  - [x] B-HiTOP (45)
+  - [x] PID-5 (220)
+  - [x] PID-5-FSF (100)
+  - [x] PID-5-BF (25)
   - [ ] HiTOP-PRO Harmful Substance Use Module
   - [ ] PID-5-BFP (36)
+
+### Phase 2
+
 - [ ] Add Normative Data
 - [ ] Add Norming Functions
 - [ ] Add Visualization Functions
+- [ ] Add Unit Testing
+
+### Phase 3
+
 - [ ] Add Individual Report Generation
 - [ ] Add Bass-Ackwards Functions
 - [ ] Add Extended Bass-Ackwards Functions
