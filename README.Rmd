@@ -36,12 +36,13 @@ remotes::install_github("jmgirard/hitop")
 
 ## Development Progress
 
+```{=html}
 <style>
   input[type=checkbox] {
     pointer-events: none;
   }
 </style>
-
+```
 
 - [ ] Add Instrument Data
   - [x] ~~HiTOP-PRO (405)~~
