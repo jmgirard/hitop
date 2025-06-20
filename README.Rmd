@@ -36,38 +36,46 @@ remotes::install_github("jmgirard/hitop")
 
 ## Development Progress
 
-- [ ] PID-5 
-  - [x] Scoring Functions
-  - [x] Validity Functions
-  - [x] Scoring Vignette
-  - [ ] Normative Data
-  - [ ] Translations
-  - [ ] Unit tests
-- [ ] PID-5-FSF
-  - [x] Scoring Functions
-  - [x] Validity Functions
-  - [x] Scoring Vignette
-  - [ ] Normative Data
-  - [ ] Translations
-  - [ ] Unit tests
-- [ ] PID-5-BF
-  - [x] Scoring Functions
-  - [x] Validity Functions
-  - [x] Scoring Vignette
-  - [ ] Normative Data
-  - [ ] Translations
-  - [ ] Unit tests
-- HiTOP-PRO
-  - [x] Scoring Functions
-  - [x] Validity Functions
-  - [x] Scoring Vignette
-  - [ ] Normative Data
-  - [ ] Translations
-  - [ ] Unit tests
-- B-HiTOP
-  - [x] Scoring Functions
-  - [x] Validity Functions
-  - [x] Scoring Vignette
-  - [ ] Normative Data
-  - [ ] Translations
-  - [ ] Unit tests
+<style>
+  input[type=checkbox] {
+    pointer-events: none;
+  }
+</style>
+
+
+- [ ] Add Instrument Data
+  - [x] ~~HiTOP-PRO (405)~~
+  - [x] ~~B-HiTOP (45)~~
+  - [x] ~~PID-5 (220)~~
+  - [x] ~~PID-5-FSF (100)~~
+  - [x] ~~PID-5-BF (25)~~
+  - [ ] HiTOP-PRO Harmful Substance Use Module
+  - [ ] PID-5-BFP (36)
+- [ ] Add Scoring Functions
+  - [x] ~~HiTOP-PRO (405)~~
+  - [x] ~~B-HiTOP (45)~~
+  - [x] ~~PID-5 (220)~~
+  - [x] ~~PID-5-FSF (100)~~
+  - [x] ~~PID-5-BF (25)~~
+  - [ ] HiTOP-PRO Harmful Substance Use Module
+  - [ ] PID-5-BFP (36)
+- [x] Add Validity Functions
+  - [x] ~~PID-5 (220)~~
+  - [x] ~~PID-5-FSF (100)~~
+- [ ] Add Scoring Vignette
+  - [x] ~~HiTOP-PRO (405)~~
+  - [x] ~~B-HiTOP (45)~~
+  - [x] ~~PID-5 (220)~~
+  - [x] ~~PID-5-FSF (100)~~
+  - [x] ~~PID-5-BF (25)~~
+  - [ ] HiTOP-PRO Harmful Substance Use Module
+  - [ ] PID-5-BFP (36)
+- [ ] Add Normative Data
+- [ ] Add Norming Functions
+- [ ] Add Visualization Functions
+- [ ] Add Individual Report Generation
+- [ ] Add Bass-Ackwards Functions
+- [ ] Add Extended Bass-Ackwards Functions
+- [ ] Add Unit Testing
+- [ ] Submit to CRAN
+- [ ] Write Package Paper
