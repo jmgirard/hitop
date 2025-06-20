@@ -1,0 +1,10 @@
+ul.task-list input[type="checkbox"] {
+  pointer-events: none;
+  cursor: default;
+  accent-color: gray;
+}
+
+ul.task-list label {
+  pointer-events: none;
+  cursor: default;
+}
