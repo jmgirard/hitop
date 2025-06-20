@@ -1,8 +1,7 @@
-/* Prevent interaction with checkboxes and their labels */
 ul.task-list input[type="checkbox"] {
   pointer-events: none;
   cursor: default;
-  accent-color: gray; /* Optional: make them look inactive */
+  accent-color: gray;
 }
 
 ul.task-list label {
