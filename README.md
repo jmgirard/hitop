@@ -24,3 +24,41 @@ You can install the development version of hitop from
 # install.packages("remotes")
 remotes::install_github("jmgirard/hitop")
 ```
+
+## Development Progress
+
+- [ ] PID-5
+  - [x] Scoring Functions
+  - [x] Validity Functions
+  - [x] Scoring Vignette
+  - [ ] Normative Data
+  - [ ] Translations
+  - [ ] Unit tests
+- [ ] PID-5-FSF
+  - [x] Scoring Functions
+  - [x] Validity Functions
+  - [x] Scoring Vignette
+  - [ ] Normative Data
+  - [ ] Translations
+  - [ ] Unit tests
+- [ ] PID-5-BF
+  - [x] Scoring Functions
+  - [x] Validity Functions
+  - [x] Scoring Vignette
+  - [ ] Normative Data
+  - [ ] Translations
+  - [ ] Unit tests
+- HiTOP-PRO
+  - [x] Scoring Functions
+  - [x] Validity Functions
+  - [x] Scoring Vignette
+  - [ ] Normative Data
+  - [ ] Translations
+  - [ ] Unit tests
+- B-HiTOP
+  - [x] Scoring Functions
+  - [x] Validity Functions
+  - [x] Scoring Vignette
+  - [ ] Normative Data
+  - [ ] Translations
+  - [ ] Unit tests
