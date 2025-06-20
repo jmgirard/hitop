@@ -28,9 +28,11 @@ remotes::install_github("jmgirard/hitop")
 ## Development Progress
 
 <style>
-input[type=checkbox] {
-  pointer-events: none;
-}
+  li > input[type=checkbox],
+  li > input[type=checkbox] + * {
+    pointer-events: none;
+    cursor: default;
+  }
 </style>
 
 ### Phase 1
