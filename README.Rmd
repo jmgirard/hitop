@@ -1,5 +1,15 @@
 ---
-output: github_document
+output: 
+  github_document:
+    includes: 
+      include-in-header: 
+        - text: "<style>
+            li > input[type=checkbox],
+            li > input[type=checkbox] + * {
+              pointer-events: none;
+              cursor: default;
+            }
+            </style>"
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
