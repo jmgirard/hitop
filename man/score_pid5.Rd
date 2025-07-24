@@ -7,7 +7,7 @@
 score_pid5(
   data,
   items,
-  version = c("FULL", "FSF", "BF"),
+  version = c("FULL", "SF", "BF"),
   srange = c(0, 3),
   prefix = "pid_",
   na.rm = TRUE,
@@ -24,7 +24,7 @@ scored and in order).}
 corresponding to the PID items in order.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
-"FSF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}
+"SF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
@@ -50,7 +50,7 @@ errors (if requested) and all original \code{data} columns (if requested)
 }
 \description{
 Calculate scale scores on the Personality Inventory for DSM-5: full version
-(PID-5, 220 items), faceted short form version (PID-5-FSF, 100 items), or
+(PID-5, 220 items), short form version (PID-5-SF, 100 items), or
 brief form version (PID-5-BF, 25 items) from item-level data.
 }
 \references{

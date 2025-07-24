@@ -1,7 +1,7 @@
 #' Score the Personality Inventory for DSM-5 Validity Scales
 #'
 #' Calculate validity scale scores on the Personality Inventory for DSM-5: full
-#' version (PID-5, 220 items), faceted short form version (PID-5-FSF, 100
+#' version (PID-5, 220 items), short form version (PID-5-SF, 100
 #' items), or brief form version (PID-5-BF, 25 items) from item-level data and
 #' return alerts when when observations meet criteria for invalidity.
 #'
@@ -16,7 +16,7 @@
 #'   genuine responding (rather than positive impression management). A score of
 #'   11 or lower on the SD-TD is indicative of social desirability (rather than
 #'   defensiveness), whereas a score of 19 or higher on the SD-TD is indicative
-#'   of defensiveness (rather than social desirability). For the PID-5-FSF,
+#'   of defensiveness (rather than social desirability). For the PID-5-SF,
 #'   scores of 8 or more on the INC-S are indicative of inconsistent responding.
 #'   Cut-scores for the ORS-S, PRD-S, and SD-TD-S have not yet been validated.
 #' @references Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
@@ -44,7 +44,7 @@
 validity_pid5 <- function(
   data,
   items,
-  version = c("FULL", "FSF", "BF"),
+  version = c("FULL", "SF", "BF"),
   srange = c(0, 3),
   prefix = "pid_",
   append = TRUE,
@@ -54,11 +54,11 @@ validity_pid5 <- function(
   # Assertions
   validate_data(data)
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "FSF", "BF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF"))
   n_items <- switch(
     version,
     "FULL" = 220,
-    "FSF"  = 100,
+    "SF"  = 100,
     "BF"   = 25,
     cli::cli_abort("Invalid `version` argument")
   )
@@ -81,8 +81,8 @@ validity_pid5 <- function(
   out <- data.frame(pna_df)
   names(out) <- paste0(prefix, "PNA")
 
-  ## For FULL and FSF versions
-  if (version %in% c("FULL", "FSF")) {
+  ## For FULL and SF versions
+  if (version %in% c("FULL", "SF")) {
     ### Response Inconsistency Scale (INC)
     inc_var <- ifelse(version == "FULL", "INC", "INCS")
     inc_items <- pid_items[!is.na(pid_items[[inc_var]]), c(version, inc_var)]
@@ -167,7 +167,7 @@ validity_pid5 <- function(
     }
     out[[sdtd_col]] <- sdtd_vec
 
-    if (version == "FSF") {
+    if (version == "SF") {
       cli::cli_alert_warning('Cut scores for the ORS-S, PRD-S, and SDTD-S have not been developed.')
     }
   }

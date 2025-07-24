@@ -4,7 +4,7 @@
 #'
 #' @format ## `pid_items` A \link[tibble]{tibble} with 220 rows and 12 columns:
 #' \describe{
-#'   \item{FULL, FSF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
+#'   \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{INC,INCS}{Item number on the response inconsistency scale full and short forms}
 #'   \item{ORS,ORSS}{Item number on the overreporting scale full and short forms}
@@ -96,15 +96,15 @@
 #' }
 "sim_pid5"
 
-#' Simulated PID-5-FSF Data
+#' Simulated PID-5-SF Data
 #'
-#' Simulated responses to items on the PID-5-FSF (with 100 items).
+#' Simulated responses to items on the PID-5-SF (with 100 items).
 #'
-#' @format ## `sim_pid5fsf` A \link[tibble]{tibble} with 100 rows and 100 columns.
+#' @format ## `sim_pid5sf` A \link[tibble]{tibble} with 100 rows and 100 columns.
 #' \describe{
 #'   \item{pid_1 to pid_100}{Responses on each item}
 #' }
-"sim_pid5fsf"
+"sim_pid5sf"
 
 #' Simulated PID-5-BF Data
 #'
@@ -116,17 +116,17 @@
 #' }
 "sim_pid5bf"
 
-#' Real PID-5-FSF Data
+#' Real PID-5-SF Data
 #'
-#' Real responses to items on the PID-5-FSF (with 100 items) from University of
+#' Real responses to items on the PID-5-SF (with 100 items) from University of
 #' Kansas students.
 #'
-#' @format ## `ku_pid5fsf` A \link[tibble]{tibble} with 386 rows and 101 columns.
+#' @format ## `ku_pid5sf` A \link[tibble]{tibble} with 386 rows and 101 columns.
 #' \describe{
 #'   \item{response_id}{An anonymized id for each participant}
 #'   \item{pid_1 to pid_100}{Responses on each item}
 #' }
-"ku_pid5fsf"
+"ku_pid5sf"
 
 #' Real B-HiTOP Data
 #'

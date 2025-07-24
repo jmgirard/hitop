@@ -39,7 +39,6 @@ usethis::use_data(ku_bhitop, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------
 
-## PID-5-FSF
-ku_pid5fsf <- readr::read_csv("data-raw/study2.csv", show_col_types = FALSE)
-colnames(ku_pid5fsf) <- c("response_id", paste0("pid_", 1:100))
-usethis::use_data(ku_pid5fsf, overwrite = TRUE)
+## PID-5-SF
+ku_pid5sf <- readr::read_csv("data-raw/ku_pid5sf.csv", show_col_types = FALSE)
+usethis::use_data(ku_pid5sf, overwrite = TRUE)

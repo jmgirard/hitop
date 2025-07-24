@@ -19,20 +19,20 @@ pid5_scales <-
   )
 names(pid5_scales$itemNumbers) <- pid5_scales$camelCase
 
-pid5fsf_scales <-
+pid5sf_scales <-
   pid_items |>
   dplyr::select(-Domain) |>
-  tidyr::drop_na(FSF) |>
+  tidyr::drop_na(SF) |>
   tidyr::nest(
-    itemdata = c(FSF, Reverse, Text),
+    itemdata = c(SF, Reverse, Text),
     .by = Facet
   ) |>
   dplyr::mutate(
     nItems = purrr::map_dbl(itemdata, nrow),
-    itemNumbers = purrr::map(itemdata, "FSF"),
+    itemNumbers = purrr::map(itemdata, "SF"),
     camelCase = snakecase::to_any_case(Facet, case = "lower_camel")
   )
-names(pid5fsf_scales$itemNumbers) <- pid5fsf_scales$camelCase
+names(pid5sf_scales$itemNumbers) <- pid5sf_scales$camelCase
 
 pid5bf_scales <-
   pid_items |>
@@ -51,7 +51,7 @@ names(pid5bf_scales$itemNumbers) <- pid5bf_scales$camelCase
 
 pid_scales <- list(
   FULL = pid5_scales,
-  FSF = pid5fsf_scales,
+  SF = pid5sf_scales,
   BF = pid5bf_scales
 )
 usethis::use_data(pid_scales, overwrite = TRUE)

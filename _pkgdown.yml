@@ -31,11 +31,11 @@ reference:
   contents:
   - ku_hitoppro
   - ku_bhitop
-  - ku_pid5fsf
+  - ku_pid5sf
   - sim_hitoppro
   - sim_bhitop
   - sim_pid5
-  - sim_pid5fsf
+  - sim_pid5sf
   - sim_pid5bf
 - title: Instrument Data
   contents:

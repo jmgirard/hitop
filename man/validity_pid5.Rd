@@ -7,7 +7,7 @@
 validity_pid5(
   data,
   items,
-  version = c("FULL", "FSF", "BF"),
+  version = c("FULL", "SF", "BF"),
   srange = c(0, 3),
   prefix = "pid_",
   append = TRUE,
@@ -22,7 +22,7 @@ scored and in order).}
 corresponding to the PID items in order.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
-"FSF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}
+"SF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
@@ -42,7 +42,7 @@ original \code{data} columns (if requested)
 }
 \description{
 Calculate validity scale scores on the Personality Inventory for DSM-5: full
-version (PID-5, 220 items), faceted short form version (PID-5-FSF, 100
+version (PID-5, 220 items), short form version (PID-5-SF, 100
 items), or brief form version (PID-5-BF, 25 items) from item-level data and
 return alerts when when observations meet criteria for invalidity.
 }
@@ -55,7 +55,7 @@ responding) whereas a score of 21 or higher on the PRD is indicative of
 genuine responding (rather than positive impression management). A score of
 11 or lower on the SD-TD is indicative of social desirability (rather than
 defensiveness), whereas a score of 19 or higher on the SD-TD is indicative
-of defensiveness (rather than social desirability). For the PID-5-FSF,
+of defensiveness (rather than social desirability). For the PID-5-SF,
 scores of 8 or more on the INC-S are indicative of inconsistent responding.
 Cut-scores for the ORS-S, PRD-S, and SD-TD-S have not yet been validated.
 }

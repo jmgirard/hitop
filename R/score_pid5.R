@@ -1,7 +1,7 @@
 #' Score the Personality Inventory for DSM-5
 #'
 #' Calculate scale scores on the Personality Inventory for DSM-5: full version
-#' (PID-5, 220 items), faceted short form version (PID-5-FSF, 100 items), or
+#' (PID-5, 220 items), short form version (PID-5-SF, 100 items), or
 #' brief form version (PID-5-BF, 25 items) from item-level data.
 #'
 #' @param data A data frame containing (at least) all the PID items (numerically
@@ -9,7 +9,7 @@
 #' @param items A vector of column names (as strings) or numbers (as integers)
 #'   corresponding to the PID items in order.
 #' @param version A string indicating the version of the PID to score: "FULL",
-#'   "FSF", or "BF". Will be automatically capitalized. (default = `"FULL"`)
+#'   "SF", or "BF". Will be automatically capitalized. (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param prefix An optional string to add before each scale column name. If no
@@ -43,7 +43,7 @@
 score_pid5 <- function(
     data,
     items,
-    version = c("FULL", "FSF", "BF"),
+    version = c("FULL", "SF", "BF"),
     srange = c(0, 3),
     prefix = "pid_",
     na.rm = TRUE,
@@ -55,11 +55,11 @@ score_pid5 <- function(
   ## Assertions
   validate_data(data)
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "FSF", "BF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF"))
   n_items <- switch(
     version,
     "FULL" = 220,
-    "FSF"  = 100,
+    "SF"  = 100,
     "BF"   = 25,
     cli::cli_abort("Invalid `version` argument")
   )

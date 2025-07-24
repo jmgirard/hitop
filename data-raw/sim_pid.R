@@ -9,6 +9,15 @@ sim_pid <- function(n_subjects, n_items) {
   tibble::as_tibble(out)
 }
 
+# Fully set seed
+
+set.seed(
+  seed = 2025,
+  kind = "Mersenne-Twister",
+  normal.kind = "Inversion",
+  sample.kind = "Rejection"
+)
+
 # ------------------------------------------------------------------------------
 
 ## PID-5
@@ -17,9 +26,9 @@ usethis::use_data(sim_pid5, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------
 
-## PID-5-FSF
-sim_pid5fsf <- sim_pid(n_subjects = 100, n_items = 100)
-usethis::use_data(sim_pid5fsf, overwrite = TRUE)
+## PID-5-SF
+sim_pid5sf <- sim_pid(n_subjects = 100, n_items = 100)
+usethis::use_data(sim_pid5sf, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------
 

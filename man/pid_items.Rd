@@ -8,7 +8,7 @@
 \subsection{\code{pid_items} A \link[tibble]{tibble} with 220 rows and 12 columns:}{
 
 \describe{
-\item{FULL, FSF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
+\item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
 \item{Reverse}{Whether the item needs to be reverse scored}
 \item{INC,INCS}{Item number on the response inconsistency scale full and short forms}
 \item{ORS,ORSS}{Item number on the overreporting scale full and short forms}
