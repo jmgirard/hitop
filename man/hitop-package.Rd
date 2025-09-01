@@ -6,6 +6,8 @@
 \alias{hitop-package}
 \title{hitop: Tools for the Hierarchical Taxonomy of Psychopathology society}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 The goal of *hitop* is to provide functions helpful for researchers working on the Hierarchical Taxonomy of Psychopathology (HiTOP).
 }
 \seealso{

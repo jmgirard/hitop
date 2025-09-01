@@ -33,10 +33,15 @@ validate_data <- function(x) {
 
 validate_items <- function(x, n) {
   cli_assert(
-    condition = is.null(x) ||
-      rlang::is_character(x, n = n) ||
-      rlang::is_integerish(x, n = n),
+    condition = rlang::is_character(x, n = n) || rlang::is_integerish(x, n = n),
     message = "The `items` argument did not have the expected length."
+  )
+}
+
+validate_scales <- function(x) {
+  cli_assert(
+    condition = rlang::is_character(x) || rlang::is_integerish(x),
+    message = "The `scales` argument did not have the expected type."
   )
 }
 
