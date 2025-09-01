@@ -86,7 +86,7 @@ scores
 
 ## Simple Standard Errors
 
-Finally, in addition to calculating each scale score as the mean of its corresponding items, we can also calculate each scale score's standard error as the SD of its corresponding items divided by the square root of its number of items. These standard errors are especially useful when plotting the scores as they can be converted into confidence intervals. We turn this on using `calc_se`.
+In addition to calculating each scale score as the mean of its corresponding items, we can also calculate each scale score's standard error as the SD of its corresponding items divided by the square root of its number of items. These standard errors are especially useful when plotting the scores as they can be converted into confidence intervals. We turn this on using `calc_se`.
 
 ```{r}
 scores <- score_hitoppro(
@@ -99,3 +99,19 @@ scores
 ```
 
 Note how there are now 152 columns instead of 76. The extra columns aren't shown in the preview above, but they are named with the `_se` suffix, e.g., `pro_agoraphobia_se`.
+
+## Scale Reliability
+
+As we compute scale scores, we can also estimate their inter-item reliability using Cronbach's α (alpha), McDonald's ω (omega total), or McDonald's ordinal ω (omega ordinal). α is fast and widely used, but it assumes tau-equivalence (all items load equally on a single factor); violations can make α under- or over-estimate reliability. ω is based on a congeneric single-factor model, allowing items to have different loadings and error variances; it typically provides a more accurate reliability estimate for unit-weighted sums. ω ordinal is the same idea as ω but uses polychoric correlations (i.e., an ordinal/threshold model), making it preferable for Likert-type items with few categories or skew. All three assume the scale is essentially unidimensional; α and ω coincide when tau-equivalence holds.
+
+We can just add one or more of the following arguments to `score_hitoppro()`: `alpha`, `omega`, and `omega_ord`. For the former option, we can use either pairwise (`alpha_pairwise = TRUE`, default) or listwise deletion (`alpha_pairwise = FALSE`) to handle missing data. For the latter two, we will need the lavaan package installed. A table of reliability results will be printed alongside the scores (and any warnings from lavaan about convergence of the factor analysis models that omega is based on).
+
+```{r}
+scores <- score_hitoppro(
+  data = ku_hitoppro,
+  items = sprintf("hitop%03d", 1:405),
+  alpha = TRUE,
+  omega = TRUE,
+  omega_ord = TRUE
+)
+```
