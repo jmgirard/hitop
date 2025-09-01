@@ -13,3 +13,5 @@
 ^doc$
 ^Meta$
 ^assets$
+^[.]?air[.]toml$
+^\.vscode$

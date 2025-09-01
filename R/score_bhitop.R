@@ -21,16 +21,15 @@
 #'   requested) and all original `data` columns (if requested)
 #' @export
 score_bhitop <- function(
-    data,
-    items,
-    srange = c(1, 4),
-    prefix = "bhitop_",
-    na.rm = TRUE,
-    calc_se = FALSE,
-    append = TRUE,
-    tibble = TRUE
+  data,
+  items,
+  srange = c(1, 4),
+  prefix = "bhitop_",
+  na.rm = TRUE,
+  calc_se = FALSE,
+  append = TRUE,
+  tibble = TRUE
 ) {
-
   ## Assertions
   validate_data(data)
   validate_items(items, n = 45)
@@ -54,11 +53,13 @@ score_bhitop <- function(
   if (length(items_rev) > 0) {
     data_items[items_rev] <- lapply(
       items_rev,
-      function(i) reverse(
-        data_items[[i]],
-        low = srange[[1]],
-        high = srange[[2]]
-      )
+      function(i) {
+        reverse(
+          data_items[[i]],
+          low = srange[[1]],
+          high = srange[[2]]
+        )
+      }
     )
   }
   data_items <- bind_columns(data_items)
@@ -91,10 +92,14 @@ score_bhitop <- function(
   }
 
   ## Append output to input tibble if requested
-  if (append == TRUE) out <- cbind(data, out)
+  if (append == TRUE) {
+    out <- cbind(data, out)
+  }
 
   ## Coerce output to tibble if requested
-  if (tibble == TRUE) out <- tibble::as_tibble(out)
+  if (tibble == TRUE) {
+    out <- tibble::as_tibble(out)
+  }
 
   ## Return output
   out
