@@ -15,22 +15,15 @@
 #' @param calc_se An optional logical indicating whether to calculate the
 #'   standard error of each scale score. (default = `FALSE`)
 #' @param alpha Optional logical; if `TRUE`, compute and print Cronbach’s alpha
-#'   for each scale. Uses pairwise item correlations when `alpha_pairwise = TRUE`.
-#'   (default = `FALSE`)
+#'   for each scale. (default = `FALSE`)
 #' @param omega Optional logical; if `TRUE`, compute and print McDonald’s omega
 #'   for each scale using Pearson correlations (i.e., non-ordinal). (default = `FALSE`)
-#' @param omega_ord Optional logical; if `TRUE`, compute and print McDonald’s omega
-#'   for each scale using an ordinal (polychoric) approach. This is independent of
-#'   `omega`; you may request one or both. (default = `FALSE`)
-#' @param alpha_pairwise Optional logical; when `alpha = TRUE`, use pairwise
-#'   complete observations to estimate the item correlation matrix for alpha.
-#'   If `FALSE`, uses listwise deletion. (default = `TRUE`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`. (default = `TRUE`)
 #' @details
-#' If any of `alpha`, `omega`, or `omega_ord` are `TRUE`, the function prints a
+#' If either `alpha` or `omega` are `TRUE`, the function prints a
 #' per-scale reliability summary. Only reliability columns that contain at least
 #' one non-`NA` value are shown (the `scale` column is always shown).
 #'
@@ -48,8 +41,6 @@ score_hitoppro <- function(
   calc_se = FALSE,
   alpha = FALSE,
   omega = FALSE,
-  omega_ord = FALSE,
-  alpha_pairwise = TRUE,
   append = TRUE,
   tibble = TRUE
 ) {
@@ -62,8 +53,6 @@ score_hitoppro <- function(
   stopifnot(rlang::is_bool(calc_se))
   stopifnot(rlang::is_bool(alpha))
   stopifnot(rlang::is_bool(omega))
-  stopifnot(rlang::is_bool(omega_ord))
-  stopifnot(rlang::is_bool(alpha_pairwise))
   stopifnot(rlang::is_bool(append))
   stopifnot(rlang::is_bool(tibble))
 
@@ -120,10 +109,9 @@ score_hitoppro <- function(
 
   ## Preallocate reliability data frame
   reliability_df <- data.frame(
-    scale = names(items_scales),
+    scale = snakecase::to_title_case(names(items_scales)),
     alpha = NA_real_,
-    omega = NA_real_,
-    omega_ord = NA_real_
+    omega = NA_real_
   )
 
   # Calculate alpha per scale if requested
@@ -131,11 +119,11 @@ score_hitoppro <- function(
     safe_alpha <- function(idx) {
       df_sub <- as.data.frame(data_items[, idx, drop = FALSE])
       tryCatch(
-        calc_alpha(df_sub, pairwise = alpha_pairwise),
+        calc_alpha(df_sub),
         error = function(e) NA_real_
       )
     }
-    reliability_df[, 2] <- vapply(items_scales, safe_alpha, numeric(1))
+    reliability_df[, "alpha"] <- vapply(items_scales, safe_alpha, numeric(1))
   }
 
   # Calculate omega per scale if requested
@@ -143,31 +131,16 @@ score_hitoppro <- function(
     safe_omega <- function(idx) {
       df_sub <- as.data.frame(data_items[, idx, drop = FALSE])
       tryCatch(
-        calc_omega(df_sub, ordinal = FALSE),
+        calc_omega(df_sub),
         error = function(e) NA_real_
       )
     }
-    reliability_df[, 3] <- vapply(items_scales, safe_omega, numeric(1))
-  }
-
-  # Calculate ordinal omega per scale if requested
-  if (isTRUE(omega_ord)) {
-    safe_omega <- function(idx) {
-      df_sub <- as.data.frame(data_items[, idx, drop = FALSE])
-      tryCatch(
-        calc_omega(df_sub, ordinal = TRUE),
-        error = function(e) NA_real_
-      )
-    }
-    reliability_df[, 4] <- vapply(items_scales, safe_omega, numeric(1))
+    reliability_df[, "omega"] <- vapply(items_scales, safe_omega, numeric(1))
   }
 
   # If any reliabilities are requested, print those that were calculated
-  if (isTRUE(alpha) || isTRUE(omega) || isTRUE(omega_ord)) {
-    keep <- vapply(reliability_df, function(x) any(!is.na(x)), logical(1))
-    if ("scale" %in% names(keep)) {
-      keep["scale"] <- TRUE
-    }
+  if (isTRUE(alpha) || isTRUE(omega)) {
+    keep <- c("scale", if (isTRUE(alpha)) "alpha", if (isTRUE(omega)) "omega")
     print(reliability_df[, keep, drop = FALSE], digits = 3)
   }
 

@@ -16,6 +16,7 @@ Imports:
     glue,
     lifecycle,
     rlang,
+    snakecase,
     stats,
     tibble,
     utils
@@ -24,8 +25,7 @@ Suggests:
     knitr,
     lavaan,
     quarto,
-    rmarkdown,
-    snakecase
+    rmarkdown
 VignetteBuilder: quarto, knitr
 Encoding: UTF-8
 LazyData: true

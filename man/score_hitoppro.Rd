@@ -13,8 +13,6 @@ score_hitoppro(
   calc_se = FALSE,
   alpha = FALSE,
   omega = FALSE,
-  omega_ord = FALSE,
-  alpha_pairwise = TRUE,
   append = TRUE,
   tibble = TRUE
 )
@@ -38,19 +36,10 @@ ignored when calculating scale scores. (default = \code{TRUE})}
 standard error of each scale score. (default = \code{FALSE})}
 
 \item{alpha}{Optional logical; if \code{TRUE}, compute and print Cronbach’s alpha
-for each scale. Uses pairwise item correlations when \code{alpha_pairwise = TRUE}.
-(default = \code{FALSE})}
+for each scale. (default = \code{FALSE})}
 
 \item{omega}{Optional logical; if \code{TRUE}, compute and print McDonald’s omega
 for each scale using Pearson correlations (i.e., non-ordinal). (default = \code{FALSE})}
-
-\item{omega_ord}{Optional logical; if \code{TRUE}, compute and print McDonald’s omega
-for each scale using an ordinal (polychoric) approach. This is independent of
-\code{omega}; you may request one or both. (default = \code{FALSE})}
-
-\item{alpha_pairwise}{Optional logical; when \code{alpha = TRUE}, use pairwise
-complete observations to estimate the item correlation matrix for alpha.
-If \code{FALSE}, uses listwise deletion. (default = \code{TRUE})}
 
 \item{append}{An optional logical indicating whether the new columns should
 be added to the end of the \code{data} input. (default = \code{TRUE})}
@@ -67,7 +56,7 @@ Reliability estimates, when requested, are printed as a side effect.
 Create a data frame with scores on all the HiTOP-PRO scales.
 }
 \details{
-If any of \code{alpha}, \code{omega}, or \code{omega_ord} are \code{TRUE}, the function prints a
+If either \code{alpha} or \code{omega} are \code{TRUE}, the function prints a
 per-scale reliability summary. Only reliability columns that contain at least
 one non-\code{NA} value are shown (the \code{scale} column is always shown).
 }

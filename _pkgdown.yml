@@ -27,6 +27,10 @@ reference:
   - score_bhitop
   - score_pid5
   - validity_pid5
+- title: Utilities
+  contents:
+  - calc_alpha
+  - calc_omega
 - title: Example Data
   contents:
   - ku_hitoppro

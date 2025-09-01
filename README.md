@@ -33,7 +33,7 @@ remotes::install_github("jmgirard/hitop")
   - [x] HiTOP-PRO (405)
   - [x] B-HiTOP (45)
   - [x] PID-5 (220)
-  - [x] PID-5-FSF (100)
+  - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
   - [ ] HiTOP-PRO Harmful Substance Use Module
   - [ ] PID-5-BFP (36)
@@ -41,18 +41,26 @@ remotes::install_github("jmgirard/hitop")
   - [x] HiTOP-PRO (405)
   - [x] B-HiTOP (45)
   - [x] PID-5 (220)
-  - [x] PID-5-FSF (100)
+  - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
   - [ ] HiTOP-PRO Harmful Substance Use Module
   - [ ] PID-5-BFP (36)
 - [x] Add Validity Functions
   - [x] PID-5 (220)
-  - [x] PID-5-FSF (100)
+  - [x] PID-5-SF (100)
+- [ ] Add Reliability Functions
+  - [x] HiTOP-PRO (405)
+  - [x] B-HiTOP (45)
+  - [ ] HiTOP-PRO Harmful Substance Use Module
+  - [ ] PID-5 (220)
+  - [ ] PID-5-SF (100)
+  - [ ] PID-5-BF (25)
+  - [ ] PID-5-BFP (36)
 - [ ] Add Scoring Vignette
   - [x] HiTOP-PRO (405)
   - [x] B-HiTOP (45)
   - [x] PID-5 (220)
-  - [x] PID-5-FSF (100)
+  - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
   - [ ] HiTOP-PRO Harmful Substance Use Module
   - [ ] PID-5-BFP (36)
