@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Score the HiTOP-PRO Instrument — score_hitoppro"><meta name="description" content="Create a data frame with scores on all the HiTOP-PRO scales."><meta property="og:description" content="Create a data frame with scores on all the HiTOP-PRO scales."></head><body>
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Score the HiTOP-PRO Instrument — score_hitoppro"><meta name="description" content="Create a data frame with scores on all the HiTOP-PRO scales."><meta property="og:description" content="Create a data frame with scores on all the HiTOP-PRO scales."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -47,8 +47,7 @@
 </nav><div class="container template-reference-topic">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Score the HiTOP-PRO Instrument</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Score the HiTOP-PRO Instrument</h1>
       <small class="dont-index">Source: <a href="https://github.com/jmgirard/hitop/blob/main/R/score_hitoppro.R" class="external-link"><code>R/score_hitoppro.R</code></a></small>
       <div class="d-none name"><code>score_hitoppro.Rd</code></div>
     </div>
@@ -66,6 +65,8 @@
 <span>  prefix <span class="op">=</span> <span class="st">"pro_"</span>,</span>
 <span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  calc_se <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  omega <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  tibble <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -104,6 +105,16 @@ ignored when calculating scale scores. (default = <code>TRUE</code>)</p></dd>
 standard error of each scale score. (default = <code>FALSE</code>)</p></dd>
 
 
+<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
+<dd><p>Optional logical; if <code>TRUE</code>, compute and print Cronbach’s alpha
+for each scale. (default = <code>FALSE</code>)</p></dd>
+
+
+<dt id="arg-omega">omega<a class="anchor" aria-label="anchor" href="#arg-omega"></a></dt>
+<dd><p>Optional logical; if <code>TRUE</code>, compute and print McDonald’s omega
+for each scale using Pearson correlations (i.e., non-ordinal). (default = <code>FALSE</code>)</p></dd>
+
+
 <dt id="arg-append">append<a class="anchor" aria-label="anchor" href="#arg-append"></a></dt>
 <dd><p>An optional logical indicating whether the new columns should
 be added to the end of the <code>data</code> input. (default = <code>TRUE</code>)</p></dd>
@@ -117,7 +128,14 @@ converted to a <code><a href="https://tibble.tidyverse.org/reference/tibble.html
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data frame containing all scale scores and standard errors (if
-requested) and all original <code>data</code> columns (if requested)</p>
+requested) and all original <code>data</code> columns (if requested).
+Reliability estimates, when requested, are printed as a side effect.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>If either <code>alpha</code> or <code>omega</code> are <code>TRUE</code>, the function prints a
+per-scale reliability summary. Only reliability columns that contain at least
+one non-<code>NA</code> value are shown (the <code>scale</code> column is always shown).</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

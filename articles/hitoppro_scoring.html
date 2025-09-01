@@ -25,6 +25,7 @@
 <link href="hitoppro_scoring_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Scoring the HiTOP-PRO">
+<meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -77,8 +78,7 @@
 </nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-
-      <h1>Scoring the HiTOP-PRO</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Scoring the HiTOP-PRO</h1>
 
 
 
@@ -254,7 +254,7 @@
 </div>
 </section><section class="level2"><h2 id="simple-standard-errors">Simple Standard Errors<a class="anchor" aria-label="anchor" href="#simple-standard-errors"></a>
 </h2>
-<p>Finally, in addition to calculating each scale score as the mean of its corresponding items, we can also calculate each scale score’s standard error as the SD of its corresponding items divided by the square root of its number of items. These standard errors are especially useful when plotting the scores as they can be converted into confidence intervals. We turn this on using <code>calc_se</code>.</p>
+<p>In addition to calculating each scale score as the mean of its corresponding items, we can also calculate each scale score’s standard error as the SD of its corresponding items divided by the square root of its number of items. These standard errors are especially useful when plotting the scores as they can be converted into confidence intervals. We turn this on using <code>calc_se</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitoppro.html">score_hitoppro</a></span><span class="op">(</span></span>
@@ -286,6 +286,96 @@
 <span><span class="co">#&gt; #   pro_diseaseConviction &lt;dbl&gt;, pro_dishonesty &lt;dbl&gt;, …</span></span></code></pre></div>
 </div>
 <p>Note how there are now 152 columns instead of 76. The extra columns aren’t shown in the preview above, but they are named with the <code>_se</code> suffix, e.g., <code>pro_agoraphobia_se</code>.</p>
+</section><section class="level2"><h2 id="scale-reliability">Scale Reliability<a class="anchor" aria-label="anchor" href="#scale-reliability"></a>
+</h2>
+<p>As we compute scale scores, we can also estimate their inter-item reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α is fast and widely used, but it assumes tau-equivalence (all items load equally on a single factor); violations can make α under- or over-estimate reliability. ω is based on a congeneric single-factor model, allowing items to have different loadings and error variances; it typically provides a more accurate reliability estimate for unit-weighted sums. Both assume the scale is essentially unidimensional; α and ω coincide when tau-equivalence holds.</p>
+<p>We can just add one or more of the following arguments to <code><a href="../reference/score_hitoppro.html">score_hitoppro()</a></code>: <code>alpha</code> and <code>omega</code>. For the latter, we will need the <strong>lavaan</strong> package installed. If requested, a table of reliability results will be printed as a side-effect of the function (alongside any warnings from lavaan about convergence of the factor analysis models that omega is based on).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitoppro.html">score_hitoppro</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">ku_hitoppro</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hitop%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  omega <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;                           scale alpha omega</span></span>
+<span><span class="co">#&gt; 1                   Agoraphobia 0.827 0.851</span></span>
+<span><span class="co">#&gt; 2           Antisocial Behavior 0.307 0.974</span></span>
+<span><span class="co">#&gt; 3                 Appetite Loss 0.814 0.839</span></span>
+<span><span class="co">#&gt; 4                  Binge Eating 0.833 0.834</span></span>
+<span><span class="co">#&gt; 5               Bodily Distress 0.771 0.776</span></span>
+<span><span class="co">#&gt; 6          Body Dissatisfaction 0.868 0.871</span></span>
+<span><span class="co">#&gt; 7                    Body Focus 0.777 0.783</span></span>
+<span><span class="co">#&gt; 8                   Callousness 0.849 0.853</span></span>
+<span><span class="co">#&gt; 9                      Checking 0.782 0.787</span></span>
+<span><span class="co">#&gt; 10                     Cleaning 0.742 0.757</span></span>
+<span><span class="co">#&gt; 11           Cognitive Problems 0.870 0.871</span></span>
+<span><span class="co">#&gt; 12          Conversion Symptoms 0.368 0.423</span></span>
+<span><span class="co">#&gt; 13                     Counting 0.760 0.769</span></span>
+<span><span class="co">#&gt; 14            Dietary Restraint 0.834 0.830</span></span>
+<span><span class="co">#&gt; 15 Difficulties Reaching Orgasm 0.748    NA</span></span>
+<span><span class="co">#&gt; 16           Disease Conviction 0.518 0.508</span></span>
+<span><span class="co">#&gt; 17                   Dishonesty 0.864 0.881</span></span>
+<span><span class="co">#&gt; 18              Disorganization 0.819 0.822</span></span>
+<span><span class="co">#&gt; 19                 Dissociation 0.755 0.757</span></span>
+<span><span class="co">#&gt; 20           Distress Dysphoria 0.940 0.940</span></span>
+<span><span class="co">#&gt; 21                  Domineering 0.847 0.849</span></span>
+<span><span class="co">#&gt; 22                 Eccentricity 0.795 0.817</span></span>
+<span><span class="co">#&gt; 23                 Emotionality 0.908 0.912</span></span>
+<span><span class="co">#&gt; 24                  Entitlement 0.729 0.741</span></span>
+<span><span class="co">#&gt; 25           Excessive Exercise 0.831 0.834</span></span>
+<span><span class="co">#&gt; 26                  Excoriation 0.737 0.739</span></span>
+<span><span class="co">#&gt; 27                Exhibitionism 0.817 0.832</span></span>
+<span><span class="co">#&gt; 28            Fantasy Proneness 0.833 0.842</span></span>
+<span><span class="co">#&gt; 29             Food Selectivity 0.850 0.848</span></span>
+<span><span class="co">#&gt; 30                     Gambling 0.521    NA</span></span>
+<span><span class="co">#&gt; 31                       Gaming 0.827 0.841</span></span>
+<span><span class="co">#&gt; 32                  Grandiosity 0.723 0.729</span></span>
+<span><span class="co">#&gt; 33               Health Anxiety 0.757 0.770</span></span>
+<span><span class="co">#&gt; 34                     Hoarding 0.725 0.742</span></span>
+<span><span class="co">#&gt; 35            Hyperdeliberation 0.853 0.856</span></span>
+<span><span class="co">#&gt; 36               Hypervigilance 0.696 0.706</span></span>
+<span><span class="co">#&gt; 37                     Insomnia 0.815 0.821</span></span>
+<span><span class="co">#&gt; 38           Low Sexual Arousal 0.814 0.820</span></span>
+<span><span class="co">#&gt; 39          Low Sexual Interest 0.710 0.730</span></span>
+<span><span class="co">#&gt; 40                 Manic Energy 0.741 0.745</span></span>
+<span><span class="co">#&gt; 41                     Mistrust 0.808 0.816</span></span>
+<span><span class="co">#&gt; 42              Muscle Building 0.815 0.833</span></span>
+<span><span class="co">#&gt; 43                   Nightmares 0.802 0.802</span></span>
+<span><span class="co">#&gt; 44              Non Persistence 0.818 0.827</span></span>
+<span><span class="co">#&gt; 45              Non Planfulness 0.823 0.829</span></span>
+<span><span class="co">#&gt; 46                         Nssi 0.826 0.866</span></span>
+<span><span class="co">#&gt; 47              Oppositionality 0.761 0.761</span></span>
+<span><span class="co">#&gt; 48                        Panic 0.692 0.731</span></span>
+<span><span class="co">#&gt; 49                  Paraphilias 0.548 0.605</span></span>
+<span><span class="co">#&gt; 50                Perfectionism 0.855 0.861</span></span>
+<span><span class="co">#&gt; 51             Premature Orgasm 0.738 0.749</span></span>
+<span><span class="co">#&gt; 52         Problematic Shopping 0.815 0.841</span></span>
+<span><span class="co">#&gt; 53                      Purging 0.595 0.652</span></span>
+<span><span class="co">#&gt; 54           Reality Distortion 0.784 0.802</span></span>
+<span><span class="co">#&gt; 55                 Restlessness 0.790 0.808</span></span>
+<span><span class="co">#&gt; 56       Restricted Affectivity 0.848 0.853</span></span>
+<span><span class="co">#&gt; 57            Restricted Eating 0.869 0.873</span></span>
+<span><span class="co">#&gt; 58                     Rigidity 0.771 0.773</span></span>
+<span><span class="co">#&gt; 59                Risk Aversion 0.771 0.773</span></span>
+<span><span class="co">#&gt; 60                  Risk Taking 0.807 0.810</span></span>
+<span><span class="co">#&gt; 61                    Risky Sex 0.751 0.779</span></span>
+<span><span class="co">#&gt; 62         Romantic Disinterest 0.805 0.814</span></span>
+<span><span class="co">#&gt; 63    Sex Related Substance Use 0.731 0.724</span></span>
+<span><span class="co">#&gt; 64              Sexual Distress 0.868 0.869</span></span>
+<span><span class="co">#&gt; 65                  Sexual Pain 0.836 0.837</span></span>
+<span><span class="co">#&gt; 66            Social Aggression 0.760 0.787</span></span>
+<span><span class="co">#&gt; 67             Social Aloofness 0.775 0.782</span></span>
+<span><span class="co">#&gt; 68               Social Anxiety 0.798 0.799</span></span>
+<span><span class="co">#&gt; 69        Somatic Preoccupation 0.714 0.735</span></span>
+<span><span class="co">#&gt; 70        Specific Phobia Index 0.721 0.730</span></span>
+<span><span class="co">#&gt; 71               Submissiveness 0.742 0.759</span></span>
+<span><span class="co">#&gt; 72                  Suicidality 0.691 0.754</span></span>
+<span><span class="co">#&gt; 73             Trauma Reactions 0.787 0.778</span></span>
+<span><span class="co">#&gt; 74             Trichotillomania 0.389    NA</span></span>
+<span><span class="co">#&gt; 75                   Well Being 0.833 0.833</span></span>
+<span><span class="co">#&gt; 76                  Workaholism 0.805 0.808</span></span></code></pre></div>
+</div>
 </section><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
