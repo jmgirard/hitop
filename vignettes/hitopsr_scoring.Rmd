@@ -1,15 +1,18 @@
 ---
-title: "Scoring the HiTOP-PRO"
+title: "Scoring the HiTOP-SR"
+output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Scoring the HiTOP-PRO}
-  %\VignetteEngine{quarto::html}
+  %\VignetteIndexEntry{Scoring the HiTOP-SR}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-knitr:
-  opts_chunk:
-    collapse: true
-    comment: '#>'
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 ```{r}
 #| include: false
 
@@ -17,7 +20,7 @@ library(tibble)
 ```
 
 
-The HiTOP-PRO instrument has 405 items and yields 76 scale scores. To demonstrate the ability of the package to calculate these scale scores, we can use real example data (n=143) that was collected at the University of Kansas (KU) by Girard & Gray in 2024. This data is stored in the package under the name `ku_hitoppro`.
+The HiTOP-SR instrument has 405 items and yields 76 scale scores. To demonstrate the ability of the package to calculate these scale scores, we can use real example data (n=143) that was collected at the University of Kansas (KU) by Girard & Gray in 2024. This data is stored in the package under the name `ku_hitopsr`.
 
 First, we load the package into memory using the `library()` function. If this doesn't work, make sure you installed the package properly (see the README on [GitHub](https://github.com/jmgirard/hitop)).
 
@@ -25,20 +28,20 @@ First, we load the package into memory using the `library()` function. If this d
 library(hitop)
 ```
 
-Next, we can load the example dataset from the package using the `data()` function. It is a large tibble that contains a `participant` column with a unique identifier for each participant, a `biosex` column indicating whether each participant is "female" or "male", and then 405 columns numbered `hitop001` to `hitop405` containing each participant's rating on each item of the HiTOP-PRO (on a numerical scale from 1 to 4).
+Next, we can load the example dataset from the package using the `data()` function. It is a large tibble that contains a `participant` column with a unique identifier for each participant, a `biosex` column indicating whether each participant is "female" or "male", and then 405 columns numbered `hitop001` to `hitop405` containing each participant's rating on each item of the HiTOP-SR (on a numerical scale from 1 to 4).
 
 ```{r}
-data("ku_hitoppro")
-ku_hitoppro
+data("ku_hitopsr")
+ku_hitopsr
 ```
 
 ## Basic Scoring
 
-To turn these item-level ratings into mean scores on the 76 scales, we can use the `score_hitoppro()` function. It needs to know what object contains the data and which columns contain the item-level data. There are several ways we can specify the items. First, we can provide the column numbers and use the `:` shortcut. In this tibble, the items are from column 3 to column 407 so we can use `items = 3:407`. I am going to also set `append = FALSE` so that you can quickly see the scale scores.
+To turn these item-level ratings into mean scores on the 76 scales, we can use the `score_hitopsr()` function. It needs to know what object contains the data and which columns contain the item-level data. There are several ways we can specify the items. First, we can provide the column numbers and use the `:` shortcut. In this tibble, the items are from column 3 to column 407 so we can use `items = 3:407`. I am going to also set `append = FALSE` so that you can quickly see the scale scores.
 
 ```{r}
-scores <- score_hitoppro(
-  data = ku_hitoppro,
+scores <- score_hitopsr(
+  data = ku_hitopsr,
   items = 3:407,
   append = FALSE
 )
@@ -50,8 +53,8 @@ scores
 If I had instead set `append = TRUE` (or left it off, as that is the default), we would get back the `ku_hitoppro` tibble with the scale scores added to the end as extra columns. Notice below how we now have 483 columns instead of 407.
 
 ```{r}
-scores <- score_hitoppro(
-  data = ku_hitoppro,
+scores <- score_hitopsr(
+  data = ku_hitopsr,
   items = 3:407
 )
 scores
@@ -62,8 +65,8 @@ scores
 Alternatively, we could provide the item column names as a character string. Typing out all 405 item names would be a hassle, but luckily this dataset named them consistently so we can build the names automatically using `sprintf()`. If we use the "hitop%03d" format and apply that across the numbers 1 to 405, that will create the zero-padded column names we need. If there was no zero-padding, we could have just used "hitop%d".
 
 ```{r}
-scores <- score_hitoppro(
-  data = ku_hitoppro,
+scores <- score_hitopsr(
+  data = ku_hitopsr,
   items = sprintf("hitop%03d", 1:405),
   append = FALSE
 )
@@ -72,13 +75,13 @@ scores
 
 ## Scale Prefixes
 
-Also note that each scale column has the prefix "pro_" in its name. You can change the prefix (e.g., setting it to `"htp_"`) or even turn it off (e.g., setting it to `""`) using the `prefix` argument.
+Also note that each scale column has the prefix "hsr_" in its name. You can change the prefix (e.g., setting it to `"hitop_"`) or even turn it off (e.g., setting it to `""`) using the `prefix` argument.
 
 ```{r}
-scores <- score_hitoppro(
-  data = ku_hitoppro,
+scores <- score_hitopsr(
+  data = ku_hitopsr,
   items = sprintf("hitop%03d", 1:405),
-  prefix = "htp_",
+  prefix = "hitop_",
   append = FALSE
 )
 scores
@@ -89,8 +92,8 @@ scores
 In addition to calculating each scale score as the mean of its corresponding items, we can also calculate each scale score's standard error as the SD of its corresponding items divided by the square root of its number of items. These standard errors are especially useful when plotting the scores as they can be converted into confidence intervals. We turn this on using `calc_se`.
 
 ```{r}
-scores <- score_hitoppro(
-  data = ku_hitoppro,
+scores <- score_hitopsr(
+  data = ku_hitopsr,
   items = sprintf("hitop%03d", 1:405),
   calc_se = TRUE,
   append = FALSE
@@ -98,19 +101,19 @@ scores <- score_hitoppro(
 scores
 ```
 
-Note how there are now 152 columns instead of 76. The extra columns aren't shown in the preview above, but they are named with the `_se` suffix, e.g., `pro_agoraphobia_se`.
+Note how there are now 152 columns instead of 76. The extra columns aren't shown in the preview above, but they are named with the `_se` suffix, e.g., `hsr_agoraphobia_se`.
 
 ## Scale Reliability
 
 As we compute scale scores, we can also estimate their inter-item reliability using Cronbach's α (alpha) or McDonald's ω (omega total). α is fast and widely used, but it assumes tau-equivalence (all items load equally on a single factor); violations can make α under- or over-estimate reliability. ω is based on a congeneric single-factor model, allowing items to have different loadings and error variances; it typically provides a more accurate reliability estimate for unit-weighted sums. Both assume the scale is essentially unidimensional; α and ω coincide when tau-equivalence holds.
 
-We can just add one or more of the following arguments to `score_hitoppro()`: `alpha` and `omega`. For the latter, we will need the **lavaan** package installed. If requested, a table of reliability results will be printed as a side-effect of the function (alongside any warnings from lavaan about convergence of the factor analysis models that omega is based on).
+We can just add one or more of the following arguments to `score_hitopsr()`: `alpha` and `omega`. For the latter, we will need the **lavaan** package installed. If requested, a table of reliability results will be printed as a side-effect of the function (alongside any warnings from lavaan about convergence of the factor analysis models that omega is based on).
 
 ```{r reliability}
 #| warning: false
 
-scores <- score_hitoppro(
-  data = ku_hitoppro,
+scores <- score_hitopsr(
+  data = ku_hitopsr,
   items = sprintf("hitop%03d", 1:405),
   alpha = TRUE,
   omega = TRUE

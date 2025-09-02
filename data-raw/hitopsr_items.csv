@@ -1,4 +1,4 @@
-PRO,Reverse,Spectrum,Subfactor,Scale,Subscale,Text
+HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text
 1,FALSE,Internalizing,Fear,Agoraphobia,,"I felt like I would be unable to breathe in a small, tight, or enclosed space."
 2,FALSE,Internalizing,Fear,Agoraphobia,,I was afraid of getting trapped in a crowd.
 3,FALSE,Internalizing,Fear,Agoraphobia,,"I avoided small, tight, or enclosed spaces."
@@ -7,7 +7,7 @@ PRO,Reverse,Spectrum,Subfactor,Scale,Subscale,Text
 6,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I vandalized or defaced public property.
 7,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I found it enjoyable to hurt animals.
 8,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I got in trouble with the law.
-9,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I forged checks or used other people’s credit cards without permission.
+9,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I forged checks or used other peopleï¿½s credit cards without permission.
 10,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I stole from someone I knew without their knowledge.
 11,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I forced someone to have sex with me.
 12,FALSE,Externalizing,Antisocial,Antisocial Behavior,,"I broke into houses, buildings, or cars."
@@ -24,7 +24,7 @@ PRO,Reverse,Spectrum,Subfactor,Scale,Subscale,Text
 23,FALSE,Somatoform,,Bodily Distress,,"I was bothered by stomach symptoms (diarrhea, nausea, stomach pain etc.)"
 24,FALSE,Somatoform,,Bodily Distress,,I experienced chest pain.
 25,FALSE,Somatoform,,Bodily Distress,,"I was bothered by several bodily symptoms (e.g., headache, fatigue or stomach problems) for which there was no clear or sufficient medical explanation."
-26,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,,I couldn’t stop comparing my body to those of others.
+26,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,,I couldnï¿½t stop comparing my body to those of others.
 27,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,,I wished I could change certain parts of my body.
 28,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,,I was dissatisfied with the shape of my body.
 29,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,,I did not like my weight (the number on the scale).
@@ -151,7 +151,7 @@ PRO,Reverse,Spectrum,Subfactor,Scale,Subscale,Text
 150,FALSE,Internalizing,Eating Pathology,Excessive Exercise,,I had to cancel plans in order to get my exercise in.
 151,FALSE,Internalizing,Fear,Excoriation,,My skin picking created problems for me.
 152,FALSE,Internalizing,Fear,Excoriation,,I tried to conceal areas where I had picked at my skin.
-153,FALSE,Internalizing,Fear,Excoriation,,I picked at areas of my skin that I don’t like.
+153,FALSE,Internalizing,Fear,Excoriation,,I picked at areas of my skin that I donï¿½t like.
 154,FALSE,Externalizing,Antagonism,Exhibitionism,,I liked attracting the attention of others.
 155,FALSE,Externalizing,Antagonism,Exhibitionism,,I enjoyed being the center of attention.
 156,FALSE,Externalizing,Antagonism,Exhibitionism,,I did things to get others to notice me.
@@ -217,7 +217,7 @@ PRO,Reverse,Spectrum,Subfactor,Scale,Subscale,Text
 216,FALSE,Internalizing-Thought Disorder,,Manic Energy,,Others noticed that I was unusually excited or up.
 217,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I felt a lot more hyper or active than usual.
 218,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I was much more talkative than usual.
-219,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I had so much energy that others couldn’t keep up with me.
+219,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I had so much energy that others couldnï¿½t keep up with me.
 220,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I felt like I could go for days without sleeping.
 221,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I felt like I could keep going and going without ever getting tired.
 222,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I had much more energy than usual.
@@ -257,7 +257,7 @@ PRO,Reverse,Spectrum,Subfactor,Scale,Subscale,Text
 256,FALSE,Externalizing,Antisocial,Oppositionality,,Life felt too short to follow other peoples' rules.
 257,FALSE,Externalizing,Antisocial,Oppositionality,,I was a rule breaker.
 258,FALSE,Externalizing,Antisocial,Oppositionality,,I didn't care whether my behavior was considered proper or not.
-259,FALSE,Externalizing,Antisocial,Oppositionality,,I didn’t pay much attention to social standards of behavior.
+259,FALSE,Externalizing,Antisocial,Oppositionality,,I didnï¿½t pay much attention to social standards of behavior.
 260,FALSE,Externalizing,Antisocial,Oppositionality,,I did things on purpose that were against the rules.
 261,FALSE,Internalizing,Fear,Panic,,I felt dizzy or lightheaded.
 262,FALSE,Internalizing,Fear,Panic,,I was trembling or shaking.
@@ -311,7 +311,7 @@ PRO,Reverse,Spectrum,Subfactor,Scale,Subscale,Text
 310,FALSE,Internalizing,Eating Pathology,Restricted Eating,,I went a long time without eating.
 311,FALSE,Internalizing,Eating Pathology,Restricted Eating,,I made excuses to avoid eating.
 312,FALSE,Externalizing,Anankastia,Rigidity,,"I refused to budge as a matter of principle, even on small matters."
-313,FALSE,Externalizing,Anankastia,Rigidity,,"I continued to do things the same way, even though my approach clearly wasn’t working."
+313,FALSE,Externalizing,Anankastia,Rigidity,,"I continued to do things the same way, even though my approach clearly wasnï¿½t working."
 314,FALSE,Externalizing,Anankastia,Rigidity,,I was very set in my ways.
 315,FALSE,Externalizing,Anankastia,Rigidity,,I refused to compromise because I knew I was right.
 316,FALSE,Externalizing,Anankastia,Rigidity,,I was rigid and inflexible in my approach to doing things.

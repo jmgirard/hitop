@@ -23,7 +23,7 @@ development:
 reference:
 - title: Score
   contents:
-  - score_hitoppro
+  - score_hitopsr
   - score_bhitop
   - score_pid5
   - validity_pid5
@@ -34,19 +34,19 @@ reference:
   - rank_scales
 - title: Example Data
   contents:
-  - ku_hitoppro
+  - ku_hitopsr
   - ku_bhitop
   - ku_pid5sf
-  - sim_hitoppro
+  - sim_hitopsr
   - sim_bhitop
   - sim_pid5
   - sim_pid5sf
   - sim_pid5bf
 - title: Instrument Data
   contents:
-  - hitoppro_items
-  - hitoppro_scales
-  - hitoppro_subscales
+  - hitopsr_items
+  - hitopsr_scales
+  - hitopsr_subscales
   - bhitop_items
   - bhitop_scales
   - pid_items

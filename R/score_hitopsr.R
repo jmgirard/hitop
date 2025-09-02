@@ -1,15 +1,15 @@
-#' Score the HiTOP-PRO Instrument
+#' Score the HiTOP-SR Instrument
 #'
-#' Create a data frame with scores on all the HiTOP-PRO scales.
+#' Create a data frame with scores on all the HiTOP-SR scales.
 #'
-#' @param data A data frame containing all HiTOP-PRO items (numerically coded).
+#' @param data A data frame containing all HiTOP-SR items (numerically coded).
 #' @param items A vector of column names (as strings) or numbers (as integers)
-#'   corresponding to the 405 HiTOP-PRO items in order.
+#'   corresponding to the 405 HiTOP-SR items in order.
 #' @param srange An optional numeric vector specifying the minimum and maximum
-#'   values of the HiTOP-PRO items, used for reverse-coding. (default = `c(1,
+#'   values of the HiTOP-SR items, used for reverse-coding. (default = `c(1,
 #'   4)`)
 #' @param prefix An optional string to add before each scale column name. If no
-#'   prefix is desired, set to an empty string `""`. (default = `"pro_"`)
+#'   prefix is desired, set to an empty string `""`. (default = `"hsr_"`)
 #' @param na.rm An optional logical indicating whether missing values should be
 #'   ignored when calculating scale scores. (default = `TRUE`)
 #' @param calc_se An optional logical indicating whether to calculate the
@@ -32,11 +32,11 @@
 #'   Reliability estimates, when requested, are printed as a side effect.
 #'
 #' @export
-score_hitoppro <- function(
+score_hitopsr <- function(
   data,
   items,
   srange = c(1, 4),
-  prefix = "pro_",
+  prefix = "hsr_",
   na.rm = TRUE,
   calc_se = FALSE,
   alpha = FALSE,
@@ -63,9 +63,9 @@ score_hitoppro <- function(
   data_items <- lapply(data_items, as.numeric)
 
   ## Reverse score the necessary items
-  utils::data(hitoppro_items)
+  utils::data(hitopsr_items)
   items_rev <-
-    hitoppro_items[hitoppro_items$Reverse == TRUE, "PRO", drop = TRUE]
+    hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE]
   if (length(items_rev) > 0) {
     data_items[items_rev] <- lapply(
       items_rev,
@@ -81,7 +81,7 @@ score_hitoppro <- function(
   data_items <- bind_columns(data_items)
 
   ## Find items per scale
-  items_scales <- hitoppro_scales$itemNumbers
+  items_scales <- hitopsr_scales$itemNumbers
 
   ## Calculate mean scores per scale
   out <- bind_columns(

@@ -1,15 +1,18 @@
 ---
 title: "Scoring the B-HiTOP"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Scoring the B-HiTOP}
-  %\VignetteEngine{quarto::html}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-knitr:
-  opts_chunk:
-    collapse: true
-    comment: '#>'
 ---
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
 ```{r}
 #| include: false
 

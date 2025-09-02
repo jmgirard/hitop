@@ -1,13 +1,10 @@
 ---
 title: "Scoring the PID-5-SF"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Scoring the PID-5-SF}
-  %\VignetteEngine{quarto::html}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-knitr:
-  opts_chunk:
-    collapse: true
-    comment: '#>'
 ---
 
 ```{r, include = FALSE}
@@ -40,7 +37,17 @@ We can repeat this process with real data that was collected at University of Ka
 ```{r x4}
 data("ku_pid5sf")
 
-score_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF", append = FALSE)
+score_pid5(
+  ku_pid5sf,
+  items = paste0("pid_", 1:100),
+  version = "SF",
+  append = FALSE
+)
 
-validity_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF", append = FALSE)
+validity_pid5(
+  ku_pid5sf,
+  items = paste0("pid_", 1:100),
+  version = "SF",
+  append = FALSE
+)
 ```

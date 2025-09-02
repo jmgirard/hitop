@@ -1,13 +1,10 @@
 ---
 title: "Scoring the PID-5-BF"
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Scoring the PID-5-BF}
-  %\VignetteEngine{quarto::html}
+  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-knitr:
-  opts_chunk:
-    collapse: true
-    comment: '#>'
 ---
 
 ```{r, include = FALSE}

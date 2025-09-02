@@ -21,13 +21,13 @@
 #' Information about the scales in different versions of the PID-5.
 "pid_scales"
 
-#' HiTOP-PRO Item Data
+#' HiTOP-SR Item Data
 #'
-#' Information about items in the HiTOP-PRO.
+#' Information about items in the HiTOP-SR.
 #'
 #' @format A \link[tibble]{tibble} with 405 rows and 8 columns:
 #' \describe{
-#'   \item{PRO}{Item number on the full HiTOP-PRO}
+#'   \item{HSR}{Item number on the full HiTOP-SR}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{Spectrum}{Name of the spectrum (level 4)}
 #'   \item{Subfactor}{Name of the subfactor (level 3)}
@@ -35,17 +35,17 @@
 #'   \item{Subscale}{Name of the subscale (level 1)}
 #'   \item{Text}{Item text}
 #' }
-"hitoppro_items"
+"hitopsr_items"
 
-#' HiTOP-PRO Scale Data
+#' HiTOP-SR Scale Data
 #'
-#' Information about scales in the HiTOP-PRO.
-"hitoppro_scales"
+#' Information about scales in the HiTOP-SR.
+"hitopsr_scales"
 
-#' HiTOP-PRO Subscale Data
+#' HiTOP-SR Subscale Data
 #'
-#' Information about subscales in the HiTOP-PRO.
-"hitoppro_subscales"
+#' Information about subscales in the HiTOP-SR.
+"hitopsr_subscales"
 
 #' B-HiTOP Item Data
 #'
@@ -66,15 +66,15 @@
 #' Information about scales in the B-HiTOP.
 "bhitop_scales"
 
-#' Simulated HiTOP-PRO Data
+#' Simulated HiTOP-SR Data
 #'
-#' Simulated responses to items on the full HiTOP-PRO (with 405 items).
+#' Simulated responses to items on the full HiTOP-SR (with 405 items).
 #'
-#' @format ## `sim_hitoppro` A \link[tibble]{tibble} with 100 rows and 405 columns.
+#' @format ## `sim_hitopsr` A \link[tibble]{tibble} with 100 rows and 405 columns.
 #' \describe{
-#'   \item{pro_1 to pro_405}{Responses on each item}
+#'   \item{hsr_1 to hsr_405}{Responses on each item}
 #' }
-"sim_hitoppro"
+"sim_hitopsr"
 
 #' Simulated B-HiTOP Data
 #'
@@ -141,9 +141,9 @@
 "ku_bhitop"
 
 
-#' Real HiTOP-PRO Data
+#' Real HiTOP-SR Data
 #'
-#' Real responses to items on the HiTOP-PRO from University of Kansas students.
+#' Real responses to items on the HiTOP-SR from University of Kansas students.
 #'
 #' @format A \link[tibble]{tibble} with 143 rows and 407 columns.
 #' \describe{
@@ -151,4 +151,4 @@
 #'   \item{biosex}{A factor indicating each participant's biological sex}
 #'   \item{hitop001 to hitop405}{Responses on each item}
 #' }
-"ku_hitoppro"
+"ku_hitopsr"
