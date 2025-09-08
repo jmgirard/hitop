@@ -92,6 +92,9 @@ calc_alpha <- function(df) {
 #' does not converge or if implied residual variances are invalid. Mixed-sign
 #' loadings trigger a warning (often indicates reverse-keying is needed).
 #'
+#' Note that the latent variable will be estimated as `f`, so please avoid
+#' naming any of your items that.
+#'
 #' @param df A data frame or matrix with one row per observation and one column
 #'   per item.
 #'
