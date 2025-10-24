@@ -51,6 +51,13 @@ calc_alpha <- function(df) {
     message = "At least two items are required."
   )
 
+  # Calculate and validate number of observations
+  n <- nrow(X)
+  cli_assert(
+    condition = n > 1,
+    message = "At least two observations are required."
+  )
+
   # Calculate and validate pairwise covariance matrix
   S <- stats::cov(X, use = "pairwise.complete.obs")
   cli_assert(
@@ -133,6 +140,13 @@ calc_omega <- function(df) {
   cli_assert(
     condition = k > 1,
     message = "At least two items are required."
+  )
+
+  # Calculate and validate number of observations
+  n <- nrow(X)
+  cli_assert(
+    condition = n > 1,
+    message = "At least two observations are required."
   )
 
   # Build unidimensional CFA
