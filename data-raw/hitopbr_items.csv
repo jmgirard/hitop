@@ -1,46 +1,46 @@
-HBR,Reverse,Scale,Pfactor,Text
-1,FALSE,Somatoform,FALSE,I had pains in several parts of my body.
-2,FALSE,Somatoform,TRUE,I felt something was wrong with my body.
-3,FALSE,Somatoform,TRUE,"I was bothered by several bodily symptoms (e.g., headache, fatigue or stomach problems) for which there was no clear or sufficient medical explanation."
-4,FALSE,Antagonism,FALSE,People told me I was coldhearted.
-5,FALSE,Internalizing,FALSE,"Even when I was very careful, I worried whether I had done something correctly."
-6,FALSE,Somatoform,FALSE,I was frustrated with having to convince others I had a real illness.
-7,FALSE,Antagonism,TRUE,I found it easy to deceive others.
-8,FALSE,Antagonism,FALSE,I found it easy to manipulate others.
-9,FALSE,Disinhibition,FALSE,I was never on time.
-10,FALSE,Disinhibition,FALSE,I had trouble planning and keeping to schedules.
-11,FALSE,Disinhibition,FALSE,I paid my bills late or missed other important deadlines.
-12,FALSE,Disinhibition,FALSE,I lost things that I needed.
-13,FALSE,Disinhibition,FALSE,I was a messy person.
-14,FALSE,Thought Disorder,FALSE,I felt that things around me were not real.
-15,FALSE,Thought Disorder,TRUE,I felt like I was outside of my body.
-16,FALSE,Thought Disorder,FALSE,I had trouble telling whether something really happened or I just imagined it.
-17,FALSE,Internalizing,FALSE,I was overwhelmed by anxiety.
-18,FALSE,Internalizing,TRUE,I was disgusted with myself.
-19,FALSE,Antagonism,FALSE,I liked having power.
-20,FALSE,Antagonism,FALSE,Things went best when I told others what to do.
-21,FALSE,Internalizing,FALSE,My moods were intense and unpredictable.
-22,FALSE,Antagonism,FALSE,I deserved special treatment.
-23,FALSE,Antagonism,FALSE,I expected to get treated better than others.
-24,FALSE,Antagonism,FALSE,I liked attracting the attention of others.
-25,FALSE,Antagonism,TRUE,I did things to get others to notice me.
-26,FALSE,Thought Disorder,FALSE,My fantasies felt very real to me.
-27,FALSE,Somatoform,FALSE,Reading articles about disease made me worry about my health.
-28,FALSE,Somatoform,FALSE,I was afraid that I might suffer from a serious illness
-29,FALSE,Internalizing,TRUE,I felt on guard and on edge.
-30,FALSE,Disinhibition,TRUE,I quit tasks that became too challenging.
-31,FALSE,Disinhibition,FALSE,I made decisions quickly without thinking them through.
-32,FALSE,Disinhibition,TRUE,I said things without thinking.
-33,FALSE,Disinhibition,FALSE,I bought much more than I needed.
-34,FALSE,Thought Disorder,FALSE,I saw things that were not really there.
-35,FALSE,Thought Disorder,TRUE,I heard things that no one else could hear.
-36,FALSE,Detachment,TRUE,Romantic relationships seemed like a hassle to me.
-37,FALSE,Detachment,TRUE,I felt that I did not want to be in a close relationship.
-38,FALSE,Detachment,FALSE,I had no interest in romantic relationships.
-39,FALSE,Detachment,FALSE,"When I had the chance, I chose to be alone rather than with other people."
-40,FALSE,Detachment,FALSE,I was happiest when I was alone.
-41,FALSE,Somatoform,FALSE,I noticed small changes to how my body feels.
-42,FALSE,Somatoform,FALSE,I could feel changes in my body.
-43,FALSE,Detachment,FALSE,I had a hard time asserting myself to others.
-44,FALSE,Internalizing,FALSE,I thought a lot about death.
-45,FALSE,Internalizing,FALSE,My mind was flooded with troubling images of a bad experience.
+HBR,Reverse,Scale,Externalizing,Pfactor,Text,HSR,Original
+1,FALSE,Antagonism,TRUE,TRUE,I found it easy to deceive others.,303,Ext_22
+2,FALSE,Antagonism,FALSE,FALSE,I deserved special treatment.,95,Ext_175
+3,FALSE,Thought Disorder,FALSE,FALSE,I saw things that were not really there.,3,HiTOP_596
+4,FALSE,Thought Disorder,FALSE,FALSE,My fantasies felt very real to me.,220,HiTOP_583
+5,FALSE,Antagonism,FALSE,FALSE,I liked having power.,52,Ext_50
+6,FALSE,Somatoform,FALSE,TRUE,I felt something was wrong with my body.,115,HiTOP_451
+7,FALSE,Detachment,FALSE,FALSE,"When I had the chance, I chose to be alone rather than with other people.",45,HiTOP_50
+8,FALSE,Internalizing,FALSE,FALSE,My moods were intense and unpredictable.,231,HiTOP_570
+9,FALSE,Internalizing,FALSE,FALSE,My mind was flooded with troubling images of a bad experience.,94,HiTOP_378
+10,FALSE,Somatoform,FALSE,FALSE,I had pains in several parts of my body.,10,HiTOP_449
+11,FALSE,Thought Disorder,FALSE,TRUE,I felt like I was outside of my body.,276,HiTOP_557
+12,FALSE,Detachment,FALSE,FALSE,I was happiest when I was alone.,278,HiTOP_657
+13,FALSE,Antagonism,TRUE,FALSE,I found it easy to manipulate others.,14,Ext_262
+14,FALSE,Somatoform,FALSE,TRUE,"I was bothered by several bodily symptoms (e.g., headache, fatigue or stomach problems) for which there was no clear or sufficient medical explanation.",324,HiTOP_456
+15,FALSE,Disinhibition,TRUE,FALSE,I had trouble planning and keeping to schedules.,337,Ext_320
+16,FALSE,Disinhibition,TRUE,FALSE,I lost things that I needed.,242,Ext_374
+17,FALSE,Somatoform,FALSE,FALSE,I was frustrated with having to convince others I had a real illness.,272,HiTOP_479
+18,FALSE,Internalizing,FALSE,FALSE,"Even when I was very careful, I worried whether I had done something correctly.",341,HiTOP_215
+19,FALSE,Somatoform,FALSE,FALSE,Reading articles about disease made me worry about my health.,240,HiTOP_487
+20,FALSE,Disinhibition,FALSE,FALSE,I paid my bills late or missed other important deadlines.,269,Ext_361
+21,FALSE,Somatoform,FALSE,FALSE,I could feel changes in my body.,247,HiTOP_494
+22,FALSE,Internalizing,FALSE,TRUE,I was disgusted with myself.,394,HiTOP_333
+23,FALSE,Internalizing,FALSE,TRUE,I felt on guard and on edge.,227,HiTOP_368
+24,FALSE,Disinhibition,FALSE,FALSE,I was a messy person.,294,Ext_97
+25,FALSE,Antagonism,TRUE,TRUE,I did things to get others to notice me.,160,HiTOP_577
+26,FALSE,Somatoform,FALSE,FALSE,I noticed small changes to how my body feels.,171,HiTOP_492
+27,FALSE,Antagonism,FALSE,FALSE,Things went best when I told others what to do.,166,HiTOP_21
+28,FALSE,Thought Disorder,FALSE,TRUE,I heard things that no one else could hear.,259,HiTOP_606
+29,FALSE,Disinhibition,FALSE,FALSE,I was never on time.,360,Ext_13
+30,FALSE,Detachment,FALSE,FALSE,I had no interest in romantic relationships.,152,HiTOP_625
+31,FALSE,Detachment,FALSE,TRUE,Romantic relationships seemed like a hassle to me.,338,HiTOP_44
+32,FALSE,Disinhibition,TRUE,TRUE,I said things without thinking.,243,Ext_166
+33,FALSE,Antagonism,FALSE,FALSE,People told me I was coldhearted.,236,Ext_367
+34,FALSE,Disinhibition,TRUE,FALSE,I made decisions quickly without thinking them through.,15,Ext_102
+35,FALSE,Disinhibition,TRUE,TRUE,I quit tasks that became too challenging.,56,Ext_256
+36,FALSE,Detachment,FALSE,FALSE,I had a hard time asserting myself to others.,122,HiTOP_69
+37,FALSE,Detachment,FALSE,TRUE,I felt that I did not want to be in a close relationship.,42,HiTOP_624
+38,FALSE,Thought Disorder,FALSE,FALSE,I had trouble telling whether something really happened or I just imagined it.,305,HiTOP_558
+39,FALSE,Thought Disorder,FALSE,FALSE,I felt that things around me were not real.,168,HiTOP_554
+40,FALSE,Antagonism,TRUE,FALSE,I liked attracting the attention of others.,301,HiTOP_11
+41,FALSE,Somatoform,FALSE,FALSE,I was afraid that I might suffer from a serious illness,332,HiTOP_490
+42,FALSE,Internalizing,FALSE,FALSE,I thought a lot about death.,373,HiTOP_356
+43,FALSE,Disinhibition,FALSE,FALSE,I bought much more than I needed.,36,Ext_281
+44,FALSE,Internalizing,FALSE,FALSE,I was overwhelmed by anxiety.,194,HiTOP_187
+45,FALSE,Antagonism,TRUE,FALSE,I expected to get treated better than others.,63,Ext_370

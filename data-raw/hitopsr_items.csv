@@ -1,406 +1,406 @@
-HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text
-1,FALSE,Internalizing,Fear,Agoraphobia,,"I felt like I would be unable to breathe in a small, tight, or enclosed space."
-2,FALSE,Internalizing,Fear,Agoraphobia,,I was afraid of getting trapped in a crowd.
-3,FALSE,Internalizing,Fear,Agoraphobia,,"I avoided small, tight, or enclosed spaces."
-4,FALSE,Internalizing,Fear,Agoraphobia,,I avoided small public spaces (such as an office or restaurant).
-5,FALSE,Internalizing,Fear,Agoraphobia,,"I was afraid that I would have a panic attack in a small, tight, or enclosed space."
-6,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I vandalized or defaced public property.
-7,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I found it enjoyable to hurt animals.
-8,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I got in trouble with the law.
-9,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I forged checks or used other people's credit cards without permission.
-10,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I stole from someone I knew without their knowledge.
-11,FALSE,Externalizing,Antisocial,Antisocial Behavior,,I forced someone to have sex with me.
-12,FALSE,Externalizing,Antisocial,Antisocial Behavior,,"I broke into houses, buildings, or cars."
-13,FALSE,Externalizing,Antisocial,Antisocial Behavior,,"I threatened someone with a weapon like a bat, brick, knife, or gun."
-14,FALSE,Internalizing,Eating Pathology,Appetite Loss,,My appetite was poor.
-15,FALSE,Internalizing,Eating Pathology,Appetite Loss,,I lost a significant amount of weight without even trying.
-16,FALSE,Internalizing,Eating Pathology,Appetite Loss,,I did not feel much like eating.
-17,FALSE,Internalizing,Eating Pathology,Binge Eating,,"Once I started eating, I could not stop."
-18,FALSE,Internalizing,Eating Pathology,Binge Eating,,I could not resist eating.
-19,FALSE,Internalizing,Eating Pathology,Binge Eating,,"I ate a very large amount of food in a short period of time (e.g., within 2 hours)."
-20,FALSE,Somatoform,,Bodily Distress,,I had pains in several parts of my body.
-21,FALSE,Somatoform,,Bodily Distress,,My muscles were weak.
-22,FALSE,Somatoform,,Bodily Distress,,I felt something was wrong with my body.
-23,FALSE,Somatoform,,Bodily Distress,,"I was bothered by stomach symptoms (diarrhea, nausea, stomach pain etc.)"
-24,FALSE,Somatoform,,Bodily Distress,,I experienced chest pain.
-25,FALSE,Somatoform,,Bodily Distress,,"I was bothered by several bodily symptoms (e.g., headache, fatigue or stomach problems) for which there was no clear or sufficient medical explanation."
-26,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,,I couldn't stop comparing my body to those of others.
-27,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,,I wished I could change certain parts of my body.
-28,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,,I was dissatisfied with the shape of my body.
-29,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,,I did not like my weight (the number on the scale).
-30,FALSE,Internalizing,Eating Pathology,Body Focus,,I spent a lot of time looking at myself.
-31,FALSE,Internalizing,Eating Pathology,Body Focus,,"If I passed by a reflective surface (like a window), I checked how I looked."
-32,FALSE,Internalizing,Eating Pathology,Body Focus,,I spent a lot of time getting ready before going out.
-33,FALSE,Internalizing,Eating Pathology,Body Focus,,I paid a lot of attention to how I look.
-34,FALSE,Internalizing,Eating Pathology,Body Focus,,I spent a lot of time grooming myself.
-35,FALSE,Externalizing,Antagonism,Callousness,,I was not all that concerned with other peoples' needs.
-36,FALSE,Externalizing,Antagonism,Callousness,,I did not really care how others felt.
-37,FALSE,Externalizing,Antagonism,Callousness,,I did not have much sympathy for others.
-38,FALSE,Externalizing,Antagonism,Callousness,,People told me I was coldhearted.
-39,FALSE,Externalizing,Antagonism,Callousness,,I did not concern myself with helping people.
-40,FALSE,Externalizing,Antagonism,Callousness,,Some people thought I was uncaring and unfeeling.
-41,FALSE,Internalizing,Fear,Checking,,I felt the urge to check to make sure I really had done something.
-42,FALSE,Internalizing,Fear,Checking,,"Even when I was very careful, I worried whether I had done something correctly."
-43,FALSE,Internalizing,Fear,Checking,,I had a nagging doubt that I'd failed to do something important.
-44,FALSE,Internalizing,Fear,Checking,,"After I left my home, I worried that I failed to do something."
-45,FALSE,Internalizing,Fear,Checking,,I found myself worrying whether I actually did something or only intended to do it.
-46,FALSE,Internalizing,Fear,Cleaning,,It was difficult for me to touch something that was dirty.
-47,FALSE,Internalizing,Fear,Cleaning,,I worried about getting germs through contact with animals.
-48,FALSE,Internalizing,Fear,Cleaning,,I avoided contact with people because I was worried about germs.
-49,FALSE,Internalizing,Fear,Cleaning,,I felt the need to wash my hands again and again.
-50,FALSE,Internalizing,Fear,Cleaning,,I was obsessed with cleanliness.
-51,FALSE,Internalizing,Fear,Cleaning,,I had to clean myself because I felt contaminated.
-52,FALSE,Internalizing,Distress,Cognitive Problems,,I struggled to think clearly.
-53,FALSE,Internalizing,Distress,Cognitive Problems,,My mind felt mixed up.
-54,FALSE,Internalizing,Distress,Cognitive Problems,,I was easily distracted.
-55,FALSE,Internalizing,Distress,Cognitive Problems,,I had trouble remembering things.
-56,FALSE,Internalizing,Distress,Cognitive Problems,,My thoughts kept jumping from one thing to another.
-57,FALSE,Somatoform,,Conversion Symptoms,,"I experienced a sudden sensory loss (e.g., seeing or hearing problems) that doctors could not explain."
-58,FALSE,Somatoform,,Conversion Symptoms,,I could not feel things I touched.
-59,FALSE,Somatoform,,Conversion Symptoms,,I had periods of unexplained deafness.
-60,FALSE,Somatoform,,Conversion Symptoms,,I experienced sudden muscle weakness or paralysis.
-61,FALSE,Somatoform,,Conversion Symptoms,,I was troubled by unexplained seizures or convulsions.
-62,FALSE,Somatoform,,Conversion Symptoms,,I had periods of unexplained blindness.
-63,FALSE,Somatoform,,Conversion Symptoms,,I experienced loss of consciousness or had fainting spells (in the absence of a diagnosed medical disorder)
-64,FALSE,Internalizing,Fear,Counting,,I felt compelled to count things.
-65,FALSE,Internalizing,Fear,Counting,,I avoided numbers that could bring bad luck.
-66,FALSE,Internalizing,Fear,Counting,,I counted things over and over again.
-67,FALSE,Internalizing,Fear,Counting,,I thought that certain numbers were lucky for me.
-68,FALSE,Internalizing,Fear,Counting,,I needed to count to a certain number before starting an activity.
-69,FALSE,Internalizing,Eating Pathology,Dietary Restraint,,I tried to eat only healthy foods.
-70,FALSE,Internalizing,Eating Pathology,Dietary Restraint,,I tried to limit the number of fatty foods I ate.
-71,FALSE,Internalizing,Eating Pathology,Dietary Restraint,,I spent time planning how to reduce my food intake.
-72,FALSE,Internalizing,Eating Pathology,Dietary Restraint,,I focused on eating more healthy foods.
-73,FALSE,Internalizing,Eating Pathology,Dietary Restraint,,I tried to eat fewer snacks.
-74,FALSE,Internalizing,Sexual Problems,Difficulties Reaching Orgasm,,I was unable to reach orgasm.
-75,FALSE,Internalizing,Sexual Problems,Difficulties Reaching Orgasm,,I reached orgasm later than I wanted to.
-76,FALSE,Internalizing,Sexual Problems,Difficulties Reaching Orgasm,,I found it difficult to reach orgasm.
-77,FALSE,Somatoform,,Disease Conviction,,I had an illness or disease that others dismissed.
-78,FALSE,Somatoform,,Disease Conviction,,I got angry when people did not take my health problems seriously.
-79,FALSE,Somatoform,,Disease Conviction,,It was difficult to find healthcare providers who recognized my illness.
-80,FALSE,Somatoform,,Disease Conviction,,I was frustrated with having to convince others I had a real illness.
-81,FALSE,Externalizing,Antagonism,Dishonesty,Deceitfulness,I said things that were not true.
-82,FALSE,Externalizing,Antagonism,Dishonesty,Deceitfulness,I was willing to tell a small lie to make things easier for myself.
-83,FALSE,Externalizing,Antagonism,Dishonesty,Deceitfulness,I believed it was fine to tell a little lie in order to get out of trouble.
-84,FALSE,Externalizing,Antagonism,Dishonesty,Deceitfulness,I lied about myself to other people.
-85,FALSE,Externalizing,Antagonism,Dishonesty,Manipulativeness,I tried to con or cheat other people.
-86,FALSE,Externalizing,Antagonism,Dishonesty,Manipulativeness,I found it easy to deceive others.
-87,FALSE,Externalizing,Antagonism,Dishonesty,Manipulativeness,I found it easy to manipulate others.
-88,FALSE,Externalizing,Antagonism,Dishonesty,Manipulativeness,I made people believe almost anything.
-89,FALSE,Externalizing,Disinhibition,Disorganization,,I was never on time.
-90,FALSE,Externalizing,Disinhibition,Disorganization,,I had trouble planning and keeping to schedules.
-91,FALSE,Externalizing,Disinhibition,Disorganization,,I paid my bills late or missed other important deadlines.
-92,FALSE,Externalizing,Disinhibition,Disorganization,,I lost things that I needed.
-93,FALSE,Externalizing,Disinhibition,Disorganization,,I could have improved on my organizational skills.
-94,FALSE,Externalizing,Disinhibition,Disorganization,,I missed appointments because I forgot about them.
-95,FALSE,Externalizing,Disinhibition,Disorganization,,I was a messy person.
-96,FALSE,Thought Disorder,,Dissociation,,I had the experience that everything suddenly seemed unfamiliar and I forgot where I was.
-97,FALSE,Thought Disorder,,Dissociation,,I felt like I no longer existed.
-98,FALSE,Thought Disorder,,Dissociation,,I had blank spells or periods of missing time.
-99,FALSE,Thought Disorder,,Dissociation,,I felt that things around me were not real.
-100,FALSE,Thought Disorder,,Dissociation,,I felt like I was outside of my body.
-101,FALSE,Thought Disorder,,Dissociation,,I had trouble telling whether something really happened or I just imagined it.
-102,FALSE,Internalizing,Distress,Distress-Dysphoria,Anhedonia,Nothing seemed interesting to me.
-103,FALSE,Internalizing,Distress,Distress-Dysphoria,Anhedonia,I didn't get excited about very much.
-104,FALSE,Internalizing,Distress,Distress-Dysphoria,Anhedonia,I didn't experience the joy and pleasure that most other people do.
-105,FALSE,Internalizing,Distress,Distress-Dysphoria,Anxious Worry,I was overwhelmed by anxiety.
-106,FALSE,Internalizing,Distress,Distress-Dysphoria,Anxious Worry,I felt nervous and on edge.
-107,FALSE,Internalizing,Distress,Distress-Dysphoria,Anxious Worry,I felt very stressed.
-108,FALSE,Internalizing,Distress,Distress-Dysphoria,Depressed Mood,I felt hopeless about the future.
-109,FALSE,Internalizing,Distress,Distress-Dysphoria,Depressed Mood,I felt worthless.
-110,FALSE,Internalizing,Distress,Distress-Dysphoria,Depressed Mood,I felt depressed.
-111,FALSE,Internalizing,Distress,Distress-Dysphoria,Depressed Mood,I felt down and discouraged.
-112,FALSE,Internalizing,Distress,Distress-Dysphoria,Lassitude,Took a lot of effort to get going.
-113,FALSE,Internalizing,Distress,Distress-Dysphoria,Lassitude,I had very little energy.
-114,FALSE,Internalizing,Distress,Distress-Dysphoria,Lassitude,I felt worn out.
-115,FALSE,Internalizing,Distress,Distress-Dysphoria,Shame/Guilt,I was disgusted with myself.
-116,FALSE,Internalizing,Distress,Distress-Dysphoria,Shame/Guilt,I blamed myself for things.
-117,FALSE,Internalizing,Distress,Distress-Dysphoria,Shame/Guilt,I was ashamed of myself.
-118,FALSE,Externalizing,Antagonism,Domineering,,I liked having power.
-119,FALSE,Externalizing,Antagonism,Domineering,,It was very important for me to take the lead.
-120,FALSE,Externalizing,Antagonism,Domineering,,I liked being the person who has the authority.
-121,FALSE,Externalizing,Antagonism,Domineering,,"When in a group, I liked to be in control."
-122,FALSE,Externalizing,Antagonism,Domineering,,Things went best when I told others what to do.
-123,FALSE,Externalizing,Antagonism,Domineering,,I was the dominant person in my relationships.
-124,FALSE,Thought Disorder,,Eccentricity,,Many people thought that my behavior was really strange.
-125,FALSE,Thought Disorder,,Eccentricity,,I thought about things in unusual ways.
-126,FALSE,Thought Disorder,,Eccentricity,,I said unusual things.
-127,FALSE,Thought Disorder,,Eccentricity,,People said I am strange.
-128,FALSE,Thought Disorder,,Eccentricity,,People told me that I was being inappropriate.
-129,FALSE,Internalizing,Distress,Emotionality,Affective Lability,My moods were intense and unpredictable.
-130,FALSE,Internalizing,Distress,Emotionality,Affective Lability,My mood changed suddenly for no good reason.
-131,FALSE,Internalizing,Distress,Emotionality,Affective Lability,I quickly went from being sad to being happy.
-132,FALSE,Internalizing,Distress,Emotionality,Angry Hostility,I got angry about small things.
-133,FALSE,Internalizing,Distress,Emotionality,Angry Hostility,I got so angry that I yelled or screamed.
-134,FALSE,Internalizing,Distress,Emotionality,Angry Hostility,I had angry outbursts.
-135,FALSE,Internalizing,Distress,Emotionality,Angry Hostility,My temper scared people.
-136,FALSE,Internalizing,Distress,Emotionality,Irritability,I was easily annoyed.
-137,FALSE,Internalizing,Distress,Emotionality,Irritability,I was grouchy.
-138,FALSE,Internalizing,Distress,Emotionality,Irritability,I was very irritable.
-139,FALSE,Internalizing,Distress,Emotionality,Irritability,Minor frustrations really upset me.
-140,FALSE,Externalizing,Antagonism,Entitlement,,I was selfish.
-141,FALSE,Externalizing,Antagonism,Entitlement,,I deserved special treatment.
-142,FALSE,Externalizing,Antagonism,Entitlement,,My needs and wants came first.
-143,FALSE,Externalizing,Antagonism,Entitlement,,Some people thought I was self-centered.
-144,FALSE,Externalizing,Antagonism,Entitlement,,I expected to get treated better than others.
-145,FALSE,Externalizing,Antagonism,Entitlement,,I was jealous of what other people have.
-146,FALSE,Internalizing,Eating Pathology,Excessive Exercise,,People told me I exercised too much.
-147,FALSE,Internalizing,Eating Pathology,Excessive Exercise,,I exercised more than was good for me.
-148,FALSE,Internalizing,Eating Pathology,Excessive Exercise,,I exercised until I felt sick.
-149,FALSE,Internalizing,Eating Pathology,Excessive Exercise,,I exercised when I was injured.
-150,FALSE,Internalizing,Eating Pathology,Excessive Exercise,,I had to cancel plans in order to get my exercise in.
-151,FALSE,Internalizing,Fear,Excoriation,,My skin picking created problems for me.
-152,FALSE,Internalizing,Fear,Excoriation,,I tried to conceal areas where I had picked at my skin.
-153,FALSE,Internalizing,Fear,Excoriation,,I picked at areas of my skin that I don't like.
-154,FALSE,Externalizing,Antagonism,Exhibitionism,,I liked attracting the attention of others.
-155,FALSE,Externalizing,Antagonism,Exhibitionism,,I enjoyed being the center of attention.
-156,FALSE,Externalizing,Antagonism,Exhibitionism,,I did things to get others to notice me.
-157,FALSE,Externalizing,Antagonism,Exhibitionism,,I dressed so as to call attention to myself.
-158,FALSE,Externalizing,Antagonism,Exhibitionism,,"When in public, I liked to stand out."
-159,FALSE,Thought Disorder,,Fantasy Proneness,,I was prone to daydreaming.
-160,FALSE,Thought Disorder,,Fantasy Proneness,,My fantasies felt very real to me.
-161,FALSE,Thought Disorder,,Fantasy Proneness,,I wished I lived in my fantasies instead of real life.
-162,FALSE,Thought Disorder,,Fantasy Proneness,,My mind wandered far away from the present.
-163,FALSE,Thought Disorder,,Fantasy Proneness,,My imagination held my attention for hours.
-164,FALSE,Thought Disorder,,Fantasy Proneness,,I lost myself in a fictional character.
-165,FALSE,Internalizing,Eating Pathology,Food Selectivity,,People told me that I was a very picky eater.
-166,FALSE,Internalizing,Eating Pathology,Food Selectivity,,I avoided foods because of their smell or texture.
-167,FALSE,Internalizing,Eating Pathology,Food Selectivity,,I avoided foods because I did not like their appearance
-168,FALSE,Internalizing,Eating Pathology,Food Selectivity,,Many types of food disgusted me.
-169,FALSE,Externalizing,Disinhibition,Gambling,,I was unable to resist the impulse to gamble.
-170,FALSE,Externalizing,Disinhibition,Gambling,,It was hard to stop gambling once I started.
-171,FALSE,Externalizing,Disinhibition,Gambling,,I kept gambling even though it caused problems in my relationships.
-172,FALSE,Externalizing,Disinhibition,Gambling,,I bet more money than I could really afford to lose.
-173,FALSE,Externalizing,Disinhibition,Gambling,,Gambling caused me to go into debt.
-174,FALSE,Externalizing,Disinhibition,Gaming,,"I kept gaming, even though it caused problems at work or school."
-175,FALSE,Externalizing,Disinhibition,Gaming,,I turned down social invitations so that I could spend more time gaming.
-176,FALSE,Externalizing,Disinhibition,Gaming,,I looked for ways to make time for gaming.
-177,FALSE,Externalizing,Disinhibition,Gaming,,My mood was negatively affected when I was unable to game as long as I wanted.
-178,FALSE,Externalizing,Antagonism,Grandiosity,,People admired me.
-179,FALSE,Externalizing,Antagonism,Grandiosity,,I recognized that I had a lot of special qualities.
-180,FALSE,Externalizing,Antagonism,Grandiosity,,I enjoyed thinking about my future and the great things it would bring.
-181,FALSE,Externalizing,Antagonism,Grandiosity,,I enjoyed looking in the mirror.
-182,FALSE,Externalizing,Antagonism,Grandiosity,,Most people would have liked to be like me.
-183,FALSE,Externalizing,Antagonism,Grandiosity,,I was very confident in myself around other people.
-184,FALSE,Somatoform,,Health Anxiety,,I spent too much time thinking about illnesses I might have.
-185,FALSE,Somatoform,,Health Anxiety,,Reading articles about disease made me worry about my health.
-186,FALSE,Somatoform,,Health Anxiety,,I worried a lot about my health.
-187,FALSE,Somatoform,,Health Anxiety,,I was afraid that I might suffer from a serious illness
-188,FALSE,Internalizing,Fear,Hoarding,,I found it difficult to throw things away.
-189,FALSE,Internalizing,Fear,Hoarding,,I collected things I did not need.
-190,FALSE,Internalizing,Fear,Hoarding,,My home was so cluttered that it was difficult to get around.
-191,FALSE,Internalizing,Fear,Hoarding,,I could not resist buying something that I did not need.
-192,FALSE,Internalizing,Fear,Hoarding,,My compulsive buying caused me financial problems.
-193,FALSE,Internalizing,Fear,Hoarding,,I kept items that I did not need.
-194,FALSE,Externalizing,Anankastia,Hyperdeliberation,,I put a lot of thought into ideas before I took any action.
-195,FALSE,Externalizing,Anankastia,Hyperdeliberation,,I examined every single option before making a selection.
-196,FALSE,Externalizing,Anankastia,Hyperdeliberation,,Major decisions took months of careful consideration to arrive at a choice.
-197,FALSE,Externalizing,Anankastia,Hyperdeliberation,,I made decisions only after I had all the information I could get.
-198,FALSE,Externalizing,Anankastia,Hyperdeliberation,,I carefully weighed out the pros and cons before I made any decision.
-199,FALSE,Externalizing,Anankastia,Hyperdeliberation,,I took time to consider all possible outcomes before making any decision.
-200,FALSE,Internalizing,Fear,Hypervigilance,,I felt like I was in danger.
-201,FALSE,Internalizing,Fear,Hypervigilance,,I felt on guard and on edge.
-202,FALSE,Internalizing,Fear,Hypervigilance,,I was easily startled.
-203,FALSE,Internalizing,Fear,Hypervigilance,,I felt that the world is a dangerous place.
-204,FALSE,Internalizing,Fear,Hypervigilance,,I was watchful for danger.
-205,FALSE,Internalizing,Fear,Hypervigilance,,I was concerned that other persons might bring me harm.
-206,FALSE,Internalizing,Distress,Insomnia,,I slept very poorly.
-207,FALSE,Internalizing,Distress,Insomnia,,I had trouble staying asleep.
-208,FALSE,Internalizing,Distress,Insomnia,,I woke up early and could not get back to sleep.
-209,FALSE,Internalizing,Distress,Insomnia,,I had trouble falling asleep.
-210,FALSE,Internalizing,Sexual Problems,Low Sexual Arousal,,It was difficult for me to get sexually aroused.
-211,FALSE,Internalizing,Sexual Problems,Low Sexual Arousal,,It was difficult for me to stay sexually aroused once sexual activity had started.
-212,FALSE,Internalizing,Sexual Problems,Low Sexual Arousal,,I did not experience enough sexual arousal (penile erection or vaginal lubrication) to enjoy sex.
-213,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,,I had little or no interest in sexual activity.
-214,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,,I felt little desire for sexual activity
-215,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,,I felt uninterested during sexual activity
-216,FALSE,Internalizing-Thought Disorder,,Manic Energy,,Others noticed that I was unusually excited or up.
-217,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I felt a lot more hyper or active than usual.
-218,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I was much more talkative than usual.
-219,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I had so much energy that others couldn't keep up with me.
-220,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I felt like I could go for days without sleeping.
-221,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I felt like I could keep going and going without ever getting tired.
-222,FALSE,Internalizing-Thought Disorder,,Manic Energy,,I had much more energy than usual.
-223,FALSE,Thought Disorder,,Mistrust,Cynicism,People were basically selfish with little concern for others.
-224,FALSE,Thought Disorder,,Mistrust,Cynicism,Others could not be trusted.
-225,FALSE,Thought Disorder,,Mistrust,Cynicism,"I believed that if you are not careful, other people will take advantage of you."
-226,FALSE,Thought Disorder,,Mistrust,Cynicism,Most people were just out for themselves.
-227,FALSE,Thought Disorder,,Mistrust,Suspiciousness,Some people were out to harm me.
-228,FALSE,Thought Disorder,,Mistrust,Suspiciousness,People talked behind my back.
-229,FALSE,Thought Disorder,,Mistrust,Suspiciousness,I was very suspicious of other people.
-230,FALSE,Thought Disorder,,Mistrust,Suspiciousness,I felt that other persons were acting against me.
-231,FALSE,Internalizing,Eating Pathology,Muscle Building,,It was important to me to build muscle mass and eliminate body fat.
-232,FALSE,Internalizing,Eating Pathology,Muscle Building,,Bulking up muscle while staying lean was a main fitness goal for me.
-233,FALSE,Internalizing,Eating Pathology,Muscle Building,,I wanted well-defined stomach muscles.
-234,FALSE,Internalizing,Eating Pathology,Muscle Building,,Being muscular was very important to me.
-235,FALSE,Internalizing,Eating Pathology,Muscle Building,,I used medicines or supplements to bulk up.
-236,FALSE,Internalizing,Distress,Nightmares,,Nightmares caused me to wake up at night.
-237,FALSE,Internalizing,Distress,Nightmares,,I had a recurring bad dream.
-238,FALSE,Internalizing,Distress,Nightmares,,I had a dream so distressing that it continued to affect me after waking.
-239,FALSE,Externalizing,Disinhibition,Non-persistence,,"I quit working (my job, homework, or housework) before I was finished."
-240,FALSE,Externalizing,Disinhibition,Non-persistence,,I could not return to a task after getting distracted.
-241,FALSE,Externalizing,Disinhibition,Non-persistence,,I quit tasks that became too challenging.
-242,FALSE,Externalizing,Disinhibition,Non-persistence,,I was unable to concentrate on a task when it was uninteresting to me.
-243,FALSE,Externalizing,Disinhibition,Non-persistence,,I became disinterested in tasks easily.
-244,FALSE,Externalizing,Disinhibition,Non-planfulness,,I made decisions quickly without thinking them through.
-245,FALSE,Externalizing,Disinhibition,Non-planfulness,,I said things without thinking.
-246,FALSE,Externalizing,Disinhibition,Non-planfulness,,I acted on impulse.
-247,FALSE,Externalizing,Disinhibition,Non-planfulness,,I did something spontaneous that I later regretted.
-248,FALSE,Externalizing,Disinhibition,Non-planfulness,,I failed to consider the consequences of an action.
-249,FALSE,Internalizing,Distress,NSSI,,I bit myself on purpose.
-250,FALSE,Internalizing,Distress,NSSI,,I hurt myself on purpose.
-251,FALSE,Internalizing,Distress,NSSI,,"I felt an urge to hurt myself (cut, burn, bite, etc.)."
-252,FALSE,Internalizing,Distress,NSSI,,I cut myself on purpose.
-253,FALSE,Internalizing,Distress,NSSI,,"At times, I just wanted to feel pain."
-254,FALSE,Internalizing,Distress,NSSI,,I intentionally scratched my skin so severely that it started bleeding.
-255,FALSE,Externalizing,Antisocial,Oppositionality,,"I enjoyed rebelling against authority figures (e.g., police, teachers, bosses)."
-256,FALSE,Externalizing,Antisocial,Oppositionality,,Life felt too short to follow other peoples' rules.
-257,FALSE,Externalizing,Antisocial,Oppositionality,,I was a rule breaker.
-258,FALSE,Externalizing,Antisocial,Oppositionality,,I didn't care whether my behavior was considered proper or not.
-259,FALSE,Externalizing,Antisocial,Oppositionality,,I didn't pay much attention to social standards of behavior.
-260,FALSE,Externalizing,Antisocial,Oppositionality,,I did things on purpose that were against the rules.
-261,FALSE,Internalizing,Fear,Panic,,I felt dizzy or lightheaded.
-262,FALSE,Internalizing,Fear,Panic,,I was trembling or shaking.
-263,FALSE,Internalizing,Fear,Panic,,My heart was racing or pounding.
-264,FALSE,Internalizing,Fear,Panic,,I was afraid that I might be having a heart attack.
-265,FALSE,Internalizing,Fear,Panic,,I was so worked up I thought I might die.
-266,FALSE,Internalizing,Sexual Problems,Paraphilias,,My sexual fantasies strained my relationships.
-267,FALSE,Internalizing,Sexual Problems,Paraphilias,,"I found watching unsuspecting people who were naked, masturbating, or having sex sexually arousing."
-268,FALSE,Internalizing,Sexual Problems,Paraphilias,,I found exposing my genitals to a stranger sexually arousing.
-269,FALSE,Internalizing,Sexual Problems,Paraphilias,,I found touching or rubbing against a stranger sexually arousing.
-270,FALSE,Internalizing,Sexual Problems,Paraphilias,,"I found sexual activity with someone unconscious (e.g., asleep or passed out from alcohol or a drug) sexually arousing."
-271,FALSE,Externalizing,Anankastia,Perfectionism,,People told me that I was too perfectionistic.
-272,FALSE,Externalizing,Anankastia,Perfectionism,,My desire for things to be flawless kept me from getting everything done.
-273,FALSE,Externalizing,Anankastia,Perfectionism,,"I strove for perfection, even when others said that I should move on."
-274,FALSE,Externalizing,Anankastia,Perfectionism,,I felt that my work must be flawless.
-275,FALSE,Externalizing,Anankastia,Perfectionism,,I demanded perfection from myself.
-276,FALSE,Internalizing,Sexual Problems,Premature Orgasm,,"During sex, I usually climaxed very quickly. "
-277,FALSE,Internalizing,Sexual Problems,Premature Orgasm,,"During sex, I consciously tried to delay orgasm so I could last longer."
-278,FALSE,Internalizing,Sexual Problems,Premature Orgasm,,I reached orgasm sooner than I wanted to.
-279,FALSE,Internalizing,Sexual Problems,Premature Orgasm,,I was unable to control when I reached orgasm.
-280,FALSE,Externalizing,Disinhibition,Problematic Shopping,,I found it hard to resist the urge to shop.
-281,FALSE,Externalizing,Disinhibition,Problematic Shopping,,I bought much more than I needed.
-282,FALSE,Externalizing,Disinhibition,Problematic Shopping,,I kept my shopping a secret.
-283,FALSE,Externalizing,Disinhibition,Problematic Shopping,,I spent more money shopping than I could afford.
-284,FALSE,Internalizing,Eating Pathology,Purging,,I vomited to control my weight.
-285,FALSE,Internalizing,Eating Pathology,Purging,,"I used certain medications (e.g. laxatives, diuretics) to lose weight."
-286,FALSE,Internalizing,Eating Pathology,Purging,,"I considered using syrup of ipecac, enemas, or suppositories to lose weight."
-287,FALSE,Thought Disorder,,Reality Distortion,Delusions,I could control things with my mind.
-288,FALSE,Thought Disorder,,Reality Distortion,Delusions,"I thought it may be possible for other people to read my mind, or for me to read other's minds."
-289,FALSE,Thought Disorder,,Reality Distortion,Delusions,I believed other people could actually hear my thoughts.
-290,FALSE,Thought Disorder,,Reality Distortion,Delusions,Special messages were written in papers or announced on TV just for me.
-291,FALSE,Thought Disorder,,Reality Distortion,Delusions,I thought I was the only one chosen by God for a special role.
-292,FALSE,Thought Disorder,,Reality Distortion,Hallucinations,I experienced strange sights or sounds.
-293,FALSE,Thought Disorder,,Reality Distortion,Hallucinations,I smelled things that were not actually there.
-294,FALSE,Thought Disorder,,Reality Distortion,Hallucinations,I saw things that were not really there.
-295,FALSE,Thought Disorder,,Reality Distortion,Hallucinations,I saw a person but then realized it was just a shadow.
-296,FALSE,Thought Disorder,,Reality Distortion,Hallucinations,I heard things that no one else could hear.
-297,FALSE,Thought Disorder,,Reality Distortion,Hallucinations,I had a sensation that something was crawling under my skin.
-298,FALSE,Externalizing,Disinhibition,Restlessness,,I felt restless when I had to sit still for more than ten minutes.
-299,FALSE,Externalizing,Disinhibition,Restlessness,,I had a hard time staying in my seat when I was supposed to be seated.
-300,FALSE,Externalizing,Disinhibition,Restlessness,,I felt the need to stand up when I should have been sitting down.
-301,FALSE,Externalizing,Disinhibition,Restlessness,,I avoided activities where I would need to sit down for long.
-302,FALSE,Externalizing,Disinhibition,Restlessness,,I had trouble sitting still.
-303,FALSE,Detachment,,Restricted Affectivity,,I hid my emotions.
-304,FALSE,Detachment,,Restricted Affectivity,,I hardly showed any feelings.
-305,FALSE,Detachment,,Restricted Affectivity,,I didn't respond to things that other people found emotional.
-306,FALSE,Detachment,,Restricted Affectivity,,People told me that I do not show emotions.
-307,FALSE,Detachment,,Restricted Affectivity,,I didn't express my emotions.
-308,FALSE,Internalizing,Eating Pathology,Restricted Eating,,People told me that I did not eat enough.
-309,FALSE,Internalizing,Eating Pathology,Restricted Eating,,I skipped two meals in a row.
-310,FALSE,Internalizing,Eating Pathology,Restricted Eating,,I went a long time without eating.
-311,FALSE,Internalizing,Eating Pathology,Restricted Eating,,I made excuses to avoid eating.
-312,FALSE,Externalizing,Anankastia,Rigidity,,"I refused to budge as a matter of principle, even on small matters."
-313,FALSE,Externalizing,Anankastia,Rigidity,,"I continued to do things the same way, even though my approach clearly wasn't working."
-314,FALSE,Externalizing,Anankastia,Rigidity,,I was very set in my ways.
-315,FALSE,Externalizing,Anankastia,Rigidity,,I refused to compromise because I knew I was right.
-316,FALSE,Externalizing,Anankastia,Rigidity,,I was rigid and inflexible in my approach to doing things.
-317,FALSE,Externalizing,Anankastia,Risk Aversion,,I went out of my way to avoid risks.
-318,FALSE,Externalizing,Anankastia,Risk Aversion,,I was cautious.
-319,FALSE,Externalizing,Anankastia,Risk Aversion,,I preferred to do things the safest way possible.
-320,FALSE,Externalizing,Anankastia,Risk Aversion,,I did not like taking chances.
-321,FALSE,Externalizing,Anankastia,Risk Aversion,,I was very cautious about taking risks.
-322,FALSE,Externalizing,Anankastia,Risk Aversion,,I avoided taking risks at all costs.
-323,FALSE,Externalizing,Disinhibition,Risk Taking,,I was a thrill-seeker.
-324,FALSE,Externalizing,Disinhibition,Risk Taking,,People would describe me as a risk-taker.
-325,FALSE,Externalizing,Disinhibition,Risk Taking,,I enjoyed activities that were a little bit dangerous.
-326,FALSE,Externalizing,Disinhibition,Risk Taking,,Taking risks made me feel alive.
-327,FALSE,Internalizing,Sexual Problems,Risky Sex,,I engaged in sexual activities that I later regretted.
-328,FALSE,Internalizing,Sexual Problems,Risky Sex,,I engaged in unprotected sex.
-329,FALSE,Internalizing,Sexual Problems,Risky Sex,,"I used sex to relieve negative feelings (e.g., anxiety, sadness, anger)."
-330,FALSE,Internalizing,Sexual Problems,Risky Sex,,I engaged in risky sexual activity.
-331,FALSE,Detachment,,Romantic Disinterest,,I found romantic relationships to be tiresome.
-332,FALSE,Detachment,,Romantic Disinterest,,Romantic relationships seemed like a hassle to me.
-333,FALSE,Detachment,,Romantic Disinterest,,I felt that I did not want to be in a close relationship.
-334,FALSE,Detachment,,Romantic Disinterest,,I had no interest in romantic relationships.
-335,TRUE,Detachment,,Romantic Disinterest,,I was happiest when I was in a romantic relationship.
-336,FALSE,Internalizing,Sexual Problems,Sex-Related Substance Use,,Sexual activity was even more enjoyable for me when I was intoxicated/high.
-337,FALSE,Internalizing,Sexual Problems,Sex-Related Substance Use,,I used substances to reduce anxiety during sexual activity.
-338,FALSE,Internalizing,Sexual Problems,Sex-Related Substance Use,,I used substances to make my partner more appealing.
-339,FALSE,Internalizing,Sexual Problems,Sex-Related Substance Use,,I used substances during sex to encourage my partner to use substances too.
-340,FALSE,Internalizing,Sexual Problems,Sexual Distress,,I felt guilty about sexual difficulties
-341,FALSE,Internalizing,Sexual Problems,Sexual Distress,,I was worried about my sex life.
-342,FALSE,Internalizing,Sexual Problems,Sexual Distress,,I felt sexually inadequate.
-343,FALSE,Internalizing,Sexual Problems,Sexual Distress,,I was unhappy about my sexual performance.
-344,FALSE,Internalizing,Sexual Problems,Sexual Pain,,I tensed up during sexual activity due to pain.
-345,FALSE,Internalizing,Sexual Problems,Sexual Pain,,I found sex physically uncomfortable.
-346,FALSE,Internalizing,Sexual Problems,Sexual Pain,,It was painful for me to have (or try to have) penetrative vaginal or anal intercourse.
-347,FALSE,Externalizing,Antagonism,Social Aggression,,I mocked people.
-348,FALSE,Externalizing,Antagonism,Social Aggression,,I tried to break up someone else's friendship or romantic relationship.
-349,FALSE,Externalizing,Antagonism,Social Aggression,,I insulted others.
-350,FALSE,Externalizing,Antagonism,Social Aggression,,People said I could be a bully.
-351,FALSE,Externalizing,Antagonism,Social Aggression,,I spread rumors about other people.
-352,FALSE,Externalizing,Antagonism,Social Aggression,,I taunted others.
-353,FALSE,Detachment,,Social Aloofness,,"When I had the chance, I chose to be alone rather than with other people."
-354,FALSE,Detachment,,Social Aloofness,,Interacting with others was not very important to me.
-355,FALSE,Detachment,,Social Aloofness,,I did not feel like spending time with people.
-356,FALSE,Detachment,,Social Aloofness,,I was happiest when I was alone.
-357,FALSE,Detachment,,Social Aloofness,,I preferred to stay home than to go to a party.
-358,FALSE,Detachment,,Social Anxiety,,I felt shy around other people.
-359,FALSE,Detachment,,Social Anxiety,,I had difficulty making eye contact with others.
-360,FALSE,Detachment,,Social Anxiety,,I was uncomfortable meeting new people.
-361,FALSE,Detachment,,Social Anxiety,,I avoided performing or giving a talk in front of others.
-362,FALSE,Detachment,,Social Anxiety,,I got anxious when others were watching me.
-363,FALSE,Somatoform,,Somatic Preoccupation,,I paid close attention to how my body feels.
-364,FALSE,Somatoform,,Somatic Preoccupation,,I noticed small changes to how my body feels.
-365,FALSE,Somatoform,,Somatic Preoccupation,,I was acutely aware of what was going on with my body.
-366,FALSE,Somatoform,,Somatic Preoccupation,,I could feel changes in my body.
-367,FALSE,Somatoform,,Somatic Preoccupation,,I was sensitive to changes in my body.
-368,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,I was afraid of spiders.
-369,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,I was fearful of rats or mice.
-370,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,I was afraid of getting stung or bitten.
-371,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,I avoided areas where there might be snakes or lizards.
-372,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,"The sight of an insect (e.g., a cockroach) upset me."
-373,FALSE,Internalizing,Fear,Specific Phobia Index,Blood-Injection Phobia,Seeing something gory made me woozy.
-374,FALSE,Internalizing,Fear,Specific Phobia Index,Blood-Injection Phobia,The sight of a needle upset me.
-375,FALSE,Internalizing,Fear,Specific Phobia Index,Blood-Injection Phobia,I felt faint at the sight of blood.
-376,FALSE,Internalizing,Fear,Specific Phobia Index,Situational Phobias,I was afraid of flying.
-377,FALSE,Internalizing,Fear,Specific Phobia Index,Situational Phobias,I was afraid of heights.
-378,FALSE,Internalizing,Fear,Specific Phobia Index,Situational Phobias,I became very anxious during a storm.
-379,FALSE,Internalizing,Fear,Specific Phobia Index,Situational Phobias,I was afraid of the dark.
-380,FALSE,Detachment,,Submissiveness,,I allowed people to take advantage of me.
-381,FALSE,Detachment,,Submissiveness,,I had trouble standing up for myself.
-382,FALSE,Detachment,,Submissiveness,,I had a hard time asserting myself to others.
-383,FALSE,Detachment,,Submissiveness,,Others could easily take advantage of me because I was too passive.
-384,FALSE,Internalizing,Distress,Suicidality,,I thought a lot about death.
-385,FALSE,Internalizing,Distress,Suicidality,,I worked on a plan to kill myself.
-386,FALSE,Internalizing,Distress,Suicidality,,I thought about killing myself.
-387,FALSE,Internalizing,Distress,Suicidality,,I tried to kill myself.
-388,FALSE,Internalizing,Fear,Trauma Reactions,,I avoided places that reminded me of something bad that happened.
-389,FALSE,Internalizing,Fear,Trauma Reactions,,I avoided people who might bring back bad memories.
-390,FALSE,Internalizing,Fear,Trauma Reactions,,I had repeated memories of a traumatic event.
-391,FALSE,Internalizing,Fear,Trauma Reactions,,I suddenly felt as if a traumatic event were actually happening again.
-392,FALSE,Internalizing,Fear,Trauma Reactions,,My mind was flooded with troubling images of a bad experience.
-393,FALSE,Internalizing,Fear,Trichotillomania,,I was embarrassed because I pulled my hair.
-394,FALSE,Internalizing,Fear,Trichotillomania,,I pulled out hairs that were a different color or texture.
-395,FALSE,Internalizing,Fear,Trichotillomania,,I felt an urge to pull my hair.
-396,FALSE,Detachment,,Well-being,,I was proud of myself.
-397,FALSE,Detachment,,Well-being,,I felt cheerful.
-398,FALSE,Detachment,,Well-being,,I felt optimistic.
-399,FALSE,Detachment,,Well-being,,I felt good about myself.
-400,FALSE,Detachment,,Well-being,,I felt motivated.
-401,FALSE,Externalizing,Anankastia,Workaholism,,I was something of a workaholic.
-402,FALSE,Externalizing,Anankastia,Workaholism,,"Even on days off, I found myself thinking about work."
-403,FALSE,Externalizing,Anankastia,Workaholism,,I was so focused on being productive that I had less time for friends and family.
-404,FALSE,Externalizing,Anankastia,Workaholism,,My work success was the most valuable aspect of my life.
-405,FALSE,Externalizing,Anankastia,Workaholism,,People told me that I work too much.
+HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
+1,FALSE,Detachment,NA,Social Aloofness,NA,I preferred to stay home than to go to a party.,HiTOP_659
+2,FALSE,Externalizing,Anankastia,Perfectionism,NA,I felt that my work must be flawless.,HiTOP_301
+3,FALSE,Thought Disorder,NA,Reality Distortion,Hallucinations,I saw things that were not really there.,HiTOP_596
+4,FALSE,Internalizing,Fear,Trichotillomania,NA,I was embarrassed because I pulled my hair.,HiTOP_383
+5,FALSE,Internalizing,Eating Pathology,Food Selectivity,NA,I avoided foods because I did not like their appearance,HiTOP_81
+6,FALSE,Internalizing,Fear,Panic,NA,I felt dizzy or lightheaded.,HiTOP_288
+7,FALSE,Externalizing,Antagonism,Dishonesty,Deceitfulness,I believed it was fine to tell a little lie in order to get out of trouble.,Ext_432
+8,FALSE,Thought Disorder,NA,Mistrust,Cynicism,Most people were just out for themselves.,Ext_79
+9,FALSE,Internalizing,Fear,Hoarding,NA,My home was so cluttered that it was difficult to get around.,HiTOP_256
+10,FALSE,Somatoform,NA,Bodily Distress,NA,I had pains in several parts of my body.,HiTOP_449
+11,FALSE,Internalizing,Distress,Distress-Dysphoria,Depressed Mood,I felt down and discouraged.,exp9
+12,FALSE,Detachment,NA,Social Anxiety,NA,I was uncomfortable meeting new people.,HiTOP_348
+13,FALSE,Externalizing,Disinhibition,Gambling,NA,I was unable to resist the impulse to gamble.,Ext_20
+14,FALSE,Externalizing,Antagonism,Dishonesty,Manipulativeness,I found it easy to manipulate others.,Ext_262
+15,FALSE,Externalizing,Disinhibition,Non-planfulness,NA,I made decisions quickly without thinking them through.,Ext_102
+16,FALSE,Internalizing,Eating Pathology,Body Focus,NA,I spent a lot of time looking at myself.,HiTOP_208
+17,FALSE,Internalizing,Fear,Cleaning,NA,It was difficult for me to touch something that was dirty.,HiTOP_221
+18,FALSE,Externalizing,Anankastia,Rigidity,NA,"I refused to budge as a matter of principle, even on small matters.",Ext_73
+19,FALSE,Externalizing,Antisocial,Oppositionality,NA,Life felt too short to follow other peoples' rules.,Ext_230
+20,FALSE,Internalizing,Distress,Distress-Dysphoria,Shame/Guilt,I blamed myself for things.,HiTOP_334
+21,FALSE,Thought Disorder,NA,Mistrust,Suspiciousness,I was very suspicious of other people.,HiTOP_661
+22,FALSE,Externalizing,Anankastia,Risk Aversion,NA,I was very cautious about taking risks.,HiTOP_37
+23,FALSE,Internalizing,Sexual Problems,Sexual Distress,NA,I felt sexually inadequate.,HiTOP_430
+24,FALSE,Detachment,NA,Restricted Affectivity,NA,I hardly showed any feelings.,HiTOP_29
+25,FALSE,Externalizing,Antagonism,Grandiosity,NA,Most people would have liked to be like me.,Ext_441
+26,FALSE,Internalizing,Distress,Emotionality,Angry Hostility,I got so angry that I yelled or screamed.,Ext_323
+27,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,NA,I felt little desire for sexual activity,HiTOP_400
+28,FALSE,Detachment,NA,Social Anxiety,NA,I avoided performing or giving a talk in front of others.,HiTOP_349
+29,FALSE,Externalizing,Disinhibition,Gambling,NA,It was hard to stop gambling once I started.,Ext_210
+30,FALSE,Somatoform,NA,Bodily Distress,NA,"I was bothered by stomach symptoms (diarrhea, nausea, stomach pain etc.)",HiTOP_452
+31,FALSE,Externalizing,Antagonism,Social Aggression,NA,I taunted others.,Ext_74
+32,FALSE,Externalizing,Disinhibition,Restlessness,NA,I felt restless when I had to sit still for more than ten minutes.,Ext_229
+33,FALSE,Internalizing,Distress,Insomnia,NA,I had trouble falling asleep.,HiTOP_274
+34,FALSE,Externalizing,Antagonism,Callousness,NA,Some people thought I was uncaring and unfeeling.,Ext_5
+35,FALSE,Externalizing,Antagonism,Domineering,NA,I was the dominant person in my relationships.,HiTOP_23
+36,FALSE,Externalizing,Disinhibition,Problematic Shopping,NA,I bought much more than I needed.,Ext_281
+37,FALSE,Internalizing,Fear,Trichotillomania,NA,I felt an urge to pull my hair.,HiTOP_385
+38,FALSE,Thought Disorder,NA,Fantasy Proneness,NA,I wished I lived in my fantasies instead of real life.,HiTOP_584
+39,FALSE,Internalizing,Sexual Problems,Paraphilias,NA,My sexual fantasies strained my relationships.,Ext_205
+40,FALSE,Externalizing,Disinhibition,Non-planfulness,NA,I did something spontaneous that I later regretted.,Ext_476
+41,FALSE,Internalizing,Distress,Suicidality,NA,I worked on a plan to kill myself.,HiTOP_358
+42,FALSE,Detachment,NA,Romantic Disinterest,NA,I felt that I did not want to be in a close relationship.,HiTOP_624
+43,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,NA,I wished I could change certain parts of my body.,HiTOP_206
+44,FALSE,Detachment,NA,Well-being,NA,I felt motivated.,HiTOP_632
+45,FALSE,Detachment,NA,Social Aloofness,NA,"When I had the chance, I chose to be alone rather than with other people.",HiTOP_50
+46,FALSE,Internalizing,Distress,NSSI,NA,"I felt an urge to hurt myself (cut, burn, bite, etc.).",Ext_468
+47,FALSE,Somatoform,NA,Health Anxiety,NA,I worried a lot about my health.,HiTOP_488
+48,FALSE,Internalizing-Thought Disorder,NA,Manic Energy,NA,Others noticed that I was unusually excited or up.,HiTOP_239
+49,FALSE,Thought Disorder,NA,Eccentricity,NA,People told me that I was being inappropriate.,HiTOP_567
+50,FALSE,Internalizing,Sexual Problems,Sexual Distress,NA,I was unhappy about my sexual performance.,HiTOP_431
+51,FALSE,Thought Disorder,NA,Reality Distortion,Hallucinations,I experienced strange sights or sounds.,HiTOP_594
+52,FALSE,Externalizing,Antagonism,Domineering,NA,I liked having power.,Ext_50
+53,FALSE,Internalizing,Distress,Cognitive Problems,NA,I had trouble remembering things.,HiTOP_231
+54,FALSE,Internalizing,Sexual Problems,Risky Sex,NA,"I used sex to relieve negative feelings (e.g., anxiety, sadness, anger).",Ext_70
+55,FALSE,Detachment,NA,Social Aloofness,NA,Interacting with others was not very important to me.,HiTOP_626
+56,FALSE,Externalizing,Disinhibition,Non-persistence,NA,I quit tasks that became too challenging.,Ext_256
+57,FALSE,Detachment,NA,Submissiveness,NA,I allowed people to take advantage of me.,exp26
+58,FALSE,Externalizing,Antagonism,Entitlement,NA,I was selfish.,Ext_136
+59,FALSE,Externalizing,Antagonism,Domineering,NA,I liked being the person who has the authority.,HiTOP_18
+60,FALSE,Internalizing,Fear,Counting,NA,I needed to count to a certain number before starting an activity.,HiTOP_238
+61,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,I was fearful of rats or mice.,HiTOP_182
+62,FALSE,Externalizing,Anankastia,Rigidity,NA,"I continued to do things the same way, even though my approach clearly wasn't working.",HiTOP_305
+63,FALSE,Externalizing,Antagonism,Entitlement,NA,I expected to get treated better than others.,Ext_370
+64,FALSE,Internalizing,Distress,Distress-Dysphoria,Anhedonia,I didn't get excited about very much.,HiTOP_508
+65,FALSE,Internalizing,Eating Pathology,Food Selectivity,NA,People told me that I was a very picky eater.,HiTOP_77
+66,FALSE,Internalizing,Fear,Agoraphobia,NA,"I was afraid that I would have a panic attack in a small, tight, or enclosed space.",HiTOP_161
+67,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,NA,I couldn't stop comparing my body to those of others.,HiTOP_105
+68,FALSE,Externalizing,Antisocial,Antisocial Behavior,NA,I stole from someone I knew without their knowledge.,Ext_369
+69,FALSE,Detachment,NA,Social Anxiety,NA,I had difficulty making eye contact with others.,HiTOP_345
+70,FALSE,Internalizing,Eating Pathology,Excessive Exercise,NA,I had to cancel plans in order to get my exercise in.,HiTOP_123
+71,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,NA,I had little or no interest in sexual activity.,HiTOP_399
+72,FALSE,Externalizing,Antagonism,Domineering,NA,It was very important for me to take the lead.,HiTOP_17
+73,FALSE,Internalizing,Fear,Excoriation,NA,My skin picking created problems for me.,HiTOP_246
+74,FALSE,Externalizing,Anankastia,Workaholism,NA,I was so focused on being productive that I had less time for friends and family.,Ext_371
+75,FALSE,Externalizing,Antagonism,Dishonesty,Deceitfulness,I lied about myself to other people.,Ext_444
+76,FALSE,Internalizing,Distress,Nightmares,NA,I had a dream so distressing that it continued to affect me after waking.,HiTOP_279
+77,FALSE,Internalizing-Thought Disorder,NA,Manic Energy,NA,I was much more talkative than usual.,HiTOP_243
+78,FALSE,Internalizing,Eating Pathology,Muscle Building,NA,I used medicines or supplements to bulk up.,HiTOP_133
+79,FALSE,Internalizing,Eating Pathology,Body Focus,NA,"If I passed by a reflective surface (like a window), I checked how I looked.",HiTOP_210
+80,FALSE,Thought Disorder,NA,Fantasy Proneness,NA,My imagination held my attention for hours.,HiTOP_586
+81,FALSE,Thought Disorder,NA,Fantasy Proneness,NA,I was prone to daydreaming.,HiTOP_582
+82,FALSE,Internalizing,Sexual Problems,Difficulties Reaching Orgasm,NA,I was unable to reach orgasm.,HiTOP_397
+83,FALSE,Internalizing,Eating Pathology,Restricted Eating,NA,I skipped two meals in a row.,HiTOP_148
+84,FALSE,Externalizing,Anankastia,Perfectionism,NA,My desire for things to be flawless kept me from getting everything done.,Ext_500
+85,FALSE,Externalizing,Antagonism,Grandiosity,NA,I was very confident in myself around other people.,Ext_498
+86,FALSE,Detachment,NA,Social Aloofness,NA,I did not feel like spending time with people.,HiTOP_649
+87,FALSE,Internalizing,Sexual Problems,Premature Orgasm,NA,I was unable to control when I reached orgasm.,HiTOP_415
+88,FALSE,Externalizing,Disinhibition,Non-persistence,NA,I became disinterested in tasks easily.,Ext_297
+89,FALSE,Detachment,NA,Well-being,NA,I felt cheerful.,HiTOP_392
+90,FALSE,Detachment,NA,Social Anxiety,NA,I got anxious when others were watching me.,HiTOP_355
+91,FALSE,Thought Disorder,NA,Reality Distortion,Delusions,I thought I was the only one chosen by God for a special role.,HiTOP_534
+92,FALSE,Internalizing,Eating Pathology,Excessive Exercise,NA,I exercised when I was injured.,HiTOP_121
+93,FALSE,Internalizing,Fear,Panic,NA,My heart was racing or pounding.,HiTOP_290
+94,FALSE,Internalizing,Fear,Trauma Reactions,NA,My mind was flooded with troubling images of a bad experience.,HiTOP_378
+95,FALSE,Externalizing,Antagonism,Entitlement,NA,I deserved special treatment.,Ext_175
+96,FALSE,Externalizing,Disinhibition,Disorganization,NA,I missed appointments because I forgot about them.,Ext_442
+97,FALSE,Externalizing,Disinhibition,Risk Taking,NA,People would describe me as a risk-taker.,Ext_495
+98,FALSE,Externalizing,Disinhibition,Gaming,NA,I turned down social invitations so that I could spend more time gaming.,Ext_350
+99,FALSE,Somatoform,NA,Conversion Symptoms,NA,I was troubled by unexplained seizures or convulsions.,HiTOP_463
+100,FALSE,Internalizing,Distress,Distress-Dysphoria,Depressed Mood,I felt hopeless about the future.,exp12
+101,FALSE,Internalizing,Eating Pathology,Dietary Restraint,NA,I tried to eat fewer snacks.,HiTOP_114
+102,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,I was afraid of spiders.,HiTOP_181
+103,FALSE,Externalizing,Disinhibition,Risk Taking,NA,Taking risks made me feel alive.,HiTOP_63
+104,FALSE,Externalizing,Antisocial,Oppositionality,NA,"I enjoyed rebelling against authority figures (e.g., police, teachers, bosses).",Ext_121
+105,FALSE,Internalizing,Fear,Hoarding,NA,I found it difficult to throw things away.,exp24
+106,FALSE,Internalizing,Distress,Emotionality,Irritability,Minor frustrations really upset me.,exp7
+107,FALSE,Thought Disorder,NA,Eccentricity,NA,I said unusual things.,HiTOP_564
+108,FALSE,Internalizing,Eating Pathology,Dietary Restraint,NA,I tried to eat only healthy foods.,HiTOP_107
+109,FALSE,Internalizing,Fear,Agoraphobia,NA,I was afraid of getting trapped in a crowd.,HiTOP_157
+110,FALSE,Internalizing,Fear,Checking,NA,I had a nagging doubt that I'd failed to do something important.,HiTOP_216
+111,FALSE,Internalizing,Distress,Emotionality,Angry Hostility,I got angry about small things.,Ext_193
+112,FALSE,Externalizing,Anankastia,Workaholism,NA,People told me that I work too much.,Ext_99
+113,FALSE,Somatoform,NA,Conversion Symptoms,NA,I had periods of unexplained deafness.,HiTOP_461
+114,FALSE,Internalizing,Sexual Problems,Premature Orgasm,NA,"During sex, I consciously tried to delay orgasm so I could last longer.",exp23
+115,FALSE,Somatoform,NA,Bodily Distress,NA,I felt something was wrong with my body.,HiTOP_451
+116,FALSE,Thought Disorder,NA,Reality Distortion,Delusions,I could control things with my mind.,HiTOP_527
+117,FALSE,Internalizing,Fear,Hypervigilance,NA,I was watchful for danger.,HiTOP_372
+118,FALSE,Internalizing,Fear,Agoraphobia,NA,"I felt like I would be unable to breathe in a small, tight, or enclosed space.",HiTOP_156
+119,FALSE,Externalizing,Antisocial,Oppositionality,NA,I didn't pay much attention to social standards of behavior.,Ext_396
+120,FALSE,Internalizing,Sexual Problems,Paraphilias,NA,"I found sexual activity with someone unconscious (e.g., asleep or passed out from alcohol or a drug) sexually arousing.",HiTOP_410
+121,FALSE,Internalizing,Fear,Hoarding,NA,I collected things I did not need.,exp25
+122,FALSE,Detachment,NA,Submissiveness,NA,I had a hard time asserting myself to others.,HiTOP_69
+123,FALSE,Detachment,NA,Restricted Affectivity,NA,People told me that I do not show emotions.,HiTOP_610
+124,FALSE,Internalizing,Sexual Problems,Difficulties Reaching Orgasm,NA,I reached orgasm later than I wanted to.,HiTOP_398
+125,FALSE,Internalizing,Distress,Emotionality,Angry Hostility,My temper scared people.,Ext_89
+126,FALSE,Thought Disorder,NA,Eccentricity,NA,Many people thought that my behavior was really strange.,HiTOP_560
+127,FALSE,Internalizing,Fear,Hypervigilance,NA,I was easily startled.,HiTOP_369
+128,FALSE,Externalizing,Disinhibition,Gaming,NA,My mood was negatively affected when I was unable to game as long as I wanted.,Ext_65
+129,FALSE,Internalizing,Fear,Hoarding,NA,My compulsive buying caused me financial problems.,HiTOP_259
+130,FALSE,Thought Disorder,NA,Reality Distortion,Delusions,"I thought it may be possible for other people to read my mind, or for me to read other's minds.",HiTOP_531
+131,FALSE,Internalizing,Sexual Problems,Sex-Related Substance Use,NA,I used substances during sex to encourage my partner to use substances too.,HiTOP_427
+132,FALSE,Detachment,NA,Well-being,NA,I felt good about myself.,HiTOP_395
+133,FALSE,Somatoform,NA,Bodily Distress,NA,I experienced chest pain.,HiTOP_455
+134,FALSE,Internalizing,Fear,Hoarding,NA,I kept items that I did not need.,HiTOP_261
+135,FALSE,Internalizing,Distress,Emotionality,Irritability,I was easily annoyed.,exp4
+136,FALSE,Internalizing,Fear,Panic,NA,I was so worked up I thought I might die.,HiTOP_299
+137,FALSE,Somatoform,NA,Disease Conviction,NA,I got angry when people did not take my health problems seriously.,HiTOP_474
+138,FALSE,Internalizing,Fear,Hypervigilance,NA,I was concerned that other persons might bring me harm.,HiTOP_54
+139,FALSE,Externalizing,Disinhibition,Restlessness,NA,I had trouble sitting still.,HiTOP_310
+140,FALSE,Externalizing,Anankastia,Workaholism,NA,"Even on days off, I found myself thinking about work.",Ext_278
+141,FALSE,Externalizing,Anankastia,Risk Aversion,NA,I avoided taking risks at all costs.,HiTOP_39
+142,FALSE,Internalizing,Fear,Trauma Reactions,NA,I avoided people who might bring back bad memories.,HiTOP_365
+143,FALSE,Externalizing,Anankastia,Workaholism,NA,My work success was the most valuable aspect of my life.,Ext_397
+144,FALSE,Internalizing,Eating Pathology,Appetite Loss,NA,My appetite was poor.,HiTOP_197
+145,FALSE,Detachment,NA,Well-being,NA,I felt optimistic.,HiTOP_393
+146,FALSE,Internalizing,Fear,Counting,NA,I counted things over and over again.,HiTOP_235
+147,FALSE,Externalizing,Antagonism,Grandiosity,NA,I enjoyed looking in the mirror.,Ext_43
+148,FALSE,Externalizing,Antagonism,Social Aggression,NA,I mocked people.,Ext_171
+149,FALSE,Externalizing,Disinhibition,Restlessness,NA,I had a hard time staying in my seat when I was supposed to be seated.,Ext_352
+150,FALSE,Externalizing,Antisocial,Oppositionality,NA,I didn't care whether my behavior was considered proper or not.,Ext_310
+151,FALSE,Internalizing,Sexual Problems,Difficulties Reaching Orgasm,NA,I found it difficult to reach orgasm.,HiTOP_442
+152,FALSE,Detachment,NA,Romantic Disinterest,NA,I had no interest in romantic relationships.,HiTOP_625
+153,FALSE,Internalizing,Sexual Problems,Sex-Related Substance Use,NA,I used substances to reduce anxiety during sexual activity.,HiTOP_424
+154,FALSE,Thought Disorder,NA,Fantasy Proneness,NA,I lost myself in a fictional character.,HiTOP_588
+155,FALSE,Internalizing,Fear,Cleaning,NA,I was obsessed with cleanliness.,HiTOP_226
+156,FALSE,Externalizing,Antisocial,Antisocial Behavior,NA,"I threatened someone with a weapon like a bat, brick, knife, or gun.",Ext_488
+157,FALSE,Internalizing,Distress,Suicidality,NA,I tried to kill myself.,HiTOP_361
+158,FALSE,Externalizing,Anankastia,Hyperdeliberation,NA,Major decisions took months of careful consideration to arrive at a choice.,Ext_291
+159,FALSE,Externalizing,Disinhibition,Non-persistence,NA,"I quit working (my job, homework, or housework) before I was finished.",Ext_11
+160,FALSE,Externalizing,Antagonism,Exhibitionism,NA,I did things to get others to notice me.,HiTOP_577
+161,FALSE,Internalizing,Fear,Specific Phobia Index,Situational Phobias,I became very anxious during a storm.,HiTOP_341
+162,FALSE,Externalizing,Antagonism,Exhibitionism,NA,I enjoyed being the center of attention.,HiTOP_16
+163,FALSE,Externalizing,Disinhibition,Problematic Shopping,NA,I spent more money shopping than I could afford.,Ext_407
+164,FALSE,Detachment,NA,Submissiveness,NA,I had trouble standing up for myself.,exp27
+165,FALSE,Thought Disorder,NA,Reality Distortion,Delusions,Special messages were written in papers or announced on TV just for me.,HiTOP_533
+166,FALSE,Externalizing,Antagonism,Domineering,NA,Things went best when I told others what to do.,HiTOP_21
+167,FALSE,Externalizing,Antisocial,Antisocial Behavior,NA,I forged checks or used other people's credit cards without permission.,Ext_308
+168,FALSE,Thought Disorder,NA,Dissociation,NA,I felt that things around me were not real.,HiTOP_554
+169,FALSE,Externalizing,Antagonism,Grandiosity,NA,I recognized that I had a lot of special qualities.,Ext_380
+170,FALSE,Internalizing,Distress,Distress-Dysphoria,Depressed Mood,I felt worthless.,exp14
+171,FALSE,Somatoform,NA,Somatic Preoccupation,NA,I noticed small changes to how my body feels.,HiTOP_492
+172,FALSE,Externalizing,Anankastia,Hyperdeliberation,NA,I made decisions only after I had all the information I could get.,Ext_35
+173,FALSE,Internalizing,Fear,Specific Phobia Index,Situational Phobias,I was afraid of heights.,HiTOP_340
+174,FALSE,Externalizing,Antagonism,Social Aggression,NA,I spread rumors about other people.,Ext_67
+175,FALSE,Externalizing,Antagonism,Dishonesty,Manipulativeness,I tried to con or cheat other people.,Ext_101
+176,FALSE,Thought Disorder,NA,Dissociation,NA,I had the experience that everything suddenly seemed unfamiliar and I forgot where I was.,HiTOP_469
+177,FALSE,Externalizing,Disinhibition,Gaming,NA,"I kept gaming, even though it caused problems at work or school.",Ext_135
+178,FALSE,Internalizing-Thought Disorder,NA,Manic Energy,NA,I felt like I could go for days without sleeping.,HiTOP_262
+179,FALSE,Externalizing,Anankastia,Workaholism,NA,I was something of a workaholic.,Ext_131
+180,FALSE,Internalizing,Sexual Problems,Risky Sex,NA,I engaged in sexual activities that I later regretted.,Ext_114
+181,FALSE,Thought Disorder,NA,Mistrust,Cynicism,"I believed that if you are not careful, other people will take advantage of you.",Ext_448
+182,FALSE,Externalizing,Antagonism,Grandiosity,NA,I enjoyed thinking about my future and the great things it would bring.,Ext_41
+183,FALSE,Internalizing,Sexual Problems,Paraphilias,NA,"I found watching unsuspecting people who were naked, masturbating, or having sex sexually arousing.",HiTOP_407
+184,FALSE,Externalizing,Disinhibition,Problematic Shopping,NA,I found it hard to resist the urge to shop.,Ext_238
+185,FALSE,Externalizing,Antisocial,Antisocial Behavior,NA,I vandalized or defaced public property.,Ext_154
+186,FALSE,Detachment,NA,Well-being,NA,I was proud of myself.,HiTOP_389
+187,FALSE,Detachment,NA,Romantic Disinterest,NA,I found romantic relationships to be tiresome.,HiTOP_42
+188,FALSE,Internalizing,Eating Pathology,Purging,NA,"I considered using syrup of ipecac, enemas, or suppositories to lose weight.",HiTOP_155
+189,FALSE,Externalizing,Antagonism,Entitlement,NA,My needs and wants came first.,Ext_216
+190,FALSE,Externalizing,Anankastia,Risk Aversion,NA,I went out of my way to avoid risks.,Ext_165
+191,FALSE,Somatoform,NA,Somatic Preoccupation,NA,I paid close attention to how my body feels.,HiTOP_491
+192,FALSE,Internalizing,Fear,Trichotillomania,NA,I pulled out hairs that were a different color or texture.,HiTOP_384
+193,FALSE,Thought Disorder,NA,Fantasy Proneness,NA,My mind wandered far away from the present.,HiTOP_585
+194,FALSE,Internalizing,Distress,Distress-Dysphoria,Anxious Worry,I was overwhelmed by anxiety.,HiTOP_187
+195,FALSE,Externalizing,Anankastia,Perfectionism,NA,People told me that I was too perfectionistic.,Ext_104
+196,FALSE,Externalizing,Disinhibition,Gambling,NA,I bet more money than I could really afford to lose.,Ext_261
+197,FALSE,Internalizing,Eating Pathology,Dietary Restraint,NA,I focused on eating more healthy foods.,HiTOP_111
+198,FALSE,Somatoform,NA,Conversion Symptoms,NA,I experienced sudden muscle weakness or paralysis.,HiTOP_462
+199,FALSE,Internalizing,Fear,Counting,NA,I felt compelled to count things.,HiTOP_233
+200,FALSE,Internalizing,Distress,Emotionality,Affective Lability,My mood changed suddenly for no good reason.,HiTOP_571
+201,FALSE,Internalizing,Eating Pathology,Body Focus,NA,I paid a lot of attention to how I look.,HiTOP_212
+202,FALSE,Internalizing,Eating Pathology,Appetite Loss,NA,I lost a significant amount of weight without even trying.,HiTOP_198
+203,FALSE,Somatoform,NA,Conversion Symptoms,NA,"I experienced a sudden sensory loss (e.g., seeing or hearing problems) that doctors could not explain.",HiTOP_458
+204,FALSE,Internalizing,Distress,Emotionality,Affective Lability,I quickly went from being sad to being happy.,HiTOP_572
+205,FALSE,Internalizing,Eating Pathology,Dietary Restraint,NA,I spent time planning how to reduce my food intake.,HiTOP_110
+206,FALSE,Externalizing,Anankastia,Risk Aversion,NA,I was cautious.,Ext_515
+207,FALSE,Externalizing,Disinhibition,Risk Taking,NA,I enjoyed activities that were a little bit dangerous.,HiTOP_62
+208,FALSE,Internalizing,Fear,Trauma Reactions,NA,I avoided places that reminded me of something bad that happened.,HiTOP_364
+209,FALSE,Internalizing,Fear,Hypervigilance,NA,I felt that the world is a dangerous place.,HiTOP_371
+210,FALSE,Somatoform,NA,Somatic Preoccupation,NA,I was sensitive to changes in my body.,HiTOP_498
+211,FALSE,Externalizing,Antagonism,Callousness,NA,I did not have much sympathy for others.,Ext_212
+212,FALSE,Internalizing,Eating Pathology,Restricted Eating,NA,People told me that I did not eat enough.,HiTOP_147
+213,FALSE,Externalizing,Antisocial,Oppositionality,NA,I was a rule breaker.,Ext_280
+214,FALSE,Internalizing,Distress,Emotionality,Irritability,I was grouchy.,exp5
+215,FALSE,Internalizing,Distress,NSSI,NA,I bit myself on purpose.,Ext_152
+216,FALSE,Externalizing,Anankastia,Perfectionism,NA,"I strove for perfection, even when others said that I should move on.",HiTOP_300
+217,FALSE,Somatoform,NA,Disease Conviction,NA,I had an illness or disease that others dismissed.,HiTOP_471
+218,FALSE,Externalizing,Antagonism,Exhibitionism,NA,"When in public, I liked to stand out.",HiTOP_9
+219,FALSE,Externalizing,Disinhibition,Non-planfulness,NA,I failed to consider the consequences of an action.,Ext_56
+220,FALSE,Thought Disorder,NA,Fantasy Proneness,NA,My fantasies felt very real to me.,HiTOP_583
+221,FALSE,Thought Disorder,NA,Reality Distortion,Hallucinations,I saw a person but then realized it was just a shadow.,HiTOP_601
+222,FALSE,Internalizing,Fear,Specific Phobia Index,Blood-Injection Phobia,Seeing something gory made me woozy.,HiTOP_200
+223,FALSE,Thought Disorder,NA,Reality Distortion,Delusions,I believed other people could actually hear my thoughts.,HiTOP_532
+224,FALSE,Internalizing,Distress,Distress-Dysphoria,Anxious Worry,I felt very stressed.,HiTOP_191
+225,FALSE,Externalizing,Anankastia,Rigidity,NA,I was rigid and inflexible in my approach to doing things.,HiTOP_309
+226,FALSE,Externalizing,Antagonism,Dishonesty,Deceitfulness,I said things that were not true.,Ext_303
+227,FALSE,Internalizing,Fear,Hypervigilance,NA,I felt on guard and on edge.,HiTOP_368
+228,FALSE,Externalizing,Antagonism,Social Aggression,NA,I tried to break up someone else's friendship or romantic relationship.,Ext_173
+229,FALSE,Externalizing,Disinhibition,Restlessness,NA,I felt the need to stand up when I should have been sitting down.,Ext_418
+230,FALSE,Internalizing,Sexual Problems,Paraphilias,NA,I found exposing my genitals to a stranger sexually arousing.,HiTOP_408
+231,FALSE,Internalizing,Distress,Emotionality,Affective Lability,My moods were intense and unpredictable.,HiTOP_570
+232,FALSE,Internalizing,Fear,Specific Phobia Index,Blood-Injection Phobia,I felt faint at the sight of blood.,HiTOP_202
+233,FALSE,Internalizing,Distress,Distress-Dysphoria,Lassitude,I had very little energy.,exp18
+234,FALSE,Internalizing,Distress,Cognitive Problems,NA,My mind felt mixed up.,Ext_64
+235,FALSE,Internalizing,Distress,NSSI,NA,"At times, I just wanted to feel pain.",HiTOP_282
+236,FALSE,Externalizing,Antagonism,Callousness,NA,People told me I was coldhearted.,Ext_367
+237,FALSE,Internalizing,Fear,Excoriation,NA,I tried to conceal areas where I had picked at my skin.,HiTOP_247
+238,FALSE,Internalizing,Sexual Problems,Sexual Pain,NA,I found sex physically uncomfortable.,HiTOP_444
+239,FALSE,Externalizing,Antisocial,Antisocial Behavior,NA,"I broke into houses, buildings, or cars.",Ext_415
+240,FALSE,Somatoform,NA,Health Anxiety,NA,Reading articles about disease made me worry about my health.,HiTOP_487
+241,FALSE,Thought Disorder,NA,Mistrust,Suspiciousness,Some people were out to harm me.,Ext_58
+242,FALSE,Externalizing,Disinhibition,Disorganization,NA,I lost things that I needed.,Ext_374
+243,FALSE,Externalizing,Disinhibition,Non-planfulness,NA,I said things without thinking.,Ext_166
+244,FALSE,Internalizing,Eating Pathology,Muscle Building,NA,I wanted well-defined stomach muscles.,HiTOP_131
+245,FALSE,Internalizing,Sexual Problems,Low Sexual Arousal,NA,I did not experience enough sexual arousal (penile erection or vaginal lubrication) to enjoy sex.,HiTOP_406
+246,FALSE,Internalizing,Distress,Cognitive Problems,NA,I struggled to think clearly.,Ext_300
+247,FALSE,Somatoform,NA,Somatic Preoccupation,NA,I could feel changes in my body.,HiTOP_494
+248,FALSE,Internalizing,Sexual Problems,Paraphilias,NA,I found touching or rubbing against a stranger sexually arousing.,HiTOP_409
+249,FALSE,Externalizing,Disinhibition,Gaming,NA,I looked for ways to make time for gaming.,Ext_45
+250,FALSE,Externalizing,Antagonism,Callousness,NA,I was not all that concerned with other peoples' needs.,Ext_103
+251,FALSE,Thought Disorder,NA,Mistrust,Suspiciousness,People talked behind my back.,HiTOP_56
+252,FALSE,Externalizing,Anankastia,Risk Aversion,NA,I did not like taking chances.,HiTOP_35
+253,FALSE,Thought Disorder,NA,Eccentricity,NA,I thought about things in unusual ways.,HiTOP_562
+254,FALSE,Internalizing,Fear,Specific Phobia Index,Situational Phobias,I was afraid of flying.,HiTOP_339
+255,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,NA,I did not like my weight (the number on the scale).,HiTOP_99
+256,FALSE,Thought Disorder,NA,Eccentricity,NA,People said I am strange.,HiTOP_566
+257,FALSE,Internalizing,Eating Pathology,Purging,NA,"I used certain medications (e.g. laxatives, diuretics) to lose weight.",HiTOP_154
+258,FALSE,Externalizing,Anankastia,Risk Aversion,NA,I preferred to do things the safest way possible.,HiTOP_34
+259,FALSE,Thought Disorder,NA,Reality Distortion,Hallucinations,I heard things that no one else could hear.,HiTOP_606
+260,FALSE,Internalizing,Fear,Agoraphobia,NA,"I avoided small, tight, or enclosed spaces.",HiTOP_158
+261,FALSE,Thought Disorder,NA,Mistrust,Cynicism,People were basically selfish with little concern for others.,Ext_198
+262,FALSE,Externalizing,Antagonism,Social Aggression,NA,People said I could be a bully.,Ext_420
+263,FALSE,Internalizing,Distress,Emotionality,Angry Hostility,I had angry outbursts.,Ext_514
+264,FALSE,Thought Disorder,NA,Mistrust,Suspiciousness,I felt that other persons were acting against me.,HiTOP_662
+265,FALSE,Thought Disorder,NA,Dissociation,NA,I had blank spells or periods of missing time.,HiTOP_552
+266,FALSE,Internalizing,Eating Pathology,Excessive Exercise,NA,I exercised more than was good for me.,HiTOP_116
+267,FALSE,Internalizing,Distress,Nightmares,NA,Nightmares caused me to wake up at night.,HiTOP_275
+268,FALSE,Externalizing,Antisocial,Antisocial Behavior,NA,I forced someone to have sex with me.,Ext_37
+269,FALSE,Externalizing,Disinhibition,Disorganization,NA,I paid my bills late or missed other important deadlines.,Ext_361
+270,FALSE,Internalizing,Distress,Emotionality,Irritability,I was very irritable.,exp6
+271,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,NA,I was dissatisfied with the shape of my body.,HiTOP_96
+272,FALSE,Somatoform,NA,Disease Conviction,NA,I was frustrated with having to convince others I had a real illness.,HiTOP_479
+273,FALSE,Externalizing,Disinhibition,Non-persistence,NA,I could not return to a task after getting distracted.,Ext_197
+274,FALSE,Externalizing,Antisocial,Antisocial Behavior,NA,I got in trouble with the law.,Ext_263
+275,FALSE,Internalizing,Sexual Problems,Sexual Pain,NA,It was painful for me to have (or try to have) penetrative vaginal or anal intercourse.,HiTOP_445
+276,FALSE,Thought Disorder,NA,Dissociation,NA,I felt like I was outside of my body.,HiTOP_557
+277,FALSE,Externalizing,Anankastia,Rigidity,NA,I was very set in my ways.,HiTOP_306
+278,FALSE,Detachment,NA,Social Aloofness,NA,I was happiest when I was alone.,HiTOP_657
+279,FALSE,Internalizing,Eating Pathology,Muscle Building,NA,Bulking up muscle while staying lean was a main fitness goal for me.,HiTOP_129
+280,FALSE,Thought Disorder,NA,Reality Distortion,Hallucinations,I smelled things that were not actually there.,HiTOP_595
+281,FALSE,Internalizing,Sexual Problems,Sexual Distress,NA,I was worried about my sex life.,HiTOP_429
+282,FALSE,Internalizing,Distress,Nightmares,NA,I had a recurring bad dream.,HiTOP_278
+283,FALSE,Somatoform,NA,Somatic Preoccupation,NA,I was acutely aware of what was going on with my body.,HiTOP_493
+284,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,NA,I felt uninterested during sexual activity,HiTOP_432
+285,FALSE,Internalizing,Eating Pathology,Excessive Exercise,NA,I exercised until I felt sick.,HiTOP_120
+286,FALSE,Internalizing,Sexual Problems,Premature Orgasm,NA,"During sex, I usually climaxed very quickly.",exp22
+287,FALSE,Detachment,NA,Restricted Affectivity,NA,I hid my emotions.,Ext_403
+288,FALSE,Internalizing-Thought Disorder,NA,Manic Energy,NA,I felt a lot more hyper or active than usual.,HiTOP_241
+289,FALSE,Externalizing,Anankastia,Hyperdeliberation,NA,I put a lot of thought into ideas before I took any action.,Ext_145
+290,FALSE,Internalizing,Sexual Problems,Sex-Related Substance Use,NA,I used substances to make my partner more appealing.,HiTOP_426
+291,FALSE,Internalizing,Fear,Agoraphobia,NA,I avoided small public spaces (such as an office or restaurant).,HiTOP_160
+292,FALSE,Internalizing,Sexual Problems,Risky Sex,NA,I engaged in risky sexual activity.,HiTOP_322
+293,FALSE,Internalizing,Eating Pathology,Purging,NA,I vomited to control my weight.,HiTOP_153
+294,FALSE,Externalizing,Disinhibition,Disorganization,NA,I was a messy person.,Ext_97
+295,FALSE,Externalizing,Disinhibition,Gambling,NA,Gambling caused me to go into debt.,Ext_269
+296,FALSE,Internalizing,Fear,Cleaning,NA,I worried about getting germs through contact with animals.,HiTOP_222
+297,FALSE,Somatoform,NA,Disease Conviction,NA,It was difficult to find healthcare providers who recognized my illness.,HiTOP_478
+298,FALSE,Internalizing,Distress,NSSI,NA,I hurt myself on purpose.,Ext_266
+299,FALSE,Externalizing,Disinhibition,Non-persistence,NA,I was unable to concentrate on a task when it was uninteresting to me.,Ext_257
+300,FALSE,Internalizing,Distress,Distress-Dysphoria,Anhedonia,Nothing seemed interesting to me.,HiTOP_173
+301,FALSE,Externalizing,Antagonism,Exhibitionism,NA,I liked attracting the attention of others.,HiTOP_11
+302,FALSE,Internalizing,Fear,Checking,NA,I found myself worrying whether I actually did something or only intended to do it.,HiTOP_219
+303,FALSE,Externalizing,Antagonism,Dishonesty,Manipulativeness,I found it easy to deceive others.,Ext_22
+304,FALSE,Internalizing,Distress,Distress-Dysphoria,Anxious Worry,I felt nervous and on edge.,HiTOP_190
+305,FALSE,Thought Disorder,NA,Dissociation,NA,I had trouble telling whether something really happened or I just imagined it.,HiTOP_558
+306,FALSE,Somatoform,NA,Conversion Symptoms,NA,I could not feel things I touched.,HiTOP_460
+307,FALSE,Externalizing,Antagonism,Social Aggression,NA,I insulted others.,Ext_400
+308,FALSE,Internalizing,Fear,Panic,NA,I was afraid that I might be having a heart attack.,HiTOP_295
+309,FALSE,Internalizing,Eating Pathology,Excessive Exercise,NA,People told me I exercised too much.,HiTOP_115
+310,TRUE,Detachment,NA,Romantic Disinterest,NA,I was happiest when I was in a romantic relationship.,HiTOP_634
+311,FALSE,Thought Disorder,NA,Dissociation,NA,I felt like I no longer existed.,HiTOP_547
+312,FALSE,Internalizing,Fear,Cleaning,NA,I had to clean myself because I felt contaminated.,HiTOP_228
+313,FALSE,Externalizing,Anankastia,Hyperdeliberation,NA,I carefully weighed out the pros and cons before I made any decision.,Ext_438
+314,FALSE,Somatoform,NA,Conversion Symptoms,NA,I experienced loss of consciousness or had fainting spells (in the absence of a diagnosed medical disorder),HiTOP_467
+315,FALSE,Externalizing,Anankastia,Rigidity,NA,I refused to compromise because I knew I was right.,HiTOP_307
+316,FALSE,Internalizing,Sexual Problems,Sex-Related Substance Use,NA,Sexual activity was even more enjoyable for me when I was intoxicated/high.,HiTOP_419
+317,FALSE,Internalizing,Fear,Checking,NA,I felt the urge to check to make sure I really had done something.,HiTOP_214
+318,FALSE,Somatoform,NA,Health Anxiety,NA,I spent too much time thinking about illnesses I might have.,HiTOP_483
+319,FALSE,Internalizing-Thought Disorder,NA,Manic Energy,NA,I had much more energy than usual.,HiTOP_645
+320,FALSE,Internalizing,Eating Pathology,Food Selectivity,NA,I avoided foods because of their smell or texture.,HiTOP_78
+321,FALSE,Detachment,NA,Restricted Affectivity,NA,I didn't respond to things that other people found emotional.,HiTOP_31
+322,FALSE,Internalizing,Fear,Checking,NA,"After I left my home, I worried that I failed to do something.",HiTOP_218
+323,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,I was afraid of getting stung or bitten.,HiTOP_183
+324,FALSE,Somatoform,NA,Bodily Distress,NA,"I was bothered by several bodily symptoms (e.g., headache, fatigue or stomach problems) for which there was no clear or sufficient medical explanation.",HiTOP_456
+325,FALSE,Internalizing,Distress,Suicidality,NA,I thought about killing myself.,HiTOP_360
+326,FALSE,Internalizing-Thought Disorder,NA,Manic Energy,NA,I had so much energy that others couldn't keep up with me.,HiTOP_244
+327,FALSE,Externalizing,Antagonism,Dishonesty,Manipulativeness,I made people believe almost anything.,Ext_38
+328,FALSE,Externalizing,Antagonism,Exhibitionism,NA,I dressed so as to call attention to myself.,HiTOP_581
+329,FALSE,Externalizing,Antagonism,Callousness,NA,I did not really care how others felt.,Ext_127
+330,FALSE,Internalizing,Fear,Trauma Reactions,NA,I suddenly felt as if a traumatic event were actually happening again.,HiTOP_375
+331,FALSE,Internalizing,Fear,Specific Phobia Index,Blood-Injection Phobia,The sight of a needle upset me.,HiTOP_201
+332,FALSE,Somatoform,NA,Health Anxiety,NA,I was afraid that I might suffer from a serious illness,HiTOP_490
+333,FALSE,Internalizing,Distress,Insomnia,NA,I slept very poorly.,HiTOP_270
+334,FALSE,Externalizing,Disinhibition,Problematic Shopping,NA,I kept my shopping a secret.,Ext_384
+335,FALSE,Internalizing,Eating Pathology,Body Focus,NA,I spent a lot of time grooming myself.,HiTOP_213
+336,FALSE,Externalizing,Antagonism,Entitlement,NA,Some people thought I was self-centered.,Ext_255
+337,FALSE,Externalizing,Disinhibition,Disorganization,NA,I had trouble planning and keeping to schedules.,Ext_320
+338,FALSE,Detachment,NA,Romantic Disinterest,NA,Romantic relationships seemed like a hassle to me.,HiTOP_44
+339,FALSE,Externalizing,Disinhibition,Disorganization,NA,I could have improved on my organizational skills.,Ext_429
+340,FALSE,Externalizing,Disinhibition,Risk Taking,NA,I was a thrill-seeker.,Ext_425
+341,FALSE,Internalizing,Fear,Checking,NA,"Even when I was very careful, I worried whether I had done something correctly.",HiTOP_215
+342,FALSE,Externalizing,Disinhibition,Gambling,NA,I kept gambling even though it caused problems in my relationships.,Ext_26
+343,FALSE,Internalizing,Distress,Distress-Dysphoria,Shame/Guilt,I was ashamed of myself.,HiTOP_336
+344,FALSE,Internalizing,Sexual Problems,Sexual Pain,NA,I tensed up during sexual activity due to pain.,HiTOP_433
+345,FALSE,Detachment,NA,Submissiveness,NA,Others could easily take advantage of me because I was too passive.,HiTOP_71
+346,FALSE,Internalizing,Eating Pathology,Dietary Restraint,NA,I tried to limit the number of fatty foods I ate.,HiTOP_109
+347,FALSE,Internalizing,Fear,Specific Phobia Index,Situational Phobias,I was afraid of the dark.,HiTOP_342
+348,FALSE,Internalizing,Sexual Problems,Risky Sex,NA,I engaged in unprotected sex.,Ext_172
+349,FALSE,Internalizing,Fear,Counting,NA,I thought that certain numbers were lucky for me.,HiTOP_237
+350,FALSE,Internalizing,Eating Pathology,Body Focus,NA,I spent a lot of time getting ready before going out.,HiTOP_211
+351,FALSE,Externalizing,Antagonism,Domineering,NA,"When in a group, I liked to be in control.",HiTOP_19
+352,FALSE,Thought Disorder,NA,Mistrust,Cynicism,Others could not be trusted.,Ext_279
+353,FALSE,Internalizing,Fear,Cleaning,NA,I avoided contact with people because I was worried about germs.,HiTOP_223
+354,FALSE,Externalizing,Anankastia,Hyperdeliberation,NA,I examined every single option before making a selection.,Ext_189
+355,FALSE,Externalizing,Anankastia,Perfectionism,NA,I demanded perfection from myself.,HiTOP_302
+356,FALSE,Externalizing,Antagonism,Grandiosity,NA,People admired me.,Ext_219
+357,FALSE,Internalizing,Distress,Insomnia,NA,I woke up early and could not get back to sleep.,HiTOP_273
+358,FALSE,Internalizing,Eating Pathology,Binge Eating,NA,"I ate a very large amount of food in a short period of time (e.g., within 2 hours).",HiTOP_93
+359,FALSE,Internalizing,Distress,Insomnia,NA,I had trouble staying asleep.,HiTOP_271
+360,FALSE,Externalizing,Disinhibition,Disorganization,NA,I was never on time.,Ext_13
+361,FALSE,Internalizing,Eating Pathology,Restricted Eating,NA,I went a long time without eating.,HiTOP_150
+362,FALSE,Internalizing,Eating Pathology,Restricted Eating,NA,I made excuses to avoid eating.,HiTOP_151
+363,FALSE,Internalizing,Distress,Cognitive Problems,NA,I was easily distracted.,HiTOP_230
+364,FALSE,Internalizing,Eating Pathology,Food Selectivity,NA,Many types of food disgusted me.,HiTOP_85
+365,FALSE,Internalizing,Distress,Distress-Dysphoria,Depressed Mood,I felt depressed.,exp8
+366,FALSE,Internalizing,Fear,Excoriation,NA,I picked at areas of my skin that I don't like.,HiTOP_248
+367,FALSE,Internalizing,Distress,Distress-Dysphoria,Lassitude,Took a lot of effort to get going.,exp17
+368,FALSE,Internalizing,Sexual Problems,Premature Orgasm,NA,I reached orgasm sooner than I wanted to.,HiTOP_414
+369,FALSE,Internalizing,Eating Pathology,Muscle Building,NA,It was important to me to build muscle mass and eliminate body fat.,HiTOP_128
+370,FALSE,Detachment,NA,Social Anxiety,NA,I felt shy around other people.,HiTOP_344
+371,FALSE,Somatoform,NA,Bodily Distress,NA,My muscles were weak.,HiTOP_450
+372,FALSE,Internalizing,Eating Pathology,Muscle Building,NA,Being muscular was very important to me.,HiTOP_132
+373,FALSE,Internalizing,Distress,Suicidality,NA,I thought a lot about death.,HiTOP_356
+374,FALSE,Externalizing,Anankastia,Hyperdeliberation,NA,I took time to consider all possible outcomes before making any decision.,Ext_457
+375,FALSE,Internalizing,Sexual Problems,Low Sexual Arousal,NA,It was difficult for me to stay sexually aroused once sexual activity had started.,HiTOP_404
+376,FALSE,Detachment,NA,Restricted Affectivity,NA,I didn't express my emotions.,HiTOP_618
+377,FALSE,Externalizing,Antagonism,Dishonesty,Deceitfulness,I was willing to tell a small lie to make things easier for myself.,Ext_395
+378,FALSE,Internalizing,Distress,Cognitive Problems,NA,My thoughts kept jumping from one thing to another.,HiTOP_543
+379,FALSE,Externalizing,Antagonism,Entitlement,NA,I was jealous of what other people have.,Ext_381
+380,FALSE,Internalizing,Distress,Distress-Dysphoria,Anhedonia,I didn't experience the joy and pleasure that most other people do.,HiTOP_8
+381,FALSE,Internalizing,Fear,Hoarding,NA,I could not resist buying something that I did not need.,HiTOP_258
+382,FALSE,Internalizing,Sexual Problems,Sexual Distress,NA,I felt guilty about sexual difficulties,HiTOP_428
+383,FALSE,Internalizing,Fear,Counting,NA,I avoided numbers that could bring bad luck.,HiTOP_234
+384,FALSE,Externalizing,Disinhibition,Restlessness,NA,I avoided activities where I would need to sit down for long.,Ext_460
+385,FALSE,Thought Disorder,NA,Reality Distortion,Hallucinations,I had a sensation that something was crawling under my skin.,HiTOP_608
+386,FALSE,Internalizing,Distress,Distress-Dysphoria,Lassitude,I felt worn out.,exp19
+387,FALSE,Internalizing,Distress,NSSI,NA,I cut myself on purpose.,HiTOP_281
+388,FALSE,Internalizing,Sexual Problems,Low Sexual Arousal,NA,It was difficult for me to get sexually aroused.,HiTOP_403
+389,FALSE,Internalizing,Eating Pathology,Appetite Loss,NA,I did not feel much like eating.,HiTOP_199
+390,FALSE,Externalizing,Antisocial,Antisocial Behavior,NA,I found it enjoyable to hurt animals.,Ext_227
+391,FALSE,Externalizing,Disinhibition,Non-planfulness,NA,I acted on impulse.,Ext_264
+392,FALSE,Internalizing,Eating Pathology,Binge Eating,NA,"Once I started eating, I could not stop.",HiTOP_87
+393,FALSE,Internalizing,Fear,Cleaning,NA,I felt the need to wash my hands again and again.,HiTOP_224
+394,FALSE,Internalizing,Distress,Distress-Dysphoria,Shame/Guilt,I was disgusted with myself.,HiTOP_333
+395,FALSE,Externalizing,Antagonism,Callousness,NA,I did not concern myself with helping people.,Ext_402
+396,FALSE,Internalizing-Thought Disorder,NA,Manic Energy,NA,I felt like I could keep going and going without ever getting tired.,HiTOP_265
+397,FALSE,Internalizing,Fear,Panic,NA,I was trembling or shaking.,HiTOP_289
+398,FALSE,Internalizing,Eating Pathology,Binge Eating,NA,I could not resist eating.,HiTOP_92
+399,FALSE,Externalizing,Antisocial,Oppositionality,NA,I did things on purpose that were against the rules.,Ext_512
+400,FALSE,Somatoform,NA,Conversion Symptoms,NA,I had periods of unexplained blindness.,HiTOP_464
+401,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,"The sight of an insect (e.g., a cockroach) upset me.",HiTOP_185
+402,FALSE,Internalizing,Fear,Hypervigilance,NA,I felt like I was in danger.,HiTOP_367
+403,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,I avoided areas where there might be snakes or lizards.,HiTOP_184
+404,FALSE,Internalizing,Distress,NSSI,NA,I intentionally scratched my skin so severely that it started bleeding.,HiTOP_286
+405,FALSE,Internalizing,Fear,Trauma Reactions,NA,I had repeated memories of a traumatic event.,HiTOP_374

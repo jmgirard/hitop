@@ -140,7 +140,6 @@
 #' }
 "ku_hitopbr"
 
-
 #' Real HiTOP-SR Data
 #'
 #' Real responses to items on the HiTOP-SR from University of Kansas students.

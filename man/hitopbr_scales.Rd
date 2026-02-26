@@ -5,7 +5,7 @@
 \alias{hitopbr_scales}
 \title{HiTOP-BR Scale Data}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 7 rows and 5 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 8 rows and 5 columns.
 }
 \usage{
 hitopbr_scales

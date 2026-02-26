@@ -15,7 +15,8 @@ hitopsr_scales <-
     nItems = purrr::map_dbl(itemdata, nrow),
     itemNumbers = purrr::map(itemdata, "HSR"),
     camelCase = snakecase::to_any_case(Scale, case = "lower_camel")
-  )
+  ) |>
+  dplyr::arrange(Scale)
 names(hitopsr_scales$itemNumbers) <- hitopsr_scales$camelCase
 usethis::use_data(hitopsr_scales, overwrite = TRUE)
 
@@ -33,6 +34,18 @@ hitopsr_subscales <-
     nItems = purrr::map_dbl(itemdata, nrow),
     itemNumbers = purrr::map(itemdata, "HSR"),
     camelCase = snakecase::to_any_case(Subscale, case = "lower_camel")
-  )
+  ) |>
+  dplyr::arrange(Subscale)
 names(hitopsr_subscales$itemNumbers) <- hitopsr_subscales$camelCase
 usethis::use_data(hitopsr_subscales, overwrite = TRUE)
+
+## HiTOP-SR Instructions
+hitopsr_instructions <-
+  list(
+    start = "Please consider whether there have been significant times during the last 12 months during which the following statements applied to you. Then please select the option that best describes how well each statement described you during that period.",
+    options = data.frame(
+      value = c(1, 2, 3, 4),
+      label = c("Not at all", "A little", "Moderately", "A lot")
+    )
+  )
+usethis::use_data(hitopsr_instructions, overwrite = TRUE)
