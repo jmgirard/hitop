@@ -20,7 +20,7 @@ library(tibble)
 ```
 
 
-The HiTOP-SR instrument has 405 items and yields 76 scale scores. To demonstrate the ability of the package to calculate these scale scores, we can use real example data (n=143) that was collected at the University of Kansas (KU) by Girard & Gray in 2024. This data is stored in the package under the name `ku_hitopsr`.
+The HiTOP-SR instrument has 405 items and yields 76 scale scores. To demonstrate the ability of the package to calculate these scale scores, we can use real example data (n=411) that was collected at the University of Kansas (KU) by Girard & Gray in 2024--2025. This data is stored in the package under the name `ku_hitopsr`.
 
 First, we load the package into memory using the `library()` function. If this doesn't work, make sure you installed the package properly (see the README on [GitHub](https://github.com/jmgirard/hitop)).
 
@@ -67,7 +67,7 @@ Alternatively, we could provide the item column names as a character string. Typ
 ```{r}
 scores <- score_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hitop%03d", 1:405),
+  items = sprintf("hsr%03d", 1:405),
   append = FALSE
 )
 scores
@@ -80,7 +80,7 @@ Also note that each scale column has the prefix "hsr_" in its name. You can chan
 ```{r}
 scores <- score_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hitop%03d", 1:405),
+  items = sprintf("hsr%03d", 1:405),
   prefix = "hitop_",
   append = FALSE
 )
@@ -94,7 +94,7 @@ In addition to calculating each scale score as the mean of its corresponding ite
 ```{r}
 scores <- score_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hitop%03d", 1:405),
+  items = sprintf("hsr%03d", 1:405),
   calc_se = TRUE,
   append = FALSE
 )
@@ -114,7 +114,7 @@ We can just add one or more of the following arguments to `score_hitopsr()`: `al
 
 scores <- score_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hitop%03d", 1:405),
+  items = sprintf("hsr%03d", 1:405),
   alpha = TRUE,
   omega = TRUE
 )

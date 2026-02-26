@@ -47,24 +47,24 @@
 #' Information about subscales in the HiTOP-SR.
 "hitopsr_subscales"
 
-#' B-HiTOP Item Data
+#' HiTOP-BR Item Data
 #'
-#' Information about items in the B-HiTOP.
+#' Information about items in the HiTOP-BR.
 #'
 #' @format A \link[tibble]{tibble} with 45 rows and 5 columns:
 #' \describe{
-#'   \item{BHITOP}{Item number on the B-HITOP}
+#'   \item{HBR}{Item number on the HITOP-BR}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{Scale}{Name of the scale}
 #'   \item{PFactor}{Whether the item is part of the p-Factor scale}
 #'   \item{Text}{Item text}
 #' }
-"bhitop_items"
+"hitopbr_items"
 
-#' B-HiTOP Scale Data
+#' HiTOP-BR Scale Data
 #'
-#' Information about scales in the B-HiTOP.
-"bhitop_scales"
+#' Information about scales in the HiTOP-BR.
+"hitopbr_scales"
 
 #' Simulated HiTOP-SR Data
 #'
@@ -76,15 +76,15 @@
 #' }
 "sim_hitopsr"
 
-#' Simulated B-HiTOP Data
+#' Simulated HiTOP-BR Data
 #'
-#' Simulated responses to items on the B-HiTOP (with 45 items).
+#' Simulated responses to items on the HiTOP-BR (with 45 items).
 #'
-#' @format ## `sim_bhitop` A \link[tibble]{tibble} with 100 rows and 45 columns.
+#' @format ## `sim_hitopbr` A \link[tibble]{tibble} with 100 rows and 45 columns.
 #' \describe{
-#'   \item{bhitop_1 to bhitop_45}{Responses on each item}
+#'   \item{hbr_1 to hbr_45}{Responses on each item}
 #' }
-"sim_bhitop"
+"sim_hitopbr"
 
 #' Simulated PID-5 Data
 #'
@@ -128,27 +128,27 @@
 #' }
 "ku_pid5sf"
 
-#' Real B-HiTOP Data
+#' Real HiTOP-BR Data
 #'
-#' Real responses to items on the B-HiTOP from University of Kansas students.
+#' Real responses to items on the HiTOP-BR from University of Kansas students.
 #'
-#' @format A \link[tibble]{tibble} with 143 rows and 47 columns.
+#' @format A \link[tibble]{tibble} with 411 rows and 47 columns.
 #' \describe{
 #'   \item{participant}{An anonymized id for each participant}
 #'   \item{biosex}{A factor indicating each participant's biological sex}
-#'   \item{bhitop01 to bhitop45}{Responses on each item}
+#'   \item{hbr01 to hbr45}{Responses on each item}
 #' }
-"ku_bhitop"
+"ku_hitopbr"
 
 
 #' Real HiTOP-SR Data
 #'
 #' Real responses to items on the HiTOP-SR from University of Kansas students.
 #'
-#' @format A \link[tibble]{tibble} with 143 rows and 407 columns.
+#' @format A \link[tibble]{tibble} with 4111 rows and 407 columns.
 #' \describe{
 #'   \item{participant}{An anonymized id for each participant}
 #'   \item{biosex}{A factor indicating each participant's biological sex}
-#'   \item{hitop001 to hitop405}{Responses on each item}
+#'   \item{hsr001 to hsr405}{Responses on each item}
 #' }
 "ku_hitopsr"

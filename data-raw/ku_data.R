@@ -1,7 +1,7 @@
 ## HiTOP-SR
 ku_hitopsr <-
   readr::read_csv(
-    "Z:/VIDAS/Study1/qualtrics_2025-09-02.csv",
+    "Y:/VIDAS/Study1/qualtrics_2026-02-26.csv",
     show_col_types = FALSE
   ) |>
   dplyr::filter(
@@ -16,30 +16,31 @@ ku_hitopsr <-
     biosex = factor(demo_biosex, levels = 0:1, labels = c("male", "female"))
   ) |>
   dplyr::select(participant, biosex, starts_with("hitop")) |>
+  dplyr::rename_all(\(x) stringr::str_replace(x, "hitop", "hsr")) |>
   dplyr::arrange(participant)
 usethis::use_data(ku_hitopsr, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------
 
-## B-HiTOP
+## HiTOP-BR
 item_conversion <-
-  dplyr::full_join(hitopsr_items, bhitop_items, by = "Text") |>
-  dplyr::select(HSR, BHITOP) |>
+  dplyr::full_join(hitopsr_items, hitopbr_items, by = "Text") |>
+  dplyr::select(HSR, HBR) |>
   tidyr::drop_na()
 
-ku_bhitop <-
+ku_hitopbr <-
   ku_hitopsr |>
   dplyr::select(
     participant,
     biosex,
-    sprintf("hitop%03d", item_conversion$HSR)
+    sprintf("hsr%03d", item_conversion$HSR)
   ) |>
   setNames(c(
     "participant",
     "biosex",
-    sprintf("bhitop%02d", item_conversion$BHITOP)
+    sprintf("hbr%02d", item_conversion$HBR)
   ))
-usethis::use_data(ku_bhitop, overwrite = TRUE)
+usethis::use_data(ku_hitopbr, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------
 

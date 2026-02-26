@@ -3,7 +3,7 @@
 export(calc_alpha)
 export(calc_omega)
 export(rank_scales)
-export(score_bhitop)
+export(score_hitopbr)
 export(score_hitopsr)
 export(score_pid5)
 export(validity_pid5)

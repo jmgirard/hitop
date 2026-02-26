@@ -1,14 +1,14 @@
-#' Score the B-HiTOP Instrument
+#' Score the HiTOP-BR Instrument
 #'
-#' Create a data frame with scores on all the B-HiTOP scales.
+#' Create a data frame with scores on all the HiTOP-BR scales.
 #'
-#' @param data A data frame containing all B-HiTOP items (numerically coded).
+#' @param data A data frame containing all HiTOP-BR items (numerically coded).
 #' @param items A vector of column names (as strings) or numbers (as integers)
-#'   corresponding to the 45 B-HiTOP items in order.
+#'   corresponding to the 45 HiTOP-BR items in order.
 #' @param srange An optional numeric vector specifying the minimum and maximum
-#'   values of the B-HiTOP items, used for reverse-coding. (default = `c(1, 4)`)
+#'   values of the HiTOP-BR items, used for reverse-coding. (default = `c(1, 4)`)
 #' @param prefix An optional string to add before each scale column name. If no
-#'   prefix is desired, set to an empty string `""`. (default = `"bhitop_"`)
+#'   prefix is desired, set to an empty string `""`. (default = `"hbr_"`)
 #' @param na.rm An optional logical indicating whether missing values should be
 #'   ignored when calculating scale scores. (default = `TRUE`)
 #' @param calc_se An optional logical indicating whether to calculate the
@@ -20,11 +20,11 @@
 #' @return A data frame containing all scale scores and standard errors (if
 #'   requested) and all original `data` columns (if requested)
 #' @export
-score_bhitop <- function(
+score_hitopbr <- function(
   data,
   items,
   srange = c(1, 4),
-  prefix = "bhitop_",
+  prefix = "hbr_",
   na.rm = TRUE,
   calc_se = FALSE,
   append = TRUE,
@@ -47,9 +47,9 @@ score_bhitop <- function(
   data_items <- lapply(data_items, as.numeric)
 
   ## Reverse score the necessary items
-  utils::data(bhitop_items)
+  utils::data(hitopbr_items)
   items_rev <-
-    bhitop_items[bhitop_items$Reverse == TRUE, "BHITOP", drop = TRUE]
+    hitopbr_items[hitopbr_items$Reverse == TRUE, "HBR", drop = TRUE]
   if (length(items_rev) > 0) {
     data_items[items_rev] <- lapply(
       items_rev,
@@ -65,7 +65,7 @@ score_bhitop <- function(
   data_items <- bind_columns(data_items)
 
   ## Find items per scale
-  items_scales <- bhitop_scales$itemNumbers
+  items_scales <- hitopbr_scales$itemNumbers
 
   ## Calculate mean scores per scale
   out <- bind_columns(

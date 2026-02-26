@@ -5,11 +5,11 @@
 \alias{ku_hitopsr}
 \title{Real HiTOP-SR Data}
 \format{
-A \link[tibble]{tibble} with 143 rows and 407 columns.
+A \link[tibble]{tibble} with 4111 rows and 407 columns.
 \describe{
 \item{participant}{An anonymized id for each participant}
 \item{biosex}{A factor indicating each participant's biological sex}
-\item{hitop001 to hitop405}{Responses on each item}
+\item{hsr001 to hsr405}{Responses on each item}
 }
 }
 \usage{

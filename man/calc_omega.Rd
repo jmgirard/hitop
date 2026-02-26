@@ -33,6 +33,9 @@ variances of the indicators.
 The function validates inputs and fails with informative messages if the CFA
 does not converge or if implied residual variances are invalid. Mixed-sign
 loadings trigger a warning (often indicates reverse-keying is needed).
+
+Note that the latent variable will be estimated as \code{f}, so please avoid
+naming any of your items that.
 }
 \references{
 \itemize{
