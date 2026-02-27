@@ -11,8 +11,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 The goal of *hitop* is to provide functions helpful for the Hierarchical
 Taxonomy of Psychopathology (HiTOP) Society. For now, this includes
-functions for scoring the PID-5 and HiTOP-SR aimed primarily at
-researchers. However, more features will be added soon, including
+functions for scoring the PID-5, HiTOP-SR, and HiTOP-BR aimed primarily
+at researchers. However, more features will be added soon, including
 features aimed primarily at clinicians.
 
 ## Installation
@@ -31,7 +31,7 @@ remotes::install_github("jmgirard/hitop")
 
 - [ ] Add Instrument Data
   - [x] HiTOP-SR (405)
-  - [x] B-HiTOP (45)
+  - [x] HiTOP-BR (45)
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
@@ -39,7 +39,7 @@ remotes::install_github("jmgirard/hitop")
   - [ ] PID-5-BFP (36)
 - [ ] Add Scoring Functions
   - [x] HiTOP-SR (405)
-  - [x] B-HiTOP (45)
+  - [x] HiTOP-BR (45)
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
@@ -50,7 +50,7 @@ remotes::install_github("jmgirard/hitop")
   - [x] PID-5-SF (100)
 - [ ] Add Reliability Functions
   - [x] HiTOP-SR (405)
-  - [x] B-HiTOP (45)
+  - [x] HiTOP-BR (45)
   - [ ] HiTOP-SR Harmful Substance Use Module
   - [ ] PID-5 (220)
   - [ ] PID-5-SF (100)
@@ -58,7 +58,7 @@ remotes::install_github("jmgirard/hitop")
   - [ ] PID-5-BFP (36)
 - [ ] Add Scoring Vignette
   - [x] HiTOP-SR (405)
-  - [x] B-HiTOP (45)
+  - [x] HiTOP-BR (45)
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
