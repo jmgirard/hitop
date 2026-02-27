@@ -1,0 +1,67 @@
+---
+format: 
+  docx:
+    reference-doc: reference.docx
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(tidyverse)
+library(flextable)
+library(officer)
+library(hitop)
+```
+
+**HiTOP-BR Questionnaire**
+
+`r hitopbr_instructions$start`
+
+```{r}
+#| label: build-table
+#| echo: false
+#| warning: false
+
+opts <- hitopbr_instructions$options
+
+legend_text <- paste(
+  opts$value,
+  opts$label,
+  sep = " = ",
+  collapse = " \u2022 "
+)
+
+table_data <-
+  hitopbr_items |>
+  select(HBR, Text) |>
+  mutate(Text = paste0(HBR, ".  ", Text)) |>
+  select(-HBR)
+
+opt_cols <- paste0("opt_", seq_len(nrow(opts)))
+
+for (i in seq_len(nrow(opts))) {
+  col_name <- opt_cols[i]
+  table_data[[col_name]] <- as.character(opts$value[i])
+}
+
+even_rows <- seq(2, nrow(table_data), by = 2)
+
+std_border <- fp_border(color = "black", width = 1.5)
+
+table_data |>
+  flextable() |>
+  delete_part(part = "header") |>
+  add_header_lines(values = legend_text) |>
+  align(align = "center", part = "header") |>
+  align(j = "Text", align = "left", part = "body") |>
+  align(j = opt_cols, align = "center", part = "body") |>
+  valign(valign = "center", part = "body") |>
+  width(j = "Text", width = 5.4) |>
+  width(j = opt_cols, width = 0.4) |>
+  padding(padding = 5, part = "all") |>
+  hline_top(border = std_border, part = "header") |>
+  hline_bottom(border = std_border, part = "header") |>
+  bg(i = even_rows, bg = "#f2f2f2", part = "body") |>
+  fontsize(size = 10, part = "all") |>
+  font(fontname = "Times New Roman", part = "all")
+```
