@@ -1,0 +1,5271 @@
+[[AdvancedFormat]]
+
+[[Question:DB]]
+[[ID:start_instructions]]
+Please consider whether there have been significant times during the last 12 months during which the following statements applied to you. Then please select the option that best describes how well each statement described you during that period.
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_001]]
+I preferred to stay home than to go to a party.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_002]]
+I felt that my work must be flawless.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_003]]
+I saw things that were not really there.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_004]]
+I was embarrassed because I pulled my hair.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_005]]
+I avoided foods because I did not like their appearance
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_006]]
+I felt dizzy or lightheaded.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_007]]
+I believed it was fine to tell a little lie in order to get out of trouble.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_008]]
+Most people were just out for themselves.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_009]]
+My home was so cluttered that it was difficult to get around.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_010]]
+I had pains in several parts of my body.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_011]]
+I felt down and discouraged.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_012]]
+I was uncomfortable meeting new people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_013]]
+I was unable to resist the impulse to gamble.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_014]]
+I found it easy to manipulate others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_015]]
+I made decisions quickly without thinking them through.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_016]]
+I spent a lot of time looking at myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_017]]
+It was difficult for me to touch something that was dirty.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_018]]
+I refused to budge as a matter of principle, even on small matters.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_019]]
+Life felt too short to follow other peoples' rules.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_020]]
+I blamed myself for things.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_021]]
+I was very suspicious of other people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_022]]
+I was very cautious about taking risks.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_023]]
+I felt sexually inadequate.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_024]]
+I hardly showed any feelings.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_025]]
+Most people would have liked to be like me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_026]]
+I got so angry that I yelled or screamed.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_027]]
+I felt little desire for sexual activity
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_028]]
+I avoided performing or giving a talk in front of others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_029]]
+It was hard to stop gambling once I started.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_030]]
+I was bothered by stomach symptoms (diarrhea, nausea, stomach pain etc.)
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_031]]
+I taunted others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_032]]
+I felt restless when I had to sit still for more than ten minutes.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_033]]
+I had trouble falling asleep.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_034]]
+Some people thought I was uncaring and unfeeling.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_035]]
+I was the dominant person in my relationships.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_036]]
+I bought much more than I needed.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_037]]
+I felt an urge to pull my hair.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_038]]
+I wished I lived in my fantasies instead of real life.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_039]]
+My sexual fantasies strained my relationships.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_040]]
+I did something spontaneous that I later regretted.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_041]]
+I worked on a plan to kill myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_042]]
+I felt that I did not want to be in a close relationship.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_043]]
+I wished I could change certain parts of my body.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_044]]
+I felt motivated.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_045]]
+When I had the chance, I chose to be alone rather than with other people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_046]]
+I felt an urge to hurt myself (cut, burn, bite, etc.).
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_047]]
+I worried a lot about my health.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_048]]
+Others noticed that I was unusually excited or up.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_049]]
+People told me that I was being inappropriate.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_050]]
+I was unhappy about my sexual performance.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_051]]
+I experienced strange sights or sounds.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_052]]
+I liked having power.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_053]]
+I had trouble remembering things.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_054]]
+I used sex to relieve negative feelings (e.g., anxiety, sadness, anger).
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_055]]
+Interacting with others was not very important to me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_056]]
+I quit tasks that became too challenging.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_057]]
+I allowed people to take advantage of me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_058]]
+I was selfish.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_059]]
+I liked being the person who has the authority.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_060]]
+I needed to count to a certain number before starting an activity.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_061]]
+I was fearful of rats or mice.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_062]]
+I continued to do things the same way, even though my approach clearly wasn't working.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_063]]
+I expected to get treated better than others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_064]]
+I didn't get excited about very much.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_065]]
+People told me that I was a very picky eater.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_066]]
+I was afraid that I would have a panic attack in a small, tight, or enclosed space.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_067]]
+I couldn't stop comparing my body to those of others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_068]]
+I stole from someone I knew without their knowledge.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_069]]
+I had difficulty making eye contact with others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_070]]
+I had to cancel plans in order to get my exercise in.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_071]]
+I had little or no interest in sexual activity.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_072]]
+It was very important for me to take the lead.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_073]]
+My skin picking created problems for me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_074]]
+I was so focused on being productive that I had less time for friends and family.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_075]]
+I lied about myself to other people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_076]]
+I had a dream so distressing that it continued to affect me after waking.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_077]]
+I was much more talkative than usual.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_078]]
+I used medicines or supplements to bulk up.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_079]]
+If I passed by a reflective surface (like a window), I checked how I looked.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_080]]
+My imagination held my attention for hours.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_081]]
+I was prone to daydreaming.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_082]]
+I was unable to reach orgasm.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_083]]
+I skipped two meals in a row.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_084]]
+My desire for things to be flawless kept me from getting everything done.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_085]]
+I was very confident in myself around other people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_086]]
+I did not feel like spending time with people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_087]]
+I was unable to control when I reached orgasm.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_088]]
+I became disinterested in tasks easily.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_089]]
+I felt cheerful.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_090]]
+I got anxious when others were watching me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_091]]
+I thought I was the only one chosen by God for a special role.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_092]]
+I exercised when I was injured.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_093]]
+My heart was racing or pounding.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_094]]
+My mind was flooded with troubling images of a bad experience.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_095]]
+I deserved special treatment.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_096]]
+I missed appointments because I forgot about them.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_097]]
+People would describe me as a risk-taker.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_098]]
+I turned down social invitations so that I could spend more time gaming.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_099]]
+I was troubled by unexplained seizures or convulsions.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_100]]
+I felt hopeless about the future.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_101]]
+I tried to eat fewer snacks.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_102]]
+I was afraid of spiders.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_103]]
+Taking risks made me feel alive.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_104]]
+I enjoyed rebelling against authority figures (e.g., police, teachers, bosses).
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_105]]
+I found it difficult to throw things away.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_106]]
+Minor frustrations really upset me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_107]]
+I said unusual things.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_108]]
+I tried to eat only healthy foods.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_109]]
+I was afraid of getting trapped in a crowd.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_110]]
+I had a nagging doubt that I'd failed to do something important.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_111]]
+I got angry about small things.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_112]]
+People told me that I work too much.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_113]]
+I had periods of unexplained deafness.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_114]]
+During sex, I consciously tried to delay orgasm so I could last longer.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_115]]
+I felt something was wrong with my body.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_116]]
+I could control things with my mind.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_117]]
+I was watchful for danger.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_118]]
+I felt like I would be unable to breathe in a small, tight, or enclosed space.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_119]]
+I didn't pay much attention to social standards of behavior.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_120]]
+I found sexual activity with someone unconscious (e.g., asleep or passed out from alcohol or a drug) sexually arousing.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_121]]
+I collected things I did not need.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_122]]
+I had a hard time asserting myself to others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_123]]
+People told me that I do not show emotions.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_124]]
+I reached orgasm later than I wanted to.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_125]]
+My temper scared people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_126]]
+Many people thought that my behavior was really strange.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_127]]
+I was easily startled.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_128]]
+My mood was negatively affected when I was unable to game as long as I wanted.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_129]]
+My compulsive buying caused me financial problems.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_130]]
+I thought it may be possible for other people to read my mind, or for me to read other's minds.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_131]]
+I used substances during sex to encourage my partner to use substances too.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_132]]
+I felt good about myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_133]]
+I experienced chest pain.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_134]]
+I kept items that I did not need.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_135]]
+I was easily annoyed.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_136]]
+I was so worked up I thought I might die.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_137]]
+I got angry when people did not take my health problems seriously.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_138]]
+I was concerned that other persons might bring me harm.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_139]]
+I had trouble sitting still.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_140]]
+Even on days off, I found myself thinking about work.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_141]]
+I avoided taking risks at all costs.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_142]]
+I avoided people who might bring back bad memories.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_143]]
+My work success was the most valuable aspect of my life.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_144]]
+My appetite was poor.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_145]]
+I felt optimistic.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_146]]
+I counted things over and over again.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_147]]
+I enjoyed looking in the mirror.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_148]]
+I mocked people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_149]]
+I had a hard time staying in my seat when I was supposed to be seated.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_150]]
+I didn't care whether my behavior was considered proper or not.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_151]]
+I found it difficult to reach orgasm.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_152]]
+I had no interest in romantic relationships.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_153]]
+I used substances to reduce anxiety during sexual activity.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_154]]
+I lost myself in a fictional character.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_155]]
+I was obsessed with cleanliness.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_156]]
+I threatened someone with a weapon like a bat, brick, knife, or gun.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_157]]
+I tried to kill myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_158]]
+Major decisions took months of careful consideration to arrive at a choice.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_159]]
+I quit working (my job, homework, or housework) before I was finished.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_160]]
+I did things to get others to notice me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_161]]
+I became very anxious during a storm.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_162]]
+I enjoyed being the center of attention.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_163]]
+I spent more money shopping than I could afford.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_164]]
+I had trouble standing up for myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_165]]
+Special messages were written in papers or announced on TV just for me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_166]]
+Things went best when I told others what to do.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_167]]
+I forged checks or used other people's credit cards without permission.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_168]]
+I felt that things around me were not real.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_169]]
+I recognized that I had a lot of special qualities.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_170]]
+I felt worthless.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_171]]
+I noticed small changes to how my body feels.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_172]]
+I made decisions only after I had all the information I could get.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_173]]
+I was afraid of heights.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_174]]
+I spread rumors about other people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_175]]
+I tried to con or cheat other people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_176]]
+I had the experience that everything suddenly seemed unfamiliar and I forgot where I was.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_177]]
+I kept gaming, even though it caused problems at work or school.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_178]]
+I felt like I could go for days without sleeping.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_179]]
+I was something of a workaholic.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_180]]
+I engaged in sexual activities that I later regretted.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_181]]
+I believed that if you are not careful, other people will take advantage of you.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_182]]
+I enjoyed thinking about my future and the great things it would bring.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_183]]
+I found watching unsuspecting people who were naked, masturbating, or having sex sexually arousing.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_184]]
+I found it hard to resist the urge to shop.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_185]]
+I vandalized or defaced public property.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_186]]
+I was proud of myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_187]]
+I found romantic relationships to be tiresome.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_188]]
+I considered using syrup of ipecac, enemas, or suppositories to lose weight.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_189]]
+My needs and wants came first.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_190]]
+I went out of my way to avoid risks.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_191]]
+I paid close attention to how my body feels.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_192]]
+I pulled out hairs that were a different color or texture.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_193]]
+My mind wandered far away from the present.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_194]]
+I was overwhelmed by anxiety.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_195]]
+People told me that I was too perfectionistic.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_196]]
+I bet more money than I could really afford to lose.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_197]]
+I focused on eating more healthy foods.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_198]]
+I experienced sudden muscle weakness or paralysis.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_199]]
+I felt compelled to count things.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_200]]
+My mood changed suddenly for no good reason.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_201]]
+I paid a lot of attention to how I look.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_202]]
+I lost a significant amount of weight without even trying.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_203]]
+I experienced a sudden sensory loss (e.g., seeing or hearing problems) that doctors could not explain.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_204]]
+I quickly went from being sad to being happy.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_205]]
+I spent time planning how to reduce my food intake.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_206]]
+I was cautious.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_207]]
+I enjoyed activities that were a little bit dangerous.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_208]]
+I avoided places that reminded me of something bad that happened.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_209]]
+I felt that the world is a dangerous place.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_210]]
+I was sensitive to changes in my body.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_211]]
+I did not have much sympathy for others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_212]]
+People told me that I did not eat enough.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_213]]
+I was a rule breaker.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_214]]
+I was grouchy.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_215]]
+I bit myself on purpose.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_216]]
+I strove for perfection, even when others said that I should move on.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_217]]
+I had an illness or disease that others dismissed.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_218]]
+When in public, I liked to stand out.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_219]]
+I failed to consider the consequences of an action.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_220]]
+My fantasies felt very real to me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_221]]
+I saw a person but then realized it was just a shadow.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_222]]
+Seeing something gory made me woozy.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_223]]
+I believed other people could actually hear my thoughts.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_224]]
+I felt very stressed.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_225]]
+I was rigid and inflexible in my approach to doing things.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_226]]
+I said things that were not true.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_227]]
+I felt on guard and on edge.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_228]]
+I tried to break up someone else's friendship or romantic relationship.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_229]]
+I felt the need to stand up when I should have been sitting down.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_230]]
+I found exposing my genitals to a stranger sexually arousing.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_231]]
+My moods were intense and unpredictable.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_232]]
+I felt faint at the sight of blood.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_233]]
+I had very little energy.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_234]]
+My mind felt mixed up.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_235]]
+At times, I just wanted to feel pain.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_236]]
+People told me I was coldhearted.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_237]]
+I tried to conceal areas where I had picked at my skin.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_238]]
+I found sex physically uncomfortable.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_239]]
+I broke into houses, buildings, or cars.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_240]]
+Reading articles about disease made me worry about my health.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_241]]
+Some people were out to harm me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_242]]
+I lost things that I needed.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_243]]
+I said things without thinking.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_244]]
+I wanted well-defined stomach muscles.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_245]]
+I did not experience enough sexual arousal (penile erection or vaginal lubrication) to enjoy sex.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_246]]
+I struggled to think clearly.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_247]]
+I could feel changes in my body.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_248]]
+I found touching or rubbing against a stranger sexually arousing.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_249]]
+I looked for ways to make time for gaming.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_250]]
+I was not all that concerned with other peoples' needs.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_251]]
+People talked behind my back.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_252]]
+I did not like taking chances.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_253]]
+I thought about things in unusual ways.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_254]]
+I was afraid of flying.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_255]]
+I did not like my weight (the number on the scale).
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_256]]
+People said I am strange.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_257]]
+I used certain medications (e.g. laxatives, diuretics) to lose weight.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_258]]
+I preferred to do things the safest way possible.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_259]]
+I heard things that no one else could hear.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_260]]
+I avoided small, tight, or enclosed spaces.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_261]]
+People were basically selfish with little concern for others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_262]]
+People said I could be a bully.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_263]]
+I had angry outbursts.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_264]]
+I felt that other persons were acting against me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_265]]
+I had blank spells or periods of missing time.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_266]]
+I exercised more than was good for me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_267]]
+Nightmares caused me to wake up at night.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_268]]
+I forced someone to have sex with me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_269]]
+I paid my bills late or missed other important deadlines.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_270]]
+I was very irritable.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_271]]
+I was dissatisfied with the shape of my body.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_272]]
+I was frustrated with having to convince others I had a real illness.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_273]]
+I could not return to a task after getting distracted.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_274]]
+I got in trouble with the law.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_275]]
+It was painful for me to have (or try to have) penetrative vaginal or anal intercourse.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_276]]
+I felt like I was outside of my body.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_277]]
+I was very set in my ways.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_278]]
+I was happiest when I was alone.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_279]]
+Bulking up muscle while staying lean was a main fitness goal for me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_280]]
+I smelled things that were not actually there.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_281]]
+I was worried about my sex life.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_282]]
+I had a recurring bad dream.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_283]]
+I was acutely aware of what was going on with my body.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_284]]
+I felt uninterested during sexual activity
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_285]]
+I exercised until I felt sick.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_286]]
+During sex, I usually climaxed very quickly.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_287]]
+I hid my emotions.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_288]]
+I felt a lot more hyper or active than usual.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_289]]
+I put a lot of thought into ideas before I took any action.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_290]]
+I used substances to make my partner more appealing.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_291]]
+I avoided small public spaces (such as an office or restaurant).
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_292]]
+I engaged in risky sexual activity.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_293]]
+I vomited to control my weight.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_294]]
+I was a messy person.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_295]]
+Gambling caused me to go into debt.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_296]]
+I worried about getting germs through contact with animals.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_297]]
+It was difficult to find healthcare providers who recognized my illness.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_298]]
+I hurt myself on purpose.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_299]]
+I was unable to concentrate on a task when it was uninteresting to me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_300]]
+Nothing seemed interesting to me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_301]]
+I liked attracting the attention of others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_302]]
+I found myself worrying whether I actually did something or only intended to do it.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_303]]
+I found it easy to deceive others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_304]]
+I felt nervous and on edge.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_305]]
+I had trouble telling whether something really happened or I just imagined it.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_306]]
+I could not feel things I touched.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_307]]
+I insulted others.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_308]]
+I was afraid that I might be having a heart attack.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_309]]
+People told me I exercised too much.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_310]]
+I was happiest when I was in a romantic relationship.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_311]]
+I felt like I no longer existed.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_312]]
+I had to clean myself because I felt contaminated.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_313]]
+I carefully weighed out the pros and cons before I made any decision.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_314]]
+I experienced loss of consciousness or had fainting spells (in the absence of a diagnosed medical disorder)
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_315]]
+I refused to compromise because I knew I was right.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_316]]
+Sexual activity was even more enjoyable for me when I was intoxicated/high.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_317]]
+I felt the urge to check to make sure I really had done something.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_318]]
+I spent too much time thinking about illnesses I might have.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_319]]
+I had much more energy than usual.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_320]]
+I avoided foods because of their smell or texture.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_321]]
+I didn't respond to things that other people found emotional.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_322]]
+After I left my home, I worried that I failed to do something.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_323]]
+I was afraid of getting stung or bitten.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_324]]
+I was bothered by several bodily symptoms (e.g., headache, fatigue or stomach problems) for which there was no clear or sufficient medical explanation.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_325]]
+I thought about killing myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_326]]
+I had so much energy that others couldn't keep up with me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_327]]
+I made people believe almost anything.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_328]]
+I dressed so as to call attention to myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_329]]
+I did not really care how others felt.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_330]]
+I suddenly felt as if a traumatic event were actually happening again.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_331]]
+The sight of a needle upset me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_332]]
+I was afraid that I might suffer from a serious illness
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_333]]
+I slept very poorly.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_334]]
+I kept my shopping a secret.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_335]]
+I spent a lot of time grooming myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_336]]
+Some people thought I was self-centered.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_337]]
+I had trouble planning and keeping to schedules.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_338]]
+Romantic relationships seemed like a hassle to me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_339]]
+I could have improved on my organizational skills.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_340]]
+I was a thrill-seeker.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_341]]
+Even when I was very careful, I worried whether I had done something correctly.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_342]]
+I kept gambling even though it caused problems in my relationships.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_343]]
+I was ashamed of myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_344]]
+I tensed up during sexual activity due to pain.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_345]]
+Others could easily take advantage of me because I was too passive.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_346]]
+I tried to limit the number of fatty foods I ate.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_347]]
+I was afraid of the dark.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_348]]
+I engaged in unprotected sex.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_349]]
+I thought that certain numbers were lucky for me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_350]]
+I spent a lot of time getting ready before going out.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_351]]
+When in a group, I liked to be in control.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_352]]
+Others could not be trusted.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_353]]
+I avoided contact with people because I was worried about germs.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_354]]
+I examined every single option before making a selection.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_355]]
+I demanded perfection from myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_356]]
+People admired me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_357]]
+I woke up early and could not get back to sleep.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_358]]
+I ate a very large amount of food in a short period of time (e.g., within 2 hours).
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_359]]
+I had trouble staying asleep.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_360]]
+I was never on time.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_361]]
+I went a long time without eating.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_362]]
+I made excuses to avoid eating.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_363]]
+I was easily distracted.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_364]]
+Many types of food disgusted me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_365]]
+I felt depressed.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_366]]
+I picked at areas of my skin that I don't like.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_367]]
+Took a lot of effort to get going.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_368]]
+I reached orgasm sooner than I wanted to.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_369]]
+It was important to me to build muscle mass and eliminate body fat.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_370]]
+I felt shy around other people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_371]]
+My muscles were weak.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_372]]
+Being muscular was very important to me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_373]]
+I thought a lot about death.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_374]]
+I took time to consider all possible outcomes before making any decision.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_375]]
+It was difficult for me to stay sexually aroused once sexual activity had started.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_376]]
+I didn't express my emotions.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_377]]
+I was willing to tell a small lie to make things easier for myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_378]]
+My thoughts kept jumping from one thing to another.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_379]]
+I was jealous of what other people have.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_380]]
+I didn't experience the joy and pleasure that most other people do.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_381]]
+I could not resist buying something that I did not need.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_382]]
+I felt guilty about sexual difficulties
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_383]]
+I avoided numbers that could bring bad luck.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_384]]
+I avoided activities where I would need to sit down for long.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_385]]
+I had a sensation that something was crawling under my skin.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_386]]
+I felt worn out.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_387]]
+I cut myself on purpose.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_388]]
+It was difficult for me to get sexually aroused.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_389]]
+I did not feel much like eating.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_390]]
+I found it enjoyable to hurt animals.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_391]]
+I acted on impulse.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_392]]
+Once I started eating, I could not stop.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_393]]
+I felt the need to wash my hands again and again.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_394]]
+I was disgusted with myself.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_395]]
+I did not concern myself with helping people.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_396]]
+I felt like I could keep going and going without ever getting tired.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_397]]
+I was trembling or shaking.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_398]]
+I could not resist eating.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_399]]
+I did things on purpose that were against the rules.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_400]]
+I had periods of unexplained blindness.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_401]]
+The sight of an insect (e.g., a cockroach) upset me.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_402]]
+I felt like I was in danger.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_403]]
+I avoided areas where there might be snakes or lizards.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_404]]
+I intentionally scratched my skin so severely that it started bleeding.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
+[[Question:MC:SingleAnswer]]
+[[ID:HSR_405]]
+I had repeated memories of a traumatic event.
+[[AdvancedChoices]]
+[[Choice:1]]
+Not at all
+[[Choice:2]]
+A little
+[[Choice:3]]
+Moderately
+[[Choice:4]]
+A lot
+
