@@ -1,0 +1,109 @@
+# Score the Personality Inventory for DSM-5 Validity Scales
+
+Calculate validity scale scores on the Personality Inventory for DSM-5:
+full version (PID-5, 220 items), short form version (PID-5-SF, 100
+items), or brief form version (PID-5-BF, 25 items) from item-level data
+and return alerts when when observations meet criteria for invalidity.
+
+## Usage
+
+``` r
+validity_pid5(
+  data,
+  items,
+  version = c("FULL", "SF", "BF"),
+  srange = c(0, 3),
+  prefix = "pid_",
+  append = TRUE,
+  tibble = TRUE
+)
+```
+
+## Arguments
+
+- data:
+
+  A data frame containing (at least) all the PID items (numerically
+  scored and in order).
+
+- items:
+
+  A vector of column names (as strings) or numbers (as integers)
+  corresponding to the PID items in order.
+
+- version:
+
+  A string indicating the version of the PID to score: "FULL", "SF", or
+  "BF". Will be automatically capitalized. (default = `"FULL"`)
+
+- srange:
+
+  An optional numeric vector specifying the minimum and maximum values
+  of the items, used for reverse-coding. (default = `c(0, 3)`)
+
+- prefix:
+
+  An optional string to add before each scale column name. If no prefix
+  is desired, set to an empty string `""`. (default = `"pid_"`)
+
+- append:
+
+  An optional logical indicating whether the new columns should be added
+  to the end of the `data` input. (default = `TRUE`)
+
+- tibble:
+
+  An optional logical indicating whether the output should be converted
+  to a [tibble](https://tibble.tidyverse.org/reference/tibble.html).
+  (default = `TRUE`)
+
+## Value
+
+A [tibble](https://tibble.tidyverse.org/reference/tibble.html)
+containing all validity scores and all original `data` columns (if
+requested)
+
+## Details
+
+For the full PID-5, a score of 17 or higher on the INC is indicative of
+inconsistent responding. A score of 3 or higher on the ORS is indicative
+of overreporting. A score of 10 or lower on the PRD is indicative of
+positive impression management (underreporting rather than genuine
+responding) whereas a score of 21 or higher on the PRD is indicative of
+genuine responding (rather than positive impression management). A score
+of 11 or lower on the SD-TD is indicative of social desirability (rather
+than defensiveness), whereas a score of 19 or higher on the SD-TD is
+indicative of defensiveness (rather than social desirability). For the
+PID-5-SF, scores of 8 or more on the INC-S are indicative of
+inconsistent responding. Cut-scores for the ORS-S, PRD-S, and SD-TD-S
+have not yet been validated.
+
+## References
+
+Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan, E. H.
+(2016). Development of a Response Inconsistency Scale for the
+Personality Inventory for DSM-5. *Journal of Personality Assessment,
+98*(4), 351-359.
+[doi:10.1080/00223891.2016.1158719](https://doi.org/10.1080/00223891.2016.1158719)
+
+Sellbom, M., Dhillon, S., & Bagby, R. M. (2018). Development and
+validation of an overreporting scale for the Personality Inventory for
+DSM-5 (PID-5). *Psychological Assessment, 30*(5), 582-593.
+[doi:10.1037/pas0000507](https://doi.org/10.1037/pas0000507)
+
+Bagby, R. M., & Sellbom, M. (2018). The Validity and Clinical Utility of
+the Personality Inventory for DSM–5 Response Inconsistency Scale.
+*Journal of Personality Assessment, 100*(4), 398–405.
+[doi:10.1080/00223891.2017.1420659](https://doi.org/10.1080/00223891.2017.1420659)
+
+Williams, M. M., Rogers, R., Sharf, A. J., & Ross, C. A. (2019). Faking
+Good: An Investigation of Social Desirability and Defensiveness in an
+Inpatient Sample With Personality Disorder Traits. *Journal of
+Personality Assessment, 101*(3), 253–263.
+[doi:10.1080/00223891.2018.1455691](https://doi.org/10.1080/00223891.2018.1455691)
+
+Lowmaster, S. E., Hartman, M. J., Zimmermann, J., Baldock, Z. C., &
+Kurtz, J. E. (2020). Further Validation of the Response Inconsistency
+Scale for the Personality Inventory for DSM-5. *Journal of Personality
+Assessment, 102*(6), 743–750.
+[doi:10.1080/00223891.2019.1674320](https://doi.org/10.1080/00223891.2019.1674320)
