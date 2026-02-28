@@ -6,10 +6,10 @@
 #' This function is designed to work seamlessly with the package's built-in
 #' datasets.
 #'
-#' @param items_df A data frame containing the survey items. The first column
+#' @param items A data frame containing the survey items. The first column
 #'   must contain the item identifiers (e.g., item numbers), and a column named
 #'   `Text` must contain the question text.
-#' @param instructions_list A list containing the survey instructions and response
+#' @param instructions A list containing the survey instructions and response
 #'   options. It must include a `start` character string for the initial descriptive
 #'   block, and an `options` data frame containing `value` and `label` columns for
 #'   the multiple-choice options.
@@ -26,21 +26,21 @@
 #' \dontrun{
 #' # Generate a Qualtrics text file using the package's built-in datasets
 #' generate_qualtrics_txt(
-#'   items_df = hitopbr_items,
-#'   instructions_list = hitopbr_instructions,
+#'   items = hitopbr_items,
+#'   instructions = hitopbr_instructions,
 #'   file_path = "hitopbr_survey.txt"
 #' )
 #' }
 generate_qualtrics_txt <- function(
-  items_df,
-  instructions_list,
+  items,
+  instructions,
   file_path = "qualtrics_import.txt"
 ) {
   # 1. Initialize the file with the Advanced Format tag
   out <- c("[[AdvancedFormat]]", "")
 
-  instrument <- colnames(items_df)[[1]]
-  max_w <- max(nchar(nrow(items_df)))
+  instrument <- colnames(items)[[1]]
+  max_w <- max(nchar(nrow(items)))
   fmt <- sprintf("[[ID:%s_%%0%dd]]", instrument, max_w)
 
   # 2. Add the starting instructions as a Descriptive Block (DB)
@@ -48,7 +48,7 @@ generate_qualtrics_txt <- function(
     out,
     "[[Question:DB]]",
     "[[ID:start_instructions]]",
-    instructions_list$start,
+    instructions$start,
     ""
   )
 
@@ -56,16 +56,16 @@ generate_qualtrics_txt <- function(
   choices_block <- c("[[AdvancedChoices]]")
 
   # Loop through options to set exact numeric values and labels
-  for (i in seq_len(nrow(instructions_list$options))) {
-    val <- instructions_list$options$value[i]
-    lab <- instructions_list$options$label[i]
+  for (i in seq_len(nrow(instructions$options))) {
+    val <- instructions$options$value[i]
+    lab <- instructions$options$label[i]
     choices_block <- c(choices_block, paste0("[[Choice:", val, "]]"), lab)
   }
 
   # 4. Loop through the items dataframe and append each question
-  for (i in seq_len(nrow(items_df))) {
-    item_num <- items_df[[i, 1]]
-    item_text <- items_df$Text[i]
+  for (i in seq_len(nrow(items))) {
+    item_num <- items[[i, 1]]
+    item_text <- items$Text[i]
 
     q_block <- c(
       "[[Question:MC:SingleAnswer]]",
