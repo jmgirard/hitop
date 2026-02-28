@@ -55,3 +55,10 @@
   : Personality Inventory for DSM-5 Item Data
 - [`pid_scales`](https://jmgirard.github.io/hitop/reference/pid_scales.md)
   : Personality Inventory for DSM-5 Scale Data
+
+## Item Export
+
+- [`generate_qualtrics_txt()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_txt.md)
+  : Generate a Qualtrics Advanced Format Import File
+- [`generate_redcap_zip()`](https://jmgirard.github.io/hitop/reference/generate_redcap_zip.md)
+  : Generate a REDCap Instrument ZIP File
