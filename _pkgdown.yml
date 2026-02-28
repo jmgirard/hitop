@@ -51,3 +51,7 @@ reference:
   - hitopbr_scales
   - pid_items
   - pid_scales
+- title: Item Export
+  contents:
+  - create_qualtrics_txt
+  - create_redcap_zip
