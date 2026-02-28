@@ -5,8 +5,8 @@
 \title{Create a REDCap Instrument ZIP File}
 \usage{
 create_redcap_zip(
-  items_df,
-  instructions_df,
+  items,
+  instructions,
   form_name = NULL,
   required = TRUE,
   breaks = 15,
@@ -14,22 +14,22 @@ create_redcap_zip(
 )
 }
 \arguments{
-\item{items_df}{A data frame containing the questionnaire items. The first column
+\item{items}{A data frame containing the questionnaire items. The first column
 should contain the item IDs, and a \code{Text} column should contain the item text.}
 
-\item{instructions_df}{A list or data frame containing the instructions and response options.
+\item{instructions}{A list containing the instructions and response options.
 Expects \code{options$value} and \code{options$label} for choices, and \code{start[1]} for the main instruction text.}
 
 \item{form_name}{Character string. The internal name of the form in REDCap.
 Defaults to the lowercase instrument name appended with "_questionnaire".}
+
+\item{required}{Logical. Whether the items should be marked as required. Defaults to \code{TRUE}.}
 
 \item{breaks}{Integer or \code{NULL}. The number of items to display before inserting a page break.
 Set to \code{0} or \code{NULL} to disable pagination entirely. Defaults to \code{15}.}
 
 \item{file_path}{Character string. The destination path for the output ZIP file.
 Defaults to the current working directory with a filename derived from the instrument.}
-
-\item{required_field}{Logical. Whether the items should be marked as required. Defaults to \code{TRUE}.}
 }
 \value{
 Invisibly returns a data frame containing the compiled REDCap data dictionary.
@@ -54,10 +54,10 @@ data frames and packages it into an Instrument ZIP file for easy uploading.
 \examples{
 \dontrun{
 create_redcap_zip(
-  items_df = hitopbr_items,
-  instructions_df = hitopbr_instructions,
+  items = hitopbr_items,
+  instructions = hitopbr_instructions,
   breaks = 15,
-  file_path = "hitopbr_redcap.zip"
+  file_path = "instruments/hitopbr_redcap.zip"
 )
 }
 }
