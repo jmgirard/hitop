@@ -53,5 +53,5 @@ reference:
   - pid_scales
 - title: Item Export
   contents:
-  - create_qualtrics_txt
-  - create_redcap_zip
+  - generate_qualtrics_txt
+  - generate_redcap_zip

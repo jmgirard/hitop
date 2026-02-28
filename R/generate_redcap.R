@@ -1,4 +1,4 @@
-#' Create a REDCap Instrument ZIP File
+#' Generate a REDCap Instrument ZIP File
 #'
 #' Generates a REDCap-compatible data dictionary from item and instruction
 #' data frames and packages it into an Instrument ZIP file for easy uploading.
@@ -30,14 +30,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' create_redcap_zip(
+#' generate_redcap_zip(
 #'   items = hitopbr_items,
 #'   instructions = hitopbr_instructions,
 #'   breaks = 15,
 #'   file_path = "hitopbr_redcap.zip"
 #' )
 #' }
-create_redcap_zip <- function(
+generate_redcap_zip <- function(
   items,
   instructions,
   form_name = NULL,

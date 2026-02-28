@@ -2,8 +2,8 @@
 
 export(calc_alpha)
 export(calc_omega)
-export(create_redcap_zip)
 export(generate_qualtrics_txt)
+export(generate_redcap_zip)
 export(rank_scales)
 export(score_hitopbr)
 export(score_hitopsr)
