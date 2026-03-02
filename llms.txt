@@ -32,7 +32,7 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-SR Harmful Substance Use Module
+HiTOP-HSUM (???)
 
 PID-5-BFP (36)
 
@@ -48,7 +48,7 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-SR Harmful Substance Use Module
+HiTOP-HSUM (???)
 
 PID-5-BFP (36)
 
@@ -64,7 +64,7 @@ HiTOP-SR (405)
 
 HiTOP-BR (45)
 
-HiTOP-SR Harmful Substance Use Module
+HiTOP-HSUM (???)
 
 PID-5 (220)
 
@@ -86,7 +86,7 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-SR Harmful Substance Use Module
+HiTOP-HSUM (???)
 
 PID-5-BFP (36)
 
@@ -96,13 +96,13 @@ HiTOP-SR (405)
 
 HiTOP-BR (45)
 
+HiTOP-HSUM (???)
+
 PID-5 (220)
 
 PID-5-SF (100)
 
 PID-5-BF (25)
-
-HiTOP-SR Harmful Substance Use Module
 
 PID-5-BFP (36)
 
