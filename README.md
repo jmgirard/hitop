@@ -35,7 +35,7 @@ remotes::install_github("jmgirard/hitop")
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
-  - [ ] HiTOP-SR Harmful Substance Use Module
+  - [ ] HiTOP-HSUM (???)
   - [ ] PID-5-BFP (36)
 - [ ] Add Scoring Functions
   - [x] HiTOP-SR (405)
@@ -43,7 +43,7 @@ remotes::install_github("jmgirard/hitop")
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
-  - [ ] HiTOP-SR Harmful Substance Use Module
+  - [ ] HiTOP-HSUM (???)
   - [ ] PID-5-BFP (36)
 - [x] Add Validity Functions
   - [x] PID-5 (220)
@@ -51,7 +51,7 @@ remotes::install_github("jmgirard/hitop")
 - [ ] Add Reliability Functions
   - [x] HiTOP-SR (405)
   - [x] HiTOP-BR (45)
-  - [ ] HiTOP-SR Harmful Substance Use Module
+  - [ ] HiTOP-HSUM (???)
   - [ ] PID-5 (220)
   - [ ] PID-5-SF (100)
   - [ ] PID-5-BF (25)
@@ -62,15 +62,15 @@ remotes::install_github("jmgirard/hitop")
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
-  - [ ] HiTOP-SR Harmful Substance Use Module
+  - [ ] HiTOP-HSUM (???)
   - [ ] PID-5-BFP (36)
 - [ ] Add Instrument Export Functions
   - [x] HiTOP-SR (405)
   - [x] HiTOP-BR (45)
-  - [x] PID-5 (220)
-  - [x] PID-5-SF (100)
-  - [x] PID-5-BF (25)
-  - [ ] HiTOP-SR Harmful Substance Use Module
+  - [ ] HiTOP-HSUM (???)
+  - [ ] PID-5 (220)
+  - [ ] PID-5-SF (100)
+  - [ ] PID-5-BF (25)
   - [ ] PID-5-BFP (36)
 
 ### Phase 2

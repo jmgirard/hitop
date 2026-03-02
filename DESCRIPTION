@@ -13,20 +13,19 @@ Depends:
     R (>= 3.5)
 Imports: 
     cli,
+    flextable,
     glue,
     lifecycle,
-    quarto,
+    officer,
     rlang,
     snakecase,
     stats,
     tibble,
     utils
 Suggests: 
-    flextable,
     ggplot2,
     knitr,
     lavaan,
-    officer,
     rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr, rmarkdown
