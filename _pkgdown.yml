@@ -53,5 +53,7 @@ reference:
   - pid_scales
 - title: Item Export
   contents:
+  - generate_docx_hitopbr
+  - generate_docx_hitopsr
   - generate_qualtrics_txt
   - generate_redcap_zip
