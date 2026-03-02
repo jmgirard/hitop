@@ -90,17 +90,33 @@ HiTOP-SR Harmful Substance Use Module
 
 PID-5-BFP (36)
 
+Add Instrument Export Functions
+
+HiTOP-SR (405)
+
+HiTOP-BR (45)
+
+PID-5 (220)
+
+PID-5-SF (100)
+
+PID-5-BF (25)
+
+HiTOP-SR Harmful Substance Use Module
+
+PID-5-BFP (36)
+
 ### Phase 2
-
-Add Normative Data
-
-Add Norming Functions
 
 Add Visualization Functions
 
 Add Unit Testing
 
 ### Phase 3
+
+Add Normative Data
+
+Add Norming Functions
 
 Add Individual Report Generation
 
