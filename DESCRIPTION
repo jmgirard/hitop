@@ -15,6 +15,7 @@ Imports:
     cli,
     glue,
     lifecycle,
+    quarto,
     rlang,
     snakecase,
     stats,

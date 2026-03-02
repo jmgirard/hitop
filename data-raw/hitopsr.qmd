@@ -1,7 +1,7 @@
 ---
 format: 
   docx:
-    reference-doc: reference.docx
+    reference-doc: hitopsr_ref.docx
 ---
 
 ```{r}
@@ -12,8 +12,6 @@ library(flextable)
 library(officer)
 library(hitop)
 ```
-
-**HiTOP-SR Questionnaire**
 
 `r hitopsr_instructions$start`
 
@@ -64,4 +62,64 @@ table_data |>
   bg(i = even_rows, bg = "#f2f2f2", part = "body") |>
   fontsize(size = 10, part = "all") |>
   font(fontname = "Times New Roman", part = "all")
+```
+
+{{< pagebreak >}}
+
+**Scoring Instructions:** Average the responses for the following item numbers. Items marked with (R) should be reversed-scored before averaging. Thus, for these items, $1 \leftrightarrow 4$ and $2 \leftrightarrow 3$.
+
+```{r}
+#| label: scoring-instructions-table
+#| echo: false
+#| warning: false
+
+scoring_data <-
+  hitopsr_scales |>
+  arrange(Scale) |>
+  mutate(
+    Items = map_chr(
+      itemdata,
+      ~ {
+        .x |>
+          mutate(
+            item_label = if_else(Reverse, paste0(HSR, "(R)"), as.character(HSR))
+          ) |>
+          pull(item_label) |>
+          paste(collapse = ", ")
+      }
+    )
+  ) |>
+  select(Scale, Items)
+
+n_rows <- ceiling(nrow(scoring_data) / 2)
+
+if (nrow(scoring_data) %% 2 != 0) {
+  scoring_data <- bind_rows(
+    scoring_data,
+    tibble(Scale = NA_character_, Items = NA_character_)
+  )
+}
+
+col1 <- scoring_data[1:n_rows, ]
+col2 <- scoring_data[(n_rows + 1):nrow(scoring_data), ] |>
+  rename(Scale_2 = Scale, Items_2 = Items)
+
+bind_cols(col1, col2) |>
+  flextable() |>
+  set_header_labels(
+    Scale = "Scale",
+    Items = "Items",
+    Scale_2 = "Scale",
+    Items_2 = "Items"
+  ) |>
+  align(align = "left", part = "all") |>
+  valign(valign = "top", part = "body") |>
+  padding(padding = 2, part = "all") |>
+  fontsize(size = 8, part = "all") |>
+  font(fontname = "Times New Roman", part = "all") |>
+  width(j = c("Scale", "Scale_2"), width = 1.25) |>
+  width(j = c("Items", "Items_2"), width = 2.25) |>
+  colformat_char(na_str = "") |>
+  hline_top(part = "header", border = std_border) |>
+  hline_bottom(part = "header", border = std_border)
 ```
