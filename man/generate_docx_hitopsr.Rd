@@ -9,6 +9,7 @@ generate_docx_hitopsr(
   papersize = c("letter", "a4"),
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
+  include_subscales = FALSE,
   base_size = 10,
   font_family = "Times New Roman"
 )
@@ -21,6 +22,8 @@ generate_docx_hitopsr(
 \item{title}{Character string for the document header title. Defaults to \code{"HiTOP-SR (v1.0)"}.}
 
 \item{include_scoring}{Logical. If \code{TRUE} (default), appends a page break and the scoring instructions table.}
+
+\item{include_subscales}{Logical. If \code{TRUE}, appends optional subscales to the scoring instructions table. Defaults to \code{FALSE}.}
 
 \item{base_size}{Numeric value specifying the base font size in points. Defaults to \code{10}.}
 

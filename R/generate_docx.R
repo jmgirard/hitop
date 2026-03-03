@@ -72,6 +72,7 @@ generate_docx_hitopbr <- function(
 #' @param papersize Character string specifying the paper dimensions. Must be one of `"letter"` or `"a4"`. Defaults to `"letter"`.
 #' @param title Character string for the document header title. Defaults to `"HiTOP-SR (v1.0)"`.
 #' @param include_scoring Logical. If `TRUE` (default), appends a page break and the scoring instructions table.
+#' @param include_subscales Logical. If `TRUE`, appends optional subscales to the scoring instructions table. Defaults to `FALSE`.
 #' @param base_size Numeric value specifying the base font size in points. Defaults to `10`.
 #' @param font_family Character string specifying the font family to be used. Defaults to `"Times New Roman"`.
 #'
@@ -82,13 +83,14 @@ generate_docx_hitopsr <- function(
   papersize = c("letter", "a4"),
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
+  include_subscales = FALSE,
   base_size = 10,
   font_family = "Times New Roman"
 ) {
   papersize <- match.arg(papersize)
   dims <- get_page_dims(papersize)
 
-  # Assuming hitopsr_instructions exists and follows the same structure as hitopbr
+  # Build the items table
   t1 <- make_items_table(
     hitopsr_items,
     "HSR",
@@ -100,8 +102,31 @@ generate_docx_hitopsr <- function(
 
   t2 <- NULL
   if (include_scoring) {
+    # Extract only the necessary columns from the main scales
+    scales_to_score <- hitopsr_scales[, c("Scale", "itemdata")]
+
+    # If requested, prepare and append the subscales
+    if (include_subscales) {
+      subscales_to_score <- hitopsr_subscales[, c("Subscale", "itemdata")]
+
+      # Rename 'Subscale' to 'Scale' to match the main dataframe
+      names(subscales_to_score)[
+        names(subscales_to_score) == "Subscale"
+      ] <- "Scale"
+
+      # Optional: Add a visual indicator that these are subscales
+      subscales_to_score$Scale <- paste0(
+        subscales_to_score$Scale,
+        " (Subscale)"
+      )
+
+      # Bind them together
+      scales_to_score <- rbind(scales_to_score, subscales_to_score)
+    }
+
+    # Pass the combined data to the helper function
     t2 <- make_scoring_table(
-      hitopsr_scales,
+      scales_to_score,
       "HSR",
       dims$pw,
       base_size,
@@ -124,7 +149,6 @@ generate_docx_hitopsr <- function(
     font_family
   )
 }
-
 
 # Internal Helper: Get page dimensions based on paper size
 get_page_dims <- function(papersize) {
@@ -246,6 +270,7 @@ make_scoring_table <- function(
       Items_2 = "Items"
     ) |>
     flextable::align(align = "left", part = "all") |>
+    flextable::valign(valign = "top", part = "body") |>
     flextable::padding(padding = 3, part = "all") |>
     flextable::fontsize(size = max(6, base_size - 1), part = "all") |>
     flextable::font(fontname = font_family, part = "all") |>
