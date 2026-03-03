@@ -1,5 +1,7 @@
 [[AdvancedFormat]]
 
+[[Block:HiTOP-BR]]
+
 [[Question:DB]]
 [[ID:start_instructions]]
 Please consider whether there have been significant times during the last 12 months during which the following statements applied to you. Then please select the option that best describes how well each statement described you during that period.
@@ -199,6 +201,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HBR_16]]
 I lost things that I needed.
@@ -393,6 +397,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HBR_31]]

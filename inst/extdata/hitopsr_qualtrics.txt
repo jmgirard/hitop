@@ -1,5 +1,7 @@
 [[AdvancedFormat]]
 
+[[Block:HiTOP-SR]]
+
 [[Question:DB]]
 [[ID:start_instructions]]
 Please consider whether there have been significant times during the last 12 months during which the following statements applied to you. Then please select the option that best describes how well each statement described you during that period.
@@ -199,6 +201,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_016]]
 I spent a lot of time looking at myself.
@@ -393,6 +397,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_031]]
@@ -589,6 +595,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_046]]
 I felt an urge to hurt myself (cut, burn, bite, etc.).
@@ -783,6 +791,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_061]]
@@ -979,6 +989,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_076]]
 I had a dream so distressing that it continued to affect me after waking.
@@ -1173,6 +1185,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_091]]
@@ -1369,6 +1383,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_106]]
 Minor frustrations really upset me.
@@ -1563,6 +1579,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_121]]
@@ -1759,6 +1777,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_136]]
 I was so worked up I thought I might die.
@@ -1953,6 +1973,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_151]]
@@ -2149,6 +2171,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_166]]
 Things went best when I told others what to do.
@@ -2343,6 +2367,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_181]]
@@ -2539,6 +2565,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_196]]
 I bet more money than I could really afford to lose.
@@ -2733,6 +2761,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_211]]
@@ -2929,6 +2959,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_226]]
 I said things that were not true.
@@ -3123,6 +3155,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_241]]
@@ -3319,6 +3353,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_256]]
 People said I am strange.
@@ -3513,6 +3549,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_271]]
@@ -3709,6 +3747,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_286]]
 During sex, I usually climaxed very quickly.
@@ -3903,6 +3943,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_301]]
@@ -4099,6 +4141,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_316]]
 Sexual activity was even more enjoyable for me when I was intoxicated/high.
@@ -4293,6 +4337,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_331]]
@@ -4489,6 +4535,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_346]]
 I tried to limit the number of fatty foods I ate.
@@ -4683,6 +4731,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_361]]
@@ -4879,6 +4929,8 @@ Moderately
 [[Choice:4]]
 A lot
 
+[[PageBreak]]
+
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_376]]
 I didn't express my emotions.
@@ -5073,6 +5125,8 @@ A little
 Moderately
 [[Choice:4]]
 A lot
+
+[[PageBreak]]
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_391]]
