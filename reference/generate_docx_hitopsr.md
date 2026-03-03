@@ -24,38 +24,22 @@ generate_docx_hitopsr(
 - file:
 
   Character string specifying the output file path. Defaults to
-  `"hitopsr_1.0.docx"`.
-
-- papersize:
-
-  Character string specifying the paper dimensions. Must be one of
-  `"letter"` or `"a4"`. Defaults to `"letter"`.
+  `"hitopsr_1.0.docx"`. @param papersize Character string specifying the
+  paper dimensions. Must be one of `"letter"` or `"a4"`. Defaults to
+  `"letter"`.
 
 - title:
 
   Character string for the document header title. Defaults to
-  `"HiTOP-SR (v1.0)"`.
-
-- include_scoring:
-
-  Logical. If `TRUE` (default), appends a page break and the scoring
-  instructions table.
-
-- include_subscales:
-
-  Logical. If `TRUE`, appends optional subscales to the scoring
-  instructions table. Defaults to `FALSE`.
-
-- font_size:
-
-  Numeric value specifying the base font size in points. Defaults to
-  `10`.
-
-- font_family:
-
-  Character string specifying the font family to be used. Defaults to
+  `"HiTOP-SR (v1.0)"`. @param include_scoring Logical. If `TRUE`
+  (default), appends a page break and the scoring instructions table.
+  @param include_subscales Logical. If `TRUE`, appends optional
+  subscales to the scoring instructions table. Defaults to `FALSE`.
+  @param font_size Numeric value specifying the base font size in
+  points. Defaults to `10`. @param font_family Character string
+  specifying the font family to be used. Defaults to
   `"Times New Roman"`.
 
 ## Value
 
-Invisibly returns the path to the created file (`file`).
+Invisibly returns the path to the created file (`file`). @export

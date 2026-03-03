@@ -100,8 +100,8 @@ of the name (i.e., <code>"^"</code> is prepended). Special regex characters in
 
 
 <dt id="arg-top">top<a class="anchor" aria-label="anchor" href="#arg-top"></a></dt>
-<dd><p>Integer (length 1). The number of columns to include per row
-after ranking. Must be between 1 and <code>length(scales)</code>.</p></dd>
+<dd><p>Integer (length 1). The number of columns to include per row after
+ranking. Must be between 1 and <code>length(scales)</code>.</p></dd>
 
 
 <dt id="arg-dir">dir<a class="anchor" aria-label="anchor" href="#arg-dir"></a></dt>
@@ -122,9 +122,9 @@ after ranking. Must be between 1 and <code>length(scales)</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>If <code>append = FALSE</code> and <code>tibble = FALSE</code>: a character vector of
-length <code>nrow(data)</code> where each element is a comma-separated list of the
-selected scale names in ranked order.</p>
+    <p>If <code>append = FALSE</code> and <code>tibble = FALSE</code>: a character
+vector of length <code>nrow(data)</code> where each element is a comma-separated
+list of the selected scale names in ranked order.</p>
 <p>If <code>append = TRUE</code>: a data frame (or tibble if <code>tibble = TRUE</code>)
 equal to <code>data</code> with an added character column <code>out</code>.</p>
 <p>If <code>append = FALSE</code> and <code>tibble = TRUE</code>: a tibble with one column
@@ -132,16 +132,17 @@ equal to <code>data</code> with an added character column <code>out</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Ranking is performed row-wise using <code><a href="https://rdrr.io/r/base/order.html" class="external-link">order()</a></code> on the selected columns.
-Ties are resolved by the original column order (the default behavior of
-<code>order</code>), which is alphabetical if using the package's scoring
-functions. Missing values are placed last by <code><a href="https://rdrr.io/r/base/order.html" class="external-link">order()</a></code> and will be
-included only if there are fewer than <code>top</code> non-missing values in a row.</p>
-<p>If <code>prefix</code> is not <code>NULL</code>, the function removes the leading
-pattern <code>paste0("^", prefix)</code> from each selected column name before
+    <p>Ranking is performed row-wise using <code><a href="https://rdrr.io/r/base/order.html" class="external-link">order()</a></code> on the selected
+columns. Ties are resolved by the original column order (the default
+behavior of <code>order</code>), which is alphabetical if using the package's
+scoring functions. Missing values are placed last by <code><a href="https://rdrr.io/r/base/order.html" class="external-link">order()</a></code> and
+will be included only if there are fewer than <code>top</code> non-missing values
+in a row.</p>
+<p>If <code>prefix</code> is not <code>NULL</code>, the function removes the leading pattern
+<code>paste0("^", prefix)</code> from each selected column name before
 concatenation.</p>
-<p>When <code>append = TRUE</code>, the appended column is named <code>"out"</code>.
-The order of existing columns in <code>data</code> is preserved.</p>
+<p>When <code>append = TRUE</code>, the appended column is named <code>"out"</code>. The
+order of existing columns in <code>data</code> is preserved.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

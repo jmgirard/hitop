@@ -1,9 +1,9 @@
 # Compute McDonald's Omega (total) via CFA
 
-`calc_omega()` computes McDonald's \\\omega\_\mathrm{total}\\ for a
-unidimensional scale using a one-factor confirmatory factor analysis
-(CFA) fit with **lavaan** using MLR estimation. Missing data can be
-handled via full information maximum likelihood (FIML).
+Computes McDonald's \\\omega\_\mathrm{total}\\ for a unidimensional
+scale using a one-factor confirmatory factor analysis (CFA) fit with
+**lavaan** using MLR estimation. Missing data can be handled via full
+information maximum likelihood (FIML).
 
 ## Usage
 

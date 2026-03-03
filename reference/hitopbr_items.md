@@ -25,6 +25,10 @@ rows and 5 columns:
 
   Name of the scale
 
+- Externalizing:
+
+  Whether the item is part of the Externalizing scale
+
 - PFactor:
 
   Whether the item is part of the p-Factor scale
@@ -32,3 +36,11 @@ rows and 5 columns:
 - Text:
 
   Item text
+
+- HSR:
+
+  Item number on the HiTOP-SR
+
+- Original:
+
+  Item ID in the original, development item pool

@@ -1,8 +1,8 @@
 # Compute Cronbach's Coefficient Alpha
 
-`calc_alpha()` computes Cronbach's coefficient alpha for a set of items
-from the **unstandardized covariance** matrix. Items are coerced to
-numeric before calculation. Missing data can be handled via **pairwise**
+Computes Cronbach's coefficient alpha for a set of items from the
+**unstandardized covariance** matrix. Items are coerced to numeric
+before calculation. Missing data can be handled via **pairwise**
 deletion.
 
 ## Usage
@@ -34,12 +34,9 @@ of the item variances and divide by the variance of the total score;
 subtract this ratio from 1 and multiply by \\k/(k-1)\\.
 
 Both \\\mathrm{Var}(X_i)\\ and \\\mathrm{Var}(T)\\ are computed using
-pairwise-complete observations.
-
-## Coercion
-
-Each column is coerced via
-[`as.numeric()`](https://rdrr.io/r/base/numeric.html). This means:
+pairwise-complete observations. @section Coercion: Each column is
+coerced via [`as.numeric()`](https://rdrr.io/r/base/numeric.html). This
+means:
 
 - factors are converted to **integer level codes** (not labels);
 

@@ -40,3 +40,7 @@ rows and 8 columns:
 - Text:
 
   Item text
+
+- Original:
+
+  Item ID in the original, development item pool

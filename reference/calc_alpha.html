@@ -5,9 +5,9 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Compute Cronbach's Coefficient Alpha — calc_alpha"><meta name="description" content="calc_alpha() computes Cronbach's coefficient alpha for a set of items from
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Compute Cronbach's Coefficient Alpha — calc_alpha"><meta name="description" content="Computes Cronbach's coefficient alpha for a set of items from
 the unstandardized covariance matrix. Items are coerced to numeric before
-calculation. Missing data can be handled via pairwise deletion."><meta property="og:description" content="calc_alpha() computes Cronbach's coefficient alpha for a set of items from
+calculation. Missing data can be handled via pairwise deletion."><meta property="og:description" content="Computes Cronbach's coefficient alpha for a set of items from
 the unstandardized covariance matrix. Items are coerced to numeric before
 calculation. Missing data can be handled via pairwise deletion."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -57,7 +57,7 @@ calculation. Missing data can be handled via pairwise deletion."><meta property=
     </div>
 
     <div class="ref-description section level2">
-    <p><code>calc_alpha()</code> computes Cronbach's coefficient alpha for a set of items from
+    <p>Computes Cronbach's coefficient alpha for a set of items from
 the <strong>unstandardized covariance</strong> matrix. Items are coerced to numeric before
 calculation. Missing data can be handled via <strong>pairwise</strong> deletion.</p>
     </div>
@@ -72,7 +72,8 @@ calculation. Missing data can be handled via <strong>pairwise</strong> deletion.
 
 
 <dl><dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a></dt>
-<dd><p>A data frame or matrix with one row per observation and one column per item.</p></dd>
+<dd><p>A data frame or matrix with one row per observation and one column
+per item.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -82,23 +83,19 @@ can be outside this range for problematic data).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Let \(k\) be the number of items and let \(X_1,\ldots,X_k\) denote the item
-scores. Define the total score \(T = \sum_{i=1}^k X_i\). Cronbach's alpha can be
-written without matrix notation as
-$$\alpha \;=\; \frac{k}{k-1}\left(1 - \frac{\sum_{i=1}^k \mathrm{Var}(X_i)}{\mathrm{Var}(T)}\right).$$
-In words: take the sum of the item variances and divide by the variance of the
-total score; subtract this ratio from 1 and multiply by \(k/(k-1)\).</p>
-<p>Both \(\mathrm{Var}(X_i)\) and \(\mathrm{Var}(T)\) are
-computed using pairwise-complete observations.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="coercion">Coercion<a class="anchor" aria-label="anchor" href="#coercion"></a></h2>
-
-
-<p>Each column is coerced via <code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric()</a></code>. This means:</p><ul><li><p>factors are converted to <strong>integer level codes</strong> (not labels);</p></li>
+    <p>Let \(k\) be the number of items and let \(X_1,\ldots,X_k\)
+denote the item scores. Define the total score \(T = \sum_{i=1}^k X_i\).
+Cronbach's alpha can be written without matrix notation as $$\alpha
+  \;=\; \frac{k}{k-1}\left(1 - \frac{\sum_{i=1}^k
+  \mathrm{Var}(X_i)}{\mathrm{Var}(T)}\right).$$ In words: take the sum of the
+item variances and divide by the variance of the total score; subtract this
+ratio from 1 and multiply by \(k/(k-1)\).</p>
+<p>Both \(\mathrm{Var}(X_i)\) and \(\mathrm{Var}(T)\) are computed using
+pairwise-complete observations. @section Coercion: Each column is coerced via
+<code><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric()</a></code>. This means:</p><ul><li><p>factors are converted to <strong>integer level codes</strong> (not labels);</p></li>
 <li><p>characters that are not parsable as numbers become <code>NA</code>;</p></li>
-<li><p>dates/times become their underlying numeric representations.
-Ensure your columns are truly numeric item responses or pre-process as needed.</p></li>
+<li><p>dates/times become their underlying numeric representations. Ensure your
+columns are truly numeric item responses or pre-process as needed.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
