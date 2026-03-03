@@ -13,6 +13,7 @@ generate_docx_hitopsr(
   papersize = c("letter", "a4"),
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
+  include_subscales = FALSE,
   base_size = 10,
   font_family = "Times New Roman"
 )
@@ -39,6 +40,11 @@ generate_docx_hitopsr(
 
   Logical. If `TRUE` (default), appends a page break and the scoring
   instructions table.
+
+- include_subscales:
+
+  Logical. If `TRUE`, appends optional subscales to the scoring
+  instructions table. Defaults to `FALSE`.
 
 - base_size:
 
