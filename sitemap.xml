@@ -17,8 +17,10 @@
 <url><loc>https://jmgirard.github.io/hitop/reference/calc_omega.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_docx_hitopbr.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.html</loc></url>
-<url><loc>https://jmgirard.github.io/hitop/reference/generate_qualtrics_txt.html</loc></url>
-<url><loc>https://jmgirard.github.io/hitop/reference/generate_redcap_zip.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopbr.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/generate_redcap_hitopbr.html</loc></url>
+<url><loc>https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/hitop-package.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/hitopbr_items.html</loc></url>
 <url><loc>https://jmgirard.github.io/hitop/reference/hitopbr_scales.html</loc></url>

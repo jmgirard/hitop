@@ -62,7 +62,11 @@
   : Generate a Word Document for the HiTOP-BR Assessment
 - [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
   : Generate a Word Document for the HiTOP-SR Assessment
-- [`generate_qualtrics_txt()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_txt.md)
-  : Generate a Qualtrics Advanced Format Import File
-- [`generate_redcap_zip()`](https://jmgirard.github.io/hitop/reference/generate_redcap_zip.md)
-  : Generate a REDCap Instrument ZIP File
+- [`generate_qualtrics_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopbr.md)
+  : Generate a Qualtrics Import File for the HiTOP-BR
+- [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
+  : Generate a Qualtrics Import File for the HiTOP-SR
+- [`generate_redcap_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopbr.md)
+  : Generate a REDCap Instrument ZIP File for the HiTOP-BR
+- [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
+  : Generate a REDCap Instrument ZIP File for the HiTOP-SR

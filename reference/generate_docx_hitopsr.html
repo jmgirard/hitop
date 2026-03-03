@@ -84,24 +84,42 @@ single continuous table.</p>
 
 <dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
 <dd><p>Character string specifying the output file path. Defaults to
-<code>"hitopsr_1.0.docx"</code>. @param papersize Character string specifying the paper
-dimensions. Must be one of <code>"letter"</code> or <code>"a4"</code>. Defaults to <code>"letter"</code>.</p></dd>
+<code>"hitopsr_1.0.docx"</code>.</p></dd>
+
+
+<dt id="arg-papersize">papersize<a class="anchor" aria-label="anchor" href="#arg-papersize"></a></dt>
+<dd><p>Character string specifying the paper dimensions. Must be
+one of <code>"letter"</code> or <code>"a4"</code>. Defaults to <code>"letter"</code>.</p></dd>
 
 
 <dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
 <dd><p>Character string for the document header title. Defaults to
-<code>"HiTOP-SR (v1.0)"</code>. @param include_scoring Logical. If <code>TRUE</code> (default),
-appends a page break and the scoring instructions table. @param
-include_subscales Logical. If <code>TRUE</code>, appends optional subscales to the
-scoring instructions table. Defaults to <code>FALSE</code>. @param font_size Numeric
-value specifying the base font size in points. Defaults to <code>10</code>. @param
-font_family Character string specifying the font family to be used. Defaults
-to <code>"Times New Roman"</code>.</p></dd>
+<code>"HiTOP-SR (v1.0)"</code>.</p></dd>
+
+
+<dt id="arg-include-scoring">include_scoring<a class="anchor" aria-label="anchor" href="#arg-include-scoring"></a></dt>
+<dd><p>Logical. If <code>TRUE</code> (default), appends a page break and
+the scoring instructions table.</p></dd>
+
+
+<dt id="arg-include-subscales">include_subscales<a class="anchor" aria-label="anchor" href="#arg-include-subscales"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, appends optional subscales to
+the scoring instructions table. Defaults to <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-font-size">font_size<a class="anchor" aria-label="anchor" href="#arg-font-size"></a></dt>
+<dd><p>Numeric value specifying the base font size in points.
+Defaults to <code>10</code>.</p></dd>
+
+
+<dt id="arg-font-family">font_family<a class="anchor" aria-label="anchor" href="#arg-font-family"></a></dt>
+<dd><p>Character string specifying the font family to be used.
+Defaults to <code>"Times New Roman"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly returns the path to the created file (<code>file</code>). @export</p>
+    <p>Invisibly returns the path to the created file (<code>file</code>).</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
