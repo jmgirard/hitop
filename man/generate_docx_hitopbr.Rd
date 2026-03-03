@@ -9,7 +9,7 @@ generate_docx_hitopbr(
   papersize = c("letter", "a4"),
   title = "HiTOP-BR (v1.0)",
   include_scoring = TRUE,
-  base_size = 10,
+  font_size = 10,
   font_family = "Times New Roman"
 )
 }
@@ -22,7 +22,7 @@ generate_docx_hitopbr(
 
 \item{include_scoring}{Logical. If \code{TRUE} (default), appends a page break and the scoring instructions table.}
 
-\item{base_size}{Numeric value specifying the base font size in points. Defaults to \code{10}.}
+\item{font_size}{Numeric value specifying the base font size in points. Defaults to \code{10}.}
 
 \item{font_family}{Character string specifying the font family to be used. Defaults to \code{"Times New Roman"}.}
 }

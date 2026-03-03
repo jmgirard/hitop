@@ -10,7 +10,7 @@ generate_docx_hitopsr(
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
   include_subscales = FALSE,
-  base_size = 10,
+  font_size = 10,
   font_family = "Times New Roman"
 )
 }
@@ -25,7 +25,7 @@ generate_docx_hitopsr(
 
 \item{include_subscales}{Logical. If \code{TRUE}, appends optional subscales to the scoring instructions table. Defaults to \code{FALSE}.}
 
-\item{base_size}{Numeric value specifying the base font size in points. Defaults to \code{10}.}
+\item{font_size}{Numeric value specifying the base font size in points. Defaults to \code{10}.}
 
 \item{font_family}{Character string specifying the font family to be used. Defaults to \code{"Times New Roman"}.}
 }

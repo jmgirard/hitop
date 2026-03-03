@@ -9,7 +9,7 @@
 #' @param papersize Character string specifying the paper dimensions. Must be one of `"letter"` or `"a4"`. Defaults to `"letter"`.
 #' @param title Character string for the document header title. Defaults to `"HiTOP-BR (v1.0)"`.
 #' @param include_scoring Logical. If `TRUE` (default), appends a page break and the scoring instructions table.
-#' @param base_size Numeric value specifying the base font size in points. Defaults to `10`.
+#' @param font_size Numeric value specifying the base font size in points. Defaults to `10`.
 #' @param font_family Character string specifying the font family to be used. Defaults to `"Times New Roman"`.
 #'
 #' @return Invisibly returns the path to the created file (`file`).
@@ -19,7 +19,7 @@ generate_docx_hitopbr <- function(
   papersize = c("letter", "a4"),
   title = "HiTOP-BR (v1.0)",
   include_scoring = TRUE,
-  base_size = 10,
+  font_size = 10,
   font_family = "Times New Roman"
 ) {
   papersize <- match.arg(papersize)
@@ -30,7 +30,7 @@ generate_docx_hitopbr <- function(
     "HBR",
     hitopbr_instructions$options,
     dims$pw,
-    base_size,
+    font_size,
     font_family
   )
 
@@ -40,7 +40,7 @@ generate_docx_hitopbr <- function(
       hitopbr_scales,
       "HBR",
       dims$pw,
-      base_size,
+      font_size,
       font_family
     )
   }
@@ -56,7 +56,7 @@ generate_docx_hitopbr <- function(
     t2,
     include_scoring,
     dims,
-    base_size,
+    font_size,
     font_family
   )
 }
@@ -73,7 +73,7 @@ generate_docx_hitopbr <- function(
 #' @param title Character string for the document header title. Defaults to `"HiTOP-SR (v1.0)"`.
 #' @param include_scoring Logical. If `TRUE` (default), appends a page break and the scoring instructions table.
 #' @param include_subscales Logical. If `TRUE`, appends optional subscales to the scoring instructions table. Defaults to `FALSE`.
-#' @param base_size Numeric value specifying the base font size in points. Defaults to `10`.
+#' @param font_size Numeric value specifying the base font size in points. Defaults to `10`.
 #' @param font_family Character string specifying the font family to be used. Defaults to `"Times New Roman"`.
 #'
 #' @return Invisibly returns the path to the created file (`file`).
@@ -84,7 +84,7 @@ generate_docx_hitopsr <- function(
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
   include_subscales = FALSE,
-  base_size = 10,
+  font_size = 10,
   font_family = "Times New Roman"
 ) {
   papersize <- match.arg(papersize)
@@ -96,7 +96,7 @@ generate_docx_hitopsr <- function(
     "HSR",
     hitopsr_instructions$options,
     dims$pw,
-    base_size,
+    font_size,
     font_family
   )
 
@@ -129,7 +129,7 @@ generate_docx_hitopsr <- function(
       scales_to_score,
       "HSR",
       dims$pw,
-      base_size,
+      font_size,
       font_family
     )
   }
@@ -145,7 +145,7 @@ generate_docx_hitopsr <- function(
     t2,
     include_scoring,
     dims,
-    base_size,
+    font_size,
     font_family
   )
 }
@@ -165,7 +165,7 @@ make_items_table <- function(
   item_col,
   opts,
   printable_w,
-  base_size,
+  font_size,
   font_family
 ) {
   num_opts <- nrow(opts)
@@ -206,7 +206,7 @@ make_items_table <- function(
     flextable::hline_top(border = std_border, part = "header") |>
     flextable::hline_bottom(border = std_border, part = "header") |>
     flextable::bg(i = even_rows, bg = "#f2f2f2", part = "body") |>
-    flextable::fontsize(size = base_size, part = "all") |>
+    flextable::fontsize(size = font_size, part = "all") |>
     flextable::font(fontname = font_family, part = "all") |>
     flextable::set_table_properties(layout = "fixed", align = "left")
 }
@@ -216,7 +216,7 @@ make_scoring_table <- function(
   scales_df,
   item_col,
   printable_w,
-  base_size,
+  font_size,
   font_family
 ) {
   scales_sorted <- scales_df[order(scales_df$Scale), ]
@@ -272,7 +272,7 @@ make_scoring_table <- function(
     flextable::align(align = "left", part = "all") |>
     flextable::valign(valign = "top", part = "body") |>
     flextable::padding(padding = 3, part = "all") |>
-    flextable::fontsize(size = max(6, base_size - 1), part = "all") |>
+    flextable::fontsize(size = max(6, font_size - 1), part = "all") |>
     flextable::font(fontname = font_family, part = "all") |>
     flextable::width(j = c("Scale", "Scale_2"), width = scale_col_width) |>
     flextable::width(j = c("Items", "Items_2"), width = items_col_width) |>
@@ -292,16 +292,16 @@ build_hitop_doc <- function(
   table_2,
   include_scoring,
   dims,
-  base_size,
+  font_size,
   font_family
 ) {
   inst_prop <- officer::fp_text(
-    font.size = base_size,
+    font.size = font_size,
     font.family = font_family
   )
   inst_prop_bold <- officer::fp_text(
     bold = TRUE,
-    font.size = base_size,
+    font.size = font_size,
     font.family = font_family
   )
   inst_par_prop <- officer::fp_par(padding.bottom = 24)
@@ -318,7 +318,7 @@ build_hitop_doc <- function(
       "Copyright 2024 \u00A9 Hierarchical Taxonomy of Psychopathology Society",
       prop = officer::fp_text(
         color = "grey",
-        font.size = max(6, base_size - 2),
+        font.size = max(6, font_size - 2),
         font.family = font_family
       )
     ),
