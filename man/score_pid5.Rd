@@ -50,8 +50,8 @@ errors (if requested) and all original \code{data} columns (if requested)
 }
 \description{
 Calculate scale scores on the Personality Inventory for DSM-5: full version
-(PID-5, 220 items), short form version (PID-5-SF, 100 items), or
-brief form version (PID-5-BF, 25 items) from item-level data.
+(PID-5, 220 items), short form version (PID-5-SF, 100 items), or brief form
+version (PID-5-BF, 25 items) from item-level data.
 }
 \references{
 Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &

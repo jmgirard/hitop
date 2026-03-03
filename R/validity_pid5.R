@@ -1,13 +1,15 @@
 #' Score the Personality Inventory for DSM-5 Validity Scales
 #'
 #' Calculate validity scale scores on the Personality Inventory for DSM-5: full
-#' version (PID-5, 220 items), short form version (PID-5-SF, 100
-#' items), or brief form version (PID-5-BF, 25 items) from item-level data and
-#' return alerts when when observations meet criteria for invalidity.
+#' version (PID-5, 220 items), short form version (PID-5-SF, 100 items), or
+#' brief form version (PID-5-BF, 25 items) from item-level data and return
+#' alerts when when observations meet criteria for invalidity.
 #'
 #' @inheritParams score_pid5
+#'
 #' @return A \link[tibble]{tibble} containing all validity scores and all
 #'   original `data` columns (if requested)
+#'
 #' @details For the full PID-5, a score of 17 or higher on the INC is indicative
 #'   of inconsistent responding. A score of 3 or higher on the ORS is indicative
 #'   of overreporting. A score of 10 or lower on the PRD is indicative of
@@ -19,6 +21,7 @@
 #'   of defensiveness (rather than social desirability). For the PID-5-SF,
 #'   scores of 8 or more on the INC-S are indicative of inconsistent responding.
 #'   Cut-scores for the ORS-S, PRD-S, and SD-TD-S have not yet been validated.
+#'
 #' @references Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
 #'   E. H. (2016). Development of a Response Inconsistency Scale for the
 #'   Personality Inventory for DSM-5. *Journal of Personality Assessment,
@@ -33,13 +36,14 @@
 #'   \doi{10.1080/00223891.2017.1420659}
 #' @references Williams, M. M., Rogers, R., Sharf, A. J., & Ross, C. A. (2019).
 #'   Faking Good: An Investigation of Social Desirability and Defensiveness in
-#'   an Inpatient Sample With Personality Disorder Traits.
-#'   *Journal of Personality Assessment, 101*(3), 253–263.
+#'   an Inpatient Sample With Personality Disorder Traits. *Journal of
+#'   Personality Assessment, 101*(3), 253–263.
 #'   \doi{10.1080/00223891.2018.1455691}
 #' @references Lowmaster, S. E., Hartman, M. J., Zimmermann, J., Baldock, Z. C.,
 #'   & Kurtz, J. E. (2020). Further Validation of the Response Inconsistency
 #'   Scale for the Personality Inventory for DSM-5. *Journal of Personality
 #'   Assessment, 102*(6), 743–750. \doi{10.1080/00223891.2019.1674320}
+#'
 #' @export
 validity_pid5 <- function(
   data,
@@ -50,7 +54,6 @@ validity_pid5 <- function(
   append = TRUE,
   tibble = TRUE
 ) {
-
   # Assertions
   validate_data(data)
   version <- toupper(version)
@@ -58,8 +61,8 @@ validity_pid5 <- function(
   n_items <- switch(
     version,
     "FULL" = 220,
-    "SF"  = 100,
-    "BF"   = 25,
+    "SF" = 100,
+    "BF" = 25,
     cli::cli_abort("Invalid `version` argument")
   )
   validate_items(items, n = n_items)
@@ -110,8 +113,12 @@ validity_pid5 <- function(
     inc_warns_p <- sprintf("%.1f%%", inc_warns / length(inc_vec) * 100)
     inc_nas <- sum(is.na(inc_vec))
     if (inc_warns > 0) {
-      cli::cli_alert_warning('A total of {inc_warns} observations ({inc_warns_p}) met criteria for inconsistent responding on the {inc_var} ({inc_nas} missing).')
-      cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, {inc_col} < {inc_cut})}')
+      cli::cli_alert_warning(
+        'A total of {inc_warns} observations ({inc_warns_p}) met criteria for inconsistent responding on the {inc_var} ({inc_nas} missing).'
+      )
+      cli::cli_alert_info(
+        'Consider removing them with {.code dplyr::filter(df, {inc_col} < {inc_cut})}'
+      )
     }
     out[[inc_col]] <- inc_vec
 
@@ -125,8 +132,12 @@ validity_pid5 <- function(
     ors_warns_p <- sprintf("%.1f%%", ors_warns / length(ors_vec) * 100)
     ors_nas <- sum(is.na(ors_vec))
     if (ors_warns > 0) {
-      cli::cli_alert_warning('A total of {ors_warns} observations ({ors_warns_p}) met criteria for overreporting on the {ors_var} ({ors_nas} missing).')
-      cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, {ors_col} < {ors_cut})}')
+      cli::cli_alert_warning(
+        'A total of {ors_warns} observations ({ors_warns_p}) met criteria for overreporting on the {ors_var} ({ors_nas} missing).'
+      )
+      cli::cli_alert_info(
+        'Consider removing them with {.code dplyr::filter(df, {ors_col} < {ors_cut})}'
+      )
     }
     out[[ors_col]] <- ors_vec
 
@@ -140,8 +151,12 @@ validity_pid5 <- function(
     prd_warns_p <- sprintf("%.1f%%", prd_warns / length(prd_vec) * 100)
     prd_nas <- sum(is.na(prd_vec))
     if (prd_warns > 0) {
-      cli::cli_alert_warning('A total of {prd_warns} observations ({prd_warns_p}) met criteria for positive impression management on the {prd_var} ({prd_nas} missing).')
-      cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, {prd_col} > {prd_cut})}')
+      cli::cli_alert_warning(
+        'A total of {prd_warns} observations ({prd_warns_p}) met criteria for positive impression management on the {prd_var} ({prd_nas} missing).'
+      )
+      cli::cli_alert_info(
+        'Consider removing them with {.code dplyr::filter(df, {prd_col} > {prd_cut})}'
+      )
     }
     out[[prd_col]] <- prd_vec
 
@@ -152,31 +167,51 @@ validity_pid5 <- function(
     sdtd_col <- paste0(prefix, sdtd_var)
     sdtd_cut_low <- ifelse(version == "FULL", 11, NA_real_)
     sdtd_warns_low <- sum(sdtd_vec <= sdtd_cut_low, na.rm = TRUE)
-    sdtd_warns_low_p <- sprintf("%.1f%%", sdtd_warns_low / length(prd_vec) * 100)
+    sdtd_warns_low_p <- sprintf(
+      "%.1f%%",
+      sdtd_warns_low / length(prd_vec) * 100
+    )
     sdtd_cut_high <- ifelse(version == "FULL", 19, NA_real_)
     sdtd_warns_high <- sum(sdtd_vec >= sdtd_cut_high, na.rm = TRUE)
-    sdtd_warns_high_p <- sprintf("%.1f%%", sdtd_warns_high / length(prd_vec) * 100)
+    sdtd_warns_high_p <- sprintf(
+      "%.1f%%",
+      sdtd_warns_high / length(prd_vec) * 100
+    )
     sdtd_nas <- sum(is.na(sdtd_vec))
     if (sdtd_warns_low > 0) {
-      cli::cli_alert_warning('A total of {sdtd_warns_low} observations ({sdtd_warns_low_p}) met criteria for social desirability on the {sdtd_var} ({sdtd_nas} missing).')
-      cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, {sdtd_col} > {sdtd_cut_low})}')
+      cli::cli_alert_warning(
+        'A total of {sdtd_warns_low} observations ({sdtd_warns_low_p}) met criteria for social desirability on the {sdtd_var} ({sdtd_nas} missing).'
+      )
+      cli::cli_alert_info(
+        'Consider removing them with {.code dplyr::filter(df, {sdtd_col} > {sdtd_cut_low})}'
+      )
     }
     if (sdtd_warns_high > 0) {
-      cli::cli_alert_warning('A total of {sdtd_warns_high} observations ({sdtd_warns_high_p}) met criteria for defensiveness on the {sdtd_var} ({sdtd_nas} missing).')
-      cli::cli_alert_info('Consider removing them with {.code dplyr::filter(df, {sdtd_col} < {sdtd_cut_high})}')
+      cli::cli_alert_warning(
+        'A total of {sdtd_warns_high} observations ({sdtd_warns_high_p}) met criteria for defensiveness on the {sdtd_var} ({sdtd_nas} missing).'
+      )
+      cli::cli_alert_info(
+        'Consider removing them with {.code dplyr::filter(df, {sdtd_col} < {sdtd_cut_high})}'
+      )
     }
     out[[sdtd_col]] <- sdtd_vec
 
     if (version == "SF") {
-      cli::cli_alert_warning('Cut scores for the ORS-S, PRD-S, and SDTD-S have not been developed.')
+      cli::cli_alert_warning(
+        'Cut scores for the ORS-S, PRD-S, and SDTD-S have not been developed.'
+      )
     }
   }
 
   ## Append output to input tibble if requested
-  if (append == TRUE) out <- cbind(data, out)
+  if (append == TRUE) {
+    out <- cbind(data, out)
+  }
 
   ## Coerce output to tibble if requested
-  if (tibble == TRUE) out <- tibble::as_tibble(out)
+  if (tibble == TRUE) {
+    out <- tibble::as_tibble(out)
+  }
 
   ## Return output
   out

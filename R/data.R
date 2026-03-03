@@ -34,6 +34,7 @@
 #'   \item{Scale}{Name of the scale (level 2)}
 #'   \item{Subscale}{Name of the subscale (level 1)}
 #'   \item{Text}{Item text}
+#'   \item{Original}{Item ID in the original, development item pool}
 #' }
 "hitopsr_items"
 
@@ -56,8 +57,11 @@
 #'   \item{HBR}{Item number on the HITOP-BR}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{Scale}{Name of the scale}
+#'   \item{Externalizing}{Whether the item is part of the Externalizing scale}
 #'   \item{PFactor}{Whether the item is part of the p-Factor scale}
 #'   \item{Text}{Item text}
+#'   \item{HSR}{Item number on the HiTOP-SR}
+#'   \item{Original}{Item ID in the original, development item pool}
 #' }
 "hitopbr_items"
 

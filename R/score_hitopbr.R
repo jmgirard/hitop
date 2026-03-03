@@ -6,7 +6,8 @@
 #' @param items A vector of column names (as strings) or numbers (as integers)
 #'   corresponding to the 45 HiTOP-BR items in order.
 #' @param srange An optional numeric vector specifying the minimum and maximum
-#'   values of the HiTOP-BR items, used for reverse-coding. (default = `c(1, 4)`)
+#'   values of the HiTOP-BR items, used for reverse-coding. (default = `c(1,
+#'   4)`)
 #' @param prefix An optional string to add before each scale column name. If no
 #'   prefix is desired, set to an empty string `""`. (default = `"hbr_"`)
 #' @param na.rm An optional logical indicating whether missing values should be
@@ -17,8 +18,10 @@
 #'   be added to the end of the `data` input. (default = `TRUE`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`. (default = `TRUE`)
+#'
 #' @return A data frame containing all scale scores and standard errors (if
 #'   requested) and all original `data` columns (if requested)
+#'
 #' @export
 score_hitopbr <- function(
   data,

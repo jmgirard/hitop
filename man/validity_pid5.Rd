@@ -42,9 +42,9 @@ original \code{data} columns (if requested)
 }
 \description{
 Calculate validity scale scores on the Personality Inventory for DSM-5: full
-version (PID-5, 220 items), short form version (PID-5-SF, 100
-items), or brief form version (PID-5-BF, 25 items) from item-level data and
-return alerts when when observations meet criteria for invalidity.
+version (PID-5, 220 items), short form version (PID-5-SF, 100 items), or
+brief form version (PID-5-BF, 25 items) from item-level data and return
+alerts when when observations meet criteria for invalidity.
 }
 \details{
 For the full PID-5, a score of 17 or higher on the INC is indicative
@@ -77,8 +77,8 @@ Scale. \emph{Journal of Personality Assessment, 100}(4), 398–405.
 
 Williams, M. M., Rogers, R., Sharf, A. J., & Ross, C. A. (2019).
 Faking Good: An Investigation of Social Desirability and Defensiveness in
-an Inpatient Sample With Personality Disorder Traits.
-\emph{Journal of Personality Assessment, 101}(3), 253–263.
+an Inpatient Sample With Personality Disorder Traits. \emph{Journal of
+Personality Assessment, 101}(3), 253–263.
 \doi{10.1080/00223891.2018.1455691}
 
 Lowmaster, S. E., Hartman, M. J., Zimmermann, J., Baldock, Z. C.,

@@ -1,8 +1,8 @@
 #' Score the Personality Inventory for DSM-5
 #'
 #' Calculate scale scores on the Personality Inventory for DSM-5: full version
-#' (PID-5, 220 items), short form version (PID-5-SF, 100 items), or
-#' brief form version (PID-5-BF, 25 items) from item-level data.
+#' (PID-5, 220 items), short form version (PID-5-SF, 100 items), or brief form
+#' version (PID-5-BF, 25 items) from item-level data.
 #'
 #' @param data A data frame containing (at least) all the PID items (numerically
 #'   scored and in order).
@@ -22,8 +22,10 @@
 #'   be added to the end of the `data` input. (default = `TRUE`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a \link[tibble]{tibble}. (default = `TRUE`)
+#'
 #' @return A \link[tibble]{tibble} containing all scale scores and standard
 #'   errors (if requested) and all original `data` columns (if requested)
+#'
 #' @references Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 #'   Skodol, A. E. (2012). Initial construction of a maladaptive personality
 #'   trait model and inventory for DSM-5. *Psychological Medicine, 42*,
@@ -32,6 +34,7 @@
 #'   the Personality Inventory for DSM-5-Brief Form (PID-5-BF) in the
 #'   measurement of maladaptive personality and psychopathology. *Assessment,
 #'   25*(5), 596–607. \doi{10.1177/1073191116676889}
+#'
 #' @references Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W. L.,
 #'   Samuel, D. B., Williamson, R. L., Lynam, D. R., Widiger, T. A., Markon, K.
 #'   E., Krueger, R. F., & Miller, J. D. (2015). Testing whether the DSM-5
@@ -39,19 +42,19 @@
 #'   items: An item response theory investigation of the personality inventory
 #'   for DSM-5. *Psychological Assessment, 27*(4), 1195–1210.
 #'   \doi{10.1037/pas0000120}
+#'
 #' @export
 score_pid5 <- function(
-    data,
-    items,
-    version = c("FULL", "SF", "BF"),
-    srange = c(0, 3),
-    prefix = "pid_",
-    na.rm = TRUE,
-    calc_se = FALSE,
-    append = TRUE,
-    tibble = TRUE
+  data,
+  items,
+  version = c("FULL", "SF", "BF"),
+  srange = c(0, 3),
+  prefix = "pid_",
+  na.rm = TRUE,
+  calc_se = FALSE,
+  append = TRUE,
+  tibble = TRUE
 ) {
-
   ## Assertions
   validate_data(data)
   version <- toupper(version)
@@ -59,8 +62,8 @@ score_pid5 <- function(
   n_items <- switch(
     version,
     "FULL" = 220,
-    "SF"  = 100,
-    "BF"   = 25,
+    "SF" = 100,
+    "BF" = 25,
     cli::cli_abort("Invalid `version` argument")
   )
   validate_items(items, n = n_items)
@@ -86,11 +89,13 @@ score_pid5 <- function(
   if (length(items_rev) > 0) {
     data_items[items_rev] <- lapply(
       items_rev,
-      function(i) reverse(
-        data_items[[i]],
-        low = srange[[1]],
-        high = srange[[2]]
-      )
+      function(i) {
+        reverse(
+          data_items[[i]],
+          low = srange[[1]],
+          high = srange[[2]]
+        )
+      }
     )
   }
   data_items <- bind_columns(data_items)
@@ -123,10 +128,14 @@ score_pid5 <- function(
   }
 
   ## Append output to input tibble if requested
-  if (append == TRUE) out <- cbind(data, out)
+  if (append == TRUE) {
+    out <- cbind(data, out)
+  }
 
   ## Coerce output to tibble if requested
-  if (tibble == TRUE) out <- tibble::as_tibble(out)
+  if (tibble == TRUE) {
+    out <- tibble::as_tibble(out)
+  }
 
   ## Return output
   out

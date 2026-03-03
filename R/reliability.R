@@ -1,37 +1,37 @@
 #' Compute Cronbach's Coefficient Alpha
 #'
-#' @description
-#' `calc_alpha()` computes Cronbach's coefficient alpha for a set of items from
+#' Computes Cronbach's coefficient alpha for a set of items from
 #' the **unstandardized covariance** matrix. Items are coerced to numeric before
 #' calculation. Missing data can be handled via **pairwise** deletion.
 #'
-#' @details
-#' Let \eqn{k} be the number of items and let \eqn{X_1,\ldots,X_k} denote the item
-#' scores. Define the total score \eqn{T = \sum_{i=1}^k X_i}. Cronbach's alpha can be
-#' written without matrix notation as
-#' \deqn{\alpha \;=\; \frac{k}{k-1}\left(1 - \frac{\sum_{i=1}^k \mathrm{Var}(X_i)}{\mathrm{Var}(T)}\right).}
-#' In words: take the sum of the item variances and divide by the variance of the
-#' total score; subtract this ratio from 1 and multiply by \eqn{k/(k-1)}.
+#' @details Let \eqn{k} be the number of items and let \eqn{X_1,\ldots,X_k}
+#'   denote the item scores. Define the total score \eqn{T = \sum_{i=1}^k X_i}.
+#'   Cronbach's alpha can be written without matrix notation as \deqn{\alpha
+#'   \;=\; \frac{k}{k-1}\left(1 - \frac{\sum_{i=1}^k
+#'   \mathrm{Var}(X_i)}{\mathrm{Var}(T)}\right).} In words: take the sum of the
+#'   item variances and divide by the variance of the total score; subtract this
+#'   ratio from 1 and multiply by \eqn{k/(k-1)}.
 #'
-#' Both \eqn{\mathrm{Var}(X_i)} and \eqn{\mathrm{Var}(T)} are
-#' computed using pairwise-complete observations.
-#' @section Coercion:
-#' Each column is coerced via `as.numeric()`. This means:
+#' Both \eqn{\mathrm{Var}(X_i)} and \eqn{\mathrm{Var}(T)} are computed using
+#' pairwise-complete observations. @section Coercion: Each column is coerced via
+#' `as.numeric()`. This means:
 #' - factors are converted to **integer level codes** (not labels);
 #' - characters that are not parsable as numbers become `NA`;
-#' - dates/times become their underlying numeric representations.
-#' Ensure your columns are truly numeric item responses or pre-process as needed.
+#' - dates/times become their underlying numeric representations. Ensure your
+#' columns are truly numeric item responses or pre-process as needed.
 #'
-#' @param df A data frame or matrix with one row per observation and one column per item.
+#' @param df A data frame or matrix with one row per observation and one column
+#'   per item.
 #'
 #' @return A numeric scalar giving Cronbach's alpha (typically in \[0, 1], but
-#' can be outside this range for problematic data).
+#'   can be outside this range for problematic data).
 #'
 #' @references
 #' - Cronbach, L. J. (1951). Coefficient alpha and the internal structure of
-#'   tests. *Psychometrika, 16*(3), 297–334.
+#' tests. *Psychometrika, 16*(3), 297–334.
 #' - Sijtsma, K. (2009). On the use, the misuse, and the very limited usefulness
-#'   of Cronbach's alpha. *Psychometrika, 74*(1), 107–120.
+#' of Cronbach's alpha. *Psychometrika, 74*(1), 107–120.
+#'
 #' @export
 calc_alpha <- function(df) {
   # Validate df arg
@@ -80,20 +80,17 @@ calc_alpha <- function(df) {
 
 #' Compute McDonald's Omega (total) via CFA
 #'
-#' @description
-#' `calc_omega()` computes McDonald's \eqn{\omega_\mathrm{total}} for a
-#' unidimensional scale using a one-factor confirmatory factor analysis
-#' (CFA) fit with **lavaan** using MLR estimation. Missing data can be
-#' handled via full information maximum likelihood (FIML).
+#' Computes McDonald's \eqn{\omega_\mathrm{total}} for a unidimensional scale
+#' using a one-factor confirmatory factor analysis (CFA) fit with **lavaan**
+#' using MLR estimation. Missing data can be handled via full information
+#' maximum likelihood (FIML).
 #'
-#' @details
-#' The model is `f =~ item1 + item2 + ... + itemK` with `std.lv = TRUE`
-#' (i.e., \eqn{\mathrm{Var}(f)=1}).
+#' @details The model is `f =~ item1 + item2 + ... + itemK` with `std.lv = TRUE`
+#'   (i.e., \eqn{\mathrm{Var}(f)=1}).
 #'
-#'   \eqn{\omega = \frac{(\sum_i \lambda_i)^2}
-#'   {(\sum_i \lambda_i)^2 + \sum_i \theta_i}}, where \eqn{\lambda_i} are
-#'   *unstandardized* loadings and \eqn{\theta_i} are *unstandardized* residual
-#'   variances of the indicators.
+#' \eqn{\omega = \frac{(\sum_i \lambda_i)^2} {(\sum_i \lambda_i)^2 + \sum_i
+#' \theta_i}}, where \eqn{\lambda_i} are *unstandardized* loadings and
+#' \eqn{\theta_i} are *unstandardized* residual variances of the indicators.
 #'
 #' The function validates inputs and fails with informative messages if the CFA
 #' does not converge or if implied residual variances are invalid. Mixed-sign
@@ -111,12 +108,13 @@ calc_alpha <- function(df) {
 #'
 #' @references
 #' - McDonald, R. P. (1999). *Test Theory: A Unified Treatment*. Lawrence
-#'   Erlbaum.
+#' Erlbaum.
 #' - Green, S. B., & Yang, Y. (2009). Reliability of summed item scores using
-#'   structural equation modeling: An alternative to coefficient alpha.
+#' structural equation modeling: An alternative to coefficient alpha.
 #'   *Psychometrika, 74*(1), 155–167.
 #' - Zinbarg, R. E., Revelle, W., Yovel, I., & Li, W. (2005). Cronbach's α,
-#'   Revelle's β, and McDonald's ωH. *Psychometrika, 70*(1), 123–133.
+#' Revelle's β, and McDonald's ωH. *Psychometrika, 70*(1), 123–133.
+#'
 #' @export
 calc_omega <- function(df) {
   # Check for dependencies

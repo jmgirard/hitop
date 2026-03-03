@@ -16,19 +16,18 @@ A numeric scalar giving McDonald;s \eqn{\omega_\mathrm{total}}
 slightly outside this range).
 }
 \description{
-\code{calc_omega()} computes McDonald's \eqn{\omega_\mathrm{total}} for a
-unidimensional scale using a one-factor confirmatory factor analysis
-(CFA) fit with \strong{lavaan} using MLR estimation. Missing data can be
-handled via full information maximum likelihood (FIML).
+Computes McDonald's \eqn{\omega_\mathrm{total}} for a unidimensional scale
+using a one-factor confirmatory factor analysis (CFA) fit with \strong{lavaan}
+using MLR estimation. Missing data can be handled via full information
+maximum likelihood (FIML).
 }
 \details{
 The model is \code{f =~ item1 + item2 + ... + itemK} with \code{std.lv = TRUE}
 (i.e., \eqn{\mathrm{Var}(f)=1}).
 
-\eqn{\omega = \frac{(\sum_i \lambda_i)^2}
-  {(\sum_i \lambda_i)^2 + \sum_i \theta_i}}, where \eqn{\lambda_i} are
-\emph{unstandardized} loadings and \eqn{\theta_i} are \emph{unstandardized} residual
-variances of the indicators.
+\eqn{\omega = \frac{(\sum_i \lambda_i)^2} {(\sum_i \lambda_i)^2 + \sum_i
+\theta_i}}, where \eqn{\lambda_i} are \emph{unstandardized} loadings and
+\eqn{\theta_i} are \emph{unstandardized} residual variances of the indicators.
 
 The function validates inputs and fails with informative messages if the CFA
 does not converge or if implied residual variances are invalid. Mixed-sign

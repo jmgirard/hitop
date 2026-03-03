@@ -3,7 +3,6 @@
 export(calc_alpha)
 export(calc_omega)
 export(generate_docx_hitopbr)
-export(generate_docx_hitopsr)
 export(generate_qualtrics_txt)
 export(generate_redcap_zip)
 export(rank_scales)

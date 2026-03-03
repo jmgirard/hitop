@@ -17,19 +17,20 @@
 #' @param alpha Optional logical; if `TRUE`, compute and print Cronbach’s alpha
 #'   for each scale. (default = `FALSE`)
 #' @param omega Optional logical; if `TRUE`, compute and print McDonald’s omega
-#'   for each scale using Pearson correlations (i.e., non-ordinal). (default = `FALSE`)
+#'   for each scale using Pearson correlations (i.e., non-ordinal). (default =
+#'   `FALSE`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`. (default = `TRUE`)
-#' @details
-#' If either `alpha` or `omega` are `TRUE`, the function prints a
-#' per-scale reliability summary. Only reliability columns that contain at least
-#' one non-`NA` value are shown (the `scale` column is always shown).
+#'
+#' @details If either `alpha` or `omega` are `TRUE`, the function prints a
+#'   per-scale reliability summary. Only reliability columns that contain at
+#'   least one non-`NA` value are shown (the `scale` column is always shown).
 #'
 #' @return A data frame containing all scale scores and standard errors (if
-#'   requested) and all original `data` columns (if requested).
-#'   Reliability estimates, when requested, are printed as a side effect.
+#'   requested) and all original `data` columns (if requested). Reliability
+#'   estimates, when requested, are printed as a side effect.
 #'
 #' @export
 score_hitopsr <- function(

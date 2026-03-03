@@ -26,8 +26,8 @@ is. The match is interpreted as a regular expression anchored to the start
 of the name (i.e., \code{"^"} is prepended). Special regex characters in
 \code{prefix} will be treated as regex metacharacters.}
 
-\item{top}{Integer (length 1). The number of columns to include per row
-after ranking. Must be between 1 and \code{length(scales)}.}
+\item{top}{Integer (length 1). The number of columns to include per row after
+ranking. Must be between 1 and \code{length(scales)}.}
 
 \item{dir}{Direction of ranking: \code{"high"} for largest values first or
 \code{"low"} for smallest values first.}
@@ -40,9 +40,9 @@ after ranking. Must be between 1 and \code{length(scales)}.}
 \code{TRUE}).}
 }
 \value{
-If \code{append = FALSE} and \code{tibble = FALSE}: a character vector of
-length \code{nrow(data)} where each element is a comma-separated list of the
-selected scale names in ranked order.
+If \code{append = FALSE} and \code{tibble = FALSE}: a character
+vector of length \code{nrow(data)} where each element is a comma-separated
+list of the selected scale names in ranked order.
 
 If \code{append = TRUE}: a data frame (or tibble if \code{tibble = TRUE})
 equal to \code{data} with an added character column \code{out}.
@@ -57,16 +57,17 @@ the \code{top} highest (or lowest) scale names, optionally removing a common
 the original data as a tibble.
 }
 \details{
-Ranking is performed row-wise using \code{order()} on the selected columns.
-Ties are resolved by the original column order (the default behavior of
-\code{order}), which is alphabetical if using the package's scoring
-functions. Missing values are placed last by \code{order()} and will be
-included only if there are fewer than \code{top} non-missing values in a row.
+Ranking is performed row-wise using \code{order()} on the selected
+columns. Ties are resolved by the original column order (the default
+behavior of \code{order}), which is alphabetical if using the package's
+scoring functions. Missing values are placed last by \code{order()} and
+will be included only if there are fewer than \code{top} non-missing values
+in a row.
 
-If \code{prefix} is not \code{NULL}, the function removes the leading
-pattern \code{paste0("^", prefix)} from each selected column name before
+If \code{prefix} is not \code{NULL}, the function removes the leading pattern
+\code{paste0("^", prefix)} from each selected column name before
 concatenation.
 
-When \code{append = TRUE}, the appended column is named \code{"out"}.
-The order of existing columns in \code{data} is preserved.
+When \code{append = TRUE}, the appended column is named \code{"out"}. The
+order of existing columns in \code{data} is preserved.
 }

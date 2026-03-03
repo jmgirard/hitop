@@ -14,6 +14,7 @@ A \link[tibble]{tibble} with 405 rows and 8 columns:
 \item{Scale}{Name of the scale (level 2)}
 \item{Subscale}{Name of the subscale (level 1)}
 \item{Text}{Item text}
+\item{Original}{Item ID in the original, development item pool}
 }
 }
 \usage{

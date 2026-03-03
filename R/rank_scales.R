@@ -13,8 +13,8 @@
 #'   is. The match is interpreted as a regular expression anchored to the start
 #'   of the name (i.e., \code{"^"} is prepended). Special regex characters in
 #'   \code{prefix} will be treated as regex metacharacters.
-#' @param top Integer (length 1). The number of columns to include per row
-#'   after ranking. Must be between 1 and \code{length(scales)}.
+#' @param top Integer (length 1). The number of columns to include per row after
+#'   ranking. Must be between 1 and \code{length(scales)}.
 #' @param dir Direction of ranking: \code{"high"} for largest values first or
 #'   \code{"low"} for smallest values first.
 #' @param append Logical. If \code{TRUE}, bind the result as a new column to
@@ -23,24 +23,23 @@
 #'   \code{tibble::as_tibble()} (applies whether or not \code{append} is
 #'   \code{TRUE}).
 #'
-#' @details
-#' Ranking is performed row-wise using \code{order()} on the selected columns.
-#' Ties are resolved by the original column order (the default behavior of
-#' \code{order}), which is alphabetical if using the package's scoring
-#' functions. Missing values are placed last by \code{order()} and will be
-#' included only if there are fewer than \code{top} non-missing values in a row.
+#' @details Ranking is performed row-wise using \code{order()} on the selected
+#'   columns. Ties are resolved by the original column order (the default
+#'   behavior of \code{order}), which is alphabetical if using the package's
+#'   scoring functions. Missing values are placed last by \code{order()} and
+#'   will be included only if there are fewer than \code{top} non-missing values
+#'   in a row.
 #'
-#' If \code{prefix} is not \code{NULL}, the function removes the leading
-#' pattern \code{paste0("^", prefix)} from each selected column name before
+#' If \code{prefix} is not \code{NULL}, the function removes the leading pattern
+#' \code{paste0("^", prefix)} from each selected column name before
 #' concatenation.
 #'
-#' When \code{append = TRUE}, the appended column is named \code{"out"}.
-#' The order of existing columns in \code{data} is preserved.
+#' When \code{append = TRUE}, the appended column is named \code{"out"}. The
+#' order of existing columns in \code{data} is preserved.
 #'
-#' @return
-#' If \code{append = FALSE} and \code{tibble = FALSE}: a character vector of
-#' length \code{nrow(data)} where each element is a comma-separated list of the
-#' selected scale names in ranked order.
+#' @return If \code{append = FALSE} and \code{tibble = FALSE}: a character
+#'   vector of length \code{nrow(data)} where each element is a comma-separated
+#'   list of the selected scale names in ranked order.
 #'
 #' If \code{append = TRUE}: a data frame (or tibble if \code{tibble = TRUE})
 #' equal to \code{data} with an added character column \code{out}.

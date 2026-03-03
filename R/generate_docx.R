@@ -63,21 +63,24 @@ generate_docx_hitopbr <- function(
 
 #' Generate a Word Document for the HiTOP-SR Assessment
 #'
-#' @description
-#' Creates a formatted Microsoft Word document containing the Hierarchical
-#' Taxonomy of Psychopathology - Self-Report (HiTOP-SR) items, instructions,
-#' and optional scoring keys. The 405 items are formatted into a single continuous table.
+#' @description Creates a formatted Microsoft Word document containing the
+#' Hierarchical Taxonomy of Psychopathology - Self-Report (HiTOP-SR) items,
+#' instructions, and optional scoring keys. The 405 items are formatted into a
+#' single continuous table.
 #'
-#' @param file Character string specifying the output file path. Defaults to `"hitopsr_1.0.docx"`.
-#' @param papersize Character string specifying the paper dimensions. Must be one of `"letter"` or `"a4"`. Defaults to `"letter"`.
-#' @param title Character string for the document header title. Defaults to `"HiTOP-SR (v1.0)"`.
-#' @param include_scoring Logical. If `TRUE` (default), appends a page break and the scoring instructions table.
-#' @param include_subscales Logical. If `TRUE`, appends optional subscales to the scoring instructions table. Defaults to `FALSE`.
-#' @param font_size Numeric value specifying the base font size in points. Defaults to `10`.
-#' @param font_family Character string specifying the font family to be used. Defaults to `"Times New Roman"`.
+#' @param file Character string specifying the output file path. Defaults to
+#' `"hitopsr_1.0.docx"`. @param papersize Character string specifying the paper
+#' dimensions. Must be one of `"letter"` or `"a4"`. Defaults to `"letter"`.
+#' @param title Character string for the document header title. Defaults to
+#' `"HiTOP-SR (v1.0)"`. @param include_scoring Logical. If `TRUE` (default),
+#' appends a page break and the scoring instructions table. @param
+#' include_subscales Logical. If `TRUE`, appends optional subscales to the
+#' scoring instructions table. Defaults to `FALSE`. @param font_size Numeric
+#' value specifying the base font size in points. Defaults to `10`. @param
+#' font_family Character string specifying the font family to be used. Defaults
+#' to `"Times New Roman"`.
 #'
-#' @return Invisibly returns the path to the created file (`file`).
-#' @export
+#' @return Invisibly returns the path to the created file (`file`). @export
 generate_docx_hitopsr <- function(
   file = "hitopsr_1.0.docx",
   papersize = c("letter", "a4"),
