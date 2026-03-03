@@ -1,67 +1,103 @@
-#' Generate a REDCap Instrument ZIP File
+#' Generate a REDCap Instrument ZIP File for the HiTOP-BR
 #'
-#' Generates a REDCap-compatible data dictionary from item and instruction data
-#' frames and packages it into an Instrument ZIP file for easy uploading.
+#' @description Generates a REDCap-compatible data dictionary for the
+#'   Hierarchical Taxonomy of Psychopathology - Brief Report (HiTOP-BR) and
+#'   packages it into an Instrument ZIP file for easy uploading.
 #'
-#' @section Importing (Uploading) Instruments into a REDCap Project: 1. Log in
-#'   to your REDCap account and navigate to the desired project. 2. Click on the
-#'   "Designer" link in the left menu bar under "Project Home and Design". 3. In
-#'   the main page, under "Data Collection Instruments", look for the "Upload
-#'   instrument ZIP" option and click the "Upload" button. 4. Click "Choose
-#'   File", navigate to where you have the measure saved as a ZIP folder, and
-#'   select the ZIP folder containing your instrument. 5. Click "Upload
-#'   instrument ZIP" button to begin the import process. 6. Find the imported
-#'   instrument in your list of measures and review for accuracy. 7. Test the
-#'   instrument to ensure proper functionality within your project.
+#' @details **Importing (Uploading) Instruments into a REDCap Project:**
+#' 1. Log in to your REDCap account and navigate to the desired project.
+#' 2. Click on the "Designer" link in the left menu bar under "Project Home and
+#'   Design".
+#' 3. In the main page, under "Data Collection Instruments", look for the
+#'   "Upload instrument ZIP" option and click the "Upload" button.
+#' 4. Click "Choose File", navigate to where you have the measure saved as a ZIP
+#'   folder, and select the ZIP folder containing your instrument.
+#' 5. Click "Upload instrument ZIP" button to begin the import process.
+#' 6. Find the imported instrument in your list of measures and review for
+#'   accuracy.
+#' 7. Test the instrument to ensure proper functionality within your project.
 #'
-#' @param items A data frame containing the questionnaire items. The first
-#'   column should contain the item IDs, and a `Text` column should contain the
-#'   item text.
-#' @param instructions A list containing the instructions and response options.
-#'   Expects `options$value` and `options$label` for choices, and `start[1]` for
-#'   the main instruction text.
+#' @param file Character string. The destination path for the output ZIP file.
+#'   Defaults to `"hitopbr_redcap.zip"`.
 #' @param form_name Character string. The internal name of the form in REDCap.
-#'   Defaults to the lowercase instrument name appended with "_questionnaire".
+#'   Defaults to `"hitopbr_questionnaire"`.
 #' @param required Logical. Whether the items should be marked as required.
 #'   Defaults to `TRUE`.
 #' @param breaks Integer or `NULL`. The number of items to display before
 #'   inserting a page break. Set to `0` or `NULL` to disable pagination
 #'   entirely. Defaults to `15`.
-#' @param file_path Character string. The destination path for the output ZIP
-#'   file. Defaults to the current working directory with a filename derived
-#'   from the instrument.
 #'
-#' @return Invisibly returns a data frame containing the compiled REDCap data
-#'   dictionary.
+#' @return Invisibly returns the path to the created file (`file`).
 #'
 #' @export
+generate_redcap_hitopbr <- function(
+  file = "hitopbr_redcap.zip",
+  form_name = "hitopbr_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  build_redcap_zip(
+    items = hitopbr_items,
+    instructions = hitopbr_instructions,
+    file = file,
+    instrument = "HBR",
+    form_name = form_name,
+    required = required,
+    breaks = breaks
+  )
+}
+
+#' Generate a REDCap Instrument ZIP File for the HiTOP-SR
 #'
-#' @examples
-#' \dontrun{
-#' generate_redcap_zip(
-#'   items = hitopbr_items,
-#'   instructions = hitopbr_instructions,
-#'   breaks = 15,
-#'   file_path = "hitopbr_redcap.zip"
-#' )
-#' }
-generate_redcap_zip <- function(
+#' @description
+#' Generates a REDCap-compatible data dictionary for the Hierarchical Taxonomy
+#' of Psychopathology - Self-Report (HiTOP-SR) and packages it into an
+#' Instrument ZIP file for easy uploading.
+#'
+#' @details
+#' **Importing (Uploading) Instruments into a REDCap Project:**
+#' 1. Log in to your REDCap account and navigate to the desired project.
+#' 2. Click on the "Designer" link in the left menu bar under "Project Home and Design".
+#' 3. In the main page, under "Data Collection Instruments", look for the "Upload instrument ZIP" option and click the "Upload" button.
+#' 4. Click "Choose File", navigate to where you have the measure saved as a ZIP folder, and select the ZIP folder containing your instrument.
+#' 5. Click "Upload instrument ZIP" button to begin the import process.
+#' 6. Find the imported instrument in your list of measures and review for accuracy.
+#' 7. Test the instrument to ensure proper functionality within your project.
+#'
+#' @param file Character string. The destination path for the output ZIP file. Defaults to `"hitopsr_redcap.zip"`.
+#' @param form_name Character string. The internal name of the form in REDCap. Defaults to `"hitopsr_questionnaire"`.
+#' @param required Logical. Whether the items should be marked as required. Defaults to `TRUE`.
+#' @param breaks Integer or `NULL`. The number of items to display before inserting a page break. Set to `0` or `NULL` to disable pagination entirely. Defaults to `15`.
+#'
+#' @return Invisibly returns the path to the created file (`file`).
+#' @export
+generate_redcap_hitopsr <- function(
+  file = "hitopsr_redcap.zip",
+  form_name = "hitopsr_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  build_redcap_zip(
+    items = hitopsr_items,
+    instructions = hitopsr_instructions,
+    file = file,
+    instrument = "HSR",
+    form_name = form_name,
+    required = required,
+    breaks = breaks
+  )
+}
+
+# Internal Helper: Build the REDCap ZIP file
+build_redcap_zip <- function(
   items,
   instructions,
-  form_name = NULL,
-  required = TRUE,
-  breaks = 15,
-  file_path = NULL
+  file,
+  instrument,
+  form_name,
+  required,
+  breaks
 ) {
-  instrument <- colnames(items)[[1]]
-  if (is.null(form_name)) {
-    form_name <- paste0(tolower(instrument), "_questionnaire")
-  }
-
-  if (is.null(file_path)) {
-    file_path <- paste0(tolower(instrument), "_redcap.zip")
-  }
-
   # 1. Format the REDCap choices string from instructions
   choice_pairs <- paste(
     instructions$options$value,
@@ -100,11 +136,10 @@ generate_redcap_zip <- function(
 
   # 5. Insert Page Breaks based on the 'breaks' argument
   if (!is.null(breaks) && breaks > 0 && nrow(item_rows) > breaks) {
-    # Find the positions where breaks should occur (e.g., items 16, 31, 46)
+    # Find the positions where breaks should occur
     break_positions <- seq(from = breaks + 1, to = nrow(item_rows), by = breaks)
 
     # REDCap triggers a page break when there is text in the Section Header column
-    # We use an HTML break tag to keep the section header visually invisible
     item_rows$`Section Header`[break_positions] <- "<br>"
   }
 
@@ -142,10 +177,10 @@ generate_redcap_zip <- function(
   }
 
   # 7. Export directly to ZIP
-  if (!grepl("^/|^[A-Za-z]:", file_path)) {
-    absolute_file_path <- file.path(getwd(), file_path)
+  if (!grepl("^/|^[A-Za-z]:", file)) {
+    absolute_file_path <- file.path(getwd(), file)
   } else {
-    absolute_file_path <- file_path
+    absolute_file_path <- file
   }
 
   temp_csv <- file.path(tempdir(), "instrument.csv")
@@ -159,7 +194,7 @@ generate_redcap_zip <- function(
 
   file.remove(temp_csv)
 
-  cli::cli_inform("Instrument successfully zipped to: {file_path}")
+  cli::cli_alert_success("Instrument successfully zipped to {.file {file}}")
 
-  invisible(data_dictionary)
+  invisible(file)
 }

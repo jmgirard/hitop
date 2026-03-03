@@ -55,5 +55,7 @@ reference:
   contents:
   - generate_docx_hitopbr
   - generate_docx_hitopsr
-  - generate_qualtrics_txt
-  - generate_redcap_zip
+  - generate_qualtrics_hitopbr
+  - generate_qualtrics_hitopsr
+  - generate_redcap_hitopbr
+  - generate_redcap_hitopsr

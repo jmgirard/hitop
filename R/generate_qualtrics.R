@@ -1,58 +1,115 @@
-#' Generate a Qualtrics Advanced Format Import File
+#' Generate a Qualtrics Import File for the HiTOP-BR
 #'
-#' Creates a text file formatted for the Qualtrics Advanced Format import tool.
-#' It takes a data frame of survey items and a list of instructions, combining
-#' them into a structured text file with specific block and question tags. This
-#' function is designed to work seamlessly with the package's built-in datasets.
+#' @description Creates a text file formatted for the Qualtrics Advanced Format
+#'   import tool containing the Hierarchical Taxonomy of Psychopathology - Brief
+#'   Report (HiTOP-BR) items and instructions.
 #'
-#' @param items A data frame containing the survey items. The first column must
-#'   contain the item identifiers (e.g., item numbers), and a column named
-#'   `Text` must contain the question text.
-#' @param instructions A list containing the survey instructions and response
-#'   options. It must include a `start` character string for the initial
-#'   descriptive block, and an `options` data frame containing `value` and
-#'   `label` columns for the multiple-choice options.
-#' @param file_path A character string specifying the output file path. Defaults
-#'   to `"qualtrics_import.txt"`.
+#' @param file Character string specifying the output file path. Defaults to
+#'   `"hitopbr_qualtrics.txt"`.
+#' @param block_name Character string specifying the name of the block in
+#'   Qualtrics. Defaults to `"HiTOP-BR"`.
+#' @param id_prefix Character string specifying the prefix for the question IDs.
+#'   Defaults to `"HBR"`.
+#' @param include_instructions Logical. If `TRUE` (default), includes the
+#'   starting instructions as a descriptive text block.
+#' @param breaks Integer or `NULL`. The number of items to display before
+#'   inserting a page break. Set to `0` or `NULL` to disable pagination.
+#'   Defaults to `15`.
 #'
-#' @return Invisibly returns `NULL`. The function creates a text file at the
-#'   specified `file_path` and prints a success message to the console.
-#'
-#' @importFrom cli cli_inform
+#' @return Invisibly returns the path to the created file (`file`).
 #'
 #' @export
+generate_qualtrics_hitopbr <- function(
+  file = "hitopbr_qualtrics.txt",
+  block_name = "HiTOP-BR",
+  id_prefix = "HBR",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  build_qualtrics_txt(
+    items = hitopbr_items,
+    instructions = hitopbr_instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks
+  )
+}
+
+#' Generate a Qualtrics Import File for the HiTOP-SR
 #'
-#' @examples
-#' \dontrun{
-#' # Generate a Qualtrics text file using the package's built-in datasets
-#' generate_qualtrics_txt(
-#'   items = hitopbr_items,
-#'   instructions = hitopbr_instructions,
-#'   file_path = "hitopbr_survey.txt"
-#' )
-#' }
-generate_qualtrics_txt <- function(
+#' @description Creates a text file formatted for the Qualtrics Advanced Format
+#'   import tool containing the Hierarchical Taxonomy of Psychopathology -
+#'   Self-Report (HiTOP-SR) items and instructions.
+#'
+#' @param file Character string specifying the output file path. Defaults to
+#'   `"hitopsr_qualtrics.txt"`.
+#' @param block_name Character string specifying the name of the block in
+#'   Qualtrics. Defaults to `"HiTOP-SR"`.
+#' @param id_prefix Character string specifying the prefix for the question IDs.
+#'   Defaults to `"HSR"`.
+#' @param include_instructions Logical. If `TRUE` (default), includes the
+#'   starting instructions as a descriptive text block.
+#' @param breaks Integer or `NULL`. The number of items to display before
+#'   inserting a page break. Set to `0` or `NULL` to disable pagination.
+#'   Defaults to `15`.
+#'
+#' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @export
+generate_qualtrics_hitopsr <- function(
+  file = "hitopsr_qualtrics.txt",
+  block_name = "HiTOP-SR",
+  id_prefix = "HSR",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  build_qualtrics_txt(
+    items = hitopsr_items,
+    instructions = hitopsr_instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks
+  )
+}
+
+# Internal Helper: Build the Qualtrics text file
+build_qualtrics_txt <- function(
   items,
   instructions,
-  file_path = "qualtrics_import.txt"
+  file,
+  block_name,
+  id_prefix,
+  include_instructions,
+  breaks
 ) {
   # 1. Initialize the file with the Advanced Format tag
   out <- c("[[AdvancedFormat]]", "")
 
-  instrument <- colnames(items)[[1]]
-  max_w <- max(nchar(nrow(items)))
-  fmt <- sprintf("[[ID:%s_%%0%dd]]", instrument, max_w)
+  # 2. Add Block Name if provided
+  if (!is.null(block_name) && nchar(block_name) > 0) {
+    out <- c(out, paste0("[[Block:", block_name, "]]"), "")
+  }
 
-  # 2. Add the starting instructions as a Descriptive Block (DB)
-  out <- c(
-    out,
-    "[[Question:DB]]",
-    "[[ID:start_instructions]]",
-    instructions$start,
-    ""
-  )
+  # Determine padding width automatically for question IDs
+  max_w <- nchar(as.character(nrow(items)))
+  fmt <- sprintf("[[ID:%s_%%0%dd]]", id_prefix, max_w)
 
-  # 3. Format choices using AdvancedChoices to ensure exact recode values
+  # 3. Add the starting instructions as a Descriptive Block (DB)
+  if (include_instructions) {
+    out <- c(
+      out,
+      "[[Question:DB]]",
+      "[[ID:start_instructions]]",
+      instructions$start,
+      ""
+    )
+  }
+
+  # 4. Format choices using AdvancedChoices to ensure exact recode values
   choices_block <- c("[[AdvancedChoices]]")
 
   # Loop through options to set exact numeric values and labels
@@ -62,7 +119,7 @@ generate_qualtrics_txt <- function(
     choices_block <- c(choices_block, paste0("[[Choice:", val, "]]"), lab)
   }
 
-  # 4. Loop through the items dataframe and append each question
+  # 5. Loop through the items dataframe and append each question
   for (i in seq_len(nrow(items))) {
     item_num <- items[[i, 1]]
     item_text <- items$Text[i]
@@ -76,9 +133,19 @@ generate_qualtrics_txt <- function(
     )
 
     out <- c(out, q_block)
+
+    # Insert Page Break based on the 'breaks' argument
+    if (
+      !is.null(breaks) && breaks > 0 && (i %% breaks == 0) && (i != nrow(items))
+    ) {
+      out <- c(out, "[[PageBreak]]", "")
+    }
   }
 
-  # 5. Write everything to the specified file
-  writeLines(out, con = file_path)
-  cli::cli_inform("Successfully created Qualtrics import file at: {file_path}")
+  # 6. Write everything to the specified file
+  writeLines(out, con = file)
+  cli::cli_alert_success(
+    "Qualtrics import file successfully created at {.file {file}}"
+  )
+  invisible(file)
 }

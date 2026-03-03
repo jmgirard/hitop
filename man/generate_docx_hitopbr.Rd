@@ -14,23 +14,29 @@ generate_docx_hitopbr(
 )
 }
 \arguments{
-\item{file}{Character string specifying the output file path. Defaults to \code{"hitopbr_1.0.docx"}.}
+\item{file}{Character string specifying the output file path. Defaults to
+\code{"hitopbr_1.0.docx"}.}
 
-\item{papersize}{Character string specifying the paper dimensions. Must be one of \code{"letter"} or \code{"a4"}. Defaults to \code{"letter"}.}
+\item{papersize}{Character string specifying the paper dimensions. Must be
+one of \code{"letter"} or \code{"a4"}. Defaults to \code{"letter"}.}
 
-\item{title}{Character string for the document header title. Defaults to \code{"HiTOP-BR (v1.0)"}.}
+\item{title}{Character string for the document header title. Defaults to
+\code{"HiTOP-BR (v1.0)"}.}
 
-\item{include_scoring}{Logical. If \code{TRUE} (default), appends a page break and the scoring instructions table.}
+\item{include_scoring}{Logical. If \code{TRUE} (default), appends a page break and
+the scoring instructions table.}
 
-\item{font_size}{Numeric value specifying the base font size in points. Defaults to \code{10}.}
+\item{font_size}{Numeric value specifying the base font size in points.
+Defaults to \code{10}.}
 
-\item{font_family}{Character string specifying the font family to be used. Defaults to \code{"Times New Roman"}.}
+\item{font_family}{Character string specifying the font family to be used.
+Defaults to \code{"Times New Roman"}.}
 }
 \value{
 Invisibly returns the path to the created file (\code{file}).
 }
 \description{
-Creates a formatted Microsoft Word document containing the Hierarchical
-Taxonomy of Psychopathology - Brief Report (HiTOP-BR) items, instructions,
-and optional scoring keys.
+Creates a formatted Microsoft Word document containing the
+Hierarchical Taxonomy of Psychopathology - Brief Report (HiTOP-BR) items,
+instructions, and optional scoring keys.
 }
