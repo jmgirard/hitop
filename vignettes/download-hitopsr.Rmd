@@ -7,11 +7,47 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-You can download the files for the HiTOP-SR instrument using the links below. These files include document versions for printing and formatted files for importing into survey platforms.
+You can download the files for the HiTOP-SR instrument below. Choose the format that best fits your research needs.
 
-* [HiTOP-SR DOCX (A4)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_A4.docx)
-* [HiTOP-SR DOCX (US Letter)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_US.docx)
-* [HiTOP-SR Qualtrics TXT](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_qualtrics.txt)
-* [HiTOP-SR REDCap ZIP](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip)
+```{=html}
+<div class="row mt-4">
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📄 DOCX Files</h5>
+        <p class="card-text text-muted">Use these Microsoft Word documents for printing, paper administration, or sending to your Institutional Review Board (IRB).</p>
+        <div class="d-grid gap-2">
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_A4.docx" class="btn btn-outline-primary">Download A4</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_US.docx" class="btn btn-outline-primary">Download US Letter</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📊 Qualtrics TXT</h5>
+        <p class="card-text text-muted">Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.</p>
+        <div class="d-grid gap-2 mt-4">
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_qualtrics.txt" class="btn btn-outline-primary">Download TXT</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🏥 REDCap ZIP</h5>
+        <p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
+        <div class="d-grid gap-2 mt-4">
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip" class="btn btn-outline-primary">Download ZIP</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
 
 **Note:** If you need to recreate or customize these files (for example, to change the formatting or translate the text), you can use the [`generate_docx_hitopsr()`](../reference/generate_docx_hitopsr.html), [`generate_qualtrics_hitopsr()`](../reference/generate_qualtrics_hitopsr.html), and [`generate_redcap_hitopsr()`](../reference/generate_redcap_hitopsr.html) functions included in this package.
