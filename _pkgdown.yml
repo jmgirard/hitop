@@ -17,6 +17,19 @@ navbar:
     left:  [reference, articles, downloads, news]
     right: [search, github, lightswitch]
   components:
+    articles:
+      text: "Articles"
+      menu:
+      - text: "Scoring HiTOP-BR"
+        href: articles/hitopbr_scoring.html
+      - text: "Scoring HiTOP-SR"
+        href: articles/hitopsr_scoring.html
+      - text: "Scoring PID-5"
+        href: articles/pid5_scoring.html
+      - text: "Scoring PID-5-BF"
+        href: articles/pid5bf_scoring.html
+      - text: "Scoring PID-5-SF"
+        href: articles/pid5sf_scoring.html
     downloads:
       text: "Downloads"
       menu:
