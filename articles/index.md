@@ -2,6 +2,10 @@
 
 ### All vignettes
 
+- [Download
+  HiTOP-BR](https://jmgirard.github.io/hitop/articles/download-hitopbr.md):
+- [Download
+  HiTOP-SR](https://jmgirard.github.io/hitop/articles/download-hitopsr.md):
 - [Scoring the
   HiTOP-BR](https://jmgirard.github.io/hitop/articles/hitopbr_scoring.md):
 - [Scoring the
