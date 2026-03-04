@@ -6,7 +6,7 @@ format that best fits your research needs.
 ##### 📄 DOCX Files
 
 Use these Microsoft Word documents for printing, paper administration,
-or sending to your Institutional Review Board (IRB).
+or sending to the Institutional Review Board.
 
 [Download
 A4](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_A4.docx)
@@ -28,6 +28,8 @@ instrument in your REDCap project.
 
 [Download
 ZIP](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip)
+
+  
 
 **Note:** If you need to recreate or customize these files (for example,
 to change the formatting or translate the text), you can use the
