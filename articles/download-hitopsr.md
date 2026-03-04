@@ -1,17 +1,33 @@
 # Download HiTOP-SR
 
-You can download the files for the HiTOP-SR instrument using the links
-below. These files include document versions for printing and formatted
-files for importing into survey platforms.
+You can download the files for the HiTOP-SR instrument below. Choose the
+format that best fits your research needs.
 
-- [HiTOP-SR DOCX
-  (A4)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_A4.docx)
-- [HiTOP-SR DOCX (US
-  Letter)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_US.docx)
-- [HiTOP-SR Qualtrics
-  TXT](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_qualtrics.txt)
-- [HiTOP-SR REDCap
-  ZIP](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip)
+##### 📄 DOCX Files
+
+Use these Microsoft Word documents for printing, paper administration,
+or sending to your Institutional Review Board (IRB).
+
+[Download
+A4](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_A4.docx)
+[Download US
+Letter](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_US.docx)
+
+##### 📊 Qualtrics TXT
+
+Use this specially formatted text file to easily import the instrument
+directly into your Qualtrics surveys.
+
+[Download
+TXT](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_qualtrics.txt)
+
+##### 🏥 REDCap ZIP
+
+Use this compressed archive file to import the instrument as a new
+instrument in your REDCap project.
+
+[Download
+ZIP](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip)
 
 **Note:** If you need to recreate or customize these files (for example,
 to change the formatting or translate the text), you can use the
