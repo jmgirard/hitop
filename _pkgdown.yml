@@ -14,8 +14,16 @@ template:
 
 navbar:
   structure:
-    left:  [reference, articles, news]
+    left:  [reference, articles, downloads, news]
     right: [search, github, lightswitch]
+  components:
+    downloads:
+      text: "Downloads"
+      menu:
+      - text: "HiTOP-BR"
+        href: articles/download-hitopbr.html
+      - text: "HiTOP-SR"
+        href: articles/download-hitopsr.html
 
 development:
   mode: auto

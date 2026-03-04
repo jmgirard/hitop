@@ -1,0 +1,17 @@
+---
+title: "Download HiTOP-BR"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{download-hitopbr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+You can download the files for the HiTOP-BR instrument using the links below. These files include document versions for printing and formatted files for importing into survey platforms.
+
+* [HiTOP-BR DOCX (A4)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_1.0_A4.docx)
+* [HiTOP-BR DOCX (US Letter)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_1.0_US.docx)
+* [HiTOP-BR Qualtrics TXT](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_qualtrics.txt)
+* [HiTOP-BR REDCap ZIP](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_redcap.zip)
+
+**Note:** If you need to recreate or customize these files (for example, to change the formatting or translate the text), you can use the [`generate_docx_hitopbr()`](../reference/generate_docx_hitopbr.html), [`generate_qualtrics_hitopbr()`](../reference/generate_qualtrics_hitopbr.html), and [`generate_redcap_hitopbr()`](../reference/generate_redcap_hitopbr.html) functions included in this package.
