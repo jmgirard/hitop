@@ -3,10 +3,10 @@
 You can download the files for the HiTOP-SR instrument below. Choose the
 format that best fits your research needs.
 
-##### 📄 DOCX Files
+##### 📄 Printable DOCX
 
 Use these Microsoft Word documents for printing, paper administration,
-or sending to the Institutional Review Board.
+or sending to the IRB.
 
 [Download
 A4](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_A4.docx)
