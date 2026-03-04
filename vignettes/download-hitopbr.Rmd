@@ -15,7 +15,7 @@ You can download the files for the HiTOP-BR instrument below. Choose the format 
     <div class="card h-100 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">📄 DOCX Files</h5>
-        <p class="card-text text-muted">Use these Microsoft Word documents for printing, paper administration, or sending to your Institutional Review Board (IRB).</p>
+        <p class="card-text text-muted">Use these Microsoft Word documents for printing, paper administration, or sending to the Institutional Review Board.</p>
         <div class="d-grid gap-2">
           <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_1.0_A4.docx" class="btn btn-outline-primary">Download A4</a>
           <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_1.0_US.docx" class="btn btn-outline-primary">Download US Letter</a>
@@ -48,6 +48,8 @@ You can download the files for the HiTOP-BR instrument below. Choose the format 
     </div>
   </div>
 </div>
+
+<br>
 ```
 
 **Note:** If you need to recreate or customize these files (for example, to change the formatting or translate the text), you can use the [`generate_docx_hitopbr()`](../reference/generate_docx_hitopbr.html), [`generate_qualtrics_hitopbr()`](../reference/generate_qualtrics_hitopbr.html), and [`generate_redcap_hitopbr()`](../reference/generate_redcap_hitopbr.html) functions included in this package.
