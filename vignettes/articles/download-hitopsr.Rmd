@@ -1,10 +1,9 @@
 ---
 title: "Download HiTOP-SR"
-output: 
-  rmarkdown::html_vignette:
-    toc: false
+output: rmarkdown::html_vignette
+toc: false
 vignette: >
-  %\VignetteIndexEntry{download-hitopsr}
+  %\VignetteIndexEntry{Download HiTOP-SR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -12,6 +11,20 @@ vignette: >
 You can download the files for the HiTOP-SR instrument below. Choose the format that best fits your research needs.
 
 ```{=html}
+<style>
+  /* Expand the main content area to full width */
+  main.col-md-9 {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+  
+  /* Hide the empty sidebar container entirely */
+  aside.col-md-3 {
+    display: none !important;
+  }
+</style>
+
 <div class="row mt-4">
   <div class="col-md-4">
     <div class="card h-100 shadow-sm">
