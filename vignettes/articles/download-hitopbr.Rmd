@@ -1,6 +1,8 @@
 ---
 title: "Download HiTOP-BR"
-output: rmarkdown::html_vignette
+output: 
+  rmarkdown::html_vignette:
+    toc: false
 vignette: >
   %\VignetteIndexEntry{download-hitopbr}
   %\VignetteEngine{knitr::rmarkdown}
