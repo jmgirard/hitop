@@ -118,7 +118,7 @@ scores <- score_hitopsr(
 )
 ```
 
-## Renaming Non-Standard Column Names
+## Renaming Item Columns
 If your dataset was collected before the item numbers were standardized or used arbitrary variable names, you must rename your columns to the standard format before running the scoring engine. The `rename_hitopsr_items()` function handles this preparation via two approaches.
 
 ### Method 1: Legacy "Original" Pool Names
