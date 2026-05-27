@@ -11,13 +11,13 @@ Source:
 [`DESCRIPTION`](https://github.com/jmgirard/hitop/blob/main/DESCRIPTION)
 
 Girard J (2026). *hitop: Tools for the Hierarchical Taxonomy of
-Psychopathology society*. R package version 0.0.1,
+Psychopathology society*. R package version 0.0.2,
 <https://github.com/jmgirard/hitop>.
 
     @Manual{,
       title = {hitop: Tools for the Hierarchical Taxonomy of Psychopathology society},
       author = {Jeffrey Girard},
       year = {2026},
-      note = {R package version 0.0.1},
+      note = {R package version 0.0.2},
       url = {https://github.com/jmgirard/hitop},
     }

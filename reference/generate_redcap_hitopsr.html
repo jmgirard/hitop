@@ -5,11 +5,11 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Generate a REDCap Instrument ZIP File for the HiTOP-SR — generate_redcap_hitopsr"><meta name="description" content="Generates a REDCap-compatible data dictionary for the Hierarchical Taxonomy
-of Psychopathology - Self-Report (HiTOP-SR) and packages it into an
-Instrument ZIP file for easy uploading."><meta property="og:description" content="Generates a REDCap-compatible data dictionary for the Hierarchical Taxonomy
-of Psychopathology - Self-Report (HiTOP-SR) and packages it into an
-Instrument ZIP file for easy uploading."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Generate a REDCap Instrument ZIP File for the HiTOP-SR — generate_redcap_hitopsr"><meta name="description" content="Generates a REDCap-compatible data dictionary for the
+Hierarchical Taxonomy of Psychopathology - Self-Report (HiTOP-SR) and
+packages it into an Instrument ZIP file for easy uploading."><meta property="og:description" content="Generates a REDCap-compatible data dictionary for the
+Hierarchical Taxonomy of Psychopathology - Self-Report (HiTOP-SR) and
+packages it into an Instrument ZIP file for easy uploading."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -17,7 +17,7 @@ Instrument ZIP file for easy uploading."><meta property="og:image" content="http
 
     <a class="navbar-brand me-2" href="../index.html">hitop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,9 +62,9 @@ Instrument ZIP file for easy uploading."><meta property="og:image" content="http
     </div>
 
     <div class="ref-description section level2">
-    <p>Generates a REDCap-compatible data dictionary for the Hierarchical Taxonomy
-of Psychopathology - Self-Report (HiTOP-SR) and packages it into an
-Instrument ZIP file for easy uploading.</p>
+    <p>Generates a REDCap-compatible data dictionary for the
+Hierarchical Taxonomy of Psychopathology - Self-Report (HiTOP-SR) and
+packages it into an Instrument ZIP file for easy uploading.</p>
     </div>
 
     <div class="section level2">
@@ -82,19 +82,24 @@ Instrument ZIP file for easy uploading.</p>
 
 
 <dl><dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
-<dd><p>Character string. The destination path for the output ZIP file. Defaults to <code>"hitopsr_redcap.zip"</code>.</p></dd>
+<dd><p>Character string. The destination path for the output ZIP file.
+Defaults to <code>"hitopsr_redcap.zip"</code>.</p></dd>
 
 
 <dt id="arg-form-name">form_name<a class="anchor" aria-label="anchor" href="#arg-form-name"></a></dt>
-<dd><p>Character string. The internal name of the form in REDCap. Defaults to <code>"hitopsr_questionnaire"</code>.</p></dd>
+<dd><p>Character string. The internal name of the form in REDCap.
+Defaults to <code>"hitopsr_questionnaire"</code>.</p></dd>
 
 
 <dt id="arg-required">required<a class="anchor" aria-label="anchor" href="#arg-required"></a></dt>
-<dd><p>Logical. Whether the items should be marked as required. Defaults to <code>TRUE</code>.</p></dd>
+<dd><p>Logical. Whether the items should be marked as required.
+Defaults to <code>TRUE</code>.</p></dd>
 
 
 <dt id="arg-breaks">breaks<a class="anchor" aria-label="anchor" href="#arg-breaks"></a></dt>
-<dd><p>Integer or <code>NULL</code>. The number of items to display before inserting a page break. Set to <code>0</code> or <code>NULL</code> to disable pagination entirely. Defaults to <code>15</code>.</p></dd>
+<dd><p>Integer or <code>NULL</code>. The number of items to display before
+inserting a page break. Set to <code>0</code> or <code>NULL</code> to disable pagination
+entirely. Defaults to <code>15</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -104,11 +109,15 @@ Instrument ZIP file for easy uploading.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><strong>Importing (Uploading) Instruments into a REDCap Project:</strong></p><ol><li><p>Log in to your REDCap account and navigate to the desired project.</p></li>
-<li><p>Click on the "Designer" link in the left menu bar under "Project Home and Design".</p></li>
-<li><p>In the main page, under "Data Collection Instruments", look for the "Upload instrument ZIP" option and click the "Upload" button.</p></li>
-<li><p>Click "Choose File", navigate to where you have the measure saved as a ZIP folder, and select the ZIP folder containing your instrument.</p></li>
+<li><p>Click on the "Designer" link in the left menu bar under "Project Home and
+Design".</p></li>
+<li><p>In the main page, under "Data Collection Instruments", look for the
+"Upload instrument ZIP" option and click the "Upload" button.</p></li>
+<li><p>Click "Choose File", navigate to where you have the measure saved as a ZIP
+folder, and select the ZIP folder containing your instrument.</p></li>
 <li><p>Click "Upload instrument ZIP" button to begin the import process.</p></li>
-<li><p>Find the imported instrument in your list of measures and review for accuracy.</p></li>
+<li><p>Find the imported instrument in your list of measures and review for
+accuracy.</p></li>
 <li><p>Test the instrument to ensure proper functionality within your project.</p></li>
 </ol></div>
 

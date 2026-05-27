@@ -10,6 +10,7 @@ doesn’t work, make sure you installed the package properly (see the
 README on [GitHub](https://github.com/jmgirard/hitop)).
 
 ``` r
+
 library(hitop)
 ```
 
@@ -21,6 +22,7 @@ the [`data()`](https://rdrr.io/r/utils/data.html) function. It contains
 named `pid_1` to `pid_220` (each representing an item from the PID-5).
 
 ``` r
+
 data("sim_pid5")
 sim_pid5
 #> # A tibble: 100 × 220
@@ -59,6 +61,7 @@ the default, shown in the example example) to let it know we are using
 the full 220-item version.
 
 ``` r
+
 scores <- score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
 scores
 #> # A tibble: 100 × 25
@@ -89,6 +92,7 @@ added to the end as extra columns. Notice below how we now have 245
 columns instead of 220 or 25.
 
 ``` r
+
 scores <- score_pid5(sim_pid5, items = 1:220)
 scores
 #> # A tibble: 100 × 245
@@ -121,6 +125,7 @@ If we use the “pid\_%d” format and apply that across the numbers 1 to
 220, that will create the column names we need.
 
 ``` r
+
 scores <- score_pid5(sim_pid5, items = sprintf("pid_%d", 1:220))
 scores
 #> # A tibble: 100 × 245
@@ -164,6 +169,7 @@ because the data is fake, we would expect there to be lots of validity
 issues.
 
 ``` r
+
 validity_pid5(sim_pid5, items = 1:220, append = FALSE)
 #> ! A total of 99 observations (99.0%) met criteria for inconsistent responding on the INC (0 missing).
 #> ℹ Consider removing them with `dplyr::filter(df, pid_INC < 17)`

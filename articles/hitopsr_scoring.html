@@ -18,8 +18,8 @@
     }
   };
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Scoring the HiTOP-SR">
@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hitop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -428,6 +428,89 @@ on).</p>
 <span><span class="co">#&gt; 74             Trichotillomania  0.1963    NA</span></span>
 <span><span class="co">#&gt; 75                   Well Being  0.6629 0.680</span></span>
 <span><span class="co">#&gt; 76                  Workaholism  0.4852 0.502</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="renaming-non-standard-column-names">Renaming Non-Standard Column Names<a class="anchor" aria-label="anchor" href="#renaming-non-standard-column-names"></a>
+</h2>
+<p>If your dataset was collected before the item numbers were
+standardized or used arbitrary variable names, you must rename your
+columns to the standard format before running the scoring engine. The
+<code><a href="../reference/rename_hitopsr_items.html">rename_hitopsr_items()</a></code> function handles this preparation
+via two approaches.</p>
+<div class="section level3">
+<h3 id="method-1-legacy-original-pool-names">Method 1: Legacy “Original” Pool Names<a class="anchor" aria-label="anchor" href="#method-1-legacy-original-pool-names"></a>
+</h3>
+<p>If your columns are labeled with older pool names (e.g., HiTOP_659 or
+Ext_432), use <code>method = "original"</code>. The function scans your
+data frame columns, matches them against the package’s built-in item
+database, and renames them to standard names.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Setup a mock dataset with older legacy column names</span></span>
+<span><span class="va">legacy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  HiTOP_659 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  HiTOP_301 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  ParticipantID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">101</span>, <span class="fl">102</span>, <span class="fl">103</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Rename legacy columns using the native pipe</span></span>
+<span><span class="va">standardized_legacy</span> <span class="op">&lt;-</span></span>
+<span>  <span class="va">legacy_data</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/rename_hitopsr_items.html">rename_hitopsr_items</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"original"</span>, prefix <span class="op">=</span> <span class="st">"HSR_"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Only 2 out of 405 HiTOP-SR items were successfully matched and renamed.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: If you plan to use `score_hitopsr()`, ensure uncollected items exist in</span></span>
+<span><span class="co">#&gt;   the data frame as `NA` columns.</span></span>
+<span></span>
+<span><span class="va">standardized_legacy</span></span>
+<span><span class="co">#&gt;   HSR_1 HSR_2 ParticipantID</span></span>
+<span><span class="co">#&gt; 1     1     3           101</span></span>
+<span><span class="co">#&gt; 2     2     4           102</span></span>
+<span><span class="co">#&gt; 3     4     2           103</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="method-2-matching-via-literal-item-text">Method 2: Matching via Literal Item Text<a class="anchor" aria-label="anchor" href="#method-2-matching-via-literal-item-text"></a>
+</h3>
+<p>If your dataset uses completely customized column names but you
+tracked the exact question prompts presented to your participants, use
+<code>method = "text"</code>. Provide a vector of your current column
+names alongside a matching vector of literal item text strings.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Setup a mock dataset with completely custom column names</span></span>
+<span><span class="va">custom_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>  q_party <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  q_flawless <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  Age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">21</span>, <span class="fl">25</span>, <span class="fl">30</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Define the mapping pairs</span></span>
+<span><span class="va">my_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"q_party"</span>, <span class="st">"q_flawless"</span><span class="op">)</span></span>
+<span><span class="va">my_texts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  <span class="st">"I preferred to stay home than to go to a party."</span>,</span>
+<span>  <span class="st">"I felt that my work must be flawless."</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Rename custom columns based on text matching</span></span>
+<span><span class="va">standardized_custom</span> <span class="op">&lt;-</span> <span class="va">custom_data</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="../reference/rename_hitopsr_items.html">rename_hitopsr_items</a></span><span class="op">(</span></span>
+<span>    method <span class="op">=</span> <span class="st">"text"</span>,</span>
+<span>    item_cols <span class="op">=</span> <span class="va">my_cols</span>,</span>
+<span>    item_text <span class="op">=</span> <span class="va">my_texts</span>,</span>
+<span>    prefix <span class="op">=</span> <span class="st">"HSR_"</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Only 2 out of 405 HiTOP-SR items were successfully matched and renamed.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: If you plan to use `score_hitopsr()`, ensure uncollected items exist in</span></span>
+<span><span class="co">#&gt;   the data frame as `NA` columns.</span></span>
+<span></span>
+<span><span class="va">standardized_custom</span></span>
+<span><span class="co">#&gt;   HSR_1 HSR_2 Age</span></span>
+<span><span class="co">#&gt; 1     1     4  21</span></span>
+<span><span class="co">#&gt; 2     2     3  25</span></span>
+<span><span class="co">#&gt; 3     1     4  30</span></span></code></pre></div>
+<p><em>Note: Because these small mock examples contain only a subset of
+the full item pool, <code><a href="../reference/rename_hitopsr_items.html">rename_hitopsr_items()</a></code> will safely
+issue a cli warning letting you know that fewer than 405 items were
+matched. This perfectly accommodates researchers intentionally
+administering short forms or separate diagnostic modules.</em></p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

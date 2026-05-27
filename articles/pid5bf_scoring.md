@@ -1,6 +1,7 @@
 # Scoring the PID-5-BF
 
 ``` r
+
 library(hitop)
 ```
 
@@ -13,6 +14,7 @@ domain scores only. The only validity scale that is calculable with this
 subset of items is the percentage of missing items (PNA).
 
 ``` r
+
 data("sim_pid5bf")
 
 score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)

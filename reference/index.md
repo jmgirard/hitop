@@ -19,6 +19,8 @@
   : Compute McDonald's Omega (total) via CFA
 - [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
   : Rank and list the top-\\n\\ scales per row
+- [`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md)
+  : Rename Columns to Standard HiTOP-SR Item Names
 
 ## Example Data
 

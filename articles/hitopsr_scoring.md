@@ -12,6 +12,7 @@ doesn’t work, make sure you installed the package properly (see the
 README on [GitHub](https://github.com/jmgirard/hitop)).
 
 ``` r
+
 library(hitop)
 ```
 
@@ -24,6 +25,7 @@ is “female” or “male”, and then 405 columns numbered `hitop001` to
 HiTOP-SR (on a numerical scale from 1 to 4).
 
 ``` r
+
 data("ku_hitopsr")
 ku_hitopsr
 #> # A tibble: 411 × 407
@@ -61,6 +63,7 @@ so we can use `items = 3:407`. I am going to also set `append = FALSE`
 so that you can quickly see the scale scores.
 
 ``` r
+
 scores <- score_hitopsr(
   data = ku_hitopsr,
   items = 3:407,
@@ -97,6 +100,7 @@ scores added to the end as extra columns. Notice below how we now have
 483 columns instead of 407.
 
 ``` r
+
 scores <- score_hitopsr(
   data = ku_hitopsr,
   items = 3:407
@@ -135,6 +139,7 @@ If we use the “hitop%03d” format and apply that across the numbers 1 to
 no zero-padding, we could have just used “hitop%d”.
 
 ``` r
+
 scores <- score_hitopsr(
   data = ku_hitopsr,
   items = sprintf("hsr%03d", 1:405),
@@ -170,6 +175,7 @@ can change the prefix (e.g., setting it to `"hitop_"`) or even turn it
 off (e.g., setting it to `""`) using the `prefix` argument.
 
 ``` r
+
 scores <- score_hitopsr(
   data = ku_hitopsr,
   items = sprintf("hsr%03d", 1:405),
@@ -209,6 +215,7 @@ plotting the scores as they can be converted into confidence intervals.
 We turn this on using `calc_se`.
 
 ``` r
+
 scores <- score_hitopsr(
   data = ku_hitopsr,
   items = sprintf("hsr%03d", 1:405),
@@ -262,6 +269,7 @@ as a side-effect of the function (alongside any warnings from lavaan
 about convergence of the factor analysis models that omega is based on).
 
 ``` r
+
 scores <- score_hitopsr(
   data = ku_hitopsr,
   items = sprintf("hsr%03d", 1:405),
@@ -346,3 +354,91 @@ scores <- score_hitopsr(
 #> 75                   Well Being  0.6629 0.680
 #> 76                  Workaholism  0.4852 0.502
 ```
+
+## Renaming Non-Standard Column Names
+
+If your dataset was collected before the item numbers were standardized
+or used arbitrary variable names, you must rename your columns to the
+standard format before running the scoring engine. The
+[`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md)
+function handles this preparation via two approaches.
+
+### Method 1: Legacy “Original” Pool Names
+
+If your columns are labeled with older pool names (e.g., HiTOP_659 or
+Ext_432), use `method = "original"`. The function scans your data frame
+columns, matches them against the package’s built-in item database, and
+renames them to standard names.
+
+``` r
+
+# Setup a mock dataset with older legacy column names
+legacy_data <- data.frame(
+  HiTOP_659 = c(1, 2, 4),
+  HiTOP_301 = c(3, 4, 2),
+  ParticipantID = c(101, 102, 103)
+)
+
+# Rename legacy columns using the native pipe
+standardized_legacy <-
+  legacy_data |>
+  rename_hitopsr_items(method = "original", prefix = "HSR_")
+#> Warning: Only 2 out of 405 HiTOP-SR items were successfully matched and renamed.
+#> ℹ Note: If you plan to use `score_hitopsr()`, ensure uncollected items exist in
+#>   the data frame as `NA` columns.
+
+standardized_legacy
+#>   HSR_1 HSR_2 ParticipantID
+#> 1     1     3           101
+#> 2     2     4           102
+#> 3     4     2           103
+```
+
+### Method 2: Matching via Literal Item Text
+
+If your dataset uses completely customized column names but you tracked
+the exact question prompts presented to your participants, use
+`method = "text"`. Provide a vector of your current column names
+alongside a matching vector of literal item text strings.
+
+``` r
+
+# Setup a mock dataset with completely custom column names
+custom_data <- data.frame(
+  q_party = c(1, 2, 1),
+  q_flawless = c(4, 3, 4),
+  Age = c(21, 25, 30)
+)
+
+# Define the mapping pairs
+my_cols <- c("q_party", "q_flawless")
+my_texts <- c(
+  "I preferred to stay home than to go to a party.",
+  "I felt that my work must be flawless."
+)
+
+# Rename custom columns based on text matching
+standardized_custom <- custom_data |>
+  rename_hitopsr_items(
+    method = "text",
+    item_cols = my_cols,
+    item_text = my_texts,
+    prefix = "HSR_"
+  )
+#> Warning: Only 2 out of 405 HiTOP-SR items were successfully matched and renamed.
+#> ℹ Note: If you plan to use `score_hitopsr()`, ensure uncollected items exist in
+#>   the data frame as `NA` columns.
+
+standardized_custom
+#>   HSR_1 HSR_2 Age
+#> 1     1     4  21
+#> 2     2     3  25
+#> 3     1     4  30
+```
+
+*Note: Because these small mock examples contain only a subset of the
+full item pool,
+[`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md)
+will safely issue a cli warning letting you know that fewer than 405
+items were matched. This perfectly accommodates researchers
+intentionally administering short forms or separate diagnostic modules.*

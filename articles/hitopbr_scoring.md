@@ -12,6 +12,7 @@ doesn’t work, make sure you installed the package properly (see the
 README on [GitHub](https://github.com/jmgirard/hitop)).
 
 ``` r
+
 library(hitop)
 ```
 
@@ -24,6 +25,7 @@ containing each participant’s rating on each item of the HiTOP-BR (on a
 numerical scale from 1 to 4).
 
 ``` r
+
 data("ku_hitopbr")
 ku_hitopbr
 #> # A tibble: 411 × 47
@@ -61,6 +63,7 @@ so we can use `items = 3:47`. I am going to also set `append = FALSE` so
 that you can quickly see the scale scores.
 
 ``` r
+
 scores <- score_hitopbr(
   data = ku_hitopbr,
   items = 3:47,
@@ -93,6 +96,7 @@ scores added to the end as extra columns. Notice below how we now have
 54 columns instead of 47.
 
 ``` r
+
 scores <- score_hitopbr(
   data = ku_hitopbr,
   items = 3:47
@@ -131,6 +135,7 @@ create the zero-padded column names we need. If there was no
 zero-padding, we could have just used “hbr%d”.
 
 ``` r
+
 scores <- score_hitopbr(
   data = ku_hitopbr,
   items = sprintf("hbr%02d", 1:45),
@@ -162,6 +167,7 @@ can change the prefix (e.g., setting it to `"hitopbr_"`) or even turn it
 off (e.g., setting it to `""`) using the `prefix` argument.
 
 ``` r
+
 scores <- score_hitopbr(
   data = ku_hitopbr,
   items = sprintf("hbr%02d", 1:45),
@@ -196,6 +202,7 @@ plotting the scores as they can be converted into confidence intervals.
 We turn this on using `calc_se`.
 
 ``` r
+
 scores <- score_hitopbr(
   data = ku_hitopbr,
   items = sprintf("hbr%02d", 1:45),

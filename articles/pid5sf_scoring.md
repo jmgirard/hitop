@@ -1,6 +1,7 @@
 # Scoring the PID-5-SF
 
 ``` r
+
 library(hitop)
 ```
 
@@ -12,6 +13,7 @@ calculable but may have fewer items and their psychometric properties
 have not, to my knowledge, been examined with the FSF.
 
 ``` r
+
 data("sim_pid5sf")
 
 score_pid5(sim_pid5sf, items = 1:100, version = "SF", append = FALSE)
@@ -64,6 +66,7 @@ validity problems since this is real data. We can also retain un-scored
 “ID” variables in the dataset.
 
 ``` r
+
 data("ku_pid5sf")
 
 score_pid5(
