@@ -53,6 +53,7 @@ reference:
   - calc_alpha
   - calc_omega
   - rank_scales
+  - rename_hitopsr_items
 - title: Example Data
   contents:
   - ku_hitopsr
