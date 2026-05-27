@@ -355,7 +355,7 @@ scores <- score_hitopsr(
 #> 76                  Workaholism  0.4852 0.502
 ```
 
-## Renaming Non-Standard Column Names
+## Renaming Item Columns
 
 If your dataset was collected before the item numbers were standardized
 or used arbitrary variable names, you must rename your columns to the
