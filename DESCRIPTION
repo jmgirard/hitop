@@ -1,17 +1,17 @@
 Package: hitop
 Title: Tools for the Hierarchical Taxonomy of Psychopathology society
-Version: 0.0.1
-Authors@R: 
+Version: 0.0.2
+Authors@R:
     person("Jeffrey", "Girard", , "me@jmgirard.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-7359-3746"))
-Description: The goal of *hitop* is to provide functions helpful for researchers 
+Description: The goal of *hitop* is to provide functions helpful for researchers
     working on the Hierarchical Taxonomy of Psychopathology (HiTOP).
 License: GPL (>= 3)
 URL: https://github.com/jmgirard/hitop, https://jmgirard.github.io/hitop/
 BugReports: https://github.com/jmgirard/hitop/issues
-Depends: 
+Depends:
     R (>= 3.5)
-Imports: 
+Imports:
     cli,
     flextable,
     glue,
@@ -22,7 +22,7 @@ Imports:
     stats,
     tibble,
     utils
-Suggests: 
+Suggests:
     ggplot2,
     knitr,
     lavaan,
@@ -32,5 +32,5 @@ VignetteBuilder: knitr, rmarkdown
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0

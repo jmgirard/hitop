@@ -15,7 +15,6 @@ knitr::opts_chunk$set(
 ```
 ```{r}
 #| include: false
-
 library(tibble)
 ```
 
@@ -111,7 +110,6 @@ We can just add one or more of the following arguments to `score_hitopsr()`: `al
 
 ```{r reliability}
 #| warning: false
-
 scores <- score_hitopsr(
   data = ku_hitopsr,
   items = sprintf("hsr%03d", 1:405),
@@ -119,3 +117,57 @@ scores <- score_hitopsr(
   omega = TRUE
 )
 ```
+
+## Renaming Non-Standard Column Names
+If your dataset was collected before the item numbers were standardized or used arbitrary variable names, you must rename your columns to the standard format before running the scoring engine. The `rename_hitopsr_items()` function handles this preparation via two approaches.
+
+### Method 1: Legacy "Original" Pool Names
+If your columns are labeled with older pool names (e.g., HiTOP_659 or Ext_432), use `method = "original"`. The function scans your data frame columns, matches them against the package's built-in item database, and renames them to standard names.
+
+```{r}
+# Setup a mock dataset with older legacy column names
+legacy_data <- data.frame(
+  HiTOP_659 = c(1, 2, 4),
+  HiTOP_301 = c(3, 4, 2),
+  ParticipantID = c(101, 102, 103)
+)
+
+# Rename legacy columns using the native pipe
+standardized_legacy <-
+  legacy_data |>
+  rename_hitopsr_items(method = "original", prefix = "HSR_")
+
+standardized_legacy
+```
+
+### Method 2: Matching via Literal Item Text
+If your dataset uses completely customized column names but you tracked the exact question prompts presented to your participants, use `method = "text"`. Provide a vector of your current column names alongside a matching vector of literal item text strings.
+
+```{r}
+# Setup a mock dataset with completely custom column names
+custom_data <- data.frame(
+  q_party = c(1, 2, 1),
+  q_flawless = c(4, 3, 4),
+  Age = c(21, 25, 30)
+)
+
+# Define the mapping pairs
+my_cols <- c("q_party", "q_flawless")
+my_texts <- c(
+  "I preferred to stay home than to go to a party.",
+  "I felt that my work must be flawless."
+)
+
+# Rename custom columns based on text matching
+standardized_custom <- custom_data |>
+  rename_hitopsr_items(
+    method = "text",
+    item_cols = my_cols,
+    item_text = my_texts,
+    prefix = "HSR_"
+  )
+
+standardized_custom
+```
+
+*Note: Because these small mock examples contain only a subset of the full item pool, `rename_hitopsr_items()` will safely issue a cli warning letting you know that fewer than 405 items were matched. This perfectly accommodates researchers intentionally administering short forms or separate diagnostic modules.*
