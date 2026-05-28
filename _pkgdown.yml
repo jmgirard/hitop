@@ -54,6 +54,8 @@ reference:
   - calc_omega
   - rank_scales
   - rename_hitopsr_items
+  - label_hitopsr
+  - label_hitopbr
 - title: Example Data
   contents:
   - ku_hitopsr
