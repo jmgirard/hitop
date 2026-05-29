@@ -33,7 +33,7 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-HSUM (???)
+HiTOP-HSUM (650)
 
 PID-5-BFP (36)
 
@@ -49,7 +49,7 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-HSUM (???)
+HiTOP-HSUM (650)
 
 PID-5-BFP (36)
 
@@ -65,7 +65,7 @@ HiTOP-SR (405)
 
 HiTOP-BR (45)
 
-HiTOP-HSUM (???)
+HiTOP-HSUM (650)
 
 PID-5 (220)
 
@@ -87,7 +87,7 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-HSUM (???)
+HiTOP-HSUM (650)
 
 PID-5-BFP (36)
 
@@ -97,7 +97,7 @@ HiTOP-SR (405)
 
 HiTOP-BR (45)
 
-HiTOP-HSUM (???)
+HiTOP-HSUM (650)
 
 PID-5 (220)
 
@@ -218,6 +218,8 @@ Write Package Paper
 
 - [Download
   HiTOP-BR](https://jmgirard.github.io/hitop/articles/download-hitopbr.md):
+- [Download
+  HiTOP-HSUM](https://jmgirard.github.io/hitop/articles/download-hitophsum.md):
 - [Download
   HiTOP-SR](https://jmgirard.github.io/hitop/articles/download-hitopsr.md):
 - [Scoring the
