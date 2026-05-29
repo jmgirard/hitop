@@ -37,6 +37,8 @@ navbar:
         href: articles/download-hitopbr.html
       - text: "HiTOP-SR"
         href: articles/download-hitopsr.html
+      - text: "HiTOP-HSUM"
+        href: articles/download-hitophsum.html
 
 development:
   mode: auto
