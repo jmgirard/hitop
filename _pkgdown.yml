@@ -83,3 +83,4 @@ reference:
   - generate_qualtrics_hitopsr
   - generate_redcap_hitopbr
   - generate_redcap_hitopsr
+  - generate_redcap_hitophsum

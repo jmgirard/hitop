@@ -1,0 +1,43 @@
+﻿Choice_Set,Value,Label
+yn_pnts,1,Yes
+yn_pnts,0,No
+yn_pnts,99,Prefer not to say
+nicotine_forms,1,smoking cigarettes
+nicotine_forms,2,vaping or e-cigarettes
+nicotine_forms,3,"cigars, cigarillos, or filtered cigars filled only with tobacco"
+nicotine_forms,4,nicotine gum or patches
+nicotine_forms,5,chewing tobacco or pouches/dip
+nicotine_forms,6,Other - specify:
+freq_12m,1,1-5 days total
+freq_12m,2,6-11 days total
+freq_12m,3,about once a month
+freq_12m,4,2-3 days per month
+freq_12m,5,1-2 days per week
+freq_12m,6,3-4 days per week
+freq_12m,7,5-6 days per week
+freq_12m,8,everyday
+freq_12m,99,Prefer not to say
+freq_intox,0,didn’t get drunk or intoxicated/high with this substance over the past 12 months
+freq_intox,1,1-5 days total
+freq_intox,2,6-11 days total
+freq_intox,3,about once a month
+freq_intox,4,2-3 days per month
+freq_intox,5,1-2 days per week
+freq_intox,6,3-4 days per week
+freq_intox,7,5-6 days per week
+freq_intox,8,everyday
+freq_intox,99,Prefer not to say
+freq_heavy,0,Never drank this many drinks on a single occasion
+freq_heavy,1,1-5  times total
+freq_heavy,2,6-11 times total
+freq_heavy,3,about once a month
+freq_heavy,4,2-3 times per month
+freq_heavy,5,1-2 times per week
+freq_heavy,6,3-4 times per week
+freq_heavy,7,5-6 times per week
+freq_heavy,8,everyday
+freq_heavy,99,Prefer not to say
+symptom_4pt,0,not at all
+symptom_4pt,1,a little
+symptom_4pt,2,moderately
+symptom_4pt,3,a lot

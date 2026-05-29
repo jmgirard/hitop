@@ -206,3 +206,306 @@ build_redcap_zip <- function(
 
   invisible(file)
 }
+
+#' Generate a REDCap Instrument ZIP File for the HiTOP-HSUM
+#'
+#' @description Generates a REDCap-compatible data dictionary for the
+#'   Hierarchical Taxonomy of Psychopathology - Substance Use Module (HiTOP-HSUM)
+#'   and packages it into an Instrument ZIP file for easy uploading.
+#'
+#' @param file Character string. The destination path for the output ZIP file.
+#'   Defaults to `"hitophsum_redcap.zip"`.
+#' @param form_name Character string. The internal name of the form in REDCap.
+#'   Defaults to `"hitophsum_questionnaire"`.
+#' @param required Logical. Whether the items should be marked as required.
+#'   Defaults to `TRUE`.
+#' @param breaks Integer or `NULL`. The number of items to display before
+#'   inserting a page break. Set to `0` or `NULL` to disable pagination
+#'   entirely. Defaults to `15`.
+#'
+#' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @export
+generate_redcap_hitophsum <- function(
+  file = "hitophsum_redcap.zip",
+  form_name = "hitophsum_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  # 1. Pre-compile the long dynamic programmatic choice sets
+  choices_1_to_20 <- paste(
+    c(paste(1:19, 1:19, sep = ", "), "20, 20+", "99, Prefer not to say"),
+    collapse = " | "
+  )
+  choices_1_to_60 <- paste(
+    c(paste(1:59, 1:59, sep = ", "), "60, 60+", "99, Prefer not to say"),
+    collapse = " | "
+  )
+
+  # 2. Format regular choices strings using split and vapply
+  choice_pairs <- paste(
+    hitophsum_choices$Value,
+    hitophsum_choices$Label,
+    sep = ", "
+  )
+  choices_list <- split(choice_pairs, hitophsum_choices$Choice_Set)
+  choices_vector <- vapply(
+    choices_list,
+    function(x) paste(x, collapse = " | "),
+    character(1)
+  )
+
+  # 3. Map parent field attributes using named vectors
+  unique_items <- hitophsum_items[!duplicated(hitophsum_items$Variable), ]
+
+  resolved_types <- tolower(unique_items$Field_Type)
+  resolved_types[unique_items$Choice_Set == "yn_pnts"] <- "radio"
+
+  parent_types <- setNames(resolved_types, unique_items$Variable)
+  parent_charsets <- setNames(unique_items$Choice_Set, unique_items$Variable)
+
+  # 4. Parse Vectorized Branching Logic
+  branching_logic <- mapply(
+    function(gate_var, gate_val) {
+      if (
+        is.na(gate_var) || gate_var == "" || is.na(gate_val) || gate_val == ""
+      ) {
+        return(NA_character_)
+      }
+
+      p_type <- parent_types[gate_var]
+      p_charset <- parent_charsets[gate_var]
+
+      if (is.na(p_type)) {
+        return(NA_character_)
+      }
+
+      # Clean string whitespace
+      gate_val <- trimws(gate_val)
+
+      # Rule Type A: Matrix count rule (count>1)
+      if (gate_val == "count>1") {
+        p_values <- hitophsum_choices$Value[
+          hitophsum_choices$Choice_Set == p_charset
+        ]
+        if (length(p_values) == 0) {
+          return(NA_character_)
+        }
+
+        if (p_type == "checkbox") {
+          conds <- paste0("if([", gate_var, "(", p_values, ")],1,0)")
+          return(paste0("(", paste(conds, collapse = " + "), ") > 1"))
+        } else {
+          return(NA_character_)
+        }
+      }
+
+      # Rule Type B: Custom "any_other" rule (any selection except option 1 / cigarettes)
+      if (gate_val == "any_other") {
+        p_values <- hitophsum_choices$Value[
+          hitophsum_choices$Choice_Set == p_charset
+        ]
+        # Exclude option 1 (baseline/primary), 0 (none), and 99 (prefer not to say)
+        matched_vals <- p_values[
+          !is.na(p_values) & !(p_values %in% c(0, 1, 99))
+        ]
+
+        if (length(matched_vals) == 0) {
+          return(NA_character_)
+        }
+
+        if (p_type == "checkbox") {
+          conds <- paste0("[", gate_var, "(", matched_vals, ")] = '1'")
+          return(paste0("(", paste(conds, collapse = " OR "), ")"))
+        } else {
+          conds <- paste0("[", gate_var, "] = '", matched_vals, "'")
+          return(paste0("(", paste(conds, collapse = " OR "), ")"))
+        }
+      }
+
+      # Rule Type C: Handle comparison operators (e.g., >=4, !=1, >1)
+      if (grepl("^(>=|<=|>|<|!=)", gate_val)) {
+        operator <- regmatches(gate_val, regexec("^(>=|<=|>|<|!=)", gate_val))[[
+          1
+        ]][1]
+        val_part <- trimws(sub(operator, "", gate_val, fixed = TRUE))
+        num_threshold <- suppressWarnings(as.numeric(val_part))
+
+        if (p_type == "checkbox") {
+          p_values <- hitophsum_choices$Value[
+            hitophsum_choices$Choice_Set == p_charset
+          ]
+
+          if (operator == "!=") {
+            matched_vals <- p_values[p_values != num_threshold]
+          } else if (operator == ">") {
+            matched_vals <- p_values[p_values > num_threshold]
+          } else if (operator == ">=") {
+            matched_vals <- p_values[p_values >= num_threshold]
+          } else if (operator == "<") {
+            matched_vals <- p_values[p_values < num_threshold]
+          } else if (operator == "<=") {
+            matched_vals <- p_values[p_values <= num_threshold]
+          } else {
+            matched_vals <- integer(0)
+          }
+
+          matched_vals <- matched_vals[
+            !is.na(matched_vals) & matched_vals != 99
+          ]
+          if (length(matched_vals) == 0) {
+            return(NA_character_)
+          }
+
+          conds <- paste0("[", gate_var, "(", matched_vals, ")] = '1'")
+          return(paste0("(", paste(conds, collapse = " OR "), ")"))
+        } else {
+          if (!is.na(num_threshold)) {
+            return(paste0("[", gate_var, "] ", operator, " ", val_part))
+          } else {
+            return(paste0("[", gate_var, "] ", operator, " '", val_part, "'"))
+          }
+        }
+      }
+
+      # Rule Type D: Handle discrete options (e.g., 2,4,5)
+      vals <- trimws(strsplit(gate_val, "[,|]")[[1]])
+      vals <- vals[vals != ""]
+
+      if (p_type == "checkbox") {
+        conds <- paste0("[", gate_var, "(", vals, ")] = '1'")
+      } else {
+        conds <- paste0("[", gate_var, "] = '", vals, "'")
+      }
+
+      if (length(conds) > 1) {
+        return(paste0("(", paste(conds, collapse = " OR "), ")"))
+      } else {
+        return(conds)
+      }
+    },
+    hitophsum_items$Gate_Variable,
+    hitophsum_items$Gate_Value,
+    USE.NAMES = FALSE
+  )
+
+  # 5. Build Final Choice Strings and Field Types
+  choices_string_vec <- unname(choices_vector[hitophsum_items$Choice_Set])
+  final_field_types <- unname(parent_types[hitophsum_items$Variable])
+
+  is_alc_quantity <- grepl(
+    "alc.*quant|quant.*alc",
+    hitophsum_items$Variable,
+    ignore.case = TRUE
+  )
+  is_cig_quantity <- grepl(
+    "(cig|cigar).*quant|quant.*(cig|cigar)",
+    hitophsum_items$Variable,
+    ignore.case = TRUE
+  )
+  is_other_quantity <- grepl(
+    "_oth$|_other$",
+    hitophsum_items$Variable,
+    ignore.case = TRUE
+  ) &
+    grepl("quant", hitophsum_items$Variable, ignore.case = TRUE)
+
+  for (i in seq_len(nrow(hitophsum_items))) {
+    if (is_alc_quantity[i]) {
+      final_field_types[i] <- "dropdown"
+      choices_string_vec[i] <- choices_1_to_20
+    } else if (is_cig_quantity[i]) {
+      final_field_types[i] <- "dropdown"
+      choices_string_vec[i] <- choices_1_to_60
+    } else if (is_other_quantity[i]) {
+      final_field_types[i] <- "text"
+      choices_string_vec[i] <- NA_character_
+    } else if (final_field_types[i] == "text") {
+      choices_string_vec[i] <- NA_character_
+    }
+  }
+
+  # 6. Build the complete Data Dictionary data frame for items
+  item_rows <- data.frame(
+    `Variable / Field Name` = hitophsum_items$Variable,
+    `Form Name` = form_name,
+    `Section Header` = NA_character_,
+    `Field Type` = final_field_types,
+    `Field Label` = hitophsum_items$Text,
+    `Choices, Calculations, OR Slider Labels` = choices_string_vec,
+    `Field Note` = NA_character_,
+    `Text Validation Type OR Show Slider Number` = NA_character_,
+    `Text Validation Min` = NA_character_,
+    `Text Validation Max` = NA_character_,
+    `Identifier?` = NA_character_,
+    `Branching Logic (Show field only if...)` = branching_logic,
+    `Required Field?` = ifelse(
+      required & final_field_types != "descriptive",
+      "y",
+      "n"
+    ),
+    `Custom Alignment` = NA_character_,
+    `Question Number (surveys only)` = NA_character_,
+    check.names = FALSE,
+    stringsAsFactors = FALSE
+  )
+
+  # 7. Insert Page Breaks based on the 'breaks' argument
+  if (!is.null(breaks) && breaks > 0 && nrow(item_rows) > breaks) {
+    break_positions <- seq(from = breaks + 1, to = nrow(item_rows), by = breaks)
+    item_rows$`Section Header`[break_positions] <- "<br>"
+  }
+
+  # 8. Build the Instructions Row
+  instruction_text <- hitophsum_instructions$start[1]
+  if (
+    !is.null(instruction_text) &&
+      !is.na(instruction_text) &&
+      nchar(instruction_text) > 0
+  ) {
+    instruction_row <- data.frame(
+      `Variable / Field Name` = "hitophsum_instructions",
+      `Form Name` = form_name,
+      `Section Header` = NA_character_,
+      `Field Type` = "descriptive",
+      `Field Label` = instruction_text,
+      `Choices, Calculations, OR Slider Labels` = NA_character_,
+      `Field Note` = NA_character_,
+      `Text Validation Type OR Show Slider Number` = NA_character_,
+      `Text Validation Min` = NA_character_,
+      `Text Validation Max` = NA_character_,
+      `Identifier?` = NA_character_,
+      `Branching Logic (Show field only if...)` = NA_character_,
+      `Required Field?` = NA_character_,
+      `Custom Alignment` = NA_character_,
+      `Question Number (surveys only)` = NA_character_,
+      check.names = FALSE,
+      stringsAsFactors = FALSE
+    )
+    data_dictionary <- rbind(instruction_row, item_rows)
+  } else {
+    data_dictionary <- item_rows
+  }
+
+  # 9. Export directly to ZIP
+  if (!grepl("^/|^[A-Za-z]:", file)) {
+    absolute_file_path <- file.path(getwd(), file)
+  } else {
+    absolute_file_path <- file
+  }
+
+  temp_csv <- file.path(tempdir(), "instrument.csv")
+  write.csv(data_dictionary, file = temp_csv, row.names = FALSE, na = "")
+
+  utils::zip(
+    zipfile = absolute_file_path,
+    files = temp_csv,
+    extras = c("-q", "-j")
+  )
+
+  file.remove(temp_csv)
+
+  cli::cli_alert_success("Instrument successfully zipped to {.file {file}}")
+
+  invisible(file)
+}
