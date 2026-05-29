@@ -21,6 +21,10 @@
   : Rank and list the top-\\n\\ scales per row
 - [`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md)
   : Rename Columns to Standard HiTOP-SR Item Names
+- [`label_hitopsr()`](https://jmgirard.github.io/hitop/reference/label_hitopsr.md)
+  : Label HiTOP-SR Columns with Semantic Descriptions
+- [`label_hitopbr()`](https://jmgirard.github.io/hitop/reference/label_hitopbr.md)
+  : Label HiTOP-BR Columns with Semantic Descriptions
 
 ## Example Data
 
@@ -72,3 +76,5 @@
   : Generate a REDCap Instrument ZIP File for the HiTOP-BR
 - [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
   : Generate a REDCap Instrument ZIP File for the HiTOP-SR
+- [`generate_redcap_hitophsum()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.md)
+  : Generate a REDCap Instrument ZIP File for the HiTOP-HSUM
