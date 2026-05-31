@@ -67,7 +67,7 @@ remotes::install_github("jmgirard/hitop")
 - [ ] Add Instrument Export Functions
   - [x] HiTOP-SR (405)
   - [x] HiTOP-BR (45)
-  - [ ] HiTOP-HSUM (650)
+  - [x] HiTOP-HSUM (650)
   - [ ] PID-5 (220)
   - [ ] PID-5-SF (100)
   - [ ] PID-5-BF (25)
