@@ -42,10 +42,10 @@ You can download the files for the HiTOP-HSUM instrument below. Choose the forma
   <div class="col-md-4">
     <div class="card h-100 shadow-sm">
       <div class="card-body">
-        <h5 class="card-title">📊 Qualtrics TXT</h5>
+        <h5 class="card-title">📊 Qualtrics QSF</h5>
         <p class="card-text text-muted">Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.</p>
         <div class="d-grid gap-2 mt-4">
-          <a href="" class="btn btn-outline-primary disabled">Download TXT</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf" class="btn btn-outline-primary">Download QSF</a>
         </div>
       </div>
     </div>
@@ -66,5 +66,3 @@ You can download the files for the HiTOP-HSUM instrument below. Choose the forma
 
 <br>
 ```
-
-**Note:** If you need to recreate or customize these files (for example, to change the formatting or translate the text), you can use the [`generate_docx_hitophsum()`](../reference/generate_docx_hitophsum.html), [`generate_qualtrics_hitophsum()`](../reference/generate_qualtrics_hitophsum.html), and [`generate_redcap_hitophsum()`](../reference/generate_redcap_hitophsum.html) functions included in this package.

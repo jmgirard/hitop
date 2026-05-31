@@ -15,6 +15,7 @@ Imports:
     cli,
     flextable,
     glue,
+    jsonlite,
     lifecycle,
     officer,
     rlang,
