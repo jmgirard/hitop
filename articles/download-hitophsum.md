@@ -5,11 +5,13 @@ the format that best fits your research needs.
 
 ##### 📄 Printable DOCX
 
-Use these Microsoft Word documents for printing, paper administration,
-or sending to the IRB.
+Use these Microsoft Word documents for an overview or sending to the
+IRB.
 
-[Download A4](https://jmgirard.github.io/hitop/articles/) [Download US
-Letter](https://jmgirard.github.io/hitop/articles/)
+[Download
+A4](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_A4.docx)
+[Download US
+Letter](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_US.docx)
 
 ##### 📊 Qualtrics TXT
 
