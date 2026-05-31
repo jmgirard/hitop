@@ -13,12 +13,13 @@ A4](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_A4.doc
 [Download US
 Letter](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_US.docx)
 
-##### 📊 Qualtrics TXT
+##### 📊 Qualtrics QSF
 
 Use this specially formatted text file to easily import the instrument
 directly into your Qualtrics surveys.
 
-[Download TXT](https://jmgirard.github.io/hitop/articles/)
+[Download
+QSF](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf)
 
 ##### 🏥 REDCap ZIP
 
@@ -29,11 +30,3 @@ instrument in your REDCap project.
 ZIP](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip)
 
   
-
-**Note:** If you need to recreate or customize these files (for example,
-to change the formatting or translate the text), you can use the
-[`generate_docx_hitophsum()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitophsum.md),
-[`generate_qualtrics_hitophsum()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitophsum.md),
-and
-[`generate_redcap_hitophsum()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.md)
-functions included in this package.
