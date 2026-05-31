@@ -34,7 +34,7 @@ create_qualtrics_question <- function(
   resp_data
 }
 
-#' Generate Discrete Display Logic for Qualtrics API
+# Generate Discrete Display Logic for Qualtrics API
 build_display_logic <- function(gate_qid, gate_vals) {
   if (length(gate_vals) == 0) {
     return(NULL)
