@@ -18,4 +18,7 @@ sim_hitopsr
 \description{
 Simulated responses to items on the full HiTOP-SR (with 405 items).
 }
+\examples{
+sim_hitopsr
+}
 \keyword{datasets}

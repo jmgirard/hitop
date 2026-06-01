@@ -5,12 +5,10 @@
 \alias{hitopsr_items}
 \title{HiTOP-SR Item Data}
 \format{
-A \link[tibble]{tibble} with 405 rows and 8 columns:
+A \link[tibble]{tibble} with 405 rows and 6 columns:
 \describe{
 \item{HSR}{Item number on the full HiTOP-SR}
 \item{Reverse}{Whether the item needs to be reverse scored}
-\item{Spectrum}{Name of the spectrum (level 4)}
-\item{Subfactor}{Name of the subfactor (level 3)}
 \item{Scale}{Name of the scale (level 2)}
 \item{Subscale}{Name of the subscale (level 1)}
 \item{Text}{Item text}
@@ -22,5 +20,8 @@ hitopsr_items
 }
 \description{
 Information about items in the HiTOP-SR.
+}
+\examples{
+hitopsr_items
 }
 \keyword{datasets}

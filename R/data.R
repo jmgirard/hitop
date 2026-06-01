@@ -25,27 +25,50 @@
 #'
 #' Information about items in the HiTOP-SR.
 #'
-#' @format A \link[tibble]{tibble} with 405 rows and 8 columns:
+#' @format A \link[tibble]{tibble} with 405 rows and 6 columns:
 #' \describe{
 #'   \item{HSR}{Item number on the full HiTOP-SR}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
-#'   \item{Spectrum}{Name of the spectrum (level 4)}
-#'   \item{Subfactor}{Name of the subfactor (level 3)}
 #'   \item{Scale}{Name of the scale (level 2)}
 #'   \item{Subscale}{Name of the subscale (level 1)}
 #'   \item{Text}{Item text}
 #'   \item{Original}{Item ID in the original, development item pool}
 #' }
+#' @examples
+#' hitopsr_items
 "hitopsr_items"
 
 #' HiTOP-SR Scale Data
 #'
 #' Information about scales in the HiTOP-SR.
+#'
+#' @format A \link[tibble]{tibble} with 76 rows and 5 columns:
+#' \describe{
+#'   \item{Scale}{Name of the scale}
+#'   \item{itemdata}{A list column containing one item-data tibble per scale}
+#'   \item{nItems}{The number of items in the scale}
+#'   \item{itemNumbers}{A list column containing one item-number vector per scale}
+#'   \item{camelCase}{The name of the scale converted to camel case}
+#' }
+#' @examples
+#' hitopsr_scales
 "hitopsr_scales"
 
 #' HiTOP-SR Subscale Data
 #'
 #' Information about subscales in the HiTOP-SR.
+#'
+#' @format A \link[tibble]{tibble} with 17 rows and 6 columns:
+#' \describe{
+#'   \item{Subscale}{Name of the subscale}
+#'   \item{Scale}{Name of the scale that the subscale is part of}
+#'   \item{itemdata}{A list column containing one item-data tibble per subscale}
+#'   \item{nItems}{The number of items in the subscale}
+#'   \item{itemNumbers}{A list column containing one item-number vector per subscale}
+#'   \item{camelCase}{The name of the subscale converted to camel case}
+#' }
+#' @examples
+#' hitopsr_subscales
 "hitopsr_subscales"
 
 #' HiTOP-BR Item Data
@@ -63,11 +86,24 @@
 #'   \item{HSR}{Item number on the HiTOP-SR}
 #'   \item{Original}{Item ID in the original, development item pool}
 #' }
+#' @examples
+#' hitopbr_items
 "hitopbr_items"
 
 #' HiTOP-BR Scale Data
 #'
 #' Information about scales in the HiTOP-BR.
+#'
+#' @format A \link[tibble]{tibble} with 8 rows and 5 columns:
+#' \describe{
+#'   \item{Scale}{Name of the scale}
+#'   \item{itemdata}{A list column containing one item-data tibble per scale}
+#'   \item{nItems}{The number of items in the scale}
+#'   \item{itemNumbers}{A list column containing one item-number vector per scale}
+#'   \item{camelCase}{The name of the scale converted to camel case}
+#' }
+#' @examples
+#' hitopbr_scales
 "hitopbr_scales"
 
 #' Simulated HiTOP-SR Data
@@ -78,6 +114,8 @@
 #' \describe{
 #'   \item{hsr_1 to hsr_405}{Responses on each item}
 #' }
+#' @examples
+#' sim_hitopsr
 "sim_hitopsr"
 
 #' Simulated HiTOP-BR Data
@@ -88,6 +126,8 @@
 #' \describe{
 #'   \item{hbr_1 to hbr_45}{Responses on each item}
 #' }
+#' @examples
+#' sim_hitopbr
 "sim_hitopbr"
 
 #' Simulated PID-5 Data
@@ -142,16 +182,20 @@
 #'   \item{biosex}{A factor indicating each participant's biological sex}
 #'   \item{hbr01 to hbr45}{Responses on each item}
 #' }
+#' @examples
+#' ku_hitopbr
 "ku_hitopbr"
 
 #' Real HiTOP-SR Data
 #'
 #' Real responses to items on the HiTOP-SR from University of Kansas students.
 #'
-#' @format A \link[tibble]{tibble} with 4111 rows and 407 columns.
+#' @format A \link[tibble]{tibble} with 411 rows and 407 columns.
 #' \describe{
 #'   \item{participant}{An anonymized id for each participant}
 #'   \item{biosex}{A factor indicating each participant's biological sex}
 #'   \item{hsr001 to hsr405}{Responses on each item}
 #' }
+#' @examples
+#' ku_hitopsr
 "ku_hitopsr"

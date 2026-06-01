@@ -5,12 +5,22 @@
 \alias{hitopsr_scales}
 \title{HiTOP-SR Scale Data}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 76 rows and 7 columns.
+A \link[tibble]{tibble} with 76 rows and 5 columns:
+\describe{
+\item{Scale}{Name of the scale}
+\item{itemdata}{A list column containing one item-data tibble per scale}
+\item{nItems}{The number of items in the scale}
+\item{itemNumbers}{A list column containing one item-number vector per scale}
+\item{camelCase}{The name of the scale converted to camel case}
+}
 }
 \usage{
 hitopsr_scales
 }
 \description{
 Information about scales in the HiTOP-SR.
+}
+\examples{
+hitopsr_scales
 }
 \keyword{datasets}

@@ -18,4 +18,7 @@ sim_hitopbr
 \description{
 Simulated responses to items on the HiTOP-BR (with 45 items).
 }
+\examples{
+sim_hitopbr
+}
 \keyword{datasets}

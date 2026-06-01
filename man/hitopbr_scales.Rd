@@ -5,12 +5,22 @@
 \alias{hitopbr_scales}
 \title{HiTOP-BR Scale Data}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 8 rows and 5 columns.
+A \link[tibble]{tibble} with 8 rows and 5 columns:
+\describe{
+\item{Scale}{Name of the scale}
+\item{itemdata}{A list column containing one item-data tibble per scale}
+\item{nItems}{The number of items in the scale}
+\item{itemNumbers}{A list column containing one item-number vector per scale}
+\item{camelCase}{The name of the scale converted to camel case}
+}
 }
 \usage{
 hitopbr_scales
 }
 \description{
 Information about scales in the HiTOP-BR.
+}
+\examples{
+hitopbr_scales
 }
 \keyword{datasets}

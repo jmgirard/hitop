@@ -33,10 +33,10 @@ navbar:
     downloads:
       text: "Downloads"
       menu:
-      - text: "HiTOP-BR"
-        href: articles/download-hitopbr.html
       - text: "HiTOP-SR"
         href: articles/download-hitopsr.html
+      - text: "HiTOP-BR"
+        href: articles/download-hitopbr.html
       - text: "HiTOP-HSUM"
         href: articles/download-hitophsum.html
 

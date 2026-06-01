@@ -18,4 +18,7 @@ ku_hitopbr
 \description{
 Real responses to items on the HiTOP-BR from University of Kansas students.
 }
+\examples{
+ku_hitopbr
+}
 \keyword{datasets}

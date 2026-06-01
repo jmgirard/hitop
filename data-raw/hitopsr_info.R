@@ -1,5 +1,6 @@
 ## HiTOP-SR Items
-hitopsr_items <- readr::read_csv("data-raw/hitopsr_items.csv")
+hitopsr_items <- readr::read_csv("data-raw/hitopsr_items.csv") |>
+  dplyr::select(-Subfactor, -Spectrum)
 usethis::use_data(hitopsr_items, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------
@@ -9,7 +10,7 @@ hitopsr_scales <-
   hitopsr_items |>
   tidyr::nest(
     itemdata = c(HSR, Reverse, Text, Subscale),
-    .by = c(Scale, Subfactor, Spectrum)
+    .by = Scale
   ) |>
   dplyr::mutate(
     nItems = purrr::map_dbl(itemdata, nrow),
@@ -28,7 +29,7 @@ hitopsr_subscales <-
   dplyr::filter(Subscale != "") |>
   tidyr::nest(
     itemdata = c(HSR, Reverse, Text, Subscale),
-    .by = c(Subscale, Scale, Subfactor, Spectrum)
+    .by = c(Subscale, Scale)
   ) |>
   dplyr::mutate(
     nItems = purrr::map_dbl(itemdata, nrow),

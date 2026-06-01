@@ -23,4 +23,7 @@ hitopbr_items
 \description{
 Information about items in the HiTOP-BR.
 }
+\examples{
+hitopbr_items
+}
 \keyword{datasets}

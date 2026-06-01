@@ -5,12 +5,23 @@
 \alias{hitopsr_subscales}
 \title{HiTOP-SR Subscale Data}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 17 rows and 8 columns.
+A \link[tibble]{tibble} with 17 rows and 6 columns:
+\describe{
+\item{Subscale}{Name of the subscale}
+\item{Scale}{Name of the scale that the subscale is part of}
+\item{itemdata}{A list column containing one item-data tibble per subscale}
+\item{nItems}{The number of items in the subscale}
+\item{itemNumbers}{A list column containing one item-number vector per subscale}
+\item{camelCase}{The name of the subscale converted to camel case}
+}
 }
 \usage{
 hitopsr_subscales
 }
 \description{
 Information about subscales in the HiTOP-SR.
+}
+\examples{
+hitopsr_subscales
 }
 \keyword{datasets}

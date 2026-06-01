@@ -5,7 +5,7 @@
 \alias{ku_hitopsr}
 \title{Real HiTOP-SR Data}
 \format{
-A \link[tibble]{tibble} with 4111 rows and 407 columns.
+A \link[tibble]{tibble} with 411 rows and 407 columns.
 \describe{
 \item{participant}{An anonymized id for each participant}
 \item{biosex}{A factor indicating each participant's biological sex}
@@ -17,5 +17,8 @@ ku_hitopsr
 }
 \description{
 Real responses to items on the HiTOP-SR from University of Kansas students.
+}
+\examples{
+ku_hitopsr
 }
 \keyword{datasets}
