@@ -32,8 +32,8 @@
   </ul></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-downloads" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Downloads</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-downloads"><li><a class="dropdown-item" href="../articles/download-hitopbr.html">HiTOP-BR</a></li>
-    <li><a class="dropdown-item" href="../articles/download-hitopsr.html">HiTOP-SR</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-downloads"><li><a class="dropdown-item" href="../articles/download-hitopsr.html">HiTOP-SR</a></li>
+    <li><a class="dropdown-item" href="../articles/download-hitopbr.html">HiTOP-BR</a></li>
     <li><a class="dropdown-item" href="../articles/download-hitophsum.html">HiTOP-HSUM</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -81,6 +81,31 @@
 
 </dl></div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ku_hitopbr</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 411 × 47</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    participant biosex hbr01 hbr02 hbr03 hbr04 hbr05 hbr06 hbr07 hbr08 hbr09</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> P001        male       1     1     1     1     2     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> P002        male       1     1     1     1     2     2     2     1     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> P003        male       1     2     1     2     3     4     3     3     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> P004        male       1     1     1     1     2     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> P005        male       1     4     1     1     3     1     1     1     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> P006        female     1     1     1     1     1     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> P007        female     1     1     1     1     1     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> P008        male       2     1     1     1     3     1     3     2     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> P009        female     1     1     1     1     3     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> P010        female     1     1     1     1     2     1     1     1     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 401 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 36 more variables: hbr10 &lt;dbl&gt;, hbr11 &lt;dbl&gt;, hbr12 &lt;dbl&gt;, hbr13 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hbr14 &lt;dbl&gt;, hbr15 &lt;dbl&gt;, hbr16 &lt;dbl&gt;, hbr17 &lt;dbl&gt;, hbr18 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hbr19 &lt;dbl&gt;, hbr20 &lt;dbl&gt;, hbr21 &lt;dbl&gt;, hbr22 &lt;dbl&gt;, hbr23 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hbr24 &lt;dbl&gt;, hbr25 &lt;dbl&gt;, hbr26 &lt;dbl&gt;, hbr27 &lt;dbl&gt;, hbr28 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hbr29 &lt;dbl&gt;, hbr30 &lt;dbl&gt;, hbr31 &lt;dbl&gt;, hbr32 &lt;dbl&gt;, hbr33 &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hbr34 &lt;dbl&gt;, hbr35 &lt;dbl&gt;, hbr36 &lt;dbl&gt;, hbr37 &lt;dbl&gt;, hbr38 &lt;dbl&gt;, …</span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

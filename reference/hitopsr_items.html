@@ -32,8 +32,8 @@
   </ul></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-downloads" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Downloads</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-downloads"><li><a class="dropdown-item" href="../articles/download-hitopbr.html">HiTOP-BR</a></li>
-    <li><a class="dropdown-item" href="../articles/download-hitopsr.html">HiTOP-SR</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-downloads"><li><a class="dropdown-item" href="../articles/download-hitopsr.html">HiTOP-SR</a></li>
+    <li><a class="dropdown-item" href="../articles/download-hitopbr.html">HiTOP-BR</a></li>
     <li><a class="dropdown-item" href="../articles/download-hitophsum.html">HiTOP-HSUM</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -69,17 +69,11 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 405 rows and 8 columns:</p><dl><dt>HSR</dt>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 405 rows and 6 columns:</p><dl><dt>HSR</dt>
 <dd><p>Item number on the full HiTOP-SR</p></dd>
 
 <dt>Reverse</dt>
 <dd><p>Whether the item needs to be reverse scored</p></dd>
-
-<dt>Spectrum</dt>
-<dd><p>Name of the spectrum (level 4)</p></dd>
-
-<dt>Subfactor</dt>
-<dd><p>Name of the subfactor (level 3)</p></dd>
 
 <dt>Scale</dt>
 <dd><p>Name of the scale (level 2)</p></dd>
@@ -96,6 +90,25 @@
 
 </dl></div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hitopsr_items</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 405 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      HSR Reverse Scale              Subscale       Text                 Original</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 FALSE   Social Aloofness   <span style="color: #BB0000;">NA</span>             I preferred to stay… HiTOP_6…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 FALSE   Perfectionism      <span style="color: #BB0000;">NA</span>             I felt that my work… HiTOP_3…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 FALSE   Reality Distortion Hallucinations I saw things that w… HiTOP_5…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>     4 FALSE   Trichotillomania   <span style="color: #BB0000;">NA</span>             I was embarrassed b… HiTOP_3…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>     5 FALSE   Food Selectivity   <span style="color: #BB0000;">NA</span>             I avoided foods bec… HiTOP_81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>     6 FALSE   Panic              <span style="color: #BB0000;">NA</span>             I felt dizzy or lig… HiTOP_2…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>     7 FALSE   Dishonesty         Deceitfulness  I believed it was f… Ext_432 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>     8 FALSE   Mistrust           Cynicism       Most people were ju… Ext_79  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>     9 FALSE   Hoarding           <span style="color: #BB0000;">NA</span>             My home was so clut… HiTOP_2…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>    10 FALSE   Bodily Distress    <span style="color: #BB0000;">NA</span>             I had pains in seve… HiTOP_4…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 395 more rows</span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

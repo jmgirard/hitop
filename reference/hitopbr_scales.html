@@ -32,8 +32,8 @@
   </ul></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-downloads" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Downloads</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-downloads"><li><a class="dropdown-item" href="../articles/download-hitopbr.html">HiTOP-BR</a></li>
-    <li><a class="dropdown-item" href="../articles/download-hitopsr.html">HiTOP-SR</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-downloads"><li><a class="dropdown-item" href="../articles/download-hitopsr.html">HiTOP-SR</a></li>
+    <li><a class="dropdown-item" href="../articles/download-hitopbr.html">HiTOP-BR</a></li>
     <li><a class="dropdown-item" href="../articles/download-hitophsum.html">HiTOP-HSUM</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -69,9 +69,40 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>, <code>data.frame</code>) with 8 rows and 5 columns.</p>
-    </div>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 8 rows and 5 columns:</p><dl><dt>Scale</dt>
+<dd><p>Name of the scale</p></dd>
 
+<dt>itemdata</dt>
+<dd><p>A list column containing one item-data tibble per scale</p></dd>
+
+<dt>nItems</dt>
+<dd><p>The number of items in the scale</p></dd>
+
+<dt>itemNumbers</dt>
+<dd><p>A list column containing one item-number vector per scale</p></dd>
+
+<dt>camelCase</dt>
+<dd><p>The name of the scale converted to camel case</p></dd>
+
+
+</dl></div>
+
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hitopbr_scales</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Scale            itemdata          nItems itemNumbers  camelCase      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;named list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Antagonism       <span style="color: #949494;">&lt;tibble [9 × 5]&gt;</span>       9 <span style="color: #949494;">&lt;dbl [9]&gt;</span>    antagonism     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Detachment       <span style="color: #949494;">&lt;tibble [6 × 5]&gt;</span>       6 <span style="color: #949494;">&lt;dbl [6]&gt;</span>    detachment     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Disinhibition    <span style="color: #949494;">&lt;tibble [9 × 5]&gt;</span>       9 <span style="color: #949494;">&lt;dbl [9]&gt;</span>    disinhibition  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Internalizing    <span style="color: #949494;">&lt;tibble [7 × 5]&gt;</span>       7 <span style="color: #949494;">&lt;dbl [7]&gt;</span>    internalizing  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Somatoform       <span style="color: #949494;">&lt;tibble [8 × 5]&gt;</span>       8 <span style="color: #949494;">&lt;dbl [8]&gt;</span>    somatoform     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Thought Disorder <span style="color: #949494;">&lt;tibble [6 × 5]&gt;</span>       6 <span style="color: #949494;">&lt;dbl [6]&gt;</span>    thoughtDisorder</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> Externalizing    <span style="color: #949494;">&lt;tibble [10 × 5]&gt;</span>     10 <span style="color: #949494;">&lt;dbl [10]&gt;</span>   externalizing  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> p-Factor         <span style="color: #949494;">&lt;tibble [12 × 5]&gt;</span>     12 <span style="color: #949494;">&lt;dbl [12]&gt;</span>   pFactor        </span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

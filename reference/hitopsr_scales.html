@@ -32,8 +32,8 @@
   </ul></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-downloads" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Downloads</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-downloads"><li><a class="dropdown-item" href="../articles/download-hitopbr.html">HiTOP-BR</a></li>
-    <li><a class="dropdown-item" href="../articles/download-hitopsr.html">HiTOP-SR</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-downloads"><li><a class="dropdown-item" href="../articles/download-hitopsr.html">HiTOP-SR</a></li>
+    <li><a class="dropdown-item" href="../articles/download-hitopbr.html">HiTOP-BR</a></li>
     <li><a class="dropdown-item" href="../articles/download-hitophsum.html">HiTOP-HSUM</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -69,9 +69,43 @@
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>, <code>data.frame</code>) with 76 rows and 7 columns.</p>
-    </div>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 76 rows and 5 columns:</p><dl><dt>Scale</dt>
+<dd><p>Name of the scale</p></dd>
 
+<dt>itemdata</dt>
+<dd><p>A list column containing one item-data tibble per scale</p></dd>
+
+<dt>nItems</dt>
+<dd><p>The number of items in the scale</p></dd>
+
+<dt>itemNumbers</dt>
+<dd><p>A list column containing one item-number vector per scale</p></dd>
+
+<dt>camelCase</dt>
+<dd><p>The name of the scale converted to camel case</p></dd>
+
+
+</dl></div>
+
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hitopsr_scales</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 76 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Scale                itemdata         nItems itemNumbers  camelCase          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;named list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Agoraphobia          <span style="color: #949494;">&lt;tibble [5 × 4]&gt;</span>      5 <span style="color: #949494;">&lt;dbl [5]&gt;</span>    agoraphobia        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Antisocial Behavior  <span style="color: #949494;">&lt;tibble [8 × 4]&gt;</span>      8 <span style="color: #949494;">&lt;dbl [8]&gt;</span>    antisocialBehavior </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Appetite Loss        <span style="color: #949494;">&lt;tibble [3 × 4]&gt;</span>      3 <span style="color: #949494;">&lt;dbl [3]&gt;</span>    appetiteLoss       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Binge Eating         <span style="color: #949494;">&lt;tibble [3 × 4]&gt;</span>      3 <span style="color: #949494;">&lt;dbl [3]&gt;</span>    bingeEating        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Bodily Distress      <span style="color: #949494;">&lt;tibble [6 × 4]&gt;</span>      6 <span style="color: #949494;">&lt;dbl [6]&gt;</span>    bodilyDistress     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Body Dissatisfaction <span style="color: #949494;">&lt;tibble [4 × 4]&gt;</span>      4 <span style="color: #949494;">&lt;dbl [4]&gt;</span>    bodyDissatisfaction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Body Focus           <span style="color: #949494;">&lt;tibble [5 × 4]&gt;</span>      5 <span style="color: #949494;">&lt;dbl [5]&gt;</span>    bodyFocus          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Callousness          <span style="color: #949494;">&lt;tibble [6 × 4]&gt;</span>      6 <span style="color: #949494;">&lt;dbl [6]&gt;</span>    callousness        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Checking             <span style="color: #949494;">&lt;tibble [5 × 4]&gt;</span>      5 <span style="color: #949494;">&lt;dbl [5]&gt;</span>    checking           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Cleaning             <span style="color: #949494;">&lt;tibble [6 × 4]&gt;</span>      6 <span style="color: #949494;">&lt;dbl [6]&gt;</span>    cleaning           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 66 more rows</span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
