@@ -3,7 +3,7 @@ title: "HiTOP-SR Instrument"
 output: rmarkdown::html_vignette
 toc: false
 vignette: >
-  %\VignetteIndexEntry{Download HiTOP-SR}
+  %\VignetteIndexEntry{HiTOP-SR Instrument}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
