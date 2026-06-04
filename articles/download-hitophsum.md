@@ -19,25 +19,25 @@ Choose the format that best fits your immediate research needs.
 Use these Microsoft Word documents for an overview or sending to the
 IRB.
 
-[Download
-A4](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_A4.docx)
-[Download US
-Letter](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_US.docx)
+[English (A4
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_A4.docx)
+[English (Letter
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_US.docx)
 
-##### 📊 Qualtrics QSF
+##### 📊 Qualtrics Import
 
 Use this specially formatted text file to easily import the instrument
 directly into your Qualtrics surveys.
 
-[Download
-QSF](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf)
+[English (QSF
+File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf)
 
-##### 🏥 REDCap ZIP
+##### 🏥 REDCap Import
 
 Use this compressed archive file to import the instrument as a new
 instrument in your REDCap project.
 
-[Download
-ZIP](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip)
+[English (ZIP
+File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip)
 
   
