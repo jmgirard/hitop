@@ -7,8 +7,7 @@
 generate_redcap_hitophsum(
   file = "hitophsum_redcap.zip",
   form_name = "hitophsum_questionnaire",
-  required = TRUE,
-  breaks = 15
+  required = TRUE
 )
 }
 \arguments{
@@ -20,10 +19,6 @@ Defaults to \code{"hitophsum_questionnaire"}.}
 
 \item{required}{Logical. Whether the items should be marked as required.
 Defaults to \code{TRUE}.}
-
-\item{breaks}{Integer or \code{NULL}. The number of items to display before
-inserting a page break. Set to \code{0} or \code{NULL} to disable pagination
-entirely. Defaults to \code{15}.}
 }
 \value{
 Invisibly returns the path to the created file (\code{file}).
@@ -32,4 +27,20 @@ Invisibly returns the path to the created file (\code{file}).
 Generates a REDCap-compatible data dictionary for the
 Hierarchical Taxonomy of Psychopathology - Substance Use Module (HiTOP-HSUM)
 and packages it into an Instrument ZIP file for easy uploading.
+}
+\details{
+\strong{Importing (Uploading) Instruments into a REDCap Project:}
+\enumerate{
+\item Log in to your REDCap account and navigate to the desired project.
+\item Click on the "Designer" link in the left menu bar under "Project Home and
+Design".
+\item In the main page, under "Data Collection Instruments", look for the
+"Upload instrument ZIP" option and click the "Upload" button.
+\item Click "Choose File", navigate to where you have the measure saved as a ZIP
+folder, and select the ZIP folder containing your instrument.
+\item Click "Upload instrument ZIP" button to begin the import process.
+\item Find the imported instrument in your list of measures and review for
+accuracy.
+\item Test the instrument to ensure proper functionality within your project.
+}
 }
