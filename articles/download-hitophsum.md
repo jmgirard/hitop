@@ -14,7 +14,7 @@ development but should be available soon.
 
 Choose the format that best fits your immediate research needs.
 
-##### 📄 Printable DOCX
+##### 📄 Printable Document
 
 Use these Microsoft Word documents for an overview or sending to the
 IRB.
