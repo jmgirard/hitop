@@ -1,14 +1,14 @@
 ---
-title: "Download HiTOP-HSUM"
+title: "HiTOP-HSUM Instrument"
 output: rmarkdown::html_vignette
 toc: false
 vignette: >
-  %\VignetteIndexEntry{Download HiTOP-HSUM}
+  %\VignetteIndexEntry{HiTOP-HSUM Instrument}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-You can download the files for the HiTOP-HSUM instrument below. Choose the format that best fits your research needs.
+Welcome to the HiTOP Harmful Substance Use Module (HiTOP-HSUM) instrument resources page. This questionnaire contains a total of 650 possible items across 3 assessment stages. Complex skip/display logic is used, such that the vast majority of respondents will only see a subset of possible items. Here you can download a DOCX summary file that can be printed and shared with IRB as well as ready-to-use imports for both Qualtrics and REDCap (both of which already implement the complex skip/display logic mentioned above). Scoring functions are still under development but should be available soon.
 
 ```{=html}
 <style>
@@ -24,6 +24,10 @@ You can download the files for the HiTOP-HSUM instrument below. Choose the forma
     display: none !important;
   }
 </style>
+
+<h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
+<p class="text-muted">Choose the format that best fits your immediate research needs.</p>
+
 
 <div class="row mt-4">
   <div class="col-md-4">
