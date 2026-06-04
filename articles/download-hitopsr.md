@@ -23,14 +23,16 @@ or sending to the IRB.
 Use this specially formatted text file to easily import the instrument
 directly into your Qualtrics surveys.
 
-[English (TXT File)](NA)
+[English (TXT File)](NA) [Import
+Instructions](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
 
 ##### 🏥 REDCap Import
 
 Use this compressed archive file to import the instrument as a new
 instrument in your REDCap project.
 
-[English (ZIP File)](NA)
+[English (ZIP File)](NA) [Import
+Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
 
 ------------------------------------------------------------------------
 

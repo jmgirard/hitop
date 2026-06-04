@@ -28,6 +28,8 @@ directly into your Qualtrics surveys.
 
 [English (TXT
 File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_qualtrics.txt)
+[Import
+Instructions](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopbr.md)
 
 ##### 🏥 REDCap Import
 
@@ -36,6 +38,8 @@ instrument in your REDCap project.
 
 [English (ZIP
 File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_redcap.zip)
+[Import
+Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopbr.md)
 
   
 
