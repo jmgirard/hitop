@@ -4,8 +4,8 @@
 
 - [HiTOP-BR
   Instrument](https://jmgirard.github.io/hitop/articles/download-hitopbr.md):
-- [Download
-  HiTOP-HSUM](https://jmgirard.github.io/hitop/articles/download-hitophsum.md):
+- [HiTOP-HSUM
+  Instrument](https://jmgirard.github.io/hitop/articles/download-hitophsum.md):
 - [HiTOP-SR
   Instrument](https://jmgirard.github.io/hitop/articles/download-hitopsr.md):
 - [Scoring the
