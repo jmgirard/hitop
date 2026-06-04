@@ -39,5 +39,7 @@ instrument in your REDCap project.
 
 [English (ZIP
 File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip)
+[Import
+Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.html#details)
 
   
