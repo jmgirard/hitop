@@ -49,6 +49,7 @@ Welcome to the HiTOP Self-Report (HiTOP-SR) instrument resources page. This ques
         <p class="card-text text-muted">Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.</p>
         <div class="d-grid gap-2 mt-4">
           <a href="[https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_qualtrics.txt](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_qualtrics.txt)" class="btn btn-outline-primary">English (TXT File)</a>
+          <a href="../reference/generate_qualtrics_hitopsr.html" class="btn btn-outline-primary">Import Instructions</a>
         </div>
       </div>
     </div>
@@ -61,6 +62,7 @@ Welcome to the HiTOP Self-Report (HiTOP-SR) instrument resources page. This ques
         <p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
         <div class="d-grid gap-2 mt-4">
           <a href="[https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip)" class="btn btn-outline-primary">English (ZIP File)</a>
+          <a href="../reference/generate_redcap_hitopsr.html" class="btn btn-outline-primary">Import Instructions</a>
         </div>
       </div>
     </div>
