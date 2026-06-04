@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Download HiTOP-BR • hitop</title>
+<title>HiTOP-BR Instrument • hitop</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -22,7 +22,7 @@
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="Download HiTOP-BR">
+<meta property="og:title" content="HiTOP-BR Instrument">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -87,7 +87,7 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>Download HiTOP-BR</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>HiTOP-BR Instrument</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/jmgirard/hitop/blob/main/vignettes/articles/download-hitopbr.Rmd" class="external-link"><code>vignettes/articles/download-hitopbr.Rmd</code></a></small>
@@ -96,8 +96,12 @@
 
     
     
-<p>You can download the files for the HiTOP-BR instrument below. Choose
-the format that best fits your research needs.</p>
+<p>Welcome to the HiTOP Brief Report (HiTOP-BR) instrument resources
+page. This questionnaire contains 45 items and can be used to score 8
+scales indexing different aspects of psychopathology. Here you can
+download ready-to-use versions of the instrument or explore the powerful
+tools provided by the <code>hitop</code> R package to customize, score,
+and analyze your data.</p>
 <style>
   /* Expand the main content area to full width */
   main.col-md-9 {
@@ -105,57 +109,113 @@ the format that best fits your research needs.</p>
     max-width: 100% !important;
     flex: 0 0 100% !important;
   }
-  
+
   /* Hide the empty sidebar container entirely */
   aside.col-md-3 {
     display: none !important;
   }
 </style>
+<h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
+<p class="text-muted">Choose the format that best fits your immediate research needs.</p>
+
 <div class="row mt-4">
   <div class="col-md-4">
     <div class="card h-100 shadow-sm">
       <div class="card-body">
-        <h5 class="card-title">📄 Printable DOCX</h5>
+        <h5 class="card-title">📄 Printable Document</h5>
         <p class="card-text text-muted">Use these Microsoft Word documents for printing, paper administration, or sending to the IRB.</p>
         <div class="d-grid gap-2">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_1.0_A4.docx" class="external-link btn btn-outline-primary">Download A4</a>
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_1.0_US.docx" class="external-link btn btn-outline-primary">Download US Letter</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_1.0_A4.docx" class="external-link btn btn-outline-primary">English (A4 Paper)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_1.0_US.docx" class="external-link btn btn-outline-primary">English (Letter Paper)</a>
         </div>
       </div>
     </div>
   </div>
-  
+
   <div class="col-md-4">
     <div class="card h-100 shadow-sm">
       <div class="card-body">
-        <h5 class="card-title">📊 Qualtrics TXT</h5>
+        <h5 class="card-title">📊 Qualtrics Import</h5>
         <p class="card-text text-muted">Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.</p>
         <div class="d-grid gap-2 mt-4">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_qualtrics.txt" class="external-link btn btn-outline-primary">Download TXT</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_qualtrics.txt" class="external-link btn btn-outline-primary">English (TXT File)</a>
         </div>
       </div>
     </div>
   </div>
-  
+
   <div class="col-md-4">
     <div class="card h-100 shadow-sm">
       <div class="card-body">
-        <h5 class="card-title">🏥 REDCap ZIP</h5>
+        <h5 class="card-title">🏥 REDCap Import</h5>
         <p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
         <div class="d-grid gap-2 mt-4">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_redcap.zip" class="external-link btn btn-outline-primary">Download ZIP</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_redcap.zip" class="external-link btn btn-outline-primary">English (ZIP File)</a>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<br><p><strong>Note:</strong> If you need to recreate or customize these
-files (for example, to change the formatting or translate the text), you
-can use the <a href="../reference/generate_docx_hitopbr.html"><code>generate_docx_hitopbr()</code></a>,
-<a href="../reference/generate_qualtrics_hitopbr.html"><code>generate_qualtrics_hitopbr()</code></a>,
-and <a href="../reference/generate_redcap_hitopbr.html"><code>generate_redcap_hitopbr()</code></a>
-functions included in this package.</p>
+<br><hr class="mt-5 mb-4">
+<h3 class="mb-3">Explore the R Package Features</h3>
+<p class="text-muted">The <code>hitop</code> package provides a complete toolkit for working with the HiTOP-BR. If you are comfortable using R, you can leverage these functions to streamline your workflow.</p>
+
+<div class="row mt-4">
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🛠️ Custom File Generation</h5>
+        <p class="card-text">Need to change the formatting, adapt the instructions, or translate the text? Build customized DOCX, Qualtrics, and REDCap files programmatically.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/generate_docx_hitopbr.html" class="btn btn-sm btn-outline-secondary">Printable</a>
+          <a href="../reference/generate_qualtrics_hitopbr.html" class="btn btn-sm btn-outline-secondary">Qualtrics</a>
+          <a href="../reference/generate_redcap_hitopbr.html" class="btn btn-sm btn-outline-secondary">REDCap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🧮 Scoring &amp; Reliability</h5>
+        <p class="card-text">Calculate subscales, handle reverse-coding, and generate reliability metrics in one step, or access the underlying internal consistency functions directly.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/score_hitopbr.html" class="btn btn-sm btn-outline-secondary">Score HiTOP-BR</a>
+          <a href="../reference/calc_alpha.html" class="btn btn-sm btn-outline-secondary">Alpha Reliability</a>
+          <a href="../reference/calc_omega.html" class="btn btn-sm btn-outline-secondary">Omega Reliability</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📋 Instrument Information</h5>
+        <p class="card-text">Access the complete item dictionary, structural hierarchy, and subscale definitions directly from the package namespace.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/hitopbr_items.html" class="btn btn-sm btn-outline-secondary">Items</a>
+          <a href="../reference/hitopbr_scales.html" class="btn btn-sm btn-outline-secondary">Scales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📊 Example Datasets</h5>
+        <p class="card-text">Test your analysis pipelines using built-in datasets, including a real validation sample and simulated respondent data.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/ku_hitopbr.html" class="btn btn-sm btn-outline-secondary">Real Data</a>
+          <a href="../reference/sim_hitopbr.html" class="btn btn-sm btn-outline-secondary">Simulated Data</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   </main>
 </div>
 
