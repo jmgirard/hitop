@@ -14,7 +14,7 @@ template:
 
 navbar:
   structure:
-    left:  [reference, articles, downloads, news]
+    left:  [downloads, reference, articles, news]
     right: [search, github, lightswitch]
   components:
     downloads:
