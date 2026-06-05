@@ -76,6 +76,20 @@ Welcome to the HiTOP Brief Report (HiTOP-BR) instrument resources page. This que
 <p class="text-muted">The <code>hitop</code> package provides a complete toolkit for working with the HiTOP-BR. If you are comfortable using R, you can leverage these functions to streamline your workflow.</p>
 
 <div class="row mt-4">
+
+    <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📋 Instrument Information</h5>
+        <p class="card-text">Access the complete item dictionary, structural hierarchy, and subscale definitions directly from the package namespace.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/hitopbr_items.html" class="btn btn-sm btn-outline-secondary">Items</a>
+          <a href="../reference/hitopbr_scales.html" class="btn btn-sm btn-outline-secondary">Scales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="col-md-6 mb-4">
     <div class="card h-100 shadow-sm">
       <div class="card-body">
@@ -99,19 +113,6 @@ Welcome to the HiTOP Brief Report (HiTOP-BR) instrument resources page. This que
           <a href="../reference/score_hitopbr.html" class="btn btn-sm btn-outline-secondary">Score HiTOP-BR</a>
           <a href="../reference/calc_alpha.html" class="btn btn-sm btn-outline-secondary">Alpha Reliability</a>
           <a href="../reference/calc_omega.html" class="btn btn-sm btn-outline-secondary">Omega Reliability</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-6 mb-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">📋 Instrument Information</h5>
-        <p class="card-text">Access the complete item dictionary, structural hierarchy, and subscale definitions directly from the package namespace.</p>
-        <div class="d-flex flex-wrap gap-2">
-          <a href="../reference/hitopbr_items.html" class="btn btn-sm btn-outline-secondary">Items</a>
-          <a href="../reference/hitopbr_scales.html" class="btn btn-sm btn-outline-secondary">Scales</a>
         </div>
       </div>
     </div>
