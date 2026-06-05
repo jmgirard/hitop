@@ -18,17 +18,13 @@ library(hitop)
 
 The sections below contain the brief and client-facing definitions for each scale and its respective subscales. Use the sidebar menu to navigate directly to specific scales.
 
---
-
 ```{r, results='asis', echo=FALSE}
 data_df <- hitopsr_definitions
 scales <- unique(data_df$Scale)
 
 for (s in scales) {
   scale_data <- data_df |> dplyr::filter(Scale == s)
-
-  # Main Scale Heading
-  cat("## ", s, "\n\n", sep = "")
+  cat("\n\n## ", s, "\n\n", sep = "")
 
   # 1. Main Scale Cards Layout
   main_def <- scale_data |> dplyr::filter(is.na(Subscale))
@@ -36,43 +32,43 @@ for (s in scales) {
     brief_text <- if (!is.na(main_def$Brief[1])) {
       main_def$Brief[1]
     } else {
-      "*Definition not available.*"
+      "<i>Definition not available.</i>"
     }
     client_text <- if (!is.na(main_def$Client[1])) {
       main_def$Client[1]
     } else {
-      "*Definition not available.*"
+      "<i>Definition not available.</i>"
     }
 
     cat('<div class="row g-3 mb-4">\n')
 
     # Clinician Card
-    cat('  <div class="col-md-6">\n')
+    cat('<div class="col-md-6">\n')
     cat(
-      '    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">\n'
+      '<div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">\n'
     )
-    cat('      <div class="card-body py-3">\n')
+    cat('<div class="card-body py-3">\n')
     cat(
-      '        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>\n'
+      '<h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>\n'
     )
-    cat('        <p class="card-text text-secondary">', brief_text, '</p>\n')
-    cat('      </div>\n')
-    cat('    </div>\n')
-    cat('  </div>\n')
+    cat('<p class="card-text text-secondary">', brief_text, '</p>\n')
+    cat('</div>\n')
+    cat('</div>\n')
+    cat('</div>\n')
 
     # Client Card
-    cat('  <div class="col-md-6">\n')
+    cat('<div class="col-md-6">\n')
     cat(
-      '    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">\n'
+      '<div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">\n'
     )
-    cat('      <div class="card-body py-3">\n')
+    cat('<div class="card-body py-3">\n')
     cat(
-      '        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>\n'
+      '<h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>\n'
     )
-    cat('        <p class="card-text text-secondary">', client_text, '</p>\n')
-    cat('      </div>\n')
-    cat('    </div>\n')
-    cat('  </div>\n')
+    cat('<p class="card-text text-secondary">', client_text, '</p>\n')
+    cat('</div>\n')
+    cat('</div>\n')
+    cat('</div>\n')
 
     cat('</div>\n\n')
   }
@@ -82,30 +78,29 @@ for (s in scales) {
   if (nrow(sub_defs) > 0) {
     for (i in seq_len(nrow(sub_defs))) {
       # Subscale Heading
-      cat("### ", sub_defs$Subscale[i], "\n\n", sep = "")
+      cat("\n\n### ", sub_defs$Subscale[i], "\n\n", sep = "")
 
       sub_brief <- if (!is.na(sub_defs$Brief[i])) {
         sub_defs$Brief[i]
       } else {
-        "*Definition not available.*"
+        "<i>Definition not available.</i>"
       }
       sub_client <- if (!is.na(sub_defs$Client[i])) {
         sub_defs$Client[i]
       } else {
-        "*Definition not available.*"
+        "<i>Definition not available.</i>"
       }
 
-      # Sleek, compact layout for subscales using description list blocks
       cat(
         '<div class="p-3 mb-4 bg-light rounded-3 border-start border-secondary border-3">\n'
       )
       cat(
-        '  <div class="mb-2"><strong>Clinician Brief:</strong> <span class="text-muted">',
+        '<div class="mb-2"><strong>Clinician Brief:</strong> <span class="text-muted">',
         sub_brief,
         '</span></div>\n'
       )
       cat(
-        '  <div><strong>Client-Facing:</strong> <span class="text-muted">',
+        '<div><strong>Client-Facing:</strong> <span class="text-muted">',
         sub_client,
         '</span></div>\n'
       )
@@ -114,6 +109,6 @@ for (s in scales) {
   }
 
   # Clean visual separator between parent domains
-  cat("<hr class=\"my-5\">\n\n")
+  cat("\n\n<hr class=\"my-5\">\n\n")
 }
 ```
