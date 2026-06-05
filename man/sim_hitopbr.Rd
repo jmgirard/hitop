@@ -14,7 +14,11 @@ A \link[tibble]{tibble} with 100 rows and 45 columns.
 sim_hitopbr
 }
 \description{
-Simulated responses to items on the HiTOP-BR (with 45 items).
+Simulated responses to items on the HiTOP-BR (with 45 items). Note that
+this is a naive simulation where response options 1 to 4 are all equally
+likely and generated independently per item. Thus, responses are not
+clustered within scales, and these data can be used (eventually) to test
+validity tools intended to detect inconsistent/random responding.
 }
 \examples{
 sim_hitopbr
