@@ -10,7 +10,8 @@ pid_items
 
 ## Format
 
-### `pid_items` A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 220 rows and 12 columns:
+A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 220
+rows and 12 columns:
 
 - FULL, SF, BF:
 

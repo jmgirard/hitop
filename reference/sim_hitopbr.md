@@ -10,7 +10,8 @@ sim_hitopbr
 
 ## Format
 
-### `sim_hitopbr` A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 100 rows and 45 columns.
+A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 100
+rows and 45 columns.
 
 - hbr_1 to hbr_45:
 

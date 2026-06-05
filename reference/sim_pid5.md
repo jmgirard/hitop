@@ -10,7 +10,8 @@ sim_pid5
 
 ## Format
 
-### `sim_pid5` A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 100 rows and 220 columns.
+A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 100
+rows and 220 columns.
 
 - pid_1 to pid_220:
 
