@@ -18,9 +18,7 @@ knitr::opts_chunk$set(
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of the **hitop** package is to provide an open-source toolkit of functions and resources tailored for the [Hierarchical Taxonomy of Psychopathology (HiTOP)](https://www.hitop-system.org/){target="_blank"} community.
-
-While the package is currently optimized to support researchers in managing large-scale assessment data, future development will expand its features to support clinical workflows and individual practitioner needs.
+The goal of the **hitop** package is to provide an open-source toolkit of functions and resources tailored for the [Hierarchical Taxonomy of Psychopathology (HiTOP)](https://www.hitop-system.org/){target="_blank"} community. While the package is currently optimized to support researchers in managing large-scale assessment data, future development will expand its features to support clinical workflows and individual practitioner needs.
 
 ### Key Features
 - **Scoring & Utilities:** Automated scoring algorithms and data-cleaning functions for multiple instrument variants, including the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF), the HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report (HiTOP-BR), and the HiTOP Harmful Substance Use Module (HiTOP-HSUM).

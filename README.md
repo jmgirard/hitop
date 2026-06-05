@@ -12,12 +12,10 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 The goal of the **hitop** package is to provide an open-source toolkit
 of functions and resources tailored for the
 <a href="https://www.hitop-system.org/" target="_blank">Hierarchical
-Taxonomy of Psychopathology (HiTOP)</a> community.
-
-While the package is currently optimized to support researchers in
-managing large-scale assessment data, future development will expand its
-features to support clinical workflows and individual practitioner
-needs.
+Taxonomy of Psychopathology (HiTOP)</a> community. While the package is
+currently optimized to support researchers in managing large-scale
+assessment data, future development will expand its features to support
+clinical workflows and individual practitioner needs.
 
 ### Key Features
 
