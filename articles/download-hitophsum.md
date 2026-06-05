@@ -43,3 +43,5 @@ File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.
 Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.html#details)
 
   
+
+Scoring functions and example data coming soon.

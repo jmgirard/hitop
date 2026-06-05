@@ -27,15 +27,15 @@ HiTOP-SR (405)
 
 HiTOP-BR (45)
 
+HiTOP-HSUM (650)
+
 PID-5 (220)
 
 PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-HSUM (650)
-
-PID-5-BFP (36)
+PID-5-BFP (36) - todo
 
 Add Scoring Functions
 
@@ -49,9 +49,9 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-HSUM (650)
+HiTOP-HSUM (650) - waiting for feedback
 
-PID-5-BFP (36)
+PID-5-BFP (36) - todo
 
 Add Validity Functions
 
@@ -65,17 +65,17 @@ HiTOP-SR (405)
 
 HiTOP-BR (45)
 
-HiTOP-HSUM (650)
+HiTOP-HSUM (650) - waiting for feedback
 
-PID-5 (220)
+PID-5 (220) - todo
 
-PID-5-SF (100)
+PID-5-SF (100) - todo
 
-PID-5-BF (25)
+PID-5-BF (25) - todo
 
-PID-5-BFP (36)
+PID-5-BFP (36) - todo
 
-Add Scoring Vignette
+Add Scoring Tutorials
 
 HiTOP-SR (405)
 
@@ -87,9 +87,9 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-HSUM (650)
+HiTOP-HSUM (650) - waiting for feedback
 
-PID-5-BFP (36)
+PID-5-BFP (36) - todo
 
 Add Instrument Export Functions
 
@@ -99,13 +99,13 @@ HiTOP-BR (45)
 
 HiTOP-HSUM (650)
 
-PID-5 (220)
+PID-5 (220) - todo
 
-PID-5-SF (100)
+PID-5-SF (100) - todo
 
-PID-5-BF (25)
+PID-5-BF (25) - todo
 
-PID-5-BFP (36)
+PID-5-BFP (36) - todo
 
 ### Phase 2
 
@@ -113,11 +113,11 @@ Add Visualization Functions
 
 Add Unit Testing
 
-### Phase 3
-
 Add Normative Data
 
 Add Norming Functions
+
+### Phase 3
 
 Add Individual Report Generation
 

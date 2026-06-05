@@ -11,12 +11,15 @@
 - [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
   : Score the Personality Inventory for DSM-5 Validity Scales
 
-## Utilities
+## Reliability
 
 - [`calc_alpha()`](https://jmgirard.github.io/hitop/reference/calc_alpha.md)
   : Compute Cronbach's Coefficient Alpha
 - [`calc_omega()`](https://jmgirard.github.io/hitop/reference/calc_omega.md)
   : Compute McDonald's Omega (total) via CFA
+
+## Utilities
+
 - [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
   : Rank and list the top-\\n\\ scales per row
 - [`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md)
