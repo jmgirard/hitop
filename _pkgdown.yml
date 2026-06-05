@@ -27,7 +27,7 @@ navbar:
       - text: "HiTOP Harmful Substance Use (HSUM)"
         href: articles/download-hitophsum.html
     articles:
-      text: "Articles"
+      text: "Tutorials"
       menu:
       - text: "Scoring HiTOP-SR"
         href: articles/hitopsr_scoring.html
