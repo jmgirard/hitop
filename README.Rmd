@@ -18,11 +18,14 @@ knitr::opts_chunk$set(
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of *hitop* is to provide functions helpful for the Hierarchical
-Taxonomy of Psychopathology (HiTOP) Society. For now, this includes functions
-for scoring the PID-5, HiTOP-SR, and HiTOP-BR aimed primarily at researchers.
-However, more features will be added soon, including features aimed primarily at
-clinicians.
+The goal of the **hitop** package is to provide an open-source toolkit of functions and resources tailored for the [Hierarchical Taxonomy of Psychopathology (HiTOP)](https://www.hitop-system.org/){target="_blank"} community.
+
+While the package is currently optimized to support researchers in managing large-scale assessment data, future development will expand its features to support clinical workflows and individual practitioner needs.
+
+### Key Features
+- **Scoring & Utilities:** Automated scoring algorithms and data-cleaning functions for multiple instrument variants, including the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF), the HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report (HiTOP-BR), and the HiTOP Harmful Substance Use Module (HiTOP-HSUM).
+-	**Instrument Downloads:** Direct access to downloadable assessment resources, including standard paper forms, as well as ready-to-import configuration files for popular data collection platforms like Qualtrics and REDCap.
+- **Comprehensive Metadata:** Embedded psychometric metadata, including explicit scale definitions, scoring keys, and item-level text to streamline documentation and reproducible workflows.
 
 ## Installation
 
@@ -30,8 +33,8 @@ You can install the development version of hitop from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("remotes")
-remotes::install_github("jmgirard/hitop")
+# install.packages("pak")
+pak::pak("jmgirard/hitop")
 ```
 
 ## Development Progress
