@@ -16,7 +16,7 @@ Choose the format that best fits your immediate research needs.
 Use these Microsoft Word documents for printing, paper administration,
 or sending to the IRB.
 
-[English (A4 Paper)](NA) [English (Letter Paper)](NA)
+[English (A4 Paper)](NA) [English (US Paper)](NA)
 
 ##### 📊 Qualtrics Import
 

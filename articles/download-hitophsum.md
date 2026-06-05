@@ -21,7 +21,7 @@ IRB.
 
 [English (A4
 Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_A4.docx)
-[English (Letter
+[English (US
 Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_US.docx)
 
 ##### 📊 Qualtrics Import
