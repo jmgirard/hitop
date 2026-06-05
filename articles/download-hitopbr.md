@@ -49,6 +49,14 @@ The `hitop` package provides a complete toolkit for working with the
 HiTOP-BR. If you are comfortable using R, you can leverage these
 functions to streamline your workflow.
 
+##### 📋 Instrument Information
+
+Access the complete item dictionary, structural hierarchy, and subscale
+definitions directly from the package namespace.
+
+[Items](https://jmgirard.github.io/hitop/reference/hitopbr_items.md)
+[Scales](https://jmgirard.github.io/hitop/reference/hitopbr_scales.md)
+
 ##### 🛠️ Custom File Generation
 
 Need to change the formatting, adapt the instructions, or translate the
@@ -71,14 +79,6 @@ HiTOP-BR](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
 Reliability](https://jmgirard.github.io/hitop/reference/calc_alpha.md)
 [Omega
 Reliability](https://jmgirard.github.io/hitop/reference/calc_omega.md)
-
-##### 📋 Instrument Information
-
-Access the complete item dictionary, structural hierarchy, and subscale
-definitions directly from the package namespace.
-
-[Items](https://jmgirard.github.io/hitop/reference/hitopbr_items.md)
-[Scales](https://jmgirard.github.io/hitop/reference/hitopbr_scales.md)
 
 ##### 📊 Example Datasets
 
