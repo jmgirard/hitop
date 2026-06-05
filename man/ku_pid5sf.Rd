@@ -5,12 +5,10 @@
 \alias{ku_pid5sf}
 \title{Real PID-5-SF Data}
 \format{
-\subsection{\code{ku_pid5sf} A \link[tibble]{tibble} with 386 rows and 101 columns.}{
-
+A \link[tibble]{tibble} with 386 rows and 101 columns.
 \describe{
 \item{response_id}{An anonymized id for each participant}
 \item{pid_1 to pid_100}{Responses on each item}
-}
 }
 }
 \usage{

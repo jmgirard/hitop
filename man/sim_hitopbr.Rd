@@ -5,11 +5,9 @@
 \alias{sim_hitopbr}
 \title{Simulated HiTOP-BR Data}
 \format{
-\subsection{\code{sim_hitopbr} A \link[tibble]{tibble} with 100 rows and 45 columns.}{
-
+A \link[tibble]{tibble} with 100 rows and 45 columns.
 \describe{
 \item{hbr_1 to hbr_45}{Responses on each item}
-}
 }
 }
 \usage{

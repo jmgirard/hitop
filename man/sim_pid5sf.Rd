@@ -5,11 +5,9 @@
 \alias{sim_pid5sf}
 \title{Simulated PID-5-SF Data}
 \format{
-\subsection{\code{sim_pid5sf} A \link[tibble]{tibble} with 100 rows and 100 columns.}{
-
+A \link[tibble]{tibble} with 100 rows and 100 columns.
 \describe{
 \item{pid_1 to pid_100}{Responses on each item}
-}
 }
 }
 \usage{

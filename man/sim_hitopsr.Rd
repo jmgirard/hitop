@@ -5,11 +5,9 @@
 \alias{sim_hitopsr}
 \title{Simulated HiTOP-SR Data}
 \format{
-\subsection{\code{sim_hitopsr} A \link[tibble]{tibble} with 100 rows and 405 columns.}{
-
+A \link[tibble]{tibble} with 100 rows and 405 columns.
 \describe{
 \item{hsr_1 to hsr_405}{Responses on each item}
-}
 }
 }
 \usage{

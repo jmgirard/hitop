@@ -2,7 +2,7 @@
 #'
 #' Information about the items in different versions of the PID-5.
 #'
-#' @format ## `pid_items` A \link[tibble]{tibble} with 220 rows and 12 columns:
+#' @format A \link[tibble]{tibble} with 220 rows and 12 columns:
 #' \describe{
 #'   \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
@@ -126,7 +126,7 @@
 #'
 #' Simulated responses to items on the full HiTOP-SR (with 405 items).
 #'
-#' @format ## `sim_hitopsr` A \link[tibble]{tibble} with 100 rows and 405 columns.
+#' @format A \link[tibble]{tibble} with 100 rows and 405 columns.
 #' \describe{
 #'   \item{hsr_1 to hsr_405}{Responses on each item}
 #' }
@@ -138,7 +138,7 @@
 #'
 #' Simulated responses to items on the HiTOP-BR (with 45 items).
 #'
-#' @format ## `sim_hitopbr` A \link[tibble]{tibble} with 100 rows and 45 columns.
+#' @format A \link[tibble]{tibble} with 100 rows and 45 columns.
 #' \describe{
 #'   \item{hbr_1 to hbr_45}{Responses on each item}
 #' }
@@ -150,7 +150,7 @@
 #'
 #' Simulated responses to items on the full PID-5 (with 220 items).
 #'
-#' @format ## `sim_pid5` A \link[tibble]{tibble} with 100 rows and 220 columns.
+#' @format A \link[tibble]{tibble} with 100 rows and 220 columns.
 #' \describe{
 #'   \item{pid_1 to pid_220}{Responses on each item}
 #' }
@@ -160,7 +160,7 @@
 #'
 #' Simulated responses to items on the PID-5-SF (with 100 items).
 #'
-#' @format ## `sim_pid5sf` A \link[tibble]{tibble} with 100 rows and 100 columns.
+#' @format A \link[tibble]{tibble} with 100 rows and 100 columns.
 #' \describe{
 #'   \item{pid_1 to pid_100}{Responses on each item}
 #' }
@@ -170,7 +170,7 @@
 #'
 #' Simulated responses to items on the PID-5-BF (with 25 items).
 #'
-#' @format ## `sim_pid5bf` A \link[tibble]{tibble} with 100 rows and 25 columns.
+#' @format A \link[tibble]{tibble} with 100 rows and 25 columns.
 #' \describe{
 #'   \item{pid_1 to pid_25}{Responses on each item}
 #' }
@@ -181,7 +181,7 @@
 #' Real responses to items on the PID-5-SF (with 100 items) from University of
 #' Kansas students.
 #'
-#' @format ## `ku_pid5sf` A \link[tibble]{tibble} with 386 rows and 101 columns.
+#' @format A \link[tibble]{tibble} with 386 rows and 101 columns.
 #' \describe{
 #'   \item{response_id}{An anonymized id for each participant}
 #'   \item{pid_1 to pid_100}{Responses on each item}
