@@ -72,6 +72,8 @@
   : HiTOP-SR Scale Data
 - [`hitopsr_subscales`](https://jmgirard.github.io/hitop/reference/hitopsr_subscales.md)
   : HiTOP-SR Subscale Data
+- [`hitopsr_definitions`](https://jmgirard.github.io/hitop/reference/hitopsr_definitions.md)
+  : HiTOP-SR Definitions
 - [`hitopbr_items`](https://jmgirard.github.io/hitop/reference/hitopbr_items.md)
   : HiTOP-BR Item Data
 - [`hitopbr_scales`](https://jmgirard.github.io/hitop/reference/hitopbr_scales.md)

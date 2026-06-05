@@ -41,6 +41,16 @@ The `hitop` package provides a complete toolkit for working with the
 HiTOP-SR. If you are comfortable using R, you can leverage these
 functions to streamline your workflow.
 
+##### 📋 Instrument Information
+
+Access the complete item dictionary, structural hierarchy, and subscale
+definitions directly from the package namespace.
+
+[Items](https://jmgirard.github.io/hitop/reference/hitopsr_items.md)
+[Scales](https://jmgirard.github.io/hitop/reference/hitopsr_scales.md)
+[Subscales](https://jmgirard.github.io/hitop/reference/hitopsr_subscales.md)
+[Definitions](https://jmgirard.github.io/hitop/articles/scales-hitopsr.md)
+
 ##### 🛠️ Custom File Generation
 
 Need to change the formatting, adapt the instructions, or translate the
@@ -63,15 +73,6 @@ HiTOP-SR](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
 Reliability](https://jmgirard.github.io/hitop/reference/calc_alpha.md)
 [Omega
 Reliability](https://jmgirard.github.io/hitop/reference/calc_omega.md)
-
-##### 📋 Instrument Information
-
-Access the complete item dictionary, structural hierarchy, and subscale
-definitions directly from the package namespace.
-
-[Items](https://jmgirard.github.io/hitop/reference/hitopsr_items.md)
-[Scales](https://jmgirard.github.io/hitop/reference/hitopsr_scales.md)
-[Subscales](https://jmgirard.github.io/hitop/reference/hitopsr_subscales.md)
 
 ##### 📊 Example Datasets
 

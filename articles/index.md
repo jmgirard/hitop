@@ -18,3 +18,5 @@
   PID-5-BF](https://jmgirard.github.io/hitop/articles/pid5bf_scoring.md):
 - [Scoring the
   PID-5-SF](https://jmgirard.github.io/hitop/articles/pid5sf_scoring.md):
+- [HiTOP Scale
+  Definitions](https://jmgirard.github.io/hitop/articles/scales-hitopsr.md):
