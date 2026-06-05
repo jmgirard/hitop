@@ -1,0 +1,52 @@
+---
+title: "HiTOP Scale Definitions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{HiTOP Scale Definitions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The sections below contain the brief and client-facing definitions for each scale and its respective subscales.
+
+```{r, results='asis', echo=FALSE}
+library(dplyr)
+library(hitop)
+
+data_df <- hitopsr_definitions
+scales <- unique(data_df$Scale)
+
+for (s in scales) {
+  scale_data <- data_df |> dplyr::filter(Scale == s)
+  cat("## ", s, "\n\n", sep = "")
+  main_def <- scale_data |> dplyr::filter(is.na(Subscale))
+  if (nrow(main_def) > 0) {
+    if (!is.na(main_def$Brief[1])) {
+      cat("**Brief Definition:** ", main_def$Brief[1], "\n\n", sep = "")
+    }
+    if (!is.na(main_def$Client[1])) {
+      cat("**Client Definition:** ", main_def$Client[1], "\n\n", sep = "")
+    }
+  }
+  sub_defs <- scale_data |> dplyr::filter(!is.na(Subscale))
+  if (nrow(sub_defs) > 0) {
+    for (i in seq_len(nrow(sub_defs))) {
+      cat("### ", sub_defs$Subscale[i], "\n\n", sep = "")
+      if (!is.na(sub_defs$Brief[i])) {
+        cat("**Brief Definition:** ", sub_defs$Brief[i], "\n\n", sep = "")
+      }
+      if (!is.na(sub_defs$Client[i])) {
+        cat("**Client Definition:** ", sub_defs$Client[i], "\n\n", sep = "")
+      }
+    }
+  }
+  cat("---\n\n")
+}
+```

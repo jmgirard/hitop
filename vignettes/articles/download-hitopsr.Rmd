@@ -29,7 +29,7 @@ Welcome to the HiTOP Self-Report (HiTOP-SR) instrument resources page. This ques
 <p class="text-muted">Choose the format that best fits your immediate research needs.</p>
 
 <div class="row mt-4">
-  <div class="col-md-4">
+  <div class="col-md-4 mb-4">
     <div class="card h-100 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">📄 Printable Document</h5>
@@ -42,7 +42,7 @@ Welcome to the HiTOP Self-Report (HiTOP-SR) instrument resources page. This ques
     </div>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-4 mb-4">
     <div class="card h-100 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">📊 Qualtrics Import</h5>
@@ -54,7 +54,7 @@ Welcome to the HiTOP Self-Report (HiTOP-SR) instrument resources page. This ques
     </div>
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-4 mb-4">
     <div class="card h-100 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">🏥 REDCap Import</h5>
@@ -74,6 +74,21 @@ Welcome to the HiTOP Self-Report (HiTOP-SR) instrument resources page. This ques
 <p class="text-muted">The <code>hitop</code> package provides a complete toolkit for working with the HiTOP-SR. If you are comfortable using R, you can leverage these functions to streamline your workflow.</p>
 
 <div class="row mt-4">
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📋 Instrument Information</h5>
+        <p class="card-text">Access the complete item dictionary, structural hierarchy, and subscale definitions directly from the package namespace.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/hitopsr_items.html" class="btn btn-sm btn-outline-secondary">Items</a>
+          <a href="../reference/hitopsr_scales.html" class="btn btn-sm btn-outline-secondary">Scales</a>
+          <a href="../reference/hitopsr_subscales.html" class="btn btn-sm btn-outline-secondary">Subscales</a>
+          <a href="../articles/scales-hitopsr.html" class="btn btn-sm btn-outline-secondary">Definitions</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="col-md-6 mb-4">
     <div class="card h-100 shadow-sm">
       <div class="card-body">
@@ -97,20 +112,6 @@ Welcome to the HiTOP Self-Report (HiTOP-SR) instrument resources page. This ques
           <a href="../reference/score_hitopsr.html" class="btn btn-sm btn-outline-secondary">Score HiTOP-SR</a>
           <a href="../reference/calc_alpha.html" class="btn btn-sm btn-outline-secondary">Alpha Reliability</a>
           <a href="../reference/calc_omega.html" class="btn btn-sm btn-outline-secondary">Omega Reliability</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-6 mb-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">📋 Instrument Information</h5>
-        <p class="card-text">Access the complete item dictionary, structural hierarchy, and subscale definitions directly from the package namespace.</p>
-        <div class="d-flex flex-wrap gap-2">
-          <a href="../reference/hitopsr_items.html" class="btn btn-sm btn-outline-secondary">Items</a>
-          <a href="../reference/hitopsr_scales.html" class="btn btn-sm btn-outline-secondary">Scales</a>
-          <a href="../reference/hitopsr_subscales.html" class="btn btn-sm btn-outline-secondary">Subscales</a>
         </div>
       </div>
     </div>

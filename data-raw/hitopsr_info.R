@@ -50,3 +50,8 @@ hitopsr_instructions <-
     )
   )
 usethis::use_data(hitopsr_instructions, overwrite = TRUE)
+
+## HiTOP-SR Definitions
+hitopsr_definitions <-
+  readr::read_csv("data-raw/hitopsr_definitions.csv", show_col_types = FALSE)
+usethis::use_data(hitopsr_definitions, overwrite = TRUE)

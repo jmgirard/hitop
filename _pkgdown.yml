@@ -17,21 +17,8 @@ navbar:
     left:  [reference, articles, downloads, news]
     right: [search, github, lightswitch]
   components:
-    articles:
-      text: "Articles"
-      menu:
-      - text: "Scoring HiTOP-BR"
-        href: articles/hitopbr_scoring.html
-      - text: "Scoring HiTOP-SR"
-        href: articles/hitopsr_scoring.html
-      - text: "Scoring PID-5"
-        href: articles/pid5_scoring.html
-      - text: "Scoring PID-5-BF"
-        href: articles/pid5bf_scoring.html
-      - text: "Scoring PID-5-SF"
-        href: articles/pid5sf_scoring.html
     downloads:
-      text: "Downloads"
+      text: "Instruments"
       menu:
       - text: "HiTOP-SR"
         href: articles/download-hitopsr.html
@@ -39,6 +26,19 @@ navbar:
         href: articles/download-hitopbr.html
       - text: "HiTOP-HSUM"
         href: articles/download-hitophsum.html
+    articles:
+      text: "Articles"
+      menu:
+      - text: "Scoring HiTOP-SR"
+        href: articles/hitopsr_scoring.html
+      - text: "Scoring HiTOP-BR"
+        href: articles/hitopbr_scoring.html
+      - text: "Scoring PID-5"
+        href: articles/pid5_scoring.html
+      - text: "Scoring PID-5-BF"
+        href: articles/pid5bf_scoring.html
+      - text: "Scoring PID-5-SF"
+        href: articles/pid5sf_scoring.html
 
 development:
   mode: auto

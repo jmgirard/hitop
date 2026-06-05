@@ -71,6 +71,22 @@
 #' hitopsr_subscales
 "hitopsr_subscales"
 
+#' HiTOP-SR Definitions
+#'
+#' Brief clinician and client-facing definitions of each scale and subscale in
+#' the HiTOP-SR
+#'
+#' @format A \link[tibble]{tibble} with 93 rows and 4 columns:
+#' \describe{
+#'   \item{Scale}{The name of the scale}
+#'   \item{Subscale}{The name of the subscale (or NA if not a subscale)}
+#'   \item{Brief}{The brief clinician-facing definition (10-20 words)}
+#'   \item{Client}{The client-facing definition with examples (30-40 words)}
+#' }
+#' @examples
+#' hitopsr_definitions
+"hitopsr_definitions"
+
 #' HiTOP-BR Item Data
 #'
 #' Information about items in the HiTOP-BR.
