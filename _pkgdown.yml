@@ -14,17 +14,17 @@ template:
 
 navbar:
   structure:
-    left:  [downloads, reference, articles, news]
+    left:  [downloads, articles, reference, news]
     right: [search, github, lightswitch]
   components:
     downloads:
       text: "Instruments"
       menu:
-      - text: "HiTOP-SR"
+      - text: "HiTOP Self Report (SR)"
         href: articles/download-hitopsr.html
-      - text: "HiTOP-BR"
+      - text: "HiTOP Brief Report (BR)"
         href: articles/download-hitopbr.html
-      - text: "HiTOP-HSUM"
+      - text: "HiTOP Harmful Substance Use (HSUM)"
         href: articles/download-hitophsum.html
     articles:
       text: "Articles"
