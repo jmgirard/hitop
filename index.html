@@ -93,14 +93,27 @@
 </div>
 <!-- badges: start -->
 
-<p>The goal of <em>hitop</em> is to provide functions helpful for the Hierarchical Taxonomy of Psychopathology (HiTOP) Society. For now, this includes functions for scoring the PID-5, HiTOP-SR, and HiTOP-BR aimed primarily at researchers. However, more features will be added soon, including features aimed primarily at clinicians.</p>
+<p>The goal of the <strong>hitop</strong> package is to provide an open-source toolkit of functions and resources tailored for the <a href="https://www.hitop-system.org/" target="_blank" class="external-link">Hierarchical Taxonomy of Psychopathology (HiTOP)</a> community.</p>
+<p>While the package is currently optimized to support researchers in managing large-scale assessment data, future development will expand its features to support clinical workflows and individual practitioner needs.</p>
+<div class="section level3">
+<h3 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
+</h3>
+<ul>
+<li>
+<strong>Scoring &amp; Utilities:</strong> Automated scoring algorithms and data-cleaning functions for multiple instrument variants, including the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF), the HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report (HiTOP-BR), and the HiTOP Harmful Substance Use Module (HiTOP-HSUM).</li>
+<li>
+<strong>Instrument Downloads:</strong> Direct access to downloadable assessment resources, including standard paper forms, as well as ready-to-import configuration files for popular data collection platforms like Qualtrics and REDCap.</li>
+<li>
+<strong>Comprehensive Metadata:</strong> Embedded psychometric metadata, including explicit scale definitions, scoring keys, and item-level text to streamline documentation and reproducible workflows.</li>
+</ul>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of hitop from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"jmgirard/hitop"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"jmgirard/hitop"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="development-progress">Development Progress<a class="anchor" aria-label="anchor" href="#development-progress"></a>
