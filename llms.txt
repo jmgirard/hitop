@@ -2,12 +2,10 @@
 
 The goal of the **hitop** package is to provide an open-source toolkit
 of functions and resources tailored for the [Hierarchical Taxonomy of
-Psychopathology (HiTOP)](https://www.hitop-system.org/) community.
-
-While the package is currently optimized to support researchers in
-managing large-scale assessment data, future development will expand its
-features to support clinical workflows and individual practitioner
-needs.
+Psychopathology (HiTOP)](https://www.hitop-system.org/) community. While
+the package is currently optimized to support researchers in managing
+large-scale assessment data, future development will expand its features
+to support clinical workflows and individual practitioner needs.
 
 ### Key Features
 
