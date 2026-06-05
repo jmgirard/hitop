@@ -50,10 +50,12 @@ reference:
   - score_hitopbr
   - score_pid5
   - validity_pid5
-- title: Utilities
+- title: Reliability
   contents:
   - calc_alpha
   - calc_omega
+- title: Utilities
+  contents:
   - rank_scales
   - rename_hitopsr_items
   - label_hitopsr

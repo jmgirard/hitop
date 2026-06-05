@@ -71,3 +71,5 @@ Welcome to the HiTOP Harmful Substance Use Module (HiTOP-HSUM) instrument resour
 
 <br>
 ```
+
+Scoring functions and example data coming soon.
