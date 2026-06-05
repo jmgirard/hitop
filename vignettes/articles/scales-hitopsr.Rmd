@@ -24,6 +24,8 @@ scales <- unique(data_df$Scale)
 
 for (s in scales) {
   scale_data <- data_df |> dplyr::filter(Scale == s)
+
+  # Main Scale Heading
   cat("\n\n## ", s, "\n\n", sep = "")
 
   # 1. Main Scale Cards Layout
@@ -42,16 +44,16 @@ for (s in scales) {
 
     cat('<div class="row g-3 mb-4">\n')
 
-    # Clinician Card
+    # Clinician Card (Using bg-body-tertiary for dynamic dark-mode compatibility)
     cat('<div class="col-md-6">\n')
     cat(
-      '<div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">\n'
+      '<div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-body-tertiary">\n'
     )
     cat('<div class="card-body py-3">\n')
     cat(
       '<h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>\n'
     )
-    cat('<p class="card-text text-secondary">', brief_text, '</p>\n')
+    cat('<p class="card-text text-body-secondary">', brief_text, '</p>\n')
     cat('</div>\n')
     cat('</div>\n')
     cat('</div>\n')
@@ -59,13 +61,13 @@ for (s in scales) {
     # Client Card
     cat('<div class="col-md-6">\n')
     cat(
-      '<div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">\n'
+      '<div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-body-tertiary">\n'
     )
     cat('<div class="card-body py-3">\n')
     cat(
       '<h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>\n'
     )
-    cat('<p class="card-text text-secondary">', client_text, '</p>\n')
+    cat('<p class="card-text text-body-secondary">', client_text, '</p>\n')
     cat('</div>\n')
     cat('</div>\n')
     cat('</div>\n')
@@ -91,16 +93,17 @@ for (s in scales) {
         "<i>Definition not available.</i>"
       }
 
+      # Using bg-body-secondary container for adaptive contrast nesting
       cat(
-        '<div class="p-3 mb-4 bg-light rounded-3 border-start border-secondary border-3">\n'
+        '<div class="p-3 mb-4 bg-body-secondary rounded-3 border-start border-secondary border-3">\n'
       )
       cat(
-        '<div class="mb-2"><strong>Clinician Brief:</strong> <span class="text-muted">',
+        '<div class="mb-2"><strong>Clinician Brief:</strong> <span class="text-body-secondary">',
         sub_brief,
         '</span></div>\n'
       )
       cat(
-        '<div><strong>Client-Facing:</strong> <span class="text-muted">',
+        '<div><strong>Client-Facing:</strong> <span class="text-body-secondary">',
         sub_client,
         '</span></div>\n'
       )
@@ -108,7 +111,7 @@ for (s in scales) {
     }
   }
 
-  # Clean visual separator between parent domains
+  # Dynamic thematic divider line
   cat("\n\n<hr class=\"my-5\">\n\n")
 }
 ```
