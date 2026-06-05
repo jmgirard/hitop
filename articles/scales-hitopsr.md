@@ -4,311 +4,268 @@ The sections below contain the brief and client-facing definitions for
 each scale and its respective subscales. Use the sidebar menu to
 navigate directly to specific scales.
 
-–
-
 ## Agoraphobia
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Fear and avoidance of situations where escape may be difficult </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Being anxious, panicking, or avoiding situations that feel difficult to escape. Examples include being in small or enclosed spaces, crowds, tunnels, or elevators and may involve worrying about having a panic attack in those situations. </p>
-      </div>
-    </div>
+Fear and avoidance of situations where escape may be difficult
+
+###### Client-Facing
+
+Being anxious, panicking, or avoiding situations that feel difficult to
+escape. Examples include being in small or enclosed spaces, crowds,
+tunnels, or elevators and may involve worrying about having a panic
+attack in those situations.
 
 ------------------------------------------------------------------------
 
 ## Antisocial Behavior
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Behavior that goes against social norms and could harm others or society </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Doing things that break rules or cause harm to others or the community. Examples include damaging property, stealing, breaking the law, hurting or threatening to hurt someone, or hurting animals. </p>
-      </div>
-    </div>
+Behavior that goes against social norms and could harm others or society
+
+###### Client-Facing
+
+Doing things that break rules or cause harm to others or the community.
+Examples include damaging property, stealing, breaking the law, hurting
+or threatening to hurt someone, or hurting animals.
 
 ------------------------------------------------------------------------
 
 ## Appetite Loss
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Decreased appetite and food interest that may cause sudden and unintended weight loss </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Reduced appetite or interest in food that can lead to unplanned weight loss. Examples include not feeling hungry, not feeling like eating, or losing a noticeable amount of weight without trying. </p>
-      </div>
-    </div>
+Decreased appetite and food interest that may cause sudden and
+unintended weight loss
+
+###### Client-Facing
+
+Reduced appetite or interest in food that can lead to unplanned weight
+loss. Examples include not feeling hungry, not feeling like eating, or
+losing a noticeable amount of weight without trying.
 
 ------------------------------------------------------------------------
 
 ## Binge Eating
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Eating unusually large amounts of food in a short period of time, with little control over stopping </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Episodes of eating much more food than usual in a short period of time and having trouble stopping or controlling eating. Examples include feeling unable to resist food or continuing to eat until uncomfortably full. </p>
-      </div>
-    </div>
+Eating unusually large amounts of food in a short period of time, with
+little control over stopping
+
+###### Client-Facing
+
+Episodes of eating much more food than usual in a short period of time
+and having trouble stopping or controlling eating. Examples include
+feeling unable to resist food or continuing to eat until uncomfortably
+full.
 
 ------------------------------------------------------------------------
 
 ## Bodily Distress
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Physical symptoms like pain, weakness, or stomach issues without a clear medical cause </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Physical problems that don't have a clear medical explanation. Examples include ongoing pain, fatigue, muscle weakness, stomach issues like nausea or diarrhea, chest pain, or other physical symptoms without a known cause. </p>
-      </div>
-    </div>
+Physical symptoms like pain, weakness, or stomach issues without a clear
+medical cause
+
+###### Client-Facing
+
+Physical problems that don’t have a clear medical explanation. Examples
+include ongoing pain, fatigue, muscle weakness, stomach issues like
+nausea or diarrhea, chest pain, or other physical symptoms without a
+known cause.
 
 ------------------------------------------------------------------------
 
 ## Body Dissatisfaction
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Persistent dissatisfaction with one's body shape, physical attractiveness, or perceived imperfections </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Ongoing unhappiness with your body shape, attractiveness, or perceived flaws. Examples include comparing your body to others, wishing to change certain features, feeling dissatisfied with your shape, or disliking your weight on the scale. </p>
-      </div>
-    </div>
+Persistent dissatisfaction with one’s body shape, physical
+attractiveness, or perceived imperfections
+
+###### Client-Facing
+
+Ongoing unhappiness with your body shape, attractiveness, or perceived
+flaws. Examples include comparing your body to others, wishing to change
+certain features, feeling dissatisfied with your shape, or disliking
+your weight on the scale.
 
 ------------------------------------------------------------------------
 
 ## Body Focus
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Excessive focus on appearance, with frequent checking, grooming, and concern about looks </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Strong focus on appearance and frequent attention to how you look. Examples include spending a lot of time looking in mirrors or reflections, grooming or getting ready, and paying close attention to your appearance before going out. </p>
-      </div>
-    </div>
+Excessive focus on appearance, with frequent checking, grooming, and
+concern about looks
+
+###### Client-Facing
+
+Strong focus on appearance and frequent attention to how you look.
+Examples include spending a lot of time looking in mirrors or
+reflections, grooming or getting ready, and paying close attention to
+your appearance before going out.
 
 ------------------------------------------------------------------------
 
 ## Callousness
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Disregard for others' feelings and needs with little sympathy or concern </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> A general tendency to give little attention to others’ feelings or needs. Examples include not thinking much about how others feel, finding it hard to show sympathy, or being seen as distant or unresponsive. </p>
-      </div>
-    </div>
+Disregard for others’ feelings and needs with little sympathy or concern
+
+###### Client-Facing
+
+A general tendency to give little attention to others’ feelings or
+needs. Examples include not thinking much about how others feel, finding
+it hard to show sympathy, or being seen as distant or unresponsive.
 
 ------------------------------------------------------------------------
 
 ## Checking
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Repetitive urges to check tasks, driven by doubt about whether they were done or done correctly </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Having doubts about whether tasks were done correctly and having repeated urges to check them. Examples include rechecking whether appliances have been turned off, worrying about leaving something unfinished, or feeling nagging doubts even after completing a task. </p>
-      </div>
-    </div>
+Repetitive urges to check tasks, driven by doubt about whether they were
+done or done correctly
+
+###### Client-Facing
+
+Having doubts about whether tasks were done correctly and having
+repeated urges to check them. Examples include rechecking whether
+appliances have been turned off, worrying about leaving something
+unfinished, or feeling nagging doubts even after completing a task.
 
 ------------------------------------------------------------------------
 
 ## Cleaning
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Fear of dirt and germs, leading to excessive washing, cleaning, or avoiding contact with people or objects </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Fear of dirt or germs that leads to frequent washing, cleaning, or avoiding contact with people or objects. Examples include avoiding contact with people or animals, feeling contaminated, or repeatedly washing hands and cleaning to feel comfortable. </p>
-      </div>
-    </div>
+Fear of dirt and germs, leading to excessive washing, cleaning, or
+avoiding contact with people or objects
+
+###### Client-Facing
+
+Fear of dirt or germs that leads to frequent washing, cleaning, or
+avoiding contact with people or objects. Examples include avoiding
+contact with people or animals, feeling contaminated, or repeatedly
+washing hands and cleaning to feel comfortable.
 
 ------------------------------------------------------------------------
 
 ## Cognitive Problems
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Difficulty concentrating, remembering, or thinking clearly, with frequent distraction or racing thoughts </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Problems with concentration, memory, or clear thinking. Examples include being easily distracted, struggling to remember things, feeling mentally mixed up, or experiencing thoughts that quickly jump from one topic to another. </p>
-      </div>
-    </div>
+Difficulty concentrating, remembering, or thinking clearly, with
+frequent distraction or racing thoughts
+
+###### Client-Facing
+
+Problems with concentration, memory, or clear thinking. Examples include
+being easily distracted, struggling to remember things, feeling mentally
+mixed up, or experiencing thoughts that quickly jump from one topic to
+another.
 
 ------------------------------------------------------------------------
 
 ## Conversion Symptoms
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Neurological symptoms such as sensory loss or motor abnormalities without medical explanation </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Unusual problems with movement, senses, or awareness that don't have a clear medical reason. Examples include sudden weakness, fainting spells, unexplained seizures, temporary blindness or deafness, or losing the ability to feel things. </p>
-      </div>
-    </div>
+Neurological symptoms such as sensory loss or motor abnormalities
+without medical explanation
+
+###### Client-Facing
+
+Unusual problems with movement, senses, or awareness that don’t have a
+clear medical reason. Examples include sudden weakness, fainting spells,
+unexplained seizures, temporary blindness or deafness, or losing the
+ability to feel things.
 
 ------------------------------------------------------------------------
 
 ## Counting
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Repeated counting of objects or actions, often linked to beliefs or superstitions about numbers </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Urges to count things or actions repeatedly, sometimes tied to beliefs about luck. Examples include counting objects over and over, avoiding “unlucky” numbers, or needing to reach certain numbers before starting activities. </p>
-      </div>
-    </div>
+Repeated counting of objects or actions, often linked to beliefs or
+superstitions about numbers
+
+###### Client-Facing
+
+Urges to count things or actions repeatedly, sometimes tied to beliefs
+about luck. Examples include counting objects over and over, avoiding
+“unlucky” numbers, or needing to reach certain numbers before starting
+activities.
 
 ------------------------------------------------------------------------
 
 ## Dietary Restraint
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Preoccupation with healthy eating that results in strict food rules and restriction </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Strong focus on healthy eating in ways that create strict rules or restrictions. Examples include trying to eat only healthy foods, limiting all fatty foods or snacks, or carefully planning to reduce food intake. </p>
-      </div>
-    </div>
+Preoccupation with healthy eating that results in strict food rules and
+restriction
+
+###### Client-Facing
+
+Strong focus on healthy eating in ways that create strict rules or
+restrictions. Examples include trying to eat only healthy foods,
+limiting all fatty foods or snacks, or carefully planning to reduce food
+intake.
 
 ------------------------------------------------------------------------
 
 ## Difficulties Reaching Orgasm
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Trouble reaching satisfying sexual climax, even with arousal and proper stimulation </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Difficulties reaching orgasm during sexual activity, even with arousal. Examples include being unable to orgasm, taking much longer than desired, or finding it difficult to achieve a satisfying sexual experience. </p>
-      </div>
-    </div>
+Trouble reaching satisfying sexual climax, even with arousal and proper
+stimulation
+
+###### Client-Facing
+
+Difficulties reaching orgasm during sexual activity, even with arousal.
+Examples include being unable to orgasm, taking much longer than
+desired, or finding it difficult to achieve a satisfying sexual
+experience.
 
 ------------------------------------------------------------------------
 
 ## Disease Conviction
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Persistent belief in having serious health problems despite medical reassurance to the contrary </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Strong beliefs about having a serious health problem even when doctors dismiss concerns. Examples include feeling unheard by doctors, becoming upset when symptoms aren't taken seriously, or struggling to convince others the illness is real. </p>
-      </div>
-    </div>
+Persistent belief in having serious health problems despite medical
+reassurance to the contrary
+
+###### Client-Facing
+
+Strong beliefs about having a serious health problem even when doctors
+dismiss concerns. Examples include feeling unheard by doctors, becoming
+upset when symptoms aren’t taken seriously, or struggling to convince
+others the illness is real.
 
 ------------------------------------------------------------------------
 
 ## Dishonesty
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> A tendency to mislead or exploit others through deceit and manipulation </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Patterns of bending the truth or influencing others in misleading ways. Examples include saying things that are not true, lying to avoid trouble, exaggerating to impress, or persuading people to believe something that is inaccurate. </p>
-      </div>
-    </div>
+A tendency to mislead or exploit others through deceit and manipulation
+
+###### Client-Facing
+
+Patterns of bending the truth or influencing others in misleading ways.
+Examples include saying things that are not true, lying to avoid
+trouble, exaggerating to impress, or persuading people to believe
+something that is inaccurate.
 
 ### Deceitfulness
 
@@ -334,55 +291,48 @@ gain more control or advantage.
 
 ## Disorganization
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Difficulty staying organized, keeping track of items, and maintaining orderly spaces or schedules </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Having trouble staying organized, being on time, or keeping track of belongings. Examples including losing important items, forgetting appointments, missing deadlines, or having messy living and working spaces. </p>
-      </div>
-    </div>
+Difficulty staying organized, keeping track of items, and maintaining
+orderly spaces or schedules
+
+###### Client-Facing
+
+Having trouble staying organized, being on time, or keeping track of
+belongings. Examples including losing important items, forgetting
+appointments, missing deadlines, or having messy living and working
+spaces.
 
 ------------------------------------------------------------------------
 
 ## Dissociation
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Experiences of feeling detached from self, memories, or surroundings, sometimes replaced by fantasies or trance states </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Feeling disconnected from yourself, your memories, or the world around you, sometimes shifting into trance-like or dreamlike states. Examples include sudden blank spells, feeling outside your body, things seeming unreal, or being unsure if events actually happened. </p>
-      </div>
-    </div>
+Experiences of feeling detached from self, memories, or surroundings,
+sometimes replaced by fantasies or trance states
+
+###### Client-Facing
+
+Feeling disconnected from yourself, your memories, or the world around
+you, sometimes shifting into trance-like or dreamlike states. Examples
+include sudden blank spells, feeling outside your body, things seeming
+unreal, or being unsure if events actually happened.
 
 ------------------------------------------------------------------------
 
 ## Distress-Dysphoria
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Proneness to a wide range of negative feelings and emotional distress </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Frequent or intense negative emotions and low mood across many areas of life. Examples include feeling anxious or hopeless, lacking interest or energy, feeling worthless or ashamed, blaming yourself, and having trouble enjoying things you used to. </p>
-      </div>
-    </div>
+Proneness to a wide range of negative feelings and emotional distress
+
+###### Client-Facing
+
+Frequent or intense negative emotions and low mood across many areas of
+life. Examples include feeling anxious or hopeless, lacking interest or
+energy, feeling worthless or ashamed, blaming yourself, and having
+trouble enjoying things you used to.
 
 ### Anhedonia
 
@@ -438,55 +388,48 @@ guilt for small mistakes.
 
 ## Domineering
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> A tendency to dominate interactions, asserting control and power over others </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> A strong tendency to take charge and direct others in social or group situations. Examples include wanting to have power, taking the lead, being the one with authority, or telling others what to do. </p>
-      </div>
-    </div>
+A tendency to dominate interactions, asserting control and power over
+others
+
+###### Client-Facing
+
+A strong tendency to take charge and direct others in social or group
+situations. Examples include wanting to have power, taking the lead,
+being the one with authority, or telling others what to do.
 
 ------------------------------------------------------------------------
 
 ## Eccentricity
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Strange or unpredictable behavior, appearance, or speech, often marked by unusual thoughts </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Thinking, behaving, or dressing in ways that seem unusual or unpredictable to others. Examples include thinking about things in different ways than most people, saying odd or inappropriate things, or being told by others that you seem weird or strange. </p>
-      </div>
-    </div>
+Strange or unpredictable behavior, appearance, or speech, often marked
+by unusual thoughts
+
+###### Client-Facing
+
+Thinking, behaving, or dressing in ways that seem unusual or
+unpredictable to others. Examples include thinking about things in
+different ways than most people, saying odd or inappropriate things, or
+being told by others that you seem weird or strange.
 
 ------------------------------------------------------------------------
 
 ## Emotionality
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> General tendency to feel intense, irritable, or hostile emotions that can shift quickly </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Frequent and quickly changing emotions that can feel intense, irritable, or hostile. Examples include sudden mood shifts, getting upset over small frustrations, feeling grouchy or easily annoyed, or having angry outbursts that may scare others. </p>
-      </div>
-    </div>
+General tendency to feel intense, irritable, or hostile emotions that
+can shift quickly
+
+###### Client-Facing
+
+Frequent and quickly changing emotions that can feel intense, irritable,
+or hostile. Examples include sudden mood shifts, getting upset over
+small frustrations, feeling grouchy or easily annoyed, or having angry
+outbursts that may scare others.
 
 ### Affective Lability
 
@@ -522,325 +465,284 @@ more than expected.
 
 ## Entitlement
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Feeling superior and entitled to special privileges, marked by self-centered focus </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Feeling more important than others and expecting special treatment or privileges. Examples include putting your own needs first, believing you deserve extra consideration, feeling jealous of what others have, or being seen as self-centered. </p>
-      </div>
-    </div>
+Feeling superior and entitled to special privileges, marked by
+self-centered focus
+
+###### Client-Facing
+
+Feeling more important than others and expecting special treatment or
+privileges. Examples include putting your own needs first, believing you
+deserve extra consideration, feeling jealous of what others have, or
+being seen as self-centered.
 
 ------------------------------------------------------------------------
 
 ## Excessive Exercise
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> A tendency to engage in exercise at levels that disrupt daily functioning or result in physical injury </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Exercising so much that it causes harm or gets in the way of other parts of life. Examples include working out when sick or injured, continuing until feeling unwell, or canceling plans because of the need to exercise. </p>
-      </div>
-    </div>
+A tendency to engage in exercise at levels that disrupt daily
+functioning or result in physical injury
+
+###### Client-Facing
+
+Exercising so much that it causes harm or gets in the way of other parts
+of life. Examples include working out when sick or injured, continuing
+until feeling unwell, or canceling plans because of the need to
+exercise.
 
 ------------------------------------------------------------------------
 
 ## Excoriation
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Repetitive skin picking that causes harm or visible marks and interferes with daily life </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Repeatedly picking at your skin in ways that cause harm or leave marks. Examples include creating sores or scabs, trying to hide picked areas, or focusing on parts of your skin you feel unhappy with. </p>
-      </div>
-    </div>
+Repetitive skin picking that causes harm or visible marks and interferes
+with daily life
+
+###### Client-Facing
+
+Repeatedly picking at your skin in ways that cause harm or leave marks.
+Examples include creating sores or scabs, trying to hide picked areas,
+or focusing on parts of your skin you feel unhappy with.
 
 ------------------------------------------------------------------------
 
 ## Exhibitionism
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Strong desire to be the center of attention and behaving in ways to attract or impress others </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> A strong desire to be the center of attention and receive admiration. Examples include enjoying attention, doing things to get noticed, dressing to stand out, or preferring to be the focus in public. </p>
-      </div>
-    </div>
+Strong desire to be the center of attention and behaving in ways to
+attract or impress others
+
+###### Client-Facing
+
+A strong desire to be the center of attention and receive admiration.
+Examples include enjoying attention, doing things to get noticed,
+dressing to stand out, or preferring to be the focus in public.
 
 ------------------------------------------------------------------------
 
 ## Fantasy Proneness
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Immersion in fantasy, daydreams, or inner thoughts that can distract from reality </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Spending a lot of time in fantasy, daydreams, or inner thoughts that pull you away from the present. Examples include vivid fantasies that feel real, wishing to live in them, or losing yourself in imagination for long periods. </p>
-      </div>
-    </div>
+Immersion in fantasy, daydreams, or inner thoughts that can distract
+from reality
+
+###### Client-Facing
+
+Spending a lot of time in fantasy, daydreams, or inner thoughts that
+pull you away from the present. Examples include vivid fantasies that
+feel real, wishing to live in them, or losing yourself in imagination
+for long periods.
 
 ------------------------------------------------------------------------
 
 ## Food Selectivity
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Picky eating marked by disgust and avoidance of foods with disliked appearances or qualities </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Being very selective about food and avoiding certain foods because of how they look, smell, or feel. Examples include being seen as a picky eater, feeling disgusted by some foods, or avoiding them due to texture or appearance. </p>
-      </div>
-    </div>
+Picky eating marked by disgust and avoidance of foods with disliked
+appearances or qualities
+
+###### Client-Facing
+
+Being very selective about food and avoiding certain foods because of
+how they look, smell, or feel. Examples include being seen as a picky
+eater, feeling disgusted by some foods, or avoiding them due to texture
+or appearance.
 
 ------------------------------------------------------------------------
 
 ## Gambling
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Persistent gambling that is difficult to control, continuing despite negative consequences </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Gambling that feels difficult to control and continues even when it causes harm. Examples include struggling to resist urges, finding it hard to stop once started, betting more than you can afford, or facing debt and relationship problems. </p>
-      </div>
-    </div>
+Persistent gambling that is difficult to control, continuing despite
+negative consequences
+
+###### Client-Facing
+
+Gambling that feels difficult to control and continues even when it
+causes harm. Examples include struggling to resist urges, finding it
+hard to stop once started, betting more than you can afford, or facing
+debt and relationship problems.
 
 ------------------------------------------------------------------------
 
 ## Gaming
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Excessive gaming that interferes with functioning, causes distress when reduced, and is difficult to control </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Excessive gaming that is hard to control, brings distress when limited, and interferes with daily life. Examples include skipping social plans, having problems at work or school, constantly making time for gaming, or feeling upset when unable to play. </p>
-      </div>
-    </div>
+Excessive gaming that interferes with functioning, causes distress when
+reduced, and is difficult to control
+
+###### Client-Facing
+
+Excessive gaming that is hard to control, brings distress when limited,
+and interferes with daily life. Examples include skipping social plans,
+having problems at work or school, constantly making time for gaming, or
+feeling upset when unable to play.
 
 ------------------------------------------------------------------------
 
 ## Grandiosity
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Feeling overly powerful or special, with unrealistic optimism and inflated self-confidence </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Feeling especially confident, optimistic, or unique, sometimes in ways that may seem larger than life. Examples include believing you have special qualities, enjoying admiration from others, looking forward to future successes, or feeling very self-assured in social situations. </p>
-      </div>
-    </div>
+Feeling overly powerful or special, with unrealistic optimism and
+inflated self-confidence
+
+###### Client-Facing
+
+Feeling especially confident, optimistic, or unique, sometimes in ways
+that may seem larger than life. Examples include believing you have
+special qualities, enjoying admiration from others, looking forward to
+future successes, or feeling very self-assured in social situations.
 
 ------------------------------------------------------------------------
 
 ## Health Anxiety
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Persistent anxiety about health, with excessive worry and searching for signs of illness </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Ongoing worry about health and frequent concern about having an illness. Examples include spending a lot of time thinking about possible diseases, feeling anxious after reading about health problems, or being afraid you might have a serious condition. </p>
-      </div>
-    </div>
+Persistent anxiety about health, with excessive worry and searching for
+signs of illness
+
+###### Client-Facing
+
+Ongoing worry about health and frequent concern about having an illness.
+Examples include spending a lot of time thinking about possible
+diseases, feeling anxious after reading about health problems, or being
+afraid you might have a serious condition.
 
 ------------------------------------------------------------------------
 
 ## Hoarding
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Difficulty letting go of possessions, leading to clutter and compulsive acquiring of new items </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Difficulty letting go of belongings, which can lead to clutter and continuing to get new items. Examples include holding onto things you don't need, collecting or buying too much, or having living spaces so full that moving around is difficult. </p>
-      </div>
-    </div>
+Difficulty letting go of possessions, leading to clutter and compulsive
+acquiring of new items
+
+###### Client-Facing
+
+Difficulty letting go of belongings, which can lead to clutter and
+continuing to get new items. Examples include holding onto things you
+don’t need, collecting or buying too much, or having living spaces so
+full that moving around is difficult.
 
 ------------------------------------------------------------------------
 
 ## Hyperdeliberation
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Tendency to overanalyze decisions before acting, even when it leads to problems </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Spending a lot of time analyzing choices before acting, even when it creates problems. Examples include examining every option, needing all available information, weighing pros and cons carefully, or taking months to reach a major decision. </p>
-      </div>
-    </div>
+Tendency to overanalyze decisions before acting, even when it leads to
+problems
+
+###### Client-Facing
+
+Spending a lot of time analyzing choices before acting, even when it
+creates problems. Examples include examining every option, needing all
+available information, weighing pros and cons carefully, or taking
+months to reach a major decision.
 
 ------------------------------------------------------------------------
 
 ## Hypervigilance
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Posttraumatic reactions of being overly alert and jumpy, staying on guard for danger and startling easily </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Feeling overly watchful and jumpy, staying on guard for possible danger and startling easily. Examples include feeling on edge, believing the world is unsafe, being concerned about harm from others, or reacting strongly to sudden noises or movements. </p>
-      </div>
-    </div>
+Posttraumatic reactions of being overly alert and jumpy, staying on
+guard for danger and startling easily
+
+###### Client-Facing
+
+Feeling overly watchful and jumpy, staying on guard for possible danger
+and startling easily. Examples include feeling on edge, believing the
+world is unsafe, being concerned about harm from others, or reacting
+strongly to sudden noises or movements.
 
 ------------------------------------------------------------------------
 
 ## Insomnia
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Difficulty sleeping well, with trouble falling asleep, staying asleep, or waking too early </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Trouble getting good sleep, including difficulty falling asleep, staying asleep, or waking up too early. Examples include sleeping poorly, lying awake at night, waking and not returning to sleep, or struggling to get enough rest. </p>
-      </div>
-    </div>
+Difficulty sleeping well, with trouble falling asleep, staying asleep,
+or waking too early
+
+###### Client-Facing
+
+Trouble getting good sleep, including difficulty falling asleep, staying
+asleep, or waking up too early. Examples include sleeping poorly, lying
+awake at night, waking and not returning to sleep, or struggling to get
+enough rest.
 
 ------------------------------------------------------------------------
 
 ## Low Sexual Arousal
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Problems with sexual arousal, from not feeling "turned on" to difficulty sustaining physical response </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Trouble becoming or staying “turned on” during sexual activity. Examples include finding it hard to get aroused, struggling to stay aroused once activity starts, or not having enough physical response to enjoy the experience. </p>
-      </div>
-    </div>
+Problems with sexual arousal, from not feeling “turned on” to difficulty
+sustaining physical response
+
+###### Client-Facing
+
+Trouble becoming or staying “turned on” during sexual activity. Examples
+include finding it hard to get aroused, struggling to stay aroused once
+activity starts, or not having enough physical response to enjoy the
+experience.
 
 ------------------------------------------------------------------------
 
 ## Low Sexual Interest
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Low sexual desire, marked by diminished interest in sexual activity </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Having low interest in or desire for sexual activity. Examples include feeling little or no desire, lacking interest in starting sexual activity, or feeling uninterested even during sexual experiences. </p>
-      </div>
-    </div>
+Low sexual desire, marked by diminished interest in sexual activity
+
+###### Client-Facing
+
+Having low interest in or desire for sexual activity. Examples include
+feeling little or no desire, lacking interest in starting sexual
+activity, or feeling uninterested even during sexual experiences.
 
 ------------------------------------------------------------------------
 
 ## Manic Energy
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Periods of extremely high mood and energy, with seemingly little need for sleep </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Times of unusually high mood and energy, often with little need for sleep. Examples include feeling overly excited or active, talking much more than usual, having so much energy others can't keep up, or going without rest. </p>
-      </div>
-    </div>
+Periods of extremely high mood and energy, with seemingly little need
+for sleep
+
+###### Client-Facing
+
+Times of unusually high mood and energy, often with little need for
+sleep. Examples include feeling overly excited or active, talking much
+more than usual, having so much energy others can’t keep up, or going
+without rest.
 
 ------------------------------------------------------------------------
 
 ## Mistrust
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> General tendency to doubt others, marked by suspicion and cynicism </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> A general tendency to be suspicious of others and doubt their intentions. Examples include believing people are selfish, feeling others can't be trusted, worrying they might take advantage of you, or thinking some are acting against you. </p>
-      </div>
-    </div>
+General tendency to doubt others, marked by suspicion and cynicism
+
+###### Client-Facing
+
+A general tendency to be suspicious of others and doubt their
+intentions. Examples include believing people are selfish, feeling
+others can’t be trusted, worrying they might take advantage of you, or
+thinking some are acting against you.
 
 ### Cynicism
 
@@ -866,235 +768,209 @@ worrying some may want to hurt you.
 
 ## Muscle Building
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Concern with appearing muscular, often driving intense exercise and supplement use </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Strong focus on building muscle and looking lean, sometimes leading to intense exercise or supplement use. Examples include wanting defined muscles, aiming to bulk up while staying lean, or feeling it’s very important to appear muscular. </p>
-      </div>
-    </div>
+Concern with appearing muscular, often driving intense exercise and
+supplement use
+
+###### Client-Facing
+
+Strong focus on building muscle and looking lean, sometimes leading to
+intense exercise or supplement use. Examples include wanting defined
+muscles, aiming to bulk up while staying lean, or feeling it’s very
+important to appear muscular.
 
 ------------------------------------------------------------------------
 
 ## Nightmares
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Nightmares and disturbing dreams that occur often and disrupt daytime well-being </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Frequent nightmares or disturbing dreams that wake you and affect how you feel during the day. Examples include waking from bad dreams, having recurring upsetting dreams, or experiencing dreams that leave you distressed after waking. </p>
-      </div>
-    </div>
+Nightmares and disturbing dreams that occur often and disrupt daytime
+well-being
+
+###### Client-Facing
+
+Frequent nightmares or disturbing dreams that wake you and affect how
+you feel during the day. Examples include waking from bad dreams, having
+recurring upsetting dreams, or experiencing dreams that leave you
+distressed after waking.
 
 ------------------------------------------------------------------------
 
 ## Non-persistence
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Difficulty staying focused on long-term goals or maintaining effort in challenging tasks </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Trouble staying focused on long-term goals or keeping effort up during difficult tasks. Examples include quitting before finishing, struggling to return after distractions, losing interest when things get hard, or finding it difficult to concentrate on uninteresting tasks. </p>
-      </div>
-    </div>
+Difficulty staying focused on long-term goals or maintaining effort in
+challenging tasks
+
+###### Client-Facing
+
+Trouble staying focused on long-term goals or keeping effort up during
+difficult tasks. Examples include quitting before finishing, struggling
+to return after distractions, losing interest when things get hard, or
+finding it difficult to concentrate on uninteresting tasks.
 
 ------------------------------------------------------------------------
 
 ## Non-planfulness
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Tendency to act quickly without planning or considering possible negative consequences </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> A tendency to act on impulse without much planning or thought about consequences. Examples include making quick decisions, saying things without thinking, doing something spontaneous you later regret, or acting without considering possible negative outcomes. </p>
-      </div>
-    </div>
+Tendency to act quickly without planning or considering possible
+negative consequences
+
+###### Client-Facing
+
+A tendency to act on impulse without much planning or thought about
+consequences. Examples include making quick decisions, saying things
+without thinking, doing something spontaneous you later regret, or
+acting without considering possible negative outcomes.
 
 ------------------------------------------------------------------------
 
 ## Non-suicidal Self-injury
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Deliberate harming of one's body (cutting, burning, scratching) that isn't meant to cause death </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Hurting your body on purpose without intending to die, often to cope with or temporarily relieve intense emotional pain. Examples include cutting, burning, biting, scratching, repeated urges to hurt yourself, or scratching until bleeding. </p>
-      </div>
-    </div>
+Deliberate harming of one’s body (cutting, burning, scratching) that
+isn’t meant to cause death
+
+###### Client-Facing
+
+Hurting your body on purpose without intending to die, often to cope
+with or temporarily relieve intense emotional pain. Examples include
+cutting, burning, biting, scratching, repeated urges to hurt yourself,
+or scratching until bleeding.
 
 ------------------------------------------------------------------------
 
 ## Oppositionality
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Tendency to be argumentative, defiant, and resistant to authority figures </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Often pushing back against rules or authority, preferring to do things your own way even when it causes conflict. Examples include enjoying rebelling against authority, breaking rules on purpose, not following social norms, or dismissing others’ standards. </p>
-      </div>
-    </div>
+Tendency to be argumentative, defiant, and resistant to authority
+figures
+
+###### Client-Facing
+
+Often pushing back against rules or authority, preferring to do things
+your own way even when it causes conflict. Examples include enjoying
+rebelling against authority, breaking rules on purpose, not following
+social norms, or dismissing others’ standards.
 
 ------------------------------------------------------------------------
 
 ## Panic
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Intense physical anxiety symptoms like racing heart or dizziness, with fears of serious harm or death </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Sudden episodes of intense fear or anxiety that include physical symptoms and worries about serious harm. Examples include feeling dizzy or lightheaded, trembling or shaking, a racing heart, fearing a heart attack, or feeling like you might die. </p>
-      </div>
-    </div>
+Intense physical anxiety symptoms like racing heart or dizziness, with
+fears of serious harm or death
+
+###### Client-Facing
+
+Sudden episodes of intense fear or anxiety that include physical
+symptoms and worries about serious harm. Examples include feeling dizzy
+or lightheaded, trembling or shaking, a racing heart, fearing a heart
+attack, or feeling like you might die.
 
 ------------------------------------------------------------------------
 
 ## Paraphilias
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Sexual arousal in unusual or non-consensual contexts, such as exposing oneself or spying on others </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Sexual arousal that occurs in unusual or non-consenting situations, which can cause relationship problems. Examples include finding it arousing to expose yourself, spy on others, touch strangers without consent, or imagine sexual activity with someone unable to respond. </p>
-      </div>
-    </div>
+Sexual arousal in unusual or non-consensual contexts, such as exposing
+oneself or spying on others
+
+###### Client-Facing
+
+Sexual arousal that occurs in unusual or non-consenting situations,
+which can cause relationship problems. Examples include finding it
+arousing to expose yourself, spy on others, touch strangers without
+consent, or imagine sexual activity with someone unable to respond.
 
 ------------------------------------------------------------------------
 
 ## Perfectionism
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Tendency to demand flawless results, leading to delays, overwork, and difficulty finishing tasks </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> A strong drive for perfection that can cause stress, overwork, or difficulty finishing tasks. Examples include demanding flawless results, striving for perfection even when unnecessary, or delaying progress because things don't feel good enough to complete. </p>
-      </div>
-    </div>
+Tendency to demand flawless results, leading to delays, overwork, and
+difficulty finishing tasks
+
+###### Client-Facing
+
+A strong drive for perfection that can cause stress, overwork, or
+difficulty finishing tasks. Examples include demanding flawless results,
+striving for perfection even when unnecessary, or delaying progress
+because things don’t feel good enough to complete.
 
 ------------------------------------------------------------------------
 
 ## Premature Orgasm
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Lack of control over sexual climax, with orgasm occurring sooner than intended </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Difficulty controlling sexual climax, with orgasm happening sooner than desired. Examples include climaxing very quickly, trying to delay orgasm but being unable to, or reaching orgasm before you wanted to during sexual activity. </p>
-      </div>
-    </div>
+Lack of control over sexual climax, with orgasm occurring sooner than
+intended
+
+###### Client-Facing
+
+Difficulty controlling sexual climax, with orgasm happening sooner than
+desired. Examples include climaxing very quickly, trying to delay orgasm
+but being unable to, or reaching orgasm before you wanted to during
+sexual activity.
 
 ------------------------------------------------------------------------
 
 ## Problematic Shopping
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Compulsive shopping with a strong urge to buy and difficulty controlling the desire for new things </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Strong urges to shop or buy things that feel hard to control, often leading to problems. Examples include buying more than needed, spending beyond your means, keeping shopping secret, or struggling to resist the desire for new things. </p>
-      </div>
-    </div>
+Compulsive shopping with a strong urge to buy and difficulty controlling
+the desire for new things
+
+###### Client-Facing
+
+Strong urges to shop or buy things that feel hard to control, often
+leading to problems. Examples include buying more than needed, spending
+beyond your means, keeping shopping secret, or struggling to resist the
+desire for new things.
 
 ------------------------------------------------------------------------
 
 ## Purging
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Using vomiting, medications, or supplements to control or force weight loss </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Using direct physical or medicine-based methods to force weight loss or prevent weight gain. Examples include making yourself vomit, taking medicines that make you lose water, using laxatives or enemas, or other substances to remove food. </p>
-      </div>
-    </div>
+Using vomiting, medications, or supplements to control or force weight
+loss
+
+###### Client-Facing
+
+Using direct physical or medicine-based methods to force weight loss or
+prevent weight gain. Examples include making yourself vomit, taking
+medicines that make you lose water, using laxatives or enemas, or other
+substances to remove food.
 
 ------------------------------------------------------------------------
 
 ## Reality Distortion
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Tendency to hold unusual beliefs or have perceptions that differ from commonly shared reality </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Having unusual beliefs or experiences others don't share. Examples include thinking you can control things with your mind, believing others can hear your thoughts or that messages are meant for you, or seeing or hearing things others don't. </p>
-      </div>
-    </div>
+Tendency to hold unusual beliefs or have perceptions that differ from
+commonly shared reality
+
+###### Client-Facing
+
+Having unusual beliefs or experiences others don’t share. Examples
+include thinking you can control things with your mind, believing others
+can hear your thoughts or that messages are meant for you, or seeing or
+hearing things others don’t.
 
 ### Delusions
 
@@ -1120,289 +996,255 @@ smelling things that aren’t real, or feeling bugs crawling on your skin.
 
 ## Restlessness
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Feeling unsettled and restless, with fidgeting or difficulty sitting still </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Feeling restless and uneasy, with difficulty staying seated or still. Examples include fidgeting, needing to stand when expected to sit, avoiding activities that require sitting, or struggling to remain in one place for long periods. </p>
-      </div>
-    </div>
+Feeling unsettled and restless, with fidgeting or difficulty sitting
+still
+
+###### Client-Facing
+
+Feeling restless and uneasy, with difficulty staying seated or still.
+Examples include fidgeting, needing to stand when expected to sit,
+avoiding activities that require sitting, or struggling to remain in one
+place for long periods.
 
 ------------------------------------------------------------------------
 
 ## Restricted Affectivity
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Limited expression and experience of emotions, including joy, warmth, and closeness with others </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Showing or feeling fewer emotions, which can make it harder to share joy or closeness with others. Examples include hiding your feelings, rarely showing emotion, not reacting to emotional events, or being told you don’t express emotions. </p>
-      </div>
-    </div>
+Limited expression and experience of emotions, including joy, warmth,
+and closeness with others
+
+###### Client-Facing
+
+Showing or feeling fewer emotions, which can make it harder to share joy
+or closeness with others. Examples include hiding your feelings, rarely
+showing emotion, not reacting to emotional events, or being told you
+don’t express emotions.
 
 ------------------------------------------------------------------------
 
 ## Restricted Eating
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Eating less than is typical, such as intentionally skipping meals or limiting portions </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Eating less than usual, often by skipping meals or limiting how much you eat. Examples include going a long time without food, skipping multiple meals, making excuses to avoid eating, or being told you don't eat enough. </p>
-      </div>
-    </div>
+Eating less than is typical, such as intentionally skipping meals or
+limiting portions
+
+###### Client-Facing
+
+Eating less than usual, often by skipping meals or limiting how much you
+eat. Examples include going a long time without food, skipping multiple
+meals, making excuses to avoid eating, or being told you don’t eat
+enough.
 
 ------------------------------------------------------------------------
 
 ## Rigidity
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Stubborn adherence to certain approaches, even when ineffective, and rigid moral or principled beliefs </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Holding tightly to certain ways of doing things or strong principles, even when they cause problems. Examples include refusing to compromise, sticking to the same approach even when it fails, or being very set in your ways. </p>
-      </div>
-    </div>
+Stubborn adherence to certain approaches, even when ineffective, and
+rigid moral or principled beliefs
+
+###### Client-Facing
+
+Holding tightly to certain ways of doing things or strong principles,
+even when they cause problems. Examples include refusing to compromise,
+sticking to the same approach even when it fails, or being very set in
+your ways.
 
 ------------------------------------------------------------------------
 
 ## Risk Aversion
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Strong tendency to avoid risks and shy away from excitement or stimulation </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> A strong preference for safety and caution, with a tendency to avoid risks or excitement. Examples include going out of your way to avoid risks, preferring the safest option, or strongly disliking taking chances. </p>
-      </div>
-    </div>
+Strong tendency to avoid risks and shy away from excitement or
+stimulation
+
+###### Client-Facing
+
+A strong preference for safety and caution, with a tendency to avoid
+risks or excitement. Examples include going out of your way to avoid
+risks, preferring the safest option, or strongly disliking taking
+chances.
 
 ------------------------------------------------------------------------
 
 ## Risk Taking
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Tendency to pursue excitement and pleasure, often through risky or reckless behavior </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Seeking excitement and pleasure, sometimes through risky or daring behavior. Examples include enjoying dangerous activities, feeling alive when taking risks, being described as a risk-taker, or seeing yourself as a thrill-seeker. </p>
-      </div>
-    </div>
+Tendency to pursue excitement and pleasure, often through risky or
+reckless behavior
+
+###### Client-Facing
+
+Seeking excitement and pleasure, sometimes through risky or daring
+behavior. Examples include enjoying dangerous activities, feeling alive
+when taking risks, being described as a risk-taker, or seeing yourself
+as a thrill-seeker.
 
 ------------------------------------------------------------------------
 
 ## Risky Sex
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Engaging in sexual acts compulsively or in ways that increase health and pregnancy risks </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Engaging in sexual activity in ways that feel hard to control or create risks. Examples include having unprotected sex, using sex to cope with negative feelings, taking sexual risks, or later regretting sexual experiences. </p>
-      </div>
-    </div>
+Engaging in sexual acts compulsively or in ways that increase health and
+pregnancy risks
+
+###### Client-Facing
+
+Engaging in sexual activity in ways that feel hard to control or create
+risks. Examples include having unprotected sex, using sex to cope with
+negative feelings, taking sexual risks, or later regretting sexual
+experiences.
 
 ------------------------------------------------------------------------
 
 ## Romantic Disinterest
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Low interest, desire, or pleasure in romance and intimate connections with others </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Having little interest in romantic or intimate relationships. Examples include feeling that relationships are a hassle, not wanting to be in a close relationship, or having no interest in romance at all. </p>
-      </div>
-    </div>
+Low interest, desire, or pleasure in romance and intimate connections
+with others
+
+###### Client-Facing
+
+Having little interest in romantic or intimate relationships. Examples
+include feeling that relationships are a hassle, not wanting to be in a
+close relationship, or having no interest in romance at all.
 
 ------------------------------------------------------------------------
 
 ## Sex-Related Substance Use
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Using substances to boost sexual performance, attraction, or to reduce negative emotions during sex </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Using alcohol or drugs to change how you feel or act during sex. Examples include reducing anxiety, making sex feel more enjoyable, finding a partner more appealing, or encouraging a partner to use substances too. </p>
-      </div>
-    </div>
+Using substances to boost sexual performance, attraction, or to reduce
+negative emotions during sex
+
+###### Client-Facing
+
+Using alcohol or drugs to change how you feel or act during sex.
+Examples include reducing anxiety, making sex feel more enjoyable,
+finding a partner more appealing, or encouraging a partner to use
+substances too.
 
 ------------------------------------------------------------------------
 
 ## Sexual Distress
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Strong negative emotions in response to perceived sexual problems or difficulties </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Feeling upset or discouraged about sexual problems or difficulties. Examples include feeling guilty about sexual issues, worrying about your sex life, feeling inadequate, or being unhappy with your sexual performance. </p>
-      </div>
-    </div>
+Strong negative emotions in response to perceived sexual problems or
+difficulties
+
+###### Client-Facing
+
+Feeling upset or discouraged about sexual problems or difficulties.
+Examples include feeling guilty about sexual issues, worrying about your
+sex life, feeling inadequate, or being unhappy with your sexual
+performance.
 
 ------------------------------------------------------------------------
 
 ## Sexual Pain
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Pain or discomfort in the genitals during or following sexual activity </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Feeling pain or discomfort in the genitals during or after sexual activity. Examples include tensing up because of pain, finding sex uncomfortable, or experiencing pain when trying to have vaginal or anal intercourse. </p>
-      </div>
-    </div>
+Pain or discomfort in the genitals during or following sexual activity
+
+###### Client-Facing
+
+Feeling pain or discomfort in the genitals during or after sexual
+activity. Examples include tensing up because of pain, finding sex
+uncomfortable, or experiencing pain when trying to have vaginal or anal
+intercourse.
 
 ------------------------------------------------------------------------
 
 ## Social Aggression
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Harming others socially by spreading rumors, lying, insulting, or disrupting relationships </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Causing harm in social situations by damaging others’ reputation or relationships. Examples include spreading rumors, mocking or insulting people, taunting others, or trying to break up friendships or romantic relationships. </p>
-      </div>
-    </div>
+Harming others socially by spreading rumors, lying, insulting, or
+disrupting relationships
+
+###### Client-Facing
+
+Causing harm in social situations by damaging others’ reputation or
+relationships. Examples include spreading rumors, mocking or insulting
+people, taunting others, or trying to break up friendships or romantic
+relationships.
 
 ------------------------------------------------------------------------
 
 ## Social Aloofness
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Disinterest in social interaction, leading to avoidance and preference for being alone </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Preferring to be alone and showing little interest in social interaction. Examples include choosing solitude over company, feeling unmotivated to spend time with others, being happiest alone, or staying home instead of going to social gatherings. </p>
-      </div>
-    </div>
+Disinterest in social interaction, leading to avoidance and preference
+for being alone
+
+###### Client-Facing
+
+Preferring to be alone and showing little interest in social
+interaction. Examples include choosing solitude over company, feeling
+unmotivated to spend time with others, being happiest alone, or staying
+home instead of going to social gatherings.
 
 ------------------------------------------------------------------------
 
 ## Social Anxiety
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Fear and avoidance of social situations, marked by shyness and worry about being negatively evaluated </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Fear of social situations, often tied to shyness or worry about being judged. Examples include avoiding public speaking, feeling uncomfortable meeting new people, struggling to make eye contact, or getting anxious when others are watching. </p>
-      </div>
-    </div>
+Fear and avoidance of social situations, marked by shyness and worry
+about being negatively evaluated
+
+###### Client-Facing
+
+Fear of social situations, often tied to shyness or worry about being
+judged. Examples include avoiding public speaking, feeling uncomfortable
+meeting new people, struggling to make eye contact, or getting anxious
+when others are watching.
 
 ------------------------------------------------------------------------
 
 ## Somatic Preoccupation
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Increased sensitivity to bodily sensations, with ongoing awareness of internal changes </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Being very aware of your physical sensations and internal bodily changes. Examples include paying close attention to how your body feels, noticing small shifts in how your body feels, and being highly aware of bodily cues. </p>
-      </div>
-    </div>
+Increased sensitivity to bodily sensations, with ongoing awareness of
+internal changes
+
+###### Client-Facing
+
+Being very aware of your physical sensations and internal bodily
+changes. Examples include paying close attention to how your body feels,
+noticing small shifts in how your body feels, and being highly aware of
+bodily cues.
 
 ------------------------------------------------------------------------
 
 ## Specific Phobia Index
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Broad pattern of phobic reactions spanning animals, medical settings, and various situations </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Strong fears across a wide range of situations, objects, or settings. Examples include fear of animals like spiders or snakes, feeling faint at the sight of blood, being upset by needles or storms, or feeling anxious about flying or heights. </p>
-      </div>
-    </div>
+Broad pattern of phobic reactions spanning animals, medical settings,
+and various situations
+
+###### Client-Facing
+
+Strong fears across a wide range of situations, objects, or settings.
+Examples include fear of animals like spiders or snakes, feeling faint
+at the sight of blood, being upset by needles or storms, or feeling
+anxious about flying or heights.
 
 ### Animal-Insect Phobia
 
@@ -1438,108 +1280,95 @@ fearful in the dark.
 
 ## Submissiveness
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Tendency to be timid and unassertive, often leading to being overlooked or taken advantage of </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Being quiet or unassertive in ways that can lead to being overlooked or taken advantage of. Examples include having trouble standing up for yourself, finding it hard to assert your needs, or letting others take advantage of you. </p>
-      </div>
-    </div>
+Tendency to be timid and unassertive, often leading to being overlooked
+or taken advantage of
+
+###### Client-Facing
+
+Being quiet or unassertive in ways that can lead to being overlooked or
+taken advantage of. Examples include having trouble standing up for
+yourself, finding it hard to assert your needs, or letting others take
+advantage of you.
 
 ------------------------------------------------------------------------
 
 ## Suicidality
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> General thoughts of death and more specific suicidal thoughts, plans, or attempts </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Thoughts about death or suicide, ranging from thinking about death to making plans or attempts to kill yourself. Examples include frequently thinking about death, forming a plan to end your life, thinking about killing yourself, or attempting suicide. </p>
-      </div>
-    </div>
+General thoughts of death and more specific suicidal thoughts, plans, or
+attempts
+
+###### Client-Facing
+
+Thoughts about death or suicide, ranging from thinking about death to
+making plans or attempts to kill yourself. Examples include frequently
+thinking about death, forming a plan to end your life, thinking about
+killing yourself, or attempting suicide.
 
 ------------------------------------------------------------------------
 
 ## Trauma Reactions
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Recurrent memories or flashbacks of trauma, paired with avoidance of related people, places, or thoughts </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Strong reactions to past traumatic events that continue to affect daily life. Examples include repeated memories, upsetting images, sudden feelings as if the event is happening again, or avoiding people, places, and thoughts connected to the trauma. </p>
-      </div>
-    </div>
+Recurrent memories or flashbacks of trauma, paired with avoidance of
+related people, places, or thoughts
+
+###### Client-Facing
+
+Strong reactions to past traumatic events that continue to affect daily
+life. Examples include repeated memories, upsetting images, sudden
+feelings as if the event is happening again, or avoiding people, places,
+and thoughts connected to the trauma.
 
 ------------------------------------------------------------------------
 
 ## Trichotillomania
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Persistent urge-driven or automatic hair pulling that leads to noticeable hair loss and distress </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Repeated hair pulling driven by urges or automatic behavior that leads to noticeable hair loss and distress. Examples include feeling embarrassed about pulling, removing hairs of different color or texture, or having strong urges to pull. </p>
-      </div>
-    </div>
+Persistent urge-driven or automatic hair pulling that leads to
+noticeable hair loss and distress
+
+###### Client-Facing
+
+Repeated hair pulling driven by urges or automatic behavior that leads
+to noticeable hair loss and distress. Examples include feeling
+embarrassed about pulling, removing hairs of different color or texture,
+or having strong urges to pull.
 
 ------------------------------------------------------------------------
 
 ## Well-being
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Feelings of positive emotion, such as being happy, excited, proud, or motivated </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> A general sense of well-being and positive emotion. Examples include feeling cheerful, proud of yourself, optimistic about the future, motivated to take action, or generally good about who you are. </p>
-      </div>
-    </div>
+Feelings of positive emotion, such as being happy, excited, proud, or
+motivated
+
+###### Client-Facing
+
+A general sense of well-being and positive emotion. Examples include
+feeling cheerful, proud of yourself, optimistic about the future,
+motivated to take action, or generally good about who you are.
 
 ------------------------------------------------------------------------
 
 ## Workaholism
 
-    <div class="card h-100 border-0 shadow-sm border-start border-primary border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-primary text-uppercase fw-bold small mb-1">Clinician Brief</h6>
-        <p class="card-text text-secondary"> Excessive focus on productivity and achievement, prioritizing work over relationships or leisure </p>
-      </div>
-    </div>
+###### Clinician Brief
 
-    <div class="card h-100 border-0 shadow-sm border-start border-success border-4 bg-light-subtle">
-      <div class="card-body py-3">
-        <h6 class="text-success text-uppercase fw-bold small mb-1">Client-Facing</h6>
-        <p class="card-text text-secondary"> Placing very high importance on productivity and achievement, often at the expense of relationships or leisure. Examples include being described as a workaholic, thinking about work on days off, or having little time for friends and family because of work. </p>
-      </div>
-    </div>
+Excessive focus on productivity and achievement, prioritizing work over
+relationships or leisure
+
+###### Client-Facing
+
+Placing very high importance on productivity and achievement, often at
+the expense of relationships or leisure. Examples include being
+described as a workaholic, thinking about work on days off, or having
+little time for friends and family because of work.
 
 ------------------------------------------------------------------------
