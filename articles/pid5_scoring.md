@@ -156,6 +156,62 @@ using its documentation by typing the following into your R console:
 or through the [package
 website](https://jmgirard.github.io/hitop/reference/score_pid5.html).
 
+## Scale Reliability
+
+As we compute scale scores, we can also estimate their inter-item
+reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α
+is fast and widely used, but it assumes tau-equivalence (all items load
+equally on a single factor); violations can make α under- or
+over-estimate reliability. ω is based on a congeneric single-factor
+model, allowing items to have different loadings and error variances; it
+typically provides a more accurate reliability estimate for
+unit-weighted sums. Both assume the scale is essentially unidimensional;
+α and ω coincide when tau-equivalence holds.
+
+We can just add one or more of the following arguments to
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md):
+`alpha` and `omega`. For the latter, we will need the **lavaan** package
+installed. If requested, a table of reliability results will be printed
+as a side-effect of the function (alongside any warnings from lavaan
+about convergence of the factor analysis models that omega is based on).
+
+``` r
+
+scores <- score_pid5(
+  data = sim_pid5,
+  items = sprintf("pid_%d", 1:220),
+  version = "FULL",
+  alpha = TRUE,
+  omega = TRUE
+)
+#>                          scale    alpha   omega
+#> 1                    Anhedonia -0.21125      NA
+#> 2               Suspiciousness -0.21133 0.04105
+#> 3                  Risk Taking -0.01279 0.00697
+#> 4                  Impulsivity  0.14130      NA
+#> 5                 Eccentricity  0.05537 0.15236
+#> 6              Distractibility -0.15419 0.00807
+#> 7       Restricted Affectivity -0.14378      NA
+#> 8               Submissiveness -0.19363 0.11572
+#> 9                   Withdrawal -0.02902      NA
+#> 10                 Callousness  0.01469 0.02795
+#> 11       Separation Insecurity  0.06978 0.13065
+#> 12           Attention Seeking -0.03878 0.13480
+#> 13          Emotional Lability  0.17074 0.18400
+#> 14                Depressivity  0.02169 0.04407
+#> 15                   Hostility  0.28614      NA
+#> 16            Irresponsibility -0.17478      NA
+#> 17         Rigid Perfectionism  0.00235 0.04668
+#> 18    Perceptual Dysregulation  0.03406 0.03416
+#> 19                 Grandiosity -0.03978 0.00716
+#> 20               Deceitfulness  0.04425      NA
+#> 21               Perseveration  0.04237 0.12652
+#> 22                 Anxiousness  0.05602 0.25144
+#> 23          Intimacy Avoidance -0.30170      NA
+#> 24 Unusual Beliefs Experiences -0.10501      NA
+#> 25            Manipulativeness  0.06954 0.17643
+```
+
 ### Validity Scales for the PID-5
 
 There are also several validity scales that have been developed for the

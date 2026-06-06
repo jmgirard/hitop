@@ -234,6 +234,59 @@ about using its documentation by typing the following into your R
 console: <code><a href="../reference/score_pid5.html">?score_pid5</a></code> or through the <a href="https://jmgirard.github.io/hitop/reference/score_pid5.html">package
 website</a>.</p>
 </div>
+<div class="section level2">
+<h2 id="scale-reliability">Scale Reliability<a class="anchor" aria-label="anchor" href="#scale-reliability"></a>
+</h2>
+<p>As we compute scale scores, we can also estimate their inter-item
+reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α
+is fast and widely used, but it assumes tau-equivalence (all items load
+equally on a single factor); violations can make α under- or
+over-estimate reliability. ω is based on a congeneric single-factor
+model, allowing items to have different loadings and error variances; it
+typically provides a more accurate reliability estimate for
+unit-weighted sums. Both assume the scale is essentially unidimensional;
+α and ω coincide when tau-equivalence holds.</p>
+<p>We can just add one or more of the following arguments to
+<code><a href="../reference/score_pid5.html">score_pid5()</a></code>: <code>alpha</code> and <code>omega</code>.
+For the latter, we will need the <strong>lavaan</strong> package
+installed. If requested, a table of reliability results will be printed
+as a side-effect of the function (alongside any warnings from lavaan
+about convergence of the factor analysis models that omega is based
+on).</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">sim_pid5</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid_%d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span>,</span>
+<span>  version <span class="op">=</span> <span class="st">"FULL"</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  omega <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;                          scale    alpha   omega</span></span>
+<span><span class="co">#&gt; 1                    Anhedonia -0.21125      NA</span></span>
+<span><span class="co">#&gt; 2               Suspiciousness -0.21133 0.04105</span></span>
+<span><span class="co">#&gt; 3                  Risk Taking -0.01279 0.00697</span></span>
+<span><span class="co">#&gt; 4                  Impulsivity  0.14130      NA</span></span>
+<span><span class="co">#&gt; 5                 Eccentricity  0.05537 0.15236</span></span>
+<span><span class="co">#&gt; 6              Distractibility -0.15419 0.00807</span></span>
+<span><span class="co">#&gt; 7       Restricted Affectivity -0.14378      NA</span></span>
+<span><span class="co">#&gt; 8               Submissiveness -0.19363 0.11572</span></span>
+<span><span class="co">#&gt; 9                   Withdrawal -0.02902      NA</span></span>
+<span><span class="co">#&gt; 10                 Callousness  0.01469 0.02795</span></span>
+<span><span class="co">#&gt; 11       Separation Insecurity  0.06978 0.13065</span></span>
+<span><span class="co">#&gt; 12           Attention Seeking -0.03878 0.13480</span></span>
+<span><span class="co">#&gt; 13          Emotional Lability  0.17074 0.18400</span></span>
+<span><span class="co">#&gt; 14                Depressivity  0.02169 0.04407</span></span>
+<span><span class="co">#&gt; 15                   Hostility  0.28614      NA</span></span>
+<span><span class="co">#&gt; 16            Irresponsibility -0.17478      NA</span></span>
+<span><span class="co">#&gt; 17         Rigid Perfectionism  0.00235 0.04668</span></span>
+<span><span class="co">#&gt; 18    Perceptual Dysregulation  0.03406 0.03416</span></span>
+<span><span class="co">#&gt; 19                 Grandiosity -0.03978 0.00716</span></span>
+<span><span class="co">#&gt; 20               Deceitfulness  0.04425      NA</span></span>
+<span><span class="co">#&gt; 21               Perseveration  0.04237 0.12652</span></span>
+<span><span class="co">#&gt; 22                 Anxiousness  0.05602 0.25144</span></span>
+<span><span class="co">#&gt; 23          Intimacy Avoidance -0.30170      NA</span></span>
+<span><span class="co">#&gt; 24 Unusual Beliefs Experiences -0.10501      NA</span></span>
+<span><span class="co">#&gt; 25            Manipulativeness  0.06954 0.17643</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="validity-scales-for-the-pid-5">Validity Scales for the PID-5<a class="anchor" aria-label="anchor" href="#validity-scales-for-the-pid-5"></a>
 </h3>
@@ -245,7 +298,7 @@ function to calculate these scores and flag issues. The function
 arguments will be consistent with what we just learned. Note that,
 because the data is fake, we would expect there to be lots of validity
 issues.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> A total of 99 observations (99.0%) met criteria for inconsistent responding on the INC (0 missing).</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Consider removing them with `dplyr::filter(df, pid_INC &lt; 17)`</span></span>
@@ -267,6 +320,7 @@ issues.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>       0      25       4      41       24</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>       0      30       5      31       29</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 90 more rows</span></span></span></code></pre></div>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

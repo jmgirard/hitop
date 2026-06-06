@@ -120,3 +120,59 @@ validity_pid5(
 #> 10       0        7        0       14         7
 #> # ℹ 376 more rows
 ```
+
+## Scale Reliability
+
+As we compute scale scores, we can also estimate their inter-item
+reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α
+is fast and widely used, but it assumes tau-equivalence (all items load
+equally on a single factor); violations can make α under- or
+over-estimate reliability. ω is based on a congeneric single-factor
+model, allowing items to have different loadings and error variances; it
+typically provides a more accurate reliability estimate for
+unit-weighted sums. Both assume the scale is essentially unidimensional;
+α and ω coincide when tau-equivalence holds.
+
+We can just add one or more of the following arguments to
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md):
+`alpha` and `omega`. For the latter, we will need the **lavaan** package
+installed. If requested, a table of reliability results will be printed
+as a side-effect of the function (alongside any warnings from lavaan
+about convergence of the factor analysis models that omega is based on).
+
+``` r
+
+scores <- score_pid5(
+  data = ku_pid5sf,
+  items = sprintf("pid_%d", 1:100),
+  version = "SF",
+  alpha = TRUE,
+  omega = TRUE
+)
+#>                          scale alpha omega
+#> 1               Suspiciousness 0.663 0.665
+#> 2                  Impulsivity 0.804 0.808
+#> 3               Submissiveness 0.818 0.818
+#> 4                  Callousness 0.816 0.816
+#> 5                    Anhedonia 0.864 0.865
+#> 6                 Eccentricity 0.832 0.833
+#> 7                    Hostility 0.748 0.762
+#> 8                  Risk Taking 0.782 0.785
+#> 9                  Grandiosity 0.763 0.772
+#> 10    Perceptual Dysregulation 0.690 0.689
+#> 11       Separation Insecurity 0.771 0.789
+#> 12               Deceitfulness 0.757 0.765
+#> 13               Perseveration 0.743 0.747
+#> 14           Attention Seeking 0.800 0.806
+#> 15                 Anxiousness 0.852 0.853
+#> 16                Depressivity 0.829 0.830
+#> 17                  Withdrawal 0.739 0.742
+#> 18      Restricted Affectivity 0.674 0.678
+#> 19          Intimacy Avoidance 0.783 0.785
+#> 20         Rigid Perfectionism 0.759 0.762
+#> 21 Unusual Beliefs Experiences 0.642 0.662
+#> 22            Manipulativeness 0.747 0.746
+#> 23             Distractibility 0.853 0.853
+#> 24          Emotional Lability 0.842 0.845
+#> 25            Irresponsibility 0.614 0.619
+```
