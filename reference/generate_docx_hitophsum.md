@@ -9,7 +9,7 @@ branching logic, and items.
 ``` r
 generate_docx_hitophsum(
   file = "hitophsum_overview_1.0.docx",
-  papersize = c("letter", "a4"),
+  papersize = c("us", "a4"),
   title = "HiTOP-HSUM (v1.0) Overview",
   font_size = 10,
   font_family = "Times New Roman"
@@ -26,7 +26,7 @@ generate_docx_hitophsum(
 - papersize:
 
   Character string specifying the paper dimensions. Must be one of
-  `"letter"` or `"a4"`. Defaults to `"letter"`.
+  `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
 
 - title:
 

@@ -9,7 +9,7 @@ instructions, and optional scoring keys.
 ``` r
 generate_docx_hitopbr(
   file = "hitopbr_1.0.docx",
-  papersize = c("letter", "a4"),
+  papersize = c("us", "a4"),
   title = "HiTOP-BR (v1.0)",
   include_scoring = TRUE,
   font_size = 10,
@@ -27,7 +27,7 @@ generate_docx_hitopbr(
 - papersize:
 
   Character string specifying the paper dimensions. Must be one of
-  `"letter"` or `"a4"`. Defaults to `"letter"`.
+  `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
 
 - title:
 

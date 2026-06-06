@@ -37,16 +37,34 @@
   : Generate a Word Document for the HiTOP-SR Assessment
 - [`generate_docx_hitophsum()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitophsum.md)
   : Generate a Word Document for the HiTOP-HSUM Assessment Overview
+- [`generate_docx_pid5()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5.md)
+  : Generate a Word Document for the PID-5 (Full)
+- [`generate_docx_pid5sf()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5sf.md)
+  : Generate a Word Document for the PID-5-SF
+- [`generate_docx_pid5bf()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5bf.md)
+  : Generate a Word Document for the PID-5-BF
 - [`generate_qualtrics_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopbr.md)
   : Generate a Qualtrics Import File for the HiTOP-BR
 - [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
   : Generate a Qualtrics Import File for the HiTOP-SR
+- [`generate_qualtrics_pid5()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5.md)
+  : Generate a Qualtrics Import File for the PID-5 (Full)
+- [`generate_qualtrics_pid5sf()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5sf.md)
+  : Generate a Qualtrics Import File for the PID-5-SF
+- [`generate_qualtrics_pid5bf()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5bf.md)
+  : Generate a Qualtrics Import File for the PID-5-BF
 - [`generate_redcap_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopbr.md)
   : Generate a REDCap Instrument ZIP File for the HiTOP-BR
 - [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
   : Generate a REDCap Instrument ZIP File for the HiTOP-SR
 - [`generate_redcap_hitophsum()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.md)
   : Generate a REDCap Instrument ZIP File for the HiTOP-HSUM
+- [`generate_redcap_pid5()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5.md)
+  : Generate a REDCap Instrument ZIP File for the PID-5 (Full)
+- [`generate_redcap_pid5sf()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5sf.md)
+  : Generate a REDCap Instrument ZIP File for the PID-5-SF
+- [`generate_redcap_pid5bf()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5bf.md)
+  : Generate a REDCap Instrument ZIP File for the PID-5-BF
 
 ## Example Data
 

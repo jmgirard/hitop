@@ -8,6 +8,12 @@
   Instrument](https://jmgirard.github.io/hitop/articles/download-hitophsum.md):
 - [HiTOP-SR
   Instrument](https://jmgirard.github.io/hitop/articles/download-hitopsr.md):
+- [PID-5
+  Instrument](https://jmgirard.github.io/hitop/articles/download-pid5.md):
+- [PID-5-BF
+  Instrument](https://jmgirard.github.io/hitop/articles/download-pid5bf.md):
+- [PID-5-SF
+  Instrument](https://jmgirard.github.io/hitop/articles/download-pid5sf.md):
 - [Scoring the
   HiTOP-BR](https://jmgirard.github.io/hitop/articles/hitopbr_scoring.md):
 - [Scoring the

@@ -51,3 +51,24 @@ rows and 12 columns:
 - Text:
 
   Item text, copyright APA
+
+## Examples
+
+``` r
+pid_items
+#> # A tibble: 220 × 15
+#>     FULL    SF    BF Reverse   INC  INCS   ORS  ORSS   PRD  PRDS  SDTD SDTDS
+#>    <dbl> <dbl> <dbl> <lgl>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#>  1     1    NA    NA FALSE      NA    NA    NA    NA    NA    NA    NA    NA
+#>  2     2     1    NA FALSE      NA    NA     1     1     1     1     1     1
+#>  3     3    NA     1 FALSE      NA    NA    NA    NA    NA    NA    NA    NA
+#>  4     4     2     2 FALSE      NA    NA    NA    NA    NA    NA     2     2
+#>  5     5    NA    NA FALSE      NA    NA    NA    NA    NA    NA    NA    NA
+#>  6     6    NA    NA FALSE      NA    NA    NA    NA    NA    NA    NA    NA
+#>  7     7    NA    NA TRUE       NA    NA    NA    NA    NA    NA    NA    NA
+#>  8     8    NA    NA FALSE      NA    NA     2    NA    NA    NA    NA    NA
+#>  9     9     3    NA FALSE      NA    NA    NA    NA    NA    NA    NA    NA
+#> 10    10    NA    NA FALSE      NA    NA    NA    NA    NA    NA    NA    NA
+#> # ℹ 210 more rows
+#> # ℹ 3 more variables: Facet <chr>, Domain <chr>, Text <chr>
+```

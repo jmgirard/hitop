@@ -1,0 +1,43 @@
+# Generate a Word Document for the PID-5 (Full)
+
+Generate a Word Document for the PID-5 (Full)
+
+## Usage
+
+``` r
+generate_docx_pid5(
+  file = "pid5_1.0.docx",
+  papersize = c("us", "a4"),
+  title = "PID-5 (Full)",
+  include_scoring = TRUE,
+  font_size = 10,
+  font_family = "Times New Roman"
+)
+```
+
+## Arguments
+
+- file:
+
+  Character string specifying the output file path.
+
+- papersize:
+
+  Character string specifying the paper dimensions. Must be one of
+  `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
+
+- title:
+
+  Character string for the document header title.
+
+- include_scoring:
+
+  Logical. If `TRUE`, appends a page break and scoring instructions.
+
+- font_size:
+
+  Numeric value specifying the base font size in points.
+
+- font_family:
+
+  Character string specifying the font family to be used.
