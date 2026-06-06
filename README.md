@@ -68,10 +68,10 @@ pak::pak("jmgirard/hitop")
 - [ ] Add Reliability Functions
   - [x] HiTOP-SR (405)
   - [x] HiTOP-BR (45)
+  - [x] PID-5 (220)
+  - [x] PID-5-SF (100)
+  - [x] PID-5-BF (25)
   - [ ] HiTOP-HSUM (650) - *waiting for feedback*
-  - [ ] PID-5 (220) - *todo*
-  - [ ] PID-5-SF (100) - *todo*
-  - [ ] PID-5-BF (25) - *todo*
   - [ ] PID-5-BFP (36) - *todo*
 - [ ] Add Scoring Tutorials
   - [x] HiTOP-SR (405)
@@ -92,15 +92,15 @@ pak::pak("jmgirard/hitop")
 
 ### Phase 2
 
-- [ ] Add Normative Data (for PID-5) - todo
-- [ ] Add Norming Functions (for PID-5) - todo
-- [ ] Add Visualization Functions - todo
-- [ ] Add Package Unit Testing - todo
+- [ ] Add Normative Data (for PID-5) - *todo*
+- [ ] Add Norming Functions (for PID-5) - *todo*
+- [ ] Add Visualization Functions - *todo*
+- [ ] Add Package Unit Testing - *todo*
 
 ### Phase 3
 
-- [ ] Add Normative Data (for HiTOP) - waiting for data
-- [ ] Add Norming Functions (for HiTOP) - waiting for data
+- [ ] Add Normative Data (for HiTOP) - *waiting for data*
+- [ ] Add Norming Functions (for HiTOP) - *waiting for data*
 - [ ] Add Individual Report Generation
 - [ ] Add Bass-Ackwards Functions
 - [ ] Add Extended Bass-Ackwards Functions
