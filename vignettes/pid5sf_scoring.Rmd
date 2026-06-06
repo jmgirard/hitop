@@ -51,3 +51,20 @@ validity_pid5(
   append = FALSE
 )
 ```
+
+## Scale Reliability
+
+As we compute scale scores, we can also estimate their inter-item reliability using Cronbach's α (alpha) or McDonald's ω (omega total). α is fast and widely used, but it assumes tau-equivalence (all items load equally on a single factor); violations can make α under- or over-estimate reliability. ω is based on a congeneric single-factor model, allowing items to have different loadings and error variances; it typically provides a more accurate reliability estimate for unit-weighted sums. Both assume the scale is essentially unidimensional; α and ω coincide when tau-equivalence holds.
+
+We can just add one or more of the following arguments to `score_pid5()`: `alpha` and `omega`. For the latter, we will need the **lavaan** package installed. If requested, a table of reliability results will be printed as a side-effect of the function (alongside any warnings from lavaan about convergence of the factor analysis models that omega is based on).
+
+```{r reliability}
+#| warning: false
+scores <- score_pid5(
+  data = ku_pid5sf,
+  items = sprintf("pid_%d", 1:100),
+  version = "SF",
+  alpha = TRUE,
+  omega = TRUE
+)
+```

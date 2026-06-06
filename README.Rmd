@@ -85,15 +85,15 @@ pak::pak("jmgirard/hitop")
 
 ### Phase 2
 
-- [ ] Add Normative Data (for PID-5) - todo
-- [ ] Add Norming Functions (for PID-5) - todo
-- [ ] Add Visualization Functions - todo
-- [ ] Add Package Unit Testing - todo
+- [ ] Add Normative Data (for PID-5) - *todo*
+- [ ] Add Norming Functions (for PID-5) - *todo*
+- [ ] Add Visualization Functions - *todo*
+- [ ] Add Package Unit Testing - *todo*
 
 ### Phase 3
 
-- [ ] Add Normative Data (for HiTOP) - waiting for data
-- [ ] Add Norming Functions (for HiTOP) - waiting for data
+- [ ] Add Normative Data (for HiTOP) - *waiting for data*
+- [ ] Add Norming Functions (for HiTOP) - *waiting for data*
 - [ ] Add Individual Report Generation
 - [ ] Add Bass-Ackwards Functions
 - [ ] Add Extended Bass-Ackwards Functions

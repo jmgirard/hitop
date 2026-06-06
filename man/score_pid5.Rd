@@ -12,6 +12,8 @@ score_pid5(
   prefix = "pid_",
   na.rm = TRUE,
   calc_se = FALSE,
+  alpha = FALSE,
+  omega = FALSE,
   append = TRUE,
   tibble = TRUE
 )
@@ -38,6 +40,13 @@ ignored when calculating scale scores. (default = \code{TRUE})}
 \item{calc_se}{An optional logical indicating whether to calculate the
 standard error of each scale score. (default = \code{FALSE})}
 
+\item{alpha}{Optional logical; if \code{TRUE}, compute and print Cronbach’s alpha
+for each scale. (default = \code{FALSE})}
+
+\item{omega}{Optional logical; if \code{TRUE}, compute and print McDonald’s omega
+for each scale using Pearson correlations (i.e., non-ordinal). (default =
+\code{FALSE})}
+
 \item{append}{An optional logical indicating whether the new columns should
 be added to the end of the \code{data} input. (default = \code{TRUE})}
 
@@ -52,6 +61,11 @@ errors (if requested) and all original \code{data} columns (if requested)
 Calculate scale scores on the Personality Inventory for DSM-5: full version
 (PID-5, 220 items), short form version (PID-5-SF, 100 items), or brief form
 version (PID-5-BF, 25 items) from item-level data.
+}
+\details{
+If either \code{alpha} or \code{omega} are \code{TRUE}, the function prints a
+per-scale reliability summary. Only reliability columns that contain at
+least one non-\code{NA} value are shown (the \code{scale} column is always shown).
 }
 \references{
 Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &

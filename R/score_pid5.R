@@ -18,10 +18,19 @@
 #'   ignored when calculating scale scores. (default = `TRUE`)
 #' @param calc_se An optional logical indicating whether to calculate the
 #'   standard error of each scale score. (default = `FALSE`)
+#' @param alpha Optional logical; if `TRUE`, compute and print Cronbach’s alpha
+#'   for each scale. (default = `FALSE`)
+#' @param omega Optional logical; if `TRUE`, compute and print McDonald’s omega
+#'   for each scale using Pearson correlations (i.e., non-ordinal). (default =
+#'   `FALSE`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a \link[tibble]{tibble}. (default = `TRUE`)
+#'
+#' @details If either `alpha` or `omega` are `TRUE`, the function prints a
+#'   per-scale reliability summary. Only reliability columns that contain at
+#'   least one non-`NA` value are shown (the `scale` column is always shown).
 #'
 #' @return A \link[tibble]{tibble} containing all scale scores and standard
 #'   errors (if requested) and all original `data` columns (if requested)
@@ -52,6 +61,8 @@ score_pid5 <- function(
   prefix = "pid_",
   na.rm = TRUE,
   calc_se = FALSE,
+  alpha = FALSE,
+  omega = FALSE,
   append = TRUE,
   tibble = TRUE
 ) {
@@ -72,6 +83,8 @@ score_pid5 <- function(
   stopifnot(rlang::is_string(prefix))
   stopifnot(rlang::is_bool(na.rm))
   stopifnot(rlang::is_bool(calc_se))
+  stopifnot(rlang::is_bool(alpha))
+  stopifnot(rlang::is_bool(omega))
   stopifnot(rlang::is_bool(append))
   stopifnot(rlang::is_bool(tibble))
 
@@ -125,6 +138,43 @@ score_pid5 <- function(
       )
     colnames(sems_scales) <- paste0(colnames(sems_scales), "_se")
     out <- cbind(out, sems_scales)
+  }
+
+  ## Preallocate reliability data frame
+  reliability_df <- data.frame(
+    scale = snakecase::to_title_case(names(items_scales)),
+    alpha = NA_real_,
+    omega = NA_real_
+  )
+
+  # Calculate alpha per scale if requested
+  if (isTRUE(alpha)) {
+    safe_alpha <- function(idx) {
+      df_sub <- as.data.frame(data_items[, idx, drop = FALSE])
+      tryCatch(
+        calc_alpha(df_sub),
+        error = function(e) NA_real_
+      )
+    }
+    reliability_df[, "alpha"] <- vapply(items_scales, safe_alpha, numeric(1))
+  }
+
+  # Calculate omega per scale if requested
+  if (isTRUE(omega)) {
+    safe_omega <- function(idx) {
+      df_sub <- as.data.frame(data_items[, idx, drop = FALSE])
+      tryCatch(
+        calc_omega(df_sub),
+        error = function(e) NA_real_
+      )
+    }
+    reliability_df[, "omega"] <- vapply(items_scales, safe_omega, numeric(1))
+  }
+
+  # If any reliabilities are requested, print those that were calculated
+  if (isTRUE(alpha) || isTRUE(omega)) {
+    keep <- c("scale", if (isTRUE(alpha)) "alpha", if (isTRUE(omega)) "omega")
+    print(reliability_df[, keep, drop = FALSE], digits = 3)
   }
 
   ## Append output to input tibble if requested
