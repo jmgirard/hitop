@@ -52,7 +52,7 @@ validity_pid5(
 )
 ```
 
-## Scale Reliability
+### Scale Reliability
 
 As we compute scale scores, we can also estimate their inter-item reliability using Cronbach's α (alpha) or McDonald's ω (omega total). α is fast and widely used, but it assumes tau-equivalence (all items load equally on a single factor); violations can make α under- or over-estimate reliability. ω is based on a congeneric single-factor model, allowing items to have different loadings and error variances; it typically provides a more accurate reliability estimate for unit-weighted sums. Both assume the scale is essentially unidimensional; α and ω coincide when tau-equivalence holds.
 
