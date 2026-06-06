@@ -24,4 +24,7 @@ pid_items
 \description{
 Information about the items in different versions of the PID-5.
 }
+\examples{
+pid_items
+}
 \keyword{datasets}

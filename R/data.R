@@ -14,6 +14,8 @@
 #'   \item{Domain}{Name of the domain}
 #'   \item{Text}{Item text, copyright APA}
 #' }
+#' @examples
+#' pid_items
 "pid_items"
 
 #' Personality Inventory for DSM-5 Scale Data
@@ -162,6 +164,8 @@
 #' \describe{
 #'   \item{pid_1 to pid_220}{Responses on each item}
 #' }
+#' @examples
+#' sim_pid5
 "sim_pid5"
 
 #' Simulated PID-5-SF Data
@@ -172,6 +176,8 @@
 #' \describe{
 #'   \item{pid_1 to pid_100}{Responses on each item}
 #' }
+#' @examples
+#' sim_pid5sf
 "sim_pid5sf"
 
 #' Simulated PID-5-BF Data
@@ -182,6 +188,8 @@
 #' \describe{
 #'   \item{pid_1 to pid_25}{Responses on each item}
 #' }
+#' @examples
+#' sim_pid5bf
 "sim_pid5bf"
 
 #' Real PID-5-SF Data
@@ -194,6 +202,8 @@
 #'   \item{response_id}{An anonymized id for each participant}
 #'   \item{pid_1 to pid_100}{Responses on each item}
 #' }
+#' @examples
+#' ku_pid5sf
 "ku_pid5sf"
 
 #' Real HiTOP-BR Data

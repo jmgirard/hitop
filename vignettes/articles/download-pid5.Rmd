@@ -1,0 +1,131 @@
+---
+title: "PID-5 Instrument"
+output: rmarkdown::html_vignette
+toc: false
+vignette: >
+  %\VignetteIndexEntry{PID-5 Instrument}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Welcome to the Personality Inventory for DSM-5 (PID-5) instrument resources page. This questionnaire contains 220 items and can be used to score 5 domains scales and 25 facet subscales indexing different aspects of personality pathology. Here you can download ready-to-use versions of the instrument or explore the powerful tools provided by the `hitop` R package to customize, score, and analyze your data.
+
+```{=html}
+<style>
+  /* Expand the main content area to full width */
+  main.col-md-9 {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+  }
+
+  /* Hide the empty sidebar container entirely */
+  aside.col-md-3 {
+    display: none !important;
+  }
+</style>
+
+<h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
+<p class="text-muted">Choose the format that best fits your immediate research needs.</p>
+
+<div class="row mt-4">
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📄 Printable Document</h5>
+        <p class="card-text text-muted">Use these Microsoft Word documents for printing, paper administration, or sending to the IRB.</p>
+        <div class="d-grid gap-2">
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_1.0_A4.docx" class="btn btn-outline-primary">English (A4 Paper)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_1.0_US.docx" class="btn btn-outline-primary">English (US Paper)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📊 Qualtrics Import</h5>
+        <p class="card-text text-muted">Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.</p>
+        <div class="d-grid gap-2 mt-4">
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_1.0_qualtrics.txt" class="btn btn-outline-primary">English (TXT File)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🏥 REDCap Import</h5>
+        <p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
+        <div class="d-grid gap-2 mt-4">
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_1.0_redcap.zip" class="btn btn-outline-primary">English (ZIP File)</a>
+          <a href="../reference/generate_redcap_hitopsr.html#details" class="btn btn-outline-primary">Import Instructions</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="mt-5 mb-4">
+
+<h3 class="mb-3">Explore the R Package Features</h3>
+<p class="text-muted">The <code>hitop</code> package provides a complete toolkit for working with the PID-5. If you are comfortable using R, you can leverage these functions to streamline your workflow.</p>
+
+<div class="row mt-4">
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📋 Instrument Information</h5>
+        <p class="card-text">Access the complete item dictionary, structural hierarchy, and subscale definitions directly from the package namespace.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/pid_items.html" class="btn btn-sm btn-outline-secondary">Items</a>
+          <a href="../reference/pid_scales.html" class="btn btn-sm btn-outline-secondary">Scales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🛠️ Custom File Generation</h5>
+        <p class="card-text">Need to change the formatting, adapt the instructions, or translate the text? Build customized DOCX, Qualtrics, and REDCap files programmatically.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/generate_docx_pid5.html" class="btn btn-sm btn-outline-secondary">Printable</a>
+          <a href="../reference/generate_qualtrics_pid5.html" class="btn btn-sm btn-outline-secondary">Qualtrics</a>
+          <a href="../reference/generate_redcap_pid5.html" class="btn btn-sm btn-outline-secondary">REDCap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🧮 Scoring & Reliability</h5>
+        <p class="card-text">Calculate subscales, handle reverse-coding, and generate reliability metrics in one step, or access the underlying internal consistency functions directly.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/score_pid5.html" class="btn btn-sm btn-outline-secondary">Score PID-5</a>
+          <a href="../reference/validity_pid5.html" class="btn btn-sm btn-outline-secondary">Validity Scales</a>
+          <a href="../reference/calc_alpha.html" class="btn btn-sm btn-outline-secondary">Alpha Reliability</a>
+          <a href="../reference/calc_omega.html" class="btn btn-sm btn-outline-secondary">Omega Reliability</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📊 Example Datasets</h5>
+        <p class="card-text">Test your analysis pipelines using built-in datasets, including a real validation sample and simulated respondent data.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/sim_pid5.html" class="btn btn-sm btn-outline-secondary">Simulated Data</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```

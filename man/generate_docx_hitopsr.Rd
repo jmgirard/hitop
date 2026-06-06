@@ -6,7 +6,7 @@
 \usage{
 generate_docx_hitopsr(
   file = "hitopsr_1.0.docx",
-  papersize = c("letter", "a4"),
+  papersize = c("us", "a4"),
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
   include_subscales = FALSE,
@@ -19,7 +19,7 @@ generate_docx_hitopsr(
 \code{"hitopsr_1.0.docx"}.}
 
 \item{papersize}{Character string specifying the paper dimensions. Must be
-one of \code{"letter"} or \code{"a4"}. Defaults to \code{"letter"}.}
+one of \code{"us"} (8.5x11 inches) or \code{"a4"} (210x297 mm). Defaults to \code{"us"}.}
 
 \item{title}{Character string for the document header title. Defaults to
 \code{"HiTOP-SR (v1.0)"}.}

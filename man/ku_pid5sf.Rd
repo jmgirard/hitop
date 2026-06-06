@@ -18,4 +18,7 @@ ku_pid5sf
 Real responses to items on the PID-5-SF (with 100 items) from University of
 Kansas students.
 }
+\examples{
+ku_pid5sf
+}
 \keyword{datasets}

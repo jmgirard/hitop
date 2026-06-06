@@ -55,3 +55,19 @@ pid_scales <- list(
   BF = pid5bf_scales
 )
 usethis::use_data(pid_scales, overwrite = TRUE)
+
+# Standard instructions and response choices for the PID-5
+pid_instructions <- list(
+  start = "This is a list of things different people might say about themselves. We are interested in how you would describe yourself. There are no right or wrong answers. So you can describe yourself as honestly as possible, we will keep your responses confidential. We'd like you to take your time and read each statement carefully, selecting the response that best describes you.",
+  options = data.frame(
+    value = 0:3,
+    label = c(
+      "Very False or Often False",
+      "Sometimes or Somewhat False",
+      "Sometimes or Somewhat True",
+      "Very True or Often True"
+    ),
+    stringsAsFactors = FALSE
+  )
+)
+usethis::use_data(pid_instructions, overwrite = TRUE)

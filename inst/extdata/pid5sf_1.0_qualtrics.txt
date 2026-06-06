@@ -1,0 +1,1320 @@
+[[AdvancedFormat]]
+
+[[Block:PID-5-SF]]
+
+[[Question:DB]]
+[[ID:start_instructions]]
+This is a list of things different people might say about themselves. We are interested in how you would describe yourself. There are no right or wrong answers. So you can describe yourself as honestly as possible, we will keep your responses confidential. We'd like you to take your time and read each statement carefully, selecting the response that best describes you.
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_001]]
+Plenty of people are out to get me
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_002]]
+I feel like I act totally on impulse
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_003]]
+I change what I do depending on what others want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_004]]
+I usually do what others think I should do
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_005]]
+I usually do things on impulse without thinking about what might happen as a result
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_006]]
+Even though I know better, I can't stop making rash decisions
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_007]]
+I really don't care if I make other people suffer
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_008]]
+I always do things on the spur of the moment
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_009]]
+Nothing seems to interest me very much
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_010]]
+People have told me that I think about things in a really strange way
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_011]]
+I almost never enjoy life
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_012]]
+I am easily angered
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_013]]
+I have no limits when it comes to doing dangerous things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_014]]
+To be honest, I'm just more important than other people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_015]]
+It's weird, but sometimes ordinary objects seem to be a different shape than usual
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_016]]
+I do a lot of things that others consider risky
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_017]]
+I worry a lot about being alone
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_018]]
+I often make up things about myself to help me get what I want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_019]]
+I keep approaching things the same way, even when it isn't working
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_020]]
+I do what other people tell me to do
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_021]]
+I like to take risks
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_022]]
+Others seem to think I'm quite odd or unusual
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_023]]
+I love getting the attention of other people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_024]]
+I worry a lot about terrible things that might happen
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_025]]
+I have trouble changing how I'm doing something even if what I'm doing isn't going well
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_026]]
+The world would be better off if I were dead
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_027]]
+I keep my distance from people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_028]]
+I don't get emotional
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_029]]
+I prefer to keep romance out of my life
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_030]]
+I don't show emotions strongly
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_031]]
+I have a very short temper
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_032]]
+I get fixated on certain things and can't stop
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_033]]
+If something I do isn't absolutely perfect, it's simply not acceptable
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_034]]
+I often have unusual experiences, such as sensing the presence of someone who isn't actually there
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_035]]
+I'm good at making people do what I want them to do
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_036]]
+I'm always worrying about something
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_037]]
+I'm better than almost everyone else
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_038]]
+I'm always on my guard for someone trying to trick or harm me
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_039]]
+I have trouble keeping my mind focused on what needs to be done
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_040]]
+I'm just not very interested in having sexual relationships
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_041]]
+I get emotional easily, often for very little reason
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_042]]
+Even though it drives other people crazy, I insist on absolute perfection in everything I do
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_043]]
+I almost never feel happy about my day-to-day activities
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_044]]
+Sweet-talking others helps me get what I want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_045]]
+I fear being alone in life more than anything else
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_046]]
+I get stuck on one way of doing things, even when it's clear it won't work
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_047]]
+I'm often pretty careless with my own and others' things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_048]]
+I am a very anxious person
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_049]]
+I am easily distracted
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_050]]
+It seems like I'm always getting a "raw deal" from others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_051]]
+I don't hesitate to cheat if it gets me ahead
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_052]]
+I don't like spending time with others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_053]]
+I never know where my emotions will go from moment to moment
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_054]]
+I have seen things that weren't really there
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_055]]
+I can't focus on things for very long
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_056]]
+I steer clear of romantic relationships
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_057]]
+I'm not interested in making friends
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_058]]
+I'll do just about anything to keep someone from abandoning me
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_059]]
+Sometimes I can influence other people just by sending my thoughts to them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_060]]
+Life looks pretty bleak to me
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_061]]
+I think about things in odd ways that don't make sense to most people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_062]]
+I don't care if my actions hurt others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_063]]
+Sometimes I feel "controlled" by thoughts that belong to someone else
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_064]]
+I make promises that I don't really intend to keep
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_065]]
+Nothing seems to make me feel good
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_066]]
+I get irritated easily by all sorts of things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_067]]
+I do what I want regardless of how unsafe it might be
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_068]]
+I often forget to pay my bills
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_069]]
+I'm good at conning people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_070]]
+Everything seems pointless to me
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_071]]
+I get emotional over every little thing
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_072]]
+It's no big deal if I hurt other peoples' feelings
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_073]]
+I never show emotions to others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_074]]
+I have no worth as a person
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_075]]
+I am usually pretty hostile
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_076]]
+I've skipped town to avoid responsibilities
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_077]]
+I like being a person who gets noticed
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_078]]
+I'm always fearful or on edge about bad things that might happen
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_079]]
+I never want to be alone
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_080]]
+I keep trying to make things perfect, even when I've gotten them as good as they're likely to get
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_081]]
+My emotions are unpredictable
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_082]]
+I don't care about other peoples' problems
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_083]]
+I don't react much to things that seem to make others emotional
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_084]]
+I avoid social events
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_085]]
+I deserve special treatment
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_086]]
+I suspect that even my so-called "friends" betray me a lot
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_087]]
+I crave attention
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_088]]
+Sometimes I think someone else is removing thoughts from my head
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_089]]
+I simply won't put up with things being out of their proper places
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_090]]
+I often have to deal with people who are less important than me
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_091]]
+I get pulled off-task by even minor distractions
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_092]]
+I try to do what others want me to do
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_093]]
+I prefer being alone to having a close romantic partner
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_094]]
+I often have thoughts that make sense to me but that other people say are strange
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_095]]
+I use people to get what I want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_096]]
+I've had some really weird experiences that are very difficult to explain
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_097]]
+I like to draw attention to myself
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_098]]
+Things around me often feel unreal, or more real than usual
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_099]]
+I'll stretch the truth if it's to my advantage
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5SF_100]]
+It is easy for me to take advantage of others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+

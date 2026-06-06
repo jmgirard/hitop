@@ -16,4 +16,7 @@ sim_pid5
 \description{
 Simulated responses to items on the full PID-5 (with 220 items).
 }
+\examples{
+sim_pid5
+}
 \keyword{datasets}

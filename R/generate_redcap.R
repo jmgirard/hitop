@@ -96,6 +96,99 @@ generate_redcap_hitopsr <- function(
   )
 }
 
+#' Generate a REDCap Instrument ZIP File for the PID-5 (Full)
+#'
+#' @details **Importing (Uploading) Instruments into a REDCap Project:**
+#' 1. Log in to your REDCap account and navigate to the desired project.
+#' 2. Click on the "Designer" link in the left menu bar under "Project Home and
+#'   Design".
+#' 3. In the main page, under "Data Collection Instruments", look for the
+#'   "Upload instrument ZIP" option and click the "Upload" button.
+#' 4. Click "Choose File", navigate to where you have the measure saved as a ZIP
+#'   folder, and select the ZIP folder containing your instrument.
+#' 5. Click "Upload instrument ZIP" button to begin the import process.
+#' 6. Find the imported instrument in your list of measures and review for
+#'   accuracy.
+#' 7. Test the instrument to ensure proper functionality within your project.
+#'
+#' @param file Character string. The destination path for the output ZIP file.
+#' @param form_name Character string. The internal name of the form in REDCap.
+#' @param required Logical. Whether the items should be marked as required.
+#' @param breaks Integer or `NULL`. The number of items to display before a page break.
+#'
+#' @export
+generate_redcap_pid5 <- function(
+  file = "pid5_redcap.zip",
+  form_name = "pid5_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  # Filter to non-missing FULL items and sort
+  items <- pid_items[!is.na(pid_items$FULL), ]
+  items <- items[order(items$FULL), ]
+
+  # Relocate the FULL column to the first position
+  items <- items[, c("FULL", setdiff(names(items), "FULL"))]
+
+  build_redcap_zip(
+    items = items,
+    instructions = pid_instructions,
+    file = file,
+    instrument = "PID5",
+    form_name = form_name,
+    required = required,
+    breaks = breaks
+  )
+}
+
+#' Generate a REDCap Instrument ZIP File for the PID-5-SF
+#'
+#' @export
+generate_redcap_pid5sf <- function(
+  file = "pid5sf_redcap.zip",
+  form_name = "pid5sf_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  items <- pid_items[!is.na(pid_items$SF), ]
+  items <- items[order(items$SF), ]
+  items <- items[, c("SF", setdiff(names(items), "SF"))]
+
+  build_redcap_zip(
+    items = items,
+    instructions = pid_instructions,
+    file = file,
+    instrument = "PID5SF",
+    form_name = form_name,
+    required = required,
+    breaks = breaks
+  )
+}
+
+#' Generate a REDCap Instrument ZIP File for the PID-5-BF
+#'
+#' @export
+generate_redcap_pid5bf <- function(
+  file = "pid5bf_redcap.zip",
+  form_name = "pid5bf_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  items <- pid_items[!is.na(pid_items$BF), ]
+  items <- items[order(items$BF), ]
+  items <- items[, c("BF", setdiff(names(items), "BF"))]
+
+  build_redcap_zip(
+    items = items,
+    instructions = pid_instructions,
+    file = file,
+    instrument = "PID5BF",
+    form_name = form_name,
+    required = required,
+    breaks = breaks
+  )
+}
+
 # Internal Helper: Build the REDCap ZIP file
 build_redcap_zip <- function(
   items,

@@ -76,6 +76,87 @@ generate_qualtrics_hitopsr <- function(
   )
 }
 
+#' Generate a Qualtrics Import File for the PID-5 (Full)
+#'
+#' @param file Character string specifying the output file path.
+#' @param block_name Character string specifying the name of the block in Qualtrics.
+#' @param id_prefix Character string specifying the prefix for the question IDs.
+#' @param include_instructions Logical. If `TRUE`, includes instructions block.
+#' @param breaks Integer or `NULL`. The number of items to display before a page break.
+#'
+#' @export
+generate_qualtrics_pid5 <- function(
+  file = "pid5_qualtrics.txt",
+  block_name = "PID-5",
+  id_prefix = "PID5",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  items <- pid_items[!is.na(pid_items$FULL), ]
+  items <- items[order(items$FULL), ]
+  items <- items[, c("FULL", setdiff(names(items), "FULL"))]
+
+  build_qualtrics_txt(
+    items = items,
+    instructions = pid_instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks
+  )
+}
+
+#' Generate a Qualtrics Import File for the PID-5-SF
+#'
+#' @export
+generate_qualtrics_pid5sf <- function(
+  file = "pid5sf_qualtrics.txt",
+  block_name = "PID-5-SF",
+  id_prefix = "PID5SF",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  items <- pid_items[!is.na(pid_items$SF), ]
+  items <- items[order(items$SF), ]
+  items <- items[, c("SF", setdiff(names(items), "SF"))]
+
+  build_qualtrics_txt(
+    items = items,
+    instructions = pid_instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks
+  )
+}
+
+#' Generate a Qualtrics Import File for the PID-5-BF
+#'
+#' @export
+generate_qualtrics_pid5bf <- function(
+  file = "pid5bf_qualtrics.txt",
+  block_name = "PID-5-BF",
+  id_prefix = "PID5BF",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  items <- pid_items[!is.na(pid_items$BF), ]
+  items <- items[order(items$BF), ]
+  items <- items[, c("BF", setdiff(names(items), "BF"))]
+
+  build_qualtrics_txt(
+    items = items,
+    instructions = pid_instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks
+  )
+}
+
 # Internal Helper: Build the Qualtrics text file
 build_qualtrics_txt <- function(
   items,

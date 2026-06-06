@@ -7,7 +7,7 @@
 #' @param file Character string specifying the output file path. Defaults to
 #'   `"hitopbr_1.0.docx"`.
 #' @param papersize Character string specifying the paper dimensions. Must be
-#'   one of `"letter"` or `"a4"`. Defaults to `"letter"`.
+#'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
 #' @param title Character string for the document header title. Defaults to
 #'   `"HiTOP-BR (v1.0)"`.
 #' @param include_scoring Logical. If `TRUE` (default), appends a page break and
@@ -22,7 +22,7 @@
 #' @export
 generate_docx_hitopbr <- function(
   file = "hitopbr_1.0.docx",
-  papersize = c("letter", "a4"),
+  papersize = c("us", "a4"),
   title = "HiTOP-BR (v1.0)",
   include_scoring = TRUE,
   font_size = 10,
@@ -77,7 +77,7 @@ generate_docx_hitopbr <- function(
 #' @param file Character string specifying the output file path. Defaults to
 #'   `"hitopsr_1.0.docx"`.
 #' @param papersize Character string specifying the paper dimensions. Must be
-#'   one of `"letter"` or `"a4"`. Defaults to `"letter"`.
+#'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
 #' @param title Character string for the document header title. Defaults to
 #'   `"HiTOP-SR (v1.0)"`.
 #' @param include_scoring Logical. If `TRUE` (default), appends a page break and
@@ -94,7 +94,7 @@ generate_docx_hitopbr <- function(
 #' @export
 generate_docx_hitopsr <- function(
   file = "hitopsr_1.0.docx",
-  papersize = c("letter", "a4"),
+  papersize = c("us", "a4"),
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
   include_subscales = FALSE,
@@ -166,7 +166,7 @@ generate_docx_hitopsr <- function(
 
 # Internal Helper: Get page dimensions based on paper size
 get_page_dims <- function(papersize) {
-  if (papersize == "letter") {
+  if (papersize == "us") {
     list(w = 8.5, h = 11.0, pw = 8.5 - 1.5)
   } else {
     list(w = 8.27, h = 11.69, pw = 8.27 - 1.5)
@@ -397,7 +397,7 @@ build_hitop_doc <- function(
 #' @param file Character string specifying the output file path. Defaults to
 #'   `"hitophsum_overview_1.0.docx"`.
 #' @param papersize Character string specifying the paper dimensions. Must be
-#'   one of `"letter"` or `"a4"`. Defaults to `"letter"`.
+#'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
 #' @param title Character string for the document header title. Defaults to
 #'   `"HiTOP-HSUM (v1.0) Overview"`.
 #' @param font_size Numeric value specifying the base font size in points.
@@ -410,7 +410,7 @@ build_hitop_doc <- function(
 #' @export
 generate_docx_hitophsum <- function(
   file = "hitophsum_overview_1.0.docx",
-  papersize = c("letter", "a4"),
+  papersize = c("us", "a4"),
   title = "HiTOP-HSUM (v1.0) Overview",
   font_size = 10,
   font_family = "Times New Roman"
@@ -919,4 +919,180 @@ generate_docx_hitophsum <- function(
   print(my_doc, target = file)
   cli::cli_alert_success("Document successfully created at {.file {file}}")
   invisible(file)
+}
+
+#' Generate a Word Document for the PID-5 (Full)
+#'
+#' @param file Character string specifying the output file path.
+#' @param papersize Character string specifying the paper dimensions. Must be
+#'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
+#' @param title Character string for the document header title.
+#' @param include_scoring Logical. If `TRUE`, appends a page break and scoring instructions.
+#' @param font_size Numeric value specifying the base font size in points.
+#' @param font_family Character string specifying the font family to be used.
+#'
+#' @export
+generate_docx_pid5 <- function(
+  file = "pid5_1.0.docx",
+  papersize = c("us", "a4"),
+  title = "PID-5 (Full)",
+  include_scoring = TRUE,
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  papersize <- match.arg(papersize)
+  dims <- get_page_dims(papersize)
+
+  items <- pid_items[!is.na(pid_items$FULL), ]
+  items <- items[order(items$FULL), ]
+
+  t1 <- make_items_table(
+    items,
+    "FULL",
+    pid_instructions$options,
+    dims$pw,
+    font_size,
+    font_family
+  )
+
+  t2 <- NULL
+  if (include_scoring) {
+    scales_to_score <- pid_scales$FULL
+    names(scales_to_score)[names(scales_to_score) == "Facet"] <- "Scale"
+
+    t2 <- make_scoring_table(
+      scales_to_score,
+      "FULL",
+      dims$pw,
+      font_size,
+      font_family
+    )
+  }
+
+  scoring_msg <- "Average the responses for the following item numbers. Reverse-scored items are indicated with (R)."
+
+  build_hitop_doc(
+    file,
+    title,
+    pid_instructions$start,
+    scoring_msg,
+    t1,
+    t2,
+    include_scoring,
+    dims,
+    font_size,
+    font_family
+  )
+}
+
+#' Generate a Word Document for the PID-5-SF
+#'
+#' @export
+generate_docx_pid5sf <- function(
+  file = "pid5sf_1.0.docx",
+  papersize = c("us", "a4"),
+  title = "PID-5-SF",
+  include_scoring = TRUE,
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  papersize <- match.arg(papersize)
+  dims <- get_page_dims(papersize)
+
+  items <- pid_items[!is.na(pid_items$SF), ]
+  items <- items[order(items$SF), ]
+
+  t1 <- make_items_table(
+    items,
+    "SF",
+    pid_instructions$options,
+    dims$pw,
+    font_size,
+    font_family
+  )
+
+  t2 <- NULL
+  if (include_scoring) {
+    scales_to_score <- pid_scales$SF
+    names(scales_to_score)[names(scales_to_score) == "Facet"] <- "Scale"
+
+    t2 <- make_scoring_table(
+      scales_to_score,
+      "SF",
+      dims$pw,
+      font_size,
+      font_family
+    )
+  }
+
+  scoring_msg <- "Average the responses for the following item numbers. Reverse-scored items are indicated with (R)."
+
+  build_hitop_doc(
+    file,
+    title,
+    pid_instructions$start,
+    scoring_msg,
+    t1,
+    t2,
+    include_scoring,
+    dims,
+    font_size,
+    font_family
+  )
+}
+
+#' Generate a Word Document for the PID-5-BF
+#'
+#' @export
+generate_docx_pid5bf <- function(
+  file = "pid5bf_1.0.docx",
+  papersize = c("us", "a4"),
+  title = "PID-5-BF",
+  include_scoring = TRUE,
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  papersize <- match.arg(papersize)
+  dims <- get_page_dims(papersize)
+
+  items <- pid_items[!is.na(pid_items$BF), ]
+  items <- items[order(items$BF), ]
+
+  t1 <- make_items_table(
+    items,
+    "BF",
+    pid_instructions$options,
+    dims$pw,
+    font_size,
+    font_family
+  )
+
+  t2 <- NULL
+  if (include_scoring) {
+    scales_to_score <- pid_scales$BF
+    names(scales_to_score)[names(scales_to_score) == "Domain"] <- "Scale"
+
+    t2 <- make_scoring_table(
+      scales_to_score,
+      "BF",
+      dims$pw,
+      font_size,
+      font_family
+    )
+  }
+
+  scoring_msg <- "Average the responses for the following item numbers. Reverse-scored items are indicated with (R)."
+
+  build_hitop_doc(
+    file,
+    title,
+    pid_instructions$start,
+    scoring_msg,
+    t1,
+    t2,
+    include_scoring,
+    dims,
+    font_size,
+    font_family
+  )
 }
