@@ -81,13 +81,13 @@ HiTOP-SR (405)
 
 HiTOP-BR (45)
 
+PID-5 (220)
+
+PID-5-SF (100)
+
+PID-5-BF (25)
+
 HiTOP-HSUM (650) - *waiting for feedback*
-
-PID-5 (220) - *todo*
-
-PID-5-SF (100) - *todo*
-
-PID-5-BF (25) - *todo*
 
 PID-5-BFP (36) - *todo*
 
@@ -125,19 +125,19 @@ PID-5-BFP (36) - *todo*
 
 ### Phase 2
 
-Add Normative Data (for PID-5) - todo
+Add Normative Data (for PID-5) - *todo*
 
-Add Norming Functions (for PID-5) - todo
+Add Norming Functions (for PID-5) - *todo*
 
-Add Visualization Functions - todo
+Add Visualization Functions - *todo*
 
-Add Package Unit Testing - todo
+Add Package Unit Testing - *todo*
 
 ### Phase 3
 
-Add Normative Data (for HiTOP) - waiting for data
+Add Normative Data (for HiTOP) - *waiting for data*
 
-Add Norming Functions (for HiTOP) - waiting for data
+Add Norming Functions (for HiTOP) - *waiting for data*
 
 Add Individual Report Generation
 

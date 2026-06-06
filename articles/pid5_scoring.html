@@ -234,9 +234,9 @@ about using its documentation by typing the following into your R
 console: <code><a href="../reference/score_pid5.html">?score_pid5</a></code> or through the <a href="https://jmgirard.github.io/hitop/reference/score_pid5.html">package
 website</a>.</p>
 </div>
-<div class="section level2">
-<h2 id="scale-reliability">Scale Reliability<a class="anchor" aria-label="anchor" href="#scale-reliability"></a>
-</h2>
+<div class="section level3">
+<h3 id="scale-reliability">Scale Reliability<a class="anchor" aria-label="anchor" href="#scale-reliability"></a>
+</h3>
 <p>As we compute scale scores, we can also estimate their inter-item
 reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α
 is fast and widely used, but it assumes tau-equivalence (all items load
@@ -251,8 +251,9 @@ unit-weighted sums. Both assume the scale is essentially unidimensional;
 For the latter, we will need the <strong>lavaan</strong> package
 installed. If requested, a table of reliability results will be printed
 as a side-effect of the function (alongside any warnings from lavaan
-about convergence of the factor analysis models that omega is based
-on).</p>
+about convergence of the factor analysis models that omega is based on).
+Note that, because this is naively simulated data, we would expect the
+reliability in this example to be poor.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">sim_pid5</span>,</span>
@@ -287,6 +288,7 @@ on).</p>
 <span><span class="co">#&gt; 23          Intimacy Avoidance -0.30170      NA</span></span>
 <span><span class="co">#&gt; 24 Unusual Beliefs Experiences -0.10501      NA</span></span>
 <span><span class="co">#&gt; 25            Manipulativeness  0.06954 0.17643</span></span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="validity-scales-for-the-pid-5">Validity Scales for the PID-5<a class="anchor" aria-label="anchor" href="#validity-scales-for-the-pid-5"></a>
 </h3>
@@ -320,7 +322,6 @@ issues.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>       0      25       4      41       24</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>       0      30       5      31       29</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 90 more rows</span></span></span></code></pre></div>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

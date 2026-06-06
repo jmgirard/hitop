@@ -156,7 +156,7 @@ using its documentation by typing the following into your R console:
 or through the [package
 website](https://jmgirard.github.io/hitop/reference/score_pid5.html).
 
-## Scale Reliability
+### Scale Reliability
 
 As we compute scale scores, we can also estimate their inter-item
 reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α
@@ -174,6 +174,8 @@ We can just add one or more of the following arguments to
 installed. If requested, a table of reliability results will be printed
 as a side-effect of the function (alongside any warnings from lavaan
 about convergence of the factor analysis models that omega is based on).
+Note that, because this is naively simulated data, we would expect the
+reliability in this example to be poor.
 
 ``` r
 

@@ -121,7 +121,7 @@ validity_pid5(
 #> # ℹ 376 more rows
 ```
 
-## Scale Reliability
+### Scale Reliability
 
 As we compute scale scores, we can also estimate their inter-item
 reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α
