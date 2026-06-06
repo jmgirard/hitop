@@ -16,21 +16,27 @@ Choose the format that best fits your immediate research needs.
 Use these Microsoft Word documents for printing, paper administration,
 or sending to the IRB.
 
-[English (A4 Paper)](NA) [English (US Paper)](NA)
+[English (A4
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_A4.docx)
+[English (US
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_US.docx)
 
 ##### 📊 Qualtrics Import
 
 Use this specially formatted text file to easily import the instrument
 directly into your Qualtrics surveys.
 
-[English (TXT File)](NA)
+[English (TXT
+File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_qualtrics.txt)
 
 ##### 🏥 REDCap Import
 
 Use this compressed archive file to import the instrument as a new
 instrument in your REDCap project.
 
-[English (ZIP File)](NA) [Import
+[English (ZIP
+File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip)
+[Import
 Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.html#details)
 
 ------------------------------------------------------------------------
