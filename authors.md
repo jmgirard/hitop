@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/jmgirard/hitop/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/jmgirard/hitop/blob/v0.1.0/DESCRIPTION)
 
 Girard J (2026). *hitop: Tools for the Hierarchical Taxonomy of
 Psychopathology society*. R package version 0.1.0,
