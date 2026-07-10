@@ -53,3 +53,12 @@ means:
 
 - Sijtsma, K. (2009). On the use, the misuse, and the very limited
   usefulness of Cronbach's alpha. *Psychometrika, 74*(1), 107–120.
+
+## Examples
+
+``` r
+# Cronbach's alpha for the HiTOP-BR Detachment scale (items 7, 12, 30, 31, 36, 37)
+detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 36, 37))
+calc_alpha(ku_hitopbr[detach_items])
+#> [1] 0.7847432
+```

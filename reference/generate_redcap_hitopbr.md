@@ -64,3 +64,11 @@ Invisibly returns the path to the created file (`file`).
 
 7.  Test the instrument to ensure proper functionality within your
     project.
+
+## Examples
+
+``` r
+# Write a HiTOP-BR REDCap instrument ZIP to a temporary location
+generate_redcap_hitopbr(file = tempfile(fileext = ".zip"))
+#> ✔ Instrument successfully zipped to /tmp/Rtmp4W87Ct/file1b80153bbb42.zip
+```

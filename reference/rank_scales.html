@@ -154,6 +154,29 @@ concatenation.</p>
 order of existing columns in <code>data</code> is preserved.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># List each respondent's 3 highest-scoring HiTOP-BR scales</span></span></span>
+<span class="r-in"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="score_hitopbr.html">score_hitopbr</a></span><span class="op">(</span><span class="va">sim_hitopbr</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">45</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">rank_scales</span><span class="op">(</span><span class="va">scored</span>, scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">scored</span><span class="op">)</span>, prefix <span class="op">=</span> <span class="st">"hbr_"</span>, top <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>            append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    value                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> somatoform,antagonism,detachment           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> thoughtDisorder,disinhibition,internalizing</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> detachment,somatoform,antagonism           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> antagonism,somatoform,detachment           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> externalizing,thoughtDisorder,antagonism   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> disinhibition,thoughtDisorder,somatoform   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> disinhibition,thoughtDisorder,externalizing</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> antagonism,pFactor,externalizing           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> detachment,disinhibition,internalizing     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> somatoform,antagonism,thoughtDisorder      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 90 more rows</span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

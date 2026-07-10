@@ -10,12 +10,12 @@
 Source:
 [`DESCRIPTION`](https://github.com/jmgirard/hitop/blob/main/DESCRIPTION)
 
-Girard J (2026). *hitop: Tools for the Hierarchical Taxonomy of
-Psychopathology society*. R package version 0.1.0,
+Girard J (2026). *hitop: Score and Distribute HiTOP Society
+Questionnaire Instruments*. R package version 0.1.0,
 <https://github.com/jmgirard/hitop>.
 
     @Manual{,
-      title = {hitop: Tools for the Hierarchical Taxonomy of Psychopathology society},
+      title = {hitop: Score and Distribute HiTOP Society Questionnaire Instruments},
       author = {Jeffrey Girard},
       year = {2026},
       note = {R package version 0.1.0},

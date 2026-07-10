@@ -52,3 +52,12 @@ naming any of your items that.
 
 - Zinbarg, R. E., Revelle, W., Yovel, I., & Li, W. (2005). Cronbach's α,
   Revelle's β, and McDonald's ωH. *Psychometrika, 70*(1), 123–133.
+
+## Examples
+
+``` r
+# McDonald's omega-total for the HiTOP-BR Detachment scale
+detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 36, 37))
+calc_omega(ku_hitopbr[detach_items])
+#> [1] 0.7779365
+```

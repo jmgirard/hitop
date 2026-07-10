@@ -131,7 +131,7 @@ Add Norming Functions (for PID-5) - *todo*
 
 Add Visualization Functions - *todo*
 
-Add Package Unit Testing - *todo*
+Add Package Unit Testing
 
 ### Phase 3
 

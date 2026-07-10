@@ -11,7 +11,7 @@ hitopbr_items
 ## Format
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 45
-rows and 5 columns:
+rows and 8 columns:
 
 - HBR:
 
@@ -29,7 +29,7 @@ rows and 5 columns:
 
   Whether the item is part of the Externalizing scale
 
-- PFactor:
+- Pfactor:
 
   Whether the item is part of the p-Factor scale
 

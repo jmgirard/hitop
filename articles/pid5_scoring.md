@@ -57,8 +57,8 @@ the `:` shortcut. In this tibble, the items are from column 1 to column
 220 so we can use `items = 1:220`. I am going to also set
 `append = FALSE` so that you can quickly see the scale scores. I also
 can set the version to `"FULL"` (or leave that argument off, as that is
-the default, shown in the example example) to let it know we are using
-the full 220-item version.
+the default, shown in the example below) to let it know we are using the
+full 220-item version.
 
 ``` r
 

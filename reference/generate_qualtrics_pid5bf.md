@@ -35,3 +35,11 @@ generate_qualtrics_pid5bf(
 - breaks:
 
   Integer or `NULL`. The number of items to display before a page break.
+
+## Examples
+
+``` r
+# Write a PID-5-BF Qualtrics import file to a temporary location
+generate_qualtrics_pid5bf(file = tempfile(fileext = ".txt"))
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmp4W87Ct/file1b805a9db027.txt
+```

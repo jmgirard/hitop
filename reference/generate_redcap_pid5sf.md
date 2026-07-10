@@ -30,3 +30,11 @@ generate_redcap_pid5sf(
 - breaks:
 
   Integer or `NULL`. The number of items to display before a page break.
+
+## Examples
+
+``` r
+# Write a PID-5-SF REDCap instrument ZIP to a temporary location
+generate_redcap_pid5sf(file = tempfile(fileext = ".zip"))
+#> ✔ Instrument successfully zipped to /tmp/Rtmp4W87Ct/file1b80a9348b9.zip
+```

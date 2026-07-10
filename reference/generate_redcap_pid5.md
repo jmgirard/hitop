@@ -53,3 +53,11 @@ generate_redcap_pid5(
 
 7.  Test the instrument to ensure proper functionality within your
     project.
+
+## Examples
+
+``` r
+# Write a PID-5 (full) REDCap instrument ZIP to a temporary location
+generate_redcap_pid5(file = tempfile(fileext = ".zip"))
+#> ✔ Instrument successfully zipped to /tmp/Rtmp4W87Ct/file1b802984fbbe.zip
+```

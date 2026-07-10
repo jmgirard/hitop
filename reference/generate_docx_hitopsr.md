@@ -59,3 +59,13 @@ generate_docx_hitopsr(
 ## Value
 
 Invisibly returns the path to the created file (`file`).
+
+## Examples
+
+``` r
+# \donttest{
+# Write a HiTOP-SR paper form to a temporary Word document
+generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
+#> ✔ Document successfully created at /tmp/Rtmp4W87Ct/file1b8075157b34.docx
+# }
+```

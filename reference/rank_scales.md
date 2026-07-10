@@ -86,3 +86,26 @@ concatenation.
 
 When `append = TRUE`, the appended column is named `"out"`. The order of
 existing columns in `data` is preserved.
+
+## Examples
+
+``` r
+# List each respondent's 3 highest-scoring HiTOP-BR scales
+scored <- score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE)
+rank_scales(scored, scales = names(scored), prefix = "hbr_", top = 3,
+            append = FALSE)
+#> # A tibble: 100 × 1
+#>    value                                      
+#>    <chr>                                      
+#>  1 somatoform,antagonism,detachment           
+#>  2 thoughtDisorder,disinhibition,internalizing
+#>  3 detachment,somatoform,antagonism           
+#>  4 antagonism,somatoform,detachment           
+#>  5 externalizing,thoughtDisorder,antagonism   
+#>  6 disinhibition,thoughtDisorder,somatoform   
+#>  7 disinhibition,thoughtDisorder,externalizing
+#>  8 antagonism,pFactor,externalizing           
+#>  9 detachment,disinhibition,internalizing     
+#> 10 somatoform,antagonism,thoughtDisorder      
+#> # ℹ 90 more rows
+```

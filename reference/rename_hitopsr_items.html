@@ -113,6 +113,20 @@ exactly to the columns specified in <code>item_cols</code>. Required if <code>me
     <p>A data frame with renamed column names for the matched HiTOP-SR items.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Rename legacy item-pool columns to standard HiTOP-SR item names</span></span></span>
+<span class="r-in"><span><span class="va">legacy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">hitopsr_items</span><span class="op">$</span><span class="va">Original</span>, <span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0</span>, nrow <span class="op">=</span> <span class="fl">2</span>, ncol <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>                           dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="va">legacy</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu">rename_hitopsr_items</span><span class="op">(</span><span class="va">df</span>, method <span class="op">=</span> <span class="st">"original"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Only 3 out of 405 HiTOP-SR items were successfully matched and renamed.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Note: If you plan to use `score_hitopsr()`, ensure uncollected items exist in</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   the data frame as `NA` columns.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "HSR_1" "HSR_2" "HSR_3"</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

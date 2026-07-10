@@ -41,3 +41,13 @@ generate_docx_pid5bf(
 - font_family:
 
   Character string specifying the font family to be used.
+
+## Examples
+
+``` r
+# \donttest{
+# Write a PID-5-BF paper form to a temporary Word document
+generate_docx_pid5bf(file = tempfile(fileext = ".docx"))
+#> ✔ Document successfully created at /tmp/Rtmp4W87Ct/file1b80389bba68.docx
+# }
+```

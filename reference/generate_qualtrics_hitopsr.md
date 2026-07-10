@@ -47,3 +47,11 @@ generate_qualtrics_hitopsr(
 ## Value
 
 Invisibly returns the path to the created file (`file`).
+
+## Examples
+
+``` r
+# Write a HiTOP-SR Qualtrics import file to a temporary location
+generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmp4W87Ct/file1b806fce63b1.txt
+```

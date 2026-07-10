@@ -118,3 +118,31 @@ Kurtz, J. E. (2020). Further Validation of the Response Inconsistency
 Scale for the Personality Inventory for DSM-5. *Journal of Personality
 Assessment, 102*(6), 743–750.
 [doi:10.1080/00223891.2019.1674320](https://doi.org/10.1080/00223891.2019.1674320)
+
+## Examples
+
+``` r
+# Compute the PID-5 validity scales and flag likely-invalid responders.
+# (The simulated data are random, so most rows are flagged.)
+validity_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
+#> ! A total of 99 observations (99.0%) met criteria for inconsistent responding on the INC (0 missing).
+#> ℹ Consider removing them with `dplyr::filter(df, pid_INC < 17)`
+#> ! A total of 53 observations (53.0%) met criteria for overreporting on the ORS (0 missing).
+#> ℹ Consider removing them with `dplyr::filter(df, pid_ORS < 3)`
+#> ! A total of 92 observations (92.0%) met criteria for defensiveness on the SDTD (0 missing).
+#> ℹ Consider removing them with `dplyr::filter(df, pid_SDTD < 19)`
+#> # A tibble: 100 × 5
+#>    pid_PNA pid_INC pid_ORS pid_PRD pid_SDTD
+#>      <dbl>   <dbl>   <dbl>   <dbl>    <dbl>
+#>  1       0      25       2      40       26
+#>  2       0      18       2      34       31
+#>  3       0      32       2      34       29
+#>  4       0      29       3      34       31
+#>  5       0      24       0      36       17
+#>  6       0      23       2      35       36
+#>  7       0      42       2      31       19
+#>  8       0      17       1      28       21
+#>  9       0      25       4      41       24
+#> 10       0      30       5      31       29
+#> # ℹ 90 more rows
+```

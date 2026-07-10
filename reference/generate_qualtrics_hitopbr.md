@@ -47,3 +47,11 @@ generate_qualtrics_hitopbr(
 ## Value
 
 Invisibly returns the path to the created file (`file`).
+
+## Examples
+
+``` r
+# Write a HiTOP-BR Qualtrics import file to a temporary location
+generate_qualtrics_hitopbr(file = tempfile(fileext = ".txt"))
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmp4W87Ct/file1b803d72437b.txt
+```

@@ -78,6 +78,9 @@
 <code><a href="../reference/score_pid5.html">score_pid5()</a></code>, <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code>, <code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code>, and <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> now guard against two ways a bad <code>items</code> mapping silently produces wrong scores: they error on duplicated <code>items</code> entries and warn when <code>items</code> column names share a common prefix and trailing number but those numbers are not in ascending (instrument) order</li>
 <li>
 <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> now warns when <code>srange</code> is not <code>c(0, 3)</code>, because the published PRD and SD-TD cut scores are raw sums against fixed thresholds that assume 0-3 item coding and do not adapt to other codings</li>
+<li>Add runnable <code>@examples</code> to every exported function</li>
+<li>Correct the dataset documentation: fix the column counts in the <code>pid_items</code> and <code>hitopbr_items</code> <code>@format</code> blocks, document the <code>pid_scales</code> format, and fix the <code>sim_hitopbr</code> item-column names (<code>hitopbr_1</code> to <code>hitopbr_45</code>)</li>
+<li>Improve the package Title and Description</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.2" id="hitop-002">hitop 0.0.2<a class="anchor" aria-label="anchor" href="#hitop-002"></a></h2>

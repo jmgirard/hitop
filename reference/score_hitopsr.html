@@ -151,6 +151,33 @@ per-scale reliability summary. Only reliability columns that contain at
 least one non-<code>NA</code> value are shown (the <code>scale</code> column is always shown).</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Score all HiTOP-SR scales from the simulated data</span></span></span>
+<span class="r-in"><span><span class="fu">score_hitopsr</span><span class="op">(</span><span class="va">sim_hitopsr</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">405</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 76</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss hsr_bingeEating</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>             2.8                   2.75             2.67            2.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>             2.6                   2.75             3               2.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>             2.4                   2.75             2.67            2.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>             2.4                   2.38             2               2.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>             2.6                   2.5              2               2.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>             2.4                   3.12             2.67            2.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>             2.6                   2.38             2.33            1.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>             3                     2.38             2.67            1.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>             2.4                   2.38             1.67            2.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>             2.4                   2                2.33            1.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 90 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 72 more variables: hsr_bodilyDistress &lt;dbl&gt;, hsr_bodyDissatisfaction &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_bodyFocus &lt;dbl&gt;, hsr_callousness &lt;dbl&gt;, hsr_checking &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_cleaning &lt;dbl&gt;, hsr_cognitiveProblems &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_conversionSymptoms &lt;dbl&gt;, hsr_counting &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_dietaryRestraint &lt;dbl&gt;, hsr_difficultiesReachingOrgasm &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_diseaseConviction &lt;dbl&gt;, hsr_dishonesty &lt;dbl&gt;, …</span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

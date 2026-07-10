@@ -142,3 +142,75 @@ personality disorder trait model can be measured with a reduced set of
 items: An item response theory investigation of the personality
 inventory for DSM-5. *Psychological Assessment, 27*(4), 1195–1210.
 [doi:10.1037/pas0000120](https://doi.org/10.1037/pas0000120)
+
+## Examples
+
+``` r
+# Score the full PID-5 (25 facets + 5 domains) from the simulated data
+score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
+#> # A tibble: 100 × 30
+#>    pid_anhedonia pid_suspiciousness pid_riskTaking pid_impulsivity
+#>            <dbl>              <dbl>          <dbl>           <dbl>
+#>  1          1.25               1.71           1.36           2.33 
+#>  2          1.38               1.57           1.43           2    
+#>  3          1.88               1              1.29           1.83 
+#>  4          1.25               2.43           1.21           1.5  
+#>  5          1.12               1.57           1.64           2.5  
+#>  6          2.12               1              1.79           1.83 
+#>  7          1.38               1.14           1.86           1.17 
+#>  8          1.5                1.71           1.86           0.667
+#>  9          1.12               1.14           1.86           1.67 
+#> 10          1.38               1.86           2.07           2    
+#> # ℹ 90 more rows
+#> # ℹ 26 more variables: pid_eccentricity <dbl>, pid_distractibility <dbl>,
+#> #   pid_restrictedAffectivity <dbl>, pid_submissiveness <dbl>,
+#> #   pid_withdrawal <dbl>, pid_callousness <dbl>,
+#> #   pid_separationInsecurity <dbl>, pid_attentionSeeking <dbl>,
+#> #   pid_emotionalLability <dbl>, pid_depressivity <dbl>, pid_hostility <dbl>,
+#> #   pid_irresponsibility <dbl>, pid_rigidPerfectionism <dbl>, …
+
+# Short form, using the item column names instead of positions
+score_pid5(sim_pid5sf, items = sprintf("pid_%d", 1:100), version = "SF",
+           append = FALSE)
+#> # A tibble: 100 × 30
+#>    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness
+#>                 <dbl>           <dbl>              <dbl>           <dbl>
+#>  1               1.5             1.5                1               2.25
+#>  2               2               1.25               1               2   
+#>  3               0.5             1.5                1.25            1.5 
+#>  4               2               1                  2               1.25
+#>  5               2.75            0.75               1               1.25
+#>  6               0.75            1.5                2.75            1.5 
+#>  7               0.75            0                  1.75            1   
+#>  8               0.5             0.75               1               2.25
+#>  9               2.25            1.75               2               1.5 
+#> 10               1               1.25               1.75            1.5 
+#> # ℹ 90 more rows
+#> # ℹ 26 more variables: pid_anhedonia <dbl>, pid_eccentricity <dbl>,
+#> #   pid_hostility <dbl>, pid_riskTaking <dbl>, pid_grandiosity <dbl>,
+#> #   pid_perceptualDysregulation <dbl>, pid_separationInsecurity <dbl>,
+#> #   pid_deceitfulness <dbl>, pid_perseveration <dbl>,
+#> #   pid_attentionSeeking <dbl>, pid_anxiousness <dbl>, pid_depressivity <dbl>,
+#> #   pid_withdrawal <dbl>, pid_restrictedAffectivity <dbl>, …
+
+# Brief form (5 domains) with standard errors
+score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
+           append = FALSE)
+#> # A tibble: 100 × 10
+#>    pid_disinhibition pid_detachment pid_psychoticism pid_negativeAffectivity
+#>                <dbl>          <dbl>            <dbl>                   <dbl>
+#>  1               1.8            1.6              2                       1.8
+#>  2               2.2            2.2              2.2                     1.4
+#>  3               2.4            1.2              1.8                     1.6
+#>  4               2.4            2.2              0.8                     0.8
+#>  5               2.2            1.2              1.4                     2.8
+#>  6               1.8            0.6              2.2                     1.2
+#>  7               1              2                1.6                     1.4
+#>  8               1.4            1.8              1.2                     1.8
+#>  9               1.6            0.8              2.2                     0.8
+#> 10               1.2            1.8              1.4                     0.6
+#> # ℹ 90 more rows
+#> # ℹ 6 more variables: pid_antagonism <dbl>, pid_disinhibition_se <dbl>,
+#> #   pid_detachment_se <dbl>, pid_psychoticism_se <dbl>,
+#> #   pid_negativeAffectivity_se <dbl>, pid_antagonism_se <dbl>
+```

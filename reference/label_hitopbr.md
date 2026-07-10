@@ -30,3 +30,12 @@ label_hitopbr(data, target = c("items", "scales"), prefix = "HBR_")
 ## Value
 
 A data frame with labeled columns.
+
+## Examples
+
+``` r
+# Attach item text as a `label` attribute to the raw item columns
+labeled <- label_hitopbr(sim_hitopbr, target = "items", prefix = "hitopbr_")
+attr(labeled$hitopbr_1, "label")
+#> [1] "I found it easy to deceive others."
+```
