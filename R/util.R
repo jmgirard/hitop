@@ -45,6 +45,44 @@ validate_scales <- function(x) {
   )
 }
 
+validate_item_uniqueness <- function(x) {
+  dups <- unique(x[duplicated(x)])
+  if (length(dups) > 0) {
+    cli::cli_abort(c(
+      "The `items` argument must map each item to a distinct column.",
+      "x" = "Duplicated entries: {.val {dups}}."
+    ))
+  }
+  invisible(NULL)
+}
+
+# Heuristic guard against a misordered `items` mapping, which silently scores the
+# wrong items. Fires only when every entry is a character name sharing one common
+# prefix followed by a trailing integer (e.g. "pid_1", "pid_2", ...) and those
+# integers are not in ascending order. Integer positions are left alone (an
+# out-of-order position vector can be a legitimate remap); mixed prefixes and
+# names without trailing digits are ignored (no reliable order to expect).
+warn_item_order <- function(x) {
+  if (!is.character(x)) {
+    return(invisible(NULL))
+  }
+  trailing <- regmatches(x, regexpr("[0-9]+$", x))
+  if (length(trailing) != length(x)) {
+    return(invisible(NULL))
+  }
+  prefixes <- sub("[0-9]+$", "", x)
+  if (length(unique(prefixes)) != 1L) {
+    return(invisible(NULL))
+  }
+  if (is.unsorted(as.integer(trailing))) {
+    cli::cli_warn(c(
+      "!" = "The `items` names are not in ascending numeric order.",
+      "i" = "Items must be supplied in instrument order; a misordered mapping scores the wrong items. Sort them (e.g. {.code items[order(as.integer(sub(\"\\\\D+\", \"\", items)))]}) if this is unintended."
+    ))
+  }
+  invisible(NULL)
+}
+
 validate_range <- function(x) {
   cli_assert(
     condition = rlang::is_integerish(x, n = 2),

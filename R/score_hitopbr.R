@@ -4,7 +4,10 @@
 #'
 #' @param data A data frame containing all HiTOP-BR items (numerically coded).
 #' @param items A vector of column names (as strings) or numbers (as integers)
-#'   corresponding to the 45 HiTOP-BR items in order.
+#'   corresponding to the 45 HiTOP-BR items in order. Items must be supplied in
+#'   instrument order; a misordered mapping silently scores the wrong items, so a
+#'   warning is issued when the names share a common prefix and trailing number
+#'   but those numbers are not ascending. Duplicated entries are an error.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-BR items, used for reverse-coding. (default = `c(1,
 #'   4)`)
@@ -36,6 +39,8 @@ score_hitopbr <- function(
   ## Assertions
   validate_data(data)
   validate_items(items, n = 45)
+  validate_item_uniqueness(items)
+  warn_item_order(items)
   validate_range(srange)
   stopifnot(rlang::is_string(prefix))
   stopifnot(rlang::is_bool(na.rm))

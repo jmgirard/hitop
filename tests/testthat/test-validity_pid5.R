@@ -188,3 +188,39 @@ test_that("row count is preserved by validity_pid5 for every version", {
     nrow(fx_pid5bf())
   )
 })
+
+# ---- srange-vs-published-cutoff guard (M11) ---------------------------------
+# PRD and SD-TD compare raw sums to fixed thresholds that assume 0-3 coding, so
+# a non-0-3 srange silently mis-flags respondents. FULL/SF warn; BF (PNA only)
+# does not. The warning is a pure side effect: scores are unchanged.
+
+test_that("non-0-3 srange warns for FULL and SF but not at the default", {
+  expect_warning(
+    suppressMessages(validity_pid5(fx_pid5(), items = 1:220, version = "FULL", srange = c(1, 4))),
+    "0-3"
+  )
+  expect_warning(
+    suppressMessages(validity_pid5(fx_pid5sf(), items = 1:100, version = "SF", srange = c(1, 4))),
+    "0-3"
+  )
+  # Default srange = c(0, 3): no cutoff-metric warning
+  expect_no_warning(
+    suppressMessages(validity_pid5(fx_pid5(), items = 1:220, version = "FULL"))
+  )
+})
+
+test_that("BF does not warn about srange (it computes no cutoff scales)", {
+  expect_no_warning(
+    validity_pid5(fx_pid5bf(), items = 1:25, version = "BF", srange = c(1, 4))
+  )
+})
+
+test_that("the srange warning does not change returned validity scores", {
+  quiet <- suppressWarnings(suppressMessages(
+    validity_pid5(fx_pid5(), items = 1:220, version = "FULL", srange = c(0, 3), append = FALSE)
+  ))
+  warned <- suppressWarnings(suppressMessages(
+    validity_pid5(fx_pid5(), items = 1:220, version = "FULL", srange = c(0, 3), append = FALSE)
+  ))
+  expect_equal(quiet, warned)
+})

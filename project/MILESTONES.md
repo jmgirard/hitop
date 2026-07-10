@@ -13,7 +13,7 @@
 
 ### M11: Guard the silent-wrong-results traps
 
-- **Status:** READY
+- **Status:** IN PROGRESS
 - **Depends on:** —
 - **Goal:** Warn or error before the two ways the package can silently produce wrong results: non-canonical `srange` invalidating the published PID-5 validity cutoffs, and misordered or duplicated `items` mappings.
 - **Acceptance criteria:**
@@ -25,10 +25,10 @@
   - [ ] Guards documented under the `items`/`srange` roxygen params; NEWS.md bullets added
   - [ ] `devtools::document()` diff limited to intended doc changes; `devtools::test()` passes; `devtools::check()` clean (0/0/0)
 - **Tasks:**
-  - [ ] Add the srange-cutoff warning in `validity_pid5()` after `validate_range()` ([R/validity_pid5.R:69](../R/validity_pid5.R)); fires only for FULL/SF (BF computes no cutoff scales)
-  - [ ] Add `validate_item_uniqueness()` (error on duplicates) and `warn_item_order()` (common-prefix + trailing-integer ascending heuristic) to [R/util.R](../R/util.R); call both from the four functions right after `validate_items()`
-  - [ ] Tests: srange block in `test-validity_pid5.R`; order/duplicate blocks (new `test-item-guards.R` or extend `test-interface.R`) covering all four functions
-  - [ ] Roxygen param updates + `devtools::document()`; NEWS.md
+  - [x] Add the srange-cutoff warning in `validity_pid5()` after `validate_range()` ([R/validity_pid5.R:69](../R/validity_pid5.R)); fires only for FULL/SF (BF computes no cutoff scales)
+  - [x] Add `validate_item_uniqueness()` (error on duplicates) and `warn_item_order()` (common-prefix + trailing-integer ascending heuristic) to [R/util.R](../R/util.R); call both from the four functions right after `validate_items()`
+  - [x] Tests: srange block in `test-validity_pid5.R`; order/duplicate blocks (new `test-item-guards.R` or extend `test-interface.R`) covering all four functions
+  - [x] Roxygen param updates + `devtools::document()`; NEWS.md
 - **Notes/links:** From the 2026-07-10 design audit. Warning (not abort) chosen for srange so legitimate non-0–3 workflows stay possible; auto-adjusting the cutoffs for shifted codings (cutoff + k×low) is deliberately deferred — it changes validity-scale semantics and needs Jeff's sign-off. Order heuristic is names-only: integer positions out of ascending order can be a legitimate mapping, numbered names out of order almost never are.
 
 ### M12: Documentation accuracy & examples
