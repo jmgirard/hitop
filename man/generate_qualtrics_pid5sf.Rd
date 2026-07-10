@@ -12,6 +12,17 @@ generate_qualtrics_pid5sf(
   breaks = 15
 )
 }
+\arguments{
+\item{file}{Character string specifying the output file path.}
+
+\item{block_name}{Character string specifying the name of the block in Qualtrics.}
+
+\item{id_prefix}{Character string specifying the prefix for the question IDs.}
+
+\item{include_instructions}{Logical. If \code{TRUE}, includes instructions block.}
+
+\item{breaks}{Integer or \code{NULL}. The number of items to display before a page break.}
+}
 \description{
 Generate a Qualtrics Import File for the PID-5-SF
 }

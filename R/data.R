@@ -124,6 +124,42 @@
 #' hitopbr_scales
 "hitopbr_scales"
 
+#' HiTOP-HSUM Item Data
+#'
+#' Information about the items in the HiTOP-HSUM (Harmful Substance Use Measure).
+#' Used by the HiTOP-HSUM instrument generators (e.g. `generate_redcap_hitophsum()`).
+#'
+#' @format A \link[tibble]{tibble} with 650 rows and 9 columns:
+#' \describe{
+#'   \item{Item}{Item number}
+#'   \item{Variable}{Variable name for the item}
+#'   \item{Substance}{Name of the substance the item refers to}
+#'   \item{Tier}{The assessment tier the item belongs to (e.g. Screening)}
+#'   \item{Field_Type}{The response field type (e.g. radio)}
+#'   \item{Gate_Variable}{Name of the gating variable, or NA if ungated}
+#'   \item{Gate_Value}{Value of the gating variable required to show the item, or NA}
+#'   \item{Choice_Set}{Name of the response choice set (see `hitophsum_choices`)}
+#'   \item{Text}{Item text}
+#' }
+#' @examples
+#' hitophsum_items
+"hitophsum_items"
+
+#' HiTOP-HSUM Choice Sets
+#'
+#' Response choice sets referenced by `hitophsum_items$Choice_Set`. Used by the
+#' HiTOP-HSUM instrument generators (e.g. `generate_redcap_hitophsum()`).
+#'
+#' @format A \link[tibble]{tibble} with 42 rows and 3 columns:
+#' \describe{
+#'   \item{Choice_Set}{Name of the choice set}
+#'   \item{Value}{Coded response value}
+#'   \item{Label}{Response label displayed to respondents}
+#' }
+#' @examples
+#' hitophsum_choices
+"hitophsum_choices"
+
 #' Simulated HiTOP-SR Data
 #'
 #' Simulated responses to items on the full HiTOP-SR (with 405 items). Note that

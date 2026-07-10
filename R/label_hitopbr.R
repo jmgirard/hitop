@@ -25,8 +25,6 @@ label_hitopbr <- function(
   data_cols <- colnames(data)
 
   if (target == "items") {
-    utils::data(hitopbr_items)
-
     # Reconstruct expected column names based on the prefix
     expected_names <- paste0(prefix, hitopbr_items$HBR)
     locs <- match(data_cols, expected_names)
@@ -43,8 +41,6 @@ label_hitopbr <- function(
       attr(data[[i]], "label") <- hitopbr_items$Text[locs[i]]
     }
   } else if (target == "scales") {
-    utils::data(hitopbr_scales)
-
     expected_names <- paste0(prefix, hitopbr_scales$camelCase)
     locs <- match(data_cols, expected_names)
     matched_idx <- which(!is.na(locs))

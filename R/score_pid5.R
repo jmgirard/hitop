@@ -95,7 +95,6 @@ score_pid5 <- function(
   data_items <- lapply(data_items, as.numeric)
 
   ## Reverse score the necessary items
-  utils::data(pid_items)
   items_rev <- drop_na(
     pid_items[pid_items$Reverse == TRUE, version, drop = TRUE]
   )

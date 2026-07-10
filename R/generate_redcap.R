@@ -143,6 +143,8 @@ generate_redcap_pid5 <- function(
 
 #' Generate a REDCap Instrument ZIP File for the PID-5-SF
 #'
+#' @inheritParams generate_redcap_pid5
+#'
 #' @export
 generate_redcap_pid5sf <- function(
   file = "pid5sf_redcap.zip",
@@ -166,6 +168,8 @@ generate_redcap_pid5sf <- function(
 }
 
 #' Generate a REDCap Instrument ZIP File for the PID-5-BF
+#'
+#' @inheritParams generate_redcap_pid5
 #'
 #' @export
 generate_redcap_pid5bf <- function(

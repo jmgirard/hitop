@@ -13,6 +13,20 @@ generate_docx_pid5bf(
   font_family = "Times New Roman"
 )
 }
+\arguments{
+\item{file}{Character string specifying the output file path.}
+
+\item{papersize}{Character string specifying the paper dimensions. Must be
+one of \code{"us"} (8.5x11 inches) or \code{"a4"} (210x297 mm). Defaults to \code{"us"}.}
+
+\item{title}{Character string for the document header title.}
+
+\item{include_scoring}{Logical. If \code{TRUE}, appends a page break and scoring instructions.}
+
+\item{font_size}{Numeric value specifying the base font size in points.}
+
+\item{font_family}{Character string specifying the font family to be used.}
+}
 \description{
 Generate a Word Document for the PID-5-BF
 }

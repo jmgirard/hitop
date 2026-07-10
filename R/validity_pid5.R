@@ -125,7 +125,7 @@ validity_pid5 <- function(
     ### Over-Reporting Scale (ORS)
     ors_var <- ifelse(version == "FULL", "ORS", "ORSS")
     ors_items <- pid_items[!is.na(pid_items[[ors_var]]), version, drop = TRUE]
-    ors_vec <- rowSums(data_items[, ors_items] == srange[[2]])
+    ors_vec <- rowSums(data_items[, ors_items, drop = FALSE] == srange[[2]])
     ors_col <- paste0(prefix, ors_var)
     ors_cut <- ifelse(version == "FULL", 3, NA_real_)
     ors_warns <- sum(ors_vec >= ors_cut, na.rm = TRUE)
@@ -144,7 +144,7 @@ validity_pid5 <- function(
     ### Positive Impression Management Response Distortion Scale (PRD)
     prd_var <- ifelse(version == "FULL", "PRD", "PRDS")
     prd_items <- pid_items[!is.na(pid_items[[prd_var]]), version, drop = TRUE]
-    prd_vec <- rowSums(data_items[, prd_items])
+    prd_vec <- rowSums(data_items[, prd_items, drop = FALSE])
     prd_col <- paste0(prefix, prd_var)
     prd_cut <- ifelse(version == "FULL", 10, NA_real_)
     prd_warns <- sum(prd_vec <= prd_cut, na.rm = TRUE)
@@ -163,19 +163,19 @@ validity_pid5 <- function(
     ### Social Desirability Total Denial Scale (SD-TD)
     sdtd_var <- ifelse(version == "FULL", "SDTD", "SDTDS")
     sdtd_items <- pid_items[!is.na(pid_items[[sdtd_var]]), version, drop = TRUE]
-    sdtd_vec <- rowSums(data_items[, sdtd_items])
+    sdtd_vec <- rowSums(data_items[, sdtd_items, drop = FALSE])
     sdtd_col <- paste0(prefix, sdtd_var)
     sdtd_cut_low <- ifelse(version == "FULL", 11, NA_real_)
     sdtd_warns_low <- sum(sdtd_vec <= sdtd_cut_low, na.rm = TRUE)
     sdtd_warns_low_p <- sprintf(
       "%.1f%%",
-      sdtd_warns_low / length(prd_vec) * 100
+      sdtd_warns_low / length(sdtd_vec) * 100
     )
     sdtd_cut_high <- ifelse(version == "FULL", 19, NA_real_)
     sdtd_warns_high <- sum(sdtd_vec >= sdtd_cut_high, na.rm = TRUE)
     sdtd_warns_high_p <- sprintf(
       "%.1f%%",
-      sdtd_warns_high / length(prd_vec) * 100
+      sdtd_warns_high / length(sdtd_vec) * 100
     )
     sdtd_nas <- sum(is.na(sdtd_vec))
     if (sdtd_warns_low > 0) {
