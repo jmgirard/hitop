@@ -11,21 +11,25 @@
 
 ### M2: Port PID-5 scoring/validity oracle tests
 
-- **Status:** PLANNED
+- **Status:** READY
 - **Depends on:** M1
-- **Goal:** `score_pid5()` and `validity_pid5()` (all three versions) are covered by ground-truth oracle tests per the D-004 strategy.
+- **Goal:** `score_pid5()` (FULL facets / SF facets / BF domains) and `validity_pid5()` (all three versions) are covered by ground-truth oracle tests per the D-004 strategy.
 - **Acceptance criteria:**
-  - [ ] Hand-computed fixture tests assert exact scale and validity values for FULL and SF (arithmetic derivable from test comments); BF covered at least by fixtures or independent recomputation
-  - [ ] ≥ 1 scale per function independently recomputed in-test from hardcoded official item numbers
-  - [ ] Invariant tests pass: reverse-keying applied, row count preserved, `prefix`/`append`/`tibble`/`calc_se` behavior, validity columns per version (PNA only for BF)
-  - [ ] `Rscript -e 'devtools::test()'` 0 failures; `Rscript -e 'devtools::check()'` clean
+  - [ ] Hand-computed fixtures assert exact values with the arithmetic in comments: FULL facets + all 5 validity scales; SF facets + all 5 S-variant validity scales; BF 5 domains + PNA
+  - [ ] Independent recomputation from hardcoded official item numbers, ≥ 1 per function per version: a facet/domain for FULL/SF/BF in `score_pid5`; INC (FULL) and INCS (SF) in `validity_pid5`
+  - [ ] Invariants pass: FULL reverse-keying applied (a facet with a reverse item ≠ 0 on all-0 input); SF & BF apply no reverse-keying (all-0 → 0); row count preserved; `prefix`/`append`/`tibble`/`calc_se` behavior; NA propagation (score `na.rm = TRUE` tolerates missing, validity → NA); validity column set per version (5 for FULL/SF, `pid_PNA` only for BF); `score_pid5` scale-column count 25/25/5
+  - [ ] `Rscript -e 'devtools::test()'` — 0 failures
+  - [ ] `R CMD check` gains no new ERROR/WARNING attributable to the added test files (full `check()`-clean is M3's goal, not M2's)
 - **Tasks:**
-  - [ ] Port from `/Users/jmgirard/hitop/tests/testthat/`: `test-score_pid5.R`, `test-validity_pid5.R`, `test-score_pid5fsf.R`, `test-validity_pid5fsf.R`, `test-interface.R`, `test-util.R`, `test-validate.R`, `helper-fixtures.R`
-  - [ ] Adapt to this repo's API: single functions with `version = "FULL"/"SF"/"BF"` (no `score_pid5fsf`), no `scales`/`id` args (all validity scales computed unconditionally), `srange` not `range`, `prefix`-based column names, `append = TRUE`/`tibble = TRUE` defaults, reliability-augmented output (`alpha`/`omega` print a summary)
-  - [ ] Adapt dataset names: `sim_pid5sf`/`sim_pid5bf`/`ku_pid5sf` (not `sim_pid5fsf`/`ku_pid5fsf`)
-  - [ ] Drop the old fork's SDTD-guard-bug regression tests (the bug does not exist here — no `scales` argument)
-  - [ ] Add oracle tests for `calc_alpha()`/`calc_omega()` if not covered (else split into M5)
-- **Notes/links:** Oracle strategy: DESIGN.md "Testing & oracle strategy"; D-004, D-006.
+  - [ ] Port `helper-fixtures.R` from `/Users/jmgirard/hitop/tests/testthat/`: keep `fx_pid5()`; rename `fx_pid5fsf()` → `fx_pid5sf()`; add new `fx_pid5bf()` (5 domains × 5 BF items, no reverse — hand-worked in comments). Item→scale numbers copied from the official key, not read from the package
+  - [ ] `tests/testthat/test-score_pid5.R` — consolidate the fork's `test-score_pid5.R` + `test-score_pid5fsf.R` into one file with FULL/SF/BF sections. Adapt columns to `pid_<camelCase>` (e.g. `pid_anhedonia`), add `items = 1:N, version =` to every call. Drop the FULL/SF *domain* fixtures and the `d_* = mean(3 facets)` invariant — they move to M7; leave a pointer comment (mirroring `tests/testthat/test-keying.R:11`)
+  - [ ] `tests/testthat/test-validity_pid5.R` — consolidate the fork's `test-validity_pid5.R` + `test-validity_pid5fsf.R`. All scales compute unconditionally, so DROP the "each scale alone", "column iff requested", and SDTD-guard-bug regression tests. Keep the PNA/INC/ORS/PRD/SDTD (+ S-variant) fixture values, NA-propagation, and cutoff-warning (`expect_message`) tests; adapt columns to `pid_INC`/`pid_INCS`/etc. Add a BF case asserting the output column set is exactly `pid_PNA`
+  - [ ] `tests/testthat/test-util.R` — port `reverse`/`bind_columns`/`adiff`/`drop_na`; adapt `reverse()` to the current `low=`/`high=` signature (not `min`/`max`); add coverage for `calc_sem()` and `cli_assert()`
+  - [ ] `tests/testthat/test-validate.R` — port `validate_data`/`validate_items`/`validate_range`; DROP all `validate_id` tests (no `id` in this API); adapt end-to-end calls to `srange =` and the required `items =` argument
+  - [ ] `tests/testthat/test-interface.R` — interface invariants on `sim_pid5`/`sim_pid5sf`/`sim_pid5bf`/`ku_pid5sf`. DROP the `scales`/`id`/partial-matching/domain tests; add `append =`, `prefix =`, `version` case-insensitivity, and per-version scale-column-count checks. Add a smoke check that `alpha = TRUE`/`omega = TRUE` prints a summary without error and returns unchanged scores (ground-truth reliability values deferred to M5)
+  - [ ] Local dev-env step: ensure {flextable}/{officer}/{snakecase} are installed so `devtools::test()` can load the package (full dependency hygiene stays in M3)
+  - [ ] Run `Rscript -e 'devtools::test()'`; iterate to 0 failures
+- **Notes/links:** Oracle strategy: DESIGN.md "Testing & oracle strategy"; D-004, D-006. Current `score_pid5()` outputs 25 facets for FULL/SF and 5 domains for BF — no FULL/SF domains, so FULL/SF domain scoring + its domain→facet oracle live in **M7**; BF domain→item structure is verified in **M6**; reliability oracle tests in **M5**. `validity_pid5` has no `scales` argument, so the fork's guard-bug (SDTD) does not exist here.
 
 ### M3: Check & dependency hygiene
 
