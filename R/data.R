@@ -2,7 +2,7 @@
 #'
 #' Information about the items in different versions of the PID-5.
 #'
-#' @format A \link[tibble]{tibble} with 220 rows and 12 columns:
+#' @format A \link[tibble]{tibble} with 220 rows and 15 columns:
 #' \describe{
 #'   \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
@@ -20,7 +20,21 @@
 
 #' Personality Inventory for DSM-5 Scale Data
 #'
-#' Information about the scales in different versions of the PID-5.
+#' Information about the scales (facets) in different versions of the PID-5,
+#' used by `score_pid5()` to map each scale to its item numbers.
+#'
+#' @format A named \link{list} of length 3 (elements `FULL`, `SF`, and `BF`),
+#'   one per PID-5 version. Each element is a \link[tibble]{tibble} with one row
+#'   per scale and 5 columns:
+#' \describe{
+#'   \item{Facet}{Name of the facet (scale)}
+#'   \item{itemdata}{A list column containing one item-data tibble per scale}
+#'   \item{nItems}{The number of items in the scale}
+#'   \item{itemNumbers}{A list column containing one item-number vector per scale}
+#'   \item{camelCase}{The name of the scale converted to camel case (the score-output column stem)}
+#' }
+#' @examples
+#' pid_scales[["BF"]]
 "pid_scales"
 
 #' Personality Inventory for DSM-5 Domain Data
@@ -111,7 +125,7 @@
 #'
 #' Information about items in the HiTOP-BR.
 #'
-#' @format A \link[tibble]{tibble} with 45 rows and 5 columns:
+#' @format A \link[tibble]{tibble} with 45 rows and 8 columns:
 #' \describe{
 #'   \item{HBR}{Item number on the HITOP-BR}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
@@ -204,7 +218,7 @@
 #'
 #' @format A \link[tibble]{tibble} with 100 rows and 45 columns.
 #' \describe{
-#'   \item{hbr_1 to hbr_45}{Responses on each item}
+#'   \item{hitopbr_1 to hitopbr_45}{Responses on each item}
 #' }
 #' @examples
 #' sim_hitopbr

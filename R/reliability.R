@@ -32,6 +32,11 @@
 #' - Sijtsma, K. (2009). On the use, the misuse, and the very limited usefulness
 #' of Cronbach's alpha. *Psychometrika, 74*(1), 107–120.
 #'
+#' @examples
+#' # Cronbach's alpha for the HiTOP-BR Detachment scale (items 7, 12, 30, 31, 36, 37)
+#' detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 36, 37))
+#' calc_alpha(ku_hitopbr[detach_items])
+#'
 #' @export
 calc_alpha <- function(df) {
   # Validate df arg
@@ -114,6 +119,11 @@ calc_alpha <- function(df) {
 #'   *Psychometrika, 74*(1), 155–167.
 #' - Zinbarg, R. E., Revelle, W., Yovel, I., & Li, W. (2005). Cronbach's α,
 #' Revelle's β, and McDonald's ωH. *Psychometrika, 70*(1), 123–133.
+#'
+#' @examplesIf requireNamespace("lavaan", quietly = TRUE)
+#' # McDonald's omega-total for the HiTOP-BR Detachment scale
+#' detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 36, 37))
+#' calc_omega(ku_hitopbr[detach_items])
 #'
 #' @export
 calc_omega <- function(df) {

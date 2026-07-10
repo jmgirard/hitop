@@ -49,3 +49,8 @@ requested) and all original \code{data} columns (if requested)
 \description{
 Create a data frame with scores on all the HiTOP-BR scales.
 }
+\examples{
+# Score all HiTOP-BR scales from the simulated data
+score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE)
+
+}

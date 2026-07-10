@@ -13,10 +13,32 @@
 
 ### M12: Documentation accuracy & examples
 
-- **Status:** PLANNED
+- **Status:** IN PROGRESS
 - **Depends on:** —
 - **Goal:** Make the user-facing documentation accurate and complete: runnable `@examples` for every exported function, correct dataset `@format` blocks, and synced README/DESCRIPTION.
-- **Notes/links:** Audit items: no exported *function* has `@examples` (use `sim_*` data); `pid_scales` has no `@format` at all ([R/data.R:21](../R/data.R)); `pid_items` @format says 12 columns but lists 15 ([R/data.R:5](../R/data.R)); `hitopbr_items` says 5 but lists 8 ([R/data.R:114](../R/data.R)); README "Add Package Unit Testing — todo" stale (561 tests exist; keep ROADMAP mirror in sync); DESCRIPTION Title case + real multi-sentence Description without markdown; document that `validity_pid5(version = "BF")` returns only PNA; "example example" typo in `vignettes/pid5_scoring.Rmd`; reconsider the "experimental" lifecycle badge.
+- **Acceptance criteria:**
+  - [ ] All 27 exported functions in `NAMESPACE` have an `@examples` block; every example runs without error (verified by `devtools::run_examples()` and clean `R CMD check` examples).
+  - [ ] `R/data.R` `@format` blocks are correct: `pid_items` says 15 columns ([R/data.R:5](../R/data.R)); `hitopbr_items` says 8 columns ([R/data.R:114](../R/data.R)); `pid_scales` has a `@format` describing a named list of 3 version tibbles (`FULL`/`SF`/`BF`, each 5 cols) plus an `@examples` ([R/data.R:21](../R/data.R)).
+  - [ ] `devtools::document()` leaves no uncommitted diff afterward; each exported function's `man/*.Rd` contains an `\examples{}` section.
+  - [ ] DESCRIPTION Title is Title Case with "Society" capitalized; Description is a markdown-free multi-sentence paragraph; `devtools::check()` emits no Title/Description NOTE.
+  - [ ] README "Development Progress" marks "Add Package Unit Testing" done; the ROADMAP mirror note stays consistent; `README.md` re-knit from `README.Rmd`.
+  - [ ] `vignettes/pid5_scoring.Rmd` "example example" typo (line 39) fixed.
+  - [ ] `validity_pid5` `@details` documents that `version = "BF"` returns only PNA (verify — added in M11; tighten wording if needed).
+  - [ ] Lifecycle badge stays `experimental` (decision recorded; no change).
+  - [ ] `devtools::check()` clean (0/0/0); `devtools::test()` passes.
+- **Tasks:**
+  - [x] Fix dataset `@format` in `R/data.R`: `pid_items` 12→15 ([R/data.R:5](../R/data.R)); `hitopbr_items` 5→8 ([R/data.R:114](../R/data.R)); add `@format` (named `list(FULL, SF, BF)`, each a tibble with `Facet, itemdata, nItems, itemNumbers, camelCase`) + `@examples pid_scales` to `pid_scales` ([R/data.R:21](../R/data.R)).
+  - [x] Add runnable `@examples` to the 4 scoring/validity fns using `sim_*` data (`score_pid5`, `score_hitopsr`, `score_hitopbr`, `validity_pid5`).
+  - [x] Add `@examples` to `calc_alpha` (Detachment scale of `ku_hitopbr`) and `calc_omega` behind `@examplesIf requireNamespace("lavaan", quietly = TRUE)`.
+  - [x] Add `@examples` to `rank_scales`, `label_hitopsr`, `label_hitopbr` (built from a scored tibble) and `rename_hitopsr_items` (`sim_hitopsr`).
+  - [x] Add `@examples` to the 17 `generate_{docx,qualtrics,redcap}_*` fns writing to `tempfile(fileext=...)`; docx generators wrapped in `\donttest{}` (SR build ~4.4s, near CRAN's per-example NOTE threshold).
+  - [x] Fix `vignettes/pid5_scoring.Rmd:39` "example example" typo.
+  - [x] Rewrite DESCRIPTION `Title` (Title Case, "Society") and `Description` (markdown-free, multi-sentence, not starting with the package name).
+  - [x] Update `README.Rmd` Development Progress (check "Add Package Unit Testing"); re-knit via `devtools::build_readme()`; confirm ROADMAP mirror note holds.
+  - [x] Verify/tighten `validity_pid5` `@details` BF-PNA note (already present from M11; no change needed).
+  - [x] Fix `sim_hitopbr` `@format` (item columns are `hitopbr_1..45`, not `hbr_1..45`) — surfaced by the `label_hitopbr` example.
+  - [x] `devtools::document()` → `devtools::test()` (PASS 561) → `devtools::check()` (0/0/0, incl. `--run-donttest`); `man/` diff is only Examples additions + `@format`/Description fixes.
+- **Notes/links:** Doc-only (no scoring change, no oracle beyond "examples execute"). Lifecycle badge kept `experimental` per Jeff (v0.1.0, M15 breaking changes pending). BF-PNA doc item already satisfied by M11. Original audit list preserved in this entry's tasks.
 
 ### M13: Scoring engine consolidation
 

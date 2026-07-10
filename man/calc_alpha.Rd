@@ -38,6 +38,12 @@ pairwise-complete observations. @section Coercion: Each column is coerced via
 columns are truly numeric item responses or pre-process as needed.
 }
 }
+\examples{
+# Cronbach's alpha for the HiTOP-BR Detachment scale (items 7, 12, 30, 31, 36, 37)
+detach_items <- sprintf("hbr\%02d", c(7, 12, 30, 31, 36, 37))
+calc_alpha(ku_hitopbr[detach_items])
+
+}
 \references{
 \itemize{
 \item Cronbach, L. J. (1951). Coefficient alpha and the internal structure of

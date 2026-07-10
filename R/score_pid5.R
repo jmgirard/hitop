@@ -76,6 +76,18 @@
 #'   for DSM-5. *Psychological Assessment, 27*(4), 1195–1210.
 #'   \doi{10.1037/pas0000120}
 #'
+#' @examples
+#' # Score the full PID-5 (25 facets + 5 domains) from the simulated data
+#' score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
+#'
+#' # Short form, using the item column names instead of positions
+#' score_pid5(sim_pid5sf, items = sprintf("pid_%d", 1:100), version = "SF",
+#'            append = FALSE)
+#'
+#' # Brief form (5 domains) with standard errors
+#' score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
+#'            append = FALSE)
+#'
 #' @export
 score_pid5 <- function(
   data,

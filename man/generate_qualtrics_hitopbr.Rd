@@ -37,3 +37,8 @@ Creates a text file formatted for the Qualtrics Advanced Format
 import tool containing the Hierarchical Taxonomy of Psychopathology - Brief
 Report (HiTOP-BR) items and instructions.
 }
+\examples{
+# Write a HiTOP-BR Qualtrics import file to a temporary location
+generate_qualtrics_hitopbr(file = tempfile(fileext = ".txt"))
+
+}

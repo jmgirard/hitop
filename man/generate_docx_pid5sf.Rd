@@ -30,3 +30,10 @@ one of \code{"us"} (8.5x11 inches) or \code{"a4"} (210x297 mm). Defaults to \cod
 \description{
 Generate a Word Document for the PID-5-SF
 }
+\examples{
+\donttest{
+# Write a PID-5-SF paper form to a temporary Word document
+generate_docx_pid5sf(file = tempfile(fileext = ".docx"))
+}
+
+}

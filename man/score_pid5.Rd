@@ -92,6 +92,19 @@ the function prints a per-scale reliability summary (facets only for FULL/SF).
 Only reliability columns that contain at least one non-\code{NA} value are shown
 (the \code{scale} column is always shown).
 }
+\examples{
+# Score the full PID-5 (25 facets + 5 domains) from the simulated data
+score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
+
+# Short form, using the item column names instead of positions
+score_pid5(sim_pid5sf, items = sprintf("pid_\%d", 1:100), version = "SF",
+           append = FALSE)
+
+# Brief form (5 domains) with standard errors
+score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
+           append = FALSE)
+
+}
 \references{
 Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
 Skodol, A. E. (2012). Initial construction of a maladaptive personality

@@ -40,3 +40,10 @@ Creates a formatted Microsoft Word document containing the
 Hierarchical Taxonomy of Psychopathology - Brief Report (HiTOP-BR) items,
 instructions, and optional scoring keys.
 }
+\examples{
+\donttest{
+# Write a HiTOP-BR paper form to a temporary Word document
+generate_docx_hitopbr(file = tempfile(fileext = ".docx"))
+}
+
+}

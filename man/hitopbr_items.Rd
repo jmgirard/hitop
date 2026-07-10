@@ -5,7 +5,7 @@
 \alias{hitopbr_items}
 \title{HiTOP-BR Item Data}
 \format{
-A \link[tibble]{tibble} with 45 rows and 5 columns:
+A \link[tibble]{tibble} with 45 rows and 8 columns:
 \describe{
 \item{HBR}{Item number on the HITOP-BR}
 \item{Reverse}{Whether the item needs to be reverse scored}

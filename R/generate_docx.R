@@ -19,6 +19,12 @@
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
+#' @examples
+#' \donttest{
+#' # Write a HiTOP-BR paper form to a temporary Word document
+#' generate_docx_hitopbr(file = tempfile(fileext = ".docx"))
+#' }
+#'
 #' @export
 generate_docx_hitopbr <- function(
   file = "hitopbr_1.0.docx",
@@ -90,6 +96,12 @@ generate_docx_hitopbr <- function(
 #'   Defaults to `"Times New Roman"`.
 #'
 #' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @examples
+#' \donttest{
+#' # Write a HiTOP-SR paper form to a temporary Word document
+#' generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
+#' }
 #'
 #' @export
 generate_docx_hitopsr <- function(
@@ -406,6 +418,12 @@ build_hitop_doc <- function(
 #'   Defaults to `"Times New Roman"`.
 #'
 #' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @examples
+#' \donttest{
+#' # Write a HiTOP-HSUM paper form to a temporary Word document
+#' generate_docx_hitophsum(file = tempfile(fileext = ".docx"))
+#' }
 #'
 #' @export
 generate_docx_hitophsum <- function(
@@ -931,6 +949,12 @@ generate_docx_hitophsum <- function(
 #' @param font_size Numeric value specifying the base font size in points.
 #' @param font_family Character string specifying the font family to be used.
 #'
+#' @examples
+#' \donttest{
+#' # Write a PID-5 (full) paper form to a temporary Word document
+#' generate_docx_pid5(file = tempfile(fileext = ".docx"))
+#' }
+#'
 #' @export
 generate_docx_pid5 <- function(
   file = "pid5_1.0.docx",
@@ -989,6 +1013,12 @@ generate_docx_pid5 <- function(
 #'
 #' @inheritParams generate_docx_pid5
 #'
+#' @examples
+#' \donttest{
+#' # Write a PID-5-SF paper form to a temporary Word document
+#' generate_docx_pid5sf(file = tempfile(fileext = ".docx"))
+#' }
+#'
 #' @export
 generate_docx_pid5sf <- function(
   file = "pid5sf_1.0.docx",
@@ -1046,6 +1076,12 @@ generate_docx_pid5sf <- function(
 #' Generate a Word Document for the PID-5-BF
 #'
 #' @inheritParams generate_docx_pid5
+#'
+#' @examples
+#' \donttest{
+#' # Write a PID-5-BF paper form to a temporary Word document
+#' generate_docx_pid5bf(file = tempfile(fileext = ".docx"))
+#' }
 #'
 #' @export
 generate_docx_pid5bf <- function(

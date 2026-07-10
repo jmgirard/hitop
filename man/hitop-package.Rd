@@ -4,11 +4,11 @@
 \name{hitop-package}
 \alias{hitop}
 \alias{hitop-package}
-\title{hitop: Tools for the Hierarchical Taxonomy of Psychopathology society}
+\title{hitop: Score and Distribute HiTOP Society Questionnaire Instruments}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-The goal of *hitop* is to provide functions helpful for researchers working on the Hierarchical Taxonomy of Psychopathology (HiTOP).
+Provides item data, scoring, validity screening, and reliability estimation for the questionnaire instruments distributed by the Hierarchical Taxonomy of Psychopathology (HiTOP) Society, including the Personality Inventory for DSM-5 (PID-5) and its short and brief forms, the HiTOP Self-Report and Brief-Report measures, and the HiTOP Harmful Substance Use Measure. Scoring follows published scoring keys and is verified against primary sources. The package also generates ready-to-administer paper forms and 'Qualtrics' and 'REDCap' import files for each instrument.
 }
 \seealso{
 Useful links:

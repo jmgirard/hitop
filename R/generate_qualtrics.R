@@ -18,6 +18,10 @@
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
+#' @examples
+#' # Write a HiTOP-BR Qualtrics import file to a temporary location
+#' generate_qualtrics_hitopbr(file = tempfile(fileext = ".txt"))
+#'
 #' @export
 generate_qualtrics_hitopbr <- function(
   file = "hitopbr_qualtrics.txt",
@@ -57,6 +61,10 @@ generate_qualtrics_hitopbr <- function(
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
+#' @examples
+#' # Write a HiTOP-SR Qualtrics import file to a temporary location
+#' generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
+#'
 #' @export
 generate_qualtrics_hitopsr <- function(
   file = "hitopsr_qualtrics.txt",
@@ -83,6 +91,10 @@ generate_qualtrics_hitopsr <- function(
 #' @param id_prefix Character string specifying the prefix for the question IDs.
 #' @param include_instructions Logical. If `TRUE`, includes instructions block.
 #' @param breaks Integer or `NULL`. The number of items to display before a page break.
+#'
+#' @examples
+#' # Write a PID-5 (full) Qualtrics import file to a temporary location
+#' generate_qualtrics_pid5(file = tempfile(fileext = ".txt"))
 #'
 #' @export
 generate_qualtrics_pid5 <- function(
@@ -111,6 +123,10 @@ generate_qualtrics_pid5 <- function(
 #'
 #' @inheritParams generate_qualtrics_pid5
 #'
+#' @examples
+#' # Write a PID-5-SF Qualtrics import file to a temporary location
+#' generate_qualtrics_pid5sf(file = tempfile(fileext = ".txt"))
+#'
 #' @export
 generate_qualtrics_pid5sf <- function(
   file = "pid5sf_qualtrics.txt",
@@ -137,6 +153,10 @@ generate_qualtrics_pid5sf <- function(
 #' Generate a Qualtrics Import File for the PID-5-BF
 #'
 #' @inheritParams generate_qualtrics_pid5
+#'
+#' @examples
+#' # Write a PID-5-BF Qualtrics import file to a temporary location
+#' generate_qualtrics_pid5bf(file = tempfile(fileext = ".txt"))
 #'
 #' @export
 generate_qualtrics_pid5bf <- function(

@@ -5,7 +5,7 @@
 \alias{pid_items}
 \title{Personality Inventory for DSM-5 Item Data}
 \format{
-A \link[tibble]{tibble} with 220 rows and 12 columns:
+A \link[tibble]{tibble} with 220 rows and 15 columns:
 \describe{
 \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
 \item{Reverse}{Whether the item needs to be reverse scored}

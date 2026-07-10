@@ -35,6 +35,10 @@
 #'   requested) and all original `data` columns (if requested). Reliability
 #'   estimates, when requested, are printed as a side effect.
 #'
+#' @examples
+#' # Score all HiTOP-SR scales from the simulated data
+#' score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
+#'
 #' @export
 score_hitopsr <- function(
   data,
@@ -186,6 +190,13 @@ score_hitopsr <- function(
 #'   (default = `"HSR_"`)
 #'
 #' @return A data frame with renamed column names for the matched HiTOP-SR items.
+#'
+#' @examples
+#' # Rename legacy item-pool columns to standard HiTOP-SR item names
+#' legacy <- head(hitopsr_items$Original, 3)
+#' df <- as.data.frame(matrix(0, nrow = 2, ncol = 3,
+#'                            dimnames = list(NULL, legacy)))
+#' names(rename_hitopsr_items(df, method = "original"))
 #'
 #' @export
 rename_hitopsr_items <- function(

@@ -26,3 +26,8 @@ generate_qualtrics_pid5sf(
 \description{
 Generate a Qualtrics Import File for the PID-5-SF
 }
+\examples{
+# Write a PID-5-SF Qualtrics import file to a temporary location
+generate_qualtrics_pid5sf(file = tempfile(fileext = ".txt"))
+
+}

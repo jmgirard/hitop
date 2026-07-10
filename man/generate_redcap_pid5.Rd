@@ -39,3 +39,8 @@ accuracy.
 \item Test the instrument to ensure proper functionality within your project.
 }
 }
+\examples{
+# Write a PID-5 (full) REDCap instrument ZIP to a temporary location
+generate_redcap_pid5(file = tempfile(fileext = ".zip"))
+
+}

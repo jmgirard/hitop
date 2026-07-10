@@ -23,3 +23,8 @@ generate_redcap_pid5sf(
 \description{
 Generate a REDCap Instrument ZIP File for the PID-5-SF
 }
+\examples{
+# Write a PID-5-SF REDCap instrument ZIP to a temporary location
+generate_redcap_pid5sf(file = tempfile(fileext = ".zip"))
+
+}
