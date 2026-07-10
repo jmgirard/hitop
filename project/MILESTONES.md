@@ -38,7 +38,7 @@
   - [x] Run suite (existing assertions unedited) → **PASS 565** (was 561; +4 from the new BR reliability tests, FAIL 0); characterization harness → **all 114 configs `identical()`**; `devtools::check()` → **0/0/0**.
   - [x] NEWS.md: internal-refactor bullet + a bullet noting `score_hitopbr()` now supports `alpha`/`omega`.
   - [x] At ship (work/review): resolve DESIGN Known issue #3, add a "scoring shares `score_engine()` behind thin wrappers" note to DESIGN Function families, and append **D-011** (engine design + uniform reliability).
-- **Notes/links:** Audit flagship. The M5/M9 `drop = FALSE` twins are the motivating bug class (same fix applied twice in different copies). BR reliability is folded in here because it was an incompleteness, not a design choice — BR runs the identical `rowMeans` pipeline and its scales already reliability-check via `calc_alpha`/`calc_omega` (M5). This resolves M15's "`score_hitopbr()` asymmetry" line; M15 is then only the print→tibble `reliability_*()` redesign.
+- **Notes/links:** Audit flagship. The M5/M9 `drop = FALSE` twins are the motivating bug class (same fix applied twice in different copies). BR reliability is folded in here because it was an incompleteness, not a design choice — BR runs the identical `rowMeans` pipeline and its scales already reliability-check via `calc_alpha`/`calc_omega` (M5). This resolves M15's "`score_hitopbr()` asymmetry" line; M15 is then only the print→tibble `reliability_*()` redesign. Implementation surfaced a pre-existing `_se`-where-`NA` inconsistency (pid5 masks, SR/BR don't), preserved behind `mask_se_na` and recorded as DESIGN Known issue #4 (unify with sign-off). D-011. PR [#14](https://github.com/jmgirard/hitop/pull/14).
 
 ### M14: Input-validation & messaging hardening
 
