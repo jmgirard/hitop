@@ -9,19 +9,26 @@
 
 ## Active
 
-### M5: HiTOP-SR/BR scoring oracle tests
+### M5: HiTOP-SR/BR scoring + reliability oracle tests
 
-- **Status:** PLANNED
+- **Status:** IN PROGRESS
 - **Depends on:** M2 (reuse fixture patterns)
-- **Goal:** `score_hitopsr()`, `score_hitopbr()`, and the label/rank utilities have ground-truth tests, not just the existing rename/pipeline tests.
+- **Goal:** `score_hitopsr()`, `score_hitopbr()`, the reliability functions (`calc_alpha()`/`calc_omega()`), and the `label_*`/`rank_scales()` utilities all have ground-truth tests, not just the existing rename/pipeline tests.
 - **Acceptance criteria:**
-  - [ ] Hand-computed fixtures assert exact scale scores for at least a subset of SR and BR scales; ≥ 1 scale per function independently recomputed from `hitopsr_items`/`hitopbr_items` source data
-  - [ ] `calc_alpha()`/`calc_omega()` verified against independently computed reference values (if not already done in M2)
-  - [ ] `devtools::check()` clean
+  - [ ] Hand-computed fixtures assert exact scale scores for a representative subset of SR and BR scales, with the arithmetic worked in comments (M2 style); the SR fixture includes the lone reverse-keyed item (HSR 310) to prove reversal
+  - [ ] ≥ 1 scale per function independently recomputed from source: BR `externalizing` **and** `pFactor` `itemNumbers` recomputed from the `hitopbr_items$Externalizing`/`$Pfactor` marker columns; ≥ 1 SR scale recomputed from `hitopsr_items$Scale`
+  - [ ] Invariants asserted for both: reverse-keying applied (SR) / no reversal (BR), `_se` columns present iff `calc_se = TRUE`, `prefix` applied to every scale column, output row count = input row count, each scale = row mean of its member items
+  - [ ] `calc_alpha()` verified against an independent reference value (hand- or `psych`-computed on a tiny fixture) and its assertion-error paths (`k < 2`, `n < 2`, zero variance); `calc_omega()` verified against a direct `lavaan::cfa` fit on the same data (`skip_if_not_installed("lavaan")`), incl. the mixed-sign-loading warning
+  - [ ] `label_hitopsr()`/`label_hitopbr()` (items + scales targets, no-match warning) and `rank_scales()` (`dir`, `top`, `prefix`-stripping, tie order) have dedicated tests beyond the pipeline test
+  - [ ] `devtools::test()` passes; `devtools::check()` clean (0/0/0)
 - **Tasks:**
-  - [ ] Fixtures + invariants (reverse-keying, `_se` columns, prefix behavior) for both instruments
-  - [ ] Tests for `label_hitopsr()`/`label_hitopbr()`/`rank_scales()` beyond the current pipeline test
-- **Notes/links:** Existing tests: tests/testthat/test-rename_hitopsr_items.R, test-test-pipeline_hitopsr.R.
+  1. [x] Add `fx_hitopsr()` + `fx_hitopbr()` to `tests/testthat/helper-fixtures.R`, item→scale memberships copied from source (never read back from the package), arithmetic in comments; SR fixture exercises reverse item 310 (srange `c(1,4)` → `reverse = 5 - x`)
+  2. [x] `test-score_hitopsr.R`: fixture exact-value assertions (incl. the reverse scale `romanticDisinterest` + a small n=3 scale e.g. `appetiteLoss` + one larger), one independent recomputation from `hitopsr_items$Scale`, invariants (`_se`, prefix, row count, `na.rm` on a missing cell)
+  3. [x] `test-score_hitopbr.R`: fixture exact-value assertions, independent recompute of `externalizing` & `pFactor` from the marker columns, invariants (no reverse-keying, `_se`, prefix, row count)
+  4. [x] `test-reliability.R`: `calc_alpha()` vs reference value + assertion-error paths (`k < 2`, `n < 2`, zero variance); `calc_omega()` vs direct `lavaan::cfa` on the same data (guarded by `skip_if_not_installed`), mixed-sign-loading warning
+  5. [x] `label_*`/`rank_scales` tests: `label_hitopsr`/`label_hitopbr` item & scale labels attach the correct text, no-match → warning + unchanged data; extend `rank_scales` coverage (`dir = "low"`, custom `top`, prefix strip, tie handling)
+  6. [x] Run `devtools::test()` then `devtools::check()`; fix any surfaced bug test-first (added defensive `drop = FALSE` to `R/score_hitopbr.R` mean/se, matching `score_hitopsr`)
+- **Notes/links:** Existing tests: `tests/testthat/test-rename_hitopsr_items.R`, `test-test-pipeline_hitopsr.R`. `calc_alpha`/`calc_omega` have **no** tests today (only `calc_sem`, test-util.R:35) — M5 owns them. BR scale overlaps: `externalizing` = {1,13,15,16,25,32,34,35,40,45}, `pFactor` = {1,6,11,14,22,23,25,28,31,32,35,37}. SR reverse item = HSR 310 (romanticDisinterest = 42,152,187,310,338); BR has 0 reverse items. `score_hitopbr()` has no `alpha`/`omega` args (SR does) — reliability tests target `calc_*` directly. `R/score_hitopbr.R:76` `rowMeans(data_items[, x], na.rm = na.rm)` lacks `drop = FALSE` — safe while all BR scales have ≥2 items; assert it or add the guard. Representative-subset scope + reliability-in-M5 per Jeff (2026-07-10). PR [#6](https://github.com/jmgirard/hitop/pull/6).
 
 ### M6: BF keying provenance + tests
 

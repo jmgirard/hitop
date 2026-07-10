@@ -73,7 +73,7 @@ score_hitopbr <- function(
   out <- bind_columns(
     lapply(
       items_scales,
-      function(x) rowMeans(data_items[, x], na.rm = na.rm)
+      function(x) rowMeans(data_items[, x, drop = FALSE], na.rm = na.rm)
     )
   )
 
@@ -86,7 +86,9 @@ score_hitopbr <- function(
       bind_columns(
         lapply(
           items_scales,
-          function(x) apply(data_items[, x], MARGIN = 1, FUN = calc_sem)
+          function(x) {
+            apply(data_items[, x, drop = FALSE], MARGIN = 1, FUN = calc_sem)
+          }
         )
       )
     colnames(sems_scales) <- paste0(prefix, colnames(sems_scales), "_se")
