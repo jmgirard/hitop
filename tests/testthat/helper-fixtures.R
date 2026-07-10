@@ -144,3 +144,92 @@ fx_pid5bf <- function() {
 
 # Validity expectations for fx_pid5bf(): only PNA is defined for the BF.
 #   R1 0, R2 0, R3 0, R4 5/25 = 0.2
+
+# ---- HiTOP-SR (405 items) ---------------------------------------------------
+#
+# Hand-computed fixture for score_hitopsr() (milestone M5). Item range is the
+# default c(1, 4); reverse(x) = 1 + 4 - x = 5 - x. Exactly ONE HiTOP-SR item is
+# reverse-keyed: HSR 310 (in Romantic Disinterest). Scale -> item memberships
+# are copied from the SOURCE (hitopsr_items.csv / hitopsr_scales), NOT read back
+# from the package inside the assertions.
+#
+#   romanticDisinterest = 42,152,187,310,338  (n=5; reverse item = 310)
+#   appetiteLoss        = 144,202,389         (n=3; no reverse)
+#   bingeEating         = 358,392,398         (n=3; no reverse)
+#
+# Rows (columns are HSR_1 .. HSR_405, passed to score_hitopsr in order):
+#   R1  all items = 1 (scale minimum)
+#       romanticDisinterest: 1,1,1,reverse(1)=4,1 -> (1+1+1+4+1)/5 = 8/5  = 1.6
+#       appetiteLoss / bingeEating: all 1          -> 1
+#   R2  all items = 4 (scale maximum)
+#       romanticDisinterest: 4,4,4,reverse(4)=1,4 -> (4+4+4+1+4)/5 = 17/5 = 3.4
+#       appetiteLoss / bingeEating: all 4          -> 4
+#   R3  all items = 2, romanticDisinterest raw = (42,152,187,310,338) = 1,2,3,4,2
+#       romanticDisinterest: 1,2,3,reverse(4)=1,2 -> (1+2+3+1+2)/5 = 9/5  = 1.8
+#       appetiteLoss / bingeEating: all 2          -> 2
+#   R4  all items = 3, item 144 = NA (missingness; scored with na.rm = TRUE)
+#       appetiteLoss: NA,3,3 -> mean(3,3)          = 3
+#       romanticDisinterest: 3,3,3,reverse(3)=2,3  -> (3+3+3+2+3)/5 = 14/5 = 2.8
+fx_hitopsr <- function() {
+  df <- as.data.frame(matrix(NA_integer_, nrow = 4, ncol = 405))
+  names(df) <- paste0("HSR_", seq_len(405))
+  df[1, ] <- 1L
+  df[2, ] <- 4L
+  df[3, ] <- 2L
+  df[3, c(42, 152, 187, 310, 338)] <- c(1L, 2L, 3L, 4L, 2L)
+  df[4, ] <- 3L
+  df[4, 144] <- NA_integer_
+  df
+}
+
+# Expected score_hitopsr() values (prefix "hsr_"), rows R1..R4:
+#   hsr_romanticDisinterest = c(1.6, 3.4, 1.8, 2.8)
+#   hsr_appetiteLoss        = c(1,   4,   2,   3)
+#   hsr_bingeEating         = c(1,   4,   2,   3)
+
+# ---- HiTOP-BR (45 items) ----------------------------------------------------
+#
+# Hand-computed fixture for score_hitopbr() (milestone M5). Item range default
+# c(1, 4). The HiTOP-BR has NO reverse-keyed items. Scale -> item memberships
+# copied from SOURCE (hitopbr_items.csv / hitopbr_scales). The externalizing
+# and pFactor scales are OVERLAPPING supersets built from the marker columns
+# hitopbr_items$Externalizing / $Pfactor:
+#   antagonism      = 1,2,5,13,25,27,33,40,45              (n=9)
+#   detachment      = 7,12,30,31,36,37                     (n=6)
+#   disinhibition   = 15,16,20,24,29,32,34,35,43           (n=9)
+#   internalizing   = 8,9,18,22,23,42,44                   (n=7)
+#   somatoform      = 6,10,14,17,19,21,26,41               (n=8)
+#   thoughtDisorder = 3,4,11,28,38,39                      (n=6)
+#   externalizing   = 1,13,15,16,25,32,34,35,40,45         (n=10)
+#   pFactor         = 1,6,11,14,22,23,25,28,31,32,35,37    (n=12)
+#
+# Rows (columns HBR_1 .. HBR_45, passed to score_hitopbr in order):
+#   R1  all items = 1 -> every scale = 1
+#   R2  all items = 4 -> every scale = 4
+#   R3  all items = 2, disinhibition items (15,16,20,24,29,32,34,35,43) = 4
+#       disinhibition          -> 4
+#       antagonism/detachment/internalizing/somatoform/thoughtDisorder -> 2
+#       externalizing: of its 10 items, {15,16,32,34,35} are disinhibition (=4)
+#         and {1,13,25,40,45} are not (=2) -> (5*4 + 5*2)/10 = 30/10 = 3.0
+#       pFactor: of its 12 items, {32,35} are disinhibition (=4), other 10 = 2
+#         -> (2*4 + 10*2)/12 = 28/12 = 7/3 = 2.333333...
+#   R4  all items = 3, items 1:5 NA (missingness; na.rm = TRUE)
+#       antagonism drops 1,2,5 -> mean of 13,25,27,33,40,45 (all 3) = 3
+#       every scale still resolves to 3 (all retained items = 3)
+fx_hitopbr <- function() {
+  df <- as.data.frame(matrix(NA_integer_, nrow = 4, ncol = 45))
+  names(df) <- paste0("HBR_", seq_len(45))
+  df[1, ] <- 1L
+  df[2, ] <- 4L
+  df[3, ] <- 2L
+  df[3, c(15, 16, 20, 24, 29, 32, 34, 35, 43)] <- 4L
+  df[4, ] <- 3L
+  df[4, 1:5] <- NA_integer_
+  df
+}
+
+# Expected score_hitopbr() values (prefix "hbr_"), rows R1..R4:
+#   hbr_disinhibition = c(1, 4, 4,   3)
+#   hbr_antagonism    = c(1, 4, 2,   3)
+#   hbr_externalizing = c(1, 4, 3.0, 3)   # overlap: 5 disinhibition members
+#   hbr_pFactor       = c(1, 4, 7/3, 3)   # overlap: 2 disinhibition members
