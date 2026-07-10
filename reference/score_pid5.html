@@ -17,7 +17,7 @@ version (PID-5-BF, 25 items) from item-level data."><meta property="og:image" co
 
     <a class="navbar-brand me-2" href="../index.html">hitop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,13 +79,9 @@ version (PID-5-BF, 25 items) from item-level data.</p>
 <span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span><span class="op">)</span>,</span>
 <span>  srange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="st">"pid_"</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  apa_scoring <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  missing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apa"</span>, <span class="st">"available"</span>, <span class="st">"complete"</span><span class="op">)</span>,</span>
 <span>  calc_se <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  alpha <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  omega <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  append <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  tibble <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  append <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -121,24 +117,17 @@ values of the items, used for reverse-coding. (default = <code>c(0, 3)</code>)</
 prefix is desired, set to an empty string <code>""</code>. (default = <code>"pid_"</code>)</p></dd>
 
 
-<dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a></dt>
-<dd><p>An optional logical indicating whether missing values should be
-ignored when calculating scale scores. Ignored when <code>apa_scoring = TRUE</code>
-(the APA missing-data rule governs instead); a warning is issued if
-<code>na.rm = FALSE</code> is set explicitly alongside <code>apa_scoring = TRUE</code>. (default =
-<code>TRUE</code>)</p></dd>
-
-
-<dt id="arg-apa-scoring">apa_scoring<a class="anchor" aria-label="anchor" href="#arg-apa-scoring"></a></dt>
-<dd><p>An optional logical selecting the missing-data algorithm.
-If <code>TRUE</code> (the default), scale scores follow the published APA scoring key:
-a facet or domain-item scale with more than 25% of its items unanswered is
-set to <code>NA</code>, and otherwise the raw score is prorated to the full item count
-and rounded to the nearest whole number before averaging; a FULL/SF domain
-is <code>NA</code> if any one of its three contributing facets is <code>NA</code>. If <code>FALSE</code>,
-scores use the traditional <code>rowMeans(na.rm = na.rm)</code> behavior, which averages
-whatever items are present. With no missing items the two agree. (default =
-<code>TRUE</code>)</p></dd>
+<dt id="arg-missing">missing<a class="anchor" aria-label="anchor" href="#arg-missing"></a></dt>
+<dd><p>A string selecting how missing item responses are handled when
+computing scale scores. <code>"apa"</code> (the default) follows the published APA
+scoring key: a facet or domain-item scale with more than 25% of its items
+unanswered is set to <code>NA</code>, and otherwise the raw score is prorated to the
+full item count and rounded to the nearest whole number before averaging (a
+FULL/SF domain is <code>NA</code> if any one of its three contributing facets is <code>NA</code>).
+<code>"available"</code> averages whatever items are present (<code>rowMeans(na.rm = TRUE)</code>).
+<code>"complete"</code> returns <code>NA</code> for any scale with a missing item
+(<code>rowMeans(na.rm = FALSE)</code>). With no missing items the three agree. (default
+= <code>"apa"</code>)</p></dd>
 
 
 <dt id="arg-calc-se">calc_se<a class="anchor" aria-label="anchor" href="#arg-calc-se"></a></dt>
@@ -147,25 +136,9 @@ standard error of each scale score. Standard errors are <code>NA</code> wherever
 scale score is <code>NA</code>. (default = <code>FALSE</code>)</p></dd>
 
 
-<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
-<dd><p>Optional logical; if <code>TRUE</code>, compute and print Cronbach’s alpha
-for each scale. (default = <code>FALSE</code>)</p></dd>
-
-
-<dt id="arg-omega">omega<a class="anchor" aria-label="anchor" href="#arg-omega"></a></dt>
-<dd><p>Optional logical; if <code>TRUE</code>, compute and print McDonald’s omega
-for each scale using Pearson correlations (i.e., non-ordinal). (default =
-<code>FALSE</code>)</p></dd>
-
-
 <dt id="arg-append">append<a class="anchor" aria-label="anchor" href="#arg-append"></a></dt>
 <dd><p>An optional logical indicating whether the new columns should
 be added to the end of the <code>data</code> input. (default = <code>TRUE</code>)</p></dd>
-
-
-<dt id="arg-tibble">tibble<a class="anchor" aria-label="anchor" href="#arg-tibble"></a></dt>
-<dd><p>An optional logical indicating whether the output should be
-converted to a <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a>. (default = <code>TRUE</code>)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -179,12 +152,11 @@ errors (if requested) and all original <code>data</code> columns (if requested)<
 scores followed by the 5 personality-trait domain scores. Following the APA
 scoring key (Step 3), each domain score is the mean of the average scores of
 its 3 primary facets (the map is stored in <code>pid_domains</code>). The BF version
-scores its 5 domains directly from its items. By default (<code>apa_scoring = TRUE</code>) all versions apply the APA missing-data and proration rule; set
-<code>apa_scoring = FALSE</code> for the traditional <code>rowMeans(na.rm = na.rm)</code> behavior.
-If either <code>alpha</code> or <code>omega</code> are <code>TRUE</code>,
-the function prints a per-scale reliability summary (facets only for FULL/SF).
-Only reliability columns that contain at least one non-<code>NA</code> value are shown
-(the <code>scale</code> column is always shown).</p>
+scores its 5 domains directly from its items. By default (<code>missing = "apa"</code>)
+all versions apply the APA missing-data and proration rule; use
+<code>missing = "available"</code> or <code>missing = "complete"</code> for the traditional
+<code><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans()</a></code> behaviors. For per-scale reliability estimates (Cronbach's
+alpha, McDonald's omega), use <code><a href="reliability_pid5.html">reliability_pid5()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

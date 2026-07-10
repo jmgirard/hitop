@@ -166,6 +166,12 @@ Write Package Paper
 
 ## Reliability
 
+- [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md)
+  : Estimate PID-5 scale reliability
+- [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  : Estimate HiTOP-SR scale reliability
+- [`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md)
+  : Estimate HiTOP-BR scale reliability
 - [`calc_alpha()`](https://jmgirard.github.io/hitop/reference/calc_alpha.md)
   : Compute Cronbach's Coefficient Alpha
 - [`calc_omega()`](https://jmgirard.github.io/hitop/reference/calc_omega.md)

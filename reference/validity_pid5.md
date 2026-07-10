@@ -14,8 +14,7 @@ validity_pid5(
   version = c("FULL", "SF", "BF"),
   srange = c(0, 3),
   prefix = "pid_",
-  append = TRUE,
-  tibble = TRUE
+  append = TRUE
 )
 ```
 
@@ -54,12 +53,6 @@ validity_pid5(
 
   An optional logical indicating whether the new columns should be added
   to the end of the `data` input. (default = `TRUE`)
-
-- tibble:
-
-  An optional logical indicating whether the output should be converted
-  to a [tibble](https://tibble.tidyverse.org/reference/tibble.html).
-  (default = `TRUE`)
 
 ## Value
 

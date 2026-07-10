@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hitop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,12 +72,9 @@
 <span>  <span class="va">items</span>,</span>
 <span>  srange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="st">"hsr_"</span>,</span>
-<span>  na.rm <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  missing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"available"</span>, <span class="st">"complete"</span><span class="op">)</span>,</span>
 <span>  calc_se <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  alpha <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  omega <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  append <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  tibble <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  append <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -107,9 +104,12 @@ values of the HiTOP-SR items, used for reverse-coding. (default = <code>c(1, 4)<
 prefix is desired, set to an empty string <code>""</code>. (default = <code>"hsr_"</code>)</p></dd>
 
 
-<dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a></dt>
-<dd><p>An optional logical indicating whether missing values should be
-ignored when calculating scale scores. (default = <code>TRUE</code>)</p></dd>
+<dt id="arg-missing">missing<a class="anchor" aria-label="anchor" href="#arg-missing"></a></dt>
+<dd><p>A string selecting how missing item responses are handled when
+computing scale scores. <code>"available"</code> (the default) averages whatever items
+are present (<code>rowMeans(na.rm = TRUE)</code>); <code>"complete"</code> returns <code>NA</code> for any
+scale with a missing item (<code>rowMeans(na.rm = FALSE)</code>). (default =
+<code>"available"</code>)</p></dd>
 
 
 <dt id="arg-calc-se">calc_se<a class="anchor" aria-label="anchor" href="#arg-calc-se"></a></dt>
@@ -117,38 +117,20 @@ ignored when calculating scale scores. (default = <code>TRUE</code>)</p></dd>
 standard error of each scale score. (default = <code>FALSE</code>)</p></dd>
 
 
-<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
-<dd><p>Optional logical; if <code>TRUE</code>, compute and print Cronbach’s alpha
-for each scale. (default = <code>FALSE</code>)</p></dd>
-
-
-<dt id="arg-omega">omega<a class="anchor" aria-label="anchor" href="#arg-omega"></a></dt>
-<dd><p>Optional logical; if <code>TRUE</code>, compute and print McDonald’s omega
-for each scale using Pearson correlations (i.e., non-ordinal). (default =
-<code>FALSE</code>)</p></dd>
-
-
 <dt id="arg-append">append<a class="anchor" aria-label="anchor" href="#arg-append"></a></dt>
 <dd><p>An optional logical indicating whether the new columns should
 be added to the end of the <code>data</code> input. (default = <code>TRUE</code>)</p></dd>
 
-
-<dt id="arg-tibble">tibble<a class="anchor" aria-label="anchor" href="#arg-tibble"></a></dt>
-<dd><p>An optional logical indicating whether the output should be
-converted to a <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble()</a></code>. (default = <code>TRUE</code>)</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame containing all scale scores and standard errors (if
-requested) and all original <code>data</code> columns (if requested). Reliability
-estimates, when requested, are printed as a side effect.</p>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> containing all scale scores and standard
+errors (if requested) and all original <code>data</code> columns (if requested).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If either <code>alpha</code> or <code>omega</code> are <code>TRUE</code>, the function prints a
-per-scale reliability summary. Only reliability columns that contain at
-least one non-<code>NA</code> value are shown (the <code>scale</code> column is always shown).</p>
+    <p>For per-scale reliability estimates (Cronbach's alpha, McDonald's
+omega), use <code><a href="reliability_hitopsr.html">reliability_hitopsr()</a></code>.</p>
     </div>
 
     <div class="section level2">

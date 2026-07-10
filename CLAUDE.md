@@ -24,8 +24,11 @@ Maintained by Jeffrey Girard.
 ## Conventions
 
 - Scoring signature:
-  `(data, items, [version,] srange, prefix, na.rm, calc_se, [alpha, omega,] append = TRUE, tibble = TRUE)`.
-  No `id` or `scales` arguments; all scales are computed.
+  `(data, items, [version,] srange, prefix, missing, calc_se, append = TRUE)`;
+  always returns a tibble. No `id`/`scales`/`tibble` arguments; all
+  scales are computed. Reliability is a separate returning family
+  `reliability_{pid5,hitopsr,hitopbr}(data, items, [version,] srange, alpha, omega)`
+  → a per-scale tibble.
 - Output columns: `prefix` + camelCase scale name (`pid_anhedonia`,
   `hsr_...`); validity scales are `prefix` + abbreviation (`pid_PNA`,
   `pid_INC`); standard errors add `_se`.

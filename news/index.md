@@ -1,5 +1,56 @@
 # Changelog
 
+## hitop 0.2.0
+
+This release makes several **breaking** API changes to stabilize the
+interface before a CRAN submission.
+
+- **New
+  [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md),
+  and
+  [`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md)
+  functions** return a per-scale tibble (`scale`, `nItems`, `alpha`,
+  `omega`). These replace the `alpha` and `omega` arguments of
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  and
+  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
+  which only *printed* a reliability table as a side effect and have
+  been **removed**
+- **[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  and
+  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
+  now take a single `missing` argument** in place of the previous
+  `na.rm` (and, for
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  `apa_scoring`) arguments. For
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  `missing = "apa"` (the default) applies the APA missing-data/proration
+  rule, `"available"` averages the present items (the old
+  `apa_scoring = FALSE, na.rm = TRUE`), and `"complete"` returns `NA`
+  for any scale with a missing item (the old `na.rm = FALSE`).
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)/[`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
+  offer `"available"` (default) and `"complete"`. Default behavior is
+  unchanged
+- **[`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
+  gains a `name` argument** (default `"top_scales"`) naming its output
+  column, which was previously hard-coded as `"out"`. It also gains
+  `reverse` and `srange` arguments: scales named in `reverse` are
+  reflected via `sum(srange) - value` before ranking, so a
+  reverse-directioned scale (e.g. a well-being scale, where higher =
+  healthier) ranks on the same “higher = more elevated” metric as the
+  other scales
+- **The `tibble` argument has been removed** from
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
+  [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md),
+  and
+  [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md);
+  these functions now always return a tibble
+
 ## hitop 0.1.0
 
 - Add initial HiTOP-HSUM functions

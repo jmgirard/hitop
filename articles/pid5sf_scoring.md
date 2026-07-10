@@ -133,46 +133,32 @@ typically provides a more accurate reliability estimate for
 unit-weighted sums. Both assume the scale is essentially unidimensional;
 α and ω coincide when tau-equivalence holds.
 
-We can just add one or more of the following arguments to
-[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md):
-`alpha` and `omega`. For the latter, we will need the **lavaan** package
-installed. If requested, a table of reliability results will be printed
-as a side-effect of the function (alongside any warnings from lavaan
-about convergence of the factor analysis models that omega is based on).
+We estimate reliability with the
+[`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md)
+function, which returns a tibble with one row per scale and columns for
+the number of items and the requested coefficients. By default it
+computes both `alpha` and `omega`; for the latter, we will need the
+**lavaan** package installed (set `omega = FALSE` to skip it).
 
 ``` r
 
-scores <- score_pid5(
+reliability_pid5(
   data = ku_pid5sf,
   items = sprintf("pid_%d", 1:100),
-  version = "SF",
-  alpha = TRUE,
-  omega = TRUE
+  version = "SF"
 )
-#>                          scale alpha omega
-#> 1               Suspiciousness 0.663 0.665
-#> 2                  Impulsivity 0.804 0.808
-#> 3               Submissiveness 0.818 0.818
-#> 4                  Callousness 0.816 0.816
-#> 5                    Anhedonia 0.864 0.865
-#> 6                 Eccentricity 0.832 0.833
-#> 7                    Hostility 0.748 0.762
-#> 8                  Risk Taking 0.782 0.785
-#> 9                  Grandiosity 0.763 0.772
-#> 10    Perceptual Dysregulation 0.690 0.689
-#> 11       Separation Insecurity 0.771 0.789
-#> 12               Deceitfulness 0.757 0.765
-#> 13               Perseveration 0.743 0.747
-#> 14           Attention Seeking 0.800 0.806
-#> 15                 Anxiousness 0.852 0.853
-#> 16                Depressivity 0.829 0.830
-#> 17                  Withdrawal 0.739 0.742
-#> 18      Restricted Affectivity 0.674 0.678
-#> 19          Intimacy Avoidance 0.783 0.785
-#> 20         Rigid Perfectionism 0.759 0.762
-#> 21 Unusual Beliefs Experiences 0.642 0.662
-#> 22            Manipulativeness 0.747 0.746
-#> 23             Distractibility 0.853 0.853
-#> 24          Emotional Lability 0.842 0.845
-#> 25            Irresponsibility 0.614 0.619
+#> # A tibble: 25 × 4
+#>    scale                    nItems alpha omega
+#>    <chr>                     <int> <dbl> <dbl>
+#>  1 Suspiciousness                4 0.663 0.665
+#>  2 Impulsivity                   4 0.804 0.808
+#>  3 Submissiveness                4 0.818 0.818
+#>  4 Callousness                   4 0.816 0.816
+#>  5 Anhedonia                     4 0.864 0.865
+#>  6 Eccentricity                  4 0.832 0.833
+#>  7 Hostility                     4 0.748 0.762
+#>  8 Risk Taking                   4 0.782 0.785
+#>  9 Grandiosity                   4 0.763 0.772
+#> 10 Perceptual Dysregulation      4 0.690 0.689
+#> # ℹ 15 more rows
 ```

@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="index.html">hitop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
 </ul></div>
 <div class="section level2">
 <h2 id="conventions">Conventions<a class="anchor" aria-label="anchor" href="#conventions"></a></h2>
-<ul><li>Scoring signature: <code>(data, items, [version,] srange, prefix, na.rm, calc_se, [alpha, omega,] append = TRUE, tibble = TRUE)</code>. No <code>id</code> or <code>scales</code> arguments; all scales are computed.</li>
+<ul><li>Scoring signature: <code>(data, items, [version,] srange, prefix, missing, calc_se, append = TRUE)</code>; always returns a tibble. No <code>id</code>/<code>scales</code>/<code>tibble</code> arguments; all scales are computed. Reliability is a separate returning family <code>reliability_{pid5,hitopsr,hitopbr}(data, items, [version,] srange, alpha, omega)</code> → a per-scale tibble.</li>
 <li>Output columns: <code>prefix</code> + camelCase scale name (<code>pid_anhedonia</code>, <code>hsr_...</code>); validity scales are <code>prefix</code> + abbreviation (<code>pid_PNA</code>, <code>pid_INC</code>); standard errors add <code>_se</code>.</li>
 <li>Scale membership comes from the <code>*_scales</code> list-column tables (<code>pid_scales[[version]]$itemNumbers</code>, <code>hitopsr_scales</code>, <code>hitopbr_scales</code>); reverse-keying and validity-scale membership from the <code>*_items</code> tables. Never hardcode item numbers.</li>
 <li>User messaging via <code><a href="https://cli.r-lib.org/reference/cli_alert.html" class="external-link">cli::cli_alert_warning()</a></code> + <code><a href="https://cli.r-lib.org/reference/cli_alert.html" class="external-link">cli::cli_alert_info()</a></code> with actionable <code>{.code dplyr::filter(...)}</code> suggestions; validation via <code>validate_*()</code>/<code>cli_assert()</code> in <code>R/util.R</code>.</li>

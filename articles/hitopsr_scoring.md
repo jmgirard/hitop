@@ -261,98 +261,33 @@ typically provides a more accurate reliability estimate for
 unit-weighted sums. Both assume the scale is essentially unidimensional;
 α and ω coincide when tau-equivalence holds.
 
-We can just add one or more of the following arguments to
-[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md):
-`alpha` and `omega`. For the latter, we will need the **lavaan** package
-installed. If requested, a table of reliability results will be printed
-as a side-effect of the function (alongside any warnings from lavaan
-about convergence of the factor analysis models that omega is based on).
+We estimate reliability with the
+[`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+function, which returns a tibble with one row per scale and columns for
+the number of items and the requested coefficients. By default it
+computes both `alpha` and `omega`; for the latter, we will need the
+**lavaan** package installed (set `omega = FALSE` to skip it).
 
 ``` r
 
-scores <- score_hitopsr(
+reliability_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hsr%03d", 1:405),
-  alpha = TRUE,
-  omega = TRUE
+  items = sprintf("hsr%03d", 1:405)
 )
-#>                           scale   alpha omega
-#> 1                   Agoraphobia  0.4188 0.431
-#> 2           Antisocial Behavior  0.5446 0.553
-#> 3                 Appetite Loss  0.3666    NA
-#> 4                  Binge Eating  0.1103 0.218
-#> 5               Bodily Distress  0.3960 0.469
-#> 6          Body Dissatisfaction  0.2935    NA
-#> 7                    Body Focus  0.3939 0.436
-#> 8                   Callousness  0.4816 0.490
-#> 9                      Checking  0.6014 0.605
-#> 10                     Cleaning  0.4800 0.526
-#> 11           Cognitive Problems  0.4744 0.508
-#> 12          Conversion Symptoms  0.4546 0.487
-#> 13                     Counting  0.2714 0.333
-#> 14            Dietary Restraint  0.5214 0.543
-#> 15 Difficulties Reaching Orgasm  0.4128 0.447
-#> 16           Disease Conviction  0.5616 0.574
-#> 17                   Dishonesty  0.5520 0.579
-#> 18              Disorganization  0.4663 0.491
-#> 19                 Dissociation  0.4384 0.456
-#> 20           Distress Dysphoria  0.7408 0.753
-#> 21                  Domineering  0.3650 0.416
-#> 22                 Eccentricity  0.5838 0.594
-#> 23                 Emotionality  0.7418 0.755
-#> 24                  Entitlement  0.3712 0.403
-#> 25           Excessive Exercise  0.5155 0.553
-#> 26                  Excoriation  0.4598 0.487
-#> 27                Exhibitionism  0.4215 0.441
-#> 28            Fantasy Proneness  0.5749 0.592
-#> 29             Food Selectivity  0.4096 0.431
-#> 30                     Gambling  0.3668 0.440
-#> 31                       Gaming  0.3686 0.372
-#> 32                  Grandiosity  0.3269 0.345
-#> 33               Health Anxiety  0.4414 0.457
-#> 34                     Hoarding  0.5728 0.616
-#> 35            Hyperdeliberation  0.2873 0.357
-#> 36               Hypervigilance  0.6377 0.662
-#> 37                     Insomnia  0.4203 0.440
-#> 38           Low Sexual Arousal  0.3140 0.458
-#> 39          Low Sexual Interest  0.6008 0.674
-#> 40                 Manic Energy  0.3561 0.392
-#> 41                     Mistrust  0.4914 0.527
-#> 42              Muscle Building  0.3529 0.487
-#> 43                         Nssi  0.4611 0.495
-#> 44                   Nightmares  0.2203    NA
-#> 45              Non Persistence  0.6345 0.672
-#> 46              Non Planfulness  0.5382 0.561
-#> 47              Oppositionality  0.3296 0.323
-#> 48                        Panic  0.1326 0.244
-#> 49                  Paraphilias  0.4004 0.392
-#> 50                Perfectionism  0.5222 0.536
-#> 51             Premature Orgasm  0.3370    NA
-#> 52         Problematic Shopping  0.3732 0.411
-#> 53                      Purging  0.2713 0.300
-#> 54           Reality Distortion  0.6772 0.687
-#> 55                 Restlessness  0.5616 0.598
-#> 56       Restricted Affectivity  0.1401 0.153
-#> 57            Restricted Eating  0.5266 0.576
-#> 58                     Rigidity  0.3968 0.448
-#> 59                Risk Aversion  0.5158 0.574
-#> 60                  Risk Taking  0.5511 0.570
-#> 61                    Risky Sex  0.1348 0.203
-#> 62         Romantic Disinterest -0.0803 0.200
-#> 63    Sex Related Substance Use  0.3688 0.403
-#> 64              Sexual Distress  0.5135 0.526
-#> 65                  Sexual Pain  0.4416 0.458
-#> 66            Social Aggression  0.5386 0.555
-#> 67             Social Aloofness  0.5550 0.599
-#> 68               Social Anxiety  0.3877 0.482
-#> 69        Somatic Preoccupation  0.5924 0.661
-#> 70        Specific Phobia Index  0.5931 0.598
-#> 71               Submissiveness  0.1241    NA
-#> 72                  Suicidality  0.4398 0.466
-#> 73             Trauma Reactions  0.3306 0.357
-#> 74             Trichotillomania  0.1963    NA
-#> 75                   Well Being  0.6629 0.680
-#> 76                  Workaholism  0.4852 0.502
+#> # A tibble: 76 × 4
+#>    scale                nItems alpha  omega
+#>    <chr>                 <int> <dbl>  <dbl>
+#>  1 Agoraphobia               5 0.419  0.431
+#>  2 Antisocial Behavior       8 0.545  0.553
+#>  3 Appetite Loss             3 0.367 NA    
+#>  4 Binge Eating              3 0.110  0.218
+#>  5 Bodily Distress           6 0.396  0.469
+#>  6 Body Dissatisfaction      4 0.294 NA    
+#>  7 Body Focus                5 0.394  0.436
+#>  8 Callousness               6 0.482  0.490
+#>  9 Checking                  5 0.601  0.605
+#> 10 Cleaning                  6 0.480  0.526
+#> # ℹ 66 more rows
 ```
 
 ## Renaming Item Columns

@@ -10,12 +10,9 @@ score_hitopbr(
   items,
   srange = c(1, 4),
   prefix = "hbr_",
-  na.rm = TRUE,
+  missing = c("available", "complete"),
   calc_se = FALSE,
-  alpha = FALSE,
-  omega = FALSE,
-  append = TRUE,
-  tibble = TRUE
+  append = TRUE
 )
 ```
 
@@ -44,50 +41,35 @@ score_hitopbr(
   An optional string to add before each scale column name. If no prefix
   is desired, set to an empty string `""`. (default = `"hbr_"`)
 
-- na.rm:
+- missing:
 
-  An optional logical indicating whether missing values should be
-  ignored when calculating scale scores. (default = `TRUE`)
+  A string selecting how missing item responses are handled when
+  computing scale scores. `"available"` (the default) averages whatever
+  items are present (`rowMeans(na.rm = TRUE)`); `"complete"` returns
+  `NA` for any scale with a missing item (`rowMeans(na.rm = FALSE)`).
+  (default = `"available"`)
 
 - calc_se:
 
   An optional logical indicating whether to calculate the standard error
   of each scale score. (default = `FALSE`)
 
-- alpha:
-
-  Optional logical; if `TRUE`, compute and print Cronbach’s alpha for
-  each scale. (default = `FALSE`)
-
-- omega:
-
-  Optional logical; if `TRUE`, compute and print McDonald’s omega for
-  each scale using Pearson correlations (i.e., non-ordinal). (default =
-  `FALSE`)
-
 - append:
 
   An optional logical indicating whether the new columns should be added
   to the end of the `data` input. (default = `TRUE`)
 
-- tibble:
-
-  An optional logical indicating whether the output should be converted
-  to a
-  [`tibble::tibble()`](https://tibble.tidyverse.org/reference/tibble.html).
-  (default = `TRUE`)
-
 ## Value
 
-A data frame containing all scale scores and standard errors (if
-requested) and all original `data` columns (if requested). Reliability
-estimates, when requested, are printed as a side effect.
+A [tibble](https://tibble.tidyverse.org/reference/tibble.html)
+containing all scale scores and standard errors (if requested) and all
+original `data` columns (if requested).
 
 ## Details
 
-If either `alpha` or `omega` are `TRUE`, the function prints a per-scale
-reliability summary. Only reliability columns that contain at least one
-non-`NA` value are shown (the `scale` column is always shown).
+For per-scale reliability estimates (Cronbach's alpha, McDonald's
+omega), use
+[`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md).
 
 ## Examples
 

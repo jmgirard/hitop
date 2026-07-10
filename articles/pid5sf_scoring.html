@@ -32,7 +32,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hitop</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -225,47 +225,32 @@ model, allowing items to have different loadings and error variances; it
 typically provides a more accurate reliability estimate for
 unit-weighted sums. Both assume the scale is essentially unidimensional;
 α and ω coincide when tau-equivalence holds.</p>
-<p>We can just add one or more of the following arguments to
-<code><a href="../reference/score_pid5.html">score_pid5()</a></code>: <code>alpha</code> and <code>omega</code>.
-For the latter, we will need the <strong>lavaan</strong> package
-installed. If requested, a table of reliability results will be printed
-as a side-effect of the function (alongside any warnings from lavaan
-about convergence of the factor analysis models that omega is based
-on).</p>
+<p>We estimate reliability with the <code><a href="../reference/reliability_pid5.html">reliability_pid5()</a></code>
+function, which returns a tibble with one row per scale and columns for
+the number of items and the requested coefficients. By default it
+computes both <code>alpha</code> and <code>omega</code>; for the latter,
+we will need the <strong>lavaan</strong> package installed (set
+<code>omega = FALSE</code> to skip it).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability_pid5.html">reliability_pid5</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_pid5sf</span>,</span>
 <span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid_%d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span>
-<span>  version <span class="op">=</span> <span class="st">"SF"</span>,</span>
-<span>  alpha <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  omega <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  version <span class="op">=</span> <span class="st">"SF"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt;                          scale alpha omega</span></span>
-<span><span class="co">#&gt; 1               Suspiciousness 0.663 0.665</span></span>
-<span><span class="co">#&gt; 2                  Impulsivity 0.804 0.808</span></span>
-<span><span class="co">#&gt; 3               Submissiveness 0.818 0.818</span></span>
-<span><span class="co">#&gt; 4                  Callousness 0.816 0.816</span></span>
-<span><span class="co">#&gt; 5                    Anhedonia 0.864 0.865</span></span>
-<span><span class="co">#&gt; 6                 Eccentricity 0.832 0.833</span></span>
-<span><span class="co">#&gt; 7                    Hostility 0.748 0.762</span></span>
-<span><span class="co">#&gt; 8                  Risk Taking 0.782 0.785</span></span>
-<span><span class="co">#&gt; 9                  Grandiosity 0.763 0.772</span></span>
-<span><span class="co">#&gt; 10    Perceptual Dysregulation 0.690 0.689</span></span>
-<span><span class="co">#&gt; 11       Separation Insecurity 0.771 0.789</span></span>
-<span><span class="co">#&gt; 12               Deceitfulness 0.757 0.765</span></span>
-<span><span class="co">#&gt; 13               Perseveration 0.743 0.747</span></span>
-<span><span class="co">#&gt; 14           Attention Seeking 0.800 0.806</span></span>
-<span><span class="co">#&gt; 15                 Anxiousness 0.852 0.853</span></span>
-<span><span class="co">#&gt; 16                Depressivity 0.829 0.830</span></span>
-<span><span class="co">#&gt; 17                  Withdrawal 0.739 0.742</span></span>
-<span><span class="co">#&gt; 18      Restricted Affectivity 0.674 0.678</span></span>
-<span><span class="co">#&gt; 19          Intimacy Avoidance 0.783 0.785</span></span>
-<span><span class="co">#&gt; 20         Rigid Perfectionism 0.759 0.762</span></span>
-<span><span class="co">#&gt; 21 Unusual Beliefs Experiences 0.642 0.662</span></span>
-<span><span class="co">#&gt; 22            Manipulativeness 0.747 0.746</span></span>
-<span><span class="co">#&gt; 23             Distractibility 0.853 0.853</span></span>
-<span><span class="co">#&gt; 24          Emotional Lability 0.842 0.845</span></span>
-<span><span class="co">#&gt; 25            Irresponsibility 0.614 0.619</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 25 × 4</span></span></span>
+<span><span class="co">#&gt;    scale                    nItems alpha omega</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Suspiciousness                4 0.663 0.665</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Impulsivity                   4 0.804 0.808</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Submissiveness                4 0.818 0.818</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Callousness                   4 0.816 0.816</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Anhedonia                     4 0.864 0.865</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Eccentricity                  4 0.832 0.833</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Hostility                     4 0.748 0.762</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Risk Taking                   4 0.782 0.785</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Grandiosity                   4 0.763 0.772</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Perceptual Dysregulation      4 0.690 0.689</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 15 more rows</span></span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
