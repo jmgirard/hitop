@@ -26,7 +26,7 @@
   - [x] Confirm the M8 follow-up note is resolved; add the `_se` single-row case to `test-interface.R` if it fits the existing shape checks.
   - [x] Add a NEWS.md bug-fix bullet (parallels the M3 `validity_pid5()` single-row entry).
   - [x] `devtools::test()` + `devtools::check()`; document if any roxygen touched (none expected).
-- **Notes/links:** Root cause confirmed empirically — `data_items` is a matrix (from `cbind`), so single-row `data_items[, x]` drops to a vector and `apply(MARGIN = 1)` fails. One-line fix; no keying content touched. Deferred follow-up from M8 (PR [#9](https://github.com/jmgirard/hitop/pull/9)).
+- **Notes/links:** Root cause confirmed empirically — `data_items` is a matrix (from `cbind`), so single-row `data_items[, x]` drops to a vector and `apply(MARGIN = 1)` fails. One-line fix; no keying content touched. Deferred follow-up from M8 (PR [#9](https://github.com/jmgirard/hitop/pull/9)). PR [#10](https://github.com/jmgirard/hitop/pull/10).
 
 ## Completed
 
