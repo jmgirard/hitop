@@ -5,6 +5,12 @@
 <!-- Boundary rule: Architecture → DESIGN. Direction → ROADMAP. Tasks → MILESTONES. History → LOG. -->
 <!-- This log starts fresh for the canonical repo (v0.1.0); the old fork's log was deliberately not imported (D-006). Pre-tracking history: see git log and NEWS.md. -->
 
+## 2026-07-09 — Adopted branch + PR workflow (—)
+
+- **What:** Added "Branching & PRs" rules to CLAUDE.md and tracking-rules.md: milestone work on `m<n>-<slug>` branches, merged to main via PR with the URL recorded in the milestone entry; keying-content PRs require Jeff's explicit sign-off before merge; trivial doc/tracking edits may still go direct to main. Updated /work-milestone (branch before code, open PR at completion) and /review-milestone (review the PR diff, merge on pass) to match.
+- **Why / decisions:** main is a distribution channel (pak installs and pkgdown deploys from it) and must stay installable; PRs give CI (future M4) a gate and keying changes a sign-off point.
+- **Follow-ups spawned:** —
+
 ## 2026-07-09 — Added collaboration rules: primary sources & model choice (—)
 
 - **What:** Added two working rules to CLAUDE.md ("Working with Jeff") and `.claude/skills/shared/tracking-rules.md`: (1) seek primary sources when they would help and ask Jeff to upload any that can't be found/accessed — never substitute secondary descriptions or model memory for keying/scoring content; (2) assume the main session runs on Opus, delegate suitable tasks to Sonnet subagents, and ask Jeff to launch a clean Fable session when one would help.

@@ -65,6 +65,15 @@ IDs are `M<n>`, monotonically increasing, never reused — even for dropped mile
 
 Never fabricate history. If LOG.md has a gap, add one catch-up entry summarizing `git log` output.
 
+## Branching & PRs
+
+`main` is a distribution channel, not just a dev branch: users install it directly (`pak::pak("jmgirard/hitop")`) and pkgdown deploys the site from it, so it must stay installable at all times.
+
+- Milestone work happens on a branch named `m<n>-<slug>` (e.g. `m1-keying-tests`), cut from up-to-date main before any code is touched. Never commit milestone work directly to main.
+- When implementation is ready, push the branch and open a PR (`gh pr create`); record the PR URL in the milestone's **Notes/links**. The PR is what /review-milestone reviews, and it merges before the milestone is marked DONE.
+- Any change to keying content (`pid_items` or the other `*_items`/`*_scales` tables) always goes through a PR and requires Jeff's explicit sign-off in that PR before merge — never self-merge those.
+- Trivial edits with no runtime surface (typos, tracking-doc updates like LOG entries) may commit directly to main.
+
 ## Subagent use
 
 - **Exploration** (plan-milestone): for milestones touching more than a couple of files, delegate fan-out searching to `Explore` subagents and keep the main context for drafting. Give each agent a specific focus and ask for file:line citations.

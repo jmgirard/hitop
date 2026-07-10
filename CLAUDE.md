@@ -28,6 +28,10 @@ Scores, validity-screens, and distributes HiTOP Society instruments: PID-5 (FULL
 - New instruments follow the pattern: items (+ scales) table via `data-raw/` → `score_*` (+ `validity_*`) + `generate_{docx,qualtrics,redcap}_*` family (see project/DESIGN.md).
 - Keep `tests/`, NEWS.md, and the `_pkgdown.yml` reference index in step with exported functions.
 
+## Branching & PRs
+
+- Milestone/code work happens on a `m<n>-<slug>` branch and merges via PR (record the URL in the milestone entry); keying-content PRs need Jeff's explicit sign-off before merge. Direct commits to main only for trivial doc/tracking edits — main must stay installable (pak installs and pkgdown deploys from it).
+
 ## Working with Jeff
 
 - When a primary source (paper, chapter, manual, scoring key) would help, look for it; if you can't find or access it, ask Jeff to upload it. Never rely on secondary descriptions or memory for keying/scoring content.
