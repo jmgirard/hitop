@@ -11,15 +11,34 @@
 
 ### M8: APA-compliant scoring toggle for `score_pid5()`
 
-- **Status:** PLANNED
-- **Depends on:** M6 (BF rule sourced); shares design with M7
-- **Goal:** Add an `apa_scoring` argument to `score_pid5()` that applies the APA missing-data + proration rules, so scored output honors the published algorithm; a `FALSE` value selects the current `rowMeans(na.rm = TRUE)` ("traditional") behavior.
-- **Open items to resolve in `/plan-milestone`:**
-  - Argument name/default settled with maintainer: `apa_scoring = TRUE` (APA rules are the **default**; `apa_scoring = FALSE` = current traditional `rowMeans(na.rm=TRUE)`). This changes default output under missing data → needs a **D-entry** and a NEWS.md note.
-  - Scope: BF only in v1, or FULL/SF/BF? FULL/SF need their APA missing-data rules pulled from the APA full-form key first (a sourcing task; not yet confirmed in hand).
-  - Proration rounding semantics: APA rounds the prorated *raw* domain score to the nearest whole number, then averages — this differs from a plain mean of available items → capture exact algorithm + hand-computed oracle fixtures.
-  - Interaction with existing `na.rm`, `calc_se`, `alpha`/`omega` args; and rewriting `tests/testthat/test-score_pid5.R:122-127`, which currently enshrines scoring a domain from a single surviving item (contradicts the APA ≥2-missing rule).
-- **Notes/links:** APA BF missing-data/proration rule text captured in M6 Notes + SOURCES.md. Relates to M7's "domain not computed if any contributing facet is missing" rule — plan the two missing-data behaviors coherently.
+- **Status:** READY
+- **Depends on:** M6 (BF rule sourced), M7 (FULL/SF domain scoring) — both DONE
+- **Goal:** Add an `apa_scoring = TRUE` argument to `score_pid5()` that applies the published APA missing-data + proration algorithm (25%-unanswered cutoff, prorated-and-rounded raw scores, domain dropped if any contributing facet is uncomputable) across FULL/SF/BF; `apa_scoring = FALSE` selects the current traditional `rowMeans(na.rm = TRUE)` behavior.
+- **Sourced algorithm** (APA full-form key, Krueger et al., 2013, p. 8 — transcribed verbatim 2026-07-10; BF key = same rule on 5-item domains, M6):
+  - Per scale (facet for FULL/SF; domain-from-items for BF): let `n` = items, `a` = answered. If `(n − a)/n > 0.25` → score = **NA** ("should not be used"). Else prorate: `prorated_raw = round(partial_sum × n / a)`, `average = prorated_raw / n`. (No missing → plain mean.)
+  - FULL/SF domains: mean of the 3 primary facet averages; **NA if any one facet is NA**.
+  - `apa_scoring = TRUE` is the **default** and governs missing data entirely — `na.rm` is ignored under it (cli warning if `na.rm = FALSE` passed explicitly); `na.rm` applies only when `apa_scoring = FALSE`. Scope decision (2026-07-10): all three versions; na.rm-override with docs + cli warnings.
+- **Acceptance criteria:**
+  - [ ] `score_pid5()` gains an `apa_scoring = TRUE` argument (documented; placed per the DESIGN signature convention) covering FULL, SF, and BF.
+  - [ ] **Proration/rounding oracle:** on the FULL fixture with Anhedonia's item 1 missing (all-1 row), `apa_scoring = TRUE` → `pid_anhedonia = 1.25` (= round(9×8/7)/8 = 10/8) while `apa_scoring = FALSE, na.rm = TRUE` → `9/7`; values hand-computed in comments.
+  - [ ] **>25% cutoff oracle:** a facet with >25% of items missing is `NA` under `apa_scoring = TRUE`; a facet at exactly 25% missing is prorated (not NA). BF: with items 1–5 missing, `pid_disinhibition` (4/5 missing) = `NA` and `pid_detachment` (1/5 missing) = prorated value under APA; both non-NA under `apa_scoring = FALSE`.
+  - [ ] **Domain gating oracle:** a FULL/SF domain is `NA` under `apa_scoring = TRUE` when any one of its 3 primary facets is NA (>25% missing), even if the other two are computable.
+  - [ ] **Half-integer rounding** matches "round to the nearest whole number" (round-half-up), verified by a fixture hitting a `.5` prorated raw if one is constructible for these facet sizes; otherwise a comment documents that base `round()` suffices because no `.5` boundary is reachable.
+  - [ ] `apa_scoring = TRUE, na.rm = FALSE` emits a cli warning that `na.rm` is ignored; roxygen docs state the interaction. `calc_se` SE columns are `NA` wherever their scale is `NA`; `alpha`/`omega` printing unchanged.
+  - [ ] `test-score_pid5.R:122-127` (the "tolerates missing via rowMeans" test that scored a domain from a single surviving item) is rewritten to assert both modes: `NA` under APA default, `1` under `apa_scoring = FALSE`.
+  - [ ] `test-interface.R` covers the new argument (bool validation; column counts unchanged — apa affects values, not shape).
+  - [ ] `NEWS.md` notes the default-behavior change under missing data; SOURCES.md's two "Not yet enforced (→ M8)" notes updated to "enforced (M8)" with the verbatim APA rule + SF-by-analogy caveat; `D-009` added to DESIGN.md.
+  - [ ] `devtools::document()` no-diff; `devtools::test()` passes; `devtools::check()` clean (0/0/0).
+- **Tasks:**
+  1. [ ] Add `apa_scoring` to the signature + roxygen in `R/score_pid5.R:62`; document the na.rm-override and cli warning. `devtools::document()`.
+  2. [ ] Add an `apa_mean()` helper (round-half-up; NA if >25% missing) in `R/util.R` near `calc_sem`; unit-test it directly.
+  3. [ ] Branch the facet computation at `R/score_pid5.R:125-130` on `apa_scoring` (APA path uses `apa_mean` over each scale's item matrix; else current `rowMeans`).
+  4. [ ] Update the FULL/SF domain block `R/score_pid5.R:135-147`: under APA, domain = mean of 3 facet averages, NA if any is NA (reuse the `na.rm = FALSE`-style gating on the already-prorated facet scores).
+  5. [ ] Gate `_se` columns to NA where the scale is NA `R/score_pid5.R:153-173`.
+  6. [ ] Extend `helper-fixtures.R` with hand-computed APA-vs-traditional values; rewrite `test-score_pid5.R:122-127`; add proration/cutoff/domain-gating/rounding oracle tests (arithmetic in comments).
+  7. [ ] SOURCES.md: replace the two "Not yet enforced" notes with the enforced verbatim rule + SF-by-analogy caveat; add the full-form PDF URL to Sources; add `D-009` to DESIGN.md; `NEWS.md` entry.
+  8. [ ] `devtools::test()`; `devtools::check()`; open PR, record URL in Notes/links.
+- **Notes/links:** APA full-form rule (verbatim, sourced 2026-07-10): *"If more than 25% of the items within a trait facet are left unanswered, the corresponding facet score should not be used… if 25% or less are unanswered… prorate… multiply the partial raw score by the total number of items contributing to that facet (i.e., 4-14)… divide by the number actually answered… If the result is a fraction, round to the nearest whole number. Domain scores should not be computed if any one of the three contributing facet scores cannot be computed."* Full-form PDF: <https://www.psychiatry.org/getmedia/594673a6-1b9b-4298-8b52-c4c652c4a4e2/APA-DSM5TR-ThePersonalityInventoryForDSM5FullVersionAdult.pdf>. `pid_items`/`pid_scales`/`pid_domains` untouched (no keying-content change). SF proration applies the full-form rule by analogy (Maples 2015 specifies none) — flagged in SOURCES.md. See D-009.
 
 ## Completed
 
