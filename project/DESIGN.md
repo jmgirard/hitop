@@ -68,7 +68,6 @@ Scoring correctness is the package's core promise, so tests must verify against 
 1. **SDTD item 38 unverified (keying, OQ-1)** — `pid_items` lists 17 SDTD items; Williams et al. (2019) Table 5's note enumerates 16 (no item 38) while its text says 17. Maintainer to check the physical PID-5 manual; `pid_items` unchanged pending sign-off. See [SOURCES.md](SOURCES.md) OQ-1.
 2. **SF validity cutoffs unavailable** — ORS-S/PRD-S/SDTD-S have no validated cut scores; `validity_pid5(version = "SF")` warns at runtime. Literature watch; no milestone yet.
 3. **`generate_*` export family untested** — the DOCX/Qualtrics/REDCap generators have no automated tests; verified only by inspecting the prebuilt `inst/extdata/` artifacts. No milestone yet.
-4. **`score_pid5(calc_se = TRUE)` crashes on single-row input** — the SE branch calls `apply(data_items[, x], MARGIN = 1, calc_sem)` without `drop = FALSE`, so a 1-row `data` drops to a vector and `apply` errors (`dim(X) must have a positive length`). Pre-existing (independent of M8; the facet/domain score paths already use `drop = FALSE`). Same class as the single-row `validity_pid5()` bug fixed in M3. Fix: add `drop = FALSE` to the SE `apply()` calls; needs a 1-row `calc_se` oracle test. No milestone yet.
 
 ## Decision Log
 

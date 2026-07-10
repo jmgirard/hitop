@@ -9,28 +9,18 @@
 
 ## Active
 
-### M9: Fix single-row `score_pid5(calc_se = TRUE)` crash
-
-- **Status:** IN PROGRESS
-- **Depends on:** —
-- **Goal:** `score_pid5()` with `calc_se = TRUE` on a single-row input returns per-scale standard errors instead of erroring, across FULL/SF/BF.
-- **Acceptance criteria:**
-  - [ ] `score_pid5(<1-row df>, items, version, calc_se = TRUE)` runs without error for FULL, SF, and BF, returning 1 row with the expected `_se` columns present.
-  - [ ] The returned `_se` values match a hand-computed `sd(items)/sqrt(k)` oracle for at least one scale per version (arithmetic in comments).
-  - [ ] Multi-row `calc_se = TRUE` output is unchanged (regression check against current values).
-  - [ ] A test written *before* the fix reproduces the `"dim(X) must have a positive length"` crash; it passes after.
-  - [ ] `devtools::test()` passes; `devtools::check()` clean (0/0/0).
-- **Tasks:**
-  - [x] Add failing single-row `calc_se = TRUE` tests to `tests/testthat/test-score_pid5.R` (FULL/SF/BF), mirroring the pattern at `test-validity_pid5.R:144`; include a hand-computed SE oracle for one scale per version.
-  - [x] Fix `R/score_pid5.R:188`: add `drop = FALSE` to `data_items[, x]` (the domain-SE path at line 196 and the score paths already have it — this is the lone offender).
-  - [x] Confirm the M8 follow-up note is resolved; add the `_se` single-row case to `test-interface.R` if it fits the existing shape checks.
-  - [x] Add a NEWS.md bug-fix bullet (parallels the M3 `validity_pid5()` single-row entry).
-  - [x] `devtools::test()` + `devtools::check()`; document if any roxygen touched (none expected).
-- **Notes/links:** Root cause confirmed empirically — `data_items` is a matrix (from `cbind`), so single-row `data_items[, x]` drops to a vector and `apply(MARGIN = 1)` fails. One-line fix; no keying content touched. Deferred follow-up from M8 (PR [#9](https://github.com/jmgirard/hitop/pull/9)). PR [#10](https://github.com/jmgirard/hitop/pull/10).
+_None — M1–M9 are DONE; Phase 3 (norms & visualization) is unplanned. Run `/plan-milestone`._
 
 ## Completed
 
 <!-- DONE entries move here as: ### M<n>: Title — DONE YYYY-MM-DD. One-line outcome. -->
+
+### M9: Fix single-row `score_pid5(calc_se = TRUE)` crash — DONE 2026-07-10. The facet-SE step `apply(data_items[, x], MARGIN = 1, calc_sem)` in `score_pid5()` omitted `drop = FALSE`; since `data_items` is a `cbind` matrix, a single-row input indexed down to a vector and `apply(MARGIN = 1)` errored with `"dim(X) must have a positive length"`. One-line fix adds `drop = FALSE` (the adjacent domain-SE path and the score/`apa_mean` paths already had it — the lone offender). Same class as the M3 single-row `validity_pid5()` fix. Test-first: single-row `calc_se = TRUE` block in `test-score_pid5.R` for FULL/SF/BF with hand-computed SE oracles (item values hardcoded from the official key: FULL Anhedonia `sd(c(1,1,1,2,1,2,1,1))/sqrt(8)` with reverse items 30/155 → 2, SF Anhedonia `sd(c(0,1,2,3))/sqrt(4)`, BF Disinhibition `sd(c(0,1,2,3,3))/sqrt(5)`), a single-row-≡-first-row-of-multi-row consistency guard, and a single-row `_se` shape invariant (30/30/5 cols) in `test-interface.R`. All 4 new score tests reproduced the crash before the fix and pass after. NEWS.md bug-fix bullet. No keying/data/generated files or roxygen touched. Suite PASS 422 (was 406); `check()` **0/0/0**; fresh-context review PASS (independently re-derived all 3 SE oracles against the keying tables and audited every other single-row path), no blockers. Resolved DESIGN Known issue #4 (the deferred M8 follow-up). PR [#10](https://github.com/jmgirard/hitop/pull/10).
+  - [x] `score_pid5(<1-row df>, items, version, calc_se = TRUE)` runs without error for FULL, SF, and BF, returning 1 row with the expected `_se` columns present
+  - [x] The returned `_se` values match a hand-computed `sd(items)/sqrt(k)` oracle for at least one scale per version (arithmetic in comments)
+  - [x] Multi-row `calc_se = TRUE` output is unchanged (single-row ≡ first row of multi-row consistency check)
+  - [x] A test written *before* the fix reproduces the `"dim(X) must have a positive length"` crash; it passes after
+  - [x] `devtools::test()` passes (PASS 422); `devtools::check()` clean (0/0/0)
 
 ### M8: APA-compliant scoring toggle for `score_pid5()` — DONE 2026-07-10. `score_pid5()` gained `apa_scoring = TRUE` (default) applying the published APA missing-data/proration rule uniformly across FULL/SF/BF: a facet (FULL/SF) or domain-from-items (BF) with >25% of its items unanswered is `NA` ("should not be used"); otherwise the raw score is prorated and rounded — `round_half_up(partial_sum × n / answered) / n` — before averaging; a FULL/SF domain is `NA` if any one of its 3 primary facets is `NA`. New internal helpers `apa_mean()` + `round_half_up()` in `R/util.R` (round-half-up matches the APA "nearest whole number", unlike base `round()`'s round-half-to-even). Facet computation branches on `apa_scoring`; `na.rm` is ignored under APA (cli warning if `na.rm = FALSE`); `_se` is `NA` wherever its scale is `NA`. `apa_scoring = FALSE` restores the prior `rowMeans(na.rm)` behavior (identical to APA on complete data). Full-form rule sourced **verbatim** from the APA PID-5 Full Version Adult key (p. 8); SF applies it by analogy (Maples 2015 specifies none). Rewrote the two "tolerates missing via rowMeans" tests to assert both modes, pinned the independent-recompute + M7 domain-na.rm tests to `apa_scoring = FALSE`, and added a dedicated APA oracle block (hand-computed proration/rounding, >25% cutoff, exactly-25% boundary, half-integer round-up, domain gating, SE gating, na.rm-ignored warning, SF parity, apa≡trad on complete data) plus `apa_mean`/`round_half_up` unit tests and interface coverage. `NEWS.md` flags the default-behavior change under missing data; SOURCES.md's two "not yet enforced" notes flipped to "enforced (M8)" with the verbatim rule + SF caveat; D-009. No keying content changed. Suite PASS 406 (was 365); `check()` **0/0/0**; independent re-verification + fresh-context review both PASS, no blockers. Resolved DESIGN Known issue #4. Follow-up: single-row + `calc_se=TRUE` crashes in the SE `apply()` (pre-existing on `main`, not an M8 regression). PR [#9](https://github.com/jmgirard/hitop/pull/9).
   - [x] `score_pid5()` gains `apa_scoring = TRUE` (documented; placed after `na.rm`, before `calc_se`) covering FULL, SF, BF
