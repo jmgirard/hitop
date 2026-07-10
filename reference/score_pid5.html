@@ -155,9 +155,15 @@ errors (if requested) and all original <code>data</code> columns (if requested)<
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If either <code>alpha</code> or <code>omega</code> are <code>TRUE</code>, the function prints a
-per-scale reliability summary. Only reliability columns that contain at
-least one non-<code>NA</code> value are shown (the <code>scale</code> column is always shown).</p>
+    <p>For the FULL and SF versions, the output includes the 25 facet
+scores followed by the 5 personality-trait domain scores. Following the APA
+scoring key (Step 3), each domain score is the mean of the average scores of
+its 3 primary facets (the map is stored in <code>pid_domains</code>); domains honor
+<code>na.rm</code> the same way facets do. The BF version scores its 5 domains directly
+from its items and is unaffected. If either <code>alpha</code> or <code>omega</code> are <code>TRUE</code>,
+the function prints a per-scale reliability summary (facets only for FULL/SF).
+Only reliability columns that contain at least one non-<code>NA</code> value are shown
+(the <code>scale</code> column is always shown).</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

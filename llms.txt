@@ -260,6 +260,8 @@ Write Package Paper
   : Personality Inventory for DSM-5 Item Data
 - [`pid_scales`](https://jmgirard.github.io/hitop/reference/pid_scales.md)
   : Personality Inventory for DSM-5 Scale Data
+- [`pid_domains`](https://jmgirard.github.io/hitop/reference/pid_domains.md)
+  : Personality Inventory for DSM-5 Domain Data
 
 # Articles
 

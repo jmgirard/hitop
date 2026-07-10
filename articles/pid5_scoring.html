@@ -153,7 +153,7 @@ let it know we are using the full 220-item version.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">scores</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 25</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 30</span></span></span>
 <span><span class="co">#&gt;    pid_anhedonia pid_suspiciousness pid_riskTaking pid_impulsivity</span></span>
 <span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>          1.25               1.71           1.36           2.33 </span></span>
@@ -167,7 +167,7 @@ let it know we are using the full 220-item version.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>          1.12               1.14           1.86           1.67 </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>          1.38               1.86           2.07           2    </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 90 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 21 more variables: pid_eccentricity &lt;dbl&gt;, pid_distractibility &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 26 more variables: pid_eccentricity &lt;dbl&gt;, pid_distractibility &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_restrictedAffectivity &lt;dbl&gt;, pid_submissiveness &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_withdrawal &lt;dbl&gt;, pid_callousness &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_separationInsecurity &lt;dbl&gt;, pid_attentionSeeking &lt;dbl&gt;,</span></span></span>
@@ -180,7 +180,7 @@ how we now have 245 columns instead of 220 or 25.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span></span>
 <span><span class="va">scores</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 245</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 250</span></span></span>
 <span><span class="co">#&gt;    pid_1 pid_2 pid_3 pid_4 pid_5 pid_6 pid_7 pid_8 pid_9 pid_10 pid_11 pid_12</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     0     3     2     1     1     3     1     3     3      0      0      3</span></span>
@@ -194,7 +194,7 @@ how we now have 245 columns instead of 220 or 25.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     1     1     3     0     1     1     2     3     1      1      3      1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     0     3     2     3     3     0     1     2     1      3      0      2</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 90 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 233 more variables: pid_13 &lt;int&gt;, pid_14 &lt;int&gt;, pid_15 &lt;int&gt;, pid_16 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 238 more variables: pid_13 &lt;int&gt;, pid_14 &lt;int&gt;, pid_15 &lt;int&gt;, pid_16 &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_17 &lt;int&gt;, pid_18 &lt;int&gt;, pid_19 &lt;int&gt;, pid_20 &lt;int&gt;, pid_21 &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_22 &lt;int&gt;, pid_23 &lt;int&gt;, pid_24 &lt;int&gt;, pid_25 &lt;int&gt;, pid_26 &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_27 &lt;int&gt;, pid_28 &lt;int&gt;, pid_29 &lt;int&gt;, pid_30 &lt;int&gt;, pid_31 &lt;int&gt;,</span></span></span>
@@ -209,7 +209,7 @@ column names we need.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid_%d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">scores</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 245</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 250</span></span></span>
 <span><span class="co">#&gt;    pid_1 pid_2 pid_3 pid_4 pid_5 pid_6 pid_7 pid_8 pid_9 pid_10 pid_11 pid_12</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     0     3     2     1     1     3     1     3     3      0      0      3</span></span>
@@ -223,7 +223,7 @@ column names we need.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     1     1     3     0     1     1     2     3     1      1      3      1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     0     3     2     3     3     0     1     2     1      3      0      2</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 90 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 233 more variables: pid_13 &lt;int&gt;, pid_14 &lt;int&gt;, pid_15 &lt;int&gt;, pid_16 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 238 more variables: pid_13 &lt;int&gt;, pid_14 &lt;int&gt;, pid_15 &lt;int&gt;, pid_16 &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_17 &lt;int&gt;, pid_18 &lt;int&gt;, pid_19 &lt;int&gt;, pid_20 &lt;int&gt;, pid_21 &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_22 &lt;int&gt;, pid_23 &lt;int&gt;, pid_24 &lt;int&gt;, pid_25 &lt;int&gt;, pid_26 &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_27 &lt;int&gt;, pid_28 &lt;int&gt;, pid_29 &lt;int&gt;, pid_30 &lt;int&gt;, pid_31 &lt;int&gt;,</span></span></span>

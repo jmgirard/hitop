@@ -89,9 +89,16 @@ original `data` columns (if requested)
 
 ## Details
 
-If either `alpha` or `omega` are `TRUE`, the function prints a per-scale
-reliability summary. Only reliability columns that contain at least one
-non-`NA` value are shown (the `scale` column is always shown).
+For the FULL and SF versions, the output includes the 25 facet scores
+followed by the 5 personality-trait domain scores. Following the APA
+scoring key (Step 3), each domain score is the mean of the average
+scores of its 3 primary facets (the map is stored in `pid_domains`);
+domains honor `na.rm` the same way facets do. The BF version scores its
+5 domains directly from its items and is unaffected. If either `alpha`
+or `omega` are `TRUE`, the function prints a per-scale reliability
+summary (facets only for FULL/SF). Only reliability columns that contain
+at least one non-`NA` value are shown (the `scale` column is always
+shown).
 
 ## References
 

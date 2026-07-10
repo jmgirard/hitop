@@ -17,7 +17,7 @@ have not, to my knowledge, been examined with the FSF.
 data("sim_pid5sf")
 
 score_pid5(sim_pid5sf, items = 1:100, version = "SF", append = FALSE)
-#> # A tibble: 100 × 25
+#> # A tibble: 100 × 30
 #>    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness
 #>                 <dbl>           <dbl>              <dbl>           <dbl>
 #>  1               1.5             1.5                1               2.25
@@ -31,7 +31,7 @@ score_pid5(sim_pid5sf, items = 1:100, version = "SF", append = FALSE)
 #>  9               2.25            1.75               2               1.5 
 #> 10               1               1.25               1.75            1.5 
 #> # ℹ 90 more rows
-#> # ℹ 21 more variables: pid_anhedonia <dbl>, pid_eccentricity <dbl>,
+#> # ℹ 26 more variables: pid_anhedonia <dbl>, pid_eccentricity <dbl>,
 #> #   pid_hostility <dbl>, pid_riskTaking <dbl>, pid_grandiosity <dbl>,
 #> #   pid_perceptualDysregulation <dbl>, pid_separationInsecurity <dbl>,
 #> #   pid_deceitfulness <dbl>, pid_perseveration <dbl>,
@@ -75,7 +75,7 @@ score_pid5(
   version = "SF",
   append = FALSE
 )
-#> # A tibble: 386 × 25
+#> # A tibble: 386 × 30
 #>    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness
 #>                 <dbl>           <dbl>              <dbl>           <dbl>
 #>  1               0               0                  0.5             0   
@@ -89,7 +89,7 @@ score_pid5(
 #>  9               0               0                  2.25            0   
 #> 10               0.5             0.5                2.5             0.75
 #> # ℹ 376 more rows
-#> # ℹ 21 more variables: pid_anhedonia <dbl>, pid_eccentricity <dbl>,
+#> # ℹ 26 more variables: pid_anhedonia <dbl>, pid_eccentricity <dbl>,
 #> #   pid_hostility <dbl>, pid_riskTaking <dbl>, pid_grandiosity <dbl>,
 #> #   pid_perceptualDysregulation <dbl>, pid_separationInsecurity <dbl>,
 #> #   pid_deceitfulness <dbl>, pid_perseveration <dbl>,
