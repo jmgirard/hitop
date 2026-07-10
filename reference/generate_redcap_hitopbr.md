@@ -70,5 +70,5 @@ Invisibly returns the path to the created file (`file`).
 ``` r
 # Write a HiTOP-BR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopbr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/Rtmp6sUjb1/file1a394f10ff8a.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpMVs42V/file1b0a70cbaaa2.zip
 ```
