@@ -39,8 +39,6 @@ File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_redcap.zi
 [Import
 Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopbr.html#details)
 
-  
-
 ------------------------------------------------------------------------
 
 ### Explore the R Package Features
@@ -51,8 +49,8 @@ functions to streamline your workflow.
 
 ##### 📋 Instrument Information
 
-Access the complete item dictionary, structural hierarchy, and subscale
-definitions directly from the package namespace.
+Access the complete item dictionary and structural hierarchy directly
+from the package namespace.
 
 [Items](https://jmgirard.github.io/hitop/reference/hitopbr_items.md)
 [Scales](https://jmgirard.github.io/hitop/reference/hitopbr_scales.md)

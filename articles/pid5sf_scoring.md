@@ -5,7 +5,7 @@
 library(hitop)
 ```
 
-### Score simulated PID-5-SF data
+## Score simulated PID-5-SF data
 
 The PID-5-SF is a shorter version of the PID-5 with 100 items that still
 yields all domain and facet scores. The validity scales are still
@@ -58,7 +58,7 @@ validity_pid5(sim_pid5sf, items = 1:100, version = "SF", append = FALSE)
 #> # ℹ 90 more rows
 ```
 
-### Score real PID-5-SF data
+## Score real PID-5-SF data
 
 We can repeat this process with real data that was collected at
 University of Kansas (KU). There should be fewer (but still some)
@@ -121,7 +121,51 @@ validity_pid5(
 #> # ℹ 376 more rows
 ```
 
-### Scale Reliability
+## Simple Standard Errors
+
+In addition to calculating each scale score as the mean of its
+corresponding items, we can also calculate each scale score’s standard
+error as the SD of its corresponding items divided by the square root of
+its number of items. These standard errors are especially useful when
+plotting the scores as they can be converted into confidence intervals.
+We turn this on using `calc_se`.
+
+``` r
+
+score_pid5(
+  ku_pid5sf,
+  items = paste0("pid_", 1:100),
+  version = "SF",
+  calc_se = TRUE,
+  append = FALSE
+)
+#> # A tibble: 386 × 60
+#>    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness
+#>                 <dbl>           <dbl>              <dbl>           <dbl>
+#>  1               0               0                  0.5             0   
+#>  2               0.5             0.25               1.5             0.5 
+#>  3               1.75            1.75               2               1.75
+#>  4               0.25            1                  0               0.25
+#>  5               1.5             2.5                2               0.5 
+#>  6               0.75            0.75               0.75            0   
+#>  7               1.5             0.75               0.75            0.25
+#>  8               0               0.25               1.25            0   
+#>  9               0               0                  2.25            0   
+#> 10               0.5             0.5                2.5             0.75
+#> # ℹ 376 more rows
+#> # ℹ 56 more variables: pid_anhedonia <dbl>, pid_eccentricity <dbl>,
+#> #   pid_hostility <dbl>, pid_riskTaking <dbl>, pid_grandiosity <dbl>,
+#> #   pid_perceptualDysregulation <dbl>, pid_separationInsecurity <dbl>,
+#> #   pid_deceitfulness <dbl>, pid_perseveration <dbl>,
+#> #   pid_attentionSeeking <dbl>, pid_anxiousness <dbl>, pid_depressivity <dbl>,
+#> #   pid_withdrawal <dbl>, pid_restrictedAffectivity <dbl>, …
+```
+
+Note how there are now 60 columns instead of 30. The extra columns
+aren’t all shown in the preview above, but they are named with the `_se`
+suffix, e.g., `pid_anhedonia_se`.
+
+## Scale Reliability
 
 As we compute scale scores, we can also estimate their inter-item
 reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α

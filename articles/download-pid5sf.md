@@ -2,7 +2,7 @@
 
 Welcome to the Personality Inventory for DSM-5 Short Form (PID-5-SF)
 instrument resources page. This questionnaire contains 100 items and can
-be used to score 5 domains scales and 25 facet subscales indexing
+be used to score 5 domain scales and 25 facet subscales indexing
 different aspects of personality pathology. Here you can download
 ready-to-use versions of the instrument or explore the powerful tools
 provided by the `hitop` R package to customize, score, and analyze your
@@ -50,8 +50,8 @@ functions to streamline your workflow.
 
 ##### 📋 Instrument Information
 
-Access the complete item dictionary, structural hierarchy, and subscale
-definitions directly from the package namespace.
+Access the complete item dictionary and structural hierarchy directly
+from the package namespace.
 
 [Items](https://jmgirard.github.io/hitop/reference/pid_items.md)
 [Scales](https://jmgirard.github.io/hitop/reference/pid_scales.md)

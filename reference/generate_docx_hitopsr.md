@@ -66,6 +66,6 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpyhAnhW/file1b3874c94f69.docx
+#> ✔ Document successfully created at /tmp/Rtmp6sUjb1/file1a3938de90dd.docx
 # }
 ```

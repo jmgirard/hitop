@@ -20,8 +20,8 @@ Next, we can load the example dataset from the package using the
 [`data()`](https://rdrr.io/r/utils/data.html) function. It is a large
 tibble that contains a `participant` column with a unique identifier for
 each participant, a `biosex` column indicating whether each participant
-is “female” or “male”, and then 405 columns numbered `hitop001` to
-`hitop405` containing each participant’s rating on each item of the
+is “female” or “male”, and then 405 columns numbered `hsr001` to
+`hsr405` containing each participant’s rating on each item of the
 HiTOP-SR (on a numerical scale from 1 to 4).
 
 ``` r
@@ -95,7 +95,7 @@ scores
 ## Appending
 
 If I had instead set `append = TRUE` (or left it off, as that is the
-default), we would get back the `ku_hitoppro` tibble with the scale
+default), we would get back the `ku_hitopsr` tibble with the scale
 scores added to the end as extra columns. Notice below how we now have
 483 columns instead of 407.
 
@@ -134,9 +134,9 @@ Alternatively, we could provide the item column names as a character
 string. Typing out all 405 item names would be a hassle, but luckily
 this dataset named them consistently so we can build the names
 automatically using [`sprintf()`](https://rdrr.io/r/base/sprintf.html).
-If we use the “hitop%03d” format and apply that across the numbers 1 to
+If we use the “hsr%03d” format and apply that across the numbers 1 to
 405, that will create the zero-padded column names we need. If there was
-no zero-padding, we could have just used “hitop%d”.
+no zero-padding, we could have just used “hsr%d”.
 
 ``` r
 

@@ -99,7 +99,7 @@
 
     
     
-<p>The HiTOP-BR instrument has 45 items and yields 7 scale scores. To
+<p>The HiTOP-BR instrument has 45 items and yields 8 scale scores. To
 demonstrate the ability of the package to calculate these scale scores,
 we can use real example data (n=411) that was collected at the
 University of Kansas (KU) by Girard &amp; Gray in 2024–2025. This data
@@ -143,7 +143,7 @@ rating on each item of the HiTOP-BR (on a numerical scale from 1 to
 <div class="section level2">
 <h2 id="basic-scoring">Basic Scoring<a class="anchor" aria-label="anchor" href="#basic-scoring"></a>
 </h2>
-<p>To turn these item-level ratings into mean scores on the 7 scales, we
+<p>To turn these item-level ratings into mean scores on the 8 scales, we
 can use the <code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code> function. It needs to know what
 object contains the data and which columns contain the item-level data.
 There are several ways we can specify the items. First, we can provide
@@ -182,7 +182,7 @@ scores.</p>
 <p>If I had instead set <code>append = TRUE</code> (or left it off, as
 that is the default), we would get back the <code>ku_hitopbr</code>
 tibble with the scale scores added to the end as extra columns. Notice
-below how we now have 54 columns instead of 47.</p>
+below how we now have 55 columns instead of 47.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopbr.html">score_hitopbr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopbr</span>,</span>
@@ -278,12 +278,12 @@ or even turn it off (e.g., setting it to <code>""</code>) using the
 <div class="section level2">
 <h2 id="simple-standard-errors">Simple Standard Errors<a class="anchor" aria-label="anchor" href="#simple-standard-errors"></a>
 </h2>
-<p>Finally, in addition to calculating each scale score as the mean of
-its corresponding items, we can also calculate each scale score’s
-standard error as the SD of its corresponding items divided by the
-square root of its number of items. These standard errors are especially
-useful when plotting the scores as they can be converted into confidence
-intervals. We turn this on using <code>calc_se</code>.</p>
+<p>In addition to calculating each scale score as the mean of its
+corresponding items, we can also calculate each scale score’s standard
+error as the SD of its corresponding items divided by the square root of
+its number of items. These standard errors are especially useful when
+plotting the scores as they can be converted into confidence intervals.
+We turn this on using <code>calc_se</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopbr.html">score_hitopbr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopbr</span>,</span>
@@ -312,9 +312,44 @@ intervals. We turn this on using <code>calc_se</code>.</p>
 <span><span class="co">#&gt; <span style="color: #949494;">#   hbr_internalizing_se &lt;dbl&gt;, hbr_somatoform_se &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   hbr_thoughtDisorder_se &lt;dbl&gt;, hbr_externalizing_se &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   hbr_pFactor_se &lt;dbl&gt;</span></span></span></code></pre></div>
-<p>Note how there are now 14 columns instead of 7. The extra columns
+<p>Note how there are now 16 columns instead of 8. The extra columns
 aren’t shown in the preview above, but they are named with the
 <code>_se</code> suffix, e.g., <code>hbr_somatoform_se</code>.</p>
+</div>
+<div class="section level2">
+<h2 id="scale-reliability">Scale Reliability<a class="anchor" aria-label="anchor" href="#scale-reliability"></a>
+</h2>
+<p>As we compute scale scores, we can also estimate their inter-item
+reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α
+is fast and widely used, but it assumes tau-equivalence (all items load
+equally on a single factor); violations can make α under- or
+over-estimate reliability. ω is based on a congeneric single-factor
+model, allowing items to have different loadings and error variances; it
+typically provides a more accurate reliability estimate for
+unit-weighted sums. Both assume the scale is essentially unidimensional;
+α and ω coincide when tau-equivalence holds.</p>
+<p>We estimate reliability with the <code><a href="../reference/reliability_hitopbr.html">reliability_hitopbr()</a></code>
+function, which returns a tibble with one row per scale and columns for
+the number of items and the requested coefficients. By default it
+computes both <code>alpha</code> and <code>omega</code>; for the latter,
+we will need the <strong>lavaan</strong> package installed (set
+<code>omega = FALSE</code> to skip it).</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability_hitopbr.html">reliability_hitopbr</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">ku_hitopbr</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hbr%02d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">45</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 8 × 4</span></span></span>
+<span><span class="co">#&gt;   scale            nItems alpha omega</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Antagonism            9 0.805 0.811</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Detachment            6 0.785 0.778</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Disinhibition         9 0.807 0.810</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Internalizing         7 0.825 0.827</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Somatoform            8 0.825 0.832</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Thought Disorder      6 0.731 0.739</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Externalizing        10 0.817 0.818</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> P Factor             12 0.804 0.811</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

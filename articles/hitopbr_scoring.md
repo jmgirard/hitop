@@ -1,6 +1,6 @@
 # Scoring the HiTOP-BR
 
-The HiTOP-BR instrument has 45 items and yields 7 scale scores. To
+The HiTOP-BR instrument has 45 items and yields 8 scale scores. To
 demonstrate the ability of the package to calculate these scale scores,
 we can use real example data (n=411) that was collected at the
 University of Kansas (KU) by Girard & Gray in 2024–2025. This data is
@@ -52,7 +52,7 @@ ku_hitopbr
 
 ## Basic Scoring
 
-To turn these item-level ratings into mean scores on the 7 scales, we
+To turn these item-level ratings into mean scores on the 8 scales, we
 can use the
 [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
 function. It needs to know what object contains the data and which
@@ -93,7 +93,7 @@ scores
 If I had instead set `append = TRUE` (or left it off, as that is the
 default), we would get back the `ku_hitopbr` tibble with the scale
 scores added to the end as extra columns. Notice below how we now have
-54 columns instead of 47.
+55 columns instead of 47.
 
 ``` r
 
@@ -194,7 +194,7 @@ scores
 
 ## Simple Standard Errors
 
-Finally, in addition to calculating each scale score as the mean of its
+In addition to calculating each scale score as the mean of its
 corresponding items, we can also calculate each scale score’s standard
 error as the SD of its corresponding items divided by the square root of
 its number of items. These standard errors are especially useful when
@@ -232,6 +232,44 @@ scores
 #> #   hbr_pFactor_se <dbl>
 ```
 
-Note how there are now 14 columns instead of 7. The extra columns aren’t
+Note how there are now 16 columns instead of 8. The extra columns aren’t
 shown in the preview above, but they are named with the `_se` suffix,
 e.g., `hbr_somatoform_se`.
+
+## Scale Reliability
+
+As we compute scale scores, we can also estimate their inter-item
+reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α
+is fast and widely used, but it assumes tau-equivalence (all items load
+equally on a single factor); violations can make α under- or
+over-estimate reliability. ω is based on a congeneric single-factor
+model, allowing items to have different loadings and error variances; it
+typically provides a more accurate reliability estimate for
+unit-weighted sums. Both assume the scale is essentially unidimensional;
+α and ω coincide when tau-equivalence holds.
+
+We estimate reliability with the
+[`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md)
+function, which returns a tibble with one row per scale and columns for
+the number of items and the requested coefficients. By default it
+computes both `alpha` and `omega`; for the latter, we will need the
+**lavaan** package installed (set `omega = FALSE` to skip it).
+
+``` r
+
+reliability_hitopbr(
+  data = ku_hitopbr,
+  items = sprintf("hbr%02d", 1:45)
+)
+#> # A tibble: 8 × 4
+#>   scale            nItems alpha omega
+#>   <chr>             <int> <dbl> <dbl>
+#> 1 Antagonism            9 0.805 0.811
+#> 2 Detachment            6 0.785 0.778
+#> 3 Disinhibition         9 0.807 0.810
+#> 4 Internalizing         7 0.825 0.827
+#> 5 Somatoform            8 0.825 0.832
+#> 6 Thought Disorder      6 0.731 0.739
+#> 7 Externalizing        10 0.817 0.818
+#> 8 P Factor             12 0.804 0.811
+```

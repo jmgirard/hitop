@@ -14,7 +14,7 @@ README on [GitHub](https://github.com/jmgirard/hitop)).
 library(hitop)
 ```
 
-### Score simulated PID-5 data
+## Score simulated PID-5 data
 
 The `sim_pid5` dataset is built into the package and can be loaded using
 the [`data()`](https://rdrr.io/r/utils/data.html) function. It contains
@@ -88,8 +88,8 @@ scores
 
 If I had instead set `append = TRUE` (or left it off, as that is the
 default), we would get back the `sim_pid5` tibble with the scale scores
-added to the end as extra columns. Notice below how we now have 245
-columns instead of 220 or 25.
+added to the end as extra columns. Notice below how we now have 250
+columns instead of 220 or 30.
 
 ``` r
 
@@ -156,7 +156,7 @@ using its documentation by typing the following into your R console:
 or through the [package
 website](https://jmgirard.github.io/hitop/reference/score_pid5.html).
 
-### Scale Reliability
+## Scale Reliability
 
 As we compute scale scores, we can also estimate their inter-item
 reliability using Cronbach’s α (alpha) or McDonald’s ω (omega total). α
@@ -200,7 +200,7 @@ reliability_pid5(
 #> # ℹ 15 more rows
 ```
 
-### Validity Scales for the PID-5
+## Validity Scales for the PID-5
 
 There are also several validity scales that have been developed for the
 full PID-5, including measures of overreporting, inconsistent

@@ -2,7 +2,7 @@
 
 Welcome to the Personality Inventory for DSM-5 Brief Form (PID-5-BF)
 instrument resources page. This questionnaire contains 25 items and can
-be used to score 5 domains scales indexing different aspects of
+be used to score 5 domain scales indexing different aspects of
 personality pathology. Here you can download ready-to-use versions of
 the instrument or explore the powerful tools provided by the `hitop` R
 package to customize, score, and analyze your data.
@@ -49,8 +49,8 @@ functions to streamline your workflow.
 
 ##### 📋 Instrument Information
 
-Access the complete item dictionary, structural hierarchy, and subscale
-definitions directly from the package namespace.
+Access the complete item dictionary and structural hierarchy directly
+from the package namespace.
 
 [Items](https://jmgirard.github.io/hitop/reference/pid_items.md)
 [Scales](https://jmgirard.github.io/hitop/reference/pid_scales.md)
@@ -82,8 +82,8 @@ Reliability](https://jmgirard.github.io/hitop/reference/calc_omega.md)
 
 ##### 📊 Example Datasets
 
-Test your analysis pipelines using built-in datasets, including a real
-validation sample and simulated respondent data.
+Test your analysis pipelines using built-in datasets of simulated
+respondent data.
 
 [Simulated
 Data](https://jmgirard.github.io/hitop/reference/sim_pid5bf.md)

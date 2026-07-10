@@ -114,9 +114,9 @@ installed the package properly (see the README on <a href="https://github.com/jm
 <code>participant</code> column with a unique identifier for each
 participant, a <code>biosex</code> column indicating whether each
 participant is “female” or “male”, and then 405 columns numbered
-<code>hitop001</code> to <code>hitop405</code> containing each
-participant’s rating on each item of the HiTOP-SR (on a numerical scale
-from 1 to 4).</p>
+<code>hsr001</code> to <code>hsr405</code> containing each participant’s
+rating on each item of the HiTOP-SR (on a numerical scale from 1 to
+4).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ku_hitopsr"</span><span class="op">)</span></span>
 <span><span class="va">ku_hitopsr</span></span>
@@ -184,7 +184,7 @@ scores.</p>
 <h2 id="appending">Appending<a class="anchor" aria-label="anchor" href="#appending"></a>
 </h2>
 <p>If I had instead set <code>append = TRUE</code> (or left it off, as
-that is the default), we would get back the <code>ku_hitoppro</code>
+that is the default), we would get back the <code>ku_hitopsr</code>
 tibble with the scale scores added to the end as extra columns. Notice
 below how we now have 483 columns instead of 407.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -220,10 +220,10 @@ below how we now have 483 columns instead of 407.</p>
 <p>Alternatively, we could provide the item column names as a character
 string. Typing out all 405 item names would be a hassle, but luckily
 this dataset named them consistently so we can build the names
-automatically using <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. If we use the “hitop%03d”
+automatically using <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. If we use the “hsr%03d”
 format and apply that across the numbers 1 to 405, that will create the
 zero-padded column names we need. If there was no zero-padding, we could
-have just used “hitop%d”.</p>
+have just used “hsr%d”.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>

@@ -2,7 +2,7 @@
 
 Welcome to the Personality Inventory for DSM-5 (PID-5) instrument
 resources page. This questionnaire contains 220 items and can be used to
-score 5 domains scales and 25 facet subscales indexing different aspects
+score 5 domain scales and 25 facet subscales indexing different aspects
 of personality pathology. Here you can download ready-to-use versions of
 the instrument or explore the powerful tools provided by the `hitop` R
 package to customize, score, and analyze your data.
@@ -37,7 +37,7 @@ instrument in your REDCap project.
 [English (ZIP
 File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_1.0_redcap.zip)
 [Import
-Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.html#details)
+Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5.html#details)
 
 ------------------------------------------------------------------------
 
@@ -49,8 +49,8 @@ to streamline your workflow.
 
 ##### 📋 Instrument Information
 
-Access the complete item dictionary, structural hierarchy, and subscale
-definitions directly from the package namespace.
+Access the complete item dictionary and structural hierarchy directly
+from the package namespace.
 
 [Items](https://jmgirard.github.io/hitop/reference/pid_items.md)
 [Scales](https://jmgirard.github.io/hitop/reference/pid_scales.md)
@@ -81,7 +81,7 @@ Reliability](https://jmgirard.github.io/hitop/reference/calc_omega.md)
 
 ##### 📊 Example Datasets
 
-Test your analysis pipelines using built-in datasets, including a real
-validation sample and simulated respondent data.
+Test your analysis pipelines using built-in datasets of simulated
+respondent data.
 
 [Simulated Data](https://jmgirard.github.io/hitop/reference/sim_pid5.md)
