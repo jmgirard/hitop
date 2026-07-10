@@ -14,7 +14,7 @@ Scores, validity-screens, and distributes HiTOP Society instruments: PID-5 (FULL
 
 ## Conventions
 
-- Scoring signature: `(data, items, [version,] srange, prefix, na.rm, calc_se, [alpha, omega,] append = TRUE, tibble = TRUE)`. No `id` or `scales` arguments; all scales are computed.
+- Scoring signature: `(data, items, [version,] srange, prefix, missing, calc_se, append = TRUE)`; always returns a tibble. No `id`/`scales`/`tibble` arguments; all scales are computed. Reliability is a separate returning family `reliability_{pid5,hitopsr,hitopbr}(data, items, [version,] srange, alpha, omega)` → a per-scale tibble.
 - Output columns: `prefix` + camelCase scale name (`pid_anhedonia`, `hsr_...`); validity scales are `prefix` + abbreviation (`pid_PNA`, `pid_INC`); standard errors add `_se`.
 - Scale membership comes from the `*_scales` list-column tables (`pid_scales[[version]]$itemNumbers`, `hitopsr_scales`, `hitopbr_scales`); reverse-keying and validity-scale membership from the `*_items` tables. Never hardcode item numbers.
 - User messaging via `cli::cli_alert_warning()` + `cli::cli_alert_info()` with actionable `{.code dplyr::filter(...)}` suggestions; validation via `validate_*()`/`cli_assert()` in `R/util.R`.

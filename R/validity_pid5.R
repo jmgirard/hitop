@@ -63,8 +63,7 @@ validity_pid5 <- function(
   version = c("FULL", "SF", "BF"),
   srange = c(0, 3),
   prefix = "pid_",
-  append = TRUE,
-  tibble = TRUE
+  append = TRUE
 ) {
   # Assertions (helpers default call = caller_env() = this function, so aborts
   # are attributed to validity_pid5())
@@ -85,7 +84,6 @@ validity_pid5 <- function(
   validate_range(srange)
   stopifnot(rlang::is_string(prefix))
   stopifnot(rlang::is_bool(append))
-  stopifnot(rlang::is_bool(tibble))
 
   ## The published PRD and SD-TD cut scores are raw sums compared to fixed
   ## thresholds (10, 11, 19) that assume items coded 0-3; unlike INC/ORS they do
@@ -235,11 +233,6 @@ validity_pid5 <- function(
     out <- cbind(data, out)
   }
 
-  ## Coerce output to tibble if requested
-  if (tibble == TRUE) {
-    out <- tibble::as_tibble(out)
-  }
-
-  ## Return output
-  out
+  ## Always return a tibble
+  tibble::as_tibble(out)
 }

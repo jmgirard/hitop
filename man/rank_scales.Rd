@@ -10,8 +10,10 @@ rank_scales(
   prefix = NULL,
   top = 5,
   dir = "high",
-  append = TRUE,
-  tibble = TRUE
+  reverse = NULL,
+  srange = NULL,
+  name = "top_scales",
+  append = TRUE
 )
 }
 \arguments{
@@ -32,23 +34,28 @@ ranking. Must be between 1 and \code{length(scales)}.}
 \item{dir}{Direction of ranking: \code{"high"} for largest values first or
 \code{"low"} for smallest values first.}
 
-\item{append}{Logical. If \code{TRUE}, bind the result as a new column to
-\code{data}. If \code{FALSE}, return only the result vector.}
+\item{reverse}{A subset of \code{scales} (names or positions) identifying
+scales that are keyed in the opposite direction to the rest (higher =
+healthier, e.g. a well-being scale). Before ranking, each such column is
+reflected via \code{sum(srange) - value} so that all selected scales share a
+common "higher = more elevated" metric and \code{dir} applies uniformly. Set
+to \code{NULL} (the default) when every scale is keyed the same way.}
 
-\item{tibble}{Logical. If \code{TRUE}, coerce the output to a tibble via
-\code{tibble::as_tibble()} (applies whether or not \code{append} is
-\code{TRUE}).}
+\item{srange}{A numeric vector of length 2 giving the minimum and maximum of
+the scale scores, used to reflect the \code{reverse} columns. Required when
+\code{reverse} is not \code{NULL}; ignored otherwise. (default = \code{NULL})}
+
+\item{name}{A length-1 string giving the name of the output column holding the
+ranked-scale strings. (default = \code{"top_scales"})}
+
+\item{append}{Logical. If \code{TRUE}, bind the result as a new column to
+\code{data}. If \code{FALSE}, return only the result column.}
 }
 \value{
-If \code{append = FALSE} and \code{tibble = FALSE}: a character
-vector of length \code{nrow(data)} where each element is a comma-separated
-list of the selected scale names in ranked order.
-
-If \code{append = TRUE}: a data frame (or tibble if \code{tibble = TRUE})
-equal to \code{data} with an added character column \code{out}.
-
-If \code{append = FALSE} and \code{tibble = TRUE}: a tibble with one column
-\code{out}.
+A \link[tibble]{tibble}. If \code{append = TRUE}, it is \code{data}
+with an added character column named by \code{name}. If \code{append =
+  FALSE}, it is a one-column tibble (named by \code{name}) whose values are
+the comma-separated ranked scale names, one per row of \code{data}.
 }
 \description{
 For each row of selected scale columns, return a comma-separated string of
@@ -68,8 +75,9 @@ If \code{prefix} is not \code{NULL}, the function removes the leading pattern
 \code{paste0("^", prefix)} from each selected column name before
 concatenation.
 
-When \code{append = TRUE}, the appended column is named \code{"out"}. The
-order of existing columns in \code{data} is preserved.
+The output column is named by \code{name}. When \code{append = TRUE} it is
+added after the existing columns of \code{data} (whose order is preserved);
+when \code{append = FALSE} the result is a one-column tibble.
 }
 \examples{
 # List each respondent's 3 highest-scoring HiTOP-BR scales

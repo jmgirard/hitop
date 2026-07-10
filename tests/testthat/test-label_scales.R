@@ -66,38 +66,75 @@ test_that("rank_scales() ranks high/low and strips the prefix", {
   )
   scales <- c("hbr_a", "hbr_b", "hbr_c")
 
-  high <- rank_scales(
-    df, scales, prefix = "hbr_", top = 2, dir = "high",
-    append = FALSE, tibble = FALSE
-  )
+  high <- rank_scales(df, scales, prefix = "hbr_", top = 2, dir = "high", append = FALSE)
   #   row1: a=3,b=1,c=2 -> a,c ; row2: a=1,b=2,c=3 -> c,b
-  expect_equal(high, c("a,c", "c,b"))
+  expect_s3_class(high, "tbl_df")
+  expect_equal(high$top_scales, c("a,c", "c,b"))
 
-  low <- rank_scales(
-    df, scales, prefix = "hbr_", top = 2, dir = "low",
-    append = FALSE, tibble = FALSE
-  )
+  low <- rank_scales(df, scales, prefix = "hbr_", top = 2, dir = "low", append = FALSE)
   #   row1: -> b,c ; row2: -> a,b
-  expect_equal(low, c("b,c", "a,b"))
+  expect_equal(low$top_scales, c("b,c", "a,b"))
 })
 
 test_that("rank_scales() resolves ties by original column order", {
   df <- data.frame(hbr_a = 2, hbr_b = 2, hbr_c = 1)
   out <- rank_scales(
     df, c("hbr_a", "hbr_b", "hbr_c"), prefix = "hbr_", top = 1,
-    dir = "high", append = FALSE, tibble = FALSE
+    dir = "high", append = FALSE
   )
   # a and b tie at 2; order() keeps the earlier column (a).
-  expect_equal(out, "a")
+  expect_equal(out$top_scales, "a")
 })
 
-test_that("rank_scales() appends an 'out' column and validates 'top'", {
+test_that("rank_scales() names the output column via `name` and validates `top`", {
   df <- data.frame(x = c(3, 1), y = c(1, 2))
-  appended <- rank_scales(df, c("x", "y"), top = 1, append = TRUE, tibble = FALSE)
-  expect_true("out" %in% names(appended))
+
+  # default name
+  appended <- rank_scales(df, c("x", "y"), top = 1, append = TRUE)
+  expect_s3_class(appended, "tbl_df")
+  expect_true("top_scales" %in% names(appended))
   expect_equal(nrow(appended), nrow(df))
   expect_true(all(names(df) %in% names(appended)))
 
+  # custom name, both appended and standalone
+  named <- rank_scales(df, c("x", "y"), top = 1, name = "elevated")
+  expect_true("elevated" %in% names(named))
+  standalone <- rank_scales(df, c("x", "y"), top = 1, name = "elevated", append = FALSE)
+  expect_identical(names(standalone), "elevated")
+
   # top must not exceed the number of ranked scales.
   expect_error(rank_scales(df, c("x", "y"), top = 3), NULL)
+})
+
+test_that("rank_scales() reflects reverse-directioned scales before ranking", {
+  # wellBeing is keyed opposite (higher = healthier). With reverse + srange it is
+  # reflected onto a common 'higher = more elevated' metric before ranking.
+  # srange = c(1, 4) -> reflect via 5 - value.
+  df <- data.frame(
+    hsr_anxiety   = c(2, 2),
+    hsr_wellBeing = c(4, 1)  # row1: healthy (high wb) ; row2: low wb (elevated)
+  )
+  scales <- c("hsr_anxiety", "hsr_wellBeing")
+
+  # Without reflection, dir = "high" surfaces the raw-highest scale: wellBeing in
+  # row1 (4 > 2). WITH reflection, wellBeing becomes 5-4 = 1 (row1) and 5-1 = 4
+  # (row2), so the top scale is anxiety in row1 and wellBeing in row2.
+  ranked <- rank_scales(
+    df, scales, prefix = "hsr_", top = 1, dir = "high",
+    reverse = "hsr_wellBeing", srange = c(1, 4), append = FALSE
+  )
+  expect_equal(ranked$top_scales, c("anxiety", "wellBeing"))
+
+  # A high well-being respondent (row1) is NOT flagged as most-elevated.
+  expect_false(ranked$top_scales[1] == "wellBeing")
+
+  # `reverse` must be a subset of `scales`, and `srange` is required with it.
+  expect_error(
+    rank_scales(df, scales, top = 1, reverse = "hsr_missing", srange = c(1, 4)),
+    "must all be in"
+  )
+  expect_error(
+    rank_scales(df, scales, top = 1, reverse = "hsr_wellBeing"),
+    "srange"
+  )
 })

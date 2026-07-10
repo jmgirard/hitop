@@ -75,19 +75,19 @@ test_that("calc_se works on single-row input for every version", {
   expect_length(grep("_se$", names(bf)), 5)       # 5 domains
 })
 
-test_that("apa_scoring must be a single logical", {
+test_that("missing must be one of the allowed levels", {
   expect_error(
-    score_pid5(sim_pid5bf, items = 1:25, version = "BF", apa_scoring = "yes"),
-    class = "simpleError"
+    score_pid5(sim_pid5bf, items = 1:25, version = "BF", missing = "yes")
   )
+  # BF/SR/BR do not offer the PID-5-only "apa" level.
   expect_error(
-    score_pid5(sim_pid5bf, items = 1:25, version = "BF", apa_scoring = c(TRUE, FALSE))
+    score_hitopbr(sim_hitopbr, items = 1:45, missing = "apa")
   )
 })
 
-test_that("apa_scoring changes values but not output shape", {
+test_that("missing changes values but not output shape", {
   apa  <- score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
-  trad <- score_pid5(sim_pid5, items = 1:220, version = "FULL", apa_scoring = FALSE, append = FALSE)
+  trad <- score_pid5(sim_pid5, items = 1:220, version = "FULL", missing = "available", append = FALSE)
   expect_equal(dim(apa), dim(trad))
   expect_equal(names(apa), names(trad))
   # calc_se still yields one _se column per scale under APA scoring.
@@ -96,12 +96,13 @@ test_that("apa_scoring changes values but not output shape", {
   expect_length(grep("_se$", names(se)), 30)
 })
 
-test_that("tibble toggles tibble vs data.frame output", {
+test_that("every scoring/validity output is a tibble", {
   skip_if_not_installed("tibble")
-  expect_s3_class(score_pid5(sim_pid5bf, items = 1:25, version = "BF", tibble = TRUE), "tbl_df")
-  out_df <- score_pid5(sim_pid5bf, items = 1:25, version = "BF", tibble = FALSE)
-  expect_s3_class(out_df, "data.frame")
-  expect_false(inherits(out_df, "tbl_df"))
+  expect_s3_class(score_pid5(sim_pid5bf, items = 1:25, version = "BF"), "tbl_df")
+  expect_s3_class(score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE), "tbl_df")
+  expect_s3_class(score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE), "tbl_df")
+  expect_s3_class(score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE), "tbl_df")
+  expect_s3_class(validity_pid5(sim_pid5bf, items = 1:25, version = "BF"), "tbl_df")
 })
 
 test_that("id-style columns pass through when scoring by item name", {
@@ -111,20 +112,5 @@ test_that("id-style columns pass through when scoring by item name", {
   expect_true(all(extra %in% names(out)))
 })
 
-test_that("alpha = TRUE prints a reliability summary and leaves scores unchanged", {
-  plain <- score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
-  expect_output(
-    out <- score_pid5(
-      sim_pid5bf, items = 1:25, version = "BF", append = FALSE, alpha = TRUE
-    ),
-    "alpha"
-  )
-  expect_equal(out, plain)
-})
-
-test_that("omega = TRUE runs without error (values verified in M5)", {
-  skip_if_not_installed("lavaan")
-  expect_no_error(suppressWarnings(utils::capture.output(
-    score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE, omega = TRUE)
-  )))
-})
+# Reliability moved out of score_pid5() into reliability_pid5() (M15); those
+# tests live in test-reliability.R.

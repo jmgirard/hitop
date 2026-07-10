@@ -35,8 +35,9 @@
 - **Theme:** Interpretation support for researchers (README Phase 2).
 - **Outcomes:**
   - PID-5 normative data and norming functions (percentiles/T-scores).
+  - Norming functions treat each instrument's official response range as canonical, rescaling data collected on a shifted equal-width coding (e.g. 1–4 vs official 0–3) to it at lookup and warning when the option *count* differs; the package's Qualtrics/REDCap exports emit the official item numbers so most data matches without rescaling. *(M16)*
   - Visualization functions for scored profiles.
-- **Related milestones:** (to be planned)
+- **Related milestones:** M16
 
 ## Phase 4: Clinical reporting & release (README Phase 3)
 

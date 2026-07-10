@@ -58,6 +58,9 @@ reference:
   - validity_pid5
 - title: Reliability
   contents:
+  - reliability_pid5
+  - reliability_hitopsr
+  - reliability_hitopbr
   - calc_alpha
   - calc_omega
 - title: Utilities

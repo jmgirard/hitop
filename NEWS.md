@@ -1,3 +1,31 @@
+# hitop 0.2.0
+
+This release makes several **breaking** API changes to stabilize the interface
+before a CRAN submission.
+
+* **New `reliability_pid5()`, `reliability_hitopsr()`, and `reliability_hitopbr()`
+  functions** return a per-scale tibble (`scale`, `nItems`, `alpha`, `omega`).
+  These replace the `alpha` and `omega` arguments of `score_pid5()`,
+  `score_hitopsr()`, and `score_hitopbr()`, which only *printed* a reliability
+  table as a side effect and have been **removed**
+* **`score_pid5()`, `score_hitopsr()`, and `score_hitopbr()` now take a single
+  `missing` argument** in place of the previous `na.rm` (and, for `score_pid5()`,
+  `apa_scoring`) arguments. For `score_pid5()`, `missing = "apa"` (the default)
+  applies the APA missing-data/proration rule, `"available"` averages the present
+  items (the old `apa_scoring = FALSE, na.rm = TRUE`), and `"complete"` returns
+  `NA` for any scale with a missing item (the old `na.rm = FALSE`).
+  `score_hitopsr()`/`score_hitopbr()` offer `"available"` (default) and
+  `"complete"`. Default behavior is unchanged
+* **`rank_scales()` gains a `name` argument** (default `"top_scales"`) naming its
+  output column, which was previously hard-coded as `"out"`. It also gains
+  `reverse` and `srange` arguments: scales named in `reverse` are reflected via
+  `sum(srange) - value` before ranking, so a reverse-directioned scale (e.g. a
+  well-being scale, where higher = healthier) ranks on the same "higher = more
+  elevated" metric as the other scales
+* **The `tibble` argument has been removed** from `score_pid5()`,
+  `score_hitopsr()`, `score_hitopbr()`, `validity_pid5()`, and `rank_scales()`;
+  these functions now always return a tibble
+
 # hitop 0.1.0
 
 * Add initial HiTOP-HSUM functions

@@ -186,3 +186,39 @@ apa_mean <- function(mat) {
     round_half_up(partial * n / a) / n
   })
 }
+
+# Shared item preparation for score_engine() and reliability_engine(): validate
+# the data/items/srange, extract the item columns in instrument order, coerce to
+# numeric, and reverse-key the flagged positions. Returns a numeric matrix (rows
+# = respondents, columns = items). `call` is forwarded to the validators so
+# aborts are attributed to the exported wrapper, not this helper or the engine.
+prep_items <- function(
+  data,
+  items,
+  n_items,
+  reverse_items,
+  srange,
+  call = rlang::caller_env()
+) {
+  validate_data(data, call = call)
+  validate_items(items, n = n_items, call = call)
+  validate_item_uniqueness(items, call = call)
+  validate_items_present(data, items, call = call)
+  warn_item_order(items)
+  validate_range(srange, call = call)
+
+  ## Extract item columns and coerce values to numbers
+  data_items <- lapply(data[items], as.numeric)
+
+  ## Reverse score the necessary items
+  if (length(reverse_items) > 0) {
+    data_items[reverse_items] <- lapply(
+      reverse_items,
+      function(i) {
+        reverse(data_items[[i]], low = srange[[1]], high = srange[[2]])
+      }
+    )
+  }
+
+  bind_columns(data_items)
+}
