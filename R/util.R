@@ -64,3 +64,27 @@ calc_sem <- function(x) {
   xc <- x[!is.na(x)]
   stats::sd(xc) / sqrt(length(xc))
 }
+
+# Round half away from zero, matching the APA scoring key's "round to the
+# nearest whole number" (base round() rounds half to even, e.g. round(2.5) = 2).
+round_half_up <- function(x) {
+  sign(x) * floor(abs(x) + 0.5)
+}
+
+# APA-compliant average score for one scale's item matrix (rows = respondents,
+# columns = the items contributing to that scale, already reverse-keyed). Per the
+# PID-5 scoring key: if more than 25% of a scale's items are unanswered, the
+# score is not used (NA); otherwise the raw score is prorated to the full item
+# count and rounded to the nearest whole number before averaging. With no missing
+# items this reduces to the plain item mean.
+apa_mean <- function(mat) {
+  n <- ncol(mat)
+  apply(mat, MARGIN = 1, FUN = function(x) {
+    a <- sum(!is.na(x))
+    if ((n - a) / n > 0.25) {
+      return(NA_real_)
+    }
+    partial <- sum(x, na.rm = TRUE)
+    round_half_up(partial * n / a) / n
+  })
+}

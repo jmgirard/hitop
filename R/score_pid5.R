@@ -15,9 +15,22 @@
 #' @param prefix An optional string to add before each scale column name. If no
 #'   prefix is desired, set to an empty string `""`. (default = `"pid_"`)
 #' @param na.rm An optional logical indicating whether missing values should be
-#'   ignored when calculating scale scores. (default = `TRUE`)
+#'   ignored when calculating scale scores. Ignored when `apa_scoring = TRUE`
+#'   (the APA missing-data rule governs instead); a warning is issued if
+#'   `na.rm = FALSE` is set explicitly alongside `apa_scoring = TRUE`. (default =
+#'   `TRUE`)
+#' @param apa_scoring An optional logical selecting the missing-data algorithm.
+#'   If `TRUE` (the default), scale scores follow the published APA scoring key:
+#'   a facet or domain-item scale with more than 25% of its items unanswered is
+#'   set to `NA`, and otherwise the raw score is prorated to the full item count
+#'   and rounded to the nearest whole number before averaging; a FULL/SF domain
+#'   is `NA` if any one of its three contributing facets is `NA`. If `FALSE`,
+#'   scores use the traditional `rowMeans(na.rm = na.rm)` behavior, which averages
+#'   whatever items are present. With no missing items the two agree. (default =
+#'   `TRUE`)
 #' @param calc_se An optional logical indicating whether to calculate the
-#'   standard error of each scale score. (default = `FALSE`)
+#'   standard error of each scale score. Standard errors are `NA` wherever their
+#'   scale score is `NA`. (default = `FALSE`)
 #' @param alpha Optional logical; if `TRUE`, compute and print Cronbach’s alpha
 #'   for each scale. (default = `FALSE`)
 #' @param omega Optional logical; if `TRUE`, compute and print McDonald’s omega
@@ -31,9 +44,11 @@
 #' @details For the FULL and SF versions, the output includes the 25 facet
 #'   scores followed by the 5 personality-trait domain scores. Following the APA
 #'   scoring key (Step 3), each domain score is the mean of the average scores of
-#'   its 3 primary facets (the map is stored in `pid_domains`); domains honor
-#'   `na.rm` the same way facets do. The BF version scores its 5 domains directly
-#'   from its items and is unaffected. If either `alpha` or `omega` are `TRUE`,
+#'   its 3 primary facets (the map is stored in `pid_domains`). The BF version
+#'   scores its 5 domains directly from its items. By default (`apa_scoring =
+#'   TRUE`) all versions apply the APA missing-data and proration rule; set
+#'   `apa_scoring = FALSE` for the traditional `rowMeans(na.rm = na.rm)` behavior.
+#'   If either `alpha` or `omega` are `TRUE`,
 #'   the function prints a per-scale reliability summary (facets only for FULL/SF).
 #'   Only reliability columns that contain at least one non-`NA` value are shown
 #'   (the `scale` column is always shown).
@@ -66,6 +81,7 @@ score_pid5 <- function(
   srange = c(0, 3),
   prefix = "pid_",
   na.rm = TRUE,
+  apa_scoring = TRUE,
   calc_se = FALSE,
   alpha = FALSE,
   omega = FALSE,
@@ -88,11 +104,20 @@ score_pid5 <- function(
   validate_range(srange)
   stopifnot(rlang::is_string(prefix))
   stopifnot(rlang::is_bool(na.rm))
+  stopifnot(rlang::is_bool(apa_scoring))
   stopifnot(rlang::is_bool(calc_se))
   stopifnot(rlang::is_bool(alpha))
   stopifnot(rlang::is_bool(omega))
   stopifnot(rlang::is_bool(append))
   stopifnot(rlang::is_bool(tibble))
+
+  ## Under APA scoring, the published missing-data rule governs; na.rm is unused
+  if (apa_scoring && !na.rm) {
+    cli::cli_warn(c(
+      "!" = "{.arg na.rm} is ignored when {.arg apa_scoring} is {.code TRUE}.",
+      "i" = "The APA missing-data rule governs scoring. Pass {.code apa_scoring = FALSE} to use {.arg na.rm}."
+    ))
+  }
 
   ## Extract item columns
   data_items <- data[items]
@@ -121,24 +146,29 @@ score_pid5 <- function(
   ## Find items per scale
   items_scales <- pid_scales[[version]]$itemNumbers
 
-  ## Calculate mean scores per scale (facets for FULL/SF, domains for BF)
-  scale_scores <- bind_columns(
-    lapply(
-      items_scales,
-      function(x) rowMeans(data_items[, x], na.rm = na.rm)
-    )
-  )
+  ## Calculate scores per scale (facets for FULL/SF, domains for BF). Under APA
+  ## scoring, apa_mean applies the 25%-missing cutoff and proration; otherwise
+  ## the traditional rowMeans(na.rm) averages whatever items are present.
+  scale_fun <- if (apa_scoring) {
+    function(x) apa_mean(data_items[, x, drop = FALSE])
+  } else {
+    function(x) rowMeans(data_items[, x, drop = FALSE], na.rm = na.rm)
+  }
+  scale_scores <- bind_columns(lapply(items_scales, scale_fun))
 
   ## For FULL/SF, add the 5 personality-trait domain scores (APA key Step 3):
   ## each domain is the mean of its 3 PRIMARY facet average scores (map stored in
   ## pid_domains). BF already scores domains directly, so it is skipped here.
+  ## Under APA scoring a domain is not computed if any one of its 3 primary
+  ## facets is NA (na.rm = FALSE propagates the NA); otherwise it honors na.rm.
   domain_facets <- NULL
   if (version %in% c("FULL", "SF")) {
     domain_facets <- setNames(pid_domains$facetStems, pid_domains$camelCase)
+    domain_narm <- if (apa_scoring) FALSE else na.rm
     domain_scores <- bind_columns(
       lapply(
         domain_facets,
-        function(f) rowMeans(scale_scores[, f, drop = FALSE], na.rm = na.rm)
+        function(f) rowMeans(scale_scores[, f, drop = FALSE], na.rm = domain_narm)
       )
     )
     out <- cbind(scale_scores, domain_scores)
@@ -168,6 +198,9 @@ score_pid5 <- function(
       )
       sems_scales <- cbind(sems_scales, sems_domains)
     }
+    ## A standard error is undefined where its scale score is NA (e.g. an APA
+    ## scale dropped for >25% missing). `out` and `sems_scales` share column order.
+    sems_scales[is.na(out)] <- NA
     colnames(sems_scales) <- paste0(prefix, colnames(sems_scales), "_se")
     out <- cbind(out, sems_scales)
   }

@@ -11,7 +11,7 @@
 
 ### M8: APA-compliant scoring toggle for `score_pid5()`
 
-- **Status:** READY
+- **Status:** IN PROGRESS
 - **Depends on:** M6 (BF rule sourced), M7 (FULL/SF domain scoring) — both DONE
 - **Goal:** Add an `apa_scoring = TRUE` argument to `score_pid5()` that applies the published APA missing-data + proration algorithm (25%-unanswered cutoff, prorated-and-rounded raw scores, domain dropped if any contributing facet is uncomputable) across FULL/SF/BF; `apa_scoring = FALSE` selects the current traditional `rowMeans(na.rm = TRUE)` behavior.
 - **Sourced algorithm** (APA full-form key, Krueger et al., 2013, p. 8 — transcribed verbatim 2026-07-10; BF key = same rule on 5-item domains, M6):
@@ -30,14 +30,14 @@
   - [ ] `NEWS.md` notes the default-behavior change under missing data; SOURCES.md's two "Not yet enforced (→ M8)" notes updated to "enforced (M8)" with the verbatim APA rule + SF-by-analogy caveat; `D-009` added to DESIGN.md.
   - [ ] `devtools::document()` no-diff; `devtools::test()` passes; `devtools::check()` clean (0/0/0).
 - **Tasks:**
-  1. [ ] Add `apa_scoring` to the signature + roxygen in `R/score_pid5.R:62`; document the na.rm-override and cli warning. `devtools::document()`.
-  2. [ ] Add an `apa_mean()` helper (round-half-up; NA if >25% missing) in `R/util.R` near `calc_sem`; unit-test it directly.
-  3. [ ] Branch the facet computation at `R/score_pid5.R:125-130` on `apa_scoring` (APA path uses `apa_mean` over each scale's item matrix; else current `rowMeans`).
-  4. [ ] Update the FULL/SF domain block `R/score_pid5.R:135-147`: under APA, domain = mean of 3 facet averages, NA if any is NA (reuse the `na.rm = FALSE`-style gating on the already-prorated facet scores).
-  5. [ ] Gate `_se` columns to NA where the scale is NA `R/score_pid5.R:153-173`.
-  6. [ ] Extend `helper-fixtures.R` with hand-computed APA-vs-traditional values; rewrite `test-score_pid5.R:122-127`; add proration/cutoff/domain-gating/rounding oracle tests (arithmetic in comments).
-  7. [ ] SOURCES.md: replace the two "Not yet enforced" notes with the enforced verbatim rule + SF-by-analogy caveat; add the full-form PDF URL to Sources; add `D-009` to DESIGN.md; `NEWS.md` entry.
-  8. [ ] `devtools::test()`; `devtools::check()`; open PR, record URL in Notes/links.
+  1. [x] Add `apa_scoring` to the signature + roxygen in `R/score_pid5.R:62`; document the na.rm-override and cli warning. `devtools::document()`.
+  2. [x] Add an `apa_mean()` helper (round-half-up; NA if >25% missing) in `R/util.R` near `calc_sem`; unit-test it directly.
+  3. [x] Branch the facet computation at `R/score_pid5.R:125-130` on `apa_scoring` (APA path uses `apa_mean` over each scale's item matrix; else current `rowMeans`).
+  4. [x] Update the FULL/SF domain block `R/score_pid5.R:135-147`: under APA, domain = mean of 3 facet averages, NA if any is NA (reuse the `na.rm = FALSE`-style gating on the already-prorated facet scores).
+  5. [x] Gate `_se` columns to NA where the scale is NA `R/score_pid5.R:153-173`.
+  6. [x] Extend `helper-fixtures.R` with hand-computed APA-vs-traditional values; rewrite `test-score_pid5.R:122-127`; add proration/cutoff/domain-gating/rounding oracle tests (arithmetic in comments). A `.5` prorated-raw boundary IS reachable (5-item scale, 1 missing, answered sum = 2 → 2.5) → included a round-half-up fixture. Also added `apa_mean`/`round_half_up` unit tests (`test-util.R`) and interface coverage (`test-interface.R`).
+  7. [x] SOURCES.md: replaced the two "Not yet enforced" notes with the enforced verbatim rule + SF-by-analogy caveat; added the full-form PDF URL to Sources; `D-009` in DESIGN.md (planning); `NEWS.md` entry.
+  8. [x] `devtools::test()` PASS 406; `devtools::check()` 0/0/0; PR opened, URL in Notes/links.
 - **Notes/links:** APA full-form rule (verbatim, sourced 2026-07-10): *"If more than 25% of the items within a trait facet are left unanswered, the corresponding facet score should not be used… if 25% or less are unanswered… prorate… multiply the partial raw score by the total number of items contributing to that facet (i.e., 4-14)… divide by the number actually answered… If the result is a fraction, round to the nearest whole number. Domain scores should not be computed if any one of the three contributing facet scores cannot be computed."* Full-form PDF: <https://www.psychiatry.org/getmedia/594673a6-1b9b-4298-8b52-c4c652c4a4e2/APA-DSM5TR-ThePersonalityInventoryForDSM5FullVersionAdult.pdf>. `pid_items`/`pid_scales`/`pid_domains` untouched (no keying-content change). SF proration applies the full-form rule by analogy (Maples 2015 specifies none) — flagged in SOURCES.md. See D-009.
 
 ## Completed

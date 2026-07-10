@@ -11,6 +11,7 @@ score_pid5(
   srange = c(0, 3),
   prefix = "pid_",
   na.rm = TRUE,
+  apa_scoring = TRUE,
   calc_se = FALSE,
   alpha = FALSE,
   omega = FALSE,
@@ -35,10 +36,24 @@ values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
 prefix is desired, set to an empty string \code{""}. (default = \code{"pid_"})}
 
 \item{na.rm}{An optional logical indicating whether missing values should be
-ignored when calculating scale scores. (default = \code{TRUE})}
+ignored when calculating scale scores. Ignored when \code{apa_scoring = TRUE}
+(the APA missing-data rule governs instead); a warning is issued if
+\code{na.rm = FALSE} is set explicitly alongside \code{apa_scoring = TRUE}. (default =
+\code{TRUE})}
+
+\item{apa_scoring}{An optional logical selecting the missing-data algorithm.
+If \code{TRUE} (the default), scale scores follow the published APA scoring key:
+a facet or domain-item scale with more than 25\% of its items unanswered is
+set to \code{NA}, and otherwise the raw score is prorated to the full item count
+and rounded to the nearest whole number before averaging; a FULL/SF domain
+is \code{NA} if any one of its three contributing facets is \code{NA}. If \code{FALSE},
+scores use the traditional \code{rowMeans(na.rm = na.rm)} behavior, which averages
+whatever items are present. With no missing items the two agree. (default =
+\code{TRUE})}
 
 \item{calc_se}{An optional logical indicating whether to calculate the
-standard error of each scale score. (default = \code{FALSE})}
+standard error of each scale score. Standard errors are \code{NA} wherever their
+scale score is \code{NA}. (default = \code{FALSE})}
 
 \item{alpha}{Optional logical; if \code{TRUE}, compute and print Cronbach’s alpha
 for each scale. (default = \code{FALSE})}
@@ -66,9 +81,10 @@ version (PID-5-BF, 25 items) from item-level data.
 For the FULL and SF versions, the output includes the 25 facet
 scores followed by the 5 personality-trait domain scores. Following the APA
 scoring key (Step 3), each domain score is the mean of the average scores of
-its 3 primary facets (the map is stored in \code{pid_domains}); domains honor
-\code{na.rm} the same way facets do. The BF version scores its 5 domains directly
-from its items and is unaffected. If either \code{alpha} or \code{omega} are \code{TRUE},
+its 3 primary facets (the map is stored in \code{pid_domains}). The BF version
+scores its 5 domains directly from its items. By default (\code{apa_scoring = TRUE}) all versions apply the APA missing-data and proration rule; set
+\code{apa_scoring = FALSE} for the traditional \code{rowMeans(na.rm = na.rm)} behavior.
+If either \code{alpha} or \code{omega} are \code{TRUE},
 the function prints a per-scale reliability summary (facets only for FULL/SF).
 Only reliability columns that contain at least one non-\code{NA} value are shown
 (the \code{scale} column is always shown).
