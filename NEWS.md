@@ -17,6 +17,7 @@
   behavior. Under `apa_scoring = TRUE`, `na.rm` is ignored (with a warning if set
   to `FALSE`), and any standard error is `NA` wherever its scale score is `NA`
 * Fix `validity_pid5()` erroring on single-row input for the FULL and SF forms
+* Fix `score_pid5(calc_se = TRUE)` erroring on single-row input
 
 # hitop 0.0.2
 

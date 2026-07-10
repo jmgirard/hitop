@@ -9,7 +9,24 @@
 
 ## Active
 
-_None — all planned Phase-2 milestones (M1–M8) are DONE._
+### M9: Fix single-row `score_pid5(calc_se = TRUE)` crash
+
+- **Status:** IN PROGRESS
+- **Depends on:** —
+- **Goal:** `score_pid5()` with `calc_se = TRUE` on a single-row input returns per-scale standard errors instead of erroring, across FULL/SF/BF.
+- **Acceptance criteria:**
+  - [ ] `score_pid5(<1-row df>, items, version, calc_se = TRUE)` runs without error for FULL, SF, and BF, returning 1 row with the expected `_se` columns present.
+  - [ ] The returned `_se` values match a hand-computed `sd(items)/sqrt(k)` oracle for at least one scale per version (arithmetic in comments).
+  - [ ] Multi-row `calc_se = TRUE` output is unchanged (regression check against current values).
+  - [ ] A test written *before* the fix reproduces the `"dim(X) must have a positive length"` crash; it passes after.
+  - [ ] `devtools::test()` passes; `devtools::check()` clean (0/0/0).
+- **Tasks:**
+  - [x] Add failing single-row `calc_se = TRUE` tests to `tests/testthat/test-score_pid5.R` (FULL/SF/BF), mirroring the pattern at `test-validity_pid5.R:144`; include a hand-computed SE oracle for one scale per version.
+  - [x] Fix `R/score_pid5.R:188`: add `drop = FALSE` to `data_items[, x]` (the domain-SE path at line 196 and the score paths already have it — this is the lone offender).
+  - [x] Confirm the M8 follow-up note is resolved; add the `_se` single-row case to `test-interface.R` if it fits the existing shape checks.
+  - [x] Add a NEWS.md bug-fix bullet (parallels the M3 `validity_pid5()` single-row entry).
+  - [x] `devtools::test()` + `devtools::check()`; document if any roxygen touched (none expected).
+- **Notes/links:** Root cause confirmed empirically — `data_items` is a matrix (from `cbind`), so single-row `data_items[, x]` drops to a vector and `apply(MARGIN = 1)` fails. One-line fix; no keying content touched. Deferred follow-up from M8 (PR [#9](https://github.com/jmgirard/hitop/pull/9)). PR [#10](https://github.com/jmgirard/hitop/pull/10).
 
 ## Completed
 
