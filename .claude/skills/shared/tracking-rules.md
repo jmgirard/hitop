@@ -22,7 +22,7 @@ Exactly these six values: `PLANNED | READY | IN PROGRESS | BLOCKED | DONE | DROP
 - `READY` — fully planned: Goal, objectively verifiable Acceptance criteria, ordered Tasks, Depends on. Set only by /plan-milestone (or a human).
 - `IN PROGRESS` — being worked. At most ONE milestone at a time (soft rule; warn if violated). Set by /work-milestone before any code is touched.
 - `BLOCKED` — add a `**Blocked by:**` line and a LOG.md entry explaining the blocker.
-- `DONE` — set only by /review-milestone after executing every acceptance criterion. Requires all acceptance boxes checked. Move the entry to the Completed section, collapsed to: `### M<n>: Title — DONE YYYY-MM-DD. One-line outcome.`
+- `DONE` — set only by /review-milestone after executing every acceptance criterion. Requires all acceptance boxes checked. Move the entry to the Completed section, condensed to a **short prose summary**: a `### M<n>: Title — DONE YYYY-MM-DD.` header followed by a one-paragraph outcome (what shipped, why it mattered, and the PR link). Drop the acceptance-criteria checklist and task list — their verification is recorded in the LOG.md entry, which owns the full narrative. Keep it to a paragraph.
 - `DROPPED` — deliberately abandoned; keep a one-liner in Completed with the reason.
 
 IDs are `M<n>`, monotonically increasing, never reused — even for dropped milestones.
