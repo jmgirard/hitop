@@ -12,6 +12,8 @@ score_hitopbr(
   prefix = "hbr_",
   na.rm = TRUE,
   calc_se = FALSE,
+  alpha = FALSE,
+  omega = FALSE,
   append = TRUE,
   tibble = TRUE
 )
@@ -52,6 +54,17 @@ score_hitopbr(
   An optional logical indicating whether to calculate the standard error
   of each scale score. (default = `FALSE`)
 
+- alpha:
+
+  Optional logical; if `TRUE`, compute and print Cronbach’s alpha for
+  each scale. (default = `FALSE`)
+
+- omega:
+
+  Optional logical; if `TRUE`, compute and print McDonald’s omega for
+  each scale using Pearson correlations (i.e., non-ordinal). (default =
+  `FALSE`)
+
 - append:
 
   An optional logical indicating whether the new columns should be added
@@ -67,7 +80,14 @@ score_hitopbr(
 ## Value
 
 A data frame containing all scale scores and standard errors (if
-requested) and all original `data` columns (if requested)
+requested) and all original `data` columns (if requested). Reliability
+estimates, when requested, are printed as a side effect.
+
+## Details
+
+If either `alpha` or `omega` are `TRUE`, the function prints a per-scale
+reliability summary. Only reliability columns that contain at least one
+non-`NA` value are shown (the `scale` column is always shown).
 
 ## Examples
 

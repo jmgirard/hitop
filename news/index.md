@@ -49,6 +49,20 @@
   `pid_scales` format, and fix the `sim_hitopbr` item-column names
   (`hitopbr_1` to `hitopbr_45`)
 - Improve the package Title and Description
+- [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
+  gains `alpha` and `omega` arguments (default `FALSE`) that print a
+  per-scale reliability summary, matching
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+  and
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+- Internal refactor:
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  and
+  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
+  now share a single internal scoring engine instead of three
+  hand-maintained copies of the same pipeline (no change to scored
+  output)
 
 ## hitop 0.0.2
 
