@@ -11,15 +11,26 @@
 
 ### M7: PID-5 FULL/SF domain scoring
 
-- **Status:** PLANNED
-- **Depends on:** M1
-- **Goal:** `score_pid5(version="FULL"/"SF")` also returns the 5 personality-trait *domain* average scores (per the APA key Step 3), and the domain→primary-facet map is stored as data and machine-verified against the APA Domain Table.
-- **Acceptance criteria (draft — refine via /plan-milestone):**
-  - [ ] FULL/SF output includes 5 domain columns (`prefix` + camelCase domain name) alongside the 25 facets
-  - [ ] Domain average = mean of the 3 primary facets' average facet scores (APA Step 3); missing-data rule honored ("domain not computed if any of its 3 contributing facets is missing")
-  - [ ] The 5×3 primary-facet map is stored as data (not hardcoded in a function) and a keying test verifies it against the APA Domain Table
-  - [ ] `devtools::check()` clean; oracle fixture asserts an exact domain value hand-computed from the published algorithm
-- **Notes/links:** APA full-form scoring key (Krueger et al., 2013), Step 3 Domain Table + instructions ("average domain scores are calculated by summing and then averaging the 3 facet scores contributing primarily to a specific domain"). Primary-facet map (verified from source 2026-07-09): Negative Affect = Emotional Lability, Anxiousness, Separation Insecurity; Detachment = Withdrawal, Anhedonia, Intimacy Avoidance; Antagonism = Manipulativeness, Deceitfulness, Grandiosity; Disinhibition = Irresponsibility, Impulsivity, Distractibility; Psychoticism = Unusual Beliefs & Experiences, Eccentricity, Perceptual Dysregulation. This is a *feature* gap (FULL/SF currently score no domains) that carries the domain→facet oracle test the old fork's test-keying.R had. Architectural: adding domain output touches `score_pid5()` and likely `pid_scales` — read DESIGN.md before implementing; may warrant a D-entry.
+- **Status:** READY
+- **Depends on:** M1, M2
+- **Goal:** `score_pid5(version="FULL"/"SF")` also returns the 5 personality-trait *domain* average scores (APA key Step 3, each = mean of its 3 primary facet scores), with the domain→primary-facet map stored as a new exported `pid_domains` dataset and machine-verified against the APA Domain Table.
+- **Acceptance criteria:**
+  - [ ] FULL & SF output gain 5 domain columns — `pid_detachment`, `pid_antagonism`, `pid_disinhibition`, `pid_negativeAffectivity`, `pid_psychoticism` — appended **after** the 25 facet columns (existing facet columns/positions unchanged); BF output unchanged.
+  - [ ] Each domain = `rowMeans` of its **3 primary facet** average scores (two-stage mean per APA Step 3), honoring `na.rm` consistently with facet scoring (strict APA ≥2-missing/proration deferred to M8).
+  - [ ] With `calc_se=TRUE`, each domain gets a `_se` column computed from its 3 facet scores via the existing `calc_sem` path; alpha/omega reliability printout stays facet-level (domains excluded).
+  - [ ] Domain→primary-facet map is stored as exported `pid_domains` data (built in `data-raw/pid_info.R`, not hardcoded in `score_pid5`), documented in `R/data.R`, and listed in `_pkgdown.yml`.
+  - [ ] `test-keying.R` gains a FULL/SF domain-map oracle: `pid_domains`' 3 primary facets per domain are set-equal to the hardcoded APA primary-facet map for all 5 domains (mirrors the M6 BF block); stale header comment ("that lives in M7") updated.
+  - [ ] Oracle fixture in `test-score_pid5.R` asserts an exact domain value hand-computed from the published algorithm (reverse-keyed facet included) for both FULL and SF; ≥1 domain independently recomputed from hardcoded facet stems.
+  - [ ] `Rscript -e 'devtools::document()'` regenerates cleanly; `devtools::test()` passes; `devtools::check()` clean (0/0/0).
+- **Tasks:**
+  1. **Test-first** — add failing tests: `test-keying.R` FULL/SF primary-facet-map oracle (hardcoded APA sets, set-equal to `pid_domains`); `test-score_pid5.R` domain fixtures (FULL+SF, arithmetic in comments), independent recompute of one domain from hardcoded facet stems, invariants (5 domain cols present + named, domain = mean of its 3 facet cols, row count preserved, BF still 5 domains).
+  2. `data-raw/pid_info.R` — define `pid_domains` (tibble: `Domain`, `camelCase`, `primaryFacets` list-col of the 3 facet camelCase stems, with an APA-source comment); `usethis::use_data(pid_domains)`; rerun the script to regenerate `data/pid_domains.rda`. (Does **not** touch `pid_items`/`pid_scales`.)
+  3. `R/score_pid5.R` — after the facet-means block (`R/score_pid5.R:118-127`), for FULL/SF only, compute the 5 domain columns from the just-computed facet score columns via `pid_domains`, respecting `na.rm`; append after facets; add domain `_se` inside the `calc_se` block (`R/score_pid5.R:130-140`). BF path untouched.
+  4. `R/data.R` — document the `pid_domains` dataset; `_pkgdown.yml` reference index — add it; `NEWS.md` — note FULL/SF domain scoring + new dataset. `Rscript -e 'devtools::document()'`.
+  5. `project/SOURCES.md` — add FULL/SF primary-facet→domain provenance rows + a note (APA full-form key Step 3 Domain Table, Krueger et al. 2013; map verified 2026-07-09).
+  6. `project/DESIGN.md` — append **D-008** (domain output + `pid_domains` dataset; traditional na.rm now, strict APA→M8); update the testing-narrative line that says FULL/SF domain scoring is unimplemented. `project/ROADMAP.md` — tick the M7 outcome.
+  7. Run `devtools::document()` → `devtools::test()` → `devtools::check()`; open PR on branch `m7-fullsf-domains`, record URL in Notes/links.
+- **Notes/links:** APA full-form scoring key (Krueger et al., 2013) Step 3 Domain Table ("average domain scores are calculated by summing and then averaging the 3 facet scores contributing primarily to a specific domain"). Primary-facet map (verified 2026-07-09): Negative Affectivity = Emotional Lability + Anxiousness + Separation Insecurity; Detachment = Withdrawal + Anhedonia + Intimacy Avoidance; Antagonism = Manipulativeness + Deceitfulness + Grandiosity; Disinhibition = Irresponsibility + Impulsivity + Distractibility; Psychoticism = Unusual Beliefs & Experiences + Eccentricity + Perceptual Dysregulation. All 15 stems confirmed present in `pid_scales[["FULL"]]$camelCase`; the 5 domain camelCase names match BF's existing domain output names. Architectural change → D-008. `pid_items$Domain` (a broad 21-facet DSM-5 grouping) is intentionally **not** the scoring map — domain scores use the 15 primary facets only. Design decisions (2026-07-10): traditional na.rm domain scoring (strict APA → M8); map stored as exported `pid_domains`; domain SE via `calc_sem` over the 3 facet scores; reliability stays facet-level.
 
 ### M8: APA-compliant scoring toggle for `score_pid5()`
 
