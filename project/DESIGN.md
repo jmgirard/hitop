@@ -64,7 +64,7 @@ Scoring correctness is the package's core promise, so tests must verify against 
 
 <!-- Numbered list; remove items when fixed (note the fix in LOG.md and the milestone). -->
 
-1. **No PID-5, keying, or reliability tests** — `tests/testthat/` has only two HiTOP-SR files (rename + pipeline). No test verifies PID-5 scoring/validity output or `pid_items` against the published sources. Tracked as M1, M2, M5.
+1. **No PID-5 scoring/validity or reliability tests** — `pid_items` keying is now machine-verified against the published sources (`tests/testthat/test-keying.R`, M1 done 2026-07-09). Still missing: tests of `score_pid5()`/`validity_pid5()` output (M2) and the reliability functions / HiTOP-SR/BR scoring (M5). Otherwise `tests/testthat/` has only the two HiTOP-SR files (rename + pipeline).
 2. **No R CMD check or coverage CI** — `.github/workflows/` contains only `pkgdown.yaml`. Tracked as M4.
 3. **Six undocumented datasets in `data/`** — `hitopbr_instructions`, `hitopsr_instructions`, `hitophsum_instructions`, `pid_instructions`, `hitophsum_choices`, `hitophsum_items` have no roxygen entries in [R/data.R](../R/data.R); the four `*_instructions` are duplicated in `R/sysdata.rda` (leftover from commit 08e3d88 "use internal data"), and no `data-raw/` script uses `internal = TRUE` — e.g. [data-raw/pid_info.R:73](../data-raw/pid_info.R) still writes `pid_instructions` to `data/` — so `R/sysdata.rda` is not currently regenerable from data-raw. Likely R CMD check warning. Tracked as M3.
 4. **Dependency declarations out of sync** — [R/qualtrics_test.R:14](../R/qualtrics_test.R) uses `httr2::` but {httr2} is not in DESCRIPTION; {glue}, {lifecycle}, and {jsonlite} are Imports with no uses in R/. Tracked as M3.

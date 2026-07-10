@@ -5,6 +5,12 @@
 <!-- Boundary rule: Architecture → DESIGN. Direction → ROADMAP. Tasks → MILESTONES. History → LOG. -->
 <!-- This log starts fresh for the canonical repo (v0.1.0); the old fork's log was deliberately not imported (D-006). Pre-tracking history: see git log and NEWS.md. -->
 
+## 2026-07-09 — Reviewed, merged & closed out M1; docs sync (M1)
+
+- **What:** Verified M1's acceptance criteria on the branch (`test(filter="keying")` FAIL 0 SKIP 1 PASS 111; `document()` no-diff; full `test()` PASS 128; `check()` shows only pre-existing M3-owned warnings, no new problems), plus a fresh-context general-purpose subagent diff review (PASS — oracle direction non-circular, tibble-safe extraction, no weakened assertions). Merged PR [#2](https://github.com/jmgirard/hitop/pull/2) to main (`c3ea999`). **Docs sync:** M1 → DONE and collapsed into Completed; DESIGN Known issue #1 rewritten (keying tests now exist; scoring/validity=M2, reliability/HiTOP-SR-BR=M5 still outstanding).
+- **Why / decisions:** M1's criteria deliberately scope out `check()`-clean (that's M3), so pre-existing check warnings don't block it. Test-only PR, no keying content, so no maintainer keying sign-off required; merge performed by the maintainer.
+- **Follow-ups spawned:** M2 and M5 are now unblocked (dependency M1 DONE) and plannable via `/plan-milestone`.
+
 ## 2026-07-09 — Ported keying-verification tests (M1)
 
 - **What:** Added `tests/testthat/test-keying.R`, porting the fork's external-source keying oracle to this repo (`PID5→FULL`, `PID5FSF→SF` column renames; tibble-safe `pid_items$FULL[rows]` extraction). 11 `test_that` blocks (10 active + OQ-1 skip) verify `pid_items` against the published sources — reverse items, 25 facets, INC 20 pairs, INC-S 10 pairs (2020 + 2021 Correction), ORS 10, PRD 22, SDTD 16-subset, SF 100 selection + per-facet + no-reverse. `devtools::test(filter="keying")` → FAIL 0 | SKIP 1 | PASS 111. `pid_items` unchanged. Installed local dev deps flextable/officer/snakecase so the suite can load. Also planned M1→READY and added M6 (BF provenance) + M7 (FULL/SF domain scoring) stubs, verified against the APA full-form and BF scoring-key PDFs.
