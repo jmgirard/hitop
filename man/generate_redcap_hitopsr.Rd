@@ -49,3 +49,8 @@ accuracy.
 \item Test the instrument to ensure proper functionality within your project.
 }
 }
+\examples{
+# Write a HiTOP-SR REDCap instrument ZIP to a temporary location
+generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
+
+}

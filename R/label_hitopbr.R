@@ -12,6 +12,11 @@
 #'
 #' @return A data frame with labeled columns.
 #'
+#' @examples
+#' # Attach item text as a `label` attribute to the raw item columns
+#' labeled <- label_hitopbr(sim_hitopbr, target = "items", prefix = "hitopbr_")
+#' attr(labeled$hitopbr_1, "label")
+#'
 #' @export
 label_hitopbr <- function(
   data,

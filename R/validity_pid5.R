@@ -51,6 +51,11 @@
 #'   Scale for the Personality Inventory for DSM-5. *Journal of Personality
 #'   Assessment, 102*(6), 743–750. \doi{10.1080/00223891.2019.1674320}
 #'
+#' @examples
+#' # Compute the PID-5 validity scales and flag likely-invalid responders.
+#' # (The simulated data are random, so most rows are flagged.)
+#' validity_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
+#'
 #' @export
 validity_pid5 <- function(
   data,

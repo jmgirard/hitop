@@ -36,7 +36,7 @@ data("sim_pid5")
 sim_pid5
 ```
 
-To turn these item-level data into scale scores on the 25 facets and 5 domains, we can use the `score_pid5()` function. We will need to tell the function which columns contain our items and which version of the PID this is. There are several ways we can specify the items. First, we can provide the column numbers and use the `:` shortcut. In this tibble, the items are from column 1 to column 220 so we can use `items = 1:220`. I am going to also set `append = FALSE` so that you can quickly see the scale scores. I also can set the version to `"FULL"` (or leave that argument off, as that is the default, shown in the example example) to let it know we are using the full 220-item version.
+To turn these item-level data into scale scores on the 25 facets and 5 domains, we can use the `score_pid5()` function. We will need to tell the function which columns contain our items and which version of the PID this is. There are several ways we can specify the items. First, we can provide the column numbers and use the `:` shortcut. In this tibble, the items are from column 1 to column 220 so we can use `items = 1:220`. I am going to also set `append = FALSE` so that you can quickly see the scale scores. I also can set the version to `"FULL"` (or leave that argument off, as that is the default, shown in the example below) to let it know we are using the full 220-item version.
 
 ```{r}
 scores <- score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)

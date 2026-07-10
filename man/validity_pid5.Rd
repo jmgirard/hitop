@@ -69,6 +69,12 @@ respondents; a warning is issued when \code{srange} is not \code{c(0, 3)}. The B
 version computes only the percent-missing (PNA) index and no cut-score
 scales.
 }
+\examples{
+# Compute the PID-5 validity scales and flag likely-invalid responders.
+# (The simulated data are random, so most rows are flagged.)
+validity_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
+
+}
 \references{
 Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
 E. H. (2016). Development of a Response Inconsistency Scale for the

@@ -64,3 +64,8 @@ If either \code{alpha} or \code{omega} are \code{TRUE}, the function prints a
 per-scale reliability summary. Only reliability columns that contain at
 least one non-\code{NA} value are shown (the \code{scale} column is always shown).
 }
+\examples{
+# Score all HiTOP-SR scales from the simulated data
+score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
+
+}

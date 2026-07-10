@@ -25,6 +25,10 @@
 #' @return A data frame containing all scale scores and standard errors (if
 #'   requested) and all original `data` columns (if requested)
 #'
+#' @examples
+#' # Score all HiTOP-BR scales from the simulated data
+#' score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE)
+#'
 #' @export
 score_hitopbr <- function(
   data,

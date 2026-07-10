@@ -71,3 +71,10 @@ concatenation.
 When \code{append = TRUE}, the appended column is named \code{"out"}. The
 order of existing columns in \code{data} is preserved.
 }
+\examples{
+# List each respondent's 3 highest-scoring HiTOP-BR scales
+scored <- score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE)
+rank_scales(scored, scales = names(scored), prefix = "hbr_", top = 3,
+            append = FALSE)
+
+}

@@ -36,3 +36,10 @@ Creates a formatted Microsoft Word document containing the
 Hierarchical Taxonomy of Psychopathology - Substance Use Module (HSUM)
 overview, branching logic, and items.
 }
+\examples{
+\donttest{
+# Write a HiTOP-HSUM paper form to a temporary Word document
+generate_docx_hitophsum(file = tempfile(fileext = ".docx"))
+}
+
+}

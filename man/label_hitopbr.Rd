@@ -23,3 +23,9 @@ Add literal item text or clean scale names as attributes to data frame
 columns for the HiTOP Brief Report (HiTOP-BR), making them readable by
 data viewers and reporting packages.
 }
+\examples{
+# Attach item text as a `label` attribute to the raw item columns
+labeled <- label_hitopbr(sim_hitopbr, target = "items", prefix = "hitopbr_")
+attr(labeled$hitopbr_1, "label")
+
+}

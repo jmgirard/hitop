@@ -35,3 +35,11 @@ A data frame with renamed column names for the matched HiTOP-SR items.
 Rename data frame columns to standard HiTOP-SR item names based on either
 legacy ("Original") variable names or item text matching.
 }
+\examples{
+# Rename legacy item-pool columns to standard HiTOP-SR item names
+legacy <- head(hitopsr_items$Original, 3)
+df <- as.data.frame(matrix(0, nrow = 2, ncol = 3,
+                           dimnames = list(NULL, legacy)))
+names(rename_hitopsr_items(df, method = "original"))
+
+}

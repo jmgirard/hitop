@@ -37,3 +37,8 @@ Creates a text file formatted for the Qualtrics Advanced Format
 import tool containing the Hierarchical Taxonomy of Psychopathology -
 Self-Report (HiTOP-SR) items and instructions.
 }
+\examples{
+# Write a HiTOP-SR Qualtrics import file to a temporary location
+generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
+
+}

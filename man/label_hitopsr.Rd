@@ -22,3 +22,9 @@ A data frame with labeled columns.
 Add literal item text or clean scale names as attributes to data frame
 columns, making them readable by data viewers and reporting packages.
 }
+\examples{
+# Attach item text as a `label` attribute to the raw item columns
+labeled <- label_hitopsr(sim_hitopsr, target = "items", prefix = "hsr_")
+attr(labeled$hsr_1, "label")
+
+}

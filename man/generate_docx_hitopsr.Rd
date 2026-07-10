@@ -45,3 +45,10 @@ Hierarchical Taxonomy of Psychopathology - Self-Report (HiTOP-SR) items,
 instructions, and optional scoring keys. The 405 items are formatted into a
 single continuous table.
 }
+\examples{
+\donttest{
+# Write a HiTOP-SR paper form to a temporary Word document
+generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
+}
+
+}

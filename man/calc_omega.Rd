@@ -36,6 +36,13 @@ loadings trigger a warning (often indicates reverse-keying is needed).
 Note that the latent variable will be estimated as \code{f}, so please avoid
 naming any of your items that.
 }
+\examples{
+\dontshow{if (requireNamespace("lavaan", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+# McDonald's omega-total for the HiTOP-BR Detachment scale
+detach_items <- sprintf("hbr\%02d", c(7, 12, 30, 31, 36, 37))
+calc_omega(ku_hitopbr[detach_items])
+\dontshow{\}) # examplesIf}
+}
 \references{
 \itemize{
 \item McDonald, R. P. (1999). \emph{Test Theory: A Unified Treatment}. Lawrence

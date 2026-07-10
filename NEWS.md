@@ -29,6 +29,11 @@
 * `validity_pid5()` now warns when `srange` is not `c(0, 3)`, because the
   published PRD and SD-TD cut scores are raw sums against fixed thresholds that
   assume 0-3 item coding and do not adapt to other codings
+* Add runnable `@examples` to every exported function
+* Correct the dataset documentation: fix the column counts in the `pid_items`
+  and `hitopbr_items` `@format` blocks, document the `pid_scales` format, and fix
+  the `sim_hitopbr` item-column names (`hitopbr_1` to `hitopbr_45`)
+* Improve the package Title and Description
 
 # hitop 0.0.2
 

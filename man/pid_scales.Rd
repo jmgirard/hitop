@@ -5,12 +5,26 @@
 \alias{pid_scales}
 \title{Personality Inventory for DSM-5 Scale Data}
 \format{
-An object of class \code{list} of length 3.
+A named \link{list} of length 3 (elements \code{FULL}, \code{SF}, and \code{BF}),
+one per PID-5 version. Each element is a \link[tibble]{tibble} with one row
+per scale and 5 columns:
+\describe{
+\item{Facet (named \code{Domain} in the BF element)}{Name of the scale: the
+facet for the FULL and SF versions, the domain for the BF version}
+\item{itemdata}{A list column containing one item-data tibble per scale}
+\item{nItems}{The number of items in the scale}
+\item{itemNumbers}{A list column containing one item-number vector per scale}
+\item{camelCase}{The name of the scale converted to camel case (the score-output column stem)}
+}
 }
 \usage{
 pid_scales
 }
 \description{
-Information about the scales in different versions of the PID-5.
+Information about the scales (facets) in different versions of the PID-5,
+used by \code{score_pid5()} to map each scale to its item numbers.
+}
+\examples{
+pid_scales[["BF"]]
 }
 \keyword{datasets}

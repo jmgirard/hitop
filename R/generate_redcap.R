@@ -29,6 +29,10 @@
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
+#' @examples
+#' # Write a HiTOP-BR REDCap instrument ZIP to a temporary location
+#' generate_redcap_hitopbr(file = tempfile(fileext = ".zip"))
+#'
 #' @export
 generate_redcap_hitopbr <- function(
   file = "hitopbr_redcap.zip",
@@ -78,6 +82,10 @@ generate_redcap_hitopbr <- function(
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
+#' @examples
+#' # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
+#' generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
+#'
 #' @export
 generate_redcap_hitopsr <- function(
   file = "hitopsr_redcap.zip",
@@ -116,6 +124,10 @@ generate_redcap_hitopsr <- function(
 #' @param required Logical. Whether the items should be marked as required.
 #' @param breaks Integer or `NULL`. The number of items to display before a page break.
 #'
+#' @examples
+#' # Write a PID-5 (full) REDCap instrument ZIP to a temporary location
+#' generate_redcap_pid5(file = tempfile(fileext = ".zip"))
+#'
 #' @export
 generate_redcap_pid5 <- function(
   file = "pid5_redcap.zip",
@@ -145,6 +157,10 @@ generate_redcap_pid5 <- function(
 #'
 #' @inheritParams generate_redcap_pid5
 #'
+#' @examples
+#' # Write a PID-5-SF REDCap instrument ZIP to a temporary location
+#' generate_redcap_pid5sf(file = tempfile(fileext = ".zip"))
+#'
 #' @export
 generate_redcap_pid5sf <- function(
   file = "pid5sf_redcap.zip",
@@ -170,6 +186,10 @@ generate_redcap_pid5sf <- function(
 #' Generate a REDCap Instrument ZIP File for the PID-5-BF
 #'
 #' @inheritParams generate_redcap_pid5
+#'
+#' @examples
+#' # Write a PID-5-BF REDCap instrument ZIP to a temporary location
+#' generate_redcap_pid5bf(file = tempfile(fileext = ".zip"))
 #'
 #' @export
 generate_redcap_pid5bf <- function(
@@ -331,6 +351,10 @@ build_redcap_zip <- function(
 #'   Defaults to `TRUE`.
 #'
 #' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @examples
+#' # Write a HiTOP-HSUM REDCap instrument ZIP to a temporary location
+#' generate_redcap_hitophsum(file = tempfile(fileext = ".zip"))
 #'
 #' @export
 generate_redcap_hitophsum <- function(
