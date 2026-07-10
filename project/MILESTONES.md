@@ -29,7 +29,7 @@
   - [x] Add `validate_item_uniqueness()` (error on duplicates) and `warn_item_order()` (common-prefix + trailing-integer ascending heuristic) to [R/util.R](../R/util.R); call both from the four functions right after `validate_items()`
   - [x] Tests: srange block in `test-validity_pid5.R`; order/duplicate blocks (new `test-item-guards.R` or extend `test-interface.R`) covering all four functions
   - [x] Roxygen param updates + `devtools::document()`; NEWS.md
-- **Notes/links:** From the 2026-07-10 design audit. Warning (not abort) chosen for srange so legitimate non-0–3 workflows stay possible; auto-adjusting the cutoffs for shifted codings (cutoff + k×low) is deliberately deferred — it changes validity-scale semantics and needs Jeff's sign-off. Order heuristic is names-only: integer positions out of ascending order can be a legitimate mapping, numbered names out of order almost never are.
+- **Notes/links:** From the 2026-07-10 design audit. Warning (not abort) chosen for srange so legitimate non-0–3 workflows stay possible; auto-adjusting the cutoffs for shifted codings (cutoff + k×low) is deliberately deferred — it changes validity-scale semantics and needs Jeff's sign-off. Order heuristic is names-only: integer positions out of ascending order can be a legitimate mapping, numbered names out of order almost never are. PR [#12](https://github.com/jmgirard/hitop/pull/12).
 
 ### M12: Documentation accuracy & examples
 
