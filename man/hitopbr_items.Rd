@@ -11,7 +11,7 @@ A \link[tibble]{tibble} with 45 rows and 8 columns:
 \item{Reverse}{Whether the item needs to be reverse scored}
 \item{Scale}{Name of the scale}
 \item{Externalizing}{Whether the item is part of the Externalizing scale}
-\item{PFactor}{Whether the item is part of the p-Factor scale}
+\item{Pfactor}{Whether the item is part of the p-Factor scale}
 \item{Text}{Item text}
 \item{HSR}{Item number on the HiTOP-SR}
 \item{Original}{Item ID in the original, development item pool}

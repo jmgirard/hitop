@@ -27,7 +27,8 @@
 #'   one per PID-5 version. Each element is a \link[tibble]{tibble} with one row
 #'   per scale and 5 columns:
 #' \describe{
-#'   \item{Facet}{Name of the facet (scale)}
+#'   \item{Facet (named `Domain` in the BF element)}{Name of the scale: the
+#'   facet for the FULL and SF versions, the domain for the BF version}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale}
 #'   \item{nItems}{The number of items in the scale}
 #'   \item{itemNumbers}{A list column containing one item-number vector per scale}
@@ -131,7 +132,7 @@
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{Scale}{Name of the scale}
 #'   \item{Externalizing}{Whether the item is part of the Externalizing scale}
-#'   \item{PFactor}{Whether the item is part of the p-Factor scale}
+#'   \item{Pfactor}{Whether the item is part of the p-Factor scale}
 #'   \item{Text}{Item text}
 #'   \item{HSR}{Item number on the HiTOP-SR}
 #'   \item{Original}{Item ID in the original, development item pool}

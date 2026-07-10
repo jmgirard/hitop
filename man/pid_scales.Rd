@@ -9,7 +9,8 @@ A named \link{list} of length 3 (elements \code{FULL}, \code{SF}, and \code{BF})
 one per PID-5 version. Each element is a \link[tibble]{tibble} with one row
 per scale and 5 columns:
 \describe{
-\item{Facet}{Name of the facet (scale)}
+\item{Facet (named \code{Domain} in the BF element)}{Name of the scale: the
+facet for the FULL and SF versions, the domain for the BF version}
 \item{itemdata}{A list column containing one item-data tibble per scale}
 \item{nItems}{The number of items in the scale}
 \item{itemNumbers}{A list column containing one item-number vector per scale}
