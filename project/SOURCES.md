@@ -43,6 +43,9 @@ status, so the table has an *external* oracle. Verified item-by-item on
 | `SDTD` (17 items) | Williams et al. (2019) | Table 5 note, p. 259 | ⚠️ 16/17 match; item 38 unverified — **OQ-1** |
 | `PID5FSF` (100 items, 25×4 facets) | Maples et al. (2015) | Appendix, p. 1210 | ✅ Exact match |
 | FSF reverse-keying (none) | Maples Appendix + APA key | p. 1210 | ✅ Design confirmed (see note) |
+| `BF` selection (25 items) | APA PID-5-BF Adult (Krueger et al., 2013) | 25-item form + Domain Scoring table | ✅ Exact match |
+| `Domain` → BF items (5 domains × 5) | APA PID-5-BF Adult | Personality Trait Domain Scoring table | ✅ Exact match (5/5) |
+| BF reverse-keying (none) | APA PID-5-BF Adult | Domain Scoring table (no reverse marks) | ✅ Design confirmed (see note) |
 
 ## Sources
 
@@ -52,6 +55,7 @@ status, so the table has an *external* oracle. Verified item-by-item on
 - **ORS** — Sellbom, M., Dhillon, S., & Bagby, R. M. (2018). Development and Validation of an Overreporting Scale for the PID-5. *Psychological Assessment, 30*(5), 582–593.
 - **PRD & SD-TD** — Williams, M. M., Rogers, R., Sharf, A. J., & Ross, C. A. (2019). Faking Good. *Journal of Personality Assessment, 101*(3), 253–263.
 - **FSF** — Maples, J. L., et al. (2015). Testing whether the DSM-5 personality disorder trait model can be measured with a reduced set of items. *Psychological Assessment, 27*(4), 1195–1210.
+- **PID-5-BF** — Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., & Skodol, A. E. (2013). *The Personality Inventory for DSM-5—Brief Form (PID-5-BF)—Adult*. American Psychiatric Association. [The authoritative source for the BF 25-item selection and its 5-domain membership.] PDF: <https://www.psychiatry.org/getmedia/f65c4386-b2bc-44a5-9ace-d6fea2211506/APA-DSM5TR-ThePersonalityInventoryForDSM5BriefFormAdult.pdf>. Secondary/validation: Anderson, J. L., Sellbom, M., & Salekin, R. T. (2018). Utility of the PID-5-BF. *Assessment, 25*(5), 596–607. \doi{10.1177/1073191116676889}.
 
 ### Cutoffs (used for the cli warnings)
 
@@ -69,6 +73,26 @@ higher-order factor* (the Appendix is organized by factor), not facet-level
 reverse-keying. None of the 8 are reverse-scored in the APA full-form key, so
 `score_pid5fsf()` scores them forward to reproduce standard DSM-5 facet scores.
 This is a deliberate interpretation; flagged here for maintainer awareness.
+
+### Note on BF domain scoring
+
+The APA "Personality Trait Domain Scoring" table assigns each of the 25 BF items
+to exactly one of 5 domains (5 items each) — **Negative Affect** = 8, 9, 10, 11,
+15; **Detachment** = 4, 13, 14, 16, 18; **Antagonism** = 17, 19, 20, 22, 25;
+**Disinhibition** = 1, 2, 3, 5, 6; **Psychoticism** = 7, 12, 21, 23, 24 (all in
+BF-relative 1–25 numbering). `pid_items$Domain` for the BF items matches this
+table exactly (asserted in `test-keying.R`); the APA prints "Negative Affect"
+where `pid_items` stores "Negative affectivity". No BF item is reverse-scored (the
+table marks none), and each domain score is an **average** (raw domain sum / 5),
+which is what `score_pid5(version = "BF")` computes via `rowMeans`.
+
+**Not yet enforced (→ M8):** the APA form also specifies a missing-data rule —
+*do not compute a domain if ≥ 2 of its 5 items are unanswered; if exactly 1 is
+unanswered, prorate* (prorated raw = round(partial_sum × 5 / n_answered)).
+`score_pid5()` currently ignores this: `rowMeans(na.rm = TRUE)` will average
+whatever items are present, even a single one. Milestone M8 adds an
+`apa_scoring` toggle (default `TRUE`) to honor the published missing-data/proration
+algorithm; `apa_scoring = FALSE` keeps the current behavior.
 
 ## Open questions (need source adjudication)
 
