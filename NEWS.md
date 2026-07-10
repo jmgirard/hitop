@@ -25,6 +25,15 @@ before a CRAN submission.
 * **The `tibble` argument has been removed** from `score_pid5()`,
   `score_hitopsr()`, `score_hitopbr()`, `validity_pid5()`, and `rank_scales()`;
   these functions now always return a tibble
+* **Documentation accuracy and polish** across the scoring tutorials and pkgdown
+  instrument pages: corrected stale column/dataset names in the HiTOP-SR tutorial
+  (leftovers from an earlier "HiTOP-PRO" draft), updated the HiTOP-BR scale count
+  (8, not 7) and the PID-5 appended-column count (now includes the 5 domains),
+  finished the previously "work in progress" PID-5-BF tutorial, added the missing
+  Scale Reliability sections to the HiTOP-BR and PID-5-BF tutorials, fixed a
+  mis-targeted REDCap "Import Instructions" link on the PID-5 download page, and
+  reconciled the instrument download pages so each describes only the resources it
+  actually links
 
 # hitop 0.1.0
 

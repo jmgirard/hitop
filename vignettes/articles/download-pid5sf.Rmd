@@ -8,7 +8,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Welcome to the Personality Inventory for DSM-5 Short Form (PID-5-SF) instrument resources page. This questionnaire contains 100 items and can be used to score 5 domains scales and 25 facet subscales indexing different aspects of personality pathology. Here you can download ready-to-use versions of the instrument or explore the powerful tools provided by the `hitop` R package to customize, score, and analyze your data.
+Welcome to the Personality Inventory for DSM-5 Short Form (PID-5-SF) instrument resources page. This questionnaire contains 100 items and can be used to score 5 domain scales and 25 facet subscales indexing different aspects of personality pathology. Here you can download ready-to-use versions of the instrument or explore the powerful tools provided by the `hitop` R package to customize, score, and analyze your data.
 
 ```{=html}
 <style>
@@ -78,7 +78,7 @@ Welcome to the Personality Inventory for DSM-5 Short Form (PID-5-SF) instrument 
     <div class="card h-100 shadow-sm">
       <div class="card-body">
         <h5 class="card-title">📋 Instrument Information</h5>
-        <p class="card-text">Access the complete item dictionary, structural hierarchy, and subscale definitions directly from the package namespace.</p>
+        <p class="card-text">Access the complete item dictionary and structural hierarchy directly from the package namespace.</p>
         <div class="d-flex flex-wrap gap-2">
           <a href="../reference/pid_items.html" class="btn btn-sm btn-outline-secondary">Items</a>
           <a href="../reference/pid_scales.html" class="btn btn-sm btn-outline-secondary">Scales</a>
