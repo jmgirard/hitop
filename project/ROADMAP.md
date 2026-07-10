@@ -27,7 +27,8 @@
   - BF keying provenance is documented and verified against the APA PID-5-BF Domain Scoring table. *(M6, done)*
   - FULL/SF domain scores (APA key Step 3) are computed and their domain→facet map is machine-verified. *(M7, done)*
   - Scoring honors the published APA missing-data/proration rules (opt-out via `apa_scoring = FALSE`). *(M8, done)*
-- **Related milestones:** M1–M8 (all DONE)
+  - Every implemented user-facing surface is tested, including the `generate_{docx,qualtrics,redcap}_*` export family (output parsed back and checked against the source datasets). *(M10, done)*
+- **Related milestones:** M1–M10 (all DONE)
 
 ## Phase 3: Norms & visualization (current focus)
 
