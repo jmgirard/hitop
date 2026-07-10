@@ -12,6 +12,7 @@ NULL
 # here so R CMD check does not flag them as undefined global variables.
 utils::globalVariables(c(
   "pid_items",
+  "pid_domains",
   "hitopsr_items",
   "hitopsr_scales",
   "hitopsr_subscales",

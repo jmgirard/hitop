@@ -63,9 +63,15 @@ Calculate scale scores on the Personality Inventory for DSM-5: full version
 version (PID-5-BF, 25 items) from item-level data.
 }
 \details{
-If either \code{alpha} or \code{omega} are \code{TRUE}, the function prints a
-per-scale reliability summary. Only reliability columns that contain at
-least one non-\code{NA} value are shown (the \code{scale} column is always shown).
+For the FULL and SF versions, the output includes the 25 facet
+scores followed by the 5 personality-trait domain scores. Following the APA
+scoring key (Step 3), each domain score is the mean of the average scores of
+its 3 primary facets (the map is stored in \code{pid_domains}); domains honor
+\code{na.rm} the same way facets do. The BF version scores its 5 domains directly
+from its items and is unaffected. If either \code{alpha} or \code{omega} are \code{TRUE},
+the function prints a per-scale reliability summary (facets only for FULL/SF).
+Only reliability columns that contain at least one non-\code{NA} value are shown
+(the \code{scale} column is always shown).
 }
 \references{
 Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &

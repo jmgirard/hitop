@@ -35,7 +35,7 @@ status, so the table has an *external* oracle. Verified item-by-item on
 |---|---|---|---|
 | `Reverse` (16 items) | APA PID-5 Adult scoring key (Krueger et al., 2013) | p. 8, Step 1 | ✅ Exact match |
 | `Facet` → items (25 facets, full form) | APA scoring key | p. 8, Facet Table | ✅ Exact match (25/25) |
-| Domain → 3 facets (in `R/pid5.R`) | APA scoring key | p. 8, Domain Table | ✅ Exact match (5/5) |
+| Domain → 3 primary facets (`pid_domains`, FULL/SF) | APA scoring key | p. 8, Domain Table | ✅ Exact match (5/5) |
 | `INC` (20 pairs) + cutoff 17 | Keeley et al. (2016) | Table 1, p. 354; cut p. 354 | ✅ Exact match |
 | `INCS` (10 pairs) + cutoff 8 | Lowmaster et al. (2020) + 2021 Correction, Table 1 | corr. p. 571 | ✅ Exact match — **OQ-2 resolved** |
 | `ORS` (10 items) + cutoff 3 | Sellbom et al. (2018) | Table 2, p. 586; cut p. 588 | ✅ Exact match |
@@ -93,6 +93,27 @@ unanswered, prorate* (prorated raw = round(partial_sum × 5 / n_answered)).
 whatever items are present, even a single one. Milestone M8 adds an
 `apa_scoring` toggle (default `TRUE`) to honor the published missing-data/proration
 algorithm; `apa_scoring = FALSE` keeps the current behavior.
+
+### Note on FULL/SF domain scoring
+
+The APA full-form scoring key (Krueger et al., 2013, p. 8, Domain Table, Step 3)
+computes each of the 5 personality-trait **domain** scores as the average of the
+scores on the **3 facets contributing primarily to that domain** — *not* the mean
+of all items across those facets, and *not* the broader 21-facet `pid_items$Domain`
+grouping (which tags every domain-affiliated facet, primary or not). The 15-facet
+primary map, transcribed from the Domain Table (verified 2026-07-09):
+
+- **Negative Affect** = Emotional Lability, Anxiousness, Separation Insecurity
+- **Detachment** = Withdrawal, Anhedonia, Intimacy Avoidance
+- **Antagonism** = Manipulativeness, Deceitfulness, Grandiosity
+- **Disinhibition** = Irresponsibility, Impulsivity, Distractibility
+- **Psychoticism** = Unusual Beliefs & Experiences, Eccentricity, Perceptual Dysregulation
+
+Stored in the `pid_domains` dataset and machine-verified against these numbers in
+`test-keying.R` (M7). `score_pid5(version = "FULL"/"SF")` appends the 5 domain
+scores after the 25 facet scores, each = `rowMeans` of its 3 primary facet scores
+honoring `na.rm`. The APA missing-data/proration rule (as for the BF, above) is
+**not** enforced here either — deferred to M8.
 
 ## Open questions (need source adjudication)
 

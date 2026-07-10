@@ -27,8 +27,8 @@ test_that("version selects the right number of scale columns", {
   sf   <- score_pid5(sim_pid5sf, items = 1:100, version = "SF", append = FALSE)
   bf   <- score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
 
-  expect_equal(ncol(full), 25)   # 25 facets
-  expect_equal(ncol(sf), 25)     # 25 facets
+  expect_equal(ncol(full), 30)   # 25 facets + 5 domains (M7)
+  expect_equal(ncol(sf), 30)     # 25 facets + 5 domains (M7)
   expect_equal(ncol(bf), 5)      # 5 domains
   expect_true(all(startsWith(names(full), "pid_")))
   expect_true(all(startsWith(names(bf), "pid_")))
@@ -56,9 +56,10 @@ test_that("prefix controls the scale-column stem", {
 test_that("calc_se adds one _se column per scale", {
   out <- score_pid5(sim_pid5, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
   se_cols <- grep("_se$", names(out), value = TRUE)
-  expect_equal(ncol(out), 50)          # 25 scales + 25 SEs
-  expect_length(se_cols, 25)
+  expect_equal(ncol(out), 60)          # (25 facets + 5 domains) scores + SEs (M7)
+  expect_length(se_cols, 30)
   expect_true("pid_anhedonia_se" %in% se_cols)
+  expect_true("pid_detachment_se" %in% se_cols)
 })
 
 test_that("tibble toggles tibble vs data.frame output", {

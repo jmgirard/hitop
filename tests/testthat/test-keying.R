@@ -9,9 +9,9 @@
 # Ported from the PID-5-only fork (milestone M1). This repo's `pid_items` uses
 # columns FULL / SF / BF where the fork used PID5 / PID5FSF / PID5BF. The BF
 # `Domain` structure (5 domains x 5 items) is verified against the APA PID-5-BF
-# Domain Scoring table in the BF block below (M6). FULL/SF *facet -> domain*
-# verification is NOT here: score_pid5() outputs 25 facets and no FULL/SF domains,
-# and no primary-facet -> domain map is stored yet; that lives in M7.
+# Domain Scoring table in the BF block below (M6). The FULL/SF primary-facet ->
+# domain map (`pid_domains`, driving score_pid5(version = "FULL"/"SF") domain
+# output) is verified against the APA full-form Domain Table in the final block (M7).
 
 # ---- Source: APA official PID-5 scoring key (Krueger et al., 2013), page 8 ----
 
@@ -212,4 +212,41 @@ test_that("BF is 25 items, 1:25, exactly 5 per domain, none reverse-keyed", {
   expect_equal(nrow(bf), 25L)                        # no duplicate BF numbers
   expect_equal(as.integer(table(bf$Domain)), rep(5L, 5))  # 5 domains x 5 items
   expect_false(any(bf$Reverse))                      # APA table marks no reverse items
+})
+
+# ---- Source: APA PID-5 scoring key (Krueger et al., 2013), p. 8 Domain Table --
+# FULL/SF domain scores average the 3 facets contributing PRIMARILY to each
+# domain (Step 3). That 15-facet primary map is stored in `pid_domains` and drives
+# score_pid5(version = "FULL"/"SF") domain output (M7). Verify the map against the
+# published Domain Table, independent of how `pid_domains` was built. NOTE: this
+# is the 3-primary-facet subset, NOT the broader 21-facet `pid_items$Domain`
+# grouping used for the BF.
+
+test_that("pid_domains primary-facet map matches the APA full-form Domain Table", {
+  # Transcribed from the APA scoring key Domain Table (facet labels as printed;
+  # the APA prints "Negative Affect" where pid_domains stores "Negative affectivity").
+  apa_domains <- list(
+    "Negative affectivity" = c("Emotional Lability", "Anxiousness", "Separation Insecurity"),
+    "Detachment"           = c("Withdrawal", "Anhedonia", "Intimacy Avoidance"),
+    "Antagonism"           = c("Manipulativeness", "Deceitfulness", "Grandiosity"),
+    "Disinhibition"        = c("Irresponsibility", "Impulsivity", "Distractibility"),
+    "Psychoticism"         = c("Unusual Beliefs & Experiences", "Eccentricity", "Perceptual Dysregulation")
+  )
+  for (d in names(apa_domains)) {
+    got <- pid_domains$primaryFacets[[which(pid_domains$Domain == d)]]
+    expect_setequal(got, apa_domains[[d]])
+  }
+})
+
+test_that("pid_domains is 5 domains x 3 primary facets with valid, distinct stems", {
+  expect_equal(nrow(pid_domains), 5L)
+  expect_true(all(lengths(pid_domains$primaryFacets) == 3L))
+  expect_true(all(lengths(pid_domains$facetStems) == 3L))
+  # Every facet stem is a real FULL-form facet output stem (guards transcription).
+  expect_true(all(unlist(pid_domains$facetStems) %in% pid_scales[["FULL"]]$camelCase))
+  # The 5 domain stems match the BF domain output names (cross-form consistency).
+  expect_setequal(pid_domains$camelCase, pid_scales[["BF"]]$camelCase)
+  # 15 distinct primary facets: no facet contributes to two domains.
+  expect_equal(length(unlist(pid_domains$facetStems)), 15L)
+  expect_equal(length(unique(unlist(pid_domains$facetStems))), 15L)
 })
