@@ -139,6 +139,39 @@ test_that("BF validity computes only PNA", {
   expect_equal(v$pid_PNA, c(0, 0, 0, 0.2))  # R4 = 5/25
 })
 
+# ---- Single-row input (regression for DESIGN #9) ----------------------------
+
+test_that("FULL validity handles single-row input (no drop-to-vector error)", {
+  # One respondent, all items = 1 (matches fixture row R2):
+  #   PNA 0, INC 0, ORS 0, PRD 22 (22 items x 1), SDTD 17 (17 items x 1).
+  # Before the drop = FALSE fix this errored: 'x' must be an array of at least
+  # two dimensions (ORS/PRD/SDTD indexed a 1-row matrix down to a vector).
+  x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 220))
+  names(x1) <- paste0("pid_", seq_len(220))
+  v <- suppressMessages(
+    validity_pid5(x1, items = 1:220, version = "FULL", append = FALSE)
+  )
+  expect_equal(nrow(v), 1L)
+  expect_equal(v$pid_PNA,  0)
+  expect_equal(v$pid_INC,  0)
+  expect_equal(v$pid_ORS,  0)
+  expect_equal(v$pid_PRD,  22)
+  expect_equal(v$pid_SDTD, 17)
+})
+
+test_that("SF validity handles single-row input", {
+  # One respondent, all items = 1: PRDS 12 (12x1), SDTDS 8 (8x1), ORSS 0, INCS 0.
+  x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 100))
+  names(x1) <- paste0("pid_", seq_len(100))
+  v <- suppressMessages(
+    validity_pid5(x1, items = 1:100, version = "SF", append = FALSE)
+  )
+  expect_equal(nrow(v), 1L)
+  expect_equal(v$pid_ORSS,  0)
+  expect_equal(v$pid_PRDS,  12)
+  expect_equal(v$pid_SDTDS, 8)
+})
+
 # ---- Invariant across versions ----------------------------------------------
 
 test_that("row count is preserved by validity_pid5 for every version", {

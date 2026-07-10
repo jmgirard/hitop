@@ -36,13 +36,4 @@ hitopbr_scales <-
 names(hitopbr_scales$itemNumbers) <- hitopbr_scales$camelCase
 usethis::use_data(hitopbr_scales, overwrite = TRUE)
 
-## HiTOP-BR Instructions
-hitopbr_instructions <-
-  list(
-    start = "Please consider whether there have been significant times during the last 12 months during which the following statements applied to you. Then please select the option that best describes how well each statement described you during that period.",
-    options = data.frame(
-      value = c(1, 2, 3, 4),
-      label = c("Not at all", "A little", "Moderately", "A lot")
-    )
-  )
-usethis::use_data(hitopbr_instructions, overwrite = TRUE)
+## hitopbr_instructions (administration text) is internal data — see data-raw/sysdata.R

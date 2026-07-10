@@ -421,29 +421,29 @@ generate_docx_hitophsum <- function(
   # --- 1. Define Data for Step 1 ---
   sud1_options <- paste(
     "Options:",
-    "• Alcohol",
-    "• Cannabis (marijuana, pot, grass, hash, etc.)",
-    "• Nicotine (cigarettes, vaping/e-cigarettes, nicotine pouches, over-the-counter nicotine gum, patch, lozenge)",
-    "• Cocaine (coke, crack, etc.)",
-    "• Prescription stimulants (Ritalin, Concerta, Dexedrine, Adderall, diet pills, etc.)",
-    "• Methamphetamine (speed, crystal meth, ice, etc.)",
-    "• Inhalants (nitrous oxide, glue, gas, paint thinner, etc.)",
-    "• Sedatives or sleeping pills (Valium, Serepax, Ativan, Xanax, Librium, Rohypnol, GHB, etc.)",
-    "• Hallucinogens (LSD, acid, mushrooms, PCP, Special K, ecstasy, etc.)",
-    "• Heroin/opiates (heroin, opium, fentanyl, etc.)",
-    "• Prescription opioids (oxycodone [OxyContin, Percocet], hydrocodone [Vicodin], methadone, buprenorphine, etc.)",
-    "• Other - specify:",
+    "\u2022 Alcohol",
+    "\u2022 Cannabis (marijuana, pot, grass, hash, etc.)",
+    "\u2022 Nicotine (cigarettes, vaping/e-cigarettes, nicotine pouches, over-the-counter nicotine gum, patch, lozenge)",
+    "\u2022 Cocaine (coke, crack, etc.)",
+    "\u2022 Prescription stimulants (Ritalin, Concerta, Dexedrine, Adderall, diet pills, etc.)",
+    "\u2022 Methamphetamine (speed, crystal meth, ice, etc.)",
+    "\u2022 Inhalants (nitrous oxide, glue, gas, paint thinner, etc.)",
+    "\u2022 Sedatives or sleeping pills (Valium, Serepax, Ativan, Xanax, Librium, Rohypnol, GHB, etc.)",
+    "\u2022 Hallucinogens (LSD, acid, mushrooms, PCP, Special K, ecstasy, etc.)",
+    "\u2022 Heroin/opiates (heroin, opium, fentanyl, etc.)",
+    "\u2022 Prescription opioids (oxycodone [OxyContin, Percocet], hydrocodone [Vicodin], methadone, buprenorphine, etc.)",
+    "\u2022 Other - specify:",
     sep = "\n"
   )
 
   sud2_options <- paste(
     "Options:",
-    "• smoking cigarettes",
-    "• vaping or e-cigarettes",
-    "• cigars, cigarillos, or filtered cigars filled only with tobacco",
-    "• nicotine gum or patches",
-    "• chewing tobacco or pouches/dip",
-    "• Other - specify:",
+    "\u2022 smoking cigarettes",
+    "\u2022 vaping or e-cigarettes",
+    "\u2022 cigars, cigarillos, or filtered cigars filled only with tobacco",
+    "\u2022 nicotine gum or patches",
+    "\u2022 chewing tobacco or pouches/dip",
+    "\u2022 Other - specify:",
     sep = "\n"
   )
 
@@ -987,6 +987,8 @@ generate_docx_pid5 <- function(
 
 #' Generate a Word Document for the PID-5-SF
 #'
+#' @inheritParams generate_docx_pid5
+#'
 #' @export
 generate_docx_pid5sf <- function(
   file = "pid5sf_1.0.docx",
@@ -1042,6 +1044,8 @@ generate_docx_pid5sf <- function(
 }
 
 #' Generate a Word Document for the PID-5-BF
+#'
+#' @inheritParams generate_docx_pid5
 #'
 #' @export
 generate_docx_pid5bf <- function(

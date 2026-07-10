@@ -14,9 +14,6 @@ Depends:
 Imports:
     cli,
     flextable,
-    glue,
-    jsonlite,
-    lifecycle,
     officer,
     rlang,
     snakecase,

@@ -50,7 +50,6 @@ score_hitopbr <- function(
   data_items <- lapply(data_items, as.numeric)
 
   ## Reverse score the necessary items
-  utils::data(hitopbr_items)
   items_rev <-
     hitopbr_items[hitopbr_items$Reverse == TRUE, "HBR", drop = TRUE]
   if (length(items_rev) > 0) {

@@ -11,6 +11,15 @@ generate_redcap_pid5sf(
   breaks = 15
 )
 }
+\arguments{
+\item{file}{Character string. The destination path for the output ZIP file.}
+
+\item{form_name}{Character string. The internal name of the form in REDCap.}
+
+\item{required}{Logical. Whether the items should be marked as required.}
+
+\item{breaks}{Integer or \code{NULL}. The number of items to display before a page break.}
+}
 \description{
 Generate a REDCap Instrument ZIP File for the PID-5-SF
 }

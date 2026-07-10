@@ -11,21 +11,29 @@
 
 ### M3: Check & dependency hygiene
 
-- **Status:** PLANNED
+- **Status:** IN PROGRESS
 - **Depends on:** —
-- **Goal:** `devtools::check()` runs clean so CI (M4) can gate on it.
+- **Goal:** `devtools::check()` runs clean (0 errors/warnings, no undocumented-data or unused-import NOTEs) so CI (M4) can gate on it.
 - **Acceptance criteria:**
-  - [ ] `Rscript -e 'devtools::check()'` — 0 errors, 0 warnings
-  - [ ] Every dataset in `data/` is documented in `R/data.R` or removed; no object exists in both `data/` and `R/sysdata.rda`
-  - [ ] All `pkg::fun()` uses are declared in DESCRIPTION; no Imports without uses in R/
+  - [ ] `Rscript -e 'devtools::check()'` — 0 errors, 0 warnings; no "Undocumented data sets" or "Namespaces in Imports field not imported from" NOTEs
+  - [ ] `Rscript -e 'devtools::test()'` passes
+  - [ ] Every object in `data/` is documented in `R/data.R`; no object exists in both `data/` and `R/sysdata.rda` (verified programmatically)
+  - [ ] `R/sysdata.rda` is regenerable from `data-raw/` (instructions written with `internal = TRUE`)
+  - [ ] All `pkg::fun()` uses declared in DESCRIPTION; `glue`/`lifecycle`/`jsonlite` removed from Imports (or justified); no `httr2::` in `R/`
+  - [ ] `validity_pid5(version = "FULL")` returns correct values on single-row input (regression test), and SDTD warning percentages use the SDTD denominator
 - **Tasks:**
-  - [ ] Install missing local dev deps (flextable, officer, snakecase) so test/check can run at all
-  - [ ] Resolve the 6 undocumented `data/*.rda` (4 × `*_instructions` duplicated in sysdata since commit 08e3d88, plus `hitophsum_choices`, `hitophsum_items`): document or drop from `data/` — confirm which copy the generators actually use before deleting
-  - [ ] Make `R/sysdata.rda` regenerable: switch the instructions `use_data()` calls in `data-raw/*_info.R` (e.g. data-raw/pid_info.R:73) to `internal = TRUE` once the data/ copies are dropped
-  - [ ] DESCRIPTION: declare {httr2} (or move R/qualtrics_test.R to devel/); remove or justify unused Imports {glue}, {lifecycle}, {jsonlite}
-  - [ ] Replace redundant `utils::data()` calls with direct lazy-data references (R/score_pid5.R:98, R/score_hitopsr.R:67 and :201, R/score_hitopbr.R:53)
-  - [ ] Fix SDTD percentage denominators (R/validity_pid5.R:172, :177); remove stale `vignettes/bhitop_scoring_files/` and `vignettes/hitoppro_scoring_files/`
-- **Notes/links:** DESIGN Known issues #3–#5, #8.
+  1. [x] Install missing local dev deps (`flextable`, `officer`, `snakecase`, `lavaan`) so check/test run at all; capture a baseline `check()` NOTE/WARNING list. *(All deps already installed. Baseline: 0 errors, 4 warnings, 2 notes — see discovered subtasks below.)*
+  2. [x] **Datasets:** document `hitophsum_choices` + `hitophsum_items` in `R/data.R` (registry item data used by `R/generate_redcap.R`); confirm the `data/` and `sysdata.rda` copies of the 4 `*_instructions` are byte-identical, then drop them from `data/` and switch the four `usethis::use_data(..._instructions)` calls (`data-raw/{pid,hitopsr,hitopbr,hitophsum}_info.R`) to a single `internal = TRUE` sysdata write; re-run the data-raw scripts to regenerate `R/sysdata.rda`; verify generators still resolve `*_instructions` from the internal copy.
+  3. [x] **Dependencies:** remove `@importFrom glue glue` and `@importFrom lifecycle deprecated` from R/hitop-package.R:6-7; drop `glue`, `lifecycle`, `jsonlite` from DESCRIPTION Imports; move `R/qualtrics_test.R` → `devel/` (removes the undeclared `httr2` use from the check surface); `devtools::document()` to regenerate NAMESPACE.
+  4. [x] **Redundant `utils::data()`:** remove all 8 calls (R/score_pid5.R:98, R/score_hitopsr.R:67 and :201, R/score_hitopbr.R:53, R/label_hitopsr.R:27 and :47, R/label_hitopbr.R:28 and :46), relying on lazy data as `validity_pid5()` already does.
+  5. [x] **Bug fixes (test-first):** add `drop = FALSE` at R/validity_pid5.R:128, :147, :166 (#9) with a hand-computed single-row FULL fixture (reuse `helper-fixtures.R`) asserting exact ORS/PRD/SDTD values instead of erroring; fix the SDTD denominator `length(prd_vec)` → `length(sdtd_vec)` at :172, :177 with an expectation on the warning-percentage wording.
+  6. [x] Remove stale local vignette artifact dirs (`vignettes/bhitop_scoring_files/`, `vignettes/hitoppro_scoring_files/`; untracked, local cleanup only).
+  7. [x] *(discovered)* Fix the non-ASCII WARNING: 18 `•` (U+2022) bullets in HSUM lists in R/generate_docx.R → `•` escapes.
+  8. [x] *(discovered)* Fix the undocumented-arguments WARNING: add `@inheritParams` to the pid5sf/pid5bf variants of `generate_{docx,qualtrics,redcap}_*` (6 Rd files) from their FULL counterparts.
+  9. [x] *(discovered)* Silence the no-visible-binding NOTE: add `utils::globalVariables()` for the lazy-data object names and `@importFrom stats setNames` / `@importFrom utils write.csv` in R/hitop-package.R.
+  10. [x] *(discovered)* `.Rbuildignore` the top-level `hitop_hex.png` (non-standard-file NOTE).
+  11. [x] `document()` → `test()` → `check()`; confirm acceptance criteria. *(check: 0 errors / 0 warnings / 0 notes; test: FAIL 0 WARN 0 SKIP 1 PASS 259.)*
+- **Notes/links:** DESIGN Known issues #3, #4, #5, #8, #9. Oracle (per tracking-rules 3b): the single-row `drop=FALSE` fix carries a hand-computed 1-row fixture; the SDTD denominator fix carries a message-wording expectation. Branch `m3-check-hygiene`; PR [#4](https://github.com/jmgirard/hitop/pull/4).
 
 ### M4: R CMD check + coverage CI
 

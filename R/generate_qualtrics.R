@@ -109,6 +109,8 @@ generate_qualtrics_pid5 <- function(
 
 #' Generate a Qualtrics Import File for the PID-5-SF
 #'
+#' @inheritParams generate_qualtrics_pid5
+#'
 #' @export
 generate_qualtrics_pid5sf <- function(
   file = "pid5sf_qualtrics.txt",
@@ -133,6 +135,8 @@ generate_qualtrics_pid5sf <- function(
 }
 
 #' Generate a Qualtrics Import File for the PID-5-BF
+#'
+#' @inheritParams generate_qualtrics_pid5
 #'
 #' @export
 generate_qualtrics_pid5bf <- function(

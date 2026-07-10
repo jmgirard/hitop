@@ -64,7 +64,6 @@ score_hitopsr <- function(
   data_items <- lapply(data_items, as.numeric)
 
   ## Reverse score the necessary items
-  utils::data(hitopsr_items)
   items_rev <-
     hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE]
   if (length(items_rev) > 0) {
@@ -196,9 +195,6 @@ rename_hitopsr_items <- function(
   ## Assertions
   stopifnot(is.data.frame(data))
   stopifnot(rlang::is_string(prefix))
-
-  ## Load package item data
-  utils::data(hitopsr_items)
 
   ## Track matched standard item numbers for the final summary warning
   matched_hsr <- numeric(0)

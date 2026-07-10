@@ -103,5 +103,7 @@ reference:
   - hitopsr_definitions
   - hitopbr_items
   - hitopbr_scales
+  - hitophsum_items
+  - hitophsum_choices
   - pid_items
   - pid_scales

@@ -24,8 +24,6 @@ label_hitopsr <- function(
   data_cols <- colnames(data)
 
   if (target == "items") {
-    utils::data(hitopsr_items)
-
     # Reconstruct expected column names based on the prefix
     expected_names <- paste0(prefix, hitopsr_items$HSR)
     locs <- match(data_cols, expected_names)
@@ -44,8 +42,6 @@ label_hitopsr <- function(
   } else if (target == "scales") {
     # Assuming hitopsr_scales uses the raw names or camelCase as keys
     # Adjust the matching column if your score_hitopsr function outputs snake_case
-    utils::data(hitopsr_scales)
-
     expected_names <- paste0(prefix, hitopsr_scales$camelCase)
     locs <- match(data_cols, expected_names)
     matched_idx <- which(!is.na(locs))
