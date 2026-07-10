@@ -10,6 +10,18 @@
   versions (APA scoring key Step 3), appended after the 25 facet scores
 - Add the `pid_domains` dataset (the domain to primary-facet map used
   for FULL/SF domain scoring)
+- [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+  gains an `apa_scoring` argument (default `TRUE`) that applies the
+  published APA missing-data and proration rule: a facet (or BF domain)
+  with more than 25% of its items unanswered is set to `NA`; otherwise
+  the raw score is prorated to the full item count and rounded before
+  averaging, and a FULL/SF domain is `NA` if any contributing facet is
+  `NA`. **This changes the default scored output under missing data**
+  (previously `rowMeans(na.rm = TRUE)` averaged whatever items were
+  present). Pass `apa_scoring = FALSE` to restore the previous behavior.
+  Under `apa_scoring = TRUE`, `na.rm` is ignored (with a warning if set
+  to `FALSE`), and any standard error is `NA` wherever its scale score
+  is `NA`
 - Fix
   [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
   erroring on single-row input for the FULL and SF forms

@@ -14,6 +14,7 @@ score_pid5(
   srange = c(0, 3),
   prefix = "pid_",
   na.rm = TRUE,
+  apa_scoring = TRUE,
   calc_se = FALSE,
   alpha = FALSE,
   omega = FALSE,
@@ -52,12 +53,28 @@ score_pid5(
 - na.rm:
 
   An optional logical indicating whether missing values should be
-  ignored when calculating scale scores. (default = `TRUE`)
+  ignored when calculating scale scores. Ignored when
+  `apa_scoring = TRUE` (the APA missing-data rule governs instead); a
+  warning is issued if `na.rm = FALSE` is set explicitly alongside
+  `apa_scoring = TRUE`. (default = `TRUE`)
+
+- apa_scoring:
+
+  An optional logical selecting the missing-data algorithm. If `TRUE`
+  (the default), scale scores follow the published APA scoring key: a
+  facet or domain-item scale with more than 25% of its items unanswered
+  is set to `NA`, and otherwise the raw score is prorated to the full
+  item count and rounded to the nearest whole number before averaging; a
+  FULL/SF domain is `NA` if any one of its three contributing facets is
+  `NA`. If `FALSE`, scores use the traditional `rowMeans(na.rm = na.rm)`
+  behavior, which averages whatever items are present. With no missing
+  items the two agree. (default = `TRUE`)
 
 - calc_se:
 
   An optional logical indicating whether to calculate the standard error
-  of each scale score. (default = `FALSE`)
+  of each scale score. Standard errors are `NA` wherever their scale
+  score is `NA`. (default = `FALSE`)
 
 - alpha:
 
@@ -92,13 +109,14 @@ original `data` columns (if requested)
 For the FULL and SF versions, the output includes the 25 facet scores
 followed by the 5 personality-trait domain scores. Following the APA
 scoring key (Step 3), each domain score is the mean of the average
-scores of its 3 primary facets (the map is stored in `pid_domains`);
-domains honor `na.rm` the same way facets do. The BF version scores its
-5 domains directly from its items and is unaffected. If either `alpha`
-or `omega` are `TRUE`, the function prints a per-scale reliability
-summary (facets only for FULL/SF). Only reliability columns that contain
-at least one non-`NA` value are shown (the `scale` column is always
-shown).
+scores of its 3 primary facets (the map is stored in `pid_domains`). The
+BF version scores its 5 domains directly from its items. By default
+(`apa_scoring = TRUE`) all versions apply the APA missing-data and
+proration rule; set `apa_scoring = FALSE` for the traditional
+`rowMeans(na.rm = na.rm)` behavior. If either `alpha` or `omega` are
+`TRUE`, the function prints a per-scale reliability summary (facets only
+for FULL/SF). Only reliability columns that contain at least one
+non-`NA` value are shown (the `scale` column is always shown).
 
 ## References
 
