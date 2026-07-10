@@ -13,10 +13,23 @@
 
 ### M14: Input-validation & messaging hardening
 
-- **Status:** PLANNED
-- **Depends on:** M11, M13
-- **Goal:** Make every user-facing failure actionable: expected-vs-actual lengths in `validate_items()`, friendly errors for `items` not present in `data`, error calls attributed to the exported function (`call = parent.frame()` threading through `cli_assert()`), and `zzz.R` globalVariables cleanup.
-- **Notes/links:** Sequenced after M13 so validation lands once, in the engine, not three times. Remainder of the audit's validation findings after M11 takes the risk-class subset.
+- **Status:** READY
+- **Depends on:** M11 (DONE), M13 (DONE)
+- **Goal:** Make every user-facing input failure actionable and correctly attributed — expected-vs-actual reporting in `validate_items()`, a friendly abort when `items` names/positions aren't in `data`, error/warning calls attributed to the exported function (not the internal engine or `validate_*`/`cli_assert`), and consolidation of the duplicated `globalVariables` declaration.
+- **Acceptance criteria:**
+  - [ ] `validate_items()` distinguishes wrong-**type** from wrong-**length**, and the length message names the expected count and the actual length (asserted by test on message content).
+  - [ ] A new `validate_items_present()` **aborts** before `data[items]` in both `score_engine()` and `validity_pid5()`, naming the character columns missing from `data` (or the integer positions outside `1:ncol(data)`); test covers a bad-name and a bad-position case for a `score_*` and for `validity_pid5()`.
+  - [ ] Errors from `score_pid5()`/`score_hitopsr()`/`score_hitopbr()`/`validity_pid5()`/`rank_scales()`/`calc_alpha()`/`calc_omega()` report the **exported** function as the call, not `score_engine()`/`validate_*`/`cli_assert` — asserted in tests via the caught condition's `call` (e.g. `rlang::catch_cnd()` → `conditionCall`/`cnd$call`).
+  - [ ] Exactly one `utils::globalVariables()` declaration remains (in `R/hitop-package.R`), listing every unqualified dataset incl. `pid_scales`; `R/zzz.R`'s `.onLoad` globalVariables is removed.
+  - [ ] `devtools::document()` no-diff; `devtools::test()` passes (existing numeric assertions unchanged — good-input scoring output byte-identical); `devtools::check()` clean (0/0/0).
+- **Tasks:**
+  1. [ ] **Test-first (errors/messaging).** Extend [test-validate.R](../tests/testthat/test-validate.R): wrong-type vs wrong-length messages for `validate_items()`; `validate_items_present()` fire/no-fire (bad name, out-of-range position, valid) at helper level and end-to-end through a `score_*` and `validity_pid5()`; call-attribution assertions (caught condition's `call` is the exported fn) for the score/validity/reliability/rank surfaces. Add an invariant that a valid call's scored output is unchanged (or rely on the existing locked suite).
+  2. [ ] **`validate_items()`** ([R/util.R:34](../R/util.R)): split the type and length checks into two `cli_assert`/`cli_abort` messages; length message reports `n` expected vs `length(x)` actual.
+  3. [ ] **New `validate_items_present(data, items, call)`** in [R/util.R](../R/util.R): abort naming missing character columns / out-of-range integer positions with an actionable hint. Wire in after `validate_item_uniqueness()` in [score_engine.R:51](../R/score_engine.R) and [validity_pid5.R:81](../R/validity_pid5.R), before each `data[items]`.
+  4. [ ] **Call threading.** Add `call = rlang::caller_env()` to `cli_assert()` and to each `validate_*`/`warn_item_order`/`validate_items_present` helper (forwarded to `cli_abort`/`cli_warn`); add a `call = rlang::caller_env()` param to `score_engine()` and forward it to its `validate_*` calls so the **wrapper** (not the engine) is blamed. `validity_pid5()`/`rank_scales()`/`reliability.R` get correct attribution automatically via the helpers' `caller_env()` default.
+  5. [ ] **globalVariables cleanup.** Add `pid_scales` to the single list in [hitop-package.R:13](../R/hitop-package.R); delete the `.onLoad`/globalVariables block in [R/zzz.R](../R/zzz.R) (remove the file if nothing else remains).
+  6. [ ] `devtools::document()`, `devtools::test()`, `devtools::check()`; NEWS.md bullet; open PR, record URL here.
+- **Notes/links:** Sequenced after M13 so validation lands once in `score_engine()` rather than three times. No keying/data/generated-data files touched — messaging/validation only, **no scoring-behavior change**. Mechanism note: goal text says `call = parent.frame()`; implementation uses the equivalent rlang idiom `rlang::caller_env()` (rlang is already `@import`ed) for the default, with `score_engine()` threading the wrapper's call explicitly since the default would otherwise blame the engine. Two `data[items]` extraction points guarded ([score_engine.R:72](../R/score_engine.R), [validity_pid5.R:100](../R/validity_pid5.R)). Reliability surface (`calc_alpha`/`calc_omega`, 13 `cli_assert` in [R/reliability.R](../R/reliability.R)) included in the attribution fix (confirmed 2026-07-10). Oracle: message-content and `call`-attribution assertions (message wording is the allowed snapshot case per tracking-rules §Oracle); numeric output guarded by the unchanged existing suite.
 
 ### M15: API polish (pre-CRAN, breaking changes)
 
