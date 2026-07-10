@@ -325,6 +325,66 @@ test_that("na.rm is ignored (with a warning) under apa_scoring = TRUE", {
   expect_equal(out, default)
 })
 
+# ---- Single-row input with calc_se (regression for the M8 follow-up) ---------
+# A one-row input drove the facet-SE `apply(data_items[, x], MARGIN = 1, ...)`
+# to index a 1-row matrix down to a vector, so `apply(MARGIN = 1)` errored with
+# "dim(X) must have a positive length". The fix adds `drop = FALSE` (mirroring
+# the domain-SE path and validity_pid5's single-row fix from M3). The SE of a
+# scale on one respondent is calc_sem over that scale's reverse-keyed item
+# values: sd(items) / sqrt(k). The expected values below hardcode those item
+# values from the official key (independent of the package's keying tables).
+
+test_that("FULL single-row calc_se returns per-scale SEs (no drop-to-vector error)", {
+  x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 220))
+  names(x1) <- paste0("pid_", seq_len(220))
+  f <- score_pid5(x1, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
+
+  expect_equal(nrow(f), 1L)
+  expect_true("pid_anhedonia_se" %in% names(f))
+  expect_true("pid_detachment_se" %in% names(f))  # a domain SE column too
+
+  # Anhedonia = items 1,23,26,30,124,155,157,189 (reverse 30,155). With every
+  # raw item = 1, reverse(1) = 2, so the 8 keyed values are 1,1,1,2,1,2,1,1.
+  anh <- c(1, 1, 1, 2, 1, 2, 1, 1)
+  expect_equal(f$pid_anhedonia_se, stats::sd(anh) / sqrt(8))
+  # No SE is NA (complete data, k >= 2 per facet).
+  se_cols <- f[grepl("_se$", names(f))]
+  expect_false(any(is.na(unlist(se_cols))))
+})
+
+test_that("SF single-row calc_se matches a hand-computed facet SE", {
+  x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 100))
+  names(x1) <- paste0("pid_", seq_len(100))
+  x1[1, c(9, 11, 43, 65)] <- c(0L, 1L, 2L, 3L)  # SF Anhedonia items (no reversal)
+  f <- score_pid5(x1, items = 1:100, version = "SF", calc_se = TRUE, append = FALSE)
+
+  expect_equal(nrow(f), 1L)
+  # SF Anhedonia = items 9,11,43,65 = 0,1,2,3 -> sd(c(0,1,2,3)) / sqrt(4).
+  expect_equal(f$pid_anhedonia_se, stats::sd(c(0, 1, 2, 3)) / sqrt(4))
+})
+
+test_that("BF single-row calc_se matches a hand-computed domain SE", {
+  x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 25))
+  names(x1) <- paste0("pid_", seq_len(25))
+  x1[1, c(1, 2, 3, 5, 6)] <- c(0L, 1L, 2L, 3L, 3L)  # BF Disinhibition items
+  d <- score_pid5(x1, items = 1:25, version = "BF", calc_se = TRUE, append = FALSE)
+
+  expect_equal(nrow(d), 1L)
+  # BF Disinhibition = items 1,2,3,5,6 = 0,1,2,3,3 -> sd / sqrt(5).
+  expect_equal(d$pid_disinhibition_se, stats::sd(c(0, 1, 2, 3, 3)) / sqrt(5))
+})
+
+test_that("single-row calc_se equals the first row of a multi-row score", {
+  # Guards against the fix altering multi-row behavior: scoring one row alone
+  # must reproduce that row's SEs from a multi-row call.
+  multi <- score_pid5(fx_pid5(), items = 1:220, version = "FULL",
+                      calc_se = TRUE, apa_scoring = FALSE, append = FALSE)
+  one <- score_pid5(fx_pid5()[2, ], items = 1:220, version = "FULL",
+                    calc_se = TRUE, apa_scoring = FALSE, append = FALSE)
+  se_names <- grep("_se$", names(multi), value = TRUE)
+  expect_equal(as.numeric(one[1, se_names]), as.numeric(multi[2, se_names]))
+})
+
 test_that("SF applies the APA rule the same way as FULL", {
   # fx_pid5sf() R5: items 1:10 NA. Submissiveness = 2 of 4 items missing (> 25%).
   apa  <- score_pid5(fx_pid5sf(), items = 1:100, version = "SF", append = FALSE)

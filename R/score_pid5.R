@@ -185,7 +185,7 @@ score_pid5 <- function(
       bind_columns(
         lapply(
           items_scales,
-          function(x) apply(data_items[, x], MARGIN = 1, FUN = calc_sem)
+          function(x) apply(data_items[, x, drop = FALSE], MARGIN = 1, FUN = calc_sem)
         )
       )
     ## Domain SEs mirror facet SEs, computed over the 3 primary facet scores

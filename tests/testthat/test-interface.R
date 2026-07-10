@@ -62,6 +62,19 @@ test_that("calc_se adds one _se column per scale", {
   expect_true("pid_detachment_se" %in% se_cols)
 })
 
+test_that("calc_se works on single-row input for every version", {
+  # Regression: a 1-row input previously errored in the facet-SE apply().
+  full <- score_pid5(sim_pid5[1, ],   items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
+  sf   <- score_pid5(sim_pid5sf[1, ], items = 1:100, version = "SF",   calc_se = TRUE, append = FALSE)
+  bf   <- score_pid5(sim_pid5bf[1, ], items = 1:25,  version = "BF",   calc_se = TRUE, append = FALSE)
+  expect_equal(nrow(full), 1L)
+  expect_equal(nrow(sf), 1L)
+  expect_equal(nrow(bf), 1L)
+  expect_length(grep("_se$", names(full)), 30)   # 25 facets + 5 domains
+  expect_length(grep("_se$", names(sf)), 30)
+  expect_length(grep("_se$", names(bf)), 5)       # 5 domains
+})
+
 test_that("apa_scoring must be a single logical", {
   expect_error(
     score_pid5(sim_pid5bf, items = 1:25, version = "BF", apa_scoring = "yes"),
