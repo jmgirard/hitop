@@ -21,6 +21,7 @@ Imports:
     tibble,
     utils
 Suggests:
+    covr,
     ggplot2,
     knitr,
     lavaan,

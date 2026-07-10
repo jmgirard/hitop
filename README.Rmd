@@ -14,8 +14,10 @@ knitr::opts_chunk$set(
 
 # hitop <a href="https://jmgirard.github.io/hitop/"><img src="man/figures/logo.png" align="right" height="138" alt="hitop website" /></a>
 
-<!-- badges: start --> [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/jmgirard/hitop/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jmgirard/hitop/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/jmgirard/hitop/graph/badge.svg)](https://app.codecov.io/gh/jmgirard/hitop)
 <!-- badges: end -->
 
 The goal of the **hitop** package is to provide an open-source toolkit of functions and resources tailored for the [Hierarchical Taxonomy of Psychopathology (HiTOP)](https://www.hitop-system.org/){target="_blank"} community. While the package is currently optimized to support researchers in managing large-scale assessment data, future development will expand its features to support clinical workflows and individual practitioner needs.
