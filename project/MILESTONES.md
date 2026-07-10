@@ -9,7 +9,30 @@
 
 ## Active
 
-_None — M1–M9 are DONE; Phase 3 (norms & visualization) is unplanned. Run `/plan-milestone`._
+### M10: Test the `generate_*` export family
+
+- **Status:** IN PROGRESS
+- **Depends on:** — (M5's oracle conventions apply)
+- **Goal:** Give the 17 DOCX/Qualtrics/REDCap generator functions automated ground-truth tests that verify output against the source instrument datasets, resolving DESIGN Known issue #3.
+- **Acceptance criteria:**
+  - [ ] New `test-generate_qualtrics.R`, `test-generate_redcap.R`, `test-generate_docx.R` exist and pass; suite PASS count grows.
+  - [ ] **Smoke coverage:** all 17 exported generators run and each produces a valid, non-empty file of the right type (5 Qualtrics `.txt`, 6 REDCap `.zip`, 6 `.docx`), written to a tempdir.
+  - [ ] **Qualtrics content oracle:** parsed output's per-item number+text set-equals the source `*_items` (independently derived, not read from output); choice `[[Choice:v]]`/label pairs equal `*_instructions$options`; `[[AdvancedFormat]]` header + exactly one `[[Question:MC:SingleAnswer]]` per item; zero-pad width and `[[PageBreak]]` positions match `breaks`; instructions block present iff `include_instructions`.
+  - [ ] **REDCap content oracle:** unzipped CSV has the 15 data-dictionary columns in exact order, one row per item + one instruction row; `Variable / Field Name` = `prefix_NNN` zero-padded; choices string `v, l | ...` equals source options; `Required Field?` = y/n per `required`; `<br>` Section-Header page-break rows at the `breaks` positions.
+  - [ ] **HSUM branching-logic oracle:** at least one hand-derived expected REDCap logic string for each rule type — `count>1` (checkbox), `any_other`, a comparison operator (`>=`/`!=`), and a discrete list — plus the field-type/choice overrides (alcohol-quantity→`dropdown` 1..20, cigarette-quantity→`dropdown` 1..60, other-quantity→`text`).
+  - [ ] **DOCX structural oracle:** each `.docx` unzips to a non-empty `word/document.xml` containing the instrument's item `Text`; `papersize = "us"` vs `"a4"` yields different `<w:pgSz>` (letter 12240×15840 vs A4 11906×16838 twips); invalid `papersize` errors via `match.arg`.
+  - [ ] `devtools::test()` passes; `devtools::check()` clean (0/0/0).
+  - [ ] DESIGN Known issue #3 removed and the testing-coverage sentence updated; `NEWS.md` bullet; `D-010` records the generator-oracle convention.
+- **Tasks:**
+  - [x] `tests/testthat/helper-generators.R`: parsers — `read_qualtrics(file)` (header/block/instruction/per-question id+text+choices/page-break positions), `read_redcap_csv(zip)` (unzip → data.frame), `read_docx_xml(file)` (unzip `word/document.xml`). Write outputs under `withr::local_tempfile()`/`tempfile()`; guard with `skip_if_not_installed("officer")` and `skip_if(Sys.which("zip") == "")` where a zip is written.
+  - [x] `test-generate_qualtrics.R`: content oracle + structural invariants on `hitopbr` and `pid5` (rev-keyed + `breaks` boundary), then a parametrized smoke loop over all 5. Target `build_qualtrics_txt` (R/generate_qualtrics.R:165).
+  - [x] `test-generate_redcap.R`: unzip→CSV oracle on `hitopbr` + `pid5` via `build_redcap_zip` (R/generate_redcap.R:197); smoke over the shared 5.
+  - [x] `test-generate_redcap.R` HSUM block: hand-derived branching-logic + field-type/choice overrides against the bespoke HSUM path (R/generate_redcap.R:336).
+  - [x] `test-generate_docx.R`: valid-docx + item-text-present + `papersize` page-size branch + `match.arg` error, over all 6, using `get_page_dims`/`build_hitop_doc` (R/generate_docx.R:168).
+  - [x] If any test-first check reproduces a generator bug, fix it minimally (behavior-preserving); otherwise no `R/` changes. — No generator bug surfaced; all tests pass unmodified `R/`. (Noted for review: docx A4 uses rounded 8.27×11.69 in → ~11909×16834 twips, ~5 twips off exact ISO A4; cosmetic, left as-is.)
+  - [x] Add `withr` to DESCRIPTION `Suggests`; remove DESIGN #3 + update the coverage sentence; append `D-010`; `NEWS.md` bullet. `devtools::document()` only if roxygen is touched (not expected).
+  - [x] `devtools::test()` + `devtools::check()`; branch `m10-generator-tests`, PR, record URL.
+- **Notes/links:** Resolves DESIGN Known issue #3. Non-keying (no `*_items`/`*_scales` edits) → no sign-off gate. HSUM scoring is unfinalized but its administration/export is stable, so the export is fair to test (Jeff, 2026-07-10). {officer}/{flextable}/{snakecase} are Imports (present under `check`); `withr` comes transitively via {testthat} but is added to Suggests for explicit helper use. Suite PASS 527 (was 422); `check()` 0/0/0; no `R/` changes. `D-010` records the parse-and-compare oracle. PR [#11](https://github.com/jmgirard/hitop/pull/11).
 
 ## Completed
 
