@@ -34,6 +34,12 @@
   and `hitopbr_items` `@format` blocks, document the `pid_scales` format, and fix
   the `sim_hitopbr` item-column names (`hitopbr_1` to `hitopbr_45`)
 * Improve the package Title and Description
+* `score_hitopbr()` gains `alpha` and `omega` arguments (default `FALSE`) that
+  print a per-scale reliability summary, matching `score_pid5()` and
+  `score_hitopsr()`
+* Internal refactor: `score_pid5()`, `score_hitopsr()`, and `score_hitopbr()` now
+  share a single internal scoring engine instead of three hand-maintained copies
+  of the same pipeline (no change to scored output)
 
 # hitop 0.0.2
 
