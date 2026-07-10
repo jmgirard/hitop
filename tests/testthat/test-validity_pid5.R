@@ -215,12 +215,17 @@ test_that("BF does not warn about srange (it computes no cutoff scales)", {
   )
 })
 
-test_that("the srange warning does not change returned validity scores", {
-  quiet <- suppressWarnings(suppressMessages(
-    validity_pid5(fx_pid5(), items = 1:220, version = "FULL", srange = c(0, 3), append = FALSE)
+test_that("the srange warning is a pure side effect (scores at c(1,4) match independent recomputation)", {
+  # Route through the warning-triggering branch (srange = c(1, 4)) and confirm the
+  # returned scores equal an independent recomputation at that srange, so the
+  # added cli_warn() cannot have altered the computation. Bug-discriminating: ORS
+  # counts items at the srange maximum, so it must use 4 here (not a hardcoded 3);
+  # the fixture's ORS overrides are 3s, which correctly count as 0 under c(1, 4).
+  x <- fx_pid5()
+  out <- suppressWarnings(suppressMessages(
+    validity_pid5(x, items = 1:220, version = "FULL", srange = c(1, 4), append = FALSE)
   ))
-  warned <- suppressWarnings(suppressMessages(
-    validity_pid5(fx_pid5(), items = 1:220, version = "FULL", srange = c(0, 3), append = FALSE)
-  ))
-  expect_equal(quiet, warned)
+  expect_equal(out$pid_PNA, rowMeans(is.na(as.matrix(x[, 1:220]))))  # srange-independent
+  ors_items <- c(2, 8, 39, 40, 44, 150, 166, 170, 171, 178)         # official FULL ORS key
+  expect_equal(out$pid_ORS, rowSums(x[, ors_items] == 4))           # counts the srange max
 })

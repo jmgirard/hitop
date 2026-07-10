@@ -65,10 +65,19 @@ test_that("misordered `items` names warn in every data-taking function", {
 
 test_that("ascending names and integer positions do not warn about order", {
   bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
+  full <- setNames(sim_pid5, paste0("pid_", 1:220))
   expect_no_warning(score_pid5(bf, items = paste0("pid_", 1:25), version = "BF"))
   expect_no_warning(score_pid5(sim_pid5bf, items = 1:25, version = "BF"))
   expect_no_warning(score_hitopbr(sim_hitopbr, items = 1:45))
   expect_no_warning(score_hitopsr(sim_hitopsr, items = 1:405))
+  # validity_pid5: ascending names and integer positions must not warn about order
+  # (suppress the flagging-count messages, which are not warnings)
+  expect_no_warning(
+    suppressMessages(validity_pid5(full, items = paste0("pid_", 1:220), version = "FULL"))
+  )
+  expect_no_warning(
+    suppressMessages(validity_pid5(sim_pid5, items = 1:220, version = "FULL"))
+  )
 })
 
 test_that("duplicated `items` error in every data-taking function", {
@@ -85,11 +94,16 @@ test_that("duplicated `items` error in every data-taking function", {
   )
 })
 
-test_that("the order guard changes no scores (warning is a pure side effect)", {
-  # Same data and same mapping, reached with vs without triggering the warning:
-  # scoring the correctly-ordered names must equal scoring integer positions.
+test_that("the order guard is a pure side effect (warning-triggering names score as their columns)", {
+  # A misordered *names* call warns AND (by design) selects those columns in the
+  # given order. The guard must not mutate that selection: scoring the misordered
+  # names must equal scoring the very same columns picked by position (which does
+  # not warn). Equal => warn_item_order() only emits a message, never reorders.
   bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
-  by_name <- score_pid5(bf, items = paste0("pid_", 1:25), version = "BF", append = FALSE)
-  by_pos  <- score_pid5(bf, items = 1:25, version = "BF", append = FALSE)
-  expect_equal(by_name, by_pos)
+  misordered <- paste0("pid_", c(2, 1, 3:25))
+  by_name <- suppressWarnings(
+    score_pid5(bf, items = misordered, version = "BF", append = FALSE)
+  )
+  by_position <- score_pid5(bf[misordered], items = 1:25, version = "BF", append = FALSE)
+  expect_equal(by_name, by_position)
 })
