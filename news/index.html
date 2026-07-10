@@ -72,6 +72,7 @@
 <code><a href="../reference/score_pid5.html">score_pid5()</a></code> gains an <code>apa_scoring</code> argument (default <code>TRUE</code>) that applies the published APA missing-data and proration rule: a facet (or BF domain) with more than 25% of its items unanswered is set to <code>NA</code>; otherwise the raw score is prorated to the full item count and rounded before averaging, and a FULL/SF domain is <code>NA</code> if any contributing facet is <code>NA</code>. <strong>This changes the default scored output under missing data</strong> (previously <code>rowMeans(na.rm = TRUE)</code> averaged whatever items were present). Pass <code>apa_scoring = FALSE</code> to restore the previous behavior. Under <code>apa_scoring = TRUE</code>, <code>na.rm</code> is ignored (with a warning if set to <code>FALSE</code>), and any standard error is <code>NA</code> wherever its scale score is <code>NA</code>
 </li>
 <li>Fix <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> erroring on single-row input for the FULL and SF forms</li>
+<li>Fix <code>score_pid5(calc_se = TRUE)</code> erroring on single-row input</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.2" id="hitop-002">hitop 0.0.2<a class="anchor" aria-label="anchor" href="#hitop-002"></a></h2>

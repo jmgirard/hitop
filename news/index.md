@@ -25,6 +25,7 @@
 - Fix
   [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
   erroring on single-row input for the FULL and SF forms
+- Fix `score_pid5(calc_se = TRUE)` erroring on single-row input
 
 ## hitop 0.0.2
 
