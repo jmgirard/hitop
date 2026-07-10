@@ -28,7 +28,11 @@ score_hitopsr(
 - items:
 
   A vector of column names (as strings) or numbers (as integers)
-  corresponding to the 405 HiTOP-SR items in order.
+  corresponding to the 405 HiTOP-SR items in order. Items must be
+  supplied in instrument order; a misordered mapping silently scores the
+  wrong items, so a warning is issued when the names share a common
+  prefix and trailing number but those numbers are not ascending.
+  Duplicated entries are an error.
 
 - srange:
 

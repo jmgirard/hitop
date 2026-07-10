@@ -98,7 +98,10 @@ scored and in order).</p></dd>
 
 <dt id="arg-items">items<a class="anchor" aria-label="anchor" href="#arg-items"></a></dt>
 <dd><p>A vector of column names (as strings) or numbers (as integers)
-corresponding to the PID items in order.</p></dd>
+corresponding to the PID items in order. Items must be supplied in
+instrument order; a misordered mapping silently scores the wrong items, so a
+warning is issued when the names share a common prefix and trailing number
+but those numbers are not ascending. Duplicated entries are an error.</p></dd>
 
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
@@ -144,6 +147,12 @@ defensiveness), whereas a score of 19 or higher on the SD-TD is indicative
 of defensiveness (rather than social desirability). For the PID-5-SF,
 scores of 8 or more on the INC-S are indicative of inconsistent responding.
 Cut-scores for the ORS-S, PRD-S, and SD-TD-S have not yet been validated.</p>
+<p>The PRD and SD-TD cut scores are raw sums compared to fixed thresholds that
+assume items are coded 0-3. Unlike the INC and ORS scales, they do not adapt
+to <code>srange</code>, so scoring items on another scale (e.g. 1-4) mis-flags
+respondents; a warning is issued when <code>srange</code> is not <code>c(0, 3)</code>. The BF
+version computes only the percent-missing (PNA) index and no cut-score
+scales.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>

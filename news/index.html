@@ -74,6 +74,10 @@
 <li>Fix <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> erroring on single-row input for the FULL and SF forms</li>
 <li>Fix <code>score_pid5(calc_se = TRUE)</code> erroring on single-row input</li>
 <li>Add tests for the <code>generate_docx_*</code>, <code>generate_qualtrics_*</code>, and <code>generate_redcap_*</code> export families, verifying each generated file against the source instrument datasets (including the HiTOP-HSUM REDCap branching logic)</li>
+<li>
+<code><a href="../reference/score_pid5.html">score_pid5()</a></code>, <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code>, <code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code>, and <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> now guard against two ways a bad <code>items</code> mapping silently produces wrong scores: they error on duplicated <code>items</code> entries and warn when <code>items</code> column names share a common prefix and trailing number but those numbers are not in ascending (instrument) order</li>
+<li>
+<code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> now warns when <code>srange</code> is not <code>c(0, 3)</code>, because the published PRD and SD-TD cut scores are raw sums against fixed thresholds that assume 0-3 item coding and do not adapt to other codings</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.2" id="hitop-002">hitop 0.0.2<a class="anchor" aria-label="anchor" href="#hitop-002"></a></h2>

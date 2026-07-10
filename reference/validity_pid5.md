@@ -29,7 +29,11 @@ validity_pid5(
 - items:
 
   A vector of column names (as strings) or numbers (as integers)
-  corresponding to the PID items in order.
+  corresponding to the PID items in order. Items must be supplied in
+  instrument order; a misordered mapping silently scores the wrong
+  items, so a warning is issued when the names share a common prefix and
+  trailing number but those numbers are not ascending. Duplicated
+  entries are an error.
 
 - version:
 
@@ -77,6 +81,13 @@ indicative of defensiveness (rather than social desirability). For the
 PID-5-SF, scores of 8 or more on the INC-S are indicative of
 inconsistent responding. Cut-scores for the ORS-S, PRD-S, and SD-TD-S
 have not yet been validated.
+
+The PRD and SD-TD cut scores are raw sums compared to fixed thresholds
+that assume items are coded 0-3. Unlike the INC and ORS scales, they do
+not adapt to `srange`, so scoring items on another scale (e.g. 1-4)
+mis-flags respondents; a warning is issued when `srange` is not
+`c(0, 3)`. The BF version computes only the percent-missing (PNA) index
+and no cut-score scales.
 
 ## References
 

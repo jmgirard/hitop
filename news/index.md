@@ -30,6 +30,19 @@
   `generate_redcap_*` export families, verifying each generated file
   against the source instrument datasets (including the HiTOP-HSUM
   REDCap branching logic)
+- [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
+  and
+  [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
+  now guard against two ways a bad `items` mapping silently produces
+  wrong scores: they error on duplicated `items` entries and warn when
+  `items` column names share a common prefix and trailing number but
+  those numbers are not in ascending (instrument) order
+- [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
+  now warns when `srange` is not `c(0, 3)`, because the published PRD
+  and SD-TD cut scores are raw sums against fixed thresholds that assume
+  0-3 item coding and do not adapt to other codings
 
 ## hitop 0.0.2
 
