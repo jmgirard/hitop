@@ -19,7 +19,10 @@ validity_pid5(
 scored and in order).}
 
 \item{items}{A vector of column names (as strings) or numbers (as integers)
-corresponding to the PID items in order.}
+corresponding to the PID items in order. Items must be supplied in
+instrument order; a misordered mapping silently scores the wrong items, so a
+warning is issued when the names share a common prefix and trailing number
+but those numbers are not ascending. Duplicated entries are an error.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
 "SF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}
@@ -58,6 +61,13 @@ defensiveness), whereas a score of 19 or higher on the SD-TD is indicative
 of defensiveness (rather than social desirability). For the PID-5-SF,
 scores of 8 or more on the INC-S are indicative of inconsistent responding.
 Cut-scores for the ORS-S, PRD-S, and SD-TD-S have not yet been validated.
+
+The PRD and SD-TD cut scores are raw sums compared to fixed thresholds that
+assume items are coded 0-3. Unlike the INC and ORS scales, they do not adapt
+to \code{srange}, so scoring items on another scale (e.g. 1-4) mis-flags
+respondents; a warning is issued when \code{srange} is not \code{c(0, 3)}. The BF
+version computes only the percent-missing (PNA) index and no cut-score
+scales.
 }
 \references{
 Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,

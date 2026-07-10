@@ -24,7 +24,10 @@ score_pid5(
 scored and in order).}
 
 \item{items}{A vector of column names (as strings) or numbers (as integers)
-corresponding to the PID items in order.}
+corresponding to the PID items in order. Items must be supplied in
+instrument order; a misordered mapping silently scores the wrong items, so a
+warning is issued when the names share a common prefix and trailing number
+but those numbers are not ascending. Duplicated entries are an error.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
 "SF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}

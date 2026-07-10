@@ -7,7 +7,10 @@
 #' @param data A data frame containing (at least) all the PID items (numerically
 #'   scored and in order).
 #' @param items A vector of column names (as strings) or numbers (as integers)
-#'   corresponding to the PID items in order.
+#'   corresponding to the PID items in order. Items must be supplied in
+#'   instrument order; a misordered mapping silently scores the wrong items, so a
+#'   warning is issued when the names share a common prefix and trailing number
+#'   but those numbers are not ascending. Duplicated entries are an error.
 #' @param version A string indicating the version of the PID to score: "FULL",
 #'   "SF", or "BF". Will be automatically capitalized. (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
@@ -100,6 +103,8 @@ score_pid5 <- function(
     cli::cli_abort("Invalid `version` argument")
   )
   validate_items(items, n = n_items)
+  validate_item_uniqueness(items)
+  warn_item_order(items)
   # TODO: validate that the requested items are possible to subset to
   validate_range(srange)
   stopifnot(rlang::is_string(prefix))

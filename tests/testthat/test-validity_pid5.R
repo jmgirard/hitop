@@ -188,3 +188,44 @@ test_that("row count is preserved by validity_pid5 for every version", {
     nrow(fx_pid5bf())
   )
 })
+
+# ---- srange-vs-published-cutoff guard (M11) ---------------------------------
+# PRD and SD-TD compare raw sums to fixed thresholds that assume 0-3 coding, so
+# a non-0-3 srange silently mis-flags respondents. FULL/SF warn; BF (PNA only)
+# does not. The warning is a pure side effect: scores are unchanged.
+
+test_that("non-0-3 srange warns for FULL and SF but not at the default", {
+  expect_warning(
+    suppressMessages(validity_pid5(fx_pid5(), items = 1:220, version = "FULL", srange = c(1, 4))),
+    "0-3"
+  )
+  expect_warning(
+    suppressMessages(validity_pid5(fx_pid5sf(), items = 1:100, version = "SF", srange = c(1, 4))),
+    "0-3"
+  )
+  # Default srange = c(0, 3): no cutoff-metric warning
+  expect_no_warning(
+    suppressMessages(validity_pid5(fx_pid5(), items = 1:220, version = "FULL"))
+  )
+})
+
+test_that("BF does not warn about srange (it computes no cutoff scales)", {
+  expect_no_warning(
+    validity_pid5(fx_pid5bf(), items = 1:25, version = "BF", srange = c(1, 4))
+  )
+})
+
+test_that("the srange warning is a pure side effect (scores at c(1,4) match independent recomputation)", {
+  # Route through the warning-triggering branch (srange = c(1, 4)) and confirm the
+  # returned scores equal an independent recomputation at that srange, so the
+  # added cli_warn() cannot have altered the computation. Bug-discriminating: ORS
+  # counts items at the srange maximum, so it must use 4 here (not a hardcoded 3);
+  # the fixture's ORS overrides are 3s, which correctly count as 0 under c(1, 4).
+  x <- fx_pid5()
+  out <- suppressWarnings(suppressMessages(
+    validity_pid5(x, items = 1:220, version = "FULL", srange = c(1, 4), append = FALSE)
+  ))
+  expect_equal(out$pid_PNA, rowMeans(is.na(as.matrix(x[, 1:220]))))  # srange-independent
+  ors_items <- c(2, 8, 39, 40, 44, 150, 166, 170, 171, 178)         # official FULL ORS key
+  expect_equal(out$pid_ORS, rowSums(x[, ors_items] == 4))           # counts the srange max
+})

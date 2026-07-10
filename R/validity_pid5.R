@@ -22,6 +22,13 @@
 #'   scores of 8 or more on the INC-S are indicative of inconsistent responding.
 #'   Cut-scores for the ORS-S, PRD-S, and SD-TD-S have not yet been validated.
 #'
+#'   The PRD and SD-TD cut scores are raw sums compared to fixed thresholds that
+#'   assume items are coded 0-3. Unlike the INC and ORS scales, they do not adapt
+#'   to `srange`, so scoring items on another scale (e.g. 1-4) mis-flags
+#'   respondents; a warning is issued when `srange` is not `c(0, 3)`. The BF
+#'   version computes only the percent-missing (PNA) index and no cut-score
+#'   scales.
+#'
 #' @references Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
 #'   E. H. (2016). Development of a Response Inconsistency Scale for the
 #'   Personality Inventory for DSM-5. *Journal of Personality Assessment,
@@ -66,10 +73,23 @@ validity_pid5 <- function(
     cli::cli_abort("Invalid `version` argument")
   )
   validate_items(items, n = n_items)
+  validate_item_uniqueness(items)
+  warn_item_order(items)
   validate_range(srange)
   stopifnot(rlang::is_string(prefix))
   stopifnot(rlang::is_bool(append))
   stopifnot(rlang::is_bool(tibble))
+
+  ## The published PRD and SD-TD cut scores are raw sums compared to fixed
+  ## thresholds (10, 11, 19) that assume items coded 0-3; unlike INC/ORS they do
+  ## not adapt to `srange`, so a non-0-3 coding silently mis-flags respondents.
+  ## Only FULL/SF compute cutoff scales (BF returns PNA only).
+  if (version %in% c("FULL", "SF") && !isTRUE(all.equal(srange, c(0, 3)))) {
+    cli::cli_warn(c(
+      "!" = "The published PID-5 validity cut scores (PRD, SD-TD) assume items coded 0-3, but {.arg srange} is {.code c({srange[[1]]}, {srange[[2]]})}.",
+      "i" = "PRD and SD-TD are raw sums compared to fixed thresholds and will be mis-flagged under other codings. Recode items to 0-3 before screening."
+    ))
+  }
 
   ## Extract item columns
   data_items <- data[items]
