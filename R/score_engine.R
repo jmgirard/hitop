@@ -1,32 +1,32 @@
-# Internal scoring engine shared by score_pid5()/score_hitopsr()/score_hitopbr().
-#
-# Each exported wrapper resolves only its instrument-specific data — which items
-# reverse-key, the per-scale item-number lists, and (for PID-5 FULL/SF) the
-# domain -> primary-facet map — and hands it here. The engine runs the whole
-# pipeline: validate -> extract -> coerce -> reverse-key -> per-scale score
-# (apa_mean vs rowMeans) -> optional FULL/SF domain scores + domain SE ->
-# optional per-scale SE with NA-masking -> optional alpha/omega print -> append
-# -> tibble. `apa_scoring` and `domain_map` are optional features used only by
-# PID-5; HiTOP-SR/BR pass the defaults and get the plain rowMeans path with no
-# domains. This is the scoring analog of the generators' build_* internals.
-#
-# @param data,items,srange,prefix,na.rm,calc_se,append,tibble As in the wrappers.
-# @param n_items Expected length of `items` (the instrument's item count).
-# @param reverse_items Integer positions within `items` to reverse-key (may be
-#   empty).
-# @param items_scales Named list mapping each output scale to the item positions
-#   that contribute to it.
-# @param apa_scoring Logical; if TRUE, use the APA missing-data/proration rule
-#   (apa_mean) instead of rowMeans(na.rm).
-# @param domain_map Named list of facet-stem vectors per domain (FULL/SF), or
-#   NULL to skip domain scoring.
-# @param alpha,omega Logical; if TRUE, compute and print per-scale reliability.
-# @param mask_se_na Logical; if TRUE, a standard error is set to NA wherever its
-#   scale score is NA. score_pid5() has always done this (needed for APA scales
-#   dropped for >25% missing); score_hitopsr()/score_hitopbr() historically did
-#   not, so they pass FALSE to preserve their exact output. (Unifying the two is
-#   a deliberate scoring-output change left for a future milestone.)
-# @noRd
+#' Internal scoring engine shared by score_pid5()/score_hitopsr()/score_hitopbr()
+#'
+#' Each exported wrapper resolves only its instrument-specific data — which items
+#' reverse-key, the per-scale item-number lists, and (for PID-5 FULL/SF) the
+#' domain -> primary-facet map — and hands it here. The engine runs the whole
+#' pipeline: validate -> extract -> coerce -> reverse-key -> per-scale score
+#' (apa_mean vs rowMeans) -> optional FULL/SF domain scores + domain SE ->
+#' optional per-scale SE with NA-masking -> optional alpha/omega print -> append
+#' -> tibble. `apa_scoring` and `domain_map` are optional features used only by
+#' PID-5; HiTOP-SR/BR pass the defaults and get the plain rowMeans path with no
+#' domains. This is the scoring analog of the generators' build_* internals.
+#'
+#' @param data,items,srange,prefix,na.rm,calc_se,append,tibble As in the wrappers.
+#' @param n_items Expected length of `items` (the instrument's item count).
+#' @param reverse_items Integer positions within `items` to reverse-key (may be
+#'   empty).
+#' @param items_scales Named list mapping each output scale to the item positions
+#'   that contribute to it.
+#' @param apa_scoring Logical; if TRUE, use the APA missing-data/proration rule
+#'   (apa_mean) instead of rowMeans(na.rm).
+#' @param domain_map Named list of facet-stem vectors per domain (FULL/SF), or
+#'   NULL to skip domain scoring.
+#' @param alpha,omega Logical; if TRUE, compute and print per-scale reliability.
+#' @param mask_se_na Logical; if TRUE, a standard error is set to NA wherever its
+#'   scale score is NA. score_pid5() has always done this (needed for APA scales
+#'   dropped for >25% missing); score_hitopsr()/score_hitopbr() historically did
+#'   not, so they pass FALSE to preserve their exact output. (Unifying the two is
+#'   a deliberate scoring-output change left for a future milestone.)
+#' @noRd
 score_engine <- function(
   data,
   items,
