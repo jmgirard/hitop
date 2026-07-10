@@ -21,10 +21,10 @@
 
 - **Theme:** Make the shipped scoring provably correct and keep it that way.
 - **Outcomes:**
-  - The keying tables are machine-verified against the published sources (ported `test-keying.R`; open questions like OQ-1 stay visible, never silently patched).
-  - A ground-truth oracle test suite covers PID-5 scoring/validity, HiTOP-SR/BR scoring, and the reliability functions.
-  - `devtools::check()` is clean (datasets documented, dependencies declared, unused Imports removed) and runs in CI with coverage reporting on every push.
-  - BF keying provenance is documented and verified; FULL/SF domain scores (APA key Step 3) are computed and their domain→facet map is machine-verified.
+  - The keying tables are machine-verified against the published sources (ported `test-keying.R`; open questions like OQ-1 stay visible, never silently patched). *(done)*
+  - A ground-truth oracle test suite covers PID-5 scoring/validity, HiTOP-SR/BR scoring, and the reliability functions. *(done)*
+  - `devtools::check()` is clean (datasets documented, dependencies declared, unused Imports removed) and runs in CI with coverage reporting on every push. *(done)*
+  - BF keying provenance is documented and verified; FULL/SF domain scores (APA key Step 3) are computed and their domain→facet map is machine-verified. *(M6, M7)*
 - **Related milestones:** M1–M7
 
 ## Phase 3: Norms & visualization

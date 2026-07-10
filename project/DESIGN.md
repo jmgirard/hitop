@@ -54,7 +54,7 @@ Base-R data manipulation internally (subsetting, `rowMeans`, `cbind`). {tibble} 
 
 ### Testing & oracle strategy
 
-Scoring correctness is the package's core promise, so tests must verify against ground truth, never against the code's own output. In priority order: (1) hand-computed fixtures with the arithmetic in comments; (2) published reference values, cited; (3) independent recomputation from hardcoded official item numbers (the only check that catches transcription errors in the keying tables); (4) invariant tests. Snapshot tests only for message wording. Full rules: `.claude/skills/shared/tracking-rules.md`. **Current coverage falls far short of this** — see Known issues #1.
+Scoring correctness is the package's core promise, so tests must verify against ground truth, never against the code's own output. In priority order: (1) hand-computed fixtures with the arithmetic in comments; (2) published reference values, cited; (3) independent recomputation from hardcoded official item numbers (the only check that catches transcription errors in the keying tables); (4) invariant tests. Snapshot tests only for message wording. Full rules: `.claude/skills/shared/tracking-rules.md`. Ground-truth oracle coverage is now in place for `pid_items` keying (`test-keying.R`, M1), PID-5 scoring/validity (M2), HiTOP-SR/BR scoring, and the reliability functions (M5); the only implemented-but-untested surface is the `generate_*` export family. PID-5 FULL/SF domain scoring is unimplemented (M7).
 
 ### Data workflow
 
@@ -64,9 +64,9 @@ Scoring correctness is the package's core promise, so tests must verify against 
 
 <!-- Numbered list; remove items when fixed (note the fix in LOG.md and the milestone). -->
 
-1. **No reliability or HiTOP-SR/BR scoring tests** — `pid_items` keying is machine-verified (`test-keying.R`, M1) and `score_pid5()`/`validity_pid5()` output now has ground-truth oracle tests for all three versions (`test-score_pid5.R`, `test-validity_pid5.R`, `test-interface.R`, `test-util.R`, `test-validate.R`; M2 done 2026-07-09). Still missing: ground-truth tests of the reliability functions and HiTOP-SR/BR scoring (M5). PID-5 FULL/SF domain scoring is untested because unimplemented (M7).
-2. **SDTD item 38 unverified (keying, OQ-1)** — `pid_items` lists 17 SDTD items; Williams et al. (2019) Table 5's note enumerates 16 (no item 38) while its text says 17. Maintainer to check the physical PID-5 manual; `pid_items` unchanged pending sign-off. See [SOURCES.md](SOURCES.md) OQ-1.
-3. **SF validity cutoffs unavailable** — ORS-S/PRD-S/SDTD-S have no validated cut scores; `validity_pid5(version = "SF")` warns at runtime. Literature watch; no milestone yet.
+1. **SDTD item 38 unverified (keying, OQ-1)** — `pid_items` lists 17 SDTD items; Williams et al. (2019) Table 5's note enumerates 16 (no item 38) while its text says 17. Maintainer to check the physical PID-5 manual; `pid_items` unchanged pending sign-off. See [SOURCES.md](SOURCES.md) OQ-1.
+2. **SF validity cutoffs unavailable** — ORS-S/PRD-S/SDTD-S have no validated cut scores; `validity_pid5(version = "SF")` warns at runtime. Literature watch; no milestone yet.
+3. **`generate_*` export family untested** — the DOCX/Qualtrics/REDCap generators have no automated tests; verified only by inspecting the prebuilt `inst/extdata/` artifacts. No milestone yet.
 
 ## Decision Log
 
