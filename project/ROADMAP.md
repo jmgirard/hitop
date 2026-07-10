@@ -25,7 +25,8 @@
   - A ground-truth oracle test suite covers PID-5 scoring/validity, HiTOP-SR/BR scoring, and the reliability functions. *(done)*
   - `devtools::check()` is clean (datasets documented, dependencies declared, unused Imports removed) and runs in CI with coverage reporting on every push. *(done)*
   - BF keying provenance is documented and verified; FULL/SF domain scores (APA key Step 3) are computed and their domain→facet map is machine-verified. *(M6, M7)*
-- **Related milestones:** M1–M7
+  - Scoring honors the published APA missing-data/proration rules (opt-out via `apa_scoring = FALSE`). *(M8)*
+- **Related milestones:** M1–M8
 
 ## Phase 3: Norms & visualization
 

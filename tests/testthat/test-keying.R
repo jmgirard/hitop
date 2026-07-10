@@ -7,10 +7,11 @@
 # the two open discrepancies are documented in project/SOURCES.md.
 #
 # Ported from the PID-5-only fork (milestone M1). This repo's `pid_items` uses
-# columns FULL / SF / BF where the fork used PID5 / PID5FSF / PID5BF. Domain ->
-# facet verification is NOT here: score_pid5() outputs 25 facets and no domains,
-# and no primary-facet -> domain map is stored; that verification lives in M7
-# (domain scoring). The `Domain` column is the BF structure, verified in M6.
+# columns FULL / SF / BF where the fork used PID5 / PID5FSF / PID5BF. The BF
+# `Domain` structure (5 domains x 5 items) is verified against the APA PID-5-BF
+# Domain Scoring table in the BF block below (M6). FULL/SF *facet -> domain*
+# verification is NOT here: score_pid5() outputs 25 facets and no FULL/SF domains,
+# and no primary-facet -> domain map is stored yet; that lives in M7.
 
 # ---- Source: APA official PID-5 scoring key (Krueger et al., 2013), page 8 ----
 
@@ -180,4 +181,35 @@ test_that("INC-S pairs match Lowmaster et al. (2021) Correction Table 1", {
   }
   # 38-92 must NOT be present (inadvertently omitted from the validated scale)
   expect_false(any(vapply(pkg_pairs, function(q) setequal(q, c(38, 92)), logical(1))))
+})
+
+# ---- Source: APA PID-5-BF Adult, "Personality Trait Domain Scoring" table -----
+# Krueger, Derringer, Markon, Watson, & Skodol (c) 2013 APA. Item numbers are in
+# BF-relative numbering (1:25). Verifies the `Domain` column for the 25 BF items
+# -- the structure score_pid5(version = "BF") groups on -- against the published
+# table, independent of pid_items.csv. All BF items are forward-scored (the table
+# marks no reverse items) and each domain score is an average (raw sum / 5).
+
+test_that("BF domain membership matches the APA PID-5-BF Domain Scoring table", {
+  # Transcribed from the APA table. Keys are the pid_items `Domain` labels; the
+  # APA prints "Negative Affect" where pid_items stores "Negative affectivity".
+  apa_bf_domains <- list(
+    "Negative affectivity" = c(8, 9, 10, 11, 15),
+    "Detachment"           = c(4, 13, 14, 16, 18),
+    "Antagonism"           = c(17, 19, 20, 22, 25),
+    "Disinhibition"        = c(1, 2, 3, 5, 6),
+    "Psychoticism"         = c(7, 12, 21, 23, 24)
+  )
+  for (d in names(apa_bf_domains)) {
+    got <- pid_items$BF[!is.na(pid_items$BF) & pid_items$Domain == d]
+    expect_setequal(got, apa_bf_domains[[d]])
+  }
+})
+
+test_that("BF is 25 items, 1:25, exactly 5 per domain, none reverse-keyed", {
+  bf <- pid_items[!is.na(pid_items$BF), ]
+  expect_setequal(bf$BF, 1:25)                       # complete 25-item form
+  expect_equal(nrow(bf), 25L)                        # no duplicate BF numbers
+  expect_equal(as.integer(table(bf$Domain)), rep(5L, 5))  # 5 domains x 5 items
+  expect_false(any(bf$Reverse))                      # APA table marks no reverse items
 })
