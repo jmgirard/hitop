@@ -5,6 +5,12 @@
 <!-- Boundary rule: Architecture → DESIGN. Direction → ROADMAP. Tasks → MILESTONES. History → LOG. -->
 <!-- This log starts fresh for the canonical repo (v0.1.0); the old fork's log was deliberately not imported (D-006). Pre-tracking history: see git log and NEWS.md. -->
 
+## 2026-07-09 — Ported keying-verification tests (M1)
+
+- **What:** Added `tests/testthat/test-keying.R`, porting the fork's external-source keying oracle to this repo (`PID5→FULL`, `PID5FSF→SF` column renames; tibble-safe `pid_items$FULL[rows]` extraction). 11 `test_that` blocks (10 active + OQ-1 skip) verify `pid_items` against the published sources — reverse items, 25 facets, INC 20 pairs, INC-S 10 pairs (2020 + 2021 Correction), ORS 10, PRD 22, SDTD 16-subset, SF 100 selection + per-facet + no-reverse. `devtools::test(filter="keying")` → FAIL 0 | SKIP 1 | PASS 111. `pid_items` unchanged. Installed local dev deps flextable/officer/snakecase so the suite can load. Also planned M1→READY and added M6 (BF provenance) + M7 (FULL/SF domain scoring) stubs, verified against the APA full-form and BF scoring-key PDFs.
+- **Why / decisions:** Fulfills D-005 (external-source oracle) for the FULL/SF keying. Confirmed from the primary APA key (Krueger et al., 2013) that the 5-domain = 3-primary-facet model (Step 3) is official but *unimplemented* here (FULL/SF score no domains) → deferred to M7 rather than forced into M1; the source `test-keying.R` never contained domain blocks, so nothing was deleted. BF Domain-column provenance (APA PID-5-BF, 2013) → M6.
+- **Follow-ups spawned:** M6 (BF keying provenance + tests), M7 (PID-5 FULL/SF domain scoring). OQ-1 (SDTD item 38) still open, `skip()`-ed.
+
 ## 2026-07-09 — Adopted branch + PR workflow (—)
 
 - **What:** Added "Branching & PRs" rules to CLAUDE.md and tracking-rules.md: milestone work on `m<n>-<slug>` branches, merged to main via PR with the URL recorded in the milestone entry; keying-content PRs require Jeff's explicit sign-off before merge; trivial doc/tracking edits may still go direct to main. Updated /work-milestone (branch before code, open PR at completion) and /review-milestone (review the PR diff, merge on pass) to match.

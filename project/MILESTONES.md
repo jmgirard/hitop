@@ -11,20 +11,20 @@
 
 ### M1: Keying-verification tests (port test-keying.R)
 
-- **Status:** READY
+- **Status:** IN PROGRESS
 - **Depends on:** —
 - **Goal:** `pid_items` FULL/SF keying is machine-verified against the authoritative published sources (the external oracle from D-005), adapted to this repo's `FULL/SF/BF` column names.
 - **Acceptance criteria:**
-  - [ ] `tests/testthat/test-keying.R` exists and `Rscript -e 'devtools::test(filter="keying")'` runs with **0 failures** (all 9 source `test_that` blocks port over)
+  - [ ] `tests/testthat/test-keying.R` exists and `Rscript -e 'devtools::test(filter="keying")'` runs with **0 failures** (all 11 source `test_that` blocks port over: 10 active + the OQ-1 skip; 111 passing assertions)
   - [ ] Assertions cover, each with expected values transcribed from the cited source (never from `pid_items.csv`): 16 reverse items; all 25 facet→item memberships; INC 20 pairs (Keeley 2016 Table 1); INC-S 10 pairs (Lowmaster 2021 Correction Table 1) **and** the Lowmaster-2020 "10 pairs, each a Keeley pair present in SF" block; ORS 10 items (Sellbom 2018); PRD 22 items (Williams 2019); SDTD 16-item subset (Williams 2019 Table 5 note); SF 100-item selection + per-facet 4-item assignments (Maples 2015) + the FSF-carries-no-reverse-items check
   - [ ] OQ-1 (SDTD item 38) remains an explicit `skip()` pointing to SOURCES.md OQ-1; `pid_items` is **unchanged** (no keying edits)
 - **Tasks:**
-  - [ ] Cut branch `m1-keying-tests` from up-to-date main
-  - [ ] Ensure the test toolchain runs: install local dev deps `flextable`, `officer`, `snakecase` if missing (`load_all` needs the package's Imports available; harmless env setup, overlaps M3)
-  - [ ] Port `/Users/jmgirard/hitop/tests/testthat/test-keying.R` → `tests/testthat/test-keying.R`, substituting `pid_items$PID5→FULL` and `pid_items$PID5FSF→SF` throughout; reference `pid_items` directly (exported lazy data, no `utils::data()` needed)
-  - [ ] **Delete** the two old domain→facet `test_that` blocks — n/a here: `score_pid5(version="FULL"/"SF")` outputs 25 facets and no domains ([R/score_pid5.R:118](../R/score_pid5.R)), and no primary-facet→domain map is stored. The domain→facet verification moves to M7 (where domain scoring is added). The `pid_items$Domain` column is the *BF* structure, verified in M6.
-  - [ ] Re-check each hardcoded source item list against SOURCES.md's verification table while porting (SOURCES marks all ✅; no silent edits)
-  - [ ] Run `Rscript -e 'devtools::test(filter="keying")'`; confirm 0 failures, 1 skip (OQ-1)
+  - [x] Cut branch `m1-keying-tests` from up-to-date main
+  - [x] Ensure the test toolchain runs: install local dev deps `flextable`, `officer`, `snakecase` if missing (`load_all` needs the package's Imports available; harmless env setup, overlaps M3)
+  - [x] Port `/Users/jmgirard/hitop/tests/testthat/test-keying.R` → `tests/testthat/test-keying.R`, substituting `pid_items$PID5→FULL` and `pid_items$PID5FSF→SF` throughout; reference `pid_items` directly (exported lazy data, no `utils::data()` needed). Converted tibble-unsafe `pid_items[rows, "col"]` subsets to `pid_items$FULL[rows]` vector extraction.
+  - [x] Domain→facet blocks: **none existed in the source file** to delete (the fork's domain assertions lived in its `R/pid5.R`-based tests, not `test-keying.R`). Confirmed domain verification correctly belongs to M7: `score_pid5(version="FULL"/"SF")` outputs 25 facets and no domains ([R/score_pid5.R:118](../R/score_pid5.R)); the `pid_items$Domain` column is the *BF* structure, verified in M6. Header comment documents this.
+  - [x] Re-check each hardcoded source item list against SOURCES.md's verification table while porting (SOURCES marks all ✅; no silent edits — `pid_items` untouched). Independently confirmed counts: 16 reverse, 100 SF, 25 facets, 20 INC pairs, 10 INC-S, 10 ORS, 22 PRD, 17 SDTD.
+  - [x] Run `Rscript -e 'devtools::test(filter="keying")'`; confirm 0 failures, 1 skip (OQ-1) → **FAIL 0 | SKIP 1 | PASS 111**
   - [ ] Push branch, open PR, record URL in Notes/links
 - **Notes/links:** SOURCES.md "Canonical-repo note" + OQ-1/OQ-2; D-005, D-006. Full `devtools::check()` clean is **M3's** deliverable, not M1's. Never edit `pid_items` without maintainer sign-off. APA full-form scoring key (Krueger et al., 2013) confirmed the reverse items (Step 1) and 25-facet Facet Table (Step 2) from the primary source on 2026-07-09.
 
