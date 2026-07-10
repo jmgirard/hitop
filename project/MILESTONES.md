@@ -31,7 +31,7 @@
   - [x] Run `Rscript -e 'devtools::test()'`; iterate to 0 failures (FAIL 0 WARN 0 SKIP 1 PASS 249)
   - [x] Discovered: fixed SE-column prefix bug in `score_pid5()` ([R/score_pid5.R:139](../R/score_pid5.R)) — it emitted `anhedonia_se` instead of the documented `pid_anhedonia_se`; now matches `score_hitopbr`/`score_hitopsr` and the convention. Surfaced by the `calc_se` invariant test
   - [x] Discovered (recorded, fix deferred to M3): `validity_pid5()` errors on single-row input — `rowSums(data_items[, items])` drops to a vector for the ORS/PRD/SDTD paths (needs `drop = FALSE`). Tests use ≥ 2 rows to avoid it; logged as DESIGN Known issue #9
-- **Notes/links:** Oracle strategy: DESIGN.md "Testing & oracle strategy"; D-004, D-006. Current `score_pid5()` outputs 25 facets for FULL/SF and 5 domains for BF — no FULL/SF domains, so FULL/SF domain scoring + its domain→facet oracle live in **M7**; BF domain→item structure is verified in **M6**; reliability oracle tests in **M5**. `validity_pid5` has no `scales` argument, so the fork's guard-bug (SDTD) does not exist here.
+- **Notes/links:** Oracle strategy: DESIGN.md "Testing & oracle strategy"; D-004, D-006. Current `score_pid5()` outputs 25 facets for FULL/SF and 5 domains for BF — no FULL/SF domains, so FULL/SF domain scoring + its domain→facet oracle live in **M7**; BF domain→item structure is verified in **M6**; reliability oracle tests in **M5**. `validity_pid5` has no `scales` argument, so the fork's guard-bug (SDTD) does not exist here. PR [#3](https://github.com/jmgirard/hitop/pull/3).
 
 ### M3: Check & dependency hygiene
 
