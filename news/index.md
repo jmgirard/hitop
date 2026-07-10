@@ -63,6 +63,15 @@
   now share a single internal scoring engine instead of three
   hand-maintained copies of the same pipeline (no change to scored
   output)
+- Clearer input errors: `items` of the wrong length now reports the
+  expected count and what was supplied, and supplying `items` names or
+  positions that are not columns of `data` now raises an actionable
+  error (naming the offenders) instead of a cryptic base-R subscript
+  error
+- Input-validation errors from the scoring, validity, reliability, and
+  [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
+  functions are now attributed to the function you called rather than to
+  an internal helper
 
 ## hitop 0.0.2
 

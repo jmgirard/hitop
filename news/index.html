@@ -85,6 +85,8 @@
 <code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code> gains <code>alpha</code> and <code>omega</code> arguments (default <code>FALSE</code>) that print a per-scale reliability summary, matching <code><a href="../reference/score_pid5.html">score_pid5()</a></code> and <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code>
 </li>
 <li>Internal refactor: <code><a href="../reference/score_pid5.html">score_pid5()</a></code>, <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code>, and <code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code> now share a single internal scoring engine instead of three hand-maintained copies of the same pipeline (no change to scored output)</li>
+<li>Clearer input errors: <code>items</code> of the wrong length now reports the expected count and what was supplied, and supplying <code>items</code> names or positions that are not columns of <code>data</code> now raises an actionable error (naming the offenders) instead of a cryptic base-R subscript error</li>
+<li>Input-validation errors from the scoring, validity, reliability, and <code><a href="../reference/rank_scales.html">rank_scales()</a></code> functions are now attributed to the function you called rather than to an internal helper</li>
 </ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.0.2" id="hitop-002">hitop 0.0.2<a class="anchor" aria-label="anchor" href="#hitop-002"></a></h2>
