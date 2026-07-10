@@ -31,8 +31,8 @@
   - [x] `test-generate_docx.R`: valid-docx + item-text-present + `papersize` page-size branch + `match.arg` error, over all 6, using `get_page_dims`/`build_hitop_doc` (R/generate_docx.R:168).
   - [x] If any test-first check reproduces a generator bug, fix it minimally (behavior-preserving); otherwise no `R/` changes. — No generator bug surfaced; all tests pass unmodified `R/`. (Noted for review: docx A4 uses rounded 8.27×11.69 in → ~11909×16834 twips, ~5 twips off exact ISO A4; cosmetic, left as-is.)
   - [x] Add `withr` to DESCRIPTION `Suggests`; remove DESIGN #3 + update the coverage sentence; append `D-010`; `NEWS.md` bullet. `devtools::document()` only if roxygen is touched (not expected).
-  - [ ] `devtools::test()` + `devtools::check()`; branch `m10-generator-tests`, PR, record URL.
-- **Notes/links:** Resolves DESIGN Known issue #3. Non-keying (no `*_items`/`*_scales` edits) → no sign-off gate. HSUM scoring is unfinalized but its administration/export is stable, so the export is fair to test (Jeff, 2026-07-10). {officer}/{flextable}/{snakecase} are Imports (present under `check`); `withr` comes transitively via {testthat} but is added to Suggests for explicit helper use.
+  - [x] `devtools::test()` + `devtools::check()`; branch `m10-generator-tests`, PR, record URL.
+- **Notes/links:** Resolves DESIGN Known issue #3. Non-keying (no `*_items`/`*_scales` edits) → no sign-off gate. HSUM scoring is unfinalized but its administration/export is stable, so the export is fair to test (Jeff, 2026-07-10). {officer}/{flextable}/{snakecase} are Imports (present under `check`); `withr` comes transitively via {testthat} but is added to Suggests for explicit helper use. Suite PASS 527 (was 422); `check()` 0/0/0; no `R/` changes. `D-010` records the parse-and-compare oracle. PR [#11](https://github.com/jmgirard/hitop/pull/11).
 
 ## Completed
 
