@@ -26,6 +26,9 @@
 #'   dropped for >25% missing); score_hitopsr()/score_hitopbr() historically did
 #'   not, so they pass FALSE to preserve their exact output. (Unifying the two is
 #'   a deliberate scoring-output change left for a future milestone.)
+#' @param call The calling environment, used so input-validation aborts are
+#'   attributed to the exported wrapper (score_pid5() etc.) rather than to this
+#'   internal engine. Defaults to the wrapper that called score_engine().
 #' @noRd
 score_engine <- function(
   data,
@@ -43,14 +46,16 @@ score_engine <- function(
   domain_map = NULL,
   alpha = FALSE,
   omega = FALSE,
-  mask_se_na = FALSE
+  mask_se_na = FALSE,
+  call = rlang::caller_env()
 ) {
-  ## Assertions
-  validate_data(data)
-  validate_items(items, n = n_items)
-  validate_item_uniqueness(items)
+  ## Assertions (call = the wrapper, so errors blame it, not score_engine())
+  validate_data(data, call = call)
+  validate_items(items, n = n_items, call = call)
+  validate_item_uniqueness(items, call = call)
+  validate_items_present(data, items, call = call)
   warn_item_order(items)
-  validate_range(srange)
+  validate_range(srange, call = call)
   stopifnot(rlang::is_string(prefix))
   stopifnot(rlang::is_bool(na.rm))
   stopifnot(rlang::is_bool(apa_scoring))

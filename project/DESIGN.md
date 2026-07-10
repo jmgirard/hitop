@@ -37,7 +37,7 @@ Adding a form variant = a new item-number column + `*_scales` entry; adding an i
 
 ### Internal utilities ([R/util.R](../R/util.R))
 
-`reverse(x, low, high)`, `bind_columns()`, `adiff()` (inconsistency pair |difference|), `drop_na()`, `calc_sem()`, `cli_assert(condition, message)` (cli-flavored abort), and `validate_data()`/`validate_items()`/`validate_scales()`/`validate_range()`.
+`reverse(x, low, high)`, `bind_columns()`, `adiff()` (inconsistency pair |difference|), `drop_na()`, `calc_sem()`, `cli_assert(condition, message, call)` (cli-flavored abort), and the input validators `validate_data()`/`validate_items()`/`validate_items_present()`/`validate_scales()`/`validate_range()`/`validate_item_uniqueness()`. Every validator takes a `call` argument (default `rlang::caller_env()`) that it forwards to `cli_assert`/`cli_abort`, so aborts are attributed to the user-facing function; `score_engine()` threads the wrapper's `call` down so its internal validation blames the wrapper, not the engine (M14).
 
 ## Conventions
 
@@ -47,7 +47,7 @@ Scoring functions share `(data, items, [version,] srange, prefix, na.rm, calc_se
 
 ### User communication
 
-{cli} throughout: `cli_alert_warning()` for counts of flagged observations + `cli_alert_info()` with an actionable `{.code dplyr::filter(...)}` suggestion; input errors via `cli_assert()`/`cli::cli_abort()`.
+{cli} throughout: `cli_alert_warning()` for counts of flagged observations + `cli_alert_info()` with an actionable `{.code dplyr::filter(...)}` suggestion; input errors via `cli_assert()`/`cli::cli_abort()`, attributed to the exported function the user called (via the validators' `call` threading, M14) and reporting the offending value (e.g. expected-vs-actual `items` length, the `items` names/positions missing from `data`).
 
 ### Internal style
 
