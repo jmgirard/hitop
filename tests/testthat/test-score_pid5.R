@@ -123,7 +123,7 @@ test_that("BF independent recomputation from the APA Domain table matches", {
   expect_equal(pkg$pid_detachment, d_detach_hand)
 })
 
-test_that("BF missing-item handling differs by apa_scoring", {
+test_that("BF missing-item handling differs by missing level", {
   # R4 sets items 1:5 NA. Disinhibition = items 1,2,3,5,6 -> 4 of 5 missing (80%).
   d_apa  <- score_pid5(fx_pid5bf(), items = 1:25, version = "BF", append = FALSE)
   d_trad <- score_pid5(fx_pid5bf(), items = 1:25, version = "BF", missing = "available", append = FALSE)
@@ -228,7 +228,7 @@ test_that("domain _se columns appear iff calc_se and derive from the 3 facet sco
   expect_equal(f$pid_detachment_se[2], stats::sd(facets_r2) / sqrt(3))
 })
 
-# ---- APA missing-data / proration scoring (M8, default apa_scoring = TRUE) ----
+# ---- APA missing-data / proration scoring (M8, default missing = "apa") ----
 # APA full-form key (Krueger et al., 2013, p. 8), sourced verbatim in SOURCES.md:
 #   > 25% of a facet's items unanswered -> facet NA ("should not be used").
 #   <= 25% unanswered -> prorate: round(partial_raw * n_items / n_answered), then

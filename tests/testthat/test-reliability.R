@@ -117,6 +117,13 @@ test_that("reliability_hitopbr() matches independently recomputed alphas (M13 or
   expect_equal(rel$alpha, unname(exp_alpha))
   expect_equal(rel$nItems, unname(lengths(scales)))
   expect_equal(rel$scale, snakecase::to_title_case(names(scales)))
+
+  # Independent, HARDCODED oracle for one scale (guards the BR scales table
+  # itself, not just the plumbing): Detachment = items 7,12,30,31,36,37 copied
+  # from the source key; BR has no reverse items so no reverse-keying is applied.
+  detach_alpha <- calc_alpha(di[c(7, 12, 30, 31, 36, 37)])
+  idet <- which(hitopbr_scales$camelCase == "detachment")
+  expect_equal(rel$alpha[idet], detach_alpha)
 })
 
 test_that("reliability_hitopsr() reverse-keys before estimating (independent recompute)", {
