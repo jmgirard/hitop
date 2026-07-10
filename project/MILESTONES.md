@@ -20,7 +20,7 @@
 
 ### M17: Vignette & pkgdown instrument-page accuracy and polish
 
-- **Status:** READY
+- **Status:** IN PROGRESS
 - **Depends on:** —
 - **Goal:** Fix factual errors, fill omissions, and harmonize structure across the 5 scoring tutorials and the 6 pkgdown instrument download pages (+ the scales-definitions article) so every prose claim matches actual code output, every link resolves to the correct target, and every instrument is documented to the same standard (docs-only; no scoring/keying/data changes).
 - **Acceptance criteria:**
@@ -43,20 +43,20 @@
     - [ ] `pkgdown::build_site()` completes without error (builds all articles incl. the 6 downloads + `scales-hitopsr`)
 - **Tasks:**
   - **A. Scoring tutorials:**
-    - [ ] `hitopsr_scoring.Rmd`: L30 `hitop001`/`hitop405`→`hsr001`/`hsr405`; L52 `ku_hitoppro`→`ku_hitopsr`; L64 `hitop%03d`/`hitop%d`→`hsr%03d`/`hsr%d`
-    - [ ] `hitopbr_scoring.Rmd`: L23/L40 7→8 scales; L53 54→55; L104 14→16; add a Scale Reliability section mirroring SR's (`reliability_hitopbr()`, `warning: false`)
-    - [ ] `pid5bf_scoring.Rmd`: remove "WORK IN PROGRESS"; add intro + Scale Reliability section (`reliability_pid5(version = "BF")`, `warning: false`)
-    - [ ] `pid5sf_scoring.Rmd`: add `library(tibble)` include + a Simple Standard Errors demo for parity with SR/BR
-    - [ ] Harmonize heading levels/section ordering across all 5 `*_scoring.Rmd` (adopt `##`)
-    - [ ] Re-derive and reconcile every count claim against actual output before finalizing
+    - [x] `hitopsr_scoring.Rmd`: L30 `hitop001`/`hitop405`→`hsr001`/`hsr405`; L52 `ku_hitoppro`→`ku_hitopsr`; L64 `hitop%03d`/`hitop%d`→`hsr%03d`/`hsr%d`
+    - [x] `hitopbr_scoring.Rmd`: L23/L40 7→8 scales; L53 54→55; L104 14→16; add a Scale Reliability section mirroring SR's (`reliability_hitopbr()`, `warning: false`)
+    - [x] `pid5bf_scoring.Rmd`: remove "WORK IN PROGRESS"; add intro + Scale Reliability section (`reliability_pid5(version = "BF")`, `warning: false`)
+    - [x] `pid5sf_scoring.Rmd`: add `library(tibble)` include + a Simple Standard Errors demo for parity with SR/BR
+    - [x] Harmonize heading levels/section ordering across all 5 `*_scoring.Rmd` (adopt `##`; SR's `###` Method 1/2 kept as genuine sub-sections)
+    - [x] Re-derive and reconcile every count claim against actual output before finalizing (discovered + fixed `pid5_scoring.Rmd` stale "245 columns instead of 220 or 25" → "250 … or 30", which predated FULL/SF domain scoring)
   - **B. pkgdown instrument/download pages:**
-    - [ ] Fix broken REDCap "Import Instructions" href in [download-pid5.Rmd:64](vignettes/articles/download-pid5.Rmd:64) (hitopsr→pid5)
-    - [ ] "domains scales"→"domain scales" in [download-pid5.Rmd:11](vignettes/articles/download-pid5.Rmd:11), `download-pid5sf.Rmd`, `download-pid5bf.Rmd`
-    - [ ] Reconcile "Instrument Information"/"Example Datasets" card boilerplate per page so claims match the links present (tailor/drop "subscale definitions" on the 4 non-SR pages; "real validation sample" only where a `ku_*` dataset is linked)
-    - [ ] Normalize download-card row markup across the 6 pages (remove stray `<br>` and `mt-4 mb-4`/indentation irregularities in [download-hitopbr.Rmd](vignettes/articles/download-hitopbr.Rmd) and `download-hitophsum.Rmd`; uniform `row mt-4`)
-    - [ ] Grep-verify all `../reference/*.html` + `inst/extdata/*` links across the 6 pages resolve
+    - [x] Fix broken REDCap "Import Instructions" href in [download-pid5.Rmd:64](vignettes/articles/download-pid5.Rmd:64) (hitopsr→pid5)
+    - [x] "domains scales"→"domain scales" in [download-pid5.Rmd:11](vignettes/articles/download-pid5.Rmd:11), `download-pid5sf.Rmd`, `download-pid5bf.Rmd`
+    - [x] Reconcile "Instrument Information"/"Example Datasets" card boilerplate per page so claims match the links present (dropped "subscale definitions" on the 4 non-SR pages; dropped "real validation sample" on pid5/pid5bf, which link only simulated data)
+    - [x] Normalize download-card row markup across the 6 pages (removed stray `<br>` from hitopbr + hitophsum; hitopbr `row mt-4 mb-4`→`row mt-4`, its 3 download cols +`mb-4`, features-row indentation fixed; hitophsum download cols +`mb-4`; all 6 now `row mt-4` + `col-md-4 mb-4`)
+    - [x] Grep-verify all `../reference/*.html` + `inst/extdata/*` links across the 6 pages resolve (37 reference targets all exported; 24 extdata files all present)
   - **C. Build & record:**
-    - [ ] Run `devtools::check()` and `pkgdown::build_site()`; add a NEWS.md bullet (README untouched)
+    - [x] Run `devtools::check()` (0/0/0, vignettes rebuilt) and `pkgdown::build_site()` (exit 0, all 6 downloads + 5 tutorials + scales article rendered); added a NEWS.md bullet (README untouched)
 - **Notes/links:** Ground truth confirmed at plan time: `hitopbr_scales` has 8 rows (antagonism, detachment, disinhibition, internalizing, somatoform, thoughtDisorder, externalizing, pFactor) and `score_hitopbr()` returns 8 cols; `hitopsr_scales` 76 / `hitopsr_subscales` 17. All `inst/extdata/*` download links resolve. Origin of the SR-vignette bugs: partial port from an old HiTOP-PRO vignette (`vignettes/.quarto/_freeze/hitoppro_scoring/`). `scales-hitopsr.Rmd` stays out of the navbar deliberately (reachable from the SR download page) — restructuring it is out of scope; only its clean build is verified. No visual redesign of the tutorials (per scope decision: fixes + finish + harmonize, no restyle).
 
 ## Completed
