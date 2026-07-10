@@ -54,7 +54,7 @@ Base-R data manipulation internally (subsetting, `rowMeans`, `cbind`). {tibble} 
 
 ### Testing & oracle strategy
 
-Scoring correctness is the package's core promise, so tests must verify against ground truth, never against the code's own output. In priority order: (1) hand-computed fixtures with the arithmetic in comments; (2) published reference values, cited; (3) independent recomputation from hardcoded official item numbers (the only check that catches transcription errors in the keying tables); (4) invariant tests. Snapshot tests only for message wording. Full rules: `.claude/skills/shared/tracking-rules.md`. Ground-truth oracle coverage is now in place for `pid_items` keying (`test-keying.R`, M1), PID-5 scoring/validity (M2), HiTOP-SR/BR scoring, and the reliability functions (M5); the only implemented-but-untested surface is the `generate_*` export family. PID-5 FULL/SF domain scoring is unimplemented (M7).
+Scoring correctness is the package's core promise, so tests must verify against ground truth, never against the code's own output. In priority order: (1) hand-computed fixtures with the arithmetic in comments; (2) published reference values, cited; (3) independent recomputation from hardcoded official item numbers (the only check that catches transcription errors in the keying tables); (4) invariant tests. Snapshot tests only for message wording. Full rules: `.claude/skills/shared/tracking-rules.md`. Ground-truth oracle coverage is now in place for `pid_items` keying — including the BF 5-domain structure verified against the APA PID-5-BF Domain Scoring table (`test-keying.R`, M1/M6) — PID-5 scoring/validity (M2), HiTOP-SR/BR scoring, and the reliability functions (M5); the only implemented-but-untested surface is the `generate_*` export family. PID-5 FULL/SF domain scoring is unimplemented (M7).
 
 ### Data workflow
 
@@ -67,6 +67,7 @@ Scoring correctness is the package's core promise, so tests must verify against 
 1. **SDTD item 38 unverified (keying, OQ-1)** — `pid_items` lists 17 SDTD items; Williams et al. (2019) Table 5's note enumerates 16 (no item 38) while its text says 17. Maintainer to check the physical PID-5 manual; `pid_items` unchanged pending sign-off. See [SOURCES.md](SOURCES.md) OQ-1.
 2. **SF validity cutoffs unavailable** — ORS-S/PRD-S/SDTD-S have no validated cut scores; `validity_pid5(version = "SF")` warns at runtime. Literature watch; no milestone yet.
 3. **`generate_*` export family untested** — the DOCX/Qualtrics/REDCap generators have no automated tests; verified only by inspecting the prebuilt `inst/extdata/` artifacts. No milestone yet.
+4. **APA missing-data/proration rules not enforced in scoring** — `score_pid5()` computes scale/domain means via `rowMeans(na.rm = TRUE)`, so it averages whatever items are present and ignores the APA rules (documented for the BF in [SOURCES.md](SOURCES.md): don't compute a domain with ≥2 missing items; prorate if exactly 1 missing). Tracked as M8 (`apa_scoring` toggle, default `TRUE`); FULL/SF equivalents need their APA missing-data sources pulled first.
 
 ## Decision Log
 

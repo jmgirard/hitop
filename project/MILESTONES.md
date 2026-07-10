@@ -9,24 +9,6 @@
 
 ## Active
 
-### M6: BF keying provenance + tests
-
-- **Status:** IN PROGRESS
-- **Depends on:** M1
-- **Goal:** Document the PID-5-BF domain keying (`pid_items$BF` + `Domain`, 5 domains × 5 items) in SOURCES.md against the APA primary source, and machine-verify the full 5×5 table directly in `test-keying.R` — closing the gap that BF keying is undocumented and only 2/5 domains are currently checked against the source.
-- **Acceptance criteria:**
-  - [ ] SOURCES.md verification-summary table gains BF rows (BF 25-item selection; Domain→BF-item map, 5×5), each citing the APA PID-5-BF "Personality Trait Domain Scoring" table with ✅ status; a Sources bullet with the APA PDF URL; a note recording all-forward scoring (no reverse), average domain = raw/5, and the APA missing-data/proration rule (with an explicit flag that `score_pid5` does **not** currently enforce it → M8)
-  - [ ] `tests/testthat/test-keying.R` gains a BF block that, from the APA table's hardcoded BF numbers, asserts all 5 domains' `pid_items$BF`/`Domain` membership set-equal; plus invariants: 25 BF items numbered 1:25, exactly 5 per domain, `!any(Reverse)` among BF items
-  - [ ] The stale forward-reference comment at `test-keying.R:10-13` is updated to point at the new block (no longer a promise of future work)
-  - [ ] `pid_items` unchanged (`git diff` empty for `data/pid_items.rda` and `data-raw/pid_items.csv`); if a genuine discrepancy is found, halt for maintainer sign-off rather than editing the table
-  - [ ] `devtools::test()` passes; `devtools::check()` clean (0/0/0)
-- **Tasks:**
-  - [x] Add a "Source: APA PID-5-BF Adult — Personality Trait Domain Scoring table" block to `tests/testthat/test-keying.R` (after the SF / INC-S blocks): hardcode the 5 domain→BF-number lists transcribed from the APA table; for each domain assert `pid_items$BF[pid_items$Domain == d]` set-equal; assert 25 BF items total / complete `1:25` numbering / exactly 5 per domain / `!any(pid_items$Reverse[!is.na(pid_items$BF)])`
-  - [x] Update the `tests/testthat/test-keying.R:10-13` header comment: remove the "verified in M6" forward reference; state that BF Domain-structure verification now lives in this file
-  - [x] `project/SOURCES.md`: add BF rows to the Verification summary table; add a BF Sources bullet (Krueger et al., © 2013 APA; PDF URL); add a note on all-forward/average (raw/5) scoring + the APA missing-data/proration rule and its current non-enforcement in `score_pid5` (cross-ref M8)
-  - [x] Run `devtools::test()` + `devtools::check()`; confirm `git status` shows no change to `data/pid_items.rda` or `data-raw/pid_items.csv`
-- **Notes/links:** Primary source = APA *The Personality Inventory for DSM-5—Brief Form (PID-5-BF)—Adult* (Krueger, Derringer, Markon, Watson, & Skodol, © 2013 APA). PDF: `https://www.psychiatry.org/getmedia/f65c4386-b2bc-44a5-9ace-d6fea2211506/APA-DSM5TR-ThePersonalityInventoryForDSM5BriefFormAdult.pdf`. "Personality Trait Domain Scoring" table (BF item numbers) confirmed 2026-07-10 to match `pid_items$Domain` for BF items **exactly**: Negative Affect = 8,9,10,11,15; Detachment = 4,13,14,16,18; Antagonism = 17,19,20,22,25; Disinhibition = 1,2,3,5,6; Psychoticism = 7,12,21,23,24. All items forward-scored; average domain score = raw sum / 5 (matches `score_pid5` `rowMeans`). APA missing-data rule (documented, **not** enforced in code → M8): don't compute a domain if ≥2 of its 5 items missing; prorate if exactly 1 missing (prorated raw = round(partial_sum × 5 / n_answered)). Existing partial coverage: `tests/testthat/test-score_pid5.R:109-120` recomputes only Disinhibition + Detachment *through* `score_pid5`; M6 adds the direct 5/5 keying-table oracle in the correct file. Secondary/validation: Anderson, Sellbom, & Salekin (2018), *Assessment, 25*(5), 596–607, doi:10.1177/1073191116676889. PR: [#7](https://github.com/jmgirard/hitop/pull/7).
-
 ### M7: PID-5 FULL/SF domain scoring
 
 - **Status:** PLANNED
@@ -54,6 +36,13 @@
 ## Completed
 
 <!-- DONE entries move here as: ### M<n>: Title — DONE YYYY-MM-DD. One-line outcome. -->
+
+### M6: BF keying provenance + tests — DONE 2026-07-10. Documented and machine-verified the PID-5-BF domain keying against the APA primary source, closing the gap that BF keying was undocumented and only 2/5 domains were checked (transitively, via `score_pid5`). Pulled the APA *PID-5-BF—Adult* PDF and transcribed its "Personality Trait Domain Scoring" table; `pid_items$Domain` for the 25 BF items matches exactly. New `test-keying.R` BF block: domain-membership oracle asserting `pid_items$BF[Domain==d]` set-equal to the hardcoded APA numbers for all 5 domains, plus invariants (25 items / complete 1:25 / 5-per-domain / no reverse). SOURCES.md gained 3 BF verification rows, a PID-5-BF source bullet + APA PDF URL, and a "Note on BF domain scoring" (all-forward, avg=raw÷5, and the unenforced APA missing-data/proration rule → M8). `pid_items` untouched. Suite PASS 329 (was 320); `check()` **0/0/0**; fresh-context review PASS (re-confirmed the APA numbers from the primary PDF and proved the oracle non-tautological), no blockers. PR [#7](https://github.com/jmgirard/hitop/pull/7).
+  - [x] SOURCES.md verification-table BF rows + Sources bullet (APA PDF URL) + "Note on BF domain scoring" (all-forward, avg=raw/5, unenforced APA missing-data/proration rule flagged → M8)
+  - [x] `test-keying.R` BF block: all 5 domains' `pid_items$BF`/`Domain` membership set-equal to hardcoded APA numbers; invariants (25 items / 1:25 / 5-per-domain / no reverse-keying)
+  - [x] Stale `test-keying.R` header comment updated (no longer forward-references M6 as future work)
+  - [x] `pid_items` unchanged (`data/pid_items.rda` + `data-raw/pid_items.csv` absent from the diff)
+  - [x] `devtools::test()` passes; `devtools::check()` clean (0/0/0)
 
 ### M5: HiTOP-SR/BR scoring + reliability oracle tests — DONE 2026-07-10. Added ground-truth oracle tests for the previously-untested HiTOP-SR/BR scoring and reliability functions: `fx_hitopsr()`/`fx_hitopbr()` hand-computed fixtures (arithmetic in comments, memberships copied from source CSVs), `test-score_hitopsr.R` (incl. the lone reverse item HSR 310, independent recompute of `appetiteLoss`), `test-score_hitopbr.R` (overlapping `externalizing`/`pFactor` recomputed from the marker columns), `test-reliability.R` (`calc_alpha` vs 42/45 + error paths; `calc_omega` vs a direct independent `lavaan::cfa` fit + warning), `test-label_scales.R` (`label_*` + `rank_scales`). Hardened `score_hitopbr()` with `drop = FALSE` (behavior-preserving). Suite FAIL 0 WARN 0 SKIP 1 PASS 320 (was 259); `check()` **0/0/0**; fresh-context review PASS-WITH-NITS, no blockers. Closed the reliability + SR/BR half of DESIGN Known issue #1. PR [#6](https://github.com/jmgirard/hitop/pull/6).
   - [x] Hand-computed fixtures assert exact SR/BR scale scores (reverse item HSR 310 included); all values independently re-derived at review, none back-filled
