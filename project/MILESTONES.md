@@ -11,16 +11,21 @@
 
 ### M4: R CMD check + coverage CI
 
-- **Status:** PLANNED
+- **Status:** IN PROGRESS
 - **Depends on:** M3 (check must pass first; M1–M2 make coverage meaningful)
-- **Goal:** Every push/PR to main runs R CMD check and uploads coverage, with README badges.
+- **Goal:** Every push/PR to main runs R CMD check and uploads coverage, with check + coverage badges in the README.
 - **Acceptance criteria:**
-  - [ ] `R-CMD-check` and `test-coverage` workflows green on main (alongside the existing pkgdown.yaml)
-  - [ ] Check + coverage badges render in README next to the lifecycle badge
+  - [ ] `R-CMD-check.yaml` and `test-coverage.yaml` exist in `.github/workflows/` (alongside `pkgdown.yaml`) and both report green on main (verify via `gh run list`)
+  - [ ] R-CMD-check job is green on all matrix platforms it defines (no new ERRORs/WARNINGs; NOTEs acceptable only if pre-existing)
+  - [ ] Check + coverage badges render in `README.md` inside the `<!-- badges: start -->` block, next to the lifecycle badge; `README.md` is regenerated from `README.Rmd`, not hand-edited
+  - [ ] `covr` added to DESCRIPTION `Suggests`; `devtools::check()` still clean locally (0/0/0)
 - **Tasks:**
-  - [ ] `usethis::use_github_action("check-standard")` and `usethis::use_github_action("test-coverage")` + `usethis::use_coverage("codecov")`
-  - [ ] Add badges to README.Rmd's badges block; re-knit README.md
-- **Notes/links:** Only `.github/workflows/pkgdown.yaml` exists today (DESIGN Known issue #2).
+  - [x] `usethis::use_github_action("check-standard")` → `.github/workflows/R-CMD-check.yaml` (keep the full standard matrix: macOS, Windows, Ubuntu release/devel/oldrel)
+  - [x] `usethis::use_github_action("test-coverage")` → `.github/workflows/test-coverage.yaml`; `usethis::use_coverage("codecov")` created `codecov.yml` + `.Rbuildignore` entry (its README badge step errored on this repo's single-line badges block, so `covr` was added to Suggests by hand)
+  - [x] Add the two badges (R-CMD-check status + codecov) to the badges block in README.Rmd:17; `Rscript -e 'devtools::build_readme()'` to re-knit
+  - [x] Confirm the new workflow files are covered by the existing `^\.github$` `.Rbuildignore` entry (they are — no new entry needed; `codecov.yml` got its own `^codecov\.yml$` entry from `use_coverage()`)
+  - [x] Push branch, open PR ([#5](https://github.com/jmgirard/hitop/pull/5)); both workflows run on the PR — watch them go green before merge (review step)
+- **Notes/links:** Only `.github/workflows/pkgdown.yaml` exists today (DESIGN Known issue #2). Repo is public; `main` is the default branch. `CODECOV_TOKEN` secret already added by Jeff (2026-07-09), so the coverage upload should authenticate on first run. PR [#5](https://github.com/jmgirard/hitop/pull/5). Local `devtools::check()` clean (0/0/0).
 
 ### M5: HiTOP-SR/BR scoring oracle tests
 

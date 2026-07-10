@@ -19,3 +19,4 @@
 ^\.claude$
 ^CLAUDE\.md$
 ^hitop_hex\.png$
+^codecov\.yml$

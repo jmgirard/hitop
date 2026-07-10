@@ -7,6 +7,9 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/jmgirard/hitop/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jmgirard/hitop/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/jmgirard/hitop/graph/badge.svg)](https://app.codecov.io/gh/jmgirard/hitop)
 <!-- badges: end -->
 
 The goal of the **hitop** package is to provide an open-source toolkit
