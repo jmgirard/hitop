@@ -33,7 +33,7 @@
   9. [x] *(discovered)* Silence the no-visible-binding NOTE: add `utils::globalVariables()` for the lazy-data object names and `@importFrom stats setNames` / `@importFrom utils write.csv` in R/hitop-package.R.
   10. [x] *(discovered)* `.Rbuildignore` the top-level `hitop_hex.png` (non-standard-file NOTE).
   11. [x] `document()` → `test()` → `check()`; confirm acceptance criteria. *(check: 0 errors / 0 warnings / 0 notes; test: FAIL 0 WARN 0 SKIP 1 PASS 259.)*
-- **Notes/links:** DESIGN Known issues #3, #4, #5, #8, #9. Oracle (per tracking-rules 3b): the single-row `drop=FALSE` fix carries a hand-computed 1-row fixture; the SDTD denominator fix carries a message-wording expectation. Branch `m3-check-hygiene`; PR URL to be recorded here.
+- **Notes/links:** DESIGN Known issues #3, #4, #5, #8, #9. Oracle (per tracking-rules 3b): the single-row `drop=FALSE` fix carries a hand-computed 1-row fixture; the SDTD denominator fix carries a message-wording expectation. Branch `m3-check-hygiene`; PR [#4](https://github.com/jmgirard/hitop/pull/4).
 
 ### M4: R CMD check + coverage CI
 
