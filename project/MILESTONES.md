@@ -9,7 +9,55 @@
 
 ## Active
 
-_None — M1–M10 are DONE; Phase 3 (norms & visualization) is unplanned. Run `/plan-milestone`._
+<!-- M11–M15 come from the 2026-07-10 retrospective design audit (see LOG once work ships). Agreed order: M11 (risk) → M12 (docs) → M13 (engine) → M14 (hardening) → M15 (API polish). -->
+
+### M11: Guard the silent-wrong-results traps
+
+- **Status:** READY
+- **Depends on:** —
+- **Goal:** Warn or error before the two ways the package can silently produce wrong results: non-canonical `srange` invalidating the published PID-5 validity cutoffs, and misordered or duplicated `items` mappings.
+- **Acceptance criteria:**
+  - [ ] `validity_pid5(version = "FULL"/"SF")` with `srange != c(0, 3)` emits a cli warning stating that the published PRD/SDTD cut scores assume 0–3 item coding (with an actionable recode suggestion); no warning under the default `srange`; returned score values are unchanged in both cases
+  - [ ] All four data-taking functions (`score_pid5`, `score_hitopsr`, `score_hitopbr`, `validity_pid5`) warn when character `items` share a common prefix + trailing integer and those integers are **not** in ascending order (the misordered-mapping heuristic); no warning for correctly ordered names, integer positions, or non-numbered names
+  - [ ] Duplicated entries in `items` (names or positions) produce a cli error naming the duplicates, in all four functions
+  - [ ] No scoring behavior changes: the pre-existing test suite passes unmodified (PASS ≥ 527)
+  - [ ] New tests cover fire and no-fire cases for each guard in each function (srange warning; order warning incl. zero-padded and mixed-prefix no-fire cases; duplicate error)
+  - [ ] Guards documented under the `items`/`srange` roxygen params; NEWS.md bullets added
+  - [ ] `devtools::document()` diff limited to intended doc changes; `devtools::test()` passes; `devtools::check()` clean (0/0/0)
+- **Tasks:**
+  - [ ] Add the srange-cutoff warning in `validity_pid5()` after `validate_range()` ([R/validity_pid5.R:69](../R/validity_pid5.R)); fires only for FULL/SF (BF computes no cutoff scales)
+  - [ ] Add `validate_item_uniqueness()` (error on duplicates) and `warn_item_order()` (common-prefix + trailing-integer ascending heuristic) to [R/util.R](../R/util.R); call both from the four functions right after `validate_items()`
+  - [ ] Tests: srange block in `test-validity_pid5.R`; order/duplicate blocks (new `test-item-guards.R` or extend `test-interface.R`) covering all four functions
+  - [ ] Roxygen param updates + `devtools::document()`; NEWS.md
+- **Notes/links:** From the 2026-07-10 design audit. Warning (not abort) chosen for srange so legitimate non-0–3 workflows stay possible; auto-adjusting the cutoffs for shifted codings (cutoff + k×low) is deliberately deferred — it changes validity-scale semantics and needs Jeff's sign-off. Order heuristic is names-only: integer positions out of ascending order can be a legitimate mapping, numbered names out of order almost never are.
+
+### M12: Documentation accuracy & examples
+
+- **Status:** PLANNED
+- **Depends on:** —
+- **Goal:** Make the user-facing documentation accurate and complete: runnable `@examples` for every exported function, correct dataset `@format` blocks, and synced README/DESCRIPTION.
+- **Notes/links:** Audit items: no exported *function* has `@examples` (use `sim_*` data); `pid_scales` has no `@format` at all ([R/data.R:21](../R/data.R)); `pid_items` @format says 12 columns but lists 15 ([R/data.R:5](../R/data.R)); `hitopbr_items` says 5 but lists 8 ([R/data.R:114](../R/data.R)); README "Add Package Unit Testing — todo" stale (527 tests exist; keep ROADMAP mirror in sync); DESCRIPTION Title case + real multi-sentence Description without markdown; document that `validity_pid5(version = "BF")` returns only PNA; "example example" typo in `vignettes/pid5_scoring.Rmd`; reconsider the "experimental" lifecycle badge.
+
+### M13: Scoring engine consolidation
+
+- **Status:** PLANNED
+- **Depends on:** —
+- **Goal:** Extract the ~100-line pipeline duplicated across `score_pid5()`/`score_hitopsr()`/`score_hitopbr()` into one internal scoring engine with thin per-instrument wrappers (the pattern the generators already use), behavior-identical under the existing oracle suite.
+- **Notes/links:** Audit flagship. The M5/M9 `drop = FALSE` twins are the motivating bug class (same fix applied twice in different copies). Acceptance must include: existing suite passes **unmodified**. Makes PID-5-BFP a wrapper + data instead of a fourth copy. Fold the duplicated alpha/omega print block into the engine; relocate `rename_hitopsr_items()` out of `score_hitopsr.R`.
+
+### M14: Input-validation & messaging hardening
+
+- **Status:** PLANNED
+- **Depends on:** M11, M13
+- **Goal:** Make every user-facing failure actionable: expected-vs-actual lengths in `validate_items()`, friendly errors for `items` not present in `data`, error calls attributed to the exported function (`call = parent.frame()` threading through `cli_assert()`), and `zzz.R` globalVariables cleanup.
+- **Notes/links:** Sequenced after M13 so validation lands once, in the engine, not three times. Remainder of the audit's validation findings after M11 takes the risk-class subset.
+
+### M15: API polish (pre-CRAN, breaking changes)
+
+- **Status:** PLANNED
+- **Depends on:** M13
+- **Goal:** Resolve the audit's API-surface findings before CRAN freezes signatures: a `reliability_*()` family that returns per-scale tibbles (replacing print-only `alpha`/`omega` and fixing the `score_hitopbr()` asymmetry), drop the vestigial `tibble` argument, name the `rank_scales()` output column (arg, not literal `"out"`/`"value"`), and decide on `missing =` consolidation of `na.rm`/`apa_scoring`.
+- **Notes/links:** Every item here is a deliberate breaking change requiring Jeff's per-item sign-off at planning time; none should be slipped into other milestones.
 
 ## Completed
 

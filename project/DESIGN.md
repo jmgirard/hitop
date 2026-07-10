@@ -67,6 +67,8 @@ Scoring correctness is the package's core promise, so tests must verify against 
 
 1. **SDTD item 38 unverified (keying, OQ-1)** — `pid_items` lists 17 SDTD items; Williams et al. (2019) Table 5's note enumerates 16 (no item 38) while its text says 17. Maintainer to check the physical PID-5 manual; `pid_items` unchanged pending sign-off. See [SOURCES.md](SOURCES.md) OQ-1.
 2. **SF validity cutoffs unavailable** — ORS-S/PRD-S/SDTD-S have no validated cut scores; `validity_pid5(version = "SF")` warns at runtime. Literature watch; no milestone yet.
+3. **Scoring pipeline triplicated** — `score_pid5()`/`score_hitopsr()`/`score_hitopbr()` are three hand-maintained copies of the same ~100-line pipeline (validate → extract → reverse → per-scale means → SE → reliability print → append), unlike the generators, which share `build_*` internals behind thin wrappers. Bug class already bitten twice (`drop = FALSE`: M5 in BR, M9 in PID SE). Consolidation planned as M13; found in the 2026-07-10 design audit.
+4. **Published-metric assumptions vs `srange`** — the PID-5 PRD/SDTD validity cutoffs (raw sums vs 10/11/19) assume 0–3 item coding, but `srange` lets users pass other codings with no warning, silently mis-flagging respondents (INC/ORS adapt; PRD/SDTD do not). Guard planned as M11; cutoff auto-adjustment deferred pending sign-off.
 
 ## Decision Log
 

@@ -44,6 +44,7 @@
 - **Outcomes:**
   - HiTOP normative data and norming functions (waiting for data).
   - Individual report generation; bass-ackwards (and extended) analysis functions.
+  - Pre-CRAN API stabilization from the 2026-07 design audit (M15: `reliability_*` family, argument cleanup) lands before submission freezes signatures.
   - CRAN submission and a package paper.
 - **Related milestones:** (to be planned)
 
