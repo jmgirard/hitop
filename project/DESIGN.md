@@ -65,9 +65,8 @@ Scoring correctness is the package's core promise, so tests must verify against 
 <!-- Numbered list; remove items when fixed (note the fix in LOG.md and the milestone). -->
 
 1. **No reliability or HiTOP-SR/BR scoring tests** — `pid_items` keying is machine-verified (`test-keying.R`, M1) and `score_pid5()`/`validity_pid5()` output now has ground-truth oracle tests for all three versions (`test-score_pid5.R`, `test-validity_pid5.R`, `test-interface.R`, `test-util.R`, `test-validate.R`; M2 done 2026-07-09). Still missing: ground-truth tests of the reliability functions and HiTOP-SR/BR scoring (M5). PID-5 FULL/SF domain scoring is untested because unimplemented (M7).
-2. **No R CMD check or coverage CI** — `.github/workflows/` contains only `pkgdown.yaml`. `devtools::check()` itself is now clean (0/0/0 as of M3, 2026-07-09), so CI can gate on it. Tracked as M4.
-3. **SDTD item 38 unverified (keying, OQ-1)** — `pid_items` lists 17 SDTD items; Williams et al. (2019) Table 5's note enumerates 16 (no item 38) while its text says 17. Maintainer to check the physical PID-5 manual; `pid_items` unchanged pending sign-off. See [SOURCES.md](SOURCES.md) OQ-1.
-4. **SF validity cutoffs unavailable** — ORS-S/PRD-S/SDTD-S have no validated cut scores; `validity_pid5(version = "SF")` warns at runtime. Literature watch; no milestone yet.
+2. **SDTD item 38 unverified (keying, OQ-1)** — `pid_items` lists 17 SDTD items; Williams et al. (2019) Table 5's note enumerates 16 (no item 38) while its text says 17. Maintainer to check the physical PID-5 manual; `pid_items` unchanged pending sign-off. See [SOURCES.md](SOURCES.md) OQ-1.
+3. **SF validity cutoffs unavailable** — ORS-S/PRD-S/SDTD-S have no validated cut scores; `validity_pid5(version = "SF")` warns at runtime. Literature watch; no milestone yet.
 
 ## Decision Log
 
