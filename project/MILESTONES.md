@@ -26,7 +26,7 @@
   - [x] Re-check each hardcoded source item list against SOURCES.md's verification table while porting (SOURCES marks all ✅; no silent edits — `pid_items` untouched). Independently confirmed counts: 16 reverse, 100 SF, 25 facets, 20 INC pairs, 10 INC-S, 10 ORS, 22 PRD, 17 SDTD.
   - [x] Run `Rscript -e 'devtools::test(filter="keying")'`; confirm 0 failures, 1 skip (OQ-1) → **FAIL 0 | SKIP 1 | PASS 111**
   - [ ] Push branch, open PR, record URL in Notes/links
-- **Notes/links:** SOURCES.md "Canonical-repo note" + OQ-1/OQ-2; D-005, D-006. Full `devtools::check()` clean is **M3's** deliverable, not M1's. Never edit `pid_items` without maintainer sign-off. APA full-form scoring key (Krueger et al., 2013) confirmed the reverse items (Step 1) and 25-facet Facet Table (Step 2) from the primary source on 2026-07-09.
+- **Notes/links:** SOURCES.md "Canonical-repo note" + OQ-1/OQ-2; D-005, D-006. Full `devtools::check()` clean is **M3's** deliverable, not M1's. Never edit `pid_items` without maintainer sign-off. APA full-form scoring key (Krueger et al., 2013) confirmed the reverse items (Step 1) and 25-facet Facet Table (Step 2) from the primary source on 2026-07-09. **PR:** https://github.com/jmgirard/hitop/pull/2
 
 ### M2: Port PID-5 scoring/validity oracle tests
 
