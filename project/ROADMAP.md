@@ -17,7 +17,7 @@
   - PID-5-BFP (36-item) data, scoring, and exports. *(todo)*
 - **Related milestones:** (to be planned when HSUM feedback / BFP materials arrive)
 
-## Phase 2: Trustworthiness (current focus)
+## Phase 2: Trustworthiness (complete)
 
 - **Theme:** Make the shipped scoring provably correct and keep it that way.
 - **Outcomes:**
@@ -26,10 +26,10 @@
   - `devtools::check()` is clean (datasets documented, dependencies declared, unused Imports removed) and runs in CI with coverage reporting on every push. *(done)*
   - BF keying provenance is documented and verified against the APA PID-5-BF Domain Scoring table. *(M6, done)*
   - FULL/SF domain scores (APA key Step 3) are computed and their domain→facet map is machine-verified. *(M7, done)*
-  - Scoring honors the published APA missing-data/proration rules (opt-out via `apa_scoring = FALSE`). *(M8)*
-- **Related milestones:** M1–M8
+  - Scoring honors the published APA missing-data/proration rules (opt-out via `apa_scoring = FALSE`). *(M8, done)*
+- **Related milestones:** M1–M8 (all DONE)
 
-## Phase 3: Norms & visualization
+## Phase 3: Norms & visualization (current focus)
 
 - **Theme:** Interpretation support for researchers (README Phase 2).
 - **Outcomes:**

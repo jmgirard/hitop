@@ -33,7 +33,7 @@ Adding a form variant = a new item-number column + `*_scales` entry; adding an i
 - **Validity** — `validity_pid5()` ([R/validity_pid5.R](../R/validity_pid5.R)): computes PNA (percent missing) for all versions and INC/ORS/PRD/SDTD (S-variants for SF) unconditionally for FULL/SF, with cli warnings at published cutoffs (INC ≥ 17, ORS ≥ 3, PRD ≤ 10, SDTD ≤ 11 / ≥ 19, INC-S ≥ 8; SF ORS-S/PRD-S/SDTD-S cutoffs not yet validated — a runtime warning says so at [R/validity_pid5.R:199](../R/validity_pid5.R)). No HiTOP validity scales yet.
 - **Reliability** — `calc_alpha()` (covariance-based Cronbach's alpha, pairwise deletion) and `calc_omega()` (omega-total via one-factor lavaan CFA, MLR + FIML) in [R/reliability.R](../R/reliability.R); also embedded in scoring via `alpha`/`omega` arguments.
 - **Utilities** — `rename_hitopsr_items()` (map legacy/text-matched columns to standard `HSR_*` names), `label_hitopsr()`/`label_hitopbr()` (attach label attributes to item/scale columns), `rank_scales()`.
-- **Generators (instrument export)** — `generate_docx_*` (paper forms via {officer}/{flextable}; US + A4), `generate_qualtrics_*` (import .txt/.qsf), `generate_redcap_*` (data-dictionary zips) for all instruments; prebuilt outputs ship in `inst/extdata/`. `R/qualtrics_test.R` holds unexported Qualtrics-API experiments (uses {httr2} — see Known issues #4).
+- **Generators (instrument export)** — `generate_docx_*` (paper forms via {officer}/{flextable}; US + A4), `generate_qualtrics_*` (import .txt/.qsf), `generate_redcap_*` (data-dictionary zips) for all instruments; prebuilt outputs ship in `inst/extdata/`. `devel/qualtrics_test.R` holds unexported Qualtrics-API experiments (uses {httr2}).
 
 ### Internal utilities ([R/util.R](../R/util.R))
 
@@ -68,7 +68,7 @@ Scoring correctness is the package's core promise, so tests must verify against 
 1. **SDTD item 38 unverified (keying, OQ-1)** — `pid_items` lists 17 SDTD items; Williams et al. (2019) Table 5's note enumerates 16 (no item 38) while its text says 17. Maintainer to check the physical PID-5 manual; `pid_items` unchanged pending sign-off. See [SOURCES.md](SOURCES.md) OQ-1.
 2. **SF validity cutoffs unavailable** — ORS-S/PRD-S/SDTD-S have no validated cut scores; `validity_pid5(version = "SF")` warns at runtime. Literature watch; no milestone yet.
 3. **`generate_*` export family untested** — the DOCX/Qualtrics/REDCap generators have no automated tests; verified only by inspecting the prebuilt `inst/extdata/` artifacts. No milestone yet.
-4. **APA missing-data/proration rules not enforced in scoring** — `score_pid5()` computes scale/domain means via `rowMeans(na.rm = TRUE)`, so it averages whatever items are present and ignores the APA rules (documented for the BF in [SOURCES.md](SOURCES.md): don't compute a domain with ≥2 missing items; prorate if exactly 1 missing). Tracked as M8 (`apa_scoring` toggle, default `TRUE`); FULL/SF equivalents need their APA missing-data sources pulled first.
+4. **`score_pid5(calc_se = TRUE)` crashes on single-row input** — the SE branch calls `apply(data_items[, x], MARGIN = 1, calc_sem)` without `drop = FALSE`, so a 1-row `data` drops to a vector and `apply` errors (`dim(X) must have a positive length`). Pre-existing (independent of M8; the facet/domain score paths already use `drop = FALSE`). Same class as the single-row `validity_pid5()` bug fixed in M3. Fix: add `drop = FALSE` to the SE `apply()` calls; needs a 1-row `calc_se` oracle test. No milestone yet.
 
 ## Decision Log
 
