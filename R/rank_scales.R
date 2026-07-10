@@ -17,11 +17,19 @@
 #'   ranking. Must be between 1 and \code{length(scales)}.
 #' @param dir Direction of ranking: \code{"high"} for largest values first or
 #'   \code{"low"} for smallest values first.
+#' @param reverse A subset of \code{scales} (names or positions) identifying
+#'   scales that are keyed in the opposite direction to the rest (higher =
+#'   healthier, e.g. a well-being scale). Before ranking, each such column is
+#'   reflected via \code{sum(srange) - value} so that all selected scales share a
+#'   common "higher = more elevated" metric and \code{dir} applies uniformly. Set
+#'   to \code{NULL} (the default) when every scale is keyed the same way.
+#' @param srange A numeric vector of length 2 giving the minimum and maximum of
+#'   the scale scores, used to reflect the \code{reverse} columns. Required when
+#'   \code{reverse} is not \code{NULL}; ignored otherwise. (default = \code{NULL})
+#' @param name A length-1 string giving the name of the output column holding the
+#'   ranked-scale strings. (default = \code{"top_scales"})
 #' @param append Logical. If \code{TRUE}, bind the result as a new column to
-#'   \code{data}. If \code{FALSE}, return only the result vector.
-#' @param tibble Logical. If \code{TRUE}, coerce the output to a tibble via
-#'   \code{tibble::as_tibble()} (applies whether or not \code{append} is
-#'   \code{TRUE}).
+#'   \code{data}. If \code{FALSE}, return only the result column.
 #'
 #' @details Ranking is performed row-wise using \code{order()} on the selected
 #'   columns. Ties are resolved by the original column order (the default
@@ -34,18 +42,14 @@
 #' \code{paste0("^", prefix)} from each selected column name before
 #' concatenation.
 #'
-#' When \code{append = TRUE}, the appended column is named \code{"out"}. The
-#' order of existing columns in \code{data} is preserved.
+#' The output column is named by \code{name}. When \code{append = TRUE} it is
+#' added after the existing columns of \code{data} (whose order is preserved);
+#' when \code{append = FALSE} the result is a one-column tibble.
 #'
-#' @return If \code{append = FALSE} and \code{tibble = FALSE}: a character
-#'   vector of length \code{nrow(data)} where each element is a comma-separated
-#'   list of the selected scale names in ranked order.
-#'
-#' If \code{append = TRUE}: a data frame (or tibble if \code{tibble = TRUE})
-#' equal to \code{data} with an added character column \code{out}.
-#'
-#' If \code{append = FALSE} and \code{tibble = TRUE}: a tibble with one column
-#' \code{out}.
+#' @return A \link[tibble]{tibble}. If \code{append = TRUE}, it is \code{data}
+#'   with an added character column named by \code{name}. If \code{append =
+#'   FALSE}, it is a one-column tibble (named by \code{name}) whose values are
+#'   the comma-separated ranked scale names, one per row of \code{data}.
 #'
 #' @examples
 #' # List each respondent's 3 highest-scoring HiTOP-BR scales
@@ -60,8 +64,10 @@ rank_scales <- function(
   prefix = NULL,
   top = 5,
   dir = "high",
-  append = TRUE,
-  tibble = TRUE
+  reverse = NULL,
+  srange = NULL,
+  name = "top_scales",
+  append = TRUE
 ) {
   ## Validate args
   validate_data(data)
@@ -70,11 +76,30 @@ rank_scales <- function(
   stopifnot(rlang::is_integerish(top, n = 1))
   stopifnot(top >= 1 && top <= length(scales))
   stopifnot(dir %in% c("high", "low"))
+  stopifnot(rlang::is_string(name))
   stopifnot(rlang::is_bool(append))
-  stopifnot(rlang::is_bool(tibble))
 
   ## Extract scale columns
   data_scales <- data[scales]
+
+  ## Reflect any reverse-directioned scales so all columns share a common
+  ## "higher = more elevated" metric before ranking.
+  if (!is.null(reverse)) {
+    cli_assert(
+      condition = all(reverse %in% scales),
+      message = "The `reverse` scales must all be in `scales`."
+    )
+    cli_assert(
+      condition = !is.null(srange),
+      message = "`srange` must be supplied when `reverse` is set."
+    )
+    validate_range(srange)
+    rev_idx <- which(scales %in% reverse)
+    data_scales[rev_idx] <- lapply(
+      data_scales[rev_idx],
+      function(v) sum(srange) - v
+    )
+  }
 
   col_names <- colnames(data_scales)
   if (!is.null(prefix)) {
@@ -82,25 +107,20 @@ rank_scales <- function(
   }
 
   ## Find the top scales per subject
-  out <- apply(data_scales, MARGIN = 1, function(row) {
-    if (dir == "high") {
-      idx <- order(row, decreasing = TRUE)[seq_len(top)]
-    } else {
-      idx <- order(row, decreasing = FALSE)[seq_len(top)]
-    }
+  ranked <- apply(data_scales, MARGIN = 1, function(row) {
+    idx <- order(row, decreasing = (dir == "high"))[seq_len(top)]
     paste(col_names[idx], collapse = ",")
   })
 
-  ## Append output to input tibble if requested
+  ## Assemble the output column under its requested name
+  out_col <- stats::setNames(
+    data.frame(ranked, stringsAsFactors = FALSE),
+    name
+  )
+
+  ## Append to the input if requested; always return a tibble
   if (append == TRUE) {
-    out <- cbind(data, out)
+    out_col <- cbind(data, out_col)
   }
-
-  ## Coerce output to tibble if requested
-  if (tibble == TRUE) {
-    out <- tibble::as_tibble(out)
-  }
-
-  ## Return output
-  out
+  tibble::as_tibble(out_col)
 }

@@ -13,27 +13,21 @@
 #'   4)`)
 #' @param prefix An optional string to add before each scale column name. If no
 #'   prefix is desired, set to an empty string `""`. (default = `"hsr_"`)
-#' @param na.rm An optional logical indicating whether missing values should be
-#'   ignored when calculating scale scores. (default = `TRUE`)
+#' @param missing A string selecting how missing item responses are handled when
+#'   computing scale scores. `"available"` (the default) averages whatever items
+#'   are present (`rowMeans(na.rm = TRUE)`); `"complete"` returns `NA` for any
+#'   scale with a missing item (`rowMeans(na.rm = FALSE)`). (default =
+#'   `"available"`)
 #' @param calc_se An optional logical indicating whether to calculate the
 #'   standard error of each scale score. (default = `FALSE`)
-#' @param alpha Optional logical; if `TRUE`, compute and print Cronbach’s alpha
-#'   for each scale. (default = `FALSE`)
-#' @param omega Optional logical; if `TRUE`, compute and print McDonald’s omega
-#'   for each scale using Pearson correlations (i.e., non-ordinal). (default =
-#'   `FALSE`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
-#' @param tibble An optional logical indicating whether the output should be
-#'   converted to a `tibble::tibble()`. (default = `TRUE`)
 #'
-#' @details If either `alpha` or `omega` are `TRUE`, the function prints a
-#'   per-scale reliability summary. Only reliability columns that contain at
-#'   least one non-`NA` value are shown (the `scale` column is always shown).
+#' @details For per-scale reliability estimates (Cronbach's alpha, McDonald's
+#'   omega), use [reliability_hitopsr()].
 #'
-#' @return A data frame containing all scale scores and standard errors (if
-#'   requested) and all original `data` columns (if requested). Reliability
-#'   estimates, when requested, are printed as a side effect.
+#' @return A \link[tibble]{tibble} containing all scale scores and standard
+#'   errors (if requested) and all original `data` columns (if requested).
 #'
 #' @examples
 #' # Score all HiTOP-SR scales from the simulated data
@@ -45,13 +39,11 @@ score_hitopsr <- function(
   items,
   srange = c(1, 4),
   prefix = "hsr_",
-  na.rm = TRUE,
+  missing = c("available", "complete"),
   calc_se = FALSE,
-  alpha = FALSE,
-  omega = FALSE,
-  append = TRUE,
-  tibble = TRUE
+  append = TRUE
 ) {
+  missing <- match.arg(missing)
   ## Resolve this instrument's data: which items reverse and the per-scale
   ## item-number lists. Shared arg validation and the pipeline run in the engine.
   reverse_items <-
@@ -65,11 +57,8 @@ score_hitopsr <- function(
     items_scales = hitopsr_scales$itemNumbers,
     srange = srange,
     prefix = prefix,
-    na.rm = na.rm,
+    missing = missing,
     calc_se = calc_se,
-    append = append,
-    tibble = tibble,
-    alpha = alpha,
-    omega = omega
+    append = append
   )
 }

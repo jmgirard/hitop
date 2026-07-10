@@ -17,44 +17,31 @@
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param prefix An optional string to add before each scale column name. If no
 #'   prefix is desired, set to an empty string `""`. (default = `"pid_"`)
-#' @param na.rm An optional logical indicating whether missing values should be
-#'   ignored when calculating scale scores. Ignored when `apa_scoring = TRUE`
-#'   (the APA missing-data rule governs instead); a warning is issued if
-#'   `na.rm = FALSE` is set explicitly alongside `apa_scoring = TRUE`. (default =
-#'   `TRUE`)
-#' @param apa_scoring An optional logical selecting the missing-data algorithm.
-#'   If `TRUE` (the default), scale scores follow the published APA scoring key:
-#'   a facet or domain-item scale with more than 25% of its items unanswered is
-#'   set to `NA`, and otherwise the raw score is prorated to the full item count
-#'   and rounded to the nearest whole number before averaging; a FULL/SF domain
-#'   is `NA` if any one of its three contributing facets is `NA`. If `FALSE`,
-#'   scores use the traditional `rowMeans(na.rm = na.rm)` behavior, which averages
-#'   whatever items are present. With no missing items the two agree. (default =
-#'   `TRUE`)
+#' @param missing A string selecting how missing item responses are handled when
+#'   computing scale scores. `"apa"` (the default) follows the published APA
+#'   scoring key: a facet or domain-item scale with more than 25% of its items
+#'   unanswered is set to `NA`, and otherwise the raw score is prorated to the
+#'   full item count and rounded to the nearest whole number before averaging (a
+#'   FULL/SF domain is `NA` if any one of its three contributing facets is `NA`).
+#'   `"available"` averages whatever items are present (`rowMeans(na.rm = TRUE)`).
+#'   `"complete"` returns `NA` for any scale with a missing item
+#'   (`rowMeans(na.rm = FALSE)`). With no missing items the three agree. (default
+#'   = `"apa"`)
 #' @param calc_se An optional logical indicating whether to calculate the
 #'   standard error of each scale score. Standard errors are `NA` wherever their
 #'   scale score is `NA`. (default = `FALSE`)
-#' @param alpha Optional logical; if `TRUE`, compute and print Cronbach’s alpha
-#'   for each scale. (default = `FALSE`)
-#' @param omega Optional logical; if `TRUE`, compute and print McDonald’s omega
-#'   for each scale using Pearson correlations (i.e., non-ordinal). (default =
-#'   `FALSE`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
-#' @param tibble An optional logical indicating whether the output should be
-#'   converted to a \link[tibble]{tibble}. (default = `TRUE`)
 #'
 #' @details For the FULL and SF versions, the output includes the 25 facet
 #'   scores followed by the 5 personality-trait domain scores. Following the APA
 #'   scoring key (Step 3), each domain score is the mean of the average scores of
 #'   its 3 primary facets (the map is stored in `pid_domains`). The BF version
-#'   scores its 5 domains directly from its items. By default (`apa_scoring =
-#'   TRUE`) all versions apply the APA missing-data and proration rule; set
-#'   `apa_scoring = FALSE` for the traditional `rowMeans(na.rm = na.rm)` behavior.
-#'   If either `alpha` or `omega` are `TRUE`,
-#'   the function prints a per-scale reliability summary (facets only for FULL/SF).
-#'   Only reliability columns that contain at least one non-`NA` value are shown
-#'   (the `scale` column is always shown).
+#'   scores its 5 domains directly from its items. By default (`missing = "apa"`)
+#'   all versions apply the APA missing-data and proration rule; use
+#'   `missing = "available"` or `missing = "complete"` for the traditional
+#'   `rowMeans()` behaviors. For per-scale reliability estimates (Cronbach's
+#'   alpha, McDonald's omega), use [reliability_pid5()].
 #'
 #' @return A \link[tibble]{tibble} containing all scale scores and standard
 #'   errors (if requested) and all original `data` columns (if requested)
@@ -95,18 +82,15 @@ score_pid5 <- function(
   version = c("FULL", "SF", "BF"),
   srange = c(0, 3),
   prefix = "pid_",
-  na.rm = TRUE,
-  apa_scoring = TRUE,
+  missing = c("apa", "available", "complete"),
   calc_se = FALSE,
-  alpha = FALSE,
-  omega = FALSE,
-  append = TRUE,
-  tibble = TRUE
+  append = TRUE
 ) {
   ## Resolve the version and its item count (shared arg validation runs in the
   ## engine; version is PID-specific and resolved here)
   version <- toupper(version)
   version <- match.arg(version, choices = c("FULL", "SF", "BF"))
+  missing <- match.arg(missing)
   n_items <- switch(
     version,
     "FULL" = 220,
@@ -135,14 +119,10 @@ score_pid5 <- function(
     items_scales = items_scales,
     srange = srange,
     prefix = prefix,
-    na.rm = na.rm,
+    missing = missing,
     calc_se = calc_se,
     append = append,
-    tibble = tibble,
-    apa_scoring = apa_scoring,
     domain_map = domain_map,
-    alpha = alpha,
-    omega = omega,
     mask_se_na = TRUE
   )
 }

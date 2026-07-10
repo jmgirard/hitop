@@ -75,53 +75,5 @@ test_that("score_hitopbr() honors invariants: se, prefix, row count", {
   expect_true(all(names(df) %in% names(appended)))
 })
 
-# --- Reliability wiring (milestone M13) -------------------------------------
-# score_hitopbr() gained alpha/omega (default FALSE), passed straight through to
-# the shared score_engine(). These verify the wiring; the reliability *values*
-# themselves are ground-truth tested in test-reliability.R (calc_alpha/calc_omega).
-
-test_that("score_hitopbr(alpha = TRUE) prints a summary and leaves scores unchanged (M13)", {
-  plain <- score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE)
-  expect_output(
-    out <- score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE, alpha = TRUE),
-    "alpha"
-  )
-  expect_equal(out, plain)
-})
-
-test_that("score_hitopbr(omega = TRUE) runs without error (M13)", {
-  skip_if_not_installed("lavaan")
-  expect_no_error(suppressWarnings(utils::capture.output(
-    score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE, omega = TRUE)
-  )))
-})
-
-test_that("score_hitopbr(alpha = TRUE) prints the independently-recomputed alphas (M13 oracle)", {
-  # Independent recomputation: reconstruct the exact table the engine prints by
-  # coercing items to numeric (BR has no reverse items) and computing calc_alpha
-  # per scale from hardcoded hitopbr_scales membership, then formatting it the
-  # same way the engine does. Uses real ku_hitopbr so the scales are coherent.
-  d <- ku_hitopbr
-  items <- 3:47  # participant, biosex, then hbr01..hbr45
-
-  di <- as.data.frame(lapply(d[items], as.numeric))
-  stopifnot(!any(hitopbr_items$Reverse))  # guards the no-reverse-keying assumption
-  scales <- hitopbr_scales$itemNumbers
-  exp_alpha <- vapply(
-    scales,
-    function(idx) tryCatch(calc_alpha(di[idx]), error = function(e) NA_real_),
-    numeric(1)
-  )
-  exp_df <- data.frame(
-    scale = snakecase::to_title_case(names(scales)),
-    alpha = unname(exp_alpha)
-  )
-  expected_print <- utils::capture.output(print(exp_df, digits = 3))
-
-  # assign inside capture.output so the returned tibble stays invisible and only
-  # the printed reliability table is captured
-  actual_print <- utils::capture.output({
-    scored <- score_hitopbr(d, items = items, append = FALSE, alpha = TRUE)
-  })
-  expect_equal(actual_print, expected_print)
-})
+# Reliability moved out of score_hitopbr() into reliability_hitopbr() (M15); the
+# per-scale alpha/omega oracle now lives in test-reliability.R.

@@ -10,13 +10,9 @@ score_pid5(
   version = c("FULL", "SF", "BF"),
   srange = c(0, 3),
   prefix = "pid_",
-  na.rm = TRUE,
-  apa_scoring = TRUE,
+  missing = c("apa", "available", "complete"),
   calc_se = FALSE,
-  alpha = FALSE,
-  omega = FALSE,
-  append = TRUE,
-  tibble = TRUE
+  append = TRUE
 )
 }
 \arguments{
@@ -38,38 +34,23 @@ values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
 \item{prefix}{An optional string to add before each scale column name. If no
 prefix is desired, set to an empty string \code{""}. (default = \code{"pid_"})}
 
-\item{na.rm}{An optional logical indicating whether missing values should be
-ignored when calculating scale scores. Ignored when \code{apa_scoring = TRUE}
-(the APA missing-data rule governs instead); a warning is issued if
-\code{na.rm = FALSE} is set explicitly alongside \code{apa_scoring = TRUE}. (default =
-\code{TRUE})}
-
-\item{apa_scoring}{An optional logical selecting the missing-data algorithm.
-If \code{TRUE} (the default), scale scores follow the published APA scoring key:
-a facet or domain-item scale with more than 25\% of its items unanswered is
-set to \code{NA}, and otherwise the raw score is prorated to the full item count
-and rounded to the nearest whole number before averaging; a FULL/SF domain
-is \code{NA} if any one of its three contributing facets is \code{NA}. If \code{FALSE},
-scores use the traditional \code{rowMeans(na.rm = na.rm)} behavior, which averages
-whatever items are present. With no missing items the two agree. (default =
-\code{TRUE})}
+\item{missing}{A string selecting how missing item responses are handled when
+computing scale scores. \code{"apa"} (the default) follows the published APA
+scoring key: a facet or domain-item scale with more than 25\% of its items
+unanswered is set to \code{NA}, and otherwise the raw score is prorated to the
+full item count and rounded to the nearest whole number before averaging (a
+FULL/SF domain is \code{NA} if any one of its three contributing facets is \code{NA}).
+\code{"available"} averages whatever items are present (\code{rowMeans(na.rm = TRUE)}).
+\code{"complete"} returns \code{NA} for any scale with a missing item
+(\code{rowMeans(na.rm = FALSE)}). With no missing items the three agree. (default
+= \code{"apa"})}
 
 \item{calc_se}{An optional logical indicating whether to calculate the
 standard error of each scale score. Standard errors are \code{NA} wherever their
 scale score is \code{NA}. (default = \code{FALSE})}
 
-\item{alpha}{Optional logical; if \code{TRUE}, compute and print Cronbach’s alpha
-for each scale. (default = \code{FALSE})}
-
-\item{omega}{Optional logical; if \code{TRUE}, compute and print McDonald’s omega
-for each scale using Pearson correlations (i.e., non-ordinal). (default =
-\code{FALSE})}
-
 \item{append}{An optional logical indicating whether the new columns should
 be added to the end of the \code{data} input. (default = \code{TRUE})}
-
-\item{tibble}{An optional logical indicating whether the output should be
-converted to a \link[tibble]{tibble}. (default = \code{TRUE})}
 }
 \value{
 A \link[tibble]{tibble} containing all scale scores and standard
@@ -85,12 +66,11 @@ For the FULL and SF versions, the output includes the 25 facet
 scores followed by the 5 personality-trait domain scores. Following the APA
 scoring key (Step 3), each domain score is the mean of the average scores of
 its 3 primary facets (the map is stored in \code{pid_domains}). The BF version
-scores its 5 domains directly from its items. By default (\code{apa_scoring = TRUE}) all versions apply the APA missing-data and proration rule; set
-\code{apa_scoring = FALSE} for the traditional \code{rowMeans(na.rm = na.rm)} behavior.
-If either \code{alpha} or \code{omega} are \code{TRUE},
-the function prints a per-scale reliability summary (facets only for FULL/SF).
-Only reliability columns that contain at least one non-\code{NA} value are shown
-(the \code{scale} column is always shown).
+scores its 5 domains directly from its items. By default (\code{missing = "apa"})
+all versions apply the APA missing-data and proration rule; use
+\code{missing = "available"} or \code{missing = "complete"} for the traditional
+\code{rowMeans()} behaviors. For per-scale reliability estimates (Cronbach's
+alpha, McDonald's omega), use \code{\link[=reliability_pid5]{reliability_pid5()}}.
 }
 \examples{
 # Score the full PID-5 (25 facets + 5 domains) from the simulated data

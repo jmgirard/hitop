@@ -10,8 +10,7 @@ validity_pid5(
   version = c("FULL", "SF", "BF"),
   srange = c(0, 3),
   prefix = "pid_",
-  append = TRUE,
-  tibble = TRUE
+  append = TRUE
 )
 }
 \arguments{
@@ -35,9 +34,6 @@ prefix is desired, set to an empty string \code{""}. (default = \code{"pid_"})}
 
 \item{append}{An optional logical indicating whether the new columns should
 be added to the end of the \code{data} input. (default = \code{TRUE})}
-
-\item{tibble}{An optional logical indicating whether the output should be
-converted to a \link[tibble]{tibble}. (default = \code{TRUE})}
 }
 \value{
 A \link[tibble]{tibble} containing all validity scores and all

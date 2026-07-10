@@ -27,9 +27,9 @@ test_that("FULL facet scores match hand-computed fixture values", {
 
 test_that("FULL independent recomputation from the official key matches", {
   # Deliberately dumb recomputation with item numbers copied from the key,
-  # guarding pid_items against transcription errors. Uses apa_scoring = FALSE so
-  # the hand rowMeans(na.rm = TRUE) oracle is the right comparison on the missing
-  # row R4 too; the APA path is exercised in its own oracle tests below.
+  # guarding pid_items against transcription errors. Uses missing = "available"
+  # so the hand rowMeans(na.rm = TRUE) oracle is the right comparison on the
+  # missing row R4 too; the APA path is exercised in its own oracle tests below.
   x <- fx_pid5()
   rev_items <- c(7, 30, 35, 58, 87, 90, 96, 97, 98, 131, 142, 155, 164, 177, 210, 215)
   xr <- x
@@ -38,7 +38,7 @@ test_that("FULL independent recomputation from the official key matches", {
   anhedonia <- c(1, 23, 26, 30, 124, 155, 157, 189)  # official Anhedonia items
   f_anhedo_hand <- rowMeans(xr[, anhedonia], na.rm = TRUE)
 
-  pkg <- score_pid5(x, items = 1:220, version = "FULL", apa_scoring = FALSE, append = FALSE)
+  pkg <- score_pid5(x, items = 1:220, version = "FULL", missing = "available", append = FALSE)
   expect_equal(pkg$pid_anhedonia, f_anhedo_hand)
 })
 
@@ -48,8 +48,8 @@ test_that("FULL applies reverse-keying (facet with a reverse item is nonzero on 
   expect_equal(f$pid_separationInsecurity[1], 0) # contains none
 })
 
-test_that("FULL traditional scoring (apa_scoring = FALSE) tolerates missing via rowMeans", {
-  f <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", apa_scoring = FALSE, append = FALSE)
+test_that("FULL available-item scoring (missing = 'available') tolerates missing via rowMeans", {
+  f <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", missing = "available", append = FALSE)
   # R4 drops item 1 from Anhedonia: (5*1 + 2*2)/7 = 9/7
   expect_equal(f$pid_anhedonia[4], 9 / 7)
   expect_false(any(is.na(f$pid_anxiousness))) # Anxiousness has no missing items
@@ -83,8 +83,8 @@ test_that("SF independent recomputation from the official key matches", {
   f_anhedo_hand <- rowMeans(x[, anhedo], na.rm = TRUE)
   f_withdr_hand <- rowMeans(x[, withdr], na.rm = TRUE)
 
-  # apa_scoring = FALSE keeps rowMeans as the correct oracle on the missing row.
-  pkg <- score_pid5(x, items = 1:100, version = "SF", apa_scoring = FALSE, append = FALSE)
+  # missing = "available" keeps rowMeans as the correct oracle on the missing row.
+  pkg <- score_pid5(x, items = 1:100, version = "SF", missing = "available", append = FALSE)
   expect_equal(pkg$pid_anhedonia, f_anhedo_hand)
   expect_equal(pkg$pid_withdrawal, f_withdr_hand)
 })
@@ -117,8 +117,8 @@ test_that("BF independent recomputation from the APA Domain table matches", {
   d_disinhib_hand <- rowMeans(x[, disinhib], na.rm = TRUE)
   d_detach_hand   <- rowMeans(x[, detach], na.rm = TRUE)
 
-  # apa_scoring = FALSE keeps rowMeans as the correct oracle on the missing row.
-  pkg <- score_pid5(x, items = 1:25, version = "BF", apa_scoring = FALSE, append = FALSE)
+  # missing = "available" keeps rowMeans as the correct oracle on the missing row.
+  pkg <- score_pid5(x, items = 1:25, version = "BF", missing = "available", append = FALSE)
   expect_equal(pkg$pid_disinhibition, d_disinhib_hand)
   expect_equal(pkg$pid_detachment, d_detach_hand)
 })
@@ -126,7 +126,7 @@ test_that("BF independent recomputation from the APA Domain table matches", {
 test_that("BF missing-item handling differs by apa_scoring", {
   # R4 sets items 1:5 NA. Disinhibition = items 1,2,3,5,6 -> 4 of 5 missing (80%).
   d_apa  <- score_pid5(fx_pid5bf(), items = 1:25, version = "BF", append = FALSE)
-  d_trad <- score_pid5(fx_pid5bf(), items = 1:25, version = "BF", apa_scoring = FALSE, append = FALSE)
+  d_trad <- score_pid5(fx_pid5bf(), items = 1:25, version = "BF", missing = "available", append = FALSE)
 
   # APA (default): >25% of Disinhibition items missing -> NA (not scored).
   expect_true(is.na(d_apa$pid_disinhibition[4]))
@@ -177,20 +177,20 @@ test_that("FULL domain = mean of its 3 primary facet columns (independent recomp
   expect_equal(f$pid_antagonism, rowMeans(as.matrix(f[, antag])))
 })
 
-test_that("FULL domains honor na.rm under traditional scoring (apa_scoring = FALSE)", {
+test_that("FULL domains honor missing = available vs complete", {
   x <- fx_pid5()
   anhedonia <- c(1, 23, 26, 30, 124, 155, 157, 189)  # official Anhedonia items
   x[1, anhedonia] <- NA_integer_                      # wipe the whole facet on R1
-  f_narm <- score_pid5(x, items = 1:220, version = "FULL", apa_scoring = FALSE, na.rm = TRUE, append = FALSE)
-  f_nona <- score_pid5(x, items = 1:220, version = "FULL", apa_scoring = FALSE, na.rm = FALSE, append = FALSE)
+  f_narm <- score_pid5(x, items = 1:220, version = "FULL", missing = "available", append = FALSE)
+  f_nona <- score_pid5(x, items = 1:220, version = "FULL", missing = "complete", append = FALSE)
 
-  # na.rm = TRUE: anhedonia is NA and drops; detachment averages the other 2 facets.
+  # missing = "available": anhedonia is NA and drops; detachment averages the other 2 facets.
   expect_true(is.na(f_narm$pid_anhedonia[1]))
   expect_equal(
     f_narm$pid_detachment[1],
     mean(c(f_narm$pid_withdrawal[1], f_narm$pid_intimacyAvoidance[1]))
   )
-  # na.rm = FALSE: a contributing facet is NA, so the domain is NA.
+  # missing = "complete": a contributing facet is NA, so the domain is NA.
   expect_true(is.na(f_nona$pid_detachment[1]))
 })
 
@@ -244,7 +244,7 @@ test_that("APA and traditional scoring agree when no items are missing", {
     n <- if (v == "FULL") 220 else 100
     fx <- if (v == "FULL") fx_pid5() else fx_pid5sf()
     apa  <- score_pid5(fx[1:2, ], items = 1:n, version = v, append = FALSE)
-    trad <- score_pid5(fx[1:2, ], items = 1:n, version = v, apa_scoring = FALSE, append = FALSE)
+    trad <- score_pid5(fx[1:2, ], items = 1:n, version = v, missing = "available", append = FALSE)
     expect_equal(apa, trad)
   }
 })
@@ -255,7 +255,7 @@ test_that("APA facet proration rounds the prorated raw (FULL Anhedonia, item 1 m
   # five 1s + two reverse(1)=2 = 9 over 7 answered. Prorated raw = round(9*8/7) =
   # round(10.2857) = 10; average = 10/8 = 1.25. Traditional rowMeans = 9/7.
   apa  <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", append = FALSE)
-  trad <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", apa_scoring = FALSE, append = FALSE)
+  trad <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", missing = "available", append = FALSE)
   expect_equal(apa$pid_anhedonia[4], 1.25)
   expect_equal(trad$pid_anhedonia[4], 9 / 7)
   expect_false(isTRUE(all.equal(apa$pid_anhedonia[4], trad$pid_anhedonia[4])))
@@ -265,7 +265,7 @@ test_that("APA drops a facet with more than 25% of items missing (FULL Impulsivi
   # R4: Impulsivity = 4,16,17,22,58,204 (n = 6); items 4,16,17,22 in 1:22 ->
   # 4 of 6 missing (66.7% > 25%) -> NA. Traditional averages the 2 present items.
   apa  <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", append = FALSE)
-  trad <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", apa_scoring = FALSE, append = FALSE)
+  trad <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", missing = "available", append = FALSE)
   expect_true(is.na(apa$pid_impulsivity[4]))
   expect_false(is.na(trad$pid_impulsivity[4]))
 })
@@ -298,7 +298,7 @@ test_that("APA domain is NA when any one contributing facet is NA (FULL Disinhib
   # R4: Impulsivity (a primary Disinhibition facet) is NA (> 25% missing), so the
   # Disinhibition DOMAIN is NA even though Irresponsibility & Distractibility score.
   apa  <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", append = FALSE)
-  trad <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", apa_scoring = FALSE, append = FALSE)
+  trad <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", missing = "available", append = FALSE)
   expect_true(is.na(apa$pid_disinhibition[4]))
   expect_false(is.na(apa$pid_irresponsibility[4]))   # a computable sibling facet
   expect_false(is.na(trad$pid_disinhibition[4]))     # traditional averages what it has
@@ -315,14 +315,29 @@ test_that("APA SE is NA wherever the scale score is NA", {
   expect_false(is.na(se$pid_anhedonia_se[4]))
 })
 
-test_that("na.rm is ignored (with a warning) under apa_scoring = TRUE", {
-  expect_warning(
-    out <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", na.rm = FALSE, append = FALSE),
-    "na.rm"
-  )
-  # Result equals the default apa call (na.rm truly ignored, not applied).
-  default <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", append = FALSE)
-  expect_equal(out, default)
+test_that("the three missing levels agree on complete data", {
+  # Rows 1-3 of every fixture are complete; with no missing items apa proration
+  # (n_answered = n_items) reduces to the plain mean, so all three levels coincide.
+  for (v in c("FULL", "SF", "BF")) {
+    n <- switch(v, FULL = 220, SF = 100, BF = 25)
+    fx <- switch(v, FULL = fx_pid5(), SF = fx_pid5sf(), BF = fx_pid5bf())[1:3, ]
+    apa   <- score_pid5(fx, items = 1:n, version = v, missing = "apa", append = FALSE)
+    avail <- score_pid5(fx, items = 1:n, version = v, missing = "available", append = FALSE)
+    comp  <- score_pid5(fx, items = 1:n, version = v, missing = "complete", append = FALSE)
+    expect_equal(apa, avail)
+    expect_equal(avail, comp)
+  }
+})
+
+test_that("missing = complete returns NA for any scale touching a missing item", {
+  # fx_pid5() R4 sets items 1:22 NA. Anhedonia includes item 1, so it is NA under
+  # "complete" but computable under "available" (averages the surviving items).
+  comp  <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", missing = "complete", append = FALSE)
+  avail <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", missing = "available", append = FALSE)
+  expect_true(is.na(comp$pid_anhedonia[4]))
+  expect_false(is.na(avail$pid_anhedonia[4]))
+  # Anxiousness has no item in 1:22, so it is computable under both.
+  expect_false(is.na(comp$pid_anxiousness[4]))
 })
 
 # ---- Single-row input with calc_se (regression for the M8 follow-up) ---------
@@ -378,9 +393,9 @@ test_that("single-row calc_se equals the first row of a multi-row score", {
   # Guards against the fix altering multi-row behavior: scoring one row alone
   # must reproduce that row's SEs from a multi-row call.
   multi <- score_pid5(fx_pid5(), items = 1:220, version = "FULL",
-                      calc_se = TRUE, apa_scoring = FALSE, append = FALSE)
+                      calc_se = TRUE, missing = "available", append = FALSE)
   one <- score_pid5(fx_pid5()[2, ], items = 1:220, version = "FULL",
-                    calc_se = TRUE, apa_scoring = FALSE, append = FALSE)
+                    calc_se = TRUE, missing = "available", append = FALSE)
   se_names <- grep("_se$", names(multi), value = TRUE)
   expect_equal(as.numeric(one[1, se_names]), as.numeric(multi[2, se_names]))
 })
@@ -388,7 +403,7 @@ test_that("single-row calc_se equals the first row of a multi-row score", {
 test_that("SF applies the APA rule the same way as FULL", {
   # fx_pid5sf() R5: items 1:10 NA. Submissiveness = 2 of 4 items missing (> 25%).
   apa  <- score_pid5(fx_pid5sf(), items = 1:100, version = "SF", append = FALSE)
-  trad <- score_pid5(fx_pid5sf(), items = 1:100, version = "SF", apa_scoring = FALSE, append = FALSE)
+  trad <- score_pid5(fx_pid5sf(), items = 1:100, version = "SF", missing = "available", append = FALSE)
   expect_true(is.na(apa$pid_submissiveness[5]))
   expect_false(is.na(trad$pid_submissiveness[5]))
 })

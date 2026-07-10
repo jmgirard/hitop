@@ -9,12 +9,9 @@ score_hitopsr(
   items,
   srange = c(1, 4),
   prefix = "hsr_",
-  na.rm = TRUE,
+  missing = c("available", "complete"),
   calc_se = FALSE,
-  alpha = FALSE,
-  omega = FALSE,
-  append = TRUE,
-  tibble = TRUE
+  append = TRUE
 )
 }
 \arguments{
@@ -32,37 +29,28 @@ values of the HiTOP-SR items, used for reverse-coding. (default = \code{c(1, 4)}
 \item{prefix}{An optional string to add before each scale column name. If no
 prefix is desired, set to an empty string \code{""}. (default = \code{"hsr_"})}
 
-\item{na.rm}{An optional logical indicating whether missing values should be
-ignored when calculating scale scores. (default = \code{TRUE})}
+\item{missing}{A string selecting how missing item responses are handled when
+computing scale scores. \code{"available"} (the default) averages whatever items
+are present (\code{rowMeans(na.rm = TRUE)}); \code{"complete"} returns \code{NA} for any
+scale with a missing item (\code{rowMeans(na.rm = FALSE)}). (default =
+\code{"available"})}
 
 \item{calc_se}{An optional logical indicating whether to calculate the
 standard error of each scale score. (default = \code{FALSE})}
 
-\item{alpha}{Optional logical; if \code{TRUE}, compute and print Cronbach’s alpha
-for each scale. (default = \code{FALSE})}
-
-\item{omega}{Optional logical; if \code{TRUE}, compute and print McDonald’s omega
-for each scale using Pearson correlations (i.e., non-ordinal). (default =
-\code{FALSE})}
-
 \item{append}{An optional logical indicating whether the new columns should
 be added to the end of the \code{data} input. (default = \code{TRUE})}
-
-\item{tibble}{An optional logical indicating whether the output should be
-converted to a \code{tibble::tibble()}. (default = \code{TRUE})}
 }
 \value{
-A data frame containing all scale scores and standard errors (if
-requested) and all original \code{data} columns (if requested). Reliability
-estimates, when requested, are printed as a side effect.
+A \link[tibble]{tibble} containing all scale scores and standard
+errors (if requested) and all original \code{data} columns (if requested).
 }
 \description{
 Create a data frame with scores on all the HiTOP-SR scales.
 }
 \details{
-If either \code{alpha} or \code{omega} are \code{TRUE}, the function prints a
-per-scale reliability summary. Only reliability columns that contain at
-least one non-\code{NA} value are shown (the \code{scale} column is always shown).
+For per-scale reliability estimates (Cronbach's alpha, McDonald's
+omega), use \code{\link[=reliability_hitopsr]{reliability_hitopsr()}}.
 }
 \examples{
 # Score all HiTOP-SR scales from the simulated data
