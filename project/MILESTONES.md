@@ -25,22 +25,22 @@
 - **Goal:** Fix factual errors, fill omissions, and harmonize structure across the 5 scoring tutorials and the 6 pkgdown instrument download pages (+ the scales-definitions article) so every prose claim matches actual code output, every link resolves to the correct target, and every instrument is documented to the same standard (docs-only; no scoring/keying/data changes).
 - **Acceptance criteria:**
   - **Scoring tutorials (`vignettes/*_scoring.Rmd`):**
-    - [ ] No stale HiTOP-PRO-era references remain: `grep -rn "ku_hitoppro\|hitop%03d\|hitop001\|hitoppro\|score_hitoppro\|pro_" vignettes/*.Rmd` returns nothing
-    - [ ] `hitopsr_scoring.Rmd` prose names match reality: columns `hsr001`–`hsr405`, dataset `ku_hitopsr`, format string `hsr%03d`
-    - [ ] `hitopbr_scoring.Rmd` states **8** scales and column counts **55** (append) and **16** (SE), matching `score_hitopbr()` output
-    - [ ] `pid5bf_scoring.Rmd` no longer says "WORK IN PROGRESS" and has a working Scale Reliability section using `reliability_pid5(version = "BF")`
-    - [ ] `hitopbr_scoring.Rmd` has a Scale Reliability section using `reliability_hitopbr()`
-    - [ ] All 5 tutorials use one consistent heading level (`##`) and a comparable section set (Basic Scoring → Appending → Items as Strings → Prefixes → SE → Reliability, applied per instrument's capabilities)
-    - [ ] Every numeric/column-count/scale-count claim in the 5 tutorials re-derived against fresh `score_*()`/`data` output (not trusted)
+    - [x] No stale HiTOP-PRO-era references remain: `grep -rn "ku_hitoppro\|hitop%03d\|hitop001\|hitoppro\|score_hitoppro\|pro_" vignettes/*.Rmd` returns nothing
+    - [x] `hitopsr_scoring.Rmd` prose names match reality: columns `hsr001`–`hsr405`, dataset `ku_hitopsr`, format string `hsr%03d`
+    - [x] `hitopbr_scoring.Rmd` states **8** scales and column counts **55** (append) and **16** (SE), matching `score_hitopbr()` output
+    - [x] `pid5bf_scoring.Rmd` no longer says "WORK IN PROGRESS" and has a working Scale Reliability section using `reliability_pid5(version = "BF")`
+    - [x] `hitopbr_scoring.Rmd` has a Scale Reliability section using `reliability_hitopbr()`
+    - [x] All 5 tutorials use one consistent heading level (`##`) and a comparable section set (Basic Scoring → Appending → Items as Strings → Prefixes → SE → Reliability, applied per instrument's capabilities)
+    - [x] Every numeric/column-count/scale-count claim in the 5 tutorials re-derived against fresh `score_*()`/`data` output (not trusted)
   - **pkgdown instrument pages (`vignettes/articles/*.Rmd`):**
-    - [ ] Each `download-*.Rmd` REDCap "Import Instructions" link points to that page's own `generate_redcap_<instrument>` reference — no cross-instrument link (`download-pid5.Rmd:64` fixed hitopsr→pid5)
-    - [ ] Every `../reference/*.html` link and every `inst/extdata/*` download link on all 6 download pages resolves to an existing target (grep-verified against exported objects / `inst/extdata/` contents)
-    - [ ] Each download page's "Instrument Information" and "Example Datasets" card text describes only resources it actually links (no unmet "subscale definitions" promise on pid5/pid5sf/pid5bf/hitopbr; no "real validation sample" claim on pages with no `ku_*` dataset)
-    - [ ] "domains scales" → "domain scales" grammar fixed in `download-pid5.Rmd`, `download-pid5sf.Rmd`, `download-pid5bf.Rmd`
-    - [ ] The 6 download pages use consistent download-card row markup (no stray `<br>`, uniform `row mt-4` spacing, consistent indentation)
+    - [x] Each `download-*.Rmd` REDCap "Import Instructions" link points to a valid `generate_redcap_*#details` anchor — no wrong-family/broken link (`download-pid5.Rmd:64` fixed hitopsr→pid5). *(Review reconciliation: pid5sf/pid5bf intentionally keep pointing to `generate_redcap_pid5.html#details` because those two functions use `@inheritParams` and have no `\details` section of their own, so their own pages carry no `#details` anchor; the instrument-generic import steps live on the pid5 page. Adding `@details` to those two functions is a separate R/roxygen follow-up.)*
+    - [x] Every `../reference/*.html` link and every `inst/extdata/*` download link on all 6 download pages resolves to an existing target (grep-verified against exported objects / `inst/extdata/` contents)
+    - [x] Each download page's "Instrument Information" and "Example Datasets" card text describes only resources it actually links (no unmet "subscale definitions" promise on pid5/pid5sf/pid5bf/hitopbr; no "real validation sample" claim on pages with no `ku_*` dataset)
+    - [x] "domains scales" → "domain scales" grammar fixed in `download-pid5.Rmd`, `download-pid5sf.Rmd`, `download-pid5bf.Rmd`
+    - [x] The 6 download pages use consistent download-card row markup (no stray `<br>`, uniform `row mt-4` spacing, consistent indentation)
   - **Build:**
-    - [ ] `devtools::check()` clean (builds the 5 package vignettes) — 0 errors / 0 warnings / 0 notes
-    - [ ] `pkgdown::build_site()` completes without error (builds all articles incl. the 6 downloads + `scales-hitopsr`)
+    - [x] `devtools::check()` clean (builds the 5 package vignettes) — 0 errors / 0 warnings / 0 notes
+    - [x] `pkgdown::build_site()` completes without error (builds all articles incl. the 6 downloads + `scales-hitopsr`)
 - **Tasks:**
   - **A. Scoring tutorials:**
     - [x] `hitopsr_scoring.Rmd`: L30 `hitop001`/`hitop405`→`hsr001`/`hsr405`; L52 `ku_hitoppro`→`ku_hitopsr`; L64 `hitop%03d`/`hitop%d`→`hsr%03d`/`hsr%d`
@@ -57,7 +57,7 @@
     - [x] Grep-verify all `../reference/*.html` + `inst/extdata/*` links across the 6 pages resolve (37 reference targets all exported; 24 extdata files all present)
   - **C. Build & record:**
     - [x] Run `devtools::check()` (0/0/0, vignettes rebuilt) and `pkgdown::build_site()` (exit 0, all 6 downloads + 5 tutorials + scales article rendered); added a NEWS.md bullet (README untouched)
-- **Notes/links:** Ground truth confirmed at plan time: `hitopbr_scales` has 8 rows (antagonism, detachment, disinhibition, internalizing, somatoform, thoughtDisorder, externalizing, pFactor) and `score_hitopbr()` returns 8 cols; `hitopsr_scales` 76 / `hitopsr_subscales` 17. All `inst/extdata/*` download links resolve. Origin of the SR-vignette bugs: partial port from an old HiTOP-PRO vignette (`vignettes/.quarto/_freeze/hitoppro_scoring/`). `scales-hitopsr.Rmd` stays out of the navbar deliberately (reachable from the SR download page) — restructuring it is out of scope; only its clean build is verified. No visual redesign of the tutorials (per scope decision: fixes + finish + harmonize, no restyle). PR [#17](https://github.com/jmgirard/hitop/pull/17).
+- **Notes/links:** Ground truth confirmed at plan time: `hitopbr_scales` has 8 rows (antagonism, detachment, disinhibition, internalizing, somatoform, thoughtDisorder, externalizing, pFactor) and `score_hitopbr()` returns 8 cols; `hitopsr_scales` 76 / `hitopsr_subscales` 17. All `inst/extdata/*` download links resolve. Origin of the SR-vignette bugs: partial port from an old HiTOP-PRO vignette (`vignettes/.quarto/_freeze/hitoppro_scoring/`). `scales-hitopsr.Rmd` stays out of the navbar deliberately (reachable from the SR download page) — restructuring it is out of scope; only its clean build is verified. No visual redesign of the tutorials (per scope decision: fixes + finish + harmonize, no restyle). PR [#17](https://github.com/jmgirard/hitop/pull/17). **Review (2026-07-10):** all 14 criteria verified by execution — 12/12 count claims match fresh `score_*()`/`data` output, no stale PRO refs, both new reliability chunks run, 37 reference + 24 extdata links resolve, boilerplate matches links, `document()` no-diff, `test()` PASS 615, `check()` 0/0/0, `pkgdown::build_site()` exit 0; fresh-context general-purpose review returned **PASS, no blockers**. Two out-of-scope follow-ups surfaced: (1) `generate_redcap_pid5sf`/`pid5bf` lack the import `@details` every other `generate_redcap_*` page has (why the SF/BF download pages link the pid5 `#details` anchor) — an R/roxygen fix; (2) the git-tracked `vignettes/.quarto/_freeze/` cache still holds old HiTOP-PRO content and should be purged/untracked so a future rebuild can't resurrect it.
 
 ## Completed
 
