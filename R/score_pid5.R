@@ -28,9 +28,15 @@
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a \link[tibble]{tibble}. (default = `TRUE`)
 #'
-#' @details If either `alpha` or `omega` are `TRUE`, the function prints a
-#'   per-scale reliability summary. Only reliability columns that contain at
-#'   least one non-`NA` value are shown (the `scale` column is always shown).
+#' @details For the FULL and SF versions, the output includes the 25 facet
+#'   scores followed by the 5 personality-trait domain scores. Following the APA
+#'   scoring key (Step 3), each domain score is the mean of the average scores of
+#'   its 3 primary facets (the map is stored in `pid_domains`); domains honor
+#'   `na.rm` the same way facets do. The BF version scores its 5 domains directly
+#'   from its items and is unaffected. If either `alpha` or `omega` are `TRUE`,
+#'   the function prints a per-scale reliability summary (facets only for FULL/SF).
+#'   Only reliability columns that contain at least one non-`NA` value are shown
+#'   (the `scale` column is always shown).
 #'
 #' @return A \link[tibble]{tibble} containing all scale scores and standard
 #'   errors (if requested) and all original `data` columns (if requested)
@@ -115,13 +121,30 @@ score_pid5 <- function(
   ## Find items per scale
   items_scales <- pid_scales[[version]]$itemNumbers
 
-  ## Calculate mean scores per scale
-  out <- bind_columns(
+  ## Calculate mean scores per scale (facets for FULL/SF, domains for BF)
+  scale_scores <- bind_columns(
     lapply(
       items_scales,
       function(x) rowMeans(data_items[, x], na.rm = na.rm)
     )
   )
+
+  ## For FULL/SF, add the 5 personality-trait domain scores (APA key Step 3):
+  ## each domain is the mean of its 3 PRIMARY facet average scores (map stored in
+  ## pid_domains). BF already scores domains directly, so it is skipped here.
+  domain_facets <- NULL
+  if (version %in% c("FULL", "SF")) {
+    domain_facets <- setNames(pid_domains$facetStems, pid_domains$camelCase)
+    domain_scores <- bind_columns(
+      lapply(
+        domain_facets,
+        function(f) rowMeans(scale_scores[, f, drop = FALSE], na.rm = na.rm)
+      )
+    )
+    out <- cbind(scale_scores, domain_scores)
+  } else {
+    out <- scale_scores
+  }
 
   ## Apply prefix to scale column names
   colnames(out) <- paste0(prefix, colnames(out))
@@ -135,6 +158,16 @@ score_pid5 <- function(
           function(x) apply(data_items[, x], MARGIN = 1, FUN = calc_sem)
         )
       )
+    ## Domain SEs mirror facet SEs, computed over the 3 primary facet scores
+    if (!is.null(domain_facets)) {
+      sems_domains <- bind_columns(
+        lapply(
+          domain_facets,
+          function(f) apply(scale_scores[, f, drop = FALSE], MARGIN = 1, FUN = calc_sem)
+        )
+      )
+      sems_scales <- cbind(sems_scales, sems_domains)
+    }
     colnames(sems_scales) <- paste0(prefix, colnames(sems_scales), "_se")
     out <- cbind(out, sems_scales)
   }
