@@ -26,7 +26,8 @@ Suggests:
     knitr,
     lavaan,
     rmarkdown,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 VignetteBuilder: knitr, rmarkdown
 Encoding: UTF-8
 LazyData: true

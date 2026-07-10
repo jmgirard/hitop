@@ -18,6 +18,9 @@
   to `FALSE`), and any standard error is `NA` wherever its scale score is `NA`
 * Fix `validity_pid5()` erroring on single-row input for the FULL and SF forms
 * Fix `score_pid5(calc_se = TRUE)` erroring on single-row input
+* Add tests for the `generate_docx_*`, `generate_qualtrics_*`, and
+  `generate_redcap_*` export families, verifying each generated file against the
+  source instrument datasets (including the HiTOP-HSUM REDCap branching logic)
 
 # hitop 0.0.2
 
