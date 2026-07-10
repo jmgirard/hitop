@@ -66,7 +66,8 @@ validity_pid5 <- function(
   append = TRUE,
   tibble = TRUE
 ) {
-  # Assertions
+  # Assertions (helpers default call = caller_env() = this function, so aborts
+  # are attributed to validity_pid5())
   validate_data(data)
   version <- toupper(version)
   version <- match.arg(version, choices = c("FULL", "SF", "BF"))
@@ -79,6 +80,7 @@ validity_pid5 <- function(
   )
   validate_items(items, n = n_items)
   validate_item_uniqueness(items)
+  validate_items_present(data, items)
   warn_item_order(items)
   validate_range(srange)
   stopifnot(rlang::is_string(prefix))
