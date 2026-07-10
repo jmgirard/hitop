@@ -252,6 +252,10 @@ Write Package Paper
   : HiTOP-BR Item Data
 - [`hitopbr_scales`](https://jmgirard.github.io/hitop/reference/hitopbr_scales.md)
   : HiTOP-BR Scale Data
+- [`hitophsum_items`](https://jmgirard.github.io/hitop/reference/hitophsum_items.md)
+  : HiTOP-HSUM Item Data
+- [`hitophsum_choices`](https://jmgirard.github.io/hitop/reference/hitophsum_choices.md)
+  : HiTOP-HSUM Choice Sets
 - [`pid_items`](https://jmgirard.github.io/hitop/reference/pid_items.md)
   : Personality Inventory for DSM-5 Item Data
 - [`pid_scales`](https://jmgirard.github.io/hitop/reference/pid_scales.md)

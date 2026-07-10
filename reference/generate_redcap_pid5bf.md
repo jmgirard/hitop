@@ -12,3 +12,21 @@ generate_redcap_pid5bf(
   breaks = 15
 )
 ```
+
+## Arguments
+
+- file:
+
+  Character string. The destination path for the output ZIP file.
+
+- form_name:
+
+  Character string. The internal name of the form in REDCap.
+
+- required:
+
+  Logical. Whether the items should be marked as required.
+
+- breaks:
+
+  Integer or `NULL`. The number of items to display before a page break.
