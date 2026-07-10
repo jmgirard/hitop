@@ -38,7 +38,7 @@
   - [x] Verify/tighten `validity_pid5` `@details` BF-PNA note (already present from M11; no change needed).
   - [x] Fix `sim_hitopbr` `@format` (item columns are `hitopbr_1..45`, not `hbr_1..45`) — surfaced by the `label_hitopbr` example.
   - [x] `devtools::document()` → `devtools::test()` (PASS 561) → `devtools::check()` (0/0/0, incl. `--run-donttest`); `man/` diff is only Examples additions + `@format`/Description fixes.
-- **Notes/links:** Doc-only (no scoring change, no oracle beyond "examples execute"). Lifecycle badge kept `experimental` per Jeff (v0.1.0, M15 breaking changes pending). BF-PNA doc item already satisfied by M11. Original audit list preserved in this entry's tasks.
+- **Notes/links:** Doc-only (no scoring change, no oracle beyond "examples execute"). Lifecycle badge kept `experimental` per Jeff (v0.1.0, M15 breaking changes pending). BF-PNA doc item already satisfied by M11. Original audit list preserved in this entry's tasks. PR [#13](https://github.com/jmgirard/hitop/pull/13).
 
 ### M13: Scoring engine consolidation
 
