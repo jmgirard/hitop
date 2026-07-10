@@ -11,35 +11,6 @@
 
 <!-- M11–M15 come from the 2026-07-10 retrospective design audit (see LOG once work ships). Agreed order: M11 (risk) → M12 (docs) → M13 (engine) → M14 (hardening) → M15 (API polish). -->
 
-### M12: Documentation accuracy & examples
-
-- **Status:** IN PROGRESS
-- **Depends on:** —
-- **Goal:** Make the user-facing documentation accurate and complete: runnable `@examples` for every exported function, correct dataset `@format` blocks, and synced README/DESCRIPTION.
-- **Acceptance criteria:**
-  - [ ] All 27 exported functions in `NAMESPACE` have an `@examples` block; every example runs without error (verified by `devtools::run_examples()` and clean `R CMD check` examples).
-  - [ ] `R/data.R` `@format` blocks are correct: `pid_items` says 15 columns ([R/data.R:5](../R/data.R)); `hitopbr_items` says 8 columns ([R/data.R:114](../R/data.R)); `pid_scales` has a `@format` describing a named list of 3 version tibbles (`FULL`/`SF`/`BF`, each 5 cols) plus an `@examples` ([R/data.R:21](../R/data.R)).
-  - [ ] `devtools::document()` leaves no uncommitted diff afterward; each exported function's `man/*.Rd` contains an `\examples{}` section.
-  - [ ] DESCRIPTION Title is Title Case with "Society" capitalized; Description is a markdown-free multi-sentence paragraph; `devtools::check()` emits no Title/Description NOTE.
-  - [ ] README "Development Progress" marks "Add Package Unit Testing" done; the ROADMAP mirror note stays consistent; `README.md` re-knit from `README.Rmd`.
-  - [ ] `vignettes/pid5_scoring.Rmd` "example example" typo (line 39) fixed.
-  - [ ] `validity_pid5` `@details` documents that `version = "BF"` returns only PNA (verify — added in M11; tighten wording if needed).
-  - [ ] Lifecycle badge stays `experimental` (decision recorded; no change).
-  - [ ] `devtools::check()` clean (0/0/0); `devtools::test()` passes.
-- **Tasks:**
-  - [x] Fix dataset `@format` in `R/data.R`: `pid_items` 12→15 ([R/data.R:5](../R/data.R)); `hitopbr_items` 5→8 ([R/data.R:114](../R/data.R)); add `@format` (named `list(FULL, SF, BF)`, each a tibble with `Facet, itemdata, nItems, itemNumbers, camelCase`) + `@examples pid_scales` to `pid_scales` ([R/data.R:21](../R/data.R)).
-  - [x] Add runnable `@examples` to the 4 scoring/validity fns using `sim_*` data (`score_pid5`, `score_hitopsr`, `score_hitopbr`, `validity_pid5`).
-  - [x] Add `@examples` to `calc_alpha` (Detachment scale of `ku_hitopbr`) and `calc_omega` behind `@examplesIf requireNamespace("lavaan", quietly = TRUE)`.
-  - [x] Add `@examples` to `rank_scales`, `label_hitopsr`, `label_hitopbr` (built from a scored tibble) and `rename_hitopsr_items` (`sim_hitopsr`).
-  - [x] Add `@examples` to the 17 `generate_{docx,qualtrics,redcap}_*` fns writing to `tempfile(fileext=...)`; docx generators wrapped in `\donttest{}` (SR build ~4.4s, near CRAN's per-example NOTE threshold).
-  - [x] Fix `vignettes/pid5_scoring.Rmd:39` "example example" typo.
-  - [x] Rewrite DESCRIPTION `Title` (Title Case, "Society") and `Description` (markdown-free, multi-sentence, not starting with the package name).
-  - [x] Update `README.Rmd` Development Progress (check "Add Package Unit Testing"); re-knit via `devtools::build_readme()`; confirm ROADMAP mirror note holds.
-  - [x] Verify/tighten `validity_pid5` `@details` BF-PNA note (already present from M11; no change needed).
-  - [x] Fix `sim_hitopbr` `@format` (item columns are `hitopbr_1..45`, not `hbr_1..45`) — surfaced by the `label_hitopbr` example.
-  - [x] `devtools::document()` → `devtools::test()` (PASS 561) → `devtools::check()` (0/0/0, incl. `--run-donttest`); `man/` diff is only Examples additions + `@format`/Description fixes.
-- **Notes/links:** Doc-only (no scoring change, no oracle beyond "examples execute"). Lifecycle badge kept `experimental` per Jeff (v0.1.0, M15 breaking changes pending). BF-PNA doc item already satisfied by M11. Original audit list preserved in this entry's tasks. PR [#13](https://github.com/jmgirard/hitop/pull/13).
-
 ### M13: Scoring engine consolidation
 
 - **Status:** PLANNED
@@ -64,6 +35,8 @@
 ## Completed
 
 <!-- DONE entries move here as: ### M<n>: Title — DONE YYYY-MM-DD. followed by a one-paragraph outcome (what shipped, why, PR link) — no acceptance-criteria checklist (its verification lives in LOG.md). -->
+
+### M12: Documentation accuracy & examples — DONE 2026-07-10. Made the user-facing documentation accurate and complete (second of five milestones from the 2026-07-10 retrospective design audit; docs only, no scoring/behavior change). Added runnable `@examples` to all **27 exported functions** (previously none had any): the 4 scoring/validity fns use the `sim_*` datasets; `calc_alpha`/`calc_omega` use the coherent HiTOP-BR Detachment scale of the real `ku_hitopbr` data (α=0.78/ω=0.78, so `calc_omega`'s one-factor CFA converges), with `calc_omega` guarded by `@examplesIf requireNamespace("lavaan", quietly = TRUE)` (lavaan is Suggests); `rank_scales`/`label_*`/`rename_hitopsr_items` build from scored output or small constructed frames; the 17 `generate_*` fns write to `tempfile(fileext=...)` (never the working dir), with the 6 `generate_docx_*` wrapped in `\donttest{}` (HiTOP-SR docx build ~4.4s, near CRAN's per-example NOTE threshold). Corrected the dataset `@format` blocks: `pid_items` 12→15 columns, `hitopbr_items` 5→8, added a full `@format` + `@examples` to `pid_scales` (a named `list(FULL, SF, BF)` of 5-column tibbles — it had none), and fixed two accuracy bugs found in review (`pid_scales[["BF"]]`'s first column is `Domain`, not `Facet`; `hitopbr_items`'s column is `Pfactor`, not `PFactor`). Fixed a real bug surfaced while verifying the `label_hitopbr` example: `sim_hitopbr`'s item columns are actually `hitopbr_1..hitopbr_45`, not the `hbr_1..hbr_45` its doc claimed (all other `sim_*`/`ku_*` column-name claims re-audited, correct). Rewrote the DESCRIPTION Title (Title Case, "Society" capitalized) and Description (markdown-free multi-sentence, `'Qualtrics'`/`'REDCap'` quoted); fixed the "example example" vignette typo; checked "Add Package Unit Testing" done in the README and re-knit it. Lifecycle badge kept `experimental` per Jeff (v0.1.0, M15 breaking changes pending). Three NEWS.md bullets. `document()` no-diff, `test()` **PASS 561** (unchanged; doc-only), `check()` **0/0/0** including `checking examples with --run-donttest ... OK` and vignette re-build; fresh-context review PASS (found and fixed the two `@format` label bugs, confirmed every example runs with correct datasets/prefixes and that only roxygen `#'` lines changed in `R/` — no function bodies, `data/*.rda`, `R/sysdata.rda`, or `NAMESPACE`). No keying/data/generated files touched. PR [#13](https://github.com/jmgirard/hitop/pull/13).
 
 ### M11: Guard the silent-wrong-results traps — DONE 2026-07-10. Added three warn/abort-only guards (no scoring behavior change) against the two ways a bad `items`/`srange` silently produces wrong scores, the first of five milestones from the 2026-07-10 retrospective design audit. (1) `validity_pid5(version = "FULL"/"SF")` warns when `srange != c(0, 3)` — PRD/SD-TD are raw sums vs fixed thresholds (10/11/19) that assume 0–3 coding and, unlike INC/ORS, don't adapt to `srange`; BF (PNA only) never warns. (2) New `warn_item_order()` ([R/util.R](../R/util.R)) warns when every `items` entry is a character name sharing one common prefix + trailing integer that isn't ascending (the misordered-mapping trap); integer positions, mixed prefixes, and non-numbered names are left alone. (3) New `validate_item_uniqueness()` aborts on duplicated `items`, naming them. Both helpers wired into all four data-taking functions after `validate_items()`. New `test-item-guards.R` (helper-level fire/no-fire units + end-to-end across all four functions + a pure-side-effect check) and an srange block in `test-validity_pid5.R`. Roxygen `items` param updated in the three score fns (validity inherits) + a `@details` note on the srange/cutoff interaction; two NEWS.md bullets. Decisions: warn (not abort/auto-adjust) for srange so non-0–3 workflows stay possible — cutoff auto-shifting deferred pending sign-off; order guard is names-only (out-of-order integer positions can be a legitimate remap). Suite PASS 561 (was 527); `document()` no-diff; `check()` **0/0/0**; fresh-context review PASS-WITH-NITS — the two flagged nits (both side-effect tests were tautological, never routing through their warning branch) fixed at review by re-anchoring on independent recomputation at `srange = c(1,4)` and on name-vs-position selection equality, plus added `validity_pid5` order no-fire coverage; other two findings correctly dispositioned (direct `cli_abort` deferred to M14; integer overflow irrelevant at max item 650). No keying/data/generated files touched. Updated DESIGN Known issue #4 (trap now warns; auto-correction still open). PR [#12](https://github.com/jmgirard/hitop/pull/12).
 
