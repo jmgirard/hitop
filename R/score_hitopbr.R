@@ -17,13 +17,23 @@
 #'   ignored when calculating scale scores. (default = `TRUE`)
 #' @param calc_se An optional logical indicating whether to calculate the
 #'   standard error of each scale score. (default = `FALSE`)
+#' @param alpha Optional logical; if `TRUE`, compute and print Cronbach’s alpha
+#'   for each scale. (default = `FALSE`)
+#' @param omega Optional logical; if `TRUE`, compute and print McDonald’s omega
+#'   for each scale using Pearson correlations (i.e., non-ordinal). (default =
+#'   `FALSE`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
 #' @param tibble An optional logical indicating whether the output should be
 #'   converted to a `tibble::tibble()`. (default = `TRUE`)
 #'
+#' @details If either `alpha` or `omega` are `TRUE`, the function prints a
+#'   per-scale reliability summary. Only reliability columns that contain at
+#'   least one non-`NA` value are shown (the `scale` column is always shown).
+#'
 #' @return A data frame containing all scale scores and standard errors (if
-#'   requested) and all original `data` columns (if requested)
+#'   requested) and all original `data` columns (if requested). Reliability
+#'   estimates, when requested, are printed as a side effect.
 #'
 #' @examples
 #' # Score all HiTOP-BR scales from the simulated data
@@ -37,83 +47,29 @@ score_hitopbr <- function(
   prefix = "hbr_",
   na.rm = TRUE,
   calc_se = FALSE,
+  alpha = FALSE,
+  omega = FALSE,
   append = TRUE,
   tibble = TRUE
 ) {
-  ## Assertions
-  validate_data(data)
-  validate_items(items, n = 45)
-  validate_item_uniqueness(items)
-  warn_item_order(items)
-  validate_range(srange)
-  stopifnot(rlang::is_string(prefix))
-  stopifnot(rlang::is_bool(na.rm))
-  stopifnot(rlang::is_bool(calc_se))
-  stopifnot(rlang::is_bool(append))
-  stopifnot(rlang::is_bool(tibble))
-
-  ## Extract item columns
-  data_items <- data[items]
-
-  ## Coerce values to numbers
-  data_items <- lapply(data_items, as.numeric)
-
-  ## Reverse score the necessary items
-  items_rev <-
+  ## Resolve this instrument's data: which items reverse and the per-scale
+  ## item-number lists. Shared arg validation and the pipeline run in the engine.
+  reverse_items <-
     hitopbr_items[hitopbr_items$Reverse == TRUE, "HBR", drop = TRUE]
-  if (length(items_rev) > 0) {
-    data_items[items_rev] <- lapply(
-      items_rev,
-      function(i) {
-        reverse(
-          data_items[[i]],
-          low = srange[[1]],
-          high = srange[[2]]
-        )
-      }
-    )
-  }
-  data_items <- bind_columns(data_items)
 
-  ## Find items per scale
-  items_scales <- hitopbr_scales$itemNumbers
-
-  ## Calculate mean scores per scale
-  out <- bind_columns(
-    lapply(
-      items_scales,
-      function(x) rowMeans(data_items[, x, drop = FALSE], na.rm = na.rm)
-    )
+  score_engine(
+    data = data,
+    items = items,
+    n_items = 45,
+    reverse_items = reverse_items,
+    items_scales = hitopbr_scales$itemNumbers,
+    srange = srange,
+    prefix = prefix,
+    na.rm = na.rm,
+    calc_se = calc_se,
+    append = append,
+    tibble = tibble,
+    alpha = alpha,
+    omega = omega
   )
-
-  ## Apply prefix to scale column names
-  colnames(out) <- paste0(prefix, colnames(out))
-
-  ## Add standard errors to output if requested
-  if (calc_se) {
-    sems_scales <-
-      bind_columns(
-        lapply(
-          items_scales,
-          function(x) {
-            apply(data_items[, x, drop = FALSE], MARGIN = 1, FUN = calc_sem)
-          }
-        )
-      )
-    colnames(sems_scales) <- paste0(prefix, colnames(sems_scales), "_se")
-    out <- cbind(out, sems_scales)
-  }
-
-  ## Append output to input tibble if requested
-  if (append == TRUE) {
-    out <- cbind(data, out)
-  }
-
-  ## Coerce output to tibble if requested
-  if (tibble == TRUE) {
-    out <- tibble::as_tibble(out)
-  }
-
-  ## Return output
-  out
 }

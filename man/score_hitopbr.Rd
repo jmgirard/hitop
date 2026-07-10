@@ -11,6 +11,8 @@ score_hitopbr(
   prefix = "hbr_",
   na.rm = TRUE,
   calc_se = FALSE,
+  alpha = FALSE,
+  omega = FALSE,
   append = TRUE,
   tibble = TRUE
 )
@@ -36,6 +38,13 @@ ignored when calculating scale scores. (default = \code{TRUE})}
 \item{calc_se}{An optional logical indicating whether to calculate the
 standard error of each scale score. (default = \code{FALSE})}
 
+\item{alpha}{Optional logical; if \code{TRUE}, compute and print Cronbach’s alpha
+for each scale. (default = \code{FALSE})}
+
+\item{omega}{Optional logical; if \code{TRUE}, compute and print McDonald’s omega
+for each scale using Pearson correlations (i.e., non-ordinal). (default =
+\code{FALSE})}
+
 \item{append}{An optional logical indicating whether the new columns should
 be added to the end of the \code{data} input. (default = \code{TRUE})}
 
@@ -44,10 +53,16 @@ converted to a \code{tibble::tibble()}. (default = \code{TRUE})}
 }
 \value{
 A data frame containing all scale scores and standard errors (if
-requested) and all original \code{data} columns (if requested)
+requested) and all original \code{data} columns (if requested). Reliability
+estimates, when requested, are printed as a side effect.
 }
 \description{
 Create a data frame with scores on all the HiTOP-BR scales.
+}
+\details{
+If either \code{alpha} or \code{omega} are \code{TRUE}, the function prints a
+per-scale reliability summary. Only reliability columns that contain at
+least one non-\code{NA} value are shown (the \code{scale} column is always shown).
 }
 \examples{
 # Score all HiTOP-BR scales from the simulated data

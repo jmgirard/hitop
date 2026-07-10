@@ -13,7 +13,7 @@
 
 ### M13: Scoring engine consolidation
 
-- **Status:** READY
+- **Status:** IN PROGRESS
 - **Depends on:** —
 - **Goal:** Extract the ~100-line pipeline duplicated across `score_pid5()`/`score_hitopsr()`/`score_hitopbr()` into one internal, data-driven scoring engine with thin per-instrument wrappers (the pattern the generators already use), behavior-preserving on defaults, and make reliability (`alpha`/`omega`) uniform across all three scoring functions.
 - **Design:** A single unexported `score_engine()` (new `R/score_engine.R`, `@noRd`) owns the whole pipeline — validate → extract → coerce → reverse-key → per-scale score (`apa_mean` vs `rowMeans` branch) → domain scores + domain SE → `_se` block + NA-masking → alpha/omega print → append → tibble. `apa_scoring` and domain scoring become optional engine features (params `apa_scoring = FALSE`, `domain_map = NULL`) that SR/BR simply don't invoke — which is what makes a future PID-5-BFP a wrapper + data rather than a fourth copy. Each wrapper resolves only its instrument data and calls the engine: reverse items (`pid_items[…, version]` / `hitopsr_items$HSR` / `hitopbr_items$HBR`) → `reverse_items`; scale item-number list (`pid_scales[[version]]$itemNumbers`, `hitopsr_scales$itemNumbers`, `hitopbr_scales$itemNumbers`) → `items_scales`; FULL/SF `setNames(pid_domains$facetStems, pid_domains$camelCase)` (else `NULL`) → `domain_map`; version→`n_items`, `apa_scoring`, `alpha`/`omega`. The pid wrapper keeps `version` `match.arg` + `n_items` switch + version/`apa_scoring` bool checks; the na.rm-ignored-under-`apa_scoring` warning lives in the engine, gated on `apa_scoring`.
@@ -27,17 +27,17 @@
   - [ ] Characterization check: byte-identical `score_*()` output before vs after across the arg matrix on all `sim_*`/`ku_*` datasets (golden captured on `main`, re-run on branch, all `identical()`).
   - [ ] `devtools::document()` no-diff on `NAMESPACE`/`man/` beyond the new `score_hitopbr` params; `devtools::check()` clean (0/0/0).
 - **Tasks:**
-  - [ ] Write the characterization harness first (scratchpad, uncommitted): score all `sim_*`/`ku_*` datasets × arg matrix on current `main`, save golden RDS.
-  - [ ] Add `R/score_engine.R` — `score_engine(data, items, n_items, reverse_items, items_scales, srange, prefix, na.rm, calc_se, append, tibble, apa_scoring = FALSE, domain_map = NULL, alpha = FALSE, omega = FALSE)`; move the shared body from [score_pid5.R:106-273](../R/score_pid5.R) verbatim, parameterizing the divergent bits; keep the na.rm-ignored-under-`apa_scoring` warning inside, gated on `apa_scoring`.
-  - [ ] Rewrite `score_pid5()` as a wrapper (version `match.arg` + `n_items` switch + version/`apa_scoring` bool checks; resolve `reverse_items`/`items_scales`/`domain_map`; call engine). Preserve current validation order (watch `validate_data` vs `match.arg` sequencing).
-  - [ ] Rewrite `score_hitopsr()` as a wrapper (passes `alpha`/`omega` through); leave `rename_hitopsr_items()` for the relocation task.
-  - [ ] Rewrite `score_hitopbr()` as a wrapper and **expose `alpha`/`omega`** (default `FALSE`, passed to engine); add the matching `@param alpha`/`@param omega` + reliability `@details` (copy from the other two).
-  - [ ] Move `rename_hitopsr_items()` ([score_hitopsr.R:176-289](../R/score_hitopsr.R)) into new `R/rename_hitopsr_items.R`, unchanged.
-  - [ ] Add a `test-score_hitopbr.R` block exercising `alpha`/`omega` (mirror the SR/PID reliability tests).
-  - [ ] `devtools::document()`; confirm the only `man/`/`NAMESPACE` change is the two new `score_hitopbr` params.
-  - [ ] Run suite (existing assertions unedited) → green; re-run characterization harness on branch → all `identical()`; `devtools::check()` → 0/0/0.
-  - [ ] NEWS.md: internal-refactor bullet + a bullet noting `score_hitopbr()` now supports `alpha`/`omega`.
-  - [ ] At ship (work/review): resolve DESIGN Known issue #3, add a "scoring shares `score_engine()` behind thin wrappers" note to DESIGN Function families, and append **D-011** (engine design + uniform reliability).
+  - [x] Write the characterization harness first (scratchpad, uncommitted): score all `sim_*`/`ku_*` datasets × arg matrix on current `main`, save golden RDS. (114 configs captured → `golden_main.rds`.)
+  - [x] Add `R/score_engine.R` — `score_engine(data, items, n_items, reverse_items, items_scales, srange, prefix, na.rm, calc_se, append, tibble, apa_scoring = FALSE, domain_map = NULL, alpha = FALSE, omega = FALSE)`; move the shared body from [score_pid5.R:106-273](../R/score_pid5.R) verbatim, parameterizing the divergent bits; keep the na.rm-ignored-under-`apa_scoring` warning inside, gated on `apa_scoring`.
+  - [x] Rewrite `score_pid5()` as a wrapper (version `match.arg` + `n_items` switch; resolve `reverse_items`/`items_scales`/`domain_map`; call engine). `apa_scoring` bool check now lives in the engine (same relative order — after `validate_items`); the only reorder is `validate_data` now runs after `match.arg` (immaterial — both are input-abort paths).
+  - [x] Rewrite `score_hitopsr()` as a wrapper (passes `alpha`/`omega` through); leave `rename_hitopsr_items()` for the relocation task.
+  - [x] Rewrite `score_hitopbr()` as a wrapper and **expose `alpha`/`omega`** (default `FALSE`, passed to engine); add the matching `@param alpha`/`@param omega` + reliability `@details` (copy from the other two).
+  - [x] Move `rename_hitopsr_items()` into new `R/rename_hitopsr_items.R`, unchanged.
+  - [x] Add a `test-score_hitopbr.R` block exercising `alpha`/`omega` (3 tests: print-wiring + scores-unchanged, omega no-error, and an independent-recomputation oracle asserting the printed alpha table on `ku_hitopbr`).
+  - [x] `devtools::document()`; only `man/` changes are `score_hitopbr.Rd` (new alpha/omega params + details/return) and `rename_hitopsr_items.Rd` (source-file pointer). NAMESPACE unchanged; no `score_engine.Rd` (`@noRd`).
+  - [x] Run suite (existing assertions unedited) → **PASS 565** (was 561; +4 from the new BR reliability tests, FAIL 0); characterization harness → **all 114 configs `identical()`**; `devtools::check()` → **0/0/0**.
+  - [x] NEWS.md: internal-refactor bullet + a bullet noting `score_hitopbr()` now supports `alpha`/`omega`.
+  - [x] At ship (work/review): resolve DESIGN Known issue #3, add a "scoring shares `score_engine()` behind thin wrappers" note to DESIGN Function families, and append **D-011** (engine design + uniform reliability).
 - **Notes/links:** Audit flagship. The M5/M9 `drop = FALSE` twins are the motivating bug class (same fix applied twice in different copies). BR reliability is folded in here because it was an incompleteness, not a design choice — BR runs the identical `rowMeans` pipeline and its scales already reliability-check via `calc_alpha`/`calc_omega` (M5). This resolves M15's "`score_hitopbr()` asymmetry" line; M15 is then only the print→tibble `reliability_*()` redesign.
 
 ### M14: Input-validation & messaging hardening
