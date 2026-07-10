@@ -49,7 +49,7 @@ status, so the table has an *external* oracle. Verified item-by-item on
 
 ## Sources
 
-- **APA scoring key** — Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., & Skodol, A. E. (2013). *The Personality Inventory for DSM-5 (PID-5)—Adult* (Full Version). American Psychiatric Association. [The authoritative key for facet/domain membership and reverse items.]
+- **APA scoring key** — Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., & Skodol, A. E. (2013). *The Personality Inventory for DSM-5 (PID-5)—Adult* (Full Version). American Psychiatric Association. [The authoritative key for facet/domain membership, reverse items, and the missing-data/proration rule (p. 8).] PDF: <https://www.psychiatry.org/getmedia/594673a6-1b9b-4298-8b52-c4c652c4a4e2/APA-DSM5TR-ThePersonalityInventoryForDSM5FullVersionAdult.pdf>.
 - **INC** — Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan, E. H. (2016). Development of a Response Inconsistency Scale for the PID-5. *Journal of Personality Assessment, 98*(4), 351–359.
 - **INC-S** — Lowmaster, S. E., Hartman, M. J., Zimmermann, J., Baldock, Z. C., & Kurtz, J. E. (2020). Further Validation of the Response Inconsistency Scale for the PID-5. *Journal of Personality Assessment, 102*(6), 743–750. **+ Correction (2021), *JPA, 103*(4), 571** — enumerates the 10 INC-S pairs (Table 1) and fixes the "10/11 transfer" count. *This Correction is the authoritative INC-S source.*
 - **ORS** — Sellbom, M., Dhillon, S., & Bagby, R. M. (2018). Development and Validation of an Overreporting Scale for the PID-5. *Psychological Assessment, 30*(5), 582–593.
@@ -86,13 +86,14 @@ where `pid_items` stores "Negative affectivity". No BF item is reverse-scored (t
 table marks none), and each domain score is an **average** (raw domain sum / 5),
 which is what `score_pid5(version = "BF")` computes via `rowMeans`.
 
-**Not yet enforced (→ M8):** the APA form also specifies a missing-data rule —
+**Enforced (M8):** the APA form also specifies a missing-data rule —
 *do not compute a domain if ≥ 2 of its 5 items are unanswered; if exactly 1 is
-unanswered, prorate* (prorated raw = round(partial_sum × 5 / n_answered)).
-`score_pid5()` currently ignores this: `rowMeans(na.rm = TRUE)` will average
-whatever items are present, even a single one. Milestone M8 adds an
-`apa_scoring` toggle (default `TRUE`) to honor the published missing-data/proration
-algorithm; `apa_scoring = FALSE` keeps the current behavior.
+unanswered, prorate* (prorated raw = round(partial_sum × 5 / n_answered)). This is
+the same 25%-unanswered/proration rule as the full-form key applied to a 5-item
+scale (2 of 5 = 40% > 25% → drop; 1 of 5 = 20% ≤ 25% → prorate). Since M8,
+`score_pid5(apa_scoring = TRUE)` (the default) honors it via `apa_mean()`;
+`apa_scoring = FALSE` restores the traditional `rowMeans(na.rm = TRUE)` behavior
+(which averages whatever items are present, even a single one). See D-009.
 
 ### Note on FULL/SF domain scoring
 
@@ -111,9 +112,30 @@ primary map, transcribed from the Domain Table (verified 2026-07-09):
 
 Stored in the `pid_domains` dataset and machine-verified against these numbers in
 `test-keying.R` (M7). `score_pid5(version = "FULL"/"SF")` appends the 5 domain
-scores after the 25 facet scores, each = `rowMeans` of its 3 primary facet scores
-honoring `na.rm`. The APA missing-data/proration rule (as for the BF, above) is
-**not** enforced here either — deferred to M8.
+scores after the 25 facet scores, each = the mean of its 3 primary facet scores.
+
+**Missing-data/proration rule (enforced since M8, default `apa_scoring = TRUE`).**
+The full-form key states, verbatim (Krueger et al., 2013, p. 8):
+
+> If more than 25% of the items within a trait facet are left unanswered, the
+> corresponding facet score should not be used… Nevertheless, if 25% or less of
+> the items are unanswered for a specific facet, you are asked to prorate the
+> facet score by first summing the number of items that were answered to get a
+> partial raw score. Next, multiply the partial raw score by the total number of
+> items contributing to that facet (i.e., 4-14). Finally, divide the resulting
+> value by the number of items that were actually answered… If the result is a
+> fraction, round to the nearest whole number. Domain scores should not be
+> computed if any one of the three contributing facet scores cannot be computed
+> because of missing item responses.
+
+So under `apa_scoring = TRUE`: a facet with > 25% missing → NA; otherwise average =
+`round(partial_sum × n_items / n_answered) / n_items` (round **half up**, matching
+"nearest whole number"; base R `round()` rounds half to even); a FULL/SF domain is
+NA if any of its 3 primary facets is NA. `apa_scoring = FALSE` restores the prior
+`rowMeans(na.rm = TRUE)` behavior. **SF caveat:** Maples et al. (2015) specifies no
+missing-data rule for the 100-item short form, so `apa_scoring` applies the
+full-form 25%/proration rule to the SF's 4-item facets *by analogy* (25% of 4 = 1
+item: ≤ 1 missing prorates, ≥ 2 → NA). See D-009.
 
 ## Open questions (need source adjudication)
 

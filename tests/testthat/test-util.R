@@ -42,3 +42,37 @@ test_that("cli_assert() aborts with its message iff the condition is false", {
   expect_no_error(cli_assert(TRUE, "should not fire"))
   expect_error(cli_assert(FALSE, "boom"), "boom")
 })
+
+test_that("round_half_up() rounds halves away from zero, unlike base round()", {
+  expect_equal(round_half_up(2.5), 3)   # base round(2.5) = 2 (round half to even)
+  expect_equal(round_half_up(3.5), 4)   # base round(3.5) = 4 (agrees here)
+  expect_equal(round_half_up(0.5), 1)   # base round(0.5) = 0
+  expect_equal(round_half_up(c(1.4, 1.6, 2)), c(1, 2, 2))
+  expect_equal(round_half_up(0), 0)
+})
+
+test_that("apa_mean() prorates and rounds the raw score per the APA rule", {
+  # No missing: reduces to the plain mean (round(sum) = sum for integer sums).
+  expect_equal(apa_mean(matrix(c(1, 2, 3, 2), nrow = 1)), 2)
+  # 1 of 4 missing (25% <= 25%): prorate 5 over 3 answered ->
+  # round(5 * 4 / 3) = round(6.667) = 7; average = 7/4 = 1.75.
+  expect_equal(apa_mean(matrix(c(1, 2, 2, NA), nrow = 1)), 7 / 4)
+  # Half-integer prorated raw rounds up: 5-item scale, 1 missing, answered sum 2
+  # -> round(2 * 5 / 4) = round(2.5) = 3; average = 3/5 = 0.6.
+  expect_equal(apa_mean(matrix(c(0, 0, 1, 1, NA), nrow = 1)), 0.6)
+})
+
+test_that("apa_mean() returns NA when more than 25% of items are missing", {
+  # 2 of 4 missing (50% > 25%) -> NA.
+  expect_true(is.na(apa_mean(matrix(c(1, 2, NA, NA), nrow = 1))))
+  # Boundary: exactly 25% missing (2 of 8) is retained (prorated), not NA.
+  expect_false(is.na(apa_mean(matrix(c(1, 1, 1, 1, 1, 1, NA, NA), nrow = 1))))
+})
+
+test_that("apa_mean() operates row-wise on a multi-respondent matrix", {
+  m <- matrix(c(1, 2, 3, 2,      # row 1: complete -> 2
+                1, 2, 2, NA,     # row 2: 1 missing -> 7/4
+                0, NA, NA, NA),  # row 3: 3 missing (>25%) -> NA
+              nrow = 3, byrow = TRUE)
+  expect_equal(apa_mean(m), c(2, 7 / 4, NA))
+})

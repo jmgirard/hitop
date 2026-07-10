@@ -62,6 +62,27 @@ test_that("calc_se adds one _se column per scale", {
   expect_true("pid_detachment_se" %in% se_cols)
 })
 
+test_that("apa_scoring must be a single logical", {
+  expect_error(
+    score_pid5(sim_pid5bf, items = 1:25, version = "BF", apa_scoring = "yes"),
+    class = "simpleError"
+  )
+  expect_error(
+    score_pid5(sim_pid5bf, items = 1:25, version = "BF", apa_scoring = c(TRUE, FALSE))
+  )
+})
+
+test_that("apa_scoring changes values but not output shape", {
+  apa  <- score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
+  trad <- score_pid5(sim_pid5, items = 1:220, version = "FULL", apa_scoring = FALSE, append = FALSE)
+  expect_equal(dim(apa), dim(trad))
+  expect_equal(names(apa), names(trad))
+  # calc_se still yields one _se column per scale under APA scoring.
+  se <- score_pid5(sim_pid5, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
+  expect_equal(ncol(se), 60)
+  expect_length(grep("_se$", names(se)), 30)
+})
+
 test_that("tibble toggles tibble vs data.frame output", {
   skip_if_not_installed("tibble")
   expect_s3_class(score_pid5(sim_pid5bf, items = 1:25, version = "BF", tibble = TRUE), "tbl_df")
