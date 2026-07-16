@@ -53,10 +53,10 @@ Maintained by Jeffrey Girard.
   — they are generated (roxygen2, data-raw scripts).
 - Never change keying content (`pid_items` and the other
   `*_items`/`*_scales` tables) without maintainer sign-off; provenance
-  in `project/SOURCES.md`.
+  in `cairn/SOURCES.md`.
 - New instruments follow the pattern: items (+ scales) table via
   `data-raw/` → `score_*` (+ `validity_*`) +
-  `generate_{docx,qualtrics,redcap}_*` family (see project/DESIGN.md).
+  `generate_{docx,qualtrics,redcap}_*` family (see cairn/DESIGN.md).
 - Keep `tests/`, NEWS.md, and the `_pkgdown.yml` reference index in step
   with exported functions.
 
@@ -78,22 +78,29 @@ Maintained by Jeffrey Girard.
   cheaper model to Sonnet subagents; if a task would benefit from a
   clean Fable session, ask Jeff to launch one.
 
-## Project tracking (project/ directory)
+## Project tracking (cairn)
 
-Boundary rule: Architecture → `project/DESIGN.md` · Direction →
-`project/ROADMAP.md` · Tasks → `project/MILESTONES.md` · History →
-`project/LOG.md`. Keying provenance (sources for `pid_items`) →
-`project/SOURCES.md`.
+This repo uses the cairn plugin. **Before acting on any request,
+classify it and route** — the tracking rulebook only loads once a cairn
+skill fires, so starting work in plain conversation silently bypasses
+the work tiers and the git model. Classify first:
 
-- Read `project/MILESTONES.md` before starting work; read
-  `project/DESIGN.md` before architectural changes.
-- Use the skills for milestone work instead of ad-hoc edits to project/
-  files:
-  - `/plan-milestone` — scope a milestone (goal, acceptance criteria,
-    tasks) → READY
-  - `/work-milestone` — implement a READY milestone, checking off tasks
-    as you go
-  - `/review-milestone` — verify acceptance criteria by executing them;
-    close out → DONE
-  - `/sync-docs` — reconcile tracking docs with the actual state of the
-    code
+- **Trivial** (no runtime surface — typo, comment, tracking edit):
+  commit directly to the default branch.
+- **User-visible bug**: invoke `/hotfix`.
+- **New work, a design decision, or more than one sitting**: invoke
+  `/milestone-plan` (then `/milestone-implement` → `/milestone-review`).
+- **Status, “what’s next”, or unsure which tier**: invoke `/milestone`.
+- **Never implement code on the default branch** outside a
+  milestone/hotfix branch; nothing reaches it without the user’s
+  explicit approval at the review gate.
+
+Whenever the request is anything but trivial, invoke the skill *first*
+so the full rulebook (the plugin’s `skills/shared/tracking-rules.md`)
+and its conduct load — do not reconstruct the rules here from memory.
+All project state lives under `cairn/` (**Architecture → DESIGN · Status
+→ ROADMAP · Tasks → milestone files · Decisions → DECISIONS · Lessons →
+LESSONS · History → archive + git**); never record status or TODOs in
+this file. Claude’s persistent memory never holds project state;
+`cairn/` files win any conflict. Keying provenance (sources for
+`pid_items` etc.) → the repo-specific file `cairn/SOURCES.md`.

@@ -90,8 +90,8 @@
 <div class="section level2">
 <h2 id="hard-rules">Hard rules<a class="anchor" aria-label="anchor" href="#hard-rules"></a></h2>
 <ul><li>Never hand-edit <code>NAMESPACE</code>, <code>man/</code>, <code>data/*.rda</code>, or <code>R/sysdata.rda</code> — they are generated (roxygen2, data-raw scripts).</li>
-<li>Never change keying content (<code>pid_items</code> and the other <code>*_items</code>/<code>*_scales</code> tables) without maintainer sign-off; provenance in <code>project/SOURCES.md</code>.</li>
-<li>New instruments follow the pattern: items (+ scales) table via <code>data-raw/</code> → <code>score_*</code> (+ <code>validity_*</code>) + <code>generate_{docx,qualtrics,redcap}_*</code> family (see project/DESIGN.md).</li>
+<li>Never change keying content (<code>pid_items</code> and the other <code>*_items</code>/<code>*_scales</code> tables) without maintainer sign-off; provenance in <code>cairn/SOURCES.md</code>.</li>
+<li>New instruments follow the pattern: items (+ scales) table via <code>data-raw/</code> → <code>score_*</code> (+ <code>validity_*</code>) + <code>generate_{docx,qualtrics,redcap}_*</code> family (see cairn/DESIGN.md).</li>
 <li>Keep <code>tests/</code>, NEWS.md, and the <code>_pkgdown.yml</code> reference index in step with exported functions.</li>
 </ul></div>
 <div class="section level2">
@@ -104,20 +104,20 @@
 <li>Assume the session usually runs on Opus: delegate tasks that suit a cheaper model to Sonnet subagents; if a task would benefit from a clean Fable session, ask Jeff to launch one.</li>
 </ul></div>
 <div class="section level2">
-<h2 id="project-tracking-project-directory">Project tracking (project/ directory)<a class="anchor" aria-label="anchor" href="#project-tracking-project-directory"></a></h2>
-<p>Boundary rule: Architecture → <code>project/DESIGN.md</code> · Direction → <code>project/ROADMAP.md</code> · Tasks → <code>project/MILESTONES.md</code> · History → <code>project/LOG.md</code>. Keying provenance (sources for <code>pid_items</code>) → <code>project/SOURCES.md</code>.</p>
-<ul><li>Read <code>project/MILESTONES.md</code> before starting work; read <code>project/DESIGN.md</code> before architectural changes.</li>
-<li>Use the skills for milestone work instead of ad-hoc edits to project/ files:
+<h2 id="project-tracking-cairn">Project tracking (cairn)<a class="anchor" aria-label="anchor" href="#project-tracking-cairn"></a></h2>
+<p>This repo uses the cairn plugin. <strong>Before acting on any request, classify it and route</strong> — the tracking rulebook only loads once a cairn skill fires, so starting work in plain conversation silently bypasses the work tiers and the git model. Classify first:</p>
 <ul><li>
-<code>/plan-milestone</code> — scope a milestone (goal, acceptance criteria, tasks) → READY</li>
+<strong>Trivial</strong> (no runtime surface — typo, comment, tracking edit): commit directly to the default branch.</li>
 <li>
-<code>/work-milestone</code> — implement a READY milestone, checking off tasks as you go</li>
+<strong>User-visible bug</strong>: invoke <code>/hotfix</code>.</li>
 <li>
-<code>/review-milestone</code> — verify acceptance criteria by executing them; close out → DONE</li>
+<strong>New work, a design decision, or more than one sitting</strong>: invoke <code>/milestone-plan</code> (then <code>/milestone-implement</code> → <code>/milestone-review</code>).</li>
 <li>
-<code>/sync-docs</code> — reconcile tracking docs with the actual state of the code</li>
-</ul></li>
-</ul></div>
+<strong>Status, “what’s next”, or unsure which tier</strong>: invoke <code>/milestone</code>.</li>
+<li>
+<strong>Never implement code on the default branch</strong> outside a milestone/hotfix branch; nothing reaches it without the user’s explicit approval at the review gate.</li>
+</ul><p>Whenever the request is anything but trivial, invoke the skill <em>first</em> so the full rulebook (the plugin’s <code>skills/shared/tracking-rules.md</code>) and its conduct load — do not reconstruct the rules here from memory. All project state lives under <code>cairn/</code> (<strong>Architecture → DESIGN · Status → ROADMAP · Tasks → milestone files · Decisions → DECISIONS · Lessons → LESSONS · History → archive + git</strong>); never record status or TODOs in this file. Claude’s persistent memory never holds project state; <code>cairn/</code> files win any conflict. Keying provenance (sources for <code>pid_items</code> etc.) → the repo-specific file <code>cairn/SOURCES.md</code>.</p>
+</div>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
