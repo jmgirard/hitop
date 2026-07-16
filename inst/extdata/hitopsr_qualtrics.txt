@@ -60,7 +60,7 @@ A lot
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_005]]
-I avoided foods because I did not like their appearance
+I avoided foods because I did not like their appearance.
 [[AdvancedChoices]]
 [[Choice:1]]
 Not at all
@@ -348,7 +348,7 @@ A lot
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_027]]
-I felt little desire for sexual activity
+I felt little desire for sexual activity.
 [[AdvancedChoices]]
 [[Choice:1]]
 Not at all
@@ -387,7 +387,7 @@ A lot
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_030]]
-I was bothered by stomach symptoms (diarrhea, nausea, stomach pain etc.)
+I was bothered by stomach symptoms (diarrhea, nausea, stomach pain etc.).
 [[AdvancedChoices]]
 [[Choice:1]]
 Not at all
@@ -3723,7 +3723,7 @@ A lot
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_284]]
-I felt uninterested during sexual activity
+I felt uninterested during sexual activity.
 [[AdvancedChoices]]
 [[Choice:1]]
 Not at all
@@ -4117,7 +4117,7 @@ A lot
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_314]]
-I experienced loss of consciousness or had fainting spells (in the absence of a diagnosed medical disorder)
+I experienced loss of consciousness or had fainting spells (in the absence of a diagnosed medical disorder).
 [[AdvancedChoices]]
 [[Choice:1]]
 Not at all
@@ -4355,7 +4355,7 @@ A lot
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_332]]
-I was afraid that I might suffer from a serious illness
+I was afraid that I might suffer from a serious illness.
 [[AdvancedChoices]]
 [[Choice:1]]
 Not at all
@@ -5011,7 +5011,7 @@ A lot
 
 [[Question:MC:SingleAnswer]]
 [[ID:HSR_382]]
-I felt guilty about sexual difficulties
+I felt guilty about sexual difficulties.
 [[AdvancedChoices]]
 [[Choice:1]]
 Not at all

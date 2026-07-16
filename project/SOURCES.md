@@ -137,6 +137,17 @@ missing-data rule for the 100-item short form, so `apa_scoring` applies the
 full-form 25%/proration rule to the SF's 4-item facets *by analogy* (25% of 4 = 1
 item: ≤ 1 missing prorates, ≥ 2 → NA). See D-009.
 
+## Note on HiTOP-SR/BR item-text punctuation (2026-07-16)
+
+The HiTOP-SR source export (`devel/hitopsr_titanium.xml`) ends 398 of its 405
+item texts with a period but omits it on 7 (HiTOP_81, _400, _452, _432, _467,
+_490, _428 = HSR 5, 27, 30, 284, 314, 332, 382; HiTOP_490 also appears as
+HBR 41). With Jeff's sign-off (2026-07-16), `hitopsr_items$Text` and
+`hitopbr_items$Text` add the trailing period to those 8 rows — a deliberate,
+punctuation-only divergence from the source, which is treated as containing
+typographical oversights. Wording is otherwise verbatim; no keying content
+(item numbers, scale membership, reverse-keying) was touched.
+
 ## Open questions (need source adjudication)
 
 Both are encoded as `skip()`-ed tests in `test-keying.R` so the suite stays green
