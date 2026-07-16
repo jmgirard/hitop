@@ -4,7 +4,7 @@
 # table), these tests guard the keying TABLE ITSELF against the authoritative
 # published sources. Every expected value below is transcribed *from the source
 # document* (cited per block), never from data-raw/pid_items.csv. Provenance and
-# the two open discrepancies are documented in project/SOURCES.md.
+# the two open discrepancies are documented in cairn/SOURCES.md.
 #
 # Ported from the PID-5-only fork (milestone M1). This repo's `pid_items` uses
 # columns FULL / SF / BF where the fork used PID5 / PID5FSF / PID5BF. The BF
@@ -91,7 +91,7 @@ test_that("PRD items match Williams et al. (2019) Table 4", {
 test_that("SDTD contains the 16 items enumerated in Williams et al. (2019) Table 5", {
   # Table 5's note lists 16 item numbers. Asserted as a subset because the
   # paper's TEXT (p. 258) says "17 items" were summed, and pid_items includes a
-  # 17th (item 38). See project/SOURCES.md open question OQ-1.
+  # 17th (item 38). See cairn/SOURCES.md open question OQ-1.
   williams_sdtd_note <- c(2, 4, 18, 23, 30, 50, 52, 57, 66, 68, 80, 82, 88, 93, 193, 209)
   expect_true(all(williams_sdtd_note %in% pid_items$FULL[!is.na(pid_items$SDTD)]))
 })
