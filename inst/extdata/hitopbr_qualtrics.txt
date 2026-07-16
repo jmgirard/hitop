@@ -532,7 +532,7 @@ A lot
 
 [[Question:MC:SingleAnswer]]
 [[ID:HBR_41]]
-I was afraid that I might suffer from a serious illness
+I was afraid that I might suffer from a serious illness.
 [[AdvancedChoices]]
 [[Choice:1]]
 Not at all

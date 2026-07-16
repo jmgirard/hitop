@@ -3,7 +3,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 2,FALSE,Externalizing,Anankastia,Perfectionism,NA,I felt that my work must be flawless.,HiTOP_301
 3,FALSE,Thought Disorder,NA,Reality Distortion,Hallucinations,I saw things that were not really there.,HiTOP_596
 4,FALSE,Internalizing,Fear,Trichotillomania,NA,I was embarrassed because I pulled my hair.,HiTOP_383
-5,FALSE,Internalizing,Eating Pathology,Food Selectivity,NA,I avoided foods because I did not like their appearance,HiTOP_81
+5,FALSE,Internalizing,Eating Pathology,Food Selectivity,NA,I avoided foods because I did not like their appearance.,HiTOP_81
 6,FALSE,Internalizing,Fear,Panic,NA,I felt dizzy or lightheaded.,HiTOP_288
 7,FALSE,Externalizing,Antagonism,Dishonesty,Deceitfulness,I believed it was fine to tell a little lie in order to get out of trouble.,Ext_432
 8,FALSE,Thought Disorder,NA,Mistrust,Cynicism,Most people were just out for themselves.,Ext_79
@@ -25,10 +25,10 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 24,FALSE,Detachment,NA,Restricted Affectivity,NA,I hardly showed any feelings.,HiTOP_29
 25,FALSE,Externalizing,Antagonism,Grandiosity,NA,Most people would have liked to be like me.,Ext_441
 26,FALSE,Internalizing,Distress,Emotionality,Angry Hostility,I got so angry that I yelled or screamed.,Ext_323
-27,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,NA,I felt little desire for sexual activity,HiTOP_400
+27,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,NA,I felt little desire for sexual activity.,HiTOP_400
 28,FALSE,Detachment,NA,Social Anxiety,NA,I avoided performing or giving a talk in front of others.,HiTOP_349
 29,FALSE,Externalizing,Disinhibition,Gambling,NA,It was hard to stop gambling once I started.,Ext_210
-30,FALSE,Somatoform,NA,Bodily Distress,NA,"I was bothered by stomach symptoms (diarrhea, nausea, stomach pain etc.)",HiTOP_452
+30,FALSE,Somatoform,NA,Bodily Distress,NA,"I was bothered by stomach symptoms (diarrhea, nausea, stomach pain etc.).",HiTOP_452
 31,FALSE,Externalizing,Antagonism,Social Aggression,NA,I taunted others.,Ext_74
 32,FALSE,Externalizing,Disinhibition,Restlessness,NA,I felt restless when I had to sit still for more than ten minutes.,Ext_229
 33,FALSE,Internalizing,Distress,Insomnia,NA,I had trouble falling asleep.,HiTOP_274
@@ -282,7 +282,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 281,FALSE,Internalizing,Sexual Problems,Sexual Distress,NA,I was worried about my sex life.,HiTOP_429
 282,FALSE,Internalizing,Distress,Nightmares,NA,I had a recurring bad dream.,HiTOP_278
 283,FALSE,Somatoform,NA,Somatic Preoccupation,NA,I was acutely aware of what was going on with my body.,HiTOP_493
-284,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,NA,I felt uninterested during sexual activity,HiTOP_432
+284,FALSE,Internalizing,Sexual Problems,Low Sexual Interest,NA,I felt uninterested during sexual activity.,HiTOP_432
 285,FALSE,Internalizing,Eating Pathology,Excessive Exercise,NA,I exercised until I felt sick.,HiTOP_120
 286,FALSE,Internalizing,Sexual Problems,Premature Orgasm,NA,"During sex, I usually climaxed very quickly.",exp22
 287,FALSE,Detachment,NA,Restricted Affectivity,NA,I hid my emotions.,Ext_403
@@ -312,7 +312,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 311,FALSE,Thought Disorder,NA,Dissociation,NA,I felt like I no longer existed.,HiTOP_547
 312,FALSE,Internalizing,Fear,Cleaning,NA,I had to clean myself because I felt contaminated.,HiTOP_228
 313,FALSE,Externalizing,Anankastia,Hyperdeliberation,NA,I carefully weighed out the pros and cons before I made any decision.,Ext_438
-314,FALSE,Somatoform,NA,Conversion Symptoms,NA,I experienced loss of consciousness or had fainting spells (in the absence of a diagnosed medical disorder),HiTOP_467
+314,FALSE,Somatoform,NA,Conversion Symptoms,NA,I experienced loss of consciousness or had fainting spells (in the absence of a diagnosed medical disorder).,HiTOP_467
 315,FALSE,Externalizing,Anankastia,Rigidity,NA,I refused to compromise because I knew I was right.,HiTOP_307
 316,FALSE,Internalizing,Sexual Problems,Sex-Related Substance Use,NA,Sexual activity was even more enjoyable for me when I was intoxicated/high.,HiTOP_419
 317,FALSE,Internalizing,Fear,Checking,NA,I felt the urge to check to make sure I really had done something.,HiTOP_214
@@ -330,7 +330,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 329,FALSE,Externalizing,Antagonism,Callousness,NA,I did not really care how others felt.,Ext_127
 330,FALSE,Internalizing,Fear,Trauma Reactions,NA,I suddenly felt as if a traumatic event were actually happening again.,HiTOP_375
 331,FALSE,Internalizing,Fear,Specific Phobia Index,Blood-Injection Phobia,The sight of a needle upset me.,HiTOP_201
-332,FALSE,Somatoform,NA,Health Anxiety,NA,I was afraid that I might suffer from a serious illness,HiTOP_490
+332,FALSE,Somatoform,NA,Health Anxiety,NA,I was afraid that I might suffer from a serious illness.,HiTOP_490
 333,FALSE,Internalizing,Distress,Insomnia,NA,I slept very poorly.,HiTOP_270
 334,FALSE,Externalizing,Disinhibition,Problematic Shopping,NA,I kept my shopping a secret.,Ext_384
 335,FALSE,Internalizing,Eating Pathology,Body Focus,NA,I spent a lot of time grooming myself.,HiTOP_213
@@ -380,7 +380,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 379,FALSE,Externalizing,Antagonism,Entitlement,NA,I was jealous of what other people have.,Ext_381
 380,FALSE,Internalizing,Distress,Distress-Dysphoria,Anhedonia,I didn't experience the joy and pleasure that most other people do.,HiTOP_8
 381,FALSE,Internalizing,Fear,Hoarding,NA,I could not resist buying something that I did not need.,HiTOP_258
-382,FALSE,Internalizing,Sexual Problems,Sexual Distress,NA,I felt guilty about sexual difficulties,HiTOP_428
+382,FALSE,Internalizing,Sexual Problems,Sexual Distress,NA,I felt guilty about sexual difficulties.,HiTOP_428
 383,FALSE,Internalizing,Fear,Counting,NA,I avoided numbers that could bring bad luck.,HiTOP_234
 384,FALSE,Externalizing,Disinhibition,Restlessness,NA,I avoided activities where I would need to sit down for long.,Ext_460
 385,FALSE,Thought Disorder,NA,Reality Distortion,Hallucinations,I had a sensation that something was crawling under my skin.,HiTOP_608
