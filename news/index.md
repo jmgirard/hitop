@@ -60,6 +60,14 @@ interface before a CRAN submission.
   fixed a mis-targeted REDCap “Import Instructions” link on the PID-5
   download page, and reconciled the instrument download pages so each
   describes only the resources it actually links
+- **Standardized item-text punctuation** in `hitopsr_items` (7 items)
+  and `hitopbr_items` (1 item): every item now ends in a period. The
+  affected items (HSR 5, 27, 30, 284, 314, 332, 382 and HBR 41) lack the
+  period in the source instrument itself, where 398 of 405 HiTOP-SR
+  items have one; the omissions are treated as typographical oversights.
+  The derived `*_scales`/`*_subscales` tables and the prebuilt
+  DOCX/Qualtrics/REDCap artifacts in `inst/extdata/` were regenerated to
+  match
 
 ## hitop 0.1.0
 
