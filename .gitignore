@@ -11,3 +11,8 @@ docs
 
 /.quarto/
 **/*.quarto_ipynb
+
+# cairn tracking system
+cairn/references/pdf/
+cairn/.merge-approved
+cairn/.merge-approved.pending

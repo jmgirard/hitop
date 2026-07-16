@@ -2,7 +2,7 @@
 #
 # The HiTOP-SR source export left 7 of 405 items (and 1 matching HiTOP-BR item)
 # without a trailing period; these were standardized with maintainer sign-off
-# on 2026-07-16 (see project/SOURCES.md, "Note on HiTOP-SR/BR item-text
+# on 2026-07-16 (see cairn/SOURCES.md, "Note on HiTOP-SR/BR item-text
 # punctuation"). These tests pin that invariant so a future CSV edit or
 # instrument update cannot silently reintroduce the inconsistency.
 #

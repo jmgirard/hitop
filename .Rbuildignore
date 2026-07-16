@@ -15,7 +15,7 @@
 ^assets$
 ^[.]?air[.]toml$
 ^\.vscode$
-^project$
+^cairn$
 ^\.claude$
 ^CLAUDE\.md$
 ^hitop_hex\.png$
