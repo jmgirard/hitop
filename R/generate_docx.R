@@ -448,7 +448,7 @@ generate_docx_hitophsum <- function(
     "\u2022 Inhalants (nitrous oxide, glue, gas, paint thinner, etc.)",
     "\u2022 Sedatives or sleeping pills (Valium, Serepax, Ativan, Xanax, Librium, Rohypnol, GHB, etc.)",
     "\u2022 Hallucinogens (LSD, acid, mushrooms, PCP, Special K, ecstasy, etc.)",
-    "\u2022 Heroin/opiates (heroin, opium, fentanyl, etc.)",
+    "\u2022 Street opioids (heroin, opium, fentanyl, etc.)",
     "\u2022 Prescription opioids (oxycodone [OxyContin, Percocet], hydrocodone [Vicodin], methadone, buprenorphine, etc.)",
     "\u2022 Other - specify:",
     sep = "\n"
@@ -541,7 +541,7 @@ generate_docx_hitophsum <- function(
       "SUD01",
       "Reminders of alcohol gave me a strong urge to drink.",
       "Reminders of using nicotine gave me a strong urge to smoke or take nicotine.",
-      "Reminders of [substance] gave me a strong urge to drink."
+      "Reminders of [substance] gave me a strong urge to use [substance]."
     ),
     c(
       "craving",
@@ -672,7 +672,7 @@ generate_docx_hitophsum <- function(
   # --- 3B. Define Data for Step 3 (WITH Items) ---
   step3_with_matrix <- rbind(
     c("... changes in bodily sensations", ""),
-    c("WITH01", "Goosebumps"),
+    c("WITH01", "Goose bumps"),
     c("WITH02", "Heart racing"),
     c("WITH03", "Muscle aches"),
     c("WITH04", "Physical shakes"),

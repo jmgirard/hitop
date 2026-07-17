@@ -54,7 +54,8 @@ Make `hitophsum_items`/`hitophsum_choices` and the HSUM DOCX/REDCap generators f
 - [x] T4 R/generate_redcap.R:526–556: drop the fragile variable-name regexes; resolve quantity field types/choices from `Choice_Set` (fixes cgr — regex `(cig|cigar)` never matches `_cgr`)
 - [x] T5 R/generate_redcap.R:456–499: append `and [var] <> '99'` to comparison gates whose parent choice set contains 99
 - [x] T6 Add `other_drug_rule` argument + argmax branching builder (other-drug set derived from `hitophsum_items`, never hardcoded); roxygen documents both modes and tie behavior; uses REDCap `if()` in branching (already required by the `count>1` gate, so no new version constraint)
-- [ ] T7 R/generate_docx.R:451 "Heroin/opiates"→"Street opioids"; :675 "Goosebumps"→"Goose bumps"; sync the hardcoded SUD matrix with the corrected wording
+- [x] T7 R/generate_docx.R:451 "Heroin/opiates"→"Street opioids"; :675 "Goosebumps"→"Goose bumps"; sync the hardcoded SUD matrix with the corrected wording
+- [x] T7b (discovered) Regenerate stale prebuilt artifacts inst/extdata/hitophsum_{1.0_US,1.0_A4}.docx + hitophsum_redcap.zip from the corrected generators; hitophsum_qualtrics.qsf is hand-built in Qualtrics and cannot be regenerated from code — flagged to Jeff
 - [ ] T8 SOURCES.md HSUM section; NEWS.md bullet; `document()`/`test()`/`check()`
 - [ ] T9 Branch `m18-hsum-source-alignment`, PR, record URL, await sign-off
 
@@ -71,6 +72,7 @@ Source: "revised SUD module-August 2024" sheet of `SUD module final analyses Jul
 - 2026-07-16: T1 done — sheet extracted and hand-transcribed into new tests/testthat/test-keying-hitophsum.R (text, counts, gates, choice sets) + extended REDCap/docx blocks (cgr dropdown, PNTS guards, argmax + per_drug modes, docx wording). Deliberately RED pending T2–T7: 73 keying, 11 redcap, 6 docx failures — all in the diagnosed spots; consumption/WITH/count blocks already green. Extra divergences found beyond plan list: alcohol sud01–17 nearly all drink-specific, nicotine sud01/09/11 too, other-drug sud03/13, nic_form "(Select...)" capitalization, freq_heavy labels.
 - 2026-07-16: T2+T3 done (one commit — same data surface): 66 scripted per-variable corrections to items csv (incl. nic_quant_oth gate → 2,4,5,6), heavy labels aligned + 143 quant choice rows, both .rda regenerated (readr installed locally to run the data-raw script). Keying suite fully green (643 assertions).
 - 2026-07-16: T4+T5+T6 done (one commit — one function refactor): quantity regexes replaced by Choice_Set resolution + a cli_abort guard on unresolved choice sets; PNTS `<> '99'` guard on radio comparison gates; `other_drug_rule` arg with argmax builder (sum-of-if() outrank terms = 0). Removed the now-dead `any_other` rule branch (its data user became a discrete list in T2). Full suite: only the 6 planned T7 docx failures remain.
+- 2026-07-16: T7 done; suite fully green (1283 pass / 0 fail). Minor amendment: added discovered T7b — the download vignette distributes prebuilt inst/extdata artifacts, so the two HSUM DOCX + REDCap ZIP were regenerated from the corrected generators; hitophsum_qualtrics.qsf remains STALE (hand-built in Qualtrics, no code path) — needs Jeff's decision (regenerate in Qualtrics or note known-stale).
 
 ## Decisions
 
