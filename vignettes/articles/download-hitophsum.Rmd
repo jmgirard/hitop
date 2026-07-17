@@ -10,92 +10,39 @@ vignette: >
 
 Welcome to the HiTOP Harmful Substance Use Module (HiTOP-HSUM) instrument resources page. This questionnaire contains a total of 650 possible items across 3 assessment stages. Complex skip/display logic is used, such that the vast majority of respondents will only see a subset of possible items. Here you can download a DOCX summary file that can be printed and shared with IRB as well as ready-to-use imports for both Qualtrics and REDCap (both of which already implement the complex skip/display logic mentioned above). Scoring functions are still under development but should be available soon.
 
+```{r setup, include=FALSE}
+source("_download-helpers.R")
+```
+
 ```{=html}
-<style>
-  /* Expand the main content area to full width */
-  main.col-md-9 {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-  }
-
-  /* Hide the empty sidebar container entirely */
-  aside.col-md-3 {
-    display: none !important;
-  }
-</style>
-
 <h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
 <p class="text-muted">Choose the format that best fits your immediate research needs.</p>
+```
 
-
-<div class="row mt-4">
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">📄 Printable Document</h5>
-        <p class="card-text text-muted">Use these Microsoft Word documents for an overview or sending to the IRB.</p>
-        <div class="d-grid gap-2">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_A4.docx" class="btn btn-outline-primary">English (A4 Paper)</a>
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_US.docx" class="btn btn-outline-primary">English (US Paper)</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">📊 Qualtrics Import</h5>
-        <p class="card-text text-muted">Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.</p>
-        <div class="d-grid gap-2 mt-4">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf" class="btn btn-outline-primary">English (QSF File)</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">🏥 REDCap Import</h5>
-        <p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
-        <div class="d-grid gap-2 mt-4">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip" class="btn btn-outline-primary">English (ZIP File)</a>
-          <a href="../reference/generate_redcap_hitophsum.html#details" class="btn btn-outline-primary">Import Instructions</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+```{r downloads, echo=FALSE, results='asis'}
+download_cards("HiTOP-HSUM", list(
+  dl_card(
+    "📄", "Printable Document",
+    "Use these Microsoft Word documents for an overview or sending to the IRB.",
+    dl_link("English (A4 Paper)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_A4.docx"),
+    dl_link("English (US Paper)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_US.docx")
+  ),
+  dl_card(
+    "📊", "Qualtrics Import",
+    "Use this survey file to easily import the instrument directly into your Qualtrics surveys.",
+    dl_link("English (QSF File)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf")
+  ),
+  dl_card(
+    "🏥", "REDCap Import",
+    "Use this compressed archive file to import the instrument as a new instrument in your REDCap project.",
+    dl_link("English (ZIP File)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip"),
+    ref_link("Import Instructions", "../reference/generate_redcap_hitophsum.html#details")
+  )
+))
 ```
 
 Scoring functions and example data coming soon.
 
-```{=html}
-<h3 class="mt-4 mb-3">Versions</h3>
-<p class="text-muted">Artifact builds are identified by their build date. The instrument itself is version 1.0; a new build date means the distributed file changed (see the history below for what changed). To check which build you downloaded, compare its MD5 checksum (e.g., with <code>tools::md5sum()</code> in R) against the manifest below; the same information is available in the package as <code>hitop_artifacts</code>.</p>
-```
-
-```{r artifact-versions, echo=FALSE}
-m <- hitop::hitop_artifacts
-m <- m[m$instrument == "HiTOP-HSUM", ]
-m <- m[order(m$file, m$build_date), ]
-current <- m[!duplicated(m$file, fromLast = TRUE), ]
-knitr::kable(
-  current[, c("file", "format", "instrument_version", "build_date", "md5")],
-  row.names = FALSE,
-  col.names = c("File", "Format", "Instrument version", "Build date", "MD5 checksum"),
-  caption = "Current builds"
-)
-```
-
-```{r artifact-history, echo=FALSE}
-history <- m[order(m$build_date, decreasing = TRUE), ]
-knitr::kable(
-  history[, c("build_date", "file", "changes")],
-  row.names = FALSE,
-  col.names = c("Build date", "File", "Changes"),
-  caption = "Version history"
-)
+```{r versions, echo=FALSE, results='asis'}
+versions_section("HiTOP-HSUM")
 ```

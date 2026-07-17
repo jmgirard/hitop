@@ -59,8 +59,8 @@ Redesign the six pkgdown instrument download pages so build-date version info is
 - [x] T1: Move the per-page inline `<style>` block (full-width main, hidden sidebar) into `pkgdown/extra.css`; add theme-aware styles for badges and the collapsible versions section using Bootstrap 5 CSS variables so both themes work.
 - [x] T2: Write the shared version-section helper under `vignettes/articles/` (sourced R helper or child Rmd, parameterized by instrument) that emits build-date badge values and the collapsible current-builds + history HTML from `hitop_artifacts`.
 - [x] T3: Prototype on `download-pid5.Rmd`: badges on download buttons, collapsible versions section, whole-page polish; `pkgdown::build_site()` locally; capture light + dark screenshots.
-- [ ] T4: Checkpoint — present screenshots to Jeff, iterate until approved, log approval in the work log.
-- [ ] T5: Roll the approved design out to the remaining 5 pages (pid5sf, pid5bf, hitopsr, hitopbr, hitophsum — adapt to HSUM's 3-card layout), deleting the now-duplicated inline blocks.
+- [x] T4: Checkpoint — present screenshots to Jeff, iterate until approved, log approval in the work log.
+- [x] T5: Roll the approved design out to the remaining 5 pages (pid5sf, pid5bf, hitopsr, hitopbr, hitophsum — adapt to HSUM's 3-card layout), deleting the now-duplicated inline blocks.
 - [ ] T6: Final verification — full `pkgdown::build_site()`, `devtools::test()`, confirm href lock passes and `inst/extdata/`/`data/` untouched; final light + dark screenshots of all 6 pages.
 
 ## Work log
@@ -71,6 +71,7 @@ Redesign the six pkgdown instrument download pages so build-date version info is
 - 2026-07-16: T1–T3 done — extra.css styles (`:has()` opt-in full-width, badges, collapsible), `_download-helpers.R` (raw-html fenced output; caught pandoc re-parsing `_1.0_` as emphasis), PID-5 prototype verified in browser light+dark; devtools::test() clean (9635 pass).
 - 2026-07-16: checkpoint gate — iterate: MD5 column dropped from the versions table (audience-fit), Import Instructions demoted to a quiet text link; scope amendment approved (manifest wording cleanup); translations scaling punted to a ROADMAP candidate.
 - 2026-07-17: iteration applied + manifest re-derived wording-only (rows verified identical minus `changes`); both themes re-verified in browser.
+- 2026-07-17: T4 approved (design v2, gate); T5 rollout to the 5 remaining pages — all 6 render new components, zero inline styles; fixed pre-existing BF-page "PID-5-SF" typo; HSUM QSF card copy "text file" → "survey file"; tests clean (9635 pass).
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
