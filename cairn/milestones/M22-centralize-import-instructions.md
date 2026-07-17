@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M22: Centralize import instructions (Qualtrics QSF+TXT, REDCap ZIP)
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -94,7 +94,7 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
       `test-import-instructions.R`): the article file exists; each download page
       links `articles/import-instructions.html` from its Qualtrics and REDCap
       cards. Keep the existing href-lock test green.
-- [ ] T6: Build locally — `devtools::install()` then
+- [x] T6: Build locally — `devtools::install()` then
       `pkgdown::build_article("import-instructions")` plus the six download
       pages — confirm anchors resolve and cards render; run
       `devtools::document()`/`test()`/`check()` clean.
@@ -120,6 +120,10 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
 - 2026-07-17: T5 — added test-artifacts.R block: article exists with the three
   anchors; each page links redcap-zip + the right qualtrics anchor (HSUM qsf,
   rest txt); no page keeps a generate_redcap*#details link. Full suite green.
+- 2026-07-17: T6 — installed + `pkgdown::build_articles()`: all three anchors
+  present in import-instructions.html; HSUM page deep-links qsf+redcap, pid5 txt+
+  redcap; both HSUM cards render an "Import Instructions" link. Added NEWS entry.
+  `devtools::check()` Status: OK (0/0/0). Milestone → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

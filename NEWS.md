@@ -10,6 +10,14 @@ before a CRAN submission.
   manifest's change notes were reworded for a general audience (data
   unchanged otherwise).
 
+* **Centralized import instructions.** A new "Importing into Qualtrics &
+  REDCap" article gives step-by-step instructions for all three import
+  formats — Qualtrics survey files (`.qsf`), Qualtrics questions files
+  (`.txt`), and REDCap instrument ZIPs — and every instrument download page
+  now links its Qualtrics and REDCap cards to it. The REDCap import steps
+  previously embedded in each `generate_redcap_*()` help page now live in
+  that article, which the functions point to via "See also".
+
 * **Distribution artifacts are now versioned.** The new `hitop_artifacts`
   manifest dataset identifies every prebuilt file in `inst/extdata/` by
   build date and MD5 checksum (one row per build, history kept); the
