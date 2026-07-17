@@ -74,7 +74,7 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Author `vignettes/articles/import-instructions.Rmd` — three sections
+- [x] T1: Author `vignettes/articles/import-instructions.Rmd` — three sections
       with stable `{#...}` anchors (`qualtrics-qsf`, `qualtrics-txt`,
       `redcap-zip`). Port the maintainer-approved REDCap steps verbatim from the
       current `generate_redcap.R` `@details`; draft the Qualtrics QSF
@@ -107,6 +107,10 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
   and the M17-follow-up "REDCap @details for pid5sf/pid5bf" item. Gate answers:
   @details → move-to-article + @seealso; home → pkgdown article; Qualtrics
   steps → verified against official docs.
+- 2026-07-17: T1 — authored import-instructions.Rmd (anchors qualtrics-qsf /
+  qualtrics-txt / redcap-zip); REDCap steps ported verbatim from generator
+  @details; Qualtrics QSF+TXT steps verified against the Qualtrics "Import &
+  Export Surveys" support article (cited in the page).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
