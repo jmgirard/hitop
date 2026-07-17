@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M23: Overview instrument page (SR/BR/HSUM link cards)
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m23-overview-instrument-page   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -109,6 +109,8 @@ by URL and discoverable atop the Instruments navbar menu.
 
 - 2026-07-17: created by /milestone-plan (absorbs the "Overview instrument page"
   candidate, lineage M21).
+- 2026-07-17: in-progress on m23-overview-instrument-page; cards emitted as a
+  static `{=html}` row (no new helper), reusing `.hitop-downloads` + card classes.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
