@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M21 | Beautify instrument download pages (manifest badges + collapsible history) | planned | — | normal | milestones/M21-beautify-download-pages.md |
+| M21 | Beautify instrument download pages (manifest badges + collapsible history) | review | — | normal | milestones/M21-beautify-download-pages.md |
 | M20 | Artifact versioning — build-date manifest + checksum lock | done | — | normal | milestones/archive/M20-artifact-versioning.md |
 | M19 | HSUM Qualtrics QSF rebuild (API script + verification test) | done | — | normal | milestones/archive/M19-hsum-qualtrics-qsf.md |
 | M18 | HiTOP-HSUM source alignment (revised SUD module, Aug 2024) | done | — | normal | milestones/archive/M18-hsum-source-alignment.md |
@@ -22,3 +22,4 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - M17 follow-ups: import `@details` for `generate_redcap_pid5sf`/`pid5bf`; purge git-tracked `vignettes/.quarto/_freeze/` (stale HiTOP-PRO content) — added 2026-07-16 — `legacy/LOG.md` (2026-07-10 M17 close-out)
+- Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
