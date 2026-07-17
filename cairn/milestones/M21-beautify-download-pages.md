@@ -54,9 +54,9 @@ Redesign the six pkgdown instrument download pages so build-date version info is
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Move the per-page inline `<style>` block (full-width main, hidden sidebar) into `pkgdown/extra.css`; add theme-aware styles for badges and the collapsible versions section using Bootstrap 5 CSS variables so both themes work.
-- [ ] T2: Write the shared version-section helper under `vignettes/articles/` (sourced R helper or child Rmd, parameterized by instrument) that emits build-date badge values and the collapsible current-builds + history HTML from `hitop_artifacts`.
-- [ ] T3: Prototype on `download-pid5.Rmd`: badges on download buttons, collapsible versions section, whole-page polish; `pkgdown::build_site()` locally; capture light + dark screenshots.
+- [x] T1: Move the per-page inline `<style>` block (full-width main, hidden sidebar) into `pkgdown/extra.css`; add theme-aware styles for badges and the collapsible versions section using Bootstrap 5 CSS variables so both themes work.
+- [x] T2: Write the shared version-section helper under `vignettes/articles/` (sourced R helper or child Rmd, parameterized by instrument) that emits build-date badge values and the collapsible current-builds + history HTML from `hitop_artifacts`.
+- [x] T3: Prototype on `download-pid5.Rmd`: badges on download buttons, collapsible versions section, whole-page polish; `pkgdown::build_site()` locally; capture light + dark screenshots.
 - [ ] T4: Checkpoint — present screenshots to Jeff, iterate until approved, log approval in the work log.
 - [ ] T5: Roll the approved design out to the remaining 5 pages (pid5sf, pid5bf, hitopsr, hitopbr, hitophsum — adapt to HSUM's 3-card layout), deleting the now-duplicated inline blocks.
 - [ ] T6: Final verification — full `pkgdown::build_site()`, `devtools::test()`, confirm href lock passes and `inst/extdata/`/`data/` untouched; final light + dark screenshots of all 6 pages.
@@ -66,6 +66,7 @@ Redesign the six pkgdown instrument download pages so build-date version info is
 
 - 2026-07-16: created by /milestone-plan (promotes the 2026-07-16 candidate row; lineage M20/D-016).
 - 2026-07-16: /milestone-implement — status in-progress, branch m21-beautify-download-pages cut from main.
+- 2026-07-16: T1–T3 done — extra.css styles (`:has()` opt-in full-width, badges, collapsible), `_download-helpers.R` (raw-html fenced output; caught pandoc re-parsing `_1.0_` as emphasis), PID-5 prototype verified in browser light+dark; devtools::test() clean (9635 pass).
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

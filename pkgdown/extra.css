@@ -8,3 +8,157 @@ ul.task-list label {
   pointer-events: none;
   cursor: default;
 }
+
+/* ==========================================================================
+   Instrument download pages
+   Pages opt in by containing an element with the .hitop-downloads class
+   (emitted by vignettes/articles/_download-helpers.R). All colors come from
+   Bootstrap 5 theme variables so the pkgdown light-switch works untouched.
+   ========================================================================== */
+
+/* Full-width layout: expand the main column and hide the empty TOC sidebar */
+main.col-md-9:has(.hitop-downloads) {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 100% !important;
+}
+
+body:has(.hitop-downloads) aside.col-md-3 {
+  display: none !important;
+}
+
+/* --- Download buttons with build-date badges --------------------------- */
+
+.hitop-dl-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.hitop-build-badge {
+  font-size: 0.72em;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+  color: var(--bs-secondary-color);
+  background-color: var(--bs-secondary-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: 50rem;
+  padding: 0.1em 0.65em;
+  white-space: nowrap;
+}
+
+/* Keep the badge legible when its button is hovered/active (filled primary) */
+.hitop-dl-btn:hover .hitop-build-badge,
+.hitop-dl-btn:active .hitop-build-badge {
+  color: var(--bs-btn-hover-color, inherit);
+  background-color: transparent;
+  border-color: currentColor;
+  opacity: 0.85;
+}
+
+/* --- Collapsible versions section --------------------------------------- */
+
+details.hitop-versions {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  background-color: var(--bs-body-bg);
+  margin-bottom: 2rem;
+}
+
+details.hitop-versions > summary {
+  cursor: pointer;
+  padding: 0.75rem 1.25rem;
+  font-weight: 600;
+  color: var(--bs-body-color);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+details.hitop-versions > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.hitop-versions > summary::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.55em;
+  height: 0.55em;
+  border-right: 2px solid var(--bs-secondary-color);
+  border-bottom: 2px solid var(--bs-secondary-color);
+  transform: rotate(-45deg);
+  transition: transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+details.hitop-versions[open] > summary::before {
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details.hitop-versions > summary::before {
+    transition: none;
+  }
+}
+
+details.hitop-versions > summary:hover {
+  background-color: var(--bs-tertiary-bg);
+  border-radius: 0.5rem;
+}
+
+details.hitop-versions[open] > summary {
+  border-bottom: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.hitop-versions-body {
+  padding: 1rem 1.25rem 0.5rem;
+}
+
+.hitop-versions-body h4 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--bs-secondary-color);
+  margin: 0.25rem 0 0.75rem;
+}
+
+.hitop-versions-body table {
+  font-size: 0.875rem;
+}
+
+.hitop-versions-body td,
+.hitop-versions-body th {
+  vertical-align: middle;
+}
+
+.hitop-md5 {
+  font-size: 0.8em;
+  word-break: break-all;
+}
+
+/* Version history entries */
+
+.hitop-history-entry {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.6rem 0;
+}
+
+.hitop-history-entry + .hitop-history-entry {
+  border-top: 1px solid var(--bs-border-color-translucent);
+}
+
+.hitop-history-entry > .hitop-build-badge {
+  flex: 0 0 auto;
+}
+
+.hitop-history-files {
+  color: var(--bs-secondary-color);
+  font-size: 0.85em;
+}
