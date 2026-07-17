@@ -2,11 +2,11 @@
      "Milestone-file section ownership". -->
 # M19: HSUM Qualtrics QSF rebuild (API script + verification test)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, IP2
-- **Branch/PR:** `m19-hsum-qualtrics-qsf`
+- **Branch/PR:** `m19-hsum-qualtrics-qsf` · https://github.com/jmgirard/hitop/pull/21
 
 ## Goal
 
@@ -45,7 +45,7 @@ Replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one reb
 - [x] T3 Modernize `devel/qualtrics_test.R` → `devel/qualtrics_hitophsum.R`: quantity types/choices from `Choice_Set` (mirror the M18 fix in R/generate_redcap.R); delete the dead `any_other` branch; keep the inherent PNTS exclusion and `SelectedChoicesCount` logic; header = run recipe + local-package note (M18 lesson) + text-adaptation list the test mirrors
 - [x] T4 **Jeff (user action):** run the script against a fresh survey with his API token, export the QSF from Qualtrics, replace `inst/extdata/hitophsum_qualtrics.qsf`; T1 test goes green
 - [x] T5 SOURCES.md (QSF row machine-checked; divergence + adaptation notes; generator provenance line), NEWS.md bullet; `document()`/`test()`/`check()`
-- [ ] T6 PR, record URL, merge on Jeff's approval
+- [x] T6 PR, record URL, merge on Jeff's approval — https://github.com/jmgirard/hitop/pull/21 (merge itself gated at review, AC7)
 
 ## Work log
 
