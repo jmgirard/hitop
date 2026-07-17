@@ -6,7 +6,7 @@
 - **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
-- **Principles touched:** —
+- **Principles touched:** IP1
 - **Branch/PR:** `m18-hsum-source-alignment`
 
 ## Goal
@@ -67,6 +67,7 @@ Source: "revised SUD module-August 2024" sheet of `SUD module final analyses Jul
 - 2026-07-16: drafted in the legacy tracker (project/MILESTONES.md) from the HSUM verification session; AC marked "re-confirm at planning".
 - 2026-07-16: translated to cairn format at migration (cairn-init); content unchanged. /milestone-implement must re-confirm the AC with Jeff before starting.
 - 2026-07-16: implementation started; branch `m18-hsum-source-alignment` cut from synced main. Source xlsx verified readable (two identical Downloads copies, sha1 f38557cf; target sheet present); working copy stashed at cairn/references/pdf/ (gitignored).
+- 2026-07-16: question gate passed — Jeff re-confirmed all nine AC as written; header amended (minor) to record Principles touched: IP1. D-014 (source of truth + other_drug_rule) added per plan Notes.
 
 ## Decisions
 
