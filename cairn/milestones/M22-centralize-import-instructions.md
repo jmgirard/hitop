@@ -90,7 +90,7 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
 - [x] T4: Edit `R/generate_redcap.R` — remove the REDCap import `@details` blocks
       on `generate_redcap_hitopbr/hitopsr/pid5`, add an `@seealso` to the article
       on every `generate_redcap_*`; run `devtools::document()` to regenerate `man/`.
-- [ ] T5: Add a test (extend `tests/testthat/test-artifacts.R` or new
+- [x] T5: Add a test (extend `tests/testthat/test-artifacts.R` or new
       `test-import-instructions.R`): the article file exists; each download page
       links `articles/import-instructions.html` from its Qualtrics and REDCap
       cards. Keep the existing href-lock test green.
@@ -117,6 +117,9 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
 - 2026-07-17: T4 — replaced the REDCap import @details on all four generators
   that carried it (hitopbr/hitopsr/pid5/hitophsum) with an @seealso to the
   article; added the same @seealso to pid5sf/pid5bf; man/ regenerated (all six).
+- 2026-07-17: T5 — added test-artifacts.R block: article exists with the three
+  anchors; each page links redcap-zip + the right qualtrics anchor (HSUM qsf,
+  rest txt); no page keeps a generate_redcap*#details link. Full suite green.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
