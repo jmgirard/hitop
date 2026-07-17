@@ -71,6 +71,18 @@ Replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one reb
 - AC6 ✅ document() no diff (clean tree after review-run); devtools::test() 7704 pass / 0 fail (review-run); devtools::check() 0 errors / 0 warnings / 0 notes (T5 this session, after the last package-content change; only cairn/ tracking edits since).
 - AC7 ⏳ pending merge-approval gate below.
 
+### Independent review fan-out (2026-07-16)
+
+Three fresh-context reviewers → 6 findings → [S] scorer. The [O] diff-bug reviewer independently re-extracted the QSF with its own code and confirmed the committed artifact faithful to the keying tables (651 unique questions, cgr choices, count logic, gate enumerations, per-drug divergence as documented); [S] blame-history confirmed no M18/D-014/D-015 regression and the any_other/regex removals kill ancestral bugs, not deliberate work; [S] prior-PR: no prior-PR evidence (no GitHub review threads exist).
+
+Actioned (≥80): F1 (82) rebuild_hitophsum_qsf could overwrite the good artifact after partial push failures → **fixed**: push now stops loudly listing failed questions before any export. F2 (85) gate test never asserted Or-conjunctions (an And regression hides 597 items and stays green) → **fixed**: first-expression-bare + all-Or assertions added.
+
+Logged sub-80, fixed anyway as cheap hardening: F3 (78) ungated items never checked for absence of display logic → new converse test. F5 (76) choice display order unchecked for dict-serialized questions → ChoiceOrder assertion added. F6 (72) DESIGN.md cited the deleted devel/qualtrics_test.R (Generators family + Known issue #5) → both updated; issue #5 narrowed to the .txt generators, its .qsf half resolved by M19.
+
+Logged sub-80, rejected as framed: F4 (38) envelope-unwrap re-serialization corruption — scorer empirically refuted the auto_unbox mechanism; the never-exercised fallback was nonetheless deleted in favor of a loud stop, eliminating the residual digits risk.
+
+Post-fix: QSF file 8305 assertions / 0 fail; full suite 9588 / 0; cairn_validate all pass.
+
 ### Consistency gate (2026-07-16)
 
 cairn_validate: all checks pass after one review-side repair — the cairn plugin updated mid-session (script mtime 21:24) and its new "profile valid" check requires a `## changelog` slot; copied verbatim from the plugin's shipped r-package reference profile into cairn/PROFILE.md (NEWS.md). Advisory warnings: the known legacy dangling-token set. Toolchain slot: document() no-diff ✅; README untouched by this branch ✅; pkgdown::check_pkgdown() no problems ✅; NEWS entry ✅; no new top-level files ✅; check() clean ✅.

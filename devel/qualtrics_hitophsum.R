@@ -88,11 +88,8 @@ export_qualtrics_qsf <- function(api_token, data_center, survey_id) {
     jsonlite::fromJSON(txt, simplifyVector = FALSE),
     error = function(e) NULL
   )
-  # Some deployments wrap the export in the usual {result: ...} envelope.
-  if (!is.null(parsed$result) && is.null(parsed$SurveyElements)) {
-    parsed <- parsed$result
-    txt <- jsonlite::toJSON(parsed, auto_unbox = TRUE)
-  }
+  # Never re-serialize a wrapped response — a jsonlite round-trip is not
+  # byte-faithful (M19 review F4). Anything that is not the bare QSF stops.
   if (is.null(parsed$SurveyEntry) || is.null(parsed$SurveyElements)) {
     stop(
       "The export response is not QSF-shaped; export manually via ",
@@ -237,6 +234,7 @@ push_hitophsum_to_qualtrics <- function(
   instructions = NULL
 ) {
   qid_map <- list()
+  failed <- character(0)
 
   # 0. Inject Global Instructions at the Beginning
   if (!is.null(instructions) && length(instructions) > 0) {
@@ -274,6 +272,8 @@ push_hitophsum_to_qualtrics <- function(
 
       if (!is.null(resp) && !is.null(resp$result$QuestionID)) {
         qid_map[["hitophsum_instructions"]] <- resp$result$QuestionID
+      } else {
+        failed <- c(failed, "hitophsum_instructions")
       }
     }
   }
@@ -417,7 +417,23 @@ push_hitophsum_to_qualtrics <- function(
     # 6. Store New QID mapping
     if (!is.null(resp) && !is.null(resp$result$QuestionID)) {
       qid_map[[var_name]] <- resp$result$QuestionID
+    } else {
+      failed <- c(failed, var_name)
     }
+  }
+
+  # A partial survey must never look like success: a missing gate parent
+  # would ship its children ungated, and rebuild_hitophsum_qsf() would
+  # overwrite the good committed artifact (M19 review F1).
+  if (length(failed) > 0) {
+    stop(
+      length(failed),
+      " question(s) failed to push (survey ",
+      survey_id,
+      " is incomplete; fix and rerun): ",
+      paste(failed, collapse = ", "),
+      call. = FALSE
+    )
   }
 
   cli::cli_alert_success("Finished pushing items to Survey ID: {survey_id}")

@@ -180,13 +180,21 @@ test_that("QSF choices match each item's Choice_Set values and labels", {
   for (i in seq_len(nrow(mc))) {
     var <- mc$Variable[i]
     cs <- hitophsum_choices[hitophsum_choices$Choice_Set == mc$Choice_Set[i], ]
-    ch <- qsf_choices(qsf_payload(var))
+    p <- qsf_payload(var)
+    ch <- qsf_choices(p)
     expect_setequal(names(ch), as.character(cs$Value))
     actual_labels <- vapply(ch, function(x) x$Display, character(1))
     expect_identical(
       unname(actual_labels[as.character(cs$Value)]),
       cs$Label,
       label = paste(var, "labels")
+    )
+    # Display ORDER is participant-facing: choices render in table order,
+    # never (e.g.) Prefer-not-to-say first (M19 review F5).
+    expect_identical(
+      as.character(unlist(p$ChoiceOrder)),
+      as.character(cs$Value),
+      label = paste(var, "choice order")
     )
   }
 })
@@ -238,7 +246,36 @@ test_that("QSF display logic expands Gate_Variable/Gate_Value correctly", {
         label = paste(var, "Selected operators")
       )
       expect_setequal(actual_vals, expected_vals)
+
+      # Multi-condition gates must join with Or: an And regression makes a
+      # radio-parent gate unsatisfiable and every item under it invisible
+      # (M19 review F2). The first expression carries no conjunction.
+      conjs <- vapply(
+        exprs,
+        function(e) e$Conjunction %||% NA_character_,
+        character(1)
+      )
+      expect_true(is.na(conjs[1]), label = paste(var, "first conjunction"))
+      if (length(conjs) > 1) {
+        expect_true(
+          all(conjs[-1] == "Or"),
+          label = paste(var, "Or conjunctions")
+        )
+      }
     }
+  }
+})
+
+test_that("ungated items carry no display logic", {
+  skip_if_not(have_jsonlite)
+  # A spurious gate on an ungated row — the substance entry questions above
+  # all — would silently suppress a whole module (M19 review F3).
+  ungated <- hitophsum_items$Variable[
+    is.na(hitophsum_items$Gate_Variable) | is.na(hitophsum_items$Gate_Value)
+  ]
+  expect_gt(length(ungated), 0)
+  for (var in ungated) {
+    expect_null(qsf_payload(var)$DisplayLogic, label = var)
   }
 })
 
