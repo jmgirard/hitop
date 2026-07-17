@@ -1,3 +1,40 @@
+# Maintainer script: build the HiTOP-HSUM Qualtrics survey via the Qualtrics
+# survey-definitions API, from the keying tables (M19; D-014/D-015).
+#
+# The committed artifact inst/extdata/hitophsum_qualtrics.qsf is DERIVED from
+# hitophsum_items/hitophsum_choices via this script — never hand-edited in the
+# Qualtrics builder. tests/testthat/test-qualtrics-hitophsum.R locks the
+# committed QSF to the keying tables, so a stale artifact fails the suite.
+#
+# Requirements (local only — devel/ is .Rbuildignore'd, so none of this
+# touches DESCRIPTION): install.packages(c("httr2", "cli")); a Qualtrics API
+# token with survey-definitions access; your datacenter id (the subdomain in
+# your Qualtrics URL, e.g. "ca1"); an EMPTY target survey created in the
+# Qualtrics UI (its id, "SV_...", is in the survey's URL).
+#
+# Run recipe:
+#   1. devtools::load_all()  # for hitophsum_items/choices/instructions
+#   2. source("devel/qualtrics_hitophsum.R")
+#   3. push_hitophsum_to_qualtrics(
+#        api_token   = Sys.getenv("QUALTRICS_API_KEY"),
+#        data_center = "<datacenter>",
+#        survey_id   = "SV_<new empty survey>",
+#        items = hitophsum_items, choices = hitophsum_choices,
+#        instructions = hitophsum_instructions
+#      )
+#   4. Spot-check the survey in the Qualtrics builder (do not edit content).
+#   5. Export: Survey > Tools > Import/Export > Export Survey (.qsf) and
+#      replace inst/extdata/hitophsum_qualtrics.qsf with the download.
+#   6. Rscript -e 'devtools::test(filter = "qualtrics")'  # must be green
+#
+# Text adaptations applied to hitophsum_items$Text (mirrored by the test and
+# documented in cairn/SOURCES.md):
+#   1. "stem: symptom" items (the withdrawal set) render the symptom bolded
+#      on its own line: "stem: <br><br><b>symptom</b>".
+#   2. "other specified substances" is followed by the respondent's own
+#      wording, piped from hsum_oth_txt: "other specified substances
+#      (${q://QID/ChoiceTextEntryValue})".
+
 # Send a Question Payload to the Qualtrics API (with error parsing)
 create_qualtrics_question <- function(
   api_token,
@@ -140,90 +177,57 @@ push_hitophsum_to_qualtrics <- function(
     }
   }
 
-  is_alc_quantity <- grepl(
-    "alc.*quant|quant.*alc",
-    items$Variable,
-    ignore.case = TRUE
-  )
-  # UPDATE: Added 'cgr' to the regex to catch hsum_nic_quant_cgr
-  is_cig_quantity <- grepl(
-    "(cig|cigar|cgr).*quant|quant.*(cig|cigar|cgr)",
-    items$Variable,
-    ignore.case = TRUE
-  )
-  is_oth_quantity <- grepl(
-    "_oth$|_other$",
-    items$Variable,
-    ignore.case = TRUE
-  ) &
-    grepl("quant", items$Variable, ignore.case = TRUE)
-
   for (i in seq_len(nrow(items))) {
     var_name <- items$Variable[i]
     text <- items$Text[i]
     field_type <- tolower(items$Field_Type[i])
     charset <- items$Choice_Set[i]
 
-    # TEXT FORMATTING UPDATES -----------------------------------------------
-
-    # 1. Line Break and Bold for items with a colon (e.g., withdrawal items)
-    if (grepl(":", text)) {
+    # Text adaptation 1: bold the symptom in "stem: symptom" items.
+    if (grepl(":\\s*\\S", text)) {
       text <- sub("(.*?:\\s*)(.*)", "\\1<br><br><b>\\2</b>", text)
     }
 
-    # 2. Dynamic Piped Text for "other specified substances"
-    if (grepl("other specified substances", text)) {
-      # Grab the Question ID generated for the text entry item
+    # Text adaptation 2: pipe the respondent's "other" substance wording.
+    if (grepl("other specified substances", text, fixed = TRUE)) {
       oth_txt_qid <- qid_map[["hsum_oth_txt"]]
-
-      # Only pipe if the text entry item has already been successfully created
       if (!is.null(oth_txt_qid)) {
         piped_string <- sprintf(
           "other specified substances (${q://%s/ChoiceTextEntryValue})",
           oth_txt_qid
         )
-        text <- gsub("other specified substances", piped_string, text)
+        text <- gsub(
+          "other specified substances",
+          piped_string,
+          text,
+          fixed = TRUE
+        )
       }
     }
-    # -----------------------------------------------------------------------
 
-    # 1. Determine Qualtrics QuestionType and Selector
-    q_type <- "MC"
-    q_selector <- "SAVR"
+    # 1. QuestionType/Selector resolve from Field_Type (never variable-name
+    # regexes — the regex path is what shipped an empty cigar dropdown; M18).
+    q_type <- switch(field_type, text = "TE", descriptive = "DB", "MC")
+    q_selector <- switch(
+      field_type,
+      radio = "SAVR",
+      checkbox = "MAVR",
+      dropdown = "DL",
+      text = "SL",
+      descriptive = "TB"
+    )
 
-    if (field_type == "checkbox") {
-      q_selector <- "MAVR"
-    }
-    if (is_alc_quantity[i] || is_cig_quantity[i]) {
-      q_selector <- "DL"
-    }
-    if (is_oth_quantity[i] || field_type == "text") {
-      q_type <- "TE"
-      q_selector <- "SL"
-    }
-    # Support inline descriptive text from the items dataframe
-    if (field_type == "descriptive") {
-      q_type <- "DB"
-      q_selector <- "TB"
-    }
-
-    # 2. Build Choices List
+    # 2. Choices resolve from Choice_Set (quant_* sets included since M18).
     api_choices <- list()
     if (q_type == "MC") {
-      if (is_alc_quantity[i]) {
-        vals <- c(1:20, 99)
-        labs <- c(as.character(1:19), "20+", "Prefer not to say")
-      } else if (is_cig_quantity[i]) {
-        vals <- c(1:60, 99)
-        labs <- c(as.character(1:59), "60+", "Prefer not to say")
-      } else {
-        sub_choices <- choices[choices$Choice_Set == charset, ]
-        vals <- sub_choices$Value
-        labs <- sub_choices$Label
+      sub_choices <- choices[choices$Choice_Set == charset, ]
+      if (nrow(sub_choices) == 0) {
+        stop("No choices found for ", var_name, " (", charset, ")")
       }
-
-      for (j in seq_along(vals)) {
-        api_choices[[as.character(vals[j])]] <- list(Display = labs[j])
+      for (j in seq_len(nrow(sub_choices))) {
+        api_choices[[as.character(sub_choices$Value[j])]] <- list(
+          Display = sub_choices$Label[j]
+        )
       }
     }
 
@@ -236,17 +240,19 @@ push_hitophsum_to_qualtrics <- function(
       Configuration = list(QuestionDescriptionOption = "UseText")
     )
 
-    # Force the mandatory SubSelector rule for standard MC questions
     if (q_type == "MC" && q_selector %in% c("SAVR", "MAVR")) {
       payload$SubSelector <- "TX"
     }
 
-    if (length(api_choices) > 0 && q_type != "DB") {
+    if (length(api_choices) > 0 && q_type == "MC") {
       payload$Choices <- api_choices
       payload$ChoiceOrder <- I(names(api_choices))
     }
 
-    # 4. Handle Branching Logic
+    # 4. Display logic from Gate_Variable/Gate_Value. Comparison gates
+    # enumerate the qualifying choice values and never include 99, so
+    # "Prefer not to say" cannot satisfy a gate (the QSF-side analog of the
+    # REDCap "<> '99'" guard).
     gate_var <- items$Gate_Variable[i]
     gate_val <- trimws(items$Gate_Value[i])
 
@@ -258,66 +264,36 @@ push_hitophsum_to_qualtrics <- function(
       if (!is.null(gate_qid)) {
         if (gate_val == "count>1") {
           payload$DisplayLogic <- build_count_logic(gate_qid, 1)
+        } else if (grepl("^(>=|<=|>|<|!=)", gate_val)) {
+          parent_idx <- which(items$Variable == gate_var)[1]
+          p_charset <- items$Choice_Set[parent_idx]
+          p_values <- choices$Value[choices$Choice_Set == p_charset]
+
+          operator <- regmatches(
+            gate_val,
+            regexec("^(>=|<=|>|<|!=)", gate_val)
+          )[[1]][1]
+          val_part <- trimws(sub(operator, "", gate_val, fixed = TRUE))
+          num_thresh <- suppressWarnings(as.numeric(val_part))
+
+          matched_vals <- switch(
+            operator,
+            ">=" = p_values[p_values >= num_thresh],
+            "<=" = p_values[p_values <= num_thresh],
+            ">" = p_values[p_values > num_thresh],
+            "<" = p_values[p_values < num_thresh],
+            "!=" = p_values[p_values != num_thresh]
+          )
+          matched_vals <- matched_vals[
+            !is.na(matched_vals) & matched_vals != 99
+          ]
+
+          if (length(matched_vals) > 0) {
+            payload$DisplayLogic <- build_display_logic(gate_qid, matched_vals)
+          }
         } else {
-          p_is_alc <- grepl(
-            "alc.*quant|quant.*alc",
-            gate_var,
-            ignore.case = TRUE
-          )
-          # UPDATE: Apply the 'cgr' regex fix to logic gates as well
-          p_is_cig <- grepl(
-            "(cig|cigar|cgr).*quant|quant.*(cig|cigar|cgr)",
-            gate_var,
-            ignore.case = TRUE
-          )
-
-          if (p_is_alc) {
-            p_values <- c(1:20, 99)
-          } else if (p_is_cig) {
-            p_values <- c(1:60, 99)
-          } else {
-            parent_idx <- which(items$Variable == gate_var)[1]
-            p_charset <- items$Choice_Set[parent_idx]
-            p_values <- choices$Value[choices$Choice_Set == p_charset]
-          }
-
-          matched_vals <- character(0)
-
-          if (gate_val == "any_other") {
-            matched_vals <- p_values[
-              !is.na(p_values) & !(p_values %in% c(0, 1, 99))
-            ]
-          } else if (grepl("^(>=|<=|>|<|!=)", gate_val)) {
-            operator <- regmatches(
-              gate_val,
-              regexec("^(>=|<=|>|<|!=)", gate_val)
-            )[[1]][1]
-            val_part <- trimws(sub(operator, "", gate_val, fixed = TRUE))
-            num_thresh <- suppressWarnings(as.numeric(val_part))
-
-            if (operator == "!=") {
-              matched_vals <- p_values[p_values != num_thresh]
-            }
-            if (operator == ">") {
-              matched_vals <- p_values[p_values > num_thresh]
-            }
-            if (operator == ">=") {
-              matched_vals <- p_values[p_values >= num_thresh]
-            }
-            if (operator == "<") {
-              matched_vals <- p_values[p_values < num_thresh]
-            }
-            if (operator == "<=") {
-              matched_vals <- p_values[p_values <= num_thresh]
-            }
-
-            matched_vals <- matched_vals[
-              !is.na(matched_vals) & matched_vals != 99
-            ]
-          } else {
-            matched_vals <- trimws(strsplit(gate_val, "[,|]")[[1]])
-          }
-
+          matched_vals <- trimws(strsplit(gate_val, "[,|]")[[1]])
+          matched_vals <- matched_vals[matched_vals != ""]
           if (length(matched_vals) > 0) {
             payload$DisplayLogic <- build_display_logic(gate_qid, matched_vals)
           }
