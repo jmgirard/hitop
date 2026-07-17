@@ -20,12 +20,12 @@ Replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one reb
 
 ## Acceptance criteria
 
-- [ ] New `tests/testthat/test-qualtrics-hitophsum.R` parses the committed QSF (jsonlite, `skip_if_not_installed`) and passes: exactly one question element per `hitophsum_items` row (+ instructions) with unique `DataExportTag`s (kills the current duplicate-block defect: 1302 SQ for ~650 items)
-- [ ] QSF content fidelity, machine-checked: item text matches `hitophsum_items$Text` modulo the adaptations documented in SOURCES.md (withdrawal-symptom bolding, piped "other" substance name); every choice-bearing question's values/labels match its `Choice_Set` (incl. the M18 `quant_*` sets)
-- [ ] QSF logic fidelity, machine-checked: every gated item's display logic is the correct expansion of `Gate_Variable`/`Gate_Value` against `hitophsum_choices` (discrete lists, threshold enumerations, `count>1` via `SelectedChoicesCount`), and no display-logic condition anywhere selects choice 99 (PNTS)
-- [ ] `devel/qualtrics_hitophsum.R` resolves field types/choices from `Choice_Set` (no variable-name regexes, no `any_other` branch), with a header documenting required local packages (httr2, cli), token/datacenter inputs, and the run→export→commit recipe; jsonlite added to Suggests (D-015)
-- [ ] SOURCES.md: HSUM verification-table QSF row flips to machine-checked; per-drug-rule platform divergence and text adaptations documented; NEWS.md bullet
-- [ ] `devtools::document()` no-diff; `devtools::test()` passes; `devtools::check()` clean
+- [x] New `tests/testthat/test-qualtrics-hitophsum.R` parses the committed QSF (jsonlite, `skip_if_not_installed`) and passes: exactly one question element per `hitophsum_items` row (+ instructions) with unique `DataExportTag`s (kills the current duplicate-block defect: 1302 SQ for ~650 items)
+- [x] QSF content fidelity, machine-checked: item text matches `hitophsum_items$Text` modulo the adaptations documented in SOURCES.md (withdrawal-symptom bolding, piped "other" substance name); every choice-bearing question's values/labels match its `Choice_Set` (incl. the M18 `quant_*` sets)
+- [x] QSF logic fidelity, machine-checked: every gated item's display logic is the correct expansion of `Gate_Variable`/`Gate_Value` against `hitophsum_choices` (discrete lists, threshold enumerations, `count>1` via `SelectedChoicesCount`), and no display-logic condition anywhere selects choice 99 (PNTS)
+- [x] `devel/qualtrics_hitophsum.R` resolves field types/choices from `Choice_Set` (no variable-name regexes, no `any_other` branch), with a header documenting required local packages (httr2, cli), token/datacenter inputs, and the run→export→commit recipe; jsonlite added to Suggests (D-015)
+- [x] SOURCES.md: HSUM verification-table QSF row flips to machine-checked; per-drug-rule platform divergence and text adaptations documented; NEWS.md bullet
+- [x] `devtools::document()` no-diff; `devtools::test()` passes; `devtools::check()` clean
 - [ ] PR merged with Jeff's approval (regenerated participant-facing artifact: IP1)
 
 ## Coverage
@@ -60,3 +60,17 @@ Replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one reb
 ## Decisions
 
 ## Review
+
+### Acceptance-criteria evidence (2026-07-16, fresh by command)
+
+- AC1 ✅ QSF suite re-run at review: structure block passes (one SQ per hitophsum_items row + instructions; unique tags; 651 elements — the old file's 1302 duplicates gone). File total 6421 pass / 0 fail.
+- AC2 ✅ text block 650/650; choices block 638/638 (values + labels per Choice_Set, incl. quant_* sets; array-serialization normalization documented in-test).
+- AC3 ✅ logic block 2554/2554 (discrete, threshold-enumeration, SelectedChoicesCount); PNTS sweep 1274/1274 (no condition selects choice 99).
+- AC4 ✅ devel/qualtrics_hitophsum.R greps clean of variable-name regexes and any_other; header carries ~/.Renviron setup, run recipe, adaptation list; DESCRIPTION Suggests has jsonlite (D-015); 6 skip guards in the test file.
+- AC5 ✅ SOURCES.md QSF row machine-checked + "Qualtrics artifact" subsection (derived provenance, PNTS enumeration, per-drug divergence); NEWS 0.2.0 bullet present.
+- AC6 ✅ document() no diff (clean tree after review-run); devtools::test() 7704 pass / 0 fail (review-run); devtools::check() 0 errors / 0 warnings / 0 notes (T5 this session, after the last package-content change; only cairn/ tracking edits since).
+- AC7 ⏳ pending merge-approval gate below.
+
+### Consistency gate (2026-07-16)
+
+cairn_validate: all checks pass after one review-side repair — the cairn plugin updated mid-session (script mtime 21:24) and its new "profile valid" check requires a `## changelog` slot; copied verbatim from the plugin's shipped r-package reference profile into cairn/PROFILE.md (NEWS.md). Advisory warnings: the known legacy dangling-token set. Toolchain slot: document() no-diff ✅; README untouched by this branch ✅; pkgdown::check_pkgdown() no problems ✅; NEWS entry ✅; no new top-level files ✅; check() clean ✅.
