@@ -92,6 +92,13 @@ Source: "revised SUD module-August 2024" sheet of `SUD module final analyses Jul
 - AC8 ✅ review-run `document()` no diff; `devtools::test()` 1283/0; `devtools::check()` 0 errors / 0 warnings / 0 notes (this session, after the last package-content change; only cairn/ tracking files changed since).
 - AC9 ⏳ pending merge-approval gate below.
 
+### Independent review fan-out (2026-07-16)
+
+Three fresh-context reviewers, zero findings; scorer no-op (nothing to score).
+- [O] diff-bug: no findings — independently generated the dictionary and traced argmax/PNTS edge cases (blank competitors false-compare to 0, strict-`>` ties show both, PNTS never competes or leaks), CSV referential integrity, .rda↔CSV match, match.arg/recycling/cli_abort correctness, and that oracles are sheet-transcribed literals whose deletion-mutations fail. Two non-blocking observations, both accepted: the docx matrix duplication is the plan's scoped-out "known accepted duplication" (reviewer manually confirmed all cells match); the PNTS sweep test only covers `>=` gates (all current gates) — latent scope gap, no shipped impact.
+- [S] blame-history: no findings — removed constructs (any_other, quantity regexes, old item text) all trace to the single original HSUM commit e61c57d, not deliberate later work; replacements are the recorded subject of D-014; no M10 test assertion weakened.
+- [S] prior-PR-comments: no prior-PR evidence (no merged PR has review comments) — clean no-op.
+
 ### Consistency gate (2026-07-16)
 
 cairn_validate: all checks pass. One FAIL surfaced and repaired review-side: "principles slot valid" — DESIGN.md wrote principles as `- **IP1 — Title.**` while the validator's canonical form is `- IP1: …`; M18 is the first milestone to cite a principle, so the latent format mismatch (from the D-013 design-interview commit) first fired here. Punctuation-only reformat of the 8 bullets; no principle content changed (cairn_impact not triggered). Advisory warnings (legacy D-001–D-012/M13/M14 dangling tokens in DESIGN/SOURCES; M18 9-AC sizing) are known migration artifacts / accepted plan shape. Toolchain slot: document() no-diff ✅; README.md newer than README.Rmd ✅; pkgdown::check_pkgdown() no problems ✅; NEWS 0.2.0 entry ✅; check() clean 0/0/0 ✅; no new top-level files.
