@@ -20,8 +20,9 @@ HiTOP hierarchy from broad spectra down to narrow subscales.
 
 45 items · 8 scales
 
-A short screening measure covering the eight broad HiTOP spectra, ideal
-when respondent time is limited.
+A short screening measure spanning the HiTOP hierarchy — six spectra
+plus the Externalizing superspectrum and a general p-factor — ideal when
+respondent time is limited.
 
 [View & download
 →](https://jmgirard.github.io/hitop/articles/download-hitopbr.md)
