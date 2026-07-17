@@ -73,21 +73,27 @@ Scoring correctness is the package's core promise, so tests must verify against 
 
 ## Design principles
 
-<!-- Interview in progress (2026-07-16): Phase 1 banked these candidates; Phase 2
-     will formalize them into IP/GP blocks (IP block first, then GPs; numbers never
-     reused) and replace this ledger. -->
+<!-- IP = inviolable: a hard constraint never violated in implementation; changing
+     or retiring one requires an explicit user decision recorded as a D-entry.
+     GP = guiding: a default stance, tradeable with stated justification.
+     IP block first, then GPs; numbers are never reused or renumbered.
+     Adopted in the 2026-07-16 design interview (D-013). -->
 
-Banked candidates from the 2026-07-16 design interview (Phase 1 — not yet adopted):
+### Inviolable
 
-- **B1 — researcher-first ergonomics:** in API conflicts, the applied researcher wins.
-- **B2 — scores, never judgment:** norms/reports yes; diagnostic interpretation or clinical recommendations never.
-- **B3 — CRAN-grade discipline:** check-cleanliness and (at acceptance) API-freeze discipline are real gates.
-- **B4 — Society as content oracle:** Society-authored instrument content matches what the Society sanctions, as APA's key governs PID-5.
-- **B5 — no scoring without a key:** registry/exports may ship on item data alone; scoring waits for an authoritative key (the HSUM split).
-- **B6 — break freely with NEWS pre-CRAN:** deprecation cycles begin at CRAN acceptance, not before.
-- **B7 — families earn Imports:** whole function families justify Imports; per-function needs use Suggests + `is_installed()`; base-R internals stand (D-002).
-- **B8 — published-norms-only:** the key bar extends to norms — citable normative tables with SOURCES.md provenance and oracle tests.
-- **B9 — deliberate 4.1 floor:** CRAN farm is the committed matrix; the `R >= 4.1` floor is policy, and raising it is a decision.
+- **IP1 — Instrument content is sacrosanct.** Keying tables, scale memberships, item text, response options, and administration instructions — wherever they live (`*_items`/`*_scales`, `R/sysdata.rda`, generated DOCX/Qualtrics/REDCap artifacts) — change only with maintainer sign-off against the authoritative source (APA key, cited publication, or Society sanction; provenance in [SOURCES.md](SOURCES.md)). Discrepancies remain visible as open questions (OQ-n), never silently patched. A change to participant-facing text is a sourced content change, not a style fix. *(From D-001/D-005 + banked B4; scope extended to text and artifacts at the 2026-07-16 interview.)*
+- **IP2 — Ground truth, never self-reference.** No test asserts the code's own output as truth: scoring verifies against hand-computed fixtures, published values, or independent recomputation; file exports by parse-and-compare against the source datasets (D-010). Every shipped numeric constant that affects output — reverse keys, validity cutoffs, proration thresholds, future norms tables — traces to a SOURCES.md-cited authority before it ships, machine-checked where feasible. *(From D-004/D-010; extended to shipped constants.)*
+- **IP3 — No scoring without a key; no norms without published tables.** Registry/export support may ship for a Society instrument on item data alone, but scoring functions ship only against an authoritative published or Society-sanctioned scoring key, and norming functions only against published, citable normative tables — regardless of demand for provisional versions. *(The HSUM split, codified; banked B5 + B8.)*
+- **IP4 — Scores, never judgment.** The package renders scores, norms, profiles, and reports; it never generates diagnostic interpretation or clinical recommendations. The line: reports may flag values against published, cited thresholds (mechanical comparison with provenance — what `validity_pid5()` does today); generated interpretive prose about what a score means or what to do is out. The package compares; it never characterizes. *(Banked B2; line drawn at the interview.)*
+
+### Guiding
+
+- **GP1 — Published rules win the defaults; deviations are loud.** Where an official published algorithm exists it is the default (APA proration, D-009) and alternatives are explicit opt-ins; a published cutoff applied outside its validated conditions warns rather than silently proceeding (M11). Where no published rule exists, defaults are chosen and documented on their merits (SR/BR `missing = "available"`). *(Mined from D-008/D-009/M11.)*
+- **GP2 — Scored output never changes silently.** Any change to scored values is NEWS-flagged and decision-recorded even pre-CRAN — signatures may break freely with NEWS, numbers never change quietly — and behavior-preserving engine refactors prove identity mechanically (the D-011 characterization-harness pattern). *(Mined from D-009/D-011/mask_se_na.)*
+- **GP3 — Researcher-first ergonomics.** In API design conflicts, the applied researcher processing response data wins over registry elegance or future-clinician needs (tibble outputs, actionable {cli} suggestions). IP1–IP4 outrank convenience wherever they apply. *(Banked B1.)*
+- **GP4 — Lean base-R core; families earn Imports.** Internals are base R (D-002); a whole function family can justify new Imports (generators → {officer}/{flextable}/{snakecase}); a per-function need uses Suggests + `rlang::is_installed()` (the {lavaan} pattern). Dependency changes go through the question gate and a D-entry. *(Banked B7 + D-002.)*
+
+**Candidate dispositions (2026-07-16 interview):** B1→GP3 · B2→IP4 · B3/B6/B9→prose facts in "Audience, boundary & governance" (time-bound postures, deliberately unnumbered) · B4→merged into IP1 · B5+B8→IP3 · B7→GP4 · mined C5→GP1 · C6→GP2.
 
 ## Known issues & tech debt
 
