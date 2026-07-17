@@ -9,7 +9,7 @@ into a single continuous table.
 
 ``` r
 generate_docx_hitopsr(
-  file = "hitopsr_1.0.docx",
+  file = "hitopsr.docx",
   papersize = c("us", "a4"),
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
@@ -24,7 +24,7 @@ generate_docx_hitopsr(
 - file:
 
   Character string specifying the output file path. Defaults to
-  `"hitopsr_1.0.docx"`.
+  `"hitopsr.docx"`.
 
 - papersize:
 
@@ -66,6 +66,6 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpJBuqjv/file1ae44424187b.docx
+#> ✔ Document successfully created at /tmp/RtmppxPdBV/file1aca63739cae.docx
 # }
 ```

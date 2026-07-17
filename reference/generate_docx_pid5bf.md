@@ -6,7 +6,7 @@ Generate a Word Document for the PID-5-BF
 
 ``` r
 generate_docx_pid5bf(
-  file = "pid5bf_1.0.docx",
+  file = "pid5bf.docx",
   papersize = c("us", "a4"),
   title = "PID-5-BF",
   include_scoring = TRUE,
@@ -48,6 +48,6 @@ generate_docx_pid5bf(
 # \donttest{
 # Write a PID-5-BF paper form to a temporary Word document
 generate_docx_pid5bf(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpJBuqjv/file1ae41c81c5e6.docx
+#> ✔ Document successfully created at /tmp/RtmppxPdBV/file1aca46ad543e.docx
 # }
 ```

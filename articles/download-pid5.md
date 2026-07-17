@@ -17,9 +17,9 @@ Use these Microsoft Word documents for printing, paper administration,
 or sending to the IRB.
 
 [English (A4
-Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_1.0_A4.docx)
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_A4.docx)
 [English (US
-Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_1.0_US.docx)
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_US.docx)
 
 ##### 📊 Qualtrics Import
 
@@ -27,7 +27,7 @@ Use this specially formatted text file to easily import the instrument
 directly into your Qualtrics surveys.
 
 [English (TXT
-File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_1.0_qualtrics.txt)
+File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_qualtrics.txt)
 
 ##### 🏥 REDCap Import
 
@@ -35,7 +35,7 @@ Use this compressed archive file to import the instrument as a new
 instrument in your REDCap project.
 
 [English (ZIP
-File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_1.0_redcap.zip)
+File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5_redcap.zip)
 [Import
 Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5.html#details)
 
@@ -85,3 +85,31 @@ Test your analysis pipelines using built-in datasets of simulated
 respondent data.
 
 [Simulated Data](https://jmgirard.github.io/hitop/reference/sim_pid5.md)
+
+### Versions
+
+Artifact builds are identified by their build date. The instrument
+itself is version 1.0; a new build date means the distributed file
+changed (see the history below for what changed). To check which build
+you downloaded, compare its MD5 checksum (e.g., with
+[`tools::md5sum()`](https://rdrr.io/r/tools/md5sum.html) in R) against
+the manifest below; the same information is available in the package as
+`hitop_artifacts`.
+
+| File | Format | Instrument version | Build date | MD5 checksum |
+|:---|:---|:---|:---|:---|
+| pid5_A4.docx | docx_a4 | 1.0 | 2026-07-16 | 42011a74067ce078457c650988853a5f |
+| pid5_qualtrics.txt | qualtrics | 1.0 | 2026-07-16 | f11cd79e83b30d1f3de8da2cfb703b71 |
+| pid5_redcap.zip | redcap | 1.0 | 2026-07-16 | b55dc10562e88b39c1c96cdcecc98dc1 |
+| pid5_US.docx | docx_us | 1.0 | 2026-07-16 | b7d23dd52928604efe9408e8bd93bf35 |
+
+Current builds {.table}
+
+| Build date | File | Changes |
+|:---|:---|:---|
+| 2026-07-16 | pid5_A4.docx | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | pid5_qualtrics.txt | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | pid5_redcap.zip | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | pid5_US.docx | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+
+Version history {.table}

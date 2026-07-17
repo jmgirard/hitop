@@ -8,7 +8,7 @@ instructions, and optional scoring keys.
 
 ``` r
 generate_docx_hitopbr(
-  file = "hitopbr_1.0.docx",
+  file = "hitopbr.docx",
   papersize = c("us", "a4"),
   title = "HiTOP-BR (v1.0)",
   include_scoring = TRUE,
@@ -22,7 +22,7 @@ generate_docx_hitopbr(
 - file:
 
   Character string specifying the output file path. Defaults to
-  `"hitopbr_1.0.docx"`.
+  `"hitopbr.docx"`.
 
 - papersize:
 
@@ -59,6 +59,6 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-BR paper form to a temporary Word document
 generate_docx_hitopbr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpJBuqjv/file1ae430abf070.docx
+#> ✔ Document successfully created at /tmp/RtmppxPdBV/file1aca65e6689a.docx
 # }
 ```

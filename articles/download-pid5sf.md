@@ -18,9 +18,9 @@ Use these Microsoft Word documents for printing, paper administration,
 or sending to the IRB.
 
 [English (A4
-Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_1.0_A4.docx)
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_A4.docx)
 [English (US
-Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_1.0_US.docx)
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_US.docx)
 
 ##### 📊 Qualtrics Import
 
@@ -28,7 +28,7 @@ Use this specially formatted text file to easily import the instrument
 directly into your Qualtrics surveys.
 
 [English (TXT
-File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_1.0_qualtrics.txt)
+File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_qualtrics.txt)
 
 ##### 🏥 REDCap Import
 
@@ -36,7 +36,7 @@ Use this compressed archive file to import the instrument as a new
 instrument in your REDCap project.
 
 [English (ZIP
-File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_1.0_redcap.zip)
+File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_redcap.zip)
 [Import
 Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5.html#details)
 
@@ -89,3 +89,31 @@ validation sample and simulated respondent data.
 [Real Data](https://jmgirard.github.io/hitop/reference/ku_pid5sf.md)
 [Simulated
 Data](https://jmgirard.github.io/hitop/reference/sim_pid5sf.md)
+
+### Versions
+
+Artifact builds are identified by their build date. The instrument
+itself is version 1.0; a new build date means the distributed file
+changed (see the history below for what changed). To check which build
+you downloaded, compare its MD5 checksum (e.g., with
+[`tools::md5sum()`](https://rdrr.io/r/tools/md5sum.html) in R) against
+the manifest below; the same information is available in the package as
+`hitop_artifacts`.
+
+| File | Format | Instrument version | Build date | MD5 checksum |
+|:---|:---|:---|:---|:---|
+| pid5sf_A4.docx | docx_a4 | 1.0 | 2026-07-16 | 3eb5eefb810d638bed9f4d6be3fba53b |
+| pid5sf_qualtrics.txt | qualtrics | 1.0 | 2026-07-16 | 732fcdfed3f2a3ad72deaff13a5a234c |
+| pid5sf_redcap.zip | redcap | 1.0 | 2026-07-16 | e892e3c8e6392fbd43bff6d35a86eef8 |
+| pid5sf_US.docx | docx_us | 1.0 | 2026-07-16 | c0d8f5d0be8840c75f3b0cdb1c994768 |
+
+Current builds {.table}
+
+| Build date | File | Changes |
+|:---|:---|:---|
+| 2026-07-16 | pid5sf_A4.docx | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | pid5sf_qualtrics.txt | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | pid5sf_redcap.zip | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | pid5sf_US.docx | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+
+Version history {.table}

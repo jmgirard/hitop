@@ -8,7 +8,7 @@ branching logic, and items.
 
 ``` r
 generate_docx_hitophsum(
-  file = "hitophsum_overview_1.0.docx",
+  file = "hitophsum_overview.docx",
   papersize = c("us", "a4"),
   title = "HiTOP-HSUM (v1.0) Overview",
   font_size = 10,
@@ -21,7 +21,7 @@ generate_docx_hitophsum(
 - file:
 
   Character string specifying the output file path. Defaults to
-  `"hitophsum_overview_1.0.docx"`.
+  `"hitophsum_overview.docx"`.
 
 - papersize:
 
@@ -53,6 +53,6 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-HSUM paper form to a temporary Word document
 generate_docx_hitophsum(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpJBuqjv/file1ae457eb1994.docx
+#> ✔ Document successfully created at /tmp/RtmppxPdBV/file1aca7dcb5329.docx
 # }
 ```

@@ -115,3 +115,5 @@
   : Personality Inventory for DSM-5 Scale Data
 - [`pid_domains`](https://jmgirard.github.io/hitop/reference/pid_domains.md)
   : Personality Inventory for DSM-5 Domain Data
+- [`hitop_artifacts`](https://jmgirard.github.io/hitop/reference/hitop_artifacts.md)
+  : Distribution Artifact Manifest

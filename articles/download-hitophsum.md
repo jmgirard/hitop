@@ -20,9 +20,9 @@ Use these Microsoft Word documents for an overview or sending to the
 IRB.
 
 [English (A4
-Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_A4.docx)
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_A4.docx)
 [English (US
-Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_US.docx)
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_US.docx)
 
 ##### 📊 Qualtrics Import
 
@@ -43,3 +43,31 @@ File)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.
 Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.html#details)
 
 Scoring functions and example data coming soon.
+
+### Versions
+
+Artifact builds are identified by their build date. The instrument
+itself is version 1.0; a new build date means the distributed file
+changed (see the history below for what changed). To check which build
+you downloaded, compare its MD5 checksum (e.g., with
+[`tools::md5sum()`](https://rdrr.io/r/tools/md5sum.html) in R) against
+the manifest below; the same information is available in the package as
+`hitop_artifacts`.
+
+| File | Format | Instrument version | Build date | MD5 checksum |
+|:---|:---|:---|:---|:---|
+| hitophsum_A4.docx | docx_a4 | 1.0 | 2026-07-16 | 621ea1441f28f804eb5479f2e4baa531 |
+| hitophsum_qualtrics.qsf | qualtrics | 1.0 | 2026-07-16 | fdd097d2bf5ed86a16a05a60a0d8c5e5 |
+| hitophsum_redcap.zip | redcap | 1.0 | 2026-07-16 | e308b6c069c863b6536635a8a88a2cbe |
+| hitophsum_US.docx | docx_us | 1.0 | 2026-07-16 | 116c3dada96106ac4a1104032b86fa8e |
+
+Current builds {.table}
+
+| Build date | File | Changes |
+|:---|:---|:---|
+| 2026-07-16 | hitophsum_A4.docx | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | hitophsum_qualtrics.qsf | Rebuilt from the corrected item data via the Qualtrics API (M19): fixes duplicated questions and the empty cigar-quantity dropdown; SurveyName carries the build stamp. |
+| 2026-07-16 | hitophsum_redcap.zip | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | hitophsum_US.docx | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+
+Version history {.table}

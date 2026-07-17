@@ -17,9 +17,9 @@ Use these Microsoft Word documents for printing, paper administration,
 or sending to the IRB.
 
 [English (A4
-Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_A4.docx)
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_A4.docx)
 [English (US
-Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_1.0_US.docx)
+Paper)](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_US.docx)
 
 ##### 📊 Qualtrics Import
 
@@ -88,3 +88,31 @@ validation sample and simulated respondent data.
 [Real Data](https://jmgirard.github.io/hitop/reference/ku_hitopsr.md)
 [Simulated
 Data](https://jmgirard.github.io/hitop/reference/sim_hitopsr.md)
+
+### Versions
+
+Artifact builds are identified by their build date. The instrument
+itself is version 1.0; a new build date means the distributed file
+changed (see the history below for what changed). To check which build
+you downloaded, compare its MD5 checksum (e.g., with
+[`tools::md5sum()`](https://rdrr.io/r/tools/md5sum.html) in R) against
+the manifest below; the same information is available in the package as
+`hitop_artifacts`.
+
+| File | Format | Instrument version | Build date | MD5 checksum |
+|:---|:---|:---|:---|:---|
+| hitopsr_A4.docx | docx_a4 | 1.0 | 2026-07-16 | aec89eaf15d7db00a8a9749ac045c679 |
+| hitopsr_qualtrics.txt | qualtrics | 1.0 | 2026-07-16 | 151f508795f5208d0e54334468850177 |
+| hitopsr_redcap.zip | redcap | 1.0 | 2026-07-16 | 090a3ee66bcdb13bb5becfcf91cce3ad |
+| hitopsr_US.docx | docx_us | 1.0 | 2026-07-16 | d2275234acf0f6cd09a3e866a0044002 |
+
+Current builds {.table}
+
+| Build date | File | Changes |
+|:---|:---|:---|
+| 2026-07-16 | hitopsr_A4.docx | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | hitopsr_qualtrics.txt | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | hitopsr_redcap.zip | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+| 2026-07-16 | hitopsr_US.docx | Versioning system introduced (D-016): renamed from the *1.0* filename scheme; DOCX footers gain a build stamp. |
+
+Version history {.table}

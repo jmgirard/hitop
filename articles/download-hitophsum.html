@@ -132,8 +132,8 @@ development but should be available soon.</p>
         <h5 class="card-title">📄 Printable Document</h5>
         <p class="card-text text-muted">Use these Microsoft Word documents for an overview or sending to the IRB.</p>
         <div class="d-grid gap-2">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_A4.docx" class="external-link btn btn-outline-primary">English (A4 Paper)</a>
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_US.docx" class="external-link btn btn-outline-primary">English (US Paper)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_A4.docx" class="external-link btn btn-outline-primary">English (A4 Paper)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_US.docx" class="external-link btn btn-outline-primary">English (US Paper)</a>
         </div>
       </div>
     </div>
@@ -165,7 +165,95 @@ development but should be available soon.</p>
   </div>
 </div>
 <p>Scoring functions and example data coming soon.</p>
-  </main>
+<h3 class="mt-4 mb-3">Versions</h3>
+<p class="text-muted">Artifact builds are identified by their build date. The instrument itself is version 1.0; a new build date means the distributed file changed (see the history below for what changed). To check which build you downloaded, compare its MD5 checksum (e.g., with <code><a href="https://rdrr.io/r/tools/md5sum.html" class="external-link">tools::md5sum()</a></code> in R) against the manifest below; the same information is available in the package as <code>hitop_artifacts</code>.</p>
+<table class="table">
+<caption>Current builds</caption>
+<colgroup>
+<col width="24%">
+<col width="10%">
+<col width="19%">
+<col width="11%">
+<col width="34%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">File</th>
+<th align="left">Format</th>
+<th align="left">Instrument version</th>
+<th align="left">Build date</th>
+<th align="left">MD5 checksum</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">hitophsum_A4.docx</td>
+<td align="left">docx_a4</td>
+<td align="left">1.0</td>
+<td align="left">2026-07-16</td>
+<td align="left">621ea1441f28f804eb5479f2e4baa531</td>
+</tr>
+<tr class="even">
+<td align="left">hitophsum_qualtrics.qsf</td>
+<td align="left">qualtrics</td>
+<td align="left">1.0</td>
+<td align="left">2026-07-16</td>
+<td align="left">fdd097d2bf5ed86a16a05a60a0d8c5e5</td>
+</tr>
+<tr class="odd">
+<td align="left">hitophsum_redcap.zip</td>
+<td align="left">redcap</td>
+<td align="left">1.0</td>
+<td align="left">2026-07-16</td>
+<td align="left">e308b6c069c863b6536635a8a88a2cbe</td>
+</tr>
+<tr class="even">
+<td align="left">hitophsum_US.docx</td>
+<td align="left">docx_us</td>
+<td align="left">1.0</td>
+<td align="left">2026-07-16</td>
+<td align="left">116c3dada96106ac4a1104032b86fa8e</td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<caption>Version history</caption>
+<colgroup>
+<col width="5%">
+<col width="11%">
+<col width="82%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Build date</th>
+<th align="left">File</th>
+<th align="left">Changes</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">2026-07-16</td>
+<td align="left">hitophsum_A4.docx</td>
+<td align="left">Versioning system introduced (D-016): renamed from the
+<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
+</tr>
+<tr class="even">
+<td align="left">2026-07-16</td>
+<td align="left">hitophsum_qualtrics.qsf</td>
+<td align="left">Rebuilt from the corrected item data via the Qualtrics
+API (M19): fixes duplicated questions and the empty cigar-quantity
+dropdown; SurveyName carries the build stamp.</td>
+</tr>
+<tr class="odd">
+<td align="left">2026-07-16</td>
+<td align="left">hitophsum_redcap.zip</td>
+<td align="left">Versioning system introduced (D-016): renamed from the
+<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
+</tr>
+<tr class="even">
+<td align="left">2026-07-16</td>
+<td align="left">hitophsum_US.docx</td>
+<td align="left">Versioning system introduced (D-016): renamed from the
+<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
+</tr>
+</tbody>
+</table></main>
 </div>
 
 

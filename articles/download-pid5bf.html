@@ -129,8 +129,8 @@ data.</p>
         <h5 class="card-title">📄 Printable Document</h5>
         <p class="card-text text-muted">Use these Microsoft Word documents for printing, paper administration, or sending to the IRB.</p>
         <div class="d-grid gap-2">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_1.0_A4.docx" class="external-link btn btn-outline-primary">English (A4 Paper)</a>
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_1.0_US.docx" class="external-link btn btn-outline-primary">English (US Paper)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_A4.docx" class="external-link btn btn-outline-primary">English (A4 Paper)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_US.docx" class="external-link btn btn-outline-primary">English (US Paper)</a>
         </div>
       </div>
     </div>
@@ -142,7 +142,7 @@ data.</p>
         <h5 class="card-title">📊 Qualtrics Import</h5>
         <p class="card-text text-muted">Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.</p>
         <div class="d-grid gap-2 mt-4">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_1.0_qualtrics.txt" class="external-link btn btn-outline-primary">English (TXT File)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_qualtrics.txt" class="external-link btn btn-outline-primary">English (TXT File)</a>
         </div>
       </div>
     </div>
@@ -154,7 +154,7 @@ data.</p>
         <h5 class="card-title">🏥 REDCap Import</h5>
         <p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
         <div class="d-grid gap-2 mt-4">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_1.0_redcap.zip" class="external-link btn btn-outline-primary">English (ZIP File)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_redcap.zip" class="external-link btn btn-outline-primary">English (ZIP File)</a>
           <a href="../reference/generate_redcap_pid5.html#details" class="btn btn-outline-primary">Import Instructions</a>
         </div>
       </div>
@@ -221,7 +221,94 @@ data.</p>
     </div>
   </div>
 </div>
-  </main>
+<h3 class="mt-4 mb-3">Versions</h3>
+<p class="text-muted">Artifact builds are identified by their build date. The instrument itself is version 1.0; a new build date means the distributed file changed (see the history below for what changed). To check which build you downloaded, compare its MD5 checksum (e.g., with <code><a href="https://rdrr.io/r/tools/md5sum.html" class="external-link">tools::md5sum()</a></code> in R) against the manifest below; the same information is available in the package as <code>hitop_artifacts</code>.</p>
+<table class="table">
+<caption>Current builds</caption>
+<colgroup>
+<col width="22%">
+<col width="10%">
+<col width="20%">
+<col width="11%">
+<col width="35%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">File</th>
+<th align="left">Format</th>
+<th align="left">Instrument version</th>
+<th align="left">Build date</th>
+<th align="left">MD5 checksum</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">pid5bf_A4.docx</td>
+<td align="left">docx_a4</td>
+<td align="left">1.0</td>
+<td align="left">2026-07-16</td>
+<td align="left">417f07adf713e7267de1b705cb45a777</td>
+</tr>
+<tr class="even">
+<td align="left">pid5bf_qualtrics.txt</td>
+<td align="left">qualtrics</td>
+<td align="left">1.0</td>
+<td align="left">2026-07-16</td>
+<td align="left">93fd646314e7283a9530ffd054389aa0</td>
+</tr>
+<tr class="odd">
+<td align="left">pid5bf_redcap.zip</td>
+<td align="left">redcap</td>
+<td align="left">1.0</td>
+<td align="left">2026-07-16</td>
+<td align="left">4c925abba617cc502279e58d3f287df9</td>
+</tr>
+<tr class="even">
+<td align="left">pid5bf_US.docx</td>
+<td align="left">docx_us</td>
+<td align="left">1.0</td>
+<td align="left">2026-07-16</td>
+<td align="left">2e26e61eba9897656bb15abafd6bea67</td>
+</tr>
+</tbody>
+</table>
+<table class="table">
+<caption>Version history</caption>
+<colgroup>
+<col width="7%">
+<col width="14%">
+<col width="77%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">Build date</th>
+<th align="left">File</th>
+<th align="left">Changes</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">2026-07-16</td>
+<td align="left">pid5bf_A4.docx</td>
+<td align="left">Versioning system introduced (D-016): renamed from the
+<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
+</tr>
+<tr class="even">
+<td align="left">2026-07-16</td>
+<td align="left">pid5bf_qualtrics.txt</td>
+<td align="left">Versioning system introduced (D-016): renamed from the
+<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
+</tr>
+<tr class="odd">
+<td align="left">2026-07-16</td>
+<td align="left">pid5bf_redcap.zip</td>
+<td align="left">Versioning system introduced (D-016): renamed from the
+<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
+</tr>
+<tr class="even">
+<td align="left">2026-07-16</td>
+<td align="left">pid5bf_US.docx</td>
+<td align="left">Versioning system introduced (D-016): renamed from the
+<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
+</tr>
+</tbody>
+</table></main>
 </div>
 
 

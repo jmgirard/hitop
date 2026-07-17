@@ -6,7 +6,7 @@ Generate a Word Document for the PID-5 (Full)
 
 ``` r
 generate_docx_pid5(
-  file = "pid5_1.0.docx",
+  file = "pid5.docx",
   papersize = c("us", "a4"),
   title = "PID-5 (Full)",
   include_scoring = TRUE,
@@ -48,6 +48,6 @@ generate_docx_pid5(
 # \donttest{
 # Write a PID-5 (full) paper form to a temporary Word document
 generate_docx_pid5(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpJBuqjv/file1ae4279fc599.docx
+#> ✔ Document successfully created at /tmp/RtmppxPdBV/file1aca505ae878.docx
 # }
 ```
