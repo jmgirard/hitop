@@ -87,7 +87,7 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
       five → `#qualtrics-txt`) and repoint each REDCap card's `ref_link` from
       `../reference/generate_redcap_*.html#details` to
       `../articles/import-instructions.html#redcap-zip`.
-- [ ] T4: Edit `R/generate_redcap.R` — remove the REDCap import `@details` blocks
+- [x] T4: Edit `R/generate_redcap.R` — remove the REDCap import `@details` blocks
       on `generate_redcap_hitopbr/hitopsr/pid5`, add an `@seealso` to the article
       on every `generate_redcap_*`; run `devtools::document()` to regenerate `man/`.
 - [ ] T5: Add a test (extend `tests/testthat/test-artifacts.R` or new
@@ -114,6 +114,9 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
 - 2026-07-17: T2 — registered the article in the _pkgdown.yml Tutorials menu.
 - 2026-07-17: T3 — all six download pages repointed: Qualtrics card → qsf/txt
   anchor, REDCap card → redcap-zip anchor; no page links generate_redcap*#details.
+- 2026-07-17: T4 — replaced the REDCap import @details on all four generators
+  that carried it (hitopbr/hitopsr/pid5/hitophsum) with an @seealso to the
+  article; added the same @seealso to pid5sf/pid5bf; man/ regenerated (all six).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

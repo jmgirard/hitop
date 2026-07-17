@@ -40,24 +40,12 @@ Generates a REDCap-compatible data dictionary for the
 Hierarchical Taxonomy of Psychopathology - Substance Use Module (HiTOP-HSUM)
 and packages it into an Instrument ZIP file for easy uploading.
 }
-\details{
-\strong{Importing (Uploading) Instruments into a REDCap Project:}
-\enumerate{
-\item Log in to your REDCap account and navigate to the desired project.
-\item Click on the "Designer" link in the left menu bar under "Project Home and
-Design".
-\item In the main page, under "Data Collection Instruments", look for the
-"Upload instrument ZIP" option and click the "Upload" button.
-\item Click "Choose File", navigate to where you have the measure saved as a ZIP
-folder, and select the ZIP folder containing your instrument.
-\item Click "Upload instrument ZIP" button to begin the import process.
-\item Find the imported instrument in your list of measures and review for
-accuracy.
-\item Test the instrument to ensure proper functionality within your project.
-}
-}
 \examples{
 # Write a HiTOP-HSUM REDCap instrument ZIP to a temporary location
 generate_redcap_hitophsum(file = tempfile(fileext = ".zip"))
 
+}
+\seealso{
+Step-by-step import instructions for Qualtrics and REDCap:
+\url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
 }
