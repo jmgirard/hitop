@@ -2,7 +2,7 @@
      section ownership". -->
 # M20: Artifact versioning — build-date manifest + checksum lock
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, GP2, GP4
@@ -58,7 +58,7 @@ Give every distributed `inst/extdata/` artifact a user-visible build-date versio
 - [x] T4: Document `hitop_artifacts` in `R/data.R`; add to `_pkgdown.yml` reference index; `devtools::document()`.
 - [x] T5: Write `tests/testthat/test-artifacts.R` — bidirectional manifest↔file lock (md5 + completeness), DOCX footer-stamp parse-back vs manifest, download-page href check; extend docx parse helpers only if the footer part needs a reader.
 - [x] T6: Update the 6 `vignettes/articles/download-*.Rmd` — new hrefs, current-build-date labels, version-history table from `hitop_artifacts`; verify with local `pkgdown::build_site()`.
-- [ ] T7: NEWS entry (renames + versioning system); DESIGN.md conventions note; full `devtools::check()`.
+- [x] T7: NEWS entry (renames + versioning system); DESIGN.md conventions note; full `devtools::check()`.
 
 ## Work log
 
@@ -67,6 +67,7 @@ Give every distributed `inst/extdata/` artifact a user-visible build-date versio
 - 2026-07-16: T4–T5 done — `hitop_artifacts` documented + pkgdown-listed; `test-artifacts.R` lock suite added (40 pass; href test red on the download pages pending T6, as intended).
 - 2026-07-16: minor amendment — the plan miscounted the download pages: there are 6 (one per instrument form), not 7; AC5/T6/Scope wording corrected, page set unchanged (all of them).
 - 2026-07-16: T6 done — 6 download pages: version-free hrefs, Versions section (current-builds + history tables from `hitop_artifacts`); rendered check via `pkgdown::build_article()` (tables + build dates + md5 present, no stale links); artifact test suite 47 pass / 0 fail.
+- 2026-07-16: T7 done — NEWS bullet, DESIGN.md "Artifact versioning" convention; `devtools::check()` clean (0E/0W/0N). Status → review.
 
 ## Decisions
 

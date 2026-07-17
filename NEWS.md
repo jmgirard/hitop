@@ -3,6 +3,19 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* **Distribution artifacts are now versioned.** The new `hitop_artifacts`
+  manifest dataset identifies every prebuilt file in `inst/extdata/` by
+  build date and MD5 checksum (one row per build, history kept); the
+  website's download pages show each instrument's current builds and a
+  version history; and generated Word documents carry a build stamp in the
+  footer ("Generated YYYY-MM-DD · hitop X.Y.Z"). A test suite locks the
+  committed files to the manifest, so no distributed artifact can change
+  again without a visible version bump. **Artifact filenames no longer
+  carry the instrument version** (e.g., `pid5_1.0_A4.docx` is now
+  `pid5_A4.docx`, so previously shared download URLs no longer resolve),
+  and the `generate_docx_*` default `file` arguments dropped `_1.0`
+  accordingly
+
 * **HiTOP-HSUM aligned to its authoritative source** (the HiTOP Society's
   "revised SUD module-August 2024" development worksheet):
   `hitophsum_items` item text now matches the worksheet's substance-specific

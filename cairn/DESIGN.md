@@ -71,6 +71,10 @@ Scoring correctness is the package's core promise, so tests must verify against 
 
 `data-raw/` scripts (CSV → `usethis::use_data()`) regenerate everything in `data/` and `R/sysdata.rda` (`internal = TRUE`); never edit `.rda` files directly. Keying content changes require maintainer sign-off; sources in [SOURCES.md](SOURCES.md).
 
+### Artifact versioning
+
+The prebuilt `inst/extdata/` artifacts are versioned by **build date** via the exported `hitop_artifacts` manifest (one row per file per build, history kept; D-016). `data-raw/artifacts.R` regenerates every artifact (except the API-built HSUM QSF, whose manifest row is computed from the file on disk) and appends a manifest row per changed file; `tests/testthat/test-artifacts.R` locks the committed files to the manifest by MD5, so no artifact changes without a visible version bump (GP2 applied to artifacts). The build stamp is embedded where the format allows — DOCX footer (`build_docx_footer()`), QSF `SurveyName` — while the flat Qualtrics .txt and REDCap zips are covered by the manifest only. Filenames are version-free so download URLs stay stable; the download articles render current builds and version history from the manifest.
+
 ## Design principles
 
 <!-- IP = inviolable: a hard constraint never violated in implementation; changing
