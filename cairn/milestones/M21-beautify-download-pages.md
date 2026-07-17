@@ -23,9 +23,11 @@ Redesign the six pkgdown instrument download pages so build-date version info is
 - Deduplication: shared styles move to `pkgdown/extra.css`; version-section rendering moves to one shared helper under `vignettes/articles/` sourced by all 6 pages (not in `R/` — no package-namespace pollution).
 - Both site themes supported (`light-switch: true`): styling verified in light and dark.
 - Prototype-first sequencing: PID-5 page approved by Jeff before rollout to the other 5 (HSUM's 3-card variant handled in rollout).
+- (Amendment 2026-07-16, prototype checkpoint): manifest wording cleanup — reword the `hitop_artifacts` `changes` text so public pages carry no internal tracking IDs; `data/hitop_artifacts.rda` re-derived wording-only via `data-raw/artifacts.R` (dates and MD5s identical, no artifact bytes change).
 
 **Out:**
-- Artifact regeneration or manifest changes — nothing in `inst/extdata/` or `data/` changes (that machinery is M20, done).
+- Artifact regeneration — no `inst/extdata/` bytes change (that machinery is M20, done).
+- Multi-language download UI (scaling beyond per-language buttons) — ROADMAP candidate, added 2026-07-17.
 - Scoring-tutorial article styling and homepage/README polish — not requested; add a candidate row later if wanted.
 - Any change to exported functions or their docs — no runtime surface in this milestone.
 
@@ -67,6 +69,8 @@ Redesign the six pkgdown instrument download pages so build-date version info is
 - 2026-07-16: created by /milestone-plan (promotes the 2026-07-16 candidate row; lineage M20/D-016).
 - 2026-07-16: /milestone-implement — status in-progress, branch m21-beautify-download-pages cut from main.
 - 2026-07-16: T1–T3 done — extra.css styles (`:has()` opt-in full-width, badges, collapsible), `_download-helpers.R` (raw-html fenced output; caught pandoc re-parsing `_1.0_` as emphasis), PID-5 prototype verified in browser light+dark; devtools::test() clean (9635 pass).
+- 2026-07-16: checkpoint gate — iterate: MD5 column dropped from the versions table (audience-fit), Import Instructions demoted to a quiet text link; scope amendment approved (manifest wording cleanup); translations scaling punted to a ROADMAP candidate.
+- 2026-07-17: iteration applied + manifest re-derived wording-only (rows verified identical minus `changes`); both themes re-verified in browser.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->

@@ -72,13 +72,7 @@ download_cards <- function(instrument, cards) {
   current <- .current_builds(instrument)
   dates <- stats::setNames(current$build_date, current$file)
 
-  render_link <- function(link) {
-    if (!isTRUE(link$artifact)) {
-      return(sprintf(
-        '<a href="%s" class="btn btn-outline-primary">%s</a>',
-        .esc(link$href), .esc(link$label)
-      ))
-    }
+  render_button <- function(link) {
     file <- basename(link$href)
     if (is.na(dates[file])) {
       stop("No hitop_artifacts row for '", file, "' (", instrument, ")")
@@ -89,8 +83,19 @@ download_cards <- function(instrument, cards) {
     )
   }
 
+  # ref_link()s render as quiet text links under the download buttons,
+  # not as peer buttons (they are supporting material, not downloads).
+  render_ref <- function(link) {
+    sprintf(
+      '<div class="text-center mt-2"><a href="%s" class="hitop-ref-link small">%s</a></div>',
+      .esc(link$href), .esc(link$label)
+    )
+  }
+
   render_card <- function(card) {
-    links <- vapply(card$links, render_link, character(1))
+    is_artifact <- vapply(card$links, function(l) isTRUE(l$artifact), logical(1))
+    buttons <- vapply(card$links[is_artifact], render_button, character(1))
+    refs <- vapply(card$links[!is_artifact], render_ref, character(1))
     sprintf(
       paste0(
         '<div class="col-md-4 mb-4">\n',
@@ -98,11 +103,12 @@ download_cards <- function(instrument, cards) {
         '<div class="card-body">\n',
         '<h5 class="card-title">%s %s</h5>\n',
         '<p class="card-text text-muted">%s</p>\n',
-        '<div class="d-grid gap-2">\n%s\n</div>\n',
+        '<div class="d-grid gap-2">\n%s\n</div>\n%s',
         '</div>\n</div>\n</div>'
       ),
       card$icon, .esc(card$title), .esc(card$desc),
-      paste(links, collapse = "\n")
+      paste(buttons, collapse = "\n"),
+      if (length(refs)) paste0(paste(refs, collapse = "\n"), "\n") else ""
     )
   }
 
@@ -121,15 +127,11 @@ versions_section <- function(instrument) {
   history <- history[order(history$build_date, decreasing = TRUE), , drop = FALSE]
 
   current_rows <- sprintf(
-    paste0(
-      "<tr><td><code>%s</code></td><td>%s</td><td>%s</td>",
-      "<td>%s</td><td><code class=\"hitop-md5\">%s</code></td></tr>"
-    ),
+    "<tr><td><code>%s</code></td><td>%s</td><td>%s</td><td>%s</td></tr>",
     .esc(current$file),
     .esc(.format_label(current$format)),
     .esc(current$instrument_version),
-    vapply(current$build_date, .badge, character(1)),
-    .esc(current$md5)
+    vapply(current$build_date, .badge, character(1))
   )
 
   # Group history rows sharing a build date and change description.
@@ -161,13 +163,13 @@ versions_section <- function(instrument) {
     '<div class="table-responsive">\n',
     '<table class="table table-sm">\n',
     "<thead><tr><th>File</th><th>Format</th><th>Instrument version</th>",
-    "<th>Build date</th><th>MD5 checksum</th></tr></thead>\n",
+    "<th>Build date</th></tr></thead>\n",
     "<tbody>\n", paste(current_rows, collapse = "\n"), "\n</tbody>\n",
     "</table>\n</div>\n",
-    '<p class="text-muted small">To check which build you downloaded, ',
-    "compare its MD5 checksum (e.g., with <code>tools::md5sum()</code> in R) ",
-    "against this manifest; the same information is available in the package ",
-    "as <code>hitop_artifacts</code>.</p>\n",
+    '<p class="text-muted small">If your downloaded file shows an older ',
+    "build date, simply re-download it to get the latest build. The full ",
+    "build manifest (including file checksums) ships in the package as ",
+    "<code>hitop_artifacts</code>.</p>\n",
     "<h4>Version history</h4>\n",
     paste(history_entries, collapse = "\n"), "\n",
     "</div>\n</details>"

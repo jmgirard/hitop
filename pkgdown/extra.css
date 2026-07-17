@@ -136,9 +136,20 @@ details.hitop-versions[open] > summary {
   vertical-align: middle;
 }
 
-.hitop-md5 {
-  font-size: 0.8em;
-  word-break: break-all;
+/* Quiet supporting links under download buttons (e.g. import instructions) */
+
+.hitop-ref-link {
+  color: var(--bs-secondary-color);
+  text-decoration: none;
+}
+
+.hitop-ref-link::after {
+  content: " \2192";
+}
+
+.hitop-ref-link:hover {
+  color: var(--bs-link-color);
+  text-decoration: underline;
 }
 
 /* Version history entries */

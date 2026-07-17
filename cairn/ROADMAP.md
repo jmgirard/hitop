@@ -22,3 +22,4 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - M17 follow-ups: import `@details` for `generate_redcap_pid5sf`/`pid5bf`; purge git-tracked `vignettes/.quarto/_freeze/` (stale HiTOP-PRO content) — added 2026-07-16 — `legacy/LOG.md` (2026-07-10 M17 close-out)
+- Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21

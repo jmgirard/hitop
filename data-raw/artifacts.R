@@ -19,12 +19,12 @@ extdata <- "inst/extdata"
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "Versioning system introduced (D-016): renamed from the _1.0_ filename",
-  "scheme; DOCX footers gain a build stamp."
+  "Versioning system introduced: files renamed from the _1.0_ filename",
+  "scheme and DOCX footers gain a build stamp."
 )
 qsf_build_date <- as.Date("2026-07-16")
 qsf_note <- paste(
-  "Rebuilt from the corrected item data via the Qualtrics API (M19): fixes",
+  "Rebuilt from the corrected item data via the Qualtrics API: fixes",
   "duplicated questions and the empty cigar-quantity dropdown; SurveyName",
   "carries the build stamp."
 )
