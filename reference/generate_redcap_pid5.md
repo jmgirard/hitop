@@ -59,5 +59,5 @@ generate_redcap_pid5(
 ``` r
 # Write a PID-5 (full) REDCap instrument ZIP to a temporary location
 generate_redcap_pid5(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmppxPdBV/file1aca2231d47a.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpznS3DN/file1aeb3e2966bf.zip
 ```
