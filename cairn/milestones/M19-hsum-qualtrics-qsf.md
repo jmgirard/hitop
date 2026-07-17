@@ -43,7 +43,7 @@ Replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one reb
 - [x] T1 Failing test first: `tests/testthat/test-qualtrics-hitophsum.R` per the full structural bar (AC1–AC3), expectations derived from `hitophsum_items`/`hitophsum_choices`, never from the QSF itself; deliberately red against the stale committed file (documents the defect)
 - [x] T2 DESCRIPTION: jsonlite → Suggests; `skip_if_not_installed("jsonlite")` guard in the test file
 - [x] T3 Modernize `devel/qualtrics_test.R` → `devel/qualtrics_hitophsum.R`: quantity types/choices from `Choice_Set` (mirror the M18 fix in R/generate_redcap.R); delete the dead `any_other` branch; keep the inherent PNTS exclusion and `SelectedChoicesCount` logic; header = run recipe + local-package note (M18 lesson) + text-adaptation list the test mirrors
-- [ ] T4 **Jeff (user action):** run the script against a fresh survey with his API token, export the QSF from Qualtrics, replace `inst/extdata/hitophsum_qualtrics.qsf`; T1 test goes green
+- [x] T4 **Jeff (user action):** run the script against a fresh survey with his API token, export the QSF from Qualtrics, replace `inst/extdata/hitophsum_qualtrics.qsf`; T1 test goes green
 - [ ] T5 SOURCES.md (QSF row machine-checked; divergence + adaptation notes; generator provenance line), NEWS.md bullet; `document()`/`test()`/`check()`
 - [ ] T6 PR, record URL, merge on Jeff's approval
 
@@ -54,6 +54,7 @@ Replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one reb
 - 2026-07-16: T1 done — test red against the stale file exactly where staleness lives (duplicate tags, 476 stale texts, any_other gate on nic_quant_oth). Discovery: the stale QSF has NULL choices on hsum_nic_quant_cgr — the cigar-quantity defect M18 fixed in REDCap exists in the hand-built Qualtrics survey too (same ancestral regex bug).
 - 2026-07-16: T2 done (jsonlite → Suggests). T3 done — script rewritten as devel/qualtrics_hitophsum.R (old qualtrics_test.R removed): Field_Type/Choice_Set resolution with a stop() on unresolved sets, any_other deleted, header carries run recipe + adaptation list; offline dry-run confirms all 650 items resolve type/choices/gates cleanly. Full suite: failures confined to the deliberate-red QSF file. Next: T4 requires Jeff at the Qualtrics console.
 - 2026-07-16: T3 amended (minor, Jeff's request): full automation — rebuild_hitophsum_qsf() creates the survey, pushes, exports via ?format=qsf (shape-validated, loud manual fallback), and overwrites the artifact; credentials from ~/.Renviron (never repo-local). T4 shrinks to setting ~/.Renviron once + one function call.
+- 2026-07-16: T4 done — Jeff ran rebuild_hitophsum_qsf(); the ?format=qsf export worked. One export quirk reconciled in the test (not content): dense zero-based choice maps (symptom_4pt 0–3) serialize as JSON arrays, keys recovered positionally from ChoiceOrder. QSF suite fully green: 6421 assertions / 0 fail.
 
 ## Decisions
 

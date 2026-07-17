@@ -63,6 +63,17 @@ qsf_expected_text <- function(text, oth_piped) {
   text
 }
 
+# A question's Choices keyed by recode value. Qualtrics's QSF export
+# serializes a dense zero-based choice map (e.g. symptom_4pt's 0-3) as a
+# JSON *array*, dropping the keys; ChoiceOrder carries them positionally.
+qsf_choices <- function(p) {
+  ch <- p$Choices
+  if (!is.null(ch) && is.null(names(ch))) {
+    names(ch) <- vapply(p$ChoiceOrder, as.character, character(1))
+  }
+  ch
+}
+
 # Flatten a DisplayLogic tree into its Expression nodes.
 qsf_logic_exprs <- function(dl) {
   out <- list()
@@ -169,9 +180,9 @@ test_that("QSF choices match each item's Choice_Set values and labels", {
   for (i in seq_len(nrow(mc))) {
     var <- mc$Variable[i]
     cs <- hitophsum_choices[hitophsum_choices$Choice_Set == mc$Choice_Set[i], ]
-    p <- qsf_payload(var)
-    expect_setequal(names(p$Choices), as.character(cs$Value))
-    actual_labels <- vapply(p$Choices, function(x) x$Display, character(1))
+    ch <- qsf_choices(qsf_payload(var))
+    expect_setequal(names(ch), as.character(cs$Value))
+    actual_labels <- vapply(ch, function(x) x$Display, character(1))
     expect_identical(
       unname(actual_labels[as.character(cs$Value)]),
       cs$Label,
