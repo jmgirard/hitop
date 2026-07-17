@@ -105,62 +105,45 @@ scales and 17 subscales indexing different aspects of psychopathology.
 Here you can download ready-to-use versions of the instrument or explore
 the powerful tools provided by the <code>hitop</code> R package to
 customize, score, and analyze your data.</p>
-<style>
-  /* Expand the main content area to full width */
-  main.col-md-9 {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-  }
-
-  /* Hide the empty sidebar container entirely */
-  aside.col-md-3 {
-    display: none !important;
-  }
-</style>
 <h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
 <p class="text-muted">Choose the format that best fits your immediate research needs.</p>
-
-<div class="row mt-4">
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">📄 Printable Document</h5>
-        <p class="card-text text-muted">Use these Microsoft Word documents for printing, paper administration, or sending to the IRB.</p>
-        <div class="d-grid gap-2">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_A4.docx" class="external-link btn btn-outline-primary">English (A4 Paper)</a>
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_US.docx" class="external-link btn btn-outline-primary">English (US Paper)</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">📊 Qualtrics Import</h5>
-        <p class="card-text text-muted">Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.</p>
-        <div class="d-grid gap-2 mt-4">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_qualtrics.txt" class="external-link btn btn-outline-primary">English (TXT File)</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-md-4 mb-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">🏥 REDCap Import</h5>
-        <p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
-        <div class="d-grid gap-2 mt-4">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip" class="external-link btn btn-outline-primary">English (ZIP File)</a>
-          <a href="../reference/generate_redcap_hitopsr.html#details" class="btn btn-outline-primary">Import Instructions</a>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="row mt-4 hitop-downloads">
+<div class="col-md-4 mb-4">
+<div class="card h-100 shadow-sm">
+<div class="card-body">
+<h5 class="card-title">📄 Printable Document</h5>
+<p class="card-text text-muted">Use these Microsoft Word documents for printing, paper administration, or sending to the IRB.</p>
+<div class="d-grid gap-2">
+<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_A4.docx" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (A4 Paper)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
+<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_US.docx" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (US Paper)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
 </div>
-
+</div>
+</div>
+</div>
+<div class="col-md-4 mb-4">
+<div class="card h-100 shadow-sm">
+<div class="card-body">
+<h5 class="card-title">📊 Qualtrics Import</h5>
+<p class="card-text text-muted">Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.</p>
+<div class="d-grid gap-2">
+<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_qualtrics.txt" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (TXT File)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4 mb-4">
+<div class="card h-100 shadow-sm">
+<div class="card-body">
+<h5 class="card-title">🏥 REDCap Import</h5>
+<p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
+<div class="d-grid gap-2">
+<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopsr_redcap.zip" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (ZIP File)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
+</div>
+<div class="text-center mt-2"><a href="../reference/generate_redcap_hitopsr.html#details" class="hitop-ref-link small">Import Instructions</a></div>
+</div>
+</div>
+</div>
+</div>
 <hr class="mt-5 mb-4">
 <h3 class="mb-3">Explore the R Package Features</h3>
 <p class="text-muted">The <code>hitop</code> package provides a complete toolkit for working with the HiTOP-SR. If you are comfortable using R, you can leverage these functions to streamline your workflow.</p>
@@ -223,93 +206,53 @@ customize, score, and analyze your data.</p>
   </div>
 </div>
 <h3 class="mt-4 mb-3">Versions</h3>
-<p class="text-muted">Artifact builds are identified by their build date. The instrument itself is version 1.0; a new build date means the distributed file changed (see the history below for what changed). To check which build you downloaded, compare its MD5 checksum (e.g., with <code><a href="https://rdrr.io/r/tools/md5sum.html" class="external-link">tools::md5sum()</a></code> in R) against the manifest below; the same information is available in the package as <code>hitop_artifacts</code>.</p>
-<table class="table">
-<caption>Current builds</caption>
-<colgroup>
-<col width="23%">
-<col width="10%">
-<col width="20%">
-<col width="11%">
-<col width="34%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">File</th>
-<th align="left">Format</th>
-<th align="left">Instrument version</th>
-<th align="left">Build date</th>
-<th align="left">MD5 checksum</th>
+<p class="text-muted">Every download button above shows its file’s build date; a new build date means the distributed file changed. The instrument itself is version 1.0.</p>
+<details class="hitop-versions"><summary>Current builds &amp; version history</summary><div class="hitop-versions-body">
+<h4>Current builds</h4>
+<div class="table-responsive">
+<table class="table table table-sm">
+<thead><tr>
+<th>File</th>
+<th>Format</th>
+<th>Instrument version</th>
+<th>Build date</th>
 </tr></thead>
 <tbody>
-<tr class="odd">
-<td align="left">hitopsr_A4.docx</td>
-<td align="left">docx_a4</td>
-<td align="left">1.0</td>
-<td align="left">2026-07-16</td>
-<td align="left">aec89eaf15d7db00a8a9749ac045c679</td>
+<tr>
+<td><code>hitopsr_A4.docx</code></td>
+<td>DOCX (A4 paper)</td>
+<td>1.0</td>
+<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
 </tr>
-<tr class="even">
-<td align="left">hitopsr_qualtrics.txt</td>
-<td align="left">qualtrics</td>
-<td align="left">1.0</td>
-<td align="left">2026-07-16</td>
-<td align="left">151f508795f5208d0e54334468850177</td>
+<tr>
+<td><code>hitopsr_qualtrics.txt</code></td>
+<td>Qualtrics import</td>
+<td>1.0</td>
+<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
 </tr>
-<tr class="odd">
-<td align="left">hitopsr_redcap.zip</td>
-<td align="left">redcap</td>
-<td align="left">1.0</td>
-<td align="left">2026-07-16</td>
-<td align="left">090a3ee66bcdb13bb5becfcf91cce3ad</td>
+<tr>
+<td><code>hitopsr_redcap.zip</code></td>
+<td>REDCap import</td>
+<td>1.0</td>
+<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
 </tr>
-<tr class="even">
-<td align="left">hitopsr_US.docx</td>
-<td align="left">docx_us</td>
-<td align="left">1.0</td>
-<td align="left">2026-07-16</td>
-<td align="left">d2275234acf0f6cd09a3e866a0044002</td>
+<tr>
+<td><code>hitopsr_US.docx</code></td>
+<td>DOCX (US paper)</td>
+<td>1.0</td>
+<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
 </tr>
 </tbody>
 </table>
-<table class="table">
-<caption>Version history</caption>
-<colgroup>
-<col width="7%">
-<col width="15%">
-<col width="77%">
-</colgroup>
-<thead><tr class="header">
-<th align="left">Build date</th>
-<th align="left">File</th>
-<th align="left">Changes</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left">2026-07-16</td>
-<td align="left">hitopsr_A4.docx</td>
-<td align="left">Versioning system introduced (D-016): renamed from the
-<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
-</tr>
-<tr class="even">
-<td align="left">2026-07-16</td>
-<td align="left">hitopsr_qualtrics.txt</td>
-<td align="left">Versioning system introduced (D-016): renamed from the
-<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
-</tr>
-<tr class="odd">
-<td align="left">2026-07-16</td>
-<td align="left">hitopsr_redcap.zip</td>
-<td align="left">Versioning system introduced (D-016): renamed from the
-<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
-</tr>
-<tr class="even">
-<td align="left">2026-07-16</td>
-<td align="left">hitopsr_US.docx</td>
-<td align="left">Versioning system introduced (D-016): renamed from the
-<em>1.0</em> filename scheme; DOCX footers gain a build stamp.</td>
-</tr>
-</tbody>
-</table></main>
+</div>
+<p class="text-muted small">If your downloaded file shows an older build date, simply re-download it to get the latest build. The full build manifest (including file checksums) ships in the package as <code>hitop_artifacts</code>.</p>
+<h4>Version history</h4>
+<div class="hitop-history-entry">
+<span class="hitop-build-badge" title="Build date">2026-07-16</span><div>Versioning system introduced: files renamed from the _1.0_ filename scheme and DOCX footers gain a build stamp.<br><span class="hitop-history-files"><code>hitopsr_A4.docx</code>, <code>hitopsr_qualtrics.txt</code>, <code>hitopsr_redcap.zip</code>, <code>hitopsr_US.docx</code></span>
+</div>
+</div>
+</div>
+</details></main>
 </div>
 
 
