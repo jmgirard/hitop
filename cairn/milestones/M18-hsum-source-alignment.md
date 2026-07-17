@@ -3,11 +3,11 @@
      project/MILESTONES.md draft (entombed at cairn/legacy/MILESTONES.md). -->
 # M18: HiTOP-HSUM source alignment (revised SUD module, August 2024)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m18-hsum-source-alignment`
 
 ## Goal
 
@@ -66,6 +66,7 @@ Source: "revised SUD module-August 2024" sheet of `SUD module final analyses Jul
 
 - 2026-07-16: drafted in the legacy tracker (project/MILESTONES.md) from the HSUM verification session; AC marked "re-confirm at planning".
 - 2026-07-16: translated to cairn format at migration (cairn-init); content unchanged. /milestone-implement must re-confirm the AC with Jeff before starting.
+- 2026-07-16: implementation started; branch `m18-hsum-source-alignment` cut from synced main. Source xlsx verified readable (two identical Downloads copies, sha1 f38557cf; target sheet present); working copy stashed at cairn/references/pdf/ (gitignored).
 
 ## Decisions
 
