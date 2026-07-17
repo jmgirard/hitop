@@ -193,6 +193,33 @@
 #' hitophsum_choices
 "hitophsum_choices"
 
+#' Distribution Artifact Manifest
+#'
+#' Version manifest for the prebuilt instrument artifacts distributed in
+#' `inst/extdata/` and on the package website's download pages. Each build of
+#' an artifact adds a row (the full history is kept), so the latest row per
+#' `file` describes the currently distributed file. Artifact revisions are
+#' identified by build date; the instrument version (e.g., `"1.0"`) is the
+#' version of the instrument itself and changes only when its publisher
+#' revises it. To check which build you have, compare your downloaded file's
+#' MD5 checksum (e.g., `tools::md5sum()`) against the `md5` column.
+#'
+#' @format A \link[tibble]{tibble} with one row per artifact build and 7
+#'   columns:
+#' \describe{
+#'   \item{file}{Artifact file name in `inst/extdata/`}
+#'   \item{instrument}{Instrument the artifact administers}
+#'   \item{format}{Artifact format: `"docx_us"`, `"docx_a4"`, `"qualtrics"`,
+#'     or `"redcap"`}
+#'   \item{instrument_version}{Version of the instrument itself}
+#'   \item{build_date}{Date this build of the artifact was generated}
+#'   \item{md5}{MD5 checksum of the built file}
+#'   \item{changes}{What changed in this build}
+#' }
+#' @examples
+#' hitop_artifacts
+"hitop_artifacts"
+
 #' Simulated HiTOP-SR Data
 #'
 #' Simulated responses to items on the full HiTOP-SR (with 405 items). Note that

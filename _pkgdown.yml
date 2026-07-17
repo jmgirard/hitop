@@ -111,3 +111,4 @@ reference:
   - pid_items
   - pid_scales
   - pid_domains
+  - hitop_artifacts

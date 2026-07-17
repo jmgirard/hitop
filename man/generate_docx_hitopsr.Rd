@@ -5,7 +5,7 @@
 \title{Generate a Word Document for the HiTOP-SR Assessment}
 \usage{
 generate_docx_hitopsr(
-  file = "hitopsr_1.0.docx",
+  file = "hitopsr.docx",
   papersize = c("us", "a4"),
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
@@ -16,7 +16,7 @@ generate_docx_hitopsr(
 }
 \arguments{
 \item{file}{Character string specifying the output file path. Defaults to
-\code{"hitopsr_1.0.docx"}.}
+\code{"hitopsr.docx"}.}
 
 \item{papersize}{Character string specifying the paper dimensions. Must be
 one of \code{"us"} (8.5x11 inches) or \code{"a4"} (210x297 mm). Defaults to \code{"us"}.}
