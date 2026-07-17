@@ -1,0 +1,9 @@
+# M19: HSUM Qualtrics QSF rebuild (API script + verification test) — done 2026-07-16
+
+**Goal:** replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one rebuilt from the corrected keying tables via a modernized maintainer API script, and lock the committed artifact to `hitophsum_items`/`hitophsum_choices` with a parse-and-compare test so QSF staleness becomes a test failure.
+
+**Outcome:** `devel/qualtrics_hitophsum.R` (replaces `qualtrics_test.R`): Field_Type/Choice_Set resolution (the old regexes shipped an empty cigar dropdown), dead `any_other` branch removed, `rebuild_hitophsum_qsf()` automates create→push→export→overwrite (credentials in `~/.Renviron`; push failures stop before export; the undocumented `?format=qsf` export works, shape-validated). Fresh QSF built by Jeff via the API: corrected M18 wording, real cigar choices (old file had NULL — the M18 REDCap defect existed here too), no duplicate question set (old: 1302 SQ for ~650 items), PNTS never enumerated in any gate. New `test-qualtrics-hitophsum.R` (8305 assertions): structure/uniqueness, text modulo two documented adaptations, choices + display order, gate expansion + Or-conjunctions, ungated-converse, no-PNTS sweep. jsonlite → Suggests (D-015). SOURCES.md Qualtrics-artifact provenance + per-drug platform divergence (Qualtrics can't compare answers across questions); DESIGN Known issue #5 narrowed to the .txt generators.
+
+**Verification:** suite 9588/0; check() 0/0/0; cairn_validate pass (review-side repairs: plugin-update `## changelog` slot in PROFILE.md). Review fan-out: 6 findings scored; F1 (82, overwrite-on-partial-failure) and F2 (85, missing Or-conjunction guard) actioned + fixed; F3/F5/F6 sub-80 fixed as cheap hardening; F4 (38) refuted, fallback deleted anyway. Diff-bug reviewer independently re-extracted the QSF and confirmed fidelity.
+
+**PR:** https://github.com/jmgirard/hitop/pull/21 (squash 42f2b32). Merged with Jeff's approval (AC7).
