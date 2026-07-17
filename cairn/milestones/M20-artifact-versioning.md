@@ -89,3 +89,12 @@ Give every distributed `inst/extdata/` artifact a user-visible build-date versio
 - `cairn_validate.py` exit 0, all checks pass (20 advisory dangling-token warnings are pre-existing legacy DESIGN/SOURCES citations).
 - `cairn_impact`: skipped — no IP/GP text changed (Conventions subsection added only).
 - Profile gate: document() no-diff ✔; generated files untouched by hand (document no-diff) ✔; README not in diff ✔; `pkgdown::check_pkgdown()` ✔; NEWS entry present, no milestone numbers in user-facing text ✔; no new top-level files needing `.Rbuildignore` (check 0 NOTEs) ✔; full check clean ✔.
+
+### Independent review (three lenses + scorer, 2026-07-16)
+
+- [O] diff-bug: 3 findings (below). [S] blame-history: no findings (M19 QSF contract untouched; no `_1.0_` stragglers; D-010 respected — lock is a drift lock, not a content oracle). [S] prior-PR-comments: no prior-PR evidence, clean no-op.
+- Scored findings — all below the 80 threshold, logged not actioned (0 actioned):
+  - F1 (78): `data-raw/artifacts.R` — "re-source is a no-op" comment is false for DOCX/zip artifacts (non-deterministic bytes: zip mtimes, footer date), so a partial rebuild re-rows all 18 with one shared note; current-row selection still resolves correctly.
+  - F2 (55): manifest `build_date` and DOCX footer `Sys.Date()` sampled at different times — a build crossing midnight would fail AC3's parse-back test on the fresh tree.
+  - F3 (60): lock test's extension whitelist (docx|txt|qsf|zip) would exempt a future artifact of a new file type from the manifest lock.
+- Non-finding observation: `R/generate_docx.R` diff is dominated by a CRLF→LF line-ending normalization (real change: footer helper + default filenames; verified by normalized diff).
