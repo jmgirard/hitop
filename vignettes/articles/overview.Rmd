@@ -1,0 +1,63 @@
+---
+title: "HiTOP Instruments"
+output: rmarkdown::html_vignette
+toc: false
+vignette: >
+  %\VignetteIndexEntry{HiTOP Instruments}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The HiTOP Society maintains three self-report measures of psychopathology at
+different lengths and levels of coverage. Choose the one that fits your study
+below, then head to its page to download ready-to-use files or explore the
+`hitop` R package tools for scoring and customization.
+
+```{=html}
+<div class="row mt-4 hitop-downloads">
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">📋 HiTOP Self-Report (SR)</h5>
+        <p class="card-text text-muted mb-1">405 items · 76 scales · 17 subscales</p>
+        <p class="card-text">The full-length measure, offering the most detailed
+        coverage of the HiTOP hierarchy from broad spectra down to narrow
+        subscales.</p>
+        <div class="d-grid mt-auto">
+          <a href="../articles/download-hitopsr.html" class="btn btn-primary">View &amp; download →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">📄 HiTOP Brief Report (BR)</h5>
+        <p class="card-text text-muted mb-1">45 items · 8 scales</p>
+        <p class="card-text">A short screening measure covering the eight broad
+        HiTOP spectra, ideal when respondent time is limited.</p>
+        <div class="d-grid mt-auto">
+          <a href="../articles/download-hitopbr.html" class="btn btn-primary">View &amp; download →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">🧪 HiTOP Harmful Substance Use (HSUM)</h5>
+        <p class="card-text text-muted mb-1">Up to 650 items · 3 assessment stages</p>
+        <p class="card-text">A dedicated substance-use module with skip/display
+        logic, so most respondents answer only a small subset of items.</p>
+        <div class="d-grid mt-auto">
+          <a href="../articles/download-hitophsum.html" class="btn btn-primary">View &amp; download →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+```

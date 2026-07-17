@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M23 | Overview instrument page (SR/BR/HSUM link cards) | planned | — | normal | milestones/M23-overview-instrument-page.md |
+| M23 | Overview instrument page (SR/BR/HSUM link cards) | review | — | normal | milestones/M23-overview-instrument-page.md |
 | M22 | Centralize import instructions (Qualtrics QSF+TXT, REDCap ZIP) | done | — | normal | milestones/archive/M22-centralize-import-instructions.md |
 | M21 | Beautify instrument download pages (manifest badges + collapsible history) | done | — | normal | milestones/archive/M21-beautify-download-pages.md |
 | M20 | Artifact versioning — build-date manifest + checksum lock | done | — | normal | milestones/archive/M20-artifact-versioning.md |
