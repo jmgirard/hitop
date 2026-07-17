@@ -31,7 +31,7 @@ rows and 3 columns:
 
 ``` r
 hitophsum_choices
-#> # A tibble: 42 × 3
+#> # A tibble: 185 × 3
 #>    Choice_Set     Value Label                                                   
 #>    <chr>          <dbl> <chr>                                                   
 #>  1 yn_pnts            1 Yes                                                     
@@ -44,5 +44,5 @@ hitophsum_choices
 #>  8 nicotine_forms     5 chewing tobacco or pouches/dip                          
 #>  9 nicotine_forms     6 Other - specify:                                        
 #> 10 freq_12m           1 1-5 days total                                          
-#> # ℹ 32 more rows
+#> # ℹ 175 more rows
 ```

@@ -76,7 +76,8 @@ and packages it into an Instrument ZIP file for easy uploading.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">generate_redcap_hitophsum</span><span class="op">(</span></span>
 <span>  file <span class="op">=</span> <span class="st">"hitophsum_redcap.zip"</span>,</span>
 <span>  form_name <span class="op">=</span> <span class="st">"hitophsum_questionnaire"</span>,</span>
-<span>  required <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  required <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  other_drug_rule <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"most_frequent"</span>, <span class="st">"per_drug"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -97,6 +98,19 @@ Defaults to <code>"hitophsum_questionnaire"</code>.</p></dd>
 <dt id="arg-required">required<a class="anchor" aria-label="anchor" href="#arg-required"></a></dt>
 <dd><p>Logical. Whether the items should be marked as required.
 Defaults to <code>TRUE</code>.</p></dd>
+
+
+<dt id="arg-other-drug-rule">other_drug_rule<a class="anchor" aria-label="anchor" href="#arg-other-drug-rule"></a></dt>
+<dd><p>Character string. How symptom items are gated for
+the "other drug" substances (every substance except alcohol and
+nicotine). The default, <code>"most_frequent"</code>, follows the source module's
+looping rule: symptom items are shown only for the most frequently used
+other drug that is used at least monthly (drugs whose frequency is
+"Prefer not to say" are ignored; when two or more drugs tie for the
+highest frequency, the symptom items are shown for each of them).
+<code>"per_drug"</code> loosens the gate so that every other drug used at least
+monthly gets its own symptom items, regardless of relative frequency.
+Alcohol and nicotine symptom gating is unaffected by this argument.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -122,7 +136,7 @@ accuracy.</p></li>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Write a HiTOP-HSUM REDCap instrument ZIP to a temporary location</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitophsum</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpNEz4OK/file1ae056a58066.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/Rtmpm2Fp1o/file1a192c053534.zip</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

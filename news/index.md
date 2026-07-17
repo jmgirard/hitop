@@ -5,6 +5,27 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+- **HiTOP-HSUM aligned to its authoritative source** (the HiTOP
+  Society’s “revised SUD module-August 2024” development worksheet):
+  `hitophsum_items` item text now matches the worksheet’s
+  substance-specific wording (alcohol items use drink-specific phrasing;
+  nicotine and other-drug items corrected; obvious worksheet typos
+  repaired and logged), the free-text nicotine quantity item now shows
+  only for non-cigarette, non-cigar forms, and `hitophsum_choices` gains
+  the alcohol/cigarette/cigar quantity choice sets. In the REDCap
+  export, the cigar quantity item is now a valid dropdown (it previously
+  imported with an empty choice list), and “Prefer not to say” frequency
+  responses no longer satisfy any symptom gate. **New `other_drug_rule`
+  argument** on
+  [`generate_redcap_hitophsum()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.md):
+  the default (`"most_frequent"`) follows the worksheet’s looping rule —
+  symptom items appear only for the most frequently used other drug used
+  at least monthly (ties show all tied drugs) — while `"per_drug"`
+  reproduces the previous looser behavior of gating every other drug
+  independently. The overview DOCX now says “Street opioids” (previously
+  “Heroin/opiates”) and “Goose bumps”, and its item matrix matches the
+  corrected wording; the prebuilt DOCX and REDCap files were regenerated
+
 - **New
   [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
   [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md),
@@ -18,6 +39,7 @@ interface before a CRAN submission.
   [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
   which only *printed* a reliability table as a side effect and have
   been **removed**
+
 - **[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
   and
@@ -34,6 +56,7 @@ interface before a CRAN submission.
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)/[`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
   offer `"available"` (default) and `"complete"`. Default behavior is
   unchanged
+
 - **[`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
   gains a `name` argument** (default `"top_scales"`) naming its output
   column, which was previously hard-coded as `"out"`. It also gains
@@ -42,6 +65,7 @@ interface before a CRAN submission.
   reverse-directioned scale (e.g. a well-being scale, where higher =
   healthier) ranks on the same “higher = more elevated” metric as the
   other scales
+
 - **The `tibble` argument has been removed** from
   [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
@@ -50,6 +74,7 @@ interface before a CRAN submission.
   and
   [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md);
   these functions now always return a tibble
+
 - **Documentation accuracy and polish** across the scoring tutorials and
   pkgdown instrument pages: corrected stale column/dataset names in the
   HiTOP-SR tutorial (leftovers from an earlier “HiTOP-PRO” draft),
@@ -60,6 +85,7 @@ interface before a CRAN submission.
   fixed a mis-targeted REDCap “Import Instructions” link on the PID-5
   download page, and reconciled the instrument download pages so each
   describes only the resources it actually links
+
 - **Standardized item-text punctuation** in `hitopsr_items` (7 items)
   and `hitopbr_items` (1 item): every item now ends in a period. The
   affected items (HSR 5, 27, 30, 284, 314, 332, 382 and HBR 41) lack the
