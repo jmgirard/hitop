@@ -1,0 +1,9 @@
+# M20: Artifact versioning — build-date manifest + checksum lock (done 2026-07-16)
+
+- **Goal:** give every distributed `inst/extdata/` artifact a user-visible build-date version so a file can never again change at a stable URL without a visible signal (the M19 QSF gap).
+- **PR:** https://github.com/jmgirard/hitop/pull/22 (squash-merged 2026-07-16); planned + implemented + reviewed same day.
+- **Shipped:** exported `hitop_artifacts` manifest (file, instrument, format, instrument_version, build_date, md5, changes; one row per build, history kept), built by `data-raw/artifacts.R` which also regenerates all artifacts (QSF excepted — API-built, M19); md5 lock suite `test-artifacts.R` (bidirectional file↔manifest, DOCX footer parse-back, download-page href check); DOCX footer build stamp via `build_docx_footer()`; version-free filenames (`pid5_1.0_A4.docx` → `pid5_A4.docx`; old URLs break once, accepted); 6 download pages render current-builds + version-history tables from the manifest; `.gitattributes` `inst/extdata/** -text`.
+- **Key decisions:** D-016 (build-date revisions; md5 not sha256; embed-where-format-allows; version-free filenames). IP1 identity verified before old names removed (DOCX body XML byte-identical; .txt byte-identical; zip contents identical).
+- **Review:** all 7 ACs fresh-evidenced (mutation demo both directions; full `build_site()`); consistency gate clean; CI 7/7 after the `.gitattributes` fix (Windows CRLF conversion had tripped the lock).
+- **Logged sub-threshold findings (not actioned):** F1 (78) `data-raw/artifacts.R` no-op-rerun comment false for non-deterministic DOCX/zip bytes (partial rebuild re-rows all 18 with one shared note); F2 (55) footer date vs manifest date sampled at different times (midnight-crossing build would fail AC3 test); F3 (60) lock test's extension whitelist would exempt a future new artifact file type.
+- **Plan deviation:** download-page count corrected 7→6 (miscount; set unchanged).

@@ -8,3 +8,5 @@
 - 2026-07-16 (M18): data-raw scripts need readr (+ usethis) installed locally; they are not package dependencies, so a fresh machine must `install.packages("readr")` before regenerating `data/*.rda`.
 - 2026-07-16 (M19): the undocumented Qualtrics `GET /survey-definitions/{id}?format=qsf` endpoint returns a genuine importable QSF — validate by shape (SurveyEntry + SurveyElements) and never re-serialize it through jsonlite (round-trips aren't byte-faithful).
 - 2026-07-16 (M19): Qualtrics QSF exports serialize a dense zero-based choice map (values 0..n) as a JSON *array*, dropping the keys — recover them positionally from ChoiceOrder when parsing.
+- 2026-07-16 (M20): byte-locked repo artifacts need `.gitattributes` `-text` — Windows `actions/checkout` CRLF-converts anything git sniffs as text (.txt/.qsf), silently mutating committed bytes before tests see them.
+- 2026-07-16 (M20): DOCX and REDCap zip builds are not byte-deterministic (zip member mtimes, date stamps) — only flat text outputs can be md5-compared across rebuilds; content comparisons must parse inside the container.

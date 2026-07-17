@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M20 | Artifact versioning — build-date manifest + checksum lock | review | — | normal | milestones/M20-artifact-versioning.md |
+| M20 | Artifact versioning — build-date manifest + checksum lock | done | — | normal | milestones/archive/M20-artifact-versioning.md |
 | M19 | HSUM Qualtrics QSF rebuild (API script + verification test) | done | — | normal | milestones/archive/M19-hsum-qualtrics-qsf.md |
 | M18 | HiTOP-HSUM source alignment (revised SUD module, Aug 2024) | done | — | normal | milestones/archive/M18-hsum-source-alignment.md |
 
