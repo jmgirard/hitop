@@ -7,7 +7,7 @@
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** m23-overview-instrument-page   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m23-overview-instrument-page · https://github.com/jmgirard/hitop/pull/25   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -48,25 +48,25 @@ by URL and discoverable atop the Instruments navbar menu.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets -->
 
-- [ ] **AC1** The built article `articles/overview.html` shows exactly three
+- [x] **AC1** The built article `articles/overview.html` shows exactly three
       instrument cards — HiTOP-SR, HiTOP-BR, HiTOP-HSUM — each with its
       item/scale summary and a working link to the correct download page
       (`download-hitopsr.html`, `download-hitopbr.html`,
       `download-hitophsum.html`). Evidence: rendered HTML (card count + hrefs).
-- [ ] **AC2** The page reuses the shared theme-aware `.hitop-*` styling with no
+- [x] **AC2** The page reuses the shared theme-aware `.hitop-*` styling with no
       inline `<style>`, and renders correctly in both light and dark pkgdown
       themes. Evidence: grep shows no `<style>` in the page/output; computed-style
       or screenshot probe in both light and dark.
-- [ ] **AC3** The overview page is the first entry in the navbar "Instruments"
+- [x] **AC3** The overview page is the first entry in the navbar "Instruments"
       menu and resolves to the article. Evidence: `_pkgdown.yml` diff + rendered
       navbar menu.
-- [ ] **AC4** A test asserts the overview page exists and links exactly the three
+- [x] **AC4** A test asserts the overview page exists and links exactly the three
       main-instrument download pages, and fails if a card link is broken or the
       instrument set changes. Evidence: test source + passing run + a mutation
       check (break one link → test fails).
-- [ ] **AC5** NEWS.md carries a user-facing entry announcing the overview page.
+- [x] **AC5** NEWS.md carries a user-facing entry announcing the overview page.
       Evidence: NEWS.md diff.
-- [ ] **AC6** Consistency gate clean: `pkgdown::check_pkgdown()` clean,
+- [x] **AC6** Consistency gate clean: `pkgdown::check_pkgdown()` clean,
       `devtools::check()` 0/0/0, `devtools::test()` green, `cairn_validate` 0.
       Evidence: command output.
 
@@ -123,3 +123,38 @@ by URL and discoverable atop the Instruments navbar menu.
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. EXEMPT from the 150-line cap (M55). -->
+
+_Reviewed 2026-07-17 on m23-overview-instrument-page; PR #25._
+
+### Acceptance-criteria evidence
+
+- **AC1** ✓ Built `docs/articles/overview.html` shows exactly three cards —
+  titles "📋 HiTOP Self-Report (SR)", "📄 HiTOP Brief Report (BR)",
+  "🧪 HiTOP Harmful Substance Use (HSUM)" — each with its correct download-page
+  href (`download-hitopsr.html` / `download-hitopbr.html` /
+  `download-hitophsum.html`), confirmed by grep of the built HTML and a rendered
+  desktop screenshot (3-across, full-width).
+- **AC2** ✓ `grep -c "<style"` on the built page = 0 (no inline style); reuses
+  `.hitop-downloads` + Bootstrap card classes; rendered correctly in both light
+  and dark pkgdown themes (screenshots, `resize_window` colorScheme probe).
+- **AC3** ✓ `_pkgdown.yml` diff adds "All HiTOP Instruments" →
+  `articles/overview.html`; built-navbar order parse confirms it is the FIRST
+  Instruments-menu entry (`overview` before all `download-*`), followed by a
+  `---` separator.
+- **AC4** ✓ `tests/testthat/test-overview.R` asserts the page exists and
+  `expect_setequal(linked, c(hitopsr, hitopbr, hitophsum))` — fails if a link
+  breaks or the instrument set changes — plus each link resolves to a real
+  `.Rmd`; 5 pass.
+- **AC5** ✓ `NEWS.md` gains a user-facing "New instrument overview page" bullet
+  under 0.2.0 (no milestone numbers).
+- **AC6** ✓ Consistency gate clean: `cairn_validate` exit 0 (20 pre-existing
+  advisory DESIGN/SOURCES dangling-id warnings, not introduced here);
+  `document()` no-diff; `check_pkgdown()` clean; `devtools::check()` 0/0/0;
+  `devtools::test()` 0 fail / 9663 pass / 1 skip.
+
+### Consistency gate
+
+- Universal: `cairn_validate` PASS (exit 0). No principle *changed* (GP3
+  worked-under only) → `cairn_impact --changed` not run.
+- Toolchain (r-package `consistency-gate`): `document()` no-diff · README not
+  touched · `check_pkgdown()` clean · NEWS entry present · `check()` 0/0/0.
