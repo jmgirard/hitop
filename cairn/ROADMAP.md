@@ -8,6 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M24 | HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap) | planned | — | normal | milestones/M24-hitopsr-subset-generation.md |
 | M23 | Overview instrument page (SR/BR/HSUM link cards) | done | — | normal | milestones/archive/M23-overview-instrument-page.md |
 | M22 | Centralize import instructions (Qualtrics QSF+TXT, REDCap ZIP) | done | — | normal | milestones/archive/M22-centralize-import-instructions.md |
 | M21 | Beautify instrument download pages (manifest badges + collapsible history) | done | — | normal | milestones/archive/M21-beautify-download-pages.md |
@@ -23,4 +24,5 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
-- Instrument modularization: let users specify a subset of scales from an instrument (e.g. HiTOP-SR) and generate matching docx/Qualtrics/REDCap artifacts + score just that subset — cuts across the `generate_{docx,qualtrics,redcap}_*` and `score_*` families; likely multi-milestone — added 2026-07-17
+- Score HiTOP-SR subset-collected data: score data gathered from a subset instrument (columns = subset items, original HSR numbering) via the `hitop_subset` descriptor — added 2026-07-17 — depends on M24 (plan after M24 lands; second half of the modularization arc)
+- Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M24
