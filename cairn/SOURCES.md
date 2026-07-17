@@ -174,7 +174,7 @@ blocks of `test-generate_redcap.R` / `test-generate_docx.R`.
 | Withdrawal stem + 33 symptoms (×12 substances) | 131–178 | ✅ Machine-checked |
 | Choice-set values/labels (freq, intox, heavy, symptom, quantity) | 54–95, 108 | ✅ Machine-checked |
 | Looping/gating rules (nicotine forms, quantity gates, symptom thresholds, most-frequent other drug) | 24, 34, 79, 82, 101–105 | ✅ Machine-checked |
-| `hitophsum_qualtrics.qsf` (inst/extdata) | — | ⚠️ Hand-built in Qualtrics **before** this alignment; stale until rebuilt |
+| `hitophsum_qualtrics.qsf` (inst/extdata) | — | ✅ Machine-checked (rebuilt 2026-07-16 from the keying tables via `devel/qualtrics_hitophsum.R`; locked to `hitophsum_items`/`hitophsum_choices` by `tests/testthat/test-qualtrics-hitophsum.R`) |
 
 ### Deliberate divergences from the sheet
 
@@ -216,6 +216,22 @@ satisfies a threshold gate (`<> '99'` guard); the sheet's "** can be
 loosened according to site needs **" (row 105) is exposed as
 `generate_redcap_hitophsum(other_drug_rule = "per_drug")`, with the sheet's
 most-frequent-other-drug rule as the default (ties show every tied drug).
+
+### Qualtrics artifact (2026-07-16, M19)
+
+`inst/extdata/hitophsum_qualtrics.qsf` is **derived** from the keying tables
+by the maintainer script `devel/qualtrics_hitophsum.R` (Qualtrics
+survey-definitions API; never hand-edited in the builder) and machine-checked
+against them by `tests/testthat/test-qualtrics-hitophsum.R`. Qualtrics-side
+renderings, in addition to the item-text adaptations (withdrawal-symptom
+bolding; the "other" substance name piped from `hsum_oth_txt`):
+
+- Threshold gates are enumerated as Selected-choice conditions, which never
+  include 99 — the QSF analog of the REDCap `<> '99'` PNTS guard.
+- **Platform divergence:** Qualtrics display logic cannot compare two
+  questions' answers, so the QSF encodes the **per-drug** other-drug rule
+  (the sheet's sanctioned loosening, row 105) rather than the
+  most-frequent-drug default of the REDCap export.
 
 ## Open questions (need source adjudication)
 
