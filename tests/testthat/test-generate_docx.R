@@ -79,3 +79,36 @@ test_that("all DOCX generators produce a non-empty document with their own text"
     expect_true(grepl(case$text, xml, fixed = TRUE))
   }
 })
+
+# ---- HSUM overview: wording synced to the August 2024 sheet ------------------
+#
+# Expected strings hand-transcribed from the "revised SUD module-August 2024"
+# sheet (see tests/testthat/test-keying-hitophsum.R and cairn/SOURCES.md).
+
+test_that("the HSUM overview uses the corrected sheet wording", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_hitophsum(file = f))
+  xml <- read_docx_xml(f)
+
+  # Substance label (sheet row 20): "Street opioids", not "Heroin/opiates".
+  expect_true(grepl("Street opioids (heroin, opium, fentanyl, etc.)", xml, fixed = TRUE))
+  expect_false(grepl("Heroin/opiates", xml, fixed = TRUE))
+
+  # WITH01 (sheet row 138): two words.
+  expect_true(grepl("Goose bumps", xml, fixed = TRUE))
+  expect_false(grepl("Goosebumps", xml, fixed = TRUE))
+
+  # Other-drugs SUD01 carries the typo repair ("urge to use", not the
+  # sheet's alcohol-carryover "urge to drink").
+  expect_true(grepl(
+    "Reminders of [substance] gave me a strong urge to use [substance].",
+    xml,
+    fixed = TRUE
+  ))
+  expect_false(grepl(
+    "Reminders of [substance] gave me a strong urge to drink.",
+    xml,
+    fixed = TRUE
+  ))
+})

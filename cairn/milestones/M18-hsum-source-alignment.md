@@ -48,7 +48,7 @@ Make `hitophsum_items`/`hitophsum_choices` and the HSUM DOCX/REDCap generators f
 
 ## Tasks
 
-- [ ] T1 Write failing tests first: extend the HSUM block in tests/testthat/test-generate_redcap.R (~lines 147–190) — cgr dropdown + choices, `<> 99` guards, discrete-list `any_other`, both `other_drug_rule` modes; new keying-test block pinning corrected `hitophsum_items` text to hand-transcribed sheet strings
+- [x] T1 Write failing tests first: extend the HSUM block in tests/testthat/test-generate_redcap.R (~lines 147–190) — cgr dropdown + choices, `<> 99` guards, discrete-list `any_other`, both `other_drug_rule` modes; new keying-test block pinning corrected `hitophsum_items` text to hand-transcribed sheet strings
 - [ ] T2 Correct data-raw/hitophsum_items.csv Text per the sheet's three columns: alcohol-specific wording (sud01–17, incl. the wrong-item sud16), nicotine sud13/14/17, other-drug sud04/16 template; fix obvious sheet typos ("urge to drink"→"use [substance]", "sunstacne") and log each in SOURCES.md; change `hsum_nic_quant_oth` Gate_Value → `2,4,5,6`
 - [ ] T3 Add `quant_alcohol` / `quant_nic_cig` / `quant_nic_cgr` choice sets to data-raw/hitophsum_choices.csv; regenerate both `.rda` via data-raw/hitophsum_info.R
 - [ ] T4 R/generate_redcap.R:526–556: drop the fragile variable-name regexes; resolve quantity field types/choices from `Choice_Set` (fixes cgr — regex `(cig|cigar)` never matches `_cgr`)
@@ -68,6 +68,7 @@ Source: "revised SUD module-August 2024" sheet of `SUD module final analyses Jul
 - 2026-07-16: translated to cairn format at migration (cairn-init); content unchanged. /milestone-implement must re-confirm the AC with Jeff before starting.
 - 2026-07-16: implementation started; branch `m18-hsum-source-alignment` cut from synced main. Source xlsx verified readable (two identical Downloads copies, sha1 f38557cf; target sheet present); working copy stashed at cairn/references/pdf/ (gitignored).
 - 2026-07-16: question gate passed — Jeff re-confirmed all nine AC as written; header amended (minor) to record Principles touched: IP1. D-014 (source of truth + other_drug_rule) added per plan Notes.
+- 2026-07-16: T1 done — sheet extracted and hand-transcribed into new tests/testthat/test-keying-hitophsum.R (text, counts, gates, choice sets) + extended REDCap/docx blocks (cgr dropdown, PNTS guards, argmax + per_drug modes, docx wording). Deliberately RED pending T2–T7: 73 keying, 11 redcap, 6 docx failures — all in the diagnosed spots; consumption/WITH/count blocks already green. Extra divergences found beyond plan list: alcohol sud01–17 nearly all drink-specific, nicotine sud01/09/11 too, other-drug sud03/13, nic_form "(Select...)" capitalization, freq_heavy labels.
 
 ## Decisions
 
