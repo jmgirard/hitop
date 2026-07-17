@@ -5,7 +5,7 @@
 \title{Generate a Word Document for the PID-5 (Full)}
 \usage{
 generate_docx_pid5(
-  file = "pid5_1.0.docx",
+  file = "pid5.docx",
   papersize = c("us", "a4"),
   title = "PID-5 (Full)",
   include_scoring = TRUE,

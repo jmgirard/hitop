@@ -5,7 +5,7 @@
 \title{Generate a Word Document for the HiTOP-HSUM Assessment Overview}
 \usage{
 generate_docx_hitophsum(
-  file = "hitophsum_overview_1.0.docx",
+  file = "hitophsum_overview.docx",
   papersize = c("us", "a4"),
   title = "HiTOP-HSUM (v1.0) Overview",
   font_size = 10,
@@ -14,7 +14,7 @@ generate_docx_hitophsum(
 }
 \arguments{
 \item{file}{Character string specifying the output file path. Defaults to
-\code{"hitophsum_overview_1.0.docx"}.}
+\code{"hitophsum_overview.docx"}.}
 
 \item{papersize}{Character string specifying the paper dimensions. Must be
 one of \code{"us"} (8.5x11 inches) or \code{"a4"} (210x297 mm). Defaults to \code{"us"}.}

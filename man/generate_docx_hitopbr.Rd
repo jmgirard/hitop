@@ -5,7 +5,7 @@
 \title{Generate a Word Document for the HiTOP-BR Assessment}
 \usage{
 generate_docx_hitopbr(
-  file = "hitopbr_1.0.docx",
+  file = "hitopbr.docx",
   papersize = c("us", "a4"),
   title = "HiTOP-BR (v1.0)",
   include_scoring = TRUE,
@@ -15,7 +15,7 @@ generate_docx_hitopbr(
 }
 \arguments{
 \item{file}{Character string specifying the output file path. Defaults to
-\code{"hitopbr_1.0.docx"}.}
+\code{"hitopbr.docx"}.}
 
 \item{papersize}{Character string specifying the paper dimensions. Must be
 one of \code{"us"} (8.5x11 inches) or \code{"a4"} (210x297 mm). Defaults to \code{"us"}.}

@@ -123,6 +123,31 @@ read_docx_xml <- function(file) {
   )
 }
 
+# Extract the concatenated text of all footer parts in a .docx.
+read_docx_footer <- function(file) {
+  exdir <- tempfile("docx")
+  dir.create(exdir)
+  on.exit(unlink(exdir, recursive = TRUE), add = TRUE)
+  footers <- grep(
+    "^word/footer[0-9]*\\.xml$",
+    utils::unzip(file, list = TRUE)$Name,
+    value = TRUE
+  )
+  utils::unzip(file, files = footers, exdir = exdir)
+  xml <- paste(
+    unlist(lapply(
+      file.path(exdir, footers),
+      readLines,
+      warn = FALSE,
+      encoding = "UTF-8"
+    )),
+    collapse = "\n"
+  )
+  # Concatenate the <w:t> runs
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  paste(gsub("<[^>]+>", "", runs), collapse = "")
+}
+
 # Extract the (width, height) of the first <w:pgSz> in twips.
 docx_page_size <- function(xml) {
   w <- as.integer(sub('.*<w:pgSz[^>]*w:w="([0-9]+)".*', "\\1", xml))

@@ -5,7 +5,7 @@
 \title{Generate a Word Document for the PID-5-BF}
 \usage{
 generate_docx_pid5bf(
-  file = "pid5bf_1.0.docx",
+  file = "pid5bf.docx",
   papersize = c("us", "a4"),
   title = "PID-5-BF",
   include_scoring = TRUE,
