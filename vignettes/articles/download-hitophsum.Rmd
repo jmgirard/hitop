@@ -36,8 +36,8 @@ Welcome to the HiTOP Harmful Substance Use Module (HiTOP-HSUM) instrument resour
         <h5 class="card-title">📄 Printable Document</h5>
         <p class="card-text text-muted">Use these Microsoft Word documents for an overview or sending to the IRB.</p>
         <div class="d-grid gap-2">
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_A4.docx" class="btn btn-outline-primary">English (A4 Paper)</a>
-          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_1.0_US.docx" class="btn btn-outline-primary">English (US Paper)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_A4.docx" class="btn btn-outline-primary">English (A4 Paper)</a>
+          <a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_US.docx" class="btn btn-outline-primary">English (US Paper)</a>
         </div>
       </div>
     </div>
@@ -71,3 +71,31 @@ Welcome to the HiTOP Harmful Substance Use Module (HiTOP-HSUM) instrument resour
 ```
 
 Scoring functions and example data coming soon.
+
+```{=html}
+<h3 class="mt-4 mb-3">Versions</h3>
+<p class="text-muted">Artifact builds are identified by their build date. The instrument itself is version 1.0; a new build date means the distributed file changed (see the history below for what changed). To check which build you downloaded, compare its MD5 checksum (e.g., with <code>tools::md5sum()</code> in R) against the manifest below; the same information is available in the package as <code>hitop_artifacts</code>.</p>
+```
+
+```{r artifact-versions, echo=FALSE}
+m <- hitop::hitop_artifacts
+m <- m[m$instrument == "HiTOP-HSUM", ]
+m <- m[order(m$file, m$build_date), ]
+current <- m[!duplicated(m$file, fromLast = TRUE), ]
+knitr::kable(
+  current[, c("file", "format", "instrument_version", "build_date", "md5")],
+  row.names = FALSE,
+  col.names = c("File", "Format", "Instrument version", "Build date", "MD5 checksum"),
+  caption = "Current builds"
+)
+```
+
+```{r artifact-history, echo=FALSE}
+history <- m[order(m$build_date, decreasing = TRUE), ]
+knitr::kable(
+  history[, c("build_date", "file", "changes")],
+  row.names = FALSE,
+  col.names = c("Build date", "File", "Changes"),
+  caption = "Version history"
+)
+```

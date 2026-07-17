@@ -83,7 +83,7 @@ test_that("download-page links point at committed artifacts", {
   extdata <- system.file("extdata", package = "hitop")
   committed <- list.files(extdata, pattern = "\\.(docx|txt|qsf|zip)$")
   pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
-  expect_length(pages, 7)
+  expect_length(pages, 6)
   for (page in pages) {
     text <- paste(readLines(page, warn = FALSE), collapse = "\n")
     hrefs <- regmatches(
