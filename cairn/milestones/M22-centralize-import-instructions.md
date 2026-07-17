@@ -161,4 +161,19 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
 - No `DESIGN.md` principle changed (GP3 worked under, not modified) → `cairn_impact` skipped.
 
 ### Independent review — findings
-_(pending three fresh-context reviewers + scorer)_
+Three fresh-context lenses, all clean:
+- **[O] diff-bug (Opus):** no surviving findings. Verified AC3 routing across all
+  six pages, anchor consistency (AC1), correct `ref_link()` usage vs
+  `_download-helpers.R`, roxygen/man regeneration (AC4), and that the new test is
+  a genuine two-sided lock, not a false-coverage prose-guard.
+- **[S] blame-history (Sonnet):** no findings. REDCap `@details` predates M18–M21
+  and is ported verbatim (no addition undone); the new test coexists with the
+  href-lock test; D-016 untouched.
+- **[S] prior-PR-comments (Sonnet):** no prior-PR evidence (PRs #4/#8/#13/#16/#17/#20/#22/#23
+  carry zero review comments) — clean no-op.
+
+No findings reached the scorer (zero survived the three lenses). One
+sub-threshold observation, logged not actioned: the article intro's "download
+page" prose links to `../index.html` (site home) rather than a per-instrument
+page — resolves correctly; dropped by the diff-bug reviewer under the style
+exclusion. Actioned findings: none.
