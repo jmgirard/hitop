@@ -2,11 +2,11 @@
      "Milestone-file section ownership". -->
 # M19: HSUM Qualtrics QSF rebuild (API script + verification test)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, IP2
-- **Branch/PR:** —
+- **Branch/PR:** `m19-hsum-qualtrics-qsf`
 
 ## Goal
 
