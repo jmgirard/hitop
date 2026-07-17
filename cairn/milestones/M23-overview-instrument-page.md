@@ -115,6 +115,9 @@ by URL and discoverable atop the Instruments navbar menu.
   entry, test-overview.R (5 pass), NEWS entry. Verified rendered light+dark,
   3-across desktop layout, navbar order; `check_pkgdown()` clean, `test()`
   0 fail / 9663 pass / 1 skip. Status → review.
+- 2026-07-17: review — gate clean (cairn_validate 0, document no-diff, check
+  0/0/0); 3-lens review, 1 finding scored 85 fixed (HSUM "3 staged modules" →
+  "3 assessment stages"); AC1–AC6 evidenced. PR #25, awaiting merge approval.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -158,3 +161,16 @@ _Reviewed 2026-07-17 on m23-overview-instrument-page; PR #25._
   worked-under only) → `cairn_impact --changed` not run.
 - Toolchain (r-package `consistency-gate`): `document()` no-diff · README not
   touched · `check_pkgdown()` clean · NEWS entry present · `check()` 0/0/0.
+
+### Independent 3-lens review + scorer
+
+- **[O] diff-bug (Opus):** 1 finding. **[S] blame-history (Sonnet):** clean —
+  navbar change reuses the exact separator pattern M22 introduced; NEWS bullet
+  additive. **[S] prior-PR (Sonnet):** no prior-PR evidence (repo has no merged-PR
+  review comments) — clean no-op.
+- **Finding (scored 85 → actioned, fixed):** `overview.Rmd` HSUM card summary read
+  "3 staged modules", mischaracterizing the instrument — the authoritative
+  `download-hitophsum.Rmd` describes "3 assessment stages" of a single Module,
+  and the card's own description says "module" (singular). Fixed to
+  "3 assessment stages"; page rebuilt, `test-overview.R` 5 pass.
+- No sub-threshold (<80) findings.
