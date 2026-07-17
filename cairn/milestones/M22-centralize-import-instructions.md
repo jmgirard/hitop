@@ -80,7 +80,7 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
       current `generate_redcap.R` `@details`; draft the Qualtrics QSF
       (whole-survey import) and TXT (Advanced-Format "import questions") steps
       and verify each against Qualtrics' official support docs, linking the source.
-- [ ] T2: Register the article in `_pkgdown.yml` (add to the Tutorials/articles
+- [x] T2: Register the article in `_pkgdown.yml` (add to the Tutorials/articles
       menu, or a dedicated "Guides" entry).
 - [ ] T3: In all six `vignettes/articles/download-*.Rmd`, add a `ref_link` on the
       Qualtrics card to the correct anchor (HSUM → `#qualtrics-qsf`; the other
@@ -111,6 +111,7 @@ REDCap `@details` steps replaced by an `@seealso` to the article.
   qualtrics-txt / redcap-zip); REDCap steps ported verbatim from generator
   @details; Qualtrics QSF+TXT steps verified against the Qualtrics "Import &
   Export Surveys" support article (cited in the page).
+- 2026-07-17: T2 — registered the article in the _pkgdown.yml Tutorials menu.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
