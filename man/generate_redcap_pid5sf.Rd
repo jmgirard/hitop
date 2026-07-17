@@ -28,3 +28,7 @@ Generate a REDCap Instrument ZIP File for the PID-5-SF
 generate_redcap_pid5sf(file = tempfile(fileext = ".zip"))
 
 }
+\seealso{
+Step-by-step import instructions for Qualtrics and REDCap:
+\url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
+}

@@ -102,3 +102,40 @@ test_that("download-page links point at committed artifacts", {
     )
   }
 })
+
+test_that("download pages link the centralized import-instructions article", {
+  # Source-checkout only: vignettes/articles is not installed.
+  articles <- testthat::test_path("..", "..", "vignettes", "articles")
+  skip_if(!dir.exists(articles), "vignettes/articles not available")
+
+  # The article exists and carries the three anchored sections the pages target.
+  article <- file.path(articles, "import-instructions.Rmd")
+  expect_true(file.exists(article))
+  atext <- paste(readLines(article, warn = FALSE), collapse = "\n")
+  for (anchor in c("{#qualtrics-qsf}", "{#qualtrics-txt}", "{#redcap-zip}")) {
+    expect_match(atext, anchor, fixed = TRUE)
+  }
+
+  pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
+  expect_length(pages, 6)
+  for (page in pages) {
+    text <- paste(readLines(page, warn = FALSE), collapse = "\n")
+    # REDCap card links the article's REDCap section.
+    expect_match(
+      text, "articles/import-instructions.html#redcap-zip",
+      fixed = TRUE, info = basename(page)
+    )
+    # Qualtrics card links the right section: HSUM ships a .qsf, the rest .txt.
+    q_anchor <- if (basename(page) == "download-hitophsum.Rmd") {
+      "articles/import-instructions.html#qualtrics-qsf"
+    } else {
+      "articles/import-instructions.html#qualtrics-txt"
+    }
+    expect_match(text, q_anchor, fixed = TRUE, info = basename(page))
+    # The per-generator #details links are fully superseded.
+    expect_no_match(
+      text, "generate_redcap_[a-z0-9]+\\.html#details",
+      info = basename(page)
+    )
+  }
+})

@@ -4,18 +4,8 @@
 #'   Hierarchical Taxonomy of Psychopathology - Brief Report (HiTOP-BR) and
 #'   packages it into an Instrument ZIP file for easy uploading.
 #'
-#' @details **Importing (Uploading) Instruments into a REDCap Project:**
-#' 1. Log in to your REDCap account and navigate to the desired project.
-#' 2. Click on the "Designer" link in the left menu bar under "Project Home and
-#'   Design".
-#' 3. In the main page, under "Data Collection Instruments", look for the
-#'   "Upload instrument ZIP" option and click the "Upload" button.
-#' 4. Click "Choose File", navigate to where you have the measure saved as a ZIP
-#'   folder, and select the ZIP folder containing your instrument.
-#' 5. Click "Upload instrument ZIP" button to begin the import process.
-#' 6. Find the imported instrument in your list of measures and review for
-#'   accuracy.
-#' 7. Test the instrument to ensure proper functionality within your project.
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
 #'
 #' @param file Character string. The destination path for the output ZIP file.
 #'   Defaults to `"hitopbr_redcap.zip"`.
@@ -57,18 +47,8 @@ generate_redcap_hitopbr <- function(
 #'   Hierarchical Taxonomy of Psychopathology - Self-Report (HiTOP-SR) and
 #'   packages it into an Instrument ZIP file for easy uploading.
 #'
-#' @details **Importing (Uploading) Instruments into a REDCap Project:**
-#' 1. Log in to your REDCap account and navigate to the desired project.
-#' 2. Click on the "Designer" link in the left menu bar under "Project Home and
-#'   Design".
-#' 3. In the main page, under "Data Collection Instruments", look for the
-#'   "Upload instrument ZIP" option and click the "Upload" button.
-#' 4. Click "Choose File", navigate to where you have the measure saved as a ZIP
-#'   folder, and select the ZIP folder containing your instrument.
-#' 5. Click "Upload instrument ZIP" button to begin the import process.
-#' 6. Find the imported instrument in your list of measures and review for
-#'   accuracy.
-#' 7. Test the instrument to ensure proper functionality within your project.
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
 #'
 #' @param file Character string. The destination path for the output ZIP file.
 #'   Defaults to `"hitopsr_redcap.zip"`.
@@ -106,18 +86,8 @@ generate_redcap_hitopsr <- function(
 
 #' Generate a REDCap Instrument ZIP File for the PID-5 (Full)
 #'
-#' @details **Importing (Uploading) Instruments into a REDCap Project:**
-#' 1. Log in to your REDCap account and navigate to the desired project.
-#' 2. Click on the "Designer" link in the left menu bar under "Project Home and
-#'   Design".
-#' 3. In the main page, under "Data Collection Instruments", look for the
-#'   "Upload instrument ZIP" option and click the "Upload" button.
-#' 4. Click "Choose File", navigate to where you have the measure saved as a ZIP
-#'   folder, and select the ZIP folder containing your instrument.
-#' 5. Click "Upload instrument ZIP" button to begin the import process.
-#' 6. Find the imported instrument in your list of measures and review for
-#'   accuracy.
-#' 7. Test the instrument to ensure proper functionality within your project.
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
 #'
 #' @param file Character string. The destination path for the output ZIP file.
 #' @param form_name Character string. The internal name of the form in REDCap.
@@ -157,6 +127,9 @@ generate_redcap_pid5 <- function(
 #'
 #' @inheritParams generate_redcap_pid5
 #'
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
+#'
 #' @examples
 #' # Write a PID-5-SF REDCap instrument ZIP to a temporary location
 #' generate_redcap_pid5sf(file = tempfile(fileext = ".zip"))
@@ -186,6 +159,9 @@ generate_redcap_pid5sf <- function(
 #' Generate a REDCap Instrument ZIP File for the PID-5-BF
 #'
 #' @inheritParams generate_redcap_pid5
+#'
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
 #'
 #' @examples
 #' # Write a PID-5-BF REDCap instrument ZIP to a temporary location
@@ -330,18 +306,8 @@ build_redcap_zip <- function(
 #'   Hierarchical Taxonomy of Psychopathology - Substance Use Module (HiTOP-HSUM)
 #'   and packages it into an Instrument ZIP file for easy uploading.
 #'
-#' @details **Importing (Uploading) Instruments into a REDCap Project:**
-#' 1. Log in to your REDCap account and navigate to the desired project.
-#' 2. Click on the "Designer" link in the left menu bar under "Project Home and
-#'   Design".
-#' 3. In the main page, under "Data Collection Instruments", look for the
-#'   "Upload instrument ZIP" option and click the "Upload" button.
-#' 4. Click "Choose File", navigate to where you have the measure saved as a ZIP
-#'   folder, and select the ZIP folder containing your instrument.
-#' 5. Click "Upload instrument ZIP" button to begin the import process.
-#' 6. Find the imported instrument in your list of measures and review for
-#'   accuracy.
-#' 7. Test the instrument to ensure proper functionality within your project.
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
 #'
 #' @param file Character string. The destination path for the output ZIP file.
 #'   Defaults to `"hitophsum_redcap.zip"`.

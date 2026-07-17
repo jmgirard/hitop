@@ -35,6 +35,9 @@ navbar:
     articles:
       text: "Tutorials"
       menu:
+      - text: "Importing into Qualtrics & REDCap"
+        href: articles/import-instructions.html
+      - text: "---"
       - text: "Scoring HiTOP-SR"
         href: articles/hitopsr_scoring.html
       - text: "Scoring HiTOP-BR"

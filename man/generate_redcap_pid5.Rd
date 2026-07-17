@@ -23,24 +23,12 @@ generate_redcap_pid5(
 \description{
 Generate a REDCap Instrument ZIP File for the PID-5 (Full)
 }
-\details{
-\strong{Importing (Uploading) Instruments into a REDCap Project:}
-\enumerate{
-\item Log in to your REDCap account and navigate to the desired project.
-\item Click on the "Designer" link in the left menu bar under "Project Home and
-Design".
-\item In the main page, under "Data Collection Instruments", look for the
-"Upload instrument ZIP" option and click the "Upload" button.
-\item Click "Choose File", navigate to where you have the measure saved as a ZIP
-folder, and select the ZIP folder containing your instrument.
-\item Click "Upload instrument ZIP" button to begin the import process.
-\item Find the imported instrument in your list of measures and review for
-accuracy.
-\item Test the instrument to ensure proper functionality within your project.
-}
-}
 \examples{
 # Write a PID-5 (full) REDCap instrument ZIP to a temporary location
 generate_redcap_pid5(file = tempfile(fileext = ".zip"))
 
+}
+\seealso{
+Step-by-step import instructions for Qualtrics and REDCap:
+\url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
 }
