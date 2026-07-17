@@ -40,7 +40,7 @@ Replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one reb
 
 ## Tasks
 
-- [ ] T1 Failing test first: `tests/testthat/test-qualtrics-hitophsum.R` per the full structural bar (AC1–AC3), expectations derived from `hitophsum_items`/`hitophsum_choices`, never from the QSF itself; deliberately red against the stale committed file (documents the defect)
+- [x] T1 Failing test first: `tests/testthat/test-qualtrics-hitophsum.R` per the full structural bar (AC1–AC3), expectations derived from `hitophsum_items`/`hitophsum_choices`, never from the QSF itself; deliberately red against the stale committed file (documents the defect)
 - [ ] T2 DESCRIPTION: jsonlite → Suggests; `skip_if_not_installed("jsonlite")` guard in the test file
 - [ ] T3 Modernize `devel/qualtrics_test.R` → `devel/qualtrics_hitophsum.R`: quantity types/choices from `Choice_Set` (mirror the M18 fix in R/generate_redcap.R); delete the dead `any_other` branch; keep the inherent PNTS exclusion and `SelectedChoicesCount` logic; header = run recipe + local-package note (M18 lesson) + text-adaptation list the test mirrors
 - [ ] T4 **Jeff (user action):** run the script against a fresh survey with his API token, export the QSF from Qualtrics, replace `inst/extdata/hitophsum_qualtrics.qsf`; T1 test goes green
@@ -50,6 +50,8 @@ Replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one reb
 ## Work log
 
 - 2026-07-16: created by /milestone-plan. Absorbs the 2026-07-16 ROADMAP candidate "Rebuild inst/extdata/hitophsum_qualtrics.qsf…" (M18's open remainder). Gate decisions (Jeff): pipeline approach confirmed; jsonlite → Suggests (D-015); full structural test bar.
+- 2026-07-16: implementation started; branch cut. Pre-impl question gate skipped — all choices settled at the plan gate this session.
+- 2026-07-16: T1 done — test red against the stale file exactly where staleness lives (duplicate tags, 476 stale texts, any_other gate on nic_quant_oth). Discovery: the stale QSF has NULL choices on hsum_nic_quant_cgr — the cigar-quantity defect M18 fixed in REDCap exists in the hand-built Qualtrics survey too (same ancestral regex bug).
 
 ## Decisions
 
