@@ -36,7 +36,9 @@ packages it into an Instrument ZIP file for easy uploading."><meta property="og:
   </ul></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorials</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials"><li><a class="dropdown-item" href="../articles/hitopsr_scoring.html">Scoring HiTOP-SR</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials"><li><a class="dropdown-item" href="../articles/import-instructions.html">Importing into Qualtrics &amp; REDCap</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="../articles/hitopsr_scoring.html">Scoring HiTOP-SR</a></li>
     <li><a class="dropdown-item" href="../articles/hitopbr_scoring.html">Scoring HiTOP-BR</a></li>
     <li><a class="dropdown-item" href="../articles/pid5_scoring.html">Scoring PID-5</a></li>
     <li><a class="dropdown-item" href="../articles/pid5sf_scoring.html">Scoring PID-5-SF</a></li>
@@ -111,25 +113,16 @@ entirely. Defaults to <code>15</code>.</p></dd>
     <p>Invisibly returns the path to the created file (<code>file</code>).</p>
     </div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><strong>Importing (Uploading) Instruments into a REDCap Project:</strong></p><ol><li><p>Log in to your REDCap account and navigate to the desired project.</p></li>
-<li><p>Click on the "Designer" link in the left menu bar under "Project Home and
-Design".</p></li>
-<li><p>In the main page, under "Data Collection Instruments", look for the
-"Upload instrument ZIP" option and click the "Upload" button.</p></li>
-<li><p>Click "Choose File", navigate to where you have the measure saved as a ZIP
-folder, and select the ZIP folder containing your instrument.</p></li>
-<li><p>Click "Upload instrument ZIP" button to begin the import process.</p></li>
-<li><p>Find the imported instrument in your list of measures and review for
-accuracy.</p></li>
-<li><p>Test the instrument to ensure proper functionality within your project.</p></li>
-</ol></div>
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Step-by-step import instructions for Qualtrics and REDCap:
+<a href="https://jmgirard.github.io/hitop/articles/import-instructions.html">https://jmgirard.github.io/hitop/articles/import-instructions.html</a></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Write a HiTOP-SR REDCap instrument ZIP to a temporary location</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitopsr</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/Rtmpd3NfMi/file1ad4cee1b6.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpHXmrG7/file1a36130bfc60.zip</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

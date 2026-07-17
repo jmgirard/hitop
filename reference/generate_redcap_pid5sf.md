@@ -31,10 +31,15 @@ generate_redcap_pid5sf(
 
   Integer or `NULL`. The number of items to display before a page break.
 
+## See also
+
+Step-by-step import instructions for Qualtrics and REDCap:
+<https://jmgirard.github.io/hitop/articles/import-instructions.html>
+
 ## Examples
 
 ``` r
 # Write a PID-5-SF REDCap instrument ZIP to a temporary location
 generate_redcap_pid5sf(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/Rtmpd3NfMi/file1ad47133f783.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpHXmrG7/file1a36487f48c0.zip
 ```

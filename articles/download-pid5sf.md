@@ -30,6 +30,9 @@ directly into your Qualtrics surveys.
 [English (TXT
 File)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_qualtrics.txt)
 
+[Import
+Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html#qualtrics-txt)
+
 ##### 🏥 REDCap Import
 
 Use this compressed archive file to import the instrument as a new
@@ -39,7 +42,7 @@ instrument in your REDCap project.
 File)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_redcap.zip)
 
 [Import
-Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5.html#details)
+Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html#redcap-zip)
 
 ------------------------------------------------------------------------
 

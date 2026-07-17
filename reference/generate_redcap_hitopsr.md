@@ -42,33 +42,15 @@ generate_redcap_hitopsr(
 
 Invisibly returns the path to the created file (`file`).
 
-## Details
+## See also
 
-**Importing (Uploading) Instruments into a REDCap Project:**
-
-1.  Log in to your REDCap account and navigate to the desired project.
-
-2.  Click on the "Designer" link in the left menu bar under "Project
-    Home and Design".
-
-3.  In the main page, under "Data Collection Instruments", look for the
-    "Upload instrument ZIP" option and click the "Upload" button.
-
-4.  Click "Choose File", navigate to where you have the measure saved as
-    a ZIP folder, and select the ZIP folder containing your instrument.
-
-5.  Click "Upload instrument ZIP" button to begin the import process.
-
-6.  Find the imported instrument in your list of measures and review for
-    accuracy.
-
-7.  Test the instrument to ensure proper functionality within your
-    project.
+Step-by-step import instructions for Qualtrics and REDCap:
+<https://jmgirard.github.io/hitop/articles/import-instructions.html>
 
 ## Examples
 
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/Rtmpd3NfMi/file1ad4cee1b6.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpHXmrG7/file1a36130bfc60.zip
 ```

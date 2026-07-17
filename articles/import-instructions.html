@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>HiTOP-HSUM Instrument • hitop</title>
+<title>Importing Instruments into Qualtrics and REDCap • hitop</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -22,7 +22,7 @@
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="HiTOP-HSUM Instrument">
+<meta property="og:title" content="Importing Instruments into Qualtrics and REDCap">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -41,7 +41,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item dropdown">
+<li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-instruments" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Instruments</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-instruments">
 <li><a class="dropdown-item" href="../articles/download-hitopsr.html">HiTOP Self Report (SR)</a></li>
@@ -52,7 +52,7 @@
     <li><a class="dropdown-item" href="../articles/download-pid5bf.html">PID-5 Brief Form (BF)</a></li>
   </ul>
 </li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorials</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials">
 <li><a class="dropdown-item" href="../articles/import-instructions.html">Importing into Qualtrics &amp; REDCap</a></li>
@@ -92,117 +92,121 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>HiTOP-HSUM Instrument</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>Importing Instruments into Qualtrics and REDCap</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/jmgirard/hitop/blob/main/vignettes/articles/download-hitophsum.Rmd" class="external-link"><code>vignettes/articles/download-hitophsum.Rmd</code></a></small>
-      <div class="d-none name"><code>download-hitophsum.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/jmgirard/hitop/blob/main/vignettes/articles/import-instructions.Rmd" class="external-link"><code>vignettes/articles/import-instructions.Rmd</code></a></small>
+      <div class="d-none name"><code>import-instructions.Rmd</code></div>
     </div>
 
     
     
-<p>Welcome to the HiTOP Harmful Substance Use Module (HiTOP-HSUM)
-instrument resources page. This questionnaire contains a total of 650
-possible items across 3 assessment stages. Complex skip/display logic is
-used, such that the vast majority of respondents will only see a subset
-of possible items. Here you can download a DOCX summary file that can be
-printed and shared with IRB as well as ready-to-use imports for both
-Qualtrics and REDCap (both of which already implement the complex
-skip/display logic mentioned above). Scoring functions are still under
-development but should be available soon.</p>
-<h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
-<p class="text-muted">Choose the format that best fits your immediate research needs.</p>
-<div class="row mt-4 hitop-downloads">
-<div class="col-md-4 mb-4">
-<div class="card h-100 shadow-sm">
-<div class="card-body">
-<h5 class="card-title">📄 Printable Document</h5>
-<p class="card-text text-muted">Use these Microsoft Word documents for an overview or sending to the IRB.</p>
-<div class="d-grid gap-2">
-<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_A4.docx" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (A4 Paper)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
-<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_US.docx" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (US Paper)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
+<p>Each instrument’s <a href="../index.html">download page</a> offers
+ready-to-use import files for the two most common survey platforms, <a href="https://www.qualtrics.com" class="external-link">Qualtrics</a> and <a href="https://projectredcap.org" class="external-link">REDCap</a>. This page collects the
+step-by-step instructions for importing those files, so you only have to
+learn the process once.</p>
+<p>Two different Qualtrics file formats are distributed, depending on
+the instrument:</p>
+<ul>
+<li>
+<strong>Survey file (<code>.qsf</code>)</strong> — a complete
+Qualtrics survey, including any skip/display logic. The
+<strong>HiTOP-HSUM</strong> ships as a <code>.qsf</code> because it
+relies on complex display logic. See <a href="#qualtrics-qsf">Importing
+a Qualtrics survey file</a>.</li>
+<li>
+<strong>Questions file (<code>.txt</code>)</strong> — a Qualtrics
+<em>Advanced Format</em> text file containing the questions, imported
+into a survey you create. The <strong>PID-5</strong> (Full/SF/BF),
+<strong>HiTOP-SR</strong>, and <strong>HiTOP-BR</strong> ship as
+<code>.txt</code>. See <a href="#qualtrics-txt">Importing a Qualtrics
+questions file</a>.</li>
+</ul>
+<p>REDCap always ships as an instrument <code>.zip</code>. See <a href="#redcap-zip">Importing a REDCap instrument</a>.</p>
+<div class="section level2">
+<h2 id="qualtrics-qsf">Importing a Qualtrics survey file (.qsf)<a class="anchor" aria-label="anchor" href="#qualtrics-qsf"></a>
+</h2>
+<p>A <code>.qsf</code> file creates a whole new survey, complete with
+its display logic. Do <strong>not</strong> open or edit the
+<code>.qsf</code> file before importing — editing it can corrupt the
+contents so that Qualtrics can no longer read it. You may rename the
+file if you wish.</p>
+<p><strong>From the Projects page (creates a new project):</strong></p>
+<ol style="list-style-type: decimal">
+<li>Log in to Qualtrics and go to your <strong>Projects</strong>
+page.</li>
+<li>Click <strong>Create project</strong>, then choose to create a
+project <strong>from a file</strong>.</li>
+<li>Select <strong>Import a QSF file</strong> and click <strong>Choose
+File</strong> to browse for the downloaded <code>.qsf</code>.</li>
+<li>Click <strong>Create project</strong>.</li>
+</ol>
+<p><strong>From within an existing survey (Survey tab):</strong></p>
+<ol style="list-style-type: decimal">
+<li>Open a survey and go to the <strong>Survey</strong> tab.</li>
+<li>Click <strong>Tools</strong>, then <strong>Import/Export</strong>,
+then <strong>Import survey</strong>.</li>
+<li>Click <strong>Choose File</strong> and select the downloaded
+<code>.qsf</code>.</li>
+<li>Choose a <strong>Project Category</strong> (Research Core applies to
+most surveys) and click <strong>Import</strong>.</li>
+</ol>
+<p>After importing, review the survey and run a quick preview to confirm
+the skip/display logic behaves as expected.</p>
 </div>
+<div class="section level2">
+<h2 id="qualtrics-txt">Importing a Qualtrics questions file (.txt)<a class="anchor" aria-label="anchor" href="#qualtrics-txt"></a>
+</h2>
+<p>A <code>.txt</code> file uses Qualtrics’ <em>Advanced Format</em> to
+add the instrument’s questions to a survey. Keep the file exactly as
+downloaded — it must stay in plain <strong>tab-delimited text</strong>;
+re-saving it as UTF-16 will prevent it from uploading.</p>
+<ol style="list-style-type: decimal">
+<li>Log in to Qualtrics and create (or open) the survey that will hold
+the instrument.</li>
+<li>Go to the <strong>Survey</strong> tab, click <strong>Tools</strong>,
+then <strong>Import/Export</strong>, then <strong>Import
+survey</strong>.</li>
+<li>Click <strong>Choose File</strong> and select the downloaded
+<code>.txt</code>.</li>
+<li>Click <strong>Import</strong>. The instrument’s questions are added
+to your survey.</li>
+<li>Review the imported questions for accuracy and preview the
+survey.</li>
+</ol>
 </div>
+<div class="section level2">
+<h2 id="redcap-zip">Importing a REDCap instrument (.zip)<a class="anchor" aria-label="anchor" href="#redcap-zip"></a>
+</h2>
+<p>The REDCap <code>.zip</code> is a packaged data collection instrument
+that you upload into an existing REDCap project.</p>
+<ol style="list-style-type: decimal">
+<li>Log in to your REDCap account and navigate to the desired
+project.</li>
+<li>Click on the <strong>Designer</strong> link in the left menu bar
+under “Project Home and Design”.</li>
+<li>In the main page, under <strong>Data Collection
+Instruments</strong>, look for the <strong>Upload instrument
+ZIP</strong> option and click the <strong>Upload</strong> button.</li>
+<li>Click <strong>Choose File</strong>, navigate to where you have the
+measure saved as a ZIP folder, and select the ZIP folder containing your
+instrument.</li>
+<li>Click the <strong>Upload instrument ZIP</strong> button to begin the
+import process.</li>
+<li>Find the imported instrument in your list of measures and review it
+for accuracy.</li>
+<li>Test the instrument to ensure proper functionality within your
+project.</li>
+</ol>
+<hr>
+<p><em>Qualtrics import steps follow the official Qualtrics support
+article, <a href="https://www.qualtrics.com/support/survey-platform/survey-module/survey-tools/import-and-export-surveys/" class="external-link">Import
+&amp; Export Surveys</a>. Platform interfaces change over time; if a
+menu name differs, consult that article for the current
+wording.</em></p>
 </div>
-</div>
-<div class="col-md-4 mb-4">
-<div class="card h-100 shadow-sm">
-<div class="card-body">
-<h5 class="card-title">📊 Qualtrics Import</h5>
-<p class="card-text text-muted">Use this survey file to easily import the instrument directly into your Qualtrics surveys.</p>
-<div class="d-grid gap-2">
-<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (QSF File)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
-</div>
-<div class="text-center mt-2"><a href="../articles/import-instructions.html#qualtrics-qsf" class="hitop-ref-link small">Import Instructions</a></div>
-</div>
-</div>
-</div>
-<div class="col-md-4 mb-4">
-<div class="card h-100 shadow-sm">
-<div class="card-body">
-<h5 class="card-title">🏥 REDCap Import</h5>
-<p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
-<div class="d-grid gap-2">
-<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (ZIP File)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
-</div>
-<div class="text-center mt-2"><a href="../articles/import-instructions.html#redcap-zip" class="hitop-ref-link small">Import Instructions</a></div>
-</div>
-</div>
-</div>
-</div>
-<p>Scoring functions and example data coming soon.</p>
-<h3 class="mt-4 mb-3">Versions</h3>
-<p class="text-muted">Every download button above shows its file’s build date; a new build date means the distributed file changed. The instrument itself is version 1.0.</p>
-<details class="hitop-versions"><summary>Current builds &amp; version history</summary><div class="hitop-versions-body">
-<h4>Current builds</h4>
-<div class="table-responsive">
-<table class="table table table-sm">
-<thead><tr>
-<th>File</th>
-<th>Format</th>
-<th>Instrument version</th>
-<th>Build date</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code>hitophsum_A4.docx</code></td>
-<td>DOCX (A4 paper)</td>
-<td>1.0</td>
-<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
-</tr>
-<tr>
-<td><code>hitophsum_qualtrics.qsf</code></td>
-<td>Qualtrics import</td>
-<td>1.0</td>
-<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
-</tr>
-<tr>
-<td><code>hitophsum_redcap.zip</code></td>
-<td>REDCap import</td>
-<td>1.0</td>
-<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
-</tr>
-<tr>
-<td><code>hitophsum_US.docx</code></td>
-<td>DOCX (US paper)</td>
-<td>1.0</td>
-<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p class="text-muted small">If your downloaded file shows an older build date, simply re-download it to get the latest build. The full build manifest (including file checksums) ships in the package as <code>hitop_artifacts</code>.</p>
-<h4>Version history</h4>
-<div class="hitop-history-entry">
-<span class="hitop-build-badge" title="Build date">2026-07-16</span><div>Versioning system introduced: files renamed from the _1.0_ filename scheme and DOCX footers gain a build stamp.<br><span class="hitop-history-files"><code>hitophsum_A4.docx</code>, <code>hitophsum_redcap.zip</code>, <code>hitophsum_US.docx</code></span>
-</div>
-</div>
-<div class="hitop-history-entry">
-<span class="hitop-build-badge" title="Build date">2026-07-16</span><div>Rebuilt from the corrected item data via the Qualtrics API: fixes duplicated questions and the empty cigar-quantity dropdown; SurveyName carries the build stamp.<br><span class="hitop-history-files"><code>hitophsum_qualtrics.qsf</code></span>
-</div>
-</div>
-</div>
-</details></main>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

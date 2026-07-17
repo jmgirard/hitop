@@ -32,6 +32,9 @@ Qualtrics surveys.
 [English (QSF
 File)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf)
 
+[Import
+Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html#qualtrics-qsf)
+
 ##### 🏥 REDCap Import
 
 Use this compressed archive file to import the instrument as a new
@@ -41,7 +44,7 @@ instrument in your REDCap project.
 File)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip)
 
 [Import
-Instructions](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.html#details)
+Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html#redcap-zip)
 
 Scoring functions and example data coming soon.
 
