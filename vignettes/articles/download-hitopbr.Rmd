@@ -30,13 +30,14 @@ download_cards("HiTOP-BR", list(
   dl_card(
     "📊", "Qualtrics Import",
     "Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.",
-    dl_link("English (TXT File)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_qualtrics.txt")
+    dl_link("English (TXT File)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_qualtrics.txt"),
+    ref_link("Import Instructions", "../articles/import-instructions.html#qualtrics-txt")
   ),
   dl_card(
     "🏥", "REDCap Import",
     "Use this compressed archive file to import the instrument as a new instrument in your REDCap project.",
     dl_link("English (ZIP File)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitopbr_redcap.zip"),
-    ref_link("Import Instructions", "../reference/generate_redcap_hitopbr.html#details")
+    ref_link("Import Instructions", "../articles/import-instructions.html#redcap-zip")
   )
 ))
 ```
