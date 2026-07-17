@@ -6,7 +6,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, GP2, GP4
-- **Branch/PR:** m20-artifact-versioning
+- **Branch/PR:** m20-artifact-versioning · https://github.com/jmgirard/hitop/pull/22
 
 ## Goal
 
@@ -32,13 +32,13 @@ Give every distributed `inst/extdata/` artifact a user-visible build-date versio
 
 ## Acceptance criteria
 
-- [ ] AC1: `hitop_artifacts` is exported, documented in `R/data.R`, and listed in `_pkgdown.yml`; it holds one current row per committed `inst/extdata/` file with the seven columns above, plus the QSF's 2026-07-16 history row.
-- [ ] AC2: A test fails when any committed artifact changes without a manifest update, in both directions (file without current row; current row whose md5 mismatches or whose file is absent) — demonstrated by mutation (touch a byte → test fails).
-- [ ] AC3: Every committed DOCX artifact's footer carries the build stamp, and a parse-back test asserts the stamp's date equals that file's manifest `build_date`.
-- [ ] AC4: No `inst/extdata/` filename contains an instrument version; generator default `file` values match the committed naming scheme; a test verifies every `download-*.Rmd` artifact href names a committed file.
-- [ ] AC5: Each of the 6 download pages displays the current build date per artifact and a version-history table rendered from `hitop_artifacts` (local `pkgdown::build_site()` evidence).
-- [ ] AC6: The existing parse-and-compare generator tests pass unchanged against the regenerated artifacts (content-identity under IP1 — the stamp is the only visible addition).
-- [ ] AC7: Profile verify clean (`devtools::document()` + `devtools::test()`; `devtools::check()` before review).
+- [x] AC1: `hitop_artifacts` is exported, documented in `R/data.R`, and listed in `_pkgdown.yml`; it holds one current row per committed `inst/extdata/` file with the seven columns above, plus the QSF's 2026-07-16 history row.
+- [x] AC2: A test fails when any committed artifact changes without a manifest update, in both directions (file without current row; current row whose md5 mismatches or whose file is absent) — demonstrated by mutation (touch a byte → test fails).
+- [x] AC3: Every committed DOCX artifact's footer carries the build stamp, and a parse-back test asserts the stamp's date equals that file's manifest `build_date`.
+- [x] AC4: No `inst/extdata/` filename contains an instrument version; generator default `file` values match the committed naming scheme; a test verifies every `download-*.Rmd` artifact href names a committed file.
+- [x] AC5: Each of the 6 download pages displays the current build date per artifact and a version-history table rendered from `hitop_artifacts` (local `pkgdown::build_site()` evidence).
+- [x] AC6: The existing parse-and-compare generator tests pass unchanged against the regenerated artifacts (content-identity under IP1 — the stamp is the only visible addition).
+- [x] AC7: Profile verify clean (`devtools::document()` + `devtools::test()`; `devtools::check()` before review).
 
 ## Coverage
 
@@ -68,7 +68,24 @@ Give every distributed `inst/extdata/` artifact a user-visible build-date versio
 - 2026-07-16: minor amendment — the plan miscounted the download pages: there are 6 (one per instrument form), not 7; AC5/T6/Scope wording corrected, page set unchanged (all of them).
 - 2026-07-16: T6 done — 6 download pages: version-free hrefs, Versions section (current-builds + history tables from `hitop_artifacts`); rendered check via `pkgdown::build_article()` (tables + build dates + md5 present, no stale links); artifact test suite 47 pass / 0 fail.
 - 2026-07-16: T7 done — NEWS bullet, DESIGN.md "Artifact versioning" convention; `devtools::check()` clean (0E/0W/0N). Status → review.
+- 2026-07-16: review checkpoint — draft PR #22 opened; AC1–AC7 fresh evidence recorded and boxes ticked; consistency gate clean; three-lens fresh-context review + scorer in flight (results pending).
 
 ## Decisions
 
 ## Review
+
+### Acceptance-criterion evidence (2026-07-16, branch m20-artifact-versioning @ 709ac5e)
+
+- AC1: `hitop_artifacts` in `data(package="hitop")` index (stopifnot TRUE); 7 documented columns confirmed by `load()`; `man/hitop_artifacts.Rd` exists; `_pkgdown.yml` lists it (`pkgdown::check_pkgdown()` no problems); QSF row build_date 2026-07-16 confirmed.
+- AC2: mutation both directions — byte appended to `hitopbr_qualtrics.txt` → md5 lock test FAILs (1 fail); rogue unmanifested file in extdata → completeness test FAILs (1 fail); tree restored, suite 47/47 green after.
+- AC3: footer parse-back test (`read_docx_footer()` vs manifest build_date) passes for all 12 DOCX in the 47-test artifact suite; stamp confirmed present in all 12 footers at build time.
+- AC4: `ls inst/extdata | grep -c "1\.0"` → 0; all 6 `generate_docx_*` `file` defaults version-free; href test passes over all 6 download pages.
+- AC5: all 6 articles rendered via `pkgdown::build_article()` — each output contains the Versions heading, Current-builds table, Version-history table, build dates, and no stale `_1.0_` links (scripted check, ALL PAGES OK: True); full `pkgdown::build_site()` completed clean with the same per-page result.
+- AC6: branch diff under `tests/` is additions only (helper-generators.R +25, test-artifacts.R +104; zero modifications to existing generator tests); full suite 9635 pass / 0 fail / 1 skip (standing OQ-1 skip).
+- AC7: `devtools::document()` no diff; full fresh `devtools::test()` 9635/0/1; `devtools::check()` 0E/0W/0N run this session on the final code tree (only tracking-file edits after).
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0, all checks pass (20 advisory dangling-token warnings are pre-existing legacy DESIGN/SOURCES citations).
+- `cairn_impact`: skipped — no IP/GP text changed (Conventions subsection added only).
+- Profile gate: document() no-diff ✔; generated files untouched by hand (document no-diff) ✔; README not in diff ✔; `pkgdown::check_pkgdown()` ✔; NEWS entry present, no milestone numbers in user-facing text ✔; no new top-level files needing `.Rbuildignore` (check 0 NOTEs) ✔; full check clean ✔.
