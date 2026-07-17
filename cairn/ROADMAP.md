@@ -23,3 +23,4 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
+- Instrument modularization: let users specify a subset of scales from an instrument (e.g. HiTOP-SR) and generate matching docx/Qualtrics/REDCap artifacts + score just that subset — cuts across the `generate_{docx,qualtrics,redcap}_*` and `score_*` families; likely multi-milestone — added 2026-07-17
