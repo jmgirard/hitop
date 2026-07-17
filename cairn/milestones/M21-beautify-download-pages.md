@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M21: Beautify instrument download pages
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate -->
 - **Depends on:** —   <!-- M20 shipped; lineage only -->
 - **Principles touched:** GP2   <!-- works under: version info stays manifest-driven and user-visible (D-016) -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m21-beautify-download-pages   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create -->
@@ -65,6 +65,7 @@ Redesign the six pkgdown instrument download pages so build-date version info is
 <!-- owner: any skill · append-only; one line per entry; absolute dates -->
 
 - 2026-07-16: created by /milestone-plan (promotes the 2026-07-16 candidate row; lineage M20/D-016).
+- 2026-07-16: /milestone-implement — status in-progress, branch m21-beautify-download-pages cut from main.
 
 ## Decisions
 <!-- owner: implement / review · append-only -->
