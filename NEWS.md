@@ -21,6 +21,14 @@ before a CRAN submission.
   The overview DOCX now says "Street opioids" (previously "Heroin/opiates")
   and "Goose bumps", and its item matrix matches the corrected wording; the
   prebuilt DOCX and REDCap files were regenerated
+* **The HiTOP-HSUM Qualtrics import file was rebuilt** from the corrected
+  item data. The previous file predated the source alignment above and also
+  contained an empty cigar-quantity dropdown and a duplicate copy of every
+  question. Note one platform difference: Qualtrics display logic cannot
+  compare answers across questions, so the Qualtrics survey shows symptom
+  items for *every* other drug used at least monthly (the source module's
+  sanctioned loosening), whereas the REDCap export defaults to the
+  most-frequently-used other drug only
 
 * **New `reliability_pid5()`, `reliability_hitopsr()`, and `reliability_hitopbr()`
   functions** return a per-scale tibble (`scale`, `nItems`, `alpha`, `omega`).
