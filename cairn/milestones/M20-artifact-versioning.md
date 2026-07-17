@@ -2,11 +2,11 @@
      section ownership". -->
 # M20: Artifact versioning — build-date manifest + checksum lock
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, GP2, GP4
-- **Branch/PR:** —
+- **Branch/PR:** m20-artifact-versioning
 
 ## Goal
 
@@ -52,9 +52,9 @@ Give every distributed `inst/extdata/` artifact a user-visible build-date versio
 
 ## Tasks
 
-- [ ] T1: Write `data-raw/artifacts.R` — regenerates all committed artifacts (12 DOCX, 5 Qualtrics .txt, 6 REDCap zips) under the new names, computes `tools::md5sum()` per file, and writes `hitop_artifacts` via `usethis::use_data()` (QSF: manifest row from the file on disk, build_date 2026-07-16, no rebuild).
-- [ ] T2: Add the build stamp to both DOCX footer sites ([R/generate_docx.R:342](../../R/generate_docx.R), [R/generate_docx.R:751](../../R/generate_docx.R)) — "Generated YYYY-MM-DD · hitop X.Y.Z" via `Sys.Date()` + `utils::packageVersion("hitop")`; no signature changes.
-- [ ] T3: Rename: update generator default `file` args (drop `_1.0`), run `data-raw/artifacts.R`, `git rm` the old filenames, commit regenerated artifacts + manifest.
+- [x] T1: Write `data-raw/artifacts.R` — regenerates all committed artifacts (12 DOCX, 5 Qualtrics .txt, 6 REDCap zips) under the new names, computes `tools::md5sum()` per file, and writes `hitop_artifacts` via `usethis::use_data()` (QSF: manifest row from the file on disk, build_date 2026-07-16, no rebuild).
+- [x] T2: Add the build stamp to both DOCX footer sites (now a shared `build_docx_footer()` helper in [R/generate_docx.R](../../R/generate_docx.R)) — "Generated YYYY-MM-DD · hitop X.Y.Z" via `Sys.Date()` + `utils::packageVersion("hitop")`; no signature changes.
+- [x] T3: Rename: update generator default `file` args (drop `_1.0`), run `data-raw/artifacts.R`, `git rm` the old filenames, commit regenerated artifacts + manifest.
 - [ ] T4: Document `hitop_artifacts` in `R/data.R`; add to `_pkgdown.yml` reference index; `devtools::document()`.
 - [ ] T5: Write `tests/testthat/test-artifacts.R` — bidirectional manifest↔file lock (md5 + completeness), DOCX footer-stamp parse-back vs manifest, download-page href check; extend docx parse helpers only if the footer part needs a reader.
 - [ ] T6: Update the 7 `vignettes/articles/download-*.Rmd` — new hrefs, current-build-date labels, version-history table from `hitop_artifacts`; verify with local `pkgdown::build_site()`.
@@ -63,6 +63,7 @@ Give every distributed `inst/extdata/` artifact a user-visible build-date versio
 ## Work log
 
 - 2026-07-16: created by /milestone-plan (question gate: build-date revisions, embed+manifest, version-free filenames, checksum lock → D-016).
+- 2026-07-16: T1–T3 done — footer stamp via shared `build_docx_footer()`, 23 artifacts rebuilt under version-free names, 24-row manifest; IP1 identity verified (DOCX body XML byte-identical, .txt byte-identical, zip contents identical vs HEAD); tests 9588 pass / 0 fail.
 
 ## Decisions
 

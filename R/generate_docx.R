@@ -5,7 +5,7 @@
 #'   instructions, and optional scoring keys.
 #'
 #' @param file Character string specifying the output file path. Defaults to
-#'   `"hitopbr_1.0.docx"`.
+#'   `"hitopbr.docx"`.
 #' @param papersize Character string specifying the paper dimensions. Must be
 #'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
 #' @param title Character string for the document header title. Defaults to
@@ -27,7 +27,7 @@
 #'
 #' @export
 generate_docx_hitopbr <- function(
-  file = "hitopbr_1.0.docx",
+  file = "hitopbr.docx",
   papersize = c("us", "a4"),
   title = "HiTOP-BR (v1.0)",
   include_scoring = TRUE,
@@ -81,7 +81,7 @@ generate_docx_hitopbr <- function(
 #'   single continuous table.
 #'
 #' @param file Character string specifying the output file path. Defaults to
-#'   `"hitopsr_1.0.docx"`.
+#'   `"hitopsr.docx"`.
 #' @param papersize Character string specifying the paper dimensions. Must be
 #'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
 #' @param title Character string for the document header title. Defaults to
@@ -105,7 +105,7 @@ generate_docx_hitopbr <- function(
 #'
 #' @export
 generate_docx_hitopsr <- function(
-  file = "hitopsr_1.0.docx",
+  file = "hitopsr.docx",
   papersize = c("us", "a4"),
   title = "HiTOP-SR (v1.0)",
   include_scoring = TRUE,
@@ -174,6 +174,30 @@ generate_docx_hitopsr <- function(
     font_size,
     font_family
   )
+}
+
+# Internal Helper: Build the shared document footer (build stamp + copyright)
+build_docx_footer <- function(font_size, font_family) {
+  footer_prop <- officer::fp_text(
+    color = "grey",
+    font.size = max(6, font_size - 2),
+    font.family = font_family
+  )
+  stamp <- paste0(
+    "Generated ",
+    format(Sys.Date(), "%Y-%m-%d"),
+    " \u00b7 hitop ",
+    utils::packageVersion("hitop")
+  )
+  footer_text <- officer::fpar(
+    officer::ftext(stamp, prop = footer_prop),
+    officer::ftext(
+      " \u00b7 Copyright 2024 \u00a9 Hierarchical Taxonomy of Psychopathology Society",
+      prop = footer_prop
+    ),
+    fp_p = officer::fp_par(text.align = "right")
+  )
+  officer::block_list(footer_text)
 }
 
 # Internal Helper: Get page dimensions based on paper size
@@ -339,20 +363,8 @@ build_hitop_doc <- function(
   )
 
   # Footer
-  footer_text <- officer::fpar(
-    officer::ftext(
-      "Copyright 2024 \u00A9 Hierarchical Taxonomy of Psychopathology Society",
-      prop = officer::fp_text(
-        color = "grey",
-        font.size = max(6, font_size - 2),
-        font.family = font_family
-      )
-    ),
-    fp_p = officer::fp_par(text.align = "right")
-  )
-
   my_header <- officer::block_list(header_text)
-  my_footer <- officer::block_list(footer_text)
+  my_footer <- build_docx_footer(font_size, font_family)
 
   my_doc <- officer::read_docx() |>
     officer::body_add_fpar(
@@ -407,7 +419,7 @@ build_hitop_doc <- function(
 #'   overview, branching logic, and items.
 #'
 #' @param file Character string specifying the output file path. Defaults to
-#'   `"hitophsum_overview_1.0.docx"`.
+#'   `"hitophsum_overview.docx"`.
 #' @param papersize Character string specifying the paper dimensions. Must be
 #'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
 #' @param title Character string for the document header title. Defaults to
@@ -427,7 +439,7 @@ build_hitop_doc <- function(
 #'
 #' @export
 generate_docx_hitophsum <- function(
-  file = "hitophsum_overview_1.0.docx",
+  file = "hitophsum_overview.docx",
   papersize = c("us", "a4"),
   title = "HiTOP-HSUM (v1.0) Overview",
   font_size = 10,
@@ -748,18 +760,7 @@ generate_docx_hitophsum <- function(
   )
   my_header <- officer::block_list(header_text)
 
-  footer_text <- officer::fpar(
-    officer::ftext(
-      "Copyright 2024 \u00A9 Hierarchical Taxonomy of Psychopathology Society",
-      prop = officer::fp_text(
-        color = "grey",
-        font.size = max(6, font_size - 2),
-        font.family = font_family
-      )
-    ),
-    fp_p = officer::fp_par(text.align = "right")
-  )
-  my_footer <- officer::block_list(footer_text)
+  my_footer <- build_docx_footer(font_size, font_family)
 
   # --- Build Flextables ---
   ft_step1 <- flextable::flextable(step1_data) |>
@@ -957,7 +958,7 @@ generate_docx_hitophsum <- function(
 #'
 #' @export
 generate_docx_pid5 <- function(
-  file = "pid5_1.0.docx",
+  file = "pid5.docx",
   papersize = c("us", "a4"),
   title = "PID-5 (Full)",
   include_scoring = TRUE,
@@ -1021,7 +1022,7 @@ generate_docx_pid5 <- function(
 #'
 #' @export
 generate_docx_pid5sf <- function(
-  file = "pid5sf_1.0.docx",
+  file = "pid5sf.docx",
   papersize = c("us", "a4"),
   title = "PID-5-SF",
   include_scoring = TRUE,
@@ -1085,7 +1086,7 @@ generate_docx_pid5sf <- function(
 #'
 #' @export
 generate_docx_pid5bf <- function(
-  file = "pid5bf_1.0.docx",
+  file = "pid5bf.docx",
   papersize = c("us", "a4"),
   title = "PID-5-BF",
   include_scoring = TRUE,
