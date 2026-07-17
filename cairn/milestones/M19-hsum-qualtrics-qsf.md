@@ -53,6 +53,7 @@ Replace the stale hand-built `inst/extdata/hitophsum_qualtrics.qsf` with one reb
 - 2026-07-16: implementation started; branch cut. Pre-impl question gate skipped — all choices settled at the plan gate this session.
 - 2026-07-16: T1 done — test red against the stale file exactly where staleness lives (duplicate tags, 476 stale texts, any_other gate on nic_quant_oth). Discovery: the stale QSF has NULL choices on hsum_nic_quant_cgr — the cigar-quantity defect M18 fixed in REDCap exists in the hand-built Qualtrics survey too (same ancestral regex bug).
 - 2026-07-16: T2 done (jsonlite → Suggests). T3 done — script rewritten as devel/qualtrics_hitophsum.R (old qualtrics_test.R removed): Field_Type/Choice_Set resolution with a stop() on unresolved sets, any_other deleted, header carries run recipe + adaptation list; offline dry-run confirms all 650 items resolve type/choices/gates cleanly. Full suite: failures confined to the deliberate-red QSF file. Next: T4 requires Jeff at the Qualtrics console.
+- 2026-07-16: T3 amended (minor, Jeff's request): full automation — rebuild_hitophsum_qsf() creates the survey, pushes, exports via ?format=qsf (shape-validated, loud manual fallback), and overwrites the artifact; credentials from ~/.Renviron (never repo-local). T4 shrinks to setting ~/.Renviron once + one function call.
 
 ## Decisions
 

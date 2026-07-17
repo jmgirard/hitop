@@ -9,23 +9,26 @@
 # Requirements (local only — devel/ is .Rbuildignore'd, so none of this
 # touches DESCRIPTION): install.packages(c("httr2", "cli")); a Qualtrics API
 # token with survey-definitions access; your datacenter id (the subdomain in
-# your Qualtrics URL, e.g. "ca1"); an EMPTY target survey created in the
-# Qualtrics UI (its id, "SV_...", is in the survey's URL).
+# your Qualtrics URL, e.g. "ca1").
 #
-# Run recipe:
+# One-time setup — put credentials in ~/.Renviron (never in the repo):
+#   usethis::edit_r_environ()   # add these two lines, then restart R:
+#   QUALTRICS_API_KEY=<your token>      (Account Settings > Qualtrics IDs)
+#   QUALTRICS_DATACENTER=<e.g. ca1>     (the subdomain in your Qualtrics URL)
+#
+# Run recipe (fully automated: creates the survey, pushes all questions,
+# exports the QSF, and overwrites inst/extdata/hitophsum_qualtrics.qsf):
 #   1. devtools::load_all()  # for hitophsum_items/choices/instructions
 #   2. source("devel/qualtrics_hitophsum.R")
-#   3. push_hitophsum_to_qualtrics(
-#        api_token   = Sys.getenv("QUALTRICS_API_KEY"),
-#        data_center = "<datacenter>",
-#        survey_id   = "SV_<new empty survey>",
-#        items = hitophsum_items, choices = hitophsum_choices,
-#        instructions = hitophsum_instructions
-#      )
-#   4. Spot-check the survey in the Qualtrics builder (do not edit content).
-#   5. Export: Survey > Tools > Import/Export > Export Survey (.qsf) and
-#      replace inst/extdata/hitophsum_qualtrics.qsf with the download.
-#   6. Rscript -e 'devtools::test(filter = "qualtrics")'  # must be green
+#   3. rebuild_hitophsum_qsf()
+#   4. Rscript -e 'devtools::test(filter = "qualtrics")'  # must be green
+#
+# If the automated QSF export fails (the ?format=qsf endpoint is not part of
+# the documented API surface), the function says so and you fall back to the
+# manual export: open the created survey > Tools > Import/Export > Export
+# Survey, then save the download over inst/extdata/hitophsum_qualtrics.qsf.
+# Do not edit survey content in the Qualtrics builder either way — the
+# committed QSF must stay a pure product of the keying tables.
 #
 # Text adaptations applied to hitophsum_items$Text (mirrored by the test and
 # documented in cairn/SOURCES.md):
@@ -34,6 +37,104 @@
 #   2. "other specified substances" is followed by the respondent's own
 #      wording, piped from hsum_oth_txt: "other specified substances
 #      (${q://QID/ChoiceTextEntryValue})".
+
+# Shared request skeleton for the survey-definitions API.
+qualtrics_request <- function(api_token, data_center, path) {
+  httr2::request(
+    sprintf("https://%s.qualtrics.com/API/v3/%s", data_center, path)
+  ) |>
+    httr2::req_headers(
+      "X-API-TOKEN" = api_token,
+      "Accept" = "application/json"
+    ) |>
+    httr2::req_error(is_error = function(resp) FALSE)
+}
+
+qualtrics_stop_on_error <- function(resp) {
+  if (httr2::resp_status(resp) >= 400) {
+    data <- tryCatch(httr2::resp_body_json(resp), error = function(e) NULL)
+    msg <- data$meta$error$errorMessage
+    stop(if (is.null(msg)) "Unknown API Error" else msg, call. = FALSE)
+  }
+  invisible(resp)
+}
+
+# Create a new blank survey; returns its SurveyID.
+create_qualtrics_survey <- function(api_token, data_center, name) {
+  resp <- qualtrics_request(api_token, data_center, "survey-definitions") |>
+    httr2::req_body_json(list(
+      SurveyName = name,
+      Language = "EN",
+      ProjectCategory = "CORE"
+    )) |>
+    httr2::req_perform()
+  qualtrics_stop_on_error(resp)
+  httr2::resp_body_json(resp)$result$SurveyID
+}
+
+# Export a survey as QSF text. Uses the ?format=qsf export; validated by
+# shape (a QSF is a JSON object with SurveyEntry + SurveyElements) so a
+# non-QSF response fails loudly instead of writing garbage.
+export_qualtrics_qsf <- function(api_token, data_center, survey_id) {
+  resp <- qualtrics_request(
+    api_token,
+    data_center,
+    sprintf("survey-definitions/%s?format=qsf", survey_id)
+  ) |>
+    httr2::req_perform()
+  qualtrics_stop_on_error(resp)
+  txt <- httr2::resp_body_string(resp)
+  parsed <- tryCatch(
+    jsonlite::fromJSON(txt, simplifyVector = FALSE),
+    error = function(e) NULL
+  )
+  # Some deployments wrap the export in the usual {result: ...} envelope.
+  if (!is.null(parsed$result) && is.null(parsed$SurveyElements)) {
+    parsed <- parsed$result
+    txt <- jsonlite::toJSON(parsed, auto_unbox = TRUE)
+  }
+  if (is.null(parsed$SurveyEntry) || is.null(parsed$SurveyElements)) {
+    stop(
+      "The export response is not QSF-shaped; export manually via ",
+      "Tools > Import/Export > Export Survey.",
+      call. = FALSE
+    )
+  }
+  txt
+}
+
+# One-shot rebuild: create survey -> push all questions -> export QSF ->
+# overwrite the committed artifact. Credentials come from ~/.Renviron.
+rebuild_hitophsum_qsf <- function(
+  api_token = Sys.getenv("QUALTRICS_API_KEY"),
+  data_center = Sys.getenv("QUALTRICS_DATACENTER"),
+  name = paste0("HiTOP-HSUM v1.0 (rebuilt ", Sys.Date(), ")"),
+  file = "inst/extdata/hitophsum_qualtrics.qsf"
+) {
+  if (!nzchar(api_token) || !nzchar(data_center)) {
+    stop(
+      "Set QUALTRICS_API_KEY and QUALTRICS_DATACENTER in ~/.Renviron ",
+      "(usethis::edit_r_environ()) and restart R.",
+      call. = FALSE
+    )
+  }
+  survey_id <- create_qualtrics_survey(api_token, data_center, name)
+  cli::cli_alert_info("Created survey {survey_id} ({name})")
+  push_hitophsum_to_qualtrics(
+    api_token,
+    data_center,
+    survey_id,
+    items = hitophsum_items,
+    choices = hitophsum_choices,
+    instructions = hitophsum_instructions
+  )
+  qsf <- export_qualtrics_qsf(api_token, data_center, survey_id)
+  writeLines(qsf, file, useBytes = TRUE)
+  cli::cli_alert_success(
+    "Wrote {.file {file}} — run devtools::test(filter = \"qualtrics\")"
+  )
+  invisible(survey_id)
+}
 
 # Send a Question Payload to the Qualtrics API (with error parsing)
 create_qualtrics_question <- function(
