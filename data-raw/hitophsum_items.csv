@@ -12,7 +12,7 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 11,hsum_pop,Prescription opioids,Screening,radio,NA,NA,yn_pnts,"Prescription opioids (oxycodone [OxyContin, Percocet], hydrocodone [Vicodin], methadone, buprenorphine, etc.)"
 12,hsum_oth,Other,Screening,radio,NA,NA,yn_pnts,Other
 13,hsum_oth_txt,Other,Screening,text,hsum_oth,1,text,Please specify the other substance:
-14,hsum_nic_form,Nicotine,Screening,checkbox,hsum_nic,1,nicotine_forms,In what forms did you use nicotine over the past 12 months? (select all that apply)
+14,hsum_nic_form,Nicotine,Screening,checkbox,hsum_nic,1,nicotine_forms,In what forms did you use nicotine over the past 12 months? (Select all that apply)
 15,hsum_nic_form_txt,Nicotine,Screening,text,hsum_nic_form,6,text,Please specify the other form of nicotine:
 16,hsum_nic_most,Nicotine,Screening,radio,hsum_nic_form,count>1,nicotine_forms,In what form did you MOST OFTEN use nicotine over the past 12 months?
 17,hsum_alc_freq,Alcohol,Consumption,radio,hsum_alc,1,freq_12m,How often did you drink alcohol over the past 12 months?
@@ -22,7 +22,7 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 21,hsum_nic_freq,Nicotine,Consumption,radio,hsum_nic,1,freq_12m,How often did you use nicotine (in any form) over the past 12 months?
 22,hsum_nic_quant_cig,Nicotine,Consumption,dropdown,hsum_nic_form,1,quant_nic_cig,"On days when you smoked cigarettes, how many did you typically smoke?"
 23,hsum_nic_quant_cgr,Nicotine,Consumption,dropdown,hsum_nic_form,3,quant_nic_cgr,"On days when you smoked cigars, cigarillos, or filtered cigars, how many did you typically smoke?"
-24,hsum_nic_quant_oth,Nicotine,Consumption,text,hsum_nic_form,any_other,text,"On days when you used nicotine, how much did you typically use?"
+24,hsum_nic_quant_oth,Nicotine,Consumption,text,hsum_nic_form,"2,4,5,6",text,"On days when you used nicotine, how much did you typically use?"
 25,hsum_can_freq,Cannabis,Consumption,radio,hsum_can,1,freq_12m,"How often did you use cannabis (marijuana, pot, grass, hash, etc.) over the past 12 months?"
 26,hsum_can_intox,Cannabis,Consumption,radio,hsum_can,1,freq_intox,"Over the past 12 months, how often did you get intoxicated/high while using cannabis?"
 27,hsum_can_quant,Cannabis,Consumption,text,hsum_can,1,text,"On days when you used cannabis, how much did you typically use?"
@@ -53,23 +53,23 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 52,hsum_oth_freq,Other,Consumption,radio,hsum_oth,1,freq_12m,How often did you use other specified substances over the past 12 months?
 53,hsum_oth_intox,Other,Consumption,radio,hsum_oth,1,freq_intox,"Over the past 12 months, how often did you get intoxicated/high while using other specified substances?"
 54,hsum_oth_quant,Other,Consumption,text,hsum_oth,1,text,"On days when you used other specified substances, how much did you typically use?"
-55,hsum_alc_sud01,Alcohol,Symptom - SUD (craving),radio,hsum_alc_freq,>= 3,symptom_4pt,Reminders of alcohol gave me a strong urge to drink alcohol.
-56,hsum_alc_sud02,Alcohol,Symptom - SUD (craving),radio,hsum_alc_freq,>= 3,symptom_4pt,I craved alcohol.
-57,hsum_alc_sud03,Alcohol,Symptom - SUD (craving),radio,hsum_alc_freq,>= 3,symptom_4pt,I had strong desires to use alcohol.
-58,hsum_alc_sud04,Alcohol,Symptom - SUD (hazardous use),radio,hsum_alc_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of alcohol.
+55,hsum_alc_sud01,Alcohol,Symptom - SUD (craving),radio,hsum_alc_freq,>= 3,symptom_4pt,Reminders of alcohol gave me a strong urge to drink.
+56,hsum_alc_sud02,Alcohol,Symptom - SUD (craving),radio,hsum_alc_freq,>= 3,symptom_4pt,I craved a drink of alcohol.
+57,hsum_alc_sud03,Alcohol,Symptom - SUD (craving),radio,hsum_alc_freq,>= 3,symptom_4pt,I had strong desires for alcohol.
+58,hsum_alc_sud04,Alcohol,Symptom - SUD (hazardous use),radio,hsum_alc_freq,>= 3,symptom_4pt,I drove a car while intoxicated.
 59,hsum_alc_sud05,Alcohol,Symptom - SUD (hazardous use),radio,hsum_alc_freq,>= 3,symptom_4pt,"When I was under the influence of alcohol, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
-60,hsum_alc_sud06,Alcohol,Symptom - SUD (hazardous use),radio,hsum_alc_freq,>= 3,symptom_4pt,I damaged something valuable while using alcohol.
-61,hsum_alc_sud07,Alcohol,Symptom - SUD (hazardous use),radio,hsum_alc_freq,>= 3,symptom_4pt,I did risky or dangerous things while using alcohol that I would not have done sober.
-62,hsum_alc_sud08,Alcohol,Symptom - SUD (impaired control),radio,hsum_alc_freq,>= 3,symptom_4pt,I was not able to cut back on using alcohol when I wanted to.
-63,hsum_alc_sud09,Alcohol,Symptom - SUD (impaired control),radio,hsum_alc_freq,>= 3,symptom_4pt,I used too much alcohol.
-64,hsum_alc_sud10,Alcohol,Symptom - SUD (impaired control),radio,hsum_alc_freq,>= 3,symptom_4pt,"I tried to use alcohol only at certain times, but it did not work for long."
-65,hsum_alc_sud11,Alcohol,Symptom - SUD (impaired control),radio,hsum_alc_freq,>= 3,symptom_4pt,I got high on alcohol despite previously deciding not to.
-66,hsum_alc_sud12,Alcohol,Symptom - SUD (role interference),radio,hsum_alc_freq,>= 3,symptom_4pt,I continued to use alcohol even though it made my performance at work suffer.
-67,hsum_alc_sud13,Alcohol,Symptom - SUD (role interference),radio,hsum_alc_freq,>= 3,symptom_4pt,"Using alcohol or being sick from using alcohol got in the way of my taking care of myself, my home, or my family."
-68,hsum_alc_sud14,Alcohol,Symptom - SUD (role interference),radio,hsum_alc_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using alcohol."
-69,hsum_alc_sud15,Alcohol,Symptom - SUD (tolerance),radio,hsum_alc_freq,>= 3,symptom_4pt,"Over time, I needed to use more alcohol to get the same effect."
-70,hsum_alc_sud16,Alcohol,Symptom - SUD (tolerance),radio,hsum_alc_freq,>= 3,symptom_4pt,I've noticed that using alcohol does not have the same effect that it used to have.
-71,hsum_alc_sud17,Alcohol,Symptom - SUD (tolerance),radio,hsum_alc_freq,>= 3,symptom_4pt,I used alcohol a lot more than others before feeling high.
+60,hsum_alc_sud06,Alcohol,Symptom - SUD (hazardous use),radio,hsum_alc_freq,>= 3,symptom_4pt,I damaged something valuable while under the influence of alcohol.
+61,hsum_alc_sud07,Alcohol,Symptom - SUD (hazardous use),radio,hsum_alc_freq,>= 3,symptom_4pt,I did risky or dangerous things while drinking alcohol that I would not have done sober.
+62,hsum_alc_sud08,Alcohol,Symptom - SUD (impaired control),radio,hsum_alc_freq,>= 3,symptom_4pt,I was not able to cut back drinking when I wanted to.
+63,hsum_alc_sud09,Alcohol,Symptom - SUD (impaired control),radio,hsum_alc_freq,>= 3,symptom_4pt,I drank too much.
+64,hsum_alc_sud10,Alcohol,Symptom - SUD (impaired control),radio,hsum_alc_freq,>= 3,symptom_4pt,"I tried to drink only at certain times, but it did not work for long."
+65,hsum_alc_sud11,Alcohol,Symptom - SUD (impaired control),radio,hsum_alc_freq,>= 3,symptom_4pt,I got drunk despite previously deciding not to.
+66,hsum_alc_sud12,Alcohol,Symptom - SUD (role interference),radio,hsum_alc_freq,>= 3,symptom_4pt,I continued to drink even though it made my performance at work suffer.
+67,hsum_alc_sud13,Alcohol,Symptom - SUD (role interference),radio,hsum_alc_freq,>= 3,symptom_4pt,"Drinking or being sick from drinking got in the way of me taking care of myself, my home, or my family."
+68,hsum_alc_sud14,Alcohol,Symptom - SUD (role interference),radio,hsum_alc_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of drinking (e.g., feeling hungover)."
+69,hsum_alc_sud15,Alcohol,Symptom - SUD (tolerance),radio,hsum_alc_freq,>= 3,symptom_4pt,"Over time, I needed to drink more alcohol in order to get the same effect."
+70,hsum_alc_sud16,Alcohol,Symptom - SUD (tolerance),radio,hsum_alc_freq,>= 3,symptom_4pt,I consumed a good amount of alcohol before others realized I had been drinking.
+71,hsum_alc_sud17,Alcohol,Symptom - SUD (tolerance),radio,hsum_alc_freq,>= 3,symptom_4pt,I drank a lot more than others before feeling drunk.
 72,hsum_alc_with01,Alcohol,Symptom - Withdrawal (bodily sensations),radio,hsum_alc_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of alcohol, I experienced: Goose bumps"
 73,hsum_alc_with02,Alcohol,Symptom - Withdrawal (bodily sensations),radio,hsum_alc_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of alcohol, I experienced: Heart racing"
 74,hsum_alc_with03,Alcohol,Symptom - Withdrawal (bodily sensations),radio,hsum_alc_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of alcohol, I experienced: Muscle aches"
@@ -103,19 +103,19 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 102,hsum_alc_with31,Alcohol,Symptom - Withdrawal (appetite or sleeping),radio,hsum_alc_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of alcohol, I experienced: Increased appetite"
 103,hsum_alc_with32,Alcohol,Symptom - Withdrawal (appetite or sleeping),radio,hsum_alc_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of alcohol, I experienced: Sleeping too much"
 104,hsum_alc_with33,Alcohol,Symptom - Withdrawal (appetite or sleeping),radio,hsum_alc_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of alcohol, I experienced: Insomnia or trouble sleeping"
-105,hsum_nic_sud01,Nicotine,Symptom - SUD (craving),radio,hsum_nic_freq,>= 5,symptom_4pt,Reminders of nicotine gave me a strong urge to smoke or take nicotine.
+105,hsum_nic_sud01,Nicotine,Symptom - SUD (craving),radio,hsum_nic_freq,>= 5,symptom_4pt,Reminders of using nicotine gave me a strong urge to smoke or take nicotine.
 106,hsum_nic_sud02,Nicotine,Symptom - SUD (craving),radio,hsum_nic_freq,>= 5,symptom_4pt,I craved nicotine.
 107,hsum_nic_sud03,Nicotine,Symptom - SUD (craving),radio,hsum_nic_freq,>= 5,symptom_4pt,I had strong desires to use nicotine.
 108,hsum_nic_sud08,Nicotine,Symptom - SUD (impaired control),radio,hsum_nic_freq,>= 5,symptom_4pt,I was not able to cut back on using nicotine when I wanted to.
-109,hsum_nic_sud09,Nicotine,Symptom - SUD (impaired control),radio,hsum_nic_freq,>= 5,symptom_4pt,I used too much nicotine.
+109,hsum_nic_sud09,Nicotine,Symptom - SUD (impaired control),radio,hsum_nic_freq,>= 5,symptom_4pt,I used nicotine too much.
 110,hsum_nic_sud10,Nicotine,Symptom - SUD (impaired control),radio,hsum_nic_freq,>= 5,symptom_4pt,"I tried to use nicotine only at certain times, but it did not work for long."
-111,hsum_nic_sud11,Nicotine,Symptom - SUD (impaired control),radio,hsum_nic_freq,>= 5,symptom_4pt,I got high on nicotine despite previously deciding not to.
+111,hsum_nic_sud11,Nicotine,Symptom - SUD (impaired control),radio,hsum_nic_freq,>= 5,symptom_4pt,I used nicotine despite previously deciding not to.
 112,hsum_nic_sud12,Nicotine,Symptom - SUD (role interference),radio,hsum_nic_freq,>= 5,symptom_4pt,I continued to use nicotine even though it made my performance at work suffer.
-113,hsum_nic_sud13,Nicotine,Symptom - SUD (role interference),radio,hsum_nic_freq,>= 5,symptom_4pt,"Using nicotine or being sick from using nicotine got in the way of my taking care of myself, my home, or my family."
-114,hsum_nic_sud14,Nicotine,Symptom - SUD (role interference),radio,hsum_nic_freq,>= 5,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using nicotine."
+113,hsum_nic_sud13,Nicotine,Symptom - SUD (role interference),radio,hsum_nic_freq,>= 5,symptom_4pt,"Using nicotine got in the way of me taking care of myself, my home, or my family."
+114,hsum_nic_sud14,Nicotine,Symptom - SUD (role interference),radio,hsum_nic_freq,>= 5,symptom_4pt,Using nicotine interfered with my health.
 115,hsum_nic_sud15,Nicotine,Symptom - SUD (tolerance),radio,hsum_nic_freq,>= 5,symptom_4pt,"Over time, I needed to use more nicotine to get the same effect."
 116,hsum_nic_sud16,Nicotine,Symptom - SUD (tolerance),radio,hsum_nic_freq,>= 5,symptom_4pt,I've noticed that using nicotine does not have the same effect that it used to have.
-117,hsum_nic_sud17,Nicotine,Symptom - SUD (tolerance),radio,hsum_nic_freq,>= 5,symptom_4pt,I used nicotine a lot more than others before feeling high.
+117,hsum_nic_sud17,Nicotine,Symptom - SUD (tolerance),radio,hsum_nic_freq,>= 5,symptom_4pt,My use of nicotine has increased over time.
 118,hsum_nic_with01,Nicotine,Symptom - Withdrawal (bodily sensations),radio,hsum_nic_freq,>= 5,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of nicotine, I experienced: Goose bumps"
 119,hsum_nic_with02,Nicotine,Symptom - Withdrawal (bodily sensations),radio,hsum_nic_freq,>= 5,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of nicotine, I experienced: Heart racing"
 120,hsum_nic_with03,Nicotine,Symptom - Withdrawal (bodily sensations),radio,hsum_nic_freq,>= 5,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of nicotine, I experienced: Muscle aches"
@@ -151,8 +151,8 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 150,hsum_nic_with33,Nicotine,Symptom - Withdrawal (appetite or sleeping),radio,hsum_nic_freq,>= 5,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of nicotine, I experienced: Insomnia or trouble sleeping"
 151,hsum_can_sud01,Cannabis,Symptom - SUD (craving),radio,hsum_can_freq,>= 3,symptom_4pt,Reminders of cannabis gave me a strong urge to use cannabis.
 152,hsum_can_sud02,Cannabis,Symptom - SUD (craving),radio,hsum_can_freq,>= 3,symptom_4pt,I craved cannabis.
-153,hsum_can_sud03,Cannabis,Symptom - SUD (craving),radio,hsum_can_freq,>= 3,symptom_4pt,I had strong desires to use cannabis.
-154,hsum_can_sud04,Cannabis,Symptom - SUD (hazardous use),radio,hsum_can_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of cannabis.
+153,hsum_can_sud03,Cannabis,Symptom - SUD (craving),radio,hsum_can_freq,>= 3,symptom_4pt,I had strong desires for cannabis.
+154,hsum_can_sud04,Cannabis,Symptom - SUD (hazardous use),radio,hsum_can_freq,>= 3,symptom_4pt,I drove a car while under the influence of cannabis.
 155,hsum_can_sud05,Cannabis,Symptom - SUD (hazardous use),radio,hsum_can_freq,>= 3,symptom_4pt,"When I was under the influence of cannabis, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 156,hsum_can_sud06,Cannabis,Symptom - SUD (hazardous use),radio,hsum_can_freq,>= 3,symptom_4pt,I damaged something valuable while using cannabis.
 157,hsum_can_sud07,Cannabis,Symptom - SUD (hazardous use),radio,hsum_can_freq,>= 3,symptom_4pt,I did risky or dangerous things while using cannabis that I would not have done sober.
@@ -161,10 +161,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 160,hsum_can_sud10,Cannabis,Symptom - SUD (impaired control),radio,hsum_can_freq,>= 3,symptom_4pt,"I tried to use cannabis only at certain times, but it did not work for long."
 161,hsum_can_sud11,Cannabis,Symptom - SUD (impaired control),radio,hsum_can_freq,>= 3,symptom_4pt,I got high on cannabis despite previously deciding not to.
 162,hsum_can_sud12,Cannabis,Symptom - SUD (role interference),radio,hsum_can_freq,>= 3,symptom_4pt,I continued to use cannabis even though it made my performance at work suffer.
-163,hsum_can_sud13,Cannabis,Symptom - SUD (role interference),radio,hsum_can_freq,>= 3,symptom_4pt,"Using cannabis or being sick from using cannabis got in the way of my taking care of myself, my home, or my family."
+163,hsum_can_sud13,Cannabis,Symptom - SUD (role interference),radio,hsum_can_freq,>= 3,symptom_4pt,"Using cannabis or being sick from using cannabis got in the way of me taking care of myself, my home, or my family."
 164,hsum_can_sud14,Cannabis,Symptom - SUD (role interference),radio,hsum_can_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using cannabis."
 165,hsum_can_sud15,Cannabis,Symptom - SUD (tolerance),radio,hsum_can_freq,>= 3,symptom_4pt,"Over time, I needed to use more cannabis to get the same effect."
-166,hsum_can_sud16,Cannabis,Symptom - SUD (tolerance),radio,hsum_can_freq,>= 3,symptom_4pt,I've noticed that using cannabis does not have the same effect that it used to have.
+166,hsum_can_sud16,Cannabis,Symptom - SUD (tolerance),radio,hsum_can_freq,>= 3,symptom_4pt,I used a good amount of cannabis before others realized I had been using it.
 167,hsum_can_sud17,Cannabis,Symptom - SUD (tolerance),radio,hsum_can_freq,>= 3,symptom_4pt,I used cannabis a lot more than others before feeling high.
 168,hsum_can_with01,Cannabis,Symptom - Withdrawal (bodily sensations),radio,hsum_can_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of cannabis, I experienced: Goose bumps"
 169,hsum_can_with02,Cannabis,Symptom - Withdrawal (bodily sensations),radio,hsum_can_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of cannabis, I experienced: Heart racing"
@@ -201,8 +201,8 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 200,hsum_can_with33,Cannabis,Symptom - Withdrawal (appetite or sleeping),radio,hsum_can_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of cannabis, I experienced: Insomnia or trouble sleeping"
 201,hsum_coc_sud01,Cocaine,Symptom - SUD (craving),radio,hsum_coc_freq,>= 3,symptom_4pt,Reminders of cocaine gave me a strong urge to use cocaine.
 202,hsum_coc_sud02,Cocaine,Symptom - SUD (craving),radio,hsum_coc_freq,>= 3,symptom_4pt,I craved cocaine.
-203,hsum_coc_sud03,Cocaine,Symptom - SUD (craving),radio,hsum_coc_freq,>= 3,symptom_4pt,I had strong desires to use cocaine.
-204,hsum_coc_sud04,Cocaine,Symptom - SUD (hazardous use),radio,hsum_coc_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of cocaine.
+203,hsum_coc_sud03,Cocaine,Symptom - SUD (craving),radio,hsum_coc_freq,>= 3,symptom_4pt,I had strong desires for cocaine.
+204,hsum_coc_sud04,Cocaine,Symptom - SUD (hazardous use),radio,hsum_coc_freq,>= 3,symptom_4pt,I drove a car while under the influence of cocaine.
 205,hsum_coc_sud05,Cocaine,Symptom - SUD (hazardous use),radio,hsum_coc_freq,>= 3,symptom_4pt,"When I was under the influence of cocaine, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 206,hsum_coc_sud06,Cocaine,Symptom - SUD (hazardous use),radio,hsum_coc_freq,>= 3,symptom_4pt,I damaged something valuable while using cocaine.
 207,hsum_coc_sud07,Cocaine,Symptom - SUD (hazardous use),radio,hsum_coc_freq,>= 3,symptom_4pt,I did risky or dangerous things while using cocaine that I would not have done sober.
@@ -211,10 +211,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 210,hsum_coc_sud10,Cocaine,Symptom - SUD (impaired control),radio,hsum_coc_freq,>= 3,symptom_4pt,"I tried to use cocaine only at certain times, but it did not work for long."
 211,hsum_coc_sud11,Cocaine,Symptom - SUD (impaired control),radio,hsum_coc_freq,>= 3,symptom_4pt,I got high on cocaine despite previously deciding not to.
 212,hsum_coc_sud12,Cocaine,Symptom - SUD (role interference),radio,hsum_coc_freq,>= 3,symptom_4pt,I continued to use cocaine even though it made my performance at work suffer.
-213,hsum_coc_sud13,Cocaine,Symptom - SUD (role interference),radio,hsum_coc_freq,>= 3,symptom_4pt,"Using cocaine or being sick from using cocaine got in the way of my taking care of myself, my home, or my family."
+213,hsum_coc_sud13,Cocaine,Symptom - SUD (role interference),radio,hsum_coc_freq,>= 3,symptom_4pt,"Using cocaine or being sick from using cocaine got in the way of me taking care of myself, my home, or my family."
 214,hsum_coc_sud14,Cocaine,Symptom - SUD (role interference),radio,hsum_coc_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using cocaine."
 215,hsum_coc_sud15,Cocaine,Symptom - SUD (tolerance),radio,hsum_coc_freq,>= 3,symptom_4pt,"Over time, I needed to use more cocaine to get the same effect."
-216,hsum_coc_sud16,Cocaine,Symptom - SUD (tolerance),radio,hsum_coc_freq,>= 3,symptom_4pt,I've noticed that using cocaine does not have the same effect that it used to have.
+216,hsum_coc_sud16,Cocaine,Symptom - SUD (tolerance),radio,hsum_coc_freq,>= 3,symptom_4pt,I used a good amount of cocaine before others realized I had been using it.
 217,hsum_coc_sud17,Cocaine,Symptom - SUD (tolerance),radio,hsum_coc_freq,>= 3,symptom_4pt,I used cocaine a lot more than others before feeling high.
 218,hsum_coc_with01,Cocaine,Symptom - Withdrawal (bodily sensations),radio,hsum_coc_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of cocaine, I experienced: Goose bumps"
 219,hsum_coc_with02,Cocaine,Symptom - Withdrawal (bodily sensations),radio,hsum_coc_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of cocaine, I experienced: Heart racing"
@@ -251,8 +251,8 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 250,hsum_coc_with33,Cocaine,Symptom - Withdrawal (appetite or sleeping),radio,hsum_coc_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of cocaine, I experienced: Insomnia or trouble sleeping"
 251,hsum_stm_sud01,Prescription stimulants,Symptom - SUD (craving),radio,hsum_stm_freq,>= 3,symptom_4pt,Reminders of prescription stimulants gave me a strong urge to use prescription stimulants.
 252,hsum_stm_sud02,Prescription stimulants,Symptom - SUD (craving),radio,hsum_stm_freq,>= 3,symptom_4pt,I craved prescription stimulants.
-253,hsum_stm_sud03,Prescription stimulants,Symptom - SUD (craving),radio,hsum_stm_freq,>= 3,symptom_4pt,I had strong desires to use prescription stimulants.
-254,hsum_stm_sud04,Prescription stimulants,Symptom - SUD (hazardous use),radio,hsum_stm_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of prescription stimulants.
+253,hsum_stm_sud03,Prescription stimulants,Symptom - SUD (craving),radio,hsum_stm_freq,>= 3,symptom_4pt,I had strong desires for prescription stimulants.
+254,hsum_stm_sud04,Prescription stimulants,Symptom - SUD (hazardous use),radio,hsum_stm_freq,>= 3,symptom_4pt,I drove a car while under the influence of prescription stimulants.
 255,hsum_stm_sud05,Prescription stimulants,Symptom - SUD (hazardous use),radio,hsum_stm_freq,>= 3,symptom_4pt,"When I was under the influence of prescription stimulants, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 256,hsum_stm_sud06,Prescription stimulants,Symptom - SUD (hazardous use),radio,hsum_stm_freq,>= 3,symptom_4pt,I damaged something valuable while using prescription stimulants.
 257,hsum_stm_sud07,Prescription stimulants,Symptom - SUD (hazardous use),radio,hsum_stm_freq,>= 3,symptom_4pt,I did risky or dangerous things while using prescription stimulants that I would not have done sober.
@@ -261,10 +261,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 260,hsum_stm_sud10,Prescription stimulants,Symptom - SUD (impaired control),radio,hsum_stm_freq,>= 3,symptom_4pt,"I tried to use prescription stimulants only at certain times, but it did not work for long."
 261,hsum_stm_sud11,Prescription stimulants,Symptom - SUD (impaired control),radio,hsum_stm_freq,>= 3,symptom_4pt,I got high on prescription stimulants despite previously deciding not to.
 262,hsum_stm_sud12,Prescription stimulants,Symptom - SUD (role interference),radio,hsum_stm_freq,>= 3,symptom_4pt,I continued to use prescription stimulants even though it made my performance at work suffer.
-263,hsum_stm_sud13,Prescription stimulants,Symptom - SUD (role interference),radio,hsum_stm_freq,>= 3,symptom_4pt,"Using prescription stimulants or being sick from using prescription stimulants got in the way of my taking care of myself, my home, or my family."
+263,hsum_stm_sud13,Prescription stimulants,Symptom - SUD (role interference),radio,hsum_stm_freq,>= 3,symptom_4pt,"Using prescription stimulants or being sick from using prescription stimulants got in the way of me taking care of myself, my home, or my family."
 264,hsum_stm_sud14,Prescription stimulants,Symptom - SUD (role interference),radio,hsum_stm_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using prescription stimulants."
 265,hsum_stm_sud15,Prescription stimulants,Symptom - SUD (tolerance),radio,hsum_stm_freq,>= 3,symptom_4pt,"Over time, I needed to use more prescription stimulants to get the same effect."
-266,hsum_stm_sud16,Prescription stimulants,Symptom - SUD (tolerance),radio,hsum_stm_freq,>= 3,symptom_4pt,I've noticed that using prescription stimulants does not have the same effect that it used to have.
+266,hsum_stm_sud16,Prescription stimulants,Symptom - SUD (tolerance),radio,hsum_stm_freq,>= 3,symptom_4pt,I used a good amount of prescription stimulants before others realized I had been using it.
 267,hsum_stm_sud17,Prescription stimulants,Symptom - SUD (tolerance),radio,hsum_stm_freq,>= 3,symptom_4pt,I used prescription stimulants a lot more than others before feeling high.
 268,hsum_stm_with01,Prescription stimulants,Symptom - Withdrawal (bodily sensations),radio,hsum_stm_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of prescription stimulants, I experienced: Goose bumps"
 269,hsum_stm_with02,Prescription stimulants,Symptom - Withdrawal (bodily sensations),radio,hsum_stm_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of prescription stimulants, I experienced: Heart racing"
@@ -301,8 +301,8 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 300,hsum_stm_with33,Prescription stimulants,Symptom - Withdrawal (appetite or sleeping),radio,hsum_stm_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of prescription stimulants, I experienced: Insomnia or trouble sleeping"
 301,hsum_met_sud01,Methamphetamine,Symptom - SUD (craving),radio,hsum_met_freq,>= 3,symptom_4pt,Reminders of methamphetamine gave me a strong urge to use methamphetamine.
 302,hsum_met_sud02,Methamphetamine,Symptom - SUD (craving),radio,hsum_met_freq,>= 3,symptom_4pt,I craved methamphetamine.
-303,hsum_met_sud03,Methamphetamine,Symptom - SUD (craving),radio,hsum_met_freq,>= 3,symptom_4pt,I had strong desires to use methamphetamine.
-304,hsum_met_sud04,Methamphetamine,Symptom - SUD (hazardous use),radio,hsum_met_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of methamphetamine.
+303,hsum_met_sud03,Methamphetamine,Symptom - SUD (craving),radio,hsum_met_freq,>= 3,symptom_4pt,I had strong desires for methamphetamine.
+304,hsum_met_sud04,Methamphetamine,Symptom - SUD (hazardous use),radio,hsum_met_freq,>= 3,symptom_4pt,I drove a car while under the influence of methamphetamine.
 305,hsum_met_sud05,Methamphetamine,Symptom - SUD (hazardous use),radio,hsum_met_freq,>= 3,symptom_4pt,"When I was under the influence of methamphetamine, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 306,hsum_met_sud06,Methamphetamine,Symptom - SUD (hazardous use),radio,hsum_met_freq,>= 3,symptom_4pt,I damaged something valuable while using methamphetamine.
 307,hsum_met_sud07,Methamphetamine,Symptom - SUD (hazardous use),radio,hsum_met_freq,>= 3,symptom_4pt,I did risky or dangerous things while using methamphetamine that I would not have done sober.
@@ -311,10 +311,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 310,hsum_met_sud10,Methamphetamine,Symptom - SUD (impaired control),radio,hsum_met_freq,>= 3,symptom_4pt,"I tried to use methamphetamine only at certain times, but it did not work for long."
 311,hsum_met_sud11,Methamphetamine,Symptom - SUD (impaired control),radio,hsum_met_freq,>= 3,symptom_4pt,I got high on methamphetamine despite previously deciding not to.
 312,hsum_met_sud12,Methamphetamine,Symptom - SUD (role interference),radio,hsum_met_freq,>= 3,symptom_4pt,I continued to use methamphetamine even though it made my performance at work suffer.
-313,hsum_met_sud13,Methamphetamine,Symptom - SUD (role interference),radio,hsum_met_freq,>= 3,symptom_4pt,"Using methamphetamine or being sick from using methamphetamine got in the way of my taking care of myself, my home, or my family."
+313,hsum_met_sud13,Methamphetamine,Symptom - SUD (role interference),radio,hsum_met_freq,>= 3,symptom_4pt,"Using methamphetamine or being sick from using methamphetamine got in the way of me taking care of myself, my home, or my family."
 314,hsum_met_sud14,Methamphetamine,Symptom - SUD (role interference),radio,hsum_met_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using methamphetamine."
 315,hsum_met_sud15,Methamphetamine,Symptom - SUD (tolerance),radio,hsum_met_freq,>= 3,symptom_4pt,"Over time, I needed to use more methamphetamine to get the same effect."
-316,hsum_met_sud16,Methamphetamine,Symptom - SUD (tolerance),radio,hsum_met_freq,>= 3,symptom_4pt,I've noticed that using methamphetamine does not have the same effect that it used to have.
+316,hsum_met_sud16,Methamphetamine,Symptom - SUD (tolerance),radio,hsum_met_freq,>= 3,symptom_4pt,I used a good amount of methamphetamine before others realized I had been using it.
 317,hsum_met_sud17,Methamphetamine,Symptom - SUD (tolerance),radio,hsum_met_freq,>= 3,symptom_4pt,I used methamphetamine a lot more than others before feeling high.
 318,hsum_met_with01,Methamphetamine,Symptom - Withdrawal (bodily sensations),radio,hsum_met_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of methamphetamine, I experienced: Goose bumps"
 319,hsum_met_with02,Methamphetamine,Symptom - Withdrawal (bodily sensations),radio,hsum_met_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of methamphetamine, I experienced: Heart racing"
@@ -351,8 +351,8 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 350,hsum_met_with33,Methamphetamine,Symptom - Withdrawal (appetite or sleeping),radio,hsum_met_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of methamphetamine, I experienced: Insomnia or trouble sleeping"
 351,hsum_inh_sud01,Inhalants,Symptom - SUD (craving),radio,hsum_inh_freq,>= 3,symptom_4pt,Reminders of inhalants gave me a strong urge to use inhalants.
 352,hsum_inh_sud02,Inhalants,Symptom - SUD (craving),radio,hsum_inh_freq,>= 3,symptom_4pt,I craved inhalants.
-353,hsum_inh_sud03,Inhalants,Symptom - SUD (craving),radio,hsum_inh_freq,>= 3,symptom_4pt,I had strong desires to use inhalants.
-354,hsum_inh_sud04,Inhalants,Symptom - SUD (hazardous use),radio,hsum_inh_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of inhalants.
+353,hsum_inh_sud03,Inhalants,Symptom - SUD (craving),radio,hsum_inh_freq,>= 3,symptom_4pt,I had strong desires for inhalants.
+354,hsum_inh_sud04,Inhalants,Symptom - SUD (hazardous use),radio,hsum_inh_freq,>= 3,symptom_4pt,I drove a car while under the influence of inhalants.
 355,hsum_inh_sud05,Inhalants,Symptom - SUD (hazardous use),radio,hsum_inh_freq,>= 3,symptom_4pt,"When I was under the influence of inhalants, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 356,hsum_inh_sud06,Inhalants,Symptom - SUD (hazardous use),radio,hsum_inh_freq,>= 3,symptom_4pt,I damaged something valuable while using inhalants.
 357,hsum_inh_sud07,Inhalants,Symptom - SUD (hazardous use),radio,hsum_inh_freq,>= 3,symptom_4pt,I did risky or dangerous things while using inhalants that I would not have done sober.
@@ -361,10 +361,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 360,hsum_inh_sud10,Inhalants,Symptom - SUD (impaired control),radio,hsum_inh_freq,>= 3,symptom_4pt,"I tried to use inhalants only at certain times, but it did not work for long."
 361,hsum_inh_sud11,Inhalants,Symptom - SUD (impaired control),radio,hsum_inh_freq,>= 3,symptom_4pt,I got high on inhalants despite previously deciding not to.
 362,hsum_inh_sud12,Inhalants,Symptom - SUD (role interference),radio,hsum_inh_freq,>= 3,symptom_4pt,I continued to use inhalants even though it made my performance at work suffer.
-363,hsum_inh_sud13,Inhalants,Symptom - SUD (role interference),radio,hsum_inh_freq,>= 3,symptom_4pt,"Using inhalants or being sick from using inhalants got in the way of my taking care of myself, my home, or my family."
+363,hsum_inh_sud13,Inhalants,Symptom - SUD (role interference),radio,hsum_inh_freq,>= 3,symptom_4pt,"Using inhalants or being sick from using inhalants got in the way of me taking care of myself, my home, or my family."
 364,hsum_inh_sud14,Inhalants,Symptom - SUD (role interference),radio,hsum_inh_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using inhalants."
 365,hsum_inh_sud15,Inhalants,Symptom - SUD (tolerance),radio,hsum_inh_freq,>= 3,symptom_4pt,"Over time, I needed to use more inhalants to get the same effect."
-366,hsum_inh_sud16,Inhalants,Symptom - SUD (tolerance),radio,hsum_inh_freq,>= 3,symptom_4pt,I've noticed that using inhalants does not have the same effect that it used to have.
+366,hsum_inh_sud16,Inhalants,Symptom - SUD (tolerance),radio,hsum_inh_freq,>= 3,symptom_4pt,I used a good amount of inhalants before others realized I had been using it.
 367,hsum_inh_sud17,Inhalants,Symptom - SUD (tolerance),radio,hsum_inh_freq,>= 3,symptom_4pt,I used inhalants a lot more than others before feeling high.
 368,hsum_inh_with01,Inhalants,Symptom - Withdrawal (bodily sensations),radio,hsum_inh_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of inhalants, I experienced: Goose bumps"
 369,hsum_inh_with02,Inhalants,Symptom - Withdrawal (bodily sensations),radio,hsum_inh_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of inhalants, I experienced: Heart racing"
@@ -399,10 +399,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 398,hsum_inh_with31,Inhalants,Symptom - Withdrawal (appetite or sleeping),radio,hsum_inh_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of inhalants, I experienced: Increased appetite"
 399,hsum_inh_with32,Inhalants,Symptom - Withdrawal (appetite or sleeping),radio,hsum_inh_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of inhalants, I experienced: Sleeping too much"
 400,hsum_inh_with33,Inhalants,Symptom - Withdrawal (appetite or sleeping),radio,hsum_inh_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of inhalants, I experienced: Insomnia or trouble sleeping"
-401,hsum_sed_sud01,Sedatives,Symptom - SUD (craving),radio,hsum_sed_freq,>= 3,symptom_4pt,Reminders of sedatives or sleeping pills gave me a strong urge to use sedatives.
+401,hsum_sed_sud01,Sedatives,Symptom - SUD (craving),radio,hsum_sed_freq,>= 3,symptom_4pt,Reminders of sedatives or sleeping pills gave me a strong urge to use sedatives or sleeping pills.
 402,hsum_sed_sud02,Sedatives,Symptom - SUD (craving),radio,hsum_sed_freq,>= 3,symptom_4pt,I craved sedatives or sleeping pills.
-403,hsum_sed_sud03,Sedatives,Symptom - SUD (craving),radio,hsum_sed_freq,>= 3,symptom_4pt,I had strong desires to use sedatives or sleeping pills.
-404,hsum_sed_sud04,Sedatives,Symptom - SUD (hazardous use),radio,hsum_sed_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of sedatives or sleeping pills.
+403,hsum_sed_sud03,Sedatives,Symptom - SUD (craving),radio,hsum_sed_freq,>= 3,symptom_4pt,I had strong desires for sedatives or sleeping pills.
+404,hsum_sed_sud04,Sedatives,Symptom - SUD (hazardous use),radio,hsum_sed_freq,>= 3,symptom_4pt,I drove a car while under the influence of sedatives or sleeping pills.
 405,hsum_sed_sud05,Sedatives,Symptom - SUD (hazardous use),radio,hsum_sed_freq,>= 3,symptom_4pt,"When I was under the influence of sedatives or sleeping pills, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 406,hsum_sed_sud06,Sedatives,Symptom - SUD (hazardous use),radio,hsum_sed_freq,>= 3,symptom_4pt,I damaged something valuable while using sedatives or sleeping pills.
 407,hsum_sed_sud07,Sedatives,Symptom - SUD (hazardous use),radio,hsum_sed_freq,>= 3,symptom_4pt,I did risky or dangerous things while using sedatives or sleeping pills that I would not have done sober.
@@ -411,10 +411,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 410,hsum_sed_sud10,Sedatives,Symptom - SUD (impaired control),radio,hsum_sed_freq,>= 3,symptom_4pt,"I tried to use sedatives or sleeping pills only at certain times, but it did not work for long."
 411,hsum_sed_sud11,Sedatives,Symptom - SUD (impaired control),radio,hsum_sed_freq,>= 3,symptom_4pt,I got high on sedatives or sleeping pills despite previously deciding not to.
 412,hsum_sed_sud12,Sedatives,Symptom - SUD (role interference),radio,hsum_sed_freq,>= 3,symptom_4pt,I continued to use sedatives or sleeping pills even though it made my performance at work suffer.
-413,hsum_sed_sud13,Sedatives,Symptom - SUD (role interference),radio,hsum_sed_freq,>= 3,symptom_4pt,"Using sedatives or sleeping pills or being sick from using sedatives or sleeping pills got in the way of my taking care of myself, my home, or my family."
+413,hsum_sed_sud13,Sedatives,Symptom - SUD (role interference),radio,hsum_sed_freq,>= 3,symptom_4pt,"Using sedatives or sleeping pills or being sick from using sedatives or sleeping pills got in the way of me taking care of myself, my home, or my family."
 414,hsum_sed_sud14,Sedatives,Symptom - SUD (role interference),radio,hsum_sed_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using sedatives or sleeping pills."
 415,hsum_sed_sud15,Sedatives,Symptom - SUD (tolerance),radio,hsum_sed_freq,>= 3,symptom_4pt,"Over time, I needed to use more sedatives or sleeping pills to get the same effect."
-416,hsum_sed_sud16,Sedatives,Symptom - SUD (tolerance),radio,hsum_sed_freq,>= 3,symptom_4pt,I've noticed that using sedatives or sleeping pills does not have the same effect that it used to have.
+416,hsum_sed_sud16,Sedatives,Symptom - SUD (tolerance),radio,hsum_sed_freq,>= 3,symptom_4pt,I used a good amount of sedatives or sleeping pills before others realized I had been using it.
 417,hsum_sed_sud17,Sedatives,Symptom - SUD (tolerance),radio,hsum_sed_freq,>= 3,symptom_4pt,I used sedatives or sleeping pills a lot more than others before feeling high.
 418,hsum_sed_with01,Sedatives,Symptom - Withdrawal (bodily sensations),radio,hsum_sed_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of sedatives or sleeping pills, I experienced: Goose bumps"
 419,hsum_sed_with02,Sedatives,Symptom - Withdrawal (bodily sensations),radio,hsum_sed_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of sedatives or sleeping pills, I experienced: Heart racing"
@@ -451,8 +451,8 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 450,hsum_sed_with33,Sedatives,Symptom - Withdrawal (appetite or sleeping),radio,hsum_sed_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of sedatives or sleeping pills, I experienced: Insomnia or trouble sleeping"
 451,hsum_hal_sud01,Hallucinogens,Symptom - SUD (craving),radio,hsum_hal_freq,>= 3,symptom_4pt,Reminders of hallucinogens gave me a strong urge to use hallucinogens.
 452,hsum_hal_sud02,Hallucinogens,Symptom - SUD (craving),radio,hsum_hal_freq,>= 3,symptom_4pt,I craved hallucinogens.
-453,hsum_hal_sud03,Hallucinogens,Symptom - SUD (craving),radio,hsum_hal_freq,>= 3,symptom_4pt,I had strong desires to use hallucinogens.
-454,hsum_hal_sud04,Hallucinogens,Symptom - SUD (hazardous use),radio,hsum_hal_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of hallucinogens.
+453,hsum_hal_sud03,Hallucinogens,Symptom - SUD (craving),radio,hsum_hal_freq,>= 3,symptom_4pt,I had strong desires for hallucinogens.
+454,hsum_hal_sud04,Hallucinogens,Symptom - SUD (hazardous use),radio,hsum_hal_freq,>= 3,symptom_4pt,I drove a car while under the influence of hallucinogens.
 455,hsum_hal_sud05,Hallucinogens,Symptom - SUD (hazardous use),radio,hsum_hal_freq,>= 3,symptom_4pt,"When I was under the influence of hallucinogens, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 456,hsum_hal_sud06,Hallucinogens,Symptom - SUD (hazardous use),radio,hsum_hal_freq,>= 3,symptom_4pt,I damaged something valuable while using hallucinogens.
 457,hsum_hal_sud07,Hallucinogens,Symptom - SUD (hazardous use),radio,hsum_hal_freq,>= 3,symptom_4pt,I did risky or dangerous things while using hallucinogens that I would not have done sober.
@@ -461,10 +461,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 460,hsum_hal_sud10,Hallucinogens,Symptom - SUD (impaired control),radio,hsum_hal_freq,>= 3,symptom_4pt,"I tried to use hallucinogens only at certain times, but it did not work for long."
 461,hsum_hal_sud11,Hallucinogens,Symptom - SUD (impaired control),radio,hsum_hal_freq,>= 3,symptom_4pt,I got high on hallucinogens despite previously deciding not to.
 462,hsum_hal_sud12,Hallucinogens,Symptom - SUD (role interference),radio,hsum_hal_freq,>= 3,symptom_4pt,I continued to use hallucinogens even though it made my performance at work suffer.
-463,hsum_hal_sud13,Hallucinogens,Symptom - SUD (role interference),radio,hsum_hal_freq,>= 3,symptom_4pt,"Using hallucinogens or being sick from using hallucinogens got in the way of my taking care of myself, my home, or my family."
+463,hsum_hal_sud13,Hallucinogens,Symptom - SUD (role interference),radio,hsum_hal_freq,>= 3,symptom_4pt,"Using hallucinogens or being sick from using hallucinogens got in the way of me taking care of myself, my home, or my family."
 464,hsum_hal_sud14,Hallucinogens,Symptom - SUD (role interference),radio,hsum_hal_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using hallucinogens."
 465,hsum_hal_sud15,Hallucinogens,Symptom - SUD (tolerance),radio,hsum_hal_freq,>= 3,symptom_4pt,"Over time, I needed to use more hallucinogens to get the same effect."
-466,hsum_hal_sud16,Hallucinogens,Symptom - SUD (tolerance),radio,hsum_hal_freq,>= 3,symptom_4pt,I've noticed that using hallucinogens does not have the same effect that it used to have.
+466,hsum_hal_sud16,Hallucinogens,Symptom - SUD (tolerance),radio,hsum_hal_freq,>= 3,symptom_4pt,I used a good amount of hallucinogens before others realized I had been using it.
 467,hsum_hal_sud17,Hallucinogens,Symptom - SUD (tolerance),radio,hsum_hal_freq,>= 3,symptom_4pt,I used hallucinogens a lot more than others before feeling high.
 468,hsum_hal_with01,Hallucinogens,Symptom - Withdrawal (bodily sensations),radio,hsum_hal_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of hallucinogens, I experienced: Goose bumps"
 469,hsum_hal_with02,Hallucinogens,Symptom - Withdrawal (bodily sensations),radio,hsum_hal_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of hallucinogens, I experienced: Heart racing"
@@ -501,8 +501,8 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 500,hsum_hal_with33,Hallucinogens,Symptom - Withdrawal (appetite or sleeping),radio,hsum_hal_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of hallucinogens, I experienced: Insomnia or trouble sleeping"
 501,hsum_sop_sud01,Street opioids,Symptom - SUD (craving),radio,hsum_sop_freq,>= 3,symptom_4pt,Reminders of street opioids gave me a strong urge to use street opioids.
 502,hsum_sop_sud02,Street opioids,Symptom - SUD (craving),radio,hsum_sop_freq,>= 3,symptom_4pt,I craved street opioids.
-503,hsum_sop_sud03,Street opioids,Symptom - SUD (craving),radio,hsum_sop_freq,>= 3,symptom_4pt,I had strong desires to use street opioids.
-504,hsum_sop_sud04,Street opioids,Symptom - SUD (hazardous use),radio,hsum_sop_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of street opioids.
+503,hsum_sop_sud03,Street opioids,Symptom - SUD (craving),radio,hsum_sop_freq,>= 3,symptom_4pt,I had strong desires for street opioids.
+504,hsum_sop_sud04,Street opioids,Symptom - SUD (hazardous use),radio,hsum_sop_freq,>= 3,symptom_4pt,I drove a car while under the influence of street opioids.
 505,hsum_sop_sud05,Street opioids,Symptom - SUD (hazardous use),radio,hsum_sop_freq,>= 3,symptom_4pt,"When I was under the influence of street opioids, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 506,hsum_sop_sud06,Street opioids,Symptom - SUD (hazardous use),radio,hsum_sop_freq,>= 3,symptom_4pt,I damaged something valuable while using street opioids.
 507,hsum_sop_sud07,Street opioids,Symptom - SUD (hazardous use),radio,hsum_sop_freq,>= 3,symptom_4pt,I did risky or dangerous things while using street opioids that I would not have done sober.
@@ -511,10 +511,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 510,hsum_sop_sud10,Street opioids,Symptom - SUD (impaired control),radio,hsum_sop_freq,>= 3,symptom_4pt,"I tried to use street opioids only at certain times, but it did not work for long."
 511,hsum_sop_sud11,Street opioids,Symptom - SUD (impaired control),radio,hsum_sop_freq,>= 3,symptom_4pt,I got high on street opioids despite previously deciding not to.
 512,hsum_sop_sud12,Street opioids,Symptom - SUD (role interference),radio,hsum_sop_freq,>= 3,symptom_4pt,I continued to use street opioids even though it made my performance at work suffer.
-513,hsum_sop_sud13,Street opioids,Symptom - SUD (role interference),radio,hsum_sop_freq,>= 3,symptom_4pt,"Using street opioids or being sick from using street opioids got in the way of my taking care of myself, my home, or my family."
+513,hsum_sop_sud13,Street opioids,Symptom - SUD (role interference),radio,hsum_sop_freq,>= 3,symptom_4pt,"Using street opioids or being sick from using street opioids got in the way of me taking care of myself, my home, or my family."
 514,hsum_sop_sud14,Street opioids,Symptom - SUD (role interference),radio,hsum_sop_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using street opioids."
 515,hsum_sop_sud15,Street opioids,Symptom - SUD (tolerance),radio,hsum_sop_freq,>= 3,symptom_4pt,"Over time, I needed to use more street opioids to get the same effect."
-516,hsum_sop_sud16,Street opioids,Symptom - SUD (tolerance),radio,hsum_sop_freq,>= 3,symptom_4pt,I've noticed that using street opioids does not have the same effect that it used to have.
+516,hsum_sop_sud16,Street opioids,Symptom - SUD (tolerance),radio,hsum_sop_freq,>= 3,symptom_4pt,I used a good amount of street opioids before others realized I had been using it.
 517,hsum_sop_sud17,Street opioids,Symptom - SUD (tolerance),radio,hsum_sop_freq,>= 3,symptom_4pt,I used street opioids a lot more than others before feeling high.
 518,hsum_sop_with01,Street opioids,Symptom - Withdrawal (bodily sensations),radio,hsum_sop_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of street opioids, I experienced: Goose bumps"
 519,hsum_sop_with02,Street opioids,Symptom - Withdrawal (bodily sensations),radio,hsum_sop_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of street opioids, I experienced: Heart racing"
@@ -551,8 +551,8 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 550,hsum_sop_with33,Street opioids,Symptom - Withdrawal (appetite or sleeping),radio,hsum_sop_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of street opioids, I experienced: Insomnia or trouble sleeping"
 551,hsum_pop_sud01,Prescription opioids,Symptom - SUD (craving),radio,hsum_pop_freq,>= 3,symptom_4pt,Reminders of prescription opioids gave me a strong urge to use prescription opioids.
 552,hsum_pop_sud02,Prescription opioids,Symptom - SUD (craving),radio,hsum_pop_freq,>= 3,symptom_4pt,I craved prescription opioids.
-553,hsum_pop_sud03,Prescription opioids,Symptom - SUD (craving),radio,hsum_pop_freq,>= 3,symptom_4pt,I had strong desires to use prescription opioids.
-554,hsum_pop_sud04,Prescription opioids,Symptom - SUD (hazardous use),radio,hsum_pop_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of prescription opioids.
+553,hsum_pop_sud03,Prescription opioids,Symptom - SUD (craving),radio,hsum_pop_freq,>= 3,symptom_4pt,I had strong desires for prescription opioids.
+554,hsum_pop_sud04,Prescription opioids,Symptom - SUD (hazardous use),radio,hsum_pop_freq,>= 3,symptom_4pt,I drove a car while under the influence of prescription opioids.
 555,hsum_pop_sud05,Prescription opioids,Symptom - SUD (hazardous use),radio,hsum_pop_freq,>= 3,symptom_4pt,"When I was under the influence of prescription opioids, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 556,hsum_pop_sud06,Prescription opioids,Symptom - SUD (hazardous use),radio,hsum_pop_freq,>= 3,symptom_4pt,I damaged something valuable while using prescription opioids.
 557,hsum_pop_sud07,Prescription opioids,Symptom - SUD (hazardous use),radio,hsum_pop_freq,>= 3,symptom_4pt,I did risky or dangerous things while using prescription opioids that I would not have done sober.
@@ -561,10 +561,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 560,hsum_pop_sud10,Prescription opioids,Symptom - SUD (impaired control),radio,hsum_pop_freq,>= 3,symptom_4pt,"I tried to use prescription opioids only at certain times, but it did not work for long."
 561,hsum_pop_sud11,Prescription opioids,Symptom - SUD (impaired control),radio,hsum_pop_freq,>= 3,symptom_4pt,I got high on prescription opioids despite previously deciding not to.
 562,hsum_pop_sud12,Prescription opioids,Symptom - SUD (role interference),radio,hsum_pop_freq,>= 3,symptom_4pt,I continued to use prescription opioids even though it made my performance at work suffer.
-563,hsum_pop_sud13,Prescription opioids,Symptom - SUD (role interference),radio,hsum_pop_freq,>= 3,symptom_4pt,"Using prescription opioids or being sick from using prescription opioids got in the way of my taking care of myself, my home, or my family."
+563,hsum_pop_sud13,Prescription opioids,Symptom - SUD (role interference),radio,hsum_pop_freq,>= 3,symptom_4pt,"Using prescription opioids or being sick from using prescription opioids got in the way of me taking care of myself, my home, or my family."
 564,hsum_pop_sud14,Prescription opioids,Symptom - SUD (role interference),radio,hsum_pop_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using prescription opioids."
 565,hsum_pop_sud15,Prescription opioids,Symptom - SUD (tolerance),radio,hsum_pop_freq,>= 3,symptom_4pt,"Over time, I needed to use more prescription opioids to get the same effect."
-566,hsum_pop_sud16,Prescription opioids,Symptom - SUD (tolerance),radio,hsum_pop_freq,>= 3,symptom_4pt,I've noticed that using prescription opioids does not have the same effect that it used to have.
+566,hsum_pop_sud16,Prescription opioids,Symptom - SUD (tolerance),radio,hsum_pop_freq,>= 3,symptom_4pt,I used a good amount of prescription opioids before others realized I had been using it.
 567,hsum_pop_sud17,Prescription opioids,Symptom - SUD (tolerance),radio,hsum_pop_freq,>= 3,symptom_4pt,I used prescription opioids a lot more than others before feeling high.
 568,hsum_pop_with01,Prescription opioids,Symptom - Withdrawal (bodily sensations),radio,hsum_pop_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of prescription opioids, I experienced: Goose bumps"
 569,hsum_pop_with02,Prescription opioids,Symptom - Withdrawal (bodily sensations),radio,hsum_pop_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of prescription opioids, I experienced: Heart racing"
@@ -599,10 +599,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 598,hsum_pop_with31,Prescription opioids,Symptom - Withdrawal (appetite or sleeping),radio,hsum_pop_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of prescription opioids, I experienced: Increased appetite"
 599,hsum_pop_with32,Prescription opioids,Symptom - Withdrawal (appetite or sleeping),radio,hsum_pop_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of prescription opioids, I experienced: Sleeping too much"
 600,hsum_pop_with33,Prescription opioids,Symptom - Withdrawal (appetite or sleeping),radio,hsum_pop_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of prescription opioids, I experienced: Insomnia or trouble sleeping"
-601,hsum_oth_sud01,Other,Symptom - SUD (craving),radio,hsum_oth_freq,>= 3,symptom_4pt,Reminders of other specified substances gave me a strong urge to use other substances.
+601,hsum_oth_sud01,Other,Symptom - SUD (craving),radio,hsum_oth_freq,>= 3,symptom_4pt,Reminders of other specified substances gave me a strong urge to use other specified substances.
 602,hsum_oth_sud02,Other,Symptom - SUD (craving),radio,hsum_oth_freq,>= 3,symptom_4pt,I craved other specified substances.
-603,hsum_oth_sud03,Other,Symptom - SUD (craving),radio,hsum_oth_freq,>= 3,symptom_4pt,I had strong desires to use other specified substances.
-604,hsum_oth_sud04,Other,Symptom - SUD (hazardous use),radio,hsum_oth_freq,>= 3,symptom_4pt,I drove a car while intoxicated under the influence of other specified substances.
+603,hsum_oth_sud03,Other,Symptom - SUD (craving),radio,hsum_oth_freq,>= 3,symptom_4pt,I had strong desires for other specified substances.
+604,hsum_oth_sud04,Other,Symptom - SUD (hazardous use),radio,hsum_oth_freq,>= 3,symptom_4pt,I drove a car while under the influence of other specified substances.
 605,hsum_oth_sud05,Other,Symptom - SUD (hazardous use),radio,hsum_oth_freq,>= 3,symptom_4pt,"When I was under the influence of other specified substances, I was in a situation where I could have gotten hurt (e.g., when riding a bicycle, swimming, operating machinery)."
 606,hsum_oth_sud06,Other,Symptom - SUD (hazardous use),radio,hsum_oth_freq,>= 3,symptom_4pt,I damaged something valuable while using other specified substances.
 607,hsum_oth_sud07,Other,Symptom - SUD (hazardous use),radio,hsum_oth_freq,>= 3,symptom_4pt,I did risky or dangerous things while using other specified substances that I would not have done sober.
@@ -611,10 +611,10 @@ Item,Variable,Substance,Tier,Field_Type,Gate_Variable,Gate_Value,Choice_Set,Text
 610,hsum_oth_sud10,Other,Symptom - SUD (impaired control),radio,hsum_oth_freq,>= 3,symptom_4pt,"I tried to use other specified substances only at certain times, but it did not work for long."
 611,hsum_oth_sud11,Other,Symptom - SUD (impaired control),radio,hsum_oth_freq,>= 3,symptom_4pt,I got high on other specified substances despite previously deciding not to.
 612,hsum_oth_sud12,Other,Symptom - SUD (role interference),radio,hsum_oth_freq,>= 3,symptom_4pt,I continued to use other specified substances even though it made my performance at work suffer.
-613,hsum_oth_sud13,Other,Symptom - SUD (role interference),radio,hsum_oth_freq,>= 3,symptom_4pt,"Using other specified substances or being sick from using other specified substances got in the way of my taking care of myself, my home, or my family."
+613,hsum_oth_sud13,Other,Symptom - SUD (role interference),radio,hsum_oth_freq,>= 3,symptom_4pt,"Using other specified substances or being sick from using other specified substances got in the way of me taking care of myself, my home, or my family."
 614,hsum_oth_sud14,Other,Symptom - SUD (role interference),radio,hsum_oth_freq,>= 3,symptom_4pt,"I missed work, school, or other obligations because I was getting over the effects of using other specified substances."
 615,hsum_oth_sud15,Other,Symptom - SUD (tolerance),radio,hsum_oth_freq,>= 3,symptom_4pt,"Over time, I needed to use more other specified substances to get the same effect."
-616,hsum_oth_sud16,Other,Symptom - SUD (tolerance),radio,hsum_oth_freq,>= 3,symptom_4pt,I've noticed that using other specified substances does not have the same effect that it used to have.
+616,hsum_oth_sud16,Other,Symptom - SUD (tolerance),radio,hsum_oth_freq,>= 3,symptom_4pt,I used a good amount of other specified substances before others realized I had been using it.
 617,hsum_oth_sud17,Other,Symptom - SUD (tolerance),radio,hsum_oth_freq,>= 3,symptom_4pt,I used other specified substances a lot more than others before feeling high.
 618,hsum_oth_with01,Other,Symptom - Withdrawal (bodily sensations),radio,hsum_oth_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of other specified substances, I experienced: Goose bumps"
 619,hsum_oth_with02,Other,Symptom - Withdrawal (bodily sensations),radio,hsum_oth_freq,>= 3,symptom_4pt,"As a result of stopping, quitting, or cutting down on my use of other specified substances, I experienced: Heart racing"
