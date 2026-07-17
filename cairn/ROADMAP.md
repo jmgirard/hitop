@@ -8,6 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M22 | Centralize import instructions (Qualtrics QSF+TXT, REDCap ZIP) | planned | — | normal | milestones/M22-centralize-import-instructions.md |
 | M21 | Beautify instrument download pages (manifest badges + collapsible history) | done | — | normal | milestones/archive/M21-beautify-download-pages.md |
 | M20 | Artifact versioning — build-date manifest + checksum lock | done | — | normal | milestones/archive/M20-artifact-versioning.md |
 | M19 | HSUM Qualtrics QSF rebuild (API script + verification test) | done | — | normal | milestones/archive/M19-hsum-qualtrics-qsf.md |
@@ -21,8 +22,6 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Norms & visualization (PID-5 norming functions, scored-profile plots) — awaiting normative data — added 2026-07-16 — `legacy/ROADMAP.md` Phase 3
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
-- M17 follow-ups: import `@details` for `generate_redcap_pid5sf`/`pid5bf`; purge git-tracked `vignettes/.quarto/_freeze/` (stale HiTOP-PRO content) — added 2026-07-16 — `legacy/LOG.md` (2026-07-10 M17 close-out)
+- M17 follow-up: purge git-tracked `vignettes/.quarto/_freeze/` (stale HiTOP-PRO content) — added 2026-07-16 — `legacy/LOG.md` (2026-07-10 M17 close-out); REDCap `@details` item absorbed into M22
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
-- Qualtrics QSF import instructions: the download pages link REDCap import instructions (generate_redcap_*#details) but the Qualtrics cards have none; add importing-a-QSF guidance (HSUM ships the only .qsf today; distinct from the .txt "import questions" flow) — added 2026-07-17 — lineage: M21
-- Centralize import instructions in a vignette covering both Qualtrics (QSF + TXT) and REDCap (ZIP) across all instruments, linked from every download page's cards — supersedes the per-generator #details approach; would absorb the M17-follow-up REDCap @details item and the QSF-instructions candidate above — added 2026-07-17
 - Overview instrument page: a single beautified page with link cards for the three main HiTOP instruments (SR, BR, HSUM) at a glance, embeddable on hitop-system.org/hitop-self-report-measures in place of the three separate embeds — reuses the M21 download-card/badge design — added 2026-07-17 — lineage: M21
