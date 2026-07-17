@@ -3,6 +3,13 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* **Redesigned instrument download pages.** Each download button on the
+  website's instrument pages now shows its file's build date, and the
+  version tables are replaced by a collapsible "Current builds & version
+  history" panel rendered from the `hitop_artifacts` manifest. The
+  manifest's change notes were reworded for a general audience (data
+  unchanged otherwise).
+
 * **Distribution artifacts are now versioned.** The new `hitop_artifacts`
   manifest dataset identifies every prebuilt file in `inst/extdata/` by
   build date and MD5 checksum (one row per build, history kept); the
