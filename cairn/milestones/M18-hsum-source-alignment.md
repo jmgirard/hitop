@@ -24,14 +24,14 @@ Make `hitophsum_items`/`hitophsum_choices` and the HSUM DOCX/REDCap generators f
 <!-- Drafted 2026-07-16 in the legacy tracker; Jeff asked to RE-CONFIRM these
      at planning/implementation start (see Work log). -->
 
-- [ ] SOURCES.md has a HiTOP-HSUM provenance section: source citation (xlsx + sheet name), verification-status table, and a deliberate-divergence log (typo fixes, label normalizations)
-- [ ] `hitophsum_items$Text` matches the sheet's substance-specific wording (typos repaired) — machine-checked against strings hand-transcribed from the sheet, plus count invariants (17 SUD non-nicotine / 13 nicotine / 33 WITH per substance)
-- [ ] Generated REDCap dictionary: `hsum_nic_quant_cgr` is a dropdown with 1–60+ & Prefer-not-to-say choices (currently a dropdown with **empty** choices — invalid import)
-- [ ] No symptom gate is satisfied by frequency = 99 (PNTS): emitted comparison gates carry a `<> 99` guard, asserted via hand-derived branching strings
-- [ ] `hsum_nic_quant_oth` shows only for nicotine forms 2/4/5/6 (currently also fires for cigars-only respondents)
-- [ ] New `other_drug_rule = c("most_frequent", "per_drug")` arg on `generate_redcap_hitophsum()`: default emits argmax branching (only the most-frequently-used other drug ≥ monthly gets symptom items; ties show both, documented); `"per_drug"` reproduces the current loosened per-drug gate — both modes asserted from parsed output
-- [ ] docx overview says "Street opioids" (not "Heroin/opiates") and "Goose bumps"; its SUD matrix matches the corrected wording
-- [ ] `devtools::document()` no-diff beyond intended; `devtools::test()` passes; `devtools::check()` clean
+- [x] SOURCES.md has a HiTOP-HSUM provenance section: source citation (xlsx + sheet name), verification-status table, and a deliberate-divergence log (typo fixes, label normalizations)
+- [x] `hitophsum_items$Text` matches the sheet's substance-specific wording (typos repaired) — machine-checked against strings hand-transcribed from the sheet, plus count invariants (17 SUD non-nicotine / 13 nicotine / 33 WITH per substance)
+- [x] Generated REDCap dictionary: `hsum_nic_quant_cgr` is a dropdown with 1–60+ & Prefer-not-to-say choices (currently a dropdown with **empty** choices — invalid import)
+- [x] No symptom gate is satisfied by frequency = 99 (PNTS): emitted comparison gates carry a `<> 99` guard, asserted via hand-derived branching strings
+- [x] `hsum_nic_quant_oth` shows only for nicotine forms 2/4/5/6 (currently also fires for cigars-only respondents)
+- [x] New `other_drug_rule = c("most_frequent", "per_drug")` arg on `generate_redcap_hitophsum()`: default emits argmax branching (only the most-frequently-used other drug ≥ monthly gets symptom items; ties show both, documented); `"per_drug"` reproduces the current loosened per-drug gate — both modes asserted from parsed output
+- [x] docx overview says "Street opioids" (not "Heroin/opiates") and "Goose bumps"; its SUD matrix matches the corrected wording
+- [x] `devtools::document()` no-diff beyond intended; `devtools::test()` passes; `devtools::check()` clean
 - [ ] PR merged **with Jeff's explicit sign-off** (keying content: `hitophsum_items`/`hitophsum_choices` change)
 
 ## Coverage
@@ -79,3 +79,19 @@ Source: "revised SUD module-August 2024" sheet of `SUD module final analyses Jul
 ## Decisions
 
 ## Review
+
+### Acceptance-criteria evidence (2026-07-16, fresh by command)
+
+- AC1 ✅ cairn/SOURCES.md "HiTOP-HSUM provenance" section read: citation + canonical URL + sha256 prefix, 7-row verification table, 10-entry divergence log (4 typo repairs, 6 normalizations/adaptations).
+- AC2 ✅ test-keying-hitophsum.R (643 assertions: text hand-transcribed per sheet row, count invariants 17/13/33) green in review-run `devtools::test()` (1283 pass / 0 fail).
+- AC3 ✅ direct probe of freshly generated dictionary: `hsum_nic_quant_cgr` = dropdown, choices `1, 1 | … | 60, 60+ | 99, Prefer not to say`; also asserted in test-generate_redcap.R.
+- AC4 ✅ probe: `[hsum_alc_freq] >= 3 and [hsum_alc_freq] <> '99'`; suite includes a global sweep asserting no comparison gate lacks its `<> '99'` guard.
+- AC5 ✅ probe: `hsum_nic_quant_oth` gate = `([hsum_nic_form(2)] = '1' OR [hsum_nic_form(4)] = '1' OR [hsum_nic_form(5)] = '1' OR [hsum_nic_form(6)] = '1')` — cigars (3) excluded.
+- AC6 ✅ both modes asserted from parsed ZIP output (argmax string for can/oth items under default; `>= 3 and <> '99'` under per_drug; match.arg rejection); probe confirmed emitted argmax term.
+- AC7 ✅ test-generate_docx.R: "Street opioids (…)" present / "Heroin/opiates" absent; "Goose bumps" present / "Goosebumps" absent; other-drug SUD01 typo repair present.
+- AC8 ✅ review-run `document()` no diff; `devtools::test()` 1283/0; `devtools::check()` 0 errors / 0 warnings / 0 notes (this session, after the last package-content change; only cairn/ tracking files changed since).
+- AC9 ⏳ pending merge-approval gate below.
+
+### Consistency gate (2026-07-16)
+
+cairn_validate: all checks pass. One FAIL surfaced and repaired review-side: "principles slot valid" — DESIGN.md wrote principles as `- **IP1 — Title.**` while the validator's canonical form is `- IP1: …`; M18 is the first milestone to cite a principle, so the latent format mismatch (from the D-013 design-interview commit) first fired here. Punctuation-only reformat of the 8 bullets; no principle content changed (cairn_impact not triggered). Advisory warnings (legacy D-001–D-012/M13/M14 dangling tokens in DESIGN/SOURCES; M18 9-AC sizing) are known migration artifacts / accepted plan shape. Toolchain slot: document() no-diff ✅; README.md newer than README.Rmd ✅; pkgdown::check_pkgdown() no problems ✅; NEWS 0.2.0 entry ✅; check() clean 0/0/0 ✅; no new top-level files.
