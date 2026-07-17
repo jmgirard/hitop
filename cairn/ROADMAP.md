@@ -1,14 +1,14 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-16_
+_Last hygiene check: 2026-07-17_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M22)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M21 | Beautify instrument download pages (manifest badges + collapsible history) | review | — | normal | milestones/M21-beautify-download-pages.md |
+| M21 | Beautify instrument download pages (manifest badges + collapsible history) | done | — | normal | milestones/archive/M21-beautify-download-pages.md |
 | M20 | Artifact versioning — build-date manifest + checksum lock | done | — | normal | milestones/archive/M20-artifact-versioning.md |
 | M19 | HSUM Qualtrics QSF rebuild (API script + verification test) | done | — | normal | milestones/archive/M19-hsum-qualtrics-qsf.md |
 | M18 | HiTOP-HSUM source alignment (revised SUD module, Aug 2024) | done | — | normal | milestones/archive/M18-hsum-source-alignment.md |
