@@ -34,3 +34,25 @@ test_that("overview page links exactly the three main HiTOP instruments", {
     )
   }
 })
+
+test_that("overview describes HiTOP-BR scales at their true hierarchy levels", {
+  # Source-checkout only: vignettes/articles is not installed.
+  articles <- testthat::test_path("..", "..", "vignettes", "articles")
+  skip_if(!dir.exists(articles), "vignettes/articles not available")
+
+  lines <- readLines(file.path(articles, "overview.Rmd"), warn = FALSE)
+  br_start <- grep("HiTOP Brief Report \\(BR\\)", lines)
+  expect_length(br_start, 1)
+  br_block <- paste(lines[br_start:(br_start + 8)], collapse = " ")
+
+  # The eight HiTOP-BR scales span three hierarchy levels: six spectra, the
+  # Externalizing superspectrum, and the general p-factor. The card must not
+  # equate all eight with spectra (the bug this test locks against).
+  expect_false(
+    grepl("eight[^.]*spectra", br_block, ignore.case = TRUE),
+    info = "HiTOP-BR card must not call all 8 scales spectra"
+  )
+  # It must name the higher-order levels it actually covers.
+  expect_match(br_block, "superspectrum", ignore.case = TRUE)
+  expect_match(br_block, "p-factor", ignore.case = TRUE)
+})

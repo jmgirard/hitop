@@ -6,7 +6,10 @@ before a CRAN submission.
 * **New instrument overview page.** A single "HiTOP Instruments" page presents
   the three self-report measures — HiTOP-SR, HiTOP-BR, and HiTOP-HSUM — as
   at-a-glance summary cards, each linking to its full download page. It is the
-  first entry in the website's "Instruments" menu.
+  first entry in the website's "Instruments" menu. Its HiTOP-BR card now
+  describes the eight scales at their true hierarchy levels — six spectra plus
+  the Externalizing superspectrum and a general p-factor — rather than calling
+  all eight "spectra".
 
 * **Redesigned instrument download pages.** Each download button on the
   website's instrument pages now shows its file's build date, and the
