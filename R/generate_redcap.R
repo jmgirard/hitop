@@ -349,6 +349,16 @@ build_redcap_zip <- function(
 #'   Defaults to `"hitophsum_questionnaire"`.
 #' @param required Logical. Whether the items should be marked as required.
 #'   Defaults to `TRUE`.
+#' @param other_drug_rule Character string. How symptom items are gated for
+#'   the "other drug" substances (every substance except alcohol and
+#'   nicotine). The default, `"most_frequent"`, follows the source module's
+#'   looping rule: symptom items are shown only for the most frequently used
+#'   other drug that is used at least monthly (drugs whose frequency is
+#'   "Prefer not to say" are ignored; when two or more drugs tie for the
+#'   highest frequency, the symptom items are shown for each of them).
+#'   `"per_drug"` loosens the gate so that every other drug used at least
+#'   monthly gets its own symptom items, regardless of relative frequency.
+#'   Alcohol and nicotine symptom gating is unaffected by this argument.
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
@@ -360,19 +370,12 @@ build_redcap_zip <- function(
 generate_redcap_hitophsum <- function(
   file = "hitophsum_redcap.zip",
   form_name = "hitophsum_questionnaire",
-  required = TRUE
+  required = TRUE,
+  other_drug_rule = c("most_frequent", "per_drug")
 ) {
-  # 1. Pre-compile the long dynamic programmatic choice sets
-  choices_1_to_20 <- paste(
-    c(paste(1:19, 1:19, sep = ", "), "20, 20+", "99, Prefer not to say"),
-    collapse = " | "
-  )
-  choices_1_to_60 <- paste(
-    c(paste(1:59, 1:59, sep = ", "), "60, 60+", "99, Prefer not to say"),
-    collapse = " | "
-  )
+  other_drug_rule <- match.arg(other_drug_rule)
 
-  # 2. Format regular choices strings using split and vapply
+  # 1. Format choices strings using split and vapply
   choice_pairs <- paste(
     hitophsum_choices$Value,
     hitophsum_choices$Label,
@@ -385,7 +388,7 @@ generate_redcap_hitophsum <- function(
     character(1)
   )
 
-  # 3. Map parent field attributes using named vectors
+  # 2. Map parent field attributes using named vectors
   unique_items <- hitophsum_items[!duplicated(hitophsum_items$Variable), ]
 
   resolved_types <- tolower(unique_items$Field_Type)
@@ -394,7 +397,7 @@ generate_redcap_hitophsum <- function(
   parent_types <- setNames(resolved_types, unique_items$Variable)
   parent_charsets <- setNames(unique_items$Choice_Set, unique_items$Variable)
 
-  # 4. Parse Vectorized Branching Logic
+  # 3. Parse Vectorized Branching Logic
   branching_logic <- mapply(
     function(gate_var, gate_val) {
       if (
@@ -430,30 +433,7 @@ generate_redcap_hitophsum <- function(
         }
       }
 
-      # Rule Type B: Custom "any_other" rule (any selection except option 1 / cigarettes)
-      if (gate_val == "any_other") {
-        p_values <- hitophsum_choices$Value[
-          hitophsum_choices$Choice_Set == p_charset
-        ]
-        # Exclude option 1 (baseline/primary), 0 (none), and 99 (prefer not to say)
-        matched_vals <- p_values[
-          !is.na(p_values) & !(p_values %in% c(0, 1, 99))
-        ]
-
-        if (length(matched_vals) == 0) {
-          return(NA_character_)
-        }
-
-        if (p_type == "checkbox") {
-          conds <- paste0("[", gate_var, "(", matched_vals, ")] = '1'")
-          return(paste0("(", paste(conds, collapse = " OR "), ")"))
-        } else {
-          conds <- paste0("[", gate_var, "] = '", matched_vals, "'")
-          return(paste0("(", paste(conds, collapse = " OR "), ")"))
-        }
-      }
-
-      # Rule Type C: Handle comparison operators (e.g., >=4, !=1, >1)
+      # Rule Type B: Handle comparison operators (e.g., >=4, !=1, >1)
       if (grepl("^(>=|<=|>|<|!=)", gate_val)) {
         operator <- regmatches(gate_val, regexec("^(>=|<=|>|<|!=)", gate_val))[[
           1
@@ -491,14 +471,23 @@ generate_redcap_hitophsum <- function(
           return(paste0("(", paste(conds, collapse = " OR "), ")"))
         } else {
           if (!is.na(num_threshold)) {
-            return(paste0("[", gate_var, "] ", operator, " ", val_part))
+            base <- paste0("[", gate_var, "] ", operator, " ", val_part)
+            # A "Prefer not to say" value (99) satisfies any usable
+            # threshold numerically, so guard it out of comparison gates.
+            p_values <- hitophsum_choices$Value[
+              hitophsum_choices$Choice_Set == p_charset
+            ]
+            if (any(p_values == 99, na.rm = TRUE)) {
+              base <- paste0(base, " and [", gate_var, "] <> '99'")
+            }
+            return(base)
           } else {
             return(paste0("[", gate_var, "] ", operator, " '", val_part, "'"))
           }
         }
       }
 
-      # Rule Type D: Handle discrete options (e.g., 2,4,5)
+      # Rule Type C: Handle discrete options (e.g., 2,4,5)
       vals <- trimws(strsplit(gate_val, "[,|]")[[1]])
       vals <- vals[vals != ""]
 
@@ -519,40 +508,43 @@ generate_redcap_hitophsum <- function(
     USE.NAMES = FALSE
   )
 
+  # 4. Apply the other-drug looping rule: under "most_frequent", a symptom
+  # item for an other drug (any substance but alcohol/nicotine) is shown only
+  # if no competing other drug has a strictly higher usable frequency (99 =
+  # Prefer not to say never competes; ties show every tied drug).
+  is_symptom <- grepl("^Symptom", hitophsum_items$Tier)
+  is_other_drug <- !hitophsum_items$Substance %in% c("Alcohol", "Nicotine")
+  if (other_drug_rule == "most_frequent") {
+    other_freq_vars <- unique(
+      hitophsum_items$Gate_Variable[is_symptom & is_other_drug]
+    )
+    for (i in which(is_symptom & is_other_drug)) {
+      self <- hitophsum_items$Gate_Variable[i]
+      competitors <- setdiff(other_freq_vars, self)
+      outranked <- paste0(
+        "if([", competitors, "] <> '99' and [", competitors, "] > [",
+        self, "],1,0)"
+      )
+      branching_logic[i] <- paste0(
+        branching_logic[i],
+        " and (", paste(outranked, collapse = " + "), ") = 0"
+      )
+    }
+  }
+
   # 5. Build Final Choice Strings and Field Types
   choices_string_vec <- unname(choices_vector[hitophsum_items$Choice_Set])
   final_field_types <- unname(parent_types[hitophsum_items$Variable])
+  choices_string_vec[final_field_types == "text"] <- NA_character_
 
-  is_alc_quantity <- grepl(
-    "alc.*quant|quant.*alc",
-    hitophsum_items$Variable,
-    ignore.case = TRUE
-  )
-  is_cig_quantity <- grepl(
-    "(cig|cigar).*quant|quant.*(cig|cigar)",
-    hitophsum_items$Variable,
-    ignore.case = TRUE
-  )
-  is_other_quantity <- grepl(
-    "_oth$|_other$",
-    hitophsum_items$Variable,
-    ignore.case = TRUE
-  ) &
-    grepl("quant", hitophsum_items$Variable, ignore.case = TRUE)
-
-  for (i in seq_len(nrow(hitophsum_items))) {
-    if (is_alc_quantity[i]) {
-      final_field_types[i] <- "dropdown"
-      choices_string_vec[i] <- choices_1_to_20
-    } else if (is_cig_quantity[i]) {
-      final_field_types[i] <- "dropdown"
-      choices_string_vec[i] <- choices_1_to_60
-    } else if (is_other_quantity[i]) {
-      final_field_types[i] <- "text"
-      choices_string_vec[i] <- NA_character_
-    } else if (final_field_types[i] == "text") {
-      choices_string_vec[i] <- NA_character_
-    }
+  # Every choice-bearing field must resolve a choice set; an unresolved one
+  # would import into REDCap as an invalid field.
+  missing_choices <- final_field_types %in% c("radio", "dropdown", "checkbox") &
+    is.na(choices_string_vec)
+  if (any(missing_choices)) {
+    cli::cli_abort(
+      "No choices found for field{?s} {.val {hitophsum_items$Variable[missing_choices]}}."
+    )
   }
 
   # 6. Build the complete Data Dictionary data frame for items

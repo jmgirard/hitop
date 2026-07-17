@@ -28,8 +28,8 @@ freq_intox,7,5-6 days per week
 freq_intox,8,everyday
 freq_intox,99,Prefer not to say
 freq_heavy,0,Never drank this many drinks on a single occasion
-freq_heavy,1,1-5  times total
-freq_heavy,2,6-11 times total
+freq_heavy,1,1-5 times
+freq_heavy,2,6-11 times
 freq_heavy,3,about once a month
 freq_heavy,4,2-3 times per month
 freq_heavy,5,1-2 times per week
@@ -41,3 +41,146 @@ symptom_4pt,0,not at all
 symptom_4pt,1,a little
 symptom_4pt,2,moderately
 symptom_4pt,3,a lot
+quant_alcohol,1,1
+quant_alcohol,2,2
+quant_alcohol,3,3
+quant_alcohol,4,4
+quant_alcohol,5,5
+quant_alcohol,6,6
+quant_alcohol,7,7
+quant_alcohol,8,8
+quant_alcohol,9,9
+quant_alcohol,10,10
+quant_alcohol,11,11
+quant_alcohol,12,12
+quant_alcohol,13,13
+quant_alcohol,14,14
+quant_alcohol,15,15
+quant_alcohol,16,16
+quant_alcohol,17,17
+quant_alcohol,18,18
+quant_alcohol,19,19
+quant_alcohol,20,20+
+quant_alcohol,99,Prefer not to say
+quant_nic_cig,1,1
+quant_nic_cig,2,2
+quant_nic_cig,3,3
+quant_nic_cig,4,4
+quant_nic_cig,5,5
+quant_nic_cig,6,6
+quant_nic_cig,7,7
+quant_nic_cig,8,8
+quant_nic_cig,9,9
+quant_nic_cig,10,10
+quant_nic_cig,11,11
+quant_nic_cig,12,12
+quant_nic_cig,13,13
+quant_nic_cig,14,14
+quant_nic_cig,15,15
+quant_nic_cig,16,16
+quant_nic_cig,17,17
+quant_nic_cig,18,18
+quant_nic_cig,19,19
+quant_nic_cig,20,20
+quant_nic_cig,21,21
+quant_nic_cig,22,22
+quant_nic_cig,23,23
+quant_nic_cig,24,24
+quant_nic_cig,25,25
+quant_nic_cig,26,26
+quant_nic_cig,27,27
+quant_nic_cig,28,28
+quant_nic_cig,29,29
+quant_nic_cig,30,30
+quant_nic_cig,31,31
+quant_nic_cig,32,32
+quant_nic_cig,33,33
+quant_nic_cig,34,34
+quant_nic_cig,35,35
+quant_nic_cig,36,36
+quant_nic_cig,37,37
+quant_nic_cig,38,38
+quant_nic_cig,39,39
+quant_nic_cig,40,40
+quant_nic_cig,41,41
+quant_nic_cig,42,42
+quant_nic_cig,43,43
+quant_nic_cig,44,44
+quant_nic_cig,45,45
+quant_nic_cig,46,46
+quant_nic_cig,47,47
+quant_nic_cig,48,48
+quant_nic_cig,49,49
+quant_nic_cig,50,50
+quant_nic_cig,51,51
+quant_nic_cig,52,52
+quant_nic_cig,53,53
+quant_nic_cig,54,54
+quant_nic_cig,55,55
+quant_nic_cig,56,56
+quant_nic_cig,57,57
+quant_nic_cig,58,58
+quant_nic_cig,59,59
+quant_nic_cig,60,60+
+quant_nic_cig,99,Prefer not to say
+quant_nic_cgr,1,1
+quant_nic_cgr,2,2
+quant_nic_cgr,3,3
+quant_nic_cgr,4,4
+quant_nic_cgr,5,5
+quant_nic_cgr,6,6
+quant_nic_cgr,7,7
+quant_nic_cgr,8,8
+quant_nic_cgr,9,9
+quant_nic_cgr,10,10
+quant_nic_cgr,11,11
+quant_nic_cgr,12,12
+quant_nic_cgr,13,13
+quant_nic_cgr,14,14
+quant_nic_cgr,15,15
+quant_nic_cgr,16,16
+quant_nic_cgr,17,17
+quant_nic_cgr,18,18
+quant_nic_cgr,19,19
+quant_nic_cgr,20,20
+quant_nic_cgr,21,21
+quant_nic_cgr,22,22
+quant_nic_cgr,23,23
+quant_nic_cgr,24,24
+quant_nic_cgr,25,25
+quant_nic_cgr,26,26
+quant_nic_cgr,27,27
+quant_nic_cgr,28,28
+quant_nic_cgr,29,29
+quant_nic_cgr,30,30
+quant_nic_cgr,31,31
+quant_nic_cgr,32,32
+quant_nic_cgr,33,33
+quant_nic_cgr,34,34
+quant_nic_cgr,35,35
+quant_nic_cgr,36,36
+quant_nic_cgr,37,37
+quant_nic_cgr,38,38
+quant_nic_cgr,39,39
+quant_nic_cgr,40,40
+quant_nic_cgr,41,41
+quant_nic_cgr,42,42
+quant_nic_cgr,43,43
+quant_nic_cgr,44,44
+quant_nic_cgr,45,45
+quant_nic_cgr,46,46
+quant_nic_cgr,47,47
+quant_nic_cgr,48,48
+quant_nic_cgr,49,49
+quant_nic_cgr,50,50
+quant_nic_cgr,51,51
+quant_nic_cgr,52,52
+quant_nic_cgr,53,53
+quant_nic_cgr,54,54
+quant_nic_cgr,55,55
+quant_nic_cgr,56,56
+quant_nic_cgr,57,57
+quant_nic_cgr,58,58
+quant_nic_cgr,59,59
+quant_nic_cgr,60,60+
+quant_nic_cgr,99,Prefer not to say

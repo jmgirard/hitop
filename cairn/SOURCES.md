@@ -148,6 +148,75 @@ punctuation-only divergence from the source, which is treated as containing
 typographical oversights. Wording is otherwise verbatim; no keying content
 (item numbers, scale membership, reverse-keying) was touched.
 
+## HiTOP-HSUM provenance (2026-07-16)
+
+**Authoritative source (D-014):** the **"revised SUD module-August 2024"**
+sheet of the HiTOP Society workbook *SUD module final analyses July 2024.xlsx*
+("HiTOP-HSUM (Harmful Substance Use) Development Worksheet", Legacy
+Development Files, <https://www.hitop-system.org/hitop-self-report-measures>).
+Canonical URL:
+<https://cdn.prod.website-files.com/642ea2c3f8ce14e5b11a29f5/674e71cb688eb6c970f82b96_SUD%20module%20final%20analyses%20July%202024.xlsx>
+(sha256 prefix `e3c4ae59667c0677`; local copy in `cairn/references/pdf/`,
+gitignored). The sheet's columns G/H/I carry the alcohol / nicotine /
+other-drugs versions of each prompt; the workbook's "revised SUD module-old"
+sheet is superseded. Confirmed as the source to build from by Jeff,
+2026-07-16. Machine-checked in `tests/testthat/test-keying-hitophsum.R`
+(sheet rows cited per test block) and, for generator output, in the HSUM
+blocks of `test-generate_redcap.R` / `test-generate_docx.R`.
+
+### Verification summary
+
+| Content | Sheet rows | Status |
+|---|---|---|
+| Screening item text (12 substances + nicotine forms) | 9–42 | ✅ Machine-checked |
+| Consumption item text (freq/intox/quantity/heavy) | 47–95 | ✅ Machine-checked |
+| SUD item text — alcohol (17), nicotine (13), other-drug template (×10) | 112–128 | ✅ Machine-checked |
+| Withdrawal stem + 33 symptoms (×12 substances) | 131–178 | ✅ Machine-checked |
+| Choice-set values/labels (freq, intox, heavy, symptom, quantity) | 54–95, 108 | ✅ Machine-checked |
+| Looping/gating rules (nicotine forms, quantity gates, symptom thresholds, most-frequent other drug) | 24, 34, 79, 82, 101–105 | ✅ Machine-checked |
+| `hitophsum_qualtrics.qsf` (inst/extdata) | — | ⚠️ Hand-built in Qualtrics **before** this alignment; stale until rebuilt |
+
+### Deliberate divergences from the sheet
+
+Sheet typos repaired in package text (the sheet is treated as containing
+typographical oversights; wording otherwise verbatim):
+
+1. Row 53 (alcohol frequency): "How often did you **use drink** alcohol…" →
+   "How often did you drink alcohol…".
+2. Row 112 (other-drugs SUD01): ends "…gave me a strong urge **to drink**."
+   (alcohol carryover) → "…a strong urge to use [substance]."
+3. Row 118 (other-drugs SUD07): placeholder misspelled "[pipe **sunstacne**
+   here]" → normal substance pipe.
+4. Row 18: "Librium**,**Rohypnol" → "Librium, Rohypnol".
+
+Label/format normalizations and rendering adaptations:
+
+5. "Prefer not to answer" (rows 62/74/95) rendered **"Prefer not to say"**
+   uniformly across all choice sets (the sheet itself says "prefer not to
+   say" at row 10).
+6. "Other **–** specify:" (en dash, rows 22/32/42) rendered with a hyphen;
+   the screening "Other" row splits into a yes/no item plus a follow-up
+   text item ("Please specify the other substance:") for REDCap.
+7. Trailing whitespace trimmed; substance names piped mid-sentence in
+   lowercase; frequency questions include each substance's screening
+   parenthetical (e.g., "cannabis (marijuana, pot, grass, hash, etc.)").
+8. Withdrawal stem joined to each symptom with ": " where the sheet uses an
+   ellipsis (rows 131/137).
+9. Intoxication-frequency anchor merged across columns: sheet's "didn't get
+   drunk or intoxicated with alcohol…" / "didn't get high or intoxicated
+   with this substance…" (rows 65) → one shared "didn't get drunk or
+   intoxicated/high with this substance over the past 12 months".
+10. Row 80 describes the cigar-quantity dropdown as "1 to 60+ **cigarettes**"
+    (copy of the cigarette row); the package labels the values 1–59, "60+"
+    with no unit noun.
+
+Gating renderings: "at least monthly" → `>= 3`, "at least 1-2 times per
+week" → `>= 5` on the `freq_12m` values; "Prefer not to say" (99) never
+satisfies a threshold gate (`<> '99'` guard); the sheet's "** can be
+loosened according to site needs **" (row 105) is exposed as
+`generate_redcap_hitophsum(other_drug_rule = "per_drug")`, with the sheet's
+most-frequent-other-drug rule as the default (ties show every tied drug).
+
 ## Open questions (need source adjudication)
 
 Both are encoded as `skip()`-ed tests in `test-keying.R` so the suite stays green

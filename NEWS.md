@@ -3,6 +3,25 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* **HiTOP-HSUM aligned to its authoritative source** (the HiTOP Society's
+  "revised SUD module-August 2024" development worksheet):
+  `hitophsum_items` item text now matches the worksheet's substance-specific
+  wording (alcohol items use drink-specific phrasing; nicotine and other-drug
+  items corrected; obvious worksheet typos repaired and logged), the
+  free-text nicotine quantity item now shows only for non-cigarette,
+  non-cigar forms, and `hitophsum_choices` gains the alcohol/cigarette/cigar
+  quantity choice sets. In the REDCap export, the cigar quantity item is now
+  a valid dropdown (it previously imported with an empty choice list), and
+  "Prefer not to say" frequency responses no longer satisfy any symptom
+  gate. **New `other_drug_rule` argument** on `generate_redcap_hitophsum()`:
+  the default (`"most_frequent"`) follows the worksheet's looping rule —
+  symptom items appear only for the most frequently used other drug used at
+  least monthly (ties show all tied drugs) — while `"per_drug"` reproduces
+  the previous looser behavior of gating every other drug independently.
+  The overview DOCX now says "Street opioids" (previously "Heroin/opiates")
+  and "Goose bumps", and its item matrix matches the corrected wording; the
+  prebuilt DOCX and REDCap files were regenerated
+
 * **New `reliability_pid5()`, `reliability_hitopsr()`, and `reliability_hitopbr()`
   functions** return a per-scale tibble (`scale`, `nItems`, `alpha`, `omega`).
   These replace the `alpha` and `omega` arguments of `score_pid5()`,
