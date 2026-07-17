@@ -20,6 +20,9 @@ navbar:
     downloads:
       text: "Instruments"
       menu:
+      - text: "All HiTOP Instruments"
+        href: articles/overview.html
+      - text: "---"
       - text: "HiTOP Self Report (SR)"
         href: articles/download-hitopsr.html
       - text: "HiTOP Brief Report (BR)"

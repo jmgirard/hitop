@@ -3,7 +3,7 @@
      Per-section owners are tagged below. -->
 # M23: Overview instrument page (SR/BR/HSUM link cards)
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
@@ -85,7 +85,7 @@ by URL and discoverable atop the Instruments navbar menu.
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive
      change is amend-via-gate -->
 
-- [ ] **T1** Author `vignettes/articles/overview.Rmd`: front matter
+- [x] **T1** Author `vignettes/articles/overview.Rmd`: front matter
       (`toc: false`), a short intro sentence, and a three-card row for SR/BR/HSUM.
       Emit the cards through the shared `.hitop-*` card styling (either a small
       `instrument_cards()` helper in `vignettes/articles/_download-helpers.R` or a
@@ -93,13 +93,13 @@ by URL and discoverable atop the Instruments navbar menu.
       Features" blocks in `download-hitopsr.Rmd:51`), wrapped so the
       `.hitop-downloads` full-width layout and theme apply. Reuse the item/scale
       summary numbers verbatim from each `download-*.Rmd` intro.
-- [ ] **T2** Add overview as the first entry in the "Instruments" navbar menu in
+- [x] **T2** Add overview as the first entry in the "Instruments" navbar menu in
       `_pkgdown.yml` (above the six per-instrument entries).
-- [ ] **T3** Add a test (new `test-overview.R` or a block in
+- [x] **T3** Add a test (new `test-overview.R` or a block in
       `tests/testthat/test-artifacts.R`) locking: `overview.Rmd` exists, links the
       three main-instrument download pages, and covers exactly those three.
-- [ ] **T4** Add a NEWS.md entry for the overview page.
-- [ ] **T5** Build the site (`build_articles()` / `init_site()`), verify the page
+- [x] **T4** Add a NEWS.md entry for the overview page.
+- [x] **T5** Build the site (`build_articles()` / `init_site()`), verify the page
       renders with three cards + correct links in light and dark, confirm the
       navbar entry resolves, and run the consistency gate
       (`check_pkgdown()`, `check()`, `test()`, `cairn_validate`).
@@ -111,6 +111,10 @@ by URL and discoverable atop the Instruments navbar menu.
   candidate, lineage M21).
 - 2026-07-17: in-progress on m23-overview-instrument-page; cards emitted as a
   static `{=html}` row (no new helper), reusing `.hitop-downloads` + card classes.
+- 2026-07-17: T1–T5 done — overview.Rmd (3 SR/BR/HSUM link-cards), navbar first
+  entry, test-overview.R (5 pass), NEWS entry. Verified rendered light+dark,
+  3-across desktop layout, navbar order; `check_pkgdown()` clean, `test()`
+  0 fail / 9663 pass / 1 skip. Status → review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
