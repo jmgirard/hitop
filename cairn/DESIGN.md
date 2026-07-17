@@ -13,6 +13,16 @@ The {hitop} package serves the HiTOP (Hierarchical Taxonomy of Psychopathology) 
 
 Goals 1 and 2 are substantially implemented for four instrument families: **PID-5** (FULL 220 / SF 100 / BF 25 items), **HiTOP-SR** (405 items), **HiTOP-BR** (45 items), and **HiTOP-HSUM** (650 items; data + export only — scoring awaits Society feedback). Goal 3 is future work (ROADMAP Phases 3–4).
 
+### Audience, boundary & governance
+
+<!-- Elicited in the 2026-07-16 design interview (Phase 1). -->
+
+- **Primary audience: applied researchers.** When needs conflict, the researcher processing response data wins — the API (tibble outputs, actionable {cli} messages, missing-data rules) is designed for correct use on a research dataset. The Society (registry role) and clinicians (future reports) are served secondarily.
+- **The job ends at reports, never judgment.** The package will eventually render norms, T-scores, profile plots, and individual reports (goal 3), but never diagnostic interpretation or clinical recommendations — a report presents scores against norms; the clinician judges.
+- **Governance:** the package is Jeff Girard's, built in active coordination with the HiTOP Society. The Society is the *content oracle* for Society-authored instruments (HiTOP-SR/BR/HSUM) — item text, keys, instructions, and scoring rules must match what it sanctions, just as the APA key governs PID-5 content. API design, dependencies, and release decisions remain the maintainer's.
+- **Distribution ambition:** CRAN submission plus a package paper. Pre-CRAN, the API may break freely with NEWS documentation and a version bump (D-012 precedent); deprecation cycles begin at CRAN acceptance. Committed platforms: the CRAN check farm (Win/mac/Linux, release + devel). The `R >= 4.1` floor is deliberate policy (old lab/university machines run old R) — raising it is a real decision, not housekeeping.
+- **Entry bar for new capability:** registry/export support may ship for a Society instrument as soon as item data exists, but *scoring* ships only against an authoritative published or Society-sanctioned key (the HSUM split: data + exports shipped, scoring withheld). The same bar extends to norms: norming functions ship only against published, citable normative tables with [SOURCES.md](SOURCES.md) provenance and oracle tests.
+
 ## Architecture overview
 
 ### Instrument data model
@@ -51,7 +61,7 @@ Scoring functions share `(data, items, [version,] srange, prefix, missing, calc_
 
 ### Internal style
 
-Base-R data manipulation internally (subsetting, `rowMeans`, `cbind`). {tibble} is an Import (tibble output is the default); {lavaan} stays in Suggests and is checked with `rlang::is_installed()` before `calc_omega()` runs. Document/generator work uses {officer}/{flextable}.
+Base-R data manipulation internally (subsetting, `rowMeans`, `cbind`). {tibble} is an Import (tibble output is the default); {lavaan} stays in Suggests and is checked with `rlang::is_installed()` before `calc_omega()` runs. Document/generator work uses {officer}/{flextable}. Dependency posture: a whole function *family* can earn new Imports (as the generators did for {officer}/{flextable}/{snakecase}); a per-function need uses Suggests + `rlang::is_installed()` (the {lavaan}/`calc_omega()` pattern).
 
 ### Testing & oracle strategy
 
@@ -61,6 +71,24 @@ Scoring correctness is the package's core promise, so tests must verify against 
 
 `data-raw/` scripts (CSV → `usethis::use_data()`) regenerate everything in `data/` and `R/sysdata.rda` (`internal = TRUE`); never edit `.rda` files directly. Keying content changes require maintainer sign-off; sources in [SOURCES.md](SOURCES.md).
 
+## Design principles
+
+<!-- Interview in progress (2026-07-16): Phase 1 banked these candidates; Phase 2
+     will formalize them into IP/GP blocks (IP block first, then GPs; numbers never
+     reused) and replace this ledger. -->
+
+Banked candidates from the 2026-07-16 design interview (Phase 1 — not yet adopted):
+
+- **B1 — researcher-first ergonomics:** in API conflicts, the applied researcher wins.
+- **B2 — scores, never judgment:** norms/reports yes; diagnostic interpretation or clinical recommendations never.
+- **B3 — CRAN-grade discipline:** check-cleanliness and (at acceptance) API-freeze discipline are real gates.
+- **B4 — Society as content oracle:** Society-authored instrument content matches what the Society sanctions, as APA's key governs PID-5.
+- **B5 — no scoring without a key:** registry/exports may ship on item data alone; scoring waits for an authoritative key (the HSUM split).
+- **B6 — break freely with NEWS pre-CRAN:** deprecation cycles begin at CRAN acceptance, not before.
+- **B7 — families earn Imports:** whole function families justify Imports; per-function needs use Suggests + `is_installed()`; base-R internals stand (D-002).
+- **B8 — published-norms-only:** the key bar extends to norms — citable normative tables with SOURCES.md provenance and oracle tests.
+- **B9 — deliberate 4.1 floor:** CRAN farm is the committed matrix; the `R >= 4.1` floor is policy, and raising it is a decision.
+
 ## Known issues & tech debt
 
 <!-- Numbered list; remove items when fixed (note the fix in LOG.md and the milestone). -->
@@ -69,6 +97,9 @@ Scoring correctness is the package's core promise, so tests must verify against 
 2. **SF validity cutoffs unavailable** — ORS-S/PRD-S/SDTD-S have no validated cut scores; `validity_pid5(version = "SF")` warns at runtime. Literature watch; no milestone yet.
 3. **Published-metric assumptions vs `srange`** — the PID-5 PRD/SDTD validity cutoffs (raw sums vs 10/11/19) assume 0–3 item coding and, unlike INC/ORS, do not adapt to `srange`. `validity_pid5()` now **warns** when `srange != c(0, 3)` (M11), so the silent case is closed; auto-adjusting the cutoffs for shifted codings (cutoff + k×low) remains deferred — it changes validity-scale semantics and needs maintainer sign-off.
 4. **`_se`-where-`NA` masking is inconsistent across instruments** — `score_pid5()` sets a standard error to `NA` wherever its scale score is `NA`; `score_hitopsr()`/`score_hitopbr()` do not (they report a `calc_sem` value even where `na.rm = FALSE` made the score `NA`). M13's engine consolidation preserved this pre-existing difference via a `mask_se_na` flag (D-011) rather than silently unifying it — unifying would change HiTOP-SR/BR SE output under `na.rm = FALSE` and needs maintainer sign-off.
+5. **Qualtrics import formats are reverse-engineered** — the .txt/.qsf files emitted by `generate_qualtrics_*` target undocumented import behavior; Qualtrics could change it without notice and no test would catch the break (tests verify our output's content, not Qualtrics's acceptance of it). `devel/qualtrics_test.R` holds API experiments toward a stronger check. (Maintainer-confirmed, 2026-07-16 interview.)
+6. **DOCX output is upstream-version-sensitive** — `generate_docx_*` layout depends on {officer}/{flextable} internals; an upstream release could shift emitted XML/layout in ways the parse-back tests don't assert (visual pagination, table widths), so shipped paper forms could drift. (Maintainer-confirmed, 2026-07-16 interview.)
+7. **HSUM registry copy may lag the Society's current instrument, and its 650-item tables press CRAN data-size budgets** — the revised Aug-2024 SUD module is tracked (M18); the data-size question is unresolved. (Maintainer-confirmed, 2026-07-16 interview.)
 
 ## Decision Log
 
