@@ -3,11 +3,11 @@
      project/MILESTONES.md draft (entombed at cairn/legacy/MILESTONES.md). -->
 # M18: HiTOP-HSUM source alignment (revised SUD module, August 2024)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1
-- **Branch/PR:** `m18-hsum-source-alignment`
+- **Branch/PR:** `m18-hsum-source-alignment` · https://github.com/jmgirard/hitop/pull/20
 
 ## Goal
 
@@ -57,7 +57,7 @@ Make `hitophsum_items`/`hitophsum_choices` and the HSUM DOCX/REDCap generators f
 - [x] T7 R/generate_docx.R:451 "Heroin/opiates"→"Street opioids"; :675 "Goosebumps"→"Goose bumps"; sync the hardcoded SUD matrix with the corrected wording
 - [x] T7b (discovered) Regenerate stale prebuilt artifacts inst/extdata/hitophsum_{1.0_US,1.0_A4}.docx + hitophsum_redcap.zip from the corrected generators; hitophsum_qualtrics.qsf is hand-built in Qualtrics and cannot be regenerated from code — flagged to Jeff
 - [x] T8 SOURCES.md HSUM section; NEWS.md bullet; `document()`/`test()`/`check()`
-- [ ] T9 Branch `m18-hsum-source-alignment`, PR, record URL, await sign-off
+- [x] T9 Branch `m18-hsum-source-alignment`, PR, record URL, await sign-off — https://github.com/jmgirard/hitop/pull/20 (merge itself gated on Jeff's sign-off at review, AC9)
 
 ## Notes
 
@@ -74,6 +74,7 @@ Source: "revised SUD module-August 2024" sheet of `SUD module final analyses Jul
 - 2026-07-16: T4+T5+T6 done (one commit — one function refactor): quantity regexes replaced by Choice_Set resolution + a cli_abort guard on unresolved choice sets; PNTS `<> '99'` guard on radio comparison gates; `other_drug_rule` arg with argmax builder (sum-of-if() outrank terms = 0). Removed the now-dead `any_other` rule branch (its data user became a discrete list in T2). Full suite: only the 6 planned T7 docx failures remain.
 - 2026-07-16: T7 done; suite fully green (1283 pass / 0 fail). Minor amendment: added discovered T7b — the download vignette distributes prebuilt inst/extdata artifacts, so the two HSUM DOCX + REDCap ZIP were regenerated from the corrected generators; hitophsum_qualtrics.qsf remains STALE (hand-built in Qualtrics, no code path) — needs Jeff's decision (regenerate in Qualtrics or note known-stale).
 - 2026-07-16: T8 done — SOURCES.md HSUM provenance section (canonical URL found on hitop-system.org Legacy Development Files: cdn.prod.website-files.com/642ea2c3f8ce14e5b11a29f5/674e71cb…xlsx, sha256 prefix e3c4ae59667c0677; 4 typo repairs + 6 normalizations/adaptations logged; qsf flagged stale); NEWS 0.2.0 bullet; document() no diff; check() 0 errors / 0 warnings / 0 notes.
+- 2026-07-16: T9 done — branch pushed, PR https://github.com/jmgirard/hitop/pull/20 opened; status → review. All tasks complete; AC9 (merge with Jeff's sign-off) remains for /milestone-review.
 
 ## Decisions
 

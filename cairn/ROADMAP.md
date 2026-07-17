@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M18 | HiTOP-HSUM source alignment (revised SUD module, Aug 2024) | in-progress | — | normal | milestones/M18-hsum-source-alignment.md |
+| M18 | HiTOP-HSUM source alignment (revised SUD module, Aug 2024) | review | — | normal | milestones/M18-hsum-source-alignment.md |
 
 ## Candidates
 
