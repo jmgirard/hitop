@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M18 | HiTOP-HSUM source alignment (revised SUD module, Aug 2024) | review | — | normal | milestones/M18-hsum-source-alignment.md |
+| M18 | HiTOP-HSUM source alignment (revised SUD module, Aug 2024) | done | — | normal | milestones/archive/M18-hsum-source-alignment.md |
 
 ## Candidates
 
@@ -19,3 +19,4 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - M17 follow-ups: import `@details` for `generate_redcap_pid5sf`/`pid5bf`; purge git-tracked `vignettes/.quarto/_freeze/` (stale HiTOP-PRO content) — added 2026-07-16 — `legacy/LOG.md` (2026-07-10 M17 close-out)
+- Rebuild `inst/extdata/hitophsum_qualtrics.qsf` in Qualtrics from the corrected HSUM content (hand-built artifact, stale since the M18 alignment; no code path regenerates it) — added 2026-07-16
