@@ -5,6 +5,12 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+- **New instrument overview page.** A single “HiTOP Instruments” page
+  presents the three self-report measures — HiTOP-SR, HiTOP-BR, and
+  HiTOP-HSUM — as at-a-glance summary cards, each linking to its full
+  download page. It is the first entry in the website’s “Instruments”
+  menu.
+
 - **Redesigned instrument download pages.** Each download button on the
   website’s instrument pages now shows its file’s build date, and the
   version tables are replaced by a collapsible “Current builds & version

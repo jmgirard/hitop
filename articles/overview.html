@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>HiTOP-HSUM Instrument • hitop</title>
+<title>HiTOP Instruments • hitop</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="../favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="../favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
@@ -22,7 +22,7 @@
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
-<meta property="og:title" content="HiTOP-HSUM Instrument">
+<meta property="og:title" content="HiTOP Instruments">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -94,117 +94,67 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="../logo.png" class="logo" alt=""><h1>HiTOP-HSUM Instrument</h1>
+      <img src="../logo.png" class="logo" alt=""><h1>HiTOP Instruments</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/jmgirard/hitop/blob/main/vignettes/articles/download-hitophsum.Rmd" class="external-link"><code>vignettes/articles/download-hitophsum.Rmd</code></a></small>
-      <div class="d-none name"><code>download-hitophsum.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/jmgirard/hitop/blob/main/vignettes/articles/overview.Rmd" class="external-link"><code>vignettes/articles/overview.Rmd</code></a></small>
+      <div class="d-none name"><code>overview.Rmd</code></div>
     </div>
 
     
     
-<p>Welcome to the HiTOP Harmful Substance Use Module (HiTOP-HSUM)
-instrument resources page. This questionnaire contains a total of 650
-possible items across 3 assessment stages. Complex skip/display logic is
-used, such that the vast majority of respondents will only see a subset
-of possible items. Here you can download a DOCX summary file that can be
-printed and shared with IRB as well as ready-to-use imports for both
-Qualtrics and REDCap (both of which already implement the complex
-skip/display logic mentioned above). Scoring functions are still under
-development but should be available soon.</p>
-<h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
-<p class="text-muted">Choose the format that best fits your immediate research needs.</p>
+<p>The HiTOP Society maintains three self-report measures of
+psychopathology at different lengths and levels of coverage. Choose the
+one that fits your study below, then head to its page to download
+ready-to-use files or explore the <code>hitop</code> R package tools for
+scoring and customization.</p>
 <div class="row mt-4 hitop-downloads">
-<div class="col-md-4 mb-4">
-<div class="card h-100 shadow-sm">
-<div class="card-body">
-<h5 class="card-title">📄 Printable Document</h5>
-<p class="card-text text-muted">Use these Microsoft Word documents for an overview or sending to the IRB.</p>
-<div class="d-grid gap-2">
-<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_A4.docx" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (A4 Paper)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
-<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_US.docx" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (US Paper)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">📋 HiTOP Self-Report (SR)</h5>
+        <p class="card-text text-muted mb-1">405 items · 76 scales · 17 subscales</p>
+        <p class="card-text">The full-length measure, offering the most detailed
+        coverage of the HiTOP hierarchy from broad spectra down to narrow
+        subscales.</p>
+        <div class="d-grid mt-auto">
+          <a href="../articles/download-hitopsr.html" class="btn btn-primary">View &amp; download →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">📄 HiTOP Brief Report (BR)</h5>
+        <p class="card-text text-muted mb-1">45 items · 8 scales</p>
+        <p class="card-text">A short screening measure covering the eight broad
+        HiTOP spectra, ideal when respondent time is limited.</p>
+        <div class="d-grid mt-auto">
+          <a href="../articles/download-hitopbr.html" class="btn btn-primary">View &amp; download →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">🧪 HiTOP Harmful Substance Use (HSUM)</h5>
+        <p class="card-text text-muted mb-1">Up to 650 items · 3 assessment stages</p>
+        <p class="card-text">A dedicated substance-use module with skip/display
+        logic, so most respondents answer only a small subset of items.</p>
+        <div class="d-grid mt-auto">
+          <a href="../articles/download-hitophsum.html" class="btn btn-primary">View &amp; download →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
-</div>
-</div>
-</div>
-<div class="col-md-4 mb-4">
-<div class="card h-100 shadow-sm">
-<div class="card-body">
-<h5 class="card-title">📊 Qualtrics Import</h5>
-<p class="card-text text-muted">Use this survey file to easily import the instrument directly into your Qualtrics surveys.</p>
-<div class="d-grid gap-2">
-<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (QSF File)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
-</div>
-<div class="text-center mt-2"><a href="../articles/import-instructions.html#qualtrics-qsf" class="hitop-ref-link small">Import Instructions</a></div>
-</div>
-</div>
-</div>
-<div class="col-md-4 mb-4">
-<div class="card h-100 shadow-sm">
-<div class="card-body">
-<h5 class="card-title">🏥 REDCap Import</h5>
-<p class="card-text text-muted">Use this compressed archive file to import the instrument as a new instrument in your REDCap project.</p>
-<div class="d-grid gap-2">
-<a href="https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip" class="external-link btn btn-outline-primary hitop-dl-btn"><span>English (ZIP File)</span><span class="hitop-build-badge" title="Build date">2026-07-16</span></a>
-</div>
-<div class="text-center mt-2"><a href="../articles/import-instructions.html#redcap-zip" class="hitop-ref-link small">Import Instructions</a></div>
-</div>
-</div>
-</div>
-</div>
-<p>Scoring functions and example data coming soon.</p>
-<h3 class="mt-4 mb-3">Versions</h3>
-<p class="text-muted">Every download button above shows its file’s build date; a new build date means the distributed file changed. The instrument itself is version 1.0.</p>
-<details class="hitop-versions"><summary>Current builds &amp; version history</summary><div class="hitop-versions-body">
-<h4>Current builds</h4>
-<div class="table-responsive">
-<table class="table table table-sm">
-<thead><tr>
-<th>File</th>
-<th>Format</th>
-<th>Instrument version</th>
-<th>Build date</th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code>hitophsum_A4.docx</code></td>
-<td>DOCX (A4 paper)</td>
-<td>1.0</td>
-<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
-</tr>
-<tr>
-<td><code>hitophsum_qualtrics.qsf</code></td>
-<td>Qualtrics import</td>
-<td>1.0</td>
-<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
-</tr>
-<tr>
-<td><code>hitophsum_redcap.zip</code></td>
-<td>REDCap import</td>
-<td>1.0</td>
-<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
-</tr>
-<tr>
-<td><code>hitophsum_US.docx</code></td>
-<td>DOCX (US paper)</td>
-<td>1.0</td>
-<td><span class="hitop-build-badge" title="Build date">2026-07-16</span></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p class="text-muted small">If your downloaded file shows an older build date, simply re-download it to get the latest build. The full build manifest (including file checksums) ships in the package as <code>hitop_artifacts</code>.</p>
-<h4>Version history</h4>
-<div class="hitop-history-entry">
-<span class="hitop-build-badge" title="Build date">2026-07-16</span><div>Versioning system introduced: files renamed from the _1.0_ filename scheme and DOCX footers gain a build stamp.<br><span class="hitop-history-files"><code>hitophsum_A4.docx</code>, <code>hitophsum_redcap.zip</code>, <code>hitophsum_US.docx</code></span>
-</div>
-</div>
-<div class="hitop-history-entry">
-<span class="hitop-build-badge" title="Build date">2026-07-16</span><div>Rebuilt from the corrected item data via the Qualtrics API: fixes duplicated questions and the empty cigar-quantity dropdown; SurveyName carries the build stamp.<br><span class="hitop-history-files"><code>hitophsum_qualtrics.qsf</code></span>
-</div>
-</div>
-</div>
-</details></main>
+  </main>
 </div>
 
 

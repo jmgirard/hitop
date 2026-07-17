@@ -20,6 +20,8 @@
   HiTOP-SR](https://jmgirard.github.io/hitop/articles/hitopsr_scoring.md):
 - [Importing Instruments into Qualtrics and
   REDCap](https://jmgirard.github.io/hitop/articles/import-instructions.md):
+- [HiTOP
+  Instruments](https://jmgirard.github.io/hitop/articles/overview.md):
 - [Scoring the
   PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.md):
 - [Scoring the
