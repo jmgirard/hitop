@@ -141,10 +141,6 @@ Add Norming Functions (for HiTOP) - *waiting for data*
 
 Add Individual Report Generation
 
-Add Bass-Ackwards Functions
-
-Add Extended Bass-Ackwards Functions
-
 Update Package Unit Testing
 
 Submit to CRAN
