@@ -69,6 +69,7 @@ Give every distributed `inst/extdata/` artifact a user-visible build-date versio
 - 2026-07-16: T6 done — 6 download pages: version-free hrefs, Versions section (current-builds + history tables from `hitop_artifacts`); rendered check via `pkgdown::build_article()` (tables + build dates + md5 present, no stale links); artifact test suite 47 pass / 0 fail.
 - 2026-07-16: T7 done — NEWS bullet, DESIGN.md "Artifact versioning" convention; `devtools::check()` clean (0E/0W/0N). Status → review.
 - 2026-07-16: review checkpoint — draft PR #22 opened; AC1–AC7 fresh evidence recorded and boxes ticked; consistency gate clean; three-lens fresh-context review + scorer in flight (results pending).
+- 2026-07-16: Windows CI red — actions/checkout CRLF-converted the text artifacts (.txt/.qsf), mutating bytes before the md5 lock test; fixed with `.gitattributes` (`inst/extdata/** -text`); local artifact suite 47/47.
 
 ## Decisions
 
