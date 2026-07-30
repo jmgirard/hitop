@@ -71,9 +71,10 @@
 #' \describe{
 #'   \item{version}{The PID-5 version the row norms: `"FULL"`, `"SF"`, or `"BF"`}
 #'   \item{scale}{Name of the scale, as the score-output column stem used by
-#'   `score_pid5()` and `validity_pid5()` (i.e., without their `prefix`). The
-#'   one exception is `"total"`, the brief form's total score, which the source
-#'   norms but `score_pid5()` does not yet compute}
+#'   `score_pid5()` and `validity_pid5()` (i.e., without their `prefix`), so a
+#'   lookup joins to scored output with no crosswalk. Every scale normed here is
+#'   produced by one of those two functions, the brief form's `"total"`
+#'   included (see [score_pid5()])}
 #'   \item{tscore}{The T score, or `NA` for the validity scales, whose tables
 #'   print none}
 #'   \item{raw}{The raw scale score, on the metric `score_pid5()` and

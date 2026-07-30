@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, IP3, GP2
-- **Branch/PR:** `m26-pid5bf-total-score`
+- **Branch/PR:** `m26-pid5bf-total-score` / https://github.com/jmgirard/hitop/pull/29
 
 ## Goal
 
