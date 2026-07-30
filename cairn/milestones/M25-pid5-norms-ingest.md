@@ -150,6 +150,7 @@ ingestion (2026-07-30); BC2 is ingested verbatim as AC7.
 - 2026-07-30: T6 done — `data-raw/norms_pid5.R` builds `pid_norms`, 1,056 rows over 5 columns (16 domain scale-by-version blocks and 4 validity scales); re-running the script leaves `data/pid_norms.rda` byte-identical (same md5) and `devtools::test()` is clean. Shape choices at the implementation gate are in Decisions (M25-D5).
 - 2026-07-30: T7 done — `tests/testthat/test-norms.R` (155 expectations) carries the three structural invariants, a scale-coverage and validity-naming guard for AC6/AC7, and 33 spot values transcribed from the seven printed tables with page anchors. `data-raw/mutate_norms_check.R` makes AC4's mutations re-runnable: all six (two AC4(a), one each AC4(b) and AC4(c), two AC4(d)) redden the file and the dataset is restored byte-identical. The harness first left `data/pid_norms.rda` mutated because `on.exit()` at an Rscript's top level fires at the end of its own statement, not at script end; the restore now runs inside a function.
 - 2026-07-30: T8 done — `pid_norms` roxygen block in `R/data.R` (format, the normative sample as the book states it, the AC9 VRIN note, `@source` with the table anchors), `_pkgdown.yml` "Instrument Data" row, NEWS bullet. `document()` leaves the tree clean, `check()` reports 0 errors / 0 warnings / 0 notes, `pkgdown::check_pkgdown()` finds no problems.
+- 2026-07-30: at the merge gate the maintainer directed that two sub-threshold (78) findings be fixed anyway, both documentation claims false as shipped — the `scale`-matches-`score_pid5()` claim (untrue for the BF `total`) and the N = 995 attribution to the brief-form norms. Fixed in `R/data.R` and `NEWS.md`; `check()` re-run clean.
 - 2026-07-30: review pass — 9/9 criteria evidenced, `cairn_validate` exit 0, `check()` 0/0/0. Three fresh-context lenses returned 19 findings (all from the [O] diff-bug lens; the two [S] lenses found none); the scorer put 2 at or above 80 and both were fixed at review — a missing BF `disinhibition` spot anchor (closed as a class, with a new test asserting every scale carries one) and a wrong `raw` metric description for the FULL/SF domains. 17 sub-threshold findings logged in the Review section.
 - 2026-07-30: [O] criteria audit ran twice (pre- and post-gate). Pass 1: findings on all 11 drafted criteria. Pass 2 on the revised 12: 8 OK, 4 findings — undefined `check()` NOTE baseline (M25 AC5, M26 AC7), validity scales carrying no T (M26 AC2, AC4), non-injective raw→T (M26 AC4), tripwire branch leaving M26 AC5 unsatisfiable. All four fixed before writing; none escalated to a second gate round.
 
@@ -290,12 +291,20 @@ command run at review time; no result carried over from implementation.
   at review** — the description now separates the FULL/SF domains, the BF domains and
   total, and the validity sums.
 
-**Logged, not actioned (score < 80): 17.** Surfaced here, never silently dropped.
+**Actioned at the maintainer's direction (score 78, below the bar): 2 of 19.** Both
+were documentation claims false as shipped, so the gate put them to the maintainer,
+who chose to fix both before merge.
 
-- 78 — `R/data.R` and `NEWS.md` say `scale` matches the columns `score_pid5()` returns,
-  but no `total` column exists until M26 adds it (D-017).
-- 78 — the roxygen extends the source's N = 995 to the BF norms; the book scopes that
-  screen to Tables A-5 to A-8, and states no N for A-9.
+- **F2, score 78 — `R/data.R` and `NEWS.md` claimed `scale` matches the columns
+  `score_pid5()` returns.** It does not for the brief form's `total`, which the book
+  norms and `score_pid5()` does not compute until M26 (D-017). Both surfaces now say so
+  explicitly.
+- **F3, score 78 — the roxygen extended the source's N = 995 to the brief form norms.**
+  The book scopes that screen to Tables A-5 to A-8 and states no N for A-9. The
+  sentence now names the FULL and SF domains and records that the source gives no
+  separate brief-form sample size.
+
+**Logged, not actioned (score < 80): 15.** Surfaced here, never silently dropped.
 - 78 — `data-raw/norms_pid5.R` reads the key column of each CSV positionally
   (`tbl[[1]]`, `tbl[[2]]`) with no column-name guard.
 - 76 — no row-count or key-completeness invariant: a CSV losing interior rows would

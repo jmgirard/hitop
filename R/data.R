@@ -67,7 +67,9 @@
 #' \describe{
 #'   \item{version}{The PID-5 version the row norms: `"FULL"`, `"SF"`, or `"BF"`}
 #'   \item{scale}{Name of the scale, as the score-output column stem used by
-#'   `score_pid5()` and `validity_pid5()` (i.e., without their `prefix`)}
+#'   `score_pid5()` and `validity_pid5()` (i.e., without their `prefix`). The
+#'   one exception is `"total"`, the brief form's total score, which the source
+#'   norms but `score_pid5()` does not yet compute}
 #'   \item{tscore}{The T score, or `NA` for the validity scales, whose tables
 #'   print none}
 #'   \item{raw}{The raw scale score, on the metric `score_pid5()` and
@@ -84,10 +86,11 @@
 #'   the book will find those tables here under the package's own names.
 #'
 #'   Norms come from a sample of 1,082 individuals from a U.S. Census-matched
-#'   panel. The validity-scale distributions use all 1,082; the domain and total
-#'   score distributions use the 995 respondents who scored below 17 on the
+#'   panel. The validity-scale distributions use all 1,082; the FULL and SF
+#'   domain distributions use the 995 respondents who scored below 17 on the
 #'   inconsistency scale, left no more than a quarter of responses missing, and
-#'   did not endorse both infrequency items. All T scores and percentiles were
+#'   did not endorse both infrequency items. The source states no separate
+#'   sample size for the brief form tables. All T scores and percentiles were
 #'   computed with sampling weights reflecting U.S. Census data.
 #'
 #'   The published facet-level and informant-form tables are not included.
