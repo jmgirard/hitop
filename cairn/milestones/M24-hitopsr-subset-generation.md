@@ -7,7 +7,7 @@
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, GP3, GP4
-- **Branch/PR:** `m24-hitopsr-subset-generation`
+- **Branch/PR:** `m24-hitopsr-subset-generation` / https://github.com/jmgirard/hitop/pull/27
 
 ## Goal
 
@@ -32,13 +32,13 @@ Let researchers select a subset of HiTOP-SR scales and generate DOCX/Qualtrics/R
 
 ## Acceptance criteria
 
-- [ ] `hitop_subset("hitopsr", scales = c(...))` returns an object whose resolved item numbers equal the union of the chosen scales' `hitopsr_scales$itemNumbers`, sorted ascending in original HSR numbering — verified against an independent hand-derived expected set for ≥2 distinct scale selections.
-- [ ] `hitop_subset()` errors on unknown scale name(s), naming each offending name via `cli`; errors on an empty/zero-scale selection. (Each error branch fired.)
-- [ ] `generate_docx_hitopsr(subset = s)` emits a DOCX whose parsed items are exactly the subset's items (verbatim text + reverse markers) and whose scoring table lists only the subset scales with original HSR item numbers (parse-and-compare per D-010).
-- [ ] `generate_qualtrics_hitopsr(subset = s)` emits a Qualtrics `.txt` whose parsed items and IDs are exactly the subset's items with original HSR numbering.
-- [ ] `generate_redcap_hitopsr(subset = s)` emits a REDCap zip whose parsed fields are exactly the subset's items with original HSR numbering.
-- [ ] Default calls (`subset = NULL`) produce parse-identical output to the current full-instrument generators — an explicit no-regression assertion for all three formats, plus the pre-existing generator tests still passing.
-- [ ] `devtools::document()` clean (no diff); profile `verify` clean (`devtools::test()` pass, `devtools::check()` 0/0/0); NEWS + `_pkgdown.yml` updated.
+- [x] `hitop_subset("hitopsr", scales = c(...))` returns an object whose resolved item numbers equal the union of the chosen scales' `hitopsr_scales$itemNumbers`, sorted ascending in original HSR numbering — verified against an independent hand-derived expected set for ≥2 distinct scale selections.
+- [x] `hitop_subset()` errors on unknown scale name(s), naming each offending name via `cli`; errors on an empty/zero-scale selection. (Each error branch fired.)
+- [x] `generate_docx_hitopsr(subset = s)` emits a DOCX whose parsed items are exactly the subset's items (verbatim text + reverse markers) and whose scoring table lists only the subset scales with original HSR item numbers (parse-and-compare per D-010).
+- [x] `generate_qualtrics_hitopsr(subset = s)` emits a Qualtrics `.txt` whose parsed items and IDs are exactly the subset's items with original HSR numbering.
+- [x] `generate_redcap_hitopsr(subset = s)` emits a REDCap zip whose parsed fields are exactly the subset's items with original HSR numbering.
+- [x] Default calls (`subset = NULL`) produce parse-identical output to the current full-instrument generators — an explicit no-regression assertion for all three formats, plus the pre-existing generator tests still passing.
+- [x] `devtools::document()` clean (no diff); profile `verify` clean (`devtools::test()` pass, `devtools::check()` 0/0/0); NEWS + `_pkgdown.yml` updated.
 
 ## Coverage
 
@@ -83,3 +83,24 @@ Settled at the implement question gate rather than escalated, the maintainer cho
 
 
 ## Review
+
+Fresh evidence gathered 2026-07-30 on `m24-hitopsr-subset-generation` @ PR #27.
+All commands run at review time; no result carried over from implementation.
+
+### Acceptance-criterion evidence
+
+- **AC1 (resolution oracle).** `test-subset.R` blocks 1–3 pass (part of 9 blocks / 27 assertions, 0 fail). Three selections checked against item numbers hand-derived from `hitopsr_items$Scale`: Agoraphobia+Appetite Loss → 66,109,118,144,202,260,291,389; Antisocial Behavior+Romantic Disinterest → 13 items incl. 42 and 390; Romantic Disinterest alone → 42,152,187,310,338. All ascending, original HSR numbering. `test-subset-generation.R` adds the all-76-scales case → exactly `hitopsr_items$HSR`, 405 items.
+- **AC2 (error branches).** `test-subset.R` fires each branch: unknown names (both named in one message), `character(0)`, `NULL`, non-character, `NA_character_`, unsupported instrument (`hitopbr`, `pid5`), unknown instrument. 0 fail.
+- **AC3 (DOCX parse-and-compare).** `test-generate_docx` 9 blocks / 73 assertions, 0 fail. Subset DOCX: all 8 kept items present as `<HSR>.  <Text>`, 25 sampled non-subset texts absent, no renumbering (`"1.  "` form absent); scoring table shows `66, 109, 118, 260, 291` and `42, 152, 187, 310(R), 338` — HSR 310 keeps its reverse marker — and omits out-of-subset scales.
+- **AC4 (Qualtrics parse-and-compare).** `test-generate_qualtrics` 7 blocks / 56 assertions, 0 fail. Parsed `num` and `text` equal the filtered `hitopsr_items` exactly; IDs `HSR_066`…`HSR_389`, all the same width.
+- **AC5 (REDCap parse-and-compare).** `test-generate_redcap` 11 blocks / 63 assertions, 0 fail. Data-dictionary radio rows equal the 8 kept items; field names `hsr_066`…`hsr_389`; the descriptive instructions row survives.
+- **AC6 (no-regression).** `test-subset-generation.R` 4 blocks / 14 assertions, 0 fail. Qualtrics: md5 identical across default / `subset = NULL` / all-76-scales. REDCap: parsed data dictionaries identical across the three. DOCX: `word/document.xml` identical across the three. Padding lock: all five Qualtrics generators keep their pre-change width (3,2,3,3,2) and contiguous 1..n numbering.
+- **AC7 (toolchain).** `devtools::document()` no diff · `devtools::test()` FAIL 0 | WARN 0 | SKIP 1 | PASS 9776 (main: 9694) · `devtools::check()` 0 errors / 0 warnings / 0 notes · `pkgdown::check_pkgdown()` no problems · NEWS.md carries both entries · `_pkgdown.yml` lists `hitop_subset` under Item Export.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0 — all 16 checks PASS. Two pre-existing advisories, neither from this milestone: a scaffold deprecation (`cairn/references/pdf/` superseded by `cairn/references/sources/`) and 26 dangling id tokens (the legacy D-001–D-012 in DESIGN.md and legacy M-ids).
+- Profile `consistency-gate` slot: `document()` no-diff ✓ · no hand-edited generated files ✓ · README untouched by this branch ✓ · `check_pkgdown()` ✓ · NEWS entry ✓ · no new top-level files needing `.Rbuildignore` ✓ · `check()` clean ✓.
+- No `DESIGN.md` principle changed, so `cairn_impact` is not run.
+- Returns to `in-progress`: none (first review pass; thrash rule not engaged).
+
