@@ -1,11 +1,11 @@
 # M26: PID-5-BF total score across scoring, reliability, and the BF paper forms
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, IP3, GP2
-- **Branch/PR:** —
+- **Branch/PR:** `m26-pid5bf-total-score`
 
 ## Goal
 
