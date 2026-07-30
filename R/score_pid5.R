@@ -37,11 +37,32 @@
 #'   scores followed by the 5 personality-trait domain scores. Following the APA
 #'   scoring key (Step 3), each domain score is the mean of the average scores of
 #'   its 3 primary facets (the map is stored in `pid_domains`). The BF version
-#'   scores its 5 domains directly from its items. By default (`missing = "apa"`)
-#'   all versions apply the APA missing-data and proration rule; use
-#'   `missing = "available"` or `missing = "complete"` for the traditional
-#'   `rowMeans()` behaviors. For per-scale reliability estimates (Cronbach's
-#'   alpha, McDonald's omega), use [reliability_pid5()].
+#'   scores its 5 domains directly from its items, and adds a `total` score. By
+#'   default (`missing = "apa"`) all versions apply the APA missing-data and
+#'   proration rule; use `missing = "available"` or `missing = "complete"` for
+#'   the traditional `rowMeans()` behaviors. For per-scale reliability estimates
+#'   (Cronbach's alpha, McDonald's omega), use [reliability_pid5()].
+#'
+#' @details ## The PID-5-BF total score
+#'
+#'   `version = "BF"` returns a `total` column after its 5 domains. Markon et al.
+#'   (2024, p. 23) define it as the item-level mean over **all 25 items**, not
+#'   the mean of the 5 domain means: the total "can be computed by averaging the
+#'   overall score by the total number of items in the measure (i.e., 25)". With
+#'   five equal-sized domains the two definitions coincide on complete data and
+#'   differ only when items are missing, where the published rule above governs.
+#'
+#'   The total is scored like any other scale, so `missing` applies to it at the
+#'   25-item level. Under `missing = "apa"` that means it is `NA` when more than
+#'   a quarter of the 25 items are unanswered (7 or more) and prorated otherwise,
+#'   independently of the domains. Because a 5-item domain is dropped at 2
+#'   unanswered items while the total tolerates 6, **a total can be reported
+#'   alongside one or more `NA` domains** (at most 3 of the 5; blanking all five
+#'   requires 10 unanswered items, which blanks the total as well). This is the
+#'   published rule applied as written, not an oversight.
+#'
+#'   The FULL and SF versions have no total score: the PID-5 book defines one
+#'   only for the brief form.
 #'
 #' @return A \link[tibble]{tibble} containing all scale scores and standard
 #'   errors (if requested) and all original `data` columns (if requested)
@@ -54,6 +75,11 @@
 #'   the Personality Inventory for DSM-5-Brief Form (PID-5-BF) in the
 #'   measurement of maladaptive personality and psychopathology. *Assessment,
 #'   25*(5), 596–607. \doi{10.1177/1073191116676889}
+#'
+#' @references Markon, K. E., Fossati, A., Somma, A., & Krueger, R. F. (2024).
+#'   *Understanding the Personality Inventory for DSM-5 (PID-5).* American
+#'   Psychiatric Association Publishing. The source for the PID-5-BF total
+#'   score's definition (p. 23) and for the normative tables in `pid_norms`.
 #'
 #' @references Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W. L.,
 #'   Samuel, D. B., Williamson, R. L., Lynam, D. R., Widiger, T. A., Markon, K.

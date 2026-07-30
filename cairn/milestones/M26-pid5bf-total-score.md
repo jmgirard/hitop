@@ -81,7 +81,7 @@ what a total score means (IP4).
 - [x] **T5.** Regenerate both BF DOCX artifacts
       ([generate_docx.R:1136](R/generate_docx.R:1136)); add their `hitop_artifacts` rows;
       verify the checksum-lock test and that the BF Qualtrics/REDCap artifacts are untouched.
-- [ ] **T6.** Roxygen `@details` for the total's rule with its citation, NEWS entries,
+- [x] **T6.** Roxygen `@details` for the total's rule with its citation, NEWS entries,
       `_pkgdown.yml` check; run `document()` / `test()` / `check()`.
 
 ## Work log
@@ -97,6 +97,8 @@ what a total score means (IP4).
 - 2026-07-30: T5 done — both BF DOCX regenerated (Total row lands in the previously blank padding cell, layout stays 3x2) with two new manifest rows; BF Qualtrics/REDCap left byte-identical.
 - 2026-07-30: minor plan amendment — `data-raw/artifacts.R` gained `rebuild_stems`/`rebuild_formats` filters (default NULL = old behavior). Sourcing it wholesale rebuilds all 19 artifacts, and since DOCX footers stamp `Sys.Date()` and REDCap zips embed mtimes (LESSONS M20), that churns every checksum and would append 19 manifest rows for a BF-only change — and would break AC4's byte-identical requirement. First run with stems alone still churned `pid5bf_redcap.zip`; its unzipped content was verified identical to HEAD and the file restored.
 - 2026-07-30: supersedes the proration premise stated at the gate above — the bound is at most 3 of 5 domains NA with a computed total (verified against `apa_mean()`), not all five, which is impossible since blanking 5 domains needs 10 missing and the total drops at 7; the chosen behavior is unchanged and `SOURCES.md` is corrected in place.
+
+- 2026-07-30: T6 done — `@details` section for the total with its p. 23 citation, `pid_scales`/`reliability_pid5()` docs updated for the sixth BF row, NEWS entry (incl. the stale "normed here but not yet scored" clause corrected in the same unreleased section), and the BF vignette's "yields the 5 domain scores only" prose fixed. `_pkgdown.yml` needs no change: M26 exports no new function. document() clean, check() 0/0/0.
 
 ## Decisions
 

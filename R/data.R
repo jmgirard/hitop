@@ -21,14 +21,18 @@
 #' Personality Inventory for DSM-5 Scale Data
 #'
 #' Information about the scales (facets) in different versions of the PID-5,
-#' used by `score_pid5()` to map each scale to its item numbers.
+#' used by `score_pid5()` to map each scale to its item numbers. It is also read
+#' by `reliability_pid5()` and by the printed scoring table in
+#' `generate_docx_pid5*()`, so adding or removing a row changes all three.
 #'
 #' @format A named \link{list} of length 3 (elements `FULL`, `SF`, and `BF`),
 #'   one per PID-5 version. Each element is a \link[tibble]{tibble} with one row
 #'   per scale and 5 columns:
 #' \describe{
 #'   \item{Facet (named `Domain` in the BF element)}{Name of the scale: the
-#'   facet for the FULL and SF versions, the domain for the BF version}
+#'   facet for the FULL and SF versions, the domain for the BF version. The BF
+#'   element carries a sixth row, `Total`, which is not a domain but the whole
+#'   25-item form scored as one scale (see [score_pid5()])}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale}
 #'   \item{nItems}{The number of items in the scale}
 #'   \item{itemNumbers}{A list column containing one item-number vector per scale}

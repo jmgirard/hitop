@@ -5,7 +5,10 @@
 #' (PID-5, 220 items), short form (PID-5-SF, 100 items), or brief form (PID-5-BF,
 #' 25 items). Reliability is estimated on the reverse-keyed item responses, at
 #' the facet level for FULL/SF and the domain level for BF (the same scales
-#' [score_pid5()] outputs, before FULL/SF domain aggregation).
+#' [score_pid5()] outputs, before FULL/SF domain aggregation). The BF version
+#' also returns a `Total` row covering all 25 items; note that this scale spans
+#' five heterogeneous domains, so its internal consistency is not comparable to
+#' a domain's and is reported without further interpretation.
 #'
 #' @param data A data frame containing (at least) all the PID items (numerically
 #'   scored and in order).
