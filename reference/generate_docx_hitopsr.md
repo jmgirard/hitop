@@ -15,7 +15,8 @@ generate_docx_hitopsr(
   include_scoring = TRUE,
   include_subscales = FALSE,
   font_size = 10,
-  font_family = "Times New Roman"
+  font_family = "Times New Roman",
+  subset = NULL
 )
 ```
 
@@ -56,6 +57,14 @@ generate_docx_hitopsr(
   Character string specifying the font family to be used. Defaults to
   `"Times New Roman"`.
 
+- subset:
+
+  An optional
+  [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
+  object restricting the form to the items of the chosen scales, keeping
+  their original HiTOP-SR item numbers. Cannot be combined with
+  `include_subscales = TRUE`. (default = `NULL`)
+
 ## Value
 
 Invisibly returns the path to the created file (`file`).
@@ -66,6 +75,13 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpGHCt9t/file1afd77ed6389.docx
+#> ✔ Document successfully created at /tmp/Rtmpv2Ccgg/file1b383125a0cc.docx
+
+# A short form containing only two scales, original numbering preserved
+generate_docx_hitopsr(
+  file = tempfile(fileext = ".docx"),
+  subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+)
+#> ✔ Document successfully created at /tmp/Rtmpv2Ccgg/file1b38487f7f.docx
 # }
 ```

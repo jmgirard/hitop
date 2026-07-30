@@ -5,6 +5,27 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+- **Generate a shortened HiTOP-SR from selected scales.** The new
+  [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
+  describes a subset of an instrument’s scales, and
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
+  [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md),
+  and
+  [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
+  each take it as a `subset` argument to emit a form containing only
+  those scales’ items. Item numbers are **not** renumbered: each item
+  keeps its original HiTOP-SR number, so data collected with the
+  shortened form still maps onto the full instrument’s scoring key.
+  Scale names may be given as printed on the instrument
+  (`"Antisocial Behavior"`) or as the camelCase stems used in scored
+  output (`"antisocialBehavior"`), in any mixture and ignoring case.
+  Subsetting is currently available for the HiTOP-SR only.
+
+- Qualtrics question IDs are now zero-padded to the width of the largest
+  item number rather than the number of items. Output for every full
+  instrument is unchanged; the change keeps IDs uniform in a subset
+  file.
+
 - **New instrument overview page.** A single “HiTOP Instruments” page
   presents the three self-report measures — HiTOP-SR, HiTOP-BR, and
   HiTOP-HSUM — as at-a-glance summary cards, each linking to its full

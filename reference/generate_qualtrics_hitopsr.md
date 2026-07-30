@@ -12,7 +12,8 @@ generate_qualtrics_hitopsr(
   block_name = "HiTOP-SR",
   id_prefix = "HSR",
   include_instructions = TRUE,
-  breaks = 15
+  breaks = 15,
+  subset = NULL
 )
 ```
 
@@ -44,6 +45,13 @@ generate_qualtrics_hitopsr(
   page break. Set to `0` or `NULL` to disable pagination. Defaults to
   `15`.
 
+- subset:
+
+  An optional
+  [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
+  object restricting the file to the items of the chosen scales, keeping
+  their original HiTOP-SR item numbers. (default = `NULL`)
+
 ## Value
 
 Invisibly returns the path to the created file (`file`).
@@ -53,5 +61,12 @@ Invisibly returns the path to the created file (`file`).
 ``` r
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpGHCt9t/file1afd6f245127.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmpv2Ccgg/file1b3841bc4696.txt
+
+# A two-scale subset, original numbering preserved
+generate_qualtrics_hitopsr(
+  file = tempfile(fileext = ".txt"),
+  subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+)
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmpv2Ccgg/file1b382371536c.txt
 ```
