@@ -71,7 +71,7 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 
 ## Tasks
 
-- [ ] **T1.** Maintainer uploads the book's norm-table pages to `cairn/references/pdf/`
+- [ ] **T1.** Maintainer uploads the book's norm-table pages to `cairn/references/sources/`
       (gitignored shelf); confirm the pages cover all seven tables. Blocks T2.
 - [ ] **T2.** Independent re-transcription of those pages by a fresh reader that has not
       seen the CSVs; emit a machine-diffable transcription.

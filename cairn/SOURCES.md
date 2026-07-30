@@ -156,7 +156,7 @@ sheet of the HiTOP Society workbook *SUD module final analyses July 2024.xlsx*
 Development Files, <https://www.hitop-system.org/hitop-self-report-measures>).
 Canonical URL:
 <https://cdn.prod.website-files.com/642ea2c3f8ce14e5b11a29f5/674e71cb688eb6c970f82b96_SUD%20module%20final%20analyses%20July%202024.xlsx>
-(sha256 prefix `e3c4ae59667c0677`; local copy in `cairn/references/pdf/`,
+(sha256 prefix `e3c4ae59667c0677`; local copy in `cairn/references/sources/`,
 gitignored). The sheet's columns G/H/I carry the alcohol / nicotine /
 other-drugs versions of each prompt; the workbook's "revised SUD module-old"
 sheet is superseded. Confirmed as the source to build from by Jeff,
