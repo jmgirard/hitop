@@ -1,11 +1,14 @@
 ## Regenerate the committed distribution artifacts in inst/extdata/ and
 ## update the hitop_artifacts manifest (D-016).
 ##
-## Usage: edit `build_notes` below to describe what changed in this build,
-## then source the whole script from the package root. Every DOCX, Qualtrics
-## .txt, and REDCap .zip artifact is rebuilt from the current keying tables;
-## the manifest gains a new row for each file whose checksum changed (the
-## full row history is kept, so the manifest doubles as a changelog).
+## Usage: set `rebuild_stems` to the instrument(s) whose content changed and
+## `rebuild_formats` to the affected output format(s) (either NULL for all),
+## edit `build_notes` to describe what changed in this build, then source the
+## whole script from the package root. The selected
+## artifacts are rebuilt from the current keying tables; the manifest gains a
+## new row for each file whose checksum changed (the full row history is kept,
+## so the manifest doubles as a changelog). Both settings are left as the last
+## build ran them, so the script records what it last did.
 ##
 ## The HSUM Qualtrics QSF is NOT rebuilt here — it is a genuine Qualtrics
 ## export built via the API by devel/qualtrics_hitophsum.R (M19). Its
@@ -16,11 +19,40 @@ devtools::load_all()
 
 extdata <- "inst/extdata"
 
+## Restrict the rebuild to specific instrument stems, e.g. c("pid5bf"); NULL
+## rebuilds every artifact. A targeted rebuild is usually what you want: DOCX
+## footers carry a Sys.Date() build stamp and REDCap zips embed member mtimes
+## (LESSONS M20), so rebuilding wholesale changes EVERY artifact's checksum --
+## and therefore appends a manifest row for every file -- even when only one
+## instrument's content actually changed. Only the rebuild loops honor this;
+## the manifest section below still reads all files from disk and appends a row
+## only where the checksum moved, so unrebuilt artifacts stay silent on their own.
+rebuild_stems <- c("pid5bf")
+
+## Restrict the rebuild to specific output formats, e.g. c("docx"); NULL rebuilds
+## every format for the selected stems. Format matters independently of stem: a
+## content change usually reaches only some of an instrument's artifacts (the BF
+## total changed the DOCX scoring table but nothing the Qualtrics or REDCap
+## exports emit), and because DOCX/zip rebuilds are not byte-deterministic, a
+## needless rebuild churns a checksum and records a manifest revision that isn't
+## one. Restrict to the format whose content actually changed.
+rebuild_formats <- c("docx")
+
+keep_specs <- function(specs, format) {
+  if (!is.null(rebuild_formats) && !(format %in% rebuild_formats)) {
+    return(list())
+  }
+  if (is.null(rebuild_stems)) {
+    return(specs)
+  }
+  Filter(function(s) s$stem %in% rebuild_stems, specs)
+}
+
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "Versioning system introduced: files renamed from the _1.0_ filename",
-  "scheme and DOCX footers gain a build stamp."
+  "Scoring table gains a Total row (all 25 items): the PID-5-BF total score,",
+  "the item-level mean over all 25 items per Markon et al. (2024, p. 23)."
 )
 qsf_build_date <- as.Date("2026-07-16")
 qsf_note <- paste(
@@ -45,7 +77,7 @@ docx_specs <- list(
   )
 )
 
-for (spec in docx_specs) {
+for (spec in keep_specs(docx_specs, "docx")) {
   for (ps in c("us", "a4")) {
     spec$fn(
       file = file.path(extdata, paste0(spec$stem, "_", toupper(ps), ".docx")),
@@ -62,7 +94,7 @@ qualtrics_specs <- list(
   list(fn = generate_qualtrics_hitopbr, stem = "hitopbr", instrument = "HiTOP-BR")
 )
 
-for (spec in qualtrics_specs) {
+for (spec in keep_specs(qualtrics_specs, "qualtrics")) {
   spec$fn(file = file.path(extdata, paste0(spec$stem, "_qualtrics.txt")))
 }
 
@@ -79,7 +111,7 @@ redcap_specs <- list(
   )
 )
 
-for (spec in redcap_specs) {
+for (spec in keep_specs(redcap_specs, "redcap")) {
   spec$fn(file = file.path(extdata, paste0(spec$stem, "_redcap.zip")))
 }
 

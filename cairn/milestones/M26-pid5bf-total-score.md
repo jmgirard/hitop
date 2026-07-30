@@ -78,7 +78,7 @@ what a total score means (IP4).
 - [x] **T4.** Update the BF reliability expectation
       ([reliability_pid5.R:60](R/reliability_pid5.R:60) consumers) and confirm alpha/omega
       compute over the 25-item total without error.
-- [ ] **T5.** Regenerate both BF DOCX artifacts
+- [x] **T5.** Regenerate both BF DOCX artifacts
       ([generate_docx.R:1136](R/generate_docx.R:1136)); add their `hitop_artifacts` rows;
       verify the checksum-lock test and that the BF Qualtrics/REDCap artifacts are untouched.
 - [ ] **T6.** Roxygen `@details` for the total's rule with its citation, NEWS entries,
@@ -94,6 +94,8 @@ what a total score means (IP4).
 - 2026-07-30: implementation gate chose independent APA proration for the total (it can compute when all five domains are NA) over NA-ing it with the domains, because GP1 gives the book's stated rule the default and the alternative needs a special case; falsified by users reading a total-with-blank-domains profile as a bug.
 - 2026-07-30: implementation gate chose to print all 25 item numbers in the DOCX total row over a prose "All 25 items" cell, because a uniform comma-joined cell is verifiable against the keying table by the same oracle the other rows use (IP2); falsified by the printed cell overflowing its column on either page size.
 - 2026-07-30: T2-T4 done — the `pid_scales` row makes the total fall out of the existing engine with no new code path in `score_engine()`; six shape assertions across four test files updated (two more than the plan anticipated: `test-interface.R:32`/`:75` and `test-keying.R:248`), no FULL/SF value assertion touched; suite 9947 pass / 0 fail.
+- 2026-07-30: T5 done — both BF DOCX regenerated (Total row lands in the previously blank padding cell, layout stays 3x2) with two new manifest rows; BF Qualtrics/REDCap left byte-identical.
+- 2026-07-30: minor plan amendment — `data-raw/artifacts.R` gained `rebuild_stems`/`rebuild_formats` filters (default NULL = old behavior). Sourcing it wholesale rebuilds all 19 artifacts, and since DOCX footers stamp `Sys.Date()` and REDCap zips embed mtimes (LESSONS M20), that churns every checksum and would append 19 manifest rows for a BF-only change — and would break AC4's byte-identical requirement. First run with stems alone still churned `pid5bf_redcap.zip`; its unzipped content was verified identical to HEAD and the file restored.
 - 2026-07-30: supersedes the proration premise stated at the gate above — the bound is at most 3 of 5 domains NA with a computed total (verified against `apa_mean()`), not all five, which is impossible since blanking 5 domains needs 10 missing and the total drops at 7; the chosen behavior is unchanged and `SOURCES.md` is corrected in place.
 
 ## Decisions

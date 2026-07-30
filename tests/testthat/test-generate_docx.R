@@ -189,3 +189,39 @@ test_that("generate_docx_hitopsr() rejects a non-hitop_subset subset", {
     "hitop_subset"
   )
 })
+
+test_that("the BF scoring table carries the Total row keyed to pid_scales", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_pid5bf(file = f))
+  xml <- read_docx_xml(f)
+
+  # The Total row's item cell is derived from the keying table, never hardcoded,
+  # so this fails if pid_scales and the printed form ever drift apart (IP2).
+  bf <- pid_scales[["BF"]]
+  total_items <- paste(bf$itemNumbers[["total"]], collapse = ", ")
+  expect_true(grepl("Total", xml, fixed = TRUE))
+  expect_true(grepl(total_items, xml, fixed = TRUE))
+
+  # It really is all 25 items, in ascending order, with no reverse marks (the
+  # BF has none) -- the three properties the book's rule depends on.
+  expect_equal(bf$itemNumbers[["total"]], sort(bf$itemNumbers[["total"]]))
+  expect_length(bf$itemNumbers[["total"]], 25L)
+  expect_false(grepl("(R)", total_items, fixed = TRUE))
+
+  # The five domain rows are still printed alongside it.
+  for (stem in setdiff(bf$camelCase, "total")) {
+    items <- paste(bf$itemNumbers[[stem]], collapse = ", ")
+    expect_true(grepl(items, xml, fixed = TRUE))
+  }
+})
+
+test_that("include_scoring = FALSE still omits the BF scoring table entirely", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_pid5bf(file = f, include_scoring = FALSE))
+  xml <- read_docx_xml(f)
+  # Adding the Total row must not leak the scoring table into the no-scoring form.
+  total_items <- paste(pid_scales[["BF"]]$itemNumbers[["total"]], collapse = ", ")
+  expect_false(grepl(total_items, xml, fixed = TRUE))
+})
