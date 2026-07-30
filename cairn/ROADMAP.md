@@ -21,8 +21,9 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - PID-5-BFP (36-item) data, scoring, exports — awaiting materials — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - HiTOP-HSUM scoring + reliability + tutorial — awaiting Society feedback — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - Norm-referenced profile plots for PID-5 (scored-profile visualization against `pid_norms`) — added 2026-07-16, narrowed 2026-07-30 (the norming-functions half graduated to M26) — `legacy/ROADMAP.md` Phase 3
-- PID-5 facet-level and demographically stratified norms — awaiting the tables from the maintainer; extends `pid_norms` with no new export — added 2026-07-30 — lineage: M25
-- HiTOP-SR/BR normative data and norming functions — awaiting Society data — added 2026-07-30 — `legacy/ROADMAP.md` Phase 3
+- PID-5 facet-level and demographically stratified norms — the book's facet tables arrived 2026-07-30 (markon2024 A–6 SRF, A–8 SF); the sex/age-stratified half is not in the appendix and still awaits the maintainer; extends `pid_norms` with no new export — added 2026-07-30 — lineage: M25
+- PID-5 Informant Form (IRF) norms — markon2024 A–10/A–11 (domain, trait) and A–12 (SRF/IRF descriptives + T-score difference) arrived 2026-07-30; the package has no IRF surface today, so this is a new instrument version, not a `pid_norms` extension — added 2026-07-30 — lineage: M25
+- HiTOP-SR/BR normative data and norming functions — source workbooks arrived 2026-07-30 (`HiTOP-SR-Final.xlsx`, `B-HiTOP overview.xlsx`); both carry sample descriptives (N/mean/SD/skew/kurtosis on a Prolific sample), not raw→T lookup tables, so the norming design differs from `pid_norms` — added 2026-07-30 — `legacy/ROADMAP.md` Phase 3
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
