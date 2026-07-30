@@ -29,7 +29,7 @@ test_that("version selects the right number of scale columns", {
 
   expect_equal(ncol(full), 30)   # 25 facets + 5 domains (M7)
   expect_equal(ncol(sf), 30)     # 25 facets + 5 domains (M7)
-  expect_equal(ncol(bf), 5)      # 5 domains
+  expect_equal(ncol(bf), 6)      # 5 domains + the total (M26)
   expect_true(all(startsWith(names(full), "pid_")))
   expect_true(all(startsWith(names(bf), "pid_")))
 })
@@ -72,7 +72,7 @@ test_that("calc_se works on single-row input for every version", {
   expect_equal(nrow(bf), 1L)
   expect_length(grep("_se$", names(full)), 30)   # 25 facets + 5 domains
   expect_length(grep("_se$", names(sf)), 30)
-  expect_length(grep("_se$", names(bf)), 5)       # 5 domains
+  expect_length(grep("_se$", names(bf)), 6)       # 5 domains + the total (M26)
 })
 
 test_that("missing must be one of the allowed levels", {

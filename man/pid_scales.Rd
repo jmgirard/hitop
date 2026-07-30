@@ -10,7 +10,9 @@ one per PID-5 version. Each element is a \link[tibble]{tibble} with one row
 per scale and 5 columns:
 \describe{
 \item{Facet (named \code{Domain} in the BF element)}{Name of the scale: the
-facet for the FULL and SF versions, the domain for the BF version}
+facet for the FULL and SF versions, the domain for the BF version. The BF
+element carries a sixth row, \code{Total}, which is not a domain but the whole
+25-item form scored as one scale (see \code{\link[=score_pid5]{score_pid5()}})}
 \item{itemdata}{A list column containing one item-data tibble per scale}
 \item{nItems}{The number of items in the scale}
 \item{itemNumbers}{A list column containing one item-number vector per scale}
@@ -22,7 +24,9 @@ pid_scales
 }
 \description{
 Information about the scales (facets) in different versions of the PID-5,
-used by \code{score_pid5()} to map each scale to its item numbers.
+used by \code{score_pid5()} to map each scale to its item numbers. It is also read
+by \code{reliability_pid5()} and by the printed scoring table in
+\verb{generate_docx_pid5*()}, so adding or removing a row changes all three.
 }
 \examples{
 pid_scales[["BF"]]

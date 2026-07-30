@@ -46,6 +46,7 @@ status, so the table has an *external* oracle. Verified item-by-item on
 | `BF` selection (25 items) | APA PID-5-BF Adult (Krueger et al., 2013) | 25-item form + Domain Scoring table | ✅ Exact match |
 | `Domain` → BF items (5 domains × 5) | APA PID-5-BF Adult | Personality Trait Domain Scoring table | ✅ Exact match (5/5) |
 | BF reverse-keying (none) | APA PID-5-BF Adult | Domain Scoring table (no reverse marks) | ✅ Design confirmed (see note) |
+| BF `total` (25 items, item-level mean) | Markon et al. (2024) | Ch. 3, p. 23 | ✅ Rule stated verbatim (see note) |
 
 ## Sources
 
@@ -94,6 +95,40 @@ scale (2 of 5 = 40% > 25% → drop; 1 of 5 = 20% ≤ 25% → prorate). Since M8,
 `score_pid5(apa_scoring = TRUE)` (the default) honors it via `apa_mean()`;
 `apa_scoring = FALSE` restores the traditional `rowMeans(na.rm = TRUE)` behavior
 (which averages whatever items are present, even a single one). See D-009.
+
+### Note on the BF total score
+
+The APA BF form defines only the 5 domain scores; the **total** is defined by the
+book. Markon et al. (2024), Chapter 3, p. 23: *"Unlike the other versions of the
+PID-5, the PID-5-BF total score can be computed by averaging the overall score by
+the total number of items in the measure (i.e., 25)."* So the total is the
+**item-level mean over all 25 BF items**, not the mean of the five domain means —
+[D-017](DECISIONS.md) left that choice open and this sentence settles it. The two
+coincide on complete data (five domains × five items each) and diverge only under
+missingness, where the book's rule governs (GP1).
+
+Chapter 3's instrument-comparison table (p. 22) characterizes the same quantity as
+"1 total score (domain profile elevation)"; that is a description of what the total
+represents, not a second computation rule, and the p. 23 sentence is the one the
+package implements. The book states **no** missing-data rule for the total, so it
+inherits `score_pid5()`'s existing `missing` semantics applied at the 25-item level:
+under `missing = "apa"`, `apa_mean()` drops the total when more than a quarter of
+the 25 items are unanswered (≥ 7) and prorates otherwise.
+
+Because every scale prorates independently, a total can be reported alongside one
+or more `NA` domains: blanking a 5-item domain takes 2 unanswered items (40% > 25%),
+while the total tolerates 6, so **up to 3 of the 5 domains can be `NA` while the
+total still computes** (6 unanswered, two in each of three domains). The converse
+cannot happen — blanking all five domains takes ≥ 10 unanswered items, which blanks
+the total too. This was accepted at the M26 implementation gate (2026-07-30) as the
+literal reading of the book's rule, and is documented in `score_pid5()`'s
+`@details`. *(Bound stated as "all five domains" when first written 2026-07-30;
+corrected the same day against `apa_mean()` — one missing item in a 5-item domain
+prorates rather than blanking it.)*
+
+The book's normative table for this scale is **A–9 (p. 174)**, "Brief Form
+normative tables: total score and domain scales", ingested as `pid_norms` rows with
+`version == "BF"` and `scale == "total"`.
 
 ### Note on FULL/SF domain scoring
 

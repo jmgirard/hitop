@@ -47,6 +47,32 @@ pid5bf_scales <-
     itemNumbers = purrr::map(itemdata, "BF"),
     camelCase = snakecase::to_any_case(Domain, case = "lower_camel")
   )
+## The PID-5-BF total scale. Unlike the five domain rows above, this is not a
+## grouping of `pid_items` -- it is the whole 25-item form scored as one scale.
+## Markon et al. (2024, Ch. 3, p. 23): the BF total "can be computed by averaging
+## the overall score by the total number of items in the measure (i.e., 25)", so
+## it is the item-level mean over all 25 items, NOT the mean of the five domain
+## means (the two coincide on complete data and diverge only under missingness).
+## It lives here rather than as a score_pid5() special case so that every
+## pid_scales consumer -- scoring, reliability, and the DOCX scoring table --
+## reads one item list. Provenance: cairn/SOURCES.md, "Note on the BF total
+## score"; the decision to carry the ripple is D-019.
+pid5bf_total_itemdata <-
+  pid_items |>
+  tidyr::drop_na(BF) |>
+  dplyr::arrange(BF) |>
+  dplyr::select(BF, Reverse, Text)
+
+pid5bf_scales <- dplyr::bind_rows(
+  pid5bf_scales,
+  tibble::tibble(
+    Domain = "Total",
+    itemdata = list(pid5bf_total_itemdata),
+    nItems = as.numeric(nrow(pid5bf_total_itemdata)),
+    itemNumbers = list(pid5bf_total_itemdata$BF),
+    camelCase = "total"
+  )
+)
 names(pid5bf_scales$itemNumbers) <- pid5bf_scales$camelCase
 
 pid_scales <- list(

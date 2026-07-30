@@ -189,3 +189,48 @@ test_that("generate_docx_hitopsr() rejects a non-hitop_subset subset", {
     "hitop_subset"
   )
 })
+
+test_that("the BF scoring table carries the Total row keyed to pid_scales", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_pid5bf(file = f))
+  xml <- read_docx_xml(f)
+
+  # The Total row's item cell is derived from the keying table, never hardcoded,
+  # so this fails if pid_scales and the printed form ever drift apart (IP2).
+  bf <- pid_scales[["BF"]]
+  total_items <- paste(bf$itemNumbers[["total"]], collapse = ", ")
+  expect_true(grepl("Total", xml, fixed = TRUE))
+  expect_true(grepl(total_items, xml, fixed = TRUE))
+
+  # It really is all 25 items in ascending order. Asserted against a literal:
+  # comparing the vector to its own sort() is satisfied by any vector, and
+  # length-25 alone does not pin which items.
+  expect_equal(bf$itemNumbers[["total"]], as.numeric(1:25))
+
+  # And no item on the printed form carries a reverse mark, because no BF item
+  # is reverse-keyed. Checked against the DOCX itself -- the earlier version of
+  # this assertion searched `total_items`, a string the test builds by joining
+  # a numeric vector, which can never contain "(R)" whatever the form says.
+  # The pattern is digit-then-mark: the form's own scoring instruction reads
+  # "Reverse-scored items are indicated with (R).", so a bare "(R)" search
+  # matches every BF form ever generated and asserts nothing.
+  expect_false(any(pid_items$Reverse[!is.na(pid_items$BF)]))
+  expect_false(grepl("[0-9]\\(R\\)", xml))
+
+  # The five domain rows are still printed alongside it.
+  for (stem in setdiff(bf$camelCase, "total")) {
+    items <- paste(bf$itemNumbers[[stem]], collapse = ", ")
+    expect_true(grepl(items, xml, fixed = TRUE))
+  }
+})
+
+test_that("include_scoring = FALSE still omits the BF scoring table entirely", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_pid5bf(file = f, include_scoring = FALSE))
+  xml <- read_docx_xml(f)
+  # Adding the Total row must not leak the scoring table into the no-scoring form.
+  total_items <- paste(pid_scales[["BF"]]$itemNumbers[["total"]], collapse = ", ")
+  expect_false(grepl(total_items, xml, fixed = TRUE))
+})

@@ -8,10 +8,23 @@ before a CRAN submission.
   score and percentile at each T score for the five domain scales (and the brief
   form's total score), and the percentile at each raw score for the INC, INC-S,
   ORS, and PRD validity scales. Scale names match the columns `score_pid5()` and
-  `validity_pid5()` return, except for the brief form's total score, which is
-  normed here but not yet scored. Every value is transcribed from Markon et al. (2024)
+  `validity_pid5()` return. Every value is transcribed from Markon et al. (2024)
   and verified cell by cell against that source. Functions for converting scores
   to and from these norms are not part of this release.
+
+* **PID-5-BF total score** (breaking). `score_pid5(version = "BF")` now returns a
+  `total` column after its five domains, so the brief form's normed total score
+  in `pid_norms` has something to convert. Following Markon et al. (2024, p. 23),
+  it is the item-level mean over all 25 items rather than the mean of the five
+  domain means; the two agree on complete data and differ only when items are
+  missing. Because each scale applies the `missing` rule independently, a total
+  can be reported alongside one or more `NA` domains — see `?score_pid5` for the
+  exact bounds. Two consequences for existing code: `reliability_pid5(version =
+  "BF")` now returns **six** rows rather than five, and the printed scoring table
+  on the PID-5-BF Word forms gains a `Total` row listing all 25 items (both forms
+  are rebuilt, with new `hitop_artifacts` entries). Code that counts the columns
+  of `score_pid5(version = "BF")` or the rows of `reliability_pid5(version =
+  "BF")` must be updated. The PID-5 and PID-5-SF are unaffected.
 
 * **Generate a shortened HiTOP-SR from selected scales.** The new
   `hitop_subset()` describes a subset of an instrument's scales, and

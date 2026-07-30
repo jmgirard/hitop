@@ -244,8 +244,11 @@ test_that("pid_domains is 5 domains x 3 primary facets with valid, distinct stem
   expect_true(all(lengths(pid_domains$facetStems) == 3L))
   # Every facet stem is a real FULL-form facet output stem (guards transcription).
   expect_true(all(unlist(pid_domains$facetStems) %in% pid_scales[["FULL"]]$camelCase))
-  # The 5 domain stems match the BF domain output names (cross-form consistency).
-  expect_setequal(pid_domains$camelCase, pid_scales[["BF"]]$camelCase)
+  # The 5 domain stems match the BF DOMAIN output names (cross-form consistency).
+  # BF also carries a `total` row (M26), which is not a domain and is excluded
+  # here deliberately: this asserts the five domain names agree across forms.
+  bf_domains <- setdiff(pid_scales[["BF"]]$camelCase, "total")
+  expect_setequal(pid_domains$camelCase, bf_domains)
   # 15 distinct primary facets: no facet contributes to two domains.
   expect_equal(length(unlist(pid_domains$facetStems)), 15L)
   expect_equal(length(unique(unlist(pid_domains$facetStems))), 15L)

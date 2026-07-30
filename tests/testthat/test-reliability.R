@@ -166,7 +166,11 @@ test_that("reliability_*() return a per-scale tibble with the requested columns"
   # PID-5 reliability is facet-level (25), before FULL/SF domain aggregation.
   rel_pid <- reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)
   expect_equal(nrow(rel_pid), 25L)
-  expect_equal(nrow(reliability_pid5(sim_pid5bf, items = 1:25, version = "BF", omega = FALSE)), 5L)
+  # BF is 5 domains + the 25-item total (M26), so 6 rows.
+  rel_bf <- reliability_pid5(sim_pid5bf, items = 1:25, version = "BF", omega = FALSE)
+  expect_equal(nrow(rel_bf), 6L)
+  expect_true("Total" %in% rel_bf$scale)
+  expect_equal(rel_bf$nItems[rel_bf$scale == "Total"], 25)
 })
 
 test_that("reliability alpha is NA-safe on a zero-variance scale (no abort)", {

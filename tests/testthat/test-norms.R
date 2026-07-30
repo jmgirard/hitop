@@ -242,3 +242,39 @@ test_that("validity norms match the values printed in the book", {
                  label = paste("percentile for", where))
   }
 })
+
+test_that("every pid_norms scale is produced by score_pid5() or validity_pid5()", {
+  # Locks the documented claim in ?pid_norms that `scale` holds score-output
+  # column stems with no crosswalk. This has now drifted twice: M25 shipped it
+  # with `total` as a stated exception, and M26 removed the exception by adding
+  # the BF total scorer. A future normed scale with no scorer fails here rather
+  # than silently making the documentation false again.
+  stems <- function(x) sub("^pid_", "", names(x))
+  produced <- list(
+    FULL = c(
+      stems(score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)),
+      stems(suppressWarnings(
+        validity_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
+      ))
+    ),
+    SF = c(
+      stems(score_pid5(sim_pid5sf, items = 1:100, version = "SF", append = FALSE)),
+      stems(suppressWarnings(
+        validity_pid5(sim_pid5sf, items = 1:100, version = "SF", append = FALSE)
+      ))
+    ),
+    BF = stems(score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE))
+  )
+
+  for (v in names(produced)) {
+    normed <- unique(pid_norms$scale[pid_norms$version == v])
+    expect_gt(length(normed), 0)
+    expect_setequal(setdiff(normed, produced[[v]]), character(0))
+  }
+
+  # The BF total specifically -- the scale M26 added a scorer for.
+  expect_true("total" %in% pid_norms$scale[pid_norms$version == "BF"])
+  expect_true("pid_total" %in% names(
+    score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
+  ))
+})
