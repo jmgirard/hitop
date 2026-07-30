@@ -12,8 +12,12 @@ A \link[tibble]{tibble} with 1056 rows and 5 columns:
 \code{score_pid5()} and \code{validity_pid5()} (i.e., without their \code{prefix})}
 \item{tscore}{The T score, or \code{NA} for the validity scales, whose tables
 print none}
-\item{raw}{The raw scale score: a mean item response for the domain and
-total scales, a sum for the validity scales}
+\item{raw}{The raw scale score, on the metric \code{score_pid5()} and
+\code{validity_pid5()} return: for the FULL and SF domains, the mean of the
+three primary facet scores (themselves item means, and the facets differ
+in length, so this is not a mean over the domain's items); for the BF
+domains and total, a mean item response; for the validity scales, an item
+sum}
 \item{percentile}{The percentile of the normative distribution at that
 score, as a proportion between 0 and 1}
 }

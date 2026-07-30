@@ -130,9 +130,16 @@ test_that("percentiles are proportions", {
 
 
 # ---- spot values from the printed tables -------------------------------------
+#
+# The spot values are the only layer that catches a whole column displaced by
+# one row -- the defect this dataset actually had before it was corrected. Such
+# a shift leaves `raw` perfectly linear in T (the intercept simply moves by one
+# step) and leaves a monotone percentile column monotone, so neither structural
+# invariant above can see it. Every (version, scale) therefore needs at least
+# one anchor, which the coverage test below enforces.
 
-test_that("domain norms match the values printed in the book", {
-  # version, scale, T score, raw, percentile, page
+# version, scale, T score, raw, percentile, page
+domain_spot <- local({
   spot <- rbind.data.frame(
     # Table A-5, self-report form domain scales (p. 120)
     list("FULL", "negativeAffectivity", 35L, 0.00, 0.00, 120),
@@ -155,29 +162,16 @@ test_that("domain norms match the values printed in the book", {
     list("BF", "negativeAffectivity", 70L, 2.05, 0.95, 174),
     list("BF", "detachment", 70L, 1.93, 0.96, 174),
     list("BF", "antagonism", 50L, 0.40, 0.56, 174),
+    list("BF", "disinhibition", 70L, 1.69, 0.95, 174),
     list("BF", "psychoticism", 70L, 1.58, 0.94, 174),
     stringsAsFactors = FALSE
   )
   names(spot) <- c("version", "scale", "tscore", "raw", "percentile", "page")
-
-  for (i in seq_len(nrow(spot))) {
-    row <- spot[i, ]
-    where <- paste0(row$version, " ", row$scale, " at T = ", row$tscore,
-                    " (p. ", row$page, ")")
-    got <- pid_norms[
-      pid_norms$version == row$version &
-        pid_norms$scale == row$scale &
-        !is.na(pid_norms$tscore) & pid_norms$tscore == row$tscore,
-    ]
-    expect_equal(nrow(got), 1, label = paste("rows found for", where))
-    expect_equal(got$raw, row$raw, label = paste("raw for", where))
-    expect_equal(got$percentile, row$percentile,
-                 label = paste("percentile for", where))
-  }
+  spot
 })
 
-test_that("validity norms match the values printed in the book", {
-  # version, scale, raw score, percentile, page
+# version, scale, raw score, percentile, page
+validity_spot <- local({
   spot <- rbind.data.frame(
     # Table A-1, self-report form inconsistency scale (p. 116)
     list("FULL", "INC", 0, 0.030, 116),
@@ -200,9 +194,41 @@ test_that("validity norms match the values printed in the book", {
     stringsAsFactors = FALSE
   )
   names(spot) <- c("version", "scale", "raw", "percentile", "page")
+  spot
+})
 
-  for (i in seq_len(nrow(spot))) {
-    row <- spot[i, ]
+test_that("every scale in pid_norms has at least one spot value", {
+  anchored <- unique(rbind(
+    domain_spot[c("version", "scale")],
+    validity_spot[c("version", "scale")]
+  ))
+  keys <- norm_keys()
+  expect_setequal(
+    paste(keys$version, keys$scale),
+    paste(anchored$version, anchored$scale)
+  )
+})
+
+test_that("domain norms match the values printed in the book", {
+  for (i in seq_len(nrow(domain_spot))) {
+    row <- domain_spot[i, ]
+    where <- paste0(row$version, " ", row$scale, " at T = ", row$tscore,
+                    " (p. ", row$page, ")")
+    got <- pid_norms[
+      pid_norms$version == row$version &
+        pid_norms$scale == row$scale &
+        !is.na(pid_norms$tscore) & pid_norms$tscore == row$tscore,
+    ]
+    expect_equal(nrow(got), 1, label = paste("rows found for", where))
+    expect_equal(got$raw, row$raw, label = paste("raw for", where))
+    expect_equal(got$percentile, row$percentile,
+                 label = paste("percentile for", where))
+  }
+})
+
+test_that("validity norms match the values printed in the book", {
+  for (i in seq_len(nrow(validity_spot))) {
+    row <- validity_spot[i, ]
     where <- paste0(row$version, " ", row$scale, " at a score of ", row$raw,
                     " (p. ", row$page, ")")
     got <- pid_norms[
