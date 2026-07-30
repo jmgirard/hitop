@@ -124,7 +124,7 @@ ingestion (2026-07-30); BC2 is ingested verbatim as AC7.
       from `templates/source-note.md`, and its `cairn/references/INDEX.md` line.
 - [x] **T6.** Write `data-raw/norms_pid5.R` building long-form `pid_norms` from the CSVs;
       regenerate `data/`. (M18 lesson: `readr`/`usethis` must be installed locally.)
-- [ ] **T7.** Write `tests/testthat/test-norms.R` — the three structural invariants plus
+- [x] **T7.** Write `tests/testthat/test-norms.R` — the three structural invariants plus
       ≥ 15 page-cited spot values — and run each mutation to confirm it reddens.
 - [ ] **T8.** Document `pid_norms` in `R/data.R`, add the `_pkgdown.yml` entry and a NEWS
       line; run `document()` / `test()` / `check()`.
@@ -148,6 +148,7 @@ ingestion (2026-07-30); BC2 is ingested verbatim as AC7.
 - 2026-07-30: ingesting RR01 took M25 to 9 acceptance criteria, past the 7-criterion split tripwire (`cairn_validate` sizing advisory). Not split: AC7 is a restrictive no-op guard over files M25 never touches, AC8 records content AC2/T5 already produce, and AC9 is one sentence in the roxygen block T8 writes — the criteria count rose without the work volume rising, and all four map onto existing tasks.
 - 2026-07-30: T5 done — `cairn/SOURCES.md` gains a PID-5 normative tables section (citation, per-table page anchors, the sample as the book states it, the book-label to package-column mapping, and per-table verification status), the source note `cairn/references/markon2024.md` is written from the template with a Provenance block, and its INDEX line is added. The book's own domain-norm inclusion criterion (VRIN < 17) matches the package's documented `INC` cut score of 17, which corroborates the A-1 mapping independently of the shared Keeley attribution.
 - 2026-07-30: T6 done — `data-raw/norms_pid5.R` builds `pid_norms`, 1,056 rows over 5 columns (16 domain scale-by-version blocks and 4 validity scales); re-running the script leaves `data/pid_norms.rda` byte-identical (same md5) and `devtools::test()` is clean. Shape choices at the implementation gate are in Decisions (M25-D5).
+- 2026-07-30: T7 done — `tests/testthat/test-norms.R` (155 expectations) carries the three structural invariants, a scale-coverage and validity-naming guard for AC6/AC7, and 33 spot values transcribed from the seven printed tables with page anchors. `data-raw/mutate_norms_check.R` makes AC4's mutations re-runnable: all six (two AC4(a), one each AC4(b) and AC4(c), two AC4(d)) redden the file and the dataset is restored byte-identical. The harness first left `data/pid_norms.rda` mutated because `on.exit()` at an Rscript's top level fires at the end of its own statement, not at script end; the restore now runs inside a function.
 - 2026-07-30: [O] criteria audit ran twice (pre- and post-gate). Pass 1: findings on all 11 drafted criteria. Pass 2 on the revised 12: 8 OK, 4 findings — undefined `check()` NOTE baseline (M25 AC5, M26 AC7), validity scales carrying no T (M26 AC2, AC4), non-injective raw→T (M26 AC4), tripwire branch leaving M26 AC5 unsatisfiable. All four fixed before writing; none escalated to a second gate round.
 
 ## Decisions
