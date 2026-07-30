@@ -100,6 +100,8 @@ what a total score means (IP4).
 
 - 2026-07-30: T6 done — `@details` section for the total with its p. 23 citation, `pid_scales`/`reliability_pid5()` docs updated for the sixth BF row, NEWS entry (incl. the stale "normed here but not yet scored" clause corrected in the same unreleased section), and the BF vignette's "yields the 5 domain scores only" prose fixed. `_pkgdown.yml` needs no change: M26 exports no new function. document() clean, check() 0/0/0.
 
+- 2026-07-30: maintainer confirmed the regenerated BF forms look right; raised the response-option legend wrapping mid-phrase, verified pre-existing (byte-identical legend on main) and PID-only, captured as a ROADMAP candidate with the chosen two-per-line break rather than widened into this milestone's scope.
+
 ## Decisions
 
 ## Review
