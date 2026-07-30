@@ -97,6 +97,7 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 - 2026-07-30: plan-time structural screen (raw linear in T; percentile monotone in [0,1]) flagged 3 cells; maintainer checked the book and corrected all 3 in `data-raw/` before planning closed.
 - 2026-07-30: plan gate chose independent re-transcription of the book pages over a maintainer second pass or a ~20-cell spot check, because a monotone-preserving percentile typo survives the structural screen; falsified by a re-transcription diff whose discrepancies are all traced to the transcriber rather than the CSVs.
 - 2026-07-30: plan chose one long-form `pid_norms` tibble over seven wide per-table datasets, because facet-level and stratified norms are expected later and a long table absorbs them without new exports; falsified by a lookup path that needs per-table column layout for acceptable performance or ergonomics.
+- 2026-07-30: the three corrections landed directly on main (c995586) rather than a branch — no runtime surface, nothing reads `data-raw/norms_*.csv` yet; the git-model hook flagged the non-`cairn/` path and the trivial-tier call is recorded here.
 - 2026-07-30: [O] criteria audit ran twice (pre- and post-gate). Pass 1: findings on all 11 drafted criteria. Pass 2 on the revised 12: 8 OK, 4 findings — undefined `check()` NOTE baseline (M25 AC5, M26 AC7), validity scales carrying no T (M26 AC2, AC4), non-injective raw→T (M26 AC4), tripwire branch leaving M26 AC5 unsatisfiable. All four fixed before writing; none escalated to a second gate round.
 
 ## Decisions
