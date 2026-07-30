@@ -52,8 +52,8 @@ Let researchers select a subset of HiTOP-SR scales and generate DOCX/Qualtrics/R
 
 ## Tasks
 
-- [ ] T1: Implement `hitop_subset()` + a `hitop_subset` S3 object and scale-name validation in a new `R/subset.R` (tests-first: resolution against a hand-derived oracle for ≥2 selections; unknown-name and empty-selection error branches). *(RB tripwire: irreversible-api — the exported constructor signature/shape)*
-- [ ] T2: Add an internal base-R helper that reduces an `*_items` table + scale map to a subset, preserving original numbering; keep it instrument-general for later reuse.
+- [x] T1: Implement `hitop_subset()` + a `hitop_subset` S3 object and scale-name validation in a new `R/subset.R` (tests-first: resolution against a hand-derived oracle for ≥2 selections; unknown-name and empty-selection error branches). *(RB tripwire: irreversible-api — the exported constructor signature/shape)*
+- [x] T2: Add an internal base-R helper that reduces an `*_items` table + scale map to a subset, preserving original numbering; keep it instrument-general for later reuse.
 - [ ] T3: Wire `subset` into `generate_docx_hitopsr`; add a parse-and-compare test (D-010 style) for a subset artifact.
 - [ ] T4: Wire `subset` into `generate_qualtrics_hitopsr`; add a parse-and-compare test.
 - [ ] T5: Wire `subset` into `generate_redcap_hitopsr`; add a parse-and-compare test.
@@ -63,8 +63,19 @@ Let researchers select a subset of HiTOP-SR scales and generate DOCX/Qualtrics/R
 ## Work log
 
 - 2026-07-30: /milestone-implement started on branch `m24-hitopsr-subset-generation`.
+- 2026-07-30: implement gate settled three open forks (scale-name vocabulary, Qualtrics ID padding, `include_subscales` collision) — see the Decisions entry below.
+- 2026-07-30: T1+T2 done — `R/subset.R` adds exported `hitop_subset()`, a `print()` method, and the internal `apply_subset()` reducer; `test-subset.R` adds 29 assertions incl. hand-derived item oracles for 3 selections. `devtools::test()` FAIL 0 | PASS 9694.
 - 2026-07-17: created by /milestone-plan. Forks decided at the gate: SR only · subset-descriptor object (not a per-function `scales=` arg, which would reverse the deliberate "no scales arg" convention — D-006/D-012) · preserve original HSR numbering · generate-first (scoring deferred to a dependent candidate).
 
 ## Decisions
+
+### 2026-07-30 (T1): `hitop_subset()` API shape (the plan's `irreversible-api` tripwire)
+
+Settled at the implement question gate rather than escalated, the maintainer choosing among three stated options per fork.
+
+1. **Scale-name vocabulary — accept both forms, case-insensitively.** `scales` matches against `hitopsr_scales$Scale` (display) *or* `$camelCase` (the scored-output stem), ignoring case; the object canonicalizes to display names plus stems. Verified safe: lowercasing both columns yields no key that maps to two different scales, so the union lookup is unambiguous. Rejected: camelCase-only (one vocabulary, but errors on the names printed on the instrument the user is holding) and display-only (diverges from the scoring vocabulary).
+2. **Qualtrics ID padding — fixed in the shared helper.** `build_qualtrics_txt()` computed its zero-pad width from `nrow(items)`, which under a subset under-pads (item 7 → `HSR_07` beside item 312 → `HSR_312`). Width now derives from the largest item number, which is identical for all six existing generators and is asserted so. Rejected: passing an explicit width from the SR generator only, which leaves the latent bug for the next instrument that filters items.
+3. **`include_subscales` + `subset` — error.** A subscale can draw items from outside the chosen scales, so the combination is rejected with a `cli` error naming the conflict. Rejected: including only fully-contained subscales (invents a containment rule the plan scoped Out) and silently ignoring the argument (GP1: deviations are loud).
+
 
 ## Review
