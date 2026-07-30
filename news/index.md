@@ -5,6 +5,21 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+- **PID-5 normative tables.** The new `pid_norms` dataset carries the
+  published normative score distributions for the PID-5, PID-5-SF, and
+  PID-5-BF: the raw score and percentile at each T score for the five
+  domain scales (and the brief form’s total score), and the percentile
+  at each raw score for the INC, INC-S, ORS, and PRD validity scales.
+  Scale names match the columns
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+  and
+  [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
+  return, except for the brief form’s total score, which is normed here
+  but not yet scored. Every value is transcribed from Markon et
+  al. (2024) and verified cell by cell against that source. Functions
+  for converting scores to and from these norms are not part of this
+  release.
+
 - **Generate a shortened HiTOP-SR from selected scales.** The new
   [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
   describes a subset of an instrument’s scales, and
