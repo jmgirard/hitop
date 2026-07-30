@@ -104,6 +104,20 @@ what a total score means (IP4).
 
 ## Decisions
 
+**M26-D1 (2026-07-30): the BF total prorates independently of the domains.**
+D-017 added the BF total but explicitly left "its behavior under `missing = "apa"`"
+to be resolved here, and the book states no missing-data rule for it. Decided at the
+implementation gate: the total is scored as its own 25-item scale, so `missing` applies
+to it at that level and it prorates independently of the five domains — GP1 gives the
+book's stated computation the default, and the alternative (blank the total whenever any
+domain blanks) would need a special case the published rule does not ask for.
+Consequence: a total can be reported beside up to 3 `NA` domains, and the converse — all
+five domains `NA` beside a reported total — cannot occur. Documented in `score_pid5()`'s
+`@details`, `cairn/SOURCES.md`, and NEWS. Recorded here rather than as a cross-cutting
+D-entry because it governs one scale in one function; D-017 and D-019 already carry the
+cross-cutting parts. Raised at review as finding F13 (scored 72, below the action bar).
+
+
 ## Review
 
 Verified 2026-07-30 on `m26-pid5bf-total-score` @ PR #29, all evidence re-run at review.
