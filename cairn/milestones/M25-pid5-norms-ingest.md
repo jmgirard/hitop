@@ -1,11 +1,11 @@
 # M25: PID-5 normative tables — verification and ingest
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, IP3
-- **Branch/PR:** —
+- **Branch/PR:** `m25-pid5-norms-ingest`
 
 ## Goal
 
@@ -71,7 +71,7 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 
 ## Tasks
 
-- [ ] **T1.** Maintainer uploads the book's norm-table pages to `cairn/references/sources/`
+- [x] **T1.** Maintainer uploads the book's norm-table pages to `cairn/references/sources/`
       (gitignored shelf); confirm the pages cover all seven tables. Blocks T2.
 - [ ] **T2.** Independent re-transcription of those pages by a fresh reader that has not
       seen the CSVs; emit a machine-diffable transcription.
@@ -98,6 +98,9 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 - 2026-07-30: plan gate chose independent re-transcription of the book pages over a maintainer second pass or a ~20-cell spot check, because a monotone-preserving percentile typo survives the structural screen; falsified by a re-transcription diff whose discrepancies are all traced to the transcriber rather than the CSVs.
 - 2026-07-30: plan chose one long-form `pid_norms` tibble over seven wide per-table datasets, because facet-level and stratified norms are expected later and a long table absorbs them without new exports; falsified by a lookup path that needs per-table column layout for acceptable performance or ergonomics.
 - 2026-07-30: the three corrections landed directly on main (c995586) rather than a branch — no runtime surface, nothing reads `data-raw/norms_*.csv` yet; the git-model hook flagged the non-`cairn/` path and the trivial-tier call is recorded here.
+- 2026-07-30: implementation started on `m25-pid5-norms-ingest`.
+- 2026-07-30: T1 done — the maintainer uploaded the whole book as `markon2024.epub` (Markon, Fossati, Somma & Krueger, 2024, APA Publishing, ISBN 9781615375127) rather than page scans. Its Appendix carries 12 tables, of which the seven M25 ships are A-1 (SRF VRIN), A-2 (100-item VRIN), A-3 (ORS), A-4 (PIM-RD), A-5 (SRF domain), A-7 (SF domain), A-9 (BF total+domain); the epub is paginated (196 page anchors), so per-table page anchors are available for AC2.
+- 2026-07-30: the five remaining appendix tables are out of M25 scope as planned and were captured as ROADMAP candidates on main before branching — A-6/A-8 (facet norms, extending the existing facet candidate) and A-10/A-11/A-12 (Informant Form, a new candidate; the package has no IRF surface).
 - 2026-07-30: [O] criteria audit ran twice (pre- and post-gate). Pass 1: findings on all 11 drafted criteria. Pass 2 on the revised 12: 8 OK, 4 findings — undefined `check()` NOTE baseline (M25 AC5, M26 AC7), validity scales carrying no T (M26 AC2, AC4), non-injective raw→T (M26 AC4), tripwire branch leaving M26 AC5 unsatisfiable. All four fixed before writing; none escalated to a second gate round.
 
 ## Decisions
