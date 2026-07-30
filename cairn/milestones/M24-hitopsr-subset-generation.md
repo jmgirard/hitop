@@ -104,3 +104,37 @@ All commands run at review time; no result carried over from implementation.
 - No `DESIGN.md` principle changed, so `cairn_impact` is not run.
 - Returns to `in-progress`: none (first review pass; thrash rule not engaged).
 
+### Independent review (3 fresh-context lenses + scorer)
+
+- **[O] diff-bug (Opus)** — 18 candidate findings. **[S] blame-history (Sonnet)** — 1 (the CRLF divergence), no conflict with any recorded decision; it verified the padding change was not a deliberate historical choice, that moving the skip guards matches M10's intent for `helper-generators.R`, and that the `subset`-object design honors the D-006/D-012 "no scales arg" convention rather than reversing it. **[S] prior-review record (Sonnet)** — 0 findings; the `gh api .../pulls/comments` probe returned `[]`, so the per-PR thread walk was skipped, and no archived `## Review` finding or LESSONS line bears on these files as a regression.
+- **[S] scorer (Sonnet)**, given the diff and the plan, scored all 19 against the rubric. One scored ≥ 80.
+
+**Actioned (score ≥ 80): 1 of 19.**
+
+- **#1, score 85 — `R/generate_docx.R:129`, the `include_subscales` + `subset` guard was bypassable.** The guard used `isTRUE(include_subscales)` while the consumer 27 lines below used plain `if (include_subscales)`, so `include_subscales = 1` slipped the guard and wrote an 8-item form whose scoring table carried 17 "(Subscale)" rows listing items not on the form — exactly the artifact milestone Decision #3 rejects. **Fixed at review**: the guard now tests the same truthiness as the consumer, with a comment saying why, plus a regression test over `1`, `1L`, and a non-coercible string. Reproduced before the fix and confirmed closed after.
+
+**Logged, not actioned (score < 80): 18.** Surfaced here, never silently dropped.
+
+- 78 — DOCX subset test samples 25 of 397 dropped item texts and never asserts the emitted item count (Qualtrics/REDCap equivalents are exact).
+- 68 — `hitop_subset("hitopsr")` with `scales` omitted gives a bare R error, not a `cli_assert` message.
+- 62 — the returned object omits the per-scale item map Scope In names; `apply_subset()` re-derives it. Belongs with the existing `Score HiTOP-SR subset-collected data` candidate, which is the consumer that would need it.
+- 55 — `instrument` precedes the required `scales`, so a positional first call errors about the wrong argument.
+- 52 — the milestone Decisions text says "all six existing generators"; five funnel through `build_qualtrics_txt()` (HSUM has no exported Qualtrics generator). The test correctly iterates five.
+- 42 — roxygen/NEWS say subset data "can still be scored against the full key"; `score_hitopsr()` requires all 405 columns, so NA-padding is needed first.
+- 35 — pad width derives from the subset's largest item number, not the instrument's; unreachable for the SR (minimum per-scale maximum is 151) and only live for the out-of-scope BR/PID-5 subsetting.
+- 33 — subset artifacts keep the full instrument's title/block/form name with no "n of 405" notice.
+- 32 — the dual-name no-collision invariant is a comment, not a machine check (verified to hold: 0 collisions across 152 keys).
+- 32 — the `subset = NULL` leg of the equivalence test is a tautology.
+- 28 — no cross-check that a subset's `instrument` matches the generator's; unreachable while only `"hitopsr"` is constructible.
+- 28 — a stale comment and a stale `file:line` cross-reference in two test files.
+- 25 — HSUM absent from the `planned` instrument list, so it gets the unknown-value error rather than "not yet supported".
+- 22 — the new width expression is less NA/zero-row robust than the old one; unreachable today.
+- 20 — factor `scales` rejected rather than coerced.
+- 20 — `print.hitop_subset()` does not truncate (77 lines for the all-scales subset).
+- 18 — one new test file fails `air format --check` (formatter-caught, excluded by rubric).
+- 15 — the CRLF divergence in two R files is perpetuated rather than normalized; the work log records the choice.
+
+### CI and post-fix re-verification
+
+- PR #27 CI green on all 7 jobs before the fix (macOS release, Ubuntu devel/release/oldrel-1, Windows release, pkgdown, test-coverage); re-run after the fix at merge time.
+- After fix: `devtools::test()` FAIL 0 | WARN 0 | SKIP 1 | PASS 9779 · `devtools::check()` 0/0/0 · `document()` no diff.

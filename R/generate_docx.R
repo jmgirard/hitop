@@ -126,7 +126,9 @@ generate_docx_hitopsr <- function(
   papersize <- match.arg(papersize)
   dims <- get_page_dims(papersize)
 
-  if (!is.null(subset) && isTRUE(include_subscales)) {
+  # Truthiness must match the consumer below (`if (include_subscales)`), or a
+  # truthy non-TRUE value slips the guard and still adds the subscale rows.
+  if (!is.null(subset) && include_subscales) {
     cli::cli_abort(c(
       "{.arg include_subscales} cannot be combined with {.arg subset}.",
       i = "A subscale may draw items from scales outside the subset, so its

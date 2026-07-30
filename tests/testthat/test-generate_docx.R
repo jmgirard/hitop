@@ -168,6 +168,18 @@ test_that("generate_docx_hitopsr() rejects subset + include_subscales", {
     generate_docx_hitopsr(file = f, subset = s, include_subscales = TRUE),
     "cannot be combined"
   )
+  # Truthy non-TRUE values must not slip past the guard: the code that adds
+  # the subscale rows tests plain truthiness, so the guard must too.
+  for (truthy in list(1, 1L)) {
+    expect_error(
+      generate_docx_hitopsr(file = f, subset = s, include_subscales = truthy),
+      "cannot be combined"
+    )
+  }
+  # A value R cannot read as a logical errors either way, never silently.
+  expect_error(
+    generate_docx_hitopsr(file = f, subset = s, include_subscales = "yes")
+  )
 })
 
 test_that("generate_docx_hitopsr() rejects a non-hitop_subset subset", {
