@@ -38,14 +38,80 @@ rebuild_stems <- c("pid5bf")
 ## one. Restrict to the format whose content actually changed.
 rebuild_formats <- c("docx")
 
+## Both filters are plain string matches, so a typo ("pid5_bf"), a case slip
+## ("DOCX"), or the manifest's own format vocabulary ("docx_us") would match
+## nothing, rebuild nothing, and exit successfully -- leaving a committed
+## artifact stale against the keying tables with no error and no failing test
+## (test-artifacts.R locks file<->manifest, and the generator tests parse fresh
+## tempfiles, never the committed files). So record what each filter actually
+## matched and abort below if anything went unmatched.
+matched_stems <- character(0)
+matched_formats <- character(0)
+
 keep_specs <- function(specs, format) {
   if (!is.null(rebuild_formats) && !(format %in% rebuild_formats)) {
     return(list())
   }
-  if (is.null(rebuild_stems)) {
-    return(specs)
+  matched_formats <<- union(matched_formats, format)
+  keep <- if (is.null(rebuild_stems)) {
+    specs
+  } else {
+    Filter(function(s) s$stem %in% rebuild_stems, specs)
   }
-  Filter(function(s) s$stem %in% rebuild_stems, specs)
+  matched_stems <<- union(
+    matched_stems,
+    vapply(keep, function(s) s$stem, character(1))
+  )
+  keep
+}
+
+check_filters_matched <- function() {
+  all_stems <- sort(unique(vapply(
+    c(docx_specs, qualtrics_specs, redcap_specs),
+    function(s) s$stem,
+    character(1)
+  )))
+  all_formats <- c("docx", "qualtrics", "redcap")
+
+  bad <- function(what, unknown, known) {
+    stop(
+      "`", what, "` has no such value: ", paste(sQuote(unknown), collapse = ", "),
+      ".\n  Valid values: ", paste(sQuote(known), collapse = ", "),
+      ".\n  Nothing was rebuilt -- fix the value and re-source.",
+      call. = FALSE
+    )
+  }
+
+  ## Formats are checked first on purpose: an unrecognized format rejects every
+  ## spec, which leaves the stems unmatched too and would otherwise blame
+  ## `rebuild_stems` for a `rebuild_formats` typo.
+  if (!is.null(rebuild_formats)) {
+    unknown <- setdiff(rebuild_formats, all_formats)
+    if (length(unknown)) bad("rebuild_formats", unknown, all_formats)
+  }
+  if (!is.null(rebuild_stems)) {
+    unknown <- setdiff(rebuild_stems, all_stems)
+    if (length(unknown)) bad("rebuild_stems", unknown, all_stems)
+  }
+
+  ## Both filters can be individually valid and still select nothing together
+  ## (e.g. stem "hitophsum" with format "qualtrics" -- the HSUM QSF is built by
+  ## devel/qualtrics_hitophsum.R, not here), which rebuilds nothing just as
+  ## silently as a typo would.
+  if (!length(matched_stems)) {
+    stop(
+      "`rebuild_stems` and `rebuild_formats` select no artifact in combination:",
+      "\n  stems = ", paste(sQuote(rebuild_stems), collapse = ", "),
+      ", formats = ", paste(sQuote(rebuild_formats), collapse = ", "),
+      "\n  Nothing was rebuilt -- widen one of them and re-source.",
+      call. = FALSE
+    )
+  }
+
+  message(
+    "Rebuilt stems: ", paste(sort(matched_stems), collapse = ", "),
+    " | formats: ", paste(sort(matched_formats), collapse = ", ")
+  )
 }
 
 ## One note per build run, applied to every artifact rebuilt below. For the
@@ -114,6 +180,10 @@ redcap_specs <- list(
 for (spec in keep_specs(redcap_specs, "redcap")) {
   spec$fn(file = file.path(extdata, paste0(spec$stem, "_redcap.zip")))
 }
+
+## Every requested stem/format matched something above, or stop before the
+## manifest section records a build that did not happen.
+check_filters_matched()
 
 # ------------------------------------------------------------------------------
 ## Rebuild the manifest

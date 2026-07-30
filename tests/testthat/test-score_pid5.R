@@ -455,3 +455,58 @@ test_that("SF applies the APA rule the same way as FULL", {
   expect_true(is.na(apa$pid_submissiveness[5]))
   expect_false(is.na(trad$pid_submissiveness[5]))
 })
+
+test_that("BF total honors every `missing` mode (hand-computed)", {
+  # F9 (M26 review): the total was covered only under missing = "apa". Expected
+  # values below are computed BY HAND from fx_pid5bf(), never from score_pid5().
+  #   rows 1-3 are complete; row 4 has items 1:5 unanswered (20 answered, all 1)
+  #   row 3 = all 1 except items 1,2,3,5,6 = 0,1,2,3,3 -> sum 29
+  x <- fx_pid5bf()
+
+  # "available" averages whatever is present: row 4 = 20/20 = 1.
+  av <- score_pid5(x, items = 1:25, version = "BF", missing = "available",
+                   append = FALSE)
+  expect_equal(av$pid_total, c(0, 2, 1.16, 1))
+
+  # "complete" returns NA if any item is missing, so row 4 drops even though
+  # only 5 of 25 are unanswered -- where "apa" prorates it to 1.
+  cp <- score_pid5(x, items = 1:25, version = "BF", missing = "complete",
+                   append = FALSE)
+  expect_equal(cp$pid_total[1:3], c(0, 2, 1.16))
+  expect_true(is.na(cp$pid_total[[4]]))
+
+  # The three modes agree wherever nothing is missing (rows 1-3).
+  ap <- score_pid5(x, items = 1:25, version = "BF", missing = "apa",
+                   append = FALSE)
+  expect_equal(ap$pid_total[1:3], av$pid_total[1:3])
+  expect_equal(ap$pid_total[1:3], cp$pid_total[1:3])
+})
+
+test_that("BF total standard error is the SEM over its answered items", {
+  # F9 (M26 review): six `_se` columns were counted but none checked by value.
+  # Recomputed here from the fixture with base R, independent of calc_sem().
+  x <- fx_pid5bf()
+  d <- score_pid5(x, items = 1:25, version = "BF", missing = "apa",
+                  calc_se = TRUE, append = FALSE)
+
+  # Rows 1, 2 and 4 have zero variance among answered items -> SE exactly 0.
+  expect_equal(d$pid_total_se[c(1, 2, 4)], c(0, 0, 0))
+
+  # Row 3 varies: sd over all 25 items / sqrt(25).
+  row3 <- as.numeric(x[3, ])
+  expect_equal(d$pid_total_se[[3]], stats::sd(row3) / sqrt(25))
+
+  # Under APA proration the SE uses only the ANSWERED items (row 4 has 20).
+  row4 <- as.numeric(x[4, ])
+  answered <- row4[!is.na(row4)]
+  expect_equal(d$pid_total_se[[4]],
+               stats::sd(answered) / sqrt(length(answered)))
+
+  # And an SE is NA wherever its score is NA (mask_se_na), including the total.
+  y <- x
+  y[4, 1:7] <- NA_integer_   # 7 unanswered -> total drops
+  dy <- score_pid5(y, items = 1:25, version = "BF", missing = "apa",
+                   calc_se = TRUE, append = FALSE)
+  expect_true(is.na(dy$pid_total[[4]]))
+  expect_true(is.na(dy$pid_total_se[[4]]))
+})

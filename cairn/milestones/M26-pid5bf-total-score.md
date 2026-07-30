@@ -118,6 +118,8 @@ D-entry because it governs one scale in one function; D-017 and D-019 already ca
 cross-cutting parts. Raised at review as finding F13 (scored 72, below the action bar).
 
 
+- 2026-07-30: maintainer declined the first merge chip pending F1 and F9; both fixed on the branch (neither touches an acceptance criterion), suite 9976 pass, check 0/0/0.
+
 ## Review
 
 Verified 2026-07-30 on `m26-pid5bf-total-score` @ PR #29, all evidence re-run at review.
@@ -205,6 +207,23 @@ asserts non-NA rather than the hand value 1. F11 `_se` carries no heterogeneity 
 the new Total reliability row. F13 the proration choice is recorded in the work log and
 `SOURCES.md` but not `DECISIONS.md`. F14 a 17-word attributed quote ships in package docs.
 F15 `pid_norms` BF domain raws exceed 3.0 (pre-existing from M25; M27 will meet it).
+
+**Maintainer send-back (2026-07-30).** At the merge gate the maintainer declined to merge
+until F1 and F9 were fixed, both logged-not-actioned. Neither touches an acceptance
+criterion, so they were done on the branch rather than returning to implement:
+- **F1** — `check_filters_matched()` now aborts when `rebuild_stems`/`rebuild_formats`
+  names nothing, listing the valid values. Verified against all four failure modes the
+  finding named (typo stem, case slip `DOCX`, manifest vocabulary `docx_us`, wrong
+  instrument) plus a fifth the fix surfaced: two individually-valid filters that select
+  nothing in combination. Formats are checked before stems because an unrecognized format
+  rejects every spec, which left the stems unmatched too and blamed the wrong variable in
+  the first version of the guard.
+- **F9** — two tests added: `pid_total` under `missing = "available"` and `"complete"`
+  with hand-computed values, agreement of all three modes on complete data, and
+  `pid_total_se` by value (zero-variance rows exactly 0, row 3 against `sd()/sqrt(25)`
+  recomputed in base R, the answered-items-only SE under proration, and NA-masking).
+
+Suite 9976 pass / 0 fail after both. `check()` re-run: 0 errors, 0 warnings, 0 notes.
 
 **CI.** All 7 checks green on PR #29 (macos, ubuntu release/devel/oldrel-1, windows,
 pkgdown, test-coverage).
