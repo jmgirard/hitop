@@ -156,11 +156,33 @@ errors (if requested) and all original <code>data</code> columns (if requested)<
 scores followed by the 5 personality-trait domain scores. Following the APA
 scoring key (Step 3), each domain score is the mean of the average scores of
 its 3 primary facets (the map is stored in <code>pid_domains</code>). The BF version
-scores its 5 domains directly from its items. By default (<code>missing = "apa"</code>)
-all versions apply the APA missing-data and proration rule; use
-<code>missing = "available"</code> or <code>missing = "complete"</code> for the traditional
-<code><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans()</a></code> behaviors. For per-scale reliability estimates (Cronbach's
-alpha, McDonald's omega), use <code><a href="reliability_pid5.html">reliability_pid5()</a></code>.</p>
+scores its 5 domains directly from its items, and adds a <code>total</code> score. By
+default (<code>missing = "apa"</code>) all versions apply the APA missing-data and
+proration rule; use <code>missing = "available"</code> or <code>missing = "complete"</code> for
+the traditional <code><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans()</a></code> behaviors. For per-scale reliability estimates
+(Cronbach's alpha, McDonald's omega), use <code><a href="reliability_pid5.html">reliability_pid5()</a></code>.</p>
+<div class="section">
+<h3 id="the-pid-bf-total-score">The PID-5-BF total score<a class="anchor" aria-label="anchor" href="#the-pid-bf-total-score"></a></h3>
+
+
+<p><code>version = "BF"</code> returns a <code>total</code> column after its 5 domains. Markon et al.
+(2024, p. 23) define it as the item-level mean over <strong>all 25 items</strong>, not
+the mean of the 5 domain means: the total "can be computed by averaging the
+overall score by the total number of items in the measure (i.e., 25)". With
+five equal-sized domains the two definitions coincide on complete data and
+differ only when items are missing, where the published rule above governs.</p>
+<p>The total is scored like any other scale, so <code>missing</code> applies to it at the
+25-item level. Under <code>missing = "apa"</code> that means it is <code>NA</code> when more than
+a quarter of the 25 items are unanswered (7 or more) and prorated otherwise,
+independently of the domains. Because a 5-item domain is dropped at 2
+unanswered items while the total tolerates 6, <strong>a total can be reported
+alongside one or more <code>NA</code> domains</strong> (at most 3 of the 5; blanking all five
+requires 10 unanswered items, which blanks the total as well). This is the
+published rule applied as written, not an oversight.</p>
+<p>The FULL and SF versions have no total score: the PID-5 book defines one
+only for the brief form.</p>
+</div>
+
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -172,6 +194,10 @@ trait model and inventory for DSM-5. <em>Psychological Medicine, 42</em>,
 the Personality Inventory for DSM-5-Brief Form (PID-5-BF) in the
 measurement of maladaptive personality and psychopathology. <em>Assessment,
 25</em>(5), 596–607. <a href="https://doi.org/10.1177/1073191116676889" class="external-link">doi:10.1177/1073191116676889</a></p>
+<p>Markon, K. E., Fossati, A., Somma, A., &amp; Krueger, R. F. (2024).
+<em>Understanding the Personality Inventory for DSM-5 (PID-5).</em> American
+Psychiatric Association Publishing. The source for the PID-5-BF total
+score's definition (p. 23) and for the normative tables in <code>pid_norms</code>.</p>
 <p>Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W. L.,
 Samuel, D. B., Williamson, R. L., Lynam, D. R., Widiger, T. A., Markon, K.
 E., Krueger, R. F., &amp; Miller, J. D. (2015). Testing whether the DSM-5
@@ -230,10 +256,10 @@ for DSM-5. <em>Psychological Assessment, 27</em>(4), 1195–1210.
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_attentionSeeking &lt;dbl&gt;, pid_anxiousness &lt;dbl&gt;, pid_depressivity &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_withdrawal &lt;dbl&gt;, pid_restrictedAffectivity &lt;dbl&gt;, …</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Brief form (5 domains) with standard errors</span></span></span>
+<span class="r-in"><span><span class="co"># Brief form (5 domains + the total) with standard errors</span></span></span>
 <span class="r-in"><span><span class="fu">score_pid5</span><span class="op">(</span><span class="va">sim_pid5bf</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, version <span class="op">=</span> <span class="st">"BF"</span>, calc_se <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>           append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 12</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    pid_disinhibition pid_detachment pid_psychoticism pid_negativeAffectivity</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>               1.8            1.6              2                       1.8</span>
@@ -247,9 +273,10 @@ for DSM-5. <em>Psychological Assessment, 27</em>(4), 1195–1210.
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>               1.6            0.8              2.2                     0.8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>               1.2            1.8              1.4                     0.6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 90 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 6 more variables: pid_antagonism &lt;dbl&gt;, pid_disinhibition_se &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_detachment_se &lt;dbl&gt;, pid_psychoticism_se &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_negativeAffectivity_se &lt;dbl&gt;, pid_antagonism_se &lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: pid_antagonism &lt;dbl&gt;, pid_total &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_disinhibition_se &lt;dbl&gt;, pid_detachment_se &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_psychoticism_se &lt;dbl&gt;, pid_negativeAffectivity_se &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_antagonism_se &lt;dbl&gt;, pid_total_se &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -7,7 +7,10 @@ form (PID-5-BF, 25 items). Reliability is estimated on the reverse-keyed
 item responses, at the facet level for FULL/SF and the domain level for
 BF (the same scales
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
-outputs, before FULL/SF domain aggregation).
+outputs, before FULL/SF domain aggregation). The BF version also returns
+a `Total` row covering all 25 items; note that this scale spans five
+heterogeneous domains, so its internal consistency is not comparable to
+a domain's and is reported without further interpretation.
 
 ## Usage
 

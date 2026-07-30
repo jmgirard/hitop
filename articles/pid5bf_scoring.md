@@ -6,15 +6,15 @@ library(hitop)
 ```
 
 The PID-5-BF (Brief Form) is a 25-item version of the PID-5 that yields
-the 5 personality-trait domain scores only (it does not produce the 25
-facet scores). We can demonstrate the package’s functionality using some
-simulated data.
+the 5 personality-trait domain scores and an overall total score (it
+does not produce the 25 facet scores). We can demonstrate the package’s
+functionality using some simulated data.
 
 ## Score simulated PID-5-BF data
 
 The `sim_pid5bf` dataset is built into the package and contains 100 rows
 (each a simulated participant) across 25 columns named `pid_1` to
-`pid_25`. To compute the 5 domain scores, we use
+`pid_25`. To compute the 5 domain scores and the total, we use
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
 with `version = "BF"`. As with the other forms, we can specify the items
 by column number (`items = 1:25`) and set `append = FALSE` to see just
@@ -23,12 +23,20 @@ is the percentage of missing items (PNA), which
 [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
 returns.
 
+The `pid_total` column is the mean of all 25 items, following Markon et
+al. (2024, p. 23). Note that this is *not* the same as averaging the 5
+domain scores whenever any items are missing: each scale applies the
+`missing` rule to its own items, so the total tolerates up to 6
+unanswered items while a 5-item domain tolerates only 1. See
+[`?score_pid5`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+for the details.
+
 ``` r
 
 data("sim_pid5bf")
 
 score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
-#> # A tibble: 100 × 5
+#> # A tibble: 100 × 6
 #>    pid_disinhibition pid_detachment pid_psychoticism pid_negativeAffectivity
 #>                <dbl>          <dbl>            <dbl>                   <dbl>
 #>  1               1.8            1.6              2                       1.8
@@ -42,7 +50,7 @@ score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
 #>  9               1.6            0.8              2.2                     0.8
 #> 10               1.2            1.8              1.4                     0.6
 #> # ℹ 90 more rows
-#> # ℹ 1 more variable: pid_antagonism <dbl>
+#> # ℹ 2 more variables: pid_antagonism <dbl>, pid_total <dbl>
 
 validity_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
 #> # A tibble: 100 × 1
@@ -89,12 +97,13 @@ reliability_pid5(
   items = 1:25,
   version = "BF"
 )
-#> # A tibble: 5 × 4
+#> # A tibble: 6 × 4
 #>   scale                nItems   alpha    omega
 #>   <chr>                 <int>   <dbl>    <dbl>
 #> 1 Disinhibition             5 -0.260  0.00111 
 #> 2 Detachment                5  0.238  0.365   
 #> 3 Psychoticism              5  0.0658 0.0863  
 #> 4 Negative Affectivity      5 -0.0852 0.000422
-#> 5 Antagonism                5 -0.0967 0.105
+#> 5 Antagonism                5 -0.0967 0.105   
+#> 6 Total                    25 -0.0719 0.0575
 ```

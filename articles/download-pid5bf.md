@@ -17,9 +17,9 @@ Use these Microsoft Word documents for printing, paper administration,
 or sending to the IRB.
 
 [English (A4
-Paper)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_A4.docx)
+Paper)2026-07-30](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_A4.docx)
 [English (US
-Paper)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_US.docx)
+Paper)2026-07-30](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5bf_US.docx)
 
 ##### 📊 Qualtrics Import
 
@@ -104,16 +104,23 @@ Current builds & version history
 
 | File                   | Format           | Instrument version | Build date |
 |------------------------|------------------|--------------------|------------|
-| `pid5bf_A4.docx`       | DOCX (A4 paper)  | 1.0                | 2026-07-16 |
+| `pid5bf_A4.docx`       | DOCX (A4 paper)  | 1.0                | 2026-07-30 |
 | `pid5bf_qualtrics.txt` | Qualtrics import | 1.0                | 2026-07-16 |
 | `pid5bf_redcap.zip`    | REDCap import    | 1.0                | 2026-07-16 |
-| `pid5bf_US.docx`       | DOCX (US paper)  | 1.0                | 2026-07-16 |
+| `pid5bf_US.docx`       | DOCX (US paper)  | 1.0                | 2026-07-30 |
 
 If your downloaded file shows an older build date, simply re-download it
 to get the latest build. The full build manifest (including file
 checksums) ships in the package as `hitop_artifacts`.
 
 #### Version history
+
+2026-07-30
+
+Scoring table gains a Total row (all 25 items): the PID-5-BF total
+score, the item-level mean over all 25 items per Markon et al. (2024, p.
+23).  
+`pid5bf_A4.docx`, `pid5bf_US.docx`
 
 2026-07-16
 

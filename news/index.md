@@ -14,11 +14,27 @@ interface before a CRAN submission.
   [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
   and
   [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
-  return, except for the brief form’s total score, which is normed here
-  but not yet scored. Every value is transcribed from Markon et
-  al. (2024) and verified cell by cell against that source. Functions
-  for converting scores to and from these norms are not part of this
-  release.
+  return. Every value is transcribed from Markon et al. (2024) and
+  verified cell by cell against that source. Functions for converting
+  scores to and from these norms are not part of this release.
+
+- **PID-5-BF total score** (breaking). `score_pid5(version = "BF")` now
+  returns a `total` column after its five domains, so the brief form’s
+  normed total score in `pid_norms` has something to convert. Following
+  Markon et al. (2024, p. 23), it is the item-level mean over all 25
+  items rather than the mean of the five domain means; the two agree on
+  complete data and differ only when items are missing. Because each
+  scale applies the `missing` rule independently, a total can be
+  reported alongside one or more `NA` domains — see
+  [`?score_pid5`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+  for the exact bounds. Two consequences for existing code:
+  `reliability_pid5(version = "BF")` now returns **six** rows rather
+  than five, and the printed scoring table on the PID-5-BF Word forms
+  gains a `Total` row listing all 25 items (both forms are rebuilt, with
+  new `hitop_artifacts` entries). Code that counts the columns of
+  `score_pid5(version = "BF")` or the rows of
+  `reliability_pid5(version = "BF")` must be updated. The PID-5 and
+  PID-5-SF are unaffected.
 
 - **Generate a shortened HiTOP-SR from selected scales.** The new
   [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)

@@ -27,10 +27,10 @@ rows and 5 columns:
   [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
   and
   [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
-  (i.e., without their `prefix`). The one exception is `"total"`, the
-  brief form's total score, which the source norms but
-  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
-  does not yet compute
+  (i.e., without their `prefix`), so a lookup joins to scored output
+  with no crosswalk. Every scale normed here is produced by one of those
+  two functions, the brief form's `"total"` included (see
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md))
 
 - tscore:
 

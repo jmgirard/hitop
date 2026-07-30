@@ -90,9 +90,10 @@ each raw score for the validity scales, which are tabled without T scores.</p>
 
 <dt>scale</dt>
 <dd><p>Name of the scale, as the score-output column stem used by
-<code><a href="score_pid5.html">score_pid5()</a></code> and <code><a href="validity_pid5.html">validity_pid5()</a></code> (i.e., without their <code>prefix</code>). The
-one exception is <code>"total"</code>, the brief form's total score, which the source
-norms but <code><a href="score_pid5.html">score_pid5()</a></code> does not yet compute</p></dd>
+<code><a href="score_pid5.html">score_pid5()</a></code> and <code><a href="validity_pid5.html">validity_pid5()</a></code> (i.e., without their <code>prefix</code>), so a
+lookup joins to scored output with no crosswalk. Every scale normed here is
+produced by one of those two functions, the brief form's <code>"total"</code>
+included (see <code><a href="score_pid5.html">score_pid5()</a></code>)</p></dd>
 
 <dt>tscore</dt>
 <dd><p>The T score, or <code>NA</code> for the validity scales, whose tables

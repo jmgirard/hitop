@@ -3,7 +3,10 @@
 Information about the scales (facets) in different versions of the
 PID-5, used by
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
-to map each scale to its item numbers.
+to map each scale to its item numbers. It is also read by
+[`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md)
+and by the printed scoring table in `generate_docx_pid5*()`, so adding
+or removing a row changes all three.
 
 ## Usage
 
@@ -21,7 +24,9 @@ row per scale and 5 columns:
 - Facet (named `Domain` in the BF element):
 
   Name of the scale: the facet for the FULL and SF versions, the domain
-  for the BF version
+  for the BF version. The BF element carries a sixth row, `Total`, which
+  is not a domain but the whole 25-item form scored as one scale (see
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md))
 
 - itemdata:
 
@@ -44,12 +49,13 @@ row per scale and 5 columns:
 
 ``` r
 pid_scales[["BF"]]
-#> # A tibble: 5 × 5
-#>   Domain               itemdata         nItems itemNumbers  camelCase          
-#>   <chr>                <list>            <dbl> <named list> <chr>              
-#> 1 Disinhibition        <tibble [5 × 3]>      5 <dbl [5]>    disinhibition      
-#> 2 Detachment           <tibble [5 × 3]>      5 <dbl [5]>    detachment         
-#> 3 Psychoticism         <tibble [5 × 3]>      5 <dbl [5]>    psychoticism       
-#> 4 Negative affectivity <tibble [5 × 3]>      5 <dbl [5]>    negativeAffectivity
-#> 5 Antagonism           <tibble [5 × 3]>      5 <dbl [5]>    antagonism         
+#> # A tibble: 6 × 5
+#>   Domain               itemdata          nItems itemNumbers  camelCase          
+#>   <chr>                <list>             <dbl> <named list> <chr>              
+#> 1 Disinhibition        <tibble [5 × 3]>       5 <dbl [5]>    disinhibition      
+#> 2 Detachment           <tibble [5 × 3]>       5 <dbl [5]>    detachment         
+#> 3 Psychoticism         <tibble [5 × 3]>       5 <dbl [5]>    psychoticism       
+#> 4 Negative affectivity <tibble [5 × 3]>       5 <dbl [5]>    negativeAffectivity
+#> 5 Antagonism           <tibble [5 × 3]>       5 <dbl [5]>    antagonism         
+#> 6 Total                <tibble [25 × 3]>     25 <dbl [25]>   total              
 ```

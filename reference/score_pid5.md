@@ -86,13 +86,37 @@ For the FULL and SF versions, the output includes the 25 facet scores
 followed by the 5 personality-trait domain scores. Following the APA
 scoring key (Step 3), each domain score is the mean of the average
 scores of its 3 primary facets (the map is stored in `pid_domains`). The
-BF version scores its 5 domains directly from its items. By default
-(`missing = "apa"`) all versions apply the APA missing-data and
-proration rule; use `missing = "available"` or `missing = "complete"`
-for the traditional [`rowMeans()`](https://rdrr.io/r/base/colSums.html)
-behaviors. For per-scale reliability estimates (Cronbach's alpha,
-McDonald's omega), use
+BF version scores its 5 domains directly from its items, and adds a
+`total` score. By default (`missing = "apa"`) all versions apply the APA
+missing-data and proration rule; use `missing = "available"` or
+`missing = "complete"` for the traditional
+[`rowMeans()`](https://rdrr.io/r/base/colSums.html) behaviors. For
+per-scale reliability estimates (Cronbach's alpha, McDonald's omega),
+use
 [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md).
+
+### The PID-5-BF total score
+
+`version = "BF"` returns a `total` column after its 5 domains. Markon et
+al. (2024, p. 23) define it as the item-level mean over **all 25
+items**, not the mean of the 5 domain means: the total "can be computed
+by averaging the overall score by the total number of items in the
+measure (i.e., 25)". With five equal-sized domains the two definitions
+coincide on complete data and differ only when items are missing, where
+the published rule above governs.
+
+The total is scored like any other scale, so `missing` applies to it at
+the 25-item level. Under `missing = "apa"` that means it is `NA` when
+more than a quarter of the 25 items are unanswered (7 or more) and
+prorated otherwise, independently of the domains. Because a 5-item
+domain is dropped at 2 unanswered items while the total tolerates 6, **a
+total can be reported alongside one or more `NA` domains** (at most 3 of
+the 5; blanking all five requires 10 unanswered items, which blanks the
+total as well). This is the published rule applied as written, not an
+oversight.
+
+The FULL and SF versions have no total score: the PID-5 book defines one
+only for the brief form.
 
 ## References
 
@@ -106,6 +130,11 @@ Personality Inventory for DSM-5-Brief Form (PID-5-BF) in the measurement
 of maladaptive personality and psychopathology. *Assessment, 25*(5),
 596–607.
 [doi:10.1177/1073191116676889](https://doi.org/10.1177/1073191116676889)
+
+Markon, K. E., Fossati, A., Somma, A., & Krueger, R. F. (2024).
+*Understanding the Personality Inventory for DSM-5 (PID-5).* American
+Psychiatric Association Publishing. The source for the PID-5-BF total
+score's definition (p. 23) and for the normative tables in `pid_norms`.
 
 Maples, J. L., Carter, N. T., Few, L. R., Crego, C., Gore, W. L.,
 Samuel, D. B., Williamson, R. L., Lynam, D. R., Widiger, T. A., Markon,
@@ -165,10 +194,10 @@ score_pid5(sim_pid5sf, items = sprintf("pid_%d", 1:100), version = "SF",
 #> #   pid_attentionSeeking <dbl>, pid_anxiousness <dbl>, pid_depressivity <dbl>,
 #> #   pid_withdrawal <dbl>, pid_restrictedAffectivity <dbl>, …
 
-# Brief form (5 domains) with standard errors
+# Brief form (5 domains + the total) with standard errors
 score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
            append = FALSE)
-#> # A tibble: 100 × 10
+#> # A tibble: 100 × 12
 #>    pid_disinhibition pid_detachment pid_psychoticism pid_negativeAffectivity
 #>                <dbl>          <dbl>            <dbl>                   <dbl>
 #>  1               1.8            1.6              2                       1.8
@@ -182,7 +211,8 @@ score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
 #>  9               1.6            0.8              2.2                     0.8
 #> 10               1.2            1.8              1.4                     0.6
 #> # ℹ 90 more rows
-#> # ℹ 6 more variables: pid_antagonism <dbl>, pid_disinhibition_se <dbl>,
-#> #   pid_detachment_se <dbl>, pid_psychoticism_se <dbl>,
-#> #   pid_negativeAffectivity_se <dbl>, pid_antagonism_se <dbl>
+#> # ℹ 8 more variables: pid_antagonism <dbl>, pid_total <dbl>,
+#> #   pid_disinhibition_se <dbl>, pid_detachment_se <dbl>,
+#> #   pid_psychoticism_se <dbl>, pid_negativeAffectivity_se <dbl>,
+#> #   pid_antagonism_se <dbl>, pid_total_se <dbl>
 ```
