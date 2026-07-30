@@ -8,6 +8,40 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-018 (2026-07-30): Validity-scale names follow the scale-development papers, not Markon et al. (2024) — `INC` is not renamed to `VRIN` (annotates D-017's M25/M26 norms arc)
+
+The PID-5 book (Markon, Fossati, Somma & Krueger, 2024) calls Keeley's full-form
+inconsistency scale "VRIN" where this package calls it `INC`. Raised at M25's
+implementation gate as a possible harmonization; escalated as an irreversible
+exported-API decision and reviewed independently (RB01/RR01, now in
+`reviews/archive/`). **Decision: keep the current names on every surface** —
+`validity_pid5()` output columns, the `pid_items` keying columns, and
+`pid_norms$scale` alike. The book's labels are recorded as provenance in
+`SOURCES.md` and surfaced to users as an "also known as" note in the
+documentation, never as a second naming scheme in the data.
+
+Three grounds. The book is not a reliable naming authority even about itself: its
+Appendix captions call *both* inconsistency tables VRIN, while Chapter 4 names the
+100-item scale PID-5-INC-S. The primary sources favor `INC` — Keeley et al. (2016)
+and Lowmaster et al. (2020) are both titled "Response Inconsistency Scale", and
+Lowmaster's PID-5-INC-S treats `INC` as the parent stem, a lineage the package's
+`INC`/`INCS` pair encodes and a `VRIN`/`INCS` pair would sever. And no rename of the
+pair is simultaneously consistent with the book, the development papers, and that
+lineage, so harmonization has no reachable end state.
+
+The general rule this settles, beyond the one scale: **authority is per-content-type,
+not per-document.** The book is the primary source for its own normative tables and is
+cited as such (IP2, IP3); for the identity and name of a scale it did not develop, the
+development paper is primary and the book is a secondary description — regardless of
+its authors having created the instrument itself. An exported alias dataset mapping
+book names to columns was considered and rejected (GP3, GP4): two documentation
+sentences do the same work without a permanent exported surface.
+
+If a future maintainer overrules this, RR01 records the path — one release, all
+surfaces at once, NEWS entry, no dual columns and no `lifecycle` (GP2 licenses a
+signature break outright; `lifecycle` is for functions and arguments, not output
+column names, and is not a current Import).
+
 ### D-013 (2026-07-16): Adopt design principles IP1–IP4 / GP1–GP4 from the design interview
 
 **Context:** The cairn migration left DESIGN.md rich on architecture but without formalized principles. The `/design-interview` elicited audience, boundary, governance, distribution, entry-bar, and dependency facts (Phase 1, commit c94f7db), banked nine candidates, and added history-mined and domain-derived ones in Phase 2.

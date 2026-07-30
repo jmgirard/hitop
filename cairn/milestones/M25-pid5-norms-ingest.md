@@ -1,11 +1,11 @@
 # M25: PID-5 normative tables — verification and ingest
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
-- **Driving RR:** —
+- **Driving RR:** RR01
 - **Principles touched:** IP1, IP2, IP3
-- **Branch/PR:** —
+- **Branch/PR:** `m25-pid5-norms-ingest`
 
 ## Goal
 
@@ -29,37 +29,71 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 
 ## Acceptance criteria
 
-- [ ] **AC1.** Every numeric cell of the seven committed `data-raw/norms_*.csv` tables is
-      reconciled against the book: a reader that did not produce the CSVs transcribes
-      the uploaded source pages independently, and the cell-by-cell diff of that
-      transcription against the CSVs is recorded in this file, with every discrepancy
-      either corrected in the CSV with maintainer sign-off (IP1) or recorded as
-      printed-in-source.
-- [ ] **AC2.** `cairn/SOURCES.md` carries a PID-5 norms section giving the book's full
+- [x] **AC1.** Every numeric cell of the seven committed `data-raw/norms_*.csv` tables is
+      reconciled against the book: an independent transcription is produced from the
+      source by a route that did not produce the CSVs — a committed, re-runnable
+      extractor over the book's table markup, or a fresh reader where no markup exists —
+      and the cell-by-cell diff of that transcription against the CSVs is recorded in
+      this file, with every discrepancy either corrected in the CSV with maintainer
+      sign-off (IP1) or recorded as printed-in-source.
+- [x] **AC2.** `cairn/SOURCES.md` carries a PID-5 norms section giving the book's full
       citation, a page/table anchor for each of the seven tables, the normative sample
       as the book describes it, the maintainer-confirmed mapping from each book scale
-      name (VRIN, ORS, PIM-RD) to the package column it norms — or, where the
+      name (VRIN, ORS, PID-5-PRD) to the package column it norms — or, where the
       maintainer's check finds no correspondence, a record that the table is not
       shipped and why — and a per-table verification status; and a citekey-named
       source note under `cairn/references/` exists carrying a Provenance block and its
       `INDEX.md` line.
-- [ ] **AC3.** `pid_norms` is a single exported tibble in long form — one row per
+- [x] **AC3.** `pid_norms` is a single exported tibble in long form — one row per
       (version, scale, T) for the three domain tables and per (version, scale, score)
       for each validity table AC2 records as shipped — and `data-raw/norms_pid5.R`
       regenerates `data/pid_norms.rda` from the CSVs such that re-running it leaves
       `data/` byte-unchanged.
-- [ ] **AC4.** `tests/testthat/test-norms.R` fails when any one of these mutations is
+- [x] **AC4.** `tests/testthat/test-norms.R` fails when any one of these mutations is
       applied to `pid_norms`, each mutation run with its failure recorded as review
       evidence: (a) any domain `raw` value changed by ≥ 0.02, breaking the per-scale
       invariant `raw == max(0, a + b*T)` to a tolerance of 0.006, with `a`/`b` fit on
       the rows above that scale's zero floor; (b) any `percentile` changed so it falls
       below its predecessor within a scale; (c) any `percentile` set outside [0, 1];
       (d) any one of the ≥ 15 values hardcoded in the test from named book pages.
-- [ ] **AC5.** `Rscript -e 'devtools::document()'` leaves the working tree clean and
+- [x] **AC5.** `Rscript -e 'devtools::document()'` leaves the working tree clean and
       `Rscript -e 'devtools::check()'` reports 0 errors and 0 warnings, with every NOTE
       justified in this file's Review section (`cairn/PROFILE.md` consistency-gate), and
       with `pid_norms` documented in `R/data.R` and listed under "Instrument Data" in
       `_pkgdown.yml`.
+
+- [x] **AC6 (BC1).** For each validity table that ships in `pid_norms`, its `scale`
+      value is exactly the package column stem — `"INC"` (book Table A-1), `"INCS"`
+      (A-2), `"ORS"` (A-3), `"PRD"` (A-4) — and no `scale` value anywhere in
+      `pid_norms` is `"VRIN"`, `"VRINS"`, `"INC-S"`, or `"PIM-RD"`.
+- [x] **AC7 (BC2).** M25 introduces no rename of existing validity-scale names on any
+      exported surface: `validity_pid5()` output column names and the
+      `pid_items`/`data-raw/pid_items.csv` validity columns (`INC`, `INCS`,
+      `ORS`, `ORSS`, `PRD`, `PRDS`, `SDTD`, `SDTDS`) are unchanged from their
+      pre-M25 state.
+- [x] **AC8 (BC3).** The `cairn/SOURCES.md` PID-5 norms section required by AC2 records,
+      with table/page anchors: (a) the A-2 caption name "Variable Response
+      Inconsistency (VRIN)" *and* the Chapter 4 name "PID-5-INC-S" as an internal
+      inconsistency of the book, with the mapping to `INCS` citing the chapter text
+      and Lowmaster et al. (2020); and (b) the book's abbreviation PID-5-PRD (not
+      "PIM-RD") mapped to package `PRD`.
+- [x] **AC9 (BC4).** The `pid_norms` roxygen block in `R/data.R` carries a one-sentence
+      note that the `INC`/`INCS` scales are also called the Variable Response
+      Inconsistency (VRIN) scale by Markon et al. (2024), so that a reader of the book
+      can find the columns.
+
+### Deviations from RR01
+
+| RR01 text | Departure | Why |
+|---|---|---|
+| BC1 "the `scale` values for the four validity tables are exactly …" | AC6 makes it conditional: "For each validity table that ships in `pid_norms`, its `scale` value is exactly …" | BC1 as written asserts all four validity tables ship, foreclosing the hold-out branch AC2, AC3 and T4 deliberately preserve; if T4 had found no correspondence for a table, satisfying AC2 would have violated BC1. |
+| BC1 "…, or any other book-caption spelling." | Clause dropped; AC6 keeps the four named literals. | Unenumerable, so no verifier could ever confirm it. |
+| BC3 "justified from the chapter text and Lowmaster et al. (2020/2021)" | AC8 reads "citing the chapter text and Lowmaster et al. (2020)". | "Justified" sets no observable failure threshold, so it is restated as a presence test; and the package's own citation in `R/validity_pid5.R` is Lowmaster 2020, leaving the 2020/2021 pairing unresolved. |
+| RR01 §7 "no AC wording change needed" | AC2's parenthetical amended from "(VRIN, ORS, PIM-RD)" to "(VRIN, ORS, PID-5-PRD)". | RR01 itself establishes the book never writes "PIM-RD"; leaving AC2 as it stood would make AC2 and BC3 jointly unsatisfiable. |
+| — (no BC) | AC9 added, binding RR01 Recommendation 3's `pid_norms` book-name note. | The recommendation is marked Apply but no BC or existing AC covered it, leaving the review's only user-facing deliverable with no verifier. |
+
+All five departures come from the fresh-context [O] binding-criteria audit run before
+ingestion (2026-07-30); BC2 is ingested verbatim as AC7.
 
 ## Coverage
 
@@ -68,27 +102,31 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 - AC3 → T6
 - AC4 → T7
 - AC5 → T8
+- AC6 → T6
+- AC7 → T6, T8
+- AC8 → T5
+- AC9 → T8
 
 ## Tasks
 
-- [ ] **T1.** Maintainer uploads the book's norm-table pages to `cairn/references/sources/`
+- [x] **T1.** Maintainer uploads the book's norm-table pages to `cairn/references/sources/`
       (gitignored shelf); confirm the pages cover all seven tables. Blocks T2.
-- [ ] **T2.** Independent re-transcription of those pages by a fresh reader that has not
+- [x] **T2.** Independent re-transcription of those pages by a fresh reader that has not
       seen the CSVs; emit a machine-diffable transcription.
-- [ ] **T3.** Diff the transcription against the seven CSVs cell by cell; reconcile each
+- [x] **T3.** Diff the transcription against the seven CSVs cell by cell; reconcile each
       discrepancy (correct with sign-off, or record as printed-in-source) and log the
       ledger here.
-- [ ] **T4.** Maintainer confirms the book-scale → package-column mapping for
+- [x] **T4.** Maintainer confirms the book-scale → package-column mapping for
       `norms_pid5_vrin`, `norms_pid5sf_vrin`, `norms_pid5_ors`, `norms_pid5_pimrd`
       against the book's own scale descriptions; any table with no confirmed
       correspondence is held out of `pid_norms`.
-- [ ] **T5.** Write the `cairn/SOURCES.md` PID-5 norms section, the citekey source note
+- [x] **T5.** Write the `cairn/SOURCES.md` PID-5 norms section, the citekey source note
       from `templates/source-note.md`, and its `cairn/references/INDEX.md` line.
-- [ ] **T6.** Write `data-raw/norms_pid5.R` building long-form `pid_norms` from the CSVs;
+- [x] **T6.** Write `data-raw/norms_pid5.R` building long-form `pid_norms` from the CSVs;
       regenerate `data/`. (M18 lesson: `readr`/`usethis` must be installed locally.)
-- [ ] **T7.** Write `tests/testthat/test-norms.R` — the three structural invariants plus
+- [x] **T7.** Write `tests/testthat/test-norms.R` — the three structural invariants plus
       ≥ 15 page-cited spot values — and run each mutation to confirm it reddens.
-- [ ] **T8.** Document `pid_norms` in `R/data.R`, add the `_pkgdown.yml` entry and a NEWS
+- [x] **T8.** Document `pid_norms` in `R/data.R`, add the `_pkgdown.yml` entry and a NEWS
       line; run `document()` / `test()` / `check()`.
 
 ## Work log
@@ -98,8 +136,200 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 - 2026-07-30: plan gate chose independent re-transcription of the book pages over a maintainer second pass or a ~20-cell spot check, because a monotone-preserving percentile typo survives the structural screen; falsified by a re-transcription diff whose discrepancies are all traced to the transcriber rather than the CSVs.
 - 2026-07-30: plan chose one long-form `pid_norms` tibble over seven wide per-table datasets, because facet-level and stratified norms are expected later and a long table absorbs them without new exports; falsified by a lookup path that needs per-table column layout for acceptable performance or ergonomics.
 - 2026-07-30: the three corrections landed directly on main (c995586) rather than a branch — no runtime surface, nothing reads `data-raw/norms_*.csv` yet; the git-model hook flagged the non-`cairn/` path and the trivial-tier call is recorded here.
+- 2026-07-30: implementation started on `m25-pid5-norms-ingest`.
+- 2026-07-30: T1 done — the maintainer uploaded the whole book as `markon2024.epub` (Markon, Fossati, Somma & Krueger, 2024, APA Publishing, ISBN 9781615375127) rather than page scans. Its Appendix carries 12 tables, of which the seven M25 ships are A-1 (SRF VRIN), A-2 (100-item VRIN), A-3 (ORS), A-4 (PIM-RD), A-5 (SRF domain), A-7 (SF domain), A-9 (BF total+domain); the epub is paginated (196 page anchors), so per-table page anchors are available for AC2.
+- 2026-07-30: the five remaining appendix tables are out of M25 scope as planned and were captured as ROADMAP candidates on main before branching — A-6/A-8 (facet norms, extending the existing facet candidate) and A-10/A-11/A-12 (Informant Form, a new candidate; the package has no IRF surface).
+- 2026-07-30: gate chose the committed-extractor route for AC1 over a fresh reader retyping, because the book arrived as structured markup rather than page scans; AC1's method wording is amended accordingly (see Decisions). Falsified by table markup that turns out not to be losslessly extractable — e.g. values carried in images or in flowed text rather than cells.
+- 2026-07-30: T4's mapping is evidenced from the book's own attributions — A-1 to Keeley et al. (2016) = `INC`, A-2 to Lowmaster et al. (2020/2021) = `INCS` (the book's caption says VRIN but its text names PID-5-INC-S), A-3 to Sellbom et al. (2018) = `ORS`, A-4 to Williams et al. (2019) = `PRD`. Each matches the source that package column already cites; maintainer sign-off still pending behind RB01.
+- 2026-07-30: blocked on RB01 — the maintainer asked whether the package should harmonize validity-scale naming to the book (`INC` to `VRIN`); that is an irreversible exported-API decision (RB tripwire `irreversible-api`), so it goes to a Fable review rather than being settled in-session. RB01 is committed on this branch rather than the default branch, because the milestone file it blocks is ahead of main here.
+- 2026-07-30: T2 done — `data-raw/verify_norms_against_book.R` extracts all seven tables from the book's own table markup and diffs them cell by cell against the CSVs. Row identity is established by the printed T/score column rather than by position, so the extractor cannot silently misalign; all seven tables match the CSVs on dimensions and on every T value. Page anchors read off the epub's pagebreak ids: A-1 p. 116, A-2 p. 117, A-3 p. 117, A-4 p. 118, A-5 p. 120, A-7 p. 147, A-9 p. 174.
+- 2026-07-30: T3 done — 18 cells corrected against the book with maintainer sign-off; the verifier now reports all seven tables matching cell for cell. Ledger in Decisions (M25-D2).
+- 2026-07-30: RR01 returned and was ingested — keep `INC`, no rename; see Decisions (M25-D3, M25-D4) and D-018. Its binding criteria were audited first by a fresh-context [O] reader, which found BC1 foreclosed the table hold-out branch AC2/AC3/T4 preserve, BC3 collided with AC2's own "PIM-RD" wording, and RR01's only user-facing recommendation had no verifier; all five fixes applied as recorded deviations. T4 discharged by the maintainer's acceptance. RB01/RR01 archived; M25 back to in-progress.
+- 2026-07-30: ingesting RR01 took M25 to 9 acceptance criteria, past the 7-criterion split tripwire (`cairn_validate` sizing advisory). Not split: AC7 is a restrictive no-op guard over files M25 never touches, AC8 records content AC2/T5 already produce, and AC9 is one sentence in the roxygen block T8 writes — the criteria count rose without the work volume rising, and all four map onto existing tasks.
+- 2026-07-30: T5 done — `cairn/SOURCES.md` gains a PID-5 normative tables section (citation, per-table page anchors, the sample as the book states it, the book-label to package-column mapping, and per-table verification status), the source note `cairn/references/markon2024.md` is written from the template with a Provenance block, and its INDEX line is added. The book's own domain-norm inclusion criterion (VRIN < 17) matches the package's documented `INC` cut score of 17, which corroborates the A-1 mapping independently of the shared Keeley attribution.
+- 2026-07-30: T6 done — `data-raw/norms_pid5.R` builds `pid_norms`, 1,056 rows over 5 columns (16 domain scale-by-version blocks and 4 validity scales); re-running the script leaves `data/pid_norms.rda` byte-identical (same md5) and `devtools::test()` is clean. Shape choices at the implementation gate are in Decisions (M25-D5).
+- 2026-07-30: T7 done — `tests/testthat/test-norms.R` (155 expectations) carries the three structural invariants, a scale-coverage and validity-naming guard for AC6/AC7, and 33 spot values transcribed from the seven printed tables with page anchors. `data-raw/mutate_norms_check.R` makes AC4's mutations re-runnable: all six (two AC4(a), one each AC4(b) and AC4(c), two AC4(d)) redden the file and the dataset is restored byte-identical. The harness first left `data/pid_norms.rda` mutated because `on.exit()` at an Rscript's top level fires at the end of its own statement, not at script end; the restore now runs inside a function.
+- 2026-07-30: T8 done — `pid_norms` roxygen block in `R/data.R` (format, the normative sample as the book states it, the AC9 VRIN note, `@source` with the table anchors), `_pkgdown.yml` "Instrument Data" row, NEWS bullet. `document()` leaves the tree clean, `check()` reports 0 errors / 0 warnings / 0 notes, `pkgdown::check_pkgdown()` finds no problems.
+- 2026-07-30: at the merge gate the maintainer directed that two sub-threshold (78) findings be fixed anyway, both documentation claims false as shipped — the `scale`-matches-`score_pid5()` claim (untrue for the BF `total`) and the N = 995 attribution to the brief-form norms. Fixed in `R/data.R` and `NEWS.md`; `check()` re-run clean.
+- 2026-07-30: review pass — 9/9 criteria evidenced, `cairn_validate` exit 0, `check()` 0/0/0. Three fresh-context lenses returned 19 findings (all from the [O] diff-bug lens; the two [S] lenses found none); the scorer put 2 at or above 80 and both were fixed at review — a missing BF `disinhibition` spot anchor (closed as a class, with a new test asserting every scale carries one) and a wrong `raw` metric description for the FULL/SF domains. 17 sub-threshold findings logged in the Review section.
 - 2026-07-30: [O] criteria audit ran twice (pre- and post-gate). Pass 1: findings on all 11 drafted criteria. Pass 2 on the revised 12: 8 OK, 4 findings — undefined `check()` NOTE baseline (M25 AC5, M26 AC7), validity scales carrying no T (M26 AC2, AC4), non-injective raw→T (M26 AC4), tripwire branch leaving M26 AC5 unsatisfiable. All four fixed before writing; none escalated to a second gate round.
 
 ## Decisions
 
+- 2026-07-30 (M25-D1): AC1's transcription route amended from "a reader that did not produce the CSVs transcribes the uploaded source pages" to "a committed, re-runnable extractor over the book's table markup, or a fresh reader where no markup exists". The plan assumed page scans; the book arrived as an EPUB whose appendix tables are well-formed markup carrying one cell per value. A deterministic extractor removes the transcriber-error class the plan's own falsification note named, and satisfies the reproducibility hard stop by regenerating the transcription from scratch rather than pinning a typed copy. Independence is preserved in the sense AC1 cares about: the extractor reads the book and never the CSVs. Maintainer approved at the implementation question gate; falsified by markup that proves not losslessly extractable (values in images, or flowed text rather than cells).
+
+- 2026-07-30 (M25-D2): AC1 reconciliation ledger and IP1 sign-off. The extraction found 18 disagreeing cells across the seven tables; all 18 are percentile values, and every one is monotone-preserving, so the plan-time structural screen could not have reached them — the plan gate's reason for requiring an independent re-transcription. Every discrepancy shares one signature: the CSV holds the book's value from one row below. In `norms_pid5sf_domains.csv` this displaces the whole `ANT_Ptl` column from T=48 down (the column matches the shifted reading on 53 of 60 rows against 44 for the true reading; only the 16 rows below expose it, because wherever two consecutive book values are equal a one-row shift is invisible). `ANT_Raw` matches the book on every row, so the slip is confined to one column rather than a misaligned row. Maintainer signed off on correcting all 18 to the book's printed values (2026-07-30), confirming separately that the book is correct for the two A-5 cells. Corrections applied, one field per line, nothing else in either file touched:
+  `norms_pid5sf_domains.csv` `ANT_Ptl` (book A-7, p. 147), CSV→book: T=48 0.58→0.52, T=50 0.64→0.58, T=51 0.68→0.64, T=53 0.74→0.68, T=55 0.78→0.74, T=56 0.79→0.78, T=57 0.82→0.79, T=58 0.85→0.82, T=60 0.87→0.85, T=62 0.89→0.87, T=64 0.91→0.89, T=65 0.92→0.91, T=67 0.94→0.92, T=69 0.96→0.94, T=72 0.97→0.96, T=74 0.98→0.97.
+  `norms_pid5_domains.csv` `DET_Ptl` (book A-5, p. 120), CSV→book: T=72 0.98→0.97, T=76 0.99→0.98.
+  Re-running `data-raw/verify_norms_against_book.R` after the corrections reports every cell of all seven tables matching the book. No discrepancy was dispositioned as printed-in-source.
+
+- 2026-07-30 (M25-D3): RR01 ingested. Its answer to the escalated question is that the package keeps `INC`/`INCS` and does not harmonize to the book's "VRIN", on three grounds: the book is internally inconsistent (both A-1 and A-2 captions say VRIN while Chapter 4 calls the 100-item scale PID-5-INC-S six times), the development papers both title the scale "Response Inconsistency Scale" and Lowmaster's own PID-5-INC-S treats `INC` as the parent stem, and no rename of the pair is consistent with the book, the papers, and internal lineage at once. The cross-cutting half is promoted to [D-018](../DECISIONS.md); the M25-local half is that `pid_norms$scale` carries package column stems (AC6), which M26's lookup then joins by string equality with no crosswalk. Maintainer accepted 2026-07-30; that acceptance also discharges T4's IP1 sign-off on the book-scale to package-column mapping, which the binding-criteria audit asked be stated rather than assumed.
+- 2026-07-30 (M25-D4): RR01's Q7 correction stands against this milestone's own plan text — the book's abbreviation for the Williams scale is PID-5-PRD (15 occurrences in Chapter 4) and never "PIM-RD" (zero). AC2's parenthetical is amended accordingly and the CSV filename `norms_pid5_pimrd.csv` is deliberately left alone: renaming data-raw files is not in M25's scope, and `SOURCES.md` will carry the filename-to-book-label mapping, so the record explains the mismatch rather than the filename hiding it.
+
+- 2026-07-30 (M25-D5): `pid_norms` column names and row layout. The exported tibble is `version` / `scale` / `tscore` / `raw` / `percentile` — 1,056 rows, one per (version, scale, T) for the three domain tables and one per (version, scale, raw score) for the four validity tables, whose rows carry `tscore = NA` because the book prints no T for them. AC3's "(version, scale, T)" and "(version, scale, score)" name the identifying quantities rather than column names; a validity raw score is a raw score, so it is carried by `raw` and no fifth identifying column ships. The T column is `tscore` and not `T` by the maintainer's choice at the implementation question gate, because `T` is base R's shorthand for `TRUE` and a data column of that name reads as a collision even where masking makes it work. No book-table anchor column ships either (same gate): the per-table page anchors live in `cairn/SOURCES.md`, which owns provenance. `scale` carries score-output column stems — the five domain stems read from `pid_domains$camelCase` rather than retyped, `"total"` for the BF whole-form score M26 adds under D-017, and the four `validity_pid5()` stems `INC` / `INCS` / `ORS` / `PRD` (M25-D3, D-018).
+
 ## Review
+
+Fresh evidence gathered 2026-07-30 on `m25-pid5-norms-ingest` @ PR #28. Every
+command run at review time; no result carried over from implementation.
+
+### Acceptance-criterion evidence
+
+- **AC1 (cell-by-cell reconciliation).** `Rscript data-raw/verify_norms_against_book.R`
+  re-run at review: all seven tables match the book on dimensions (24x2, 16x2, 9x2,
+  56x2, 56x11, 61x11, 61x13) and on every cell — "every cell of all seven tables
+  matches the book". The extractor reads the EPUB's table markup and never the CSVs,
+  and establishes row identity by the printed T/score column rather than by position.
+  The reconciliation ledger for the 18 discrepancies the first pass found is recorded
+  in this file (M25-D2) with maintainer sign-off on all 18 corrections; none was
+  dispositioned as printed-in-source. Route amended from the plan's "fresh reader" to
+  a committed extractor at the implementation gate (M25-D1).
+- **AC2 (provenance).** `cairn/SOURCES.md` "PID-5 normative tables" section carries the
+  full citation, a page anchor per table (A-1 p. 116, A-2 p. 117, A-3 p. 117, A-4
+  p. 118, A-5 p. 120, A-7 p. 147, A-9 p. 174), the normative sample as the book states
+  it (1,082 for validity; the 995-respondent subset for domains, with the book's
+  inclusion criteria and census weighting), the maintainer-confirmed book-label to
+  package-column mapping table, and a per-table verification status. All seven tables
+  ship, so the hold-out branch is not exercised. `cairn/references/markon2024.md`
+  exists with a Provenance block (source pointer, ingested date, ingesting milestone,
+  pagination basis, extraction-verified status carrying its own observed date) and its
+  `INDEX.md` line.
+- **AC3 (the dataset).** `pid_norms` is one exported tibble (`tbl_df`), 1,056 rows x 5
+  columns, listed by `data(package = "hitop")`. Long form holds: 951 domain rows,
+  unique on (version, scale, tscore); 105 validity rows, unique on (version, scale,
+  raw). All four validity tables ship, as AC2 records. Re-running
+  `Rscript data-raw/norms_pid5.R` leaves `data/pid_norms.rda` at md5
+  `1e4b215b0513481c1c0b7ad865e11a77`, unchanged, and `git status` clean for `data/`.
+  Column names against AC3's tuples: M25-D5.
+- **AC4 (mutation evidence).** `Rscript data-raw/mutate_norms_check.R` run at review;
+  baseline green, then six mutations, each reverted before the next, the dataset
+  restored to the same md5 at the end. Every one reddened `test-norms.R`:
+  (a) FULL `negativeAffectivity` raw at T = 60 +0.02 → caught by the linearity test;
+  (a) SF `psychoticism` raw at T = 30, on the zero floor, 0 → 0.02 → linearity test;
+  (b) BF `detachment` percentile at T = 70 dropped below its predecessor → monotonicity
+  test (and the domain spot values); (c) FULL `INC` percentile at score 5 set to 1.4 →
+  proportion test (and monotonicity); (d) FULL `PRD` percentile at score 21 nudged
+  0.894 → 0.895 → validity spot values; (d) SF `antagonism` percentile at T = 48
+  reverted to its pre-correction 0.58 → domain spot values. The test carries 34
+  page-cited spot values against AC4(d)'s floor of 15.
+- **AC5 (toolchain).** `devtools::document()` run twice leaves `git status` empty ·
+  `devtools::check()` 0 errors / 0 warnings / **0 notes** (2m52s), so no NOTE needs
+  justifying · `pkgdown::check_pkgdown()` no problems · `pid_norms` documented in
+  `R/data.R` (`man/pid_norms.Rd`) and listed under "Instrument Data" at
+  `_pkgdown.yml:121`.
+- **AC6 (validity scale names).** `unique(pid_norms$scale)` is the five domain stems
+  plus `total`, `INC`, `INCS`, `ORS`, `PRD`; none of `VRIN`, `VRINS`, `INC-S`,
+  `PIM-RD` appears. Version assignment matches which `validity_pid5()` version emits
+  each scale: `INC`/`ORS`/`PRD` under FULL, `INCS` under SF.
+- **AC7 (no rename introduced).** `git diff --stat origin/main..HEAD` is empty for
+  `R/validity_pid5.R`, `data-raw/pid_items.csv`, and `data/pid_items.rda` — M25 does
+  not touch them. `pid_items` still carries all eight validity columns (`INC`, `INCS`,
+  `ORS`, `ORSS`, `PRD`, `PRDS`, `SDTD`, `SDTDS`), asserted in `test-norms.R` as well.
+- **AC8 (book-internal inconsistency recorded).** `cairn/SOURCES.md` records the A-2
+  caption "Variable Response Inconsistency (VRIN)" against the Chapter 4 name
+  "PID-5-INC-S" as an inconsistency internal to the book (p. 117 caption vs pp. 34-35),
+  maps it to `INCS` citing the chapter text and Lowmaster et al. (2020), and states
+  that the book's abbreviation for the Williams scale is PID-5-PRD (15 occurrences in
+  Chapter 4) and never "PIM-RD", mapped to package `PRD`.
+- **AC9 (VRIN note in the docs).** `man/pid_norms.Rd` carries the sentence: the `INC`
+  and `INCS` scales are called the Variable Response Inconsistency (VRIN) scale by
+  Markon et al. (2024), so a reader coming from the book finds them under the
+  package's names.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0 — all 16 checks PASS. Two advisories, neither a gate
+  failure and neither new: the sizing tripwire (M25 has 9 acceptance criteria), already
+  dispositioned in the work log when RR01's binding criteria were ingested; and 24
+  dangling id tokens, all legacy pre-migration ids in `DESIGN.md`, `SOURCES.md`, and
+  M26.
+- Profile `consistency-gate` slot: `document()` no diff ✓ · no hand-edited generated
+  file (`data/pid_norms.rda` and `man/pid_norms.Rd` both regenerate) ✓ · README
+  untouched by this branch ✓ · `pkgdown::check_pkgdown()` no problems ✓ · NEWS entry ✓
+  · no new top-level file needing an `.Rbuildignore` entry (`check()` reports no NOTE)
+  ✓ · `check()` 0/0/0 ✓.
+- No `DESIGN.md` principle changed, so `cairn_impact` is not run.
+- Returns to `in-progress`: none (first review pass; thrash rule not engaged).
+
+### Independent review (3 fresh-context lenses + scorer)
+
+- **[O] diff-bug (Opus)** — 19 candidate findings. It independently reproduced the
+  build from the CSVs and confirmed the shipped `.rda` byte for byte, checked all 33
+  spot values against the CSVs programmatically (0 mismatches), verified the scale
+  stems against `score_pid5()`'s own domain map and `validity_pid5()`'s branches, and
+  brute-forced every single-cell ±0.02 raw perturbation across the 16 domain blocks
+  (0 of 1,798 escape the linearity test).
+- **[S] blame-history (Sonnet)** — 0 findings. It diffed the 18 corrected cells against
+  M25-D2's ledger (2 in `DET_Ptl`, 16 in `ANT_Ptl`) and found them byte-for-byte as
+  recorded with no unexplained extra edits, and confirmed D-017 and D-018 are honored
+  rather than undone.
+- **[S] prior-review record (Sonnet)** — 0 findings. The
+  `gh api .../pulls/comments` probe returned `[]`, so the per-PR thread walk was
+  skipped; against the archived RB01/RR01 record the diff is the compliant
+  implementation of all four binding criteria.
+- **[S] scorer (Sonnet)**, given the diff and the plan, scored all 19 against the
+  rubric. Two scored ≥ 80.
+
+**Actioned (score ≥ 80): 2 of 19.**
+
+- **F1, score 92 — `tests/testthat/test-norms.R`, BF `disinhibition` had no spot
+  anchor.** The defect class this dataset actually had — a percentile column displaced
+  one row — escapes both structural invariants: a one-row shift of `raw = a + b*T` is
+  still perfectly linear (the intercept moves by one step) and a shifted monotone
+  column is still monotone. The reviewer simulated the shift on all 16 domain blocks:
+  for 15 the spot values catch it, for BF `disinhibition` nothing did. **Fixed at
+  review** — the missing anchor added from the book (A-9 p. 174, T = 70: raw 1.69,
+  percentile 0.95), and the gap closed as a class rather than an instance: the two spot
+  tables are hoisted to file level and a new test asserts every (version, scale) in
+  `pid_norms` carries at least one anchor. Verified by deleting the new anchor and
+  confirming that test alone reddens.
+- **F4, score 85 — `R/data.R`, the `raw` column was mis-described.** It read "a mean
+  item response for the domain and total scales", but `score_pid5()` computes a FULL or
+  SF domain as the mean of its three primary facet scores, and PID-5 facets have
+  unequal item counts, so that is not a mean over the domain's items. A user computing
+  `rowMeans()` over a domain's items would look up the wrong T and percentile. **Fixed
+  at review** — the description now separates the FULL/SF domains, the BF domains and
+  total, and the validity sums.
+
+**Actioned at the maintainer's direction (score 78, below the bar): 2 of 19.** Both
+were documentation claims false as shipped, so the gate put them to the maintainer,
+who chose to fix both before merge.
+
+- **F2, score 78 — `R/data.R` and `NEWS.md` claimed `scale` matches the columns
+  `score_pid5()` returns.** It does not for the brief form's `total`, which the book
+  norms and `score_pid5()` does not compute until M26 (D-017). Both surfaces now say so
+  explicitly.
+- **F3, score 78 — the roxygen extended the source's N = 995 to the brief form norms.**
+  The book scopes that screen to Tables A-5 to A-8 and states no N for A-9. The
+  sentence now names the FULL and SF domains and records that the source gives no
+  separate brief-form sample size.
+
+**Logged, not actioned (score < 80): 15.** Surfaced here, never silently dropped.
+- 78 — `data-raw/norms_pid5.R` reads the key column of each CSV positionally
+  (`tbl[[1]]`, `tbl[[2]]`) with no column-name guard.
+- 76 — no row-count or key-completeness invariant: a CSV losing interior rows would
+  build and test green while "1,056 rows" became false.
+- 75 — the linearity test's comment derives 0.005 but the constant is 0.006; three
+  scales already exceed 0.005, so the constant is empirical, not derived (0.00054 slack).
+- 70 — `data-raw/mutate_norms_check.R` discards both `file.copy()` return values and
+  only prints, never `stop()`s, on an md5 mismatch.
+- 68 — the roxygen does not say that four `validity_pid5()` scales (`SDTD`, `SDTDS`,
+  `ORSS`, `PRDS`) are unnormed because the book publishes no tables for them.
+- 65 — the Deviations table says the Lowmaster 2020/2021 pairing is unresolved;
+  `SOURCES.md` already records it resolved (OQ-2).
+- 55 — RR01 Recommendations 4 and 5 (a VRIN note in `validity_pid5()`'s `@details`; a
+  Keeley 2016 abbreviation spot-check) have no recorded disposition.
+- 48 — nothing asserts validity `raw` scores are integers or contiguous.
+- 45 — the high-T rows extrapolate past the attainable 0-3 item ceiling (BF T = 95 gives
+  3.72) with no note saying so.
+- 45 — the build script `load()`s the generated `data/pid_domains.rda` rather than a
+  source CSV, and into the global environment.
+- 38 — `@source` gives the whole Appendix page range (113-219) rather than the 116-174
+  the named tables occupy.
+- 35 — the T2 work-log line describes the verifier as keying rows by the printed
+  T/score column; it compares positionally, with column 1 included.
+- 35 — `NEWS.md` writes the scale as `INC-S` in prose, matching house style but not the
+  `INCS` data value.
+- 35 — the ±0.01 perturbation escapes the linearity test about 12% of the time.
+- 35 — the validity-scale literal `c("INC", "INCS", "ORS", "PRD")` is repeated in the
+  build script's guards rather than derived from `validity_spec`.

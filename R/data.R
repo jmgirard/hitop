@@ -56,6 +56,53 @@
 #' pid_domains
 "pid_domains"
 
+#' Personality Inventory for DSM-5 Normative Tables
+#'
+#' Published normative score distributions for the PID-5, PID-5-SF, and
+#' PID-5-BF, in long form: the raw score and percentile at each T score for the
+#' five domain scales (and the brief form's total score), and the percentile at
+#' each raw score for the validity scales, which are tabled without T scores.
+#'
+#' @format A \link[tibble]{tibble} with 1056 rows and 5 columns:
+#' \describe{
+#'   \item{version}{The PID-5 version the row norms: `"FULL"`, `"SF"`, or `"BF"`}
+#'   \item{scale}{Name of the scale, as the score-output column stem used by
+#'   `score_pid5()` and `validity_pid5()` (i.e., without their `prefix`). The
+#'   one exception is `"total"`, the brief form's total score, which the source
+#'   norms but `score_pid5()` does not yet compute}
+#'   \item{tscore}{The T score, or `NA` for the validity scales, whose tables
+#'   print none}
+#'   \item{raw}{The raw scale score, on the metric `score_pid5()` and
+#'   `validity_pid5()` return: for the FULL and SF domains, the mean of the
+#'   three primary facet scores (themselves item means, and the facets differ
+#'   in length, so this is not a mean over the domain's items); for the BF
+#'   domains and total, a mean item response; for the validity scales, an item
+#'   sum}
+#'   \item{percentile}{The percentile of the normative distribution at that
+#'   score, as a proportion between 0 and 1}
+#' }
+#' @details The `INC` and `INCS` scales are called the Variable Response
+#'   Inconsistency (VRIN) scale by Markon et al. (2024), so a reader coming from
+#'   the book will find those tables here under the package's own names.
+#'
+#'   Norms come from a sample of 1,082 individuals from a U.S. Census-matched
+#'   panel. The validity-scale distributions use all 1,082; the FULL and SF
+#'   domain distributions use the 995 respondents who scored below 17 on the
+#'   inconsistency scale, left no more than a quarter of responses missing, and
+#'   did not endorse both infrequency items. The source states no separate
+#'   sample size for the brief form tables. All T scores and percentiles were
+#'   computed with sampling weights reflecting U.S. Census data.
+#'
+#'   The published facet-level and informant-form tables are not included.
+#'
+#' @source Markon, K. E., Fossati, A., Somma, A., & Krueger, R. F. (2024).
+#'   *Understanding the Personality Inventory for DSM-5 (PID-5).* American
+#'   Psychiatric Association Publishing. Appendix, Tables A-1 to A-5, A-7, and
+#'   A-9 (pp. 113-219).
+#' @examples
+#' pid_norms
+"pid_norms"
+
 #' HiTOP-SR Item Data
 #'
 #' Information about items in the HiTOP-SR.
