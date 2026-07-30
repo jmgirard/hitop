@@ -9,7 +9,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M26 | PID-5 norming and score conversion (raw ↔ T ↔ percentile) | planned | M25 | normal | milestones/M26-pid5-norming-functions.md |
-| M25 | PID-5 normative tables — verification and ingest | in-progress | — | normal | milestones/M25-pid5-norms-ingest.md |
+| M25 | PID-5 normative tables — verification and ingest | review | — | normal | milestones/M25-pid5-norms-ingest.md |
 | M24 | HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap) | done | — | normal | milestones/archive/M24-hitopsr-subset-generation.md |
 | M23 | Overview instrument page (SR/BR/HSUM link cards) | done | — | normal | milestones/archive/M23-overview-instrument-page.md |
 | M22 | Centralize import instructions (Qualtrics QSF+TXT, REDCap ZIP) | done | — | normal | milestones/archive/M22-centralize-import-instructions.md |

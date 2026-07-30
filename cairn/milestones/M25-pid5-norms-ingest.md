@@ -1,6 +1,6 @@
 # M25: PID-5 normative tables — verification and ingest
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR01
