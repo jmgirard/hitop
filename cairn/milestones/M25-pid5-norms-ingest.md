@@ -1,6 +1,6 @@
 # M25: PID-5 normative tables — verification and ingest
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -30,11 +30,12 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 ## Acceptance criteria
 
 - [ ] **AC1.** Every numeric cell of the seven committed `data-raw/norms_*.csv` tables is
-      reconciled against the book: a reader that did not produce the CSVs transcribes
-      the uploaded source pages independently, and the cell-by-cell diff of that
-      transcription against the CSVs is recorded in this file, with every discrepancy
-      either corrected in the CSV with maintainer sign-off (IP1) or recorded as
-      printed-in-source.
+      reconciled against the book: an independent transcription is produced from the
+      source by a route that did not produce the CSVs — a committed, re-runnable
+      extractor over the book's table markup, or a fresh reader where no markup exists —
+      and the cell-by-cell diff of that transcription against the CSVs is recorded in
+      this file, with every discrepancy either corrected in the CSV with maintainer
+      sign-off (IP1) or recorded as printed-in-source.
 - [ ] **AC2.** `cairn/SOURCES.md` carries a PID-5 norms section giving the book's full
       citation, a page/table anchor for each of the seven tables, the normative sample
       as the book describes it, the maintainer-confirmed mapping from each book scale
@@ -101,8 +102,13 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 - 2026-07-30: implementation started on `m25-pid5-norms-ingest`.
 - 2026-07-30: T1 done — the maintainer uploaded the whole book as `markon2024.epub` (Markon, Fossati, Somma & Krueger, 2024, APA Publishing, ISBN 9781615375127) rather than page scans. Its Appendix carries 12 tables, of which the seven M25 ships are A-1 (SRF VRIN), A-2 (100-item VRIN), A-3 (ORS), A-4 (PIM-RD), A-5 (SRF domain), A-7 (SF domain), A-9 (BF total+domain); the epub is paginated (196 page anchors), so per-table page anchors are available for AC2.
 - 2026-07-30: the five remaining appendix tables are out of M25 scope as planned and were captured as ROADMAP candidates on main before branching — A-6/A-8 (facet norms, extending the existing facet candidate) and A-10/A-11/A-12 (Informant Form, a new candidate; the package has no IRF surface).
+- 2026-07-30: gate chose the committed-extractor route for AC1 over a fresh reader retyping, because the book arrived as structured markup rather than page scans; AC1's method wording is amended accordingly (see Decisions). Falsified by table markup that turns out not to be losslessly extractable — e.g. values carried in images or in flowed text rather than cells.
+- 2026-07-30: T4's mapping is evidenced from the book's own attributions — A-1 to Keeley et al. (2016) = `INC`, A-2 to Lowmaster et al. (2020/2021) = `INCS` (the book's caption says VRIN but its text names PID-5-INC-S), A-3 to Sellbom et al. (2018) = `ORS`, A-4 to Williams et al. (2019) = `PRD`. Each matches the source that package column already cites; maintainer sign-off still pending behind RB01.
+- 2026-07-30: blocked on RB01 — the maintainer asked whether the package should harmonize validity-scale naming to the book (`INC` to `VRIN`); that is an irreversible exported-API decision (RB tripwire `irreversible-api`), so it goes to a Fable review rather than being settled in-session. RB01 is committed on this branch rather than the default branch, because the milestone file it blocks is ahead of main here.
 - 2026-07-30: [O] criteria audit ran twice (pre- and post-gate). Pass 1: findings on all 11 drafted criteria. Pass 2 on the revised 12: 8 OK, 4 findings — undefined `check()` NOTE baseline (M25 AC5, M26 AC7), validity scales carrying no T (M26 AC2, AC4), non-injective raw→T (M26 AC4), tripwire branch leaving M26 AC5 unsatisfiable. All four fixed before writing; none escalated to a second gate round.
 
 ## Decisions
+
+- 2026-07-30 (M25-D1): AC1's transcription route amended from "a reader that did not produce the CSVs transcribes the uploaded source pages" to "a committed, re-runnable extractor over the book's table markup, or a fresh reader where no markup exists". The plan assumed page scans; the book arrived as an EPUB whose appendix tables are well-formed markup carrying one cell per value. A deterministic extractor removes the transcriber-error class the plan's own falsification note named, and satisfies the reproducibility hard stop by regenerating the transcription from scratch rather than pinning a typed copy. Independence is preserved in the sense AC1 cares about: the extractor reads the book and never the CSVs. Maintainer approved at the implementation question gate; falsified by markup that proves not losslessly extractable (values in images, or flowed text rather than cells).
 
 ## Review
