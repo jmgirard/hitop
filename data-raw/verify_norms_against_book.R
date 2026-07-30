@@ -81,10 +81,10 @@ data_matrix <- function(tbl, ncol_expected) {
 ## The seven tables M25 ships, in book order, with their CSV counterparts.
 ## Appendix table A-n is tables[[n]].
 spec <- list(
-  list(tbl = 1L,  ncol = 2L,  csv = "data-raw/norms_pid5_vrin.csv",       label = "A-1  SRF VRIN (= INC)"),
-  list(tbl = 2L,  ncol = 2L,  csv = "data-raw/norms_pid5sf_vrin.csv",     label = "A-2  100-item VRIN (= INC-S)"),
-  list(tbl = 3L,  ncol = 2L,  csv = "data-raw/norms_pid5_ors.csv",        label = "A-3  ORS"),
-  list(tbl = 4L,  ncol = 2L,  csv = "data-raw/norms_pid5_pimrd.csv",      label = "A-4  PIM-RD (= PRD)"),
+  list(tbl = 1L,  ncol = 2L,  csv = "data-raw/norms_pid5_vrin.csv",       label = "A-1  inconsistency, FULL (INC)"),
+  list(tbl = 2L,  ncol = 2L,  csv = "data-raw/norms_pid5sf_vrin.csv",     label = "A-2  inconsistency, SF (INCS)"),
+  list(tbl = 3L,  ncol = 2L,  csv = "data-raw/norms_pid5_ors.csv",        label = "A-3  over-reporting (ORS)"),
+  list(tbl = 4L,  ncol = 2L,  csv = "data-raw/norms_pid5_pimrd.csv",      label = "A-4  PID-5-PRD (PRD)"),
   list(tbl = 5L,  ncol = 11L, csv = "data-raw/norms_pid5_domains.csv",    label = "A-5  SRF domain scales"),
   list(tbl = 7L,  ncol = 11L, csv = "data-raw/norms_pid5sf_domains.csv",  label = "A-7  SF domain scales"),
   list(tbl = 9L,  ncol = 13L, csv = "data-raw/norms_pid5bf_domains.csv",  label = "A-9  BF total + domain scales")
