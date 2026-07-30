@@ -131,14 +131,14 @@ numbers. (default = <code>NULL</code>)</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Write a HiTOP-SR REDCap instrument ZIP to a temporary location</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitopsr</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/Rtmp6q9FTJ/file1a411b4d6174.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpBzzZdi/file1bcc474639e6.zip</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A two-scale subset, original numbering preserved</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitopsr</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  subset <span class="op">=</span> <span class="fu"><a href="hitop_subset.html">hitop_subset</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/Rtmp6q9FTJ/file1a411af2ad2b.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpBzzZdi/file1bcc117fc1e0.zip</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

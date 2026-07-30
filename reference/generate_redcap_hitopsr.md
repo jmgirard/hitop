@@ -60,12 +60,12 @@ Step-by-step import instructions for Qualtrics and REDCap:
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/Rtmp6q9FTJ/file1a411b4d6174.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpBzzZdi/file1bcc474639e6.zip
 
 # A two-scale subset, original numbering preserved
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
   subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Instrument successfully zipped to /tmp/Rtmp6q9FTJ/file1a411af2ad2b.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpBzzZdi/file1bcc117fc1e0.zip
 ```
