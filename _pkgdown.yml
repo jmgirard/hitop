@@ -118,4 +118,5 @@ reference:
   - pid_items
   - pid_scales
   - pid_domains
+  - pid_norms
   - hitop_artifacts
