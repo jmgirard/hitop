@@ -120,7 +120,7 @@ ingestion (2026-07-30); BC2 is ingested verbatim as AC7.
       `norms_pid5_vrin`, `norms_pid5sf_vrin`, `norms_pid5_ors`, `norms_pid5_pimrd`
       against the book's own scale descriptions; any table with no confirmed
       correspondence is held out of `pid_norms`.
-- [ ] **T5.** Write the `cairn/SOURCES.md` PID-5 norms section, the citekey source note
+- [x] **T5.** Write the `cairn/SOURCES.md` PID-5 norms section, the citekey source note
       from `templates/source-note.md`, and its `cairn/references/INDEX.md` line.
 - [ ] **T6.** Write `data-raw/norms_pid5.R` building long-form `pid_norms` from the CSVs;
       regenerate `data/`. (M18 lesson: `readr`/`usethis` must be installed locally.)
@@ -146,6 +146,7 @@ ingestion (2026-07-30); BC2 is ingested verbatim as AC7.
 - 2026-07-30: T3 done — 18 cells corrected against the book with maintainer sign-off; the verifier now reports all seven tables matching cell for cell. Ledger in Decisions (M25-D2).
 - 2026-07-30: RR01 returned and was ingested — keep `INC`, no rename; see Decisions (M25-D3, M25-D4) and D-018. Its binding criteria were audited first by a fresh-context [O] reader, which found BC1 foreclosed the table hold-out branch AC2/AC3/T4 preserve, BC3 collided with AC2's own "PIM-RD" wording, and RR01's only user-facing recommendation had no verifier; all five fixes applied as recorded deviations. T4 discharged by the maintainer's acceptance. RB01/RR01 archived; M25 back to in-progress.
 - 2026-07-30: ingesting RR01 took M25 to 9 acceptance criteria, past the 7-criterion split tripwire (`cairn_validate` sizing advisory). Not split: AC7 is a restrictive no-op guard over files M25 never touches, AC8 records content AC2/T5 already produce, and AC9 is one sentence in the roxygen block T8 writes — the criteria count rose without the work volume rising, and all four map onto existing tasks.
+- 2026-07-30: T5 done — `cairn/SOURCES.md` gains a PID-5 normative tables section (citation, per-table page anchors, the sample as the book states it, the book-label to package-column mapping, and per-table verification status), the source note `cairn/references/markon2024.md` is written from the template with a Provenance block, and its INDEX line is added. The book's own domain-norm inclusion criterion (VRIN < 17) matches the package's documented `INC` cut score of 17, which corroborates the A-1 mapping independently of the shared Keeley attribution.
 - 2026-07-30: [O] criteria audit ran twice (pre- and post-gate). Pass 1: findings on all 11 drafted criteria. Pass 2 on the revised 12: 8 OK, 4 findings — undefined `check()` NOTE baseline (M25 AC5, M26 AC7), validity scales carrying no T (M26 AC2, AC4), non-injective raw→T (M26 AC4), tripwire branch leaving M26 AC5 unsatisfiable. All four fixed before writing; none escalated to a second gate round.
 
 ## Decisions

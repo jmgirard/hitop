@@ -137,6 +137,65 @@ missing-data rule for the 100-item short form, so `apa_scoring` applies the
 full-form 25%/proration rule to the SF's 4-item facets *by analogy* (25% of 4 = 1
 item: ≤ 1 missing prorates, ≥ 2 → NA). See D-009.
 
+## PID-5 normative tables (2026-07-30, M25)
+
+**Source.** Markon, K. E., Fossati, A., Somma, A., & Krueger, R. F. (2024).
+*Understanding the Personality Inventory for DSM-5 (PID-5).* American Psychiatric
+Association Publishing. ISBN 9781615375127. Appendix, "Normative Score
+Distributions", pp. 113–219. Shelf copy: `cairn/references/sources/markon2024.epub`
+(gitignored). Extracted values, the sample description, and open questions:
+[markon2024](references/markon2024.md).
+
+**Normative sample, as the book describes it** (pp. 113–114). Self-report norms come
+from 1,082 individuals in a U.S. Census–matched panel (Krueger et al. 2012) — the same
+panel as the original PID-5 development article, a different sample. Validity-scale
+distributions use all 1,082; domain and trait distributions use the 995 respondents
+with a VRIN score below 17, no more than a quarter of responses missing, and not
+endorsing both infrequency items. All self-report statistics, T scores, and
+percentiles are computed with sampling weights reflecting U.S. Census data.
+
+**Book scale name → package column.** Confirmed by the maintainer 2026-07-30 on
+acceptance of RR01; the naming decision itself is [D-018](DECISIONS.md). Each mapping
+rests on the book crediting the same paper the package column already cites.
+
+| Book table (page) | Name as the book prints it | Book credits | Package column | Verification |
+|---|---|---|---|---|
+| A–1 (p. 116) | "Variable Response Inconsistency (VRIN) scale" | Keeley et al. (2016) | `INC` (FULL) | all cells match the book |
+| A–2 (p. 117) | caption "Variable Response Inconsistency (VRIN)"; Chapter 4 "PID-5-INC-S" | Lowmaster et al. (2020) | `INCS` (SF) | all cells match the book |
+| A–3 (p. 117) | "Over-Reporting Scale" (PID-5-ORS) | Sellbom et al. (2018) | `ORS` (FULL) | all cells match the book |
+| A–4 (p. 118) | "Positive Impression Management Response Distortion scale (underreporting)" (PID-5-PRD) | Williams et al. (2019) | `PRD` (FULL) | all cells match the book |
+| A–5 (p. 120) | "normative tables: domain scales" | — | FULL domains | all cells match the book |
+| A–7 (p. 147) | "(100 item) normative tables: domain scales" | — | SF domains | all cells match the book |
+| A–9 (p. 174) | "Brief Form normative tables: total score and domain scales" | — | BF total + domains | all cells match the book |
+
+**The book's abbreviation for the Williams scale is PID-5-PRD, not "PIM-RD."**
+Chapter 4 writes "PID-5-PRD" 15 times and "PIM-RD" never, so A–4 → `PRD` is an
+identity mapping rather than a translation. The `data-raw/norms_pid5_pimrd.csv`
+filename predates this ingest and follows a label the book does not use; it is
+deliberately left unrenamed (M25-D4), and this row is where the mismatch is explained.
+
+**A–2 carries an inconsistency internal to the book.** Its caption (p. 117) names the
+100-item scale "Variable Response Inconsistency (VRIN)" — the same label the A–1
+caption gives the 220-item scale — while Chapter 4 (pp. 34–35, six occurrences) calls
+it "PID-5-INC-S" and credits Lowmaster et al. (2020), whose own published name is
+PID-5-INC-S. The package maps A–2 to `INCS` on the strength of the chapter text,
+Lowmaster et al. (2020), and the item-pair content (`test-keying.R` asserts every
+INC-S pair is a Keeley INC pair). A reader auditing provenance from the caption alone
+should not be stopped by it.
+
+Corroboration for A–1: the book's own domain-norm inclusion criterion is a VRIN score
+"lower than 17" (p. 114), identical to the `INC` cut score documented in
+`R/validity_pid5.R` — independent of the shared Keeley attribution.
+
+**Verification status.** Every numeric cell of all seven tables was extracted from the
+book's table markup by `data-raw/verify_norms_against_book.R` and diffed against the
+committed CSVs. The first pass found 18 disagreeing cells, all percentiles and all
+monotone-preserving; each held the book's value from one row below, displacing
+`ANT_Ptl` in the SF domain table from T=48 down and two `DET_Ptl` cells in the full
+domain table. All 18 were corrected to the book's printed values with maintainer
+sign-off (2026-07-30); none was dispositioned as printed-in-source. Re-running the
+verifier reports all seven tables matching the book cell for cell.
+
 ## Note on HiTOP-SR/BR item-text punctuation (2026-07-16)
 
 The HiTOP-SR source export (`devel/hitopsr_titanium.xml`) ends 398 of its 405
