@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-30 (M24 close-out; M25/M26 planned)_
+_Last hygiene check: 2026-07-30 (cairn-init repair: source shelf renamed to `references/sources/`; audit clean, nothing in flight)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M22)._
 
 ## Milestones
