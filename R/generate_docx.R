@@ -94,6 +94,9 @@ generate_docx_hitopbr <- function(
 #'   Defaults to `10`.
 #' @param font_family Character string specifying the font family to be used.
 #'   Defaults to `"Times New Roman"`.
+#' @param subset An optional [hitop_subset()] object restricting the form to the
+#'   items of the chosen scales, keeping their original HiTOP-SR item numbers.
+#'   Cannot be combined with `include_subscales = TRUE`. (default = `NULL`)
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
@@ -101,6 +104,12 @@ generate_docx_hitopbr <- function(
 #' \donttest{
 #' # Write a HiTOP-SR paper form to a temporary Word document
 #' generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
+#'
+#' # A short form containing only two scales, original numbering preserved
+#' generate_docx_hitopsr(
+#'   file = tempfile(fileext = ".docx"),
+#'   subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+#' )
 #' }
 #'
 #' @export
@@ -111,14 +120,28 @@ generate_docx_hitopsr <- function(
   include_scoring = TRUE,
   include_subscales = FALSE,
   font_size = 10,
-  font_family = "Times New Roman"
+  font_family = "Times New Roman",
+  subset = NULL
 ) {
   papersize <- match.arg(papersize)
   dims <- get_page_dims(papersize)
 
+  # Truthiness must match the consumer below (`if (include_subscales)`), or a
+  # truthy non-TRUE value slips the guard and still adds the subscale rows.
+  if (!is.null(subset) && include_subscales) {
+    cli::cli_abort(c(
+      "{.arg include_subscales} cannot be combined with {.arg subset}.",
+      i = "A subscale may draw items from scales outside the subset, so its
+           scoring row would list items the form does not contain.",
+      i = "Set {.code include_subscales = FALSE} to generate the subset form."
+    ))
+  }
+
+  reduced <- apply_subset(hitopsr_items, hitopsr_scales, subset, "HSR")
+
   # Build the items table
   t1 <- make_items_table(
-    hitopsr_items,
+    reduced$items,
     "HSR",
     hitopsr_instructions$options,
     dims$pw,
@@ -129,7 +152,7 @@ generate_docx_hitopsr <- function(
   t2 <- NULL
   if (include_scoring) {
     # Extract only the necessary columns from the main scales
-    scales_to_score <- hitopsr_scales[, c("Scale", "itemdata")]
+    scales_to_score <- reduced$scales[, c("Scale", "itemdata")]
 
     # If requested, prepare and append the subscales
     if (include_subscales) {

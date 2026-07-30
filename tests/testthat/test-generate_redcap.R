@@ -7,8 +7,7 @@
 # (R/generate_redcap.R:336) whose expected strings are hand-derived below from
 # the published rule logic + the hitophsum_choices values.
 
-# zip writing needs an external zip utility; reading (unzip) is internal.
-skip_if_no_zip <- function() skip_if(unname(Sys.which("zip")) == "")
+# skip_if_no_zip() lives in helper-generators.R.
 
 redcap_cols <- c(
   "Variable / Field Name",
@@ -294,4 +293,43 @@ test_that("HSUM quantity items get the correct field-type/choice overrides", {
   # No choice-bearing field is left with an empty choices string.
   choice_types <- r[["Field Type"]] %in% c("radio", "dropdown", "checkbox")
   expect_true(all(nzchar(r[["Choices, Calculations, OR Slider Labels"]][choice_types])))
+})
+
+# ---- HiTOP-SR scale subsets (M24) -------------------------------------------
+#
+# Parse-and-compare per D-010: expected fields come from `hitopsr_items`
+# filtered by `Scale`, independently of the `hitopsr_scales$itemNumbers` path.
+
+test_that("generate_redcap_hitopsr(subset =) emits exactly the subset's fields", {
+  skip_if_no_zip()
+  s <- hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  f <- withr::local_tempfile(fileext = ".zip")
+  suppressMessages(generate_redcap_hitopsr(file = f, subset = s))
+  dd <- read_redcap_csv(f)
+
+  kept <- hitopsr_items[
+    hitopsr_items$Scale %in% c("Agoraphobia", "Appetite Loss"),
+  ]
+  item_rows <- dd[dd$`Field Type` == "radio", ]
+
+  expect_equal(nrow(item_rows), 8)
+  expect_equal(item_rows$`Field Label`, kept$Text)
+  # Field names carry the ORIGINAL HSR numbers, zero-padded to the widest.
+  expect_equal(
+    item_rows$`Variable / Field Name`,
+    sprintf("hsr_%03d", kept$HSR)
+  )
+  expect_equal(item_rows$`Variable / Field Name`[1], "hsr_066")
+  expect_equal(item_rows$`Variable / Field Name`[8], "hsr_389")
+
+  # The descriptive instructions row survives subsetting.
+  expect_true("hsr_instructions" %in% dd$`Variable / Field Name`)
+})
+
+test_that("generate_redcap_hitopsr() rejects a non-hitop_subset subset", {
+  f <- withr::local_tempfile(fileext = ".zip")
+  expect_error(
+    generate_redcap_hitopsr(file = f, subset = list(items = 1:5)),
+    "hitop_subset"
+  )
 })

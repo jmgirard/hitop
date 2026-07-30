@@ -77,6 +77,7 @@ reference:
   - label_hitopbr
 - title: Item Export
   contents:
+  - hitop_subset
   - generate_docx_hitopbr
   - generate_docx_hitopsr
   - generate_docx_hitophsum

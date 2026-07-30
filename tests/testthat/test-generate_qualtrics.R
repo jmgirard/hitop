@@ -100,3 +100,66 @@ test_that("all Qualtrics generators run and produce one question per source item
     expect_equal(nrow(q$questions), case$n)
   }
 })
+
+# ---- HiTOP-SR scale subsets (M24) -------------------------------------------
+#
+# Parse-and-compare per D-010: expected numbers/texts come from `hitopsr_items`
+# filtered by `Scale`, independently of the `hitopsr_scales$itemNumbers` path
+# the generator walks.
+
+test_that("generate_qualtrics_hitopsr(subset =) emits exactly the subset's items", {
+  s <- hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  f <- withr::local_tempfile(fileext = ".txt")
+  suppressMessages(generate_qualtrics_hitopsr(file = f, subset = s))
+  parsed <- read_qualtrics(f)
+
+  kept <- hitopsr_items[
+    hitopsr_items$Scale %in% c("Agoraphobia", "Appetite Loss"),
+  ]
+  expect_equal(parsed$questions$num, kept$HSR)
+  expect_equal(parsed$questions$text, kept$Text)
+  expect_equal(nrow(parsed$questions), 8)
+
+  # Original numbering, uniformly zero-padded to the widest item number.
+  expect_equal(parsed$questions$id[1], "HSR_066")
+  expect_equal(parsed$questions$id[8], "HSR_389")
+  expect_true(all(nchar(parsed$questions$id) == nchar("HSR_066")))
+
+  # Structure is otherwise a normal Qualtrics file.
+  expect_true(parsed$advanced_format)
+  expect_equal(parsed$block, "HiTOP-SR")
+  expect_true(parsed$has_instructions)
+})
+
+test_that("subset = NULL leaves Qualtrics output byte-identical for all instruments", {
+  # Locks the shared-helper padding change (nrow -> max item number): every
+  # existing generator must be unaffected.
+  gens <- list(
+    generate_qualtrics_hitopsr,
+    generate_qualtrics_hitopbr,
+    generate_qualtrics_pid5,
+    generate_qualtrics_pid5sf,
+    generate_qualtrics_pid5bf
+  )
+  widths <- c(3, 2, 3, 3, 2) # 405, 45, 220, 100, 25 items
+  for (i in seq_along(gens)) {
+    f <- withr::local_tempfile(fileext = ".txt")
+    suppressMessages(gens[[i]](file = f))
+    parsed <- read_qualtrics(f)
+    ids <- parsed$questions$id
+    expect_equal(
+      unique(nchar(sub("^.*_", "", ids))),
+      widths[i]
+    )
+    # Numbering is 1..n contiguous for every full instrument.
+    expect_equal(parsed$questions$num, seq_len(nrow(parsed$questions)))
+  }
+})
+
+test_that("generate_qualtrics_hitopsr() rejects a non-hitop_subset subset", {
+  f <- withr::local_tempfile(fileext = ".txt")
+  expect_error(
+    generate_qualtrics_hitopsr(file = f, subset = "Agoraphobia"),
+    "hitop_subset"
+  )
+})
