@@ -5,10 +5,7 @@
 # (c) the papersize branch sets the right <w:pgSz>. officer/flextable are
 # Imports but the skip guard keeps local runs graceful when they are absent.
 
-skip_if_no_docx <- function() {
-  skip_if_not_installed("officer")
-  skip_if_not_installed("flextable")
-}
+# skip_if_no_docx() lives in helper-generators.R.
 
 # First source Text made only of plain ASCII (no XML-escaped chars), so a
 # fixed-string search of document.xml is reliable.
@@ -111,4 +108,72 @@ test_that("the HSUM overview uses the corrected sheet wording", {
     xml,
     fixed = TRUE
   ))
+})
+
+# ---- HiTOP-SR scale subsets (M24) -------------------------------------------
+#
+# Parse-and-compare per D-010: the expected item numbers and texts are derived
+# from `hitopsr_items` (filtered by `Scale`), independently of the
+# `hitopsr_scales$itemNumbers` path the generator itself walks.
+
+test_that("generate_docx_hitopsr(subset =) emits exactly the subset's items", {
+  skip_if_no_docx()
+  s <- hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  f <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_hitopsr(file = f, subset = s))
+  xml <- read_docx_xml(f)
+
+  kept <- hitopsr_items[
+    hitopsr_items$Scale %in% c("Agoraphobia", "Appetite Loss"),
+  ]
+  expect_equal(kept$HSR, c(66, 109, 118, 144, 202, 260, 291, 389))
+
+  # Every kept item appears, numbered with its ORIGINAL HSR number.
+  for (i in seq_len(nrow(kept))) {
+    expect_true(
+      grepl(paste0(kept$HSR[i], ".  ", kept$Text[i]), xml, fixed = TRUE)
+    )
+  }
+
+  # No item from any other scale leaks in.
+  dropped <- hitopsr_items[!hitopsr_items$HSR %in% kept$HSR, ]
+  for (txt in utils::head(dropped$Text, 25)) {
+    expect_false(grepl(txt, xml, fixed = TRUE))
+  }
+
+  # Renumbering did NOT happen: item 66 is first, and there is no "1.  " row.
+  expect_false(grepl(paste0("1.  ", kept$Text[1]), xml, fixed = TRUE))
+})
+
+test_that("the subset DOCX scoring table lists only the subset's scales", {
+  skip_if_no_docx()
+  s <- hitop_subset("hitopsr", c("Agoraphobia", "Romantic Disinterest"))
+  f <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_hitopsr(file = f, subset = s))
+  xml <- read_docx_xml(f)
+
+  # Scoring rows carry original numbers, and HSR 310 keeps its (R) marker.
+  expect_true(grepl("66, 109, 118, 260, 291", xml, fixed = TRUE))
+  expect_true(grepl("42, 152, 187, 310(R), 338", xml, fixed = TRUE))
+
+  # Scales outside the subset are absent from the scoring table.
+  expect_false(grepl("Antisocial Behavior", xml, fixed = TRUE))
+  expect_false(grepl("Appetite Loss", xml, fixed = TRUE))
+})
+
+test_that("generate_docx_hitopsr() rejects subset + include_subscales", {
+  s <- hitop_subset("hitopsr", "Agoraphobia")
+  f <- withr::local_tempfile(fileext = ".docx")
+  expect_error(
+    generate_docx_hitopsr(file = f, subset = s, include_subscales = TRUE),
+    "cannot be combined"
+  )
+})
+
+test_that("generate_docx_hitopsr() rejects a non-hitop_subset subset", {
+  f <- withr::local_tempfile(fileext = ".docx")
+  expect_error(
+    generate_docx_hitopsr(file = f, subset = c("Agoraphobia")),
+    "hitop_subset"
+  )
 })

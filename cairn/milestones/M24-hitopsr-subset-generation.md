@@ -54,16 +54,18 @@ Let researchers select a subset of HiTOP-SR scales and generate DOCX/Qualtrics/R
 
 - [x] T1: Implement `hitop_subset()` + a `hitop_subset` S3 object and scale-name validation in a new `R/subset.R` (tests-first: resolution against a hand-derived oracle for ≥2 selections; unknown-name and empty-selection error branches). *(RB tripwire: irreversible-api — the exported constructor signature/shape)*
 - [x] T2: Add an internal base-R helper that reduces an `*_items` table + scale map to a subset, preserving original numbering; keep it instrument-general for later reuse.
-- [ ] T3: Wire `subset` into `generate_docx_hitopsr`; add a parse-and-compare test (D-010 style) for a subset artifact.
-- [ ] T4: Wire `subset` into `generate_qualtrics_hitopsr`; add a parse-and-compare test.
-- [ ] T5: Wire `subset` into `generate_redcap_hitopsr`; add a parse-and-compare test.
-- [ ] T6: Add full-vs-`subset=NULL` equivalence tests (no-regression) for all three generators.
+- [x] T3: Wire `subset` into `generate_docx_hitopsr`; add a parse-and-compare test (D-010 style) for a subset artifact.
+- [x] T4: Wire `subset` into `generate_qualtrics_hitopsr`; add a parse-and-compare test.
+- [x] T5: Wire `subset` into `generate_redcap_hitopsr`; add a parse-and-compare test.
+- [x] T6: Add full-vs-`subset=NULL` equivalence tests (no-regression) for all three generators.
 - [ ] T7: Roxygen docs + worked example, NEWS entry, `_pkgdown.yml` reference; run `document()`, `test()`, `check()`.
 
 ## Work log
 
 - 2026-07-30: /milestone-implement started on branch `m24-hitopsr-subset-generation`.
 - 2026-07-30: implement gate settled three open forks (scale-name vocabulary, Qualtrics ID padding, `include_subscales` collision) — see the Decisions entry below.
+- 2026-07-30: T3-T6 done — `subset = NULL` added to all three SR generators; Qualtrics ID padding now derives from the largest item number (was row count); `include_subscales` + `subset` errors; 3 new test blocks per format plus `test-subset-generation.R` (subset = NULL and an all-76-scales subset both reproduce the full artifact). `devtools::test()` FAIL 0 | PASS 9776.
+- 2026-07-30: moved `skip_if_no_zip()`/`skip_if_no_docx()` from two test files into `helper-generators.R` so the new subset tests share them (no behavior change).
 - 2026-07-30: T1+T2 done — `R/subset.R` adds exported `hitop_subset()`, a `print()` method, and the internal `apply_subset()` reducer; `test-subset.R` adds 29 assertions incl. hand-derived item oracles for 3 selections. `devtools::test()` FAIL 0 | PASS 9694.
 - 2026-07-17: created by /milestone-plan. Forks decided at the gate: SR only · subset-descriptor object (not a per-function `scales=` arg, which would reverse the deliberate "no scales arg" convention — D-006/D-012) · preserve original HSR numbering · generate-first (scoring deferred to a dependent candidate).
 

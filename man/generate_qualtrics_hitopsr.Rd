@@ -9,7 +9,8 @@ generate_qualtrics_hitopsr(
   block_name = "HiTOP-SR",
   id_prefix = "HSR",
   include_instructions = TRUE,
-  breaks = 15
+  breaks = 15,
+  subset = NULL
 )
 }
 \arguments{
@@ -28,6 +29,10 @@ starting instructions as a descriptive text block.}
 \item{breaks}{Integer or \code{NULL}. The number of items to display before
 inserting a page break. Set to \code{0} or \code{NULL} to disable pagination.
 Defaults to \code{15}.}
+
+\item{subset}{An optional \code{\link[=hitop_subset]{hitop_subset()}} object restricting the file to the
+items of the chosen scales, keeping their original HiTOP-SR item numbers.
+(default = \code{NULL})}
 }
 \value{
 Invisibly returns the path to the created file (\code{file}).
@@ -40,5 +45,11 @@ Self-Report (HiTOP-SR) items and instructions.
 \examples{
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
+
+# A two-scale subset, original numbering preserved
+generate_qualtrics_hitopsr(
+  file = tempfile(fileext = ".txt"),
+  subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+)
 
 }

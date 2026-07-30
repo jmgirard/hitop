@@ -58,6 +58,9 @@ generate_qualtrics_hitopbr <- function(
 #' @param breaks Integer or `NULL`. The number of items to display before
 #'   inserting a page break. Set to `0` or `NULL` to disable pagination.
 #'   Defaults to `15`.
+#' @param subset An optional [hitop_subset()] object restricting the file to the
+#'   items of the chosen scales, keeping their original HiTOP-SR item numbers.
+#'   (default = `NULL`)
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
@@ -65,16 +68,25 @@ generate_qualtrics_hitopbr <- function(
 #' # Write a HiTOP-SR Qualtrics import file to a temporary location
 #' generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
 #'
+#' # A two-scale subset, original numbering preserved
+#' generate_qualtrics_hitopsr(
+#'   file = tempfile(fileext = ".txt"),
+#'   subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+#' )
+#'
 #' @export
 generate_qualtrics_hitopsr <- function(
   file = "hitopsr_qualtrics.txt",
   block_name = "HiTOP-SR",
   id_prefix = "HSR",
   include_instructions = TRUE,
-  breaks = 15
+  breaks = 15,
+  subset = NULL
 ) {
+  reduced <- apply_subset(hitopsr_items, NULL, subset, "HSR")
+
   build_qualtrics_txt(
-    items = hitopsr_items,
+    items = reduced$items,
     instructions = hitopsr_instructions,
     file = file,
     block_name = block_name,
@@ -199,8 +211,11 @@ build_qualtrics_txt <- function(
     out <- c(out, paste0("[[Block:", block_name, "]]"), "")
   }
 
-  # Determine padding width automatically for question IDs
-  max_w <- nchar(as.character(nrow(items)))
+  # Determine padding width automatically for question IDs. The width comes
+  # from the largest item NUMBER, not the row count: a subset keeps original
+  # numbering, so its row count under-pads (item 7 as `_07` beside `_312`).
+  # For a full instrument the two agree, so existing output is unchanged.
+  max_w <- nchar(as.character(max(items[[1]])))
   fmt <- sprintf("[[ID:%s_%%0%dd]]", id_prefix, max_w)
 
   # 3. Add the starting instructions as a Descriptive Block (DB)

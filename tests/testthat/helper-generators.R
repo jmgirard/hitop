@@ -154,3 +154,16 @@ docx_page_size <- function(xml) {
   h <- as.integer(sub('.*<w:pgSz[^>]*w:h="([0-9]+)".*', "\\1", xml))
   c(width = w, height = h)
 }
+
+# ---- Shared skip guards -----------------------------------------------------
+#
+# zip WRITING needs an external zip utility (unzip is internal to R);
+# officer/flextable are Imports, but the guard keeps local runs graceful when
+# they are absent.
+
+skip_if_no_zip <- function() testthat::skip_if(unname(Sys.which("zip")) == "")
+
+skip_if_no_docx <- function() {
+  testthat::skip_if_not_installed("officer")
+  testthat::skip_if_not_installed("flextable")
+}
