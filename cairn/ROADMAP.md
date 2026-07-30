@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-17 (M23 close-out)_
+_Last hygiene check: 2026-07-30 (M24 close-out; M25/M26 planned)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M22)._
 
 ## Milestones
@@ -10,12 +10,11 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 |---|---|---|---|---|---|
 | M26 | PID-5 norming and score conversion (raw ↔ T ↔ percentile) | planned | M25 | normal | milestones/M26-pid5-norming-functions.md |
 | M25 | PID-5 normative tables — verification and ingest | planned | — | normal | milestones/M25-pid5-norms-ingest.md |
-| M24 | HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap) | review | — | normal | milestones/M24-hitopsr-subset-generation.md |
+| M24 | HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap) | done | — | normal | milestones/archive/M24-hitopsr-subset-generation.md |
 | M23 | Overview instrument page (SR/BR/HSUM link cards) | done | — | normal | milestones/archive/M23-overview-instrument-page.md |
 | M22 | Centralize import instructions (Qualtrics QSF+TXT, REDCap ZIP) | done | — | normal | milestones/archive/M22-centralize-import-instructions.md |
 | M21 | Beautify instrument download pages (manifest badges + collapsible history) | done | — | normal | milestones/archive/M21-beautify-download-pages.md |
 | M20 | Artifact versioning — build-date manifest + checksum lock | done | — | normal | milestones/archive/M20-artifact-versioning.md |
-| M19 | HSUM Qualtrics QSF rebuild (API script + verification test) | done | — | normal | milestones/archive/M19-hsum-qualtrics-qsf.md |
 
 ## Candidates
 
