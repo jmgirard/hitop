@@ -3,11 +3,11 @@
      Per-section owners are tagged below. -->
 # M24: HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** IP1, GP3, GP4
-- **Branch/PR:** —
+- **Branch/PR:** `m24-hitopsr-subset-generation`
 
 ## Goal
 
@@ -62,6 +62,7 @@ Let researchers select a subset of HiTOP-SR scales and generate DOCX/Qualtrics/R
 
 ## Work log
 
+- 2026-07-30: /milestone-implement started on branch `m24-hitopsr-subset-generation`.
 - 2026-07-17: created by /milestone-plan. Forks decided at the gate: SR only · subset-descriptor object (not a per-function `scales=` arg, which would reverse the deliberate "no scales arg" convention — D-006/D-012) · preserve original HSR numbering · generate-first (scoring deferred to a dependent candidate).
 
 ## Decisions
