@@ -138,6 +138,63 @@ both forms.
 reliability row count) with no milestone numbers in user-facing text. `devtools::check()`
 re-run at review: **0 errors, 0 warnings, 0 notes**. `document()` produces no diff.
 
+**Independent review — three lenses, then a scorer.**
+
+*[S] blame-history:* no regressions. Every changed test expectation traces to M7's
+`8c5dfa4` shape guards and to the D-017/D-019 sign-off; each "loosened" assertion was
+re-tightened via `setdiff(..., "total")` rather than deleted. Noted that M20 logged a
+sub-threshold finding F1 ("partial rebuild re-rows all 18 with one shared note"), so the
+new `artifacts.R` filtering is the fix for a gap review had already spotted once.
+
+*[S] prior-review:* one finding, **fixed at 60327eb**. `R/data.R`'s `pid_norms` roxygen
+still read "the brief form's total score, which the source norms but `score_pid5()` does
+not yet compute" — shipped in `man/pid_norms.Rd`. M25's own review had corrected that exact
+sentence; M26 fixed the NEWS and vignette copies and missed this third one. All 20 normed
+scales now have a scorer, so the exception was removed rather than reworded, and
+`test-norms.R` gained a test locking the correspondence (it has drifted twice).
+Secondary probe `gh api .../pulls/comments` returned `[]` — no GitHub review threads.
+
+*[O] diff-bug:* **no correctness bug.** Independently re-derived `pid_total` under all
+three `missing` modes on complete and NA-injected data (6/6 `all.equal` TRUE), confirmed
+`_se` ordering and NA-masking, re-ran `data-raw/pid_info.R` in a scratch copy and got a
+`pid_scales` identical to the committed `.rda`, verified all 24 manifest md5s, confirmed
+the two BF `document.xml` diffs are exactly two text nodes plus the footer stamp, and
+independently confirmed the `@details` "at most 3 of the 5" arithmetic against `apa_mean()`.
+Reported 15 workflow/documentation/test findings.
+
+**Scoring.** All 16 findings went to a fresh [S] scorer holding the diff and this milestone
+file. **None scored >= 80**, so the actioned list is empty; all 16 are logged below per IP3.
+Highest: F8 75, F13 72, F1/F5/F10 68, F9 66, F12 63, F4 62. Then F6 58, F11 55, F2/F7 50,
+F16 32, F3 30, F14 20, F15 10.
+
+Two sub-threshold findings were nonetheless fixed, because both were unambiguously wrong in
+code this diff introduced and each cost one line:
+- **F8 (75)** — `expect_false(grepl("(R)", total_items))` searched a string built by joining
+  a numeric vector, so it could never be TRUE; `expect_equal(x, sort(x))` is satisfied by any
+  vector. Replaced with `expect_equal(..., as.numeric(1:25))` and a `[0-9]\(R\)` search of
+  the DOCX itself. Fixing it surfaced that a bare `"(R)"` search matches every BF form, since
+  the form's own instruction reads "Reverse-scored items are indicated with (R)." The new
+  pattern is discriminating: it matches the HiTOP-SR form (which has reverse items) and not
+  the BF form (which has none).
+- **F4b (62)** — `@examples` comment "# Brief form (5 domains) with standard errors" was
+  stale in a file this milestone reworked.
+
+Logged, not actioned (14): F1 unvalidated `rebuild_stems`/`rebuild_formats` fail silently on
+a typo. F2 committed filter defaults are a partial rebuild. F3 comment overstates the
+manifest guarantee. F4a `vignettes/articles/download-pid5bf.Rmd` still says "5 domain
+scales". F5 vignette tolerance claim omits its `missing = "apa"` precondition. F6 the
+converse case (NA total, some domains reported) is undocumented. F7 DOCX test reaches ground
+truth via `test-keying.R` rather than directly. F9 no regression guard for `pid_total` under
+`"available"`/`"complete"`, nor for `pid_total_se`'s value. F10 the 6-unanswered boundary
+asserts non-NA rather than the hand value 1. F11 `_se` carries no heterogeneity caveat where
+`reliability_pid5()` now does. F12 vignette's "essentially unidimensional" prose sits above
+the new Total reliability row. F13 the proration choice is recorded in the work log and
+`SOURCES.md` but not `DECISIONS.md`. F14 a 17-word attributed quote ships in package docs.
+F15 `pid_norms` BF domain raws exceed 3.0 (pre-existing from M25; M27 will meet it).
+
+**CI.** All 7 checks green on PR #29 (macos, ubuntu release/devel/oldrel-1, windows,
+pkgdown, test-coverage).
+
 **Consistency gate.** `cairn_validate` exit 0, all checks pass (24 dangling-id advisories,
 all pre-existing legacy D-001-D-012 / M13-M16 references). Profile `consistency-gate`
 slot: `document()` no-diff clean, `pkgdown::check_pkgdown()` "No problems found", NEWS

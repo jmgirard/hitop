@@ -203,11 +203,20 @@ test_that("the BF scoring table carries the Total row keyed to pid_scales", {
   expect_true(grepl("Total", xml, fixed = TRUE))
   expect_true(grepl(total_items, xml, fixed = TRUE))
 
-  # It really is all 25 items, in ascending order, with no reverse marks (the
-  # BF has none) -- the three properties the book's rule depends on.
-  expect_equal(bf$itemNumbers[["total"]], sort(bf$itemNumbers[["total"]]))
-  expect_length(bf$itemNumbers[["total"]], 25L)
-  expect_false(grepl("(R)", total_items, fixed = TRUE))
+  # It really is all 25 items in ascending order. Asserted against a literal:
+  # comparing the vector to its own sort() is satisfied by any vector, and
+  # length-25 alone does not pin which items.
+  expect_equal(bf$itemNumbers[["total"]], as.numeric(1:25))
+
+  # And no item on the printed form carries a reverse mark, because no BF item
+  # is reverse-keyed. Checked against the DOCX itself -- the earlier version of
+  # this assertion searched `total_items`, a string the test builds by joining
+  # a numeric vector, which can never contain "(R)" whatever the form says.
+  # The pattern is digit-then-mark: the form's own scoring instruction reads
+  # "Reverse-scored items are indicated with (R).", so a bare "(R)" search
+  # matches every BF form ever generated and asserts nothing.
+  expect_false(any(pid_items$Reverse[!is.na(pid_items$BF)]))
+  expect_false(grepl("[0-9]\\(R\\)", xml))
 
   # The five domain rows are still printed alongside it.
   for (stem in setdiff(bf$camelCase, "total")) {

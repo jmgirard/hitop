@@ -102,7 +102,7 @@ score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
 score_pid5(sim_pid5sf, items = sprintf("pid_\%d", 1:100), version = "SF",
            append = FALSE)
 
-# Brief form (5 domains) with standard errors
+# Brief form (5 domains + the total) with standard errors
 score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
            append = FALSE)
 
