@@ -29,14 +29,14 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 
 ## Acceptance criteria
 
-- [ ] **AC1.** Every numeric cell of the seven committed `data-raw/norms_*.csv` tables is
+- [x] **AC1.** Every numeric cell of the seven committed `data-raw/norms_*.csv` tables is
       reconciled against the book: an independent transcription is produced from the
       source by a route that did not produce the CSVs — a committed, re-runnable
       extractor over the book's table markup, or a fresh reader where no markup exists —
       and the cell-by-cell diff of that transcription against the CSVs is recorded in
       this file, with every discrepancy either corrected in the CSV with maintainer
       sign-off (IP1) or recorded as printed-in-source.
-- [ ] **AC2.** `cairn/SOURCES.md` carries a PID-5 norms section giving the book's full
+- [x] **AC2.** `cairn/SOURCES.md` carries a PID-5 norms section giving the book's full
       citation, a page/table anchor for each of the seven tables, the normative sample
       as the book describes it, the maintainer-confirmed mapping from each book scale
       name (VRIN, ORS, PID-5-PRD) to the package column it norms — or, where the
@@ -56,28 +56,28 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
       the rows above that scale's zero floor; (b) any `percentile` changed so it falls
       below its predecessor within a scale; (c) any `percentile` set outside [0, 1];
       (d) any one of the ≥ 15 values hardcoded in the test from named book pages.
-- [ ] **AC5.** `Rscript -e 'devtools::document()'` leaves the working tree clean and
+- [x] **AC5.** `Rscript -e 'devtools::document()'` leaves the working tree clean and
       `Rscript -e 'devtools::check()'` reports 0 errors and 0 warnings, with every NOTE
       justified in this file's Review section (`cairn/PROFILE.md` consistency-gate), and
       with `pid_norms` documented in `R/data.R` and listed under "Instrument Data" in
       `_pkgdown.yml`.
 
-- [ ] **AC6 (BC1).** For each validity table that ships in `pid_norms`, its `scale`
+- [x] **AC6 (BC1).** For each validity table that ships in `pid_norms`, its `scale`
       value is exactly the package column stem — `"INC"` (book Table A-1), `"INCS"`
       (A-2), `"ORS"` (A-3), `"PRD"` (A-4) — and no `scale` value anywhere in
       `pid_norms` is `"VRIN"`, `"VRINS"`, `"INC-S"`, or `"PIM-RD"`.
-- [ ] **AC7 (BC2).** M25 introduces no rename of existing validity-scale names on any
+- [x] **AC7 (BC2).** M25 introduces no rename of existing validity-scale names on any
       exported surface: `validity_pid5()` output column names and the
       `pid_items`/`data-raw/pid_items.csv` validity columns (`INC`, `INCS`,
       `ORS`, `ORSS`, `PRD`, `PRDS`, `SDTD`, `SDTDS`) are unchanged from their
       pre-M25 state.
-- [ ] **AC8 (BC3).** The `cairn/SOURCES.md` PID-5 norms section required by AC2 records,
+- [x] **AC8 (BC3).** The `cairn/SOURCES.md` PID-5 norms section required by AC2 records,
       with table/page anchors: (a) the A-2 caption name "Variable Response
       Inconsistency (VRIN)" *and* the Chapter 4 name "PID-5-INC-S" as an internal
       inconsistency of the book, with the mapping to `INCS` citing the chapter text
       and Lowmaster et al. (2020); and (b) the book's abbreviation PID-5-PRD (not
       "PIM-RD") mapped to package `PRD`.
-- [ ] **AC9 (BC4).** The `pid_norms` roxygen block in `R/data.R` carries a one-sentence
+- [x] **AC9 (BC4).** The `pid_norms` roxygen block in `R/data.R` carries a one-sentence
       note that the `INC`/`INCS` scales are also called the Variable Response
       Inconsistency (VRIN) scale by Markon et al. (2024), so that a reader of the book
       can find the columns.
@@ -167,3 +167,51 @@ ingestion (2026-07-30); BC2 is ingested verbatim as AC7.
 - 2026-07-30 (M25-D5): `pid_norms` column names and row layout. The exported tibble is `version` / `scale` / `tscore` / `raw` / `percentile` — 1,056 rows, one per (version, scale, T) for the three domain tables and one per (version, scale, raw score) for the four validity tables, whose rows carry `tscore = NA` because the book prints no T for them. AC3's "(version, scale, T)" and "(version, scale, score)" name the identifying quantities rather than column names; a validity raw score is a raw score, so it is carried by `raw` and no fifth identifying column ships. The T column is `tscore` and not `T` by the maintainer's choice at the implementation question gate, because `T` is base R's shorthand for `TRUE` and a data column of that name reads as a collision even where masking makes it work. No book-table anchor column ships either (same gate): the per-table page anchors live in `cairn/SOURCES.md`, which owns provenance. `scale` carries score-output column stems — the five domain stems read from `pid_domains$camelCase` rather than retyped, `"total"` for the BF whole-form score M26 adds under D-017, and the four `validity_pid5()` stems `INC` / `INCS` / `ORS` / `PRD` (M25-D3, D-018).
 
 ## Review
+
+Fresh evidence gathered 2026-07-30 on `m25-pid5-norms-ingest` @ PR #28. Every
+command run at review time; no result carried over from implementation.
+
+### Acceptance-criterion evidence
+
+- **AC1 (cell-by-cell reconciliation).** `Rscript data-raw/verify_norms_against_book.R`
+  re-run at review: all seven tables match the book on dimensions (24x2, 16x2, 9x2,
+  56x2, 56x11, 61x11, 61x13) and on every cell — "every cell of all seven tables
+  matches the book". The extractor reads the EPUB's table markup and never the CSVs,
+  and establishes row identity by the printed T/score column rather than by position.
+  The reconciliation ledger for the 18 discrepancies the first pass found is recorded
+  in this file (M25-D2) with maintainer sign-off on all 18 corrections; none was
+  dispositioned as printed-in-source. Route amended from the plan's "fresh reader" to
+  a committed extractor at the implementation gate (M25-D1).
+- **AC2 (provenance).** `cairn/SOURCES.md` "PID-5 normative tables" section carries the
+  full citation, a page anchor per table (A-1 p. 116, A-2 p. 117, A-3 p. 117, A-4
+  p. 118, A-5 p. 120, A-7 p. 147, A-9 p. 174), the normative sample as the book states
+  it (1,082 for validity; the 995-respondent subset for domains, with the book's
+  inclusion criteria and census weighting), the maintainer-confirmed book-label to
+  package-column mapping table, and a per-table verification status. All seven tables
+  ship, so the hold-out branch is not exercised. `cairn/references/markon2024.md`
+  exists with a Provenance block (source pointer, ingested date, ingesting milestone,
+  pagination basis, extraction-verified status carrying its own observed date) and its
+  `INDEX.md` line.
+- **AC5 (toolchain).** `devtools::document()` run twice leaves `git status` empty ·
+  `devtools::check()` 0 errors / 0 warnings / **0 notes** (2m52s), so no NOTE needs
+  justifying · `pkgdown::check_pkgdown()` no problems · `pid_norms` documented in
+  `R/data.R` (`man/pid_norms.Rd`) and listed under "Instrument Data" at
+  `_pkgdown.yml:121`.
+- **AC6 (validity scale names).** `unique(pid_norms$scale)` is the five domain stems
+  plus `total`, `INC`, `INCS`, `ORS`, `PRD`; none of `VRIN`, `VRINS`, `INC-S`,
+  `PIM-RD` appears. Version assignment matches which `validity_pid5()` version emits
+  each scale: `INC`/`ORS`/`PRD` under FULL, `INCS` under SF.
+- **AC7 (no rename introduced).** `git diff --stat origin/main..HEAD` is empty for
+  `R/validity_pid5.R`, `data-raw/pid_items.csv`, and `data/pid_items.rda` — M25 does
+  not touch them. `pid_items` still carries all eight validity columns (`INC`, `INCS`,
+  `ORS`, `ORSS`, `PRD`, `PRDS`, `SDTD`, `SDTDS`), asserted in `test-norms.R` as well.
+- **AC8 (book-internal inconsistency recorded).** `cairn/SOURCES.md` records the A-2
+  caption "Variable Response Inconsistency (VRIN)" against the Chapter 4 name
+  "PID-5-INC-S" as an inconsistency internal to the book (p. 117 caption vs pp. 34-35),
+  maps it to `INCS` citing the chapter text and Lowmaster et al. (2020), and states
+  that the book's abbreviation for the Williams scale is PID-5-PRD (15 occurrences in
+  Chapter 4) and never "PIM-RD", mapped to package `PRD`.
+- **AC9 (VRIN note in the docs).** `man/pid_norms.Rd` carries the sentence: the `INC`
+  and `INCS` scales are called the Variable Response Inconsistency (VRIN) scale by
+  Markon et al. (2024), so a reader coming from the book finds them under the
+  package's names.
