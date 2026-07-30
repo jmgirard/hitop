@@ -1,6 +1,6 @@
 # M26: PID-5-BF total score across scoring, reliability, and the BF paper forms
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
