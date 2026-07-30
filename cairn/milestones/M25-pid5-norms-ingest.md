@@ -74,7 +74,7 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 
 - [x] **T1.** Maintainer uploads the book's norm-table pages to `cairn/references/sources/`
       (gitignored shelf); confirm the pages cover all seven tables. Blocks T2.
-- [ ] **T2.** Independent re-transcription of those pages by a fresh reader that has not
+- [x] **T2.** Independent re-transcription of those pages by a fresh reader that has not
       seen the CSVs; emit a machine-diffable transcription.
 - [ ] **T3.** Diff the transcription against the seven CSVs cell by cell; reconcile each
       discrepancy (correct with sign-off, or record as printed-in-source) and log the
@@ -105,6 +105,7 @@ norms → ROADMAP candidate rows. Profile plots and rendered reports → the exi
 - 2026-07-30: gate chose the committed-extractor route for AC1 over a fresh reader retyping, because the book arrived as structured markup rather than page scans; AC1's method wording is amended accordingly (see Decisions). Falsified by table markup that turns out not to be losslessly extractable — e.g. values carried in images or in flowed text rather than cells.
 - 2026-07-30: T4's mapping is evidenced from the book's own attributions — A-1 to Keeley et al. (2016) = `INC`, A-2 to Lowmaster et al. (2020/2021) = `INCS` (the book's caption says VRIN but its text names PID-5-INC-S), A-3 to Sellbom et al. (2018) = `ORS`, A-4 to Williams et al. (2019) = `PRD`. Each matches the source that package column already cites; maintainer sign-off still pending behind RB01.
 - 2026-07-30: blocked on RB01 — the maintainer asked whether the package should harmonize validity-scale naming to the book (`INC` to `VRIN`); that is an irreversible exported-API decision (RB tripwire `irreversible-api`), so it goes to a Fable review rather than being settled in-session. RB01 is committed on this branch rather than the default branch, because the milestone file it blocks is ahead of main here.
+- 2026-07-30: T2 done — `data-raw/verify_norms_against_book.R` extracts all seven tables from the book's own table markup and diffs them cell by cell against the CSVs. Row identity is established by the printed T/score column rather than by position, so the extractor cannot silently misalign; all seven tables match the CSVs on dimensions and on every T value. Page anchors read off the epub's pagebreak ids: A-1 p. 116, A-2 p. 117, A-3 p. 117, A-4 p. 118, A-5 p. 120, A-7 p. 147, A-9 p. 174.
 - 2026-07-30: [O] criteria audit ran twice (pre- and post-gate). Pass 1: findings on all 11 drafted criteria. Pass 2 on the revised 12: 8 OK, 4 findings — undefined `check()` NOTE baseline (M25 AC5, M26 AC7), validity scales carrying no T (M26 AC2, AC4), non-injective raw→T (M26 AC4), tripwire branch leaving M26 AC5 unsatisfiable. All four fixed before writing; none escalated to a second gate round.
 
 ## Decisions
