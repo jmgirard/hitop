@@ -66,7 +66,7 @@ what a total score means (IP4).
 
 ## Tasks
 
-- [ ] **T1.** Read `cairn/references/sources/markon2024.epub` for the BF total's
+- [x] **T1.** Read `cairn/references/sources/markon2024.epub` for the BF total's
       computation rule and its missing-data handling; record it in `cairn/SOURCES.md` and
       `cairn/references/markon2024.md` with a page or table anchor. If the book states no
       computation rule, stop and return to plan rather than choosing one (IP3).
@@ -90,6 +90,9 @@ what a total score means (IP4).
 - 2026-07-30: plan gate chose to add a PID-5-BF total to `score_pid5()` (D-017) over shipping the book's TOT norm rows as unusable data or dropping them, because the book publishes a normed total and a norm with nothing to convert is dead weight; falsified by the book defining the total on a metric `score_pid5()` cannot produce.
 - 2026-07-30: plan gate chose the `pid_scales` row (D-019) over a scorer-only special case, accepting the ripple into `reliability_pid5()` and both BF DOCX artifacts, because a scale absent from `pid_scales` needs permanent special-casing in every consumer; falsified by the regenerated paper form proving confusing to administer.
 - 2026-07-30: plan split this milestone out of the original M26 (norming, now M27) after the gate answers pushed the combined scope past four split tripwires; the halves ship independently and M27 depends on this one.
+- 2026-07-30: T1 done — the book states the rule outright at Ch. 3, p. 23 (item-level mean over all 25 items), settling D-017's open choice; recorded in `SOURCES.md` and `references/markon2024.md`. No IP3 stop.
+- 2026-07-30: implementation gate chose independent APA proration for the total (it can compute when all five domains are NA) over NA-ing it with the domains, because GP1 gives the book's stated rule the default and the alternative needs a special case; falsified by users reading a total-with-blank-domains profile as a bug.
+- 2026-07-30: implementation gate chose to print all 25 item numbers in the DOCX total row over a prose "All 25 items" cell, because a uniform comma-joined cell is verifiable against the keying table by the same oracle the other rows use (IP2); falsified by the printed cell overflowing its column on either page size.
 
 ## Decisions
 

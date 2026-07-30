@@ -19,8 +19,11 @@ Appendix, "Normative Score Distributions", pp. 113–219.
 **Role.** The authoritative published source for the PID-5 normative tables the
 package ships as `pid_norms` (IP3: no norms without published tables). It settles
 the raw ↔ T ↔ percentile correspondence for the domain scales of all three scored
-versions and the percentile distributions of the four validity scales. It is *not*
-the authority for validity-scale naming — see D-018 and "Open questions" below.
+versions and the percentile distributions of the four validity scales. It is also
+the **scoring key for the PID-5-BF total** (Ch. 3, p. 23, below) — the APA BF form
+defines only the five domains, so this book is the sole published authority for how
+the total is computed (IP3: no scoring without a key). It is *not* the authority for
+validity-scale naming — see D-018 and "Open questions" below.
 
 ## Extracted values
 
@@ -50,6 +53,20 @@ ships are listed; the Appendix runs to twelve (see Open questions).
 - **Table A–9**, p. 174 — "…Brief Form normative tables: total score and domain
   scales". 61 rows, Total plus the five domains. → BF total + domains.
   CSV `data-raw/norms_pid5bf_domains.csv`.
+
+**The PID-5-BF total's computation rule** (Chapter 3, p. 23 — prose, not a table;
+ingested 2026-07-30 by M26). The book states it once, verbatim: *"Unlike the other
+versions of the PID-5, the PID-5-BF total score can be computed by averaging the
+overall score by the total number of items in the measure (i.e., 25)."* So the total
+is the item-level mean over all 25 BF items, not the mean of the five domain means.
+The page anchor is the EPUB's own `page23` pagebreak span, read directly from the
+chapter markup rather than inferred from surrounding text — verified against the
+source 2026-07-30. Chapter 3's instrument-comparison table (p. 22) describes the same
+quantity as "1 total score (domain profile elevation)", which is a characterization
+of what the total represents rather than a competing rule. The book gives **no**
+missing-data or proration rule for the total anywhere; the Appendix's only mention of
+missingness (p. 114) is a sample-inclusion criterion for deriving the norms, not a
+scoring instruction — observed 2026-07-30.
 
 **The normative sample** (Appendix, "Background and Methods", pp. 113–114), in the
 book's own terms:
@@ -86,6 +103,9 @@ the package's `INC` are one scale, beyond the shared attribution to Keeley et al
   table→CSV correspondence.
 - `cairn/SOURCES.md`, "PID-5 normative tables" section — the provenance record and
   the book-label → package-column mapping.
+- `pid_scales[["BF"]]`'s `total` row and `score_pid5(version = "BF")`'s total column,
+  via `cairn/SOURCES.md`'s "Note on the BF total score" — the p. 23 rule above is the
+  IP3 key they ship against (M26).
 
 ## Open questions
 
