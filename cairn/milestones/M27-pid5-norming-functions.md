@@ -1,6 +1,6 @@
 # M27: PID-5 norming and score conversion (raw ↔ T ↔ percentile)
 
-- **Status:** planned
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M26
 - **Driving RR:** —
@@ -110,6 +110,7 @@ means (IP4).
 - 2026-07-30: plan gate chose to escalate the lookup, tie, and above-ceiling rules to a written review brief over pinning a default rule in the criteria, because the tables print 29 rows no real score can reach and a guessed rule would be unfalsifiable against them; falsified by the book stating all three rules outright, which would make the brief redundant.
 - 2026-07-30: plan chose `cli::cli_alert_info()` for the reconciliation report over the silent rescale the legacy-M16 note proposed, because GP1 requires deviations to be loud and it changes the numbers a user reads; falsified by the message proving noisy enough on ordinary data that users suppress it.
 - 2026-07-30: plan absorbed the `Norm-ready response ranges (legacy M16)` candidate row into AC6 rather than planning it separately, because the reconciliation has no home outside a norming lookup (D-012 deferred it here explicitly).
+- 2026-07-30: blocked on RB02 (T1) — AC1's three lookup rules escalated; the brief's falsification check confirmed the book prints no lookup rule (Appendix pp. 113-115, Ch. 7), and probing `pid_norms` established that the 16 T-carrying tables are exactly linear, every tie is a raw-0.00 floor clip, percentile is empirical rather than a transform of T, and only 39 of 305 printed BF domain raws are attainable.
 
 ## Decisions
 
