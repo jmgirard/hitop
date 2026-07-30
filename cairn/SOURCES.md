@@ -113,11 +113,18 @@ represents, not a second computation rule, and the p. 23 sentence is the one the
 package implements. The book states **no** missing-data rule for the total, so it
 inherits `score_pid5()`'s existing `missing` semantics applied at the 25-item level:
 under `missing = "apa"`, `apa_mean()` drops the total when more than a quarter of
-the 25 items are unanswered (≥ 7) and prorates otherwise. Because every scale
-prorates independently, a respondent missing one item in each of the five domains
-receives a computed total alongside five `NA` domains — accepted at the M26
-implementation gate (2026-07-30) as the literal reading of the book's rule, and
-documented in `score_pid5()`'s `@details`.
+the 25 items are unanswered (≥ 7) and prorates otherwise.
+
+Because every scale prorates independently, a total can be reported alongside one
+or more `NA` domains: blanking a 5-item domain takes 2 unanswered items (40% > 25%),
+while the total tolerates 6, so **up to 3 of the 5 domains can be `NA` while the
+total still computes** (6 unanswered, two in each of three domains). The converse
+cannot happen — blanking all five domains takes ≥ 10 unanswered items, which blanks
+the total too. This was accepted at the M26 implementation gate (2026-07-30) as the
+literal reading of the book's rule, and is documented in `score_pid5()`'s
+`@details`. *(Bound stated as "all five domains" when first written 2026-07-30;
+corrected the same day against `apa_mean()` — one missing item in a 5-item domain
+prorates rather than blanking it.)*
 
 The book's normative table for this scale is **A–9 (p. 174)**, "Brief Form
 normative tables: total score and domain scales", ingested as `pid_norms` rows with

@@ -162,9 +162,11 @@ test_that("FULL gains 5 domain columns named like BF, appended after the 25 face
   f <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", append = FALSE)
   expect_equal(ncol(f), 30L)                                  # 25 facets + 5 domains
   expect_equal(tail(names(f), 5), paste0("pid_", pid_domains$camelCase))
+  # BF's `total` row (M26) is not a domain and is excluded: the claim is that
+  # FULL's 5 domain columns are named like BF's 5 DOMAIN columns.
   expect_setequal(
     paste0("pid_", pid_domains$camelCase),
-    paste0("pid_", pid_scales[["BF"]]$camelCase)
+    paste0("pid_", setdiff(pid_scales[["BF"]]$camelCase, "total"))
   )
 })
 
@@ -211,10 +213,56 @@ test_that("SF gains the same 5 domain columns as FULL", {
   expect_true(all(paste0("pid_", pid_domains$camelCase) %in% names(f)))
 })
 
-test_that("BF output is unchanged by M7 (still 5 domains, no facet columns)", {
+test_that("BF output is 5 domains + the total, and no facet columns", {
   d <- score_pid5(fx_pid5bf(), items = 1:25, version = "BF", append = FALSE)
-  expect_equal(ncol(d), 5L)
+  expect_equal(ncol(d), 6L)
   expect_setequal(names(d), paste0("pid_", pid_scales[["BF"]]$camelCase))
+  # The total is appended after the five domains, never interleaved.
+  expect_equal(names(d)[[6]], "pid_total")
+})
+
+test_that("BF total is the item-level mean over all 25 items (hand-computed oracle)", {
+  # Markon et al. (2024, Ch. 3, p. 23): the BF total "can be computed by averaging
+  # the overall score by the total number of items in the measure (i.e., 25)".
+  # Expected values below are computed BY HAND from fx_pid5bf(), never from
+  # score_pid5() (IP2). fx_pid5bf() rows:
+  #   1: all 25 items = 0                      -> 0/25   = 0
+  #   2: all 25 items = 2                      -> 50/25  = 2
+  #   3: all 1, but items 1,2,3,5,6 = 0,1,2,3,3
+  #      sum = 25 - (5 x 1) + (0+1+2+3+3) = 29 -> 29/25  = 1.16
+  #   4: all 1, items 1:5 missing              -> see the proration case below
+  d <- score_pid5(fx_pid5bf(), items = 1:25, version = "BF", append = FALSE)
+  expect_equal(d$pid_total[1:3], c(0, 2, 1.16))
+
+  # Row 4 exercises the APA rule at the 25-item level: 5 of 25 unanswered is 20%,
+  # within the 25% tolerance, so the total prorates rather than dropping.
+  # partial = 20 (20 answered items, each 1); prorated raw = 20 x 25/20 = 25;
+  # total = 25/25 = 1.
+  expect_equal(d$pid_total[[4]], 1)
+
+  # And it prorates INDEPENDENTLY of the domains (M26 implementation gate): items
+  # 1, 2, 3, 5 are all Disinhibition, so 4 of that domain's 5 items are missing
+  # (80% > 25%) and the domain drops -- while the total above still computes.
+  expect_true(is.na(d$pid_disinhibition[[4]]))
+
+  # The two candidate rules D-017 left open coincide on complete data: with five
+  # equal-sized domains, the mean of 25 items IS the mean of the 5 domain means.
+  # They are only distinguishable under missingness, where the book's rule governs.
+  complete <- d[1:3, ]
+  domain_means <- rowMeans(
+    complete[, paste0("pid_", setdiff(pid_scales[["BF"]]$camelCase, "total"))]
+  )
+  expect_equal(unname(domain_means), complete$pid_total)
+})
+
+test_that("BF total drops when more than a quarter of the 25 items are unanswered", {
+  # apa_mean() drops at (25 - answered)/25 > 0.25, i.e. from 7 unanswered.
+  x <- fx_pid5bf()
+  x[3, 1:6] <- NA_integer_   # 6 unanswered: 24% -> still prorates
+  x[4, 1:7] <- NA_integer_   # 7 unanswered: 28% -> drops
+  d <- score_pid5(x, items = 1:25, version = "BF", missing = "apa", append = FALSE)
+  expect_false(is.na(d$pid_total[[3]]))
+  expect_true(is.na(d$pid_total[[4]]))
 })
 
 test_that("domain _se columns appear iff calc_se and derive from the 3 facet scores", {

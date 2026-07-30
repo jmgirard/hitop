@@ -70,12 +70,12 @@ what a total score means (IP4).
       computation rule and its missing-data handling; record it in `cairn/SOURCES.md` and
       `cairn/references/markon2024.md` with a page or table anchor. If the book states no
       computation rule, stop and return to plan rather than choosing one (IP3).
-- [ ] **T2.** Add the `total` row to `pid_scales[["BF"]]` via its `data-raw/` script (all
+- [x] **T2.** Add the `total` row to `pid_scales[["BF"]]` via its `data-raw/` script (all
       25 items, no reverse keys); regenerate `data/*.rda`; confirm `pid_items` is untouched.
-- [ ] **T3.** Implement the total in `score_pid5(version = "BF")` per T1's rule
+- [x] **T3.** Implement the total in `score_pid5(version = "BF")` per T1's rule
       ([score_pid5.R:107](R/score_pid5.R:107)); add the hand-computed oracle test; update
       the BF shape assertions.
-- [ ] **T4.** Update the BF reliability expectation
+- [x] **T4.** Update the BF reliability expectation
       ([reliability_pid5.R:60](R/reliability_pid5.R:60) consumers) and confirm alpha/omega
       compute over the 25-item total without error.
 - [ ] **T5.** Regenerate both BF DOCX artifacts
@@ -93,6 +93,8 @@ what a total score means (IP4).
 - 2026-07-30: T1 done — the book states the rule outright at Ch. 3, p. 23 (item-level mean over all 25 items), settling D-017's open choice; recorded in `SOURCES.md` and `references/markon2024.md`. No IP3 stop.
 - 2026-07-30: implementation gate chose independent APA proration for the total (it can compute when all five domains are NA) over NA-ing it with the domains, because GP1 gives the book's stated rule the default and the alternative needs a special case; falsified by users reading a total-with-blank-domains profile as a bug.
 - 2026-07-30: implementation gate chose to print all 25 item numbers in the DOCX total row over a prose "All 25 items" cell, because a uniform comma-joined cell is verifiable against the keying table by the same oracle the other rows use (IP2); falsified by the printed cell overflowing its column on either page size.
+- 2026-07-30: T2-T4 done — the `pid_scales` row makes the total fall out of the existing engine with no new code path in `score_engine()`; six shape assertions across four test files updated (two more than the plan anticipated: `test-interface.R:32`/`:75` and `test-keying.R:248`), no FULL/SF value assertion touched; suite 9947 pass / 0 fail.
+- 2026-07-30: supersedes the proration premise stated at the gate above — the bound is at most 3 of 5 domains NA with a computed total (verified against `apa_mean()`), not all five, which is impossible since blanking 5 domains needs 10 missing and the total drops at 7; the chosen behavior is unchanged and `SOURCES.md` is corrected in place.
 
 ## Decisions
 
