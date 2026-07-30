@@ -120,6 +120,12 @@ cross-cutting parts. Raised at review as finding F13 (scored 72, below the actio
 
 - 2026-07-30: maintainer declined the first merge chip pending F1 and F9; both fixed on the branch (neither touches an acceptance criterion), suite 9976 pass, check 0/0/0.
 
+**M26-D2 (2026-07-30): M26-D1 is superseded by [D-021](../DECISIONS.md).**
+At the merge gate the maintainer directed that the independent-proration rule be recorded
+cross-cuttingly rather than milestone-locally. M26-D1's stated reason for staying local
+("it governs one scale in one function") no longer holds; D-021 carries the decision, and
+M26-D1 stands unedited as the record of what was decided when (IP4).
+
 ## Review
 
 Verified 2026-07-30 on `m26-pid5bf-total-score` @ PR #29, all evidence re-run at review.
