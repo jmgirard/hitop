@@ -1,14 +1,15 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-30 (M25 merged and archived; M20 row pruned under terminal-row retention; audit clean)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M22)._
+_Last hygiene check: 2026-07-30 (M26 split into M26 BF-total + M27 norming at the plan gate; D-019/D-020 recorded; audit clean)_
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M28)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M26 | PID-5 norming and score conversion (raw ↔ T ↔ percentile) | planned | M25 | normal | milestones/M26-pid5-norming-functions.md |
+| M27 | PID-5 norming and score conversion (raw ↔ T ↔ percentile) | planned | M26 | normal | milestones/M27-pid5-norming-functions.md |
+| M26 | PID-5-BF total score across scoring, reliability, and the BF paper forms | planned | — | normal | milestones/M26-pid5bf-total-score.md |
 | M25 | PID-5 normative tables — verification and ingest | done | — | normal | milestones/archive/M25-pid5-norms-ingest.md |
 | M24 | HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap) | done | — | normal | milestones/archive/M24-hitopsr-subset-generation.md |
 | M23 | Overview instrument page (SR/BR/HSUM link cards) | done | — | normal | milestones/archive/M23-overview-instrument-page.md |
@@ -19,7 +20,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 - PID-5-BFP (36-item) data, scoring, exports — awaiting materials — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - HiTOP-HSUM scoring + reliability + tutorial — awaiting Society feedback — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
-- Norm-referenced profile plots for PID-5 (scored-profile visualization against `pid_norms`) — added 2026-07-16, narrowed 2026-07-30 (the norming-functions half graduated to M26) — `legacy/ROADMAP.md` Phase 3
+- Norm-referenced profile plots for PID-5 (scored-profile visualization against `pid_norms`) — added 2026-07-16, narrowed 2026-07-30 (the norming-functions half graduated to M26, renumbered M27 at the same-day split) — `legacy/ROADMAP.md` Phase 3
 - PID-5 facet-level and demographically stratified norms — the book's facet tables arrived 2026-07-30 (markon2024 A–6 SRF, A–8 SF); the sex/age-stratified half is not in the appendix and still awaits the maintainer; extends `pid_norms` with no new export — added 2026-07-30 — lineage: M25
 - PID-5 Informant Form (IRF) norms — markon2024 A–10/A–11 (domain, trait) and A–12 (SRF/IRF descriptives + T-score difference) arrived 2026-07-30; the package has no IRF surface today, so this is a new instrument version, not a `pid_norms` extension — added 2026-07-30 — lineage: M25
 - HiTOP-SR/BR normative data and norming functions — source workbooks arrived 2026-07-30 (`HiTOP-SR-Final.xlsx`, `B-HiTOP overview.xlsx`); both carry sample descriptives (N/mean/SD/skew/kurtosis on a Prolific sample), not raw→T lookup tables, so the norming design differs from `pid_norms` — added 2026-07-30 — `legacy/ROADMAP.md` Phase 3
