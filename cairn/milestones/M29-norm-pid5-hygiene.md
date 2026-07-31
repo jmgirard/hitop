@@ -19,6 +19,10 @@ silently wrong number, and is silenced by one suppression call.
 `R/util.R` that `norm_pid5()` calls, `R/rank_scales.R`'s matching `prefix`
 bug, and `tests/testthat/test-norm_pid5.R`. Input validation, loud failure on
 an unclassifiable scale, one report mechanism, and the test-hygiene gaps.
+Also the user-facing prose describing the two reports being reclassified:
+`NEWS.md` and the norming paragraphs of the three PID-5 scoring vignettes
+(`vignettes/pid5_scoring.Rmd`, `pid5sf_scoring.Rmd`, `pid5bf_scoring.Rmd`),
+which today call them "messages".
 
 **Out:** any change to a converted value on a valid call — the lookup, tie,
 capping and shift arithmetic M27 and M28 verified stay untouched.
@@ -120,6 +124,8 @@ plots → the norm-referenced plotting candidate.
 - 2026-07-31: plan gate chose unifying all four reports onto `cli_warn()` over adding a `quiet` argument and over documenting the split, because D-024 already licensed the unification and the capping report carries none of the `dplyr::filter()` remedy wording its convention clause was written for; falsified by a user needing the four reports suppressible independently, or by a second norming function whose count reporting the alert convention plainly fits.
 - 2026-07-31: plan gate chose fixing `prefix` in both `norm_pid5()` and `rank_scales()` over `norm_pid5()` alone, because one argument name meaning literal in one exported function and regex in another is the divergence a later milestone would have to close anyway; falsified by a user relying on `rank_scales()`'s documented regex `prefix`.
 - 2026-07-31: plan gate chose aborting on factor and character score columns over also aborting on logical, because `as.numeric(TRUE)` is well defined and a 0/1 column converts correctly today; falsified by a logical column reaching the lookup and producing a number the caller did not intend.
+- 2026-07-31: amendment (implement gate) — Scope grew to include `NEWS.md` and the three PID-5 vignettes' norming paragraphs, which describe the coverage and capping reports as "messages" that AC5 turns into warnings; chosen over a candidate row for the vignettes because a doc line contradicting the shipped condition class is the GP2 mismatch this milestone exists to close.
+- 2026-07-31: implement gate chose amending the unreleased 0.2.0 `norm_pid5()` NEWS bullet in place, plus new bullets for `rank_scales()`'s literal `prefix` and `norm_pid5()`'s new aborts, over narrating a messages-to-warnings transition no released version ever exposed (`v0.1.0` is the only tag).
 
 ## Decisions
 
