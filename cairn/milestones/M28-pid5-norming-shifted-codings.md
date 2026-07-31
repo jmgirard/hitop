@@ -1,6 +1,6 @@
 # M28: PID-5 norming under shifted response codings, and the vignette norming sections
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M27
 - **Driving RR:** —
