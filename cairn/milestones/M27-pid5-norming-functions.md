@@ -1,11 +1,11 @@
 # M27: PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M26
 - **Driving RR:** RR02
 - **Principles touched:** IP2, IP3, IP4, GP1, GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m27-norm-pid5`
 
 ## Goal
 
@@ -137,7 +137,7 @@ scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 ## Tasks
 
 - [x] **T1.** File the Review Brief and ingest its report (RB02/RR02, archived; done 2026-07-30).
-- [ ] **T2.** Implement the selection primitives over `pid_norms` — T → raw, raw → T, raw →
+- [x] **T2.** Implement the selection primitives over `pid_norms` — T → raw, raw → T, raw →
       percentile — applying AC8–AC17's rules.
 - [ ] **T3.** Implement `norm_pid5()`: signature and column mapping, per-scale `_t`/`_ptl`
       columns, the unnormed-scale message, `NA` inputs, and AC6's `srange` guard.
@@ -162,6 +162,7 @@ scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 - 2026-07-30: re-cut by /milestone-plan — the shifted-coding reconciliation and the three vignette norming sections move to M28; this milestone keeps the conversion, the ten binding criteria, and their Deviations table, and lands at 149/149 plan-owned lines.
 - 2026-07-30: the re-cut's criteria audit ([O], fresh context) returned that this milestone would otherwise ship `srange` inert, that AC3's `NA` clause contradicted AC2 on the validity scales, and that both renumbered pointers (AC16/BC9, AC10/BC3) were correct; the first two were fixed here, the `srange` gap at the gate as new AC6.
 - 2026-07-30: plan gate chose to guard `srange` in M27 (AC6, any non-official coding returns `NA` with a warning) over dropping the argument until M28 or leaving it inert, because main is a distribution channel and a shifted-coding user must not get silently wrong numbers between the two merges; falsified by M28 landing in the same release, which would make the guard dead code.
+- 2026-07-30: T2 done — `R/norm_engine.R` holds the vectorized selection (nearest printed raw, toward-50 tie-break, percentile-toward-0.50 on the T-less validity tables), `norm_t_to_raw()`, and the capping counter; 223 assertions pass, including printed-row identity over all 20 tables and agreement with an independently coded scalar lookup.
 
 ## Decisions
 
