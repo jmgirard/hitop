@@ -197,7 +197,9 @@ Three fresh-context lenses, then a Sonnet scorer that did not generate the findi
   a non-empty adjusted set, reading "needed no reconciliation" otherwise.
 
 Both fixes are locked by new tests (all-invariant request reports no adjustment; uncovered-only
-request raises the coverage message and zero warnings). Suite after fixes: 10288 pass, 0 fail.
+request raises the coverage message and zero warnings). Re-verified after the fixes:
+`document()` no diff, suite 10288 pass / 0 fail, `pid5_scoring.Rmd` re-renders,
+`devtools::check()` again **0 errors, 0 warnings, 0 notes**, `cairn_validate` exit 0.
 
 **Logged below threshold (13), not actioned:** F7 (72) the shipped `cli_warn()` contradicts
 D-020's `cli_alert_info()` text with no D-entry — raised at the merge gate · F9 (68) two
