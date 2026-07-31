@@ -597,6 +597,42 @@ test_that("norm_pid5() rejects a duplicated `scores` entry", {
   )
 })
 
+test_that("every `scores` complaint names `scores`, never `items` or `scales`", {
+  ## The three shared validators are also used by the scoring family, where the
+  ## same argument is called `items` or `scales`. Each call site passes its own
+  ## name down; without that threading these aborts would blame an argument the
+  ## caller never wrote.
+  msg <- function(expr) {
+    m <- paste(conditionMessage(rlang::catch_cnd(expr, "error")), collapse = " ")
+    gsub("[[:space:]]+", " ", m)
+  }
+  cases <- list(
+    wrong_type = msg(norm_pid5(scored_bf, scores = TRUE, version = "BF")),
+    duplicated = msg(norm_pid5(scored_bf,
+                               scores = c("pid_detachment", "pid_detachment"),
+                               version = "BF")),
+    absent_name = msg(norm_pid5(scored_bf, scores = "pid_nope", version = "BF")),
+    absent_pos = msg(norm_pid5(scored_bf, scores = 999L, version = "BF")),
+    non_numeric = msg(norm_pid5(data.frame(pid_detachment = "0.2"),
+                                scores = "pid_detachment", version = "BF"))
+  )
+  for (nm in names(cases)) {
+    expect_match(cases[[nm]], "scores", fixed = TRUE, info = nm)
+    expect_false(grepl("`items`", cases[[nm]], fixed = TRUE), info = nm)
+    expect_false(grepl("`scales`", cases[[nm]], fixed = TRUE), info = nm)
+  }
+
+  ## `data` and `srange` still blame themselves.
+  expect_match(msg(norm_pid5(1:5, scores = "x", version = "BF")), "`data`",
+               fixed = TRUE)
+  expect_match(
+    msg(norm_pid5(scored_bf, scores = "pid_detachment", version = "BF",
+                  srange = c(3, 0))),
+    "`srange`",
+    fixed = TRUE
+  )
+})
+
 test_that("norm_pid5() aborts on a non-numeric score column rather than coercing", {
   # A factor would be coerced to its integer codes and a character column to
   # NA; both are wrong answers rather than errors, so both abort naming the

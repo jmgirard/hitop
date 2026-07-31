@@ -83,8 +83,8 @@ returns that row's values, rather than an extrapolation. A score below
 the lowest returns whatever an observation \emph{at} the lowest printed raw
 returns -- which, on the scales whose tables print a run of 0.00, is that
 run's highest-T row and not the table's first row, so the two agree
-instead of jumping. A message reports how many observations were capped at
-each end. This is reachable in ordinary data: \code{PRD} is a 22-item sum
+instead of jumping. A warning reports how many observations were capped
+at each end. This is reachable in ordinary data: \code{PRD} is a 22-item sum
 reaching 66 while its table stops at 55.
 \item \strong{Unattainable printed rows.} Five domain tables print rows above the
 3.00 ceiling a 0-3 item mean can reach, so the top of those T ranges
@@ -92,7 +92,7 @@ cannot be attained. A maximum score returns T = 84 (brief-form negative
 affectivity), 87 (brief-form detachment), 93 (brief-form disinhibition),
 87 (full-form negative affectivity), or 85 (short-form negative
 affectivity) -- each at percentile 1.00. Nothing is wrong with such data
-and no message fires.
+and nothing is reported.
 \item \strong{Comparison tolerance.} All comparisons use an absolute tolerance of
 1e-8, so that scores on grids with no exact binary representation (a
 short-form domain mean is a twelfth) match the printed 2-decimal raws as
@@ -101,7 +101,20 @@ intended.
 
 Columns the tables do not cover for the requested \code{version} -- the 25
 facets, for instance -- return \code{NA} in both conversion columns with a
-message naming them. An \code{NA} score returns \code{NA}.
+warning naming them. An \code{NA} score returns \code{NA}.
+
+\strong{Reporting and silence.} Everything this function reports -- the capping
+count above, the uncovered-column warning, and the two response-coding
+reports below -- is a warning condition, so a single \code{suppressWarnings()}
+call silences the function and any one report can still be caught and
+tested for individually.
+
+\strong{Errors.} \code{scores} is checked before anything is converted. Naming the
+same score column twice is an error rather than a duplicated pair of output
+columns, and a factor or character score column is an error rather than a
+silent coercion -- a factor's integer codes are not its scores, and a
+character column would coerce to \code{NA}. Logical columns are accepted, since
+a 0/1 indicator converts as it reads.
 
 \strong{Response coding.} The normative tables are built on the official
 four-option 0-3 coding. Data collected on a four-option coding that merely

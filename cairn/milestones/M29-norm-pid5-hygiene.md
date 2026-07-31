@@ -138,6 +138,9 @@ plots → the norm-referenced plotting candidate.
 - 2026-07-31: T7 — the test helper is now `collect_warnings()`, so nothing shadows testthat's `capture_warnings` export; two interaction tests added — a negative `low` (`srange = c(-1, 2)`) reconciling an item mean upward, and `srange = c(1, 5)` (shifted *and* five options) reporting the refusal alone. `devtools::test()` clean.
 - 2026-07-31: T8 — `norm_pid5()`'s `@details` gained a Reporting-and-silence paragraph and an Errors paragraph, `@param scores`/`@param prefix` state the new contracts, and every "message" describing a report became "warning" across the roxygen, `NEWS.md` and the three vignettes' norming paragraphs. Gate: `devtools::document()` no diff, `devtools::test()` 10347 passing / 0 failures / 0 warnings, `devtools::check()` 0 errors 0 warnings 0 notes.
 
+- 2026-07-31: review correction superseding the T8 line above — the `@details` "Reporting and silence" and "Errors" paragraphs and three "message"->"warning" fixes in the roxygen did NOT land at T8. The edit script that applied them aborted on a failed assertion before writing, and the surviving second run carried only the `@param` half; the T8 log line recorded work the diff did not contain. Found by the fresh-context [O] diff reviewer (findings 1-3, scored 90/88/85) and fixed in the review commit below.
+- 2026-07-31: review — three fresh-context reviewers ([O] diff-bug, [S] blame-history, [S] prior-PR-comments) returned 28 candidate findings, all from the [O] lens; the other two reported no regressions. A separate [S] scorer put 4 at or above the 80 threshold; all 4 were fixed on the branch. `devtools::test()` 10364 passing, `devtools::check()` 0/0/0 after the fixes.
+
 ## Decisions
 
 ## Review
@@ -219,3 +222,75 @@ pre-migration `D-001`-`D-012` or `M13`/`M14` reference in `DESIGN.md` /
 diff, no generated file hand-edited, `README.Rmd`/`README.md` untouched,
 `pkgdown::check_pkgdown()` reports no problems, NEWS.md carries the
 user-visible entries, no new top-level files, `check()` clean.
+
+**Independent review.** Three fresh-context reviewers ran in parallel on
+distinct evidence bases. The **[S] blame-history** lens traced every modified
+line to its introducing commit and reported no regressions: the reclassified
+report strings are byte-identical, the seven `expect_message` ->
+`expect_warning` swaps are faithful, the two dropped `suppressMessages()`
+wrappers had become inert, and the new metric partition preserves D-023's
+classification for all ten shipped scales. The **[S] prior-review** lens found
+no regression of any point M27's or M28's archived reviews raised (M27's
+infinite-score clamp and per-observation capping counts are untouched); its
+`gh api pulls/comments` probe returned empty, so the PR-thread walk was
+correctly skipped. The **[O] diff-bug** lens returned 28 candidate findings and
+confirmed no violation of the Scope's Out list — for a metacharacter-free
+`prefix`, `strip_prefix()` is byte-identical to the old regex strip, and
+`norm_shift()`, `norm_select()`, `norm_convert()` and `norm_capped()` are
+untouched, so no converted value moves on a valid call.
+
+**Scoring and triage.** A separate [S] scorer, which did not generate the
+findings, scored all 28 against the confidence rubric. Four scored at or above
+80 and were **fixed on the branch**:
+
+- *(90)* `?norm_pid5`'s `@details` still called the capping and uncovered-scale
+  reports "messages" after T6 made them warnings — the exact GP2 mismatch the
+  Scope amendment was taken for, fixed in NEWS and the vignettes but missed in
+  the roxygen.
+- *(88)* T8's work-log claim of a "Reporting-and-silence" paragraph and an
+  "Errors" paragraph was false: neither existed. Both now do, so the
+  milestone's headline contract is stated in the function's own help.
+- *(85)* The internal comment at `R/norm_pid5.R` still said an uncovered scale
+  "is reported by the message below".
+- *(82)* AC2's central claim — every `scores` complaint names `scores`, never
+  `items` or `scales` — had zero regression coverage: the existing tests
+  matched only generic substrings, so reverting T3's `arg` threading left the
+  suite green. A new test asserts across all five abort paths that `scores`
+  appears and neither `items` nor `scales` does, and that `data` and `srange`
+  still blame themselves. Mutation-verified: reverting two of the three
+  threaded calls turns it red with 6 failures.
+
+**Logged below threshold (24 findings, not actioned).** Surfaced here rather
+than dropped (IP3), highest first: *(78)* the new `norm_metric()` tests
+transcribe the three partition constants as their expected values rather than
+using an independent oracle, against the file's own IP2 header; *(72)* the
+logical-column test computes its expectation with `norm_convert()`, the engine
+under test; *(70)* the refusal half of the AC5 silence test would have passed
+pre-milestone; *(68)* the three metric vectors are never asserted pairwise
+disjoint, so a future overlap would resolve silently to `"mean"`; *(68)*
+`{.val {version}}` in the new abort differs from the bare `{version}` in the
+sibling report; *(68)* the AC1 prefix fixture 0.20 sits exactly on a tie
+boundary; *(68)* the non-numeric abort hand-rolls a class label instead of
+using `{.cls}`, and reports `"ordered"` for an ordered factor; *(65)* the AC4
+test cannot distinguish a correct `low x nItems` shift from a wrong one;
+*(65)* a vestigial `suppressMessages()` in that same test; *(65)* the
+covered-scale classification loop's assertion is structurally unfalsifiable;
+*(60)* `DESIGN.md`/`CLAUDE.md` do not yet list `strip_prefix()` or note
+D-024/D-025's carve-out from the alert convention; *(55)* the `norm_metric()`
+abort blames the internal helper rather than the exported caller; *(55)*
+`norm_metric()` errors on an `NA` scale name, unreachable from `norm_pid5()`;
+*(52, 50, 45, 45, 40, 40, 35, 30, 30, 20, 10)* pluralization of the abort
+headline, `.internal = TRUE` idiom, two unreachable `strip_prefix()` guards,
+the numeric-abort headline excluding logical, raw glue interpolation of the
+internal `unit`/`arg` literals, `prefix = ""` documentation, a pre-existing
+`stopifnot()` on `prefix`, redundant coverage scans, the capping report's
+pluralization, and a duplicate-column claim disproven on inspection.
+
+The recurring shapes among them — test oracles drifting toward the
+implementation, and internal-consistency polish on the norming family — are
+carried to a ROADMAP candidate rather than expanded here, the same route by
+which this milestone was itself created from M27's and M28's residue.
+
+**Re-verified after the fixes.** `devtools::document()` no diff,
+`devtools::test()` 10364 passing / 0 failures / 0 warnings,
+`devtools::check()` 0 errors / 0 warnings / 0 notes.

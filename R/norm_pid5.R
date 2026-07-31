@@ -54,8 +54,8 @@
 #'     the lowest returns whatever an observation *at* the lowest printed raw
 #'     returns -- which, on the scales whose tables print a run of 0.00, is that
 #'     run's highest-T row and not the table's first row, so the two agree
-#'     instead of jumping. A message reports how many observations were capped at
-#'     each end. This is reachable in ordinary data: `PRD` is a 22-item sum
+#'     instead of jumping. A warning reports how many observations were capped
+#'     at each end. This is reachable in ordinary data: `PRD` is a 22-item sum
 #'     reaching 66 while its table stops at 55.
 #'   * **Unattainable printed rows.** Five domain tables print rows above the
 #'     3.00 ceiling a 0-3 item mean can reach, so the top of those T ranges
@@ -63,7 +63,7 @@
 #'     affectivity), 87 (brief-form detachment), 93 (brief-form disinhibition),
 #'     87 (full-form negative affectivity), or 85 (short-form negative
 #'     affectivity) -- each at percentile 1.00. Nothing is wrong with such data
-#'     and no message fires.
+#'     and nothing is reported.
 #'   * **Comparison tolerance.** All comparisons use an absolute tolerance of
 #'     1e-8, so that scores on grids with no exact binary representation (a
 #'     short-form domain mean is a twelfth) match the printed 2-decimal raws as
@@ -71,7 +71,20 @@
 #'
 #'   Columns the tables do not cover for the requested `version` -- the 25
 #'   facets, for instance -- return `NA` in both conversion columns with a
-#'   message naming them. An `NA` score returns `NA`.
+#'   warning naming them. An `NA` score returns `NA`.
+#'
+#'   **Reporting and silence.** Everything this function reports -- the capping
+#'   count above, the uncovered-column warning, and the two response-coding
+#'   reports below -- is a warning condition, so a single `suppressWarnings()`
+#'   call silences the function and any one report can still be caught and
+#'   tested for individually.
+#'
+#'   **Errors.** `scores` is checked before anything is converted. Naming the
+#'   same score column twice is an error rather than a duplicated pair of output
+#'   columns, and a factor or character score column is an error rather than a
+#'   silent coercion -- a factor's integer codes are not its scores, and a
+#'   character column would coerce to `NA`. Logical columns are accepted, since
+#'   a 0/1 indicator converts as it reads.
 #'
 #'   **Response coding.** The normative tables are built on the official
 #'   four-option 0-3 coding. Data collected on a four-option coding that merely
@@ -256,7 +269,7 @@ norm_pid5 <- function(
   ## Report the reconciliation once per call, naming both groups, so a user on a
   ## shifted coding can see which of their scales moved and which did not. Only
   ## covered scales are listed: an uncovered one is returned as NA either way and
-  ## is reported by the message below instead.
+  ## is reported by the warning below instead.
   if (shifted && any(covered)) {
     adjusted <- col_names[covered & metric != "invariant"]
     invariant <- col_names[covered & metric == "invariant"]
