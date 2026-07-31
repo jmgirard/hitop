@@ -62,6 +62,9 @@ reference:
   - score_hitopbr
   - score_pid5
   - validity_pid5
+- title: Norms
+  contents:
+  - norm_pid5
 - title: Reliability
   contents:
   - reliability_pid5

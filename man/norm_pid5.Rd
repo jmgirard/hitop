@@ -51,9 +51,14 @@ and never rescores.
 For each named score column the tables are searched for the printed
 row whose raw score is \strong{nearest} the observed value, and that one row's
 printed T score and printed percentile are returned. Nothing is
-interpolated: every returned number is a cell of Markon et al. (2024). The
-rules below were settled by an independent review of the tables, since the
-book prints the tables but no instruction for reading them.
+interpolated: every returned number is a cell of Markon et al. (2024).
+
+Markon et al. print the tables but give no instruction for reading them —
+no rounding, interpolation, or tie rule appears anywhere in the book — so
+the rules below are this package's, chosen and defended rather than quoted.
+They were settled by an independent review of the tables recorded in the
+package's development history as report RR02 (in the project repository,
+not the installed package).
 \itemize{
 \item \strong{Between printed rows.} The nearer row wins. Printed raws step by
 0.04-0.07 while attainable scores fall on much coarser grids (a 5-item

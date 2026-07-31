@@ -14,6 +14,7 @@ utils::globalVariables(c(
   "pid_items",
   "pid_scales",
   "pid_domains",
+  "pid_norms",
   "hitopsr_items",
   "hitopsr_scales",
   "hitopsr_subscales",

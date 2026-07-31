@@ -1,6 +1,6 @@
 # M27: PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding)
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M26
 - **Driving RR:** RR02
@@ -144,7 +144,7 @@ scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 - [x] **T4.** Implement capping at both ends across both columns, with per-end warning counts.
 - [x] **T5.** Tests: AC17's minimum set, plus unnormed scales, `NA` inputs, the `srange`
       guard, and the R edge cases the profile's test-doctrine names.
-- [ ] **T6.** Roxygen `@details` with the cited rules, the `_pkgdown.yml` entry, NEWS; run
+- [x] **T6.** Roxygen `@details` with the cited rules, the `_pkgdown.yml` entry, NEWS; run
       `document()` / `test()` / `check()`.
 
 ## Work log
@@ -165,6 +165,9 @@ scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 - 2026-07-30: T2 done — `R/norm_engine.R` holds the vectorized selection (nearest printed raw, toward-50 tie-break, percentile-toward-0.50 on the T-less validity tables), `norm_t_to_raw()`, and the capping counter; 223 assertions pass, including printed-row identity over all 20 tables and agreement with an independently coded scalar lookup.
 - 2026-07-30: T3–T5 done — `R/norm_pid5.R` exports the wrapper (column mapping by prefix-stripped camelCase, per-scale `_t`/`_ptl`, unnormed-scale and `NA` handling, the AC6 `srange` guard, per-end capping counts); tests cover AC17's minimum set plus the profile's R edge cases. Full suite 10,233 assertions, 0 failures.
 - 2026-07-30: a wrapper test caught a real AC3 violation — an uncovered scale was getting only a `_ptl` column, because the `_t` decision keyed on coverage rather than on whether a *covered* scale's rows carry T; fixed so only the four validity scales go without one.
+- 2026-07-30: T6 done — `@details` carries the selection rule, the five effective T-maxima, the 1e-8 tolerance, and the fact that Markon et al. print no lookup rule (RR02 named as the package's own record); `norm_pid5()` added to `_pkgdown.yml` and NEWS. `check()` reports 0 errors / 0 warnings / 0 notes, so AC7 has no NOTE to justify.
+- 2026-07-30: `check()` first flagged `pid_norms` as an undefined global in the two engine helpers; added it to the `utils::globalVariables()` block in `R/hitop-package.R` beside the other lazy-loaded datasets, which is how this package already handles `pid_items` and its siblings.
+- 2026-07-30: all tasks done, status `review`.
 
 ## Decisions
 
