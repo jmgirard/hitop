@@ -1,11 +1,11 @@
 # M27: PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding)
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M26
 - **Driving RR:** RR02
 - **Principles touched:** IP2, IP3, IP4, GP1, GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m27-norm-pid5` / https://github.com/jmgirard/hitop/pull/30
 
 ## Goal
 
@@ -25,75 +25,75 @@ scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 
 ## Acceptance criteria
 
-- [ ] **AC1.** AC8–AC17's rules are reproduced in `norm_pid5()`'s `@details` citing RR02
+- [x] **AC1.** AC8–AC17's rules are reproduced in `norm_pid5()`'s `@details` citing RR02
       (GP1's no-published-rule branch), and covered by tests whose expected values come from
       the report or the book, never the function's own output (IP2).
-- [ ] **AC2.** `norm_pid5(data, scores, version, srange, prefix, append = TRUE)` names score
+- [x] **AC2.** `norm_pid5(data, scores, version, srange, prefix, append = TRUE)` names score
       columns via `scores` (mirroring the scoring family's `items`), matching each to a
       `pid_norms$scale` value by camelCase name with `prefix` stripped, and returns a tibble
       with a `_ptl` column for every covered column and a `_t` column for every covered
       column whose rows carry a non-`NA` `tscore` — the domains and the BF `total` only.
-- [ ] **AC3.** A named column `pid_norms` does not cover for that version (any of the 25
+- [x] **AC3.** A named column `pid_norms` does not cover for that version (any of the 25
       facets, say) yields both a `_t` and a `_ptl` column filled with `NA` plus one `cli`
       message naming those scales — never an error, never a silently absent column. An `NA`
       input yields `NA` in whichever columns AC2 produces, uncounted in AC5's warning.
-- [ ] **AC4.** Conversion is verified against the shipped tables rather than the function's own
+- [x] **AC4.** Conversion is verified against the shipped tables rather than the function's own
       output, over **every** scale in `pid_norms` — five domains per version, the BF `total`,
       the four validity scales; the round-trip requirements are AC16's (BC9).
-- [ ] **AC5.** Out-of-table raws are capped at both ends on both columns: above the highest
+- [x] **AC5.** Out-of-table raws are capped at both ends on both columns: above the highest
       printed row returns that row's T (where the scale has one) and percentile rather than
       an extrapolation; below the lowest returns the values of the row AC10 (BC3) selects
       for the lowest printed raw; one `cli` warning names how many observations were capped
       at each end. The validity scales, carrying no T, are capped on percentile alone.
-- [ ] **AC6.** Any `srange` other than the official `c(0, 3)` returns `NA` in every
+- [x] **AC6.** Any `srange` other than the official `c(0, 3)` returns `NA` in every
       conversion column with one `cli` warning naming the coding — a guard until M28
       replaces it with the D-020/D-023 reconciliation, documented in `@details` as interim.
-- [ ] **AC7.** `norm_pid5()` is in `_pkgdown.yml`'s reference index and NEWS.md; `document()`
+- [x] **AC7.** `norm_pid5()` is in `_pkgdown.yml`'s reference index and NEWS.md; `document()`
       leaves the tree clean and `check()` reports 0 errors / 0 warnings, NOTEs justified below.
-- [ ] **AC8** (BC1): For every conversion, the returned `_t` and `_ptl` for one
+- [x] **AC8** (BC1): For every conversion, the returned `_t` and `_ptl` for one
       observation are the `tscore` and `percentile` of **one** printed row of
       `pid_norms` for that version/scale, selected by arithmetic on printed cells only.
       No returned value is interpolated, and no constant derived by fitting `pid_norms`
       (M, SD, slope, intercept, or equivalent) ships in package code, package data, or
       documentation-stated formulas.
-- [ ] **AC9** (BC2): The selected row minimizes `|observed − raw|` over the scale's
+- [x] **AC9** (BC2): The selected row minimizes `|observed − raw|` over the scale's
       printed rows. Verified: for every printed row outside a tie run, converting that
       row's raw returns that row's T and percentile exactly (0 tolerance on the returned
       values; input comparison per BC8).
-- [ ] **AC10** (BC3): When two or more rows remain candidates — an observed value equal
+- [x] **AC10** (BC3): When two or more rows remain candidates — an observed value equal
       to a raw printed in multiple rows, or equidistant from two adjacent printed raws
       within the BC8 tolerance — the candidate whose T is nearest 50 is selected. Fixed
       consequences (exact expected values): SF psychoticism 0.00 → T=42, ptl 0.31; BF
       psychoticism 0.00 → T=42, ptl 0.00; BF total 0.00 → T=37, ptl 0.00; BF detachment
       0.20 → T=43, ptl 0.35; BF total 0.76 → T=54, ptl 0.71.
-- [ ] **AC11** (BC4): raw → T and raw → percentile are monotone nondecreasing in the
+- [x] **AC11** (BC4): raw → T and raw → percentile are monotone nondecreasing in the
       observed value on every version/scale, verified over a grid no coarser than 0.01
       across each table's raw range.
-- [ ] **AC12** (BC5): Every returned percentile equals a printed `percentile` cell of
+- [x] **AC12** (BC5): Every returned percentile equals a printed `percentile` cell of
       the selected scale exactly; no returned percentile has more than 2 decimal places
       of information.
-- [ ] **AC13** (BC6): For `INC`, `INCS`, `ORS`, `PRD`: every integer within the printed
+- [x] **AC13** (BC6): For `INC`, `INCS`, `ORS`, `PRD`: every integer within the printed
       range returns that row's percentile exactly; attainable above-table integers
       (`PRD` 56–66) return the last printed row's percentile under AC5's capping and are
       counted in its warning; no `_t` column is produced (AC2, restated for
       completeness).
-- [ ] **AC14** (BC7): The 29 above-ceiling rows remain in `pid_norms` and in the lookup
+- [x] **AC14** (BC7): The 29 above-ceiling rows remain in `pid_norms` and in the lookup
       domain (this report directs no row edit, addition, or removal). Fixed
       consequences: BF negativeAffectivity 3.00 → T=84, ptl 1.00; BF detachment 3.00 →
       T=87, ptl 1.00; BF disinhibition 3.00 → T=93, ptl 1.00; FULL negativeAffectivity
       3.00 → T=87, ptl 1.00; SF negativeAffectivity 3.00 → T=85, ptl 1.00. No runtime
       message fires for in-table scores; the five effective T-maxima above are stated in
       `norm_pid5()`'s `@details`.
-- [ ] **AC15** (BC8): All lookup comparisons (exact match, nearest distance,
+- [x] **AC15** (BC8): All lookup comparisons (exact match, nearest distance,
       equidistance) use a documented absolute tolerance of 1e-8, so that binary
       representation of decimal and twelfth-grid raws never changes a selection. The
       tolerance appears in `@details`.
-- [ ] **AC16** (BC9): M27 AC4 is amended as follows: T → raw reproduces every printed
+- [x] **AC16** (BC9): M27 AC4 is amended as follows: T → raw reproduces every printed
       row exactly and raw → T → raw is the identity on every printed row, both including
       tie runs and above-ceiling rows; the raw → percentile identity holds for every
       printed row *outside* tie runs, and within a tie run the shared raw converts to
       the BC3-selected row's percentile.
-- [ ] **AC17** (BC10): The test suite contains, at minimum: (i) the full printed-row
+- [x] **AC17** (BC10): The test suite contains, at minimum: (i) the full printed-row
       identity checks of BC9 against `pid_norms`; (ii) hand-computed fixtures whose
       expected values are stated with their bracketing printed cells cited in the test
       source, covering: one generic (non-midpoint) between-rows case per version, both
@@ -137,14 +137,14 @@ scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 ## Tasks
 
 - [x] **T1.** File the Review Brief and ingest its report (RB02/RR02, archived; done 2026-07-30).
-- [ ] **T2.** Implement the selection primitives over `pid_norms` — T → raw, raw → T, raw →
+- [x] **T2.** Implement the selection primitives over `pid_norms` — T → raw, raw → T, raw →
       percentile — applying AC8–AC17's rules.
-- [ ] **T3.** Implement `norm_pid5()`: signature and column mapping, per-scale `_t`/`_ptl`
+- [x] **T3.** Implement `norm_pid5()`: signature and column mapping, per-scale `_t`/`_ptl`
       columns, the unnormed-scale message, `NA` inputs, and AC6's `srange` guard.
-- [ ] **T4.** Implement capping at both ends across both columns, with per-end warning counts.
-- [ ] **T5.** Tests: AC17's minimum set, plus unnormed scales, `NA` inputs, the `srange`
+- [x] **T4.** Implement capping at both ends across both columns, with per-end warning counts.
+- [x] **T5.** Tests: AC17's minimum set, plus unnormed scales, `NA` inputs, the `srange`
       guard, and the R edge cases the profile's test-doctrine names.
-- [ ] **T6.** Roxygen `@details` with the cited rules, the `_pkgdown.yml` entry, NEWS; run
+- [x] **T6.** Roxygen `@details` with the cited rules, the `_pkgdown.yml` entry, NEWS; run
       `document()` / `test()` / `check()`.
 
 ## Work log
@@ -162,6 +162,12 @@ scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 - 2026-07-30: re-cut by /milestone-plan — the shifted-coding reconciliation and the three vignette norming sections move to M28; this milestone keeps the conversion, the ten binding criteria, and their Deviations table, and lands at 149/149 plan-owned lines.
 - 2026-07-30: the re-cut's criteria audit ([O], fresh context) returned that this milestone would otherwise ship `srange` inert, that AC3's `NA` clause contradicted AC2 on the validity scales, and that both renumbered pointers (AC16/BC9, AC10/BC3) were correct; the first two were fixed here, the `srange` gap at the gate as new AC6.
 - 2026-07-30: plan gate chose to guard `srange` in M27 (AC6, any non-official coding returns `NA` with a warning) over dropping the argument until M28 or leaving it inert, because main is a distribution channel and a shifted-coding user must not get silently wrong numbers between the two merges; falsified by M28 landing in the same release, which would make the guard dead code.
+- 2026-07-30: T2 done — `R/norm_engine.R` holds the vectorized selection (nearest printed raw, toward-50 tie-break, percentile-toward-0.50 on the T-less validity tables), `norm_t_to_raw()`, and the capping counter; 223 assertions pass, including printed-row identity over all 20 tables and agreement with an independently coded scalar lookup.
+- 2026-07-30: T3–T5 done — `R/norm_pid5.R` exports the wrapper (column mapping by prefix-stripped camelCase, per-scale `_t`/`_ptl`, unnormed-scale and `NA` handling, the AC6 `srange` guard, per-end capping counts); tests cover AC17's minimum set plus the profile's R edge cases. Full suite 10,233 assertions, 0 failures.
+- 2026-07-30: a wrapper test caught a real AC3 violation — an uncovered scale was getting only a `_ptl` column, because the `_t` decision keyed on coverage rather than on whether a *covered* scale's rows carry T; fixed so only the four validity scales go without one.
+- 2026-07-30: T6 done — `@details` carries the selection rule, the five effective T-maxima, the 1e-8 tolerance, and the fact that Markon et al. print no lookup rule (RR02 named as the package's own record); `norm_pid5()` added to `_pkgdown.yml` and NEWS. `check()` reports 0 errors / 0 warnings / 0 notes, so AC7 has no NOTE to justify.
+- 2026-07-30: `check()` first flagged `pid_norms` as an undefined global in the two engine helpers; added it to the `utils::globalVariables()` block in `R/hitop-package.R` beside the other lazy-loaded datasets, which is how this package already handles `pid_items` and its siblings.
+- 2026-07-30: all tasks done, status `review`.
 
 ## Decisions
 
@@ -224,3 +230,134 @@ convention, and the reachable state D-021 creates when a BF `total` prorates to 
 beside reported domains.
 
 ## Review
+
+Verified 2026-07-30 on `m27-norm-pid5` at `ea8e842`, PR #30. Evidence is fresh:
+every command below was run in this session against the branch tree. Test counts
+are per-test assertion totals from `testthat::test_file()`.
+
+**Per criterion.**
+
+- **AC1** — `man/norm_pid5.Rd`'s Details reproduces all six rules (between-rows,
+  ties, scores of 0, out-of-table, unattainable rows, tolerance), states that
+  Markon et al. print no lookup instruction, and names RR02 as the package's own
+  record. Every test expectation is derived from printed cells cited in the test
+  source or from RR02's fixtures; none asserts the function's output (IP2).
+- **AC2** — "returns a _t and a _ptl column per covered scale" (5 assertions),
+  "validity scales get a percentile column but no T column" (1), and the
+  edge-case test's prefix-stripping and column-position cases (10) all pass.
+- **AC3** — "an uncovered scale yields NA columns and one message naming it" (3)
+  and "NA scores pass through as NA in both columns" (3). The uncovered case was
+  a real bug caught here during implementation, not at review.
+- **AC4** — the four printed-row tests iterate every version/scale pair in
+  `pid_norms` (20 pairs; 16 T-carrying): 16 + 16 + 20 + 30 assertions, 0 failures.
+- **AC5** — "out-of-table values cap to the nearest end rather than extrapolate"
+  (42, both ends over all 20 tables) and "capping is reported per end and does not
+  extrapolate" (2).
+- **AC6** — "a non-official srange refuses to convert and says so" (3): all
+  conversion columns `NA`, one warning naming the coding.
+- **AC7** — `pkgdown::check_pkgdown()` reports no problems; NEWS.md carries the
+  entry; `devtools::document()` leaves no diff; `devtools::check()` returns
+  0 errors / 0 warnings / 0 notes, so no NOTE needs justifying.
+- **AC8 (BC1)** — every returned value is a printed cell: `grep` over
+  `R/norm_engine.R` and `R/norm_pid5.R` finds no `lm()`, `coef()`, `predict()`,
+  `mean()`, or `sd()`; the only fitting anywhere is absent (AC17's optional
+  cross-check was not implemented).
+- **AC9 (BC2)** — "raw -> percentile reproduces every printed row outside tie
+  runs" (20) plus the two T identities (32); 0 tolerance on returned values.
+- **AC10 (BC3)** — "floor-tie and midpoint fixtures match the printed cells" (5)
+  and "inside a tie run the shared raw converts to the toward-50 row" (30, every
+  tie run in every T-carrying scale).
+- **AC11 (BC4)** — "conversion is monotone nondecreasing in the observed score"
+  (36) over a 0.01 grid across every table's raw range.
+- **AC12 (BC5)** — every returned percentile is a printed cell (the identity
+  tests above). The criterion's second clause is not implemented; see the
+  Deviations table and "Deviation exercised" below.
+- **AC13 (BC6)** — "every integer in a validity table's printed range converts
+  exactly" (8) and the `PRD` = 60 capping case; no `_t` column on any of the four.
+- **AC14 (BC7)** — "a maxed 0-3 score lands below the unattainable printed rows"
+  (5, all five scales asserted); `git diff main..HEAD -- data/ R/sysdata.rda` is
+  empty, so no row was edited, added, or removed; the five effective T-maxima
+  appear in the Rd.
+- **AC15 (BC8)** — `norm_tol <- 1e-8` at `R/norm_engine.R:27`, used for every
+  exact-match, nearest-distance, and equidistance comparison; stated in the Rd.
+- **AC16 (BC9)** — T -> raw exact on all printed rows (16), raw -> T -> raw the
+  identity on all printed rows including tie runs and above-ceiling rows (16),
+  percentile identity outside tie runs (20), and the selected row's percentile
+  within them (30).
+- **AC17 (BC10)** — (i) the identity checks above; (ii) hand-computed fixtures
+  citing bracketing cells — one generic between-rows case per version, both
+  midpoints, both zero-tie flavors, all five maxima, capping at both ends, `PRD`
+  = 60; (iii) an independently coded scalar lookup agreeing over the attainable
+  grids (40); (iv) monotonicity. The optional fitted-line cross-check was not
+  implemented — RR02 marked it "consider", not required.
+
+**Measured against RR02's projections.** All ten fixed consequences reproduce
+exactly, measured against projected: SF psychoticism 0.00 -> T=42/ptl 0.31
+against projected T=42/0.31; BF psychoticism 0.00 -> T=42/0.00 against T=42/0.00;
+BF total 0.00 -> T=37/0.00 against T=37/0.00; BF detachment 0.20 -> T=43/0.35
+against T=43/0.35; BF total 0.76 -> T=54/0.71 against T=54/0.71; and the five
+attainable maxima at 3.00 -> T=84, 87, 93, 87, 85 (all ptl 1.00) against
+projected 84, 87, 93, 87, 85. No shortfall.
+
+**Deviation exercised.** AC12's second clause ("no returned percentile has more
+than 2 decimal places of information") is not implemented, per the Deviations
+from RR02 table: `norm_pid5()` returns `ORS`, `PRD`, and `INCS` percentiles at
+the printed 3-dp precision. Confirmed against the data at review: 71 of the 105
+validity rows carry 3 dp.
+
+**Consistency gate.** `cairn_validate` passes every check (24 advisory warnings,
+none a gate failure); no DESIGN principle changed, so `cairn_impact` is skipped.
+Toolchain slot: `document()` no-diff, generated files untouched by hand, README
+unchanged by this milestone, `check_pkgdown()` clean, NEWS entry present with no
+milestone numbers, no new top-level files, `check()` clean.
+
+**Independent review (three fresh-context lenses + scorer).** The blame-history
+lens ([S]) and the prior-review lens ([S]) each returned zero findings; the
+latter noted this milestone resolves M26's deferred F15 (above-ceiling rows
+undocumented) and found no non-bot PR review threads in the repo. The diff-bug
+lens ([O]) reported 15 candidate findings, scored 0-100 by a separate [S] scorer
+holding the diff and the plan.
+
+**Actioned (scored >= 80), all five fixed on the branch:**
+
+- **F1 (88)** `R/norm_engine.R` — a non-finite or enormous score made every
+  printed row equidistant, so the tie-break returned a row near T=50 while the
+  message claimed the value had been capped. Fixed by clamping to the printed
+  raw range before measuring distances; regression test asserts Inf/-Inf/1e16
+  return the end rows.
+- **F2 (82)** `R/norm_pid5.R` `@details` — the low-end bullet still described the
+  behavior AC5 abandoned at M27-D6 ("returns the lowest's"), contradicting the
+  code, which returns the floor run's toward-50 row. Prose corrected.
+- **F4 (85)** `R/norm_pid5.R` — the capping message counted observation-by-scale
+  pairs, so one respondent out of range on three scales was reported as three
+  observations. Now tracked per observation; regression test covers both shapes.
+- **F13 (80)** the naive-agreement grid routed the four validity scales to their
+  printed raws only, never comparing the attainable above-table half AC17(iii)
+  asks for. Grids widened to INC 0-60, INCS 0-30, ORS 0-10, PRD 0-66.
+- **F14 (82)** only `PRD` = 60 exercised above-table capping, though the
+  Deviations table makes INC, INCS, and ORS equally binding. All four now tested
+  for capped percentile, absent T, and the counting message.
+
+**Logged below threshold (scored < 80), not actioned:** F5 (75) `prefix` is
+interpolated as a regex rather than matched literally; F7 (72) validator errors
+name `items`/`scales`, arguments `norm_pid5()` does not have; F3 (65) a factor
+score column is coerced through its level codes without complaint; F12 (62) the
+"independent" scalar lookup imports the implementation's own tolerance constant
+and branch predicate; F8 (52) an illustrative step-size range in `@details` was
+0.04-0.07 where the true range is 0.01-0.07 (corrected in passing with F2);
+F6 (50) duplicate entries in `scores` are silently mishandled, and the scorer
+found the reported mechanism wrong besides; F9 (45) the tolerance comment's
+1/300 bound holds for SF twelfths but not FULL denominators, with no behavioral
+consequence; F10 (42) and F11 (42) two tests compare the wrapper or the function
+to itself rather than to printed cells; F15 (15) AC9 is asserted transitively
+rather than directly, which the finding itself calls sound. F3, F5, F6, and F7
+are one coherent input-hygiene follow-up and became a ROADMAP candidate row.
+
+**After the fixes.** Full suite 10,259 assertions, 0 failures (283 in
+`test-norm_pid5.R`); `devtools::check()` 0 errors / 0 warnings / 0 notes;
+`document()` still no-diff.
+
+**Returns.** None. This is M27's first review; the work log records one re-cut
+(the M27/M28 split), which the thrash rule counts but which came from the cap,
+not from a failed review.
+

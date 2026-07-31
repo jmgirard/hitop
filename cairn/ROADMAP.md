@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M27 | PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding) | planned | M26 | normal | milestones/M27-pid5-norming-functions.md |
+| M27 | PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding) | review | M26 | normal | milestones/M27-pid5-norming-functions.md |
 | M28 | PID-5 norming under shifted response codings, and the vignette norming sections | planned | M27 | normal | milestones/M28-pid5-norming-shifted-codings.md |
 | M26 | PID-5-BF total score across scoring, reliability, and the BF paper forms | done | — | normal | milestones/archive/M26-pid5bf-total-score.md |
 | M25 | PID-5 normative tables — verification and ingest | done | — | normal | milestones/archive/M25-pid5-norms-ingest.md |
@@ -28,5 +28,6 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
 - Response-option legend wraps mid-phrase on the PID paper forms: `make_items_table()` builds one 126-character string that breaks wherever the column ends; split it two-per-line at a bullet separator (break style chosen by the maintainer 2026-07-30). PID-only — the HiTOP-SR/BR legend is 58 chars and fits on one line — but the fix is in shared generator code and rebuilds 6 PID DOCX with manifest rows per D-016; pure layout, no wording change (IP1 style-fix carve-out) — added 2026-07-30 — lineage: M26
+- `norm_pid5()` input hygiene: four sub-threshold findings logged at M27's review — `prefix` is interpolated into a regex rather than matched literally (a `prefix` containing a metacharacter strips the wrong columns), the shared validators report `items`/`scales` for an argument named `scores`, a factor score column is coerced through its level codes without complaint, and duplicate entries in `scores` are mishandled silently (the scoring family guards this with `validate_item_uniqueness()`). One coherent pass over `R/norm_pid5.R`'s argument handling — added 2026-07-30 — lineage: M27
 - Score HiTOP-SR subset-collected data: score data gathered from a subset instrument (columns = subset items, original HSR numbering) via the `hitop_subset` descriptor — added 2026-07-17 — depends on M24 (plan after M24 lands; second half of the modularization arc)
 - Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M24
