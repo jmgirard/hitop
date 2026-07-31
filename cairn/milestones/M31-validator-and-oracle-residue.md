@@ -1,6 +1,6 @@
 # M31: Argument-validation consistency and a harder norming oracle
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -102,7 +102,7 @@ evidence in the work log), at the maintainer's direction at the plan gate.
       Thread `call` into `warn_item_order()`.
 - [x] T5. Convert the 22 `stopifnot()` sites, one file at a time, verifying
       after each.
-- [ ] T6. Update roxygen where documented error behavior changes; `document()`;
+- [x] T6. Update roxygen where documented error behavior changes; `document()`;
       NEWS.md entry; `cairn/DESIGN.md:50` inventory line; re-run AC7 and
       `check()`.
 
@@ -127,6 +127,7 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 - 2026-07-31: T5 correction — `rlang::arg_match()` does NOT partial-match: it requires an exact value and only *suggests* the near miss, so AC4's "which also enables partial matching" was false and is amended. The practical effect is that the change is strictly smaller than planned — accepted input for `dir` is unchanged and only the error message improves, so NEWS records no widening. Caught by the test asserting `dir = "l"` would newly succeed, which failed.
 - 2026-07-31: AC7 evidence — `devel/characterize_m31.R` run before and after; all 33 configs `identical()`, no differing config. Full suite 0 fail / 10478 pass / 1 pre-existing skip (+60 assertions).
 - 2026-07-31: T6 partial — NEWS.md entry added (message-only change, no widening), `cairn/DESIGN.md:50` inventory line names the three new validators and records that no argument check in `R/` uses a bare predicate assertion. `devtools::document()` produces no `man/`/`NAMESPACE` diff; no roxygen needed editing because accepted input is unchanged everywhere. T6 stays unchecked: the final `devtools::check()` and the AC7 re-run are still outstanding.
+- 2026-07-31: T6 complete — final `devtools::check()` 0 errors / 0 warnings / 0 notes, matching the T1 baseline exactly. AC7 re-run against the final tree: all 33 configs `identical()` to the pre-milestone snapshot. `grep -rn "stopifnot" R/` returns 0. Status → review.
 
 ## Decisions
 
