@@ -304,9 +304,11 @@ test_that("an uncovered scale yields NA columns and one report naming it", {
 # are printed for the FULL form only and INC-S for the SF only.
 
 ## Run `expr`, collecting its warnings and returning them alongside its value.
+## Deliberately not named `capture_warnings`: testthat exports a function of
+## that name, and defining one here shadowed it for the whole file.
 ## Warning text is whitespace-collapsed so assertions are not defeated by the
 ## line wrapping cli applies at the console width.
-capture_warnings <- function(expr) {
+collect_warnings <- function(expr) {
   msgs <- character()
   value <- withCallingHandlers(
     expr,
@@ -323,7 +325,7 @@ capture_warnings <- function(expr) {
 }
 
 test_that("a coding with a different option count converts nothing", {
-  got <- capture_warnings(
+  got <- collect_warnings(
     norm_pid5(scored_bf, scores = bf_scales, version = "BF",
               srange = c(0, 4), append = FALSE)
   )
@@ -333,7 +335,7 @@ test_that("a coding with a different option count converts nothing", {
   expect_equal(ncol(got$value), 2 * length(bf_scales))
 
   ## Fewer options is refused on the same footing as more.
-  two <- capture_warnings(
+  two <- collect_warnings(
     norm_pid5(scored_bf, scores = bf_scales, version = "BF",
               srange = c(0, 1), append = FALSE)
   )
@@ -351,7 +353,7 @@ test_that("a shifted coding reconciles an item mean by `low`", {
                      pid_norms$tscore == 58L, ]
   expect_equal(row$raw, 1.18)
 
-  got <- capture_warnings(
+  got <- collect_warnings(
     norm_pid5(data.frame(pid_detachment = 2.20), scores = "pid_detachment",
               version = "BF", srange = c(1, 4), append = FALSE)
   )
@@ -366,6 +368,45 @@ test_that("a shifted coding reconciles an item mean by `low`", {
   expect_gt(unshifted$pid_detachment_t, 58L)
 })
 
+test_that("a negative `low` reconciles an item mean by adding, not subtracting", {
+  ## Five brief-form detachment items coded -1..2 whose mean is 0.20 are the
+  ## same responses as a 0-3 mean of 0.20 - (-1) = 1.20. The BF detachment table
+  ## prints raw 1.18 at T 58 and 1.24 at T 59, and 1.20 is nearer 1.18.
+  row <- pid_norms[pid_norms$version == "BF" &
+                     pid_norms$scale == "detachment" &
+                     pid_norms$tscore == 58L, ]
+  expect_equal(row$raw, 1.18)
+
+  got <- collect_warnings(
+    norm_pid5(data.frame(pid_detachment = 0.20), scores = "pid_detachment",
+              version = "BF", srange = c(-1, 2), append = FALSE)
+  )
+  expect_equal(got$value$pid_detachment_t, 58L)
+  expect_equal(got$value$pid_detachment_ptl, row$percentile)
+  expect_equal(got$n, 1L)
+  expect_match(got$text, "reconciled", fixed = TRUE)
+
+  ## Read unreconciled, 0.20 is a far lower score and lands elsewhere.
+  unshifted <- norm_pid5(data.frame(pid_detachment = 0.20),
+                         scores = "pid_detachment", version = "BF",
+                         append = FALSE)
+  expect_lt(unshifted$pid_detachment_t, 58L)
+})
+
+test_that("a shifted coding of the wrong option count reports only the refusal", {
+  ## `srange = c(1, 5)` is both shifted off 0 and five options wide. The option
+  ## count is the fatal one: nothing is converted, so there is nothing to
+  ## reconcile and no reconciliation report is owed.
+  got <- collect_warnings(
+    norm_pid5(scored_bf, scores = bf_scales, version = "BF",
+              srange = c(1, 5), append = FALSE)
+  )
+  expect_equal(got$n, 1L)
+  expect_match(got$text, "implies 5 response options", fixed = TRUE)
+  expect_false(grepl("reconcil", got$text, fixed = TRUE))
+  expect_true(all(vapply(got$value, function(x) all(is.na(x)), logical(1))))
+})
+
 test_that("a shifted coding reconciles PRD by `low` x nItems", {
   ## PRD is a plain sum over its items, so the same responses coded 1-4 rather
   ## than 0-3 sum one point higher per item: a 0-3 sum of 30 is a 1-4 sum of
@@ -376,7 +417,7 @@ test_that("a shifted coding reconciles PRD by `low` x nItems", {
                                  pid_norms$raw == 30]
   expect_equal(length(want), 1L)
 
-  got <- capture_warnings(
+  got <- collect_warnings(
     norm_pid5(data.frame(pid_PRD = 52), scores = "pid_PRD", version = "FULL",
               srange = c(1, 4), append = FALSE)
   )
@@ -422,7 +463,7 @@ test_that("INC, INC-S, and ORS are unchanged by a shifted coding", {
                                    pid_norms$raw == case$raw]
     expect_equal(length(want), 1L, info = case$scale)
     df <- stats::setNames(data.frame(case$raw), col)
-    got <- capture_warnings(
+    got <- collect_warnings(
       norm_pid5(df, scores = col, version = case$version, srange = c(1, 4),
                 append = FALSE)
     )
@@ -432,7 +473,7 @@ test_that("INC, INC-S, and ORS are unchanged by a shifted coding", {
 
 test_that("the reconciliation is reported once, naming both groups", {
   df <- data.frame(pid_detachment = 2.20, pid_PRD = 52, pid_ORS = 2)
-  got <- capture_warnings(
+  got <- collect_warnings(
     norm_pid5(df, scores = names(df), version = "FULL", srange = c(1, 4),
               append = FALSE)
   )
@@ -448,7 +489,7 @@ test_that("the reconciliation is reported once, naming both groups", {
 test_that("an all-invariant request is not reported as an adjustment", {
   ## Every requested scale is coding-invariant, so nothing was reconciled and
   ## the report must not claim otherwise.
-  got <- capture_warnings(
+  got <- collect_warnings(
     norm_pid5(data.frame(pid_INC = 12), scores = "pid_INC", version = "FULL",
               srange = c(1, 4), append = FALSE)
   )
@@ -460,7 +501,7 @@ test_that("an all-invariant request is not reported as an adjustment", {
 test_that("a request the tables cover nowhere reports coverage, not coding", {
   ## The facets are in no version's tables, so there is nothing to reconcile and
   ## the coverage report is the whole story.
-  got <- capture_warnings(
+  got <- collect_warnings(
     norm_pid5(data.frame(pid_anhedonia = 2.2), scores = "pid_anhedonia",
               version = "FULL", srange = c(1, 4), append = FALSE)
   )
@@ -488,7 +529,7 @@ test_that("one suppressWarnings() silences the whole function", {
   ## a PRD sum shifted below its table's top row and then capped, beside an
   ## uncovered facet.
   df <- data.frame(pid_PRD = 90, pid_anhedonia = 2.2)
-  loud <- capture_warnings(
+  loud <- collect_warnings(
     norm_pid5(df, scores = names(df), version = "FULL", srange = c(1, 4),
               append = FALSE)
   )

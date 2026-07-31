@@ -113,7 +113,7 @@ plots → the norm-referenced plotting candidate.
 - [x] T6. Convert the coverage and capping reports (`R/norm_pid5.R:258-278`)
       to `cli::cli_warn()`; add whole-function silence tests for both coding
       cases.
-- [ ] T7. Rename the `capture_warnings()` helper at
+- [x] T7. Rename the `capture_warnings()` helper at
       `tests/testthat/test-norm_pid5.R:271`; add the negative-`low` and
       shifted-plus-wrong-count interaction tests.
 - [ ] T8. Sync `@details` for the new aborts and report classes, write the
@@ -135,6 +135,7 @@ plots → the norm-referenced plotting candidate.
 - 2026-07-31: T5 — `norm_shift()`'s sum branch now documents its dependency on `validity_pid5()`'s `rowSums()` without `na.rm` (`R/validity_pid5.R:172`) and what would break if that changed; new test drives a real missing PRD item through `validity_pid5()` and asserts the score is `NA` before and after the `low x nItems` correction while its neighbours convert. `devtools::test()` clean.
 - 2026-07-31: amendment (mini gate) — AC3's "`test-norm_pid5.R:249` passes unedited" clause was unsatisfiable alongside AC5, which turns the report that test listens for into a warning; replaced with a substance clause (both columns `NA`, the column named) allowing exactly the condition-class edit AC5 forces.
 - 2026-07-31: T6 — the uncovered-scale and capping reports are now `cli::cli_warn()`, so all four of `norm_pid5()`'s reports are warnings and one `suppressWarnings()` silences it; seven `expect_message()` assertions became `expect_warning()`, two stale `suppressMessages()` wrappers dropped, and a new test asserts silence in both the refusal case and a three-report shifted call. `devtools::test()` clean, 0 test warnings.
+- 2026-07-31: T7 — the test helper is now `collect_warnings()`, so nothing shadows testthat's `capture_warnings` export; two interaction tests added — a negative `low` (`srange = c(-1, 2)`) reconciling an item mean upward, and `srange = c(1, 5)` (shifted *and* five options) reporting the refusal alone. `devtools::test()` clean.
 
 ## Decisions
 
