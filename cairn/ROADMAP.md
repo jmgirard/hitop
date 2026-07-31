@@ -1,14 +1,15 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-30 (RR02 ingested into M27; D-022 recorded; RB02/RR02 archived; M27 plan-owned body over cap pending the split decision)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M28)._
+_Last hygiene check: 2026-07-30 (M27 re-cut and M28 split off after the RR02 ingest; D-022, D-023 recorded; M27 back under cap at 149/149)_
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M29)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M27 | PID-5 norming and score conversion (raw ↔ T ↔ percentile) | planned | M26 | normal | milestones/M27-pid5-norming-functions.md |
+| M27 | PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding) | planned | M26 | normal | milestones/M27-pid5-norming-functions.md |
+| M28 | PID-5 norming under shifted response codings, and the vignette norming sections | planned | M27 | normal | milestones/M28-pid5-norming-shifted-codings.md |
 | M26 | PID-5-BF total score across scoring, reliability, and the BF paper forms | done | — | normal | milestones/archive/M26-pid5bf-total-score.md |
 | M25 | PID-5 normative tables — verification and ingest | done | — | normal | milestones/archive/M25-pid5-norms-ingest.md |
 | M24 | HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap) | done | — | normal | milestones/archive/M24-hitopsr-subset-generation.md |

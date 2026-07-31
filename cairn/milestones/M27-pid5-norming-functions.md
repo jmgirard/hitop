@@ -1,4 +1,4 @@
-# M27: PID-5 norming and score conversion (raw ↔ T ↔ percentile)
+# M27: PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding)
 
 - **Status:** planned
 - **Priority:** normal
@@ -9,61 +9,47 @@
 
 ## Goal
 
-Convert PID-5 / SF / BF scale scores to normative T scores and percentiles, and back, from
-the `pid_norms` tables shipped by M25.
+Ship `norm_pid5()`, converting scored PID-5 / SF / BF columns to normative T scores and
+percentiles from `pid_norms` by RR02's selection rule, on the official 0–3 item coding.
 
 ## Scope
 
-**In:** `norm_pid5()` over scored columns; the vectorized conversion primitives it wraps;
-out-of-table and above-ceiling behavior; unnormed-scale handling; per-scale reconciliation
-to the official response range (D-020, absorbing the legacy-M16 candidate); roxygen, three
-vignette sections, `_pkgdown.yml`, NEWS, tests.
+**In:** the selection primitives over `pid_norms` (nearest printed row, ties, above-ceiling
+rows); `norm_pid5()`'s signature and per-scale `_t`/`_ptl` columns; unnormed-scale and `NA`
+handling; capping at both ends; the `srange` guard M28 replaces; roxygen, pkgdown, NEWS, tests.
 
-**Out:** the BF total scorer and its `pid_scales` row → M26. Facet-level and sex/age
-stratified norms, IRF norms, and HiTOP-SR/BR norms → their ROADMAP candidate rows. Profile
-plots and rendered individual reports → the "Clinical reporting & release" candidate.
-`validity_pid5()`'s cut-score adaptation under shifted codings → stays deferred as DESIGN
-Known issue #3 (D-020 changes the norming lookup only). Any prose about what a T score
-means (IP4).
+**Out:** reconciling a shifted coding (D-020, D-023) and the three vignette norming sections
+→ M28. Facet/stratified, IRF, and HiTOP-SR/BR norms → their candidate rows. Profile plots and
+rendered reports → the "Clinical reporting & release" candidate. `validity_pid5()`'s cut
+scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 
 ## Acceptance criteria
 
-- [ ] **AC1.** The AC8–AC17 rules are reproduced in `norm_pid5()`'s `@details` with their
-      source (RR02, GP1's no-published-rule branch) and covered by tests whose expected
-      values come from the report or the book, never from the function's own output (IP2).
-      *(RB tripwire: no-oracle — discharged by RB02/RR02, archived.)*
-- [ ] **AC2.** `norm_pid5(data, scores, version, srange, prefix, append = TRUE)` names its
-      score columns via `scores` (mirroring the scoring family's `items`) and returns a
-      tibble with a `_ptl` column for every named column `pid_norms` covers for that
-      `version` and a `_t` column for every covered column whose rows carry a non-`NA`
-      `tscore` — the domains and the BF `total`. `INC`/`INCS`/`ORS`/`PRD` are
-      score→percentile only and get no `_t` column.
-- [ ] **AC3.** A named score column `pid_norms` does not cover for that version (for
-      example any of the 25 facets) yields both a `_t` and a `_ptl` column, present and
-      filled with `NA`, plus one `cli` message naming those scales — never an error, and
-      never a silently absent column.
-- [ ] **AC4.** Conversion is verified against the shipped tables rather than the function's
-      own output, over **every** scale in `pid_norms` — the five domains per version, the
-      BF `total`, and the four validity scales; the round-trip and printed-row identity
-      requirements are AC16's (BC9), which amends this criterion's original clause.
-- [ ] **AC5.** Out-of-table raws are capped at both ends on both output columns: above the
-      highest printed row returns that row's T (where the scale has one) and its
-      percentile rather than an extrapolation; below the lowest printed row returns the
-      values of the row AC10 (BC3) selects for the lowest printed raw; one `cli` warning
-      names how many observations were capped at each end. The validity scales, whose rows
-      carry no T, are capped on percentile alone.
-- [ ] **AC6.** An `srange` implying an option count other than four returns `NA` in every
-      conversion column and warns naming the mismatch. A shifted four-option coding is
-      reconciled per scale per D-020 — item means by `low`, `PRD` by `low × nItems`, `ORS`
-      re-derived against the shifted maximum, `INC`/`INCS` unchanged as already
-      coding-invariant — the formulas documented in `@details` on their merits (GP1) and
-      reported once via `cli::cli_alert_info()` naming which scales were adjusted and
-      which were not.
-- [ ] **AC7.** The three PID vignettes each gain a norming section executing against the
-      package's example data; `norm_pid5()` is in `_pkgdown.yml`'s reference index;
-      NEWS.md records it; `devtools::document()` leaves the tree clean and
-      `devtools::check()` reports 0 errors and 0 warnings, every NOTE justified in the
-      Review section.
+- [ ] **AC1.** AC8–AC17's rules are reproduced in `norm_pid5()`'s `@details` citing RR02
+      (GP1's no-published-rule branch), and covered by tests whose expected values come from
+      the report or the book, never the function's own output (IP2).
+- [ ] **AC2.** `norm_pid5(data, scores, version, srange, prefix, append = TRUE)` names score
+      columns via `scores` (mirroring the scoring family's `items`), matching each to a
+      `pid_norms$scale` value by camelCase name with `prefix` stripped, and returns a tibble
+      with a `_ptl` column for every covered column and a `_t` column for every covered
+      column whose rows carry a non-`NA` `tscore` — the domains and the BF `total` only.
+- [ ] **AC3.** A named column `pid_norms` does not cover for that version (any of the 25
+      facets, say) yields both a `_t` and a `_ptl` column filled with `NA` plus one `cli`
+      message naming those scales — never an error, never a silently absent column. An `NA`
+      input yields `NA` in whichever columns AC2 produces, uncounted in AC5's warning.
+- [ ] **AC4.** Conversion is verified against the shipped tables rather than the function's own
+      output, over **every** scale in `pid_norms` — five domains per version, the BF `total`,
+      the four validity scales; the round-trip requirements are AC16's (BC9).
+- [ ] **AC5.** Out-of-table raws are capped at both ends on both columns: above the highest
+      printed row returns that row's T (where the scale has one) and percentile rather than
+      an extrapolation; below the lowest returns the values of the row AC10 (BC3) selects
+      for the lowest printed raw; one `cli` warning names how many observations were capped
+      at each end. The validity scales, carrying no T, are capped on percentile alone.
+- [ ] **AC6.** Any `srange` other than the official `c(0, 3)` returns `NA` in every
+      conversion column with one `cli` warning naming the coding — a guard until M28
+      replaces it with the D-020/D-023 reconciliation, documented in `@details` as interim.
+- [ ] **AC7.** `norm_pid5()` is in `_pkgdown.yml`'s reference index and NEWS.md; `document()`
+      leaves the tree clean and `check()` reports 0 errors / 0 warnings, NOTEs justified below.
 - [ ] **AC8** (BC1): For every conversion, the returned `_t` and `_ptl` for one
       observation are the `tscore` and `percentile` of **one** printed row of
       `pid_norms` for that version/scale, selected by arithmetic on printed cells only.
@@ -130,42 +116,36 @@ means (IP4).
 
 ## Coverage
 
-- AC1 → T1, T2, T6, T7
+- AC1 → T1, T2, T5, T6
 - AC2 → T3
-- AC3 → T3, T6
-- AC4 → T2, T6
-- AC5 → T5, T6
-- AC6 → T4, T6
-- AC7 → T7
-- AC8 → T2, T6
-- AC9 → T2, T6
-- AC10 → T2, T6
-- AC11 → T6
-- AC12 → T2, T6
-- AC13 → T3, T5, T6
-- AC14 → T2, T6
-- AC15 → T2, T7
-- AC16 → T2, T6
-- AC17 → T6
+- AC3 → T3, T5
+- AC4 → T2, T5
+- AC5 → T4, T5
+- AC6 → T3, T5
+- AC7 → T6
+- AC8 → T2, T5
+- AC9 → T2, T5
+- AC10 → T2, T5
+- AC11 → T5
+- AC12 → T2, T5
+- AC13 → T3, T4, T5
+- AC14 → T2, T5
+- AC15 → T2, T6
+- AC16 → T2, T5
+- AC17 → T5
 
 ## Tasks
 
-- [x] **T1.** File the Review Brief via `/milestone-brief` covering AC1's three rules;
-      ingest the resulting report and record its rules in this file's Decisions section.
-      Set the **Driving RR** header slot if the report carries Binding criteria.
-- [ ] **T2.** Implement the conversion primitives over `pid_norms` — T → raw, raw → T, raw
-      → percentile — applying the report's rules.
-- [ ] **T3.** Implement `norm_pid5()`: signature, per-scale `_t`/`_ptl` columns, and the
-      unnormed-scale message.
-- [ ] **T4.** Implement the `srange` reconciliation per D-020 — option-count check, the
-      four per-metric rescale branches, and the `cli_alert_info()` report.
-- [ ] **T5.** Implement capping at both ends across both output columns, with per-end
-      warning counts.
-- [ ] **T6.** Tests: every printed row round-tripped per AC4, capping at both ends,
-      unnormed scales, both `srange` branches, and the R edge cases the profile's
-      test-doctrine names.
-- [ ] **T7.** Roxygen with the cited rules, three vignette norming sections, the
-      `_pkgdown.yml` reference entry, NEWS; run `document()` / `test()` / `check()`.
+- [x] **T1.** File the Review Brief and ingest its report (RB02/RR02, archived; done 2026-07-30).
+- [ ] **T2.** Implement the selection primitives over `pid_norms` — T → raw, raw → T, raw →
+      percentile — applying AC8–AC17's rules.
+- [ ] **T3.** Implement `norm_pid5()`: signature and column mapping, per-scale `_t`/`_ptl`
+      columns, the unnormed-scale message, `NA` inputs, and AC6's `srange` guard.
+- [ ] **T4.** Implement capping at both ends across both columns, with per-end warning counts.
+- [ ] **T5.** Tests: AC17's minimum set, plus unnormed scales, `NA` inputs, the `srange`
+      guard, and the R edge cases the profile's test-doctrine names.
+- [ ] **T6.** Roxygen `@details` with the cited rules, the `_pkgdown.yml` entry, NEWS; run
+      `document()` / `test()` / `check()`.
 
 ## Work log
 
@@ -179,6 +159,9 @@ means (IP4).
 - 2026-07-30: the pre-ingest criteria audit ([O], fresh context) returned three defects — AC12 (BC5) false against the shipped data, AC10 (BC3) undefined on the four validity scales, AC13 (BC6) enumerating one of four above-table cases — plus an AC5 low-end collision and an unspecified `NA` input; every factual claim was re-verified against `pid_norms` here before the gate, and all five were disposed of at it rather than softened.
 - 2026-07-30: ingest chose to take RR02's criteria verbatim with a Deviations table over sending the report back for a second Fable pass, because the defects are three narrow wording faults in an otherwise independently reproduced rule set; falsified by a fourth defect turning up in implementation that the audit's two questions should have caught.
 - 2026-07-30: blocked on RB02 (T1) — AC1's three lookup rules escalated; the brief's falsification check confirmed the book prints no lookup rule (Appendix pp. 113-115, Ch. 7), and probing `pid_norms` established that the 16 T-carrying tables are exactly linear, every tie is a raw-0.00 floor clip, percentile is empirical rather than a transform of T, and only 39 of 305 printed BF domain raws are attainable.
+- 2026-07-30: re-cut by /milestone-plan — the shifted-coding reconciliation and the three vignette norming sections move to M28; this milestone keeps the conversion, the ten binding criteria, and their Deviations table, and lands at 149/149 plan-owned lines.
+- 2026-07-30: the re-cut's criteria audit ([O], fresh context) returned that this milestone would otherwise ship `srange` inert, that AC3's `NA` clause contradicted AC2 on the validity scales, and that both renumbered pointers (AC16/BC9, AC10/BC3) were correct; the first two were fixed here, the `srange` gap at the gate as new AC6.
+- 2026-07-30: plan gate chose to guard `srange` in M27 (AC6, any non-official coding returns `NA` with a warning) over dropping the argument until M28 or leaving it inert, because main is a distribution channel and a shifted-coding user must not get silently wrong numbers between the two merges; falsified by M28 landing in the same release, which would make the guard dead code.
 
 ## Decisions
 
