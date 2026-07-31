@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
-- **Branch/PR:** `m29-norm-pid5-hygiene`
+- **Branch/PR:** `m29-norm-pid5-hygiene` · https://github.com/jmgirard/hitop/pull/32
 
 ## Goal
 
@@ -32,7 +32,7 @@ plots → the norm-referenced plotting candidate.
 
 ## Acceptance criteria
 
-- [ ] AC1. `norm_pid5()` and `rank_scales()` both strip `prefix` from a column
+- [x] AC1. `norm_pid5()` and `rank_scales()` both strip `prefix` from a column
       name by literal match, never as a regex: `prefix = "pid(_"` on a column
       named `pid(_detachment` returns that column's `_t`/`_ptl` values with no
       regex-compilation error, and `prefix = "p.d_"` on `pXd_detachment`
@@ -40,7 +40,7 @@ plots → the norm-referenced plotting candidate.
       named in the uncovered-scale report. `rank_scales()`'s roxygen
       (`R/rank_scales.R:15-17, 42`) no longer promises regex semantics. NEWS
       records the change (GP2).
-- [ ] AC2. `norm_pid5()` validates `scores` before any conversion, and every
+- [x] AC2. `norm_pid5()` validates `scores` before any conversion, and every
       error it raises about that argument names `scores` — never `items` or
       `scales`: a duplicated entry aborts naming the duplicates (as
       `score_pid5()` does), and a factor or character score column aborts
@@ -49,7 +49,7 @@ plots → the norm-referenced plotting candidate.
       keep naming those arguments, and the scoring and validity families'
       validator messages are unchanged, evidenced by their current tests
       passing unedited. NEWS records both aborts (GP2).
-- [ ] AC3. `norm_metric()` takes `version` alongside `scale` and aborts when
+- [x] AC3. `norm_metric()` takes `version` alongside `scale` and aborts when
       asked to classify a scale `pid_norms` covers for that version but its
       metric partition does not name, so a `PRDS` or `SDTD` row added to
       `pid_norms` fails loudly rather than silently taking the item-mean
@@ -60,21 +60,21 @@ plots → the norm-referenced plotting candidate.
       `"mean"` for them, and the uncovered-scale test's substance (both
       conversion columns `NA`, the column named in the report) is unchanged,
       its only edit being the condition class AC5 reclassifies.
-- [ ] AC4. `norm_shift()` names the `validity_pid5()` `rowSums()`-without-
+- [x] AC4. `norm_shift()` names the `validity_pid5()` `rowSums()`-without-
       `na.rm` dependency in a comment citing `R/validity_pid5.R:172`, and
       `tests/testthat/test-norm_pid5.R` carries a test asserting the norming
       consequence — a `PRD` with a missing item is `NA` both before and after
       the `low × nItems` correction, so the correction is never applied to a
       partial sum — rather than re-asserting `test-validity_pid5.R:44`, which
       already turns red on `na.rm = TRUE` today.
-- [ ] AC5. One `suppressWarnings()` call silences `norm_pid5()` entirely: all
+- [x] AC5. One `suppressWarnings()` call silences `norm_pid5()` entirely: all
       four reports — the option-count refusal, the reconciliation report, the
       uncovered-scale report, and the capping report — are `cli::cli_warn()`
       conditions. Tested in the refusal case (`srange = c(0, 4)`, which emits
       the refusal alone, the other three being gated off) and in the shifted
       case (one call emitting reconciliation, coverage and capping together),
       with no console output remaining in either.
-- [ ] AC6. `tests/testthat/test-norm_pid5.R` no longer defines a helper named
+- [x] AC6. `tests/testthat/test-norm_pid5.R` no longer defines a helper named
       `capture_warnings`, so nothing shadows the `testthat` export of that
       name, and two previously untested interaction paths are covered: a
       negative `low` (`srange = c(-1, 2)`) reconciles an item mean by adding
@@ -141,3 +141,81 @@ plots → the norm-referenced plotting candidate.
 ## Decisions
 
 ## Review
+
+Reviewed 2026-07-31 on branch `m29-norm-pid5-hygiene`, PR #32. Evidence below
+is fresh — every line was produced by running the command or the code named,
+never recalled.
+
+**AC1 — literal `prefix` in both functions.** Verified live: `prefix = "pid(_"`
+on a column `pid(_detachment` returns `_t` 43 / `_ptl` 0.35 with no regex error;
+`prefix = "p.d_"` on `pXd_detachment` leaves the name whole, returns `NA` in
+both conversion columns, and the uncovered-scale warning names
+`"pXd_detachment"`. `rank_scales(prefix = "hbr(_")` returns `"a"`;
+`rank_scales(prefix = "h.r_")` on `hXr_a`/`hXr_b` returns `"hXr_a"` unstripped.
+`R/rank_scales.R:13` and `man/rank_scales.Rd:27` now read "The match is literal,
+not a regular expression"; no "regex metacharacters" promise remains. NEWS
+carries a `rank_scales()` bullet flagging the break (GP2).
+
+**AC2 — `scores` validated before conversion, blamed by its own name.**
+Verified live: a duplicated entry aborts with "The `scores` argument must map
+each score to a distinct column. / Duplicated entries: \"pid_detachment\"";
+a factor and a character column each abort with "The `scores` columns must be
+numeric. / Not numeric: \"pid_detachment <factor>\"" (resp. `<character>`);
+a logical column still converts (`c(TRUE, FALSE)` -> T 55, 39). A missing
+column says "The `scores` names must all be columns in `data`", a wrong type
+"The `scores` argument did not have the expected type" — no `items` or
+`scales` anywhere. `data` and `srange` errors still name themselves. The
+scoring family is untouched: `score_pid5()` with a duplicated item still says
+"The `items` argument must map each item to a distinct column", and
+`git diff main..HEAD` reports zero changes to `test-score_pid5.R`,
+`test-validity_pid5.R`, `test-validate.R`, all passing. NEWS records both
+aborts (GP2).
+
+**AC3 — `norm_metric()` fails loudly on a covered scale it cannot classify.**
+Verified live: `formals(norm_metric)` is `scale, version`. With `norm_covers()`
+forced TRUE, `norm_metric("PRDS", "SF")` and `norm_metric("SDTD", "FULL")` both
+abort naming the scale and pointing at the three partition constants in
+`R/norm_engine.R`. Unmocked, the 20 covered version/scale pairs all classify
+(`mean`/`sum`/`invariant`, checked in a loop over `pid_norms`) and the facets
+classify as `mean` without error. The uncovered-scale test keeps its substance —
+both columns `NA`, the column named — its only edit being `expect_message` ->
+`expect_warning`, exactly the condition-class change the amended criterion
+permits.
+
+**AC4 — the `na.rm` coupling is named and its consequence tested.**
+`R/norm_engine.R:161` cites `R/validity_pid5.R:172`, which is confirmed to be
+`prd_vec <- rowSums(data_items[, prd_items, drop = FALSE])`, and states what
+would break were `na.rm = TRUE` added. The new test blanks one real PRD item in
+`sim_pid5`, scores through `validity_pid5()`, and asserts the score is `NA`
+before the correction and `NA` in both conversion columns after it, while every
+other row converts — the norming consequence, not a restatement of
+`test-validity_pid5.R:44`.
+
+**AC5 — one `suppressWarnings()` silences the function.** Verified live by
+counting conditions: `srange = c(0, 4)` raises exactly 1 warning (the refusal,
+the other three gated off); one shifted call on `pid_PRD = 90` beside an
+uncovered facet raises exactly 3 (reconciliation, coverage, capping). Wrapped in
+`suppressWarnings()`, both emit 0 lines of console output — measured with
+`capture.output(type = "message")`, so a surviving `cli_alert_*` would have been
+caught.
+
+**AC6 — test hygiene and the two interaction paths.** The file defines
+`collect_warnings()` at `test-norm_pid5.R:311`; the only remaining occurrence of
+`capture_warnings` is the comment at :307 explaining why the helper is not
+called that, so nothing shadows testthat's export. Verified live: `srange =
+c(-1, 2)` converts a detachment mean of 0.20 to T 58 (reconciled upward by 1 to
+1.20, nearest printed raw 1.18), and `srange = c(1, 5)` — shifted and
+five-option at once — raises exactly 1 warning, the option-count refusal.
+
+**AC7 — profile gate clean.** `devtools::document()` produces no diff;
+`devtools::test()` passes 10347 with 0 failures, 0 warnings, 1 pre-existing skip
+(OQ-1, unrelated); `devtools::check()` returns 0 errors, 0 warnings, 0 notes.
+
+**Consistency gate.** `cairn_validate` exits 0 — all 16 checks PASS, 6 advisories
+OK, and the one WARN is the standing 20 `dangling id tokens`, every one a
+pre-migration `D-001`-`D-012` or `M13`/`M14` reference in `DESIGN.md` /
+`SOURCES.md`, unchanged by this milestone. No `DESIGN.md` principle changed, so
+`cairn_impact` does not apply. Toolchain slot (`r-package`): `document()` no
+diff, no generated file hand-edited, `README.Rmd`/`README.md` untouched,
+`pkgdown::check_pkgdown()` reports no problems, NEWS.md carries the
+user-visible entries, no new top-level files, `check()` clean.
