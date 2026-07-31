@@ -147,9 +147,12 @@ norm_pid5 <- function(
   version <- toupper(version)
   version <- match.arg(version, choices = c("FULL", "SF", "BF"))
   validate_data(data)
-  validate_scales(scores)
-  validate_item_uniqueness(scores)
-  validate_items_present(data, scores)
+  ## The shared validators are told which argument to blame: every complaint
+  ## about this argument says `scores`, the name the caller actually wrote,
+  ## rather than the `items` or `scales` the scoring family passes them.
+  validate_scales(scores, arg = "scores")
+  validate_item_uniqueness(scores, arg = "scores", unit = "score")
+  validate_items_present(data, scores, arg = "scores")
   validate_range(srange)
   stopifnot(rlang::is_string(prefix))
   stopifnot(rlang::is_bool(append))

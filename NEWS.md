@@ -57,6 +57,14 @@ before a CRAN submission.
   (`"antisocialBehavior"`), in any mixture and ignoring case. Subsetting is
   currently available for the HiTOP-SR only.
 
+* `norm_pid5()` now checks its `scores` argument before converting anything.
+  Naming the same score column twice is an error rather than a silently
+  duplicated pair of output columns, and a factor or character score column is
+  an error rather than being coerced — a factor's integer codes are not its
+  scores, and a character column coerces to `NA`. Logical columns still
+  convert. Every complaint about the argument names `scores`, not the `items`
+  or `scales` of the shared validators behind it.
+
 * `rank_scales()`'s `prefix` argument is now matched **literally** (breaking).
   It was previously compiled as a regular expression anchored to the start of
   the column name, which meant a prefix containing `(` failed with a regex

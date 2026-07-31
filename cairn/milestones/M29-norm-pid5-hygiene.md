@@ -99,7 +99,7 @@ plots → the norm-referenced plotting candidate.
       `rank_scales()`'s roxygen promise; test both failure modes.
 - [x] T2. Add `validate_item_uniqueness(scores)` and a numeric-type guard
       ahead of the `as.numeric()` at `R/norm_pid5.R:205`; test both aborts.
-- [ ] T3. Give `validate_scales()` / `validate_items_present()` an
+- [x] T3. Give `validate_scales()` / `validate_items_present()` an
       argument-name parameter in `R/util.R` (default preserving today's
       wording), thread `"scores"` from `norm_pid5()`, and confirm the scoring
       and validity test files pass unedited.
@@ -128,6 +128,7 @@ plots → the norm-referenced plotting candidate.
 - 2026-07-31: implement gate chose amending the unreleased 0.2.0 `norm_pid5()` NEWS bullet in place, plus new bullets for `rank_scales()`'s literal `prefix` and `norm_pid5()`'s new aborts, over narrating a messages-to-warnings transition no released version ever exposed (`v0.1.0` is the only tag).
 - 2026-07-31: T1 — `strip_prefix()` in `R/util.R` replaces the regex strip in both `norm_pid5()` and `rank_scales()`; `rank_scales()`'s roxygen now documents a literal match; NEWS bullet added; two new tests (metacharacter prefix that matches, `.`-bearing prefix that must not); `devtools::test()` clean.
 - 2026-07-31: T2 — `norm_pid5()` now calls `validate_item_uniqueness()` and aborts naming any factor or character score column, both ahead of every report and conversion; a logical column still converts. Three new tests; `devtools::test()` clean.
+- 2026-07-31: T3 — `validate_scales()`, `validate_items_present()` and `validate_item_uniqueness()` take an `arg` name (defaults reproduce today's wording; uniqueness also takes `unit` so the default sentence stays byte-identical for the scoring family), and `norm_pid5()` threads `"scores"` through all three. `tests/testthat/test-score_pid5.R`, `test-validity_pid5.R` and `test-validate.R` pass unedited (`git diff` empty). NEWS bullet added for the two new aborts.
 
 ## Decisions
 
