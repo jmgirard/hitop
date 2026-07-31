@@ -30,8 +30,8 @@ reliability_engine <- function(
   omega = TRUE,
   call = rlang::caller_env()
 ) {
-  stopifnot(rlang::is_bool(alpha))
-  stopifnot(rlang::is_bool(omega))
+  validate_flag(alpha, arg = "alpha", call = call)
+  validate_flag(omega, arg = "omega", call = call)
 
   ## Validate, extract, coerce, and reverse-key the item columns
   data_items <- prep_items(

@@ -106,7 +106,10 @@ validate_items_present <- function(
 validate_scales <- function(x, arg = "scales", call = rlang::caller_env()) {
   cli_assert(
     condition = rlang::is_character(x) || rlang::is_integerish(x),
-    message = "The {.arg {arg}} argument did not have the expected type.",
+    message = c(
+      "The {.arg {arg}} argument did not have the expected type.",
+      "x" = "You supplied {.cls {class(x)}}."
+    ),
     call = call
   )
 }
@@ -136,7 +139,7 @@ validate_item_uniqueness <- function(
 # integers are not in ascending order. Integer positions are left alone (an
 # out-of-order position vector can be a legitimate remap); mixed prefixes and
 # names without trailing digits are ignored (no reliable order to expect).
-warn_item_order <- function(x) {
+warn_item_order <- function(x, call = rlang::caller_env()) {
   if (!is.character(x)) {
     return(invisible(NULL))
   }
@@ -152,7 +155,7 @@ warn_item_order <- function(x) {
     cli::cli_warn(c(
       "!" = "The `items` names are not in ascending numeric order.",
       "i" = "Items must be supplied in instrument order; a misordered mapping scores the wrong items. Sort them (e.g. {.code items[order(as.integer(sub(\"\\\\D+\", \"\", items)))]}) if this is unintended."
-    ))
+    ), call = call)
   }
   invisible(NULL)
 }
@@ -168,6 +171,72 @@ validate_range <- function(x, call = rlang::caller_env()) {
     message = "The second `srange` value must be greater than the first.",
     call = call
   )
+}
+
+# The three validators below cover the scalar arguments the exported surface
+# once checked with a bare base-R predicate assertion -- `prefix`, `name`,
+# `append`, `calc_se`, `alpha`, `omega`, `top`. Such an assertion reports the
+# predicate that failed (`rlang::is_string(prefix) is not TRUE`), names no
+# function, and says nothing about what was actually supplied; these follow the
+# `arg`/`call` convention of the validators above instead, so the abort blames
+# the exported function the user called and the argument they wrote.
+
+# `allow_null` exists for exactly one caller: rank_scales()'s `prefix`, where
+# NULL means "strip nothing" rather than a missing value.
+validate_string <- function(
+  x,
+  arg,
+  allow_null = FALSE,
+  call = rlang::caller_env()
+) {
+  if (allow_null && is.null(x)) {
+    return(invisible(NULL))
+  }
+  what <- if (allow_null) "a single string or NULL" else "a single string"
+  cli_assert(
+    condition = rlang::is_string(x),
+    message = c(
+      "The {.arg {arg}} argument must be {what}.",
+      "x" = "You supplied {.cls {class(x)}} of length {length(x)}."
+    ),
+    call = call
+  )
+  invisible(NULL)
+}
+
+validate_flag <- function(x, arg, call = rlang::caller_env()) {
+  cli_assert(
+    condition = rlang::is_bool(x),
+    message = c(
+      "The {.arg {arg}} argument must be {.code TRUE} or {.code FALSE}.",
+      "x" = "You supplied {.cls {class(x)}} of length {length(x)}."
+    ),
+    call = call
+  )
+  invisible(NULL)
+}
+
+# Both a type and a bounds check, reported separately so the message says which
+# one failed: a `top` of 99 is a well-formed number that asks for more scales
+# than were supplied, which is a different mistake from passing "3".
+validate_count <- function(x, arg, max, call = rlang::caller_env()) {
+  cli_assert(
+    condition = rlang::is_integerish(x, n = 1) && !is.na(x),
+    message = c(
+      "The {.arg {arg}} argument must be a single whole number.",
+      "x" = "You supplied {.cls {class(x)}} of length {length(x)}."
+    ),
+    call = call
+  )
+  cli_assert(
+    condition = x >= 1 && x <= max,
+    message = c(
+      "The {.arg {arg}} argument is out of range.",
+      "x" = "It must be between 1 and {max}, but you supplied {x}."
+    ),
+    call = call
+  )
+  invisible(NULL)
 }
 
 # Remove a leading `prefix` from each name by *literal* match (D-026). The
@@ -232,7 +301,7 @@ prep_items <- function(
   validate_items(items, n = n_items, call = call)
   validate_item_uniqueness(items, call = call)
   validate_items_present(data, items, call = call)
-  warn_item_order(items)
+  warn_item_order(items, call = call)
   validate_range(srange, call = call)
 
   ## Extract item columns and coerce values to numbers

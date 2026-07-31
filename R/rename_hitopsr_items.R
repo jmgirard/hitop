@@ -34,8 +34,8 @@ rename_hitopsr_items <- function(
   method <- match.arg(method)
 
   ## Assertions
-  stopifnot(is.data.frame(data))
-  stopifnot(rlang::is_string(prefix))
+  validate_data(data)
+  validate_string(prefix, arg = "prefix")
 
   ## Track matched standard item numbers for the final summary warning
   matched_hsr <- numeric(0)

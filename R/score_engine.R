@@ -49,11 +49,13 @@ score_engine <- function(
   call = rlang::caller_env()
 ) {
   ## Scalar-argument assertions (item/data/srange checks run in prep_items, with
-  ## call = the wrapper so errors blame it, not score_engine())
-  stopifnot(rlang::is_string(prefix))
-  stopifnot(rlang::is_string(missing))
-  stopifnot(rlang::is_bool(calc_se))
-  stopifnot(rlang::is_bool(append))
+  ## call = the wrapper so errors blame it, not score_engine()). `missing` is
+  ## not checked here: every wrapper match.arg()s it before calling, so a bad
+  ## value cannot reach this frame, and the switch below aborts on anything the
+  ## match somehow let through.
+  validate_string(prefix, arg = "prefix", call = call)
+  validate_flag(calc_se, arg = "calc_se", call = call)
+  validate_flag(append, arg = "append", call = call)
 
   ## Validate, extract, coerce, and reverse-key the item columns
   data_items <- prep_items(
