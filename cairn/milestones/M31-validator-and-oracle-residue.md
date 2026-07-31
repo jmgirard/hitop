@@ -1,0 +1,116 @@
+# M31: Argument-validation consistency and a harder norming oracle
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** IP2, GP3
+- **Branch/PR:** —
+
+## Goal
+
+Close the residue M29 and M30 left behind, by putting every argument check in
+`R/` on the one cli-flavored validator mechanism and making the norming
+differential oracle fail under the regressions it currently tolerates.
+
+## Scope
+
+**In:** `R/util.R` — new validators for the scalar arguments the family checks
+with `stopifnot()` today (`data`, `prefix`, `append`, `calc_se`, `alpha`,
+`omega`, `top`, `name`, and the choice arguments `dir`/`missing`), each taking
+`call` so the abort blames the exported function; `warn_item_order()` gains the
+same `call`. The 22 `stopifnot()` call sites across `R/rank_scales.R`,
+`R/score_engine.R`, `R/norm_pid5.R`, `R/validity_pid5.R`,
+`R/reliability_engine.R`, `R/label_hitopsr.R`, `R/label_hitopbr.R`, and
+`R/rename_hitopsr_items.R`. `tests/testthat/test-validate.R` — error-branch
+tests. `tests/testthat/test-norm_pid5.R` — `observed_shift()` and the
+`norm_shift()` test at `:366`. `NEWS.md` and `cairn/DESIGN.md:50` (the
+`R/util.R` helper inventory line).
+
+**Out:** any change to a returned score, T score, or percentile — AC7 forbids
+it here and nothing plans it elsewhere. Unifying the `cli_alert_*` reporting
+convention beyond the D-024/D-025 carve-out → not planned; D-025 settled the
+`norm_pid5()` case and nothing else is disputed. The candidate row's
+`.internal = TRUE` item → dropped as having no referent in `R/util.R` (grep
+evidence in the work log), at the maintainer's direction at the plan gate.
+
+## Acceptance criteria
+
+- [ ] AC1. The `norm_shift()` test (`test-norm_pid5.R:366`) runs `observed_shift()`
+      on an in-test copy of `sim_pid5` carrying one `NA` on a PRD item that
+      belongs to no domain-contributing facet (11 such items exist; item 2 is
+      one), so no scale the norms cover is ever prorated. The test fails when
+      `R/validity_pid5.R:172`'s `rowSums()` gains `na.rm = TRUE`, shown by
+      mutation: apply the change, run, require red, restore and diff.
+- [ ] AC2. That test asserts the covered-scale set per version equals what
+      `pid_norms` carries — FULL {the 5 domains, INC, ORS, PRD}, SF {the 5
+      domains, INCS}, BF {total, the 5 domains} — replacing
+      `expect_true(any(keep))` at `:379`, so PRD and with it the `"sum"` branch
+      cannot silently drop out of the comparison. No *expected* value in the
+      test is read from `norm_mean_scales`, `norm_sum_scales`,
+      `norm_invariant_scales`, or `norm_metric()` (IP2); the existing
+      `norm_metric()` call on the actual side (`:384`) stays.
+- [ ] AC3. The `low` loop at `:372` covers a negative shift as well as the two
+      positive ones, and every assertion in the test holds for it.
+- [ ] AC4. `grep -rn "stopifnot" R/` returns no matches; every argument
+      formerly checked there is checked by an `R/util.R` validator built on
+      `cli_assert()`/`cli::cli_abort()` that takes `call`. `dir` and `missing`
+      go through `rlang::arg_match()`, which also enables partial matching.
+      `validate_scales()` (`R/util.R:106`) gains the `"x" = "You supplied
+      {.cls {class(x)}}."` bullet its sibling `validate_items()` already
+      carries, so the two report a type failure alike.
+- [ ] AC5. Every validator added under AC4 that is reachable through an
+      exported function has a test firing its error branch, asserting the
+      abort's `conditionCall()` names that exported function and its message
+      names the offending argument. `score_engine()`'s `missing` check is not
+      reachable (`score_pid5()` calls `match.arg()` first, `R/score_pid5.R:119`)
+      and is covered by its shared validator's reachable sites instead.
+- [ ] AC6. `devtools::document()` leaves no diff, `devtools::test()` passes,
+      and `devtools::check()` reports no new errors, warnings, or notes against
+      the pre-milestone baseline recorded in the work log at T1.
+- [ ] AC7. No returned value moves: `score_pid5()`, `validity_pid5()`,
+      `reliability_pid5()`, `norm_pid5()`, and `rank_scales()` are
+      `identical()` before and after across the versions and `missing` modes
+      the suite already exercises (GP2).
+
+## Coverage
+
+- AC1 → T2
+- AC2 → T3
+- AC3 → T3
+- AC4 → T4, T5
+- AC5 → T4
+- AC6 → T6
+- AC7 → T1, T6
+
+## Tasks
+
+- [ ] T1. Record the pre-milestone `devtools::check()` baseline in the work log
+      and capture the AC7 characterization snapshot (the M30 harness pattern).
+- [ ] T2. Add the missing-PRD-item fixture to the `norm_shift()` test; verify it
+      goes red under the `na.rm = TRUE` mutation at `R/validity_pid5.R:172`,
+      then restore and diff.
+- [ ] T3. Replace `expect_true(any(keep))` with the per-version covered-set
+      assertion; extend the `low` loop with a negative shift.
+- [ ] T4. Author the new validators in `R/util.R` with `call` threading and
+      `arg_match()` for `dir`/`missing`; write each error-branch test first.
+      Thread `call` into `warn_item_order()`.
+- [ ] T5. Convert the 22 `stopifnot()` sites, one file at a time, verifying
+      after each.
+- [ ] T6. Update roxygen where documented error behavior changes; `document()`;
+      NEWS.md entry; `cairn/DESIGN.md:50` inventory line; re-run AC7 and
+      `check()`.
+
+## Work log
+
+- 2026-07-31: created by /milestone-plan.
+- 2026-07-31: criteria audit ([O], fresh context) returned six findings — four fixed pre-gate (AC1 fixture must be an in-test copy since `sim_pid5` has no NAs; AC2's "fails if any scale stops being reconciled" over-claimed what a set assertion can detect; AC5's `missing` check unreachable and `call=` invisible to `conditionMessage()`; AC6 had no recorded 0/0/0 baseline), one became the gate's fixture question, one confirmed no IP/D conflict.
+- 2026-07-31: plan gate chose converting all 22 `stopifnot()` sites over converting only `prefix`/`append` because a partial conversion leaves one file giving two error idioms, the divergence D-026 had to close later; falsified by a conversion that changes behavior at any site rather than only its message.
+- 2026-07-31: plan gate chose constraining the AC1 fixture's `NA` to a PRD item outside every domain-contributing facet over dropping the negative shift, because `round_half_up()` is not translation-equivariant across zero and proration is what exposes that; falsified by a covered scale showing a non-constant observed shift despite the placement.
+- 2026-07-31: plan gate chose `rlang::arg_match()` for `dir`/`missing` over a plain allowed-set assertion, accepting that it widens accepted input with partial matching, because the suggestion-on-typo error is what GP3 asks of this package's errors; falsified by partial matching resolving a user's abbreviation to the wrong option.
+- 2026-07-31: the candidate row's glue-interpolation item was examined and largely found sound — `{arg}` is already `{.arg {arg}}` at `R/util.R:109` and `:124`, and `{unit}` is a common noun where bare interpolation is correct; the one live residue, `validate_scales()` lacking the supplied-type bullet `validate_items()` has, is in AC4.
+- 2026-07-31: `.internal = TRUE`, the candidate row's first item, has no referent — `grep -rn "\.internal" R tests cairn` matches only the row itself and unrelated `use_data(internal = TRUE)` prose; dropped at the maintainer's direction.
+
+## Decisions
+
+## Review
