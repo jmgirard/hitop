@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** `m32-m31-validation-test-coverage`
+- **Branch/PR:** `m32-m31-validation-test-coverage` · https://github.com/jmgirard/hitop/pull/35
 
 ## Goal
 
@@ -34,20 +34,20 @@ No NEWS entry: nothing user-visible changes.
 
 ## Acceptance criteria
 
-- [ ] AC1: `validate_scales()` has a test asserting the supplied-type bullet
+- [x] AC1: `validate_scales()` has a test asserting the supplied-type bullet
       names the class actually supplied — `logical` for `TRUE`, `list` for
       `list("a")` — matching the bare class word rather than the cli-styled
       `<logical>`, and it fails when that bullet is deleted from `R/util.R`.
-- [ ] AC2: `validate_scales()` has a test asserting its message names the
+- [x] AC2: `validate_scales()` has a test asserting its message names the
       caller's argument when a caller overrides the `arg` default, exercised
       through `norm_pid5(scores = TRUE)`, and it fails when the `{arg}`
       interpolation is removed from the message in `R/util.R`.
-- [ ] AC3: `warn_item_order()` has tests asserting the warning's
+- [x] AC3: `warn_item_order()` has tests asserting the warning's
       `conditionCall()` names the exported function the user called — for both
       `score_pid5()` (explicit `call` thread) and `validity_pid5()`
       (`caller_env()` default) — each failing when `call = call` is dropped from
       the `cli_warn()` in `R/util.R`.
-- [ ] AC4: the set assertion in the `norm_shift()` loop
+- [x] AC4: the set assertion in the `norm_shift()` loop
       (`tests/testthat/test-norm_pid5.R:418`) carries the same
       `info = paste(k$version, k$label, "low", low)` label its two neighbours
       already carry, so a failure identifies the iteration; verified by mutating
@@ -55,7 +55,7 @@ No NEWS entry: nothing user-visible changes.
       takes no `info`, so the assertion is reshaped to a sorted, de-duplicated
       `expect_equal()`, which keeps set semantics and still reports which scale
       names differ.
-- [ ] AC5: `devtools::test()` clean (0 failures) and `devtools::check()` clean
+- [x] AC5: `devtools::test()` clean (0 failures) and `devtools::check()` clean
       (0 errors, 0 warnings; NOTEs justified).
 
 ## Coverage
@@ -93,3 +93,65 @@ No NEWS entry: nothing user-visible changes.
 - 2026-07-31: T4 done — `devtools::test()` 0 failures / 10490 pass / 1 skip; `devtools::check()` 0 errors, 0 warnings, 0 notes (3m 1s). All tasks complete; status to review.
 
 ## Decisions
+
+## Review
+
+Evidence gathered 2026-07-31 on `m32-m31-validation-test-coverage` @ 759de4f, PR #35.
+Each mutation was re-run in an isolated `git archive` copy of HEAD so it could not
+perturb the tree the review subagents were reading.
+
+- AC1: deleting the `"x" = "You supplied {.cls {class(x)}}."` bullet from
+  `validate_scales()` reddens both class assertions — `test-validate.R:58` and
+  `:62` fail, suite 2 FAIL / 112 PASS; restored, 0 FAIL / 114 PASS.
+- AC2: hardcoding `{.arg {arg}}` to `{.arg scales}` reddens `test-validate.R:75`
+  only — 1 FAIL / 113 PASS. The assertion runs through `norm_pid5(scores = TRUE)`,
+  the sole caller overriding the `arg` default.
+- AC3: dropping `call = call` from `warn_item_order()`'s `cli_warn()` reddens
+  both call sites independently — `test-item-guards.R:84` (score_pid5) and `:88`
+  (validity_pid5), 2 FAIL / 28 PASS. Confirmed separately that both paths'
+  `conditionCall()` become NULL under the mutation.
+- AC4: mutating `covered_scales[["SF"]]` fails the three SF iterations, each
+  printing its own label — `SF complete low -1`, `SF complete low 1`,
+  `SF complete low 2` — alongside the differing scale names, 3 FAIL / 437 PASS.
+- AC5: `devtools::test()` 0 failures / 10490 pass / 1 skip; `devtools::check()`
+  0 errors, 0 warnings, 0 notes (2m 53s).
+
+Consistency gate — universal: `cairn_validate` exit 0, all checks pass (20
+`dangling id tokens` advisories are the standing pre-migration references, not
+this milestone's). No `DESIGN.md` principle changed, so `cairn_impact` skipped.
+Toolchain (`r-package` slot): `devtools::document()` produced no diff;
+`pkgdown::check_pkgdown()` "No problems found"; README.Rmd untouched; no NEWS
+entry owed (nothing user-visible changed, per Scope Out); no new top-level file,
+so no `.Rbuildignore` entry needed; full `check()` clean as above.
+
+Review fan-out — three fresh-context lenses. Blame-history [S]: zero findings;
+verified the `expect_setequal()` → sorted-unique `expect_equal()` reshape
+preserves what M31 bought (whole-set coverage including the PRD sum branch).
+Prior-review [S]: zero findings; probe `gh api .../pulls/comments` returned `[]`
+so the thread walk was skipped, and the archived M31 review confirms this diff
+closes its findings 78 and 68 rather than contradicting them. Diff-bug [O]: 13
+findings, all scored below the 80 threshold by the [S] scorer, so none actioned.
+
+Logged sub-threshold findings (13, none actioned):
+- F13 (72): `suppressMessages()` in the new attribution test is dead code —
+  `catch_cnd()` exits at the first warning, which precedes every `cli_alert_*`.
+- F4 (52): that test's `catch_cnd()` omits `classes = "error"`, unlike its
+  sibling; correct today because the abort is the first condition raised.
+- F1 (45): the warning assertion pins the caller but not the message, so a
+  future earlier `cli_warn()` could satisfy it.
+- F9 (45): `sort()` drops `NA` where `expect_setequal()` would not; the scorer
+  found the scenario unreachable, as these are column names.
+- F2 (40): the `no_call()` substitution reports "no warning fired" and "warning
+  with NULL call" identically.
+- F5 (35): `cnd$call` unguarded in `test-validate.R`, unlike the `warner()` helper.
+- F8 (35): the `arg`-interpolation fixture calls `score_pid5()` where a bare
+  data frame would reach the same validator.
+- F3 (32): the test comment's "different mechanisms" framing — both paths start
+  from a `caller_env()` default and differ in hop count.
+- F12 (30): the new block repeats two calls the existing block already makes.
+- F10 (28), F11 (22): comment-accuracy notes riding on F9's unreachable case.
+- F6 (25), F7 (25): unanchored `expect_match()` substrings, the file's existing idiom.
+
+No finding reached 80, so nothing was fixed, deferred, or rejected at this gate.
+No candidate row spawned: the two highest (72, 52) are hardening suggestions
+against unreachable paths, not the shipped-untested gaps M31's 78/68 recorded.
