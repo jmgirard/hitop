@@ -203,3 +203,140 @@ test_that("NA scores convert to NA without affecting their neighbours", {
   expect_equal(got$t, c(45L, NA, 87L))
   expect_true(is.na(got$ptl[[2]]))
 })
+
+# ---- norm_pid5() ------------------------------------------------------------
+
+scored_bf <- score_pid5(sim_pid5bf, items = 1:25, version = "BF")
+bf_scales <- paste0("pid_", c("negativeAffectivity", "detachment", "antagonism",
+                             "disinhibition", "psychoticism", "total"))
+
+test_that("norm_pid5() returns a _t and a _ptl column per covered scale", {
+  out <- norm_pid5(scored_bf, scores = bf_scales, version = "BF", append = FALSE)
+  expect_s3_class(out, "tbl_df")
+  expect_equal(names(out), as.vector(rbind(paste0(bf_scales, "_t"),
+                                           paste0(bf_scales, "_ptl"))))
+  expect_equal(nrow(out), nrow(scored_bf))
+  expect_type(out[[1]], "integer")
+  expect_type(out[[2]], "double")
+})
+
+test_that("norm_pid5() converts each column exactly as the primitive does", {
+  out <- norm_pid5(scored_bf, scores = bf_scales, version = "BF", append = FALSE)
+  for (s in bf_scales) {
+    want <- norm_convert(scored_bf[[s]], "BF", sub("^pid_", "", s))
+    expect_equal(out[[paste0(s, "_t")]], as.integer(want$t), info = s)
+    expect_equal(out[[paste0(s, "_ptl")]], want$ptl, info = s)
+  }
+})
+
+test_that("append = TRUE keeps the input columns ahead of the new ones", {
+  out <- norm_pid5(scored_bf, scores = bf_scales, version = "BF")
+  expect_equal(names(out)[seq_len(ncol(scored_bf))], names(scored_bf))
+  expect_equal(ncol(out), ncol(scored_bf) + 2 * length(bf_scales))
+})
+
+test_that("validity scales get a percentile column but no T column", {
+  scored <- score_pid5(sim_pid5, items = 1:220, version = "FULL")
+  scored <- validity_pid5(scored, items = 1:220)
+  out <- norm_pid5(scored, scores = c("pid_INC", "pid_ORS", "pid_PRD"),
+                   version = "FULL", append = FALSE)
+  expect_equal(names(out), c("pid_INC_ptl", "pid_ORS_ptl", "pid_PRD_ptl"))
+})
+
+test_that("an uncovered scale yields NA columns and one message naming it", {
+  facets <- paste0("pid_", c("anhedonia", "anxiousness"))
+  scored <- score_pid5(sim_pid5, items = 1:220, version = "FULL")
+  expect_message(
+    out <- norm_pid5(scored, scores = facets, version = "FULL", append = FALSE),
+    "not covered"
+  )
+  expect_equal(names(out), c("pid_anhedonia_t", "pid_anhedonia_ptl",
+                             "pid_anxiousness_t", "pid_anxiousness_ptl"))
+  expect_true(all(vapply(out, function(x) all(is.na(x)), logical(1))))
+})
+
+test_that("a non-official srange refuses to convert and says so", {
+  expect_message(
+    out <- norm_pid5(scored_bf, scores = bf_scales, version = "BF",
+                     srange = c(1, 4), append = FALSE),
+    "official 0-3 response coding"
+  )
+  expect_true(all(vapply(out, function(x) all(is.na(x)), logical(1))))
+  expect_equal(ncol(out), 2 * length(bf_scales))
+})
+
+test_that("capping is reported per end and does not extrapolate", {
+  # PRD's table stops at 55; a 22-item sum can reach 66.
+  df <- data.frame(pid_PRD = c(0, 55, 60, 66))
+  expect_message(
+    out <- norm_pid5(df, scores = "pid_PRD", version = "FULL", append = FALSE),
+    "above the printed range"
+  )
+  top <- pid_norms$percentile[pid_norms$scale == "PRD" & pid_norms$raw == 55]
+  expect_equal(out$pid_PRD_ptl, c(
+    pid_norms$percentile[pid_norms$scale == "PRD" & pid_norms$raw == 0],
+    top, top, top
+  ))
+})
+
+test_that("NA scores pass through as NA in both columns", {
+  df <- data.frame(pid_detachment = c(0.2, NA, 1))
+  out <- norm_pid5(df, scores = "pid_detachment", version = "BF", append = FALSE)
+  expect_equal(out$pid_detachment_t[[1]], 43L)
+  expect_true(is.na(out$pid_detachment_t[[2]]))
+  expect_true(is.na(out$pid_detachment_ptl[[2]]))
+})
+
+test_that("norm_pid5() rejects malformed input", {
+  expect_error(norm_pid5(1:5, scores = "x", version = "BF"), "must be a data frame")
+  expect_error(
+    norm_pid5(scored_bf, scores = "pid_nope", version = "BF"),
+    "must all be columns"
+  )
+  expect_error(
+    norm_pid5(scored_bf, scores = bf_scales, version = "BF", srange = c(3, 0)),
+    "must be greater"
+  )
+})
+
+test_that("norm_pid5() handles the R edge cases", {
+  # Column positions work as well as names (mirroring `items`).
+  by_name <- norm_pid5(scored_bf, scores = bf_scales, version = "BF", append = FALSE)
+  pos <- match(bf_scales, names(scored_bf))
+  by_pos <- norm_pid5(scored_bf, scores = pos, version = "BF", append = FALSE)
+  expect_equal(by_pos, by_name)
+
+  # Zero rows in, zero rows out, with the columns still present.
+  empty <- scored_bf[0, ]
+  out <- norm_pid5(empty, scores = bf_scales, version = "BF", append = FALSE)
+  expect_equal(nrow(out), 0L)
+  expect_equal(ncol(out), 2 * length(bf_scales))
+
+  # A single row and a single scale.
+  one <- norm_pid5(scored_bf[1, ], scores = bf_scales[[1]], version = "BF",
+                   append = FALSE)
+  expect_equal(nrow(one), 1L)
+  expect_equal(ncol(one), 2L)
+
+  # An empty prefix leaves the column name as the scale name.
+  df <- data.frame(detachment = 0.2)
+  bare <- norm_pid5(df, scores = "detachment", version = "BF", prefix = "",
+                    append = FALSE)
+  expect_equal(names(bare), c("detachment_t", "detachment_ptl"))
+  expect_equal(bare$detachment_t, 43L)
+
+  # `version` is case-insensitive and rejects anything else.
+  expect_equal(
+    norm_pid5(df, scores = "detachment", version = "bf", prefix = "",
+              append = FALSE),
+    bare
+  )
+  expect_error(
+    norm_pid5(df, scores = "detachment", version = "XX", prefix = ""),
+    "should be one of"
+  )
+  expect_error(
+    norm_pid5(df, scores = list("detachment"), version = "BF", prefix = ""),
+    "did not have the expected type"
+  )
+})

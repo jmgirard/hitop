@@ -139,10 +139,10 @@ scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 - [x] **T1.** File the Review Brief and ingest its report (RB02/RR02, archived; done 2026-07-30).
 - [x] **T2.** Implement the selection primitives over `pid_norms` — T → raw, raw → T, raw →
       percentile — applying AC8–AC17's rules.
-- [ ] **T3.** Implement `norm_pid5()`: signature and column mapping, per-scale `_t`/`_ptl`
+- [x] **T3.** Implement `norm_pid5()`: signature and column mapping, per-scale `_t`/`_ptl`
       columns, the unnormed-scale message, `NA` inputs, and AC6's `srange` guard.
-- [ ] **T4.** Implement capping at both ends across both columns, with per-end warning counts.
-- [ ] **T5.** Tests: AC17's minimum set, plus unnormed scales, `NA` inputs, the `srange`
+- [x] **T4.** Implement capping at both ends across both columns, with per-end warning counts.
+- [x] **T5.** Tests: AC17's minimum set, plus unnormed scales, `NA` inputs, the `srange`
       guard, and the R edge cases the profile's test-doctrine names.
 - [ ] **T6.** Roxygen `@details` with the cited rules, the `_pkgdown.yml` entry, NEWS; run
       `document()` / `test()` / `check()`.
@@ -163,6 +163,8 @@ scores → DESIGN Known issue #3. Any prose about what a T score means (IP4).
 - 2026-07-30: the re-cut's criteria audit ([O], fresh context) returned that this milestone would otherwise ship `srange` inert, that AC3's `NA` clause contradicted AC2 on the validity scales, and that both renumbered pointers (AC16/BC9, AC10/BC3) were correct; the first two were fixed here, the `srange` gap at the gate as new AC6.
 - 2026-07-30: plan gate chose to guard `srange` in M27 (AC6, any non-official coding returns `NA` with a warning) over dropping the argument until M28 or leaving it inert, because main is a distribution channel and a shifted-coding user must not get silently wrong numbers between the two merges; falsified by M28 landing in the same release, which would make the guard dead code.
 - 2026-07-30: T2 done — `R/norm_engine.R` holds the vectorized selection (nearest printed raw, toward-50 tie-break, percentile-toward-0.50 on the T-less validity tables), `norm_t_to_raw()`, and the capping counter; 223 assertions pass, including printed-row identity over all 20 tables and agreement with an independently coded scalar lookup.
+- 2026-07-30: T3–T5 done — `R/norm_pid5.R` exports the wrapper (column mapping by prefix-stripped camelCase, per-scale `_t`/`_ptl`, unnormed-scale and `NA` handling, the AC6 `srange` guard, per-end capping counts); tests cover AC17's minimum set plus the profile's R edge cases. Full suite 10,233 assertions, 0 failures.
+- 2026-07-30: a wrapper test caught a real AC3 violation — an uncovered scale was getting only a `_ptl` column, because the `_t` decision keyed on coverage rather than on whether a *covered* scale's rows carry T; fixed so only the four validity scales go without one.
 
 ## Decisions
 
