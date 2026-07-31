@@ -71,7 +71,7 @@ No NEWS entry: nothing user-visible changes.
 - [x] T1: add the supplied-type and `arg`-interpolation assertions beside the
       existing `validate_scales()` block (`tests/testthat/test-validate.R:46`);
       verify each reddens against a scratch revert of `R/util.R:110-111`.
-- [ ] T2: add the two `warn_item_order()` attribution assertions to
+- [x] T2: add the two `warn_item_order()` attribution assertions to
       `tests/testthat/test-item-guards.R`, reusing its misordered-items fixture
       (`:41,46-49`); verify both redden with `call = call` dropped from
       `R/util.R:158`.
@@ -88,5 +88,6 @@ No NEWS entry: nothing user-visible changes.
 - 2026-07-31: plan gate chose covering both `warn_item_order()` call sites over the explicit thread alone because the two carry the caller's identity by different mechanisms (explicit `call =` vs the `caller_env()` default); falsified by evidence the two mechanisms cannot break independently.
 
 - 2026-07-31: T1 done — two `validate_scales()` blocks in `test-validate.R`; deleting the type bullet reddens both class assertions, hardcoding `{arg}` to "scales" reddens the `norm_pid5(scores=)` assertion. Suite clean (114 pass).
+- 2026-07-31: T2 done — both `warn_item_order()` call sites asserted in `test-item-guards.R`; dropping `call = call` leaves `conditionCall()` NULL at both, and the first draft's raw `call_name()` erroring on NULL aborted the block before the second site, so the assertions were reshaped to fail independently (2 failures under mutation, not 1). Suite clean (30 pass).
 
 ## Decisions

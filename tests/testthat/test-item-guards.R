@@ -63,6 +63,36 @@ test_that("misordered `items` names warn in every data-taking function", {
   )
 })
 
+test_that("the order warning is attributed to the exported function", {
+  # `call` carries the function name, read from conditionCall() and never from
+  # the message. Both call sites are covered because they supply `call`
+  # differently: score_pid5() reaches warn_item_order() through prep_items(),
+  # which threads its own `call` down explicitly, while validity_pid5() calls
+  # warn_item_order() directly and relies on the caller_env() default. Either
+  # mechanism can break without the other.
+  bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
+  full <- setNames(sim_pid5, paste0("pid_", 1:220))
+
+  # Dropping `call` leaves conditionCall() NULL, which would make call_name()
+  # itself error and abort the block before the second site is reached; the
+  # substitution keeps each site's assertion independently reportable.
+  warner <- function(expr) {
+    cnd <- rlang::catch_cnd(expr, classes = "warning")
+    rlang::call_name(if (is.null(cnd$call)) quote(no_call()) else cnd$call)
+  }
+
+  expect_equal(
+    warner(score_pid5(bf, items = paste0("pid_", c(2, 1, 3:25)), version = "BF")),
+    "score_pid5"
+  )
+  expect_equal(
+    warner(suppressMessages(
+      validity_pid5(full, items = paste0("pid_", c(2, 1, 3:220)), version = "FULL")
+    )),
+    "validity_pid5"
+  )
+})
+
 test_that("ascending names and integer positions do not warn about order", {
   bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
   full <- setNames(sim_pid5, paste0("pid_", 1:220))
