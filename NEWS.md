@@ -6,8 +6,9 @@ before a CRAN submission.
 * **Clearer errors for bad arguments.** Every argument check across the package
   now reports which argument was wrong, what was supplied, and which function
   was called, instead of printing the internal test that failed. This affects
-  `prefix`, `name`, `append`, `calc_se`, `alpha`, `omega`, and `top` throughout
-  the scoring, reliability, norming, labelling, and ranking functions. A bad
+  `data`, `prefix`, `name`, `append`, `calc_se`, `alpha`, `omega`, and `top`
+  throughout the scoring, reliability, norming, labelling, and ranking
+  functions. A bad
   `dir` in `rank_scales()` now lists the permitted values and suggests the
   closest match. No function accepts or rejects anything it did not before —
   only the messages changed.

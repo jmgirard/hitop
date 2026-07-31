@@ -1,6 +1,6 @@
 # M31: Argument-validation consistency and a harder norming oracle
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -52,7 +52,7 @@ evidence in the work log), at the maintainer's direction at the plan gate.
       `norm_metric()` call on the actual side (`:384`) stays.
 - [x] AC3. The `low` loop at `:372` covers a negative shift as well as the two
       positive ones, and every assertion in the test holds for it.
-- [x] AC4. `grep -rn "stopifnot" R/` returns no matches; every argument
+- [ ] AC4. `grep -rn "stopifnot" R/` returns no matches; every argument
       formerly checked there is checked by an `R/util.R` validator built on
       `cli_assert()`/`cli::cli_abort()` that takes `call`. `dir`
       (`R/rank_scales.R:79`, where nothing matches it today) goes through
@@ -129,6 +129,9 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 - 2026-07-31: T6 partial — NEWS.md entry added (message-only change, no widening), `cairn/DESIGN.md:50` inventory line names the three new validators and records that no argument check in `R/` uses a bare predicate assertion. `devtools::document()` produces no `man/`/`NAMESPACE` diff; no roxygen needed editing because accepted input is unchanged everywhere. T6 stays unchecked: the final `devtools::check()` and the AC7 re-run are still outstanding.
 - 2026-07-31: review checkpoint — draft PR #34 opened; AC1-AC5 and AC7 verified with fresh command evidence and ticked; consistency gate clean (`cairn_validate` exit 0, `document()` no-diff, `check_pkgdown()` clean, README in sync). AC6 unticked pending the review-time `devtools::check()`. Blame-history and prior-review lenses returned no findings; the diff-bug lens is still running.
 - 2026-07-31: T6 complete — final `devtools::check()` 0 errors / 0 warnings / 0 notes, matching the T1 baseline exactly. AC7 re-run against the final tree: all 33 configs `identical()` to the pre-milestone snapshot. `grep -rn "stopifnot" R/` returns 0. Status → review.
+- 2026-07-31: review return #1 — AC4 failed. The diff-bug lens found (scored 92) that `rlang::arg_match()` rejects a factor `dir`, which the `stopifnot(dir %in% c("high","low"))` it replaced accepted (`factor("high") %in% c("high","low")` is TRUE), so "accepted input does not change" was false. Status → in-progress, AC4 unticked. Criterion kept as written and the code fixed: `dir` is coerced with `as.character()` when it is a factor, before `arg_match()`.
+- 2026-07-31: the AC7 characterization harness could not have caught that — it passes only `dir = "high"`, so it probes returned values on valid input and says nothing about which inputs are accepted. Added `devel/acceptance_probe_m31.R`, a differential *acceptance* probe: 187 argument/value pairs (odd types, NA, NULL, length-0/2, factor) run against `main` exported via `git archive` and against the branch, comparing accept-vs-reject only. Result: 0 divergent. That is the evidence AC4's no-change clause actually needs.
+- 2026-07-31: two sub-threshold findings fixed anyway because both are factual errors in durable text this milestone authored, not reviewer opinion — NEWS.md's affected-argument list omitted `data` (finding 7a, 70), and `cairn/DESIGN.md:50`'s new sentence claimed every argument check reports the supplied value, which is untrue of `validate_data()`, `validate_range()`, and `rank_scales()`'s two `cli_assert()` calls (finding 11, 72). The remaining sub-threshold findings are logged below, unactioned.
 
 ## Decisions
 
@@ -175,4 +178,45 @@ implementation session.
   sync; NEWS.md carries the user-visible entry; no new top-level file (the
   harness sits in the already-ignored `devel/`).
 - Full suite: 0 failures / 0 errors / 0 warnings / 1 pre-existing skip /
-  10478 passes.
+  10480 passes (after the AC4 fix).
+
+### Independent review — three lenses + scorer
+
+- **[S] blame-history:** no regressions. Traced every removed `stopifnot()` to
+  M13/M14/M15/M29 as routine guards with no bug-fix history; confirmed all
+  three `score_engine()` callers `match.arg()` first; judged `expect_setequal`
+  strictly stronger than the M30 assertion it replaces; confirmed the M24 CRLF
+  trio is untouched.
+- **[S] prior-PR-comments:** no prior finding reintroduced or contradicted.
+  GitHub thread probe returned empty, so archived `## Review` sections were the
+  operative surface. Noted that M30's finding list included a "never exercises
+  negative `low`" item (58), so AC3 closes a third M30 finding.
+- **[O] diff-bug:** 12 findings; 1 scored ≥80 and was actioned.
+
+**Actioned (1).** Finding 1 (92) — `arg_match()` rejected a factor `dir` the
+old membership test accepted, falsifying AC4. Fixed by coercing a factor to
+character before `arg_match()`; regression test added; the 187-pair acceptance
+probe now covers the class of defect. Caused review return #1.
+
+**Sub-threshold (11), logged not actioned.** Two were fixed regardless because
+they are factual errors in text this milestone authored (marked ✎):
+
+- 78 — `validate_scales()`'s new supplied-type bullet and `warn_item_order()`'s
+  new `call` parameter both ship untested.
+- 72 ✎ — `cairn/DESIGN.md:50`'s new sentence overstated the invariant.
+- 70 ✎ — NEWS.md's affected-argument list omitted `data`.
+- 68 — `expect_setequal()` takes no `info`, so it is the one assertion in a
+  12-iteration loop that cannot name the failing case.
+- 65 — `blames()` uses `rlang::catch_cnd()` without `classes = "error"`, so it
+  would silently catch a message if one were ever added above a validator.
+- 56 — `validate_count()` reports `top = NA_integer_` as a type failure when
+  the type is fine and the value is missing.
+- 55 — `score_engine()`'s comment claims the `switch` aborts on a bad
+  `missing`, but `switch()` on a numeric selects positionally; unreachable from
+  the exported surface, so the removal stays contract-safe.
+- 52 — the AC1 fixture comment names only PRD, though item 2 is also an ORS and
+  SD-TD item; the test survives because those `rowSums()` also lack `na.rm`.
+- 38 — an empty `scales` yields "must be between 1 and 0".
+- 30 — `validity_pid5()` still calls `warn_item_order(items)` bare (an
+  unmodified line; the `caller_env()` default is already correct).
+- 18 — stale observation about unticked checkboxes, since ticked.

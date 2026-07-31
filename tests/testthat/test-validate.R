@@ -214,6 +214,17 @@ test_that("rank_scales() `dir` reports the allowed values and suggests a match",
     rank_scales(scored, scales = names(scored), dir = "l"),
     "must be one of"
   )
+  # arg_match() insists on a character vector, but the membership test it
+  # replaced was satisfied by a factor -- `factor("high") %in% c("high","low")`
+  # is TRUE -- so a `dir` taken from a factor column must keep working.
+  expect_no_error(
+    rank_scales(scored, scales = names(scored), dir = factor("high"))
+  )
+  expect_identical(
+    rank_scales(scored, scales = names(scored), dir = factor("low"),
+                append = FALSE),
+    rank_scales(scored, scales = names(scored), dir = "low", append = FALSE)
+  )
 })
 
 test_that("valid input still scores without error (no behavior regression)", {

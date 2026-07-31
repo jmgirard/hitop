@@ -78,9 +78,15 @@ rank_scales <- function(
   ## the length of `scales` rather than a constant.
   validate_count(top, arg = "top", max = length(scales))
   ## arg_match() lists the permitted values and suggests the near miss on a
-  ## typo. Unlike match.arg() it requires an exact match, so accepted input is
-  ## unchanged from the bare membership test it replaces -- only the error
-  ## message improves.
+  ## typo. Unlike match.arg() it requires an exact match, so no abbreviation
+  ## becomes newly acceptable. It does insist on a character vector, where the
+  ## membership test it replaces was satisfied by a factor
+  ## (`factor("high") %in% c("high", "low")` is TRUE) -- a `dir` read from a
+  ## factor column of a config table used to work, so it is coerced here rather
+  ## than rejected. Accepted input is therefore unchanged; only the error is.
+  if (is.factor(dir)) {
+    dir <- as.character(dir)
+  }
   dir <- rlang::arg_match(dir, values = c("high", "low"))
   validate_string(name, arg = "name")
   validate_flag(append, arg = "append")
