@@ -5,6 +5,17 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+- **Clearer errors for bad arguments.** Every argument check across the
+  package now reports which argument was wrong, what was supplied, and
+  which function was called, instead of printing the internal test that
+  failed. This affects `data`, `prefix`, `name`, `append`, `calc_se`,
+  `alpha`, `omega`, and `top` throughout the scoring, reliability,
+  norming, labelling, and ranking functions. A bad `dir` in
+  [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
+  now lists the permitted values and suggests the closest match. No
+  function accepts or rejects anything it did not before — only the
+  messages changed.
+
 - **PID-5 normative tables.** The new `pid_norms` dataset carries the
   published normative score distributions for the PID-5, PID-5-SF, and
   PID-5-BF: the raw score and percentile at each T score for the five
