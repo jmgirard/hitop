@@ -88,7 +88,7 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 
 ## Tasks
 
-- [ ] T1. Record the pre-milestone `devtools::check()` baseline in the work log
+- [x] T1. Record the pre-milestone `devtools::check()` baseline in the work log
       and capture the AC7 characterization snapshot (the M30 harness pattern).
 - [ ] T2. Add the missing-PRD-item fixture to the `norm_shift()` test; verify it
       goes red under the `na.rm = TRUE` mutation at `R/validity_pid5.R:172`,
@@ -116,6 +116,7 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 
 - 2026-07-31: branch `m31-validator-and-oracle-residue` cut from main at 954a0e7; status → in-progress.
 - 2026-07-31: substantive amendment at the implementation gate — AC4's "`dir` and `missing` go through `rlang::arg_match()`" narrowed to `dir` only, with `missing`/`version` keeping `match.arg()` and the engine's redundant `missing` check removed; AC5's `missing` sentence follows. Maintainer chose this over converting the exported layer, since nothing is defective about `match.arg()` and converting it would move error text on three exported functions for no fault.
+- 2026-07-31: T1 — pre-milestone `devtools::check()` baseline is 0 errors / 0 warnings / 0 notes, so AC6's "no new" bar is a clean 0/0/0. AC7 snapshot captured over 33 configs (3 versions × 3 `missing` modes × `calc_se` on/off for `score_pid5()`, plus `validity_pid5()`, `reliability_pid5()`, `norm_pid5()` official and shifted, `rank_scales()`); all 33 return without error. Harness committed to `devel/characterize_m31.R` so the comparison is reproducible at review.
 
 ## Decisions
 
