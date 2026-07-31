@@ -1,11 +1,11 @@
 # M30: Norming-family test oracles and internal consistency
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP2
-- **Branch/PR:** —
+- **Branch/PR:** `m30-norming-oracle-residue`
 
 ## Goal
 
@@ -97,15 +97,15 @@ it here.
 
 ## Tasks
 
-- [ ] T1. Build the differential fixture: one PID-5 dataset and its `data + low`
+- [x] T1. Build the differential fixture: one PID-5 dataset and its `data + low`
       copy, scored through `score_pid5()`/`validity_pid5()` on `c(0, 3)` and the
       shifted `srange`, exposing an observed per-scale difference.
-- [ ] T2. Rewrite the metric/shift expectations on that fixture; drop the
+- [x] T2. Rewrite the metric/shift expectations on that fixture; drop the
       per-scale label expectations at `test-norm_pid5.R:218-221` and `:234`,
       keeping the no-abort substance; keep `:410-425`'s published-cell oracle
       and add the differential PRD assertion beside it; restate the file's IP2
       header.
-- [ ] T3. Add the pairwise-disjointness assertion over the three vectors in
+- [x] T3. Add the pairwise-disjointness assertion over the three vectors in
       `R/norm_engine.R:114-123`.
 - [ ] T4. Thread `call` from `norm_pid5()` into `norm_metric()`
       (`R/norm_engine.R:125-153`) and test the attribution.
@@ -131,6 +131,10 @@ it here.
 - 2026-07-31: plan gate chose asserting the measured shift magnitude over asserting the `"mean"`/`"sum"`/`"invariant"` labels because mapping a measured difference back to a label re-transcribes `norm_shift()` and relocates the IP2 violation rather than closing it; falsified by a mutation that changes a scale's label without changing its shift magnitude.
 - 2026-07-31: plan gate chose one abort bullet per offending column over `{.cls}` for the single-offender case only because cli's `{.cls}` collapses several classes into one union label and cannot reproduce the per-column pairing; falsified by a rendered-message test showing the multi-column abort still carrying a hand-rolled class string.
 - 2026-07-31: plan gate chose substantive findings plus cheap polish over the full 24 because the polish items in `R/util.R`'s shared validators ripple into the scoring family and past this milestone's characterization evidence; falsified by that ripple turning out to be confined to the norming family.
+- 2026-07-31: branch `m30-norming-oracle-residue` cut from main at 12b7887; status in-progress.
+- 2026-07-31: T7's baseline capture reordered ahead of T1 (minor amendment) — the harness must read the pre-change code; 9 configurations captured to a scratch RDS.
+- 2026-07-31: T1-T3 done — `observed_shift()` scores a dataset and its `data + low` copy on matching `srange` and differences per scale; `norm_shift()` is asserted against the measured shift for FULL/SF/BF x low 1,2; the per-scale label expectations at the old :218-221 and :234 are gone; the three vectors are asserted pairwise disjoint. `test_file()` 406 pass / 0 fail.
+- 2026-07-31: AC3 mutations for T1-T3, each observed red and reverted — "PRD" added to `norm_mean_scales` (disjointness 1 failure, differential 2); `out[metric == "mean"] <- low + 1` (differential 6 failures); "ORS" moved from invariant to mean (4 failures).
 
 ## Decisions
 

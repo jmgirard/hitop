@@ -208,17 +208,33 @@ test_that("NA scores convert to NA without affecting their neighbours", {
 })
 
 test_that("norm_metric() classifies every scale the shipped tables carry", {
+  # That each scale lands in the *right* metric is not asserted here: the label
+  # is internal vocabulary, and copying the three partition vectors into an
+  # expectation would assert the implementation against itself (IP2). What the
+  # classification is for -- the size of the shift each scale undergoes -- is
+  # measured against the scoring functions instead, further down the file.
   for (i in seq_len(nrow(p_pairs))) {
     v <- p_pairs$version[[i]]
     s <- p_pairs$scale[[i]]
     expect_true(norm_metric(s, v) %in% c("mean", "sum", "invariant"),
                 info = paste(v, s))
   }
-  # And each lands in the metric its definition implies.
-  expect_equal(
-    norm_metric(c("detachment", "total", "PRD", "INC", "INCS", "ORS"), "FULL"),
-    c("mean", "mean", "sum", "invariant", "invariant", "invariant")
-  )
+})
+
+test_that("the three metric vectors are pairwise disjoint", {
+  # norm_metric() assigns in write order (invariant, then sum, then mean), so a
+  # scale named in two vectors would resolve silently to whichever ran last
+  # rather than to a visible conflict.
+  vectors <- list(mean = norm_mean_scales, sum = norm_sum_scales,
+                  invariant = norm_invariant_scales)
+  pairs <- utils::combn(names(vectors), 2, simplify = FALSE)
+  for (p in pairs) {
+    expect_equal(
+      intersect(vectors[[p[[1]]]], vectors[[p[[2]]]]),
+      character(0),
+      info = paste(p, collapse = " vs ")
+    )
+  }
 })
 
 test_that("norm_metric() aborts on a covered scale it cannot classify", {
@@ -230,8 +246,9 @@ test_that("norm_metric() aborts on a covered scale it cannot classify", {
   local_mocked_bindings(norm_covers = function(version, scale) TRUE)
   expect_error(norm_metric("PRDS", "SF"), "PRDS")
   expect_error(norm_metric("SDTD", "FULL"), "no metric")
-  # A scale it *can* classify is unaffected by the coverage answer.
-  expect_equal(norm_metric("PRD", "FULL"), "sum")
+  # A scale it *can* classify is unaffected by the coverage answer: it returns
+  # rather than aborting, whatever the mocked coverage says.
+  expect_no_error(norm_metric("PRD", "FULL"))
 })
 
 test_that("a scale the tables do not cover classifies without aborting", {
@@ -302,6 +319,60 @@ test_that("an uncovered scale yields NA columns and one report naming it", {
 # named printed cells of `pid_norms`; none is taken from norm_pid5()'s own output
 # (IP2). The scales are version-pinned because the tables are: INC, ORS, and PRD
 # are printed for the FULL form only and INC-S for the SF only.
+#
+# How far a scale moves under a shifted coding is a fact about how score_pid5()
+# and validity_pid5() compute that scale, not about the constants norm_engine.R
+# happens to carry, so the test below *measures* it: one dataset and its shifted
+# copy, each scored on its own `srange`, differenced per scale. Reading the
+# three partition vectors (or norm_metric()'s labels) into an expectation would
+# assert the implementation against itself instead.
+
+## The shift each scored column actually undergoes when the same responses are
+## coded `low..low+3` rather than 0-3. Returns one number per `pid_` column, or
+## NA for a column whose shift is not constant across respondents.
+observed_shift <- function(data, n, version, low) {
+  items <- seq_len(n)
+  score_both <- function(d, srange) {
+    suppressWarnings(suppressMessages({
+      s <- score_pid5(d, items = items, version = version, srange = srange)
+      validity_pid5(s, items = items, version = version, srange = srange)
+    }))
+  }
+  moved <- data
+  moved[items] <- data[items] + low
+  base <- score_both(data, c(0, 3))
+  sh <- score_both(moved, c(low, low + 3))
+  cols <- grep("^pid_", names(base), value = TRUE)
+  vapply(cols, function(cl) {
+    d <- unique(round(sh[[cl]] - base[[cl]], 8))
+    d <- d[!is.na(d)]
+    if (length(d) == 1L) d else NA_real_
+  }, numeric(1))
+}
+
+test_that("norm_shift() reproduces the shift each scale actually undergoes", {
+  cases <- list(
+    list(data = sim_pid5, n = 220, version = "FULL"),
+    list(data = sim_pid5sf, n = 100, version = "SF"),
+    list(data = sim_pid5bf, n = 25, version = "BF")
+  )
+  for (low in c(1, 2)) {
+    for (k in cases) {
+      obs <- observed_shift(k$data, k$n, k$version, low)
+      scales <- strip_prefix(names(obs), "pid_")
+      ## Only the scales the tables cover are ever reconciled.
+      keep <- vapply(scales, norm_covers, logical(1), version = k$version)
+      info <- paste(k$version, "low", low)
+      expect_true(any(keep), info = info)
+      expect_false(any(is.na(obs[keep])), info = info)
+      expect_equal(
+        unname(norm_shift(scales[keep], norm_metric(scales[keep], k$version), low)),
+        unname(obs[keep]),
+        info = info
+      )
+    }
+  }
+})
 
 ## Run `expr`, collecting its warnings and returning them alongside its value.
 ## Deliberately not named `capture_warnings`: testthat exports a function of
