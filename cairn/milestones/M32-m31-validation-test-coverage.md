@@ -75,7 +75,7 @@ No NEWS entry: nothing user-visible changes.
       `tests/testthat/test-item-guards.R`, reusing its misordered-items fixture
       (`:41,46-49`); verify both redden with `call = call` dropped from
       `R/util.R:158`.
-- [ ] T3: reshape `tests/testthat/test-norm_pid5.R:418` to a sorted-unique
+- [x] T3: reshape `tests/testthat/test-norm_pid5.R:418` to a sorted-unique
       `expect_equal()` carrying the loop's existing `info`; verify by mutating
       `covered_scales[["SF"]]` and reading the reported label.
 - [ ] T4: run `devtools::test()` and `devtools::check()`; record both outputs.
@@ -89,5 +89,6 @@ No NEWS entry: nothing user-visible changes.
 
 - 2026-07-31: T1 done — two `validate_scales()` blocks in `test-validate.R`; deleting the type bullet reddens both class assertions, hardcoding `{arg}` to "scales" reddens the `norm_pid5(scores=)` assertion. Suite clean (114 pass).
 - 2026-07-31: T2 done — both `warn_item_order()` call sites asserted in `test-item-guards.R`; dropping `call = call` leaves `conditionCall()` NULL at both, and the first draft's raw `call_name()` erroring on NULL aborted the block before the second site, so the assertions were reshaped to fail independently (2 failures under mutation, not 1). Suite clean (30 pass).
+- 2026-07-31: T3 done — `test-norm_pid5.R:418` reshaped to a sorted-unique `expect_equal()` carrying the loop's `info`; mutating `covered_scales[["SF"]]` fails the three SF iterations, each printing its own `SF complete low <n>` label alongside the differing scale names. Suite clean (440 pass).
 
 ## Decisions

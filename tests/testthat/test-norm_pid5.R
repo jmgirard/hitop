@@ -415,7 +415,14 @@ test_that("norm_shift() reproduces the shift each scale actually undergoes", {
       ## Only the scales the tables cover are ever reconciled.
       keep <- vapply(scales, norm_covers, logical(1), version = k$version)
       info <- paste(k$version, k$label, "low", low)
-      expect_setequal(scales[keep], covered_scales[[k$version]])
+      ## expect_setequal() takes no `info`, so a failure here would name none of
+      ## the 12 cases this loop runs. Sorted unique vectors compare as sets and
+      ## still report which scale names differ.
+      expect_equal(
+        sort(unique(scales[keep])),
+        sort(unique(covered_scales[[k$version]])),
+        info = info
+      )
       expect_false(any(is.na(obs[keep])), info = info)
       expect_equal(
         unname(norm_shift(scales[keep], norm_metric(scales[keep], k$version), low)),
