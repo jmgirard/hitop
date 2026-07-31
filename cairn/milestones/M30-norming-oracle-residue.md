@@ -1,6 +1,6 @@
 # M30: Norming-family test oracles and internal consistency
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -141,6 +141,7 @@ it here.
 - 2026-07-31: `devtools::document()` no diff; `devtools::test()` 10400 pass / 0 fail / 0 warn / 1 pre-existing skip.
 - 2026-07-31: T8 — `has_t` now reuses `covered` instead of re-scanning `pid_norms` for coverage per column, and `@param prefix` documents `""`. The finding's "two unreachable `strip_prefix()` guards" does not map to shipped code: `R/util.R:179-183` is four lines with no guards, so nothing was removed; recorded rather than invented.
 - 2026-07-31: T9 — DESIGN.md lists `strip_prefix()` among the internal utilities and its "User communication" section carries the D-024/D-025 carve-out; CLAUDE.md's messaging line points at it in one clause.
+- 2026-07-31: all nine tasks done; status review.
 - 2026-07-31: T7 closed — the characterization harness reports `identical()` for 9/9 configurations (3 datasets x 3 sranges) before and after the branch; `devtools::check()` 0 errors / 0 warnings / 0 notes.
 
 ## Decisions
