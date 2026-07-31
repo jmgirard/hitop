@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-31 (M28 merged and archived; M23 row pruned under terminal-row retention; the M27 `norm_pid5()` candidate absorbed M28's five sub-threshold findings; no lessons met the bar; audit clean)_
+_Last hygiene check: 2026-07-31 (status audit after M28: all 16 checks pass; the 20 `dangling id tokens` advisories all resolve to pre-migration IDs entombed in `cairn/legacy/` — reported, not fixed; both GitHub inboxes empty; nothing in flight)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M29)._
 
 ## Milestones
