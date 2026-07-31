@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M32 | Test coverage for M31's argument-validation additions | planned | — | normal | milestones/M32-m31-validation-test-coverage.md |
+| M32 | Test coverage for M31's argument-validation additions | review | — | normal | milestones/M32-m31-validation-test-coverage.md |
 | M31 | Argument-validation consistency and a harder norming oracle | done | — | normal | milestones/archive/M31-validator-and-oracle-residue.md |
 | M30 | Norming-family test oracles and internal consistency | done | — | normal | milestones/archive/M30-norming-oracle-residue.md |
 | M29 | `norm_pid5()` hygiene and robustness | done | — | normal | milestones/archive/M29-norm-pid5-hygiene.md |
