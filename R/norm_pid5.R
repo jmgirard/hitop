@@ -284,27 +284,26 @@ norm_pid5 <- function(
     cli::cli_warn(bullets)
   }
 
-  ## Report the scales the tables do not cover, once, naming them.
+  ## Report the scales the tables do not cover, once, naming them. Every report
+  ## this function emits is a warning condition, so one suppressWarnings() call
+  ## silences the whole function and each report can be caught and asserted on
+  ## (D-025, extending D-024).
   if (usable && any(!covered)) {
     uncovered <- col_names[!covered]
-    cli::cli_alert_warning(
-      "{length(uncovered)} score column{?s} {?is/are} not covered by the {version} normative tables: {.val {uncovered}}."
-    )
-    cli::cli_alert_info(
-      "Their {.code _t} and {.code _ptl} columns are returned as {.code NA}. {.code pid_norms} carries the five domain scales, the brief-form total, and the validity scales only."
-    )
+    cli::cli_warn(c(
+      "!" = "{length(uncovered)} score column{?s} {?is/are} not covered by the {version} normative tables: {.val {uncovered}}.",
+      "i" = "Their {.code _t} and {.code _ptl} columns are returned as {.code NA}. {.code pid_norms} carries the five domain scales, the brief-form total, and the validity scales only."
+    ))
   }
 
   ## Report the observations that fell outside a printed range, per end.
   if (any(capped_low) || any(capped_high)) {
     n_low <- sum(capped_low)
     n_high <- sum(capped_high)
-    cli::cli_alert_warning(
-      "{n_low} observation{?s} below and {n_high} above the printed range were capped to the nearest printed row."
-    )
-    cli::cli_alert_info(
-      "A capped score's T and percentile are the end row's printed values, not an extrapolation."
-    )
+    cli::cli_warn(c(
+      "!" = "{n_low} observation{?s} below and {n_high} above the printed range were capped to the nearest printed row.",
+      "i" = "A capped score's T and percentile are the end row's printed values, not an extrapolation."
+    ))
   }
 
   out <- as.data.frame(out, check.names = FALSE)

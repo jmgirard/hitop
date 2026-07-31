@@ -275,15 +275,19 @@ test_that("append = TRUE keeps the input columns ahead of the new ones", {
 test_that("validity scales get a percentile column but no T column", {
   scored <- score_pid5(sim_pid5, items = 1:220, version = "FULL")
   scored <- validity_pid5(scored, items = 1:220)
-  out <- norm_pid5(scored, scores = c("pid_INC", "pid_ORS", "pid_PRD"),
-                   version = "FULL", append = FALSE)
+  ## The simulated INC scores run past the top printed row, so this call also
+  ## emits the capping report; it is the subject of its own tests below.
+  out <- suppressWarnings(
+    norm_pid5(scored, scores = c("pid_INC", "pid_ORS", "pid_PRD"),
+              version = "FULL", append = FALSE)
+  )
   expect_equal(names(out), c("pid_INC_ptl", "pid_ORS_ptl", "pid_PRD_ptl"))
 })
 
-test_that("an uncovered scale yields NA columns and one message naming it", {
+test_that("an uncovered scale yields NA columns and one report naming it", {
   facets <- paste0("pid_", c("anhedonia", "anxiousness"))
   scored <- score_pid5(sim_pid5, items = 1:220, version = "FULL")
-  expect_message(
+  expect_warning(
     out <- norm_pid5(scored, scores = facets, version = "FULL", append = FALSE),
     "not covered"
   )
@@ -429,10 +433,8 @@ test_that("INC, INC-S, and ORS are unchanged by a shifted coding", {
 test_that("the reconciliation is reported once, naming both groups", {
   df <- data.frame(pid_detachment = 2.20, pid_PRD = 52, pid_ORS = 2)
   got <- capture_warnings(
-    suppressMessages(
-      norm_pid5(df, scores = names(df), version = "FULL", srange = c(1, 4),
-                append = FALSE)
-    )
+    norm_pid5(df, scores = names(df), version = "FULL", srange = c(1, 4),
+              append = FALSE)
   )
   expect_equal(got$n, 1L)
   expect_match(got$text, "reconciled", fixed = TRUE)
@@ -457,18 +459,48 @@ test_that("an all-invariant request is not reported as an adjustment", {
 
 test_that("a request the tables cover nowhere reports coverage, not coding", {
   ## The facets are in no version's tables, so there is nothing to reconcile and
-  ## the coverage message is the whole story.
+  ## the coverage report is the whole story.
   got <- capture_warnings(
-    suppressMessages(
-      norm_pid5(data.frame(pid_anhedonia = 2.2), scores = "pid_anhedonia",
-                version = "FULL", srange = c(1, 4), append = FALSE)
+    norm_pid5(data.frame(pid_anhedonia = 2.2), scores = "pid_anhedonia",
+              version = "FULL", srange = c(1, 4), append = FALSE)
+  )
+  expect_equal(got$n, 1L)
+  expect_match(got$text, "not covered", fixed = TRUE)
+  expect_false(grepl("reconcil", got$text, fixed = TRUE))
+  expect_false(grepl("coding-invariant", got$text, fixed = TRUE))
+})
+
+test_that("one suppressWarnings() silences the whole function", {
+  ## Every report norm_pid5() emits is a warning condition (D-025), so a single
+  ## suppression call covers all four rather than needing suppressMessages()
+  ## for some and suppressWarnings() for the rest.
+
+  ## The refusal case: a five-option coding refuses before anything else runs,
+  ## so the refusal is the only report there is to silence.
+  expect_silent(
+    suppressWarnings(
+      norm_pid5(scored_bf, scores = bf_scales, version = "BF",
+                srange = c(0, 4), append = FALSE)
     )
   )
-  expect_equal(got$n, 0L)
-  expect_message(
-    norm_pid5(data.frame(pid_anhedonia = 2.2), scores = "pid_anhedonia",
-              version = "FULL", srange = c(1, 4), append = FALSE),
-    "not covered"
+
+  ## The shifted case: one call that emits three different reports together --
+  ## a PRD sum shifted below its table's top row and then capped, beside an
+  ## uncovered facet.
+  df <- data.frame(pid_PRD = 90, pid_anhedonia = 2.2)
+  loud <- capture_warnings(
+    norm_pid5(df, scores = names(df), version = "FULL", srange = c(1, 4),
+              append = FALSE)
+  )
+  expect_equal(loud$n, 3L)
+  expect_match(loud$text, "reconciled", fixed = TRUE)
+  expect_match(loud$text, "not covered", fixed = TRUE)
+  expect_match(loud$text, "capped", fixed = TRUE)
+  expect_silent(
+    suppressWarnings(
+      norm_pid5(df, scores = names(df), version = "FULL", srange = c(1, 4),
+                append = FALSE)
+    )
   )
 })
 
@@ -482,7 +514,7 @@ test_that("the official coding says nothing about response coding", {
 test_that("capping is reported per end and does not extrapolate", {
   # PRD's table stops at 55; a 22-item sum can reach 66.
   df <- data.frame(pid_PRD = c(0, 55, 60, 66))
-  expect_message(
+  expect_warning(
     out <- norm_pid5(df, scores = "pid_PRD", version = "FULL", append = FALSE),
     "above the printed range"
   )
@@ -613,7 +645,7 @@ test_that("`prefix` is stripped by literal match, never as a regex", {
   # start with the literal "p.d_", so the name is left unstripped, no scale
   # matches it, and both conversion columns come back NA with the column named.
   df2 <- stats::setNames(data.frame(0.2), "pXd_detachment")
-  expect_message(
+  expect_warning(
     out2 <- norm_pid5(df2, scores = "pXd_detachment", version = "BF",
                       prefix = "p.d_", append = FALSE),
     "pXd_detachment",
@@ -642,7 +674,7 @@ test_that("every validity scale caps above its printed range, not just PRD", {
     # And the wrapper counts them, one message naming both ends.
     df <- data.frame(x = k$above)
     names(df) <- paste0("pid_", k$s)
-    expect_message(
+    expect_warning(
       norm_pid5(df, scores = names(df), version = k$v, append = FALSE),
       paste0(length(k$above), " above the printed range")
     )
@@ -664,13 +696,13 @@ test_that("non-finite and enormous scores cap rather than landing mid-table", {
 test_that("capping counts observations, not observation-by-scale pairs", {
   # One respondent, three scales out of range at the same end: one observation.
   df <- data.frame(pid_INC = 30, pid_PRD = 60, pid_ORS = 9)
-  expect_message(
+  expect_warning(
     norm_pid5(df, scores = names(df), version = "FULL", append = FALSE),
     "0 observations below and 1 above"
   )
   # Two respondents, one capped on two scales and one on neither: still one.
   df2 <- data.frame(pid_INC = c(30, 1), pid_PRD = c(60, 1))
-  expect_message(
+  expect_warning(
     norm_pid5(df2, scores = names(df2), version = "FULL", append = FALSE),
     "0 observations below and 1 above"
   )

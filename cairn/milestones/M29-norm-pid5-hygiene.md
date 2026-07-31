@@ -56,8 +56,10 @@ plots → the norm-referenced plotting candidate.
       formula. The abort is exercised by a test injecting such a scale through
       a mocked `norm_covers()` (`pid_norms` is lazy data and cannot be rebound
       by `local_mocked_bindings()`). A scale `pid_norms` does not cover — the
-      25 facets — still classifies without error, and
-      `tests/testthat/test-norm_pid5.R:249` passes unedited.
+      25 facets — still classifies without error: `norm_metric()` returns
+      `"mean"` for them, and the uncovered-scale test's substance (both
+      conversion columns `NA`, the column named in the report) is unchanged,
+      its only edit being the condition class AC5 reclassifies.
 - [ ] AC4. `norm_shift()` names the `validity_pid5()` `rowSums()`-without-
       `na.rm` dependency in a comment citing `R/validity_pid5.R:172`, and
       `tests/testthat/test-norm_pid5.R` carries a test asserting the norming
@@ -108,7 +110,7 @@ plots → the norm-referenced plotting candidate.
       test through a mocked `norm_covers()`.
 - [x] T5. Comment the `na.rm` coupling at `norm_shift()`; add the
       missing-item `PRD` norming test.
-- [ ] T6. Convert the coverage and capping reports (`R/norm_pid5.R:258-278`)
+- [x] T6. Convert the coverage and capping reports (`R/norm_pid5.R:258-278`)
       to `cli::cli_warn()`; add whole-function silence tests for both coding
       cases.
 - [ ] T7. Rename the `capture_warnings()` helper at
@@ -131,6 +133,8 @@ plots → the norm-referenced plotting candidate.
 - 2026-07-31: T3 — `validate_scales()`, `validate_items_present()` and `validate_item_uniqueness()` take an `arg` name (defaults reproduce today's wording; uniqueness also takes `unit` so the default sentence stays byte-identical for the scoring family), and `norm_pid5()` threads `"scores"` through all three. `tests/testthat/test-score_pid5.R`, `test-validity_pid5.R` and `test-validate.R` pass unedited (`git diff` empty). NEWS bullet added for the two new aborts.
 - 2026-07-31: T4 — `norm_metric(scale, version)` now names each metric's scales positively (`norm_mean_scales`/`norm_sum_scales`/`norm_invariant_scales`) and aborts on a covered-but-unclassified scale; an uncovered scale still classifies as a mean. Three new tests, the abort exercised through a mocked `norm_covers()`; the uncovered-scale test passes unedited; `devtools::test()` clean.
 - 2026-07-31: T5 — `norm_shift()`'s sum branch now documents its dependency on `validity_pid5()`'s `rowSums()` without `na.rm` (`R/validity_pid5.R:172`) and what would break if that changed; new test drives a real missing PRD item through `validity_pid5()` and asserts the score is `NA` before and after the `low x nItems` correction while its neighbours convert. `devtools::test()` clean.
+- 2026-07-31: amendment (mini gate) — AC3's "`test-norm_pid5.R:249` passes unedited" clause was unsatisfiable alongside AC5, which turns the report that test listens for into a warning; replaced with a substance clause (both columns `NA`, the column named) allowing exactly the condition-class edit AC5 forces.
+- 2026-07-31: T6 — the uncovered-scale and capping reports are now `cli::cli_warn()`, so all four of `norm_pid5()`'s reports are warnings and one `suppressWarnings()` silences it; seven `expect_message()` assertions became `expect_warning()`, two stale `suppressMessages()` wrappers dropped, and a new test asserts silence in both the refusal case and a three-report shifted call. `devtools::test()` clean, 0 test warnings.
 
 ## Decisions
 
