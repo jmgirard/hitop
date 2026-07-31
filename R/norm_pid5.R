@@ -7,7 +7,8 @@
 #'
 #' @param data A data frame containing scored PID-5 columns.
 #' @param scores The score columns to convert, as column names or column
-#'   positions (mirroring the `items` argument of [score_pid5()]).
+#'   positions (mirroring the `items` argument of [score_pid5()]). Each column
+#'   must be numeric (or logical) and each may be named only once.
 #' @param version Which PID-5 version the scores came from: `"FULL"` (220
 #'   items), `"SF"` (100 items), or `"BF"` (25 items). The normative tables
 #'   differ by version.
@@ -16,7 +17,9 @@
 #'   official `c(0, 3)` range before lookup; a coding with a different number of
 #'   options is not convertible. See Details.
 #' @param prefix The prefix [score_pid5()] applied to its output columns, used
-#'   to match a score column back to its scale.
+#'   to match a score column back to its scale. Matched literally, not as a
+#'   regular expression: a column name that does not begin with exactly this
+#'   string keeps its whole name and is reported as uncovered.
 #' @param append Whether to return the input `data` with the conversion columns
 #'   appended (`TRUE`, the default) or the conversion columns alone.
 #'
@@ -51,8 +54,8 @@
 #'     the lowest returns whatever an observation *at* the lowest printed raw
 #'     returns -- which, on the scales whose tables print a run of 0.00, is that
 #'     run's highest-T row and not the table's first row, so the two agree
-#'     instead of jumping. A message reports how many observations were capped at
-#'     each end. This is reachable in ordinary data: `PRD` is a 22-item sum
+#'     instead of jumping. A warning reports how many observations were capped
+#'     at each end. This is reachable in ordinary data: `PRD` is a 22-item sum
 #'     reaching 66 while its table stops at 55.
 #'   * **Unattainable printed rows.** Five domain tables print rows above the
 #'     3.00 ceiling a 0-3 item mean can reach, so the top of those T ranges
@@ -60,7 +63,7 @@
 #'     affectivity), 87 (brief-form detachment), 93 (brief-form disinhibition),
 #'     87 (full-form negative affectivity), or 85 (short-form negative
 #'     affectivity) -- each at percentile 1.00. Nothing is wrong with such data
-#'     and no message fires.
+#'     and nothing is reported.
 #'   * **Comparison tolerance.** All comparisons use an absolute tolerance of
 #'     1e-8, so that scores on grids with no exact binary representation (a
 #'     short-form domain mean is a twelfth) match the printed 2-decimal raws as
@@ -68,7 +71,20 @@
 #'
 #'   Columns the tables do not cover for the requested `version` -- the 25
 #'   facets, for instance -- return `NA` in both conversion columns with a
-#'   message naming them. An `NA` score returns `NA`.
+#'   warning naming them. An `NA` score returns `NA`.
+#'
+#'   **Reporting and silence.** Everything this function reports -- the capping
+#'   count above, the uncovered-column warning, and the two response-coding
+#'   reports below -- is a warning condition, so a single `suppressWarnings()`
+#'   call silences the function and any one report can still be caught and
+#'   tested for individually.
+#'
+#'   **Errors.** `scores` is checked before anything is converted. Naming the
+#'   same score column twice is an error rather than a duplicated pair of output
+#'   columns, and a factor or character score column is an error rather than a
+#'   silent coercion -- a factor's integer codes are not its scores, and a
+#'   character column would coerce to `NA`. Logical columns are accepted, since
+#'   a 0/1 indicator converts as it reads.
 #'
 #'   **Response coding.** The normative tables are built on the official
 #'   four-option 0-3 coding. Data collected on a four-option coding that merely
@@ -104,7 +120,7 @@
 #'   scales were adjusted and which were left alone; where every requested scale
 #'   turns out to be coding-invariant, it says so rather than claiming an
 #'   adjustment. The warning covers the scales the tables actually carry, so a
-#'   request the tables cover nowhere raises the coverage message above instead
+#'   request the tables cover nowhere raises the coverage warning above instead
 #'   and nothing about coding. The official coding is silent.
 #'
 #'   One consequence is worth stating plainly, because it can put two differently
@@ -147,18 +163,48 @@ norm_pid5 <- function(
   version <- toupper(version)
   version <- match.arg(version, choices = c("FULL", "SF", "BF"))
   validate_data(data)
-  validate_scales(scores)
-  validate_items_present(data, scores)
+  ## The shared validators are told which argument to blame: every complaint
+  ## about this argument says `scores`, the name the caller actually wrote,
+  ## rather than the `items` or `scales` the scoring family passes them.
+  validate_scales(scores, arg = "scores")
+  validate_item_uniqueness(scores, arg = "scores", unit = "score")
+  validate_items_present(data, scores, arg = "scores")
   validate_range(srange)
   stopifnot(rlang::is_string(prefix))
   stopifnot(rlang::is_bool(append))
 
   ## Extract the score columns and recover each one's scale name: the output
   ## naming of score_pid5() is prefix + the camelCase scale, so stripping the
-  ## prefix leaves the `pid_norms$scale` value to look up.
+  ## prefix leaves the `pid_norms$scale` value to look up. The strip is a
+  ## literal match, never a regex (D-026); a name the prefix does not start is
+  ## left whole and falls through to the uncovered-scale report below.
   score_cols <- data[scores]
   col_names <- names(score_cols)
-  scale_names <- sub(paste0("^", prefix), "", col_names)
+  scale_names <- strip_prefix(col_names, prefix)
+
+  ## Only a numeric (or logical) column can be looked up. as.numeric() would
+  ## turn a factor into its integer codes and a character column into NA --
+  ## wrong answers rather than errors -- so both abort here, before any report
+  ## fires or any conversion happens. A logical column is left alone:
+  ## as.numeric(TRUE) is 1, which is what a 0/1 indicator already means.
+  bad_type <- !vapply(
+    score_cols,
+    function(x) is.numeric(x) || is.logical(x),
+    logical(1)
+  )
+  if (any(bad_type)) {
+    bad <- paste0(
+      col_names[bad_type],
+      " <",
+      vapply(score_cols[bad_type], function(x) class(x)[[1]], character(1)),
+      ">"
+    )
+    cli::cli_abort(c(
+      "The {.arg scores} columns must be numeric.",
+      "x" = "Not numeric: {.val {bad}}.",
+      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is converted for you. Convert them before calling {.code norm_pid5()}."
+    ))
+  }
 
   ## Which requested scales the tables cover for this version. An uncovered
   ## scale still gets both columns, filled with NA (never silently absent).
@@ -190,7 +236,7 @@ norm_pid5 <- function(
   }
 
   ## Each scale's metric, and the amount a shifted coding adds to it.
-  metric <- norm_metric(scale_names)
+  metric <- norm_metric(scale_names, version)
   shift <- norm_shift(scale_names, metric, low)
 
   ## Convert each column, collecting the capping counts as we go.
@@ -223,7 +269,7 @@ norm_pid5 <- function(
   ## Report the reconciliation once per call, naming both groups, so a user on a
   ## shifted coding can see which of their scales moved and which did not. Only
   ## covered scales are listed: an uncovered one is returned as NA either way and
-  ## is reported by the message below instead.
+  ## is reported by the warning below instead.
   if (shifted && any(covered)) {
     adjusted <- col_names[covered & metric != "invariant"]
     invariant <- col_names[covered & metric == "invariant"]
@@ -254,27 +300,26 @@ norm_pid5 <- function(
     cli::cli_warn(bullets)
   }
 
-  ## Report the scales the tables do not cover, once, naming them.
+  ## Report the scales the tables do not cover, once, naming them. Every report
+  ## this function emits is a warning condition, so one suppressWarnings() call
+  ## silences the whole function and each report can be caught and asserted on
+  ## (D-025, extending D-024).
   if (usable && any(!covered)) {
     uncovered <- col_names[!covered]
-    cli::cli_alert_warning(
-      "{length(uncovered)} score column{?s} {?is/are} not covered by the {version} normative tables: {.val {uncovered}}."
-    )
-    cli::cli_alert_info(
-      "Their {.code _t} and {.code _ptl} columns are returned as {.code NA}. {.code pid_norms} carries the five domain scales, the brief-form total, and the validity scales only."
-    )
+    cli::cli_warn(c(
+      "!" = "{length(uncovered)} score column{?s} {?is/are} not covered by the {version} normative tables: {.val {uncovered}}.",
+      "i" = "Their {.code _t} and {.code _ptl} columns are returned as {.code NA}. {.code pid_norms} carries the five domain scales, the brief-form total, and the validity scales only."
+    ))
   }
 
   ## Report the observations that fell outside a printed range, per end.
   if (any(capped_low) || any(capped_high)) {
     n_low <- sum(capped_low)
     n_high <- sum(capped_high)
-    cli::cli_alert_warning(
-      "{n_low} observation{?s} below and {n_high} above the printed range were capped to the nearest printed row."
-    )
-    cli::cli_alert_info(
-      "A capped score's T and percentile are the end row's printed values, not an extrapolation."
-    )
+    cli::cli_warn(c(
+      "!" = "{n_low} observation{?s} below and {n_high} above the printed range were capped to the nearest printed row.",
+      "i" = "A capped score's T and percentile are the end row's printed values, not an extrapolation."
+    ))
   }
 
   out <- as.data.frame(out, check.names = FALSE)

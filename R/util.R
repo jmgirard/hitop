@@ -60,18 +60,29 @@ validate_items <- function(x, n, call = rlang::caller_env()) {
   )
 }
 
+# The three validators below are shared across argument names: score_pid5() and
+# friends pass a column mapping called `items`, rank_scales() one called
+# `scales`, and norm_pid5() one called `scores`. Each takes an `arg` naming the
+# caller's argument so the abort blames the argument the user actually wrote;
+# the defaults reproduce the wording these helpers carried before `arg` existed.
+
 # Abort when `items` refers to columns not present in `data`, before the base-R
 # `data[items]` extraction (whose own subscript error is cryptic). Character
 # entries must be names in `data`; integer entries must be valid column
 # positions (1..ncol). Assumes validate_items() already checked type/length.
-validate_items_present <- function(data, items, call = rlang::caller_env()) {
+validate_items_present <- function(
+  data,
+  items,
+  arg = "items",
+  call = rlang::caller_env()
+) {
   if (is.character(items)) {
     missing <- setdiff(items, names(data))
     if (length(missing) > 0) {
       cli::cli_abort(
         c(
-          "The `items` names must all be columns in `data`.",
-          "x" = "Not found in `data`: {.val {missing}}."
+          "The {.arg {arg}} names must all be columns in {.arg data}.",
+          "x" = "Not found in {.arg data}: {.val {missing}}."
         ),
         call = call
       )
@@ -82,8 +93,8 @@ validate_items_present <- function(data, items, call = rlang::caller_env()) {
     if (length(bad) > 0) {
       cli::cli_abort(
         c(
-          "The `items` positions must be valid columns of `data`.",
-          "x" = "`data` has {ncol(data)} column{?s}; out of range: {.val {bad}}."
+          "The {.arg {arg}} positions must be valid columns of {.arg data}.",
+          "x" = "{.arg data} has {ncol(data)} column{?s}; out of range: {.val {bad}}."
         ),
         call = call
       )
@@ -92,20 +103,25 @@ validate_items_present <- function(data, items, call = rlang::caller_env()) {
   invisible(NULL)
 }
 
-validate_scales <- function(x, call = rlang::caller_env()) {
+validate_scales <- function(x, arg = "scales", call = rlang::caller_env()) {
   cli_assert(
     condition = rlang::is_character(x) || rlang::is_integerish(x),
-    message = "The `scales` argument did not have the expected type.",
+    message = "The {.arg {arg}} argument did not have the expected type.",
     call = call
   )
 }
 
-validate_item_uniqueness <- function(x, call = rlang::caller_env()) {
+validate_item_uniqueness <- function(
+  x,
+  arg = "items",
+  unit = "item",
+  call = rlang::caller_env()
+) {
   dups <- unique(x[duplicated(x)])
   if (length(dups) > 0) {
     cli::cli_abort(
       c(
-        "The `items` argument must map each item to a distinct column.",
+        "The {.arg {arg}} argument must map each {unit} to a distinct column.",
         "x" = "Duplicated entries: {.val {dups}}."
       ),
       call = call
@@ -152,6 +168,18 @@ validate_range <- function(x, call = rlang::caller_env()) {
     message = "The second `srange` value must be greater than the first.",
     call = call
   )
+}
+
+# Remove a leading `prefix` from each name by *literal* match (D-026). The
+# obvious `sub(paste0("^", prefix), "", x)` compiles the caller's string as a
+# regular expression, so a prefix containing `(` aborts with a regex error the
+# caller never wrote and one containing `.` strips a prefix that was never
+# there. A name that does not start with `prefix` is returned unchanged; an
+# empty `prefix` is a no-op.
+strip_prefix <- function(x, prefix) {
+  hit <- startsWith(x, prefix)
+  x[hit] <- substring(x[hit], nchar(prefix) + 1L)
+  x
 }
 
 drop_na <- function(x) {

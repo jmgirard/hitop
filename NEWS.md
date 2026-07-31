@@ -17,8 +17,8 @@ before a CRAN submission.
   rows carry a T score and a `_ptl` column for every converted scale. Every
   returned value is a printed cell of Markon et al. (2024): the nearest printed
   row is selected and nothing is interpolated. Scores outside a printed range are
-  capped to the nearest end with a message rather than extrapolated, and scales
-  the tables do not cover return `NA` with a message naming them. Scores
+  capped to the nearest end with a warning rather than extrapolated, and scales
+  the tables do not cover return `NA` with a warning naming them. Scores
   collected on any four-option response coding are accepted: a coding shifted
   off the official 0-3 range (1-4, say) is reconciled to it before lookup, per
   scale — item means by the coding's low value, `PRD` by that value times its
@@ -28,8 +28,10 @@ before a CRAN submission.
   four-option tables and returns `NA` in every conversion column with a warning.
   Note that `validity_pid5()`'s published cut scores are still *not* adapted to
   a shifted coding, so a reconciled percentile and an unreconciled validity flag
-  can appear together; see `?norm_pid5`. The PID-5, PID-5-SF, and PID-5-BF
-  vignettes each gain a section demonstrating the conversion.
+  can appear together; see `?norm_pid5`. Every report the function makes is a
+  warning condition, so one `suppressWarnings()` call silences it entirely. The
+  PID-5, PID-5-SF, and PID-5-BF vignettes each gain a section demonstrating the
+  conversion.
 
 * **PID-5-BF total score** (breaking). `score_pid5(version = "BF")` now returns a
   `total` column after its five domains, so the brief form's normed total score
@@ -56,6 +58,22 @@ before a CRAN submission.
   Behavior"`) or as the camelCase stems used in scored output
   (`"antisocialBehavior"`), in any mixture and ignoring case. Subsetting is
   currently available for the HiTOP-SR only.
+
+* `norm_pid5()` now checks its `scores` argument before converting anything.
+  Naming the same score column twice is an error rather than a silently
+  duplicated pair of output columns, and a factor or character score column is
+  an error rather than being coerced — a factor's integer codes are not its
+  scores, and a character column coerces to `NA`. Logical columns still
+  convert. Every complaint about the argument names `scores`, not the `items`
+  or `scales` of the shared validators behind it.
+
+* `rank_scales()`'s `prefix` argument is now matched **literally** (breaking).
+  It was previously compiled as a regular expression anchored to the start of
+  the column name, which meant a prefix containing `(` failed with a regex
+  error and one containing `.` could strip a prefix that was never there. A
+  column name that does not begin with exactly `prefix` is now carried through
+  whole. Code relying on a regex `prefix` must pre-strip the names instead.
+  `norm_pid5()` matches `prefix` the same way.
 
 * Qualtrics question IDs are now zero-padded to the width of the largest item
   number rather than the number of items. Output for every full instrument is

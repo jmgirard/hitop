@@ -8,11 +8,12 @@
 #' @param data A data frame containing the scale columns.
 #' @param scales A character or integer vector identifying the columns in
 #'   \code{data} to rank (names or positions). These columns should be numeric.
-#' @param prefix A length-1 string giving a leading pattern to strip from each
+#' @param prefix A length-1 string giving a leading string to strip from each
 #'   selected column name before concatenation, or \code{NULL} to keep names as
-#'   is. The match is interpreted as a regular expression anchored to the start
-#'   of the name (i.e., \code{"^"} is prepended). Special regex characters in
-#'   \code{prefix} will be treated as regex metacharacters.
+#'   is. The match is literal, not a regular expression: a column name that does
+#'   not begin with exactly \code{prefix} is left unchanged, and characters that
+#'   are regex metacharacters (\code{.}, \code{(}, \code{+}) stand for
+#'   themselves.
 #' @param top Integer (length 1). The number of columns to include per row after
 #'   ranking. Must be between 1 and \code{length(scales)}.
 #' @param dir Direction of ranking: \code{"high"} for largest values first or
@@ -38,9 +39,9 @@
 #'   will be included only if there are fewer than \code{top} non-missing values
 #'   in a row.
 #'
-#' If \code{prefix} is not \code{NULL}, the function removes the leading pattern
-#' \code{paste0("^", prefix)} from each selected column name before
-#' concatenation.
+#' If \code{prefix} is not \code{NULL}, the function removes that exact leading
+#' string from each selected column name before concatenation. Names that do not
+#' begin with it are carried through whole.
 #'
 #' The output column is named by \code{name}. When \code{append = TRUE} it is
 #' added after the existing columns of \code{data} (whose order is preserved);
@@ -103,7 +104,7 @@ rank_scales <- function(
 
   col_names <- colnames(data_scales)
   if (!is.null(prefix)) {
-    col_names <- sub(paste0("^", prefix), "", col_names)
+    col_names <- strip_prefix(col_names, prefix)
   }
 
   ## Find the top scales per subject
