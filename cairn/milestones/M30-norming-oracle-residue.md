@@ -143,6 +143,7 @@ it here.
 - 2026-07-31: T9 — DESIGN.md lists `strip_prefix()` among the internal utilities and its "User communication" section carries the D-024/D-025 carve-out; CLAUDE.md's messaging line points at it in one clause.
 - 2026-07-31: all nine tasks done; status review.
 - 2026-07-31: review returned the milestone (return 1) — AC1's last clause, "the file's IP2 header states the differential oracle and why it is not self-reference", is unmet: the explanation was written onto the shifted-codings section header at :299 and the file header at :1-6 still describes only the printed-cell oracles. Every other AC1 clause verified.
+- 2026-07-31: review found T3's task text and the Scope both place the disjointness assertion in `R/norm_engine.R:114-123`, but it shipped in `test-norm_pid5.R` only; AC2 asks for a test and a test is the better home, so the code is right and the task prose was wrong — recorded rather than silently reconciled ([O] diff-bug finding, scored 55).
 - 2026-07-31: return 1 addressed — the file header now states the differential oracle and why a relationship between two scoring runs is not self-reference; the section header at :299 keeps the mechanics. Tests re-run, 422 pass / 0 fail. Status back to review.
 - 2026-07-31: T7 closed — the characterization harness reports `identical()` for 9/9 configurations (3 datasets x 3 sranges) before and after the branch; `devtools::check()` 0 errors / 0 warnings / 0 notes.
 
@@ -217,5 +218,54 @@ changed (the additions are conventions, not IP/GP text), so `cairn_impact` does
 not apply. Toolchain slot (`r-package`): `document()` no diff, no generated file
 hand-edited, README untouched by this diff, `pkgdown::check_pkgdown()` reports
 no problems, NEWS.md carries the user-visible entry, no new top-level files,
-`check()` clean.
+`check()` clean. CI green on all seven jobs (PR #33).
+
+**Independent review.** Three fresh-context reviewers ran in parallel on
+distinct evidence bases. The **[S] blame-history** lens traced every modified
+and deleted line to its introducing commit and found no regression: each
+removed test expectation was introduced by M29 and its intent is preserved or
+strengthened, the `suppressMessages()` removals are licensed by D-025, and the
+`has_t` refactor is algebraically identical. The **[S] prior-review** lens
+mapped the diff one-to-one onto five of M29's logged sub-threshold findings and
+found nothing walked back; its `gh api pulls/comments` probe returned empty, so
+the PR-thread walk was correctly skipped. The **[O] diff-bug** lens returned 16
+candidate findings and independently verified the parts that matter most:
+`observed_shift()` genuinely isolates the coding shift (reverse-keying, ORS's
+comparison against `srange[[2]]`, the within-pair cancellation in INC/INCS, and
+APA proration all commute with an integer shift), the brace escaping holds
+against adversarial column names including braces, ANSI colour and 78-character
+names, and the new fixture values are real printed cells. It also measured that
+the union across the three versions exercises every member of all three
+partition vectors — strictly better coverage than the deleted label expectation.
+
+**Scoring and triage.** A separate [S] scorer, which did not generate the
+findings, scored all 17 (16 plus one from the prior-review lens) against the
+confidence rubric. **None reached 80, so nothing was actioned on the branch.**
+
+**Logged below threshold (17 findings, not actioned).** Surfaced rather than
+dropped (IP3), highest first: *(78)* the differential oracle runs only on
+complete data, so a regression to `na.rm = TRUE` in PRD's `rowSums()` would
+leave it green; *(75)* `expect_true(any(keep))` is a weak scope guard — one
+covered scale suffices, so the "sum" branch could silently drop out of
+coverage; *(58)* the oracle loops `low` over 1 and 2 only, never the negative
+`low` that `validate_range()` accepts; *(55)* `norm_shift()`'s PRD item count
+and `validity_pid5()`'s PRD sum both read `pid_items$PRD`, so that one constant
+is not isolated by the differential; *(55)* T3 and the Scope place the
+disjointness assertion in `R/norm_engine.R` but it shipped test-only; *(55)*
+the NEWS `call`-attribution sentence sits under the non-numeric-column bullet
+though it describes a different abort; *(45)* the surviving facet label
+expectation at :270 is the shape AC1 removed elsewhere, though outside AC1's
+enumerated scope; *(40)* `{cli::qty()}` sits at the head of the non-numeric
+headline rather than adjacent to its marker, safe today but the trap the sibling
+fix was taken for; *(35)* per-column bullets lose the automatic 20-item
+truncation `{.val }` gave the old single bullet; *(30, 30, 25, 20, 20, 15, 12,
+8)* the "i" bullet's singular prose beside a pluralized verb, the `caller_env()`
+comment's "never", AC5's count-interpolation reading, the dropped names on
+`has_t`, the remaining `norm_rows()` scans, the oracle testing `norm_shift()`
+rather than its call site, the cli lesson not yet in LESSONS.md (post-merge
+hygiene), and cli's whitespace collapsing in reported names (pre-existing).
+
+The recurring shape — rigor gaps in the differential oracle this milestone
+introduced — is carried to a ROADMAP candidate rather than expanded here, the
+same route by which this milestone was created from M29's residue.
 
