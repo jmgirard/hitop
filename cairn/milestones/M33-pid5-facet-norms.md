@@ -2,6 +2,7 @@
 
 - **Status:** review
 - **Branch:** `m33-pid5-facet-norms`
+- **PR:** https://github.com/jmgirard/hitop/pull/36
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -34,31 +35,31 @@ and `cairn/`.
 
 ## Acceptance criteria
 
-- [ ] AC1. `Rscript data-raw/verify_norms_against_book.R` extracts Tables A–6
+- [x] AC1. `Rscript data-raw/verify_norms_against_book.R` extracts Tables A–6
       and A–8 from `cairn/references/sources/markon2024.epub` block by block —
       recovering which facet each `Raw`/`Percentile` pair belongs to from that
       block's banner row rather than from an assumed facet order — reports zero
       discrepancies for all nine specified tables against their committed CSVs,
       and `stop()`s on any discrepancy.
-- [ ] AC2. `pid_norms` carries one row per (version, facet, tscore) printed in
+- [x] AC2. `pid_norms` carries one row per (version, facet, tscore) printed in
       A–6 and A–8: 3,550 new rows over 50 new (version, scale) pairs, `version`
       in `FULL`/`SF`, `tscore` covering 30–100 for every *new* pair, no NA in
       `raw` or `percentile`. Each new `scale` is that facet's `camelCase` stem
       read from `pid_scales[[version]]`, and `data-raw/norms_pid5.R` asserts the
       mapped stems are `setequal()` to `pid_scales[[version]]$camelCase` so the
       book-label→stem crosswalk cannot silently drop or duplicate a facet.
-- [ ] AC3. `norm_pid5()` on `score_pid5(sim_pid5, items = 1:220, version =
+- [x] AC3. `norm_pid5()` on `score_pid5(sim_pid5, items = 1:220, version =
       "FULL")` and on the SF equivalent returns a non-NA `_t` and `_ptl` for all
       25 facets with no uncovered-scale report; the 25 facet stems are named in
       `norm_engine.R`'s `norm_mean_scales`; and the four uncovered-scale tests in
       `test-norm_pid5.R` (lines 268, 317, 634, 667) are re-pointed at a scale
       `pid_norms` still does not cover.
-- [ ] AC4. Every printed row ships, ceiling included: where A–6 or A–8 prints
+- [x] AC4. Every printed row ships, ceiling included: where A–6 or A–8 prints
       the same `raw` on consecutive T rows at the top of a facet's column,
       `pid_norms` carries every one of those rows, and `norm_pid5()` converts
       that raw to the lowest `tscore` of the run. A test asserts both halves
       over all such columns, SF `anxiousness` (12 rows at 4.00) among them.
-- [ ] AC5. Over the widened `pid_norms`, for every (version, scale) carrying a T
+- [x] AC5. Over the widened `pid_norms`, for every (version, scale) carrying a T
       score: `percentile` is nondecreasing in `tscore`; and a minimax
       (Chebyshev) line in `tscore` reproduces every printed `raw` to within
       0.005 — half a unit in the last printed place — over the rows strictly
@@ -66,13 +67,13 @@ and `cairn/`.
       consecutive T rows, strictly below that run. This replaces the current
       `lm`-based linearity test, which fails on 20 of the 50 new columns. The
       line is fitted inside the test and never ships (D-022).
-- [ ] AC6. Each of the 50 new (version, scale) pairs carries at least one spot
+- [x] AC6. Each of the 50 new (version, scale) pairs carries at least one spot
       value in `tests/testthat/test-norms.R`, transcribed from the rendered page
       rather than from `verify_norms_against_book.R`'s output (method recorded
       in the work log), anchored to its table label and that table's first page,
       and matching `pid_norms`. The existing "every scale in `pid_norms` has at
       least one spot value" test passes with its assertion unchanged.
-- [ ] AC7. No shipped or tracked text makes a statement about `pid_norms`'
+- [x] AC7. No shipped or tracked text makes a statement about `pid_norms`'
       contents that the widened dataset falsifies. Updated: `R/data.R`'s
       `pid_norms` `@description`, `@format` (row count and the `raw` item),
       `@details`, and `@source`; `norm_pid5()`'s `@details` (including the
@@ -85,7 +86,7 @@ and `cairn/`.
       open question about the source). A `cairn/DECISIONS.md` entry records the
       GP2 change — facet columns move from `NA` + warning to real values — and
       the decision to ship the book's unreachable rows verbatim.
-- [ ] AC8. `devtools::test()` passes and `devtools::check()` completes with 0
+- [x] AC8. `devtools::test()` passes and `devtools::check()` completes with 0
       errors and 0 warnings (Imports installed).
 
 ## Coverage
@@ -146,3 +147,93 @@ and `cairn/`.
 ## Decisions
 
 ## Review
+
+Reviewed 2026-07-31 against PR #36. Evidence below is fresh — every line was
+produced by running the command named, in this session, on the branch head.
+
+### Acceptance criteria
+- **AC1 — met.** `Rscript data-raw/verify_norms_against_book.R` prints all nine
+  tables and `RESULT: every cell of all 9 tables matches the book`, exit 0; A-6
+  anchors to p. 124 and A-8 to p. 151, the pages the plan names. Extraction is
+  block-aware and banner-driven, not order-assuming: seeding a wrong cell in the
+  SF facet CSV gave `T = 68, column Anhedonia_Raw -- book 1.79, csv 9.99` and
+  exit 1, and swapping the `Hostility_Raw`/`Impulsivity_Raw` column *labels*
+  (leaving every number in place) raised 118 discrepancies — a positional
+  comparison would have passed it. Tree restored to clean after both probes.
+- **AC2 — met.** `pid_norms` is 4,606 rows against M25's 1,056: 3,550 new, over
+  exactly 50 new (version, scale) pairs, `version` in `FULL`/`SF` only. Every
+  new pair's `tscore` set is `identical()` to `30:100`; no NA in `raw` or
+  `percentile`. The new `scale` values are `setequal()` to
+  `pid_scales[[version]]$camelCase` for both versions. The build guard bites:
+  renaming the `Withdrawal` columns to `Anhedonia` in the FULL facet CSV aborts
+  `data-raw/norms_pid5.R` at `setequal(unname(stem), scales$camelCase)` rather
+  than writing a `pid_norms` missing a facet. Tree restored to clean.
+- **AC3 — met.** `norm_pid5()` over all 25 facet columns of
+  `score_pid5(sim_pid5, items = 1:220, version = "FULL")` returns 25 `_t` and 25
+  `_ptl` columns, no NA in any, and raises no `not covered` warning; the SF
+  equivalent on `sim_pid5sf` does the same. All 25 stems of both versions are in
+  `norm_mean_scales`. The four uncovered-scale fixtures are re-pointed at scales
+  the tables still miss — `SDTD`/`PNA` at `test-norm_pid5.R:290-292` and `:339`,
+  `SDTD` at `:663` and `:693` — and `norm_covers()` confirms neither is covered.
+- **AC4 — met.** Every T-scored column's `tscore` values form an unbroken run
+  from its own minimum to its maximum, so no printed row was dropped. Nineteen
+  columns repeat their top raw; each run is contiguous, and `norm_convert()` at
+  that raw returns the run's lowest T on all nineteen. SF `anxiousness` carries
+  12 rows at 4.00 spanning T = 89-100 and converts to T = 89. Both halves are
+  asserted in `test-norms.R`'s ceiling-run test, and the mutation harness
+  confirms it bites: truncating that run to one row is CAUGHT by it.
+- **AC5 — met.** No percentile decreases anywhere: 0 of the 66 T-scored columns
+  and 0 of the 4 validity columns. Recomputing the minimax bound independently of
+  the test's own helper gives a worst column of 0.004918 and 0 of 66 at or above
+  0.005. The plan's ground for the replacement is confirmed by measurement: the
+  old `lm` form would fail on exactly 20 of the 50 new columns. Nothing fitted
+  ships — `minimax_line_error()` occurs only in `tests/testthat/test-norms.R`,
+  and no `lm(`, `chull`, or minimax code exists under `R/` or in the data-raw
+  builders (D-022 intact). A raw pushed 0.02 off its line is CAUGHT.
+- **AC6 — met.** `facet_spot` (`test-norms.R:256`) carries one anchor per new
+  pair, all 50, at T = 65, labelled to their tables' first pages (124 and 151).
+  Reading method is in the work log: the EPUB was served over localhost and each
+  of the ten blocks read in two screenshots of the rendered page — banner row for
+  the facet names and order, T = 65 for the values — with the numbers typed from
+  those images, never from the extractor's output. `devtools::test(filter =
+  "norms")` is 526 pass / 0 fail, so every one matches `pid_norms`. The
+  coverage test's assertion is unchanged (`expect_setequal` over
+  `paste(keys$version, keys$scale)`); only the frame it unions was widened. Its
+  value is demonstrated, not asserted: displacing the FULL `hostility` raw column
+  by one row is caught by the spot values AND BY NOTHING ELSE.
+- **AC7 — met.** Every listed surface is updated, and a sweep for the falsified
+  phrasings — `1056`/`1,056`, `seven shipped`, `all seven`, `do not cover the 25
+  facets`, `facet-level and informant-form`, `the 25 facets, for instance`,
+  `A-1 to A-5, A-7` — returns nothing across `R/`, `man/`, `tests/`,
+  `vignettes/`, `NEWS.md`, `README.Rmd`, `cairn/SOURCES.md`, and
+  `cairn/references/markon2024.md`. Spot-checked replacements: `R/data.R` 4,606
+  rows and `Tables A-1 to A-9`; `norm_pid5()`'s rewritten unattainable-rows
+  paragraph; the runtime warning naming facets per version; `test-norms.R`'s
+  header and its `nine shipped tables` test name; both vignettes. D-027 records
+  the GP2 change and the ship-verbatim decision; `markon2024.md` carries the
+  4.00 clamp as an open question against the source.
+- **AC8 — met.** `devtools::test()` 11,489 pass / 0 fail / 1 skip.
+  `devtools::check()` Status: OK — 0 errors, 0 warnings, 0 notes, vignettes
+  re-built.
+
+### Consistency gate
+
+- `cairn_validate` exit 0, every CHECK PASS. Two advisories, neither a gate
+  failure: `sizing` flags M33's 8 acceptance criteria against the >7 split
+  tripwire — considered and declined at plan time for a reason the work bore out
+  (facet rows in `pid_norms` abort `norm_metric()` until the partition names
+  them, so a data-only half would leave the default branch un-shippable); and
+  `dangling id tokens` (20), the standing pre-migration references in
+  `DESIGN.md`/`SOURCES.md` that the ROADMAP hygiene stamp already records.
+- No `DESIGN.md` principle changed, so `cairn_impact` does not apply. The header's
+  `Principles touched: IP2, IP3, GP2` names principles the work is held to, none
+  it edits.
+- Toolchain gate (`r-package` profile): `devtools::document()` produces no diff;
+  `NAMESPACE`, `man/`, and `data/*.rda` are all generated (the two `man/` files
+  in the diff come from `document()`, `pid_norms.rda` from `data-raw/`);
+  README.md is in sync and untouched by this diff; `pkgdown::check_pkgdown()`
+  reports no problems; `NEWS.md` carries the user-visible changes with no
+  milestone numbers; no new top-level files, so no `.Rbuildignore` entry is owed;
+  `devtools::check()` is 0/0/0.
+- CI on PR #36: all 7 checks pass — `R CMD check` on ubuntu (devel, release,
+  oldrel-1), macos, and windows, plus pkgdown and test-coverage.
