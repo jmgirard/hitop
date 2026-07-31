@@ -17,7 +17,8 @@ norm_pid5(
 \item{data}{A data frame containing scored PID-5 columns.}
 
 \item{scores}{The score columns to convert, as column names or column
-positions (mirroring the \code{items} argument of \code{\link[=score_pid5]{score_pid5()}}).}
+positions (mirroring the \code{items} argument of \code{\link[=score_pid5]{score_pid5()}}). Each column
+must be numeric (or logical) and each may be named only once.}
 
 \item{version}{Which PID-5 version the scores came from: \code{"FULL"} (220
 items), \code{"SF"} (100 items), or \code{"BF"} (25 items). The normative tables
@@ -29,7 +30,9 @@ official \code{c(0, 3)} range before lookup; a coding with a different number of
 options is not convertible. See Details.}
 
 \item{prefix}{The prefix \code{\link[=score_pid5]{score_pid5()}} applied to its output columns, used
-to match a score column back to its scale.}
+to match a score column back to its scale. Matched literally, not as a
+regular expression: a column name that does not begin with exactly this
+string keeps its whole name and is reported as uncovered.}
 
 \item{append}{Whether to return the input \code{data} with the conversion columns
 appended (\code{TRUE}, the default) or the conversion columns alone.}
@@ -135,7 +138,7 @@ A shifted coding raises one warning per call naming which of the requested
 scales were adjusted and which were left alone; where every requested scale
 turns out to be coding-invariant, it says so rather than claiming an
 adjustment. The warning covers the scales the tables actually carry, so a
-request the tables cover nowhere raises the coverage message above instead
+request the tables cover nowhere raises the coverage warning above instead
 and nothing about coding. The official coding is silent.
 
 One consequence is worth stating plainly, because it can put two differently

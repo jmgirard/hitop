@@ -7,7 +7,8 @@
 #'
 #' @param data A data frame containing scored PID-5 columns.
 #' @param scores The score columns to convert, as column names or column
-#'   positions (mirroring the `items` argument of [score_pid5()]).
+#'   positions (mirroring the `items` argument of [score_pid5()]). Each column
+#'   must be numeric (or logical) and each may be named only once.
 #' @param version Which PID-5 version the scores came from: `"FULL"` (220
 #'   items), `"SF"` (100 items), or `"BF"` (25 items). The normative tables
 #'   differ by version.
@@ -16,7 +17,9 @@
 #'   official `c(0, 3)` range before lookup; a coding with a different number of
 #'   options is not convertible. See Details.
 #' @param prefix The prefix [score_pid5()] applied to its output columns, used
-#'   to match a score column back to its scale.
+#'   to match a score column back to its scale. Matched literally, not as a
+#'   regular expression: a column name that does not begin with exactly this
+#'   string keeps its whole name and is reported as uncovered.
 #' @param append Whether to return the input `data` with the conversion columns
 #'   appended (`TRUE`, the default) or the conversion columns alone.
 #'
@@ -104,7 +107,7 @@
 #'   scales were adjusted and which were left alone; where every requested scale
 #'   turns out to be coding-invariant, it says so rather than claiming an
 #'   adjustment. The warning covers the scales the tables actually carry, so a
-#'   request the tables cover nowhere raises the coverage message above instead
+#'   request the tables cover nowhere raises the coverage warning above instead
 #'   and nothing about coding. The official coding is silent.
 #'
 #'   One consequence is worth stating plainly, because it can put two differently

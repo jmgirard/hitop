@@ -1,6 +1,6 @@
 # M29: `norm_pid5()` hygiene and robustness
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -116,7 +116,7 @@ plots → the norm-referenced plotting candidate.
 - [x] T7. Rename the `capture_warnings()` helper at
       `tests/testthat/test-norm_pid5.R:271`; add the negative-`low` and
       shifted-plus-wrong-count interaction tests.
-- [ ] T8. Sync `@details` for the new aborts and report classes, write the
+- [x] T8. Sync `@details` for the new aborts and report classes, write the
       NEWS entries, and run the full gate.
 
 ## Work log
@@ -136,6 +136,7 @@ plots → the norm-referenced plotting candidate.
 - 2026-07-31: amendment (mini gate) — AC3's "`test-norm_pid5.R:249` passes unedited" clause was unsatisfiable alongside AC5, which turns the report that test listens for into a warning; replaced with a substance clause (both columns `NA`, the column named) allowing exactly the condition-class edit AC5 forces.
 - 2026-07-31: T6 — the uncovered-scale and capping reports are now `cli::cli_warn()`, so all four of `norm_pid5()`'s reports are warnings and one `suppressWarnings()` silences it; seven `expect_message()` assertions became `expect_warning()`, two stale `suppressMessages()` wrappers dropped, and a new test asserts silence in both the refusal case and a three-report shifted call. `devtools::test()` clean, 0 test warnings.
 - 2026-07-31: T7 — the test helper is now `collect_warnings()`, so nothing shadows testthat's `capture_warnings` export; two interaction tests added — a negative `low` (`srange = c(-1, 2)`) reconciling an item mean upward, and `srange = c(1, 5)` (shifted *and* five options) reporting the refusal alone. `devtools::test()` clean.
+- 2026-07-31: T8 — `norm_pid5()`'s `@details` gained a Reporting-and-silence paragraph and an Errors paragraph, `@param scores`/`@param prefix` state the new contracts, and every "message" describing a report became "warning" across the roxygen, `NEWS.md` and the three vignettes' norming paragraphs. Gate: `devtools::document()` no diff, `devtools::test()` 10347 passing / 0 failures / 0 warnings, `devtools::check()` 0 errors 0 warnings 0 notes.
 
 ## Decisions
 
