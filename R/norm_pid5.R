@@ -155,10 +155,12 @@ norm_pid5 <- function(
 
   ## Extract the score columns and recover each one's scale name: the output
   ## naming of score_pid5() is prefix + the camelCase scale, so stripping the
-  ## prefix leaves the `pid_norms$scale` value to look up.
+  ## prefix leaves the `pid_norms$scale` value to look up. The strip is a
+  ## literal match, never a regex (D-026); a name the prefix does not start is
+  ## left whole and falls through to the uncovered-scale report below.
   score_cols <- data[scores]
   col_names <- names(score_cols)
-  scale_names <- sub(paste0("^", prefix), "", col_names)
+  scale_names <- strip_prefix(col_names, prefix)
 
   ## Which requested scales the tables cover for this version. An uncovered
   ## scale still gets both columns, filled with NA (never silently absent).

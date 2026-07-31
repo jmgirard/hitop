@@ -76,6 +76,20 @@ test_that("rank_scales() ranks high/low and strips the prefix", {
   expect_equal(low$top_scales, c("b,c", "a,b"))
 })
 
+test_that("rank_scales() strips `prefix` by literal match, never as a regex", {
+  # A metacharacter-bearing prefix that *is* the literal start of the names:
+  # compiled as a pattern this aborted with "invalid regular expression".
+  df <- stats::setNames(data.frame(x = 3, y = 1), c("hbr(_a", "hbr(_b"))
+  out <- rank_scales(df, names(df), prefix = "hbr(_", top = 1, append = FALSE)
+  expect_equal(out$top_scales, "a")
+
+  # A `.` no longer matches an arbitrary character: these names do not start
+  # with the literal "h.r_", so nothing is stripped.
+  df2 <- stats::setNames(data.frame(x = 3, y = 1), c("hXr_a", "hXr_b"))
+  out2 <- rank_scales(df2, names(df2), prefix = "h.r_", top = 1, append = FALSE)
+  expect_equal(out2$top_scales, "hXr_a")
+})
+
 test_that("rank_scales() resolves ties by original column order", {
   df <- data.frame(hbr_a = 2, hbr_b = 2, hbr_c = 1)
   out <- rank_scales(

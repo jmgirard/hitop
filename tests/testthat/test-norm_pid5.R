@@ -499,6 +499,30 @@ test_that("norm_pid5() handles the R edge cases", {
   )
 })
 
+test_that("`prefix` is stripped by literal match, never as a regex", {
+  # A metacharacter-bearing prefix that *is* the literal start of the column
+  # name: compiled as a pattern this aborted with "invalid regular expression
+  # '^pid(_'", naming a regex the caller never wrote.
+  df <- stats::setNames(data.frame(0.2), "pid(_detachment")
+  out <- norm_pid5(df, scores = "pid(_detachment", version = "BF",
+                   prefix = "pid(_", append = FALSE)
+  expect_equal(out[["pid(_detachment_t"]], 43L)
+  expect_equal(out[["pid(_detachment_ptl"]], 0.35)
+
+  # A `.` no longer matches an arbitrary character: "pXd_detachment" does not
+  # start with the literal "p.d_", so the name is left unstripped, no scale
+  # matches it, and both conversion columns come back NA with the column named.
+  df2 <- stats::setNames(data.frame(0.2), "pXd_detachment")
+  expect_message(
+    out2 <- norm_pid5(df2, scores = "pXd_detachment", version = "BF",
+                      prefix = "p.d_", append = FALSE),
+    "pXd_detachment",
+    fixed = TRUE
+  )
+  expect_true(is.na(out2[["pXd_detachment_t"]]))
+  expect_true(is.na(out2[["pXd_detachment_ptl"]]))
+})
+
 test_that("every validity scale caps above its printed range, not just PRD", {
   # Each of the four is a sum whose attainable maximum exceeds its last printed
   # row: INC 20 pairs x 3 = 60 against 23, INCS 10 x 3 = 30 against 15, ORS 10

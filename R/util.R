@@ -154,6 +154,18 @@ validate_range <- function(x, call = rlang::caller_env()) {
   )
 }
 
+# Remove a leading `prefix` from each name by *literal* match (D-026). The
+# obvious `sub(paste0("^", prefix), "", x)` compiles the caller's string as a
+# regular expression, so a prefix containing `(` aborts with a regex error the
+# caller never wrote and one containing `.` strips a prefix that was never
+# there. A name that does not start with `prefix` is returned unchanged; an
+# empty `prefix` is a no-op.
+strip_prefix <- function(x, prefix) {
+  hit <- startsWith(x, prefix)
+  x[hit] <- substring(x[hit], nchar(prefix) + 1L)
+  x
+}
+
 drop_na <- function(x) {
   x[!is.na(x)]
 }

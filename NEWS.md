@@ -57,6 +57,14 @@ before a CRAN submission.
   (`"antisocialBehavior"`), in any mixture and ignoring case. Subsetting is
   currently available for the HiTOP-SR only.
 
+* `rank_scales()`'s `prefix` argument is now matched **literally** (breaking).
+  It was previously compiled as a regular expression anchored to the start of
+  the column name, which meant a prefix containing `(` failed with a regex
+  error and one containing `.` could strip a prefix that was never there. A
+  column name that does not begin with exactly `prefix` is now carried through
+  whole. Code relying on a regex `prefix` must pre-strip the names instead.
+  `norm_pid5()` matches `prefix` the same way.
+
 * Qualtrics question IDs are now zero-padded to the width of the largest item
   number rather than the number of items. Output for every full instrument is
   unchanged; the change keeps IDs uniform in a subset file.
