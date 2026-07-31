@@ -379,6 +379,28 @@ test_that("a shifted coding reconciles PRD by `low` x nItems", {
   expect_equal(got$value$pid_PRD_ptl, want)
 })
 
+test_that("a PRD with a missing item stays NA through the shift correction", {
+  ## validity_pid5() sums PRD with rowSums() and no `na.rm`
+  ## (R/validity_pid5.R:172), so one unanswered item makes the whole sum NA.
+  ## The `low x nItems` correction is therefore never applied to a partial sum:
+  ## it is NA going in and NA coming out, and both conversion columns are NA.
+  prd_cols <- pid_items$FULL[!is.na(pid_items$PRD)]
+  holed <- sim_pid5
+  holed[1, prd_cols[[1]]] <- NA
+  scored <- suppressMessages(
+    validity_pid5(score_pid5(holed, items = 1:220), items = 1:220)
+  )
+  expect_true(is.na(scored$pid_PRD[[1]]))
+  expect_false(any(is.na(scored$pid_PRD[-1])))
+
+  out <- suppressMessages(suppressWarnings(
+    norm_pid5(scored, scores = "pid_PRD", version = "FULL", srange = c(1, 4),
+              append = FALSE)
+  ))
+  expect_true(is.na(out$pid_PRD_ptl[[1]]))
+  expect_false(any(is.na(out$pid_PRD_ptl[-1])))
+})
+
 test_that("INC, INC-S, and ORS are unchanged by a shifted coding", {
   ## INC and INC-S sum absolute differences within item pairs, which a constant
   ## added to both members cancels out of; ORS counts items answered at the top

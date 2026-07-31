@@ -156,6 +156,14 @@ norm_metric <- function(scale, version) {
 ## the same responses coded 0-3: `low` per item for a mean, `low * nItems` for a
 ## sum, nothing for a coding-invariant scale. Item counts are read from
 ## `pid_items` at run time rather than hardcoded.
+##
+## The "sum" branch depends on a choice made elsewhere: validity_pid5() builds
+## PRD with rowSums() and no `na.rm` (R/validity_pid5.R:172), so one unanswered
+## item makes the whole sum NA and a *partial* PRD sum never reaches this
+## function. `low * nItems` is therefore always subtracted from a complete
+## 22-item sum. Were `na.rm = TRUE` ever added there, partial sums would start
+## arriving here and this correction would over-subtract them in silence --
+## it would have to become `low * (number of items actually answered)`.
 norm_shift <- function(scale, metric, low) {
   out <- rep(0, length(scale))
   out[metric == "mean"] <- low
