@@ -38,7 +38,7 @@ it here.
 
 ## Acceptance criteria
 
-- [ ] AC1. The tests asserting how much `detachment`, `total`, `PRD`, `INC`,
+- [x] AC1. The tests asserting how much `detachment`, `total`, `PRD`, `INC`,
       `INCS`, and `ORS` move under a four-option coding shifted off 0-3 derive
       their expected values from a fixture dataset **and its shifted copy**
       (`data + low`), each scored on its own matching `srange` through
@@ -53,25 +53,25 @@ it here.
       `pid_items` keying and a printed `pid_norms` cell, keeps its oracle and
       the new differential test lands beside it. The file's IP2 header states
       the differential oracle and why it is not self-reference.
-- [ ] AC2. A test asserts `norm_mean_scales`, `norm_sum_scales`, and
+- [x] AC2. A test asserts `norm_mean_scales`, `norm_sum_scales`, and
       `norm_invariant_scales` are pairwise disjoint, and fails when any scale
       name is added to a second vector.
-- [ ] AC3. Every test added or rewritten under AC1, AC2 and AC5, plus the
+- [x] AC3. Every test added or rewritten under AC1, AC2 and AC5, plus the
       refusal half of the one-`suppressWarnings()` test, is shown to fail under
       a named mutation of the code it locks; the work log records each mutation
       and that it was reverted.
-- [ ] AC4. With `norm_covers()` mocked `TRUE`, the abort `norm_pid5()` raises on
+- [x] AC4. With `norm_covers()` mocked `TRUE`, the abort `norm_pid5()` raises on
       a covered-but-unclassified scale carries a `conditionCall()` of
       `norm_pid5()` rather than `norm_metric()`, matching the `call`-threading
       convention DESIGN.md records for the validators.
-- [ ] AC5. Two aborts are fixed and each is locked by a test on its rendered
+- [x] AC5. Two aborts are fixed and each is locked by a test on its rendered
       text: `norm_metric()`'s interpolates `version` bare, as its only sibling
       report in `norm_pid5()` does; and `norm_pid5()`'s non-numeric abort emits
       **one bullet per offending column**, each labelling that column's class
       with cli's `{.cls}`, with a headline that interpolates the offending count
       before pluralizing (a bare `{?s}` aborts at runtime — LESSONS 2026-07-30).
       The existing both-offenders-in-one-abort test is updated to the new shape.
-- [ ] AC6. No returned value changes and the profile gate is clean: a
+- [x] AC6. No returned value changes and the profile gate is clean: a
       characterization harness scores `sim_pid5` (FULL), `sim_pid5sf` (SF), and
       `sim_pid5bf` (BF), each on its own version, runs `norm_pid5()` over
       `srange` in `{c(0,3), c(1,4), c(0,4)}`, and reports `identical()` for
@@ -79,7 +79,7 @@ it here.
       produces no diff, `devtools::test()` 0 failures / 0 warnings, and
       `devtools::check()` 0 errors / 0 warnings / 0 notes (M29's review is the
       baseline for the absolute form).
-- [ ] AC7. `DESIGN.md`'s internal-utilities paragraph lists `strip_prefix()`,
+- [x] AC7. `DESIGN.md`'s internal-utilities paragraph lists `strip_prefix()`,
       its "User communication" convention records D-024/D-025's carve-out
       (reports a caller is expected to catch or suppress are `cli::cli_warn()`;
       count-of-flagged-observations screening output stays `cli_alert_*`), and
@@ -149,3 +149,73 @@ it here.
 ## Decisions
 
 ## Review
+
+Reviewed 2026-07-31 on branch `m30-norming-oracle-residue`, PR #33. Every line
+below was produced by running the command or the code named in this session,
+never recalled.
+
+**AC1 — the shift is measured, not transcribed.** `grep` over
+`test-norm_pid5.R` finds `norm_mean_scales`/`norm_sum_scales`/
+`norm_invariant_scales` at exactly two lines (:228-229), both inside the
+disjointness test that is *about* those vectors; no expectation reads them.
+The per-scale label expectations are gone: the old :218-221 block no longer
+exists and the old :234 is now `expect_no_error(norm_metric("PRD", "FULL"))`.
+`observed_shift()` scores a dataset and its `data + low` copy on `c(0,3)` and
+`c(low, low+3)` and differences per column; the new test holds `norm_shift()`
+to the result for FULL/SF/BF at `low` 1 and 2 and passes. The PRD test keeps
+its own oracle unchanged at :481-496 — `sum(!is.na(pid_items$PRD)) == 22` plus
+the printed `pid_norms` percentile at raw 30 — with the differential test
+beside it, not replacing it. **Returned once** before passing: the file header
+at :1-6 still described only the printed-cell oracles, which AC1's last clause
+requires it to extend; fixed in cb132c2 and re-verified.
+
+**AC2 — the three vectors are asserted disjoint.** The test at :226-238 checks
+all three pairs. Verified fresh by mutation: adding `"PRD"` to
+`norm_mean_scales` reds it (1 failure) and the differential test with it (2);
+reverted, tree clean by `git diff`.
+
+**AC3 — every new lock is falsifiable.** Seven mutations were run during
+implementation and are recorded in the work log with their failure counts. Two
+were re-run fresh at review: the `norm_mean_scales` overlap above, and dropping
+`call = call` from `norm_metric()`'s abort, which reds the attribution test (2
+failures) and nothing else. Both reverted; `git diff R/norm_engine.R` empty
+after each.
+
+**AC4 — the abort blames the exported caller.** With `norm_covers()` mocked
+`TRUE`, the error `norm_pid5()` raises on `pid_PRDS` carries a
+`conditionCall()` of `norm_pid5(...)` and the string `norm_metric` appears
+nowhere in it. The test at :640-652 asserts both halves and reds when the
+`call` argument is dropped.
+
+**AC5 — both aborts render as specified.** Verified live:
+`norm_metric("PRDS", "SF")` reads "The SF normative tables carry a scale with
+no metric formula" — version bare, matching the sibling coverage report — and
+`norm_metric(c("PRDS", "SDTD"), "SF")` reads "carry scales", pluralizing off
+the unclassified count. `norm_pid5()` on a frame with an ordered factor and a
+character column emits one bullet per column, `<ordered/factor>` and
+`<character>`, under a headline that says "column" for one and "columns" for
+two. The both-offenders test was updated to the new shape and still asserts
+both columns are named in one abort.
+
+**AC6 — nothing returned moved, and the gate is clean.** The characterization
+harness ran on `main`'s code before any change and again on the finished
+branch: 9/9 configurations (3 datasets x 3 `srange` values) `identical()`.
+`devtools::document()` produces no diff; `devtools::test()` 10400 passing / 0
+failures / 0 warnings / 1 pre-existing skip (OQ-1); `devtools::check()` 0
+errors / 0 warnings / 0 notes.
+
+**AC7 — the conventions are recorded.** `DESIGN.md:50` lists
+`strip_prefix(x, prefix)` among the internal utilities with its literal-match
+contract and D-026; `DESIGN.md:62` carries the D-024/D-025 carve-out, naming
+what stays inside the `cli_alert_*` convention and what does not.
+`CLAUDE.md:20` points at it in one clause.
+
+**Consistency gate.** `cairn_validate` exits 0 — 14 PASS, 6 advisories OK, and
+the one WARN is the standing 20 `dangling id tokens`, every one a pre-migration
+reference in `DESIGN.md`/`SOURCES.md`, untouched here. No `DESIGN.md` principle
+changed (the additions are conventions, not IP/GP text), so `cairn_impact` does
+not apply. Toolchain slot (`r-package`): `document()` no diff, no generated file
+hand-edited, README untouched by this diff, `pkgdown::check_pkgdown()` reports
+no problems, NEWS.md carries the user-visible entry, no new top-level files,
+`check()` clean.
+
