@@ -101,11 +101,12 @@ and `cairn/`.
 
 ## Tasks
 
-- [ ] T1. Transcribe A–6 and A–8 into `data-raw/norms_pid5_facets.csv` and
-      `norms_pid5sf_facets.csv`; give `verify_norms_against_book.R` block-aware
-      extraction (banner rows of width 6 delimit five 5-facet blocks of 71 T
-      rows within one `<table>`), add the two `spec` entries, make it `stop()`
-      on discrepancies, and run it to zero.
+- [x] T1. Extract A–6 and A–8 into `data-raw/norms_pid5_facets.csv` and
+      `norms_pid5sf_facets.csv` via `data-raw/extract_facet_norms.R` (3,550 cells
+      a side is past hand transcription); give `verify_norms_against_book.R` a
+      second, independently structured block reader (banner rows of width 6
+      delimit five 5-facet blocks of 71 T rows within one `<table>`), add the two
+      `spec` entries, make it `stop()` on discrepancies, and run it to zero.
 - [ ] T2. Extend `data-raw/norms_pid5.R` with a facet-block builder keyed on
       `pid_scales[[version]]$camelCase`, add the `setequal()` crosswalk guard,
       widen the `stopifnot()` block (`R/norm_engine.R` and `data-raw/norms_pid5.R:117`),
@@ -132,6 +133,7 @@ and `cairn/`.
 - 2026-07-31: `cairn_validate`'s 8-AC split tripwire considered and declined — facet rows in `pid_norms` abort `norm_metric()` until the metric partition names them, so a data-only half would leave the default branch un-shippable; the work is one PR.
 - 2026-07-31: implement started on `m33-pid5-facet-norms`; source probe confirms A-6/A-8 are `tables[[6]]`/`tables[[8]]`, five banner-delimited blocks of 5 facets x 71 T rows each (355 rows/table, 3,550 total), so AC2's counts hold.
 - 2026-07-31: gate chose reading the AC6 spot values off the browser-rendered appendix page over a second extraction tool or waiting for a print copy — the defect this layer catches lives in block-splitting and column-pairing, not in reading the file, and only the EPUB is on the shelf.
+- 2026-07-31: T1 done. Minor amendment: the plan's "transcribe" is machine extraction via a new `data-raw/extract_facet_norms.R` (7,100 cells is past hand transcription), so the verifier is now a cross-check of two independently structured reshapings — the extractor carries banner names forward through a sequential walk, the verifier cuts numeric rows at T restarts and matches columns by name — with the hand-read spot values (T6) as the layer that reads the rendered page. Verifier reports 0 discrepancies over all 9 tables (A-6 p. 124, A-8 p. 151); seeded a wrong cell → exit 1, seeded a one-row column displacement → 64 discrepancies.
 - 2026-07-31: criteria audit ([O], fresh context) returned 20 findings; 14 fixed into the wording above (minimax named, plateau defined, `lm` test replacement stated, crosswalk guard added, four breaking tests named, `R/data.R` `@details` and `R/norm_engine.R` added to the docs sweep, check bar made absolute), 3 became gate questions, 3 were confirmations.
 
 ## Decisions
