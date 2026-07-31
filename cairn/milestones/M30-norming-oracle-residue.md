@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP2
-- **Branch/PR:** `m30-norming-oracle-residue`
+- **Branch/PR:** `m30-norming-oracle-residue` / https://github.com/jmgirard/hitop/pull/33
 
 ## Goal
 
@@ -142,6 +142,8 @@ it here.
 - 2026-07-31: T8 — `has_t` now reuses `covered` instead of re-scanning `pid_norms` for coverage per column, and `@param prefix` documents `""`. The finding's "two unreachable `strip_prefix()` guards" does not map to shipped code: `R/util.R:179-183` is four lines with no guards, so nothing was removed; recorded rather than invented.
 - 2026-07-31: T9 — DESIGN.md lists `strip_prefix()` among the internal utilities and its "User communication" section carries the D-024/D-025 carve-out; CLAUDE.md's messaging line points at it in one clause.
 - 2026-07-31: all nine tasks done; status review.
+- 2026-07-31: review returned the milestone (return 1) — AC1's last clause, "the file's IP2 header states the differential oracle and why it is not self-reference", is unmet: the explanation was written onto the shifted-codings section header at :299 and the file header at :1-6 still describes only the printed-cell oracles. Every other AC1 clause verified.
+- 2026-07-31: return 1 addressed — the file header now states the differential oracle and why a relationship between two scoring runs is not self-reference; the section header at :299 keeps the mechanics. Tests re-run, 422 pass / 0 fail. Status back to review.
 - 2026-07-31: T7 closed — the characterization harness reports `identical()` for 9/9 configurations (3 datasets x 3 sranges) before and after the branch; `devtools::check()` 0 errors / 0 warnings / 0 notes.
 
 ## Decisions

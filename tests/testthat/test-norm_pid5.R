@@ -4,6 +4,19 @@
 # against Markon et al. 2024 by data-raw/verify_norms_against_book.R) plus
 # expected values computed by hand from named printed cells. Nothing here
 # asserts the function's own output as truth (IP2).
+#
+# One family of assertions has no printed cell behind it: how far a scale moves
+# when the same responses are coded on a four-option range shifted off 0-3.
+# Markon et al. tabulate the official coding only, so the quantity is a fact
+# about how score_pid5() and validity_pid5() compute each scale, not about the
+# book. It is therefore *measured* rather than transcribed -- one dataset and
+# its shifted copy, each scored on its own `srange`, differenced per scale (see
+# `observed_shift()` below) -- and norm_shift() is asserted against what was
+# observed. That is a differential oracle, not self-reference: the claim under
+# test is a relationship between two scoring runs, and the constants it checks
+# (norm_engine.R's three partition vectors) are nowhere read into the
+# expectation. Copying those vectors into an expected value, as these tests
+# once did, would assert the implementation against itself.
 
 ## The 16 version/scale pairs whose rows carry a T score, and the 4 that do not.
 t_pairs <- unique(pid_norms[!is.na(pid_norms$tscore), c("version", "scale")])
