@@ -363,20 +363,59 @@ observed_shift <- function(data, n, version, low) {
   }, numeric(1))
 }
 
+## `sim_pid5` with one PRD response unanswered. Item 2 is a PRD item belonging
+## to no domain-contributing facet -- 11 of the 22 PRD items qualify -- so the
+## NA prorates only a facet, and no scale the norms cover is prorated at all.
+## That matters because round_half_up() rounds half *away from zero* and so is
+## not translation-equivariant across it: a prorated value landing on .5 and
+## pushed negative by the shift below would round the other way and make a
+## covered scale's observed shift non-constant, failing this test for a reason
+## unrelated to what it is testing.
+prd_na_pid5 <- local({
+  d <- sim_pid5
+  d[[1L, 2L]] <- NA
+  d
+})
+
+## The scales `pid_norms` covers, per version. Hardcoded from the shipped table
+## rather than derived from norm_engine.R's partition vectors, which are the
+## constants under test (IP2). Asserting the whole set -- not merely that it is
+## non-empty -- is what keeps PRD, the only "sum" scale, inside the comparison:
+## with `any(keep)` the sum branch could drop out and every remaining
+## assertion still pass.
+covered_scales <- list(
+  FULL = c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
+           "psychoticism", "INC", "ORS", "PRD"),
+  SF = c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
+         "psychoticism", "INCS"),
+  BF = c("total", "negativeAffectivity", "detachment", "antagonism",
+         "disinhibition", "psychoticism")
+)
+
 test_that("norm_shift() reproduces the shift each scale actually undergoes", {
   cases <- list(
-    list(data = sim_pid5, n = 220, version = "FULL"),
-    list(data = sim_pid5sf, n = 100, version = "SF"),
-    list(data = sim_pid5bf, n = 25, version = "BF")
+    list(data = sim_pid5, n = 220, version = "FULL", label = "complete"),
+    list(data = sim_pid5sf, n = 100, version = "SF", label = "complete"),
+    list(data = sim_pid5bf, n = 25, version = "BF", label = "complete"),
+    ## validity_pid5() builds PRD with rowSums() and no `na.rm`
+    ## (R/validity_pid5.R:172), so this respondent's PRD is NA in both runs and
+    ## drops out of the per-column difference, leaving the shift constant. Were
+    ## `na.rm = TRUE` ever added there, a partial sum would arrive shifted by
+    ## low * 21 against everyone else's low * 22, the difference would stop
+    ## being constant, and the NA assertion below would fail.
+    list(data = prd_na_pid5, n = 220, version = "FULL",
+         label = "missing PRD item")
   )
-  for (low in c(1, 2)) {
+  ## A negative `low` exercises a coding straddling zero, where the shift
+  ## arithmetic and round_half_up() interact if anything covered is prorated.
+  for (low in c(-1, 1, 2)) {
     for (k in cases) {
       obs <- observed_shift(k$data, k$n, k$version, low)
       scales <- strip_prefix(names(obs), "pid_")
       ## Only the scales the tables cover are ever reconciled.
       keep <- vapply(scales, norm_covers, logical(1), version = k$version)
-      info <- paste(k$version, "low", low)
-      expect_true(any(keep), info = info)
+      info <- paste(k$version, k$label, "low", low)
+      expect_setequal(scales[keep], covered_scales[[k$version]])
       expect_false(any(is.na(obs[keep])), info = info)
       expect_equal(
         unname(norm_shift(scales[keep], norm_metric(scales[keep], k$version), low)),

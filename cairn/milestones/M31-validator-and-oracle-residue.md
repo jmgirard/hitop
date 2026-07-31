@@ -90,10 +90,10 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 
 - [x] T1. Record the pre-milestone `devtools::check()` baseline in the work log
       and capture the AC7 characterization snapshot (the M30 harness pattern).
-- [ ] T2. Add the missing-PRD-item fixture to the `norm_shift()` test; verify it
+- [x] T2. Add the missing-PRD-item fixture to the `norm_shift()` test; verify it
       goes red under the `na.rm = TRUE` mutation at `R/validity_pid5.R:172`,
       then restore and diff.
-- [ ] T3. Replace `expect_true(any(keep))` with the per-version covered-set
+- [x] T3. Replace `expect_true(any(keep))` with the per-version covered-set
       assertion; extend the `low` loop with a negative shift.
 - [ ] T4. Author the new validators in `R/util.R` with `call` threading and
       `arg_match()` for `dir`/`missing`; write each error-branch test first.
@@ -117,6 +117,9 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 - 2026-07-31: branch `m31-validator-and-oracle-residue` cut from main at 954a0e7; status → in-progress.
 - 2026-07-31: substantive amendment at the implementation gate — AC4's "`dir` and `missing` go through `rlang::arg_match()`" narrowed to `dir` only, with `missing`/`version` keeping `match.arg()` and the engine's redundant `missing` check removed; AC5's `missing` sentence follows. Maintainer chose this over converting the exported layer, since nothing is defective about `match.arg()` and converting it would move error text on three exported functions for no fault.
 - 2026-07-31: T1 — pre-milestone `devtools::check()` baseline is 0 errors / 0 warnings / 0 notes, so AC6's "no new" bar is a clean 0/0/0. AC7 snapshot captured over 33 configs (3 versions × 3 `missing` modes × `calc_se` on/off for `score_pid5()`, plus `validity_pid5()`, `reliability_pid5()`, `norm_pid5()` official and shifted, `rank_scales()`); all 33 return without error. Harness committed to `devel/characterize_m31.R` so the comparison is reproducible at review.
+- 2026-07-31: T2 — fixture `prd_na_pid5` (one NA on item 2, a PRD item in no domain-contributing facet) added as a fourth case. Mutation `na.rm = TRUE` at `R/validity_pid5.R:172` → 6 failures in the `norm_shift()` test (2 assertions × 3 `low` values); restored, `git diff` clean.
+- 2026-07-31: T2 finding — the same mutation also reddens the pre-existing test at `test-norm_pid5.R:550` ("a PRD with a missing item stays NA through the shift correction", 2 failures), so the regression was not wholly uncovered as the candidate row assumed; what was uncovered is the *differential oracle*, which was green under it. The new case makes `observed_shift()` itself sensitive and exercises the shift correction against a measured quantity, which `:550` (an NA-propagation assertion) does not.
+- 2026-07-31: T3 — `expect_true(any(keep))` replaced by `expect_setequal()` against a hardcoded per-version covered set read from `pid_norms`, not from the partition vectors (IP2); `low` loop extended to `c(-1, 1, 2)`. Mutation hiding PRD in `norm_covers()` → 6 failures where `any(keep)` stayed green; restored. Full suite 0 fail / 10418 pass / 1 pre-existing skip.
 
 ## Decisions
 
