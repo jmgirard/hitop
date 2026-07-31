@@ -81,6 +81,37 @@ mutations <- list(
       x$percentile[[i]] <- 0.58
       x
     }
+  ),
+  ## M33's facet mutations. The first is the defect this dataset actually had
+  ## once (a whole column off by one row), which no structural invariant can
+  ## see: it leaves the raws on a line and the percentiles monotone.
+  list(
+    ac = "M33 AC6",
+    desc = "FULL hostility raw column displaced down one T row",
+    f = function(x) {
+      i <- which(x$version == "FULL" & x$scale == "hostility")
+      i <- i[order(x$tscore[i])]
+      x$raw[i] <- c(x$raw[[i[[1]]]], utils::head(x$raw[i], -1))
+      x
+    }
+  ),
+  list(
+    ac = "M33 AC5",
+    desc = "SF perseveration raw at T = 55 pushed 0.02 off its column's line",
+    f = function(x) {
+      i <- row_of(x, "SF", "perseveration", tscore = 55)
+      x$raw[[i]] <- x$raw[[i]] + 0.02
+      x
+    }
+  ),
+  list(
+    ac = "M33 AC4",
+    desc = "SF anxiousness ceiling run truncated -- its 12 rows at 4.00 cut to 1",
+    f = function(x) {
+      i <- which(x$version == "SF" & x$scale == "anxiousness" & x$raw == 4)
+      stopifnot(length(i) == 12L)
+      x[-utils::tail(i, -1), ]
+    }
   )
 )
 

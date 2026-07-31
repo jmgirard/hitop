@@ -245,6 +245,53 @@ domain_spot <- local({
   spot
 })
 
+# The facet anchors, one per new (version, scale) pair, all at T = 65 -- high
+# enough to be clear of every column's 0.00 floor and below every ceiling run,
+# so a one-row displacement moves the value on all 50. Read by eye off the
+# rendered appendix pages, block by block, with each block's facet order taken
+# from the banner row visible in the same view; the two tables lay their five
+# blocks out in the same order, which is why the two halves below read alike.
+# Pages are the tables' own first pages (A-6 begins p. 124, A-8 p. 151); T = 65
+# falls a few pages into each.
+facet_spot <- local({
+  facets <- c(
+    "anhedonia", "anxiousness", "attentionSeeking", "callousness",
+    "deceitfulness", "depressivity", "distractibility", "eccentricity",
+    "emotionalLability", "grandiosity", "hostility", "impulsivity",
+    "intimacyAvoidance", "irresponsibility", "manipulativeness",
+    "perceptualDysregulation", "perseveration", "restrictedAffectivity",
+    "rigidPerfectionism", "riskTaking", "separationInsecurity",
+    "submissiveness", "suspiciousness", "unusualBeliefsExperiences",
+    "withdrawal"
+  )
+  # Table A-6, self-report form trait (facet) scales, at T = 65
+  full_raw <- c(1.73, 2.01, 1.63, 0.98, 1.18, 1.26, 1.74, 1.78, 1.85, 1.56,
+                1.77, 1.57, 1.49, 0.97, 1.67, 0.99, 1.61, 1.75, 2.00, 1.77,
+                1.65, 2.13, 1.70, 1.31, 2.01)
+  full_ptl <- c(0.89, 0.90, 0.92, 0.92, 0.92, 0.90, 0.91, 0.91, 0.89, 0.91,
+                0.91, 0.90, 0.90, 0.90, 0.91, 0.89, 0.91, 0.93, 0.91, 0.92,
+                0.90, 0.94, 0.93, 0.91, 0.92)
+  # Table A-8, 100-item short form trait (facet) scales, at T = 65
+  sf_raw <- c(1.59, 2.10, 1.81, 1.08, 1.10, 1.15, 1.88, 1.80, 1.72, 1.40,
+              1.73, 1.64, 1.64, 0.91, 1.53, 0.67, 1.67, 1.92, 1.91, 1.32,
+              1.85, 2.13, 1.53, 1.19, 1.91)
+  sf_ptl <- c(0.92, 0.93, 0.91, 0.94, 0.94, 0.92, 0.92, 0.93, 0.91, 0.92,
+              0.91, 0.91, 0.91, 0.93, 0.94, 0.92, 0.92, 0.90, 0.92, 0.93,
+              0.91, 0.93, 0.94, 0.91, 0.94)
+  data.frame(
+    version = rep(c("FULL", "SF"), each = length(facets)),
+    scale = rep(facets, 2),
+    tscore = 65L,
+    raw = c(full_raw, sf_raw),
+    percentile = c(full_ptl, sf_ptl),
+    page = rep(c(124, 151), each = length(facets)),
+    stringsAsFactors = FALSE
+  )
+})
+
+# Every anchor whose table prints a T score, domains and facets alike.
+tscored_spot <- rbind(domain_spot, facet_spot)
+
 # version, scale, raw score, percentile, page
 validity_spot <- local({
   spot <- rbind.data.frame(
@@ -274,7 +321,7 @@ validity_spot <- local({
 
 test_that("every scale in pid_norms has at least one spot value", {
   anchored <- unique(rbind(
-    domain_spot[c("version", "scale")],
+    tscored_spot[c("version", "scale")],
     validity_spot[c("version", "scale")]
   ))
   keys <- norm_keys()
@@ -284,9 +331,9 @@ test_that("every scale in pid_norms has at least one spot value", {
   )
 })
 
-test_that("domain norms match the values printed in the book", {
-  for (i in seq_len(nrow(domain_spot))) {
-    row <- domain_spot[i, ]
+test_that("domain and facet norms match the values printed in the book", {
+  for (i in seq_len(nrow(tscored_spot))) {
+    row <- tscored_spot[i, ]
     where <- paste0(row$version, " ", row$scale, " at T = ", row$tscore,
                     " (p. ", row$page, ")")
     got <- pid_norms[

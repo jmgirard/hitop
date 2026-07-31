@@ -1,6 +1,6 @@
 # M33: PID-5 facet-level norms
 
-- **Status:** in-progress
+- **Status:** review
 - **Branch:** `m33-pid5-facet-norms`
 - **Priority:** normal
 - **Depends on:** —
@@ -107,21 +107,21 @@ and `cairn/`.
       second, independently structured block reader (banner rows of width 6
       delimit five 5-facet blocks of 71 T rows within one `<table>`), add the two
       `spec` entries, make it `stop()` on discrepancies, and run it to zero.
-- [ ] T2. Extend `data-raw/norms_pid5.R` with a facet-block builder keyed on
+- [x] T2. Extend `data-raw/norms_pid5.R` with a facet-block builder keyed on
       `pid_scales[[version]]$camelCase`, add the `setequal()` crosswalk guard,
       widen the `stopifnot()` block (`R/norm_engine.R` and `data-raw/norms_pid5.R:117`),
       and regenerate `data/pid_norms.rda`.
-- [ ] T3. Add the 25 facet stems to `norm_mean_scales` and correct the two now-false
+- [x] T3. Add the 25 facet stems to `norm_mean_scales` and correct the two now-false
       comments in `R/norm_engine.R` — the floor-tie claim at :46 and the
       "25 facets reach here on every full-form call" note at :135.
-- [ ] T4. Re-point `test-norm_pid5.R`'s four uncovered-scale fixtures at `SDTD`,
+- [x] T4. Re-point `test-norm_pid5.R`'s four uncovered-scale fixtures at `SDTD`,
       and extend `grid_for()` (:186) with a facet branch.
-- [ ] T5. Replace the `lm` linearity test with the minimax form over the
+- [x] T5. Replace the `lm` linearity test with the minimax form over the
       floor-to-ceiling span, and add the ceiling-run tests (rows present
       verbatim; lowest-T selection).
-- [ ] T6. Transcribe one spot value per new (version, scale) pair from the
+- [x] T6. Transcribe one spot value per new (version, scale) pair from the
       rendered pages; log the reading method.
-- [ ] T7. Docs and records sweep per AC7, then `devtools::document()`,
+- [x] T7. Docs and records sweep per AC7, then `devtools::document()`,
       `devtools::test()`, `devtools::check()`.
 
 ## Work log
@@ -138,6 +138,9 @@ and `cairn/`.
 - 2026-07-31: T3–T5 code landed. `norm_mean_scales` names the 25 facet stems (spelled out to avoid a load-time dependency on lazy-loaded `pid_scales`, with a new test holding the two in step); the floor-tie and "25 facets reach here" comments corrected; the four uncovered-scale fixtures re-pointed at `SDTD`/`PNA`, `grid_for()` given a facet branch reading `nItems` from `pid_scales`, and `covered_scales` widened from `pid_scales` rather than from the partition under test. The `lm` linearity test is replaced by an exact minimax (Chebyshev) fit over the interior span: all 66 T-scored columns pass, worst 0.004918 against the 0.005 bound. Ceiling-run test finds 19 runs, SF `anxiousness` 12 rows at 4.00, each converting to the run's lowest T. `test-norm_pid5.R` green (1,078); only T6's spot-value coverage test still red.
 - 2026-07-31: T7 docs and records sweep landed — `R/data.R` (`@description`, 4,606-row `@format`, the `raw` item's unattainable-row note, `@details` sample text, `@source` A-1 to A-9), `norm_pid5()`'s `@details` (floor paragraph, the rewritten unattainable-rows paragraph, the item-mean list, the uncovered-columns sentence) and `@return`, the runtime uncovered-scale warning, both vignette norming sections plus a worked `anhedonia` example, `NEWS.md`, `cairn/SOURCES.md` (A-6/A-8 rows, caption-map paragraph, nine-table verification status), `cairn/references/markon2024.md` (provenance re-verified 2026-07-31, two new table anchors, traces, and the 4.00-clamp open question), and `D-027`. `devtools::document()` re-run.
 - 2026-07-31: T6 blocked. The gate's chosen reading method needs the appendix rendered in the browser pane, and all three routes to it — a `file://` preview, a launch.json static server over the extracted EPUB, and unzipping it under the gitignored `docs/` — were denied by the permission classifier. Not routed around; surfaced to the maintainer instead. Everything not depending on T6 is done; the suite is green but for T6's own spot-value coverage test.
+- 2026-07-31: T6 unblocked at the maintainer's direction and done. Reading method: the EPUB was extracted to a scratch dir and served over localhost; each of the ten 5-facet blocks was read in two screenshots of the rendered page — one at the banner row, confirming that block's facet names and order by eye, one at T = 65 — and the 50 raw/percentile pairs were typed from those images, never from the extractor. T = 65 is clear of every column's 0.00 floor and below every ceiling run, so a one-row displacement moves the value on all 50. All 50 match `pid_norms`.
+- 2026-07-31: discovered sub-task under T5/T6 — `data-raw/mutate_norms_check.R` gains three facet mutations. A displaced `hostility` column is caught by the spot values *and by nothing else*, which is the case AC6 exists for; a `perseveration` raw pushed 0.02 off its line is caught by the minimax test; a truncated SF `anxiousness` ceiling run is caught by the ceiling-run test.
+- 2026-07-31: T7 gate clean — `devtools::document()` no diff, `devtools::test()` 11,489 pass / 0 fail / 1 skip, `devtools::check()` 0 errors, 0 warnings, 0 notes. Status → review.
 - 2026-07-31: criteria audit ([O], fresh context) returned 20 findings; 14 fixed into the wording above (minimax named, plateau defined, `lm` test replacement stated, crosswalk guard added, four breaking tests named, `R/data.R` `@details` and `R/norm_engine.R` added to the docs sweep, check bar made absolute), 3 became gate questions, 3 were confirmations.
 
 ## Decisions
