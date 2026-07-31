@@ -12,8 +12,9 @@
 #'   items), `"SF"` (100 items), or `"BF"` (25 items). The normative tables
 #'   differ by version.
 #' @param srange The response range the items were coded on, as
-#'   `c(low, high)`. Only the official `c(0, 3)` coding is supported here; see
-#'   Details.
+#'   `c(low, high)`. Any four-option coding is accepted and reconciled to the
+#'   official `c(0, 3)` range before lookup; a coding with a different number of
+#'   options is not convertible. See Details.
 #' @param prefix The prefix [score_pid5()] applied to its output columns, used
 #'   to match a score column back to its scale.
 #' @param append Whether to return the input `data` with the conversion columns
@@ -70,11 +71,50 @@
 #'   message naming them. An `NA` score returns `NA`.
 #'
 #'   **Response coding.** The normative tables are built on the official
-#'   four-option 0-3 coding, so any other `srange` currently returns `NA` in
-#'   every conversion column with a warning. Reconciling a shifted coding (1-4,
-#'   say) to the official range is planned; until then, recode items to 0-3
-#'   before scoring. Note that [validity_pid5()]'s published cut scores are not
-#'   adapted to other codings either.
+#'   four-option 0-3 coding. Data collected on a four-option coding that merely
+#'   starts elsewhere -- 1-4, say -- carries the same information, so each score
+#'   is reconciled to the official range before lookup and the conversion
+#'   proceeds. A coding with a different *number* of options is a different
+#'   metric: no mapping onto a four-option norm table is defined, so every
+#'   conversion column is returned as `NA` with a warning, and the items must be
+#'   recoded and rescored.
+#'
+#'   How much a shift moves a score depends on how the scale is computed, so the
+#'   reconciliation is applied per scale rather than per item. No published
+#'   source states these rules -- Markon et al. give the tables for the official
+#'   coding only -- so, like the reading rules above, they are this package's,
+#'   derived from each scale's own definition:
+#'
+#'   * **Item means** (the five domains, and the brief form's total) are
+#'     reconciled by subtracting `srange[[1]]`. Shifting every item by a constant
+#'     shifts their mean by the same constant.
+#'   * **`PRD`** is a plain sum over its 22 items, so the same shift moves it by
+#'     `srange[[1]]` times the number of items, which is what is subtracted. The
+#'     item count is read from [pid_items] rather than assumed.
+#'   * **`INC` and `INC-S`** are sums of *absolute differences within item
+#'     pairs*. A constant added to both members of a pair cancels in the
+#'     difference, so these are unchanged by a shift and nothing is subtracted.
+#'   * **`ORS`** is a count of items answered at the top of the response range --
+#'     [validity_pid5()] computes it by comparing each item to `srange[[2]]`
+#'     rather than to a fixed value (`R/validity_pid5.R:153` in the package
+#'     sources). A shift moves the top of the range along with the answers, so
+#'     the same items are counted and the score is unchanged.
+#'
+#'   A shifted coding raises one warning per call naming which of the requested
+#'   scales were adjusted and which were left alone; where every requested scale
+#'   turns out to be coding-invariant, it says so rather than claiming an
+#'   adjustment. The warning covers the scales the tables actually carry, so a
+#'   request the tables cover nowhere raises the coverage message above instead
+#'   and nothing about coding. The official coding is silent.
+#'
+#'   One consequence is worth stating plainly, because it can put two differently
+#'   grounded numbers side by side in the same session: [validity_pid5()]'s
+#'   published cut scores are **not** reconciled to a shifted coding. `PRD` and
+#'   `SD-TD` are compared against fixed thresholds that assume 0-3 items, and
+#'   `validity_pid5()` warns rather than adapting them. So a respondent scored on
+#'   a 1-4 coding can receive a reconciled percentile from this function and, from
+#'   `validity_pid5()`, a validity flag still read against the 0-3 thresholds.
+#'   Adapting those cut scores is a separate, deliberately deferred question.
 #'
 #' @return A \link[tibble]{tibble} with a `_t` column for every converted scale
 #'   whose normative rows carry a T score (the five domains, plus the brief
@@ -133,17 +173,25 @@ norm_pid5 <- function(
     logical(1)
   )
 
-  ## The tables are built on the official 0-3 coding. Any other coding is
-  ## refused outright rather than converted on a metric the tables do not share.
-  official <- isTRUE(all.equal(as.numeric(srange), c(0, 3)))
-  if (!official) {
-    cli::cli_alert_warning(
-      "Scores coded {.code c({srange[[1]]}, {srange[[2]]})} cannot be converted: the PID-5 normative tables are built on the official 0-3 response coding."
-    )
-    cli::cli_alert_info(
-      "Recode the items to 0-3 and rescore before calling {.code norm_pid5()}."
-    )
+  ## The tables are built on the official four-option 0-3 coding. A coding with
+  ## a different *number* of options shares no metric with them and nothing is
+  ## converted; a four-option coding merely shifted off 0-3 is reconciled per
+  ## scale below (D-020, D-023).
+  low <- srange[[1]]
+  n_options <- srange[[2]] - srange[[1]] + 1
+  usable <- isTRUE(all.equal(as.numeric(n_options), 4))
+  shifted <- usable && !isTRUE(all.equal(as.numeric(low), 0))
+  if (!usable) {
+    cli::cli_warn(c(
+      "!" = "{.arg srange} {.code c({srange[[1]]}, {srange[[2]]})} implies {n_options} response options, but the PID-5 normative tables are built on the official four-option 0-3 coding.",
+      "i" = "No mapping is defined from a {n_options}-option metric onto a four-option norm table, so every {.code _t} and {.code _ptl} column is returned as {.code NA}.",
+      "i" = "Recode the items to 0-3 and rescore before calling {.code norm_pid5()}."
+    ))
   }
+
+  ## Each scale's metric, and the amount a shifted coding adds to it.
+  metric <- norm_metric(scale_names)
+  shift <- norm_shift(scale_names, metric, low)
 
   ## Convert each column, collecting the capping counts as we go.
   n <- nrow(data)
@@ -155,7 +203,10 @@ norm_pid5 <- function(
   for (i in seq_along(col_names)) {
     s <- scale_names[[i]]
     x <- as.numeric(score_cols[[i]])
-    if (official && covered[[i]]) {
+    if (usable && covered[[i]]) {
+      ## Reconcile to the official range before lookup: a no-op on the official
+      ## coding, and on any coding-invariant scale whatever the coding.
+      x <- x - shift[[i]]
       got <- norm_convert(x, version, s)
       ends <- norm_capped(x, norm_rows(version, s))
       capped_low <- capped_low | ends$low
@@ -169,8 +220,42 @@ norm_pid5 <- function(
     out[[paste0(col_names[[i]], "_ptl")]] <- as.numeric(got$ptl)
   }
 
+  ## Report the reconciliation once per call, naming both groups, so a user on a
+  ## shifted coding can see which of their scales moved and which did not. Only
+  ## covered scales are listed: an uncovered one is returned as NA either way and
+  ## is reported by the message below instead.
+  if (shifted && any(covered)) {
+    adjusted <- col_names[covered & metric != "invariant"]
+    invariant <- col_names[covered & metric == "invariant"]
+    ## Headline only claims a reconciliation when one happened: a request made
+    ## entirely of coding-invariant scales needed none, and saying otherwise
+    ## would describe work the function did not do.
+    if (length(adjusted) > 0) {
+      bullets <- c(
+        "!" = "Scores coded {.code c({srange[[1]]}, {srange[[2]]})} were reconciled to the official 0-3 coding before lookup.",
+        "*" = "Adjusted: {.val {adjusted}}."
+      )
+      if (length(invariant) > 0) {
+        bullets <- c(
+          bullets,
+          "*" = "Left unchanged as coding-invariant: {.val {invariant}}."
+        )
+      }
+    } else {
+      bullets <- c(
+        "!" = "Scores coded {.code c({srange[[1]]}, {srange[[2]]})} needed no reconciliation to the official 0-3 coding.",
+        "*" = "Left unchanged as coding-invariant: {.val {invariant}}."
+      )
+    }
+    bullets <- c(
+      bullets,
+      "i" = "{.code validity_pid5()}'s published cut scores are not reconciled, so a flag it raises on this data is still read against the 0-3 thresholds."
+    )
+    cli::cli_warn(bullets)
+  }
+
   ## Report the scales the tables do not cover, once, naming them.
-  if (official && any(!covered)) {
+  if (usable && any(!covered)) {
     uncovered <- col_names[!covered]
     cli::cli_alert_warning(
       "{length(uncovered)} score column{?s} {?is/are} not covered by the {version} normative tables: {.val {uncovered}}."

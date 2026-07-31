@@ -95,6 +95,44 @@ norm_t_to_raw <- function(t, version, scale) {
   rows$raw[match(t, rows$tscore)]
 }
 
+## Which metric a normed scale is on, which is what decides how a four-option
+## coding shifted off the official 0-3 range is reconciled before lookup
+## (D-020, corrected by D-023). Three metrics, two of which move under a shift:
+##
+##   * "mean"      -- an item mean (the five domains, the brief form's total).
+##   * "sum"       -- a plain sum over the scale's items (PRD).
+##   * "invariant" -- unchanged by a shift. INC/INCS sum *within-pair absolute
+##                    differences*, which a constant added to both members
+##                    cancels out of; ORS counts items sitting at the range
+##                    maximum (R/validity_pid5.R:153), and a shift moves the
+##                    maximum with the items, leaving the same count.
+norm_metric <- function(scale) {
+  ifelse(
+    scale %in% c("INC", "INCS", "ORS"),
+    "invariant",
+    ifelse(scale == "PRD", "sum", "mean")
+  )
+}
+
+## How much a score collected on a four-option coding starting at `low` exceeds
+## the same responses coded 0-3: `low` per item for a mean, `low * nItems` for a
+## sum, nothing for a coding-invariant scale. Item counts are read from
+## `pid_items` at run time rather than hardcoded.
+norm_shift <- function(scale, metric, low) {
+  out <- rep(0, length(scale))
+  out[metric == "mean"] <- low
+  is_sum <- metric == "sum"
+  if (any(is_sum)) {
+    n <- vapply(
+      scale[is_sum],
+      function(s) sum(!is.na(pid_items[[s]])),
+      numeric(1)
+    )
+    out[is_sum] <- low * n
+  }
+  out
+}
+
 ## Which observations fall outside a scale's printed raw range, flagged per end.
 ## Nearest-row selection already caps them -- the nearest row to an above-table
 ## value is the last printed row, and to a below-table value the floor run's

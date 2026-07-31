@@ -9,7 +9,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M27 | PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding) | done | M26 | normal | milestones/archive/M27-pid5-norming-functions.md |
-| M28 | PID-5 norming under shifted response codings, and the vignette norming sections | planned | M27 | normal | milestones/M28-pid5-norming-shifted-codings.md |
+| M28 | PID-5 norming under shifted response codings, and the vignette norming sections | review | M27 | normal | milestones/M28-pid5-norming-shifted-codings.md |
 | M26 | PID-5-BF total score across scoring, reliability, and the BF paper forms | done | — | normal | milestones/archive/M26-pid5bf-total-score.md |
 | M25 | PID-5 normative tables — verification and ingest | done | — | normal | milestones/archive/M25-pid5-norms-ingest.md |
 | M24 | HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap) | done | — | normal | milestones/archive/M24-hitopsr-subset-generation.md |
