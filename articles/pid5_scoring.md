@@ -236,3 +236,80 @@ validity_pid5(sim_pid5, items = 1:220, append = FALSE)
 #> 10       0      30       5      31       29
 #> # ℹ 90 more rows
 ```
+
+## Normative Scores
+
+The `pid_norms` dataset carries the normative score distributions
+published by Markon et al. (2024). The
+[`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+function looks scored columns up in those tables and returns, for each
+one, the T score and percentile printed against the nearest tabled raw
+score. It converts scores rather than computing them, so we hand it the
+output of
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+— and of
+[`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md),
+if we want those scales converted too.
+
+``` r
+
+scored <- score_pid5(sim_pid5, items = 1:220)
+scored <- validity_pid5(scored, items = 1:220)
+```
+
+For the full form the published tables cover the five domain scales and
+three of the validity scales — INC, ORS, and PRD. They do not cover the
+25 facets, and they do not cover SD-TD at all. Each converted scale
+gains a `_ptl` column, and those whose tables print T scores also gain a
+`_t` column. The validity scales are distributed as percentiles only, so
+they get no `_t` column.
+
+``` r
+
+norm_pid5(
+  scored,
+  scores = paste0(
+    "pid_",
+    c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
+      "psychoticism", "INC", "ORS", "PRD")
+  ),
+  version = "FULL",
+  append = FALSE
+)
+#> ! 0 observations below and 63 above the printed range were capped to the nearest printed row.
+#> ℹ A capped score's T and percentile are the end row's printed values, not an extrapolation.
+#> # A tibble: 100 × 13
+#>    pid_negativeAffectivity_t pid_negativeAffectivity_ptl pid_detachment_t
+#>                        <int>                       <dbl>            <int>
+#>  1                        60                        0.84               56
+#>  2                        54                        0.71               59
+#>  3                        58                        0.81               68
+#>  4                        59                        0.82               67
+#>  5                        57                        0.79               63
+#>  6                        64                        0.89               66
+#>  7                        61                        0.85               59
+#>  8                        58                        0.81               65
+#>  9                        62                        0.87               59
+#> 10                        57                        0.79               70
+#> # ℹ 90 more rows
+#> # ℹ 10 more variables: pid_detachment_ptl <dbl>, pid_antagonism_t <int>,
+#> #   pid_antagonism_ptl <dbl>, pid_disinhibition_t <int>,
+#> #   pid_disinhibition_ptl <dbl>, pid_psychoticism_t <int>,
+#> #   pid_psychoticism_ptl <dbl>, pid_INC_ptl <dbl>, pid_ORS_ptl <dbl>,
+#> #   pid_PRD_ptl <dbl>
+```
+
+Every number returned is a cell of a published table: the nearest
+printed row is selected and nothing is interpolated. A score that falls
+outside a printed range is capped to the nearest end rather than
+extrapolated, and a message reports how many observations that happened
+to — the `PRD` sum reaches 66 while its table stops at 55, so it is a
+common one to see. A scale the tables do not cover returns `NA` in both
+columns with a message naming it.
+
+If the items were answered on a four-option response scale that starts
+somewhere other than 0 — 1 to 4, say — pass that range as `srange` and
+each score is reconciled to the published 0–3 metric before it is looked
+up, with a warning naming which scales were adjusted and which were left
+alone. The per-scale formulas are given in
+[`?norm_pid5`](https://jmgirard.github.io/hitop/reference/norm_pid5.md).

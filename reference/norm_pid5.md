@@ -41,8 +41,10 @@ norm_pid5(
 
 - srange:
 
-  The response range the items were coded on, as `c(low, high)`. Only
-  the official `c(0, 3)` coding is supported here; see Details.
+  The response range the items were coded on, as `c(low, high)`. Any
+  four-option coding is accepted and reconciled to the official
+  `c(0, 3)` range before lookup; a coding with a different number of
+  options is not convertible. See Details.
 
 - prefix:
 
@@ -125,12 +127,63 @@ facets, for instance – return `NA` in both conversion columns with a
 message naming them. An `NA` score returns `NA`.
 
 **Response coding.** The normative tables are built on the official
-four-option 0-3 coding, so any other `srange` currently returns `NA` in
-every conversion column with a warning. Reconciling a shifted coding
-(1-4, say) to the official range is planned; until then, recode items to
-0-3 before scoring. Note that
+four-option 0-3 coding. Data collected on a four-option coding that
+merely starts elsewhere – 1-4, say – carries the same information, so
+each score is reconciled to the official range before lookup and the
+conversion proceeds. A coding with a different *number* of options is a
+different metric: no mapping onto a four-option norm table is defined,
+so every conversion column is returned as `NA` with a warning, and the
+items must be recoded and rescored.
+
+How much a shift moves a score depends on how the scale is computed, so
+the reconciliation is applied per scale rather than per item. No
+published source states these rules – Markon et al. give the tables for
+the official coding only – so, like the reading rules above, they are
+this package's, derived from each scale's own definition:
+
+- **Item means** (the five domains, and the brief form's total) are
+  reconciled by subtracting `srange[[1]]`. Shifting every item by a
+  constant shifts their mean by the same constant.
+
+- **`PRD`** is a plain sum over its 22 items, so the same shift moves it
+  by `srange[[1]]` times the number of items, which is what is
+  subtracted. The item count is read from
+  [pid_items](https://jmgirard.github.io/hitop/reference/pid_items.md)
+  rather than assumed.
+
+- **`INC` and `INC-S`** are sums of *absolute differences within item
+  pairs*. A constant added to both members of a pair cancels in the
+  difference, so these are unchanged by a shift and nothing is
+  subtracted.
+
+- **`ORS`** is a count of items answered at the top of the response
+  range –
+  [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
+  computes it by comparing each item to `srange[[2]]` rather than to a
+  fixed value (`R/validity_pid5.R:153` in the package sources). A shift
+  moves the top of the range along with the answers, so the same items
+  are counted and the score is unchanged.
+
+A shifted coding raises one warning per call naming which of the
+requested scales were adjusted and which were left alone; where every
+requested scale turns out to be coding-invariant, it says so rather than
+claiming an adjustment. The warning covers the scales the tables
+actually carry, so a request the tables cover nowhere raises the
+coverage message above instead and nothing about coding. The official
+coding is silent.
+
+One consequence is worth stating plainly, because it can put two
+differently grounded numbers side by side in the same session:
 [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)'s
-published cut scores are not adapted to other codings either.
+published cut scores are **not** reconciled to a shifted coding. `PRD`
+and `SD-TD` are compared against fixed thresholds that assume 0-3 items,
+and
+[`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
+warns rather than adapting them. So a respondent scored on a 1-4 coding
+can receive a reconciled percentile from this function and, from
+[`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md),
+a validity flag still read against the 0-3 thresholds. Adapting those
+cut scores is a separate, deliberately deferred question.
 
 ## References
 
