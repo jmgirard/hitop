@@ -1,11 +1,11 @@
 # M31: Argument-validation consistency and a harder norming oracle
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m31-validator-and-oracle-residue`
 
 ## Goal
 
@@ -54,17 +54,20 @@ evidence in the work log), at the maintainer's direction at the plan gate.
       positive ones, and every assertion in the test holds for it.
 - [ ] AC4. `grep -rn "stopifnot" R/` returns no matches; every argument
       formerly checked there is checked by an `R/util.R` validator built on
-      `cli_assert()`/`cli::cli_abort()` that takes `call`. `dir` and `missing`
-      go through `rlang::arg_match()`, which also enables partial matching.
+      `cli_assert()`/`cli::cli_abort()` that takes `call`. `dir`
+      (`R/rank_scales.R:79`, where nothing matches it today) goes through
+      `rlang::arg_match()`, which also enables partial matching; `missing` and
+      `version` keep base `match.arg()` in the exported functions, and
+      `score_engine()`'s `stopifnot(rlang::is_string(missing))` — unreachable
+      after `match.arg()` has already run — is removed rather than converted.
       `validate_scales()` (`R/util.R:106`) gains the `"x" = "You supplied
       {.cls {class(x)}}."` bullet its sibling `validate_items()` already
       carries, so the two report a type failure alike.
 - [ ] AC5. Every validator added under AC4 that is reachable through an
       exported function has a test firing its error branch, asserting the
       abort's `conditionCall()` names that exported function and its message
-      names the offending argument. `score_engine()`'s `missing` check is not
-      reachable (`score_pid5()` calls `match.arg()` first, `R/score_pid5.R:119`)
-      and is covered by its shared validator's reachable sites instead.
+      names the offending argument. No test is owed for `score_engine()`'s
+      `missing` check, which AC4 removes as unreachable.
 - [ ] AC6. `devtools::document()` leaves no diff, `devtools::test()` passes,
       and `devtools::check()` reports no new errors, warnings, or notes against
       the pre-milestone baseline recorded in the work log at T1.
@@ -110,6 +113,9 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 - 2026-07-31: plan gate chose `rlang::arg_match()` for `dir`/`missing` over a plain allowed-set assertion, accepting that it widens accepted input with partial matching, because the suggestion-on-typo error is what GP3 asks of this package's errors; falsified by partial matching resolving a user's abbreviation to the wrong option.
 - 2026-07-31: the candidate row's glue-interpolation item was examined and largely found sound — `{arg}` is already `{.arg {arg}}` at `R/util.R:109` and `:124`, and `{unit}` is a common noun where bare interpolation is correct; the one live residue, `validate_scales()` lacking the supplied-type bullet `validate_items()` has, is in AC4.
 - 2026-07-31: `.internal = TRUE`, the candidate row's first item, has no referent — `grep -rn "\.internal" R tests cairn` matches only the row itself and unrelated `use_data(internal = TRUE)` prose; dropped at the maintainer's direction.
+
+- 2026-07-31: branch `m31-validator-and-oracle-residue` cut from main at 954a0e7; status → in-progress.
+- 2026-07-31: substantive amendment at the implementation gate — AC4's "`dir` and `missing` go through `rlang::arg_match()`" narrowed to `dir` only, with `missing`/`version` keeping `match.arg()` and the engine's redundant `missing` check removed; AC5's `missing` sentence follows. Maintainer chose this over converting the exported layer, since nothing is defective about `match.arg()` and converting it would move error text on three exported functions for no fault.
 
 ## Decisions
 

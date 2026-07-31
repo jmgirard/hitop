@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M31 | Argument-validation consistency and a harder norming oracle | planned | — | normal | milestones/M31-validator-and-oracle-residue.md |
+| M31 | Argument-validation consistency and a harder norming oracle | in-progress | — | normal | milestones/M31-validator-and-oracle-residue.md |
 | M30 | Norming-family test oracles and internal consistency | done | — | normal | milestones/archive/M30-norming-oracle-residue.md |
 | M29 | `norm_pid5()` hygiene and robustness | done | — | normal | milestones/archive/M29-norm-pid5-hygiene.md |
 | M27 | PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding) | done | M26 | normal | milestones/archive/M27-pid5-norming-functions.md |
