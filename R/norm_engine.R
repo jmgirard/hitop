@@ -52,8 +52,15 @@ norm_select <- function(x, rows) {
     return(out)
   }
 
+  ## Clamp to the printed raw range before measuring distances. Out-of-range
+  ## values are capped to the nearest end anyway, and clamping first keeps the
+  ## arithmetic well behaved: an infinite observation would otherwise sit at an
+  ## infinite distance from *every* row, making all of them equally near, and a
+  ## value past ~1e15 would collapse every distance to one float.
+  xx <- pmin(pmax(x[ok], min(rows$raw)), max(rows$raw))
+
   ## Distance from each observed value to every printed raw (n x k).
-  d <- abs(outer(x[ok], rows$raw, "-"))
+  d <- abs(outer(xx, rows$raw, "-"))
   nearest <- apply(d, 1, min)
   candidate <- d <= nearest + norm_tol
 
@@ -88,14 +95,16 @@ norm_t_to_raw <- function(t, version, scale) {
   rows$raw[match(t, rows$tscore)]
 }
 
-## Observations falling outside a scale's printed raw range, counted per end.
+## Which observations fall outside a scale's printed raw range, flagged per end.
 ## Nearest-row selection already caps them -- the nearest row to an above-table
 ## value is the last printed row, and to a below-table value the floor run's
 ## selected row -- so this reports what happened rather than deciding it.
+## Returns logical vectors rather than counts so a caller converting several
+## scales can count each *observation* once, however many of its scores capped.
 norm_capped <- function(x, rows) {
   ok <- !is.na(x)
-  c(
-    low = sum(ok & x < min(rows$raw) - norm_tol),
-    high = sum(ok & x > max(rows$raw) + norm_tol)
+  list(
+    low = ok & x < min(rows$raw) - norm_tol,
+    high = ok & x > max(rows$raw) + norm_tol
   )
 }

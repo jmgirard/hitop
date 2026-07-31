@@ -175,15 +175,18 @@ test_that("the vectorized lookup agrees with an independent scalar lookup", {
     c(t = rows$tscore[[best]], ptl = rows$percentile[[best]])
   }
 
+  # The full attainable grid of each scale, which for the validity sums runs
+  # well past the last printed row (INC 20 pairs x 3, INCS 10 x 3, ORS 10 items,
+  # PRD 22 items x 3) and so exercises the capping branch too.
   grid_for <- function(v, s, rows) {
-    if (v == "BF" && s == "total") seq(0, 3, by = 0.04)
+    if (s == "INC") 0:60
+    else if (s == "INCS") 0:30
+    else if (s == "ORS") 0:10
+    else if (s == "PRD") 0:66
+    else if (v == "BF" && s == "total") seq(0, 3, by = 0.04)
     else if (v == "BF") seq(0, 3, by = 0.2)
-    else if (v == "SF" && !s %in% c("INCS")) (0:36) / 12
-    else if (v == "FULL" && !s %in% c("INC", "ORS", "PRD")) {
-      seq(min(rows$raw), max(rows$raw), by = 0.01)
-    } else {
-      rows$raw
-    }
+    else if (v == "SF") (0:36) / 12
+    else seq(0, 3, by = 0.01)
   }
 
   for (i in seq_len(nrow(p_pairs))) {
@@ -338,5 +341,58 @@ test_that("norm_pid5() handles the R edge cases", {
   expect_error(
     norm_pid5(df, scores = list("detachment"), version = "BF", prefix = ""),
     "did not have the expected type"
+  )
+})
+
+test_that("every validity scale caps above its printed range, not just PRD", {
+  # Each of the four is a sum whose attainable maximum exceeds its last printed
+  # row: INC 20 pairs x 3 = 60 against 23, INCS 10 x 3 = 30 against 15, ORS 10
+  # items against 8, PRD 22 x 3 = 66 against 55.
+  cases <- list(
+    list(v = "FULL", s = "INC", above = 24:60),
+    list(v = "SF", s = "INCS", above = 16:30),
+    list(v = "FULL", s = "ORS", above = 9:10),
+    list(v = "FULL", s = "PRD", above = 56:66)
+  )
+  for (k in cases) {
+    rows <- pid_norms[pid_norms$version == k$v & pid_norms$scale == k$s, ]
+    top <- rows$percentile[which.max(rows$raw)]
+    got <- norm_convert(k$above, k$v, k$s)
+    expect_equal(got$ptl, rep(top, length(k$above)), info = k$s)
+    expect_true(all(is.na(got$t)), info = k$s)
+    # And the wrapper counts them, one message naming both ends.
+    df <- data.frame(x = k$above)
+    names(df) <- paste0("pid_", k$s)
+    expect_message(
+      norm_pid5(df, scores = names(df), version = k$v, append = FALSE),
+      paste0(length(k$above), " above the printed range")
+    )
+  }
+})
+
+test_that("non-finite and enormous scores cap rather than landing mid-table", {
+  # Every printed raw is equally far from an infinite observation, so an
+  # unclamped nearest-row search would call them all candidates and return the
+  # tie-break winner near T=50 instead of the end row.
+  rows <- pid_norms[pid_norms$version == "BF" & pid_norms$scale == "detachment", ]
+  top <- rows[which.max(rows$raw), ]
+  at_floor <- norm_convert(0, "BF", "detachment")
+  got <- norm_convert(c(Inf, -Inf, 1e16, -1e16), "BF", "detachment")
+  expect_equal(got$t, c(top$tscore, at_floor$t, top$tscore, at_floor$t))
+  expect_equal(got$ptl, c(top$percentile, at_floor$ptl, top$percentile, at_floor$ptl))
+})
+
+test_that("capping counts observations, not observation-by-scale pairs", {
+  # One respondent, three scales out of range at the same end: one observation.
+  df <- data.frame(pid_INC = 30, pid_PRD = 60, pid_ORS = 9)
+  expect_message(
+    norm_pid5(df, scores = names(df), version = "FULL", append = FALSE),
+    "0 observations below and 1 above"
+  )
+  # Two respondents, one capped on two scales and one on neither: still one.
+  df2 <- data.frame(pid_INC = c(30, 1), pid_PRD = c(60, 1))
+  expect_message(
+    norm_pid5(df2, scores = names(df2), version = "FULL", append = FALSE),
+    "0 observations below and 1 above"
   )
 })

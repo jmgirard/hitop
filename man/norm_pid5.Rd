@@ -61,7 +61,7 @@ package's development history as report RR02 (in the project repository,
 not the installed package).
 \itemize{
 \item \strong{Between printed rows.} The nearer row wins. Printed raws step by
-0.04-0.07 while attainable scores fall on much coarser grids (a 5-item
+0.01-0.07 while attainable scores fall on much coarser grids (a 5-item
 brief-form domain mean can only be a multiple of 0.2), so most lookups
 land between rows.
 \item \strong{Ties.} Where two or more rows are equally near -- a raw printed in
@@ -75,10 +75,13 @@ T, the one row of the run that renders an attainable score. Its printed
 percentile is positive on some scales and 0.00 on others; that asymmetry
 is a property of the published tables, not of this function.
 \item \strong{Scores outside the table.} A score above the highest printed row
-returns that row's values and a score below the lowest returns the
-lowest's, rather than an extrapolation; a message reports how many
-observations were capped at each end. This is reachable in ordinary data:
-\code{PRD} is a 22-item sum reaching 66 while its table stops at 55.
+returns that row's values, rather than an extrapolation. A score below
+the lowest returns whatever an observation \emph{at} the lowest printed raw
+returns -- which, on the scales whose tables print a run of 0.00, is that
+run's highest-T row and not the table's first row, so the two agree
+instead of jumping. A message reports how many observations were capped at
+each end. This is reachable in ordinary data: \code{PRD} is a 22-item sum
+reaching 66 while its table stops at 55.
 \item \strong{Unattainable printed rows.} Five domain tables print rows above the
 3.00 ceiling a 0-3 item mean can reach, so the top of those T ranges
 cannot be attained. A maximum score returns T = 84 (brief-form negative

@@ -32,7 +32,7 @@
 #'   not the installed package).
 #'
 #'   * **Between printed rows.** The nearer row wins. Printed raws step by
-#'     0.04-0.07 while attainable scores fall on much coarser grids (a 5-item
+#'     0.01-0.07 while attainable scores fall on much coarser grids (a 5-item
 #'     brief-form domain mean can only be a multiple of 0.2), so most lookups
 #'     land between rows.
 #'   * **Ties.** Where two or more rows are equally near -- a raw printed in
@@ -46,10 +46,13 @@
 #'     percentile is positive on some scales and 0.00 on others; that asymmetry
 #'     is a property of the published tables, not of this function.
 #'   * **Scores outside the table.** A score above the highest printed row
-#'     returns that row's values and a score below the lowest returns the
-#'     lowest's, rather than an extrapolation; a message reports how many
-#'     observations were capped at each end. This is reachable in ordinary data:
-#'     `PRD` is a 22-item sum reaching 66 while its table stops at 55.
+#'     returns that row's values, rather than an extrapolation. A score below
+#'     the lowest returns whatever an observation *at* the lowest printed raw
+#'     returns -- which, on the scales whose tables print a run of 0.00, is that
+#'     run's highest-T row and not the table's first row, so the two agree
+#'     instead of jumping. A message reports how many observations were capped at
+#'     each end. This is reachable in ordinary data: `PRD` is a 22-item sum
+#'     reaching 66 while its table stops at 55.
 #'   * **Unattainable printed rows.** Five domain tables print rows above the
 #'     3.00 ceiling a 0-3 item mean can reach, so the top of those T ranges
 #'     cannot be attained. A maximum score returns T = 84 (brief-form negative
@@ -145,13 +148,18 @@ norm_pid5 <- function(
   ## Convert each column, collecting the capping counts as we go.
   n <- nrow(data)
   out <- list()
-  capped <- c(low = 0, high = 0)
+  ## Capping is tracked per observation, not per conversion: a respondent whose
+  ## scores fall outside two scales' tables is one capped observation, not two.
+  capped_low <- rep(FALSE, n)
+  capped_high <- rep(FALSE, n)
   for (i in seq_along(col_names)) {
     s <- scale_names[[i]]
     x <- as.numeric(score_cols[[i]])
     if (official && covered[[i]]) {
       got <- norm_convert(x, version, s)
-      capped <- capped + norm_capped(x, norm_rows(version, s))
+      ends <- norm_capped(x, norm_rows(version, s))
+      capped_low <- capped_low | ends$low
+      capped_high <- capped_high | ends$high
     } else {
       got <- list(t = rep(NA_real_, n), ptl = rep(NA_real_, n))
     }
@@ -173,9 +181,11 @@ norm_pid5 <- function(
   }
 
   ## Report the observations that fell outside a printed range, per end.
-  if (any(capped > 0)) {
+  if (any(capped_low) || any(capped_high)) {
+    n_low <- sum(capped_low)
+    n_high <- sum(capped_high)
     cli::cli_alert_warning(
-      "{capped[['low']]} observation{?s} below and {capped[['high']]} above the printed range were capped to the nearest printed row."
+      "{n_low} observation{?s} below and {n_high} above the printed range were capped to the nearest printed row."
     )
     cli::cli_alert_info(
       "A capped score's T and percentile are the end row's printed values, not an extrapolation."

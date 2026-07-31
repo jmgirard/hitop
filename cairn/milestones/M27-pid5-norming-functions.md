@@ -311,6 +311,52 @@ Toolchain slot: `document()` no-diff, generated files untouched by hand, README
 unchanged by this milestone, `check_pkgdown()` clean, NEWS entry present with no
 milestone numbers, no new top-level files, `check()` clean.
 
+**Independent review (three fresh-context lenses + scorer).** The blame-history
+lens ([S]) and the prior-review lens ([S]) each returned zero findings; the
+latter noted this milestone resolves M26's deferred F15 (above-ceiling rows
+undocumented) and found no non-bot PR review threads in the repo. The diff-bug
+lens ([O]) reported 15 candidate findings, scored 0-100 by a separate [S] scorer
+holding the diff and the plan.
+
+**Actioned (scored >= 80), all five fixed on the branch:**
+
+- **F1 (88)** `R/norm_engine.R` — a non-finite or enormous score made every
+  printed row equidistant, so the tie-break returned a row near T=50 while the
+  message claimed the value had been capped. Fixed by clamping to the printed
+  raw range before measuring distances; regression test asserts Inf/-Inf/1e16
+  return the end rows.
+- **F2 (82)** `R/norm_pid5.R` `@details` — the low-end bullet still described the
+  behavior AC5 abandoned at M27-D6 ("returns the lowest's"), contradicting the
+  code, which returns the floor run's toward-50 row. Prose corrected.
+- **F4 (85)** `R/norm_pid5.R` — the capping message counted observation-by-scale
+  pairs, so one respondent out of range on three scales was reported as three
+  observations. Now tracked per observation; regression test covers both shapes.
+- **F13 (80)** the naive-agreement grid routed the four validity scales to their
+  printed raws only, never comparing the attainable above-table half AC17(iii)
+  asks for. Grids widened to INC 0-60, INCS 0-30, ORS 0-10, PRD 0-66.
+- **F14 (82)** only `PRD` = 60 exercised above-table capping, though the
+  Deviations table makes INC, INCS, and ORS equally binding. All four now tested
+  for capped percentile, absent T, and the counting message.
+
+**Logged below threshold (scored < 80), not actioned:** F5 (75) `prefix` is
+interpolated as a regex rather than matched literally; F7 (72) validator errors
+name `items`/`scales`, arguments `norm_pid5()` does not have; F3 (65) a factor
+score column is coerced through its level codes without complaint; F12 (62) the
+"independent" scalar lookup imports the implementation's own tolerance constant
+and branch predicate; F8 (52) an illustrative step-size range in `@details` was
+0.04-0.07 where the true range is 0.01-0.07 (corrected in passing with F2);
+F6 (50) duplicate entries in `scores` are silently mishandled, and the scorer
+found the reported mechanism wrong besides; F9 (45) the tolerance comment's
+1/300 bound holds for SF twelfths but not FULL denominators, with no behavioral
+consequence; F10 (42) and F11 (42) two tests compare the wrapper or the function
+to itself rather than to printed cells; F15 (15) AC9 is asserted transitively
+rather than directly, which the finding itself calls sound. F3, F5, F6, and F7
+are one coherent input-hygiene follow-up and became a ROADMAP candidate row.
+
+**After the fixes.** Full suite 10,259 assertions, 0 failures (283 in
+`test-norm_pid5.R`); `devtools::check()` 0 errors / 0 warnings / 0 notes;
+`document()` still no-diff.
+
 **Returns.** None. This is M27's first review; the work log records one re-cut
 (the M27/M28 split), which the thrash rule counts but which came from the cap,
 not from a failed review.
