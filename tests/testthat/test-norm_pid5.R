@@ -457,6 +457,50 @@ test_that("norm_pid5() rejects malformed input", {
   )
 })
 
+test_that("norm_pid5() rejects a duplicated `scores` entry", {
+  # Without the guard, `data[scores]` silently returns the column twice under
+  # base R's de-duplicated names and the output carries two near-identical
+  # conversion pairs.
+  expect_error(
+    norm_pid5(scored_bf, scores = c("pid_detachment", "pid_detachment"),
+              version = "BF"),
+    "distinct column"
+  )
+})
+
+test_that("norm_pid5() aborts on a non-numeric score column rather than coercing", {
+  # A factor would be coerced to its integer codes and a character column to
+  # NA; both are wrong answers rather than errors, so both abort naming the
+  # column.
+  fct <- data.frame(pid_detachment = factor("0.2"))
+  expect_error(
+    norm_pid5(fct, scores = "pid_detachment", version = "BF"),
+    "must be numeric"
+  )
+  chr <- data.frame(pid_detachment = "0.2")
+  expect_error(
+    norm_pid5(chr, scores = "pid_detachment", version = "BF"),
+    "must be numeric"
+  )
+  # Both offenders are named in one abort rather than one per call.
+  both <- data.frame(pid_detachment = factor("0.2"), pid_antagonism = "0.5")
+  expect_error(
+    norm_pid5(both, scores = names(both), version = "BF"),
+    "pid_antagonism"
+  )
+
+  # A logical column is left alone: as.numeric(TRUE) is 1, which is what a 0/1
+  # indicator already means.
+  lgl <- data.frame(pid_detachment = c(TRUE, FALSE))
+  out <- norm_pid5(lgl, scores = "pid_detachment", version = "BF",
+                   append = FALSE)
+  expect_equal(
+    out$pid_detachment_t,
+    as.integer(c(norm_convert(1, "BF", "detachment")$t,
+                 norm_convert(0, "BF", "detachment")$t))
+  )
+})
+
 test_that("norm_pid5() handles the R edge cases", {
   # Column positions work as well as names (mirroring `items`).
   by_name <- norm_pid5(scored_bf, scores = bf_scales, version = "BF", append = FALSE)

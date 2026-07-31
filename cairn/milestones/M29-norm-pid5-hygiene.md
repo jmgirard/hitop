@@ -97,7 +97,7 @@ plots → the norm-referenced plotting candidate.
 - [x] T1. Replace the regex strip at `R/norm_pid5.R:161` and
       `R/rank_scales.R:106` with a literal prefix match; rewrite
       `rank_scales()`'s roxygen promise; test both failure modes.
-- [ ] T2. Add `validate_item_uniqueness(scores)` and a numeric-type guard
+- [x] T2. Add `validate_item_uniqueness(scores)` and a numeric-type guard
       ahead of the `as.numeric()` at `R/norm_pid5.R:205`; test both aborts.
 - [ ] T3. Give `validate_scales()` / `validate_items_present()` an
       argument-name parameter in `R/util.R` (default preserving today's
@@ -127,6 +127,7 @@ plots → the norm-referenced plotting candidate.
 - 2026-07-31: amendment (implement gate) — Scope grew to include `NEWS.md` and the three PID-5 vignettes' norming paragraphs, which describe the coverage and capping reports as "messages" that AC5 turns into warnings; chosen over a candidate row for the vignettes because a doc line contradicting the shipped condition class is the GP2 mismatch this milestone exists to close.
 - 2026-07-31: implement gate chose amending the unreleased 0.2.0 `norm_pid5()` NEWS bullet in place, plus new bullets for `rank_scales()`'s literal `prefix` and `norm_pid5()`'s new aborts, over narrating a messages-to-warnings transition no released version ever exposed (`v0.1.0` is the only tag).
 - 2026-07-31: T1 — `strip_prefix()` in `R/util.R` replaces the regex strip in both `norm_pid5()` and `rank_scales()`; `rank_scales()`'s roxygen now documents a literal match; NEWS bullet added; two new tests (metacharacter prefix that matches, `.`-bearing prefix that must not); `devtools::test()` clean.
+- 2026-07-31: T2 — `norm_pid5()` now calls `validate_item_uniqueness()` and aborts naming any factor or character score column, both ahead of every report and conversion; a logical column still converts. Three new tests; `devtools::test()` clean.
 
 ## Decisions
 

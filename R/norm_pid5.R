@@ -148,6 +148,7 @@ norm_pid5 <- function(
   version <- match.arg(version, choices = c("FULL", "SF", "BF"))
   validate_data(data)
   validate_scales(scores)
+  validate_item_uniqueness(scores)
   validate_items_present(data, scores)
   validate_range(srange)
   stopifnot(rlang::is_string(prefix))
@@ -161,6 +162,30 @@ norm_pid5 <- function(
   score_cols <- data[scores]
   col_names <- names(score_cols)
   scale_names <- strip_prefix(col_names, prefix)
+
+  ## Only a numeric (or logical) column can be looked up. as.numeric() would
+  ## turn a factor into its integer codes and a character column into NA --
+  ## wrong answers rather than errors -- so both abort here, before any report
+  ## fires or any conversion happens. A logical column is left alone:
+  ## as.numeric(TRUE) is 1, which is what a 0/1 indicator already means.
+  bad_type <- !vapply(
+    score_cols,
+    function(x) is.numeric(x) || is.logical(x),
+    logical(1)
+  )
+  if (any(bad_type)) {
+    bad <- paste0(
+      col_names[bad_type],
+      " <",
+      vapply(score_cols[bad_type], function(x) class(x)[[1]], character(1)),
+      ">"
+    )
+    cli::cli_abort(c(
+      "The {.arg scores} columns must be numeric.",
+      "x" = "Not numeric: {.val {bad}}.",
+      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is converted for you. Convert them before calling {.code norm_pid5()}."
+    ))
+  }
 
   ## Which requested scales the tables cover for this version. An uncovered
   ## scale still gets both columns, filled with NA (never silently absent).
