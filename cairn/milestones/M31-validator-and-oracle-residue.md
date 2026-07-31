@@ -1,6 +1,6 @@
 # M31: Argument-validation consistency and a harder norming oracle
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -52,7 +52,7 @@ evidence in the work log), at the maintainer's direction at the plan gate.
       `norm_metric()` call on the actual side (`:384`) stays.
 - [x] AC3. The `low` loop at `:372` covers a negative shift as well as the two
       positive ones, and every assertion in the test holds for it.
-- [ ] AC4. `grep -rn "stopifnot" R/` returns no matches; every argument
+- [x] AC4. `grep -rn "stopifnot" R/` returns no matches; every argument
       formerly checked there is checked by an `R/util.R` validator built on
       `cli_assert()`/`cli::cli_abort()` that takes `call`. `dir`
       (`R/rank_scales.R:79`, where nothing matches it today) goes through
@@ -70,7 +70,7 @@ evidence in the work log), at the maintainer's direction at the plan gate.
       abort's `conditionCall()` names that exported function and its message
       names the offending argument. No test is owed for `score_engine()`'s
       `missing` check, which AC4 removes as unreachable.
-- [ ] AC6. `devtools::document()` leaves no diff, `devtools::test()` passes,
+- [x] AC6. `devtools::document()` leaves no diff, `devtools::test()` passes,
       and `devtools::check()` reports no new errors, warnings, or notes against
       the pre-milestone baseline recorded in the work log at T1.
 - [x] AC7. No returned value moves: `score_pid5()`, `validity_pid5()`,
@@ -155,10 +155,18 @@ implementation session.
 - AC3 — `for (low in c(-1, 1, 2))` at `:411`. Shown load-bearing, not
   decorative: a mutation zeroing the mean adjustment *only when `low < 0`* →
   4 failures (one per case at `low = -1`). Restored clean.
-- AC4 — `grep -rn "stopifnot" R/` → 0 matches. `dir` on `rlang::arg_match()`;
+- AC4 — **failed once, fixed, re-verified.** `grep -rn "stopifnot" R/` → 0
+  matches. `dir` on `rlang::arg_match()` with a factor coerced first;
   `missing`/`version` keep `match.arg()`; `score_engine()`'s unreachable
   `missing` check removed; `validate_scales()` carries the supplied-type
-  bullet.
+  bullet. The "accepted input does not change" clause is now evidenced by
+  `devel/acceptance_probe_m31.R`: 187 argument/value pairs run against `main`
+  (exported via `git archive`, checkout untouched) and against the branch,
+  comparing accept-vs-reject only — **0 divergent**. The first tick of this
+  criterion rested on a spot check and was wrong; see review return #1.
+- AC6 — `devtools::document()` no `man/`/`NAMESPACE` diff; full suite 0 fail /
+  10480 pass / 1 pre-existing skip; `devtools::check()` 0 errors / 0 warnings /
+  0 notes, identical to the T1 baseline. Re-run after the AC4 fix.
 - AC5 — `test-validate.R` "scalar-argument failures blame the exported
   function and the arg": 30 assertions, 0 failures, over 15 call sites across
   8 exported functions, each asserting `rlang::call_name(cnd$call)` and the
