@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP3
-- **Branch/PR:** `m31-validator-and-oracle-residue`
+- **Branch/PR:** `m31-validator-and-oracle-residue` / https://github.com/jmgirard/hitop/pull/34
 
 ## Goal
 
@@ -36,13 +36,13 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 
 ## Acceptance criteria
 
-- [ ] AC1. The `norm_shift()` test (`test-norm_pid5.R:366`) runs `observed_shift()`
+- [x] AC1. The `norm_shift()` test (`test-norm_pid5.R:366`) runs `observed_shift()`
       on an in-test copy of `sim_pid5` carrying one `NA` on a PRD item that
       belongs to no domain-contributing facet (11 such items exist; item 2 is
       one), so no scale the norms cover is ever prorated. The test fails when
       `R/validity_pid5.R:172`'s `rowSums()` gains `na.rm = TRUE`, shown by
       mutation: apply the change, run, require red, restore and diff.
-- [ ] AC2. That test asserts the covered-scale set per version equals what
+- [x] AC2. That test asserts the covered-scale set per version equals what
       `pid_norms` carries — FULL {the 5 domains, INC, ORS, PRD}, SF {the 5
       domains, INCS}, BF {total, the 5 domains} — replacing
       `expect_true(any(keep))` at `:379`, so PRD and with it the `"sum"` branch
@@ -50,9 +50,9 @@ evidence in the work log), at the maintainer's direction at the plan gate.
       test is read from `norm_mean_scales`, `norm_sum_scales`,
       `norm_invariant_scales`, or `norm_metric()` (IP2); the existing
       `norm_metric()` call on the actual side (`:384`) stays.
-- [ ] AC3. The `low` loop at `:372` covers a negative shift as well as the two
+- [x] AC3. The `low` loop at `:372` covers a negative shift as well as the two
       positive ones, and every assertion in the test holds for it.
-- [ ] AC4. `grep -rn "stopifnot" R/` returns no matches; every argument
+- [x] AC4. `grep -rn "stopifnot" R/` returns no matches; every argument
       formerly checked there is checked by an `R/util.R` validator built on
       `cli_assert()`/`cli::cli_abort()` that takes `call`. `dir`
       (`R/rank_scales.R:79`, where nothing matches it today) goes through
@@ -65,7 +65,7 @@ evidence in the work log), at the maintainer's direction at the plan gate.
       `validate_scales()` (`R/util.R:106`) gains the `"x" = "You supplied
       {.cls {class(x)}}."` bullet its sibling `validate_items()` already
       carries, so the two report a type failure alike.
-- [ ] AC5. Every validator added under AC4 that is reachable through an
+- [x] AC5. Every validator added under AC4 that is reachable through an
       exported function has a test firing its error branch, asserting the
       abort's `conditionCall()` names that exported function and its message
       names the offending argument. No test is owed for `score_engine()`'s
@@ -73,7 +73,7 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 - [ ] AC6. `devtools::document()` leaves no diff, `devtools::test()` passes,
       and `devtools::check()` reports no new errors, warnings, or notes against
       the pre-milestone baseline recorded in the work log at T1.
-- [ ] AC7. No returned value moves: `score_pid5()`, `validity_pid5()`,
+- [x] AC7. No returned value moves: `score_pid5()`, `validity_pid5()`,
       `reliability_pid5()`, `norm_pid5()`, and `rank_scales()` are
       `identical()` before and after across the versions and `missing` modes
       the suite already exercises (GP2).
@@ -127,8 +127,52 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 - 2026-07-31: T5 correction — `rlang::arg_match()` does NOT partial-match: it requires an exact value and only *suggests* the near miss, so AC4's "which also enables partial matching" was false and is amended. The practical effect is that the change is strictly smaller than planned — accepted input for `dir` is unchanged and only the error message improves, so NEWS records no widening. Caught by the test asserting `dir = "l"` would newly succeed, which failed.
 - 2026-07-31: AC7 evidence — `devel/characterize_m31.R` run before and after; all 33 configs `identical()`, no differing config. Full suite 0 fail / 10478 pass / 1 pre-existing skip (+60 assertions).
 - 2026-07-31: T6 partial — NEWS.md entry added (message-only change, no widening), `cairn/DESIGN.md:50` inventory line names the three new validators and records that no argument check in `R/` uses a bare predicate assertion. `devtools::document()` produces no `man/`/`NAMESPACE` diff; no roxygen needed editing because accepted input is unchanged everywhere. T6 stays unchecked: the final `devtools::check()` and the AC7 re-run are still outstanding.
+- 2026-07-31: review checkpoint — draft PR #34 opened; AC1-AC5 and AC7 verified with fresh command evidence and ticked; consistency gate clean (`cairn_validate` exit 0, `document()` no-diff, `check_pkgdown()` clean, README in sync). AC6 unticked pending the review-time `devtools::check()`. Blame-history and prior-review lenses returned no findings; the diff-bug lens is still running.
 - 2026-07-31: T6 complete — final `devtools::check()` 0 errors / 0 warnings / 0 notes, matching the T1 baseline exactly. AC7 re-run against the final tree: all 33 configs `identical()` to the pre-milestone snapshot. `grep -rn "stopifnot" R/` returns 0. Status → review.
 
 ## Decisions
 
 ## Review
+
+Reviewed 2026-07-31 on `m31-validator-and-oracle-residue` @ e72172d, PR #34.
+All evidence re-gathered by command at review; nothing carried from the
+implementation session.
+
+### Criterion evidence
+
+- AC1 — `prd_na_pid5` (one `NA` at `sim_pid5[[1, 2]]`; item 2 is a PRD item in
+  no domain-contributing facet) runs as the 4th case. Mutation `na.rm = TRUE`
+  at `R/validity_pid5.R:172` → 6 failures in the `norm_shift()` test; restored,
+  `git diff R/` clean.
+- AC2 — `expect_setequal()` over the per-version covered set replaces
+  `expect_true(any(keep))` at `:414`. Mutation hiding PRD in `norm_covers()` →
+  6 failures; `any(keep)` would have stayed green. Restored clean. The
+  expected sets are literals read from `pid_norms`, not from the partition
+  vectors (IP2 preserved).
+- AC3 — `for (low in c(-1, 1, 2))` at `:411`. Shown load-bearing, not
+  decorative: a mutation zeroing the mean adjustment *only when `low < 0`* →
+  4 failures (one per case at `low = -1`). Restored clean.
+- AC4 — `grep -rn "stopifnot" R/` → 0 matches. `dir` on `rlang::arg_match()`;
+  `missing`/`version` keep `match.arg()`; `score_engine()`'s unreachable
+  `missing` check removed; `validate_scales()` carries the supplied-type
+  bullet.
+- AC5 — `test-validate.R` "scalar-argument failures blame the exported
+  function and the arg": 30 assertions, 0 failures, over 15 call sites across
+  8 exported functions, each asserting `rlang::call_name(cnd$call)` and the
+  argument name in the message. `dir` case additionally asserts the permitted
+  values and "Did you mean".
+- AC7 — `devel/characterize_m31.R` re-run at review: 33/33 configs
+  `identical()` to the pre-milestone baseline, 0 errored.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0 — all 9 PASS checks pass; 20 `dangling id tokens`
+  advisories are the standing pre-migration references in DESIGN.md/SOURCES.md.
+- `cairn_impact` skipped: the diff changes no `IPn`/`GPn` line (`git diff` over
+  `cairn/DESIGN.md` matches 0 principle lines; only the util.R inventory moved).
+- Toolchain slot: `devtools::document()` no `man/`/`NAMESPACE`/`DESCRIPTION`
+  diff; `pkgdown::check_pkgdown()` "No problems found"; README.Rmd/README.md in
+  sync; NEWS.md carries the user-visible entry; no new top-level file (the
+  harness sits in the already-ignored `devel/`).
+- Full suite: 0 failures / 0 errors / 0 warnings / 1 pre-existing skip /
+  10478 passes.
