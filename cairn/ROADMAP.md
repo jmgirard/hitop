@@ -1,19 +1,18 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-31 (status audit after M28: all 16 checks pass; the 20 `dangling id tokens` advisories all resolve to pre-migration IDs — `D-001`–`D-012` in DESIGN.md's embedded Decision Log, `M13`/`M14` in `cairn/legacy/` — reported, not fixed; both GitHub inboxes empty; M29 planned from the `norm_pid5()` hygiene candidate)_
+_Last hygiene check: 2026-07-31 (M29 merged as PR #32 and archived; all 16 checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md; two lessons captured, none retired; one candidate added for M29's sub-threshold review residue)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M29)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M29 | `norm_pid5()` hygiene and robustness | review | — | normal | milestones/M29-norm-pid5-hygiene.md |
+| M29 | `norm_pid5()` hygiene and robustness | done | — | normal | milestones/archive/M29-norm-pid5-hygiene.md |
 | M27 | PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding) | done | M26 | normal | milestones/archive/M27-pid5-norming-functions.md |
 | M28 | PID-5 norming under shifted response codings, and the vignette norming sections | done | M27 | normal | milestones/archive/M28-pid5-norming-shifted-codings.md |
 | M26 | PID-5-BF total score across scoring, reliability, and the BF paper forms | done | — | normal | milestones/archive/M26-pid5bf-total-score.md |
 | M25 | PID-5 normative tables — verification and ingest | done | — | normal | milestones/archive/M25-pid5-norms-ingest.md |
-| M24 | HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap) | done | — | normal | milestones/archive/M24-hitopsr-subset-generation.md |
 
 ## Candidates
 
