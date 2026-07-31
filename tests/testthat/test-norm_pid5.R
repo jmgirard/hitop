@@ -207,6 +207,40 @@ test_that("NA scores convert to NA without affecting their neighbours", {
   expect_true(is.na(got$ptl[[2]]))
 })
 
+test_that("norm_metric() classifies every scale the shipped tables carry", {
+  for (i in seq_len(nrow(p_pairs))) {
+    v <- p_pairs$version[[i]]
+    s <- p_pairs$scale[[i]]
+    expect_true(norm_metric(s, v) %in% c("mean", "sum", "invariant"),
+                info = paste(v, s))
+  }
+  # And each lands in the metric its definition implies.
+  expect_equal(
+    norm_metric(c("detachment", "total", "PRD", "INC", "INCS", "ORS"), "FULL"),
+    c("mean", "mean", "sum", "invariant", "invariant", "invariant")
+  )
+})
+
+test_that("norm_metric() aborts on a covered scale it cannot classify", {
+  # `pid_norms` is lazy data and cannot be rebound by local_mocked_bindings(),
+  # so the hypothetical new row is injected through the coverage predicate
+  # instead. PRDS and SDTD are real PID-5 validity scales with no normative
+  # table today and no reconciliation formula either; were a table to arrive,
+  # the old ifelse() would have handed them the item-mean shift in silence.
+  local_mocked_bindings(norm_covers = function(version, scale) TRUE)
+  expect_error(norm_metric("PRDS", "SF"), "PRDS")
+  expect_error(norm_metric("SDTD", "FULL"), "no metric")
+  # A scale it *can* classify is unaffected by the coverage answer.
+  expect_equal(norm_metric("PRD", "FULL"), "sum")
+})
+
+test_that("a scale the tables do not cover classifies without aborting", {
+  # The 25 facets are in no version's tables; they are item means, and their
+  # metric is never used because an uncovered scale is never converted.
+  expect_equal(norm_metric(c("anhedonia", "anxiousness"), "FULL"),
+               c("mean", "mean"))
+})
+
 # ---- norm_pid5() ------------------------------------------------------------
 
 scored_bf <- score_pid5(sim_pid5bf, items = 1:25, version = "BF")

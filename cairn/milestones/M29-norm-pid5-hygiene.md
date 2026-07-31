@@ -103,7 +103,7 @@ plots → the norm-referenced plotting candidate.
       argument-name parameter in `R/util.R` (default preserving today's
       wording), thread `"scores"` from `norm_pid5()`, and confirm the scoring
       and validity test files pass unedited.
-- [ ] T4. Add `version` to `norm_metric()`, abort on a covered-but-
+- [x] T4. Add `version` to `norm_metric()`, abort on a covered-but-
       unclassified scale, update the call site at `R/norm_pid5.R:193`, and
       test through a mocked `norm_covers()`.
 - [ ] T5. Comment the `na.rm` coupling at `norm_shift()`; add the
@@ -129,6 +129,7 @@ plots → the norm-referenced plotting candidate.
 - 2026-07-31: T1 — `strip_prefix()` in `R/util.R` replaces the regex strip in both `norm_pid5()` and `rank_scales()`; `rank_scales()`'s roxygen now documents a literal match; NEWS bullet added; two new tests (metacharacter prefix that matches, `.`-bearing prefix that must not); `devtools::test()` clean.
 - 2026-07-31: T2 — `norm_pid5()` now calls `validate_item_uniqueness()` and aborts naming any factor or character score column, both ahead of every report and conversion; a logical column still converts. Three new tests; `devtools::test()` clean.
 - 2026-07-31: T3 — `validate_scales()`, `validate_items_present()` and `validate_item_uniqueness()` take an `arg` name (defaults reproduce today's wording; uniqueness also takes `unit` so the default sentence stays byte-identical for the scoring family), and `norm_pid5()` threads `"scores"` through all three. `tests/testthat/test-score_pid5.R`, `test-validity_pid5.R` and `test-validate.R` pass unedited (`git diff` empty). NEWS bullet added for the two new aborts.
+- 2026-07-31: T4 — `norm_metric(scale, version)` now names each metric's scales positively (`norm_mean_scales`/`norm_sum_scales`/`norm_invariant_scales`) and aborts on a covered-but-unclassified scale; an uncovered scale still classifies as a mean. Three new tests, the abort exercised through a mocked `norm_covers()`; the uncovered-scale test passes unedited; `devtools::test()` clean.
 
 ## Decisions
 

@@ -220,7 +220,7 @@ norm_pid5 <- function(
   }
 
   ## Each scale's metric, and the amount a shifted coding adds to it.
-  metric <- norm_metric(scale_names)
+  metric <- norm_metric(scale_names, version)
   shift <- norm_shift(scale_names, metric, low)
 
   ## Convert each column, collecting the capping counts as we go.

@@ -106,12 +106,50 @@ norm_t_to_raw <- function(t, version, scale) {
 ##                    cancels out of; ORS counts items sitting at the range
 ##                    maximum (R/validity_pid5.R:153), and a shift moves the
 ##                    maximum with the items, leaving the same count.
-norm_metric <- function(scale) {
-  ifelse(
-    scale %in% c("INC", "INCS", "ORS"),
-    "invariant",
-    ifelse(scale == "PRD", "sum", "mean")
-  )
+##
+## Each metric names its scales positively rather than falling through to
+## "mean", so a scale the shipped tables cover but this partition does not name
+## -- a PRDS or SDTD row arriving in a later `pid_norms` -- is a loud failure
+## rather than a silent item-mean shift applied to a sum.
+norm_mean_scales <- c(
+  "negativeAffectivity",
+  "detachment",
+  "antagonism",
+  "disinhibition",
+  "psychoticism",
+  "total"
+)
+norm_sum_scales <- "PRD"
+norm_invariant_scales <- c("INC", "INCS", "ORS")
+
+norm_metric <- function(scale, version) {
+  out <- rep(NA_character_, length(scale))
+  out[scale %in% norm_invariant_scales] <- "invariant"
+  out[scale %in% norm_sum_scales] <- "sum"
+  out[scale %in% norm_mean_scales] <- "mean"
+
+  ## A scale nothing covers is never converted, so its metric is never used --
+  ## the 25 facets reach here on every full-form call. Only an *unclassified
+  ## covered* scale is a real gap in the partition.
+  unknown <- is.na(out)
+  if (any(unknown)) {
+    covered <- vapply(
+      scale[unknown],
+      norm_covers,
+      logical(1),
+      version = version,
+      USE.NAMES = FALSE
+    )
+    if (any(covered)) {
+      cli::cli_abort(c(
+        "The {.val {version}} normative tables carry a scale with no metric formula in this package.",
+        "x" = "Unclassified: {.val {scale[unknown][covered]}}.",
+        "i" = "A shifted response coding is reconciled per metric, so an unclassified scale would silently take the item-mean adjustment. Add it to {.code norm_mean_scales}, {.code norm_sum_scales}, or {.code norm_invariant_scales} in {.file R/norm_engine.R}."
+      ))
+    }
+    out[unknown] <- "mean"
+  }
+  out
 }
 
 ## How much a score collected on a four-option coding starting at `low` exceeds
