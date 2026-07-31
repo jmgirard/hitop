@@ -2,12 +2,13 @@
 
 _The only authority on milestone status. Grouped by status, not ID._
 _Last hygiene check: 2026-07-31 (M32 merged as PR #35 and archived, its candidate row absorbed, M27 row pruned under terminal-row retention; all checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md; two lessons captured, none retired; no candidate spawned — M32's 13 review findings all scored sub-threshold)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M32 (corrected 2026-07-31; the line still said M29 after M29–M31 were assigned))._
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M34)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M33 | PID-5 facet-level norms | planned | — | normal | milestones/M33-pid5-facet-norms.md |
 | M32 | Test coverage for M31's argument-validation additions | done | — | normal | milestones/archive/M32-m31-validation-test-coverage.md |
 | M31 | Argument-validation consistency and a harder norming oracle | done | — | normal | milestones/archive/M31-validator-and-oracle-residue.md |
 | M30 | Norming-family test oracles and internal consistency | done | — | normal | milestones/archive/M30-norming-oracle-residue.md |
@@ -19,7 +20,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - PID-5-BFP (36-item) data, scoring, exports — awaiting materials — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - HiTOP-HSUM scoring + reliability + tutorial — awaiting Society feedback — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - Norm-referenced profile plots for PID-5 (scored-profile visualization against `pid_norms`) — added 2026-07-16, narrowed 2026-07-30 (the norming-functions half graduated to M26, renumbered M27 at the same-day split) — `legacy/ROADMAP.md` Phase 3
-- PID-5 facet-level and demographically stratified norms — the book's facet tables arrived 2026-07-30 (markon2024 A–6 SRF, A–8 SF); the sex/age-stratified half is not in the appendix and still awaits the maintainer; extends `pid_norms` with no new export — added 2026-07-30 — lineage: M25
+- PID-5 demographically stratified norms — the sex/age-stratified tables appear nowhere in the markon2024 appendix and still await the maintainer; would extend `pid_norms` with no new export — added 2026-07-30, narrowed 2026-07-31 (the facet half graduated to M33) — lineage: M25
 - PID-5 Informant Form (IRF) norms — markon2024 A–10/A–11 (domain, trait) and A–12 (SRF/IRF descriptives + T-score difference) arrived 2026-07-30; the package has no IRF surface today, so this is a new instrument version, not a `pid_norms` extension — added 2026-07-30 — lineage: M25
 - HiTOP-SR/BR normative data and norming functions — source workbooks arrived 2026-07-30 (`HiTOP-SR-Final.xlsx`, `B-HiTOP overview.xlsx`); both carry sample descriptives (N/mean/SD/skew/kurtosis on a Prolific sample), not raw→T lookup tables, so the norming design differs from `pid_norms` — added 2026-07-30 — `legacy/ROADMAP.md` Phase 3
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
