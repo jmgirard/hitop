@@ -56,7 +56,9 @@ evidence in the work log), at the maintainer's direction at the plan gate.
       formerly checked there is checked by an `R/util.R` validator built on
       `cli_assert()`/`cli::cli_abort()` that takes `call`. `dir`
       (`R/rank_scales.R:79`, where nothing matches it today) goes through
-      `rlang::arg_match()`, which also enables partial matching; `missing` and
+      `rlang::arg_match()`, which lists the permitted values and suggests the
+      near miss on a typo while still requiring an exact match, so accepted
+      input does not change; `missing` and
       `version` keep base `match.arg()` in the exported functions, and
       `score_engine()`'s `stopifnot(rlang::is_string(missing))` — unreachable
       after `match.arg()` has already run — is removed rather than converted.
@@ -95,10 +97,10 @@ evidence in the work log), at the maintainer's direction at the plan gate.
       then restore and diff.
 - [x] T3. Replace `expect_true(any(keep))` with the per-version covered-set
       assertion; extend the `low` loop with a negative shift.
-- [ ] T4. Author the new validators in `R/util.R` with `call` threading and
-      `arg_match()` for `dir`/`missing`; write each error-branch test first.
+- [x] T4. Author the new validators in `R/util.R` with `call` threading and
+      `arg_match()` for `dir`; write each error-branch test first.
       Thread `call` into `warn_item_order()`.
-- [ ] T5. Convert the 22 `stopifnot()` sites, one file at a time, verifying
+- [x] T5. Convert the 22 `stopifnot()` sites, one file at a time, verifying
       after each.
 - [ ] T6. Update roxygen where documented error behavior changes; `document()`;
       NEWS.md entry; `cairn/DESIGN.md:50` inventory line; re-run AC7 and
@@ -120,6 +122,10 @@ evidence in the work log), at the maintainer's direction at the plan gate.
 - 2026-07-31: T2 — fixture `prd_na_pid5` (one NA on item 2, a PRD item in no domain-contributing facet) added as a fourth case. Mutation `na.rm = TRUE` at `R/validity_pid5.R:172` → 6 failures in the `norm_shift()` test (2 assertions × 3 `low` values); restored, `git diff` clean.
 - 2026-07-31: T2 finding — the same mutation also reddens the pre-existing test at `test-norm_pid5.R:550` ("a PRD with a missing item stays NA through the shift correction", 2 failures), so the regression was not wholly uncovered as the candidate row assumed; what was uncovered is the *differential oracle*, which was green under it. The new case makes `observed_shift()` itself sensitive and exercises the shift correction against a measured quantity, which `:550` (an NA-propagation assertion) does not.
 - 2026-07-31: T3 — `expect_true(any(keep))` replaced by `expect_setequal()` against a hardcoded per-version covered set read from `pid_norms`, not from the partition vectors (IP2); `low` loop extended to `c(-1, 1, 2)`. Mutation hiding PRD in `norm_covers()` → 6 failures where `any(keep)` stayed green; restored. Full suite 0 fail / 10418 pass / 1 pre-existing skip.
+- 2026-07-31: T4 — three new validators in `R/util.R` (`validate_string()` with an `allow_null` for `rank_scales()`'s nullable `prefix`, `validate_flag()`, `validate_count()` splitting type from bounds), each on the `arg`/`call` convention; `validate_scales()` gained the supplied-type bullet; `warn_item_order()` now takes and forwards `call`. Tests written first and confirmed red (12 failures, 3 errors) before the implementation landed.
+- 2026-07-31: T5 — all 22 sites converted across 8 files; `grep -rn "stopifnot" R/` now returns 0. `score_engine()`'s `missing` check removed per AC4. None of the 8 files is in the CRLF trio the M24 lesson names, so whole-file rewrites were safe.
+- 2026-07-31: T5 correction — `rlang::arg_match()` does NOT partial-match: it requires an exact value and only *suggests* the near miss, so AC4's "which also enables partial matching" was false and is amended. The practical effect is that the change is strictly smaller than planned — accepted input for `dir` is unchanged and only the error message improves, so NEWS records no widening. Caught by the test asserting `dir = "l"` would newly succeed, which failed.
+- 2026-07-31: AC7 evidence — `devel/characterize_m31.R` run before and after; all 33 configs `identical()`, no differing config. Full suite 0 fail / 10478 pass / 1 pre-existing skip (+60 assertions).
 
 ## Decisions
 

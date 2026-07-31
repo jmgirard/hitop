@@ -50,6 +50,44 @@ test_that("validate_scales() accepts character or integerish of any length", {
   expect_error(validate_scales(list("a")))
 })
 
+test_that("validate_string() requires a single string, optionally NULL", {
+  expect_no_error(validate_string("pid_", arg = "prefix"))
+  expect_error(validate_string(1, arg = "prefix"), "prefix")
+  expect_error(validate_string(c("a", "b"), arg = "prefix"), "prefix")
+  expect_error(validate_string(NULL, arg = "prefix"), "prefix")
+  # allow_null lets the one nullable caller (rank_scales's `prefix`) through
+  expect_no_error(validate_string(NULL, arg = "prefix", allow_null = TRUE))
+  expect_error(validate_string(1, arg = "prefix", allow_null = TRUE), "prefix")
+  # The message reports what was supplied, as validate_items() does
+  err <- expect_error(validate_string(1:3, arg = "name"))
+  expect_match(conditionMessage(err), "integer")
+  expect_match(conditionMessage(err), "3") # length
+})
+
+test_that("validate_flag() requires TRUE or FALSE", {
+  expect_no_error(validate_flag(TRUE, arg = "append"))
+  expect_no_error(validate_flag(FALSE, arg = "append"))
+  expect_error(validate_flag(NA, arg = "append"), "append")
+  expect_error(validate_flag(1, arg = "append"), "append")
+  expect_error(validate_flag(c(TRUE, TRUE), arg = "append"), "append")
+  expect_error(validate_flag(NULL, arg = "append"), "append")
+})
+
+test_that("validate_count() checks type and bounds separately", {
+  expect_no_error(validate_count(3, arg = "top", max = 5))
+  expect_no_error(validate_count(1, arg = "top", max = 5))
+  expect_no_error(validate_count(5, arg = "top", max = 5))
+  # Type failures name the type, not the range
+  expect_error(validate_count("3", arg = "top", max = 5), "whole number")
+  expect_error(validate_count(c(1, 2), arg = "top", max = 5), "whole number")
+  expect_error(validate_count(NA_integer_, arg = "top", max = 5), "whole number")
+  # Bounds failures report both the limit and what was supplied
+  err <- expect_error(validate_count(9, arg = "top", max = 5), "range")
+  expect_match(conditionMessage(err), "5")
+  expect_match(conditionMessage(err), "9")
+  expect_error(validate_count(0, arg = "top", max = 5), "range")
+})
+
 test_that("validate_range() requires a length-2 increasing integerish vector", {
   expect_no_error(validate_range(c(0, 3)))
   expect_error(validate_range(c(0, 3, 4)))  # wrong length
@@ -113,6 +151,69 @@ test_that("input errors are attributed to the exported function, not internals",
 
   cnd <- rlang::catch_cnd(calc_omega(1L))
   expect_equal(rlang::call_name(cnd$call), "calc_omega")
+})
+
+test_that("scalar-argument failures blame the exported function and the arg", {
+  # These arguments were checked with bare stopifnot() before M31, which named
+  # the failed predicate rather than the argument and blamed no function at all.
+  # `call` carries the function name, so it is read from conditionCall(), never
+  # from the message.
+  blames <- function(expr, fn, arg) {
+    cnd <- rlang::catch_cnd(expr)
+    expect_equal(rlang::call_name(cnd$call), fn)
+    expect_match(conditionMessage(cnd), arg)
+  }
+
+  blames(score_pid5(sim_pid5, items = 1:220, version = "FULL", prefix = 1),
+         "score_pid5", "prefix")
+  blames(score_pid5(sim_pid5, items = 1:220, version = "FULL", append = NA),
+         "score_pid5", "append")
+  blames(score_pid5(sim_pid5, items = 1:220, version = "FULL", calc_se = 1),
+         "score_pid5", "calc_se")
+  blames(validity_pid5(sim_pid5, items = 1:220, version = "FULL", prefix = 1),
+         "validity_pid5", "prefix")
+  blames(reliability_pid5(sim_pid5, items = 1:220, version = "FULL", alpha = 1),
+         "reliability_pid5", "alpha")
+  blames(reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = NA),
+         "reliability_pid5", "omega")
+
+  scored <- score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
+  blames(norm_pid5(scored, scores = names(scored), version = "BF", prefix = 1),
+         "norm_pid5", "prefix")
+  blames(norm_pid5(scored, scores = names(scored), version = "BF", append = NA),
+         "norm_pid5", "append")
+
+  blames(rank_scales(scored, scales = names(scored), prefix = 1),
+         "rank_scales", "prefix")
+  blames(rank_scales(scored, scales = names(scored), top = 99),
+         "rank_scales", "top")
+  blames(rank_scales(scored, scales = names(scored), name = 1),
+         "rank_scales", "name")
+  blames(rank_scales(scored, scales = names(scored), append = NA),
+         "rank_scales", "append")
+
+  blames(label_hitopsr(1:5), "label_hitopsr", "data")
+  blames(label_hitopbr(1:5), "label_hitopbr", "data")
+  blames(rename_hitopsr_items(1:5), "rename_hitopsr_items", "data")
+})
+
+test_that("rank_scales() `dir` reports the allowed values and suggests a match", {
+  scored <- score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
+  cnd <- rlang::catch_cnd(
+    rank_scales(scored, scales = names(scored), dir = "hihg")
+  )
+  expect_equal(rlang::call_name(cnd$call), "rank_scales")
+  # arg_match() lists the permitted values and offers the near miss
+  expect_match(conditionMessage(cnd), "high")
+  expect_match(conditionMessage(cnd), "low")
+  expect_match(conditionMessage(cnd), "Did you mean")
+  # arg_match() requires an exact match -- unlike match.arg(), it does NOT
+  # accept an unambiguous abbreviation, so accepted input is unchanged from the
+  # membership test it replaces and only the error improves.
+  expect_error(
+    rank_scales(scored, scales = names(scored), dir = "l"),
+    "must be one of"
+  )
 })
 
 test_that("valid input still scores without error (no behavior regression)", {

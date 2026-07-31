@@ -82,8 +82,8 @@ validity_pid5 <- function(
   validate_items_present(data, items)
   warn_item_order(items)
   validate_range(srange)
-  stopifnot(rlang::is_string(prefix))
-  stopifnot(rlang::is_bool(append))
+  validate_string(prefix, arg = "prefix")
+  validate_flag(append, arg = "append")
 
   ## The published PRD and SD-TD cut scores are raw sums compared to fixed
   ## thresholds (10, 11, 19) that assume items coded 0-3; unlike INC/ORS they do

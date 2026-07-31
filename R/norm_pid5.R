@@ -171,8 +171,8 @@ norm_pid5 <- function(
   validate_item_uniqueness(scores, arg = "scores", unit = "score")
   validate_items_present(data, scores, arg = "scores")
   validate_range(srange)
-  stopifnot(rlang::is_string(prefix))
-  stopifnot(rlang::is_bool(append))
+  validate_string(prefix, arg = "prefix")
+  validate_flag(append, arg = "append")
 
   ## Extract the score columns and recover each one's scale name: the output
   ## naming of score_pid5() is prefix + the camelCase scale, so stripping the

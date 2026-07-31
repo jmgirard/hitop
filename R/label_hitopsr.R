@@ -23,8 +23,8 @@ label_hitopsr <- function(
   prefix = "HSR_"
 ) {
   target <- match.arg(target)
-  stopifnot(is.data.frame(data))
-  stopifnot(rlang::is_string(prefix))
+  validate_data(data)
+  validate_string(prefix, arg = "prefix")
 
   data_cols <- colnames(data)
 

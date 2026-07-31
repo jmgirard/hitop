@@ -73,12 +73,17 @@ rank_scales <- function(
   ## Validate args
   validate_data(data)
   validate_scales(scales)
-  stopifnot(is.null(prefix) || rlang::is_string(prefix))
-  stopifnot(rlang::is_integerish(top, n = 1))
-  stopifnot(top >= 1 && top <= length(scales))
-  stopifnot(dir %in% c("high", "low"))
-  stopifnot(rlang::is_string(name))
-  stopifnot(rlang::is_bool(append))
+  validate_string(prefix, arg = "prefix", allow_null = TRUE)
+  ## `top` cannot ask for more scales than were supplied, so its upper bound is
+  ## the length of `scales` rather than a constant.
+  validate_count(top, arg = "top", max = length(scales))
+  ## arg_match() lists the permitted values and suggests the near miss on a
+  ## typo. Unlike match.arg() it requires an exact match, so accepted input is
+  ## unchanged from the bare membership test it replaces -- only the error
+  ## message improves.
+  dir <- rlang::arg_match(dir, values = c("high", "low"))
+  validate_string(name, arg = "name")
+  validate_flag(append, arg = "append")
 
   ## Extract scale columns
   data_scales <- data[scales]
