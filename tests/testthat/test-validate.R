@@ -50,6 +50,31 @@ test_that("validate_scales() accepts character or integerish of any length", {
   expect_error(validate_scales(list("a")))
 })
 
+test_that("validate_scales() reports the type actually supplied", {
+  # The bullet is what distinguishes "wrong type" from "wrong value": without
+  # it the message says only that the type was unexpected. Matched on the bare
+  # class word, never the cli-styled `<logical>`, which carries ANSI escapes
+  # when colors are on.
+  expect_match(
+    conditionMessage(expect_error(validate_scales(TRUE))),
+    "logical"
+  )
+  expect_match(
+    conditionMessage(expect_error(validate_scales(list("a")))),
+    "list"
+  )
+})
+
+test_that("validate_scales() names the caller's argument, not its default", {
+  # norm_pid5() is the one caller that overrides `arg` (R/norm_pid5.R), so it
+  # is the only place the interpolation can be observed: everywhere else the
+  # default "scales" would render whether `{arg}` were interpolated or not.
+  scored <- score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)
+  cnd <- rlang::catch_cnd(norm_pid5(scored, scores = TRUE, version = "BF"))
+  expect_equal(rlang::call_name(cnd$call), "norm_pid5")
+  expect_match(conditionMessage(cnd), "scores")
+})
+
 test_that("validate_string() requires a single string, optionally NULL", {
   expect_no_error(validate_string("pid_", arg = "prefix"))
   expect_error(validate_string(1, arg = "prefix"), "prefix")

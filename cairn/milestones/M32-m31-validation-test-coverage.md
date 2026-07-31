@@ -1,11 +1,11 @@
 # M32: Test coverage for M31's argument-validation additions
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m32-m31-validation-test-coverage`
 
 ## Goal
 
@@ -68,7 +68,7 @@ No NEWS entry: nothing user-visible changes.
 
 ## Tasks
 
-- [ ] T1: add the supplied-type and `arg`-interpolation assertions beside the
+- [x] T1: add the supplied-type and `arg`-interpolation assertions beside the
       existing `validate_scales()` block (`tests/testthat/test-validate.R:46`);
       verify each reddens against a scratch revert of `R/util.R:110-111`.
 - [ ] T2: add the two `warn_item_order()` attribution assertions to
@@ -86,5 +86,7 @@ No NEWS entry: nothing user-visible changes.
 - 2026-07-31: criteria audit ([O], fresh context) returned one finding — AC4's verification clause named a per-case expected set that does not exist, since `covered_scales` (`test-norm_pid5.R:386`) is keyed by version only and `scales[keep]` depends on neither `low` nor `label`; clause rewritten to mutate `covered_scales[["SF"]]`. AC1/AC2/AC3/AC5 returned satisfiable as written, each stated mutation confirmed to redden.
 - 2026-07-31: plan gate chose a sorted-unique `expect_equal()` over `expect_true(setequal(...), info = info)` for AC4 because the boolean wrapper prints only "was not TRUE" and loses the differing scale names M31 adopted `expect_setequal()` to see; falsified by a failure whose sorted-vector diff reads less legibly than a set difference.
 - 2026-07-31: plan gate chose covering both `warn_item_order()` call sites over the explicit thread alone because the two carry the caller's identity by different mechanisms (explicit `call =` vs the `caller_env()` default); falsified by evidence the two mechanisms cannot break independently.
+
+- 2026-07-31: T1 done — two `validate_scales()` blocks in `test-validate.R`; deleting the type bullet reddens both class assertions, hardcoding `{arg}` to "scales" reddens the `norm_pid5(scores=)` assertion. Suite clean (114 pass).
 
 ## Decisions
