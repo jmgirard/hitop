@@ -1,13 +1,14 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-31 (status audit after M28: all 16 checks pass; the 20 `dangling id tokens` advisories all resolve to pre-migration IDs entombed in `cairn/legacy/` — reported, not fixed; both GitHub inboxes empty; nothing in flight)_
+_Last hygiene check: 2026-07-31 (status audit after M28: all 16 checks pass; the 20 `dangling id tokens` advisories all resolve to pre-migration IDs — `D-001`–`D-012` in DESIGN.md's embedded Decision Log, `M13`/`M14` in `cairn/legacy/` — reported, not fixed; both GitHub inboxes empty; M29 planned from the `norm_pid5()` hygiene candidate)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M29)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M29 | `norm_pid5()` hygiene and robustness | planned | — | normal | milestones/M29-norm-pid5-hygiene.md |
 | M27 | PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding) | done | M26 | normal | milestones/archive/M27-pid5-norming-functions.md |
 | M28 | PID-5 norming under shifted response codings, and the vignette norming sections | done | M27 | normal | milestones/archive/M28-pid5-norming-shifted-codings.md |
 | M26 | PID-5-BF total score across scoring, reliability, and the BF paper forms | done | — | normal | milestones/archive/M26-pid5bf-total-score.md |
@@ -26,6 +27,5 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
 - Response-option legend wraps mid-phrase on the PID paper forms: `make_items_table()` builds one 126-character string that breaks wherever the column ends; split it two-per-line at a bullet separator (break style chosen by the maintainer 2026-07-30). PID-only — the HiTOP-SR/BR legend is 58 chars and fits on one line — but the fix is in shared generator code and rebuilds 6 PID DOCX with manifest rows per D-016; pure layout, no wording change (IP1 style-fix carve-out) — added 2026-07-30 — lineage: M26
-- `norm_pid5()` hygiene and robustness: four sub-threshold findings from M27's review — `prefix` is interpolated into a regex rather than matched literally (a `prefix` containing a metacharacter strips the wrong columns), the shared validators report `items`/`scales` for an argument named `scores`, a factor score column is coerced through its level codes without complaint, and duplicate entries in `scores` are mishandled silently (the scoring family guards this with `validate_item_uniqueness()`) — plus five more from M28's review on the same file: `norm_metric()` defaults an unclassified *covered* scale to the item-mean formula instead of failing loud (a wrong number, not an error, if `pid_norms` ever gains `PRDS`/`SDTD` rows), `norm_shift()`'s `PRD` correction silently depends on `validity_pid5()` summing without `na.rm`, the two coding reports are `cli_warn()` while the coverage and capping reports are `cli_alert_*` so no single suppressor silences the function (D-024), the test helper `capture_warnings()` shadows a `testthat` export with different semantics, and two interaction paths are untested (negative `low`; a coding both shifted and of the wrong option count). One coherent pass over `R/norm_pid5.R` — added 2026-07-30, extended 2026-07-31 — lineage: M27, M28
 - Score HiTOP-SR subset-collected data: score data gathered from a subset instrument (columns = subset items, original HSR numbering) via the `hitop_subset` descriptor — added 2026-07-17 — depends on M24 (plan after M24 lands; second half of the modularization arc)
 - Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M24
