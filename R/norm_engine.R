@@ -42,9 +42,19 @@ norm_covers <- function(version, scale) {
 ## Ties are broken toward the middle of the distribution: by T nearest 50 where
 ## the table carries T scores, and -- since the four validity tables carry none
 ## -- by percentile nearest 0.50 where it does not. Every tie in the shipped
-## PID-5 tables is a run of raw 0.00 at the floor, where the linear T the book
-## tabulated predicts a negative raw and prints 0.00 instead; the toward-middle
-## pick returns the one row of the run that renders an attainable score.
+## PID-5 tables is a run of one repeated raw at one end of a column, and the
+## toward-middle pick returns the end of the run nearest the rest of the table:
+##
+##   * At the floor, a run of 0.00 across low T scores, where the linear T the
+##     book tabulated predicts a negative raw and 0.00 is printed instead. Every
+##     T-scored column has one; the pick returns the run's *highest* T, the one
+##     row of the run that renders an attainable score.
+##   * At the ceiling, a run of the column's top raw across high T scores, on 19
+##     of the 66 T-scored columns -- all of them facets, all at 4.00, up to the
+##     12 rows the short form prints for anxiousness. The pick returns the run's
+##     *lowest* T. These rows are unattainable on the official 0-3 coding (a
+##     facet is an item mean, so it stops at 3.00) and ship because the book
+##     prints them, not because a respondent can reach them.
 norm_select <- function(x, rows) {
   out <- rep(NA_integer_, length(x))
   ok <- !is.na(x)
@@ -99,7 +109,8 @@ norm_t_to_raw <- function(t, version, scale) {
 ## coding shifted off the official 0-3 range is reconciled before lookup
 ## (D-020, corrected by D-023). Three metrics, two of which move under a shift:
 ##
-##   * "mean"      -- an item mean (the five domains, the brief form's total).
+##   * "mean"      -- an item mean (the 25 facets, the five domains, the brief
+##                    form's total).
 ##   * "sum"       -- a plain sum over the scale's items (PRD).
 ##   * "invariant" -- unchanged by a shift. INC/INCS sum *within-pair absolute
 ##                    differences*, which a constant added to both members
@@ -111,13 +122,44 @@ norm_t_to_raw <- function(t, version, scale) {
 ## "mean", so a scale the shipped tables cover but this partition does not name
 ## -- a PRDS or SDTD row arriving in a later `pid_norms` -- is a loud failure
 ## rather than a silent item-mean shift applied to a sum.
+## The facet stems are spelled out rather than read from `pid_scales` at load
+## time, because a namespace-load-time dependency on a lazy-loaded dataset is
+## exactly the kind of ordering hazard this file has no need of. Their source of
+## truth is still `pid_scales[[version]]$camelCase`: `data-raw/norms_pid5.R`
+## refuses to build a `pid_norms` whose facet stems are not `setequal()` to it,
+## and a test in tests/testthat/test-norms.R holds this vector to the same set.
 norm_mean_scales <- c(
   "negativeAffectivity",
   "detachment",
   "antagonism",
   "disinhibition",
   "psychoticism",
-  "total"
+  "total",
+  "anhedonia",
+  "anxiousness",
+  "attentionSeeking",
+  "callousness",
+  "deceitfulness",
+  "depressivity",
+  "distractibility",
+  "eccentricity",
+  "emotionalLability",
+  "grandiosity",
+  "hostility",
+  "impulsivity",
+  "intimacyAvoidance",
+  "irresponsibility",
+  "manipulativeness",
+  "perceptualDysregulation",
+  "perseveration",
+  "restrictedAffectivity",
+  "rigidPerfectionism",
+  "riskTaking",
+  "separationInsecurity",
+  "submissiveness",
+  "suspiciousness",
+  "unusualBeliefsExperiences",
+  "withdrawal"
 )
 norm_sum_scales <- "PRD"
 norm_invariant_scales <- c("INC", "INCS", "ORS")
@@ -132,8 +174,9 @@ norm_metric <- function(scale, version, call = rlang::caller_env()) {
   out[scale %in% norm_mean_scales] <- "mean"
 
   ## A scale nothing covers is never converted, so its metric is never used --
-  ## the 25 facets reach here on every full-form call. Only an *unclassified
-  ## covered* scale is a real gap in the partition.
+  ## `SDTD` and the short-form validity scales reach here on the calls that ask
+  ## for them. Only an *unclassified covered* scale is a real gap in the
+  ## partition.
   unknown <- is.na(out)
   if (any(unknown)) {
     covered <- vapply(

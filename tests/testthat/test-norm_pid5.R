@@ -190,12 +190,19 @@ test_that("the vectorized lookup agrees with an independent scalar lookup", {
 
   # The full attainable grid of each scale, which for the validity sums runs
   # well past the last printed row (INC 20 pairs x 3, INCS 10 x 3, ORS 10 items,
-  # PRD 22 items x 3) and so exercises the capping branch too.
+  # PRD 22 items x 3) and so exercises the capping branch too. A facet is an
+  # item mean over its own item count -- 4 to 14 on the full form, 4 throughout
+  # the short form -- so its grid is read from pid_scales rather than assumed,
+  # and it stops at 3.00 even though these columns print raws up to 4.00.
   grid_for <- function(v, s, rows) {
     if (s == "INC") 0:60
     else if (s == "INCS") 0:30
     else if (s == "ORS") 0:10
     else if (s == "PRD") 0:66
+    else if (v %in% names(pid_scales) && s %in% pid_scales[[v]]$camelCase) {
+      n <- pid_scales[[v]]$nItems[match(s, pid_scales[[v]]$camelCase)]
+      (0:(3 * n)) / n
+    }
     else if (v == "BF" && s == "total") seq(0, 3, by = 0.04)
     else if (v == "BF") seq(0, 3, by = 0.2)
     else if (v == "SF") (0:36) / 12
@@ -234,6 +241,18 @@ test_that("norm_metric() classifies every scale the shipped tables carry", {
   }
 })
 
+test_that("norm_mean_scales names every facet pid_scales does", {
+  # norm_engine.R spells the 25 facet stems out rather than reading them from
+  # the lazy-loaded pid_scales at namespace-load time, so this is what holds
+  # the two in step: a facet renamed or added in pid_scales fails here.
+  for (v in c("FULL", "SF")) {
+    expect_setequal(
+      intersect(norm_mean_scales, pid_scales[[v]]$camelCase),
+      pid_scales[[v]]$camelCase
+    )
+  }
+})
+
 test_that("the three metric vectors are pairwise disjoint", {
   # norm_metric() assigns in write order (invariant, then sum, then mean), so a
   # scale named in two vectors would resolve silently to whichever ran last
@@ -265,10 +284,12 @@ test_that("norm_metric() aborts on a covered scale it cannot classify", {
 })
 
 test_that("a scale the tables do not cover classifies without aborting", {
-  # The 25 facets are in no version's tables; they are item means, and their
-  # metric is never used because an uncovered scale is never converted.
-  expect_equal(norm_metric(c("anhedonia", "anxiousness"), "FULL"),
-               c("mean", "mean"))
+  # SDTD and PNA are validity_pid5() outputs with no normative table in any
+  # version, so their metric is never used because an uncovered scale is never
+  # converted. (The 25 facets stood here until their tables shipped.)
+  expect_false(norm_covers("FULL", "SDTD"))
+  expect_false(norm_covers("FULL", "PNA"))
+  expect_equal(norm_metric(c("SDTD", "PNA"), "FULL"), c("mean", "mean"))
 })
 
 # ---- norm_pid5() ------------------------------------------------------------
@@ -315,14 +336,17 @@ test_that("validity scales get a percentile column but no T column", {
 })
 
 test_that("an uncovered scale yields NA columns and one report naming it", {
-  facets <- paste0("pid_", c("anhedonia", "anxiousness"))
-  scored <- score_pid5(sim_pid5, items = 1:220, version = "FULL")
+  uncovered <- paste0("pid_", c("SDTD", "PNA"))
+  scored <- suppressWarnings(
+    validity_pid5(sim_pid5, items = 1:220, version = "FULL")
+  )
   expect_warning(
-    out <- norm_pid5(scored, scores = facets, version = "FULL", append = FALSE),
+    out <- norm_pid5(scored, scores = uncovered, version = "FULL",
+                     append = FALSE),
     "not covered"
   )
-  expect_equal(names(out), c("pid_anhedonia_t", "pid_anhedonia_ptl",
-                             "pid_anxiousness_t", "pid_anxiousness_ptl"))
+  expect_equal(names(out), c("pid_SDTD_t", "pid_SDTD_ptl",
+                             "pid_PNA_t", "pid_PNA_ptl"))
   expect_true(all(vapply(out, function(x) all(is.na(x)), logical(1))))
 })
 
@@ -382,12 +406,14 @@ prd_na_pid5 <- local({
 ## constants under test (IP2). Asserting the whole set -- not merely that it is
 ## non-empty -- is what keeps PRD, the only "sum" scale, inside the comparison:
 ## with `any(keep)` the sum branch could drop out and every remaining
-## assertion still pass.
+## assertion still pass. The 25 facets are taken from `pid_scales`, the
+## scale-membership table -- not from `norm_mean_scales`, which is one of the
+## constants under test.
 covered_scales <- list(
   FULL = c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
-           "psychoticism", "INC", "ORS", "PRD"),
+           "psychoticism", "INC", "ORS", "PRD", pid_scales[["FULL"]]$camelCase),
   SF = c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
-         "psychoticism", "INCS"),
+         "psychoticism", "INCS", pid_scales[["SF"]]$camelCase),
   BF = c("total", "negativeAffectivity", "detachment", "antagonism",
          "disinhibition", "psychoticism")
 )
@@ -631,10 +657,10 @@ test_that("an all-invariant request is not reported as an adjustment", {
 })
 
 test_that("a request the tables cover nowhere reports coverage, not coding", {
-  ## The facets are in no version's tables, so there is nothing to reconcile and
-  ## the coverage report is the whole story.
+  ## SDTD is in no version's tables, so there is nothing to reconcile and the
+  ## coverage report is the whole story.
   got <- collect_warnings(
-    norm_pid5(data.frame(pid_anhedonia = 2.2), scores = "pid_anhedonia",
+    norm_pid5(data.frame(pid_SDTD = 12), scores = "pid_SDTD",
               version = "FULL", srange = c(1, 4), append = FALSE)
   )
   expect_equal(got$n, 1L)
@@ -663,8 +689,8 @@ test_that("one suppressWarnings() silences the whole function", {
 
   ## The shifted case: one call that emits three different reports together --
   ## a PRD sum shifted below its table's top row and then capped, beside an
-  ## uncovered facet.
-  df <- data.frame(pid_PRD = 90, pid_anhedonia = 2.2)
+  ## uncovered SDTD.
+  df <- data.frame(pid_PRD = 90, pid_SDTD = 12)
   loud <- collect_warnings(
     norm_pid5(df, scores = names(df), version = "FULL", srange = c(1, 4),
               append = FALSE)

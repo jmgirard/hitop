@@ -1,8 +1,8 @@
 # pid_norms: the PID-5 / PID-5-SF / PID-5-BF normative tables.
 #
-# Two kinds of check. The structural invariants hold across all 1,056 rows and
+# Two kinds of check. The structural invariants hold across all 4,606 rows and
 # would catch a systematic corruption of the dataset; the spot values are cells
-# transcribed by hand from the printed tables and would catch a corruption that
+# read by hand off the rendered pages and would catch a corruption that
 # preserves the invariants. Page anchors are the book's own (Markon, Fossati,
 # Somma & Krueger, 2024; see cairn/SOURCES.md); every cell of every table is
 # additionally machine-verified against the source by
@@ -30,6 +30,11 @@ domain_names <- c(
 )
 validity_names <- c("INC", "INCS", "ORS", "PRD")
 
+# The 25 facet stems for one version, from the scale-membership table rather
+# than retyped -- pid_scales is what data-raw/norms_pid5.R maps the book's
+# captions onto, so a facet renamed there must move the norm rows with it.
+facet_names <- function(version) pid_scales[[version]]$camelCase
+
 
 # ---- structure ---------------------------------------------------------------
 
@@ -48,19 +53,21 @@ test_that("pid_norms has the documented structure", {
   expect_equal(anyDuplicated(pid_norms[c("version", "scale", "tscore", "raw")]), 0)
 })
 
-test_that("pid_norms covers exactly the scales the seven shipped tables norm", {
+test_that("pid_norms covers exactly the scales the nine shipped tables norm", {
   keys <- norm_keys()
   expect_setequal(
     paste(keys$version, keys$scale),
     c(
-      paste("FULL", c(domain_names, "INC", "ORS", "PRD")),
-      paste("SF", c(domain_names, "INCS")),
+      paste("FULL", c(domain_names, facet_names("FULL"), "INC", "ORS", "PRD")),
+      paste("SF", c(domain_names, facet_names("SF"), "INCS")),
       paste("BF", c("total", domain_names))
     )
   )
-  # The domain scale names are score_pid5() output column stems, so a norming
-  # lookup can join on them with no crosswalk.
+  # The domain and facet scale names are score_pid5() output column stems, so a
+  # norming lookup can join on them with no crosswalk.
   expect_true(all(domain_names %in% pid_domains$camelCase))
+  expect_length(facet_names("FULL"), 25L)
+  expect_setequal(facet_names("FULL"), facet_names("SF"))
   # T scores are printed for the domain tables and for no validity table.
   expect_setequal(unique(pid_norms$scale[is.na(pid_norms$tscore)]), validity_names)
   expect_false(anyNA(pid_norms$tscore[!pid_norms$scale %in% validity_names]))
@@ -83,23 +90,52 @@ test_that("validity scale names are the package's, not the book's captions", {
 
 # ---- structural invariants ---------------------------------------------------
 
-test_that("domain raw scores are linear in T above the scale's zero floor", {
-  # A T score is a linear rescaling of the raw metric, floored at zero once the
-  # line drops below it, so every printed raw value sits on one line per scale.
-  # Values are printed to two decimals, so the fitted line can be off by at most
-  # half a unit in the last place (0.005) on any row.
+# The rows of one column that lie strictly between its printed floor and its
+# printed ceiling: raw above the run of 0.00 the book prints where the line goes
+# negative, and, where the column's top raw repeats on consecutive T rows, below
+# that run. Both runs are clamps rather than points on the line, so a line is
+# fitted to neither.
+norm_interior <- function(x) {
+  top <- max(x$raw)
+  x <- x[x$raw > 0, ]
+  run <- x$tscore[x$raw == top]
+  if (length(run) > 1) x <- x[x$tscore < min(run), ]
+  x
+}
+
+# The smallest maximum absolute deviation of any straight line from the points
+# (t, y) -- the Chebyshev, or minimax, fit. The optimal line is the midline of
+# the narrowest vertical slab containing every point, and that slab always has a
+# side flush with an edge of the points' convex hull, so its slope is the slope
+# of some pair of points: scanning every pair finds it exactly. `lm` minimizes a
+# different thing (squared error) and is not the right instrument for a bound on
+# the *largest* deviation.
+minimax_line_error <- function(t, y) {
+  n <- length(t)
+  best <- Inf
+  for (i in seq_len(n - 1L)) {
+    for (j in seq(i + 1L, n)) {
+      if (t[[i]] == t[[j]]) next
+      slope <- (y[[j]] - y[[i]]) / (t[[j]] - t[[i]])
+      resid <- y - slope * t
+      best <- min(best, max(resid) - min(resid))
+    }
+  }
+  best / 2
+}
+
+test_that("raw scores are linear in T between the printed floor and ceiling", {
+  # A T score is a linear rescaling of the raw metric, clamped at each end once
+  # the line leaves the attainable range, so every printed raw between the
+  # clamps sits on one line per scale. Values are printed to two decimals, so
+  # the best line can be off by at most half a unit in the last place (0.005) on
+  # any row -- which is the bound asserted, not a tolerance chosen to pass.
   keys <- norm_keys(pid_norms[!is.na(pid_norms$tscore), ])
   for (i in seq_len(nrow(keys))) {
-    x <- norm_rows(keys$version[[i]], keys$scale[[i]])
-    above_floor <- x[x$raw > 0, ]
-    fit <- stats::lm(raw ~ tscore, data = above_floor)
-    predicted <- pmax(
-      0,
-      stats::coef(fit)[[1]] + stats::coef(fit)[[2]] * x$tscore
-    )
+    x <- norm_interior(norm_rows(keys$version[[i]], keys$scale[[i]]))
     expect_lt(
-      max(abs(predicted - x$raw)),
-      0.006,
+      minimax_line_error(x$tscore, x$raw),
+      0.005,
       label = paste0(
         "largest raw-vs-line deviation for ",
         keys$version[[i]], " ", keys$scale[[i]]
@@ -121,6 +157,45 @@ test_that("percentiles never decrease as the score rises", {
       )
     )
   }
+})
+
+test_that("a repeated top raw ships every printed row and converts to its lowest T", {
+  # Nineteen facet columns print their top raw on several consecutive T rows,
+  # because the line the book tabulated runs past the 3.00 an item mean can
+  # reach and 4.00 is printed instead. Those rows are unattainable but they are
+  # printed, so they ship verbatim (M33): the table is the published object, not
+  # a filtered view of it. Selection then treats the run like the floor run --
+  # the tie rule takes the end nearest the middle of the distribution, which at
+  # the ceiling is the run's lowest T.
+  keys <- norm_keys(pid_norms[!is.na(pid_norms$tscore), ])
+  runs <- 0L
+  for (i in seq_len(nrow(keys))) {
+    v <- keys$version[[i]]
+    s <- keys$scale[[i]]
+    x <- norm_rows(v, s)
+    where <- paste(v, s)
+
+    # No T row is missing from any column, so no printed row was dropped.
+    expect_equal(x$tscore, seq(min(x$tscore), max(x$tscore)), label = where)
+
+    top <- x$tscore[x$raw == max(x$raw)]
+    if (length(top) == 1L) next
+    runs <- runs + 1L
+    # The repeats are consecutive, so the run is one plateau and not a raw
+    # value recurring in two places.
+    expect_equal(top, seq(min(top), max(top)), label = paste("top run of", where))
+    expect_equal(
+      norm_convert(max(x$raw), v, s)$t, min(top),
+      label = paste("T returned at the top raw of", where)
+    )
+  }
+  expect_equal(runs, 19L)
+
+  # The longest such run, named so a change in its length is visible here
+  # rather than only in the count above.
+  sf_anx <- norm_rows("SF", "anxiousness")
+  expect_equal(sum(sf_anx$raw == 4), 12L)
+  expect_equal(norm_convert(4, "SF", "anxiousness")$t, min(sf_anx$tscore[sf_anx$raw == 4]))
 })
 
 test_that("percentiles are proportions", {
