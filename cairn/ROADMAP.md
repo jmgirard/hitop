@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M29 | `norm_pid5()` hygiene and robustness | planned | — | normal | milestones/M29-norm-pid5-hygiene.md |
+| M29 | `norm_pid5()` hygiene and robustness | in-progress | — | normal | milestones/M29-norm-pid5-hygiene.md |
 | M27 | PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding) | done | M26 | normal | milestones/archive/M27-pid5-norming-functions.md |
 | M28 | PID-5 norming under shifted response codings, and the vignette norming sections | done | M27 | normal | milestones/archive/M28-pid5-norming-shifted-codings.md |
 | M26 | PID-5-BF total score across scoring, reliability, and the BF paper forms | done | — | normal | milestones/archive/M26-pid5bf-total-score.md |

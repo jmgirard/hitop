@@ -1,11 +1,11 @@
 # M29: `norm_pid5()` hygiene and robustness
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m29-norm-pid5-hygiene`
 
 ## Goal
 
