@@ -387,6 +387,35 @@ test_that("the reconciliation is reported once, naming both groups", {
   }
 })
 
+test_that("an all-invariant request is not reported as an adjustment", {
+  ## Every requested scale is coding-invariant, so nothing was reconciled and
+  ## the report must not claim otherwise.
+  got <- capture_warnings(
+    norm_pid5(data.frame(pid_INC = 12), scores = "pid_INC", version = "FULL",
+              srange = c(1, 4), append = FALSE)
+  )
+  expect_equal(got$n, 1L)
+  expect_match(got$text, "needed no reconciliation", fixed = TRUE)
+  expect_false(grepl("Adjusted", got$text, fixed = TRUE))
+})
+
+test_that("a request the tables cover nowhere reports coverage, not coding", {
+  ## The facets are in no version's tables, so there is nothing to reconcile and
+  ## the coverage message is the whole story.
+  got <- capture_warnings(
+    suppressMessages(
+      norm_pid5(data.frame(pid_anhedonia = 2.2), scores = "pid_anhedonia",
+                version = "FULL", srange = c(1, 4), append = FALSE)
+    )
+  )
+  expect_equal(got$n, 0L)
+  expect_message(
+    norm_pid5(data.frame(pid_anhedonia = 2.2), scores = "pid_anhedonia",
+              version = "FULL", srange = c(1, 4), append = FALSE),
+    "not covered"
+  )
+})
+
 test_that("the official coding says nothing about response coding", {
   expect_no_warning(
     norm_pid5(data.frame(pid_detachment = 1.20), scores = "pid_detachment",

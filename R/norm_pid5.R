@@ -99,9 +99,12 @@
 #'     to a fixed value. A shift moves the top of the range along with the
 #'     answers, so the same items are counted and the score is unchanged.
 #'
-#'   Which scales moved and which did not is reported once per call as a warning
-#'   whenever `srange` is a shifted coding; nothing is emitted on the official
-#'   one.
+#'   A shifted coding raises one warning per call naming which of the requested
+#'   scales were adjusted and which were left alone; where every requested scale
+#'   turns out to be coding-invariant, it says so rather than claiming an
+#'   adjustment. The warning covers the scales the tables actually carry, so a
+#'   request the tables cover nowhere raises the coverage message above instead
+#'   and nothing about coding. The official coding is silent.
 #'
 #'   One consequence is worth stating plainly, because it can put two differently
 #'   grounded numbers side by side in the same session: [validity_pid5()]'s
@@ -223,15 +226,23 @@ norm_pid5 <- function(
   if (shifted && any(covered)) {
     adjusted <- col_names[covered & metric != "invariant"]
     invariant <- col_names[covered & metric == "invariant"]
-    bullets <- c(
-      "!" = "Scores coded {.code c({srange[[1]]}, {srange[[2]]})} were reconciled to the official 0-3 coding before lookup."
-    )
+    ## Headline only claims a reconciliation when one happened: a request made
+    ## entirely of coding-invariant scales needed none, and saying otherwise
+    ## would describe work the function did not do.
     if (length(adjusted) > 0) {
-      bullets <- c(bullets, "*" = "Adjusted: {.val {adjusted}}.")
-    }
-    if (length(invariant) > 0) {
       bullets <- c(
-        bullets,
+        "!" = "Scores coded {.code c({srange[[1]]}, {srange[[2]]})} were reconciled to the official 0-3 coding before lookup.",
+        "*" = "Adjusted: {.val {adjusted}}."
+      )
+      if (length(invariant) > 0) {
+        bullets <- c(
+          bullets,
+          "*" = "Left unchanged as coding-invariant: {.val {invariant}}."
+        )
+      }
+    } else {
+      bullets <- c(
+        "!" = "Scores coded {.code c({srange[[1]]}, {srange[[2]]})} needed no reconciliation to the official 0-3 coding.",
         "*" = "Left unchanged as coding-invariant: {.val {invariant}}."
       )
     }

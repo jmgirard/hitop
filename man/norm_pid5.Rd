@@ -130,9 +130,12 @@ to a fixed value. A shift moves the top of the range along with the
 answers, so the same items are counted and the score is unchanged.
 }
 
-Which scales moved and which did not is reported once per call as a warning
-whenever \code{srange} is a shifted coding; nothing is emitted on the official
-one.
+A shifted coding raises one warning per call naming which of the requested
+scales were adjusted and which were left alone; where every requested scale
+turns out to be coding-invariant, it says so rather than claiming an
+adjustment. The warning covers the scales the tables actually carry, so a
+request the tables cover nowhere raises the coverage message above instead
+and nothing about coding. The official coding is silent.
 
 One consequence is worth stating plainly, because it can put two differently
 grounded numbers side by side in the same session: \code{\link[=validity_pid5]{validity_pid5()}}'s

@@ -88,6 +88,7 @@ interpretation.
 - 2026-07-30: AC3's `ORS` trace is split — `@details` states the invariance from how `validity_pid5()` computes the score (a line number would rot in a shipped man page), and the literal `R/validity_pid5.R:153` pointer sits in `norm_metric()`'s source comment.
 - 2026-07-30: T4's `@details` half landed with T1-T3 rather than in T4's commit, so no commit ships behavior whose documented contract contradicts it.
 - 2026-07-30: T4 — norming sections added to all three PID vignettes (FULL on `sim_pid5` + `validity_pid5()` output, SF on the real `ku_pid5sf` data, BF on `sim_pid5bf`), NEWS's `norm_pid5()` bullet rewritten to the shipped coding behavior; `document()` no diff, `test()` 10283 pass / 0 fail, `check()` 0 errors / 0 warnings / 0 notes.
+- 2026-07-30: review fixed the two actioned findings (F8 the vignette's "four validity scales" claim, false for FULL; F2 `@details` overstating when the reconciliation warning fires) plus F3 alongside F2 (the report claimed a reconciliation on an all-invariant request); two new tests lock both, suite 10288 pass / 0 fail.
 - 2026-07-30: plan gate chose to supersede D-020's `ORS` clause (D-023) over planning to the four-formula text, because `R/validity_pid5.R:153` already counts `ORS` against `srange[[2]]` and the function receives scores rather than items; falsified by an `ORS` coding shift that changes the count — none exists while the scale is defined as a count at the range maximum.
 
 ## Decisions
@@ -157,3 +158,57 @@ Reviewed 2026-07-30 on `m28-pid5-norming-shifted-codings` @ 1448833, PR #31.
 - Toolchain slot (`r-package`): `document()` no diff · generated files regenerated not
   hand-edited · README.Rmd/README.md untouched and in sync · `pkgdown::check_pkgdown()` "No
   problems found" · NEWS.md entry present · no new top-level files · full `check()` clean.
+- CI on PR #31: all 7 checks pass (ubuntu release/devel/oldrel-1, macOS, Windows, pkgdown,
+  test-coverage).
+
+### Independent review
+
+Three fresh-context lenses, then a Sonnet scorer that did not generate the findings.
+
+- **Prior-review lens: 0 findings.** Confirmed M27's five fixed findings all still intact
+  (clamping, the `@details` low-end text, per-observation capping, both above-table test
+  gaps), and that the four sub-threshold M27 findings parked as a ROADMAP candidate are
+  untouched — neither worsened nor accidentally fixed.
+- **Blame-history lens:** the per-observation capping fix is intact (only its guard variable
+  was renamed); the deleted `srange`-refusal test was superseded by intent, not lost; the
+  `official` → `usable`/`shifted` split matches D-023's corrected partition.
+- **Diff-bug lens: 16 findings.** It also built an oracle the suite lacks — `sim_pid5[1:20, ]`
+  with +1 added to every item, scored under each coding — and found the 0-3 and 1-4 conversion
+  columns byte-identical across all five domains, `INC`, `ORS`, `PRD`, and the BF total, with
+  measured raw deltas of exactly +1 per mean, 0 for `INC`/`ORS`, +22 for `PRD`. Reverse-keying
+  survives a shift (`reverse()` is `low + high - x`). Negative `low` (`c(-2, 1)`) reproduces
+  the official result exactly. No arithmetic defect found.
+
+**Actioned (score ≥ 80), both fixed on the branch:**
+
+- **F8 (88)** — `vignettes/pid5_scoring.Rmd` claimed the FULL tables cover "the four validity
+  scales"; `pid_norms` carries three under FULL (`INC`, `ORS`, `PRD`) and none for `SD-TD`. A
+  reader would have expected `pid_SDTD` to convert. Prose corrected to name the three and say
+  SD-TD is not normed.
+- **F2 (80)** — `@details` said the reconciliation warning fires "whenever `srange` is a
+  shifted coding", but the code guards on `shifted && any(covered)`, so a facets-only request
+  on a 1-4 coding said nothing about coding at all. `@details` rewritten to the actual
+  condition.
+
+**Fixed alongside F2** (same message surface; the scorer flagged them as one repair):
+
+- **F3 (78)** — the report's headline said scores "were reconciled" even when every requested
+  scale was coding-invariant and nothing had been adjusted. The headline is now conditional on
+  a non-empty adjusted set, reading "needed no reconciliation" otherwise.
+
+Both fixes are locked by new tests (all-invariant request reports no adjustment; uncovered-only
+request raises the coverage message and zero warnings). Suite after fixes: 10288 pass, 0 fail.
+
+**Logged below threshold (13), not actioned:** F7 (72) the shipped `cli_warn()` contradicts
+D-020's `cli_alert_info()` text with no D-entry — raised at the merge gate · F9 (68) two
+vignettes describe an uncovered-scale message their chunks never trigger · F13 (62) untested
+interaction paths (negative `low`; a `k≠4` coding that is also shifted) · F10 (50) `INC-S` vs
+`INCS` in one man page · F12 (45) the test helper `capture_warnings()` shadows a `testthat`
+export with different semantics · F6 (40) two condition classes coexist in the function, so no
+single suppressor silences it · F14 (40) AC5's fixtures check the stated formula rather than
+round-tripping against `score_pid5()` · F4 (30) `PRD`'s 22-item correction depends on
+`validity_pid5()` summing without `na.rm`, unasserted · F1 (25) `norm_metric()` defaults
+unclassified scales to `"mean"` rather than failing loud · F5 (25) a `k≠4` coding also
+suppresses the coverage report · F11 (25) `@details` states PRD's item count in prose · F15
+(25) one differential assertion is weaker than the printed table allows · F16 (3) premise
+stale — the reviewer read the milestone file before this Review section existed.

@@ -93,7 +93,7 @@ scored <- score_pid5(sim_pid5, items = 1:220)
 scored <- validity_pid5(scored, items = 1:220)
 ```
 
-The published tables cover the five domain scales and the four validity scales for the full form; they do not cover the 25 facets. Each converted scale gains a `_ptl` column, and those whose tables print T scores also gain a `_t` column. The four validity scales are distributed as percentiles only, so they get no `_t` column.
+For the full form the published tables cover the five domain scales and three of the validity scales — INC, ORS, and PRD. They do not cover the 25 facets, and they do not cover SD-TD at all. Each converted scale gains a `_ptl` column, and those whose tables print T scores also gain a `_t` column. The validity scales are distributed as percentiles only, so they get no `_t` column.
 
 ```{r x2d}
 norm_pid5(
