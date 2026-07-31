@@ -19,7 +19,8 @@
 #' @param prefix The prefix [score_pid5()] applied to its output columns, used
 #'   to match a score column back to its scale. Matched literally, not as a
 #'   regular expression: a column name that does not begin with exactly this
-#'   string keeps its whole name and is reported as uncovered.
+#'   string keeps its whole name and is reported as uncovered. Pass `""` when
+#'   the columns are named for the scales themselves, with no prefix to strip.
 #' @param append Whether to return the input `data` with the conversion columns
 #'   appended (`TRUE`, the default) or the conversion columns alone.
 #'
@@ -218,9 +219,13 @@ norm_pid5 <- function(
   ## validity scales, distributed as percentiles only -- goes without a `_t`
   ## column. An uncovered scale gets both columns, filled with NA, so a missing
   ## conversion is visible in the output rather than absent from it.
+  ## Reuses `covered` rather than scanning the table for coverage a second
+  ## time; only a covered scale's rows need looking at.
   has_t <- vapply(
-    scale_names,
-    function(s) !norm_covers(version, s) || any(!is.na(norm_rows(version, s)$tscore)),
+    seq_along(scale_names),
+    function(i) {
+      !covered[[i]] || any(!is.na(norm_rows(version, scale_names[[i]])$tscore))
+    },
     logical(1)
   )
 

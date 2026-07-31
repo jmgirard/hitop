@@ -116,12 +116,12 @@ it here.
       `norm_convert()`, move the 0.20 prefix fixture off the tie boundary, drop
       the vestigial `suppressMessages()`, and make the refusal half of the
       silence test fail pre-M29's condition class.
-- [ ] T7. Write the characterization harness, capture the pre-branch baseline
+- [x] T7. Write the characterization harness, capture the pre-branch baseline
       before any code change, and re-run it at the end.
-- [ ] T8. Cheap polish in files already touched: the two unreachable
+- [x] T8. Cheap polish in files already touched: the two unreachable
       `strip_prefix()` guards, the `prefix = ""` documentation gap, and the
       redundant coverage scans in `norm_pid5()`.
-- [ ] T9. DESIGN.md + CLAUDE.md entries for `strip_prefix()` and the
+- [x] T9. DESIGN.md + CLAUDE.md entries for `strip_prefix()` and the
       alert-convention carve-out.
 
 ## Work log
@@ -139,6 +139,9 @@ it here.
 - 2026-07-31: cli takes a plural marker's quantity from the last value interpolated before it, so `{cli::qty(n)}` at the head of a string is cancelled by an intervening `{version}` — qty moved adjacent to the marker.
 - 2026-07-31: AC3 mutations for T4-T6, each observed red and reverted — dropping `call = call` (attribution test, 2 failures); `{.val {version}}` restored (consistency test, 2); single hand-rolled class bullet (consistency test, 2); the refusal reverted to `cli_alert_warning()` (silence test 2, plus 5 elsewhere).
 - 2026-07-31: `devtools::document()` no diff; `devtools::test()` 10400 pass / 0 fail / 0 warn / 1 pre-existing skip.
+- 2026-07-31: T8 — `has_t` now reuses `covered` instead of re-scanning `pid_norms` for coverage per column, and `@param prefix` documents `""`. The finding's "two unreachable `strip_prefix()` guards" does not map to shipped code: `R/util.R:179-183` is four lines with no guards, so nothing was removed; recorded rather than invented.
+- 2026-07-31: T9 — DESIGN.md lists `strip_prefix()` among the internal utilities and its "User communication" section carries the D-024/D-025 carve-out; CLAUDE.md's messaging line points at it in one clause.
+- 2026-07-31: T7 closed — the characterization harness reports `identical()` for 9/9 configurations (3 datasets x 3 sranges) before and after the branch; `devtools::check()` 0 errors / 0 warnings / 0 notes.
 
 ## Decisions
 
