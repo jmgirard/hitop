@@ -88,7 +88,12 @@ interface before a CRAN submission.
   codes are not its scores, and a character column coerces to `NA`.
   Logical columns still convert. Every complaint about the argument
   names `scores`, not the `items` or `scales` of the shared validators
-  behind it.
+  behind it. That error now gives each offending column its own line
+  with its full class (an ordered factor reads as `<ordered/factor>`
+  rather than as `ordered`), and errors raised while reconciling a
+  shifted response coding are attributed to
+  [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+  rather than to the internal helper that raised them.
 
 - [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)’s
   `prefix` argument is now matched **literally** (breaking). It was

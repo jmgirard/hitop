@@ -39,8 +39,11 @@ Maintained by Jeffrey Girard.
 - User messaging via
   [`cli::cli_alert_warning()`](https://cli.r-lib.org/reference/cli_alert.html) +
   [`cli::cli_alert_info()`](https://cli.r-lib.org/reference/cli_alert.html)
-  with actionable `{.code dplyr::filter(...)}` suggestions; validation
-  via `validate_*()`/`cli_assert()` in `R/util.R`.
+  with actionable `{.code dplyr::filter(...)}` suggestions — except
+  reports the caller is meant to catch or suppress, which are
+  [`cli::cli_warn()`](https://cli.r-lib.org/reference/cli_abort.html)
+  conditions (D-024/D-025 carve-out, see DESIGN “User communication”);
+  validation via `validate_*()`/`cli_assert()` in `R/util.R`.
 - Base-R data manipulation internally; {tibble} is an Import (default
   output), {lavaan} in Suggests (needed only by `calc_omega`).
 - Instrument administration text lives in `R/sysdata.rda`

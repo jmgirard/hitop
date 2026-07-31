@@ -121,7 +121,8 @@ options is not convertible. See Details.</p></dd>
 <dd><p>The prefix <code><a href="score_pid5.html">score_pid5()</a></code> applied to its output columns, used
 to match a score column back to its scale. Matched literally, not as a
 regular expression: a column name that does not begin with exactly this
-string keeps its whole name and is reported as uncovered.</p></dd>
+string keeps its whole name and is reported as uncovered. Pass <code>""</code> when
+the columns are named for the scales themselves, with no prefix to strip.</p></dd>
 
 
 <dt id="arg-append">append<a class="anchor" aria-label="anchor" href="#arg-append"></a></dt>

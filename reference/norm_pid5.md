@@ -55,7 +55,8 @@ norm_pid5(
   applied to its output columns, used to match a score column back to
   its scale. Matched literally, not as a regular expression: a column
   name that does not begin with exactly this string keeps its whole name
-  and is reported as uncovered.
+  and is reported as uncovered. Pass `""` when the columns are named for
+  the scales themselves, with no prefix to strip.
 
 - append:
 
