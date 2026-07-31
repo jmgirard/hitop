@@ -34,11 +34,11 @@ rank_scales(
 
 - prefix:
 
-  A length-1 string giving a leading pattern to strip from each selected
+  A length-1 string giving a leading string to strip from each selected
   column name before concatenation, or `NULL` to keep names as is. The
-  match is interpreted as a regular expression anchored to the start of
-  the name (i.e., `"^"` is prepended). Special regex characters in
-  `prefix` will be treated as regex metacharacters.
+  match is literal, not a regular expression: a column name that does
+  not begin with exactly `prefix` is left unchanged, and characters that
+  are regex metacharacters (`.`, `(`, `+`) stand for themselves.
 
 - top:
 
@@ -93,9 +93,9 @@ functions. Missing values are placed last by
 [`order()`](https://rdrr.io/r/base/order.html) and will be included only
 if there are fewer than `top` non-missing values in a row.
 
-If `prefix` is not `NULL`, the function removes the leading pattern
-`paste0("^", prefix)` from each selected column name before
-concatenation.
+If `prefix` is not `NULL`, the function removes that exact leading
+string from each selected column name before concatenation. Names that
+do not begin with it are carried through whole.
 
 The output column is named by `name`. When `append = TRUE` it is added
 after the existing columns of `data` (whose order is preserved); when

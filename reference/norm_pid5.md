@@ -32,6 +32,8 @@ norm_pid5(
   The score columns to convert, as column names or column positions
   (mirroring the `items` argument of
   [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)).
+  Each column must be numeric (or logical) and each may be named only
+  once.
 
 - version:
 
@@ -51,7 +53,9 @@ norm_pid5(
   The prefix
   [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
   applied to its output columns, used to match a score column back to
-  its scale.
+  its scale. Matched literally, not as a regular expression: a column
+  name that does not begin with exactly this string keeps its whole name
+  and is reported as uncovered.
 
 - append:
 
@@ -105,7 +109,7 @@ project repository, not the installed package).
   the lowest returns whatever an observation *at* the lowest printed raw
   returns – which, on the scales whose tables print a run of 0.00, is
   that run's highest-T row and not the table's first row, so the two
-  agree instead of jumping. A message reports how many observations were
+  agree instead of jumping. A warning reports how many observations were
   capped at each end. This is reachable in ordinary data: `PRD` is a
   22-item sum reaching 66 while its table stops at 55.
 
@@ -115,7 +119,7 @@ project repository, not the installed package).
   negative affectivity), 87 (brief-form detachment), 93 (brief-form
   disinhibition), 87 (full-form negative affectivity), or 85 (short-form
   negative affectivity) – each at percentile 1.00. Nothing is wrong with
-  such data and no message fires.
+  such data and nothing is reported.
 
 - **Comparison tolerance.** All comparisons use an absolute tolerance of
   1e-8, so that scores on grids with no exact binary representation (a
@@ -124,7 +128,21 @@ project repository, not the installed package).
 
 Columns the tables do not cover for the requested `version` – the 25
 facets, for instance – return `NA` in both conversion columns with a
-message naming them. An `NA` score returns `NA`.
+warning naming them. An `NA` score returns `NA`.
+
+**Reporting and silence.** Everything this function reports – the
+capping count above, the uncovered-column warning, and the two
+response-coding reports below – is a warning condition, so a single
+[`suppressWarnings()`](https://rdrr.io/r/base/warning.html) call
+silences the function and any one report can still be caught and tested
+for individually.
+
+**Errors.** `scores` is checked before anything is converted. Naming the
+same score column twice is an error rather than a duplicated pair of
+output columns, and a factor or character score column is an error
+rather than a silent coercion – a factor's integer codes are not its
+scores, and a character column would coerce to `NA`. Logical columns are
+accepted, since a 0/1 indicator converts as it reads.
 
 **Response coding.** The normative tables are built on the official
 four-option 0-3 coding. Data collected on a four-option coding that
@@ -169,7 +187,7 @@ requested scales were adjusted and which were left alone; where every
 requested scale turns out to be coding-invariant, it says so rather than
 claiming an adjustment. The warning covers the scales the tables
 actually carry, so a request the tables cover nowhere raises the
-coverage message above instead and nothing about coding. The official
+coverage warning above instead and nothing about coding. The official
 coding is silent.
 
 One consequence is worth stating plainly, because it can put two

@@ -161,9 +161,11 @@ norm_pid5(
 Every number returned is a cell of a published table: the nearest
 printed row is selected and nothing is interpolated. A score that falls
 outside a printed range is capped to the nearest end rather than
-extrapolated, and a message reports how many observations that happened
-to. Note that `version = "BF"` selects the brief-form tables — the same
-raw score converts differently across forms.
+extrapolated, and a warning reports how many observations that happened
+to. Every report this function makes is a warning, so a single
+[`suppressWarnings()`](https://rdrr.io/r/base/warning.html) call
+silences it. Note that `version = "BF"` selects the brief-form tables —
+the same raw score converts differently across forms.
 
 If the items were answered on a four-option response scale that starts
 somewhere other than 0 — 1 to 4, say — pass that range as `srange` and

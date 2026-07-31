@@ -344,8 +344,10 @@ as percentiles only, so they get no <code>_t</code> column.</p>
 <span>  version <span class="op">=</span> <span class="st">"FULL"</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> 0 observations below and 63 above the printed range were capped to the nearest printed row.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> A capped score's T and percentile are the end row's printed values, not an extrapolation.</span></span>
+<span><span class="co">#&gt; Warning: <span style="color: #BBBB00;">!</span> 0 observations below and 63 above the printed range were capped to the</span></span>
+<span><span class="co">#&gt;   nearest printed row.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> A capped score's T and percentile are the end row's printed values, not an</span></span>
+<span><span class="co">#&gt;   extrapolation.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 13</span></span></span>
 <span><span class="co">#&gt;    pid_negativeAffectivity_t pid_negativeAffectivity_ptl pid_detachment_t</span></span>
 <span><span class="co">#&gt;                        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -368,10 +370,12 @@ as percentiles only, so they get no <code>_t</code> column.</p>
 <p>Every number returned is a cell of a published table: the nearest
 printed row is selected and nothing is interpolated. A score that falls
 outside a printed range is capped to the nearest end rather than
-extrapolated, and a message reports how many observations that happened
+extrapolated, and a warning reports how many observations that happened
 to — the <code>PRD</code> sum reaches 66 while its table stops at 55, so
 it is a common one to see. A scale the tables do not cover returns
-<code>NA</code> in both columns with a message naming it.</p>
+<code>NA</code> in both columns with a warning naming it. Every report
+this function makes is a warning, so a single
+<code><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings()</a></code> call silences it.</p>
 <p>If the items were answered on a four-option response scale that
 starts somewhere other than 0 — 1 to 4, say — pass that range as
 <code>srange</code> and each score is reconciled to the published 0–3

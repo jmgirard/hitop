@@ -107,11 +107,12 @@ the original data as a tibble.</p>
 
 
 <dt id="arg-prefix">prefix<a class="anchor" aria-label="anchor" href="#arg-prefix"></a></dt>
-<dd><p>A length-1 string giving a leading pattern to strip from each
+<dd><p>A length-1 string giving a leading string to strip from each
 selected column name before concatenation, or <code>NULL</code> to keep names as
-is. The match is interpreted as a regular expression anchored to the start
-of the name (i.e., <code>"^"</code> is prepended). Special regex characters in
-<code>prefix</code> will be treated as regex metacharacters.</p></dd>
+is. The match is literal, not a regular expression: a column name that does
+not begin with exactly <code>prefix</code> is left unchanged, and characters that
+are regex metacharacters (<code>.</code>, <code>(</code>, <code>+</code>) stand for
+themselves.</p></dd>
 
 
 <dt id="arg-top">top<a class="anchor" aria-label="anchor" href="#arg-top"></a></dt>
@@ -164,9 +165,9 @@ behavior of <code>order</code>), which is alphabetical if using the package's
 scoring functions. Missing values are placed last by <code><a href="https://rdrr.io/r/base/order.html" class="external-link">order()</a></code> and
 will be included only if there are fewer than <code>top</code> non-missing values
 in a row.</p>
-<p>If <code>prefix</code> is not <code>NULL</code>, the function removes the leading pattern
-<code>paste0("^", prefix)</code> from each selected column name before
-concatenation.</p>
+<p>If <code>prefix</code> is not <code>NULL</code>, the function removes that exact leading
+string from each selected column name before concatenation. Names that do not
+begin with it are carried through whole.</p>
 <p>The output column is named by <code>name</code>. When <code>append = TRUE</code> it is
 added after the existing columns of <code>data</code> (whose order is preserved);
 when <code>append = FALSE</code> the result is a one-column tibble.</p>

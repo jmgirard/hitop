@@ -248,8 +248,10 @@ norm_pid5(
   version = "SF",
   append = FALSE
 )
-#> ! 0 observations below and 6 above the printed range were capped to the nearest printed row.
-#> ℹ A capped score's T and percentile are the end row's printed values, not an extrapolation.
+#> Warning: ! 0 observations below and 6 above the printed range were capped to the nearest
+#>   printed row.
+#> ℹ A capped score's T and percentile are the end row's printed values, not an
+#>   extrapolation.
 #> # A tibble: 386 × 11
 #>    pid_negativeAffectivity_t pid_negativeAffectivity_ptl pid_detachment_t
 #>                        <int>                       <dbl>            <int>
@@ -273,9 +275,11 @@ norm_pid5(
 Every number returned is a cell of a published table: the nearest
 printed row is selected and nothing is interpolated. A score that falls
 outside a printed range is capped to the nearest end rather than
-extrapolated, and a message reports how many observations that happened
+extrapolated, and a warning reports how many observations that happened
 to. A scale the tables do not cover returns `NA` in both columns with a
-message naming it.
+warning naming it. Every report this function makes is a warning, so a
+single [`suppressWarnings()`](https://rdrr.io/r/base/warning.html) call
+silences it.
 
 If the items were answered on a four-option response scale that starts
 somewhere other than 0 — 1 to 4, say — pass that range as `srange` and
