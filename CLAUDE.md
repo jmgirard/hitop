@@ -1,6 +1,6 @@
 # hitop — R package for HiTOP Society questionnaire instruments
 
-Scores, validity-screens, and distributes HiTOP Society instruments: PID-5 (FULL 220 / SF 100 / BF 25, one function per task with a `version` argument), HiTOP-SR (405), HiTOP-BR (45), and HiTOP-HSUM (item data + export only; scoring pending Society feedback). Version 0.1.0, GPL-3. Maintained by Jeffrey Girard.
+Scores, validity-screens, and distributes HiTOP Society instruments: PID-5 (FULL 220 / SF 100 / BF 25, one function per task with a `version` argument), HiTOP-SR (405), HiTOP-BR (45), and HiTOP-HSUM (item data + export only; scoring pending Society feedback). Version 0.2.0, GPL-3. Maintained by Jeffrey Girard.
 
 ## Commands
 
