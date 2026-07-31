@@ -1,19 +1,18 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-31 (M29 merged as PR #32 and archived; all 16 checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md; two lessons captured, none retired; one candidate added for M29's sub-threshold review residue)_
+_Last hygiene check: 2026-07-31 (M30 merged as PR #33 and archived, M25 row pruned under terminal-row retention; all checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md; one lesson captured, none retired; one candidate added for M30's sub-threshold oracle-rigor findings)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M29)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M30 | Norming-family test oracles and internal consistency | review | — | normal | milestones/M30-norming-oracle-residue.md |
+| M30 | Norming-family test oracles and internal consistency | done | — | normal | milestones/archive/M30-norming-oracle-residue.md |
 | M29 | `norm_pid5()` hygiene and robustness | done | — | normal | milestones/archive/M29-norm-pid5-hygiene.md |
 | M27 | PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding) | done | M26 | normal | milestones/archive/M27-pid5-norming-functions.md |
 | M28 | PID-5 norming under shifted response codings, and the vignette norming sections | done | M27 | normal | milestones/archive/M28-pid5-norming-shifted-codings.md |
 | M26 | PID-5-BF total score across scoring, reliability, and the BF paper forms | done | — | normal | milestones/archive/M26-pid5bf-total-score.md |
-| M25 | PID-5 normative tables — verification and ingest | done | — | normal | milestones/archive/M25-pid5-norms-ingest.md |
 
 ## Candidates
 
@@ -29,4 +28,5 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Response-option legend wraps mid-phrase on the PID paper forms: `make_items_table()` builds one 126-character string that breaks wherever the column ends; split it two-per-line at a bullet separator (break style chosen by the maintainer 2026-07-30). PID-only — the HiTOP-SR/BR legend is 58 chars and fits on one line — but the fix is in shared generator code and rebuilds 6 PID DOCX with manifest rows per D-016; pure layout, no wording change (IP1 style-fix carve-out) — added 2026-07-30 — lineage: M26
 - Score HiTOP-SR subset-collected data: score data gathered from a subset instrument (columns = subset items, original HSR numbering) via the `hitop_subset` descriptor — added 2026-07-17 — depends on M24 (plan after M24 lands; second half of the modularization arc)
 - Shared validator polish in `R/util.R`: the `.internal = TRUE` idiom, raw glue interpolation of the internal `unit`/`arg` literals, and the pre-existing `stopifnot()` on `prefix` — these helpers are shared with `score_pid5()`/`validity_pid5()`/`rank_scales()`, so a change ripples across the scoring family — added 2026-07-31 — lineage: M30 (its Out list; M29's residue candidate was absorbed into M30)
+- Strengthen the norming differential oracle: exercise `observed_shift()` on data with a missing PRD item (a regression to `na.rm = TRUE` in PRD's `rowSums()` leaves it green today), assert the covered-scale count rather than `any(keep)` so the "sum" branch cannot silently drop out, and loop `low` over a negative shift — added 2026-07-31 — lineage: M30 (its two highest sub-threshold review findings, 78 and 75)
 - Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M24
