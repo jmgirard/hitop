@@ -258,14 +258,140 @@ test_that("an uncovered scale yields NA columns and one message naming it", {
   expect_true(all(vapply(out, function(x) all(is.na(x)), logical(1))))
 })
 
-test_that("a non-official srange refuses to convert and says so", {
-  expect_message(
-    out <- norm_pid5(scored_bf, scores = bf_scales, version = "BF",
-                     srange = c(1, 4), append = FALSE),
-    "official 0-3 response coding"
+# ---- shifted response codings ----------------------------------------------
+#
+# Expected values below are hand-computed from the shift arithmetic and read off
+# named printed cells of `pid_norms`; none is taken from norm_pid5()'s own output
+# (IP2). The scales are version-pinned because the tables are: INC, ORS, and PRD
+# are printed for the FULL form only and INC-S for the SF only.
+
+## Run `expr`, collecting its warnings and returning them alongside its value.
+## Warning text is whitespace-collapsed so assertions are not defeated by the
+## line wrapping cli applies at the console width.
+capture_warnings <- function(expr) {
+  msgs <- character()
+  value <- withCallingHandlers(
+    expr,
+    warning = function(w) {
+      msgs <<- c(msgs, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
   )
-  expect_true(all(vapply(out, function(x) all(is.na(x)), logical(1))))
-  expect_equal(ncol(out), 2 * length(bf_scales))
+  list(
+    value = value,
+    n = length(msgs),
+    text = gsub("[[:space:]]+", " ", paste(msgs, collapse = " "))
+  )
+}
+
+test_that("a coding with a different option count converts nothing", {
+  got <- capture_warnings(
+    norm_pid5(scored_bf, scores = bf_scales, version = "BF",
+              srange = c(0, 4), append = FALSE)
+  )
+  expect_equal(got$n, 1L)
+  expect_match(got$text, "implies 5 response options", fixed = TRUE)
+  expect_true(all(vapply(got$value, function(x) all(is.na(x)), logical(1))))
+  expect_equal(ncol(got$value), 2 * length(bf_scales))
+
+  ## Fewer options is refused on the same footing as more.
+  two <- capture_warnings(
+    norm_pid5(scored_bf, scores = bf_scales, version = "BF",
+              srange = c(0, 1), append = FALSE)
+  )
+  expect_match(two$text, "implies 2 response options", fixed = TRUE)
+  expect_true(all(vapply(two$value, function(x) all(is.na(x)), logical(1))))
+})
+
+test_that("a shifted coding reconciles an item mean by `low`", {
+  ## Five brief-form detachment items coded 1-4 whose mean is 2.20 are the same
+  ## responses as a 0-3 mean of 2.20 - 1 = 1.20. The BF detachment table prints
+  ## raw 1.18 at T 58 and raw 1.24 at T 59, and 1.20 is the nearer of the two to
+  ## 1.18 (0.02 against 0.04), so the reconciled lookup lands on the T 58 row.
+  row <- pid_norms[pid_norms$version == "BF" &
+                     pid_norms$scale == "detachment" &
+                     pid_norms$tscore == 58L, ]
+  expect_equal(row$raw, 1.18)
+
+  got <- capture_warnings(
+    norm_pid5(data.frame(pid_detachment = 2.20), scores = "pid_detachment",
+              version = "BF", srange = c(1, 4), append = FALSE)
+  )
+  expect_equal(got$value$pid_detachment_t, 58L)
+  expect_equal(got$value$pid_detachment_ptl, row$percentile)
+
+  ## The shift is what produced that row: read unreconciled, 2.20 is a far
+  ## higher score than 1.20 and lands elsewhere in the table.
+  unshifted <- norm_pid5(data.frame(pid_detachment = 2.20),
+                         scores = "pid_detachment", version = "BF",
+                         append = FALSE)
+  expect_gt(unshifted$pid_detachment_t, 58L)
+})
+
+test_that("a shifted coding reconciles PRD by `low` x nItems", {
+  ## PRD is a plain sum over its items, so the same responses coded 1-4 rather
+  ## than 0-3 sum one point higher per item: a 0-3 sum of 30 is a 1-4 sum of
+  ## 30 + 22 = 52.
+  expect_equal(sum(!is.na(pid_items$PRD)), 22L)
+  want <- pid_norms$percentile[pid_norms$version == "FULL" &
+                                 pid_norms$scale == "PRD" &
+                                 pid_norms$raw == 30]
+  expect_equal(length(want), 1L)
+
+  got <- capture_warnings(
+    norm_pid5(data.frame(pid_PRD = 52), scores = "pid_PRD", version = "FULL",
+              srange = c(1, 4), append = FALSE)
+  )
+  expect_equal(got$value$pid_PRD_ptl, want)
+})
+
+test_that("INC, INC-S, and ORS are unchanged by a shifted coding", {
+  ## INC and INC-S sum absolute differences within item pairs, which a constant
+  ## added to both members cancels out of; ORS counts items answered at the top
+  ## of the response range, which moves with the range. All three keep the score
+  ## they were given, so each converts to the cell printed at that raw.
+  cases <- list(
+    list(version = "FULL", scale = "INC", raw = 12),
+    list(version = "SF", scale = "INCS", raw = 5),
+    list(version = "FULL", scale = "ORS", raw = 2)
+  )
+  for (case in cases) {
+    col <- paste0("pid_", case$scale)
+    want <- pid_norms$percentile[pid_norms$version == case$version &
+                                   pid_norms$scale == case$scale &
+                                   pid_norms$raw == case$raw]
+    expect_equal(length(want), 1L, info = case$scale)
+    df <- stats::setNames(data.frame(case$raw), col)
+    got <- capture_warnings(
+      norm_pid5(df, scores = col, version = case$version, srange = c(1, 4),
+                append = FALSE)
+    )
+    expect_equal(got$value[[paste0(col, "_ptl")]], want, info = case$scale)
+  }
+})
+
+test_that("the reconciliation is reported once, naming both groups", {
+  df <- data.frame(pid_detachment = 2.20, pid_PRD = 52, pid_ORS = 2)
+  got <- capture_warnings(
+    suppressMessages(
+      norm_pid5(df, scores = names(df), version = "FULL", srange = c(1, 4),
+                append = FALSE)
+    )
+  )
+  expect_equal(got$n, 1L)
+  expect_match(got$text, "reconciled", fixed = TRUE)
+  expect_match(got$text, "Adjusted", fixed = TRUE)
+  expect_match(got$text, "unchanged", fixed = TRUE)
+  for (nm in names(df)) {
+    expect_match(got$text, nm, fixed = TRUE)
+  }
+})
+
+test_that("the official coding says nothing about response coding", {
+  expect_no_warning(
+    norm_pid5(data.frame(pid_detachment = 1.20), scores = "pid_detachment",
+              version = "BF", srange = c(0, 3), append = FALSE)
+  )
 })
 
 test_that("capping is reported per end and does not extrapolate", {
