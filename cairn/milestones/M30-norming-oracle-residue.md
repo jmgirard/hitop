@@ -107,12 +107,12 @@ it here.
       header.
 - [x] T3. Add the pairwise-disjointness assertion over the three vectors in
       `R/norm_engine.R:114-123`.
-- [ ] T4. Thread `call` from `norm_pid5()` into `norm_metric()`
+- [x] T4. Thread `call` from `norm_pid5()` into `norm_metric()`
       (`R/norm_engine.R:125-153`) and test the attribution.
-- [ ] T5. Fix the two aborts per AC5 — bare `{version}` in `norm_metric()`;
+- [x] T5. Fix the two aborts per AC5 — bare `{version}` in `norm_metric()`;
       one bullet per bad column with `{.cls}` and a counted headline in
       `R/norm_pid5.R:195-207` — and update the both-offenders test.
-- [ ] T6. Test hygiene: replace the logical-column expectation computed with
+- [x] T6. Test hygiene: replace the logical-column expectation computed with
       `norm_convert()`, move the 0.20 prefix fixture off the tie boundary, drop
       the vestigial `suppressMessages()`, and make the refusal half of the
       silence test fail pre-M29's condition class.
@@ -135,6 +135,10 @@ it here.
 - 2026-07-31: T7's baseline capture reordered ahead of T1 (minor amendment) — the harness must read the pre-change code; 9 configurations captured to a scratch RDS.
 - 2026-07-31: T1-T3 done — `observed_shift()` scores a dataset and its `data + low` copy on matching `srange` and differences per scale; `norm_shift()` is asserted against the measured shift for FULL/SF/BF x low 1,2; the per-scale label expectations at the old :218-221 and :234 are gone; the three vectors are asserted pairwise disjoint. `test_file()` 406 pass / 0 fail.
 - 2026-07-31: AC3 mutations for T1-T3, each observed red and reverted — "PRD" added to `norm_mean_scales` (disjointness 1 failure, differential 2); `out[metric == "mean"] <- low + 1` (differential 6 failures); "ORS" moved from invariant to mean (4 failures).
+- 2026-07-31: T4-T6 done — `norm_metric()` takes `call = rlang::caller_env()` and the abort now reads `norm_pid5()`; the abort names the version bare and pluralizes off the unclassified count; the non-numeric abort emits one `{.cls}` bullet per offending column (an ordered factor reads `<ordered/factor>`); logical-column and `prefix` fixtures read printed cells instead of `norm_convert()`, the prefix fixture moved off the 0.20 tie, the vestigial `suppressMessages()` dropped, and the refusal half now also asserts `suppressMessages()` does not reach it. NEWS updated.
+- 2026-07-31: cli takes a plural marker's quantity from the last value interpolated before it, so `{cli::qty(n)}` at the head of a string is cancelled by an intervening `{version}` — qty moved adjacent to the marker.
+- 2026-07-31: AC3 mutations for T4-T6, each observed red and reverted — dropping `call = call` (attribution test, 2 failures); `{.val {version}}` restored (consistency test, 2); single hand-rolled class bullet (consistency test, 2); the refusal reverted to `cli_alert_warning()` (silence test 2, plus 5 elsewhere).
+- 2026-07-31: `devtools::document()` no diff; `devtools::test()` 10400 pass / 0 fail / 0 warn / 1 pre-existing skip.
 
 ## Decisions
 

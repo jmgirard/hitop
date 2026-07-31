@@ -509,10 +509,12 @@ test_that("a PRD with a missing item stays NA through the shift correction", {
   expect_true(is.na(scored$pid_PRD[[1]]))
   expect_false(any(is.na(scored$pid_PRD[-1])))
 
-  out <- suppressMessages(suppressWarnings(
+  ## No suppressMessages() here: every report norm_pid5() emits is a warning
+  ## condition (D-025), so wrapping it would silence nothing.
+  out <- suppressWarnings(
     norm_pid5(scored, scores = "pid_PRD", version = "FULL", srange = c(1, 4),
               append = FALSE)
-  ))
+  )
   expect_true(is.na(out$pid_PRD_ptl[[1]]))
   expect_false(any(is.na(out$pid_PRD_ptl[-1])))
 })
@@ -588,13 +590,17 @@ test_that("one suppressWarnings() silences the whole function", {
   ## for some and suppressWarnings() for the rest.
 
   ## The refusal case: a five-option coding refuses before anything else runs,
-  ## so the refusal is the only report there is to silence.
-  expect_silent(
-    suppressWarnings(
-      norm_pid5(scored_bf, scores = bf_scales, version = "BF",
-                srange = c(0, 4), append = FALSE)
-    )
-  )
+  ## so the refusal is the only report there is to silence. Silencing it under
+  ## suppressWarnings() proves little on its own -- the refusal was already a
+  ## warning before the four were unified -- so the lock is the other half:
+  ## suppressMessages() must NOT reach it, which fails the moment it reverts to
+  ## a cli_alert_* message.
+  refuse <- function() {
+    norm_pid5(scored_bf, scores = bf_scales, version = "BF",
+              srange = c(0, 4), append = FALSE)
+  }
+  expect_silent(suppressWarnings(refuse()))
+  expect_warning(suppressMessages(refuse()), "response options")
 
   ## The shifted case: one call that emits three different reports together --
   ## a PRD sum shifted below its table's top row and then capped, beside an
@@ -614,6 +620,67 @@ test_that("one suppressWarnings() silences the whole function", {
                 append = FALSE)
     )
   )
+  ## And the same lock on the two reports M29 reclassified: suppressMessages()
+  ## leaves all three standing.
+  under_msg <- collect_warnings(
+    suppressMessages(
+      norm_pid5(df, scores = names(df), version = "FULL", srange = c(1, 4),
+                append = FALSE)
+    )
+  )
+  expect_equal(under_msg$n, 3L)
+})
+
+test_that("an unclassified covered scale blames norm_pid5(), not the helper", {
+  ## The abort fires inside norm_metric(), an internal helper the caller never
+  ## named; `call` threading attributes it to the exported function instead,
+  ## matching the convention the R/util.R validators follow.
+  local_mocked_bindings(norm_covers = function(version, scale) TRUE)
+  e <- rlang::catch_cnd(
+    norm_pid5(data.frame(pid_PRDS = 3), scores = "pid_PRDS", version = "FULL"),
+    "error"
+  )
+  shown <- paste(deparse(conditionCall(e)), collapse = " ")
+  expect_match(shown, "norm_pid5(", fixed = TRUE)
+  expect_false(grepl("norm_metric", shown, fixed = TRUE))
+})
+
+test_that("the two aborts render consistently", {
+  render <- function(expr) {
+    m <- paste(conditionMessage(rlang::catch_cnd(expr, "error")), collapse = " ")
+    gsub("[[:space:]]+", " ", m)
+  }
+
+  ## norm_metric() names the version bare, as norm_pid5()'s uncovered-scale
+  ## report does; {.val} would quote it in one place and not the other.
+  local_mocked_bindings(norm_covers = function(version, scale) TRUE)
+  one <- render(norm_metric("PRDS", "SF"))
+  expect_match(one, "The SF normative tables", fixed = TRUE)
+  expect_false(grepl('"SF"', one, fixed = TRUE))
+  ## and pluralizes off the number of unclassified scales.
+  expect_match(one, "carry a scale with no metric formula", fixed = TRUE)
+  two <- render(norm_metric(c("PRDS", "SDTD"), "SF"))
+  expect_match(two, "carry scales with no metric formula", fixed = TRUE)
+
+  ## The non-numeric abort gives each offending column its own bullet carrying
+  ## that column's own class: {.cls} collapses a vector of classes into one
+  ## union label, so a shared bullet cannot report them separately. An ordered
+  ## factor reads as its full class, not as the bare "ordered" a class(x)[[1]]
+  ## label reported.
+  ord <- data.frame(a = 1)
+  ord$pid_detachment <- factor("x", ordered = TRUE)
+  ord$pid_antagonism <- "0.5"
+  solo <- render(norm_pid5(ord, scores = "pid_detachment", version = "BF"))
+  expect_match(solo, "The `scores` column must be numeric.", fixed = TRUE)
+  expect_match(solo, "ordered/factor", fixed = TRUE)
+  expect_false(grepl("<ordered>", solo, fixed = TRUE))
+
+  both <- render(norm_pid5(ord, scores = c("pid_detachment", "pid_antagonism"),
+                           version = "BF"))
+  expect_match(both, "The `scores` columns must be numeric.", fixed = TRUE)
+  expect_match(both, "pid_detachment", fixed = TRUE)
+  expect_match(both, "pid_antagonism", fixed = TRUE)
+  expect_match(both, "character", fixed = TRUE)
 })
 
 test_that("the official coding says nothing about response coding", {
@@ -726,15 +793,15 @@ test_that("norm_pid5() aborts on a non-numeric score column rather than coercing
   )
 
   # A logical column is left alone: as.numeric(TRUE) is 1, which is what a 0/1
-  # indicator already means.
+  # indicator already means. The expected cells are read off the printed BF
+  # detachment table, not computed with norm_convert(): TRUE -> raw 1.00, whose
+  # nearest printed raw is 0.99 at T 55; FALSE -> raw 0.00, which the table
+  # prints across T 35-39 and the toward-50 tie rule resolves to T 39.
   lgl <- data.frame(pid_detachment = c(TRUE, FALSE))
   out <- norm_pid5(lgl, scores = "pid_detachment", version = "BF",
                    append = FALSE)
-  expect_equal(
-    out$pid_detachment_t,
-    as.integer(c(norm_convert(1, "BF", "detachment")$t,
-                 norm_convert(0, "BF", "detachment")$t))
-  )
+  expect_equal(out$pid_detachment_t, c(55L, 39L))
+  expect_equal(out$pid_detachment_ptl, c(0.68, 0.00))
 })
 
 test_that("norm_pid5() handles the R edge cases", {
@@ -783,11 +850,15 @@ test_that("`prefix` is stripped by literal match, never as a regex", {
   # A metacharacter-bearing prefix that *is* the literal start of the column
   # name: compiled as a pattern this aborted with "invalid regular expression
   # '^pid(_'", naming a regex the caller never wrote.
-  df <- stats::setNames(data.frame(0.2), "pid(_detachment")
+  # The fixture is 1.20 rather than an attainable-but-tied value: 0.20 sits
+  # exactly midway between the printed raws 0.17 and 0.23, so the tie rule
+  # rather than the prefix strip would decide which row came back. 1.20 is
+  # nearer 1.18 (T 58) than 1.24 (T 59) outright.
+  df <- stats::setNames(data.frame(1.2), "pid(_detachment")
   out <- norm_pid5(df, scores = "pid(_detachment", version = "BF",
                    prefix = "pid(_", append = FALSE)
-  expect_equal(out[["pid(_detachment_t"]], 43L)
-  expect_equal(out[["pid(_detachment_ptl"]], 0.35)
+  expect_equal(out[["pid(_detachment_t"]], 58L)
+  expect_equal(out[["pid(_detachment_ptl"]], 0.77)
 
   # A `.` no longer matches an arbitrary character: "pXd_detachment" does not
   # start with the literal "p.d_", so the name is left unstripped, no scale

@@ -193,16 +193,21 @@ norm_pid5 <- function(
     logical(1)
   )
   if (any(bad_type)) {
-    bad <- paste0(
-      col_names[bad_type],
-      " <",
-      vapply(score_cols[bad_type], function(x) class(x)[[1]], character(1)),
-      ">"
-    )
+    ## One bullet per offending column, each carrying that column's own class:
+    ## {.cls} collapses a vector of classes into a single union label, so the
+    ## columns cannot share a bullet. Escaped because the bullets are already
+    ## formatted and cli_abort() would interpolate them a second time.
+    detail <- vapply(which(bad_type), function(i) {
+      nm <- col_names[[i]]
+      cls <- class(score_cols[[i]])
+      out <- cli::format_inline("{.val {nm}} is {.cls {cls}}.")
+      gsub("}", "}}", gsub("{", "{{", out, fixed = TRUE), fixed = TRUE)
+    }, character(1))
+    names(detail) <- rep("x", length(detail))
     cli::cli_abort(c(
-      "The {.arg scores} columns must be numeric.",
-      "x" = "Not numeric: {.val {bad}}.",
-      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is converted for you. Convert them before calling {.code norm_pid5()}."
+      "{cli::qty(sum(bad_type))}The {.arg scores} column{?s} must be numeric.",
+      detail,
+      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is converted for you. Convert {cli::qty(sum(bad_type))}{?it/them} before calling {.code norm_pid5()}."
     ))
   }
 
