@@ -1,8 +1,8 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-31 (M31 merged as PR #34 and archived, M26 row pruned under terminal-row retention; all checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md; two lessons captured, none retired; one candidate added for M31's top sub-threshold review findings)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M29)._
+_Last hygiene check: 2026-07-31 (status audit, no work since M31's post-merge pass; all checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md; GitHub issue and PR inboxes both empty; nothing in flight — next-milestone ID corrected to M32)_
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M32 (corrected 2026-07-31; the line still said M29 after M29–M31 were assigned))._
 
 ## Milestones
 
