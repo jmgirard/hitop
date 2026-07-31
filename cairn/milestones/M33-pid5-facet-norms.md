@@ -1,6 +1,7 @@
 # M33: PID-5 facet-level norms
 
-- **Status:** planned
+- **Status:** in-progress
+- **Branch:** `m33-pid5-facet-norms`
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -129,6 +130,8 @@ and `cairn/`.
 - 2026-07-31: plan gate chose one hand-transcribed spot value per new pair (~50) over one per 5-facet block (~10) because the per-pair layer is what catches a single displaced column, the defect this dataset actually had; falsified by the block-level check catching a seeded single-column displacement.
 - 2026-07-31: plan chose a minimax linearity fit at 0.005 over raising the `lm` tolerance because all 66 columns pass minimax at half-a-unit-in-the-last-place while 16 exceed 0.005 under `lm`; falsified by a printed column no line reproduces within its rounding bound.
 - 2026-07-31: `cairn_validate`'s 8-AC split tripwire considered and declined — facet rows in `pid_norms` abort `norm_metric()` until the metric partition names them, so a data-only half would leave the default branch un-shippable; the work is one PR.
+- 2026-07-31: implement started on `m33-pid5-facet-norms`; source probe confirms A-6/A-8 are `tables[[6]]`/`tables[[8]]`, five banner-delimited blocks of 5 facets x 71 T rows each (355 rows/table, 3,550 total), so AC2's counts hold.
+- 2026-07-31: gate chose reading the AC6 spot values off the browser-rendered appendix page over a second extraction tool or waiting for a print copy — the defect this layer catches lives in block-splitting and column-pairing, not in reading the file, and only the EPUB is on the shelf.
 - 2026-07-31: criteria audit ([O], fresh context) returned 20 findings; 14 fixed into the wording above (minimax named, plateau defined, `lm` test replacement stated, crosswalk guard added, four breaking tests named, `R/data.R` `@details` and `R/norm_engine.R` added to the docs sweep, check bar made absolute), 3 became gate questions, 3 were confirmations.
 
 ## Decisions

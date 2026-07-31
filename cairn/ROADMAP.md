@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M33 | PID-5 facet-level norms | planned | — | normal | milestones/M33-pid5-facet-norms.md |
+| M33 | PID-5 facet-level norms | in-progress | — | normal | milestones/M33-pid5-facet-norms.md |
 | M32 | Test coverage for M31's argument-validation additions | done | — | normal | milestones/archive/M32-m31-validation-test-coverage.md |
 | M31 | Argument-validation consistency and a harder norming oracle | done | — | normal | milestones/archive/M31-validator-and-oracle-residue.md |
 | M30 | Norming-family test oracles and internal consistency | done | — | normal | milestones/archive/M30-norming-oracle-residue.md |
