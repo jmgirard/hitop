@@ -17,7 +17,7 @@ Scores, validity-screens, and distributes HiTOP Society instruments: PID-5 (FULL
 - Scoring signature: `(data, items, [version,] srange, prefix, missing, calc_se, append = TRUE)`; always returns a tibble. No `id`/`scales`/`tibble` arguments; all scales are computed. Reliability is a separate returning family `reliability_{pid5,hitopsr,hitopbr}(data, items, [version,] srange, alpha, omega)` → a per-scale tibble.
 - Output columns: `prefix` + camelCase scale name (`pid_anhedonia`, `hsr_...`); validity scales are `prefix` + abbreviation (`pid_PNA`, `pid_INC`); standard errors add `_se`.
 - Scale membership comes from the `*_scales` list-column tables (`pid_scales[[version]]$itemNumbers`, `hitopsr_scales`, `hitopbr_scales`); reverse-keying and validity-scale membership from the `*_items` tables. Never hardcode item numbers.
-- User messaging via `cli::cli_alert_warning()` + `cli::cli_alert_info()` with actionable `{.code dplyr::filter(...)}` suggestions; validation via `validate_*()`/`cli_assert()` in `R/util.R`.
+- User messaging via `cli::cli_alert_warning()` + `cli::cli_alert_info()` with actionable `{.code dplyr::filter(...)}` suggestions — except reports the caller is meant to catch or suppress, which are `cli::cli_warn()` conditions (D-024/D-025 carve-out, see DESIGN "User communication"); validation via `validate_*()`/`cli_assert()` in `R/util.R`.
 - Base-R data manipulation internally; {tibble} is an Import (default output), {lavaan} in Suggests (needed only by `calc_omega`).
 - Instrument administration text lives in `R/sysdata.rda` (`*_instructions`); prebuilt DOCX/Qualtrics/REDCap artifacts in `inst/extdata/`.
 

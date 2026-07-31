@@ -47,7 +47,7 @@ Adding a form variant = a new item-number column + `*_scales` entry; adding an i
 
 ### Internal utilities ([R/util.R](../R/util.R))
 
-`reverse(x, low, high)`, `bind_columns()`, `adiff()` (inconsistency pair |difference|), `drop_na()`, `calc_sem()`, `apa_mean()`/`round_half_up()` (APA proration), `prep_items()` (the shared validate → extract → coerce → reverse-key step used by both `score_engine()` and `reliability_engine()`), `cli_assert(condition, message, call)` (cli-flavored abort), and the input validators `validate_data()`/`validate_items()`/`validate_items_present()`/`validate_scales()`/`validate_range()`/`validate_item_uniqueness()`. Every validator takes a `call` argument (default `rlang::caller_env()`) that it forwards to `cli_assert`/`cli_abort`, so aborts are attributed to the user-facing function; `score_engine()` threads the wrapper's `call` down so its internal validation blames the wrapper, not the engine (M14).
+`reverse(x, low, high)`, `bind_columns()`, `adiff()` (inconsistency pair |difference|), `drop_na()`, `calc_sem()`, `strip_prefix(x, prefix)` (the literal — never regex — prefix strip both `norm_pid5()` and `rank_scales()` use to recover a scale name from a scored column name, D-026), `apa_mean()`/`round_half_up()` (APA proration), `prep_items()` (the shared validate → extract → coerce → reverse-key step used by both `score_engine()` and `reliability_engine()`), `cli_assert(condition, message, call)` (cli-flavored abort), and the input validators `validate_data()`/`validate_items()`/`validate_items_present()`/`validate_scales()`/`validate_range()`/`validate_item_uniqueness()`. Every validator takes a `call` argument (default `rlang::caller_env()`) that it forwards to `cli_assert`/`cli_abort`, so aborts are attributed to the user-facing function; `score_engine()` threads the wrapper's `call` down so its internal validation blames the wrapper, not the engine (M14).
 
 ## Conventions
 
@@ -58,6 +58,8 @@ Scoring functions share `(data, items, [version,] srange, prefix, missing, calc_
 ### User communication
 
 {cli} throughout: `cli_alert_warning()` for counts of flagged observations + `cli_alert_info()` with an actionable `{.code dplyr::filter(...)}` suggestion; input errors via `cli_assert()`/`cli::cli_abort()`, attributed to the exported function the user called (via the validators' `call` threading, M14) and reporting the offending value (e.g. expected-vs-actual `items` length, the `items` names/positions missing from `data`).
+
+Carve-out (D-024, narrowed by D-025): a report the caller is expected to *catch or suppress* is a `cli::cli_warn()` condition rather than a `cli_alert_*` message — all four of `norm_pid5()`'s reports are warnings, so one `suppressWarnings()` silences the function and each report can be asserted on individually. The `cli_alert_*` convention above still governs screening output that counts observations flagged for the caller's action and pairs the count with a remedy (`validity_pid5()`); a count reporting what a function did to its own return value (`norm_pid5()`'s capping report) is not inside it.
 
 ### Internal style
 

@@ -19,7 +19,8 @@
 #' @param prefix The prefix [score_pid5()] applied to its output columns, used
 #'   to match a score column back to its scale. Matched literally, not as a
 #'   regular expression: a column name that does not begin with exactly this
-#'   string keeps its whole name and is reported as uncovered.
+#'   string keeps its whole name and is reported as uncovered. Pass `""` when
+#'   the columns are named for the scales themselves, with no prefix to strip.
 #' @param append Whether to return the input `data` with the conversion columns
 #'   appended (`TRUE`, the default) or the conversion columns alone.
 #'
@@ -193,16 +194,21 @@ norm_pid5 <- function(
     logical(1)
   )
   if (any(bad_type)) {
-    bad <- paste0(
-      col_names[bad_type],
-      " <",
-      vapply(score_cols[bad_type], function(x) class(x)[[1]], character(1)),
-      ">"
-    )
+    ## One bullet per offending column, each carrying that column's own class:
+    ## {.cls} collapses a vector of classes into a single union label, so the
+    ## columns cannot share a bullet. Escaped because the bullets are already
+    ## formatted and cli_abort() would interpolate them a second time.
+    detail <- vapply(which(bad_type), function(i) {
+      nm <- col_names[[i]]
+      cls <- class(score_cols[[i]])
+      out <- cli::format_inline("{.val {nm}} is {.cls {cls}}.")
+      gsub("}", "}}", gsub("{", "{{", out, fixed = TRUE), fixed = TRUE)
+    }, character(1))
+    names(detail) <- rep("x", length(detail))
     cli::cli_abort(c(
-      "The {.arg scores} columns must be numeric.",
-      "x" = "Not numeric: {.val {bad}}.",
-      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is converted for you. Convert them before calling {.code norm_pid5()}."
+      "{cli::qty(sum(bad_type))}The {.arg scores} column{?s} must be numeric.",
+      detail,
+      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is converted for you. Convert {cli::qty(sum(bad_type))}{?it/them} before calling {.code norm_pid5()}."
     ))
   }
 
@@ -213,9 +219,13 @@ norm_pid5 <- function(
   ## validity scales, distributed as percentiles only -- goes without a `_t`
   ## column. An uncovered scale gets both columns, filled with NA, so a missing
   ## conversion is visible in the output rather than absent from it.
+  ## Reuses `covered` rather than scanning the table for coverage a second
+  ## time; only a covered scale's rows need looking at.
   has_t <- vapply(
-    scale_names,
-    function(s) !norm_covers(version, s) || any(!is.na(norm_rows(version, s)$tscore)),
+    seq_along(scale_names),
+    function(i) {
+      !covered[[i]] || any(!is.na(norm_rows(version, scale_names[[i]])$tscore))
+    },
     logical(1)
   )
 

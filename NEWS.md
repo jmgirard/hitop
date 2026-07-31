@@ -65,7 +65,11 @@ before a CRAN submission.
   an error rather than being coerced — a factor's integer codes are not its
   scores, and a character column coerces to `NA`. Logical columns still
   convert. Every complaint about the argument names `scores`, not the `items`
-  or `scales` of the shared validators behind it.
+  or `scales` of the shared validators behind it. That error now gives each
+  offending column its own line with its full class (an ordered factor reads as
+  `<ordered/factor>` rather than as `ordered`), and errors raised while
+  reconciling a shifted response coding are attributed to `norm_pid5()` rather
+  than to the internal helper that raised them.
 
 * `rank_scales()`'s `prefix` argument is now matched **literally** (breaking).
   It was previously compiled as a regular expression anchored to the start of

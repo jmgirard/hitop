@@ -32,7 +32,8 @@ options is not convertible. See Details.}
 \item{prefix}{The prefix \code{\link[=score_pid5]{score_pid5()}} applied to its output columns, used
 to match a score column back to its scale. Matched literally, not as a
 regular expression: a column name that does not begin with exactly this
-string keeps its whole name and is reported as uncovered.}
+string keeps its whole name and is reported as uncovered. Pass \code{""} when
+the columns are named for the scales themselves, with no prefix to strip.}
 
 \item{append}{Whether to return the input \code{data} with the conversion columns
 appended (\code{TRUE}, the default) or the conversion columns alone.}

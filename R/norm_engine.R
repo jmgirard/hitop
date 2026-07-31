@@ -122,7 +122,10 @@ norm_mean_scales <- c(
 norm_sum_scales <- "PRD"
 norm_invariant_scales <- c("INC", "INCS", "ORS")
 
-norm_metric <- function(scale, version) {
+## `call` follows the convention the input validators in R/util.R use: the
+## abort below is attributed to the exported function the user called, never to
+## this internal helper, so the error reads `norm_pid5()`.
+norm_metric <- function(scale, version, call = rlang::caller_env()) {
   out <- rep(NA_character_, length(scale))
   out[scale %in% norm_invariant_scales] <- "invariant"
   out[scale %in% norm_sum_scales] <- "sum"
@@ -141,11 +144,18 @@ norm_metric <- function(scale, version) {
       USE.NAMES = FALSE
     )
     if (any(covered)) {
-      cli::cli_abort(c(
-        "The {.val {version}} normative tables carry a scale with no metric formula in this package.",
-        "x" = "Unclassified: {.val {scale[unknown][covered]}}.",
-        "i" = "A shifted response coding is reconciled per metric, so an unclassified scale would silently take the item-mean adjustment. Add it to {.code norm_mean_scales}, {.code norm_sum_scales}, or {.code norm_invariant_scales} in {.file R/norm_engine.R}."
-      ))
+      bad <- scale[unknown][covered]
+      cli::cli_abort(
+        c(
+          ## qty() sits immediately before the marker: cli takes the quantity
+          ## from the last value interpolated ahead of it, and {version} would
+          ## otherwise set it to 1 and force the singular.
+          "The {version} normative tables carry {cli::qty(length(bad))}{?a scale/scales} with no metric formula in this package.",
+          "x" = "Unclassified: {.val {bad}}.",
+          "i" = "A shifted response coding is reconciled per metric, so an unclassified scale would silently take the item-mean adjustment. Add {cli::qty(length(bad))}{?it/them} to {.code norm_mean_scales}, {.code norm_sum_scales}, or {.code norm_invariant_scales} in {.file R/norm_engine.R}."
+        ),
+        call = call
+      )
     }
     out[unknown] <- "mean"
   }
