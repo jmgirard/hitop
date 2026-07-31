@@ -40,11 +40,11 @@ appended (\code{TRUE}, the default) or the conversion columns alone.}
 }
 \value{
 A \link[tibble]{tibble} with a \verb{_t} column for every converted scale
-whose normative rows carry a T score (the five domains, plus the brief
-form's total) and a \verb{_ptl} column for every converted scale, alongside all
-original \code{data} columns if requested. The four validity scales
-(\code{INC}, \code{INCS}, \code{ORS}, \code{PRD}) are distributed as percentiles only and get
-no \verb{_t} column.
+whose normative rows carry a T score (the five domains, the 25 facets of
+the full and short forms, and the brief form's total) and a \verb{_ptl} column
+for every converted scale, alongside all original \code{data} columns if
+requested. The four validity scales (\code{INC}, \code{INCS}, \code{ORS}, \code{PRD}) are
+distributed as percentiles only and get no \verb{_t} column.
 }
 \description{
 Looks up scored PID-5 columns in the published normative tables shipped as
@@ -73,8 +73,8 @@ land between rows.
 several rows, or a value exactly midway between two rows -- the row whose
 T score is nearest 50 is returned. The four validity scales carry no T
 score, so a tie there returns the row whose percentile is nearest 0.50.
-\item \strong{Scores of 0.} Each domain table prints raw 0.00 across a run of low T
-scores, because the linear T the book tabulated predicts a negative raw
+\item \strong{Scores of 0.} Every T-scored table prints raw 0.00 across a run of low
+T scores, because the linear T the book tabulated predicts a negative raw
 there and 0.00 is printed instead. The tie rule returns the run's highest
 T, the one row of the run that renders an attainable score. Its printed
 percentile is positive on some scales and 0.00 on others; that asymmetry
@@ -87,22 +87,27 @@ run's highest-T row and not the table's first row, so the two agree
 instead of jumping. A warning reports how many observations were capped
 at each end. This is reachable in ordinary data: \code{PRD} is a 22-item sum
 reaching 66 while its table stops at 55.
-\item \strong{Unattainable printed rows.} Five domain tables print rows above the
-3.00 ceiling a 0-3 item mean can reach, so the top of those T ranges
-cannot be attained. A maximum score returns T = 84 (brief-form negative
+\item \strong{Unattainable printed rows.} 47 of the 66 tabled scales print rows
+above the 3.00 ceiling a 0-3 item mean can reach -- five domain scales
+and 42 of the 50 facet columns -- so the top of those T ranges cannot be
+attained. A maximum score returns T = 84 (brief-form negative
 affectivity), 87 (brief-form detachment), 93 (brief-form disinhibition),
-87 (full-form negative affectivity), or 85 (short-form negative
-affectivity) -- each at percentile 1.00. Nothing is wrong with such data
-and nothing is reported.
+87 (full-form negative affectivity), 85 (short-form negative
+affectivity), or, on a facet, a T between 76 and 98 depending on the
+facet and the form -- each at percentile 1.00. Nineteen facet columns go
+further and print the same top raw, 4.00, on several consecutive T rows
+(12 of them for short-form anxiousness); those rows ship as published,
+and the tie rule above returns the lowest T of the run. Nothing is wrong
+with such data and nothing is reported.
 \item \strong{Comparison tolerance.} All comparisons use an absolute tolerance of
 1e-8, so that scores on grids with no exact binary representation (a
 short-form domain mean is a twelfth) match the printed 2-decimal raws as
 intended.
 }
 
-Columns the tables do not cover for the requested \code{version} -- the 25
-facets, for instance -- return \code{NA} in both conversion columns with a
-warning naming them. An \code{NA} score returns \code{NA}.
+Columns the tables do not cover for the requested \code{version} -- \code{SD-TD}, or
+any facet on the brief form, for instance -- return \code{NA} in both conversion
+columns with a warning naming them. An \code{NA} score returns \code{NA}.
 
 \strong{Reporting and silence.} Everything this function reports -- the capping
 count above, the uncovered-column warning, and the two response-coding
@@ -132,7 +137,8 @@ source states these rules -- Markon et al. give the tables for the official
 coding only -- so, like the reading rules above, they are this package's,
 derived from each scale's own definition:
 \itemize{
-\item \strong{Item means} (the five domains, and the brief form's total) are
+\item \strong{Item means} (the 25 facets, the five domains, and the brief form's
+total) are
 reconciled by subtracting \code{srange[[1]]}. Shifting every item by a constant
 shifts their mean by the same constant.
 \item \strong{\code{PRD}} is a plain sum over its 22 items, so the same shift moves it by

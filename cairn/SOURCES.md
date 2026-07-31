@@ -200,8 +200,17 @@ rests on the book crediting the same paper the package column already cites.
 | A–3 (p. 117) | "Over-Reporting Scale" (PID-5-ORS) | Sellbom et al. (2018) | `ORS` (FULL) | all cells match the book |
 | A–4 (p. 118) | "Positive Impression Management Response Distortion scale (underreporting)" (PID-5-PRD) | Williams et al. (2019) | `PRD` (FULL) | all cells match the book |
 | A–5 (p. 120) | "normative tables: domain scales" | — | FULL domains | all cells match the book |
+| A–6 (p. 124) | "normative tables: trait scales" | — | FULL facets (25) | all cells match the book |
 | A–7 (p. 147) | "(100 item) normative tables: domain scales" | — | SF domains | all cells match the book |
+| A–8 (p. 151) | "(100 item) normative tables: trait scales" | — | SF facets (25) | all cells match the book |
 | A–9 (p. 174) | "Brief Form normative tables: total score and domain scales" | — | BF total + domains | all cells match the book |
+
+**The book's "trait scales" are the package's facets** (M33). A–6 and A–8 print all
+25 under sentence-case captions ("Attention seeking", "Unusual beliefs and
+experiences"); `data-raw/norms_pid5.R` carries the one map from those captions onto
+`pid_scales[[version]]$Facet`, and takes the output column stem from that table's
+`camelCase` rather than retyping it. The build refuses any mapping that is not
+`setequal()` to the 25 facets of the version being built.
 
 **The book's abbreviation for the Williams scale is PID-5-PRD, not "PIM-RD."**
 Chapter 4 writes "PID-5-PRD" 15 times and "PIM-RD" never, so A–4 → `PRD` is an
@@ -222,14 +231,20 @@ Corroboration for A–1: the book's own domain-norm inclusion criterion is a VRI
 "lower than 17" (p. 114), identical to the `INC` cut score documented in
 `R/validity_pid5.R` — independent of the shared Keeley attribution.
 
-**Verification status.** Every numeric cell of all seven tables was extracted from the
+**Verification status.** Every numeric cell of all nine tables was extracted from the
 book's table markup by `data-raw/verify_norms_against_book.R` and diffed against the
-committed CSVs. The first pass found 18 disagreeing cells, all percentiles and all
+committed CSVs. The seven M25 tables were transcribed by hand, so for those this is a
+transcription check; A–6 and A–8 carry 3,550 cells apiece and are machine-extracted by
+`data-raw/extract_facet_norms.R`, so for those it is a cross-check of two independently
+structured reshapings of the same markup (M33) — the hand-read spot values in
+`tests/testthat/test-norms.R` are the layer that reads a rendered page. The first pass
+over the seven found 18 disagreeing cells, all percentiles and all
 monotone-preserving; each held the book's value from one row below, displacing
 `ANT_Ptl` in the SF domain table from T=48 down and two `DET_Ptl` cells in the full
 domain table. All 18 were corrected to the book's printed values with maintainer
 sign-off (2026-07-30); none was dispositioned as printed-in-source. Re-running the
-verifier reports all seven tables matching the book cell for cell.
+verifier reports all nine tables matching the book cell for cell, and it now exits
+non-zero on any discrepancy rather than only printing one.
 
 ## Note on HiTOP-SR/BR item-text punctuation (2026-07-16)
 

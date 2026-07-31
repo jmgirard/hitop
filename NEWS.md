@@ -15,11 +15,15 @@ before a CRAN submission.
 
 * **PID-5 normative tables.** The new `pid_norms` dataset carries the published
   normative score distributions for the PID-5, PID-5-SF, and PID-5-BF: the raw
-  score and percentile at each T score for the five domain scales (and the brief
-  form's total score), and the percentile at each raw score for the INC, INC-S,
-  ORS, and PRD validity scales. Scale names match the columns `score_pid5()` and
-  `validity_pid5()` return. Every value is transcribed from Markon et al. (2024)
-  and verified cell by cell against that source.
+  score and percentile at each T score for the five domain scales, for all 25
+  facet scales of the full and short forms, and for the brief form's total
+  score; and the percentile at each raw score for the INC, INC-S, ORS, and PRD
+  validity scales. Scale names match the columns `score_pid5()` and
+  `validity_pid5()` return. Every value comes from Markon et al. (2024) and is
+  verified cell by cell against that source. Note that most facet columns print
+  raw scores above the 3.00 a mean of 0–3 items can reach, and 19 of them repeat
+  a printed 4.00 across several T rows; those rows ship exactly as published and
+  are simply unattainable.
 
 * **PID-5 score conversion.** The new `norm_pid5()` converts scored PID-5,
   PID-5-SF, and PID-5-BF columns to normative T scores and percentiles from
@@ -39,9 +43,11 @@ before a CRAN submission.
   Note that `validity_pid5()`'s published cut scores are still *not* adapted to
   a shifted coding, so a reconciled percentile and an unreconciled validity flag
   can appear together; see `?norm_pid5`. Every report the function makes is a
-  warning condition, so one `suppressWarnings()` call silences it entirely. The
-  PID-5, PID-5-SF, and PID-5-BF vignettes each gain a section demonstrating the
-  conversion.
+  warning condition, so one `suppressWarnings()` call silences it entirely. All
+  25 facets convert on the full and short forms as well as the five domains; on
+  the brief form, and for `SD-TD` on any form, the tables carry nothing and the
+  conversion columns come back `NA` with the warning above. The PID-5, PID-5-SF,
+  and PID-5-BF vignettes each gain a section demonstrating the conversion.
 
 * **PID-5-BF total score** (breaking). `score_pid5(version = "BF")` now returns a
   `total` column after its five domains, so the brief form's normed total score
