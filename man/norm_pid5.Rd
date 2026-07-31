@@ -125,9 +125,10 @@ item count is read from \link{pid_items} rather than assumed.
 pairs}. A constant added to both members of a pair cancels in the
 difference, so these are unchanged by a shift and nothing is subtracted.
 \item \strong{\code{ORS}} is a count of items answered at the top of the response range --
-\code{\link[=validity_pid5]{validity_pid5()}} computes it by comparing each item to \code{srange[[2]]}, not
-to a fixed value. A shift moves the top of the range along with the
-answers, so the same items are counted and the score is unchanged.
+\code{\link[=validity_pid5]{validity_pid5()}} computes it by comparing each item to \code{srange[[2]]}
+rather than to a fixed value (\code{R/validity_pid5.R:153} in the package
+sources). A shift moves the top of the range along with the answers, so
+the same items are counted and the score is unchanged.
 }
 
 A shifted coding raises one warning per call naming which of the requested

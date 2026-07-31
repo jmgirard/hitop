@@ -95,9 +95,10 @@
 #'     pairs*. A constant added to both members of a pair cancels in the
 #'     difference, so these are unchanged by a shift and nothing is subtracted.
 #'   * **`ORS`** is a count of items answered at the top of the response range --
-#'     [validity_pid5()] computes it by comparing each item to `srange[[2]]`, not
-#'     to a fixed value. A shift moves the top of the range along with the
-#'     answers, so the same items are counted and the score is unchanged.
+#'     [validity_pid5()] computes it by comparing each item to `srange[[2]]`
+#'     rather than to a fixed value (`R/validity_pid5.R:153` in the package
+#'     sources). A shift moves the top of the range along with the answers, so
+#'     the same items are counted and the score is unchanged.
 #'
 #'   A shifted coding raises one warning per call naming which of the requested
 #'   scales were adjusted and which were left alone; where every requested scale

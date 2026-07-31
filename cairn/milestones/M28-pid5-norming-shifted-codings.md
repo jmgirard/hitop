@@ -35,7 +35,7 @@ interpretation.
       reconciled per scale before lookup: item means shifted by `low`, `PRD` by
       `low × nItems`, and `INC`/`INCS`/`ORS` left unchanged as coding-invariant (D-023,
       superseding D-020's `ORS` clause). The M27 row-selection primitive is not changed.
-- [ ] **AC3.** Each of the two adjustments and each of the three no-ops is documented in
+- [x] **AC3.** Each of the two adjustments and each of the three no-ops is documented in
       `@details` on its merits (GP1's no-published-rule branch — no source states them),
       with `ORS`'s invariance traced to `R/validity_pid5.R:153`, and with the standing
       consequence that `validity_pid5()`'s cut scores are *not* reconciled (DESIGN Known
@@ -88,6 +88,7 @@ interpretation.
 - 2026-07-30: AC3's `ORS` trace is split — `@details` states the invariance from how `validity_pid5()` computes the score (a line number would rot in a shipped man page), and the literal `R/validity_pid5.R:153` pointer sits in `norm_metric()`'s source comment.
 - 2026-07-30: T4's `@details` half landed with T1-T3 rather than in T4's commit, so no commit ships behavior whose documented contract contradicts it.
 - 2026-07-30: T4 — norming sections added to all three PID vignettes (FULL on `sim_pid5` + `validity_pid5()` output, SF on the real `ku_pid5sf` data, BF on `sim_pid5bf`), NEWS's `norm_pid5()` bullet rewritten to the shipped coding behavior; `document()` no diff, `test()` 10283 pass / 0 fail, `check()` 0 errors / 0 warnings / 0 notes.
+- 2026-07-30: merge gate directed AC3's line pointer into `@details` (criterion met as written, not amended) and D-024 recording the shipped `cli_warn()` mechanism against D-020's `cli_alert_info()` text; both landed before merge.
 - 2026-07-30: review fixed the two actioned findings (F8 the vignette's "four validity scales" claim, false for FULL; F2 `@details` overstating when the reconciliation warning fires) plus F3 alongside F2 (the report claimed a reconciliation on an all-invariant request); two new tests lock both, suite 10288 pass / 0 fail.
 - 2026-07-30: plan gate chose to supersede D-020's `ORS` clause (D-023) over planning to the four-formula text, because `R/validity_pid5.R:153` already counts `ORS` against `srange[[2]]` and the function receives scores rather than items; falsified by an `ORS` coding shift that changes the count — none exists while the scale is defined as a count at the range maximum.
 
@@ -128,19 +129,20 @@ Reviewed 2026-07-30 on `m28-pid5-norming-shifted-codings` @ 1448833, PR #31.
   before using it. No expectation is taken from `norm_pid5()`'s output (IP2). Version-pinned:
   `INC`/`ORS`/`PRD` cases run `version = "FULL"`, `INCS` runs `"SF"`, the item-mean fixture
   `"BF"`. Full file: 0 failures.
-- **AC3** — *not ticked; one clause unmet as written.* `man/norm_pid5.Rd`'s "Response coding"
+- **AC3** — `man/norm_pid5.Rd`'s "Response coding"
   section documents all five treatments on their merits, each from the scale's own definition
   and flagged as this package's rather than Markon et al.'s: item means (shift by
   `srange[[1]]`), `PRD` (`srange[[1]]` × its items, count read from `pid_items`), `INC`/`INC-S`
   (a constant cancels in a within-pair difference), and `ORS` (a count against `srange[[2]]`,
   which moves with the range). The Known-issue-#3 consequence is a closing paragraph stating
   that a respondent on a 1-4 coding can get a reconciled percentile from `norm_pid5()` and an
-  unreconciled flag from `validity_pid5()` in the same session. **Unmet:** AC3 asks for `ORS`'s
-  invariance "traced to `R/validity_pid5.R:153`"; `@details` traces it to `validity_pid5()` at
-  function granularity, and the literal line pointer sits in `norm_metric()`'s source comment
-  in `R/norm_engine.R` instead — the implementer's reason being that a line number in a shipped
-  man page rots on the next edit to that file. Not reinterpreted review-side; referred to the
-  maintainer at the merge gate.
+  unreconciled flag from `validity_pid5()` in the same session. The line-pointer clause was
+  initially unmet — `@details` traced `ORS`'s invariance to `validity_pid5()` at function
+  granularity, with the literal pointer only in `norm_metric()`'s source comment — and was
+  referred to the maintainer rather than read charitably; at the 2026-07-30 merge gate they
+  chose to meet the criterion as written, so `@details` now carries
+  `R/validity_pid5.R:153` explicitly. Verified that line is still
+  `ors_vec <- rowSums(data_items[, ors_items, drop = FALSE] == srange[[2]])`.
 - **AC6** — a `## Normative Scores` section exists in all three files
   (`pid5_scoring.Rmd:85`, `pid5sf_scoring.Rmd:91`, `pid5bf_scoring.Rmd:57`), each calling
   `norm_pid5()` on package example data — `sim_pid5` plus `validity_pid5()` output for FULL,
