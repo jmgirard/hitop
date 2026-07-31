@@ -15,8 +15,20 @@ interface before a CRAN submission.
   and
   [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
   return. Every value is transcribed from Markon et al. (2024) and
-  verified cell by cell against that source. Functions for converting
-  scores to and from these norms are not part of this release.
+  verified cell by cell against that source.
+
+- **PID-5 score conversion.** The new
+  [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+  converts scored PID-5, PID-5-SF, and PID-5-BF columns to normative T
+  scores and percentiles from `pid_norms`, adding a `_t` column for
+  every converted scale whose normative rows carry a T score and a
+  `_ptl` column for every converted scale. Every returned value is a
+  printed cell of Markon et al. (2024): the nearest printed row is
+  selected and nothing is interpolated. Scores outside a printed range
+  are capped to the nearest end with a message rather than extrapolated,
+  and scales the tables do not cover return `NA` with a message naming
+  them. Only the official 0-3 response coding is supported for now; any
+  other coding returns `NA` with a warning.
 
 - **PID-5-BF total score** (breaking). `score_pid5(version = "BF")` now
   returns a `total` column after its five domains, so the brief form’s

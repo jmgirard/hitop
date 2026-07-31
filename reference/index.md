@@ -11,6 +11,11 @@
 - [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
   : Score the Personality Inventory for DSM-5 Validity Scales
 
+## Norms
+
+- [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+  : Convert PID-5 scale scores to normative T scores and percentiles
+
 ## Reliability
 
 - [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md)
