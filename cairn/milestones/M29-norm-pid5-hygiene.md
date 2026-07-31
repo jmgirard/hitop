@@ -216,8 +216,8 @@ five-option at once — raises exactly 1 warning, the option-count refusal.
 
 **Consistency gate.** `cairn_validate` exits 0 — all 16 checks PASS, 6 advisories
 OK, and the one WARN is the standing 20 `dangling id tokens`, every one a
-pre-migration `D-001`-`D-012` or `M13`/`M14` reference in `DESIGN.md` /
-`SOURCES.md`, unchanged by this milestone. No `DESIGN.md` principle changed, so
+pre-migration reference in `DESIGN.md` / `SOURCES.md` to the legacy embedded
+decision log and the entombed milestone files, unchanged by this milestone. No `DESIGN.md` principle changed, so
 `cairn_impact` does not apply. Toolchain slot (`r-package`): `document()` no
 diff, no generated file hand-edited, `README.Rmd`/`README.md` untouched,
 `pkgdown::check_pkgdown()` reports no problems, NEWS.md carries the
