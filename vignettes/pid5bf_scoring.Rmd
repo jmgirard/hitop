@@ -53,3 +53,28 @@ reliability_pid5(
   version = "BF"
 )
 ```
+
+## Normative Scores
+
+The `pid_norms` dataset carries the normative score distributions published by Markon et al. (2024), including a set built on the brief form. The `norm_pid5()` function looks scored columns up in those tables and returns, for each one, the T score and percentile printed against the nearest tabled raw score. It converts scores rather than computing them, so we hand it the output of `score_pid5()`.
+
+The brief-form tables cover the five domain scales and the total score — every scale `score_pid5(version = "BF")` returns — so each column here gains both a `_t` and a `_ptl` column.
+
+```{r norming}
+scored <- score_pid5(sim_pid5bf, items = 1:25, version = "BF")
+
+norm_pid5(
+  scored,
+  scores = paste0(
+    "pid_",
+    c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
+      "psychoticism", "total")
+  ),
+  version = "BF",
+  append = FALSE
+)
+```
+
+Every number returned is a cell of a published table: the nearest printed row is selected and nothing is interpolated. A score that falls outside a printed range is capped to the nearest end rather than extrapolated, and a message reports how many observations that happened to. Note that `version = "BF"` selects the brief-form tables — the same raw score converts differently across forms.
+
+If the items were answered on a four-option response scale that starts somewhere other than 0 — 1 to 4, say — pass that range as `srange` and each score is reconciled to the published 0–3 metric before it is looked up, with a warning naming which scales were adjusted and which were left alone. The per-scale formulas are given in `?norm_pid5`.

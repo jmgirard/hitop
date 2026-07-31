@@ -87,3 +87,33 @@ reliability_pid5(
   version = "SF"
 )
 ```
+
+## Normative Scores
+
+The `pid_norms` dataset carries the normative score distributions published by Markon et al. (2024), including a set built on the short form. The `norm_pid5()` function looks scored columns up in those tables and returns, for each one, the T score and percentile printed against the nearest tabled raw score. It converts scores rather than computing them, so we hand it the output of `score_pid5()` — and of `validity_pid5()`, if we want those scales converted too.
+
+```{r x6}
+#| message: false
+#| warning: false
+scored <- score_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF")
+scored <- validity_pid5(scored, items = paste0("pid_", 1:100), version = "SF")
+```
+
+For the short form the published tables cover the five domain scales and the INC-S inconsistency scale; they do not cover the 25 facets. Each converted scale gains a `_ptl` column, and those whose tables print T scores also gain a `_t` column. INC-S is distributed as percentiles only, so it gets no `_t` column. Note that `version = "SF"` selects the short-form tables — the same raw score converts differently across forms.
+
+```{r x7}
+norm_pid5(
+  scored,
+  scores = paste0(
+    "pid_",
+    c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
+      "psychoticism", "INCS")
+  ),
+  version = "SF",
+  append = FALSE
+)
+```
+
+Every number returned is a cell of a published table: the nearest printed row is selected and nothing is interpolated. A score that falls outside a printed range is capped to the nearest end rather than extrapolated, and a message reports how many observations that happened to. A scale the tables do not cover returns `NA` in both columns with a message naming it.
+
+If the items were answered on a four-option response scale that starts somewhere other than 0 — 1 to 4, say — pass that range as `srange` and each score is reconciled to the published 0–3 metric before it is looked up, with a warning naming which scales were adjusted and which were left alone. The per-scale formulas are given in `?norm_pid5`.

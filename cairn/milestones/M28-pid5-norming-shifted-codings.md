@@ -73,7 +73,7 @@ interpretation.
 - [x] **T2.** Implement the two per-metric rescale branches and assert the three no-ops.
 - [x] **T3.** Tests per AC5 — the count branch, two adjusted-metric fixtures, three
       invariance assertions.
-- [ ] **T4.** `@details` for the formulas and the Known-issue-#3 consequence; the three
+- [x] **T4.** `@details` for the formulas and the Known-issue-#3 consequence; the three
       vignette norming sections; NEWS; run `document()` / `test()` / `check()`.
 
 ## Work log
@@ -87,6 +87,7 @@ interpretation.
 - 2026-07-30: metric classification is by scale name in `norm_metric()` (`PRD` sums, `INC`/`INCS`/`ORS` invariant, everything else an item mean); `PRD`'s 22-item count is read from `pid_items` at run time, never hardcoded.
 - 2026-07-30: AC3's `ORS` trace is split — `@details` states the invariance from how `validity_pid5()` computes the score (a line number would rot in a shipped man page), and the literal `R/validity_pid5.R:153` pointer sits in `norm_metric()`'s source comment.
 - 2026-07-30: T4's `@details` half landed with T1-T3 rather than in T4's commit, so no commit ships behavior whose documented contract contradicts it.
+- 2026-07-30: T4 — norming sections added to all three PID vignettes (FULL on `sim_pid5` + `validity_pid5()` output, SF on the real `ku_pid5sf` data, BF on `sim_pid5bf`), NEWS's `norm_pid5()` bullet rewritten to the shipped coding behavior; `document()` no diff, `test()` 10283 pass / 0 fail, `check()` 0 errors / 0 warnings / 0 notes.
 - 2026-07-30: plan gate chose to supersede D-020's `ORS` clause (D-023) over planning to the four-formula text, because `R/validity_pid5.R:153` already counts `ORS` against `srange[[2]]` and the function receives scores rather than items; falsified by an `ORS` coding shift that changes the count — none exists while the scale is defined as a count at the range maximum.
 
 ## Decisions
