@@ -96,7 +96,7 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
       refuses `file://`), and record the attestation in the work log.
 - [x] T3. Add the anchors to `domain_spot`/`facet_spot` in
       `tests/testthat/test-norms.R` with their table's first page.
-- [ ] T4. Tighten the coverage test to ≥2 for T-scored columns; add the AC3
+- [x] T4. Tighten the coverage test to ≥2 for T-scored columns; add the AC3
       step-placement and AC4 pairwise-distinctness tests.
 - [ ] T5. Add the two column-swap mutations to `data-raw/mutate_norms_check.R`;
       run it and confirm every mutation comes back CAUGHT.
@@ -115,6 +115,7 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 - 2026-07-31: T2 — hand read delegated to a fresh-context [O] reader given only the served rendered pages, the column headings and the row list; it was barred from `pid_norms`, the data-raw CSVs, test-norms.R and R itself, and from extracting numbers via the DOM, `get_page_text` or the file on disk, so the read is visual and independent of the existing markup extraction. It reported 0 unreadable cells and controlled column alignment two ways (re-photographing each block banner, and overlapping the two horizontal pans by a full column). Attestation: all 63 values were read off rendered screenshots.
 - 2026-07-31: T2 — all 63 hand-read pairs match the shipped cells exactly; 0 mismatches, so the re-read-then-escalate protocol was not exercised.
 - 2026-07-31: T3 — anchors added as a third `second_spot` table rbound into `tscored_spot`; a separate table rather than extending `facet_spot`, whose vectorized shape assumes one shared T.
+- 2026-07-31: T4 — three adequacy tests added (>=2 distinct-T anchors, step placement, pairwise distinctness), scoped to T-scored columns; the existing all-70 coverage test is unchanged. Inversion-checked: removing `second_spot` turns all three red, so none passes vacuously. Guard ordering matters in the distinctness test — `[[` on an absent name errors rather than returning NA, so the membership test precedes the lookup.
 
 ## Decisions
 

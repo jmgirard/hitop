@@ -426,6 +426,94 @@ validity_spot <- local({
   spot
 })
 
+# The anchor set's own adequacy. The three tests below assert nothing about
+# whether `pid_norms` is correct -- they read it only to check that the anchors
+# are placed where a displacement or a swap would move them. The values remain
+# the only truth claim in this file, and they come from the printed page.
+tscored_keys <- function() norm_keys(pid_norms[!is.na(pid_norms$tscore), ])
+
+anchors_at <- function(version, scale) {
+  hit <- tscored_spot$version == version & tscored_spot$scale == scale
+  sort(unique(tscored_spot$tscore[hit]))
+}
+
+test_that("every T-scored scale has at least two anchors at distinct T scores", {
+  keys <- tscored_keys()
+  n <- vapply(
+    seq_len(nrow(keys)),
+    function(i) length(anchors_at(keys$version[[i]], keys$scale[[i]])),
+    integer(1)
+  )
+  expect_equal(
+    paste(keys$version, keys$scale)[n < 2L],
+    character(),
+    label = "T-scored columns anchored at fewer than two distinct T scores"
+  )
+})
+
+test_that("every T-scored scale is anchored where its percentile steps", {
+  # A column displaced down one row reads its predecessor's value at every T, so
+  # an anchor sitting on a percentile plateau reads the same before and after
+  # and witnesses nothing. Each column therefore needs an anchor at a T whose
+  # percentile differs from the row below it. Only the downward direction is
+  # closed: an upward displacement needs a T differing from the row above, and
+  # 14 of the 66 columns have no interior T differing from both neighbours.
+  keys <- tscored_keys()
+  flat <- vapply(seq_len(nrow(keys)), function(i) {
+    col <- pid_norms[
+      pid_norms$version == keys$version[[i]] & pid_norms$scale == keys$scale[[i]],
+    ]
+    col <- col[order(col$tscore), ]
+    steps <- col$tscore[-1][diff(col$percentile) != 0]
+    !any(anchors_at(keys$version[[i]], keys$scale[[i]]) %in% steps)
+  }, logical(1))
+  expect_equal(
+    paste(keys$version, keys$scale)[flat],
+    character(),
+    label = "T-scored columns anchored only on percentile plateaus"
+  )
+})
+
+test_that("no two T-scored scales read alike at every anchor they share", {
+  # Two columns reading alike wherever either is anchored cannot witness a swap
+  # of each other. Before M34 two SF pairs did exactly that at their shared
+  # T = 65 anchor -- impulsivity/intimacyAvoidance and manipulativeness/
+  # suspiciousness -- which is half of why the second anchor exists.
+  keys <- tscored_keys()
+  labels <- paste(keys$version, keys$scale)
+  # Named lookups keyed by T, so the pairwise sweep below costs no subsetting.
+  cells <- lapply(seq_len(nrow(keys)), function(i) {
+    col <- pid_norms[
+      pid_norms$version == keys$version[[i]] & pid_norms$scale == keys$scale[[i]],
+    ]
+    list(
+      raw = stats::setNames(col$raw, col$tscore),
+      pct = stats::setNames(col$percentile, col$tscore),
+      at = as.character(anchors_at(keys$version[[i]], keys$scale[[i]]))
+    )
+  })
+  alike <- character()
+  for (a in seq_along(cells)) {
+    for (b in seq_len(a - 1L)) {
+      x <- cells[[a]]
+      y <- cells[[b]]
+      same <- TRUE
+      for (t in union(x$at, y$at)) {
+        # A T where either column has no row cannot be an agreement. The
+        # membership test must precede the lookup: `[[` on an absent name is an
+        # error, not NA.
+        if (!(t %in% names(x$raw)) || !(t %in% names(y$raw)) ||
+            x$raw[[t]] != y$raw[[t]] || x$pct[[t]] != y$pct[[t]]) {
+          same <- FALSE
+          break
+        }
+      }
+      if (same) alike <- c(alike, paste(labels[[a]], "and", labels[[b]]))
+    }
+  }
+  expect_equal(alike, character(), label = "indistinguishable T-scored column pairs")
+})
+
 test_that("every scale in pid_norms has at least one spot value", {
   anchored <- unique(rbind(
     tscored_spot[c("version", "scale")],
