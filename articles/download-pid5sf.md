@@ -18,9 +18,9 @@ Use these Microsoft Word documents for printing, paper administration,
 or sending to the IRB.
 
 [English (A4
-Paper)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_A4.docx)
+Paper)2026-07-31](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_A4.docx)
 [English (US
-Paper)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_US.docx)
+Paper)2026-07-31](https://github.com/jmgirard/hitop/raw/main/inst/extdata/pid5sf_US.docx)
 
 ##### 📊 Qualtrics Import
 
@@ -106,16 +106,23 @@ Current builds & version history
 
 | File                   | Format           | Instrument version | Build date |
 |------------------------|------------------|--------------------|------------|
-| `pid5sf_A4.docx`       | DOCX (A4 paper)  | 1.0                | 2026-07-16 |
+| `pid5sf_A4.docx`       | DOCX (A4 paper)  | 1.0                | 2026-07-31 |
 | `pid5sf_qualtrics.txt` | Qualtrics import | 1.0                | 2026-07-16 |
 | `pid5sf_redcap.zip`    | REDCap import    | 1.0                | 2026-07-16 |
-| `pid5sf_US.docx`       | DOCX (US paper)  | 1.0                | 2026-07-16 |
+| `pid5sf_US.docx`       | DOCX (US paper)  | 1.0                | 2026-07-31 |
 
 If your downloaded file shows an older build date, simply re-download it
 to get the latest build. The full build manifest (including file
 checksums) ships in the package as `hitop_artifacts`.
 
 #### Version history
+
+2026-07-31
+
+Response-option legend split across two header lines (values 0 and 1 on
+the first, 2 and 3 on the second) so no option phrase breaks mid-phrase;
+legend wording, values, and labels are unchanged.  
+`pid5sf_A4.docx`, `pid5sf_US.docx`
 
 2026-07-16
 
