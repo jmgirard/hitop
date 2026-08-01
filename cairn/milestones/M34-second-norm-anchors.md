@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2
-- **Branch/PR:** `m34-second-norm-anchors`
+- **Branch/PR:** `m34-second-norm-anchors` / https://github.com/jmgirard/hitop/pull/37
 
 ## Goal
 
@@ -34,26 +34,26 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 
 ## Acceptance criteria
 
-- [ ] AC1. Every `(version, scale)` pair in `pid_norms` with a non-`NA` `tscore`
+- [x] AC1. Every `(version, scale)` pair in `pid_norms` with a non-`NA` `tscore`
       — 66 columns — carries at least two spot anchors at distinct `tscore`
       values, asserted by a test over
       `norm_keys(pid_norms[!is.na(pid_norms$tscore), ])` that fails naming any
       column with fewer. The four raw-keyed validity columns are outside this
       test and keep their existing anchors.
-- [ ] AC2. Every anchor added here records a `raw`, a `percentile`, and the page
+- [x] AC2. Every anchor added here records a `raw`, a `percentile`, and the page
       on which its table begins (per the file's existing convention), and its
       two values equal the cells printed at that `(version, scale, tscore)` in
       markon2024 Tables A–5 (p. 120), A–6 (p. 124), A–7 (p. 147), A–8 (p. 151),
       A–9 (p. 174). The existing "domain and facet norms match the values
       printed in the book" test covers the new rows and passes.
-- [ ] AC3. Each T-scored column has at least one anchor at a `tscore` whose
+- [x] AC3. Each T-scored column has at least one anchor at a `tscore` whose
       `percentile` differs from the `percentile` at `tscore - 1`, restricted to
       T values whose predecessor row exists in that column; a test asserts this
       and fails naming any column whose anchors all sit on a percentile plateau.
       This closes a percentile column displaced *down* one row; the upward
       displacement stays open (see Scope **Out**). The test asserts the adequacy
       of the anchor set, never the correctness of `pid_norms`.
-- [ ] AC4. No two T-scored columns agree on both `raw` and `percentile` at every
+- [x] AC4. No two T-scored columns agree on both `raw` and `percentile` at every
       `tscore` in the union of their anchor sets, treating columns as differing
       at any `tscore` where either lacks a row; a test asserts this over all
       pairs and fails naming any colliding pair. Adequacy of the anchor set,
@@ -120,7 +120,48 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 - 2026-07-31: T6 — the `.claude/launch.json` static-server entry added for the hand read was committed in cc51413 with a session-specific absolute path; removed again here, and the server stopped (the M33 lesson's own practice).
 
 - 2026-07-31: all six tasks done; status → review. Acceptance-criteria boxes left unticked for /milestone-review to fence against fresh evidence.
+- 2026-07-31: review in progress — PR #37 opened as draft; AC1-AC4 and AC6 verified with fresh evidence, consistency gate green both halves. AC5 and AC7 deferred within this phase: both read `data/pid_norms.rda`, and the mutation script swaps it in place, so they wait until the diff-bug reviewer finishes rather than race it (a concurrent run already produced one phantom mismatch).
 
 ## Decisions
 
 ## Review
+
+Evidence is fresh, gathered at review time by command. Where a criterion names a
+test, it was also verified *independently of that test* — by evaluating the
+anchor tables straight out of the test file and re-deriving the property — so a
+criterion cannot be satisfied by a test that agrees with itself.
+
+- AC1 — VERIFIED. `tscored_spot` evaluated from `tests/testthat/test-norms.R`
+  holds 133 rows over the 66 T-scored columns; every column carries >=2 anchors
+  at distinct T scores (0 with fewer), and 0 anchors name a column absent from
+  `pid_norms`. The in-suite test asserting this passes.
+- AC2 — VERIFIED. All 133 T-scored anchor rows carry `version, scale, tscore,
+  raw, percentile, page` with no NA; the pages cited are exactly 120, 124, 147,
+  151, 174 (the five tables' first pages, the file's existing convention). All
+  133 match their shipped cell exactly — 0 value mismatches. Provenance of the
+  63 new values is the fresh-context rendered-page read logged under T2.
+- AC3 — VERIFIED. Re-derived from `pid_norms`: 0 of the 66 T-scored columns are
+  anchored only on a percentile plateau. The in-suite test passes and was
+  inversion-checked at T4 (red when `second_spot` is removed).
+- AC4 — VERIFIED. Re-derived over all 2,145 column pairs: 0 indistinguishable
+  pairs. The in-suite test passes and was inversion-checked at T4.
+
+**Consistency gate.** Universal cairn-file checks: `cairn_validate` exit 0, all
+16 PASS including `coverage complete`; the 20 `dangling id tokens` advisories are
+the standing pre-migration references in DESIGN.md/SOURCES.md, unchanged by this
+branch. No principle changed, so `cairn_impact` is not run. Toolchain checks per
+the `r-package` profile's `consistency-gate` slot: `devtools::document()`
+produces no diff; `pkgdown::check_pkgdown()` reports no problems; README.Rmd
+untouched; the new `data-raw/select_norm_anchors.R` sits inside the already
+`.Rbuildignore`d `data-raw/`, and `check()` reports 0 notes. No NEWS.md entry is
+owed — the diff touches only tracking files, `data-raw/` and `tests/`, with no
+`R/`, `data/`, `man/` or `NAMESPACE` change, so nothing user-visible changed.
+
+**A note on evidence hygiene.** A first pass at AC2 reported one value mismatch
+that did not reproduce. Cause: `data-raw/mutate_norms_check.R` swaps
+`data/pid_norms.rda` in place, and the blame-history reviewer was running it
+concurrently, so that read saw a deliberately mutated dataset. Re-checked
+serially: 0 mismatches, and `data/pid_norms.rda` md5-matches its committed
+object with a clean `git status`. The script's own restore-and-hash-check is what
+made this recoverable rather than silent.
+
