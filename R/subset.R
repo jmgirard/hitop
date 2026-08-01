@@ -202,13 +202,30 @@ subset_engine_inputs <- function(
     call = call
   )
 
+  # `nItems` and `items` are independent fields of a plain list, so a descriptor
+  # assembled or edited by hand can disagree with itself. Taking the item count
+  # from `nItems` alone would then pass validate_items() against the wrong
+  # width and score whichever columns happened to be supplied: an inflated
+  # nItems accepts a full 405-column frame and silently scores items 1..n as
+  # the subset's scales. The count is therefore derived from `items`, which is
+  # what the remap below actually indexes into, and the disagreement is an error.
+  cli_assert(
+    condition = identical(as.integer(subset$nItems), length(subset$items)),
+    message = c(
+      "The {.arg subset} argument is internally inconsistent.",
+      x = "It reports {subset$nItems} item{?s} but carries {length(subset$items)}.",
+      i = "Build one with {.code hitop_subset()} rather than by hand."
+    ),
+    call = call
+  )
+
   kept <- scales[scales[[scale_col]] %in% subset$camelCase, , drop = FALSE]
   reverse_numbers <- items[[item_col]][items[[reverse_col]]]
   numbers <- kept[[number_col]]
   names(numbers) <- kept[[scale_col]]
 
   list(
-    n_items = subset$nItems,
+    n_items = length(subset$items),
     reverse_items = which(subset$items %in% reverse_numbers),
     items_scales = lapply(numbers, function(x) match(x, subset$items))
   )

@@ -66,9 +66,11 @@ omega), use \code{\link[=reliability_hitopsr]{reliability_hitopsr()}}.
 # Score all HiTOP-SR scales from the simulated data
 score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
 
-# Score data collected with a two-scale short form
+# Score data collected with a two-scale short form. Select the item columns
+# by name: `s$items` holds original HiTOP-SR numbers, which are column
+# positions only in a data frame that is exactly the 405 items in order.
 s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
-score_hitopsr(sim_hitopsr[s$items], items = seq_len(s$nItems),
-              subset = s, append = FALSE)
+short <- sim_hitopsr[paste0("hsr_", s$items)]
+score_hitopsr(short, items = names(short), subset = s, append = FALSE)
 
 }

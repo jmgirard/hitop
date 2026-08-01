@@ -60,9 +60,11 @@ rather than aborting the call.
 # Per-scale alpha for the HiTOP-SR
 reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
 
-# Per-scale alpha for data collected with a two-scale short form
+# Per-scale alpha for data collected with a two-scale short form. Select the
+# item columns by name: `s$items` holds original HiTOP-SR numbers, which are
+# column positions only in a data frame that is exactly the 405 items in order.
 s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
-reliability_hitopsr(sim_hitopsr[s$items], items = seq_len(s$nItems),
-                    subset = s, omega = FALSE)
+short <- sim_hitopsr[paste0("hsr_", s$items)]
+reliability_hitopsr(short, items = names(short), subset = s, omega = FALSE)
 
 }

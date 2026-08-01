@@ -274,3 +274,23 @@ test_that("the subset argument's three error paths blame the exported wrapper", 
     "reliability_hitopsr"
   )
 })
+
+test_that("the descriptor-consistency error also blames the exported wrapper", {
+  s <- hitop_subset("hitopsr", "agoraphobia")
+  bad <- s
+  bad$nItems <- 405L
+
+  blamed <- function(expr) {
+    cnd <- rlang::catch_cnd(expr, classes = "error")
+    rlang::call_name(if (is.null(cnd$call)) quote(no_call()) else cnd$call)
+  }
+
+  expect_equal(
+    blamed(score_hitopsr(sim_hitopsr, items = 1:405, subset = bad)),
+    "score_hitopsr"
+  )
+  expect_equal(
+    blamed(reliability_hitopsr(sim_hitopsr, items = 1:405, subset = bad)),
+    "reliability_hitopsr"
+  )
+})

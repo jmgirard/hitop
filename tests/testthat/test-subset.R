@@ -171,3 +171,47 @@ test_that("subset_engine_inputs() rejects a non-subset and a wrong instrument", 
     "wrong instrument"
   )
 })
+
+test_that("subset_engine_inputs() rejects a descriptor inconsistent with itself", {
+  # `nItems` and `items` are independent list fields, so hand-editing one can
+  # leave them disagreeing. An inflated nItems is the dangerous direction: it
+  # would accept a full 405-column frame and score items 1..8 as the subset's
+  # scales, silently and with no warning.
+  s <- hitop_subset("hitopsr", c("agoraphobia", "appetiteLoss"))
+  inflated <- s
+  inflated$nItems <- 405L
+  expect_error(
+    subset_engine_inputs(
+      inflated, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
+    ),
+    "internally inconsistent"
+  )
+
+  # The deflated direction too, so the check is not one-sided.
+  shrunk <- s
+  shrunk$nItems <- 3L
+  expect_error(
+    subset_engine_inputs(
+      shrunk, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
+    ),
+    "internally inconsistent"
+  )
+
+  # And the count the engines receive comes from `items`, not from `nItems`.
+  out <- subset_engine_inputs(
+    s, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
+  )
+  expect_equal(out$n_items, length(s$items))
+})
+
+test_that("an inflated descriptor aborts instead of silently scoring wrong items", {
+  # Regression fixture for the concrete failure: before the consistency check,
+  # this call returned hsr_agoraphobia = 2 (the mean of HSR 1,2,3,6,7) where the
+  # true value is 2.8, with no error and no warning.
+  s <- hitop_subset("hitopsr", c("agoraphobia", "appetiteLoss"))
+  s$nItems <- 405L
+  expect_error(
+    score_hitopsr(sim_hitopsr, items = 1:405, subset = s, append = FALSE),
+    "internally inconsistent"
+  )
+})

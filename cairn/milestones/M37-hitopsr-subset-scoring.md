@@ -99,6 +99,13 @@ match by column name and already tolerate a partial column set).
 - [x] T7. `@param` docs on both functions, NEWS entry, a worked short-form
       section in `vignettes/hitopsr_scoring.Rmd`, `devtools::document()`, then
       `devtools::test()` and `devtools::check()`.
+- [x] T8. Select columns by name, not by item number, in both wrappers'
+      `@examples` (`sim_hitopsr[paste0("hsr_", s$items)]`), so the documented
+      idiom stays correct on a frame carrying leading ID columns.
+- [x] T9. Derive `n_items` from `length(subset$items)` in
+      `subset_engine_inputs()` and assert it agrees with `subset$nItems`, so a
+      hand-mutated descriptor errors instead of scoring silently wrong; test the
+      new branch and its `call` attribution.
 
 ## Work log
 
@@ -116,6 +123,8 @@ match by column name and already tolerate a partial column set).
 - 2026-08-01: probe sensitivity confirmed by mutation rather than by eye — forcing the full path's `reverse_items` to `integer(0)` turned the probe red, the reported differences naming `hsr_romanticDisinterest` (and its `_se`) across the score grid and `alpha` on the reliability side, which is exactly the scale holding HSR 310; mutation reverted, the restored file verified byte-identical to the committed version, and the clean probe re-run afterwards.
 - 2026-08-01: T7 done — `@param subset` on both wrappers plus a runnable `@examples` line each, a NEWS entry, and a "Scoring a Short Form" vignette section that fields a four-scale form, scores it, and shows `all.equal()` against the full run. `devtools::document()` rewrote only the two `.Rd` files; `devtools::test()` clean (11739 pass); `devtools::check()` clean (0 errors, 0 warnings, 0 notes, 3m38s). AC7 probe re-run on the restored tree: 43/43 identical.
 - 2026-08-01: reviewed at PR #40 — all 8 criteria verified with fresh evidence, consistency gate clean, three fresh-context reviewers (two returned zero findings, the diff-bug lens returned 14 scored by a fourth agent). One finding actioned (F2, the now-false `@param data`/`@param items` wording, fixed on both wrappers); F11 carried to a candidate row; 12 logged below threshold. First review pass, no returns.
+- 2026-08-01: merge withheld at the review gate; the maintainer asked for both near-threshold findings to be fixed before merge (F11 at 78, F4 at 75). Status back to `in-progress`, T8/T9 added, and all eight criteria unticked — their evidence was gathered against code these tasks change, so it is re-run at the second review pass rather than carried over. Return #1.
+- 2026-08-01: T8/T9 done — `@examples` on both wrappers select item columns by name, and `subset_engine_inputs()` derives `n_items` from `length(subset$items)` and aborts on disagreement with `subset$nItems`. Six new tests including a regression fixture for the silent-miscoring case. All eight criteria re-verified from scratch; `test()` 11745 pass, `check()` 0/0/0, AC7 probe 43/43. Back to `review`.
 - 2026-08-01: `cairn_validate` advises 8 acceptance criteria against the >7 split tripwire; not split — AC8 is the mandated profile-verify criterion, leaving 7 substantive, and the only natural cut (reliability into its own milestone) is the one the plan gate explicitly declined. 7 tasks, one PR, 102/149 lines.
 
 ## Decisions
@@ -213,3 +222,26 @@ Logged below threshold (13), surfaced not dropped:
   pass `call = call`, and `info=` does label failures under testthat 3e.
 - F14 (5) — stale; the criteria boxes and this section are the review gate's own
   output.
+
+**Second pass, 2026-08-01**
+
+The maintainer withheld merge at the first gate and asked for both
+near-threshold findings fixed. T8/T9 added and shipped; all eight criteria were
+unticked and re-verified from scratch, since the first pass's evidence was
+gathered against code these tasks changed.
+
+- F11 fixed — both wrappers' `@examples` now select item columns by name
+  (`sim_hitopsr[paste0("hsr_", s$items)]`, `items = names(short)`) with a
+  comment saying why, so the documented idiom survives a leading ID column.
+- F4 fixed — `subset_engine_inputs()` derives `n_items` from
+  `length(subset$items)` and aborts when it disagrees with `subset$nItems`
+  ("The `subset` argument is internally inconsistent"), attributed to the
+  exported wrapper. Four new tests: both disagreement directions, `n_items`
+  provenance, and a regression fixture for the concrete silent-miscoring case
+  (an inflated `nItems` previously returned `hsr_agoraphobia = 2` against a true
+  2.8, with no error).
+
+Re-verified: AC1 column order TRUE · AC2 4/4 equal · AC3 = 1.8 · AC4 4 `_se`
+columns equal · AC5 4 rows, `nItems` 5/8/3/5, alpha equal · AC6 all three paths
+plus the new branch blaming the wrapper · AC7 43/43 identical · AC8
+`test()` 11745 pass / 0 fail, `check()` 0/0/0.
