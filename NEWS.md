@@ -3,6 +3,14 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* **Scoring short forms.** `score_hitopsr()` and `reliability_hitopsr()` gain a
+  `subset` argument taking the same short-form description that
+  `hitop_subset()` builds and the `generate_*_hitopsr()` functions consume. Give
+  it the item columns you actually collected and it scores only that short
+  form's scales, returning the same values a full 405-item administration would
+  have produced for them. Without the argument both functions behave exactly as
+  before. See `vignette("hitopsr_scoring")`.
+
 * **Clearer errors for bad arguments.** Every argument check across the package
   now reports which argument was wrong, what was supplied, and which function
   was called, instead of printing the internal test that failed. This affects

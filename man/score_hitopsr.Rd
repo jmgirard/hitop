@@ -11,7 +11,8 @@ score_hitopsr(
   prefix = "hsr_",
   missing = c("available", "complete"),
   calc_se = FALSE,
-  append = TRUE
+  append = TRUE,
+  subset = NULL
 )
 }
 \arguments{
@@ -40,6 +41,13 @@ standard error of each scale score. (default = \code{FALSE})}
 
 \item{append}{An optional logical indicating whether the new columns should
 be added to the end of the \code{data} input. (default = \code{TRUE})}
+
+\item{subset}{An optional \code{hitop_subset} object, as returned by
+\code{\link[=hitop_subset]{hitop_subset()}}, describing a short form of the instrument. When supplied,
+\code{data} and \code{items} hold only that subset's item columns — in ascending
+instrument order, as the \verb{generate_*_hitopsr()} forms lay them out — and
+only that subset's scales are scored. When \code{NULL}, all 405 items are
+expected and all 76 scales are scored. (default = \code{NULL})}
 }
 \value{
 A \link[tibble]{tibble} containing all scale scores and standard
@@ -55,5 +63,10 @@ omega), use \code{\link[=reliability_hitopsr]{reliability_hitopsr()}}.
 \examples{
 # Score all HiTOP-SR scales from the simulated data
 score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
+
+# Score data collected with a two-scale short form
+s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+score_hitopsr(sim_hitopsr[s$items], items = seq_len(s$nItems),
+              subset = s, append = FALSE)
 
 }

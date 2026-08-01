@@ -4,7 +4,14 @@
 \alias{reliability_hitopsr}
 \title{Estimate HiTOP-SR scale reliability}
 \usage{
-reliability_hitopsr(data, items, srange = c(1, 4), alpha = TRUE, omega = TRUE)
+reliability_hitopsr(
+  data,
+  items,
+  srange = c(1, 4),
+  alpha = TRUE,
+  omega = TRUE,
+  subset = NULL
+)
 }
 \arguments{
 \item{data}{A data frame containing all HiTOP-SR items (numerically coded).}
@@ -22,6 +29,13 @@ per scale. (default = \code{TRUE})}
 \item{omega}{Optional logical; if \code{TRUE}, include a column of McDonald's omega
 (total) per scale, estimated via a one-factor CFA (requires the \pkg{lavaan}
 package). (default = \code{TRUE})}
+
+\item{subset}{An optional \code{hitop_subset} object, as returned by
+\code{\link[=hitop_subset]{hitop_subset()}}, describing a short form of the instrument. When supplied,
+\code{data} and \code{items} hold only that subset's item columns — in ascending
+instrument order, as the \verb{generate_*_hitopsr()} forms lay them out — and one
+row is returned per subset scale. When \code{NULL}, all 405 items are expected
+and all 76 scales are estimated. (default = \code{NULL})}
 }
 \value{
 A \link[tibble]{tibble} with one row per scale and columns \code{scale},
@@ -43,5 +57,10 @@ rather than aborting the call.
 \examples{
 # Per-scale alpha for the HiTOP-SR
 reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
+
+# Per-scale alpha for data collected with a two-scale short form
+s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+reliability_hitopsr(sim_hitopsr[s$items], items = seq_len(s$nItems),
+                    subset = s, omega = FALSE)
 
 }

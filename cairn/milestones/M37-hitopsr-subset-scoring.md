@@ -1,6 +1,6 @@
 # M37: Score HiTOP-SR subset-collected data
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -93,10 +93,10 @@ match by column name and already tolerate a partial column set).
       equality against the full run.
 - [x] T5. Error-branch tests for all three AC6 paths, asserting the attributed
       `call` as well as the message.
-- [ ] T6. Differential probe script under `devel/` following the M31 pattern:
+- [x] T6. Differential probe script under `devel/` following the M31 pattern:
       `git archive` the base ref to a temp dir, run both versions in separate R
       subprocesses over the AC7 argument grid, compare values and conditions.
-- [ ] T7. `@param` docs on both functions, NEWS entry, a worked short-form
+- [x] T7. `@param` docs on both functions, NEWS entry, a worked short-form
       section in `vignettes/hitopsr_scoring.Rmd`, `devtools::document()`, then
       `devtools::test()` and `devtools::check()`.
 
@@ -112,6 +112,9 @@ match by column name and already tolerate a partial column set).
 - 2026-08-01: T1 done — `subset_engine_inputs()` in `R/subset.R` remaps a descriptor into `n_items`/`reverse_items`/`items_scales` as positions within the supplied columns; the reverse key is read from `hitopsr_items` rather than trusted from the descriptor's parallel flags. Five direct unit tests; `devtools::test()` clean (11715 pass).
 - 2026-08-01: T2/T3 done — `subset` is the last argument of `score_hitopsr()`, resolving through a shared `hitopsr_engine_inputs()` branch (`is.null()` on both sides, per the M24 truthiness lesson). Six score-path tests: column set in row order, subset-vs-full equality across both `missing` modes with and without injected `NA`s, the HSR 310 reverse-key fixture, `calc_se`, and items-as-names. The `NA` injection carries an explicit guard that the two `missing` modes differ on it, so the equality check cannot pass vacuously (M36 lesson). `devtools::test()` clean (11726 pass).
 - 2026-08-01: T4/T5 done — `reliability_hitopsr()` takes `subset` through the same `hitopsr_engine_inputs()` helper; tests fix the row set and order, `nItems` against `hitopsr_scales`, and whole-row equality with the full run. All three AC6 error paths assert the attributed `call` on both wrappers (six attribution checks), using the M32 placeholder idiom so a NULL `call` fails one assertion rather than aborting the block. `devtools::test()` clean (11739 pass).
+- 2026-08-01: T6 done — `devel/regression_probe_m37.R` runs 43 cells (score's `missing` × `calc_se` × `append` × names/positions grid, a non-default `srange` and `prefix`, reliability's `alpha` × `omega`, and 21 error/warning conditions) against a `git archive` export of the merge-base, in separate R subprocesses per tree; 43/43 `identical()`. Unlike M31's probe it compares returned values and full conditions, not accept-vs-reject, because M37 changes neither. ~8 min per run (76 omega CFAs, twice).
+- 2026-08-01: probe sensitivity confirmed by mutation rather than by eye — forcing the full path's `reverse_items` to `integer(0)` turned the probe red, the reported differences naming `hsr_romanticDisinterest` (and its `_se`) across the score grid and `alpha` on the reliability side, which is exactly the scale holding HSR 310; mutation reverted, the restored file verified byte-identical to the committed version, and the clean probe re-run afterwards.
+- 2026-08-01: T7 done — `@param subset` on both wrappers plus a runnable `@examples` line each, a NEWS entry, and a "Scoring a Short Form" vignette section that fields a four-scale form, scores it, and shows `all.equal()` against the full run. `devtools::document()` rewrote only the two `.Rd` files; `devtools::test()` clean (11739 pass); `devtools::check()` clean (0 errors, 0 warnings, 0 notes, 3m38s). AC7 probe re-run on the restored tree: 43/43 identical.
 - 2026-08-01: `cairn_validate` advises 8 acceptance criteria against the >7 split tripwire; not split — AC8 is the mandated profile-verify criterion, leaving 7 substantive, and the only natural cut (reliability into its own milestone) is the one the plan gate explicitly declined. 7 tasks, one PR, 102/149 lines.
 
 ## Decisions

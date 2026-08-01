@@ -116,6 +116,67 @@ reliability_hitopsr(
 )
 ```
 
+## Scoring a Short Form
+
+Not every study administers all 405 items. The `hitop_subset()` function describes a short form built from a chosen set of scales, and the `generate_docx_hitopsr()`, `generate_qualtrics_hitopsr()`, and `generate_redcap_hitopsr()` functions turn that description into an instrument to field. Data collected that way has only the subset's item columns, so passing it to `score_hitopsr()` as if it were a full administration would fail on the item count.
+
+Instead, hand the same description back through the `subset` argument. Here is a four-scale short form:
+
+```{r}
+short_form <- hitop_subset(
+  instrument = "hitopsr",
+  scales = c(
+    "Agoraphobia", "Appetite Loss",
+    "Antisocial Behavior", "Romantic Disinterest"
+  )
+)
+short_form
+```
+
+We will stand in for the collected data by keeping just those columns of `ku_hitopsr`. Note that the item numbers are the *original* HiTOP-SR numbers — the short form does not renumber its items from 1.
+
+```{r}
+short_data <- ku_hitopsr[sprintf("hsr%03d", short_form$items)]
+ncol(short_data)
+```
+
+Now score it. The `items` argument names the columns you actually have, in instrument order, and `subset` tells the function which scales they belong to.
+
+```{r}
+short_scores <- score_hitopsr(
+  data = short_data,
+  items = names(short_data),
+  subset = short_form,
+  append = FALSE
+)
+short_scores
+```
+
+Only the subset's scales come back, in the order they appear in `hitopsr_scales`. The values are exactly what a full administration would have produced for those scales — a scale score depends only on its own items, so dropping the other 72 scales' columns cannot move it:
+
+```{r}
+full_scores <- score_hitopsr(
+  data = ku_hitopsr,
+  items = sprintf("hsr%03d", 1:405),
+  append = FALSE
+)
+all.equal(short_scores, full_scores[names(short_scores)])
+```
+
+`reliability_hitopsr()` takes the same argument and returns one row per subset scale.
+
+```{r}
+#| warning: false
+reliability_hitopsr(
+  data = short_data,
+  items = names(short_data),
+  subset = short_form,
+  omega = FALSE
+)
+```
+
+The `srange`, `prefix`, `missing`, `calc_se`, and `append` arguments all behave exactly as they do for a full administration.
+
 ## Renaming Item Columns
 If your dataset was collected before the item numbers were standardized or used arbitrary variable names, you must rename your columns to the standard format before running the scoring engine. The `rename_hitopsr_items()` function handles this preparation via two approaches.
 
