@@ -148,6 +148,29 @@ read_docx_footer <- function(file) {
   paste(gsub("<[^>]+>", "", runs), collapse = "")
 }
 
+# Extract the response-option legend lines from a .docx, in document order.
+#
+# The legend sits in the items table's own header as one <w:t> run per line.
+# Anchoring on "<value> = " is what scopes the result to the legend: item text
+# runs read "12.  I ...", the option columns are bare digits, and the scoring
+# table's header cells are "Scale"/"Items", so none of them can match. Returns
+# character(0) when a document has no legend.
+docx_legend_lines <- function(file) {
+  xml <- read_docx_xml(file)
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  grep("^[0-9]+ = ", gsub("<[^>]+>", "", runs), value = TRUE)
+}
+
+# Split a legend line back into its (value, label) pairs.
+docx_legend_pairs <- function(lines) {
+  pairs <- unlist(strsplit(lines, " • ", fixed = TRUE))
+  data.frame(
+    value = sub(" = .*$", "", pairs),
+    label = sub("^[0-9]+ = ", "", pairs),
+    stringsAsFactors = FALSE
+  )
+}
+
 # Extract the (width, height) of the first <w:pgSz> in twips.
 docx_page_size <- function(xml) {
   w <- as.integer(sub('.*<w:pgSz[^>]*w:w="([0-9]+)".*', "\\1", xml))

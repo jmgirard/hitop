@@ -234,3 +234,112 @@ test_that("include_scoring = FALSE still omits the BF scoring table entirely", {
   total_items <- paste(pid_scales[["BF"]]$itemNumbers[["total"]], collapse = ", ")
   expect_false(grepl(total_items, xml, fixed = TRUE))
 })
+
+# ---- Response-option legend line breaking (M36) -----------------------------
+#
+# The legend is participant-facing content under IP1: this milestone changes
+# only where it breaks, never what it says (D-028), so these tests assert the
+# line structure AND recover the pairs to prove the wording is untouched. The
+# oracle for "unchanged" is `*_instructions$options` and the committed SR/BR
+# forms -- never the PID forms this milestone rebuilds, which would be the
+# code's own output asserted as truth (IP2).
+
+test_that("the PID legend prints two options per line, in printed order", {
+  skip_if_no_docx()
+  for (gen in list(generate_docx_pid5, generate_docx_pid5sf, generate_docx_pid5bf)) {
+    f <- withr::local_tempfile(fileext = ".docx")
+    suppressMessages(gen(file = f))
+    lines <- docx_legend_lines(f)
+
+    # Exactly two legend lines. The scoring table's header row is "Scale"/
+    # "Items" and cannot match the extractor's "<value> = " anchor, so this
+    # counts the items table's header alone.
+    expect_length(lines, 2L)
+
+    opts <- pid_instructions$options
+    expect_equal(docx_legend_pairs(lines[[1]])$value, as.character(opts$value[1:2]))
+    expect_equal(docx_legend_pairs(lines[[2]])$value, as.character(opts$value[3:4]))
+  }
+})
+
+test_that("splitting the PID legend changes no wording and adds no character", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  suppressMessages(generate_docx_pid5(file = f))
+  lines <- docx_legend_lines(f)
+  got <- docx_legend_pairs(lines)
+  opts <- pid_instructions$options
+
+  # Every pair survives the split, in printed order, value and label intact.
+  expect_equal(got$value, as.character(opts$value))
+  expect_equal(got$label, opts$label)
+
+  # The separator is consumed by the break, not carried to a line end, and the
+  # split adds nothing: rejoining the lines reproduces the one-line legend.
+  expect_false(any(grepl("•\\s*$", lines)))
+  expect_equal(
+    paste(lines, collapse = " • "),
+    paste(opts$value, opts$label, sep = " = ", collapse = " • ")
+  )
+})
+
+test_that("the HiTOP-SR and HiTOP-BR legends still print on one line", {
+  skip_if_no_docx()
+  for (gen in list(generate_docx_hitopsr, generate_docx_hitopbr)) {
+    f <- withr::local_tempfile(fileext = ".docx")
+    suppressMessages(gen(file = f))
+    lines <- docx_legend_lines(f)
+    expect_length(lines, 1L)
+    expect_equal(nrow(docx_legend_pairs(lines)), 4L)
+  }
+})
+
+test_that("the default legend matches the committed forms this milestone leaves alone", {
+  skip_if_no_docx()
+  # The SR/BR artifacts are not rebuilt by M36, so their committed bytes are an
+  # external record of the pre-change single-line legend -- the oracle for the
+  # claim that `make_items_table()`'s default is unchanged.
+  committed <- list(
+    hitopsr = system.file("extdata", "hitopsr_US.docx", package = "hitop"),
+    hitopbr = system.file("extdata", "hitopbr_US.docx", package = "hitop")
+  )
+  fresh <- list(hitopsr = generate_docx_hitopsr, hitopbr = generate_docx_hitopbr)
+
+  for (nm in names(committed)) {
+    skip_if(committed[[nm]] == "")
+    f <- withr::local_tempfile(fileext = ".docx")
+    suppressMessages(fresh[[nm]](file = f))
+    expect_equal(docx_legend_lines(f), docx_legend_lines(committed[[nm]]))
+  }
+})
+
+test_that("opts_per_line defaults to the option count, not a hardcoded four", {
+  skip_if_no_docx()
+  # A three-option table must still print on ONE line by default; a hardcoded 4
+  # would pass every four-option check above while wrapping this one wrongly.
+  opts3 <- data.frame(value = 1:3, label = c("Never", "Sometimes", "Always"))
+  items <- data.frame(Number = 1:3, Text = c("a", "b", "c"))
+
+  one <- make_items_table(items, "Number", opts3, 7, 10, "Times New Roman")
+  f1 <- withr::local_tempfile(fileext = ".docx")
+  print(flextable::body_add_flextable(officer::read_docx(), one), target = f1)
+  expect_length(docx_legend_lines(f1), 1L)
+
+  two <- make_items_table(items, "Number", opts3, 7, 10, "Times New Roman", opts_per_line = 2)
+  f2 <- withr::local_tempfile(fileext = ".docx")
+  print(flextable::body_add_flextable(officer::read_docx(), two), target = f2)
+  # 3 options at 2 per line is 2 + 1, and the short final line carries no
+  # dangling separator.
+  expect_length(docx_legend_lines(f2), 2L)
+  expect_equal(nrow(docx_legend_pairs(docx_legend_lines(f2)[[2]])), 1L)
+})
+
+test_that("a one-item table builds without error", {
+  skip_if_no_docx()
+  # Regression: even-row shading used seq(2, n, by = 2), which counts backwards
+  # at n = 1 and aborts -- reachable through a single-item subset form.
+  one_item <- data.frame(Number = 1L, Text = "a")
+  expect_no_error(
+    make_items_table(one_item, "Number", hitopsr_instructions$options, 7, 10, "Times New Roman")
+  )
+})
