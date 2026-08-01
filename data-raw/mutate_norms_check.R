@@ -125,8 +125,10 @@ mutations <- list(
   ),
   ## A percentile column displaced on its own is the thinnest case in the
   ## dataset: it stays monotone, and `raw` -- which every other test reads -- is
-  ## untouched, so only an anchor whose percentile happens to step at that T can
-  ## see it. Kept here to measure the gap rather than to assert it is closed.
+  ## untouched, so only an anchor whose percentile steps at that T can see it.
+  ## Both were NOT CAUGHT while each column had a single anchor at T = 65. M34
+  ## placed every column's second anchor at exactly such a step, so these now
+  ## fire -- and fire on the book-comparison test, not merely on an adequacy one.
   list(
     ac = "M33 AC6",
     desc = "SF withdrawal percentile column displaced down one T row (raw untouched)",

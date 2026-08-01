@@ -6,13 +6,6 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8787", "-d", "docs"],
       "port": 8787
-    },
-    {
-      "name": "markon2024-appendix",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8791", "-d",
-        "/private/tmp/claude-503/-Users-jmgirard-GitHub-hitop/a17940b5-3c8a-4075-a77f-a6399fe01e86/scratchpad/epub"],
-      "port": 8791
     }
   ]
 }

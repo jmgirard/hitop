@@ -206,30 +206,43 @@ test_that("percentiles are proportions", {
 
 # ---- spot values from the printed tables -------------------------------------
 #
-# The spot values are the only layer in this suite that catches a whole column
-# displaced by one row -- the defect this dataset actually had before it was
-# corrected. Such a shift leaves `raw` perfectly linear in T (the intercept
-# simply moves by one step) and leaves a monotone percentile column monotone, so
-# neither structural invariant above can see it. Every (version, scale)
-# therefore needs at least one anchor, which the coverage test below enforces.
+# The spot values are the only layer in this suite that reads the rendered page,
+# and the only one that catches a whole column displaced by one row -- the defect
+# this dataset actually had before it was corrected. Such a shift leaves `raw`
+# perfectly linear in T (the intercept simply moves by one step) and leaves a
+# monotone percentile column monotone, so neither structural invariant above can
+# see it.
 #
-# What one anchor per column does NOT close, measured rather than assumed
-# (data-raw/mutate_norms_check.R runs each case and reports which tests fire):
+# Every T-scored (version, scale) carries two anchors at distinct T scores. The
+# three adequacy tests below assert what that pair is placed to witness, and
+# data-raw/mutate_norms_check.R runs each corruption and reports which tests
+# fire:
 #
-#   * A displaced *percentile* column, with `raw` untouched, is caught only
-#     where the anchor's own T is a row at which that column's percentile
-#     steps. Both seeded cases in the mutation script -- SF withdrawal and FULL
-#     anhedonia -- come back NOT CAUGHT. Outside the suite,
-#     data-raw/verify_norms_against_book.R does catch it, since it diffs every
-#     printed cell against the book; the exposure is a displacement introduced
-#     downstream of the CSVs, in data-raw/norms_pid5.R's long-format assembly.
-#   * Two facet columns whose anchors coincide cannot witness a swap *of each
-#     other*: at T = 65, SF impulsivity and SF intimacyAvoidance both read
-#     (1.64, 0.91), and SF manipulativeness and SF suspiciousness both read
-#     (1.53, 0.94).
+#   * A displaced *percentile* column with `raw` untouched -- the thinnest case
+#     in the dataset, since every other test reads `raw`. Each column's second
+#     anchor sits at a T where its percentile steps up from the row below, so
+#     the displacement moves the value there. Both seeded cases, SF withdrawal
+#     and FULL anhedonia, are caught, and by the book-comparison test rather
+#     than only by an adequacy test.
+#   * A swap of two columns. One anchor per column could not witness this
+#     wherever two columns read alike at it: at T = 65 SF impulsivity and SF
+#     intimacyAvoidance agreed, as did SF manipulativeness and SF
+#     suspiciousness. No two T-scored columns now read alike at every T where
+#     either is anchored.
 #
-# Closing either needs a second anchor per column at a T chosen against that
-# column, which is another hand-reading pass; it is a ROADMAP candidate.
+# What stays open is a column displaced *upward*, each row taking its
+# successor's value. Catching that needs an anchor differing from the row above,
+# and 14 of the 66 columns have no interior T differing from both neighbours --
+# their percentiles step only every third row -- so it would take a third anchor
+# on 41 columns. It is a ROADMAP candidate.
+#
+# The layer outside this suite is data-raw/verify_norms_against_book.R, which
+# diffs every printed cell against an independent extraction of the book's
+# markup, in either direction. It compares the data-raw CSVs, not `pid_norms`,
+# so the assembly in data-raw/norms_pid5.R sits between the two layers; the
+# anchors are what observe it here. Being markup-based, it also shares a blind
+# spot the anchors do not: a defect in the book's own markup, which only a
+# rendered-page read can see.
 
 # version, scale, T score, raw, percentile, page
 domain_spot <- local({

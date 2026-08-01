@@ -100,7 +100,7 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
       step-placement and AC4 pairwise-distinctness tests.
 - [x] T5. Add the two column-swap mutations to `data-raw/mutate_norms_check.R`;
       run it and confirm every mutation comes back CAUGHT.
-- [ ] T6. Rewrite the two block comments; run `devtools::test()` and
+- [x] T6. Rewrite the two block comments; run `devtools::test()` and
       `devtools::check()`.
 
 ## Work log
@@ -109,7 +109,6 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 - 2026-07-31: criteria audit ([O], fresh context) returned 7 findings — AC1 test scope over all 70 columns vs 66, AC2 page convention contradicting the file's own, AC4 undefined for cross-version pairs, AC5 satisfiable by the meta-tests alone, AC6 line-pinned and missing two other homes of the stale claim, plus a verified infeasibility behind AC3's directionality; all applied, the directionality one routed to the gate. IP2 verdict on AC3/AC4: no conflict.
 - 2026-07-31: plan gate chose one anchor per column, closing the downward displacement only, over covering both directions because 41 of 66 columns would need a second new anchor for a failure direction never yet observed here; falsified by an upward displacement reaching the shipped dataset, or by any second displacement whose direction the seeded pair does not cover.
 - 2026-07-31: plan chose hand-read anchors over folding in the mechanical whole-dataset comparison because the anchors are the only layer reading the rendered page, where the markup-based checks share a blind spot; falsified by a defect that the markup extraction and the rendered page would report identically, which would make the hand read redundant. The mechanical comparison is planned as M35 rather than dropped.
-
 - 2026-07-31: T1 — `data-raw/select_norm_anchors.R` assigns each of the 63 columns a T from a frozen five-value preference order (44, 64, 63, 45, 46), covering all of them and reporting 0 indistinguishable pairs over 2,145. Shared T values were chosen over per-column ones so the read is five row scans across the page rather than 63 separate lookups (the M33 shape); each assigned T is still drawn from that column's own eligible set, so Scope's "chosen against that column" holds and no amendment is needed.
 - 2026-07-31: implement gate chose a fresh-context reader for the hand read over this session reading it, because this session has been reasoning about `pid_norms` all along; no `raw` or `percentile` cell value has been printed here, so the reader can be given page images and row labels with no exposure to the shipped numbers. On a mismatch: one independent re-read, then stop and escalate — never edit the norms, never adopt the shipped value.
 - 2026-07-31: T2 — hand read delegated to a fresh-context [O] reader given only the served rendered pages, the column headings and the row list; it was barred from `pid_norms`, the data-raw CSVs, test-norms.R and R itself, and from extracting numbers via the DOM, `get_page_text` or the file on disk, so the read is visual and independent of the existing markup extraction. It reported 0 unreadable cells and controlled column alignment two ways (re-photographing each block banner, and overlapping the two horizontal pans by a full column). Attestation: all 63 values were read off rendered screenshots.
@@ -117,6 +116,8 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 - 2026-07-31: T3 — anchors added as a third `second_spot` table rbound into `tscored_spot`; a separate table rather than extending `facet_spot`, whose vectorized shape assumes one shared T.
 - 2026-07-31: T4 — three adequacy tests added (>=2 distinct-T anchors, step placement, pairwise distinctness), scoped to T-scored columns; the existing all-70 coverage test is unchanged. Inversion-checked: removing `second_spot` turns all three red, so none passes vacuously. Guard ordering matters in the distinctness test — `[[` on an absent name errors rather than returning NA, so the membership test precedes the lookup.
 - 2026-07-31: T5 — two swap mutations added via a `swap_columns()` helper; the full script now reports CAUGHT for all 13 mutations, the two M33 percentile displacements included. For all four M34-relevant cases the book-comparison test is among the failing tests, which is what AC5 requires over a bare CAUGHT. Restore verified by md5, unchanged.
+- 2026-07-31: T6 — both block comments rewritten; the ROADMAP row needed no edit, having been replaced at plan time by the narrower upward-displacement candidate. `devtools::test()` 11681 pass / 0 fail / 1 skip (pre-existing); `devtools::check()` 0 errors, 0 warnings, 0 notes.
+- 2026-07-31: T6 — the `.claude/launch.json` static-server entry added for the hand read was committed in cc51413 with a session-specific absolute path; removed again here, and the server stopped (the M33 lesson's own practice).
 
 ## Decisions
 
