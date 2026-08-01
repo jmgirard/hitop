@@ -372,12 +372,14 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric) {
       linewidth = 0.7
     ) +
     ggplot2::geom_point(size = 2.5) +
-    ## Nudged off the point, or the label sits exactly on top of the marker it
-    ## labels and hides it entirely. The offset is a fraction of the axis span
-    ## so it scales with the metric (T span ~60, percentile span 100).
+    ## Offset off the point, or the label sits exactly on top of the marker it
+    ## labels and hides it entirely. The offset is `vjust` -- a rendering
+    ## property -- and never a nudge of the x value: nudging in data space
+    ## pushes a score near the top of the axis PAST the limit, and ggplot2 then
+    ## drops that label silently (a percentile of 98 nudged to 102.5 vanished).
     ggplot2::geom_label(
       ggplot2::aes(label = round(.data$value)),
-      nudge_x = diff(axis$limits) * 0.045,
+      vjust = -0.55,
       size = 3,
       label.padding = ggplot2::unit(0.15, "lines")
     ) +

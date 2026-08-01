@@ -481,3 +481,47 @@ test_that("a scale absent from pid_norms is refused by the axis helper", {
     regexp = "no rows for"
   )
 })
+
+test_that("every point keeps a visible marker and an undropped label", {
+  # Two failure modes, one test. (a) The label must not sit exactly on the
+  # point, or it hides the marker entirely. (b) The offset must not move the
+  # label in DATA space: a percentile of 98 nudged outward lands past the
+  # axis limit and ggplot2 drops that label silently, with only a warning.
+  for (case in list(
+    list(v = "BF", m = "percentile"), list(v = "BF", m = "t"),
+    list(v = "FULL", m = "t"), list(v = "FULL", m = "percentile")
+  )) {
+    p <- plot_pid5(normed_one(case$v), version = case$v, metric = case$m)
+    lab <- layer_data_for(p, "GeomLabel")
+    pts <- layer_data_for(p, "GeomPoint")
+
+    # No label is dropped for falling outside the scale range.
+    expect_false(any(is.na(lab$x)), info = paste(case$v, case$m))
+    expect_equal(nrow(lab), nrow(pts), info = paste(case$v, case$m))
+    expect_true(all(lab$x >= min(value_limits(p)) & lab$x <= max(value_limits(p))))
+
+    # The label shares the point's data position; separation is a rendering
+    # property (vjust), so it can never push a value off the axis.
+    expect_equal(lab$x, pts$x, info = paste(case$v, case$m))
+    expect_true(all(lab$vjust != 0.5))
+  }
+})
+
+test_that("drawing a plot emits no ggplot2 warnings", {
+  # A dropped label or an out-of-range value surfaces only at draw time --
+  # ggplot_build() alone does not raise it.
+  for (lvl in c("domain", "facet")) {
+    for (m in c("t", "percentile")) {
+      p <- plot_pid5(
+        normed_one("FULL", level = lvl),
+        version = "FULL", level = lvl, metric = m
+      )
+      f <- withr::local_tempfile(fileext = ".png")
+      expect_no_warning(
+        suppressMessages(
+          ggplot2::ggsave(f, p, width = 7, height = 7, dpi = 72)
+        )
+      )
+    }
+  }
+})
