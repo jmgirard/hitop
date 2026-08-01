@@ -12,7 +12,8 @@ score_hitopsr(
   prefix = "hsr_",
   missing = c("available", "complete"),
   calc_se = FALSE,
-  append = TRUE
+  append = TRUE,
+  subset = NULL
 )
 ```
 
@@ -20,16 +21,18 @@ score_hitopsr(
 
 - data:
 
-  A data frame containing all HiTOP-SR items (numerically coded).
+  A data frame containing the HiTOP-SR items (numerically coded): all
+  405 of them, or, when `subset` is supplied, that short form's items.
 
 - items:
 
   A vector of column names (as strings) or numbers (as integers)
-  corresponding to the 405 HiTOP-SR items in order. Items must be
-  supplied in instrument order; a misordered mapping silently scores the
-  wrong items, so a warning is issued when the names share a common
-  prefix and trailing number but those numbers are not ascending.
-  Duplicated entries are an error.
+  corresponding to the HiTOP-SR items held in `data` — all 405, or, when
+  `subset` is supplied, that short form's items. Items must be supplied
+  in instrument order; a misordered mapping silently scores the wrong
+  items, so a warning is issued when the names share a common prefix and
+  trailing number but those numbers are not ascending. Duplicated
+  entries are an error.
 
 - srange:
 
@@ -58,6 +61,16 @@ score_hitopsr(
 
   An optional logical indicating whether the new columns should be added
   to the end of the `data` input. (default = `TRUE`)
+
+- subset:
+
+  An optional `hitop_subset` object, as returned by
+  [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md),
+  describing a short form of the instrument. When supplied, `data` and
+  `items` hold only that subset's item columns — in ascending instrument
+  order, as the `generate_*_hitopsr()` forms lay them out — and only
+  that subset's scales are scored. When `NULL`, all 405 items are
+  expected and all 76 scales are scored. (default = `NULL`)
 
 ## Value
 
@@ -96,4 +109,25 @@ score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
 #> #   hsr_conversionSymptoms <dbl>, hsr_counting <dbl>,
 #> #   hsr_dietaryRestraint <dbl>, hsr_difficultiesReachingOrgasm <dbl>,
 #> #   hsr_diseaseConviction <dbl>, hsr_dishonesty <dbl>, …
+
+# Score data collected with a two-scale short form. Select the item columns
+# by name: `s$items` holds original HiTOP-SR numbers, which are column
+# positions only in a data frame that is exactly the 405 items in order.
+s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+short <- sim_hitopsr[paste0("hsr_", s$items)]
+score_hitopsr(short, items = names(short), subset = s, append = FALSE)
+#> # A tibble: 100 × 2
+#>    hsr_agoraphobia hsr_appetiteLoss
+#>              <dbl>            <dbl>
+#>  1             2.8             2.67
+#>  2             2.6             3   
+#>  3             2.4             2.67
+#>  4             2.4             2   
+#>  5             2.6             2   
+#>  6             2.4             2.67
+#>  7             2.6             2.33
+#>  8             3               2.67
+#>  9             2.4             1.67
+#> 10             2.4             2.33
+#> # ℹ 90 more rows
 ```

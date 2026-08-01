@@ -290,6 +290,121 @@ reliability_hitopsr(
 #> # ℹ 66 more rows
 ```
 
+## Scoring a Short Form
+
+Not every study administers all 405 items. The
+[`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
+function describes a short form built from a chosen set of scales, and
+the
+[`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
+[`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md),
+and
+[`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
+functions turn that description into an instrument to field. Data
+collected that way has only the subset’s item columns, so passing it to
+[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+as if it were a full administration would fail on the item count.
+
+Instead, hand the same description back through the `subset` argument.
+Here is a four-scale short form:
+
+``` r
+
+short_form <- hitop_subset(
+  instrument = "hitopsr",
+  scales = c(
+    "Agoraphobia", "Appetite Loss",
+    "Antisocial Behavior", "Romantic Disinterest"
+  )
+)
+short_form
+#> <hitop_subset> hitopsr: 21 items from 4 scales
+#> * Agoraphobia
+#> * Antisocial Behavior
+#> * Appetite Loss
+#> * Romantic Disinterest
+```
+
+We will stand in for the collected data by keeping just those columns of
+`ku_hitopsr`. Note that the item numbers are the *original* HiTOP-SR
+numbers — the short form does not renumber its items from 1.
+
+``` r
+
+short_data <- ku_hitopsr[sprintf("hsr%03d", short_form$items)]
+ncol(short_data)
+#> [1] 21
+```
+
+Now score it. The `items` argument names the columns you actually have,
+in instrument order, and `subset` tells the function which scales they
+belong to.
+
+``` r
+
+short_scores <- score_hitopsr(
+  data = short_data,
+  items = names(short_data),
+  subset = short_form,
+  append = FALSE
+)
+short_scores
+#> # A tibble: 411 × 4
+#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss
+#>              <dbl>                  <dbl>            <dbl>
+#>  1             2                     1.12             1   
+#>  2             1.4                   1.75             1   
+#>  3             2.2                   2.12             2   
+#>  4             1.2                   1.25             1   
+#>  5             2                     1.88             2   
+#>  6             1                     1.25             1   
+#>  7             1                     1                1.67
+#>  8             1.6                   1.62             1   
+#>  9             1.4                   1.25             1.67
+#> 10             1.2                   1.38             1   
+#> # ℹ 401 more rows
+#> # ℹ 1 more variable: hsr_romanticDisinterest <dbl>
+```
+
+Only the subset’s scales come back, in the order they appear in
+`hitopsr_scales`. The values are exactly what a full administration
+would have produced for those scales — a scale score depends only on its
+own items, so dropping the other 72 scales’ columns cannot move it:
+
+``` r
+
+full_scores <- score_hitopsr(
+  data = ku_hitopsr,
+  items = sprintf("hsr%03d", 1:405),
+  append = FALSE
+)
+all.equal(short_scores, full_scores[names(short_scores)])
+#> [1] TRUE
+```
+
+[`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+takes the same argument and returns one row per subset scale.
+
+``` r
+
+reliability_hitopsr(
+  data = short_data,
+  items = names(short_data),
+  subset = short_form,
+  omega = FALSE
+)
+#> # A tibble: 4 × 3
+#>   scale                nItems   alpha
+#>   <chr>                 <int>   <dbl>
+#> 1 Agoraphobia               5  0.419 
+#> 2 Antisocial Behavior       8  0.545 
+#> 3 Appetite Loss             3  0.367 
+#> 4 Romantic Disinterest      5 -0.0803
+```
+
+The `srange`, `prefix`, `missing`, `calc_se`, and `append` arguments all
+behave exactly as they do for a full administration.
+
 ## Renaming Item Columns
 
 If your dataset was collected before the item numbers were standardized

@@ -10,20 +10,29 @@ outputs.
 ## Usage
 
 ``` r
-reliability_hitopsr(data, items, srange = c(1, 4), alpha = TRUE, omega = TRUE)
+reliability_hitopsr(
+  data,
+  items,
+  srange = c(1, 4),
+  alpha = TRUE,
+  omega = TRUE,
+  subset = NULL
+)
 ```
 
 ## Arguments
 
 - data:
 
-  A data frame containing all HiTOP-SR items (numerically coded).
+  A data frame containing the HiTOP-SR items (numerically coded): all
+  405 of them, or, when `subset` is supplied, that short form's items.
 
 - items:
 
   A vector of column names (as strings) or numbers (as integers)
-  corresponding to the 405 HiTOP-SR items in order. Items must be
-  supplied in instrument order; duplicated entries are an error.
+  corresponding to the HiTOP-SR items held in `data` — all 405, or, when
+  `subset` is supplied, that short form's items. Items must be supplied
+  in instrument order; duplicated entries are an error.
 
 - srange:
 
@@ -40,6 +49,16 @@ reliability_hitopsr(data, items, srange = c(1, 4), alpha = TRUE, omega = TRUE)
   Optional logical; if `TRUE`, include a column of McDonald's omega
   (total) per scale, estimated via a one-factor CFA (requires the lavaan
   package). (default = `TRUE`)
+
+- subset:
+
+  An optional `hitop_subset` object, as returned by
+  [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md),
+  describing a short form of the instrument. When supplied, `data` and
+  `items` hold only that subset's item columns — in ascending instrument
+  order, as the `generate_*_hitopsr()` forms lay them out — and one row
+  is returned per subset scale. When `NULL`, all 405 items are expected
+  and all 76 scales are estimated. (default = `NULL`)
 
 ## Value
 
@@ -76,4 +95,16 @@ reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
 #>  9 Checking                  5 -0.247  
 #> 10 Cleaning                  6  0.174  
 #> # ℹ 66 more rows
+
+# Per-scale alpha for data collected with a two-scale short form. Select the
+# item columns by name: `s$items` holds original HiTOP-SR numbers, which are
+# column positions only in a data frame that is exactly the 405 items in order.
+s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+short <- sim_hitopsr[paste0("hsr_", s$items)]
+reliability_hitopsr(short, items = names(short), subset = s, omega = FALSE)
+#> # A tibble: 2 × 3
+#>   scale         nItems    alpha
+#>   <chr>          <int>    <dbl>
+#> 1 Agoraphobia        5 -0.108  
+#> 2 Appetite Loss      3  0.00603
 ```

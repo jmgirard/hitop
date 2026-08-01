@@ -80,7 +80,14 @@ estimated on the reverse-keyed item responses for each of the scales that
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reliability_hitopsr</span><span class="op">(</span><span class="va">data</span>, <span class="va">items</span>, srange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, alpha <span class="op">=</span> <span class="cn">TRUE</span>, omega <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reliability_hitopsr</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">items</span>,</span>
+<span>  srange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  omega <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  subset <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -88,12 +95,14 @@ estimated on the reverse-keyed item responses for each of the scales that
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A data frame containing all HiTOP-SR items (numerically coded).</p></dd>
+<dd><p>A data frame containing the HiTOP-SR items (numerically coded):
+all 405 of them, or, when <code>subset</code> is supplied, that short form's items.</p></dd>
 
 
 <dt id="arg-items">items<a class="anchor" aria-label="anchor" href="#arg-items"></a></dt>
 <dd><p>A vector of column names (as strings) or numbers (as integers)
-corresponding to the 405 HiTOP-SR items in order. Items must be supplied in
+corresponding to the HiTOP-SR items held in <code>data</code> — all 405, or, when
+<code>subset</code> is supplied, that short form's items. Items must be supplied in
 instrument order; duplicated entries are an error.</p></dd>
 
 
@@ -111,6 +120,15 @@ per scale. (default = <code>TRUE</code>)</p></dd>
 <dd><p>Optional logical; if <code>TRUE</code>, include a column of McDonald's omega
 (total) per scale, estimated via a one-factor CFA (requires the <span class="pkg">lavaan</span>
 package). (default = <code>TRUE</code>)</p></dd>
+
+
+<dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
+<dd><p>An optional <code>hitop_subset</code> object, as returned by
+<code><a href="hitop_subset.html">hitop_subset()</a></code>, describing a short form of the instrument. When supplied,
+<code>data</code> and <code>items</code> hold only that subset's item columns — in ascending
+instrument order, as the <code>generate_*_hitopsr()</code> forms lay them out — and one
+row is returned per subset scale. When <code>NULL</code>, all 405 items are expected
+and all 76 scales are estimated. (default = <code>NULL</code>)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -145,6 +163,18 @@ rather than aborting the call.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Checking                  5 -<span style="color: #BB0000;">0.247</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Cleaning                  6  0.174  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 66 more rows</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Per-scale alpha for data collected with a two-scale short form. Select the</span></span></span>
+<span class="r-in"><span><span class="co"># item columns by name: `s$items` holds original HiTOP-SR numbers, which are</span></span></span>
+<span class="r-in"><span><span class="co"># column positions only in a data frame that is exactly the 405 items in order.</span></span></span>
+<span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="hitop_subset.html">hitop_subset</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">short</span> <span class="op">&lt;-</span> <span class="va">sim_hitopsr</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"hsr_"</span>, <span class="va">s</span><span class="op">$</span><span class="va">items</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu">reliability_hitopsr</span><span class="op">(</span><span class="va">short</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">short</span><span class="op">)</span>, subset <span class="op">=</span> <span class="va">s</span>, omega <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   scale         nItems    alpha</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Agoraphobia        5 -<span style="color: #BB0000;">0.108</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Appetite Loss      3  0.006<span style="text-decoration: underline;">03</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
