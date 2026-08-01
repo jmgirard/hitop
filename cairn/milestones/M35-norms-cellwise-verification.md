@@ -1,11 +1,11 @@
 # M35: Cell-by-cell verification of the shipped norms against the book
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M34
 - **Driving RR:** —
 - **Principles touched:** IP2
-- **Branch/PR:** —
+- **Branch/PR:** `m35-norms-cellwise-verification`
 
 ## Goal
 

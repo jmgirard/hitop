@@ -9,7 +9,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M34 | A second spot-value anchor per normed PID-5 column | done | — | normal | milestones/archive/M34-second-norm-anchors.md |
-| M35 | Cell-by-cell verification of the shipped norms against the book | planned | M34 | normal | milestones/M35-norms-cellwise-verification.md |
+| M35 | Cell-by-cell verification of the shipped norms against the book | in-progress | M34 | normal | milestones/M35-norms-cellwise-verification.md |
 | M33 | PID-5 facet-level norms | done | — | normal | milestones/archive/M33-pid5-facet-norms.md |
 | M32 | Test coverage for M31's argument-validation additions | done | — | normal | milestones/archive/M32-m31-validation-test-coverage.md |
 | M31 | Argument-validation consistency and a harder norming oracle | done | — | normal | milestones/archive/M31-validator-and-oracle-residue.md |
