@@ -2,12 +2,13 @@
 
 _The only authority on milestone status. Grouped by status, not ID._
 _Last hygiene check: 2026-08-01 (M36 merged and archived; M31's row pruned under terminal-row retention, two lessons captured, none retired; all checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M36)._
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M38)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M37 | Score HiTOP-SR subset-collected data | planned | — | normal | milestones/M37-hitopsr-subset-scoring.md |
 | M36 | Two-line response-option legend on the PID paper forms | done | — | normal | milestones/archive/M36-pid-legend-two-lines.md |
 | M34 | A second spot-value anchor per normed PID-5 column | done | — | normal | milestones/archive/M34-second-norm-anchors.md |
 | M35 | Cell-by-cell verification of the shipped norms against the book | done | M34 | normal | milestones/archive/M35-norms-cellwise-verification.md |
@@ -29,5 +30,5 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
 - A repeatable width-budget check that a legend line fits the printable column at the form's font size — M36 proves the PID legend's two lines visually, which confirms this build but guards no later edit; Word's line breaking is not observable from `document.xml`, so any such check is an estimate. Promote if a mid-phrase wrap ever reaches a committed form unnoticed — added 2026-07-31 — lineage: M36
-- Score HiTOP-SR subset-collected data: score data gathered from a subset instrument (columns = subset items, original HSR numbering) via the `hitop_subset` descriptor — added 2026-07-17 — depends on M24 (plan after M24 lands; second half of the modularization arc)
+- Score subset-collected HiTOP-SR data with no descriptor in hand, by working out from the column names which scales are fully present — needs its own decisions about partial coverage and name matching; useful for data that arrived from elsewhere. Promote if a researcher is ever blocked scoring a short form they did not themselves generate — added 2026-08-01 — lineage: M37
 - Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M24
