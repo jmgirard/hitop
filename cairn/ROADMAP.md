@@ -17,6 +17,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 ## Candidates
 
+- A second spot-value anchor per normed column, at a T chosen against that column — one anchor per column leaves two gaps the M33 mutation script measures as NOT CAUGHT: a displaced percentile column with `raw` untouched, and a swap of two columns whose anchors coincide (SF impulsivity/intimacyAvoidance, SF manipulativeness/suspiciousness, both at T = 65). Needs another hand-reading pass of the rendered pages — added 2026-07-31 — lineage: M33
 - PID-5-BFP (36-item) data, scoring, exports — awaiting materials — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - HiTOP-HSUM scoring + reliability + tutorial — awaiting Society feedback — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - Norm-referenced profile plots for PID-5 (scored-profile visualization against `pid_norms`) — added 2026-07-16, narrowed 2026-07-30 (the norming-functions half graduated to M26, renumbered M27 at the same-day split) — `legacy/ROADMAP.md` Phase 3

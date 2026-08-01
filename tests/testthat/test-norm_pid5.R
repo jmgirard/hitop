@@ -199,7 +199,10 @@ test_that("the vectorized lookup agrees with an independent scalar lookup", {
     else if (s == "INCS") 0:30
     else if (s == "ORS") 0:10
     else if (s == "PRD") 0:66
-    else if (v %in% names(pid_scales) && s %in% pid_scales[[v]]$camelCase) {
+    # Named by version rather than by "is it in pid_scales" -- pid_scales[["BF"]]
+    # also carries a camelCase column (its five domains and total), so the looser
+    # test would swallow every BF lookup and leave the two branches below dead.
+    else if (v %in% c("FULL", "SF") && s %in% pid_scales[[v]]$camelCase) {
       n <- pid_scales[[v]]$nItems[match(s, pid_scales[[v]]$camelCase)]
       (0:(3 * n)) / n
     }

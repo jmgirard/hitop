@@ -46,9 +46,11 @@ norm_covers <- function(version, scale) {
 ## toward-middle pick returns the end of the run nearest the rest of the table:
 ##
 ##   * At the floor, a run of 0.00 across low T scores, where the linear T the
-##     book tabulated predicts a negative raw and 0.00 is printed instead. Every
-##     T-scored column has one; the pick returns the run's *highest* T, the one
-##     row of the run that renders an attainable score.
+##     book tabulated predicts a negative raw and 0.00 is printed instead. 64 of
+##     the 66 T-scored columns carry such a run -- full-form detachment and risk
+##     taking print 0.00 exactly once, so there is no tie to break there -- and
+##     the pick returns the run's *highest* T, the one row of the run that
+##     renders an attainable score.
 ##   * At the ceiling, a run of the column's top raw across high T scores, on 19
 ##     of the 66 T-scored columns -- all of them facets, all at 4.00, up to the
 ##     12 rows the short form prints for anxiousness. The pick returns the run's
@@ -233,9 +235,11 @@ norm_shift <- function(scale, metric, low) {
 }
 
 ## Which observations fall outside a scale's printed raw range, flagged per end.
-## Nearest-row selection already caps them -- the nearest row to an above-table
-## value is the last printed row, and to a below-table value the floor run's
-## selected row -- so this reports what happened rather than deciding it.
+## Nearest-row selection already caps them -- an above-table value selects
+## whichever row an observation at the top printed raw would select (the last
+## printed row on most scales, the ceiling run's lowest-T row on the 19 that
+## repeat it), and a below-table value the floor run's selected row -- so this
+## reports what happened rather than deciding it.
 ## Returns logical vectors rather than counts so a caller converting several
 ## scales can count each *observation* once, however many of its scores capped.
 norm_capped <- function(x, rows) {

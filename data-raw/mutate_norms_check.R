@@ -104,6 +104,30 @@ mutations <- list(
       x
     }
   ),
+  ## A percentile column displaced on its own is the thinnest case in the
+  ## dataset: it stays monotone, and `raw` -- which every other test reads -- is
+  ## untouched, so only an anchor whose percentile happens to step at that T can
+  ## see it. Kept here to measure the gap rather than to assert it is closed.
+  list(
+    ac = "M33 AC6",
+    desc = "SF withdrawal percentile column displaced down one T row (raw untouched)",
+    f = function(x) {
+      i <- which(x$version == "SF" & x$scale == "withdrawal")
+      i <- i[order(x$tscore[i])]
+      x$percentile[i] <- c(x$percentile[[i[[1]]]], utils::head(x$percentile[i], -1))
+      x
+    }
+  ),
+  list(
+    ac = "M33 AC6",
+    desc = "FULL anhedonia percentile column displaced down one T row (raw untouched)",
+    f = function(x) {
+      i <- which(x$version == "FULL" & x$scale == "anhedonia")
+      i <- i[order(x$tscore[i])]
+      x$percentile[i] <- c(x$percentile[[i[[1]]]], utils::head(x$percentile[i], -1))
+      x
+    }
+  ),
   list(
     ac = "M33 AC4",
     desc = "SF anxiousness ceiling run truncated -- its 12 rows at 4.00 cut to 1",

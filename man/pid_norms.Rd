@@ -20,9 +20,10 @@ print none}
 three primary facet scores (themselves item means, and the facets differ
 in length, so this is not a mean over the domain's items); for the FULL and
 SF facets and for the BF domains and total, a mean item response; for the
-validity scales, an item sum. Nineteen facet columns print raws above the
-3.00 a mean of 0-3 items can reach, up to 4.00; those rows ship as
-published and are simply unattainable (see \code{\link[=norm_pid5]{norm_pid5()}})}
+validity scales, an item sum. 42 of the 50 facet columns print raws above
+the 3.00 a mean of 0-3 items can reach, up to 4.00, and 19 of those repeat
+their top raw across consecutive T scores; all such rows ship as published
+and are simply unattainable (see \code{\link[=norm_pid5]{norm_pid5()}})}
 \item{percentile}{The percentile of the normative distribution at that
 score, as a proportion between 0 and 1}
 }

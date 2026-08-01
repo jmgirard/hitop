@@ -44,14 +44,19 @@
 #'     several rows, or a value exactly midway between two rows -- the row whose
 #'     T score is nearest 50 is returned. The four validity scales carry no T
 #'     score, so a tie there returns the row whose percentile is nearest 0.50.
-#'   * **Scores of 0.** Every T-scored table prints raw 0.00 across a run of low
-#'     T scores, because the linear T the book tabulated predicts a negative raw
-#'     there and 0.00 is printed instead. The tie rule returns the run's highest
-#'     T, the one row of the run that renders an attainable score. Its printed
+#'   * **Scores of 0.** Nearly every tabled scale prints raw 0.00 across a run of
+#'     low T scores, because the linear T the book tabulated predicts a negative
+#'     raw there and 0.00 is printed instead. The tie rule returns the run's
+#'     highest T, the one row of the run that renders an attainable score. (Two
+#'     columns -- full-form detachment and risk taking -- print 0.00 just once,
+#'     so no tie arises there.) Its printed
 #'     percentile is positive on some scales and 0.00 on others; that asymmetry
 #'     is a property of the published tables, not of this function.
-#'   * **Scores outside the table.** A score above the highest printed row
-#'     returns that row's values, rather than an extrapolation. A score below
+#'   * **Scores outside the table.** A score above the highest printed raw
+#'     returns whatever an observation *at* that raw returns, rather than an
+#'     extrapolation -- the last printed row on most scales, but the lowest-T
+#'     row of the run where the top raw is printed several times (see
+#'     "Unattainable printed rows" below). A score below
 #'     the lowest returns whatever an observation *at* the lowest printed raw
 #'     returns -- which, on the scales whose tables print a run of 0.00, is that
 #'     run's highest-T row and not the table's first row, so the two agree

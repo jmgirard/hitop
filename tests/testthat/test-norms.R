@@ -206,12 +206,30 @@ test_that("percentiles are proportions", {
 
 # ---- spot values from the printed tables -------------------------------------
 #
-# The spot values are the only layer that catches a whole column displaced by
-# one row -- the defect this dataset actually had before it was corrected. Such
-# a shift leaves `raw` perfectly linear in T (the intercept simply moves by one
-# step) and leaves a monotone percentile column monotone, so neither structural
-# invariant above can see it. Every (version, scale) therefore needs at least
-# one anchor, which the coverage test below enforces.
+# The spot values are the only layer in this suite that catches a whole column
+# displaced by one row -- the defect this dataset actually had before it was
+# corrected. Such a shift leaves `raw` perfectly linear in T (the intercept
+# simply moves by one step) and leaves a monotone percentile column monotone, so
+# neither structural invariant above can see it. Every (version, scale)
+# therefore needs at least one anchor, which the coverage test below enforces.
+#
+# What one anchor per column does NOT close, measured rather than assumed
+# (data-raw/mutate_norms_check.R runs each case and reports which tests fire):
+#
+#   * A displaced *percentile* column, with `raw` untouched, is caught only
+#     where the anchor's own T is a row at which that column's percentile
+#     steps. Both seeded cases in the mutation script -- SF withdrawal and FULL
+#     anhedonia -- come back NOT CAUGHT. Outside the suite,
+#     data-raw/verify_norms_against_book.R does catch it, since it diffs every
+#     printed cell against the book; the exposure is a displacement introduced
+#     downstream of the CSVs, in data-raw/norms_pid5.R's long-format assembly.
+#   * Two facet columns whose anchors coincide cannot witness a swap *of each
+#     other*: at T = 65, SF impulsivity and SF intimacyAvoidance both read
+#     (1.64, 0.91), and SF manipulativeness and SF suspiciousness both read
+#     (1.53, 0.94).
+#
+# Closing either needs a second anchor per column at a T chosen against that
+# column, which is another hand-reading pass; it is a ROADMAP candidate.
 
 # version, scale, T score, raw, percentile, page
 domain_spot <- local({

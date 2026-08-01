@@ -237,3 +237,73 @@ produced by running the command named, in this session, on the branch head.
   `devtools::check()` is 0/0/0.
 - CI on PR #36: all 7 checks pass — `R CMD check` on ubuntu (devel, release,
   oldrel-1), macos, and windows, plus pkgdown and test-coverage.
+
+### Independent review
+
+Three fresh-context reviewers on distinct evidence bases, then a [S] scorer that
+did not generate the findings. [S] blame-history: 0 findings — it traced every
+deleted or rewritten region and found no prior deliberate work undone. [S]
+prior-review record: 0 findings; the GitHub inline-comment probe returned an
+empty array, so the archived `## Review` sections of M25-M32 were the evidence,
+and none is regressed. [O] diff-bug: 21 findings, scored 8-88.
+
+**Actioned (scored >= 80), all five fixed on the branch:**
+
+- F1 (88) `R/data.R`'s `@format` said "Nineteen facet columns print raws above
+  the 3.00"; the count for that claim is 42, and 19 is the count of columns that
+  *repeat* their top raw — so the two shipped help pages contradicted each other.
+  Fixed to state both numbers for what each measures. Verified: 42 of 50.
+- F7 (85) `verify_norms_against_book.R`'s facet comparison used `which(b != cv)`,
+  which drops NA, so a cell that failed to parse was reported as matching. Fixed
+  to the NA-aware form the non-facet path already used, plus an `!anyNA()` guard
+  on the book side. Verified: a cell typed `1.7O` now reports `csv NA` and
+  exits 1, where before it printed "every cell ... matches the book", exit 0.
+- F3 (82) `norm_pid5()`'s "Scores outside the table" bullet said a score above
+  the highest printed row returns that row's values; on the 19 ceiling-run
+  columns it returns the run's lowest T, which a later bullet in the same
+  `@details` stated correctly. Fixed the earlier bullet.
+- F15 (80) "Every T-scored column has" a 0.00 floor run is false for two: FULL
+  detachment and FULL riskTaking print 0.00 exactly once. Corrected in both
+  `R/norm_engine.R` and `R/norm_pid5.R` to 64 of 66, naming the two.
+- F12 (80) a displaced *percentile* column, `raw` untouched, is caught by no test
+  in the suite. Fixed in part and measured rather than assumed: two percentile
+  displacements added to `mutate_norms_check.R` both report NOT CAUGHT, and the
+  header comment in `test-norms.R` that claimed the anchors catch any displaced
+  column now states both gaps and points at the script. `verify_norms_against_book.R`
+  does catch it at the CSV; the residual exposure is a displacement introduced
+  downstream, in the long-format assembly. Closing it needs a second anchor per
+  column — a ROADMAP candidate, added 2026-07-31.
+
+**Also fixed — surfaced by the scorer, not by any reviewer.** Scoring F16 (25)
+showed its premise backwards and a real defect underneath it: `pid_scales[["BF"]]`
+*does* carry a `camelCase` column (its domains and total), so `grid_for()`'s new
+`v %in% names(pid_scales)` branch swallowed every BF lookup and left the two BF
+branches below it dead. Harmless today only because the grids coincide. The
+branch is now keyed on `c("FULL", "SF")`.
+
+**Sub-threshold (16), logged not actioned:** F2 (78) two pairs of SF facets share
+anchor values at T = 65, so neither can witness a swap of the other — same
+remedy as F12, folded into that candidate. F4 (75) `norm_capped()`'s header
+comment shares F3's staleness — fixed anyway while in the file. F8 (78) no test
+locks the 4,606 row count or the 30-100 span, only contiguity. F9 (78) two new
+`stopifnot()` comments overstate what their checks do (a range bound is not a
+span check; the version table recycles). F10 (72) AC3's end-to-end claim is
+verified by hand here but not locked by a test. F6 (68) a fixture comment in
+`test-norm_pid5.R` says no covered scale is prorated, which facet coverage makes
+false. F11 (62) the two reshapings are independent in row assembly but share the
+banner-to-block pairing, so the scripts' "would have to occur identically"
+wording is stronger than earned. F5 (60) facets now cap on simulated data,
+emitting a capping warning where the columns used to return NA — real new
+behavior, undocumented. F18 (60) "3,550 cells each side of the pair" reads as
+7,100. F21 (58) the uncovered-scale message qualifies domains and facets by
+version but lists the validity scales flat. F14 (52), F17 (50), F13 (48), F20
+(42), F16 (25), F19 (8) — hypothetical, imprecise, or premise-wrong; F19 asks for
+a page anchor AC6 explicitly specifies.
+
+### Post-fix re-verification
+
+`devtools::document()` no diff beyond the two regenerated `.Rd`; `devtools::test()`
+11,489 pass / 0 fail / 1 skip; `devtools::check()` 0 errors, 0 warnings, 0 notes;
+`cairn_validate` exit 0; `verify_norms_against_book.R` 0 discrepancies over 9
+tables; mutation script 9 of 11 CAUGHT, the 2 NOT CAUGHT being F12's deliberately
+seeded percentile displacements.

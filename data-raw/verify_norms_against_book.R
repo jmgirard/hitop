@@ -122,9 +122,11 @@ facet_book_columns <- function(tbl) {
   stopifnot(length(names_by_block) == length(blocks))
   out <- list()
   for (b in seq_along(blocks)) {
-    m <- matrix(as.numeric(unlist(blocks[[b]])), nrow = length(blocks[[b]]),
-                byrow = TRUE)
-    stopifnot(identical(as.integer(m[, 1]), 30:100))
+    m <- matrix(suppressWarnings(as.numeric(unlist(blocks[[b]]))),
+                nrow = length(blocks[[b]]), byrow = TRUE)
+    ## A cell the book prints as something non-numeric would arrive here as NA
+    ## and compare equal to nothing; fail loudly rather than let it through.
+    stopifnot(!anyNA(m), identical(as.integer(m[, 1]), 30:100))
     for (j in seq_along(names_by_block[[b]])) {
       out[[names_by_block[[b]][[j]]]] <- m[, c(2L * j, 2L * j + 1L), drop = FALSE]
     }
@@ -182,8 +184,11 @@ compare_facets <- function(s, tbl, page) {
     for (k in seq_len(2L)) {
       col <- paste0(facet, c("_Raw", "_Ptl")[[k]])
       b <- book[[facet]][, k]
-      cv <- as.numeric(csv[[col]])
-      bad <- which(b != cv)
+      cv <- suppressWarnings(as.numeric(csv[[col]]))
+      ## NA-aware, like the non-facet path below: `b != cv` is NA wherever
+      ## either side failed to parse, and which() drops NA, so a CSV cell typed
+      ## `1.7O` would otherwise be reported as matching the book.
+      bad <- which(is.na(b) | is.na(cv) | b != cv)
       for (r in bad) {
         out <- c(out, sprintf(
           "%s: T = %d, column %s -- book %s, csv %s",
