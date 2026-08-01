@@ -1,13 +1,15 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-31 (M33 merged as PR #36 and archived, M28 row pruned under terminal-row retention; all checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md; three lessons captured, none retired; one candidate spawned for the second spot-value anchor M33's review left open)_
+_Last hygiene check: 2026-07-31 (M34 and M35 planned; M33's second-anchor candidate absorbed into M34, and two narrower candidates spawned in its place — the upward-displacement direction M34 leaves open, and CI-runnable fixtures for M35's comparison)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M34)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M34 | A second spot-value anchor per normed PID-5 column | planned | — | normal | milestones/M34-second-norm-anchors.md |
+| M35 | Cell-by-cell verification of the shipped norms against the book | planned | M34 | normal | milestones/M35-norms-cellwise-verification.md |
 | M33 | PID-5 facet-level norms | done | — | normal | milestones/archive/M33-pid5-facet-norms.md |
 | M32 | Test coverage for M31's argument-validation additions | done | — | normal | milestones/archive/M32-m31-validation-test-coverage.md |
 | M31 | Argument-validation consistency and a harder norming oracle | done | — | normal | milestones/archive/M31-validator-and-oracle-residue.md |
@@ -16,7 +18,8 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 ## Candidates
 
-- A second spot-value anchor per normed column, at a T chosen against that column — one anchor per column leaves two gaps the M33 mutation script measures as NOT CAUGHT: a displaced percentile column with `raw` untouched, and a swap of two columns whose anchors coincide (SF impulsivity/intimacyAvoidance, SF manipulativeness/suspiciousness, both at T = 65). Needs another hand-reading pass of the rendered pages — added 2026-07-31 — lineage: M33
+- An anchor catching an *upward* percentile displacement (every row taking its successor's value) — M34 closes the downward direction only; no single anchor catches both, and 41 of the 66 T-scored columns would need a second new hand-read anchor, since their percentiles step only every third row. Promote if an upward displacement ever reaches the shipped dataset — added 2026-07-31 — lineage: M34 (which absorbed M33's original second-anchor row)
+- Commit the norms CSVs or the book extraction as test fixtures so M35's cell-by-cell comparison can run in CI rather than only when the maintainer runs it — costs ~42 KB duplicating data already in `pid_norms`, and a second copy can drift; needs its own decision. Promote if a norms defect ever reaches a release through a path where the maintainer did not re-run the script — added 2026-07-31 — lineage: M35
 - PID-5-BFP (36-item) data, scoring, exports — awaiting materials — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - HiTOP-HSUM scoring + reliability + tutorial — awaiting Society feedback — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - Norm-referenced profile plots for PID-5 (scored-profile visualization against `pid_norms`) — added 2026-07-16, narrowed 2026-07-30 (the norming-functions half graduated to M26, renumbered M27 at the same-day split) — `legacy/ROADMAP.md` Phase 3
