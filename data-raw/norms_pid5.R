@@ -12,11 +12,12 @@ stopifnot(requireNamespace("readr", quietly = TRUE))
 stopifnot(requireNamespace("usethis", quietly = TRUE))
 stopifnot(requireNamespace("tibble", quietly = TRUE))
 
-## The domain scale names are the score-output column stems, taken from
-## pid_domains rather than retyped, so `pid_norms$scale` joins to
-## `score_pid5()` output by string equality with no crosswalk. Run
-## data-raw/pid_info.R first if the domain labels have changed.
+## The domain and facet scale names are the score-output column stems, taken
+## from pid_domains / pid_scales rather than retyped, so `pid_norms$scale` joins
+## to `score_pid5()` output by string equality with no crosswalk. Run
+## data-raw/pid_info.R first if the scale labels have changed.
 load("data/pid_domains.rda")
+load("data/pid_scales.rda")
 
 ## Column abbreviations as printed in the book's domain-table heads.
 domain_abbr <- c(
@@ -67,6 +68,80 @@ domain_blocks <- function(s) {
   })
 }
 
+## ---- facet tables ----------------------------------------------------------
+## One row per (version, scale, T score), as for the domains. A-6 and A-8 print
+## the facets under the book's own sentence-case captions, which differ from the
+## package's `Facet` labels in case and in spelling out "and"; the map below is
+## the one place the book's wording lives. The output column stem still comes
+## from `pid_scales[[version]]$camelCase` rather than being retyped, so a facet
+## renamed in pid_scales moves the norm rows with it.
+
+facet_caption <- c(
+  "Anhedonia"                      = "Anhedonia",
+  "Anxiousness"                    = "Anxiousness",
+  "Attention seeking"              = "Attention Seeking",
+  "Callousness"                    = "Callousness",
+  "Deceitfulness"                  = "Deceitfulness",
+  "Depressivity"                   = "Depressivity",
+  "Distractibility"                = "Distractibility",
+  "Eccentricity"                   = "Eccentricity",
+  "Emotional lability"             = "Emotional Lability",
+  "Grandiosity"                    = "Grandiosity",
+  "Hostility"                      = "Hostility",
+  "Impulsivity"                    = "Impulsivity",
+  "Intimacy avoidance"             = "Intimacy Avoidance",
+  "Irresponsibility"               = "Irresponsibility",
+  "Manipulativeness"               = "Manipulativeness",
+  "Perceptual dysregulation"       = "Perceptual Dysregulation",
+  "Perseveration"                  = "Perseveration",
+  "Restricted affectivity"         = "Restricted Affectivity",
+  "Rigid perfectionism"            = "Rigid Perfectionism",
+  "Risk taking"                    = "Risk Taking",
+  "Separation insecurity"          = "Separation Insecurity",
+  "Submissiveness"                 = "Submissiveness",
+  "Suspiciousness"                 = "Suspiciousness",
+  "Unusual beliefs and experiences" = "Unusual Beliefs & Experiences",
+  "Withdrawal"                     = "Withdrawal"
+)
+
+facet_spec <- list(
+  list(version = "FULL", csv = "data-raw/norms_pid5_facets.csv"),
+  list(version = "SF", csv = "data-raw/norms_pid5sf_facets.csv")
+)
+
+facet_blocks <- function(s) {
+  tbl <- read_norms(s$csv)
+  tscore <- as.integer(tbl[[1]])
+  captions <- sub("_Raw$", "", grep("_Raw$", names(tbl), value = TRUE))
+  stopifnot(all(captions %in% names(facet_caption)))
+
+  scales <- pid_scales[[s$version]]
+  stem <- stats::setNames(
+    scales$camelCase[match(facet_caption[captions], scales$Facet)],
+    captions
+  )
+  ## The crosswalk is checked in both directions before anything is built: a
+  ## caption the package does not know maps to NA, and a facet the CSV omits or
+  ## names twice breaks the setequal. Either way the guard fires here rather
+  ## than shipping a `pid_norms` quietly missing a facet.
+  stopifnot(
+    !anyNA(stem),
+    !anyDuplicated(stem),
+    setequal(unname(stem), scales$camelCase)
+  )
+
+  lapply(captions, function(cap) {
+    data.frame(
+      version = s$version,
+      scale = unname(stem[[cap]]),
+      tscore = tscore,
+      raw = as.numeric(tbl[[paste0(cap, "_Raw")]]),
+      percentile = as.numeric(tbl[[paste0(cap, "_Ptl")]]),
+      stringsAsFactors = FALSE
+    )
+  })
+}
+
 ## ---- validity tables -------------------------------------------------------
 ## One row per (version, scale, raw score). These tables print no T score, so
 ## `tscore` is NA. `scale` is the `validity_pid5()` column stem, which is not
@@ -96,13 +171,15 @@ validity_block <- function(s) {
 
 ## ---- assemble --------------------------------------------------------------
 ## Blocks are concatenated version by version (FULL, SF, BF), domains before
-## validity scales; each block is already ascending in T or in raw score, so
-## the result is sorted without a sort.
+## facets before validity scales; each block is already ascending in T or in raw
+## score, so the result is sorted without a sort.
 
 blocks <- c(
   domain_blocks(domain_spec[[1]]),
+  facet_blocks(facet_spec[[1]]),
   lapply(validity_spec[1:3], validity_block),
   domain_blocks(domain_spec[[2]]),
+  facet_blocks(facet_spec[[2]]),
   list(validity_block(validity_spec[[4]])),
   domain_blocks(domain_spec[[3]])
 )
@@ -128,7 +205,22 @@ stopifnot(
   ),
   !anyNA(pid_norms$tscore[!pid_norms$scale %in% c("INC", "INCS", "ORS", "PRD")]),
   ## no duplicate rows within a (version, scale)
-  !anyDuplicated(pid_norms[c("version", "scale", "tscore", "raw")])
+  !anyDuplicated(pid_norms[c("version", "scale", "tscore", "raw")]),
+  ## every T-scored pair spans exactly the T rows its table prints, so a block
+  ## silently short of rows cannot reach the .rda
+  all(pid_norms$tscore >= 30 & pid_norms$tscore <= 100, na.rm = TRUE),
+  ## the 25 facets are normed for FULL and SF and for neither the BF nor
+  ## anything else, at 71 T rows apiece
+  identical(
+    sort(unique(pid_norms$scale[
+      pid_norms$scale %in% pid_scales[["FULL"]]$camelCase
+    ])),
+    sort(pid_scales[["FULL"]]$camelCase)
+  ),
+  all(
+    table(pid_norms$version[pid_norms$scale %in% pid_scales[["FULL"]]$camelCase]) ==
+      c(FULL = 25 * 71, SF = 25 * 71)
+  )
 )
 
 usethis::use_data(pid_norms, overwrite = TRUE)

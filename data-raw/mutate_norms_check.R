@@ -81,6 +81,61 @@ mutations <- list(
       x$percentile[[i]] <- 0.58
       x
     }
+  ),
+  ## M33's facet mutations. The first is the defect this dataset actually had
+  ## once (a whole column off by one row), which no structural invariant can
+  ## see: it leaves the raws on a line and the percentiles monotone.
+  list(
+    ac = "M33 AC6",
+    desc = "FULL hostility raw column displaced down one T row",
+    f = function(x) {
+      i <- which(x$version == "FULL" & x$scale == "hostility")
+      i <- i[order(x$tscore[i])]
+      x$raw[i] <- c(x$raw[[i[[1]]]], utils::head(x$raw[i], -1))
+      x
+    }
+  ),
+  list(
+    ac = "M33 AC5",
+    desc = "SF perseveration raw at T = 55 pushed 0.02 off its column's line",
+    f = function(x) {
+      i <- row_of(x, "SF", "perseveration", tscore = 55)
+      x$raw[[i]] <- x$raw[[i]] + 0.02
+      x
+    }
+  ),
+  ## A percentile column displaced on its own is the thinnest case in the
+  ## dataset: it stays monotone, and `raw` -- which every other test reads -- is
+  ## untouched, so only an anchor whose percentile happens to step at that T can
+  ## see it. Kept here to measure the gap rather than to assert it is closed.
+  list(
+    ac = "M33 AC6",
+    desc = "SF withdrawal percentile column displaced down one T row (raw untouched)",
+    f = function(x) {
+      i <- which(x$version == "SF" & x$scale == "withdrawal")
+      i <- i[order(x$tscore[i])]
+      x$percentile[i] <- c(x$percentile[[i[[1]]]], utils::head(x$percentile[i], -1))
+      x
+    }
+  ),
+  list(
+    ac = "M33 AC6",
+    desc = "FULL anhedonia percentile column displaced down one T row (raw untouched)",
+    f = function(x) {
+      i <- which(x$version == "FULL" & x$scale == "anhedonia")
+      i <- i[order(x$tscore[i])]
+      x$percentile[i] <- c(x$percentile[[i[[1]]]], utils::head(x$percentile[i], -1))
+      x
+    }
+  ),
+  list(
+    ac = "M33 AC4",
+    desc = "SF anxiousness ceiling run truncated -- its 12 rows at 4.00 cut to 1",
+    f = function(x) {
+      i <- which(x$version == "SF" & x$scale == "anxiousness" & x$raw == 4)
+      stopifnot(length(i) == 12L)
+      x[-utils::tail(i, -1), ]
+    }
   )
 )
 

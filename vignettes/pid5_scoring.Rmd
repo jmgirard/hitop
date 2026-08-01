@@ -93,7 +93,7 @@ scored <- score_pid5(sim_pid5, items = 1:220)
 scored <- validity_pid5(scored, items = 1:220)
 ```
 
-For the full form the published tables cover the five domain scales and three of the validity scales — INC, ORS, and PRD. They do not cover the 25 facets, and they do not cover SD-TD at all. Each converted scale gains a `_ptl` column, and those whose tables print T scores also gain a `_t` column. The validity scales are distributed as percentiles only, so they get no `_t` column.
+For the full form the published tables cover the five domain scales, all 25 facet scales, and three of the validity scales — INC, ORS, and PRD. They do not cover SD-TD at all. Each converted scale gains a `_ptl` column, and those whose tables print T scores also gain a `_t` column. The validity scales are distributed as percentiles only, so they get no `_t` column.
 
 ```{r x2d}
 norm_pid5(
@@ -106,6 +106,12 @@ norm_pid5(
   version = "FULL",
   append = FALSE
 )
+```
+
+The facets convert the same way. Anhedonia, for instance, is an item mean over its eight full-form items, and its table runs from a floor of 0.00 up to a printed 3.84 — past the 3.00 an item mean can actually reach, which is true of most of the facet columns and is a property of the published tables rather than of the conversion:
+
+```{r x2d2}
+norm_pid5(scored, scores = "pid_anhedonia", version = "FULL", append = FALSE)
 ```
 
 Every number returned is a cell of a published table: the nearest printed row is selected and nothing is interpolated. A score that falls outside a printed range is capped to the nearest end rather than extrapolated, and a warning reports how many observations that happened to — the `PRD` sum reaches 66 while its table stops at 55, so it is a common one to see. A scale the tables do not cover returns `NA` in both columns with a warning naming it. Every report this function makes is a warning, so a single `suppressWarnings()` call silences it.

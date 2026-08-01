@@ -99,7 +99,7 @@ scored <- score_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF")
 scored <- validity_pid5(scored, items = paste0("pid_", 1:100), version = "SF")
 ```
 
-For the short form the published tables cover the five domain scales and the INC-S inconsistency scale; they do not cover the 25 facets. Each converted scale gains a `_ptl` column, and those whose tables print T scores also gain a `_t` column. INC-S is distributed as percentiles only, so it gets no `_t` column. Note that `version = "SF"` selects the short-form tables — the same raw score converts differently across forms.
+For the short form the published tables cover the five domain scales, all 25 facet scales, and the INC-S inconsistency scale. Each converted scale gains a `_ptl` column, and those whose tables print T scores also gain a `_t` column. INC-S is distributed as percentiles only, so it gets no `_t` column. Note that `version = "SF"` selects the short-form tables — the same raw score converts differently across forms.
 
 ```{r x7}
 norm_pid5(
