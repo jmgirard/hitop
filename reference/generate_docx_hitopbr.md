@@ -59,6 +59,6 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-BR paper form to a temporary Word document
 generate_docx_hitopbr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpZ94lvM/file1b4f45a1b502.docx
+#> ✔ Document successfully created at /tmp/RtmpiYigSi/file1b6b2d480093.docx
 # }
 ```
