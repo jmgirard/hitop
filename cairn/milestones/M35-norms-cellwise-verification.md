@@ -148,7 +148,69 @@ Reviewed 2026-07-31 on `m35-norms-cellwise-verification` at 86b9cfc, PR #38.
 - No IP/GP principle changed, so `cairn_impact` does not apply (the header's
   `Principles touched: IP2` records what the milestone serves, not a change).
 - Toolchain (`r-package` profile): `devtools::document()` produces no diff;
+
   no generated file hand-edited; README.Rmd/README.md in sync; `pkgdown::check_pkgdown()`
   reports no problems; `devtools::check()` clean; no new top-level file, so no
   `.Rbuildignore` entry is owed. No NEWS entry: the milestone changes maintainer
   tooling and comments only, with no user-visible behavior change.
+
+### Independent review
+
+Three fresh-context reviewers with distinct evidence bases, then a Sonnet
+scorer that did not generate the findings.
+
+- [O] diff-bug (Opus, the full diff against criteria/DESIGN/DECISIONS): 14
+  findings. It separately confirmed on the unmodified dataset that the script
+  exits 0 over 4,606 rows and 70 columns; that the name-keying is genuinely
+  name-based and independent of `norms_pid5.R`'s maps; that all 13 seeded
+  corruptions are caught with the restore hash unchanged; and, by injecting a
+  `stop()` into the harness body, that the restore fires on the error path.
+- [S] blame-history (Sonnet, `git log`/`blame` on the touched lines): no
+  findings. It enumerated all 13 mutations before and after the refactor and
+  found the bodies and their `stopifnot()` guards byte-identical modulo the
+  added `id`, and found no claim dropped from either rewritten comment.
+- [S] prior-review record (Sonnet, archived `## Review` sections; the GitHub
+  inline-comment probe returned empty, so no PR-thread walk): 1 finding. It
+  separately confirmed the new comparison does not regress M33's NA-blind-compare
+  finding.
+
+**Nothing scored at or above the 80 threshold, so the actioned list is empty.**
+All 15 findings are logged here, highest first, with the scorer's confidence:
+
+- 72 — the M34 lesson about swapping the tracked `data/pid_norms.rda` in place
+  names only `mutate_norms_check.R`; two scripts now share that pattern and the
+  new one's window is minutes rather than seconds. Handled: the lesson is
+  corrected in place at hygiene (current knowledge, D-045), not in code.
+- 70 — a duplicated `(version, scale, key)` in `pid_norms` aborts on the bare
+  `stopifnot(!anyDuplicated(...))` before the three categories are computed, so a
+  crosswalk defect that relabels a whole block crashes opaquely instead of
+  being reported.
+- 68 — the NA-awareness is one-sided: an unparseable cell on the *book* side
+  aborts in `book_long()`/`facet_book_columns()` rather than reaching `differs()`.
+- 65 — `mutate_norms_book_check.R`'s `stopped && reported` test cannot tell a
+  crashed verification run from a clean one, so an unrelated crash is reported
+  as "the comparison missed it".
+- 55 — on the four validity scales `raw` is the match key, so a `raw` mismatch
+  surfaces as a paired extra+missing row rather than as a value difference.
+- 55 — the subprocess call passes neither `--vanilla` nor a quoted path.
+- 45 — no `length(cols) == 25` assertion on the facet side (pre-existing M33
+  code; the CSV layer flags the same defect independently).
+- 45 — the new harness's working-tree window is ~2 minutes (the plan directed
+  reusing the existing pattern rather than redesigning isolation).
+- 35 — the per-column coverage is printed for a reader, not asserted; AC1 asks
+  only that a reader can check it.
+- 35 — `res$lines[[1]]` is unguarded against a future message-format change.
+- 30 — the new `<caption>` assertion is a beneficial guard that no seeded
+  corruption exercises.
+- 25 — `norm_key` is not NA-safe in `raw` (reachable only from a hand-corrupted
+  `.rda`).
+- 20 — `with_pristine_norms()` discards its `file.copy()` return values
+  (pre-existing on the default branch; T3 directed reusing the pattern).
+- 20 — the validity key stringifies a double (harmless while every validity raw
+  score is a small integer).
+- 18 — the per-column listing's sort order is locale-dependent.
+
+The three strongest code findings (70/68/65) are one theme — how the script
+*reports* a failure it does detect, on a maintainer-run tool — rather than a
+wrong answer on the shipped data, so they graduate to a candidate row rather
+than blocking the merge.
