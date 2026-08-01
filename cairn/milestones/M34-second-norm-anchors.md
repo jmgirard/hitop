@@ -1,6 +1,6 @@
 # M34: A second spot-value anchor per normed PID-5 column
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -118,6 +118,8 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 - 2026-07-31: T5 — two swap mutations added via a `swap_columns()` helper; the full script now reports CAUGHT for all 13 mutations, the two M33 percentile displacements included. For all four M34-relevant cases the book-comparison test is among the failing tests, which is what AC5 requires over a bare CAUGHT. Restore verified by md5, unchanged.
 - 2026-07-31: T6 — both block comments rewritten; the ROADMAP row needed no edit, having been replaced at plan time by the narrower upward-displacement candidate. `devtools::test()` 11681 pass / 0 fail / 1 skip (pre-existing); `devtools::check()` 0 errors, 0 warnings, 0 notes.
 - 2026-07-31: T6 — the `.claude/launch.json` static-server entry added for the hand read was committed in cc51413 with a session-specific absolute path; removed again here, and the server stopped (the M33 lesson's own practice).
+
+- 2026-07-31: all six tasks done; status → review. Acceptance-criteria boxes left unticked for /milestone-review to fence against fresh evidence.
 
 ## Decisions
 
