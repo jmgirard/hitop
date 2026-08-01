@@ -2,13 +2,13 @@
 
 _The only authority on milestone status. Grouped by status, not ID._
 _Last hygiene check: 2026-07-31 (M34 and M35 planned; M33's second-anchor candidate absorbed into M34, and two narrower candidates spawned in its place — the upward-displacement direction M34 leaves open, and CI-runnable fixtures for M35's comparison)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M34)._
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M36)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M34 | A second spot-value anchor per normed PID-5 column | planned | — | normal | milestones/M34-second-norm-anchors.md |
+| M34 | A second spot-value anchor per normed PID-5 column | review | — | normal | milestones/M34-second-norm-anchors.md |
 | M35 | Cell-by-cell verification of the shipped norms against the book | planned | M34 | normal | milestones/M35-norms-cellwise-verification.md |
 | M33 | PID-5 facet-level norms | done | — | normal | milestones/archive/M33-pid5-facet-norms.md |
 | M32 | Test coverage for M31's argument-validation additions | done | — | normal | milestones/archive/M32-m31-validation-test-coverage.md |
@@ -18,7 +18,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 ## Candidates
 
-- An anchor catching an *upward* percentile displacement (every row taking its successor's value) — M34 closes the downward direction only; no single anchor catches both, and 41 of the 66 T-scored columns would need a second new hand-read anchor, since their percentiles step only every third row. Promote if an upward displacement ever reaches the shipped dataset — added 2026-07-31 — lineage: M34 (which absorbed M33's original second-anchor row)
+- An anchor catching an *upward* percentile displacement (every row taking its successor's value) — M34 closes the downward direction only; its second anchors happen to cover the upward direction on 34 of the 66 T-scored columns, so 32 would need a third hand-read anchor, and no single anchor can serve both directions on the 14 columns with no interior T differing from both neighbours. Promote if an upward displacement ever reaches the shipped dataset — added 2026-07-31, figure corrected 2026-07-31 at M34 review (the row was written pre-M34 and said 41, which was the pre-M34 count) — lineage: M34 (which absorbed M33's original second-anchor row)
 - Commit the norms CSVs or the book extraction as test fixtures so M35's cell-by-cell comparison can run in CI rather than only when the maintainer runs it — costs ~42 KB duplicating data already in `pid_norms`, and a second copy can drift; needs its own decision. Promote if a norms defect ever reaches a release through a path where the maintainer did not re-run the script — added 2026-07-31 — lineage: M35
 - PID-5-BFP (36-item) data, scoring, exports — awaiting materials — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1
 - HiTOP-HSUM scoring + reliability + tutorial — awaiting Society feedback — added 2026-07-16 — `legacy/ROADMAP.md` Phase 1

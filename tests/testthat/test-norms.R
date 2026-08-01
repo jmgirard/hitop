@@ -206,30 +206,44 @@ test_that("percentiles are proportions", {
 
 # ---- spot values from the printed tables -------------------------------------
 #
-# The spot values are the only layer in this suite that catches a whole column
-# displaced by one row -- the defect this dataset actually had before it was
-# corrected. Such a shift leaves `raw` perfectly linear in T (the intercept
-# simply moves by one step) and leaves a monotone percentile column monotone, so
-# neither structural invariant above can see it. Every (version, scale)
-# therefore needs at least one anchor, which the coverage test below enforces.
+# The spot values are the only layer in this suite that reads the rendered page,
+# and the only one that catches a whole column displaced by one row -- the defect
+# this dataset actually had before it was corrected. Such a shift leaves `raw`
+# perfectly linear in T (the intercept simply moves by one step) and leaves a
+# monotone percentile column monotone, so neither structural invariant above can
+# see it.
 #
-# What one anchor per column does NOT close, measured rather than assumed
-# (data-raw/mutate_norms_check.R runs each case and reports which tests fire):
+# Every T-scored (version, scale) carries two anchors at distinct T scores. The
+# three adequacy tests below assert what that pair is placed to witness, and
+# data-raw/mutate_norms_check.R runs each corruption and reports which tests
+# fire:
 #
-#   * A displaced *percentile* column, with `raw` untouched, is caught only
-#     where the anchor's own T is a row at which that column's percentile
-#     steps. Both seeded cases in the mutation script -- SF withdrawal and FULL
-#     anhedonia -- come back NOT CAUGHT. Outside the suite,
-#     data-raw/verify_norms_against_book.R does catch it, since it diffs every
-#     printed cell against the book; the exposure is a displacement introduced
-#     downstream of the CSVs, in data-raw/norms_pid5.R's long-format assembly.
-#   * Two facet columns whose anchors coincide cannot witness a swap *of each
-#     other*: at T = 65, SF impulsivity and SF intimacyAvoidance both read
-#     (1.64, 0.91), and SF manipulativeness and SF suspiciousness both read
-#     (1.53, 0.94).
+#   * A displaced *percentile* column with `raw` untouched -- the thinnest case
+#     in the dataset, since every other test reads `raw`. Each column's second
+#     anchor sits at a T where its percentile steps up from the row below, so
+#     the displacement moves the value there. Both seeded cases, SF withdrawal
+#     and FULL anhedonia, are caught, and by the book-comparison test rather
+#     than only by an adequacy test.
+#   * A swap of two columns. One anchor per column could not witness this
+#     wherever two columns read alike at it: at T = 65 SF impulsivity and SF
+#     intimacyAvoidance agreed, as did SF manipulativeness and SF
+#     suspiciousness. No two T-scored columns now read alike at every T where
+#     either is anchored.
 #
-# Closing either needs a second anchor per column at a T chosen against that
-# column, which is another hand-reading pass; it is a ROADMAP candidate.
+# What stays open is a column displaced *upward*, each row taking its
+# successor's value. Catching that needs an anchor differing from the row above.
+# The second anchors placed here happen to satisfy that on 34 of the 66 columns,
+# so closing it would take a third anchor on the remaining 32; and no single
+# anchor could serve both directions on the 14 columns that have no interior T
+# differing from both neighbours. It is a ROADMAP candidate.
+#
+# The layer outside this suite is data-raw/verify_norms_against_book.R, which
+# diffs every printed cell against an independent extraction of the book's
+# markup, in either direction. It compares the data-raw CSVs, not `pid_norms`,
+# so the assembly in data-raw/norms_pid5.R sits between the two layers; the
+# anchors are what observe it here. Being markup-based, it also shares a blind
+# spot the anchors do not: a defect in the book's own markup, which only a
+# rendered-page read can see.
 
 # version, scale, T score, raw, percentile, page
 domain_spot <- local({
@@ -307,8 +321,97 @@ facet_spot <- local({
   )
 })
 
+# The second anchor for each of the 63 columns that entered M34 carrying only
+# one. Where the first anchors sit at a T chosen for the table (T = 65 for every
+# facet), these sit at a T chosen for the *column*: one where that column's
+# percentile differs from the row below it, so a column displaced down one row
+# reads a different value here. data-raw/select_norm_anchors.R makes the choice
+# and checks it; this table freezes the result, and the tests below re-derive
+# both properties rather than trusting either.
+#
+# Five T scores cover all 63 columns, which is why they were preferred over a
+# distinct T per column: each group is one scan across the printed row, the way
+# M33 read all 50 of its anchors at T = 65. Read by eye off the rendered pages
+# by a reader with no access to `pid_norms`, the data-raw CSVs, or this file,
+# working from the column headings alone; every value matched the shipped cell.
+second_spot <- local({
+  spot <- rbind.data.frame(
+    # T = 44
+    list("FULL", "antagonism", 44L, 0.34, 0.32, 120),
+    list("FULL", "disinhibition", 44L, 0.29, 0.32, 120),
+    list("FULL", "psychoticism", 44L, 0.20, 0.38, 120),
+    list("FULL", "anhedonia", 44L, 0.47, 0.30, 124),
+    list("FULL", "anxiousness", 44L, 0.50, 0.36, 124),
+    list("FULL", "attentionSeeking", 44L, 0.31, 0.38, 124),
+    list("FULL", "callousness", 44L, 0.09, 0.34, 124),
+    list("FULL", "depressivity", 44L, 0.11, 0.36, 124),
+    list("FULL", "distractibility", 44L, 0.35, 0.38, 124),
+    list("FULL", "eccentricity", 44L, 0.22, 0.37, 124),
+    list("FULL", "emotionalLability", 44L, 0.38, 0.34, 124),
+    list("FULL", "grandiosity", 44L, 0.38, 0.35, 124),
+    list("FULL", "hostility", 44L, 0.44, 0.33, 124),
+    list("FULL", "perceptualDysregulation", 44L, 0.09, 0.42, 124),
+    list("FULL", "perseveration", 44L, 0.35, 0.38, 124),
+    list("FULL", "rigidPerfectionism", 44L, 0.56, 0.34, 124),
+    list("FULL", "riskTaking", 44L, 0.70, 0.28, 124),
+    list("FULL", "separationInsecurity", 44L, 0.32, 0.39, 124),
+    list("FULL", "unusualBeliefsExperiences", 44L, 0.16, 0.40, 124),
+    list("FULL", "withdrawal", 44L, 0.51, 0.36, 124),
+    list("SF", "antagonism", 44L, 0.21, 0.35, 147),
+    list("SF", "detachment", 44L, 0.29, 0.36, 147),
+    list("SF", "disinhibition", 44L, 0.26, 0.36, 147),
+    list("SF", "negativeAffectivity", 44L, 0.37, 0.37, 147),
+    list("SF", "psychoticism", 44L, 0.10, 0.43, 147),
+    list("SF", "attentionSeeking", 44L, 0.31, 0.40, 151),
+    list("SF", "callousness", 44L, 0.01, 0.58, 151),
+    list("SF", "deceitfulness", 44L, 0.03, 0.57, 151),
+    list("SF", "distractibility", 44L, 0.29, 0.43, 151),
+    list("SF", "hostility", 44L, 0.26, 0.42, 151),
+    list("SF", "impulsivity", 44L, 0.27, 0.44, 151),
+    list("SF", "irresponsibility", 44L, 0.02, 0.58, 151),
+    list("SF", "manipulativeness", 44L, 0.26, 0.43, 151),
+    list("SF", "perseveration", 44L, 0.28, 0.41, 151),
+    list("SF", "rigidPerfectionism", 44L, 0.35, 0.39, 151),
+    list("SF", "separationInsecurity", 44L, 0.31, 0.43, 151),
+    list("SF", "submissiveness", 44L, 0.70, 0.25, 151),
+    list("SF", "unusualBeliefsExperiences", 44L, 0.04, 0.57, 151),
+    list("SF", "withdrawal", 44L, 0.32, 0.42, 151),
+    list("BF", "detachment", 44L, 0.30, 0.36, 174),
+    list("BF", "disinhibition", 44L, 0.22, 0.41, 174),
+    # T = 45
+    list("FULL", "restrictedAffectivity", 45L, 0.60, 0.37, 124),
+    list("SF", "emotionalLability", 45L, 0.26, 0.51, 151),
+    list("SF", "suspiciousness", 45L, 0.31, 0.45, 151),
+    # T = 46
+    list("SF", "perceptualDysregulation", 46L, 0.02, 0.77, 151),
+    # T = 63
+    list("FULL", "irresponsibility", 63L, 0.88, 0.90, 124),
+    list("SF", "depressivity", 63L, 1.04, 0.92, 151),
+    list("SF", "grandiosity", 63L, 1.28, 0.92, 151),
+    list("SF", "restrictedAffectivity", 63L, 1.80, 0.90, 151),
+    list("BF", "antagonism", 63L, 1.03, 0.92, 174),
+    # T = 64
+    list("FULL", "deceitfulness", 64L, 1.13, 0.92, 124),
+    list("FULL", "impulsivity", 64L, 1.51, 0.90, 124),
+    list("FULL", "intimacyAvoidance", 64L, 1.42, 0.90, 124),
+    list("FULL", "manipulativeness", 64L, 1.60, 0.91, 124),
+    list("FULL", "submissiveness", 64L, 2.06, 0.94, 124),
+    list("FULL", "suspiciousness", 64L, 1.64, 0.89, 124),
+    list("SF", "anhedonia", 64L, 1.52, 0.92, 151),
+    list("SF", "anxiousness", 64L, 2.02, 0.93, 151),
+    list("SF", "eccentricity", 64L, 1.73, 0.90, 151),
+    list("SF", "intimacyAvoidance", 64L, 1.56, 0.91, 151),
+    list("SF", "riskTaking", 64L, 1.26, 0.93, 151),
+    list("BF", "negativeAffectivity", 64L, 1.65, 0.90, 174),
+    list("BF", "psychoticism", 64L, 1.23, 0.90, 174),
+    stringsAsFactors = FALSE
+  )
+  names(spot) <- c("version", "scale", "tscore", "raw", "percentile", "page")
+  spot
+})
+
 # Every anchor whose table prints a T score, domains and facets alike.
-tscored_spot <- rbind(domain_spot, facet_spot)
+tscored_spot <- rbind(domain_spot, facet_spot, second_spot)
 
 # version, scale, raw score, percentile, page
 validity_spot <- local({
@@ -335,6 +438,94 @@ validity_spot <- local({
   )
   names(spot) <- c("version", "scale", "raw", "percentile", "page")
   spot
+})
+
+# The anchor set's own adequacy. The three tests below assert nothing about
+# whether `pid_norms` is correct -- they read it only to check that the anchors
+# are placed where a displacement or a swap would move them. The values remain
+# the only truth claim in this file, and they come from the printed page.
+tscored_keys <- function() norm_keys(pid_norms[!is.na(pid_norms$tscore), ])
+
+anchors_at <- function(version, scale) {
+  hit <- tscored_spot$version == version & tscored_spot$scale == scale
+  sort(unique(tscored_spot$tscore[hit]))
+}
+
+test_that("every T-scored scale has at least two anchors at distinct T scores", {
+  keys <- tscored_keys()
+  n <- vapply(
+    seq_len(nrow(keys)),
+    function(i) length(anchors_at(keys$version[[i]], keys$scale[[i]])),
+    integer(1)
+  )
+  expect_equal(
+    paste(keys$version, keys$scale)[n < 2L],
+    character(),
+    label = "T-scored columns anchored at fewer than two distinct T scores"
+  )
+})
+
+test_that("every T-scored scale is anchored where its percentile steps", {
+  # A column displaced down one row reads its predecessor's value at every T, so
+  # an anchor sitting on a percentile plateau reads the same before and after
+  # and witnesses nothing. Each column therefore needs an anchor at a T whose
+  # percentile differs from the row below it. Only the downward direction is
+  # closed: an upward displacement needs a T differing from the row above, and
+  # 14 of the 66 columns have no interior T differing from both neighbours.
+  keys <- tscored_keys()
+  flat <- vapply(seq_len(nrow(keys)), function(i) {
+    col <- pid_norms[
+      pid_norms$version == keys$version[[i]] & pid_norms$scale == keys$scale[[i]],
+    ]
+    col <- col[order(col$tscore), ]
+    steps <- col$tscore[-1][diff(col$percentile) != 0]
+    !any(anchors_at(keys$version[[i]], keys$scale[[i]]) %in% steps)
+  }, logical(1))
+  expect_equal(
+    paste(keys$version, keys$scale)[flat],
+    character(),
+    label = "T-scored columns anchored only on percentile plateaus"
+  )
+})
+
+test_that("no two T-scored scales read alike at every anchor they share", {
+  # Two columns reading alike wherever either is anchored cannot witness a swap
+  # of each other. Before M34 two SF pairs did exactly that at their shared
+  # T = 65 anchor -- impulsivity/intimacyAvoidance and manipulativeness/
+  # suspiciousness -- which is half of why the second anchor exists.
+  keys <- tscored_keys()
+  labels <- paste(keys$version, keys$scale)
+  # Named lookups keyed by T, so the pairwise sweep below costs no subsetting.
+  cells <- lapply(seq_len(nrow(keys)), function(i) {
+    col <- pid_norms[
+      pid_norms$version == keys$version[[i]] & pid_norms$scale == keys$scale[[i]],
+    ]
+    list(
+      raw = stats::setNames(col$raw, col$tscore),
+      pct = stats::setNames(col$percentile, col$tscore),
+      at = as.character(anchors_at(keys$version[[i]], keys$scale[[i]]))
+    )
+  })
+  alike <- character()
+  for (a in seq_along(cells)) {
+    for (b in seq_len(a - 1L)) {
+      x <- cells[[a]]
+      y <- cells[[b]]
+      same <- TRUE
+      for (t in union(x$at, y$at)) {
+        # A T where either column has no row cannot be an agreement. The
+        # membership test must precede the lookup: `[[` on an absent name is an
+        # error, not NA.
+        if (!(t %in% names(x$raw)) || !(t %in% names(y$raw)) ||
+            x$raw[[t]] != y$raw[[t]] || x$pct[[t]] != y$pct[[t]]) {
+          same <- FALSE
+          break
+        }
+      }
+      if (same) alike <- c(alike, paste(labels[[a]], "and", labels[[b]]))
+    }
+  }
+  expect_equal(alike, character(), label = "indistinguishable T-scored column pairs")
 })
 
 test_that("every scale in pid_norms has at least one spot value", {
