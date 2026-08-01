@@ -58,19 +58,19 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
       at any `tscore` where either lacks a row; a test asserts this over all
       pairs and fails naming any colliding pair. Adequacy of the anchor set,
       never correctness of `pid_norms`.
-- [ ] AC5. `Rscript data-raw/mutate_norms_check.R` reports CAUGHT for every
+- [x] AC5. `Rscript data-raw/mutate_norms_check.R` reports CAUGHT for every
       mutation, with the "domain and facet norms match the values printed in the
       book" test among the failing tests for the two percentile-column
       displacements (SF withdrawal, FULL anhedonia) and for two new column-swap
       mutations added here (SF impulsivity ↔ SF intimacyAvoidance;
       SF manipulativeness ↔ SF suspiciousness).
-- [ ] AC6. The `# ---- spot values from the printed tables` block comment states
+- [x] AC6. The `# ---- spot values from the printed tables` block comment states
       what the second anchor closes and what it leaves open; the matching
       comment in `data-raw/mutate_norms_check.R` ("Kept here to measure the gap
       rather than to assert it is closed") and the ROADMAP candidate row are
       updated or retired. No comment in either file still describes a closed gap
       as open.
-- [ ] AC7. `devtools::test()` passes and `devtools::check()` reports 0 errors,
+- [x] AC7. `devtools::test()` passes and `devtools::check()` reports 0 errors,
       0 warnings, 0 notes.
 
 ## Coverage
@@ -164,4 +164,68 @@ concurrently, so that read saw a deliberately mutated dataset. Re-checked
 serially: 0 mismatches, and `data/pid_norms.rda` md5-matches its committed
 object with a clean `git status`. The script's own restore-and-hash-check is what
 made this recoverable rather than silent.
+
+- AC5 — VERIFIED. `Rscript data-raw/mutate_norms_check.R`, run against an
+  isolated `git archive` export of HEAD so it could not race the live checkout,
+  reports CAUGHT for all 13 mutations. For all four cases the criterion names —
+  the SF withdrawal and FULL anhedonia percentile displacements and both new
+  swaps — `domain and facet norms match the values printed in the book` is among
+  the failing tests, so the catch rests on hand-read book values rather than on
+  the new adequacy tests alone. Restore verified by md5, unchanged.
+- AC6 — VERIFIED, after a review fix. Both block comments rewritten; the only
+  remaining "stays open" text is the upward displacement, which genuinely is
+  open. The ROADMAP candidate row was corrected here too (see F1 below).
+- AC7 — VERIFIED. In the same isolated export: `devtools::test()` 11681 pass /
+  0 fail / 1 pre-existing skip; `devtools::check()` 0 errors, 0 warnings,
+  0 notes. Re-run after the F1 fix: `test(filter = "norms")` 718 pass / 0 fail,
+  `cairn_validate` still exit 0.
+
+**Independent review — three lenses, then a scorer.** The blame-history and
+prior-PR-comments lenses each reported zero findings; the prior-review lens
+recorded that the repo has no inline PR review comments at all (probe returned
+empty), so archived `## Review` sections were the evidence base. It independently
+re-derived three numeric claims in the new comments against the data (63
+single-anchor columns, 14 columns with no interior T differing from both
+neighbours, and the third-anchor count) — the check that caught F1. The diff-bug
+lens reported nine findings. All nine went to a fresh Sonnet scorer holding the
+diff and the plan.
+
+Actioned (>= 80):
+
+- **F1 (90) — `tests/testthat/test-norms.R`: the "41 columns" figure is stale.**
+  The sentence read "so it would take a *third* anchor on 41 columns", a
+  post-M34 statement carrying a pre-M34 number. Verified independently: the
+  second anchors placed by this milestone already cover the upward direction on
+  34 of the 66 columns, so 32 would need a third — not 41. FIXED in the comment
+  and in the ROADMAP candidate row, which carried the same figure; the row is
+  marked as corrected. This is the same class of defect M33's review caught
+  (a count stated in a comment that the data does not support).
+
+Logged, below threshold, not actioned (8):
+
+- F2 (60) — "percentiles step only every third row" is loose; two columns step
+  every 5. The clause was removed incidentally by F1's rewrite of the same
+  sentence, not actioned on its own merits; it survives in
+  `data-raw/select_norm_anchors.R`.
+- F3 (45) — a third pre-M34 indistinguishable pair exists (BF disinhibition and
+  SF grandiosity, cross-version) that the comments' two-pair enumeration omits.
+  Verified real by the scorer. The AC4 test covers all pairs including
+  cross-version, so the test is complete; only the narrative is partial.
+- F4 (45) — `select_norm_anchors.R` hand-copies the existing anchor list, which
+  could drift from `test-norms.R`. Matches exactly today.
+- F5 (55) — the script exempts the 3 already-multi-anchored columns from its own
+  step check; all three satisfy it anyway, and the test checks all 66.
+- F6 (35) — the new tests re-implement `norm_rows()` without its NA-tscore
+  handling; inert, as no column mixes T-scored and raw-keyed rows.
+- F7 (30) — step detection uses positional adjacency rather than an explicit
+  `T - 1`; all 66 columns are contiguous and an explicit recheck agreed.
+- F8 (35) — the distinctness guard handles absent names but would error on an NA
+  value; unreachable given an existing `anyNA` assertion.
+- F9 (25) — an adequacy-test failure label can misdirect toward the anchor set
+  when the data is what moved; the book test fails in the same run.
+
+The diff-bug lens also returned an IP2 verdict worth keeping: the adequacy tests
+cannot launder a data defect into a pass, because a displaced `pid_norms` would
+leave all three still passing and the failure would land on the book-comparison
+test, whose values came from the independent rendered-page read.
 

@@ -231,10 +231,11 @@ test_that("percentiles are proportions", {
 #     either is anchored.
 #
 # What stays open is a column displaced *upward*, each row taking its
-# successor's value. Catching that needs an anchor differing from the row above,
-# and 14 of the 66 columns have no interior T differing from both neighbours --
-# their percentiles step only every third row -- so it would take a third anchor
-# on 41 columns. It is a ROADMAP candidate.
+# successor's value. Catching that needs an anchor differing from the row above.
+# The second anchors placed here happen to satisfy that on 34 of the 66 columns,
+# so closing it would take a third anchor on the remaining 32; and no single
+# anchor could serve both directions on the 14 columns that have no interior T
+# differing from both neighbours. It is a ROADMAP candidate.
 #
 # The layer outside this suite is data-raw/verify_norms_against_book.R, which
 # diffs every printed cell against an independent extraction of the book's
