@@ -91,3 +91,83 @@ test_that("hitop_subset() errors for instruments that are not yet supported", {
 test_that("hitop_subset() prints a compact summary", {
   expect_snapshot(hitop_subset("hitopsr", c("agoraphobia", "appetiteLoss")))
 })
+
+# --- subset_engine_inputs(): descriptor -> engine inputs -------------------
+# Oracle note: the expected POSITIONS below are hand-derived from the item
+# numbers already hand-derived at the top of this file, never recomputed from
+# `hitopsr_scales$itemNumbers` at test time.
+
+test_that("subset_engine_inputs() maps item numbers to subset-column positions", {
+  # Agoraphobia   = 66, 109, 118, 260, 291
+  # Appetite Loss = 144, 202, 389
+  # union, ascending: 66 109 118 144 202 260 291 389
+  #        positions:  1   2   3   4   5   6   7   8
+  s <- hitop_subset("hitopsr", c("agoraphobia", "appetiteLoss"))
+  out <- subset_engine_inputs(
+    subset = s,
+    instrument = "hitopsr",
+    items = hitopsr_items,
+    scales = hitopsr_scales,
+    item_col = "HSR"
+  )
+  expect_equal(out$n_items, 8)
+  expect_equal(names(out$items_scales), c("agoraphobia", "appetiteLoss"))
+  expect_equal(out$items_scales$agoraphobia, c(1L, 2L, 3L, 6L, 7L))
+  expect_equal(out$items_scales$appetiteLoss, c(4L, 5L, 8L))
+})
+
+test_that("subset_engine_inputs() locates the reverse-keyed item by position", {
+  # HSR 310 is the whole instrument's only reverse-keyed item, and it is the
+  # 4th of Romantic Disinterest's five items (42, 152, 187, 310, 338).
+  s <- hitop_subset("hitopsr", "romanticDisinterest")
+  out <- subset_engine_inputs(
+    s, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
+  )
+  expect_equal(out$reverse_items, 4L)
+
+  # A subset holding no reverse-keyed item gets an empty vector, which
+  # prep_items() skips rather than reverse-keying nothing.
+  s2 <- hitop_subset("hitopsr", "agoraphobia")
+  out2 <- subset_engine_inputs(
+    s2, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
+  )
+  expect_length(out2$reverse_items, 0)
+})
+
+test_that("subset_engine_inputs() returns scales in instrument row order", {
+  # Selection order must not leak into the output: appetiteLoss is row 3 of
+  # hitopsr_scales and agoraphobia row 1, whichever order they are asked for.
+  s <- hitop_subset("hitopsr", c("appetiteLoss", "agoraphobia"))
+  out <- subset_engine_inputs(
+    s, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
+  )
+  expect_equal(names(out$items_scales), c("agoraphobia", "appetiteLoss"))
+})
+
+test_that("subset_engine_inputs() covers every subset column exactly once", {
+  s <- hitop_subset("hitopsr", c("agoraphobia", "romanticDisinterest", "appetiteLoss"))
+  out <- subset_engine_inputs(
+    s, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
+  )
+  pos <- sort(unlist(out$items_scales, use.names = FALSE))
+  expect_equal(pos, seq_len(s$nItems))
+})
+
+test_that("subset_engine_inputs() rejects a non-subset and a wrong instrument", {
+  expect_error(
+    subset_engine_inputs(
+      list(items = 1), "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
+    ),
+    "hitop_subset"
+  )
+
+  # Only reachable by hand-assembly: hitop_subset() will not build this.
+  fake <- hitop_subset("hitopsr", "agoraphobia")
+  fake$instrument <- "hitopbr"
+  expect_error(
+    subset_engine_inputs(
+      fake, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
+    ),
+    "wrong instrument"
+  )
+})

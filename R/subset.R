@@ -155,3 +155,61 @@ apply_subset <- function(
     }
   )
 }
+
+# Internal Helper: remap a subset descriptor into the engines' three inputs
+#
+# `apply_subset()` above reduces the instrument's TABLES for the generators,
+# which keep the original item numbering. The engines instead address items by
+# POSITION within the columns the caller supplied, so scoring subset-collected
+# data needs the subset's original numbers translated into positions within
+# `subset$items` (which is ascending). Returns `n_items`, `reverse_items`, and
+# `items_scales` ready for score_engine()/reliability_engine().
+#
+# `items` and `scales` are the instrument's own tables, so the reverse key is
+# read from the package's canonical source rather than trusted from the
+# descriptor's parallel `reverse` flags.
+#
+# Invariant: every kept scale's items are fully contained in `subset$items`,
+# because hitop_subset() builds `items` as the union of exactly the scales it
+# keeps. The match() below therefore never yields NA for a kept scale.
+subset_engine_inputs <- function(
+  subset,
+  instrument,
+  items,
+  scales,
+  item_col,
+  reverse_col = "Reverse",
+  scale_col = "camelCase",
+  number_col = "itemNumbers",
+  call = rlang::caller_env()
+) {
+  cli_assert(
+    condition = inherits(subset, "hitop_subset"),
+    message = c(
+      "The {.arg subset} argument must be a {.cls hitop_subset} object.",
+      i = "Build one with {.code hitop_subset()}."
+    ),
+    call = call
+  )
+  # Only reachable from a hand-assembled object: hitop_subset() refuses to
+  # build a subset for any instrument but the ones it supports.
+  cli_assert(
+    condition = identical(subset$instrument, instrument),
+    message = c(
+      "The {.arg subset} argument describes the wrong instrument.",
+      x = "Expected a {.val {instrument}} subset but got {.val {subset$instrument}}."
+    ),
+    call = call
+  )
+
+  kept <- scales[scales[[scale_col]] %in% subset$camelCase, , drop = FALSE]
+  reverse_numbers <- items[[item_col]][items[[reverse_col]]]
+  numbers <- kept[[number_col]]
+  names(numbers) <- kept[[scale_col]]
+
+  list(
+    n_items = subset$nItems,
+    reverse_items = which(subset$items %in% reverse_numbers),
+    items_scales = lapply(numbers, function(x) match(x, subset$items))
+  )
+}

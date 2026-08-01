@@ -1,11 +1,11 @@
 # M37: Score HiTOP-SR subset-collected data
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m37-hitopsr-subset-scoring`
 
 ## Goal
 
@@ -78,7 +78,7 @@ match by column name and already tolerate a partial column set).
 
 ## Tasks
 
-- [ ] T1. Add the internal remap helper beside `apply_subset()` in `R/subset.R`,
+- [x] T1. Add the internal remap helper beside `apply_subset()` in `R/subset.R`,
       turning a `hitop_subset` plus an instrument's items/scales tables into
       `n_items`, `reverse_items` and `items_scales` in subset-column positions
       (`match(itemNumbers, subset$items)`); direct unit tests for the remap.
@@ -108,6 +108,8 @@ match by column name and already tolerate a partial column set).
 - 2026-08-01: plan gate chose to carry `reliability_hitopsr()` in the same milestone over deferring it, because both wrappers hand the same three inputs to a shared engine and the audit confirmed subset alpha is numerically identical to full-run alpha, so the second wrapper costs one task rather than a second design; falsified by the reliability path needing its own remap semantics once implemented.
 - 2026-08-01: plan chose to express the remap as positions within the supplied columns over renumbering the data to full-instrument width and padding absent items with `NA`, because padding would make every subset scale's siblings silently `NA`-scored and would defeat `missing = "complete"`; falsified by a scale whose items are not fully contained in the subset — impossible today, since the 76 scales partition the 405 items exactly.
 
+- 2026-08-01: implementation gate chose to place AC6's new instrument check in the scoring-path remap helper only, leaving `apply_subset()` and the three `generate_*_hitopsr()` functions untouched, because the check fires only on a hand-assembled descriptor and extending it would add an error branch to functions this milestone scoped out; falsified by a generator ever being handed a foreign-instrument subset.
+- 2026-08-01: T1 done — `subset_engine_inputs()` in `R/subset.R` remaps a descriptor into `n_items`/`reverse_items`/`items_scales` as positions within the supplied columns; the reverse key is read from `hitopsr_items` rather than trusted from the descriptor's parallel flags. Five direct unit tests; `devtools::test()` clean (11715 pass).
 - 2026-08-01: `cairn_validate` advises 8 acceptance criteria against the >7 split tripwire; not split — AC8 is the mandated profile-verify criterion, leaving 7 substantive, and the only natural cut (reliability into its own milestone) is the one the plan gate explicitly declined. 7 tasks, one PR, 102/149 lines.
 
 ## Decisions
