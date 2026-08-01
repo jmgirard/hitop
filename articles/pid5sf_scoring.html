@@ -311,11 +311,11 @@ want those scales converted too.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">ku_pid5sf</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>, version <span class="op">=</span> <span class="st">"SF"</span><span class="op">)</span></span>
 <span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span><span class="va">scored</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>, version <span class="op">=</span> <span class="st">"SF"</span><span class="op">)</span></span></code></pre></div>
-<p>For the short form the published tables cover the five domain scales
-and the INC-S inconsistency scale; they do not cover the 25 facets. Each
-converted scale gains a <code>_ptl</code> column, and those whose tables
-print T scores also gain a <code>_t</code> column. INC-S is distributed
-as percentiles only, so it gets no <code>_t</code> column. Note that
+<p>For the short form the published tables cover the five domain scales,
+all 25 facet scales, and the INC-S inconsistency scale. Each converted
+scale gains a <code>_ptl</code> column, and those whose tables print T
+scores also gain a <code>_t</code> column. INC-S is distributed as
+percentiles only, so it gets no <code>_t</code> column. Note that
 <code>version = "SF"</code> selects the short-form tables — the same raw
 score converts differently across forms.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">

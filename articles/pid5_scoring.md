@@ -257,12 +257,12 @@ scored <- score_pid5(sim_pid5, items = 1:220)
 scored <- validity_pid5(scored, items = 1:220)
 ```
 
-For the full form the published tables cover the five domain scales and
-three of the validity scales — INC, ORS, and PRD. They do not cover the
-25 facets, and they do not cover SD-TD at all. Each converted scale
-gains a `_ptl` column, and those whose tables print T scores also gain a
-`_t` column. The validity scales are distributed as percentiles only, so
-they get no `_t` column.
+For the full form the published tables cover the five domain scales, all
+25 facet scales, and three of the validity scales — INC, ORS, and PRD.
+They do not cover SD-TD at all. Each converted scale gains a `_ptl`
+column, and those whose tables print T scores also gain a `_t` column.
+The validity scales are distributed as percentiles only, so they get no
+`_t` column.
 
 ``` r
 
@@ -299,6 +299,31 @@ norm_pid5(
 #> #   pid_disinhibition_ptl <dbl>, pid_psychoticism_t <int>,
 #> #   pid_psychoticism_ptl <dbl>, pid_INC_ptl <dbl>, pid_ORS_ptl <dbl>,
 #> #   pid_PRD_ptl <dbl>
+```
+
+The facets convert the same way. Anhedonia, for instance, is an item
+mean over its eight full-form items, and its table runs from a floor of
+0.00 up to a printed 3.84 — past the 3.00 an item mean can actually
+reach, which is true of most of the facet columns and is a property of
+the published tables rather than of the conversion:
+
+``` r
+
+norm_pid5(scored, scores = "pid_anhedonia", version = "FULL", append = FALSE)
+#> # A tibble: 100 × 2
+#>    pid_anhedonia_t pid_anhedonia_ptl
+#>              <int>             <dbl>
+#>  1              57              0.79
+#>  2              59              0.8 
+#>  3              67              0.93
+#>  4              57              0.79
+#>  5              55              0.76
+#>  6              71              0.95
+#>  7              59              0.8 
+#>  8              61              0.84
+#>  9              55              0.76
+#> 10              59              0.8 
+#> # ℹ 90 more rows
 ```
 
 Every number returned is a cell of a published table: the nearest

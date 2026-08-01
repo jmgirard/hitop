@@ -133,11 +133,11 @@ appended (<code>TRUE</code>, the default) or the conversion columns alone.</p></
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with a <code>_t</code> column for every converted scale
-whose normative rows carry a T score (the five domains, plus the brief
-form's total) and a <code>_ptl</code> column for every converted scale, alongside all
-original <code>data</code> columns if requested. The four validity scales
-(<code>INC</code>, <code>INCS</code>, <code>ORS</code>, <code>PRD</code>) are distributed as percentiles only and get
-no <code>_t</code> column.</p>
+whose normative rows carry a T score (the five domains, the 25 facets of
+the full and short forms, and the brief form's total) and a <code>_ptl</code> column
+for every converted scale, alongside all original <code>data</code> columns if
+requested. The four validity scales (<code>INC</code>, <code>INCS</code>, <code>ORS</code>, <code>PRD</code>) are
+distributed as percentiles only and get no <code>_t</code> column.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -158,34 +158,44 @@ land between rows.</p></li>
 several rows, or a value exactly midway between two rows – the row whose
 T score is nearest 50 is returned. The four validity scales carry no T
 score, so a tie there returns the row whose percentile is nearest 0.50.</p></li>
-<li><p><strong>Scores of 0.</strong> Each domain table prints raw 0.00 across a run of low T
-scores, because the linear T the book tabulated predicts a negative raw
-there and 0.00 is printed instead. The tie rule returns the run's highest
-T, the one row of the run that renders an attainable score. Its printed
+<li><p><strong>Scores of 0.</strong> Nearly every tabled scale prints raw 0.00 across a run of
+low T scores, because the linear T the book tabulated predicts a negative
+raw there and 0.00 is printed instead. The tie rule returns the run's
+highest T, the one row of the run that renders an attainable score. (Two
+columns – full-form detachment and risk taking – print 0.00 just once,
+so no tie arises there.) Its printed
 percentile is positive on some scales and 0.00 on others; that asymmetry
 is a property of the published tables, not of this function.</p></li>
-<li><p><strong>Scores outside the table.</strong> A score above the highest printed row
-returns that row's values, rather than an extrapolation. A score below
+<li><p><strong>Scores outside the table.</strong> A score above the highest printed raw
+returns whatever an observation <em>at</em> that raw returns, rather than an
+extrapolation – the last printed row on most scales, but the lowest-T
+row of the run where the top raw is printed several times (see
+"Unattainable printed rows" below). A score below
 the lowest returns whatever an observation <em>at</em> the lowest printed raw
 returns – which, on the scales whose tables print a run of 0.00, is that
 run's highest-T row and not the table's first row, so the two agree
 instead of jumping. A warning reports how many observations were capped
 at each end. This is reachable in ordinary data: <code>PRD</code> is a 22-item sum
 reaching 66 while its table stops at 55.</p></li>
-<li><p><strong>Unattainable printed rows.</strong> Five domain tables print rows above the
-3.00 ceiling a 0-3 item mean can reach, so the top of those T ranges
-cannot be attained. A maximum score returns T = 84 (brief-form negative
+<li><p><strong>Unattainable printed rows.</strong> 47 of the 66 tabled scales print rows
+above the 3.00 ceiling a 0-3 item mean can reach – five domain scales
+and 42 of the 50 facet columns – so the top of those T ranges cannot be
+attained. A maximum score returns T = 84 (brief-form negative
 affectivity), 87 (brief-form detachment), 93 (brief-form disinhibition),
-87 (full-form negative affectivity), or 85 (short-form negative
-affectivity) – each at percentile 1.00. Nothing is wrong with such data
-and nothing is reported.</p></li>
+87 (full-form negative affectivity), 85 (short-form negative
+affectivity), or, on a facet, a T between 76 and 98 depending on the
+facet and the form – each at percentile 1.00. Nineteen facet columns go
+further and print the same top raw, 4.00, on several consecutive T rows
+(12 of them for short-form anxiousness); those rows ship as published,
+and the tie rule above returns the lowest T of the run. Nothing is wrong
+with such data and nothing is reported.</p></li>
 <li><p><strong>Comparison tolerance.</strong> All comparisons use an absolute tolerance of
 1e-8, so that scores on grids with no exact binary representation (a
 short-form domain mean is a twelfth) match the printed 2-decimal raws as
 intended.</p></li>
-</ul><p>Columns the tables do not cover for the requested <code>version</code> – the 25
-facets, for instance – return <code>NA</code> in both conversion columns with a
-warning naming them. An <code>NA</code> score returns <code>NA</code>.</p>
+</ul><p>Columns the tables do not cover for the requested <code>version</code> – <code>SD-TD</code>, or
+any facet on the brief form, for instance – return <code>NA</code> in both conversion
+columns with a warning naming them. An <code>NA</code> score returns <code>NA</code>.</p>
 <p><strong>Reporting and silence.</strong> Everything this function reports – the capping
 count above, the uncovered-column warning, and the two response-coding
 reports below – is a warning condition, so a single <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings()</a></code>
@@ -209,7 +219,8 @@ recoded and rescored.</p>
 reconciliation is applied per scale rather than per item. No published
 source states these rules – Markon et al. give the tables for the official
 coding only – so, like the reading rules above, they are this package's,
-derived from each scale's own definition:</p><ul><li><p><strong>Item means</strong> (the five domains, and the brief form's total) are
+derived from each scale's own definition:</p><ul><li><p><strong>Item means</strong> (the 25 facets, the five domains, and the brief form's
+total) are
 reconciled by subtracting <code>srange[[1]]</code>. Shifting every item by a constant
 shifts their mean by the same constant.</p></li>
 <li><p><strong><code>PRD</code></strong> is a plain sum over its 22 items, so the same shift moves it by

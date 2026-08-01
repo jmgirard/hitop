@@ -327,12 +327,12 @@ too.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span></span>
 <span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span><span class="va">scored</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span></span></code></pre></div>
-<p>For the full form the published tables cover the five domain scales
-and three of the validity scales — INC, ORS, and PRD. They do not cover
-the 25 facets, and they do not cover SD-TD at all. Each converted scale
-gains a <code>_ptl</code> column, and those whose tables print T scores
-also gain a <code>_t</code> column. The validity scales are distributed
-as percentiles only, so they get no <code>_t</code> column.</p>
+<p>For the full form the published tables cover the five domain scales,
+all 25 facet scales, and three of the validity scales — INC, ORS, and
+PRD. They do not cover SD-TD at all. Each converted scale gains a
+<code>_ptl</code> column, and those whose tables print T scores also
+gain a <code>_t</code> column. The validity scales are distributed as
+percentiles only, so they get no <code>_t</code> column.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/norm_pid5.html">norm_pid5</a></span><span class="op">(</span></span>
 <span>  <span class="va">scored</span>,</span>
@@ -367,6 +367,27 @@ as percentiles only, so they get no <code>_t</code> column.</p>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_disinhibition_ptl &lt;dbl&gt;, pid_psychoticism_t &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_psychoticism_ptl &lt;dbl&gt;, pid_INC_ptl &lt;dbl&gt;, pid_ORS_ptl &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid_PRD_ptl &lt;dbl&gt;</span></span></span></code></pre></div>
+<p>The facets convert the same way. Anhedonia, for instance, is an item
+mean over its eight full-form items, and its table runs from a floor of
+0.00 up to a printed 3.84 — past the 3.00 an item mean can actually
+reach, which is true of most of the facet columns and is a property of
+the published tables rather than of the conversion:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/norm_pid5.html">norm_pid5</a></span><span class="op">(</span><span class="va">scored</span>, scores <span class="op">=</span> <span class="st">"pid_anhedonia"</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 2</span></span></span>
+<span><span class="co">#&gt;    pid_anhedonia_t pid_anhedonia_ptl</span></span>
+<span><span class="co">#&gt;              <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>              57              0.79</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>              59              0.8 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>              67              0.93</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>              57              0.79</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>              55              0.76</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>              71              0.95</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>              59              0.8 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>              61              0.84</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>              55              0.76</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>              59              0.8 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 90 more rows</span></span></span></code></pre></div>
 <p>Every number returned is a cell of a published table: the nearest
 printed row is selected and nothing is interpolated. A score that falls
 outside a printed range is capped to the nearest end rather than
