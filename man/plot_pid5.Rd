@@ -21,9 +21,11 @@ a profile plot shows one respondent.}
 items), \code{"SF"} (100 items), or \code{"BF"} (25 items). Matched case-insensitively.}
 
 \item{level}{Which scales to plot. \code{"domain"} plots the five personality
-domains, plus the brief form's total. \code{"facet"} plots the 25 facets grouped
-into a panel per domain, and is available for \code{"FULL"} and \code{"SF"} only --
-the brief form has no facet scores.}
+domains, plus the brief form's total. \code{"facet"} plots all 25 facets in
+panels, and is available for \code{"FULL"} and \code{"SF"} only -- the brief form has
+no facet scores. The APA key ties three facets to each domain; those get a
+panel per domain, and the remaining ten, which define no domain, share a
+final panel rather than being dropped.}
 
 \item{metric}{Which normed metric to plot: \code{"t"} for T scores, or
 \code{"percentile"} for percentile ranks. \code{\link[=norm_pid5]{norm_pid5()}} returns percentiles as a
@@ -57,6 +59,8 @@ thresholds this package chose.
 The score axis spans the range the normative tables actually print for the
 plotted scales, so the axis does not rescale from respondent to respondent
 and two profiles on the same version and level are directly comparable.
+Scales are listed top to bottom in the order their scoring table gives them,
+under their printed names rather than their column stems.
 
 On the brief form the profile line stops before \code{total}: the total is an
 overall elevation across the five domains rather than a sixth domain, so
