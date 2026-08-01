@@ -1,6 +1,6 @@
 # M35: Cell-by-cell verification of the shipped norms against the book
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M34
 - **Driving RR:** —
