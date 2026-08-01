@@ -85,11 +85,16 @@ plot_pid5 <- function(
   ## is touched -- the same rlang::is_installed() guard calc_omega() uses for
   ## lavaan. Note check_installed() would NOT work here: it never consults
   ## is_installed() on its detection path, so it cannot be mocked in tests.
+  ##
+  ## The version floor is enforced HERE and not only declared in DESCRIPTION:
+  ## R does not check a Suggests floor when a package is merely loaded, so the
+  ## declaration alone would leave an old ggplot2 failing on an unknown
+  ## `linewidth` parameter instead of saying which version is wanted (D-031).
   cli_assert(
-    condition = rlang::is_installed("ggplot2"),
+    condition = rlang::is_installed("ggplot2", version = "3.4.0"),
     message = c(
-      "Package {.pkg ggplot2} is required to plot a PID-5 profile.",
-      "i" = "Install it with {.code install.packages(\"ggplot2\")}."
+      "Package {.pkg ggplot2} (>= 3.4.0) is required to plot a PID-5 profile.",
+      "i" = "Install or update it with {.code install.packages(\"ggplot2\")}."
     )
   )
 

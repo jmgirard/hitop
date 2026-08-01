@@ -525,3 +525,21 @@ test_that("drawing a plot emits no ggplot2 warnings", {
     }
   }
 })
+
+test_that("the ggplot2 floor in DESCRIPTION matches the one the guard enforces", {
+  # D-031 states the floor twice by necessity: DESCRIPTION is what installers
+  # and R CMD check read, the guard argument is what actually fires for a user
+  # whose ggplot2 is too old. They must move together.
+  # R/ is not shipped in an installed package, so this can only run against a
+  # source checkout; it skips rather than errors under R CMD check.
+  src_path <- test_path("../../R/plot_pid5.R")
+  skip_if_not(file.exists(src_path), "source checkout not available")
+  declared <- read.dcf(system.file("DESCRIPTION", package = "hitop"), fields = "Suggests")[[1]]
+  skip_if(is.na(declared))
+  floor_declared <- sub(".*ggplot2 \\(>= ([0-9.]+)\\).*", "\\1", gsub("\n", " ", declared))
+  src <- readLines(src_path, warn = FALSE)
+  guard <- grep('is_installed\\("ggplot2"', src, value = TRUE)
+  expect_length(guard, 1)
+  floor_guard <- sub('.*version = "([0-9.]+)".*', "\\1", guard)
+  expect_equal(floor_guard, floor_declared)
+})

@@ -29,7 +29,7 @@ Imports:
     utils
 Suggests:
     covr,
-    ggplot2,
+    ggplot2 (>= 3.4.0),
     jsonlite,
     knitr,
     lavaan,

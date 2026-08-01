@@ -70,10 +70,12 @@ row, vignette section, NEWS entry, README checkbox.
       introducing no boundary constant of this package's invention (IP2).
 - [ ] AC6. Each input branch fires in its own test: `nrow(data) != 1` aborts
       naming the row count; a requested `_t`/`_ptl` column absent from `data`
-      aborts through the `validate_*()` family as the rest of the package does;
+      aborts with a message naming the missing columns and pointing at
+      `norm_pid5()` as the remedy;
       a present-but-`NA` score is dropped from the series with a
       `cli::cli_warn()` naming every dropped scale while the plot still renders;
-      and ggplot2 unavailable aborts informatively, verified by mocking
+      and ggplot2 unavailable or older than the declared floor aborts
+      informatively, verified by mocking
       `rlang::is_installed()` (the binding `calc_omega()` uses at
       `R/reliability.R:132` — *not* `check_installed()`, which never consults it).
 - [ ] AC7. A PID-5 vignette section renders the score → validity → norm → plot
@@ -147,6 +149,8 @@ row, vignette section, NEWS entry, README checkbox.
 - 2026-08-01: my first fix for the hidden-point finding introduced a worse defect -- nudging the label in DATA space pushed a percentile of 98 to 102.5, past the axis limit, and ggplot2 dropped 2 of 6 labels with only a draw-time warning. Replaced with a `vjust` offset (a rendering property, so it cannot move a value off the axis); two guards added, both mutation-confirmed red.
 - 2026-08-01: lost the first round of these fixes to a `git checkout --` used to revert a mutation while they were still uncommitted; reapplied and now commit before any mutation run.
 - 2026-08-01: [S] scorer results over 23 findings -- 2 at or above the 80 threshold (F1 facet blocker 97, F13 label hides point 88), both fixed. Nine below-threshold findings also fixed while in the area (F2/F3 false comments 76/74, F4 hardcoded percentile breaks 60, F5 axis from survivors 68, F6 unguarded seq/absent-stem 22, F10 weak label assertion 55, F11 non-halting helper expectation 78, F19 duplicated literal 42, F20 vignette warnings 78).
+- 2026-08-01: review gate amended AC6 -- the criterion required the absent-column abort to route through the `validate_*()` family, but `validate_items_present()`'s message ("The `data` names must all be columns in `data`") loses the actionable hint naming `norm_pid5()` as the fix; Jeff chose the better message and the criterion follows it (GP3). The type-check duplication with `norm_pid5()` that the same finding named is logged below the threshold, not actioned.
+- 2026-08-01: review gate approved a `ggplot2 (>= 3.4.0)` floor -> D-031. Declared in Suggests AND passed to the existing `rlang::is_installed()` guard, because R does not enforce a Suggests floor at load time, so the declaration alone would not produce the clear message it was chosen for.
 
 ## Decisions
 
