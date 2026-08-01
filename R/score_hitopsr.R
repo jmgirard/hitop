@@ -2,9 +2,11 @@
 #'
 #' Create a data frame with scores on all the HiTOP-SR scales.
 #'
-#' @param data A data frame containing all HiTOP-SR items (numerically coded).
+#' @param data A data frame containing the HiTOP-SR items (numerically coded):
+#'   all 405 of them, or, when `subset` is supplied, that short form's items.
 #' @param items A vector of column names (as strings) or numbers (as integers)
-#'   corresponding to the 405 HiTOP-SR items in order. Items must be supplied in
+#'   corresponding to the HiTOP-SR items held in `data` — all 405, or, when
+#'   `subset` is supplied, that short form's items. Items must be supplied in
 #'   instrument order; a misordered mapping silently scores the wrong items, so a
 #'   warning is issued when the names share a common prefix and trailing number
 #'   but those numbers are not ascending. Duplicated entries are an error.

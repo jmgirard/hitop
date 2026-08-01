@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP2, GP3
-- **Branch/PR:** `m37-hitopsr-subset-scoring`
+- **Branch/PR:** `m37-hitopsr-subset-scoring` · https://github.com/jmgirard/hitop/pull/40
 
 ## Goal
 
@@ -33,37 +33,37 @@ match by column name and already tolerate a partial column set).
 
 ## Acceptance criteria
 
-- [ ] AC1. `score_hitopsr(data_sub, items = <the subset's columns>, subset = s,
+- [x] AC1. `score_hitopsr(data_sub, items = <the subset's columns>, subset = s,
       append = FALSE)` returns a tibble whose columns are exactly `prefix` pasted
       to the subset's `camelCase` stems, in `hitopsr_scales` row order.
-- [ ] AC2. For every scale in the subset, the values the subset path returns are
+- [x] AC2. For every scale in the subset, the values the subset path returns are
       equal to the corresponding columns of `score_hitopsr()` run on the full
       405-item data, under both `missing` modes (`"available"`, `"complete"`),
       checked on `sim_hitopsr` both unmodified and with injected `NA`s.
-- [ ] AC3. The test subset includes Romantic Disinterest (which holds HSR 310,
+- [x] AC3. The test subset includes Romantic Disinterest (which holds HSR 310,
       the instrument's only reverse-keyed item), and for one respondent that
       scale's returned score equals a hardcoded expected value, with the
       reverse-key arithmetic (`5 - x` under `srange = c(1, 4)`) shown in a
       comment rather than recomputed from `hitopsr_items` at test time.
-- [ ] AC4. With `calc_se = TRUE` the subset path returns `_se` columns for
+- [x] AC4. With `calc_se = TRUE` the subset path returns `_se` columns for
       exactly the subset's scales, equal to the corresponding full-run `_se`
       values.
-- [ ] AC5. `reliability_hitopsr(..., subset = s)` returns one row per subset
+- [x] AC5. `reliability_hitopsr(..., subset = s)` returns one row per subset
       scale with `nItems` matching `hitopsr_scales$nItems`, and alpha equal to
       the full-run alpha for those scales.
-- [ ] AC6. Three error paths fire with a cli message attributed to the exported
+- [x] AC6. Three error paths fire with a cli message attributed to the exported
       wrapper rather than the internal engine (checked on the condition's
       `call`): a `subset` that is not a `hitop_subset`; a hand-constructed
       `hitop_subset` naming an instrument other than `"hitopsr"` (a new check —
       `apply_subset()` has none today); and the existing `validate_items()`
       length check re-pointed at `subset$nItems`, naming `items` and reporting
       `subset$nItems` as the expected count.
-- [ ] AC7. With `subset = NULL` the full-instrument path is unchanged: a
+- [x] AC7. With `subset = NULL` the full-instrument path is unchanged: a
       differential probe against a `git archive` export of the base ref shows
       `identical()` returned values and `identical()` error conditions across
       `missing` × `calc_se` × `append` × items-as-names/positions for
       `score_hitopsr()`, and `alpha` × `omega` for `reliability_hitopsr()`.
-- [ ] AC8. `devtools::test()` and `devtools::check()` are clean.
+- [x] AC8. `devtools::test()` and `devtools::check()` are clean.
 
 ## Coverage
 
@@ -115,8 +115,101 @@ match by column name and already tolerate a partial column set).
 - 2026-08-01: T6 done — `devel/regression_probe_m37.R` runs 43 cells (score's `missing` × `calc_se` × `append` × names/positions grid, a non-default `srange` and `prefix`, reliability's `alpha` × `omega`, and 21 error/warning conditions) against a `git archive` export of the merge-base, in separate R subprocesses per tree; 43/43 `identical()`. Unlike M31's probe it compares returned values and full conditions, not accept-vs-reject, because M37 changes neither. ~8 min per run (76 omega CFAs, twice).
 - 2026-08-01: probe sensitivity confirmed by mutation rather than by eye — forcing the full path's `reverse_items` to `integer(0)` turned the probe red, the reported differences naming `hsr_romanticDisinterest` (and its `_se`) across the score grid and `alpha` on the reliability side, which is exactly the scale holding HSR 310; mutation reverted, the restored file verified byte-identical to the committed version, and the clean probe re-run afterwards.
 - 2026-08-01: T7 done — `@param subset` on both wrappers plus a runnable `@examples` line each, a NEWS entry, and a "Scoring a Short Form" vignette section that fields a four-scale form, scores it, and shows `all.equal()` against the full run. `devtools::document()` rewrote only the two `.Rd` files; `devtools::test()` clean (11739 pass); `devtools::check()` clean (0 errors, 0 warnings, 0 notes, 3m38s). AC7 probe re-run on the restored tree: 43/43 identical.
+- 2026-08-01: reviewed at PR #40 — all 8 criteria verified with fresh evidence, consistency gate clean, three fresh-context reviewers (two returned zero findings, the diff-bug lens returned 14 scored by a fourth agent). One finding actioned (F2, the now-false `@param data`/`@param items` wording, fixed on both wrappers); F11 carried to a candidate row; 12 logged below threshold. First review pass, no returns.
 - 2026-08-01: `cairn_validate` advises 8 acceptance criteria against the >7 split tripwire; not split — AC8 is the mandated profile-verify criterion, leaving 7 substantive, and the only natural cut (reliability into its own milestone) is the one the plan gate explicitly declined. 7 tasks, one PR, 102/149 lines.
 
 ## Decisions
 
 ## Review
+
+Reviewed 2026-08-01 on `m37-hitopsr-subset-scoring` at PR #40. Evidence gathered
+by running each criterion fresh, not from the implementation session's record.
+
+**Acceptance criteria**
+
+- AC1 — `score_hitopsr(subset=)` on a four-scale form returned exactly
+  `hsr_agoraphobia`, `hsr_antisocialBehavior`, `hsr_appetiteLoss`,
+  `hsr_romanticDisinterest`; `identical()` against `prefix` pasted to the
+  `hitopsr_scales`-row-ordered `camelCase` stems is TRUE, and the scales were
+  requested in a different order than they came back.
+- AC2 — subset output equalled the corresponding full-run columns across
+  2 datasets × 2 `missing` modes (4 comparisons, all `all.equal()` TRUE). The
+  `NA`-injected dataset is non-vacuous: 8 `NA`s per scale under `"complete"`
+  against 0 under `"available"`.
+- AC3 — Romantic Disinterest for fixture respondent 3 returned 1.8, the
+  hardcoded expected value; unreversed it would be 2.4. The `5 - x` arithmetic
+  is a test comment, not a runtime read of `hitopsr_items`.
+- AC4 — with `calc_se = TRUE` the subset returned 8 columns, 4 of them `_se`,
+  one per subset scale and no others; `all.equal()` against the full run's
+  corresponding columns TRUE.
+- AC5 — `reliability_hitopsr(subset=)` returned 4 rows in `hitopsr_scales` row
+  order with `nItems` 5, 8, 3, 5, and alpha `all.equal()` to the full run.
+  `nItems` is integer, byte-identical to the full path's; the table column
+  `hitopsr_scales$nItems` is double, so a strict `identical()` against the table
+  is FALSE on both paths alike — pre-existing, not introduced here.
+- AC6 — all three paths fired with the abort attributed to the exported wrapper,
+  read from `conditionCall()`: a non-`hitop_subset` ("must be a <hitop_subset>
+  object"), a hand-built foreign-instrument descriptor ("describes the wrong
+  instrument … Expected a "hitopsr" subset but got "hitopbr""), and the
+  re-pointed length check ("The `items` argument has the wrong length. Expected
+  21 items but got 405"). Checked on `score_hitopsr()` and
+  `reliability_hitopsr()` alike; each blamed itself.
+- AC7 — `devel/regression_probe_m37.R` re-run at review: 43/43 cells
+  `identical()` against a `git archive` export of merge-base `fb926b4`.
+- AC8 — `devtools::test()` 11739 pass / 0 fail / 1 skip (on-CRAN);
+  `devtools::check()` 0 errors, 0 warnings, 0 notes.
+
+**Consistency gate**
+
+- `cairn_validate` exit 0, all 16 checks pass including `coverage complete`;
+  2 standing advisories (M37's 8th criterion, disposed of at plan; the 20
+  pre-migration id tokens).
+- No `DESIGN.md` principle changed — `cairn_impact` not applicable.
+- Toolchain slot: `devtools::document()` left no diff; `pkgdown::check_pkgdown()`
+  "No problems found"; NEWS entry present; `devel/` already carries its
+  `.Rbuildignore` entry; full `check()` clean.
+
+**Independent review**
+
+Three fresh-context reviewers with distinct evidence bases. The blame-history
+lens (Sonnet) and the prior-review lens (Sonnet) each reported zero findings —
+the latter confirming the new `is.null()` guards do not repeat M24's bypassable
+`isTRUE()` guard, that the M32 placeholder idiom is reproduced correctly, and
+that a GitHub inline-comment probe returned empty, so archived `## Review`
+sections were the whole surface. The diff-bug lens (Opus) reported 14 candidate
+findings, scored by a fourth agent that generated none of them.
+
+Actioned (scored >= 80), 1 of 14:
+
+- F2 (82) — `@param data` and `@param items` on both wrappers still read "all"
+  and "405" unconditionally, contradicting the new `@param subset` a reader
+  meets later and telling a short-form user their data cannot be scored. Fixed:
+  both params now say "all 405, or, when `subset` is supplied, that short form's
+  items", on `score_hitopsr()` and `reliability_hitopsr()` alike.
+
+Logged below threshold (13), surfaced not dropped:
+
+- F11 (78) — the new `@examples` use `sim_hitopsr[s$items]`, correct only
+  because that dataset is exactly the 405 items with no ID columns; `ku_hitopsr`
+  has leading `participant`/`biosex`. The vignette uses the safe name-based
+  idiom. Carried to a candidate row.
+- F4 (75) — `n_items` is trusted from `subset$nItems` rather than recomputed
+  from `length(subset$items)`; a hand-mutated descriptor scores silently wrong.
+- F7 (70) — subset-path tests never vary `append`, `prefix`, or `srange`, and
+  the probe varies those only on the full path.
+- F10 (65) — the probe's `outcome()` drops the returned value when a warning
+  fires, so the `items_misordered` cell compares the warning only.
+- F1 (55) — `DESIGN.md`'s shared-signature line does not yet mention `subset`.
+- F5 (55) — the containment invariant is a comment, not an assertion;
+  unreachable through `hitop_subset()` today.
+- F13 (55) — the additive NEWS bullet sits under a "breaking changes" lead-in.
+- F12 (40) — `subset_engine_inputs()` carries generality parameters no test
+  varies.
+- F6 (35) — the subset path reads `Reverse` by logical indexing, the full path
+  by `== TRUE`; identical while `Reverse` stays logical.
+- F8 (30) — two equality tests index the oracle by what the implementation
+  returned; the scale set is separately pinned elsewhere.
+- F3 (8) and F9 (8) — refuted on inspection: the wrong-instrument assertion does
+  pass `call = call`, and `info=` does label failures under testthat 3e.
+- F14 (5) — stale; the criteria boxes and this section are the review gate's own
+  output.

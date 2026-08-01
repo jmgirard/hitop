@@ -16,10 +16,12 @@ score_hitopsr(
 )
 }
 \arguments{
-\item{data}{A data frame containing all HiTOP-SR items (numerically coded).}
+\item{data}{A data frame containing the HiTOP-SR items (numerically coded):
+all 405 of them, or, when \code{subset} is supplied, that short form's items.}
 
 \item{items}{A vector of column names (as strings) or numbers (as integers)
-corresponding to the 405 HiTOP-SR items in order. Items must be supplied in
+corresponding to the HiTOP-SR items held in \code{data} — all 405, or, when
+\code{subset} is supplied, that short form's items. Items must be supplied in
 instrument order; a misordered mapping silently scores the wrong items, so a
 warning is issued when the names share a common prefix and trailing number
 but those numbers are not ascending. Duplicated entries are an error.}

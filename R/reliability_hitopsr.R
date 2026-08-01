@@ -5,9 +5,11 @@
 #' estimated on the reverse-keyed item responses for each of the scales that
 #' [score_hitopsr()] outputs.
 #'
-#' @param data A data frame containing all HiTOP-SR items (numerically coded).
+#' @param data A data frame containing the HiTOP-SR items (numerically coded):
+#'   all 405 of them, or, when `subset` is supplied, that short form's items.
 #' @param items A vector of column names (as strings) or numbers (as integers)
-#'   corresponding to the 405 HiTOP-SR items in order. Items must be supplied in
+#'   corresponding to the HiTOP-SR items held in `data` — all 405, or, when
+#'   `subset` is supplied, that short form's items. Items must be supplied in
 #'   instrument order; duplicated entries are an error.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-SR items, used for reverse-coding. (default = `c(1, 4)`)
