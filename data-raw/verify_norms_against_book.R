@@ -1,10 +1,11 @@
-# Verify data-raw/norms_*.csv against the published source (M25, AC1; M33)
+# Verify the PID-5 norms against the published source (M25, AC1; M33; M35)
 #
 # Independent transcription of the PID-5 normative tables, extracted
 # deterministically from the book's own table markup and diffed cell by cell
-# against the committed CSVs. The extraction path never reads the CSVs; the
-# comparison happens only after both sides exist, so every reported
-# discrepancy is a fact about the CSVs rather than about a transcriber.
+# against the committed CSVs and against the shipped `pid_norms`. The
+# extraction path never reads either; the comparisons happen only after both
+# sides exist, so every reported discrepancy is a fact about the package's data
+# rather than about a transcriber.
 #
 # The seven M25 tables were transcribed by hand, so for those this is a
 # transcription check. The two facet tables M33 adds carry 3,550 cells each and
@@ -14,9 +15,26 @@
 # while the block reader below ignores banners when assembling rows -- it cuts
 # the numeric rows at their T-score restarts -- and recovers the facet names
 # from the banners only afterwards, then compares column by *name* rather than
-# by position. What neither can catch is a defect already present in the book's
-# own markup; the hand-read spot values in tests/testthat/test-norms.R are the
-# layer that reads the rendered page.
+# by position. The third comparison M35 adds reads the same tables into
+# `pid_norms`'s long format and diffs the shipped dataset itself, so
+# data-raw/norms_pid5.R's assembly of the CSVs is covered too.
+#
+# Which layer covers what:
+#
+#   * This script is exhaustive -- every printed cell, in both directions --
+#     but it is markup-based and maintainer-run: it needs the gitignored shelf
+#     epub below, so it never runs in CI, and it cannot see a defect already
+#     present in the book's own markup.
+#   * The hand-read spot values in tests/testthat/test-norms.R are the only
+#     layer that reads the rendered page, and so the only one that can catch
+#     such a markup defect. Being anchors, they are not exhaustive.
+#   * CI therefore sees those anchors and the structural invariants only. An
+#     exhaustive check of the shipped data against the book happens exactly
+#     when a maintainer runs this script.
+#
+# data-raw/mutate_norms_book_check.R is the evidence that the comparisons here
+# catch what they are meant to: it seeds each known corruption of `pid_norms`
+# in turn and requires this script to report it.
 #
 # Source (gitignored shelf, not distributed):
 #   cairn/references/sources/markon2024.epub

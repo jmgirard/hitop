@@ -239,11 +239,17 @@ test_that("percentiles are proportions", {
 #
 # The layer outside this suite is data-raw/verify_norms_against_book.R, which
 # diffs every printed cell against an independent extraction of the book's
-# markup, in either direction. It compares the data-raw CSVs, not `pid_norms`,
-# so the assembly in data-raw/norms_pid5.R sits between the two layers; the
-# anchors are what observe it here. Being markup-based, it also shares a blind
-# spot the anchors do not: a defect in the book's own markup, which only a
-# rendered-page read can see.
+# markup, in either direction -- the data-raw CSVs, and since M35 the shipped
+# `pid_norms` itself, so data-raw/norms_pid5.R's assembly of the one into the
+# other is covered there rather than resting on these anchors alone.
+#
+# The two layers divide as follows. That script is exhaustive but markup-based
+# and maintainer-run: it reads a gitignored shelf epub, so it never runs in CI,
+# and it cannot see a defect already present in the book's own markup. These
+# anchors are the only layer that reads the rendered page, and so the only one
+# that can, but they are anchors and not a sweep. What CI sees is therefore
+# these anchors and the structural invariants above; the exhaustive comparison
+# happens when a maintainer runs that script.
 
 # version, scale, T score, raw, percentile, page
 domain_spot <- local({

@@ -85,7 +85,7 @@ rendered page, which this markup-based check cannot, so the two layers stay.
 - [x] T3. Add a runnable mutation check over the four M34 cases (reuse
       `data-raw/mutate_norms_check.R`'s save/restore-by-hash pattern rather than
       re-inventing it) and confirm each is reported.
-- [ ] T4. Update the script header and the `test-norms.R` block comment with the
+- [x] T4. Update the script header and the `test-norms.R` block comment with the
       layer map; run `devtools::test()` and `devtools::check()`.
 
 ## Work log
@@ -98,6 +98,7 @@ rendered page, which this markup-based check cannot, so the two layers stay.
 - 2026-07-31: question gate — the book-wording crosswalk is written independently of `data-raw/norms_pid5.R` (facets by a case/`&` normalizing rule against `pid_scales$Facet`, domains by a five-entry banner map against `pid_domains`), so a mislabelled column is compared against the right one rather than against itself; and the mutation definitions move to a shared `data-raw/norms_mutations.R` sourced by both harnesses.
 - 2026-07-31: T3 — the 13 seeded corruptions move to `data-raw/norms_mutations.R` with stable ids and the shared save/restore-by-hash wrapper; the new `data-raw/mutate_norms_book_check.R` runs all of them against the book comparison and all 13 are CAUGHT, the four M34 cases included, with the restore hash unchanged. `data-raw/mutate_norms_check.R` re-run over the shared list: 0 NOT CAUGHT.
 - 2026-07-31: the book harness asserts every seeded corruption, not only AC4's four — an exhaustive cell-by-cell diff that missed any of them would be a finding, so it `stop()`s on an unreported one rather than merely printing it.
+- 2026-07-31: T4 — the layer map is stated in the script header and in `test-norms.R`'s block comment, and the comment's now-false claim that the script compares the CSVs rather than `pid_norms` is corrected. `devtools::test()` 11681 pass / 0 fail; `devtools::check()` 0 errors, 0 warnings, 0 notes; DESCRIPTION and NAMESPACE untouched.
 
 ## Decisions
 
