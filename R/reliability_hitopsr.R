@@ -16,6 +16,12 @@
 #' @param omega Optional logical; if `TRUE`, include a column of McDonald's omega
 #'   (total) per scale, estimated via a one-factor CFA (requires the \pkg{lavaan}
 #'   package). (default = `TRUE`)
+#' @param subset An optional `hitop_subset` object, as returned by
+#'   [hitop_subset()], describing a short form of the instrument. When supplied,
+#'   `data` and `items` hold only that subset's item columns — in ascending
+#'   instrument order, as the `generate_*_hitopsr()` forms lay them out — and one
+#'   row is returned per subset scale. When `NULL`, all 405 items are expected
+#'   and all 76 scales are estimated. (default = `NULL`)
 #'
 #' @details Alpha is computed by [calc_alpha()] (covariance-based, pairwise
 #'   deletion) and omega by [calc_omega()] (one-factor lavaan CFA, FIML). A scale
@@ -30,23 +36,30 @@
 #' # Per-scale alpha for the HiTOP-SR
 #' reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
 #'
+#' # Per-scale alpha for data collected with a two-scale short form
+#' s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+#' reliability_hitopsr(sim_hitopsr[s$items], items = seq_len(s$nItems),
+#'                     subset = s, omega = FALSE)
+#'
 #' @export
 reliability_hitopsr <- function(
   data,
   items,
   srange = c(1, 4),
   alpha = TRUE,
-  omega = TRUE
+  omega = TRUE,
+  subset = NULL
 ) {
-  reverse_items <-
-    hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE]
+  ## Same three instrument-resolved inputs score_hitopsr() uses, remapped to
+  ## subset-column positions when a `subset` is supplied.
+  inputs <- hitopsr_engine_inputs(subset)
 
   reliability_engine(
     data = data,
     items = items,
-    n_items = 405,
-    reverse_items = reverse_items,
-    items_scales = hitopsr_scales$itemNumbers,
+    n_items = inputs$n_items,
+    reverse_items = inputs$reverse_items,
+    items_scales = inputs$items_scales,
     srange = srange,
     alpha = alpha,
     omega = omega

@@ -189,3 +189,88 @@ test_that("reliability omega is NA-safe on a zero-variance scale (no abort)", {
   )
   expect_true(all(is.na(rel$omega)))
 })
+
+# --- subset reliability (M37) -----------------------------------------------
+
+test_that("reliability_hitopsr(subset=) returns one row per subset scale", {
+  s <- hitop_subset(
+    "hitopsr",
+    c("romanticDisinterest", "appetiteLoss", "agoraphobia", "antisocialBehavior")
+  )
+  part <- reliability_hitopsr(
+    sim_hitopsr[s$items], items = seq_len(s$nItems),
+    subset = s, omega = FALSE
+  )
+
+  # Row order follows hitopsr_scales, not the order the scales were named.
+  expect_equal(
+    part$scale,
+    c("Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest")
+  )
+  # nItems comes from the remapped positions; it must still match the table.
+  expect_equal(
+    part$nItems,
+    hitopsr_scales$nItems[match(part$scale, hitopsr_scales$Scale)]
+  )
+})
+
+test_that("reliability_hitopsr(subset=) gives the full run's alpha for its scales", {
+  # Alpha is computed within a scale from its own reverse-keyed items, so
+  # dropping the other 71 scales' columns cannot move it.
+  s <- hitop_subset("hitopsr", c("romanticDisinterest", "agoraphobia"))
+  full <- reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
+  part <- reliability_hitopsr(
+    sim_hitopsr[s$items], items = seq_len(s$nItems), subset = s, omega = FALSE
+  )
+  expect_equal(part, full[match(part$scale, full$scale), ], ignore_attr = "row.names")
+})
+
+test_that("the subset argument's three error paths blame the exported wrapper", {
+  s <- hitop_subset("hitopsr", "agoraphobia")
+  dat <- sim_hitopsr[s$items]
+
+  # Substituting a placeholder keeps each assertion independently reportable:
+  # rlang::call_name(NULL) errors rather than failing as an expectation.
+  blamed <- function(expr) {
+    cnd <- rlang::catch_cnd(expr, classes = "error")
+    list(
+      fn = rlang::call_name(if (is.null(cnd$call)) quote(no_call()) else cnd$call),
+      msg = conditionMessage(cnd)
+    )
+  }
+
+  # (1) not a hitop_subset at all
+  bad <- blamed(score_hitopsr(dat, items = seq_len(s$nItems), subset = list(items = 1)))
+  expect_equal(bad$fn, "score_hitopsr")
+  expect_match(bad$msg, "hitop_subset")
+
+  # (2) a hand-assembled descriptor naming another instrument; hitop_subset()
+  #     itself will not build one, so only hand-assembly reaches this branch.
+  foreign <- s
+  foreign$instrument <- "hitopbr"
+  bad2 <- blamed(score_hitopsr(dat, items = seq_len(s$nItems), subset = foreign))
+  expect_equal(bad2$fn, "score_hitopsr")
+  expect_match(bad2$msg, "wrong instrument")
+
+  # (3) the existing length check, now re-pointed at the subset's item count:
+  #     the full 405 columns are the wrong input for a 5-item short form.
+  bad3 <- blamed(score_hitopsr(sim_hitopsr, items = 1:405, subset = s))
+  expect_equal(bad3$fn, "score_hitopsr")
+  expect_match(bad3$msg, "items")
+  expect_match(bad3$msg, "Expected 5 items but got 405")
+
+  # All three reach reliability_hitopsr() through the same helper, and must
+  # blame it rather than score_hitopsr() or the internal engine.
+  expect_equal(
+    blamed(reliability_hitopsr(dat, items = seq_len(s$nItems), subset = list(x = 1)))$fn,
+    "reliability_hitopsr"
+  )
+  expect_equal(
+    blamed(reliability_hitopsr(dat, items = seq_len(s$nItems), subset = foreign))$fn,
+    "reliability_hitopsr"
+  )
+  expect_equal(
+    blamed(reliability_hitopsr(sim_hitopsr, items = 1:405, subset = s))$fn,
+    "reliability_hitopsr"
+  )
+})
