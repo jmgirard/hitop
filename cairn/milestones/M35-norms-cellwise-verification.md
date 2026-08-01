@@ -5,7 +5,7 @@
 - **Depends on:** M34
 - **Driving RR:** —
 - **Principles touched:** IP2
-- **Branch/PR:** `m35-norms-cellwise-verification`
+- **Branch/PR:** `m35-norms-cellwise-verification` — https://github.com/jmgirard/hitop/pull/38
 
 ## Goal
 
@@ -38,30 +38,30 @@ rendered page, which this markup-based check cannot, so the two layers stay.
 
 ## Acceptance criteria
 
-- [ ] AC1. `Rscript data-raw/verify_norms_against_book.R` compares every cell of
+- [x] AC1. `Rscript data-raw/verify_norms_against_book.R` compares every cell of
       the shipped `pid_norms` against the extracted markup, keyed by name rather
       than position, and covers all 70 `(version, scale)` columns — asserted by
       the script printing a per-column comparison count that a reader can check
       sums to the dataset's row count, with no column silently skipped.
-- [ ] AC2. The comparison reports rows present in `pid_norms` but absent from
+- [x] AC2. The comparison reports rows present in `pid_norms` but absent from
       the extraction, rows absent from `pid_norms` but present in the
       extraction, and cells present in both whose `raw` or `percentile` differ,
       as three distinct categories; each is NA-aware, so a value failing to
       parse on either side is reported rather than passing as equal (M33
       lesson).
-- [ ] AC3. The script exits non-zero via `stop()` when any of the three
+- [x] AC3. The script exits non-zero via `stop()` when any of the three
       categories is non-empty, and exits 0 on the unmodified dataset.
-- [ ] AC4. Mutation evidence: with each of the four M34 mutation cases applied
+- [x] AC4. Mutation evidence: with each of the four M34 mutation cases applied
       in turn to `pid_norms` — the SF withdrawal and FULL anhedonia
       percentile-column displacements and the two column swaps — the new
       comparison reports the mutation and `stop()`s. Recorded as a runnable
       check, not a one-off transcript.
-- [ ] AC5. The script header and the `# ---- spot values from the printed
+- [x] AC5. The script header and the `# ---- spot values from the printed
       tables` comment in `tests/testthat/test-norms.R` state which layer covers
       what: that this check is exhaustive but maintainer-run and markup-based,
       that the hand-read anchors are the only rendered-page layer, and that CI
       therefore sees the anchors and structural invariants only.
-- [ ] AC6. `devtools::test()` passes and `devtools::check()` reports 0 errors,
+- [x] AC6. `devtools::test()` passes and `devtools::check()` reports 0 errors,
       0 warnings, 0 notes; no package dependency is added (`xml2`/`readr` stay
       maintainer-local, per the M18 lesson).
 
@@ -103,3 +103,52 @@ rendered page, which this markup-based check cannot, so the two layers stay.
 ## Decisions
 
 ## Review
+
+Reviewed 2026-07-31 on `m35-norms-cellwise-verification` at 86b9cfc, PR #38.
+
+### Acceptance-criteria evidence
+
+- AC1. `Rscript data-raw/verify_norms_against_book.R` exits 0 and prints a
+  per-column count for 70 `(version, scale)` columns summing to 4,606, which is
+  `nrow(pid_norms)` exactly — no column skipped, none double-counted. Column
+  identity is read from each table's own banner row (domains, facets) or from a
+  spec entry whose table index is checked against that table's `<caption>`
+  (validity), never from a position.
+- AC2. All three categories fired on demand. Differing values: 12 of the 13
+  seeded mutations. Rows in the book only: the anxiousness ceiling-cut mutation,
+  reported as 11 book-only rows. Rows in `pid_norms` only: a review probe adding
+  a FULL anhedonia row at T = 101 — reported as
+  `pid_norms has a row the book does not print -- FULL anhedonia T = 101`.
+  NA-awareness: a review probe setting FULL detachment raw at T = 65 to `NA`
+  was reported as a differing value (`book raw 1.57 ... pid_norms raw NA`),
+  not passed over as equal. Both probes restored the dataset, hash unchanged.
+- AC3. Exit status 1 on each of the 15 corrupted datasets exercised (13 seeded
+  mutations plus the 2 review probes); exit status 0 on the unmodified dataset.
+- AC4. `Rscript data-raw/mutate_norms_book_check.R` is the runnable check: it
+  reports every seeded corruption CAUGHT — 13 of 13, including AC4's four named
+  M34 cases (SF withdrawal and FULL anhedonia percentile displacements, the two
+  column swaps) — and `stop()`s on any unreported one, so it is a check rather
+  than a transcript. Restore hash unchanged.
+- AC5. Stated in both places. `data-raw/verify_norms_against_book.R`'s header
+  carries a "Which layer covers what" block: exhaustive but markup-based and
+  maintainer-run, the anchors as the only rendered-page layer, CI seeing the
+  anchors and structural invariants only. `tests/testthat/test-norms.R`'s
+  `# ---- spot values from the printed tables` comment states the same division,
+  and its now-false claim that the script compares the CSVs rather than
+  `pid_norms` was corrected.
+- AC6. `devtools::test()` 11,681 pass / 0 fail / 1 skip; `devtools::check()`
+  0 errors, 0 warnings, 0 notes (4m35s). No dependency added — `DESCRIPTION`
+  and `NAMESPACE` are byte-identical to the default branch, and `xml2`/`readr`
+  stay maintainer-local.
+
+### Consistency gate
+
+- `cairn_validate` exit 0, all checks pass; the 20 `dangling id tokens`
+  advisories are the standing pre-migration references in DESIGN.md/SOURCES.md.
+- No IP/GP principle changed, so `cairn_impact` does not apply (the header's
+  `Principles touched: IP2` records what the milestone serves, not a change).
+- Toolchain (`r-package` profile): `devtools::document()` produces no diff;
+  no generated file hand-edited; README.Rmd/README.md in sync; `pkgdown::check_pkgdown()`
+  reports no problems; `devtools::check()` clean; no new top-level file, so no
+  `.Rbuildignore` entry is owed. No NEWS entry: the milestone changes maintainer
+  tooling and comments only, with no user-visible behavior change.
