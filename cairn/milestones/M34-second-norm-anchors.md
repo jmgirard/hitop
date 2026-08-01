@@ -98,7 +98,7 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
       `tests/testthat/test-norms.R` with their table's first page.
 - [x] T4. Tighten the coverage test to ≥2 for T-scored columns; add the AC3
       step-placement and AC4 pairwise-distinctness tests.
-- [ ] T5. Add the two column-swap mutations to `data-raw/mutate_norms_check.R`;
+- [x] T5. Add the two column-swap mutations to `data-raw/mutate_norms_check.R`;
       run it and confirm every mutation comes back CAUGHT.
 - [ ] T6. Rewrite the two block comments; run `devtools::test()` and
       `devtools::check()`.
@@ -116,6 +116,7 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 - 2026-07-31: T2 — all 63 hand-read pairs match the shipped cells exactly; 0 mismatches, so the re-read-then-escalate protocol was not exercised.
 - 2026-07-31: T3 — anchors added as a third `second_spot` table rbound into `tscored_spot`; a separate table rather than extending `facet_spot`, whose vectorized shape assumes one shared T.
 - 2026-07-31: T4 — three adequacy tests added (>=2 distinct-T anchors, step placement, pairwise distinctness), scoped to T-scored columns; the existing all-70 coverage test is unchanged. Inversion-checked: removing `second_spot` turns all three red, so none passes vacuously. Guard ordering matters in the distinctness test — `[[` on an absent name errors rather than returning NA, so the membership test precedes the lookup.
+- 2026-07-31: T5 — two swap mutations added via a `swap_columns()` helper; the full script now reports CAUGHT for all 13 mutations, the two M33 percentile displacements included. For all four M34-relevant cases the book-comparison test is among the failing tests, which is what AC5 requires over a bare CAUGHT. Restore verified by md5, unchanged.
 
 ## Decisions
 

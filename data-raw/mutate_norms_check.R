@@ -23,6 +23,25 @@ row_of <- function(x, version, scale, tscore = NULL, raw = NULL) {
   i
 }
 
+## Exchange two columns' values, matched on T score, leaving the scale labels
+## where they are. A swap leaves every structural invariant intact -- both
+## columns stay linear in T and both percentile columns stay monotone -- so only
+## an anchor that reads differently on the two columns can witness it.
+swap_columns <- function(x, version, a, b) {
+  ia <- which(x$version == version & x$scale == a)
+  ib <- which(x$version == version & x$scale == b)
+  ia <- ia[order(x$tscore[ia])]
+  ib <- ib[order(x$tscore[ib])]
+  stopifnot(length(ia) == length(ib), identical(x$tscore[ia], x$tscore[ib]))
+  raw <- x$raw
+  percentile <- x$percentile
+  x$raw[ia] <- raw[ib]
+  x$raw[ib] <- raw[ia]
+  x$percentile[ia] <- percentile[ib]
+  x$percentile[ib] <- percentile[ia]
+  x
+}
+
 mutations <- list(
   list(
     ac = "AC4(a)",
@@ -136,6 +155,19 @@ mutations <- list(
       stopifnot(length(i) == 12L)
       x[-utils::tail(i, -1), ]
     }
+  ),
+  ## M34's swap mutations. Both pairs read alike at T = 65 -- the one anchor
+  ## every facet column carried before M34 -- so neither could witness a swap of
+  ## the other. The second anchor is what separates them.
+  list(
+    ac = "M34 AC5",
+    desc = "SF impulsivity and SF intimacyAvoidance columns swapped",
+    f = function(x) swap_columns(x, "SF", "impulsivity", "intimacyAvoidance")
+  ),
+  list(
+    ac = "M34 AC5",
+    desc = "SF manipulativeness and SF suspiciousness columns swapped",
+    f = function(x) swap_columns(x, "SF", "manipulativeness", "suspiciousness")
   )
 )
 
