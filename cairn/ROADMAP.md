@@ -1,19 +1,18 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-07-31 (audit pass with the board idle — nothing in flight, no orphans, GitHub issue and PR inboxes both empty, tracking level with git; all checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md; no tracking edits owed)_
+_Last hygiene check: 2026-08-01 (M36 merged and archived; M31's row pruned under terminal-row retention, two lessons captured, none retired; all checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M36)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M36 | Two-line response-option legend on the PID paper forms | review | — | normal | milestones/M36-pid-legend-two-lines.md |
+| M36 | Two-line response-option legend on the PID paper forms | done | — | normal | milestones/archive/M36-pid-legend-two-lines.md |
 | M34 | A second spot-value anchor per normed PID-5 column | done | — | normal | milestones/archive/M34-second-norm-anchors.md |
 | M35 | Cell-by-cell verification of the shipped norms against the book | done | M34 | normal | milestones/archive/M35-norms-cellwise-verification.md |
 | M33 | PID-5 facet-level norms | done | — | normal | milestones/archive/M33-pid5-facet-norms.md |
 | M32 | Test coverage for M31's argument-validation additions | done | — | normal | milestones/archive/M32-m31-validation-test-coverage.md |
-| M31 | Argument-validation consistency and a harder norming oracle | done | — | normal | milestones/archive/M31-validator-and-oracle-residue.md |
 
 ## Candidates
 
