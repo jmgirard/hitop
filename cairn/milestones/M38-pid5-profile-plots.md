@@ -1,6 +1,6 @@
 # M38: Norm-referenced PID-5 profile plots
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -110,7 +110,7 @@ row, vignette section, NEWS entry, README checkbox.
       the `cli_warn()` report.
 - [x] T7. Tests: structural `ggplot_build()` assertions for AC2–AC5, one test
       per branch for AC6.
-- [ ] T8. Docs: roxygen + guarded examples, `_pkgdown.yml` row, vignette
+- [x] T8. Docs: roxygen + guarded examples, `_pkgdown.yml` row, vignette
       section, NEWS entry, README checkbox, `devtools::document()` +
       `devtools::build_readme()`.
 
@@ -137,6 +137,8 @@ row, vignette section, NEWS entry, README checkbox.
 - 2026-08-01: AC5 reads "exactly one `GeomHline` (or `GeomVline` after `coord_flip()`)" -- the build uses `GeomVline` with NO `coord_flip()`, since dropping the flip is what fixed the facet layout. The criterion's substance (exactly one reference line, no rectangle layer, one text layer) is met and the test asserts `sum(geoms %in% c("GeomHline", "GeomVline")) == 1`; only the parenthetical's stated reason is now historical.
 - 2026-08-01: added a non-numeric-column abort for parity with `norm_pid5()` -- a character column would coerce to `NA` and be reported by the NA-drop branch as "no value", hiding a type mistake behind a missing-data warning.
 - 2026-08-01: CHECKPOINT -- T8's content is written (pkgdown row, vignette section, NEWS, README, roxygen) and the plot file's own 109 assertions pass, but T8 stays unchecked until the full `devtools::test()` and `devtools::check()` are confirmed clean after the axis refactor.
+- 2026-08-01: T8 done. Final verification on the committed tree: `devtools::test()` failed=0 errors=0 passed=11854; `devtools::check()` 0 errors / 0 warnings / 0 notes; `devtools::document()` idempotent; `pkgdown::check_pkgdown()` clean; `pid5_scoring.Rmd` renders. Status in-progress -> review.
+- 2026-08-01: the first `check()` after the axis refactor ran against a stale `plot_pid5.Rd` (roxygen was edited after the preceding `document()`); the Rd was regenerated, committed, and `check()` re-run on the final tree rather than carrying the earlier result forward.
 
 ## Decisions
 
