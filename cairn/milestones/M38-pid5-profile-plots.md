@@ -50,10 +50,12 @@ row, vignette section, NEWS entry, README checkbox.
       input column. On BF the `GeomLine` layer's built data covers only the
       five domains, so the profile line stops before `total`.
 - [ ] AC3. With `level = "facet"` on FULL or SF, the `GeomPoint` layer built
-      data has exactly 25 rows distributed over 5 panels matching
-      `pid_domains$facetStems`; `level = "facet"` with `version = "BF"` aborts
-      via `cli::cli_abort()` in a message stating the brief form has no facet
-      scores.
+      data has exactly 25 rows distributed over 6 panels: one per domain
+      holding that domain's 3 defining facets from `pid_domains$facetStems`
+      (15 facets, in `pid_domains` order), and a final panel holding the 10
+      facets the APA key assigns to no domain, labelled as such.
+      `level = "facet"` with `version = "BF"` aborts via `cli::cli_abort()` in
+      a message stating the brief form has no facet scores.
 - [ ] AC4. With `metric = "percentile"`, the `GeomPoint` layer's y values equal
       the corresponding `_ptl` input columns multiplied by 100 (`norm_pid5()`
       returns `_ptl` as a proportion, verified 0-1 across `pid_norms`), the
@@ -90,22 +92,22 @@ row, vignette section, NEWS entry, README checkbox.
 
 ## Tasks
 
-- [ ] T1. `R/plot_pid5.R`: signature, `version`/`level`/`metric` via
+- [x] T1. `R/plot_pid5.R`: signature, `version`/`level`/`metric` via
       `match.arg()` after `toupper()` where the package does, argument checks
       through `R/util.R`'s `validate_*()` family, and the
       `rlang::is_installed("ggplot2")` guard.
-- [ ] T2. Internal helper mapping `version` + `level` to expected column names
+- [x] T2. Internal helper mapping `version` + `level` to expected column names
       by **pasting** `prefix` onto the camelCase stems from
       `pid_scales`/`pid_domains` and appending `_t`/`_ptl` — the direction
       `norm_pid5()` names its outputs (D-026 governs stripping, not pasting).
-- [ ] T3. Domain profile on the T axis: points, connecting line, value labels,
+- [x] T3. Domain profile on the T axis: points, connecting line, value labels,
       reference line, breaks and limits derived from `pid_norms`.
-- [ ] T4. Facet profile: 5 panels keyed on `pid_domains$facetStems` (a
+- [x] T4. Facet profile: 5 panels keyed on `pid_domains$facetStems` (a
       list-column — unlist into a per-facet domain factor).
-- [ ] T5. Percentile metric: `_ptl` columns, percentile axis, median reference.
-- [ ] T6. Input branches: multi-row abort, absent-column abort, `NA`-drop with
+- [x] T5. Percentile metric: `_ptl` columns, percentile axis, median reference.
+- [x] T6. Input branches: multi-row abort, absent-column abort, `NA`-drop with
       the `cli_warn()` report.
-- [ ] T7. Tests: structural `ggplot_build()` assertions for AC2–AC5, one test
+- [x] T7. Tests: structural `ggplot_build()` assertions for AC2–AC5, one test
       per branch for AC6.
 - [ ] T8. Docs: roxygen + guarded examples, `_pkgdown.yml` row, vignette
       section, NEWS entry, README checkbox, `devtools::document()` +
@@ -123,6 +125,9 @@ row, vignette section, NEWS entry, README checkbox.
 - 2026-08-01: plan gate chose structural `ggplot_build()` assertions over `vdiffr` snapshots because they need no new dependency and survive a cosmetic restyle; falsified by a visual regression that ships with every structural assertion still green.
 - 2026-08-01: plan gate chose aborting on multi-row input over a row-selector argument because the package validates loudly everywhere else; falsified by a user needing a group profile before the multi-respondent candidate is promoted.
 - 2026-08-01: plan chose a fixed axis span derived from the plotted scales' `pid_norms` rows over a data-driven span, autonomously, because a norm-referenced profile whose axis rescales per respondent is not comparable across respondents; falsified by a profile whose scores fall outside the tables' printed span.
+- 2026-08-01: T1-T7 done -- `R/plot_pid5.R` plus `tests/testthat/test-plot_pid5.R` (93 assertions); full suite FAIL 0 WARN 0 SKIP 1 PASS 11838.
+- 2026-08-01: implement gate amended AC3 -- `pid_domains$facetStems` is the APA key's domain-DEFINING map (3 per domain, 15 of 25), not a full 25->5 assignment, so "25 facets over 5 panels" was unsatisfiable; `pid_items$Domain` is broader but tags 6 facets under more than one domain, so it cannot key panels either. Jeff chose 6 panels: 5 domains plus the 10 facets the key assigns to no domain, labelled "Not domain-defining".
+- 2026-08-01: two test-mechanism corrections found by running them -- after `coord_flip()` the value axis is the pre-flip `y` scale (the built panel's `x.range`), and the built range carries ggplot2's default 5% expansion, so axis-bound assertions read `layer_scales(p)$y$get_limits()` rather than a panel range.
 
 ## Decisions
 
