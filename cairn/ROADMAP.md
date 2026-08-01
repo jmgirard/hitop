@@ -8,6 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M36 | Two-line response-option legend on the PID paper forms | planned | — | normal | milestones/M36-pid-legend-two-lines.md |
 | M34 | A second spot-value anchor per normed PID-5 column | done | — | normal | milestones/archive/M34-second-norm-anchors.md |
 | M35 | Cell-by-cell verification of the shipped norms against the book | done | M34 | normal | milestones/archive/M35-norms-cellwise-verification.md |
 | M33 | PID-5 facet-level norms | done | — | normal | milestones/archive/M33-pid5-facet-norms.md |
@@ -28,6 +29,6 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
 - Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, plotting helpers `devel/plotting.R`, HiTOP-SR/BR validity scales) — added 2026-07-16 — `legacy/ROADMAP.md`
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
-- Response-option legend wraps mid-phrase on the PID paper forms: `make_items_table()` builds one 126-character string that breaks wherever the column ends; split it two-per-line at a bullet separator (break style chosen by the maintainer 2026-07-30). PID-only — the HiTOP-SR/BR legend is 58 chars and fits on one line — but the fix is in shared generator code and rebuilds 6 PID DOCX with manifest rows per D-016; pure layout, no wording change (IP1 style-fix carve-out) — added 2026-07-30 — lineage: M26
+- A repeatable width-budget check that a legend line fits the printable column at the form's font size — M36 proves the PID legend's two lines visually, which confirms this build but guards no later edit; Word's line breaking is not observable from `document.xml`, so any such check is an estimate. Promote if a mid-phrase wrap ever reaches a committed form unnoticed — added 2026-07-31 — lineage: M36
 - Score HiTOP-SR subset-collected data: score data gathered from a subset instrument (columns = subset items, original HSR numbering) via the `hitop_subset` descriptor — added 2026-07-17 — depends on M24 (plan after M24 lands; second half of the modularization arc)
 - Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M24
