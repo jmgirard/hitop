@@ -1,11 +1,11 @@
 # M34: A second spot-value anchor per normed PID-5 column
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2
-- **Branch/PR:** —
+- **Branch/PR:** `m34-second-norm-anchors`
 
 ## Goal
 
@@ -85,7 +85,7 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 
 ## Tasks
 
-- [ ] T1. Compute per T-scored column the `tscore` values satisfying AC3 and
+- [x] T1. Compute per T-scored column the `tscore` values satisfying AC3 and
       AC4 jointly; pick one per column and record the selection and its method.
       A naive first-eligible-T selection was verified at plan time to yield 0
       colliding pairs, so a search is not expected to be needed.
@@ -109,6 +109,9 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 - 2026-07-31: criteria audit ([O], fresh context) returned 7 findings — AC1 test scope over all 70 columns vs 66, AC2 page convention contradicting the file's own, AC4 undefined for cross-version pairs, AC5 satisfiable by the meta-tests alone, AC6 line-pinned and missing two other homes of the stale claim, plus a verified infeasibility behind AC3's directionality; all applied, the directionality one routed to the gate. IP2 verdict on AC3/AC4: no conflict.
 - 2026-07-31: plan gate chose one anchor per column, closing the downward displacement only, over covering both directions because 41 of 66 columns would need a second new anchor for a failure direction never yet observed here; falsified by an upward displacement reaching the shipped dataset, or by any second displacement whose direction the seeded pair does not cover.
 - 2026-07-31: plan chose hand-read anchors over folding in the mechanical whole-dataset comparison because the anchors are the only layer reading the rendered page, where the markup-based checks share a blind spot; falsified by a defect that the markup extraction and the rendered page would report identically, which would make the hand read redundant. The mechanical comparison is planned as M35 rather than dropped.
+
+- 2026-07-31: T1 — `data-raw/select_norm_anchors.R` assigns each of the 63 columns a T from a frozen five-value preference order (44, 64, 63, 45, 46), covering all of them and reporting 0 indistinguishable pairs over 2,145. Shared T values were chosen over per-column ones so the read is five row scans across the page rather than 63 separate lookups (the M33 shape); each assigned T is still drawn from that column's own eligible set, so Scope's "chosen against that column" holds and no amendment is needed.
+- 2026-07-31: implement gate chose a fresh-context reader for the hand read over this session reading it, because this session has been reasoning about `pid_norms` all along; no `raw` or `percentile` cell value has been printed here, so the reader can be given page images and row labels with no exposure to the shipped numbers. On a mismatch: one independent re-read, then stop and escalate — never edit the norms, never adopt the shipped value.
 
 ## Decisions
 
