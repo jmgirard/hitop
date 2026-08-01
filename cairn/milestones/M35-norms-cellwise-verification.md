@@ -76,10 +76,10 @@ rendered page, which this markup-based check cannot, so the two layers stay.
 
 ## Tasks
 
-- [ ] T1. Map the extraction's per-table matrices onto `pid_norms`'s long
+- [x] T1. Map the extraction's per-table matrices onto `pid_norms`'s long
       format: the version/scale naming, the T-scored vs raw-keyed split, and
       the unattainable printed rows D-027 ships verbatim.
-- [ ] T2. Add the third comparison to `data-raw/verify_norms_against_book.R` —
+- [x] T2. Add the third comparison to `data-raw/verify_norms_against_book.R` —
       name-keyed, NA-aware, three categories, per-column counts, `stop()` on
       any discrepancy.
 - [ ] T3. Add a runnable mutation check over the four M34 cases (reuse
@@ -93,6 +93,9 @@ rendered page, which this markup-based check cannot, so the two layers stay.
 - 2026-07-31: created by /milestone-plan alongside M34; the exhaustive-check half of the same gap, split out at the plan gate at the user's choice rather than folded in.
 - 2026-07-31: plan gate chose extending the maintainer script over committing the CSVs as test fixtures because a fixture duplicates ~42 KB already in `pid_norms` and creates a second copy that can drift, at the cost of the check never running in CI; falsified by a norms defect reaching a release through a path where the maintainer never re-ran the script — which would show the CI-blind boundary is the binding one.
 - 2026-07-31: `Depends on: M34` is ordering, not necessity — both touch the same two block comments, and M34's rewrite of them lands first so M35 amends one settled text rather than racing it.
+
+- 2026-07-31: T1+T2 — the assembly comparison reads all nine tables into `pid_norms`'s long format and diffs 4,606 rows over all 70 columns, clean; the domain and facet column names come from the tables' own banner rows and the validity ones from a spec whose table index is now checked against each `<caption>`.
+- 2026-07-31: question gate — the book-wording crosswalk is written independently of `data-raw/norms_pid5.R` (facets by a case/`&` normalizing rule against `pid_scales$Facet`, domains by a five-entry banner map against `pid_domains`), so a mislabelled column is compared against the right one rather than against itself; and the mutation definitions move to a shared `data-raw/norms_mutations.R` sourced by both harnesses.
 
 ## Decisions
 
