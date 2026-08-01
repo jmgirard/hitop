@@ -47,15 +47,18 @@ row, vignette section, NEWS entry, README checkbox.
       by `pid_domains$camelCase`, and exactly 6 rows for BF, ordered by
       `pid_scales[["BF"]]$camelCase` (which ends on `total` and is *not*
       `pid_domains` order); each row's y value equals the corresponding `_t`
-      input column.
+      input column. On BF the `GeomLine` layer's built data covers only the
+      five domains, so the profile line stops before `total`.
 - [ ] AC3. With `level = "facet"` on FULL or SF, the `GeomPoint` layer built
       data has exactly 25 rows distributed over 5 panels matching
       `pid_domains$facetStems`; `level = "facet"` with `version = "BF"` aborts
       via `cli::cli_abort()` in a message stating the brief form has no facet
       scores.
 - [ ] AC4. With `metric = "percentile"`, the `GeomPoint` layer's y values equal
-      the corresponding `_ptl` input columns, and the reference line sits at
-      the 50th percentile in whatever units `norm_pid5()`'s `_ptl` carries.
+      the corresponding `_ptl` input columns multiplied by 100 (`norm_pid5()`
+      returns `_ptl` as a proportion, verified 0-1 across `pid_norms`), the
+      axis spans 0-100, and the reference line sits at 50. The help page states
+      the rescaling.
 - [ ] AC5. The plot carries no interpretive furniture: its built layers include
       no `GeomRect`/`GeomTile`, exactly one `GeomHline` (or `GeomVline` after
       `coord_flip()`), and exactly one text/label layer whose `label` values are
@@ -113,6 +116,8 @@ row, vignette section, NEWS entry, README checkbox.
 - 2026-08-01: created by /milestone-plan.
 - 2026-08-01: branch `m38-pid5-profile-plots` cut from main; status planned -> in-progress.
 - 2026-08-01: probed installed ggplot2 4.0.3 -- `ggplot_build()` still exposes per-layer `$data` and `$layout$layout`, so D-030's structural-assertion mechanism holds on the installed version.
+- 2026-08-01: implement gate amended AC4 -- `norm_pid5()` returns `_ptl` as a proportion (0-1, verified across `pid_norms`), which the plan had left as "whatever units it carries"; the percentile axis rescales to 0-100 for readability (GP3) and the help page states it.
+- 2026-08-01: implement gate amended AC2 -- the brief form's `total` is an overall elevation, not a sixth domain, so the profile line stops before it while the point is still plotted.
 - 2026-08-01: plan-gate criteria audit ([O], fresh context) returned 17 findings; 13 fixed pre-gate (unworkable `check_installed()` mock, undefined "N plotted positions" over multi-layer build data, missing BF criterion and its differing scale order, wrong abort rationale, self-falsifying AC4 prose, unmechanizable text-layer test, unreachable uncovered-scale branch, D-026 cited for the wrong direction, unguarded `@examples`, AC7 restating the review gate, spurious AC1→T1 coverage, undefined axis extent, undefined missing-column behavior), 4 routed to the gate.
 - 2026-08-01: plan gate chose no severity bands over porting the prototype's green/red bands because no source in `references/` or `SOURCES.md` supplies boundaries (IP2) and shading by severity characterizes a score (IP4); falsified by a published, citable set of PID-5 profile elevation thresholds.
 - 2026-08-01: plan gate chose structural `ggplot_build()` assertions over `vdiffr` snapshots because they need no new dependency and survive a cosmetic restyle; falsified by a visual regression that ships with every structural assertion still green.
