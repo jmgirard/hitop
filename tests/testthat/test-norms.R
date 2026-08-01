@@ -307,8 +307,97 @@ facet_spot <- local({
   )
 })
 
+# The second anchor for each of the 63 columns that entered M34 carrying only
+# one. Where the first anchors sit at a T chosen for the table (T = 65 for every
+# facet), these sit at a T chosen for the *column*: one where that column's
+# percentile differs from the row below it, so a column displaced down one row
+# reads a different value here. data-raw/select_norm_anchors.R makes the choice
+# and checks it; this table freezes the result, and the tests below re-derive
+# both properties rather than trusting either.
+#
+# Five T scores cover all 63 columns, which is why they were preferred over a
+# distinct T per column: each group is one scan across the printed row, the way
+# M33 read all 50 of its anchors at T = 65. Read by eye off the rendered pages
+# by a reader with no access to `pid_norms`, the data-raw CSVs, or this file,
+# working from the column headings alone; every value matched the shipped cell.
+second_spot <- local({
+  spot <- rbind.data.frame(
+    # T = 44
+    list("FULL", "antagonism", 44L, 0.34, 0.32, 120),
+    list("FULL", "disinhibition", 44L, 0.29, 0.32, 120),
+    list("FULL", "psychoticism", 44L, 0.20, 0.38, 120),
+    list("FULL", "anhedonia", 44L, 0.47, 0.30, 124),
+    list("FULL", "anxiousness", 44L, 0.50, 0.36, 124),
+    list("FULL", "attentionSeeking", 44L, 0.31, 0.38, 124),
+    list("FULL", "callousness", 44L, 0.09, 0.34, 124),
+    list("FULL", "depressivity", 44L, 0.11, 0.36, 124),
+    list("FULL", "distractibility", 44L, 0.35, 0.38, 124),
+    list("FULL", "eccentricity", 44L, 0.22, 0.37, 124),
+    list("FULL", "emotionalLability", 44L, 0.38, 0.34, 124),
+    list("FULL", "grandiosity", 44L, 0.38, 0.35, 124),
+    list("FULL", "hostility", 44L, 0.44, 0.33, 124),
+    list("FULL", "perceptualDysregulation", 44L, 0.09, 0.42, 124),
+    list("FULL", "perseveration", 44L, 0.35, 0.38, 124),
+    list("FULL", "rigidPerfectionism", 44L, 0.56, 0.34, 124),
+    list("FULL", "riskTaking", 44L, 0.70, 0.28, 124),
+    list("FULL", "separationInsecurity", 44L, 0.32, 0.39, 124),
+    list("FULL", "unusualBeliefsExperiences", 44L, 0.16, 0.40, 124),
+    list("FULL", "withdrawal", 44L, 0.51, 0.36, 124),
+    list("SF", "antagonism", 44L, 0.21, 0.35, 147),
+    list("SF", "detachment", 44L, 0.29, 0.36, 147),
+    list("SF", "disinhibition", 44L, 0.26, 0.36, 147),
+    list("SF", "negativeAffectivity", 44L, 0.37, 0.37, 147),
+    list("SF", "psychoticism", 44L, 0.10, 0.43, 147),
+    list("SF", "attentionSeeking", 44L, 0.31, 0.40, 151),
+    list("SF", "callousness", 44L, 0.01, 0.58, 151),
+    list("SF", "deceitfulness", 44L, 0.03, 0.57, 151),
+    list("SF", "distractibility", 44L, 0.29, 0.43, 151),
+    list("SF", "hostility", 44L, 0.26, 0.42, 151),
+    list("SF", "impulsivity", 44L, 0.27, 0.44, 151),
+    list("SF", "irresponsibility", 44L, 0.02, 0.58, 151),
+    list("SF", "manipulativeness", 44L, 0.26, 0.43, 151),
+    list("SF", "perseveration", 44L, 0.28, 0.41, 151),
+    list("SF", "rigidPerfectionism", 44L, 0.35, 0.39, 151),
+    list("SF", "separationInsecurity", 44L, 0.31, 0.43, 151),
+    list("SF", "submissiveness", 44L, 0.70, 0.25, 151),
+    list("SF", "unusualBeliefsExperiences", 44L, 0.04, 0.57, 151),
+    list("SF", "withdrawal", 44L, 0.32, 0.42, 151),
+    list("BF", "detachment", 44L, 0.30, 0.36, 174),
+    list("BF", "disinhibition", 44L, 0.22, 0.41, 174),
+    # T = 45
+    list("FULL", "restrictedAffectivity", 45L, 0.60, 0.37, 124),
+    list("SF", "emotionalLability", 45L, 0.26, 0.51, 151),
+    list("SF", "suspiciousness", 45L, 0.31, 0.45, 151),
+    # T = 46
+    list("SF", "perceptualDysregulation", 46L, 0.02, 0.77, 151),
+    # T = 63
+    list("FULL", "irresponsibility", 63L, 0.88, 0.90, 124),
+    list("SF", "depressivity", 63L, 1.04, 0.92, 151),
+    list("SF", "grandiosity", 63L, 1.28, 0.92, 151),
+    list("SF", "restrictedAffectivity", 63L, 1.80, 0.90, 151),
+    list("BF", "antagonism", 63L, 1.03, 0.92, 174),
+    # T = 64
+    list("FULL", "deceitfulness", 64L, 1.13, 0.92, 124),
+    list("FULL", "impulsivity", 64L, 1.51, 0.90, 124),
+    list("FULL", "intimacyAvoidance", 64L, 1.42, 0.90, 124),
+    list("FULL", "manipulativeness", 64L, 1.60, 0.91, 124),
+    list("FULL", "submissiveness", 64L, 2.06, 0.94, 124),
+    list("FULL", "suspiciousness", 64L, 1.64, 0.89, 124),
+    list("SF", "anhedonia", 64L, 1.52, 0.92, 151),
+    list("SF", "anxiousness", 64L, 2.02, 0.93, 151),
+    list("SF", "eccentricity", 64L, 1.73, 0.90, 151),
+    list("SF", "intimacyAvoidance", 64L, 1.56, 0.91, 151),
+    list("SF", "riskTaking", 64L, 1.26, 0.93, 151),
+    list("BF", "negativeAffectivity", 64L, 1.65, 0.90, 174),
+    list("BF", "psychoticism", 64L, 1.23, 0.90, 174),
+    stringsAsFactors = FALSE
+  )
+  names(spot) <- c("version", "scale", "tscore", "raw", "percentile", "page")
+  spot
+})
+
 # Every anchor whose table prints a T score, domains and facets alike.
-tscored_spot <- rbind(domain_spot, facet_spot)
+tscored_spot <- rbind(domain_spot, facet_spot, second_spot)
 
 # version, scale, raw score, percentile, page
 validity_spot <- local({

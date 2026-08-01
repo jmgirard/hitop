@@ -89,12 +89,12 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
       AC4 jointly; pick one per column and record the selection and its method.
       A naive first-eligible-T selection was verified at plan time to yield 0
       colliding pairs, so a search is not expected to be needed.
-- [ ] T2. Hand-read `raw` and `percentile` at each selected T off the *rendered*
+- [x] T2. Hand-read `raw` and `percentile` at each selected T off the *rendered*
       appendix pages for the 63 columns — not the epub markup and not the
       `data-raw/` CSVs. Serve the extracted epub directory via a
       `.claude/launch.json` static-server entry (M33 lesson: the browser pane
       refuses `file://`), and record the attestation in the work log.
-- [ ] T3. Add the anchors to `domain_spot`/`facet_spot` in
+- [x] T3. Add the anchors to `domain_spot`/`facet_spot` in
       `tests/testthat/test-norms.R` with their table's first page.
 - [ ] T4. Tighten the coverage test to ≥2 for T-scored columns; add the AC3
       step-placement and AC4 pairwise-distinctness tests.
@@ -112,6 +112,9 @@ disagreeing with the shipped cell is a finding to escalate, not a cell to edit.
 
 - 2026-07-31: T1 — `data-raw/select_norm_anchors.R` assigns each of the 63 columns a T from a frozen five-value preference order (44, 64, 63, 45, 46), covering all of them and reporting 0 indistinguishable pairs over 2,145. Shared T values were chosen over per-column ones so the read is five row scans across the page rather than 63 separate lookups (the M33 shape); each assigned T is still drawn from that column's own eligible set, so Scope's "chosen against that column" holds and no amendment is needed.
 - 2026-07-31: implement gate chose a fresh-context reader for the hand read over this session reading it, because this session has been reasoning about `pid_norms` all along; no `raw` or `percentile` cell value has been printed here, so the reader can be given page images and row labels with no exposure to the shipped numbers. On a mismatch: one independent re-read, then stop and escalate — never edit the norms, never adopt the shipped value.
+- 2026-07-31: T2 — hand read delegated to a fresh-context [O] reader given only the served rendered pages, the column headings and the row list; it was barred from `pid_norms`, the data-raw CSVs, test-norms.R and R itself, and from extracting numbers via the DOM, `get_page_text` or the file on disk, so the read is visual and independent of the existing markup extraction. It reported 0 unreadable cells and controlled column alignment two ways (re-photographing each block banner, and overlapping the two horizontal pans by a full column). Attestation: all 63 values were read off rendered screenshots.
+- 2026-07-31: T2 — all 63 hand-read pairs match the shipped cells exactly; 0 mismatches, so the re-read-then-escalate protocol was not exercised.
+- 2026-07-31: T3 — anchors added as a third `second_spot` table rbound into `tscored_spot`; a separate table rather than extending `facet_spot`, whose vectorized shape assumes one shared T.
 
 ## Decisions
 
