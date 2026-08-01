@@ -102,8 +102,9 @@ row, vignette section, NEWS entry, README checkbox.
       `norm_pid5()` names its outputs (D-026 governs stripping, not pasting).
 - [x] T3. Domain profile on the T axis: points, connecting line, value labels,
       reference line, breaks and limits derived from `pid_norms`.
-- [x] T4. Facet profile: 5 panels keyed on `pid_domains$facetStems` (a
-      list-column — unlist into a per-facet domain factor).
+- [x] T4. Facet profile: 6 panels keyed on `pid_domains$facetStems` (a
+      list-column — unlist into a per-facet domain factor), the sixth holding
+      the 10 facets the key assigns to no domain.
 - [x] T5. Percentile metric: `_ptl` columns, percentile axis, median reference.
 - [x] T6. Input branches: multi-row abort, absent-column abort, `NA`-drop with
       the `cli_warn()` report.
@@ -128,6 +129,14 @@ row, vignette section, NEWS entry, README checkbox.
 - 2026-08-01: T1-T7 done -- `R/plot_pid5.R` plus `tests/testthat/test-plot_pid5.R` (93 assertions); full suite FAIL 0 WARN 0 SKIP 1 PASS 11838.
 - 2026-08-01: implement gate amended AC3 -- `pid_domains$facetStems` is the APA key's domain-DEFINING map (3 per domain, 15 of 25), not a full 25->5 assignment, so "25 facets over 5 panels" was unsatisfiable; `pid_items$Domain` is broader but tags 6 facets under more than one domain, so it cannot key panels either. Jeff chose 6 panels: 5 domains plus the 10 facets the key assigns to no domain, labelled "Not domain-defining".
 - 2026-08-01: two test-mechanism corrections found by running them -- after `coord_flip()` the value axis is the pre-flip `y` scale (the built panel's `x.range`), and the built range carries ggplot2's default 5% expansion, so axis-bound assertions read `layer_scales(p)$y$get_limits()` rather than a panel range.
+- 2026-08-01: T8 docs -- `_pkgdown.yml` gains a Plots section, `pid5_scoring.Rmd` gains a Profile Plots section (renders), NEWS entry added, README's three stale Phase-2 boxes ticked (norms and norming functions had shipped at M25/M27/M33 and were still marked todo) and a Phase-3 HiTOP visualization row added; `build_readme()` re-knitted; `check_pkgdown()` clean.
+- 2026-08-01: mutation-checked the four load-bearing guards -- joining BF's total to the profile line, dropping the percentile rescale, adding a red band above T=70, and folding the unassigned facets into a domain panel each turn the intended assertion red (LESSONS M36: a guard not re-run against its named mutation asserts nothing).
+- 2026-08-01: a visual check caught what the structural tests cannot (the cost D-030 accepted): `coord_flip()` applies a facet's free scale BEFORE the flip, so every panel of the facet profile drew all 25 scale names on top of one another. Rebuilt with scores on x and scale names on y directly -- no `coord_flip()` -- and `facet_grid(space = "free_y")` so the 10-facet panel is not crushed into the height a 3-facet panel gets.
+- 2026-08-01: second defect from the same pass -- a discrete scale trained across layers places a value missing from an earlier layer LAST, so the brief form's `total` (absent from the profile-line layer by design) drew at the top instead of the bottom; `scale_y_discrete(limits = ...)` pins the positions. A test now asserts the drawn order from built coordinates rather than from factor level order, which run opposite ways.
+- 2026-08-01: axis labels switched from column stems to the tables' printed names (`pid_scales$Facet`, `pid_domains$Domain`); tests repointed to a `stem` column so they still assert canonical scale names.
+- 2026-08-01: AC5 reads "exactly one `GeomHline` (or `GeomVline` after `coord_flip()`)" -- the build uses `GeomVline` with NO `coord_flip()`, since dropping the flip is what fixed the facet layout. The criterion's substance (exactly one reference line, no rectangle layer, one text layer) is met and the test asserts `sum(geoms %in% c("GeomHline", "GeomVline")) == 1`; only the parenthetical's stated reason is now historical.
+- 2026-08-01: added a non-numeric-column abort for parity with `norm_pid5()` -- a character column would coerce to `NA` and be reported by the NA-drop branch as "no value", hiding a type mistake behind a missing-data warning.
+- 2026-08-01: CHECKPOINT -- T8's content is written (pkgdown row, vignette section, NEWS, README, roxygen) and the plot file's own 109 assertions pass, but T8 stays unchecked until the full `devtools::test()` and `devtools::check()` are confirmed clean after the axis refactor.
 
 ## Decisions
 

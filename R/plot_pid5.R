@@ -12,9 +12,11 @@
 #' @param version Which PID-5 version the scores came from: `"FULL"` (220
 #'   items), `"SF"` (100 items), or `"BF"` (25 items). Matched case-insensitively.
 #' @param level Which scales to plot. `"domain"` plots the five personality
-#'   domains, plus the brief form's total. `"facet"` plots the 25 facets grouped
-#'   into a panel per domain, and is available for `"FULL"` and `"SF"` only --
-#'   the brief form has no facet scores.
+#'   domains, plus the brief form's total. `"facet"` plots all 25 facets in
+#'   panels, and is available for `"FULL"` and `"SF"` only -- the brief form has
+#'   no facet scores. The APA key ties three facets to each domain; those get a
+#'   panel per domain, and the remaining ten, which define no domain, share a
+#'   final panel rather than being dropped.
 #' @param metric Which normed metric to plot: `"t"` for T scores, or
 #'   `"percentile"` for percentile ranks. [norm_pid5()] returns percentiles as a
 #'   proportion; this function multiplies them by 100 so the axis reads on the
@@ -35,6 +37,8 @@
 #' The score axis spans the range the normative tables actually print for the
 #' plotted scales, so the axis does not rescale from respondent to respondent
 #' and two profiles on the same version and level are directly comparable.
+#' Scales are listed top to bottom in the order their scoring table gives them,
+#' under their printed names rather than their column stems.
 #'
 #' On the brief form the profile line stops before `total`: the total is an
 #' overall elevation across the five domains rather than a sixth domain, so
@@ -137,6 +141,24 @@ plot_pid5 <- function(
     ))
   }
 
+  ## Only a numeric column can be plotted against a norm table. as.numeric()
+  ## would turn a factor into its integer codes and a character column into
+  ## NA -- the latter then reported as a dropped scale, which would hide a type
+  ## mistake behind a warning about missing data. norm_pid5() refuses the same
+  ## input for the same reason.
+  bad_type <- !vapply(
+    cols,
+    function(nm) is.numeric(data[[nm]]) || is.logical(data[[nm]]),
+    logical(1)
+  )
+  if (any(bad_type)) {
+    cli::cli_abort(c(
+      "{cli::qty(sum(bad_type))}The normed column{?s} this profile plots must be numeric.",
+      "x" = "Not numeric in {.arg data}: {.val {cols[bad_type]}}.",
+      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is plotted for you."
+    ))
+  }
+
   values <- vapply(cols, function(nm) as.numeric(data[[nm]][[1]]), numeric(1))
   ## Percentiles arrive as a proportion; the axis reads 0-100.
   if (identical(metric, "percentile")) {
@@ -189,6 +211,24 @@ plot_scale_stems <- function(version, level) {
 }
 
 
+# The printed name for each scale stem, from the same tables the stems came
+# from. The axis reads "Negative affectivity", not "negativeAffectivity" --
+# the plot is a presentation artifact and camelCase is a column-naming
+# convention, not a label.
+plot_scale_labels <- function(stems, version, level) {
+  table <- if (identical(level, "facet")) {
+    stats::setNames(pid_scales[[version]]$Facet, pid_scales[[version]]$camelCase)
+  } else if (identical(version, "BF")) {
+    stats::setNames(pid_scales[["BF"]]$Domain, pid_scales[["BF"]]$camelCase)
+  } else {
+    stats::setNames(pid_domains$Domain, pid_domains$camelCase)
+  }
+  ## A stem the table does not name keeps its stem rather than becoming NA.
+  out <- unname(table[stems])
+  ifelse(is.na(out), stems, out)
+}
+
+
 # The panel each facet belongs to, as a factor whose first five levels run in
 # `pid_domains` order so the facet plot's panels match the domain plot's points.
 #
@@ -236,20 +276,32 @@ plot_pid5_axis <- function(stems, version, metric) {
 }
 
 
-# Assemble the profile. Layer order is load-bearing and asserted in the tests:
-# reference line, profile line, points, labels.
+# Assemble the profile.
+#
+# The scale names go on y and the scores on x directly, rather than being built
+# vertically and flipped: coord_flip() applies a facet's free scale BEFORE the
+# flip, so every panel of a facetted profile drew all 25 scale names on top of
+# one another. Mapping the axes as they are drawn keeps `scales = "free_y"`
+# meaning what it says.
 plot_pid5_build <- function(stems, values, version, level, metric) {
   axis <- plot_pid5_axis(stems, version, metric)
 
+  ## `stem` is the canonical scale name and carries the logic (and the tests);
+  ## `scale` is the printed label. Level order is set so the table's first
+  ## scale sits at the TOP of the axis, which is how a profile is read. A
+  ## discrete y scale draws its first level at the BOTTOM, so the levels are
+  ## reversed; the test asserts the drawn order rather than the level order.
+  labels <- plot_scale_labels(stems, version, level)
   df <- data.frame(
-    scale = factor(stems, levels = stems),
+    stem = stems,
+    scale = factor(labels, levels = rev(labels)),
     value = values,
     stringsAsFactors = FALSE
   )
 
   ## The profile line joins points within a panel; on an unfacetted plot every
-  ## point is one series. x is discrete, so the group must be given explicitly
-  ## or ggplot2 would draw one segment per x position (i.e. nothing).
+  ## point is one series. y is discrete, so the group must be given explicitly
+  ## or ggplot2 would draw one segment per y position (i.e. nothing).
   if (identical(level, "facet")) {
     df$panel <- plot_facet_domains(stems)
     df$panel_group <- as.integer(df$panel)
@@ -263,28 +315,29 @@ plot_pid5_build <- function(stems, values, version, level, metric) {
   ## group would still contribute a row to the layer's built data, and the
   ## tests assert the line covers the five domains exactly.
   line_df <- if (identical(version, "BF") && identical(level, "domain")) {
-    df[df$scale != "total", , drop = FALSE]
+    df[df$stem != "total", , drop = FALSE]
   } else {
     df
   }
 
-  y_label <- if (identical(metric, "t")) "T score" else "Percentile"
+  x_label <- if (identical(metric, "t")) "T score" else "Percentile"
 
   p <- ggplot2::ggplot(
     df,
-    ggplot2::aes(x = .data$scale, y = .data$value)
+    ggplot2::aes(x = .data$value, y = .data$scale)
   ) +
     ## The midpoint of the normative sample. It carries no text label: a
     ## labelled reference line is a second text layer, and the tests assert
     ## exactly one.
-    ggplot2::geom_hline(
-      yintercept = axis$midpoint,
+    ggplot2::geom_vline(
+      xintercept = axis$midpoint,
       linetype = "dashed",
       colour = "grey50"
     ) +
     ggplot2::geom_line(
       data = line_df,
       ggplot2::aes(group = .data$panel_group),
+      orientation = "y",
       linewidth = 0.7
     ) +
     ggplot2::geom_point(size = 2.5) +
@@ -293,24 +346,42 @@ plot_pid5_build <- function(stems, values, version, level, metric) {
       size = 3,
       label.padding = ggplot2::unit(0.15, "lines")
     ) +
-    ggplot2::scale_y_continuous(
+    ggplot2::scale_x_continuous(
       breaks = axis$breaks,
       limits = axis$limits
     ) +
+    ## The discrete positions are pinned rather than left to layer training.
+    ## The profile-line layer deliberately omits the brief form's `total`, and
+    ## a scale trained across layers puts a value missing from the first layer
+    ## last -- which drew `total` at the top instead of the bottom.
+    ggplot2::scale_y_discrete(limits = rev(labels)) +
     ggplot2::labs(
-      x = NULL,
-      y = y_label,
+      x = x_label,
+      y = NULL,
       title = paste0("PID-5 ", version, " ", level, " profile")
     ) +
-    ggplot2::coord_flip() +
     ggplot2::theme_bw(base_size = 12)
 
   if (identical(level, "facet")) {
-    ## `free_x` frees the *scale-name* axis, which is x before coord_flip(),
-    ## so each panel lists only its own three facets. The value axis stays
-    ## fixed across panels -- freeing it would defeat the point of a common
-    ## norm-referenced span.
-    p <- p + ggplot2::facet_wrap(~panel, ncol = 1, scales = "free_x")
+    ## `free_y` frees the scale-name axis so each panel lists only its own
+    ## facets, and `space = "free_y"` sizes each panel to how many it lists --
+    ## without it the sixth panel's ten facets are crushed into the height
+    ## three get. The value axis stays fixed across panels; freeing it would
+    ## defeat the point of a common norm-referenced span.
+    p <- p +
+      ggplot2::facet_grid(
+        rows = ggplot2::vars(.data$panel),
+        scales = "free_y",
+        space = "free_y",
+        switch = "y",
+        labeller = ggplot2::label_wrap_gen(width = 14)
+      ) +
+      ## Horizontal strip text: rotated, a long domain name is clipped to the
+      ## height of a panel listing only three facets.
+      ggplot2::theme(
+        strip.placement = "outside",
+        strip.text.y.left = ggplot2::element_text(angle = 0)
+      )
   }
 
   p

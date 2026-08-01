@@ -44,10 +44,10 @@ normed_one <- function(version, level = "domain", row = 1) {
 # The bounds set on the continuous value axis. Read from the scale rather than
 # from the built panel range, which ggplot2 pads by a default 5% expansion --
 # the claim under test is which limits the function *asked for*, not how far
-# the renderer padded them. The value scale is `y` as declared; coord_flip()
-# swaps it only at draw time.
+# the renderer padded them. Scores are on x; the scale names are the discrete
+# y axis.
 value_limits <- function(p) {
-  ggplot2::layer_scales(p)$y$get_limits()
+  ggplot2::layer_scales(p)$x$get_limits()
 }
 
 # The built data for one geom, by class name -- indexing layers positionally
@@ -73,9 +73,10 @@ test_that("domain profiles plot the five domains in pid_domains order", {
     pts <- layer_data_for(p, "GeomPoint")
 
     expect_equal(nrow(pts), 5)
-    # Order is the table's, not the plot's own: coord_flip() reverses the
-    # drawn order, so the factor levels carry the claim.
-    expect_equal(levels(p$data$scale), pid_domains$camelCase)
+    # The claim is the table's order, asserted on the canonical stems in the
+    # order the plot's data carries them; the drawn top-to-bottom order has
+    # its own test below.
+    expect_equal(p$data$stem, pid_domains$camelCase)
 
     expected <- vapply(
       paste0("pid_", pid_domains$camelCase, "_t"),
@@ -83,7 +84,7 @@ test_that("domain profiles plot the five domains in pid_domains order", {
       numeric(1)
     )
     expect_equal(p$data$value, unname(expected))
-    expect_setequal(pts$y, unname(expected))
+    expect_setequal(pts$x, unname(expected))
   }
 })
 
@@ -93,9 +94,9 @@ test_that("the brief form plots six scales and stops the line before total", {
 
   expect_equal(nrow(layer_data_for(p, "GeomPoint")), 6)
   # BF order ends on `total` and is deliberately NOT pid_domains order.
-  expect_equal(levels(p$data$scale), pid_scales[["BF"]]$camelCase)
-  expect_equal(tail(levels(p$data$scale), 1), "total")
-  expect_false(identical(levels(p$data$scale), pid_domains$camelCase))
+  expect_equal(p$data$stem, pid_scales[["BF"]]$camelCase)
+  expect_equal(tail(p$data$stem, 1), "total")
+  expect_false(identical(p$data$stem, pid_domains$camelCase))
 
   # The total is an overall elevation, not a sixth domain: the profile line
   # covers the five domains only.
@@ -133,7 +134,7 @@ test_that("each panel holds the facets the APA key assigns to it", {
 
   for (i in seq_len(nrow(pid_domains))) {
     domain <- pid_domains$Domain[[i]]
-    in_panel <- as.character(p$data$scale[p$data$panel == domain])
+    in_panel <- as.character(p$data$stem[p$data$panel == domain])
     expect_setequal(in_panel, pid_domains$facetStems[[i]])
     expect_length(in_panel, 3)
   }
@@ -144,7 +145,7 @@ test_that("each panel holds the facets the APA key assigns to it", {
   leftover <- setdiff(pid_scales[["FULL"]]$camelCase, defining)
   expect_length(leftover, 10)
   expect_setequal(
-    as.character(p$data$scale[p$data$panel == "Not domain-defining"]),
+    as.character(p$data$stem[p$data$panel == "Not domain-defining"]),
     leftover
   )
 })
@@ -180,7 +181,7 @@ test_that("the percentile metric plots proportions rescaled to 0-100", {
   expect_equal(p$data$value / 100, unname(raw))
 
   expect_equal(value_limits(p), c(0, 100))
-  expect_equal(layer_data_for(p, "GeomHline")$yintercept, 50)
+  expect_equal(layer_data_for(p, "GeomVline")$xintercept, 50)
 })
 
 
@@ -209,7 +210,7 @@ test_that("the plot carries no bands, thresholds, or extra annotation", {
 
     # Exactly one reference line, and it carries no text label of its own:
     # a labelled reference line would be a second text layer.
-    expect_equal(sum(geoms == "GeomHline"), 1)
+    expect_equal(sum(geoms %in% c("GeomHline", "GeomVline")), 1)
     expect_equal(sum(geoms %in% c("GeomText", "GeomLabel")), 1)
 
     # The one text layer says nothing but the plotted values.
@@ -222,7 +223,7 @@ test_that("axis bounds come from pid_norms rather than a chosen constant", {
   for (version in c("FULL", "SF", "BF")) {
     normed <- normed_one(version)
     p <- plot_pid5(normed, version = version)
-    stems <- levels(p$data$scale)
+    stems <- p$data$stem
 
     rows <- pid_norms[
       pid_norms$version == version & pid_norms$scale %in% stems,
@@ -234,7 +235,7 @@ test_that("axis bounds come from pid_norms rather than a chosen constant", {
 
   # The T reference line is the metric's own midpoint, not a cut score.
   p <- plot_pid5(normed_one("FULL"), version = "FULL")
-  expect_equal(layer_data_for(p, "GeomHline")$yintercept, 50)
+  expect_equal(layer_data_for(p, "GeomVline")$xintercept, 50)
 })
 
 
@@ -273,7 +274,7 @@ test_that("a scale with no value is dropped with a warning and the rest plot", {
     regexp = "detachment"
   )
   expect_equal(nrow(layer_data_for(p, "GeomPoint")), 4)
-  expect_false("detachment" %in% levels(p$data$scale))
+  expect_false("detachment" %in% p$data$stem)
 })
 
 test_that("a profile with no values at all is an error", {
@@ -323,4 +324,60 @@ test_that("a non-default prefix is pasted onto the scale stems", {
   expect_equal(nrow(layer_data_for(p, "GeomPoint")), 6)
   # The default prefix finds nothing in that frame.
   expect_error(plot_pid5(normed, version = "BF"), regexp = "missing the normed columns")
+})
+
+
+# ---- drawn order ----------------------------------------------------------
+
+test_that("scales are drawn top-to-bottom in their table's order", {
+  # A discrete y scale draws its first level at the bottom, so this asserts
+  # the built y coordinates rather than the factor's level order -- the two
+  # run opposite ways and only one of them is what a reader sees.
+  drawn_top_down <- function(p) {
+    pts <- layer_data_for(p, "GeomPoint")
+    as.character(p$data$stem[order(-pts$y)])
+  }
+
+  expect_equal(
+    drawn_top_down(plot_pid5(normed_one("FULL"), version = "FULL")),
+    pid_domains$camelCase
+  )
+  expect_equal(
+    drawn_top_down(plot_pid5(normed_one("BF"), version = "BF")),
+    pid_scales[["BF"]]$camelCase
+  )
+
+  # Facet panels run top-down in domain order, and within each panel the
+  # scales run top-down in the same table order. The sort is per panel: with
+  # free panel scales the y coordinates restart at 1 in every panel, so a
+  # single global sort would compare positions that are not comparable.
+  p <- plot_pid5(normed_one("FULL", level = "facet"), version = "FULL", level = "facet")
+  pts <- layer_data_for(p, "GeomPoint")
+  for (panel in levels(p$data$panel)) {
+    keep <- p$data$panel == panel
+    drawn <- as.character(p$data$stem[keep][order(-pts$y[keep])])
+    expect_equal(drawn, pid_scales[["FULL"]]$camelCase[pid_scales[["FULL"]]$camelCase %in% drawn])
+  }
+})
+
+test_that("axis labels are the tables' printed names, not column stems", {
+  p <- plot_pid5(normed_one("FULL"), version = "FULL")
+  expect_equal(levels(p$data$scale), rev(pid_domains$Domain))
+  expect_false(any(levels(p$data$scale) %in% pid_domains$camelCase))
+
+  p <- plot_pid5(normed_one("FULL", level = "facet"), version = "FULL", level = "facet")
+  expect_setequal(as.character(p$data$scale), pid_scales[["FULL"]]$Facet)
+})
+
+test_that("a non-numeric normed column is refused, not reported as missing", {
+  # A character column coerces to NA, which the NA-drop branch would report as
+  # "no value" -- hiding a type mistake behind a missing-data warning.
+  normed <- normed_one("BF")
+  normed$pid_detachment_t <- as.character(normed$pid_detachment_t)
+  expect_error(plot_pid5(normed, version = "BF"), regexp = "must be numeric")
+
+  # A factor's integer codes are not its scores either.
+  normed <- normed_one("BF")
+  normed$pid_detachment_t <- factor(normed$pid_detachment_t)
+  expect_error(plot_pid5(normed, version = "BF"), regexp = "must be numeric")
 })
