@@ -25,7 +25,7 @@ The PID paper forms print their response-option legend on two lines of two optio
 - [x] AC4 Freshly generated `generate_docx_hitopsr()` and `generate_docx_hitopbr()` documents each carry exactly one legend header line holding all four pairs.
 - [x] AC5 The six committed PID DOCX (`pid5`, `pid5sf`, `pid5bf` × `_US`/`_A4`) are regenerated through `data-raw/artifacts.R` with `rebuild_stems <- c("pid5","pid5sf","pid5bf")` and `rebuild_formats <- c("docx")`, each gaining one new `hitop_artifacts` row dated the rebuild day with a `changes` note naming the legend split; each committed file parses back to the two header lines of AC2; NEWS.md records the regenerated forms (GP2).
 - [x] AC6 No artifact other than those six changes: every other file in `inst/extdata/` is byte-identical to its pre-milestone committed bytes (compared against `<merge-base>` via `git show`), and `hitop_artifacts` gains no row for any of them.
-- [ ] AC7 The rebuilt US and A4 PID forms are opened and visually confirmed to break no option phrase mid-phrase, with a screenshot recorded as review evidence (the maintainer's chosen proof — Word's line breaking is not observable from `document.xml`).
+- [x] AC7 The rebuilt US and A4 PID forms are opened and visually confirmed to break no option phrase mid-phrase, with a screenshot recorded as review evidence (the maintainer's chosen proof — Word's line breaking is not observable from `document.xml`).
 - [x] AC8 `devtools::test()` and `devtools::check()` clean.
 - [x] AC9 `make_items_table()` builds a one-item table without error, with a regression test that fails against the pre-fix `seq(2, n, by = 2)` shading index (added to scope at the maintainer's direction at the 2026-07-31 implementation gate).
 
@@ -66,6 +66,7 @@ The PID paper forms print their response-option legend on two lines of two optio
 - 2026-07-31: AC7 visual confirmation is partial — all six rebuilt forms were rendered and inspected page-by-page (macOS QuickLook), showing the two legend lines unbroken on both US and A4; the Word-native open AC7 names was not performed, because Word's AppleScript `save as` errors -1708 on this machine and `osascript` has neither accessibility nor screen-recording grant, so Word could be neither driven nor captured. Left for the maintainer at the review gate rather than silently substituted.
 
 - 2026-07-31: review — cairn_validate exit 0; r-package consistency gate clean (document() no diff, README in sync, pkgdown no problems, check() Status OK 0/0/0); eight of nine criteria verified with fresh evidence, AC7 carried to the maintainer as partial. Three-lens fan-out: blame-history and prior-review lenses zero findings, diff-bug lens 14, of which one scored >=80 (F4, 82) and was fixed — the "not a hardcoded four" test used a three-option table that passes against a hardcoded 4, moved to five options and re-verified red by mutation.
+- 2026-07-31: merge gate — Jeff accepted the QuickLook renders as AC7's visual proof in place of a Word-native open, which this session could not perform; recorded as accepted with the renderer named rather than as a Word check.
 
 ## Decisions
 
@@ -116,15 +117,19 @@ from recall.
   against `git show 25a3a1b:<path>` and all 18 are identical. No manifest row
   was added for any of them (0 added rows outside the six), and every
   pre-existing row survives unaltered.
-- AC7 **Partially met — the one gap in this review.** All six rebuilt forms were
-  rendered and inspected page by page, and the two legend lines print whole on
-  both US and A4 with no option phrase broken; the US and A4 PID-5 renders were
-  shown to the maintainer. But the rendering is macOS QuickLook's, not Word's,
-  and the criterion names Word because Word's line breaking is the thing at
-  issue. Word could not be driven or captured from this session: its AppleScript
-  `save as` errors -1708 and `osascript` holds neither accessibility nor
-  screen-recording permission. Carried to the maintainer at the merge gate
-  rather than counted as met.
+- AC7 Met, with the renderer named so the record says what was actually checked.
+  All six rebuilt forms were rendered to page images and inspected page by page;
+  the two legend lines print whole on both US and A4, no option phrase broken.
+  The US and A4 PID-5 renders were shown to the maintainer at the review gate.
+  The renderer was **macOS QuickLook, not Word** — Word could not be driven or
+  captured from this session (its AppleScript `save as` errors -1708 and
+  `osascript` holds neither accessibility nor screen-recording permission), and
+  the criterion's parenthetical reasons about Word's line breaking specifically.
+  Offered the choice of checking in Word, accepting the render, or merging with
+  the criterion open, the maintainer accepted the render as proof at the
+  2026-07-31 merge gate. A non-Word renderer approximates Word's breaking; the
+  standing candidate row for a repeatable width-budget check is where a later
+  wrap regression would be caught.
 - AC8 `devtools::test()` clean at FAIL 0 | WARN 0 | SKIP 1 | PASS 11704.
   `devtools::check()` Status OK — 0 errors, 0 warnings, 0 notes (4m24s).
 - AC9 `make_items_table()` builds a one-item table without error, verified for
