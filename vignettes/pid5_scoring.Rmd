@@ -145,8 +145,10 @@ The dashed line marks T = 50, the normative sample's mean, and the score axis sp
 Passing `level = "facet"` plots all 25 facets instead, grouped into a panel per domain. The APA key ties three facets to each domain; the remaining ten define no domain and are grouped separately rather than dropped.
 
 ```{r x2g}
-#| fig.width: 7
-#| fig.height: 10
+#| fig.width: 7.5
+#| fig.height: 9
+#| message: false
+#| warning: false
 #| eval: !expr requireNamespace("ggplot2", quietly = TRUE)
 facets <- paste0("pid_", pid_scales[["FULL"]]$camelCase)
 normed_facets <- norm_pid5(scored, scores = facets, version = "FULL")

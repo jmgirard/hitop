@@ -1,6 +1,6 @@
 # M38: Norm-referenced PID-5 profile plots
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -49,26 +49,26 @@ row, vignette section, NEWS entry, README checkbox.
       `pid_domains` order); each row's y value equals the corresponding `_t`
       input column. On BF the `GeomLine` layer's built data covers only the
       five domains, so the profile line stops before `total`.
-- [x] AC3. With `level = "facet"` on FULL or SF, the `GeomPoint` layer built
+- [ ] AC3. With `level = "facet"` on FULL or SF, the `GeomPoint` layer built
       data has exactly 25 rows distributed over 6 panels: one per domain
       holding that domain's 3 defining facets from `pid_domains$facetStems`
       (15 facets, in `pid_domains` order), and a final panel holding the 10
       facets the APA key assigns to no domain, labelled as such.
       `level = "facet"` with `version = "BF"` aborts via `cli::cli_abort()` in
       a message stating the brief form has no facet scores.
-- [x] AC4. With `metric = "percentile"`, the `GeomPoint` layer's y values equal
+- [ ] AC4. With `metric = "percentile"`, the `GeomPoint` layer's y values equal
       the corresponding `_ptl` input columns multiplied by 100 (`norm_pid5()`
       returns `_ptl` as a proportion, verified 0-1 across `pid_norms`), the
       axis spans 0-100, and the reference line sits at 50. The help page states
       the rescaling.
-- [x] AC5. The plot carries no interpretive furniture: its built layers include
+- [ ] AC5. The plot carries no interpretive furniture: its built layers include
       no `GeomRect`/`GeomTile`, exactly one `GeomHline` (or `GeomVline` after
       `coord_flip()`), and exactly one text/label layer whose `label` values are
       `setequal()` to the plotted score values — so the reference line carries
       no text label and no band or threshold annotation can ship (IP4). Axis
       breaks and limits derive from the plotted scales' own rows in `pid_norms`,
       introducing no boundary constant of this package's invention (IP2).
-- [x] AC6. Each input branch fires in its own test: `nrow(data) != 1` aborts
+- [ ] AC6. Each input branch fires in its own test: `nrow(data) != 1` aborts
       naming the row count; a requested `_t`/`_ptl` column absent from `data`
       aborts through the `validate_*()` family as the rest of the package does;
       a present-but-`NA` score is dropped from the series with a
@@ -76,7 +76,7 @@ row, vignette section, NEWS entry, README checkbox.
       and ggplot2 unavailable aborts informatively, verified by mocking
       `rlang::is_installed()` (the binding `calc_omega()` uses at
       `R/reliability.R:132` — *not* `check_installed()`, which never consults it).
-- [x] AC7. A PID-5 vignette section renders the score → validity → norm → plot
+- [ ] AC7. A PID-5 vignette section renders the score → validity → norm → plot
       pipeline under the same `requireNamespace()` guard, NEWS.md carries a
       user-visible entry, and the profile's `verify` slot is clean.
 
@@ -141,6 +141,8 @@ row, vignette section, NEWS entry, README checkbox.
 - 2026-08-01: the first `check()` after the axis refactor ran against a stale `plot_pid5.Rd` (roxygen was edited after the preceding `document()`); the Rd was regenerated, committed, and `check()` re-run on the final tree rather than carrying the earlier result forward.
 - 2026-08-01: review — all 7 acceptance criteria ticked against fresh evidence; consistency gate green (cairn_validate exit 0, check 0/0/0, document idempotent, README in sync, check_pkgdown clean); draft PR #41 opened, CI running.
 - 2026-08-01: review — [S] blame-history lens returned zero findings: the README boxes are documented doc drift (unticked since M12 though norms shipped at M25/M27/M33), NEWS ordering/format and the new pkgdown section follow existing convention with no milestone ids in user-facing text, and D-002/D-029/D-030 are respected.
+- 2026-08-01: REVIEW RETURN 1 (review -> in-progress). [O] diff-bug lens found a blocker I reproduced: `scale_y_discrete(limits = rev(labels))`, added late to fix the brief form's `total` ordering, overrides per-panel scale training, so `facet_grid(scales = "free_y", space = "free_y")` stopped working -- all six panels carry all 25 y limits and draw all 25 facet labels overlapping, at equal panel heights. It re-broke the exact defect the earlier `coord_flip()` removal had fixed, because no visual re-check followed the second fix. CI (7 jobs incl. pkgdown) passed green over it, as did all 109 structural assertions.
+- 2026-08-01: AC3-AC7 unticked -- their evidence was gathered against the broken build and is void.
 
 ## Decisions
 

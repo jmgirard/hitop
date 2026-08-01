@@ -55,7 +55,12 @@ value_limits <- function(p) {
 layer_data_for <- function(p, geom) {
   b <- ggplot2::ggplot_build(p)
   hits <- which(vapply(p$layers, function(L) class(L$geom)[[1]], character(1)) == geom)
-  expect_length(hits, 1)
+  # Stop rather than expect: a bare expectation does not halt, and indexing
+  # with 0 or 2 hits then throws an opaque subscript error (or, for 2, silently
+  # recursive-indexes into a column) instead of naming what went wrong.
+  if (length(hits) != 1) {
+    testthat::fail(sprintf("expected exactly 1 %s layer, found %d", geom, length(hits)))
+  }
   b$data[[hits]]
 }
 
@@ -123,7 +128,7 @@ test_that("facet profiles plot 25 facets over six panels", {
     expect_equal(nrow(b$layout$layout), 6)
     expect_equal(
       as.character(b$layout$layout$panel),
-      c(pid_domains$Domain, "Not domain-defining")
+      c(pid_domains$Domain, PLOT_UNASSIGNED_PANEL)
     )
   }
 })
@@ -145,7 +150,7 @@ test_that("each panel holds the facets the APA key assigns to it", {
   leftover <- setdiff(pid_scales[["FULL"]]$camelCase, defining)
   expect_length(leftover, 10)
   expect_setequal(
-    as.character(p$data$stem[p$data$panel == "Not domain-defining"]),
+    as.character(p$data$stem[p$data$panel == PLOT_UNASSIGNED_PANEL]),
     leftover
   )
 })
@@ -213,9 +218,14 @@ test_that("the plot carries no bands, thresholds, or extra annotation", {
     expect_equal(sum(geoms %in% c("GeomHline", "GeomVline")), 1)
     expect_equal(sum(geoms %in% c("GeomText", "GeomLabel")), 1)
 
-    # The one text layer says nothing but the plotted values.
-    labels <- layer_data_for(p, "GeomLabel")$label
-    expect_setequal(as.character(labels), as.character(round(p$data$value)))
+    # The one text layer says nothing but the plotted values -- elementwise,
+    # so a build that put one scale's label on another scale's point fails.
+    lab <- layer_data_for(p, "GeomLabel")
+    pts <- layer_data_for(p, "GeomPoint")
+    expect_equal(
+      as.character(lab$label[order(lab$PANEL, lab$y)]),
+      as.character(round(pts$x[order(pts$PANEL, pts$y)]))
+    )
   }
 })
 
@@ -348,9 +358,9 @@ test_that("scales are drawn top-to-bottom in their table's order", {
   )
 
   # Facet panels run top-down in domain order, and within each panel the
-  # scales run top-down in the same table order. The sort is per panel: with
-  # free panel scales the y coordinates restart at 1 in every panel, so a
-  # single global sort would compare positions that are not comparable.
+  # scales run top-down in the same table order. The sort is done per panel
+  # because only within-panel relative order is the claim; built y values are
+  # in fact global, so a per-panel sort is the narrower and safer assertion.
   p <- plot_pid5(normed_one("FULL", level = "facet"), version = "FULL", level = "facet")
   pts <- layer_data_for(p, "GeomPoint")
   for (panel in levels(p$data$panel)) {
@@ -380,4 +390,94 @@ test_that("a non-numeric normed column is refused, not reported as missing", {
   normed <- normed_one("BF")
   normed$pid_detachment_t <- factor(normed$pid_detachment_t)
   expect_error(plot_pid5(normed, version = "BF"), regexp = "must be numeric")
+})
+
+
+# ---- per-panel axis content (regression guard) -----------------------------
+
+test_that("each facet panel draws only its own scales on the axis", {
+  # A pinned `scale_y_discrete(limits =)` overrides per-panel scale training,
+  # which silently disables facet_grid's `free_y`/`space = "free_y"` and draws
+  # ALL 25 facet names in EVERY panel, at equal panel heights. Every structural
+  # assertion above stays green through that, and so does CI including pkgdown
+  # -- only the axis content shows it. This is the guard for that regression.
+  for (version in c("FULL", "SF")) {
+    p <- plot_pid5(
+      normed_one(version, level = "facet"),
+      version = version,
+      level = "facet"
+    )
+    b <- ggplot2::ggplot_build(p)
+    per_panel <- vapply(
+      b$layout$panel_scales_y,
+      function(sc) length(sc$get_limits()),
+      integer(1)
+    )
+    # Five domain panels of three defining facets, then the ten the key
+    # assigns to no domain.
+    expect_equal(per_panel, c(3L, 3L, 3L, 3L, 3L, 10L), info = version)
+    expect_equal(sum(per_panel), 25L, info = version)
+
+    # And each panel's axis lists exactly the scales in that panel.
+    for (i in seq_along(b$layout$panel_scales_y)) {
+      panel_name <- as.character(b$layout$layout$panel[[i]])
+      expect_setequal(
+        b$layout$panel_scales_y[[i]]$get_limits(),
+        as.character(p$data$scale[p$data$panel == panel_name])
+      )
+    }
+  }
+})
+
+test_that("the unfacetted profile pins its scale order against layer training", {
+  # The brief form's profile-line layer omits `total`, and a discrete scale
+  # trained across layers puts a value missing from the first layer LAST --
+  # which drew `total` at the top. The pin is what prevents that, and it is
+  # safe here only because there is a single panel to train.
+  p <- plot_pid5(normed_one("BF"), version = "BF")
+  expect_equal(
+    ggplot2::layer_scales(p)$y$get_limits(),
+    rev(pid_scales[["BF"]]$Domain)
+  )
+})
+
+test_that("the axis does not depend on which scales survived the NA drop", {
+  # The documented guarantee is that two profiles on the same version and
+  # level share an axis. If the axis were computed from the surviving stems,
+  # dropping a scale could move it.
+  full <- normed_one("FULL")
+  holed <- full
+  holed$pid_detachment_t[[1]] <- NA_integer_
+
+  p_full <- plot_pid5(full, version = "FULL")
+  p_holed <- suppressWarnings(plot_pid5(holed, version = "FULL"))
+  expect_equal(value_limits(p_holed), value_limits(p_full))
+})
+
+test_that("axis breaks step across the published span, not fixed positions", {
+  p <- plot_pid5(normed_one("FULL"), version = "FULL")
+  breaks <- ggplot2::layer_scales(p)$x$get_breaks()
+  breaks <- breaks[!is.na(breaks)]
+  lim <- value_limits(p)
+  expect_true(all(breaks %% 10 == 0))
+  expect_true(all(breaks >= lim[[1]] & breaks <= lim[[2]]))
+
+  p <- plot_pid5(normed_one("FULL"), version = "FULL", metric = "percentile")
+  breaks <- ggplot2::layer_scales(p)$x$get_breaks()
+  breaks <- breaks[!is.na(breaks)]
+  expect_true(all(breaks %% 25 == 0))
+  expect_true(all(breaks >= 0 & breaks <= 100))
+})
+
+test_that("axis_breaks falls back to the span when it holds no multiple", {
+  # seq() would run backwards and error here; the guard returns the endpoints.
+  expect_equal(axis_breaks(c(52, 58), step = 10), c(52, 58))
+  expect_equal(axis_breaks(c(30, 90), step = 10), seq(30, 90, by = 10))
+})
+
+test_that("a scale absent from pid_norms is refused by the axis helper", {
+  expect_error(
+    plot_pid5_axis("nope", "FULL", "t"),
+    regexp = "no rows for"
+  )
 })

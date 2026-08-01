@@ -186,6 +186,12 @@ plot_pid5 <- function(
   plot_pid5_build(
     stems = stems[!drop],
     values = values[!drop],
+    ## The axis is computed from every scale this (version, level) plots, not
+    ## from the ones that survived the NA drop -- otherwise the axis would be a
+    ## function of which scales happened to be missing for this respondent, and
+    ## the documented "does not rescale from respondent to respondent"
+    ## guarantee would hold only by coincidence of the shipped tables.
+    axis_stems = stems,
     version = version,
     level = level,
     metric = metric
@@ -260,19 +266,43 @@ plot_pid5_axis <- function(stems, version, metric) {
     ,
     drop = FALSE
   ]
+  ## A stem with no rows for this version would make range() return c(Inf,-Inf)
+  ## after a base-R warning, and hand an incoherent axis to the scale. Not
+  ## reachable from the shipped tables, but the helper must not depend on that.
+  missing_rows <- setdiff(stems, rows$scale)
+  if (length(missing_rows) > 0) {
+    cli::cli_abort(c(
+      "{.field pid_norms} has no rows for {cli::qty(length(missing_rows))}{?this scale/these scales} on version {.val {version}}.",
+      "x" = "Missing: {.val {missing_rows}}.",
+      "i" = "The axis is derived from the published tables, so a scale absent from them cannot be placed on it."
+    ))
+  }
   if (identical(metric, "t")) {
     span <- range(rows$tscore, na.rm = TRUE)
-    ## Decade gridlines across the printed span: 10 is the T metric's own
-    ## standard deviation, not a threshold.
-    breaks <- seq(
-      ceiling(span[[1]] / 10) * 10,
-      floor(span[[2]] / 10) * 10,
-      by = 10
-    )
-    return(list(limits = span, breaks = breaks, midpoint = 50))
+    ## Decade gridlines: 10 is the T metric's own standard deviation, stepped
+    ## across the published span. Not a threshold.
+    return(list(limits = span, breaks = axis_breaks(span, step = 10), midpoint = 50))
   }
+  ## The tables' percentile column, on the 0-100 scale the caller plots.
+  ## Quartiles divide a percentile scale as decades divide the T metric; both
+  ## step across the published span rather than sitting at fixed positions, so
+  ## neither introduces a bound of this package's choosing.
   span <- range(rows$percentile, na.rm = TRUE) * 100
-  list(limits = span, breaks = seq(0, 100, by = 25), midpoint = 50)
+  list(limits = span, breaks = axis_breaks(span, step = 25), midpoint = 50)
+}
+
+
+# Gridline positions at multiples of `step` inside `span`. A span narrower than
+# one step contains no multiple, and seq() would then run backwards and error
+# ("wrong sign in 'by' argument") -- so that case falls back to the span's own
+# endpoints rather than producing an invalid sequence.
+axis_breaks <- function(span, step) {
+  lo <- ceiling(span[[1]] / step) * step
+  hi <- floor(span[[2]] / step) * step
+  if (lo > hi) {
+    return(span)
+  }
+  seq(lo, hi, by = step)
 }
 
 
@@ -281,10 +311,11 @@ plot_pid5_axis <- function(stems, version, metric) {
 # The scale names go on y and the scores on x directly, rather than being built
 # vertically and flipped: coord_flip() applies a facet's free scale BEFORE the
 # flip, so every panel of a facetted profile drew all 25 scale names on top of
-# one another. Mapping the axes as they are drawn keeps `scales = "free_y"`
-# meaning what it says.
-plot_pid5_build <- function(stems, values, version, level, metric) {
-  axis <- plot_pid5_axis(stems, version, metric)
+# one another. Mapping the axes as they are drawn lets `scales = "free_y"` act
+# on the axis it names -- provided nothing pins that scale's limits, which is
+# why the pin below is applied only to the unfacetted branch.
+plot_pid5_build <- function(stems, values, axis_stems, version, level, metric) {
+  axis <- plot_pid5_axis(axis_stems, version, metric)
 
   ## `stem` is the canonical scale name and carries the logic (and the tests);
   ## `scale` is the printed label. Level order is set so the table's first
@@ -341,8 +372,12 @@ plot_pid5_build <- function(stems, values, version, level, metric) {
       linewidth = 0.7
     ) +
     ggplot2::geom_point(size = 2.5) +
+    ## Nudged off the point, or the label sits exactly on top of the marker it
+    ## labels and hides it entirely. The offset is a fraction of the axis span
+    ## so it scales with the metric (T span ~60, percentile span 100).
     ggplot2::geom_label(
       ggplot2::aes(label = round(.data$value)),
+      nudge_x = diff(axis$limits) * 0.045,
       size = 3,
       label.padding = ggplot2::unit(0.15, "lines")
     ) +
@@ -350,11 +385,6 @@ plot_pid5_build <- function(stems, values, version, level, metric) {
       breaks = axis$breaks,
       limits = axis$limits
     ) +
-    ## The discrete positions are pinned rather than left to layer training.
-    ## The profile-line layer deliberately omits the brief form's `total`, and
-    ## a scale trained across layers puts a value missing from the first layer
-    ## last -- which drew `total` at the top instead of the bottom.
-    ggplot2::scale_y_discrete(limits = rev(labels)) +
     ggplot2::labs(
       x = x_label,
       y = NULL,
@@ -368,6 +398,12 @@ plot_pid5_build <- function(stems, values, version, level, metric) {
     ## without it the sixth panel's ten facets are crushed into the height
     ## three get. The value axis stays fixed across panels; freeing it would
     ## defeat the point of a common norm-referenced span.
+    ##
+    ## Deliberately NO `scale_y_discrete(limits =)` here: pinning the discrete
+    ## limits overrides per-panel training, which silently disables `free_y`
+    ## and `space = "free_y"` and draws all 25 names in every panel. The
+    ## unfacetted branch below needs the pin for a different reason, so the
+    ## two cases are handled separately rather than shared.
     p <- p +
       ggplot2::facet_grid(
         rows = ggplot2::vars(.data$panel),
@@ -382,6 +418,13 @@ plot_pid5_build <- function(stems, values, version, level, metric) {
         strip.placement = "outside",
         strip.text.y.left = ggplot2::element_text(angle = 0)
       )
+  } else {
+    ## Unfacetted: pin the discrete positions rather than leave them to layer
+    ## training. The profile-line layer deliberately omits the brief form's
+    ## `total`, and a scale trained across layers puts a value missing from the
+    ## first layer LAST -- which drew `total` at the top instead of the bottom.
+    ## Safe here precisely because there is one panel to train.
+    p <- p + ggplot2::scale_y_discrete(limits = rev(labels))
   }
 
   p
