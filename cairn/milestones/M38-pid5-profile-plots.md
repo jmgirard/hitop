@@ -1,11 +1,11 @@
 # M38: Norm-referenced PID-5 profile plots
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, IP4, GP3, GP4
-- **Branch/PR:** —
+- **Branch/PR:** `m38-pid5-profile-plots`
 
 ## Goal
 
@@ -111,6 +111,8 @@ row, vignette section, NEWS entry, README checkbox.
 ## Work log
 
 - 2026-08-01: created by /milestone-plan.
+- 2026-08-01: branch `m38-pid5-profile-plots` cut from main; status planned -> in-progress.
+- 2026-08-01: probed installed ggplot2 4.0.3 -- `ggplot_build()` still exposes per-layer `$data` and `$layout$layout`, so D-030's structural-assertion mechanism holds on the installed version.
 - 2026-08-01: plan-gate criteria audit ([O], fresh context) returned 17 findings; 13 fixed pre-gate (unworkable `check_installed()` mock, undefined "N plotted positions" over multi-layer build data, missing BF criterion and its differing scale order, wrong abort rationale, self-falsifying AC4 prose, unmechanizable text-layer test, unreachable uncovered-scale branch, D-026 cited for the wrong direction, unguarded `@examples`, AC7 restating the review gate, spurious AC1→T1 coverage, undefined axis extent, undefined missing-column behavior), 4 routed to the gate.
 - 2026-08-01: plan gate chose no severity bands over porting the prototype's green/red bands because no source in `references/` or `SOURCES.md` supplies boundaries (IP2) and shading by severity characterizes a score (IP4); falsified by a published, citable set of PID-5 profile elevation thresholds.
 - 2026-08-01: plan gate chose structural `ggplot_build()` assertions over `vdiffr` snapshots because they need no new dependency and survive a cosmetic restyle; falsified by a visual regression that ships with every structural assertion still green.
