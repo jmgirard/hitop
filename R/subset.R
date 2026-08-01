@@ -213,3 +213,30 @@ subset_engine_inputs <- function(
     items_scales = lapply(numbers, function(x) match(x, subset$items))
   )
 }
+
+# Internal Helper: the three engine inputs for the HiTOP-SR, full or subset
+#
+# score_hitopsr() and reliability_hitopsr() resolve the same three values the
+# same way, so they share this. `subset = NULL` is the full instrument, where an
+# item's number is already its position among the 405 supplied columns. `call`
+# reaches the exported wrapper one frame up, so subset_engine_inputs()'s aborts
+# blame score_hitopsr()/reliability_hitopsr() rather than this helper.
+hitopsr_engine_inputs <- function(subset, call = rlang::caller_env()) {
+  if (is.null(subset)) {
+    return(list(
+      n_items = 405,
+      reverse_items =
+        hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE],
+      items_scales = hitopsr_scales$itemNumbers
+    ))
+  }
+
+  subset_engine_inputs(
+    subset = subset,
+    instrument = "hitopsr",
+    items = hitopsr_items,
+    scales = hitopsr_scales,
+    item_col = "HSR",
+    call = call
+  )
+}

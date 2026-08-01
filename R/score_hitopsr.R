@@ -22,6 +22,12 @@
 #'   standard error of each scale score. (default = `FALSE`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
+#' @param subset An optional `hitop_subset` object, as returned by
+#'   [hitop_subset()], describing a short form of the instrument. When supplied,
+#'   `data` and `items` hold only that subset's item columns — in ascending
+#'   instrument order, as the `generate_*_hitopsr()` forms lay them out — and
+#'   only that subset's scales are scored. When `NULL`, all 405 items are
+#'   expected and all 76 scales are scored. (default = `NULL`)
 #'
 #' @details For per-scale reliability estimates (Cronbach's alpha, McDonald's
 #'   omega), use [reliability_hitopsr()].
@@ -33,6 +39,11 @@
 #' # Score all HiTOP-SR scales from the simulated data
 #' score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
 #'
+#' # Score data collected with a two-scale short form
+#' s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+#' score_hitopsr(sim_hitopsr[s$items], items = seq_len(s$nItems),
+#'               subset = s, append = FALSE)
+#'
 #' @export
 score_hitopsr <- function(
   data,
@@ -41,20 +52,22 @@ score_hitopsr <- function(
   prefix = "hsr_",
   missing = c("available", "complete"),
   calc_se = FALSE,
-  append = TRUE
+  append = TRUE,
+  subset = NULL
 ) {
   missing <- match.arg(missing)
   ## Resolve this instrument's data: which items reverse and the per-scale
-  ## item-number lists. Shared arg validation and the pipeline run in the engine.
-  reverse_items <-
-    hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE]
+  ## item-number lists. With a `subset`, the same three inputs are remapped to
+  ## positions within the subset's own columns; without one, item number and
+  ## position coincide. Shared arg validation and the pipeline run in the engine.
+  inputs <- hitopsr_engine_inputs(subset)
 
   score_engine(
     data = data,
     items = items,
-    n_items = 405,
-    reverse_items = reverse_items,
-    items_scales = hitopsr_scales$itemNumbers,
+    n_items = inputs$n_items,
+    reverse_items = inputs$reverse_items,
+    items_scales = inputs$items_scales,
     srange = srange,
     prefix = prefix,
     missing = missing,

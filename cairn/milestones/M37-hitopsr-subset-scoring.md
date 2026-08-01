@@ -82,10 +82,10 @@ match by column name and already tolerate a partial column set).
       turning a `hitop_subset` plus an instrument's items/scales tables into
       `n_items`, `reverse_items` and `items_scales` in subset-column positions
       (`match(itemNumbers, subset$items)`); direct unit tests for the remap.
-- [ ] T2. Wire `subset = NULL` into `score_hitopsr()` (`R/score_hitopsr.R:41`)
+- [x] T2. Wire `subset = NULL` into `score_hitopsr()` (`R/score_hitopsr.R:41`)
       as the final argument, with the instrument check and the re-pointed
       `n_items`; guard truthiness the same way its consumer does (M24 lesson).
-- [ ] T3. Score-path tests: column set and order, subset-vs-full equality under
+- [x] T3. Score-path tests: column set and order, subset-vs-full equality under
       both `missing` modes with and without injected `NA`s, the Romantic
       Disinterest reverse-key fixture, and `calc_se = TRUE`.
 - [ ] T4. Wire `subset` into `reliability_hitopsr()`
@@ -110,6 +110,7 @@ match by column name and already tolerate a partial column set).
 
 - 2026-08-01: implementation gate chose to place AC6's new instrument check in the scoring-path remap helper only, leaving `apply_subset()` and the three `generate_*_hitopsr()` functions untouched, because the check fires only on a hand-assembled descriptor and extending it would add an error branch to functions this milestone scoped out; falsified by a generator ever being handed a foreign-instrument subset.
 - 2026-08-01: T1 done — `subset_engine_inputs()` in `R/subset.R` remaps a descriptor into `n_items`/`reverse_items`/`items_scales` as positions within the supplied columns; the reverse key is read from `hitopsr_items` rather than trusted from the descriptor's parallel flags. Five direct unit tests; `devtools::test()` clean (11715 pass).
+- 2026-08-01: T2/T3 done — `subset` is the last argument of `score_hitopsr()`, resolving through a shared `hitopsr_engine_inputs()` branch (`is.null()` on both sides, per the M24 truthiness lesson). Six score-path tests: column set in row order, subset-vs-full equality across both `missing` modes with and without injected `NA`s, the HSR 310 reverse-key fixture, `calc_se`, and items-as-names. The `NA` injection carries an explicit guard that the two `missing` modes differ on it, so the equality check cannot pass vacuously (M36 lesson). `devtools::test()` clean (11726 pass).
 - 2026-08-01: `cairn_validate` advises 8 acceptance criteria against the >7 split tripwire; not split — AC8 is the mandated profile-verify criterion, leaving 7 substantive, and the only natural cut (reliability into its own milestone) is the one the plan gate explicitly declined. 7 tasks, one PR, 102/149 lines.
 
 ## Decisions
