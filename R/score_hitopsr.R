@@ -2,9 +2,11 @@
 #'
 #' Create a data frame with scores on all the HiTOP-SR scales.
 #'
-#' @param data A data frame containing all HiTOP-SR items (numerically coded).
+#' @param data A data frame containing the HiTOP-SR items (numerically coded):
+#'   all 405 of them, or, when `subset` is supplied, that short form's items.
 #' @param items A vector of column names (as strings) or numbers (as integers)
-#'   corresponding to the 405 HiTOP-SR items in order. Items must be supplied in
+#'   corresponding to the HiTOP-SR items held in `data` — all 405, or, when
+#'   `subset` is supplied, that short form's items. Items must be supplied in
 #'   instrument order; a misordered mapping silently scores the wrong items, so a
 #'   warning is issued when the names share a common prefix and trailing number
 #'   but those numbers are not ascending. Duplicated entries are an error.
@@ -22,6 +24,12 @@
 #'   standard error of each scale score. (default = `FALSE`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
+#' @param subset An optional `hitop_subset` object, as returned by
+#'   [hitop_subset()], describing a short form of the instrument. When supplied,
+#'   `data` and `items` hold only that subset's item columns — in ascending
+#'   instrument order, as the `generate_*_hitopsr()` forms lay them out — and
+#'   only that subset's scales are scored. When `NULL`, all 405 items are
+#'   expected and all 76 scales are scored. (default = `NULL`)
 #'
 #' @details For per-scale reliability estimates (Cronbach's alpha, McDonald's
 #'   omega), use [reliability_hitopsr()].
@@ -33,6 +41,13 @@
 #' # Score all HiTOP-SR scales from the simulated data
 #' score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
 #'
+#' # Score data collected with a two-scale short form. Select the item columns
+#' # by name: `s$items` holds original HiTOP-SR numbers, which are column
+#' # positions only in a data frame that is exactly the 405 items in order.
+#' s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+#' short <- sim_hitopsr[paste0("hsr_", s$items)]
+#' score_hitopsr(short, items = names(short), subset = s, append = FALSE)
+#'
 #' @export
 score_hitopsr <- function(
   data,
@@ -41,20 +56,22 @@ score_hitopsr <- function(
   prefix = "hsr_",
   missing = c("available", "complete"),
   calc_se = FALSE,
-  append = TRUE
+  append = TRUE,
+  subset = NULL
 ) {
   missing <- match.arg(missing)
   ## Resolve this instrument's data: which items reverse and the per-scale
-  ## item-number lists. Shared arg validation and the pipeline run in the engine.
-  reverse_items <-
-    hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE]
+  ## item-number lists. With a `subset`, the same three inputs are remapped to
+  ## positions within the subset's own columns; without one, item number and
+  ## position coincide. Shared arg validation and the pipeline run in the engine.
+  inputs <- hitopsr_engine_inputs(subset)
 
   score_engine(
     data = data,
     items = items,
-    n_items = 405,
-    reverse_items = reverse_items,
-    items_scales = hitopsr_scales$itemNumbers,
+    n_items = inputs$n_items,
+    reverse_items = inputs$reverse_items,
+    items_scales = inputs$items_scales,
     srange = srange,
     prefix = prefix,
     missing = missing,

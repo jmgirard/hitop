@@ -11,14 +11,17 @@ score_hitopsr(
   prefix = "hsr_",
   missing = c("available", "complete"),
   calc_se = FALSE,
-  append = TRUE
+  append = TRUE,
+  subset = NULL
 )
 }
 \arguments{
-\item{data}{A data frame containing all HiTOP-SR items (numerically coded).}
+\item{data}{A data frame containing the HiTOP-SR items (numerically coded):
+all 405 of them, or, when \code{subset} is supplied, that short form's items.}
 
 \item{items}{A vector of column names (as strings) or numbers (as integers)
-corresponding to the 405 HiTOP-SR items in order. Items must be supplied in
+corresponding to the HiTOP-SR items held in \code{data} — all 405, or, when
+\code{subset} is supplied, that short form's items. Items must be supplied in
 instrument order; a misordered mapping silently scores the wrong items, so a
 warning is issued when the names share a common prefix and trailing number
 but those numbers are not ascending. Duplicated entries are an error.}
@@ -40,6 +43,13 @@ standard error of each scale score. (default = \code{FALSE})}
 
 \item{append}{An optional logical indicating whether the new columns should
 be added to the end of the \code{data} input. (default = \code{TRUE})}
+
+\item{subset}{An optional \code{hitop_subset} object, as returned by
+\code{\link[=hitop_subset]{hitop_subset()}}, describing a short form of the instrument. When supplied,
+\code{data} and \code{items} hold only that subset's item columns — in ascending
+instrument order, as the \verb{generate_*_hitopsr()} forms lay them out — and
+only that subset's scales are scored. When \code{NULL}, all 405 items are
+expected and all 76 scales are scored. (default = \code{NULL})}
 }
 \value{
 A \link[tibble]{tibble} containing all scale scores and standard
@@ -55,5 +65,12 @@ omega), use \code{\link[=reliability_hitopsr]{reliability_hitopsr()}}.
 \examples{
 # Score all HiTOP-SR scales from the simulated data
 score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
+
+# Score data collected with a two-scale short form. Select the item columns
+# by name: `s$items` holds original HiTOP-SR numbers, which are column
+# positions only in a data frame that is exactly the 405 items in order.
+s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+short <- sim_hitopsr[paste0("hsr_", s$items)]
+score_hitopsr(short, items = names(short), subset = s, append = FALSE)
 
 }

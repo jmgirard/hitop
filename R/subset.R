@@ -155,3 +155,105 @@ apply_subset <- function(
     }
   )
 }
+
+# Internal Helper: remap a subset descriptor into the engines' three inputs
+#
+# `apply_subset()` above reduces the instrument's TABLES for the generators,
+# which keep the original item numbering. The engines instead address items by
+# POSITION within the columns the caller supplied, so scoring subset-collected
+# data needs the subset's original numbers translated into positions within
+# `subset$items` (which is ascending). Returns `n_items`, `reverse_items`, and
+# `items_scales` ready for score_engine()/reliability_engine().
+#
+# `items` and `scales` are the instrument's own tables, so the reverse key is
+# read from the package's canonical source rather than trusted from the
+# descriptor's parallel `reverse` flags.
+#
+# Invariant: every kept scale's items are fully contained in `subset$items`,
+# because hitop_subset() builds `items` as the union of exactly the scales it
+# keeps. The match() below therefore never yields NA for a kept scale.
+subset_engine_inputs <- function(
+  subset,
+  instrument,
+  items,
+  scales,
+  item_col,
+  reverse_col = "Reverse",
+  scale_col = "camelCase",
+  number_col = "itemNumbers",
+  call = rlang::caller_env()
+) {
+  cli_assert(
+    condition = inherits(subset, "hitop_subset"),
+    message = c(
+      "The {.arg subset} argument must be a {.cls hitop_subset} object.",
+      i = "Build one with {.code hitop_subset()}."
+    ),
+    call = call
+  )
+  # Only reachable from a hand-assembled object: hitop_subset() refuses to
+  # build a subset for any instrument but the ones it supports.
+  cli_assert(
+    condition = identical(subset$instrument, instrument),
+    message = c(
+      "The {.arg subset} argument describes the wrong instrument.",
+      x = "Expected a {.val {instrument}} subset but got {.val {subset$instrument}}."
+    ),
+    call = call
+  )
+
+  # `nItems` and `items` are independent fields of a plain list, so a descriptor
+  # assembled or edited by hand can disagree with itself. Taking the item count
+  # from `nItems` alone would then pass validate_items() against the wrong
+  # width and score whichever columns happened to be supplied: an inflated
+  # nItems accepts a full 405-column frame and silently scores items 1..n as
+  # the subset's scales. The count is therefore derived from `items`, which is
+  # what the remap below actually indexes into, and the disagreement is an error.
+  cli_assert(
+    condition = identical(as.integer(subset$nItems), length(subset$items)),
+    message = c(
+      "The {.arg subset} argument is internally inconsistent.",
+      x = "It reports {subset$nItems} item{?s} but carries {length(subset$items)}.",
+      i = "Build one with {.code hitop_subset()} rather than by hand."
+    ),
+    call = call
+  )
+
+  kept <- scales[scales[[scale_col]] %in% subset$camelCase, , drop = FALSE]
+  reverse_numbers <- items[[item_col]][items[[reverse_col]]]
+  numbers <- kept[[number_col]]
+  names(numbers) <- kept[[scale_col]]
+
+  list(
+    n_items = length(subset$items),
+    reverse_items = which(subset$items %in% reverse_numbers),
+    items_scales = lapply(numbers, function(x) match(x, subset$items))
+  )
+}
+
+# Internal Helper: the three engine inputs for the HiTOP-SR, full or subset
+#
+# score_hitopsr() and reliability_hitopsr() resolve the same three values the
+# same way, so they share this. `subset = NULL` is the full instrument, where an
+# item's number is already its position among the 405 supplied columns. `call`
+# reaches the exported wrapper one frame up, so subset_engine_inputs()'s aborts
+# blame score_hitopsr()/reliability_hitopsr() rather than this helper.
+hitopsr_engine_inputs <- function(subset, call = rlang::caller_env()) {
+  if (is.null(subset)) {
+    return(list(
+      n_items = 405,
+      reverse_items =
+        hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE],
+      items_scales = hitopsr_scales$itemNumbers
+    ))
+  }
+
+  subset_engine_inputs(
+    subset = subset,
+    instrument = "hitopsr",
+    items = hitopsr_items,
+    scales = hitopsr_scales,
+    item_col = "HSR",
+    call = call
+  )
+}

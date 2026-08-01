@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M37 | Score HiTOP-SR subset-collected data | planned | — | normal | milestones/M37-hitopsr-subset-scoring.md |
+| M37 | Score HiTOP-SR subset-collected data | review | — | normal | milestones/M37-hitopsr-subset-scoring.md |
 | M36 | Two-line response-option legend on the PID paper forms | done | — | normal | milestones/archive/M36-pid-legend-two-lines.md |
 | M34 | A second spot-value anchor per normed PID-5 column | done | — | normal | milestones/archive/M34-second-norm-anchors.md |
 | M35 | Cell-by-cell verification of the shipped norms against the book | done | M34 | normal | milestones/archive/M35-norms-cellwise-verification.md |
@@ -31,4 +31,5 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
 - A repeatable width-budget check that a legend line fits the printable column at the form's font size — M36 proves the PID legend's two lines visually, which confirms this build but guards no later edit; Word's line breaking is not observable from `document.xml`, so any such check is an estimate. Promote if a mid-phrase wrap ever reaches a committed form unnoticed — added 2026-07-31 — lineage: M36
 - Score subset-collected HiTOP-SR data with no descriptor in hand, by working out from the column names which scales are fully present — needs its own decisions about partial coverage and name matching; useful for data that arrived from elsewhere. Promote if a researcher is ever blocked scoring a short form they did not themselves generate — added 2026-08-01 — lineage: M37
+- Teach the subset `@examples` a column-selection idiom that survives an ID column — `sim_hitopsr[s$items]` works only because that dataset is exactly the 405 items in order, while `ku_hitopsr` leads with `participant`/`biosex`, so a user copying the help-page idiom onto their own frame silently scores the wrong columns; the vignette already uses the safe name-based form. Promote if a user ever reports wrong scores traced to the documented idiom — added 2026-08-01 — lineage: M37 (review finding scored 78, below the actioning threshold)
 - Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M24
