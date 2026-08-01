@@ -315,23 +315,30 @@ test_that("the default legend matches the committed forms this milestone leaves 
 
 test_that("opts_per_line defaults to the option count, not a hardcoded four", {
   skip_if_no_docx()
-  # A three-option table must still print on ONE line by default; a hardcoded 4
-  # would pass every four-option check above while wrapping this one wrongly.
-  opts3 <- data.frame(value = 1:3, label = c("Never", "Sometimes", "Always"))
+  # FIVE options, not three: the table must discriminate the nrow(opts) default
+  # from a hardcoded 4, and only a count ABOVE 4 does. At three options both
+  # give one line -- seq(1, 3, by = 4) and seq(1, 3, by = 3) each yield a single
+  # start -- so a three-option table passes against the very mutation it names.
+  # At five, the default prints one line and a hardcoded 4 would print two.
+  opts5 <- data.frame(
+    value = 1:5,
+    label = c("Never", "Rarely", "Sometimes", "Often", "Always")
+  )
   items <- data.frame(Number = 1:3, Text = c("a", "b", "c"))
 
-  one <- make_items_table(items, "Number", opts3, 7, 10, "Times New Roman")
+  one <- make_items_table(items, "Number", opts5, 7, 10, "Times New Roman")
   f1 <- withr::local_tempfile(fileext = ".docx")
   print(flextable::body_add_flextable(officer::read_docx(), one), target = f1)
   expect_length(docx_legend_lines(f1), 1L)
+  expect_equal(nrow(docx_legend_pairs(docx_legend_lines(f1))), 5L)
 
-  two <- make_items_table(items, "Number", opts3, 7, 10, "Times New Roman", opts_per_line = 2)
+  two <- make_items_table(items, "Number", opts5, 7, 10, "Times New Roman", opts_per_line = 2)
   f2 <- withr::local_tempfile(fileext = ".docx")
   print(flextable::body_add_flextable(officer::read_docx(), two), target = f2)
-  # 3 options at 2 per line is 2 + 1, and the short final line carries no
+  # 5 options at 2 per line is 2 + 2 + 1, and the short final line carries no
   # dangling separator.
-  expect_length(docx_legend_lines(f2), 2L)
-  expect_equal(nrow(docx_legend_pairs(docx_legend_lines(f2)[[2]])), 1L)
+  expect_length(docx_legend_lines(f2), 3L)
+  expect_equal(nrow(docx_legend_pairs(docx_legend_lines(f2)[[3]])), 1L)
 })
 
 test_that("a one-item table builds without error", {
