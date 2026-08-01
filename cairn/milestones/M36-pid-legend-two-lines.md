@@ -45,7 +45,7 @@ The PID paper forms print their response-option legend on two lines of two optio
 
 - [x] T1 Add the pairs-per-line argument to `make_items_table()` (`R/generate_docx.R:236-250`), defaulting to `nrow(opts)`; split the legend into that many `add_header_lines()` values. Verify the default against the legend recovered from the pre-milestone committed `pid5_US.docx` (one-time, recorded as evidence) and lock it with a test against the committed SR/BR forms. Fix the even-row shading index in the same helper and add its regression test.
 - [x] T2 Pass 2 from the three PID generators (`R/generate_docx.R:997, 1061, 1125`); add parse-based tests over fresh tempfiles asserting two lines with the expected pairs for PID and one line for SR/BR. Anchor the assertions on line structure, not bare substring presence (LESSONS 2026-07-30, M26).
-- [ ] T3 Regenerate the six PID DOCX via `data-raw/artifacts.R` with the two filters set; confirm exactly six new manifest rows and that no other `inst/extdata/` file moved.
+- [x] T3 Regenerate the six PID DOCX via `data-raw/artifacts.R` with the two filters set; confirm exactly six new manifest rows and that no other `inst/extdata/` file moved.
 - [ ] T4 NEWS entry; open the rebuilt US and A4 forms and capture the visual confirmation; run `devtools::test()` and `devtools::check()`.
 
 ## Work log
@@ -61,6 +61,7 @@ The PID paper forms print their response-option legend on two lines of two optio
 - 2026-07-31: implementation gate added the one-item shading fix to scope as AC9 at Jeff's direction — `seq(2, n, by = 2)` counts backwards at n = 1 and aborts, reachable through a single-item subset form; carried a regression test rather than a candidate row.
 - 2026-07-31: six legend tests added to `test-generate_docx.R` plus two parsers in `helper-generators.R`; all six verified red by mutation (reverting `opts_per_line = 2` and the shading index) before being accepted green.
 - 2026-07-31: T2 done with T1 (same edit surface); full `devtools::test()` clean at FAIL 0 | WARN 0 | SKIP 1 | PASS 11704.
+- 2026-07-31: T3 done — six PID DOCX rebuilt via `data-raw/artifacts.R` (stems pid5/pid5sf/pid5bf, format docx); exactly six files changed md5 (all other `inst/extdata/` files byte-identical) and the manifest gained exactly six rows dated 2026-07-31; all six committed files parse back to the two expected legend lines.
 
 ## Decisions
 

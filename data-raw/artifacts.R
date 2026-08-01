@@ -27,7 +27,7 @@ extdata <- "inst/extdata"
 ## instrument's content actually changed. Only the rebuild loops honor this;
 ## the manifest section below still reads all files from disk and appends a row
 ## only where the checksum moved, so unrebuilt artifacts stay silent on their own.
-rebuild_stems <- c("pid5bf")
+rebuild_stems <- c("pid5", "pid5sf", "pid5bf")
 
 ## Restrict the rebuild to specific output formats, e.g. c("docx"); NULL rebuilds
 ## every format for the selected stems. Format matters independently of stem: a
@@ -117,8 +117,9 @@ check_filters_matched <- function() {
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "Scoring table gains a Total row (all 25 items): the PID-5-BF total score,",
-  "the item-level mean over all 25 items per Markon et al. (2024, p. 23)."
+  "Response-option legend split across two header lines (values 0 and 1 on",
+  "the first, 2 and 3 on the second) so no option phrase breaks mid-phrase;",
+  "legend wording, values, and labels are unchanged."
 )
 qsf_build_date <- as.Date("2026-07-16")
 qsf_note <- paste(
