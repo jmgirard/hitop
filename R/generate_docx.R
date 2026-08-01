@@ -239,14 +239,24 @@ make_items_table <- function(
   opts,
   printable_w,
   font_size,
-  font_family
+  font_family,
+  opts_per_line = nrow(opts)
 ) {
   num_opts <- nrow(opts)
-  legend_text <- paste(
-    opts$value,
-    opts$label,
-    sep = " = ",
-    collapse = " \u2022 "
+  # The legend prints `opts_per_line` response options per header line. The
+  # default puts them all on one line -- Word then breaks that line wherever
+  # the column ends, which splits an option phrase mid-phrase once the labels
+  # are long (the PID legend is 126 characters against the SR/BR's 58), so the
+  # PID generators pass 2. Layout only: the pairs and their separator are
+  # unchanged, and no line carries a trailing separator.
+  pairs <- paste(opts$value, opts$label, sep = " = ")
+  starts <- seq(1, length(pairs), by = opts_per_line)
+  legend_text <- vapply(
+    starts,
+    function(i) {
+      paste(pairs[i:min(i + opts_per_line - 1L, length(pairs))], collapse = " \u2022 ")
+    },
+    character(1)
   )
 
   table_data <- data.frame(
@@ -259,7 +269,9 @@ make_items_table <- function(
     table_data[[opt_cols[i]]] <- as.character(opts$value[i])
   }
 
-  even_rows <- seq(2, nrow(table_data), by = 2)
+  # which(), not seq(2, n, by = 2): a one-item table (a single-item subset
+  # form) makes that seq() count backwards and abort with "wrong sign in 'by'".
+  even_rows <- which(seq_len(nrow(table_data)) %% 2 == 0)
   std_border <- officer::fp_border(color = "black", width = 1.5)
 
   opt_col_width <- 0.4
@@ -1000,7 +1012,8 @@ generate_docx_pid5 <- function(
     pid_instructions$options,
     dims$pw,
     font_size,
-    font_family
+    font_family,
+    opts_per_line = 2
   )
 
   t2 <- NULL
@@ -1064,7 +1077,8 @@ generate_docx_pid5sf <- function(
     pid_instructions$options,
     dims$pw,
     font_size,
-    font_family
+    font_family,
+    opts_per_line = 2
   )
 
   t2 <- NULL
@@ -1128,7 +1142,8 @@ generate_docx_pid5bf <- function(
     pid_instructions$options,
     dims$pw,
     font_size,
-    font_family
+    font_family,
+    opts_per_line = 2
   )
 
   t2 <- NULL

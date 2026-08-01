@@ -63,6 +63,14 @@ before a CRAN submission.
   of `score_pid5(version = "BF")` or the rows of `reliability_pid5(version =
   "BF")` must be updated. The PID-5 and PID-5-SF are unaffected.
 
+* **PID-5 Word forms print the response options on two lines.** The response
+  scale printed above the items on the PID-5, PID-5-SF, and PID-5-BF Word forms
+  now runs across two lines — `0` and `1` on the first, `2` and `3` on the
+  second — so that no option phrase is broken partway through by the column
+  width. The option values and wording are unchanged, and the HiTOP-SR and
+  HiTOP-BR forms keep their single-line scale. All six PID Word files
+  (US and A4) were regenerated, with new `hitop_artifacts` entries.
+
 * **Generate a shortened HiTOP-SR from selected scales.** The new
   `hitop_subset()` describes a subset of an instrument's scales, and
   `generate_docx_hitopsr()`, `generate_qualtrics_hitopsr()`, and
