@@ -1,19 +1,18 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-01 (M37 merged and archived; M32's row pruned under terminal-row retention, two lessons captured, none retired, one review finding carried to a candidate row; all checks pass, the 20 `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md)_
+_Last hygiene check: 2026-08-01 (M38 merged and archived; M33's row pruned under terminal-row retention, six lessons captured, none retired, three review findings carried to candidate rows; all checks pass, the `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M38)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M38 | Norm-referenced PID-5 profile plots | review | — | normal | milestones/M38-pid5-profile-plots.md |
+| M38 | Norm-referenced PID-5 profile plots | done | — | normal | milestones/archive/M38-pid5-profile-plots.md |
 | M37 | Score HiTOP-SR subset-collected data | done | — | normal | milestones/archive/M37-hitopsr-subset-scoring.md |
 | M36 | Two-line response-option legend on the PID paper forms | done | — | normal | milestones/archive/M36-pid-legend-two-lines.md |
 | M34 | A second spot-value anchor per normed PID-5 column | done | — | normal | milestones/archive/M34-second-norm-anchors.md |
 | M35 | Cell-by-cell verification of the shipped norms against the book | done | M34 | normal | milestones/archive/M35-norms-cellwise-verification.md |
-| M33 | PID-5 facet-level norms | done | — | normal | milestones/archive/M33-pid5-facet-norms.md |
 
 ## Candidates
 
