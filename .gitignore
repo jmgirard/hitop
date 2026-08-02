@@ -16,3 +16,6 @@ docs
 cairn/references/sources/
 cairn/.merge-approved
 cairn/.merge-approved.pending
+
+# Stray device output from plotting in a non-interactive session
+Rplots.pdf
