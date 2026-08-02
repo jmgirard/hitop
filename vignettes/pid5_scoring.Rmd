@@ -117,3 +117,44 @@ norm_pid5(scored, scores = "pid_anhedonia", version = "FULL", append = FALSE)
 Every number returned is a cell of a published table: the nearest printed row is selected and nothing is interpolated. A score that falls outside a printed range is capped to the nearest end rather than extrapolated, and a warning reports how many observations that happened to — the `PRD` sum reaches 66 while its table stops at 55, so it is a common one to see. A scale the tables do not cover returns `NA` in both columns with a warning naming it. Every report this function makes is a warning, so a single `suppressWarnings()` call silences it.
 
 If the items were answered on a four-option response scale that starts somewhere other than 0 — 1 to 4, say — pass that range as `srange` and each score is reconciled to the published 0–3 metric before it is looked up, with a warning naming which scales were adjusted and which were left alone. The per-scale formulas are given in `?norm_pid5`.
+
+## Profile Plots
+
+Once a respondent's scores are normed, `plot_pid5()` draws them as a profile against the published metric. It takes one respondent — a profile plot shows one person — so we norm the whole dataset and hand it a single row.
+
+```{r x2e}
+#| message: false
+#| warning: false
+domains <- paste0(
+  "pid_",
+  c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
+    "psychoticism")
+)
+normed <- norm_pid5(scored, scores = domains, version = "FULL")
+```
+
+```{r x2f}
+#| fig.width: 7
+#| fig.height: 4
+#| eval: !expr requireNamespace("ggplot2", quietly = TRUE)
+plot_pid5(normed[1, ], version = "FULL")
+```
+
+The dashed line marks T = 50, the normative sample's mean, and the score axis spans the range the published tables actually print for these scales — so the axis does not rescale from respondent to respondent and two profiles are directly comparable. Nothing on the plot says whether a score is high, low, or concerning: {hitop} presents scores against norms and leaves the interpreting to you.
+
+Passing `level = "facet"` plots all 25 facets instead, grouped into a panel per domain. The APA key ties three facets to each domain; the remaining ten define no domain and are grouped separately rather than dropped.
+
+```{r x2g}
+#| fig.width: 7.5
+#| fig.height: 9
+#| message: false
+#| warning: false
+#| eval: !expr requireNamespace("ggplot2", quietly = TRUE)
+facets <- paste0("pid_", pid_scales[["FULL"]]$camelCase)
+normed_facets <- norm_pid5(scored, scores = facets, version = "FULL")
+plot_pid5(normed_facets[1, ], version = "FULL", level = "facet")
+```
+
+Set `metric = "percentile"` for a percentile axis instead of T scores. `norm_pid5()` returns percentiles as a proportion; the plot multiplies them by 100 so the axis reads 0–100.
+
+The result is an ordinary ggplot object, so you can restyle it with any ggplot2 layer — `+ ggplot2::labs(title = ...)`, a different theme, and so on.

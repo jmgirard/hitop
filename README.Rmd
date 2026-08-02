@@ -87,15 +87,16 @@ pak::pak("jmgirard/hitop")
 
 ### Phase 2
 
-- [ ] Add Normative Data (for PID-5) - *todo*
-- [ ] Add Norming Functions (for PID-5) - *todo*
-- [ ] Add Visualization Functions - *todo*
+- [x] Add Normative Data (for PID-5)
+- [x] Add Norming Functions (for PID-5)
+- [x] Add Visualization Functions (for PID-5)
 - [x] Add Package Unit Testing
 
 ### Phase 3
 
 - [ ] Add Normative Data (for HiTOP) - *waiting for data*
 - [ ] Add Norming Functions (for HiTOP) - *waiting for data*
+- [ ] Add Visualization Functions (for HiTOP) - *waiting for norms*
 - [ ] Add Individual Report Generation
 - [ ] Update Package Unit Testing
 - [ ] Submit to CRAN
