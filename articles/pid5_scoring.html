@@ -404,6 +404,45 @@ metric before it is looked up, with a warning naming which scales were
 adjusted and which were left alone. The per-scale formulas are given in
 <code><a href="../reference/norm_pid5.html">?norm_pid5</a></code>.</p>
 </div>
+<div class="section level2">
+<h2 id="profile-plots">Profile Plots<a class="anchor" aria-label="anchor" href="#profile-plots"></a>
+</h2>
+<p>Once a respondent’s scores are normed, <code><a href="../reference/plot_pid5.html">plot_pid5()</a></code> draws
+them as a profile against the published metric. It takes one respondent
+— a profile plot shows one person — so we norm the whole dataset and
+hand it a single row.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">domains</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
+<span>  <span class="st">"pid_"</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"negativeAffectivity"</span>, <span class="st">"detachment"</span>, <span class="st">"antagonism"</span>, <span class="st">"disinhibition"</span>,</span>
+<span>    <span class="st">"psychoticism"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">normed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm_pid5.html">norm_pid5</a></span><span class="op">(</span><span class="va">scored</span>, scores <span class="op">=</span> <span class="va">domains</span>, version <span class="op">=</span> <span class="st">"FULL"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pid5.html">plot_pid5</a></span><span class="op">(</span><span class="va">normed</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, version <span class="op">=</span> <span class="st">"FULL"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="pid5_scoring_files/figure-html/x2f-1.png" class="r-plt" alt="" width="672"></p>
+<p>The dashed line marks T = 50, the normative sample’s mean, and the
+score axis spans the range the published tables actually print for these
+scales — so the axis does not rescale from respondent to respondent and
+two profiles are directly comparable. Nothing on the plot says whether a
+score is high, low, or concerning: {hitop} presents scores against norms
+and leaves the interpreting to you.</p>
+<p>Passing <code>level = "facet"</code> plots all 25 facets instead,
+grouped into a panel per domain. The APA key ties three facets to each
+domain; the remaining ten define no domain and are grouped separately
+rather than dropped.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">facets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pid_"</span>, <span class="va">pid_scales</span><span class="op">[[</span><span class="st">"FULL"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">camelCase</span><span class="op">)</span></span>
+<span><span class="va">normed_facets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm_pid5.html">norm_pid5</a></span><span class="op">(</span><span class="va">scored</span>, scores <span class="op">=</span> <span class="va">facets</span>, version <span class="op">=</span> <span class="st">"FULL"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/plot_pid5.html">plot_pid5</a></span><span class="op">(</span><span class="va">normed_facets</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, level <span class="op">=</span> <span class="st">"facet"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="pid5_scoring_files/figure-html/x2g-1.png" class="r-plt" alt="" width="720"></p>
+<p>Set <code>metric = "percentile"</code> for a percentile axis instead
+of T scores. <code><a href="../reference/norm_pid5.html">norm_pid5()</a></code> returns percentiles as a
+proportion; the plot multiplies them by 100 so the axis reads 0–100.</p>
+<p>The result is an ordinary ggplot object, so you can restyle it with
+any ggplot2 layer — <code>+ ggplot2::labs(title = ...)</code>, a
+different theme, and so on.</p>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>

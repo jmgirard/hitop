@@ -16,6 +16,11 @@
 - [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
   : Convert PID-5 scale scores to normative T scores and percentiles
 
+## Plots
+
+- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+  : Plot a norm-referenced PID-5 profile
+
 ## Reliability
 
 - [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md)

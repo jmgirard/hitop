@@ -5,6 +5,19 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+- **Norm-referenced profile plots.** New
+  [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+  draws one respondent’s normed PID-5 scores as a profile against the
+  published normative tables — the five domains (plus the brief form’s
+  total), or all 25 facets grouped by domain, on a T-score or percentile
+  axis. It presents scores against norms and characterizes none of them:
+  there are no severity bands, no elevation thresholds, and no
+  annotation about what a score means. The score axis spans the range
+  the tables actually print, so two profiles on the same version are
+  directly comparable. Returns an ordinary ggplot object, which stays in
+  Suggests — install {ggplot2} to use it. See
+  [`vignette("pid5_scoring")`](https://jmgirard.github.io/hitop/articles/pid5_scoring.md).
+
 - **Scoring short forms.**
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
   and

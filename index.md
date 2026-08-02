@@ -125,11 +125,11 @@ PID-5-BFP (36) - *todo*
 
 ### Phase 2
 
-Add Normative Data (for PID-5) - *todo*
+Add Normative Data (for PID-5)
 
-Add Norming Functions (for PID-5) - *todo*
+Add Norming Functions (for PID-5)
 
-Add Visualization Functions - *todo*
+Add Visualization Functions (for PID-5)
 
 Add Package Unit Testing
 
@@ -138,6 +138,8 @@ Add Package Unit Testing
 Add Normative Data (for HiTOP) - *waiting for data*
 
 Add Norming Functions (for HiTOP) - *waiting for data*
+
+Add Visualization Functions (for HiTOP) - *waiting for norms*
 
 Add Individual Report Generation
 

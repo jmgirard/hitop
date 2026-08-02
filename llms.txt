@@ -125,11 +125,11 @@ PID-5-BFP (36) - *todo*
 
 ### Phase 2
 
-Add Normative Data (for PID-5) - *todo*
+Add Normative Data (for PID-5)
 
-Add Norming Functions (for PID-5) - *todo*
+Add Norming Functions (for PID-5)
 
-Add Visualization Functions - *todo*
+Add Visualization Functions (for PID-5)
 
 Add Package Unit Testing
 
@@ -138,6 +138,8 @@ Add Package Unit Testing
 Add Normative Data (for HiTOP) - *waiting for data*
 
 Add Norming Functions (for HiTOP) - *waiting for data*
+
+Add Visualization Functions (for HiTOP) - *waiting for norms*
 
 Add Individual Report Generation
 
@@ -164,6 +166,11 @@ Write Package Paper
 
 - [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
   : Convert PID-5 scale scores to normative T scores and percentiles
+
+## Plots
+
+- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+  : Plot a norm-referenced PID-5 profile
 
 ## Reliability
 
