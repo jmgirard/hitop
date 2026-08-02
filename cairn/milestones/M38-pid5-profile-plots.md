@@ -1,6 +1,6 @@
 # M38: Norm-referenced PID-5 profile plots
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -49,26 +49,26 @@ row, vignette section, NEWS entry, README checkbox.
       `pid_domains` order); each row's y value equals the corresponding `_t`
       input column. On BF the `GeomLine` layer's built data covers only the
       five domains, so the profile line stops before `total`.
-- [ ] AC3. With `level = "facet"` on FULL or SF, the `GeomPoint` layer built
+- [x] AC3. With `level = "facet"` on FULL or SF, the `GeomPoint` layer built
       data has exactly 25 rows distributed over 6 panels: one per domain
       holding that domain's 3 defining facets from `pid_domains$facetStems`
       (15 facets, in `pid_domains` order), and a final panel holding the 10
       facets the APA key assigns to no domain, labelled as such.
       `level = "facet"` with `version = "BF"` aborts via `cli::cli_abort()` in
       a message stating the brief form has no facet scores.
-- [ ] AC4. With `metric = "percentile"`, the `GeomPoint` layer's y values equal
+- [x] AC4. With `metric = "percentile"`, the `GeomPoint` layer's y values equal
       the corresponding `_ptl` input columns multiplied by 100 (`norm_pid5()`
       returns `_ptl` as a proportion, verified 0-1 across `pid_norms`), the
       axis spans 0-100, and the reference line sits at 50. The help page states
       the rescaling.
-- [ ] AC5. The plot carries no interpretive furniture: its built layers include
+- [x] AC5. The plot carries no interpretive furniture: its built layers include
       no `GeomRect`/`GeomTile`, exactly one `GeomHline` (or `GeomVline` after
       `coord_flip()`), and exactly one text/label layer whose `label` values are
       `setequal()` to the plotted score values — so the reference line carries
       no text label and no band or threshold annotation can ship (IP4). Axis
       breaks and limits derive from the plotted scales' own rows in `pid_norms`,
       introducing no boundary constant of this package's invention (IP2).
-- [ ] AC6. Each input branch fires in its own test: `nrow(data) != 1` aborts
+- [x] AC6. Each input branch fires in its own test: `nrow(data) != 1` aborts
       naming the row count; a requested `_t`/`_ptl` column absent from `data`
       aborts with a message naming the missing columns and pointing at
       `norm_pid5()` as the remedy;
@@ -78,7 +78,7 @@ row, vignette section, NEWS entry, README checkbox.
       informatively, verified by mocking
       `rlang::is_installed()` (the binding `calc_omega()` uses at
       `R/reliability.R:132` — *not* `check_installed()`, which never consults it).
-- [ ] AC7. A PID-5 vignette section renders the score → validity → norm → plot
+- [x] AC7. A PID-5 vignette section renders the score → validity → norm → plot
       pipeline under the same `requireNamespace()` guard, NEWS.md carries a
       user-visible entry, and the profile's `verify` slot is clean.
 
@@ -206,6 +206,80 @@ against `main` @ 2d37210. PR: https://github.com/jmgirard/hitop/pull/41
   carries a user-visible `plot_pid5()` entry with no milestone ids; profile
   `verify` slot clean — `devtools::document()` idempotent (no diff on a second
   run) and `devtools::test()` failed=0 errors=0 passed=11854.
+
+### Re-verification after review return 1
+
+Re-reviewed 2026-08-01 @ 8fce0a5 after the facet blocker and its fallout were
+fixed. AC3-AC7 were unticked and are re-ticked here against fresh evidence.
+
+- **AC3 (re).** New test *each facet panel draws only its own scales on the
+  axis* asserts per-panel axis content `c(3,3,3,3,3,10)` summing to 25, and
+  each panel's axis limits `setequal()` to the scales in that panel, for FULL
+  and SF. Mutation-confirmed: restoring the unconditional
+  `scale_y_discrete(limits =)` turns it red. Rendered and inspected: six
+  panels, correct membership, panel heights proportional to contents.
+- **AC4 (re).** Percentile test unchanged and passing; breaks now step across
+  the published span (`axis_breaks(span, step = 25)`) rather than sitting at
+  hardcoded positions, with *axis breaks step across the published span* as
+  its guard.
+- **AC5 (re).** No-furniture test passing over four combinations; the label
+  assertion now compares elementwise against the built point layer rather
+  than `setequal` against the implementation's own frame. Axis-bound test
+  passing, plus *the axis does not depend on which scales survived the NA
+  drop* — the axis is now computed from the full scale set, so the
+  documented cross-respondent comparability is structural rather than a
+  coincidence of the shipped tables.
+- **AC6 (re).** Amended at the review gate (absent-column abort keeps its own
+  message; ggplot2 branch now also covers the version floor). All branch tests
+  passing, plus the D-031 floor-drift guard, mutation-confirmed.
+- **AC7 (re).** Vignette renders; its facet chunk now suppresses norming
+  warnings. `devtools::test()` failed=0 passed=11884 (28 tests / 141
+  assertions in `test-plot_pid5.R` alone); `devtools::check()` 0 errors,
+  0 warnings, 0 notes.
+
+### Review findings
+
+23 candidate findings from three fresh-context lenses, scored by an
+independent [S] scorer.
+
+**Actioned (>= 80):**
+- **F1 (97) — fixed.** `scale_y_discrete(limits = rev(labels))` overrode
+  per-panel scale training, disabling `facet_grid`'s `free_y`/`space` and
+  drawing all 25 facet names in every panel at equal heights. Reproduced,
+  fixed by scoping the pin to the unfacetted branch, guarded by a new test.
+- **F13 (88) — fixed.** `geom_label` drawn after `geom_point` at identical
+  coordinates hid every point marker. Fixed with a `vjust` offset; the first
+  attempt (a data-space `nudge_x`) silently dropped labels for values near the
+  axis top and was itself caught and replaced, with guards for both modes.
+
+**Below threshold, fixed anyway while in the area:** F11 (78) non-halting
+helper expectation; F20 (78) unsuppressed vignette warnings; F2 (76) / F3 (74)
+comments asserting behavior that was false; F5 (68) axis from NA-drop
+survivors; F4 (60) hardcoded percentile breaks; F10 (55) label assertion
+compared to the implementation's own frame; F19 (42) duplicated panel literal;
+F6 (22) unguarded `seq()` and absent-stem axis.
+
+**Below threshold, logged not actioned (8):**
+- F9 (78) most assertions read `p$data`, a private intermediate, rather than
+  built layer data — a real deviation from D-030's own wording. → candidate row.
+- F22 (76) loop assertions carry no `info=`, echoing the M32 lesson. → candidate row.
+- F7 (68) the numeric-type check duplicates `norm_pid5()`'s near line-for-line;
+  the AC6 half was settled at the gate. → candidate row.
+- F12 (62) residual coverage gaps (the `is.logical()` branch; an unreachable
+  label fallback). Partly closed by the new breaks and panel tests.
+- F23 (55) was raised by the orchestrator and actioned via D-031, not deferred.
+- F18 (52) the profile line joins the ten unrelated "Not domain-defining"
+  facets into one series.
+- F8 (50) three abort branches undocumented on the help page; `level`/`metric`
+  case-sensitivity unstated.
+- F15 (48), F14 (42), F16 (30), F21 (30), F17 (24) — messaging vocabulary,
+  `round()` vs `round_half_up()`, row-name leakage, AC7 reading, naming style.
+
+**Process notes.** CI passed all seven jobs green over the F1 blocker,
+pkgdown included, and so did all 109 structural assertions — the defect was
+visible only in the rendered figure. A stray `Rplots.pdf`, written by an R
+graphics device during plot verification, was swept into a commit by
+`git add -A` and caught by `R CMD check`; removed and gitignored.
 
 ### Consistency gate
 
