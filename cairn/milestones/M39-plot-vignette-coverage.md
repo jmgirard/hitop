@@ -24,9 +24,11 @@ ggplot2 guard on every `plot_pid5()` chunk in all three vignettes, including
 the two that shipped at M38. Visual inspection of every figure the three
 vignettes render, recorded per figure. The `.Rbuildignore` vignette-figure
 pattern, which is a regex matching nothing it intends to. The clipped top value
-label in the facet profiles: `plot_pid5()`'s discrete scale gains an upper
-expansion wide enough for the `vjust`-offset label, applied without pinning the
-discrete limits so per-panel training survives.
+label, in both the facet and unfacetted profiles: the label's offset moves from
+the vertical rendering direction into the horizontal one, where the continuous
+score axis can be padded to hold it, and the discrete scale returns to
+ggplot2's default expansion. A `labels` argument for turning the value labels
+off.
 
 **Out:** `rank_scales()` vignette coverage → candidate row (it is a ranking
 helper, not a plot, and would widen this milestone). Image-snapshot regression
@@ -73,15 +75,21 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
       `devtools::document()` idempotent, `devtools::test()` 0 failures and
       0 errors — and `devtools::check()` reports 0 errors, 0 warnings, 0 notes
       with `pkgdown::check_pkgdown()` reporting no problems.
-- [ ] AC8. `plot_pid5()`'s facet profiles reserve room above the top scale for
-      its offset value label: for FULL and SF at `level = "facet"`, every
-      panel's built upper y bound
-      (`ggplot_build(p)$layout$panel_params[[i]]$y.range[2]`) exceeds that
-      panel's top scale position (`length(...$y$get_limits())`) by more than
-      the 0.6 ggplot2's default discrete expansion supplies, and each panel's
-      scale membership is unchanged from what AC3 asserts. Mutation-checked by
-      restoring the default expansion and confirming the test turns red. The
-      re-rendered facet figures are inspected and show no clipped label.
+- [ ] AC8. The value label's offset is horizontal rather than vertical, and the
+      discrete scale carries ggplot2's default expansion, so the room a label
+      needs no longer comes out of the panel's short dimension. Swept: FULL
+      facet, SF facet, FULL domain, and BF domain profiles rendered at 7.5x9,
+      6x4.5, and 6x1.8 inches — twelve figures, each inspected, none carrying a
+      clipped label. A test asserts the label layer carries `hjust` and no
+      `vjust`, that no panel's built y range exceeds its scale count by more
+      than the default 0.6, and that a respondent whose value sits at the axis
+      maximum yields a built label for every plotted scale with no draw-time
+      warning. Mutation-checked.
+- [ ] AC9. `plot_pid5()` takes a `labels` argument, `TRUE` by default;
+      `labels = FALSE` returns a plot carrying no `GeomLabel` layer, with its
+      point, line, and reference-line layers unchanged. Tests cover both values
+      for one facet and one unfacetted profile; the argument is documented on
+      the help page.
 
 ## Coverage
 
@@ -92,7 +100,8 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 - AC5 → T3, T6
 - AC6 → T5
 - AC7 → T7
-- AC8 → T8
+- AC8 → T9, T6
+- AC9 → T10
 
 ## Tasks
 
@@ -117,10 +126,16 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
       the `_files/` directories afterwards.
 - [x] T7. NEWS entry for the new vignette sections; run the `verify` slot,
       `devtools::check()`, and `pkgdown::check_pkgdown()`.
-- [x] T8. Widen the discrete scale's upper expansion in `plot_pid5()`'s facet
-      branch (`R/plot_pid5.R:401-420`), with a test asserting the built
-      per-panel upper bounds and unchanged panel membership; mutation-check it.
-      Re-run T6 (render + inspect) and T7 (NEWS + checks) afterwards.
+- [x] T8. Superseded by T9 at the review return — the upper-expansion fix it
+      shipped was device-size dependent.
+- [ ] T9. Move the label offset from `vjust` to `hjust` in `plot_pid5()`
+      (`R/plot_pid5.R:385-390`), pad the continuous score axis to hold it, and
+      drop T8's discrete-scale expansion so both branches return to ggplot2's
+      default. Replace T8's test per AC8; fix the three below-threshold review
+      findings in the area — the comment blaming short panels (F3), the test's
+      over-claiming name (F4), and the missing `info = version` (P1).
+- [ ] T10. Add the `labels` argument per AC9: signature, guard, roxygen, tests
+      for both values, and a NEWS mention. Re-run T6 and T7 afterwards.
 
 ## Work log
 
@@ -136,6 +151,7 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 - 2026-08-04: T8 done. `plot_pid5()`'s facet branch gains `scale_y_discrete(expand = expansion(add = c(0.6, 1.1)))` — expand only, never limits, so per-panel training survives. New test *each facet panel reserves room above its top scale for the label* asserts every panel's built upper y bound exceeds its scale count by more than ggplot2's default 0.6, that no panel lists all 25 facets, and that per-panel counts are still 3/3/3/3/3/10, for FULL and SF. Written first and confirmed red (2 failures at 0.600 <= 0.600); mutation-checked after the fix by restoring `add = c(0.6, 0.6)`, which turns it red again.
 - 2026-08-04: T6 and T7 re-run after T8. Package reinstalled so the vignettes knit against the fix (verified: installed `plot_pid5()` builds panel 1 upper bound 4.1). Counts again 3/2/1. All six figures re-inspected — both facet figures now show the top label fully inside its panel with membership unchanged, and the four unfacetted figures are as recorded above. NEWS gains a user-visible bug-fix bullet for the clipped label, backed by the T8 test. `devtools::document()` idempotent, `devtools::test()` FAIL 0 WARN 0 SKIP 1 PASS 11912, `pkgdown::check_pkgdown()` clean, `devtools::check()` 0/0/0. Status review.
 - 2026-08-04: review returned M39 to in-progress. What failed: the AC8 fix is device-size dependent — `vjust = -0.55` is an absolute label-height offset while the new headroom is 1.1 data units, so at 6x4.5in every facet panel's top label clips again (reproduced independently at review), and `NEWS.md` claims the fix unconditionally. Two more actioned findings ride along: the unfacetted branch has the same defect and no `expand` at all, and the new test's version loop carries no `info = version`. Defect returns on this milestone: 1.
+- 2026-08-04: amendment executing the review return. Scope, AC8, and the tasks are re-cut around a horizontal label offset — the vertical direction is the panel's short one and no data-space reservation in it survives a smaller device, whereas the continuous score axis can be padded. Chosen at Jeff's gate over disabling panel clipping (rejected outright) and over reserving the space in physical units (kept in reserve, fiddlier); falsified by a clipped label at any size in AC8's twelve-figure sweep. AC9 adds a `labels` argument: Jeff asked for labels to drop out automatically when they would overlap, which ggplot2 cannot decide at build time because the device size is unknown until draw time, so the argument is the manual form of it and a draw-time geom is left unbuilt. T8 is superseded rather than reopened.
 
 ## Decisions
 
