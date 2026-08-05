@@ -5,6 +5,16 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+- The scoring vignettes described the `calc_se` standard errors
+  incorrectly and now describe what is actually computed. The divisor is
+  the number of items a respondent answered, not the number of items on
+  the scale. A PID-5 short-form domain score is a mean of three facet
+  scores rather than of items, so its standard error is taken over those
+  three facet scores. The vignettes also no longer suggest converting
+  these standard errors into confidence intervals: they summarize how
+  much a respondent’s answers varied within a scale, not how precisely
+  the scale measures the trait.
+
 - **Norm-referenced profile plots.** New
   [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
   draws one respondent’s normed PID-5 scores as a profile against the

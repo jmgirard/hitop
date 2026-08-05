@@ -283,11 +283,15 @@ or even turn it off (e.g., setting it to <code>""</code>) using the
 <h2 id="simple-standard-errors">Simple Standard Errors<a class="anchor" aria-label="anchor" href="#simple-standard-errors"></a>
 </h2>
 <p>In addition to calculating each scale score as the mean of its
-corresponding items, we can also calculate each scale score’s standard
-error as the SD of its corresponding items divided by the square root of
-its number of items. These standard errors are especially useful when
-plotting the scores as they can be converted into confidence intervals.
-We turn this on using <code>calc_se</code>.</p>
+corresponding items, we can also calculate a standard error for each
+scale score: the SD of the items the respondent actually answered
+divided by the square root of how many of those items they answered. We
+turn this on using <code>calc_se</code>.</p>
+<p>Note what these numbers do and do not describe. Each one summarizes
+how much a respondent’s answers varied within a scale; it is not an
+estimate of how precisely the scale measures the underlying trait, so it
+does not give a confidence interval for a respondent’s true score. For
+measurement precision, see the reliability coefficients below.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopbr.html">score_hitopbr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopbr</span>,</span>

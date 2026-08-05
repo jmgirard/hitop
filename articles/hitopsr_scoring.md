@@ -208,11 +208,16 @@ scores
 ## Simple Standard Errors
 
 In addition to calculating each scale score as the mean of its
-corresponding items, we can also calculate each scale score’s standard
-error as the SD of its corresponding items divided by the square root of
-its number of items. These standard errors are especially useful when
-plotting the scores as they can be converted into confidence intervals.
-We turn this on using `calc_se`.
+corresponding items, we can also calculate a standard error for each
+scale score: the SD of the items the respondent actually answered
+divided by the square root of how many of those items they answered. We
+turn this on using `calc_se`.
+
+Note what these numbers do and do not describe. Each one summarizes how
+much a respondent’s answers varied within a scale; it is not an estimate
+of how precisely the scale measures the underlying trait, so it does not
+give a confidence interval for a respondent’s true score. For
+measurement precision, see the reliability coefficients below.
 
 ``` r
 
