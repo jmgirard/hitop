@@ -2,12 +2,13 @@
 
 _The only authority on milestone status. Grouped by status, not ID._
 _Last hygiene check: 2026-08-01 (M38 merged and archived; M33's row pruned under terminal-row retention, six lessons captured, none retired, three review findings carried to candidate rows; all checks pass, the `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M38)._
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M40)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M39 | Profile plots in the short- and brief-form vignettes | planned | — | normal | milestones/M39-plot-vignette-coverage.md |
 | M38 | Norm-referenced PID-5 profile plots | done | — | normal | milestones/archive/M38-pid5-profile-plots.md |
 | M37 | Score HiTOP-SR subset-collected data | done | — | normal | milestones/archive/M37-hitopsr-subset-scoring.md |
 | M36 | Two-line response-option legend on the PID paper forms | done | — | normal | milestones/archive/M36-pid-legend-two-lines.md |
@@ -15,6 +16,8 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 | M35 | Cell-by-cell verification of the shipped norms against the book | done | M34 | normal | milestones/archive/M35-norms-cellwise-verification.md |
 
 ## Candidates
+
+- `rank_scales()` vignette coverage — the function is exported, listed in `_pkgdown.yml`, and carries a help-page example, but appears in no vignette, so the only worked demonstration of ranking a respondent's highest scales is on the reference page. Promote if a researcher is ever unable to work out how to rank scales from the help page alone — added 2026-08-04 — lineage: M39 (scoped out at the plan gate as a ranking helper, not a plot)
 
 - An anchor catching an *upward* percentile displacement (every row taking its successor's value) — M34 closes the downward direction only; its second anchors happen to cover the upward direction on 34 of the 66 T-scored columns, so 32 would need a third hand-read anchor, and no single anchor can serve both directions on the 14 columns with no interior T differing from both neighbours. Promote if an upward displacement ever reaches the shipped dataset — added 2026-07-31, figure corrected 2026-07-31 at M34 review (the row was written pre-M34 and said 41, which was the pre-M34 count) — lineage: M34 (which absorbed M33's original second-anchor row)
 - Commit the norms CSVs or the book extraction as test fixtures so M35's cell-by-cell comparison can run in CI rather than only when the maintainer runs it — costs ~42 KB duplicating data already in `pid_norms`, and a second copy can drift; needs its own decision. Promote if a norms defect ever reaches a release through a path where the maintainer did not re-run the script — added 2026-07-31 — lineage: M35
