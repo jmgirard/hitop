@@ -429,35 +429,90 @@ test_that("each facet panel draws only its own scales on the axis", {
   }
 })
 
-test_that("each facet panel reserves room above its top scale for the label", {
-  # The value label is offset off its point with `vjust`, a RENDERING property:
-  # layer data is byte-identical whether the label lands inside the panel or is
-  # clipped by its top edge, so every assertion above stays green over a label
-  # nobody can read. ggplot2's default discrete expansion adds 0.6, which the
-  # short facet panels do not cover. This is the guard for that.
-  for (version in c("FULL", "SF")) {
-    p <- plot_pid5(
-      normed_one(version, level = "facet"),
-      version = version,
-      level = "facet"
-    )
+test_that("the value label is offset horizontally, not into the panel height", {
+  # A rendering offset is an absolute distance; room reserved for it on the
+  # DISCRETE axis is measured in data units whose physical size shrinks with
+  # the panel. So a `vjust` offset is clipped by the panel edge on a small
+  # enough device however much discrete expansion is added -- which an earlier
+  # fix here did, and which layer data cannot see. The offset belongs on the
+  # continuous axis, where padding is the room the label needs. This is the
+  # guard for that direction.
+  for (version in c("FULL", "SF", "BF")) {
+    level <- if (identical(version, "BF")) "domain" else "facet"
+    p <- plot_pid5(normed_one(version, level = level), version = version, level = level)
+    i <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomLabel"), TRUE))
+    expect_length(i, 1)
+    expect_true("hjust" %in% names(p$layers[[i]]$aes_params), info = version)
+    expect_false("vjust" %in% names(p$layers[[i]]$aes_params), info = version)
+    expect_null(p$layers[[i]]$position$x, info = version)
+
+    # And no room is taken out of the panel height: the discrete axis carries
+    # ggplot2's default expansion of 0.6 and nothing wider.
     b <- ggplot2::ggplot_build(p)
-    for (i in seq_along(b$layout$panel_params)) {
-      n_scales <- length(b$layout$panel_params[[i]]$y$get_limits())
-      upper <- b$layout$panel_params[[i]]$y.range[[2]]
-      expect_gt(upper - n_scales, 0.6)
-      # Widening the expansion must not pin the discrete limits: doing so
-      # cancels per-panel training and every panel lists all 25 facets.
-      expect_lt(n_scales, 25L)
-    }
-    # Panel sizes are still trained per panel, as the test above asserts.
-    per_panel <- vapply(
+    headroom <- vapply(
       b$layout$panel_params,
-      function(pp) length(pp$y$get_limits()),
-      integer(1)
+      function(pp) pp$y.range[[2]] - length(pp$y$get_limits()),
+      numeric(1)
     )
-    expect_equal(per_panel, c(3L, 3L, 3L, 3L, 3L, 10L), info = version)
+    expect_equal(headroom, rep(0.6, length(headroom)), info = version)
   }
+})
+
+test_that("a value at the end of the axis still gets its label drawn", {
+  # The hazard the horizontal offset has to clear: a score at the top of the
+  # published span must not push its label past the axis limit, where ggplot2
+  # drops it with only a draw-time warning that ggplot_build() never raises.
+  # The continuous axis is padded on the label side for exactly this case.
+  for (metric in c("t", "percentile")) {
+    normed <- normed_one("FULL", level = "domain")
+    suffix <- if (identical(metric, "t")) "_t" else "_ptl"
+    cols <- grep(paste0(suffix, "$"), names(normed), value = TRUE)
+    # Pin every scale to the largest value the tables print FOR THE SCALES THIS
+    # PLOT DRAWS -- that is the axis maximum, recomputed from `pid_norms` here
+    # rather than read back off the plot (IP2).
+    stems <- sub("^pid_", "", sub(paste0(suffix, "$"), "", cols))
+    rows <- pid_norms[
+      pid_norms$version == "FULL" & pid_norms$scale %in% stems, , drop = FALSE
+    ]
+    top <- max(rows[[if (identical(metric, "t")) "tscore" else "percentile"]], na.rm = TRUE)
+    normed[cols] <- top
+    p <- plot_pid5(normed, version = "FULL", metric = metric)
+
+    built <- ggplot2::ggplot_build(p)$data
+    lab <- built[[which(vapply(p$layers, function(l) inherits(l$geom, "GeomLabel"), TRUE))]]
+    expect_equal(nrow(lab), length(cols), info = metric)
+    # And drawing it emits nothing -- the dropped-label warning fires at draw
+    # time, not at build time.
+    expect_no_warning(ggplot2::ggplot_gtable(ggplot2::ggplot_build(p)))
+  }
+})
+
+test_that("labels = FALSE drops the value labels and leaves the rest alone", {
+  for (version in c("FULL", "BF")) {
+    level <- if (identical(version, "BF")) "domain" else "facet"
+    normed <- normed_one(version, level = level)
+    on <- plot_pid5(normed, version = version, level = level)
+    off <- plot_pid5(normed, version = version, level = level, labels = FALSE)
+
+    geoms <- function(p) vapply(p$layers, function(l) class(l$geom)[1], character(1))
+    expect_true("GeomLabel" %in% geoms(on), info = version)
+    expect_false("GeomLabel" %in% geoms(off), info = version)
+    # Everything else is untouched: same layers, in the same order.
+    expect_equal(unname(setdiff(geoms(on), "GeomLabel")), unname(geoms(off)), info = version)
+
+    # And the points and profile line still carry the same data.
+    b_on <- ggplot2::ggplot_build(on)$data
+    b_off <- ggplot2::ggplot_build(off)$data
+    expect_equal(b_off[[3]]$x, b_on[[3]]$x, info = version)
+    expect_equal(b_off[[2]]$x, b_on[[2]]$x, info = version)
+  }
+})
+
+test_that("labels must be TRUE or FALSE", {
+  normed <- normed_one("BF")
+  expect_error(plot_pid5(normed, version = "BF", labels = "yes"), "must be")
+  expect_error(plot_pid5(normed, version = "BF", labels = NA), "must be")
+  expect_error(plot_pid5(normed, version = "BF", labels = c(TRUE, TRUE)), "must be")
 })
 
 test_that("the unfacetted profile pins its scale order against layer training", {
@@ -532,9 +587,9 @@ test_that("every point keeps a visible marker and an undropped label", {
     expect_true(all(lab$x >= min(value_limits(p)) & lab$x <= max(value_limits(p))))
 
     # The label shares the point's data position; separation is a rendering
-    # property (vjust), so it can never push a value off the axis.
+    # property (hjust), so it can never push a value off the axis.
     expect_equal(lab$x, pts$x, info = paste(case$v, case$m))
-    expect_true(all(lab$vjust != 0.5))
+    expect_true(all(lab$hjust != 0.5), info = paste(case$v, case$m))
   }
 })
 

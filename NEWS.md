@@ -15,10 +15,14 @@ before a CRAN submission.
   forms: `vignette("pid5_scoring")`, `vignette("pid5sf_scoring")`, and
   `vignette("pid5bf_scoring")`.
 
-* `plot_pid5(level = "facet")` no longer clips the topmost value label in each
-  panel. The labels are offset off their points, and the panels did not reserve
-  room for that offset, so the top label in a panel was cut off by the panel
-  edge.
+* `plot_pid5()` now places each value label to the right of its point rather
+  than above it, and pads the score axis to hold it. Offsetting upward took the
+  room out of the panel's height, where it ran out on a smaller figure and the
+  top label in each panel was clipped.
+
+* `plot_pid5()` gains a `labels` argument. Set `labels = FALSE` to draw the
+  points and profile line without the value labels, which crowd each other in a
+  small figure.
 
 * **Scoring short forms.** `score_hitopsr()` and `reliability_hitopsr()` gain a
   `subset` argument taking the same short-form description that

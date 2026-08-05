@@ -9,6 +9,7 @@ plot_pid5(
   version = c("FULL", "SF", "BF"),
   level = c("domain", "facet"),
   metric = c("t", "percentile"),
+  labels = TRUE,
   prefix = "pid_"
 )
 }
@@ -32,6 +33,12 @@ final panel rather than being dropped.}
 proportion; this function multiplies them by 100 so the axis reads on the
 familiar 0-100 percentile scale.}
 
+\item{labels}{Whether to label each point with its rounded value. \code{TRUE} by
+default. Set \code{FALSE} for a small figure, where the labels crowd each other
+-- the points and profile line are unchanged. This is a choice you make,
+not one the function can make for you: a plot is assembled before anything
+knows what size it will be drawn at.}
+
 \item{prefix}{The column-name prefix used when the scores were computed, as
 passed to \code{\link[=score_pid5]{score_pid5()}} and \code{\link[=norm_pid5]{norm_pid5()}}. Pasted onto each scale's
 camelCase name to find its column.}
@@ -51,7 +58,8 @@ profile is the clinician's job, not this package's.
 \subsection{What the plot draws}{
 
 Each plotted scale gets a point at its normed value, labelled with that
-value, and the points are joined by a profile line. A single reference line
+value just to its right (set \code{labels = FALSE} to drop the labels), and the
+points are joined by a profile line. A single reference line
 marks the normative sample's midpoint -- T = 50, or the 50th percentile.
 Both are definitional properties of the metrics themselves rather than
 thresholds this package chose.
