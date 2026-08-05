@@ -1,11 +1,11 @@
 # M39: Profile plots in the short- and brief-form vignettes
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP4
-- **Branch/PR:** —
+- **Branch/PR:** `m39-plot-vignette-coverage`
 
 ## Goal
 
@@ -110,6 +110,7 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 - 2026-08-04: created by /milestone-plan.
 - 2026-08-04: plan gate chose a version-aware `rlang::is_installed("ggplot2", version = "3.4.0")` guard in all three vignettes over copying M38's `requireNamespace("ggplot2")` guard, because the weaker guard lets a chunk evaluate on ggplot2 < 3.4.0 and then abort inside `plot_pid5()`; falsified by a vignette build failing because `rlang` is unavailable at knit time, or by the guard diverging from the D-031 floor.
 - 2026-08-04: plan gate chose one-off visual inspection recorded per figure over committing a maintainer render-and-look script and over reopening D-030 for image snapshots, because D-030's stated reopening condition — a purely visual regression leaving layer data unchanged — has not occurred; falsified by any visual defect reaching a release past green structural assertions, which is the same evidence class D-030 names.
+- 2026-08-04: branch `m39-plot-vignette-coverage` cut from main @ 206959a; status in-progress.
 - 2026-08-04: plan-gate criteria audit ([O], fresh context) returned six findings: the figure-count criterion was unsatisfiable because `html_vignette` self-containment leaves no figure files on disk (fixed by naming `self_contained = FALSE` and clearing `_files/` first), confirming the facet refusal against a rendered figure was unreachable because a refusal renders no figure (fixed by routing it to the named test), three under-specified terms — "plotting chunk", "grep'd", "the points it should" — now name what they mean, and the ggplot2 guard mismatch was routed to the question gate. It also found `.Rbuildignore`'s `^vignettes/*_files$` matches nothing intended, absorbed as AC6/T5.
 
 ## Decisions
