@@ -11,7 +11,9 @@ before a CRAN submission.
   thresholds, and no annotation about what a score means. The score axis spans
   the range the tables actually print, so two profiles on the same version are
   directly comparable. Returns an ordinary ggplot object, which stays in
-  Suggests — install {ggplot2} to use it. See `vignette("pid5_scoring")`.
+  Suggests — install {ggplot2} to use it. Worked profile examples for all three
+  forms: `vignette("pid5_scoring")`, `vignette("pid5sf_scoring")`, and
+  `vignette("pid5bf_scoring")`.
 
 * **Scoring short forms.** `score_hitopsr()` and `reliability_hitopsr()` gain a
   `subset` argument taking the same short-form description that
