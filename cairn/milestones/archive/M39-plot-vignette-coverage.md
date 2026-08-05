@@ -1,0 +1,11 @@
+# M39: Profile plots in the short- and brief-form vignettes
+
+**Status:** done (2026-08-05, PR #42 https://github.com/jmgirard/hitop/pull/42)
+
+**Goal:** Give every PID-5 form's scoring vignette a rendered profile plot, so the plotting surface is demonstrated for the short and brief forms rather than for the full form alone.
+
+**Outcome:** `## Profile Plots` sections in `pid5sf_scoring.Rmd` (domain + facet) and `pid5bf_scoring.Rmd` (domain, plus prose that `total` sits off the profile line and `level = "facet"` is refused); a rendered `metric = "percentile"` chunk in `pid5_scoring.Rmd`. All six `plot_pid5()` chunks now guard on `rlang::is_installed("ggplot2", version = "3.4.0")`, matching D-031's floor — the M38 pair checked only that ggplot2 existed. `plot_pid5()` gained a `labels` argument (default `TRUE`, `validate_flag()`-checked) and moved its value-label offset from `vjust` to `hjust = -0.6`, padding the continuous axis `expansion(mult = c(0.03, 0.12))` and returning the discrete axis to ggplot2's default; the earlier `vjust` offset took its room from the panel's height, where it ran out on smaller figures and clipped the top label in every panel. The fit is promised only at figure widths of about 7 inches or more, stated in `?plot_pid5` and NEWS, with `labels = FALSE` below. `.Rbuildignore`'s `^vignettes/*_files$` corrected to `^vignettes/.*_files$` — the old form was a regex matching nothing intended.
+
+**Decisions:** none promoted. AC8 was amended twice at the maintainer's gate — first to add the clipped-label fix, then to bound its promise by figure width after the first fix proved device-size dependent. `coord_cartesian(clip = "off")` was declined twice; reserving the space in physical units stays unused.
+
+**Review:** Two rounds. Round 1 returned the milestone: F1 (92) showed the first fix held only at the vignette's figure size. Round 2, 29 findings from three lenses, two actioned — D7 (85) a vacuous `expect_null()` assertion that could not fail for the defect it named, replaced with a mutation-confirmed one; D9 (82) missing `info =` labels. Four fixed in passing, one rejected, four carried to candidate rows. Four mutations red. One defect return. M38's `nudge_x` lesson retired by enforcement — the replacement assertion fails on exactly that mistake — and its device-dependence successor captured in its place.
