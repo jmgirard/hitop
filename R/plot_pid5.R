@@ -22,10 +22,12 @@
 #'   proportion; this function multiplies them by 100 so the axis reads on the
 #'   familiar 0-100 percentile scale.
 #' @param labels Whether to label each point with its rounded value. `TRUE` by
-#'   default. Set `FALSE` for a small figure, where the labels crowd each other
-#'   -- the points and profile line are unchanged. This is a choice you make,
-#'   not one the function can make for you: a plot is assembled before anything
-#'   knows what size it will be drawn at.
+#'   default. The labels need a figure about 7 inches wide or more: below that,
+#'   a label on a score at the top of the published span runs into the edge of
+#'   the panel and is cut off. Set `labels = FALSE` for a narrower figure and
+#'   the points and profile line are drawn without them. This is a choice you
+#'   make, not one the function can make for you -- a plot is assembled before
+#'   anything knows what size it will be drawn at.
 #' @param prefix The column-name prefix used when the scores were computed, as
 #'   passed to [score_pid5()] and [norm_pid5()]. Pasted onto each scale's
 #'   camelCase name to find its column.

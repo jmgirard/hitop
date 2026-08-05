@@ -20,9 +20,9 @@ before a CRAN submission.
   room out of the panel's height, where it ran out on a smaller figure and the
   top label in each panel was clipped.
 
-* `plot_pid5()` gains a `labels` argument. Set `labels = FALSE` to draw the
-  points and profile line without the value labels, which crowd each other in a
-  small figure.
+* `plot_pid5()` gains a `labels` argument. The value labels need a figure about
+  7 inches wide or more; set `labels = FALSE` for a narrower one and the points
+  and profile line are drawn without them.
 
 * **Scoring short forms.** `score_hitopsr()` and `reliability_hitopsr()` gain a
   `subset` argument taking the same short-form description that

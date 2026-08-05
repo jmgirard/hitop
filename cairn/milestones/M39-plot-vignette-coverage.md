@@ -1,6 +1,6 @@
 # M39: Profile plots in the short- and brief-form vignettes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -77,14 +77,18 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
       with `pkgdown::check_pkgdown()` reporting no problems.
 - [ ] AC8. The value label's offset is horizontal rather than vertical, and the
       discrete scale carries ggplot2's default expansion, so the room a label
-      needs no longer comes out of the panel's short dimension. Swept: FULL
-      facet, SF facet, FULL domain, and BF domain profiles rendered at 7.5x9,
-      6x4.5, and 6x1.8 inches — twelve figures, each inspected, none carrying a
+      needs is taken on the continuous axis rather than out of the panel's
+      height. The promise is bounded by figure width and documented as such:
+      `?plot_pid5` states that value labels need a figure about 7 inches wide
+      or more, and directs narrower figures to `labels = FALSE`. Swept: FULL
+      facet, SF facet, FULL domain, and BF domain profiles rendered at 7.5x9
+      and 7x4.5 inches with labels on, and at 6x1.8 inches with
+      `labels = FALSE` — twelve figures, each inspected, none carrying a
       clipped label. A test asserts the label layer carries `hjust` and no
       `vjust`, that no panel's built y range exceeds its scale count by more
-      than the default 0.6, and that a respondent whose value sits at the axis
-      maximum yields a built label for every plotted scale with no draw-time
-      warning. Mutation-checked.
+      than the default 0.6, that the panel reserves room past the axis limit on
+      the label side, and that a value at the axis maximum yields a built label
+      for every plotted scale with no draw-time warning. Mutation-checked.
 - [ ] AC9. `plot_pid5()` takes a `labels` argument, `TRUE` by default;
       `labels = FALSE` returns a plot carrying no `GeomLabel` layer, with its
       point, line, and reference-line layers unchanged. Tests cover both values
@@ -128,13 +132,13 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
       `devtools::check()`, and `pkgdown::check_pkgdown()`.
 - [x] T8. Superseded by T9 at the review return — the upper-expansion fix it
       shipped was device-size dependent.
-- [ ] T9. Move the label offset from `vjust` to `hjust` in `plot_pid5()`
+- [x] T9. Move the label offset from `vjust` to `hjust` in `plot_pid5()`
       (`R/plot_pid5.R:385-390`), pad the continuous score axis to hold it, and
       drop T8's discrete-scale expansion so both branches return to ggplot2's
       default. Replace T8's test per AC8; fix the three below-threshold review
       findings in the area — the comment blaming short panels (F3), the test's
       over-claiming name (F4), and the missing `info = version` (P1).
-- [ ] T10. Add the `labels` argument per AC9: signature, guard, roxygen, tests
+- [x] T10. Add the `labels` argument per AC9: signature, guard, roxygen, tests
       for both values, and a NEWS mention. Re-run T6 and T7 afterwards.
 
 ## Work log
@@ -154,6 +158,9 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 - 2026-08-04: amendment executing the review return. Scope, AC8, and the tasks are re-cut around a horizontal label offset — the vertical direction is the panel's short one and no data-space reservation in it survives a smaller device, whereas the continuous score axis can be padded. Chosen at Jeff's gate over disabling panel clipping (rejected outright) and over reserving the space in physical units (kept in reserve, fiddlier); falsified by a clipped label at any size in AC8's twelve-figure sweep. AC9 adds a `labels` argument: Jeff asked for labels to drop out automatically when they would overlap, which ggplot2 cannot decide at build time because the device size is unknown until draw time, so the argument is the manual form of it and a draw-time geom is left unbuilt. T8 is superseded rather than reopened.
 - 2026-08-04: T9/T10 implemented — label offset moved to `hjust = -0.6`, continuous axis padded `mult = c(0.03, 0.12)`, the facet branch's discrete expansion removed, `labels` argument added with `validate_flag()`, roxygen and NEWS updated, and F3/F4/P1 fixed in the area. Three mutations all red: reverting to `vjust` (10 failures), re-adding the discrete expansion (2), dropping the axis padding (2) — the third only after a further assertion was added, since the first form of the test missed it entirely.
 - 2026-08-04: AC8's twelve-figure sweep FAILED at figure 8. SF facet at 6x4.5in clips its `100` label to `10` at the right panel edge. Same shape as the defect this milestone already returned once for: the `hjust` offset and the label's width are absolute, while the padding holding them is a proportion of the data range, so it shrinks with panel width. Measured: the worst case (a three-digit value at the axis maximum) fits down to ~7in wide and clips below. `coord_cartesian(clip = "off")` holds at every width tested by drawing the label into the margin. Second failure of AC8 by a new mechanism of the same shape — taken back to Jeff rather than retuned a third time.
+- 2026-08-04: AC8 amended at Jeff's gate to a bounded promise — the padding approach is kept and the guarantee is stated as a figure-width floor rather than claimed unconditionally. Measured on the worst case (a three-digit value at the axis maximum on an SF facet profile): fits at 7in wide, clips at 6.5in. Chosen over `coord_cartesian(clip = "off")`, which held at every width tested by drawing into the margin but was declined twice, and over escalating via a review brief; falsified by a clipped label at or above 7in. `?plot_pid5` and NEWS both carry the width floor and point narrower figures at `labels = FALSE`.
+- 2026-08-04: AC8's re-run sweep passes — twelve figures (FULL facet, SF facet, FULL domain, BF domain at 7.5x9 and 7x4.5 with labels, and at 6x1.8 with `labels = FALSE`), each inspected, none carrying a clipped label. The 6x1.8 facet figures are illegible from row crowding at that height, which is a separate limitation and not a clipped label. Vignettes re-rendered (3/2/1 figures, all six inspected, all clean; both plotting chunks sit at fig.width 7 and 7.5, at or above the documented floor). `devtools::test()` PASS 11920, `check_pkgdown()` clean, `devtools::check()` 0/0/0 after removing a stray `Rplots.pdf` written by a grid probe. Status review.
+- 2026-08-04: candidate row added for Jeff's hierarchical-profile mockup, shared in chat this session; the image is not committed anywhere, so the row describes it rather than pointing at it.
 
 ## Decisions
 

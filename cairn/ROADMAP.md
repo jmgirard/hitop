@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M39 | Profile plots in the short- and brief-form vignettes | in-progress | — | normal | milestones/M39-plot-vignette-coverage.md |
+| M39 | Profile plots in the short- and brief-form vignettes | review | — | normal | milestones/M39-plot-vignette-coverage.md |
 | M38 | Norm-referenced PID-5 profile plots | done | — | normal | milestones/archive/M38-pid5-profile-plots.md |
 | M37 | Score HiTOP-SR subset-collected data | done | — | normal | milestones/archive/M37-hitopsr-subset-scoring.md |
 | M36 | Two-line response-option legend on the PID paper forms | done | — | normal | milestones/archive/M36-pid-legend-two-lines.md |
@@ -17,6 +17,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 ## Candidates
 
+- Hierarchical PID-5 profile display in the shape of Jeff's HiTOP-SR mockup — one block per level of the hierarchy, each a table of scale names, `T [95% CI]` values, and a per-row glyph plot with SD gridlines, using indent markers (`>`, `>>`) and a distinct glyph per level. Mockup shared in chat 2026-08-04 and not committed anywhere, so it lives only in that conversation. Adapting it to the PID-5 needs decisions `plot_pid5()` does not make today: the PID-5 hierarchy is two levels (domain, facet) against the mockup's four, and the 10 non-domain-defining facets have no parent to nest under. Its CI bars and its cutoff-based fills are the two rows above, each blocked by its own condition. Promote when hierarchical HiTOP-SR scoring is finalized, or if the two-level PID-5 form is wanted on its own — added 2026-08-04
 - `rank_scales()` vignette coverage — the function is exported, listed in `_pkgdown.yml`, and carries a help-page example, but appears in no vignette, so the only worked demonstration of ranking a respondent's highest scales is on the reference page. Promote if a researcher is ever unable to work out how to rank scales from the help page alone — added 2026-08-04 — lineage: M39 (scoped out at the plan gate as a ranking helper, not a plot)
 
 - An anchor catching an *upward* percentile displacement (every row taking its successor's value) — M34 closes the downward direction only; its second anchors happen to cover the upward direction on 34 of the 66 T-scored columns, so 32 would need a third hand-read anchor, and no single anchor can serve both directions on the 14 columns with no interior T differing from both neighbours. Promote if an upward displacement ever reaches the shipped dataset — added 2026-07-31, figure corrected 2026-07-31 at M34 review (the row was written pre-M34 and said 41, which was the pre-M34 count) — lineage: M34 (which absorbed M33's original second-anchor row)
