@@ -15,6 +15,11 @@ before a CRAN submission.
   forms: `vignette("pid5_scoring")`, `vignette("pid5sf_scoring")`, and
   `vignette("pid5bf_scoring")`.
 
+* `plot_pid5(level = "facet")` no longer clips the topmost value label in each
+  panel. The labels are offset off their points, and the panels did not reserve
+  room for that offset, so the top label in a panel was cut off by the panel
+  edge.
+
 * **Scoring short forms.** `score_hitopsr()` and `reliability_hitopsr()` gain a
   `subset` argument taking the same short-form description that
   `hitop_subset()` builds and the `generate_*_hitopsr()` functions consume. Give

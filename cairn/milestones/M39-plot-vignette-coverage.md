@@ -1,6 +1,6 @@
 # M39: Profile plots in the short- and brief-form vignettes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -112,12 +112,12 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
       (`vignettes/pid5_scoring.Rmd:139`) and `x2g`
       (`vignettes/pid5_scoring.Rmd:152`).
 - [x] T5. Fix `.Rbuildignore`'s `^vignettes/*_files$` to `^vignettes/.*_files$`.
-- [ ] T6. Render the three vignettes non-self-contained into a scratch tree,
+- [x] T6. Render the three vignettes non-self-contained into a scratch tree,
       open every figure, and record one inspection line per figure; clean up
       the `_files/` directories afterwards.
-- [ ] T7. NEWS entry for the new vignette sections; run the `verify` slot,
+- [x] T7. NEWS entry for the new vignette sections; run the `verify` slot,
       `devtools::check()`, and `pkgdown::check_pkgdown()`.
-- [ ] T8. Widen the discrete scale's upper expansion in `plot_pid5()`'s facet
+- [x] T8. Widen the discrete scale's upper expansion in `plot_pid5()`'s facet
       branch (`R/plot_pid5.R:401-420`), with a test asserting the built
       per-panel upper bounds and unchanged panel membership; mutation-check it.
       Re-run T6 (render + inspect) and T7 (NEWS + checks) afterwards.
@@ -133,6 +133,8 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 - 2026-08-04: T6 done. All three vignettes rendered with `self_contained = FALSE` after clearing their `_files/` directories; png counts 3 (FULL) / 2 (SF) / 1 (BF) equal the per-vignette `plot_pid5(` chunk counts. All six figures opened and inspected: FULL `x2f` five domains on a T axis, line joins all five; FULL `x2g` 25 facets over six panels sized 3/3/3/3/3/10, lines join within a panel only; FULL `x2h` the same five domains on a percentile axis with labelled breaks 0/25/50/75/100; SF `x9` five domains on a T axis, line joins all five; SF `x10` the same six-panel facet layout for the short form; BF `profile-plot` six scales on a T axis with the line joining the five domains and stopping before Total, whose point is drawn unconnected. Every figure carries one dashed reference line at the metric's midpoint and no bands or annotations. Rendered artifacts deleted afterwards; tree clean.
 - 2026-08-04: T7 done. The existing 0.2.0 `plot_pid5()` NEWS bullet's single vignette pointer now names all three scoring vignettes; no new bullet, since this milestone changes no behavior. `devtools::document()` idempotent (only NEWS.md modified after the run), `devtools::test()` FAIL 0 WARN 0 SKIP 1 PASS 11886, `pkgdown::check_pkgdown()` "No problems found.", `devtools::check()` 0 errors 0 warnings 0 notes with vignette re-building OK. Status review.
 - 2026-08-04: amendment at Jeff's report that the facet plots clip their top value label. Scope gains the fix, plus AC8 and T8; T6 and T7 unticked for re-run and status returned to in-progress. The defect is in M38's shipped `plot_pid5()`, not in M39's vignette work — the full-form facet figure clips too — and is invisible to layer data because `vjust` is a rendering property, which is the cost D-030 names. Chosen over routing it to `/hotfix` on its own branch, because the branch is already open on these very figures and shipping M39's facet figures clipped was the alternative; falsified if the fix turns out to need changes beyond the discrete scale's expansion. D-030 is not reopened: the guard asserts built panel bounds, which is what D-030 prescribes.
+- 2026-08-04: T8 done. `plot_pid5()`'s facet branch gains `scale_y_discrete(expand = expansion(add = c(0.6, 1.1)))` — expand only, never limits, so per-panel training survives. New test *each facet panel reserves room above its top scale for the label* asserts every panel's built upper y bound exceeds its scale count by more than ggplot2's default 0.6, that no panel lists all 25 facets, and that per-panel counts are still 3/3/3/3/3/10, for FULL and SF. Written first and confirmed red (2 failures at 0.600 <= 0.600); mutation-checked after the fix by restoring `add = c(0.6, 0.6)`, which turns it red again.
+- 2026-08-04: T6 and T7 re-run after T8. Package reinstalled so the vignettes knit against the fix (verified: installed `plot_pid5()` builds panel 1 upper bound 4.1). Counts again 3/2/1. All six figures re-inspected — both facet figures now show the top label fully inside its panel with membership unchanged, and the four unfacetted figures are as recorded above. NEWS gains a user-visible bug-fix bullet for the clipped label, backed by the T8 test. `devtools::document()` idempotent, `devtools::test()` FAIL 0 WARN 0 SKIP 1 PASS 11912, `pkgdown::check_pkgdown()` clean, `devtools::check()` 0/0/0. Status review.
 
 ## Decisions
 
