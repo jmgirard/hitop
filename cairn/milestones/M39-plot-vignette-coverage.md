@@ -83,22 +83,22 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 
 ## Tasks
 
-- [ ] T1. Add a `## Profile Plots` section to `vignettes/pid5sf_scoring.Rmd`
+- [x] T1. Add a `## Profile Plots` section to `vignettes/pid5sf_scoring.Rmd`
       after its norming section (`vignettes/pid5sf_scoring.Rmd:119`), with
       rendered domain and facet chunks mirroring
       `vignettes/pid5_scoring.Rmd:123-158`.
-- [ ] T2. Add a `## Profile Plots` section to `vignettes/pid5bf_scoring.Rmd`
+- [x] T2. Add a `## Profile Plots` section to `vignettes/pid5bf_scoring.Rmd`
       after its norming section (`vignettes/pid5bf_scoring.Rmd:80`): a rendered
       domain chunk, plus prose on `total` being plotted off the profile line
       and on `level = "facet"` being refused for this form.
-- [ ] T3. Replace the prose-only percentile mention at
+- [x] T3. Replace the prose-only percentile mention at
       `vignettes/pid5_scoring.Rmd:158` with a rendered
       `metric = "percentile"` chunk.
-- [ ] T4. Switch every `plot_pid5()` chunk in the three vignettes to the
+- [x] T4. Switch every `plot_pid5()` chunk in the three vignettes to the
       version-aware guard, including the shipped full-form chunks `x2f`
       (`vignettes/pid5_scoring.Rmd:139`) and `x2g`
       (`vignettes/pid5_scoring.Rmd:152`).
-- [ ] T5. Fix `.Rbuildignore`'s `^vignettes/*_files$` to `^vignettes/.*_files$`.
+- [x] T5. Fix `.Rbuildignore`'s `^vignettes/*_files$` to `^vignettes/.*_files$`.
 - [ ] T6. Render the three vignettes non-self-contained into a scratch tree,
       open every figure, and record one inspection line per figure; clean up
       the `_files/` directories afterwards.
@@ -112,6 +112,7 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 - 2026-08-04: plan gate chose one-off visual inspection recorded per figure over committing a maintainer render-and-look script and over reopening D-030 for image snapshots, because D-030's stated reopening condition — a purely visual regression leaving layer data unchanged — has not occurred; falsified by any visual defect reaching a release past green structural assertions, which is the same evidence class D-030 names.
 - 2026-08-04: branch `m39-plot-vignette-coverage` cut from main @ 206959a; status in-progress.
 - 2026-08-04: plan-gate criteria audit ([O], fresh context) returned six findings: the figure-count criterion was unsatisfiable because `html_vignette` self-containment leaves no figure files on disk (fixed by naming `self_contained = FALSE` and clearing `_files/` first), confirming the facet refusal against a rendered figure was unreachable because a refusal renders no figure (fixed by routing it to the named test), three under-specified terms — "plotting chunk", "grep'd", "the points it should" — now name what they mean, and the ggplot2 guard mismatch was routed to the question gate. It also found `.Rbuildignore`'s `^vignettes/*_files$` matches nothing intended, absorbed as AC6/T5.
+- 2026-08-04: T1-T5 done. SF gains domain + facet profile sections after its norming section; BF gains a domain profile section with prose on `total` off the line and facet level refused; FULL gains a rendered `metric = "percentile"` chunk (`x2h`). All six `plot_pid5()` chunks across the three vignettes now guard on `rlang::is_installed("ggplot2", version = "3.4.0")`, the M38 pair included. `.Rbuildignore`'s `^vignettes/*_files$` corrected to `^vignettes/.*_files$`; `grepl()` on the committed line returns TRUE for `vignettes/pid5_scoring_files` where the old pattern returned FALSE.
 
 ## Decisions
 
