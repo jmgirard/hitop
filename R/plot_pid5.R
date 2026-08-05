@@ -418,8 +418,11 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric,
     ## is measured in data units whose physical size shrinks with the panel --
     ## so a `vjust` offset is clipped by the panel edge on a small enough
     ## device, in every panel, however much discrete expansion is added. The
-    ## continuous axis has no such problem: it is padded above, and that
-    ## padding is the room the label needs.
+    ## continuous axis is padded on the label side instead, and that padding is
+    ## the room the label needs. That is better, not immune: the padding is a
+    ## proportion of the data range, so it too shrinks with panel width. It
+    ## holds at the figure widths `?plot_pid5` documents and no wider promise
+    ## is made -- below them the caller passes `labels = FALSE`.
     p <- p + ggplot2::geom_label(
       ggplot2::aes(label = round(.data$value)),
       hjust = -0.6,

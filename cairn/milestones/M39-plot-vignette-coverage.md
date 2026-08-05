@@ -161,6 +161,7 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 - 2026-08-04: AC8 amended at Jeff's gate to a bounded promise — the padding approach is kept and the guarantee is stated as a figure-width floor rather than claimed unconditionally. Measured on the worst case (a three-digit value at the axis maximum on an SF facet profile): fits at 7in wide, clips at 6.5in. Chosen over `coord_cartesian(clip = "off")`, which held at every width tested by drawing into the margin but was declined twice, and over escalating via a review brief; falsified by a clipped label at or above 7in. `?plot_pid5` and NEWS both carry the width floor and point narrower figures at `labels = FALSE`.
 - 2026-08-04: AC8's re-run sweep passes — twelve figures (FULL facet, SF facet, FULL domain, BF domain at 7.5x9 and 7x4.5 with labels, and at 6x1.8 with `labels = FALSE`), each inspected, none carrying a clipped label. The 6x1.8 facet figures are illegible from row crowding at that height, which is a separate limitation and not a clipped label. Vignettes re-rendered (3/2/1 figures, all six inspected, all clean; both plotting chunks sit at fig.width 7 and 7.5, at or above the documented floor). `devtools::test()` PASS 11920, `check_pkgdown()` clean, `devtools::check()` 0/0/0 after removing a stray `Rplots.pdf` written by a grid probe. Status review.
 - 2026-08-04: candidate row added for Jeff's hierarchical-profile mockup, shared in chat this session; the image is not committed anywhere, so the row describes it rather than pointing at it.
+- 2026-08-04: re-review round 2. All nine criteria re-derived and ticked against fresh evidence; 29 findings from three lenses, two at or above 80, both fixed (a vacuous assertion replaced with a mutation-confirmed one, and the missing `info =` labels added). Four below-threshold findings fixed in passing, one rejected with reason, two carried to candidate rows. No return this round. `test()` PASS 11932, `check()` 0/0/0, `check_pkgdown()` clean, `cairn_validate` exit 0.
 
 ## Decisions
 
@@ -258,4 +259,113 @@ what `plot_pid5()` does for its users. The fix must hold independent of device
 size, and AC8's wording — which the current fix satisfies while the defect
 stands — needs a gated amendment in the same pass. F2 and P1 ride along.
 Defect returns on this milestone: 1.
+
+## Re-review (round 2)
+
+Re-reviewed 2026-08-04 on `m39-plot-vignette-coverage` against `main` @ 206959a.
+PR: https://github.com/jmgirard/hitop/pull/42. All nine criteria re-derived from
+scratch; the round-1 evidence above is superseded, not reused.
+
+### Acceptance criteria — fresh evidence
+
+- [x] **AC1.** `## Profile Plots` present in both new vignettes
+      (`pid5sf_scoring.Rmd:121`, `pid5bf_scoring.Rmd:82`). All six chunks
+      calling `plot_pid5()` — FULL `x2f`/`x2g`/`x2h`, SF `x9`/`x10`, BF
+      `profile-plot` — carry the `rlang::is_installed("ggplot2", version =
+      "3.4.0")` guard, enumerated by grepping `plot_pid5(` across
+      `vignettes/pid5*_scoring.Rmd`.
+- [x] **AC2.** `_files/` cleared, all three rendered with
+      `self_contained = FALSE`, no errors; png counts 3 / 2 / 1 equal the
+      per-vignette chunk counts from AC1.
+- [x] **AC3.** All six figures opened and inspected. FULL `x2f` five domains on
+      a T axis, line joins all five; `x2g` 25 facets over six panels
+      3/3/3/3/3/10, lines join within a panel only; `x2h` the same domains on a
+      percentile axis, labelled breaks 0/25/50/75/100. SF `x9` five domains on
+      a T axis; `x10` the same six-panel facet layout. BF `profile-plot` six
+      scales with the line stopping before Total, whose point is drawn
+      unconnected. One dashed midpoint line each; no bands, no annotations; no
+      clipped label in any of the six.
+- [x] **AC4.** BF prose at `pid5bf_scoring.Rmd:100` and `:104`. Both named
+      tests pass — *the brief form plots six scales and stops the line before
+      total* (`test-plot_pid5.R:96`) and *the brief form refuses a facet
+      profile* (`:158`).
+- [x] **AC5.** `x2h` present with the AC1 guard; its figure's labelled breaks
+      run 0 to 100, and `plot_pid5_axis()` derives them from `pid_norms`.
+- [x] **AC6.** `grepl("^vignettes/.*_files$", "vignettes/pid5_scoring_files")`
+      returns `TRUE`.
+- [x] **AC7.** `document()` idempotent, `test()` FAIL 0 WARN 0 SKIP 1 PASS
+      11932, `check_pkgdown()` "No problems found.", `check()` 0/0/0.
+- [x] **AC8.** Label layer carries `hjust` and no `vjust`; discrete headroom
+      exactly 0.6 (ggplot2's default) on every panel of FULL, SF and BF. Sweep
+      re-rendered at review and byte-compared against the twelve figures
+      inspected during implementation — all twelve md5-identical, so the
+      inspection is of provably these artifacts: FULL facet, SF facet, FULL
+      domain and BF domain at 7.5x9 and 7x4.5 with labels, and at 6x1.8 with
+      `labels = FALSE`; none carries a clipped label. Four mutations, all red:
+      `vjust` for `hjust` (10 failures), re-adding the discrete expansion (2),
+      dropping the axis padding (2), and a data-space `nudge_x` (10).
+- [x] **AC9.** `labels = TRUE` in the signature (`R/plot_pid5.R:90`), validated
+      by `validate_flag()`, documented on the help page. `labels = FALSE` drops
+      the `GeomLabel` layer and leaves the others' built data unchanged;
+      mutation-checked (ignoring the flag turns 4 assertions red). Both values
+      covered for a facet and an unfacetted profile, plus the invalid-input
+      branch.
+
+### Consistency gate
+
+- Universal: `cairn_validate` exit 0, all checks passed; 23 advisories (22
+  standing pre-migration `dangling id tokens`, plus a `sizing` advisory for the
+  ninth criterion). `cairn_impact` skipped — no `DESIGN.md` principle changed.
+- Toolchain (`r-package`): `document()` no diff · generated files not
+  hand-edited · README.md in sync · `check_pkgdown()` clean · NEWS entries
+  present · no new top-level files · `check()` 0/0/0.
+- Defect returns on this milestone: 1 (round 1). No return this round.
+
+### Review findings — round 2
+
+29 candidate findings from three fresh-context lenses, scored by an independent
+[S] scorer. Two scored >= 80; neither is >= 90 nor shows a criterion failing
+inside its named procedure, so the return floor does not fire.
+
+**Actioned (>= 80) — both fixed:**
+- **D7 (85).** `expect_null(p$layers[[i]]$position$x)` was vacuous: ggplot2
+  gives `geom_label()` a `PositionNudge` whose `$x` is `NULL` whether or not
+  `nudge_x` was passed, so the assertion guarding "never a data-space nudge"
+  could not fail. Confirmed independently. Replaced with built-data equality
+  between the label and point layers, which is falsifiable — a `nudge_x`
+  mutation now turns 10 assertions red where the old form stayed green.
+- **D9 (82).** The `info =` label was missing from three assertions in the
+  replacement tests, reproducing the standing ROADMAP candidate inside the
+  pass that closed it. Added. `expect_length()` accepts no `info` — the M32
+  lesson's shape again — so that one became `expect_equal(length(i), 1L)`.
+
+**Below threshold, fixed anyway while in the area:** D17 (75) the `hjust`
+comment claimed the continuous axis "has no such problem", which overstates —
+its padding is proportional too, and that is why the promise is bounded;
+rewritten. D8 (66) the padding assertion only covered an unfacetted profile,
+never the facet branch that actually clipped — extended. D19 (48) the NEWS
+clipping bullet stated the fix without its width bound; bounded. D24 (48) the
+new confidence-interval candidate row stated Krueger et al. (2012) figures as
+fact from a fetched summary, against CLAUDE.md's primary-sources rule; marked
+provisional and unverified pending ingestion.
+
+**Rejected with reason:** P1r (52) held that the new vignettes call the
+reference line "the normative sample's mean" where the code says "midpoint".
+In both vignettes the sentence is scoped to `T = 50`, where the normative mean
+is exactly what it is; the code says "midpoint" because it also covers the
+percentile axis, whose line is a median. The prose is correct as written.
+
+**Below threshold, logged not actioned (22):** D4 (68) the right-hand padding
+is paid even when `labels = FALSE` → candidate row; D23 (60) / D1 (58) the
+7-inch floor rests on one hand measurement on one device and font → candidate
+row; D11 (52) the `labels = FALSE` test checks the reference-line layer by
+presence only; D3 (45) / B1 (40) the lower axis expansion dropped from
+ggplot2's 5% default to 3% unremarked; D10 (45) a test hardcodes ggplot2's
+current default expansion; D22 (40) round-1 evidence sat in the work log rather
+than the Review section — this section is that fix; D21 (38) no vignette
+demonstrates `labels`; D12 (38) the validator test omits `NULL`; D2 (35) the
+per-level floor figures conflict with the milestone's own measurement; D13
+(33), D25 (32), D18 (30), D6 (30), D20 (30), D5 (28), D15 (22), D14 (15),
+D16 (12), P3r — naming, comment placement, and pre-existing patterns this diff
+did not introduce.
 

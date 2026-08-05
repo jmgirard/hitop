@@ -18,7 +18,8 @@ before a CRAN submission.
 * `plot_pid5()` now places each value label to the right of its point rather
   than above it, and pads the score axis to hold it. Offsetting upward took the
   room out of the panel's height, where it ran out on a smaller figure and the
-  top label in each panel was clipped.
+  top label in each panel was clipped. The labels fit on figures about 7 inches
+  wide or more; see `labels` below for narrower ones.
 
 * `plot_pid5()` gains a `labels` argument. The value labels need a figure about
   7 inches wide or more; set `labels = FALSE` for a narrower one and the points

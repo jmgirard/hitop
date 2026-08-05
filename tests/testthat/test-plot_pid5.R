@@ -441,14 +441,27 @@ test_that("the value label is offset horizontally, not into the panel height", {
     level <- if (identical(version, "BF")) "domain" else "facet"
     p <- plot_pid5(normed_one(version, level = level), version = version, level = level)
     i <- which(vapply(p$layers, function(l) inherits(l$geom, "GeomLabel"), TRUE))
-    expect_length(i, 1)
+    # `expect_length()` takes no `info`, so a failure inside this loop could not
+    # name its version; `expect_equal()` on the length can.
+    expect_equal(length(i), 1L, info = version)
     expect_true("hjust" %in% names(p$layers[[i]]$aes_params), info = version)
     expect_false("vjust" %in% names(p$layers[[i]]$aes_params), info = version)
-    expect_null(p$layers[[i]]$position$x, info = version)
+
+    # And the offset is a RENDERING one, never a nudge of the x value: nudging
+    # in data space pushes a score near the end of the axis past the limit and
+    # ggplot2 drops that label silently. The layer object cannot show this --
+    # `geom_label()` carries a `PositionNudge` with a NULL `$x` whether or not
+    # `nudge_x` was given, so asserting over `$position` is vacuous. Built data
+    # can: a nudge moves the label's x off its point's.
+    b <- ggplot2::ggplot_build(p)
+    expect_equal(
+      b$data[[i]]$x,
+      b$data[[which(vapply(p$layers, function(l) inherits(l$geom, "GeomPoint"), TRUE))]]$x,
+      info = version
+    )
 
     # And no room is taken out of the panel height: the discrete axis carries
     # ggplot2's default expansion of 0.6 and nothing wider.
-    b <- ggplot2::ggplot_build(p)
     headroom <- vapply(
       b$layout$panel_params,
       function(pp) pp$y.range[[2]] - length(pp$y$get_limits()),
@@ -484,6 +497,14 @@ test_that("a value at the end of the axis still gets its label drawn", {
     # And drawing it emits nothing -- the dropped-label warning fires at draw
     # time, not at build time.
     expect_no_warning(ggplot2::ggplot_gtable(ggplot2::ggplot_build(p)))
+    # The facet branch is the one that clipped through two earlier attempts, so
+    # the padding is checked there too and not only on a single-panel plot.
+    p_facet <- plot_pid5(normed_one("FULL", level = "facet"), version = "FULL",
+                         level = "facet", metric = metric)
+    for (pp in ggplot2::ggplot_build(p_facet)$layout$panel_params) {
+      expect_gt(pp$x.range[[2]] - max(value_limits(p_facet)),
+                0.05 * diff(value_limits(p_facet)))
+    }
 
     # The panel reserves room past the axis limit on the label side. This
     # asserts the room EXISTS, not that a given label fits in it: whether a
@@ -494,7 +515,7 @@ test_that("a value at the end of the axis still gets its label drawn", {
     limits <- value_limits(p)
     x_range <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x.range
     default_pad <- 0.05 * diff(limits)
-    expect_gt(x_range[[2]] - limits[[2]], default_pad)
+    expect_gt(x_range[[2]] - limits[[2]], default_pad, label = paste("metric", metric))
   }
 })
 
