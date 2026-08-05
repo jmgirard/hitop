@@ -11,7 +11,19 @@ before a CRAN submission.
   thresholds, and no annotation about what a score means. The score axis spans
   the range the tables actually print, so two profiles on the same version are
   directly comparable. Returns an ordinary ggplot object, which stays in
-  Suggests — install {ggplot2} to use it. See `vignette("pid5_scoring")`.
+  Suggests — install {ggplot2} to use it. Worked profile examples for all three
+  forms: `vignette("pid5_scoring")`, `vignette("pid5sf_scoring")`, and
+  `vignette("pid5bf_scoring")`.
+
+* `plot_pid5()` now places each value label to the right of its point rather
+  than above it, and pads the score axis to hold it. Offsetting upward took the
+  room out of the panel's height, where it ran out on a smaller figure and the
+  top label in each panel was clipped. The labels fit on figures about 7 inches
+  wide or more; see `labels` below for narrower ones.
+
+* `plot_pid5()` gains a `labels` argument. The value labels need a figure about
+  7 inches wide or more; set `labels = FALSE` for a narrower one and the points
+  and profile line are drawn without them.
 
 * **Scoring short forms.** `score_hitopsr()` and `reliability_hitopsr()` gain a
   `subset` argument taking the same short-form description that

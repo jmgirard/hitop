@@ -5,7 +5,7 @@
 ^data-raw$
 ^README\.Rmd$
 ^vignettes/\.quarto$
-^vignettes/*_files$
+^vignettes/.*_files$
 ^devel$
 ^_pkgdown\.yml$
 ^docs$

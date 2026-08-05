@@ -21,6 +21,13 @@
 #'   `"percentile"` for percentile ranks. [norm_pid5()] returns percentiles as a
 #'   proportion; this function multiplies them by 100 so the axis reads on the
 #'   familiar 0-100 percentile scale.
+#' @param labels Whether to label each point with its rounded value. `TRUE` by
+#'   default. The labels need a figure about 7 inches wide or more: below that,
+#'   a label on a score at the top of the published span runs into the edge of
+#'   the panel and is cut off. Set `labels = FALSE` for a narrower figure and
+#'   the points and profile line are drawn without them. This is a choice you
+#'   make, not one the function can make for you -- a plot is assembled before
+#'   anything knows what size it will be drawn at.
 #' @param prefix The column-name prefix used when the scores were computed, as
 #'   passed to [score_pid5()] and [norm_pid5()]. Pasted onto each scale's
 #'   camelCase name to find its column.
@@ -29,7 +36,8 @@
 #' ## What the plot draws
 #'
 #' Each plotted scale gets a point at its normed value, labelled with that
-#' value, and the points are joined by a profile line. A single reference line
+#' value just to its right (set `labels = FALSE` to drop the labels), and the
+#' points are joined by a profile line. A single reference line
 #' marks the normative sample's midpoint -- T = 50, or the 50th percentile.
 #' Both are definitional properties of the metrics themselves rather than
 #' thresholds this package chose.
@@ -79,6 +87,7 @@ plot_pid5 <- function(
   version = c("FULL", "SF", "BF"),
   level = c("domain", "facet"),
   metric = c("t", "percentile"),
+  labels = TRUE,
   prefix = "pid_"
 ) {
   ## ggplot2 lives in Suggests (D-002), so the dependency is checked before it
@@ -103,6 +112,7 @@ plot_pid5 <- function(
   level <- match.arg(level)
   metric <- match.arg(metric)
   validate_data(data)
+  validate_flag(labels, arg = "labels")
   validate_string(prefix, arg = "prefix")
 
   ## A profile is one respondent's. Plotting several would need decisions this
@@ -199,7 +209,8 @@ plot_pid5 <- function(
     axis_stems = stems,
     version = version,
     level = level,
-    metric = metric
+    metric = metric,
+    show_labels = labels
   )
 }
 
@@ -319,7 +330,8 @@ axis_breaks <- function(span, step) {
 # one another. Mapping the axes as they are drawn lets `scales = "free_y"` act
 # on the axis it names -- provided nothing pins that scale's limits, which is
 # why the pin below is applied only to the unfacetted branch.
-plot_pid5_build <- function(stems, values, axis_stems, version, level, metric) {
+plot_pid5_build <- function(stems, values, axis_stems, version, level, metric,
+                            show_labels = TRUE) {
   axis <- plot_pid5_axis(axis_stems, version, metric)
 
   ## `stem` is the canonical scale name and carries the logic (and the tests);
@@ -377,20 +389,14 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric) {
       linewidth = 0.7
     ) +
     ggplot2::geom_point(size = 2.5) +
-    ## Offset off the point, or the label sits exactly on top of the marker it
-    ## labels and hides it entirely. The offset is `vjust` -- a rendering
-    ## property -- and never a nudge of the x value: nudging in data space
-    ## pushes a score near the top of the axis PAST the limit, and ggplot2 then
-    ## drops that label silently (a percentile of 98 nudged to 102.5 vanished).
-    ggplot2::geom_label(
-      ggplot2::aes(label = round(.data$value)),
-      vjust = -0.55,
-      size = 3,
-      label.padding = ggplot2::unit(0.15, "lines")
-    ) +
     ggplot2::scale_x_continuous(
       breaks = axis$breaks,
-      limits = axis$limits
+      limits = axis$limits,
+      ## Padding on the label side, so a score at the top of the published span
+      ## still has somewhere for its label to sit. This is expansion around the
+      ## trained range, never a change to `limits` or `breaks` -- the axis
+      ## still spans exactly what the tables print.
+      expand = ggplot2::expansion(mult = c(0.03, 0.12))
     ) +
     ggplot2::labs(
       x = x_label,
@@ -398,6 +404,32 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric) {
       title = paste0("PID-5 ", version, " ", level, " profile")
     ) +
     ggplot2::theme_bw(base_size = 12)
+
+  if (isTRUE(show_labels)) {
+    ## Offset off the point, or the label sits exactly on top of the marker it
+    ## labels and hides it entirely. Two constraints decide the direction.
+    ##
+    ## It is `hjust` and never a nudge of the x value: nudging in data space
+    ## pushes a score near the end of the axis PAST the limit, and ggplot2 then
+    ## drops that label silently (a percentile of 98 nudged to 102.5 vanished).
+    ##
+    ## And it is HORIZONTAL and never vertical. A rendering offset is an
+    ## absolute distance, while any room reserved for it on the discrete axis
+    ## is measured in data units whose physical size shrinks with the panel --
+    ## so a `vjust` offset is clipped by the panel edge on a small enough
+    ## device, in every panel, however much discrete expansion is added. The
+    ## continuous axis is padded on the label side instead, and that padding is
+    ## the room the label needs. That is better, not immune: the padding is a
+    ## proportion of the data range, so it too shrinks with panel width. It
+    ## holds at the figure widths `?plot_pid5` documents and no wider promise
+    ## is made -- below them the caller passes `labels = FALSE`.
+    p <- p + ggplot2::geom_label(
+      ggplot2::aes(label = round(.data$value)),
+      hjust = -0.6,
+      size = 3,
+      label.padding = ggplot2::unit(0.15, "lines")
+    )
+  }
 
   if (identical(level, "facet")) {
     ## `free_y` frees the scale-name axis so each panel lists only its own
@@ -419,6 +451,12 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric) {
         switch = "y",
         labeller = ggplot2::label_wrap_gen(width = 14)
       ) +
+      ## Deliberately no `scale_y_discrete()` in this branch at all. An earlier
+      ## fix widened the discrete expansion here to hold the value label; the
+      ## label is offset horizontally now, so the room is taken on the
+      ## continuous axis instead and this axis is left to ggplot2's default --
+      ## widening it only added dead margin above the top point.
+      ##
       ## Horizontal strip text: rotated, a long domain name is clipped to the
       ## height of a panel listing only three facets.
       ggplot2::theme(
