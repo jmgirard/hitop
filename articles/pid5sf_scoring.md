@@ -286,3 +286,54 @@ each score is reconciled to the published 0–3 metric before it is looked
 up, with a warning naming which scales were adjusted and which were left
 alone. The per-scale formulas are given in
 [`?norm_pid5`](https://jmgirard.github.io/hitop/reference/norm_pid5.md).
+
+## Profile Plots
+
+Once a respondent’s scores are normed,
+[`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+draws them as a profile against the published metric. It takes one
+respondent — a profile plot shows one person — so we norm the whole
+dataset and hand it a single row. Passing `version = "SF"` builds the
+plot against the short form’s own tables.
+
+``` r
+
+domains <- paste0(
+  "pid_",
+  c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
+    "psychoticism")
+)
+normed <- norm_pid5(scored, scores = domains, version = "SF")
+```
+
+``` r
+
+plot_pid5(normed[1, ], version = "SF")
+```
+
+![](pid5sf_scoring_files/figure-html/x9-1.png)
+
+The dashed line marks T = 50, the normative sample’s mean, and the score
+axis spans the range the published short-form tables actually print for
+these scales — so the axis does not rescale from respondent to
+respondent and two short-form profiles are directly comparable. Nothing
+on the plot says whether a score is high, low, or concerning: {hitop}
+presents scores against norms and leaves the interpreting to you.
+
+The short form scores all 25 facets, so `level = "facet"` plots those
+instead, grouped into a panel per domain. The APA key ties three facets
+to each domain; the remaining ten define no domain and are grouped
+separately rather than dropped.
+
+``` r
+
+facets <- paste0("pid_", pid_scales[["SF"]]$camelCase)
+normed_facets <- norm_pid5(scored, scores = facets, version = "SF")
+plot_pid5(normed_facets[1, ], version = "SF", level = "facet")
+```
+
+![](pid5sf_scoring_files/figure-html/x10-1.png)
+
+Set `metric = "percentile"` for a percentile axis instead of T scores;
+the full-form vignette shows one. The result is an ordinary ggplot
+object, so you can restyle it with any ggplot2 layer.

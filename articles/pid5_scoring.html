@@ -439,6 +439,9 @@ rather than dropped.</p>
 <p>Set <code>metric = "percentile"</code> for a percentile axis instead
 of T scores. <code><a href="../reference/norm_pid5.html">norm_pid5()</a></code> returns percentiles as a
 proportion; the plot multiplies them by 100 so the axis reads 0–100.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pid5.html">plot_pid5</a></span><span class="op">(</span><span class="va">normed</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, metric <span class="op">=</span> <span class="st">"percentile"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="pid5_scoring_files/figure-html/x2h-1.png" class="r-plt" alt="" width="672"></p>
 <p>The result is an ordinary ggplot object, so you can restyle it with
 any ggplot2 layer — <code>+ ggplot2::labs(title = ...)</code>, a
 different theme, and so on.</p>

@@ -395,6 +395,13 @@ Set `metric = "percentile"` for a percentile axis instead of T scores.
 returns percentiles as a proportion; the plot multiplies them by 100 so
 the axis reads 0–100.
 
+``` r
+
+plot_pid5(normed[1, ], version = "FULL", metric = "percentile")
+```
+
+![](pid5_scoring_files/figure-html/x2h-1.png)
+
 The result is an ordinary ggplot object, so you can restyle it with any
 ggplot2 layer — `+ ggplot2::labs(title = ...)`, a different theme, and
 so on.

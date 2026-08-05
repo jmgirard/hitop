@@ -15,8 +15,25 @@ interface before a CRAN submission.
   annotation about what a score means. The score axis spans the range
   the tables actually print, so two profiles on the same version are
   directly comparable. Returns an ordinary ggplot object, which stays in
-  Suggests — install {ggplot2} to use it. See
-  [`vignette("pid5_scoring")`](https://jmgirard.github.io/hitop/articles/pid5_scoring.md).
+  Suggests — install {ggplot2} to use it. Worked profile examples for
+  all three forms:
+  [`vignette("pid5_scoring")`](https://jmgirard.github.io/hitop/articles/pid5_scoring.md),
+  [`vignette("pid5sf_scoring")`](https://jmgirard.github.io/hitop/articles/pid5sf_scoring.md),
+  and
+  [`vignette("pid5bf_scoring")`](https://jmgirard.github.io/hitop/articles/pid5bf_scoring.md).
+
+- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+  now places each value label to the right of its point rather than
+  above it, and pads the score axis to hold it. Offsetting upward took
+  the room out of the panel’s height, where it ran out on a smaller
+  figure and the top label in each panel was clipped. The labels fit on
+  figures about 7 inches wide or more; see `labels` below for narrower
+  ones.
+
+- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+  gains a `labels` argument. The value labels need a figure about 7
+  inches wide or more; set `labels = FALSE` for a narrower one and the
+  points and profile line are drawn without them.
 
 - **Scoring short forms.**
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)

@@ -173,3 +173,46 @@ each score is reconciled to the published 0–3 metric before it is looked
 up, with a warning naming which scales were adjusted and which were left
 alone. The per-scale formulas are given in
 [`?norm_pid5`](https://jmgirard.github.io/hitop/reference/norm_pid5.md).
+
+## Profile Plots
+
+Once a respondent’s scores are normed,
+[`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+draws them as a profile against the published metric. It takes one
+respondent — a profile plot shows one person — so we norm the whole
+dataset and hand it a single row. Passing `version = "BF"` builds the
+plot against the brief form’s own tables.
+
+``` r
+
+bf_scales <- paste0("pid_", pid_scales[["BF"]]$camelCase)
+normed <- norm_pid5(scored, scores = bf_scales, version = "BF")
+```
+
+``` r
+
+plot_pid5(normed[1, ], version = "BF")
+```
+
+![](pid5bf_scoring_files/figure-html/profile-plot-1.png)
+
+All six brief-form scales get a point, but the profile line stops before
+`total`: the total is an overall elevation across the five domains
+rather than a sixth domain, so joining it to the line would imply a
+comparability it does not have. The point itself is still drawn, so the
+elevation is readable alongside the domains it summarizes.
+
+The dashed line marks T = 50, the normative sample’s mean, and the score
+axis spans the range the published brief-form tables actually print for
+these scales — so the axis does not rescale from respondent to
+respondent and two brief-form profiles are directly comparable. Nothing
+on the plot says whether a score is high, low, or concerning: {hitop}
+presents scores against norms and leaves the interpreting to you.
+
+There is no facet profile for this form. The brief form’s 25 items yield
+the five domains and the total and no facet scores at all, so
+`level = "facet"` is an error here rather than an empty plot; facet
+profiles are available for the full and short forms. Set
+`metric = "percentile"` for a percentile axis instead of T scores; the
+full-form vignette shows one. The result is an ordinary ggplot object,
+so you can restyle it with any ggplot2 layer.

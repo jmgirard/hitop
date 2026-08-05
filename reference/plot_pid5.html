@@ -88,6 +88,7 @@ profile is the clinician's job, not this package's.</p>
 <span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span><span class="op">)</span>,</span>
 <span>  level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"domain"</span>, <span class="st">"facet"</span><span class="op">)</span>,</span>
 <span>  metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t"</span>, <span class="st">"percentile"</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="st">"pid_"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -123,6 +124,16 @@ proportion; this function multiplies them by 100 so the axis reads on the
 familiar 0-100 percentile scale.</p></dd>
 
 
+<dt id="arg-labels">labels<a class="anchor" aria-label="anchor" href="#arg-labels"></a></dt>
+<dd><p>Whether to label each point with its rounded value. <code>TRUE</code> by
+default. The labels need a figure about 7 inches wide or more: below that,
+a label on a score at the top of the published span runs into the edge of
+the panel and is cut off. Set <code>labels = FALSE</code> for a narrower figure and
+the points and profile line are drawn without them. This is a choice you
+make, not one the function can make for you – a plot is assembled before
+anything knows what size it will be drawn at.</p></dd>
+
+
 <dt id="arg-prefix">prefix<a class="anchor" aria-label="anchor" href="#arg-prefix"></a></dt>
 <dd><p>The column-name prefix used when the scores were computed, as
 passed to <code><a href="score_pid5.html">score_pid5()</a></code> and <code><a href="norm_pid5.html">norm_pid5()</a></code>. Pasted onto each scale's
@@ -142,7 +153,8 @@ further ggplot2 layers to restyle it.</p>
 
 
 <p>Each plotted scale gets a point at its normed value, labelled with that
-value, and the points are joined by a profile line. A single reference line
+value just to its right (set <code>labels = FALSE</code> to drop the labels), and the
+points are joined by a profile line. A single reference line
 marks the normative sample's midpoint – T = 50, or the 50th percentile.
 Both are definitional properties of the metrics themselves rather than
 thresholds this package chose.</p>
