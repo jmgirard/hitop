@@ -429,6 +429,37 @@ test_that("each facet panel draws only its own scales on the axis", {
   }
 })
 
+test_that("each facet panel reserves room above its top scale for the label", {
+  # The value label is offset off its point with `vjust`, a RENDERING property:
+  # layer data is byte-identical whether the label lands inside the panel or is
+  # clipped by its top edge, so every assertion above stays green over a label
+  # nobody can read. ggplot2's default discrete expansion adds 0.6, which the
+  # short facet panels do not cover. This is the guard for that.
+  for (version in c("FULL", "SF")) {
+    p <- plot_pid5(
+      normed_one(version, level = "facet"),
+      version = version,
+      level = "facet"
+    )
+    b <- ggplot2::ggplot_build(p)
+    for (i in seq_along(b$layout$panel_params)) {
+      n_scales <- length(b$layout$panel_params[[i]]$y$get_limits())
+      upper <- b$layout$panel_params[[i]]$y.range[[2]]
+      expect_gt(upper - n_scales, 0.6)
+      # Widening the expansion must not pin the discrete limits: doing so
+      # cancels per-panel training and every panel lists all 25 facets.
+      expect_lt(n_scales, 25L)
+    }
+    # Panel sizes are still trained per panel, as the test above asserts.
+    per_panel <- vapply(
+      b$layout$panel_params,
+      function(pp) length(pp$y$get_limits()),
+      integer(1)
+    )
+    expect_equal(per_panel, c(3L, 3L, 3L, 3L, 3L, 10L), info = version)
+  }
+})
+
 test_that("the unfacetted profile pins its scale order against layer training", {
   # The brief form's profile-line layer omits `total`, and a discrete scale
   # trained across layers puts a value missing from the first layer LAST --

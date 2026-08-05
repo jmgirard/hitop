@@ -419,6 +419,19 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric) {
         switch = "y",
         labeller = ggplot2::label_wrap_gen(width = 14)
       ) +
+      ## Room above the top scale for its value label. The label is offset off
+      ## its point with `vjust`, a rendering property, and ggplot2's default
+      ## discrete expansion (0.6) is narrower than that offset in a panel
+      ## listing only three facets -- so the top label was clipped by the panel
+      ## edge. Layer data is identical either way, which is why no structural
+      ## assertion caught it.
+      ##
+      ## `expand` ONLY, never `limits`: pinning the discrete limits here is the
+      ## regression the per-panel axis tests guard against, because it cancels
+      ## facet_grid's per-panel training and lists all 25 facets in every panel.
+      ggplot2::scale_y_discrete(
+        expand = ggplot2::expansion(add = c(0.6, 1.1))
+      ) +
       ## Horizontal strip text: rotated, a long domain name is clipped to the
       ## height of a panel listing only three facets.
       ggplot2::theme(
