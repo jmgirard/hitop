@@ -1,6 +1,6 @@
 # M39: Profile plots in the short- and brief-form vignettes
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -23,7 +23,10 @@ that form). A rendered `metric = "percentile"` chunk in
 ggplot2 guard on every `plot_pid5()` chunk in all three vignettes, including
 the two that shipped at M38. Visual inspection of every figure the three
 vignettes render, recorded per figure. The `.Rbuildignore` vignette-figure
-pattern, which is a regex matching nothing it intends to.
+pattern, which is a regex matching nothing it intends to. The clipped top value
+label in the facet profiles: `plot_pid5()`'s discrete scale gains an upper
+expansion wide enough for the `vjust`-offset label, applied without pinning the
+discrete limits so per-panel training survives.
 
 **Out:** `rank_scales()` vignette coverage → candidate row (it is a ranking
 helper, not a plot, and would widen this milestone). Image-snapshot regression
@@ -70,6 +73,15 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
       `devtools::document()` idempotent, `devtools::test()` 0 failures and
       0 errors — and `devtools::check()` reports 0 errors, 0 warnings, 0 notes
       with `pkgdown::check_pkgdown()` reporting no problems.
+- [ ] AC8. `plot_pid5()`'s facet profiles reserve room above the top scale for
+      its offset value label: for FULL and SF at `level = "facet"`, every
+      panel's built upper y bound
+      (`ggplot_build(p)$layout$panel_params[[i]]$y.range[2]`) exceeds that
+      panel's top scale position (`length(...$y$get_limits())`) by more than
+      the 0.6 ggplot2's default discrete expansion supplies, and each panel's
+      scale membership is unchanged from what AC3 asserts. Mutation-checked by
+      restoring the default expansion and confirming the test turns red. The
+      re-rendered facet figures are inspected and show no clipped label.
 
 ## Coverage
 
@@ -80,6 +92,7 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 - AC5 → T3, T6
 - AC6 → T5
 - AC7 → T7
+- AC8 → T8
 
 ## Tasks
 
@@ -99,11 +112,15 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
       (`vignettes/pid5_scoring.Rmd:139`) and `x2g`
       (`vignettes/pid5_scoring.Rmd:152`).
 - [x] T5. Fix `.Rbuildignore`'s `^vignettes/*_files$` to `^vignettes/.*_files$`.
-- [x] T6. Render the three vignettes non-self-contained into a scratch tree,
+- [ ] T6. Render the three vignettes non-self-contained into a scratch tree,
       open every figure, and record one inspection line per figure; clean up
       the `_files/` directories afterwards.
-- [x] T7. NEWS entry for the new vignette sections; run the `verify` slot,
+- [ ] T7. NEWS entry for the new vignette sections; run the `verify` slot,
       `devtools::check()`, and `pkgdown::check_pkgdown()`.
+- [ ] T8. Widen the discrete scale's upper expansion in `plot_pid5()`'s facet
+      branch (`R/plot_pid5.R:401-420`), with a test asserting the built
+      per-panel upper bounds and unchanged panel membership; mutation-check it.
+      Re-run T6 (render + inspect) and T7 (NEWS + checks) afterwards.
 
 ## Work log
 
@@ -115,6 +132,7 @@ rows. HiTOP-SR/BR profile plots → no plotting function exists for them.
 - 2026-08-04: T1-T5 done. SF gains domain + facet profile sections after its norming section; BF gains a domain profile section with prose on `total` off the line and facet level refused; FULL gains a rendered `metric = "percentile"` chunk (`x2h`). All six `plot_pid5()` chunks across the three vignettes now guard on `rlang::is_installed("ggplot2", version = "3.4.0")`, the M38 pair included. `.Rbuildignore`'s `^vignettes/*_files$` corrected to `^vignettes/.*_files$`; `grepl()` on the committed line returns TRUE for `vignettes/pid5_scoring_files` where the old pattern returned FALSE.
 - 2026-08-04: T6 done. All three vignettes rendered with `self_contained = FALSE` after clearing their `_files/` directories; png counts 3 (FULL) / 2 (SF) / 1 (BF) equal the per-vignette `plot_pid5(` chunk counts. All six figures opened and inspected: FULL `x2f` five domains on a T axis, line joins all five; FULL `x2g` 25 facets over six panels sized 3/3/3/3/3/10, lines join within a panel only; FULL `x2h` the same five domains on a percentile axis with labelled breaks 0/25/50/75/100; SF `x9` five domains on a T axis, line joins all five; SF `x10` the same six-panel facet layout for the short form; BF `profile-plot` six scales on a T axis with the line joining the five domains and stopping before Total, whose point is drawn unconnected. Every figure carries one dashed reference line at the metric's midpoint and no bands or annotations. Rendered artifacts deleted afterwards; tree clean.
 - 2026-08-04: T7 done. The existing 0.2.0 `plot_pid5()` NEWS bullet's single vignette pointer now names all three scoring vignettes; no new bullet, since this milestone changes no behavior. `devtools::document()` idempotent (only NEWS.md modified after the run), `devtools::test()` FAIL 0 WARN 0 SKIP 1 PASS 11886, `pkgdown::check_pkgdown()` "No problems found.", `devtools::check()` 0 errors 0 warnings 0 notes with vignette re-building OK. Status review.
+- 2026-08-04: amendment at Jeff's report that the facet plots clip their top value label. Scope gains the fix, plus AC8 and T8; T6 and T7 unticked for re-run and status returned to in-progress. The defect is in M38's shipped `plot_pid5()`, not in M39's vignette work — the full-form facet figure clips too — and is invisible to layer data because `vjust` is a rendering property, which is the cost D-030 names. Chosen over routing it to `/hotfix` on its own branch, because the branch is already open on these very figures and shipping M39's facet figures clipped was the alternative; falsified if the fix turns out to need changes beyond the discrete scale's expansion. D-030 is not reopened: the guard asserts built panel bounds, which is what D-030 prescribes.
 
 ## Decisions
 
