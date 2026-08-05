@@ -484,6 +484,17 @@ test_that("a value at the end of the axis still gets its label drawn", {
     # And drawing it emits nothing -- the dropped-label warning fires at draw
     # time, not at build time.
     expect_no_warning(ggplot2::ggplot_gtable(ggplot2::ggplot_build(p)))
+
+    # The panel reserves room past the axis limit on the label side. This
+    # asserts the room EXISTS, not that a given label fits in it: whether a
+    # label fits is a grob measurement against a device size, and no build-time
+    # value carries it. AC8's rendered sweep is what checks the fit. Without
+    # this the labels at the top of the span render clipped ("90" drawn as "9")
+    # and every other assertion here stays green.
+    limits <- value_limits(p)
+    x_range <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x.range
+    default_pad <- 0.05 * diff(limits)
+    expect_gt(x_range[[2]] - limits[[2]], default_pad)
   }
 })
 
