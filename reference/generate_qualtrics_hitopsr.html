@@ -132,14 +132,14 @@ items of the chosen scales, keeping their original HiTOP-SR item numbers.
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Write a HiTOP-SR Qualtrics import file to a temporary location</span></span></span>
 <span class="r-in"><span><span class="fu">generate_qualtrics_hitopsr</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Qualtrics import file successfully created at <span style="color: #0000BB;">/tmp/RtmpO0moG3/file1b32777dc944.txt</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Qualtrics import file successfully created at <span style="color: #0000BB;">/tmp/Rtmp9WlW4S/file1a7b506589d7.txt</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A two-scale subset, original numbering preserved</span></span></span>
 <span class="r-in"><span><span class="fu">generate_qualtrics_hitopsr</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  subset <span class="op">=</span> <span class="fu"><a href="hitop_subset.html">hitop_subset</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Qualtrics import file successfully created at <span style="color: #0000BB;">/tmp/RtmpO0moG3/file1b325bab731a.txt</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Qualtrics import file successfully created at <span style="color: #0000BB;">/tmp/Rtmp9WlW4S/file1a7b764999c8.txt</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
