@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-05 (M39 merged and archived; M35's row pruned, three lessons captured and M38's `nudge_x` lesson retired by enforcement, six candidate rows added; all checks pass, the `dangling id tokens` advisories are the standing pre-migration references in DESIGN.md/SOURCES.md)_
+_Last hygiene check: 2026-08-06 (nothing changed since the last check — board idle with nothing in flight since M39 merged, tree clean, GitHub issue and PR inboxes both empty; all checks pass, the 20 `dangling id tokens` advisories remain the standing pre-migration references in DESIGN.md/SOURCES.md)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M40)._
 
 ## Milestones
