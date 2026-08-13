@@ -29,7 +29,7 @@ axis limit, or break (IP2, D-029); no new plot argument.
 
 ## Acceptance criteria
 
-- [ ] AC1 With `labels = FALSE`, `plot_pid5()` pads the continuous score axis
+- [x] AC1 With `labels = FALSE`, `plot_pid5()` pads the continuous score axis
       by 3% at both ends; with `labels = TRUE` the existing 3%/12% padding is
       unchanged. Asserted over all 10 legal `version` × `level` × `metric`
       combinations (3 × 2 × 2, less the two BF × facet cases `plot_pid5()`
@@ -38,7 +38,7 @@ axis limit, or break (IP2, D-029); no new plot argument.
       for **every** panel `i` against that plot's `pid_norms`-derived scale
       limits (not against the range of the plotted values, which lie inside
       them).
-- [ ] AC2 No assertion in `tests/testthat/test-plot_pid5.R` reads a column of
+- [x] AC2 No assertion in `tests/testthat/test-plot_pid5.R` reads a column of
       the plot object's internal data frame. Domain enumerated by parsing the
       file (`parse()` + AST walk for `$data` extraction on a ggplot object),
       which returns none; each such assertion instead reads
@@ -47,23 +47,23 @@ axis limit, or break (IP2, D-029); no new plot argument.
       consistently renaming the internal `stem` column in `R/plot_pid5.R`
       (the column *and* the `df$stem != "total"` filter at R/plot_pid5.R:366)
       leaves `devtools::test()` green; reverted after.
-- [ ] AC3 Every expectation call inside a `for` body in that file names its
+- [x] AC3 Every expectation call inside a `for` body in that file names its
       iteration on failure. Domain enumerated by the same AST walk, which
       reports no in-loop `expect_setequal()` or `expect_length()` call
       (neither accepts `info`) and an `info =` argument on every remaining
       in-loop expectation. One in-loop assertion is mutation-checked to show
       the iteration in the failure message.
-- [ ] AC4 `norm_pid5()` and `plot_pid5()` reject a non-numeric,
+- [x] AC4 `norm_pid5()` and `plot_pid5()` reject a non-numeric,
       non-logical score column through one helper defined in `R/util.R`. Each
       keeps its own headline naming its own argument; both emit one bullet per
       offending column carrying that column's class. Verified by mutation:
       inverting the helper's predicate turns both functions' guard tests red,
       so both demonstrably route through it. Tests fire each guard on a
       character column and on a factor column.
-- [ ] AC5 `NEWS.md` carries one entry per user-visible change in this
+- [x] AC5 `NEWS.md` carries one entry per user-visible change in this
       milestone's Scope **In** list, and each entry has a test that fails
       without the behavior that entry asserts.
-- [ ] AC6 `Rscript -e 'devtools::document()'` and `Rscript -e 'devtools::test()'`
+- [x] AC6 `Rscript -e 'devtools::document()'` and `Rscript -e 'devtools::test()'`
       clean, and `devtools::check()` clean (structural change to `R/util.R`).
 
 ## Coverage
@@ -141,6 +141,10 @@ axis limit, or break (IP2, D-029); no new plot argument.
 - 2026-08-13: finding 7 — the vacuity is fixed at its root (finding 6): `stem_for_label()` gained the unmapped-stem fallback its production counterpart has, and the dropped-scale claim is now positive (the four survivors in order). Forcing the recovery to `NA` reds it, where the old `expect_false(... %in% ...)` form passed.
 
 - 2026-08-13: return fixes verified clean — `devtools::document()` no diff, `devtools::test()` 12052 passing, `devtools::check()` 0/0/0. `cairn_validate` passes; its one new advisory is the >10-task split tripwire, fired by five review-return tasks appended to finished work rather than by scope growth. Status back to review.
+
+- 2026-08-13: second review pass. Both Sonnet lenses returned zero findings; the [O] lens returned 16, of which one (B6, 82) cleared the bar and was fixed in-pass -- `built_profile()` read the layout's facet column by the hardcoded name `panel`, which is the internal frame's column name, so a behavior-preserving rename broke 4 tests. A `panel_names()` helper now finds it by elimination from the structural layout columns; the rename mutation breaks 0 tests and AC2's own `stem` mutation still breaks 0.
+- 2026-08-13: B6 was scored not an AC2 failure (it reads `ggplot_build(p)$layout`, which AC2's text sanctions), so it took triage rather than a second return; the defect-return count for M40 stays at 1.
+- 2026-08-13: logged unactioned and disclosed at the merge gate -- the AC2 walk's accessor rule is still narrower than its receiver rule (A1, 74): `attr(p, "data")`, a variable-keyed `p[[key]]`, `do.call("[[", ...)` and `base::`-qualified accessors escape it. No such read exists in the file today, which is why it scored as guard strength rather than a present violation.
 
 ## Decisions
 
@@ -274,3 +278,49 @@ inside the domain of the AST walk each names, and AC4 on `plot_pid5()`'s headlin
 Everything else passed: `cairn_validate` clean, `devtools::document()` no diff,
 `pkgdown::check_pkgdown()` clean, `devtools::check()` 0/0/0, and CI green on all
 seven jobs of PR #44.
+
+## Review (second pass, 2026-08-13)
+
+### Acceptance criteria — re-verified after the return fixes
+
+- **AC1 — verified.** `profile_cases()` enumerates 10 combinations from `pid_scales`; the two BF facet cases are excluded because that table names `Domain` and carries no `Facet` column. Measured `x.range` against the `pid_norms`-derived span: FULL facet t limits [30,100] -> [27.9,108.4] with labels (3.00%/12.00%) and [27.9,102.1] without (3.00%/3.00%); BF domain percentile [0,100] -> [-3,112] and [-3,103]. Asserted for every panel of all 10 combinations, both ways.
+- **AC2 — verified.** The walk reports no `data` extraction outside a `ggplot_build()` call; the self-check passes and asserts it saw the file. The pass-1 probe that defeated it (`ps[[1]]$data`, `(p1)$data`, `getElement(p1, "data")`) now reds it. AC2's named mutation -- renaming the internal `stem` column and its `!= "total"` filter -- leaves the file green at 275 passing. The second-pass coupling on the internal `panel` column (finding B6) is closed too: renaming that column now leaves the file green, where it broke 4 tests before the fix.
+- **AC3 — verified.** No in-loop `expect_setequal()`/`expect_length()`, and an `info =` on every remaining in-loop expectation; the self-check asserts it saw >20 of them. Expectation names now resolve through `::`/`:::`, so the pass-1 probe (`testthat::expect_equal()` in a `for` body with no `info`) reds it.
+- **AC4 — verified.** Both functions route through `validate_numeric_columns()`. Rendered side by side: plot says "The normed columns this profile plots must be numeric in `data`. x ... Convert them before calling `plot_pid5()`."; norm says "The `scores` columns must be numeric. x ... Convert them before calling `norm_pid5()`." Each headline names its own argument, each emits one bullet per offending column carrying its class, both pluralize off the count, and `conditionCall()` blames the right function. Inverting the shared predicate breaks 29 tests in `test-plot_pid5.R` and 26 in `test-norm_pid5.R`, both guard tests among them by name. `test-norm_pid5.R` has zero diff on this branch.
+- **AC5 — verified.** Two user-visible Scope-In changes, two NEWS entries; the two test-only changes get none. Reverting `expand` to unconditional reds the padding test; replacing the per-column class with a classless bullet reds the plot guard test.
+- **AC6 — verified.** `devtools::document()` no diff, `devtools::test()` 12052 passing / 0 failures / 1 skip, `devtools::check()` 0 errors / 0 warnings / 0 notes. CI green on all seven jobs.
+
+### Independent review — second pass
+
+Three fresh lenses over the updated diff. **[S] blame-history** and **[S] prior-review** each returned zero findings; both independently judged the return fixes to restore or strengthen rather than weaken, and the prior-review lens confirmed none of pass 1's 21 sub-80 findings was made worse. **[O] diff-bug** returned 16. An **[S] scorer** that did not generate them scored all 16; one cleared 80.
+
+**Actioned (>=80), verbatim:**
+
+- **B6 (82) — fixed in this pass.** `tests/testthat/test-plot_pid5.R:120-125` — `built_profile()` still couples to an internal data-frame column name (`panel`), so a behavior-preserving rename reds the file. VERIFIED by mutation. `built_profile()` reads `layout$panel` by name, and that column is named after the faceting variable, which is `df$panel` -- a column of the plot object's internal data frame. Renaming `df$panel` -> `df$domainPanel` consistently makes `"panel" %in% names(layout)` FALSE, `panel_name` silently becomes `rep(NA_character_, n)`, and the facet tests fail with a confusing 25-vs-3 count rather than "panel recovery unavailable". This is precisely the defect class AC2 exists to eliminate; AC2's mutation exercised `stem` only, which is why it wasn't caught.
+  Scored as NOT an AC2 failure -- the read goes through `ggplot_build(p)$layout`, a form AC2's text explicitly sanctions -- so it took triage rather than a return. **Disposition: fixed now.** A `panel_names()` helper finds the facet column by elimination from the structural layout columns (`PANEL`/`ROW`/`COL`/`SCALE_X`/`SCALE_Y`/`COORD`) instead of by name, and fails with a diagnostic if more than one remains; the two test sites that also hardcoded `layout$panel` now use it. Re-verified: the rename mutation breaks 0 tests, and AC2's own `stem` mutation still breaks 0.
+
+**Below 80 — excluded from the actioned list, logged (15 findings):**
+
+- (74) A1 `test-plot_pid5.R:215` — the AC2 walk's *accessor* rule is still narrower than its receiver rule: `attr(p, "data")` (ggplot2 4.0.3 objects are S7, so properties are attributes), `p[[key]]` with a variable index, `do.call("[[", list(p, "data"))`, and `base::`-qualified `getElement`/`$` all escape. Verified end-to-end. Scored as guard strength, not a present violation -- no such read exists in the file today.
+- (65) B7 `R/plot_pid5.R:170` — `data[cols]` is a new single-bracket subset; a `data.table` passed as `data` would hit `[.data.table`'s row-subset semantics instead of the guard. Unverified (data.table not installed).
+- (58) B10 `test-plot_pid5.R:110` — `panel_scales_y` indexed by `PANEL` rather than `layout$SCALE_Y`; equal under this `facet_grid` usage, divergent under `facet_wrap`. Carried from pass-1 F5, now load-bearing for more assertions.
+- (55) A2 `test-plot_pid5.R:240` — `while`/`repeat` bodies and `do.call("expect_equal", ...)` still escape the AC3 loop detection. Carried from pass-1 F3.
+- (48) B11 `test-plot_pid5.R:105` — `built_profile()`'s `version`/`level` are unchecked, and the new fallback turns a mismatch into a plausible wrong answer rather than an obvious `NA`.
+- (45) B8 `R/util.R:257` — the helper errors opaquely on unnamed input and does not validate that `headline`/`info` are functions.
+- (45) B16 `R/plot_pid5.R:28` / `NEWS.md:27` — "the profile itself gets that width back" could be read as promising a narrower rendered figure; what changes is how much of the panel the profile occupies.
+- (42) A4 — the finding-7 fix moves rather than removes the vacuity: because `stem_for_label()`'s fallback is the exact inverse of `plot_scale_labels()`'s, `built_profile()$stem` is correct by construction when the label table degrades to identity.
+- (42) A5 — the per-panel vocabulary assertion passes vacuously for an empty panel, and its comment oversells what the pinned branch can show.
+- (35) B9 `test-plot_pid5.R:185` — anti-vacuity thresholds (500, 20) are loose against measured 1454 and 41.
+- (32) B14 `DESCRIPTION:44` — the roxygen2 version bump is a contributor-facing toolchain floor riding in on this milestone.
+- (28) B13 milestone file — the first-pass Gate result read as current until this section superseded it.
+- (15) B12 `test-plot_pid5.R:106` — `built_profile()` builds the plot twice; pure cost.
+- (15) B15 `man/plot_pid5.Rd:40` — unreflowed roxygen after the text splice.
+- (5) A3 — reported by the reviewer as no defect: AC4's fix is correct and consistent.
+
+### Gate result (second pass)
+
+Passed. No finding demonstrates an acceptance criterion failing; the one finding
+at or above 80 was fixed in this pass and re-verified. `cairn_validate` passes,
+`devtools::document()` leaves no diff, `pkgdown::check_pkgdown()` clean,
+`devtools::check()` 0/0/0, CI green on all seven jobs. The one advisory is the
+>10-task split tripwire, fired by review-return tasks appended to finished work.

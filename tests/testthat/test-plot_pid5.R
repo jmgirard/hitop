@@ -95,6 +95,35 @@ stem_for_label <- function(labels, version, level) {
   ifelse(is.na(out), labels, out)
 }
 
+# The panel names of a built plot, in panel order -- `character(0)` when the
+# plot is unfacetted and has no facet variable to name its single panel.
+#
+# The layout's facet column is named after the faceting VARIABLE, which is a
+# column of the plot's internal frame, so it is found by ELIMINATION from the
+# structural columns rather than by name. Hardcoding `layout$panel` would couple
+# these tests to that internal name exactly as reading the frame did: a rename
+# that changes nothing a reader sees would red the file, which is the failure
+# this whole conversion exists to remove.
+LAYOUT_STRUCTURAL <- c("PANEL", "ROW", "COL", "SCALE_X", "SCALE_Y", "COORD")
+
+panel_names <- function(p) {
+  layout <- ggplot2::ggplot_build(p)$layout$layout
+  facet_var <- setdiff(names(layout), LAYOUT_STRUCTURAL)
+  if (length(facet_var) == 0L) {
+    return(character(0))
+  }
+  # Stop with a diagnostic rather than pick one, following layer_data_for()'s
+  # precedent: a silent choice here surfaces later as an unrelated count
+  # mismatch instead of naming what went wrong.
+  if (length(facet_var) != 1L) {
+    testthat::fail(sprintf(
+      "expected at most 1 facet variable in the layout, found %d: %s",
+      length(facet_var), paste(facet_var, collapse = ", ")
+    ))
+  }
+  as.character(layout[[facet_var]])
+}
+
 # What the plot actually drew, recovered from BUILT layer data alone: one row
 # per plotted point -- its printed scale name, its canonical stem, its value and
 # its panel -- in DRAWN order, panels top to bottom and the topmost scale first
@@ -118,10 +147,9 @@ built_profile <- function(p, version, level) {
   }, character(1))
 
   layout <- built$layout$layout
-  panel_name <- if ("panel" %in% names(layout)) {
-    as.character(layout$panel)[match(pts$PANEL, layout$PANEL)]
-  } else {
-    rep(NA_character_, length(panel_i))
+  panel_name <- panel_names(p)[match(pts$PANEL, layout$PANEL)]
+  if (length(panel_name) == 0L) {
+    panel_name <- rep(NA_character_, length(panel_i))
   }
 
   out <- data.frame(
@@ -417,7 +445,7 @@ test_that("facet profiles plot 25 facets over six panels", {
     expect_equal(nrow(built_profile(p, version, "facet")), 25L, info = version)
     expect_equal(nrow(layout), 6L, info = version)
     expect_equal(
-      as.character(layout$panel),
+      panel_names(p),
       c(pid_domains$Domain, PLOT_UNASSIGNED_PANEL),
       info = version
     )
@@ -775,8 +803,9 @@ test_that("each facet panel draws only its own scales on the axis", {
     expect_equal(sum(per_panel), 25L, info = version)
 
     # And each panel's axis lists exactly the scales in that panel.
+    named <- panel_names(p)
     for (i in seq_along(b$layout$panel_scales_y)) {
-      panel_name <- as.character(b$layout$layout$panel[[i]])
+      panel_name <- named[[i]]
       expect_equal(
         sort(b$layout$panel_scales_y[[i]]$get_limits()),
         sort(prof$scale[prof$panel == panel_name]),
