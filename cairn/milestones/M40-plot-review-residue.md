@@ -121,6 +121,8 @@ axis limit, or break (IP2, D-029); no new plot argument.
 - 2026-08-13: T1/T2 done. The new test enumerates the 10 legal combinations from `pid_scales` (a version offers a facet level iff its scales table names Facets) and compares every panel's `x.range` against a `pid_norms`-derived span; it failed on all `labels = FALSE` cases and passed every `labels = TRUE` case before the fix, which is the control identifying the failure. `expand` is now conditional on `show_labels`. `devtools::test()` 12025 passing, 0 failures.
 - 2026-08-13: `devtools::document()` also rewrote DESCRIPTION's `Config/roxygen2/version` 8.0.0 -> 8.1.0 (local roxygen2 is newer than the one that last documented the repo); committed because the review consistency-gate requires `document()` to leave no diff.
 - 2026-08-06: plan scoped the ~7-inch figure-width floor out because M39's own lesson makes any such promise device- and font-dependent, so it needs a measurement procedure rather than a second hand measurement; it stays a candidate row.
+- 2026-08-13: review returned M40 to in-progress (defect return 1). Three criteria fail as written, each verified in-session by injection or by rendering: AC2 — the self-check's `is.name(e[[2]])` receiver restriction lets `ps[[1]]$data` read the internal frame with both guards green; AC3 — its `is.name(call[[1]])` restriction never classifies `testthat::expect_equal()` as an expectation, so an in-loop qualified call with no `info` passes; AC4 — `plot_pid5()`'s message names no argument and offers no code action, where main's named `{.arg data}`. All other gate checks and CI passed.
+- 2026-08-13: review evidence gathered fresh for all six criteria before the return; the three passing ones (AC1, AC5, AC6) stand on their own recorded evidence and their boxes are unticked only because the milestone reopened.
 
 ## Decisions
 
@@ -154,8 +156,6 @@ axis limit, or break (IP2, D-029); no new plot argument.
 
 ## Review
 
-- 2026-08-13: review returned M40 to in-progress (defect return 1). Three criteria fail as written, each verified in-session by injection or by rendering: AC2 — the self-check's `is.name(e[[2]])` receiver restriction lets `ps[[1]]$data` read the internal frame with both guards green; AC3 — its `is.name(call[[1]])` restriction never classifies `testthat::expect_equal()` as an expectation, so an in-loop qualified call with no `info` passes; AC4 — `plot_pid5()`'s message names no argument and offers no code action, where main's named `{.arg data}`. All other gate checks and CI passed.
-- 2026-08-13: review evidence gathered fresh for all six criteria before the return; the three passing ones (AC1, AC5, AC6) stand on their own recorded evidence and their boxes are unticked only because the milestone reopened.
 
 ### Acceptance criteria
 
