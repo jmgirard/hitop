@@ -24,6 +24,17 @@ before a CRAN submission.
   forms: `vignette("pid5_scoring")`, `vignette("pid5sf_scoring")`, and
   `vignette("pid5bf_scoring")`.
 
+* `plot_pid5(labels = FALSE)` no longer reserves the extra room a value label
+  would need on the score axis. That padding is the label's, and reserving it
+  when no label is drawn spent width on empty margin — exactly the width
+  `labels = FALSE` is asked for to save. Profiles drawn with labels are
+  unchanged.
+
+* `plot_pid5()` now reports a non-numeric normed column the way `norm_pid5()`
+  already did: one bullet per offending column, each naming that column and its
+  own class, rather than a single line listing the names with no types. The two
+  functions now share one guard, so the two messages cannot drift apart.
+
 * `plot_pid5()` now places each value label to the right of its point rather
   than above it, and pads the score axis to hold it. Offsetting upward took the
   room out of the panel's height, where it ran out on a smaller figure and the

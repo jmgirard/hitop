@@ -652,6 +652,33 @@ test_that("a non-numeric normed column is refused, not reported as missing", {
   normed <- normed_one("BF")
   normed$pid_detachment_t <- factor(normed$pid_detachment_t)
   expect_error(plot_pid5(normed, version = "BF"), regexp = "must be numeric")
+
+  # Each offending column gets its own bullet naming that column and carrying
+  # that column's own class, so two columns of different types are told apart.
+  # A shared bullet could not do it: {.cls} collapses a vector of classes into
+  # one union label. An ordered factor reads as its full class, not the bare
+  # "ordered" a class(x)[[1]] label would report.
+  render <- function(expr) {
+    m <- paste(conditionMessage(rlang::catch_cnd(expr, "error")), collapse = " ")
+    gsub("[[:space:]]+", " ", m)
+  }
+  normed <- normed_one("BF")
+  normed$pid_detachment_t <- as.character(normed$pid_detachment_t)
+  normed$pid_antagonism_t <- factor(normed$pid_antagonism_t, ordered = TRUE)
+  msg <- render(plot_pid5(normed, version = "BF"))
+
+  expect_match(msg, "The normed columns this profile plots must be numeric.", fixed = TRUE)
+  expect_match(msg, "pid_detachment_t", fixed = TRUE)
+  expect_match(msg, "pid_antagonism_t", fixed = TRUE)
+  expect_match(msg, "character", fixed = TRUE)
+  expect_match(msg, "ordered/factor", fixed = TRUE)
+  expect_false(grepl("<ordered>", msg, fixed = TRUE))
+
+  # And it pluralizes off the number of offending columns, not off a constant.
+  one_bad <- normed_one("BF")
+  one_bad$pid_detachment_t <- as.character(one_bad$pid_detachment_t)
+  solo <- render(plot_pid5(one_bad, version = "BF"))
+  expect_match(solo, "The normed column this profile plots must be numeric.", fixed = TRUE)
 })
 
 

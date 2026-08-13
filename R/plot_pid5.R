@@ -158,23 +158,24 @@ plot_pid5 <- function(
     ))
   }
 
-  ## Only a numeric column can be plotted against a norm table. as.numeric()
-  ## would turn a factor into its integer codes and a character column into
-  ## NA -- the latter then reported as a dropped scale, which would hide a type
-  ## mistake behind a warning about missing data. norm_pid5() refuses the same
-  ## input for the same reason.
-  bad_type <- !vapply(
-    cols,
-    function(nm) is.numeric(data[[nm]]) || is.logical(data[[nm]]),
-    logical(1)
+  ## Only a numeric column can be plotted against a norm table. A character
+  ## column coercing to NA would otherwise be reported below as a dropped
+  ## scale, hiding a type mistake behind a warning about missing data -- so
+  ## this stays ahead of the NA-drop branch. norm_pid5() refuses the same input
+  ## for the same reason, through the same guard.
+  validate_numeric_columns(
+    data[cols],
+    headline = function(n) {
+      cli::format_inline(
+        "{cli::qty(n)}The normed column{?s} this profile plots must be numeric."
+      )
+    },
+    info = function(n) {
+      cli::format_inline(
+        "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is plotted for you."
+      )
+    }
   )
-  if (any(bad_type)) {
-    cli::cli_abort(c(
-      "{cli::qty(sum(bad_type))}The normed column{?s} this profile plots must be numeric.",
-      "x" = "Not numeric in {.arg data}: {.val {cols[bad_type]}}.",
-      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is plotted for you."
-    ))
-  }
 
   values <- vapply(cols, function(nm) as.numeric(data[[nm]][[1]]), numeric(1))
   ## Percentiles arrive as a proportion; the axis reads 0-100.

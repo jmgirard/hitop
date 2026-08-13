@@ -1,6 +1,6 @@
 # M40: Retire the M38/M39 plot-review residue
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -93,12 +93,12 @@ axis limit, or break (IP2, D-029); no new plot argument.
 - [x] T5 Recast the in-loop `expect_setequal()`/`expect_length()` calls per
       the M32/M39 form in LESSONS and add `info =` to the remaining in-loop
       expectations; mutation-check one.
-- [ ] T6 Extract the shared numeric-column guard into `R/util.R` from
+- [x] T6 Extract the shared numeric-column guard into `R/util.R` from
       R/norm_pid5.R:202-224 and R/plot_pid5.R:164-175, parameterized on the
       headline; point both call sites at it (keeping `plot_pid5()`'s guard
       ahead of its NA-drop branch) and run the predicate-inversion mutation.
-- [ ] T7 NEWS.md entry per Scope-In user-visible change.
-- [ ] T8 `devtools::document()`, `devtools::test()`, `devtools::check()`.
+- [x] T7 NEWS.md entry per Scope-In user-visible change.
+- [x] T8 `devtools::document()`, `devtools::test()`, `devtools::check()`.
 
 ## Work log
 
@@ -109,6 +109,10 @@ axis limit, or break (IP2, D-029); no new plot argument.
 - 2026-08-13: AC2 mutation run — renaming the internal `stem` column to `scaleStem` (the column and the `df$stem != "total"` filter) left `test-plot_pid5.R` green at 251 passing; reverted, and `git diff` confirms R/plot_pid5.R is back to its committed state.
 - 2026-08-13: AC3 mutation run — breaking the per-panel facet-membership assertion produced five failures each naming its domain ("Negative affectivity", "Detachment", ...) from `info`; reverted.
 - 2026-08-13: the recast follows the M32/M39 LESSONS form but drops its `unique()`: a facet drawn twice is a real defect here, so comparing sorted values without de-duplicating is strictly stronger than the `expect_setequal()` it replaces.
+- 2026-08-13: T6/T7/T8 done. `validate_numeric_columns()` in R/util.R now carries the shared predicate and the per-column class bullets; each caller passes its own headline and closing line as functions of the offending-column count, so `norm_pid5()`'s test-pinned wording is unchanged and `plot_pid5()` gains the per-column class detail it lacked.
+- 2026-08-13: AC4 mutation run — inverting the helper's predicate broke both guard tests by name (`plot_pid5()`'s "a non-numeric normed column is refused, not reported as missing" and `norm_pid5()`'s "aborts on a non-numeric score column rather than coercing"), 29 and 26 tests broken in the two files; reverted. A first reading of that run reported 0 plot failures, which was a measurement error — testthat records a thrown error in `error`, not `failed`, and the mutation makes `plot_pid5()` abort outright rather than fail an expectation.
+- 2026-08-13: two NEWS entries, one per user-visible Scope-In change (the conditional padding, and the per-column guard detail); the other two Scope-In items are test-only and get none.
+- 2026-08-13: T8 clean — `devtools::document()` leaves no diff, `devtools::test()` 12035 passing, `devtools::check()` 0 errors / 0 warnings / 0 notes. Status to review.
 - 2026-08-06: plan gate chose keeping each function's own error headline with shared per-column detail over one flattened message because flattening would degrade `norm_pid5()`'s existing `{.arg scores}` blaming; falsified by a user report that the two messages read as unrelated errors.
 - 2026-08-06: plan gate chose converting all 20 internal-frame reads through one shared test helper over converting only the mechanically substitutable ones because a partial conversion leaves the fragility the item was raised about; falsified by the helper proving unable to recover a property some assertion needs from built data.
 - 2026-08-06: plan gate chose 3% symmetric padding under `labels = FALSE` over ggplot2's 5% default because it matches the padding already used on the left; falsified by a report that label-free profiles read as cramped.
