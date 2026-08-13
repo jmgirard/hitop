@@ -1,22 +1,22 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-13 (M40 planned and awaiting implementation, nothing else changed — tree clean, no open RB, GitHub issue and PR inboxes both empty; all checks pass, the 20 `dangling id tokens` advisories remain the standing pre-migration references in DESIGN.md/SOURCES.md)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M40)._
+_Last hygiene check: 2026-08-13 (M40 merged as PR #44 and archived; its row replaces M34's under terminal-row retention. Board now idle, tree clean, all checks pass, the 20 `dangling id tokens` advisories remain the standing pre-migration references in DESIGN.md/SOURCES.md)_
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M41)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M40 | Retire the M38/M39 plot-review residue | review | — | normal | milestones/M40-plot-review-residue.md |
+| M40 | Retire the M38/M39 plot-review residue | done | — | normal | milestones/archive/M40-plot-review-residue.md |
 | M39 | Profile plots in the short- and brief-form vignettes | done | — | normal | milestones/archive/M39-plot-vignette-coverage.md |
 | M38 | Norm-referenced PID-5 profile plots | done | — | normal | milestones/archive/M38-pid5-profile-plots.md |
 | M37 | Score HiTOP-SR subset-collected data | done | — | normal | milestones/archive/M37-hitopsr-subset-scoring.md |
 | M36 | Two-line response-option legend on the PID paper forms | done | — | normal | milestones/archive/M36-pid-legend-two-lines.md |
-| M34 | A second spot-value anchor per normed PID-5 column | done | — | normal | milestones/archive/M34-second-norm-anchors.md |
 
 ## Candidates
 
+- The AST-walk self-check that certifies `test-plot_pid5.R` reads no plot internals discriminates by the *receiver* of a `data` extraction but not by the *accessor*: `attr(p, "data")` reads it (ggplot2 4.x objects are S7, so properties are attributes), as do `p[[key]]` with a variable index, `do.call("[[", list(p, "data"))`, and `base::`-qualified accessors — all verified to leave the guard green. No such read exists in the file today, so this is guard strength rather than a live defect. The same walk treats only `for` as a loop, so `while`/`repeat` bodies escape the in-loop `info =` rule. Promote on any read of a plot's internals reaching that file past the guard, or on the guard being reused for a second test file — added 2026-08-13 — lineage: M40 (review findings scored 74 and 55, below the actioning threshold)
 - `calc_se` is demonstrated in no PID-5 vignette but the short-form one — the full-form and brief-form scoring vignettes have no standard-error section at all, so the only worked `calc_se` example for the 220-item and 25-item forms is the `?score_pid5` help page. The BF case differs from the other two rather than merely repeating them: its 5 domains score straight from items with no facet layer, so its standard errors are item-based where the SF's domain standard errors are not. Promote if a reader is ever unable to work out `calc_se` for the full or brief form from the short-form vignette and the help page — added 2026-08-04 — lineage: the vignette standard-error hotfix (PR #43), which corrected the description where it existed and added none where it did not
 - The documented ~7-inch figure-width floor for `plot_pid5()`'s value labels rests on a single hand measurement, on one device with one font — the review measured the worst case (a three-digit value at the axis maximum on a facet profile) as needing ~0.402in against ~0.382in of padding at 7in, i.e. essentially no margin, and the binding constraint is panel width, which differs by an inch or more between `level = "domain"` and `level = "facet"`. A per-level floor, or a measurement repeated across graphics devices, would replace the single number. Promote if a clipped label is reported at or above the documented width — added 2026-08-04, annotated 2026-08-06: M40 makes the padding conditional on `labels`, which leaves this floor where it stands (it binds only with labels on) — lineage: M39 (review findings scored 60 and 58), scoped out of M40
 - Hierarchical PID-5 profile display in the shape of Jeff's HiTOP-SR mockup — one block per level of the hierarchy, each a table of scale names, `T [95% CI]` values, and a per-row glyph plot with SD gridlines, using indent markers (`>`, `>>`) and a distinct glyph per level. Mockup shared in chat 2026-08-04 and not committed anywhere, so it lives only in that conversation. Adapting it to the PID-5 needs decisions `plot_pid5()` does not make today: the PID-5 hierarchy is two levels (domain, facet) against the mockup's four, and the 10 non-domain-defining facets have no parent to nest under. Its CI bars and its cutoff-based fills are the two rows above, each blocked by its own condition. Promote when hierarchical HiTOP-SR scoring is finalized, or if the two-level PID-5 form is wanted on its own — added 2026-08-04

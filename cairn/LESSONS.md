@@ -4,8 +4,6 @@
      quirks, testing tricks — captured at milestone end, surfaced at plan time.
      A *choice* is a D-entry, not a lesson. -->
 
-- 2026-07-16 (M18): DESIGN.md principle bullets must use the validator-canonical `- IPn: …` / `- GPn: …` form — `cairn_validate`'s "principles slot valid" check parses exactly that pattern and first fires when a milestone cites a principle.
-- 2026-07-16 (M18): data-raw scripts need readr (+ usethis) installed locally; they are not package dependencies, so a fresh machine must `install.packages("readr")` before regenerating `data/*.rda`.
 - 2026-07-16 (M19): the undocumented Qualtrics `GET /survey-definitions/{id}?format=qsf` endpoint returns a genuine importable QSF — validate by shape (SurveyEntry + SurveyElements) and never re-serialize it through jsonlite (round-trips aren't byte-faithful).
 - 2026-07-16 (M19): Qualtrics QSF exports serialize a dense zero-based choice map (values 0..n) as a JSON *array*, dropping the keys — recover them positionally from ChoiceOrder when parsing.
 - 2026-07-16 (M20): byte-locked repo artifacts need `.gitattributes` `-text` — Windows `actions/checkout` CRLF-converts anything git sniffs as text (.txt/.qsf), silently mutating committed bytes before tests see them.
@@ -46,3 +44,5 @@
 - 2026-08-05 (M39): `rmarkdown::html_vignette` is self-contained, so it base64-embeds figures and deletes the `_files` directory — a render leaves no figure files on disk to inspect unless it passes `output_options = list(self_contained = FALSE)`, and any stale `_files` contents must be cleared first or they inflate the count.
 - 2026-08-01 (M38): a Suggests version floor is not enforced when a package is merely loaded, so declaring one in DESCRIPTION alone still lets an old version fail on an unknown argument — pass the same version to the `rlang::is_installed()` guard and hold the two statements of it in step with a test.
 - 2026-08-01 (M38): reverting a mutation with `git checkout -- <file>` discards *uncommitted* work in that file — commit before mutation-testing, or copy the file aside and restore from the copy.
+- 2026-08-13 (M40): `testthat::test_file(reporter = "silent")` records a thrown error in the result's `error` column, not `failed` — a mutation that makes the code under test abort outright reads as "0 failures" if only `failed` is summed, which silently inverts a mutation check's verdict. Sum `failed > 0 | error`.
+- 2026-08-13 (M40): ggplot2 4.x plot objects are S7, so their properties ARE attributes — `attr(p, "data")` returns the internal data frame just as `p$data` does. Any check that means to stop code reading a plot's internals has to cover `attr()` too, not only `$`/`[[`.
