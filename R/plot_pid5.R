@@ -167,12 +167,12 @@ plot_pid5 <- function(
     data[cols],
     headline = function(n) {
       cli::format_inline(
-        "{cli::qty(n)}The normed column{?s} this profile plots must be numeric."
+        "{cli::qty(n)}The normed column{?s} this profile plots must be numeric in {.arg data}."
       )
     },
     info = function(n) {
       cli::format_inline(
-        "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is plotted for you."
+        "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is plotted for you. Convert {cli::qty(n)}{?it/them} before calling {.code plot_pid5()}."
       )
     }
   )

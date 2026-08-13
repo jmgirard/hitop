@@ -32,8 +32,9 @@ before a CRAN submission.
 
 * `plot_pid5()` now reports a non-numeric normed column the way `norm_pid5()`
   already did: one bullet per offending column, each naming that column and its
-  own class, rather than a single line listing the names with no types. The two
-  functions now share one guard, so the two messages cannot drift apart.
+  own class, rather than a single line listing the names with no types, and a
+  closing line saying what to do about it. The two functions now share one
+  guard, so the two messages cannot drift apart.
 
 * `plot_pid5()` now places each value label to the right of its point rather
   than above it, and pads the score axis to hold it. Offsetting upward took the

@@ -1,6 +1,6 @@
 # M40: Retire the M38/M39 plot-review residue
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -69,9 +69,9 @@ axis limit, or break (IP2, D-029); no new plot argument.
 ## Coverage
 
 - AC1 → T1, T2
-- AC2 → T3, T4
-- AC3 → T5
-- AC4 → T6
+- AC2 → T3, T4, T9, T12, T13
+- AC3 → T5, T10
+- AC4 → T6, T11
 - AC5 → T7
 - AC6 → T8
 
@@ -99,6 +99,17 @@ axis limit, or break (IP2, D-029); no new plot argument.
       ahead of its NA-drop branch) and run the predicate-inversion mutation.
 - [x] T7 NEWS.md entry per Scope-In user-visible change.
 - [x] T8 `devtools::document()`, `devtools::test()`, `devtools::check()`.
+- [x] T9 (review return, AC2) Widen the self-check's receiver rule: reject `data`
+      taken off ANY receiver except a `ggplot_build()` call, and name
+      `getElement()` alongside `$` and `[[`.
+- [x] T10 (review return, AC3) Resolve the called function's name through a
+      `pkg::` qualifier so `testthat::expect_*()` is classified as an expectation.
+- [x] T11 (review return, AC4) Restore `{.arg data}` to `plot_pid5()`'s headline
+      and give its closing line an action, mirroring `norm_pid5()`.
+- [x] T12 (review finding 8) Assert the axis's whole drawn vocabulary, not only
+      the names carrying a point, on both the pinned and the trained branch.
+- [x] T13 (review finding 7) Give `stem_for_label()` the unmapped-stem fallback
+      `plot_scale_labels()` has, and state the dropped-scale claim positively.
 
 ## Work log
 
@@ -123,6 +134,13 @@ axis limit, or break (IP2, D-029); no new plot argument.
 - 2026-08-06: plan scoped the ~7-inch figure-width floor out because M39's own lesson makes any such promise device- and font-dependent, so it needs a measurement procedure rather than a second hand measurement; it stays a candidate row.
 - 2026-08-13: review returned M40 to in-progress (defect return 1). Three criteria fail as written, each verified in-session by injection or by rendering: AC2 — the self-check's `is.name(e[[2]])` receiver restriction lets `ps[[1]]$data` read the internal frame with both guards green; AC3 — its `is.name(call[[1]])` restriction never classifies `testthat::expect_equal()` as an expectation, so an in-loop qualified call with no `info` passes; AC4 — `plot_pid5()`'s message names no argument and offers no code action, where main's named `{.arg data}`. All other gate checks and CI passed.
 - 2026-08-13: review evidence gathered fresh for all six criteria before the return; the three passing ones (AC1, AC5, AC6) stand on their own recorded evidence and their boxes are unticked only because the milestone reopened.
+
+- 2026-08-13: return fixes done. AC2 — the self-check now rejects `data` off any receiver but a `ggplot_build()` call and names `getElement()`; AC3 — expectation names resolve through `::`. Both verified against the exact probe that defeated them: `ps[[1]]$data`, `(p1)$data`, `getElement(p1, "data")` and an in-loop `testthat::expect_equal()` with no `info` previously left both guards green and now red them, while the file without the probe stays green.
+- 2026-08-13: AC4 — `plot_pid5()`'s headline names `{.arg data}` again and its closing line now says what to do, both pluralized off the count (which also gives `plot_pid5()`'s `info` closure a use for its `n`, review finding 12). Rendered and checked, not assumed.
+- 2026-08-13: finding 8 — a ghost factor level turns out to be invisible in built data on BOTH branches (pinned limits unfacetted, unused levels dropped by per-panel training), so it never reaches the axis or the reader. What the old `levels(p$data$scale)` assertion actually protected is the axis vocabulary, now asserted on the drawn axis for the unfacetted branch and per panel for the facet branch; making `plot_scale_labels()` return stems reds it with 17 failures.
+- 2026-08-13: finding 7 — the vacuity is fixed at its root (finding 6): `stem_for_label()` gained the unmapped-stem fallback its production counterpart has, and the dropped-scale claim is now positive (the four survivors in order). Forcing the recovery to `NA` reds it, where the old `expect_false(... %in% ...)` form passed.
+
+- 2026-08-13: return fixes verified clean — `devtools::document()` no diff, `devtools::test()` 12052 passing, `devtools::check()` 0/0/0. `cairn_validate` passes; its one new advisory is the >10-task split tripwire, fired by five review-return tasks appended to finished work rather than by scope growth. Status back to review.
 
 ## Decisions
 

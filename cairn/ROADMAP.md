@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M40 | Retire the M38/M39 plot-review residue | in-progress | — | normal | milestones/M40-plot-review-residue.md |
+| M40 | Retire the M38/M39 plot-review residue | review | — | normal | milestones/M40-plot-review-residue.md |
 | M39 | Profile plots in the short- and brief-form vignettes | done | — | normal | milestones/archive/M39-plot-vignette-coverage.md |
 | M38 | Norm-referenced PID-5 profile plots | done | — | normal | milestones/archive/M38-pid5-profile-plots.md |
 | M37 | Score HiTOP-SR subset-collected data | done | — | normal | milestones/archive/M37-hitopsr-subset-scoring.md |

@@ -87,7 +87,12 @@ stem_for_label <- function(labels, version, level) {
   } else {
     stats::setNames(pid_domains$camelCase, pid_domains$Domain)
   }
-  unname(table[labels])
+  out <- unname(table[labels])
+  # `plot_scale_labels()` plots a stem the table does not name under its own
+  # stem, so the inverse must recover that stem rather than NA. Mirroring that
+  # fallback is not cosmetic: an NA here is silent, and it turns any assertion
+  # of the form `expect_false(x %in% stems)` into one that passes vacuously.
+  ifelse(is.na(out), labels, out)
 }
 
 # What the plot actually drew, recovered from BUILT layer data alone: one row
@@ -183,22 +188,41 @@ test_that("no assertion here reads the plot object's internal data frame", {
   # not what it drew. It carries columns no aesthetic maps, so a rename that
   # changes no behavior reds these tests -- which is a defect in the test.
   # Built layer data is read instead, and the two are told apart by SHAPE: the
-  # forbidden read takes `data` off a bare symbol, the permitted one off a call
-  # (`ggplot_build(p)$data`). That needs no tracking of which variable holds
-  # what. The cost is a deliberate conservatism -- `b <- ggplot_build(p)`
-  # followed by `b$data` is legitimate and still rejected -- so built data is
-  # taken from the call itself, or through `layer_data_for()`.
+  # ONE permitted way to take `data` is directly off a `ggplot_build()` call.
+  # Every other receiver is rejected -- a bare symbol, a list element, a
+  # parenthesised plot, a nested layer. That needs no tracking of which
+  # variable holds what, and it is deliberately conservative: `b <-
+  # ggplot_build(p)` followed by `b$data` is legitimate and still rejected, so
+  # built data is taken from the call itself, or through `layer_data_for()`.
   #
-  # `[[` counts as well as `$`. Were it not checked, the rule would be a rule
-  # about spelling: `b[["data"]]` reads exactly what `b$data` reads, and a
-  # guard that waves it through polices nothing.
+  # The rule is stated as "everything except the build call" and never as "a
+  # bare symbol", because the second is a rule the shape of the receiver can
+  # walk around: `plots[[i]]$data` reads the internal frame exactly as `p$data`
+  # does, and a loop over several plots is the shape this file uses. Likewise
+  # `[[` counts alongside `$`, or the rule would be a rule about spelling
+  # (`b[["data"]]` reads what `b$data` reads), and `getElement()` is named
+  # because it is the third spelling of the same read.
+  is_build_call <- function(e) {
+    if (!is.call(e)) {
+      return(FALSE)
+    }
+    fn <- e[[1]]
+    if (is.call(fn) && identical(fn[[1]], as.name("::"))) {
+      fn <- fn[[3]]
+    }
+    is.name(fn) && identical(as.character(fn), "ggplot_build")
+  }
   extracts_data <- function(e) {
+    if (identical(e[[1]], as.name("getElement"))) {
+      return(length(e) == 3L && identical(e[[3]], "data") && !is_build_call(e[[2]]))
+    }
     if (!(identical(e[[1]], as.name("$")) || identical(e[[1]], as.name("[[")))) {
       return(FALSE)
     }
-    length(e) == 3L && is.name(e[[2]]) &&
-      (is.character(e[[3]]) || is.name(e[[3]])) &&
-      identical(as.character(e[[3]]), "data")
+    if (length(e) != 3L || !(is.character(e[[3]]) || is.name(e[[3]]))) {
+      return(FALSE)
+    }
+    identical(as.character(e[[3]]), "data") && !is_build_call(e[[2]])
   }
   offenders <- Filter(function(hit) extracts_data(hit$call), calls)
   expect_equal(
@@ -207,12 +231,24 @@ test_that("no assertion here reads the plot object's internal data frame", {
   )
 })
 
+# The called function's bare name, seeing THROUGH a `pkg::` qualifier.
+# `testthat::expect_equal()` carries a `::` *call* in first position, not a
+# name, so a walk that matched only bare names would never classify it as an
+# expectation at all -- and this file already uses `testthat::fail()` and
+# `testthat::capture_warnings()`, so the qualified form is live local style,
+# not a hypothetical.
+called_name <- function(e) {
+  fn <- e[[1]]
+  if (is.call(fn) &&
+      (identical(fn[[1]], as.name("::")) || identical(fn[[1]], as.name(":::")))) {
+    fn <- fn[[3]]
+  }
+  if (is.name(fn)) as.character(fn) else ""
+}
+
 test_that("every expectation inside a loop names its iteration on failure", {
   in_loop <- Filter(
-    function(hit) {
-      hit$in_loop && is.name(hit$call[[1]]) &&
-        startsWith(as.character(hit$call[[1]]), "expect_")
-    },
+    function(hit) hit$in_loop && startsWith(called_name(hit$call), "expect_"),
     test_file_calls()
   )
   # There are in-loop expectations to check, so this cannot pass vacuously.
@@ -226,8 +262,7 @@ test_that("every expectation inside a loop names its iteration on failure", {
   # recast for the same reason.
   undescribed <- Filter(
     function(hit) {
-      fn <- as.character(hit$call[[1]])
-      if (fn %in% c("expect_setequal", "expect_length")) {
+      if (called_name(hit$call) %in% c("expect_setequal", "expect_length")) {
         return(TRUE)
       }
       !("info" %in% names(hit$call))
@@ -547,7 +582,14 @@ test_that("a scale with no value is dropped with a warning and the rest plot", {
     regexp = "detachment"
   )
   expect_equal(nrow(layer_data_for(p, "GeomPoint")), 4)
-  expect_false("detachment" %in% built_profile(p, "FULL", "domain")$stem)
+  # Stated positively -- the four survivors, in order -- rather than as
+  # `expect_false("detachment" %in% ...)`. A negative membership claim over a
+  # recovered vector passes whenever the recovery breaks, since `NA %in% x` is
+  # `FALSE`; naming the four that must remain cannot pass that way.
+  expect_equal(
+    built_profile(p, "FULL", "domain")$stem,
+    setdiff(pid_domains$camelCase, "detachment")
+  )
 })
 
 test_that("a profile with no values at all is an error", {
@@ -637,8 +679,25 @@ test_that("axis labels are the tables' printed names, not column stems", {
   expect_equal(drawn, pid_domains$Domain)
   expect_false(any(drawn %in% pid_domains$camelCase))
 
+  # And the whole vocabulary the axis carries, not only the names that happen
+  # to have a point on them: a scale the axis lists but draws nothing at would
+  # be invisible to the assertion above. The discrete scale runs bottom-to-top,
+  # hence the reversal.
+  vocabulary <- ggplot2::layer_scales(p)$y$get_limits()
+  expect_equal(rev(vocabulary), pid_domains$Domain)
+  expect_false(any(vocabulary %in% pid_domains$camelCase))
+
   p <- plot_pid5(normed_one("FULL", level = "facet"), version = "FULL", level = "facet")
   expect_setequal(built_profile(p, "FULL", "facet")$scale, pid_scales[["FULL"]]$Facet)
+
+  # Same claim per panel on the facet branch, where the axis is trained rather
+  # than pinned and each panel carries its own vocabulary.
+  panels <- ggplot2::ggplot_build(p)$layout$panel_scales_y
+  for (i in seq_along(panels)) {
+    listed <- panels[[i]]$get_limits()
+    expect_false(any(listed %in% pid_scales[["FULL"]]$camelCase), info = paste("panel", i))
+    expect_true(all(listed %in% pid_scales[["FULL"]]$Facet), info = paste("panel", i))
+  }
 })
 
 test_that("a non-numeric normed column is refused, not reported as missing", {
@@ -667,18 +726,25 @@ test_that("a non-numeric normed column is refused, not reported as missing", {
   normed$pid_antagonism_t <- factor(normed$pid_antagonism_t, ordered = TRUE)
   msg <- render(plot_pid5(normed, version = "BF"))
 
-  expect_match(msg, "The normed columns this profile plots must be numeric.", fixed = TRUE)
+  expect_match(msg, "The normed columns this profile plots must be numeric in `data`.", fixed = TRUE)
   expect_match(msg, "pid_detachment_t", fixed = TRUE)
   expect_match(msg, "pid_antagonism_t", fixed = TRUE)
   expect_match(msg, "character", fixed = TRUE)
   expect_match(msg, "ordered/factor", fixed = TRUE)
   expect_false(grepl("<ordered>", msg, fixed = TRUE))
 
-  # And it pluralizes off the number of offending columns, not off a constant.
+  # The headline names the argument the caller actually wrote, and the closing
+  # line says what to do about it -- both of which the message a caller sees
+  # needs, and neither of which a list of column names supplies on its own.
+  expect_match(msg, "`data`", fixed = TRUE)
+  expect_match(msg, "Convert them before calling `plot_pid5()`.", fixed = TRUE)
+
+  # And both pluralize off the number of offending columns, not off a constant.
   one_bad <- normed_one("BF")
   one_bad$pid_detachment_t <- as.character(one_bad$pid_detachment_t)
   solo <- render(plot_pid5(one_bad, version = "BF"))
-  expect_match(solo, "The normed column this profile plots must be numeric.", fixed = TRUE)
+  expect_match(solo, "The normed column this profile plots must be numeric in `data`.", fixed = TRUE)
+  expect_match(solo, "Convert it before calling `plot_pid5()`.", fixed = TRUE)
 })
 
 
