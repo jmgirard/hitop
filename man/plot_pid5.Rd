@@ -37,7 +37,9 @@ familiar 0-100 percentile scale.}
 default. The labels need a figure about 7 inches wide or more: below that,
 a label on a score at the top of the published span runs into the edge of
 the panel and is cut off. Set \code{labels = FALSE} for a narrower figure and
-the points and profile line are drawn without them. This is a choice you
+the points and profile line are drawn without them; the score axis then
+drops the extra padding it reserves for a label, so the profile itself
+gets that width back. This is a choice you
 make, not one the function can make for you -- a plot is assembled before
 anything knows what size it will be drawn at.}
 

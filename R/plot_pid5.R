@@ -25,7 +25,9 @@
 #'   default. The labels need a figure about 7 inches wide or more: below that,
 #'   a label on a score at the top of the published span runs into the edge of
 #'   the panel and is cut off. Set `labels = FALSE` for a narrower figure and
-#'   the points and profile line are drawn without them. This is a choice you
+#'   the points and profile line are drawn without them; the score axis then
+#'   drops the extra padding it reserves for a label, so the profile itself
+#'   gets that width back. This is a choice you
 #'   make, not one the function can make for you -- a plot is assembled before
 #'   anything knows what size it will be drawn at.
 #' @param prefix The column-name prefix used when the scores were computed, as
@@ -156,23 +158,24 @@ plot_pid5 <- function(
     ))
   }
 
-  ## Only a numeric column can be plotted against a norm table. as.numeric()
-  ## would turn a factor into its integer codes and a character column into
-  ## NA -- the latter then reported as a dropped scale, which would hide a type
-  ## mistake behind a warning about missing data. norm_pid5() refuses the same
-  ## input for the same reason.
-  bad_type <- !vapply(
-    cols,
-    function(nm) is.numeric(data[[nm]]) || is.logical(data[[nm]]),
-    logical(1)
+  ## Only a numeric column can be plotted against a norm table. A character
+  ## column coercing to NA would otherwise be reported below as a dropped
+  ## scale, hiding a type mistake behind a warning about missing data -- so
+  ## this stays ahead of the NA-drop branch. norm_pid5() refuses the same input
+  ## for the same reason, through the same guard.
+  validate_numeric_columns(
+    data[cols],
+    headline = function(n) {
+      cli::format_inline(
+        "{cli::qty(n)}The normed column{?s} this profile plots must be numeric in {.arg data}."
+      )
+    },
+    info = function(n) {
+      cli::format_inline(
+        "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is plotted for you. Convert {cli::qty(n)}{?it/them} before calling {.code plot_pid5()}."
+      )
+    }
   )
-  if (any(bad_type)) {
-    cli::cli_abort(c(
-      "{cli::qty(sum(bad_type))}The normed column{?s} this profile plots must be numeric.",
-      "x" = "Not numeric in {.arg data}: {.val {cols[bad_type]}}.",
-      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is plotted for you."
-    ))
-  }
 
   values <- vapply(cols, function(nm) as.numeric(data[[nm]][[1]]), numeric(1))
   ## Percentiles arrive as a proportion; the axis reads 0-100.
@@ -396,7 +399,14 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric,
       ## still has somewhere for its label to sit. This is expansion around the
       ## trained range, never a change to `limits` or `breaks` -- the axis
       ## still spans exactly what the tables print.
-      expand = ggplot2::expansion(mult = c(0.03, 0.12))
+      ##
+      ## The wider side is the label's room and is taken only when a label is
+      ## drawn there. Asked for `labels = FALSE`, the caller wants a narrower
+      ## figure, so reserving room for a label that is not drawn would spend
+      ## the width they asked to save on empty margin.
+      expand = ggplot2::expansion(
+        mult = if (isTRUE(show_labels)) c(0.03, 0.12) else c(0.03, 0.03)
+      )
     ) +
     ggplot2::labs(
       x = x_label,
@@ -419,10 +429,12 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric,
     ## so a `vjust` offset is clipped by the panel edge on a small enough
     ## device, in every panel, however much discrete expansion is added. The
     ## continuous axis is padded on the label side instead, and that padding is
-    ## the room the label needs. That is better, not immune: the padding is a
-    ## proportion of the data range, so it too shrinks with panel width. It
-    ## holds at the figure widths `?plot_pid5` documents and no wider promise
-    ## is made -- below them the caller passes `labels = FALSE`.
+    ## the room the label needs -- which is why the scale above takes it only
+    ## on this branch, and pads both ends evenly when no label is drawn. That is
+    ## better, not immune: the padding is a proportion of the data range, so it
+    ## too shrinks with panel width. It holds at the figure widths `?plot_pid5`
+    ## documents and no wider promise is made -- below them the caller passes
+    ## `labels = FALSE`.
     p <- p + ggplot2::geom_label(
       ggplot2::aes(label = round(.data$value)),
       hjust = -0.6,

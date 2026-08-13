@@ -194,34 +194,21 @@ norm_pid5 <- function(
   col_names <- names(score_cols)
   scale_names <- strip_prefix(col_names, prefix)
 
-  ## Only a numeric (or logical) column can be looked up. as.numeric() would
-  ## turn a factor into its integer codes and a character column into NA --
-  ## wrong answers rather than errors -- so both abort here, before any report
-  ## fires or any conversion happens. A logical column is left alone:
-  ## as.numeric(TRUE) is 1, which is what a 0/1 indicator already means.
-  bad_type <- !vapply(
+  ## Only a numeric (or logical) column can be looked up -- the shared guard
+  ## aborts here, before any report fires or any conversion happens.
+  validate_numeric_columns(
     score_cols,
-    function(x) is.numeric(x) || is.logical(x),
-    logical(1)
+    headline = function(n) {
+      cli::format_inline(
+        "{cli::qty(n)}The {.arg scores} column{?s} must be numeric."
+      )
+    },
+    info = function(n) {
+      cli::format_inline(
+        "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is converted for you. Convert {cli::qty(n)}{?it/them} before calling {.code norm_pid5()}."
+      )
+    }
   )
-  if (any(bad_type)) {
-    ## One bullet per offending column, each carrying that column's own class:
-    ## {.cls} collapses a vector of classes into a single union label, so the
-    ## columns cannot share a bullet. Escaped because the bullets are already
-    ## formatted and cli_abort() would interpolate them a second time.
-    detail <- vapply(which(bad_type), function(i) {
-      nm <- col_names[[i]]
-      cls <- class(score_cols[[i]])
-      out <- cli::format_inline("{.val {nm}} is {.cls {cls}}.")
-      gsub("}", "}}", gsub("{", "{{", out, fixed = TRUE), fixed = TRUE)
-    }, character(1))
-    names(detail) <- rep("x", length(detail))
-    cli::cli_abort(c(
-      "{cli::qty(sum(bad_type))}The {.arg scores} column{?s} must be numeric.",
-      detail,
-      "i" = "A factor's integer codes are not its scores, and a character column coerces to {.code NA}, so neither is converted for you. Convert {cli::qty(sum(bad_type))}{?it/them} before calling {.code norm_pid5()}."
-    ))
-  }
 
   ## Which requested scales the tables cover for this version. An uncovered
   ## scale still gets both columns, filled with NA (never silently absent).

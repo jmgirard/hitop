@@ -239,6 +239,45 @@ validate_count <- function(x, arg, max, call = rlang::caller_env()) {
   invisible(NULL)
 }
 
+# Refuse any column that is not numeric or logical. Shared by norm_pid5() and
+# plot_pid5(), which reject such a column for the same reason: as.numeric()
+# turns a factor into its integer codes and a character column into NA -- wrong
+# answers rather than errors -- so both stop before any conversion happens. A
+# logical column is left alone: as.numeric(TRUE) is 1, which is what a 0/1
+# indicator already means.
+#
+# The detail is shared and the headline is not. Each offending column gets its
+# own bullet carrying its own class ({.cls} collapses a vector of classes into a
+# single union label, so they cannot share a bullet). But norm_pid5() blames its
+# `scores` argument while plot_pid5() names the normed columns it plots, and one
+# flattened message would cost norm_pid5() the blame it already gives -- so the
+# caller supplies its headline and closing line as functions of how many columns
+# offended. That count is what both pluralize on and what neither knows until
+# the check has run, which is why they are functions and not strings.
+validate_numeric_columns <- function(columns, headline, info,
+                                     call = rlang::caller_env()) {
+  bad <- !vapply(columns, function(x) is.numeric(x) || is.logical(x), logical(1))
+  if (!any(bad)) {
+    return(invisible(NULL))
+  }
+  ## Escaped because these strings are already formatted, and cli_abort() would
+  ## interpolate a brace in a column name or a class a second time.
+  escape_braces <- function(x) {
+    gsub("}", "}}", gsub("{", "{{", x, fixed = TRUE), fixed = TRUE)
+  }
+  detail <- vapply(which(bad), function(i) {
+    nm <- names(columns)[[i]]
+    cls <- class(columns[[i]])
+    escape_braces(cli::format_inline("{.val {nm}} is {.cls {cls}}."))
+  }, character(1))
+  names(detail) <- rep("x", length(detail))
+  n <- sum(bad)
+  cli::cli_abort(
+    c(escape_braces(headline(n)), detail, "i" = escape_braces(info(n))),
+    call = call
+  )
+}
+
 # Remove a leading `prefix` from each name by *literal* match (D-026). The
 # obvious `sub(paste0("^", prefix), "", x)` compiles the caller's string as a
 # regular expression, so a prefix containing `(` aborts with a regex error the
