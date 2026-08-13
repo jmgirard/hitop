@@ -1,6 +1,6 @@
 # M40: Retire the M38/M39 plot-review residue
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -29,7 +29,7 @@ axis limit, or break (IP2, D-029); no new plot argument.
 
 ## Acceptance criteria
 
-- [x] AC1 With `labels = FALSE`, `plot_pid5()` pads the continuous score axis
+- [ ] AC1 With `labels = FALSE`, `plot_pid5()` pads the continuous score axis
       by 3% at both ends; with `labels = TRUE` the existing 3%/12% padding is
       unchanged. Asserted over all 10 legal `version` × `level` × `metric`
       combinations (3 × 2 × 2, less the two BF × facet cases `plot_pid5()`
@@ -38,7 +38,7 @@ axis limit, or break (IP2, D-029); no new plot argument.
       for **every** panel `i` against that plot's `pid_norms`-derived scale
       limits (not against the range of the plotted values, which lie inside
       them).
-- [x] AC2 No assertion in `tests/testthat/test-plot_pid5.R` reads a column of
+- [ ] AC2 No assertion in `tests/testthat/test-plot_pid5.R` reads a column of
       the plot object's internal data frame. Domain enumerated by parsing the
       file (`parse()` + AST walk for `$data` extraction on a ggplot object),
       which returns none; each such assertion instead reads
@@ -47,23 +47,23 @@ axis limit, or break (IP2, D-029); no new plot argument.
       consistently renaming the internal `stem` column in `R/plot_pid5.R`
       (the column *and* the `df$stem != "total"` filter at R/plot_pid5.R:366)
       leaves `devtools::test()` green; reverted after.
-- [x] AC3 Every expectation call inside a `for` body in that file names its
+- [ ] AC3 Every expectation call inside a `for` body in that file names its
       iteration on failure. Domain enumerated by the same AST walk, which
       reports no in-loop `expect_setequal()` or `expect_length()` call
       (neither accepts `info`) and an `info =` argument on every remaining
       in-loop expectation. One in-loop assertion is mutation-checked to show
       the iteration in the failure message.
-- [x] AC4 `norm_pid5()` and `plot_pid5()` reject a non-numeric,
+- [ ] AC4 `norm_pid5()` and `plot_pid5()` reject a non-numeric,
       non-logical score column through one helper defined in `R/util.R`. Each
       keeps its own headline naming its own argument; both emit one bullet per
       offending column carrying that column's class. Verified by mutation:
       inverting the helper's predicate turns both functions' guard tests red,
       so both demonstrably route through it. Tests fire each guard on a
       character column and on a factor column.
-- [x] AC5 `NEWS.md` carries one entry per user-visible change in this
+- [ ] AC5 `NEWS.md` carries one entry per user-visible change in this
       milestone's Scope **In** list, and each entry has a test that fails
       without the behavior that entry asserts.
-- [x] AC6 `Rscript -e 'devtools::document()'` and `Rscript -e 'devtools::test()'`
+- [ ] AC6 `Rscript -e 'devtools::document()'` and `Rscript -e 'devtools::test()'`
       clean, and `devtools::check()` clean (structural change to `R/util.R`).
 
 ## Coverage
@@ -154,6 +154,9 @@ axis limit, or break (IP2, D-029); no new plot argument.
 
 ## Review
 
+- 2026-08-13: review returned M40 to in-progress (defect return 1). Three criteria fail as written, each verified in-session by injection or by rendering: AC2 — the self-check's `is.name(e[[2]])` receiver restriction lets `ps[[1]]$data` read the internal frame with both guards green; AC3 — its `is.name(call[[1]])` restriction never classifies `testthat::expect_equal()` as an expectation, so an in-loop qualified call with no `info` passes; AC4 — `plot_pid5()`'s message names no argument and offers no code action, where main's named `{.arg data}`. All other gate checks and CI passed.
+- 2026-08-13: review evidence gathered fresh for all six criteria before the return; the three passing ones (AC1, AC5, AC6) stand on their own recorded evidence and their boxes are unticked only because the milestone reopened.
+
 ### Acceptance criteria
 
 - **AC1 — verified.** `profile_cases()` enumerates **10** combinations from `pid_scales` (FULL/SF x domain/facet x t/percentile, plus BF domain x 2); the two BF facet cases are excluded because `pid_scales[["BF"]]` names `Domain` and no `Facet` column, not because "BF" is named in the test. Measured `x.range` against the `pid_norms`-derived span, every panel: FULL facet t limits [30,100] -> [27.9,108.4] with labels (3.00%/12.00%) and [27.9,102.1] without (3.00%/3.00%); BF domain percentile limits [0,100] -> [-3,112] and [-3,103]. The test asserts this for every panel of all 10 combinations, both ways.
@@ -167,3 +170,89 @@ axis limit, or break (IP2, D-029); no new plot argument.
 - **AC5 — verified.** Two of the four Scope-In changes are user-visible and each has one NEWS entry; the other two (converting the tests off the internal frame, labelling in-loop assertions) are test-only and get none. Each entry rests on a test that fails without its behavior, shown by mutation: reverting `expand` to unconditional reds the padding test (30 assertions); replacing the per-column class detail with a classless bullet reds the plot guard test. Both reverted.
 
 - **AC6 — verified.** `devtools::document()` leaves no diff in `man/`, `NAMESPACE`, `DESCRIPTION` or `R/`. `devtools::test()` 12035 passing, 0 failures, 1 skip. `devtools::check()` **0 errors, 0 warnings, 0 notes** (2m 4s).
+
+### Independent review (2026-08-13)
+
+Three fresh-context lenses. The **[S] blame-history** lens returned zero findings
+(it traced the padding change to PR #42/M39 and confirmed the M39 label-clipping
+bug cannot recur where no label is drawn; it found no deleted assertion without an
+equal-or-stronger replacement). The **[S] prior-review** lens returned zero findings
+(M38's and M39's archived `## Review` findings are untouched; the `gh` probe found
+no real inline PR comments, so the thread walk was skipped). The **[O] diff-bug**
+lens returned 24. An **[S] scorer** that did not generate them scored all 24 against
+the rubric; three cleared 80.
+
+**Actioned (>=80), verbatim, each verified in this session before it was recorded:**
+
+- **Finding 1 (84) — AC2 failure.** `tests/testthat/test-plot_pid5.R:199` — the AC2
+  self-check's `is.name(e[[2]])` requirement lets any non-symbol receiver read the
+  internal frame. `extracts_data()` only fires when the thing on the left of
+  `$`/`[[` is a bare symbol. Verified: appending
+  `ps <- list(plot_pid5(normed_one("BF"), version="BF")); expect_true(length(ps[[1]]$data$stem) == 6)`
+  to the file left both self-checks and the entire file green. `(p)$data`,
+  `plots[[1]]$data`, `getElement(p, "data")` and `p$layers[[1]]$data` all pass the
+  guard. AC2 promises "No assertion in `tests/testthat/test-plot_pid5.R` reads a
+  column of the plot object's internal data frame"; the check that certifies it
+  enforces something considerably narrower, and `plots[[i]]$data` is the realistic
+  form (a loop over several plots is exactly the shape this file uses).
+  Falsifies AC2's "Domain enumerated by parsing the file (`parse()` + AST walk for
+  `$data` extraction on a ggplot object), which returns none" -- a `[[`-indexed
+  receiver is inside that procedure's own domain.
+
+- **Finding 2 (84) — AC3 failure.** `tests/testthat/test-plot_pid5.R:213` — the AC3
+  self-check's `is.name(hit$call[[1]])` requirement misses every namespace-qualified
+  expectation. `testthat::expect_equal(...)` has a `::` *call* in position 1, not a
+  name, so it is never classified as an expectation. Verified: injecting
+  `for (v in c("BF")) { testthat::expect_equal(nrow(ps[[1]]$data), 6L) }` — an
+  in-loop expectation with no `info` — left the file green. The file already uses
+  `testthat::fail()` and `testthat::capture_warnings()`, so qualified calls are an
+  established local style and this hole is live.
+  Falsifies AC3's "an `info =` argument on every remaining in-loop expectation" --
+  a `::`-qualified call in a `for` body is inside that procedure's own domain.
+
+- **Finding 11 (87) — AC4 failure.** `R/plot_pid5.R:166-178` — `plot_pid5()`'s
+  message lost its only pointer at the offending argument, and gained no remedy.
+  Main's bullet was `"Not numeric in {.arg data}: {.val {cols[bad_type]}}."`. The new
+  message is *"The normed columns this profile plots must be numeric. x
+  "pid_detachment_t" is <character>. i A factor's integer codes are not its scores..."*
+  — it never names `data`, and its `i` bullet contains no `{.code}` action (norm's
+  does: *"Convert them before calling `norm_pid5()`"*). CLAUDE.md requires
+  "actionable `{.code dplyr::filter(...)}` suggestions". NEWS.md presents this change
+  as unambiguously an improvement; the per-column classes are new, but the argument
+  attribution is a regression.
+  Falsifies AC4's "Each keeps its own headline naming its own argument". Verified by
+  rendering both messages: `norm_pid5()`'s names `scores` and offers
+  `norm_pid5()` as an action; `plot_pid5()`'s matches neither `data` nor any code
+  action, where `main`'s did name `{.arg data}`.
+
+**Below 80 — excluded from the actioned list, logged (21 findings):**
+
+- (78) F8 `test-plot_pid5.R` — the axis-label claim narrowed from the discrete scale's whole level vocabulary to the names at drawn points; a ghost factor level would no longer red.
+- (75) F7 `test-plot_pid5.R:550` — `expect_false("detachment" %in% built_profile(...)$stem)` passes vacuously if the stem mapping ever returns `NA`.
+- (62) F24 milestone file — AC2/AC3's own text is stronger than the checks that discharge them; overlaps F1 at the framing level.
+- (55) F5 `test-plot_pid5.R:111` — `panel_scales_y` indexed by `PANEL` rather than `layout$SCALE_Y`; equal today, would diverge under `facet_wrap`.
+- (55) F6 `test-plot_pid5.R:90` — `stem_for_label()` lacks `plot_scale_labels()`'s unmapped-stem fallback and returns `NA` silently.
+- (55) F15 `test-plot_pid5.R:112` — `limits[[pts$y[[k]]]]` fails as an opaque subscript error rather than a named `testthat::fail()`.
+- (50) F9 `test-plot_pid5.R` — two tests now make the identical FULL drawn-order claim, and a surviving comment still describes them as distinct.
+- (45) F12 `R/plot_pid5.R` — `plot_pid5()`'s `info` closure ignores its `n` argument, so M40-D3's design is exercised by one caller of two.
+- (42) F19 `test-plot_pid5.R:255` — the enumeration's legality rule (`"Facet" %in% names(...)`) is correlated with, not identical to, `plot_pid5()`'s own `BF` gate.
+- (40) F4 `test-plot_pid5.R:233` — the check tests for an `info` argument's presence, never that its value varies by iteration.
+- (40) F23 `test-plot_pid5.R:105` — `built_profile()`'s `version`/`level` are caller-supplied and unchecked against the plot.
+- (38) F20 `DESCRIPTION` — the roxygen2 version bump is outside Scope In; justified by AC6 but arguably its own trivial commit.
+- (35) F3 `test-plot_pid5.R:163` — only `for` is recognized as a loop; `while`/`repeat`/`lapply` bodies are not.
+- (35) F17 `test-plot_pid5.R` — the `expect_gt()` -> `expect_true()` recast gains `info` but loses printed operand values.
+- (32) F16 `test-plot_pid5.R` — the anti-vacuity thresholds (500, 20) are loose against measured 1354 and 39.
+- (30) F10 `R/util.R:257` — the new helper takes callbacks and calls `cli_abort()` directly, unlike every sibling validator; M40-D3 records this as deliberate.
+- (30) F13 `R/util.R:257` — `headline`/`info` are unvalidated required callbacks.
+- (30) F14 `test-plot_pid5.R:106` — `built_profile()` builds the plot twice.
+- (25) F18 `test-plot_pid5.R:309` — the expected padding restates the implementation's own constants.
+- (20) F21 `NEWS.md` — both entries describe changes to a function introduced in the same unreleased section; pre-existing pattern.
+- (15) F22 `R/plot_pid5.R:28` — an unreflowed roxygen line after the text splice.
+
+### Gate result
+
+Returned to `in-progress`. Three acceptance criteria fail as written: AC2 and AC3
+inside the domain of the AST walk each names, and AC4 on `plot_pid5()`'s headline.
+Everything else passed: `cairn_validate` clean, `devtools::document()` no diff,
+`pkgdown::check_pkgdown()` clean, `devtools::check()` 0/0/0, and CI green on all
+seven jobs of PR #44.
