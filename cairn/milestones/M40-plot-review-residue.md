@@ -77,10 +77,10 @@ axis limit, or break (IP2, D-029); no new plot argument.
 
 ## Tasks
 
-- [ ] T1 Write the failing test first: enumerate the 10 legal combinations
+- [x] T1 Write the failing test first: enumerate the 10 legal combinations
       from `pid_scales`, build with `labels = FALSE` and `labels = TRUE`, and
       assert `x.range` per panel against the scale limits.
-- [ ] T2 Make the `expand =` at R/plot_pid5.R:399 conditional on
+- [x] T2 Make the `expand =` at R/plot_pid5.R:399 conditional on
       `show_labels`; update the comment block at R/plot_pid5.R:395-398 and
       R/plot_pid5.R:416-425 to say the padding is the label's room and is not
       taken when there are no labels.
@@ -109,8 +109,38 @@ axis limit, or break (IP2, D-029); no new plot argument.
 - 2026-08-06: plan gate chose 3% symmetric padding under `labels = FALSE` over ggplot2's 5% default because it matches the padding already used on the left; falsified by a report that label-free profiles read as cramped.
 - 2026-08-13: in-progress on `m40-plot-review-residue`; ggplot2/flextable/officer/lavaan installed locally (absent before), baseline `devtools::test()` green at 11964 passing on ggplot2 4.0.3.
 - 2026-08-13: measured the AC2/AC3 domains by AST walk before writing anything — 27 `$data` reads on a bare symbol (24 on the plot object, 3 on a `ggplot_build()` result) against T4's hand-written "20", and 39 in-loop expectations of which 3 `expect_setequal`, 1 `expect_length`, 2 `expect_gt` and 2 `expect_no_warning` take no `info`.
+- 2026-08-13: T1/T2 done. The new test enumerates the 10 legal combinations from `pid_scales` (a version offers a facet level iff its scales table names Facets) and compares every panel's `x.range` against a `pid_norms`-derived span; it failed on all `labels = FALSE` cases and passed every `labels = TRUE` case before the fix, which is the control identifying the failure. `expand` is now conditional on `show_labels`. `devtools::test()` 12025 passing, 0 failures.
+- 2026-08-13: `devtools::document()` also rewrote DESCRIPTION's `Config/roxygen2/version` 8.0.0 -> 8.1.0 (local roxygen2 is newer than the one that last documented the repo); committed because the review consistency-gate requires `document()` to leave no diff.
 - 2026-08-06: plan scoped the ~7-inch figure-width floor out because M39's own lesson makes any such promise device- and font-dependent, so it needs a measurement procedure rather than a second hand measurement; it stays a candidate row.
 
 ## Decisions
+
+- 2026-08-13 (M40-D1): The converted assertions claim the **drawn** top-to-bottom
+  order, not the plot's internal row order. Built layer data carries no `stem`
+  column, so the recoverable order is which panel a point sits in and how high
+  in it; that is also the order a reader sees. Rejected: additionally asserting
+  that the built layer preserves the input frame's row order, which would keep
+  the two claims separate at the cost of pinning a ggplot2 internal this package
+  makes no promise about. Chosen at the 2026-08-13 implementation gate.
+  Falsified by a reordering defect that changes the internal frame while leaving
+  the drawn order correct.
+
+- 2026-08-13 (M40-D2): The AC2 self-check discriminates by **syntactic shape**:
+  `$data` on a bare symbol is rejected, and built data is reached through a
+  `ggplot_build()` call, whose left side is a call rather than a symbol. This
+  needs no dataflow tracking and cannot be fooled by naming. Its cost is
+  conservatism -- `b <- ggplot_build(p); b$data` is legitimate but rejected, so
+  the three existing reads of that form are rewritten. Rejected: tracking which
+  symbols are assigned from `ggplot_build()`, which puts a variable tracker in
+  the test file. Chosen at the 2026-08-13 implementation gate.
+
+- 2026-08-13 (M40-D3): The shared numeric-column guard takes each caller's
+  headline and closing line as functions of the offending-column count, rather
+  than composing both messages from an argument name. `norm_pid5()`'s wording is
+  pinned character-for-character by existing tests, in singular and plural, and
+  carries a closing sentence `plot_pid5()` does not; a template would change it
+  and force those tests to be rewritten to match the refactor -- which is the
+  test rewriting itself to fit the code. Chosen at the 2026-08-13 implementation
+  gate.
 
 ## Review

@@ -14,6 +14,19 @@
 
 skip_if_not_installed("ggplot2")
 
+# The scales a (version, level) pair plots, derived from the same tables
+# `plot_pid5()` reads rather than from the plot -- ground truth for what the
+# axis spans and which scales it carries (IP2).
+profile_stems <- function(version, level) {
+  if (identical(level, "facet")) {
+    return(pid_scales[[version]]$camelCase)
+  }
+  if (identical(version, "BF")) {
+    return(pid_scales[["BF"]]$camelCase)
+  }
+  pid_domains$camelCase
+}
+
 # One normed respondent for a version, carrying every scale that version's
 # `level` plots. Returns a one-row tibble of `_t` and `_ptl` columns.
 normed_one <- function(version, level = "domain", row = 1) {
@@ -24,13 +37,7 @@ normed_one <- function(version, level = "domain", row = 1) {
     SF = sim_pid5sf,
     BF = sim_pid5bf
   )
-  stems <- if (identical(level, "facet")) {
-    pid_scales[[version]]$camelCase
-  } else if (identical(version, "BF")) {
-    pid_scales[["BF"]]$camelCase
-  } else {
-    pid_domains$camelCase
-  }
+  stems <- profile_stems(version, level)
   scored <- score_pid5(dataset[row, ], items = seq_len(n_items), version = version)
   # norm_pid5() reports its own capping when a simulated score falls outside
   # the printed range. That report is not this function's, and letting it
@@ -67,6 +74,89 @@ layer_data_for <- function(p, geom) {
 geom_classes <- function(p) {
   vapply(p$layers, function(L) class(L$geom)[[1]], character(1))
 }
+
+
+# ---- label-side axis padding ----------------------------------------------
+
+# Every (version, level, metric) combination `plot_pid5()` accepts, enumerated
+# from `pid_scales` rather than hand-listed. Which levels a version offers is
+# read off its scales table: the forms that score facets name them in a `Facet`
+# column, and the brief form -- which has no facet scores to plot -- names
+# domains instead. So the two brief-form facet cases `plot_pid5()` aborts are
+# excluded by the same fact that makes it abort, not by naming "BF" here.
+profile_cases <- function() {
+  out <- list()
+  for (version in names(pid_scales)) {
+    levels <- if ("Facet" %in% names(pid_scales[[version]])) {
+      c("domain", "facet")
+    } else {
+      "domain"
+    }
+    for (level in levels) {
+      for (metric in c("t", "percentile")) {
+        out[[length(out) + 1]] <- list(
+          version = version, level = level, metric = metric
+        )
+      }
+    }
+  }
+  out
+}
+
+# The span the published tables print for every scale a combination plots --
+# the range the continuous scale is trained on, recomputed from `pid_norms`
+# here rather than read back off the plot (IP2). Every scale the combination
+# plots counts, including any the respondent has no value for, which is what
+# makes the axis independent of the respondent.
+published_span <- function(version, level, metric) {
+  stems <- profile_stems(version, level)
+  rows <- pid_norms[
+    pid_norms$version == version & pid_norms$scale %in% stems, , drop = FALSE
+  ]
+  if (identical(metric, "t")) {
+    return(range(rows$tscore, na.rm = TRUE))
+  }
+  range(rows$percentile, na.rm = TRUE) * 100
+}
+
+test_that("the label-side padding is taken only when labels are drawn", {
+  cases <- profile_cases()
+  # 3 versions x 2 levels x 2 metrics, less the two facet cases the brief form
+  # has no facet scores for.
+  expect_equal(length(cases), 10L)
+
+  for (case in cases) {
+    id <- paste(case$version, case$level, case$metric)
+    normed <- normed_one(case$version, level = case$level)
+    limits <- published_span(case$version, case$level, case$metric)
+    span <- diff(limits)
+
+    for (labels in c(TRUE, FALSE)) {
+      p <- plot_pid5(
+        normed,
+        version = case$version, level = case$level,
+        metric = case$metric, labels = labels
+      )
+      # The padding is the label's room. With labels drawn the label side gets
+      # the wider 12%; with no label to hold, both ends get the same 3% the
+      # left already had. Compared against the tables' own span, never against
+      # the range of the plotted values, which lie inside it.
+      expected <- limits + c(-0.03, if (labels) 0.12 else 0.03) * span
+      ranges <- lapply(
+        ggplot2::ggplot_build(p)$layout$panel_params,
+        function(pp) pp$x.range
+      )
+      # Every panel, not only the first: the value axis is fixed across panels,
+      # so a per-panel difference would show up here and nowhere else.
+      for (i in seq_along(ranges)) {
+        expect_equal(
+          ranges[[i]], expected,
+          info = paste(id, "labels =", labels, "panel", i)
+        )
+      }
+    }
+  }
+})
 
 
 # ---- AC2: domain profiles -------------------------------------------------

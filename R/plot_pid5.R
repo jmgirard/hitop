@@ -25,7 +25,9 @@
 #'   default. The labels need a figure about 7 inches wide or more: below that,
 #'   a label on a score at the top of the published span runs into the edge of
 #'   the panel and is cut off. Set `labels = FALSE` for a narrower figure and
-#'   the points and profile line are drawn without them. This is a choice you
+#'   the points and profile line are drawn without them; the score axis then
+#'   drops the extra padding it reserves for a label, so the profile itself
+#'   gets that width back. This is a choice you
 #'   make, not one the function can make for you -- a plot is assembled before
 #'   anything knows what size it will be drawn at.
 #' @param prefix The column-name prefix used when the scores were computed, as
@@ -396,7 +398,14 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric,
       ## still has somewhere for its label to sit. This is expansion around the
       ## trained range, never a change to `limits` or `breaks` -- the axis
       ## still spans exactly what the tables print.
-      expand = ggplot2::expansion(mult = c(0.03, 0.12))
+      ##
+      ## The wider side is the label's room and is taken only when a label is
+      ## drawn there. Asked for `labels = FALSE`, the caller wants a narrower
+      ## figure, so reserving room for a label that is not drawn would spend
+      ## the width they asked to save on empty margin.
+      expand = ggplot2::expansion(
+        mult = if (isTRUE(show_labels)) c(0.03, 0.12) else c(0.03, 0.03)
+      )
     ) +
     ggplot2::labs(
       x = x_label,
@@ -419,10 +428,12 @@ plot_pid5_build <- function(stems, values, axis_stems, version, level, metric,
     ## so a `vjust` offset is clipped by the panel edge on a small enough
     ## device, in every panel, however much discrete expansion is added. The
     ## continuous axis is padded on the label side instead, and that padding is
-    ## the room the label needs. That is better, not immune: the padding is a
-    ## proportion of the data range, so it too shrinks with panel width. It
-    ## holds at the figure widths `?plot_pid5` documents and no wider promise
-    ## is made -- below them the caller passes `labels = FALSE`.
+    ## the room the label needs -- which is why the scale above takes it only
+    ## on this branch, and pads both ends evenly when no label is drawn. That is
+    ## better, not immune: the padding is a proportion of the data range, so it
+    ## too shrinks with panel width. It holds at the figure widths `?plot_pid5`
+    ## documents and no wider promise is made -- below them the caller passes
+    ## `labels = FALSE`.
     p <- p + ggplot2::geom_label(
       ggplot2::aes(label = round(.data$value)),
       hjust = -0.6,
