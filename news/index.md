@@ -32,6 +32,20 @@ interface before a CRAN submission.
   and
   [`vignette("pid5bf_scoring")`](https://jmgirard.github.io/hitop/articles/pid5bf_scoring.md).
 
+- `plot_pid5(labels = FALSE)` no longer reserves the extra room a value
+  label would need on the score axis. That padding is the label’s, and
+  reserving it when no label is drawn spent width on empty margin —
+  exactly the width `labels = FALSE` is asked for to save. Profiles
+  drawn with labels are unchanged.
+
+- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+  now reports a non-numeric normed column the way
+  [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+  already did: one bullet per offending column, each naming that column
+  and its own class, rather than a single line listing the names with no
+  types, and a closing line saying what to do about it. The two
+  functions now share one guard, so the two messages cannot drift apart.
+
 - [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
   now places each value label to the right of its point rather than
   above it, and pads the score axis to hold it. Offsetting upward took
