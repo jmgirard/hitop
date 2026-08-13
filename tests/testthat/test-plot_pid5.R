@@ -60,7 +60,7 @@ value_limits <- function(p) {
 # The built data for one geom, by class name -- indexing layers positionally
 # would bake in the assembly order the tests are meant to be independent of.
 layer_data_for <- function(p, geom) {
-  b <- ggplot2::ggplot_build(p)
+  layers <- ggplot2::ggplot_build(p)$data
   hits <- which(vapply(p$layers, function(L) class(L$geom)[[1]], character(1)) == geom)
   # Stop rather than expect: a bare expectation does not halt, and indexing
   # with 0 or 2 hits then throws an opaque subscript error (or, for 2, silently
@@ -68,12 +68,177 @@ layer_data_for <- function(p, geom) {
   if (length(hits) != 1) {
     testthat::fail(sprintf("expected exactly 1 %s layer, found %d", geom, length(hits)))
   }
-  b$data[[hits]]
+  layers[[hits]]
 }
 
 geom_classes <- function(p) {
   vapply(p$layers, function(L) class(L$geom)[[1]], character(1))
 }
+
+# A printed scale name back to its canonical stem, through the same tables
+# `plot_pid5()` maps the other way. Built layer data carries only what is drawn,
+# so the printed name is what comes back off a plot; the stem is recovered
+# through the package's own tables (IP2), never through the plot object.
+stem_for_label <- function(labels, version, level) {
+  table <- if (identical(level, "facet")) {
+    stats::setNames(pid_scales[[version]]$camelCase, pid_scales[[version]]$Facet)
+  } else if (identical(version, "BF")) {
+    stats::setNames(pid_scales[["BF"]]$camelCase, pid_scales[["BF"]]$Domain)
+  } else {
+    stats::setNames(pid_domains$camelCase, pid_domains$Domain)
+  }
+  unname(table[labels])
+}
+
+# What the plot actually drew, recovered from BUILT layer data alone: one row
+# per plotted point -- its printed scale name, its canonical stem, its value and
+# its panel -- in DRAWN order, panels top to bottom and the topmost scale first
+# within each.
+#
+# The built point layer carries x, y and PANEL and nothing else. `stem` and
+# `scale` are columns of the plot object's internal data frame, which these
+# tests deliberately never read: that frame is what the assembly was handed
+# rather than what it drew, and asserting over it fails under a rename that
+# changes no behavior. The printed name is recovered instead by indexing each
+# panel's OWN discrete scale with the point's y position, and the panel's name
+# from the built layout.
+built_profile <- function(p, version, level) {
+  built <- ggplot2::ggplot_build(p)
+  pts <- layer_data_for(p, "GeomPoint")
+  panel_i <- as.integer(pts$PANEL)
+
+  scale_name <- vapply(seq_along(panel_i), function(k) {
+    limits <- built$layout$panel_scales_y[[panel_i[[k]]]]$get_limits()
+    as.character(limits[[pts$y[[k]]]])
+  }, character(1))
+
+  layout <- built$layout$layout
+  panel_name <- if ("panel" %in% names(layout)) {
+    as.character(layout$panel)[match(pts$PANEL, layout$PANEL)]
+  } else {
+    rep(NA_character_, length(panel_i))
+  }
+
+  out <- data.frame(
+    stem = stem_for_label(scale_name, version, level),
+    scale = scale_name,
+    value = pts$x,
+    panel = panel_name,
+    stringsAsFactors = FALSE
+  )
+  # A discrete axis draws its FIRST level at the bottom, so the topmost scale in
+  # a panel is its highest y -- the order a reader sees, which is the order
+  # these assertions are about.
+  out <- out[order(panel_i, -pts$y), , drop = FALSE]
+  row.names(out) <- NULL
+  out
+}
+
+
+# ---- the shape of this file (self-checks) ---------------------------------
+
+# Every call in this file, each tagged with whether it sits inside a `for` body.
+# Parsed rather than grepped: source text cannot tell a call inside a loop from
+# one beside it, and shows argument names only by accident of spelling.
+test_file_calls <- function() {
+  path <- test_path("test-plot_pid5.R")
+  if (!file.exists(path)) {
+    skip("test source not available")
+  }
+  found <- list()
+  # An absent argument (`x[, drop = FALSE]`) is held as the empty symbol, and
+  # pulling one out of a call with `[[` raises a missing-argument error;
+  # as.list() hands it back harmlessly, so the walk descends through that.
+  parts <- function(e) {
+    kids <- as.list(e)
+    empty <- vapply(kids, function(k) is.symbol(k) && !nzchar(as.character(k)), logical(1))
+    kids[!empty]
+  }
+  walk <- function(e, in_loop) {
+    if (!is.call(e)) {
+      return(invisible(NULL))
+    }
+    found[[length(found) + 1L]] <<- list(call = e, in_loop = in_loop)
+    fn <- if (is.name(e[[1]])) as.character(e[[1]]) else ""
+    if (identical(fn, "for") && length(e) == 4L) {
+      # The sequence is evaluated once; only the body repeats.
+      walk(e[[3]], in_loop)
+      walk(e[[4]], TRUE)
+      return(invisible(NULL))
+    }
+    for (k in parts(e)) walk(k, in_loop)
+    invisible(NULL)
+  }
+  for (e in parse(path, keep.source = FALSE)) walk(e, FALSE)
+  found
+}
+
+test_that("no assertion here reads the plot object's internal data frame", {
+  calls <- test_file_calls()
+  # The walk has to have seen this file at all, or an unreadable path would
+  # make every check below pass by finding nothing.
+  expect_gt(length(calls), 500)
+
+  # `p$data` is the plot object's internal frame: what the assembly was handed,
+  # not what it drew. It carries columns no aesthetic maps, so a rename that
+  # changes no behavior reds these tests -- which is a defect in the test.
+  # Built layer data is read instead, and the two are told apart by SHAPE: the
+  # forbidden read takes `data` off a bare symbol, the permitted one off a call
+  # (`ggplot_build(p)$data`). That needs no tracking of which variable holds
+  # what. The cost is a deliberate conservatism -- `b <- ggplot_build(p)`
+  # followed by `b$data` is legitimate and still rejected -- so built data is
+  # taken from the call itself, or through `layer_data_for()`.
+  #
+  # `[[` counts as well as `$`. Were it not checked, the rule would be a rule
+  # about spelling: `b[["data"]]` reads exactly what `b$data` reads, and a
+  # guard that waves it through polices nothing.
+  extracts_data <- function(e) {
+    if (!(identical(e[[1]], as.name("$")) || identical(e[[1]], as.name("[[")))) {
+      return(FALSE)
+    }
+    length(e) == 3L && is.name(e[[2]]) &&
+      (is.character(e[[3]]) || is.name(e[[3]])) &&
+      identical(as.character(e[[3]]), "data")
+  }
+  offenders <- Filter(function(hit) extracts_data(hit$call), calls)
+  expect_equal(
+    vapply(offenders, function(hit) deparse1(hit$call), character(1)),
+    character(0)
+  )
+})
+
+test_that("every expectation inside a loop names its iteration on failure", {
+  in_loop <- Filter(
+    function(hit) {
+      hit$in_loop && is.name(hit$call[[1]]) &&
+        startsWith(as.character(hit$call[[1]]), "expect_")
+    },
+    test_file_calls()
+  )
+  # There are in-loop expectations to check, so this cannot pass vacuously.
+  expect_gt(length(in_loop), 20)
+
+  # A failure inside a loop that does not say which iteration raised it sends
+  # the reader back to run the loop by hand. `expect_setequal()` and
+  # `expect_length()` accept no `info`, so they cannot say it at all and are
+  # recast rather than excused -- as a sorted `expect_equal()` and an
+  # `expect_equal()` on the length. `expect_gt()` and `expect_no_warning()` are
+  # recast for the same reason.
+  undescribed <- Filter(
+    function(hit) {
+      fn <- as.character(hit$call[[1]])
+      if (fn %in% c("expect_setequal", "expect_length")) {
+        return(TRUE)
+      }
+      !("info" %in% names(hit$call))
+    },
+    in_loop
+  )
+  expect_equal(
+    vapply(undescribed, function(hit) deparse1(hit$call), character(1)),
+    character(0)
+  )
+})
 
 
 # ---- label-side axis padding ----------------------------------------------
@@ -165,33 +330,33 @@ test_that("domain profiles plot the five domains in pid_domains order", {
   for (version in c("FULL", "SF")) {
     normed <- normed_one(version)
     p <- plot_pid5(normed, version = version)
-    pts <- layer_data_for(p, "GeomPoint")
+    prof <- built_profile(p, version, "domain")
 
-    expect_equal(nrow(pts), 5)
-    # The claim is the table's order, asserted on the canonical stems in the
-    # order the plot's data carries them; the drawn top-to-bottom order has
-    # its own test below.
-    expect_equal(p$data$stem, pid_domains$camelCase)
+    expect_equal(nrow(prof), 5L, info = version)
+    # The claim is the table's order, read off the drawn profile top to bottom.
+    expect_equal(prof$stem, pid_domains$camelCase, info = version)
 
     expected <- vapply(
       paste0("pid_", pid_domains$camelCase, "_t"),
       function(nm) as.numeric(normed[[nm]][[1]]),
       numeric(1)
     )
-    expect_equal(p$data$value, unname(expected))
-    expect_setequal(pts$x, unname(expected))
+    # Elementwise and in drawn order, so a build that put one domain's score on
+    # another domain's row fails -- which a set comparison would pass.
+    expect_equal(prof$value, unname(expected), info = version)
   }
 })
 
 test_that("the brief form plots six scales and stops the line before total", {
   normed <- normed_one("BF")
   p <- plot_pid5(normed, version = "BF")
+  prof <- built_profile(p, "BF", "domain")
 
-  expect_equal(nrow(layer_data_for(p, "GeomPoint")), 6)
+  expect_equal(nrow(prof), 6L)
   # BF order ends on `total` and is deliberately NOT pid_domains order.
-  expect_equal(p$data$stem, pid_scales[["BF"]]$camelCase)
-  expect_equal(tail(p$data$stem, 1), "total")
-  expect_false(identical(p$data$stem, pid_domains$camelCase))
+  expect_equal(prof$stem, pid_scales[["BF"]]$camelCase)
+  expect_equal(tail(prof$stem, 1), "total")
+  expect_false(identical(prof$stem, pid_domains$camelCase))
 
   # The total is an overall elevation, not a sixth domain: the profile line
   # covers the five domains only.
@@ -201,7 +366,7 @@ test_that("the brief form plots six scales and stops the line before total", {
 test_that("full and short domain profiles join all five points", {
   for (version in c("FULL", "SF")) {
     p <- plot_pid5(normed_one(version), version = version)
-    expect_equal(nrow(layer_data_for(p, "GeomLine")), 5)
+    expect_equal(nrow(layer_data_for(p, "GeomLine")), 5, info = version)
   }
 })
 
@@ -212,13 +377,14 @@ test_that("facet profiles plot 25 facets over six panels", {
   for (version in c("FULL", "SF")) {
     normed <- normed_one(version, level = "facet")
     p <- plot_pid5(normed, version = version, level = "facet")
-    b <- ggplot2::ggplot_build(p)
+    layout <- ggplot2::ggplot_build(p)$layout$layout
 
-    expect_equal(nrow(layer_data_for(p, "GeomPoint")), 25)
-    expect_equal(nrow(b$layout$layout), 6)
+    expect_equal(nrow(built_profile(p, version, "facet")), 25L, info = version)
+    expect_equal(nrow(layout), 6L, info = version)
     expect_equal(
-      as.character(b$layout$layout$panel),
-      c(pid_domains$Domain, PLOT_UNASSIGNED_PANEL)
+      as.character(layout$panel),
+      c(pid_domains$Domain, PLOT_UNASSIGNED_PANEL),
+      info = version
     )
   }
 })
@@ -226,12 +392,16 @@ test_that("facet profiles plot 25 facets over six panels", {
 test_that("each panel holds the facets the APA key assigns to it", {
   normed <- normed_one("FULL", level = "facet")
   p <- plot_pid5(normed, version = "FULL", level = "facet")
+  prof <- built_profile(p, "FULL", "facet")
 
   for (i in seq_len(nrow(pid_domains))) {
     domain <- pid_domains$Domain[[i]]
-    in_panel <- as.character(p$data$stem[p$data$panel == domain])
-    expect_setequal(in_panel, pid_domains$facetStems[[i]])
-    expect_length(in_panel, 3)
+    in_panel <- prof$stem[prof$panel == domain]
+    # `expect_setequal()` accepts no `info`, so a failure here could not name
+    # its domain. Sorting both sides makes the same claim through
+    # `expect_equal()`, which can.
+    expect_equal(sort(in_panel), sort(pid_domains$facetStems[[i]]), info = domain)
+    expect_equal(length(in_panel), 3L, info = domain)
   }
 
   # The 10 facets the key ties to no domain land in the sixth panel rather
@@ -239,10 +409,7 @@ test_that("each panel holds the facets the APA key assigns to it", {
   defining <- unlist(pid_domains$facetStems, use.names = FALSE)
   leftover <- setdiff(pid_scales[["FULL"]]$camelCase, defining)
   expect_length(leftover, 10)
-  expect_setequal(
-    as.character(p$data$stem[p$data$panel == PLOT_UNASSIGNED_PANEL]),
-    leftover
-  )
+  expect_setequal(prof$stem[prof$panel == PLOT_UNASSIGNED_PANEL], leftover)
 })
 
 test_that("the brief form refuses a facet profile", {
@@ -258,14 +425,15 @@ test_that("the brief form refuses a facet profile", {
 test_that("the percentile metric plots proportions rescaled to 0-100", {
   normed <- normed_one("FULL")
   p <- plot_pid5(normed, version = "FULL", metric = "percentile")
+  prof <- built_profile(p, "FULL", "domain")
 
   expected <- vapply(
     paste0("pid_", pid_domains$camelCase, "_ptl"),
     function(nm) as.numeric(normed[[nm]][[1]]) * 100,
     numeric(1)
   )
-  expect_equal(p$data$value, unname(expected))
-  expect_true(all(p$data$value >= 0 & p$data$value <= 100))
+  expect_equal(prof$value, unname(expected))
+  expect_true(all(prof$value >= 0 & prof$value <= 100))
 
   # norm_pid5() returns a proportion; the rescaling is a factor of exactly 100.
   raw <- vapply(
@@ -273,7 +441,7 @@ test_that("the percentile metric plots proportions rescaled to 0-100", {
     function(nm) as.numeric(normed[[nm]][[1]]),
     numeric(1)
   )
-  expect_equal(p$data$value / 100, unname(raw))
+  expect_equal(prof$value / 100, unname(raw))
 
   expect_equal(value_limits(p), c(0, 100))
   expect_equal(layer_data_for(p, "GeomVline")$xintercept, 50)
@@ -290,6 +458,7 @@ test_that("the plot carries no bands, thresholds, or extra annotation", {
     list(version = "BF", level = "domain", metric = "percentile")
   )
   for (case in cases) {
+    id <- paste(case$version, case$level, case$metric)
     normed <- normed_one(case$version, level = case$level)
     p <- plot_pid5(
       normed,
@@ -301,12 +470,15 @@ test_that("the plot carries no bands, thresholds, or extra annotation", {
 
     # A severity band would be a rectangle layer. There is none, on any
     # combination -- the plot presents scores and characterizes nothing (IP4).
-    expect_false(any(c("GeomRect", "GeomTile", "GeomRibbon", "GeomArea") %in% geoms))
+    expect_false(
+      any(c("GeomRect", "GeomTile", "GeomRibbon", "GeomArea") %in% geoms),
+      info = id
+    )
 
     # Exactly one reference line, and it carries no text label of its own:
     # a labelled reference line would be a second text layer.
-    expect_equal(sum(geoms %in% c("GeomHline", "GeomVline")), 1)
-    expect_equal(sum(geoms %in% c("GeomText", "GeomLabel")), 1)
+    expect_equal(sum(geoms %in% c("GeomHline", "GeomVline")), 1L, info = id)
+    expect_equal(sum(geoms %in% c("GeomText", "GeomLabel")), 1L, info = id)
 
     # The one text layer says nothing but the plotted values -- elementwise,
     # so a build that put one scale's label on another scale's point fails.
@@ -314,7 +486,8 @@ test_that("the plot carries no bands, thresholds, or extra annotation", {
     pts <- layer_data_for(p, "GeomPoint")
     expect_equal(
       as.character(lab$label[order(lab$PANEL, lab$y)]),
-      as.character(round(pts$x[order(pts$PANEL, pts$y)]))
+      as.character(round(pts$x[order(pts$PANEL, pts$y)])),
+      info = id
     )
   }
 })
@@ -323,14 +496,14 @@ test_that("axis bounds come from pid_norms rather than a chosen constant", {
   for (version in c("FULL", "SF", "BF")) {
     normed <- normed_one(version)
     p <- plot_pid5(normed, version = version)
-    stems <- p$data$stem
+    stems <- built_profile(p, version, "domain")$stem
 
     rows <- pid_norms[
       pid_norms$version == version & pid_norms$scale %in% stems,
       ,
       drop = FALSE
     ]
-    expect_equal(value_limits(p), range(rows$tscore, na.rm = TRUE))
+    expect_equal(value_limits(p), range(rows$tscore, na.rm = TRUE), info = version)
   }
 
   # The T reference line is the metric's own midpoint, not a cut score.
@@ -374,7 +547,7 @@ test_that("a scale with no value is dropped with a warning and the rest plot", {
     regexp = "detachment"
   )
   expect_equal(nrow(layer_data_for(p, "GeomPoint")), 4)
-  expect_false("detachment" %in% p$data$stem)
+  expect_false("detachment" %in% built_profile(p, "FULL", "domain")$stem)
 })
 
 test_that("a profile with no values at all is an error", {
@@ -430,43 +603,42 @@ test_that("a non-default prefix is pasted onto the scale stems", {
 # ---- drawn order ----------------------------------------------------------
 
 test_that("scales are drawn top-to-bottom in their table's order", {
-  # A discrete y scale draws its first level at the bottom, so this asserts
-  # the built y coordinates rather than the factor's level order -- the two
-  # run opposite ways and only one of them is what a reader sees.
-  drawn_top_down <- function(p) {
-    pts <- layer_data_for(p, "GeomPoint")
-    as.character(p$data$stem[order(-pts$y)])
-  }
-
+  # `built_profile()` returns the drawn order -- a discrete y scale draws its
+  # first level at the bottom, so the drawn order and the factor's level order
+  # run opposite ways, and only one of them is what a reader sees.
   expect_equal(
-    drawn_top_down(plot_pid5(normed_one("FULL"), version = "FULL")),
+    built_profile(plot_pid5(normed_one("FULL"), version = "FULL"), "FULL", "domain")$stem,
     pid_domains$camelCase
   )
   expect_equal(
-    drawn_top_down(plot_pid5(normed_one("BF"), version = "BF")),
+    built_profile(plot_pid5(normed_one("BF"), version = "BF"), "BF", "domain")$stem,
     pid_scales[["BF"]]$camelCase
   )
 
   # Facet panels run top-down in domain order, and within each panel the
-  # scales run top-down in the same table order. The sort is done per panel
-  # because only within-panel relative order is the claim; built y values are
-  # in fact global, so a per-panel sort is the narrower and safer assertion.
+  # scales run top-down in the same table order.
   p <- plot_pid5(normed_one("FULL", level = "facet"), version = "FULL", level = "facet")
-  pts <- layer_data_for(p, "GeomPoint")
-  for (panel in levels(p$data$panel)) {
-    keep <- p$data$panel == panel
-    drawn <- as.character(p$data$stem[keep][order(-pts$y[keep])])
-    expect_equal(drawn, pid_scales[["FULL"]]$camelCase[pid_scales[["FULL"]]$camelCase %in% drawn])
+  prof <- built_profile(p, "FULL", "facet")
+  expect_equal(unique(prof$panel), c(pid_domains$Domain, PLOT_UNASSIGNED_PANEL))
+  for (panel in unique(prof$panel)) {
+    drawn <- prof$stem[prof$panel == panel]
+    expect_equal(
+      drawn,
+      pid_scales[["FULL"]]$camelCase[pid_scales[["FULL"]]$camelCase %in% drawn],
+      info = panel
+    )
   }
 })
 
 test_that("axis labels are the tables' printed names, not column stems", {
   p <- plot_pid5(normed_one("FULL"), version = "FULL")
-  expect_equal(levels(p$data$scale), rev(pid_domains$Domain))
-  expect_false(any(levels(p$data$scale) %in% pid_domains$camelCase))
+  # The names as drawn, top to bottom.
+  drawn <- built_profile(p, "FULL", "domain")$scale
+  expect_equal(drawn, pid_domains$Domain)
+  expect_false(any(drawn %in% pid_domains$camelCase))
 
   p <- plot_pid5(normed_one("FULL", level = "facet"), version = "FULL", level = "facet")
-  expect_setequal(as.character(p$data$scale), pid_scales[["FULL"]]$Facet)
+  expect_setequal(built_profile(p, "FULL", "facet")$scale, pid_scales[["FULL"]]$Facet)
 })
 
 test_that("a non-numeric normed column is refused, not reported as missing", {
@@ -498,6 +670,7 @@ test_that("each facet panel draws only its own scales on the axis", {
       level = "facet"
     )
     b <- ggplot2::ggplot_build(p)
+    prof <- built_profile(p, version, "facet")
     per_panel <- vapply(
       b$layout$panel_scales_y,
       function(sc) length(sc$get_limits()),
@@ -511,9 +684,10 @@ test_that("each facet panel draws only its own scales on the axis", {
     # And each panel's axis lists exactly the scales in that panel.
     for (i in seq_along(b$layout$panel_scales_y)) {
       panel_name <- as.character(b$layout$layout$panel[[i]])
-      expect_setequal(
-        b$layout$panel_scales_y[[i]]$get_limits(),
-        as.character(p$data$scale[p$data$panel == panel_name])
+      expect_equal(
+        sort(b$layout$panel_scales_y[[i]]$get_limits()),
+        sort(prof$scale[prof$panel == panel_name]),
+        info = paste(version, panel_name)
       )
     }
   }
@@ -543,17 +717,16 @@ test_that("the value label is offset horizontally, not into the panel height", {
     # `geom_label()` carries a `PositionNudge` with a NULL `$x` whether or not
     # `nudge_x` was given, so asserting over `$position` is vacuous. Built data
     # can: a nudge moves the label's x off its point's.
-    b <- ggplot2::ggplot_build(p)
     expect_equal(
-      b$data[[i]]$x,
-      b$data[[which(vapply(p$layers, function(l) inherits(l$geom, "GeomPoint"), TRUE))]]$x,
+      layer_data_for(p, "GeomLabel")$x,
+      layer_data_for(p, "GeomPoint")$x,
       info = version
     )
 
     # And no room is taken out of the panel height: the discrete axis carries
     # ggplot2's default expansion of 0.6 and nothing wider.
     headroom <- vapply(
-      b$layout$panel_params,
+      ggplot2::ggplot_build(p)$layout$panel_params,
       function(pp) pp$y.range[[2]] - length(pp$y$get_limits()),
       numeric(1)
     )
@@ -581,19 +754,30 @@ test_that("a value at the end of the axis still gets its label drawn", {
     normed[cols] <- top
     p <- plot_pid5(normed, version = "FULL", metric = metric)
 
-    built <- ggplot2::ggplot_build(p)$data
-    lab <- built[[which(vapply(p$layers, function(l) inherits(l$geom, "GeomLabel"), TRUE))]]
+    lab <- layer_data_for(p, "GeomLabel")
     expect_equal(nrow(lab), length(cols), info = metric)
     # And drawing it emits nothing -- the dropped-label warning fires at draw
-    # time, not at build time.
-    expect_no_warning(ggplot2::ggplot_gtable(ggplot2::ggplot_build(p)))
+    # time, not at build time. `expect_no_warning()` accepts no `info`, so the
+    # warnings are captured and compared instead, which both names the metric
+    # and shows what was raised.
+    expect_equal(
+      testthat::capture_warnings(ggplot2::ggplot_gtable(ggplot2::ggplot_build(p))),
+      character(0),
+      info = metric
+    )
     # The facet branch is the one that clipped through two earlier attempts, so
     # the padding is checked there too and not only on a single-panel plot.
     p_facet <- plot_pid5(normed_one("FULL", level = "facet"), version = "FULL",
                          level = "facet", metric = metric)
-    for (pp in ggplot2::ggplot_build(p_facet)$layout$panel_params) {
-      expect_gt(pp$x.range[[2]] - max(value_limits(p_facet)),
-                0.05 * diff(value_limits(p_facet)))
+    facet_params <- ggplot2::ggplot_build(p_facet)$layout$panel_params
+    for (j in seq_along(facet_params)) {
+      # `expect_gt()` takes a `label` but no `info`; `expect_true()` on the same
+      # comparison names both the metric and the panel.
+      expect_true(
+        facet_params[[j]]$x.range[[2]] - max(value_limits(p_facet)) >
+          0.05 * diff(value_limits(p_facet)),
+        info = paste(metric, "panel", j)
+      )
     }
 
     # The panel reserves room past the axis limit on the label side. This
@@ -605,7 +789,7 @@ test_that("a value at the end of the axis still gets its label drawn", {
     limits <- value_limits(p)
     x_range <- ggplot2::ggplot_build(p)$layout$panel_params[[1]]$x.range
     default_pad <- 0.05 * diff(limits)
-    expect_gt(x_range[[2]] - limits[[2]], default_pad, label = paste("metric", metric))
+    expect_true(x_range[[2]] - limits[[2]] > default_pad, info = metric)
   }
 })
 
@@ -622,11 +806,19 @@ test_that("labels = FALSE drops the value labels and leaves the rest alone", {
     # Everything else is untouched: same layers, in the same order.
     expect_equal(unname(setdiff(geoms(on), "GeomLabel")), unname(geoms(off)), info = version)
 
-    # And the points and profile line still carry the same data.
-    b_on <- ggplot2::ggplot_build(on)$data
-    b_off <- ggplot2::ggplot_build(off)$data
-    expect_equal(b_off[[3]]$x, b_on[[3]]$x, info = version)
-    expect_equal(b_off[[2]]$x, b_on[[2]]$x, info = version)
+    # And the points and profile line still carry the same data. Looked up by
+    # geom rather than by layer position, which would bake in the assembly
+    # order this test is meant to be independent of.
+    expect_equal(
+      layer_data_for(off, "GeomPoint")$x,
+      layer_data_for(on, "GeomPoint")$x,
+      info = version
+    )
+    expect_equal(
+      layer_data_for(off, "GeomLine")$x,
+      layer_data_for(on, "GeomLine")$x,
+      info = version
+    )
   }
 })
 
@@ -706,7 +898,10 @@ test_that("every point keeps a visible marker and an undropped label", {
     # No label is dropped for falling outside the scale range.
     expect_false(any(is.na(lab$x)), info = paste(case$v, case$m))
     expect_equal(nrow(lab), nrow(pts), info = paste(case$v, case$m))
-    expect_true(all(lab$x >= min(value_limits(p)) & lab$x <= max(value_limits(p))))
+    expect_true(
+      all(lab$x >= min(value_limits(p)) & lab$x <= max(value_limits(p))),
+      info = paste(case$v, case$m)
+    )
 
     # The label shares the point's data position; separation is a rendering
     # property (hjust), so it can never push a value off the axis.
@@ -725,10 +920,17 @@ test_that("drawing a plot emits no ggplot2 warnings", {
         version = "FULL", level = lvl, metric = m
       )
       f <- withr::local_tempfile(fileext = ".png")
-      expect_no_warning(
-        suppressMessages(
-          ggplot2::ggsave(f, p, width = 7, height = 7, dpi = 72)
-        )
+      # `expect_no_warning()` accepts no `info`, so the warnings are captured
+      # and compared instead -- which names the iteration and shows what was
+      # raised rather than only that something was.
+      expect_equal(
+        testthat::capture_warnings(
+          suppressMessages(
+            ggplot2::ggsave(f, p, width = 7, height = 7, dpi = 72)
+          )
+        ),
+        character(0),
+        info = paste(lvl, m)
       )
     }
   }

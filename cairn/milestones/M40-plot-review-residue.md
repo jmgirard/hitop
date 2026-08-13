@@ -84,13 +84,13 @@ axis limit, or break (IP2, D-029); no new plot argument.
       `show_labels`; update the comment block at R/plot_pid5.R:395-398 and
       R/plot_pid5.R:416-425 to say the padding is the label's room and is not
       taken when there are no labels.
-- [ ] T3 Add the shared test helper that recovers scale names and panel
+- [x] T3 Add the shared test helper that recovers scale names and panel
       assignment from built layer data (`ggplot_build(p)$data` +
       `$layout$panel_scales_y`), plus the AST-walk check AC2/AC3 enumerate.
-- [ ] T4 Convert all 20 internal-frame reads in
+- [x] T4 Convert all 20 internal-frame reads in
       `tests/testthat/test-plot_pid5.R` through that helper; run the
       consistent-rename mutation and record it.
-- [ ] T5 Recast the in-loop `expect_setequal()`/`expect_length()` calls per
+- [x] T5 Recast the in-loop `expect_setequal()`/`expect_length()` calls per
       the M32/M39 form in LESSONS and add `info =` to the remaining in-loop
       expectations; mutation-check one.
 - [ ] T6 Extract the shared numeric-column guard into `R/util.R` from
@@ -104,6 +104,11 @@ axis limit, or break (IP2, D-029); no new plot argument.
 
 - 2026-08-06: created by /milestone-plan.
 - 2026-08-06: criteria audit ([O], fresh context) returned findings on all five drafted criteria — AC1 pinned no padding value and compared against the wrong range, AC2 scoped its mutation to `stem` alone and leaned on a grep proxy, AC3 was unsatisfiable as written, AC4's definition-site grep could not show both functions route through the helper, AC5 hand-listed the changes it quantified over. All fixed in the wording above before the gate; three residual either-way calls became the gate's questions.
+- 2026-08-13: T3/T4/T5 done. New `built_profile()` recovers each drawn point's printed name, stem, value and panel from built layer data alone (the printed name by indexing that panel's own discrete scale with the point's y; the stem through `pid_scales`/`pid_domains`, never the plot), returning rows in drawn order. Cross-checked against the internal frame on every combination before the reads were removed: stem, printed name, value and panel all agreed.
+- 2026-08-13: the AC2 self-check rejects `data` taken off a bare symbol by `$` **or** `[[` — checking only `$` would have made it a rule about spelling, since `b[["data"]]` reads exactly what `b$data` reads. Built data is reached through the `ggplot_build()` call itself or through `layer_data_for()`.
+- 2026-08-13: AC2 mutation run — renaming the internal `stem` column to `scaleStem` (the column and the `df$stem != "total"` filter) left `test-plot_pid5.R` green at 251 passing; reverted, and `git diff` confirms R/plot_pid5.R is back to its committed state.
+- 2026-08-13: AC3 mutation run — breaking the per-panel facet-membership assertion produced five failures each naming its domain ("Negative affectivity", "Detachment", ...) from `info`; reverted.
+- 2026-08-13: the recast follows the M32/M39 LESSONS form but drops its `unique()`: a facet drawn twice is a real defect here, so comparing sorted values without de-duplicating is strictly stronger than the `expect_setequal()` it replaces.
 - 2026-08-06: plan gate chose keeping each function's own error headline with shared per-column detail over one flattened message because flattening would degrade `norm_pid5()`'s existing `{.arg scores}` blaming; falsified by a user report that the two messages read as unrelated errors.
 - 2026-08-06: plan gate chose converting all 20 internal-frame reads through one shared test helper over converting only the mechanically substitutable ones because a partial conversion leaves the fragility the item was raised about; falsified by the helper proving unable to recover a property some assertion needs from built data.
 - 2026-08-06: plan gate chose 3% symmetric padding under `labels = FALSE` over ggplot2's 5% default because it matches the padding already used on the left; falsified by a report that label-free profiles read as cramped.
