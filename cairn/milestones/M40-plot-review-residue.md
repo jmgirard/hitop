@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP3, GP4
-- **Branch/PR:** `m40-plot-review-residue`
+- **Branch/PR:** `m40-plot-review-residue` / https://github.com/jmgirard/hitop/pull/44
 
 ## Goal
 
@@ -29,7 +29,7 @@ axis limit, or break (IP2, D-029); no new plot argument.
 
 ## Acceptance criteria
 
-- [ ] AC1 With `labels = FALSE`, `plot_pid5()` pads the continuous score axis
+- [x] AC1 With `labels = FALSE`, `plot_pid5()` pads the continuous score axis
       by 3% at both ends; with `labels = TRUE` the existing 3%/12% padding is
       unchanged. Asserted over all 10 legal `version` × `level` × `metric`
       combinations (3 × 2 × 2, less the two BF × facet cases `plot_pid5()`
@@ -38,7 +38,7 @@ axis limit, or break (IP2, D-029); no new plot argument.
       for **every** panel `i` against that plot's `pid_norms`-derived scale
       limits (not against the range of the plotted values, which lie inside
       them).
-- [ ] AC2 No assertion in `tests/testthat/test-plot_pid5.R` reads a column of
+- [x] AC2 No assertion in `tests/testthat/test-plot_pid5.R` reads a column of
       the plot object's internal data frame. Domain enumerated by parsing the
       file (`parse()` + AST walk for `$data` extraction on a ggplot object),
       which returns none; each such assertion instead reads
@@ -47,23 +47,23 @@ axis limit, or break (IP2, D-029); no new plot argument.
       consistently renaming the internal `stem` column in `R/plot_pid5.R`
       (the column *and* the `df$stem != "total"` filter at R/plot_pid5.R:366)
       leaves `devtools::test()` green; reverted after.
-- [ ] AC3 Every expectation call inside a `for` body in that file names its
+- [x] AC3 Every expectation call inside a `for` body in that file names its
       iteration on failure. Domain enumerated by the same AST walk, which
       reports no in-loop `expect_setequal()` or `expect_length()` call
       (neither accepts `info`) and an `info =` argument on every remaining
       in-loop expectation. One in-loop assertion is mutation-checked to show
       the iteration in the failure message.
-- [ ] AC4 `norm_pid5()` and `plot_pid5()` reject a non-numeric,
+- [x] AC4 `norm_pid5()` and `plot_pid5()` reject a non-numeric,
       non-logical score column through one helper defined in `R/util.R`. Each
       keeps its own headline naming its own argument; both emit one bullet per
       offending column carrying that column's class. Verified by mutation:
       inverting the helper's predicate turns both functions' guard tests red,
       so both demonstrably route through it. Tests fire each guard on a
       character column and on a factor column.
-- [ ] AC5 `NEWS.md` carries one entry per user-visible change in this
+- [x] AC5 `NEWS.md` carries one entry per user-visible change in this
       milestone's Scope **In** list, and each entry has a test that fails
       without the behavior that entry asserts.
-- [ ] AC6 `Rscript -e 'devtools::document()'` and `Rscript -e 'devtools::test()'`
+- [x] AC6 `Rscript -e 'devtools::document()'` and `Rscript -e 'devtools::test()'`
       clean, and `devtools::check()` clean (structural change to `R/util.R`).
 
 ## Coverage
@@ -153,3 +153,17 @@ axis limit, or break (IP2, D-029); no new plot argument.
   gate.
 
 ## Review
+
+### Acceptance criteria
+
+- **AC1 — verified.** `profile_cases()` enumerates **10** combinations from `pid_scales` (FULL/SF x domain/facet x t/percentile, plus BF domain x 2); the two BF facet cases are excluded because `pid_scales[["BF"]]` names `Domain` and no `Facet` column, not because "BF" is named in the test. Measured `x.range` against the `pid_norms`-derived span, every panel: FULL facet t limits [30,100] -> [27.9,108.4] with labels (3.00%/12.00%) and [27.9,102.1] without (3.00%/3.00%); BF domain percentile limits [0,100] -> [-3,112] and [-3,103]. The test asserts this for every panel of all 10 combinations, both ways.
+
+- **AC2 — verified.** The in-file AST walk (`test_file_calls()`, `parse()` + descent tracking `for` bodies) reports **no** `data` extraction on a bare symbol, by `$` or by `[[`; the self-check passes. Every such read now goes through `ggplot_build(p)$data`, `layer_data_for()`, or the new `built_profile()`. Mutation: renaming the internal `stem` column to `scaleStem` (the column *and* the `df$stem != "total"` filter) left the file green at 258 passing; reverted, `git diff` clean. Negative control: reintroducing one `p$data` read turned the self-check red, so it fails when its rule is broken.
+
+- **AC3 — verified.** The same walk reports no in-loop `expect_setequal()` or `expect_length()` and an `info =` argument on every remaining in-loop expectation; the self-check passes and asserts it saw >20 in-loop expectations, so it cannot pass vacuously. The two other `info`-less kinds found in the measured domain (`expect_gt`, `expect_no_warning`) were recast rather than excused. Mutation: breaking the per-panel facet-membership assertion produced one failure per domain, each naming its iteration ("Negative affectivity", "Detachment", ...); reverted.
+
+- **AC4 — verified.** Both functions route through `validate_numeric_columns()` in `R/util.R`; each passes its own headline and closing line as functions of the offending-column count, so `norm_pid5()`'s test-pinned wording is byte-identical (`test-norm_pid5.R` has zero diff on this branch) and `plot_pid5()` gains per-column class bullets. Mutation: inverting the helper's predicate broke **29** tests in `test-plot_pid5.R` and **26** in `test-norm_pid5.R`, including both guard tests by name -- "a non-numeric normed column is refused, not reported as missing" and "norm_pid5() aborts on a non-numeric score column rather than coercing" -- so both demonstrably route through it. Reverted, `git diff` clean. Each guard is fired on a character column and on a factor column; the plot guard is additionally fired on both at once and on an ordered factor, asserting `ordered/factor` rather than a collapsed `<ordered>`.
+
+- **AC5 — verified.** Two of the four Scope-In changes are user-visible and each has one NEWS entry; the other two (converting the tests off the internal frame, labelling in-loop assertions) are test-only and get none. Each entry rests on a test that fails without its behavior, shown by mutation: reverting `expand` to unconditional reds the padding test (30 assertions); replacing the per-column class detail with a classless bullet reds the plot guard test. Both reverted.
+
+- **AC6 — verified.** `devtools::document()` leaves no diff in `man/`, `NAMESPACE`, `DESCRIPTION` or `R/`. `devtools::test()` 12035 passing, 0 failures, 1 skip. `devtools::check()` **0 errors, 0 warnings, 0 notes** (2m 4s).
