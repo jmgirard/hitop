@@ -3,6 +3,17 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* The `calc_se` help text on `score_pid5()`, `score_hitopsr()`, and
+  `score_hitopbr()` now states what these standard errors are computed over and
+  says plainly that they are not standard errors of measurement. Each is the SD
+  of the items a respondent actually answered over the square root of how many
+  they answered (for a PID-5 full- or short-form domain, over its three
+  contributing facet scores), so no reliability estimate enters it: it describes
+  how much a respondent's answers varied within a scale, not how precisely the
+  scale measures. The reliability functions are named for that. The vignettes
+  already said this; the help pages said only "the standard error of each scale
+  score", which reads as a standard error of measurement.
+
 * The scoring vignettes described the `calc_se` standard errors incorrectly and
   now describe what is actually computed. The divisor is the number of items a
   respondent answered, not the number of items on the scale. A PID-5 short-form

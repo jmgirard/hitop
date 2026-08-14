@@ -18,8 +18,14 @@
 #'   are present (`rowMeans(na.rm = TRUE)`); `"complete"` returns `NA` for any
 #'   scale with a missing item (`rowMeans(na.rm = FALSE)`). (default =
 #'   `"available"`)
-#' @param calc_se An optional logical indicating whether to calculate the
-#'   standard error of each scale score. (default = `FALSE`)
+#' @param calc_se An optional logical indicating whether to calculate a
+#'   standard error for each scale score: the SD of the items the respondent
+#'   actually answered divided by the square root of how many of those items
+#'   they answered. Each one summarizes how much a respondent's answers varied
+#'   within a scale. It is not a standard error of measurement — no reliability
+#'   estimate enters it — so it does not give a confidence interval for a
+#'   respondent's true score; for measurement precision see
+#'   [reliability_hitopbr()]. (default = `FALSE`)
 #' @param append An optional logical indicating whether the new columns should
 #'   be added to the end of the `data` input. (default = `TRUE`)
 #'
