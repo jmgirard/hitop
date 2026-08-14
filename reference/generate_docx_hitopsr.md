@@ -75,13 +75,13 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpWEbMod/file1a1124513184.docx
+#> ✔ Document successfully created at /tmp/Rtmp7OzBc4/file1b76526e99b2.docx
 
 # A short form containing only two scales, original numbering preserved
 generate_docx_hitopsr(
   file = tempfile(fileext = ".docx"),
   subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Document successfully created at /tmp/RtmpWEbMod/file1a1112c4644.docx
+#> ✔ Document successfully created at /tmp/Rtmp7OzBc4/file1b765ab5594e.docx
 # }
 ```
