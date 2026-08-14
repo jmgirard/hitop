@@ -38,8 +38,14 @@ are present (\code{rowMeans(na.rm = TRUE)}); \code{"complete"} returns \code{NA}
 scale with a missing item (\code{rowMeans(na.rm = FALSE)}). (default =
 \code{"available"})}
 
-\item{calc_se}{An optional logical indicating whether to calculate the
-standard error of each scale score. (default = \code{FALSE})}
+\item{calc_se}{An optional logical indicating whether to calculate a
+standard error for each scale score: the SD of the items the respondent
+actually answered divided by the square root of how many of those items
+they answered. Each one summarizes how much a respondent's answers varied
+within a scale. It is not a standard error of measurement — no reliability
+estimate enters it — so it does not give a confidence interval for a
+respondent's true score; for measurement precision see
+\code{\link[=reliability_hitopsr]{reliability_hitopsr()}}. (default = \code{FALSE})}
 
 \item{append}{An optional logical indicating whether the new columns should
 be added to the end of the \code{data} input. (default = \code{TRUE})}
