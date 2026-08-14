@@ -37,35 +37,63 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 
 ## Acceptance criteria
 
-- [ ] AC1 `hitopsr_devstats` ships one row per HiTOP-SR primary scale and
-      subscale, each carrying item count, alpha, mean, and SD as printed in the
-      final paper's Table 1; a test iterating `hitopsr_scales` and
-      `hitopsr_subscales` — not a hand-written list — shows every scale in
-      those two tables has exactly one row and every row a scale.
+- [ ] AC1 `hitopsr_devstats` ships one row for each HiTOP-SR primary scale and
+      subscale Table 1 covers, carrying item count, alpha, mean, and SD as
+      printed in the final paper. A committed, source-cited name map resolves
+      Table 1's labels onto `hitopsr_scales$Scale` and
+      `hitopsr_subscales$Subscale` and declares an exception set naming every
+      Table 1 row with no package scale and every package scale with no Table 1
+      row. A test iterating those two shipped tables — never a hand-written
+      list — shows the join is complete modulo the declared exception set, and
+      that the exception set is exactly what the map declares.
 - [ ] AC2 `data-raw/verify_hitopsr_devstats.R` extracts Table 1 from the source
-      file on the `references/sources/` shelf and reports zero differing cells
-      against the committed CSV; its run output is recorded in the Review.
+      file on the gitignored `references/sources/` shelf and reports zero
+      differing cells against both the committed CSV and the built
+      `hitopsr_devstats`; its run output is recorded in the Review. Because
+      that script cannot run in CI, a second, CI-runnable oracle asserts for
+      every joined row that Table 1's item count equals that scale's `nItems`
+      in `hitopsr_scales`/`hitopsr_subscales`. Where the final paper's format
+      admits no deterministic extraction, an independent second transcription
+      diffed against the first stands in for the extraction half.
 - [ ] AC3 `interval_hitopsr()` returns `_est`, `_lo`, and `_hi` per requested
-      score column, and its help page states the estimate and bound formulas
-      with a page anchor into Schmukle (2025).
-- [ ] AC4 A test recomputes one scale's estimate and both bounds from the
-      published formula in hand-written arithmetic, the arithmetic in comments,
-      and matches the function's output to within 1e-8 (closed-form oracle).
-- [ ] AC5 A test simulates responses from a known true score and error variance
-      at a known reliability, and shows the interval's empirical coverage sits
-      within a stated tolerance of nominal (simulation-coverage oracle, the
-      primary oracle for an interval method).
-- [ ] AC6 The help page, NEWS entry, pkgdown reference, and vignette section
-      each name the reference group as the paper's development sample and its
-      N, and say it is not a community norm; a test asserts that wording in the
-      rendered help page and the vignette.
+      score column at a `level` argument defaulting to 0.95, and its help page
+      states the estimate and bound formulas with a page anchor into Schmukle
+      (2025). A score column with no `hitopsr_devstats` row, and a call whose
+      `srange` is not the response coding Table 1's mean and SD are printed on,
+      each return `NA` in all three columns and report it as its own catchable
+      `cli::cli_warn()` condition, mirroring `norm_pid5()`. Subset-scored
+      columns are not detectable and are not claimed to be: the help page
+      states that a scale scored from fewer than its full items is not
+      comparable to the reference statistics.
+- [ ] AC4 A test recomputes the estimate and both bounds in hand-written
+      arithmetic, the arithmetic in comments, for two scales at opposite ends
+      of the shipped alpha range, each at a score below, at, and above the
+      reference mean, and at two confidence levels, matching the function's
+      output to within 1e-8 (closed-form oracle). Each oracle is recorded by
+      id, type, and asserting `test:line` at the location `cairn/DESIGN.md`
+      declares for oracle records.
+- [ ] AC5 A test asserts *marginal* coverage — true scores drawn from the
+      reference population and observed scores generated from them under the
+      measurement model the ingested Schmukle (2025) source note records, never
+      a single fixed true score, whose conditional coverage a mean-shrunken
+      estimator does not promise — swept over the lowest, median, and highest
+      alpha in `hitopsr_devstats` and two nominal levels, with seed and
+      replication count fixed in the test and the tolerance stated as a
+      Monte-Carlo bound (simulation-coverage oracle, the primary oracle for an
+      interval method).
+- [ ] AC6 The help page, the NEWS entry, the `_pkgdown.yml` reference entry,
+      and the vignette section each name the reference group as the paper's
+      development sample and its N, and say it is not a community norm; a test
+      asserts that wording as text over all four artifacts — the generated
+      `man/*.Rd`, `NEWS.md`, `_pkgdown.yml`, and the vignette `.Rmd` — and
+      asserts the N it finds equals the N documented for `hitopsr_devstats`.
 - [ ] AC7 `devtools::document()` produces no diff and `devtools::test()` and
       `devtools::check()` are clean.
 
 ## Coverage
 
 - AC1 → T3, T6
-- AC2 → T4
+- AC2 → T4, T6
 - AC3 → T2, T5, T7
 - AC4 → T6
 - AC5 → T6
@@ -84,9 +112,13 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
       formulas verbatim with page anchors. Needs the PDF from the maintainer.
 - [ ] T3 Transcribe Table 1 to `data-raw/hitopsr_devstats.csv` and write
       `data-raw/hitopsr_devstats.R` building `data/hitopsr_devstats.rda`,
-      resolving the four scale names that do not join — `Manic Energy†`,
-      `Non-suicidal Self-injury`, `p-factor`, and `Appearance Focus`, the last
-      of which matches no package scale and may or may not be `Body Focus`.
+      committing the source-cited name map and its exception set. Four Table 1
+      labels do not join: `Manic Energy†` and `Non-suicidal Self-injury` are
+      typography and abbreviation, `p-factor` belongs to `hitopbr_scales` and
+      so falls outside this milestone's scope, and `Appearance Focus` matches
+      no package scale at all — it stays an open question on the map rather
+      than being resolved by whichever mapping turns a test green (IP1:
+      discrepancies stay visible, never silently patched).
 - [ ] T4 Write `data-raw/verify_hitopsr_devstats.R` on the pattern of
       `data-raw/verify_norms_against_book.R`, extracting Table 1 from the
       shelved source and diffing every cell against the committed CSV.
@@ -94,9 +126,12 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
       `interval_hitopsr()`, following the wrapper-over-engine pattern of
       `R/score_engine.R` so HiTOP-BR and PID-5 can reuse it, with the shared
       validators from `R/util.R` and `call` threading.
-- [ ] T6 Tests: the two oracles of AC4 and AC5, the join completeness of AC1,
-      every error branch fired with its condition asserted by name, and the
-      wording guard of AC6.
+- [ ] T6 Tests: the two oracles of AC4 and AC5, AC2's CI-runnable item-count
+      oracle, the join completeness of AC1, every error branch fired with its
+      condition asserted by name, and the wording guard of AC6. Add the
+      validation doctrine's oracle-registry pointer line to `cairn/DESIGN.md`
+      Conventions — the repo does numeric work and carries none today — and
+      record this milestone's oracles there.
 - [ ] T7 Docs: roxygen help page, NEWS entry, `_pkgdown.yml` reference index,
       and a vignette section demonstrating the function.
 
@@ -108,6 +143,8 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 - 2026-08-13: plan chose `hitopsr_devstats` and `_est`/`_lo`/`_hi` over `hitopsr_refstats` and `_ci_lo`/`_ci_hi` because the dataset name carries the development-sample provenance the maintainer asked to be visible everywhere; falsified by a name collision with a later community-norm dataset for the same instrument.
 - 2026-08-13: plan chose the paper's Cronbach's alpha over model-based omega at the maintainer's direction, since alpha is what the source prints; falsified by omega estimates for these scales being published, which would make the alpha figures the weaker of two available sources.
 - 2026-08-13: checkpoint commit — the fresh-context criteria audit was spawned over AC1-AC7 and had not reported when this landed; its findings and their disposition are recorded in the following line.
+- 2026-08-13: the fresh-context criteria audit returned findings on AC1-AC6 and none on AC7; all six were accepted and the criteria rewritten. AC1 asserted a bijection its own task contradicted (four Table 1 labels do not join, one of them unresolvable) — now a committed name map plus a declared exception set. AC2 verified the CSV rather than the shipped object and named a script that cannot run in CI, leaving the constants with no CI-visible oracle — now diffs the built object too and adds a CI-runnable item-count oracle. AC3 constrained output shape only — now names the `level` default and the two mismatch branches, and declines to claim subset detection it cannot perform. AC4's single hand-computed point left the sign of the mean deviation, the alpha range, and the level unprobed — now two scales, three score positions, two levels. AC5 asserted coverage at a fixed true score, which a mean-shrunken estimator does not promise — now marginal coverage under the source's own measurement model, with seed, replications, and a Monte-Carlo tolerance fixed in the test. AC6 quantified over four surfaces and tested two, one of them untestable against an uninstalled package — now asserted over all four as text.
+- 2026-08-13: the audit also surfaced a substantive open question for T2: it derives the interval half-width as `z * SD * sqrt(rel * (1 - rel))`, the classical standard error of the true-score estimate, where Johannes Zimmermann's proposal states `z * SD * sqrt(1 - rel)`. Which is Schmukle's scale-corrected form is not decidable from any secondary description in hand and is settled by the primary source, not here.
 - 2026-08-13: two external inputs block implementation — the final submitted paper (T1) and the Schmukle PDF (T2); T5's engine and T6's oracles can be built ahead of both.
 
 ## Decisions
