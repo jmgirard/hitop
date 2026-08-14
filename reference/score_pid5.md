@@ -65,9 +65,20 @@ score_pid5(
 
 - calc_se:
 
-  An optional logical indicating whether to calculate the standard error
-  of each scale score. Standard errors are `NA` wherever their scale
-  score is `NA`. (default = `FALSE`)
+  An optional logical indicating whether to calculate a standard error
+  for each scale score. For the 25 facets, and for the brief form's
+  domains and total, this is the SD of the items the respondent actually
+  answered divided by the square root of how many of those items they
+  answered. The FULL and SF domain scores are means of three facet
+  scores rather than of items, so their standard errors are taken one
+  level up: the SD of the three contributing facet scores divided by the
+  square root of 3. Standard errors are `NA` wherever their scale score
+  is `NA`. Each one summarizes how much a respondent's answers varied
+  within a scale. It is not a standard error of measurement — no
+  reliability estimate enters it — so it does not give a confidence
+  interval for a respondent's true score; for measurement precision see
+  [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md).
+  (default = `FALSE`)
 
 - append:
 

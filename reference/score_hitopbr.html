@@ -117,8 +117,14 @@ scale with a missing item (<code>rowMeans(na.rm = FALSE)</code>). (default =
 
 
 <dt id="arg-calc-se">calc_se<a class="anchor" aria-label="anchor" href="#arg-calc-se"></a></dt>
-<dd><p>An optional logical indicating whether to calculate the
-standard error of each scale score. (default = <code>FALSE</code>)</p></dd>
+<dd><p>An optional logical indicating whether to calculate a
+standard error for each scale score: the SD of the items the respondent
+actually answered divided by the square root of how many of those items
+they answered. Each one summarizes how much a respondent's answers varied
+within a scale. It is not a standard error of measurement — no reliability
+estimate enters it — so it does not give a confidence interval for a
+respondent's true score; for measurement precision see
+<code><a href="reliability_hitopbr.html">reliability_hitopbr()</a></code>. (default = <code>FALSE</code>)</p></dd>
 
 
 <dt id="arg-append">append<a class="anchor" aria-label="anchor" href="#arg-append"></a></dt>

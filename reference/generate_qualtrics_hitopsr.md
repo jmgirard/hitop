@@ -61,12 +61,12 @@ Invisibly returns the path to the created file (`file`).
 ``` r
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpkFToIu/file1b8c56ee4ca7.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpWEbMod/file1a113eef6a8b.txt
 
 # A two-scale subset, original numbering preserved
 generate_qualtrics_hitopsr(
   file = tempfile(fileext = ".txt"),
   subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpkFToIu/file1b8c690f9e41.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpWEbMod/file1a1140b750b3.txt
 ```
