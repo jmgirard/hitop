@@ -1,6 +1,6 @@
 # M42: Serve instrument downloads from the pkgdown site
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -144,6 +144,7 @@ because the pkgdown workflow deploys only off the default branch.
 - 2026-08-19: T5 — `devtools::install()` + `pkgdown::build_site()`: `docs/downloads/` holds 24 files, same set as `inst/extdata/` and byte-identical to it; the six built pages carry 24 `../downloads/` anchors, every one resolving to a real file and carrying a `download` attribute, and no built page still matches `github\.com/.*inst/extdata`.
 - 2026-08-19: T6 — NEWS entry; the import-instructions `.txt` workaround paragraph rewritten to cover only files obtained outside the site; `cairn/DESIGN.md` artifact-versioning paragraph rewritten to name the site route (corrected M42).
 - 2026-08-19: verify slot clean — `devtools::test()` 13,480 pass / 0 fail / 1 skip, `devtools::check()` 0/0/0, `pkgdown::check_pkgdown()` no problems.
+- 2026-08-19: status → review; T1-T6 done, T7 stays open by design (it verifies the deployed site, which only exists after merge).
 
 ## Decisions
 
