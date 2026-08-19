@@ -295,3 +295,32 @@ test_that("no QSF display-logic condition selects choice 99 (PNTS)", {
     )
   }
 })
+
+# Qualtrics rejects a QSF whose absent values are encoded as empty JSON
+# objects instead of null: the survey-definitions ?format=qsf API response
+# writes `{}` where a Tools > Import/Export > Export Survey download writes
+# `null` (1,324 sites in the 2026-07-16 build, including SecondaryAttribute
+# and TertiaryAttribute on every element), and importing that file fails
+# with an internal error.
+test_that("the committed QSF encodes absent values as JSON null", {
+  path <- system.file(
+    "extdata", "hitophsum_qualtrics.qsf",
+    package = "hitop"
+  )
+  text <- readChar(path, file.size(path), useBytes = TRUE)
+  expect_false(
+    grepl("{}", text, fixed = TRUE),
+    label = "committed QSF contains an empty JSON object"
+  )
+
+  skip_if_not(have_jsonlite)
+  entry <- qsf$SurveyEntry
+  expect_null(entry$SurveyDescription)
+  expect_null(entry$DivisionID)
+  expect_null(entry$Deleted)
+  # Both attributes are a string or null in an exported QSF, never an object.
+  for (e in qsf$SurveyElements) {
+    expect_false(is.list(e$SecondaryAttribute), label = e$PrimaryAttribute)
+    expect_false(is.list(e$TertiaryAttribute), label = e$PrimaryAttribute)
+  }
+})

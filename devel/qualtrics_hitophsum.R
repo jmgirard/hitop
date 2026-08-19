@@ -72,9 +72,56 @@ create_qualtrics_survey <- function(api_token, data_center, name) {
   httr2::resp_body_json(resp)$result$SurveyID
 }
 
+# The ?format=qsf API response encodes every absent value as an empty JSON
+# object ({}) where a Tools > Import/Export > Export Survey download encodes
+# it as null -- 1,324 sites in the 2026-07-16 build, including the
+# SecondaryAttribute/TertiaryAttribute of all 659 elements. Qualtrics' own
+# importer rejects the API flavor with an internal error, so an unnormalized
+# response is not a distributable artifact.
+#
+# The substitution is byte-faithful by construction: it rewrites `{}` only in
+# value position (immediately after a `:`), and stops if the file holds an
+# empty object anywhere else rather than guessing. Idempotent -- a QSF that
+# already uses null passes through untouched.
+normalize_qsf_nulls <- function(txt) {
+  count <- function(pattern) {
+    hits <- gregexpr(pattern, txt, fixed = TRUE)[[1]]
+    sum(hits > 0)
+  }
+  if (count("{}") != count(":{}")) {
+    stop(
+      "The QSF holds an empty JSON object outside value position; ",
+      "normalize it by hand before committing.",
+      call. = FALSE
+    )
+  }
+  gsub(":{}", ":null", txt, fixed = TRUE)
+}
+
+# Re-encode a QSF already on disk (and restamp its SurveyName with the build
+# date, which the manifest test locks). Used to repair a committed artifact
+# exported before normalize_qsf_nulls() existed; a no-op on a clean file.
+renormalize_committed_qsf <- function(
+  file = "inst/extdata/hitophsum_qualtrics.qsf",
+  build_date = Sys.Date()
+) {
+  txt <- readChar(file, file.size(file), useBytes = TRUE)
+  txt <- normalize_qsf_nulls(txt)
+  name <- sprintf("HiTOP-HSUM v1.0 (rebuilt %s)", format(build_date, "%Y-%m-%d"))
+  txt <- sub(
+    '"SurveyName":"[^"]*"',
+    sprintf('"SurveyName":"%s"', name),
+    txt
+  )
+  writeLines(txt, file, useBytes = TRUE)
+  cli::cli_alert_success("Renormalized {.file {file}} as {.val {name}}")
+  invisible(file)
+}
+
 # Export a survey as QSF text. Uses the ?format=qsf export; validated by
 # shape (a QSF is a JSON object with SurveyEntry + SurveyElements) so a
-# non-QSF response fails loudly instead of writing garbage.
+# non-QSF response fails loudly instead of writing garbage, then normalized
+# to the null encoding Qualtrics' importer accepts.
 export_qualtrics_qsf <- function(api_token, data_center, survey_id) {
   resp <- qualtrics_request(
     api_token,
@@ -97,7 +144,7 @@ export_qualtrics_qsf <- function(api_token, data_center, survey_id) {
       call. = FALSE
     )
   }
-  txt
+  normalize_qsf_nulls(txt)
 }
 
 # One-shot rebuild: create survey -> push all questions -> export QSF ->
