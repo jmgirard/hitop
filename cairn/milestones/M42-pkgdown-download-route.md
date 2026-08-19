@@ -95,13 +95,13 @@ because the pkgdown workflow deploys only off the default branch.
       file-set lock (AC3), the page-href form and exclusion check replacing
       the current href lock at `test-artifacts.R:79`, and the
       `render_button()` unit test (AC2).
-- [ ] T4: Run the four AC4 probes, red→green each, recording commands and
+- [x] T4: Run the four AC4 probes, red→green each, recording commands and
       output.
-- [ ] T5: Local `pkgdown::build_site()`; confirm `docs/downloads/` holds the
+- [x] T5: Local `pkgdown::build_site()`; confirm `docs/downloads/` holds the
       24 files byte-identical to `inst/extdata/` and that each built page's
       `../downloads/` hrefs resolve (LESSONS M21/M22: a new asset needs a
       full `build_site()`/`init_site()`, not `build_article()`).
-- [ ] T6: NEWS entry; rewrite the import-instructions workaround paragraph;
+- [x] T6: NEWS entry; rewrite the import-instructions workaround paragraph;
       update the artifact-distribution paragraph at `cairn/DESIGN.md:78`,
       whose "download URLs stay stable" clause is written against the
       `raw/main` route.
@@ -140,6 +140,10 @@ because the pkgdown workflow deploys only off the default branch.
 - 2026-08-19: T1 — `data-raw/artifacts.R` now stages the 24 current-build artifacts into `pkgdown/assets/downloads/` (dropping any file the manifest no longer lists); `.gitattributes` gives the staged path `-text`. Minor reorder: AC3's staged-copy lock test was written in T1 rather than T3, so the staging landed test-first (skip before the directory existed, green and unskipped after).
 - 2026-08-19: T2+T3 committed together — rewriting the 24 hrefs turns the old href-lock test red, so the page change and its replacement test are one commit. `render_button()` now emits `download="<file>"`; the page test asserts the `../downloads/<file>` form, the 24 basenames against the manifest, and that no page still matches `github\.com/.*inst/extdata`.
 - 2026-08-19: T3 discriminating probes (LESSONS M40 — counted `failed > 0 | error`): reverting one page href to a GitHub raw URL → red; dropping the `download` attribute from `render_button()` → red; restored control → green.
+- 2026-08-19: T4 — four staged-copy probes, each red against the clean control: byte change in `pid5_US.docx`, byte change in `hitophsum_qualtrics.qsf`, a deleted staged file, an extra staged file; controls before and after both green.
+- 2026-08-19: T5 — `devtools::install()` + `pkgdown::build_site()`: `docs/downloads/` holds 24 files, same set as `inst/extdata/` and byte-identical to it; the six built pages carry 24 `../downloads/` anchors, every one resolving to a real file and carrying a `download` attribute, and no built page still matches `github\.com/.*inst/extdata`.
+- 2026-08-19: T6 — NEWS entry; the import-instructions `.txt` workaround paragraph rewritten to cover only files obtained outside the site; `cairn/DESIGN.md` artifact-versioning paragraph rewritten to name the site route (corrected M42).
+- 2026-08-19: verify slot clean — `devtools::test()` 13,480 pass / 0 fail / 1 skip, `devtools::check()` 0/0/0, `pkgdown::check_pkgdown()` no problems.
 
 ## Decisions
 

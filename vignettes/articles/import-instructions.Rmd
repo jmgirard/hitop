@@ -34,12 +34,11 @@ A `.qsf` file creates a whole new survey, complete with its display logic. Do
 the contents so that Qualtrics can no longer read it. You may rename the file if
 you wish.
 
-Some browsers save the download as a plain text file (`hitophsum_qualtrics.txt`
-or `hitophsum_qualtrics.qsf.txt`) because the file is served as text. That is
-only the file name: renaming it back to `hitophsum_qualtrics.qsf` is safe and
-enough for Qualtrics to accept it. If your browser displays the file instead of
-downloading it, use **Save link as…** (right-click or Control-click the download
-link) rather than copying the text out of the browser window.
+The download buttons on the instrument pages save the file under its own name.
+If you obtain the `.qsf` some other way — from the GitHub repository, say — your
+browser may name it `.txt`, because GitHub serves the file as plain text. That
+is only the file name: renaming it back to `.qsf` is safe and is all Qualtrics
+needs.
 
 **From the Projects page (creates a new project):**
 
