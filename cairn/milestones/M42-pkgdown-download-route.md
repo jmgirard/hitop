@@ -1,11 +1,11 @@
 # M42: Serve instrument downloads from the pkgdown site
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m42-pkgdown-download-route
 
 ## Goal
 
@@ -35,37 +35,37 @@ because the pkgdown workflow deploys only off the default branch.
 
 ## Acceptance criteria
 
-- [ ] AC1: In a source checkout, all 24 artifact links across the six
+- [x] AC1: In a source checkout, all 24 artifact links across the six
       `vignettes/articles/download-*.Rmd` pages are staged-copy links — a
       test reading those six files asserts every `dl_link()` href matches
       `../downloads/<filename>`, that the 24 basenames equal the 24
       `hitop_artifacts` current-build filenames, and that no href in those
       files matches `github\.com/.*inst/extdata`.
-- [ ] AC2: `render_button()` emits, for each of the 24 current-build links,
+- [x] AC2: `render_button()` emits, for each of the 24 current-build links,
       an anchor whose `href` is the link's href and which carries
       `download="<basename of href>"` — asserted by a unit test over the
       emitted strings (regex, no HTML-parser dependency).
-- [ ] AC3: The staged copies are byte-identical to the artifacts they
+- [x] AC3: The staged copies are byte-identical to the artifacts they
       distribute — in a source checkout, a test asserts the file set of
       `pkgdown/assets/downloads/` equals the file set of the
       `hitop_artifacts` current-build rows and that each staged file's
       `tools::md5sum()` equals that row's `md5`; it skips with a reason when
       `pkgdown/` is absent, and the review records a run where it did not skip.
-- [ ] AC4: A staged copy that drifts fails the suite in each form the lock
+- [x] AC4: A staged copy that drifts fails the suite in each form the lock
       must catch — four probes shown red then green: a byte change in a
       staged `.docx`, a byte change in a staged `.txt` or `.qsf` (the class
       Windows CI CRLF-converts, LESSONS 2026-07-16 M20), a deleted staged
       file, and an extra staged file.
-- [ ] AC5: A local `pkgdown::build_site()` lands all 24 artifacts under
+- [x] AC5: A local `pkgdown::build_site()` lands all 24 artifacts under
       `docs/downloads/`, each byte-identical to its `inst/extdata/` original,
       and every `../downloads/` href on the six built pages resolves to one
       of them — recorded as command output in the review.
-- [ ] AC6: `NEWS.md` records the new download route in user-facing terms, and
+- [x] AC6: `NEWS.md` records the new download route in user-facing terms, and
       the `.qsf`-saves-as-`.txt` workaround paragraph in
       `vignettes/articles/import-instructions.Rmd` (added 2026-08-19) is
       removed or rewritten, since same-origin serving plus the `download`
       attribute makes it obsolete.
-- [ ] AC7: The profile's verify slot is clean — `devtools::test()` passes,
+- [x] AC7: The profile's verify slot is clean — `devtools::test()` passes,
       `devtools::check()` reports 0 errors and 0 warnings, and
       `pkgdown::check_pkgdown()` is clean.
 
@@ -81,27 +81,27 @@ because the pkgdown workflow deploys only off the default branch.
 
 ## Tasks
 
-- [ ] T1: Stage the 24 artifacts under `pkgdown/assets/downloads/`, written
+- [x] T1: Stage the 24 artifacts under `pkgdown/assets/downloads/`, written
       by a new step in `data-raw/artifacts.R` after its manifest section
       (`data-raw/artifacts.R:215+`); give the staged path a `-text`
       `.gitattributes` entry so Windows checkout cannot CRLF-convert the
       `.txt`/`.qsf` copies out of their checksums; confirm `.Rbuildignore`'s
       `^pkgdown$` keeps them out of the built package.
-- [ ] T2: Emit the `download` attribute from `render_button()`
+- [x] T2: Emit the `download` attribute from `render_button()`
       (`vignettes/articles/_download-helpers.R:79`) and rewrite the 24
       `dl_link()` hrefs across the six `download-*.Rmd` pages to
       `../downloads/<filename>`.
-- [ ] T3: Extend `tests/testthat/test-artifacts.R` — staged-copy md5 and
+- [x] T3: Extend `tests/testthat/test-artifacts.R` — staged-copy md5 and
       file-set lock (AC3), the page-href form and exclusion check replacing
       the current href lock at `test-artifacts.R:79`, and the
       `render_button()` unit test (AC2).
-- [ ] T4: Run the four AC4 probes, red→green each, recording commands and
+- [x] T4: Run the four AC4 probes, red→green each, recording commands and
       output.
-- [ ] T5: Local `pkgdown::build_site()`; confirm `docs/downloads/` holds the
+- [x] T5: Local `pkgdown::build_site()`; confirm `docs/downloads/` holds the
       24 files byte-identical to `inst/extdata/` and that each built page's
       `../downloads/` hrefs resolve (LESSONS M21/M22: a new asset needs a
       full `build_site()`/`init_site()`, not `build_article()`).
-- [ ] T6: NEWS entry; rewrite the import-instructions workaround paragraph;
+- [x] T6: NEWS entry; rewrite the import-instructions workaround paragraph;
       update the artifact-distribution paragraph at `cairn/DESIGN.md:78`,
       whose "download URLs stay stable" clause is written against the
       `raw/main` route.
@@ -137,7 +137,101 @@ because the pkgdown workflow deploys only off the default branch.
   over keeping the GitHub raw links canonical because the site copy is the one
   that downloads correctly; falsified by the site becoming an unreliable host
   (a Pages outage or size limit) where the raw links keep working.
+- 2026-08-19: T1 — `data-raw/artifacts.R` now stages the 24 current-build artifacts into `pkgdown/assets/downloads/` (dropping any file the manifest no longer lists); `.gitattributes` gives the staged path `-text`. Minor reorder: AC3's staged-copy lock test was written in T1 rather than T3, so the staging landed test-first (skip before the directory existed, green and unskipped after).
+- 2026-08-19: T2+T3 committed together — rewriting the 24 hrefs turns the old href-lock test red, so the page change and its replacement test are one commit. `render_button()` now emits `download="<file>"`; the page test asserts the `../downloads/<file>` form, the 24 basenames against the manifest, and that no page still matches `github\.com/.*inst/extdata`.
+- 2026-08-19: T3 discriminating probes (LESSONS M40 — counted `failed > 0 | error`): reverting one page href to a GitHub raw URL → red; dropping the `download` attribute from `render_button()` → red; restored control → green.
+- 2026-08-19: T4 — four staged-copy probes, each red against the clean control: byte change in `pid5_US.docx`, byte change in `hitophsum_qualtrics.qsf`, a deleted staged file, an extra staged file; controls before and after both green.
+- 2026-08-19: T5 — `devtools::install()` + `pkgdown::build_site()`: `docs/downloads/` holds 24 files, same set as `inst/extdata/` and byte-identical to it; the six built pages carry 24 `../downloads/` anchors, every one resolving to a real file and carrying a `download` attribute, and no built page still matches `github\.com/.*inst/extdata`.
+- 2026-08-19: T6 — NEWS entry; the import-instructions `.txt` workaround paragraph rewritten to cover only files obtained outside the site; `cairn/DESIGN.md` artifact-versioning paragraph rewritten to name the site route (corrected M42).
+- 2026-08-19: verify slot clean — `devtools::test()` 13,480 pass / 0 fail / 1 skip, `devtools::check()` 0/0/0, `pkgdown::check_pkgdown()` no problems.
+- 2026-08-19: status → review; T1-T6 done, T7 stays open by design (it verifies the deployed site, which only exists after merge).
+- 2026-08-19: merge approved at the review gate for PR #47; merge held on CI — six of the seven checks pass, `ubuntu-latest (release)` sat queued at 0s past the blocking wait's timeout. Nothing left watching; re-derive from `gh pr checks 47` on resume.
 
 ## Decisions
 
 ## Review
+Evidence gathered 2026-08-19 on branch `m42-pkgdown-download-route`, PR #47.
+All figures are from commands run at review, not from implement.
+
+- **AC1 — met.** `test_local(filter = "artifacts")`: "download-page links point
+  at the staged site copies" — 38 assertions, 0 failures, not skipped. Probes:
+  reverting one page href to a GitHub raw URL → red; a
+  `raw.githubusercontent.com` artifact link (the host the original assertion
+  missed, review finding 4) → red after the exclusion was broadened; clean
+  control → green.
+- **AC2 — met.** "every rendered download button carries a download attribute"
+  — 24 assertions over the 24 current-build links, 0 failures, not skipped.
+  Probe: emitting the attribute on a different element → red (the assertion was
+  strengthened to one regex over the whole anchor at review finding 5; the
+  two-substring form passed this probe).
+- **AC3 — met, unskipped.** "staged pkgdown download copies match the manifest
+  exactly" — 2 assertions, 0 failures, `skipped = FALSE` recorded from the
+  results frame.
+- **AC4 — met.** Four probes at review, each red against green controls before
+  and after: byte change in `pid5_US.docx`; byte change in
+  `hitophsum_qualtrics.qsf`; `hitopsr_redcap.zip` removed; an extra staged
+  file. A fifth probe added at review finding 9: a stray `.DS_Store` → red.
+  Counted as `failed > 0 | error` (LESSONS M40).
+- **AC6 — met.** `NEWS.md` leads 0.2.0 with the new download route in
+  user-facing terms; the import-instructions paragraph now covers only files
+  obtained outside the site, and the "Save link as…" guidance the blame-history
+  lens flagged as still needed for the GitHub route was restored.
+- **AC5 — met.** `devtools::install()` + `pkgdown::build_site()` rebuilt after
+  the review fixes: `docs/downloads/` holds 24 files, the same set as
+  `inst/extdata/` and byte-identical to it; the six built pages carry 24
+  `../downloads/` anchors, every one resolving to a real file under `docs/`
+  and carrying a `download` attribute; no built page links an artifact
+  off-site.
+- **AC7 — met.** `devtools::test()` 13,456 pass / 0 fail / 1 skip;
+  `devtools::check()` 0 errors, 0 warnings, 0 notes;
+  `pkgdown::check_pkgdown()` no problems found.
+
+**Consistency gate.** `cairn_validate` all checks passed (41 advisories, not
+gate failures). `devtools::document()` produces no diff beyond the
+`hitop_artifacts` roxygen this review changed (review finding 7), regenerated
+in the same commit. Generated files otherwise untouched: `NAMESPACE`, `data/`,
+`R/sysdata.rda` carry no diff. README.Rmd/README.md unchanged and in sync.
+NEWS.md carries the user-visible entry. No new top-level file needs an
+`.Rbuildignore` entry — `^pkgdown$` already covers the staged copies, and
+`check()` reports 0 notes. No principle changed, so `cairn_impact` does not
+run. Coverage map complete (7 criteria, all mapped).
+
+**Review fan-out — three lenses, all findings and dispositions.**
+
+[O] diff-bug returned 11 findings; [S] blame-history returned 1; [S]
+prior-PR-comments reported a clean no-op (no archived review finding or lesson
+on the touched files is walked back; the GitHub comment probe found no threads
+at all). None of the 12 demonstrates an acceptance criterion failing inside its
+named procedure's domain, so none met the return floor; ten were fixed at the
+gate and two were rejected with reason. Dispositions:
+
+1. Fixed — `latest_files` was every file ever in the manifest, not the current
+   builds, so the stale-removal block was dead for retirement and a retired
+   artifact would abort the copy; now staged from `new_rows$file`, the set this
+   run read off disk.
+2. Fixed — `file.remove()`'s return value now checked, symmetric with the
+   copy guard.
+3. Fixed — the `dl_link()` href regex now tolerates whitespace and newlines,
+   so a reflowed call cannot silently escape the form check.
+4. Fixed — the off-site exclusion missed `raw.githubusercontent.com`; it now
+   matches any `https?://…inst/extdata`. Probed red.
+5. Fixed — the download-attribute assertion checked two independent
+   substrings and could not tell they sat on one anchor; now one regex over
+   the whole tag. Probed red.
+6. Fixed — three assertions passed `label =` where `info =` was meant.
+7. Fixed — `R/data.R`'s `hitop_artifacts` roxygen still named `inst/extdata/`
+   as the distribution route; rewritten and re-documented.
+8. Fixed — `devel/qualtrics_hitophsum.R` writes `inst/extdata/` directly and
+   now says in its run recipe that `data-raw/artifacts.R` must follow, for the
+   manifest row and the staged copy both.
+9. Fixed — dotfiles were invisible to both the pruning step and the lock test;
+   both now use `all.files = TRUE`. Probed red with a stray `.DS_Store`.
+10. Fixed — the staging step now verifies the copies by md5 at regeneration
+    time instead of deferring every detection to the suite.
+11. Rejected — repo growth per artifact revision roughly doubles. Accepted at
+    the plan gate and already recorded there as the falsifier for the
+    committed-copies choice; not a defect.
+12. Fixed (blame-history) — the import-instructions rewrite dropped the "Save
+    link as…" guidance, which still applies to the GitHub raw route D-033
+    deliberately keeps alive; restored.
+

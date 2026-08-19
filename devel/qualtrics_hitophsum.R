@@ -21,7 +21,13 @@
 #   1. devtools::load_all()  # for hitophsum_items/choices/instructions
 #   2. source("devel/qualtrics_hitophsum.R")
 #   3. rebuild_hitophsum_qsf()
-#   4. Rscript -e 'devtools::test(filter = "qualtrics")'  # must be green
+#   4. source("data-raw/artifacts.R")  # new manifest row + restaged site copy
+#   5. Rscript -e 'devtools::test(filter = "qualtrics")'  # must be green
+#
+# Step 4 is not optional: this script writes inst/extdata/ directly, and the
+# website serves its own copy under pkgdown/assets/downloads/ (D-033). Both
+# the manifest row and that copy come from data-raw/artifacts.R, and
+# test-artifacts.R fails until they agree.
 #
 # If the automated QSF export fails (the ?format=qsf endpoint is not part of
 # the documented API surface), the function says so and you fall back to the

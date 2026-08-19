@@ -1,3 +1,7 @@
 # Distribution artifacts are byte-exact (md5-locked to the hitop_artifacts
 # manifest, D-016): never apply line-ending conversion on checkout.
 inst/extdata/** -text
+
+# The pkgdown site's download copies are byte-locked to the same manifest
+# (D-033) — same reason, same rule.
+pkgdown/assets/downloads/** -text

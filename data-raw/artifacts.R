@@ -263,3 +263,49 @@ hitop_artifacts <- hitop_artifacts[
 rownames(hitop_artifacts) <- NULL
 
 usethis::use_data(hitop_artifacts, overwrite = TRUE)
+
+# ------------------------------------------------------------------------------
+## Stage the site's download copies (D-033)
+##
+## pkgdown copies `pkgdown/assets/` to the site root, so these land as
+## `docs/downloads/<file>`; the download pages link `../downloads/<file>` with
+## a `download` attribute, which is the same-origin route a browser saves
+## under the artifact's own name. The GitHub `raw/main` links could not be
+## fixed link-side: GitHub serves `.qsf`/`.txt` as text/plain with no
+## attachment header, and `download` is ignored cross-origin.
+##
+## The copies are byte-for-byte; test-artifacts.R locks them to the manifest,
+## so a rebuilt artifact whose copy was not restaged fails the suite.
+
+staged <- "pkgdown/assets/downloads"
+dir.create(staged, recursive = TRUE, showWarnings = FALSE)
+
+## The files to stage are the ones this run read off disk (`add_row()` stops
+## on a missing file), NOT the manifest's file column -- history rows are
+## never pruned, so that column keeps the name of any artifact ever
+## distributed, including one since retired, whose source no longer exists.
+staged_files <- new_rows$file
+
+## Drop anything else in the directory, so a renamed or retired artifact
+## cannot linger on the site behind a stale link. `all.files` because a stray
+## dotfile (`.DS_Store`) would otherwise be published and go unnoticed by the
+## lock test.
+stale <- setdiff(list.files(staged, all.files = TRUE, no.. = TRUE), staged_files)
+if (length(stale)) {
+  removed <- file.remove(file.path(staged, stale))
+  stopifnot(all(removed))
+}
+
+copied <- file.copy(
+  file.path(extdata, staged_files),
+  file.path(staged, staged_files),
+  overwrite = TRUE
+)
+stopifnot(all(copied))
+
+## Verify the copies here rather than deferring every detection to the suite.
+stopifnot(identical(
+  unname(tools::md5sum(file.path(staged, staged_files))),
+  unname(tools::md5sum(file.path(extdata, staged_files)))
+))
+message("Staged ", length(staged_files), " download copies in ", staged)
