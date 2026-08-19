@@ -145,6 +145,7 @@ because the pkgdown workflow deploys only off the default branch.
 - 2026-08-19: T6 — NEWS entry; the import-instructions `.txt` workaround paragraph rewritten to cover only files obtained outside the site; `cairn/DESIGN.md` artifact-versioning paragraph rewritten to name the site route (corrected M42).
 - 2026-08-19: verify slot clean — `devtools::test()` 13,480 pass / 0 fail / 1 skip, `devtools::check()` 0/0/0, `pkgdown::check_pkgdown()` no problems.
 - 2026-08-19: status → review; T1-T6 done, T7 stays open by design (it verifies the deployed site, which only exists after merge).
+- 2026-08-19: merge approved at the review gate for PR #47; merge held on CI — six of the seven checks pass, `ubuntu-latest (release)` sat queued at 0s past the blocking wait's timeout. Nothing left watching; re-derive from `gh pr checks 47` on resume.
 
 ## Decisions
 
