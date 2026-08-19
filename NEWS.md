@@ -3,6 +3,16 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* The HiTOP-HSUM Qualtrics survey file (`hitophsum_qualtrics.qsf`) now imports
+  into Qualtrics. The previous build was exported through the Qualtrics API,
+  which writes absent values as empty objects rather than as JSON `null`; the
+  importer rejects that file with an internal error. The file now carries the
+  same encoding as a survey exported from the Qualtrics interface. Its
+  content — questions, response choices, and skip/display logic — is unchanged.
+
+* The Qualtrics import instructions note that a browser may save the survey
+  file with a `.txt` extension, and that renaming it back to `.qsf` is safe.
+
 * The `calc_se` help text on `score_pid5()`, `score_hitopsr()`, and
   `score_hitopbr()` now states what these standard errors are computed over and
   says plainly that they are not standard errors of measurement. Each is the SD

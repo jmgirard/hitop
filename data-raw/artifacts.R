@@ -27,7 +27,11 @@ extdata <- "inst/extdata"
 ## instrument's content actually changed. Only the rebuild loops honor this;
 ## the manifest section below still reads all files from disk and appends a row
 ## only where the checksum moved, so unrebuilt artifacts stay silent on their own.
-rebuild_stems <- c("pid5", "pid5sf", "pid5bf")
+## `character(0)` is an explicit rebuild-nothing run: the manifest section
+## below still reads every file from disk, which is how a replaced HSUM QSF
+## (built elsewhere, by devel/qualtrics_hitophsum.R) gains its row without
+## churning the checksum of any artifact this script does rebuild.
+rebuild_stems <- character(0)
 
 ## Restrict the rebuild to specific output formats, e.g. c("docx"); NULL rebuilds
 ## every format for the selected stems. Format matters independently of stem: a
@@ -36,7 +40,7 @@ rebuild_stems <- c("pid5", "pid5sf", "pid5bf")
 ## exports emit), and because DOCX/zip rebuilds are not byte-deterministic, a
 ## needless rebuild churns a checksum and records a manifest revision that isn't
 ## one. Restrict to the format whose content actually changed.
-rebuild_formats <- c("docx")
+rebuild_formats <- NULL
 
 ## Both filters are plain string matches, so a typo ("pid5_bf"), a case slip
 ## ("DOCX"), or the manifest's own format vocabulary ("docx_us") would match
@@ -98,6 +102,11 @@ check_filters_matched <- function() {
   ## (e.g. stem "hitophsum" with format "qualtrics" -- the HSUM QSF is built by
   ## devel/qualtrics_hitophsum.R, not here), which rebuilds nothing just as
   ## silently as a typo would.
+  if (!is.null(rebuild_stems) && !length(rebuild_stems)) {
+    message("Rebuilt stems: none (manifest-only run)")
+    return(invisible(NULL))
+  }
+
   if (!length(matched_stems)) {
     stop(
       "`rebuild_stems` and `rebuild_formats` select no artifact in combination:",
@@ -121,11 +130,10 @@ build_notes <- paste(
   "the first, 2 and 3 on the second) so no option phrase breaks mid-phrase;",
   "legend wording, values, and labels are unchanged."
 )
-qsf_build_date <- as.Date("2026-07-16")
+qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(
-  "Rebuilt from the corrected item data via the Qualtrics API: fixes",
-  "duplicated questions and the empty cigar-quantity dropdown; SurveyName",
-  "carries the build stamp."
+  "Re-encoded so Qualtrics accepts the import: absent values are written as",
+  "JSON null rather than as empty objects. Survey content is unchanged."
 )
 
 # ------------------------------------------------------------------------------
