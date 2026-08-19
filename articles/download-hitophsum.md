@@ -30,7 +30,7 @@ Use this survey file to easily import the instrument directly into your
 Qualtrics surveys.
 
 [English (QSF
-File)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf)
+File)2026-08-19](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf)
 
 [Import
 Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html#qualtrics-qsf)
@@ -61,7 +61,7 @@ Current builds & version history
 | File                      | Format           | Instrument version | Build date |
 |---------------------------|------------------|--------------------|------------|
 | `hitophsum_A4.docx`       | DOCX (A4 paper)  | 1.0                | 2026-07-16 |
-| `hitophsum_qualtrics.qsf` | Qualtrics import | 1.0                | 2026-07-16 |
+| `hitophsum_qualtrics.qsf` | Qualtrics import | 1.0                | 2026-08-19 |
 | `hitophsum_redcap.zip`    | REDCap import    | 1.0                | 2026-07-16 |
 | `hitophsum_US.docx`       | DOCX (US paper)  | 1.0                | 2026-07-16 |
 
@@ -70,6 +70,12 @@ to get the latest build. The full build manifest (including file
 checksums) ships in the package as `hitop_artifacts`.
 
 #### Version history
+
+2026-08-19
+
+Re-encoded so Qualtrics accepts the import: absent values are written as
+JSON null rather than as empty objects. Survey content is unchanged.  
+`hitophsum_qualtrics.qsf`
 
 2026-07-16
 
