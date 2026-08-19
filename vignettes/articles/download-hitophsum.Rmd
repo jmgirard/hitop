@@ -24,19 +24,19 @@ download_cards("HiTOP-HSUM", list(
   dl_card(
     "📄", "Printable Document",
     "Use these Microsoft Word documents for an overview or sending to the IRB.",
-    dl_link("English (A4 Paper)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_A4.docx"),
-    dl_link("English (US Paper)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_US.docx")
+    dl_link("English (A4 Paper)", "../downloads/hitophsum_A4.docx"),
+    dl_link("English (US Paper)", "../downloads/hitophsum_US.docx")
   ),
   dl_card(
     "📊", "Qualtrics Import",
     "Use this survey file to easily import the instrument directly into your Qualtrics surveys.",
-    dl_link("English (QSF File)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf"),
+    dl_link("English (QSF File)", "../downloads/hitophsum_qualtrics.qsf"),
     ref_link("Import Instructions", "../articles/import-instructions.html#qualtrics-qsf")
   ),
   dl_card(
     "🏥", "REDCap Import",
     "Use this compressed archive file to import the instrument as a new instrument in your REDCap project.",
-    dl_link("English (ZIP File)", "https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip"),
+    dl_link("English (ZIP File)", "../downloads/hitophsum_redcap.zip"),
     ref_link("Import Instructions", "../articles/import-instructions.html#redcap-zip")
   )
 ))

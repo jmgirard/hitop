@@ -77,9 +77,16 @@ download_cards <- function(instrument, cards) {
     if (is.na(dates[file])) {
       stop("No hitop_artifacts row for '", file, "' (", instrument, ")")
     }
+    # `download` names the saved file, so the browser saves the artifact
+    # under its own name instead of naming it after the served content type
+    # (D-033). It is honoured only same-origin, which is why these hrefs are
+    # site-relative rather than GitHub raw links.
     sprintf(
-      '<a href="%s" class="btn btn-outline-primary hitop-dl-btn"><span>%s</span>%s</a>',
-      .esc(link$href), .esc(link$label), .badge(dates[[file]])
+      paste0(
+        '<a href="%s" class="btn btn-outline-primary hitop-dl-btn" ',
+        'download="%s"><span>%s</span>%s</a>'
+      ),
+      .esc(link$href), .esc(file), .esc(link$label), .badge(dates[[file]])
     )
   }
 

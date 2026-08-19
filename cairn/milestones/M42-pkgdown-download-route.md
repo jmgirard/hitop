@@ -87,11 +87,11 @@ because the pkgdown workflow deploys only off the default branch.
       `.gitattributes` entry so Windows checkout cannot CRLF-convert the
       `.txt`/`.qsf` copies out of their checksums; confirm `.Rbuildignore`'s
       `^pkgdown$` keeps them out of the built package.
-- [ ] T2: Emit the `download` attribute from `render_button()`
+- [x] T2: Emit the `download` attribute from `render_button()`
       (`vignettes/articles/_download-helpers.R:79`) and rewrite the 24
       `dl_link()` hrefs across the six `download-*.Rmd` pages to
       `../downloads/<filename>`.
-- [ ] T3: Extend `tests/testthat/test-artifacts.R` — staged-copy md5 and
+- [x] T3: Extend `tests/testthat/test-artifacts.R` — staged-copy md5 and
       file-set lock (AC3), the page-href form and exclusion check replacing
       the current href lock at `test-artifacts.R:79`, and the
       `render_button()` unit test (AC2).
@@ -138,6 +138,8 @@ because the pkgdown workflow deploys only off the default branch.
   that downloads correctly; falsified by the site becoming an unreliable host
   (a Pages outage or size limit) where the raw links keep working.
 - 2026-08-19: T1 — `data-raw/artifacts.R` now stages the 24 current-build artifacts into `pkgdown/assets/downloads/` (dropping any file the manifest no longer lists); `.gitattributes` gives the staged path `-text`. Minor reorder: AC3's staged-copy lock test was written in T1 rather than T3, so the staging landed test-first (skip before the directory existed, green and unskipped after).
+- 2026-08-19: T2+T3 committed together — rewriting the 24 hrefs turns the old href-lock test red, so the page change and its replacement test are one commit. `render_button()` now emits `download="<file>"`; the page test asserts the `../downloads/<file>` form, the 24 basenames against the manifest, and that no page still matches `github\.com/.*inst/extdata`.
+- 2026-08-19: T3 discriminating probes (LESSONS M40 — counted `failed > 0 | error`): reverting one page href to a GitHub raw URL → red; dropping the `download` attribute from `render_button()` → red; restored control → green.
 
 ## Decisions
 

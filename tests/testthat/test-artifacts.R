@@ -76,29 +76,66 @@ test_that("the committed QSF SurveyName carries the manifest build date", {
   )
 })
 
-test_that("download-page links point at committed artifacts", {
+# The pages link the pkgdown site's own copies, not GitHub raw URLs
+# (D-033): only a same-origin href honours the `download` attribute, and
+# only that attribute makes a browser save `.qsf`/`.txt` under its own name.
+test_that("download-page links point at the staged site copies", {
   # Source-checkout only: vignettes/articles is not installed.
   articles <- testthat::test_path("..", "..", "vignettes", "articles")
   skip_if(!dir.exists(articles), "vignettes/articles not available")
-  extdata <- system.file("extdata", package = "hitop")
-  committed <- list.files(extdata, pattern = "\\.(docx|txt|qsf|zip)$")
+  m <- latest_manifest()
   pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
   expect_length(pages, 6)
+
+  linked <- character(0)
   for (page in pages) {
     text <- paste(readLines(page, warn = FALSE), collapse = "\n")
     hrefs <- regmatches(
       text,
-      gregexpr("inst/extdata/[A-Za-z0-9._-]+", text)
+      gregexpr('dl_link\\("[^"]*",\\s*"[^"]*"\\)', text)
     )[[1]]
+    hrefs <- sub('.*"([^"]*)"\\s*\\)$', "\\1", hrefs)
     expect_gt(length(hrefs), 0, label = basename(page))
-    linked <- unique(basename(hrefs))
-    expect_true(
-      all(linked %in% committed),
-      info = paste0(
-        basename(page),
-        ": stale link(s) ",
-        paste(setdiff(linked, committed), collapse = ", ")
-      )
+    for (href in hrefs) {
+      expect_match(href, "^\\.\\./downloads/[A-Za-z0-9._-]+$", label = basename(page))
+    }
+    # No artifact may still be served from GitHub, in any anchor on the page.
+    expect_false(
+      grepl("github\\.com/.*inst/extdata", text),
+      label = paste(basename(page), "still links a GitHub raw artifact")
+    )
+    linked <- c(linked, basename(hrefs))
+  }
+  expect_equal(sort(linked), sort(m$file))
+})
+
+test_that("every rendered download button carries a download attribute", {
+  articles <- testthat::test_path("..", "..", "vignettes", "articles")
+  skip_if(!dir.exists(articles), "vignettes/articles not available")
+  helpers <- new.env()
+  sys.source(file.path(articles, "_download-helpers.R"), envir = helpers)
+  m <- latest_manifest()
+
+  for (i in seq_len(nrow(m))) {
+    href <- paste0("../downloads/", m$file[i])
+    html <- paste(
+      utils::capture.output(
+        helpers$download_cards(
+          m$instrument[i],
+          list(helpers$dl_card(
+            "x", "t", "d",
+            helpers$dl_link("Label", href)
+          ))
+        )
+      ),
+      collapse = "\n"
+    )
+    expect_match(html, paste0('href="', href, '"'), fixed = TRUE, info = m$file[i])
+    expect_match(
+      html,
+      paste0('download="', m$file[i], '"'),
+      fixed = TRUE,
+      info = m$file[i]
     )
   }
 })
