@@ -1,11 +1,11 @@
 # M42: Serve instrument downloads from the pkgdown site
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** m42-pkgdown-download-route
 
 ## Goal
 
@@ -81,7 +81,7 @@ because the pkgdown workflow deploys only off the default branch.
 
 ## Tasks
 
-- [ ] T1: Stage the 24 artifacts under `pkgdown/assets/downloads/`, written
+- [x] T1: Stage the 24 artifacts under `pkgdown/assets/downloads/`, written
       by a new step in `data-raw/artifacts.R` after its manifest section
       (`data-raw/artifacts.R:215+`); give the staged path a `-text`
       `.gitattributes` entry so Windows checkout cannot CRLF-convert the
@@ -137,6 +137,7 @@ because the pkgdown workflow deploys only off the default branch.
   over keeping the GitHub raw links canonical because the site copy is the one
   that downloads correctly; falsified by the site becoming an unreliable host
   (a Pages outage or size limit) where the raw links keep working.
+- 2026-08-19: T1 — `data-raw/artifacts.R` now stages the 24 current-build artifacts into `pkgdown/assets/downloads/` (dropping any file the manifest no longer lists); `.gitattributes` gives the staged path `-text`. Minor reorder: AC3's staged-copy lock test was written in T1 rather than T3, so the staging landed test-first (skip before the directory existed, green and unskipped after).
 
 ## Decisions
 

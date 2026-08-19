@@ -139,3 +139,29 @@ test_that("download pages link the centralized import-instructions article", {
     )
   }
 })
+
+# The pkgdown site serves its own copy of every artifact (D-033): pkgdown
+# copies `pkgdown/assets/downloads/` to the site root, and the download
+# pages link `../downloads/<file>` so the browser saves the file under its
+# own name. The staged copy must never drift from what the manifest locks.
+staged_dir <- function() {
+  testthat::test_path("..", "..", "pkgdown", "assets", "downloads")
+}
+
+test_that("staged pkgdown download copies match the manifest exactly", {
+  # Source-checkout only: `.Rbuildignore` keeps `pkgdown/` out of the build.
+  skip_if(!dir.exists(staged_dir()), "pkgdown/assets/downloads not available")
+  m <- latest_manifest()
+  staged <- list.files(staged_dir())
+  expect_equal(
+    sort(staged),
+    sort(m$file),
+    info = "staged download copies differ from the manifest file set"
+  )
+  actual <- unname(tools::md5sum(file.path(staged_dir(), m$file)))
+  expect_equal(
+    actual,
+    m$md5,
+    info = "Restage via data-raw/artifacts.R"
+  )
+})

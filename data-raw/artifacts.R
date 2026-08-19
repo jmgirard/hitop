@@ -263,3 +263,36 @@ hitop_artifacts <- hitop_artifacts[
 rownames(hitop_artifacts) <- NULL
 
 usethis::use_data(hitop_artifacts, overwrite = TRUE)
+
+# ------------------------------------------------------------------------------
+## Stage the site's download copies (D-033)
+##
+## pkgdown copies `pkgdown/assets/` to the site root, so these land as
+## `docs/downloads/<file>`; the download pages link `../downloads/<file>` with
+## a `download` attribute, which is the same-origin route a browser saves
+## under the artifact's own name. The GitHub `raw/main` links could not be
+## fixed link-side: GitHub serves `.qsf`/`.txt` as text/plain with no
+## attachment header, and `download` is ignored cross-origin.
+##
+## The copies are byte-for-byte; test-artifacts.R locks them to the manifest,
+## so a rebuilt artifact whose copy was not restaged fails the suite.
+
+staged <- "pkgdown/assets/downloads"
+dir.create(staged, recursive = TRUE, showWarnings = FALSE)
+
+latest_files <- hitop_artifacts$file[
+  !duplicated(hitop_artifacts$file, fromLast = TRUE)
+]
+
+## Drop any staged file the manifest no longer lists, so a renamed or retired
+## artifact cannot linger on the site behind a stale link.
+stale <- setdiff(list.files(staged), latest_files)
+if (length(stale)) file.remove(file.path(staged, stale))
+
+copied <- file.copy(
+  file.path(extdata, latest_files),
+  file.path(staged, latest_files),
+  overwrite = TRUE
+)
+stopifnot(all(copied))
+message("Staged ", length(latest_files), " download copies in ", staged)
