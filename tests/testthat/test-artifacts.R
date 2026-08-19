@@ -92,17 +92,22 @@ test_that("download-page links point at the staged site copies", {
     text <- paste(readLines(page, warn = FALSE), collapse = "\n")
     hrefs <- regmatches(
       text,
-      gregexpr('dl_link\\("[^"]*",\\s*"[^"]*"\\)', text)
+      gregexpr('dl_link\\(\\s*"[^"]*"\\s*,\\s*"[^"]*"\\s*\\)', text)
     )[[1]]
     hrefs <- sub('.*"([^"]*)"\\s*\\)$', "\\1", hrefs)
     expect_gt(length(hrefs), 0, label = basename(page))
     for (href in hrefs) {
-      expect_match(href, "^\\.\\./downloads/[A-Za-z0-9._-]+$", label = basename(page))
+      expect_match(
+        href,
+        "^\\.\\./downloads/[A-Za-z0-9._-]+$",
+        info = basename(page)
+      )
     }
-    # No artifact may still be served from GitHub, in any anchor on the page.
+    # No artifact may still be served from anywhere off-site, in any link on
+    # the page — `raw.githubusercontent.com` does not contain "github.com".
     expect_false(
-      grepl("github\\.com/.*inst/extdata", text),
-      label = paste(basename(page), "still links a GitHub raw artifact")
+      grepl("https?://[^\"[:space:]]*inst/extdata", text),
+      info = paste(basename(page), "still links an off-site artifact")
     )
     linked <- c(linked, basename(hrefs))
   }
@@ -130,11 +135,13 @@ test_that("every rendered download button carries a download attribute", {
       ),
       collapse = "\n"
     )
-    expect_match(html, paste0('href="', href, '"'), fixed = TRUE, info = m$file[i])
+    # One regex over the whole tag: two independent substring matches would
+    # pass even if the attribute landed on a different element.
     expect_match(
       html,
-      paste0('download="', m$file[i], '"'),
-      fixed = TRUE,
+      paste0(
+        '<a href="', href, '"[^>]*download="', m$file[i], '"[^>]*>'
+      ),
       info = m$file[i]
     )
   }
@@ -189,7 +196,7 @@ test_that("staged pkgdown download copies match the manifest exactly", {
   # Source-checkout only: `.Rbuildignore` keeps `pkgdown/` out of the build.
   skip_if(!dir.exists(staged_dir()), "pkgdown/assets/downloads not available")
   m <- latest_manifest()
-  staged <- list.files(staged_dir())
+  staged <- list.files(staged_dir(), all.files = TRUE, no.. = TRUE)
   expect_equal(
     sort(staged),
     sort(m$file),

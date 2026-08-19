@@ -256,8 +256,9 @@
 
 #' Distribution Artifact Manifest
 #'
-#' Version manifest for the prebuilt instrument artifacts distributed in
-#' `inst/extdata/` and on the package website's download pages. Each build of
+#' Version manifest for the prebuilt instrument artifacts. They ship in the
+#' package at `inst/extdata/` and are distributed from the package website's
+#' download pages, which serve their own byte-identical copy. Each build of
 #' an artifact adds a row (the full history is kept), so the latest row per
 #' `file` describes the currently distributed file. Artifact revisions are
 #' identified by build date; the instrument version (e.g., `"1.0"`) is the
@@ -268,7 +269,8 @@
 #' @format A \link[tibble]{tibble} with one row per artifact build and 7
 #'   columns:
 #' \describe{
-#'   \item{file}{Artifact file name in `inst/extdata/`}
+#'   \item{file}{Artifact file name, the same in `inst/extdata/` and on the
+#'     website's download pages}
 #'   \item{instrument}{Instrument the artifact administers}
 #'   \item{format}{Artifact format: `"docx_us"`, `"docx_a4"`, `"qualtrics"`,
 #'     or `"redcap"`}
