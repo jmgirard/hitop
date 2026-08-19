@@ -1,20 +1,19 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-13 (second pass same day; nothing changed since — board idle, tree clean, no open issues or PRs, all checks pass, the 20 `dangling id tokens` advisories remain the standing pre-migration references in DESIGN.md/SOURCES.md)_
+_Last hygiene check: 2026-08-19 (M42 merged and archived; the HSUM QSF import hotfix PR #46 merged the same day; M36 pruned under terminal-row retention; the M19 QSF-export lesson corrected where it stood, proven false by that hotfix; caps and byte budgets checked)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M41)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M42 | Serve instrument downloads from the pkgdown site | review | — | normal | milestones/M42-pkgdown-download-route.md |
+| M42 | Serve instrument downloads from the pkgdown site | done | — | normal | milestones/archive/M42-pkgdown-download-route.md |
 | M41 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M41-hitopsr-score-intervals.md |
 | M40 | Retire the M38/M39 plot-review residue | done | — | normal | milestones/archive/M40-plot-review-residue.md |
 | M39 | Profile plots in the short- and brief-form vignettes | done | — | normal | milestones/archive/M39-plot-vignette-coverage.md |
 | M38 | Norm-referenced PID-5 profile plots | done | — | normal | milestones/archive/M38-pid5-profile-plots.md |
 | M37 | Score HiTOP-SR subset-collected data | done | — | normal | milestones/archive/M37-hitopsr-subset-scoring.md |
-| M36 | Two-line response-option legend on the PID paper forms | done | — | normal | milestones/archive/M36-pid-legend-two-lines.md |
 
 ## Candidates
 
