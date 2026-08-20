@@ -5,6 +5,12 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+- The download buttons on the instrument pages now serve the files from
+  the package website itself, so a browser saves each one under its own
+  name. The Qualtrics survey files used to open as text in a new tab,
+  because GitHub serves them as plain text; they now download ready to
+  import. The GitHub links keep working for anyone who saved them.
+
 - The HiTOP-HSUM Qualtrics survey file (`hitophsum_qualtrics.qsf`) now
   imports into Qualtrics. The previous build was exported through the
   Qualtrics API, which writes absent values as empty objects rather than

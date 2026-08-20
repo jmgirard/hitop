@@ -1,13 +1,14 @@
 # Distribution Artifact Manifest
 
-Version manifest for the prebuilt instrument artifacts distributed in
-`inst/extdata/` and on the package website's download pages. Each build
-of an artifact adds a row (the full history is kept), so the latest row
-per `file` describes the currently distributed file. Artifact revisions
-are identified by build date; the instrument version (e.g., `"1.0"`) is
-the version of the instrument itself and changes only when its publisher
-revises it. To check which build you have, compare your downloaded
-file's MD5 checksum (e.g.,
+Version manifest for the prebuilt instrument artifacts. They ship in the
+package at `inst/extdata/` and are distributed from the package
+website's download pages, which serve their own byte-identical copy.
+Each build of an artifact adds a row (the full history is kept), so the
+latest row per `file` describes the currently distributed file. Artifact
+revisions are identified by build date; the instrument version (e.g.,
+`"1.0"`) is the version of the instrument itself and changes only when
+its publisher revises it. To check which build you have, compare your
+downloaded file's MD5 checksum (e.g.,
 [`tools::md5sum()`](https://rdrr.io/r/tools/md5sum.html)) against the
 `md5` column.
 
@@ -24,7 +25,8 @@ row per artifact build and 7 columns:
 
 - file:
 
-  Artifact file name in `inst/extdata/`
+  Artifact file name, the same in `inst/extdata/` and on the website's
+  download pages
 
 - instrument:
 

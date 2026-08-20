@@ -20,9 +20,9 @@ Use these Microsoft Word documents for an overview or sending to the
 IRB.
 
 [English (A4
-Paper)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_A4.docx)
+Paper)2026-07-16](https://jmgirard.github.io/hitop/downloads/hitophsum_A4.docx)
 [English (US
-Paper)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_US.docx)
+Paper)2026-07-16](https://jmgirard.github.io/hitop/downloads/hitophsum_US.docx)
 
 ##### 📊 Qualtrics Import
 
@@ -30,7 +30,7 @@ Use this survey file to easily import the instrument directly into your
 Qualtrics surveys.
 
 [English (QSF
-File)2026-08-19](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_qualtrics.qsf)
+File)2026-08-19](https://jmgirard.github.io/hitop/downloads/hitophsum_qualtrics.qsf)
 
 [Import
 Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html#qualtrics-qsf)
@@ -41,7 +41,7 @@ Use this compressed archive file to import the instrument as a new
 instrument in your REDCap project.
 
 [English (ZIP
-File)2026-07-16](https://github.com/jmgirard/hitop/raw/main/inst/extdata/hitophsum_redcap.zip)
+File)2026-07-16](https://jmgirard.github.io/hitop/downloads/hitophsum_redcap.zip)
 
 [Import
 Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html#redcap-zip)
