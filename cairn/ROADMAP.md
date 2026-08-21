@@ -1,13 +1,16 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-19 (M42 merged and archived; the HSUM QSF import hotfix PR #46 merged the same day; M36 pruned under terminal-row retention; the M19 QSF-export lesson corrected where it stood, proven false by that hotfix; caps and byte budgets checked)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M41)._
+_Last hygiene check: 2026-08-21 (M43/M44/M45 planned for the HiTOP-SR module family; the `@examples` idiom candidate absorbed into M44 and the Shiny-app half of the someday-maybe cluster into M45; the BR/PID-5 generalization row annotated; caps and byte budgets checked)_
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M46)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M45 | A browser module builder for the HiTOP-SR | planned | M43 | normal | milestones/M45-browser-module-builder.md |
+| M44 | A dedicated article for building and scoring HiTOP-SR modules | planned | M43 | normal | milestones/M44-modules-article.md |
+| M43 | Rename the HiTOP-SR subset family to modules | planned | — | normal | milestones/M43-module-vocabulary.md |
 | M42 | Serve instrument downloads from the pkgdown site | done | — | normal | milestones/archive/M42-pkgdown-download-route.md |
 | M41 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M41-hitopsr-score-intervals.md |
 | M40 | Retire the M38/M39 plot-review residue | done | — | normal | milestones/archive/M40-plot-review-residue.md |
@@ -38,9 +41,8 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 - PID-5 Informant Form (IRF) norms — markon2024 A–10/A–11 (domain, trait) and A–12 (SRF/IRF descriptives + T-score difference) arrived 2026-07-30; the package has no IRF surface today, so this is a new instrument version, not a `pid_norms` extension — added 2026-07-30 — lineage: M25
 - HiTOP-SR/BR normative data and norming functions — source workbooks arrived 2026-07-30 (`HiTOP-SR-Final.xlsx`, `B-HiTOP overview.xlsx`); both carry sample descriptives (N/mean/SD/skew/kurtosis on a Prolific sample), not raw→T lookup tables, so the norming design differs from `pid_norms` — added 2026-07-30, corrected 2026-08-06 (maintainer): no official SR or BR norms exist, and the development workbooks are not trustworthy for clinical norming, so IP3 bars a norming function until published, citable tables exist — this row is norming *research*, not a plannable norming milestone — `legacy/ROADMAP.md` Phase 3
 - Clinical reporting & release (individual reports, bass-ackwards analyses, CRAN submission + package paper) — added 2026-07-16 — `legacy/ROADMAP.md` Phase 4
-- Someday-maybe cluster (Shiny scoring app stub `inst/shiny/app.R`, HiTOP-SR/BR validity scales) — added 2026-07-16, narrowed 2026-08-01 (the `devel/plotting.R` plotting-helpers half graduated to M38) — `legacy/ROADMAP.md`
+- Someday-maybe cluster (HiTOP-SR/BR validity scales) — added 2026-07-16, narrowed 2026-08-01 (the `devel/plotting.R` plotting-helpers half graduated to M38) and 2026-08-21 (the Shiny scoring app half graduated to M45, which deletes the `inst/shiny/app.R` stub) — `legacy/ROADMAP.md`
 - Multi-language download UI: per-language buttons on the instrument download pages won't scale once translations arrive; design a language selector/grouped layout — added 2026-07-17 — lineage: M21
 - A repeatable width-budget check that a legend line fits the printable column at the form's font size — M36 proves the PID legend's two lines visually, which confirms this build but guards no later edit; Word's line breaking is not observable from `document.xml`, so any such check is an estimate. Promote if a mid-phrase wrap ever reaches a committed form unnoticed — added 2026-07-31 — lineage: M36
 - Score subset-collected HiTOP-SR data with no descriptor in hand, by working out from the column names which scales are fully present — needs its own decisions about partial coverage and name matching; useful for data that arrived from elsewhere. Promote if a researcher is ever blocked scoring a short form they did not themselves generate — added 2026-08-01 — lineage: M37
-- Teach the subset `@examples` a column-selection idiom that survives an ID column — `sim_hitopsr[s$items]` works only because that dataset is exactly the 405 items in order, while `ku_hitopsr` leads with `participant`/`biosex`, so a user copying the help-page idiom onto their own frame silently scores the wrong columns; the vignette already uses the safe name-based form. Promote if a user ever reports wrong scores traced to the documented idiom — added 2026-08-01 — lineage: M37 (review finding scored 78, below the actioning threshold)
-- Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M24
+- Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M24 — annotated 2026-08-21: M43 renames this family to "modules" and deliberately precedes this row so the generalization inherits one vocabulary
