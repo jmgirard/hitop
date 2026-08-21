@@ -46,6 +46,13 @@ m
 # The item numbers are the original HiTOP-SR numbers, not 1..8
 m$items
 
+# Select the collected item columns by NAME, never by position: `m$items`
+# holds item numbers, which are column positions only in a frame that is
+# exactly the 405 items in order. `ku_hitopsr` leads with `participant` and
+# `biosex`, so `ku_hitopsr[m$items]` would quietly return the wrong columns.
+collected <- ku_hitopsr[sprintf("hsr\%03d", m$items)]
+ncol(collected) == m$nItems
+
 }
 \seealso{
 \code{\link[=available_scales]{available_scales()}} for the scale names this accepts;
