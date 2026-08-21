@@ -1,7 +1,7 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-21 (M43 merged via PR #48 and archived; D-034 added for the module vocabulary and the condition-class contract; two candidate rows added from M43 — the HSUM name collision and the `nItems` type mismatch; M37 pruned under terminal-row retention; caps and byte budgets checked)_
+_Last hygiene check: 2026-08-21 (M44 merged via PR #49 and archived; one candidate row added from M44 — the three item-column naming patterns; no D-entry and no lesson earned; M38 pruned under terminal-row retention; caps and byte budgets checked)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M46)._
 
 ## Milestones
@@ -9,13 +9,12 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M45 | A browser module builder for the HiTOP-SR | planned | M43 | normal | milestones/M45-browser-module-builder.md |
-| M44 | A dedicated article for building and scoring HiTOP-SR modules | review | M43 | normal | milestones/M44-modules-article.md |
+| M44 | A dedicated article for building and scoring HiTOP-SR modules | done | M43 | normal | milestones/archive/M44-modules-article.md |
 | M43 | Rename the HiTOP-SR subset family to modules | done | — | normal | milestones/archive/M43-module-vocabulary.md |
 | M42 | Serve instrument downloads from the pkgdown site | done | — | normal | milestones/archive/M42-pkgdown-download-route.md |
 | M41 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M41-hitopsr-score-intervals.md |
 | M40 | Retire the M38/M39 plot-review residue | done | — | normal | milestones/archive/M40-plot-review-residue.md |
 | M39 | Profile plots in the short- and brief-form vignettes | done | — | normal | milestones/archive/M39-plot-vignette-coverage.md |
-| M38 | Norm-referenced PID-5 profile plots | done | — | normal | milestones/archive/M38-pid5-profile-plots.md |
 
 ## Candidates
 
