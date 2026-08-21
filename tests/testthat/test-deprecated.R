@@ -99,17 +99,43 @@ arg_consumers <- list(
   )
 )
 
+# `expect_no_warning()` takes no `info`/`label`, and its `message` argument is a
+# regexp selecting WHICH warnings count — passing the function name there makes
+# the expectation vacuous, since no real warning would ever match it. So warnings
+# are captured and counted instead, which both names the failing iteration and
+# actually fails when a warning is raised (the M32 recast-as-expect_equal
+# pattern).
+warnings_raised <- function(expr) {
+  seen <- character()
+  withCallingHandlers(
+    force(expr),
+    warning = function(cnd) {
+      seen <<- c(seen, conditionMessage(cnd))
+      invokeRestart("muffleWarning")
+    }
+  )
+  seen
+}
+
 test_that("every consumer accepts `module =` without warning", {
   m <- hitop_module("hitopsr", c("agoraphobia", "appetiteLoss"))
   for (f in arg_consumers) {
-    expect_no_warning(f$call(m, list(module = m)), message = f$name)
+    expect_equal(
+      warnings_raised(f$call(m, list(module = m))),
+      character(),
+      info = f$name
+    )
   }
 })
 
 test_that("every consumer accepts a legacy hitop_subset object", {
   old <- suppressWarnings(hitop_subset("hitopsr", c("agoraphobia", "appetiteLoss")))
   for (f in arg_consumers) {
-    expect_no_warning(f$call(old, list(module = old)), message = f$name)
+    expect_equal(
+      warnings_raised(f$call(old, list(module = old))),
+      character(),
+      info = f$name
+    )
   }
 })
 

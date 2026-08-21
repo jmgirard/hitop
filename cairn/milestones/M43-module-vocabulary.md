@@ -66,7 +66,7 @@ D-entry, and one warning does not earn one.
       `README.Rmd`, `vignettes/`, and `_pkgdown.yml` returns only the
       deprecation shims and their roxygen, plus any use of base R's own `subset`
       generic; the command and its full output are recorded in the Review.
-- [ ] AC7 `devtools::document()` produces no diff; `devtools::test()` and
+- [x] AC7 `devtools::document()` produces no diff; `devtools::test()` and
       `devtools::check()` are clean; `pkgdown::check_pkgdown()` passes with
       `hitop_module` and `available_scales` carrying `_pkgdown.yml` reference
       rows; NEWS.md records the rename and the deprecation.
@@ -116,6 +116,7 @@ D-entry, and one warning does not earn one.
 - 2026-08-21: the M29 lesson landed exactly as recorded — converting the deprecation to a `cli::cli_warn()` condition made every existing test that merely *called* `hitop_subset()` or passed `subset =` fail, not just the ones asserting on messages. All seven test files were swept, `test-subset.R`/`test-subset-generation.R`/`_snaps/subset.md` renamed to `module`, and the suite is green at 13456 passing, 0 failures, 0 warnings, 1 skip.
 - 2026-08-21: the M24 CRLF lesson held — `R/generate_qualtrics.R` and `R/generate_redcap.R` were patched with newline-preserving edits and each shows a 12-line diff with CRLF endings intact, rather than the ~1,700-line inflation a whole-file rewrite causes.
 - 2026-08-21: review opened draft PR #48; CI green so far on macOS, ubuntu release/oldrel-1, pkgdown, and test-coverage, with windows and ubuntu-devel still pending. Checkpoint: AC1-AC6 verified with fresh evidence and ticked; AC7 awaits the local `devtools::check()` still running, so its box stays unticked. Three fresh-context reviewers were spawned after the maintainer explicitly authorised subagents for this session (they are otherwise disabled here); the blame-history lens has reported zero findings, the diff-bug and prior-review lenses are still running.
+- 2026-08-21: AC3's first evidence was invalid — found by the primary session while the review lenses ran, and independently confirmed by the diff-bug lens as its top finding. The two "accepts `module =` without warning" tests were vacuous; both the vacuity and the fix were demonstrated by mutation rather than asserted (committed tests 0 failures under a mutation that warns on every call; recast tests 2). Fixed on the branch before the approval gate; AC3 re-verified against the recast tests.
 
 ## Decisions
 
@@ -133,11 +134,21 @@ both `unclass()`ed, so nothing but the class attribute may differ.
 descriptor it returns scores through `score_hitopsr()` to the expected two
 columns.
 
-**AC3** — four tests iterate one table row per exported consumer
-(`score_hitopsr`, `reliability_hitopsr`, and the three `generate_*_hitopsr`),
-firing all three branches per function: `module =` silent, a legacy
-`hitop_subset` object accepted, `subset =` warning by class, both arguments
-erroring by `class = "hitop_both_module_args"`. All pass.
+**AC3** — first evidence was INVALID and is superseded. Four tests iterate one
+table row per exported consumer (`score_hitopsr`, `reliability_hitopsr`, and the
+three `generate_*_hitopsr`), firing all branches: `module =` silent, a legacy
+`hitop_subset` object accepted, `subset =` warning by
+`class = "hitop_deprecated_subset"`, both arguments erroring by
+`class = "hitop_both_module_args"`. The two silence tests as committed at
+a713c08 could not fail: `expect_no_warning(object, message = )` treats `message`
+as a regexp selecting WHICH warnings count, so `message = f$name` asserted only
+that no warning mentioning e.g. "score_hitopsr" was raised, which no real
+warning would. Proven, not inferred: mutating `resolve_module_arg()` to fire the
+deprecation on EVERY call left the committed tests at 0 failures, while the
+recast version reports 2. Recast to a `warnings_raised()` capture-and-count
+helper with `info = f$name` (the M32 pattern, since `expect_no_warning()` takes
+no `info`/`label`). Re-verified after the fix: suite 13663 passing, 0 failures,
+0 warnings, 1 skip.
 
 **AC4** — two tests sweep three module shapes (single-scale, reverse-keyed,
 and the four-scale vignette set), comparing scores plus `calc_se = TRUE`
@@ -160,6 +171,12 @@ English or mathematical word, each read and confirmed unrelated to this family:
 `R/rank_scales.R:21` and `man/rank_scales.Rd:38` ("A subset of `scales`"),
 `vignettes/pid5bf_scoring.Rmd:30`, `vignettes/articles/overview.Rmd:55`, and
 `vignettes/articles/download-hitophsum.Rmd:11` ("a subset of possible items").
+
+**AC7** — fresh runs: `devtools::document()` no diff; `devtools::test()` 13663
+passing / 0 failures / 0 warnings / 1 skip; `devtools::check()` **Status: OK**
+(0 errors, 0 warnings, 0 notes); `pkgdown::check_pkgdown()` "No problems found";
+`hitop_module` and `available_scales` both carry `_pkgdown.yml` reference rows;
+NEWS.md records the rename and the deprecation.
 
 **Consistency gate** — universal cairn checks: `cairn_validate` exit 0, all 16
 PASS, 4 OK, 21 pre-existing advisory `dangling id tokens` warnings (D-001..D-012
