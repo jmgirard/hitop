@@ -62,11 +62,23 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
       (D-010's parse-and-compare pattern, since the M20 lesson records DOCX
       bytes as non-deterministic), the Qualtrics `.txt` byte-for-byte, and the
       REDCap zip by its extracted CSV. Evidence recorded per format.
-- [ ] AC4 The app hardcodes no instrument content: a script iterating every
-      value of `hitopsr_scales$Scale` and `hitopsr_scales$camelCase` and every
-      item number in `hitopsr_items$HSR` finds no literal occurrence of any of
-      them in the app's source files, so every name and number the page shows
-      is read from the package's keying tables at runtime (IP1).
+- [ ] AC4 The app hardcodes no instrument content. At the reviewed commit a
+      script sweeps every tracked text file in the app repo (`index.html`,
+      `README.md`, `LICENSE.md`, `.github/workflows/pages.yml`) for three
+      things: (a) every value of `hitopsr_scales$Scale` and
+      `hitopsr_scales$camelCase` as a case-insensitive literal substring;
+      (b) every value of `hitopsr_items$Text` as a literal substring; and
+      (c) every item number in `hitopsr_items$HSR` as a digit run with no
+      adjacent digit (`(?<![0-9])N(?![0-9])`, so `405` never matches inside
+      `1405`). Sweeps (a) and (b) must return zero hits. Sweep (c) cannot,
+      because small integers are unavoidable in a web page, so the Review
+      records a ledger with one row per distinct numeral per file saying what
+      that numeral denotes; the criterion passes only if no row denotes a
+      HiTOP-SR item number, item count, or item position. The Review also
+      records the line of app source supplying the checkbox labels, which must
+      be the result of an `available_scales("hitopsr")` call evaluated in webR,
+      so every scale name, item number, and item text the page shows is read
+      from the package's keying tables at runtime (IP1).
 - [ ] AC5 This package's `_pkgdown.yml` links the deployed app from the
       Instruments menu; `pkgdown::check_pkgdown()` passes and
       `devtools::check()` is clean after the `inst/shiny/app.R` deletion.
@@ -126,6 +138,9 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-21: amendment return: AC2 — "The app repo `jmgirard/hitop-builder` is publicly readable — an unauthenticated request to its GitHub URL returns 200 — and its tracked files are static web assets plus the Pages deploy workflow, with no `.R` file and no application backend. In one load of the deployed Pages URL in a fresh browser profile, the scale checkboxes render, the page's webR log reports `installPackages("hitop")` and `library(hitop)` completing with no error and no uncaught console error, and the Network panel shows at least one request to `https://jmgirard.r-universe.dev` serving the `hitop` WebAssembly binary, with every other request going only to the Pages origin, the webR distribution origin the app's source names, or `https://repo.r-wasm.org`. Repo file listing, log excerpt, and network origin list recorded in the Review with the date observed."
 - 2026-08-21: AC2's amended wording was audited in **full** mode by two fresh-context [O] readers, neither of which authored what it read, at the user's explicit go-ahead to spawn them. The first returned FIX on verifiability and instrument: "runs it in the reader's browser" and "working as a static site" named no observable signal. Its replacement was re-audited and returned FIX again — "holds no server-side code" is false as written, because the Pages deploy workflow is server-side code; the origin whitelist permitted the r-universe host without requiring it, so "installs from r-universe" had no positive check; and "the console showing…" fixed no success signal. Further churn went to the user per the once-only re-entry rule, who chose a trimmed wording carrying all three fixes.
 - 2026-08-21: T6 — both `utils::zip()` call sites in `R/generate_redcap.R` now call `zip::zip(mode = "cherry-pick")`, {zip} entered Imports, and the four `skip_if_no_zip()` guards plus the helper were removed, so the REDCap suite no longer skips on a machine without the executable. Two new tests set `R_ZIPCMD` to a nonexistent program and assert the archive is still written with one flat `instrument.csv` entry; both failed before the swap with no file produced and pass after. `devtools::test()` reports FAIL 0 / WARN 0 / SKIP 1 / PASS 13679 and `devtools::document()` produced no diff.
+- 2026-08-21: amendment return: AC4 — "The app hardcodes no instrument content. At the reviewed commit a script sweeps every tracked text file in the app repo (`index.html`, `README.md`, `LICENSE.md`, `.github/workflows/pages.yml`) for three things: (a) every value of `hitopsr_scales$Scale` and `hitopsr_scales$camelCase` as a case-insensitive literal substring; (b) every value of `hitopsr_items$Text` as a literal substring; and (c) every item number in `hitopsr_items$HSR` as a digit run with no adjacent digit (`(?<![0-9])N(?![0-9])`, so `405` never matches inside `1405`). Sweeps (a) and (b) must return zero hits. Sweep (c) cannot, because small integers are unavoidable in a web page, so the Review records a ledger with one row per distinct numeral per file saying what that numeral denotes; the criterion passes only if no row denotes a HiTOP-SR item number, item count, or item position. The Review also records the line of app source supplying the checkbox labels, which must be the result of an `available_scales('hitopsr')` call evaluated in webR, so every scale name, item number, and item text the page shows is read from the package's keying tables at runtime (IP1)."
+- 2026-08-21: AC4 was amended because its original zero-occurrence promise is unsatisfiable by any web page: item numbers run 1-405, and a word-boundary sweep of `index.html` matched the bare integers 1, 2, 4, 5, 6, 8, 20 and 55 in CSS lengths, `charset="utf-8"`, the webR version `v0.6.0` and the prose "about 20 seconds", none of them instrument content. Two fresh-context [O] readers audited the replacement wording in **full** mode at the user's go-ahead; the second corrected a factual error in the first's regex example (`(?<![0-9])55(?![0-9])` does match inside `1.55`) and found that item *text* was swept by neither version, a gap through which a page pasting item stems verbatim would pass. Further churn went to the user per the once-only re-entry rule.
+- 2026-08-21: the amended AC4 sweep was run against the app as built and passes on all three parts: (a) 0 hits over 152 scale-name needles case-insensitively, (b) 0 hits over 405 item-text needles, (c) 157 numeral hits — 94 in `index.html` over 24 distinct numerals, 56 in `LICENSE.md`, 4 in the workflow, 3 in the README — every one of which is a CSS length, hex colour, library version, GPL section number, or prose figure. The ledger is recorded at review.
 
 ## Decisions
 
