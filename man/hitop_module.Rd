@@ -4,7 +4,7 @@
 \alias{hitop_module}
 \title{Describe a Module of an Instrument's Scales}
 \usage{
-hitop_module(instrument = "hitopsr", scales)
+hitop_module(instrument = "hitopsr", scales, call = rlang::current_env())
 }
 \arguments{
 \item{instrument}{A string naming the instrument to build a module from.
@@ -14,6 +14,12 @@ Currently only \code{"hitopsr"} is supported. (default = \code{"hitopsr"})}
 either as they are printed on the instrument (\code{"Antisocial Behavior"}) or
 as the camelCase stems used in scored output (\code{"antisocialBehavior"}), in
 any mixture and ignoring case. Duplicates are dropped.}
+
+\item{call}{Internal. The environment blamed by any error this raises. A
+default argument is evaluated in this function's own frame, so a direct
+call blames \code{hitop_module()}; the deprecated \code{\link[=hitop_subset]{hitop_subset()}} passes its
+own frame instead, so a bad argument there names the function the user
+actually wrote. (default = this function's frame)}
 }
 \value{
 An object of class \code{hitop_module}: a list with the resolved

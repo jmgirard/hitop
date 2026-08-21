@@ -30,7 +30,13 @@
 #' @export
 hitop_subset <- function(instrument = "hitopsr", scales) {
   deprecate_subset("hitop_subset()", "hitop_module()")
-  out <- hitop_module(instrument = instrument, scales = scales)
+  # `call` is threaded so a bad argument blames hitop_subset() — the function
+  # the user actually called — rather than the hitop_module() it delegates to.
+  out <- hitop_module(
+    instrument = instrument,
+    scales = scales,
+    call = rlang::current_env()
+  )
   # The legacy class, not an added one: an object built here differs from a
   # hitop_module only in its class attribute, and is_module() accepts both.
   class(out) <- "hitop_subset"

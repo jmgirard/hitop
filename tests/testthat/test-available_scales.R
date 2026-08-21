@@ -15,7 +15,24 @@ test_that("available_scales() returns one row per HiTOP-SR scale", {
 })
 
 test_that("available_scales() defaults to the HiTOP-SR", {
-  expect_equal(available_scales(), available_scales("hitopsr"))
+  # NOT expect_equal(available_scales(), available_scales("hitopsr")): that
+  # compares the function to itself and passes whatever the default is. Assert
+  # the declared default, and that calling with no argument yields that
+  # instrument's table.
+  expect_identical(formals(available_scales)$instrument, "hitopsr")
+  expect_equal(available_scales()$Scale, hitopsr_scales$Scale)
+})
+
+test_that("the supported set and the scale tables cannot drift apart", {
+  # F6: `supported` is derived from the table map, so an instrument cannot be
+  # declared supported without a table to serve it.
+  tables <- module_scale_tables()
+  expect_true(length(tables) >= 1L)
+  for (nm in names(tables)) {
+    expect_false(is.null(tables[[nm]]), info = nm)
+    expect_true(all(c("Scale", "camelCase", "nItems") %in% names(tables[[nm]])), info = nm)
+    expect_equal(available_scales(nm)$Scale, tables[[nm]]$Scale, info = nm)
+  }
 })
 
 test_that("available_scales() accepts an instrument name in any case", {

@@ -242,3 +242,30 @@ test_that("Cronbach's alpha is unmoved by the rename", {
     )
   }
 })
+
+# --- Review findings F2 and F3 ----------------------------------------------
+
+test_that("the deprecated constructor's errors blame hitop_subset()", {
+  # Before this was fixed, both errors reported hitop_module() as the call —
+  # a function the user never wrote. Asserted on the call, not the message.
+  blame <- function(expr) {
+    e <- tryCatch(expr, error = function(e) e)
+    deparse(conditionCall(e))[[1L]]
+  }
+  suppressWarnings({
+    expect_match(blame(hitop_subset("bogus", "agoraphobia")), "hitop_subset")
+    expect_match(blame(hitop_subset("hitopsr", "nosuchscale")), "hitop_subset")
+  })
+  # The undeprecated path still blames itself.
+  expect_match(blame(hitop_module("bogus", "agoraphobia")), "hitop_module")
+})
+
+test_that("adding `module` leaves `mo` unambiguous even though `m` is not", {
+  # Adding `module` to score_hitopsr() made the abbreviation `m =` ambiguous
+  # with the pre-existing `missing =`. `mo` still resolves, and NEWS records
+  # the break; this pins both halves so neither changes unnoticed.
+  nm <- names(formals(score_hitopsr))
+  expect_equal(sum(startsWith(nm, "m")), 2L)
+  expect_equal(nm[startsWith(nm, "mo")], "module")
+  expect_equal(nm[startsWith(nm, "mi")], "missing")
+})

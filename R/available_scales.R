@@ -27,7 +27,10 @@
 available_scales <- function(instrument = "hitopsr") {
   instrument <- validate_module_instrument(instrument)
 
-  ref <- hitopsr_scales
+  # Read through the same map hitop_module() uses, never a hardcoded table:
+  # otherwise the day another instrument becomes supported, this silently keeps
+  # returning HiTOP-SR scales.
+  ref <- module_scale_tables()[[instrument]]
   tibble::tibble(
     Scale = ref$Scale,
     camelCase = ref$camelCase,

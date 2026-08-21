@@ -35,27 +35,37 @@
 #' # The item numbers are the original HiTOP-SR numbers, not 1..8
 #' m$items
 #'
+#' @param call Internal. The environment blamed by any error this raises. A
+#'   default argument is evaluated in this function's own frame, so a direct
+#'   call blames `hitop_module()`; the deprecated [hitop_subset()] passes its
+#'   own frame instead, so a bad argument there names the function the user
+#'   actually wrote. (default = this function's frame)
+#'
 #' @export
-hitop_module <- function(instrument = "hitopsr", scales) {
-  instrument <- validate_module_instrument(instrument)
+hitop_module <- function(instrument = "hitopsr", scales,
+                         call = rlang::current_env()) {
+  instrument <- validate_module_instrument(instrument, call = call)
 
   cli_assert(
     condition = length(scales) > 0L,
     message = c(
       "The {.arg scales} argument must name at least one scale.",
       i = "See {.code hitopsr_scales$camelCase} for the available names."
-    )
+    ),
+    call = call
   )
   cli_assert(
     condition = is.character(scales),
-    message = "The {.arg scales} argument must be a character vector."
+    message = "The {.arg scales} argument must be a character vector.",
+    call = call
   )
   cli_assert(
     condition = !anyNA(scales),
-    message = "The {.arg scales} argument must not contain missing values."
+    message = "The {.arg scales} argument must not contain missing values.",
+    call = call
   )
 
-  ref <- hitopsr_scales
+  ref <- module_scale_tables()[[instrument]]
   # A scale is matchable by either of its names, compared case-insensitively;
   # the two name columns never collide across different scales.
   lookup <- c(tolower(ref$Scale), tolower(ref$camelCase))
@@ -67,7 +77,7 @@ hitop_module <- function(instrument = "hitopsr", scales) {
     cli::cli_abort(c(
       "Unknown scale name{?s}: {.val {unknown}}.",
       i = "See {.code hitopsr_scales$camelCase} for the {nrow(ref)} available names."
-    ))
+    ), call = call)
   }
 
   idx <- sort(unique(idx))
@@ -255,42 +265,13 @@ is_module <- function(x) {
   inherits(x, c("hitop_module", "hitop_subset"))
 }
 
-# Internal Helper: validate and normalize an instrument name for the module API
+# Internal Helper: the scale table backing each instrument the module API supports
 #
-# Shared by hitop_module() and available_scales() so the two cannot drift: the
-# browser must reject exactly what the constructor rejects, with the same words,
-# or a caller is told a scale set exists that no module can be built from.
-# Both branches carry a condition class, because tests assert on the class and
-# cli_assert()/cli_abort()'s default `rlang_error` does not discriminate.
-validate_module_instrument <- function(instrument, call = rlang::caller_env()) {
-  cli_assert(
-    condition = is.character(instrument) && length(instrument) == 1L,
-    message = "The {.arg instrument} argument must be a single string.",
-    call = call
-  )
-  instrument <- tolower(instrument)
-
-  supported <- "hitopsr"
-  planned <- c("hitopbr", "pid5", "pid5sf", "pid5bf")
-  if (!instrument %in% c(supported, planned)) {
-    cli::cli_abort(
-      c(
-        "Unknown {.arg instrument} value {.val {instrument}}.",
-        i = "Currently supported: {.val {supported}}."
-      ),
-      class = "hitop_unknown_instrument",
-      call = call
-    )
-  }
-  if (!instrument %in% supported) {
-    cli::cli_abort(
-      c(
-        "Scale modules are not yet supported for {.val {instrument}}.",
-        i = "Only {.val {supported}} can be built into modules at present."
-      ),
-      class = "hitop_unsupported_instrument",
-      call = call
-    )
-  }
-  instrument
+# The single source of the supported set. validate_module_instrument() derives
+# `supported` from these names and both hitop_module() and available_scales()
+# read their table through here, so an instrument cannot be declared supported
+# without a table — the failure mode being avoided is a new entry in a
+# hand-maintained `supported` vector silently yielding HiTOP-SR scales.
+module_scale_tables <- function() {
+  list(hitopsr = hitopsr_scales)
 }

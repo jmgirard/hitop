@@ -77,7 +77,6 @@ reference:
   - calc_omega
 - title: Utilities
   contents:
-  - available_scales
   - rank_scales
   - rename_hitopsr_items
   - label_hitopsr
@@ -85,6 +84,7 @@ reference:
 - title: Item Export
   contents:
   - hitop_module
+  - available_scales
   - generate_docx_hitopbr
   - generate_docx_hitopsr
   - generate_docx_hitophsum
@@ -127,3 +127,6 @@ reference:
   - pid_domains
   - pid_norms
   - hitop_artifacts
+- title: Deprecated
+  contents:
+  - hitop_subset

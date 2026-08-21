@@ -3,15 +3,15 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
-* **A chosen set of scales is now called a *module*.** `hitop_subset()` is
-  renamed `hitop_module()`, and the `subset` argument of `score_hitopsr()`,
-  `reliability_hitopsr()`, `generate_docx_hitopsr()`,
-  `generate_qualtrics_hitopsr()`, and `generate_redcap_hitopsr()` is renamed
-  `module`. Nothing about the behaviour changes: the same scales produce the
-  same items, the same forms, and the same scores. If you used the development
-  version, the old names still work and warn, and every function that takes a
-  module also accepts a descriptor built by the old `hitop_subset()`. Supplying
-  both `module` and `subset` in one call is an error.
+* **A chosen set of an instrument's scales is called a *module*.** The
+  entries below describe that feature under its final names. *For development-
+  version users only:* these were briefly called `hitop_subset()` and `subset`
+  before release. Both still work and warn, every function taking a `module`
+  also accepts a descriptor built by `hitop_subset()`, and supplying both
+  `module` and `subset` in one call is an error. One further consequence of
+  the argument rename: in `score_hitopsr()`, the abbreviation `m = ` is now
+  ambiguous between `module` and `missing` and errors — write `mo = ` and
+  `mi = `, or spell the arguments out.
 
 * **`available_scales()` lists the scales you can build a module from**, with
   the name printed on the form, the camelCase stem that names the scored
