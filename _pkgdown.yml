@@ -43,6 +43,8 @@ navbar:
       - text: "---"
       - text: "Scoring HiTOP-SR"
         href: articles/hitopsr_scoring.html
+      - text: "Building HiTOP-SR Modules"
+        href: articles/modules-hitopsr.html
       - text: "Scoring HiTOP-BR"
         href: articles/hitopbr_scoring.html
       - text: "Scoring PID-5"

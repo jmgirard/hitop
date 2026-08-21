@@ -81,7 +81,7 @@ behavior → none is in scope; this milestone is documentation.
 - [x] T2 Replace that section with a short cross-reference to the new article.
 - [x] T3 Fix the positional-indexing idiom in the three `@examples` blocks; run
       `devtools::document()`.
-- [ ] T4 Add the `_pkgdown.yml` Tutorials row. Build with
+- [x] T4 Add the `_pkgdown.yml` Tutorials row. Build with
       `pkgdown::build_articles()` (plural) after `devtools::install()` — the M22
       lesson records that the singular `build_article()` cannot find a newly
       added `.Rmd`, and the M21 lesson that articles render against the
@@ -99,6 +99,7 @@ behavior → none is in scope; this milestone is documentation.
 - 2026-08-21: implement gate chose the title "Building HiTOP-SR Modules", the `hitop_module()`-only example fix (the other two blocks already select by name from M43), and `tempdir()` for the article's generated files.
 - 2026-08-21: T2 — replaced `vignettes/hitopsr_scoring.Rmd`'s "Scoring a Module" section with a three-line cross-reference under the heading "Scoring Only Some Scales"; the heading avoids the four AC4 grep terms so the linking sentence is the only hit case-insensitively too, and the link is the absolute site URL because that vignette installs with the package while the article does not. The file's one other use of the word, in the `rename_hitopsr_items()` note, was reworded.
 - 2026-08-21: T3 — `score_hitopsr()` and `reliability_hitopsr()` already selected by name (M43 wrote them that way), so only `hitop_module()`'s `@examples` needed the idiom; added a by-name selection against `ku_hitopsr`, whose leading `participant`/`biosex` columns make the positional trap concrete. `devtools::document()` rewrote `man/hitop_module.Rd`; the example lines were executed and `devtools::test()` is clean (0 failures, 13674 passing, 1 skip).
+- 2026-08-21: T4 — added the Tutorials navbar row directly after "Scoring HiTOP-SR"; `pkgdown::check_pkgdown()` reports no problems, and `pkgdown::build_articles()` after `devtools::install()` re-rendered the edited scoring vignette with no error or warning.
 - 2026-08-21: the criteria audit ran in **full** mode over AC1-AC6 and returned two findings, both fixed before the criteria were written. AC1 promised a render with no error *or warning*, which pkgdown routinely emits for reasons unrelated to the article — narrowed to no error, with every warning quoted and disposed. AC2 promised "every R chunk executes", which a clean render evidences only if no chunk is `eval = FALSE` — the promise now rests on a grep that settles exactly that. The audit ran inline in this session rather than in a fresh-context reader, because this session is instructed not to spawn subagents unless asked; the reader-freshness the instrument normally provides was not obtained.
 
 
