@@ -1,11 +1,11 @@
 # M44: A dedicated article for building and scoring HiTOP-SR modules
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M43
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m44-modules-article`
 
 ## Goal
 
@@ -74,7 +74,7 @@ behavior → none is in scope; this milestone is documentation.
 
 ## Tasks
 
-- [ ] T1 Draft `vignettes/articles/modules-hitopsr.Rmd` to AC2's section list,
+- [x] T1 Draft `vignettes/articles/modules-hitopsr.Rmd` to AC2's section list,
       lifting and expanding the worked example currently at
       `vignettes/hitopsr_scoring.Rmd:121-183` and adding the generation half,
       which that section only mentions.
@@ -95,6 +95,8 @@ behavior → none is in scope; this milestone is documentation.
 - 2026-08-21: created by /milestone-plan.
 - 2026-08-21: plan gate chose two milestones with the rename first over one combined milestone, because a combined goal needs an "and" and trips the sizing tripwires, and because writing the article before the rename would mean rewriting it; falsified by M43 slipping far enough that the documentation gap outweighs the rewrite cost.
 - 2026-08-21: plan absorbed the standing candidate row on the `@examples` column-selection idiom (lineage M37, scored 78) rather than leaving it queued, because this milestone rewrites the same example blocks and splitting them across two milestones would touch them twice.
+- 2026-08-21: T1 — drafted `vignettes/articles/modules-hitopsr.Rmd` with five sections (choosing scales, building the module, generating the instrument, selecting the collected columns, scoring and reliability); `pkgdown::build_articles()` rendered it with no error and no warning against the freshly installed package; every prose figure in it was derived from an executed probe first.
+- 2026-08-21: implement gate chose the title "Building HiTOP-SR Modules", the `hitop_module()`-only example fix (the other two blocks already select by name from M43), and `tempdir()` for the article's generated files.
 - 2026-08-21: the criteria audit ran in **full** mode over AC1-AC6 and returned two findings, both fixed before the criteria were written. AC1 promised a render with no error *or warning*, which pkgdown routinely emits for reasons unrelated to the article — narrowed to no error, with every warning quoted and disposed. AC2 promised "every R chunk executes", which a clean render evidences only if no chunk is `eval = FALSE` — the promise now rests on a grep that settles exactly that. The audit ran inline in this session rather than in a fresh-context reader, because this session is instructed not to spawn subagents unless asked; the reader-freshness the instrument normally provides was not obtained.
 
 ## Decisions
