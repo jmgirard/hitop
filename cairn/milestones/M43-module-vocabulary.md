@@ -246,8 +246,9 @@ choosing "fix all nine"):
   `check()` returned.
 
 **Post-fix verification** — `devtools::test()` 13674 passing, 0 failures, 0
-warnings, 1 skip; `pkgdown::check_pkgdown()` "No problems found";
-`cairn_validate` all checks passed; CI green on all 7 jobs. Three mutations
+warnings, 1 skip; `devtools::check()` **Status: OK**, zero NOTEs or WARNINGs;
+`pkgdown::check_pkgdown()` "No problems found"; `cairn_validate` all checks
+passed; CI green on all 7 jobs before the fixes and re-run after them. Three mutations
 confirm the new guards bite: dropping the shim's threaded frame (1 failure),
 declaring an instrument supported with no table (3), and changing the browser's
 declared default (1).
