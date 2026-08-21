@@ -113,11 +113,11 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
       call sites in `R/generate_redcap.R`, add {zip} to Imports, and cover it
       with a test that the generated archive holds one flat `instrument.csv`
       entry (D-035). Runs before the app so the app never works around it.
-- [ ] T3 Build the app: a webR page whose checkbox list is driven by
+- [x] T3 Build the app: a webR page whose checkbox list is driven by
       `available_scales("hitopsr")`, with a running item count and one download
       button per format.
 - [ ] T4 Deploy to GitHub Pages and run AC3's round-trip comparison per format.
-- [ ] T5 In this repo: the `_pkgdown.yml` Instruments-menu link, the
+- [x] T5 In this repo: the `_pkgdown.yml` Instruments-menu link, the
       `inst/shiny/app.R` deletion, and the app repo's README.
 
 ## Work log
@@ -141,6 +141,9 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-21: amendment return: AC4 — "The app hardcodes no instrument content. At the reviewed commit a script sweeps every tracked text file in the app repo (`index.html`, `README.md`, `LICENSE.md`, `.github/workflows/pages.yml`) for three things: (a) every value of `hitopsr_scales$Scale` and `hitopsr_scales$camelCase` as a case-insensitive literal substring; (b) every value of `hitopsr_items$Text` as a literal substring; and (c) every item number in `hitopsr_items$HSR` as a digit run with no adjacent digit (`(?<![0-9])N(?![0-9])`, so `405` never matches inside `1405`). Sweeps (a) and (b) must return zero hits. Sweep (c) cannot, because small integers are unavoidable in a web page, so the Review records a ledger with one row per distinct numeral per file saying what that numeral denotes; the criterion passes only if no row denotes a HiTOP-SR item number, item count, or item position. The Review also records the line of app source supplying the checkbox labels, which must be the result of an `available_scales('hitopsr')` call evaluated in webR, so every scale name, item number, and item text the page shows is read from the package's keying tables at runtime (IP1)."
 - 2026-08-21: AC4 was amended because its original zero-occurrence promise is unsatisfiable by any web page: item numbers run 1-405, and a word-boundary sweep of `index.html` matched the bare integers 1, 2, 4, 5, 6, 8, 20 and 55 in CSS lengths, `charset="utf-8"`, the webR version `v0.6.0` and the prose "about 20 seconds", none of them instrument content. Two fresh-context [O] readers audited the replacement wording in **full** mode at the user's go-ahead; the second corrected a factual error in the first's regex example (`(?<![0-9])55(?![0-9])` does match inside `1.55`) and found that item *text* was swept by neither version, a gap through which a page pasting item stems verbatim would pass. Further churn went to the user per the once-only re-entry rule.
 - 2026-08-21: the amended AC4 sweep was run against the app as built and passes on all three parts: (a) 0 hits over 152 scale-name needles case-insensitively, (b) 0 hits over 405 item-text needles, (c) 157 numeral hits — 94 in `index.html` over 24 distinct numerals, 56 in `LICENSE.md`, 4 in the workflow, 3 in the README — every one of which is a CSS length, hex colour, library version, GPL section number, or prose figure. The ledger is recorded at review.
+- 2026-08-21: T3 — the app is a single `index.html` in the new public repo `jmgirard/hitop-builder`, loading webR 0.6.0 from `webr.r-wasm.org` and installing `hitop` from the r-universe repository; its checkbox list, item counts and scale names come from an `available_scales("hitopsr")` call evaluated in webR, and each download button calls the matching `generate_*_hitopsr()` and hands the bytes to the browser as a Blob. Verified working on plain GitHub Pages with `crossOriginIsolated` false, so webR's PostMessage channel suffices and no COOP/COEP headers are needed — the constraint that would have ruled Pages out.
+- 2026-08-21: T5 — `_pkgdown.yml` links the deployed app from the Instruments menu, `inst/shiny/app.R` and its now-empty directory are deleted, the app repo carries a README stating that the page generates instruments and scores nothing, and NEWS gained entries for both the app and the zip change. `pkgdown::check_pkgdown()` reports no problems found.
+- 2026-08-21: at the user's direction the {zip} fix was split onto `hotfix-redcap-zip` (carrying only the code, tests, NEWS entry and D-035) and pushed, so it can reach the default branch and trigger an r-universe rebuild before this milestone's REDCap round-trip is verified; the same commits remain on the milestone branch and are expected to merge as identical content.
 
 ## Decisions
 
