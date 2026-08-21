@@ -100,7 +100,7 @@ rename_hitopsr_items <- function(
     }
   }
 
-  ## Check for completeness and issue a subset warning if appropriate
+  ## Check for completeness and warn if fewer than all items were matched
   n_matched <- length(unique(matched_hsr))
   if (n_matched > 0 && n_matched < 405) {
     cli::cli_warn(c(

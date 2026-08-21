@@ -77,13 +77,14 @@ reference:
   - calc_omega
 - title: Utilities
   contents:
+  - available_scales
   - rank_scales
   - rename_hitopsr_items
   - label_hitopsr
   - label_hitopbr
 - title: Item Export
   contents:
-  - hitop_subset
+  - hitop_module
   - generate_docx_hitopbr
   - generate_docx_hitopsr
   - generate_docx_hitophsum

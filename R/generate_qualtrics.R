@@ -216,7 +216,7 @@ build_qualtrics_txt <- function(
   }
 
   # Determine padding width automatically for question IDs. The width comes
-  # from the largest item NUMBER, not the row count: a subset keeps original
+  # from the largest item NUMBER, not the row count: a module keeps original
   # numbering, so its row count under-pads (item 7 as `_07` beside `_312`).
   # For a full instrument the two agree, so existing output is unchanged.
   max_w <- nchar(as.character(max(items[[1]])))

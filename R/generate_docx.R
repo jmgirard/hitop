@@ -273,7 +273,7 @@ make_items_table <- function(
     table_data[[opt_cols[i]]] <- as.character(opts$value[i])
   }
 
-  # which(), not seq(2, n, by = 2): a one-item table (a single-item subset
+  # which(), not seq(2, n, by = 2): a one-item table (a single-item module
   # form) makes that seq() count backwards and abort with "wrong sign in 'by'".
   even_rows <- which(seq_len(nrow(table_data)) %% 2 == 0)
   std_border <- officer::fp_border(color = "black", width = 1.5)

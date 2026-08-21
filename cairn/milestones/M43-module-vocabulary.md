@@ -1,6 +1,6 @@
 # M43: Rename the HiTOP-SR subset family to modules
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -97,9 +97,9 @@ D-entry, and one warning does not earn one.
 - [x] T4 Write `available_scales()` reading `hitopsr_scales`, with its help page
       and `_pkgdown.yml` row.
 - [x] T5 Tests for AC1-AC5, every condition fired and asserted by class.
-- [ ] T6 Docs sweep for AC6: roxygen text, `@examples`, NEWS entry, then
+- [x] T6 Docs sweep for AC6: roxygen text, `@examples`, NEWS entry, then
       `devtools::document()`.
-- [ ] T7 Full check: `devtools::test()`, `devtools::check()`,
+- [x] T7 Full check: `devtools::test()`, `devtools::check()`,
       `pkgdown::check_pkgdown()`; record AC6's grep output.
 
 ## Work log
@@ -121,3 +121,7 @@ D-entry, and one warning does not earn one.
 ## Review
 - 2026-08-21: T5 — `test-deprecated.R` (AC1-AC4) and `test-available_scales.R` (AC5) added; suite 13456 -> 13663 passing, 0 failures, 0 warnings, 1 skip. Two branches gained condition classes so the criteria's "asserted by class" is honest rather than an `rlang_error` match: `hitop_both_module_args` on the both-arguments error, and `hitop_unknown_instrument`/`hitop_unsupported_instrument` on the instrument guard.
 - 2026-08-21: refactor found at T5 — `hitop_module()` and `available_scales()` carried byte-identical instrument guards, and AC5 requires the browser to reject exactly what the constructor rejects with the same words. Extracted to `validate_module_instrument()` in `R/module.R`, with a test asserting the two messages are identical rather than trusting two copies to stay in step.
+- 2026-08-21: T5 mutation check — five mutations each turned the new tests red against a clean baseline, and the tree was restored after each: dropping the deprecation condition class (2), removing the both-arguments error so `module` silently wins (1), muting the `subset =` warning (1), removing the browser's shared instrument guard (4), and zeroing module reverse-keying (2). The first harness attempt reported a non-zero BASELINE because `testthat::test_file()` runs without the package loaded; it was fixed with `pkgload::load_all()` before any mutation was read, so no verdict rests on it.
+- 2026-08-21: T6 — the two unreleased 0.2.0 NEWS entries describing this feature were rewritten in module vocabulary rather than contradicted by a fourth entry, since 0.2.0 has not shipped; a separate entry covers the deprecation for anyone already on the development version. `_pkgdown.yml` swaps `hitop_subset` for `hitop_module` and adds `available_scales`; `hitop_subset` is `@keywords internal`, so pkgdown excludes it and `check_pkgdown()` is clean without a row for it. The scoring vignette's section is renamed and re-worded here; M44 replaces it with a link.
+- 2026-08-21: T7 — `devtools::document()` no diff, `devtools::test()` 13663 passing / 0 failures / 0 warnings / 1 skip, `pkgdown::check_pkgdown()` "No problems found", `devtools::check()` Status: OK (0 errors, 0 warnings, 0 notes). AC6's sweep is clean: every remaining `subset` in the swept paths is either a deprecation shim or the ordinary English/mathematical word in code unrelated to this family.
+- 2026-08-21: docs sweep surfaced a terminology collision recorded as a ROADMAP candidate — the HiTOP-HSUM's Society name is the Harmful Substance Use *Module*, so "module" now names two things. Nothing user-facing conflates them today; IP1 bars renaming the instrument, so any fix is package-side and waits for modularization to reach other instruments.
