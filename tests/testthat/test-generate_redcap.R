@@ -295,16 +295,16 @@ test_that("HSUM quantity items get the correct field-type/choice overrides", {
   expect_true(all(nzchar(r[["Choices, Calculations, OR Slider Labels"]][choice_types])))
 })
 
-# ---- HiTOP-SR scale subsets (M24) -------------------------------------------
+# ---- HiTOP-SR scale modules (M24) -------------------------------------------
 #
 # Parse-and-compare per D-010: expected fields come from `hitopsr_items`
 # filtered by `Scale`, independently of the `hitopsr_scales$itemNumbers` path.
 
-test_that("generate_redcap_hitopsr(subset =) emits exactly the subset's fields", {
+test_that("generate_redcap_hitopsr(module =) emits exactly the module's fields", {
   skip_if_no_zip()
-  s <- hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  s <- hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
   f <- withr::local_tempfile(fileext = ".zip")
-  suppressMessages(generate_redcap_hitopsr(file = f, subset = s))
+  suppressMessages(generate_redcap_hitopsr(file = f, module = s))
   dd <- read_redcap_csv(f)
 
   kept <- hitopsr_items[
@@ -322,14 +322,14 @@ test_that("generate_redcap_hitopsr(subset =) emits exactly the subset's fields",
   expect_equal(item_rows$`Variable / Field Name`[1], "hsr_066")
   expect_equal(item_rows$`Variable / Field Name`[8], "hsr_389")
 
-  # The descriptive instructions row survives subsetting.
+  # The descriptive instructions row survives module reduction.
   expect_true("hsr_instructions" %in% dd$`Variable / Field Name`)
 })
 
-test_that("generate_redcap_hitopsr() rejects a non-hitop_subset subset", {
+test_that("generate_redcap_hitopsr() rejects a non-hitop_module module", {
   f <- withr::local_tempfile(fileext = ".zip")
   expect_error(
-    generate_redcap_hitopsr(file = f, subset = list(items = 1:5)),
-    "hitop_subset"
+    generate_redcap_hitopsr(file = f, module = list(items = 1:5)),
+    "hitop_module"
   )
 })

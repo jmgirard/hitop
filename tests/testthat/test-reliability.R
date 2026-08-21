@@ -190,16 +190,16 @@ test_that("reliability omega is NA-safe on a zero-variance scale (no abort)", {
   expect_true(all(is.na(rel$omega)))
 })
 
-# --- subset reliability (M37) -----------------------------------------------
+# --- module reliability (M37) -----------------------------------------------
 
-test_that("reliability_hitopsr(subset=) returns one row per subset scale", {
-  s <- hitop_subset(
+test_that("reliability_hitopsr(module=) returns one row per module scale", {
+  s <- hitop_module(
     "hitopsr",
     c("romanticDisinterest", "appetiteLoss", "agoraphobia", "antisocialBehavior")
   )
   part <- reliability_hitopsr(
     sim_hitopsr[s$items], items = seq_len(s$nItems),
-    subset = s, omega = FALSE
+    module = s, omega = FALSE
   )
 
   # Row order follows hitopsr_scales, not the order the scales were named.
@@ -214,19 +214,19 @@ test_that("reliability_hitopsr(subset=) returns one row per subset scale", {
   )
 })
 
-test_that("reliability_hitopsr(subset=) gives the full run's alpha for its scales", {
+test_that("reliability_hitopsr(module=) gives the full run's alpha for its scales", {
   # Alpha is computed within a scale from its own reverse-keyed items, so
   # dropping the other 71 scales' columns cannot move it.
-  s <- hitop_subset("hitopsr", c("romanticDisinterest", "agoraphobia"))
+  s <- hitop_module("hitopsr", c("romanticDisinterest", "agoraphobia"))
   full <- reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
   part <- reliability_hitopsr(
-    sim_hitopsr[s$items], items = seq_len(s$nItems), subset = s, omega = FALSE
+    sim_hitopsr[s$items], items = seq_len(s$nItems), module = s, omega = FALSE
   )
   expect_equal(part, full[match(part$scale, full$scale), ], ignore_attr = "row.names")
 })
 
-test_that("the subset argument's three error paths blame the exported wrapper", {
-  s <- hitop_subset("hitopsr", "agoraphobia")
+test_that("the module argument's three error paths blame the exported wrapper", {
+  s <- hitop_module("hitopsr", "agoraphobia")
   dat <- sim_hitopsr[s$items]
 
   # Substituting a placeholder keeps each assertion independently reportable:
@@ -239,22 +239,22 @@ test_that("the subset argument's three error paths blame the exported wrapper", 
     )
   }
 
-  # (1) not a hitop_subset at all
-  bad <- blamed(score_hitopsr(dat, items = seq_len(s$nItems), subset = list(items = 1)))
+  # (1) not a hitop_module at all
+  bad <- blamed(score_hitopsr(dat, items = seq_len(s$nItems), module = list(items = 1)))
   expect_equal(bad$fn, "score_hitopsr")
-  expect_match(bad$msg, "hitop_subset")
+  expect_match(bad$msg, "hitop_module")
 
-  # (2) a hand-assembled descriptor naming another instrument; hitop_subset()
+  # (2) a hand-assembled descriptor naming another instrument; hitop_module()
   #     itself will not build one, so only hand-assembly reaches this branch.
   foreign <- s
   foreign$instrument <- "hitopbr"
-  bad2 <- blamed(score_hitopsr(dat, items = seq_len(s$nItems), subset = foreign))
+  bad2 <- blamed(score_hitopsr(dat, items = seq_len(s$nItems), module = foreign))
   expect_equal(bad2$fn, "score_hitopsr")
   expect_match(bad2$msg, "wrong instrument")
 
-  # (3) the existing length check, now re-pointed at the subset's item count:
+  # (3) the existing length check, now re-pointed at the module's item count:
   #     the full 405 columns are the wrong input for a 5-item short form.
-  bad3 <- blamed(score_hitopsr(sim_hitopsr, items = 1:405, subset = s))
+  bad3 <- blamed(score_hitopsr(sim_hitopsr, items = 1:405, module = s))
   expect_equal(bad3$fn, "score_hitopsr")
   expect_match(bad3$msg, "items")
   expect_match(bad3$msg, "Expected 5 items but got 405")
@@ -262,21 +262,21 @@ test_that("the subset argument's three error paths blame the exported wrapper", 
   # All three reach reliability_hitopsr() through the same helper, and must
   # blame it rather than score_hitopsr() or the internal engine.
   expect_equal(
-    blamed(reliability_hitopsr(dat, items = seq_len(s$nItems), subset = list(x = 1)))$fn,
+    blamed(reliability_hitopsr(dat, items = seq_len(s$nItems), module = list(x = 1)))$fn,
     "reliability_hitopsr"
   )
   expect_equal(
-    blamed(reliability_hitopsr(dat, items = seq_len(s$nItems), subset = foreign))$fn,
+    blamed(reliability_hitopsr(dat, items = seq_len(s$nItems), module = foreign))$fn,
     "reliability_hitopsr"
   )
   expect_equal(
-    blamed(reliability_hitopsr(sim_hitopsr, items = 1:405, subset = s))$fn,
+    blamed(reliability_hitopsr(sim_hitopsr, items = 1:405, module = s))$fn,
     "reliability_hitopsr"
   )
 })
 
 test_that("the descriptor-consistency error also blames the exported wrapper", {
-  s <- hitop_subset("hitopsr", "agoraphobia")
+  s <- hitop_module("hitopsr", "agoraphobia")
   bad <- s
   bad$nItems <- 405L
 
@@ -286,11 +286,11 @@ test_that("the descriptor-consistency error also blames the exported wrapper", {
   }
 
   expect_equal(
-    blamed(score_hitopsr(sim_hitopsr, items = 1:405, subset = bad)),
+    blamed(score_hitopsr(sim_hitopsr, items = 1:405, module = bad)),
     "score_hitopsr"
   )
   expect_equal(
-    blamed(reliability_hitopsr(sim_hitopsr, items = 1:405, subset = bad)),
+    blamed(reliability_hitopsr(sim_hitopsr, items = 1:405, module = bad)),
     "reliability_hitopsr"
   )
 })

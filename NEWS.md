@@ -3,6 +3,21 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* **A chosen set of an instrument's scales is called a *module*.** The
+  entries below describe that feature under its final names. *For development-
+  version users only:* these were briefly called `hitop_subset()` and `subset`
+  before release. Both still work and warn, every function taking a `module`
+  also accepts a descriptor built by `hitop_subset()`, and supplying both
+  `module` and `subset` in one call is an error. One further consequence of
+  the argument rename: in `score_hitopsr()`, the abbreviation `m = ` is now
+  ambiguous between `module` and `missing` and errors — write `mo = ` and
+  `mi = `, or spell the arguments out.
+
+* **`available_scales()` lists the scales you can build a module from**, with
+  the name printed on the form, the camelCase stem that names the scored
+  output column, and the item count — so you no longer need to know which
+  dataset to open before choosing scales.
+
 * The download buttons on the instrument pages now serve the files from the
   package website itself, so a browser saves each one under its own name. The
   Qualtrics survey files used to open as text in a new tab, because GitHub
@@ -73,13 +88,13 @@ before a CRAN submission.
   7 inches wide or more; set `labels = FALSE` for a narrower one and the points
   and profile line are drawn without them.
 
-* **Scoring short forms.** `score_hitopsr()` and `reliability_hitopsr()` gain a
-  `subset` argument taking the same short-form description that
-  `hitop_subset()` builds and the `generate_*_hitopsr()` functions consume. Give
-  it the item columns you actually collected and it scores only that short
-  form's scales, returning the same values a full 405-item administration would
-  have produced for them. Without the argument both functions behave exactly as
-  before. See `vignette("hitopsr_scoring")`.
+* **Scoring modules.** `score_hitopsr()` and `reliability_hitopsr()` gain a
+  `module` argument taking the same description that `hitop_module()` builds and
+  the `generate_*_hitopsr()` functions consume. Give it the item columns you
+  actually collected and it scores only that module's scales, returning the same
+  values a full 405-item administration would have produced for them. Without
+  the argument both functions behave exactly as before. See
+  `vignette("hitopsr_scoring")`.
 
 * **Clearer errors for bad arguments.** Every argument check across the package
   now reports which argument was wrong, what was supplied, and which function
@@ -149,10 +164,10 @@ before a CRAN submission.
   HiTOP-BR forms keep their single-line scale. All six PID Word files
   (US and A4) were regenerated, with new `hitop_artifacts` entries.
 
-* **Generate a shortened HiTOP-SR from selected scales.** The new
-  `hitop_subset()` describes a subset of an instrument's scales, and
+* **Generate a HiTOP-SR module from selected scales.** The new
+  `hitop_module()` describes a chosen set of an instrument's scales, and
   `generate_docx_hitopsr()`, `generate_qualtrics_hitopsr()`, and
-  `generate_redcap_hitopsr()` each take it as a `subset` argument to emit a
+  `generate_redcap_hitopsr()` each take it as a `module` argument to emit a
   form containing only those scales' items. Item numbers are **not**
   renumbered: each item keeps its original HiTOP-SR number, so data collected
   with the shortened form still maps onto the full instrument's scoring key.
@@ -183,7 +198,7 @@ before a CRAN submission.
 
 * Qualtrics question IDs are now zero-padded to the width of the largest item
   number rather than the number of items. Output for every full instrument is
-  unchanged; the change keeps IDs uniform in a subset file.
+  unchanged; the change keeps IDs uniform in a module file.
 
 * **New instrument overview page.** A single "HiTOP Instruments" page presents
   the three self-report measures — HiTOP-SR, HiTOP-BR, and HiTOP-HSUM — as

@@ -118,43 +118,43 @@ reliability_hitopsr(
 )
 ```
 
-## Scoring a Short Form
+## Scoring a Module
 
-Not every study administers all 405 items. The `hitop_subset()` function describes a short form built from a chosen set of scales, and the `generate_docx_hitopsr()`, `generate_qualtrics_hitopsr()`, and `generate_redcap_hitopsr()` functions turn that description into an instrument to field. Data collected that way has only the subset's item columns, so passing it to `score_hitopsr()` as if it were a full administration would fail on the item count.
+Not every study administers all 405 items. A **module** is a chosen set of the instrument's scales, administered and scored on its own. The `hitop_module()` function describes one — use `available_scales("hitopsr")` to see what is on offer — and the `generate_docx_hitopsr()`, `generate_qualtrics_hitopsr()`, and `generate_redcap_hitopsr()` functions turn that description into an instrument to field. Data collected that way has only the module's item columns, so passing it to `score_hitopsr()` as if it were a full administration would fail on the item count.
 
-Instead, hand the same description back through the `subset` argument. Here is a four-scale short form:
+Instead, hand the same description back through the `module` argument. Here is a four-scale module:
 
 ```{r}
-short_form <- hitop_subset(
+four_scale <- hitop_module(
   instrument = "hitopsr",
   scales = c(
     "Agoraphobia", "Appetite Loss",
     "Antisocial Behavior", "Romantic Disinterest"
   )
 )
-short_form
+four_scale
 ```
 
-We will stand in for the collected data by keeping just those columns of `ku_hitopsr`. Note that the item numbers are the *original* HiTOP-SR numbers — the short form does not renumber its items from 1.
+We will stand in for the collected data by keeping just those columns of `ku_hitopsr`. Note that the item numbers are the *original* HiTOP-SR numbers — a module does not renumber its items from 1.
 
 ```{r}
-short_data <- ku_hitopsr[sprintf("hsr%03d", short_form$items)]
-ncol(short_data)
+module_data <- ku_hitopsr[sprintf("hsr%03d", four_scale$items)]
+ncol(module_data)
 ```
 
-Now score it. The `items` argument names the columns you actually have, in instrument order, and `subset` tells the function which scales they belong to.
+Now score it. The `items` argument names the columns you actually have, in instrument order, and `module` tells the function which scales they belong to.
 
 ```{r}
-short_scores <- score_hitopsr(
-  data = short_data,
-  items = names(short_data),
-  subset = short_form,
+module_scores <- score_hitopsr(
+  data = module_data,
+  items = names(module_data),
+  module = four_scale,
   append = FALSE
 )
-short_scores
+module_scores
 ```
 
-Only the subset's scales come back, in the order they appear in `hitopsr_scales`. The values are exactly what a full administration would have produced for those scales — a scale score depends only on its own items, so dropping the other 72 scales' columns cannot move it:
+Only the module's scales come back, in the order they appear in `hitopsr_scales`. The values are exactly what a full administration would have produced for those scales — a scale score depends only on its own items, so dropping the other 72 scales' columns cannot move it:
 
 ```{r}
 full_scores <- score_hitopsr(
@@ -162,17 +162,17 @@ full_scores <- score_hitopsr(
   items = sprintf("hsr%03d", 1:405),
   append = FALSE
 )
-all.equal(short_scores, full_scores[names(short_scores)])
+all.equal(module_scores, full_scores[names(module_scores)])
 ```
 
-`reliability_hitopsr()` takes the same argument and returns one row per subset scale.
+`reliability_hitopsr()` takes the same argument and returns one row per module scale.
 
 ```{r}
 #| warning: false
 reliability_hitopsr(
-  data = short_data,
-  items = names(short_data),
-  subset = short_form,
+  data = module_data,
+  items = names(module_data),
+  module = four_scale,
   omega = FALSE
 )
 ```
@@ -231,4 +231,4 @@ standardized_custom <- custom_data |>
 standardized_custom
 ```
 
-*Note: Because these small mock examples contain only a subset of the full item pool, `rename_hitopsr_items()` will safely issue a cli warning letting you know that fewer than 405 items were matched. This perfectly accommodates researchers intentionally administering short forms or separate diagnostic modules.*
+*Note: Because these small mock examples contain only some of the full item pool, `rename_hitopsr_items()` will safely issue a cli warning letting you know that fewer than 405 items were matched. This perfectly accommodates researchers intentionally administering modules.*

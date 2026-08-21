@@ -6,10 +6,10 @@
 #' [score_hitopsr()] outputs.
 #'
 #' @param data A data frame containing the HiTOP-SR items (numerically coded):
-#'   all 405 of them, or, when `subset` is supplied, that short form's items.
+#'   all 405 of them, or, when `module` is supplied, that module's items.
 #' @param items A vector of column names (as strings) or numbers (as integers)
 #'   corresponding to the HiTOP-SR items held in `data` — all 405, or, when
-#'   `subset` is supplied, that short form's items. Items must be supplied in
+#'   `module` is supplied, that module's items. Items must be supplied in
 #'   instrument order; duplicated entries are an error.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-SR items, used for reverse-coding. (default = `c(1, 4)`)
@@ -18,12 +18,14 @@
 #' @param omega Optional logical; if `TRUE`, include a column of McDonald's omega
 #'   (total) per scale, estimated via a one-factor CFA (requires the \pkg{lavaan}
 #'   package). (default = `TRUE`)
-#' @param subset An optional `hitop_subset` object, as returned by
-#'   [hitop_subset()], describing a short form of the instrument. When supplied,
-#'   `data` and `items` hold only that subset's item columns — in ascending
+#' @param module An optional `hitop_module` object, as returned by
+#'   [hitop_module()], describing a module of the instrument. When supplied,
+#'   `data` and `items` hold only that module's item columns — in ascending
 #'   instrument order, as the `generate_*_hitopsr()` forms lay them out — and one
-#'   row is returned per subset scale. When `NULL`, all 405 items are expected
+#'   row is returned per module scale. When `NULL`, all 405 items are expected
 #'   and all 76 scales are estimated. (default = `NULL`)
+#' @param subset Deprecated. The former name of `module`; supplying it warns.
+#'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
 #' @details Alpha is computed by [calc_alpha()] (covariance-based, pairwise
 #'   deletion) and omega by [calc_omega()] (one-factor lavaan CFA, FIML). A scale
@@ -38,12 +40,12 @@
 #' # Per-scale alpha for the HiTOP-SR
 #' reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
 #'
-#' # Per-scale alpha for data collected with a two-scale short form. Select the
-#' # item columns by name: `s$items` holds original HiTOP-SR numbers, which are
+#' # Per-scale alpha for data collected with a two-scale module. Select the
+#' # item columns by name: `m$items` holds original HiTOP-SR numbers, which are
 #' # column positions only in a data frame that is exactly the 405 items in order.
-#' s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
-#' short <- sim_hitopsr[paste0("hsr_", s$items)]
-#' reliability_hitopsr(short, items = names(short), subset = s, omega = FALSE)
+#' m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+#' collected <- sim_hitopsr[paste0("hsr_", m$items)]
+#' reliability_hitopsr(collected, items = names(collected), module = m, omega = FALSE)
 #'
 #' @export
 reliability_hitopsr <- function(
@@ -52,11 +54,13 @@ reliability_hitopsr <- function(
   srange = c(1, 4),
   alpha = TRUE,
   omega = TRUE,
+  module = NULL,
   subset = NULL
 ) {
+  module <- resolve_module_arg(module, subset)
   ## Same three instrument-resolved inputs score_hitopsr() uses, remapped to
-  ## subset-column positions when a `subset` is supplied.
-  inputs <- hitopsr_engine_inputs(subset)
+  ## module-column positions when a `module` is supplied.
+  inputs <- hitopsr_engine_inputs(module)
 
   reliability_engine(
     data = data,

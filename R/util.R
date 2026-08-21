@@ -358,3 +358,60 @@ prep_items <- function(
 
   bind_columns(data_items)
 }
+
+# Internal Helper: one deprecation warning carrying a stable condition class
+#
+# {lifecycle} is deliberately not a dependency (GP4: a single deprecation does
+# not earn one), so the warning is hand-rolled. Tests assert on the class, not
+# on the message text, so the class is the stable part of this contract.
+deprecate_subset <- function(what, instead, call = rlang::caller_env()) {
+  cli::cli_warn(
+    c(
+      "{.code {what}} was renamed to {.code {instead}} in hitop 0.2.0.",
+      i = "The old name still works, but please use {.code {instead}}.",
+      i = "A chosen set of an instrument's scales is now called a {.emph module}."
+    ),
+    class = "hitop_deprecated_subset",
+    call = call
+  )
+}
+
+# Internal Helper: validate and normalize an instrument name for the module API
+#
+# Shared by hitop_module() and available_scales() so the two cannot drift: the
+# browser must reject exactly what the constructor rejects, with the same words,
+# or a caller is told a scale set exists that no module can be built from.
+# Both branches carry a condition class, because tests assert on the class and
+# cli_assert()/cli_abort()'s default `rlang_error` does not discriminate.
+validate_module_instrument <- function(instrument, call = rlang::caller_env()) {
+  cli_assert(
+    condition = is.character(instrument) && length(instrument) == 1L,
+    message = "The {.arg instrument} argument must be a single string.",
+    call = call
+  )
+  instrument <- tolower(instrument)
+
+  supported <- names(module_scale_tables())
+  planned <- c("hitopbr", "pid5", "pid5sf", "pid5bf")
+  if (!instrument %in% c(supported, planned)) {
+    cli::cli_abort(
+      c(
+        "Unknown {.arg instrument} value {.val {instrument}}.",
+        i = "Currently supported: {.val {supported}}."
+      ),
+      class = "hitop_unknown_instrument",
+      call = call
+    )
+  }
+  if (!instrument %in% supported) {
+    cli::cli_abort(
+      c(
+        "Scale modules are not yet supported for {.val {instrument}}.",
+        i = "Only {.val {supported}} can be built into modules at present."
+      ),
+      class = "hitop_unsupported_instrument",
+      call = call
+    )
+  }
+  instrument
+}

@@ -9,6 +9,7 @@ generate_redcap_hitopsr(
   form_name = "hitopsr_questionnaire",
   required = TRUE,
   breaks = 15,
+  module = NULL,
   subset = NULL
 )
 }
@@ -26,9 +27,12 @@ Defaults to \code{TRUE}.}
 inserting a page break. Set to \code{0} or \code{NULL} to disable pagination
 entirely. Defaults to \code{15}.}
 
-\item{subset}{An optional \code{\link[=hitop_subset]{hitop_subset()}} object restricting the instrument
+\item{module}{An optional \code{\link[=hitop_module]{hitop_module()}} object restricting the instrument
 to the items of the chosen scales, keeping their original HiTOP-SR item
 numbers. (default = \code{NULL})}
+
+\item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
+Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}
 }
 \value{
 Invisibly returns the path to the created file (\code{file}).
@@ -42,10 +46,10 @@ packages it into an Instrument ZIP file for easy uploading.
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
 
-# A two-scale subset, original numbering preserved
+# A two-scale module, original numbering preserved
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
-  subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
 
 }

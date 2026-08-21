@@ -83,7 +83,8 @@ reference:
   - label_hitopbr
 - title: Item Export
   contents:
-  - hitop_subset
+  - hitop_module
+  - available_scales
   - generate_docx_hitopbr
   - generate_docx_hitopsr
   - generate_docx_hitophsum
@@ -126,3 +127,6 @@ reference:
   - pid_domains
   - pid_norms
   - hitop_artifacts
+- title: Deprecated
+  contents:
+  - hitop_subset

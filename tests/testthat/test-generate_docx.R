@@ -110,17 +110,17 @@ test_that("the HSUM overview uses the corrected sheet wording", {
   ))
 })
 
-# ---- HiTOP-SR scale subsets (M24) -------------------------------------------
+# ---- HiTOP-SR scale modules (M24) -------------------------------------------
 #
 # Parse-and-compare per D-010: the expected item numbers and texts are derived
 # from `hitopsr_items` (filtered by `Scale`), independently of the
 # `hitopsr_scales$itemNumbers` path the generator itself walks.
 
-test_that("generate_docx_hitopsr(subset =) emits exactly the subset's items", {
+test_that("generate_docx_hitopsr(module =) emits exactly the module's items", {
   skip_if_no_docx()
-  s <- hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  s <- hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
   f <- withr::local_tempfile(fileext = ".docx")
-  suppressMessages(generate_docx_hitopsr(file = f, subset = s))
+  suppressMessages(generate_docx_hitopsr(file = f, module = s))
   xml <- read_docx_xml(f)
 
   kept <- hitopsr_items[
@@ -145,48 +145,48 @@ test_that("generate_docx_hitopsr(subset =) emits exactly the subset's items", {
   expect_false(grepl(paste0("1.  ", kept$Text[1]), xml, fixed = TRUE))
 })
 
-test_that("the subset DOCX scoring table lists only the subset's scales", {
+test_that("the module DOCX scoring table lists only the module's scales", {
   skip_if_no_docx()
-  s <- hitop_subset("hitopsr", c("Agoraphobia", "Romantic Disinterest"))
+  s <- hitop_module("hitopsr", c("Agoraphobia", "Romantic Disinterest"))
   f <- withr::local_tempfile(fileext = ".docx")
-  suppressMessages(generate_docx_hitopsr(file = f, subset = s))
+  suppressMessages(generate_docx_hitopsr(file = f, module = s))
   xml <- read_docx_xml(f)
 
   # Scoring rows carry original numbers, and HSR 310 keeps its (R) marker.
   expect_true(grepl("66, 109, 118, 260, 291", xml, fixed = TRUE))
   expect_true(grepl("42, 152, 187, 310(R), 338", xml, fixed = TRUE))
 
-  # Scales outside the subset are absent from the scoring table.
+  # Scales outside the module are absent from the scoring table.
   expect_false(grepl("Antisocial Behavior", xml, fixed = TRUE))
   expect_false(grepl("Appetite Loss", xml, fixed = TRUE))
 })
 
-test_that("generate_docx_hitopsr() rejects subset + include_subscales", {
-  s <- hitop_subset("hitopsr", "Agoraphobia")
+test_that("generate_docx_hitopsr() rejects module + include_subscales", {
+  s <- hitop_module("hitopsr", "Agoraphobia")
   f <- withr::local_tempfile(fileext = ".docx")
   expect_error(
-    generate_docx_hitopsr(file = f, subset = s, include_subscales = TRUE),
+    generate_docx_hitopsr(file = f, module = s, include_subscales = TRUE),
     "cannot be combined"
   )
   # Truthy non-TRUE values must not slip past the guard: the code that adds
   # the subscale rows tests plain truthiness, so the guard must too.
   for (truthy in list(1, 1L)) {
     expect_error(
-      generate_docx_hitopsr(file = f, subset = s, include_subscales = truthy),
+      generate_docx_hitopsr(file = f, module = s, include_subscales = truthy),
       "cannot be combined"
     )
   }
   # A value R cannot read as a logical errors either way, never silently.
   expect_error(
-    generate_docx_hitopsr(file = f, subset = s, include_subscales = "yes")
+    generate_docx_hitopsr(file = f, module = s, include_subscales = "yes")
   )
 })
 
-test_that("generate_docx_hitopsr() rejects a non-hitop_subset subset", {
+test_that("generate_docx_hitopsr() rejects a non-hitop_module module", {
   f <- withr::local_tempfile(fileext = ".docx")
   expect_error(
-    generate_docx_hitopsr(file = f, subset = c("Agoraphobia")),
-    "hitop_subset"
+    generate_docx_hitopsr(file = f, module = c("Agoraphobia")),
+    "hitop_module"
   )
 })
 
@@ -344,7 +344,7 @@ test_that("opts_per_line defaults to the option count, not a hardcoded four", {
 test_that("a one-item table builds without error", {
   skip_if_no_docx()
   # Regression: even-row shading used seq(2, n, by = 2), which counts backwards
-  # at n = 1 and aborts -- reachable through a single-item subset form.
+  # at n = 1 and aborts -- reachable through a single-item module form.
   one_item <- data.frame(Number = 1L, Text = "a")
   expect_no_error(
     make_items_table(one_item, "Number", hitopsr_instructions$options, 7, 10, "Times New Roman")
