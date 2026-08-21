@@ -78,7 +78,7 @@ behavior → none is in scope; this milestone is documentation.
       lifting and expanding the worked example currently at
       `vignettes/hitopsr_scoring.Rmd:121-183` and adding the generation half,
       which that section only mentions.
-- [ ] T2 Replace that section with a short cross-reference to the new article.
+- [x] T2 Replace that section with a short cross-reference to the new article.
 - [ ] T3 Fix the positional-indexing idiom in the three `@examples` blocks; run
       `devtools::document()`.
 - [ ] T4 Add the `_pkgdown.yml` Tutorials row. Build with
@@ -97,7 +97,9 @@ behavior → none is in scope; this milestone is documentation.
 - 2026-08-21: plan absorbed the standing candidate row on the `@examples` column-selection idiom (lineage M37, scored 78) rather than leaving it queued, because this milestone rewrites the same example blocks and splitting them across two milestones would touch them twice.
 - 2026-08-21: T1 — drafted `vignettes/articles/modules-hitopsr.Rmd` with five sections (choosing scales, building the module, generating the instrument, selecting the collected columns, scoring and reliability); `pkgdown::build_articles()` rendered it with no error and no warning against the freshly installed package; every prose figure in it was derived from an executed probe first.
 - 2026-08-21: implement gate chose the title "Building HiTOP-SR Modules", the `hitop_module()`-only example fix (the other two blocks already select by name from M43), and `tempdir()` for the article's generated files.
+- 2026-08-21: T2 — replaced `vignettes/hitopsr_scoring.Rmd`'s "Scoring a Module" section with a three-line cross-reference under the heading "Scoring Only Some Scales"; the heading avoids the four AC4 grep terms so the linking sentence is the only hit case-insensitively too, and the link is the absolute site URL because that vignette installs with the package while the article does not. The file's one other use of the word, in the `rename_hitopsr_items()` note, was reworded.
 - 2026-08-21: the criteria audit ran in **full** mode over AC1-AC6 and returned two findings, both fixed before the criteria were written. AC1 promised a render with no error *or warning*, which pkgdown routinely emits for reasons unrelated to the article — narrowed to no error, with every warning quoted and disposed. AC2 promised "every R chunk executes", which a clean render evidences only if no chunk is `eval = FALSE` — the promise now rests on a grep that settles exactly that. The audit ran inline in this session rather than in a fresh-context reader, because this session is instructed not to spawn subagents unless asked; the reader-freshness the instrument normally provides was not obtained.
+
 
 ## Decisions
 
