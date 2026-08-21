@@ -60,6 +60,7 @@
 <li><a class="dropdown-item" href="../articles/import-instructions.html">Importing into Qualtrics &amp; REDCap</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/hitopsr_scoring.html">Scoring HiTOP-SR</a></li>
+    <li><a class="dropdown-item" href="../articles/modules-hitopsr.html">Building HiTOP-SR Modules</a></li>
     <li><a class="dropdown-item" href="../articles/hitopbr_scoring.html">Scoring HiTOP-BR</a></li>
     <li><a class="dropdown-item" href="../articles/pid5_scoring.html">Scoring PID-5</a></li>
     <li><a class="dropdown-item" href="../articles/pid5sf_scoring.html">Scoring PID-5-SF</a></li>
@@ -376,100 +377,12 @@ we will need the <strong>lavaan</strong> package installed (set
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 66 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="scoring-a-module">Scoring a Module<a class="anchor" aria-label="anchor" href="#scoring-a-module"></a>
+<h2 id="scoring-only-some-scales">Scoring Only Some Scales<a class="anchor" aria-label="anchor" href="#scoring-only-some-scales"></a>
 </h2>
-<p>Not every study administers all 405 items. A <strong>module</strong>
-is a chosen set of the instrument’s scales, administered and scored on
-its own. The <code><a href="../reference/hitop_module.html">hitop_module()</a></code> function describes one — use
-<code>available_scales("hitopsr")</code> to see what is on offer — and
-the <code><a href="../reference/generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code>,
-<code><a href="../reference/generate_qualtrics_hitopsr.html">generate_qualtrics_hitopsr()</a></code>, and
-<code><a href="../reference/generate_redcap_hitopsr.html">generate_redcap_hitopsr()</a></code> functions turn that description
-into an instrument to field. Data collected that way has only the
-module’s item columns, so passing it to <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code> as
-if it were a full administration would fail on the item count.</p>
-<p>Instead, hand the same description back through the
-<code>module</code> argument. Here is a four-scale module:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">four_scale</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hitop_module.html">hitop_module</a></span><span class="op">(</span></span>
-<span>  instrument <span class="op">=</span> <span class="st">"hitopsr"</span>,</span>
-<span>  scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span>,</span>
-<span>    <span class="st">"Antisocial Behavior"</span>, <span class="st">"Romantic Disinterest"</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">four_scale</span></span>
-<span><span class="co">#&gt; &lt;hitop_module&gt; hitopsr: 21 items from 4 scales</span></span>
-<span><span class="co">#&gt; * Agoraphobia</span></span>
-<span><span class="co">#&gt; * Antisocial Behavior</span></span>
-<span><span class="co">#&gt; * Appetite Loss</span></span>
-<span><span class="co">#&gt; * Romantic Disinterest</span></span></code></pre></div>
-<p>We will stand in for the collected data by keeping just those columns
-of <code>ku_hitopsr</code>. Note that the item numbers are the
-<em>original</em> HiTOP-SR numbers — a module does not renumber its
-items from 1.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">module_data</span> <span class="op">&lt;-</span> <span class="va">ku_hitopsr</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="va">four_scale</span><span class="op">$</span><span class="va">items</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">module_data</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 21</span></span></code></pre></div>
-<p>Now score it. The <code>items</code> argument names the columns you
-actually have, in instrument order, and <code>module</code> tells the
-function which scales they belong to.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">module_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">module_data</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">module_data</span><span class="op">)</span>,</span>
-<span>  module <span class="op">=</span> <span class="va">four_scale</span>,</span>
-<span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">module_scores</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 411 × 4</span></span></span>
-<span><span class="co">#&gt;    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss</span></span>
-<span><span class="co">#&gt;              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>             2                     1.12             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>             1.4                   1.75             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>             2.2                   2.12             2   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>             1.2                   1.25             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>             2                     1.88             2   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>             1                     1.25             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>             1                     1                1.67</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>             1.6                   1.62             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>             1.4                   1.25             1.67</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>             1.2                   1.38             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 401 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: hsr_romanticDisinterest &lt;dbl&gt;</span></span></span></code></pre></div>
-<p>Only the module’s scales come back, in the order they appear in
-<code>hitopsr_scales</code>. The values are exactly what a full
-administration would have produced for those scales — a scale score
-depends only on its own items, so dropping the other 72 scales’ columns
-cannot move it:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">full_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
-<span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">module_scores</span>, <span class="va">full_scores</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">module_scores</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
-<p><code><a href="../reference/reliability_hitopsr.html">reliability_hitopsr()</a></code> takes the same argument and
-returns one row per module scale.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability_hitopsr.html">reliability_hitopsr</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">module_data</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">module_data</span><span class="op">)</span>,</span>
-<span>  module <span class="op">=</span> <span class="va">four_scale</span>,</span>
-<span>  omega <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 3</span></span></span>
-<span><span class="co">#&gt;   scale                nItems   alpha</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Agoraphobia               5  0.419 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Antisocial Behavior       8  0.545 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Appetite Loss             3  0.367 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Romantic Disinterest      5 -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">3</span></span></span></code></pre></div>
-<p>The <code>srange</code>, <code>prefix</code>, <code>missing</code>,
-<code>calc_se</code>, and <code>append</code> arguments all behave
-exactly as they do for a full administration.</p>
+<p>Not every study administers all 405 items. The package can build,
+field, and score a chosen set of the instrument’s scales; that whole
+workflow has its own walkthrough in <a href="https://jmgirard.github.io/hitop/articles/modules-hitopsr.html">Building
+HiTOP-SR Modules</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="renaming-item-columns">Renaming Item Columns<a class="anchor" aria-label="anchor" href="#renaming-item-columns"></a>
@@ -486,7 +399,7 @@ via two approaches.</p>
 Ext_432), use <code>method = "original"</code>. The function scans your
 data frame columns, matches them against the package’s built-in item
 database, and renames them to standard names.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setup a mock dataset with older legacy column names</span></span>
 <span><span class="va">legacy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  HiTOP_659 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,</span>
@@ -515,7 +428,7 @@ database, and renames them to standard names.</p>
 tracked the exact question prompts presented to your participants, use
 <code>method = "text"</code>. Provide a vector of your current column
 names alongside a matching vector of literal item text strings.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setup a mock dataset with completely custom column names</span></span>
 <span><span class="va">custom_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  q_party <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>,</span>
@@ -550,8 +463,8 @@ names alongside a matching vector of literal item text strings.</p>
 <p><em>Note: Because these small mock examples contain only some of the
 full item pool, <code><a href="../reference/rename_hitopsr_items.html">rename_hitopsr_items()</a></code> will safely issue a
 cli warning letting you know that fewer than 405 items were matched.
-This perfectly accommodates researchers intentionally administering
-modules.</em></p>
+This perfectly accommodates researchers who intentionally administer
+only part of the instrument.</em></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

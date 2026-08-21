@@ -295,121 +295,12 @@ reliability_hitopsr(
 #> # ℹ 66 more rows
 ```
 
-## Scoring a Module
+## Scoring Only Some Scales
 
-Not every study administers all 405 items. A **module** is a chosen set
-of the instrument’s scales, administered and scored on its own. The
-[`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
-function describes one — use `available_scales("hitopsr")` to see what
-is on offer — and the
-[`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
-[`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md),
-and
-[`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
-functions turn that description into an instrument to field. Data
-collected that way has only the module’s item columns, so passing it to
-[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-as if it were a full administration would fail on the item count.
-
-Instead, hand the same description back through the `module` argument.
-Here is a four-scale module:
-
-``` r
-
-four_scale <- hitop_module(
-  instrument = "hitopsr",
-  scales = c(
-    "Agoraphobia", "Appetite Loss",
-    "Antisocial Behavior", "Romantic Disinterest"
-  )
-)
-four_scale
-#> <hitop_module> hitopsr: 21 items from 4 scales
-#> * Agoraphobia
-#> * Antisocial Behavior
-#> * Appetite Loss
-#> * Romantic Disinterest
-```
-
-We will stand in for the collected data by keeping just those columns of
-`ku_hitopsr`. Note that the item numbers are the *original* HiTOP-SR
-numbers — a module does not renumber its items from 1.
-
-``` r
-
-module_data <- ku_hitopsr[sprintf("hsr%03d", four_scale$items)]
-ncol(module_data)
-#> [1] 21
-```
-
-Now score it. The `items` argument names the columns you actually have,
-in instrument order, and `module` tells the function which scales they
-belong to.
-
-``` r
-
-module_scores <- score_hitopsr(
-  data = module_data,
-  items = names(module_data),
-  module = four_scale,
-  append = FALSE
-)
-module_scores
-#> # A tibble: 411 × 4
-#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss
-#>              <dbl>                  <dbl>            <dbl>
-#>  1             2                     1.12             1   
-#>  2             1.4                   1.75             1   
-#>  3             2.2                   2.12             2   
-#>  4             1.2                   1.25             1   
-#>  5             2                     1.88             2   
-#>  6             1                     1.25             1   
-#>  7             1                     1                1.67
-#>  8             1.6                   1.62             1   
-#>  9             1.4                   1.25             1.67
-#> 10             1.2                   1.38             1   
-#> # ℹ 401 more rows
-#> # ℹ 1 more variable: hsr_romanticDisinterest <dbl>
-```
-
-Only the module’s scales come back, in the order they appear in
-`hitopsr_scales`. The values are exactly what a full administration
-would have produced for those scales — a scale score depends only on its
-own items, so dropping the other 72 scales’ columns cannot move it:
-
-``` r
-
-full_scores <- score_hitopsr(
-  data = ku_hitopsr,
-  items = sprintf("hsr%03d", 1:405),
-  append = FALSE
-)
-all.equal(module_scores, full_scores[names(module_scores)])
-#> [1] TRUE
-```
-
-[`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
-takes the same argument and returns one row per module scale.
-
-``` r
-
-reliability_hitopsr(
-  data = module_data,
-  items = names(module_data),
-  module = four_scale,
-  omega = FALSE
-)
-#> # A tibble: 4 × 3
-#>   scale                nItems   alpha
-#>   <chr>                 <int>   <dbl>
-#> 1 Agoraphobia               5  0.419 
-#> 2 Antisocial Behavior       8  0.545 
-#> 3 Appetite Loss             3  0.367 
-#> 4 Romantic Disinterest      5 -0.0803
-```
-
-The `srange`, `prefix`, `missing`, `calc_se`, and `append` arguments all
-behave exactly as they do for a full administration.
+Not every study administers all 405 items. The package can build, field,
+and score a chosen set of the instrument’s scales; that whole workflow
+has its own walkthrough in [Building HiTOP-SR
+Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.html).
 
 ## Renaming Item Columns
 
@@ -496,5 +387,5 @@ standardized_custom
 item pool,
 [`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md)
 will safely issue a cli warning letting you know that fewer than 405
-items were matched. This perfectly accommodates researchers
-intentionally administering modules.*
+items were matched. This perfectly accommodates researchers who
+intentionally administer only part of the instrument.*
