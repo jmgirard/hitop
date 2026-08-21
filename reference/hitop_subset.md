@@ -1,11 +1,23 @@
-# Describe a Subset of an Instrument's Scales
+# Deprecated: Describe a Subset of an Instrument's Scales
 
-Builds a validated description of a subset of an instrument's scales,
-for use with the `generate_*` family. Supplying the result as the
-`subset` argument of a generator produces a shortened instrument
-containing only the items belonging to the chosen scales, **keeping each
-item's original number** so that data collected with the shortened form
-can still be scored against the full instrument's key.
+`hitop_subset()` was renamed to
+[`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+in hitop 0.2.0, when a chosen set of an instrument's scales became a
+*module* throughout this package. It is kept so existing scripts keep
+running: it warns, then returns the same descriptor
+[`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+returns, carrying the legacy `hitop_subset` class. Every function that
+accepts a module also accepts that legacy object.
+
+The `subset` argument of
+[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+[`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md),
+[`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
+[`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md),
+and
+[`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
+was renamed to `module` at the same time, and is deprecated in the same
+way.
 
 ## Usage
 
@@ -17,8 +29,8 @@ hitop_subset(instrument = "hitopsr", scales)
 
 - instrument:
 
-  A string naming the instrument to subset. Currently only `"hitopsr"`
-  is supported. (default = `"hitopsr"`)
+  A string naming the instrument to build a module from. Currently only
+  `"hitopsr"` is supported. (default = `"hitopsr"`)
 
 - scales:
 
@@ -29,30 +41,24 @@ hitop_subset(instrument = "hitopsr", scales)
 
 ## Value
 
-An object of class `hitop_subset`: a list with the resolved
-`instrument`, the canonical display `scales` and their `camelCase`
-stems, the `items` kept (original instrument numbering, ascending), the
-parallel `reverse` keying flags, and `nItems`.
+An object of class `hitop_subset`, identical to what
+[`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+returns apart from its class attribute.
 
 ## See also
 
-[`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
-[`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md),
-and
-[`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md),
-each of which takes a `subset` argument.
+[`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md),
+which replaces this.
 
 ## Examples
 
 ``` r
-# Describe a two-scale subset of the HiTOP-SR
-s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
-s
+# Deprecated; use hitop_module() instead
+m <- suppressWarnings(
+  hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+)
+m
 #> <hitop_subset> hitopsr: 8 items from 2 scales
 #> * Agoraphobia
 #> * Appetite Loss
-
-# The item numbers are the original HiTOP-SR numbers, not 1..8
-s$items
-#> [1]  66 109 118 144 202 260 291 389
 ```

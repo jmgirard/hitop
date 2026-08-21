@@ -295,35 +295,36 @@ reliability_hitopsr(
 #> # ℹ 66 more rows
 ```
 
-## Scoring a Short Form
+## Scoring a Module
 
-Not every study administers all 405 items. The
-[`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
-function describes a short form built from a chosen set of scales, and
-the
+Not every study administers all 405 items. A **module** is a chosen set
+of the instrument’s scales, administered and scored on its own. The
+[`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+function describes one — use `available_scales("hitopsr")` to see what
+is on offer — and the
 [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
 [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md),
 and
 [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
 functions turn that description into an instrument to field. Data
-collected that way has only the subset’s item columns, so passing it to
+collected that way has only the module’s item columns, so passing it to
 [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
 as if it were a full administration would fail on the item count.
 
-Instead, hand the same description back through the `subset` argument.
-Here is a four-scale short form:
+Instead, hand the same description back through the `module` argument.
+Here is a four-scale module:
 
 ``` r
 
-short_form <- hitop_subset(
+four_scale <- hitop_module(
   instrument = "hitopsr",
   scales = c(
     "Agoraphobia", "Appetite Loss",
     "Antisocial Behavior", "Romantic Disinterest"
   )
 )
-short_form
-#> <hitop_subset> hitopsr: 21 items from 4 scales
+four_scale
+#> <hitop_module> hitopsr: 21 items from 4 scales
 #> * Agoraphobia
 #> * Antisocial Behavior
 #> * Appetite Loss
@@ -332,28 +333,28 @@ short_form
 
 We will stand in for the collected data by keeping just those columns of
 `ku_hitopsr`. Note that the item numbers are the *original* HiTOP-SR
-numbers — the short form does not renumber its items from 1.
+numbers — a module does not renumber its items from 1.
 
 ``` r
 
-short_data <- ku_hitopsr[sprintf("hsr%03d", short_form$items)]
-ncol(short_data)
+module_data <- ku_hitopsr[sprintf("hsr%03d", four_scale$items)]
+ncol(module_data)
 #> [1] 21
 ```
 
 Now score it. The `items` argument names the columns you actually have,
-in instrument order, and `subset` tells the function which scales they
+in instrument order, and `module` tells the function which scales they
 belong to.
 
 ``` r
 
-short_scores <- score_hitopsr(
-  data = short_data,
-  items = names(short_data),
-  subset = short_form,
+module_scores <- score_hitopsr(
+  data = module_data,
+  items = names(module_data),
+  module = four_scale,
   append = FALSE
 )
-short_scores
+module_scores
 #> # A tibble: 411 × 4
 #>    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss
 #>              <dbl>                  <dbl>            <dbl>
@@ -371,7 +372,7 @@ short_scores
 #> # ℹ 1 more variable: hsr_romanticDisinterest <dbl>
 ```
 
-Only the subset’s scales come back, in the order they appear in
+Only the module’s scales come back, in the order they appear in
 `hitopsr_scales`. The values are exactly what a full administration
 would have produced for those scales — a scale score depends only on its
 own items, so dropping the other 72 scales’ columns cannot move it:
@@ -383,19 +384,19 @@ full_scores <- score_hitopsr(
   items = sprintf("hsr%03d", 1:405),
   append = FALSE
 )
-all.equal(short_scores, full_scores[names(short_scores)])
+all.equal(module_scores, full_scores[names(module_scores)])
 #> [1] TRUE
 ```
 
 [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
-takes the same argument and returns one row per subset scale.
+takes the same argument and returns one row per module scale.
 
 ``` r
 
 reliability_hitopsr(
-  data = short_data,
-  items = names(short_data),
-  subset = short_form,
+  data = module_data,
+  items = names(module_data),
+  module = four_scale,
   omega = FALSE
 )
 #> # A tibble: 4 × 3
@@ -491,9 +492,9 @@ standardized_custom
 #> 3     1     4  30
 ```
 
-*Note: Because these small mock examples contain only a subset of the
-full item pool,
+*Note: Because these small mock examples contain only some of the full
+item pool,
 [`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md)
 will safely issue a cli warning letting you know that fewer than 405
 items were matched. This perfectly accommodates researchers
-intentionally administering short forms or separate diagnostic modules.*
+intentionally administering modules.*

@@ -79,6 +79,7 @@
 <span>  missing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"available"</span>, <span class="st">"complete"</span><span class="op">)</span>,</span>
 <span>  calc_se <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  module <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subset <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -89,13 +90,13 @@
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>A data frame containing the HiTOP-SR items (numerically coded):
-all 405 of them, or, when <code>subset</code> is supplied, that short form's items.</p></dd>
+all 405 of them, or, when <code>module</code> is supplied, that module's items.</p></dd>
 
 
 <dt id="arg-items">items<a class="anchor" aria-label="anchor" href="#arg-items"></a></dt>
 <dd><p>A vector of column names (as strings) or numbers (as integers)
 corresponding to the HiTOP-SR items held in <code>data</code> — all 405, or, when
-<code>subset</code> is supplied, that short form's items. Items must be supplied in
+<code>module</code> is supplied, that module's items. Items must be supplied in
 instrument order; a misordered mapping silently scores the wrong items, so a
 warning is issued when the names share a common prefix and trailing number
 but those numbers are not ascending. Duplicated entries are an error.</p></dd>
@@ -135,13 +136,18 @@ respondent's true score; for measurement precision see
 be added to the end of the <code>data</code> input. (default = <code>TRUE</code>)</p></dd>
 
 
-<dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
-<dd><p>An optional <code>hitop_subset</code> object, as returned by
-<code><a href="hitop_subset.html">hitop_subset()</a></code>, describing a short form of the instrument. When supplied,
-<code>data</code> and <code>items</code> hold only that subset's item columns — in ascending
+<dt id="arg-module">module<a class="anchor" aria-label="anchor" href="#arg-module"></a></dt>
+<dd><p>An optional <code>hitop_module</code> object, as returned by
+<code><a href="hitop_module.html">hitop_module()</a></code>, describing a module of the instrument. When supplied,
+<code>data</code> and <code>items</code> hold only that module's item columns — in ascending
 instrument order, as the <code>generate_*_hitopsr()</code> forms lay them out — and
-only that subset's scales are scored. When <code>NULL</code>, all 405 items are
+only that module's scales are scored. When <code>NULL</code>, all 405 items are
 expected and all 76 scales are scored. (default = <code>NULL</code>)</p></dd>
+
+
+<dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
+<dd><p>Deprecated. The former name of <code>module</code>; supplying it warns.
+Supplying both <code>module</code> and <code>subset</code> is an error. (default = <code>NULL</code>)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -180,12 +186,12 @@ omega), use <code><a href="reliability_hitopsr.html">reliability_hitopsr()</a></
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_dietaryRestraint &lt;dbl&gt;, hsr_difficultiesReachingOrgasm &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_diseaseConviction &lt;dbl&gt;, hsr_dishonesty &lt;dbl&gt;, …</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Score data collected with a two-scale short form. Select the item columns</span></span></span>
-<span class="r-in"><span><span class="co"># by name: `s$items` holds original HiTOP-SR numbers, which are column</span></span></span>
+<span class="r-in"><span><span class="co"># Score data collected with a two-scale module. Select the item columns</span></span></span>
+<span class="r-in"><span><span class="co"># by name: `m$items` holds original HiTOP-SR numbers, which are column</span></span></span>
 <span class="r-in"><span><span class="co"># positions only in a data frame that is exactly the 405 items in order.</span></span></span>
-<span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="hitop_subset.html">hitop_subset</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">short</span> <span class="op">&lt;-</span> <span class="va">sim_hitopsr</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"hsr_"</span>, <span class="va">s</span><span class="op">$</span><span class="va">items</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-in"><span><span class="fu">score_hitopsr</span><span class="op">(</span><span class="va">short</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">short</span><span class="op">)</span>, subset <span class="op">=</span> <span class="va">s</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, scales <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">collected</span> <span class="op">&lt;-</span> <span class="va">sim_hitopsr</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"hsr_"</span>, <span class="va">m</span><span class="op">$</span><span class="va">items</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu">score_hitopsr</span><span class="op">(</span><span class="va">collected</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">collected</span><span class="op">)</span>, module <span class="op">=</span> <span class="va">m</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 2</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    hsr_agoraphobia hsr_appetiteLoss</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>

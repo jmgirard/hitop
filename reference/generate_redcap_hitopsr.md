@@ -12,6 +12,7 @@ generate_redcap_hitopsr(
   form_name = "hitopsr_questionnaire",
   required = TRUE,
   breaks = 15,
+  module = NULL,
   subset = NULL
 )
 ```
@@ -39,12 +40,17 @@ generate_redcap_hitopsr(
   page break. Set to `0` or `NULL` to disable pagination entirely.
   Defaults to `15`.
 
-- subset:
+- module:
 
   An optional
-  [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
   object restricting the instrument to the items of the chosen scales,
   keeping their original HiTOP-SR item numbers. (default = `NULL`)
+
+- subset:
+
+  Deprecated. The former name of `module`; supplying it warns. Supplying
+  both `module` and `subset` is an error. (default = `NULL`)
 
 ## Value
 
@@ -60,12 +66,12 @@ Step-by-step import instructions for Qualtrics and REDCap:
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmpgTbg3b/file1a4c2b827eee.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpqCkA5F/file1a966db7fb9c.zip
 
-# A two-scale subset, original numbering preserved
+# A two-scale module, original numbering preserved
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
-  subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Instrument successfully zipped to /tmp/RtmpgTbg3b/file1a4c1c6e9a9e.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpqCkA5F/file1a962b7ef48f.zip
 ```

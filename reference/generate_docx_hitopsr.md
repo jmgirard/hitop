@@ -16,6 +16,7 @@ generate_docx_hitopsr(
   include_subscales = FALSE,
   font_size = 10,
   font_family = "Times New Roman",
+  module = NULL,
   subset = NULL
 )
 ```
@@ -57,13 +58,18 @@ generate_docx_hitopsr(
   Character string specifying the font family to be used. Defaults to
   `"Times New Roman"`.
 
-- subset:
+- module:
 
   An optional
-  [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
   object restricting the form to the items of the chosen scales, keeping
   their original HiTOP-SR item numbers. Cannot be combined with
   `include_subscales = TRUE`. (default = `NULL`)
+
+- subset:
+
+  Deprecated. The former name of `module`; supplying it warns. Supplying
+  both `module` and `subset` is an error. (default = `NULL`)
 
 ## Value
 
@@ -75,13 +81,13 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpgTbg3b/file1a4c114850b7.docx
+#> ✔ Document successfully created at /tmp/RtmpqCkA5F/file1a96501cbcfb.docx
 
-# A short form containing only two scales, original numbering preserved
+# A module containing only two scales, original numbering preserved
 generate_docx_hitopsr(
   file = tempfile(fileext = ".docx"),
-  subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Document successfully created at /tmp/RtmpgTbg3b/file1a4c710eaf1b.docx
+#> ✔ Document successfully created at /tmp/RtmpqCkA5F/file1a963a0d4cbf.docx
 # }
 ```

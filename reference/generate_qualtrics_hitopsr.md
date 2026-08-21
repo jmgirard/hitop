@@ -13,6 +13,7 @@ generate_qualtrics_hitopsr(
   id_prefix = "HSR",
   include_instructions = TRUE,
   breaks = 15,
+  module = NULL,
   subset = NULL
 )
 ```
@@ -45,12 +46,17 @@ generate_qualtrics_hitopsr(
   page break. Set to `0` or `NULL` to disable pagination. Defaults to
   `15`.
 
-- subset:
+- module:
 
   An optional
-  [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
   object restricting the file to the items of the chosen scales, keeping
   their original HiTOP-SR item numbers. (default = `NULL`)
+
+- subset:
+
+  Deprecated. The former name of `module`; supplying it warns. Supplying
+  both `module` and `subset` is an error. (default = `NULL`)
 
 ## Value
 
@@ -61,12 +67,12 @@ Invisibly returns the path to the created file (`file`).
 ``` r
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpgTbg3b/file1a4c2f2a33cb.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpqCkA5F/file1a961cdca487.txt
 
-# A two-scale subset, original numbering preserved
+# A two-scale module, original numbering preserved
 generate_qualtrics_hitopsr(
   file = tempfile(fileext = ".txt"),
-  subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpgTbg3b/file1a4c76c67f5d.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpqCkA5F/file1a965064f081.txt
 ```

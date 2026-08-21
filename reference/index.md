@@ -47,8 +47,10 @@
 
 ## Item Export
 
-- [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
-  : Describe a Subset of an Instrument's Scales
+- [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  : Describe a Module of an Instrument's Scales
+- [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
+  : List the Scales an Instrument Offers
 - [`generate_docx_hitopbr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopbr.md)
   : Generate a Word Document for the HiTOP-BR Assessment
 - [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
@@ -131,3 +133,8 @@
   : Personality Inventory for DSM-5 Normative Tables
 - [`hitop_artifacts`](https://jmgirard.github.io/hitop/reference/hitop_artifacts.md)
   : Distribution Artifact Manifest
+
+## Deprecated
+
+- [`hitop_subset()`](https://jmgirard.github.io/hitop/reference/hitop_subset.md)
+  : Deprecated: Describe a Subset of an Instrument's Scales
