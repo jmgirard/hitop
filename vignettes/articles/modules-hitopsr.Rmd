@@ -17,8 +17,9 @@ library(tibble)
 ```
 
 The full HiTOP-SR asks 405 items and returns 76 scale scores, which is more
-than many studies need or many participants will sit through. A **module** is a
-chosen set of the instrument's scales, administered and scored on its own.
+than many studies need and more than many participants will sit through. A
+**module** is a chosen set of the instrument's scales, administered and scored
+on its own.
 
 This article walks the whole module workflow end to end: choosing which scales
 to include, describing the module, generating the files you will actually field,
@@ -43,6 +44,11 @@ scale_menu
 Both name columns are accepted when you build a module, so you can write scale
 names the way they are printed on the form (`"Antisocial Behavior"`) or the way
 they appear in scored output (`"antisocialBehavior"`).
+
+A module is built from these 76 scales only. The instrument also defines 17
+subscales (see `hitopsr_subscales`), but a subscale is not a unit you can select
+here — `hitop_module()` rejects a subscale name as unknown. Ask for the scale
+that contains it instead.
 
 Because this is an ordinary tibble, you can also use it to plan the length of
 your module. For example, to see the shortest scales:
@@ -93,6 +99,7 @@ would give a real path or let the default filename land in your working
 directory.
 
 ```{r}
+#| message: false
 outdir <- tempdir()
 
 docx_file <- generate_docx_hitopsr(
@@ -163,14 +170,17 @@ names(ku_hitopsr[four_scale$items])[1:4]
 
 Those are items 40, 64, 66, and 107 masquerading as the module's items. Nothing
 would have failed loudly; the scores would simply have been wrong. If your item
-columns are named differently, `rename_hitopsr_items()` can standardize them
-first.
+columns carry other names, `rename_hitopsr_items()` can rename them to standard
+item numbers first; its `prefix` argument sets the stem those names are built
+from.
 
 ## Scoring and Reliability
 
-Hand the same description back through the `module` argument. The `items`
-argument names the columns you actually have, in instrument order, and `module`
-tells the function which scales they belong to.
+Hand the same description back through the `module` argument. Without it,
+`score_hitopsr()` expects a full administration and stops on the item count
+("Expected 405 items but got 21"); with it, the `items` argument names the
+columns you actually have, in instrument order, and `module` tells the function
+which scales they belong to.
 
 ```{r}
 module_scores <- score_hitopsr(
@@ -200,7 +210,6 @@ all.equal(module_scores, full_scores[names(module_scores)])
 scale.
 
 ```{r}
-#| warning: false
 reliability_hitopsr(
   data = collected,
   items = names(collected),
@@ -209,10 +218,13 @@ reliability_hitopsr(
 )
 ```
 
-Reliability is worth checking on your own module rather than assumed: these are
-short scales, and in this sample the four coefficients range from clearly
-unacceptable to modest. Set `omega = FALSE` to skip McDonald's ω, which needs
-the **lavaan** package.
+Reliability is worth checking on your own module rather than assumed. In this
+sample the four coefficients run from modest down to negative: Romantic
+Disinterest returns a negative α, which is not a small number but a sign that
+its items covary near zero or oppositely in these data, so a mean of them is
+not measuring one thing. Short scales make α less stable, but shortness alone
+does not produce a negative value. Set `omega = FALSE` to skip McDonald's ω,
+which needs the **lavaan** package.
 
 The `srange`, `prefix`, `missing`, `calc_se`, and `append` arguments all behave
 exactly as they do for a full administration; see [Scoring the
