@@ -19,13 +19,16 @@ User-facing tier: the deliverable is a public web page and a link from this
 package's site.
 
 **In:** registering `hitop` on `jmgirard.r-universe.dev` so a WebAssembly build
-of the package exists; a new public repo holding a shinylive app that installs
-`hitop` from that repository, lists the scales as checkboxes, and offers the
-three generated files as downloads; deletion of the unused 11-line
-`inst/shiny/app.R` placeholder, which this supersedes; and a link to the
-deployed app from this package's pkgdown Instruments menu. This repo's own PR
-carries only that link, the placeholder deletion, and tracking — the app repo
-keeps its own history, which no PR here can contain.
+of the package exists; a new public repo holding a static webR page that
+installs `hitop` from that repository, lists the scales as checkboxes, and
+offers the three generated files as downloads; replacing this package's two
+`utils::zip()` call sites with `zip::zip()` so the REDCap generator stops
+shelling out to an external executable, which it cannot do under emscripten;
+deletion of the unused 11-line `inst/shiny/app.R` placeholder, which this
+supersedes; and a link to the deployed app from this package's pkgdown
+Instruments menu. This repo's own PR carries that link, the zip change, the
+placeholder deletion, and tracking — the app repo keeps its own history, which
+no PR here can contain.
 
 **Out:** scoring in the app → not this milestone; the app generates instruments
 and reads no response data. Modules for the HiTOP-BR and PID-5 in the app →
@@ -40,10 +43,18 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
       package API response reports a `wasm`/`emscripten` binary with status
       `success`; both responses are recorded in the Review with the date
       observed.
-- [ ] AC2 The app repo exists, is public, and holds a shinylive app that
-      installs `hitop` from the r-universe WebAssembly repository, with no
-      server-side R process — evidenced by the deployed page working as a static
-      site.
+- [ ] AC2 The app repo `jmgirard/hitop-builder` is publicly readable — an
+      unauthenticated request to its GitHub URL returns 200 — and its tracked
+      files are static web assets plus the Pages deploy workflow, with no `.R`
+      file and no application backend. In one load of the deployed Pages URL in
+      a fresh browser profile, the scale checkboxes render, the page's webR log
+      reports `installPackages("hitop")` and `library(hitop)` completing with no
+      error and no uncaught console error, and the Network panel shows at least
+      one request to `https://jmgirard.r-universe.dev` serving the `hitop`
+      WebAssembly binary, with every other request going only to the Pages
+      origin, the webR distribution origin the app's source names, or
+      `https://repo.r-wasm.org`. Repo file listing, log excerpt, and network
+      origin list recorded in the Review with the date observed.
 - [ ] AC3 For each of the three formats, a named scale selection made in the
       deployed app produces a downloaded file whose content matches what the
       corresponding `generate_*_hitopsr()` call produces locally for the same
@@ -67,9 +78,9 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 
 - AC1 → T1
 - AC2 → T2, T3
-- AC3 → T2, T4
+- AC3 → T2, T4, T6
 - AC4 → T3
-- AC5 → T5
+- AC5 → T5, T6
 - AC6 → T5
 
 ## Tasks
@@ -86,8 +97,13 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
       `shiny`, `systemfonts`, `gdtools`, `zip`, `xml2` (observed 2026-08-21) —
       but their behavior under emscripten is unverified. A format that cannot
       generate returns this milestone to plan rather than being worked around.
-- [ ] T3 Build the app: checkboxes driven by `available_scales("hitopsr")`, a
-      running item count, and a `downloadHandler()` per format.
+- [ ] T6 Replace `utils::zip()` with `zip::zip(mode = "cherry-pick")` at both
+      call sites in `R/generate_redcap.R`, add {zip} to Imports, and cover it
+      with a test that the generated archive holds one flat `instrument.csv`
+      entry (D-035). Runs before the app so the app never works around it.
+- [ ] T3 Build the app: a webR page whose checkbox list is driven by
+      `available_scales("hitopsr")`, with a running item count and one download
+      button per format.
 - [ ] T4 Deploy to GitHub Pages and run AC3's round-trip comparison per format.
 - [ ] T5 In this repo: the `_pkgdown.yml` Instruments-menu link, the
       `inst/shiny/app.R` deletion, and the app repo's README.
@@ -105,6 +121,10 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-21: T2 probe run in webR 0.6.0 (R 4.6.0) on a COOP/COEP static page, crossOriginIsolated true: `installPackages("hitop")` from `https://jmgirard.r-universe.dev` succeeded in ~16 s, pulling every Import including officer, flextable, gdtools, systemfonts, ragg and zip; `library(hitop)` and `hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))` both returned normally.
 - 2026-08-21: T2 result by format on that module — Qualtrics `.txt` generated (1991 bytes); DOCX generated and verified a real OOXML package (PK magic, 16 zip entries, a 123,144-byte `word/document.xml`, all 8 of the module's item numbers present in its stripped text); REDCap aborted with `The `system()` function is unsupported under Emscripten.`
 - 2026-08-21: the REDCap abort localizes to `utils::zip()` at `R/generate_redcap.R:306` (and again at :598), which shells out to an external `zip` executable; a follow-up probe installed {zip} 2.3.3 under the same webR and `zip::zip(mode = "cherry-pick")` wrote a valid 173-byte archive whose single entry was the flat `instrument.csv`, so the format is generable under emscripten once the package stops shelling out.
+- 2026-08-21: amendment gate — Scope (In) widened to carry a package-side fix: this repo's PR now also replaces `utils::zip()` with `zip::zip()`, recorded as D-035, because the REDCap format is generable under emscripten once the shell-out goes and the same shell-out already fails for users with no `zip` executable on `PATH`. Rejected at the gate: rebuilding the archive in the app's own JavaScript, shipping two formats, and returning the milestone to plan.
+- 2026-08-21: amendment gate — the app's shape is a plain webR page rather than a shinylive app, chosen for a much smaller first load on a page that already spends ~16 s installing `hitop` and for having no build step for the deploy workflow to run; falsified by the hand-written UI growing past what a single HTML file can carry legibly. Scope (In) and T3 reworded; new task T6 added and mapped to AC3 and AC5. No acceptance criterion changed.
+- 2026-08-21: amendment return: AC2 — "The app repo `jmgirard/hitop-builder` is publicly readable — an unauthenticated request to its GitHub URL returns 200 — and its tracked files are static web assets plus the Pages deploy workflow, with no `.R` file and no application backend. In one load of the deployed Pages URL in a fresh browser profile, the scale checkboxes render, the page's webR log reports `installPackages("hitop")` and `library(hitop)` completing with no error and no uncaught console error, and the Network panel shows at least one request to `https://jmgirard.r-universe.dev` serving the `hitop` WebAssembly binary, with every other request going only to the Pages origin, the webR distribution origin the app's source names, or `https://repo.r-wasm.org`. Repo file listing, log excerpt, and network origin list recorded in the Review with the date observed."
+- 2026-08-21: AC2's amended wording was audited in **full** mode by two fresh-context [O] readers, neither of which authored what it read, at the user's explicit go-ahead to spawn them. The first returned FIX on verifiability and instrument: "runs it in the reader's browser" and "working as a static site" named no observable signal. Its replacement was re-audited and returned FIX again — "holds no server-side code" is false as written, because the Pages deploy workflow is server-side code; the origin whitelist permitted the r-universe host without requiring it, so "installs from r-universe" had no positive check; and "the console showing…" fixed no success signal. Further churn went to the user per the once-only re-entry rule, who chose a trimmed wording carrying all three fixes.
 
 ## Decisions
 
