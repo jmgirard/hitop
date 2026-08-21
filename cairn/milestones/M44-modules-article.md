@@ -1,6 +1,6 @@
 # M44: A dedicated article for building and scoring HiTOP-SR modules
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M43
 - **Driving RR:** —
@@ -86,7 +86,7 @@ behavior → none is in scope; this milestone is documentation.
       lesson records that the singular `build_article()` cannot find a newly
       added `.Rmd`, and the M21 lesson that articles render against the
       *installed* package.
-- [ ] T5 Full build and check: `build_site()`, `check_pkgdown()`,
+- [x] T5 Full build and check: `build_site()`, `check_pkgdown()`,
       `devtools::test()`, `devtools::check()`; record AC1's warnings, AC2's and
       AC4's grep output, and the read of the rendered page.
 
@@ -100,6 +100,7 @@ behavior → none is in scope; this milestone is documentation.
 - 2026-08-21: T2 — replaced `vignettes/hitopsr_scoring.Rmd`'s "Scoring a Module" section with a three-line cross-reference under the heading "Scoring Only Some Scales"; the heading avoids the four AC4 grep terms so the linking sentence is the only hit case-insensitively too, and the link is the absolute site URL because that vignette installs with the package while the article does not. The file's one other use of the word, in the `rename_hitopsr_items()` note, was reworded.
 - 2026-08-21: T3 — `score_hitopsr()` and `reliability_hitopsr()` already selected by name (M43 wrote them that way), so only `hitop_module()`'s `@examples` needed the idiom; added a by-name selection against `ku_hitopsr`, whose leading `participant`/`biosex` columns make the positional trap concrete. `devtools::document()` rewrote `man/hitop_module.Rd`; the example lines were executed and `devtools::test()` is clean (0 failures, 13674 passing, 1 skip).
 - 2026-08-21: T4 — added the Tutorials navbar row directly after "Scoring HiTOP-SR"; `pkgdown::check_pkgdown()` reports no problems, and `pkgdown::build_articles()` after `devtools::install()` re-rendered the edited scoring vignette with no error or warning.
+- 2026-08-21: T5 — full local verification clean: `pkgdown::build_site()` wrote `docs/articles/modules-hitopsr.html` with no error or warning, `pkgdown::check_pkgdown()` found no problems, `devtools::document()` produced no diff, and `devtools::check()` returned 0 errors / 0 warnings / 0 notes (tests run inside it). Added the NEWS entry for the new article. The rendered page was read end to end and every printed figure in its prose matches the chunk output above it.
 - 2026-08-21: the criteria audit ran in **full** mode over AC1-AC6 and returned two findings, both fixed before the criteria were written. AC1 promised a render with no error *or warning*, which pkgdown routinely emits for reasons unrelated to the article — narrowed to no error, with every warning quoted and disposed. AC2 promised "every R chunk executes", which a clean render evidences only if no chunk is `eval = FALSE` — the promise now rests on a grep that settles exactly that. The audit ran inline in this session rather than in a fresh-context reader, because this session is instructed not to spawn subagents unless asked; the reader-freshness the instrument normally provides was not obtained.
 
 

@@ -18,6 +18,13 @@ before a CRAN submission.
   output column, and the item count — so you no longer need to know which
   dataset to open before choosing scales.
 
+* **A new article, [Building HiTOP-SR
+  Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.html),
+  walks the whole module workflow**: choosing scales, describing the module,
+  generating the paper, Qualtrics, and REDCap files, selecting the collected
+  item columns, and scoring plus reliability. The HiTOP-SR scoring vignette now
+  links to it rather than carrying its own shorter copy.
+
 * The download buttons on the instrument pages now serve the files from the
   package website itself, so a browser saves each one under its own name. The
   Qualtrics survey files used to open as text in a new tab, because GitHub
