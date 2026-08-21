@@ -117,6 +117,7 @@ D-entry, and one warning does not earn one.
 - 2026-08-21: the M24 CRLF lesson held — `R/generate_qualtrics.R` and `R/generate_redcap.R` were patched with newline-preserving edits and each shows a 12-line diff with CRLF endings intact, rather than the ~1,700-line inflation a whole-file rewrite causes.
 - 2026-08-21: review opened draft PR #48; CI green so far on macOS, ubuntu release/oldrel-1, pkgdown, and test-coverage, with windows and ubuntu-devel still pending. Checkpoint: AC1-AC6 verified with fresh evidence and ticked; AC7 awaits the local `devtools::check()` still running, so its box stays unticked. Three fresh-context reviewers were spawned after the maintainer explicitly authorised subagents for this session (they are otherwise disabled here); the blame-history lens has reported zero findings, the diff-bug and prior-review lenses are still running.
 - 2026-08-21: AC3's first evidence was invalid — found by the primary session while the review lenses ran, and independently confirmed by the diff-bug lens as its top finding. The two "accepts `module =` without warning" tests were vacuous; both the vacuity and the fix were demonstrated by mutation rather than asserted (committed tests 0 failures under a mutation that warns on every call; recast tests 2). Fixed on the branch before the approval gate; AC3 re-verified against the recast tests.
+- 2026-08-21: hit the M38 lesson while mutation-testing the fixes — `git checkout -- <file>` to revert a mutation also discarded the uncommitted F3/F6/F8 source edits in those same files, leaving `validate_module_instrument()` defined twice and halting `check()`. Caught by grepping for the fixes rather than trusting the revert; all three were reapplied, and the fixes were COMMITTED before mutation testing resumed. The lesson says exactly this and was read at plan time; it was not applied.
 
 ## Decisions
 
@@ -192,3 +193,61 @@ No principle changed, so `cairn_impact` is skipped. Toolchain checks from the
 - 2026-08-21: T6 — the two unreleased 0.2.0 NEWS entries describing this feature were rewritten in module vocabulary rather than contradicted by a fourth entry, since 0.2.0 has not shipped; a separate entry covers the deprecation for anyone already on the development version. `_pkgdown.yml` swaps `hitop_subset` for `hitop_module` and adds `available_scales`; `hitop_subset` is `@keywords internal`, so pkgdown excludes it and `check_pkgdown()` is clean without a row for it. The scoring vignette's section is renamed and re-worded here; M44 replaces it with a link.
 - 2026-08-21: T7 — `devtools::document()` no diff, `devtools::test()` 13663 passing / 0 failures / 0 warnings / 1 skip, `pkgdown::check_pkgdown()` "No problems found", `devtools::check()` Status: OK (0 errors, 0 warnings, 0 notes). AC6's sweep is clean: every remaining `subset` in the swept paths is either a deprecation shim or the ordinary English/mathematical word in code unrelated to this family.
 - 2026-08-21: docs sweep surfaced a terminology collision recorded as a ROADMAP candidate — the HiTOP-HSUM's Society name is the Harmful Substance Use *Module*, so "module" now names two things. Nothing user-facing conflates them today; IP1 bars renaming the instrument, so any fix is package-side and waits for modularization to reach other instruments.
+
+**Independent review** — three fresh-context lenses, spawned after the
+maintainer explicitly authorised subagents for this session (they are otherwise
+disabled here; recorded because the instrument's value depends on the reader
+being fresh). Blame-history [S]: zero findings — it verified every safeguard M24
+and M37 established survives the rename, naming the `include_subscales`
+truthiness guard, the Qualtrics zero-pad width, the one-item-table `which()`,
+the `nItems`/`length(items)` consistency check, and the canonical reverse-key
+read. Prior-review [S]: zero findings — the GitHub inline-comment probe returned
+`[]`, so archived `## Review` sections were the surface; it confirmed no
+LESSONS.md entry is re-broken and verified the two-part `cli::pluralize()` call
+by executing it. Diff-bug [O]: it built `main` in a scratch tree and proved
+mechanically that no scored value moves — scores, `_se`, alpha, the Qualtrics
+`.txt`, and the REDCap zip all `identical()` across four module shapes and a
+full run — then returned 12 ranked findings.
+
+**Findings and disposition** (all 12 logged; maintainer triaged at the gate,
+choosing "fix all nine"):
+- F1 the two "accepts `module =` without warning" tests were vacuous — ACTIONED,
+  see the AC3 entry above. Found independently by the primary session and
+  confirmed by the lens.
+- F2 `m = ` became ambiguous between `module` and `missing` in
+  `score_hitopsr()`, a break no shim covers — ACTIONED: recorded in NEWS, with a
+  test pinning that `mo`/`mi` still resolve and that exactly two arguments start
+  with `m`. Verified against the implementation before acting.
+- F3 the deprecated constructor's errors blamed `hitop_module()`, a function the
+  user never called — ACTIONED: `call` threaded through the shim, with
+  `hitop_module()`'s own default set to its own frame so a direct call still
+  blames itself. Verified before acting; mutation-checked after.
+- F4 no decision record for the rename or the new condition-class contract —
+  ACTIONED: D-034.
+- F6 `available_scales()` validated `instrument` then hardcoded `hitopsr_scales`
+  — ACTIONED: one `module_scale_tables()` map now supplies both the supported
+  set and every table, so an instrument cannot be declared supported without
+  one. Mutation-checked.
+- F7 `expect_equal(available_scales(), available_scales("hitopsr"))` compared the
+  function to itself — ACTIONED: asserts the declared default instead.
+  Mutation-checked.
+- F8 `validate_module_instrument()` sat in `R/module.R` against CLAUDE.md's
+  validators-in-`R/util.R` convention — ACTIONED: moved.
+- F9 `available_scales` filed under Utilities, away from `hitop_module` —
+  ACTIONED: regrouped under Item Export.
+- F10 `hitop_subset` dropped from the site index, so a user who hits the warning
+  and searches finds nothing — ACTIONED: a Deprecated section carries it.
+- F11 the 0.2.0 NEWS section both introduced and renamed the same function —
+  ACTIONED: reworded to address development-version users explicitly.
+- F5 `available_scales()$nItems` is double where `hitop_module()$nItems` is
+  integer — FOLLOW-UP candidate row: the double is the shipped table's own type
+  (the M37 lesson records it), not introduced here.
+- F12 AC7 unticked while the Review recorded its checks — RESOLVED: ticked once
+  `check()` returned.
+
+**Post-fix verification** — `devtools::test()` 13674 passing, 0 failures, 0
+warnings, 1 skip; `pkgdown::check_pkgdown()` "No problems found";
+`cairn_validate` all checks passed; CI green on all 7 jobs. Three mutations
+confirm the new guards bite: dropping the shim's threaded frame (1 failure),
+declaring an instrument supported with no table (3), and changing the browser's
+declared default (1).
