@@ -26,7 +26,8 @@ Imports:
     snakecase,
     stats,
     tibble,
-    utils
+    utils,
+    zip
 Suggests:
     covr,
     ggplot2 (>= 3.4.0),

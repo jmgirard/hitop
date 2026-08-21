@@ -25,6 +25,12 @@ before a CRAN submission.
   item columns, and scoring plus reliability. The HiTOP-SR scoring vignette now
   links to it rather than carrying its own shorter copy.
 
+* **The REDCap generators no longer need an external `zip` program.** They
+  built the instrument archive by running the system's `zip` command, which
+  silently failed wherever no such program was installed -- commonly on
+  Windows. The archive is now written by the {zip} package, in R, with no
+  outside program involved. The file REDCap receives is unchanged.
+
 * The download buttons on the instrument pages now serve the files from the
   package website itself, so a browser saves each one under its own name. The
   Qualtrics survey files used to open as text in a new tab, because GitHub
