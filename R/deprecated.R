@@ -55,15 +55,20 @@ resolve_module_arg <- function(module, subset, call = rlang::caller_env()) {
   if (is.null(subset)) {
     return(module)
   }
-  cli_assert(
-    condition = is.null(module),
-    message = c(
-      "Supply either {.arg module} or {.arg subset}, not both.",
-      i = "{.arg subset} is the deprecated name for {.arg module}.",
-      i = "Drop the {.arg subset} argument and keep {.arg module}."
-    ),
-    call = call
-  )
+  # `cli::cli_abort()` directly rather than cli_assert(), which takes no class:
+  # this branch is asserted by class in the tests, and widening the shared
+  # validator's signature for one call site is not worth it.
+  if (!is.null(module)) {
+    cli::cli_abort(
+      c(
+        "Supply either {.arg module} or {.arg subset}, not both.",
+        i = "{.arg subset} is the deprecated name for {.arg module}.",
+        i = "Drop the {.arg subset} argument and keep {.arg module}."
+      ),
+      class = "hitop_both_module_args",
+      call = call
+    )
+  }
   deprecate_subset("The `subset` argument", "the `module` argument", call = call)
   subset
 }

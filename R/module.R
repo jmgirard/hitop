@@ -37,27 +37,7 @@
 #'
 #' @export
 hitop_module <- function(instrument = "hitopsr", scales) {
-  cli_assert(
-    condition = is.character(instrument) && length(instrument) == 1L,
-    message = "The {.arg instrument} argument must be a single string."
-  )
-  instrument <- tolower(instrument)
-
-  supported <- "hitopsr"
-  planned <- c("hitopbr", "pid5", "pid5sf", "pid5bf")
-  cli_assert(
-    condition = instrument %in% c(supported, planned),
-    message = c(
-      "Unknown {.arg instrument} value {.val {instrument}}.",
-      i = "Currently supported: {.val {supported}}."
-    )
-  )
-  if (!instrument %in% supported) {
-    cli::cli_abort(c(
-      "Scale modules are not yet supported for {.val {instrument}}.",
-      i = "Only {.val {supported}} can be built into modules at present."
-    ))
-  }
+  instrument <- validate_module_instrument(instrument)
 
   cli_assert(
     condition = length(scales) > 0L,
@@ -273,4 +253,44 @@ hitopsr_engine_inputs <- function(module, call = rlang::caller_env()) {
 # classes carry identical fields; only the class attribute differs.
 is_module <- function(x) {
   inherits(x, c("hitop_module", "hitop_subset"))
+}
+
+# Internal Helper: validate and normalize an instrument name for the module API
+#
+# Shared by hitop_module() and available_scales() so the two cannot drift: the
+# browser must reject exactly what the constructor rejects, with the same words,
+# or a caller is told a scale set exists that no module can be built from.
+# Both branches carry a condition class, because tests assert on the class and
+# cli_assert()/cli_abort()'s default `rlang_error` does not discriminate.
+validate_module_instrument <- function(instrument, call = rlang::caller_env()) {
+  cli_assert(
+    condition = is.character(instrument) && length(instrument) == 1L,
+    message = "The {.arg instrument} argument must be a single string.",
+    call = call
+  )
+  instrument <- tolower(instrument)
+
+  supported <- "hitopsr"
+  planned <- c("hitopbr", "pid5", "pid5sf", "pid5bf")
+  if (!instrument %in% c(supported, planned)) {
+    cli::cli_abort(
+      c(
+        "Unknown {.arg instrument} value {.val {instrument}}.",
+        i = "Currently supported: {.val {supported}}."
+      ),
+      class = "hitop_unknown_instrument",
+      call = call
+    )
+  }
+  if (!instrument %in% supported) {
+    cli::cli_abort(
+      c(
+        "Scale modules are not yet supported for {.val {instrument}}.",
+        i = "Only {.val {supported}} can be built into modules at present."
+      ),
+      class = "hitop_unsupported_instrument",
+      call = call
+    )
+  }
+  instrument
 }

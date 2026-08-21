@@ -25,30 +25,7 @@
 #'
 #' @export
 available_scales <- function(instrument = "hitopsr") {
-  cli_assert(
-    condition = is.character(instrument) && length(instrument) == 1L,
-    message = "The {.arg instrument} argument must be a single string."
-  )
-  instrument <- tolower(instrument)
-
-  # The supported set is deliberately the one hitop_module() supports: this
-  # function exists to feed that one, and listing scales a caller cannot yet
-  # build a module from would promise a reach the module family does not have.
-  supported <- "hitopsr"
-  planned <- c("hitopbr", "pid5", "pid5sf", "pid5bf")
-  cli_assert(
-    condition = instrument %in% c(supported, planned),
-    message = c(
-      "Unknown {.arg instrument} value {.val {instrument}}.",
-      i = "Currently supported: {.val {supported}}."
-    )
-  )
-  if (!instrument %in% supported) {
-    cli::cli_abort(c(
-      "Scale modules are not yet supported for {.val {instrument}}.",
-      i = "Only {.val {supported}} can be built into modules at present."
-    ))
-  }
+  instrument <- validate_module_instrument(instrument)
 
   ref <- hitopsr_scales
   tibble::tibble(

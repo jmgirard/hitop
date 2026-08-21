@@ -96,7 +96,7 @@ D-entry, and one warning does not earn one.
       lesson records them as CRLF files a whole-file rewrite silently converts.
 - [x] T4 Write `available_scales()` reading `hitopsr_scales`, with its help page
       and `_pkgdown.yml` row.
-- [ ] T5 Tests for AC1-AC5, every condition fired and asserted by class.
+- [x] T5 Tests for AC1-AC5, every condition fired and asserted by class.
 - [ ] T6 Docs sweep for AC6: roxygen text, `@examples`, NEWS entry, then
       `devtools::document()`.
 - [ ] T7 Full check: `devtools::test()`, `devtools::check()`,
@@ -119,3 +119,5 @@ D-entry, and one warning does not earn one.
 ## Decisions
 
 ## Review
+- 2026-08-21: T5 — `test-deprecated.R` (AC1-AC4) and `test-available_scales.R` (AC5) added; suite 13456 -> 13663 passing, 0 failures, 0 warnings, 1 skip. Two branches gained condition classes so the criteria's "asserted by class" is honest rather than an `rlang_error` match: `hitop_both_module_args` on the both-arguments error, and `hitop_unknown_instrument`/`hitop_unsupported_instrument` on the instrument guard.
+- 2026-08-21: refactor found at T5 — `hitop_module()` and `available_scales()` carried byte-identical instrument guards, and AC5 requires the browser to reject exactly what the constructor rejects with the same words. Extracted to `validate_module_instrument()` in `R/module.R`, with a test asserting the two messages are identical rather than trusting two copies to stay in step.
