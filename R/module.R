@@ -1,37 +1,42 @@
-#' Describe a Subset of an Instrument's Scales
+#' Describe a Module of an Instrument's Scales
 #'
-#' @description Builds a validated description of a subset of an instrument's
-#'   scales, for use with the `generate_*` family. Supplying the result as the
-#'   `subset` argument of a generator produces a shortened instrument
-#'   containing only the items belonging to the chosen scales, **keeping each
-#'   item's original number** so that data collected with the shortened form
-#'   can still be scored against the full instrument's key.
+#' @description Builds a validated description of a **module**: a chosen set of
+#'   an instrument's scales, administered and scored on its own. Supplying the
+#'   result as the `module` argument of a generator produces an instrument
+#'   containing only the items belonging to those scales, **keeping each item's
+#'   original number**, so that data collected with the module can still be
+#'   scored against the full instrument's key. Supplying it again to
+#'   [score_hitopsr()] or [reliability_hitopsr()] scores the collected columns.
 #'
-#' @param instrument A string naming the instrument to subset. Currently only
-#'   `"hitopsr"` is supported. (default = `"hitopsr"`)
+#'   Use [available_scales()] to see which scales an instrument offers.
+#'
+#' @param instrument A string naming the instrument to build a module from.
+#'   Currently only `"hitopsr"` is supported. (default = `"hitopsr"`)
 #' @param scales A character vector of scale names to keep. Names may be given
 #'   either as they are printed on the instrument (`"Antisocial Behavior"`) or
 #'   as the camelCase stems used in scored output (`"antisocialBehavior"`), in
 #'   any mixture and ignoring case. Duplicates are dropped.
 #'
-#' @return An object of class `hitop_subset`: a list with the resolved
+#' @return An object of class `hitop_module`: a list with the resolved
 #'   `instrument`, the canonical display `scales` and their `camelCase` stems,
 #'   the `items` kept (original instrument numbering, ascending), the parallel
 #'   `reverse` keying flags, and `nItems`.
 #'
-#' @seealso [generate_docx_hitopsr()], [generate_qualtrics_hitopsr()], and
-#'   [generate_redcap_hitopsr()], each of which takes a `subset` argument.
+#' @seealso [available_scales()] for the scale names this accepts;
+#'   [generate_docx_hitopsr()], [generate_qualtrics_hitopsr()], and
+#'   [generate_redcap_hitopsr()], each of which takes a `module` argument;
+#'   [score_hitopsr()] and [reliability_hitopsr()] for scoring the result.
 #'
 #' @examples
-#' # Describe a two-scale subset of the HiTOP-SR
-#' s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
-#' s
+#' # Describe a two-scale module of the HiTOP-SR
+#' m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+#' m
 #'
 #' # The item numbers are the original HiTOP-SR numbers, not 1..8
-#' s$items
+#' m$items
 #'
 #' @export
-hitop_subset <- function(instrument = "hitopsr", scales) {
+hitop_module <- function(instrument = "hitopsr", scales) {
   cli_assert(
     condition = is.character(instrument) && length(instrument) == 1L,
     message = "The {.arg instrument} argument must be a single string."
@@ -49,8 +54,8 @@ hitop_subset <- function(instrument = "hitopsr", scales) {
   )
   if (!instrument %in% supported) {
     cli::cli_abort(c(
-      "Scale subsets are not yet supported for {.val {instrument}}.",
-      i = "Only {.val {supported}} can be subset at present."
+      "Scale modules are not yet supported for {.val {instrument}}.",
+      i = "Only {.val {supported}} can be built into modules at present."
     ))
   }
 
@@ -99,18 +104,21 @@ hitop_subset <- function(instrument = "hitopsr", scales) {
       reverse = hitopsr_items$Reverse[keep],
       nItems = length(items)
     ),
-    class = "hitop_subset"
+    class = "hitop_module"
   )
 }
 
 #' @export
-print.hitop_subset <- function(x, ...) {
+print.hitop_module <- function(x, ...) {
   # `cat()` rather than {cli}: cli writes to the message connection, and a
   # print method must write to stdout.
   n_scales <- length(x$scales)
+  # The label is read off the object rather than hardcoded, so the deprecated
+  # `hitop_subset` class prints as itself when it delegates here.
+  label <- class(x)[[1L]]
   cat(
     cli::pluralize(
-      "<hitop_subset> {x$instrument}: {x$nItems} item{?s} from ",
+      "<{label}> {x$instrument}: {x$nItems} item{?s} from ",
       "{n_scales} scale{?s}"
     ),
     "\n",
@@ -120,60 +128,60 @@ print.hitop_subset <- function(x, ...) {
   invisible(x)
 }
 
-# Internal Helper: reduce an items table and a scales table to a subset
+# Internal Helper: reduce an items table and a scales table to a module
 #
-# `subset` may be NULL (returns both tables untouched, so callers need no
+# `module` may be NULL (returns both tables untouched, so callers need no
 # branch). Item numbering is never rewritten: the reduced tables carry the
 # instrument's original numbers, with gaps where items were dropped.
-apply_subset <- function(
+apply_module <- function(
   items,
   scales,
-  subset,
+  module,
   item_col,
   scale_col = "camelCase",
   call = rlang::caller_env()
 ) {
-  if (is.null(subset)) {
+  if (is.null(module)) {
     return(list(items = items, scales = scales))
   }
 
   cli_assert(
-    condition = inherits(subset, "hitop_subset"),
+    condition = is_module(module),
     message = c(
-      "The {.arg subset} argument must be a {.cls hitop_subset} object.",
-      i = "Build one with {.code hitop_subset()}."
+      "The {.arg module} argument must be a {.cls hitop_module} object.",
+      i = "Build one with {.code hitop_module()}."
     ),
     call = call
   )
 
   list(
-    items = items[items[[item_col]] %in% subset$items, , drop = FALSE],
+    items = items[items[[item_col]] %in% module$items, , drop = FALSE],
     scales = if (is.null(scales)) {
       NULL
     } else {
-      scales[scales[[scale_col]] %in% subset$camelCase, , drop = FALSE]
+      scales[scales[[scale_col]] %in% module$camelCase, , drop = FALSE]
     }
   )
 }
 
-# Internal Helper: remap a subset descriptor into the engines' three inputs
+# Internal Helper: remap a module descriptor into the engines' three inputs
 #
-# `apply_subset()` above reduces the instrument's TABLES for the generators,
+# `apply_module()` above reduces the instrument's TABLES for the generators,
 # which keep the original item numbering. The engines instead address items by
-# POSITION within the columns the caller supplied, so scoring subset-collected
-# data needs the subset's original numbers translated into positions within
-# `subset$items` (which is ascending). Returns `n_items`, `reverse_items`, and
+# POSITION within the columns the caller supplied, so scoring module-collected
+# data needs the module's original numbers translated into positions within
+# `module$items` (which is ascending). Returns `n_items`, `reverse_items`, and
 # `items_scales` ready for score_engine()/reliability_engine().
 #
 # `items` and `scales` are the instrument's own tables, so the reverse key is
 # read from the package's canonical source rather than trusted from the
 # descriptor's parallel `reverse` flags.
 #
-# Invariant: every kept scale's items are fully contained in `subset$items`,
-# because hitop_subset() builds `items` as the union of exactly the scales it
+# Invariant: every kept scale's items are fully contained in `module$items`,
+# because hitop_module() builds `items` as the union of exactly the scales it
 # keeps. The match() below therefore never yields NA for a kept scale.
-subset_engine_inputs <- function(
-  subset,
+module_engine_inputs <- function(
+  module,
   instrument,
   items,
   scales,
@@ -184,20 +192,20 @@ subset_engine_inputs <- function(
   call = rlang::caller_env()
 ) {
   cli_assert(
-    condition = inherits(subset, "hitop_subset"),
+    condition = is_module(module),
     message = c(
-      "The {.arg subset} argument must be a {.cls hitop_subset} object.",
-      i = "Build one with {.code hitop_subset()}."
+      "The {.arg module} argument must be a {.cls hitop_module} object.",
+      i = "Build one with {.code hitop_module()}."
     ),
     call = call
   )
-  # Only reachable from a hand-assembled object: hitop_subset() refuses to
-  # build a subset for any instrument but the ones it supports.
+  # Only reachable from a hand-assembled object: hitop_module() refuses to
+  # build a module for any instrument but the ones it supports.
   cli_assert(
-    condition = identical(subset$instrument, instrument),
+    condition = identical(module$instrument, instrument),
     message = c(
-      "The {.arg subset} argument describes the wrong instrument.",
-      x = "Expected a {.val {instrument}} subset but got {.val {subset$instrument}}."
+      "The {.arg module} argument describes the wrong instrument.",
+      x = "Expected a {.val {instrument}} module but got {.val {module$instrument}}."
     ),
     call = call
   )
@@ -207,39 +215,39 @@ subset_engine_inputs <- function(
   # from `nItems` alone would then pass validate_items() against the wrong
   # width and score whichever columns happened to be supplied: an inflated
   # nItems accepts a full 405-column frame and silently scores items 1..n as
-  # the subset's scales. The count is therefore derived from `items`, which is
+  # the module's scales. The count is therefore derived from `items`, which is
   # what the remap below actually indexes into, and the disagreement is an error.
   cli_assert(
-    condition = identical(as.integer(subset$nItems), length(subset$items)),
+    condition = identical(as.integer(module$nItems), length(module$items)),
     message = c(
-      "The {.arg subset} argument is internally inconsistent.",
-      x = "It reports {subset$nItems} item{?s} but carries {length(subset$items)}.",
-      i = "Build one with {.code hitop_subset()} rather than by hand."
+      "The {.arg module} argument is internally inconsistent.",
+      x = "It reports {module$nItems} item{?s} but carries {length(module$items)}.",
+      i = "Build one with {.code hitop_module()} rather than by hand."
     ),
     call = call
   )
 
-  kept <- scales[scales[[scale_col]] %in% subset$camelCase, , drop = FALSE]
+  kept <- scales[scales[[scale_col]] %in% module$camelCase, , drop = FALSE]
   reverse_numbers <- items[[item_col]][items[[reverse_col]]]
   numbers <- kept[[number_col]]
   names(numbers) <- kept[[scale_col]]
 
   list(
-    n_items = length(subset$items),
-    reverse_items = which(subset$items %in% reverse_numbers),
-    items_scales = lapply(numbers, function(x) match(x, subset$items))
+    n_items = length(module$items),
+    reverse_items = which(module$items %in% reverse_numbers),
+    items_scales = lapply(numbers, function(x) match(x, module$items))
   )
 }
 
-# Internal Helper: the three engine inputs for the HiTOP-SR, full or subset
+# Internal Helper: the three engine inputs for the HiTOP-SR, full or module
 #
 # score_hitopsr() and reliability_hitopsr() resolve the same three values the
-# same way, so they share this. `subset = NULL` is the full instrument, where an
+# same way, so they share this. `module = NULL` is the full instrument, where an
 # item's number is already its position among the 405 supplied columns. `call`
-# reaches the exported wrapper one frame up, so subset_engine_inputs()'s aborts
+# reaches the exported wrapper one frame up, so module_engine_inputs()'s aborts
 # blame score_hitopsr()/reliability_hitopsr() rather than this helper.
-hitopsr_engine_inputs <- function(subset, call = rlang::caller_env()) {
-  if (is.null(subset)) {
+hitopsr_engine_inputs <- function(module, call = rlang::caller_env()) {
+  if (is.null(module)) {
     return(list(
       n_items = 405,
       reverse_items =
@@ -248,12 +256,21 @@ hitopsr_engine_inputs <- function(subset, call = rlang::caller_env()) {
     ))
   }
 
-  subset_engine_inputs(
-    subset = subset,
+  module_engine_inputs(
+    module = module,
     instrument = "hitopsr",
     items = hitopsr_items,
     scales = hitopsr_scales,
     item_col = "HSR",
     call = call
   )
+}
+
+# Internal Helper: is this object a module descriptor?
+#
+# Accepts the deprecated `hitop_subset` class alongside `hitop_module`, so a
+# descriptor built before the rename still reaches every consumer. The two
+# classes carry identical fields; only the class attribute differs.
+is_module <- function(x) {
+  inherits(x, c("hitop_module", "hitop_subset"))
 }

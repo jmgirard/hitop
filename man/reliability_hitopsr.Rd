@@ -10,16 +10,17 @@ reliability_hitopsr(
   srange = c(1, 4),
   alpha = TRUE,
   omega = TRUE,
+  module = NULL,
   subset = NULL
 )
 }
 \arguments{
 \item{data}{A data frame containing the HiTOP-SR items (numerically coded):
-all 405 of them, or, when \code{subset} is supplied, that short form's items.}
+all 405 of them, or, when \code{module} is supplied, that module's items.}
 
 \item{items}{A vector of column names (as strings) or numbers (as integers)
 corresponding to the HiTOP-SR items held in \code{data} — all 405, or, when
-\code{subset} is supplied, that short form's items. Items must be supplied in
+\code{module} is supplied, that module's items. Items must be supplied in
 instrument order; duplicated entries are an error.}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
@@ -32,12 +33,15 @@ per scale. (default = \code{TRUE})}
 (total) per scale, estimated via a one-factor CFA (requires the \pkg{lavaan}
 package). (default = \code{TRUE})}
 
-\item{subset}{An optional \code{hitop_subset} object, as returned by
-\code{\link[=hitop_subset]{hitop_subset()}}, describing a short form of the instrument. When supplied,
-\code{data} and \code{items} hold only that subset's item columns — in ascending
+\item{module}{An optional \code{hitop_module} object, as returned by
+\code{\link[=hitop_module]{hitop_module()}}, describing a module of the instrument. When supplied,
+\code{data} and \code{items} hold only that module's item columns — in ascending
 instrument order, as the \verb{generate_*_hitopsr()} forms lay them out — and one
-row is returned per subset scale. When \code{NULL}, all 405 items are expected
+row is returned per module scale. When \code{NULL}, all 405 items are expected
 and all 76 scales are estimated. (default = \code{NULL})}
+
+\item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
+Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}
 }
 \value{
 A \link[tibble]{tibble} with one row per scale and columns \code{scale},
@@ -60,11 +64,11 @@ rather than aborting the call.
 # Per-scale alpha for the HiTOP-SR
 reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
 
-# Per-scale alpha for data collected with a two-scale short form. Select the
-# item columns by name: `s$items` holds original HiTOP-SR numbers, which are
+# Per-scale alpha for data collected with a two-scale module. Select the
+# item columns by name: `m$items` holds original HiTOP-SR numbers, which are
 # column positions only in a data frame that is exactly the 405 items in order.
-s <- hitop_subset("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
-short <- sim_hitopsr[paste0("hsr_", s$items)]
-reliability_hitopsr(short, items = names(short), subset = s, omega = FALSE)
+m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+collected <- sim_hitopsr[paste0("hsr_", m$items)]
+reliability_hitopsr(collected, items = names(collected), module = m, omega = FALSE)
 
 }

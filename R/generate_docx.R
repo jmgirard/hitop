@@ -94,9 +94,11 @@ generate_docx_hitopbr <- function(
 #'   Defaults to `10`.
 #' @param font_family Character string specifying the font family to be used.
 #'   Defaults to `"Times New Roman"`.
-#' @param subset An optional [hitop_subset()] object restricting the form to the
+#' @param module An optional [hitop_module()] object restricting the form to the
 #'   items of the chosen scales, keeping their original HiTOP-SR item numbers.
 #'   Cannot be combined with `include_subscales = TRUE`. (default = `NULL`)
+#' @param subset Deprecated. The former name of `module`; supplying it warns.
+#'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
@@ -105,10 +107,10 @@ generate_docx_hitopbr <- function(
 #' # Write a HiTOP-SR paper form to a temporary Word document
 #' generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
 #'
-#' # A short form containing only two scales, original numbering preserved
+#' # A module containing only two scales, original numbering preserved
 #' generate_docx_hitopsr(
 #'   file = tempfile(fileext = ".docx"),
-#'   subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+#'   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 #' )
 #' }
 #'
@@ -121,23 +123,25 @@ generate_docx_hitopsr <- function(
   include_subscales = FALSE,
   font_size = 10,
   font_family = "Times New Roman",
+  module = NULL,
   subset = NULL
 ) {
   papersize <- match.arg(papersize)
   dims <- get_page_dims(papersize)
+  module <- resolve_module_arg(module, subset)
 
   # Truthiness must match the consumer below (`if (include_subscales)`), or a
   # truthy non-TRUE value slips the guard and still adds the subscale rows.
-  if (!is.null(subset) && include_subscales) {
+  if (!is.null(module) && include_subscales) {
     cli::cli_abort(c(
-      "{.arg include_subscales} cannot be combined with {.arg subset}.",
-      i = "A subscale may draw items from scales outside the subset, so its
+      "{.arg include_subscales} cannot be combined with {.arg module}.",
+      i = "A subscale may draw items from scales outside the module, so its
            scoring row would list items the form does not contain.",
-      i = "Set {.code include_subscales = FALSE} to generate the subset form."
+      i = "Set {.code include_subscales = FALSE} to generate the module form."
     ))
   }
 
-  reduced <- apply_subset(hitopsr_items, hitopsr_scales, subset, "HSR")
+  reduced <- apply_module(hitopsr_items, hitopsr_scales, module, "HSR")
 
   # Build the items table
   t1 <- make_items_table(

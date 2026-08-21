@@ -101,16 +101,16 @@ test_that("all Qualtrics generators run and produce one question per source item
   }
 })
 
-# ---- HiTOP-SR scale subsets (M24) -------------------------------------------
+# ---- HiTOP-SR scale modules (M24) -------------------------------------------
 #
 # Parse-and-compare per D-010: expected numbers/texts come from `hitopsr_items`
 # filtered by `Scale`, independently of the `hitopsr_scales$itemNumbers` path
 # the generator walks.
 
-test_that("generate_qualtrics_hitopsr(subset =) emits exactly the subset's items", {
-  s <- hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+test_that("generate_qualtrics_hitopsr(module =) emits exactly the module's items", {
+  s <- hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
   f <- withr::local_tempfile(fileext = ".txt")
-  suppressMessages(generate_qualtrics_hitopsr(file = f, subset = s))
+  suppressMessages(generate_qualtrics_hitopsr(file = f, module = s))
   parsed <- read_qualtrics(f)
 
   kept <- hitopsr_items[
@@ -131,7 +131,7 @@ test_that("generate_qualtrics_hitopsr(subset =) emits exactly the subset's items
   expect_true(parsed$has_instructions)
 })
 
-test_that("subset = NULL leaves Qualtrics output byte-identical for all instruments", {
+test_that("module = NULL leaves Qualtrics output byte-identical for all instruments", {
   # Locks the shared-helper padding change (nrow -> max item number): every
   # existing generator must be unaffected.
   gens <- list(
@@ -156,10 +156,10 @@ test_that("subset = NULL leaves Qualtrics output byte-identical for all instrume
   }
 })
 
-test_that("generate_qualtrics_hitopsr() rejects a non-hitop_subset subset", {
+test_that("generate_qualtrics_hitopsr() rejects a non-hitop_module module", {
   f <- withr::local_tempfile(fileext = ".txt")
   expect_error(
-    generate_qualtrics_hitopsr(file = f, subset = "Agoraphobia"),
-    "hitop_subset"
+    generate_qualtrics_hitopsr(file = f, module = "Agoraphobia"),
+    "hitop_module"
   )
 })

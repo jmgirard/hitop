@@ -1,11 +1,11 @@
 # M43: Rename the HiTOP-SR subset family to modules
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m43-module-vocabulary`
 
 ## Goal
 
@@ -83,18 +83,18 @@ D-entry, and one warning does not earn one.
 
 ## Tasks
 
-- [ ] T1 Rename `R/subset.R` → `R/module.R`: `hitop_module()`,
+- [x] T1 Rename `R/subset.R` → `R/module.R`: `hitop_module()`,
       `print.hitop_module()`, and the internal helpers `apply_subset()` /
       `subset_engine_inputs()` renamed to match, with both classes accepted
       wherever a descriptor is validated (`R/subset.R:140`, `R/subset.R:180`).
-- [ ] T2 Deprecation shims: `hitop_subset()` and `print.hitop_subset()` delegate
+- [x] T2 Deprecation shims: `hitop_subset()` and `print.hitop_subset()` delegate
       after one `cli::cli_warn()` carrying a stable condition class, emitted by
       a shared internal helper in `R/util.R`.
-- [ ] T3 Rename `subset =` → `module =` on the five exported functions, each
+- [x] T3 Rename `subset =` → `module =` on the five exported functions, each
       accepting the legacy argument and erroring when both are given. Edit
       `R/generate_qualtrics.R` and `R/generate_redcap.R` in place — the M24
       lesson records them as CRLF files a whole-file rewrite silently converts.
-- [ ] T4 Write `available_scales()` reading `hitopsr_scales`, with its help page
+- [x] T4 Write `available_scales()` reading `hitopsr_scales`, with its help page
       and `_pkgdown.yml` row.
 - [ ] T5 Tests for AC1-AC5, every condition fired and asserted by class.
 - [ ] T6 Docs sweep for AC6: roxygen text, `@examples`, NEWS entry, then
@@ -109,6 +109,12 @@ D-entry, and one warning does not earn one.
 - 2026-08-21: plan chose a hand-rolled `cli::cli_warn()` with a stable class over adding {lifecycle}, because one deprecation does not earn a dependency (GP4) and a dependency change needs its own gate and D-entry; falsified by a second deprecation arriving that wants the lifecycle badge machinery in the help pages.
 - 2026-08-21: plan chose `available_scales()` over `hitop_scales()` for the browser, because the latter reads as a sibling of the `hitopsr_scales`/`hitopbr_scales` datasets and would collide with them in autocomplete; falsified by a second instrument-listing function arriving that wants a shared `hitop_*` prefix.
 - 2026-08-21: the criteria audit ran in **full** mode over AC1-AC7 and returned three findings, all fixed before the criteria were written. AC4 probed one module shape, leaving reverse-keying, single-scale width, and standard errors unvaried — now three shapes with `calc_se = TRUE`. AC5 promised values were "read from rather than restated" from `hitopsr_scales`, an implementation property no test asserts — narrowed to the row-for-row equality the test actually checks. AC6's sweep was drafted as `\bsubset\b`, which cannot match inside `hitop_subset` because `_` is a word character, so the sweep would have missed the identifier it exists to find — now an unanchored `subset`. The audit ran inline in this session rather than in a fresh-context reader, because this session is instructed not to spawn subagents unless asked; the reader-freshness the instrument normally provides was not obtained.
+- 2026-08-21: implement gate — the stray `jmgirard.r-universe.dev` clone (created inside the repo by a command this session handed the user) was moved to `~/github/`, leaving the tree clean before branching.
+- 2026-08-21: implement gate held AC5 as written — `available_scales()` covers only the HiTOP-SR, matching what `hitop_module()` supports, over also listing the 8 HiTOP-BR scales (offered and declined by the maintainer); widening it later is additive, and listing scales no module can yet be built from would promise a reach the module family lacks.
+- 2026-08-21: T1-T4 landed in one checkpoint rather than four: the package does not load consistently part-way through the rename (an exported function calling a renamed internal), so no intermediate state passes the profile's verify slot. Tasks are ticked individually; the commit is one.
+- 2026-08-21: minor task refinement to T2 — `print.hitop_subset()` delegates to the module printer WITHOUT warning. T2's wording had it warn too, but printing an object is not a use of the deprecated API: the call that built it already warned, and warning again on every display would punish the user for looking at what they were handed. The printer reads its label off `class(x)[[1L]]` so the legacy object still prints as `<hitop_subset>`.
+- 2026-08-21: the M29 lesson landed exactly as recorded — converting the deprecation to a `cli::cli_warn()` condition made every existing test that merely *called* `hitop_subset()` or passed `subset =` fail, not just the ones asserting on messages. All seven test files were swept, `test-subset.R`/`test-subset-generation.R`/`_snaps/subset.md` renamed to `module`, and the suite is green at 13456 passing, 0 failures, 0 warnings, 1 skip.
+- 2026-08-21: the M24 CRLF lesson held — `R/generate_qualtrics.R` and `R/generate_redcap.R` were patched with newline-preserving edits and each shows a 12-line diff with CRLF endings intact, rather than the ~1,700-line inflation a whole-file rewrite causes.
 
 ## Decisions
 

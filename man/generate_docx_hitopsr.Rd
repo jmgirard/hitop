@@ -12,6 +12,7 @@ generate_docx_hitopsr(
   include_subscales = FALSE,
   font_size = 10,
   font_family = "Times New Roman",
+  module = NULL,
   subset = NULL
 )
 }
@@ -37,9 +38,12 @@ Defaults to \code{10}.}
 \item{font_family}{Character string specifying the font family to be used.
 Defaults to \code{"Times New Roman"}.}
 
-\item{subset}{An optional \code{\link[=hitop_subset]{hitop_subset()}} object restricting the form to the
+\item{module}{An optional \code{\link[=hitop_module]{hitop_module()}} object restricting the form to the
 items of the chosen scales, keeping their original HiTOP-SR item numbers.
 Cannot be combined with \code{include_subscales = TRUE}. (default = \code{NULL})}
+
+\item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
+Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}
 }
 \value{
 Invisibly returns the path to the created file (\code{file}).
@@ -55,10 +59,10 @@ single continuous table.
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
 
-# A short form containing only two scales, original numbering preserved
+# A module containing only two scales, original numbering preserved
 generate_docx_hitopsr(
   file = tempfile(fileext = ".docx"),
-  subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
 }
 

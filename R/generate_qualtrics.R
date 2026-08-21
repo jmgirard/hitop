@@ -58,9 +58,11 @@ generate_qualtrics_hitopbr <- function(
 #' @param breaks Integer or `NULL`. The number of items to display before
 #'   inserting a page break. Set to `0` or `NULL` to disable pagination.
 #'   Defaults to `15`.
-#' @param subset An optional [hitop_subset()] object restricting the file to the
+#' @param module An optional [hitop_module()] object restricting the file to the
 #'   items of the chosen scales, keeping their original HiTOP-SR item numbers.
 #'   (default = `NULL`)
+#' @param subset Deprecated. The former name of `module`; supplying it warns.
+#'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
 #' @return Invisibly returns the path to the created file (`file`).
 #'
@@ -68,10 +70,10 @@ generate_qualtrics_hitopbr <- function(
 #' # Write a HiTOP-SR Qualtrics import file to a temporary location
 #' generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
 #'
-#' # A two-scale subset, original numbering preserved
+#' # A two-scale module, original numbering preserved
 #' generate_qualtrics_hitopsr(
 #'   file = tempfile(fileext = ".txt"),
-#'   subset = hitop_subset("hitopsr", c("Agoraphobia", "Appetite Loss"))
+#'   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 #' )
 #'
 #' @export
@@ -81,9 +83,11 @@ generate_qualtrics_hitopsr <- function(
   id_prefix = "HSR",
   include_instructions = TRUE,
   breaks = 15,
+  module = NULL,
   subset = NULL
 ) {
-  reduced <- apply_subset(hitopsr_items, NULL, subset, "HSR")
+  module <- resolve_module_arg(module, subset)
+  reduced <- apply_module(hitopsr_items, NULL, module, "HSR")
 
   build_qualtrics_txt(
     items = reduced$items,

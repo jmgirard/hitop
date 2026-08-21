@@ -10,7 +10,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 |---|---|---|---|---|---|
 | M45 | A browser module builder for the HiTOP-SR | planned | M43 | normal | milestones/M45-browser-module-builder.md |
 | M44 | A dedicated article for building and scoring HiTOP-SR modules | planned | M43 | normal | milestones/M44-modules-article.md |
-| M43 | Rename the HiTOP-SR subset family to modules | planned | — | normal | milestones/M43-module-vocabulary.md |
+| M43 | Rename the HiTOP-SR subset family to modules | in-progress | — | normal | milestones/M43-module-vocabulary.md |
 | M42 | Serve instrument downloads from the pkgdown site | done | — | normal | milestones/archive/M42-pkgdown-download-route.md |
 | M41 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M41-hitopsr-score-intervals.md |
 | M40 | Retire the M38/M39 plot-review residue | done | — | normal | milestones/archive/M40-plot-review-residue.md |

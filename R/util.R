@@ -358,3 +358,20 @@ prep_items <- function(
 
   bind_columns(data_items)
 }
+
+# Internal Helper: one deprecation warning carrying a stable condition class
+#
+# {lifecycle} is deliberately not a dependency (GP4: a single deprecation does
+# not earn one), so the warning is hand-rolled. Tests assert on the class, not
+# on the message text, so the class is the stable part of this contract.
+deprecate_subset <- function(what, instead, call = rlang::caller_env()) {
+  cli::cli_warn(
+    c(
+      "{.code {what}} was renamed to {.code {instead}} in hitop 0.2.0.",
+      i = "The old name still works, but please use {.code {instead}}.",
+      i = "A chosen set of an instrument's scales is now called a {.emph module}."
+    ),
+    class = "hitop_deprecated_subset",
+    call = call
+  )
+}
