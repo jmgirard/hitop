@@ -78,7 +78,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
       emscripten build succeeds. The universe already builds WebAssembly —
       `circumplex` reports `wasm emscripten 4.6.0 success` (observed
       2026-08-21) — so this is registration, not new infrastructure.
-- [ ] T2 Feasibility probe before any UI work: in a bare webR or shinylive page,
+- [x] T2 Feasibility probe before any UI work: in a bare webR or shinylive page,
       install `hitop` from the universe and run each of the three
       `generate_*_hitopsr()` calls on a two-scale module, recording which
       succeed. Every Import has a WebAssembly binary in the webR repository —
@@ -102,6 +102,9 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-21: T1 needed no work — `hitop` was already registered on `jmgirard.r-universe.dev` and its emscripten build had already succeeded when the task was reached (`api/ls` lists it; `api/packages/hitop` reports `wasm` R 4.6.0 status `success`, built 2026-08-21T22:08:42Z). Evidence for AC1 is re-observed at review.
 - 2026-08-21: implement gate chose `jmgirard/hitop-builder` as the app repo name and a GitHub Action on push as the deploy route; the app's shape (shinylive vs plain webR) was left open by the user for T2's probe to inform.
 - 2026-08-21: T2 is the milestone's real risk — nothing verifies that {officer} and {flextable} produce a valid DOCX under emscripten. It is sequenced before the UI so a failure surfaces at the cheapest point.
+- 2026-08-21: T2 probe run in webR 0.6.0 (R 4.6.0) on a COOP/COEP static page, crossOriginIsolated true: `installPackages("hitop")` from `https://jmgirard.r-universe.dev` succeeded in ~16 s, pulling every Import including officer, flextable, gdtools, systemfonts, ragg and zip; `library(hitop)` and `hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))` both returned normally.
+- 2026-08-21: T2 result by format on that module — Qualtrics `.txt` generated (1991 bytes); DOCX generated and verified a real OOXML package (PK magic, 16 zip entries, a 123,144-byte `word/document.xml`, all 8 of the module's item numbers present in its stripped text); REDCap aborted with `The `system()` function is unsupported under Emscripten.`
+- 2026-08-21: the REDCap abort localizes to `utils::zip()` at `R/generate_redcap.R:306` (and again at :598), which shells out to an external `zip` executable; a follow-up probe installed {zip} 2.3.3 under the same webR and `zip::zip(mode = "cherry-pick")` wrote a valid 173-byte archive whose single entry was the flat `instrument.csv`, so the format is generable under emscripten once the package stops shelling out.
 
 ## Decisions
 
