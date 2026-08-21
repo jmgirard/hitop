@@ -1,11 +1,11 @@
 # M45: A browser module builder for the HiTOP-SR
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M43
 - **Driving RR:** —
 - **Principles touched:** IP1, IP4, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m45-browser-module-builder`
 
 ## Goal
 
@@ -74,7 +74,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 
 ## Tasks
 
-- [ ] T1 Register `hitop` on `jmgirard.r-universe.dev` and confirm the
+- [x] T1 Register `hitop` on `jmgirard.r-universe.dev` and confirm the
       emscripten build succeeds. The universe already builds WebAssembly —
       `circumplex` reports `wasm emscripten 4.6.0 success` (observed
       2026-08-21) — so this is registration, not new infrastructure.
@@ -99,6 +99,8 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-21: plan absorbed the Shiny-app half of the standing "Someday-maybe cluster" candidate row; the HiTOP-SR/BR validity-scales half of that row stays where it is.
 - 2026-08-21: plan chose r-universe over building and hosting the WebAssembly binary by hand with {rwasm}, because the universe already produces successful emscripten builds for this maintainer at no maintenance cost; falsified by r-universe's emscripten build failing on this package for a reason registration cannot fix.
 - 2026-08-21: the criteria audit ran in **full** mode over AC1-AC6 and returned one finding, fixed before the criteria were written. AC4 promised the app source contains "no hardcoded scale name or item number" with no procedure enumerating that domain — it now names the script that iterates the two scale-name columns and the item-number column, which is exactly the domain the promise quantifies over. The audit ran inline in this session rather than in a fresh-context reader, because this session is instructed not to spawn subagents unless asked; the reader-freshness the instrument normally provides was not obtained.
+- 2026-08-21: T1 needed no work — `hitop` was already registered on `jmgirard.r-universe.dev` and its emscripten build had already succeeded when the task was reached (`api/ls` lists it; `api/packages/hitop` reports `wasm` R 4.6.0 status `success`, built 2026-08-21T22:08:42Z). Evidence for AC1 is re-observed at review.
+- 2026-08-21: implement gate chose `jmgirard/hitop-builder` as the app repo name and a GitHub Action on push as the deploy route; the app's shape (shinylive vs plain webR) was left open by the user for T2's probe to inform.
 - 2026-08-21: T2 is the milestone's real risk — nothing verifies that {officer} and {flextable} produce a valid DOCX under emscripten. It is sequenced before the UI so a failure surfaces at the cheapest point.
 
 ## Decisions
