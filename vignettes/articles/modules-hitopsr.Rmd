@@ -1,0 +1,231 @@
+---
+title: "Building HiTOP-SR Modules"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Building HiTOP-SR Modules}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(tibble)
+```
+
+The full HiTOP-SR asks 405 items and returns 76 scale scores, which is more
+than many studies need and more than many participants will sit through. A
+**module** is a chosen set of the instrument's scales, administered and scored
+on its own.
+
+This article walks the whole module workflow end to end: choosing which scales
+to include, describing the module, generating the files you will actually field,
+and scoring the data that comes back. For scoring a *complete* administration,
+see [Scoring the HiTOP-SR](hitopsr_scoring.html) instead.
+
+```{r}
+library(hitop)
+```
+
+## Choosing Scales
+
+Start from the menu. `available_scales()` lists every scale the instrument
+offers, along with the camelCase stem that will name its scored output column
+and the number of items it contributes.
+
+```{r}
+scale_menu <- available_scales("hitopsr")
+scale_menu
+```
+
+Both name columns are accepted when you build a module, so you can write scale
+names the way they are printed on the form (`"Antisocial Behavior"`) or the way
+they appear in scored output (`"antisocialBehavior"`).
+
+A module is built from these 76 scales only. The instrument also defines 17
+subscales (see `hitopsr_subscales`), but a subscale is not a unit you can select
+here — `hitop_module()` rejects a subscale name as unknown. Ask for the scale
+that contains it instead.
+
+Because this is an ordinary tibble, you can also use it to plan the length of
+your module. For example, to see the shortest scales:
+
+```{r}
+scale_menu[order(scale_menu$nItems), ][1:5, ]
+```
+
+## Building the Module
+
+`hitop_module()` turns a set of scale names into a validated description of the
+module. It resolves the names, works out which items those scales need, and
+records the reverse-keying flags that scoring will require.
+
+```{r}
+four_scale <- hitop_module(
+  instrument = "hitopsr",
+  scales = c(
+    "Agoraphobia", "Appetite Loss",
+    "Antisocial Behavior", "Romantic Disinterest"
+  )
+)
+four_scale
+```
+
+The printed summary reports how many items the module needs. The description
+itself is a plain list, so you can look inside it:
+
+```{r}
+four_scale$camelCase
+four_scale$nItems
+four_scale$items
+```
+
+Note that `$items` holds the **original** HiTOP-SR item numbers. A module does
+not renumber its items from 1: item 42 of the full instrument stays item 42
+throughout, so data collected with a module can still be scored against the full
+instrument's key.
+
+## Generating the Instrument
+
+Each of the three HiTOP-SR generators takes a `module` argument. Pass the
+description and you get a form containing only that module's items, keeping
+their original numbers.
+
+Here we write all three formats into a temporary folder; in your own work you
+would give a real path or let the default filename land in your working
+directory.
+
+```{r}
+#| message: false
+outdir <- tempdir()
+
+docx_file <- generate_docx_hitopsr(
+  file = file.path(outdir, "hitopsr_module.docx"),
+  module = four_scale
+)
+
+qualtrics_file <- generate_qualtrics_hitopsr(
+  file = file.path(outdir, "hitopsr_module.txt"),
+  module = four_scale
+)
+
+redcap_file <- generate_redcap_hitopsr(
+  file = file.path(outdir, "hitopsr_module.zip"),
+  module = four_scale
+)
+```
+
+```{r}
+basename(c(docx_file, qualtrics_file, redcap_file))
+```
+
+The DOCX file is a paper form ready to print, the `.txt` file imports into
+Qualtrics as an advanced-format question block, and the `.zip` file imports into
+REDCap as an instrument. See [Importing Instruments into Qualtrics and
+REDCap](import-instructions.html) for the import steps themselves.
+
+## Selecting the Collected Columns
+
+Once the data comes back, it has only the module's item columns — plus whatever
+else your platform recorded, such as participant identifiers and demographics.
+Both scoring functions need you to name those item columns.
+
+We will stand in for module-collected data using `ku_hitopsr`, the package's
+real example dataset. Its first two columns are `participant` and `biosex`, and
+its 405 item columns are named `hsr001` through `hsr405`:
+
+```{r}
+data("ku_hitopsr")
+names(ku_hitopsr)[1:5]
+```
+
+**Select the item columns by name, never by position.** The numbers in
+`four_scale$items` are item numbers, not column numbers. They coincide only in
+a data frame that is exactly the 405 items in order — and this one is not,
+because two other columns come first. Build the column names instead:
+
+```{r}
+item_cols <- sprintf("hsr%03d", four_scale$items)
+collected <- ku_hitopsr[item_cols]
+ncol(collected)
+```
+
+That width matches the module's own item count, which is the check worth
+running before you score anything:
+
+```{r}
+ncol(collected) == four_scale$nItems
+```
+
+Indexing by `four_scale$items` directly would have selected columns 42, 66, 68,
+and so on *by position*, which in this frame are the wrong items — shifted by
+the two leading columns:
+
+```{r}
+names(ku_hitopsr[four_scale$items])[1:4]
+```
+
+Those are items 40, 64, 66, and 107 masquerading as the module's items. Nothing
+would have failed loudly; the scores would simply have been wrong. If your item
+columns carry other names, `rename_hitopsr_items()` can rename them to standard
+item numbers first; its `prefix` argument sets the stem those names are built
+from.
+
+## Scoring and Reliability
+
+Hand the same description back through the `module` argument. Without it,
+`score_hitopsr()` expects a full administration and stops on the item count
+("Expected 405 items but got 21"); with it, the `items` argument names the
+columns you actually have, in instrument order, and `module` tells the function
+which scales they belong to.
+
+```{r}
+module_scores <- score_hitopsr(
+  data = collected,
+  items = names(collected),
+  module = four_scale,
+  append = FALSE
+)
+module_scores
+```
+
+Only the module's scales come back, in the order they appear in
+`hitopsr_scales`. The values are exactly what a full administration would have
+produced for those scales — a scale score depends only on its own items, so
+dropping the other 72 scales' columns cannot move it:
+
+```{r}
+full_scores <- score_hitopsr(
+  data = ku_hitopsr,
+  items = sprintf("hsr%03d", 1:405),
+  append = FALSE
+)
+all.equal(module_scores, full_scores[names(module_scores)])
+```
+
+`reliability_hitopsr()` takes the same argument and returns one row per module
+scale.
+
+```{r}
+reliability_hitopsr(
+  data = collected,
+  items = names(collected),
+  module = four_scale,
+  omega = FALSE
+)
+```
+
+Reliability is worth checking on your own module rather than assumed. In this
+sample the four coefficients run from modest down to negative: Romantic
+Disinterest returns a negative α, which is not a small number but a sign that
+its items covary near zero or oppositely in these data, so a mean of them is
+not measuring one thing. Short scales make α less stable, but shortness alone
+does not produce a negative value. Set `omega = FALSE` to skip McDonald's ω,
+which needs the **lavaan** package.
+
+The `srange`, `prefix`, `missing`, `calc_se`, and `append` arguments all behave
+exactly as they do for a full administration; see [Scoring the
+HiTOP-SR](hitopsr_scoring.html) for those.
