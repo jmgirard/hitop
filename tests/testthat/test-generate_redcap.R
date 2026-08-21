@@ -7,7 +7,7 @@
 # (R/generate_redcap.R:336) whose expected strings are hand-derived below from
 # the published rule logic + the hitophsum_choices values.
 
-# skip_if_no_zip() lives in helper-generators.R.
+# No external `zip` program is needed: the archive is written by {zip} (D-035).
 
 redcap_cols <- c(
   "Variable / Field Name",
@@ -30,7 +30,6 @@ redcap_cols <- c(
 # ---- Shared path: HiTOP-BR (full detail) ------------------------------------
 
 test_that("generate_redcap_hitopbr builds a faithful data dictionary", {
-  skip_if_no_zip()
   f <- withr::local_tempfile(fileext = ".zip")
   suppressMessages(generate_redcap_hitopbr(file = f))
   r <- read_redcap_csv(f)
@@ -66,7 +65,6 @@ test_that("generate_redcap_hitopbr builds a faithful data dictionary", {
 })
 
 test_that("required = FALSE flips every item to 'n'", {
-  skip_if_no_zip()
   f <- withr::local_tempfile(fileext = ".zip")
   suppressMessages(generate_redcap_hitopbr(file = f, required = FALSE))
   items <- read_redcap_csv(f)[-1, ]
@@ -76,7 +74,6 @@ test_that("required = FALSE flips every item to 'n'", {
 # ---- Shared path: PID-5 FULL (padding width + page-break count) -------------
 
 test_that("generate_redcap_pid5 pads to 3 digits and paginates correctly", {
-  skip_if_no_zip()
   f <- withr::local_tempfile(fileext = ".zip")
   suppressMessages(generate_redcap_pid5(file = f))
   r <- read_redcap_csv(f)
@@ -97,7 +94,6 @@ test_that("generate_redcap_pid5 pads to 3 digits and paginates correctly", {
 # ---- Smoke coverage: the 5 shared-path generators ---------------------------
 
 test_that("all shared-path REDCap generators produce a valid dictionary", {
-  skip_if_no_zip()
   cases <- list(
     list(fn = generate_redcap_hitopbr, n = 45L),
     list(fn = generate_redcap_hitopsr, n = nrow(hitopsr_items)),
@@ -152,7 +148,6 @@ hsum_argmax_bl <- function(abbr) {
 }
 
 test_that("HSUM REDCap branching logic matches the hand-derived rule strings", {
-  skip_if_no_zip()
   f <- withr::local_tempfile(fileext = ".zip")
   suppressMessages(generate_redcap_hitophsum(file = f))
   r <- read_redcap_csv(f)
@@ -211,7 +206,6 @@ test_that("HSUM REDCap branching logic matches the hand-derived rule strings", {
 })
 
 test_that("HSUM other_drug_rule = 'most_frequent' (default) emits argmax gates", {
-  skip_if_no_zip()
   f <- withr::local_tempfile(fileext = ".zip")
   suppressMessages(generate_redcap_hitophsum(file = f))
   r <- read_redcap_csv(f)
@@ -233,7 +227,6 @@ test_that("HSUM other_drug_rule = 'most_frequent' (default) emits argmax gates",
 })
 
 test_that("HSUM other_drug_rule = 'per_drug' reproduces the loosened gates", {
-  skip_if_no_zip()
   f <- withr::local_tempfile(fileext = ".zip")
   suppressMessages(generate_redcap_hitophsum(file = f, other_drug_rule = "per_drug"))
   r <- read_redcap_csv(f)
@@ -261,7 +254,6 @@ test_that("HSUM other_drug_rule rejects unknown values", {
 })
 
 test_that("HSUM quantity items get the correct field-type/choice overrides", {
-  skip_if_no_zip()
   f <- withr::local_tempfile(fileext = ".zip")
   suppressMessages(generate_redcap_hitophsum(file = f))
   r <- read_redcap_csv(f)
@@ -301,7 +293,6 @@ test_that("HSUM quantity items get the correct field-type/choice overrides", {
 # filtered by `Scale`, independently of the `hitopsr_scales$itemNumbers` path.
 
 test_that("generate_redcap_hitopsr(module =) emits exactly the module's fields", {
-  skip_if_no_zip()
   s <- hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
   f <- withr::local_tempfile(fileext = ".zip")
   suppressMessages(generate_redcap_hitopsr(file = f, module = s))
@@ -332,4 +323,37 @@ test_that("generate_redcap_hitopsr() rejects a non-hitop_module module", {
     generate_redcap_hitopsr(file = f, module = list(items = 1:5)),
     "hitop_module"
   )
+})
+
+# ---- No external zip program (D-035) ----------------------------------------
+#
+# The archive is written by {zip}, which implements the format in C, so no
+# child process is spawned and no `zip` executable need exist. That is the
+# property WebAssembly needs, where `system()` is unavailable and the old
+# `utils::zip()` call aborted. R_ZIPCMD is what `utils::zip()` reads to find
+# its executable; pointing it at a nonexistent program makes the old path fail
+# and leaves the current one untouched.
+
+test_that("the REDCap archive is written without an external zip program", {
+  withr::local_envvar(c(R_ZIPCMD = "hitop-no-such-zip-program"))
+
+  f <- withr::local_tempfile(fileext = ".zip")
+  suppressMessages(generate_redcap_hitopbr(file = f))
+  expect_true(file.exists(f))
+
+  # One entry, stored flat -- no directory component from the temp file's path.
+  entries <- utils::unzip(f, list = TRUE)$Name
+  expect_identical(entries, "instrument.csv")
+
+  # The archive still reads back as the same data dictionary.
+  expect_identical(names(read_redcap_csv(f)), redcap_cols)
+})
+
+test_that("the HiTOP-HSUM REDCap archive also needs no external zip program", {
+  withr::local_envvar(c(R_ZIPCMD = "hitop-no-such-zip-program"))
+
+  f <- withr::local_tempfile(fileext = ".zip")
+  suppressMessages(generate_redcap_hitophsum(file = f))
+  expect_true(file.exists(f))
+  expect_identical(utils::unzip(f, list = TRUE)$Name, "instrument.csv")
 })

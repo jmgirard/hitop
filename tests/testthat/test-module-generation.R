@@ -30,7 +30,6 @@ test_that("Qualtrics: module = NULL and an all-scales module match the default",
 })
 
 test_that("REDCap: module = NULL and an all-scales module match the default", {
-  skip_if_no_zip()
   f_default <- withr::local_tempfile(fileext = ".zip")
   f_null <- withr::local_tempfile(fileext = ".zip")
   f_all <- withr::local_tempfile(fileext = ".zip")
