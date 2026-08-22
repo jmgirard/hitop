@@ -1,11 +1,11 @@
 # M46: Renumbered and optionally shuffled HiTOP-SR module Word forms
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M45
 - **Driving RR:** —
 - **Principles touched:** IP1, GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m46-module-form-numbering`
 
 ## Goal
 
@@ -100,7 +100,7 @@ new test helper extracts from a written DOCX in document order.
 
 ## Tasks
 
-- [ ] T1 — add a `docx_item_rows()` helper to
+- [x] T1 — add a `docx_item_rows()` helper to
       `tests/testthat/helper-generators.R` returning printed (number, text)
       pairs in document order, splitting the `NN.  Text` cell built at
       `R/generate_docx.R:267`; pin it against the committed
@@ -127,6 +127,8 @@ new test helper extracts from a written DOCX in document order.
 - 2026-08-21: plan gate chose renumbering by default over an opt-in argument because it reaches the browser builder with no change in that repo and makes the printed number equal the column position `score_hitopsr(module =)` expects; falsified by a report of module data collected against an older form being scored against a renumbered key.
 - 2026-08-21: plan gate chose a printed crosswalk on the scoring page over an `item_order` attribute alone, and over refusing `randomize` when `include_scoring = FALSE`, because a shuffled form must be scoreable from the paper alone; falsified by a researcher needing a participant-facing shuffled form that must carry no key.
 - 2026-08-21: plan gate chose Word-only renumbering over renumbering all three generators because a Qualtrics/REDCap item number names a collected data column; falsified by a user mis-joining Word-collected and online-collected module data.
+- 2026-08-22: implement gate settled three open choices: `randomize = TRUE` with `renumber = FALSE` is legal (the two arguments stay independent), the crosswalk prints as compact arrow-joined pairs, and `item_order` is attached on every call rather than only a shuffled one.
+- 2026-08-22: T1 — `docx_item_rows()` added to `helper-generators.R` with an XML-entity unescaper, pinned against the committed `inst/extdata/hitopsr_US.docx` (405 rows, numbers and texts equal to `hitopsr_items` in `HSR` order).
 
 ## Decisions
 

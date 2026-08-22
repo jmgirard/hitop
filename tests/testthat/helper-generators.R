@@ -171,6 +171,36 @@ docx_legend_pairs <- function(lines) {
   )
 }
 
+# Extract the printed item rows from a .docx, in document order.
+#
+# make_items_table() builds each item cell as `paste0(number, ".  ", text)`
+# (R/generate_docx.R), so an item row is the only <w:t> run that opens with
+# digits, a period, and two spaces. The legend runs read "0 = Never", the
+# option columns are bare digits, the scoring table's Items cells read
+# "1, 2(R), 3", and the crosswalk pairs are joined with an arrow, so none of
+# them can match. Returns a data.frame(number, text) with zero rows when a
+# document has no items table.
+docx_item_rows <- function(file) {
+  xml <- read_docx_xml(file)
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  txt <- unescape_xml(gsub("<[^>]+>", "", runs))
+  hits <- grep("^[0-9]+\\.  ", txt, value = TRUE)
+  data.frame(
+    number = sub("^([0-9]+)\\.  .*$", "\\1", hits),
+    text = sub("^[0-9]+\\.  ", "", hits),
+    stringsAsFactors = FALSE
+  )
+}
+
+# Undo the XML entity escaping officer applies when it writes a run.
+unescape_xml <- function(x) {
+  x <- gsub("&lt;", "<", x, fixed = TRUE)
+  x <- gsub("&gt;", ">", x, fixed = TRUE)
+  x <- gsub("&quot;", '"', x, fixed = TRUE)
+  x <- gsub("&apos;", "'", x, fixed = TRUE)
+  gsub("&amp;", "&", x, fixed = TRUE)
+}
+
 # Extract the (width, height) of the first <w:pgSz> in twips.
 docx_page_size <- function(xml) {
   w <- as.integer(sub('.*<w:pgSz[^>]*w:w="([0-9]+)".*', "\\1", xml))
