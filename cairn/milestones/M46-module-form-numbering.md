@@ -306,3 +306,47 @@ The reviewer independently confirmed AC1, AC2, AC3, AC4, AC6, and AC7 met, and
 reported nothing in three further categories: convention violations beyond
 finding 7, DOCX extractor defects, and edge cases (a single-item module is
 unreachable — the smallest HiTOP-SR scale has 3 items).
+
+### Triage (2026-08-22)
+
+Every finding's disposition, none dropped (IP3):
+
+- **1 — fix now, documentation.** At the gate Jeff chose documenting the
+  hazard over adding a runtime warning: `?generate_docx_hitopsr`, the modules
+  vignette, and `NEWS.md` will say plainly that responses collected on a
+  shuffled form must be reordered through `item_order` before
+  `score_hitopsr(module = )`, with a worked line. Scorer-side detection stays
+  out of scope per the plan.
+- **2 — fix now.** The crosswalk moves out of the `include_scoring` block, so
+  a shuffled module form carries its map whether or not the scoring key is
+  appended. A crosswalk is a numbering map, not a key: it reveals no scale
+  membership and no reverse-keying, so printing it does not defeat
+  `include_scoring = FALSE`. A test covers the combination.
+- **3 — fix now.** The `@param randomize` text, the vignette, and `NEWS.md`
+  narrow to what the code does: the crosswalk is printed for a renumbered
+  module form, and `renumber = FALSE` prints the originals, which are their
+  own map.
+- **4 — fix now.** The AC5 loop reads each scale's printed numbers from
+  `docx_scoring_rows()` instead of deriving them by `match()` against
+  `item_order`. This is the criterion failure that returned the milestone.
+- **5 — fix now, folded into 4.** Once 4 reads the printed page, the module
+  scoring rows under `randomize` are covered per scale rather than by the
+  single HSR-310 marker.
+- **6, 7, 9 — fix now.** The `NEWS.md` cross-reference direction; a NEWS note
+  that the two new arguments sit between `module` and `subset`, so positional
+  calls past `font_family` must be respelled; `item_order` returned as integer.
+- **8 — fix now.** `withr::local_seed()` in place of bare `set.seed()`, and
+  the missing `skip_if_no_docx()` guard. The prior-review lens's `(R)`
+  anchoring tidy-up rides along here.
+- **10 — fix now, per Jeff's gate decision.** The crosswalk prints for module
+  forms only. A shuffled full instrument prints none — its 405-pair paragraph
+  was never signed off under IP1 and D-036 covers module forms only, so this
+  keeps the printed page inside the existing sign-off; the caller reads the
+  order from `item_order`. No criterion changes: AC5 is stated over `m`, a
+  module, and AC4's no-module clause says nothing about a crosswalk.
+- **prior-review lens's `(R)` item — rejected**, reproduced as non-vacuous
+  (see above); its anchoring suggestion is absorbed into 8.
+
+CI on PR #52 at `5c450ca`: six of seven jobs pass (macOS, pkgdown, coverage,
+Ubuntu devel/oldrel-1/release); Windows was still building when the review
+returned. CI will be re-run on the fix commits regardless.
