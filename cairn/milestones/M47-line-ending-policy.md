@@ -1,6 +1,6 @@
 # M47: One line-ending policy for the whole repository
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
@@ -65,7 +65,7 @@ it like any other.
       criterion — beside its `git check-attr text` value. No path meeting that
       criterion resolves as `text=auto`, so no binary file's stored bytes
       depend on the content sniff at checkout.
-- [x] AC5 — The committed guard reports a failure when a CR byte is present in
+- [ ] AC5 — The committed guard reports a failure when a CR byte is present in
       any path `git check-attr` resolves as `text=auto`, and reports none on
       the clean tree.
 - [x] AC6 — `devtools::document()` produces no diff, and `devtools::test()`
@@ -124,6 +124,7 @@ it like any other.
 - 2026-08-22: T5 discovery — a `.git-blame-ignore-revs` naming this branch's normalization commit would be inert. Verified against M46: its branch tip `0264d7d` is not an ancestor of `main`, because a squash merge writes a new commit. The file, its activation instructions, and the `CLAUDE.md` line therefore land on the branch, and the squashed commit's SHA is appended during post-merge hygiene.
 - 2026-08-22: AC5 evidence — the guard was mutation-tested at two path types by writing CRLF blobs straight into the index with `git hash-object -w --no-filters` plus `git update-index`. A plain `git add` cannot reproduce the fault at all, because `eol=lf` normalizes on the way in; the low-level write is the shape a merge from a pre-policy branch takes. The guard exited 1 naming `R/reliability.R`, then 1 naming both it and `data-raw/norms_pid5_ors.csv`, and 0 once both were renormalized.
 - 2026-08-22: T6 first `devtools::check()` run raised exactly the NOTE T5 anticipated — "Found the following hidden files and directories: .git-blame-ignore-revs" — so `^\\.git-blame-ignore-revs$` was added to `.Rbuildignore` and the check re-run. `devtools::document()` produces no diff. The full branch diff against the base lists 25 paths: `.gitattributes`, the two files added, the two edited, the two tracking files, and the 18 renormalized text paths; no artifact, dataset, or image path appears.
+- 2026-08-22: review return (defect return 1) — AC5 fails inside its own domain. `blob_bytes()` interpolates a path into a single-quoted shell string, so a tracked path containing an apostrophe reads as zero bytes and the guard reports no CR and exits 0; reproduced against a scratch repo holding a verified CRLF blob at `it'"'"'s.R`. Compounding it, no `git` call checks its exit status, so running outside a repository or from a subdirectory also reports a clean pass — in CI a broken checkout would green the job. Both defeat the milestone'"'"'s Goal sentence, which promises a guard that fails the push reintroducing a CRLF. Status to in-progress; AC5 unticked; fourteen findings and their triage recorded in the Review section.
 - 2026-08-22: verify slot clean — `devtools::test()` FAIL 0 / WARN 0 / SKIP 1 / PASS 13778 (the skip is the pre-existing SDTD item-38 keying dispute); `devtools::check()` Status OK with 0 errors, 0 warnings, 0 notes after the `.Rbuildignore` entry; `devtools::document()` no diff; the guard exits 0 reporting 334 tracked paths, 0 undeclared, and 66 CR-carrying files all of which git counts binary. All tasks done; status to review.
 - 2026-08-22: checkpoint — task boxes stay unticked until `devtools::test()` and `devtools::check()` report; the run was still in flight when this landed.
 
@@ -160,19 +161,21 @@ tree must not be disturbed mid-review. `<base>` is `70c5b50`._
   `-text`/`binary`, none `text=auto`. Re-derived independently by the same
   `git check-attr` + `git cat-file` walk: 66 NUL-carrying paths, 0 of them
   left convertible.
-- **AC5 — verified, beyond what the criterion asks.** Control: the guard
-  exits 0 on the clean tree. Mutation A — a CRLF blob written straight into
-  the index for `R/reliability.R` via `git hash-object -w --no-filters` plus
-  `git update-index` — exit 1, naming `R/reliability.R` under "convertible
-  paths carrying a CR byte". Mutation B, the same at a second path type
-  (`data-raw/hitopbr_items.csv`) — exit 1, naming both. Mutation C, deleting
-  the `*.rda binary` declaration — exit 1 under "binary paths not declared",
-  naming `R/sysdata.rda` and the `data/*.rda` files, and the declared count
-  falling 78 to 56. Restored control: exit 0. The low-level index write is
-  the only way to produce mutation A or B at all: `eol=lf` normalizes on
-  `git add`, so an ordinary commit cannot reintroduce a CR — the fault shape
-  the CR half of the guard actually defends against is a merge from a branch
-  predating the policy.
+- **AC5 — NOT verified.** The positive cases hold: control exits 0; a CRLF
+  blob written into the index for `R/reliability.R` exits 1 naming it; the same
+  at `data-raw/hitopbr_items.csv` exits 1 naming both; deleting the
+  `*.rda binary` declaration exits 1 under "binary paths not declared", the
+  declared count falling 78 to 56. **But the criterion fails inside its own
+  domain.** `blob_bytes()` interpolates the path into a shell string wrapped in
+  single quotes, so a tracked path containing an apostrophe breaks the quoting
+  and the blob reads as zero bytes. Reproduced 2026-08-22 in a scratch repo: a
+  genuine CRLF blob at `it's.R` (confirmed `a \r \n b \r \n` by `od -c`)
+  produced `sh: unexpected EOF`, a report of "carrying a CR byte: 0", and
+  **exit 0**. `git ls-files` quotes only control and non-ASCII bytes, so the
+  `tracked_paths()` guard does not catch an apostrophe. Separately, no `git`
+  call checks its exit status: run outside a repository, or from
+  `data-raw/`, the guard reports 0 CR bytes and exits 0 — in CI a checkout
+  that produced no usable `.git` would green the job.
 
 - **AC6 — verified.** Re-run against the branch tip after the last two
   commits, not carried over from implementation: `devtools::document()`
@@ -197,3 +200,63 @@ tree must not be disturbed mid-review. `<base>` is `70c5b50`._
 
 ### Independent review
 
+Three fresh-context lenses (internal tier, but the diff adds a script and a CI
+job, so the full fan-out applied).
+
+**[S] blame-history — no findings.** It verified independently that
+`git check-attr --source=main` and `--source=HEAD` both report `text: unset`
+for every path under the two byte-locked directories, that all 18 renormalized
+files hash identically once CRs are stripped, and that every CSV consumer uses
+`readr::read_csv()`, which is line-ending agnostic.
+
+**[S] prior-review — no findings.** No archived review ever proposed and
+rejected a repo-wide normalization; the diff resolves the M24/M46 CRLF lesson
+rather than regressing it, and preserves M20's and M42's `-text` lines. The
+`gh api .../pulls/comments` probe returned `[]`, so the thread walk was skipped.
+
+**[O] diff-bug — fourteen findings.** It independently confirmed AC1, AC2,
+AC3, AC4, and AC6, and went further than this review's own evidence on AC3 by
+checking semantics rather than bytes: `parse()`/`deparse()` identical across
+`main`→`HEAD` for all three renormalized `.R` files, `read.csv()` identical for
+all 11 CSVs, and no string literal in the `main` versions containing a literal
+CR. It also established that the 12 `.txt`/`.qsf` artifacts carry neither CR
+nor NUL, so git's sniff would never have protected them — which is precisely
+the M20 failure the `-text` lines cover.
+
+Findings 1, 2, and 4 were reproduced by this session against the implementation
+before being accepted; the rest are recorded as reported.
+
+1. `blob_bytes()` breaks on a path containing an apostrophe and scores the
+   blob as empty — a silent false negative on the exact fault the guard
+   exists to catch. **Reproduced. Returns the milestone (AC5).**
+2. No `git` invocation checks its exit status, so any git failure degrades to
+   a green pass — outside a repo, or from a subdirectory. **Reproduced.
+   Returns the milestone.**
+3. `readBin(n = 50e6)` silently truncates, so a CR past 50 MB is missed.
+   Latent: the largest tracked blob is 1,364,039 bytes.
+4. `.git-blame-ignore-revs` ships with no SHA, and `CLAUDE.md:13` states as
+   fact that the documented `git config` makes blame skip the normalization
+   commit. **Reproduced:** with the config active, all 216 lines of
+   `R/reliability.R` still attribute to `ad813bb`. The post-merge SHA step has
+   no task, no checklist entry, and no criterion.
+5. The normalization commit bundles content changes, so the SHA eventually
+   appended violates the file's own stated contract ("changed only line
+   endings or formatting, never meaning") and would un-attribute real work.
+6. The `line-endings` CI job omits the `GITHUB_PAT` env every other job in the
+   file sets, exposing it to unauthenticated API rate limiting.
+7. The guard never catches over-declaration: a future `*.svg binary` would
+   freeze `favicon.svg` out of normalization and stay green.
+8. `cairn/LESSONS.md:14` is now false — it still says the two `R/*.R` files
+   are stored CRLF.
+9. `cairn/DESIGN.md` records no line-ending convention though this milestone
+   establishes a repo-wide invariant enforced in CI.
+10. `.txt`/`.qsf` have no extension rule, so the byte-locked Qualtrics
+    artifacts rest solely on their two directory rules.
+11. `air.toml` is empty, so Air formats with `line-ending = "auto"` and writes
+    CRLF on Windows; `eol=lf` catches it at commit but the churn is avoidable.
+12. The T6 work-log entry says 25 paths and omits `CLAUDE.md`; the real count
+    is 26. T2's text still says "the 14 expected text paths" where the Scope
+    correction said 18.
+13. The `text_attrs()` round-trip guard is protective but its failure message
+    is opaque to a CI reader.
+14. `cat(paste0(...), "\n")` emits a stray space before each newline.
