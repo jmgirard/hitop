@@ -17,6 +17,8 @@ generate_docx_hitopsr(
   font_size = 10,
   font_family = "Times New Roman",
   module = NULL,
+  renumber = TRUE,
+  randomize = FALSE,
   subset = NULL
 )
 ```
@@ -62,9 +64,44 @@ generate_docx_hitopsr(
 
   An optional
   [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
-  object restricting the form to the items of the chosen scales, keeping
-  their original HiTOP-SR item numbers. Cannot be combined with
-  `include_subscales = TRUE`. (default = `NULL`)
+  object restricting the form to the items of the chosen scales. Cannot
+  be combined with `include_subscales = TRUE`. (default = `NULL`)
+
+- renumber:
+
+  Logical. If `TRUE` (default), the printed items are numbered `1` to
+  `n` down the page, so a module form does not show the full
+  instrument's gapped numbers. Set to `FALSE` to print each item's
+  original HiTOP-SR number instead. The scoring page always uses
+  whichever numbers are printed. This differs from
+  [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
+  and
+  [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md),
+  which never renumber, because there an item number names a collected
+  data column.
+
+- randomize:
+
+  Logical. If `TRUE`, the items are printed in a random order. On a
+  renumbered module form the document also carries a crosswalk from each
+  printed number back to its original HiTOP-SR number, so the form is
+  scoreable from the paper alone; that crosswalk is printed whether or
+  not `include_scoring` appends the key. It is *not* printed when
+  `module` is `NULL` (405 pairs would be one dense paragraph) or when
+  `renumber = FALSE` (the printed numbers are already the original ones)
+  — in both cases read the order from the `item_order` attribute
+  described under Value. There is no `seed` argument: call
+  [`set.seed()`](https://rdrr.io/r/base/Random.html) before this
+  function to make an order reproducible. (default = `FALSE`)
+
+  **Scoring data collected on a shuffled form.**
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  addresses a module's items by their position in `module$items`, which
+  is ascending original order — not the order a shuffled form prints
+  them in. Reorder the collected columns through `item_order` before
+  scoring: `collected[order(attr(out, "item_order"))]`. Scoring
+  printed-order columns directly returns wrong scale scores and raises
+  no error.
 
 - subset:
 
@@ -73,7 +110,10 @@ generate_docx_hitopsr(
 
 ## Value
 
-Invisibly returns the path to the created file (`file`).
+Invisibly returns the path to the created file (`file`), carrying an
+`item_order` attribute: the original HiTOP-SR item numbers in the order
+they were printed. It is present on every call, and is simply ascending
+unless `randomize = TRUE`.
 
 ## Examples
 
@@ -81,13 +121,32 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/Rtmptlg1it/file1aa82881d7a5.docx
+#> ✔ Document successfully created at /tmp/RtmpNHkk2h/file1a3ec2594ad.docx
 
-# A module containing only two scales, original numbering preserved
+# A module containing only two scales, printed as items 1 to 8
 generate_docx_hitopsr(
   file = tempfile(fileext = ".docx"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Document successfully created at /tmp/Rtmptlg1it/file1aa87ba3595b.docx
+#> ✔ Document successfully created at /tmp/RtmpNHkk2h/file1a3e75d3ad51.docx
+
+# The same module keeping the full instrument's own item numbers
+generate_docx_hitopsr(
+  file = tempfile(fileext = ".docx"),
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
+  renumber = FALSE
+)
+#> ✔ Document successfully created at /tmp/RtmpNHkk2h/file1a3e1c9cfe5f.docx
+
+# A shuffled form; the scoring page carries the crosswalk back
+set.seed(1)
+out <- generate_docx_hitopsr(
+  file = tempfile(fileext = ".docx"),
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
+  randomize = TRUE
+)
+#> ✔ Document successfully created at /tmp/RtmpNHkk2h/file1a3e45aa592e.docx
+attr(out, "item_order")
+#> [1]  66 144 389 109 260 118 291 202
 # }
 ```

@@ -51,7 +51,11 @@ generate_qualtrics_hitopsr(
   An optional
   [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
   object restricting the file to the items of the chosen scales, keeping
-  their original HiTOP-SR item numbers. (default = `NULL`)
+  their original HiTOP-SR item numbers. This is deliberately unlike
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
+  whose module forms are numbered `1` to `n`: here an item number names
+  a collected data column, so renumbering would rename variables in
+  dictionaries already in the field. (default = `NULL`)
 
 - subset:
 
@@ -67,12 +71,12 @@ Invisibly returns the path to the created file (`file`).
 ``` r
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/Rtmptlg1it/file1aa8ccf040a.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpNHkk2h/file1a3e19739795.txt
 
-# A two-scale module, original numbering preserved
+# A two-scale module, original numbering preserved (unlike the Word form)
 generate_qualtrics_hitopsr(
   file = tempfile(fileext = ".txt"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Qualtrics import file successfully created at /tmp/Rtmptlg1it/file1aa83b976d24.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpNHkk2h/file1a3e7a1391fb.txt
 ```

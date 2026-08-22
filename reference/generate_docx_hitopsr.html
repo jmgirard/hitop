@@ -92,6 +92,8 @@ single continuous table.</p>
 <span>  font_size <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  font_family <span class="op">=</span> <span class="st">"Times New Roman"</span>,</span>
 <span>  module <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  renumber <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  randomize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  subset <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -137,8 +139,37 @@ Defaults to <code>"Times New Roman"</code>.</p></dd>
 
 <dt id="arg-module">module<a class="anchor" aria-label="anchor" href="#arg-module"></a></dt>
 <dd><p>An optional <code><a href="hitop_module.html">hitop_module()</a></code> object restricting the form to the
-items of the chosen scales, keeping their original HiTOP-SR item numbers.
-Cannot be combined with <code>include_subscales = TRUE</code>. (default = <code>NULL</code>)</p></dd>
+items of the chosen scales. Cannot be combined with
+<code>include_subscales = TRUE</code>. (default = <code>NULL</code>)</p></dd>
+
+
+<dt id="arg-renumber">renumber<a class="anchor" aria-label="anchor" href="#arg-renumber"></a></dt>
+<dd><p>Logical. If <code>TRUE</code> (default), the printed items are numbered
+<code>1</code> to <code>n</code> down the page, so a module form does not show the full
+instrument's gapped numbers. Set to <code>FALSE</code> to print each item's original
+HiTOP-SR number instead. The scoring page always uses whichever numbers
+are printed. This differs from <code><a href="generate_qualtrics_hitopsr.html">generate_qualtrics_hitopsr()</a></code> and
+<code><a href="generate_redcap_hitopsr.html">generate_redcap_hitopsr()</a></code>, which never renumber, because there an item
+number names a collected data column.</p></dd>
+
+
+<dt id="arg-randomize">randomize<a class="anchor" aria-label="anchor" href="#arg-randomize"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, the items are printed in a random
+order. On a renumbered module form the document also carries a crosswalk
+from each printed number back to its original HiTOP-SR number, so the form
+is scoreable from the paper alone; that crosswalk is printed whether or
+not <code>include_scoring</code> appends the key. It is <em>not</em> printed when <code>module</code>
+is <code>NULL</code> (405 pairs would be one dense paragraph) or when
+<code>renumber = FALSE</code> (the printed numbers are already the original ones) —
+in both cases read the order from the <code>item_order</code> attribute described
+under Value. There is no <code>seed</code> argument: call <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> before this
+function to make an order reproducible. (default = <code>FALSE</code>)</p>
+<p><strong>Scoring data collected on a shuffled form.</strong> <code><a href="score_hitopsr.html">score_hitopsr()</a></code> addresses
+a module's items by their position in <code>module$items</code>, which is ascending
+original order — not the order a shuffled form prints them in. Reorder the
+collected columns through <code>item_order</code> before scoring:
+<code>collected[order(attr(out, "item_order"))]</code>. Scoring printed-order columns
+directly returns wrong scale scores and raises no error.</p></dd>
 
 
 <dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
@@ -148,7 +179,10 @@ Supplying both <code>module</code> and <code>subset</code> is an error. (default
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly returns the path to the created file (<code>file</code>).</p>
+    <p>Invisibly returns the path to the created file (<code>file</code>), carrying an
+<code>item_order</code> attribute: the original HiTOP-SR item numbers in the order
+they were printed. It is present on every call, and is simply ascending
+unless <code>randomize = TRUE</code>.</p>
     </div>
 
     <div class="section level2">
@@ -156,14 +190,33 @@ Supplying both <code>module</code> and <code>subset</code> is an error. (default
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Write a HiTOP-SR paper form to a temporary Word document</span></span></span>
 <span class="r-in"><span><span class="fu">generate_docx_hitopsr</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/Rtmptlg1it/file1aa82881d7a5.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpNHkk2h/file1a3ec2594ad.docx</span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># A module containing only two scales, original numbering preserved</span></span></span>
+<span class="r-in"><span><span class="co"># A module containing only two scales, printed as items 1 to 8</span></span></span>
 <span class="r-in"><span><span class="fu">generate_docx_hitopsr</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/Rtmptlg1it/file1aa87ba3595b.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpNHkk2h/file1a3e75d3ad51.docx</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The same module keeping the full instrument's own item numbers</span></span></span>
+<span class="r-in"><span><span class="fu">generate_docx_hitopsr</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  renumber <span class="op">=</span> <span class="cn">FALSE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpNHkk2h/file1a3e1c9cfe5f.docx</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># A shuffled form; the scoring page carries the crosswalk back</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">generate_docx_hitopsr</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  randomize <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpNHkk2h/file1a3e45aa592e.docx</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">out</span>, <span class="st">"item_order"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  66 144 389 109 260 118 291 202</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

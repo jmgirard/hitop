@@ -195,16 +195,42 @@ description itself is a plain list, so you can look inside it:</p>
 <span><span class="co">#&gt;  [1]  42  66  68 109 118 144 152 156 167 185 187 202 239 260 268 274 291 310 338</span></span>
 <span><span class="co">#&gt; [20] 389 390</span></span></code></pre></div>
 <p>Note that <code>$items</code> holds the <strong>original</strong>
-HiTOP-SR item numbers. A module does not renumber its items from 1: item
-42 of the full instrument stays item 42 throughout, so data collected
-with a module can still be scored against the full instrument’s key.</p>
+HiTOP-SR item numbers. That is true of the descriptor whatever a
+generator later prints: item 42 of the full instrument is item 42 here,
+which is what lets data collected with a module be scored against the
+full instrument’s key.</p>
 </div>
 <div class="section level2">
 <h2 id="generating-the-instrument">Generating the Instrument<a class="anchor" aria-label="anchor" href="#generating-the-instrument"></a>
 </h2>
 <p>Each of the three HiTOP-SR generators takes a <code>module</code>
 argument. Pass the description and you get a form containing only that
-module’s items, keeping their original numbers.</p>
+module’s items.</p>
+<p>The three do not number those items alike, on purpose. The Word form
+is what a participant fills in on paper, so
+<code><a href="../reference/generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> numbers it <code>1</code> to
+<code>n</code> down the page – a four-scale module reads 1, 2, 3 rather
+than 7, 42, 213. Pass <code>renumber = FALSE</code> to keep the original
+numbers instead. In the Qualtrics and REDCap exports an item number
+names a collected data column, so those keep the original HiTOP-SR
+numbers always; renumbering them would rename variables in dictionaries
+already in the field.</p>
+<p><code><a href="../reference/generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> also takes
+<code>randomize = TRUE</code>, which prints the items in a random order.
+The page is still numbered <code>1</code> to <code>n</code>, and a
+module form also carries a crosswalk from each printed number back to
+its original HiTOP-SR number — printed whether or not
+<code>include_scoring</code> appends the key — so a shuffled module form
+can be scored from the paper alone. Shuffling the full instrument prints
+no crosswalk, since 405 pairs would fill a page; read the order from the
+<code>item_order</code> attribute of the returned path instead. Call
+<code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> beforehand to make an order reproducible.</p>
+<p>One thing to watch: <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code> addresses a module’s
+items by their position in <code>module$items</code>, which is ascending
+<strong>original</strong> order, not the order a shuffled form prints
+them in. Reorder the collected columns through <code>item_order</code>
+first — <code>collected[order(attr(out, "item_order"))]</code> — or the
+scale scores come back wrong with no error raised.</p>
 <p>Here we write all three formats into a temporary folder; in your own
 work you would give a real path or let the default filename land in your
 working directory.</p>

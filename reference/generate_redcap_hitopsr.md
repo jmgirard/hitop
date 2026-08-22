@@ -45,7 +45,12 @@ generate_redcap_hitopsr(
   An optional
   [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
   object restricting the instrument to the items of the chosen scales,
-  keeping their original HiTOP-SR item numbers. (default = `NULL`)
+  keeping their original HiTOP-SR item numbers. This is deliberately
+  unlike
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
+  whose module forms are numbered `1` to `n`: here an item number names
+  a collected data column, so renumbering would rename variables in
+  dictionaries already in the field. (default = `NULL`)
 
 - subset:
 
@@ -66,12 +71,12 @@ Step-by-step import instructions for Qualtrics and REDCap:
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/Rtmptlg1it/file1aa8121da7da.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpNHkk2h/file1a3eb4c66a2.zip
 
-# A two-scale module, original numbering preserved
+# A two-scale module, original numbering preserved (unlike the Word form)
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Instrument successfully zipped to /tmp/Rtmptlg1it/file1aa83ea69a95.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpNHkk2h/file1a3e681a57dc.zip
 ```

@@ -3,13 +3,16 @@
 Builds a validated description of a **module**: a chosen set of an
 instrument's scales, administered and scored on its own. Supplying the
 result as the `module` argument of a generator produces an instrument
-containing only the items belonging to those scales, **keeping each
-item's original number**, so that data collected with the module can
-still be scored against the full instrument's key. Supplying it again to
+containing only the items belonging to those scales. The `items` field
+below always holds the **original** instrument numbers, whatever a
+generator prints: the online exports keep those numbers, while
+[`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+numbers a Word form `1` to `n` down the page unless asked not to.
+Supplying the module again to
 [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
 or
 [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
-scores the collected columns.
+scores the collected columns either way.
 
 Use
 [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
@@ -75,7 +78,8 @@ m
 #> * Agoraphobia
 #> * Appetite Loss
 
-# The item numbers are the original HiTOP-SR numbers, not 1..8
+# `$items` holds the original HiTOP-SR numbers, not 1..8 -- this is the
+# descriptor, not what any particular generator prints
 m$items
 #> [1]  66 109 118 144 202 260 291 389
 
