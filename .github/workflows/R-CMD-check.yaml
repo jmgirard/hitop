@@ -54,6 +54,12 @@ jobs:
 
     name: line endings
 
+    # Same token the check job sets: without it `setup-r` resolves the release
+    # unauthenticated and is subject to API rate limiting on busy runners,
+    # which would fail this job for a reason unrelated to line endings.
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
     # One platform is enough and is not a shortcut: the check reads each path's
     # INDEX BLOB (`git cat-file blob :path`), which no checkout-time conversion
     # touches, so every runner would read identical bytes.
