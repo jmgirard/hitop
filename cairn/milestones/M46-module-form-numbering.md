@@ -47,19 +47,19 @@ For every criterion below, `m` is
 (number, text) pairs the new test helper extracts from a written DOCX in
 document order.
 
-- [ ] AC1 — `generate_docx_hitopsr(module = m)` at the shipped defaults writes
+- [x] AC1 — `generate_docx_hitopsr(module = m)` at the shipped defaults writes
       printed rows whose numbers are `as.character(seq_len(m$nItems))` and
       whose texts equal, element for element, the `Text` values of
       `hitopsr_items[hitopsr_items$Scale %in% m$scales, ]` in ascending `HSR`
       order — the expected set derived by filtering `hitopsr_items$Scale`, not
       through `m$items`.
-- [ ] AC2 — in that same file, for each scale in `m$scales`, the scoring page's
+- [x] AC2 — in that same file, for each scale in `m$scales`, the scoring page's
       item list — as extracted by `docx_scoring_rows()` — equals that scale's
       items' ranks among the module's items (derived by the same
       `hitopsr_items$Scale` filter), carrying an `(R)` marker on exactly those
       whose `hitopsr_items$Reverse` is `TRUE`; for this `m` that is HSR 310,
       whose printed rank is 20, and the other 22 items carry no marker.
-- [ ] AC3 — the printed rows of a fresh default `generate_docx_hitopsr()` call
+- [x] AC3 — the printed rows of a fresh default `generate_docx_hitopsr()` call
       with no `module` equal, number for number and text for text, those
       extracted from the committed `inst/extdata/hitopsr_US.docx`; and
       `generate_docx_hitopsr(module = m, renumber = FALSE)` reproduces the
@@ -67,7 +67,7 @@ document order.
       implementation that renumbers unconditionally fails this criterion.
       `tests/testthat/test-artifacts.R` passes unchanged, so no shipped
       artifact or `hitop_artifacts` row moved.
-- [ ] AC4 — with `randomize = TRUE` and `module = m`, the printed numbers are
+- [x] AC4 — with `randomize = TRUE` and `module = m`, the printed numbers are
       `as.character(seq_len(m$nItems))` and the printed texts are a permutation
       of AC1's expected texts; across seeds 1 through 5 under `set.seed()` at
       least two distinct printed orders occur; two calls each preceded by
@@ -75,7 +75,7 @@ document order.
       TRUE` with `module = NULL` writes printed numbers `as.character(1:405)`
       whose texts are a permutation of `hitopsr_items$Text` and are not in
       `HSR` order.
-- [ ] AC5 — a shuffled form's scoring page carries a crosswalk whose
+- [x] AC5 — a shuffled form's scoring page carries a crosswalk whose
       (new, original) pairs, as extracted by a new `docx_crosswalk_pairs()`
       helper, are the printed numbers paired with the original `HSR` numbers,
       and the invisible return value carries an `item_order` attribute equal to
@@ -84,7 +84,7 @@ document order.
       equals `hitopsr_scales$itemNumbers` for that scale as a set; and that
       scoring page carries an `(R)` marker on exactly the printed number
       `attr(out, "item_order")` maps to HSR 310, and on no other.
-- [ ] AC6 — after the change, no file under `R/`, no file under `vignettes/`,
+- [x] AC6 — after the change, no file under `R/`, no file under `vignettes/`,
       not `README.Rmd`, and not `NEWS.md` asserts that a module **Word** form
       keeps its original item numbers, established by
       `grep -rniE 'renumber|original|numbering|item number'` over those paths
@@ -97,7 +97,7 @@ document order.
       `?generate_docx_hitopsr` and carry a `NEWS.md` entry, and
       `?generate_qualtrics_hitopsr` and `?generate_redcap_hitopsr` each state
       that the Word form renumbers a module while these do not.
-- [ ] AC7 — `devtools::test()` and `devtools::check()` are clean (0 errors,
+- [x] AC7 — `devtools::test()` and `devtools::check()` are clean (0 errors,
       0 warnings, and no note absent from the pre-milestone baseline of the
       default branch), per the profile's verify slot.
 
@@ -146,6 +146,7 @@ document order.
 - 2026-08-22: T3/T4/T5 — `generate_docx_hitopsr()` gains `renumber` and `randomize`, both `validate_flag()`-checked. One printed-order map built after `apply_module()` drives the items table, the scoring table, the subscale rows, the crosswalk, and the return attribute; `remap_itemdata()` re-sorts each scoring row by its printed number. The crosswalk prints as arrow-joined pairs ahead of the scoring table (arrow, not `=`, so it cannot be mistaken for the response legend by the parser that reads it). `docx_crosswalk_pairs()` added; the two M24 original-numbering tests now pass `renumber = FALSE`, which is the opt-out's regression coverage.
 - 2026-08-22: T6 — `?generate_docx_hitopsr` documents both arguments, the `item_order` attribute, and the Word-vs-online divergence; `?hitop_module`, `?generate_qualtrics_hitopsr`, `?generate_redcap_hitopsr`, `vignettes/articles/modules-hitopsr.Rmd`, and `NEWS.md` updated, with the 0.2.0 module entry's "not renumbered" claim corrected in place. `apply_module()`'s internal comment now says whose decision the printed numbering is. `devtools::document()` run. AC6's grep re-run over `R/`, `vignettes/`, `README.Rmd`, `NEWS.md`: every remaining hit reads correctly (they concern `m$items`, the online exports, or `rename_hitopsr_items()`'s legacy pool names).
 - 2026-08-22: post-T7 gap closed — the `include_subscales` + `randomize` path (reachable only on the full instrument, since subscales cannot combine with a module) remapped `hitopsr_subscales` rows through the printed-order map with nothing exercising it; a test now asserts each subscale row's printed numbers map back through `item_order` to that subscale's original items and are sorted by printed number. `devtools::test()` re-run: FAIL 0 / WARN 0 / SKIP 1 / PASS 13766.
+- 2026-08-22: review — branch pushed, draft PR #52 opened, CI running. AC1-AC7 all verified with fresh evidence (recorded in the Review section) and ticked. Consistency gate clean: `cairn_validate` exit 0 with every check PASS (20 pre-existing dangling `D-001`..`D-012` advisories), `document()` no-diff, `pkgdown::check_pkgdown()` no problems, `check()` Status OK. Review fan-out spawned: [S] blame-history returned no findings across all four of its categories; [S] prior-review returned one low-confidence item (a bare `"(R)"` grep echoing the M26 lesson), which I reproduced against the implementation and confirmed cannot match the instruction sentence, since `docx_scoring_rows()` yields only scoring-table cells; [O] diff-bug still running.
 - 2026-08-22: T7 — `devtools::check()` reports Status: OK (0 errors, 0 warnings, 0 notes). All tasks done; status to review.
 - 2026-08-22: verify slot clean after T6 — `devtools::test()` reports FAIL 0 / WARN 0 / SKIP 1 / PASS 13731, the one skip being the pre-existing SDTD item-38 keying dispute. T1-T6 ticked; T7 adds `devtools::check()`.
 - 2026-08-22: T2 — AC1/AC2/AC3 renumbering tests written in `tests/testthat/test-docx-numbering.R`; red by design (7 failures: the 1..n numbers, the rank-based scoring lists, and `renumber` being an unused argument). Box stays unticked until T3 turns them green.
@@ -154,3 +155,83 @@ document order.
 ## Decisions
 
 ## Review
+
+_Fresh evidence gathered 2026-08-22 on branch `m46-module-form-numbering` at
+`0264d7d`, via `devtools::load_all()` + the committed DOCX extractors. `m` is
+the five-scale module the criteria preamble fixes (23 items)._
+
+- **AC1 — verified.** `generate_docx_hitopsr(module = m)` at the shipped
+  defaults writes 23 printed rows whose numbers are exactly
+  `as.character(1:23)` and whose texts are element-for-element identical to the
+  `Text` values of `hitopsr_items[hitopsr_items$Scale %in% m$scales, ]` in
+  ascending `HSR` order, the expected set built by that filter and never
+  through `m$items`.
+- **AC2 — verified.** All five scoring rows equal that scale's items' ranks
+  among the module's items, derived by the same `hitopsr_items$Scale` filter.
+  Exactly one `(R)` marker appears on the page, and the module carries exactly
+  one `hitopsr_items$Reverse == TRUE` item: HSR 310 at printed rank 20, and the
+  Romantic Disinterest row reads `3, 12, 13, 20(R), 21`.
+- **AC3 — verified.** A fresh default `generate_docx_hitopsr()` call with no
+  `module` produces printed rows identical, number for number and text for
+  text, to those extracted from the committed `inst/extdata/hitopsr_US.docx`.
+  `renumber = FALSE` on `m` reproduces the gapped originals in full —
+  `1, 2, 42, 45, 55, 66, 84, 86, 109, 118, 144, 152, 187, 195, 202, 216, 260,
+  278, 291, 310, 338, 355, 389` — equal to `hitopsr_items$HSR` and unequal to
+  `1:23`, so an unconditional renumber fails here. `test-artifacts.R` passes
+  unchanged (121 assertions); `git diff main..HEAD` touches no file under
+  `inst/extdata/` or `data/`, so no artifact or `hitop_artifacts` row moved.
+- **AC4 — verified.** With `randomize = TRUE` and `module = m` the printed
+  numbers are `as.character(1:23)` and the texts are a permutation of AC1's
+  expected set. Seeds 1 through 5 under `set.seed()` produce 5 distinct printed
+  orders (the criterion asks for at least 2). Two calls each preceded by
+  `set.seed(1)` produce identical printed-text vectors. With `module = NULL`,
+  `randomize = TRUE` writes numbers `as.character(1:405)` whose texts permute
+  `hitopsr_items$Text` and are not in `HSR` order.
+- **AC5 — verified.** Under `set.seed(3)` the shuffled form's crosswalk has 23
+  rows whose `new` column is `1:23` and whose `original` column equals
+  `attr(out, "item_order")`; reading the module's texts through that attribute
+  reproduces the printed page exactly. For each of the five scales,
+  `attr(out, "item_order")[<that scale's printed numbers>]` equals
+  `hitopsr_scales$itemNumbers` for that scale as a set. The scoring page
+  carries exactly one `(R)` marker, on printed number 8, which is where HSR 310
+  landed in `item_order` — the pre-shuffle rank would have been 20, so the
+  clause discriminates rather than passing incidentally. An unshuffled call
+  prints no crosswalk and still reports an ascending `item_order`.
+- **AC6 — verified.** `grep -rniE 'renumber|original|numbering|item number'`
+  over `R/`, `vignettes/`, `README.Rmd`, and `NEWS.md` returns 94 hits; the 55
+  substantive ones (the rest being `rename_hitopsr_items()`'s legacy pool
+  names, `\item{}` data-dictionary rows, and `all original data columns`
+  boilerplate) were read individually and none asserts that a module **Word**
+  form keeps its original item numbers. Every plan-listed site was addressed:
+  `R/module.R` now says the descriptor holds original numbers whatever a
+  generator prints; the two Qualtrics/REDCap `keeping their original` hits are
+  correct for those exports and each carries the divergence sentence beside it.
+  `renumber`, `randomize`, and `item_order` are each documented on
+  `?generate_docx_hitopsr` and carry a `NEWS.md` entry, and both
+  `man/generate_qualtrics_hitopsr.Rd` and `man/generate_redcap_hitopsr.Rd`
+  reference `generate_docx_hitopsr()` for the divergence.
+- **AC7 — verified.** `devtools::test()`: FAIL 0, WARN 0, SKIP 1, PASS 13766 —
+  the one skip is the pre-existing SDTD item-38 keying dispute (SOURCES.md
+  OQ-1), unrelated to this milestone. `devtools::check()`: Status OK, 0 errors,
+  0 warnings, 0 notes, so the baseline-note clause never bound.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0 — every check PASS, including `coverage complete`
+  and `binding criteria`. 20 advisory warnings, all pre-existing dangling
+  `D-001`..`D-012` tokens from the pre-migration numbering range; untouched by
+  this milestone.
+- No `DESIGN.md` principle changed, so `cairn_impact.py` was not run.
+- Profile `r-package` toolchain slot: `devtools::document()` produces no diff;
+  `NAMESPACE`, `man/`, `data/*.rda` regenerate cleanly; `README.Rmd`/`README.md`
+  untouched by the diff; `pkgdown::check_pkgdown()` reports no problems;
+  `NEWS.md` carries the user-visible entry with no milestone number in it; the
+  only top-level file in the diff is `NEWS.md`, so no `.Rbuildignore` entry is
+  owed; full `devtools::check()` clean.
+
+### Independent review
+
+_In progress: the blame-history and prior-review lenses have reported; the
+diff-bug lens is still running. Findings and their triage land here before the
+approval gate._
+
