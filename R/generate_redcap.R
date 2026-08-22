@@ -61,7 +61,10 @@ generate_redcap_hitopbr <- function(
 #'   entirely. Defaults to `15`.
 #' @param module An optional [hitop_module()] object restricting the instrument
 #'   to the items of the chosen scales, keeping their original HiTOP-SR item
-#'   numbers. (default = `NULL`)
+#'   numbers. This is deliberately unlike [generate_docx_hitopsr()], whose
+#'   module forms are numbered `1` to `n`: here an item number names a
+#'   collected data column, so renumbering would rename variables in
+#'   dictionaries already in the field. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -71,7 +74,7 @@ generate_redcap_hitopbr <- function(
 #' # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 #' generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
 #'
-#' # A two-scale module, original numbering preserved
+#' # A two-scale module, original numbering preserved (unlike the Word form)
 #' generate_redcap_hitopsr(
 #'   file = tempfile(fileext = ".zip"),
 #'   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))

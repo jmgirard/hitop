@@ -230,6 +230,35 @@ docx_scoring_rows <- function(file) {
   )
 }
 
+# Extract the shuffled-form crosswalk's (new, original) pairs from a .docx.
+#
+# generate_docx_hitopsr() prints the crosswalk as one run of arrow-joined
+# pairs ahead of the scoring table. The arrow is what scopes this: the legend
+# runs read "0 = Never", item rows read "12.  I ...", and the scoring table's
+# Items cells read "1, 2(R), 3", so none of them can match. Returns a
+# data.frame(new, original) of integers, with zero rows when a document
+# carries no crosswalk.
+docx_crosswalk_pairs <- function(file) {
+  xml <- read_docx_xml(file)
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  txt <- unescape_xml(gsub("<[^>]+>", "", runs))
+  hit <- grep("^[0-9]+ \u2192 [0-9]+", txt, value = TRUE)
+  if (length(hit) == 0L) {
+    return(data.frame(
+      new = integer(0),
+      original = integer(0),
+      stringsAsFactors = FALSE
+    ))
+  }
+  pairs <- strsplit(hit[[1]], ", ", fixed = TRUE)[[1]]
+  parts <- do.call(rbind, strsplit(pairs, " \u2192 ", fixed = TRUE))
+  data.frame(
+    new = as.integer(parts[, 1]),
+    original = as.integer(parts[, 2]),
+    stringsAsFactors = FALSE
+  )
+}
+
 # Extract the (width, height) of the first <w:pgSz> in twips.
 docx_page_size <- function(xml) {
   w <- as.integer(sub('.*<w:pgSz[^>]*w:w="([0-9]+)".*', "\\1", xml))

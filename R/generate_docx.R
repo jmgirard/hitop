@@ -95,23 +95,55 @@ generate_docx_hitopbr <- function(
 #' @param font_family Character string specifying the font family to be used.
 #'   Defaults to `"Times New Roman"`.
 #' @param module An optional [hitop_module()] object restricting the form to the
-#'   items of the chosen scales, keeping their original HiTOP-SR item numbers.
-#'   Cannot be combined with `include_subscales = TRUE`. (default = `NULL`)
+#'   items of the chosen scales. Cannot be combined with
+#'   `include_subscales = TRUE`. (default = `NULL`)
+#' @param renumber Logical. If `TRUE` (default), the printed items are numbered
+#'   `1` to `n` down the page, so a module form does not show the full
+#'   instrument's gapped numbers. Set to `FALSE` to print each item's original
+#'   HiTOP-SR number instead. The scoring page always uses whichever numbers
+#'   are printed. This differs from [generate_qualtrics_hitopsr()] and
+#'   [generate_redcap_hitopsr()], which never renumber, because there an item
+#'   number names a collected data column.
+#' @param randomize Logical. If `TRUE`, the items are printed in a random
+#'   order. The numbering still runs down the page, and the scoring page gains
+#'   a crosswalk from each printed number back to its original HiTOP-SR number
+#'   so the form is scoreable from the paper alone. There is no `seed`
+#'   argument: call [set.seed()] before this function to make an order
+#'   reproducible. (default = `FALSE`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
-#' @return Invisibly returns the path to the created file (`file`).
+#' @return Invisibly returns the path to the created file (`file`), carrying an
+#'   `item_order` attribute: the original HiTOP-SR item numbers in the order
+#'   they were printed. It is present on every call, and is simply ascending
+#'   unless `randomize = TRUE`.
 #'
 #' @examples
 #' \donttest{
 #' # Write a HiTOP-SR paper form to a temporary Word document
 #' generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
 #'
-#' # A module containing only two scales, original numbering preserved
+#' # A module containing only two scales, printed as items 1 to 8
 #' generate_docx_hitopsr(
 #'   file = tempfile(fileext = ".docx"),
 #'   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 #' )
+#'
+#' # The same module keeping the full instrument's own item numbers
+#' generate_docx_hitopsr(
+#'   file = tempfile(fileext = ".docx"),
+#'   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
+#'   renumber = FALSE
+#' )
+#'
+#' # A shuffled form; the scoring page carries the crosswalk back
+#' set.seed(1)
+#' out <- generate_docx_hitopsr(
+#'   file = tempfile(fileext = ".docx"),
+#'   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
+#'   randomize = TRUE
+#' )
+#' attr(out, "item_order")
 #' }
 #'
 #' @export
@@ -124,11 +156,15 @@ generate_docx_hitopsr <- function(
   font_size = 10,
   font_family = "Times New Roman",
   module = NULL,
+  renumber = TRUE,
+  randomize = FALSE,
   subset = NULL
 ) {
   papersize <- match.arg(papersize)
   dims <- get_page_dims(papersize)
   module <- resolve_module_arg(module, subset)
+  validate_flag(renumber, "renumber")
+  validate_flag(randomize, "randomize")
 
   # Truthiness must match the consumer below (`if (include_subscales)`), or a
   # truthy non-TRUE value slips the guard and still adds the subscale rows.
@@ -143,9 +179,25 @@ generate_docx_hitopsr <- function(
 
   reduced <- apply_module(hitopsr_items, hitopsr_scales, module, "HSR")
 
+  # ONE printed-order map drives the items table, the scoring table, the
+  # subscale rows, the crosswalk, and the returned attribute. Building it once
+  # here is what keeps them from disagreeing: `item_order` is the original HSR
+  # numbers in the order they are printed, and `printed_of()` sends an original
+  # number to the number printed beside it.
+  # sample.int(), not sample(): sample() on a length-one vector samples from
+  # 1:x instead of permuting it, which is the classic foot-gun here.
+  slot <- seq_len(nrow(reduced$items))
+  if (randomize) slot <- sample.int(nrow(reduced$items))
+  item_order <- reduced$items$HSR[slot]
+  printed <- if (renumber) seq_along(item_order) else item_order
+  printed_of <- function(x) printed[match(x, item_order)]
+
+  items_printed <- reduced$items[slot, , drop = FALSE]
+  items_printed$HSR <- printed
+
   # Build the items table
   t1 <- make_items_table(
-    reduced$items,
+    items_printed,
     "HSR",
     hitopsr_instructions$options,
     dims$pw,
@@ -157,10 +209,20 @@ generate_docx_hitopsr <- function(
   if (include_scoring) {
     # Extract only the necessary columns from the main scales
     scales_to_score <- reduced$scales[, c("Scale", "itemdata")]
+    scales_to_score$itemdata <- lapply(
+      scales_to_score$itemdata,
+      remap_itemdata,
+      printed_of = printed_of
+    )
 
     # If requested, prepare and append the subscales
     if (include_subscales) {
       subscales_to_score <- hitopsr_subscales[, c("Subscale", "itemdata")]
+      subscales_to_score$itemdata <- lapply(
+        subscales_to_score$itemdata,
+        remap_itemdata,
+        printed_of = printed_of
+      )
 
       # Rename 'Subscale' to 'Scale' to match the main dataframe
       names(subscales_to_score)[
@@ -189,7 +251,20 @@ generate_docx_hitopsr <- function(
 
   scoring_msg <- "Average the responses for the following item numbers. Reverse-scored items are indicated with (R)."
 
-  build_hitop_doc(
+  # A shuffled form is scoreable from the paper alone only if the paper says
+  # where each printed item came from, so the crosswalk prints whenever the
+  # printed order is not the instrument's own. It is omitted when nothing was
+  # shuffled, where it would just restate the numbering, and when the printed
+  # numbers ARE the original ones, where each row would read "42 -> 42".
+  crosswalk_msg <- NULL
+  if (randomize && renumber) {
+    crosswalk_msg <- paste(
+      paste(printed, "\u2192", item_order),
+      collapse = ", "
+    )
+  }
+
+  out <- build_hitop_doc(
     file,
     title,
     hitopsr_instructions$start,
@@ -199,8 +274,26 @@ generate_docx_hitopsr <- function(
     include_scoring,
     dims,
     font_size,
-    font_family
+    font_family,
+    crosswalk_msg
   )
+
+  invisible(structure(out, item_order = item_order))
+}
+
+# Internal Helper: remap one scale's itemdata frame into printed numbering
+#
+# `printed_of()` closes over the single printed-order map built in
+# generate_docx_hitopsr(), so a scoring row can never drift from the items
+# table. Rows are re-sorted by their PRINTED number: on a shuffled form the
+# original ascending order would print as a scattered list.
+#
+# A subscale may draw items from outside a module, which is why
+# `include_subscales` and `module` cannot be combined; with `module = NULL`
+# every item is present, so `match()` here never yields NA.
+remap_itemdata <- function(x, printed_of) {
+  x$HSR <- printed_of(x$HSR)
+  x[order(x$HSR), , drop = FALSE]
 }
 
 # Internal Helper: Build the shared document footer (build stamp + copyright)
@@ -382,7 +475,8 @@ build_hitop_doc <- function(
   include_scoring,
   dims,
   font_size,
-  font_family
+  font_family,
+  crosswalk_msg = NULL
 ) {
   inst_prop <- officer::fp_text(
     font.size = font_size,
@@ -423,7 +517,26 @@ build_hitop_doc <- function(
           officer::ftext(scoring_msg, prop = inst_prop),
           fp_p = inst_par_prop
         )
-      ) |>
+      )
+
+    # Ahead of the scoring table, never after it: the table is the last thing
+    # on the page, and a reader looking up a printed number wants the map
+    # before the key rather than past it.
+    if (!is.null(crosswalk_msg)) {
+      my_doc <- my_doc |>
+        officer::body_add_fpar(
+          officer::fpar(
+            officer::ftext(
+              "Item Number Crosswalk (printed number \u2192 original HiTOP-SR number): ",
+              prop = inst_prop_bold
+            ),
+            officer::ftext(crosswalk_msg, prop = inst_prop),
+            fp_p = inst_par_prop
+          )
+        )
+    }
+
+    my_doc <- my_doc |>
       flextable::body_add_flextable(value = table_2)
   }
 

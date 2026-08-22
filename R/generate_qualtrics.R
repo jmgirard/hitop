@@ -60,7 +60,10 @@ generate_qualtrics_hitopbr <- function(
 #'   Defaults to `15`.
 #' @param module An optional [hitop_module()] object restricting the file to the
 #'   items of the chosen scales, keeping their original HiTOP-SR item numbers.
-#'   (default = `NULL`)
+#'   This is deliberately unlike [generate_docx_hitopsr()], whose module forms
+#'   are numbered `1` to `n`: here an item number names a collected data
+#'   column, so renumbering would rename variables in dictionaries already in
+#'   the field. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -70,7 +73,7 @@ generate_qualtrics_hitopbr <- function(
 #' # Write a HiTOP-SR Qualtrics import file to a temporary location
 #' generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
 #'
-#' # A two-scale module, original numbering preserved
+#' # A two-scale module, original numbering preserved (unlike the Word form)
 #' generate_qualtrics_hitopsr(
 #'   file = tempfile(fileext = ".txt"),
 #'   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))

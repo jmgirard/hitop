@@ -134,3 +134,139 @@ test_that("renumber = FALSE keeps a module form's original gapped numbers", {
     )
   }
 })
+
+# ---- AC4: randomize shuffles the printed order, keeping 1..n numbering ------
+
+printed_texts <- function(...) {
+  f <- withr::local_tempfile(fileext = ".docx", .local_envir = parent.frame())
+  suppressMessages(generate_docx_hitopsr(file = f, ...))
+  docx_item_rows(f)$text
+}
+
+test_that("randomize = TRUE keeps 1..n numbering and permutes the texts", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  set.seed(1)
+  suppressMessages(
+    generate_docx_hitopsr(file = f, module = m, randomize = TRUE)
+  )
+
+  rows <- docx_item_rows(f)
+  want <- expected_rows(m)
+
+  expect_equal(rows$number, as.character(seq_len(m$nItems)))
+  expect_setequal(rows$text, want$Text)
+  expect_equal(sort(rows$text), sort(want$Text))
+})
+
+test_that("the shuffled order varies across seeds and repeats under one seed", {
+  skip_if_no_docx()
+  orders <- lapply(1:5, function(s) {
+    set.seed(s)
+    printed_texts(module = m, randomize = TRUE)
+  })
+  expect_gte(length(unique(orders)), 2L)
+
+  set.seed(1)
+  a <- printed_texts(module = m, randomize = TRUE)
+  set.seed(1)
+  b <- printed_texts(module = m, randomize = TRUE)
+  expect_identical(a, b)
+})
+
+test_that("randomize = TRUE with no module shuffles all 405 items", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  set.seed(7)
+  suppressMessages(generate_docx_hitopsr(file = f, randomize = TRUE))
+
+  rows <- docx_item_rows(f)
+  full <- hitopsr_items[order(hitopsr_items$HSR), ]
+
+  expect_equal(rows$number, as.character(1:405))
+  expect_equal(sort(rows$text), sort(full$Text))
+  expect_false(identical(rows$text, full$Text))
+})
+
+# ---- AC5: the crosswalk, the item_order attribute, and the (R) marker ------
+
+test_that("a shuffled form carries a crosswalk and an item_order attribute", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  set.seed(3)
+  out <- suppressMessages(
+    generate_docx_hitopsr(file = f, module = m, randomize = TRUE)
+  )
+
+  order <- attr(out, "item_order")
+  rows <- docx_item_rows(f)
+  want <- expected_rows(m)
+
+  # The attribute is the original HSR numbers in printed order: reading the
+  # texts back through it must reproduce the page.
+  expect_equal(sort(order), want$HSR)
+  expect_equal(want$Text[match(order, want$HSR)], rows$text)
+
+  # The printed crosswalk says the same thing as the attribute.
+  cross <- docx_crosswalk_pairs(f)
+  expect_equal(cross$new, seq_len(m$nItems))
+  expect_equal(cross$original, order)
+
+  # Each scale's printed numbers map back to exactly its original items.
+  for (scale in m$scales) {
+    printed_nums <- match(want$HSR[want$Scale == scale], order)
+    expect_setequal(
+      order[printed_nums],
+      hitopsr_scales$itemNumbers[[which(hitopsr_scales$Scale == scale)]]
+    )
+  }
+
+  # The (R) marker follows the SHUFFLED numbering, not the pre-shuffle rank.
+  scoring <- docx_scoring_rows(f)
+  marked <- grep("[0-9]+\\(R\\)", scoring$items, value = TRUE)
+  expect_length(marked, 1L)
+  expect_equal(
+    as.integer(sub("^.*?([0-9]+)\\(R\\).*$", "\\1", marked)),
+    match(310L, order)
+  )
+  expect_equal(sum(grepl("(R)", scoring$items, fixed = TRUE)), 1L)
+})
+
+test_that("an unshuffled form still reports its item_order and no crosswalk", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  out <- suppressMessages(generate_docx_hitopsr(file = f, module = m))
+
+  expect_equal(attr(out, "item_order"), expected_rows(m)$HSR)
+  expect_equal(nrow(docx_crosswalk_pairs(f)), 0L)
+})
+
+test_that("randomize with renumber = FALSE shuffles but keeps the numbers", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  set.seed(4)
+  out <- suppressMessages(generate_docx_hitopsr(
+    file = f,
+    module = m,
+    randomize = TRUE,
+    renumber = FALSE
+  ))
+
+  rows <- docx_item_rows(f)
+  want <- expected_rows(m)
+
+  # The printed numbers ARE the original ones, so they are their own
+  # crosswalk and none is printed.
+  expect_equal(as.integer(rows$number), attr(out, "item_order"))
+  expect_setequal(as.integer(rows$number), want$HSR)
+  expect_false(identical(as.integer(rows$number), want$HSR))
+  expect_equal(nrow(docx_crosswalk_pairs(f)), 0L)
+})
+
+test_that("renumber and randomize reject non-flag values", {
+  f <- withr::local_tempfile(fileext = ".docx")
+  expect_error(generate_docx_hitopsr(file = f, renumber = "yes"), "renumber")
+  expect_error(generate_docx_hitopsr(file = f, randomize = NA), "randomize")
+  expect_error(generate_docx_hitopsr(file = f, renumber = c(TRUE, TRUE)),
+               "renumber")
+})
