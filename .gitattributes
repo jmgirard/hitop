@@ -1,3 +1,31 @@
+# Line-ending policy (M47). The LAST matching line wins, so the byte-locked
+# directories stay at the bottom.
+
+# Default: anything git resolves as text is stored LF in the index and checked
+# out LF on every platform. Without this line a path is `unspecified` and its
+# handling falls back to the local `core.autocrlf`, which differs per machine
+# and per CI image.
+* text=auto eol=lf
+
+# Binary families declared outright rather than left to git's content sniff.
+# The sniff (a NUL byte in the first 8000) classifies all of these correctly
+# today, but it is a heuristic over file CONTENT and it has already failed in
+# this repo: a Windows `actions/checkout` CRLF-converted the .txt/.qsf
+# artifacts and tripped the md5 lock during M20's review. Declaring them
+# removes the guess. `.svg` is deliberately absent — `pkgdown/favicon/
+# favicon.svg` is genuine text and is normalized like any other text file.
+*.rda binary
+*.png binary
+*.ico binary
+*.docx binary
+*.zip binary
+
+# The Qualtrics artifacts are the one byte-locked family git's content sniff
+# does NOT back up: they carry no NUL byte, so git reads them as text. That is
+# the exact pairing that let a Windows checkout mutate them during M20's
+# review, so they are declared by extension as well as by directory.
+*.qsf -text
+
 # Distribution artifacts are byte-exact (md5-locked to the hitop_artifacts
 # manifest, D-016): never apply line-ending conversion on checkout.
 inst/extdata/** -text

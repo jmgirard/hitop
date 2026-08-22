@@ -1,0 +1,18 @@
+# Commits `git blame` should look through, so it reaches the commit that
+# actually wrote a line rather than the one that only reshaped it.
+#
+# Activate per clone (git does not read this file by default, and a fresh
+# clone does not inherit the setting):
+#
+#     git config blame.ignoreRevsFile .git-blame-ignore-revs
+#
+# One full 40-character SHA per line. This file is EMPTY until the M47
+# normalization lands: a squash merge writes a new commit on the default
+# branch, so the branch-side SHA is never an ancestor of main and naming it
+# would have no effect.
+#
+# Note when the M47 commit is added: it is not a pure whitespace commit. The
+# squash carries `.gitattributes`, the check script, the CI job, and doc
+# changes alongside the renormalization, so blame will look through those
+# additions too. That is the accepted cost of un-attributing the 18
+# renormalized files.

@@ -1,0 +1,5 @@
+# Air writes the working tree, and "auto" (its default) means CRLF on
+# Windows, which the commit-time `eol=lf` policy in .gitattributes would then
+# have to undo on every format. Setting it here stops the churn at the source.
+[format]
+line-ending = "lf"
