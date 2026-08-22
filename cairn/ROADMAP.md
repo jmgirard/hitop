@@ -2,12 +2,13 @@
 
 _The only authority on milestone status. Grouped by status, not ID._
 _Last hygiene check: 2026-08-22 (M45 merged via PR #51 and archived, with the split {zip} fix merged ahead via PR #50 and recorded as D-035; four candidate rows added from M45's review findings; one M45 lesson captured and one stale M38 git lesson pruned for cap headroom; M39 pruned under terminal-row retention; caps and byte budgets checked)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M46)._
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M47)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M46 | Renumbered and optionally shuffled HiTOP-SR module Word forms | planned | M45 | normal | milestones/M46-module-form-numbering.md |
 | M45 | A browser module builder for the HiTOP-SR | done | M43 | normal | milestones/archive/M45-browser-module-builder.md |
 | M44 | A dedicated article for building and scoring HiTOP-SR modules | done | M43 | normal | milestones/archive/M44-modules-article.md |
 | M43 | Rename the HiTOP-SR subset family to modules | done | — | normal | milestones/archive/M43-module-vocabulary.md |
