@@ -1,6 +1,6 @@
 # M45: A browser module builder for the HiTOP-SR
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M43
 - **Driving RR:** —
@@ -157,6 +157,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-22: amendment return: AC6 — "The app's landing text and its repo README each state that the app generates instruments and scores nothing, and name the `hitop` version the page installs."
 - 2026-08-22: AC6's citation of IP4 was wrong and is deleted, and the header's `Principles touched` drops IP4 with it: DESIGN's IP4 is "Scores, never judgment", so an app that *did* score would not violate it — the scoring exclusion is what this milestone's Scope records, not a principle. Two fresh-context [O] readers audited the replacement in full mode; the first caught that the session's own first attempt made "not a DESIGN principle" part of what the app must *state*, and the second found its own replacement's "read at runtime" unverifiable without a named source line. The user chose the minimal deletion over the auditor's wider wording, holding the criteria set on a milestone whose log records a defect return; the auditor's concern that AC6 cannot distinguish a runtime-read version string from a hardcoded one is offered a home on the standing builder-app candidate row.
 - 2026-08-22: fix-now findings 3, 7, 8, 11 and 14 applied. In the app repo (`c892bac`): clearing is unconditional and the button reads "Clear all", while selecting still follows the filter and now says so ("Select all N shown"); `aria-live` moved from the log pane to the status line and the filter gained an accessible name; a `<noscript>` block names the requirement and links the ready-made downloads; the webR output pump catches a rejected `read()` and reports rather than dying silently. In this repo, the NEWS claim "it installs nothing and sends nothing anywhere" is replaced by an accurate one. Verified on a local serve of the fixed page: the finding-3 sequence that previously left `healthAnxiety` and `socialAnxiety` selected after a Clear now leaves none, the select-all label reads "Select all 2 shown" under the `anx` filter, and all three formats still generate with the Qualtrics file byte-identical to its verified hash.
+- 2026-08-22: all fix-now findings applied and verified on the deployed page; `devtools::test()` FAIL 0 / WARN 0 / SKIP 1 / PASS 13679 and `devtools::check()` Status OK with 0 errors, 0 warnings and 0 notes. Status set back to review; AC6 is unticked pending re-verification against its amended wording.
 
 ## Review
 
