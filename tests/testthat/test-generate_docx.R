@@ -110,17 +110,24 @@ test_that("the HSUM overview uses the corrected sheet wording", {
   ))
 })
 
-# ---- HiTOP-SR scale modules (M24) -------------------------------------------
+# ---- HiTOP-SR scale modules (M24, renumbering opted out of since M46) -------
 #
 # Parse-and-compare per D-010: the expected item numbers and texts are derived
 # from `hitopsr_items` (filtered by `Scale`), independently of the
 # `hitopsr_scales$itemNumbers` path the generator itself walks.
+#
+# A module form renumbers 1..n by default since M46 (D-036), so these two
+# original-numbering tests pass `renumber = FALSE`; that is what keeps them
+# meaningful rather than merely green, and it is the opt-out's regression
+# coverage. The renumbered defaults are asserted in test-docx-numbering.R.
 
 test_that("generate_docx_hitopsr(module =) emits exactly the module's items", {
   skip_if_no_docx()
   s <- hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
   f <- withr::local_tempfile(fileext = ".docx")
-  suppressMessages(generate_docx_hitopsr(file = f, module = s))
+  suppressMessages(
+    generate_docx_hitopsr(file = f, module = s, renumber = FALSE)
+  )
   xml <- read_docx_xml(f)
 
   kept <- hitopsr_items[
@@ -141,7 +148,7 @@ test_that("generate_docx_hitopsr(module =) emits exactly the module's items", {
     expect_false(grepl(txt, xml, fixed = TRUE))
   }
 
-  # Renumbering did NOT happen: item 66 is first, and there is no "1.  " row.
+  # renumber = FALSE holds: item 66 is first, and there is no "1.  " row.
   expect_false(grepl(paste0("1.  ", kept$Text[1]), xml, fixed = TRUE))
 })
 
@@ -149,7 +156,9 @@ test_that("the module DOCX scoring table lists only the module's scales", {
   skip_if_no_docx()
   s <- hitop_module("hitopsr", c("Agoraphobia", "Romantic Disinterest"))
   f <- withr::local_tempfile(fileext = ".docx")
-  suppressMessages(generate_docx_hitopsr(file = f, module = s))
+  suppressMessages(
+    generate_docx_hitopsr(file = f, module = s, renumber = FALSE)
+  )
   xml <- read_docx_xml(f)
 
   # Scoring rows carry original numbers, and HSR 310 keeps its (R) marker.

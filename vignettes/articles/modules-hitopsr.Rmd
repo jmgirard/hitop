@@ -83,16 +83,38 @@ four_scale$nItems
 four_scale$items
 ```
 
-Note that `$items` holds the **original** HiTOP-SR item numbers. A module does
-not renumber its items from 1: item 42 of the full instrument stays item 42
-throughout, so data collected with a module can still be scored against the full
-instrument's key.
+Note that `$items` holds the **original** HiTOP-SR item numbers. That is true
+of the descriptor whatever a generator later prints: item 42 of the full
+instrument is item 42 here, which is what lets data collected with a module be
+scored against the full instrument's key.
 
 ## Generating the Instrument
 
 Each of the three HiTOP-SR generators takes a `module` argument. Pass the
-description and you get a form containing only that module's items, keeping
-their original numbers.
+description and you get a form containing only that module's items.
+
+The three do not number those items alike, on purpose. The Word form is what a
+participant fills in on paper, so `generate_docx_hitopsr()` numbers it `1` to
+`n` down the page -- a four-scale module reads 1, 2, 3 rather than 7, 42, 213.
+Pass `renumber = FALSE` to keep the original numbers instead. In the Qualtrics
+and REDCap exports an item number names a collected data column, so those keep
+the original HiTOP-SR numbers always; renumbering them would rename variables
+in dictionaries already in the field.
+
+`generate_docx_hitopsr()` also takes `randomize = TRUE`, which prints the items
+in a random order. The page is still numbered `1` to `n`, and a module form
+also carries a crosswalk from each printed number back to its original
+HiTOP-SR number — printed whether or not `include_scoring` appends the key — so
+a shuffled module form can be scored from the paper alone. Shuffling the full
+instrument prints no crosswalk, since 405 pairs would fill a page; read the
+order from the `item_order` attribute of the returned path instead. Call
+`set.seed()` beforehand to make an order reproducible.
+
+One thing to watch: `score_hitopsr()` addresses a module's items by their
+position in `module$items`, which is ascending **original** order, not the
+order a shuffled form prints them in. Reorder the collected columns through
+`item_order` first — `collected[order(attr(out, "item_order"))]` — or the
+scale scores come back wrong with no error raised.
 
 Here we write all three formats into a temporary folder; in your own work you
 would give a real path or let the default filename land in your working

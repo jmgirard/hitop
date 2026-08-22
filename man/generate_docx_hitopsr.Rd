@@ -13,6 +13,8 @@ generate_docx_hitopsr(
   font_size = 10,
   font_family = "Times New Roman",
   module = NULL,
+  renumber = TRUE,
+  randomize = FALSE,
   subset = NULL
 )
 }
@@ -39,14 +41,43 @@ Defaults to \code{10}.}
 Defaults to \code{"Times New Roman"}.}
 
 \item{module}{An optional \code{\link[=hitop_module]{hitop_module()}} object restricting the form to the
-items of the chosen scales, keeping their original HiTOP-SR item numbers.
-Cannot be combined with \code{include_subscales = TRUE}. (default = \code{NULL})}
+items of the chosen scales. Cannot be combined with
+\code{include_subscales = TRUE}. (default = \code{NULL})}
+
+\item{renumber}{Logical. If \code{TRUE} (default), the printed items are numbered
+\code{1} to \code{n} down the page, so a module form does not show the full
+instrument's gapped numbers. Set to \code{FALSE} to print each item's original
+HiTOP-SR number instead. The scoring page always uses whichever numbers
+are printed. This differs from \code{\link[=generate_qualtrics_hitopsr]{generate_qualtrics_hitopsr()}} and
+\code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}}, which never renumber, because there an item
+number names a collected data column.}
+
+\item{randomize}{Logical. If \code{TRUE}, the items are printed in a random
+order. On a renumbered module form the document also carries a crosswalk
+from each printed number back to its original HiTOP-SR number, so the form
+is scoreable from the paper alone; that crosswalk is printed whether or
+not \code{include_scoring} appends the key. It is \emph{not} printed when \code{module}
+is \code{NULL} (405 pairs would be one dense paragraph) or when
+\code{renumber = FALSE} (the printed numbers are already the original ones) —
+in both cases read the order from the \code{item_order} attribute described
+under Value. There is no \code{seed} argument: call \code{\link[=set.seed]{set.seed()}} before this
+function to make an order reproducible. (default = \code{FALSE})
+
+\strong{Scoring data collected on a shuffled form.} \code{\link[=score_hitopsr]{score_hitopsr()}} addresses
+a module's items by their position in \code{module$items}, which is ascending
+original order — not the order a shuffled form prints them in. Reorder the
+collected columns through \code{item_order} before scoring:
+\code{collected[order(attr(out, "item_order"))]}. Scoring printed-order columns
+directly returns wrong scale scores and raises no error.}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}
 }
 \value{
-Invisibly returns the path to the created file (\code{file}).
+Invisibly returns the path to the created file (\code{file}), carrying an
+\code{item_order} attribute: the original HiTOP-SR item numbers in the order
+they were printed. It is present on every call, and is simply ascending
+unless \code{randomize = TRUE}.
 }
 \description{
 Creates a formatted Microsoft Word document containing the
@@ -59,11 +90,27 @@ single continuous table.
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
 
-# A module containing only two scales, original numbering preserved
+# A module containing only two scales, printed as items 1 to 8
 generate_docx_hitopsr(
   file = tempfile(fileext = ".docx"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
+
+# The same module keeping the full instrument's own item numbers
+generate_docx_hitopsr(
+  file = tempfile(fileext = ".docx"),
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
+  renumber = FALSE
+)
+
+# A shuffled form; the scoring page carries the crosswalk back
+set.seed(1)
+out <- generate_docx_hitopsr(
+  file = tempfile(fileext = ".docx"),
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
+  randomize = TRUE
+)
+attr(out, "item_order")
 }
 
 }

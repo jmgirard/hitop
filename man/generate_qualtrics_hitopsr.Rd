@@ -33,7 +33,10 @@ Defaults to \code{15}.}
 
 \item{module}{An optional \code{\link[=hitop_module]{hitop_module()}} object restricting the file to the
 items of the chosen scales, keeping their original HiTOP-SR item numbers.
-(default = \code{NULL})}
+This is deliberately unlike \code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}}, whose module forms
+are numbered \code{1} to \code{n}: here an item number names a collected data
+column, so renumbering would rename variables in dictionaries already in
+the field. (default = \code{NULL})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}
@@ -50,7 +53,7 @@ Self-Report (HiTOP-SR) items and instructions.
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
 
-# A two-scale module, original numbering preserved
+# A two-scale module, original numbering preserved (unlike the Word form)
 generate_qualtrics_hitopsr(
   file = tempfile(fileext = ".txt"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))

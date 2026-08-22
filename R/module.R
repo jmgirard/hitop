@@ -3,10 +3,12 @@
 #' @description Builds a validated description of a **module**: a chosen set of
 #'   an instrument's scales, administered and scored on its own. Supplying the
 #'   result as the `module` argument of a generator produces an instrument
-#'   containing only the items belonging to those scales, **keeping each item's
-#'   original number**, so that data collected with the module can still be
-#'   scored against the full instrument's key. Supplying it again to
-#'   [score_hitopsr()] or [reliability_hitopsr()] scores the collected columns.
+#'   containing only the items belonging to those scales. The `items` field
+#'   below always holds the **original** instrument numbers, whatever a
+#'   generator prints: the online exports keep those numbers, while
+#'   [generate_docx_hitopsr()] numbers a Word form `1` to `n` down the page
+#'   unless asked not to. Supplying the module again to [score_hitopsr()] or
+#'   [reliability_hitopsr()] scores the collected columns either way.
 #'
 #'   Use [available_scales()] to see which scales an instrument offers.
 #'
@@ -32,7 +34,8 @@
 #' m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
 #' m
 #'
-#' # The item numbers are the original HiTOP-SR numbers, not 1..8
+#' # `$items` holds the original HiTOP-SR numbers, not 1..8 -- this is the
+#' # descriptor, not what any particular generator prints
 #' m$items
 #'
 #' # Select the collected item columns by NAME, never by position: `m$items`
@@ -128,8 +131,11 @@ print.hitop_module <- function(x, ...) {
 # Internal Helper: reduce an items table and a scales table to a module
 #
 # `module` may be NULL (returns both tables untouched, so callers need no
-# branch). Item numbering is never rewritten: the reduced tables carry the
-# instrument's original numbers, with gaps where items were dropped.
+# branch). This helper itself rewrites no numbering: the reduced tables carry
+# the instrument's original numbers, with gaps where items were dropped. What
+# a generator PRINTS is its own decision downstream of here --
+# generate_docx_hitopsr() renumbers the page 1..n by default, the online
+# exports never do.
 apply_module <- function(
   items,
   scales,
@@ -164,7 +170,8 @@ apply_module <- function(
 # Internal Helper: remap a module descriptor into the engines' three inputs
 #
 # `apply_module()` above reduces the instrument's TABLES for the generators,
-# which keep the original item numbering. The engines instead address items by
+# whose reduced tables keep the original item numbering. The engines instead
+# address items by
 # POSITION within the columns the caller supplied, so scoring module-collected
 # data needs the module's original numbers translated into positions within
 # `module$items` (which is ascending). Returns `n_items`, `reverse_items`, and

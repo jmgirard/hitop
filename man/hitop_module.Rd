@@ -31,10 +31,12 @@ the \code{items} kept (original instrument numbering, ascending), the parallel
 Builds a validated description of a \strong{module}: a chosen set of
 an instrument's scales, administered and scored on its own. Supplying the
 result as the \code{module} argument of a generator produces an instrument
-containing only the items belonging to those scales, \strong{keeping each item's
-original number}, so that data collected with the module can still be
-scored against the full instrument's key. Supplying it again to
-\code{\link[=score_hitopsr]{score_hitopsr()}} or \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} scores the collected columns.
+containing only the items belonging to those scales. The \code{items} field
+below always holds the \strong{original} instrument numbers, whatever a
+generator prints: the online exports keep those numbers, while
+\code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} numbers a Word form \code{1} to \code{n} down the page
+unless asked not to. Supplying the module again to \code{\link[=score_hitopsr]{score_hitopsr()}} or
+\code{\link[=reliability_hitopsr]{reliability_hitopsr()}} scores the collected columns either way.
 
 Use \code{\link[=available_scales]{available_scales()}} to see which scales an instrument offers.
 }
@@ -43,7 +45,8 @@ Use \code{\link[=available_scales]{available_scales()}} to see which scales an i
 m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
 m
 
-# The item numbers are the original HiTOP-SR numbers, not 1..8
+# `$items` holds the original HiTOP-SR numbers, not 1..8 -- this is the
+# descriptor, not what any particular generator prints
 m$items
 
 # Select the collected item columns by NAME, never by position: `m$items`

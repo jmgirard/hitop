@@ -171,6 +171,94 @@ docx_legend_pairs <- function(lines) {
   )
 }
 
+# Extract the printed item rows from a .docx, in document order.
+#
+# make_items_table() builds each item cell as `paste0(number, ".  ", text)`
+# (R/generate_docx.R), so an item row is the only <w:t> run that opens with
+# digits, a period, and two spaces. The legend runs read "0 = Never", the
+# option columns are bare digits, the scoring table's Items cells read
+# "1, 2(R), 3", and the crosswalk pairs are joined with an arrow, so none of
+# them can match. Returns a data.frame(number, text) with zero rows when a
+# document has no items table.
+docx_item_rows <- function(file) {
+  xml <- read_docx_xml(file)
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  txt <- unescape_xml(gsub("<[^>]+>", "", runs))
+  hits <- grep("^[0-9]+\\.  ", txt, value = TRUE)
+  data.frame(
+    number = sub("^([0-9]+)\\.  .*$", "\\1", hits),
+    text = sub("^[0-9]+\\.  ", "", hits),
+    stringsAsFactors = FALSE
+  )
+}
+
+# Undo the XML entity escaping officer applies when it writes a run.
+unescape_xml <- function(x) {
+  x <- gsub("&lt;", "<", x, fixed = TRUE)
+  x <- gsub("&gt;", ">", x, fixed = TRUE)
+  x <- gsub("&quot;", '"', x, fixed = TRUE)
+  x <- gsub("&apos;", "'", x, fixed = TRUE)
+  gsub("&amp;", "&", x, fixed = TRUE)
+}
+
+# Extract the scoring table's (scale, items) pairs from a .docx.
+#
+# make_scoring_table() lays the scales out in two side-by-side (Scale, Items)
+# column pairs, so after the header runs -- "Scale", "Items", "Scale", "Items"
+# -- the body cells arrive as alternating scale-name and item-list runs in
+# document order. An unpaired trailing NA cell prints as nothing at all
+# (`colformat_char(na_str = "")`), so the alternation never breaks. Returns a
+# data.frame(scale, items) with zero rows when a document has no scoring page.
+docx_scoring_rows <- function(file) {
+  xml <- read_docx_xml(file)
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  txt <- unescape_xml(gsub("<[^>]+>", "", runs))
+  hdr <- which(txt == "Items")
+  empty <- data.frame(
+    scale = character(0),
+    items = character(0),
+    stringsAsFactors = FALSE
+  )
+  if (length(hdr) == 0L) return(empty)
+  body <- txt[seq_len(length(txt) - max(hdr)) + max(hdr)]
+  n <- 2L * (length(body) %/% 2L)
+  if (n == 0L) return(empty)
+  data.frame(
+    scale = body[seq(1L, n, by = 2L)],
+    items = body[seq(2L, n, by = 2L)],
+    stringsAsFactors = FALSE
+  )
+}
+
+# Extract the shuffled-form crosswalk's (new, original) pairs from a .docx.
+#
+# generate_docx_hitopsr() prints the crosswalk as one run of arrow-joined
+# pairs ahead of the scoring table. The arrow is what scopes this: the legend
+# runs read "0 = Never", item rows read "12.  I ...", and the scoring table's
+# Items cells read "1, 2(R), 3", so none of them can match. Returns a
+# data.frame(new, original) of integers, with zero rows when a document
+# carries no crosswalk.
+docx_crosswalk_pairs <- function(file) {
+  xml <- read_docx_xml(file)
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  txt <- unescape_xml(gsub("<[^>]+>", "", runs))
+  hit <- grep("^[0-9]+ \u2192 [0-9]+", txt, value = TRUE)
+  if (length(hit) == 0L) {
+    return(data.frame(
+      new = integer(0),
+      original = integer(0),
+      stringsAsFactors = FALSE
+    ))
+  }
+  pairs <- strsplit(hit[[1]], ", ", fixed = TRUE)[[1]]
+  parts <- do.call(rbind, strsplit(pairs, " \u2192 ", fixed = TRUE))
+  data.frame(
+    new = as.integer(parts[, 1]),
+    original = as.integer(parts[, 2]),
+    stringsAsFactors = FALSE
+  )
+}
+
 # Extract the (width, height) of the first <w:pgSz> in twips.
 docx_page_size <- function(xml) {
   w <- as.integer(sub('.*<w:pgSz[^>]*w:w="([0-9]+)".*', "\\1", xml))

@@ -186,13 +186,33 @@ before a CRAN submission.
   HiTOP-BR forms keep their single-line scale. All six PID Word files
   (US and A4) were regenerated, with new `hitop_artifacts` entries.
 
+* **HiTOP-SR module Word forms are numbered `1` to `n`, and can be shuffled.**
+  `generate_docx_hitopsr()` gains `renumber` (default `TRUE`), so a module's
+  paper form no longer prints the full instrument's gapped numbers; pass
+  `renumber = FALSE` for the previous behavior. It also gains `randomize`
+  (default `FALSE`), which prints the items in a random order and appends a
+  crosswalk from each printed number back to its original HiTOP-SR number, so
+  a shuffled form is still scoreable from the paper alone. Use `set.seed()`
+  to make an order reproducible. Every call's invisible return value now
+  carries an `item_order` attribute holding the original item numbers in
+  printed order. Data collected on a shuffled form must be reordered through
+  that attribute before `score_hitopsr()`, which addresses a module's items in
+  ascending original order; `?generate_docx_hitopsr` shows the idiom.
+  `generate_qualtrics_hitopsr()` and `generate_redcap_hitopsr()` are
+  deliberately unchanged: there an item number names a collected data column.
+  No distributed form under `inst/extdata/` changed, since each is the full
+  instrument and already numbered from one. The two new arguments sit between
+  `module` and `subset` in the signature, so any call passing arguments
+  positionally past `font_family` must be respelled by name.
+
 * **Generate a HiTOP-SR module from selected scales.** The new
   `hitop_module()` describes a chosen set of an instrument's scales, and
   `generate_docx_hitopsr()`, `generate_qualtrics_hitopsr()`, and
   `generate_redcap_hitopsr()` each take it as a `module` argument to emit a
-  form containing only those scales' items. Item numbers are **not**
-  renumbered: each item keeps its original HiTOP-SR number, so data collected
-  with the shortened form still maps onto the full instrument's scoring key.
+  form containing only those scales' items. The Qualtrics and REDCap exports
+  keep each item's original HiTOP-SR number, because there an item number
+  names a collected data column; the Word form numbers its items `1` to `n`
+  down the page (see the entry above).
   Scale names may be given as printed on the instrument (`"Antisocial
   Behavior"`) or as the camelCase stems used in scored output
   (`"antisocialBehavior"`), in any mixture and ignoring case. Subsetting is
