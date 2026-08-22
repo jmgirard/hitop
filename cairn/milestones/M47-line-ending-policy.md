@@ -260,3 +260,41 @@ before being accepted; the rest are recorded as reported.
 13. The `text_attrs()` round-trip guard is protective but its failure message
     is opaque to a CI reader.
 14. `cat(paste0(...), "\n")` emits a stray space before each newline.
+
+### Triage (2026-08-22)
+
+Every finding's disposition, none dropped (IP3). Two went to the maintainer at
+the gate; both were adopted as recommended.
+
+- **1, 2 — fix now, and they are what returned the milestone.** Read blobs with
+  `system2()` argument vectors rather than a shell string, and check every
+  `git` call's exit status, anchoring to `git rev-parse --show-toplevel` so the
+  working directory cannot change the answer. Both get a regression case.
+- **3 — fix now.** Read the blob in a loop until a short read, so no cap can
+  truncate a blob past which a CR would go unseen.
+- **4 — fix now, per the maintainer's gate decision.** The CSVs stay
+  normalized; the false `CLAUDE.md` sentence is corrected to say what the file
+  does today; and appending the squashed SHA becomes a recorded task rather
+  than an untracked intention, since it is the plan's own named falsifier for
+  renormalizing the keying-provenance CSVs.
+- **5 — fix now.** A sentence in `.git-blame-ignore-revs` saying the commit it
+  will name also carries content, so ignoring it in blame un-attributes that
+  content too.
+- **6 — fix now.** Add the `GITHUB_PAT` env the file's other job sets.
+- **7 — fix now, per the maintainer's gate decision.** The guard gains an
+  over-declaration check: a path declared `-text`/`binary` carrying neither a
+  NUL nor a CR is a violation, with the 12 byte-locked `.txt`/`.qsf` artifacts
+  named as the exceptions D-016 and D-033 require. This enforces the one
+  prohibition the Scope states outright.
+- **8 — fix at post-merge hygiene.** `cairn/LESSONS.md:14` is current
+  knowledge, corrected in place where it sits, which is that pass's job.
+- **9 — fix now.** A one-line convention entry in `cairn/DESIGN.md`; CLAUDE.md
+  carries the operational command, DESIGN.md the architecture record.
+- **10 — fix now.** `*.qsf -text` and the `.txt` case folded into finding 7's
+  exception list, so the Qualtrics artifacts do not rest on directory rules
+  alone.
+- **11 — fix now.** `line-ending = "lf"` in `air.toml`, stopping the churn at
+  its source rather than catching it at commit.
+- **12, 13, 14 — fix now.** The work-log count corrected to 26, T2's stale
+  "14 expected text paths" corrected to 18, a failure message a CI reader can
+  act on, and the stray space in the violation output.
