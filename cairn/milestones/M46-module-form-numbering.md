@@ -5,7 +5,7 @@
 - **Depends on:** M45
 - **Driving RR:** —
 - **Principles touched:** IP1, GP2, GP3
-- **Branch/PR:** `m46-module-form-numbering`
+- **Branch/PR:** `m46-module-form-numbering` / [PR #52](https://github.com/jmgirard/hitop/pull/52)
 
 ## Goal
 
