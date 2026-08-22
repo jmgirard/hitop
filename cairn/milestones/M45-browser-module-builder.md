@@ -5,7 +5,7 @@
 - **Depends on:** M43
 - **Driving RR:** —
 - **Principles touched:** IP1, IP4, GP3
-- **Branch/PR:** `m45-browser-module-builder`
+- **Branch/PR:** `m45-browser-module-builder` — https://github.com/jmgirard/hitop/pull/51
 
 ## Goal
 
@@ -39,7 +39,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 
 ## Acceptance criteria
 
-- [ ] AC1 `hitop` is listed by `https://jmgirard.r-universe.dev/api/ls` and its
+- [x] AC1 `hitop` is listed by `https://jmgirard.r-universe.dev/api/ls` and its
       package API response reports a `wasm`/`emscripten` binary with status
       `success`; both responses are recorded in the Review with the date
       observed.
@@ -55,14 +55,14 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
       origin, the webR distribution origin the app's source names, or
       `https://repo.r-wasm.org`. Repo file listing, log excerpt, and network
       origin list recorded in the Review with the date observed.
-- [ ] AC3 For each of the three formats, a named scale selection made in the
+- [x] AC3 For each of the three formats, a named scale selection made in the
       deployed app produces a downloaded file whose content matches what the
       corresponding `generate_*_hitopsr()` call produces locally for the same
       scales: the DOCX compared by parsing its item text and numbers back out
       (D-010's parse-and-compare pattern, since the M20 lesson records DOCX
       bytes as non-deterministic), the Qualtrics `.txt` byte-for-byte, and the
       REDCap zip by its extracted CSV. Evidence recorded per format.
-- [ ] AC4 The app hardcodes no instrument content. At the reviewed commit a
+- [x] AC4 The app hardcodes no instrument content. At the reviewed commit a
       script sweeps every tracked text file in the app repo (`index.html`,
       `README.md`, `LICENSE.md`, `.github/workflows/pages.yml`) for three
       things: (a) every value of `hitopsr_scales$Scale` and
@@ -82,7 +82,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - [ ] AC5 This package's `_pkgdown.yml` links the deployed app from the
       Instruments menu; `pkgdown::check_pkgdown()` passes and
       `devtools::check()` is clean after the `inst/shiny/app.R` deletion.
-- [ ] AC6 The app's landing text and its repo README each state that the app
+- [x] AC6 The app's landing text and its repo README each state that the app
       generates instruments and scores nothing (IP4), and name the `hitop`
       version the page installs.
 
@@ -155,3 +155,47 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 ## Decisions
 
 ## Review
+
+Evidence gathered 2026-08-22 on branch `m45-browser-module-builder`, PR #51.
+
+**AC1 — verified.** `https://jmgirard.r-universe.dev/api/ls` returns
+`["ackwards", "circumplex", "hitop", "rlmstudio"]`, listing `hitop`. The package
+API's `_binaries` carries `{r: 4.6.0, os: wasm, version: 0.2.0, status: success,
+date: 2026-08-22T02:14:36Z, commit: 3bb3f7e0abafdeed73ef12f3351cd9268d0e9532}` —
+the emscripten build, successful, at this milestone's merged `{zip}` commit. Both
+responses observed 2026-08-22.
+
+**AC3 — verified, all three formats.** One module (Agoraphobia + Appetite Loss,
+8 items) selected in the deployed page; each file captured as the Blob the page's
+own download button produces, then compared to a local `generate_*_hitopsr()` on
+the same scales. Qualtrics: byte-for-byte, 1991 bytes, SHA-256
+`c1a11153890a6dacd0e5577580c0bf463d1dcccfca7c1e54af53708b0e625d57` both sides.
+DOCX: parsed and compared per D-010 — 16 zip entries, a 126,018-byte
+`word/document.xml`, and 1045 characters of tag-stripped whitespace-collapsed
+text hashing to `22fe9ebe984b061ae658159aff971927028fbfa7eb3f4baef989c571f360a1e0`
+both sides. REDCap: extracted CSV byte-for-byte, 2008 bytes, 11 lines, SHA-256
+`37272d11e02461376ea5a4c0ca859e444fa406ac16dcc6803afbd2dd01396dbb` both sides,
+sole entry `instrument.csv`. The zip containers differ (811 browser against 795
+local), which is why the criterion compares the extracted CSV.
+
+**AC4 — verified.** Sweep run over the four tracked text files of
+`jmgirard/hitop-builder`. (a) 152 scale-name needles, case-insensitive literal
+substring: 0 hits. (b) 405 `hitopsr_items$Text` needles, literal substring:
+0 hits. (c) item numbers as digit runs with no adjacent digit: 52 distinct
+numerals — 24 in `index.html`, 22 in `LICENSE.md`, 3 in the workflow, 3 in the
+README. Ledger: `index.html`'s are CSS lengths and colours (`1.5rem`, `.5`,
+`1.4`, `16px/1.55`, `4px`, `#1f5c8b`, `#333`-class hex digits), `charset="utf-8"`,
+the webR version `v0.6.0`, the blob-revoke timeout, and the prose "about 20
+seconds"; `LICENSE.md`'s are GPL-3 section numbers; the workflow's are action
+version pins (`v4`, `v5`, `v3`); the README's are prose and version figures. No
+row denotes a HiTOP-SR item number, item count, or item position. The checkbox
+labels are supplied by `index.html:282`,
+`as.data.frame(hitop::available_scales("hitopsr"))` evaluated in webR, whose
+result the page renders directly.
+
+**AC6 — verified.** The app's landing notice reads "This page builds blank
+questionnaires. It does not score anything. It never asks for, receives, or
+transmits anyone's responses." The repo README's own section reads "The app
+**generates blank questionnaires. It scores nothing.**" The page names the
+installed version at runtime — `(version 0.2.0)` observed on load — and the
+README names `hitop` 0.2.0 with the date it was checked.
