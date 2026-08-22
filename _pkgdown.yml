@@ -35,6 +35,9 @@ navbar:
         href: articles/download-pid5sf.html
       - text: "PID-5 Brief Form (BF)"
         href: articles/download-pid5bf.html
+      - text: "---"
+      - text: "Build a HiTOP-SR Module"
+        href: https://jmgirard.github.io/hitop-builder/
     articles:
       text: "Tutorials"
       menu:

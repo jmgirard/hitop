@@ -1,11 +1,11 @@
 # M45: A browser module builder for the HiTOP-SR
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M43
 - **Driving RR:** —
-- **Principles touched:** IP1, IP4, GP3
-- **Branch/PR:** —
+- **Principles touched:** IP1, GP3
+- **Branch/PR:** `m45-browser-module-builder` — https://github.com/jmgirard/hitop/pull/51
 
 ## Goal
 
@@ -19,13 +19,16 @@ User-facing tier: the deliverable is a public web page and a link from this
 package's site.
 
 **In:** registering `hitop` on `jmgirard.r-universe.dev` so a WebAssembly build
-of the package exists; a new public repo holding a shinylive app that installs
-`hitop` from that repository, lists the scales as checkboxes, and offers the
-three generated files as downloads; deletion of the unused 11-line
-`inst/shiny/app.R` placeholder, which this supersedes; and a link to the
-deployed app from this package's pkgdown Instruments menu. This repo's own PR
-carries only that link, the placeholder deletion, and tracking — the app repo
-keeps its own history, which no PR here can contain.
+of the package exists; a new public repo holding a static webR page that
+installs `hitop` from that repository, lists the scales as checkboxes, and
+offers the three generated files as downloads; replacing this package's two
+`utils::zip()` call sites with `zip::zip()` so the REDCap generator stops
+shelling out to an external executable, which it cannot do under emscripten;
+deletion of the unused 11-line `inst/shiny/app.R` placeholder, which this
+supersedes; and a link to the deployed app from this package's pkgdown
+Instruments menu. This repo's own PR carries that link, the zip change, the
+placeholder deletion, and tracking — the app repo keeps its own history, which
+no PR here can contain.
 
 **Out:** scoring in the app → not this milestone; the app generates instruments
 and reads no response data. Modules for the HiTOP-BR and PID-5 in the app →
@@ -36,49 +39,69 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 
 ## Acceptance criteria
 
-- [ ] AC1 `hitop` is listed by `https://jmgirard.r-universe.dev/api/ls` and its
+- [x] AC1 `hitop` is listed by `https://jmgirard.r-universe.dev/api/ls` and its
       package API response reports a `wasm`/`emscripten` binary with status
       `success`; both responses are recorded in the Review with the date
       observed.
-- [ ] AC2 The app repo exists, is public, and holds a shinylive app that
-      installs `hitop` from the r-universe WebAssembly repository, with no
-      server-side R process — evidenced by the deployed page working as a static
-      site.
-- [ ] AC3 For each of the three formats, a named scale selection made in the
+- [x] AC2 The app repo `jmgirard/hitop-builder` is publicly readable — an
+      unauthenticated request to its GitHub URL returns 200 — and its tracked
+      files are static web assets plus the Pages deploy workflow, with no `.R`
+      file and no application backend. In one load of the deployed Pages URL in
+      a fresh browser profile, the scale checkboxes render, the page's webR log
+      reports `installPackages("hitop")` and `library(hitop)` completing with no
+      error and no uncaught console error, and the Network panel shows at least
+      one request to `https://jmgirard.r-universe.dev` serving the `hitop`
+      WebAssembly binary, with every other request going only to the Pages
+      origin, the webR distribution origin the app's source names, or
+      `https://repo.r-wasm.org`. Repo file listing, log excerpt, and network
+      origin list recorded in the Review with the date observed.
+- [x] AC3 For each of the three formats, a named scale selection made in the
       deployed app produces a downloaded file whose content matches what the
       corresponding `generate_*_hitopsr()` call produces locally for the same
       scales: the DOCX compared by parsing its item text and numbers back out
       (D-010's parse-and-compare pattern, since the M20 lesson records DOCX
       bytes as non-deterministic), the Qualtrics `.txt` byte-for-byte, and the
       REDCap zip by its extracted CSV. Evidence recorded per format.
-- [ ] AC4 The app hardcodes no instrument content: a script iterating every
-      value of `hitopsr_scales$Scale` and `hitopsr_scales$camelCase` and every
-      item number in `hitopsr_items$HSR` finds no literal occurrence of any of
-      them in the app's source files, so every name and number the page shows
-      is read from the package's keying tables at runtime (IP1).
-- [ ] AC5 This package's `_pkgdown.yml` links the deployed app from the
+- [x] AC4 The app hardcodes no instrument content. At the reviewed commit a
+      script sweeps every tracked text file in the app repo (`index.html`,
+      `README.md`, `LICENSE.md`, `.github/workflows/pages.yml`) for three
+      things: (a) every value of `hitopsr_scales$Scale` and
+      `hitopsr_scales$camelCase` as a case-insensitive literal substring;
+      (b) every value of `hitopsr_items$Text` as a literal substring; and
+      (c) every item number in `hitopsr_items$HSR` as a digit run with no
+      adjacent digit (`(?<![0-9])N(?![0-9])`, so `405` never matches inside
+      `1405`). Sweeps (a) and (b) must return zero hits. Sweep (c) cannot,
+      because small integers are unavoidable in a web page, so the Review
+      records a ledger with one row per distinct numeral per file saying what
+      that numeral denotes; the criterion passes only if no row denotes a
+      HiTOP-SR item number, item count, or item position. The Review also
+      records the line of app source supplying the checkbox labels, which must
+      be the result of an `available_scales("hitopsr")` call evaluated in webR,
+      so every scale name, item number, and item text the page shows is read
+      from the package's keying tables at runtime (IP1).
+- [x] AC5 This package's `_pkgdown.yml` links the deployed app from the
       Instruments menu; `pkgdown::check_pkgdown()` passes and
       `devtools::check()` is clean after the `inst/shiny/app.R` deletion.
-- [ ] AC6 The app's landing text and its repo README each state that the app
-      generates instruments and scores nothing (IP4), and name the `hitop`
-      version the page installs.
+- [x] AC6 The app's landing text and its repo README each state that the app
+      generates instruments and scores nothing, and name the `hitop` version
+      the page installs.
 
 ## Coverage
 
 - AC1 → T1
 - AC2 → T2, T3
-- AC3 → T2, T4
+- AC3 → T2, T4, T6
 - AC4 → T3
-- AC5 → T5
+- AC5 → T5, T6
 - AC6 → T5
 
 ## Tasks
 
-- [ ] T1 Register `hitop` on `jmgirard.r-universe.dev` and confirm the
+- [x] T1 Register `hitop` on `jmgirard.r-universe.dev` and confirm the
       emscripten build succeeds. The universe already builds WebAssembly —
       `circumplex` reports `wasm emscripten 4.6.0 success` (observed
       2026-08-21) — so this is registration, not new infrastructure.
-- [ ] T2 Feasibility probe before any UI work: in a bare webR or shinylive page,
+- [x] T2 Feasibility probe before any UI work: in a bare webR or shinylive page,
       install `hitop` from the universe and run each of the three
       `generate_*_hitopsr()` calls on a two-scale module, recording which
       succeed. Every Import has a WebAssembly binary in the webR repository —
@@ -86,10 +109,15 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
       `shiny`, `systemfonts`, `gdtools`, `zip`, `xml2` (observed 2026-08-21) —
       but their behavior under emscripten is unverified. A format that cannot
       generate returns this milestone to plan rather than being worked around.
-- [ ] T3 Build the app: checkboxes driven by `available_scales("hitopsr")`, a
-      running item count, and a `downloadHandler()` per format.
-- [ ] T4 Deploy to GitHub Pages and run AC3's round-trip comparison per format.
-- [ ] T5 In this repo: the `_pkgdown.yml` Instruments-menu link, the
+- [x] T6 Replace `utils::zip()` with `zip::zip(mode = "cherry-pick")` at both
+      call sites in `R/generate_redcap.R`, add {zip} to Imports, and cover it
+      with a test that the generated archive holds one flat `instrument.csv`
+      entry (D-035). Runs before the app so the app never works around it.
+- [x] T3 Build the app: a webR page whose checkbox list is driven by
+      `available_scales("hitopsr")`, with a running item count and one download
+      button per format.
+- [x] T4 Deploy to GitHub Pages and run AC3's round-trip comparison per format.
+- [x] T5 In this repo: the `_pkgdown.yml` Instruments-menu link, the
       `inst/shiny/app.R` deletion, and the app repo's README.
 
 ## Work log
@@ -99,8 +127,195 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-21: plan absorbed the Shiny-app half of the standing "Someday-maybe cluster" candidate row; the HiTOP-SR/BR validity-scales half of that row stays where it is.
 - 2026-08-21: plan chose r-universe over building and hosting the WebAssembly binary by hand with {rwasm}, because the universe already produces successful emscripten builds for this maintainer at no maintenance cost; falsified by r-universe's emscripten build failing on this package for a reason registration cannot fix.
 - 2026-08-21: the criteria audit ran in **full** mode over AC1-AC6 and returned one finding, fixed before the criteria were written. AC4 promised the app source contains "no hardcoded scale name or item number" with no procedure enumerating that domain — it now names the script that iterates the two scale-name columns and the item-number column, which is exactly the domain the promise quantifies over. The audit ran inline in this session rather than in a fresh-context reader, because this session is instructed not to spawn subagents unless asked; the reader-freshness the instrument normally provides was not obtained.
+- 2026-08-21: T1 needed no work — `hitop` was already registered on `jmgirard.r-universe.dev` and its emscripten build had already succeeded when the task was reached (`api/ls` lists it; `api/packages/hitop` reports `wasm` R 4.6.0 status `success`, built 2026-08-21T22:08:42Z). Evidence for AC1 is re-observed at review.
+- 2026-08-21: implement gate chose `jmgirard/hitop-builder` as the app repo name and a GitHub Action on push as the deploy route; the app's shape (shinylive vs plain webR) was left open by the user for T2's probe to inform.
 - 2026-08-21: T2 is the milestone's real risk — nothing verifies that {officer} and {flextable} produce a valid DOCX under emscripten. It is sequenced before the UI so a failure surfaces at the cheapest point.
+- 2026-08-21: T2 probe run in webR 0.6.0 (R 4.6.0) on a COOP/COEP static page, crossOriginIsolated true: `installPackages("hitop")` from `https://jmgirard.r-universe.dev` succeeded in ~16 s, pulling every Import including officer, flextable, gdtools, systemfonts, ragg and zip; `library(hitop)` and `hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))` both returned normally.
+- 2026-08-21: T2 result by format on that module — Qualtrics `.txt` generated (1991 bytes); DOCX generated and verified a real OOXML package (PK magic, 16 zip entries, a 123,144-byte `word/document.xml`, all 8 of the module's item numbers present in its stripped text); REDCap aborted with `The `system()` function is unsupported under Emscripten.`
+- 2026-08-21: the REDCap abort localizes to `utils::zip()` at `R/generate_redcap.R:306` (and again at :598), which shells out to an external `zip` executable; a follow-up probe installed {zip} 2.3.3 under the same webR and `zip::zip(mode = "cherry-pick")` wrote a valid 173-byte archive whose single entry was the flat `instrument.csv`, so the format is generable under emscripten once the package stops shelling out.
+- 2026-08-21: amendment gate — Scope (In) widened to carry a package-side fix: this repo's PR now also replaces `utils::zip()` with `zip::zip()`, recorded as D-035, because the REDCap format is generable under emscripten once the shell-out goes and the same shell-out already fails for users with no `zip` executable on `PATH`. Rejected at the gate: rebuilding the archive in the app's own JavaScript, shipping two formats, and returning the milestone to plan.
+- 2026-08-21: amendment gate — the app's shape is a plain webR page rather than a shinylive app, chosen for a much smaller first load on a page that already spends ~16 s installing `hitop` and for having no build step for the deploy workflow to run; falsified by the hand-written UI growing past what a single HTML file can carry legibly. Scope (In) and T3 reworded; new task T6 added and mapped to AC3 and AC5. No acceptance criterion changed.
+- 2026-08-21: amendment return: AC2 — "The app repo `jmgirard/hitop-builder` is publicly readable — an unauthenticated request to its GitHub URL returns 200 — and its tracked files are static web assets plus the Pages deploy workflow, with no `.R` file and no application backend. In one load of the deployed Pages URL in a fresh browser profile, the scale checkboxes render, the page's webR log reports `installPackages("hitop")` and `library(hitop)` completing with no error and no uncaught console error, and the Network panel shows at least one request to `https://jmgirard.r-universe.dev` serving the `hitop` WebAssembly binary, with every other request going only to the Pages origin, the webR distribution origin the app's source names, or `https://repo.r-wasm.org`. Repo file listing, log excerpt, and network origin list recorded in the Review with the date observed."
+- 2026-08-21: AC2's amended wording was audited in **full** mode by two fresh-context [O] readers, neither of which authored what it read, at the user's explicit go-ahead to spawn them. The first returned FIX on verifiability and instrument: "runs it in the reader's browser" and "working as a static site" named no observable signal. Its replacement was re-audited and returned FIX again — "holds no server-side code" is false as written, because the Pages deploy workflow is server-side code; the origin whitelist permitted the r-universe host without requiring it, so "installs from r-universe" had no positive check; and "the console showing…" fixed no success signal. Further churn went to the user per the once-only re-entry rule, who chose a trimmed wording carrying all three fixes.
+- 2026-08-21: T6 — both `utils::zip()` call sites in `R/generate_redcap.R` now call `zip::zip(mode = "cherry-pick")`, {zip} entered Imports, and the four `skip_if_no_zip()` guards plus the helper were removed, so the REDCap suite no longer skips on a machine without the executable. Two new tests set `R_ZIPCMD` to a nonexistent program and assert the archive is still written with one flat `instrument.csv` entry; both failed before the swap with no file produced and pass after. `devtools::test()` reports FAIL 0 / WARN 0 / SKIP 1 / PASS 13679 and `devtools::document()` produced no diff.
+- 2026-08-21: amendment return: AC4 — "The app hardcodes no instrument content. At the reviewed commit a script sweeps every tracked text file in the app repo (`index.html`, `README.md`, `LICENSE.md`, `.github/workflows/pages.yml`) for three things: (a) every value of `hitopsr_scales$Scale` and `hitopsr_scales$camelCase` as a case-insensitive literal substring; (b) every value of `hitopsr_items$Text` as a literal substring; and (c) every item number in `hitopsr_items$HSR` as a digit run with no adjacent digit (`(?<![0-9])N(?![0-9])`, so `405` never matches inside `1405`). Sweeps (a) and (b) must return zero hits. Sweep (c) cannot, because small integers are unavoidable in a web page, so the Review records a ledger with one row per distinct numeral per file saying what that numeral denotes; the criterion passes only if no row denotes a HiTOP-SR item number, item count, or item position. The Review also records the line of app source supplying the checkbox labels, which must be the result of an `available_scales('hitopsr')` call evaluated in webR, so every scale name, item number, and item text the page shows is read from the package's keying tables at runtime (IP1)."
+- 2026-08-21: AC4 was amended because its original zero-occurrence promise is unsatisfiable by any web page: item numbers run 1-405, and a word-boundary sweep of `index.html` matched the bare integers 1, 2, 4, 5, 6, 8, 20 and 55 in CSS lengths, `charset="utf-8"`, the webR version `v0.6.0` and the prose "about 20 seconds", none of them instrument content. Two fresh-context [O] readers audited the replacement wording in **full** mode at the user's go-ahead; the second corrected a factual error in the first's regex example (`(?<![0-9])55(?![0-9])` does match inside `1.55`) and found that item *text* was swept by neither version, a gap through which a page pasting item stems verbatim would pass. Further churn went to the user per the once-only re-entry rule.
+- 2026-08-21: the amended AC4 sweep was run against the app as built and passes on all three parts: (a) 0 hits over 152 scale-name needles case-insensitively, (b) 0 hits over 405 item-text needles, (c) 157 numeral hits — 94 in `index.html` over 24 distinct numerals, 56 in `LICENSE.md`, 4 in the workflow, 3 in the README — every one of which is a CSS length, hex colour, library version, GPL section number, or prose figure. The ledger is recorded at review.
+- 2026-08-21: T3 — the app is a single `index.html` in the new public repo `jmgirard/hitop-builder`, loading webR 0.6.0 from `webr.r-wasm.org` and installing `hitop` from the r-universe repository; its checkbox list, item counts and scale names come from an `available_scales("hitopsr")` call evaluated in webR, and each download button calls the matching `generate_*_hitopsr()` and hands the bytes to the browser as a Blob. Verified working on plain GitHub Pages with `crossOriginIsolated` false, so webR's PostMessage channel suffices and no COOP/COEP headers are needed — the constraint that would have ruled Pages out.
+- 2026-08-21: T5 — `_pkgdown.yml` links the deployed app from the Instruments menu, `inst/shiny/app.R` and its now-empty directory are deleted, the app repo carries a README stating that the page generates instruments and scores nothing, and NEWS gained entries for both the app and the zip change. `pkgdown::check_pkgdown()` reports no problems found.
+- 2026-08-21: at the user's direction the {zip} fix was split onto `hotfix-redcap-zip` (carrying only the code, tests, NEWS entry and D-035) and pushed, so it can reach the default branch and trigger an r-universe rebuild before this milestone's REDCap round-trip is verified; the same commits remain on the milestone branch and are expected to merge as identical content.
+- 2026-08-21: T4 — the app is deployed at `https://jmgirard.github.io/hitop-builder/` and AC3's round-trip was run on the Agoraphobia + Appetite Loss module by capturing the blobs the deployed page's own download buttons produce. Qualtrics matches the local `generate_qualtrics_hitopsr()` byte-for-byte (1991 bytes, SHA-256 `c1a11153890a6dacd0e5577580c0bf463d1dcccfca7c1e54af53708b0e625d57` on both sides). The DOCX matches on parsed content per D-010: 16 zip entries, a 126,018-byte `word/document.xml`, and 1045 characters of tag-stripped whitespace-collapsed text hashing to `22fe9ebe984b061ae658159aff971927028fbfa7eb3f4baef989c571f360a1e0` in both the browser and a local generation.
+- 2026-08-21: T4 REDCap leg is outstanding and stays so until PR #50 merges and r-universe rebuilds: the deployed page installs whatever binary the universe serves, which is still the pre-fix 0.2.0, so its REDCap button reports the emscripten `system()` abort. Verified 2026-08-21 that `hitop` appears in no other repository the app names — `repo.r-wasm.org` returns zero matches at `bin/emscripten/contrib/4.6/PACKAGES` — so a successful in-page install is only possible from `jmgirard.r-universe.dev`, which is the fallback evidence for AC2's r-universe clause if worker traffic proves invisible to the network panel.
+- 2026-08-21: PR #50 opened for the split {zip} fix; `devtools::check()` on that branch reports Status OK with 0 errors, 0 warnings and 0 notes.
+- 2026-08-22: PR #50 merged to main after all seven CI checks passed, Windows included; main is now at `3bb3f7e` and the branch merged it back, resolving one NEWS conflict where the two entries had been inserted at the same anchor. The branch's diff against main is now NEWS, `_pkgdown.yml`, the `inst/shiny/app.R` deletion and tracking — exactly what the amended Scope says this repo's PR carries. Waiting on r-universe to rebuild at that commit before T4's REDCap leg can run.
+- 2026-08-22: r-universe rebuilt `hitop` at the merge commit `3bb3f7e` with a successful wasm build (2026-08-22T02:14:36Z); the served tarball's DESCRIPTION now lists `zip` in Imports, where the previous build's did not.
+- 2026-08-22: T4 complete — the reloaded deployed page generated the REDCap archive for the same Agoraphobia + Appetite Loss module (811 bytes) and its extracted `instrument.csv` matches a local `generate_redcap_hitopsr()` byte-for-byte: 2008 bytes, 11 lines, SHA-256 `37272d11e02461376ea5a4c0ca859e444fa406ac16dcc6803afbd2dd01396dbb` on both sides, one flat `instrument.csv` entry. The zip containers themselves differ (811 against 795 bytes), which is why AC3 compares the extracted CSV rather than the archive.
+- 2026-08-22: all six tasks checked; `devtools::document()` produces no diff, `devtools::check()` reports Status OK with 0 errors, 0 warnings and 0 notes, and `pkgdown::check_pkgdown()` reports no problems. Status set to review.
 
 ## Decisions
+- 2026-08-22: review returned the milestone to `in-progress` at the maintainer's gate decision. Five criteria verified outright; AC2 ticked on substitute evidence the maintainer accepted, because its network clause names an instrument that cannot observe webR's worker-originated requests. Three fresh-context reviewers ran; the two history lenses found nothing, the diff-bug lens returned 17 findings — six fix-now, eight follow-up in four clustered candidate rows, three rejected, and one severity corrected against the implementation.
+- 2026-08-22: amendment return: AC6 — "The app's landing text and its repo README each state that the app generates instruments and scores nothing, and name the `hitop` version the page installs."
+- 2026-08-22: AC6's citation of IP4 was wrong and is deleted, and the header's `Principles touched` drops IP4 with it: DESIGN's IP4 is "Scores, never judgment", so an app that *did* score would not violate it — the scoring exclusion is what this milestone's Scope records, not a principle. Two fresh-context [O] readers audited the replacement in full mode; the first caught that the session's own first attempt made "not a DESIGN principle" part of what the app must *state*, and the second found its own replacement's "read at runtime" unverifiable without a named source line. The user chose the minimal deletion over the auditor's wider wording, holding the criteria set on a milestone whose log records a defect return; the auditor's concern that AC6 cannot distinguish a runtime-read version string from a hardcoded one is offered a home on the standing builder-app candidate row.
+- 2026-08-22: fix-now findings 3, 7, 8, 11 and 14 applied. In the app repo (`c892bac`): clearing is unconditional and the button reads "Clear all", while selecting still follows the filter and now says so ("Select all N shown"); `aria-live` moved from the log pane to the status line and the filter gained an accessible name; a `<noscript>` block names the requirement and links the ready-made downloads; the webR output pump catches a rejected `read()` and reports rather than dying silently. In this repo, the NEWS claim "it installs nothing and sends nothing anywhere" is replaced by an accurate one. Verified on a local serve of the fixed page: the finding-3 sequence that previously left `healthAnxiety` and `socialAnxiety` selected after a Clear now leaves none, the select-all label reads "Select all 2 shown" under the `anx` filter, and all three formats still generate with the Qualtrics file byte-identical to its verified hash.
+- 2026-08-22: all fix-now findings applied and verified on the deployed page; `devtools::test()` FAIL 0 / WARN 0 / SKIP 1 / PASS 13679 and `devtools::check()` Status OK with 0 errors, 0 warnings and 0 notes. Status set back to review; AC6 is unticked pending re-verification against its amended wording.
+- 2026-08-22: delta review returned 9 findings on the fix commit; 7 fixed in app-repo `99cd10f`, 2 rejected as harmless. The first fix commit's accessibility claim was wrong — `role="log"` is implicitly a polite live region — and the correction is stated in the new commit message rather than the claim repeated. Footer and README attribution changed to the HiTOP Society at `hitop-system.org` at the maintainer's request.
 
 ## Review
+
+Evidence gathered 2026-08-22 on branch `m45-browser-module-builder`, PR #51.
+
+**AC1 — verified.** `https://jmgirard.r-universe.dev/api/ls` returns
+`["ackwards", "circumplex", "hitop", "rlmstudio"]`, listing `hitop`. The package
+API's `_binaries` carries `{r: 4.6.0, os: wasm, version: 0.2.0, status: success,
+date: 2026-08-22T02:14:36Z, commit: 3bb3f7e0abafdeed73ef12f3351cd9268d0e9532}` —
+the emscripten build, successful, at this milestone's merged `{zip}` commit. Both
+responses observed 2026-08-22.
+
+**AC3 — verified, all three formats.** One module (Agoraphobia + Appetite Loss,
+8 items) selected in the deployed page; each file captured as the Blob the page's
+own download button produces, then compared to a local `generate_*_hitopsr()` on
+the same scales. Qualtrics: byte-for-byte, 1991 bytes, SHA-256
+`c1a11153890a6dacd0e5577580c0bf463d1dcccfca7c1e54af53708b0e625d57` both sides.
+DOCX: parsed and compared per D-010 — 16 zip entries, a 126,018-byte
+`word/document.xml`, and 1045 characters of tag-stripped whitespace-collapsed
+text hashing to `22fe9ebe984b061ae658159aff971927028fbfa7eb3f4baef989c571f360a1e0`
+both sides. REDCap: extracted CSV byte-for-byte, 2008 bytes, 11 lines, SHA-256
+`37272d11e02461376ea5a4c0ca859e444fa406ac16dcc6803afbd2dd01396dbb` both sides,
+sole entry `instrument.csv`. The zip containers differ (811 browser against 795
+local), which is why the criterion compares the extracted CSV.
+
+**AC4 — verified.** Sweep run over the four tracked text files of
+`jmgirard/hitop-builder`. (a) 152 scale-name needles, case-insensitive literal
+substring: 0 hits. (b) 405 `hitopsr_items$Text` needles, literal substring:
+0 hits. (c) item numbers as digit runs with no adjacent digit: 52 distinct
+numerals — 24 in `index.html`, 22 in `LICENSE.md`, 3 in the workflow, 3 in the
+README. Ledger: `index.html`'s are CSS lengths and colours (`1.5rem`, `.5`,
+`1.4`, `16px/1.55`, `4px`, `#1f5c8b`, `#333`-class hex digits), `charset="utf-8"`,
+the webR version `v0.6.0`, the blob-revoke timeout, and the prose "about 20
+seconds"; `LICENSE.md`'s are GPL-3 section numbers; the workflow's are action
+version pins (`v4`, `v5`, `v3`); the README's are prose and version figures. No
+row denotes a HiTOP-SR item number, item count, or item position. The checkbox
+labels are supplied by `index.html:282`,
+`as.data.frame(hitop::available_scales("hitopsr"))` evaluated in webR, whose
+result the page renders directly.
+
+**AC6 — re-verified 2026-08-22 against the amended wording** (the IP4 citation
+deleted). The deployed page's landing notice reads in full: "This page builds
+blank questionnaires. It does not score anything. It never asks for, receives,
+or transmits anyone's responses. The R package hitop (version 0.2.0) is
+downloaded into your own browser and every file is generated there — nothing you
+select or produce leaves this page." The app repo's README at the reviewed commit
+reads "The app **generates blank questionnaires. It scores nothing.**" and, at
+line 33, "it was **`hitop` 0.2.0** when this README was last checked
+(2026-08-21)". The page's own version span rendered `(version 0.2.0)` on load.
+
+**AC5 — verified.** `_pkgdown.yml:39-40` carries a "Build a HiTOP-SR Module"
+entry pointing at `https://jmgirard.github.io/hitop-builder/`, under a separator
+at the end of the Instruments menu. `pkgdown::check_pkgdown()` reports "No
+problems found." `inst/shiny/app.R` and its directory are gone. On the branch
+with that deletion, `devtools::document()` produces no diff, `devtools::test()`
+reports FAIL 0 / WARN 0 / SKIP 1 / PASS 13679, and `devtools::check()` reports
+Status OK — 0 errors, 0 warnings, 0 notes. The single skip is `test-keying.R:102`,
+a deliberate `skip()` marking open question OQ-1 (SDTD item 38 disputed between
+Williams (2019) Table 5's note and its text), which predates this milestone.
+
+**AC2 — verified, network clause on substitute evidence accepted by the maintainer.**
+Everything AC2 asks for except its network clause checks out: an unauthenticated
+fetch of `https://github.com/jmgirard/hitop-builder` returns 200 and `gh repo
+view` reports PUBLIC; the tracked files are exactly `index.html`, `README.md`,
+`LICENSE.md`, `.gitignore` and `.github/workflows/pages.yml`, with no `.R` file
+and no backend; and one load of the deployed page in a fresh profile rendered 76
+checkboxes with the log reporting `installPackages("hitop") completed` and
+`library(hitop) completed`, no error text in the log and no uncaught console
+error. The network clause could not be executed: webR performs its fetches from
+a Web Worker, and the available network panel records only main-frame requests —
+it did not even record the `webr.mjs` module fetch that
+`performance.getEntriesByType('resource')` reports. A `Worker`-constructor patch
+to observe the worker's own requests lost the race against webR's startup. The
+substitute evidence available is that `hitop` is published in no other repository
+the app names — `https://repo.r-wasm.org/bin/emscripten/contrib/4.6/PACKAGES`
+returns zero matches for it (observed 2026-08-22) — so a successful in-page
+install is only possible from `jmgirard.r-universe.dev`. That is an inference,
+not the observation the criterion names.
+
+**Consistency gate.** `cairn_validate` exit 0, all checks passed; 21 advisory
+warnings, all dangling-id tokens pointing at legacy D-001-D-012, which live in
+DESIGN.md by the DECISIONS.md header's own note, plus one new advisory for AC3's
+D-010 citation of the same kind. No DESIGN principle changed, so no impact
+report. Toolchain slot: `document()` no diff; `NAMESPACE`, `man/` and `data/`
+regenerate; `README.md`/`README.Rmd` untouched by this branch and last written by
+the same commit; `check_pkgdown()` clean; NEWS carries an entry; no new top-level
+files; `check()` Status OK.
+
+**Findings and triage (diff-bug reviewer, 17 findings; blame-history and
+prior-review reviewers returned none).** Fix-now, directed by the maintainer at
+the 2026-08-22 gate: (3) "Select all" and "Clear" act only on filter-visible
+checkboxes, so hidden-but-checked scales are silently included — reproduced on
+the deployed page, where a Clear under a changed filter left `healthAnxiety` and
+`socialAnxiety` selected; (11) the NEWS privacy claim "it installs nothing and
+sends nothing anywhere" overstates what the page does, which downloads from two
+third-party hosts and does install a package; (8) `aria-live` sits on the log
+pane rather than the status line and the filter input has no accessible name;
+(7) no `<noscript>` or module-unsupported fallback; (14) the `webR.read()` loop
+has no `catch`, so a rejection kills R output silently; (13) AC6 cites IP4 for
+"scores nothing", but IP4 is "Scores, never judgment" — the scoring exclusion is
+a Scope decision, so AC6's citation needs a gated amendment.
+
+Follow-up, spun into four clustered ROADMAP candidate rows: (1) the app installs
+an unpinned `hitop`, (2) the app repo has no CI or smoke test, (6) no timeout or
+retry on a stalled install, (12) the README's pinned version goes stale — all
+four clustered into one row; (4) the app exposes no `include_scoring` toggle;
+(5) `R/generate_redcap.R` was silently converted CRLF→LF; (9) the REDCap temp CSV
+uses a fixed path in `tempdir()` and (10) `zip` carries no version floor —
+clustered into one row.
+
+Severity corrected at triage: finding (4) was ranked as researchers handing
+participants an answer key. Verified against the implementation instead — the
+package's own shipped `inst/extdata/hitopsr_A4.docx` carries the same scoring
+key, so the app matches the established norm rather than introducing a hazard.
+Downgraded from fix-now to follow-up.
+
+Rejected: (15) no CSP meta tag and the workflow's `path: .` upload — defensible
+as built; (16) a doubled blank line left in `helper-generators.R` — cosmetic;
+(17) every download shares one filename — a matter of taste.
+
+**Return.** Status set back to `in-progress` at the maintainer's direction at the
+2026-08-22 gate. What failed: no acceptance criterion failed — all six are
+verified — but six findings were triaged fix-now, one of which (13) requires a
+gated amendment to AC6's wording, and one of which (3) is a defect a user of the
+deployed page can hit. AC2's network clause was not executed; the maintainer
+accepted the substitute evidence in its place rather than convening a third
+amendment round on that criterion, and this Review records the substitution as an
+inference rather than the observation AC2 names.
+**Delta review of the fixes (one fresh-context [O] reviewer, 9 findings).** The
+history lenses were not re-spawned: their prior pass found nothing, and the delta
+touches only `index.html`, whose whole history is this milestone. Findings 1-7
+were fixed at the maintainer's direction and are in app-repo commit `99cd10f`;
+findings 8 (a redundant `role="status"` beside `aria-live`) and 9 (a module-scope
+`clearAll` sharing a name with the button's id) were rejected as harmless.
+
+Finding 1 is the material one and was self-inflicted: the earlier fix commit
+claimed to stop a screen reader narrating the webR install transcript, but
+`role="log"` carries an implicit `aria-live="polite"`, so moving the attribute
+changed nothing. The pane is now `aria-live="off"` with no role, leaving the
+status line the only announced region, and the new commit message states the
+correction rather than repeating the claim. Findings 2, 4 and 5 closed three
+silent-hang paths (a dead output pump, a no-JS page that contradicted its own
+`<noscript>`, and a blocked webR CDN); 3 applies the filter at first render for
+a browser-restored value; 6 disables a zero-match "Select all"; 7 names both
+hosts the page contacts in the in-page notice, matching the corrected NEWS entry.
+
+Verified after the fixes on a local serve: the log pane reports `aria-live="off"`
+with no role and the status line `role="status"`/`aria-live="polite"`; the served
+markup ships `#status` and the log section `hidden` with the `<noscript>` block
+present; a zero-match filter disables "Select all 0 shown"; the finding-3 clear
+sequence still leaves nothing selected; and all three formats still generate,
+with the Qualtrics file byte-identical to its verified SHA-256. Finding 3's
+failure scenario did not reproduce in the test browser, which cleared the filter
+across a reload, so it was fixed as a latent gap rather than a live defect; the
+reviewer's scenario also miscounted the scale list as 224 where it is 76.
+
+At the maintainer's request the instruments are attributed to the HiTOP Society
+at `hitop-system.org`, in both the app's footer and its README, replacing an
+earlier "HiTOP Consortium" attribution and Stony Brook link.
+
