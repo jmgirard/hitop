@@ -82,6 +82,7 @@
 <li>Regenerate data: run the matching script in <code>data-raw/</code>; never edit <code>data/*.rda</code> or <code>R/sysdata.rda</code> directly</li>
 <li>README: edit <code>README.Rmd</code>, then <code>Rscript -e 'devtools::build_readme()'</code>
 </li>
+<li>Line endings: LF everywhere via <code>.gitattributes</code>; <code>Rscript data-raw/check_line_endings.R</code> verifies it and runs in CI. <code>git config blame.ignoreRevsFile .git-blame-ignore-revs</code> makes <code>git blame</code> skip whatever commits that file lists (it is per-clone; a fresh clone does not inherit it).</li>
 <li>Site: pkgdown, built/deployed by <code>.github/workflows/pkgdown.yaml</code>; local preview <code>Rscript -e 'pkgdown::build_site()'</code>
 </li>
 </ul></div>
