@@ -82,7 +82,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - [x] AC5 This package's `_pkgdown.yml` links the deployed app from the
       Instruments menu; `pkgdown::check_pkgdown()` passes and
       `devtools::check()` is clean after the `inst/shiny/app.R` deletion.
-- [ ] AC6 The app's landing text and its repo README each state that the app
+- [x] AC6 The app's landing text and its repo README each state that the app
       generates instruments and scores nothing, and name the `hitop` version
       the page installs.
 
@@ -198,12 +198,15 @@ labels are supplied by `index.html:282`,
 `as.data.frame(hitop::available_scales("hitopsr"))` evaluated in webR, whose
 result the page renders directly.
 
-**AC6 — verified.** The app's landing notice reads "This page builds blank
-questionnaires. It does not score anything. It never asks for, receives, or
-transmits anyone's responses." The repo README's own section reads "The app
-**generates blank questionnaires. It scores nothing.**" The page names the
-installed version at runtime — `(version 0.2.0)` observed on load — and the
-README names `hitop` 0.2.0 with the date it was checked.
+**AC6 — re-verified 2026-08-22 against the amended wording** (the IP4 citation
+deleted). The deployed page's landing notice reads in full: "This page builds
+blank questionnaires. It does not score anything. It never asks for, receives,
+or transmits anyone's responses. The R package hitop (version 0.2.0) is
+downloaded into your own browser and every file is generated there — nothing you
+select or produce leaves this page." The app repo's README at the reviewed commit
+reads "The app **generates blank questionnaires. It scores nothing.**" and, at
+line 33, "it was **`hitop` 0.2.0** when this README was last checked
+(2026-08-21)". The page's own version span rendered `(version 0.2.0)` on load.
 
 **AC5 — verified.** `_pkgdown.yml:39-40` carries a "Build a HiTOP-SR Module"
 entry pointing at `https://jmgirard.github.io/hitop-builder/`, under a separator
