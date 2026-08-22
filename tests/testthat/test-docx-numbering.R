@@ -270,3 +270,40 @@ test_that("renumber and randomize reject non-flag values", {
   expect_error(generate_docx_hitopsr(file = f, renumber = c(TRUE, TRUE)),
                "renumber")
 })
+
+# ---- Subscale rows follow the same printed-order map -----------------------
+#
+# `include_subscales` cannot be combined with `module`, so this path is
+# reachable only on the full instrument -- where renumbering is the identity
+# and only `randomize` moves anything. The subscale rows are built from
+# `hitopsr_subscales`, a different table from the one the scale rows come
+# from, so they are the one place the printed-order map could be applied to
+# one table and not the other.
+
+test_that("shuffling remaps the subscale scoring rows too", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  set.seed(11)
+  out <- suppressMessages(generate_docx_hitopsr(
+    file = f,
+    include_subscales = TRUE,
+    randomize = TRUE
+  ))
+
+  order <- attr(out, "item_order")
+  printed <- docx_scoring_rows(f)
+  sub_rows <- printed[grepl(" (Subscale)", printed$scale, fixed = TRUE), ]
+  expect_gt(nrow(sub_rows), 0L)
+
+  for (i in seq_len(nrow(sub_rows))) {
+    name <- sub(" \\(Subscale\\)$", "", sub_rows$scale[i])
+    want <- hitopsr_subscales$itemdata[[
+      which(hitopsr_subscales$Subscale == name)
+    ]]$HSR
+    got <- as.integer(gsub("\\(R\\)", "", strsplit(sub_rows$items[i], ", ")[[1]]))
+    # Each printed number is the position its original item landed in.
+    expect_setequal(order[got], want)
+    # And the row is sorted by printed number, not left in original order.
+    expect_equal(got, sort(got))
+  }
+})
