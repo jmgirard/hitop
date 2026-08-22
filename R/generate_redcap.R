@@ -303,10 +303,14 @@ build_redcap_zip <- function(
   temp_csv <- file.path(tempdir(), "instrument.csv")
   write.csv(data_dictionary, file = temp_csv, row.names = FALSE, na = "")
 
-  utils::zip(
+  # {zip} implements the archive format in C, so no `zip` executable need
+  # exist and no child process is spawned -- the property WebAssembly needs,
+  # where `system()` is unavailable (D-035). "cherry-pick" stores the file by
+  # its basename, reproducing what `utils::zip()`'s `-j` gave.
+  zip::zip(
     zipfile = absolute_file_path,
     files = temp_csv,
-    extras = c("-q", "-j")
+    mode = "cherry-pick"
   )
 
   file.remove(temp_csv)
@@ -595,10 +599,14 @@ generate_redcap_hitophsum <- function(
   temp_csv <- file.path(tempdir(), "instrument.csv")
   write.csv(data_dictionary, file = temp_csv, row.names = FALSE, na = "")
 
-  utils::zip(
+  # {zip} implements the archive format in C, so no `zip` executable need
+  # exist and no child process is spawned -- the property WebAssembly needs,
+  # where `system()` is unavailable (D-035). "cherry-pick" stores the file by
+  # its basename, reproducing what `utils::zip()`'s `-j` gave.
+  zip::zip(
     zipfile = absolute_file_path,
     files = temp_csv,
-    extras = c("-q", "-j")
+    mode = "cherry-pick"
   )
 
   file.remove(temp_csv)

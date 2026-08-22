@@ -184,7 +184,6 @@ docx_page_size <- function(xml) {
 # officer/flextable are Imports, but the guard keeps local runs graceful when
 # they are absent.
 
-skip_if_no_zip <- function() testthat::skip_if(unname(Sys.which("zip")) == "")
 
 skip_if_no_docx <- function() {
   testthat::skip_if_not_installed("officer")
