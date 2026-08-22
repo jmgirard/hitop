@@ -75,7 +75,7 @@ document order.
       TRUE` with `module = NULL` writes printed numbers `as.character(1:405)`
       whose texts are a permutation of `hitopsr_items$Text` and are not in
       `HSR` order.
-- [ ] AC5 — a shuffled form's scoring page carries a crosswalk whose
+- [x] AC5 — a shuffled form's scoring page carries a crosswalk whose
       (new, original) pairs, as extracted by a new `docx_crosswalk_pairs()`
       helper, are the printed numbers paired with the original `HSR` numbers,
       and the invisible return value carries an `item_order` attribute equal to
@@ -190,23 +190,22 @@ the five-scale module the criteria preamble fixes (23 items)._
   `set.seed(1)` produce identical printed-text vectors. With `module = NULL`,
   `randomize = TRUE` writes numbers `as.character(1:405)` whose texts permute
   `hitopsr_items$Text` and are not in `HSR` order.
-- **AC5 — NOT verified.** Three of its four clauses hold: under `set.seed(3)`
-  the crosswalk has 23 rows whose `new` column is `1:23` and whose `original`
-  column equals `attr(out, "item_order")`; reading the module's texts through
-  that attribute reproduces the printed page exactly; and the scoring page
-  carries exactly one `(R)` marker, on printed number 8, where HSR 310 landed
-  in `item_order` — the pre-shuffle rank would have been 20, so that clause
-  discriminates. An unshuffled call prints no crosswalk and reports an
-  ascending `item_order`. **The per-scale reconstruction clause is not
-  verified.** Both the test at `test-docx-numbering.R:216-223` and this
-  review's first evidence pass took "that scale's printed numbers" to mean
-  `match(want$HSR[want$Scale == scale], item_order)`, which reduces
-  `item_order[match(v, item_order)]` to `v` — an identity. Re-run 2026-08-22
-  against two arbitrary hand-built orders, one of them deliberately wrong: the
-  clause passed against both, so it constrains the generated document not at
-  all. The clause is satisfiable non-vacuously — the printed numbers must be
-  read from `docx_scoring_rows()`, as the subscale test at `:296-308` already
-  does — so the criterion stands as written and the test is what is wrong.
+- **AC5 — verified (second pass, 2026-08-22, after the review fix).** Under
+  `set.seed(3)` the crosswalk has 23 rows whose `new` column is `1:23` and
+  whose `original` column is identical to `attr(out, "item_order")`; reading
+  the module's texts through that attribute reproduces the printed page. The
+  per-scale reconstruction now reads each scale's printed numbers **off the
+  scoring page** via `docx_scoring_rows()` rather than deriving them by
+  `match()` against `item_order` — the identity that made the first pass
+  vacuous. Those printed numbers are genuinely scattered (Agoraphobia at
+  7, 9, 11, 19, 23; Social Aloofness at 1, 4, 5, 18, 21), and
+  `item_order[<them>]` equals `hitopsr_scales$itemNumbers` for each of the five
+  scales. Discriminating control: re-pointing `printed_of()` at
+  `sort(item_order)` fails the repaired loop on all five scales, where the
+  original loop passed green under the same mutation. Exactly one `(R)` marker
+  appears, on printed number 8, where HSR 310 landed. `item_order` is an
+  integer vector.
+
 - **AC6 — verified.** `grep -rniE 'renumber|original|numbering|item number'`
   over `R/`, `vignettes/`, `README.Rmd`, and `NEWS.md` returns 94 hits; the 55
   substantive ones (the rest being `rename_hitopsr_items()`'s legacy pool
@@ -349,6 +348,22 @@ Every finding's disposition, none dropped (IP3):
 - **prior-review lens's `(R)` item — rejected**, reproduced as non-vacuous
   (see above); its anchoring suggestion is absorbed into 8.
 
-CI on PR #52 at `5c450ca`: six of seven jobs pass (macOS, pkgdown, coverage,
+CI on PR #52 at `5c450ca`: six of seven jobs passed (macOS, pkgdown, coverage,
 Ubuntu devel/oldrel-1/release); Windows was still building when the review
-returned. CI will be re-run on the fix commits regardless.
+returned. CI re-ran on the fix commits.
+
+### Round 2 (2026-08-22)
+
+All ten findings fixed on the branch (see the work log for what changed). Every
+criterion re-executed against the fixed code: AC1, AC2, AC3, AC4, AC6, and AC7
+hold unchanged, AC5 is verified for the first time (its line above is the
+second-pass evidence), and `test-artifacts.R` still passes 121 assertions with
+no file under `inst/extdata/` or `data/` touched. Consistency gate re-run
+clean: `cairn_validate` all checks passed, `document()` no diff,
+`pkgdown::check_pkgdown()` no problems, `devtools::test()` FAIL 0 / WARN 0 /
+SKIP 1 / PASS 13778, `devtools::check()` Status OK (0 errors, 0 warnings,
+0 notes).
+
+No new reviewer fan-out was spawned for round 2: the fixes were directed by the
+round-1 findings and each was verified by execution, including a mutation
+control on the one that had been passing vacuously.
