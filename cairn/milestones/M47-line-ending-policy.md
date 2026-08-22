@@ -1,11 +1,11 @@
 # M47: One line-ending policy for the whole repository
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
 - **Driving RR:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m47-line-ending-policy`
 
 ## Goal
 
@@ -23,8 +23,8 @@ stay unchanged rather than to change.
 **In:** a `* text=auto eol=lf` rule in `.gitattributes` plus explicit `binary`
 declarations for every family that must never be converted (`*.rda`, `*.png`,
 `*.ico`, and the two artifact directories already declared `-text`);
-`git add --renormalize` over the 14 tracked text files still stored CRLF —
-`R/generate_qualtrics.R`, `R/reliability.R`, eight `data-raw/*.csv`,
+`git add --renormalize` over the 18 tracked text files still stored CRLF —
+`R/generate_qualtrics.R`, `R/reliability.R`, eleven `data-raw/*.csv`,
 `data-raw/hitopsr.qmd`, `data-raw/.gitignore`, `devel/titanium.R`, and two
 `.vscode/*.json`; a committed script that walks `git ls-files` and reports each
 path's `git check-attr text` value against its blob's bytes; a CI step running
@@ -115,6 +115,15 @@ it like any other.
 - 2026-08-22: plan chose normalizing every tracked text file, `data-raw/`'s keying-provenance CSVs included, over normalizing only `R/` and declaring the rest an exception, because two conventions in one repo is what let this recur and AC3 proves no parsed value or built dataset moved; falsified by a keying-provenance audit that needs `git blame` on those CSVs to reach past the normalization commit.
 - 2026-08-22: plan chose committing `.git-blame-ignore-revs` over accepting the blame rewrite because `R/generate_qualtrics.R` is entirely CRLF and would otherwise re-attribute every line to one commit; falsified by the file proving useless in practice, since it takes a per-clone `git config` that a fresh clone does not inherit.
 - 2026-08-22: plan chose a CI workflow step for the guard over a testthat test because the check shells out to `git`, which no CRAN check environment or built tarball provides, so a test would have to skip in exactly the places a guard is claimed to run; falsified by a CRLF reaching the default branch through a path CI does not run.
+
+- 2026-08-22: minor reorder — T3's check script was written before T1/T2 so it could show the before-state, which is the tests-first order; task numbering is unchanged.
+- 2026-08-22: T3 — `data-raw/check_line_endings.R` written. Its first version passed vacuously on a repo carrying 84 CR-bearing files: `git check-attr` reports `unspecified`, not `auto`, where nothing declares the attribute, so comparing against `"auto"` classified all 332 tracked paths as declared-safe. The classifier now treats `unspecified` as its own violation — behavior there falls back to the local `core.autocrlf` — which made the pre-policy run exit 1 on 284 undeclared paths.
+- 2026-08-22: T1/T2 — `.gitattributes` gained `* text=auto eol=lf` plus `binary` for `*.rda`, `*.png`, `*.ico`, `*.docx`, `*.zip`, keeping the two `-text` directories last so they win. `.svg` is deliberately excluded: `pkgdown/favicon/favicon.svg` is text. `git add --renormalize .` staged 18 text files, and a second pass staged nothing new. Verified: no path under `inst/extdata/`, `pkgdown/assets/downloads/`, `data/`, `R/sysdata.rda`, `man/figures/`, `pkgdown/favicon/`, `hitop_hex.png`, or `devel/example.png` was staged; all 18 renormalized files show an empty `git diff -w` and are byte-identical to their `main` blobs once CRs are stripped. Post-policy the checker reports 0 undeclared paths, 254 `text=auto`, 78 declared, and the 66 CR-carrying files are exactly the 66 git counts binary.
+- 2026-08-22: plan correction — Scope said "the 14 tracked text files still stored CRLF ... eight `data-raw/*.csv`". The observed set is 18 files and 11 CSVs; `git add --renormalize .` is the authority and the Scope enumeration was a miscount. Corrected in place rather than convened at a gate: no acceptance criterion cites a count, and the set being described is unchanged.
+- 2026-08-22: T4 — a separate `line-endings` job added to `.github/workflows/R-CMD-check.yaml`, on ubuntu only, because the script reads each path's index blob and no checkout-time conversion can alter what it sees. YAML re-parsed to confirm two jobs.
+- 2026-08-22: T5 discovery — a `.git-blame-ignore-revs` naming this branch's normalization commit would be inert. Verified against M46: its branch tip `0264d7d` is not an ancestor of `main`, because a squash merge writes a new commit. The file, its activation instructions, and the `CLAUDE.md` line therefore land on the branch, and the squashed commit's SHA is appended during post-merge hygiene.
+- 2026-08-22: AC5 evidence — the guard was mutation-tested at two path types by writing CRLF blobs straight into the index with `git hash-object -w --no-filters` plus `git update-index`. A plain `git add` cannot reproduce the fault at all, because `eol=lf` normalizes on the way in; the low-level write is the shape a merge from a pre-policy branch takes. The guard exited 1 naming `R/reliability.R`, then 1 naming both it and `data-raw/norms_pid5_ors.csv`, and 0 once both were renormalized.
+- 2026-08-22: checkpoint — task boxes stay unticked until `devtools::test()` and `devtools::check()` report; the run was still in flight when this landed.
 
 ## Decisions
 

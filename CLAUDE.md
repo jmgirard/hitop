@@ -10,6 +10,7 @@ Scores, validity-screens, and distributes HiTOP Society instruments: PID-5 (FULL
 - Coverage: `Rscript -e 'covr::package_coverage()'`
 - Regenerate data: run the matching script in `data-raw/`; never edit `data/*.rda` or `R/sysdata.rda` directly
 - README: edit `README.Rmd`, then `Rscript -e 'devtools::build_readme()'`
+- Line endings: LF everywhere via `.gitattributes`; `Rscript data-raw/check_line_endings.R` verifies it and runs in CI. After cloning, run `git config blame.ignoreRevsFile .git-blame-ignore-revs` so `git blame` skips the normalization commit.
 - Site: pkgdown, built/deployed by `.github/workflows/pkgdown.yaml`; local preview `Rscript -e 'pkgdown::build_site()'`
 
 ## Conventions

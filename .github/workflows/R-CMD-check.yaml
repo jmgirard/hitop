@@ -48,3 +48,23 @@ jobs:
         with:
           upload-snapshots: true
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+
+  line-endings:
+    runs-on: ubuntu-latest
+
+    name: line endings
+
+    # One platform is enough and is not a shortcut: the check reads each path's
+    # INDEX BLOB (`git cat-file blob :path`), which no checkout-time conversion
+    # touches, so every runner would read identical bytes.
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+
+      # Base R and git only — the script loads no package, so the dependency
+      # install the other job needs is not required here.
+      - name: Check line-ending policy
+        run: Rscript data-raw/check_line_endings.R
