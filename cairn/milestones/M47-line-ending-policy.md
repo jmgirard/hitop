@@ -68,7 +68,7 @@ it like any other.
 - [x] AC5 — The committed guard reports a failure when a CR byte is present in
       any path `git check-attr` resolves as `text=auto`, and reports none on
       the clean tree.
-- [ ] AC6 — `devtools::document()` produces no diff, and `devtools::test()`
+- [x] AC6 — `devtools::document()` produces no diff, and `devtools::test()`
       and `devtools::check()` are clean (0 errors, 0 warnings, and no note
       absent from the pre-milestone baseline of the default branch).
 
@@ -173,6 +173,13 @@ tree must not be disturbed mid-review. `<base>` is `70c5b50`._
   `git add`, so an ordinary commit cannot reintroduce a CR — the fault shape
   the CR half of the guard actually defends against is a merge from a branch
   predating the policy.
+
+- **AC6 — verified.** Re-run against the branch tip after the last two
+  commits, not carried over from implementation: `devtools::document()`
+  produces no diff, `devtools::test()` reports FAIL 0 / WARN 0 / SKIP 1 /
+  PASS 13778 (the skip is the pre-existing SDTD item-38 keying dispute,
+  SOURCES.md OQ-1), and `devtools::check()` reports Status OK — 0 errors,
+  0 warnings, 0 notes, so the baseline-note clause never bound.
 
 ### Consistency gate
 
