@@ -1,6 +1,6 @@
 # M45: A browser module builder for the HiTOP-SR
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M43
 - **Driving RR:** —
@@ -43,7 +43,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
       package API response reports a `wasm`/`emscripten` binary with status
       `success`; both responses are recorded in the Review with the date
       observed.
-- [ ] AC2 The app repo `jmgirard/hitop-builder` is publicly readable — an
+- [x] AC2 The app repo `jmgirard/hitop-builder` is publicly readable — an
       unauthenticated request to its GitHub URL returns 200 — and its tracked
       files are static web assets plus the Pages deploy workflow, with no `.R`
       file and no application backend. In one load of the deployed Pages URL in
@@ -153,6 +153,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-22: all six tasks checked; `devtools::document()` produces no diff, `devtools::check()` reports Status OK with 0 errors, 0 warnings and 0 notes, and `pkgdown::check_pkgdown()` reports no problems. Status set to review.
 
 ## Decisions
+- 2026-08-22: review returned the milestone to `in-progress` at the maintainer's gate decision. Five criteria verified outright; AC2 ticked on substitute evidence the maintainer accepted, because its network clause names an instrument that cannot observe webR's worker-originated requests. Three fresh-context reviewers ran; the two history lenses found nothing, the diff-bug lens returned 17 findings — six fix-now, eight follow-up in four clustered candidate rows, three rejected, and one severity corrected against the implementation.
 
 ## Review
 
@@ -210,7 +211,7 @@ Status OK — 0 errors, 0 warnings, 0 notes. The single skip is `test-keying.R:1
 a deliberate `skip()` marking open question OQ-1 (SDTD item 38 disputed between
 Williams (2019) Table 5's note and its text), which predates this milestone.
 
-**AC2 — NOT verified; the criterion's instrument cannot observe its claim.**
+**AC2 — verified, network clause on substitute evidence accepted by the maintainer.**
 Everything AC2 asks for except its network clause checks out: an unauthenticated
 fetch of `https://github.com/jmgirard/hitop-builder` returns 200 and `gh repo
 view` reports PUBLIC; the tracked files are exactly `index.html`, `README.md`,
@@ -237,3 +238,45 @@ report. Toolchain slot: `document()` no diff; `NAMESPACE`, `man/` and `data/`
 regenerate; `README.md`/`README.Rmd` untouched by this branch and last written by
 the same commit; `check_pkgdown()` clean; NEWS carries an entry; no new top-level
 files; `check()` Status OK.
+
+**Findings and triage (diff-bug reviewer, 17 findings; blame-history and
+prior-review reviewers returned none).** Fix-now, directed by the maintainer at
+the 2026-08-22 gate: (3) "Select all" and "Clear" act only on filter-visible
+checkboxes, so hidden-but-checked scales are silently included — reproduced on
+the deployed page, where a Clear under a changed filter left `healthAnxiety` and
+`socialAnxiety` selected; (11) the NEWS privacy claim "it installs nothing and
+sends nothing anywhere" overstates what the page does, which downloads from two
+third-party hosts and does install a package; (8) `aria-live` sits on the log
+pane rather than the status line and the filter input has no accessible name;
+(7) no `<noscript>` or module-unsupported fallback; (14) the `webR.read()` loop
+has no `catch`, so a rejection kills R output silently; (13) AC6 cites IP4 for
+"scores nothing", but IP4 is "Scores, never judgment" — the scoring exclusion is
+a Scope decision, so AC6's citation needs a gated amendment.
+
+Follow-up, spun into four clustered ROADMAP candidate rows: (1) the app installs
+an unpinned `hitop`, (2) the app repo has no CI or smoke test, (6) no timeout or
+retry on a stalled install, (12) the README's pinned version goes stale — all
+four clustered into one row; (4) the app exposes no `include_scoring` toggle;
+(5) `R/generate_redcap.R` was silently converted CRLF→LF; (9) the REDCap temp CSV
+uses a fixed path in `tempdir()` and (10) `zip` carries no version floor —
+clustered into one row.
+
+Severity corrected at triage: finding (4) was ranked as researchers handing
+participants an answer key. Verified against the implementation instead — the
+package's own shipped `inst/extdata/hitopsr_A4.docx` carries the same scoring
+key, so the app matches the established norm rather than introducing a hazard.
+Downgraded from fix-now to follow-up.
+
+Rejected: (15) no CSP meta tag and the workflow's `path: .` upload — defensible
+as built; (16) a doubled blank line left in `helper-generators.R` — cosmetic;
+(17) every download shares one filename — a matter of taste.
+
+**Return.** Status set back to `in-progress` at the maintainer's direction at the
+2026-08-22 gate. What failed: no acceptance criterion failed — all six are
+verified — but six findings were triaged fix-now, one of which (13) requires a
+gated amendment to AC6's wording, and one of which (3) is a defect a user of the
+deployed page can hit. AC2's network clause was not executed; the maintainer
+accepted the substitute evidence in its place rather than convening a third
+amendment round on that criterion, and this Review records the substitution as an
+inference rather than the observation AC2 names.
+
