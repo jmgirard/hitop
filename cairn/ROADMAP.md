@@ -1,20 +1,19 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-22 (M45 merged via PR #51 and archived, with the split {zip} fix merged ahead via PR #50 and recorded as D-035; four candidate rows added from M45's review findings; one M45 lesson captured and one stale M38 git lesson pruned for cap headroom; M39 pruned under terminal-row retention; caps and byte budgets checked)_
+_Last hygiene check: 2026-08-22 (M46 merged via PR #52 and archived; the review's ten findings were all fixed on the branch before merge, so none graduated to a candidate row; one M46 lesson captured on tautological oracles, the M24 CRLF lesson corrected from three files to two, and the M33 browser-pane lesson pruned for cap headroom at the user's selection; M40 pruned under terminal-row retention; caps and byte budgets checked)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M47)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M46 | Renumbered and optionally shuffled HiTOP-SR module Word forms | review | M45 | normal | milestones/M46-module-form-numbering.md |
+| M46 | Renumbered and optionally shuffled HiTOP-SR module Word forms | done | M45 | normal | milestones/archive/M46-module-form-numbering.md |
 | M45 | A browser module builder for the HiTOP-SR | done | M43 | normal | milestones/archive/M45-browser-module-builder.md |
 | M44 | A dedicated article for building and scoring HiTOP-SR modules | done | M43 | normal | milestones/archive/M44-modules-article.md |
 | M43 | Rename the HiTOP-SR subset family to modules | done | — | normal | milestones/archive/M43-module-vocabulary.md |
 | M42 | Serve instrument downloads from the pkgdown site | done | — | normal | milestones/archive/M42-pkgdown-download-route.md |
 | M41 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M41-hitopsr-score-intervals.md |
-| M40 | Retire the M38/M39 plot-review residue | done | — | normal | milestones/archive/M40-plot-review-residue.md |
 
 ## Candidates
 
