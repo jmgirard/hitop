@@ -117,17 +117,17 @@ document order.
       `tests/testthat/helper-generators.R` returning printed (number, text)
       pairs and (scale, items) pairs in document order; pin the first against
       the committed `inst/extdata/hitopsr_US.docx`.
-- [ ] T2 — write the failing renumbering tests (AC1, AC2, and AC3's
+- [x] T2 — write the failing renumbering tests (AC1, AC2, and AC3's
       `renumber = FALSE` clause).
-- [ ] T3 — implement `renumber` in `generate_docx_hitopsr()`: build one
+- [x] T3 — implement `renumber` in `generate_docx_hitopsr()`: build one
       printed-order map after `apply_module()` and remap the item column
       passed to `make_items_table()` and the `itemdata` frames passed to
       `make_scoring_table()` (including `hitopsr_subscales`) through it.
-- [ ] T4 — add a `docx_crosswalk_pairs()` helper and write the failing
+- [x] T4 — add a `docx_crosswalk_pairs()` helper and write the failing
       shuffle tests (AC4, AC5).
-- [ ] T5 — implement `randomize`, the printed crosswalk on the scoring page,
+- [x] T5 — implement `randomize`, the printed crosswalk on the scoring page,
       and the `item_order` attribute on the invisible return.
-- [ ] T6 — update `?generate_docx_hitopsr`, `?hitop_module`, the Qualtrics and
+- [x] T6 — update `?generate_docx_hitopsr`, `?hitop_module`, the Qualtrics and
       REDCap help pages (`@param module` plus the divergence sentence),
       `README.Rmd`, `vignettes/articles/modules-hitopsr.Rmd`,
       and `NEWS.md`; `devtools::document()`.
@@ -145,6 +145,7 @@ document order.
 - 2026-08-22: substantive amendment — the criteria's module `m` named four scales, none reverse-keyed (only "Romantic Disinterest" is, of all 405 items), so AC2's `(R)` clause was vacuous; `m` gains that scale. A fresh-context [O] reader that authored none of the wording ran the FULL criteria audit (user-facing tier) over the amended text and returned seven findings. Fixed directly: AC2's drafted justification clause was instrument-bound (replaced by the pinned HSR 310 / rank 20 exemplar), AC4's "two calls under one seed" was literally unreachable, AC5 named no crosswalk extractor, AC3's gapped-number clause is now stated in full, AC7's "0 notes" bound the toolchain rather than the deliverable. Routed to the mini gate and adopted at the user's selection: AC5 widened with the shuffled-form `(R)`-marker clause, and AC6 widened to four grep terms over four paths plus a clause on the two online help pages. T1 and T4 gained the two extra extractors; T6 gained `README.Rmd` and the divergence sentence.
 - 2026-08-22: T3/T4/T5 — `generate_docx_hitopsr()` gains `renumber` and `randomize`, both `validate_flag()`-checked. One printed-order map built after `apply_module()` drives the items table, the scoring table, the subscale rows, the crosswalk, and the return attribute; `remap_itemdata()` re-sorts each scoring row by its printed number. The crosswalk prints as arrow-joined pairs ahead of the scoring table (arrow, not `=`, so it cannot be mistaken for the response legend by the parser that reads it). `docx_crosswalk_pairs()` added; the two M24 original-numbering tests now pass `renumber = FALSE`, which is the opt-out's regression coverage.
 - 2026-08-22: T6 — `?generate_docx_hitopsr` documents both arguments, the `item_order` attribute, and the Word-vs-online divergence; `?hitop_module`, `?generate_qualtrics_hitopsr`, `?generate_redcap_hitopsr`, `vignettes/articles/modules-hitopsr.Rmd`, and `NEWS.md` updated, with the 0.2.0 module entry's "not renumbered" claim corrected in place. `apply_module()`'s internal comment now says whose decision the printed numbering is. `devtools::document()` run. AC6's grep re-run over `R/`, `vignettes/`, `README.Rmd`, `NEWS.md`: every remaining hit reads correctly (they concern `m$items`, the online exports, or `rename_hitopsr_items()`'s legacy pool names).
+- 2026-08-22: verify slot clean after T6 — `devtools::test()` reports FAIL 0 / WARN 0 / SKIP 1 / PASS 13731, the one skip being the pre-existing SDTD item-38 keying dispute. T1-T6 ticked; T7 adds `devtools::check()`.
 - 2026-08-22: T2 — AC1/AC2/AC3 renumbering tests written in `tests/testthat/test-docx-numbering.R`; red by design (7 failures: the 1..n numbers, the rank-based scoring lists, and `renumber` being an unused argument). Box stays unticked until T3 turns them green.
 - 2026-08-22: T1 — `docx_item_rows()` added to `helper-generators.R` with an XML-entity unescaper, pinned against the committed `inst/extdata/hitopsr_US.docx` (405 rows, numbers and texts equal to `hitopsr_items` in `HSR` order).
 
