@@ -1,6 +1,6 @@
 # M47: One line-ending policy for the whole repository
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
@@ -131,6 +131,8 @@ it like any other.
 - 2026-08-22: review fixes — all fourteen findings addressed. The root cause of findings 1 and 2 is gone rather than papered over: blobs are now read by ONE `git cat-file --batch` call with the paths arriving on stdin and the output captured to an R-controlled temp file, so no path reaches a command line at all. An intermediate `system2(stdout = <file>)` fix was rejected on test — it builds a shell redirect, so `it'"'"'s.R` still failed to parse, merely loudly instead of silently. Verified after: a repo holding a genuine CRLF blob at `it'"'"'s.R` now reports "carrying a CR byte: 1" and names the path, and a path with a space, `$`, and a backtick reads cleanly. Every `git` call checks its exit status through one `git_lines()` helper, and the script anchors to `git rev-parse --show-toplevel`; run outside a repository it now exits 1 naming the failure, and run from `data-raw/` it finds all 334 paths where it previously found 36 and passed. Blob reads take `file.size()` bytes with a short-read assertion, so no cap can truncate.
 - 2026-08-22: review fixes — the guard gained the over-declaration check (finding 7) at the user'"'"'s gate selection: a path declared `-text`/`binary` carrying neither NUL nor CR is a violation unless it sits under a byte-locked tree, which is a rule rather than a hand-list. Mutation-tested by appending the `*.svg binary` line the Scope bars: exit 1 naming `pkgdown/favicon/favicon.svg`, and zero violations on the clean tree. `*.qsf -text` added (finding 10) because the Qualtrics artifacts are the one byte-locked family git'"'"'s NUL sniff does not back up.
 - 2026-08-22: review fixes — `air.toml` gained `line-ending = "lf"` (finding 11). The first draft put the key at top level and Air refused to parse it; the shipped form uses the `[format]` table, verified with `air 0.11.0` by formatting a CRLF input to LF, and verified meaningful by confirming Air rejects an unknown key under the same table rather than ignoring it. The `GITHUB_PAT` env was added to the new CI job (6), `.git-blame-ignore-revs` now states that the commit it will name also carries content (5), the false `CLAUDE.md` blame claim was corrected to describe what the file does (4), `cairn/DESIGN.md` gained a Line endings convention entry (9), and the work-log count 25→26 and T2'"'"'s stale "14" were corrected (12).
+
+- 2026-08-22: verify slot clean after the review fixes — `devtools::test()` FAIL 0 / WARN 0 / SKIP 1 / PASS 13778; `devtools::check()` Status OK (0/0/0); `devtools::document()` no diff; the guard exits 0 with 334 paths, 0 undeclared. Status back to review.
 
 ## Decisions
 
