@@ -7,9 +7,18 @@
 # as truth (IP2). `docx_item_rows()` (helper-generators.R) recovers the printed
 # (number, text) pairs from the written file in document order.
 
+# Romantic Disinterest is in the module on purpose: HSR 310 is the ONLY
+# reverse-keyed item in all 405, so without that scale every `(R)` assertion
+# below would pass vacuously.
 m <- hitop_module(
   "hitopsr",
-  c("Agoraphobia", "Appetite Loss", "Perfectionism", "Social Aloofness")
+  c(
+    "Agoraphobia",
+    "Appetite Loss",
+    "Perfectionism",
+    "Romantic Disinterest",
+    "Social Aloofness"
+  )
 )
 
 # The module's items, derived by filtering hitopsr_items$Scale, in ascending
@@ -69,8 +78,11 @@ test_that("the module scoring page lists each scale's items by their ranks", {
     )
   }
 
-  # At least one reverse-keyed item is in play, or the (R) clause is vacuous.
-  expect_true(any(want$Reverse))
+  # The pinned exemplar: HSR 310 is the module's 20th item, and it is the only
+  # one carrying a marker.
+  expect_equal(which(want$HSR == 310L), 20L)
+  expect_equal(sum(want$Reverse), 1L)
+  expect_equal(sum(grepl("(R)", printed$items, fixed = TRUE)), 1L)
 })
 
 # ---- AC3: the full form is untouched, and renumber = FALSE opts out --------
@@ -96,11 +108,17 @@ test_that("renumber = FALSE keeps a module form's original gapped numbers", {
   rows <- docx_item_rows(f)
   want <- expected_rows(m)
 
+  # Stated in full, not spot-checked: `m` opens with HSR 1 and 2, so the two
+  # numberings agree for two rows and diverge only from the third.
+  expect_equal(
+    rows$number,
+    as.character(c(
+      1, 2, 42, 45, 55, 66, 84, 86, 109, 118, 144, 152, 187, 195, 202,
+      216, 260, 278, 291, 310, 338, 355, 389
+    ))
+  )
   expect_equal(rows$number, as.character(want$HSR))
   expect_equal(rows$text, want$Text)
-  # The gapped numbers are what makes this criterion falsifiable: an
-  # implementation that renumbers unconditionally would print 1..n here.
-  expect_false(identical(rows$number, as.character(seq_len(m$nItems))))
 
   printed <- docx_scoring_rows(f)
   for (scale in m$scales) {
