@@ -1,6 +1,6 @@
 # M47: One line-ending policy for the whole repository
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Principles touched:** —
@@ -83,27 +83,27 @@ it like any other.
 
 ## Tasks
 
-- [ ] T1 — Write `.gitattributes`: `* text=auto eol=lf`, explicit `binary` for
+- [x] T1 — Write `.gitattributes`: `* text=auto eol=lf`, explicit `binary` for
       `*.rda`, `*.png`, `*.ico`, keeping the existing `inst/extdata/** -text`
       and `pkgdown/assets/downloads/** -text` lines and their D-016/D-033
       comments. Do not declare `*.svg` binary — `pkgdown/favicon/favicon.svg`
       is text.
-- [ ] T2 — Run `git add --renormalize .`, commit, and confirm by
+- [x] T2 — Run `git add --renormalize .`, commit, and confirm by
       `git diff --name-only` that only the 14 expected text paths plus
       `.gitattributes` moved. Re-run renormalize to confirm idempotence.
-- [ ] T3 — Write `data-raw/check_line_endings.R`: walk `git ls-files`,
+- [x] T3 — Write `data-raw/check_line_endings.R`: walk `git ls-files`,
       report per path the `git check-attr text` value, CR presence, and NUL
       within the first 8000 bytes; exit non-zero on any `text=auto` path with
       a CR, or any NUL-carrying path resolving `text=auto`.
-- [ ] T4 — Add a step running that script to the existing
+- [x] T4 — Add a step running that script to the existing
       `.github/workflows/` check workflow. It shells out to `git`, which no
       CRAN check environment or built tarball provides, so it is a CI step and
       not a testthat test.
-- [ ] T5 — Add `.git-blame-ignore-revs` naming T2's commit, plus a `CLAUDE.md`
+- [x] T5 — Add `.git-blame-ignore-revs` naming T2's commit, plus a `CLAUDE.md`
       line giving the `git config blame.ignoreRevsFile .git-blame-ignore-revs`
       activation. Add `.Rbuildignore` entries for any new top-level file that
       `devtools::check()` NOTEs.
-- [ ] T6 — Run `devtools::document()`, `devtools::test()`, and
+- [x] T6 — Run `devtools::document()`, `devtools::test()`, and
       `devtools::check()`; record the AC2/AC4 script output for the Review.
 
 ## Work log
@@ -124,6 +124,7 @@ it like any other.
 - 2026-08-22: T5 discovery — a `.git-blame-ignore-revs` naming this branch's normalization commit would be inert. Verified against M46: its branch tip `0264d7d` is not an ancestor of `main`, because a squash merge writes a new commit. The file, its activation instructions, and the `CLAUDE.md` line therefore land on the branch, and the squashed commit's SHA is appended during post-merge hygiene.
 - 2026-08-22: AC5 evidence — the guard was mutation-tested at two path types by writing CRLF blobs straight into the index with `git hash-object -w --no-filters` plus `git update-index`. A plain `git add` cannot reproduce the fault at all, because `eol=lf` normalizes on the way in; the low-level write is the shape a merge from a pre-policy branch takes. The guard exited 1 naming `R/reliability.R`, then 1 naming both it and `data-raw/norms_pid5_ors.csv`, and 0 once both were renormalized.
 - 2026-08-22: T6 first `devtools::check()` run raised exactly the NOTE T5 anticipated — "Found the following hidden files and directories: .git-blame-ignore-revs" — so `^\\.git-blame-ignore-revs$` was added to `.Rbuildignore` and the check re-run. `devtools::document()` produces no diff. The full branch diff against the base lists 25 paths: `.gitattributes`, the two files added, the two edited, the two tracking files, and the 18 renormalized text paths; no artifact, dataset, or image path appears.
+- 2026-08-22: verify slot clean — `devtools::test()` FAIL 0 / WARN 0 / SKIP 1 / PASS 13778 (the skip is the pre-existing SDTD item-38 keying dispute); `devtools::check()` Status OK with 0 errors, 0 warnings, 0 notes after the `.Rbuildignore` entry; `devtools::document()` no diff; the guard exits 0 reporting 334 tracked paths, 0 undeclared, and 66 CR-carrying files all of which git counts binary. All tasks done; status to review.
 - 2026-08-22: checkpoint — task boxes stay unticked until `devtools::test()` and `devtools::check()` report; the run was still in flight when this landed.
 
 ## Decisions

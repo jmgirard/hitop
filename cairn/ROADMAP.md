@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M47 | One line-ending policy for the whole repository | in-progress | — | normal | milestones/M47-line-ending-policy.md |
+| M47 | One line-ending policy for the whole repository | review | — | normal | milestones/M47-line-ending-policy.md |
 | M46 | Renumbered and optionally shuffled HiTOP-SR module Word forms | done | M45 | normal | milestones/archive/M46-module-form-numbering.md |
 | M45 | A browser module builder for the HiTOP-SR | done | M43 | normal | milestones/archive/M45-browser-module-builder.md |
 | M44 | A dedicated article for building and scoring HiTOP-SR modules | done | M43 | normal | milestones/archive/M44-modules-article.md |
