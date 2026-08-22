@@ -65,7 +65,7 @@ it like any other.
       criterion — beside its `git check-attr text` value. No path meeting that
       criterion resolves as `text=auto`, so no binary file's stored bytes
       depend on the content sniff at checkout.
-- [ ] AC5 — The committed guard reports a failure when a CR byte is present in
+- [x] AC5 — The committed guard reports a failure when a CR byte is present in
       any path `git check-attr` resolves as `text=auto`, and reports none on
       the clean tree.
 - [x] AC6 — `devtools::document()` produces no diff, and `devtools::test()`
@@ -174,21 +174,19 @@ tree must not be disturbed mid-review. `<base>` is `70c5b50`._
   `-text`/`binary`, none `text=auto`. Re-derived independently by the same
   `git check-attr` + `git cat-file` walk: 66 NUL-carrying paths, 0 of them
   left convertible.
-- **AC5 — NOT verified.** The positive cases hold: control exits 0; a CRLF
-  blob written into the index for `R/reliability.R` exits 1 naming it; the same
-  at `data-raw/hitopbr_items.csv` exits 1 naming both; deleting the
-  `*.rda binary` declaration exits 1 under "binary paths not declared", the
-  declared count falling 78 to 56. **But the criterion fails inside its own
-  domain.** `blob_bytes()` interpolates the path into a shell string wrapped in
-  single quotes, so a tracked path containing an apostrophe breaks the quoting
-  and the blob reads as zero bytes. Reproduced 2026-08-22 in a scratch repo: a
-  genuine CRLF blob at `it's.R` (confirmed `a \r \n b \r \n` by `od -c`)
-  produced `sh: unexpected EOF`, a report of "carrying a CR byte: 0", and
-  **exit 0**. `git ls-files` quotes only control and non-ASCII bytes, so the
-  `tracked_paths()` guard does not catch an apostrophe. Separately, no `git`
-  call checks its exit status: run outside a repository, or from
-  `data-raw/`, the guard reports 0 CR bytes and exits 0 — in CI a checkout
-  that produced no usable `.git` would green the job.
+- **AC5 — verified (second pass, 2026-08-22, after the review fix).** Six
+  cases in a fresh clone of the branch tip. Control: exit 0. (A) a CRLF blob
+  written into the index for `R/reliability.R` — exit 1, naming it. (B) the
+  apostrophe path that defeated the first guard, `it's.R` carrying a genuine
+  CRLF blob — exit 1, **naming `it's.R`**, where the previous implementation
+  reported zero CR bytes and passed. (C) the `*.rda binary` declaration
+  deleted — exit 1 under "binary paths not declared", naming `R/sysdata.rda`.
+  (D) the `*.svg binary` line the Scope bars — exit 1 under the new
+  over-declaration check, naming `pkgdown/favicon/favicon.svg`. (E) run
+  outside a repository — exit 1 with `git rev-parse --show-toplevel failed
+  with status 128`, where it previously reported a clean pass. (F) run from
+  `data-raw/` — exit 0 having found all 334 paths, where it previously found
+  36 and passed. Restored control: exit 0.
 
 - **AC6 — verified.** Re-run against the branch tip after the last two
   commits, not carried over from implementation: `devtools::document()`
@@ -273,6 +271,29 @@ before being accepted; the rest are recorded as reported.
 13. The `text_attrs()` round-trip guard is protective but its failure message
     is opaque to a CI reader.
 14. `cat(paste0(...), "\n")` emits a stray space before each newline.
+
+### Round 2 (2026-08-22)
+
+All fourteen findings fixed on the branch. Every criterion re-executed against
+the fixed code in a fresh clone: AC1 (renormalize stages nothing, 0 porcelain
+lines), AC2 and AC4 re-derived independently of the script by walking
+`git check-attr` and `git cat-file` — 256 convertible paths of which 0 carry a
+CR, 66 NUL-carrying paths of which 0 are undeclared — AC3 (28 paths: 1 policy,
+2 added, 4 edited, 3 tracking, 18 renormalized, no artifact path; artifact md5
+lock green at 121 assertions), AC5 as above, and AC6 (`document()` no diff,
+`test()` FAIL 0 / PASS 13778, `check()` Status OK 0/0/0).
+
+The blocking fix went further than the finding asked. An intermediate repair —
+`system2(stdout = <file>)` instead of `pipe()` — was written, tested, and
+**rejected**: it builds a shell redirect, so `it's.R` still failed to parse,
+turning a silent false negative into a loud error rather than a correct read.
+The shipped fix removes the shell from the path entirely by passing every path
+on stdin to one `git cat-file --batch` call, which also collapses 334 git
+processes into one.
+
+No new reviewer fan-out was spawned for round 2: each fix was directed by a
+round-1 finding and verified by execution, with the two blocking ones
+mutation-controlled against the exact inputs that defeated the originals.
 
 ### Triage (2026-08-22)
 
