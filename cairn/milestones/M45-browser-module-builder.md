@@ -79,7 +79,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
       be the result of an `available_scales("hitopsr")` call evaluated in webR,
       so every scale name, item number, and item text the page shows is read
       from the package's keying tables at runtime (IP1).
-- [ ] AC5 This package's `_pkgdown.yml` links the deployed app from the
+- [x] AC5 This package's `_pkgdown.yml` links the deployed app from the
       Instruments menu; `pkgdown::check_pkgdown()` passes and
       `devtools::check()` is clean after the `inst/shiny/app.R` deletion.
 - [x] AC6 The app's landing text and its repo README each state that the app
@@ -199,3 +199,41 @@ transmits anyone's responses." The repo README's own section reads "The app
 **generates blank questionnaires. It scores nothing.**" The page names the
 installed version at runtime — `(version 0.2.0)` observed on load — and the
 README names `hitop` 0.2.0 with the date it was checked.
+
+**AC5 — verified.** `_pkgdown.yml:39-40` carries a "Build a HiTOP-SR Module"
+entry pointing at `https://jmgirard.github.io/hitop-builder/`, under a separator
+at the end of the Instruments menu. `pkgdown::check_pkgdown()` reports "No
+problems found." `inst/shiny/app.R` and its directory are gone. On the branch
+with that deletion, `devtools::document()` produces no diff, `devtools::test()`
+reports FAIL 0 / WARN 0 / SKIP 1 / PASS 13679, and `devtools::check()` reports
+Status OK — 0 errors, 0 warnings, 0 notes. The single skip is `test-keying.R:102`,
+a deliberate `skip()` marking open question OQ-1 (SDTD item 38 disputed between
+Williams (2019) Table 5's note and its text), which predates this milestone.
+
+**AC2 — NOT verified; the criterion's instrument cannot observe its claim.**
+Everything AC2 asks for except its network clause checks out: an unauthenticated
+fetch of `https://github.com/jmgirard/hitop-builder` returns 200 and `gh repo
+view` reports PUBLIC; the tracked files are exactly `index.html`, `README.md`,
+`LICENSE.md`, `.gitignore` and `.github/workflows/pages.yml`, with no `.R` file
+and no backend; and one load of the deployed page in a fresh profile rendered 76
+checkboxes with the log reporting `installPackages("hitop") completed` and
+`library(hitop) completed`, no error text in the log and no uncaught console
+error. The network clause could not be executed: webR performs its fetches from
+a Web Worker, and the available network panel records only main-frame requests —
+it did not even record the `webr.mjs` module fetch that
+`performance.getEntriesByType('resource')` reports. A `Worker`-constructor patch
+to observe the worker's own requests lost the race against webR's startup. The
+substitute evidence available is that `hitop` is published in no other repository
+the app names — `https://repo.r-wasm.org/bin/emscripten/contrib/4.6/PACKAGES`
+returns zero matches for it (observed 2026-08-22) — so a successful in-page
+install is only possible from `jmgirard.r-universe.dev`. That is an inference,
+not the observation the criterion names.
+
+**Consistency gate.** `cairn_validate` exit 0, all checks passed; 21 advisory
+warnings, all dangling-id tokens pointing at legacy D-001-D-012, which live in
+DESIGN.md by the DECISIONS.md header's own note, plus one new advisory for AC3's
+D-010 citation of the same kind. No DESIGN principle changed, so no impact
+report. Toolchain slot: `document()` no diff; `NAMESPACE`, `man/` and `data/`
+regenerate; `README.md`/`README.Rmd` untouched by this branch and last written by
+the same commit; `check_pkgdown()` clean; NEWS carries an entry; no new top-level
+files; `check()` Status OK.
