@@ -1,6 +1,6 @@
 # M45: A browser module builder for the HiTOP-SR
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M43
 - **Driving RR:** —
@@ -150,6 +150,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-22: PR #50 merged to main after all seven CI checks passed, Windows included; main is now at `3bb3f7e` and the branch merged it back, resolving one NEWS conflict where the two entries had been inserted at the same anchor. The branch's diff against main is now NEWS, `_pkgdown.yml`, the `inst/shiny/app.R` deletion and tracking — exactly what the amended Scope says this repo's PR carries. Waiting on r-universe to rebuild at that commit before T4's REDCap leg can run.
 - 2026-08-22: r-universe rebuilt `hitop` at the merge commit `3bb3f7e` with a successful wasm build (2026-08-22T02:14:36Z); the served tarball's DESCRIPTION now lists `zip` in Imports, where the previous build's did not.
 - 2026-08-22: T4 complete — the reloaded deployed page generated the REDCap archive for the same Agoraphobia + Appetite Loss module (811 bytes) and its extracted `instrument.csv` matches a local `generate_redcap_hitopsr()` byte-for-byte: 2008 bytes, 11 lines, SHA-256 `37272d11e02461376ea5a4c0ca859e444fa406ac16dcc6803afbd2dd01396dbb` on both sides, one flat `instrument.csv` entry. The zip containers themselves differ (811 against 795 bytes), which is why AC3 compares the extracted CSV rather than the archive.
+- 2026-08-22: all six tasks checked; `devtools::document()` produces no diff, `devtools::check()` reports Status OK with 0 errors, 0 warnings and 0 notes, and `pkgdown::check_pkgdown()` reports no problems. Status set to review.
 
 ## Decisions
 
