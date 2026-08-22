@@ -201,6 +201,35 @@ unescape_xml <- function(x) {
   gsub("&amp;", "&", x, fixed = TRUE)
 }
 
+# Extract the scoring table's (scale, items) pairs from a .docx.
+#
+# make_scoring_table() lays the scales out in two side-by-side (Scale, Items)
+# column pairs, so after the header runs -- "Scale", "Items", "Scale", "Items"
+# -- the body cells arrive as alternating scale-name and item-list runs in
+# document order. An unpaired trailing NA cell prints as nothing at all
+# (`colformat_char(na_str = "")`), so the alternation never breaks. Returns a
+# data.frame(scale, items) with zero rows when a document has no scoring page.
+docx_scoring_rows <- function(file) {
+  xml <- read_docx_xml(file)
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  txt <- unescape_xml(gsub("<[^>]+>", "", runs))
+  hdr <- which(txt == "Items")
+  empty <- data.frame(
+    scale = character(0),
+    items = character(0),
+    stringsAsFactors = FALSE
+  )
+  if (length(hdr) == 0L) return(empty)
+  body <- txt[seq_len(length(txt) - max(hdr)) + max(hdr)]
+  n <- 2L * (length(body) %/% 2L)
+  if (n == 0L) return(empty)
+  data.frame(
+    scale = body[seq(1L, n, by = 2L)],
+    items = body[seq(2L, n, by = 2L)],
+    stringsAsFactors = FALSE
+  )
+}
+
 # Extract the (width, height) of the first <w:pgSz> in twips.
 docx_page_size <- function(xml) {
   w <- as.integer(sub('.*<w:pgSz[^>]*w:w="([0-9]+)".*', "\\1", xml))

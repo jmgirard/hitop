@@ -43,8 +43,9 @@ candidate row if a mis-scored paper dataset is ever reported.
 
 For every criterion below, `m` is
 `hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss", "Perfectionism",
-"Social Aloofness"))`, and "printed rows" means the (number, text) pairs the
-new test helper extracts from a written DOCX in document order.
+"Romantic Disinterest", "Social Aloofness"))`, and "printed rows" means the
+(number, text) pairs the new test helper extracts from a written DOCX in
+document order.
 
 - [ ] AC1 — `generate_docx_hitopsr(module = m)` at the shipped defaults writes
       printed rows whose numbers are `as.character(seq_len(m$nItems))` and
@@ -53,40 +54,52 @@ new test helper extracts from a written DOCX in document order.
       order — the expected set derived by filtering `hitopsr_items$Scale`, not
       through `m$items`.
 - [ ] AC2 — in that same file, for each scale in `m$scales`, the scoring page's
-      item list equals that scale's items' ranks among the module's items
-      (derived by the same `hitopsr_items$Scale` filter), carrying an `(R)`
-      marker on exactly those whose `hitopsr_items$Reverse` is `TRUE`.
+      item list — as extracted by `docx_scoring_rows()` — equals that scale's
+      items' ranks among the module's items (derived by the same
+      `hitopsr_items$Scale` filter), carrying an `(R)` marker on exactly those
+      whose `hitopsr_items$Reverse` is `TRUE`; for this `m` that is HSR 310,
+      whose printed rank is 20, and the other 22 items carry no marker.
 - [ ] AC3 — the printed rows of a fresh default `generate_docx_hitopsr()` call
       with no `module` equal, number for number and text for text, those
       extracted from the committed `inst/extdata/hitopsr_US.docx`; and
       `generate_docx_hitopsr(module = m, renumber = FALSE)` reproduces the
-      gapped original numbers, so an implementation that renumbers
-      unconditionally fails this criterion. `tests/testthat/test-artifacts.R`
-      passes unchanged, so no shipped artifact or `hitop_artifacts` row moved.
+      gapped original numbers in full — `1, 2, 42, …, 389` — so an
+      implementation that renumbers unconditionally fails this criterion.
+      `tests/testthat/test-artifacts.R` passes unchanged, so no shipped
+      artifact or `hitop_artifacts` row moved.
 - [ ] AC4 — with `randomize = TRUE` and `module = m`, the printed numbers are
       `as.character(seq_len(m$nItems))` and the printed texts are a permutation
       of AC1's expected texts; across seeds 1 through 5 under `set.seed()` at
-      least two distinct printed orders occur; two calls under one seed produce
-      identical printed-text vectors; and `randomize = TRUE` with `module =
-      NULL` shuffles all 405 items under the same rules.
-- [ ] AC5 — a shuffled form's scoring page carries a crosswalk whose rows are
-      the printed numbers paired with the original `HSR` numbers, and the
-      invisible return value carries an `item_order` attribute equal to that
-      same original-number vector in printed order; for each scale in
+      least two distinct printed orders occur; two calls each preceded by
+      `set.seed(1)` produce identical printed-text vectors; and `randomize =
+      TRUE` with `module = NULL` writes printed numbers `as.character(1:405)`
+      whose texts are a permutation of `hitopsr_items$Text` and are not in
+      `HSR` order.
+- [ ] AC5 — a shuffled form's scoring page carries a crosswalk whose
+      (new, original) pairs, as extracted by a new `docx_crosswalk_pairs()`
+      helper, are the printed numbers paired with the original `HSR` numbers,
+      and the invisible return value carries an `item_order` attribute equal to
+      that same original-number vector in printed order; for each scale in
       `m$scales`, `attr(out, "item_order")[<that scale's printed numbers>]`
-      equals `hitopsr_scales$itemNumbers` for that scale as a set.
+      equals `hitopsr_scales$itemNumbers` for that scale as a set; and that
+      scoring page carries an `(R)` marker on exactly the printed number
+      `attr(out, "item_order")` maps to HSR 310, and on no other.
 - [ ] AC6 — after the change, no file under `R/`, no file under `vignettes/`,
-      and not `NEWS.md` asserts that a module **Word** form keeps its original
-      item numbers, established by `grep -rn` for `renumber|original` over
-      those paths and reading each hit; the sites standing today are
-      `R/module.R:7-8`, `R/module.R:35`, `R/generate_docx.R:98`,
-      `R/generate_docx.R:110`, `NEWS.md:193-195`, and
-      `vignettes/articles/modules-hitopsr.Rmd:86-89` and `:95`. The
+      not `README.Rmd`, and not `NEWS.md` asserts that a module **Word** form
+      keeps its original item numbers, established by
+      `grep -rniE 'renumber|original|numbering|item number'` over those paths
+      and reading each hit; the sites standing today are `R/module.R:7-8`,
+      `R/module.R:35`, `R/generate_docx.R:98`, `R/generate_docx.R:110`,
+      `R/generate_qualtrics.R:62`, `R/generate_redcap.R:74`, `NEWS.md:193-195`,
+      and `vignettes/articles/modules-hitopsr.Rmd:86-89` and `:95`. The
       `renumber`/`randomize` arguments, the `item_order` return attribute, and
       the Word-vs-online divergence are each documented on
-      `?generate_docx_hitopsr` and carry a `NEWS.md` entry.
+      `?generate_docx_hitopsr` and carry a `NEWS.md` entry, and
+      `?generate_qualtrics_hitopsr` and `?generate_redcap_hitopsr` each state
+      that the Word form renumbers a module while these do not.
 - [ ] AC7 — `devtools::test()` and `devtools::check()` are clean (0 errors,
-      0 warnings, 0 notes), per the profile's verify slot.
+      0 warnings, and no note absent from the pre-milestone baseline of the
+      default branch), per the profile's verify slot.
 
 ## Coverage
 
@@ -100,22 +113,23 @@ new test helper extracts from a written DOCX in document order.
 
 ## Tasks
 
-- [x] T1 — add a `docx_item_rows()` helper to
+- [x] T1 — add `docx_item_rows()` and `docx_scoring_rows()` helpers to
       `tests/testthat/helper-generators.R` returning printed (number, text)
-      pairs in document order, splitting the `NN.  Text` cell built at
-      `R/generate_docx.R:267`; pin it against the committed
-      `inst/extdata/hitopsr_US.docx`.
+      pairs and (scale, items) pairs in document order; pin the first against
+      the committed `inst/extdata/hitopsr_US.docx`.
 - [ ] T2 — write the failing renumbering tests (AC1, AC2, and AC3's
       `renumber = FALSE` clause).
 - [ ] T3 — implement `renumber` in `generate_docx_hitopsr()`: build one
       printed-order map after `apply_module()` and remap the item column
       passed to `make_items_table()` and the `itemdata` frames passed to
       `make_scoring_table()` (including `hitopsr_subscales`) through it.
-- [ ] T4 — write the failing shuffle tests (AC4, AC5).
+- [ ] T4 — add a `docx_crosswalk_pairs()` helper and write the failing
+      shuffle tests (AC4, AC5).
 - [ ] T5 — implement `randomize`, the printed crosswalk on the scoring page,
       and the `item_order` attribute on the invisible return.
 - [ ] T6 — update `?generate_docx_hitopsr`, `?hitop_module`, the Qualtrics and
-      REDCap `@param module` text, `vignettes/articles/modules-hitopsr.Rmd`,
+      REDCap help pages (`@param module` plus the divergence sentence),
+      `README.Rmd`, `vignettes/articles/modules-hitopsr.Rmd`,
       and `NEWS.md`; `devtools::document()`.
 - [ ] T7 — run
       `devtools::test()` and `devtools::check()`.
@@ -128,6 +142,7 @@ new test helper extracts from a written DOCX in document order.
 - 2026-08-21: plan gate chose a printed crosswalk on the scoring page over an `item_order` attribute alone, and over refusing `randomize` when `include_scoring = FALSE`, because a shuffled form must be scoreable from the paper alone; falsified by a researcher needing a participant-facing shuffled form that must carry no key.
 - 2026-08-21: plan gate chose Word-only renumbering over renumbering all three generators because a Qualtrics/REDCap item number names a collected data column; falsified by a user mis-joining Word-collected and online-collected module data.
 - 2026-08-22: implement gate settled three open choices: `randomize = TRUE` with `renumber = FALSE` is legal (the two arguments stay independent), the crosswalk prints as compact arrow-joined pairs, and `item_order` is attached on every call rather than only a shuffled one.
+- 2026-08-22: substantive amendment — the criteria's module `m` named four scales, none reverse-keyed (only "Romantic Disinterest" is, of all 405 items), so AC2's `(R)` clause was vacuous; `m` gains that scale. A fresh-context [O] reader that authored none of the wording ran the FULL criteria audit (user-facing tier) over the amended text and returned seven findings. Fixed directly: AC2's drafted justification clause was instrument-bound (replaced by the pinned HSR 310 / rank 20 exemplar), AC4's "two calls under one seed" was literally unreachable, AC5 named no crosswalk extractor, AC3's gapped-number clause is now stated in full, AC7's "0 notes" bound the toolchain rather than the deliverable. Routed to the mini gate and adopted at the user's selection: AC5 widened with the shuffled-form `(R)`-marker clause, and AC6 widened to four grep terms over four paths plus a clause on the two online help pages. T1 and T4 gained the two extra extractors; T6 gained `README.Rmd` and the divergence sentence.
 - 2026-08-22: T1 — `docx_item_rows()` added to `helper-generators.R` with an XML-entity unescaper, pinned against the committed `inst/extdata/hitopsr_US.docx` (405 rows, numbers and texts equal to `hitopsr_items` in `HSR` order).
 
 ## Decisions
