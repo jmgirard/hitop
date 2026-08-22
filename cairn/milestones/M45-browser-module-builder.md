@@ -4,7 +4,7 @@
 - **Priority:** normal
 - **Depends on:** M43
 - **Driving RR:** —
-- **Principles touched:** IP1, IP4, GP3
+- **Principles touched:** IP1, GP3
 - **Branch/PR:** `m45-browser-module-builder` — https://github.com/jmgirard/hitop/pull/51
 
 ## Goal
@@ -82,9 +82,9 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - [x] AC5 This package's `_pkgdown.yml` links the deployed app from the
       Instruments menu; `pkgdown::check_pkgdown()` passes and
       `devtools::check()` is clean after the `inst/shiny/app.R` deletion.
-- [x] AC6 The app's landing text and its repo README each state that the app
-      generates instruments and scores nothing (IP4), and name the `hitop`
-      version the page installs.
+- [ ] AC6 The app's landing text and its repo README each state that the app
+      generates instruments and scores nothing, and name the `hitop` version
+      the page installs.
 
 ## Coverage
 
@@ -154,6 +154,9 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 
 ## Decisions
 - 2026-08-22: review returned the milestone to `in-progress` at the maintainer's gate decision. Five criteria verified outright; AC2 ticked on substitute evidence the maintainer accepted, because its network clause names an instrument that cannot observe webR's worker-originated requests. Three fresh-context reviewers ran; the two history lenses found nothing, the diff-bug lens returned 17 findings — six fix-now, eight follow-up in four clustered candidate rows, three rejected, and one severity corrected against the implementation.
+- 2026-08-22: amendment return: AC6 — "The app's landing text and its repo README each state that the app generates instruments and scores nothing, and name the `hitop` version the page installs."
+- 2026-08-22: AC6's citation of IP4 was wrong and is deleted, and the header's `Principles touched` drops IP4 with it: DESIGN's IP4 is "Scores, never judgment", so an app that *did* score would not violate it — the scoring exclusion is what this milestone's Scope records, not a principle. Two fresh-context [O] readers audited the replacement in full mode; the first caught that the session's own first attempt made "not a DESIGN principle" part of what the app must *state*, and the second found its own replacement's "read at runtime" unverifiable without a named source line. The user chose the minimal deletion over the auditor's wider wording, holding the criteria set on a milestone whose log records a defect return; the auditor's concern that AC6 cannot distinguish a runtime-read version string from a hardcoded one is offered a home on the standing builder-app candidate row.
+- 2026-08-22: fix-now findings 3, 7, 8, 11 and 14 applied. In the app repo (`c892bac`): clearing is unconditional and the button reads "Clear all", while selecting still follows the filter and now says so ("Select all N shown"); `aria-live` moved from the log pane to the status line and the filter gained an accessible name; a `<noscript>` block names the requirement and links the ready-made downloads; the webR output pump catches a rejected `read()` and reports rather than dying silently. In this repo, the NEWS claim "it installs nothing and sends nothing anywhere" is replaced by an accurate one. Verified on a local serve of the fixed page: the finding-3 sequence that previously left `healthAnxiety` and `socialAnxiety` selected after a Clear now leaves none, the select-all label reads "Select all 2 shown" under the `anx` filter, and all three formats still generate with the Qualtrics file byte-identical to its verified hash.
 
 ## Review
 
@@ -279,4 +282,3 @@ deployed page can hit. AC2's network clause was not executed; the maintainer
 accepted the substitute evidence in its place rather than convening a third
 amendment round on that criterion, and this Review records the substitution as an
 inference rather than the observation AC2 names.
-

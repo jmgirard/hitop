@@ -29,9 +29,10 @@ before a CRAN submission.
   you want at
   [jmgirard.github.io/hitop-builder](https://jmgirard.github.io/hitop-builder/)
   and download a Word, Qualtrics, or REDCap instrument containing only those
-  items. The page runs this package inside your browser, so it installs
-  nothing and sends nothing anywhere; it builds blank questionnaires and
-  scores nothing. Linked from the Instruments menu on the package website.
+  items. The page downloads R and this package into your browser and generates
+  the files there, so nothing you select or produce is sent anywhere; it builds
+  blank questionnaires and scores nothing. Linked from the Instruments menu on
+  the package website.
 
 * **The REDCap generators no longer need an external `zip` program.** They
   built the instrument archive by running the system's `zip` command, which
