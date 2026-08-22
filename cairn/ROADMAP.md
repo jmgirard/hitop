@@ -1,23 +1,23 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-22 (M46 merged via PR #52 and archived; M47 planned, absorbing the CRLF candidate row whose promotion condition M46 met; one M46 lesson captured on tautological oracles, the M24 CRLF lesson corrected from three files to two, and the M33 browser-pane lesson pruned for cap headroom at the user's selection; M40 pruned under terminal-row retention; caps and byte budgets checked)_
+_Last hygiene check: 2026-08-22 (M47 merged via PR #53 and archived, with the squashed SHA appended to `.git-blame-ignore-revs` per M47-D1 and blame verified to resolve past it; one M47 lesson captured on git-attribute states and R's shell/exit-status traps, and the M24 CRLF lesson retired because the hazard it warns about no longer exists; one candidate row added from review finding 10; M42 pruned under terminal-row retention; caps and byte budgets checked)_
 _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M48)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M47 | One line-ending policy for the whole repository | review | — | normal | milestones/M47-line-ending-policy.md |
+| M47 | One line-ending policy for the whole repository | done | — | normal | milestones/archive/M47-line-ending-policy.md |
 | M46 | Renumbered and optionally shuffled HiTOP-SR module Word forms | done | M45 | normal | milestones/archive/M46-module-form-numbering.md |
 | M45 | A browser module builder for the HiTOP-SR | done | M43 | normal | milestones/archive/M45-browser-module-builder.md |
 | M44 | A dedicated article for building and scoring HiTOP-SR modules | done | M43 | normal | milestones/archive/M44-modules-article.md |
 | M43 | Rename the HiTOP-SR subset family to modules | done | — | normal | milestones/archive/M43-module-vocabulary.md |
-| M42 | Serve instrument downloads from the pkgdown site | done | — | normal | milestones/archive/M42-pkgdown-download-route.md |
 | M41 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M41-hitopsr-score-intervals.md |
 
 ## Candidates
 
+- The five `*_qualtrics.txt` byte-locked artifacts in each of `inst/extdata/` and `pkgdown/assets/downloads/` are protected only by their directory's `-text` rule: they carry neither a NUL byte nor a CR, so M47's line-ending guard cannot see a mis-declaration of them, and git's own content sniff reads them as text — the exact pairing that let a Windows checkout mutate them at M20. `*.qsf` gained an extension rule at M47; `.txt` did not, because a blanket `*.txt -text` would wrongly freeze every ordinary text file. A path-scoped rule, or a guard clause keyed to the manifest, would close it. The md5 lock still catches an actual byte change, so this is guard reach rather than a live defect. Promote if an artifact `.txt` is ever moved or added outside those two directories, or if the md5 lock trips again on a line-ending conversion — added 2026-08-22 — lineage: M47 (review finding 10, partially addressed)
 - The browser module builder ([jmgirard/hitop-builder](https://github.com/jmgirard/hitop-builder)) installs whatever `hitop` r-universe currently serves, with no version pin, no CI, no smoke test, and no timeout on a stalled install — so a pre-CRAN API change here (the kind M43 made to `subset`→`module`) silently breaks the deployed page for the next visitor, with nothing in either repo detecting it, and its README's named version drifts. Deciding between a version pin and a release-checklist entry is the open question. Promote when a `hitop` release changes any surface the app calls (`available_scales()`'s three columns, `hitop_module()`'s camelCase stems, the three generators' `file`/`module`/`papersize` arguments), or if a visitor reports the page failing — added 2026-08-22 — lineage: M45 (review findings 1, 2, 6, 12; plus the M45 amendment audit's point that AC6 cannot distinguish a runtime-read version string from a hardcoded one)
 - The builder app offers no `include_scoring` control, so its Word download always carries the scoring-key page that `generate_docx_hitopsr(include_scoring = TRUE)` appends; a package caller can turn this off and an app user cannot. Not a hazard the app introduced — the shipped `inst/extdata/hitopsr_A4.docx` carries the same key — which is why it was triaged down at review. Promote if a researcher asks for a participant-facing form without the key — added 2026-08-22 — lineage: M45 (review finding 4, severity corrected at triage)
 - Two generator-hygiene gaps the {zip} change surrounded but did not address: `build_redcap_zip()` writes its intermediate CSV to a fixed `file.path(tempdir(), "instrument.csv")`, so two REDCap generations in one session's forked workers can clobber each other, and its `file.remove()` is unguarded against a `zip::zip()` error; and `zip` entered Imports with no version floor although `mode = "cherry-pick"` needs zip >= 2.2.0. Promote if a parallel generation returns a wrong dictionary, or if an old-{zip} install reports an unused-argument error — added 2026-08-22 — lineage: M45 (review findings 9, 10)
