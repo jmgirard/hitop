@@ -53,11 +53,22 @@ are printed. This differs from \code{\link[=generate_qualtrics_hitopsr]{generate
 number names a collected data column.}
 
 \item{randomize}{Logical. If \code{TRUE}, the items are printed in a random
-order. The numbering still runs down the page, and the scoring page gains
-a crosswalk from each printed number back to its original HiTOP-SR number
-so the form is scoreable from the paper alone. There is no \code{seed}
-argument: call \code{\link[=set.seed]{set.seed()}} before this function to make an order
-reproducible. (default = \code{FALSE})}
+order. On a renumbered module form the document also carries a crosswalk
+from each printed number back to its original HiTOP-SR number, so the form
+is scoreable from the paper alone; that crosswalk is printed whether or
+not \code{include_scoring} appends the key. It is \emph{not} printed when \code{module}
+is \code{NULL} (405 pairs would be one dense paragraph) or when
+\code{renumber = FALSE} (the printed numbers are already the original ones) —
+in both cases read the order from the \code{item_order} attribute described
+under Value. There is no \code{seed} argument: call \code{\link[=set.seed]{set.seed()}} before this
+function to make an order reproducible. (default = \code{FALSE})
+
+\strong{Scoring data collected on a shuffled form.} \code{\link[=score_hitopsr]{score_hitopsr()}} addresses
+a module's items by their position in \code{module$items}, which is ascending
+original order — not the order a shuffled form prints them in. Reorder the
+collected columns through \code{item_order} before scoring:
+\code{collected[order(attr(out, "item_order"))]}. Scoring printed-order columns
+directly returns wrong scale scores and raises no error.}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}

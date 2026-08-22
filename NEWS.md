@@ -195,10 +195,15 @@ before a CRAN submission.
   a shuffled form is still scoreable from the paper alone. Use `set.seed()`
   to make an order reproducible. Every call's invisible return value now
   carries an `item_order` attribute holding the original item numbers in
-  printed order. `generate_qualtrics_hitopsr()` and
-  `generate_redcap_hitopsr()` are deliberately unchanged: there an item number
-  names a collected data column. No distributed form under `inst/extdata/`
-  changed, since each is the full instrument and already numbered from one.
+  printed order. Data collected on a shuffled form must be reordered through
+  that attribute before `score_hitopsr()`, which addresses a module's items in
+  ascending original order; `?generate_docx_hitopsr` shows the idiom.
+  `generate_qualtrics_hitopsr()` and `generate_redcap_hitopsr()` are
+  deliberately unchanged: there an item number names a collected data column.
+  No distributed form under `inst/extdata/` changed, since each is the full
+  instrument and already numbered from one. The two new arguments sit between
+  `module` and `subset` in the signature, so any call passing arguments
+  positionally past `font_family` must be respelled by name.
 
 * **Generate a HiTOP-SR module from selected scales.** The new
   `hitop_module()` describes a chosen set of an instrument's scales, and
@@ -207,7 +212,7 @@ before a CRAN submission.
   form containing only those scales' items. The Qualtrics and REDCap exports
   keep each item's original HiTOP-SR number, because there an item number
   names a collected data column; the Word form numbers its items `1` to `n`
-  down the page (see the entry below).
+  down the page (see the entry above).
   Scale names may be given as printed on the instrument (`"Antisocial
   Behavior"`) or as the camelCase stems used in scored output
   (`"antisocialBehavior"`), in any mixture and ignoring case. Subsetting is

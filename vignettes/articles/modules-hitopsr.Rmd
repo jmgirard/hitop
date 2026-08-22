@@ -102,11 +102,19 @@ the original HiTOP-SR numbers always; renumbering them would rename variables
 in dictionaries already in the field.
 
 `generate_docx_hitopsr()` also takes `randomize = TRUE`, which prints the items
-in a random order. The page is still numbered `1` to `n`, and the scoring page
-gains a crosswalk from each printed number back to its original HiTOP-SR
-number, so a shuffled form can be scored from the paper alone. Call
-`set.seed()` beforehand to make an order reproducible, and read the order back
-from the `item_order` attribute of the returned path.
+in a random order. The page is still numbered `1` to `n`, and a module form
+also carries a crosswalk from each printed number back to its original
+HiTOP-SR number — printed whether or not `include_scoring` appends the key — so
+a shuffled module form can be scored from the paper alone. Shuffling the full
+instrument prints no crosswalk, since 405 pairs would fill a page; read the
+order from the `item_order` attribute of the returned path instead. Call
+`set.seed()` beforehand to make an order reproducible.
+
+One thing to watch: `score_hitopsr()` addresses a module's items by their
+position in `module$items`, which is ascending **original** order, not the
+order a shuffled form prints them in. Reorder the collected columns through
+`item_order` first — `collected[order(attr(out, "item_order"))]` — or the
+scale scores come back wrong with no error raised.
 
 Here we write all three formats into a temporary folder; in your own work you
 would give a real path or let the default filename land in your working

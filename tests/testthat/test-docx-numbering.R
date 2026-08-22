@@ -82,7 +82,7 @@ test_that("the module scoring page lists each scale's items by their ranks", {
   # one carrying a marker.
   expect_equal(which(want$HSR == 310L), 20L)
   expect_equal(sum(want$Reverse), 1L)
-  expect_equal(sum(grepl("(R)", printed$items, fixed = TRUE)), 1L)
+  expect_equal(sum(grepl("[0-9]\\(R\\)", printed$items)), 1L)
 })
 
 # ---- AC3: the full form is untouched, and renumber = FALSE opts out --------
@@ -146,7 +146,7 @@ printed_texts <- function(...) {
 test_that("randomize = TRUE keeps 1..n numbering and permutes the texts", {
   skip_if_no_docx()
   f <- withr::local_tempfile(fileext = ".docx")
-  set.seed(1)
+  withr::local_seed(1)
   suppressMessages(
     generate_docx_hitopsr(file = f, module = m, randomize = TRUE)
   )
@@ -162,14 +162,14 @@ test_that("randomize = TRUE keeps 1..n numbering and permutes the texts", {
 test_that("the shuffled order varies across seeds and repeats under one seed", {
   skip_if_no_docx()
   orders <- lapply(1:5, function(s) {
-    set.seed(s)
+    withr::local_seed(s)
     printed_texts(module = m, randomize = TRUE)
   })
   expect_gte(length(unique(orders)), 2L)
 
-  set.seed(1)
+  withr::local_seed(1)
   a <- printed_texts(module = m, randomize = TRUE)
-  set.seed(1)
+  withr::local_seed(1)
   b <- printed_texts(module = m, randomize = TRUE)
   expect_identical(a, b)
 })
@@ -177,7 +177,7 @@ test_that("the shuffled order varies across seeds and repeats under one seed", {
 test_that("randomize = TRUE with no module shuffles all 405 items", {
   skip_if_no_docx()
   f <- withr::local_tempfile(fileext = ".docx")
-  set.seed(7)
+  withr::local_seed(7)
   suppressMessages(generate_docx_hitopsr(file = f, randomize = TRUE))
 
   rows <- docx_item_rows(f)
@@ -193,7 +193,7 @@ test_that("randomize = TRUE with no module shuffles all 405 items", {
 test_that("a shuffled form carries a crosswalk and an item_order attribute", {
   skip_if_no_docx()
   f <- withr::local_tempfile(fileext = ".docx")
-  set.seed(3)
+  withr::local_seed(3)
   out <- suppressMessages(
     generate_docx_hitopsr(file = f, module = m, randomize = TRUE)
   )
@@ -213,12 +213,25 @@ test_that("a shuffled form carries a crosswalk and an item_order attribute", {
   expect_equal(cross$original, order)
 
   # Each scale's printed numbers map back to exactly its original items.
+  #
+  # The printed numbers are READ OFF THE SCORING PAGE. Deriving them instead
+  # as `match(want$HSR[want$Scale == scale], order)` reduces the assertion to
+  # `order[match(v, order)] == v`, an identity that holds for any order at all
+  # and constrains the generated document not at all -- the defect this
+  # milestone's review returned on.
+  scoring <- docx_scoring_rows(f)
+  expect_setequal(scoring$scale, m$scales)
   for (scale in m$scales) {
-    printed_nums <- match(want$HSR[want$Scale == scale], order)
+    printed_nums <- as.integer(gsub(
+      "\\(R\\)", "",
+      strsplit(scoring$items[scoring$scale == scale], ", ")[[1]]
+    ))
     expect_setequal(
       order[printed_nums],
       hitopsr_scales$itemNumbers[[which(hitopsr_scales$Scale == scale)]]
     )
+    # And the row is sorted by printed number, not left in original order.
+    expect_equal(printed_nums, sort(printed_nums))
   }
 
   # The (R) marker follows the SHUFFLED numbering, not the pre-shuffle rank.
@@ -229,7 +242,47 @@ test_that("a shuffled form carries a crosswalk and an item_order attribute", {
     as.integer(sub("^.*?([0-9]+)\\(R\\).*$", "\\1", marked)),
     match(310L, order)
   )
-  expect_equal(sum(grepl("(R)", scoring$items, fixed = TRUE)), 1L)
+  expect_equal(sum(grepl("[0-9]\\(R\\)", scoring$items)), 1L)
+})
+
+test_that("the crosswalk does not depend on the scoring key being appended", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  withr::local_seed(3)
+  out <- suppressMessages(generate_docx_hitopsr(
+    file = f,
+    module = m,
+    randomize = TRUE,
+    include_scoring = FALSE
+  ))
+
+  # `include_scoring = FALSE` asks for a participant-facing form with no key.
+  # The crosswalk is not a key -- it names no scale and marks no reverse item
+  # -- and a shuffled form is unscoreable without it, so it still prints.
+  cross <- docx_crosswalk_pairs(f)
+  expect_equal(nrow(cross), m$nItems)
+  expect_equal(cross$original, attr(out, "item_order"))
+  expect_equal(nrow(docx_scoring_rows(f)), 0L)
+})
+
+test_that("a shuffled full instrument prints no crosswalk", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  withr::local_seed(1)
+  out <- suppressMessages(generate_docx_hitopsr(file = f, randomize = TRUE))
+
+  # 405 pairs would be one dense paragraph on a participant-facing page, and
+  # the IP1 sign-off covers module forms only; the caller reads the order off
+  # the return value instead.
+  expect_equal(nrow(docx_crosswalk_pairs(f)), 0L)
+  expect_setequal(attr(out, "item_order"), hitopsr_items$HSR)
+})
+
+test_that("item_order is an integer vector", {
+  skip_if_no_docx()
+  f <- withr::local_tempfile(fileext = ".docx")
+  out <- suppressMessages(generate_docx_hitopsr(file = f))
+  expect_identical(attr(out, "item_order"), 1:405)
 })
 
 test_that("an unshuffled form still reports its item_order and no crosswalk", {
@@ -244,7 +297,7 @@ test_that("an unshuffled form still reports its item_order and no crosswalk", {
 test_that("randomize with renumber = FALSE shuffles but keeps the numbers", {
   skip_if_no_docx()
   f <- withr::local_tempfile(fileext = ".docx")
-  set.seed(4)
+  withr::local_seed(4)
   out <- suppressMessages(generate_docx_hitopsr(
     file = f,
     module = m,
@@ -264,6 +317,7 @@ test_that("randomize with renumber = FALSE shuffles but keeps the numbers", {
 })
 
 test_that("renumber and randomize reject non-flag values", {
+  skip_if_no_docx()
   f <- withr::local_tempfile(fileext = ".docx")
   expect_error(generate_docx_hitopsr(file = f, renumber = "yes"), "renumber")
   expect_error(generate_docx_hitopsr(file = f, randomize = NA), "randomize")
@@ -283,7 +337,7 @@ test_that("renumber and randomize reject non-flag values", {
 test_that("shuffling remaps the subscale scoring rows too", {
   skip_if_no_docx()
   f <- withr::local_tempfile(fileext = ".docx")
-  set.seed(11)
+  withr::local_seed(11)
   out <- suppressMessages(generate_docx_hitopsr(
     file = f,
     include_subscales = TRUE,

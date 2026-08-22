@@ -105,11 +105,22 @@ generate_docx_hitopbr <- function(
 #'   [generate_redcap_hitopsr()], which never renumber, because there an item
 #'   number names a collected data column.
 #' @param randomize Logical. If `TRUE`, the items are printed in a random
-#'   order. The numbering still runs down the page, and the scoring page gains
-#'   a crosswalk from each printed number back to its original HiTOP-SR number
-#'   so the form is scoreable from the paper alone. There is no `seed`
-#'   argument: call [set.seed()] before this function to make an order
-#'   reproducible. (default = `FALSE`)
+#'   order. On a renumbered module form the document also carries a crosswalk
+#'   from each printed number back to its original HiTOP-SR number, so the form
+#'   is scoreable from the paper alone; that crosswalk is printed whether or
+#'   not `include_scoring` appends the key. It is *not* printed when `module`
+#'   is `NULL` (405 pairs would be one dense paragraph) or when
+#'   `renumber = FALSE` (the printed numbers are already the original ones) —
+#'   in both cases read the order from the `item_order` attribute described
+#'   under Value. There is no `seed` argument: call [set.seed()] before this
+#'   function to make an order reproducible. (default = `FALSE`)
+#'
+#'   **Scoring data collected on a shuffled form.** [score_hitopsr()] addresses
+#'   a module's items by their position in `module$items`, which is ascending
+#'   original order — not the order a shuffled form prints them in. Reorder the
+#'   collected columns through `item_order` before scoring:
+#'   `collected[order(attr(out, "item_order"))]`. Scoring printed-order columns
+#'   directly returns wrong scale scores and raises no error.
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -188,7 +199,10 @@ generate_docx_hitopsr <- function(
   # 1:x instead of permuting it, which is the classic foot-gun here.
   slot <- seq_len(nrow(reduced$items))
   if (randomize) slot <- sample.int(nrow(reduced$items))
-  item_order <- reduced$items$HSR[slot]
+  # as.integer(): `hitopsr_items$HSR` is a double, and an item number is a
+  # count. Without this the returned attribute is a double and
+  # `identical(attr(out, "item_order"), 1:405)` is FALSE.
+  item_order <- as.integer(reduced$items$HSR[slot])
   printed <- if (renumber) seq_along(item_order) else item_order
   printed_of <- function(x) printed[match(x, item_order)]
 
@@ -252,12 +266,16 @@ generate_docx_hitopsr <- function(
   scoring_msg <- "Average the responses for the following item numbers. Reverse-scored items are indicated with (R)."
 
   # A shuffled form is scoreable from the paper alone only if the paper says
-  # where each printed item came from, so the crosswalk prints whenever the
-  # printed order is not the instrument's own. It is omitted when nothing was
-  # shuffled, where it would just restate the numbering, and when the printed
-  # numbers ARE the original ones, where each row would read "42 -> 42".
+  # where each printed item came from. Three conditions gate the crosswalk.
+  # Nothing shuffled: it would just restate the numbering. `renumber = FALSE`:
+  # the printed numbers ARE the original ones, so every row would read
+  # "42 -> 42". No module: a shuffled full instrument would print 405 pairs as
+  # one dense paragraph on a participant-facing page, and D-036 signed off the
+  # crosswalk for module forms only -- so the whole-instrument caller reads the
+  # order from the returned `item_order` instead (maintainer decision, 2026-08-22
+  # M46 review gate).
   crosswalk_msg <- NULL
-  if (randomize && renumber) {
+  if (randomize && renumber && !is.null(module)) {
     crosswalk_msg <- paste(
       paste(printed, "\u2192", item_order),
       collapse = ", "
@@ -508,9 +526,20 @@ build_hitop_doc <- function(
     ) |>
     flextable::body_add_flextable(value = table_1)
 
-  if (include_scoring && !is.null(table_2)) {
+  scoring_page <- include_scoring && !is.null(table_2)
+
+  # The crosswalk is NOT gated on the scoring key. A shuffled form has to be
+  # scoreable from the paper alone, and `include_scoring = FALSE` asks for a
+  # participant-facing form with no key -- which the crosswalk is not: it maps
+  # printed numbers to original ones and reveals neither scale membership nor
+  # reverse-keying. Gating it on the key wrote a shuffled form nobody could
+  # score, which is what this milestone's review returned.
+  if (scoring_page || !is.null(crosswalk_msg)) {
+    my_doc <- my_doc |> officer::body_add_break()
+  }
+
+  if (scoring_page) {
     my_doc <- my_doc |>
-      officer::body_add_break() |>
       officer::body_add_fpar(
         officer::fpar(
           officer::ftext("Scoring Instructions: ", prop = inst_prop_bold),
@@ -518,24 +547,26 @@ build_hitop_doc <- function(
           fp_p = inst_par_prop
         )
       )
+  }
 
-    # Ahead of the scoring table, never after it: the table is the last thing
-    # on the page, and a reader looking up a printed number wants the map
-    # before the key rather than past it.
-    if (!is.null(crosswalk_msg)) {
-      my_doc <- my_doc |>
-        officer::body_add_fpar(
-          officer::fpar(
-            officer::ftext(
-              "Item Number Crosswalk (printed number \u2192 original HiTOP-SR number): ",
-              prop = inst_prop_bold
-            ),
-            officer::ftext(crosswalk_msg, prop = inst_prop),
-            fp_p = inst_par_prop
-          )
+  # Ahead of the scoring table, never after it: the table is the last thing on
+  # the page, and a reader looking up a printed number wants the map before
+  # the key rather than past it.
+  if (!is.null(crosswalk_msg)) {
+    my_doc <- my_doc |>
+      officer::body_add_fpar(
+        officer::fpar(
+          officer::ftext(
+            "Item Number Crosswalk (printed number \u2192 original HiTOP-SR number): ",
+            prop = inst_prop_bold
+          ),
+          officer::ftext(crosswalk_msg, prop = inst_prop),
+          fp_p = inst_par_prop
         )
-    }
+      )
+  }
 
+  if (scoring_page) {
     my_doc <- my_doc |>
       flextable::body_add_flextable(value = table_2)
   }
