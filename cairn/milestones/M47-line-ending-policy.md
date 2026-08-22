@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Principles touched:** —
 - **Driving RR:** —
-- **Branch/PR:** `m47-line-ending-policy`
+- **Branch/PR:** `m47-line-ending-policy` / [PR #53](https://github.com/jmgirard/hitop/pull/53)
 
 ## Goal
 
