@@ -116,7 +116,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - [x] T3 Build the app: a webR page whose checkbox list is driven by
       `available_scales("hitopsr")`, with a running item count and one download
       button per format.
-- [ ] T4 Deploy to GitHub Pages and run AC3's round-trip comparison per format.
+- [x] T4 Deploy to GitHub Pages and run AC3's round-trip comparison per format.
 - [x] T5 In this repo: the `_pkgdown.yml` Instruments-menu link, the
       `inst/shiny/app.R` deletion, and the app repo's README.
 
@@ -148,6 +148,8 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-21: T4 REDCap leg is outstanding and stays so until PR #50 merges and r-universe rebuilds: the deployed page installs whatever binary the universe serves, which is still the pre-fix 0.2.0, so its REDCap button reports the emscripten `system()` abort. Verified 2026-08-21 that `hitop` appears in no other repository the app names — `repo.r-wasm.org` returns zero matches at `bin/emscripten/contrib/4.6/PACKAGES` — so a successful in-page install is only possible from `jmgirard.r-universe.dev`, which is the fallback evidence for AC2's r-universe clause if worker traffic proves invisible to the network panel.
 - 2026-08-21: PR #50 opened for the split {zip} fix; `devtools::check()` on that branch reports Status OK with 0 errors, 0 warnings and 0 notes.
 - 2026-08-22: PR #50 merged to main after all seven CI checks passed, Windows included; main is now at `3bb3f7e` and the branch merged it back, resolving one NEWS conflict where the two entries had been inserted at the same anchor. The branch's diff against main is now NEWS, `_pkgdown.yml`, the `inst/shiny/app.R` deletion and tracking — exactly what the amended Scope says this repo's PR carries. Waiting on r-universe to rebuild at that commit before T4's REDCap leg can run.
+- 2026-08-22: r-universe rebuilt `hitop` at the merge commit `3bb3f7e` with a successful wasm build (2026-08-22T02:14:36Z); the served tarball's DESCRIPTION now lists `zip` in Imports, where the previous build's did not.
+- 2026-08-22: T4 complete — the reloaded deployed page generated the REDCap archive for the same Agoraphobia + Appetite Loss module (811 bytes) and its extracted `instrument.csv` matches a local `generate_redcap_hitopsr()` byte-for-byte: 2008 bytes, 11 lines, SHA-256 `37272d11e02461376ea5a4c0ca859e444fa406ac16dcc6803afbd2dd01396dbb` on both sides, one flat `instrument.csv` entry. The zip containers themselves differ (811 against 795 bytes), which is why AC3 compares the extracted CSV rather than the archive.
 
 ## Decisions
 
