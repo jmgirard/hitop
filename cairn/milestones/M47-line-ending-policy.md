@@ -46,26 +46,26 @@ it like any other.
 
 `<base>` below is the merge-base commit this milestone's branch was cut from.
 
-- [ ] AC1 — On a clean checkout at the merge commit,
+- [x] AC1 — On a clean checkout at the merge commit,
       `git add --renormalize .` followed by `git status --porcelain` reports no
       output. The renormalize pass visits every tracked path, so it is itself
       the procedure that enumerates the domain: any file whose stored bytes
       disagree with the declared policy is staged and appears here.
-- [ ] AC2 — A committed script walks `git ls-files` and reports, for every
+- [x] AC2 — A committed script walks `git ls-files` and reports, for every
       tracked path, its `git check-attr text` value and whether its index blob
       contains a CR byte. No path that `git check-attr` resolves as `text=auto`
       carries a CR byte in its index blob.
-- [ ] AC3 — `git diff --name-only <base> HEAD` lists only `.gitattributes`,
+- [x] AC3 — `git diff --name-only <base> HEAD` lists only `.gitattributes`,
       the files this milestone adds, the tracking files it updates, and the
       tracked text paths the policy renormalizes; no other tracked path
       appears. Every committed artifact's md5 still equals its current
       `hitop_artifacts` row, with `tests/testthat/test-artifacts.R` green.
-- [ ] AC4 — The same script reports, for every tracked path, whether its index
+- [x] AC4 — The same script reports, for every tracked path, whether its index
       blob contains a NUL byte within its first 8000 bytes — git's own binary
       criterion — beside its `git check-attr text` value. No path meeting that
       criterion resolves as `text=auto`, so no binary file's stored bytes
       depend on the content sniff at checkout.
-- [ ] AC5 — The committed guard reports a failure when a CR byte is present in
+- [x] AC5 — The committed guard reports a failure when a CR byte is present in
       any path `git check-attr` resolves as `text=auto`, and reports none on
       the clean tree.
 - [ ] AC6 — `devtools::document()` produces no diff, and `devtools::test()`
@@ -130,3 +130,63 @@ it like any other.
 ## Decisions
 
 ## Review
+
+_Fresh evidence gathered 2026-08-22. AC1-AC5 were executed in a throwaway
+clone of the branch (`git clone --branch m47-line-ending-policy`), because
+`git add --renormalize` and the mutation probes write to an index and the live
+tree must not be disturbed mid-review. `<base>` is `70c5b50`._
+
+- **AC1 — verified.** On a clean checkout of the branch tip,
+  `git add --renormalize .` followed by `git status --porcelain` printed
+  nothing at all (0 lines). A second pass printed nothing either, so the
+  policy is idempotent and the stored bytes already agree with it.
+- **AC2 — verified.** `data-raw/check_line_endings.R` reports 334 tracked
+  paths: 256 resolving `text=auto`, 78 declared `-text`/`binary`, and 0
+  undeclared. No path resolving `text=auto` carries a CR byte. Re-derived
+  independently of the script, by piping `git ls-files` through
+  `git check-attr --stdin text`, selecting the 256 convertible paths, and
+  reading each one's blob with `git cat-file`: 0 of them carry a CR byte.
+- **AC3 — verified.** `git diff --name-only 70c5b50 HEAD` lists 26 paths and
+  classifies exactly: 1 policy file (`.gitattributes`), 2 added
+  (`data-raw/check_line_endings.R`, `.git-blame-ignore-revs`), 3 edited
+  (`.Rbuildignore`, `CLAUDE.md`, `.github/workflows/R-CMD-check.yaml`), 2
+  tracking files, and the 18 renormalized text paths. Restricting the same
+  diff to `inst/extdata/`, `pkgdown/assets/downloads/`, `data/`,
+  `R/sysdata.rda`, `man/figures/`, `pkgdown/favicon/`, `hitop_hex.png`, and
+  `devel/example.png` returns nothing. `test-artifacts.R` passes 121
+  assertions, so every artifact's md5 still equals its `hitop_artifacts` row.
+- **AC4 — verified.** The script reports 66 paths carrying a NUL byte within
+  their first 8000 — git's own binary criterion — and all 66 resolve
+  `-text`/`binary`, none `text=auto`. Re-derived independently by the same
+  `git check-attr` + `git cat-file` walk: 66 NUL-carrying paths, 0 of them
+  left convertible.
+- **AC5 — verified, beyond what the criterion asks.** Control: the guard
+  exits 0 on the clean tree. Mutation A — a CRLF blob written straight into
+  the index for `R/reliability.R` via `git hash-object -w --no-filters` plus
+  `git update-index` — exit 1, naming `R/reliability.R` under "convertible
+  paths carrying a CR byte". Mutation B, the same at a second path type
+  (`data-raw/hitopbr_items.csv`) — exit 1, naming both. Mutation C, deleting
+  the `*.rda binary` declaration — exit 1 under "binary paths not declared",
+  naming `R/sysdata.rda` and the `data/*.rda` files, and the declared count
+  falling 78 to 56. Restored control: exit 0. The low-level index write is
+  the only way to produce mutation A or B at all: `eol=lf` normalizes on
+  `git add`, so an ordinary commit cannot reintroduce a CR — the fault shape
+  the CR half of the guard actually defends against is a merge from a branch
+  predating the policy.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0, every check PASS, 20 advisory warnings all
+  pre-existing dangling `D-001`..`D-012` tokens from the pre-migration
+  numbering range.
+- No `DESIGN.md` principle changed, so `cairn_impact.py` was not run.
+- Profile `r-package` toolchain slot: `devtools::document()` no diff;
+  `README.Rmd`/`README.md` untouched by the diff; `pkgdown::check_pkgdown()`
+  reports no problems; the one new top-level file `.git-blame-ignore-revs`
+  carries its `.Rbuildignore` entry, added after the first `check()` run
+  raised the hidden-file NOTE naming it. **No `NEWS.md` entry is owed**: the
+  milestone changes stored line endings, a `data-raw/` script, and CI, and
+  no package behavior a user can observe.
+
+### Independent review
+
