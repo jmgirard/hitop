@@ -158,6 +158,7 @@ not a distributed artifact and carries no `hitop_artifacts` manifest row.
 - 2026-08-22: AC6's citation of IP4 was wrong and is deleted, and the header's `Principles touched` drops IP4 with it: DESIGN's IP4 is "Scores, never judgment", so an app that *did* score would not violate it — the scoring exclusion is what this milestone's Scope records, not a principle. Two fresh-context [O] readers audited the replacement in full mode; the first caught that the session's own first attempt made "not a DESIGN principle" part of what the app must *state*, and the second found its own replacement's "read at runtime" unverifiable without a named source line. The user chose the minimal deletion over the auditor's wider wording, holding the criteria set on a milestone whose log records a defect return; the auditor's concern that AC6 cannot distinguish a runtime-read version string from a hardcoded one is offered a home on the standing builder-app candidate row.
 - 2026-08-22: fix-now findings 3, 7, 8, 11 and 14 applied. In the app repo (`c892bac`): clearing is unconditional and the button reads "Clear all", while selecting still follows the filter and now says so ("Select all N shown"); `aria-live` moved from the log pane to the status line and the filter gained an accessible name; a `<noscript>` block names the requirement and links the ready-made downloads; the webR output pump catches a rejected `read()` and reports rather than dying silently. In this repo, the NEWS claim "it installs nothing and sends nothing anywhere" is replaced by an accurate one. Verified on a local serve of the fixed page: the finding-3 sequence that previously left `healthAnxiety` and `socialAnxiety` selected after a Clear now leaves none, the select-all label reads "Select all 2 shown" under the `anx` filter, and all three formats still generate with the Qualtrics file byte-identical to its verified hash.
 - 2026-08-22: all fix-now findings applied and verified on the deployed page; `devtools::test()` FAIL 0 / WARN 0 / SKIP 1 / PASS 13679 and `devtools::check()` Status OK with 0 errors, 0 warnings and 0 notes. Status set back to review; AC6 is unticked pending re-verification against its amended wording.
+- 2026-08-22: delta review returned 9 findings on the fix commit; 7 fixed in app-repo `99cd10f`, 2 rejected as harmless. The first fix commit's accessibility claim was wrong — `role="log"` is implicitly a polite live region — and the correction is stated in the new commit message rather than the claim repeated. Footer and README attribution changed to the HiTOP Society at `hitop-system.org` at the maintainer's request.
 
 ## Review
 
@@ -286,3 +287,35 @@ deployed page can hit. AC2's network clause was not executed; the maintainer
 accepted the substitute evidence in its place rather than convening a third
 amendment round on that criterion, and this Review records the substitution as an
 inference rather than the observation AC2 names.
+**Delta review of the fixes (one fresh-context [O] reviewer, 9 findings).** The
+history lenses were not re-spawned: their prior pass found nothing, and the delta
+touches only `index.html`, whose whole history is this milestone. Findings 1-7
+were fixed at the maintainer's direction and are in app-repo commit `99cd10f`;
+findings 8 (a redundant `role="status"` beside `aria-live`) and 9 (a module-scope
+`clearAll` sharing a name with the button's id) were rejected as harmless.
+
+Finding 1 is the material one and was self-inflicted: the earlier fix commit
+claimed to stop a screen reader narrating the webR install transcript, but
+`role="log"` carries an implicit `aria-live="polite"`, so moving the attribute
+changed nothing. The pane is now `aria-live="off"` with no role, leaving the
+status line the only announced region, and the new commit message states the
+correction rather than repeating the claim. Findings 2, 4 and 5 closed three
+silent-hang paths (a dead output pump, a no-JS page that contradicted its own
+`<noscript>`, and a blocked webR CDN); 3 applies the filter at first render for
+a browser-restored value; 6 disables a zero-match "Select all"; 7 names both
+hosts the page contacts in the in-page notice, matching the corrected NEWS entry.
+
+Verified after the fixes on a local serve: the log pane reports `aria-live="off"`
+with no role and the status line `role="status"`/`aria-live="polite"`; the served
+markup ships `#status` and the log section `hidden` with the `<noscript>` block
+present; a zero-match filter disables "Select all 0 shown"; the finding-3 clear
+sequence still leaves nothing selected; and all three formats still generate,
+with the Qualtrics file byte-identical to its verified SHA-256. Finding 3's
+failure scenario did not reproduce in the test browser, which cleared the filter
+across a reload, so it was fixed as a latent gap rather than a live defect; the
+reviewer's scenario also miscounted the scale list as 224 where it is 76.
+
+At the maintainer's request the instruments are attributed to the HiTOP Society
+at `hitop-system.org`, in both the app's footer and its README, replacing an
+earlier "HiTOP Consortium" attribution and Stony Brook link.
+
