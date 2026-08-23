@@ -1,4 +1,4 @@
-# Printed item numbering on HiTOP-SR Word forms (M46).
+# Printed item numbering on HiTOP-SR Word forms (M046).
 #
 # A module form numbers its items 1..n down the page by default (D-036), and
 # `randomize = TRUE` shuffles the printed order while keeping that numbering.

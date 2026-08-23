@@ -179,7 +179,7 @@ test_that("input errors are attributed to the exported function, not internals",
 })
 
 test_that("scalar-argument failures blame the exported function and the arg", {
-  # These arguments were checked with bare stopifnot() before M31, which named
+  # These arguments were checked with bare stopifnot() before M031, which named
   # the failed predicate rather than the argument and blamed no function at all.
   # `call` carries the function name, so it is read from conditionCall(), never
   # from the message.

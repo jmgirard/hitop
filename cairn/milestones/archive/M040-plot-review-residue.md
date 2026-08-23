@@ -1,8 +1,8 @@
-# M40: Retire the M38/M39 plot-review residue
+# M040: Retire the M038/M039 plot-review residue
 
 **Status:** done (2026-08-13, PR #44 https://github.com/jmgirard/hitop/pull/44)
 
-**Goal:** Clear the four mechanical follow-ups the M38 and M39 reviews left on
+**Goal:** Clear the four mechanical follow-ups the M038 and M039 reviews left on
 `plot_pid5()` and its tests.
 
 **Outcome:** `plot_pid5()`'s score axis takes the label-side 12% expansion only
@@ -14,8 +14,8 @@ built layer data only, via `built_profile()` and `panel_names()`, with two
 AST-walk self-checks over the file enforcing that and `info =` on in-loop
 expectations.
 
-**Decisions:** M40-D1 drawn order over internal row order; M40-D2 the self-check
-discriminates by syntactic shape, not dataflow; M40-D3 callers supply headline
+**Decisions:** M040-D1 drawn order over internal row order; M040-D2 the self-check
+discriminates by syntactic shape, not dataflow; M040-D3 callers supply headline
 and closing line as functions of the count. None cross-cutting.
 
 **Review:** Two passes. Pass 1 returned it (84/AC2, 84/AC3, 87/AC4; 21 logged

@@ -12,7 +12,7 @@ Turn an idea (or an existing PLANNED entry) into a READY milestone with verifiab
 1. Read `.claude/skills/shared/tracking-rules.md`, `project/MILESTONES.md`, and `project/ROADMAP.md`. If the work touches architecture (new function family, new instrument, dependency changes), also read `project/DESIGN.md`.
 
 2. **Resolve the target:**
-   - If the user named a milestone (e.g., "plan M4"), use that entry.
+   - If the user named a milestone (e.g., "plan M004"), use that entry.
    - If the user described new work, create a new entry using the next unused `M<n>` id (check both Active and Completed sections — ids are never reused).
    - If the user asked "what next": recommend the highest-priority milestone whose dependencies are all DONE, respecting the roadmap's current phase. Present the recommendation and confirm before planning it.
 

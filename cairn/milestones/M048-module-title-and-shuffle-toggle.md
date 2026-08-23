@@ -1,4 +1,4 @@
-# M48: A module-titled Word form and a shuffle toggle in the browser builder
+# M048: A module-titled Word form and a shuffle toggle in the browser builder
 
 - **Status:** planned
 - **Priority:** normal
@@ -26,7 +26,7 @@ before scoring; NEWS, help-page, and app-README text for both.
 form with original numbers prints no crosswalk) → candidate row if a user asks
 for it. A module-aware title for the HiTOP-BR or PID-5 generators → no module
 support exists there; it follows the standing modularization candidate. Version
-pinning, CI, or a smoke test for the app → the standing M45 candidate row.
+pinning, CI, or a smoke test for the app → the standing M045 candidate row.
 Rebuilding any `inst/extdata/` artifact → nothing shipped there is a module.
 
 ## Acceptance criteria

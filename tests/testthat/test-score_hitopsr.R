@@ -1,4 +1,4 @@
-# Ground-truth oracle tests for score_hitopsr() (milestone M5).
+# Ground-truth oracle tests for score_hitopsr() (milestone M005).
 # Fixtures + hand-computed expectations live in helper-fixtures.R (fx_hitopsr).
 
 test_that("score_hitopsr() matches hand-computed scores (incl. reverse item 310)", {
@@ -64,7 +64,7 @@ test_that("score_hitopsr() honors invariants: se, prefix, row count", {
   expect_true(all(names(df) %in% names(appended)))
 })
 
-# --- module scoring (M37) ---------------------------------------------------
+# --- module scoring (M037) ---------------------------------------------------
 # The module path hands score_engine() the same three inputs as the full path,
 # remapped to positions within the supplied columns. These tests fix the output
 # contract and pin it to the full-instrument run, which the oracle tests above

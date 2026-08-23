@@ -1,4 +1,4 @@
-# M35: Cell-by-cell verification of the shipped norms against the book
+# M035: Cell-by-cell verification of the shipped norms against the book
 
 **Status:** done (2026-07-31, PR #38 https://github.com/jmgirard/hitop/pull/38)
 
@@ -16,4 +16,4 @@ The layer map — exhaustive but markup-based and maintainer-run, versus the anc
 
 **Review:** Three fresh-context lenses plus a scorer; blame-history and prior-review found nothing blocking.
 Nothing reached the 80 actioning threshold, so all 15 findings are logged with scores rather than actioned.
-The 70/68/65 cluster — how the script reports a failure it does detect — graduated to a candidate row; the 72 finding corrected the M34 in-place-swap lesson to name both harnesses.
+The 70/68/65 cluster — how the script reports a failure it does detect — graduated to a candidate row; the 72 finding corrected the M034 in-place-swap lesson to name both harnesses.

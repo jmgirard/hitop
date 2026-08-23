@@ -16,7 +16,7 @@
 > `data-raw/pid_items.csv` and passed** (reverse items, 25 facets, INC 20 pairs,
 > ORS 10, PRD 22, SDTD 16+item-38, INC-S 10 pairs, FSF 100), so the provenance
 > holds. Two to-dos in this repo: (1) create `tests/testthat/test-keying.R` by
-> porting the old one (tracked as milestone M1); (2) OQ-1 below is still open.
+> porting the old one (tracked as milestone M001); (2) OQ-1 below is still open.
 > Substitute `PID5→FULL`, `PID5FSF→SF`, `PID5BF→BF` when reading below.
 
 ## Why this file exists
@@ -87,11 +87,11 @@ where `pid_items` stores "Negative affectivity". No BF item is reverse-scored (t
 table marks none), and each domain score is an **average** (raw domain sum / 5),
 which is what `score_pid5(version = "BF")` computes via `rowMeans`.
 
-**Enforced (M8):** the APA form also specifies a missing-data rule —
+**Enforced (M008):** the APA form also specifies a missing-data rule —
 *do not compute a domain if ≥ 2 of its 5 items are unanswered; if exactly 1 is
 unanswered, prorate* (prorated raw = round(partial_sum × 5 / n_answered)). This is
 the same 25%-unanswered/proration rule as the full-form key applied to a 5-item
-scale (2 of 5 = 40% > 25% → drop; 1 of 5 = 20% ≤ 25% → prorate). Since M8,
+scale (2 of 5 = 40% > 25% → drop; 1 of 5 = 20% ≤ 25% → prorate). Since M008,
 `score_pid5(apa_scoring = TRUE)` (the default) honors it via `apa_mean()`;
 `apa_scoring = FALSE` restores the traditional `rowMeans(na.rm = TRUE)` behavior
 (which averages whatever items are present, even a single one). See D-009.
@@ -120,7 +120,7 @@ or more `NA` domains: blanking a 5-item domain takes 2 unanswered items (40% > 2
 while the total tolerates 6, so **up to 3 of the 5 domains can be `NA` while the
 total still computes** (6 unanswered, two in each of three domains). The converse
 cannot happen — blanking all five domains takes ≥ 10 unanswered items, which blanks
-the total too. This was accepted at the M26 implementation gate (2026-07-30) as the
+the total too. This was accepted at the M026 implementation gate (2026-07-30) as the
 literal reading of the book's rule, and is documented in `score_pid5()`'s
 `@details`. *(Bound stated as "all five domains" when first written 2026-07-30;
 corrected the same day against `apa_mean()` — one missing item in a 5-item domain
@@ -146,10 +146,10 @@ primary map, transcribed from the Domain Table (verified 2026-07-09):
 - **Psychoticism** = Unusual Beliefs & Experiences, Eccentricity, Perceptual Dysregulation
 
 Stored in the `pid_domains` dataset and machine-verified against these numbers in
-`test-keying.R` (M7). `score_pid5(version = "FULL"/"SF")` appends the 5 domain
+`test-keying.R` (M007). `score_pid5(version = "FULL"/"SF")` appends the 5 domain
 scores after the 25 facet scores, each = the mean of its 3 primary facet scores.
 
-**Missing-data/proration rule (enforced since M8, default `apa_scoring = TRUE`).**
+**Missing-data/proration rule (enforced since M008, default `apa_scoring = TRUE`).**
 The full-form key states, verbatim (Krueger et al., 2013, p. 8):
 
 > If more than 25% of the items within a trait facet are left unanswered, the
@@ -172,7 +172,7 @@ missing-data rule for the 100-item short form, so `apa_scoring` applies the
 full-form 25%/proration rule to the SF's 4-item facets *by analogy* (25% of 4 = 1
 item: ≤ 1 missing prorates, ≥ 2 → NA). See D-009.
 
-## PID-5 normative tables (2026-07-30, M25)
+## PID-5 normative tables (2026-07-30, M025)
 
 **Source.** Markon, K. E., Fossati, A., Somma, A., & Krueger, R. F. (2024).
 *Understanding the Personality Inventory for DSM-5 (PID-5).* American Psychiatric
@@ -205,7 +205,7 @@ rests on the book crediting the same paper the package column already cites.
 | A–8 (p. 151) | "(100 item) normative tables: trait scales" | — | SF facets (25) | all cells match the book |
 | A–9 (p. 174) | "Brief Form normative tables: total score and domain scales" | — | BF total + domains | all cells match the book |
 
-**The book's "trait scales" are the package's facets** (M33). A–6 and A–8 print all
+**The book's "trait scales" are the package's facets** (M033). A–6 and A–8 print all
 25 under sentence-case captions ("Attention seeking", "Unusual beliefs and
 experiences"); `data-raw/norms_pid5.R` carries the one map from those captions onto
 `pid_scales[[version]]$Facet`, and takes the output column stem from that table's
@@ -216,7 +216,7 @@ experiences"); `data-raw/norms_pid5.R` carries the one map from those captions o
 Chapter 4 writes "PID-5-PRD" 15 times and "PIM-RD" never, so A–4 → `PRD` is an
 identity mapping rather than a translation. The `data-raw/norms_pid5_pimrd.csv`
 filename predates this ingest and follows a label the book does not use; it is
-deliberately left unrenamed (M25-D4), and this row is where the mismatch is explained.
+deliberately left unrenamed (M025-D4), and this row is where the mismatch is explained.
 
 **A–2 carries an inconsistency internal to the book.** Its caption (p. 117) names the
 100-item scale "Variable Response Inconsistency (VRIN)" — the same label the A–1
@@ -233,10 +233,10 @@ Corroboration for A–1: the book's own domain-norm inclusion criterion is a VRI
 
 **Verification status.** Every numeric cell of all nine tables was extracted from the
 book's table markup by `data-raw/verify_norms_against_book.R` and diffed against the
-committed CSVs. The seven M25 tables were transcribed by hand, so for those this is a
+committed CSVs. The seven M025 tables were transcribed by hand, so for those this is a
 transcription check; A–6 and A–8 carry 3,550 cells apiece and are machine-extracted by
 `data-raw/extract_facet_norms.R`, so for those it is a cross-check of two independently
-structured reshapings of the same markup (M33) — the hand-read spot values in
+structured reshapings of the same markup (M033) — the hand-read spot values in
 `tests/testthat/test-norms.R` are the layer that reads a rendered page. The first pass
 over the seven found 18 disagreeing cells, all percentiles and all
 monotone-preserving; each held the book's value from one row below, displacing
@@ -326,7 +326,7 @@ loosened according to site needs **" (row 105) is exposed as
 `generate_redcap_hitophsum(other_drug_rule = "per_drug")`, with the sheet's
 most-frequent-other-drug rule as the default (ties show every tied drug).
 
-### Qualtrics artifact (2026-07-16, M19)
+### Qualtrics artifact (2026-07-16, M019)
 
 `inst/extdata/hitophsum_qualtrics.qsf` is **derived** from the keying tables
 by the maintainer script `devel/qualtrics_hitophsum.R` (Qualtrics

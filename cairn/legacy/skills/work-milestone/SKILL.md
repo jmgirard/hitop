@@ -1,6 +1,6 @@
 ---
 name: work-milestone
-description: Implement a planned milestone for the hitop package. Use when the user says to work on, implement, start, continue, or resume a milestone (e.g. "work on M3"), or to implement something already planned in project/MILESTONES.md.
+description: Implement a planned milestone for the hitop package. Use when the user says to work on, implement, start, continue, or resume a milestone (e.g. "work on M003"), or to implement something already planned in project/MILESTONES.md.
 ---
 
 # Work a milestone

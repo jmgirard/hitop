@@ -1,4 +1,4 @@
-# Ground-truth oracle tests for score_hitopbr() (milestone M5).
+# Ground-truth oracle tests for score_hitopbr() (milestone M005).
 # Fixtures + hand-computed expectations live in helper-fixtures.R (fx_hitopbr).
 
 test_that("score_hitopbr() matches hand-computed scores, including overlaps", {
@@ -75,5 +75,5 @@ test_that("score_hitopbr() honors invariants: se, prefix, row count", {
   expect_true(all(names(df) %in% names(appended)))
 })
 
-# Reliability moved out of score_hitopbr() into reliability_hitopbr() (M15); the
+# Reliability moved out of score_hitopbr() into reliability_hitopbr() (M015); the
 # per-scale alpha/omega oracle now lives in test-reliability.R.

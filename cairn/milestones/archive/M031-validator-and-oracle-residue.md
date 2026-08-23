@@ -1,4 +1,4 @@
-# M31: Argument-validation consistency and a harder norming oracle
+# M031: Argument-validation consistency and a harder norming oracle
 
 **Status:** done (2026-07-31, PR #34 https://github.com/jmgirard/hitop/pull/34)
 

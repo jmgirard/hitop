@@ -1,4 +1,4 @@
-# Hand-computed fixtures for ground-truth oracle tests (milestone M2).
+# Hand-computed fixtures for ground-truth oracle tests (milestone M002).
 #
 # These build tiny synthetic response sets whose scores are worked out by hand
 # from the published PID-5 scoring keys. Item -> scale memberships are copied
@@ -11,7 +11,7 @@
 # The SF and BF contain NO reverse-keyed items (see test-keying.R).
 #
 # score_pid5() outputs 25 facets for FULL/SF and 5 domains for BF; it does NOT
-# output FULL/SF domains (that feature + its domain->facet oracle is M7). So
+# output FULL/SF domains (that feature + its domain->facet oracle is M007). So
 # these fixtures cover FULL/SF facets, BF domains, and all validity scales only.
 
 # ---- Full PID-5 (220 items) -------------------------------------------------
@@ -116,7 +116,7 @@ fx_pid5sf <- function() {
 #
 # BF-relative numbering (1:25). No reverse-keyed items. score_pid5(version="BF")
 # returns 5 DOMAIN averages (5 items each). Domain -> BF item map, transcribed
-# from the APA PID-5-BF Domain Scoring table (verified in test-keying.R / M6):
+# from the APA PID-5-BF Domain Scoring table (verified in test-keying.R / M006):
 #   Disinhibition (pid_disinhibition)             = 1,2,3,5,6
 #   Detachment (pid_detachment)                   = 4,13,14,16,18
 #   Psychoticism (pid_psychoticism)               = 7,12,21,23,24
@@ -147,7 +147,7 @@ fx_pid5bf <- function() {
 
 # ---- HiTOP-SR (405 items) ---------------------------------------------------
 #
-# Hand-computed fixture for score_hitopsr() (milestone M5). Item range is the
+# Hand-computed fixture for score_hitopsr() (milestone M005). Item range is the
 # default c(1, 4); reverse(x) = 1 + 4 - x = 5 - x. Exactly ONE HiTOP-SR item is
 # reverse-keyed: HSR 310 (in Romantic Disinterest). Scale -> item memberships
 # are copied from the SOURCE (hitopsr_items.csv / hitopsr_scales), NOT read back
@@ -189,7 +189,7 @@ fx_hitopsr <- function() {
 
 # ---- HiTOP-BR (45 items) ----------------------------------------------------
 #
-# Hand-computed fixture for score_hitopbr() (milestone M5). Item range default
+# Hand-computed fixture for score_hitopbr() (milestone M005). Item range default
 # c(1, 4). The HiTOP-BR has NO reverse-keyed items. Scale -> item memberships
 # copied from SOURCE (hitopbr_items.csv / hitopbr_scales). The externalizing
 # and pFactor scales are OVERLAPPING supersets built from the marker columns

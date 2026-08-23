@@ -1,4 +1,4 @@
-# M47: One line-ending policy for the whole repository
+# M047: One line-ending policy for the whole repository
 
 **Status:** done (2026-08-22, PR #53 https://github.com/jmgirard/hitop/pull/53)
 
@@ -15,7 +15,7 @@ reading blobs via one `git cat-file --batch` call with paths on stdin so no
 filename reaches a command line; a `line-endings` CI job runs it. `air.toml`
 gained `[format] line-ending = "lf"`, `DESIGN.md` a Line endings convention.
 
-**Decisions:** M47-D1 — the blame-ignore SHA is appended at post-merge hygiene,
+**Decisions:** M047-D1 — the blame-ignore SHA is appended at post-merge hygiene,
 since a squash merge writes a commit the branch cannot name. Done and verified:
 blame now resolves the renormalized files to their real authors.
 

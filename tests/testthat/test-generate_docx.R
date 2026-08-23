@@ -1,4 +1,4 @@
-# Ground-truth tests for the DOCX export family (M10).
+# Ground-truth tests for the DOCX export family (M010).
 #
 # A .docx is a ZIP of XML; we unzip word/document.xml (helper-generators.R) and
 # assert (a) it is non-empty, (b) it contains the instrument's own text, and
@@ -110,13 +110,13 @@ test_that("the HSUM overview uses the corrected sheet wording", {
   ))
 })
 
-# ---- HiTOP-SR scale modules (M24, renumbering opted out of since M46) -------
+# ---- HiTOP-SR scale modules (M024, renumbering opted out of since M046) -------
 #
 # Parse-and-compare per D-010: the expected item numbers and texts are derived
 # from `hitopsr_items` (filtered by `Scale`), independently of the
 # `hitopsr_scales$itemNumbers` path the generator itself walks.
 #
-# A module form renumbers 1..n by default since M46 (D-036), so these two
+# A module form renumbers 1..n by default since M046 (D-036), so these two
 # original-numbering tests pass `renumber = FALSE`; that is what keeps them
 # meaningful rather than merely green, and it is the opt-out's regression
 # coverage. The renumbered defaults are asserted in test-docx-numbering.R.
@@ -244,7 +244,7 @@ test_that("include_scoring = FALSE still omits the BF scoring table entirely", {
   expect_false(grepl(total_items, xml, fixed = TRUE))
 })
 
-# ---- Response-option legend line breaking (M36) -----------------------------
+# ---- Response-option legend line breaking (M036) -----------------------------
 #
 # The legend is participant-facing content under IP1: this milestone changes
 # only where it breaks, never what it says (D-028), so these tests assert the
@@ -305,7 +305,7 @@ test_that("the HiTOP-SR and HiTOP-BR legends still print on one line", {
 
 test_that("the default legend matches the committed forms this milestone leaves alone", {
   skip_if_no_docx()
-  # The SR/BR artifacts are not rebuilt by M36, so their committed bytes are an
+  # The SR/BR artifacts are not rebuilt by M036, so their committed bytes are an
   # external record of the pre-change single-line legend -- the oracle for the
   # claim that `make_items_table()`'s default is unchanged.
   committed <- list(

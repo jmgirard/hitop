@@ -107,12 +107,12 @@ norms_mutations <- list(
       x
     }
   ),
-  ## M33's facet mutations. The first is the defect this dataset actually had
+  ## M033's facet mutations. The first is the defect this dataset actually had
   ## once (a whole column off by one row), which no structural invariant can
   ## see: it leaves the raws on a line and the percentiles monotone.
   list(
     id = "full-hostility-raw-shift",
-    ac = "M33 AC6",
+    ac = "M033 AC6",
     desc = "FULL hostility raw column displaced down one T row",
     f = function(x) {
       i <- which(x$version == "FULL" & x$scale == "hostility")
@@ -123,7 +123,7 @@ norms_mutations <- list(
   ),
   list(
     id = "sf-perseveration-off-line",
-    ac = "M33 AC5",
+    ac = "M033 AC5",
     desc = "SF perseveration raw at T = 55 pushed 0.02 off its column's line",
     f = function(x) {
       i <- row_of(x, "SF", "perseveration", tscore = 55)
@@ -134,12 +134,12 @@ norms_mutations <- list(
   ## A percentile column displaced on its own is the thinnest case in the
   ## dataset: it stays monotone, and `raw` -- which every other test reads -- is
   ## untouched, so only an anchor whose percentile steps at that T can see it.
-  ## Both were NOT CAUGHT while each column had a single anchor at T = 65. M34
+  ## Both were NOT CAUGHT while each column had a single anchor at T = 65. M034
   ## placed every column's second anchor at exactly such a step, so these now
   ## fire -- and fire on the book-comparison test, not merely on an adequacy one.
   list(
     id = "sf-withdrawal-ptl-shift",
-    ac = "M33 AC6",
+    ac = "M033 AC6",
     desc = "SF withdrawal percentile column displaced down one T row (raw untouched)",
     f = function(x) {
       i <- which(x$version == "SF" & x$scale == "withdrawal")
@@ -150,7 +150,7 @@ norms_mutations <- list(
   ),
   list(
     id = "full-anhedonia-ptl-shift",
-    ac = "M33 AC6",
+    ac = "M033 AC6",
     desc = "FULL anhedonia percentile column displaced down one T row (raw untouched)",
     f = function(x) {
       i <- which(x$version == "FULL" & x$scale == "anhedonia")
@@ -161,7 +161,7 @@ norms_mutations <- list(
   ),
   list(
     id = "sf-anxiousness-ceiling-cut",
-    ac = "M33 AC4",
+    ac = "M033 AC4",
     desc = "SF anxiousness ceiling run truncated -- its 12 rows at 4.00 cut to 1",
     f = function(x) {
       i <- which(x$version == "SF" & x$scale == "anxiousness" & x$raw == 4)
@@ -169,18 +169,18 @@ norms_mutations <- list(
       x[-utils::tail(i, -1), ]
     }
   ),
-  ## M34's swap mutations. Both pairs read alike at T = 65 -- the one anchor
-  ## every facet column carried before M34 -- so neither could witness a swap of
+  ## M034's swap mutations. Both pairs read alike at T = 65 -- the one anchor
+  ## every facet column carried before M034 -- so neither could witness a swap of
   ## the other. The second anchor is what separates them.
   list(
     id = "sf-impulsivity-intimacy-swap",
-    ac = "M34 AC5",
+    ac = "M034 AC5",
     desc = "SF impulsivity and SF intimacyAvoidance columns swapped",
     f = function(x) swap_columns(x, "SF", "impulsivity", "intimacyAvoidance")
   ),
   list(
     id = "sf-manipulativeness-suspiciousness-swap",
-    ac = "M34 AC5",
+    ac = "M034 AC5",
     desc = "SF manipulativeness and SF suspiciousness columns swapped",
     f = function(x) swap_columns(x, "SF", "manipulativeness", "suspiciousness")
   )

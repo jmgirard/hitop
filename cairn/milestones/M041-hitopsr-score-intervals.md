@@ -1,4 +1,4 @@
-# M41: Confidence intervals for HiTOP-SR scale scores
+# M041: Confidence intervals for HiTOP-SR scale scores
 
 - **Status:** planned
 - **Priority:** normal

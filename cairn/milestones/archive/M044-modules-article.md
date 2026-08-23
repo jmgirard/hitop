@@ -1,4 +1,4 @@
-# M44: A dedicated article for building and scoring HiTOP-SR modules
+# M044: A dedicated article for building and scoring HiTOP-SR modules
 
 **Status:** done (2026-08-21, PR #49 https://github.com/jmgirard/hitop/pull/49)
 
@@ -10,13 +10,13 @@ HiTOP-SR Modules", walking `available_scales()` → `hitop_module()` → the thr
 name-based column selection against `ku_hitopsr` → `score_hitopsr()`/`reliability_hitopsr()`
 with `module =`; every chunk evaluated. The 61-line copy in `vignettes/hitopsr_scoring.Rmd`
 became a cross-reference under "Scoring Only Some Scales", a heading avoiding AC4's grep
-terms. `hitop_module()`'s `@examples` gained the by-name idiom, closing the M37 candidate row
+terms. `hitop_module()`'s `@examples` gained the by-name idiom, closing the M037 candidate row
 on it. Plus a `_pkgdown.yml` navbar row and a NEWS entry; no scoring behavior changed.
 
 **Decisions:** none.
 
 **Review:** three-lens fan-out; blame-history and prior-review clean (deleted content fully
-reproduced, M43's positional-indexing lesson carried forward, empty GitHub comment probe).
+reproduced, M043's positional-indexing lesson carried forward, empty GitHub comment probe).
 The [O] diff-bug lens re-executed every factual claim, confirmed all, and reported ten
 findings: six fixed on the branch (a `tempdir()` path leaked into the published page; the
 negative α blamed on scale shortness; the unstated reason `module =` is required; a no-op

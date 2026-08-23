@@ -1,14 +1,14 @@
 # markon2024 — the published PID-5 normative tables (raw ↔ T ↔ percentile) and their sample
 
-**Provenance.** Ingested 2026-07-30 by M25 from
+**Provenance.** Ingested 2026-07-30 by M025 from
 `cairn/references/sources/markon2024.epub` (gitignored) — an EPUB supplied by the
 maintainer, not a PDF. Pagination: book pages, carried by the EPUB's own pagebreak
 anchors, so every anchor below is the printed page rather than an estimate.
 Extraction: verified 2026-07-31 against the source — every numeric cell of the nine
 ingested tables was extracted from the book's table markup by
 `data-raw/verify_norms_against_book.R` and diffed against the committed CSVs, which
-now match cell for cell — observed 2026-07-31. The seven M25 tables were transcribed
-by hand, so for those the diff is a transcription check; A–6 and A–8 (M33) are
+now match cell for cell — observed 2026-07-31. The seven M025 tables were transcribed
+by hand, so for those the diff is a transcription check; A–6 and A–8 (M033) are
 machine-extracted by `data-raw/extract_facet_norms.R`, so for those it is a
 cross-check of two independently structured reshapings, backed by hand-read spot
 values in `tests/testthat/test-norms.R` — observed 2026-07-31.
@@ -47,26 +47,26 @@ ships are listed; the Appendix runs to twelve (see Open questions).
 - **Table A–4**, p. 118 — "Personality Inventory for DSM-5—Self-Report Form Positive
   Impression Management Response Distortion scale (underreporting) score percentiles".
   56 rows. → package `PRD` (FULL). CSV `data-raw/norms_pid5_pimrd.csv` (the filename
-  predates this ingest and follows a label the book does not use; kept as-is by M25-D4).
+  predates this ingest and follows a label the book does not use; kept as-is by M025-D4).
 - **Table A–5**, p. 120 — "…Self-Report Form normative tables: domain scales". 56 rows
   × (T, and Raw/Percentile for each of Negative affect, Detachment, Antagonism,
   Disinhibition, Psychoticism). → FULL domains. CSV `data-raw/norms_pid5_domains.csv`.
 - **Table A–6**, p. 124 — "…Self-Report Form normative tables: trait scales". All 25
   facets in one `<table>`, printed as five stacked blocks of five facets, each block
   71 rows (T = 30–100) × (T, and Raw/Percentile per facet) = 1,775 rows. → FULL
-  facets. CSV `data-raw/norms_pid5_facets.csv` (M33).
+  facets. CSV `data-raw/norms_pid5_facets.csv` (M033).
 - **Table A–7**, p. 147 — "…Self-Report Form (100 item) normative tables: domain
   scales". 61 rows, same five domains. → SF domains.
   CSV `data-raw/norms_pid5sf_domains.csv`.
 - **Table A–8**, p. 151 — "…Self-Report Form (100 item) normative tables: trait
   scales". Same shape as A–6: five blocks of five facets, 71 rows each, 1,775 rows.
-  → SF facets. CSV `data-raw/norms_pid5sf_facets.csv` (M33).
+  → SF facets. CSV `data-raw/norms_pid5sf_facets.csv` (M033).
 - **Table A–9**, p. 174 — "…Brief Form normative tables: total score and domain
   scales". 61 rows, Total plus the five domains. → BF total + domains.
   CSV `data-raw/norms_pid5bf_domains.csv`.
 
 **The PID-5-BF total's computation rule** (Chapter 3, p. 23 — prose, not a table;
-ingested 2026-07-30 by M26). The book states it once, verbatim: *"Unlike the other
+ingested 2026-07-30 by M026). The book states it once, verbatim: *"Unlike the other
 versions of the PID-5, the PID-5-BF total score can be computed by averaging the
 overall score by the total number of items in the measure (i.e., 25)."* So the total
 is the item-level mean over all 25 BF items, not the mean of the five domain means.
@@ -119,12 +119,12 @@ the package's `INC` are one scale, beyond the shared attribution to Keeley et al
   the book-label → package-column mapping.
 - `pid_scales[["BF"]]`'s `total` row and `score_pid5(version = "BF")`'s total column,
   via `cairn/SOURCES.md`'s "Note on the BF total score" — the p. 23 rule above is the
-  IP3 key they ship against (M26).
+  IP3 key they ship against (M026).
 
 ## Open questions
 
-- The Appendix carries **twelve** tables; the package ships nine (M25's seven plus
-  A–6 and A–8 at M33). A–10 and A–11 are the Informant Form norms and A–12 the
+- The Appendix carries **twelve** tables; the package ships nine (M025's seven plus
+  A–6 and A–8 at M033). A–10 and A–11 are the Informant Form norms and A–12 the
   SRF/IRF descriptive statistics and T-score differences; those three are captured as
   ROADMAP candidates rather than ingested here — observed 2026-07-31.
 - **A–6 and A–8 print raw scores a 0–3 item mean cannot reach.** A facet score is a
@@ -132,7 +132,7 @@ the package's `INC` are one scale, beyond the shared attribution to Keeley et al
   raws above 3.00 and 19 of them clamp at exactly 4.00, repeating that value across
   up to 12 consecutive T rows (short-form anxiousness, T = 89–100). The book states
   no ceiling rule and no erratum is known, so the package ships the rows verbatim
-  (M33) and reads them by its ordinary tie rule. Whether the 4.00 clamp is a
+  (M033) and reads them by its ordinary tie rule. Whether the 4.00 clamp is a
   deliberate tabulation choice or an error in the source is **unresolved and worth
   putting to the authors** — a 4.00 ceiling is what a 1–4 coding would produce, which
   would make these columns tabulated on a different response coding from the domain

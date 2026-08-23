@@ -1,4 +1,4 @@
-# Tests for the labeling and ranking utilities (milestone M5):
+# Tests for the labeling and ranking utilities (milestone M005):
 # label_hitopsr(), label_hitopbr(), and rank_scales(). These go beyond the
 # incidental coverage in the end-to-end pipeline test.
 

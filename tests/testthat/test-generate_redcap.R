@@ -1,4 +1,4 @@
-# Ground-truth tests for the REDCap export family (M10).
+# Ground-truth tests for the REDCap export family (M010).
 #
 # Oracle: unzip the instrument ZIP, read its data-dictionary CSV back
 # (helper-generators.R), and compare to the source datasets derived
@@ -287,7 +287,7 @@ test_that("HSUM quantity items get the correct field-type/choice overrides", {
   expect_true(all(nzchar(r[["Choices, Calculations, OR Slider Labels"]][choice_types])))
 })
 
-# ---- HiTOP-SR scale modules (M24) -------------------------------------------
+# ---- HiTOP-SR scale modules (M024) -------------------------------------------
 #
 # Parse-and-compare per D-010: expected fields come from `hitopsr_items`
 # filtered by `Scale`, independently of the `hitopsr_scales$itemNumbers` path.

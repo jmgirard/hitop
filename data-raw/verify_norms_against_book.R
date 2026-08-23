@@ -1,4 +1,4 @@
-# Verify the PID-5 norms against the published source (M25, AC1; M33; M35)
+# Verify the PID-5 norms against the published source (M025, AC1; M033; M035)
 #
 # Independent transcription of the PID-5 normative tables, extracted
 # deterministically from the book's own table markup and diffed cell by cell
@@ -7,15 +7,15 @@
 # sides exist, so every reported discrepancy is a fact about the package's data
 # rather than about a transcriber.
 #
-# The seven M25 tables were transcribed by hand, so for those this is a
-# transcription check. The two facet tables M33 adds carry 3,550 cells each and
+# The seven M025 tables were transcribed by hand, so for those this is a
+# transcription check. The two facet tables M033 adds carry 3,550 cells each and
 # are machine-extracted by data-raw/extract_facet_norms.R, so for those this is
 # a cross-check of two *independent reshapings* of the same markup: the
 # extractor walks rows sequentially carrying each banner's facet names forward,
 # while the block reader below ignores banners when assembling rows -- it cuts
 # the numeric rows at their T-score restarts -- and recovers the facet names
 # from the banners only afterwards, then compares column by *name* rather than
-# by position. The third comparison M35 adds reads the same tables into
+# by position. The third comparison M035 adds reads the same tables into
 # `pid_norms`'s long format and diffs the shipped dataset itself, so
 # data-raw/norms_pid5.R's assembly of the CSVs is covered too.
 #
@@ -43,7 +43,7 @@
 #   American Psychiatric Association Publishing. ISBN 9781615375127.
 #
 # Requires xml2 and readr installed locally. Like the other data-raw scripts
-# these are maintainer tools, not package dependencies (M18 lesson).
+# these are maintainer tools, not package dependencies (M018 lesson).
 #
 # Usage:  Rscript data-raw/verify_norms_against_book.R
 
@@ -152,7 +152,7 @@ facet_book_columns <- function(tbl) {
   out
 }
 
-## The seven tables M25 ships plus the two facet tables M33 adds, in book order,
+## The seven tables M025 ships plus the two facet tables M033 adds, in book order,
 ## with their CSV counterparts and the `pid_norms` (version, scale) coordinates
 ## the assembly comparison below reads them into. Appendix table A-n is
 ## tables[[n]]; `caption` is asserted against the table's own <caption>, so a

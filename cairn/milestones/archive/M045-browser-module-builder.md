@@ -1,4 +1,4 @@
-# M45: A browser module builder for the HiTOP-SR
+# M045: A browser module builder for the HiTOP-SR
 
 **Status:** done (2026-08-22, PR #51 https://github.com/jmgirard/hitop/pull/51)
 

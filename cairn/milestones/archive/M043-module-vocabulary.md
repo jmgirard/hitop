@@ -1,4 +1,4 @@
-# M43: Rename the HiTOP-SR subset family to modules
+# M043: Rename the HiTOP-SR subset family to modules
 
 **Status:** done (2026-08-21, PR #48 https://github.com/jmgirard/hitop/pull/48)
 
@@ -21,5 +21,5 @@ public contract, hand-rolled deprecation over {lifecycle}.
 nothing. Diff-bug proved no scored value moves, then returned 12; nine actioned,
 two real bugs — `m = ` became ambiguous with `missing`, and the deprecated
 constructor blamed `hitop_module()`. AC3's first evidence was invalid. Hygiene
-retired M24's truthiness lesson (an `isTRUE()` guard fails
-`test-generate_docx.R:173`) and folded M27's cli-plural lesson into M30's.
+retired M024's truthiness lesson (an `isTRUE()` guard fails
+`test-generate_docx.R:173`) and folded M027's cli-plural lesson into M030's.

@@ -3,17 +3,17 @@
 # what it returned before this milestone, and abort with exactly the same
 # conditions?
 #
-# Unlike M31's acceptance probe — which compared accept-vs-reject only, because
+# Unlike M031's acceptance probe — which compared accept-vs-reject only, because
 # that milestone meant to change the messages — this one compares the returned
 # VALUES and the full condition objects (class, message, and the function the
-# abort is attributed to), because M37 means to change neither.
+# abort is attributed to), because M037 means to change neither.
 #
 #   Rscript devel/regression_probe_m37.R            # driver: base vs. working tree
 #   Rscript devel/regression_probe_m37.R <pkg> <out.rds>   # worker, one tree
 #
 # The driver exports the branch's merge-base with the default branch to a temp
 # dir via `git archive` (never a checkout, which would move HEAD under anything
-# else reading the tree — M34) and runs the worker in a separate R subprocess
+# else reading the tree — M034) and runs the worker in a separate R subprocess
 # per tree, so the two package versions never share a namespace.
 
 args <- commandArgs(trailingOnly = TRUE)

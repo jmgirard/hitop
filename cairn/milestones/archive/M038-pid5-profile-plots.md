@@ -1,4 +1,4 @@
-# M38: Norm-referenced PID-5 profile plots
+# M038: Norm-referenced PID-5 profile plots
 
 **Status:** done (2026-08-01, PR #41 https://github.com/jmgirard/hitop/pull/41)
 

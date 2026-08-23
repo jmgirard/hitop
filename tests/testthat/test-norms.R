@@ -163,7 +163,7 @@ test_that("a repeated top raw ships every printed row and converts to its lowest
   # Nineteen facet columns print their top raw on several consecutive T rows,
   # because the line the book tabulated runs past the 3.00 an item mean can
   # reach and 4.00 is printed instead. Those rows are unattainable but they are
-  # printed, so they ship verbatim (M33): the table is the published object, not
+  # printed, so they ship verbatim (M033): the table is the published object, not
   # a filtered view of it. Selection then treats the run like the floor run --
   # the tie rule takes the end nearest the middle of the distribution, which at
   # the ceiling is the run's lowest T.
@@ -239,7 +239,7 @@ test_that("percentiles are proportions", {
 #
 # The layer outside this suite is data-raw/verify_norms_against_book.R, which
 # diffs every printed cell against an independent extraction of the book's
-# markup, in either direction -- the data-raw CSVs, and since M35 the shipped
+# markup, in either direction -- the data-raw CSVs, and since M035 the shipped
 # `pid_norms` itself, so data-raw/norms_pid5.R's assembly of the one into the
 # other is covered there rather than resting on these anchors alone.
 #
@@ -327,7 +327,7 @@ facet_spot <- local({
   )
 })
 
-# The second anchor for each of the 63 columns that entered M34 carrying only
+# The second anchor for each of the 63 columns that entered M034 carrying only
 # one. Where the first anchors sit at a T chosen for the table (T = 65 for every
 # facet), these sit at a T chosen for the *column*: one where that column's
 # percentile differs from the row below it, so a column displaced down one row
@@ -337,7 +337,7 @@ facet_spot <- local({
 #
 # Five T scores cover all 63 columns, which is why they were preferred over a
 # distinct T per column: each group is one scan across the printed row, the way
-# M33 read all 50 of its anchors at T = 65. Read by eye off the rendered pages
+# M033 read all 50 of its anchors at T = 65. Read by eye off the rendered pages
 # by a reader with no access to `pid_norms`, the data-raw CSVs, or this file,
 # working from the column headings alone; every value matched the shipped cell.
 second_spot <- local({
@@ -496,7 +496,7 @@ test_that("every T-scored scale is anchored where its percentile steps", {
 
 test_that("no two T-scored scales read alike at every anchor they share", {
   # Two columns reading alike wherever either is anchored cannot witness a swap
-  # of each other. Before M34 two SF pairs did exactly that at their shared
+  # of each other. Before M034 two SF pairs did exactly that at their shared
   # T = 65 anchor -- impulsivity/intimacyAvoidance and manipulativeness/
   # suspiciousness -- which is half of why the second anchor exists.
   keys <- tscored_keys()
@@ -582,8 +582,8 @@ test_that("validity norms match the values printed in the book", {
 
 test_that("every pid_norms scale is produced by score_pid5() or validity_pid5()", {
   # Locks the documented claim in ?pid_norms that `scale` holds score-output
-  # column stems with no crosswalk. This has now drifted twice: M25 shipped it
-  # with `total` as a stated exception, and M26 removed the exception by adding
+  # column stems with no crosswalk. This has now drifted twice: M025 shipped it
+  # with `total` as a stated exception, and M026 removed the exception by adding
   # the BF total scorer. A future normed scale with no scorer fails here rather
   # than silently making the documentation false again.
   stems <- function(x) sub("^pid_", "", names(x))
@@ -609,7 +609,7 @@ test_that("every pid_norms scale is produced by score_pid5() or validity_pid5()"
     expect_setequal(setdiff(normed, produced[[v]]), character(0))
   }
 
-  # The BF total specifically -- the scale M26 added a scorer for.
+  # The BF total specifically -- the scale M026 added a scorer for.
   expect_true("total" %in% pid_norms$scale[pid_norms$version == "BF"])
   expect_true("pid_total" %in% names(
     score_pid5(sim_pid5bf, items = 1:25, version = "BF", append = FALSE)

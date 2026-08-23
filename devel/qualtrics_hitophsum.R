@@ -1,5 +1,5 @@
 # Maintainer script: build the HiTOP-HSUM Qualtrics survey via the Qualtrics
-# survey-definitions API, from the keying tables (M19; D-014/D-015).
+# survey-definitions API, from the keying tables (M019; D-014/D-015).
 #
 # The committed artifact inst/extdata/hitophsum_qualtrics.qsf is DERIVED from
 # hitophsum_items/hitophsum_choices via this script — never hand-edited in the
@@ -142,7 +142,7 @@ export_qualtrics_qsf <- function(api_token, data_center, survey_id) {
     error = function(e) NULL
   )
   # Never re-serialize a wrapped response — a jsonlite round-trip is not
-  # byte-faithful (M19 review F4). Anything that is not the bare QSF stops.
+  # byte-faithful (M019 review F4). Anything that is not the bare QSF stops.
   if (is.null(parsed$SurveyEntry) || is.null(parsed$SurveyElements)) {
     stop(
       "The export response is not QSF-shaped; export manually via ",
@@ -360,7 +360,7 @@ push_hitophsum_to_qualtrics <- function(
     }
 
     # 1. QuestionType/Selector resolve from Field_Type (never variable-name
-    # regexes — the regex path is what shipped an empty cigar dropdown; M18).
+    # regexes — the regex path is what shipped an empty cigar dropdown; M018).
     q_type <- switch(field_type, text = "TE", descriptive = "DB", "MC")
     q_selector <- switch(
       field_type,
@@ -371,7 +371,7 @@ push_hitophsum_to_qualtrics <- function(
       descriptive = "TB"
     )
 
-    # 2. Choices resolve from Choice_Set (quant_* sets included since M18).
+    # 2. Choices resolve from Choice_Set (quant_* sets included since M018).
     api_choices <- list()
     if (q_type == "MC") {
       sub_choices <- choices[choices$Choice_Set == charset, ]
@@ -477,7 +477,7 @@ push_hitophsum_to_qualtrics <- function(
 
   # A partial survey must never look like success: a missing gate parent
   # would ship its children ungated, and rebuild_hitophsum_qsf() would
-  # overwrite the good committed artifact (M19 review F1).
+  # overwrite the good committed artifact (M019 review F1).
   if (length(failed) > 0) {
     stop(
       length(failed),

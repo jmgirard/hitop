@@ -1,4 +1,4 @@
-## Mutation check for the book comparison in verify_norms_against_book.R (M35, AC4)
+## Mutation check for the book comparison in verify_norms_against_book.R (M035, AC4)
 #
 # data-raw/mutate_norms_check.R runs the seeded corruptions of `pid_norms`
 # against tests/testthat/test-norms.R. This script runs the same list against
@@ -9,7 +9,7 @@
 # The pristine dataset is restored on exit -- including on error -- and the
 # restore is checked by hash.
 #
-# The four cases M34 seeded are the ones this milestone's AC4 names -- the SF
+# The four cases M034 seeded are the ones this milestone's AC4 names -- the SF
 # withdrawal and FULL anhedonia percentile-column displacements and the two
 # column swaps -- but an exhaustive cell-by-cell diff should see every
 # corruption in the list, so the script asserts all of them and stops if any

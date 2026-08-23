@@ -1,4 +1,4 @@
-# M24: HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap)
+# M024: HiTOP-SR scale-subset generation (subset descriptor + docx/Qualtrics/REDCap)
 
 **Status:** done (2026-07-30, PR #27 https://github.com/jmgirard/hitop/pull/27)
 

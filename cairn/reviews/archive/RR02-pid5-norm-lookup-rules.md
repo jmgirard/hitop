@@ -1,4 +1,4 @@
-# RR02: PID-5 raw ↔ T ↔ percentile lookup rules (M27)
+# RR02: PID-5 raw ↔ T ↔ percentile lookup rules (M027)
 
 - **Date:** 2026-07-30
 - **Answers:** `cairn/reviews/RB02-pid5-norm-lookup-rules.md`
@@ -231,7 +231,7 @@ date", below IP2's citation bar; (iii) *access and redistribution* — it sits
 behind the publisher's platform, and captured outputs could not be committed as
 test fixtures with clean provenance; (iv) it plausibly returns T from the
 continuous formula, which would produce false failures against a table-derived
-rule. A one-time informal spot check by the maintainer, recorded in M27's work
+rule. A one-time informal spot check by the maintainer, recorded in M027's work
 log as corroboration (never as a test), is worthwhile if access is convenient —
 recommended below as *consider*.
 
@@ -283,7 +283,7 @@ recommended below as *consider*.
    the five effective T-maxima in `@details`; no runtime message (BC7).
 4. **Apply** — ship no fitted constants; permit the fitted line only as a
    test-time independent-recomputation oracle (BC1, BC10).
-5. **Apply** — amend M27 AC4's percentile-identity clause per BC9 (via the
+5. **Apply** — amend M027 AC4's percentile-identity clause per BC9 (via the
    milestone's "Deviations from RR02" table or a direct AC edit at ingest,
    whichever the tracking rules prescribe).
 6. **Apply** — document in `@details`: the selection rule with this RR cited
@@ -291,7 +291,7 @@ recommended below as *consider*.
    the brief 2), and the comparison tolerance (BC8).
 7. **Consider** — the test-time fitted-line ±1 T cross-check over attainable
    grids (BC10's optional clause).
-8. **Consider** — a one-time manual Pegaso spot check recorded in M27's work
+8. **Consider** — a one-time manual Pegaso spot check recorded in M027's work
    log as informal corroboration only.
 9. **Reject** — Pegaso as a test oracle or cited authority: unverifiable
    provenance, version drift, access/redistribution constraints (Q6).
@@ -340,7 +340,7 @@ recommended below as *consider*.
   use a documented absolute tolerance of 1e-8, so that binary representation of
   decimal and twelfth-grid raws never changes a selection. The tolerance
   appears in `@details`.
-- **BC9.** M27 AC4 is amended as follows: T → raw reproduces every printed row
+- **BC9.** M027 AC4 is amended as follows: T → raw reproduces every printed row
   exactly and raw → T → raw is the identity on every printed row, both
   including tie runs and above-ceiling rows; the raw → percentile identity
   holds for every printed row *outside* tie runs, and within a tie run the

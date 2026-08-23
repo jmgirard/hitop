@@ -6,12 +6,12 @@
 # document* (cited per block), never from data-raw/pid_items.csv. Provenance and
 # the two open discrepancies are documented in cairn/SOURCES.md.
 #
-# Ported from the PID-5-only fork (milestone M1). This repo's `pid_items` uses
+# Ported from the PID-5-only fork (milestone M001). This repo's `pid_items` uses
 # columns FULL / SF / BF where the fork used PID5 / PID5FSF / PID5BF. The BF
 # `Domain` structure (5 domains x 5 items) is verified against the APA PID-5-BF
-# Domain Scoring table in the BF block below (M6). The FULL/SF primary-facet ->
+# Domain Scoring table in the BF block below (M006). The FULL/SF primary-facet ->
 # domain map (`pid_domains`, driving score_pid5(version = "FULL"/"SF") domain
-# output) is verified against the APA full-form Domain Table in the final block (M7).
+# output) is verified against the APA full-form Domain Table in the final block (M007).
 
 # ---- Source: APA official PID-5 scoring key (Krueger et al., 2013), page 8 ----
 
@@ -217,7 +217,7 @@ test_that("BF is 25 items, 1:25, exactly 5 per domain, none reverse-keyed", {
 # ---- Source: APA PID-5 scoring key (Krueger et al., 2013), p. 8 Domain Table --
 # FULL/SF domain scores average the 3 facets contributing PRIMARILY to each
 # domain (Step 3). That 15-facet primary map is stored in `pid_domains` and drives
-# score_pid5(version = "FULL"/"SF") domain output (M7). Verify the map against the
+# score_pid5(version = "FULL"/"SF") domain output (M007). Verify the map against the
 # published Domain Table, independent of how `pid_domains` was built. NOTE: this
 # is the 3-primary-facet subset, NOT the broader 21-facet `pid_items$Domain`
 # grouping used for the BF.
@@ -245,7 +245,7 @@ test_that("pid_domains is 5 domains x 3 primary facets with valid, distinct stem
   # Every facet stem is a real FULL-form facet output stem (guards transcription).
   expect_true(all(unlist(pid_domains$facetStems) %in% pid_scales[["FULL"]]$camelCase))
   # The 5 domain stems match the BF DOMAIN output names (cross-form consistency).
-  # BF also carries a `total` row (M26), which is not a domain and is excluded
+  # BF also carries a `total` row (M026), which is not a domain and is excluded
   # here deliberately: this asserts the five domain names agree across forms.
   bf_domains <- setdiff(pid_scales[["BF"]]$camelCase, "total")
   expect_setequal(pid_domains$camelCase, bf_domains)

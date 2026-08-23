@@ -708,7 +708,7 @@ test_that("one suppressWarnings() silences the whole function", {
                 append = FALSE)
     )
   )
-  ## And the same lock on the two reports M29 reclassified: suppressMessages()
+  ## And the same lock on the two reports M029 reclassified: suppressMessages()
   ## leaves all three standing.
   under_msg <- collect_warnings(
     suppressMessages(

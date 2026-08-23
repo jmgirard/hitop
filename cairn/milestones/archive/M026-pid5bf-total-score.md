@@ -1,4 +1,4 @@
-# M26: PID-5-BF total score across scoring, reliability, and the BF paper forms
+# M026: PID-5-BF total score across scoring, reliability, and the BF paper forms
 
 **Status:** done (2026-07-30, PR #29 https://github.com/jmgirard/hitop/pull/29)
 
@@ -16,10 +16,10 @@ instrument rebuilds without churning all 19 checksums. Three falsified prose cla
 
 **Decisions:** [D-021](../../DECISIONS.md) the total prorates independently of the domains
 under `missing = "apa"` (up to 3 `NA` domains beside a reported total; the converse is
-unreachable) — promoted from M26-D1 at the merge gate, with M26-D2 recording the
+unreachable) — promoted from M026-D1 at the merge gate, with M026-D2 recording the
 promotion. [D-019](../../DECISIONS.md), authored at plan time, carried the ripple.
 
 **Review:** 3 lenses + scorer; 16 findings, **none ≥ 80**, all logged. Fixed anyway: a
 tautological DOCX assertion (75) and a stale `@examples` comment (62); the prior-review
-lens caught a third stale copy of a claim M25's own review had fixed. Maintainer declined
+lens caught a third stale copy of a claim M025's own review had fixed. Maintainer declined
 the first merge chip pending F1/F9; both fixed. Suite 9976, check 0/0/0, CI green.

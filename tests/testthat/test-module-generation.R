@@ -1,4 +1,4 @@
-# No-regression and round-trip invariants for the `module` argument (M24).
+# No-regression and round-trip invariants for the `module` argument (M024).
 #
 # Two properties, checked across all three HiTOP-SR generators:
 #   (1) module = NULL produces the same artifact as omitting the argument;

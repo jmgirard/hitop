@@ -1,4 +1,4 @@
-# Line-ending policy check (M47).
+# Line-ending policy check (M047).
 #
 # Walks every tracked path and reports four facts per path:
 #   * the `text` attribute git resolves for it (from .gitattributes)
@@ -14,7 +14,7 @@
 # must resolve to something other than `text=auto`, or its stored bytes depend
 # on a content heuristic rather than a declaration. That heuristic already
 # failed here: a Windows `actions/checkout` CRLF-converted the .txt/.qsf
-# artifacts and tripped the md5 lock during M20's review.
+# artifacts and tripped the md5 lock during M020's review.
 #
 # Four violations, any of which exits non-zero:
 #   1. a path no .gitattributes rule covers (`unspecified`)

@@ -1,4 +1,4 @@
-# Ground-truth oracle tests for the reliability functions (milestone M5):
+# Ground-truth oracle tests for the reliability functions (milestone M005):
 # calc_alpha() (covariance-based Cronbach's alpha) and calc_omega()
 # (omega-total via a one-factor lavaan CFA).
 
@@ -92,15 +92,15 @@ test_that("calc_omega() rejects degenerate input", {
   expect_error(calc_omega("nope"), "data frame or matrix")
 })
 
-# ---- reliability_*() family (milestone M15) ---------------------------------
+# ---- reliability_*() family (milestone M015) ---------------------------------
 # The returning family that replaced the print-only alpha/omega args on the
 # score_*() functions. Each resolves its instrument data and hands the reverse-
 # keyed items to reliability_engine(), which calls calc_alpha()/calc_omega() per
 # scale. Oracles below independently recompute alpha from hardcoded official item
-# numbers (the same strategy as the M13 print oracle it replaces), so they catch
+# numbers (the same strategy as the M013 print oracle it replaces), so they catch
 # a transcription error in the scales tables or a broken reverse-key in the prep.
 
-test_that("reliability_hitopbr() matches independently recomputed alphas (M13 oracle)", {
+test_that("reliability_hitopbr() matches independently recomputed alphas (M013 oracle)", {
   # ku_hitopbr: columns 1-2 are participant/biosex, then hbr01..hbr45.
   d <- ku_hitopbr
   items <- 3:47
@@ -166,7 +166,7 @@ test_that("reliability_*() return a per-scale tibble with the requested columns"
   # PID-5 reliability is facet-level (25), before FULL/SF domain aggregation.
   rel_pid <- reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)
   expect_equal(nrow(rel_pid), 25L)
-  # BF is 5 domains + the 25-item total (M26), so 6 rows.
+  # BF is 5 domains + the 25-item total (M026), so 6 rows.
   rel_bf <- reliability_pid5(sim_pid5bf, items = 1:25, version = "BF", omega = FALSE)
   expect_equal(nrow(rel_bf), 6L)
   expect_true("Total" %in% rel_bf$scale)
@@ -190,7 +190,7 @@ test_that("reliability omega is NA-safe on a zero-variance scale (no abort)", {
   expect_true(all(is.na(rel$omega)))
 })
 
-# --- module reliability (M37) -----------------------------------------------
+# --- module reliability (M037) -----------------------------------------------
 
 test_that("reliability_hitopsr(module=) returns one row per module scale", {
   s <- hitop_module(

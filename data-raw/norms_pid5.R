@@ -33,7 +33,7 @@ scale_for <- stats::setNames(
   names(domain_abbr)
 )
 ## The PID-5-BF total has no facet or domain entry of its own: it is the
-## whole-form score that `score_pid5(version = "BF")` gains in M26 (D-017),
+## whole-form score that `score_pid5(version = "BF")` gains in M026 (D-017),
 ## whose output column stem is "total".
 scale_for["TOT"] <- "total"
 

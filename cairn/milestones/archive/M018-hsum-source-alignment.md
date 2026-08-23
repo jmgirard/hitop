@@ -1,4 +1,4 @@
-# M18: HiTOP-HSUM source alignment (revised SUD module, August 2024) — done 2026-07-16
+# M018: HiTOP-HSUM source alignment (revised SUD module, August 2024) — done 2026-07-16
 
 **Goal:** make `hitophsum_items`/`hitophsum_choices` and the HSUM DOCX/REDCap generators faithful to the authoritative "revised SUD module-August 2024" sheet (D-014), fixing the broken cigar-quantity field, the PNTS gate leak, and the item-text divergences, with provenance in SOURCES.md.
 

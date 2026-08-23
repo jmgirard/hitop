@@ -9,7 +9,7 @@
 #' `domain_map` feature is used only by PID-5; HiTOP-SR/BR pass NULL and get the
 #' plain per-scale path with no domains. This is the scoring analog of the
 #' generators' build_* internals. Reliability (alpha/omega) is no longer computed
-#' here — it moved to the returning reliability_*() family (M15).
+#' here — it moved to the returning reliability_*() family (M015).
 #'
 #' @param data,items,srange,prefix,calc_se,append As in the wrappers.
 #' @param n_items Expected length of `items` (the instrument's item count).

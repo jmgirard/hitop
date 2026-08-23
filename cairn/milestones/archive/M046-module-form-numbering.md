@@ -1,4 +1,4 @@
-# M46: Renumbered and optionally shuffled HiTOP-SR module Word forms
+# M046: Renumbered and optionally shuffled HiTOP-SR module Word forms
 
 **Status:** done (2026-08-22, PR #52 https://github.com/jmgirard/hitop/pull/52)
 
@@ -22,4 +22,4 @@ actionable. Diff-bug returned ten, all reproduced and fixed; three returned the
 milestone — shuffled-form data mis-scoring through `score_hitopsr()` undocumented,
 the crosswalk suppressed under `include_scoring = FALSE`, AC5 asserted by an
 identity. Gate: crosswalk module-only, hazard documented. Hygiene corrected the
-M24 CRLF lesson's stale file count.
+M024 CRLF lesson's stale file count.

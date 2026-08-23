@@ -1,5 +1,5 @@
 # Ground-truth verification of the committed HiTOP-HSUM Qualtrics QSF
-# (inst/extdata/hitophsum_qualtrics.qsf) against the keying tables (M19).
+# (inst/extdata/hitophsum_qualtrics.qsf) against the keying tables (M019).
 #
 # Oracle: parse the QSF's JSON and compare every question's text, choices,
 # and display logic to expectations derived independently from
@@ -190,7 +190,7 @@ test_that("QSF choices match each item's Choice_Set values and labels", {
       label = paste(var, "labels")
     )
     # Display ORDER is participant-facing: choices render in table order,
-    # never (e.g.) Prefer-not-to-say first (M19 review F5).
+    # never (e.g.) Prefer-not-to-say first (M019 review F5).
     expect_identical(
       as.character(unlist(p$ChoiceOrder)),
       as.character(cs$Value),
@@ -249,7 +249,7 @@ test_that("QSF display logic expands Gate_Variable/Gate_Value correctly", {
 
       # Multi-condition gates must join with Or: an And regression makes a
       # radio-parent gate unsatisfiable and every item under it invisible
-      # (M19 review F2). The first expression carries no conjunction.
+      # (M019 review F2). The first expression carries no conjunction.
       conjs <- vapply(
         exprs,
         function(e) e$Conjunction %||% NA_character_,
@@ -269,7 +269,7 @@ test_that("QSF display logic expands Gate_Variable/Gate_Value correctly", {
 test_that("ungated items carry no display logic", {
   skip_if_not(have_jsonlite)
   # A spurious gate on an ungated row — the substance entry questions above
-  # all — would silently suppress a whole module (M19 review F3).
+  # all — would silently suppress a whole module (M019 review F3).
   ungated <- hitophsum_items$Variable[
     is.na(hitophsum_items$Gate_Variable) | is.na(hitophsum_items$Gate_Value)
   ]

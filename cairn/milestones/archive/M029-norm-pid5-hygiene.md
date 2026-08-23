@@ -1,8 +1,8 @@
-# M29: `norm_pid5()` hygiene and robustness
+# M029: `norm_pid5()` hygiene and robustness
 
 **Status:** done (2026-07-31, PR #32 https://github.com/jmgirard/hitop/pull/32)
 
-**Goal:** Close the sub-threshold review findings M27 and M28 left on the PID-5
+**Goal:** Close the sub-threshold review findings M027 and M028 left on the PID-5
 norming family: fail loudly on bad input, never return a silently wrong number.
 
 **Outcome:** New `strip_prefix()` (`R/util.R`) matches `prefix` literally in

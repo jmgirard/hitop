@@ -1,4 +1,4 @@
-# M37: Score HiTOP-SR subset-collected data
+# M037: Score HiTOP-SR subset-collected data
 
 **Status:** done (2026-08-01, PR #40 https://github.com/jmgirard/hitop/pull/40)
 

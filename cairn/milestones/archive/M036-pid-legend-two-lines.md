@@ -1,4 +1,4 @@
-# M36: Two-line response-option legend on the PID paper forms
+# M036: Two-line response-option legend on the PID paper forms
 
 **Status:** done (2026-07-31, PR #39 https://github.com/jmgirard/hitop/pull/39)
 

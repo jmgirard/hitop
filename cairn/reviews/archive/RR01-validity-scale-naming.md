@@ -7,7 +7,7 @@
 Materials read: `R/validity_pid5.R`; `R/data.R` (validity-column docs);
 `data-raw/pid_items.csv` (header); `tests/testthat/test-validity_pid5.R`,
 `test-keying.R`, `helper-fixtures.R`; `cairn/SOURCES.md`; `cairn/DESIGN.md`
-IP1–IP4/GP1–GP4; `cairn/milestones/M25-pid5-norms-ingest.md` (Goal/Scope);
+IP1–IP4/GP1–GP4; `cairn/milestones/M025-pid5-norms-ingest.md` (Goal/Scope);
 `NEWS.md` (0.2.0); `DESCRIPTION` (Imports); and the book itself
 (`cairn/references/sources/markon2024.epub` — Appendix table captions and
 Chapter 4 term usage, extracted directly from the XHTML).
@@ -69,7 +69,7 @@ internally-consistent and primary-source-consistent.
 The distinction that resolves the brief's "not obvious which this book is"
 question: authority is per-content-type, not per-document. For the **normative
 tables**, the book is the primary source — the percentiles originate there,
-computed on the book's normative sample — and M25 correctly cites it as the
+computed on the book's normative sample — and M025 correctly cites it as the
 authority (IP2/IP3). For the **identity and name of a scale the book did not
 develop**, the development paper is the primary source and the book is a
 secondary description, regardless of its authors' standing as PID-5
@@ -92,10 +92,10 @@ documentation, in two places serving two audiences:
   about sources*, and it must exist regardless of any package-facing surface.
 - **Package documentation (user-facing; one sentence, not a dataset).** A
   reader of Markon et al. (2024) will look for "VRIN". The right surface is a
-  brief "also known as" note: in the `pid_norms` roxygen block (in M25 scope —
+  brief "also known as" note: in the `pid_norms` roxygen block (in M025 scope —
   T8 writes that block anyway) and, as later work, in `validity_pid5()`'s
   `@details` (e.g. "the INC is also called the PID-5 Variable Response
-  Inconsistency (VRIN) scale, e.g. by Markon et al., 2024"). M26's
+  Inconsistency (VRIN) scale, e.g. by Markon et al., 2024"). M026's
   `norm_pid5()` help is the natural second home when it exists.
 
 An **exported alias table** (a data object mapping book names to columns) is
@@ -135,14 +135,14 @@ columns, `pid_items` columns, docs, tests), NEWS + D-entry.
   are expensive and another reason not to make this one.
 - **(c) `pid_norms$scale`:** ratify the session's provisional decision —
   carry **package column stems** (`INC`, `INCS`, `ORS`, `PRD`), not book
-  names. M26's lookup function then joins scored output to norm rows by
+  names. M026's lookup function then joins scored output to norm rows by
   string equality with zero crosswalk code, which is the researcher-workflow
   test GP3 imposes. Nothing is lost: the book's names live in SOURCES.md
   (AC2) and the `pid_norms` documentation note (Q4). Putting book names in
   the data and package names in the code would manufacture a permanent
   translation layer to honor the less consistent of the two sources.
 
-### 7. Anything to change in how M25 records the mapping? **Two refinements to what AC2's record should say; no AC wording change needed.**
+### 7. Anything to change in how M025 records the mapping? **Two refinements to what AC2's record should say; no AC wording change needed.**
 
 AC2's parenthetical "(VRIN, ORS, PIM-RD)" is close but the record itself
 should use the book's *actual* labels, verified from the EPUB:
@@ -163,7 +163,7 @@ should use the book's *actual* labels, verified from the EPUB:
 Additionally worth one line in the record: Chapter 4 contains no mention of
 the Williams SD-TD scale at all (zero occurrences of "SD-TD", "Total Denial",
 or "Social Desirability" as a scale name), and no appendix table norms it —
-consistent with M25 shipping no SDTD table and creating no naming pressure on
+consistent with M025 shipping no SDTD table and creating no naming pressure on
 `SDTD`/`SDTDS`.
 
 ## Beyond the brief
@@ -198,14 +198,14 @@ consistent with M25 shipping no SDTD table and creating no naming pressure on
    sign-off on this RR closes the question; no rename milestone is needed.
 2. **Apply — ratify `pid_norms$scale` = package column stems** (`INC`,
    `INCS`, `ORS`, `PRD` for the four validity tables), per Q6c.
-3. **Apply — within M25's existing AC2/T5 scope,** record the mapping in
+3. **Apply — within M025's existing AC2/T5 scope,** record the mapping in
    SOURCES.md using the book's verbatim labels and anchors, including the
    A–2 caption-vs-text inconsistency and the fact that the book's PRD
    abbreviation is PID-5-PRD (identity mapping), per Q7; and include a
    one-sentence book-name note in the `pid_norms` roxygen block T8 writes.
-4. **Consider — future trivial-tier or M26 work:** add the "also known as
+4. **Consider — future trivial-tier or M026 work:** add the "also known as
    VRIN (Markon et al., 2024)" sentence to `validity_pid5()`'s `@details`,
-   and to `norm_pid5()`'s help when M26 creates it, so book readers find the
+   and to `norm_pid5()`'s help when M026 creates it, so book readers find the
    columns.
 5. **Consider — maintainer spot-check** of Keeley et al. (2016)'s in-text
    abbreviation next time the PDF is at hand (B1); record the answer in
@@ -221,18 +221,18 @@ consistent with M25 shipping no SDTD table and creating no naming pressure on
 
 The naming outcome is "no change", but the brief flagged `pid_norms$scale` as
 provisional and this RR is its ratification vehicle, so the following bind
-M25's implementation. No numeric projections are made; no tolerances apply.
+M025's implementation. No numeric projections are made; no tolerances apply.
 
 - **BC1.** In the shipped `pid_norms`, the `scale` values for the four
   validity tables are exactly the package column stems — `"INC"` (book Table
   A–1), `"INCS"` (A–2), `"ORS"` (A–3), `"PRD"` (A–4) — and no `scale` value
   anywhere in `pid_norms` is `"VRIN"`, `"VRINS"`, `"INC-S"`, `"PIM-RD"`, or
   any other book-caption spelling.
-- **BC2.** M25 introduces no rename of existing validity-scale names on any
+- **BC2.** M025 introduces no rename of existing validity-scale names on any
   exported surface: `validity_pid5()` output column names and the
   `pid_items`/`data-raw/pid_items.csv` validity columns (`INC`, `INCS`,
   `ORS`, `ORSS`, `PRD`, `PRDS`, `SDTD`, `SDTDS`) are unchanged from their
-  pre-M25 state.
+  pre-M025 state.
 - **BC3.** The `cairn/SOURCES.md` PID-5 norms section required by AC2 records,
   with table/page anchors: (a) the A–2 caption name "Variable Response
   Inconsistency (VRIN)" *and* the Chapter 4 name "PID-5-INC-S" as an internal

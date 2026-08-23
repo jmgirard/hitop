@@ -1,4 +1,4 @@
-## Mutation check for tests/testthat/test-norms.R (M25, AC4)
+## Mutation check for tests/testthat/test-norms.R (M025, AC4)
 #
 # A test suite that passes proves nothing about what it would catch. This
 # script applies, one at a time, each corruption test-norms.R is meant to

@@ -1,4 +1,4 @@
-# Parsers for the generate_* export-family tests (milestone M10).
+# Parsers for the generate_* export-family tests (milestone M010).
 #
 # The oracle strategy for the file generators is "parse the output back and
 # compare it to the SOURCE instrument datasets, derived independently" -- the

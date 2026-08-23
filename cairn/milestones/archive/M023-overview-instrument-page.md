@@ -1,17 +1,17 @@
-# M23: Overview instrument page (SR/BR/HSUM link cards) (done 2026-07-17)
+# M023: Overview instrument page (SR/BR/HSUM link cards) (done 2026-07-17)
 
 - **Goal:** a single beautified pkgdown page of at-a-glance summary link-cards for
   the three main HiTOP self-report measures (SR, BR, HSUM), embeddable by URL on
   hitop-system.org in place of the three separate embeds.
 - **PR:** https://github.com/jmgirard/hitop/pull/25 (squash-merged 2026-07-17);
   planned + implemented + reviewed same day. Absorbed the "Overview instrument
-  page" candidate (lineage M21).
+  page" candidate (lineage M021).
 - **Shipped:** new `vignettes/articles/overview.Rmd` — three summary cards (icon,
   name, item/scale summary, description, "View & download →" link to each download
-  page), a static `{=html}` row reusing the M21 `.hitop-downloads` card/theme
+  page), a static `{=html}` row reusing the M021 `.hitop-downloads` card/theme
   classes (no new helper, no inline `<style>`, full-width + light/dark via unchanged
   `pkgdown/extra.css`). Added as the **first** "Instruments" navbar entry (with a
-  `---` separator, mirroring M22's Tutorials pattern). New `test-overview.R` locks
+  `---` separator, mirroring M022's Tutorials pattern). New `test-overview.R` locks
   page presence + exactly the three instrument-page links via `expect_setequal`.
   NEWS entry. Scope: three main HiTOP instruments only (PID-5 excluded); downloads
   stay on the per-instrument pages; external iframe markup out of scope.

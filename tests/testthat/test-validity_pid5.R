@@ -189,7 +189,7 @@ test_that("row count is preserved by validity_pid5 for every version", {
   )
 })
 
-# ---- srange-vs-published-cutoff guard (M11) ---------------------------------
+# ---- srange-vs-published-cutoff guard (M011) ---------------------------------
 # PRD and SD-TD compare raw sums to fixed thresholds that assume 0-3 coding, so
 # a non-0-3 srange silently mis-flags respondents. FULL/SF warn; BF (PNA only)
 # does not. The warning is a pure side effect: scores are unchanged.

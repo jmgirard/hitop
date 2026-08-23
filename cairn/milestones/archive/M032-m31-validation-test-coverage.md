@@ -1,8 +1,8 @@
-# M32: Test coverage for M31's argument-validation additions
+# M032: Test coverage for M031's argument-validation additions
 
 **Status:** done (2026-07-31, PR #35 https://github.com/jmgirard/hitop/pull/35)
 
-**Goal:** Give M31's three untested argument-validation additions assertions that
+**Goal:** Give M031's three untested argument-validation additions assertions that
 fail when the addition is reverted, and make the `norm_shift()` loop name its failing case.
 
 **Outcome:** Tests only; `R/` untouched. `test-validate.R` gained a supplied-type block
@@ -19,6 +19,6 @@ verification clause before the file was written (`covered_scales` is version-key
 per-case expected set exists to mutate).
 
 **Review:** Blame-history and prior-review lenses returned nothing — the first confirming the
-reshape preserves the whole-set coverage M31 bought, the second that this closes M31's
+reshape preserves the whole-set coverage M031 bought, the second that this closes M031's
 findings 78/68. Diff-bug returned 13, all below 80, none actioned, all logged with scores
 (top two: 72 dead `suppressMessages()`, 52 unpinned condition class); no candidate row.

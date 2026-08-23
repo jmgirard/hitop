@@ -1,4 +1,4 @@
-# M33: PID-5 facet-level norms
+# M033: PID-5 facet-level norms
 
 **Status:** done (2026-07-31, PR #36 https://github.com/jmgirard/hitop/pull/36)
 

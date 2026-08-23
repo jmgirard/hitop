@@ -1,4 +1,4 @@
-# RB01: Validity-scale naming — harmonize to the book, or keep primary-source names? (M25)
+# RB01: Validity-scale naming — harmonize to the book, or keep primary-source names? (M025)
 
 - **Date:** 2026-07-30
 - **Output required:** write findings to `cairn/reviews/RR01-validity-scale-naming.md`
@@ -34,14 +34,14 @@ currently shipped are:
 | `SDTDS` | SD-TD — Short Form | SF | (short-form variant; cut-scores unvalidated) |
 | `PNA` | Percent missing (not a published scale) | all | — |
 
-**What prompted this review.** Milestone M25 is ingesting the PID-5 normative
+**What prompted this review.** Milestone M025 is ingesting the PID-5 normative
 tables from a newly acquired primary source:
 
 > Markon, K. E., Fossati, A., Somma, A., & Krueger, R. F. (2024).
 > *Understanding the Personality Inventory for DSM-5 (PID-5).*
 > American Psychiatric Association Publishing. ISBN 9781615375127.
 
-The book's Appendix carries 12 normative tables; M25 ships seven of them.
+The book's Appendix carries 12 normative tables; M025 ships seven of them.
 Four of those seven are validity-scale percentile tables, and while mapping
 them to package columns it emerged that the book's naming and the package's
 naming diverge on exactly one scale — and that **the book is internally
@@ -105,7 +105,7 @@ Read these, in this order:
 6. `cairn/DESIGN.md` lines 88–98 — the numbered principles IP1–IP4 and GP1–GP4.
    IP2, GP2, and GP3 are the ones that bear on this question; they are quoted
    under Constraints below.
-7. `cairn/milestones/M25-pid5-norms-ingest.md` — the milestone in flight, for
+7. `cairn/milestones/M025-pid5-norms-ingest.md` — the milestone in flight, for
    its Goal and Scope sections only.
 
 The book itself is on the gitignored source shelf at
@@ -113,7 +113,7 @@ The book itself is on the gitignored source shelf at
 appendix is `OEBPS/xhtml/20_Appendix.xhtml` and chapter 4 is
 `OEBPS/xhtml/10_Chapter04.xhtml`, both well-formed XHTML readable with
 `python3` + `zipfile`. No `cairn/references/<citekey>.md` summary exists yet —
-authoring it is a later task of M25 (T5), so quote the book directly if you
+authoring it is a later task of M025 (T5), so quote the book directly if you
 need more than the passages excerpted above.
 
 ## Questions
@@ -145,11 +145,11 @@ need more than the passages excerpted above.
    **scored-output column names** from `validity_pid5()`, (b) the
    **keying-table column names** in `pid_items`/`data-raw/pid_items.csv`, and
    (c) the `scale` **values inside the forthcoming `pid_norms` dataset** that
-   M25 is building. The session's provisional decision — not yet ratified — was
-   that `pid_norms$scale` should carry package column names so that M26's
+   M025 is building. The session's provisional decision — not yet ratified — was
+   that `pid_norms$scale` should carry package column names so that M026's
    planned lookup function can join scored output to norm rows by name.
-7. Does anything in the review change how M25 should record the mapping in
-   `cairn/SOURCES.md`? M25's acceptance criterion AC2 already requires "the
+7. Does anything in the review change how M025 should record the mapping in
+   `cairn/SOURCES.md`? M025's acceptance criterion AC2 already requires "the
    maintainer-confirmed mapping from each book scale name (VRIN, ORS, PIM-RD)
    to the package column it norms".
 
@@ -177,10 +177,10 @@ around a constraint silently.
   of deliberate breaking API changes (see `NEWS.md` for 0.2.0). The
   tracking rules allow a pre-1.0 project to waive the deprecation cycle with
   explicit maintainer approval.
-- **M25's scope is fixed** and does not include renaming anything: it ingests
+- **M025's scope is fixed** and does not include renaming anything: it ingests
   the seven norm tables, writes provenance, builds `pid_norms`, and tests it.
   If you recommend a rename, recommend it as separate future work, not as an
-  M25 amendment.
+  M025 amendment.
 - **Do not modify any file** other than writing your findings to the RR path.
   In particular, do not edit `R/`, `data-raw/`, `tests/`, or the milestone file.
 
@@ -198,5 +198,5 @@ through that milestone's shown "Deviations from RR01" table.
 
 Note: if your conclusion is that no implementation change should follow (for
 example, that the package should keep its current names), then emit **no**
-`## Binding criteria` section at all rather than an empty one — M25's
+`## Binding criteria` section at all rather than an empty one — M025's
 acceptance criteria are then left exactly as planned.

@@ -1,6 +1,6 @@
-# AC7 characterization harness for M31.
+# AC7 characterization harness for M031.
 #
-# Captures every returned value of the five functions M31 touches, across the
+# Captures every returned value of the five functions M031 touches, across the
 # versions and `missing` modes the suite exercises, into one .rds. Run once on
 # the pre-milestone tree and once at the end; the two must be identical().
 #

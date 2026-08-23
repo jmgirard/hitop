@@ -273,7 +273,7 @@ generate_docx_hitopsr <- function(
   # one dense paragraph on a participant-facing page, and D-036 signed off the
   # crosswalk for module forms only -- so the whole-instrument caller reads the
   # order from the returned `item_order` instead (maintainer decision, 2026-08-22
-  # M46 review gate).
+  # M046 review gate).
   crosswalk_msg <- NULL
   if (randomize && renumber && !is.null(module)) {
     crosswalk_msg <- paste(

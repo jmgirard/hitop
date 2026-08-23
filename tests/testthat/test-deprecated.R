@@ -103,7 +103,7 @@ arg_consumers <- list(
 # regexp selecting WHICH warnings count — passing the function name there makes
 # the expectation vacuous, since no real warning would ever match it. So warnings
 # are captured and counted instead, which both names the failing iteration and
-# actually fails when a warning is raised (the M32 recast-as-expect_equal
+# actually fails when a warning is raised (the M032 recast-as-expect_equal
 # pattern).
 warnings_raised <- function(expr) {
   seen <- character()

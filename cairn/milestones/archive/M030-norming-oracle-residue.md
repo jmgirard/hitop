@@ -1,4 +1,4 @@
-# M30: Norming-family test oracles and internal consistency
+# M030: Norming-family test oracles and internal consistency
 
 **Status:** done (2026-07-31, PR #33 https://github.com/jmgirard/hitop/pull/33)
 

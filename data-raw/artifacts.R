@@ -11,7 +11,7 @@
 ## build ran them, so the script records what it last did.
 ##
 ## The HSUM Qualtrics QSF is NOT rebuilt here — it is a genuine Qualtrics
-## export built via the API by devel/qualtrics_hitophsum.R (M19). Its
+## export built via the API by devel/qualtrics_hitophsum.R (M019). Its
 ## manifest row is computed from the committed file on disk; when that file
 ## is replaced, set `qsf_build_date`/`qsf_note` accordingly.
 
@@ -22,7 +22,7 @@ extdata <- "inst/extdata"
 ## Restrict the rebuild to specific instrument stems, e.g. c("pid5bf"); NULL
 ## rebuilds every artifact. A targeted rebuild is usually what you want: DOCX
 ## footers carry a Sys.Date() build stamp and REDCap zips embed member mtimes
-## (LESSONS M20), so rebuilding wholesale changes EVERY artifact's checksum --
+## (LESSONS M020), so rebuilding wholesale changes EVERY artifact's checksum --
 ## and therefore appends a manifest row for every file -- even when only one
 ## instrument's content actually changed. Only the rebuild loops honor this;
 ## the manifest section below still reads all files from disk and appends a row

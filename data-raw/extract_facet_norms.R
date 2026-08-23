@@ -1,8 +1,8 @@
-## Extract the PID-5 facet normative tables (A-6, A-8) from the book (M33)
+## Extract the PID-5 facet normative tables (A-6, A-8) from the book (M033)
 #
 # Writes data-raw/norms_pid5_facets.csv and data-raw/norms_pid5sf_facets.csv
 # from the book's own table markup. The domain and validity CSVs were small
-# enough to transcribe by hand (M25); these two carry 3,550 cells each side of
+# enough to transcribe by hand (M025); these two carry 3,550 cells each side of
 # the raw/percentile pair, so they are machine-extracted here instead.
 #
 # That makes the check in data-raw/verify_norms_against_book.R a *cross-check of
@@ -15,7 +15,7 @@
 # values in tests/testthat/test-norms.R, read off the rendered page.
 #
 # Requires xml2 and readr installed locally; maintainer tools, not package
-# dependencies (M18 lesson).
+# dependencies (M018 lesson).
 #
 # Usage:  Rscript data-raw/extract_facet_norms.R
 

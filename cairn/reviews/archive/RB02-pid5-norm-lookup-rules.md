@@ -1,4 +1,4 @@
-# RB02: PID-5 raw ↔ T ↔ percentile lookup rules (M27)
+# RB02: PID-5 raw ↔ T ↔ percentile lookup rules (M027)
 
 - **Date:** 2026-07-30
 - **Output required:** write findings to `cairn/reviews/RR02-pid5-norm-lookup-rules.md`
@@ -20,7 +20,7 @@ validity scales are integer sums: `INC`/`INCS` (sums of within-pair absolute
 differences), `ORS` (a count of items answered at the range maximum), `PRD` (a
 22-item raw sum).
 
-Milestone M25 shipped the dataset `pid_norms` (1,056 rows;
+Milestone M025 shipped the dataset `pid_norms` (1,056 rows;
 `version`/`scale`/`tscore`/`raw`/`percentile`), transcribed from the normative
 tables in Markon, Fossati, Somma & Krueger (2024), *Understanding the PID-5*
 (APA Publishing), Appendix "Normative Score Distributions", pp. 113–219, and
@@ -29,7 +29,7 @@ verified cell-for-cell against the book by `data-raw/verify_norms_against_book.R
 carry a `tscore`; the four validity scales carry `NA` there and are
 score→percentile only.
 
-Milestone M27 now builds `norm_pid5()`, which converts scored columns to T
+Milestone M027 now builds `norm_pid5()`, which converts scored columns to T
 scores and percentiles. Its acceptance criterion AC1 requires that three numeric
 rules be settled by independent review **before** the conversion primitives
 ship, because the book prints tables and no instruction for using them.
@@ -51,7 +51,7 @@ Read, in this order:
 1. `cairn/references/markon2024.md` — the source note for the book: citation,
    which seven of the twelve Appendix tables ship, page anchors, the normative
    sample, and open questions.
-2. `cairn/milestones/M27-pid5-norming-functions.md` — the milestone. AC1 is the
+2. `cairn/milestones/M027-pid5-norming-functions.md` — the milestone. AC1 is the
    criterion this brief serves; AC2–AC7 are the surrounding contract (signature,
    column naming, capping, `srange` reconciliation, documentation).
 3. `cairn/DESIGN.md` lines 89–95 — principles IP2, IP3, IP4, GP1 (quoted under
@@ -197,7 +197,7 @@ report rather than silently working around it.
   an `NA` total has no T to convert. Not open here.
 - **D-018** settles the scale names (`INC`, not the book's "VRIN"). Not open
   here.
-- **M27's AC2 signature and column contract** — `(data, scores, version, srange,
+- **M027's AC2 signature and column contract** — `(data, scores, version, srange,
   prefix, append = TRUE)`, one `_t` column per T-carrying covered scale and one
   `_ptl` per covered scale — is fixed. AC5's out-of-table capping decision is
   likewise fixed.
@@ -215,6 +215,6 @@ the brief"; end with concrete recommendations, each marked apply / consider /
 reject-with-reason. Where findings bind implementation, also emit a
 `## Binding criteria` section: numbered `BC1…`, each a measurable assertion
 checkable against evidence, with any numeric projection stating its tolerance.
-These are ingested VERBATIM into M27's acceptance criteria and mechanically
-diffed against this file; departures are legal only through M27's shown
+These are ingested VERBATIM into M027's acceptance criteria and mechanically
+diffed against this file; departures are legal only through M027's shown
 "Deviations from RR02" table.

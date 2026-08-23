@@ -1,10 +1,10 @@
 # Ground-truth oracle tests for score_pid5(). Expected values are hand-computed
 # in helper-fixtures.R from the published PID-5 keys, never read from the code.
 #
-# score_pid5() outputs 25 facets + 5 domains for FULL/SF (M7) and 5 domains for
+# score_pid5() outputs 25 facets + 5 domains for FULL/SF (M007) and 5 domains for
 # BF. FULL/SF domains average the 3 primary facets of each domain (APA Step 3);
 # the primary-facet map (`pid_domains`) is verified against the APA source in
-# test-keying.R. The BF 5-domain structure is verified there too (M6).
+# test-keying.R. The BF 5-domain structure is verified there too (M006).
 
 # ---- FULL (220 items) -------------------------------------------------------
 
@@ -138,7 +138,7 @@ test_that("BF missing-item handling differs by missing level", {
   expect_equal(d_apa$pid_detachment[4], 1)
 })
 
-# ---- FULL/SF domains (M7) ---------------------------------------------------
+# ---- FULL/SF domains (M007) ---------------------------------------------------
 # Domain = mean of its 3 PRIMARY facet average scores (APA Step 3). The facet
 # values used below are the hand-computed fixture facets from helper-fixtures.R.
 
@@ -162,7 +162,7 @@ test_that("FULL gains 5 domain columns named like BF, appended after the 25 face
   f <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", append = FALSE)
   expect_equal(ncol(f), 30L)                                  # 25 facets + 5 domains
   expect_equal(tail(names(f), 5), paste0("pid_", pid_domains$camelCase))
-  # BF's `total` row (M26) is not a domain and is excluded: the claim is that
+  # BF's `total` row (M026) is not a domain and is excluded: the claim is that
   # FULL's 5 domain columns are named like BF's 5 DOMAIN columns.
   expect_setequal(
     paste0("pid_", pid_domains$camelCase),
@@ -240,7 +240,7 @@ test_that("BF total is the item-level mean over all 25 items (hand-computed orac
   # total = 25/25 = 1.
   expect_equal(d$pid_total[[4]], 1)
 
-  # And it prorates INDEPENDENTLY of the domains (M26 implementation gate): items
+  # And it prorates INDEPENDENTLY of the domains (M026 implementation gate): items
   # 1, 2, 3, 5 are all Disinhibition, so 4 of that domain's 5 items are missing
   # (80% > 25%) and the domain drops -- while the total above still computes.
   expect_true(is.na(d$pid_disinhibition[[4]]))
@@ -276,12 +276,12 @@ test_that("domain _se columns appear iff calc_se and derive from the 3 facet sco
   expect_equal(f$pid_detachment_se[2], stats::sd(facets_r2) / sqrt(3))
 })
 
-# ---- APA missing-data / proration scoring (M8, default missing = "apa") ----
+# ---- APA missing-data / proration scoring (M008, default missing = "apa") ----
 # APA full-form key (Krueger et al., 2013, p. 8), sourced verbatim in SOURCES.md:
 #   > 25% of a facet's items unanswered -> facet NA ("should not be used").
 #   <= 25% unanswered -> prorate: round(partial_raw * n_items / n_answered), then
 #   average = prorated_raw / n_items. Domain NA if any of its 3 facets is NA.
-# The BF key applies the same rule to its 5-item domains (M6). With no missing
+# The BF key applies the same rule to its 5-item domains (M006). With no missing
 # items APA and traditional scoring agree, so the completed-data fixture tests
 # above already cover the no-missing case for both modes.
 
@@ -388,11 +388,11 @@ test_that("missing = complete returns NA for any scale touching a missing item",
   expect_false(is.na(comp$pid_anxiousness[4]))
 })
 
-# ---- Single-row input with calc_se (regression for the M8 follow-up) ---------
+# ---- Single-row input with calc_se (regression for the M008 follow-up) ---------
 # A one-row input drove the facet-SE `apply(data_items[, x], MARGIN = 1, ...)`
 # to index a 1-row matrix down to a vector, so `apply(MARGIN = 1)` errored with
 # "dim(X) must have a positive length". The fix adds `drop = FALSE` (mirroring
-# the domain-SE path and validity_pid5's single-row fix from M3). The SE of a
+# the domain-SE path and validity_pid5's single-row fix from M003). The SE of a
 # scale on one respondent is calc_sem over that scale's reverse-keyed item
 # values: sd(items) / sqrt(k). The expected values below hardcode those item
 # values from the official key (independent of the package's keying tables).
@@ -457,7 +457,7 @@ test_that("SF applies the APA rule the same way as FULL", {
 })
 
 test_that("BF total honors every `missing` mode (hand-computed)", {
-  # F9 (M26 review): the total was covered only under missing = "apa". Expected
+  # F9 (M026 review): the total was covered only under missing = "apa". Expected
   # values below are computed BY HAND from fx_pid5bf(), never from score_pid5().
   #   rows 1-3 are complete; row 4 has items 1:5 unanswered (20 answered, all 1)
   #   row 3 = all 1 except items 1,2,3,5,6 = 0,1,2,3,3 -> sum 29
@@ -483,7 +483,7 @@ test_that("BF total honors every `missing` mode (hand-computed)", {
 })
 
 test_that("BF total standard error is the SEM over its answered items", {
-  # F9 (M26 review): six `_se` columns were counted but none checked by value.
+  # F9 (M026 review): six `_se` columns were counted but none checked by value.
   # Recomputed here from the fixture with base R, independent of calc_sem().
   x <- fx_pid5bf()
   d <- score_pid5(x, items = 1:25, version = "BF", missing = "apa",

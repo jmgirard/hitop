@@ -1,4 +1,4 @@
-# Ground-truth tests for the Qualtrics export family (M10).
+# Ground-truth tests for the Qualtrics export family (M010).
 #
 # Oracle: parse the generated .txt back (helper-generators.R) and compare it to
 # the SOURCE item/instruction datasets derived independently -- never to the
@@ -101,7 +101,7 @@ test_that("all Qualtrics generators run and produce one question per source item
   }
 })
 
-# ---- HiTOP-SR scale modules (M24) -------------------------------------------
+# ---- HiTOP-SR scale modules (M024) -------------------------------------------
 #
 # Parse-and-compare per D-010: expected numbers/texts come from `hitopsr_items`
 # filtered by `Scale`, independently of the `hitopsr_scales$itemNumbers` path

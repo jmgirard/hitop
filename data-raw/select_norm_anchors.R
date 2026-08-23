@@ -1,4 +1,4 @@
-## Choose the second spot-value anchor for each T-scored column (M34, T1)
+## Choose the second spot-value anchor for each T-scored column (M034, T1)
 #
 # tests/testthat/test-norms.R anchors every (version, scale) column of
 # `pid_norms` to values hand-read off the book's rendered pages. One anchor per
@@ -34,7 +34,7 @@
 # Candidate T scores are tried in the fixed `preference` order below rather than
 # taking each column's lowest eligible T. The anchors are read by eye off the
 # rendered appendix, and a shared T lets a whole band of columns be read as one
-# row scan across the page -- the same way M33 read all 50 of its anchors at
+# row scan across the page -- the same way M033 read all 50 of its anchors at
 # T = 65 -- instead of hunting a different row in each of 63 columns. Five T
 # scores in two bands cover every column.
 #
@@ -48,7 +48,7 @@ tscored$key <- paste(tscored$version, tscored$scale)
 keys <- unique(tscored$key)
 
 ## The anchors test-norms.R already carries, by column. Three columns entered
-## M34 with more than one and need nothing; the other 63 get one more.
+## M034 with more than one and need nothing; the other 63 get one more.
 existing <- list(
   "FULL negativeAffectivity" = c(35, 50),
   "FULL detachment"          = c(65, 72, 76),
@@ -67,7 +67,7 @@ existing <- list(
   "BF disinhibition"         = 70,
   "BF psychoticism"          = 70
 )
-## Every facet column is anchored at T = 65 (M33); the domains are listed above.
+## Every facet column is anchored at T = 65 (M033); the domains are listed above.
 anchors_of <- function(key) if (is.null(existing[[key]])) 65 else existing[[key]]
 
 needs_anchor <- keys[vapply(keys, function(k) length(anchors_of(k)) == 1L, logical(1))]

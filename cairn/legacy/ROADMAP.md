@@ -24,20 +24,20 @@
   - The keying tables are machine-verified against the published sources (ported `test-keying.R`; open questions like OQ-1 stay visible, never silently patched). *(done)*
   - A ground-truth oracle test suite covers PID-5 scoring/validity, HiTOP-SR/BR scoring, and the reliability functions. *(done)*
   - `devtools::check()` is clean (datasets documented, dependencies declared, unused Imports removed) and runs in CI with coverage reporting on every push. *(done)*
-  - BF keying provenance is documented and verified against the APA PID-5-BF Domain Scoring table. *(M6, done)*
-  - FULL/SF domain scores (APA key Step 3) are computed and their domain→facet map is machine-verified. *(M7, done)*
-  - Scoring honors the published APA missing-data/proration rules (opt-out via `apa_scoring = FALSE`). *(M8, done)*
-  - Every implemented user-facing surface is tested, including the `generate_{docx,qualtrics,redcap}_*` export family (output parsed back and checked against the source datasets). *(M10, done)*
-- **Related milestones:** M1–M10 (all DONE)
+  - BF keying provenance is documented and verified against the APA PID-5-BF Domain Scoring table. *(M006, done)*
+  - FULL/SF domain scores (APA key Step 3) are computed and their domain→facet map is machine-verified. *(M007, done)*
+  - Scoring honors the published APA missing-data/proration rules (opt-out via `apa_scoring = FALSE`). *(M008, done)*
+  - Every implemented user-facing surface is tested, including the `generate_{docx,qualtrics,redcap}_*` export family (output parsed back and checked against the source datasets). *(M010, done)*
+- **Related milestones:** M001–M010 (all DONE)
 
 ## Phase 3: Norms & visualization (current focus)
 
 - **Theme:** Interpretation support for researchers (README Phase 2).
 - **Outcomes:**
   - PID-5 normative data and norming functions (percentiles/T-scores).
-  - Norming functions treat each instrument's official response range as canonical, rescaling data collected on a shifted equal-width coding (e.g. 1–4 vs official 0–3) to it at lookup and warning when the option *count* differs; the package's Qualtrics/REDCap exports emit the official item numbers so most data matches without rescaling. *(M16)*
+  - Norming functions treat each instrument's official response range as canonical, rescaling data collected on a shifted equal-width coding (e.g. 1–4 vs official 0–3) to it at lookup and warning when the option *count* differs; the package's Qualtrics/REDCap exports emit the official item numbers so most data matches without rescaling. *(M016)*
   - Visualization functions for scored profiles.
-- **Related milestones:** M16
+- **Related milestones:** M016
 
 ## Phase 4: Clinical reporting & release (README Phase 3)
 
@@ -45,7 +45,7 @@
 - **Outcomes:**
   - HiTOP normative data and norming functions (waiting for data).
   - Individual report generation; bass-ackwards (and extended) analysis functions.
-  - Pre-CRAN API stabilization from the 2026-07 design audit (`reliability_*` family, `missing=` consolidation, `rank_scales` naming/direction, drop `tibble`) landed in v0.2.0. *(M15, done)*
+  - Pre-CRAN API stabilization from the 2026-07 design audit (`reliability_*` family, `missing=` consolidation, `rank_scales` naming/direction, drop `tibble`) landed in v0.2.0. *(M015, done)*
   - CRAN submission and a package paper.
 - **Related milestones:** (to be planned)
 

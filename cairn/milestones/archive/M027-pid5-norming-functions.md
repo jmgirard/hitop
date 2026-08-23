@@ -1,4 +1,4 @@
-# M27: PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding)
+# M027: PID-5 raw → T / percentile conversion (`norm_pid5()` on the official coding)
 
 **Status:** done (2026-07-30, PR #30 https://github.com/jmgirard/hitop/pull/30)
 
@@ -11,11 +11,11 @@ picks the printed row nearest the observed value, breaking ties toward T=50 (tow
 0.50 on the four T-less validity tables) after clamping to the printed range; `norm_t_to_raw()`
 inverts by exact lookup; `norm_capped()` flags out-of-range observations per end. Uncovered
 scales and `NA` inputs return `NA` with a message; any `srange` but `c(0, 3)` is refused
-pending M28. `pid_norms` itself was not touched.
+pending M028. `pid_norms` itself was not touched.
 
-**Decisions:** M27-D1 the selection rule; M27-D2 the 29 above-ceiling rows retained with five
-effective T-maxima documented; M27-D4 the oracle set (Pegaso rejected); M27-D5 three departures
-from RR02's binding criteria; M27-D6 AC5's low end reconciled, `NA` input pinned. Cross-cutting:
+**Decisions:** M027-D1 the selection rule; M027-D2 the 29 above-ceiling rows retained with five
+effective T-maxima documented; M027-D4 the oracle set (Pegaso rejected); M027-D5 three departures
+from RR02's binding criteria; M027-D6 AC5's low end reconciled, `NA` input pinned. Cross-cutting:
 D-022 (published cells only) and D-023 (`ORS` is coding-invariant).
 
 **Review:** Three fresh-context lenses; blame-history and prior-review found nothing, the diff-bug

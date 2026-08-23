@@ -1,4 +1,4 @@
-# M42: Serve instrument downloads from the pkgdown site
+# M042: Serve instrument downloads from the pkgdown site
 
 **Status:** done (2026-08-19, PR #47 https://github.com/jmgirard/hitop/pull/47)
 

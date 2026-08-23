@@ -1,4 +1,4 @@
-# Guards against the two silent-wrong-results traps (M11):
+# Guards against the two silent-wrong-results traps (M011):
 #   - warn_item_order():        misordered character `items` names
 #   - validate_item_uniqueness(): duplicated `items` entries
 # Exercised at the helper level and end-to-end through all four data-taking
