@@ -1,11 +1,11 @@
 # M049: An original-numbering toggle for the browser module builder
 
-- **Status:** in-progress
+- **Status:** planned
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR03 (advisory; no binding criteria requested)
 - **Principles touched:** IP1
-- **Branch/PR:** `m049-builder-numbering-toggle`
+- **Branch/PR:** — (the `m049-builder-numbering-toggle` branch carried tracking only and was folded back; a re-cut milestone cuts a fresh one)
 
 ## Goal
 
@@ -108,6 +108,7 @@ supplies (`R/generate_docx.R:191-199`), so it is not exposable at all.
 - 2026-08-23: implementation gate Q2 chose having the page treat an all-scales tick as the full instrument (no module passed) over leaving it a module or fixing only the header. Verified on main the same day: an all-scales module is exactly items 1-405, so renumbering is already the identity there; what differs is the Word header (`HiTOP-SR Module (v1.0)` against `HiTOP-SR (v1.0)`) and the 405-pair crosswalk a shuffled all-scales module prints and a whole-instrument call declines; the Qualtrics `.txt` and the REDCap `instrument.csv` are byte-identical between the two calls. The scope and criteria amendment this needs is deferred until the escalated Q1 resolves, since the shape of the control it attaches to is what is under review.
 - 2026-08-23: blocked on RB03 (`cairn/reviews/RB03-builder-word-numbering-control.md`), which asks whether the Word item-numbering control belongs on the page at all under the maintainer's self-containment priority, and what the goal should rest on if it does. The brief and this record are committed on the milestone branch rather than the default branch, because the branch already carries M049's status mirror and file; putting the pair on the default branch would split the record.
 - 2026-08-23: RB03 reviewed by a Fable subagent; RR03 ingested and the pair archived. All eight recommendations triaged below in the Decisions section: five applied, two accepted rejections, one deferred to a gate. One departure from the report, logged at M049-D1: its recommendation that the Goal be re-cut through /milestone-plan is put to the maintainer rather than taken, because the replacement rationale the report supplies is the alignment the Goal's existing sentence already states.
+- 2026-08-23: amendment gate returned the Goal to planning, choosing RR03's recommendation over the session's contrary reading; status back to `planned` and no code written. The same gate settled the four inputs the re-cut inherits, recorded at M049-D5. No implementation work was done on the branch at any point — every commit was tracking.
 
 ## Decisions
 
@@ -149,6 +150,45 @@ the crosswalk's presence for existing R callers, which is participant-facing
 printed text needing a fresh gate and a partial supersession of D-037, to
 encode a judgment about intent the package cannot see. An R caller passing an
 all-scales module therefore still gets module framing, on purpose.
+
+**M049-D5 (2026-08-23): the Goal returns to planning, and the four inputs the
+re-cut inherits.** RR03 recommended the Goal be re-cut because the reason it
+gives for the control — aligning a paper form's numbers with the online
+exports' column names — is not the reason that survives the maintainer's
+priority. The session read the existing sentence as already stating the
+alignment RR03's replacement rationale rests on and recommended carrying on;
+the maintainer chose the re-cut, so the Goal returns to `/milestone-plan` and
+this session wrote no code. The re-cut carries forward, all settled at the same
+gate:
+
+1. *The purpose the Goal should state.* The printed number is the name a person
+   uses to move a response off the page. With the control set to original,
+   those names are the field names the page's own REDCap and Qualtrics exports
+   give the collected variables, so hand-entering paper responses into a
+   project built from the same page needs no translation. Both numbering states
+   produce a form scoreable from the paper alone, so the control never trades
+   away self-containment — the subordinate clause RR03 asks the Goal to keep.
+2. *The all-scales behavior is in scope, with its own criterion and task.* The
+   page passes no `module` when every scale is ticked, so the Word header reads
+   `HiTOP-SR (v1.0)` and a shuffled all-scales build carries no crosswalk; the
+   page carries a comment recording that this rests on the HiTOP-SR's 76 scales
+   tiling its 405 items exactly. Its criterion pins both headers and holds the
+   Qualtrics `.txt` and REDCap `instrument.csv` unchanged.
+3. *The shuffle-notice criterion is two-dimensional.* It conditions on the
+   numbering control and on whether every scale is ticked, and covers three
+   states: original-plus-shuffle (no crosswalk, printed numbers are the
+   instrument's own), default-plus-shuffle on a module (crosswalk present), and
+   default-plus-shuffle with every scale ticked (no crosswalk claimed). Without
+   the third the page ships a notice that is false in exactly the configuration
+   the maintainer flagged.
+4. *Three smaller items, all taken into the milestone rather than the backlog.*
+   The printed-numbers criterion pins ascending order as well as the number set;
+   an all-scales download is named for what it contains rather than
+   `hitopsr-module.docx`, which narrows the standing M048 candidate row rather
+   than duplicating it; and `hitop_module()`'s help page gains a sentence
+   noting that a module naming every scale still receives module framing from
+   the Word generator, so an R caller wanting full-instrument framing passes no
+   module. The third makes the milestone touch the package, not the page alone.
 
 **M049-D4 (2026-08-23): triage of RR03's eight recommendations.** Applied: 1
 (ship the control, per M049-D1), 2 (leave original-plus-shuffle available, per
