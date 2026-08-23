@@ -1,6 +1,6 @@
 # M048: A module-titled Word form and a shuffle toggle in the browser builder
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -82,9 +82,9 @@ Rebuilding any `inst/extdata/` artifact → nothing shipped there is a module.
       the paper-size fieldset (`index.html:107-117`), pass `randomize` into the
       DOCX call only (`index.html:266-278`), and add the reorder-before-scoring
       note shown when it is ticked.
-- [ ] T4: NEWS entry; `devtools::document()`; app README row and behavior text;
+- [x] T4: NEWS entry; `devtools::document()`; app README row and behavior text;
       run the profile's verify and check commands.
-- [ ] T5: verify the app against a locally served copy of the page — download a
+- [x] T5: verify the app against a locally served copy of the page — download a
       Word file with the control ticked and unticked and check the crosswalk and
       item order, and diff the Qualtrics and REDCap downloads across both states.
 
