@@ -1,11 +1,11 @@
 # M049: An original-numbering toggle for the browser module builder
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
-- **Branch/PR:** —
+- **Branch/PR:** `m049-builder-numbering-toggle`
 
 ## Goal
 
@@ -104,6 +104,8 @@ supplies (`R/generate_docx.R:191-199`), so it is not exposable at all.
 - 2026-08-23: criteria audit ran in FULL mode (user-facing tier), inline rather than in a fresh-context subagent (session configured not to spawn agents). One finding: AC1 as first drafted probed a single module, standing one exemplar in for the family the promise covers — fixed here by requiring two modules chosen to differ on whether the instrument's own numbers are gapped. No other finding.
 - 2026-08-23: plan gate chose exposing `renumber` as a two-state control over leaving the app to always renumber and documenting the limitation; the latter lost because a researcher fielding paper and online forms of one module gets two numbering schemes from the app with no way to align them. Falsified by a report that the original-numbering form is never wanted in practice.
 - 2026-08-23: plan gate chose a conditional shuffle notice over leaving the existing unconditional wording; the latter lost because `renumber = FALSE` makes its crosswalk claim false. Falsified by the package printing a crosswalk under `renumber = FALSE`, which `R/generate_docx.R:110-120` says it does not.
+- 2026-08-23: implementation gate Q1 asked whether the numbering control still ships, given the maintainer's steer that a paper form being scoreable from what it prints outranks aligning its numbers to the online exports — the goal's stated reason. The maintainer chose escalation to a review brief over the three offered options. M049 is marked as touching IP1, so this question sat on an escalation tripwire the chip should have carried an option for; it did not, and the maintainer supplied one.
+- 2026-08-23: implementation gate Q2 chose having the page treat an all-scales tick as the full instrument (no module passed) over leaving it a module or fixing only the header. Verified on main the same day: an all-scales module is exactly items 1-405, so renumbering is already the identity there; what differs is the Word header (`HiTOP-SR Module (v1.0)` against `HiTOP-SR (v1.0)`) and the 405-pair crosswalk a shuffled all-scales module prints and a whole-instrument call declines; the Qualtrics `.txt` and the REDCap `instrument.csv` are byte-identical between the two calls. The scope and criteria amendment this needs is deferred until the escalated Q1 resolves, since the shape of the control it attaches to is what is under review.
 
 ## Decisions
 
