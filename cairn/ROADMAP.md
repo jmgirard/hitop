@@ -1,8 +1,8 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-22 (M47 merged via PR #53 and archived, with the squashed SHA appended to `.git-blame-ignore-revs` per M47-D1 and blame verified to resolve past it; one M47 lesson captured on git-attribute states and R's shell/exit-status traps, and the M24 CRLF lesson retired because the hazard it warns about no longer exists; one candidate row added from review finding 10; M42 pruned under terminal-row retention; caps and byte budgets checked)_
-_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M48)._
+_Last hygiene check: 2026-08-23 (M48 planned; D-037 appended as the IP1 sign-off for a module form's header wording; caps and byte budgets checked)_
+_Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; IDs continue — next new milestone is M49)._
 
 ## Milestones
 
@@ -13,6 +13,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M1–M17 done there; ID
 | M45 | A browser module builder for the HiTOP-SR | done | M43 | normal | milestones/archive/M45-browser-module-builder.md |
 | M44 | A dedicated article for building and scoring HiTOP-SR modules | done | M43 | normal | milestones/archive/M44-modules-article.md |
 | M43 | Rename the HiTOP-SR subset family to modules | done | — | normal | milestones/archive/M43-module-vocabulary.md |
+| M48 | A module-titled Word form and a shuffle toggle in the browser builder | planned | — | normal | milestones/M048-module-title-and-shuffle-toggle.md |
 | M41 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M41-hitopsr-score-intervals.md |
 
 ## Candidates
