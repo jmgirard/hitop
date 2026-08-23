@@ -133,11 +133,11 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 - [x] T4. Verify AC1–AC2: serve the modified page locally, build both modules
       in both numbering states, parse each `.docx` for its printed numbers, and
       compare the Qualtrics and REDCap downloads across states.
-- [ ] T5. Verify AC3–AC4: the four shuffled states; the all-scales header,
+- [x] T5. Verify AC3–AC4: the four shuffled states; the all-scales header,
       crosswalk and download name against a module's; the two online exports
       against the pre-change page; and the gate's predicate on a module that is
       not `1..N`.
-- [ ] T6. Verify AC5: read the page's accessibility tree for the new group and
+- [x] T6. Verify AC5: read the page's accessibility tree for the new group and
       drive each named existing control.
 - [x] T7. In `hitop`: add the `hitop_module()` help sentence (AC6) against a
       built document, run `devtools::document()`, and run the profile's checks.
@@ -169,6 +169,9 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 - 2026-08-23: T7 done - `hitop_module()`'s help page gains the all-scales framing sentence, derived from a built document (all-76-scale module with `randomize = TRUE`: header `HiTOP-SR Module (v1.0)`, 405 crosswalk rows; no-module: header `HiTOP-SR (v1.0)`, 0 crosswalk rows; Qualtrics bytes and REDCap `instrument.csv` identical between the two calls). `devtools::document()` and `devtools::test()` clean (FAIL 0, WARN 0, SKIP 1, PASS 13794).
 - 2026-08-23: T4 done - AC1/AC2 verified by driving the locally served modified page. Printed numbers: Difficulties Reaching Orgasm at default `1, 2, 3` and at original `82, 124, 151`; Binge Eating + Sexual Pain at default `1..6` and at original `238, 275, 344, 358, 392, 398`; both original lists strictly ascending and equal to the expectation taken from `hitopsr_items$Scale`, not from the page's own mapping. The same module's Qualtrics `.txt` came out byte-identical across the two numbering states and its REDCap `instrument.csv` identical.
 - 2026-08-23: added a `hitop-builder` entry to `.claude/launch.json` beside the existing `pkgdown-docs` one, so the builder page can be served locally for verification here and at M050.
+
+- 2026-08-23: T5 done - AC3/AC4 verified on the served page. Of the four shuffle-ticked states, only module-plus-default numbering produced a crosswalk (6 rows for the two-scale module; 0 rows in the other three), matching the notice shown in each. All-scales files: header `HiTOP-SR (v1.0)`, printed numbers `1..405` ascending, log line and download name carrying no module (`hitopsr.docx`/`.txt`/`.zip`); a module's header stayed `HiTOP-SR Module (v1.0)` with `hitopsr-module.<ext>`. The all-scales Qualtrics `.txt` came out byte-identical to the pre-change page's and the REDCap `instrument.csv` identical (406 rows each), captured by serving the pre-change `index.html` beside it. The tiling predicate returned `TRUE` on all 76 scales and `FALSE` on the two-scale module.
+- 2026-08-23: T6 done - AC5 verified. The accessibility tree renders the new group as `generic "Word item numbering"` over `label "Number the items 1 to n"` / `radio "renumber"` and `label "Keep the HiTOP-SR's own item numbers"` / `radio "original"`, the shape the `papersize` group takes. Drove each named existing control: the filter (`Select all` retitled `Select all 1 shown`), Select all (76 of 76), Clear all (0 of 76, all three buttons disabled), the tally, the shuffle box and its notice, and each download button. A real click on the original-numbering radio switched the notice sentence.
 
 ## Decisions
 
