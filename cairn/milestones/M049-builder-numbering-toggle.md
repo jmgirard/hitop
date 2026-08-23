@@ -5,98 +5,145 @@
 - **Depends on:** —
 - **Driving RR:** RR03 (advisory; no binding criteria requested)
 - **Principles touched:** IP1
-- **Branch/PR:** — (the `m049-builder-numbering-toggle` branch carried tracking only and was folded back; a re-cut milestone cuts a fresh one)
+- **Branch/PR:** — (the earlier `m049-builder-numbering-toggle` branch carried tracking only and was folded back; this re-cut cuts a fresh one)
 
 ## Goal
 
-The browser module builder lets the person building a Word module form keep the
-HiTOP-SR's own item numbers instead of the default `1..n`, so a paper form's
-printed numbers line up with the column names the same module's Qualtrics and
-REDCap exports produce.
+The browser module builder lets the person building a Word module form choose
+which numbers it prints: the default `1..n`, or the HiTOP-SR's own item
+numbers. The printed number is the name a person uses to move a response off
+the page, and at *original* those names are the field names the same page's
+REDCap and Qualtrics exports give the collected variables, so hand-entering
+paper responses into a project built from that page needs no translation. Both
+settings produce a form scoreable from the paper alone, so the control never
+trades away self-containment.
 
 ## Scope
 
-This milestone's deliverable is **user-facing**: a control on a public web page
-and the copy around it. The code lives in `jmgirard/hitop-builder`; the hitop
-branch carries the milestone record, and the builder commit is pushed at merge
-(the M048 pattern).
+The deliverable is **user-facing**: a control and its copy on a public web
+page, plus one sentence on a package help page. Most of the code lives in
+`jmgirard/hitop-builder`; the hitop branch carries the milestone record and the
+help-page change, and the builder commit is pushed at merge (the M048 pattern).
 
-**In:** a *Word item numbering* control in the builder's `index.html`, passing
-`renumber` to `generate_docx_hitopsr()` and to no other call; a rewrite of the
-existing shuffle notice, which today asserts unconditionally that every
-shuffled Word file carries a crosswalk — false once numbering can be set to
-original, because the package prints no crosswalk when `renumber = FALSE`
-(`R/generate_docx.R:110-120`); a README section for the new control.
+**In:** a two-option *Word item numbering* group in the builder's `index.html`,
+passing `renumber` to `generate_docx_hitopsr()` and to no other call; treating
+an all-scales tick as the whole instrument — no `module` on any of the three
+downloads, gated on an R-side check that the chosen items really are `1` to `N`
+with no gaps, beside a source comment recording the assumption; naming an
+all-scales download for the instrument rather than a module; a shuffle notice
+conditional on both the numbering and the all-scales state, replacing today's
+unconditional crosswalk claim (`index.html:121-126`), which
+`R/generate_docx.R:290` falsifies in three of the four shuffled states; the
+same correction plus a numbering section in the builder `README.md`; and one
+sentence in `hitop_module()`'s help page on the module framing an all-scales
+module still receives.
 
-**Out:** `include_scoring` — dropped at the 2026-08-23 plan gate, so the M045
-candidate row stands unchanged. The Qualtrics and REDCap controls and their
-package-side validation → M050. Naming a download from the options that
-produced it → the standing M048 candidate row. `title`, `font_size`,
-`font_family` → a new candidate row. `include_subscales` → nowhere: the
-package errors when it is combined with `module`, which the app always
-supplies (`R/generate_docx.R:191-199`), so it is not exposable at all.
+**Out:** naming a *shuffled* download distinctly → the standing M048 candidate
+row, where the M048 gate put it; `include_scoring` → the standing M045 row;
+the Qualtrics and REDCap naming controls and their guards → M050; `title`,
+`font_size`, `font_family` → the standing candidate row; `include_subscales` →
+nowhere, since the package errors when it is combined with `module`
+(`R/generate_docx.R:191-199`). Blocking or warning original-plus-shuffle, and
+any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 
 ## Acceptance criteria
 
 - [ ] AC1. In a browser loading the modified page, two named modules — one
-      whose scales sit low in the instrument and one whose scales sit high, so
-      the gapped-number case is exercised — each build a Word file in both
-      numbering states. With the control set to *original*, the printed item
-      numbers read out of each built `.docx` are exactly that module's
-      HiTOP-SR numbers taken from `hitopsr_items` independently of the app;
-      with the control at its default they are `1..n`. Evidence: all four
-      number lists quoted.
+      whose scales sit low in the instrument's numbering and one whose sit
+      high, so the gapped case is exercised — each build a Word file in both
+      numbering states with shuffle off. The numbers parsed out of each `.docx`
+      are, at *original*, exactly that module's HiTOP-SR numbers ascending, and
+      at the default `1` to `n` ascending; the expected sets come from
+      `hitopsr_items` independently of the app, never back through the page's
+      own scale-to-item mapping. Evidence: the four parsed lists and that
+      expectation.
 - [ ] AC2. `renumber` reaches the Word call alone. For one module, the
-      Qualtrics `.txt` downloaded with numbering set to *original* is
-      byte-identical to the one downloaded at the default, and the two REDCap
-      archives carry an identical `instrument.csv` (member-content, not
-      archive bytes — DOCX and REDCap zips are not byte-deterministic).
-      Evidence: the four downloads and the comparison output.
-- [ ] AC3. The page's shuffle notice is conditional on the numbering state and
-      matches the built document in both. With shuffle ticked and numbering at
-      *original* the visible notice says the file carries no crosswalk and the
-      printed numbers are the instrument's own, and the built `.docx` contains
-      no crosswalk; with shuffle ticked and numbering at its default the
-      notice says the crosswalk is present, and it is. Evidence: the notice
-      text quoted in each state beside whether the crosswalk appears.
-- [ ] AC4. The new control is a `fieldset`/`legend` group whose input carries
-      an associated label, on the same pattern as the existing `papersize` and
-      `shuffle` groups, and it appears as such in the page's accessibility
-      tree. These named existing controls still behave after the change: the
-      scale filter, Select all, Clear all, the item tally, and each of the
-      three download buttons. Evidence: the accessibility tree for the new
-      group, and a run through each named control.
-- [ ] AC5. The builder `README.md` gains a section for the numbering control
+      Qualtrics `.txt` downloaded at *original* is byte-identical to the one at
+      the default, and the two REDCap archives carry an identical
+      `instrument.csv` (member content, not archive bytes — DOCX and REDCap
+      zips are not byte-deterministic). Evidence: the four downloads compared.
+- [ ] AC3. With shuffle ticked, the notice the page shows matches what the
+      built Word file contains in each of the four combinations of the
+      numbering control (default / *original*) and the selection (a module /
+      every scale ticked). In the one combination that produces a crosswalk —
+      default numbering on a module — the notice says the file carries one and
+      the `.docx` contains it; in the other three the notice says it does not
+      and the `.docx` does not, and wherever numbering is *original* the notice
+      also says the printed numbers are the instrument's own and responses
+      should be entered by item number. Evidence: the notice quoted in each
+      state beside whether the crosswalk appears in that state's file.
+- [ ] AC4. With every scale ticked the page passes no `module` on any of the
+      three downloads: the Word header reads `HiTOP-SR (v1.0)` and the download
+      is named for the instrument; with any scale unticked the header reads
+      `HiTOP-SR Module (v1.0)` and the download is named for a module. The
+      all-scales Qualtrics `.txt` and REDCap `instrument.csv` are identical to
+      those the page produced before the change. The omission is gated on an
+      R-side check that the chosen items are exactly `1` to `N` with no gaps —
+      so a selection failing it still passes its module — beside a comment
+      recording what that encodes, the 76 scales covering exactly items 1–405,
+      and the date verified. Evidence: both headers parsed from their files,
+      both download names, the two online comparisons, the gate's predicate
+      returning `FALSE` on a module whose items are not `1..N`, the comment.
+- [ ] AC5. The new control is a `fieldset`/`legend` group whose two inputs each
+      carry an associated label, on the pattern of the existing `papersize` and
+      `shuffle` groups, and appears as such in the page's accessibility tree.
+      These named existing controls still behave after the change: the scale
+      filter, Select all, Clear all, the item tally, the shuffle box and its
+      notice, and each of the three download buttons. Evidence: the
+      accessibility tree for the new group, and a run through each control named.
+- [ ] AC6. `hitop_module()`'s help page gains a sentence saying that a module
+      naming every scale is item-identical to the full instrument but still
+      receives module framing from the Word generator — the `HiTOP-SR Module`
+      header, and a crosswalk when shuffled — so an R caller wanting
+      full-instrument framing passes no module. The claim is derived: a module
+      naming all 76 scales is built with `randomize = TRUE` and its header and
+      crosswalk read back out. Evidence: the rendered text and those readings.
+- [ ] AC7. The builder `README.md` gains a section for the numbering control
       stating what it does, that it applies to the Word file only, and what
-      happens when it is combined with shuffle — matching the behavior AC1–AC3
-      verified — carrying the verification date. Evidence: the section quoted.
+      happens when it is combined with shuffle; and its existing shuffle
+      section's unconditional claim that a shuffled Word file carries a
+      crosswalk is corrected to match. Both sections match what AC1–AC4
+      verified and carry the verification date. Evidence: both sections quoted.
 
 ## Coverage
 
-- AC1 → T1, T3
-- AC2 → T1, T3
-- AC3 → T2, T3
-- AC4 → T1, T4
-- AC5 → T5
+- AC1 → T1, T4
+- AC2 → T1, T4
+- AC3 → T3, T5
+- AC4 → T2, T5
+- AC5 → T1, T6
+- AC6 → T7
+- AC7 → T8
 
 ## Tasks
 
 - [ ] T1. In `jmgirard/hitop-builder` on a branch: add the *Word item
-      numbering* fieldset (default = renumbered) beside the existing
-      `papersize` and `shuffle` groups in `index.html`; bind its value and
-      pass `renumber` into the DOCX call only, mirroring how `randomize` is
-      passed today (`index.html:296-306`).
-- [ ] T2. Rewrite the shuffle notice so its text is conditional on the
-      numbering state, and wire it to update when either control changes.
-- [ ] T3. Serve the modified page locally and verify AC1–AC3: build both
-      modules in both numbering states, parse each `.docx` for its printed
-      numbers and for the crosswalk, and compare the Qualtrics and REDCap
-      downloads across states.
-- [ ] T4. Verify AC4: read the page's accessibility tree for the new group and
+      numbering* fieldset (two radios, default = numbered `1..n`) beside the
+      existing `papersize` and `shuffle` groups in `index.html`; bind its value
+      and interpolate `renumber` as a literal `TRUE`/`FALSE` into the DOCX call
+      only, mirroring how `randomize` is passed today (`index.html:296-306`).
+- [ ] T2. Treat an all-scales tick as the whole instrument: build the module
+      object, ask R whether its items are exactly `1` to `N`, and on both
+      conditions omit `module` from all three calls, from the log line, and
+      from the download name (`hitopsr.<ext>` against `hitopsr-module.<ext>`).
+      Carry the tiling comment at the check.
+- [ ] T3. Rewrite the shuffle notice so its text is conditional on the
+      numbering state and on whether every scale is ticked, and wire it to
+      update when either input or any scale checkbox changes.
+- [ ] T4. Verify AC1–AC2: serve the modified page locally, build both modules
+      in both numbering states, parse each `.docx` for its printed numbers, and
+      compare the Qualtrics and REDCap downloads across states.
+- [ ] T5. Verify AC3–AC4: the four shuffled states; the all-scales header,
+      crosswalk and download name against a module's; the two online exports
+      against the pre-change page; and the gate's predicate on a module that is
+      not `1..N`.
+- [ ] T6. Verify AC5: read the page's accessibility tree for the new group and
       drive each named existing control.
-- [ ] T5. Add the README section (AC5) with the verification date; open the
-      hitop-side PR carrying the milestone record; push the builder commit at
-      merge.
+- [ ] T7. In `hitop`: add the `hitop_module()` help sentence (AC6) against a
+      built document, run `devtools::document()`, and run the profile's checks.
+- [ ] T8. Add the builder README's numbering section and the shuffle-section
+      correction (AC7) with the verification date; open the hitop-side PR
+      carrying the milestone record; push the builder commit at merge.
 
 ## Work log
 
@@ -109,6 +156,12 @@ supplies (`R/generate_docx.R:191-199`), so it is not exposable at all.
 - 2026-08-23: blocked on RB03 (`cairn/reviews/RB03-builder-word-numbering-control.md`), which asks whether the Word item-numbering control belongs on the page at all under the maintainer's self-containment priority, and what the goal should rest on if it does. The brief and this record are committed on the milestone branch rather than the default branch, because the branch already carries M049's status mirror and file; putting the pair on the default branch would split the record.
 - 2026-08-23: RB03 reviewed by a Fable subagent; RR03 ingested and the pair archived. All eight recommendations triaged below in the Decisions section: five applied, two accepted rejections, one deferred to a gate. One departure from the report, logged at M049-D1: its recommendation that the Goal be re-cut through /milestone-plan is put to the maintainer rather than taken, because the replacement rationale the report supplies is the alignment the Goal's existing sentence already states.
 - 2026-08-23: amendment gate returned the Goal to planning, choosing RR03's recommendation over the session's contrary reading; status back to `planned` and no code written. The same gate settled the four inputs the re-cut inherits, recorded at M049-D5. No implementation work was done on the branch at any point — every commit was tracking.
+- 2026-08-23: goal re-cut through /milestone-plan; every plan-owned section rewritten from the four inputs M049-D5 settled plus this gate's four answers. No code written, no branch cut.
+- 2026-08-23: criteria audit ran in FULL mode (user-facing tier), inline rather than in a fresh-context subagent (session configured not to spawn agents). Three findings, all fixed before the criteria were written: a criterion had bundled `devtools::document()`/`check()`, which the profile's consistency-gate slot already owns (trimmed to the help-page text, verified against a built document); the builder README's existing shuffle section asserts unconditionally that a shuffled Word file carries a crosswalk, which the all-scales change makes false in three of the four shuffled states (pulled into AC7's scope); and AC3's domain is the four shuffle-ticked control combinations, not the three the amendment gate named (all four now enumerated).
+- 2026-08-23: plan gate chose omitting `module` on all three downloads for an all-scales tick over omitting it on the Word call only; Word-only lost because it leaves two code paths and a download name saying "module" for one file and not another built from the same tick. Falsified by an online export differing between an all-scales module call and a no-module call, which the 2026-08-23 verification says it does not.
+- 2026-08-23: plan gate chose an R-side check that the chosen items are exactly `1..N` over RR03 recommendation 4's source comment alone (the comment is kept beside the check); comment-only lost because the failure it guards against is silent and a comment can be skimmed past. Falsified by the check proving unaffordable in the page's webR round-trip, or by an instrument whose full selection is legitimately not `1..N`.
+- 2026-08-23: plan gate chose naming a download by module-versus-whole-instrument only over also folding in the shuffled-versus-unshuffled naming now; the wider option lost because the M048 gate declined that same widening and the standing candidate row still holds it. Falsified by two forms being confused on disk, which is that row's own promotion condition.
+- 2026-08-23: plan gate chose a two-radio *Word item numbering* group over a single tick box; the tick box lost because it names only one of the two numbering schemes and leaves the default unlabelled. Falsified by the radio pair failing the accessibility reading AC5 requires.
 
 ## Decisions
 
