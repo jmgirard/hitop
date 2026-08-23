@@ -1,11 +1,11 @@
 # M049: An original-numbering toggle for the browser module builder
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR03 (advisory; no binding criteria requested)
 - **Principles touched:** IP1
-- **Branch/PR:** — (the earlier `m049-builder-numbering-toggle` branch carried tracking only and was folded back; this re-cut cuts a fresh one)
+- **Branch/PR:** `m049-builder-numbering-toggle` (the earlier branch of the same name carried tracking only and was folded back; this re-cut cut a fresh one)
 
 ## Goal
 
@@ -156,6 +156,7 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 - 2026-08-23: blocked on RB03 (`cairn/reviews/RB03-builder-word-numbering-control.md`), which asks whether the Word item-numbering control belongs on the page at all under the maintainer's self-containment priority, and what the goal should rest on if it does. The brief and this record are committed on the milestone branch rather than the default branch, because the branch already carries M049's status mirror and file; putting the pair on the default branch would split the record.
 - 2026-08-23: RB03 reviewed by a Fable subagent; RR03 ingested and the pair archived. All eight recommendations triaged below in the Decisions section: five applied, two accepted rejections, one deferred to a gate. One departure from the report, logged at M049-D1: its recommendation that the Goal be re-cut through /milestone-plan is put to the maintainer rather than taken, because the replacement rationale the report supplies is the alignment the Goal's existing sentence already states.
 - 2026-08-23: amendment gate returned the Goal to planning, choosing RR03's recommendation over the session's contrary reading; status back to `planned` and no code written. The same gate settled the four inputs the re-cut inherits, recorded at M049-D5. No implementation work was done on the branch at any point — every commit was tracking.
+- 2026-08-23: implementation started; branch `m049-builder-numbering-toggle` cut fresh from `main`. Builder work on `jmgirard/hitop-builder` branch `m049-word-item-numbering`, pushed at merge (the M048 pattern).
 - 2026-08-23: goal re-cut through /milestone-plan; every plan-owned section rewritten from the four inputs M049-D5 settled plus this gate's four answers. No code written, no branch cut.
 - 2026-08-23: criteria audit ran in FULL mode (user-facing tier), inline rather than in a fresh-context subagent (session configured not to spawn agents). Three findings, all fixed before the criteria were written: a criterion had bundled `devtools::document()`/`check()`, which the profile's consistency-gate slot already owns (trimmed to the help-page text, verified against a built document); the builder README's existing shuffle section asserts unconditionally that a shuffled Word file carries a crosswalk, which the all-scales change makes false in three of the four shuffled states (pulled into AC7's scope); and AC3's domain is the four shuffle-ticked control combinations, not the three the amendment gate named (all four now enumerated).
 - 2026-08-23: plan gate chose omitting `module` on all three downloads for an all-scales tick over omitting it on the Word call only; Word-only lost because it leaves two code paths and a download name saying "module" for one file and not another built from the same tick. Falsified by an online export differing between an all-scales module call and a no-module call, which the 2026-08-23 verification says it does not.
