@@ -98,7 +98,7 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
       full-instrument framing passes no module. The claim is derived: a module
       naming all 76 scales is built with `randomize = TRUE` and its header and
       crosswalk read back out. Evidence: the rendered text and those readings.
-- [ ] AC7. The builder `README.md` gains a section for the numbering control
+- [x] AC7. The builder `README.md` gains a section for the numbering control
       stating what it does, that it applies to the Word file only, and what
       happens when it is combined with shuffle; and its existing shuffle
       section's unconditional claim that a shuffled Word file carries a
@@ -187,6 +187,8 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 - 2026-08-23: T10's task line was compressed to one line to hold the 150-line plan-owned cap it had pushed to 150, the same trim T9 took; the Acceptance criteria section the breakdown names as heaviest is amendment-gated and its wording is what review reads, so it was left alone.
 
 - 2026-08-23: open concern for review triage, not a criterion failure. Shuffling with every scale ticked now yields a Word form with no crosswalk and nothing on the paper recording the printed order, where the pre-change page always passed a module and so always printed one (405 pairs). AC3 enumerates this state and the notice tells the visitor so, and the package's own position is that a shuffled full instrument prints no crosswalk, so the page now matches it. What is gone is the page's accidental recovery path; the generator returns the order in its `item_order` attribute and the page discards it. A ROADMAP candidate row would need a pruning pass first - the table is at 59 of its 60-line cap.
+
+- 2026-08-23: review pass 2 - all seven criteria verified fresh at `cf242ec` / builder `0278967`; consistency gate clean (`cairn_validate` pass, `document()` no diff, `test()` FAIL 0 PASS 13794, `check()` 0/0/0, `check_pkgdown()` clean, line endings clean). Three lenses run inline (session configured not to spawn agents); three findings, none an acceptance-criterion failure, going to the maintainer at the merge gate.
 
 ## Decisions
 
@@ -288,74 +290,80 @@ artifact-touching change under IP1.
 
 ## Review
 
-Verified 2026-08-23 against branch `m049-builder-numbering-toggle` at `e1dc389`
-and `jmgirard/hitop-builder` branch `m049-word-item-numbering` at `36ad567`,
-served locally on port 8788 and driven in a browser. Files were captured as they
-were handed to the browser's downloader and read back from their bytes.
+Second pass. The first, on 2026-08-23, returned the milestone on AC7; the work
+log records it. Everything below was gathered fresh in this pass against branch
+`m049-builder-numbering-toggle` at `cf242ec` and `jmgirard/hitop-builder` branch
+`m049-word-item-numbering` at `0278967`, served locally on port 8788 and driven
+in a browser. Built files were captured as the page handed them to the browser's
+downloader and read back from their bytes. `main` has not moved since the branch
+was cut, so no merge was needed. The three review lenses were run inline rather
+than in fresh-context subagents (session configured not to spawn agents), as at
+M048.
 
 **AC1 — printed numbers in both states, two modules, shuffle off.** Two modules
 chosen for where their scales sit in the instrument's numbering: *Difficulties
-Reaching Orgasm* (the scale with the lowest maximum item number, 151) and *Binge
-Eating + Sexual Pain* (the two scales with the highest minimum, 238). The
-expected sets were taken from `hitopsr_items` in R — 82, 124, 151 and 238, 275,
-344, 358, 392, 398 — never through the page's own scale-to-item mapping. Parsed
-out of the four `.docx` files: at *original*, `82, 124, 151` and `238, 275, 344,
-358, 392, 398`; at the default, `1, 2, 3` and `1, 2, 3, 4, 5, 6`. All four lists
-strictly ascending; both original lists equal to the expectation.
+Reaching Orgasm* (lowest maximum item number, 151) and *Binge Eating + Sexual
+Pain* (highest minimum, 238). Expected sets taken from `hitopsr_items$HSR` in R
+— 82, 124, 151 and 238, 275, 344, 358, 392, 398 — never through the page's own
+scale-to-item mapping. Parsed out of the four `.docx` files: at *original*,
+`82, 124, 151` and `238, 275, 344, 358, 392, 398`; at the default, `1, 2, 3` and
+`1, 2, 3, 4, 5, 6`. All four lists strictly ascending; both *original* lists
+equal to the expectation.
 
 **AC2 — `renumber` reaches the Word call alone.** In `index.html` the numbering
-value is interpolated only into the `extra` string, which is built only when
+value is interpolated only into the `extra` string, built only when
 `format === 'docx'`; the Qualtrics and REDCap calls receive nothing new. Driven
-on the *Binge Eating + Sexual Pain* module: the Qualtrics `.txt` came out 1579
-bytes in both numbering states with the same SHA-256 (`53d36ec3af15da…`), i.e.
+on *Binge Eating + Sexual Pain*: the Qualtrics `.txt` came out 1,579 bytes in
+both numbering states with the same SHA-256 (`53d36ec3af15dacc…`), i.e.
 byte-identical; the two REDCap archives carried an identical `instrument.csv`
 (9 lines, string-equal), compared as member content rather than archive bytes.
 
 **AC3 — the shuffle notice against what the file carries, four states.** With
-the shuffle box ticked, the notice sentence quoted from the page beside the
+the shuffle box ticked, the notice sentence read off the page beside the
 crosswalk paragraph parsed out of that state's `.docx`:
 
 - module (*Binge Eating + Sexual Pain*), default numbering — "This form carries
   a crosswalk listing each printed number and the original HiTOP-SR number it
   came from." The file carries one: "Item Number Crosswalk (printed number →
-  original HiTOP-SR number): 1 → 238, 2 → 398, 3 → 275, 4 → 358, 5 → 344,
+  original HiTOP-SR number): 1 → 238, 2 → 344, 3 → 358, 4 → 275, 5 → 398,
   6 → 392".
 - module, *original* — "This form prints the instrument's own item numbers, in a
   shuffled order, so it carries no crosswalk — the printed number already is the
   original one. Enter each response under its printed item number." No crosswalk
-  paragraph in the file; the printed numbers are 238, 392, 398, 358, 344, 275
-  and the scoring key lists those same numbers.
+  paragraph; printed numbers 392, 275, 238, 398, 344, 358.
 - every scale, default numbering — "This form carries no crosswalk: a shuffled
   copy of the whole instrument would print 405 pairs on a participant-facing
   page. Nothing on the paper records the printed order, so keep your own record
   of it, or build the form from a selection of scales, which does carry one." No
-  crosswalk paragraph; 405 items printed 1 upward.
-- every scale, *original* — the same original-numbering sentence as above. No
-  crosswalk paragraph; 405 items printed under the instrument's own numbers in
-  shuffled order.
+  crosswalk paragraph; 405 items printed `1` upward.
+- every scale, *original* — the same *original*-numbering sentence. No crosswalk
+  paragraph; 405 items printed under the instrument's own numbers in shuffled
+  order (241, 123, 202, 51, …, 281).
 
 Exactly one of the four claims a crosswalk and exactly that one carries it; both
 *original* states say the printed numbers are the instrument's own and to enter
 responses under them.
 
 **AC4 — an all-scales tick is the whole instrument.** With all 76 scales ticked
-the log line read `generate_docx_hitopsr(file = out_path, renumber = FALSE,
-randomize = TRUE)` — no `module` argument — and the three downloads were named
-`hitopsr.docx`, `hitopsr.txt`, `hitopsr.zip`. The Word header parsed from
-`word/header1.xml` read `HiTOP-SR (v1.0)`; with two scales unticked the same
-parse read `HiTOP-SR Module (v1.0)` and the downloads were `hitopsr-module.*`.
-Online comparison against the pre-change page (`origin/main`'s `index.html`
-served beside it and driven with all 76 scales ticked): the Qualtrics `.txt`
-came out 81,951 bytes with the same SHA-256 (`bc73b984bccd76e7…`) — byte-identical
-— and the REDCap `instrument.csv` 65,854 bytes with the same SHA-256
-(`db794565f74b1513…`); only the file names differ. The gate's predicate,
+the log line read `generate_docx_hitopsr(file = out_path, randomize = TRUE)` —
+no `module` argument — and the three downloads were named `hitopsr.docx`,
+`hitopsr.txt`, `hitopsr.zip`. The Word header parsed from `word/header1.xml`
+read `HiTOP-SR (v1.0)`; on a module the same parse read `HiTOP-SR Module
+(v1.0)` with downloads `hitopsr-module.*`. The online comparison was made
+through the package rather than by re-serving the pre-change page: the page's
+all-scales Qualtrics `.txt` (81,951 bytes, SHA-256 `bc73b984bccd76e7…`) and
+REDCap `instrument.csv` (65,854 bytes, SHA-256 `db794565f74b1513…`) are
+byte-identical to a local build of `generate_qualtrics_hitopsr(file = )` and
+`generate_redcap_hitopsr(file = )` with no module, and that build is in turn
+byte-identical to the same two calls passing an all-76-scale module — which is
+exactly what the pre-change page passed. The gate's predicate,
 `identical(as.integer(m$items), seq_along(m$items))`, returned `TRUE` for the
-all-76-scale module (405 items) and `FALSE` for the *Binge Eating + Sexual Pain*
-module (items 238, 275, 344, 358, 392, 398); the page reports it at load
-("every scale ticked covers items 1..N with no gaps: true") and holds
-`tilesExactly = false` until the answer is in. The comment at
-`index.html:478-486` records what the check encodes, that it is TRUE for the
-HiTOP-SR's 76 scales over items 1-405, and the 2026-08-23 verification date.
+all-76-scale module (405 items) and `FALSE` for the two-scale module (items 238,
+275, 344, 358, 392, 398); the page reports it at load ("every scale ticked
+covers items 1..N with no gaps: true") and holds `tilesExactly = false` until
+the answer is in. The comment at `index.html:478-486` records what the check
+encodes, that it is TRUE for the HiTOP-SR's 76 scales over items 1-405, and the
+2026-08-23 verification date.
 
 **AC5 — the control's markup, and the existing controls still behave.** The
 accessibility tree renders the new group as `generic "Word item numbering"` over
@@ -364,65 +372,105 @@ HiTOP-SR's own item numbers"` / `radio "original"` — the shape the existing
 `papersize` group takes (`generic "Word paper size"` over `label "US Letter"` /
 `radio "us"`). In the markup it is a `fieldset`/`legend` whose two radios each
 sit inside their own `label`, as the `papersize` and `shuffle` groups do. Driven
-with real clicks on the reloaded page: typing `binge` in the filter left one
+with real mouse clicks: Clear all gave `0 of 76 scales selected — 0 items` with
+all three download buttons disabled; typing `binge` into the filter left one
 scale shown and retitled the button `Select all 1 shown`; Select all under that
-filter gave `1 of 76 scales selected — 5 items` with the three download buttons
-enabled, and unfiltered gave `76 of 76 scales selected — 405 items`; Clear all
-gave `0 of 76 scales selected — 0 items` with all three buttons disabled;
-clicking a scale row ticked it and moved the tally; clicking the shuffle box
-revealed the notice; clicking the *original* radio switched the notice's middle
-sentence; and each of the three download buttons produced its file
-(`hitopsr-module.docx` 17,575 bytes, `.txt` 1,351, `.zip` 719) with the matching
-log line. Emptying the filter box was done by script — synthetic Backspace did
-not reach the field in this harness — but the filter itself was driven by real
-typing.
+filter gave `1 of 76 scales selected — 3 items` with the three buttons enabled;
+clicking the shuffle box revealed the notice; clicking the *original* radio
+switched the notice's middle sentence; the Word button produced
+`hitopsr-module.docx` (17,299 bytes) with the matching log line.
 
-**AC6 — the `hitop_module()` help sentence.** The rendered help page now reads:
-"A module naming every scale holds exactly the instrument's own items — all 405
-of them for the HiTOP-SR — but it is still a module, and
-`generate_docx_hitopsr()` frames it as one: the form is headed `"HiTOP-SR Module
-(v1.0)"`, and with `randomize = TRUE` it also carries a 405-row crosswalk.
-Supply no `module` at all to get the full instrument's framing. The Qualtrics and
-REDCap exports are the same either way." Derived, not composed: a module naming
-all 76 scales built with `randomize = TRUE` gave header `HiTOP-SR Module (v1.0)`
-and a crosswalk of 405 pairs read back out of the `.docx`; the same call with no
-`module` gave header `HiTOP-SR (v1.0)` and no crosswalk paragraph. The
-Qualtrics/REDCap half is the AC4 comparison above.
+**AC6 — the `hitop_module()` help sentence.** The rendered help page reads: "A
+module naming every scale holds exactly the instrument's own items — all 405 of
+them for the HiTOP-SR — but it is still a module, and `generate_docx_hitopsr()`
+frames it as one: the form is headed `"HiTOP-SR Module (v1.0)"`, and with
+`randomize = TRUE` it also carries a 405-row crosswalk. Supply no `module` at
+all to get the full instrument's framing. The Qualtrics and REDCap exports are
+the same either way." Derived, not composed: a module naming all 76 scales built
+with `randomize = TRUE` gave header `HiTOP-SR Module (v1.0)` and 405 crosswalk
+pairs read back out of the `.docx`; the same call with no `module` gave header
+`HiTOP-SR (v1.0)` and no crosswalk paragraph. The Qualtrics/REDCap half is the
+AC4 comparison above.
 
-**AC7 — FAILS.** The builder `README.md` gains *Numbering the Word form*, which
-states what each option does ("Number the items 1 to n … numbers the printed
-items from `1` down the page"; "Keep the HiTOP-SR's own item numbers prints each
-item's original HiTOP-SR number instead") and that it applies to the Word file
-only ("The choice applies to the Word file only. In the Qualtrics and REDCap
-exports an item number names a collected data column, so those two downloads
-come out the same either way — verified 2026-08-23…"), and carries the
-verification date. It says nothing about what happens when the numbering choice
-is combined with shuffle — the third thing the criterion requires that section
-to state. The section's other claim was checked and holds: the *Binge Eating +
-Sexual Pain* module's REDCap fields are `hsr_238, hsr_275, hsr_344, hsr_358,
-hsr_392, hsr_398`.
+**AC7 — the builder README's numbering section and the shuffle correction.**
+*Numbering the Word form* now states all three things. What each option does:
+"Number the items 1 to n … numbers the printed items from `1` down the page";
+"Keep the HiTOP-SR's own item numbers prints each item's original HiTOP-SR
+number instead". That it applies to the Word file only: "The choice applies to
+the Word file only. In the Qualtrics and REDCap exports an item number names a
+collected data column, so those two downloads come out the same either way —
+verified 2026-08-23…". And, in the paragraph added since the first pass, what
+happens with shuffle: "Combined with the *Word item order* box, the numbering
+choice decides whether a shuffled form can be traced back to the instrument's
+numbers. Numbered `1 to n`, a shuffled module form prints a crosswalk; with the
+instrument's own numbers there is nothing to cross-walk, so it prints none and
+each response is entered under its printed number. Ticking every scale leaves a
+shuffled form with no crosswalk either way." — each clause a state AC3 verified
+above, and the section cross-references the shuffle section's table rather than
+restating it. The section's REDCap claim was re-checked: the *Binge Eating +
+Sexual Pain* module's fields are `hsr_238, hsr_275, hsr_344, hsr_358, hsr_392,
+hsr_398`, read out of the archive the page built. Every claim carries the
+2026-08-23 date.
 
-The second half of the criterion is met. *Shuffling the Word form* no longer
-claims a crosswalk unconditionally; it now reads "A shuffled Word file carries a
-crosswalk … only when the form is numbered `1 to n` *and* built from a selection
-of scales. The other three combinations carry none, and the page's on-screen
-notice says so in each. Verified 2026-08-23 by reading the four built files
-back:" followed by the four-row table (1 to n / some scales → yes; 1 to n /
-every scale → no; the instrument's own numbers / some scales → no; the
-instrument's own numbers / every scale → no). That table matches AC3 row for
-row, and *Ticking every scale* matches AC4.
+The second half holds. *Shuffling the Word form* no longer claims a crosswalk
+unconditionally: "A shuffled Word file carries a crosswalk … only when the form
+is numbered `1 to n` *and* built from a selection of scales. The other three
+combinations carry none, and the page's on-screen notice says so in each.
+Verified 2026-08-23 by reading the four built files back:" followed by the
+four-row table (1 to n / some scales → yes; 1 to n / every scale → no; the
+instrument's own numbers / some scales → no; the instrument's own numbers /
+every scale → no). That table matches AC3 row for row, and *Ticking every scale*
+matches AC4.
 
-**Consistency gate — all clean.** `cairn_validate` passes (22 advisory dangling
--id warnings, every one a pre-migration `D-001`–`D-012` token, unchanged by this
-branch). Toolchain slot: `devtools::document()` leaves no diff;
-`devtools::test()` FAIL 0, WARN 0, SKIP 1, PASS 13794; `devtools::check()` 0
-errors, 0 warnings, 0 notes; `pkgdown::check_pkgdown()` no problems; the
-line-ending policy check passes; `NEWS.md` carries entries for the numbering
-group, the all-scales change, and the `?hitop_module` sentence; `README.Rmd` is
-untouched by this branch. No `DESIGN.md` principle changed, so `cairn_impact`
-does not apply.
+**Consistency gate — clean.** `cairn_validate` passes, with 24 advisory
+dangling-id warnings, every one a pre-migration `D-001`–`D-012` token unchanged
+by this branch. Toolchain slot: `devtools::document()` leaves no diff;
+`devtools::test()` FAIL 0, WARN 0, SKIP 1, PASS 13794; `devtools::check()` 0 errors,
+0 warnings, 0 notes; `pkgdown::check_pkgdown()` no problems; the line-ending policy
+check passes; `NEWS.md` carries entries for the numbering group, the all-scales
+change and the `?hitop_module` sentence; `README.Rmd` is untouched by this
+branch, and `.Rbuildignore` already carries `^\.claude$` for the new
+`launch.json` entry. No `DESIGN.md` principle changed, so `cairn_impact` does not
+apply.
 
-**Outcome: returned to `in-progress` on AC7.** No `Driving RR` projection to
-compare — RR03 is advisory with no binding criteria. The independent review
-fan-out was not run; it comes after a clean gate. The all-scales shuffle
-consequence logged on 2026-08-23 stays open for triage at the eventual gate.
+**Findings.** Three lenses run inline. Ranked:
+
+1. *(diff-bug)* Shuffling with every scale ticked produces a Word form whose
+   printed order is recoverable from nothing the page hands over. Before this
+   branch the page always passed `module`, so that form carried a 405-row
+   crosswalk; it now passes none, and `generate_docx_hitopsr()` deliberately
+   prints no crosswalk for a shuffled full instrument. The generator returns the
+   order in the `item_order` attribute and the page discards it. The notice
+   tells the visitor to "keep your own record of it" while offering no record to
+   keep, so a researcher who fields such a form and enters responses in printed
+   order gets wrong scale scores from `score_hitopsr()` with no error raised —
+   the failure the crosswalk exists to prevent. No criterion fails: AC3
+   enumerates the state and the notice matches the file, and AC4 requires the
+   omission.
+2. *(prior-review)* `NEWS.md` describes builder behavior whose commits are
+   unpushed — `aabfdf7`, `36ad567`, `0278967` on `m049-word-item-numbering`.
+   M048's review raised this same point on these same files and actioned it by
+   pushing the builder branch at merge; the same remedy applies here, and the
+   milestone's Scope already names it.
+3. *(diff-bug)* `vignettes/articles/modules-hitopsr.Rmd` says that with
+   `randomize = TRUE` "the page is still numbered `1` to `n`" and a module form
+   "also carries a crosswalk", without the `renumber = FALSE` case, where
+   neither holds. Pre-existing — both arguments predate this branch — so the
+   diff did not introduce it; but the builder README now documents the
+   combination correctly, leaving the article the only surface stating it
+   unconditionally.
+
+The blame-history lens found nothing. The modified builder lines trace to M045's
+initial page (`b1442ca`) and its review fixes (`c892bac`, `99cd10f`) and to
+M048's shuffle control (`5e78f98`); nothing they added deliberately is undone.
+The one M048 line this diff replaces — the unconditional crosswalk sentence — is
+replaced because it was false, which is what AC7's second half asks for. The new
+load-time R call sits under the existing `main().catch()`, so M045's
+failure-path work is not weakened. The prior-review lens found no inline GitHub
+review threads on the repo at all (existence probe returned zero), so it rests
+on the archived `## Review` sections, which is where finding 2 came from.
+
+**Outcome.** All seven acceptance criteria verified with fresh evidence and
+ticked; the consistency gate is clean. No `Driving RR` projection to compare —
+RR03 is advisory with no binding criteria. The three findings above go to the
+maintainer at the merge gate; their dispositions are recorded below.
