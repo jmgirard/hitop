@@ -39,7 +39,11 @@ interface before a CRAN submission.
   those items. The page downloads R and this package into your browser
   and generates the files there, so nothing you select or produce is
   sent anywhere; it builds blank questionnaires and scores nothing.
-  Linked from the Instruments menu on the package website.
+  Linked from the Instruments menu on the package website. A *Word item
+  order* box there shuffles the printed order of the Word form’s items,
+  with an on-page warning that the collected columns must be put back
+  into the instrument’s own order before scoring; the Qualtrics and
+  REDCap downloads are unaffected by it.
 
 - **The REDCap generators no longer need an external `zip` program.**
   They built the instrument archive by running the system’s `zip`
@@ -262,6 +266,17 @@ interface before a CRAN submission.
   arguments sit between `module` and `subset` in the signature, so any
   call passing arguments positionally past `font_family` must be
   respelled by name.
+
+- **A HiTOP-SR Word form built from a module says so in its header.**
+  With no `title` of your own,
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+  now heads a module form `"HiTOP-SR Module (v1.0)"` and a
+  full-instrument form `"HiTOP-SR (v1.0)"`, so a paper holding a handful
+  of scales is no longer titled as the whole 405-item instrument.
+  Passing `title` still prints exactly what you pass, including on a
+  module form. The item text, response options, and administration
+  instructions are untouched, and no distributed form under
+  `inst/extdata/` changed, since each is the full instrument.
 
 - **Generate a HiTOP-SR module from selected scales.** The new
   [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)

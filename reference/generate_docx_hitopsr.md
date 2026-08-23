@@ -11,7 +11,7 @@ into a single continuous table.
 generate_docx_hitopsr(
   file = "hitopsr.docx",
   papersize = c("us", "a4"),
-  title = "HiTOP-SR (v1.0)",
+  title = NULL,
   include_scoring = TRUE,
   include_subscales = FALSE,
   font_size = 10,
@@ -37,8 +37,11 @@ generate_docx_hitopsr(
 
 - title:
 
-  Character string for the document header title. Defaults to
-  `"HiTOP-SR (v1.0)"`.
+  Character string for the document header title, printed verbatim. The
+  default (`NULL`) resolves by what the form contains:
+  `"HiTOP-SR Module (v1.0)"` when `module` is supplied and
+  `"HiTOP-SR (v1.0)"` otherwise, so a form built from a few scales is
+  not headed as the full 405-item instrument. (default = `NULL`)
 
 - include_scoring:
 
@@ -121,14 +124,14 @@ unless `randomize = TRUE`.
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpCpuyqx/file1b40116fbb2c.docx
+#> ✔ Document successfully created at /tmp/RtmptGNiCv/file1aad5214fcc.docx
 
 # A module containing only two scales, printed as items 1 to 8
 generate_docx_hitopsr(
   file = tempfile(fileext = ".docx"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Document successfully created at /tmp/RtmpCpuyqx/file1b404b2204b9.docx
+#> ✔ Document successfully created at /tmp/RtmptGNiCv/file1aad6469ff5d.docx
 
 # The same module keeping the full instrument's own item numbers
 generate_docx_hitopsr(
@@ -136,7 +139,7 @@ generate_docx_hitopsr(
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
   renumber = FALSE
 )
-#> ✔ Document successfully created at /tmp/RtmpCpuyqx/file1b40286efd3.docx
+#> ✔ Document successfully created at /tmp/RtmptGNiCv/file1aad2a472859.docx
 
 # A shuffled form; the scoring page carries the crosswalk back
 set.seed(1)
@@ -145,7 +148,7 @@ out <- generate_docx_hitopsr(
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
   randomize = TRUE
 )
-#> ✔ Document successfully created at /tmp/RtmpCpuyqx/file1b40b5840c9.docx
+#> ✔ Document successfully created at /tmp/RtmptGNiCv/file1aad1a08987a.docx
 attr(out, "item_order")
 #> [1]  66 144 389 109 260 118 291 202
 # }
