@@ -10,6 +10,13 @@
 #'   unless asked not to. Supplying the module again to [score_hitopsr()] or
 #'   [reliability_hitopsr()] scores the collected columns either way.
 #'
+#'   A module naming every scale holds exactly the instrument's own items --
+#'   all 405 of them for the HiTOP-SR -- but it is still a module, and
+#'   [generate_docx_hitopsr()] frames it as one: the form is headed
+#'   `"HiTOP-SR Module (v1.0)"`, and with `randomize = TRUE` it also carries a
+#'   405-row crosswalk. Supply no `module` at all to get the full instrument's
+#'   framing. The Qualtrics and REDCap exports are the same either way.
+#'
 #'   Use [available_scales()] to see which scales an instrument offers.
 #'
 #' @param instrument A string naming the instrument to build a module from.

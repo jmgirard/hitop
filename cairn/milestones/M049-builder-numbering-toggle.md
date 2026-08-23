@@ -117,20 +117,20 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 
 ## Tasks
 
-- [ ] T1. In `jmgirard/hitop-builder` on a branch: add the *Word item
+- [x] T1. In `jmgirard/hitop-builder` on a branch: add the *Word item
       numbering* fieldset (two radios, default = numbered `1..n`) beside the
       existing `papersize` and `shuffle` groups in `index.html`; bind its value
       and interpolate `renumber` as a literal `TRUE`/`FALSE` into the DOCX call
       only, mirroring how `randomize` is passed today (`index.html:296-306`).
-- [ ] T2. Treat an all-scales tick as the whole instrument: build the module
+- [x] T2. Treat an all-scales tick as the whole instrument: build the module
       object, ask R whether its items are exactly `1` to `N`, and on both
       conditions omit `module` from all three calls, from the log line, and
       from the download name (`hitopsr.<ext>` against `hitopsr-module.<ext>`).
       Carry the tiling comment at the check.
-- [ ] T3. Rewrite the shuffle notice so its text is conditional on the
+- [x] T3. Rewrite the shuffle notice so its text is conditional on the
       numbering state and on whether every scale is ticked, and wire it to
       update when either input or any scale checkbox changes.
-- [ ] T4. Verify AC1–AC2: serve the modified page locally, build both modules
+- [x] T4. Verify AC1–AC2: serve the modified page locally, build both modules
       in both numbering states, parse each `.docx` for its printed numbers, and
       compare the Qualtrics and REDCap downloads across states.
 - [ ] T5. Verify AC3–AC4: the four shuffled states; the all-scales header,
@@ -139,7 +139,7 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
       not `1..N`.
 - [ ] T6. Verify AC5: read the page's accessibility tree for the new group and
       drive each named existing control.
-- [ ] T7. In `hitop`: add the `hitop_module()` help sentence (AC6) against a
+- [x] T7. In `hitop`: add the `hitop_module()` help sentence (AC6) against a
       built document, run `devtools::document()`, and run the profile's checks.
 - [ ] T8. Add the builder README's numbering section and the shuffle-section
       correction (AC7) with the verification date; open the hitop-side PR
@@ -163,6 +163,12 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 - 2026-08-23: plan gate chose an R-side check that the chosen items are exactly `1..N` over RR03 recommendation 4's source comment alone (the comment is kept beside the check); comment-only lost because the failure it guards against is silent and a comment can be skimmed past. Falsified by the check proving unaffordable in the page's webR round-trip, or by an instrument whose full selection is legitimately not `1..N`.
 - 2026-08-23: plan gate chose naming a download by module-versus-whole-instrument only over also folding in the shuffled-versus-unshuffled naming now; the wider option lost because the M048 gate declined that same widening and the standing candidate row still holds it. Falsified by two forms being confused on disk, which is that row's own promotion condition.
 - 2026-08-23: plan gate chose a two-radio *Word item numbering* group over a single tick box; the tick box lost because it names only one of the two numbering schemes and leaves the default unlabelled. Falsified by the radio pair failing the accessibility reading AC5 requires.
+
+- 2026-08-23: T1-T3 done in `jmgirard/hitop-builder` (commit `aabfdf7`, unpushed): the *Word item numbering* fieldset with its hint line, `renumber` interpolated into the DOCX call only, the all-scales path dropping `module` behind an R-side tiling check asked once at load, and the shuffle notice's crosswalk sentence written per state.
+- 2026-08-23: implementation gate settled three open items, all at the recommended option: the radio wording plus a hint line under the group; the notice stays tied to the shuffle box, so no criterion widens; and an all-scales tick that fails the tiling check falls back to passing its module and logs one line saying why.
+- 2026-08-23: T7 done - `hitop_module()`'s help page gains the all-scales framing sentence, derived from a built document (all-76-scale module with `randomize = TRUE`: header `HiTOP-SR Module (v1.0)`, 405 crosswalk rows; no-module: header `HiTOP-SR (v1.0)`, 0 crosswalk rows; Qualtrics bytes and REDCap `instrument.csv` identical between the two calls). `devtools::document()` and `devtools::test()` clean (FAIL 0, WARN 0, SKIP 1, PASS 13794).
+- 2026-08-23: T4 done - AC1/AC2 verified by driving the locally served modified page. Printed numbers: Difficulties Reaching Orgasm at default `1, 2, 3` and at original `82, 124, 151`; Binge Eating + Sexual Pain at default `1..6` and at original `238, 275, 344, 358, 392, 398`; both original lists strictly ascending and equal to the expectation taken from `hitopsr_items$Scale`, not from the page's own mapping. The same module's Qualtrics `.txt` came out byte-identical across the two numbering states and its REDCap `instrument.csv` identical.
+- 2026-08-23: added a `hitop-builder` entry to `.claude/launch.json` beside the existing `pkgdown-docs` one, so the builder page can be served locally for verification here and at M050.
 
 ## Decisions
 
