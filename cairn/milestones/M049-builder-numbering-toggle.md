@@ -1,6 +1,6 @@
 # M049: An original-numbering toggle for the browser module builder
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR03 (advisory; no binding criteria requested)
@@ -145,6 +145,7 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
       correction (AC7) with the verification date; open the hitop-side PR
       carrying the milestone record; push the builder commit at merge.
 - [x] T9. (added in implementation) Record the user-visible changes in `NEWS.md`.
+- [x] T10. (added after the review return) State the shuffle combination in the builder README's numbering section, as AC7 requires that section to.
 
 ## Work log
 
@@ -180,6 +181,10 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 - 2026-08-23: T9 done and all tasks checked; status to `review`. `devtools::document()` no diff, `devtools::test()` clean (FAIL 0, WARN 0, SKIP 1, PASS 13794), `devtools::check()` clean (0 errors, 0 warnings, 0 notes), line-ending policy check passed, `cairn_validate` passes (20 pre-existing dangling-id advisories, all pointing at pre-migration D-001..D-012). T9's task line was compressed to one line to hold the 150-line plan-owned cap it had pushed to 151.
 
 - 2026-08-23: review returned the milestone to `in-progress` on AC7. The builder README's *Numbering the Word form* section states what the control does and that it applies to the Word file only, but not what happens when the numbering choice is combined with shuffle, which the criterion requires that section to state; the four-state crosswalk correction the criterion's second half asks for is in place in the shuffle section. AC1-AC6 verified with fresh evidence and ticked; the consistency gate is clean. First defect return on this milestone.
+
+- 2026-08-23: T10 done - the builder README's *Numbering the Word form* section gains a paragraph on the shuffle combination (`jmgirard/hitop-builder` commit `0278967`, unpushed): a crosswalk with `1 to n` on a module, none with the instrument's own numbers, none either way with every scale ticked, and a cross-reference to the shuffle section's four-state table rather than a restatement of it. Every claim is one AC3 verified on the served page. No package code changed, so the profile's checks stand from this session's run.
+
+- 2026-08-23: T10's task line was compressed to one line to hold the 150-line plan-owned cap it had pushed to 150, the same trim T9 took; the Acceptance criteria section the breakdown names as heaviest is amendment-gated and its wording is what review reads, so it was left alone.
 
 - 2026-08-23: open concern for review triage, not a criterion failure. Shuffling with every scale ticked now yields a Word form with no crosswalk and nothing on the paper recording the printed order, where the pre-change page always passed a module and so always printed one (405 pairs). AC3 enumerates this state and the notice tells the visitor so, and the package's own position is that a shuffled full instrument prints no crosswalk, so the page now matches it. What is gone is the page's accidental recovery path; the generator returns the order in its `item_order` attribute and the page discards it. A ROADMAP candidate row would need a pruning pass first - the table is at 59 of its 60-line cap.
 

@@ -14,7 +14,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M045 | A browser module builder for the HiTOP-SR | done | M043 | normal | milestones/archive/M045-browser-module-builder.md |
 | M044 | A dedicated article for building and scoring HiTOP-SR modules | done | M043 | normal | milestones/archive/M044-modules-article.md |
 | M050 | Naming and response controls for the builder's online exports | planned | M049 | normal | milestones/M050-online-export-controls.md |
-| M049 | An original-numbering toggle for the browser module builder | in-progress | — | normal | milestones/M049-builder-numbering-toggle.md |
+| M049 | An original-numbering toggle for the browser module builder | review | — | normal | milestones/M049-builder-numbering-toggle.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
 
 ## Candidates
