@@ -179,6 +179,8 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 
 - 2026-08-23: T9 done and all tasks checked; status to `review`. `devtools::document()` no diff, `devtools::test()` clean (FAIL 0, WARN 0, SKIP 1, PASS 13794), `devtools::check()` clean (0 errors, 0 warnings, 0 notes), line-ending policy check passed, `cairn_validate` passes (20 pre-existing dangling-id advisories, all pointing at pre-migration D-001..D-012). T9's task line was compressed to one line to hold the 150-line plan-owned cap it had pushed to 151.
 
+- 2026-08-23: open concern for review triage, not a criterion failure. Shuffling with every scale ticked now yields a Word form with no crosswalk and nothing on the paper recording the printed order, where the pre-change page always passed a module and so always printed one (405 pairs). AC3 enumerates this state and the notice tells the visitor so, and the package's own position is that a shuffled full instrument prints no crosswalk, so the page now matches it. What is gone is the page's accidental recovery path; the generator returns the order in its `item_order` attribute and the page discards it. A ROADMAP candidate row would need a pruning pass first - the table is at 59 of its 60-line cap.
+
 ## Decisions
 
 **M049-D1 (2026-08-23): the numbering control ships, on the reading of its
