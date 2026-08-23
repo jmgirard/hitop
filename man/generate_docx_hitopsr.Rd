@@ -7,7 +7,7 @@
 generate_docx_hitopsr(
   file = "hitopsr.docx",
   papersize = c("us", "a4"),
-  title = "HiTOP-SR (v1.0)",
+  title = NULL,
   include_scoring = TRUE,
   include_subscales = FALSE,
   font_size = 10,
@@ -25,8 +25,11 @@ generate_docx_hitopsr(
 \item{papersize}{Character string specifying the paper dimensions. Must be
 one of \code{"us"} (8.5x11 inches) or \code{"a4"} (210x297 mm). Defaults to \code{"us"}.}
 
-\item{title}{Character string for the document header title. Defaults to
-\code{"HiTOP-SR (v1.0)"}.}
+\item{title}{Character string for the document header title, printed
+verbatim. The default (\code{NULL}) resolves by what the form contains:
+\code{"HiTOP-SR Module (v1.0)"} when \code{module} is supplied and
+\code{"HiTOP-SR (v1.0)"} otherwise, so a form built from a few scales is not
+headed as the full 405-item instrument. (default = \code{NULL})}
 
 \item{include_scoring}{Logical. If \code{TRUE} (default), appends a page break and
 the scoring instructions table.}

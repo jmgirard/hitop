@@ -123,6 +123,36 @@ read_docx_xml <- function(file) {
   )
 }
 
+# Extract the document header title from a .docx.
+#
+# build_hitop_doc() puts `title` in the section's `header_default`, so it lands
+# in word/header*.xml and NOT in word/document.xml -- read_docx_xml() cannot
+# see it. Every generator writes the title as the header's only content, so
+# concatenating the header parts' runs returns the title verbatim.
+docx_header_title <- function(file) {
+  exdir <- tempfile("docx")
+  dir.create(exdir)
+  on.exit(unlink(exdir, recursive = TRUE), add = TRUE)
+  headers <- grep(
+    "^word/header[0-9]*\\.xml$",
+    utils::unzip(file, list = TRUE)$Name,
+    value = TRUE
+  )
+  if (length(headers) == 0L) return("")
+  utils::unzip(file, files = headers, exdir = exdir)
+  xml <- paste(
+    unlist(lapply(
+      file.path(exdir, headers),
+      readLines,
+      warn = FALSE,
+      encoding = "UTF-8"
+    )),
+    collapse = "\n"
+  )
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  unescape_xml(paste(gsub("<[^>]+>", "", runs), collapse = ""))
+}
+
 # Extract the concatenated text of all footer parts in a .docx.
 read_docx_footer <- function(file) {
   exdir <- tempfile("docx")
