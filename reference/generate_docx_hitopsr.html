@@ -190,14 +190,14 @@ unless <code>randomize = TRUE</code>.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Write a HiTOP-SR paper form to a temporary Word document</span></span></span>
 <span class="r-in"><span><span class="fu">generate_docx_hitopsr</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpzwiER2/file1a5f5db7d4cf.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/Rtmptw4dHI/file1b19b0d7363.docx</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A module containing only two scales, printed as items 1 to 8</span></span></span>
 <span class="r-in"><span><span class="fu">generate_docx_hitopsr</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".docx"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpzwiER2/file1a5f1f9ec417.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/Rtmptw4dHI/file1b19b2c74e0.docx</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The same module keeping the full instrument's own item numbers</span></span></span>
 <span class="r-in"><span><span class="fu">generate_docx_hitopsr</span><span class="op">(</span></span></span>
@@ -205,7 +205,7 @@ unless <code>randomize = TRUE</code>.</p>
 <span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  renumber <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpzwiER2/file1a5f7cba9636.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/Rtmptw4dHI/file1b193e4cf31e.docx</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A shuffled form; the scoring page carries the crosswalk back</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
@@ -214,7 +214,7 @@ unless <code>randomize = TRUE</code>.</p>
 <span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  randomize <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/RtmpzwiER2/file1a5fa17d272.docx</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Document successfully created at <span style="color: #0000BB;">/tmp/Rtmptw4dHI/file1b19754f40b4.docx</span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">out</span>, <span class="st">"item_order"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  66 144 389 109 260 118 291 202</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
