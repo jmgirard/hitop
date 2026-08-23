@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** RR03 (advisory; no binding criteria requested)
 - **Principles touched:** IP1
-- **Branch/PR:** `m049-builder-numbering-toggle` (the earlier branch of the same name carried tracking only and was folded back; this re-cut cut a fresh one)
+- **Branch/PR:** `m049-builder-numbering-toggle` / PR #55 https://github.com/jmgirard/hitop/pull/55 (the earlier branch of the same name carried tracking only and was folded back; this re-cut cut a fresh one)
 
 ## Goal
 
