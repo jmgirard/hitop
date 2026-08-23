@@ -1,6 +1,6 @@
 # M049: An original-numbering toggle for the browser module builder
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** RR03 (advisory; no binding criteria requested)
@@ -141,9 +141,10 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
       drive each named existing control.
 - [x] T7. In `hitop`: add the `hitop_module()` help sentence (AC6) against a
       built document, run `devtools::document()`, and run the profile's checks.
-- [ ] T8. Add the builder README's numbering section and the shuffle-section
+- [x] T8. Add the builder README's numbering section and the shuffle-section
       correction (AC7) with the verification date; open the hitop-side PR
       carrying the milestone record; push the builder commit at merge.
+- [x] T9. (added in implementation) Record the user-visible changes in `NEWS.md`.
 
 ## Work log
 
@@ -172,6 +173,11 @@ any package-side collapse of an all-scales module → rejected at M049-D2/D3.
 
 - 2026-08-23: T5 done - AC3/AC4 verified on the served page. Of the four shuffle-ticked states, only module-plus-default numbering produced a crosswalk (6 rows for the two-scale module; 0 rows in the other three), matching the notice shown in each. All-scales files: header `HiTOP-SR (v1.0)`, printed numbers `1..405` ascending, log line and download name carrying no module (`hitopsr.docx`/`.txt`/`.zip`); a module's header stayed `HiTOP-SR Module (v1.0)` with `hitopsr-module.<ext>`. The all-scales Qualtrics `.txt` came out byte-identical to the pre-change page's and the REDCap `instrument.csv` identical (406 rows each), captured by serving the pre-change `index.html` beside it. The tiling predicate returned `TRUE` on all 76 scales and `FALSE` on the two-scale module.
 - 2026-08-23: T6 done - AC5 verified. The accessibility tree renders the new group as `generic "Word item numbering"` over `label "Number the items 1 to n"` / `radio "renumber"` and `label "Keep the HiTOP-SR's own item numbers"` / `radio "original"`, the shape the `papersize` group takes. Drove each named existing control: the filter (`Select all` retitled `Select all 1 shown`), Select all (76 of 76), Clear all (0 of 76, all three buttons disabled), the tally, the shuffle box and its notice, and each download button. A real click on the original-numbering radio switched the notice sentence.
+
+- 2026-08-23: T8 done - the builder README gains *Numbering the Word form* and *Ticking every scale* sections and its shuffle section's unconditional crosswalk claim is replaced by the four-state table, every claim carrying the 2026-08-23 verification date.
+- 2026-08-23: minor plan amendment - added T9 for the `NEWS.md` entries, which the plan's tasks did not name although the profile's consistency gate requires one for user-visible changes. No criterion or scope text changed.
+
+- 2026-08-23: T9 done and all tasks checked; status to `review`. `devtools::document()` no diff, `devtools::test()` clean (FAIL 0, WARN 0, SKIP 1, PASS 13794), `devtools::check()` clean (0 errors, 0 warnings, 0 notes), line-ending policy check passed, `cairn_validate` passes (20 pre-existing dangling-id advisories, all pointing at pre-migration D-001..D-012). T9's task line was compressed to one line to hold the 150-line plan-owned cap it had pushed to 151.
 
 ## Decisions
 

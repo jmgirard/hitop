@@ -35,7 +35,14 @@ before a CRAN submission.
   the package website. A *Word item order* box there shuffles the printed order
   of the Word form's items, with an on-page warning that the collected columns
   must be put back into the instrument's own order before scoring; the
-  Qualtrics and REDCap downloads are unaffected by it.
+  Qualtrics and REDCap downloads are unaffected by it. A *Word item numbering*
+  group chooses between numbering the printed items 1 to n -- the default --
+  and keeping the HiTOP-SR's own item numbers, which are the names the same
+  page's Qualtrics and REDCap exports give the collected variables, so paper
+  responses can be typed into a project built there without translating them;
+  it too leaves those two downloads unchanged. Ticking every scale now builds
+  the whole instrument rather than a module, so that Word form is headed
+  `HiTOP-SR (v1.0)` and the three downloads are named for the instrument.
 
 * **The REDCap generators no longer need an external `zip` program.** They
   built the instrument archive by running the system's `zip` command, which
@@ -58,6 +65,12 @@ before a CRAN submission.
 
 * The Qualtrics import instructions note that a browser may save the survey
   file with a `.txt` extension, and that renaming it back to `.qsf` is safe.
+
+* `?hitop_module` now says that a module naming every scale holds exactly the
+  instrument's own items but is still framed as a module by
+  `generate_docx_hitopsr()` -- the `HiTOP-SR Module` header, and a crosswalk
+  when the form is shuffled -- so a caller wanting the full instrument's
+  framing passes no `module` at all.
 
 * The `calc_se` help text on `score_pid5()`, `score_hitopsr()`, and
   `score_hitopbr()` now states what these standard errors are computed over and
