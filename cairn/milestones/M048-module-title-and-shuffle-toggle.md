@@ -1,11 +1,11 @@
 # M048: A module-titled Word form and a shuffle toggle in the browser builder
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
-- **Branch/PR:** —
+- **Branch/PR:** `m048-module-title-and-shuffle-toggle`
 
 ## Goal
 
@@ -70,7 +70,7 @@ Rebuilding any `inst/extdata/` artifact → nothing shipped there is a module.
 
 ## Tasks
 
-- [ ] T1: give `generate_docx_hitopsr()` a `title = NULL` sentinel resolving to
+- [x] T1: give `generate_docx_hitopsr()` a `title = NULL` sentinel resolving to
       `"HiTOP-SR Module (v1.0)"` when `module` is non-`NULL` and to
       `"HiTOP-SR (v1.0)"` otherwise (`R/generate_docx.R:161-176`), leaving an
       explicit `title` untouched; update the `@param title` text
@@ -106,6 +106,15 @@ Rebuilding any `inst/extdata/` artifact → nothing shipped there is a module.
   `renumber`, because a shuffled form with original numbers prints no crosswalk
   and cannot be scored from the paper alone; falsified by a user needing
   original numbering on a shuffled module form.
+- 2026-08-23: implementation gate — the app change is held unpushed until the
+  milestone is approved at review (its `main` publishes straight to the live
+  page), and the shuffled Word download keeps the planned filename; naming it
+  distinctly was offered and declined as a scope widening, captured as a
+  candidate row instead.
+- 2026-08-23: T1 — `title` defaults to `NULL` and resolves after
+  `resolve_module_arg()`, so a deprecated `subset =` caller gets the module
+  header too; an explicit `title` (including one equal to the other default) is
+  never replaced. `validate_string(allow_null = TRUE)` guards the new sentinel.
 
 ## Decisions
 

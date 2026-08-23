@@ -13,7 +13,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M045 | A browser module builder for the HiTOP-SR | done | M043 | normal | milestones/archive/M045-browser-module-builder.md |
 | M044 | A dedicated article for building and scoring HiTOP-SR modules | done | M043 | normal | milestones/archive/M044-modules-article.md |
 | M043 | Rename the HiTOP-SR subset family to modules | done | — | normal | milestones/archive/M043-module-vocabulary.md |
-| M048 | A module-titled Word form and a shuffle toggle in the browser builder | planned | — | normal | milestones/M048-module-title-and-shuffle-toggle.md |
+| M048 | A module-titled Word form and a shuffle toggle in the browser builder | in-progress | — | normal | milestones/M048-module-title-and-shuffle-toggle.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
 
 ## Candidates

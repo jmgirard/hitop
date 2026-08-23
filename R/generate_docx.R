@@ -84,8 +84,11 @@ generate_docx_hitopbr <- function(
 #'   `"hitopsr.docx"`.
 #' @param papersize Character string specifying the paper dimensions. Must be
 #'   one of `"us"` (8.5x11 inches) or `"a4"` (210x297 mm). Defaults to `"us"`.
-#' @param title Character string for the document header title. Defaults to
-#'   `"HiTOP-SR (v1.0)"`.
+#' @param title Character string for the document header title, printed
+#'   verbatim. The default (`NULL`) resolves by what the form contains:
+#'   `"HiTOP-SR Module (v1.0)"` when `module` is supplied and
+#'   `"HiTOP-SR (v1.0)"` otherwise, so a form built from a few scales is not
+#'   headed as the full 405-item instrument. (default = `NULL`)
 #' @param include_scoring Logical. If `TRUE` (default), appends a page break and
 #'   the scoring instructions table.
 #' @param include_subscales Logical. If `TRUE`, appends optional subscales to
@@ -161,7 +164,7 @@ generate_docx_hitopbr <- function(
 generate_docx_hitopsr <- function(
   file = "hitopsr.docx",
   papersize = c("us", "a4"),
-  title = "HiTOP-SR (v1.0)",
+  title = NULL,
   include_scoring = TRUE,
   include_subscales = FALSE,
   font_size = 10,
@@ -174,8 +177,17 @@ generate_docx_hitopsr <- function(
   papersize <- match.arg(papersize)
   dims <- get_page_dims(papersize)
   module <- resolve_module_arg(module, subset)
+  validate_string(title, "title", allow_null = TRUE)
   validate_flag(renumber, "renumber")
   validate_flag(randomize, "randomize")
+
+  # Resolved AFTER resolve_module_arg(), so a caller still passing the
+  # deprecated `subset =` gets the module header too. The sentinel is what
+  # keeps an explicit `title` untouched: only `NULL` is replaced, so no
+  # caller's header moves without asking (D-037).
+  if (is.null(title)) {
+    title <- if (is.null(module)) "HiTOP-SR (v1.0)" else "HiTOP-SR Module (v1.0)"
+  }
 
   # Truthiness must match the consumer below (`if (include_subscales)`), or a
   # truthy non-TRUE value slips the guard and still adds the subscale rows.
