@@ -78,7 +78,7 @@ Rebuilding any `inst/extdata/` artifact → nothing shipped there is a module.
 - [x] T2: tests parsing the header out of a built DOCX — module default, full
       default, explicit title in each case — plus the full-instrument comparison
       against both committed `inst/extdata/hitopsr_*.docx`.
-- [ ] T3: in `jmgirard/hitop-builder`, add the Word-only shuffle checkbox beside
+- [x] T3: in `jmgirard/hitop-builder`, add the Word-only shuffle checkbox beside
       the paper-size fieldset (`index.html:107-117`), pass `randomize` into the
       DOCX call only (`index.html:266-278`), and add the reorder-before-scoring
       note shown when it is ticked.
@@ -121,6 +121,11 @@ Rebuilding any `inst/extdata/` artifact → nothing shipped there is a module.
   compares title and item rows against the committed `inst/extdata` forms. The
   files landed in the T1 commit rather than their own. Suite clean: 13794 pass,
   0 fail, 1 skip.
+- 2026-08-23: T3 — `jmgirard/hitop-builder` commit `5e78f98` adds the Word-only
+  shuffle checkbox in its own `Word item order` fieldset, the ticked-only
+  warning, and the app README section; `randomize` is interpolated into the
+  DOCX call alone. Committed locally and deliberately not pushed (that repo's
+  `main` publishes to the live page).
 
 ## Decisions
 
