@@ -117,7 +117,7 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
       fields, rebuild through `hitop_module()`, cross-check the recorded
       `items`/`nItems`, validate and attach `item_order`, and raise each
       failure as its own classed condition.
-- [ ] T4 Commit the hand-written descriptor fixture under
+- [x] T4 Commit the hand-written descriptor fixture under
       `tests/testthat/fixtures/` with its provenance comment.
 - [ ] T5 Tests in `tests/testthat/test-module_file.R` covering AC1–AC7, with
       the enumerated module set built from `available_scales("hitopsr")` rather
@@ -140,6 +140,7 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
 - 2026-08-24: implementation gate settled four open format choices, all as recommended: camelCase field names in the file, a read that refuses a version stamp newer than this release writes, unknown scale/instrument names surfaced by wrapping `hitop_module()`'s own refusal with the file name, and `file` as the path argument on both functions.
 - 2026-08-24: T1 done — {jsonlite} moved from Suggests to Imports in DESCRIPTION, and D-039 extended with the format version string, the field list, and the seven condition classes `read_module()` introduces.
 - 2026-08-24: T2 and T3 landed together in `R/module_file.R`, rather than in two commits, because `write_module()`'s help-page example reads its own file back and so cannot run under the verify slot until `read_module()` exists. Suite clean at 13,897 passing, 0 failing.
+- 2026-08-24: T4 — `tests/testthat/fixtures/module-handwritten.json` committed, its provenance carried in a `_provenance` field the reader ignores; it names its scales by camelCase stem and omits the three advisory fields, so it exercises the format's optional parts as well as the hand-written path.
 
 ## Decisions
 
