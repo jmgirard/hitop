@@ -60,7 +60,7 @@ row. `title`, `font_size`, `font_family` → a new candidate row.
       `[[Block:...]]` line and `[[ID:...]]` question IDs carry the supplied
       strings, and a REDCap `instrument.csv` whose `Form Name` column carries
       the supplied form name; with *required* unticked that file's
-      `Required Field?` column is empty on every item row and with it ticked
+      `Required Field?` column reads `n` on every item row and with it ticked
       reads `y` on every item row, row count stated. With every control left
       at its default, the same module's Qualtrics `.txt` is byte-identical,
       and its REDCap `instrument.csv` identical, to what the currently
@@ -116,6 +116,7 @@ row. `title`, `font_size`, `font_family` → a new candidate row.
 - 2026-08-23: plan gate chose package-side guards over validating in the app alone; the latter lost because an R caller would keep the silent-bad-artifact path and the rules would live in a repo cairn does not track. Falsified by a guard rejecting a value the target system actually accepts.
 - 2026-08-23: plan gate chose enumerating AC1's domain with `formals()` over a hand-list of the six arguments; the hand-list lost under the bounded-promise rule, since a formal added later would ship unswept. Falsified by a formal the walk cannot reach.
 - 2026-08-24: implementation gate settled three open choices: guards live in the shared `build_qualtrics_txt()`/`build_redcap_zip()` builders rather than the two HiTOP-SR wrappers, so all eight generators are swept; `validate_count()` grew `min`/`allow_null` (defaults unchanged) rather than a second helper; a cleared naming box on the builder page falls back to the package default rather than sending a blank through.
+- 2026-08-24: AC3 amended at a mini gate, one clause: `Required Field?` on an unticked-required REDCap item row was promised empty and reads `n` (`ifelse(required, "y", "n")` in `build_redcap_zip()`, confirmed by generating one). Criteria audit on the amended wording ran inline in FULL mode (user-facing tier), not in a fresh-context subagent (session configured not to spawn agents); no findings.
 - 2026-08-24: T1 done. Guards added to both builders with `call` defaulting to the calling wrapper; `tests/testthat/test-export-arg-guards.R` walks `formals()` of the two HiTOP-SR generators. Discrimination checked: the file fails 8 expectations against the pre-change `R/` and passes 30 with it; full suite 13824 pass, 0 fail.
 
 ## Decisions
