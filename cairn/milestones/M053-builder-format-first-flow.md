@@ -5,7 +5,7 @@
 - **Depends on:** M052
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** `m053-builder-format-first-flow` (tracking); builder repo `m053-format-first-flow`
+- **Branch/PR:** `m053-builder-format-first-flow` (tracking) → https://github.com/jmgirard/hitop/pull/59; builder repo `m053-format-first-flow` → https://github.com/jmgirard/hitop-builder/pull/4
 
 ## Goal
 
@@ -40,7 +40,7 @@ their own ROADMAP candidate rows. The R package → untouched.
 
 ## Acceptance criteria
 
-- [ ] AC1: For each of the three formats, a file built from the branch page has
+- [x] AC1: For each of the three formats, a file built from the branch page has
       the same content as the file the deployed M052 page builds from the same
       scale selection and the same option values, across this matrix: {a named
       two-scale selection, every scale} × {Word: US Letter and A4, numbering
@@ -52,32 +52,32 @@ their own ROADMAP candidate rows. The R package → untouched.
       byte-reproducible); the download file name is compared in every cell.
       Both pages report the same `hitop` version, which each prints on load; a
       version that moves between captures is re-baselined.
-- [ ] AC2: On the third step, the focusable form controls the page renders
+- [x] AC2: On the third step, the focusable form controls the page renders
       under each format — enumerated by walking the shown step with real Tab
       presses, once per format — are exactly: for Word, the paper-size radios,
       the numbering radios and the shuffle checkbox; for Qualtrics, the block
       name and question ID prefix boxes; for REDCap, the form name box and the
       required checkbox. No control in any of the three enumerations sets a
       value another format's generator call reads.
-- [ ] AC3: From a completed download, a second format is built for the same
+- [x] AC3: From a completed download, a second format is built for the same
       scales without re-ticking any scale: driving that path returns a file
       whose scale content matches the first file's, verified by reading both
       files back.
-- [ ] AC4: Every step boundary the page defines is crossable by keyboard alone
+- [x] AC4: Every step boundary the page defines is crossable by keyboard alone
       in both directions where the page offers both, each arrived-at step's
       heading takes focus and paints the focus indicator M051 established, and
       the download control stays unavailable while no scale is ticked, with a
       rendered hint saying why. Querying the rendered DOM for elements carrying
       `aria-live` or a role with an implicit live value returns exactly the
       status line (polite) and the log pane (`off`), whichever step is shown.
-- [ ] AC5: The status line, the log pane, the two opening paragraphs and the
+- [x] AC5: The status line, the log pane, the two opening paragraphs and the
       back-link to the package documentation render outside the steps, and each
       one's rendered text is unchanged from the deployed M052 page.
-- [ ] AC6: At viewport widths of 360, 768 and 1280 CSS pixels, in both colour
+- [x] AC6: At viewport widths of 360, 768 and 1280 CSS pixels, in both colour
       schemes, every step renders its own controls unclipped — each control's
       bounding rectangle lies within its container's — and the page's document
       scrolls vertically only (`documentElement.scrollWidth <= clientWidth`).
-- [ ] AC7: Every control-group title the page renders, read out of the elements
+- [x] AC7: Every control-group title the page renders, read out of the elements
       that carry those titles, appears verbatim in `README.md`, and the README
       describes the page's steps in the order the page presents them.
 
@@ -137,6 +137,151 @@ their own ROADMAP candidate rows. The R package → untouched.
 
 - 2026-08-24: all six tasks done. `cairn_validate` all checks passed (20 pre-existing advisories about legacy D-ids); `devtools::test()` 0 failures, 0 warnings, 1 skip, 13897 passing, with no R source changed on this branch. Status set to review.
 
+- 2026-08-24: review — all seven criteria verified fresh against a same-session capture from the deployed M052 page; consistency gate clean; three lenses inline, five findings, none a criterion failure. Two harness defects found and corrected mid-review before their results were trusted: a `<w:tr` split that also matched `<w:trPr`/`<w:trHeight` (Word cells re-run on both pages) and a containment check blind to `#scales`'s own scroll box. Acceptance boxes were ticked in one pass as the Review section was written, not one at a time; every tick has its evidence line in the same commit.
+
 ## Decisions
 
 ## Review
+
+Evidence gathered fresh on 2026-08-24 against the branch page served from the
+builder repo's working tree (`index.html` sha256 `65bd63d2…`, identical to
+branch HEAD) and the deployed page (`5ebe25f0…`, byte-identical to the builder
+repo's `origin/main`). Both pages report `hitop` 0.2.0 and 76 scales, printed on
+load in the second opening paragraph.
+
+- AC1 — 16/16 matrix cells identical. The eight Qualtrics and REDCap cells were
+  compared on a 17-field canonical digest (Qualtrics: file name, byte length,
+  whole-file SHA-256; REDCap: file name, zip entry list with uncompressed sizes,
+  CSV name, line count, whole-`instrument.csv` SHA-256, header line, first entry
+  line, last entry line) — 0 mismatches, the digest shown deterministic by
+  recomputation on both pages. The eight Word cells were re-run on both pages
+  after the first parse was found unsound: splitting `word/document.xml` on the
+  bare string `<w:tr` also matches `<w:trPr`/`<w:trHeight`, which inflated a
+  13-row form to 39 rows of mostly empty text (the same class of defect T1
+  recorded for `<w:t>`; the fault was in this review's harness, not in the
+  page). Re-run with the tag boundary anchored, all eight cells match on nine
+  fields — file name, `w:pgSz`, header text, row count, a SHA-256 over the
+  joined printed rows, first/second/last row and an empty-row count of 0 — with
+  13 rows for the two-scale module (legend, ten items, crosswalk) and 445 for
+  every scale. Detector shown able to fail: a Word cell built on A4 against the
+  US Letter baseline differs on `pgSz` alone while the control rebuild differs
+  on nothing.
+- AC2 — real Tab presses through the shown step, once per format, enumerate
+  exactly: Word, the paper-size radio group, the numbering radio group and the
+  shuffle checkbox (three tab stops; a radio group is one stop and its second
+  radio is reached by arrow key); Qualtrics, the block name and question ID
+  prefix boxes; REDCap, the form name box and the required checkbox. No
+  enumeration contains a control belonging to another format. The
+  "sets no value another format's generator call reads" clause was executed as
+  well as read: for each format, a file built with every *other* format's
+  controls at their defaults and one built with those same controls moved to
+  non-default values (A4, original numbering, shuffle on, `Wave 2 Screening` /
+  `W2SCR` / `wave2_screening`, required off) are identical on every compared
+  field. Detector shown able to fail: an extra text box planted in the Qualtrics
+  panel appears in the Tab enumeration and goes when it is removed.
+- AC3 — two scales ticked once, Word built, then "Choose a different format" →
+  REDCap built with the ticks untouched: 2 ticked before, between and after,
+  recap "2 of 76 scales selected — 10 items." unchanged, and both files read
+  back carry the same ten item texts in the same order. Detector shown able to
+  fail: a third scale ticked between the two builds takes the comparison to 10
+  items against 13 and not identical.
+- AC4 — all six step boundaries crossed from a control reached by real Tab
+  presses: step 1 → 2 ("Continue to the format"), 2 → 3 (a format card),
+  3 → 2 ("Choose a different format"), 2 → 1 ("Back to scales"), 1 → 3 (the
+  step bar) and 3 → 1 (the recap's "Change the selection"). Every arrived-at
+  step focused its own `h2`, each painting `solid 3px` at `4px` offset in
+  `rgb(156, 203, 240)`, and every control on the walk painted the same ring at
+  `2px` offset. The download button is disabled with 0 scales ticked, with the
+  rendered hint "The button builds the file in this browser and saves it. It
+  turns on once at least one scale is ticked."; enabled at 1; disabled again at
+  0. The live-region query returns exactly `#status` (polite) and `#log`
+  (`off`) on each of the three steps, and a planted `role="alert"` appears in it
+  and goes when removed. **Instrument limit, carried from T4 and re-confirmed
+  here:** this browser harness delivers `keydown` to the page but performs no
+  default action for Enter or Space (a real Enter on the focused "Continue to
+  the format" button left the page on step 1), and it ignores the shift
+  modifier on Tab. Activation was therefore driven through the Tab-reached
+  element, which is what Enter's default action does on a native button. The
+  substitute evidence for the untestable half: every boundary control is a
+  native `<button type="button">`, the file contains no `role="button"`, no
+  `tabindex` other than `-1` on the three headings, and no `keydown`/`keypress`/
+  `keyup` handler at all, so activation cannot be mouse-only.
+- AC5 — the status line (`aria-live="polite"`), the log pane (`aria-live="off"`),
+  the two opening paragraphs and the back-link all render outside every
+  `.step`, and their rendered text is character-identical between the branch and
+  deployed pages: both opening paragraphs verbatim, the link text
+  "← hitop package documentation" with `href` `https://jmgirard.github.io/hitop/`,
+  and the status line reading "Ready." at rest on both.
+- AC6 — 6 cells (360, 768, 1280 CSS px × light, dark) × 5 views (step 1, step 2
+  and step 3 under each of the three formats) × 208 controls = 1248 containment
+  checks, 0 clipped, and `documentElement.scrollWidth <= clientWidth` on all 30
+  views. The containment check was first blind in a second way: `#scales` is a
+  `max-height: 416px; overflow-y: auto` list, so every row below its fold read
+  as clipped until the check measured against a scroll container's scroll
+  extent rather than its viewport rect. Detector shown able to fail: a 3000px
+  text box planted in the Qualtrics panel goes red on five page-column
+  violations and on document scroll width (3042 > 360) and clean on revert —
+  and the container half alone does not catch it, which is why the page-column
+  comparison is there.
+- AC7 — all six control-group titles the page renders (the five `legend`
+  elements "Paper size", "Item numbering", "Item order", "Block and question
+  naming", "Form name and required items", plus the scale list's
+  `role="group"` label "HiTOP-SR scales") appear verbatim in `README.md`, as
+  does the filter box's `aria-label` "Filter the scale list by name"; the four
+  retired M052 titles ("Word paper size", "Word item numbering", "Word item
+  order", "Qualtrics and REDCap naming") appear nowhere in it. The README's
+  *What the page shows* section walks the steps as Choose scales → Choose a
+  format → Options and download, the order of the step bar and of the three
+  `section.step` blocks. Detector shown able to fail: titles the README does not
+  carry ("Colour scheme", "Font size") are reported absent.
+
+Plan-gate falsifier, not a criterion: step 3 at 360 CSS pixels measures 778px
+(Word, shuffle off), 633px (Qualtrics) and 621px (REDCap) against an 800px
+viewport, so "a download step that grows past one screen" did not fire.
+
+**Consistency gate.** `cairn_validate.py` exit 0, all checks passed, 20 advisory
+warnings — the pre-existing legacy `D-001`…`D-012` id tokens, unchanged by this
+milestone; the `release window` advisory did not fire. No `DESIGN.md` principle
+changed, so `cairn_impact.py` was skipped. Toolchain checks from the
+`r-package` profile's `consistency-gate` slot: `devtools::document()` produced
+no diff; `devtools::test()` 0 failures, 0 warnings, 1 skip, 13897 passing;
+`devtools::check()` 0 errors, 0 warnings, 0 notes; `pkgdown::check_pkgdown()`
+no problems; `README.Rmd`/`README.md` untouched on this branch and in sync;
+no `NEWS.md` entry due, the R package having no user-visible change here (the
+diff in this repo is tracking files only); no new top-level file, so no
+`.Rbuildignore` entry due.
+
+**Independent review.** The declared surface tier is user-facing, so the full
+three-lens fan-out applied. All three lenses ran inline in full mode, not in
+fresh-context subagents — this session is configured not to spawn agents, as at
+M048–M052. The prior-PR-comments lens ran its probe first:
+`gh api repos/{owner}/{repo}/pulls/comments?per_page=1` returns an empty list on
+both `jmgirard/hitop` and `jmgirard/hitop-builder`, so no GitHub thread walk was
+paid for; the archived `## Review` sections of M045 and M048–M052 were the
+evidence base. Five findings, ranked; none demonstrates an acceptance criterion
+failing and none is a load-bearing defect in what the page does for its users,
+so the return floor does not fire.
+
+1. [O] On first load the Word card carries `aria-current="true"` before the
+   visitor has chosen anything. `setFormat('docx')` runs at init to make a
+   step-bar jump straight to step 3 coherent, and it also marks the card; the
+   code comment says the mark tells a returning visitor "which screen the
+   visitor just came from", which is not true on a first visit, and a screen
+   reader announces one option as current on the screen whose whole purpose is
+   to make that choice.
+2. [S-prior] The rendered legends are uppercased by CSS ("PAPER SIZE") while the
+   README names them in sentence case ("*Paper size*") — the same mismatch M051
+   raised and rejected, now recurring on the two new legend names.
+3. [S-blame] The Qualtrics and REDCap hints drop M050's sentence "None of them
+   reaches the Word form", keeping only "Neither changes the items, their
+   wording, or their response options." The reassurance survives in the README
+   and the controls no longer sit beside the Word ones, but a sentence a past
+   milestone added deliberately is gone from the page.
+4. [O] `download()` binds `paper_size` into R's global environment on every
+   build, including the two online formats whose generator call never mentions
+   it. Nothing reads it — the cross-contamination probe above proves the files
+   are identical — but a Word-only control's value is written into the R session
+   for a non-Word build.
+5. [O] `#downloadHint` renders "It turns on once at least one scale is ticked"
+   unconditionally, including when the button is already on. Carried over from
+   M052's wording for the three buttons rather than introduced here.
