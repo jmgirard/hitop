@@ -14,7 +14,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M052 | A stepped flow for the browser module builder | done | M051 | normal | milestones/archive/M052-builder-stepped-flow.md |
 | M051 | A visual system and tightened copy for the browser module builder | done | — | normal | milestones/archive/M051-builder-visual-system.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
-| M053 | A format-first flow for the browser module builder | in-progress | M052 | normal | milestones/M053-builder-format-first-flow.md |
+| M053 | A format-first flow for the browser module builder | review | M052 | normal | milestones/M053-builder-format-first-flow.md |
 
 ## Candidates
 
