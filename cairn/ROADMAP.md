@@ -1,20 +1,19 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-24 (M053 planned; ROADMAP 58 lines, under the 60-line cap. The PID-5 confidence-interval candidate compressed to hold the byte budget against the new row; the light/dark candidate's third decline recorded in place. Five terminal rows, at the limit. LESSONS untouched at 49 lines / 17337 bytes.)_
+_Last hygiene check: 2026-08-24 (M053 done and archived; M048's row pruned to hold terminal-row retention at five. ROADMAP 57 lines / 23,788 bytes and LESSONS 49 lines / 18,488 bytes, both under budget. Two LESSONS lines extended rather than added, the file being at its line cap; nothing retired, M053 shipping no guard.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M054)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M053 | A format-first flow for the browser module builder | done | M052 | normal | milestones/archive/M053-builder-format-first-flow.md |
 | M050 | Naming and response controls for the builder's online exports | done | M049 | normal | milestones/archive/M050-online-export-controls.md |
 | M049 | An original-numbering toggle for the browser module builder | done | — | normal | milestones/archive/M049-builder-numbering-toggle.md |
-| M048 | A module-titled Word form and a shuffle toggle in the browser builder | done | — | normal | milestones/archive/M048-module-title-and-shuffle-toggle.md |
 | M052 | A stepped flow for the browser module builder | done | M051 | normal | milestones/archive/M052-builder-stepped-flow.md |
 | M051 | A visual system and tightened copy for the browser module builder | done | — | normal | milestones/archive/M051-builder-visual-system.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
-| M053 | A format-first flow for the browser module builder | review | M052 | normal | milestones/M053-builder-format-first-flow.md |
 
 ## Candidates
 
