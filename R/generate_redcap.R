@@ -216,8 +216,18 @@ build_redcap_zip <- function(
   instrument,
   form_name,
   required,
-  breaks
+  breaks,
+  call = rlang::caller_env()
 ) {
+  # As in build_qualtrics_txt(): one set of guards for every instrument, with
+  # `call` defaulting to the wrapper so the abort blames the exported function.
+  # `form_name` takes no NULL here -- it is written into every dictionary row,
+  # and a NULL would recycle into a zero-row data frame rather than a form
+  # anyone could import.
+  validate_string(form_name, arg = "form_name", call = call)
+  validate_flag(required, arg = "required", call = call)
+  validate_count(breaks, arg = "breaks", min = 0, allow_null = TRUE, call = call)
+
   # 1. Format the REDCap choices string from instructions
   choice_pairs <- paste(
     instructions$options$value,

@@ -1,11 +1,11 @@
 # M050: Naming and response controls for the builder's online exports
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M049
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m050-online-export-controls`
 
 ## Goal
 
@@ -94,7 +94,7 @@ row. `title`, `font_size`, `font_family` → a new candidate row.
 
 ## Tasks
 
-- [ ] T1. Add the guards to both generators, deciding how `breaks` accepts its
+- [x] T1. Add the guards to both generators, deciding how `breaks` accepts its
       documented `0`/`NULL` disable value alongside `validate_count()`'s
       `>= 1` floor; write the `formals()`-walking test first.
 - [ ] T2. Rebuild the committed artifacts at defaults and compare (AC2).
@@ -115,6 +115,8 @@ row. `title`, `font_size`, `font_family` → a new candidate row.
 - 2026-08-23: the drafted criteria tripped the >7 acceptance-criteria advisory at 8; the REDCap `required` criterion was merged into the criterion covering the other three controls, which the same verification session exercises. Now 7.
 - 2026-08-23: plan gate chose package-side guards over validating in the app alone; the latter lost because an R caller would keep the silent-bad-artifact path and the rules would live in a repo cairn does not track. Falsified by a guard rejecting a value the target system actually accepts.
 - 2026-08-23: plan gate chose enumerating AC1's domain with `formals()` over a hand-list of the six arguments; the hand-list lost under the bounded-promise rule, since a formal added later would ship unswept. Falsified by a formal the walk cannot reach.
+- 2026-08-24: implementation gate settled three open choices: guards live in the shared `build_qualtrics_txt()`/`build_redcap_zip()` builders rather than the two HiTOP-SR wrappers, so all eight generators are swept; `validate_count()` grew `min`/`allow_null` (defaults unchanged) rather than a second helper; a cleared naming box on the builder page falls back to the package default rather than sending a blank through.
+- 2026-08-24: T1 done. Guards added to both builders with `call` defaulting to the calling wrapper; `tests/testthat/test-export-arg-guards.R` walks `formals()` of the two HiTOP-SR generators. Discrimination checked: the file fails 8 expectations against the pre-change `R/` and passes 30 with it; full suite 13824 pass, 0 fail.
 
 ## Decisions
 
