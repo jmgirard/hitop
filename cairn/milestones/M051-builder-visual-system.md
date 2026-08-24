@@ -1,11 +1,11 @@
 # M051: A visual system and tightened copy for the browser module builder
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
-- **Branch/PR:** —
+- **Branch/PR:** `m051-builder-visual-system` (tracking, jmgirard/hitop) · `m051-visual-system` (code, jmgirard/hitop-builder)
 
 ## Goal
 
@@ -52,6 +52,9 @@ The work lands in the sibling repo `jmgirard/hitop-builder` (single file `index.
 ## Work log
 
 - 2026-08-24: created by /milestone-plan.
+- 2026-08-24: implementation started; branches cut in both repos.
+- 2026-08-24: implementation gate — own token palette in the blue family over copying the pkgdown site's stock Bootstrap or going near-monochrome; the four control-group titles keep their current wording, so the copy pass works on the lede, notices, hints and status strings and the README's italicized names stay correct; no light/dark toggle, the page keeps following the operating system, recorded as a ROADMAP candidate for the stepped-flow rework.
+- 2026-08-24: ROADMAP hygiene paid for that candidate row — a stray blank line in the candidates list dropped, the hygiene stamp restated, and the builder version-pin row's lineage parenthetical compressed; 59 lines, 23,974 bytes, both under cap.
 - 2026-08-24: criteria audit ran in FULL mode (user-facing tier), fresh-context [O] reader. Nine findings across AC1, AC2, AC3, AC5, AC6 plus one coverage gap on AC2; all had one clear right answer and were fixed before the criteria were written — AC1 narrowed to what its procedure compares and given a version-parity clause, AC2 re-stated over a non-empty focusable set with a rendering focus indicator and a named live-region query, AC3 scoped to opaque full-opacity backdrops with the excluded cases enumerated and its screenshot clause moved to T5, AC5 corrected against `repo.r-wasm.org` which the notice omits today, AC6 restated as containment against the README's italicized group names, and T5 given the keyboard and live-region sweep AC2 had no task for. AC4 passed all six questions.
 - 2026-08-24: plan gate chose a restyle holding the existing element order over a stepped rework in one milestone because the user's stepped-flow answer trips the sizing tripwires (new interaction model plus visual system plus copy pass); the rework is M052, depending on this. Falsified by the restyle proving unshippable without the reflow — a control group that cannot be made legible at 360px in the current order.
 - 2026-08-24: plan gate chose a self-contained page with no new outside host over a hosted web font because the page's privacy notice enumerates where it connects and a font server adds a fourth host to disclose. Falsified by the system fonts proving unable to carry the type scale legibly in the AC3 sweep.
