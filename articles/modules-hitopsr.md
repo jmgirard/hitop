@@ -332,3 +332,67 @@ The `srange`, `prefix`, `missing`, `calc_se`, and `append` arguments all
 behave exactly as they do for a full administration; see [Scoring the
 HiTOP-SR](https://jmgirard.github.io/hitop/articles/hitopsr_scoring.md)
 for those.
+
+## Saving the Module Beside the Form
+
+Everything above depends on still having `four_scale` when the data
+comes back. Months later, in a fresh session, rebuilding it means
+retyping every scale name — and a typo scores the wrong scales while a
+forgotten scale scores none.
+
+[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+saves the description to a small JSON file you can keep beside the forms
+you generated:
+
+``` r
+
+descriptor <- write_module(four_scale, file.path(outdir, "hitopsr_module.json"))
+cat(readLines(descriptor), sep = "\n")
+#> {
+#>   "format": "1.0",
+#>   "package": "hitop",
+#>   "packageVersion": "0.2.0",
+#>   "buildDate": "2026-08-24",
+#>   "instrument": "hitopsr",
+#>   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],
+#>   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],
+#>   "nItems": 21
+#> }
+```
+
+The file is plain text, so you can read it, edit it, and send it to a
+collaborator.
+[`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+turns it back into a module:
+
+``` r
+
+reloaded <- read_module(descriptor)
+reloaded
+#> <hitop_module> hitopsr: 21 items from 4 scales
+#> * Agoraphobia
+#> * Antisocial Behavior
+#> * Appetite Loss
+#> * Romantic Disinterest
+```
+
+What comes back is not simply what the file said. The file records scale
+*names*; the items and their reverse-keying flags are rebuilt from this
+package’s own tables, so a descriptor can never introduce a scoring key
+of its own. The `items` the file records are checked against that
+rebuild, and a disagreement stops with an error rather than scoring
+quietly — which is what you want if the file was written by an older
+version of the package whose tables have since changed.
+
+Hand the reloaded module to
+[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+exactly as you would the original:
+
+``` r
+
+identical(
+  score_hitopsr(collected, items = names(collected), module = reloaded, append = FALSE),
+  module_scores
+)
+#> [1] TRUE
+```

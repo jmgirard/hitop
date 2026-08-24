@@ -18,6 +18,33 @@ interface before a CRAN submission.
   the abbreviation `m =` is now ambiguous between `module` and `missing`
   and errors — write `mo =` and `mi =`, or spell the arguments out.
 
+- **[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+  and
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  save a module to a file and read it back.** Keep the file beside the
+  forms you generate, and at scoring time hand
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  to the `module` argument instead of retyping every scale name. The
+  file is small, plain JSON you can read, edit, and send to a
+  collaborator; it carries a format version so later releases can grow
+  it. What it records is scale names, never a scoring key: the items and
+  their reverse-keying flags are rebuilt from the package’s own tables
+  on read, and the item numbers the file records are checked against
+  that rebuild, so a descriptor written against tables that have since
+  changed stops with an error rather than scoring quietly. Each failure
+  carries its own condition class, listed on
+  [`?read_module`](https://jmgirard.github.io/hitop/reference/read_module.md);
+  a descriptor that is malformed rather than merely wrong is refused by
+  one of those same classes, never by a bare R coercion error. The order
+  the item numbers are written in carries no meaning, so a hand-edited
+  file may list them any way round.
+
+- **The jsonlite package moved from Suggests to Imports**, so it is now
+  installed with hitop rather than optionally.
+  [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+  needs it, and the browser module builder runs in an environment where
+  suggested packages are not installed.
+
 - **[`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
   lists the scales you can build a module from**, with the name printed
   on the form, the camelCase stem that names the scored output column,

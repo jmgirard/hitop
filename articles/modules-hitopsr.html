@@ -376,6 +376,56 @@ stable, but shortness alone does not produce a negative value. Set
 <code>calc_se</code>, and <code>append</code> arguments all behave
 exactly as they do for a full administration; see <a href="hitopsr_scoring.html">Scoring the HiTOP-SR</a> for those.</p>
 </div>
+<div class="section level2">
+<h2 id="saving-the-module-beside-the-form">Saving the Module Beside the Form<a class="anchor" aria-label="anchor" href="#saving-the-module-beside-the-form"></a>
+</h2>
+<p>Everything above depends on still having <code>four_scale</code> when
+the data comes back. Months later, in a fresh session, rebuilding it
+means retyping every scale name — and a typo scores the wrong scales
+while a forgotten scale scores none.</p>
+<p><code><a href="../reference/write_module.html">write_module()</a></code> saves the description to a small JSON
+file you can keep beside the forms you generated:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">descriptor</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_module.html">write_module</a></span><span class="op">(</span><span class="va">four_scale</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"hitopsr_module.json"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">descriptor</span><span class="op">)</span>, sep <span class="op">=</span> <span class="st">"\n"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; {</span></span>
+<span><span class="co">#&gt;   "format": "1.0",</span></span>
+<span><span class="co">#&gt;   "package": "hitop",</span></span>
+<span><span class="co">#&gt;   "packageVersion": "0.2.0",</span></span>
+<span><span class="co">#&gt;   "buildDate": "2026-08-24",</span></span>
+<span><span class="co">#&gt;   "instrument": "hitopsr",</span></span>
+<span><span class="co">#&gt;   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],</span></span>
+<span><span class="co">#&gt;   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],</span></span>
+<span><span class="co">#&gt;   "nItems": 21</span></span>
+<span><span class="co">#&gt; }</span></span></code></pre></div>
+<p>The file is plain text, so you can read it, edit it, and send it to a
+collaborator. <code><a href="../reference/read_module.html">read_module()</a></code> turns it back into a
+module:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">reloaded</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_module.html">read_module</a></span><span class="op">(</span><span class="va">descriptor</span><span class="op">)</span></span>
+<span><span class="va">reloaded</span></span>
+<span><span class="co">#&gt; &lt;hitop_module&gt; hitopsr: 21 items from 4 scales</span></span>
+<span><span class="co">#&gt; * Agoraphobia</span></span>
+<span><span class="co">#&gt; * Antisocial Behavior</span></span>
+<span><span class="co">#&gt; * Appetite Loss</span></span>
+<span><span class="co">#&gt; * Romantic Disinterest</span></span></code></pre></div>
+<p>What comes back is not simply what the file said. The file records
+scale <em>names</em>; the items and their reverse-keying flags are
+rebuilt from this package’s own tables, so a descriptor can never
+introduce a scoring key of its own. The <code>items</code> the file
+records are checked against that rebuild, and a disagreement stops with
+an error rather than scoring quietly — which is what you want if the
+file was written by an older version of the package whose tables have
+since changed.</p>
+<p>Hand the reloaded module to <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code> exactly as
+you would the original:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span><span class="va">collected</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">collected</span><span class="op">)</span>, module <span class="op">=</span> <span class="va">reloaded</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  <span class="va">module_scores</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
