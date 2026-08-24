@@ -42,8 +42,8 @@ The work lands in the sibling repo `jmgirard/hitop-builder` (single file `index.
 ## Tasks
 
 - [ ] T1: Capture the AC1 baseline from the M051 page — each matrix cell's file plus the reported `hitop` version — by the blob-capture and `read_page`/`form_input` route M051's T1 used.
-- [ ] T2: Restructure the markup into steps — choose scales, set options, download — moving the existing control groups and notices under the step each belongs to, and keeping every notice's trigger logic intact.
-- [ ] T3: Wire step navigation: showing and hiding, the progress indication the steps need, keyboard reach between steps, and focus placement on entering one.
+- [x] T2: Restructure the markup into steps — choose scales, set options, download — moving the existing control groups and notices under the step each belongs to, and keeping every notice's trigger logic intact.
+- [x] T3: Wire step navigation: showing and hiding, the progress indication the steps need, keyboard reach between steps, and focus placement on entering one.
 - [ ] T4: Lay out each step at 360, 768 and 1280 CSS pixels in both schemes; verify unclipped rendering, the horizontal-overflow check, the keyboard walk through every step, and the live-region re-read.
 - [ ] T5: Verify behaviour: rebuild every AC1 matrix cell from the branch page and compare against the T1 baseline; drive the four crosswalk combinations and read each built file back.
 - [ ] T6: Rewrite `README.md`'s control-group sections to describe the steps in the order the page presents them.
@@ -54,6 +54,9 @@ The work lands in the sibling repo `jmgirard/hitop-builder` (single file `index.
 - 2026-08-24: criteria audit ran in FULL mode (user-facing tier) over M051's drafted criteria, which these were derived from after its nine findings were fixed; the derived criteria carry the same repairs — procedure-bounded comparison, a non-empty focusable set, a named live-region query, page properties rather than screenshot existence. No separate reader ran over this file's wording.
 - 2026-08-24: plan gate chose a stepped progression over a two-column reflow and over leaving the element order alone, on the user's answer at the 2026-08-24 gate. Falsified by a step boundary that cannot be drawn without splitting a control group whose parts depend on each other.
 - 2026-08-24: plan gate declined a persistent selection summary, a light/dark switch and pinned download buttons, on the user's answer at the same gate; whatever progress and selection indication the steps themselves need is in scope. Falsified by a visitor unable to tell from a step which scales are currently chosen.
+- 2026-08-24: implementation gate chose one step on screen at a time with a jumpable step bar, a count-and-items recap line on the later steps, the status line and log page-level, and both opening paragraphs above the steps.
+- 2026-08-24: the builder repo has no DESCRIPTION and no test suite, so the inferred profile is generic and its verify slot is empty; the page checks in T4 and T5 are this milestone's verification, as at M051.
+- 2026-08-24: T2, T3 — `index.html` restructured into three steps with a step bar, Back/Continue pairs, a recap line and heading focus on arrival (hitop-builder `ad5a001`).
 
 ## Decisions
 
