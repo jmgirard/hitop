@@ -1,6 +1,6 @@
 # M054: A saved module descriptor that reads back for scoring
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -124,7 +124,7 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
       than any hand-written list.
 - [x] T6 Docs: roxygen for both functions, the vignette section, the NEWS
       entries, and the `_pkgdown.yml` reference lines.
-- [ ] T7 Run the PROFILE verify slot: `devtools::document()`,
+- [x] T7 Run the PROFILE verify slot: `devtools::document()`,
       `devtools::test()`, `devtools::check()`, `pkgdown::check_pkgdown()`.
 
 ## Work log
@@ -144,6 +144,7 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
 - 2026-08-24: T5 — `tests/testthat/test-module_file.R` covers AC1-AC7; the AC1 module set is built by iterating `available_scales("hitopsr")`, and every expected item and reverse flag is derived from `hitopsr_items` (the item-level table) rather than from `hitopsr_scales$itemNumbers`, which is what `hitop_module()` itself reads.
 - 2026-08-24: T5 check discrimination — two defects planted and observed red before the tests were trusted: setting the written format string to "1.1" failed the literal-version test and the newer-version refusal test; replacing the recorded-items cross-check condition with `FALSE` failed both wrong-value and wrong-length mismatch tests. Both reverted.
 - 2026-08-24: T6 — roxygen for both functions (the format documented once on `write_module()` and inherited by `read_module()`), a "Saving the Module Beside the Form" section added to `vignettes/articles/modules-hitopsr.Rmd` and rendered clean, NEWS entries for both exports and the {jsonlite} Imports move, and both functions added to `_pkgdown.yml`; `pkgdown::check_pkgdown()` reports no problems.
+- 2026-08-24: T7 — verify slot clean on the committed branch: `devtools::document()` produced no diff, `devtools::test()` reported FAIL 0 / WARN 0 / SKIP 1 / PASS 14259, `devtools::check()` reported 0 errors, 0 warnings, 0 notes, and `pkgdown::check_pkgdown()` found no problems. Status set to review.
 
 ## Decisions
 
