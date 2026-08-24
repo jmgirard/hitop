@@ -112,7 +112,7 @@ their own ROADMAP candidate rows. The R package → untouched.
       enumeration; drive the two-format path and read both files back. Show
       each detector able to fail on a planted defect before trusting a clean
       result.
-- [ ] T6: Rewrite `README.md`'s *What the page shows* section to walk the new
+- [x] T6: Rewrite `README.md`'s *What the page shows* section to walk the new
       steps in page order and to name each format's own control group.
 
 ## Work log
@@ -132,6 +132,8 @@ their own ROADMAP candidate rows. The R package → untouched.
 - 2026-08-24: the browser harness delivers `keydown` to the page but not the key's default action — a real space press on a focused checkbox left it unchecked — so step boundaries were reached by real Tab presses and then activated through the focused element, which is what Enter's default action does. Noted for review as a limit of the instrument, not of the page.
 
 - 2026-08-24: T5 — all 16 AC1 matrix cells rebuilt from the branch page and compared field by field against the T1 baseline: 112 compared fields, 0 differences, both pages `hitop` 0.2.0. AC3 path driven end to end: two scales ticked once, Word built, "Choose a different format" then REDCap built with the ticks untouched (2 still checked, recap unchanged); the two files read back carry the same 10 items in the same order. Every detector shown able to fail on a planted defect — a Word cell built on A4 instead of US Letter differs from the baseline on `w:pgSz` alone while the control cell matches on all five fields; a third scale ticked between the two AC3 builds takes the item comparison to 10 against 13 and not identical; an extra text box planted in the Qualtrics panel appears in the real-Tab enumeration and goes when it is removed; a planted `role="alert"` appears in the live-region query and goes when it is removed.
+
+- 2026-08-24: T6 — `README.md`'s *What the page shows* rewritten to walk the three steps in page order, naming each format's own settings group; the three stale *Under **Set options*** references in the numbering, naming and shuffling sections re-pointed at the format screens, and the naming bullets renamed to the labels the page now renders. All 7 control-group titles the page renders (5 legends plus the scale-list group label and the filter box label) appear verbatim in the README; the check reports a title absent when given one the README does not carry, and the retired *Word paper size* is gone from both. Builder commit `1b78de9`.
 
 ## Decisions
 
