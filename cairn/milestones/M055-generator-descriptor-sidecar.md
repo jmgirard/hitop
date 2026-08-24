@@ -1,6 +1,6 @@
 # M055: The HiTOP-SR generators write a descriptor beside the file they build
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M054
 - **Driving RR:** —
@@ -91,7 +91,7 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
       AC1–AC5.
 - [x] T4 Docs: the three help pages, the vignette, NEWS, and the DESIGN known
       issue 8 rewrite.
-- [ ] T5 Run the PROFILE verify slot.
+- [x] T5 Run the PROFILE verify slot.
 
 ## Work log
 
@@ -105,6 +105,8 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
 - 2026-08-24: T3 — `tests/testthat/test-generator-descriptor.R` covers AC1–AC5, parsing the written file with `jsonlite::fromJSON()` against `hitopsr_items`/`hitopsr_scales` rather than through `read_module()`. Each new check was proven able to fail by planting the defect it claims to catch: printed numbers in `itemOrder`, a sorted `itemOrder`, an `itemOrder` written for an unshuffled form, and a sidecar left behind after a failed build.
 - 2026-08-24: the first wiring passed each build to a shared `with_descriptor(build = function() ...)` helper; `test-export-arg-guards.R` reddened, showing the generators' own guards blaming `build` instead of the exported function, and the wrapper also made the two online generators return their path visibly. Replaced by an inline `on.exit()` in each generator; both regressions gone.
 - 2026-08-24: T4 — the three help pages document `descriptor`, `vignettes/articles/modules-hitopsr.Rmd` shows the one-call form and the shuffled-form order it saves, NEWS records the argument, and DESIGN known issue 8 is narrowed to the app remainder M056 carries.
+- 2026-08-24: T5 — `devtools::document()` produces no diff, `devtools::test()` is clean (1 pre-existing skip, the OQ-1 keying question), and `devtools::check()` returns 0 errors / 0 warnings / 0 notes. `pkgdown::build_article("articles/modules-hitopsr")` renders the edited article, which `R CMD check` does not cover.
+- 2026-08-24: status set to `review`.
 
 ## Decisions
 
