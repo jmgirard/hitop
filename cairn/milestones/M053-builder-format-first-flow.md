@@ -97,11 +97,11 @@ their own ROADMAP candidate rows. The R package → untouched.
       cell's file plus the reported `hitop` version — by the blob-capture and
       `read_page`/`form_input` route M052's T1 used; confirm by digest that the
       deployed page is the builder repo's `origin/main` `index.html`.
-- [ ] T2: Re-cut the markup into the three steps, sorting the four existing
+- [x] T2: Re-cut the markup into the three steps, sorting the four existing
       control groups per format and splitting the shared naming fieldset;
       keep the shuffle notice with the shuffle control and leave the status
       line, log, opening paragraphs and back-link page-level.
-- [ ] T3: Wire the format choice and the download step: which options show,
+- [x] T3: Wire the format choice and the download step: which options show,
       the single download button, the return-to-the-format-choice control that
       keeps the selection, step-bar labels, keyboard reach and focus placement.
 - [ ] T4: Lay out each step at 360, 768 and 1280 CSS pixels in both schemes;
@@ -125,6 +125,8 @@ their own ROADMAP candidate rows. The R package → untouched.
 - 2026-08-24: implementation gate chose three format buttons that advance on click over radios plus Continue; group titles dropping the format prefix ("Paper size", "Item numbering", "Item order") with the shared naming fieldset split into "Block and question naming" and "Form name and required items"; a standing "Choose a different format" button at the foot of the last step over an extra post-download line; step-bar labels "Choose scales", "Choose a format", "Options and download".
 
 - 2026-08-24: T1 — AC1 baseline captured from the deployed page, confirmed byte-identical to the builder repo's `origin/main` `index.html` (sha256 `5ebe25f0…`); `hitop` 0.2.0, 76 scales; all 16 matrix cells built and summarized (Qualtrics whole-file digest; REDCap entry list, per-line digests and whole-`instrument.csv` digest; Word header text, `w:pgSz` and printed table rows parsed from `word/document.xml`); two-scale selection is Agoraphobia + Social Anxiety, non-default naming set block `Wave 2 Screening` / prefix `W2SCR` / form `wave2_screening` with required unticked. A first parse run was discarded: the `<w:t>` regex also matched `<w:tbl`/`<w:tc`/`<w:tr`, so the extracted "text" was markup; re-run after anchoring the tag boundary.
+
+- 2026-08-24: T2 and T3 landed in one commit to `index.html` (builder repo `3dd1357`) — the markup re-cut and its wiring are one edit to one file. Step two is a format choice of three cards, each recording the choice and moving to step three; step three shows one format panel (Word: Paper size / Item numbering / Item order; Qualtrics: Block and question naming; REDCap: Form name and required items), one download button named for the format, and a standing "Choose a different format" button at its foot. `currentFormat` starts at Word so a step-bar jump straight to step three is coherent.
 
 ## Decisions
 
