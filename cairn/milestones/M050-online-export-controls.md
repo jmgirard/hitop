@@ -1,6 +1,6 @@
 # M050: Naming and response controls for the builder's online exports
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M049
 - **Driving RR:** —
@@ -26,7 +26,11 @@ of which is checked today (`R/generate_qualtrics.R:83-104`,
 `R/generate_redcap.R:84-104`); the existing `validate_string()` /
 `validate_flag()` / `validate_count()` helpers in `R/util.R`, noting that
 `validate_count()` rejects `0` while `breaks` documents `0`/`NULL` as
-"disable pagination". Tests, NEWS.
+"disable pagination". The guards land in the shared `build_qualtrics_txt()` /
+`build_redcap_zip()` builders, so the HiTOP-BR and PID-5 generators are swept
+with them; `generate_redcap_hitophsum()`, which builds its dictionary without
+those builders, gets the same `form_name` / `required` guards directly.
+Tests, NEWS.
 
 **In (builder):** four controls — Qualtrics block name, Qualtrics ID prefix,
 REDCap form name, REDCap required — each passed to its own format's call and
@@ -97,15 +101,15 @@ row. `title`, `font_size`, `font_family` → a new candidate row.
 - [x] T1. Add the guards to both generators, deciding how `breaks` accepts its
       documented `0`/`NULL` disable value alongside `validate_count()`'s
       `>= 1` floor; write the `formals()`-walking test first.
-- [ ] T2. Rebuild the committed artifacts at defaults and compare (AC2).
-- [ ] T3. NEWS entry, `devtools::document()`, then `devtools::test()` and
+- [x] T2. Rebuild the committed artifacts at defaults and compare (AC2).
+- [x] T3. NEWS entry, `devtools::document()`, then `devtools::test()` and
       `devtools::check()` clean.
-- [ ] T4. In `jmgirard/hitop-builder` on a branch: add the four controls,
+- [x] T4. In `jmgirard/hitop-builder` on a branch: add the four controls,
       binding every value rather than interpolating it, each passed only into
       its own format's call.
-- [ ] T5. Serve the page locally; verify AC3 and AC4 by downloading and
+- [x] T5. Serve the page locally; verify AC3 and AC4 by downloading and
       parsing each file.
-- [ ] T6. README section (AC5); open the hitop-side PR; push the builder
+- [x] T6. README section (AC5); open the hitop-side PR; push the builder
       commit at merge.
 
 ## Work log
@@ -118,6 +122,13 @@ row. `title`, `font_size`, `font_family` → a new candidate row.
 - 2026-08-24: implementation gate settled three open choices: guards live in the shared `build_qualtrics_txt()`/`build_redcap_zip()` builders rather than the two HiTOP-SR wrappers, so all eight generators are swept; `validate_count()` grew `min`/`allow_null` (defaults unchanged) rather than a second helper; a cleared naming box on the builder page falls back to the package default rather than sending a blank through.
 - 2026-08-24: AC3 amended at a mini gate, one clause: `Required Field?` on an unticked-required REDCap item row was promised empty and reads `n` (`ifelse(required, "y", "n")` in `build_redcap_zip()`, confirmed by generating one). Criteria audit on the amended wording ran inline in FULL mode (user-facing tier), not in a fresh-context subagent (session configured not to spawn agents); no findings.
 - 2026-08-24: T1 done. Guards added to both builders with `call` defaulting to the calling wrapper; `tests/testthat/test-export-arg-guards.R` walks `formals()` of the two HiTOP-SR generators. Discrimination checked: the file fails 8 expectations against the pre-change `R/` and passes 30 with it; full suite 13824 pass, 0 fail.
+- 2026-08-24: T2 done. Rebuilt at defaults, `hitopsr_qualtrics.txt` md5 151f508795f5208d0e54334468850177 matches the committed copy; the REDCap archive's `instrument.csv` (407 lines, md5 a82f3ebbadc1e3c97cd081b1a8dd32d6) matches the committed archive's member byte for byte.
+- 2026-08-24: Scope amended at a mini gate to add `generate_redcap_hitophsum()`, which builds its dictionary without the shared builders and so did not inherit the guards; it takes `form_name` and `required` directly. Found while checking the NEWS entry's "every generator" claim against the family.
+
+- 2026-08-24: T3 done. NEWS entry added; `devtools::document()` produced no diff; `devtools::test()` 13897 pass / 0 fail / 1 skip; `devtools::check()` Status OK, 0 errors, 0 warnings, 0 notes.
+- 2026-08-24: T4 done. `jmgirard/hitop-builder` branch `m050-online-export-controls`, commit eb68d2c: a *Qualtrics and REDCap naming* fieldset with block name, ID prefix, form name and a required checkbox. The three free-text values are bound with `webR.objs.globalEnv.bind()` and referenced by name in the call string; each is passed only into its own format's call. Boxes prefill from `formals()` of the installed package, read at load, so no default is copied into the page.
+- 2026-08-24: T5 done, page served from `.claude/launch.json`'s `hitop-builder` config. Two-scale module (Agoraphobia, Appetite Loss; 8 items) with block name `Wave 2 Screening`, ID prefix `W2SCR`, form name `wave2_screening`: the Qualtrics file carried `[[Block:Wave 2 Screening]]` and IDs `W2SCR_066`..`W2SCR_389`; the REDCap `instrument.csv` carried `Form Name` = `wave2_screening` on all 9 rows, `Required Field?` = `n` on all 8 item rows unticked and `y` on all 8 ticked. At defaults both files were byte-identical (sha256 c1a11153.. and 37272d11..) to the same module built on the deployed page. AC4: block name `He said "\\ok\") and left` round-tripped verbatim into the block line, no error, no truncation. An emptied box fell back to the package default with a log line.
+- 2026-08-24: T6 done. Builder README gained a "Naming the Qualtrics and REDCap exports" section naming what each control sets and stating that a name the target system refuses surfaces at import, not at generation.
 
 ## Decisions
 

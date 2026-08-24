@@ -107,22 +107,41 @@ test_that("`breaks` keeps its documented 0 and NULL disable values", {
   )
 })
 
-test_that("the other instruments' generators are guarded from the same place", {
-  # The guards sit in build_qualtrics_txt()/build_redcap_zip(), so the HiTOP-BR
-  # and PID-5 generators inherit them; this is the behavior change those five
-  # functions saw, and it is what NEWS records.
-  expect_error(
-    generate_qualtrics_hitopbr(
-      file = withr::local_tempfile(fileext = ".txt"),
-      id_prefix = 1
-    ),
-    "id_prefix"
+test_that("every exported Qualtrics and REDCap generator guards its shared arguments", {
+  # NEWS says these arguments are checked on *every* generate_qualtrics_*() and
+  # generate_redcap_*(), so the claim is enforced over the whole exported
+  # family rather than a sample of it. Ten of the eleven inherit the guards
+  # from build_qualtrics_txt()/build_redcap_zip(); generate_redcap_hitophsum()
+  # builds its dictionary itself and carries them directly.
+  fns <- grep(
+    "^generate_(qualtrics|redcap)_",
+    getNamespaceExports("hitop"),
+    value = TRUE
   )
-  expect_error(
-    generate_redcap_pid5(
-      file = withr::local_tempfile(fileext = ".zip"),
-      required = "yes"
-    ),
-    "required"
+  expect_true(length(fns) > 0)
+
+  # The arguments NEWS names, checked on each generator that actually has it --
+  # generate_redcap_hitophsum() has no `breaks`, for instance.
+  shared <- c(
+    "block_name", "id_prefix", "include_instructions",
+    "breaks", "form_name", "required"
   )
+
+  for (fn in fns) {
+    f <- getExportedValue("hitop", fn)
+    ext <- if (grepl("qualtrics", fn)) ".txt" else ".zip"
+    for (arg in intersect(names(formals(f)), shared)) {
+      call_args <- list(file = withr::local_tempfile(fileext = ext))
+      call_args[[arg]] <- WRONG_TYPE
+      err <- expect_error(
+        do.call(f, call_args),
+        class = "rlang_error",
+        info = paste(fn, arg)
+      )
+      expect_match(
+        conditionMessage(err), arg,
+        fixed = TRUE, info = paste(fn, arg)
+      )
+    }
+  }
 })

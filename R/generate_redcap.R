@@ -373,6 +373,10 @@ generate_redcap_hitophsum <- function(
   other_drug_rule = c("most_frequent", "per_drug")
 ) {
   other_drug_rule <- match.arg(other_drug_rule)
+  # This generator builds its dictionary without build_redcap_zip(), so it
+  # takes the same two guards directly rather than inheriting them.
+  validate_string(form_name, arg = "form_name")
+  validate_flag(required, arg = "required")
 
   # 1. Format choices strings using split and vapply
   choice_pairs <- paste(
