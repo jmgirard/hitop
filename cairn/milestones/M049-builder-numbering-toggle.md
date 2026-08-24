@@ -474,3 +474,12 @@ on the archived `## Review` sections, which is where finding 2 came from.
 ticked; the consistency gate is clean. No `Driving RR` projection to compare —
 RR03 is advisory with no binding criteria. The three findings above go to the
 maintainer at the merge gate; their dispositions are recorded below.
+
+**Triage (2026-08-24).** Finding 1 — the maintainer chose to record and ship:
+the milestone merges as built, the limitation is written into `DESIGN.md`'s
+Known issues and a ROADMAP row, and the page's notice already tells the visitor
+to keep their own record. Finding 2 — actioned: the three builder commits are
+pushed as part of the merge, the M048 remedy the Scope already names. Finding 3
+— follow-up: pre-existing and outside this diff, absorbed as one clause into the
+standing ROADMAP row about `vignettes/articles/modules-hitopsr.Rmd` rather than
+a new row. No finding met the return floor, so the milestone did not go back.
