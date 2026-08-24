@@ -146,6 +146,7 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
 - 2026-08-24: T6 — roxygen for both functions (the format documented once on `write_module()` and inherited by `read_module()`), a "Saving the Module Beside the Form" section added to `vignettes/articles/modules-hitopsr.Rmd` and rendered clean, NEWS entries for both exports and the {jsonlite} Imports move, and both functions added to `_pkgdown.yml`; `pkgdown::check_pkgdown()` reports no problems.
 - 2026-08-24: T7 — verify slot clean on the committed branch: `devtools::document()` produced no diff, `devtools::test()` reported FAIL 0 / WARN 0 / SKIP 1 / PASS 14259, `devtools::check()` reported 0 errors, 0 warnings, 0 notes, and `pkgdown::check_pkgdown()` found no problems. Status set to review.
 - 2026-08-24: /milestone-review started; branch pushed and draft PR #60 opened. Checkpoint: AC1-AC8 verified with fresh evidence and ticked; `cairn_validate` exit 0; `document()` no diff; `check_pkgdown()` clean; vignette rendered. AC9 (`devtools::check()`), the diff-bug review lens, and PR CI still outstanding.
+- 2026-08-24: review fan-out done — blame-history and prior-review lenses no findings; diff-bug lens returned 11 ranked findings, all re-verified against the implementation (10 reproduce, F9 refuted). Findings logged in the Review section; triage pending at the gate. AC9 still running.
 
 ## Decisions
 
@@ -203,3 +204,68 @@ empty), so no merge was needed before gathering evidence.
   read -> score; it rendered clean. `NEWS.md` carries entries for both exports
   and the {jsonlite} Imports move. Both functions appear under Modules in
   `_pkgdown.yml` and `pkgdown::check_pkgdown()` reports no problems.
+
+### Independent review
+
+Three fresh-context lenses, none having seen the implementation. The
+blame-history lens ([S]) reported no findings: `hitop_module()` is untouched,
+the {jsonlite} Imports move is the supersession D-039 records rather than a
+silent reversal of D-015, and the `item_order` attribute reuses the name
+`generate_docx_hitopsr()` established. The prior-review lens ([S]) reported no
+prior-review regressions; its GitHub probe returned no real inline review
+comments, so the PR-thread walk was skipped, and it checked the diff against
+the M043 partial-matching lesson, the M044 tempdir-path finding, the M024
+`isTRUE()` lesson, and the D-034(c) class-registration contract, all clean.
+
+The diff-bug lens ([O]) returned eleven ranked findings. Each was re-verified
+against the implementation rather than against the reviewer's account of it;
+ten reproduce and one is refuted.
+
+- F1 A JSON document whose top level is an array of objects passes the
+  "top level is not an object" guard (`R/module_file.R:180`), because
+  `fromJSON(simplifyVector = TRUE)` turns it into a named data frame.
+  Reproduced: `[{"format":"1.0","instrument":"hitopsr","scales":["Agoraphobia"]}]`
+  returns a 5-item module instead of aborting. A multi-row array takes only the
+  first row's fields.
+- F2 A ragged `items` or `itemOrder` array (`[[1,2],[3]]`) escapes as an
+  unclassed `simpleError`, "'list' object cannot be coerced to type 'integer'"
+  (`R/module_file.R:224`, `:272`) — no class, no file name, contradicting
+  D-039's addendum and the `Errors` section of `?read_module`, which promise
+  every failure aborts with one of seven classed conditions naming the file.
+  Reproduced on both fields.
+- F3 `hitop_module_file_missing` is the one of D-039's seven classes with no
+  test; D-034(c) makes the classes a contract on the basis that tests assert on
+  them. AC4 does not name this case, so AC4 is unaffected.
+- F4 `items` recorded set-equal but not ascending is rejected
+  (`R/module_file.R:225` compares with `identical()`), and blamed on "The scale
+  tables may have changed since the file was written", which is false for that
+  case. The documented format says only "the item numbers the module covers"
+  and never requires an order, so a hand-written descriptor — the path AC2 and
+  the fixture exist to support — can be rejected for something the contract
+  does not ask of it. Reproduced.
+- F5 When `nItems` is present and `items` is absent, the mismatch message reads
+  "its `items` field carries 8" about a field the file does not have
+  (`R/module_file.R:254-265`). Reproduced. When `items` is present the check is
+  unreachable, the block above having already proven equality.
+- F6 `suppressWarnings(as.integer(...))` on `items`, `nItems`, and `itemOrder`
+  silently accepts JSON strings where the format documents numbers; reproduced
+  with `"items": ["66", ...]` reading back clean.
+- F7 `read_module()` refuses only versions above what this release writes, so
+  `"format": "0.5"` — a version that has never existed — reads through.
+  Reproduced. AC5 asks only about the higher case.
+- F8 `write_module()` to a path whose directory does not exist raises a raw
+  `simpleError` "cannot open the connection" plus a warning, with no cli
+  framing and no file name. Reproduced.
+- F9 **Refuted.** The lens read `cli_assert()`'s `call = rlang::caller_env()`
+  default as blaming the caller of `write_module()`. The default is evaluated
+  inside `cli_assert()`, so it resolves to `write_module()`'s own frame:
+  `conditionCall()` on the raised error is `write_module("not a module", ...)`,
+  which is what `current_env()` would give. No drift from T2's convention.
+- F10 `is_module()` accepts the deprecated `hitop_subset` class, so
+  `write_module()` writes one and `read_module()` returns a `hitop_module`;
+  reproduced, `identical()` FALSE across the round trip. D-039's addendum says
+  a written file reads back to an object identical to the module written.
+- F11 `write_module()` checks the class but not the invariant
+  `module_engine_inputs()` guards, so a hand-assembled module whose `nItems`
+  disagrees with its `items` is written out and then rejected on read.
+  Reproduced.
