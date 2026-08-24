@@ -38,6 +38,13 @@ generator prints: the online exports keep those numbers, while
 unless asked not to. Supplying the module again to \code{\link[=score_hitopsr]{score_hitopsr()}} or
 \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} scores the collected columns either way.
 
+A module naming every scale holds exactly the instrument's own items --
+all 405 of them for the HiTOP-SR -- but it is still a module, and
+\code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} frames it as one: the form is headed
+\code{"HiTOP-SR Module (v1.0)"}, and with \code{randomize = TRUE} it also carries a
+405-row crosswalk. Supply no \code{module} at all to get the full instrument's
+framing. The Qualtrics and REDCap exports are the same either way.
+
 Use \code{\link[=available_scales]{available_scales()}} to see which scales an instrument offers.
 }
 \examples{
