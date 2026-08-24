@@ -44,6 +44,17 @@ before a CRAN submission.
   the whole instrument rather than a module, so that Word form is headed
   `HiTOP-SR (v1.0)` and the three downloads are named for the instrument.
 
+* **The Qualtrics and REDCap generators now check their arguments** (breaking).
+  `block_name`, `id_prefix`, and `include_instructions` on every
+  `generate_qualtrics_*()`, `form_name` and `required` on every
+  `generate_redcap_*()`, and `breaks` on every generator that takes it,
+  previously wrote whatever they were handed into the import file:
+  `id_prefix = 1` wrote question IDs reading `1_001`, and `required = "yes"`
+  left the dictionary's required column blank on every row instead of marking
+  anything. Each now raises an error naming the argument, and no file is
+  written. `breaks` still accepts `0` and `NULL` to turn pagination off. Files
+  built from valid arguments are byte-for-byte unchanged.
+
 * **The REDCap generators no longer need an external `zip` program.** They
   built the instrument archive by running the system's `zip` command, which
   silently failed wherever no such program was installed -- commonly on

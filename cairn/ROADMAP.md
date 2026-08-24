@@ -13,7 +13,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M047 | One line-ending policy for the whole repository | done | — | normal | milestones/archive/M047-line-ending-policy.md |
 | M046 | Renumbered and optionally shuffled HiTOP-SR module Word forms | done | M045 | normal | milestones/archive/M046-module-form-numbering.md |
 | M045 | A browser module builder for the HiTOP-SR | done | M043 | normal | milestones/archive/M045-browser-module-builder.md |
-| M050 | Naming and response controls for the builder's online exports | planned | M049 | normal | milestones/M050-online-export-controls.md |
+| M050 | Naming and response controls for the builder's online exports | review | M049 | normal | milestones/M050-online-export-controls.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
 
 ## Candidates

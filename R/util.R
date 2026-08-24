@@ -219,20 +219,48 @@ validate_flag <- function(x, arg, call = rlang::caller_env()) {
 # Both a type and a bounds check, reported separately so the message says which
 # one failed: a `top` of 99 is a well-formed number that asks for more scales
 # than were supplied, which is a different mistake from passing "3".
-validate_count <- function(x, arg, max, call = rlang::caller_env()) {
+#
+# `min`, `max` and `allow_null` all default to what rank_scales()'s `top` needed
+# when this helper was written, so its calls are unchanged. The generators'
+# `breaks` is the reason they exist: it documents 0 and NULL as "no pagination"
+# and has no upper limit, a page size larger than the instrument simply never
+# reaching a break.
+validate_count <- function(
+  x,
+  arg,
+  max = Inf,
+  min = 1,
+  allow_null = FALSE,
+  call = rlang::caller_env()
+) {
+  if (allow_null && is.null(x)) {
+    return(invisible(NULL))
+  }
+  what <- if (allow_null) {
+    "a single whole number or NULL"
+  } else {
+    "a single whole number"
+  }
   cli_assert(
     condition = rlang::is_integerish(x, n = 1) && !is.na(x),
     message = c(
-      "The {.arg {arg}} argument must be a single whole number.",
+      "The {.arg {arg}} argument must be {what}.",
       "x" = "You supplied {.cls {class(x)}} of length {length(x)}."
     ),
     call = call
   )
+  # With no upper limit the "between" phrasing would read "between 0 and Inf",
+  # so an unbounded count states its floor instead.
+  limit <- if (is.finite(max)) {
+    "It must be between {min} and {max}, but you supplied {x}."
+  } else {
+    "It must be {min} or greater, but you supplied {x}."
+  }
   cli_assert(
-    condition = x >= 1 && x <= max,
+    condition = x >= min && x <= max,
     message = c(
       "The {.arg {arg}} argument is out of range.",
-      "x" = "It must be between 1 and {max}, but you supplied {x}."
+      "x" = limit
     ),
     call = call
   )

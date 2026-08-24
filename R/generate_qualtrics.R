@@ -208,8 +208,22 @@ build_qualtrics_txt <- function(
   block_name,
   id_prefix,
   include_instructions,
-  breaks
+  breaks,
+  call = rlang::caller_env()
 ) {
+  # The guards live here rather than in each generate_qualtrics_*() wrapper so
+  # every instrument gets them from one place; `call` defaults to the wrapper
+  # that called this, so the abort blames the exported function the user wrote,
+  # not this internal (the score_engine() convention).
+  #
+  # `block_name` allows NULL because the block-line branch below already treats
+  # NULL and "" alike as "write no block line"; guarding it as a plain string
+  # would turn a call that works today into an error.
+  validate_string(block_name, arg = "block_name", allow_null = TRUE, call = call)
+  validate_string(id_prefix, arg = "id_prefix", call = call)
+  validate_flag(include_instructions, arg = "include_instructions", call = call)
+  validate_count(breaks, arg = "breaks", min = 0, allow_null = TRUE, call = call)
+
   # 1. Initialize the file with the Advanced Format tag
   out <- c("[[AdvancedFormat]]", "")
 
