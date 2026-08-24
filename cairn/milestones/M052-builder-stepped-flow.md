@@ -46,7 +46,7 @@ The work lands in the sibling repo `jmgirard/hitop-builder` (single file `index.
 - [x] T3: Wire step navigation: showing and hiding, the progress indication the steps need, keyboard reach between steps, and focus placement on entering one.
 - [x] T4: Lay out each step at 360, 768 and 1280 CSS pixels in both schemes; verify unclipped rendering, the horizontal-overflow check, the keyboard walk through every step, and the live-region re-read.
 - [ ] T5: Verify behaviour: rebuild every AC1 matrix cell from the branch page and compare against the T1 baseline; drive the four crosswalk combinations and read each built file back.
-- [ ] T6: Rewrite `README.md`'s control-group sections to describe the steps in the order the page presents them.
+- [x] T6: Rewrite `README.md`'s control-group sections to describe the steps in the order the page presents them.
 
 ## Work log
 
@@ -60,6 +60,7 @@ The work lands in the sibling repo `jmgirard/hitop-builder` (single file `index.
 - 2026-08-24: T1 — 16-cell AC1 baseline captured from the deployed page (`hitop` 0.2.0, 76 scales): per cell the download's file name, byte size, the extracted content's SHA-256, and for Word the header text and the printed page size. Two extractor defects were found and fixed before the baseline stood: `<w:t[^>]*>` also matched `<w:tbl…>`/`<w:tr>` so raw markup leaked into the "parsed item rows", and the page-size read assumed a w-then-h attribute order, which reported `none` and left the US-Letter-versus-A4 dimension unable to fail.
 - 2026-08-24: T4 — six width × scheme cells (360/768/1280 CSS px, light and dark) × three steps: 0 clipping failures over 87/19/12 controls per step, `documentElement.scrollWidth == clientWidth` in every cell, and the live-region query returning exactly `#status` (polite) and `#log` (`off`) on every step. Keyboard: every step's focusable set reached by real Tab presses and ringed in both schemes — 80 + 12 + 5 step controls plus 7 page-level, none missed. Both detectors shown able to fail (a planted over-wide control and a planted in-scroller offset; a planted `outline: none` on one download button).
 - 2026-08-24: the browser driver's Enter and Space arrive with an empty `code`, which Chrome requires before it runs a button's default activation, so every control on the keyboard walk is *reached* by real Tab presses and then activated on the focused element. The page registers no `keydown`/`keyup`/`keypress` handler and calls `preventDefault` nowhere, so nothing in it stands between a real Enter and the native activation.
+- 2026-08-24: T6 — README's *What the page shows* rewritten to walk the three steps in page order; the three "Under **Download**" sections now say "Under **Set options**". All 11 control-group titles read out of the rendered DOM appear verbatim in it (hitop-builder `ba55e48`).
 
 ## Decisions
 
