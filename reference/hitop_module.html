@@ -14,6 +14,12 @@ generator prints: the online exports keep those numbers, while
 generate_docx_hitopsr() numbers a Word form 1 to n down the page
 unless asked not to. Supplying the module again to score_hitopsr() or
 reliability_hitopsr() scores the collected columns either way.
+A module naming every scale holds exactly the instrument's own items –
+all 405 of them for the HiTOP-SR – but it is still a module, and
+generate_docx_hitopsr() frames it as one: the form is headed
+&quot;HiTOP-SR Module (v1.0)&quot;, and with randomize = TRUE it also carries a
+405-row crosswalk. Supply no module at all to get the full instrument's
+framing. The Qualtrics and REDCap exports are the same either way.
 Use available_scales() to see which scales an instrument offers."><meta property="og:description" content="Builds a validated description of a module: a chosen set of
 an instrument's scales, administered and scored on its own. Supplying the
 result as the module argument of a generator produces an instrument
@@ -23,6 +29,12 @@ generator prints: the online exports keep those numbers, while
 generate_docx_hitopsr() numbers a Word form 1 to n down the page
 unless asked not to. Supplying the module again to score_hitopsr() or
 reliability_hitopsr() scores the collected columns either way.
+A module naming every scale holds exactly the instrument's own items –
+all 405 of them for the HiTOP-SR – but it is still a module, and
+generate_docx_hitopsr() frames it as one: the form is headed
+&quot;HiTOP-SR Module (v1.0)&quot;, and with randomize = TRUE it also carries a
+405-row crosswalk. Supply no module at all to get the full instrument's
+framing. The Qualtrics and REDCap exports are the same either way.
 Use available_scales() to see which scales an instrument offers."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
@@ -96,6 +108,12 @@ generator prints: the online exports keep those numbers, while
 <code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> numbers a Word form <code>1</code> to <code>n</code> down the page
 unless asked not to. Supplying the module again to <code><a href="score_hitopsr.html">score_hitopsr()</a></code> or
 <code><a href="reliability_hitopsr.html">reliability_hitopsr()</a></code> scores the collected columns either way.</p>
+<p>A module naming every scale holds exactly the instrument's own items –
+all 405 of them for the HiTOP-SR – but it is still a module, and
+<code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> frames it as one: the form is headed
+<code>"HiTOP-SR Module (v1.0)"</code>, and with <code>randomize = TRUE</code> it also carries a
+405-row crosswalk. Supply no <code>module</code> at all to get the full instrument's
+framing. The Qualtrics and REDCap exports are the same either way.</p>
 <p>Use <code><a href="available_scales.html">available_scales()</a></code> to see which scales an instrument offers.</p>
     </div>
 

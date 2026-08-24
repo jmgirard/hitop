@@ -14,6 +14,14 @@ or
 [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
 scores the collected columns either way.
 
+A module naming every scale holds exactly the instrument's own items –
+all 405 of them for the HiTOP-SR – but it is still a module, and
+[`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+frames it as one: the form is headed `"HiTOP-SR Module (v1.0)"`, and
+with `randomize = TRUE` it also carries a 405-row crosswalk. Supply no
+`module` at all to get the full instrument's framing. The Qualtrics and
+REDCap exports are the same either way.
+
 Use
 [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
 to see which scales an instrument offers.
