@@ -90,6 +90,8 @@ reference:
   contents:
   - hitop_module
   - available_scales
+  - write_module
+  - read_module
   - generate_docx_hitopbr
   - generate_docx_hitopsr
   - generate_docx_hitophsum

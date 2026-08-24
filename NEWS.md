@@ -13,6 +13,23 @@ before a CRAN submission.
   ambiguous between `module` and `missing` and errors — write `mo = ` and
   `mi = `, or spell the arguments out.
 
+* **`write_module()` and `read_module()` save a module to a file and read it
+  back.** Keep the file beside the forms you generate, and at scoring time
+  hand `read_module()` to the `module` argument instead of retyping every
+  scale name. The file is small, plain JSON you can read, edit, and send to a
+  collaborator; it carries a format version so later releases can grow it.
+  What it records is scale names, never a scoring key: the items and their
+  reverse-keying flags are rebuilt from the package's own tables on read, and
+  the item numbers the file records are checked against that rebuild, so a
+  descriptor written against tables that have since changed stops with an
+  error rather than scoring quietly. Each failure carries its own condition
+  class, listed on `?read_module`.
+
+* **The jsonlite package moved from Suggests to Imports**, so it is now
+  installed with hitop rather than optionally. `write_module()` needs it, and
+  the browser module builder runs in an environment where suggested packages
+  are not installed.
+
 * **`available_scales()` lists the scales you can build a module from**, with
   the name printed on the form, the camelCase stem that names the scored
   output column, and the item count — so you no longer need to know which

@@ -119,10 +119,10 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
       failure as its own classed condition.
 - [x] T4 Commit the hand-written descriptor fixture under
       `tests/testthat/fixtures/` with its provenance comment.
-- [ ] T5 Tests in `tests/testthat/test-module_file.R` covering AC1–AC7, with
+- [x] T5 Tests in `tests/testthat/test-module_file.R` covering AC1–AC7, with
       the enumerated module set built from `available_scales("hitopsr")` rather
       than any hand-written list.
-- [ ] T6 Docs: roxygen for both functions, the vignette section, the NEWS
+- [x] T6 Docs: roxygen for both functions, the vignette section, the NEWS
       entries, and the `_pkgdown.yml` reference lines.
 - [ ] T7 Run the PROFILE verify slot: `devtools::document()`,
       `devtools::test()`, `devtools::check()`, `pkgdown::check_pkgdown()`.
@@ -141,6 +141,9 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
 - 2026-08-24: T1 done — {jsonlite} moved from Suggests to Imports in DESCRIPTION, and D-039 extended with the format version string, the field list, and the seven condition classes `read_module()` introduces.
 - 2026-08-24: T2 and T3 landed together in `R/module_file.R`, rather than in two commits, because `write_module()`'s help-page example reads its own file back and so cannot run under the verify slot until `read_module()` exists. Suite clean at 13,897 passing, 0 failing.
 - 2026-08-24: T4 — `tests/testthat/fixtures/module-handwritten.json` committed, its provenance carried in a `_provenance` field the reader ignores; it names its scales by camelCase stem and omits the three advisory fields, so it exercises the format's optional parts as well as the hand-written path.
+- 2026-08-24: T5 — `tests/testthat/test-module_file.R` covers AC1-AC7; the AC1 module set is built by iterating `available_scales("hitopsr")`, and every expected item and reverse flag is derived from `hitopsr_items` (the item-level table) rather than from `hitopsr_scales$itemNumbers`, which is what `hitop_module()` itself reads.
+- 2026-08-24: T5 check discrimination — two defects planted and observed red before the tests were trusted: setting the written format string to "1.1" failed the literal-version test and the newer-version refusal test; replacing the recorded-items cross-check condition with `FALSE` failed both wrong-value and wrong-length mismatch tests. Both reverted.
+- 2026-08-24: T6 — roxygen for both functions (the format documented once on `write_module()` and inherited by `read_module()`), a "Saving the Module Beside the Form" section added to `vignettes/articles/modules-hitopsr.Rmd` and rendered clean, NEWS entries for both exports and the {jsonlite} Imports move, and both functions added to `_pkgdown.yml`; `pkgdown::check_pkgdown()` reports no problems.
 
 ## Decisions
 
