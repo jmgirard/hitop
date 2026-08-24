@@ -1,11 +1,11 @@
 # M052: A stepped flow for the browser module builder
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M051
 - **Driving RR:** —
 - **Principles touched:** IP1
-- **Branch/PR:** —
+- **Branch/PR:** `m052-builder-stepped-flow` (this repo) · `m052-stepped-flow` in `jmgirard/hitop-builder`
 
 ## Goal
 
