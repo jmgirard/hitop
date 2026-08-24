@@ -9,6 +9,12 @@ module_format_version <- function() {
   "1.0"
 }
 
+# The earliest version of the format that has ever existed. Equal to the
+# written version today; it stays behind as the floor once that one moves on.
+module_format_first_version <- function() {
+  "1.0"
+}
+
 #' Save a Module to a File
 #'
 #' @description Writes a [hitop_module()] descriptor to a JSON file, so that a
@@ -35,7 +41,10 @@ module_format_version <- function() {
 #'     \item{`scales`}{The module's scales, as they are printed on the
 #'       instrument. **Required**: these are what the module is rebuilt from.}
 #'     \item{`items`, `nItems`}{The original instrument item numbers the module
-#'       covers, and how many there are. Cross-checked on read.}
+#'       covers, and how many there are. Cross-checked on read: the order they
+#'       are written in carries no meaning --- [read_module()] compares them as
+#'       a set --- but a repeated number is an error, and the printed order of
+#'       a shuffled form belongs in `itemOrder` instead.}
 #'     \item{`itemOrder`}{Reserved for the printed order of a shuffled form: a
 #'       permutation of `items`. [write_module()] never writes it, because a
 #'       module object records no printed order; [read_module()] accepts one
@@ -96,7 +105,21 @@ write_module <- function(module, file) {
   )
 
   json <- jsonlite::toJSON(payload, auto_unbox = FALSE, pretty = TRUE)
-  writeLines(as.character(json), con = file)
+  # An unwritable path is reported the way every other failure in this file is
+  # -- naming the file -- rather than as the bare "cannot open the connection"
+  # that `writeLines()` raises on its own.
+  rlang::try_fetch(
+    suppressWarnings(writeLines(as.character(json), con = file)),
+    error = function(cnd) {
+      cli::cli_abort(
+        c(
+          "Cannot write the module descriptor to {.file {file}}.",
+          i = "Check that the directory exists and is writable."
+        ),
+        parent = cnd
+      )
+    }
+  )
 
   invisible(file)
 }
@@ -133,6 +156,12 @@ write_module <- function(module, file) {
 #'   (which carries [hitop_module()]'s own refusal as its parent),
 #'   `hitop_module_file_items_mismatch`, and `hitop_module_file_bad_item_order`.
 #'
+#'   The list is exhaustive by design: a descriptor that is malformed rather
+#'   than merely wrong --- a top level that is a JSON array instead of an
+#'   object, or a number field that is not a flat array of numbers --- is
+#'   refused as `hitop_module_file_invalid_json` or as the mismatch condition
+#'   for the field it spoils, never as a bare R coercion error.
+#'
 #' @seealso [write_module()] to write the file; [hitop_module()] to build a
 #'   module without one.
 #'
@@ -164,8 +193,19 @@ read_module <- function(file) {
     )
   }
 
+  # `simplifyDataFrame` and `simplifyMatrix` are off so that only the two
+  # shapes the format actually uses survive parsing: a named object at the top
+  # level, and flat arrays of scalars inside it. Left on, jsonlite turns an
+  # array of objects into a data frame -- a *named* list, which walks straight
+  # past the shape guard below -- and a nested array into a matrix, which
+  # `as.integer()` then flattens into plausible-looking nonsense.
   parsed <- rlang::try_fetch(
-    jsonlite::fromJSON(file, simplifyVector = TRUE),
+    jsonlite::fromJSON(
+      file,
+      simplifyVector = TRUE,
+      simplifyDataFrame = FALSE,
+      simplifyMatrix = FALSE
+    ),
     error = function(cnd) {
       cli::cli_abort(
         "The module descriptor {.file {file}} is not valid JSON.",
@@ -177,7 +217,8 @@ read_module <- function(file) {
   # A JSON document whose top level is an array or a bare value parses without
   # error but is not a descriptor; it is rejected here rather than reported as
   # a pile of missing fields.
-  if (!is.list(parsed) || is.null(names(parsed))) {
+  if (!is.list(parsed) || is.null(names(parsed)) || anyNA(names(parsed)) ||
+      any(names(parsed) == "")) {
     cli::cli_abort(
       c(
         "The module descriptor {.file {file}} is not valid JSON.",
@@ -221,13 +262,24 @@ read_module <- function(file) {
   # The rebuild above is the only source of keying (D-039). What the file
   # recorded is compared against it, never substituted for it.
   if (!is.null(parsed$items)) {
-    recorded <- suppressWarnings(as.integer(parsed$items))
-    if (!identical(recorded, as.integer(module$items))) {
+    recorded <- read_module_numbers(
+      parsed$items,
+      field = "items",
+      file = file,
+      class = "hitop_module_file_items_mismatch"
+    )
+    covered <- as.integer(module$items)
+    # Compared as a set: the format states no order for `items`, so a
+    # hand-written descriptor listing them any way round is a descriptor, not a
+    # defect. A repeat is still an error -- it is not a set the module covers.
+    absent <- setdiff(covered, recorded)
+    extra <- setdiff(recorded, covered)
+    duplicated_items <- unique(recorded[duplicated(recorded)])
+    if (length(absent) > 0L || length(extra) > 0L ||
+        length(duplicated_items) > 0L) {
       # Report which numbers differ, not merely how many: a file recording the
       # right number of wrong items is the case a count would describe as
       # "8 items against 8 items".
-      absent <- setdiff(module$items, recorded)
-      extra <- setdiff(recorded, module$items)
       cli::cli_abort(
         c(
           "The module descriptor {.file {file}} disagrees with this package.",
@@ -239,11 +291,12 @@ read_module <- function(file) {
           x = if (length(extra) > 0L) {
             "Recorded but not covered: {.val {extra}}."
           },
-          x = if (length(absent) == 0L && length(extra) == 0L) {
-            "It records the same {length(recorded)} item{?s} out of ascending \\
-             order or with duplicates."
+          x = if (length(duplicated_items) > 0L) {
+            "Recorded more than once: {.val {duplicated_items}}."
           },
-          i = "The scale tables may have changed since the file was written."
+          i = if (length(absent) > 0L || length(extra) > 0L) {
+            "The scale tables may have changed since the file was written."
+          }
         ),
         class = "hitop_module_file_items_mismatch"
       )
@@ -251,17 +304,23 @@ read_module <- function(file) {
   }
 
   if (!is.null(parsed$nItems)) {
-    covered <- if (is.null(parsed$items)) {
-      module$nItems
-    } else {
-      length(parsed$items)
-    }
-    if (!identical(suppressWarnings(as.integer(parsed$nItems)), as.integer(covered))) {
+    # Checked against the rebuild, never against `parsed$items`: where `items`
+    # is present the block above has already proven the two cover the same set,
+    # so comparing to it would be a check that cannot fail, reported against a
+    # field the file may not even carry.
+    recorded_n <- read_module_numbers(
+      parsed$nItems,
+      field = "nItems",
+      file = file,
+      class = "hitop_module_file_items_mismatch"
+    )
+    if (length(recorded_n) != 1L ||
+        !identical(recorded_n, as.integer(module$nItems))) {
       cli::cli_abort(
         c(
-          "The module descriptor {.file {file}} disagrees with itself.",
-          x = "Its {.field nItems} field says {parsed$nItems} but its \\
-               {.field items} field carries {covered}."
+          "The module descriptor {.file {file}} disagrees with this package.",
+          x = "Its {.field nItems} field says {.val {parsed$nItems}} but its \\
+               {.field scales} cover {module$nItems} item{?s}."
         ),
         class = "hitop_module_file_items_mismatch"
       )
@@ -269,9 +328,13 @@ read_module <- function(file) {
   }
 
   if (!is.null(parsed$itemOrder)) {
-    order <- suppressWarnings(as.integer(parsed$itemOrder))
+    order <- read_module_numbers(
+      parsed$itemOrder,
+      field = "itemOrder",
+      file = file,
+      class = "hitop_module_file_bad_item_order"
+    )
     ok <- length(order) == module$nItems &&
-      !anyNA(order) &&
       identical(sort(order), as.integer(module$items))
     if (!ok) {
       cli::cli_abort(
@@ -288,6 +351,34 @@ read_module <- function(file) {
   }
 
   module
+}
+
+# Internal Helper: read one of the format's number fields.
+#
+# JSON permits shapes R's `as.integer()` either refuses outright -- a ragged
+# array parses to a list, and coercing one throws a bare `simpleError` naming
+# neither the field nor the file -- or accepts while quietly producing `NA`.
+# Both are descriptor problems, so both are raised here as the classed,
+# file-naming condition the caller would have raised for a wrong value.
+read_module_numbers <- function(x, field, file, class,
+                                call = rlang::caller_env()) {
+  unusable <- !is.atomic(x) || is.character(x) && anyNA(suppressWarnings(as.integer(x)))
+  if (!unusable) {
+    x <- suppressWarnings(as.integer(x))
+    unusable <- length(x) == 0L || anyNA(x)
+  }
+  if (unusable) {
+    cli::cli_abort(
+      c(
+        "The module descriptor {.file {file}} has an unreadable \\
+         {.field {field}}.",
+        x = "It must be a JSON array of item numbers."
+      ),
+      class = class,
+      call = call
+    )
+  }
+  x
 }
 
 # Internal Helper: is this file's `format` one this release can read?
@@ -321,6 +412,22 @@ read_module_check_format <- function(format, file, call = rlang::caller_env()) {
         "The module descriptor {.file {file}} is in format \\
          {.val {format}}, which this version of {.pkg hitop} cannot read.",
         i = "It writes format {.val {written}}. Update {.pkg hitop}."
+      ),
+      class = "hitop_module_file_unsupported_format",
+      call = call
+    )
+  }
+
+  # `"1.0"` is the first version of the format, so anything below it names a
+  # version that has never existed -- as much a sign of a file this reader
+  # should not guess at as one from the future.
+  if (numeric_version(format) < numeric_version(module_format_first_version())) {
+    cli::cli_abort(
+      c(
+        "The module descriptor {.file {file}} is in format \\
+         {.val {format}}, which is not a version of this format.",
+        i = "The earliest is {.val {module_format_first_version()}}; this \\
+             release writes {.val {written}}."
       ),
       class = "hitop_module_file_unsupported_format",
       call = call

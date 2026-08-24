@@ -312,3 +312,137 @@ test_that("a module read from a file scores and estimates reliability identicall
     )
   )
 })
+
+
+# Review findings ------------------------------------------------------------
+#
+# Each block below pins a defect the M054 review found in `read_module()` and
+# `write_module()`. None of AC1-AC9 fenced these cases, so each is asserted
+# here directly rather than folded into a criterion's block above.
+
+raw_descriptor <- function(txt, envir = parent.frame()) {
+  f <- withr::local_tempfile(fileext = ".json", .local_envir = envir)
+  writeLines(txt, f)
+  f
+}
+
+# A well-formed descriptor as raw JSON text, so its fields can be replaced by
+# shapes `jsonlite::write_json()` would never emit.
+raw_head <- function() {
+  '{"format":"1.0","instrument":"hitopsr","scales":["Agoraphobia","Appetite Loss"]'
+}
+
+test_that("read_module() rejects a JSON document whose top level is not an object", {
+  withr::local_options(cli.width = 10000)
+
+  # An array of objects parses to a *named* list under jsonlite's data-frame
+  # simplification, so it walked past the shape guard and read as a module.
+  f1 <- raw_descriptor(
+    '[{"format":"1.0","instrument":"hitopsr","scales":["Agoraphobia"]}]'
+  )
+  e1 <- expect_error(read_module(f1), class = "hitop_module_file_invalid_json")
+  expect_true(grepl(f1, conditionMessage(e1), fixed = TRUE))
+
+  f2 <- raw_descriptor("[1, 2, 3]")
+  expect_error(read_module(f2), class = "hitop_module_file_invalid_json")
+})
+
+test_that("read_module() rejects a number field that is not an array of numbers", {
+  withr::local_options(cli.width = 10000)
+
+  items <- paste(as.integer(expected_items(c("Agoraphobia", "Appetite Loss"))),
+                 collapse = ",")
+
+  # Ragged and nested arrays: the first parses to a list, which `as.integer()`
+  # refuses with a bare simpleError; the second parsed to a matrix, which it
+  # silently flattened.
+  ragged <- raw_descriptor(paste0(raw_head(), ',"items":[[1,2],[3]]}'))
+  e1 <- expect_error(read_module(ragged),
+                     class = "hitop_module_file_items_mismatch")
+  expect_true(grepl(ragged, conditionMessage(e1), fixed = TRUE))
+  expect_true(grepl("items", conditionMessage(e1), fixed = TRUE))
+
+  nested <- raw_descriptor(paste0(raw_head(), ',"items":[[1,2],[3,4]]}'))
+  expect_error(read_module(nested), class = "hitop_module_file_items_mismatch")
+
+  alpha <- raw_descriptor(paste0(raw_head(), ',"items":["a","b"]}'))
+  expect_error(read_module(alpha), class = "hitop_module_file_items_mismatch")
+
+  order <- raw_descriptor(
+    sprintf('%s,"items":[%s],"itemOrder":[[1,2],[3]]}', raw_head(), items)
+  )
+  e2 <- expect_error(read_module(order),
+                     class = "hitop_module_file_bad_item_order")
+  expect_true(grepl("itemOrder", conditionMessage(e2), fixed = TRUE))
+})
+
+test_that("read_module() aborts on a path with no file, naming it", {
+  withr::local_options(cli.width = 10000)
+
+  f <- file.path(withr::local_tempdir(), "absent.json")
+  e <- expect_error(read_module(f), class = "hitop_module_file_missing")
+  expect_true(grepl(f, conditionMessage(e), fixed = TRUE))
+})
+
+test_that("read_module() compares recorded items as a set, but rejects a repeat", {
+  withr::local_options(cli.width = 10000)
+
+  # The format states no order for `items`, so a hand-written descriptor
+  # listing them any way round is a descriptor, not a defect.
+  reversed <- base_descriptor()
+  reversed$items <- rev(reversed$items)
+  expect_identical(
+    read_module(descriptor_file(reversed)),
+    hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+  )
+
+  repeated <- base_descriptor()
+  repeated$items[[1L]] <- repeated$items[[2L]]
+  e <- expect_error(read_module(descriptor_file(repeated)),
+                    class = "hitop_module_file_items_mismatch")
+  expect_true(grepl("Recorded more than once", conditionMessage(e), fixed = TRUE))
+})
+
+test_that("the nItems refusal names the scales it checked against, not an absent field", {
+  withr::local_options(cli.width = 10000)
+
+  # With no `items` in the file, the message used to report a count as coming
+  # from an `items` field the file does not carry.
+  d <- base_descriptor()
+  d$items <- NULL
+  d$nItems <- 99L
+  e <- expect_error(read_module(descriptor_file(d)),
+                    class = "hitop_module_file_items_mismatch")
+  expect_true(grepl("nItems", conditionMessage(e), fixed = TRUE))
+  expect_true(grepl("scales", conditionMessage(e), fixed = TRUE))
+  expect_false(grepl("items field", conditionMessage(e), fixed = TRUE))
+})
+
+test_that("read_module() refuses a format below the first version of the format", {
+  withr::local_options(cli.width = 10000)
+
+  d <- base_descriptor()
+  d$format <- "0.5"
+  e <- expect_error(read_module(descriptor_file(d)),
+                    class = "hitop_module_file_unsupported_format")
+  expect_true(grepl("0.5", conditionMessage(e), fixed = TRUE))
+})
+
+test_that("write_module() names the file when it cannot be written", {
+  withr::local_options(cli.width = 10000)
+
+  m <- hitop_module("hitopsr", scales = "agoraphobia")
+  f <- file.path(withr::local_tempdir(), "no-such-dir", "m.json")
+  e <- expect_error(write_module(m, f))
+  # The abort is this function's own, naming the file; `writeLines()`'s bare
+  # "cannot open the connection" survives only as the parent, which is where a
+  # caller should have to look for it.
+  expect_true(grepl(f, conditionMessage(e), fixed = TRUE))
+  expect_true(
+    grepl("Cannot write the module descriptor", conditionMessage(e), fixed = TRUE)
+  )
+
+  # The passing control: the same module to a writable path returns the path.
+  good <- withr::local_tempfile(fileext = ".json")
+  expect_identical(write_module(m, good), good)
+})

@@ -147,6 +147,7 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
 - 2026-08-24: T7 — verify slot clean on the committed branch: `devtools::document()` produced no diff, `devtools::test()` reported FAIL 0 / WARN 0 / SKIP 1 / PASS 14259, `devtools::check()` reported 0 errors, 0 warnings, 0 notes, and `pkgdown::check_pkgdown()` found no problems. Status set to review.
 - 2026-08-24: /milestone-review started; branch pushed and draft PR #60 opened. Checkpoint: AC1-AC8 verified with fresh evidence and ticked; `cairn_validate` exit 0; `document()` no diff; `check_pkgdown()` clean; vignette rendered. AC9 (`devtools::check()`), the diff-bug review lens, and PR CI still outstanding.
 - 2026-08-24: review fan-out done — blame-history and prior-review lenses no findings; diff-bug lens returned 11 ranked findings, all re-verified against the implementation (10 reproduce, F9 refuted). Findings logged in the Review section; triage pending at the gate. AC9 still running.
+- 2026-08-24: gate triage — Jeff chose fix-seven-then-merge. F1-F5, F7, F8 fixed in `R/module_file.R` with seven tests, each defect planted and observed red before its green was trusted; F6, F10, F11 absorbed into the M054-lineage descriptor candidate row; F9 rejected as refuted. ROADMAP byte overage (24,979 of 24,000, pre-existing) surfaced at the gate rather than cleared by pruning a record unilaterally.
 
 ## Decisions
 
@@ -269,3 +270,52 @@ ten reproduce and one is refuted.
   `module_engine_inputs()` guards, so a hand-assembled module whose `nItems`
   disagrees with its `items` is written out and then rejected on read.
   Reproduced.
+
+### Triage and dispositions
+
+At the 2026-08-24 gate Jeff chose to fix seven findings on the branch before
+merging and to carry the remaining three as one follow-up row.
+
+- F1, F2, F3, F4, F5, F7, F8 — **fixed on the branch.** `read_module()` now
+  parses with `simplifyDataFrame` and `simplifyMatrix` off, so an array of
+  objects no longer arrives as a named list and a nested array no longer
+  arrives as a coercible matrix; a new internal `read_module_numbers()` raises
+  the field's own classed, file-naming condition for anything that is not a
+  flat array of numbers; `items` is compared as a set, with a repeat still an
+  error and the "scale tables may have changed" hint shown only when the sets
+  actually differ; the `nItems` refusal is checked against the rebuild and
+  names the scales rather than an `items` field the file may not carry;
+  `read_module()` refuses a version below the format's first; and
+  `write_module()` frames an unwritable path with the file name, keeping
+  `writeLines()`'s bare error as the parent. Seven tests added, one per finding.
+- F6 (JSON strings silently coerced where the format documents numbers), F10
+  (the deprecated `hitop_subset` class does not round-trip), F11
+  (`write_module()` does not check the `nItems`/`items` invariant the reader
+  enforces) — **follow-up.** Absorbed into the existing M054-lineage descriptor
+  candidate row rather than added as a new one, per search-first and the
+  ROADMAP line cap.
+- F9 — **rejected, refuted against the implementation.** `cli_assert()`'s
+  `call = rlang::caller_env()` default is evaluated inside `cli_assert()`, so
+  it resolves to `write_module()`'s own frame; `conditionCall()` on the raised
+  error is `write_module("not a module", ...)`, which is exactly what
+  `current_env()` would give. No drift from T2's stated convention.
+
+### Check discrimination on the fix
+
+Each fix was proven able to fail before its green was trusted. Planted one at a
+time and re-run: `simplifyDataFrame = TRUE` (2 red), the number-field guard
+disabled (1), `items` compared by `identical()` again (1), the version floor
+removed (2), the write-path cli framing removed (2), the missing-file class
+renamed (1), the `nItems` message reverted to naming `items` (2). Restored, 0
+red. Separately, an accidental full revert of the implementation ran the new
+tests against the unfixed code: 6 red.
+
+### Hygiene finding, not a review finding
+
+`cairn/ROADMAP.md` is 24,979 bytes against its 24,000-byte budget. The overage
+predates this review — the file measured 24,736 bytes before this milestone's
+edits, having crossed the budget during the M054-M056 planning pass, where the
+stamp recorded lines but not bytes. Compressing the three widest rows recovered
+only part of it; clearing the rest means pruning or graduating a candidate
+record, which is the maintainer's call, so it is surfaced at the gate rather
+than taken here. The line cap (59 of 60) and every `cairn_validate` check pass.

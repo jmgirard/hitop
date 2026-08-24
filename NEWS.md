@@ -23,7 +23,10 @@ before a CRAN submission.
   the item numbers the file records are checked against that rebuild, so a
   descriptor written against tables that have since changed stops with an
   error rather than scoring quietly. Each failure carries its own condition
-  class, listed on `?read_module`.
+  class, listed on `?read_module`; a descriptor that is malformed rather than
+  merely wrong is refused by one of those same classes, never by a bare R
+  coercion error. The order the item numbers are written in carries no
+  meaning, so a hand-edited file may list them any way round.
 
 * **The jsonlite package moved from Suggests to Imports**, so it is now
   installed with hitop rather than optionally. `write_module()` needs it, and

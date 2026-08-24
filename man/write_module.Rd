@@ -40,7 +40,10 @@ reader; \code{\link[=read_module]{read_module()}} ignores all three.}
 \item{\code{scales}}{The module's scales, as they are printed on the
 instrument. \strong{Required}: these are what the module is rebuilt from.}
 \item{\code{items}, \code{nItems}}{The original instrument item numbers the module
-covers, and how many there are. Cross-checked on read.}
+covers, and how many there are. Cross-checked on read: the order they
+are written in carries no meaning --- \code{\link[=read_module]{read_module()}} compares them as
+a set --- but a repeated number is an error, and the printed order of
+a shuffled form belongs in \code{itemOrder} instead.}
 \item{\code{itemOrder}}{Reserved for the printed order of a shuffled form: a
 permutation of \code{items}. \code{\link[=write_module]{write_module()}} never writes it, because a
 module object records no printed order; \code{\link[=read_module]{read_module()}} accepts one

@@ -37,6 +37,12 @@ may catch a particular one by class: \code{hitop_module_file_missing},
 \code{hitop_module_file_unsupported_format}, \code{hitop_module_file_unknown_scales}
 (which carries \code{\link[=hitop_module]{hitop_module()}}'s own refusal as its parent),
 \code{hitop_module_file_items_mismatch}, and \code{hitop_module_file_bad_item_order}.
+
+The list is exhaustive by design: a descriptor that is malformed rather
+than merely wrong --- a top level that is a JSON array instead of an
+object, or a number field that is not a flat array of numbers --- is
+refused as \code{hitop_module_file_invalid_json} or as the mismatch condition
+for the field it spoils, never as a bare R coercion error.
 }
 
 \section{The descriptor format}{
@@ -54,7 +60,10 @@ reader; \code{\link[=read_module]{read_module()}} ignores all three.}
 \item{\code{scales}}{The module's scales, as they are printed on the
 instrument. \strong{Required}: these are what the module is rebuilt from.}
 \item{\code{items}, \code{nItems}}{The original instrument item numbers the module
-covers, and how many there are. Cross-checked on read.}
+covers, and how many there are. Cross-checked on read: the order they
+are written in carries no meaning --- \code{\link[=read_module]{read_module()}} compares them as
+a set --- but a repeated number is an error, and the printed order of
+a shuffled form belongs in \code{itemOrder} instead.}
 \item{\code{itemOrder}}{Reserved for the printed order of a shuffled form: a
 permutation of \code{items}. \code{\link[=write_module]{write_module()}} never writes it, because a
 module object records no printed order; \code{\link[=read_module]{read_module()}} accepts one
