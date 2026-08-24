@@ -1,8 +1,8 @@
 # Roadmap
 
 _The only authority on milestone status. Grouped by status, not ID._
-_Last hygiene check: 2026-08-24 (M051 in-progress; one builder candidate row added, paid for with a stray blank line and this stamp. Terminal rows at the retention limit of 5; LESSONS holds at 49 lines.)_
-_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M051)._
+_Last hygiene check: 2026-08-24 (M051 done and archived; ROADMAP 58 lines / 23,867 bytes and LESSONS 49 lines / 16,755 bytes, both under cap. M046's terminal row retired to hold the limit of 5; the M045 webR lesson extended, nothing retired.)_
+_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M053)._
 
 ## Milestones
 
@@ -12,9 +12,8 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M049 | An original-numbering toggle for the browser module builder | done | — | normal | milestones/archive/M049-builder-numbering-toggle.md |
 | M048 | A module-titled Word form and a shuffle toggle in the browser builder | done | — | normal | milestones/archive/M048-module-title-and-shuffle-toggle.md |
 | M047 | One line-ending policy for the whole repository | done | — | normal | milestones/archive/M047-line-ending-policy.md |
-| M046 | Renumbered and optionally shuffled HiTOP-SR module Word forms | done | M045 | normal | milestones/archive/M046-module-form-numbering.md |
 | M052 | A stepped flow for the browser module builder | planned | M051 | normal | milestones/M052-builder-stepped-flow.md |
-| M051 | A visual system and tightened copy for the browser module builder | review | — | normal | milestones/M051-builder-visual-system.md |
+| M051 | A visual system and tightened copy for the browser module builder | done | — | normal | milestones/archive/M051-builder-visual-system.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
 
 ## Candidates
