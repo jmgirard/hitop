@@ -88,7 +88,7 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
       generate → write → read → score; `NEWS.md` records both exports and the
       {jsonlite} Imports move; both functions appear in `_pkgdown.yml` and
       `pkgdown::check_pkgdown()` passes.
-- [ ] AC9 `devtools::document()` produces no diff, and `devtools::test()` and
+- [x] AC9 `devtools::document()` produces no diff, and `devtools::test()` and
       `devtools::check()` are clean (0 errors, 0 warnings; NOTEs justified).
 
 ## Coverage
@@ -205,6 +205,14 @@ empty), so no merge was needed before gathering evidence.
   read -> score; it rendered clean. `NEWS.md` carries entries for both exports
   and the {jsonlite} Imports move. Both functions appear under Modules in
   `_pkgdown.yml` and `pkgdown::check_pkgdown()` reports no problems.
+- AC9 — Run twice. On the pre-fix branch at 32f03fbc: `devtools::document()` no
+  diff, `devtools::check()` `Status: OK`, 0 errors / 0 warnings / 0 notes,
+  5m 16s. Re-run after the seven gate fixes landed: `document()` no diff again,
+  `check()` `Status: OK`, 0 errors / 0 warnings / 0 notes, 4m 54s, with the
+  suite's 448-line `test-module_file.R` inside it. `pkgdown::check_pkgdown()`
+  and the vignette render were both re-run clean after the fixes, and AC1-AC7
+  were each re-verified against the fixed implementation, all still holding.
+
 
 ### Independent review
 
