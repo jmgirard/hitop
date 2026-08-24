@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP3, GP4
-- **Branch/PR:** `m054-module-descriptor-file`
+- **Branch/PR:** `m054-module-descriptor-file` / https://github.com/jmgirard/hitop/pull/60
 
 ## Goal
 
@@ -41,48 +41,48 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
 
 ## Acceptance criteria
 
-- [ ] AC1 For each module in the set a test enumerates by iterating the rows of
+- [x] AC1 For each module in the set a test enumerates by iterating the rows of
       `available_scales("hitopsr")` — one single-scale module per row, one
       module naming every row, and one four-scale module of non-adjacent rows —
       `write_module()` produces a file whose parsed `instrument`, `scales`, and
       `items` fields equal values derived directly from `hitopsr_scales` and
       `hitopsr_items`, never read off the module object under test, and
       `read_module()` on that file returns an object `identical()` to it.
-- [ ] AC2 A hand-written descriptor committed as a test fixture, produced by no
+- [x] AC2 A hand-written descriptor committed as a test fixture, produced by no
       package function and carrying its provenance per the PROFILE fixture
       rule, reads back into a `hitop_module` whose `instrument`, `scales`,
       `camelCase`, `items`, `reverse`, and `nItems` each equal values derived
       directly from `hitopsr_scales` and `hitopsr_items`.
-- [ ] AC3 `read_module()` aborts with a classed `cli` error naming the file and
+- [x] AC3 `read_module()` aborts with a classed `cli` error naming the file and
       the disagreeing field for a descriptor whose recorded `items` disagrees
       with what `hitop_module()` derives from that file's own `scales` — tested
       in a wrong-value form and a wrong-length form — and for one whose
       `nItems` disagrees with its `items`. Where the fields agree, the returned
       module's `items` and `reverse` equal those of
       `hitop_module(instrument, scales)`.
-- [ ] AC4 `read_module()` aborts with a classed `cli` error naming the file for
+- [x] AC4 `read_module()` aborts with a classed `cli` error naming the file for
       each of: a file that is not valid JSON; each field the documented format
       requires (`format`, `instrument`, `scales`) omitted in turn, one test per
       field; an `instrument` the package does not support; a scale name
       `hitop_module()` does not recognize. Every class introduced is named in
       D-039, per D-034(c).
-- [ ] AC5 `write_module()` writes a `format` field whose value equals the
+- [x] AC5 `write_module()` writes a `format` field whose value equals the
       version string this release writes, asserted in the test against that
       literal and not against `write_module()`'s own output; `read_module()`
       aborts on a `format` carrying a higher version than this release writes,
       and on a non-version value such as `42`.
-- [ ] AC6 A descriptor whose `itemOrder` is a permutation of its `items` reads
+- [x] AC6 A descriptor whose `itemOrder` is a permutation of its `items` reads
       back with that order preserved on the returned object's `item_order`
       attribute, matching the attribute name `generate_docx_hitopsr()` already
       returns; one whose `itemOrder` is present but is not a permutation of
       `items` is rejected with a classed error; and a descriptor
       `write_module()` wrote carries no `itemOrder`, because a module object
       records no printed order.
-- [ ] AC7 `score_hitopsr(collected, items = names(collected), module = read_module(f))`
+- [x] AC7 `score_hitopsr(collected, items = names(collected), module = read_module(f))`
       returns a tibble `identical()` to the same call passing the in-memory
       module, for the four-scale module scored on the matching `sim_hitopsr`
       columns; `reliability_hitopsr()` likewise.
-- [ ] AC8 `?write_module` and `?read_module` each carry an example that runs
+- [x] AC8 `?write_module` and `?read_module` each carry an example that runs
       under `R CMD check` and writes only to `tempfile()`;
       `vignettes/articles/modules-hitopsr.Rmd` gains a section running
       generate → write → read → score; `NEWS.md` records both exports and the
@@ -145,7 +145,61 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
 - 2026-08-24: T5 check discrimination — two defects planted and observed red before the tests were trusted: setting the written format string to "1.1" failed the literal-version test and the newer-version refusal test; replacing the recorded-items cross-check condition with `FALSE` failed both wrong-value and wrong-length mismatch tests. Both reverted.
 - 2026-08-24: T6 — roxygen for both functions (the format documented once on `write_module()` and inherited by `read_module()`), a "Saving the Module Beside the Form" section added to `vignettes/articles/modules-hitopsr.Rmd` and rendered clean, NEWS entries for both exports and the {jsonlite} Imports move, and both functions added to `_pkgdown.yml`; `pkgdown::check_pkgdown()` reports no problems.
 - 2026-08-24: T7 — verify slot clean on the committed branch: `devtools::document()` produced no diff, `devtools::test()` reported FAIL 0 / WARN 0 / SKIP 1 / PASS 14259, `devtools::check()` reported 0 errors, 0 warnings, 0 notes, and `pkgdown::check_pkgdown()` found no problems. Status set to review.
+- 2026-08-24: /milestone-review started; branch pushed and draft PR #60 opened. Checkpoint: AC1-AC8 verified with fresh evidence and ticked; `cairn_validate` exit 0; `document()` no diff; `check_pkgdown()` clean; vignette rendered. AC9 (`devtools::check()`), the diff-bug review lens, and PR CI still outstanding.
 
 ## Decisions
 
 ## Review
+
+Reviewed 2026-08-24 on `m054-module-descriptor-file` at 32f03fbc, PR #60.
+`main` had not moved since the branch was cut (`git log HEAD..origin/main`
+empty), so no merge was needed before gathering evidence.
+
+### Acceptance-criteria evidence
+
+- AC1 — Ran independently of the suite: `available_scales("hitopsr")` has 76
+  rows, so the enumerated set is 78 modules (76 singles, one naming every row,
+  one of rows 3/17/41/68) over a non-empty domain. On the four-scale module the
+  written file's `instrument`, `scales`, and `items` each matched values derived
+  from `hitopsr_scales`/`hitopsr_items` rather than from the module object, and
+  `read_module()` returned an object `identical()` to it. The suite's AC1 block
+  passes over all 78.
+- AC2 — `read_module("tests/testthat/fixtures/module-handwritten.json")` run
+  directly: `instrument`, `scales`, `camelCase`, `items`, `reverse`, and
+  `nItems` all equal values derived from `hitopsr_scales`/`hitopsr_items`. The
+  fixture is hand-written, names its scales by camelCase stem rather than the
+  display names `write_module()` writes, omits the three advisory fields, and
+  carries its provenance in a `_provenance` field the reader ignores.
+- AC3 — Three mangled descriptors read directly: a wrong item value, a
+  wrong-length item vector, and a wrong `nItems` each aborted with class
+  `hitop_module_file_items_mismatch`, every message naming the file and the
+  disagreeing field (`items`, `items`, `nItems`). The wrong-value message names
+  which numbers differ ("Covered but not recorded: 66. Recorded but not covered:
+  999."), not a count. Where the fields agree, the returned module's `items` and
+  `reverse` are `identical()` to `hitop_module()`'s.
+- AC4 — Six failures fired directly, each naming the file: truncated JSON →
+  `hitop_module_file_invalid_json`; `format`, `instrument`, and `scales` dropped
+  one at a time → `hitop_module_file_missing_field`, each message naming the
+  dropped field; `instrument = "pid5"` and an unknown scale name →
+  `hitop_module_file_unknown_scales`. D-039's appended Classes paragraph names
+  all seven classes `read_module()` raises, matching those in `R/module_file.R`
+  and the `Errors` section of `?read_module`.
+- AC5 — The written `format` field parsed back as `"1.0"`, asserted against the
+  literal; `hitop:::module_format_version()` returns `"1.0"`. Formats `"1.1"`
+  and `"2.0"` and the non-version value `42` each aborted with
+  `hitop_module_file_unsupported_format`.
+- AC6 — A descriptor whose `itemOrder` reverses its `items` read back with that
+  order on `attr(m, "item_order")`, the attribute `generate_docx_hitopsr()`
+  returns. A substituted value and a short vector each aborted with
+  `hitop_module_file_bad_item_order`. A file `write_module()` wrote carries no
+  `itemOrder` and reads back with the attribute `NULL`.
+- AC7 — For the four-scale module scored on the matching `sim_hitopsr` columns,
+  `score_hitopsr(..., module = read_module(f))` returned a 100x28 tibble
+  `identical()` to the same call passing the in-memory module;
+  `reliability_hitopsr(..., omega = FALSE)` likewise identical.
+- AC8 — `R CMD check`'s "checking examples ... OK": both help-page examples run
+  and write only to `tempfile()`. `vignettes/articles/modules-hitopsr.Rmd` gains
+  a "Saving the Module Beside the Form" section running generate -> write ->
+  read -> score; it rendered clean. `NEWS.md` carries entries for both exports
+  and the {jsonlite} Imports move. Both functions appear under Modules in
+  `_pkgdown.yml` and `pkgdown::check_pkgdown()` reports no problems.
