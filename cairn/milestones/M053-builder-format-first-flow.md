@@ -93,7 +93,7 @@ their own ROADMAP candidate rows. The R package → untouched.
 
 ## Tasks
 
-- [ ] T1: Capture the AC1 baseline from the deployed M052 page — each matrix
+- [x] T1: Capture the AC1 baseline from the deployed M052 page — each matrix
       cell's file plus the reported `hitop` version — by the blob-capture and
       `read_page`/`form_input` route M052's T1 used; confirm by digest that the
       deployed page is the builder repo's `origin/main` `index.html`.
@@ -123,6 +123,8 @@ their own ROADMAP candidate rows. The R package → untouched.
 - 2026-08-24: plan gate chose an explicit return-to-the-format-choice control over leaving the two-format case to the step bar, and over keeping all three download buttons on the last step, because the step bar advertises nothing and three buttons undo what choosing a format buys; falsified by a visitor reporting the second format harder to reach than on the M052 page.
 - 2026-08-24: plan gate chose the full 16-cell AC1 matrix over a reduced six-cell one because the harness and the baseline method already exist from M052, so the cost is running it; falsified by the matrix run exceeding a working session.
 - 2026-08-24: implementation gate chose three format buttons that advance on click over radios plus Continue; group titles dropping the format prefix ("Paper size", "Item numbering", "Item order") with the shared naming fieldset split into "Block and question naming" and "Form name and required items"; a standing "Choose a different format" button at the foot of the last step over an extra post-download line; step-bar labels "Choose scales", "Choose a format", "Options and download".
+
+- 2026-08-24: T1 — AC1 baseline captured from the deployed page, confirmed byte-identical to the builder repo's `origin/main` `index.html` (sha256 `5ebe25f0…`); `hitop` 0.2.0, 76 scales; all 16 matrix cells built and summarized (Qualtrics whole-file digest; REDCap entry list, per-line digests and whole-`instrument.csv` digest; Word header text, `w:pgSz` and printed table rows parsed from `word/document.xml`); two-scale selection is Agoraphobia + Social Anxiety, non-default naming set block `Wave 2 Screening` / prefix `W2SCR` / form `wave2_screening` with required unticked. A first parse run was discarded: the `<w:t>` regex also matched `<w:tbl`/`<w:tc`/`<w:tr`, so the extracted "text" was markup; re-run after anchoring the tag boundary.
 
 ## Decisions
 
