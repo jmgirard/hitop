@@ -65,6 +65,7 @@ The work lands in the sibling repo `jmgirard/hitop-builder` (single file `index.
 - 2026-08-24: T5 — the four numbering × selection combinations driven with shuffle on. The shuffle notice is the page's only conditional notice and sits inside the *Word item order* group on the options step, the control it qualifies; the noscript notice is the other one in the source and speaks for the whole page before any step. 1-to-n × two scales claims a crosswalk and its file carries `Item Number Crosswalk (printed number → …)` with 8 pairs; the other three claim none and carry no heading and no arrow pairs. The detector found the crosswalk in the case that has one, so the three zeroes are informative rather than an empty search.
 - 2026-08-24: all six tasks done; `cairn_validate` exit 0 (20 pre-existing legacy D-id advisories, unchanged) and `devtools::test()` clean — 0 failures, 0 warnings, 1 skip, 13897 passing in 3:52. The R package is untouched: this repo's branch diff is `cairn/ROADMAP.md` and this file only. Status to review.
 - 2026-08-24: review — all six criteria verified fresh; gate clean (`cairn_validate` exit 0, `document()` no diff, `test()` 13897 passing, `check()` 0/0/0, `check_pkgdown()` clean); three lenses run inline, three findings, none a criterion failure.
+- 2026-08-24: gate — finding 1 fixed on the branch and AC6 re-run clean; findings 2 and 3 rejected; merge of PR #58 and hitop-builder PR #3 approved.
 
 ## Decisions
 
@@ -88,3 +89,5 @@ Reviewed 2026-08-24 on `m052-builder-stepped-flow` (this repo, PR #58) and `m052
 3. `#stepbar ol` sets `list-style: none`, which in Safari with VoiceOver drops the list semantics, so the step bar is no longer announced as a three-item list. The `nav` landmark's `Steps` label and `aria-current="step"` still convey which step is current.
 
 Nothing from the archived review record on these two files is reintroduced or contradicted: M045's log-pane `aria-live="off"` decision, the wiring-time `refreshShuffleNote()` call that covers a bfcache restore, M048's and M049's shuffle and numbering logic, and M050's naming controls all move through the diff unchanged and were re-verified above.
+
+**Triage (2026-08-24 gate).** Finding 1 fixed on the branch: the sentence now says which of Back and Continue each step carries (hitop-builder `57c8c68`); AC6 was re-run against the edited README and both clauses still hold. Findings 2 and 3 rejected — the repeated `selected()` call has no effect a visitor can observe, and the step bar's position is still carried by the `nav` landmark's label and `aria-current="step"`, with no list semantics there before this milestone to regress. Merge of both PRs approved at the same gate.
