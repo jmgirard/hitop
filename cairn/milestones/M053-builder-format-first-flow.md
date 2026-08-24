@@ -137,6 +137,7 @@ their own ROADMAP candidate rows. The R package → untouched.
 
 - 2026-08-24: all six tasks done. `cairn_validate` all checks passed (20 pre-existing advisories about legacy D-ids); `devtools::test()` 0 failures, 0 warnings, 1 skip, 13897 passing, with no R source changed on this branch. Status set to review.
 
+- 2026-08-24: review gate — finding 1 fixed on the branch (builder `e2c0600`) and the affected checks re-run clean; findings 2-5 rejected with reasons in the Review section. Merge approved by the maintainer at the chip.
 - 2026-08-24: review — all seven criteria verified fresh against a same-session capture from the deployed M052 page; consistency gate clean; three lenses inline, five findings, none a criterion failure. Two harness defects found and corrected mid-review before their results were trusted: a `<w:tr` split that also matched `<w:trPr`/`<w:trHeight` (Word cells re-run on both pages) and a containment check blind to `#scales`'s own scroll box. Acceptance boxes were ticked in one pass as the Review section was written, not one at a time; every tick has its evidence line in the same commit.
 
 ## Decisions
@@ -285,3 +286,20 @@ so the return floor does not fire.
 5. [O] `#downloadHint` renders "It turns on once at least one scale is ticked"
    unconditionally, including when the button is already on. Carried over from
    M052's wording for the three buttons rather than introduced here.
+
+**Triage at the gate (2026-08-24).** Finding 1 fixed on the branch, builder
+commit `e2c0600`: the `aria-current` mark is split out of `setFormat()` into
+`markFormatChoice()`, called only from a format card's own click handler, so
+the page's starting format is set up without being announced as a choice.
+Re-verified after the fix: no card marked on load or after a step-bar jump
+straight to step 3 (which still lands coherently on Word), the chosen card
+marked and the mark persisting on return to the choice screen; AC1 re-run on
+one cell per format, all three matching the deployed baseline digests; the
+Qualtrics Tab enumeration, the step 2 -> step 3 crossing with its heading focus
+and 3px/4px ring, the live-region query, and the 360 CSS px layout cells in both
+schemes all unchanged. Findings 2-5 rejected: 2 is the settled M051 call and the
+mismatch is CSS casing of names the README gives in sentence case; 3 keeps the
+reassurance in the README and the controls are now format-local, so the dropped
+sentence has no reader who needs it where it was; 4 has no observable effect,
+proved by the cross-contamination probe above; 5 is M052 wording carried over on
+an unmodified behaviour.
