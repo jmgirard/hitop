@@ -107,7 +107,7 @@ their own ROADMAP candidate rows. The R package → untouched.
 - [x] T4: Lay out each step at 360, 768 and 1280 CSS pixels in both schemes;
       run the keyboard walk across every boundary, the focus-indicator check,
       the live-region re-read and the horizontal-overflow check.
-- [ ] T5: Verify behaviour: rebuild every AC1 matrix cell from the branch page
+- [x] T5: Verify behaviour: rebuild every AC1 matrix cell from the branch page
       and compare against the T1 baseline; run the per-format control
       enumeration; drive the two-format path and read both files back. Show
       each detector able to fail on a planted defect before trusting a clean
@@ -130,6 +130,8 @@ their own ROADMAP candidate rows. The R package → untouched.
 
 - 2026-08-24: T4 — 6 viewport cells (360/768/1280 CSS px × light/dark) × 5 step-and-panel views × 221 controls = 1326 containment checks, 0 clipped, and `documentElement.scrollWidth <= clientWidth` on every view. The containment check was first blind: a `fieldset` grows with an oversized child and document scroll was sampled once at the end, so a planted 3000px text box passed; after adding a page-column comparison and per-view scroll sampling the same planted defect goes red on four controls and on scroll width, and clean on revert. Tab walk: 89 focus events on step one (80 in-step, 9 page-level), 5 on step two, and per format on step three exactly the paper-size radios, numbering radios and shuffle checkbox (Word), block name and question ID prefix (Qualtrics), form name and required checkbox (REDCap); every one of the walk's focus events painted a solid 3px ring, and each arrived-at step's heading took focus with the 3px/4px-offset heading ring. Live-region query returned exactly `#status` (polite) and `#log` (`off`) on all three steps. Download button disabled with no scale ticked and a rendered hint saying why, enabled at one, disabled again at none. AC5's four page-level regions carry identical rendered text on the branch page and the deployed page, all outside the steps. Step three at 360 CSS px measures 778px (Word, shuffle off), 633px (Qualtrics) and 621px (REDCap) against an 800px viewport, so the plan gate's one-screen falsifier did not fire.
 - 2026-08-24: the browser harness delivers `keydown` to the page but not the key's default action — a real space press on a focused checkbox left it unchecked — so step boundaries were reached by real Tab presses and then activated through the focused element, which is what Enter's default action does. Noted for review as a limit of the instrument, not of the page.
+
+- 2026-08-24: T5 — all 16 AC1 matrix cells rebuilt from the branch page and compared field by field against the T1 baseline: 112 compared fields, 0 differences, both pages `hitop` 0.2.0. AC3 path driven end to end: two scales ticked once, Word built, "Choose a different format" then REDCap built with the ticks untouched (2 still checked, recap unchanged); the two files read back carry the same 10 items in the same order. Every detector shown able to fail on a planted defect — a Word cell built on A4 instead of US Letter differs from the baseline on `w:pgSz` alone while the control cell matches on all five fields; a third scale ticked between the two AC3 builds takes the item comparison to 10 against 13 and not identical; an extra text box planted in the Qualtrics panel appears in the real-Tab enumeration and goes when it is removed; a planted `role="alert"` appears in the live-region query and goes when it is removed.
 
 ## Decisions
 
