@@ -1,11 +1,11 @@
 # M053: A format-first flow for the browser module builder
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M052
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m053-builder-format-first-flow` (tracking); builder repo `m053-format-first-flow`
 
 ## Goal
 
@@ -122,6 +122,7 @@ their own ROADMAP candidate rows. The R package → untouched.
 - 2026-08-24: plan gate chose three steps with options and download merged over a four-step flow separating them because each format carries two or three options, so the merged step stays short and the button sits beside the settings it uses; falsified by a download step that grows past one screen at 360 CSS pixels.
 - 2026-08-24: plan gate chose an explicit return-to-the-format-choice control over leaving the two-format case to the step bar, and over keeping all three download buttons on the last step, because the step bar advertises nothing and three buttons undo what choosing a format buys; falsified by a visitor reporting the second format harder to reach than on the M052 page.
 - 2026-08-24: plan gate chose the full 16-cell AC1 matrix over a reduced six-cell one because the harness and the baseline method already exist from M052, so the cost is running it; falsified by the matrix run exceeding a working session.
+- 2026-08-24: implementation gate chose three format buttons that advance on click over radios plus Continue; group titles dropping the format prefix ("Paper size", "Item numbering", "Item order") with the shared naming fieldset split into "Block and question naming" and "Form name and required items"; a standing "Choose a different format" button at the foot of the last step over an extra post-download line; step-bar labels "Choose scales", "Choose a format", "Options and download".
 
 ## Decisions
 
