@@ -14,7 +14,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M052 | A stepped flow for the browser module builder | done | M051 | normal | milestones/archive/M052-builder-stepped-flow.md |
 | M051 | A visual system and tightened copy for the browser module builder | done | — | normal | milestones/archive/M051-builder-visual-system.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
-| M054 | A saved module descriptor that reads back for scoring | planned | — | normal | milestones/M054-module-descriptor-file.md |
+| M054 | A saved module descriptor that reads back for scoring | in-progress | — | normal | milestones/M054-module-descriptor-file.md |
 | M055 | The HiTOP-SR generators write a descriptor beside the file they build | planned | M054 | normal | milestones/M055-generator-descriptor-sidecar.md |
 | M056 | The browser builder offers the module descriptor as a download | planned | M055 | normal | milestones/M056-builder-descriptor-download.md |
 

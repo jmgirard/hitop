@@ -1,11 +1,11 @@
 # M054: A saved module descriptor that reads back for scoring
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP3, GP4
-- **Branch/PR:** —
+- **Branch/PR:** `m054-module-descriptor-file`
 
 ## Goal
 
@@ -136,6 +136,7 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
 - 2026-08-24: plan gate chose leaving `items` required on `score_hitopsr()` over deriving it from the descriptor, because the column names only exist once a generator has run and matching them silently is the failure GP2's warnings exist to prevent; falsified by a researcher reporting the descriptor still leaves the tedious half of the typing.
 - 2026-08-24: plan chose rebuilding keying from the package's tables on read, with the file's recorded items cross-checked and a disagreement raised, over trusting the file (IP1: a descriptor could otherwise inject keying) and over recording no items at all (a descriptor a researcher cannot read is worth less); falsified by a legitimate workflow where the package's tables move and an old descriptor must still score.
 - 2026-08-24: fresh-context criteria audit ran in FULL mode (user-facing tier) over the pre-gate AC draft and returned findings on four of six criteria; all four were repaired before this file was written. The round-trip criterion asserted `write_module()`'s output through `read_module()` and nothing else, which is code-as-truth under IP2 and is satisfied by a format recording only scale names — now the written file's fields are asserted against `hitopsr_scales`/`hitopsr_items` and a hand-written fixture is read independently (AC1, AC2). The keying criterion stated an implementation path rather than an observable property and probed one field in one form — now behavioral, per corrupted field, in two forms (AC3). "A JSON file missing a required field" was one exemplar for a family — now one test per required field, omitted in turn (AC4). "Aborts on a `format` value it does not support" was unbounded on a single probe — now a stated pair, with the written value asserted against a literal (AC5).
+- 2026-08-24: /milestone-implement started; branch `m054-module-descriptor-file` cut from main.
 
 ## Decisions
 
