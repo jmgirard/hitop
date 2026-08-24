@@ -21,6 +21,7 @@ Depends:
 Imports:
     cli,
     flextable,
+    jsonlite,
     officer,
     rlang,
     snakecase,
@@ -31,7 +32,6 @@ Imports:
 Suggests:
     covr,
     ggplot2 (>= 3.4.0),
-    jsonlite,
     knitr,
     lavaan,
     rmarkdown,
