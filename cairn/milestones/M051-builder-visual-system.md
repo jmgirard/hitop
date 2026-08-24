@@ -1,6 +1,6 @@
 # M051: A visual system and tightened copy for the browser module builder
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -69,6 +69,8 @@ The work lands in the sibling repo `jmgirard/hitop-builder` (single file `index.
 
 - 2026-08-24: T6 — behaviour verified (hitop-builder 3c56d57). Both pages reported hitop 0.2.0, so no re-baselining. AC1: all 16 matrix cells rebuilt through the same ref and form_input driving and compared on file name, non-blank line count, content digest and DOCX header — 16 of 16 identical, 0 mismatches; raw byte counts differ on some DOCX cells, which is the non-reproducibility the criterion anticipates, and the comparison was shown able to fail on a flipped digest, a swapped header and a changed line count. AC4: each of the four numbering × selection combinations matched its file, scanning the whole document text rather than its tail — the 1-to-n module form carries `Item Number Crosswalk (printed number → original HiTOP-SR number)` with 8 pairs, the other three carry no crosswalk line and no arrow pairs.
 - 2026-08-24: T6 finding, fixed on the branch — the page named three hosts but fetches from four. Neither the browser's request recorder nor the page's performance timeline sees webR's worker-side fetches, so traffic was constrained instead: a copy of the page under an enforced Content-Security-Policy naming only its own origin and the hosts its text names. That run failed on the package download, and `curl -L` showed `jmgirard.r-universe.dev` answers 302 with `location: https://r2.ropensci.org/<sha256>`; `repo.r-wasm.org` and `webr.r-wasm.org` answer 200 with no redirect. The page and README now name `r2.ropensci.org`. With all four named, one load plus one build of each format ran clean with zero policy violations; dropping `repo.r-wasm.org` from the policy fails on the missing `rlang`, so the policy binds the worker rather than passing everything. The only edit after the AC1 and AC4 runs is that one sentence, touching no CSS and no script line. Evidence in the session scratchpad, `m051/t6-behaviour.md`.
+
+- 2026-08-24: all seven tasks done; `devtools::test()` clean on the branch (0 failures, 0 warnings, 1 skip, 13897 passing — the R package is untouched by this milestone, so this confirms the branch rather than exercising it). AC6 re-checked after the README edits: all nine rendered group titles appear verbatim in `README.md`, and every italicized name in the README is a group the page renders. Both branches pushed. Status to review.
 
 ## Decisions
 

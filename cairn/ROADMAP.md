@@ -14,7 +14,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M047 | One line-ending policy for the whole repository | done | — | normal | milestones/archive/M047-line-ending-policy.md |
 | M046 | Renumbered and optionally shuffled HiTOP-SR module Word forms | done | M045 | normal | milestones/archive/M046-module-form-numbering.md |
 | M052 | A stepped flow for the browser module builder | planned | M051 | normal | milestones/M052-builder-stepped-flow.md |
-| M051 | A visual system and tightened copy for the browser module builder | in-progress | — | normal | milestones/M051-builder-visual-system.md |
+| M051 | A visual system and tightened copy for the browser module builder | review | — | normal | milestones/M051-builder-visual-system.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
 
 ## Candidates
