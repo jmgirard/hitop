@@ -110,10 +110,10 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
       Suggests to Imports in `DESCRIPTION`, and extend D-039 with the names of
       the condition classes this milestone introduces, which D-034(c) requires
       a D-entry to carry.
-- [ ] T2 Implement `write_module()` in a new `R/module_file.R`, using the
+- [x] T2 Implement `write_module()` in a new `R/module_file.R`, using the
       `validate_*()` helpers in `R/util.R` and the `call = rlang::current_env()`
       convention `hitop_module()` follows (`R/module.R:63`).
-- [ ] T3 Implement `read_module()`: parse, check `format`, check the required
+- [x] T3 Implement `read_module()`: parse, check `format`, check the required
       fields, rebuild through `hitop_module()`, cross-check the recorded
       `items`/`nItems`, validate and attach `item_order`, and raise each
       failure as its own classed condition.
@@ -139,6 +139,7 @@ for the HiTOP-BR or PID-5 → the standing modularization-generalization row;
 - 2026-08-24: /milestone-implement started; branch `m054-module-descriptor-file` cut from main.
 - 2026-08-24: implementation gate settled four open format choices, all as recommended: camelCase field names in the file, a read that refuses a version stamp newer than this release writes, unknown scale/instrument names surfaced by wrapping `hitop_module()`'s own refusal with the file name, and `file` as the path argument on both functions.
 - 2026-08-24: T1 done — {jsonlite} moved from Suggests to Imports in DESCRIPTION, and D-039 extended with the format version string, the field list, and the seven condition classes `read_module()` introduces.
+- 2026-08-24: T2 and T3 landed together in `R/module_file.R`, rather than in two commits, because `write_module()`'s help-page example reads its own file back and so cannot run under the verify slot until `read_module()` exists. Suite clean at 13,897 passing, 0 failing.
 
 ## Decisions
 
