@@ -1,7 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-08-24 (M054-M056 planned; ROADMAP held under its line cap by merging three builder-control candidate rows into one and the two shuffled-form rows into one, no content dropped. 59 lines.)_
-_Last hygiene check: 2026-08-24 (M053 done and archived; M048's row pruned to hold terminal-row retention at five. ROADMAP 57 lines / 23,788 bytes and LESSONS 49 lines / 18,488 bytes, both under budget. Two LESSONS lines extended rather than added, the file being at its line cap; nothing retired, M053 shipping no guard.)_
+_Last hygiene check: 2026-08-24 (M054 done and archived; M049's row pruned to hold terminal-row retention at five. Two LESSONS lines extended rather than added, the file being at its line cap — nothing retired, M054 shipping no guard over an existing lesson. The doubled stamp the previous pass left is collapsed to this one line. ROADMAP is over its 24,000-byte budget: the overage predates this milestone (24,736 bytes before it) and Jeff chose at the 2026-08-24 M054 gate to record it rather than prune a candidate record; compressing the three widest rows recovered 47 bytes. LESSONS 49 lines / 19,729 bytes, both under budget.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M057)._
 
 ## Milestones
@@ -10,11 +9,10 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 |---|---|---|---|---|---|
 | M053 | A format-first flow for the browser module builder | done | M052 | normal | milestones/archive/M053-builder-format-first-flow.md |
 | M050 | Naming and response controls for the builder's online exports | done | M049 | normal | milestones/archive/M050-online-export-controls.md |
-| M049 | An original-numbering toggle for the browser module builder | done | — | normal | milestones/archive/M049-builder-numbering-toggle.md |
 | M052 | A stepped flow for the browser module builder | done | M051 | normal | milestones/archive/M052-builder-stepped-flow.md |
 | M051 | A visual system and tightened copy for the browser module builder | done | — | normal | milestones/archive/M051-builder-visual-system.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
-| M054 | A saved module descriptor that reads back for scoring | review | — | normal | milestones/M054-module-descriptor-file.md |
+| M054 | A saved module descriptor that reads back for scoring | done | — | normal | milestones/archive/M054-module-descriptor-file.md |
 | M055 | The HiTOP-SR generators write a descriptor beside the file they build | planned | M054 | normal | milestones/M055-generator-descriptor-sidecar.md |
 | M056 | The browser builder offers the module descriptor as a download | planned | M055 | normal | milestones/M056-builder-descriptor-download.md |
 
