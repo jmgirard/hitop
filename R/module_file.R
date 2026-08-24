@@ -45,23 +45,30 @@ module_format_first_version <- function() {
 #'       are written in carries no meaning --- [read_module()] compares them as
 #'       a set --- but a repeated number is an error, and the printed order of
 #'       a shuffled form belongs in `itemOrder` instead.}
-#'     \item{`itemOrder`}{Reserved for the printed order of a shuffled form: a
-#'       permutation of `items`. [write_module()] never writes it, because a
-#'       module object records no printed order; [read_module()] accepts one
-#'       and returns it on the `item_order` attribute, the same attribute
-#'       [generate_docx_hitopsr()] returns.}
+#'     \item{`itemOrder`}{The printed order of a shuffled form: a permutation
+#'       of `items`. Optional --- a form printed in instrument order carries
+#'       none. [read_module()] returns it on the module's `item_order`
+#'       attribute, the same attribute [generate_docx_hitopsr()] returns, and
+#'       [write_module()] writes it back from that attribute, so a descriptor
+#'       read and written again keeps the order it recorded. The generators'
+#'       `descriptor` argument sets the attribute for you.}
 #'   }
 #'
 #'   `format`, `instrument`, and `scales` are required. The fields and the
 #'   version string are a public contract and change only deliberately.
 #'
-#' @param module A `hitop_module` object, as returned by [hitop_module()].
+#' @param module A `hitop_module` object, as returned by [hitop_module()]. An
+#'   `item_order` attribute, where present, is written as the file's
+#'   `itemOrder` and must be a permutation of the module's items.
 #' @param file A string giving the path to write to.
 #'
 #' @return The `file` path, invisibly.
 #'
 #' @seealso [read_module()] to read the file back; [hitop_module()] to build a
-#'   module in the first place.
+#'   module in the first place; the `descriptor` argument of
+#'   [generate_docx_hitopsr()], [generate_qualtrics_hitopsr()], and
+#'   [generate_redcap_hitopsr()], which writes one of these files beside the
+#'   instrument it builds.
 #'
 #' @examples
 #' m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
@@ -103,6 +110,29 @@ write_module <- function(module, file) {
     items = as.integer(module$items),
     nItems = jsonlite::unbox(as.integer(module$nItems))
   )
+
+  # A module carrying an `item_order` attribute records the order a shuffled
+  # form printed its items in; read_module() returns exactly this attribute, so
+  # writing it back is what makes a descriptor round-trip whole. Checked here
+  # rather than trusted, because the attribute can be set by hand: an order
+  # that is not a permutation of the module's items would write a file
+  # read_module() then refuses.
+  item_order <- attr(module, "item_order")
+  if (!is.null(item_order)) {
+    usable <- is.numeric(item_order) &&
+      !anyNA(item_order) &&
+      identical(sort(as.integer(item_order)), as.integer(module$items))
+    cli_assert(
+      condition = usable,
+      message = c(
+        "The {.arg module} argument has an unusable {.field item_order} \\
+         attribute.",
+        x = "It must be a permutation of the {module$nItems} item{?s} the \\
+             module covers."
+      )
+    )
+    payload$itemOrder <- as.integer(item_order)
+  }
 
   json <- jsonlite::toJSON(payload, auto_unbox = FALSE, pretty = TRUE)
   # An unwritable path is reported the way every other failure in this file is
@@ -435,4 +465,36 @@ read_module_check_format <- function(format, file, call = rlang::caller_env()) {
   }
 
   invisible(format)
+}
+
+# Internal Helper: write a generator's sidecar descriptor
+#
+# Shared by the three HiTOP-SR generators' `descriptor` argument. `module =
+# NULL` is the full instrument, described here as a module over every scale the
+# instrument offers, so a full administration gets a descriptor too rather than
+# the argument quietly doing nothing. `item_order` is the original item numbers
+# in the order a form printed them; NULL leaves the field out, which is what a
+# form printed in instrument order deserves.
+write_descriptor_sidecar <- function(
+  descriptor,
+  module,
+  instrument,
+  item_order = NULL,
+  call = rlang::caller_env()
+) {
+  validate_string(descriptor, "descriptor", call = call)
+  if (is.null(module)) {
+    module <- hitop_module(
+      instrument = instrument,
+      scales = module_scale_tables()[[instrument]]$Scale,
+      call = call
+    )
+  }
+  if (!is.null(item_order)) {
+    attr(module, "item_order") <- as.integer(item_order)
+  }
+  # write_module()'s own abort is left to speak: it names the path, which is
+  # the fact the caller needs, and re-wrapping it here would re-interpolate a
+  # message that has already been formatted.
+  write_module(module, descriptor)
 }

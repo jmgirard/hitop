@@ -1,11 +1,11 @@
 # M055: The HiTOP-SR generators write a descriptor beside the file they build
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M054
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m055-generator-descriptor-sidecar`
 
 ## Goal
 
@@ -81,15 +81,15 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
 
 ## Tasks
 
-- [ ] T1 Add `descriptor` to the three generators, resolving the full-instrument
+- [x] T1 Add `descriptor` to the three generators, resolving the full-instrument
       case to a module over every scale, and guard it beside the existing
       `file` checks.
-- [ ] T2 Thread `item_order` from `generate_docx_hitopsr()`'s existing
+- [x] T2 Thread `item_order` from `generate_docx_hitopsr()`'s existing
       computation (`R/generate_docx.R:217`, returned at `:311`) into the
       descriptor writer.
-- [ ] T3 Tests in `tests/testthat/test-module_file.R` or a sibling, covering
+- [x] T3 Tests in `tests/testthat/test-module_file.R` or a sibling, covering
       AC1–AC5.
-- [ ] T4 Docs: the three help pages, the vignette, NEWS, and the DESIGN known
+- [x] T4 Docs: the three help pages, the vignette, NEWS, and the DESIGN known
       issue 8 rewrite.
 - [ ] T5 Run the PROFILE verify slot.
 
@@ -99,7 +99,19 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
 - 2026-08-24: plan gate split the sidecar work from M054's format work so the format round-trips before three call sites depend on it; the alternative, one milestone doing both, was rejected at the gate and is recorded on M054.
 - 2026-08-24: plan chose splitting the builder-page download into M056 rather than carrying it here, because the two live in different repos and the combined scope trips the sizing tripwires; falsified by the app change proving to be a few lines that would have been cheaper alongside these.
 - 2026-08-24: fresh-context criteria audit ran in FULL mode (user-facing tier) and returned findings on AC1, AC3, and AC5; all three were repaired before this file was committed. AC1 checked the writer only through the package's own reader (IP2) — now the written fields are parsed independently and asserted against `hitopsr_scales`/`hitopsr_items`. AC3 left the shuffle seed and `renumber` unvaried, the axis where an `itemOrder` recorded in printed numbers rather than original HSR numbers would pass — now seeded and run at both `renumber` values, with the numbering stated. AC5 named an internal call site and left the abort ordering to the implementation, which constrains nothing — now behavioral, with the ordering fixed. AC2, AC4, AC6, and AC7 returned nothing.
+- 2026-08-24: T1 — `descriptor` added to `generate_docx_hitopsr()`, `generate_qualtrics_hitopsr()`, and `generate_redcap_hitopsr()`, placed last before the deprecated `subset` so no positional call shifts; `module = NULL` resolves to a module over every scale, so a full administration is described too.
+- 2026-08-24: implementation gate chose `write_module()` writing an `item_order` attribute as the file's `itemOrder` over an internal-only writer (recorded below as M055-D1), and chose removing an already-written sidecar when the instrument build then fails over leaving it behind.
+- 2026-08-24: T2 — the Word generator threads its existing printed-order map into the sidecar under `randomize = TRUE` only; without a shuffle the module's ascending `items` already states the order.
+- 2026-08-24: T3 — `tests/testthat/test-generator-descriptor.R` covers AC1–AC5, parsing the written file with `jsonlite::fromJSON()` against `hitopsr_items`/`hitopsr_scales` rather than through `read_module()`. Each new check was proven able to fail by planting the defect it claims to catch: printed numbers in `itemOrder`, a sorted `itemOrder`, an `itemOrder` written for an unshuffled form, and a sidecar left behind after a failed build.
+- 2026-08-24: the first wiring passed each build to a shared `with_descriptor(build = function() ...)` helper; `test-export-arg-guards.R` reddened, showing the generators' own guards blaming `build` instead of the exported function, and the wrapper also made the two online generators return their path visibly. Replaced by an inline `on.exit()` in each generator; both regressions gone.
+- 2026-08-24: T4 — the three help pages document `descriptor`, `vignettes/articles/modules-hitopsr.Rmd` shows the one-call form and the shuffled-form order it saves, NEWS records the argument, and DESIGN known issue 8 is narrowed to the app remainder M056 carries.
 
 ## Decisions
+
+### M055-D1 (2026-08-24): `write_module()` writes a module's `item_order` attribute as the file's `itemOrder`
+
+**Context:** The descriptor format already defines `itemOrder`, and `read_module()` already returns it on the module's `item_order` attribute, but M054 documented `write_module()` as never writing it — so a descriptor read and written again lost the printed order it recorded, and the generators' new `descriptor` argument would have needed a private writer to save one.
+**Decision:** `write_module()` writes `itemOrder` whenever the module carries an `item_order` attribute, after checking that the attribute is a permutation of the module's items rather than trusting it. The generators set the attribute; nothing else about the format changes.
+**Consequences:** Saving and reading a descriptor are symmetric. The field's definition and the version string are untouched, so the format contract D-039 fixed is not reopened; one paragraph of `?write_module` is rewritten, and a hand-set attribute that is not a permutation is now an error at write time instead of at read time.
 
 ## Review
