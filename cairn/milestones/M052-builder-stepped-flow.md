@@ -1,6 +1,6 @@
 # M052: A stepped flow for the browser module builder
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M051
 - **Driving RR:** —
@@ -63,6 +63,7 @@ The work lands in the sibling repo `jmgirard/hitop-builder` (single file `index.
 - 2026-08-24: T6 — README's *What the page shows* rewritten to walk the three steps in page order; the three "Under **Download**" sections now say "Under **Set options**". All 11 control-group titles read out of the rendered DOM appear verbatim in it (hitop-builder `ba55e48`).
 - 2026-08-24: T5 — all 16 AC1 cells rebuilt from the branch page (`hitop` 0.2.0 on both pages, 76 scales on both) and compared against the T1 baseline on seven fields per cell: 16/16 identical, 0 mismatches. Four Word cells differ in raw byte size only (70604/70603, 18005/18006, 18024/18025, 17996/17998) — the zip non-reproducibility the criterion anticipates, which is why the content digest and not the byte count is the key. The comparison was shown able to fail: one flipped hex digit in one baseline digest returned exactly that cell and field.
 - 2026-08-24: T5 — the four numbering × selection combinations driven with shuffle on. The shuffle notice is the page's only conditional notice and sits inside the *Word item order* group on the options step, the control it qualifies; the noscript notice is the other one in the source and speaks for the whole page before any step. 1-to-n × two scales claims a crosswalk and its file carries `Item Number Crosswalk (printed number → …)` with 8 pairs; the other three claim none and carry no heading and no arrow pairs. The detector found the crosswalk in the case that has one, so the three zeroes are informative rather than an empty search.
+- 2026-08-24: all six tasks done; `cairn_validate` exit 0 (20 pre-existing legacy D-id advisories, unchanged) and `devtools::test()` clean — 0 failures, 0 warnings, 1 skip, 13897 passing in 3:52. The R package is untouched: this repo's branch diff is `cairn/ROADMAP.md` and this file only. Status to review.
 
 ## Decisions
 

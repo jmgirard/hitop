@@ -12,7 +12,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M049 | An original-numbering toggle for the browser module builder | done | — | normal | milestones/archive/M049-builder-numbering-toggle.md |
 | M048 | A module-titled Word form and a shuffle toggle in the browser builder | done | — | normal | milestones/archive/M048-module-title-and-shuffle-toggle.md |
 | M047 | One line-ending policy for the whole repository | done | — | normal | milestones/archive/M047-line-ending-policy.md |
-| M052 | A stepped flow for the browser module builder | in-progress | M051 | normal | milestones/M052-builder-stepped-flow.md |
+| M052 | A stepped flow for the browser module builder | review | M051 | normal | milestones/M052-builder-stepped-flow.md |
 | M051 | A visual system and tightened copy for the browser module builder | done | — | normal | milestones/archive/M051-builder-visual-system.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
 
