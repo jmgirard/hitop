@@ -84,8 +84,9 @@ administration. With \code{randomize = TRUE} it also records the printed order,
 returned on the read module's \code{item_order} attribute --- the record a
 shuffled whole-instrument form otherwise leaves nowhere, since no
 crosswalk is printed for one. Written before the Word file, so an
-unwritable path is reported before any form is produced.
-(default = \code{NULL})}
+unwritable path is reported before any form is produced; if the Word file
+then cannot be written, the descriptor is removed again, a file that was
+already at that path included. (default = \code{NULL})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}

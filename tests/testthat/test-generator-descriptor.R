@@ -33,9 +33,28 @@ GENERATORS <- list(
   generate_redcap_hitopsr = ".zip"
 )
 
-skip_if_no_generators <- function() {
-  skip_if_no_docx()
-  testthat::skip_if_not_installed("zip")
+# What each generator needs installed: officer/flextable for the Word builder,
+# an external {zip} for the REDCap bundle, nothing at all for the Qualtrics text
+# file. Filtering the loop rather than skipping the whole test keeps one absent
+# dependency from taking the other generators' coverage with it. Skips only when
+# nothing is runnable, so the loops below cannot silently pass over an empty
+# domain.
+GENERATOR_DEPS <- list(
+  generate_docx_hitopsr = c("officer", "flextable"),
+  generate_qualtrics_hitopsr = character(),
+  generate_redcap_hitopsr = "zip"
+)
+
+available_generators <- function() {
+  installed <- function(pkgs) {
+    all(vapply(pkgs, requireNamespace, logical(1), quietly = TRUE))
+  }
+  runnable <- names(GENERATOR_DEPS)[vapply(GENERATOR_DEPS, installed, logical(1))]
+  testthat::skip_if(
+    length(runnable) == 0L,
+    "no generator's dependencies are installed"
+  )
+  runnable
 }
 
 # Parse a written descriptor without going through read_module().
@@ -52,8 +71,6 @@ parse_descriptor <- function(file) {
 # AC1 -------------------------------------------------------------------------
 
 test_that("generate_docx_hitopsr(), generate_qualtrics_hitopsr(), and generate_redcap_hitopsr() write a module's descriptor beside the file", {
-  skip_if_no_generators()
-
   module <- hitop_module("hitopsr", scales = FOUR_STEMS)
   display <- display_of(FOUR_STEMS)
   items <- items_of(display)
@@ -61,7 +78,7 @@ test_that("generate_docx_hitopsr(), generate_qualtrics_hitopsr(), and generate_r
   # make the field comparisons below vacuous and this test still green.
   expect_true(length(items) > 0)
 
-  for (fn in names(GENERATORS)) {
+  for (fn in available_generators()) {
     descriptor <- withr::local_tempfile(fileext = ".json")
     do.call(fn, list(
       file = withr::local_tempfile(fileext = GENERATORS[[fn]]),
@@ -86,12 +103,10 @@ test_that("generate_docx_hitopsr(), generate_qualtrics_hitopsr(), and generate_r
 # AC2 -------------------------------------------------------------------------
 
 test_that("a generator call with no module writes a descriptor of the whole instrument", {
-  skip_if_no_generators()
-
   full_items <- seq_len(405)
   expected <- score_hitopsr(sim_hitopsr, items = full_items, append = FALSE)
 
-  for (fn in names(GENERATORS)) {
+  for (fn in available_generators()) {
     descriptor <- withr::local_tempfile(fileext = ".json")
     do.call(fn, list(
       file = withr::local_tempfile(fileext = GENERATORS[[fn]]),
@@ -157,6 +172,10 @@ test_that("a shuffled Word form's descriptor records the printed order in origin
     # Original instrument numbers, in printed order: a permutation of the items
     # the form covers, and the same order the generator returns.
     expect_identical(sort(order), covered, info = case$label)
+    # The saved file and the returned attribute are the same computation, so
+    # this says only that the sidecar preserved what the generator returned --
+    # the contract the help pages state. Whether the order is RIGHT is settled
+    # by the independent scoring round trip below.
     expect_identical(order, attr(out, "item_order"), info = case$label)
     # Discriminating control for the renumbered module form, where the printed
     # numbers are 1..8 and the original ones are not.
@@ -208,8 +227,6 @@ test_that("a shuffled Word form's descriptor records the printed order in origin
 # AC4 -------------------------------------------------------------------------
 
 test_that("a descriptor for an unshuffled form carries no printed order", {
-  skip_if_no_generators()
-
   module <- hitop_module("hitopsr", scales = FOUR_STEMS)
 
   # The Word generator with randomize = FALSE, then the two online exports,
@@ -232,7 +249,9 @@ test_that("a descriptor for an unshuffled form carries no printed order", {
     )
   )
 
+  runnable <- available_generators()
   for (label in names(calls)) {
+    if (!calls[[label]]$fn %in% runnable) next
     descriptor <- withr::local_tempfile(fileext = ".json")
     args <- c(
       calls[[label]]$args,
@@ -249,13 +268,11 @@ test_that("a descriptor for an unshuffled form carries no printed order", {
 # AC5 -------------------------------------------------------------------------
 
 test_that("every generator refuses a descriptor that is not a single path", {
-  skip_if_no_generators()
-
   # Not a string, not NULL, and not length one: it fails the guard whichever
   # way the guard is written.
   bad <- list(list(1, 2), c("one.json", "two.json"), NA_character_)
 
-  for (fn in names(GENERATORS)) {
+  for (fn in available_generators()) {
     for (value in bad) {
       target <- withr::local_tempfile(fileext = GENERATORS[[fn]])
       err <- expect_error(
@@ -269,9 +286,7 @@ test_that("every generator refuses a descriptor that is not a single path", {
 })
 
 test_that("an unwritable descriptor path is refused before any instrument file is written", {
-  skip_if_no_generators()
-
-  for (fn in names(GENERATORS)) {
+  for (fn in available_generators()) {
     target <- withr::local_tempfile(fileext = GENERATORS[[fn]])
     # A directory that does not exist, so the descriptor cannot be opened.
     missing_dir <- file.path(
@@ -297,9 +312,7 @@ test_that("an unwritable descriptor path is refused before any instrument file i
 })
 
 test_that("a descriptor is not left behind when the instrument file cannot be written", {
-  skip_if_no_generators()
-
-  for (fn in names(GENERATORS)) {
+  for (fn in available_generators()) {
     descriptor <- file.path(withr::local_tempdir(), "module.json")
     # A target the builder cannot open, for the same reason: its directory
     # does not exist.
@@ -316,6 +329,84 @@ test_that("a descriptor is not left behind when the instrument file cannot be wr
         do.call(fn, list(file = target, descriptor = descriptor))
       )
     )
+    expect_false(file.exists(descriptor), info = fn)
+  }
+})
+
+
+# Return repairs (2026-08-24 review findings) --------------------------------
+
+test_that("a module that already carries a printed order does not stamp one on a form that was never shuffled", {
+  # The state under test is exactly what read_module() returns from a shuffled
+  # Word form's descriptor -- AC3 above asserts that attribute is there -- set
+  # by hand so this regression covers the online generators on a machine with
+  # no Word stack.
+  module <- hitop_module("hitopsr", scales = FOUR_STEMS)
+  attr(module, "item_order") <- rev(as.integer(module$items))
+
+  extra <- list(
+    generate_docx_hitopsr = list(randomize = FALSE),
+    generate_qualtrics_hitopsr = list(),
+    generate_redcap_hitopsr = list()
+  )
+
+  for (fn in available_generators()) {
+    descriptor <- withr::local_tempfile(fileext = ".json")
+    do.call(fn, c(
+      list(
+        file = withr::local_tempfile(fileext = GENERATORS[[fn]]),
+        module = module,
+        descriptor = descriptor
+      ),
+      extra[[fn]]
+    ))
+
+    expect_null(parse_descriptor(descriptor)$itemOrder, info = fn)
+    expect_null(attr(read_module(descriptor), "item_order"), info = fn)
+  }
+})
+
+test_that("a refused descriptor path blames the generator that was called", {
+  for (fn in available_generators()) {
+    missing_dir <- file.path(
+      withr::local_tempdir(),
+      "no-such-directory",
+      "module.json"
+    )
+    err <- expect_error(
+      do.call(fn, list(
+        file = withr::local_tempfile(fileext = GENERATORS[[fn]]),
+        descriptor = missing_dir
+      )),
+      class = "rlang_error"
+    )
+    # Which function is blamed, not merely that something aborted: the repo's
+    # guards name the exported function the user called, never an internal
+    # helper (tests/testthat/test-export-arg-guards.R).
+    expect_identical(
+      as.character(conditionCall(err)[[1]]),
+      fn,
+      info = fn
+    )
+  }
+})
+
+test_that("rollback removes the descriptor itself, not every path matching it", {
+  for (fn in available_generators()) {
+    dir <- withr::local_tempdir()
+    # A file whose name a wildcard reading of the descriptor path would match.
+    bystander <- file.path(dir, "modulea.json")
+    writeLines("keep me", bystander)
+    descriptor <- file.path(dir, "module[a].json")
+
+    target <- file.path(dir, "no-such-directory", paste0("f", GENERATORS[[fn]]))
+    expect_error(
+      suppressWarnings(
+        do.call(fn, list(file = target, descriptor = descriptor, module = NULL))
+      )
+    )
+
+    expect_true(file.exists(bystander), info = fn)
     expect_false(file.exists(descriptor), info = fn)
   }
 })

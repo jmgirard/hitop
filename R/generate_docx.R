@@ -134,8 +134,9 @@ generate_docx_hitopbr <- function(
 #'   returned on the read module's `item_order` attribute --- the record a
 #'   shuffled whole-instrument form otherwise leaves nowhere, since no
 #'   crosswalk is printed for one. Written before the Word file, so an
-#'   unwritable path is reported before any form is produced.
-#'   (default = `NULL`)
+#'   unwritable path is reported before any form is produced; if the Word file
+#'   then cannot be written, the descriptor is removed again, a file that was
+#'   already at that path included. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -336,7 +337,13 @@ generate_docx_hitopsr <- function(
     )
     # A descriptor with no form beside it describes a form that was never
     # written, so it goes again if the build below fails.
-    on.exit(if (!built) unlink(descriptor), add = TRUE)
+    # file.remove() on the literal path, never unlink(), which would treat a
+    # descriptor path holding `*`, `?` or `[` as a wildcard and delete every
+    # file it matched.
+    on.exit(
+      if (!built && file.exists(descriptor)) file.remove(descriptor),
+      add = TRUE
+    )
   }
 
   out <- build_hitop_doc(

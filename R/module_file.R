@@ -83,16 +83,29 @@ module_format_first_version <- function() {
 #'
 #' @export
 write_module <- function(module, file) {
+  write_module_impl(module, file, call = rlang::current_env())
+}
+
+# Internal Helper: the body of write_module(), with the frame to blame
+#
+# Split out so that the generators' `descriptor` sidecar can write a file
+# through the same code and still have a refusal name the exported generator
+# the user called, which is the convention test-export-arg-guards.R enforces.
+# write_module() keeps its two-argument signature; `call` is not a public
+# argument.
+write_module_impl <- function(module, file, call = rlang::caller_env()) {
   cli_assert(
     condition = is_module(module),
     message = c(
       "The {.arg module} argument must be a {.cls hitop_module} object.",
       i = "Build one with {.code hitop_module()}."
-    )
+    ),
+    call = call
   )
   cli_assert(
     condition = is.character(file) && length(file) == 1L && !is.na(file),
-    message = "The {.arg file} argument must be a single string."
+    message = "The {.arg file} argument must be a single string.",
+    call = call
   )
 
   # `unbox()` on every scalar, with `auto_unbox = FALSE`, so that `scales` and
@@ -129,7 +142,8 @@ write_module <- function(module, file) {
          attribute.",
         x = "It must be a permutation of the {module$nItems} item{?s} the \\
              module covers."
-      )
+      ),
+      call = call
     )
     payload$itemOrder <- as.integer(item_order)
   }
@@ -146,7 +160,8 @@ write_module <- function(module, file) {
           "Cannot write the module descriptor to {.file {file}}.",
           i = "Check that the directory exists and is writable."
         ),
-        parent = cnd
+        parent = cnd,
+        call = call
       )
     }
   )
@@ -490,11 +505,15 @@ write_descriptor_sidecar <- function(
       call = call
     )
   }
-  if (!is.null(item_order)) {
-    attr(module, "item_order") <- as.integer(item_order)
-  }
-  # write_module()'s own abort is left to speak: it names the path, which is
-  # the fact the caller needs, and re-wrapping it here would re-interpolate a
-  # message that has already been formatted.
-  write_module(module, descriptor)
+  # Set unconditionally, so that a NULL `item_order` CLEARS any attribute the
+  # incoming `module` already carried. A module read back from a shuffled Word
+  # form's descriptor carries one, and without this an export that never
+  # shuffled would inherit that form's printed order.
+  attr(module, "item_order") <-
+    if (is.null(item_order)) NULL else as.integer(item_order)
+  # The writer's own abort is left to speak: it names the path, which is the
+  # fact the caller needs, and re-wrapping it here would re-interpolate a
+  # message that has already been formatted. `call` is passed through so the
+  # refusal blames the generator the user called.
+  write_module_impl(module, descriptor, call = call)
 }

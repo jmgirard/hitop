@@ -1,6 +1,6 @@
 # M055: The HiTOP-SR generators write a descriptor beside the file they build
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M054
 - **Driving RR:** —
@@ -108,6 +108,10 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
 - 2026-08-24: T5 — `devtools::document()` produces no diff, `devtools::test()` is clean (1 pre-existing skip, the OQ-1 keying question), and `devtools::check()` returns 0 errors / 0 warnings / 0 notes. `pkgdown::build_article("articles/modules-hitopsr")` renders the edited article, which `R CMD check` does not cover.
 - 2026-08-24: status set to `review`.
 - 2026-08-24: review returned M055 to `in-progress` at the return floor. Finding 1 of the diff-bug lens falsifies AC4: `write_descriptor_sidecar()` never clears an `item_order` attribute the incoming module already carries, so a module read back from a shuffled Word form's descriptor makes `generate_qualtrics_hitopsr()`, `generate_redcap_hitopsr()`, and `generate_docx_hitopsr(randomize = FALSE)` write an `itemOrder` into a descriptor for a form that was never shuffled. Reproduced fresh. Findings 2, 3, 6, 7, and 8 ride the same return; 4 and 5 are the maintainer's call. Defect returns on this milestone: 1.
+- 2026-08-24: return gate chose always removing the sidecar when the build fails, a file already at that path included (M055-D2), and chose an internal shared writer over adding a `call` argument to the exported `write_module()`.
+- 2026-08-24: finding 1 (AC4 falsified) — `write_descriptor_sidecar()` now sets `item_order` unconditionally, so a NULL order clears one the incoming module already carried. Reproduced first: a module read back from a shuffled Word form's descriptor stamped `66 144 389 109 260 118 291 202` on a Qualtrics export. The regression test was proven red against the old line.
+- 2026-08-24: findings 2, 3, 6, 7, 8 — the write body moved to an internal `write_module_impl(module, file, call)`, so an unwritable path now blames the generator called rather than `write_module(module, descriptor)`; rollback uses `file.remove()` on the literal path instead of `unlink()`, which glob-expanded a path holding `*`, `?` or `[`; the test file filters the generator loop by each generator's own dependencies rather than skipping all three when the Word stack is absent; AC3's returned-attribute check is labeled for what it checks; `generate_redcap_hitopsr()` gains the descriptor `@seealso`. Findings 2 and 3 were each reproduced and each new check proven red against the old code. Finding 4 is settled by M055-D2; finding 5 (promoting M055-D1) stays for the review gate.
+- 2026-08-24: `devtools::document()` produces no diff, `devtools::test()` is clean (FAIL 0, WARN 0, SKIP 1 pre-existing, PASS 14391), and `devtools::check()` returns 0 errors / 0 warnings / 0 notes. Status set back to `review`.
 
 ## Decisions
 
@@ -116,6 +120,12 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
 **Context:** The descriptor format already defines `itemOrder`, and `read_module()` already returns it on the module's `item_order` attribute, but M054 documented `write_module()` as never writing it — so a descriptor read and written again lost the printed order it recorded, and the generators' new `descriptor` argument would have needed a private writer to save one.
 **Decision:** `write_module()` writes `itemOrder` whenever the module carries an `item_order` attribute, after checking that the attribute is a permutation of the module's items rather than trusting it. The generators set the attribute; nothing else about the format changes.
 **Consequences:** Saving and reading a descriptor are symmetric. The field's definition and the version string are untouched, so the format contract D-039 fixed is not reopened; one paragraph of `?write_module` is rewritten, and a hand-set attribute that is not a permutation is now an error at write time instead of at read time.
+
+### M055-D2 (2026-08-24): a failed build removes the descriptor even when a file was already at that path
+
+**Context:** The generators write the descriptor before the instrument file and remove it again when the build fails, so no descriptor is left describing a form that was never written. The review asked what should happen when the path already held a file: the write has already replaced its contents by then, so the old descriptor is gone either way.
+**Decision:** The cleanup always removes the descriptor path the call was given, whether or not a file was there before it. The removal names the literal path, so a `descriptor` holding `*`, `?` or `[` deletes only itself.
+**Consequences:** A caller who points `descriptor` at an existing file and whose build then fails is left with no file at that path. The three generator help pages say so.
 
 ## Review
 

@@ -45,7 +45,9 @@ and which instrument items they draw on, so \code{\link[=read_module]{read_modul
 module straight back to \code{\link[=score_hitopsr]{score_hitopsr()}} at scoring time. A call passing
 no \code{module} writes a descriptor naming every scale, describing the full
 administration. Written before the instrument file, so an unwritable path
-is reported before any form is produced. (default = \code{NULL})}
+is reported before any form is produced; if the instrument file then
+cannot be written, the descriptor is removed again, a file that was
+already at that path included. (default = \code{NULL})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}

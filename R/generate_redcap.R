@@ -71,11 +71,15 @@ generate_redcap_hitopbr <- function(
 #'   module straight back to [score_hitopsr()] at scoring time. A call passing
 #'   no `module` writes a descriptor naming every scale, describing the full
 #'   administration. Written before the instrument file, so an unwritable path
-#'   is reported before any form is produced. (default = `NULL`)
+#'   is reported before any form is produced; if the instrument file then
+#'   cannot be written, the descriptor is removed again, a file that was
+#'   already at that path included. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
 #' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @seealso [write_module()] and [read_module()] for the descriptor file.
 #'
 #' @examples
 #' # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
@@ -110,7 +114,13 @@ generate_redcap_hitopsr <- function(
     write_descriptor_sidecar(descriptor, module, "hitopsr")
     # A descriptor with no form beside it describes a form that was never
     # written, so it goes again if the build below fails.
-    on.exit(if (!built) unlink(descriptor), add = TRUE)
+    # file.remove() on the literal path, never unlink(), which would treat a
+    # descriptor path holding `*`, `?` or `[` as a wildcard and delete every
+    # file it matched.
+    on.exit(
+      if (!built && file.exists(descriptor)) file.remove(descriptor),
+      add = TRUE
+    )
   }
 
   out <- build_redcap_zip(
