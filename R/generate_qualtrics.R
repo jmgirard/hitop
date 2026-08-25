@@ -72,7 +72,10 @@ generate_qualtrics_hitopbr <- function(
 #'   administration. Written before the instrument file, so an unwritable path
 #'   is reported before any form is produced; if the instrument file then
 #'   cannot be written, the descriptor is removed again, a file that was
-#'   already at that path included. (default = `NULL`)
+#'   already at that path included.
+#'   It must name a path of its own: an empty string, or the same path as
+#'   `file`, is refused rather than leaving you with no descriptor and no
+#'   error. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -103,6 +106,7 @@ generate_qualtrics_hitopsr <- function(
 ) {
   module <- resolve_module_arg(module, subset)
   validate_string(descriptor, "descriptor", allow_null = TRUE)
+  validate_descriptor_target(descriptor, file)
   reduced <- apply_module(hitopsr_items, NULL, module, "HSR")
 
   # Written BEFORE the export, so an unwritable `descriptor` path is reported

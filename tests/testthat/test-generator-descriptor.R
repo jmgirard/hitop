@@ -410,3 +410,49 @@ test_that("rollback removes the descriptor itself, not every path matching it", 
     expect_false(file.exists(descriptor), info = fn)
   }
 })
+
+
+# Gate repairs (2026-08-24 review findings) -----------------------------------
+
+test_that("every generator refuses an empty descriptor path", {
+  # A length-one string, so the type guard admits it; the write then discards
+  # the file silently. Refused before any instrument file is written.
+  for (fn in available_generators()) {
+    target <- withr::local_tempfile(fileext = GENERATORS[[fn]])
+    err <- expect_error(
+      do.call(fn, list(file = target, descriptor = "")),
+      class = "rlang_error"
+    )
+    expect_match(conditionMessage(err), "descriptor", fixed = TRUE, info = fn)
+    expect_false(file.exists(target), info = fn)
+  }
+})
+
+test_that("every generator refuses a descriptor naming the instrument file", {
+  # The descriptor is written first and the form second, so one path for both
+  # leaves the form where the descriptor was, with no rollback and a success
+  # message. Refused before either file is written.
+  for (fn in available_generators()) {
+    target <- file.path(withr::local_tempdir(), paste0("f", GENERATORS[[fn]]))
+    err <- expect_error(
+      do.call(fn, list(file = target, descriptor = target)),
+      class = "rlang_error"
+    )
+    expect_match(conditionMessage(err), "descriptor", fixed = TRUE, info = fn)
+    expect_false(file.exists(target), info = fn)
+  }
+
+  # The same path written two ways is still one path.
+  for (fn in available_generators()) {
+    dir <- withr::local_tempdir()
+    target <- file.path(dir, paste0("f", GENERATORS[[fn]]))
+    expect_error(
+      do.call(fn, list(
+        file = target,
+        descriptor = file.path(dir, ".", paste0("f", GENERATORS[[fn]]))
+      )),
+      class = "rlang_error"
+    )
+    expect_false(file.exists(target), info = fn)
+  }
+})

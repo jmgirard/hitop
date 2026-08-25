@@ -113,6 +113,7 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
 - 2026-08-24: findings 2, 3, 6, 7, 8 — the write body moved to an internal `write_module_impl(module, file, call)`, so an unwritable path now blames the generator called rather than `write_module(module, descriptor)`; rollback uses `file.remove()` on the literal path instead of `unlink()`, which glob-expanded a path holding `*`, `?` or `[`; the test file filters the generator loop by each generator's own dependencies rather than skipping all three when the Word stack is absent; AC3's returned-attribute check is labeled for what it checks; `generate_redcap_hitopsr()` gains the descriptor `@seealso`. Findings 2 and 3 were each reproduced and each new check proven red against the old code. Finding 4 is settled by M055-D2; finding 5 (promoting M055-D1) stays for the review gate.
 - 2026-08-24: `devtools::document()` produces no diff, `devtools::test()` is clean (FAIL 0, WARN 0, SKIP 1 pre-existing, PASS 14391), and `devtools::check()` returns 0 errors / 0 warnings / 0 notes. Status set back to `review`.
 - 2026-08-24: re-review — every acceptance criterion re-verified with fresh evidence on the repaired branch, AC4 included (its return scenario reproduced independently as well as in the suite). Gate checks clean. The three-lens fan-out re-ran: blame-history and prior-review lenses returned no findings; the diff-bug lens confirmed all six repairs and returned eight further findings, none falsifying a criterion, taken to the approval gate for triage.
+- 2026-08-24: gate triage — findings 1 and 2 fixed on the branch: `write_module()` and the sidecar writer refuse an empty path, and a shared `validate_descriptor_target()` refuses a `descriptor` naming the same path as `file`, each guard blaming the argument the caller passed. Three regression tests, each proven red against the unguarded code. M055-D1 promoted to D-040. Suite PASS 14419, `check()` 0/0/0.
 
 ## Decisions
 
@@ -183,6 +184,9 @@ superseded.
   `devtools::test()` over the whole suite: FAIL 0, WARN 0, SKIP 1 (the
   pre-existing OQ-1 keying skip at `test-keying.R:102`), PASS 14391.
   `devtools::check()`: Status OK — 0 errors, 0 warnings, 0 notes (3m 49.5s).
+  Re-run after the gate fixes below: `document()` no diff, `devtools::test()`
+  FAIL 0 / WARN 0 / SKIP 1 / PASS 14419, `devtools::check()` Status OK — 0
+  errors, 0 warnings, 0 notes (4m 40s).
 
 ### Consistency gate (2026-08-24, second pass)
 
@@ -237,34 +241,38 @@ dispositions:
    The write body is inherited from M054, but M055 is what makes it reachable
    from three exported user-facing arguments. Falsifies no criterion — AC5
    promises a refusal for a value that is "not a length-one character string",
-   and `""` is one. **Recommended fix now** — put to the maintainer at the gate.
+   and `""` is one. **Fixed at the gate** (2026-08-24): `write_module()` and the
+   sidecar writer both refuse an empty path, each naming the argument the
+   caller passed, with regression tests proven red against the unguarded code.
 2. **`descriptor` pointing at the same path as `file` is silently clobbered.**
    Reproduced fresh: the descriptor is written, the export then overwrites it,
    `built <- TRUE` suppresses rollback, and the call reports success; the file
    left on disk is the Qualtrics export and `read_module()` refuses it. Same
-   silent-no-descriptor outcome as finding 1. No AC touched. **Recommended fix
-   now** — put to the maintainer at the gate.
+   silent-no-descriptor outcome as finding 1. No AC touched. **Fixed at the
+   gate** (2026-08-24): a shared `validate_descriptor_target()` refuses the
+   pair before either file is written, comparing the resolved directory and
+   basename so `dir/./m.json` and `dir/m.json` are seen as one path.
 3. **`cairn/DECISIONS.md` now misdescribes the shipped format.** D-039's
    entry still calls `itemOrder` a reserved slot `write_module()` never
    populates, while D-039(d) says the fields change "only through a further
    D-entry"; M055-D1 is that entry but lives only in this milestone file. Not
    a code defect — carried over from the first pass, where it was finding 5.
-   **Recommended promotion to `cairn/DECISIONS.md`** — put to the maintainer at
-   the gate.
+   **Promoted to `cairn/DECISIONS.md`** at the gate
+   as D-040, annotating D-039.
 4. **AC4's checkbox was unticked and its evidence line stale** when the repair
    commit set status back to `review`. **Resolved by this pass** — fresh
    evidence recorded above and the box re-ticked against it.
 5. **The rollback block is triplicated verbatim** across the three generators.
    The work log records why the closure-taking wrapper was reverted (it broke
    argument blame); a narrower helper could keep both. Quality only.
-   **Recommended reject** — style, and the reverted alternative is on record.
+   **Rejected at triage** — style, and the reverted alternative is on record.
 6. **The descriptor's creation is never announced**, unlike every instrument
    file, which ends in a `cli_alert_success()` naming its path. No AC touched.
-   **Recommended follow-up** — a candidate line.
+   **Follow-up** — a candidate line, written in the hygiene commit.
 7. **`descriptor` sits ahead of the deprecated `subset` in all three
    signatures**, so the work log's "no positional call shifts" holds for every
    argument except `subset` itself, which an eight-argument positional call
-   would now land in `descriptor`. **Recommended reject** — `subset` is
+   would now land in `descriptor`. **Rejected at triage** — `subset` is
    deprecated and warns, and the shift needs a fully positional eight-argument
    call.
 8. **The reorder recipe is unqualified for `renumber = FALSE`.** Both
@@ -272,9 +280,15 @@ dispositions:
    `collected[order(item_order)]`, which is right when the columns are in
    printed *position* order and double-permutes if a researcher keyed them by
    the printed original number instead. Wording inherited from main; M055's
-   vignette repeats it. **Recommended follow-up** — widens the existing
+   vignette repeats it. **Follow-up** — widens the existing
    `modules-hitopsr.Rmd` candidate row.
 
 ### Outcome
 
-_(to be completed at the approval gate)_
+Every acceptance criterion is verified against fresh evidence recorded above,
+AC4 included. Eight diff-bug findings were triaged at the gate: two silent
+no-descriptor holes (findings 1 and 2) fixed on the branch with regression
+tests proven red against the unguarded code, M055-D1 promoted to D-040, two
+rejected as style or negligible, two routed to candidate rows, and one
+(AC4's stale evidence) resolved by this pass. No finding met the return floor.
+Defect returns on this milestone: 1.

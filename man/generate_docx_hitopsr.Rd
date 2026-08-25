@@ -86,7 +86,10 @@ shuffled whole-instrument form otherwise leaves nowhere, since no
 crosswalk is printed for one. Written before the Word file, so an
 unwritable path is reported before any form is produced; if the Word file
 then cannot be written, the descriptor is removed again, a file that was
-already at that path included. (default = \code{NULL})}
+already at that path included.
+It must name a path of its own: an empty string, or the same path as
+\code{file}, is refused rather than leaving you with no descriptor and no
+error. (default = \code{NULL})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}

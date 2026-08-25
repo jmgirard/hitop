@@ -107,6 +107,18 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
     message = "The {.arg file} argument must be a single string.",
     call = call
   )
+  # An empty path is a string, so the guard above admits it -- and
+  # `writeLines(json, con = "")` then opens an anonymous connection whose
+  # contents are discarded, leaving no file and raising nothing the caller
+  # sees. Refused here so a descriptor is never silently not written.
+  cli_assert(
+    condition = nzchar(file),
+    message = c(
+      "The {.arg file} argument must not be an empty string.",
+      i = "Give the path the descriptor should be written to."
+    ),
+    call = call
+  )
 
   # `unbox()` on every scalar, with `auto_unbox = FALSE`, so that `scales` and
   # `items` stay JSON arrays even for a module holding one of either. Under
@@ -498,6 +510,16 @@ write_descriptor_sidecar <- function(
   call = rlang::caller_env()
 ) {
   validate_string(descriptor, "descriptor", call = call)
+  # Named for the argument the user actually passed; `write_module_impl()`
+  # refuses the same value below, but blames `file`.
+  cli_assert(
+    condition = nzchar(descriptor),
+    message = c(
+      "The {.arg descriptor} argument must not be an empty string.",
+      i = "Give the path the descriptor should be written to."
+    ),
+    call = call
+  )
   if (is.null(module)) {
     module <- hitop_module(
       instrument = instrument,
@@ -516,4 +538,38 @@ write_descriptor_sidecar <- function(
   # message that has already been formatted. `call` is passed through so the
   # refusal blames the generator the user called.
   write_module_impl(module, descriptor, call = call)
+}
+
+# Internal Helper: refuse a `descriptor` that would be overwritten by the form
+#
+# The descriptor is written first and the instrument file second, so pointing
+# both at one path leaves the export where the descriptor was, with `built`
+# TRUE and no rollback -- a success message and no descriptor. Compared after
+# `normalizePath()` so `./m.json` and `m.json` are seen as one path; neither
+# file need exist yet, hence `mustWork = FALSE`.
+validate_descriptor_target <- function(descriptor, file, call = rlang::caller_env()) {
+  if (is.null(descriptor) || !rlang::is_string(file)) {
+    return(invisible(NULL))
+  }
+  # Normalize the DIRECTORY, which exists, rather than the file, which need
+  # not: normalizePath() returns a non-existent path unchanged, so comparing
+  # the paths whole would miss `dir/./m.json` against `dir/m.json`.
+  resolved <- function(path) {
+    file.path(
+      normalizePath(dirname(path), mustWork = FALSE),
+      basename(path)
+    )
+  }
+  same <- resolved(descriptor) == resolved(file)
+  cli_assert(
+    condition = !same,
+    message = c(
+      "The {.arg descriptor} and {.arg file} arguments must name different \\
+       paths.",
+      x = "Both name {.file {file}}.",
+      i = "The instrument file would overwrite the descriptor."
+    ),
+    call = call
+  )
+  invisible(NULL)
 }
