@@ -168,11 +168,13 @@ a set — but a repeated number is an error, and the printed order of
 a shuffled form belongs in <code>itemOrder</code> instead.</p></dd>
 
 <dt><code>itemOrder</code></dt>
-<dd><p>Reserved for the printed order of a shuffled form: a
-permutation of <code>items</code>. <code><a href="write_module.html">write_module()</a></code> never writes it, because a
-module object records no printed order; <code>read_module()</code> accepts one
-and returns it on the <code>item_order</code> attribute, the same attribute
-<code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> returns.</p></dd>
+<dd><p>The printed order of a shuffled form: a permutation
+of <code>items</code>. Optional — a form printed in instrument order carries
+none. <code>read_module()</code> returns it on the module's <code>item_order</code>
+attribute, the same attribute <code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> returns, and
+<code><a href="write_module.html">write_module()</a></code> writes it back from that attribute, so a descriptor
+read and written again keeps the order it recorded. The generators'
+<code>descriptor</code> argument sets the attribute for you.</p></dd>
 
 
 </dl><p><code>format</code>, <code>instrument</code>, and <code>scales</code> are required. The fields and the

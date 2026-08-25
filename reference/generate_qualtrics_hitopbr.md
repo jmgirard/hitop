@@ -53,5 +53,5 @@ Invisibly returns the path to the created file (`file`).
 ``` r
 # Write a HiTOP-BR Qualtrics import file to a temporary location
 generate_qualtrics_hitopbr(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpwAFVUL/file1aa42c75d1d5.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmp8I6Dty/file1b1a74da998d.txt
 ```

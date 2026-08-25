@@ -13,6 +13,7 @@ generate_redcap_hitopsr(
   required = TRUE,
   breaks = 15,
   module = NULL,
+  descriptor = NULL,
   subset = NULL
 )
 ```
@@ -52,6 +53,23 @@ generate_redcap_hitopsr(
   a collected data column, so renumbering would rename variables in
   dictionaries already in the field. (default = `NULL`)
 
+- descriptor:
+
+  An optional path to write a module descriptor to, beside the
+  instrument file. The saved file records which scales the form covers
+  and which instrument items they draw on, so
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  hands the module straight back to
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  at scoring time. A call passing no `module` writes a descriptor naming
+  every scale, describing the full administration. Written before the
+  instrument file, so an unwritable path is reported before any form is
+  produced; if the instrument file then cannot be written, the
+  descriptor is removed again, a file that was already at that path
+  included. It must name a path of its own: an empty string, or the same
+  path as `file`, is refused rather than leaving you with no descriptor
+  and no error. (default = `NULL`)
+
 - subset:
 
   Deprecated. The former name of `module`; supplying it warns. Supplying
@@ -66,17 +84,22 @@ Invisibly returns the path to the created file (`file`).
 Step-by-step import instructions for Qualtrics and REDCap:
 <https://jmgirard.github.io/hitop/articles/import-instructions.html>
 
+[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+and
+[`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+for the descriptor file.
+
 ## Examples
 
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmpwAFVUL/file1aa47f5973d3.zip
+#> ✔ Instrument successfully zipped to /tmp/Rtmp8I6Dty/file1b1a4e24aa68.zip
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Instrument successfully zipped to /tmp/RtmpwAFVUL/file1aa41b8deabc.zip
+#> ✔ Instrument successfully zipped to /tmp/Rtmp8I6Dty/file1b1a3f5b29f3.zip
 ```

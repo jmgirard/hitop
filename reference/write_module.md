@@ -26,6 +26,8 @@ write_module(module, file)
 
   A `hitop_module` object, as returned by
   [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md).
+  An `item_order` attribute, where present, is written as the file's
+  `itemOrder` and must be a permutation of the module's items.
 
 - file:
 
@@ -71,14 +73,14 @@ The file is JSON, with these fields:
 
 - `itemOrder`:
 
-  Reserved for the printed order of a shuffled form: a permutation of
-  `items`. `write_module()` never writes it, because a module object
-  records no printed order;
+  The printed order of a shuffled form: a permutation of `items`.
+  Optional — a form printed in instrument order carries none.
   [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
-  accepts one and returns it on the `item_order` attribute, the same
-  attribute
+  returns it on the module's `item_order` attribute, the same attribute
   [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
-  returns.
+  returns, and `write_module()` writes it back from that attribute, so a
+  descriptor read and written again keeps the order it recorded. The
+  generators' `descriptor` argument sets the attribute for you.
 
 `format`, `instrument`, and `scales` are required. The fields and the
 version string are a public contract and change only deliberately.
@@ -88,7 +90,12 @@ version string are a public contract and change only deliberately.
 [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
 to read the file back;
 [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
-to build a module in the first place.
+to build a module in the first place; the `descriptor` argument of
+[`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
+[`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md),
+and
+[`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md),
+which writes one of these files beside the instrument it builds.
 
 ## Examples
 
@@ -102,7 +109,7 @@ cat(readLines(f), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-08-24",
+#>   "buildDate": "2026-08-25",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Appetite Loss"],
 #>   "items": [66, 109, 118, 144, 202, 260, 291, 389],

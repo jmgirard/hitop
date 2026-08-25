@@ -103,7 +103,9 @@ than a silent preference for either side.</p>
 
 
 <dl><dt id="arg-module">module<a class="anchor" aria-label="anchor" href="#arg-module"></a></dt>
-<dd><p>A <code>hitop_module</code> object, as returned by <code><a href="hitop_module.html">hitop_module()</a></code>.</p></dd>
+<dd><p>A <code>hitop_module</code> object, as returned by <code><a href="hitop_module.html">hitop_module()</a></code>. An
+<code>item_order</code> attribute, where present, is written as the file's
+<code>itemOrder</code> and must be a permutation of the module's items.</p></dd>
 
 
 <dt id="arg-file">file<a class="anchor" aria-label="anchor" href="#arg-file"></a></dt>
@@ -144,11 +146,13 @@ a set — but a repeated number is an error, and the printed order of
 a shuffled form belongs in <code>itemOrder</code> instead.</p></dd>
 
 <dt><code>itemOrder</code></dt>
-<dd><p>Reserved for the printed order of a shuffled form: a
-permutation of <code>items</code>. <code>write_module()</code> never writes it, because a
-module object records no printed order; <code><a href="read_module.html">read_module()</a></code> accepts one
-and returns it on the <code>item_order</code> attribute, the same attribute
-<code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> returns.</p></dd>
+<dd><p>The printed order of a shuffled form: a permutation
+of <code>items</code>. Optional — a form printed in instrument order carries
+none. <code><a href="read_module.html">read_module()</a></code> returns it on the module's <code>item_order</code>
+attribute, the same attribute <code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> returns, and
+<code>write_module()</code> writes it back from that attribute, so a descriptor
+read and written again keeps the order it recorded. The generators'
+<code>descriptor</code> argument sets the attribute for you.</p></dd>
 
 
 </dl><p><code>format</code>, <code>instrument</code>, and <code>scales</code> are required. The fields and the
@@ -157,7 +161,10 @@ version string are a public contract and change only deliberately.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="read_module.html">read_module()</a></code> to read the file back; <code><a href="hitop_module.html">hitop_module()</a></code> to build a
-module in the first place.</p></div>
+module in the first place; the <code>descriptor</code> argument of
+<code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code>, <code><a href="generate_qualtrics_hitopsr.html">generate_qualtrics_hitopsr()</a></code>, and
+<code><a href="generate_redcap_hitopsr.html">generate_redcap_hitopsr()</a></code>, which writes one of these files beside the
+instrument it builds.</p></div>
     </div>
 
     <div class="section level2">
@@ -171,7 +178,7 @@ module in the first place.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "format": "1.0",</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "package": "hitop",</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "packageVersion": "0.2.0",</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   "buildDate": "2026-08-24",</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   "buildDate": "2026-08-25",</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "instrument": "hitopsr",</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "scales": ["Agoraphobia", "Appetite Loss"],</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   "items": [66, 109, 118, 144, 202, 260, 291, 389],</span>

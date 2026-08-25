@@ -87,6 +87,7 @@ Self-Report (HiTOP-SR) items and instructions.</p>
 <span>  include_instructions <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  breaks <span class="op">=</span> <span class="fl">15</span>,</span>
 <span>  module <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  descriptor <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  subset <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -130,6 +131,21 @@ column, so renumbering would rename variables in dictionaries already in
 the field. (default = <code>NULL</code>)</p></dd>
 
 
+<dt id="arg-descriptor">descriptor<a class="anchor" aria-label="anchor" href="#arg-descriptor"></a></dt>
+<dd><p>An optional path to write a module descriptor to, beside
+the instrument file. The saved file records which scales the form covers
+and which instrument items they draw on, so <code><a href="read_module.html">read_module()</a></code> hands the
+module straight back to <code><a href="score_hitopsr.html">score_hitopsr()</a></code> at scoring time. A call passing
+no <code>module</code> writes a descriptor naming every scale, describing the full
+administration. Written before the instrument file, so an unwritable path
+is reported before any form is produced; if the instrument file then
+cannot be written, the descriptor is removed again, a file that was
+already at that path included.
+It must name a path of its own: an empty string, or the same path as
+<code>file</code>, is refused rather than leaving you with no descriptor and no
+error. (default = <code>NULL</code>)</p></dd>
+
+
 <dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
 <dd><p>Deprecated. The former name of <code>module</code>; supplying it warns.
 Supplying both <code>module</code> and <code>subset</code> is an error. (default = <code>NULL</code>)</p></dd>
@@ -139,19 +155,23 @@ Supplying both <code>module</code> and <code>subset</code> is an error. (default
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>Invisibly returns the path to the created file (<code>file</code>).</p>
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="write_module.html">write_module()</a></code> and <code><a href="read_module.html">read_module()</a></code> for the descriptor file.</p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Write a HiTOP-SR Qualtrics import file to a temporary location</span></span></span>
 <span class="r-in"><span><span class="fu">generate_qualtrics_hitopsr</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Qualtrics import file successfully created at <span style="color: #0000BB;">/tmp/RtmpwAFVUL/file1aa44339ab0f.txt</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Qualtrics import file successfully created at <span style="color: #0000BB;">/tmp/Rtmp8I6Dty/file1b1a6e5ef18d.txt</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A two-scale module, original numbering preserved (unlike the Word form)</span></span></span>
 <span class="r-in"><span><span class="fu">generate_qualtrics_hitopsr</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".txt"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Qualtrics import file successfully created at <span style="color: #0000BB;">/tmp/RtmpwAFVUL/file1aa42eef485c.txt</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Qualtrics import file successfully created at <span style="color: #0000BB;">/tmp/Rtmp8I6Dty/file1b1a58100ca4.txt</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

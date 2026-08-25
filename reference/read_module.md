@@ -87,14 +87,16 @@ The file is JSON, with these fields:
 
 - `itemOrder`:
 
-  Reserved for the printed order of a shuffled form: a permutation of
-  `items`.
-  [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
-  never writes it, because a module object records no printed order;
-  `read_module()` accepts one and returns it on the `item_order`
-  attribute, the same attribute
+  The printed order of a shuffled form: a permutation of `items`.
+  Optional — a form printed in instrument order carries none.
+  `read_module()` returns it on the module's `item_order` attribute, the
+  same attribute
   [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
-  returns.
+  returns, and
+  [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+  writes it back from that attribute, so a descriptor read and written
+  again keeps the order it recorded. The generators' `descriptor`
+  argument sets the attribute for you.
 
 `format`, `instrument`, and `scales` are required. The fields and the
 version string are a public contract and change only deliberately.

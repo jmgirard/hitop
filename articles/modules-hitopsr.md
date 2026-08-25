@@ -139,9 +139,10 @@ crosswalk from each printed number back to its original HiTOP-SR number
 — printed whether or not `include_scoring` appends the key — so a
 shuffled module form can be scored from the paper alone. Shuffling the
 full instrument prints no crosswalk, since 405 pairs would fill a page;
-read the order from the `item_order` attribute of the returned path
-instead. Call [`set.seed()`](https://rdrr.io/r/base/Random.html)
-beforehand to make an order reproducible.
+read the order from the `item_order` attribute of the returned path, or
+save it with `descriptor =` below. Call
+[`set.seed()`](https://rdrr.io/r/base/Random.html) beforehand to make an
+order reproducible.
 
 One thing to watch:
 [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
@@ -352,13 +353,53 @@ cat(readLines(descriptor), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-08-24",
+#>   "buildDate": "2026-08-25",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],
 #>   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],
 #>   "nItems": 21
 #> }
 ```
+
+You do not have to remember to call it. Each of the three generators
+takes a `descriptor` argument, so one call writes both the form and the
+file that scores it:
+
+``` r
+
+generate_docx_hitopsr(
+  file = file.path(outdir, "hitopsr_module2.docx"),
+  module = four_scale,
+  descriptor = file.path(outdir, "hitopsr_module2.json")
+)
+```
+
+A call that passes no `module` writes a descriptor naming every scale,
+so a full administration is described too. And on a shuffled Word form
+the descriptor also records the printed order, which is the one thing a
+whole-instrument form gives you nowhere else — no crosswalk is printed
+for one:
+
+``` r
+
+set.seed(42)
+shuffled_descriptor <- file.path(outdir, "hitopsr_shuffled.json")
+generate_docx_hitopsr(
+  file = file.path(outdir, "hitopsr_shuffled.docx"),
+  module = four_scale,
+  randomize = TRUE,
+  descriptor = shuffled_descriptor
+)
+
+printed_order <- attr(read_module(shuffled_descriptor), "item_order")
+printed_order
+#>  [1] 291 118  42 185 109  66 310 338 156 152 390 167 389 144 187 274 239  68 202
+#> [20] 260 268
+```
+
+Those are the original HiTOP-SR item numbers in the order the page
+printed them, so responses entered off that form go back into instrument
+order with `collected[order(printed_order)]`.
 
 The file is plain text, so you can read it, edit it, and send it to a
 collaborator.

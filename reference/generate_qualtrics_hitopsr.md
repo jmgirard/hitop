@@ -14,6 +14,7 @@ generate_qualtrics_hitopsr(
   include_instructions = TRUE,
   breaks = 15,
   module = NULL,
+  descriptor = NULL,
   subset = NULL
 )
 ```
@@ -57,6 +58,23 @@ generate_qualtrics_hitopsr(
   a collected data column, so renumbering would rename variables in
   dictionaries already in the field. (default = `NULL`)
 
+- descriptor:
+
+  An optional path to write a module descriptor to, beside the
+  instrument file. The saved file records which scales the form covers
+  and which instrument items they draw on, so
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  hands the module straight back to
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  at scoring time. A call passing no `module` writes a descriptor naming
+  every scale, describing the full administration. Written before the
+  instrument file, so an unwritable path is reported before any form is
+  produced; if the instrument file then cannot be written, the
+  descriptor is removed again, a file that was already at that path
+  included. It must name a path of its own: an empty string, or the same
+  path as `file`, is refused rather than leaving you with no descriptor
+  and no error. (default = `NULL`)
+
 - subset:
 
   Deprecated. The former name of `module`; supplying it warns. Supplying
@@ -66,17 +84,24 @@ generate_qualtrics_hitopsr(
 
 Invisibly returns the path to the created file (`file`).
 
+## See also
+
+[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+and
+[`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+for the descriptor file.
+
 ## Examples
 
 ``` r
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpwAFVUL/file1aa44339ab0f.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmp8I6Dty/file1b1a6e5ef18d.txt
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_qualtrics_hitopsr(
   file = tempfile(fileext = ".txt"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpwAFVUL/file1aa42eef485c.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmp8I6Dty/file1b1a58100ca4.txt
 ```
