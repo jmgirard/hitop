@@ -176,3 +176,97 @@ origin alone. Raised at the approval gate rather than read around.
   removal and a ROADMAP status flip); the user-visible change is in
   `jmgirard/hitop-builder`, which carries no changelog.
 
+**`devtools::check()`**: 0 errors, 0 warnings, 0 notes (3m 52s).
+**CI**: green on PR #62 across all 8 jobs. The builder repo runs a Pages deploy
+workflow only, so its PR reports no checks.
+
+### Independent fresh-context review
+
+Three lenses, none having seen the implementation, each on a distinct evidence
+base. Every finding reported is listed with its disposition.
+
+**[S] prior-PR-comments lens — zero findings.** Archived `## Review` sections
+for M045, M048-M055 plus RR03 were the primary surface; the `gh api
+pulls/comments` probe returned `[]` on both repos, so the GitHub thread walk was
+not paid for. It cleared four specific regression risks, notably that RR03
+blessed the no-crosswalk-on-a-shuffled-whole-instrument behavior and deferred
+the recoverability gap as known issue 8 — this diff is that closure, not a
+contradiction of it.
+
+**[O] diff-bug lens — 9 findings.**
+
+1. *Two programmatic downloads in one tick.* `saveFile()` is called twice back
+   to back, both synthetic `a.click()`s outside any user gesture (consumed
+   before `await webR.evalRVoid`). Chrome's "Download multiple files?" gate and
+   Safari's one-download-per-gesture behavior target this pattern; when either
+   fires the visitor gets the questionnaire and silently not the descriptor —
+   the exact failure the adjacent comment claims to rule out. **AC1's own method
+   cannot see it**: the M050 patch hooks `URL.createObjectURL`, which runs
+   before the click, so a captured blob proves the blob was made, not that a
+   file reached disk. Not an AC failure — AC1 names the blob capture as its
+   procedure and the evidence sits inside that domain — but a real gap between
+   what the criterion measures and what the visitor gets. Attempted a driven
+   real-download check at review; the browser pane became unreliable mid-walk
+   and the check was not completed, so this is **unresolved either way**. Both
+   available fixes (one archive for all three formats; a second click for the
+   descriptor) reverse a recorded gate choice, so the disposition is the
+   maintainer's. **Taken to the approval gate.**
+2. *Cross-format `.json` filename collision.* **Confirmed by this review's own
+   captures.** The descriptor stem ignores the format, so a shuffled Word build
+   followed by a Qualtrics build yields `hitopsr-module.json` (297 B, carrying
+   `itemOrder`) and `hitopsr-module (1).json` (241 B, carrying none) — the
+   package records `itemOrder` only under `randomize`, which the two online
+   exports never pass. Keeping the wrong one loses the printed order with no
+   error at scoring time. The standing M048 candidate row covers
+   shuffled-vs-unshuffled naming of the *instrument* file, not this collision,
+   which M056 newly creates. A format-distinct descriptor stem reverses the
+   implementation gate's recorded choice. **Taken to the approval gate.**
+3. *AC3's captured copy superseded by the review-time rewrite.* **Fixed** —
+   AC3 was re-captured against the shipped text (see above) and a work-log line
+   marks the T3 quotes as superseded. The lens also noted `get_page_text`
+   standing in for `read_page`; both were used, `read_page` for the region tree
+   and `get_page_text` only for the text nodes `read_page` truncates.
+4. *AC4 says "the deployed page"; evidence is `localhost:8788`.* **Surfaced,
+   not read around** — recorded under AC4 above and carried to the gate.
+5. *Cross-repo sequencing.* Merging the hitop PR while the builder PR is unmerged
+   would leave `main`'s DESIGN asserting a closed issue that is still live in
+   production. **Actioned**: the builder PR merges first, the tracking PR second.
+6. *`crosswalkSentence()` four-way logic.* Traced against
+   `generate_docx.R:322` and found accurate in every combination; refresh wiring
+   sound. The nit that the `original`-numbering branch never mentions the
+   `.json` although the descriptor records `itemOrder` there too — **rejected**:
+   with original numbers printed, there is nothing to recover.
+7. *`#descriptorNote` mentions a shuffled Word form on the Qualtrics and REDCap
+   screens.* Accurate but off-target for two of three formats, since the notice
+   sits outside the `.fmtpanel` divs. **Taken to the approval gate** as a copy
+   call.
+8. *README pairs a module and a whole-instrument filename in one clause.*
+   **Rejected** — both examples are accurate and the whole-instrument rule is
+   stated in the same document.
+9. *README line 201 exceeds the file's ~80-column wrap.* **Rejected** —
+   formatter-class, and pre-existing lines already overrun.
+
+**[S] blame-history lens — 3 findings.**
+
+1. *The static shuffle paragraph contradicts the rewritten sentence below it and
+   is what known issue 8 meant by "tells the visitor to keep a record it does not
+   give them".* **Rejected** — verified against the shipped markup, not the
+   lens's account of it. That paragraph reads "put those columns into the
+   original HiTOP-SR order before scoring, or the scale scores come out wrong and
+   nothing warns you"; it never asks for a record, and both clauses remain true
+   (the descriptor supplies the order but nothing reorders automatically, and no
+   warning fires). The "keep your own record" phrasing lived in
+   `crosswalkSentence()`, which is exactly what this milestone rewrote. What
+   survives is a copy suggestion — that the paragraph could name the `.json` as
+   the means — which rides with diff-bug finding 7 to the gate.
+2. *The T3 work-log entries quote copy that no longer exists.* **Fixed** — same
+   repair as diff-bug finding 3.
+3. *Known issue 8 was deleted outright rather than narrowed.* **Rejected** —
+   both halves of its remaining text ("passes no `descriptor` and offers no such
+   download"; "its on-screen notice still tells the visitor to keep a record it
+   does not give them") are now false, so deletion is the correct disposition.
+
+No finding demonstrates an acceptance criterion failing inside its named
+procedure's domain, so the return floor is not met and status stays `review`.
+Findings 1, 2 and 7 go to the maintainer at the approval gate because each
+available fix reverses a gate choice already on record.
