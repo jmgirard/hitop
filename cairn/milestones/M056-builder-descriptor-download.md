@@ -1,11 +1,11 @@
 # M056: The browser builder offers the module descriptor as a download
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M055
 - **Driving RR:** —
 - **Principles touched:** IP1, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m056-builder-descriptor-download` (hitop) · `m056-descriptor-download` (hitop-builder)
 
 ## Goal
 
@@ -55,9 +55,9 @@ candidate row from the M048 implementation gate.
 
 ## Tasks
 
-- [ ] T1 Wire the descriptor into the app's build step, calling M055's
+- [x] T1 Wire the descriptor into the app's build step, calling M055's
       `descriptor` argument and offering the result as a download.
-- [ ] T2 Page copy: the descriptor's purpose, and the shuffled-form notice
+- [x] T2 Page copy: the descriptor's purpose, and the shuffled-form notice
       rewrite.
 - [ ] T3 Drive the page and capture the three descriptors and the shuffled run,
       using the blob-capture and `read_page`/`form_input` techniques the M045,
@@ -69,6 +69,9 @@ candidate row from the M048 implementation gate.
 
 - 2026-08-24: created by /milestone-plan.
 - 2026-08-24: plan chose a separate download over bundling the descriptor into the REDCap zip or the Word file because the descriptor must accompany all three formats and only one of them is an archive; falsified by visitors losing the second file often enough that bundling would help.
+- 2026-08-24: implementation gate chose, on recommendation, one click saving both files over a second button or an opt-out tick-box; the descriptor taking the questionnaire's own stem (`hitopsr-module.json` beside `hitopsr-module.docx`); and a standing notice above the download button over a sentence in the small print under it.
+- 2026-08-24: T1+T2 in `jmgirard/hitop-builder` commit `80d0c5e` — all three generator calls pass `descriptor = desc_path`, `saveFile()` hands over both files with both read before either is saved, the step-three notice and the download hint state the pair, the shuffled whole-instrument sentence points at the descriptor instead of the visitor's own record, and README gains a *The scoring file* section with an example built from a two-scale shuffled module.
+- 2026-08-24: r-universe's WebAssembly build of `hitop` still served commit `80c3601`, one behind M055's merge, so T3's driven capture waits on the rebuild — observed 2026-08-24 20:15 CDT.
 - 2026-08-24: fresh-context criteria audit ran in FULL mode (user-facing tier) and returned findings on two criteria, both repaired before commit. The shuffled-run criterion asserted only the length and the set of `itemOrder`, which a permutation unrelated to what the form actually prints satisfies — the very failure known issue 8 names — so it now compares against the sequence parsed out of the downloaded DOCX. A criterion binding the removal of known issue 8 and two ROADMAP rows bound tracking records rather than the deliverable and was dropped; T4 carries that work and the review's consistency gate checks it. The remaining criteria returned nothing.
 
 ## Decisions
