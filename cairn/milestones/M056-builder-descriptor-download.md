@@ -1,6 +1,6 @@
 # M056: The browser builder offers the module descriptor as a download
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M055
 - **Driving RR:** —
@@ -59,7 +59,7 @@ candidate row from the M048 implementation gate.
       `descriptor` argument and offering the result as a download.
 - [x] T2 Page copy: the descriptor's purpose, and the shuffled-form notice
       rewrite.
-- [ ] T3 Drive the page and capture the three descriptors and the shuffled run,
+- [x] T3 Drive the page and capture the three descriptors and the shuffled run,
       using the blob-capture and `read_page`/`form_input` techniques the M045,
       M050, and M052 lessons record.
 - [ ] T4 Close DESIGN known issue 8 and the two candidate rows it settles,
@@ -75,6 +75,12 @@ candidate row from the M048 implementation gate.
 - 2026-08-24: driven smoke run against the branch page served locally, with the M050 blob-capture patch installed: the Word build reached R as `generate_docx_hitopsr(file = out_path, descriptor = desc_path, module = .m, papersize = paper_size, renumber = TRUE, randomize = FALSE)` and failed `unused argument (descriptor = desc_path)` against the served pre-M055 build, with zero blobs captured — so a failed build hands over neither file. The step-three notice and the rewritten download hint were read back from the live page.
 - 2026-08-24: blocked on r-universe. Its `Update universe` sync last ran 2026-08-24 23:55Z against an hourly cadence and had not run again by 01:42Z, so the WebAssembly binary still serves commit `80c3601`, one behind M055's merge, and no `descriptor` argument exists in the browser. T3's in-page capture and T4, which reads T3's evidence, both wait on the rebuild; resume once `https://jmgirard.r-universe.dev/api/packages/hitop` reports `RemoteSha` at `a3bddd1` or later — observed 2026-08-24.
 - 2026-08-24: fresh-context criteria audit ran in FULL mode (user-facing tier) and returned findings on two criteria, both repaired before commit. The shuffled-run criterion asserted only the length and the set of `itemOrder`, which a permutation unrelated to what the form actually prints satisfies — the very failure known issue 8 names — so it now compares against the sequence parsed out of the downloaded DOCX. A criterion binding the removal of known issue 8 and two ROADMAP rows bound tracking records rather than the deliverable and was dropped; T4 carries that work and the review's consistency gate checks it. The remaining criteria returned nothing.
+
+- 2026-08-24: r-universe's rebuild landed — `https://jmgirard.r-universe.dev/api/packages/hitop` reports `RemoteSha` `a3bddd1`, M055's merge — so the blocker cleared and the milestone returned to in-progress.
+- 2026-08-24: T3 drove the branch page served at `localhost:8788` with the M050 blob-capture patch. Word, Qualtrics and REDCap runs over the same two ticked scales (Agoraphobia, Binge Eating) each handed over two files (`hitopsr-module.<ext>` plus `hitopsr-module.json`); the three captured descriptors are byte-identical, name exactly the two ticked scales, and the captured bytes parse with the package's own `read_module()` as `<hitop_module> hitopsr: 8 items from 2 scales`. A fourth run with all 76 scales ticked and shuffling on handed over `hitopsr.docx` + `hitopsr.json`, the descriptor carrying `itemOrder` of length 405.
+- 2026-08-24: T3's order check parsed the downloaded DOCX in-page (central-directory walk, `DecompressionStream('deflate-raw')`, item rows read out of `word/document.xml`), mapped each printed item's own text back to its HiTOP-SR number through a map generated from `hitopsr_items`, and compared position by position: all 405 printed rows matched a known item, printed numbers ran 1..405, and the recovered sequence equals the descriptor's `itemOrder` exactly, a real permutation rather than the identity. The comparison was shown able to fail — swapping one adjacent pair, rotating the sequence by one, and altering one item's text each break it while the control passes.
+
+- 2026-08-24: T3 also captured the page copy on the shuffled Word screen: the standing notice reads "Two files are saved, and both matter. Beside the questionnaire, this page saves a small .json file naming the scales you chose — and, on a shuffled Word form, the order the items were printed in." followed by "Keep it with the responses you collect."; the shuffled-form notice now reads "Nothing on the paper records the order it came out in; the .json file saved with the form does, and is the only copy of it." — no sentence asks the visitor to keep a record of their own. `read_page` truncates a long text node, so the copy was read back with `get_page_text` over the same driven page.
 
 ## Decisions
 
