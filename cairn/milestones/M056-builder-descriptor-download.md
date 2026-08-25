@@ -1,6 +1,6 @@
 # M056: The browser builder offers the module descriptor as a download
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M055
 - **Driving RR:** —
@@ -72,6 +72,8 @@ candidate row from the M048 implementation gate.
 - 2026-08-24: implementation gate chose, on recommendation, one click saving both files over a second button or an opt-out tick-box; the descriptor taking the questionnaire's own stem (`hitopsr-module.json` beside `hitopsr-module.docx`); and a standing notice above the download button over a sentence in the small print under it.
 - 2026-08-24: T1+T2 in `jmgirard/hitop-builder` commit `80d0c5e` — all three generator calls pass `descriptor = desc_path`, `saveFile()` hands over both files with both read before either is saved, the step-three notice and the download hint state the pair, the shuffled whole-instrument sentence points at the descriptor instead of the visitor's own record, and README gains a *The scoring file* section with an example built from a two-scale shuffled module.
 - 2026-08-24: r-universe's WebAssembly build of `hitop` still served commit `80c3601`, one behind M055's merge, so T3's driven capture waits on the rebuild — observed 2026-08-24 20:15 CDT.
+- 2026-08-24: driven smoke run against the branch page served locally, with the M050 blob-capture patch installed: the Word build reached R as `generate_docx_hitopsr(file = out_path, descriptor = desc_path, module = .m, papersize = paper_size, renumber = TRUE, randomize = FALSE)` and failed `unused argument (descriptor = desc_path)` against the served pre-M055 build, with zero blobs captured — so a failed build hands over neither file. The step-three notice and the rewritten download hint were read back from the live page.
+- 2026-08-24: blocked on r-universe. Its `Update universe` sync last ran 2026-08-24 23:55Z against an hourly cadence and had not run again by 01:42Z, so the WebAssembly binary still serves commit `80c3601`, one behind M055's merge, and no `descriptor` argument exists in the browser. T3's in-page capture and T4, which reads T3's evidence, both wait on the rebuild; resume once `https://jmgirard.r-universe.dev/api/packages/hitop` reports `RemoteSha` at `a3bddd1` or later — observed 2026-08-24.
 - 2026-08-24: fresh-context criteria audit ran in FULL mode (user-facing tier) and returned findings on two criteria, both repaired before commit. The shuffled-run criterion asserted only the length and the set of `itemOrder`, which a permutation unrelated to what the form actually prints satisfies — the very failure known issue 8 names — so it now compares against the sequence parsed out of the downloaded DOCX. A criterion binding the removal of known issue 8 and two ROADMAP rows bound tracking records rather than the deliverable and was dropped; T4 carries that work and the review's consistency gate checks it. The remaining criteria returned nothing.
 
 ## Decisions
