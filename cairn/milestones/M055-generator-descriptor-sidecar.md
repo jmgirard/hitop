@@ -1,11 +1,11 @@
 # M055: The HiTOP-SR generators write a descriptor beside the file they build
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M054
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP3
-- **Branch/PR:** `m055-generator-descriptor-sidecar`
+- **Branch/PR:** `m055-generator-descriptor-sidecar` / https://github.com/jmgirard/hitop/pull/61
 
 ## Goal
 
@@ -35,19 +35,19 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
 
 ## Acceptance criteria
 
-- [ ] AC1 For each of the three named HiTOP-SR generators, a call passing a
+- [x] AC1 For each of the three named HiTOP-SR generators, a call passing a
       four-scale `module` and a `descriptor` path writes a file whose
       `format`, `instrument`, `scales`, and `items` fields, parsed with
       `jsonlite::fromJSON()` rather than through `read_module()`, equal values
       derived directly from `hitopsr_scales` and `hitopsr_items`, and which
       `read_module()` returns a module `identical()` to that `module` from —
       one test per generator, all three named in the test.
-- [ ] AC2 For each of the same three generators, a call passing `descriptor`
+- [x] AC2 For each of the same three generators, a call passing `descriptor`
       and no `module` writes a descriptor naming exactly the `Scale` column of
       `available_scales("hitopsr")`, and `score_hitopsr()` given that
       descriptor's module over all 405 `sim_hitopsr` item columns returns a
       tibble `identical()` to the same call passing no `module`.
-- [ ] AC3 The descriptor's `itemOrder` records original HSR item numbers. For
+- [x] AC3 The descriptor's `itemOrder` records original HSR item numbers. For
       `generate_docx_hitopsr(randomize = TRUE, descriptor = )` under a seed
       fixed in the test, run once with a module and once without and at each of
       `renumber = TRUE` and `renumber = FALSE`, scoring responses laid out in
@@ -57,16 +57,16 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
       mapping under test (the M046 lesson).
 - [ ] AC4 With `randomize = FALSE`, and for the two online generators, which
       never shuffle, the written descriptor carries no `itemOrder`.
-- [ ] AC5 For each of the three generators, a `descriptor` that is not a
+- [x] AC5 For each of the three generators, a `descriptor` that is not a
       length-one character string aborts with a classed `cli` error naming the
       argument, and an unwritable `descriptor` path aborts naming the path
       before any instrument file is written, asserted by checking that the
       `file` path does not exist after the abort.
-- [ ] AC6 The three help pages document `descriptor`,
+- [x] AC6 The three help pages document `descriptor`,
       `vignettes/articles/modules-hitopsr.Rmd` shows the one-call form,
       `NEWS.md` records the argument, and DESIGN known issue 8 is rewritten to
       the app-only remainder M056 carries.
-- [ ] AC7 `devtools::document()` produces no diff, and `devtools::test()` and
+- [x] AC7 `devtools::document()` produces no diff, and `devtools::test()` and
       `devtools::check()` are clean (0 errors, 0 warnings; NOTEs justified).
 
 ## Coverage
@@ -107,6 +107,7 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
 - 2026-08-24: T4 — the three help pages document `descriptor`, `vignettes/articles/modules-hitopsr.Rmd` shows the one-call form and the shuffled-form order it saves, NEWS records the argument, and DESIGN known issue 8 is narrowed to the app remainder M056 carries.
 - 2026-08-24: T5 — `devtools::document()` produces no diff, `devtools::test()` is clean (1 pre-existing skip, the OQ-1 keying question), and `devtools::check()` returns 0 errors / 0 warnings / 0 notes. `pkgdown::build_article("articles/modules-hitopsr")` renders the edited article, which `R CMD check` does not cover.
 - 2026-08-24: status set to `review`.
+- 2026-08-24: review returned M055 to `in-progress` at the return floor. Finding 1 of the diff-bug lens falsifies AC4: `write_descriptor_sidecar()` never clears an `item_order` attribute the incoming module already carries, so a module read back from a shuffled Word form's descriptor makes `generate_qualtrics_hitopsr()`, `generate_redcap_hitopsr()`, and `generate_docx_hitopsr(randomize = FALSE)` write an `itemOrder` into a descriptor for a form that was never shuffled. Reproduced fresh. Findings 2, 3, 6, 7, and 8 ride the same return; 4 and 5 are the maintainer's call. Defect returns on this milestone: 1.
 
 ## Decisions
 
@@ -117,3 +118,135 @@ resolve `items` → the candidate row M054 opened. HiTOP-BR and PID-5 generators
 **Consequences:** Saving and reading a descriptor are symmetric. The field's definition and the version string are untouched, so the format contract D-039 fixed is not reopened; one paragraph of `?write_module` is rewritten, and a hand-set attribute that is not a permutation is now an error at write time instead of at read time.
 
 ## Review
+
+### Acceptance criteria — fresh evidence (2026-08-24)
+
+Branch synced: `main` == `origin/main` and contained in `HEAD`; nothing to
+merge, so the evidence below is from a current branch.
+
+- AC1 — `tests/testthat/test-generator-descriptor.R` "…write a module's
+  descriptor beside the file" runs the four-scale module through all three
+  named generators; 19 expectations pass, none skipped. The written file is
+  parsed with `jsonlite::fromJSON()` and its `format`, `instrument`, `scales`,
+  `items`, and `nItems` compared against values derived from `hitopsr_items`
+  and `hitopsr_scales`; `read_module()` then returns a module `identical()` to
+  the one passed.
+- AC2 — "a generator call with no module writes a descriptor of the whole
+  instrument": 6 expectations pass. The descriptor's `scales` equals the
+  `Scale` column of `available_scales("hitopsr")` for each generator, and
+  `score_hitopsr()` over all 405 `sim_hitopsr` columns through that module is
+  `identical()` to the same call with no `module`.
+- AC3 — "a shuffled Word form's descriptor records the printed order in
+  original HiTOP-SR numbers": 18 expectations pass across the four cases
+  (module / whole instrument × `renumber = TRUE` / `FALSE`) under
+  `set.seed(20260824)`. `itemOrder` is asserted to be a permutation of the
+  covered original numbers and not the identity; the expected scores are read
+  off the responses laid out in instrument order, never back through the
+  mapping under test.
+- AC4 — "a descriptor for an unshuffled form carries no printed order": 6
+  expectations pass; `itemOrder` is absent from the parsed JSON and the read
+  module carries no `item_order` for `randomize = FALSE` and for both online
+  generators.
+- AC5 — "every generator refuses a descriptor that is not a single path" (18
+  expectations) and "an unwritable descriptor path is refused before any
+  instrument file is written" (9). Each abort is an `rlang_error` whose message
+  names `descriptor`, or names the path; the instrument `file` is asserted not
+  to exist after the abort. The sibling test also confirms a sidecar is not
+  left behind when the build itself fails (6 expectations).
+- AC6 — `descriptor` is documented in all three help pages
+  (`man/generate_docx_hitopsr.Rd:78`, `man/generate_qualtrics_hitopsr.Rd:42`,
+  `man/generate_redcap_hitopsr.Rd:38`); `vignettes/articles/modules-hitopsr.Rmd`
+  shows the one-call form and reads the printed order back
+  (`:271`–`:299`); `NEWS.md:31`–`:44` records the argument with no milestone
+  numbers in user-facing text; `cairn/DESIGN.md:119` known issue 8 is rewritten
+  to the app-only remainder M056 carries.
+- AC7 — `devtools::document()` re-run leaves the working tree clean apart from
+  this milestone file. `devtools::test()` over the whole suite: FAIL 0, WARN 0,
+  SKIP 1 (the pre-existing OQ-1 keying skip), PASS 14370.
+  `devtools::check()`: Status OK — 0 errors, 0 warnings, 0 notes (8m 55s).
+
+### Consistency gate (2026-08-24)
+
+Universal cairn-file checks: `cairn_validate.py` exits 0, "all checks passed",
+with 21 advisory dangling-id warnings, all pre-existing references to the
+pre-migration D-001–D-012 entries. No `DESIGN.md` principle (IP/GP) text
+changed — only known issue 8 — so `cairn_impact.py --changed` does not apply.
+
+Toolchain checks from the `r-package` profile's `consistency-gate` slot:
+`document()` no diff; no hand-edited generated files (the no-diff run covers
+it); README.Rmd untouched, so README.md is in sync; `pkgdown::check_pkgdown()`
+reports no problems; NEWS.md carries the user-visible entry with no milestone
+numbers; no new top-level files, so no `.Rbuildignore` entry is owed;
+`devtools::check()` clean as recorded under AC7. `pkgdown::build_article(
+"articles/modules-hitopsr")` renders the edited article, which `R CMD check`
+does not cover.
+
+### Independent fresh-context review (2026-08-24)
+
+Surface tier user-facing and the diff touches `R/`, so the full three-lens
+fan-out ran: an Opus diff-bug lens, a Sonnet blame-history lens, and a Sonnet
+prior-review lens, each with its own evidence base and none having seen the
+implementation.
+
+Blame-history lens: no findings. It confirmed M055-D1's reversal of M054's
+"never writes `itemOrder`" clause is the follow-on D-039 itself anticipated,
+not a silent regression, and that no participant-facing printed content
+changed (the D-036/D-037/D-038 IP1 gate is not reopened).
+
+Prior-review lens: no prior-review evidence of a reintroduced or contradicted
+finding. The GitHub inline-comment probe returned empty, so the per-PR walk was
+skipped; the archived `## Review` sections for M054, M046, M048, M050 and the
+LESSONS entries on these files were all checked and found honored — notably
+M046's "expected side read off the responses" rule, which AC3's test follows.
+
+Diff-bug lens: eight findings, ranked. Dispositions:
+
+1. **AC4 falsified — a stale `item_order` attribute leaks into every later
+   descriptor.** `write_descriptor_sidecar()` (`R/module_file.R:479`) sets the
+   attribute when a printed order is supplied but never clears one the incoming
+   `module` already carries, and `read_module()` returns exactly that attribute
+   on a documented path. Reproduced fresh: a module read back from a shuffled
+   Word form's descriptor, passed to `generate_qualtrics_hitopsr(descriptor =)`,
+   writes `itemOrder` `66 144 389 109 260 118 291 202` into an export that is in
+   instrument order; the same module through `generate_docx_hitopsr(randomize =
+   FALSE)` writes it too. Following the package's own recipe then permutes
+   correct columns and miscores silently — the failure class this milestone
+   exists to close. AC4's test misses it because every case builds a fresh
+   `hitop_module()`. **Floor-qualifying: milestone returned to `in-progress`.**
+2. **An unwritable `descriptor` path blames `write_module()`, not the exported
+   generator.** Reproduced: `conditionCall()` is `write_module(module,
+   descriptor)`. `write_module()` takes no `call` argument, so the sidecar's
+   `call = rlang::caller_env()` cannot reach it. The repo's convention that a
+   guard blames the exported function is what
+   `tests/testthat/test-export-arg-guards.R` enforces, and this branch's own
+   work log records reverting a helper wrapper for exactly this reason. AC5 is
+   met as written (the message names the path), so this is not a second floor
+   return — **fix on the return** alongside finding 1.
+3. **`unlink()` glob-expands the rollback path.** A `descriptor` containing
+   `*`, `?`, or `[` deletes every matching file in the directory when the build
+   fails. **Fix on the return** (`file.remove()`, or `unlink()` on a literal).
+4. **Rollback also removes a pre-existing file at the `descriptor` path.** The
+   write has already clobbered it, so nothing is recoverable either way, but the
+   decision was reasoned about a file the call created. **Fix on the return**
+   or accept explicitly — maintainer's call.
+5. **M055-D1 touches a contract D-039 owns and stays milestone-local.**
+   Promotion to `cairn/DECISIONS.md` is the maintainer's call at the gate; not
+   a code defect. **Deferred to the gate.**
+6. **The Qualtrics and REDCap assertions skip when {officer}/{flextable} are
+   absent** — `skip_if_no_generators()` calls `skip_if_no_docx()`
+   unconditionally, so the whole online-export coverage vanishes on a machine
+   without the DOCX stack. **Fix on the return.**
+7. **AC3's `expect_identical(order, attr(out, "item_order"))` is
+   self-referential** — both sides trace to the same local. Harmless beside the
+   independent scoring round-trip, but it reads as a check and is not one.
+   **Fix on the return.**
+8. **`@seealso` for the descriptor functions landed on two of three help
+   pages**, not `generate_redcap_hitopsr()`. Cosmetic, no AC miss. **Fix on the
+   return.**
+
+### Outcome
+
+Returned to `in-progress` at the return floor on finding 1: AC4's checkbox is
+unticked, its evidence line stands as recorded but is superseded by the
+reproduction above. AC1, AC2, AC3, AC5, AC6, and AC7 remain verified. Defect
+returns on this milestone: 1.
