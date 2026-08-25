@@ -7,7 +7,9 @@
 write_module(module, file)
 }
 \arguments{
-\item{module}{A \code{hitop_module} object, as returned by \code{\link[=hitop_module]{hitop_module()}}.}
+\item{module}{A \code{hitop_module} object, as returned by \code{\link[=hitop_module]{hitop_module()}}. An
+\code{item_order} attribute, where present, is written as the file's
+\code{itemOrder} and must be a permutation of the module's items.}
 
 \item{file}{A string giving the path to write to.}
 }
@@ -44,11 +46,13 @@ covers, and how many there are. Cross-checked on read: the order they
 are written in carries no meaning --- \code{\link[=read_module]{read_module()}} compares them as
 a set --- but a repeated number is an error, and the printed order of
 a shuffled form belongs in \code{itemOrder} instead.}
-\item{\code{itemOrder}}{Reserved for the printed order of a shuffled form: a
-permutation of \code{items}. \code{\link[=write_module]{write_module()}} never writes it, because a
-module object records no printed order; \code{\link[=read_module]{read_module()}} accepts one
-and returns it on the \code{item_order} attribute, the same attribute
-\code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns.}
+\item{\code{itemOrder}}{The printed order of a shuffled form: a permutation
+of \code{items}. Optional --- a form printed in instrument order carries
+none. \code{\link[=read_module]{read_module()}} returns it on the module's \code{item_order}
+attribute, the same attribute \code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns, and
+\code{\link[=write_module]{write_module()}} writes it back from that attribute, so a descriptor
+read and written again keeps the order it recorded. The generators'
+\code{descriptor} argument sets the attribute for you.}
 }
 
 \code{format}, \code{instrument}, and \code{scales} are required. The fields and the
@@ -69,5 +73,8 @@ file.remove(f)
 }
 \seealso{
 \code{\link[=read_module]{read_module()}} to read the file back; \code{\link[=hitop_module]{hitop_module()}} to build a
-module in the first place.
+module in the first place; the \code{descriptor} argument of
+\code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}}, \code{\link[=generate_qualtrics_hitopsr]{generate_qualtrics_hitopsr()}}, and
+\code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}}, which writes one of these files beside the
+instrument it builds.
 }

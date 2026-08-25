@@ -15,6 +15,7 @@ generate_docx_hitopsr(
   module = NULL,
   renumber = TRUE,
   randomize = FALSE,
+  descriptor = NULL,
   subset = NULL
 )
 }
@@ -71,7 +72,24 @@ a module's items by their position in \code{module$items}, which is ascending
 original order — not the order a shuffled form prints them in. Reorder the
 collected columns through \code{item_order} before scoring:
 \code{collected[order(attr(out, "item_order"))]}. Scoring printed-order columns
-directly returns wrong scale scores and raises no error.}
+directly returns wrong scale scores and raises no error --- or pass
+\code{descriptor} and let the saved file carry the order for you.}
+
+\item{descriptor}{An optional path to write a module descriptor to, beside
+the Word file. The saved file records which scales the form covers and
+which instrument items they draw on, so \code{\link[=read_module]{read_module()}} hands the module
+straight back to \code{\link[=score_hitopsr]{score_hitopsr()}} at scoring time. A call passing no
+\code{module} writes a descriptor naming every scale, describing the full
+administration. With \code{randomize = TRUE} it also records the printed order,
+returned on the read module's \code{item_order} attribute --- the record a
+shuffled whole-instrument form otherwise leaves nowhere, since no
+crosswalk is printed for one. Written before the Word file, so an
+unwritable path is reported before any form is produced; if the Word file
+then cannot be written, the descriptor is removed again, a file that was
+already at that path included.
+It must name a path of its own: an empty string, or the same path as
+\code{file}, is refused rather than leaving you with no descriptor and no
+error. (default = \code{NULL})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}
@@ -114,6 +132,21 @@ out <- generate_docx_hitopsr(
   randomize = TRUE
 )
 attr(out, "item_order")
+
+# The same form with a descriptor saved beside it; the descriptor carries
+# the printed order, so the collected columns can be put back in order
+# without keeping a note by hand
+f <- tempfile(fileext = ".json")
+generate_docx_hitopsr(
+  file = tempfile(fileext = ".docx"),
+  module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
+  randomize = TRUE,
+  descriptor = f
+)
+attr(read_module(f), "item_order")
 }
 
+}
+\seealso{
+\code{\link[=write_module]{write_module()}} and \code{\link[=read_module]{read_module()}} for the descriptor file.
 }

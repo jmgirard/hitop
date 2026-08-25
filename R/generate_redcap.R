@@ -65,10 +65,24 @@ generate_redcap_hitopbr <- function(
 #'   module forms are numbered `1` to `n`: here an item number names a
 #'   collected data column, so renumbering would rename variables in
 #'   dictionaries already in the field. (default = `NULL`)
+#' @param descriptor An optional path to write a module descriptor to, beside
+#'   the instrument file. The saved file records which scales the form covers
+#'   and which instrument items they draw on, so [read_module()] hands the
+#'   module straight back to [score_hitopsr()] at scoring time. A call passing
+#'   no `module` writes a descriptor naming every scale, describing the full
+#'   administration. Written before the instrument file, so an unwritable path
+#'   is reported before any form is produced; if the instrument file then
+#'   cannot be written, the descriptor is removed again, a file that was
+#'   already at that path included.
+#'   It must name a path of its own: an empty string, or the same path as
+#'   `file`, is refused rather than leaving you with no descriptor and no
+#'   error. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
 #' @return Invisibly returns the path to the created file (`file`).
+#'
+#' @seealso [write_module()] and [read_module()] for the descriptor file.
 #'
 #' @examples
 #' # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
@@ -87,12 +101,33 @@ generate_redcap_hitopsr <- function(
   required = TRUE,
   breaks = 15,
   module = NULL,
+  descriptor = NULL,
   subset = NULL
 ) {
   module <- resolve_module_arg(module, subset)
+  validate_string(descriptor, "descriptor", allow_null = TRUE)
+  validate_descriptor_target(descriptor, file)
   reduced <- apply_module(hitopsr_items, NULL, module, "HSR")
 
-  build_redcap_zip(
+  # Written BEFORE the export, so an unwritable `descriptor` path is reported
+  # while no instrument file exists yet. No `item_order`: this export never
+  # shuffles, so the items are in instrument order and there is no printed
+  # order to record.
+  built <- FALSE
+  if (!is.null(descriptor)) {
+    write_descriptor_sidecar(descriptor, module, "hitopsr")
+    # A descriptor with no form beside it describes a form that was never
+    # written, so it goes again if the build below fails.
+    # file.remove() on the literal path, never unlink(), which would treat a
+    # descriptor path holding `*`, `?` or `[` as a wildcard and delete every
+    # file it matched.
+    on.exit(
+      if (!built && file.exists(descriptor)) file.remove(descriptor),
+      add = TRUE
+    )
+  }
+
+  out <- build_redcap_zip(
     items = reduced$items,
     instructions = hitopsr_instructions,
     file = file,
@@ -101,6 +136,8 @@ generate_redcap_hitopsr <- function(
     required = required,
     breaks = breaks
   )
+  built <- TRUE
+  invisible(out)
 }
 
 #' Generate a REDCap Instrument ZIP File for the PID-5 (Full)

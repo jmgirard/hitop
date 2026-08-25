@@ -28,6 +28,22 @@ before a CRAN submission.
   coercion error. The order the item numbers are written in carries no
   meaning, so a hand-edited file may list them any way round.
 
+* **The three HiTOP-SR generators can save a module descriptor beside the file
+  they build.** Pass `descriptor = "module.json"` to
+  `generate_docx_hitopsr()`, `generate_qualtrics_hitopsr()`, or
+  `generate_redcap_hitopsr()` and one call produces both the form you field
+  and the file that scores the data it comes back as. A call passing no
+  `module` writes a descriptor naming every scale, so a full administration is
+  described too. On a shuffled Word form (`randomize = TRUE`) the descriptor
+  also records the printed order, returned on the read module's `item_order`
+  attribute — the record a shuffled whole-instrument form leaves nowhere else,
+  since no crosswalk is printed for one. The descriptor is written before the
+  instrument file, so an unwritable path is reported before any form is
+  produced, and it is removed again if the form itself cannot be written.
+  `write_module()` now writes an `item_order` attribute as the file's
+  `itemOrder` field, so a descriptor read and written again keeps the order it
+  recorded.
+
 * **The jsonlite package moved from Suggests to Imports**, so it is now
   installed with hitop rather than optionally. `write_module()` needs it, and
   the browser module builder runs in an environment where suggested packages

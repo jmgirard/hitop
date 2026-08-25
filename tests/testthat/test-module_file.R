@@ -446,3 +446,17 @@ test_that("write_module() names the file when it cannot be written", {
   good <- withr::local_tempfile(fileext = ".json")
   expect_identical(write_module(m, good), good)
 })
+
+test_that("write_module() refuses an empty path rather than discarding the file", {
+  # `writeLines(json, con = "")` opens an anonymous connection and throws the
+  # contents away, so an empty path used to return quietly having written
+  # nothing. The refusal is what stops a caller believing a descriptor was
+  # saved when none exists.
+  module <- hitop_module("hitopsr", scales = "agoraphobia")
+  expect_error(write_module(module, ""), class = "rlang_error")
+  expect_match(
+    conditionMessage(expect_error(write_module(module, ""))),
+    "empty string",
+    fixed = TRUE
+  )
+})

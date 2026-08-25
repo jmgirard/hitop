@@ -64,11 +64,13 @@ covers, and how many there are. Cross-checked on read: the order they
 are written in carries no meaning --- \code{\link[=read_module]{read_module()}} compares them as
 a set --- but a repeated number is an error, and the printed order of
 a shuffled form belongs in \code{itemOrder} instead.}
-\item{\code{itemOrder}}{Reserved for the printed order of a shuffled form: a
-permutation of \code{items}. \code{\link[=write_module]{write_module()}} never writes it, because a
-module object records no printed order; \code{\link[=read_module]{read_module()}} accepts one
-and returns it on the \code{item_order} attribute, the same attribute
-\code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns.}
+\item{\code{itemOrder}}{The printed order of a shuffled form: a permutation
+of \code{items}. Optional --- a form printed in instrument order carries
+none. \code{\link[=read_module]{read_module()}} returns it on the module's \code{item_order}
+attribute, the same attribute \code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns, and
+\code{\link[=write_module]{write_module()}} writes it back from that attribute, so a descriptor
+read and written again keeps the order it recorded. The generators'
+\code{descriptor} argument sets the attribute for you.}
 }
 
 \code{format}, \code{instrument}, and \code{scales} are required. The fields and the

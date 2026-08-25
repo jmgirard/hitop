@@ -107,8 +107,9 @@ also carries a crosswalk from each printed number back to its original
 HiTOP-SR number — printed whether or not `include_scoring` appends the key — so
 a shuffled module form can be scored from the paper alone. Shuffling the full
 instrument prints no crosswalk, since 405 pairs would fill a page; read the
-order from the `item_order` attribute of the returned path instead. Call
-`set.seed()` beforehand to make an order reproducible.
+order from the `item_order` attribute of the returned path, or save it with
+`descriptor =` below. Call `set.seed()` beforehand to make an order
+reproducible.
 
 One thing to watch: `score_hitopsr()` addresses a module's items by their
 position in `module$items`, which is ascending **original** order, not the
@@ -265,6 +266,43 @@ the forms you generated:
 descriptor <- write_module(four_scale, file.path(outdir, "hitopsr_module.json"))
 cat(readLines(descriptor), sep = "\n")
 ```
+
+You do not have to remember to call it. Each of the three generators takes a
+`descriptor` argument, so one call writes both the form and the file that
+scores it:
+
+```{r}
+#| message: false
+generate_docx_hitopsr(
+  file = file.path(outdir, "hitopsr_module2.docx"),
+  module = four_scale,
+  descriptor = file.path(outdir, "hitopsr_module2.json")
+)
+```
+
+A call that passes no `module` writes a descriptor naming every scale, so a
+full administration is described too. And on a shuffled Word form the
+descriptor also records the printed order, which is the one thing a
+whole-instrument form gives you nowhere else — no crosswalk is printed for one:
+
+```{r}
+#| message: false
+set.seed(42)
+shuffled_descriptor <- file.path(outdir, "hitopsr_shuffled.json")
+generate_docx_hitopsr(
+  file = file.path(outdir, "hitopsr_shuffled.docx"),
+  module = four_scale,
+  randomize = TRUE,
+  descriptor = shuffled_descriptor
+)
+
+printed_order <- attr(read_module(shuffled_descriptor), "item_order")
+printed_order
+```
+
+Those are the original HiTOP-SR item numbers in the order the page printed
+them, so responses entered off that form go back into instrument order with
+`collected[order(printed_order)]`.
 
 The file is plain text, so you can read it, edit it, and send it to a
 collaborator. `read_module()` turns it back into a module:

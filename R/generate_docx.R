@@ -123,7 +123,23 @@ generate_docx_hitopbr <- function(
 #'   original order — not the order a shuffled form prints them in. Reorder the
 #'   collected columns through `item_order` before scoring:
 #'   `collected[order(attr(out, "item_order"))]`. Scoring printed-order columns
-#'   directly returns wrong scale scores and raises no error.
+#'   directly returns wrong scale scores and raises no error --- or pass
+#'   `descriptor` and let the saved file carry the order for you.
+#' @param descriptor An optional path to write a module descriptor to, beside
+#'   the Word file. The saved file records which scales the form covers and
+#'   which instrument items they draw on, so [read_module()] hands the module
+#'   straight back to [score_hitopsr()] at scoring time. A call passing no
+#'   `module` writes a descriptor naming every scale, describing the full
+#'   administration. With `randomize = TRUE` it also records the printed order,
+#'   returned on the read module's `item_order` attribute --- the record a
+#'   shuffled whole-instrument form otherwise leaves nowhere, since no
+#'   crosswalk is printed for one. Written before the Word file, so an
+#'   unwritable path is reported before any form is produced; if the Word file
+#'   then cannot be written, the descriptor is removed again, a file that was
+#'   already at that path included.
+#'   It must name a path of its own: an empty string, or the same path as
+#'   `file`, is refused rather than leaving you with no descriptor and no
+#'   error. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -158,7 +174,21 @@ generate_docx_hitopbr <- function(
 #'   randomize = TRUE
 #' )
 #' attr(out, "item_order")
+#'
+#' # The same form with a descriptor saved beside it; the descriptor carries
+#' # the printed order, so the collected columns can be put back in order
+#' # without keeping a note by hand
+#' f <- tempfile(fileext = ".json")
+#' generate_docx_hitopsr(
+#'   file = tempfile(fileext = ".docx"),
+#'   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
+#'   randomize = TRUE,
+#'   descriptor = f
+#' )
+#' attr(read_module(f), "item_order")
 #' }
+#'
+#' @seealso [write_module()] and [read_module()] for the descriptor file.
 #'
 #' @export
 generate_docx_hitopsr <- function(
@@ -172,12 +202,15 @@ generate_docx_hitopsr <- function(
   module = NULL,
   renumber = TRUE,
   randomize = FALSE,
+  descriptor = NULL,
   subset = NULL
 ) {
   papersize <- match.arg(papersize)
   dims <- get_page_dims(papersize)
   module <- resolve_module_arg(module, subset)
   validate_string(title, "title", allow_null = TRUE)
+  validate_string(descriptor, "descriptor", allow_null = TRUE)
+  validate_descriptor_target(descriptor, file)
   validate_flag(renumber, "renumber")
   validate_flag(randomize, "randomize")
 
@@ -294,6 +327,29 @@ generate_docx_hitopsr <- function(
     )
   }
 
+  # Written BEFORE the document, so an unwritable `descriptor` path is reported
+  # while no Word file exists yet. A printed order is recorded only where there
+  # is one to record: without `randomize` the form prints the instrument's own
+  # order, which the module's ascending `items` already states.
+  built <- FALSE
+  if (!is.null(descriptor)) {
+    write_descriptor_sidecar(
+      descriptor,
+      module,
+      "hitopsr",
+      item_order = if (randomize) item_order else NULL
+    )
+    # A descriptor with no form beside it describes a form that was never
+    # written, so it goes again if the build below fails.
+    # file.remove() on the literal path, never unlink(), which would treat a
+    # descriptor path holding `*`, `?` or `[` as a wildcard and delete every
+    # file it matched.
+    on.exit(
+      if (!built && file.exists(descriptor)) file.remove(descriptor),
+      add = TRUE
+    )
+  }
+
   out <- build_hitop_doc(
     file,
     title,
@@ -307,6 +363,7 @@ generate_docx_hitopsr <- function(
     font_family,
     crosswalk_msg
   )
+  built <- TRUE
 
   invisible(structure(out, item_order = item_order))
 }

@@ -45,23 +45,30 @@ module_format_first_version <- function() {
 #'       are written in carries no meaning --- [read_module()] compares them as
 #'       a set --- but a repeated number is an error, and the printed order of
 #'       a shuffled form belongs in `itemOrder` instead.}
-#'     \item{`itemOrder`}{Reserved for the printed order of a shuffled form: a
-#'       permutation of `items`. [write_module()] never writes it, because a
-#'       module object records no printed order; [read_module()] accepts one
-#'       and returns it on the `item_order` attribute, the same attribute
-#'       [generate_docx_hitopsr()] returns.}
+#'     \item{`itemOrder`}{The printed order of a shuffled form: a permutation
+#'       of `items`. Optional --- a form printed in instrument order carries
+#'       none. [read_module()] returns it on the module's `item_order`
+#'       attribute, the same attribute [generate_docx_hitopsr()] returns, and
+#'       [write_module()] writes it back from that attribute, so a descriptor
+#'       read and written again keeps the order it recorded. The generators'
+#'       `descriptor` argument sets the attribute for you.}
 #'   }
 #'
 #'   `format`, `instrument`, and `scales` are required. The fields and the
 #'   version string are a public contract and change only deliberately.
 #'
-#' @param module A `hitop_module` object, as returned by [hitop_module()].
+#' @param module A `hitop_module` object, as returned by [hitop_module()]. An
+#'   `item_order` attribute, where present, is written as the file's
+#'   `itemOrder` and must be a permutation of the module's items.
 #' @param file A string giving the path to write to.
 #'
 #' @return The `file` path, invisibly.
 #'
 #' @seealso [read_module()] to read the file back; [hitop_module()] to build a
-#'   module in the first place.
+#'   module in the first place; the `descriptor` argument of
+#'   [generate_docx_hitopsr()], [generate_qualtrics_hitopsr()], and
+#'   [generate_redcap_hitopsr()], which writes one of these files beside the
+#'   instrument it builds.
 #'
 #' @examples
 #' m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
@@ -76,16 +83,41 @@ module_format_first_version <- function() {
 #'
 #' @export
 write_module <- function(module, file) {
+  write_module_impl(module, file, call = rlang::current_env())
+}
+
+# Internal Helper: the body of write_module(), with the frame to blame
+#
+# Split out so that the generators' `descriptor` sidecar can write a file
+# through the same code and still have a refusal name the exported generator
+# the user called, which is the convention test-export-arg-guards.R enforces.
+# write_module() keeps its two-argument signature; `call` is not a public
+# argument.
+write_module_impl <- function(module, file, call = rlang::caller_env()) {
   cli_assert(
     condition = is_module(module),
     message = c(
       "The {.arg module} argument must be a {.cls hitop_module} object.",
       i = "Build one with {.code hitop_module()}."
-    )
+    ),
+    call = call
   )
   cli_assert(
     condition = is.character(file) && length(file) == 1L && !is.na(file),
-    message = "The {.arg file} argument must be a single string."
+    message = "The {.arg file} argument must be a single string.",
+    call = call
+  )
+  # An empty path is a string, so the guard above admits it -- and
+  # `writeLines(json, con = "")` then opens an anonymous connection whose
+  # contents are discarded, leaving no file and raising nothing the caller
+  # sees. Refused here so a descriptor is never silently not written.
+  cli_assert(
+    condition = nzchar(file),
+    message = c(
+      "The {.arg file} argument must not be an empty string.",
+      i = "Give the path the descriptor should be written to."
+    ),
+    call = call
   )
 
   # `unbox()` on every scalar, with `auto_unbox = FALSE`, so that `scales` and
@@ -104,6 +136,30 @@ write_module <- function(module, file) {
     nItems = jsonlite::unbox(as.integer(module$nItems))
   )
 
+  # A module carrying an `item_order` attribute records the order a shuffled
+  # form printed its items in; read_module() returns exactly this attribute, so
+  # writing it back is what makes a descriptor round-trip whole. Checked here
+  # rather than trusted, because the attribute can be set by hand: an order
+  # that is not a permutation of the module's items would write a file
+  # read_module() then refuses.
+  item_order <- attr(module, "item_order")
+  if (!is.null(item_order)) {
+    usable <- is.numeric(item_order) &&
+      !anyNA(item_order) &&
+      identical(sort(as.integer(item_order)), as.integer(module$items))
+    cli_assert(
+      condition = usable,
+      message = c(
+        "The {.arg module} argument has an unusable {.field item_order} \\
+         attribute.",
+        x = "It must be a permutation of the {module$nItems} item{?s} the \\
+             module covers."
+      ),
+      call = call
+    )
+    payload$itemOrder <- as.integer(item_order)
+  }
+
   json <- jsonlite::toJSON(payload, auto_unbox = FALSE, pretty = TRUE)
   # An unwritable path is reported the way every other failure in this file is
   # -- naming the file -- rather than as the bare "cannot open the connection"
@@ -116,7 +172,8 @@ write_module <- function(module, file) {
           "Cannot write the module descriptor to {.file {file}}.",
           i = "Check that the directory exists and is writable."
         ),
-        parent = cnd
+        parent = cnd,
+        call = call
       )
     }
   )
@@ -435,4 +492,84 @@ read_module_check_format <- function(format, file, call = rlang::caller_env()) {
   }
 
   invisible(format)
+}
+
+# Internal Helper: write a generator's sidecar descriptor
+#
+# Shared by the three HiTOP-SR generators' `descriptor` argument. `module =
+# NULL` is the full instrument, described here as a module over every scale the
+# instrument offers, so a full administration gets a descriptor too rather than
+# the argument quietly doing nothing. `item_order` is the original item numbers
+# in the order a form printed them; NULL leaves the field out, which is what a
+# form printed in instrument order deserves.
+write_descriptor_sidecar <- function(
+  descriptor,
+  module,
+  instrument,
+  item_order = NULL,
+  call = rlang::caller_env()
+) {
+  validate_string(descriptor, "descriptor", call = call)
+  # Named for the argument the user actually passed; `write_module_impl()`
+  # refuses the same value below, but blames `file`.
+  cli_assert(
+    condition = nzchar(descriptor),
+    message = c(
+      "The {.arg descriptor} argument must not be an empty string.",
+      i = "Give the path the descriptor should be written to."
+    ),
+    call = call
+  )
+  if (is.null(module)) {
+    module <- hitop_module(
+      instrument = instrument,
+      scales = module_scale_tables()[[instrument]]$Scale,
+      call = call
+    )
+  }
+  # Set unconditionally, so that a NULL `item_order` CLEARS any attribute the
+  # incoming `module` already carried. A module read back from a shuffled Word
+  # form's descriptor carries one, and without this an export that never
+  # shuffled would inherit that form's printed order.
+  attr(module, "item_order") <-
+    if (is.null(item_order)) NULL else as.integer(item_order)
+  # The writer's own abort is left to speak: it names the path, which is the
+  # fact the caller needs, and re-wrapping it here would re-interpolate a
+  # message that has already been formatted. `call` is passed through so the
+  # refusal blames the generator the user called.
+  write_module_impl(module, descriptor, call = call)
+}
+
+# Internal Helper: refuse a `descriptor` that would be overwritten by the form
+#
+# The descriptor is written first and the instrument file second, so pointing
+# both at one path leaves the export where the descriptor was, with `built`
+# TRUE and no rollback -- a success message and no descriptor. Compared after
+# `normalizePath()` so `./m.json` and `m.json` are seen as one path; neither
+# file need exist yet, hence `mustWork = FALSE`.
+validate_descriptor_target <- function(descriptor, file, call = rlang::caller_env()) {
+  if (is.null(descriptor) || !rlang::is_string(file)) {
+    return(invisible(NULL))
+  }
+  # Normalize the DIRECTORY, which exists, rather than the file, which need
+  # not: normalizePath() returns a non-existent path unchanged, so comparing
+  # the paths whole would miss `dir/./m.json` against `dir/m.json`.
+  resolved <- function(path) {
+    file.path(
+      normalizePath(dirname(path), mustWork = FALSE),
+      basename(path)
+    )
+  }
+  same <- resolved(descriptor) == resolved(file)
+  cli_assert(
+    condition = !same,
+    message = c(
+      "The {.arg descriptor} and {.arg file} arguments must name different \\
+       paths.",
+      x = "Both name {.file {file}}.",
+      i = "The instrument file would overwrite the descriptor."
+    ),
+    call = call
+  )
+  invisible(NULL)
 }
