@@ -5,7 +5,7 @@
 - **Depends on:** M055
 - **Driving RR:** —
 - **Principles touched:** IP1, GP3
-- **Branch/PR:** `m056-builder-descriptor-download` (hitop) · `m056-descriptor-download` (hitop-builder)
+- **Branch/PR:** `m056-builder-descriptor-download` (hitop) → https://github.com/jmgirard/hitop/pull/62 · `m056-descriptor-download` (hitop-builder) → https://github.com/jmgirard/hitop-builder/pull/5
 
 ## Goal
 
@@ -31,19 +31,19 @@ candidate row from the M048 implementation gate.
 
 ## Acceptance criteria
 
-- [ ] AC1 For each of the three formats the page offers, driving the page to
+- [x] AC1 For each of the three formats the page offers, driving the page to
       build a module form yields a descriptor download whose bytes, captured
       in-page by the `URL.createObjectURL` patch the M050 lesson records, parse
       as M054's format and name exactly the scales ticked in the run.
-- [ ] AC2 A run with every scale ticked and shuffling on yields a descriptor
+- [x] AC2 A run with every scale ticked and shuffling on yields a descriptor
       whose `itemOrder` equals the item sequence parsed out of the downloaded
       DOCX itself, read from the form's own rows in the parse-and-compare style
       D-010 uses — never merely its length or its set.
-- [ ] AC3 The page states, in copy a `read_page` capture shows, what the
+- [x] AC3 The page states, in copy a `read_page` capture shows, what the
       descriptor is for and that it must be kept with the collected data; the
       shuffled-form notice no longer tells the visitor to keep their own record
       of an order the page never gave them.
-- [ ] AC4 The deployed page loads and builds all three formats after the
+- [x] AC4 The deployed page loads and builds all three formats after the
       change, evidenced by a driven run in the review.
 
 ## Coverage
@@ -86,7 +86,93 @@ candidate row from the M048 implementation gate.
 - 2026-08-24: T4 disposition of the candidate row the issue settles. The row planning merged from two (the shuffled form's lost order, and downloads too alike to tell apart) is settled in its order half only: M056 gives the visitor the printed order in the descriptor. Its naming half stands — every module download is still `hitopsr-module.<ext>`, and a whole-instrument one `hitopsr.<ext>` whether shuffled or not, so a shuffled Word form and an unshuffled one remain indistinguishable on disk. The row is left in place for the post-merge hygiene pass to narrow to that half, per the candidates-graduate-at-completion rule; T4's task text was refined to say so.
 
 - 2026-08-24: all tasks checked; `devtools::test()` clean (0 failures, 0 warnings, 1 skip, 14419 passing). Status to review.
+- 2026-08-24: review, at the maintainer's direction, rewrote the two callouts this milestone added — the standing two-file notice and both tails of `crosswalkSentence()` — to drop the stock-emphasis and paired-negation constructions, and matched README's three references to the new wording (`hitop-builder` `7b9a696`). **The T3 work-log entries above quote the pre-rewrite copy; those exact strings no longer exist in the page.** The Review section's AC3 evidence is a fresh capture of the shipped text and supersedes them; AC1, AC2 and AC4 were also re-driven against this final state rather than carried over.
+- 2026-08-24: review checkpoint — Review section written with fresh AC1-AC4 evidence, all four criteria ticked against it; `cairn_validate` exit 0, `devtools::test()` 14,419 passing, `document()`/`build_readme()` no diff, `pkgdown::check_pkgdown()` clean, line-ending policy passed, CI green on PR #62. `devtools::check()` and the diff-bug reviewer still outstanding at this commit.
 
 ## Decisions
 
 ## Review
+
+PR: hitop [#62](https://github.com/jmgirard/hitop/pull/62) (tracking only) ·
+hitop-builder [#5](https://github.com/jmgirard/hitop-builder/pull/5) (the app change).
+Both branches sit on top of their default branch; neither `main` had moved since
+the branch was cut, so no merge-forward was needed.
+
+All acceptance evidence below was taken against the **final** branch state,
+after the copy rewrite committed at review (`hitop-builder` `7b9a696`) — the
+page served over HTTP from the branch working tree at `localhost:8788`, with the
+M050 `URL.createObjectURL` blob-capture patch installed and the anchor's `click`
+suppressed so downloads are captured rather than saved.
+
+**AC1 — a descriptor download for each of the three formats.** Verified. Word,
+Qualtrics and REDCap were each driven over the same two ticked scales
+(Agoraphobia, Binge Eating). Each run handed over two blobs: `hitopsr-module.docx`
+(18,151 B) + `hitopsr-module.json` (297 B), `hitopsr-module.txt` (2,029 B) +
+`hitopsr-module.json` (241 B), `hitopsr-module.zip` (831 B) +
+`hitopsr-module.json` (241 B). The two online-export descriptors are
+byte-identical; the Word one differs only by the `itemOrder` field the shuffled
+run adds. All three name exactly `["Agoraphobia", "Binge Eating"]` and carry
+`items` `[66, 109, 118, 260, 291, 358, 392, 398]`, which equals the union of
+those two scales' `hitopsr_scales$itemNumbers`. The captured 241-byte descriptor
+was written out verbatim (byte count matches the capture) and read by the
+package's own `read_module()`, returning
+`<hitop_module> hitopsr: 8 items from 2 scales` with `is_module()` TRUE — so the
+bytes parse as M054's format.
+
+**AC2 — `itemOrder` equals the sequence the DOCX prints.** Verified by
+parse-and-compare, not by length or set. A run with all 76 scales ticked and
+shuffling on handed over `hitopsr.docx` (70,589 B) + `hitopsr.json` (5,376 B),
+`nItems` 405 and `itemOrder` of length 405, not the identity. The DOCX was parsed
+in-page — central-directory walk, `DecompressionStream('deflate-raw')`,
+`word/document.xml` — and its 405 item rows read off the form itself; the printed
+numbers ran 1..405 with no gaps. SHA-256 over the 405 printed item texts joined
+by newline came to `735d20c82e100df4268527256b382b22e093bc85779d7f0b14b73937b5ee99be`;
+the same digest computed independently in R over
+`hitopsr_items$Text[match(itemOrder, hitopsr_items$HSR)]` matched exactly. The
+comparison was shown able to fail: swapping one adjacent pair, rotating the
+sequence by one, and altering one item's text each produced a different digest
+(`422ae5a6…`, `c12ac38c…`, `f00c0a9d…`).
+
+**AC3 — the copy.** Verified by `read_page` over the step-three region on the
+shuffled Word screen, with `get_page_text` used for the long text nodes
+`read_page` truncates. The standing notice reads "**This page saves two files.**
+Beside the questionnaire it writes a small `.json` file listing the scales you
+chose and, on a shuffled Word form, the order the items were printed in." /
+"Keep it with the responses you collect. The `hitop` package reads it back with
+`read_module()` when you score the data." — purpose and keep-it-with-the-data,
+both stated. The shuffled-form notice reads, on a whole instrument, "This form
+carries no crosswalk: a shuffled whole instrument would print 405 pairs on a page
+a participant reads. The printed order is recorded only in the .json file saved
+with the form."; on a module, "This form carries a crosswalk: each printed number
+beside the original HiTOP-SR number it came from. The .json file saved with the
+form records that order too." No sentence asks the visitor to keep a record of
+their own.
+
+**AC4 — the page loads and builds all three formats after the change.**
+Verified up to the hosting origin. The page was loaded fresh over HTTP, fetched
+webR from `webr.r-wasm.org` and `hitop` 0.2.0 from `jmgirard.r-universe.dev`
+(redirected to `r2.ropensci.org`) — a real network install, not a stub — reached
+`Ready.`, and built all three formats plus the 405-item shuffled Word form in one
+session with no error. The one gap: this was the branch working tree served at
+`localhost:8788`, not `jmgirard.github.io/hitop-builder`, which cannot serve the
+change until the builder PR merges. GitHub Pages serves the same single static
+`index.html`, and this diff touches no origin-dependent path (the M051 lesson
+records that webR needs no COOP/COEP headers there), so the gap is the hosting
+origin alone. Raised at the approval gate rather than read around.
+
+**Toolchain consistency gate (`r-package` profile).**
+- `cairn_validate.py`: exit 0, all checks passed; 21 advisory dangling-id
+  warnings, all pre-existing legacy `D-001`..`D-012` tokens.
+- Coverage completeness: PASS (mechanical, in `cairn_validate`).
+- `cairn_impact.py`: skipped — the milestone changes no DESIGN principle (it
+  removes a Known-issues entry).
+- `devtools::test()`: 0 failures, 0 warnings, 1 skip, 14,419 passing.
+- `devtools::document()`: no diff.
+- `devtools::build_readme()`: no diff.
+- `pkgdown::check_pkgdown()`: no problems found.
+- `check_line_endings.R`: policy check passed.
+- `devtools::check()`: see below.
+- NEWS.md: no entry. The `hitop` diff is tracking-only (a DESIGN Known-issues
+  removal and a ROADMAP status flip); the user-visible change is in
+  `jmgirard/hitop-builder`, which carries no changelog.
+
