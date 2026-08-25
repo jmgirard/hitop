@@ -159,6 +159,14 @@ change until the builder PR merges. GitHub Pages serves the same single static
 `index.html`, and this diff touches no origin-dependent path (the M051 lesson
 records that webR needs no COOP/COEP headers there), so the gap is the hosting
 origin alone. Raised at the approval gate rather than read around.
+Post-merge addendum (the builder PR merged first, by design): the Pages deploy
+succeeded and `https://jmgirard.github.io/hitop-builder/` was fetched and driven
+— its served source carries `descriptor = desc_path` on all three generator
+calls and the rewritten "This page saves two files" notice, and the page loaded
+and reached `Ready.` on that origin with webR and `hitop` 0.2.0 installed. A full
+three-format build **on the deployed origin** was not completed: the browser
+driver stopped dispatching clicks mid-walk (an environment failure, not a page
+failure), so the criterion rests on the branch-served driven run recorded above.
 
 **Toolchain consistency gate (`r-package` profile).**
 - `cairn_validate.py`: exit 0, all checks passed; 21 advisory dangling-id
