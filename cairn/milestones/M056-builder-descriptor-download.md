@@ -1,6 +1,6 @@
 # M056: The browser builder offers the module descriptor as a download
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M055
 - **Driving RR:** —
@@ -62,8 +62,8 @@ candidate row from the M048 implementation gate.
 - [x] T3 Drive the page and capture the three descriptors and the shuffled run,
       using the blob-capture and `read_page`/`form_input` techniques the M045,
       M050, and M052 lessons record.
-- [ ] T4 Close DESIGN known issue 8 and the two candidate rows it settles,
-      recording each disposition.
+- [x] T4 Close DESIGN known issue 8 and record the disposition of the candidate
+      row it settles; the row itself graduates at the post-merge hygiene pass.
 
 ## Work log
 
@@ -81,6 +81,11 @@ candidate row from the M048 implementation gate.
 - 2026-08-24: T3's order check parsed the downloaded DOCX in-page (central-directory walk, `DecompressionStream('deflate-raw')`, item rows read out of `word/document.xml`), mapped each printed item's own text back to its HiTOP-SR number through a map generated from `hitopsr_items`, and compared position by position: all 405 printed rows matched a known item, printed numbers ran 1..405, and the recovered sequence equals the descriptor's `itemOrder` exactly, a real permutation rather than the identity. The comparison was shown able to fail — swapping one adjacent pair, rotating the sequence by one, and altering one item's text each break it while the control passes.
 
 - 2026-08-24: T3 also captured the page copy on the shuffled Word screen: the standing notice reads "Two files are saved, and both matter. Beside the questionnaire, this page saves a small .json file naming the scales you chose — and, on a shuffled Word form, the order the items were printed in." followed by "Keep it with the responses you collect."; the shuffled-form notice now reads "Nothing on the paper records the order it came out in; the .json file saved with the form does, and is the only copy of it." — no sentence asks the visitor to keep a record of their own. `read_page` truncates a long text node, so the copy was read back with `get_page_text` over the same driven page.
+
+- 2026-08-24: T4 removed DESIGN known issue 8, whose whole remainder was the app change this branch makes: the page now passes `descriptor =` on all three formats, hands the file over, and its notice points at that file rather than at a record the visitor was never given. Nothing else in DESIGN referenced it and the list needed no renumbering.
+- 2026-08-24: T4 disposition of the candidate row the issue settles. The row planning merged from two (the shuffled form's lost order, and downloads too alike to tell apart) is settled in its order half only: M056 gives the visitor the printed order in the descriptor. Its naming half stands — every module download is still `hitopsr-module.<ext>`, and a whole-instrument one `hitopsr.<ext>` whether shuffled or not, so a shuffled Word form and an unshuffled one remain indistinguishable on disk. The row is left in place for the post-merge hygiene pass to narrow to that half, per the candidates-graduate-at-completion rule; T4's task text was refined to say so.
+
+- 2026-08-24: all tasks checked; `devtools::test()` clean (0 failures, 0 warnings, 1 skip, 14419 passing). Status to review.
 
 ## Decisions
 
