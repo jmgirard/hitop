@@ -13,7 +13,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M054 | A saved module descriptor that reads back for scoring | done | — | normal | milestones/archive/M054-module-descriptor-file.md |
 | M055 | The HiTOP-SR generators write a descriptor beside the file they build | done | M054 | normal | milestones/archive/M055-generator-descriptor-sidecar.md |
 | M056 | The browser builder offers the module descriptor as a download | done | M055 | normal | milestones/archive/M056-builder-descriptor-download.md |
-| M057 | Each scale in the browser builder shows its clinician definition | planned | — | normal | milestones/M057-builder-scale-definitions.md |
+| M057 | Each scale in the browser builder shows its clinician definition | in-progress | — | normal | milestones/M057-builder-scale-definitions.md |
 | M058 | The HiTOP-SR's NSSI scale is named in full | planned | M057 | normal | milestones/M058-nssi-scale-name.md |
 
 ## Candidates

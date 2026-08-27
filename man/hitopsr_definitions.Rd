@@ -5,12 +5,16 @@
 \alias{hitopsr_definitions}
 \title{HiTOP-SR Definitions}
 \format{
-A \link[tibble]{tibble} with 93 rows and 4 columns:
+A \link[tibble]{tibble} with 93 rows and 5 columns:
 \describe{
 \item{Scale}{The name of the scale}
 \item{Subscale}{The name of the subscale (or NA if not a subscale)}
 \item{Brief}{The brief clinician-facing definition (10-20 words)}
 \item{Client}{The client-facing definition with examples (30-40 words)}
+\item{camelCase}{The camel case name of whatever the row defines: the
+subscale where there is one, otherwise the scale. Matches
+\link{hitopsr_scales}$camelCase on the scale rows and
+\link{hitopsr_subscales}$camelCase on the subscale rows.}
 }
 }
 \usage{

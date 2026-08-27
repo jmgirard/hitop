@@ -1,11 +1,11 @@
 # M057: Each scale in the browser builder shows its clinician definition
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m057-builder-scale-definitions`
 
 ## Goal
 
@@ -90,7 +90,7 @@ column. NEWS, `?available_scales`, `?hitopsr_definitions`, builder README.
 
 ## Tasks
 
-- [ ] T1 Add a `camelCase` column to `hitopsr_definitions` in
+- [x] T1 Add a `camelCase` column to `hitopsr_definitions` in
       `data-raw/hitopsr_info.R:45-48`, derived as `hitopsr_scales$camelCase` is
       (`data-raw/hitopsr_info.R:18`), with the one differing label paired explicitly
       in the script and the pairing commented; regenerate the `.rda`. Update
@@ -122,6 +122,8 @@ column. NEWS, `?available_scales`, `?hitopsr_definitions`, builder README.
 - 2026-08-26: plan gate chose the package-side column over a page-side lookup because the name join then lives beside both tables and under test, where a second repo's JavaScript would drift — the reasoning D-035 used against rebuilding packaging logic app-side; falsified by evidence that an r-universe rebuild lag leaves the page without definitions long enough to matter, which AC5's degraded path would then have to become permanent.
 - 2026-08-26: plan gate chose a hover-and-focus tooltip over a bare `title` attribute, an always-visible second line, and a tap-to-expand button, because it honors the request while reaching keyboard and screen-reader users, and the definitions run to 118 characters, which would roughly triple the height of an already-scrolling 76-row list; falsified by a visitor reporting the popup unreachable or obstructive on touch, which points at the always-visible option.
 - 2026-08-26: plan gate chose to match the two tables on the camelCase stem over hard-coding the one differing label and over renaming a label, because the stem is already the app's own value and no printed name moves; falsified by a second stem collision, which would make the derived stems no better a key than the names.
+- 2026-08-26: implementation gate, three choices, all as recommended: a definitions row's stem names whatever that row defines (the subscale where there is one, else the scale), so the column keys all 93 rows and pairs with `hitopsr_subscales` as well as `hitopsr_scales`; `data-raw/hitopsr_info.R` stops on a stem-set disagreement with either table rather than only stating the one label pairing, so a relabelled scale cannot rebuild a table with an unmatched stem; and the builder's hover target is the whole scale row with a short delay, not a per-row info marker, so nothing new must be found or aimed at.
+- 2026-08-26: T1 done. `hitopsr_definitions` gains `camelCase` (93 rows, 5 columns); the "Non-suicidal Self-injury"/"NSSI" pair is stated in the script and the three set-equality guards pass. Regenerating the script left the other three HiTOP-SR `.rda` files byte-identical. `document()` wrote `man/hitopsr_definitions.Rd`; `test()` 14,419 pass / 0 fail / 1 skip.
 
 ## Decisions
 
