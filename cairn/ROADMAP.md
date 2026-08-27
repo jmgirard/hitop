@@ -1,19 +1,18 @@
 # Roadmap
 
-_Last hygiene check: 2026-08-26 (M057 and M058 planned — the builder tooltip work and the scale rename it surfaced. No D-entry: neither plan made a cross-cutting decision, and M058's IP1 sign-off is its own acceptance criterion. Three candidate rows merged to hold the 60-line cap while two milestone rows landed: M035's two norms-book tooling rows into one; the `plot_pid5()` figure-width floor with M036's legend width-budget row, both being width claims resting on one hand measurement; and the builder light/dark row widened to carry M057's two deferred definition items rather than opening a fourth builder row. Nothing pruned. ROADMAP is 59 lines / 28,929 bytes, over its 24,000-byte budget as it has been since M054; per Jeff's 2026-08-24 choice the overage is recorded rather than met by pruning a candidate record. LESSONS untouched at 49 lines; nothing retired, since neither milestone has shipped a guard.)_
-_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M057)._
+_Last hygiene check: 2026-08-27 (M057 done and archived — `available_scales()` carries each HiTOP-SR scale's clinician definition and the builder page shows it. Its two deferred review findings, both latent until a second instrument gains a scale table, went onto the standing "Generalize modularization to BR/PID-5" row rather than opening a new one; no other candidate row moved and nothing was pruned. No D-entry: the milestone made no cross-cutting decision. Two LESSONS lines extended in place (M043's `call =` family, M056's browser-driving family), so the file holds at 49 lines; nothing retired, since M057's one new guard covers a single function rather than the M043 lesson's package-wide claim. Both byte budgets are over and neither was met by pruning: ROADMAP 59 lines / 29,342 bytes against 24,000, the overage recorded per Jeff's 2026-08-24 choice; LESSONS 49 lines / 20,808 bytes against 20,000, first noticed here — it was already at 20,015 before this pass, so the line-count check alone has been missing it. Worth a decision next session: prune the stalest LESSONS lines, or record this overage the way ROADMAP's is.)_
+_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M059)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M053 | A format-first flow for the browser module builder | done | M052 | normal | milestones/archive/M053-builder-format-first-flow.md |
-| M052 | A stepped flow for the browser module builder | done | M051 | normal | milestones/archive/M052-builder-stepped-flow.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
 | M054 | A saved module descriptor that reads back for scoring | done | — | normal | milestones/archive/M054-module-descriptor-file.md |
 | M055 | The HiTOP-SR generators write a descriptor beside the file they build | done | M054 | normal | milestones/archive/M055-generator-descriptor-sidecar.md |
 | M056 | The browser builder offers the module descriptor as a download | done | M055 | normal | milestones/archive/M056-builder-descriptor-download.md |
-| M057 | Each scale in the browser builder shows its clinician definition | review | — | normal | milestones/M057-builder-scale-definitions.md |
+| M057 | Each scale in the browser builder shows its clinician definition | done | — | normal | milestones/archive/M057-builder-scale-definitions.md |
 | M058 | The HiTOP-SR's NSSI scale is named in full | planned | M057 | normal | milestones/M058-nssi-scale-name.md |
 
 ## Candidates
