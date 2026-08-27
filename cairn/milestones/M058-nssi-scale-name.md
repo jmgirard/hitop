@@ -1,11 +1,11 @@
 # M058: The HiTOP-SR's NSSI scale is named in full
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M057
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP2
-- **Branch/PR:** —
+- **Branch/PR:** `m058-nssi-scale-name`
 
 ## Goal
 
@@ -123,6 +123,8 @@ sourced branch.
 - 2026-08-26: created by /milestone-plan, from the M057 plan gate's choice to rename separately rather than inside the tooltip milestone.
 - 2026-08-26: criteria audit ran in full mode (user-facing tier), fresh-context [O] reader, on a seven-criterion draft. Findings on all seven; all had one clear right answer and were fixed before this file was written. The load-bearing one: the draft put a "stop if no source is obtainable" branch inside AC1, so a milestone that never happened would have passed AC1 while AC6 became unsatisfiable and five others unevaluable — the branch is now a Scope gate condition carrying IP1's open-question obligation. Also fixed: AC1 compared the CSV against this file's own transcription of the source (one author checking themself); the stale-spelling sweep was a hand-list of four tables and missed `R/sysdata.rda`, `man/`, `README.Rmd` and the lowercase stem; the invariance check listed three columns and left item text free; "the base commit" named no ref or loading mechanism; the scored comparison pinned one column where GP2 governs the whole tibble and omitted `calc_se`; the artifact parse-back named two formats of four and left the REDCap dictionary unverified; the MD5 re-lock was stated as verification when its expected values are regenerated from the files just built; and `devtools::test()` clean was vacuous because `test-artifacts.R` skips itself without officer. No finding went to the gate.
 - 2026-08-26: plan gate chose to rename separately from M057 over doing it inside that milestone and over shortening the definitions row to `NSSI`, because the rename touches keying content, renames a scored column for existing users and regenerates four checksum-locked artifacts, none of which belongs in a UI change; falsified by the source search returning nothing citable, which sends this back to the gate as an open question and leaves M057's stem join standing on its own.
+- 2026-08-27: /milestone-implement opened on branch `m058-nssi-scale-name`. T1 source search, before any keying edit. The Scope gate condition's sourced branch holds: the HiTOP Measures Development Workgroup deck *Measurement Workgroup Presentation December 2023* (Leonard Simms; PDF CreationDate 2023-12-01; sha256 `903e277334924d42286bbf261857ddea539b87e00eff5563784686711614681a`), slide 34, table "Internalizing : Distress Scales", prints the row `Non-suicidal Self-Injury (NSSI)  6  0.83` — plain ASCII hyphens, capital `I` in `Injury`. Served from the same 3P Lab page as `HiTOP-SR-Final.xlsx` (<https://ubwp.buffalo.edu/3plab/wp-content/uploads/sites/251/2026/07/MeasurementWorkgroupPresentationDecember2023.pdf>); copy on the gitignored shelf as `cairn/references/sources/simms2023_hitop_measurement_workgroup.pdf`. Corroboration: 75 of the package's 76 `hitopsr_items$Scale` values appear as verbatim lines in that deck and `NSSI` is the only one that does not; the deck's item count for the scale (6) matches the package's 6 NSSI items. No source disagreement — `HiTOP-SR-Final.xlsx` prints `NSSI` in all five sheets that mention it and no full name anywhere, so the workbook is silent rather than competing, and `hitopsr_definitions.csv`'s `Non-suicidal Self-injury` is in-repo authoring, not a source. Both casings convert to the same stem, so the scored column would be `hsr_nonSuicidalSelfInjury` either way and only the four printed questionnaires differ.
+- 2026-08-27: question gate. On T1's `(RB tripwire: ip-touching)` question — adopt the deck's `Non-suicidal Self-Injury` — Jeff chose **Escalate via `/milestone-brief`** over adopting it here and over the definitions CSV's unsourced `Non-suicidal Self-injury`. No keying edit was made; the milestone stops at T1 pending the RR. On the second gate question Jeff chose, for after the escalation returns: align `data-raw/hitopsr_definitions.csv`'s `Scale` cell to whatever name is adopted and delete the then-inert `definition_scale_labels` map and its comment from `data-raw/hitopsr_info.R`, keeping the `stopifnot` stem check as the guard that catches future drift. That choice is banked, not executed.
 
 ## Decisions
 
