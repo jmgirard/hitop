@@ -22,26 +22,27 @@ library(hitop)
 Start from the menu.
 [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
 lists every scale the instrument offers, along with the camelCase stem
-that will name its scored output column and the number of items it
-contributes.
+that will name its scored output column, the number of items it
+contributes, and a brief clinician-facing definition (`Brief`, printed
+here truncated; `hitopsr_definitions` carries it in full).
 
 ``` r
 
 scale_menu <- available_scales("hitopsr")
 scale_menu
-#> # A tibble: 76 × 3
-#>    Scale                camelCase           nItems
-#>    <chr>                <chr>                <dbl>
-#>  1 Agoraphobia          agoraphobia              5
-#>  2 Antisocial Behavior  antisocialBehavior       8
-#>  3 Appetite Loss        appetiteLoss             3
-#>  4 Binge Eating         bingeEating              3
-#>  5 Bodily Distress      bodilyDistress           6
-#>  6 Body Dissatisfaction bodyDissatisfaction      4
-#>  7 Body Focus           bodyFocus                5
-#>  8 Callousness          callousness              6
-#>  9 Checking             checking                 5
-#> 10 Cleaning             cleaning                 6
+#> # A tibble: 76 × 4
+#>    Scale                camelCase           nItems Brief                        
+#>    <chr>                <chr>                <dbl> <chr>                        
+#>  1 Agoraphobia          agoraphobia              5 Fear and avoidance of situat…
+#>  2 Antisocial Behavior  antisocialBehavior       8 Behavior that goes against s…
+#>  3 Appetite Loss        appetiteLoss             3 Decreased appetite and food …
+#>  4 Binge Eating         bingeEating              3 Eating unusually large amoun…
+#>  5 Bodily Distress      bodilyDistress           6 Physical symptoms like pain,…
+#>  6 Body Dissatisfaction bodyDissatisfaction      4 Persistent dissatisfaction w…
+#>  7 Body Focus           bodyFocus                5 Excessive focus on appearanc…
+#>  8 Callousness          callousness              6 Disregard for others' feelin…
+#>  9 Checking             checking                 5 Repetitive urges to check ta…
+#> 10 Cleaning             cleaning                 6 Fear of dirt and germs, lead…
 #> # ℹ 66 more rows
 ```
 
@@ -63,14 +64,14 @@ length of your module. For example, to see the shortest scales:
 ``` r
 
 scale_menu[order(scale_menu$nItems), ][1:5, ]
-#> # A tibble: 5 × 3
-#>   Scale                        camelCase                  nItems
-#>   <chr>                        <chr>                       <dbl>
-#> 1 Appetite Loss                appetiteLoss                    3
-#> 2 Binge Eating                 bingeEating                     3
-#> 3 Difficulties Reaching Orgasm difficultiesReachingOrgasm      3
-#> 4 Excoriation                  excoriation                     3
-#> 5 Low Sexual Arousal           lowSexualArousal                3
+#> # A tibble: 5 × 4
+#>   Scale                        camelCase                  nItems Brief          
+#>   <chr>                        <chr>                       <dbl> <chr>          
+#> 1 Appetite Loss                appetiteLoss                    3 "Decreased app…
+#> 2 Binge Eating                 bingeEating                     3 "Eating unusua…
+#> 3 Difficulties Reaching Orgasm difficultiesReachingOrgasm      3 "Trouble reach…
+#> 4 Excoriation                  excoriation                     3 "Repetitive sk…
+#> 5 Low Sexual Arousal           lowSexualArousal                3 "Problems with…
 ```
 
 ## Building the Module

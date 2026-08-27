@@ -82,7 +82,7 @@ the HiTOP-SR</p>
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 93 rows and 4 columns:</p><dl><dt>Scale</dt>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 93 rows and 5 columns:</p><dl><dt>Scale</dt>
 <dd><p>The name of the scale</p></dd>
 
 <dt>Subscale</dt>
@@ -94,25 +94,31 @@ the HiTOP-SR</p>
 <dt>Client</dt>
 <dd><p>The client-facing definition with examples (30-40 words)</p></dd>
 
+<dt>camelCase</dt>
+<dd><p>The camel case name of whatever the row defines: the
+subscale where there is one, otherwise the scale. Matches
+<a href="hitopsr_scales.html">hitopsr_scales</a>$camelCase on the scale rows and
+<a href="hitopsr_subscales.html">hitopsr_subscales</a>$camelCase on the subscale rows.</p></dd>
+
 
 </dl></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hitopsr_definitions</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 93 × 4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Scale                Subscale Brief                                    Client</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Agoraphobia          <span style="color: #BB0000;">NA</span>       Fear and avoidance of situations where … Being…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Antisocial Behavior  <span style="color: #BB0000;">NA</span>       Behavior that goes against social norms… Doing…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Appetite Loss        <span style="color: #BB0000;">NA</span>       Decreased appetite and food interest th… Reduc…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Binge Eating         <span style="color: #BB0000;">NA</span>       Eating unusually large amounts of food … Episo…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Bodily Distress      <span style="color: #BB0000;">NA</span>       Physical symptoms like pain, weakness, … Physi…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Body Dissatisfaction <span style="color: #BB0000;">NA</span>       Persistent dissatisfaction with one's b… Ongoi…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Body Focus           <span style="color: #BB0000;">NA</span>       Excessive focus on appearance, with fre… Stron…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Callousness          <span style="color: #BB0000;">NA</span>       Disregard for others' feelings and need… A gen…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Checking             <span style="color: #BB0000;">NA</span>       Repetitive urges to check tasks, driven… Havin…</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Cleaning             <span style="color: #BB0000;">NA</span>       Fear of dirt and germs, leading to exce… Fear …</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 93 × 5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Scale                Subscale Brief                          Client camelCase</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Agoraphobia          <span style="color: #BB0000;">NA</span>       Fear and avoidance of situati… Being… agorapho…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Antisocial Behavior  <span style="color: #BB0000;">NA</span>       Behavior that goes against so… Doing… antisoci…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Appetite Loss        <span style="color: #BB0000;">NA</span>       Decreased appetite and food i… Reduc… appetite…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Binge Eating         <span style="color: #BB0000;">NA</span>       Eating unusually large amount… Episo… bingeEat…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Bodily Distress      <span style="color: #BB0000;">NA</span>       Physical symptoms like pain, … Physi… bodilyDi…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Body Dissatisfaction <span style="color: #BB0000;">NA</span>       Persistent dissatisfaction wi… Ongoi… bodyDiss…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Body Focus           <span style="color: #BB0000;">NA</span>       Excessive focus on appearance… Stron… bodyFocus</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Callousness          <span style="color: #BB0000;">NA</span>       Disregard for others' feeling… A gen… callousn…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Checking             <span style="color: #BB0000;">NA</span>       Repetitive urges to check tas… Havin… checking </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Cleaning             <span style="color: #BB0000;">NA</span>       Fear of dirt and germs, leadi… Fear … cleaning </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 83 more rows</span></span>
 </code></pre></div>
     </div>

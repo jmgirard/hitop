@@ -68,8 +68,26 @@ interface before a CRAN submission.
 - **[`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
   lists the scales you can build a module from**, with the name printed
   on the form, the camelCase stem that names the scored output column,
-  and the item count — so you no longer need to know which dataset to
-  open before choosing scales.
+  the item count, and — in a new fourth column, `Brief` — the scale’s
+  brief clinician-facing definition, so you no longer need to know which
+  dataset to open before choosing scales. The definition is matched to
+  the scale on that camelCase stem, never on a printed name, and a stem
+  with no definition behind it is an error rather than a blank.
+
+- **`hitopsr_definitions` gains a `camelCase` column**, naming whatever
+  each row defines: the subscale where there is one, otherwise the
+  scale. It is the key
+  [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
+  joins on, and it lines up with `hitopsr_scales$camelCase` and
+  `hitopsr_subscales$camelCase`.
+
+- **The [browser module
+  builder](https://jmgirard.github.io/hitop-builder/) shows those
+  definitions while you pick.** Pointing at a scale, or reaching its
+  checkbox with the Tab key, brings up that scale’s definition; Escape
+  dismisses it. The page reads the text from the installed package
+  rather than keeping a copy, so a version that does not supply it shows
+  the list exactly as before.
 
 - **A new article, [Building HiTOP-SR
   Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.html),

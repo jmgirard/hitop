@@ -121,24 +121,25 @@ will actually field, and scoring the data that comes back. For scoring a
 </h2>
 <p>Start from the menu. <code><a href="../reference/available_scales.html">available_scales()</a></code> lists every
 scale the instrument offers, along with the camelCase stem that will
-name its scored output column and the number of items it
-contributes.</p>
+name its scored output column, the number of items it contributes, and a
+brief clinician-facing definition (<code>Brief</code>, printed here
+truncated; <code>hitopsr_definitions</code> carries it in full).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scale_menu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/available_scales.html">available_scales</a></span><span class="op">(</span><span class="st">"hitopsr"</span><span class="op">)</span></span>
 <span><span class="va">scale_menu</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 76 × 3</span></span></span>
-<span><span class="co">#&gt;    Scale                camelCase           nItems</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Agoraphobia          agoraphobia              5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Antisocial Behavior  antisocialBehavior       8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Appetite Loss        appetiteLoss             3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Binge Eating         bingeEating              3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Bodily Distress      bodilyDistress           6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Body Dissatisfaction bodyDissatisfaction      4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Body Focus           bodyFocus                5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Callousness          callousness              6</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Checking             checking                 5</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Cleaning             cleaning                 6</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 76 × 4</span></span></span>
+<span><span class="co">#&gt;    Scale                camelCase           nItems Brief                        </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Agoraphobia          agoraphobia              5 Fear and avoidance of situat…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Antisocial Behavior  antisocialBehavior       8 Behavior that goes against s…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Appetite Loss        appetiteLoss             3 Decreased appetite and food …</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Binge Eating         bingeEating              3 Eating unusually large amoun…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Bodily Distress      bodilyDistress           6 Physical symptoms like pain,…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Body Dissatisfaction bodyDissatisfaction      4 Persistent dissatisfaction w…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Body Focus           bodyFocus                5 Excessive focus on appearanc…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Callousness          callousness              6 Disregard for others' feelin…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Checking             checking                 5 Repetitive urges to check ta…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Cleaning             cleaning                 6 Fear of dirt and germs, lead…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 66 more rows</span></span></span></code></pre></div>
 <p>Both name columns are accepted when you build a module, so you can
 write scale names the way they are printed on the form
@@ -153,14 +154,14 @@ instead.</p>
 length of your module. For example, to see the shortest scales:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scale_menu</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">scale_menu</span><span class="op">$</span><span class="va">nItems</span><span class="op">)</span>, <span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 3</span></span></span>
-<span><span class="co">#&gt;   Scale                        camelCase                  nItems</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Appetite Loss                appetiteLoss                    3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Binge Eating                 bingeEating                     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Difficulties Reaching Orgasm difficultiesReachingOrgasm      3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Excoriation                  excoriation                     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Low Sexual Arousal           lowSexualArousal                3</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 4</span></span></span>
+<span><span class="co">#&gt;   Scale                        camelCase                  nItems Brief          </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Appetite Loss                appetiteLoss                    3 <span style="color: #949494;">"</span>Decreased app…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Binge Eating                 bingeEating                     3 <span style="color: #949494;">"</span>Eating unusua…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Difficulties Reaching Orgasm difficultiesReachingOrgasm      3 <span style="color: #949494;">"</span>Trouble reach…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Excoriation                  excoriation                     3 <span style="color: #949494;">"</span>Repetitive sk…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Low Sexual Arousal           lowSexualArousal                3 <span style="color: #949494;">"</span>Problems with…</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="building-the-module">Building the Module<a class="anchor" aria-label="anchor" href="#building-the-module"></a>
