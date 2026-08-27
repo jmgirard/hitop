@@ -40,42 +40,42 @@ column. NEWS, `?available_scales`, `?hitopsr_definitions`, builder README.
 
 ## Acceptance criteria
 
-- [ ] AC1 `available_scales("hitopsr")` returns the three pre-existing columns plus a
+- [x] AC1 `available_scales("hitopsr")` returns the three pre-existing columns plus a
       `Brief` column, joined on the camelCase stem rather than on a printed display
       name. A test walks every row it returns, comparing each row's `Brief` against
       the string `hitopsr_definitions` carries for that stem, the expected side read
       from `hitopsr_definitions` independently of `available_scales()`. Shown red
       under an altered definition value, a dropped definitions row, and a stem
       re-paired to a neighbouring scale.
-- [ ] AC2 No scale is silently lost in the join: the same test asserts the set of
+- [x] AC2 No scale is silently lost in the join: the same test asserts the set of
       `camelCase` stems returned equals the set `hitopsr_scales` carries — an
       equality over both tables, not a walk over whatever survived — and that no
       returned `Brief` is `NA` or empty. Both expected sides read from the shipped
       tables, never hardcoded in the test file.
-- [ ] AC3 With definitions available, every rendered scale row shows that row's own
+- [x] AC3 With definitions available, every rendered scale row shows that row's own
       definition: a browser-driven check queries all rendered rows, resolves each
       checkbox's `aria-describedby` to its target, and asserts that target's text
       equals the `Brief` the page's own `available_scales()` call returned for that
       row. The queried row count is asserted equal to the number of rows that call
       returned; the check is shown red under a page mutation rotating the
       definitions by one row.
-- [ ] AC4 Reachable by pointer and keyboard, dismissible from both: on three named
+- [x] AC4 Reachable by pointer and keyboard, dismissible from both: on three named
       scales, a browser-driven run shows the definition on pointer hover, shows the
       same string after reaching the checkbox by real Tab presses, and shows it
       hidden after Escape in each of those two states. This verifies transport only;
       AC1 pins the package side.
-- [ ] AC5 Driven against a stubbed `available_scales()` result carrying only the
+- [x] AC5 Driven against a stubbed `available_scales()` result carrying only the
       three pre-existing columns, the page renders one row per stub row, ticking a
       box still updates the tally, and no row carries an `aria-describedby` or a
       hover trigger at all — the degraded behavior is the absence of the affordance,
       not an empty or placeholder description.
-- [ ] AC6 The page holds no copy of the definition text: a check over the built
+- [x] AC6 The page holds no copy of the definition text: a check over the built
       `index.html` asserts none of the 76 `Brief` strings occurs in its source. NEWS
       names the new column and the page behavior; `?available_scales` lists all four
       returned columns (its roxygen today hardcodes "three columns",
       `R/available_scales.R:13-15`); the builder README says definitions come from
       the installed package.
-- [ ] AC7 `devtools::document()` no diff, `devtools::test()` clean,
+- [x] AC7 `devtools::document()` no diff, `devtools::test()` clean,
       `devtools::check()` clean (0 errors, 0 warnings; NOTEs justified).
 
 ## Coverage
@@ -139,3 +139,24 @@ column. NEWS, `?available_scales`, `?hitopsr_definitions`, builder README.
 ## Decisions
 
 ## Review
+
+- 2026-08-26: reviewed at PR #63 (https://github.com/jmgirard/hitop/pull/63); `main` had not moved since the branch was cut, so no merge was owed. Evidence below is fresh, run at review.
+- AC1 verified. `available_scales("hitopsr")` returns `Scale`/`camelCase`/`nItems`/`Brief`, and `test-available_scales.R` is green at 338 passes. Planted join-side, each of AC1's three mutations went red and each restore green: one `Brief` altered on the way out (337 pass / 1 fail, at the per-row walk), a definitions row dropped before the join (18 pass / 7 error, the guard aborting), every stem re-paired to its neighbour (262 pass / 76 fail).
+- AC2 verified. The same test asserts stem-set equality both ways (returned stems against `hitopsr_scales$camelCase`, and against the scale rows of `hitopsr_definitions`), row-count equality, and no `NA` or blank `Brief`; both expected sides are read from the shipped tables. A fourth mutation dropping a scale from the returned tibble went red at those equalities (325 pass / 9 fail) and green on restore.
+- AC3 verified. Driven against a local server on a harness copy of the builder's `index.html` differing from the shipped file in two named places (the R expression, because the branch's four-column `available_scales()` is not yet on r-universe; and one line exposing the frame the page received, the shipped page being an ES module). 76 rows queried against 76 rows in that frame, counts equal; every checkbox's `aria-describedby` resolved and every target's text matched that row's `Brief` — 0 mismatches, 0 unresolved. Rotating the 76 description texts by one row in the DOM gave 76 mismatches; restoring gave 0.
+- AC4 verified on Agoraphobia, Low Sexual Arousal and Workaholism. For each: real pointer hover showed that scale's own definition (id and text checked, not presence); Escape hid it; a real click into the filter box then three real Tab presses put focus on that scale's checkbox and showed the same string; Escape hid it again with focus retained. One popup was also screenshotted on screen under its row. Two Escape presses in an earlier attempt were discarded as contaminated: the filter is `type="search"`, so Escape with focus still in it clears the filter and re-renders the list, which would have hidden the popup for a reason other than the Escape handler.
+- AC5 verified against the shipped `index.html` (exposure line only) with the published hitop 0.2.0, which returns the three pre-existing columns today: 76 rows rendered against 76 rows returned, zero `.desc` elements, zero `aria-describedby`, zero `role="tooltip"` nodes, no popup after two seconds of real pointer hover on a row, and a real click ticked Agoraphobia and moved the tally to "1 of 76 scales selected — 5 items."
+- AC6 verified. Over the built `index.html` (48,616 bytes): none of the 76 `Brief` strings occurs in it, with a passing control on a string the page does contain and a planted control finding exactly one after a `Brief` is pasted in. NEWS names the new column, its stem join, the `hitopsr_definitions` column and the page behavior; `man/available_scales.Rd`'s `\value` lists all four columns; the builder README's *Choose scales* step describes the popup and says the text comes from the installed package.
+- AC7 verified. `devtools::document()` left no diff; `devtools::test()` 14,583 pass / 0 fail / 1 skip; `devtools::check()` 0 errors / 0 warnings / 0 notes (3m 53s).
+- Consistency gate passed. `cairn_validate.py` exit 0, all checks PASS, 20 pre-existing advisory warnings about legacy `D-00x` id tokens in DESIGN/SOURCES. No `DESIGN.md` principle changed, so `cairn_impact.py` was skipped. Toolchain slot: `document()` no diff, no hand-edited generated files, README.Rmd/README.md untouched by the branch, `pkgdown::check_pkgdown()` no problems, NEWS entries present, no new top-level files, `check()` clean.
+- Independent review, full three-lens fan-out (user-facing tier). [S] blame-history: no findings — the diff is additive, removes no guard, and contradicts no D-entry or lesson. [S] prior-review record: no findings — no archived `## Review` section touches `hitopsr_definitions`, and the GitHub inline-comment probe returned empty, so that surface no-ops. [O] diff-bug returned ten ranked findings, recorded below with their disposition. None demonstrates an acceptance criterion failing, so none met the return floor.
+- Finding 1 (verified real): `vignettes/articles/modules-hitopsr.Rmd` was not updated and now contradicts its own output — its prose says `available_scales()` lists the stem "and the number of items it contributes", then prints a tibble that now carries a fourth `Brief` column.
+- Finding 2 (verified real): `scale_definitions()`'s `cli::cli_abort()` takes and passes no `call`, so the condition is blamed on the internal helper. DESIGN.md states the convention: every validator forwards a `call` "so aborts are attributed to the user-facing function".
+- Finding 3 (verified real): that abort's hint names `data-raw/hitopsr_info.R`, which is `.Rbuildignore`d and so absent for an installed user, and hardcodes the HiTOP-SR path regardless of the instrument the message interpolates.
+- Finding 4 (verified latent): `validate_module_instrument()` derives the supported set from `module_scale_tables()` alone, but `available_scales()` now also needs a key in `module_definition_tables()`; nothing asserts the two maps agree. Unreachable today — both maps hold exactly `hitopsr`.
+- Finding 5 (verified real): the new condition class `hitop_missing_definition` is documented nowhere, while D-034 makes this package's condition classes a public contract named in a D-entry.
+- Finding 6 (verified latent): `scale_definitions()` assumes the definitions table has a `Subscale` column; without one, `is.na(NULL)` gives a zero-row table and the guard misreports the cause. Same one-instrument reach as finding 4.
+- Finding 7 (rejected, style): `data-raw/hitopsr_info.R` derives the stem with `na_if(Subscale, "")` while the guards beside it partition on `is.na(Subscale)`. Both conventions are pre-existing in that script and the build-time set-equality guard catches any disagreement.
+- Finding 8 (rejected, not introduced by this diff): NEWS amends the `# hitop 0.2.0` section. 0.2.0 is the unreleased development version (D-034 calls it that); every milestone in this cycle adds there.
+- Finding 9 (rejected, style): `module_definition_tables()` sits in `R/available_scales.R` rather than beside `module_scale_tables()` in `R/module.R`.
+- Finding 10 (rejected, linter-grade): `expect_false(anyDuplicated(x) > 0L)` would report the offending index if written `expect_equal(anyDuplicated(x), 0L)`.
