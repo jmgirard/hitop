@@ -110,7 +110,7 @@ column. NEWS, `?available_scales`, `?hitopsr_definitions`, builder README.
 - [x] T7 Drive the page against a stubbed three-column `available_scales()` for AC5.
 - [x] T8 AC6: the no-embedded-copy check over `index.html`, the NEWS entry, the
       builder README line.
-- [ ] T9 `document()`/`test()`/`check()`; open both PRs. **Merge order is the
+- [x] T9 `document()`/`test()`/`check()`; open both PRs. **Merge order is the
       package first**, then the builder once r-universe has rebuilt — the reverse of
       M056, because the page's new behavior needs the new column to exist. AC5 is
       what makes the interval safe.
@@ -133,6 +133,7 @@ column. NEWS, `?available_scales`, `?hitopsr_definitions`, builder README.
 - 2026-08-26: AC4 verified on Agoraphobia, Low Sexual Arousal and Workaholism. For each: real pointer hover showed that scale's definition (id and text checked, not presence); Escape hid it; three real Tab presses from the filter box put focus on that scale's checkbox and showed the same string; Escape hid it again. Both Escape states checked on all three.
 - 2026-08-26: AC5 verified twice. Against a deliberate three-column stub of `available_scales()`: 76 rows rendered against 76 rows returned, zero `.desc` elements, zero `aria-describedby`, no popup after two seconds of real hover on a row, and a real click ticked Agoraphobia and moved the tally to "1 of 76 scales selected — 5 items." Against the shipped `index.html` unmodified with the published hitop 0.2.0, which returns three columns today: 76 rows, zero `.desc`, zero `aria-describedby` — the actual state of the deployed page during the merge interval.
 - 2026-08-26: T8 done. AC6's no-embedded-copy check run over the built `index.html` (48,588 bytes): none of the 76 `Brief` strings occurs in it, with a passing control on a string the page does have and a planted control showing the check goes red when one `Brief` is pasted in. NEWS gained three entries (the `Brief` column and its stem join, `hitopsr_definitions`'s new column, the page behavior); the builder README's *Choose scales* step now describes the popup and says the text comes from the installed package.
+- 2026-08-26: T9. `check()` first returned one NOTE of this branch's own making — `hitopsr_definitions` referenced by name inside a function was not in the `utils::globalVariables()` list `R/hitop-package.R` keeps for the other ten lazy-loaded datasets. Fixed rather than justified: the dataset is declared there, and the `switch()` reading it became `module_definition_tables()`, a sibling of `module_scale_tables()` so a future instrument with a scale table but no definitions is a missing key rather than a column of NA. `document()` no diff, `pkgdown::check_pkgdown()` no problems, `check()` 0 errors / 0 warnings / 0 notes.
 
 ## Decisions
 

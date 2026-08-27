@@ -49,7 +49,7 @@ available_scales <- function(instrument = "hitopsr") {
 # definition reaches a caller as a blank where a definition should be, and an
 # instrument added without a definitions table would return a column of NA.
 scale_definitions <- function(instrument, stems) {
-  ref <- switch(instrument, hitopsr = hitopsr_definitions)
+  ref <- module_definition_tables()[[instrument]]
   # Only the rows defining a scale; the other rows define subscales, which
   # available_scales() does not list.
   if (!is.null(ref)) ref <- ref[is.na(ref$Subscale), ]
@@ -65,4 +65,11 @@ scale_definitions <- function(instrument, stems) {
     )
   }
   ref$Brief[hit]
+}
+
+# The sibling of module_scale_tables(): one entry per instrument that has
+# definitions, so an instrument gaining a scale table without one is a missing
+# key rather than a silent column of NA.
+module_definition_tables <- function() {
+  list(hitopsr = hitopsr_definitions)
 }
