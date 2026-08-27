@@ -1,11 +1,11 @@
 # M057: Each scale in the browser builder shows its clinician definition
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP3
-- **Branch/PR:** `m057-builder-scale-definitions`
+- **Branch/PR:** `m057-builder-scale-definitions` — https://github.com/jmgirard/hitop/pull/63 (app change jmgirard/hitop-builder#6)
 
 ## Goal
 
@@ -134,6 +134,7 @@ column. NEWS, `?available_scales`, `?hitopsr_definitions`, builder README.
 - 2026-08-26: AC5 verified twice. Against a deliberate three-column stub of `available_scales()`: 76 rows rendered against 76 rows returned, zero `.desc` elements, zero `aria-describedby`, no popup after two seconds of real hover on a row, and a real click ticked Agoraphobia and moved the tally to "1 of 76 scales selected — 5 items." Against the shipped `index.html` unmodified with the published hitop 0.2.0, which returns three columns today: 76 rows, zero `.desc`, zero `aria-describedby` — the actual state of the deployed page during the merge interval.
 - 2026-08-26: T8 done. AC6's no-embedded-copy check run over the built `index.html` (48,588 bytes): none of the 76 `Brief` strings occurs in it, with a passing control on a string the page does have and a planted control showing the check goes red when one `Brief` is pasted in. NEWS gained three entries (the `Brief` column and its stem join, `hitopsr_definitions`'s new column, the page behavior); the builder README's *Choose scales* step now describes the popup and says the text comes from the installed package.
 - 2026-08-26: T9. `check()` first returned one NOTE of this branch's own making — `hitopsr_definitions` referenced by name inside a function was not in the `utils::globalVariables()` list `R/hitop-package.R` keeps for the other ten lazy-loaded datasets. Fixed rather than justified: the dataset is declared there, and the `switch()` reading it became `module_definition_tables()`, a sibling of `module_scale_tables()` so a future instrument with a scale table but no definitions is a missing key rather than a column of NA. `document()` no diff, `pkgdown::check_pkgdown()` no problems, `check()` 0 errors / 0 warnings / 0 notes.
+- 2026-08-26: T9 done. PR #63 opened (https://github.com/jmgirard/hitop/pull/63) with the builder PR jmgirard/hitop-builder#6 beside it; both PR bodies state the merge order, package first. CI green on all eight checks (R CMD check on ubuntu devel/release/oldrel-1, windows, macos; line endings; pkgdown; test-coverage). Status to review.
 
 ## Decisions
 
