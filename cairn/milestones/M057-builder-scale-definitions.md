@@ -95,11 +95,11 @@ column. NEWS, `?available_scales`, `?hitopsr_definitions`, builder README.
       (`data-raw/hitopsr_info.R:18`), with the one differing label paired explicitly
       in the script and the pairing commented; regenerate the `.rda`. Update
       `?hitopsr_definitions` (`R/data.R:170-184`) for the new column.
-- [ ] T2 Write the AC1/AC2 test first and confirm it red: stem-set equality against
+- [x] T2 Write the AC1/AC2 test first and confirm it red: stem-set equality against
       `hitopsr_scales`, per-row `Brief` comparison read independently.
-- [ ] T3 Add the `Brief` column to `available_scales()` (`R/available_scales.R:27-38`)
+- [x] T3 Add the `Brief` column to `available_scales()` (`R/available_scales.R:27-38`)
       joining on the stem; update the `@return` roxygen and `document()`.
-- [ ] T4 Run the three AC1 mutations (altered value, dropped row, re-paired stem);
+- [x] T4 Run the three AC1 mutations (altered value, dropped row, re-paired stem);
       confirm each red, restore, confirm green.
 - [ ] T5 In the builder repo: render a description element per scale row carrying
       that row's `Brief`, wired by `aria-describedby`, shown on hover and on focus,
@@ -124,6 +124,9 @@ column. NEWS, `?available_scales`, `?hitopsr_definitions`, builder README.
 - 2026-08-26: plan gate chose to match the two tables on the camelCase stem over hard-coding the one differing label and over renaming a label, because the stem is already the app's own value and no printed name moves; falsified by a second stem collision, which would make the derived stems no better a key than the names.
 - 2026-08-26: implementation gate, three choices, all as recommended: a definitions row's stem names whatever that row defines (the subscale where there is one, else the scale), so the column keys all 93 rows and pairs with `hitopsr_subscales` as well as `hitopsr_scales`; `data-raw/hitopsr_info.R` stops on a stem-set disagreement with either table rather than only stating the one label pairing, so a relabelled scale cannot rebuild a table with an unmatched stem; and the builder's hover target is the whole scale row with a short delay, not a per-row info marker, so nothing new must be found or aimed at.
 - 2026-08-26: T1 done. `hitopsr_definitions` gains `camelCase` (93 rows, 5 columns); the "Non-suicidal Self-injury"/"NSSI" pair is stated in the script and the three set-equality guards pass. Regenerating the script left the other three HiTOP-SR `.rda` files byte-identical. `document()` wrote `man/hitopsr_definitions.Rd`; `test()` 14,419 pass / 0 fail / 1 skip.
+- 2026-08-26: T2 done. Two tests added to `test-available_scales.R`: the per-row `Brief` walk with stem-set equality against both `hitopsr_scales` and the definitions table, and a guard that the definitions table keys on a stem rather than a printed name. Confirmed red before T3 (76 pairing failures plus the column-name assertion).
+- 2026-08-26: T3 done. `available_scales()` returns `Scale`/`camelCase`/`nItems`/`Brief`; the internal `scale_definitions()` matches on the stem and aborts with class `hitop_missing_definition` rather than returning a hole, fired directly in a test with a passing control over all 76 shipped stems. `@return` roxygen now names four columns.
+- 2026-08-26: T4 done. AC1's three mutations were planted in the join, not in `hitopsr_definitions`: the test reads its expected side from that table (AC2 forbids hardcoding one), so a data-side edit moves both sides together and is invisible by construction — verified by running all three data-side first, where only the dropped row went red, and only because the new guard aborts. Planted join-side, each was red and each restore green: one `Brief` altered on the way out (red at the per-row walk), a definitions row dropped before the join (red as the guard abort), a scale dropped from the returned tibble (red at the row-count and set equalities), and every stem re-paired to its neighbour (red at the per-row walk). `test()` 14,583 pass / 0 fail / 1 skip.
 
 ## Decisions
 

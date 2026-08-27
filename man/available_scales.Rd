@@ -11,14 +11,16 @@ available_scales(instrument = "hitopsr")
 is supported. (default = \code{"hitopsr"})}
 }
 \value{
-A tibble with one row per scale and three columns: \code{Scale} (the
-display name), \code{camelCase} (the scored-output stem), and \code{nItems}.
+A tibble with one row per scale and four columns: \code{Scale} (the
+display name), \code{camelCase} (the scored-output stem), \code{nItems}, and \code{Brief}
+(the clinician-facing definition, as \link{hitopsr_definitions} carries it).
 }
 \description{
 Returns the scales available for building a module, with the
 name to print on a form, the camelCase stem that names the scored output
-column, and how many items the scale contributes. Either name column may be
-passed to \code{\link[=hitop_module]{hitop_module()}}.
+column, how many items the scale contributes, and the scale's brief
+clinician-facing definition. Either name column may be passed to
+\code{\link[=hitop_module]{hitop_module()}}.
 
 This is a convenience view of the instrument's own scale table, so a
 researcher choosing scales need not know which dataset to open.
@@ -32,5 +34,6 @@ hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
 
 }
 \seealso{
-\code{\link[=hitop_module]{hitop_module()}}, which takes these names.
+\code{\link[=hitop_module]{hitop_module()}}, which takes these names;
+\link{hitopsr_definitions}, which carries the definitions in full.
 }
