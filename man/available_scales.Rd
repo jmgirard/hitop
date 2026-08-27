@@ -25,6 +25,13 @@ clinician-facing definition. Either name column may be passed to
 This is a convenience view of the instrument's own scale table, so a
 researcher choosing scales need not know which dataset to open.
 }
+\details{
+A scale whose definition is missing from the instrument's
+definitions table is an error, never a blank cell: the abort carries the
+condition class \code{hitop_missing_definition}, which a caller may catch. It is
+not reachable from the shipped tables, which are built under a check that
+the two tables carry the same stems.
+}
 \examples{
 # Every HiTOP-SR scale, with its item count
 available_scales("hitopsr")

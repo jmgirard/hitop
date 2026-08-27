@@ -152,3 +152,20 @@ test_that("a scale with no definition aborts rather than returning a blank", {
     nrow(hitopsr_scales)
   )
 })
+
+test_that("the missing-definition abort blames the function the user called", {
+  # DESIGN's convention: aborts are attributed to the user-facing function, not
+  # to the internal helper that raised them. `scale_definitions()` is called
+  # from `available_scales()`, so a caller sees that call in the condition.
+  outer <- function() scale_definitions("hitopbr", "agoraphobia")
+  cnd <- tryCatch(outer(), hitop_missing_definition = function(c) c)
+  expect_s3_class(cnd, "hitop_missing_definition")
+  expect_identical(conditionCall(cnd), quote(outer()))
+  # The control: the neighbouring guard in the same call path behaves the same
+  # way, so this is the package's convention and not a one-off.
+  unsupported <- tryCatch(
+    available_scales("hitopbr"),
+    hitop_unsupported_instrument = function(c) c
+  )
+  expect_identical(conditionCall(unsupported), quote(available_scales("hitopbr")))
+})

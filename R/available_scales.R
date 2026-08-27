@@ -16,6 +16,12 @@
 #'   display name), `camelCase` (the scored-output stem), `nItems`, and `Brief`
 #'   (the clinician-facing definition, as [hitopsr_definitions] carries it).
 #'
+#' @details A scale whose definition is missing from the instrument's
+#'   definitions table is an error, never a blank cell: the abort carries the
+#'   condition class `hitop_missing_definition`, which a caller may catch. It is
+#'   not reachable from the shipped tables, which are built under a check that
+#'   the two tables carry the same stems.
+#'
 #' @seealso [hitop_module()], which takes these names;
 #'   [hitopsr_definitions], which carries the definitions in full.
 #'
@@ -34,11 +40,15 @@ available_scales <- function(instrument = "hitopsr") {
   # otherwise the day another instrument becomes supported, this silently keeps
   # returning HiTOP-SR scales.
   ref <- module_scale_tables()[[instrument]]
+  # Resolved before the tibble() call, not inside it: a promise forced in
+  # tibble()'s frame leaves scale_definitions() with no calling function to
+  # blame, and the abort would carry no call at all.
+  brief <- scale_definitions(instrument, ref$camelCase)
   tibble::tibble(
     Scale = ref$Scale,
     camelCase = ref$camelCase,
     nItems = ref$nItems,
-    Brief = scale_definitions(instrument, ref$camelCase)
+    Brief = brief
   )
 }
 
@@ -48,7 +58,7 @@ available_scales <- function(instrument = "hitopsr") {
 # Abort rather than return a column with a hole in it -- a silently missing
 # definition reaches a caller as a blank where a definition should be, and an
 # instrument added without a definitions table would return a column of NA.
-scale_definitions <- function(instrument, stems) {
+scale_definitions <- function(instrument, stems, call = rlang::caller_env()) {
   ref <- module_definition_tables()[[instrument]]
   # Only the rows defining a scale; the other rows define subscales, which
   # available_scales() does not list.
@@ -59,8 +69,10 @@ scale_definitions <- function(instrument, stems) {
       c(
         "Some {.val {instrument}} scales have no definition.",
         "x" = "No definition for {.val {stems[is.na(hit)]}}.",
-        "i" = "Rebuild the definitions table from {.file data-raw/hitopsr_info.R}."
+        "i" = "This is a fault in the installed package, not in what you supplied.",
+        "i" = "Please report it at {.url https://github.com/jmgirard/hitop/issues}."
       ),
+      call = call,
       class = "hitop_missing_definition"
     )
   }

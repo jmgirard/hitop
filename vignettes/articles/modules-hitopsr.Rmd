@@ -33,8 +33,9 @@ library(hitop)
 ## Choosing Scales
 
 Start from the menu. `available_scales()` lists every scale the instrument
-offers, along with the camelCase stem that will name its scored output column
-and the number of items it contributes.
+offers, along with the camelCase stem that will name its scored output column,
+the number of items it contributes, and a brief clinician-facing definition
+(`Brief`, printed here truncated; `hitopsr_definitions` carries it in full).
 
 ```{r}
 scale_menu <- available_scales("hitopsr")
