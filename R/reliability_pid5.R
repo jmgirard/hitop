@@ -31,8 +31,9 @@
 #'   non-converging CFA or an uninstalled \pkg{lavaan}) is returned as `NA`
 #'   rather than aborting the call.
 #'
-#' @return A \link[tibble]{tibble} with one row per scale and columns `scale`,
-#'   `nItems`, and (when requested) `alpha` and `omega`.
+#' @return A \link[tibble]{tibble} with one row per scale and columns `Scale`
+#'   (the scale's canonical display name, as the instrument's keying table spells
+#'   it), `nItems`, and (when requested) `alpha` and `omega`.
 #'
 #' @examples
 #' # Facet-level reliability for the full PID-5 (alpha only)
@@ -61,6 +62,13 @@ reliability_pid5 <- function(
     pid_items[pid_items$Reverse == TRUE, version, drop = TRUE]
   )
   items_scales <- pid_scales[[version]]$itemNumbers
+  ## The canonical display names, read from the same table row for row. FULL and
+  ## SF are facet-level; BF is domain-level plus its Total row.
+  scale_names <- if (version == "BF") {
+    pid_scales[["BF"]]$Domain
+  } else {
+    pid_scales[[version]]$Facet
+  }
 
   reliability_engine(
     data = data,
@@ -68,6 +76,7 @@ reliability_pid5 <- function(
     n_items = n_items,
     reverse_items = reverse_items,
     items_scales = items_scales,
+    scale_names = scale_names,
     srange = srange,
     alpha = alpha,
     omega = omega

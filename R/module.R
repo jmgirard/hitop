@@ -199,6 +199,7 @@ module_engine_inputs <- function(
   item_col,
   reverse_col = "Reverse",
   scale_col = "camelCase",
+  display_col = "Scale",
   number_col = "itemNumbers",
   call = rlang::caller_env()
 ) {
@@ -246,7 +247,12 @@ module_engine_inputs <- function(
   list(
     n_items = length(module$items),
     reverse_items = which(module$items %in% reverse_numbers),
-    items_scales = lapply(numbers, function(x) match(x, module$items))
+    items_scales = lapply(numbers, function(x) match(x, module$items)),
+    # Read from the instrument's own table, not from `module$scales`: the module
+    # object carries the same names, but taking them from there would make the
+    # reliability call and the module that produced it one source rather than
+    # two, and nothing downstream could then tell them apart (M061-D1).
+    scale_names = kept[[display_col]]
   )
 }
 
@@ -263,7 +269,8 @@ hitopsr_engine_inputs <- function(module, call = rlang::caller_env()) {
       n_items = 405,
       reverse_items =
         hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE],
-      items_scales = hitopsr_scales$itemNumbers
+      items_scales = hitopsr_scales$itemNumbers,
+      scale_names = hitopsr_scales$Scale
     ))
   }
 

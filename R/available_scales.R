@@ -13,7 +13,7 @@
 #'   is supported. (default = `"hitopsr"`)
 #'
 #' @return A tibble with one row per scale and four columns: `Scale` (the
-#'   display name), `camelCase` (the scored-output stem), `nItems`, and `Brief`
+#'   display name), `camelCase` (the scored-output stem), `nItems` (integer), and `Brief`
 #'   (the clinician-facing definition, as [hitopsr_definitions] carries it).
 #'
 #' @details A scale whose definition is missing from the instrument's
@@ -47,7 +47,10 @@ available_scales <- function(instrument = "hitopsr") {
   tibble::tibble(
     Scale = ref$Scale,
     camelCase = ref$camelCase,
-    nItems = ref$nItems,
+    # The shipped tables store nItems as a double; the engines return the
+    # integer lengths(itemNumbers). Coerced here so a caller comparing this
+    # column with a scored output's or a module's nItems meets one type.
+    nItems = as.integer(ref$nItems),
     Brief = brief
   )
 }

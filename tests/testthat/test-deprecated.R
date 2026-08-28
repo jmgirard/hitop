@@ -236,7 +236,7 @@ test_that("Cronbach's alpha is unmoved by the rename", {
     expect_equal(via_module, via_subset, info = shape)
     expect_equal(
       via_module,
-      full[full$scale %in% via_module$scale, ],
+      full[full$Scale %in% via_module$Scale, ],
       ignore_attr = TRUE,
       info = shape
     )

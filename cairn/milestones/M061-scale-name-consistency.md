@@ -100,21 +100,21 @@ spelling the table ships today and is unaffected by how that row settles.
       ref via `git archive` into a temp dir, two subprocesses, abort on an empty
       enumeration or a missing probe. Cover the full argument matrix named in AC6.
       Prove it fails on the three planted defects of AC7, with clean controls.
-- [ ] T2 Give `reliability_engine()` a `scale_names` argument replacing the
+- [x] T2 Give `reliability_engine()` a `scale_names` argument replacing the
       `snakecase::to_title_case()` derivation at `R/reliability_engine.R:47`. Suppliers:
       `reliability_pid5()` → `pid_scales[[version]]$Facet` (FULL/SF) or `$Domain` (BF);
       `reliability_hitopbr()` → `hitopbr_scales$Scale`; `reliability_hitopsr()` →
       `hitopsr_scales$Scale`, or the module's own `$scales` on the module path
       (`R/module.R:241` names `itemNumbers` from `camelCase` today).
-- [ ] T3 Rename the returned column `scale` → `Scale` in the engine and update the
+- [x] T3 Rename the returned column `scale` → `Scale` in the engine and update the
       `@return` line of all three exports (`R/reliability_hitopsr.R:36`,
       `R/reliability_hitopbr.R:27`, `R/reliability_pid5.R:34`); sweep `tests/`,
       `vignettes/` and `README.Rmd` for readers of the old name.
-- [ ] T4 Coerce `nItems` to integer in `available_scales()` (`R/available_scales.R:50`,
+- [x] T4 Coerce `nItems` to integer in `available_scales()` (`R/available_scales.R:50`,
       copied from the dataset's double).
 - [ ] T5 Drop `snakecase` from `DESCRIPTION` Imports; note in the `data-raw/` scripts
       that still call `to_any_case()` that they need it installed.
-- [ ] T6 Tests: AC1's 79-call elementwise comparison, AC2's nine literal pairs, AC3's
+- [x] T6 Tests: AC1's 79-call elementwise comparison, AC2's nine literal pairs, AC3's
       76-value round-trip, AC5's five type assertions. Rewrite
       `tests/testthat/test-reliability.R:119`
       (`expect_equal(rel$scale, snakecase::to_title_case(names(scales)))`) — it derives
@@ -173,6 +173,15 @@ spelling the table ships today and is unaffected by how that row settles.
   a shifted alpha on exactly the 24 `alpha = TRUE` cells and no condition change;
   a planted `warning()` on all 48 cells' conditions and no value change; a deleted
   HiTOP-BR path as "No probe for: reliability_hitopbr". Four controls, all clean.
+
+- 2026-08-28: T2, T3, T4 and T6 done and verified together in one run, since the
+  AC1-AC5 tests fail until all three code changes land. `reliability_engine()`
+  takes a `scale_names` argument; the four suppliers are `pid_scales[[version]]`'s
+  `Facet` (FULL/SF) or `Domain` (BF), `hitopbr_scales$Scale`, `hitopsr_scales$Scale`,
+  and `module_engine_inputs()`'s new `display_col`. Returned column renamed
+  `scale` -> `Scale` in the engine, the three `@return` sections, and seven reader
+  sites across `test-reliability.R` and `test-deprecated.R`. `available_scales()`
+  coerces `nItems` to integer. `devtools::test()`: FAIL 0, PASS 15500, SKIP 4.
 
 ## Decisions
 

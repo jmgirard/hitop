@@ -24,8 +24,9 @@
 #'   rather than aborting the call. The overlapping `externalizing` and `pFactor`
 #'   scales are included alongside the six base spectra.
 #'
-#' @return A \link[tibble]{tibble} with one row per scale and columns `scale`,
-#'   `nItems`, and (when requested) `alpha` and `omega`.
+#' @return A \link[tibble]{tibble} with one row per scale and columns `Scale`
+#'   (the scale's canonical display name, as the instrument's keying table spells
+#'   it), `nItems`, and (when requested) `alpha` and `omega`.
 #'
 #' @examples
 #' # Per-scale alpha for the HiTOP-BR
@@ -48,6 +49,7 @@ reliability_hitopbr <- function(
     n_items = 45,
     reverse_items = reverse_items,
     items_scales = hitopbr_scales$itemNumbers,
+    scale_names = hitopbr_scales$Scale,
     srange = srange,
     alpha = alpha,
     omega = omega

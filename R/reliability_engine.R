@@ -14,6 +14,12 @@
 #'   empty).
 #' @param items_scales Named list mapping each scale to the item positions that
 #'   contribute to it.
+#' @param scale_names Character vector of the canonical display names, parallel
+#'   to `items_scales`. Read from the instrument's keying table by the caller and
+#'   passed through unchanged: the engine never derives a printed name from a
+#'   camelCase stem, because the two spellings diverge on nine scales and the
+#'   table's is the canonical one. A length that disagrees with `items_scales`
+#'   is caught by `data.frame()` below, which is why no separate guard is added.
 #' @param alpha,omega Logical; whether to compute each coefficient. A coefficient
 #'   is included as an output column only when its flag is TRUE.
 #' @param call The calling environment, forwarded to the validators so aborts are
@@ -25,6 +31,7 @@ reliability_engine <- function(
   n_items,
   reverse_items,
   items_scales,
+  scale_names,
   srange,
   alpha = TRUE,
   omega = TRUE,
@@ -44,7 +51,7 @@ reliability_engine <- function(
   )
 
   out <- data.frame(
-    scale = snakecase::to_title_case(names(items_scales)),
+    Scale = scale_names,
     nItems = lengths(items_scales),
     row.names = NULL,
     stringsAsFactors = FALSE
