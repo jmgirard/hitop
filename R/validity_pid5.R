@@ -96,6 +96,26 @@ validity_pid5 <- function(
     ))
   }
 
+  ## Refuse an append that would collide with a column `data` already holds
+  ## (D-045(a)). The output is the prefix plus PNA and, for FULL/SF, the four
+  ## cutoff-scale abbreviations, all of which are known from `version` alone --
+  ## so the refusal lands before any column is built and after the existing
+  ## argument checks. The abbreviations are resolved here and reused below, so
+  ## the enumeration and the columns cannot drift apart.
+  cutoff_vars <- if (!version %in% c("FULL", "SF")) {
+    stats::setNames(character(0), character(0))
+  } else if (version == "FULL") {
+    c(inc = "INC", ors = "ORS", prd = "PRD", sdtd = "SDTD")
+  } else {
+    c(inc = "INCS", ors = "ORSS", prd = "PRDS", sdtd = "SDTDS")
+  }
+  if (append) {
+    validate_no_output_collision(
+      paste0(prefix, c("PNA", unname(cutoff_vars))),
+      data
+    )
+  }
+
   ## Extract item columns
   data_items <- data[items]
 
@@ -112,7 +132,7 @@ validity_pid5 <- function(
   ## For FULL and SF versions
   if (version %in% c("FULL", "SF")) {
     ### Response Inconsistency Scale (INC)
-    inc_var <- ifelse(version == "FULL", "INC", "INCS")
+    inc_var <- cutoff_vars[["inc"]]
     inc_items <- pid_items[!is.na(pid_items[[inc_var]]), c(version, inc_var)]
     inc_items <- inc_items[order(inc_items[[inc_var]]), , drop = FALSE]
     inc_items$VAR <- rep(1:2, times = nrow(inc_items) / 2)
@@ -148,7 +168,7 @@ validity_pid5 <- function(
     out[[inc_col]] <- inc_vec
 
     ### Over-Reporting Scale (ORS)
-    ors_var <- ifelse(version == "FULL", "ORS", "ORSS")
+    ors_var <- cutoff_vars[["ors"]]
     ors_items <- pid_items[!is.na(pid_items[[ors_var]]), version, drop = TRUE]
     ors_vec <- rowSums(data_items[, ors_items, drop = FALSE] == srange[[2]])
     ors_col <- paste0(prefix, ors_var)
@@ -167,7 +187,7 @@ validity_pid5 <- function(
     out[[ors_col]] <- ors_vec
 
     ### Positive Impression Management Response Distortion Scale (PRD)
-    prd_var <- ifelse(version == "FULL", "PRD", "PRDS")
+    prd_var <- cutoff_vars[["prd"]]
     prd_items <- pid_items[!is.na(pid_items[[prd_var]]), version, drop = TRUE]
     prd_vec <- rowSums(data_items[, prd_items, drop = FALSE])
     prd_col <- paste0(prefix, prd_var)
@@ -186,7 +206,7 @@ validity_pid5 <- function(
     out[[prd_col]] <- prd_vec
 
     ### Social Desirability Total Denial Scale (SD-TD)
-    sdtd_var <- ifelse(version == "FULL", "SDTD", "SDTDS")
+    sdtd_var <- cutoff_vars[["sdtd"]]
     sdtd_items <- pid_items[!is.na(pid_items[[sdtd_var]]), version, drop = TRUE]
     sdtd_vec <- rowSums(data_items[, sdtd_items, drop = FALSE])
     sdtd_col <- paste0(prefix, sdtd_var)

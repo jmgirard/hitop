@@ -179,6 +179,11 @@ norm_pid5 <- function(
   ## about this argument says `scores`, the name the caller actually wrote,
   ## rather than the `items` or `scales` the scoring family passes them.
   validate_scales(scores, arg = "scores")
+  ## A selection that names no column aborts here, after its own type check and
+  ## ahead of `srange`, `prefix` and `append` (D-045(b)), so the cause reported
+  ## is the empty selection and not a consequence of it. `data` is checked above
+  ## and is exempt.
+  validate_nonempty_selection(scores, arg = "scores")
   validate_item_uniqueness(scores, arg = "scores", unit = "score")
   validate_items_present(data, scores, arg = "scores")
   validate_range(srange)
@@ -226,6 +231,17 @@ norm_pid5 <- function(
     },
     logical(1)
   )
+
+  ## Refuse an append that would collide with a column `data` already holds
+  ## (D-045(a)). Every requested column gets a `_ptl`, and every one but a
+  ## covered percentile-only scale gets a `_t`; both are settled by `has_t`
+  ## above, so the refusal lands before the conversion loop and before the
+  ## reports below -- a colliding call is told about the collision alone, not
+  ## about capped or uncovered scores on the way to a result it will not return.
+  if (append) {
+    produced <- c(paste0(col_names[has_t], "_t"), paste0(col_names, "_ptl"))
+    validate_no_output_collision(produced, data)
+  }
 
   ## The tables are built on the official four-option 0-3 coding. A coding with
   ## a different *number* of options shares no metric with them and nothing is

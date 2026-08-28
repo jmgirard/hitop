@@ -94,11 +94,11 @@ an empty selection aborts.
 - [x] **T3.** Write the failing tests for AC2: class, argument named, and the
       precedence cases over `top`/`srange`/`prefix`/`level`/`append`, plus the
       `data`-first exemption. Confirm red.
-- [ ] **T4.** Add `validate_no_output_collision()` to `R/util.R` following the
+- [x] **T4.** Add `validate_no_output_collision()` to `R/util.R` following the
       family's `arg`/`call` convention (`cli_assert()`'s `caller_env()` default —
       M043/M054/M057: resolve the value into a local before any enclosing call so
       `conditionCall()` is not `NULL`), and call it at the five append sites.
-- [ ] **T5.** Add `validate_nonempty_selection()` and call it in `norm_pid5()`,
+- [x] **T5.** Add `validate_nonempty_selection()` and call it in `norm_pid5()`,
       `interval_engine()` and `rank_scales()` at the position AC2's precedence
       requires — after `validate_data()`, before the rest.
 - [ ] **T6.** Run T1's harness against the branch; record the comparison.
@@ -124,6 +124,8 @@ an empty selection aborts.
 - 2026-08-28: T1 — `data-raw/verify_m060_characterization.R` records value, conditions and abort-flag per call for the seven enumerated exports, on the working tree and on a `git archive` of the merge base, in separate subprocesses. Control clean (7 same, 0 differ). Proven able to fail on four planted defects, one at a time, each dimension reported independently; recorded in the script header.
 - 2026-08-28: T2 — `tests/testthat/test-append-collision.R` written. Confirmed red on all seven exports individually, each aborting with `tibble_error_column_names_must_be_unique` rather than a classed condition. The message assertion reads whole quoted tokens, not substrings, because every scale column is a prefix of its own `_se` column. Three tests already green: the sweep-matches-probe-table check, `append = FALSE`, and the existing-checks-first ordering control.
 - 2026-08-28: T3 — `tests/testthat/test-empty-selection.R` written. Confirmed red on all three exports, each reaching base R's "arguments imply differing number of rows" or `validate_count()`'s "between 1 and 0". The precedence test asserts each competing argument is invalid on its own before asserting the empty selection outranks it. The `data`-first and wrong-type tests are green already. Tests-first tasks are red by construction; the profile's verify slot is run clean at T4/T5, when the guards land.
+- 2026-08-28: T4 — `validate_no_output_collision()` in `R/util.R`, called at the five append sites, each after that site's existing argument checks and before any output column is built. `validity_pid5()`'s four cutoff abbreviations are now resolved once into `cutoff_vars` and read by both the enumeration and the four scale blocks, so the two cannot drift.
+- 2026-08-28: T5 — `validate_nonempty_selection()` in `R/util.R`, called in `rank_scales()`, `norm_pid5()` and `interval_engine()` after the selection's own type check and before the rest of the selection family. Full suite clean after both: FAIL 0, WARN 0, SKIP 5, PASS 15087.
 
 ## Decisions
 

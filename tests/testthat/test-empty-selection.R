@@ -18,12 +18,13 @@ empty_selection_calls <- function() {
       arg = "scores",
       empty = list(scores = character(0)),
       # One other invalid argument per member of the selection family this
-      # function carries. Each is invalid on its own, so each is a real
-      # precedence test and not a no-op.
+      # function carries, each as the argument list that makes it invalid. Each
+      # is invalid on its own -- asserted below -- so each is a real precedence
+      # test and not a no-op.
       others = list(
-        srange = c(0, 3, 7),
-        prefix = 1L,
-        append = "yes"
+        srange = list(srange = c(0, 3, 7)),
+        prefix = list(prefix = 1L),
+        append = list(append = "yes")
       )
     ),
     interval_hitopsr = list(
@@ -32,10 +33,10 @@ empty_selection_calls <- function() {
       arg = "scores",
       empty = list(scores = character(0)),
       others = list(
-        srange = c(1, 4, 9),
-        prefix = 1L,
-        level = 2,
-        append = "yes"
+        srange = list(srange = c(1, 4, 9)),
+        prefix = list(prefix = 1L),
+        level = list(level = 2),
+        append = list(append = "yes")
       )
     ),
     rank_scales = list(
@@ -43,11 +44,15 @@ empty_selection_calls <- function() {
       data = scored_sr,
       arg = "scales",
       empty = list(scales = character(0)),
+      # `srange` is read by rank_scales() only when `reverse` is set, so the
+      # probe that makes it invalid supplies both. Without `reverse` a malformed
+      # `srange` is simply unused, and the precedence claim would rest on an
+      # argument nothing looks at.
       others = list(
-        top = 3,
-        prefix = 1L,
-        srange = c(1, 4, 9),
-        append = "yes"
+        top = list(top = "3"),
+        prefix = list(prefix = 1L),
+        srange = list(reverse = "hsr_agoraphobia", srange = c(1, 4, 9)),
+        append = list(append = "yes")
       )
     )
   )
@@ -90,8 +95,10 @@ test_that("the empty selection is reported ahead of the rest of its family", {
     for (other in names(spec$others)) {
       # Each `other` is genuinely invalid on its own: without that, the
       # precedence assertion below would hold for a call with only one problem.
-      bad_only <- list(data = spec$data, names(spec$data))
-      bad_only[[other]] <- spec$others[[other]]
+      bad_only <- c(
+        list(data = spec$data, names(spec$data)),
+        spec$others[[other]]
+      )
       solo <- expect_error(
         suppressWarnings(do.call(spec$fn, bad_only)),
         class = "rlang_error"
@@ -101,8 +108,7 @@ test_that("the empty selection is reported ahead of the rest of its family", {
         info = paste(nm, other)
       )
 
-      both <- c(list(data = spec$data), spec$empty)
-      both[[other]] <- spec$others[[other]]
+      both <- c(list(data = spec$data), spec$empty, spec$others[[other]])
       err <- expect_error(
         suppressWarnings(do.call(spec$fn, both)),
         class = "hitop_empty_selection"

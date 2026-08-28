@@ -73,6 +73,12 @@ rank_scales <- function(
   ## Validate args
   validate_data(data)
   validate_scales(scales)
+  ## A selection that names no column aborts here, after its own type check and
+  ## ahead of the rest of the selection family (D-045(b)). Before this, a
+  ## zero-length `scales` made validate_count() below report `top` as out of
+  ## range "between 1 and 0" -- a consequence of the empty selection blamed as
+  ## its cause.
+  validate_nonempty_selection(scales, arg = "scales")
   validate_string(prefix, arg = "prefix", allow_null = TRUE)
   ## `top` cannot ask for more scales than were supplied, so its upper bound is
   ## the length of `scales` rather than a constant.
@@ -116,6 +122,15 @@ rank_scales <- function(
   col_names <- colnames(data_scales)
   if (!is.null(prefix)) {
     col_names <- strip_prefix(col_names, prefix)
+  }
+
+  ## Refuse an append that would collide with a column `data` already holds
+  ## (D-045(a)). This function appends exactly one column, under the name the
+  ## caller gave in `name`. Placed after the `reverse`/`srange` block so every
+  ## existing complaint still reports first, and before the ranking below, which
+  ## is the output column's content.
+  if (append) {
+    validate_no_output_collision(name, data)
   }
 
   ## Find the top scales per subject
