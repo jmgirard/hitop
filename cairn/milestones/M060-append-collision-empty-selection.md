@@ -86,7 +86,7 @@ an empty selection aborts.
       (M031/M037 — a value-only probe is blind to which inputs are accepted), and
       capture the merge-base baseline via `git archive` to a temp dir. Assert the
       enumerated call list is non-empty before comparing.
-- [ ] **T2.** Write the failing tests for AC1 first: a `getNamespaceExports()`
+- [x] **T2.** Write the failing tests for AC1 first: a `getNamespaceExports()`
       sweep filtered on an `append` formal, with `expect_true(length(x) > 0)` on
       the enumerated set (the `test-export-arg-guards.R` pattern, guarding the
       silently-emptying domain), asserting condition class and the exact set of
@@ -122,6 +122,7 @@ an empty selection aborts.
 - 2026-08-28: implementation gate chose a maintainer-run `data-raw/` script for the characterization harness over a testthat helper, because the comparison needs a git checkout of the merge base and `R CMD check` runs against a built copy with no repository, where the helper would skip silently.
 - 2026-08-28: implementation gate chose reporting the existing argument checks ahead of the output-column collision over the collision first, because the collision check adds a refusal and the alternative would change what an already-invalid call reports today.
 - 2026-08-28: T1 — `data-raw/verify_m060_characterization.R` records value, conditions and abort-flag per call for the seven enumerated exports, on the working tree and on a `git archive` of the merge base, in separate subprocesses. Control clean (7 same, 0 differ). Proven able to fail on four planted defects, one at a time, each dimension reported independently; recorded in the script header.
+- 2026-08-28: T2 — `tests/testthat/test-append-collision.R` written. Confirmed red on all seven exports individually, each aborting with `tibble_error_column_names_must_be_unique` rather than a classed condition. The message assertion reads whole quoted tokens, not substrings, because every scale column is a prefix of its own `_se` column. Three tests already green: the sweep-matches-probe-table check, `append = FALSE`, and the existing-checks-first ordering control.
 
 ## Decisions
 
