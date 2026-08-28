@@ -126,9 +126,9 @@ check_filters_matched <- function() {
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "One scale, previously shown on the scoring page by an abbreviation, is",
-  "named in full there as Non-suicidal Self-injury. Item text, item numbers,",
-  "response options, and every other scale name are unchanged."
+  "One scale's name on the scoring page is corrected to the spelling the",
+  "instrument's introduction paper prints, Appearance Focus. Item text, item",
+  "numbers, response options, and every other scale name are unchanged."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(

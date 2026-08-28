@@ -14,7 +14,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 13,FALSE,Externalizing,Disinhibition,Gambling,NA,I was unable to resist the impulse to gamble.,Ext_20
 14,FALSE,Externalizing,Antagonism,Dishonesty,Manipulativeness,I found it easy to manipulate others.,Ext_262
 15,FALSE,Externalizing,Disinhibition,Non-planfulness,NA,I made decisions quickly without thinking them through.,Ext_102
-16,FALSE,Internalizing,Eating Pathology,Body Focus,NA,I spent a lot of time looking at myself.,HiTOP_208
+16,FALSE,Internalizing,Eating Pathology,Appearance Focus,NA,I spent a lot of time looking at myself.,HiTOP_208
 17,FALSE,Internalizing,Fear,Cleaning,NA,It was difficult for me to touch something that was dirty.,HiTOP_221
 18,FALSE,Externalizing,Anankastia,Rigidity,NA,"I refused to budge as a matter of principle, even on small matters.",Ext_73
 19,FALSE,Externalizing,Antisocial,Oppositionality,NA,Life felt too short to follow other peoples' rules.,Ext_230
@@ -77,7 +77,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 76,FALSE,Internalizing,Distress,Nightmares,NA,I had a dream so distressing that it continued to affect me after waking.,HiTOP_279
 77,FALSE,Internalizing-Thought Disorder,NA,Manic Energy,NA,I was much more talkative than usual.,HiTOP_243
 78,FALSE,Internalizing,Eating Pathology,Muscle Building,NA,I used medicines or supplements to bulk up.,HiTOP_133
-79,FALSE,Internalizing,Eating Pathology,Body Focus,NA,"If I passed by a reflective surface (like a window), I checked how I looked.",HiTOP_210
+79,FALSE,Internalizing,Eating Pathology,Appearance Focus,NA,"If I passed by a reflective surface (like a window), I checked how I looked.",HiTOP_210
 80,FALSE,Thought Disorder,NA,Fantasy Proneness,NA,My imagination held my attention for hours.,HiTOP_586
 81,FALSE,Thought Disorder,NA,Fantasy Proneness,NA,I was prone to daydreaming.,HiTOP_582
 82,FALSE,Internalizing,Sexual Problems,Difficulties Reaching Orgasm,NA,I was unable to reach orgasm.,HiTOP_397
@@ -199,7 +199,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 198,FALSE,Somatoform,NA,Conversion Symptoms,NA,I experienced sudden muscle weakness or paralysis.,HiTOP_462
 199,FALSE,Internalizing,Fear,Counting,NA,I felt compelled to count things.,HiTOP_233
 200,FALSE,Internalizing,Distress,Emotionality,Affective Lability,My mood changed suddenly for no good reason.,HiTOP_571
-201,FALSE,Internalizing,Eating Pathology,Body Focus,NA,I paid a lot of attention to how I look.,HiTOP_212
+201,FALSE,Internalizing,Eating Pathology,Appearance Focus,NA,I paid a lot of attention to how I look.,HiTOP_212
 202,FALSE,Internalizing,Eating Pathology,Appetite Loss,NA,I lost a significant amount of weight without even trying.,HiTOP_198
 203,FALSE,Somatoform,NA,Conversion Symptoms,NA,"I experienced a sudden sensory loss (e.g., seeing or hearing problems) that doctors could not explain.",HiTOP_458
 204,FALSE,Internalizing,Distress,Emotionality,Affective Lability,I quickly went from being sad to being happy.,HiTOP_572
@@ -333,7 +333,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 332,FALSE,Somatoform,NA,Health Anxiety,NA,I was afraid that I might suffer from a serious illness.,HiTOP_490
 333,FALSE,Internalizing,Distress,Insomnia,NA,I slept very poorly.,HiTOP_270
 334,FALSE,Externalizing,Disinhibition,Problematic Shopping,NA,I kept my shopping a secret.,Ext_384
-335,FALSE,Internalizing,Eating Pathology,Body Focus,NA,I spent a lot of time grooming myself.,HiTOP_213
+335,FALSE,Internalizing,Eating Pathology,Appearance Focus,NA,I spent a lot of time grooming myself.,HiTOP_213
 336,FALSE,Externalizing,Antagonism,Entitlement,NA,Some people thought I was self-centered.,Ext_255
 337,FALSE,Externalizing,Disinhibition,Disorganization,NA,I had trouble planning and keeping to schedules.,Ext_320
 338,FALSE,Detachment,NA,Romantic Disinterest,NA,Romantic relationships seemed like a hassle to me.,HiTOP_44
@@ -348,7 +348,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 347,FALSE,Internalizing,Fear,Specific Phobia Index,Situational Phobias,I was afraid of the dark.,HiTOP_342
 348,FALSE,Internalizing,Sexual Problems,Risky Sex,NA,I engaged in unprotected sex.,Ext_172
 349,FALSE,Internalizing,Fear,Counting,NA,I thought that certain numbers were lucky for me.,HiTOP_237
-350,FALSE,Internalizing,Eating Pathology,Body Focus,NA,I spent a lot of time getting ready before going out.,HiTOP_211
+350,FALSE,Internalizing,Eating Pathology,Appearance Focus,NA,I spent a lot of time getting ready before going out.,HiTOP_211
 351,FALSE,Externalizing,Antagonism,Domineering,NA,"When in a group, I liked to be in control.",HiTOP_19
 352,FALSE,Thought Disorder,NA,Mistrust,Cynicism,Others could not be trusted.,Ext_279
 353,FALSE,Internalizing,Fear,Cleaning,NA,I avoided contact with people because I was worried about germs.,HiTOP_223

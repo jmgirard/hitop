@@ -3,22 +3,27 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
-* **The HiTOP-SR scale abbreviated `NSSI` is now named in full,
-  `Non-suicidal Self-injury`,** the spelling printed for it in the instrument's
-  introduction paper, and it is spelled out the way the other 75 scales already
-  were. *Breaking:* `score_hitopsr()` returns `hsr_nonSuicidalSelfInjury` and
-  `hsr_nonSuicidalSelfInjury_se` where it returned `hsr_nssi` and `hsr_nssi_se`;
-  code selecting the old names must be updated. Because the scale tables are
-  sorted by name, both columns also move position in the returned tibble, the
-  score from 448 to 451 and its standard error from 524 to 527 — code selecting
-  scored columns by position rather than by name must be updated too. The scale
-  is also addressed by name elsewhere: `hitop_module()` no longer accepts
-  `"NSSI"`, and `read_module()` rejects a saved module descriptor that records
-  it, so any descriptor written before this release must be rebuilt;
-  `available_scales("hitopsr")` lists the new name. No score changes: every
-  column, that one included, returns exactly the values it did before. The name also changes on the scoring page of the two
-  Word questionnaires; the Qualtrics and REDCap exports print no scale names and
-  are unchanged.
+* **Two HiTOP-SR scales are now named the way the instrument's introduction
+  paper prints them.** The scale abbreviated `NSSI` is named in full,
+  `Non-suicidal Self-injury`, spelled out the way the other 75 scales already
+  were; and the scale called `Body Focus` is named `Appearance Focus`.
+  *Breaking:* `score_hitopsr()` returns `hsr_nonSuicidalSelfInjury` and
+  `hsr_nonSuicidalSelfInjury_se` where it returned `hsr_nssi` and `hsr_nssi_se`,
+  and `hsr_appearanceFocus` and `hsr_appearanceFocus_se` where it returned
+  `hsr_bodyFocus` and `hsr_bodyFocus_se`; code selecting the old names must be
+  updated. Because the scale tables are sorted by name, both scales also move
+  position in the returned tibble — the first from 448 to 451 and its standard
+  error from 524 to 527, the second from 412 to 408 and its standard error from
+  488 to 484 — and the columns lying between an old and a new position shift by
+  one, so code selecting scored columns by position rather than by name must be
+  updated too. Both scales are also addressed by name elsewhere:
+  `hitop_module()` no longer accepts `"NSSI"` or `"Body Focus"`, and
+  `read_module()` rejects a saved module descriptor that records either, so any
+  descriptor written before this release must be rebuilt;
+  `available_scales("hitopsr")` lists the new names. No score changes: every
+  column, those two included, returns exactly the values it did before. The
+  names also change on the scoring page of the two Word questionnaires; the
+  Qualtrics and REDCap exports print no scale names and are unchanged.
 
 * **A chosen set of an instrument's scales is called a *module*.** The
   entries below describe that feature under its final names. *For development-

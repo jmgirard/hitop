@@ -22,12 +22,14 @@ hitopsr_items
 Information about items in the HiTOP-SR.
 }
 \details{
-One scale is widely written in the literature by its abbreviation: the scale
-this table calls \verb{Non-suicidal Self-injury}, the name printed in the
-HiTOP-SR introduction paper's Table 1, is also known as \strong{NSSI}, and was
-named that way in this package before version 0.2.0. Scoring functions
-derive a column name from each scale name, so that scale's scored column is
-\code{hsr_nonSuicidalSelfInjury}.
+Two scales carry other names in the literature and in earlier versions of
+this package. The scale this table calls \verb{Non-suicidal Self-injury} is
+widely written by its abbreviation, \strong{NSSI}, and was named that way here
+before version 0.2.0; the scale it calls \verb{Appearance Focus} was named \strong{Body
+Focus} here before version 0.2.0. Both names are the ones printed in the
+HiTOP-SR introduction paper's Table 1. Scoring functions derive a column
+name from each scale name, so those scales' scored columns are
+\code{hsr_nonSuicidalSelfInjury} and \code{hsr_appearanceFocus}.
 }
 \examples{
 hitopsr_items
