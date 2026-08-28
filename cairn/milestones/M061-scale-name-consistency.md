@@ -95,7 +95,7 @@ spelling the table ships today and is unaffected by how that row settles.
 
 ## Tasks
 
-- [ ] T1 Write `data-raw/verify_m061_characterization.R` on the M060 pattern
+- [x] T1 Write `data-raw/verify_m061_characterization.R` on the M060 pattern
       (`data-raw/verify_m060_characterization.R`): value-and-condition recording, base
       ref via `git archive` into a temp dir, two subprocesses, abort on an empty
       enumeration or a missing probe. Cover the full argument matrix named in AC6.
@@ -168,8 +168,11 @@ spelling the table ships today and is unaffected by how that row settles.
 - 2026-08-28: implementation gate chose recording the `snakecase` requirement of the
   five `data-raw/` scripts both as a script header note and as a
   `Config/Needs/data-raw` line in DESCRIPTION, Jeff's call.
-- 2026-08-28: T1 checkpoint (in progress): harness written, 48 cells per side
-  built and smoke-tested, control run started. Tests for AC1-AC5 drafted.
+- 2026-08-28: T1 done. Harness runs 48 cells per side. Control run clean (0 differ).
+  Three planted defects each reported and each exited 1, on its own dimension:
+  a shifted alpha on exactly the 24 `alpha = TRUE` cells and no condition change;
+  a planted `warning()` on all 48 cells' conditions and no value change; a deleted
+  HiTOP-BR path as "No probe for: reliability_hitopbr". Four controls, all clean.
 
 ## Decisions
 

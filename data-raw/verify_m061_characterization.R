@@ -35,8 +35,21 @@
 # HiTOP-SR full instrument; HiTOP-SR module; HiTOP-BR) x `alpha` on/off x `omega`
 # on/off x two `srange` values = 48 cells per side.
 #
-# Proven able to fail: see the "Proven able to fail" note appended below once the
-# three planted defects of AC7 have been run.
+# Proven able to fail, 2026-08-28, one planted defect at a time against that day's
+# working tree, each with a clean control run before and after (four controls, all
+# 48 cells same, all exiting 0). The three defects differ in FORM, not only in
+# location, and each was reported on its own dimension alone:
+#   1. A changed returned number -- `out$alpha` shifted by 1e-6 in
+#      reliability_engine() -- was reported as "returned value changed" on exactly
+#      the 24 `alpha = TRUE` cells and on the conditions dimension nowhere.
+#   2. An added condition that leaves every returned value identical -- a
+#      `warning()` before the engine's return -- was reported as "conditions
+#      changed" on all 48 cells and as a value change on none, so the condition
+#      half of the recording is not carried by the value half.
+#   3. A deleted probe -- the HiTOP-BR path removed from build_paths() -- was
+#      reported as "No probe for: reliability_hitopbr" rather than quietly
+#      comparing the 40 remaining cells.
+# Each defect run exited 1.
 #
 # What this script cannot do: it needs a git checkout, so it never runs under
 # `R CMD check`, which builds from a source tarball with no repository. It is
