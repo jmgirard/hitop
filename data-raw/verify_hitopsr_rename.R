@@ -207,14 +207,46 @@ for (nm in keying) {
   hh <- blank_renamed(h)[match(bk, hk), ]
   ## Row names carry the pre-reorder positions after the match, and are not data.
   attr(bb, "row.names") <- attr(hh, "row.names") <- seq_len(nrow(b))
+
+  ## Matching rows by key absorbs ANY permutation, so the comparison above
+  ## cannot by itself distinguish the renamed row's move from a second, genuine
+  ## reordering of unrelated scales -- verified by planting a clean two-scale
+  ## swap, which passed it. The relative order of every other row is therefore
+  ## asserted directly: drop the renamed row from each side and the two key
+  ## sequences must be identical element for element.
+  b_rest <- bk[!grepl(old_pattern, do.call(paste, c(b, sep = " ")), ignore.case = TRUE)]
+  h_rest <- hk[!grepl("Non-suicidal Self-injury", do.call(paste, c(h, sep = " ")), fixed = TRUE)]
+  if (!identical(b_rest, h_rest)) {
+    note(nm, ": rows other than the renamed one changed their relative order")
+    cat("   ", nm, ": FAIL (order of other rows)\n", sep = "")
+    next
+  }
+
   if (!identical(bb, hh)) {
     note(nm, ": differs from the merge-base outside the renamed cells")
     cat("   ", nm, ": FAIL\n", sep = "")
   } else if (length(moved)) {
-    cat("   ", nm, ": identical outside the renamed cells; the renamed row moves ",
-        "from position ", which(grepl(old_pattern, do.call(paste, c(b, sep = " ")), ignore.case = TRUE))[1],
-        " to ", which(grepl("Non-suicidal Self-injury", do.call(paste, c(h, sep = " ")), fixed = TRUE))[1],
-        " (sort order, expected)\n", sep = "")
+    from <- which(grepl(old_pattern, do.call(paste, c(b, sep = " ")), ignore.case = TRUE))[1]
+    to <- which(grepl("Non-suicidal Self-injury", do.call(paste, c(h, sep = " ")), fixed = TRUE))[1]
+    ## The new position is asserted, not merely printed. The renamed cells are
+    ## blanked before the comparison above, so position is the only remaining
+    ## signal that the sort key is the string we think it is: a plausible-looking
+    ## variant (a stray space, a different hyphen) would land somewhere else.
+    ## Recomputed here from the base's own names rather than read off
+    ## `dplyr::arrange()`'s output, which is the thing under test (IP2).
+    if ("Scale" %in% names(b)) {
+      base_names <- b$Scale
+      base_names[grepl(old_pattern, base_names, ignore.case = TRUE)] <- "Non-suicidal Self-injury"
+      expected <- which(sort(base_names, method = "radix") == "Non-suicidal Self-injury")
+      if (!identical(as.integer(to), as.integer(expected))) {
+        note(nm, ": renamed row sits at ", to, " where the adopted name sorts to ", expected)
+        cat("   ", nm, ": FAIL (position ", to, " != expected ", expected, ")\n", sep = "")
+        next
+      }
+    }
+    cat("   ", nm, ": identical outside the renamed cells; every other row keeps ",
+        "its relative order; the renamed row moves from position ", from, " to ", to,
+        " (where the adopted name sorts, expected)\n", sep = "")
   } else {
     cat("   ", nm, ": identical outside the renamed cells\n", sep = "")
   }
