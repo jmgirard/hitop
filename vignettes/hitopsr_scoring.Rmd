@@ -90,7 +90,7 @@ scores
 
 In addition to calculating each scale score as the mean of its corresponding items, we can also calculate a standard error for each scale score: the SD of the items the respondent actually answered divided by the square root of how many of those items they answered. We turn this on using `calc_se`.
 
-Note what these numbers do and do not describe. Each one summarizes how much a respondent's answers varied within a scale; it is not an estimate of how precisely the scale measures the underlying trait, so it does not give a confidence interval for a respondent's true score. For measurement precision, see the reliability coefficients below.
+Note what these numbers do and do not describe. Each one summarizes how much a respondent's answers varied within a scale; it is not an estimate of how precisely the scale measures the underlying trait, so it does not give a confidence interval for a respondent's true score. For measurement precision, see the reliability coefficients below, and for an interval around a respondent's true score, see [Confidence Intervals](#confidence-intervals).
 
 ```{r}
 scores <- score_hitopsr(
@@ -117,6 +117,82 @@ reliability_hitopsr(
   items = sprintf("hsr%03d", 1:405)
 )
 ```
+
+## Confidence Intervals
+
+A scale score is measured with error, so it is worth reporting a range rather
+than a single number. `interval_hitopsr()` returns three columns per scale:
+`_est`, an estimate of the respondent's true score, and `_lo` and `_hi`, the
+bounds of a confidence interval around it.
+
+```{r}
+scored <- score_hitopsr(
+  data = ku_hitopsr,
+  items = sprintf("hsr%03d", 1:405),
+  append = FALSE
+)
+
+interval_hitopsr(
+  data = scored,
+  scores = c("hsr_agoraphobia", "hsr_wellBeing"),
+  append = FALSE
+)
+```
+
+The estimate is not the observed score. It is the observed score pulled toward
+the reference group's mean, because with imperfect measurement a true score
+tends to lie nearer the mean than the observed score does -- the less reliable
+the scale, the further it is pulled. The method is the regression approach with
+scale correction from Schmukle (2026), which puts the estimate back on the same
+metric as the observed score so the two can be read against each other.
+
+The width comes from the scale's reliability and the reference group's standard
+deviation, so it is the same for every respondent on a given scale and it
+narrows as reliability rises. Widen or narrow the interval with `level`:
+
+```{r}
+interval_hitopsr(
+  data = scored,
+  scores = "hsr_agoraphobia",
+  level = 0.80,
+  append = FALSE
+)
+```
+
+### What the reference group is
+
+The mean, standard deviation and reliability behind every number above are
+shipped as `hitopsr_devstats`, transcribed from Table 1 of the HiTOP-SR
+introduction paper.
+
+```{r}
+hitopsr_devstats
+```
+
+**That reference group is the paper's Development Sample 2, N = 780 Prolific
+Academic participants stratified by sex and age to approximate a
+community-representative United States population. It is a development sample,
+and not a community norm.** No census weighting was applied and the paper publishes no raw-score to
+T-score table. So an interval here says where a score sits relative to the
+sample the instrument was developed on; it does not say what percentile that
+score occupies in any population.
+
+Three further limits are worth knowing before you report one of these
+intervals.
+
+* The interval is symmetric and the same width for every respondent on a scale,
+  which is what classical test theory implies, and it is **not** clipped to the
+  1-4 response range. On a strongly skewed scale -- Conversion Symptoms, say,
+  whose mean is 1.12 -- a bound can therefore fall below 1.
+* The coverage the method demonstrates is across a population of respondents:
+  about `level` of the intervals contain the true score when respondents are
+  drawn from the reference distribution. It is not a guarantee for any one
+  respondent.
+* A scale scored from fewer than its full items -- from a module form, or from
+  data scored with `missing = "available"` -- is not on the same footing as the
+  reference statistics, which come from complete scales. `interval_hitopsr()`
+  receives scores rather than items, so it cannot tell such a column from a
+  fully scored one; treat the interval as not comparable.
 
 ## Scoring Only Some Scales
 
