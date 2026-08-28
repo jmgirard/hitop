@@ -146,7 +146,15 @@ for (nm in keying) load(file.path(repo, "data", paste0(nm, ".rda")), envir = her
 ## on this side, then require what is left to be identical. Any other movement
 ## -- an item text, a reverse flag, a row order, an item count -- survives the
 ## blanking and fails the comparison.
-blank_renamed <- function(x, pattern) {
+## Both spellings, so the same pattern blanks both sides. Blanking each side
+## with only its own spelling would leave a table that already carried the new
+## name -- hitopsr_definitions did -- blanked on one side and not the other, and
+## report a difference that is an artifact of the comparison.
+renamed_cell <- "nssi|Non-suicidal Self-injury|nonSuicidalSelfInjury"
+
+## Structure-preserving: a data frame comes back a data frame with the same
+## class and attributes, so the comparison below still sees a tibble.
+blank_renamed <- function(x, pattern = renamed_cell) {
   if (is.character(x)) {
     x[grepl(pattern, x, ignore.case = TRUE)] <- NA_character_
     return(x)
@@ -155,9 +163,26 @@ blank_renamed <- function(x, pattern) {
     if (!is.null(names(x))) {
       names(x)[grepl(pattern, names(x), ignore.case = TRUE)] <- NA_character_
     }
-    return(lapply(x, blank_renamed, pattern = pattern))
+    for (i in seq_along(x)) x[[i]] <- blank_renamed(x[[i]], pattern)
+    return(x)
   }
   x
+}
+
+## Renaming a scale moves its row, because the tables are sorted by name and
+## `dplyr::arrange()` sorts in the C locale: `NSSI` sorted among the uppercase
+## names, `Non-suicidal Self-injury` sorts after `Non-planfulness`. That is a
+## consequence of the rename, not a second change, so rows are matched by
+## identity rather than by position and any move is reported rather than failed.
+row_key <- function(df) {
+  if ("HSR" %in% names(df)) return(as.character(df$HSR))
+  if ("itemNumbers" %in% names(df)) {
+    return(vapply(df$itemNumbers, function(x) paste(x, collapse = ","), character(1)))
+  }
+  ## hitopsr_definitions keys on what each row defines, minus the renamed stem.
+  apply(as.data.frame(lapply(df[intersect(c("Scale", "Subscale"), names(df))],
+                             function(col) blank_renamed(as.character(col)))),
+        1, paste, collapse = "|")
 }
 
 cat("\n2. Keying-table invariance against the merge-base\n")
@@ -170,13 +195,26 @@ for (nm in keying) {
     cat("   ", nm, ": FAIL (dimensions)\n", sep = "")
     next
   }
-  ## Blanked on each side by its own spelling: the base holds the old name, this
-  ## side the new one, and every other cell must survive both blankings intact.
-  bb <- blank_renamed(b, old_pattern)
-  hh <- blank_renamed(h, "Non-suicidal Self-injury|nonSuicidalSelfInjury")
+  bk <- row_key(b)
+  hk <- row_key(h)
+  if (!setequal(bk, hk) || anyDuplicated(bk) || anyDuplicated(hk)) {
+    note(nm, ": the set of rows changed, or a row key is not unique")
+    cat("   ", nm, ": FAIL (row set)\n", sep = "")
+    next
+  }
+  moved <- which(bk != hk)
+  bb <- blank_renamed(b)
+  hh <- blank_renamed(h)[match(bk, hk), ]
+  ## Row names carry the pre-reorder positions after the match, and are not data.
+  attr(bb, "row.names") <- attr(hh, "row.names") <- seq_len(nrow(b))
   if (!identical(bb, hh)) {
     note(nm, ": differs from the merge-base outside the renamed cells")
     cat("   ", nm, ": FAIL\n", sep = "")
+  } else if (length(moved)) {
+    cat("   ", nm, ": identical outside the renamed cells; the renamed row moves ",
+        "from position ", which(grepl(old_pattern, do.call(paste, c(b, sep = " ")), ignore.case = TRUE))[1],
+        " to ", which(grepl("Non-suicidal Self-injury", do.call(paste, c(h, sep = " ")), fixed = TRUE))[1],
+        " (sort order, expected)\n", sep = "")
   } else {
     cat("   ", nm, ": identical outside the renamed cells\n", sep = "")
   }
@@ -210,18 +248,38 @@ if (length(missing_new)) note("current output lacks: ", paste(missing_new, colla
 if (!length(missing_old) && !length(missing_new)) {
   renamed <- base_scored
   names(renamed)[match(names(rename_map), names(renamed))] <- unname(rename_map)
-  if (!identical(renamed, here_scored)) {
-    same_names <- identical(names(renamed), names(here_scored))
-    note("scored output differs from the merge-base beyond the two renamed columns",
-         if (!same_names) " (column names or their order moved)" else "")
-    if (same_names) {
-      moved <- names(renamed)[!vapply(names(renamed), function(k)
-        identical(renamed[[k]], here_scored[[k]]), logical(1))]
-      cat("   columns whose values moved: ", paste(moved, collapse = ", "), "\n", sep = "")
-    }
-    cat("   FAIL\n")
+
+  ## The column set and every column's values must be identical. Position is
+  ## checked separately and reported rather than failed: the scored columns
+  ## follow `hitopsr_scales`'s row order, which the rename moves for the same
+  ## sort reason the table itself moves, so a position change is a consequence
+  ## of the rename rather than a second change. A value change is not.
+  if (!setequal(names(renamed), names(here_scored))) {
+    note("scored output's column set changed: ",
+         "added ", paste(setdiff(names(here_scored), names(renamed)), collapse = ", "), "; ",
+         "dropped ", paste(setdiff(names(renamed), names(here_scored)), collapse = ", "))
+    cat("   FAIL (column set)\n")
   } else {
-    cat("   identical over the whole tibble once the two columns are renamed\n")
+    moved <- names(here_scored)[!vapply(names(here_scored), function(k)
+      identical(renamed[[k]], here_scored[[k]]), logical(1))]
+    if (length(moved)) {
+      note("scored values changed in: ", paste(moved, collapse = ", "))
+      cat("   FAIL (values in ", paste(moved, collapse = ", "), ")\n", sep = "")
+    } else {
+      cat("   every column identical in value once the two columns are renamed\n")
+      if (!identical(names(renamed), names(here_scored))) {
+        from <- which(names(renamed) == unname(rename_map)[[1]])
+        to <- which(names(here_scored) == unname(rename_map)[[1]])
+        cat("   column order moves: ", unname(rename_map)[[1]], " from position ",
+            from, " to ", to, " (follows hitopsr_scales' sort order, expected)\n", sep = "")
+        others <- setdiff(names(renamed), unname(rename_map))
+        if (!identical(others[order(match(others, names(renamed)))],
+                       others[order(match(others, names(here_scored)))])) {
+          note("scored output reorders columns other than the renamed pair")
+          cat("   FAIL (other columns reordered)\n")
+        }
+      }
+    }
   }
 }
 

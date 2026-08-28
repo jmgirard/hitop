@@ -44,7 +44,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 43,FALSE,Internalizing,Eating Pathology,Body Dissatisfaction,NA,I wished I could change certain parts of my body.,HiTOP_206
 44,FALSE,Detachment,NA,Well-being,NA,I felt motivated.,HiTOP_632
 45,FALSE,Detachment,NA,Social Aloofness,NA,"When I had the chance, I chose to be alone rather than with other people.",HiTOP_50
-46,FALSE,Internalizing,Distress,NSSI,NA,"I felt an urge to hurt myself (cut, burn, bite, etc.).",Ext_468
+46,FALSE,Internalizing,Distress,Non-suicidal Self-injury,NA,"I felt an urge to hurt myself (cut, burn, bite, etc.).",Ext_468
 47,FALSE,Somatoform,NA,Health Anxiety,NA,I worried a lot about my health.,HiTOP_488
 48,FALSE,Internalizing-Thought Disorder,NA,Manic Energy,NA,Others noticed that I was unusually excited or up.,HiTOP_239
 49,FALSE,Thought Disorder,NA,Eccentricity,NA,People told me that I was being inappropriate.,HiTOP_567
@@ -213,7 +213,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 212,FALSE,Internalizing,Eating Pathology,Restricted Eating,NA,People told me that I did not eat enough.,HiTOP_147
 213,FALSE,Externalizing,Antisocial,Oppositionality,NA,I was a rule breaker.,Ext_280
 214,FALSE,Internalizing,Distress,Emotionality,Irritability,I was grouchy.,exp5
-215,FALSE,Internalizing,Distress,NSSI,NA,I bit myself on purpose.,Ext_152
+215,FALSE,Internalizing,Distress,Non-suicidal Self-injury,NA,I bit myself on purpose.,Ext_152
 216,FALSE,Externalizing,Anankastia,Perfectionism,NA,"I strove for perfection, even when others said that I should move on.",HiTOP_300
 217,FALSE,Somatoform,NA,Disease Conviction,NA,I had an illness or disease that others dismissed.,HiTOP_471
 218,FALSE,Externalizing,Antagonism,Exhibitionism,NA,"When in public, I liked to stand out.",HiTOP_9
@@ -233,7 +233,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 232,FALSE,Internalizing,Fear,Specific Phobia Index,Blood-Injection Phobia,I felt faint at the sight of blood.,HiTOP_202
 233,FALSE,Internalizing,Distress,Distress-Dysphoria,Lassitude,I had very little energy.,exp18
 234,FALSE,Internalizing,Distress,Cognitive Problems,NA,My mind felt mixed up.,Ext_64
-235,FALSE,Internalizing,Distress,NSSI,NA,"At times, I just wanted to feel pain.",HiTOP_282
+235,FALSE,Internalizing,Distress,Non-suicidal Self-injury,NA,"At times, I just wanted to feel pain.",HiTOP_282
 236,FALSE,Externalizing,Antagonism,Callousness,NA,People told me I was coldhearted.,Ext_367
 237,FALSE,Internalizing,Fear,Excoriation,NA,I tried to conceal areas where I had picked at my skin.,HiTOP_247
 238,FALSE,Internalizing,Sexual Problems,Sexual Pain,NA,I found sex physically uncomfortable.,HiTOP_444
@@ -296,7 +296,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 295,FALSE,Externalizing,Disinhibition,Gambling,NA,Gambling caused me to go into debt.,Ext_269
 296,FALSE,Internalizing,Fear,Cleaning,NA,I worried about getting germs through contact with animals.,HiTOP_222
 297,FALSE,Somatoform,NA,Disease Conviction,NA,It was difficult to find healthcare providers who recognized my illness.,HiTOP_478
-298,FALSE,Internalizing,Distress,NSSI,NA,I hurt myself on purpose.,Ext_266
+298,FALSE,Internalizing,Distress,Non-suicidal Self-injury,NA,I hurt myself on purpose.,Ext_266
 299,FALSE,Externalizing,Disinhibition,Non-persistence,NA,I was unable to concentrate on a task when it was uninteresting to me.,Ext_257
 300,FALSE,Internalizing,Distress,Distress-Dysphoria,Anhedonia,Nothing seemed interesting to me.,HiTOP_173
 301,FALSE,Externalizing,Antagonism,Exhibitionism,NA,I liked attracting the attention of others.,HiTOP_11
@@ -385,7 +385,7 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 384,FALSE,Externalizing,Disinhibition,Restlessness,NA,I avoided activities where I would need to sit down for long.,Ext_460
 385,FALSE,Thought Disorder,NA,Reality Distortion,Hallucinations,I had a sensation that something was crawling under my skin.,HiTOP_608
 386,FALSE,Internalizing,Distress,Distress-Dysphoria,Lassitude,I felt worn out.,exp19
-387,FALSE,Internalizing,Distress,NSSI,NA,I cut myself on purpose.,HiTOP_281
+387,FALSE,Internalizing,Distress,Non-suicidal Self-injury,NA,I cut myself on purpose.,HiTOP_281
 388,FALSE,Internalizing,Sexual Problems,Low Sexual Arousal,NA,It was difficult for me to get sexually aroused.,HiTOP_403
 389,FALSE,Internalizing,Eating Pathology,Appetite Loss,NA,I did not feel much like eating.,HiTOP_199
 390,FALSE,Externalizing,Antisocial,Antisocial Behavior,NA,I found it enjoyable to hurt animals.,Ext_227
@@ -402,5 +402,5 @@ HSR,Reverse,Spectrum,Subfactor,Scale,Subscale,Text,Original
 401,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,"The sight of an insect (e.g., a cockroach) upset me.",HiTOP_185
 402,FALSE,Internalizing,Fear,Hypervigilance,NA,I felt like I was in danger.,HiTOP_367
 403,FALSE,Internalizing,Fear,Specific Phobia Index,Animal-Insect Phobia,I avoided areas where there might be snakes or lizards.,HiTOP_184
-404,FALSE,Internalizing,Distress,NSSI,NA,I intentionally scratched my skin so severely that it started bleeding.,HiTOP_286
+404,FALSE,Internalizing,Distress,Non-suicidal Self-injury,NA,I intentionally scratched my skin so severely that it started bleeding.,HiTOP_286
 405,FALSE,Internalizing,Fear,Trauma Reactions,NA,I had repeated memories of a traumatic event.,HiTOP_374
