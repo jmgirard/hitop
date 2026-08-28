@@ -1,6 +1,6 @@
 # M060: The scoring and conversion family refuses two argument shapes it lets fall through
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -130,6 +130,7 @@ an empty selection aborts.
 - 2026-08-28: T7 — **Errors** prose added to all seven help pages (five new passages, `norm_pid5()`'s and `interval_hitopsr()`'s existing ones extended) and a `NEWS.md` entry under 0.2.0 naming both classes. `tests/testthat/test-error-prose.R` resolves each swept export to its Rd through the `\alias{}` index across `man/`, cuts the Errors passage between anchors the Rd owns with both ends asserted found, and drops the opening anchor. `\examples{` terminates six pages; `norm_pid5()`'s Errors passage is followed by a further bold heading, which is the tighter cut. Proven able to fail on three planted defects with a clean control: a reversed sentence in one Rd (1 failure), a removed class name in NEWS (1), and a terminator matching nothing (7 — the widening trap fails rather than passing on later text).
 - 2026-08-28: T7 — a fourth test asserts the four non-selection exports do *not* promise an empty-selection refusal, so a page cannot claim a refusal its function does not make.
 - 2026-08-28: T8 — `devtools::document()` reproduces the committed `man/` with no further diff and leaves `NAMESPACE` unchanged (both validators are internal). `devtools::test()`: FAIL 0, WARN 0, SKIP 5, PASS 15179. Shipped behavior matches D-045(a)-(d): aborts on collision naming every colliding column; aborts on an empty selection naming the argument, ahead of the other selection arguments and behind `data`; both conditions classed and public; no returned value changed (T6).
+- 2026-08-28: all eight tasks done; status set to `review`. `devtools::document()` no diff, `devtools::test()` FAIL 0 / PASS 15179, `cairn_validate` all checks passed (21 pre-existing advisories, none from this branch).
 
 ## Decisions
 
