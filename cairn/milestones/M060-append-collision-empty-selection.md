@@ -80,7 +80,7 @@ an empty selection aborts.
 
 ## Tasks
 
-- [ ] **T1.** Build the characterization harness under `data-raw/` or
+- [x] **T1.** Build the characterization harness under `data-raw/` or
       `tests/testthat/helper-*`: enumerate the seven exports by the AC1 sweep,
       call each as AC3 specifies, record value and condition together per call
       (M031/M037 — a value-only probe is blind to which inputs are accepted), and
@@ -121,6 +121,7 @@ an empty selection aborts.
 - 2026-08-28: plan gate chose narrowing AC3's promise to its enumerated calls over an argument grid over `append`/`missing`/`calc_se`/`srange`/`version`, because the change adds refusals and touches no arithmetic; falsified by a value difference the existing suite catches that the 7-call harness does not.
 - 2026-08-28: implementation gate chose a maintainer-run `data-raw/` script for the characterization harness over a testthat helper, because the comparison needs a git checkout of the merge base and `R CMD check` runs against a built copy with no repository, where the helper would skip silently.
 - 2026-08-28: implementation gate chose reporting the existing argument checks ahead of the output-column collision over the collision first, because the collision check adds a refusal and the alternative would change what an already-invalid call reports today.
+- 2026-08-28: T1 — `data-raw/verify_m060_characterization.R` records value, conditions and abort-flag per call for the seven enumerated exports, on the working tree and on a `git archive` of the merge base, in separate subprocesses. Control clean (7 same, 0 differ). Proven able to fail on four planted defects, one at a time, each dimension reported independently; recorded in the script header.
 
 ## Decisions
 
