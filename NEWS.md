@@ -3,6 +3,29 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* **`interval_hitopsr()` puts a confidence interval around a HiTOP-SR scale
+  score.** Give it scored columns and it returns three per scale: `_est`, a
+  regression-based estimate of the respondent's true score, and `_lo` and `_hi`,
+  the bounds of a confidence interval around it at a `level` you choose
+  (0.95 by default). The method is the regression approach with scale
+  correction from Schmukle (2026, *Assessment*, 33(5), 817-825), Equations (10)
+  to (12): the estimate pulls the observed score toward the reference mean,
+  because with imperfect measurement a true score tends to sit nearer the mean
+  than the observed score does, and the scale correction returns it to the
+  metric the observed score is on. The reference mean, standard deviation and
+  Cronbach's alpha come from a new exported dataset, `hitopsr_devstats`, which
+  carries the statistics printed for each of the 93 HiTOP-SR primary scales and
+  subscales in Table 1 of the instrument's introduction paper. **That reference
+  group is the paper's Development Sample 2, N = 780: a development sample, and
+  not a community norm** -- no census weighting was applied and no raw-score to
+  T-score table exists -- so an interval says where a score sits relative to the sample the
+  instrument was developed on, not what percentile it occupies in a population.
+  Two limits are worth knowing: the interval is the same width for every
+  respondent on a scale and is not clipped to the 1-4 response range, so on a
+  strongly skewed scale a bound can fall outside it; and the coverage the
+  method demonstrates holds across a population of respondents rather than for
+  any one of them.
+
 * **Two HiTOP-SR scales are now named the way the instrument's introduction
   paper prints them.** The scale abbreviated `NSSI` is named in full,
   `Non-suicidal Self-injury`, spelled out the way the other 75 scales already

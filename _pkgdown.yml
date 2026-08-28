@@ -70,6 +70,14 @@ reference:
 - title: Norms
   contents:
   - norm_pid5
+- title: Score Intervals
+  desc: >
+    Confidence intervals for HiTOP-SR scale scores, computed against the
+    statistics printed for the instrument's introduction paper Development
+    Sample 2 (N = 780). That is a development sample and not a community norm.
+  contents:
+  - interval_hitopsr
+  - hitopsr_devstats
 - title: Plots
   contents:
   - plot_pid5

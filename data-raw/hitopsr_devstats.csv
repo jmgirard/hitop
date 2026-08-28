@@ -1,0 +1,94 @@
+label,nItems,alpha,mean,sd
+Bodily Distress,6,0.85,1.84,0.74
+Cognitive Problems,5,0.88,1.97,0.82
+Conversion Symptoms,7,0.82,1.12,0.31
+Disease Conviction,4,0.87,1.40,0.69
+Health Anxiety,4,0.87,1.78,0.81
+Somatic Preoccupation,5,0.84,2.36,0.77
+Distress-Dysphoria,16,0.96,2.19,0.87
+Anhedonia,3,0.88,2.07,0.96
+Anxious Worry,3,0.90,2.25,1.01
+Depressed Mood,4,0.92,2.21,1.00
+Lassitude,3,0.87,2.40,0.97
+Shame/Guilt,3,0.88,2.01,0.94
+Emotionality,11,0.93,1.70,0.66
+Affective Lability,3,0.81,1.51,0.69
+Angry Hostility,4,0.84,1.53,0.63
+Irritability,4,0.90,2.00,0.83
+Hypervigilance,6,0.85,1.92,0.73
+Insomnia,4,0.89,2.32,0.93
+Nightmares,3,0.86,1.64,0.77
+Non-suicidal Self-injury,6,0.83,1.18,0.39
+Submissiveness,4,0.88,1.36,0.53
+Suicidality,4,0.74,1.75,0.83
+Trauma Reactions,5,0.88,1.20,0.45
+Agoraphobia,5,0.86,1.62,0.77
+Checking,5,0.88,1.80,0.77
+Cleaning,6,0.82,1.53,0.58
+Counting,5,0.81,1.34,0.55
+Panic,5,0.84,1.53,0.63
+Social Anxiety,5,0.88,2.06,0.89
+Specific Phobia Index,12,0.82,1.62,0.53
+Animal-Insect Phobia,5,0.76,1.80,0.74
+Blood-Injection Phobia,3,0.66,1.34,0.55
+Situational Phobias,4,0.61,1.61,0.62
+Appearance Focus,5,0.81,1.72,0.68
+Appetite Loss,3,0.80,1.53,0.68
+Binge Eating,3,0.83,1.65,0.79
+Body Dissatisfaction,4,0.88,2.31,0.94
+Dietary Restraint,5,0.81,2.12,0.75
+Excessive Exercise,5,0.83,1.19,0.43
+Food Selectivity,4,0.80,1.53,0.66
+Muscle Building,5,0.84,1.50,0.65
+Purging,3,0.66,1.12,0.35
+Restricted Eating,4,0.81,1.48,0.64
+Difficulties Reaching Orgasm,3,0.84,1.49,0.76
+Low Sexual Arousal,3,0.86,1.56,0.81
+Low Sexual Interest,3,0.83,1.89,0.95
+Premature Orgasm,4,0.76,1.45,0.60
+Sexual Distress,4,0.87,1.59,0.78
+Sexual Pain,3,0.85,1.29,0.62
+Dissociation,6,0.86,1.29,0.52
+Eccentricity,5,0.84,1.40,0.55
+Fantasy Proneness,6,0.84,1.80,0.72
+Reality Distortion,11,0.87,1.19,0.37
+Delusions,5,0.74,1.15,0.36
+Hallucinations,6,0.80,1.23,0.42
+Manic Energy†,7,0.82,1.33,0.45
+Mistrust,8,0.85,1.84,0.69
+Cynicism,4,0.85,2.14,0.84
+Suspiciousness,4,0.80,1.54,0.67
+Restricted Affectivity,5,0.84,1.80,0.72
+Romantic Disinterest,5,0.87,2.04,0.93
+Social Aloofness,5,0.88,2.49,0.90
+Well-being,5,0.88,2.53,0.82
+Disorganization,7,0.84,1.70,0.63
+Non-persistence,5,0.86,1.87,0.76
+Non-planfulness,5,0.88,1.61,0.65
+Restlessness,5,0.84,1.46,0.61
+Risk Taking,4,0.86,1.39,0.59
+Hyperdeliberation,6,0.82,2.58,0.74
+Perfectionism,5,0.85,1.77,0.76
+Rigidity,5,0.76,1.83,0.62
+Risk Aversion,6,0.85,2.43,0.79
+Workaholism,5,0.78,1.60,0.65
+Callousness,6,0.84,1.47,0.55
+Dishonesty,8,0.87,1.48,0.53
+Deceitfulness,4,0.85,1.68,0.69
+Manipulativeness,4,0.83,1.27,0.50
+Domineering,6,0.84,1.67,0.64
+Entitlement,6,0.72,1.60,0.52
+Exhibitionism,5,0.86,1.39,0.57
+Grandiosity,6,0.79,1.95,0.67
+Social Aggression,6,0.80,1.22,0.37
+Antisocial Behavior,8,0.86,1.07,0.25
+Oppositionality,6,0.83,1.45,0.56
+Excoriation,3,0.86,1.30,0.61
+Gambling,5,0.86,1.17,0.44
+Gaming,4,0.79,1.44,0.60
+Hoarding,6,0.83,1.60,0.63
+Paraphilias,5,0.75,1.12,0.33
+Problematic Shopping,4,0.84,1.47,0.66
+Risky Sex,4,0.72,1.35,0.56
+Sex-Related Substance Use,4,0.74,1.24,0.48
+Trichotillomania,3,0.67,1.87,0.72

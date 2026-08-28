@@ -202,7 +202,7 @@ test_that("the renamed scale scores over every probe, matching a hand mean", {
 # ---- M059 AC2: only the name moved ------------------------------------------
 
 test_that("the keying tables differ from the merge base only in the name", {
-  base <- skip_without_merge_base()
+  base <- skip_without_rename_base()
   old_name <- "Body Focus"
   new_name <- "Appearance Focus"
   old_stem <- "bodyFocus"
@@ -267,7 +267,7 @@ test_that("the keying tables differ from the merge base only in the name", {
 })
 
 test_that("the keyed diff can see a change outside the name", {
-  base <- skip_without_merge_base()
+  base <- skip_without_rename_base()
   old_items <- merge_base_object("hitopsr_items", base)
   ## Planted: an item's reverse flag flipped. The comparison above asserts
   ## every non-Scale column identical, so this must be visible.
@@ -283,7 +283,7 @@ test_that("the keyed diff can see a change outside the name", {
 # ---- M059 AC5: exactly the two Word files and their staged copies -----------
 
 test_that("the rebuild touched only the two Word forms and their copies", {
-  base <- skip_without_merge_base()
+  base <- skip_without_rename_base()
   changed <- git_run(
     "diff", "--name-only", base, "--",
     "inst/extdata", "pkgdown/assets/downloads"
