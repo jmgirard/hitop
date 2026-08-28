@@ -156,6 +156,18 @@ rather than a silent coercion – a factor's integer codes are not its
 scores, and a character column would coerce to `NA`. Logical columns are
 accepted, since a 0/1 indicator converts as it reads.
 
+A `scores` argument that names no columns is an error, reported ahead of
+the other selection arguments, so the cause named is the empty selection
+and not a consequence of it. The condition is classed
+`hitop_empty_selection`, so a caller can catch this refusal by name.
+
+With `append = TRUE`, a column of `data` whose name this call would also
+produce is an error rather than an overwrite or a duplicated column: the
+message names every colliding column. Re-run with `append = FALSE` to
+return only the new columns, or drop the colliding columns from `data`
+first. The condition is classed `hitop_append_collision`, so a caller
+can catch this refusal by name.
+
 **Response coding.** The normative tables are built on the official
 four-option 0-3 coding. Data collected on a four-option coding that
 merely starts elsewhere – 1-4, say – carries the same information, so

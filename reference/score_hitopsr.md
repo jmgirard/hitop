@@ -97,6 +97,13 @@ For per-scale reliability estimates (Cronbach's alpha, McDonald's
 omega), use
 [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md).
 
+**Errors.** With `append = TRUE`, a column of `data` whose name this
+call would also produce is an error rather than an overwrite or a
+duplicated column: the message names every colliding column. Re-run with
+`append = FALSE` to return only the new columns, or drop the colliding
+columns from `data` first. The condition is classed
+`hitop_append_collision`, so a caller can catch this refusal by name.
+
 ## Examples
 
 ``` r

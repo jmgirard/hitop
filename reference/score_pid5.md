@@ -129,6 +129,13 @@ oversight.
 The FULL and SF versions have no total score: the PID-5 book defines one
 only for the brief form.
 
+**Errors.** With `append = TRUE`, a column of `data` whose name this
+call would also produce is an error rather than an overwrite or a
+duplicated column: the message names every colliding column. Re-run with
+`append = FALSE` to return only the new columns, or drop the colliding
+columns from `data` first. The condition is classed
+`hitop_append_collision`, so a caller can catch this refusal by name.
+
 ## References
 
 Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., & Skodol, A.

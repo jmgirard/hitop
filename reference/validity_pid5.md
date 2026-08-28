@@ -82,6 +82,13 @@ mis-flags respondents; a warning is issued when `srange` is not
 `c(0, 3)`. The BF version computes only the percent-missing (PNA) index
 and no cut-score scales.
 
+**Errors.** With `append = TRUE`, a column of `data` whose name this
+call would also produce is an error rather than an overwrite or a
+duplicated column: the message names every colliding column. Re-run with
+`append = FALSE` to return only the new columns, or drop the colliding
+columns from `data` first. The condition is classed
+`hitop_append_collision`, so a caller can catch this refusal by name.
+
 ## References
 
 Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan, E. H.
