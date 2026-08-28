@@ -397,10 +397,16 @@ throughout the document, so there is no discrepancy to keep visible. The
 allowance this reading runs on is D-042.
 
 **Verification.** `data-raw/verify_hitopsr_scale_name.R` reads the shelf PDF at run
-time, checks its sha256, inventories every rendering of the name with the page of
-each, and compares `data-raw/hitopsr_items.csv`'s committed string character for
-character against Table 1's cell. Maintainer-run, never CI: it needs the gitignored
-shelf and `pdftotext`. It exits non-zero on any mismatch.
+time, checks its sha256, inventories every rendering of each adopted name with the
+page of each, and compares each string committed in `data-raw/hitopsr_items.csv`
+character for character against the label Table 1 prints. It identifies each
+committed name by that scale's pinned item numbers rather than by its text, and it
+takes the source side from `data-raw/hitopsr_table1.R`, a shared extractor that
+reads Table 1 without ever seeing a committed name. Maintainer-run, never CI: it
+needs the gitignored shelf and `pdftotext`. It exits non-zero on any mismatch —
+checked on 2026-08-27 against that day's committed keying by writing
+`Appearance focus` in place of `Appearance Focus`, which reported the case
+difference and exited 1.
 
 ## Open questions (need source adjudication)
 

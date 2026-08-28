@@ -107,7 +107,7 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
       `data-raw/hitopsr_definitions.csv` (1 row), rerun the `data-raw/` scripts
       that build the four keying tables, then `data-raw/artifacts.R` for the two
       Word files, their pkgdown copies and the manifest rows.
-- [ ] T3 Generalize `data-raw/verify_hitopsr_scale_name.R` from one hardcoded
+- [x] T3 Generalize `data-raw/verify_hitopsr_scale_name.R` from one hardcoded
       scale to a table of (item numbers → committed name) pairs covering M058's
       scale and this one. Two changes, not one: the committed side stops
       grepping item text (why a sanctioned item-text edit would break the check
@@ -143,6 +143,7 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
 - 2026-08-27: implementation gate, question 3 — `data-raw/verify_hitopsr_rename.R` is left untouched; its keyed-diff step would now misreport this rename as unexpected, and that is added to the existing `data-raw/` maintainer-tooling candidate row rather than fixed here.
 - 2026-08-27: T1 done. `cairn/SOURCES.md`'s scale-names section now covers both adopted names, cites D-042's widened allowance, and records the source reading: Table 1 row 54 on p. 49 prints `Appearance Focus`, the document contains no `body focus` in any case, and `Appearance Focus` appears five times with identical capitalization (p. 19 prose, Tables 1-3 on pp. 49/52/55, Appendix A on p. 62, the last not evidence) — so unlike M058's scale there is no rendering discrepancy to keep visible. T1's wording said "five prose uses"; corrected to five uses, one of which is prose.
 - 2026-08-27: T2 done. Renamed in the two source CSVs (5 item rows, 1 definition row, the definition row moved to the file's alphabetical position), rebuilt the four keying tables and the two Word questionnaires with their staged copies. `hitopsr_subscales.rda` is byte-identical to its merge-base copy; `hitop_artifacts` went 35 rows to 37. Measured in a temporary worktree at the merge base and on the branch: `hsr_bodyFocus` sat at column 412 and `hsr_bodyFocus_se` at 488; `hsr_appearanceFocus` is at 408 and its standard error at 484. `hsr_nonSuicidalSelfInjury` stays at 451/527, so M058's NEWS figures are unaffected. Suite clean at 14598 passing, 1 skip.
+- 2026-08-27: T3 done, with one discovered sub-task: the Table 1 extraction moved to a new `data-raw/hitopsr_table1.R` sourced by both verifiers, so neither owns it and neither comparison can see a committed name. `verify_hitopsr_scale_name.R` now pins both scales by item numbers (46/215/235/298/387/404 and 16/79/201/335/350), reads the committed name from the CSV, and asks whether it is among the extracted labels. Run clean: `Non-suicidal Self-injury` matches a label-only row on p. 49, `Appearance Focus` a with-cells row on p. 49, and the NSSI rendering inventory reproduces the block SOURCES.md OQ-3 quotes, page-69 wrapped occurrence included. Discrimination checked by planting two defects: committing `Appearance focus` reported the case difference and exited 1; moving item 16 to another scale stopped on the pinned-items assertion.
 
 ## Decisions
 
