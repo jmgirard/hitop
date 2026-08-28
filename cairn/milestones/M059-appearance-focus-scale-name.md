@@ -61,14 +61,20 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
       pinned item numbers rather than by grepping item text, and identifies the
       source cell on a row whose label and numeric cells share an extracted
       line as well as on one where the label stands alone.
-- [ ] AC4 `data-raw/verify_hitopsr_names.R` extracts every scale and subscale
-      label Table 1 prints, checks the count it extracted against Table 1's own
-      row numbering, and reports the symmetric difference against
-      `hitopsr_scales$Scale` and `hitopsr_subscales$Subscale`. The run reports
-      that difference in full; each member is either `Manic Energy†` (a
-      footnote marker on a name that otherwise matches) or `p-factor` (a
-      HiTOP-BR scale, outside both tables), or is filed as a `candidate`
-      ROADMAP row naming it.
+- [ ] AC4 `data-raw/verify_hitopsr_names.R` checks the shelf copy's sha256
+      against the pin in `data-raw/hitopsr_table1.R` and stops when it differs,
+      then reports, for Table 1: the 13 section headers, each named; the 8
+      members of the Superspectra and Spectra block, which are `Externalizing`,
+      `p-factor`, `Internalizing`, `Somatoform`, `Detachment`,
+      `Thought Disorder`, `Disinhibition` and `Antagonism`; 93 label rows
+      outside that block, the count the paper's own prose states (pp. 5 and 17
+      of the shelf PDF, "76 primary scales and 17 subscales"; p. 24, "93
+      primary scales and subscales"); and a symmetric difference against
+      `hitopsr_scales$Scale` and `hitopsr_subscales$Subscale` whose only
+      members are source-only `Manic Energy†` and package-only `Manic Energy`.
+      It exits non-zero on any departure from that report, shown red under
+      three planted defects: one extracted label suppressed, the watermark
+      stripping disabled, and a label's trailing footnote marker truncated.
 - [ ] AC5 Within `inst/extdata/` and `pkgdown/assets/downloads/`, `git diff
       --name-only` against the merge base names exactly
       `hitopsr_{US,A4}.docx` and their two staged copies and nothing else;
@@ -115,20 +121,25 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
       is alone on its extracted line, which holds for `Non-suicidal
       Self-injury` but not for `Appearance Focus`, whose Table 1 rows extract
       with their numeric cells on the same line.
-- [ ] T4 Write `data-raw/verify_hitopsr_names.R`: extract Table 1 with
-      `pdftotext -layout`, handling both row shapes — label and numeric cells
-      on one line, and label alone with its cells on the next — strip the
-      manuscript's line numbers and the section-header rows, keep the
-      Superspectra and Spectra block's members so `p-factor` reaches the
-      exception set rather than vanishing with its heading, and diff against
-      the two shipped name tables.
-- [ ] T5 Run both verifier scripts and capture their output for the Review.
-- [ ] T6 Tests: AC1's probe set and hand recomputation, AC2's keyed diff of the
+- [x] T4 Write `data-raw/verify_hitopsr_names.R` on the shared extractor T3
+      added: report the section headers and the Superspectra and Spectra block
+      by name, read the expected label count out of the paper's own prose at
+      run time rather than transcribing it, and reconcile the rest against the
+      two shipped name tables. Carry positive controls over the extraction —
+      the watermark fragments are present to be stripped, none survives as a
+      label, a trailing footnote marker survives, and both row shapes reach the
+      label set. A member of the difference is adjudicated by a person, as an
+      extraction defect fixed in `data-raw/hitopsr_table1.R` or as a source
+      divergence, which IP1 keeps visible as an OQ-n entry in `SOURCES.md`
+      alongside its ROADMAP candidate row; the run never discharges one by
+      filing anything.
+- [x] T5 Run both verifier scripts and capture their output for the Review.
+- [x] T6 Tests: AC1's probe set and hand recomputation, AC2's keyed diff of the
       three tables plus the `hitopsr_subscales` identity, AC5's file
       enumeration, and AC6's dataset walk and Word-text sweep, on the
       `character_leaves()` pattern already in
       `tests/testthat/test-scale-name-hitopsr.R`.
-- [ ] T7 Docs: NEWS entry naming the renamed columns and the module break, the
+- [x] T7 Docs: NEWS entry naming the renamed columns and the module break, the
       also-known-as note on `?hitopsr_items`, and `devtools::document()`.
 
 ## Work log
@@ -144,6 +155,12 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
 - 2026-08-27: T1 done. `cairn/SOURCES.md`'s scale-names section now covers both adopted names, cites D-042's widened allowance, and records the source reading: Table 1 row 54 on p. 49 prints `Appearance Focus`, the document contains no `body focus` in any case, and `Appearance Focus` appears five times with identical capitalization (p. 19 prose, Tables 1-3 on pp. 49/52/55, Appendix A on p. 62, the last not evidence) — so unlike M058's scale there is no rendering discrepancy to keep visible. T1's wording said "five prose uses"; corrected to five uses, one of which is prose.
 - 2026-08-27: T2 done. Renamed in the two source CSVs (5 item rows, 1 definition row, the definition row moved to the file's alphabetical position), rebuilt the four keying tables and the two Word questionnaires with their staged copies. `hitopsr_subscales.rda` is byte-identical to its merge-base copy; `hitop_artifacts` went 35 rows to 37. Measured in a temporary worktree at the merge base and on the branch: `hsr_bodyFocus` sat at column 412 and `hsr_bodyFocus_se` at 488; `hsr_appearanceFocus` is at 408 and its standard error at 484. `hsr_nonSuicidalSelfInjury` stays at 451/527, so M058's NEWS figures are unaffected. Suite clean at 14598 passing, 1 skip.
 - 2026-08-27: T3 done, with one discovered sub-task: the Table 1 extraction moved to a new `data-raw/hitopsr_table1.R` sourced by both verifiers, so neither owns it and neither comparison can see a committed name. `verify_hitopsr_scale_name.R` now pins both scales by item numbers (46/215/235/298/387/404 and 16/79/201/335/350), reads the committed name from the CSV, and asks whether it is among the extracted labels. Run clean: `Non-suicidal Self-injury` matches a label-only row on p. 49, `Appearance Focus` a with-cells row on p. 49, and the NSSI rendering inventory reproduces the block SOURCES.md OQ-3 quotes, page-69 wrapped occurrence included. Discrimination checked by planting two defects: committing `Appearance focus` reported the case difference and exited 1; moving item 16 to another scale stopped on the pinned-items assertion.
+- 2026-08-27: AC4 amended, twice. The wording as planned was unsatisfiable — Table 1 numbers no rows, so "the count it extracted against Table 1's own row numbering" had nothing to check against — and its exception set named `Manic Energy†` and `p-factor` where the measured symmetric difference has ten members, the other seven being the rest of the Superspectra and Spectra block. Jeff took the first replacement at a mini gate. A fresh-context [O] reader then returned seven findings on it, six of them repaired without a further gate: a disjunct that let any mismatch be discharged by filing a ROADMAP row (so no observable state failed the criterion), no probe over label form, a count entailed on the pass path, a page citation given in manuscript rather than shelf pages, an unpinned document, and two clauses binding an instrument or a tracking record rather than the deliverable. A second fresh-context [O] reader cleared satisfiability, reachability, instrument-binding and proportionality on the repair and returned four narrowing findings — the block's members reported but not pinned, the hash pin described rather than performed, no stated evidence route for the exit-non-zero promise, and "93 labels" ambiguous between rows and distinct strings. All four were applied, and the third wording went to Jeff rather than a third reader; he took it as printed.
+- 2026-08-27: T4 done. `data-raw/verify_hitopsr_names.R` reconciles Table 1 against both shipped name tables and runs clean: 13 section headers, the 8-member Superspectra and Spectra block, 93 label rows outside it against the 93 the paper's prose states on shelf pages 5, 17 and 24, and a symmetric difference of source-only `Manic Energy†` and package-only `Manic Energy`. Discrimination checked by planting three extraction defects: disabling the watermark stripping reported 108 labels and five surviving fragments; suppressing one label reported 92 and a package-only `Workaholism`; truncating a trailing footnote dagger emptied both sides of the difference and tripped the marker control. Each exited non-zero.
+- 2026-08-27: T6 done. `tests/testthat/test-scale-name-hitopsr.R` now covers both renames from one table of adopted names, and adds AC1's probe set (both `missing` settings, `calc_se` on and off, whole and NA-injected data, against a hand row mean of items 16/79/201/335/350 whose reverse flags the test asserts before using), AC2's keyed diff against the merge-base tables with `hitopsr_subscales` asserted byte-identical, AC5's `git diff --name-only` and manifest-row count, and AC6's dataset walk and Word-document text sweep over body, headers and footers. Two of the new blocks are self-checks that plant a violation and see it caught. `tests/testthat/helper-merge-base.R` reads the merge base without assuming the default branch is named `main`; the merge-base tests skip where there is no repository or no distinct base, which means they will skip permanently once this branch merges — the cost of the implementation gate's choice to keep them in the suite rather than in a `data-raw/` script.
+- 2026-08-27: the artifact manifest's build note was reworded and the two Word forms rebuilt a second time, after AC6's dataset sweep caught `Body Focus` in `hitop_artifacts$changes` — a build note naming the retired spelling is itself a shipped occurrence of it. The note now cites only the adopted name, following M058, which wrote "an abbreviation" for the same reason. The first build's artifacts and manifest were reset to the merge base before rebuilding, so the manifest still gains two rows rather than four.
+- 2026-08-27: T5 done. Both verifiers run clean and exit 0. `verify_hitopsr_scale_name.R` matches `Non-suicidal Self-injury` to a label-only Table 1 row and `Appearance Focus` to a with-cells row, both on p. 49, and inventories `Appearance Focus` at five occurrences on pp. 19, 49, 52, 55 and 62 with no rendering disagreement. `verify_hitopsr_names.R` reports 13 section headers, the pinned 8-member Superspectra and Spectra block, 93 label rows against the 93 the prose states on pp. 5, 17 and 24, and the two-member symmetric difference.
+- 2026-08-27: T7 done. NEWS's two HiTOP-SR rename entries were merged into one, per the implementation gate, and its position figures were measured rather than carried over: at v0.1.0 `hsr_nssi` sat at 448 and `hsr_nssi_se` at 524, `hsr_bodyFocus` at 412 and `hsr_bodyFocus_se` at 488; they are now 451/527 and 408/484. The entry's claims are enforced by three added test blocks — the four column positions, `hitop_module()` rejecting either retired name with the unknown-scale error rather than a bare failure, and `read_module()` rejecting a descriptor whose recorded scale name was rewritten to `Body Focus`. Its "no score changes" claim rests on AC2's keyed diff, which shows item membership and reverse flags unmoved; separately checked against a v0.1.0 worktree, where the whole scored matrix is identical after renaming the four columns. The `?hitopsr_items` note now names both former spellings.
 
 ## Decisions
 
