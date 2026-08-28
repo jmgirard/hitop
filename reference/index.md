@@ -16,6 +16,18 @@
 - [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
   : Convert PID-5 scale scores to normative T scores and percentiles
 
+## Score Intervals
+
+Confidence intervals for HiTOP-SR scale scores, computed against the
+statistics printed for the instrument’s introduction paper Development
+Sample 2 (N = 780). That is a development sample and not a community
+norm.
+
+- [`interval_hitopsr()`](https://jmgirard.github.io/hitop/reference/interval_hitopsr.md)
+  : Confidence intervals for HiTOP-SR scale scores
+- [`hitopsr_devstats`](https://jmgirard.github.io/hitop/reference/hitopsr_devstats.md)
+  : HiTOP-SR Development-Sample Statistics
+
 ## Plots
 
 - [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)

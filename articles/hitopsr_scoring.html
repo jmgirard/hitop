@@ -307,7 +307,8 @@ turn this on using <code>calc_se</code>.</p>
 how much a respondent’s answers varied within a scale; it is not an
 estimate of how precisely the scale measures the underlying trait, so it
 does not give a confidence interval for a respondent’s true score. For
-measurement precision, see the reliability coefficients below.</p>
+measurement precision, see the reliability coefficients below, and for
+an interval around a respondent’s true score, see <a href="#confidence-intervals">Confidence Intervals</a>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
@@ -379,6 +380,124 @@ we will need the <strong>lavaan</strong> package installed (set
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 66 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="confidence-intervals">Confidence Intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals"></a>
+</h2>
+<p>A scale score is measured with error, so it is worth reporting a
+range rather than a single number. <code><a href="../reference/interval_hitopsr.html">interval_hitopsr()</a></code>
+returns three columns per scale: <code>_est</code>, an estimate of the
+respondent’s true score, and <code>_lo</code> and <code>_hi</code>, the
+bounds of a confidence interval around it.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
+<span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/interval_hitopsr.html">interval_hitopsr</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">scored</span>,</span>
+<span>  scores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"hsr_agoraphobia"</span>, <span class="st">"hsr_wellBeing"</span><span class="op">)</span>,</span>
+<span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 411 × 6</span></span></span>
+<span><span class="co">#&gt;    hsr_agoraphobia_est hsr_agoraphobia_lo hsr_agoraphobia_hi hsr_wellBeing_est</span></span>
+<span><span class="co">#&gt;                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>                1.97              1.41                2.54              1.28</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>                1.42              0.851               1.98              1.28</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>                2.16              1.59                2.72              2.41</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>                1.23              0.666               1.80              1.85</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>                1.97              1.41                2.54              2.22</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>                1.05              0.480               1.61              1.47</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>                1.05              0.480               1.61              1.47</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>                1.60              1.04                2.17              2.22</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>                1.42              0.851               1.98              1.66</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>                1.23              0.666               1.80              1.47</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 401 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: hsr_wellBeing_lo &lt;dbl&gt;, hsr_wellBeing_hi &lt;dbl&gt;</span></span></span></code></pre></div>
+<p>The estimate is not the observed score. It is the observed score
+pulled toward the reference group’s mean, because with imperfect
+measurement a true score tends to lie nearer the mean than the observed
+score does – the less reliable the scale, the further it is pulled. The
+method is the regression approach with scale correction from Schmukle
+(2026), which puts the estimate back on the same metric as the observed
+score so the two can be read against each other.</p>
+<p>The width comes from the scale’s reliability and the reference
+group’s standard deviation, so it is the same for every respondent on a
+given scale and it narrows as reliability rises. Widen or narrow the
+interval with <code>level</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/interval_hitopsr.html">interval_hitopsr</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">scored</span>,</span>
+<span>  scores <span class="op">=</span> <span class="st">"hsr_agoraphobia"</span>,</span>
+<span>  level <span class="op">=</span> <span class="fl">0.80</span>,</span>
+<span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 411 × 3</span></span></span>
+<span><span class="co">#&gt;    hsr_agoraphobia_est hsr_agoraphobia_lo hsr_agoraphobia_hi</span></span>
+<span><span class="co">#&gt;                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>                1.97              1.60                2.34</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>                1.42              1.05                1.79</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>                2.16              1.79                2.53</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>                1.23              0.861               1.60</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>                1.97              1.60                2.34</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>                1.05              0.676               1.41</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>                1.05              0.676               1.41</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>                1.60              1.23                1.97</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>                1.42              1.05                1.79</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>                1.23              0.861               1.60</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 401 more rows</span></span></span></code></pre></div>
+<div class="section level3">
+<h3 id="what-the-reference-group-is">What the reference group is<a class="anchor" aria-label="anchor" href="#what-the-reference-group-is"></a>
+</h3>
+<p>The mean, standard deviation and reliability behind every number
+above are shipped as <code>hitopsr_devstats</code>, transcribed from
+Table 1 of the HiTOP-SR introduction paper.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">hitopsr_devstats</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 93 × 8</span></span></span>
+<span><span class="co">#&gt;    scale          camelCase type  nItems reliability reliabilityType  mean    sd</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Agoraphobia    agorapho… scale      5        0.86 alpha            1.62  0.77</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Antisocial Be… antisoci… scale      8        0.86 alpha            1.07  0.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Appearance Fo… appearan… scale      5        0.81 alpha            1.72  0.68</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Appetite Loss  appetite… scale      3        0.8  alpha            1.53  0.68</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Binge Eating   bingeEat… scale      3        0.83 alpha            1.65  0.79</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Bodily Distre… bodilyDi… scale      6        0.85 alpha            1.84  0.74</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Body Dissatis… bodyDiss… scale      4        0.88 alpha            2.31  0.94</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Callousness    callousn… scale      6        0.84 alpha            1.47  0.55</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Checking       checking  scale      5        0.88 alpha            1.8   0.77</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Cleaning       cleaning  scale      6        0.82 alpha            1.53  0.58</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 83 more rows</span></span></span></code></pre></div>
+<p><strong>That reference group is the paper’s Development Sample 2, N =
+780 Prolific Academic participants stratified by sex and age to
+approximate a community-representative United States population. It is a
+development sample, and not a community norm.</strong> No census
+weighting was applied and the paper publishes no raw-score to T-score
+table. So an interval here says where a score sits relative to the
+sample the instrument was developed on; it does not say what percentile
+that score occupies in any population.</p>
+<p>Three further limits are worth knowing before you report one of these
+intervals.</p>
+<ul>
+<li>The interval is symmetric and the same width for every respondent on
+a scale, which is what classical test theory implies, and it is
+<strong>not</strong> clipped to the 1-4 response range. On a strongly
+skewed scale – Conversion Symptoms, say, whose mean is 1.12 – a bound
+can therefore fall below 1.</li>
+<li>The coverage the method demonstrates is across a population of
+respondents: about <code>level</code> of the intervals contain the true
+score when respondents are drawn from the reference distribution. It is
+not a guarantee for any one respondent.</li>
+<li>A scale scored from fewer than its full items – from a module form,
+or from data scored with <code>missing = "available"</code> – is not on
+the same footing as the reference statistics, which come from complete
+scales. <code><a href="../reference/interval_hitopsr.html">interval_hitopsr()</a></code> receives scores rather than
+items, so it cannot tell such a column from a fully scored one; treat
+the interval as not comparable.</li>
+</ul>
+</div>
+</div>
+<div class="section level2">
 <h2 id="scoring-only-some-scales">Scoring Only Some Scales<a class="anchor" aria-label="anchor" href="#scoring-only-some-scales"></a>
 </h2>
 <p>Not every study administers all 405 items. The package can build,
@@ -401,7 +520,7 @@ via two approaches.</p>
 Ext_432), use <code>method = "original"</code>. The function scans your
 data frame columns, matches them against the package’s built-in item
 database, and renames them to standard names.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setup a mock dataset with older legacy column names</span></span>
 <span><span class="va">legacy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  HiTOP_659 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,</span>
@@ -430,7 +549,7 @@ database, and renames them to standard names.</p>
 tracked the exact question prompts presented to your participants, use
 <code>method = "text"</code>. Provide a vector of your current column
 names alongside a matching vector of literal item text strings.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setup a mock dataset with completely custom column names</span></span>
 <span><span class="va">custom_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  q_party <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>,</span>

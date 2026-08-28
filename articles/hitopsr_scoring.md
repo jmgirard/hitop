@@ -217,7 +217,9 @@ Note what these numbers do and do not describe. Each one summarizes how
 much a respondent’s answers varied within a scale; it is not an estimate
 of how precisely the scale measures the underlying trait, so it does not
 give a confidence interval for a respondent’s true score. For
-measurement precision, see the reliability coefficients below.
+measurement precision, see the reliability coefficients below, and for
+an interval around a respondent’s true score, see [Confidence
+Intervals](#confidence-intervals).
 
 ``` r
 
@@ -294,6 +296,135 @@ reliability_hitopsr(
 #> 10 Cleaning                  6 0.480  0.526
 #> # ℹ 66 more rows
 ```
+
+## Confidence Intervals
+
+A scale score is measured with error, so it is worth reporting a range
+rather than a single number.
+[`interval_hitopsr()`](https://jmgirard.github.io/hitop/reference/interval_hitopsr.md)
+returns three columns per scale: `_est`, an estimate of the respondent’s
+true score, and `_lo` and `_hi`, the bounds of a confidence interval
+around it.
+
+``` r
+
+scored <- score_hitopsr(
+  data = ku_hitopsr,
+  items = sprintf("hsr%03d", 1:405),
+  append = FALSE
+)
+
+interval_hitopsr(
+  data = scored,
+  scores = c("hsr_agoraphobia", "hsr_wellBeing"),
+  append = FALSE
+)
+#> # A tibble: 411 × 6
+#>    hsr_agoraphobia_est hsr_agoraphobia_lo hsr_agoraphobia_hi hsr_wellBeing_est
+#>                  <dbl>              <dbl>              <dbl>             <dbl>
+#>  1                1.97              1.41                2.54              1.28
+#>  2                1.42              0.851               1.98              1.28
+#>  3                2.16              1.59                2.72              2.41
+#>  4                1.23              0.666               1.80              1.85
+#>  5                1.97              1.41                2.54              2.22
+#>  6                1.05              0.480               1.61              1.47
+#>  7                1.05              0.480               1.61              1.47
+#>  8                1.60              1.04                2.17              2.22
+#>  9                1.42              0.851               1.98              1.66
+#> 10                1.23              0.666               1.80              1.47
+#> # ℹ 401 more rows
+#> # ℹ 2 more variables: hsr_wellBeing_lo <dbl>, hsr_wellBeing_hi <dbl>
+```
+
+The estimate is not the observed score. It is the observed score pulled
+toward the reference group’s mean, because with imperfect measurement a
+true score tends to lie nearer the mean than the observed score does –
+the less reliable the scale, the further it is pulled. The method is the
+regression approach with scale correction from Schmukle (2026), which
+puts the estimate back on the same metric as the observed score so the
+two can be read against each other.
+
+The width comes from the scale’s reliability and the reference group’s
+standard deviation, so it is the same for every respondent on a given
+scale and it narrows as reliability rises. Widen or narrow the interval
+with `level`:
+
+``` r
+
+interval_hitopsr(
+  data = scored,
+  scores = "hsr_agoraphobia",
+  level = 0.80,
+  append = FALSE
+)
+#> # A tibble: 411 × 3
+#>    hsr_agoraphobia_est hsr_agoraphobia_lo hsr_agoraphobia_hi
+#>                  <dbl>              <dbl>              <dbl>
+#>  1                1.97              1.60                2.34
+#>  2                1.42              1.05                1.79
+#>  3                2.16              1.79                2.53
+#>  4                1.23              0.861               1.60
+#>  5                1.97              1.60                2.34
+#>  6                1.05              0.676               1.41
+#>  7                1.05              0.676               1.41
+#>  8                1.60              1.23                1.97
+#>  9                1.42              1.05                1.79
+#> 10                1.23              0.861               1.60
+#> # ℹ 401 more rows
+```
+
+### What the reference group is
+
+The mean, standard deviation and reliability behind every number above
+are shipped as `hitopsr_devstats`, transcribed from Table 1 of the
+HiTOP-SR introduction paper.
+
+``` r
+
+hitopsr_devstats
+#> # A tibble: 93 × 8
+#>    scale          camelCase type  nItems reliability reliabilityType  mean    sd
+#>    <chr>          <chr>     <chr>  <int>       <dbl> <chr>           <dbl> <dbl>
+#>  1 Agoraphobia    agorapho… scale      5        0.86 alpha            1.62  0.77
+#>  2 Antisocial Be… antisoci… scale      8        0.86 alpha            1.07  0.25
+#>  3 Appearance Fo… appearan… scale      5        0.81 alpha            1.72  0.68
+#>  4 Appetite Loss  appetite… scale      3        0.8  alpha            1.53  0.68
+#>  5 Binge Eating   bingeEat… scale      3        0.83 alpha            1.65  0.79
+#>  6 Bodily Distre… bodilyDi… scale      6        0.85 alpha            1.84  0.74
+#>  7 Body Dissatis… bodyDiss… scale      4        0.88 alpha            2.31  0.94
+#>  8 Callousness    callousn… scale      6        0.84 alpha            1.47  0.55
+#>  9 Checking       checking  scale      5        0.88 alpha            1.8   0.77
+#> 10 Cleaning       cleaning  scale      6        0.82 alpha            1.53  0.58
+#> # ℹ 83 more rows
+```
+
+**That reference group is the paper’s Development Sample 2, N = 780
+Prolific Academic participants stratified by sex and age to approximate
+a community-representative United States population. It is a development
+sample, and not a community norm.** No census weighting was applied and
+the paper publishes no raw-score to T-score table. So an interval here
+says where a score sits relative to the sample the instrument was
+developed on; it does not say what percentile that score occupies in any
+population.
+
+Three further limits are worth knowing before you report one of these
+intervals.
+
+- The interval is symmetric and the same width for every respondent on a
+  scale, which is what classical test theory implies, and it is **not**
+  clipped to the 1-4 response range. On a strongly skewed scale –
+  Conversion Symptoms, say, whose mean is 1.12 – a bound can therefore
+  fall below 1.
+- The coverage the method demonstrates is across a population of
+  respondents: about `level` of the intervals contain the true score
+  when respondents are drawn from the reference distribution. It is not
+  a guarantee for any one respondent.
+- A scale scored from fewer than its full items – from a module form, or
+  from data scored with `missing = "available"` – is not on the same
+  footing as the reference statistics, which come from complete scales.
+  [`interval_hitopsr()`](https://jmgirard.github.io/hitop/reference/interval_hitopsr.md)
+  receives scores rather than items, so it cannot tell such a column
+  from a fully scored one; treat the interval as not comparable.
 
 ## Scoring Only Some Scales
 
