@@ -40,7 +40,7 @@ spelling the table ships today and is unaffected by how that row settles.
 
 ## Acceptance criteria
 
-- [ ] AC1 For each of these calls the returned display-name column equals, elementwise
+- [x] AC1 For each of these calls the returned display-name column equals, elementwise
       and in returned row order, the canonical column of the table its scales came
       from: `reliability_pid5(version = "FULL")` and `(version = "SF")` against
       `pid_scales[[version]]$Facet`; `reliability_pid5(version = "BF")` against
@@ -50,17 +50,17 @@ spelling the table ships today and is unaffected by how that row settles.
       consecutive rows of `hitopsr_scales` — a procedure that puts every one of the 76
       names through the module path — `reliability_hitopsr(module = m)` against
       `m$scales`. Asserted by a test making all 79 calls.
-- [ ] AC2 The nine divergent names are returned in canonical spelling, asserted by
+- [x] AC2 The nine divergent names are returned in canonical spelling, asserted by
       literal old→new string pair in a test, one pair per name listed in Scope.
-- [ ] AC3 Every one of the 76 values `reliability_hitopsr()` returns in its display-name
+- [x] AC3 Every one of the 76 values `reliability_hitopsr()` returns in its display-name
       column is accepted verbatim by `hitop_module("hitopsr", scales = )` and comes back
       identical in that module's `$scales`, and equals the same-row
       `available_scales("hitopsr")$Scale` entry. Asserted by a test making one
       `hitop_module()` call per value.
-- [ ] AC4 The three `reliability_*()` exports return the display name in a column named
+- [x] AC4 The three `reliability_*()` exports return the display name in a column named
       `Scale`; `?reliability_pid5`, `?reliability_hitopsr` and `?reliability_hitopbr`
       each name `Scale` and not `scale` in their `@return` section.
-- [ ] AC5 `available_scales("hitopsr")$nItems`, `hitop_module("hitopsr", scales = )$nItems`
+- [x] AC5 `available_scales("hitopsr")$nItems`, `hitop_module("hitopsr", scales = )$nItems`
       and the `nItems` column of all three `reliability_*()` exports are integer,
       asserted by `expect_type(x, "integer")` on one call to each of those five.
 - [ ] AC6 No number moves: `data-raw/verify_m061_characterization.R` records value and
@@ -75,7 +75,7 @@ spelling the table ships today and is unaffected by how that row settles.
       condition that leaves every returned value identical, and a deleted probe — each
       run one at a time, each exiting non-zero, with a clean control run before and
       after each.
-- [ ] AC8 `snakecase` is not a declared dependency of the package:
+- [x] AC8 `snakecase` is not a declared dependency of the package:
       `grep -rn snakecase R/ NAMESPACE` returns no hits, and
       `grep -n snakecase DESCRIPTION` returns exactly one line, belonging to the
       `Config/Needs/data-raw` field and to no other field — in particular not to
@@ -239,3 +239,45 @@ spelling the table ships today and is unaffected by how that row settles.
   readers of the same column, which is what AC1 then checks.
 
 ## Review
+
+Reviewed 2026-08-28 on `m061-scale-name-consistency` at `e4f559e`, against
+`origin/main` at `a322585d`. The branch was already current with the default
+branch (`git log HEAD..origin/main` empty), so nothing was merged in.
+PR: https://github.com/jmgirard/hitop/pull/68
+
+### Acceptance-criterion evidence
+
+- **AC1 — verified.** Re-derived independently of the milestone's own tests, in a
+  scratch script that reads each expectation from the keying table rather than
+  from the test file. All 79 calls compared elementwise in returned row order:
+  `reliability_pid5()` FULL and SF against `pid_scales[[version]]$Facet`, BF
+  against `pid_scales[["BF"]]$Domain`, `reliability_hitopsr()` against
+  `hitopsr_scales$Scale`, `reliability_hitopbr()` against `hitopbr_scales$Scale`,
+  and each of the 74 sliding-window three-scale modules against its own
+  `$scales`. `identical()` on every one; 5 + 74 = 79 confirmed by assertion.
+  `test-reliability-scale-names.R` and `test-reliability.R` together: FAIL 0,
+  ERROR 0, WARN 0, SKIP 0, PASS 312.
+- **AC2 — verified.** Each of the nine old spellings absent from the emitted
+  column and each canonical spelling present, checked as literal pairs against
+  live output: `Distress-Dysphoria`, `Non-persistence`, `Non-planfulness`,
+  `Non-suicidal Self-injury`, `Sex-Related Substance Use`, `Well-being`,
+  `p-Factor`, `Unusual Beliefs & Experiences`, `Negative affectivity`.
+- **AC3 — verified.** All 76 `reliability_hitopsr()` display names fed back to
+  `hitop_module("hitopsr", scales = )` one at a time; every call accepted and
+  returned the value unchanged in `$scales`, and the returned column is
+  `identical()` to `available_scales("hitopsr")$Scale` row for row. Separately
+  confirmed that `hitop_module()` rejects all six old HiTOP-SR spellings, the
+  claim `NEWS.md` makes.
+- **AC4 — verified.** All three exports return `Scale` and no `scale`; the
+  `\value` section of `man/reliability_pid5.Rd`, `man/reliability_hitopsr.Rd`
+  and `man/reliability_hitopbr.Rd` each names `Scale`, and `grep '`scale`'` over
+  the three pages returns nothing.
+- **AC5 — verified.** `expect_type(x, "integer")` equivalent run on all five:
+  `available_scales("hitopsr")$nItems`, `hitop_module()$nItems`, and the `nItems`
+  column of each of the three `reliability_*()` exports.
+- **AC8 — verified.** `grep -rn snakecase R/ NAMESPACE` exits 1 with no hits.
+  `grep -n snakecase DESCRIPTION` returns exactly one line, `43:Config/Needs/data-raw:
+  snakecase`; the file's `Imports:`, `Suggests:` and `Depends:` fields were read
+  in full and name no `snakecase`, and no `LinkingTo:` or `Enhances:` field
+  exists. Each of `data-raw/pid_info.R`, `data-raw/hitopsr_info.R` and
+  `data-raw/hitopbr_info.R` carries the header note.
