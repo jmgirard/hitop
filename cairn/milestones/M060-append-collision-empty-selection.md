@@ -36,7 +36,7 @@ an empty selection aborts.
 
 ## Acceptance criteria
 
-- [ ] **AC1.** Every exported function of this package whose `formals()` carry an
+- [x] **AC1.** Every exported function of this package whose `formals()` carry an
       `append` argument aborts, signalling none of the warnings its
       output-building path would raise, when `append = TRUE` and `data` already
       holds a column that call would produce. The condition is classed
@@ -164,15 +164,165 @@ an empty selection aborts.
 - 2026-08-28: T12 — `devtools::document()` reproduces the committed `man/` with no further diff; `devtools::test()` FAIL 0, WARN 0, SKIP 4, PASS 15218 (one fewer skip than before the repair: the multi-column probe no longer skips); `devtools::check()` 0 errors, 0 warnings, 0 notes, so the `test-error-prose.R` error the review found is gone. T1's harness re-run against the branch at 1bb0f2d, merge base 108f126: 7 probes each side, 7 calls compared, 0 differ; `validity_pid5()`'s six conditions identical on both sides.
 - 2026-08-28: repair complete; status set to `review`. AC1's checkbox stays unticked for the review to verify against the amended wording.
 
+- 2026-08-28: review pass 2. All five criteria verified with fresh evidence at
+  4d67bb5; `devtools::check()` Status OK (0/0/0) and `cairn_validate` exit 0, so
+  both pass-1 failures are resolved. Three lenses ran; two returned nothing, the
+  [O] lens seven. No finding demonstrates a criterion failing, so the return floor
+  did not fire; findings taken to the approval gate for triage.
+
 ## Decisions
 
 ## Review
+
+### Pass 2 — 2026-08-28, PR #67, branch at 4d67bb5, merge base 108f126
+
+Fresh evidence re-gathered for all five criteria at this HEAD; the pass-1
+record is kept below.
+
+#### Acceptance criteria
+
+- [x] **AC1 — verified.** The `getNamespaceExports()` sweep filtered on an
+  `append` formal names exactly seven exports — `interval_hitopsr, norm_pid5,
+  rank_scales, score_hitopbr, score_hitopsr, score_pid5, validity_pid5` —
+  asserted non-empty and `expect_setequal` against the probe table.
+  `tests/testthat/test-append-collision.R`: 90 passes, 0 failures, **0 skips**
+  (the skip that aborted the multi-column block in pass 1 is gone).
+  Both pass-1 failures re-measured directly this session on a loaded package:
+  the 30-column `score_pid5()` re-run names 30 of 30 quoted columns, the
+  76-column `score_hitopsr()` re-run names 76 of 76, neither message carries an
+  elision, and in both cases the set of quoted names equals the set of
+  collisions exactly. Headline number agrees: "holds columns" at n = 30 and
+  n = 76, "holds a column" at n = 1. Every probe aborted with
+  `hitop_append_collision` and signalled **zero** warnings. Probe variation
+  confirmed present and passing: a `_se` collision (`pid_anhedonia_se` quoted,
+  `pid_anhedonia` not), a validity abbreviation (`pid_PNA`), a collision placed
+  first in `data`, a >20-column probe, and the headline at one column and at
+  many. `rank_scales()` is the asserted single-column exemption — measured
+  output width 1 (`top_scales`) — and a closing `expect_setequal` proves the
+  other six each received a multi-column probe.
+- [x] **AC2 — verified.** `tests/testthat/test-empty-selection.R`: 71 passes,
+  0 failures, 0 skips. Each of the three exports aborts on a zero-length
+  selection with `hitop_empty_selection` naming `scores`/`scales`; each
+  competing argument of that function's selection family is asserted invalid on
+  its own before being asserted outranked; `rank_scales()` no longer reports
+  `top` "between 1 and 0"; the `data`-first exemption and the wrong-type case
+  are asserted separately.
+- [x] **AC3 — verified.** `Rscript data-raw/verify_m060_characterization.R`
+  re-run this session at 4d67bb5 against merge base 108f126: 7 probes recorded
+  each side, 7 calls compared, **0 differ**. Column counts identical per call
+  (interval_hitopsr 304, norm_pid5 90, rank_scales 77, score_hitopbr 53,
+  score_hitopsr 481, score_pid5 250, validity_pid5 225) and
+  `validity_pid5()`'s six conditions identical on both sides.
+- [x] **AC4 — verified.** `tests/testthat/test-error-prose.R`: 106 passes,
+  0 failures. Each swept export resolves to an Rd through the `\alias{}` index
+  with an unresolved name failing the setequal check; the Errors passage is cut
+  between two anchors, both ends asserted found, opening anchor dropped; all
+  seven pages carry the collision sentence and name
+  `hitop_append_collision`, the three selection pages carry the empty-selection
+  sentence naming their argument and `hitop_empty_selection`, and the four
+  others are asserted not to. The `NEWS.md` section is cut at the 0.2.0 heading
+  and names both classes.
+- [x] **AC5 — verified.** `Rscript -e 'devtools::document()'` leaves
+  `git status --porcelain` empty. `Rscript -e 'devtools::test()'`: FAIL 0,
+  WARN 0, SKIP 4, PASS 15218.
+
+#### Consistency gate
+
+Universal: `python3 cairn_validate.py` — exit 0, **all checks passed**; 22
+advisories, none a gate failure. Twenty-one are pre-existing (20 dangling id
+tokens in DESIGN/SOURCES/DECISIONS, 1 references staleness on
+`schmukle2026.md`); one is branch-introduced — `sizing (split tripwires):
+M060: 12 tasks (>10 tripwire)`, the repair tasks T9-T12 pushing the count past
+the advisory threshold. No `DESIGN.md` principle changed (the file is not in
+the diff), so `cairn_impact.py` was not run.
+
+Toolchain (`r-package` profile), each run this session:
+`devtools::document()` no diff — pass. No generated file hand-edited;
+`NAMESPACE` unchanged, both validators internal — pass. `README.Rmd` untouched
+— pass. `pkgdown::check_pkgdown()` "No problems found" — pass. `NEWS.md`
+carries an entry under 0.2.0 naming both classes, no milestone number — pass.
+No new top-level file, so no `.Rbuildignore` entry owed — pass.
+**`devtools::check()`: Status OK — 0 errors, 0 warnings, 0 notes** (3m 58s).
+The pass-1 `test-error-prose.R:169` ERROR is resolved.
+
+#### Findings
+
+Three fresh-context lenses ran against distinct evidence bases. Two returned
+nothing; the [O] lens returned seven. Ranked, with disposition.
+
+**[S] blame-history lens: no findings.** It read the touched lines' `git blame`
+history, the milestones those commits name, and D-045/D-044/D-034/D-025, and
+found nothing silently undone, resurrected or contradicted. It cleared the
+`validity_pid5()` reorder as leaving the `srange` warning intact on every other
+path, and the `cutoff_vars` refactor as value-preserving.
+
+**[S] prior-review lens: no findings.** It read the pass-1 Review section below
+and `LESSONS.md` and confirmed each of findings 1-11 repaired and still intact
+at HEAD. Its GitHub probe (`gh api repos/jmgirard/hitop/pulls/comments`) was
+re-run this session and returned `[]`, so the per-PR walk was skipped.
+
+**[O] diff-bug lens: seven findings.** It independently re-verified all six
+pass-1 repairs empirically, and confirmed the `produced` set equals the actual
+`append = FALSE` output-name set for all seven exports across every
+`version`/`calc_se`/`srange` combination including `norm_pid5()`'s
+percentile-only `has_t = FALSE` branch, so the guard raises no false refusals.
+
+1. **`NEWS.md` denies a real breaking change.** It says "No value that any
+   succeeding call returned changes: these are refusals of calls that
+   previously failed anyway, or that failed for the wrong stated reason."
+   Reproduced this session against a `git archive` of 108f126:
+   `norm_pid5(scored, scores = character(0), append = FALSE)` and
+   `interval_hitopsr(scored, scores = character(0), append = FALSE)` each
+   **returned a 0x0 tibble** on the merge base and abort with
+   `hitop_empty_selection` on the branch. D-045(d) and Scope's **Out** bullet
+   carry the same claim, and D-045's *Context* is wrong on the same point (the
+   `data.frame()` differing-rows error was reached only under
+   `append = TRUE`). The abort is intended — Scope's last **Out** bullet
+   anticipates the `append = FALSE` shape — so this is a prose defect on a
+   user-facing surface, not a code defect.
+2. **AC1's no-warnings clause is guarded for one export of the two that have
+   such a warning.** `test-append-collision.R:344` covers `validity_pid5()`
+   only; `norm_pid5()`'s coding warning and `interval_hitopsr()`'s
+   `hitop_interval_coding`/`hitop_interval_uncovered` have no equivalent test,
+   and the other probes wrap the erroring call in `suppressWarnings()`. The
+   behavior is correct — measured this session, `norm_pid5()`,
+   `interval_hitopsr()` and `rank_scales()` each abort on a collision with
+   0 warnings and 0 messages — so AC1 holds; the guard is thinner than the
+   promise.
+3. **`expect_no_error(..., message = nm)` is the wrong argument.**
+   `test-append-collision.R:143` and `test-empty-selection.R:69`: testthat
+   forwards `message` to `regexp`, a filter on which errors count, not a
+   failure label. The control is not vacuous — an error still fails the test —
+   but it reports unlabelled.
+4. **"a standard-error column collides in its own right"
+   (`test-append-collision.R:262`) can pass with zero assertions.** It `next`s
+   on each `extra = NULL` probe and carries no non-vacuity guard, unlike every
+   other sweep in the file.
+5. **Nothing asserts `conditionCall()` on either new condition.** T4 cites the
+   M043/M054/M057 lesson explicitly; the behavior is correct at all eight sites
+   (the lens confirmed non-NULL, naming the exported wrapper) but no test holds
+   it.
+6. **The two help-page paragraphs are ordered inconsistently.**
+   `man/rank_scales.Rd` puts collision first; `man/norm_pid5.Rd` and
+   `man/interval_hitopsr.Rd` put empty-selection first. Cosmetic.
+7. **`validate_nonempty_selection()`'s "x" bullet reads "You supplied
+   `<character>` of length 0."** — missing article. Cosmetic.
+
+**Return floor.** No finding demonstrates an acceptance criterion failing.
+Finding 1 falsifies prose, not a criterion: AC2 requires exactly the abort it
+reports, AC3's promise is over its seven enumerated calls (0 differ), and AC4
+requires `NEWS.md` to record both refusals, which it does. Whether finding 1 is
+a load-bearing user-facing defect is the maintainer's call, and was put to the
+gate as such.
+
+### Pass 1 — 2026-08-28 (defect return 1), branch at 5acc9ed
+
 
 Reviewed 2026-08-28 against PR #67, branch at 5acc9ed, merge base 108f126.
 **Outcome: returned to `in-progress`.** AC1 fails on two counts and the
 profile's consistency gate fails on `devtools::check()`.
 
-### Acceptance criteria
+#### Acceptance criteria
 
 - **AC1 — FAILS.** The sweep does enumerate exactly the seven exports carrying
   an `append` formal, and each aborts with `hitop_append_collision` before any
@@ -214,7 +364,7 @@ profile's consistency gate fails on `devtools::check()`.
   clean (`git status` shows only this milestone file). `Rscript -e
   'devtools::test()'`: FAIL 0, WARN 0, SKIP 5, PASS 15179.
 
-### Consistency gate
+#### Consistency gate
 
 Universal: `cairn_validate.py` — all checks passed, 21 advisories, all
 pre-existing (20 dangling id tokens in DESIGN/SOURCES/DECISIONS, 1 references
@@ -234,7 +384,7 @@ absent, so the test errors instead of skipping — contradicting the file's own
 header comment that these tests skip under check. CI on PR #67 will be red for
 the same reason. This is branch-introduced; the file is new here.
 
-### Findings
+#### Findings
 
 Three fresh-context lenses ran against distinct evidence bases; the review
 session added three of its own. Ranked, with disposition.
@@ -293,7 +443,7 @@ found nothing the branch silently undoes, resurrects, or contradicts.
 (`gh api repos/jmgirard/hitop/pulls/comments?per_page=1`) returned `[]`, so the
 per-PR walk was skipped.
 
-### Return
+#### Return
 
 Defect return 1 of this milestone (thrash rule: none prior; no re-cut, no
 amendment return). Findings 1, 2 and 3 are the return; 4 through 11 are logged
