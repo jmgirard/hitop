@@ -19,6 +19,7 @@ utils::globalVariables(c(
   "hitopsr_scales",
   "hitopsr_subscales",
   "hitopsr_definitions",
+  "hitopsr_devstats",
   "hitopbr_items",
   "hitopbr_scales",
   "hitophsum_items",
