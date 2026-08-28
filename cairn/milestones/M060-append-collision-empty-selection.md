@@ -91,7 +91,7 @@ an empty selection aborts.
       the enumerated set (the `test-export-arg-guards.R` pattern, guarding the
       silently-emptying domain), asserting condition class and the exact set of
       named columns per probe. Confirm red on all seven before T4.
-- [ ] **T3.** Write the failing tests for AC2: class, argument named, and the
+- [x] **T3.** Write the failing tests for AC2: class, argument named, and the
       precedence cases over `top`/`srange`/`prefix`/`level`/`append`, plus the
       `data`-first exemption. Confirm red.
 - [ ] **T4.** Add `validate_no_output_collision()` to `R/util.R` following the
@@ -123,6 +123,7 @@ an empty selection aborts.
 - 2026-08-28: implementation gate chose reporting the existing argument checks ahead of the output-column collision over the collision first, because the collision check adds a refusal and the alternative would change what an already-invalid call reports today.
 - 2026-08-28: T1 — `data-raw/verify_m060_characterization.R` records value, conditions and abort-flag per call for the seven enumerated exports, on the working tree and on a `git archive` of the merge base, in separate subprocesses. Control clean (7 same, 0 differ). Proven able to fail on four planted defects, one at a time, each dimension reported independently; recorded in the script header.
 - 2026-08-28: T2 — `tests/testthat/test-append-collision.R` written. Confirmed red on all seven exports individually, each aborting with `tibble_error_column_names_must_be_unique` rather than a classed condition. The message assertion reads whole quoted tokens, not substrings, because every scale column is a prefix of its own `_se` column. Three tests already green: the sweep-matches-probe-table check, `append = FALSE`, and the existing-checks-first ordering control.
+- 2026-08-28: T3 — `tests/testthat/test-empty-selection.R` written. Confirmed red on all three exports, each reaching base R's "arguments imply differing number of rows" or `validate_count()`'s "between 1 and 0". The precedence test asserts each competing argument is invalid on its own before asserting the empty selection outranks it. The `data`-first and wrong-type tests are green already. Tests-first tasks are red by construction; the profile's verify slot is run clean at T4/T5, when the guards land.
 
 ## Decisions
 
