@@ -283,6 +283,59 @@ if (!length(missing_old) && !length(missing_new)) {
   }
 }
 
+## ------------------------------------------------------------ 4. artifacts ---
+
+## The two Word forms are the only distributed artifacts that print a scale
+## name, so they are the only ones rebuilt. Their extracted text must differ
+## from the merge-base build in the scale-name row and the build stamp and
+## nowhere else -- an item's text, a response option or another scale's name
+## moving would show up here as a third difference.
+cat("\n4. Word-form text against the merge-base build\n")
+docx <- c("inst/extdata/hitopsr_US.docx", "inst/extdata/hitopsr_A4.docx")
+
+docx_text <- function(path) {
+  s <- officer::docx_summary(officer::read_docx(path))
+  s$text[!is.na(s$text)]
+}
+## The footer carries the build stamp, which docx_summary() does not return.
+docx_footer <- function(path) {
+  tmp <- file.path(tempdir(), paste0("unz-", basename(path)))
+  unlink(tmp, recursive = TRUE)
+  utils::unzip(path, exdir = tmp)
+  ft <- list.files(file.path(tmp, "word"), pattern = "^footer.*\\.xml$", full.names = TRUE)
+  paste(vapply(ft, function(f) paste(readLines(f, warn = FALSE), collapse = ""), character(1)),
+        collapse = "")
+}
+
+for (f in docx) {
+  b <- docx_text(file.path(wt, f))
+  h <- docx_text(f)
+  if (length(b) != length(h)) {
+    note(basename(f), ": paragraph count moved, ", length(b), " -> ", length(h))
+    cat("   ", basename(f), ": FAIL (paragraph count)\n", sep = "")
+    next
+  }
+  d <- which(b != h)
+  ok <- length(d) == 1L && grepl(old_pattern, b[d], ignore.case = TRUE) &&
+    identical(h[d], "Non-suicidal Self-injury")
+  if (!ok) {
+    note(basename(f), ": body text differs in ", length(d),
+         " place(s), not the one scale-name row")
+    cat("   ", basename(f), ": FAIL -- differing rows: ",
+        paste(sprintf("[%d] %s -> %s", d, b[d], h[d]), collapse = "; "), "\n", sep = "")
+  } else {
+    cat("   ", basename(f), ": body text differs only at row ", d,
+        " (", b[d], " -> ", h[d], ")\n", sep = "")
+  }
+  ## The stamp must move (the build date changed) and must be the only footer
+  ## difference; a footer identical to the base would mean the stamp never
+  ## updated, which D-016 relies on.
+  if (identical(docx_footer(file.path(wt, f)), docx_footer(f))) {
+    note(basename(f), ": footer build stamp did not change")
+    cat("   ", basename(f), ": FAIL (stamp unchanged)\n", sep = "")
+  }
+}
+
 cat("\n")
 if (!length(fail)) {
   cat("RESULT: the rename reached every place the old name lived and moved nothing else.\n")
