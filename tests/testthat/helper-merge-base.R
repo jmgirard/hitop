@@ -63,3 +63,24 @@ merge_base_object <- function(name, sha) {
   load(tmp, envir = env)
   get(name, envir = env)
 }
+
+# The merge base for M059's rename-diff tests specifically.
+#
+# Those tests compare the branch against the state before the Body Focus ->
+# Appearance Focus rename, which exists only on the branch that performed it.
+# Once the rename is on the default branch, a later branch's merge base already
+# carries the new name: `skip_without_merge_base()` still returns a distinct
+# commit, and the "only the name moved" assertions then report that branch's own
+# work as an unexpected change. There is no rename diff to check there, so the
+# tests skip rather than fail. Detected by asking the merge base what it called
+# the scale, never by naming a branch or a commit.
+skip_without_rename_base <- function(old_name = "Body Focus") {
+  base <- skip_without_merge_base()
+  old_scales <- merge_base_object("hitopsr_scales", base)
+  testthat::skip_if_not(
+    old_name %in% old_scales$Scale,
+    paste0("the merge base already carries the rename; no ", old_name,
+           " diff to compare")
+  )
+  base
+}
