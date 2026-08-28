@@ -1,6 +1,6 @@
 # M041: Confidence intervals for HiTOP-SR scale scores
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M059
 - **Driving RR:** —
@@ -155,6 +155,7 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 - 2026-08-28: /milestone-implement started; status in-progress on branch `m041-hitopsr-score-intervals`, cut from the pushed default branch.
 - 2026-08-28: implement gate, reliability coefficient — Jeff chose an outside review over settling it here, so the alpha-vs-omega-ordinal question escalates before T3 or T5 begin. The session's recommendation was alpha, on three grounds: Schmukle (2026, p. 822) estimated its own validating simulation's CIs with Cronbach's alpha on 10 six-category Likert items, the item format the HiTOP-SR uses; Eq (11)'s `s_x` is the observed-score SD, the same metric Table 1's mean and SD are on, whereas omega-ordinal is a latent-response-metric coefficient; and alpha is printed, so it is transcribable and cell-verifiable as AC2 assumes, while omega-ordinal would pull the raw-data recomputation candidate into this milestone.
 - 2026-08-28: implement gate, `hitopsr_devstats` schema — Jeff chose `reliability` plus `reliabilityType` over a column named `alpha`, so the coefficient's identity travels with its value. Departs from the `alpha`/`omega` column pattern of the `reliability_*` family; falsified by a later coefficient that cannot be labelled in one string. Whether AC1's "alpha" wording needs an amendment is held until the escalation returns, since the two answers may need amending together.
+- 2026-08-28: blocked on RB05 (`cairn/reviews/RB05-hitopsr-interval-reliability.md`) — which reliability coefficient supplies `rel` in the interval formula. Committed on the milestone branch rather than the default branch, since M041's status mirror and gate lines already live here.
 
 ## Decisions
 
