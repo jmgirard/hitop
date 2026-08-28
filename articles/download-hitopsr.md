@@ -17,9 +17,9 @@ Use these Microsoft Word documents for printing, paper administration,
 or sending to the IRB.
 
 [English (A4
-Paper)2026-07-16](https://jmgirard.github.io/hitop/downloads/hitopsr_A4.docx)
+Paper)2026-08-27](https://jmgirard.github.io/hitop/downloads/hitopsr_A4.docx)
 [English (US
-Paper)2026-07-16](https://jmgirard.github.io/hitop/downloads/hitopsr_US.docx)
+Paper)2026-08-27](https://jmgirard.github.io/hitop/downloads/hitopsr_US.docx)
 
 ##### 📊 Qualtrics Import
 
@@ -105,16 +105,23 @@ Current builds & version history
 
 | File                    | Format           | Instrument version | Build date |
 |-------------------------|------------------|--------------------|------------|
-| `hitopsr_A4.docx`       | DOCX (A4 paper)  | 1.0                | 2026-07-16 |
+| `hitopsr_A4.docx`       | DOCX (A4 paper)  | 1.0                | 2026-08-27 |
 | `hitopsr_qualtrics.txt` | Qualtrics import | 1.0                | 2026-07-16 |
 | `hitopsr_redcap.zip`    | REDCap import    | 1.0                | 2026-07-16 |
-| `hitopsr_US.docx`       | DOCX (US paper)  | 1.0                | 2026-07-16 |
+| `hitopsr_US.docx`       | DOCX (US paper)  | 1.0                | 2026-08-27 |
 
 If your downloaded file shows an older build date, simply re-download it
 to get the latest build. The full build manifest (including file
 checksums) ships in the package as `hitop_artifacts`.
 
 #### Version history
+
+2026-08-27
+
+One scale, previously shown on the scoring page by an abbreviation, is
+named in full there as Non-suicidal Self-injury. Item text, item
+numbers, response options, and every other scale name are unchanged.  
+`hitopsr_A4.docx`, `hitopsr_US.docx`
 
 2026-07-16
 
