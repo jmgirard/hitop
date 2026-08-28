@@ -33,6 +33,24 @@ named_columns <- function(msg) {
   gsub('^["“]|["”]$', "", tokens)
 }
 
+# Warnings raised on the way to an error, collected. `expect_no_warning()`
+# wrapped around `expect_error()` does NOT see them -- expect_error() captures
+# the call and the warnings raised before the error never reach the outer
+# expectation, so that nesting stays green even when a guard is moved back
+# behind its warning (proven by planting exactly that defect). This collects the
+# warnings with a calling handler, which sees each one as it is signalled.
+warnings_before_error <- function(expr) {
+  seen <- character(0)
+  err <- withCallingHandlers(
+    tryCatch(force(expr), error = function(e) e),
+    warning = function(w) {
+      seen <<- c(seen, class(w)[[1]])
+      invokeRestart("muffleWarning")
+    }
+  )
+  list(error = err, warnings = seen)
+}
+
 # One probe per appending export: the arguments of a call that succeeds today,
 # and the `data` it runs against. `extra` supplies a second set of arguments
 # exercising a different *form* of output column on the exports that emit one --
@@ -140,9 +158,18 @@ test_that("every appending export refuses a single output-column collision", {
     # The control: the same call on data that holds none of its output columns
     # still succeeds, so a red result below is the guard firing and not a call
     # that was broken to begin with.
-    expect_no_error(
-      suppressWarnings(do.call(p$fn, c(list(data = p$data), p$args))),
-      message = nm
+    # `message =` is testthat's filter on *which* errors count, not a failure
+    # label, so the control is written as an explicit success expectation that
+    # can carry `info`.
+    expect_true(
+      !inherits(
+        try(
+          suppressWarnings(do.call(p$fn, c(list(data = p$data), p$args))),
+          silent = TRUE
+        ),
+        "try-error"
+      ),
+      info = nm
     )
 
     collide <- produced[[1]]
@@ -261,9 +288,14 @@ test_that("the collision headline agrees in number with the columns it names", {
 
 test_that("a standard-error column collides in its own right", {
   probes <- collision_probes()
+  # The `extra` probes are optional per export, so this sweep would pass having
+  # asserted nothing if they were all dropped. Count them, as every other sweep
+  # in this file counts its domain.
+  probed <- character(0)
   for (nm in names(probes)) {
     p <- resolve_probe(nm, probes[[nm]], which = "extra")
     if (is.null(p)) next
+    probed <- c(probed, nm)
     produced <- produced_columns(p)
     se_cols <- grep("_se$", produced, value = TRUE)
     expect_true(length(se_cols) > 0, info = nm)
@@ -280,6 +312,7 @@ test_that("a standard-error column collides in its own right", {
     # not be reported: `hsr_agoraphobia_se` collided, `hsr_agoraphobia` did not.
     expect_setequal(named, collide)
   }
+  expect_setequal(probed, c("score_pid5", "score_hitopsr", "score_hitopbr"))
 })
 
 test_that("a validity-scale abbreviation collides in its own right", {
@@ -296,6 +329,98 @@ test_that("a validity-scale abbreviation collides in its own right", {
   )
   named <- named_columns(conditionMessage(err))
   expect_setequal(named, "pid_PNA")
+})
+
+test_that("no appending site warns on the way to a collision abort", {
+  # AC1 promises the abort signals none of the warnings the output-building path
+  # would raise. `validity_pid5()` is covered above; these are the other two
+  # exports whose output path warns. Each pairs the silence with a control
+  # showing the same call does warn when it is not colliding, so a guard moved
+  # back behind its warning goes red here.
+  scored_pid <- suppressWarnings(
+    hitop::score_pid5(hitop::sim_pid5, items = 1:220, append = FALSE)
+  )
+  normed <- suppressWarnings(
+    hitop::norm_pid5(scored_pid, scores = names(scored_pid), append = FALSE)
+  )
+  # `srange = c(1, 5)` is what makes this call warn about its coding -- it is
+  # the *number* of response options, not the offset, that norm_pid5() warns on
+  # before converting -- so the
+  # silence below is the abort pre-empting a warning that would otherwise fire.
+  got <- warnings_before_error(
+    hitop::norm_pid5(
+      cbind(scored_pid, normed),
+      scores = names(scored_pid),
+      srange = c(1, 5)
+    )
+  )
+  expect_s3_class(got$error, "hitop_append_collision")
+  expect_identical(got$warnings, character(0))
+
+  scored_sr <- suppressWarnings(
+    hitop::score_hitopsr(hitop::sim_hitopsr, items = 1:405, append = FALSE)
+  )
+  intervals <- suppressWarnings(
+    hitop::interval_hitopsr(scored_sr, scores = names(scored_sr), append = FALSE)
+  )
+  got2 <- warnings_before_error(
+    hitop::interval_hitopsr(
+      cbind(scored_sr, intervals),
+      scores = names(scored_sr),
+      srange = c(0, 3)
+    )
+  )
+  expect_s3_class(got2$error, "hitop_append_collision")
+  expect_identical(got2$warnings, character(0))
+
+  # Controls: without the collision, each of these calls does warn, so the
+  # silence above is the abort's doing and not a warning that never fires.
+  expect_warning(
+    hitop::norm_pid5(
+      scored_pid,
+      scores = names(scored_pid),
+      srange = c(1, 5),
+      append = FALSE
+    )
+  )
+  expect_warning(
+    hitop::interval_hitopsr(
+      scored_sr,
+      scores = names(scored_sr),
+      srange = c(0, 3),
+      append = FALSE
+    ),
+    class = "hitop_interval_coding"
+  )
+})
+
+test_that("both new conditions carry a call naming the export the caller wrote", {
+  # M043/M054/M057: a validator that lets `conditionCall()` fall to NULL reports
+  # a refusal the caller cannot trace back to the function they called.
+  dirty <- hitop::sim_hitopbr
+  dirty[["hbr_antagonism"]] <- NA_real_
+  err <- expect_error(
+    suppressWarnings(hitop::score_hitopbr(dirty, items = 1:45)),
+    class = "hitop_append_collision"
+  )
+  expect_false(is.null(conditionCall(err)))
+  expect_match(
+    paste(deparse(conditionCall(err)), collapse = " "),
+    "score_hitopbr"
+  )
+
+  scored <- suppressWarnings(
+    hitop::score_pid5(hitop::sim_pid5, items = 1:220, append = FALSE)
+  )
+  err2 <- expect_error(
+    suppressWarnings(hitop::norm_pid5(scored, scores = character(0))),
+    class = "hitop_empty_selection"
+  )
+  expect_false(is.null(conditionCall(err2)))
+  expect_match(
+    paste(deparse(conditionCall(err2)), collapse = " "),
+    "norm_pid5"
+  )
 })
 
 test_that("append = FALSE is unaffected by a column of the same name in data", {
@@ -347,12 +472,11 @@ test_that("a colliding validity call is not also warned about its coding", {
   # `validity_pid5()` warned first until the M060 repair.
   dirty <- hitop::sim_pid5
   dirty[["pid_PNA"]] <- NA_real_
-  expect_no_warning(
-    expect_error(
-      hitop::validity_pid5(dirty, items = 1:220, srange = c(1, 4)),
-      class = "hitop_append_collision"
-    )
+  got <- warnings_before_error(
+    hitop::validity_pid5(dirty, items = 1:220, srange = c(1, 4))
   )
+  expect_s3_class(got$error, "hitop_append_collision")
+  expect_identical(got$warnings, character(0))
   # Control: the same call without the collision does warn about the coding, so
   # the silence above is the abort's doing and not a warning that never fires.
   expect_warning(

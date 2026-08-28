@@ -66,11 +66,20 @@ test_that("an empty selection aborts, naming the argument the caller wrote", {
     spec <- calls[[nm]]
     # The control: the same call on a non-empty selection succeeds, so a red
     # result is the new guard firing and not a broken call.
-    expect_no_error(
-      suppressWarnings(
-        do.call(spec$fn, list(data = spec$data, names(spec$data)))
+    # `message =` is testthat's filter on *which* errors count, not a failure
+    # label, so the control is written as an explicit success expectation that
+    # can carry `info`.
+    expect_true(
+      !inherits(
+        try(
+          suppressWarnings(
+            do.call(spec$fn, list(data = spec$data, names(spec$data)))
+          ),
+          silent = TRUE
+        ),
+        "try-error"
       ),
-      message = nm
+      info = nm
     )
 
     err <- expect_error(

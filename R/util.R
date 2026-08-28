@@ -412,7 +412,7 @@ validate_nonempty_selection <- function(
   cli::cli_abort(
     c(
       "The {.arg {arg}} argument selects no columns.",
-      "x" = "You supplied {.cls {class(x)}} of length 0.",
+      "x" = "You supplied a {.cls {class(x)}} of length 0.",
       "i" = "Name at least one column of {.arg data} to work on."
     ),
     class = "hitop_empty_selection",

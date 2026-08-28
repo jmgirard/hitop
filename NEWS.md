@@ -25,9 +25,11 @@ before a CRAN submission.
   reported first. The condition is classed `hitop_empty_selection`. Both
   classes are part of the package's public contract.
 
-  No value that any succeeding call returned changes: these are refusals of
-  calls that previously failed anyway, or that failed for the wrong stated
-  reason.
+  Scoring and converting return exactly what they returned before for every
+  call that still succeeds; no arithmetic changed. Two calls that used to
+  succeed no longer do: `norm_pid5()` and `interval_hitopsr()` with
+  `append = FALSE` and an empty `scores` returned an empty tibble, and now
+  raise the empty-selection error along with every other shape of that call.
 
 * **`interval_hitopsr()` puts a confidence interval around a HiTOP-SR scale
   score.** Give it scored columns and it returns three per scale: `_est`, a

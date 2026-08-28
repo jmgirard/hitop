@@ -170,6 +170,16 @@ an empty selection aborts.
   [O] lens seven. No finding demonstrates a criterion failing, so the return floor
   did not fire; findings taken to the approval gate for triage.
 
+- 2026-08-28: gate fixes. All seven findings actioned, none rejected: `NEWS.md`
+  corrected (finding 1, D-045 correction filed as a follow-up), the no-warnings
+  and `conditionCall()` guards added, the `expect_no_error` label and the `_se`
+  sweep's vacuity fixed, Rd order and wording aligned. Finding 2's investigation
+  exposed the `expect_no_warning(expect_error(...))` blind spot and rewrote the
+  existing `validity_pid5()` ordering test onto a calling-handler helper; both
+  proven able to fail on a planted reorder, control clean.
+  `devtools::document()` no diff, `devtools::test()` PASS 15231,
+  `devtools::check()` Status OK (0/0/0).
+
 ## Decisions
 
 ## Review
@@ -313,7 +323,49 @@ Finding 1 falsifies prose, not a criterion: AC2 requires exactly the abort it
 reports, AC3's promise is over its seven enumerated calls (0 differ), and AC4
 requires `NEWS.md` to record both refusals, which it does. Whether finding 1 is
 a load-bearing user-facing defect is the maintainer's call, and was put to the
-gate as such.
+gate as such; Jeff chose to fix `NEWS.md` on the branch and file the D-045
+correction, not to return.
+
+#### Triage and disposition
+
+All seven findings were actioned; none was rejected. Fixes committed on the
+branch before the approval marker.
+
+1. **Fixed at the gate** (Jeff's selection). The `NEWS.md` paragraph now states
+   what actually changed: every succeeding call returns what it returned before
+   and no arithmetic changed, and the two `append = FALSE` empty-selection calls
+   that used to return an empty tibble now raise the empty-selection error.
+   **Follow-up filed**: D-045(d) and its *Context* carry the same false claim and
+   sit on `main`, where `DECISIONS.md` is append-only, so correcting them is a
+   separate edit — a ROADMAP candidate row.
+2. **Fixed at the gate.** A new test asserts `norm_pid5()` and
+   `interval_hitopsr()` signal no warning on the way to a collision abort, each
+   with a control showing the same non-colliding call does warn
+   (`srange = c(1, 5)` and `srange = c(0, 3)` respectively). Investigating it
+   exposed a **second, larger blind spot**: `expect_no_warning()` wrapped around
+   `expect_error()` never sees warnings raised before the error, so the existing
+   `validity_pid5()` ordering test was insensitive too — a check moved back
+   behind its warning stayed green. Both are rewritten onto a
+   `warnings_before_error()` helper using a calling handler. Proven able to fail:
+   moving `norm_pid5()`'s check behind its coding warning fails
+   `test-append-collision.R:358`, moving `validity_pid5()`'s behind its `srange`
+   warning fails `:479`, each on `Expected got$warnings to be identical to
+   character(0)`, with a clean control both times.
+3. **Fixed at the gate.** Both sites replace the misused `message =` with an
+   explicit success expectation carrying `info = nm`.
+4. **Fixed at the gate.** The `_se` sweep now accumulates the exports it probed
+   and closes with `expect_setequal(probed, c("score_pid5", "score_hitopsr",
+   "score_hitopbr"))`, so dropping the `extra` probes fails rather than passing
+   vacuously.
+5. **Fixed at the gate.** A new test asserts `conditionCall()` is non-NULL and
+   names the exported wrapper for both new conditions.
+6. **Fixed at the gate** (Jeff's selection). `man/rank_scales.Rd` now leads with
+   the empty-selection paragraph, matching `norm_pid5` and `interval_hitopsr`.
+7. **Fixed at the gate** (Jeff's selection). "You supplied a `<character>` of
+   length 0."
+
+Re-verified after the fixes: `devtools::document()` no diff,
+`devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15231.
 
 ### Pass 1 — 2026-08-28 (defect return 1), branch at 5acc9ed
 
