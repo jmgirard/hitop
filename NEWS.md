@@ -3,6 +3,19 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* **The HiTOP-SR scale abbreviated `NSSI` is now named in full,
+  `Non-suicidal Self-injury`,** matching the name printed in the instrument's
+  introduction paper and the way all 75 other scales were already named.
+  *Breaking:* `score_hitopsr()` returns `hsr_nonSuicidalSelfInjury` and
+  `hsr_nonSuicidalSelfInjury_se` where it returned `hsr_nssi` and
+  `hsr_nssi_se`; code selecting the old names must be updated. Because the
+  scale tables are sorted by name, that column also moves position in the
+  returned tibble, from 448 to 451 — code selecting scored columns by position
+  rather than by name must be updated too. No score changes: every other
+  column, that one included, returns exactly the values it did before. The
+  name also changes on the scoring page of the two Word questionnaires; the
+  Qualtrics and REDCap exports print no scale names and are unchanged.
+
 * **A chosen set of an instrument's scales is called a *module*.** The
   entries below describe that feature under its final names. *For development-
   version users only:* these were briefly called `hitop_subset()` and `subset`

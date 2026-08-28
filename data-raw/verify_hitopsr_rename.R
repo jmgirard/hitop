@@ -1,19 +1,24 @@
 # Verify that the NSSI rename moved what it had to and nothing else (M058, AC2/AC3)
 #
-# Three checks that need something the test suite cannot reach -- the git
+# Five checks that need something the test suite cannot reach -- the git
 # history, and a second build of the package -- so they live here rather than in
 # tests/testthat/. The shipped-object half of AC2 and AC3 is
 # tests/testthat/test-scale-name-hitopsr.R, which runs everywhere.
 #
-#   1. Working-tree sweep. No case-insensitive `nssi` survives outside an
-#      allow-list written below, where the old name is deliberate history.
-#   2. Keying-table invariance. The four HiTOP-SR tables are compared against
-#      the same objects loaded from a git worktree of the merge-base of this
-#      branch and the default branch, and must be identical except in the cells
-#      that held the old name.
-#   3. Scored-output invariance. score_hitopsr(sim_hitopsr, calc_se = TRUE) is
-#      compared against the merge-base build's result over the whole returned
-#      tibble, and must be equal once the two renamed columns are renamed back.
+#   1. Working-tree sweep (AC2). No case-insensitive `nssi` survives outside the
+#      allow-list written below, where the old name is deliberate.
+#   2. Keying-table invariance (AC2). The four HiTOP-SR tables against the same
+#      objects from a git worktree of the merge-base, identical outside the
+#      renamed cells, with every other row's relative order asserted directly
+#      and the renamed row's new position asserted against a recomputed sort.
+#   3. Scored-output invariance (AC3).
+#      score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE) against the
+#      merge-base build: same column set, every column identical in value.
+#   4. Word-form text (AC4). Each rebuilt DOCX against the merge-base build,
+#      differing only at the scale-name row, with the footer stamp changed.
+#   5. Distributed files and manifest (AC5). Both distribution directories
+#      listed rather than read from the manifest, and the manifest required to
+#      gain one row per rebuilt file while every pre-existing row holds.
 #
 # The merge-base build is a reference for *invariance only*. It certifies that
 # this milestone changed nothing it did not intend; it never certifies that a
@@ -32,7 +37,13 @@ allow <- c(
   "^NEWS\\.md$",              # the rename is announced there by name
   "^cairn/",                  # tracking: the milestone, decisions, reviews
   "^data-raw/verify_hitopsr_", # these verifiers name the old spelling
-  "^tests/testthat/test-scale-name-hitopsr\\.R$" # the sweep names what it forbids
+  "^tests/testthat/test-scale-name-hitopsr\\.R$", # the sweep names what it forbids
+  ## D-041 keeps `NSSI` as an also-known-as note for a name the literature will
+  ## go on using -- D-018's pattern. These two carry that note (the second is
+  ## generated from the first), which is deliberate documentation, not a
+  ## leftover.
+  "^R/data\\.R$",
+  "^man/hitopsr_items\\.Rd$"
 )
 
 fail <- character(0)

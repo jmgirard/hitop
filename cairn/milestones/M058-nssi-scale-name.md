@@ -74,8 +74,10 @@ requires.
       since `.rda` is gzip and `.docx` a zip and a byte grep passes either whatever
       it contains — asserting no case-insensitive `nssi` outside an allow-list
       written into the check and no other path: `NEWS.md` and `cairn/`, where the old
-      name is history, plus the two files whose job is to name the forbidden spelling
-      (`data-raw/verify_hitopsr_*.R`, `tests/testthat/test-scale-name-hitopsr.R`).
+      name is history; the two files whose job is to name the forbidden spelling
+      (`data-raw/verify_hitopsr_*.R`, `tests/testthat/test-scale-name-hitopsr.R`);
+      and `R/data.R` with its generated `man/hitopsr_items.Rd`, which carry the
+      also-known-as note D-041 keeps for a name the literature will go on using.
       The four keying tables are compared against the same objects from a
       `git worktree` of the merge-base, rows matched by identity, identical except
       cells matching the renamed name in either spelling — blanked on both sides,
@@ -164,7 +166,7 @@ requires.
       both DOCX, neither name in the Qualtrics `.txt` and the REDCap dictionary —
       and the bounded DOCX text-plus-footer diff.
 - [x] T7 The AC5 directory-listing sweep and the manifest file-set anchor.
-- [ ] T8 NEWS; fix every doc surface the AC2 sweep flags (`?score_hitopsr`,
+- [x] T8 NEWS; fix every doc surface the AC2 sweep flags (`?score_hitopsr`,
       `R/data.R`, `README.Rmd`, `_pkgdown.yml`, the vignettes); `build_readme()`.
 - [ ] T9 `document()`/`test()`/`check()`; open the PR.
 
@@ -195,6 +197,7 @@ requires.
 - 2026-08-27: the build note was reworded rather than allow-listed. `data-raw/artifacts.R`'s `build_notes` named the old abbreviation, which put it and the manifest's `changes` column — rendered as version history on the pkgdown download pages — into the sweep. Allow-listing the manifest was the alternative and was declined: the sweep's exemption set is the whole point of AC2, and the note reads as well without the superseded spelling, while `NEWS.md`, which is allow-listed, is where a user actually needs the literal old column name for migration. To keep the branch recording one rebuild rather than two, the four artifact files and the manifest were reset to their pre-T5 state and rebuilt once with the corrected note; `hitop_artifacts` holds 35 rows with exactly two dated 2026-08-27. `verify_hitopsr_rename.R` is now fully green on all four steps, and `test-artifacts.R` passes 121 with 0 skips.
 - 2026-08-27: plan-owned body is 161 lines against the 150-line cap. The heaviest plan-owned section, Acceptance criteria, was compressed in one pass from 100 lines to 88 — no checkable clause dropped, only prose tightened — and the body is still 11 over. Recorded rather than nibbled at further, on the precedent of the ROADMAP byte-budget overage Jeff accepted on 2026-08-24. Most of the residue is Scope's discharged gate condition, which is now history rather than plan and would be the natural thing to move at archive time.
 - 2026-08-27: T7 — the AC5 sweep added to `verify_hitopsr_rename.R` as a fifth step. Both distribution directories hold 24 files, their listings are identical to the merge-base's (so a deleted or added file would be caught, which a loop over the current tree alone cannot see), and exactly the two DOCX differ in each. The manifest anchor caught a wrong assumption of my own first: `hitop_artifacts` is kept sorted rather than appended to — the new rows landed at indices 11 and 15, not at the end — so comparing the first `nrow(base)` rows positionally reported the pre-existing rows as changed when none had. Rows are now matched by content: 33 unchanged, exactly 2 added, one per rebuilt DOCX. All five verifier steps green.
+- 2026-08-27: T8 — NEWS entry written, recording the rename as breaking, naming both old and new column names, and per AC3's amendment stating the position move from 448 to 451 so positional selection is warned about rather than left to surprise; it also records that no score changed and that the Qualtrics and REDCap exports are unaffected. The AC2 sweep flagged no doc surface: `?score_hitopsr`, `R/data.R`, `README.Rmd`, `_pkgdown.yml` and the vignettes carried no occurrence of the old name, so there was nothing to fix there, and `README.md` needed no re-knit. What T8 did add is the also-known-as note D-041 committed to, in `hitopsr_items`'s `@details`: it names `NSSI` as the literature's abbreviation for the scale, says the package used it before 0.2.0, and gives the derived column name. That note is itself an occurrence of the old spelling, so the sweep flagged `R/data.R` and its generated `man/hitopsr_items.Rd` — a third touch on AC2's allow-list, put to Jeff rather than edited in, since AC2 had already had its gate and its audit. He chose to amend the allow-list over dropping the note (which would reverse D-041) or writing a note that never spells the name a reader would search for. Both paths added, with the reason recorded beside them in the check.
 
 ## Decisions
 
