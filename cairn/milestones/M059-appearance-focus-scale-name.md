@@ -272,3 +272,106 @@ Toolchain checks, from the `r-package` profile's `consistency-gate` slot:
 - `data-raw/check_line_endings.R` passes.
 
 Gate result: pass.
+
+### Independent fresh-context review (2026-08-28)
+
+Declared surface tier is user-facing, so the full three-lens fan-out ran, each
+lens with its own evidence base and none having seen the implementation.
+
+- **[S] prior-review record** — no regression. Its primary surface (archived
+  `## Review` sections and `cairn/LESSONS.md`) has real evidence on these files,
+  and the diff satisfies rather than reintroduces each point: M058's item-text
+  grep is replaced by pinned item numbers; the M035/M058 keyed-diff permutation
+  lesson is honoured by recomputing row order from the base table rather than
+  reading it off the output under test; the M020/M058 container lesson by
+  unzipping the Word files instead of byte-scanning; the M025 lesson by keeping
+  both new `on.exit()` calls function-scoped. Its GitHub probe
+  (`pulls/comments?per_page=1`) returned empty, so the per-PR walk was skipped.
+- **[S] blame-history** — no violation. It checked the D-032 "no drafts ship"
+  bar (satisfied by D-042's recorded widening, not bypassed), the D-016
+  manifest-note pattern, and the deliberately untouched
+  `verify_hitopsr_rename.R`. Two minor findings, carried below.
+- **[O] diff-bug** — 13 findings, carried below. Two earlier spawns of this lens
+  died on environment failures (one drifted into re-running the test suite in
+  the shared tree and was stopped; one was killed when the machine slept), so
+  the reported run is the third. It read the milestone file, the whole text
+  diff, the test file, the merge-base helper and the extractor, and states it
+  did not read the `SOURCES.md`/`ROADMAP.md` hunks, the binaries,
+  `test-artifacts.R`, or `verify_hitopsr_rename.R`.
+
+**Return floor: not triggered.** No finding demonstrates an acceptance
+criterion failing, and none is a defect in what the package does for its users:
+every finding is either a durability property of a test, a robustness property
+of a maintainer-run `data-raw/` script (not shipped — `data-raw/` is
+`.Rbuildignore`d), or a latent fragility that no current data reaches.
+
+#### Findings and disposition
+
+Verified against the implementation this session before triage:
+
+- **F1** (rank 1) — AC6's Word sweep collects
+  `c(installed, staged[file.exists(staged)])` under `expect_gte(length(files),
+  2L)`, so under `R CMD check` (a tarball with no `pkgdown/`) it inspects only
+  the two installed files. In the repo, where the criterion was evaluated, it
+  reads all four; AC6's evidence was also taken independently over all four
+  files this session. Durability gap, not a criterion failure. → follow-up.
+- **F2** (rank 2) — the "keyed diff can see a change outside the name"
+  self-check plants a flipped `Reverse` and then asserts the difference
+  directly, re-implementing the assertion instead of exercising the comparison
+  loop it validates; it would still pass if that loop were deleted. Confirmed by
+  reading the block. No criterion requires the self-check. → follow-up.
+- **F3** (rank 3) — AC5's `added` rows are found by `Reduce(`&`, ...)` over
+  `==` comparisons, which would yield `NA` and index phantom rows if any
+  manifest cell were `NA`. Checked: `any(is.na(hitop_artifacts))` is `FALSE`, so
+  the block is correct today. Latent. → follow-up.
+- **F4** (rank 4) — the watermark stripping applies `(?<=[0-9])(Fo|rP|ee|rR|
+  ev|iew)` and its mirror regardless of surrounding letters, so a future label
+  fragment abutting a digit could be deleted from a name without changing any
+  count. → follow-up.
+- **F5** (rank 5) — `section = grepl("\\bScales\\b", label)` would classify a
+  real scale whose name contains the word "Scales" as a section header.
+  Checked: 0 of the 93 shipped names contain it. Latent. → follow-up.
+- **F6** (rank 6) — the block partition assumes "Superspectra and Spectra
+  Scales" is Table 1's last section; a revision moving it mid-table would
+  mis-attribute the failure, though the pinned-membership check still fires.
+  → follow-up.
+- **F7** (rank 7) — if a future revision drops both prose phrasings, `stated`
+  becomes empty and the 93-label check degrades to a "no oracle" note rather
+  than a mismatch. → follow-up.
+- **F8** (rank 8) — control (b) catches a watermark fragment only when it is the
+  whole label; a fragment glued to a real label passes it. → follow-up.
+- **F9** (rank 9) — NEWS's `available_scales("hitopsr")` and "no score changes"
+  claims are enforced by no test in the diff. Checked: `available_scales(
+  "hitopsr")` does list both new names and no `body ?focus`, and the no-score-
+  changes claim rests on the v0.1.0-worktree comparison the work log records, so
+  both are derived from observed output as the derived-claims rule requires.
+  → rejected, claims verified.
+- **F10** (rank 10) — the AC2/AC5 merge-base tests skip permanently once this
+  branch merges, and under `R CMD check`. This is the implementation gate's
+  recorded choice, logged in the work log at plan time — an intentional change
+  the plan called for. → rejected as out of scope, and the durability question
+  rides F1's follow-up.
+- **F11** (rank 11) — AC1's probe cannot distinguish `missing = "available"`
+  from `"complete"` because the injected NAs fall only inside the five scale
+  columns. AC1 does not ask it to; the probe set's job is the column names, and
+  the score equality was taken against an independent hand recomputation.
+  → follow-up.
+- **F12** (rank 12) — `rendering_pattern()` applies its case-class rewrite after
+  metacharacter escaping, which would corrupt an escape sequence containing
+  letters; harmless for both current names. → follow-up.
+- **F13** (rank 13) — `data-raw/artifacts.R`'s `build_notes` now names only this
+  rename, so the next unrelated rebuild inherits it unless rewritten. This is
+  the script's documented pattern ("edit `build_notes` to describe what changed
+  in this build"), and the blame lens independently cleared it against D-016.
+  → rejected, working as designed.
+- **B1** (blame lens) — the milestone file's Tasks and work log cite "LESSONS,
+  M058 finding 12", which resolves to no numbered entry in `cairn/LESSONS.md`;
+  the substance is corroborated by the ROADMAP's maintainer-tooling row.
+  Tracking prose in an append-only section. → rejected, no action.
+- **B2** (blame lens) — three cosmetic blank separators were removed from
+  ROADMAP's Candidates block. The work log records this as deliberate, to hold
+  the file at 57 lines against its 60-line cap. → rejected, intentional.
+
+Two follow-up destinations, both filed in the post-merge hygiene pass: F4–F8
+and F12 extend the existing `data-raw/` maintainer-tooling candidate row, and
+F1, F2, F3 and F11 open a new row on this milestone's test durability.
