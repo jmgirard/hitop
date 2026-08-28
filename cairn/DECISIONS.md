@@ -8,6 +8,44 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-045 (2026-08-28): The scoring and conversion family aborts on an output-column collision and on an empty column selection, under two new public condition classes (applies GP2/GP3 to the family's argument surface; meets D-034(c) for new exported conditions, as D-044 did)
+
+**Context:** Seven exported functions carry an `append` argument and build their
+result with `cbind(data, out)` at five sites (`R/score_engine.R`,
+`R/validity_pid5.R`, `R/rank_scales.R`, `R/norm_pid5.R`, `R/interval_engine.R`).
+Re-running any of them over data that already holds their output columns reached
+`tibble::as_tibble()` and aborted with tibble's duplicated-names error, naming no
+argument and blaming no function; and a zero-length `scores`/`scales` reached
+`data.frame()` with a zero-column result ("arguments imply differing number of
+rows"), except in `rank_scales()`, where `validate_count()` fired first and
+reported `top` as out of range "between 1 and 0" — the wrong cause. Every other
+argument in this family is checked by a `validate_*()` helper that names the
+argument and blames the exported call, so these were the only paths where a
+caller saw base R or tibble rather than cli. Reproduced on all seven exports at
+the 2026-08-28 M060 plan gate.
+
+**Decision:** (a) An output-column collision **aborts**, naming every colliding
+column, rather than overwriting the existing columns with or without a warning:
+an overwrite destroys a same-named column that need not have come from this
+package, which is the silent change GP2 exists to stop, and re-running a call is
+a rarer cost than losing a column. (b) An empty column selection **aborts**,
+naming the argument the caller wrote, rather than returning `data` unchanged: a
+mistyped `prefix` matching nothing would otherwise return silently unconverted
+data, and M029's hygiene pass on this same function set the family's posture as
+failing loudly rather than returning a silently wrong answer (GP3). The empty
+selection is reported ahead of the other selection-family arguments (`top`,
+`srange`, `prefix`, `level`, `append`) so the cause named is the empty selection
+and not a consequence of it; an invalid `data` is still reported first. (c) The
+two conditions are classed `hitop_append_collision` and `hitop_empty_selection`,
+and both are **public** on the terms D-034(c) sets for this package's condition
+classes: they change only through a further D-entry. (d) No value a succeeding
+call returns changes; this entry adds refusals only.
+
+Chosen by Jeff at the 2026-08-28 M060 plan gate over returning the input
+unchanged on an empty selection (rejected: silent on a mistyped prefix) and over
+overwriting on a collision, warned or not (rejected: destroys a caller's column;
+a warning is easy to miss in a script and the column is gone either way).
+
 ### D-044 (2026-08-28): `interval_hitopsr()`'s two reports are classed `hitop_interval_uncovered` and `hitop_interval_coding`, and both are public (the successor entry D-034(c) requires for a new exported condition)
 
 **Context:** D-034(c) named the four condition classes M043 introduced a public contract and committed the package to naming every later exported catchable condition "here or in a successor entry". M041 adds an exported function that reports two things and returns `NA` rather than aborting: a score column with no `hitopsr_devstats` row, and a call whose `srange` is not the coding the reference mean and SD are printed on. M041's AC3 requires each to be catchable on its own, which message text cannot deliver, so classes were introduced at implementation. The omission was found by the fresh-context criteria audit of the amended AC3 at the 2026-08-28 amendment gate, not by the implementing session.
