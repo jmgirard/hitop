@@ -63,7 +63,7 @@ spelling the table ships today and is unaffected by how that row settles.
 - [x] AC5 `available_scales("hitopsr")$nItems`, `hitop_module("hitopsr", scales = )$nItems`
       and the `nItems` column of all three `reliability_*()` exports are integer,
       asserted by `expect_type(x, "integer")` on one call to each of those five.
-- [ ] AC6 No number moves: `data-raw/verify_m061_characterization.R` records value and
+- [x] AC6 No number moves: `data-raw/verify_m061_characterization.R` records value and
       signalled conditions together for every cell of the argument matrix (instrument ×
       version × `alpha` on/off × `omega` on/off × two `srange` values × full-instrument
       and module), runs the branch and a `git archive` of the merge base in separate R
@@ -275,6 +275,14 @@ PR: https://github.com/jmgirard/hitop/pull/68
 - **AC5 — verified.** `expect_type(x, "integer")` equivalent run on all five:
   `available_scales("hitopsr")$nItems`, `hitop_module()$nItems`, and the `nItems`
   column of each of the three `reliability_*()` exports.
+- **AC6 — verified.** `Rscript data-raw/verify_m061_characterization.R` re-run at
+  review against merge base `a322585d`, both sides recomputed cold in separate
+  subprocesses: **48 cells compared, 0 differ outside the display-name column,
+  40 carry a display-name change**, exit 0. The 8 cells with no name change are
+  the module cells, whose three scales (`Agoraphobia`, `Appetite Loss`,
+  `Binge Eating`) are none of the nine. The enumeration guards are exercised
+  rather than assumed: the empty-enumeration and cell-count guards run on every
+  pass, and the no-probe guard is fired by AC7's third planted defect below.
 - **AC8 — verified.** `grep -rn snakecase R/ NAMESPACE` exits 1 with no hits.
   `grep -n snakecase DESCRIPTION` returns exactly one line, `43:Config/Needs/data-raw:
   snakecase`; the file's `Imports:`, `Suggests:` and `Depends:` fields were read
