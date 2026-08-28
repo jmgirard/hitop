@@ -111,10 +111,10 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 
 ## Tasks
 
-- [ ] T1 Ingest the HiTOP-SR introduction paper — the manuscript D-042 admits
+- [x] T1 Ingest the HiTOP-SR introduction paper — the manuscript D-042 admits
       — as a `cairn/references/` source note with Table 1's anchors, plus its
       `INDEX.md` line, extending the `SOURCES.md` section M058 opened.
-- [ ] T2 Ingest Schmukle (2026, *Assessment*, 33(5), 817-825,
+- [x] T2 Ingest Schmukle (2026, *Assessment*, 33(5), 817-825,
       `cairn/references/sources/schmukle2026.pdf`) as a `cairn/references/`
       source note, quoting Eqs (5)-(12) verbatim with page anchors.
 - [ ] T3 Transcribe Table 1 to `data-raw/hitopsr_devstats.csv` and write
@@ -174,6 +174,7 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 - 2026-08-28: the amendment pushed the plan-owned body to 157 lines, so the Tasks section — heaviest after Acceptance criteria, and the only one of the two implement may edit — was compressed in one pass to 149. Recompressing the just-gated criteria would have taken a second gate and a second audit.
 - 2026-08-28: RB05/RR05 archived; status back to in-progress. `cairn/ROADMAP.md` grew ~360 bytes on the candidate-row extension and stands at 36,160 against the 24,000 budget, an overage already standing by Jeff's 2026-08-24 choice.
 - 2026-08-28: implement gate, four choices. Table 1's numbers are extracted by word coordinates (`pdftotext -bbox`, rows banded by y and columns by x) rather than by grouping the layout dump's equal-length runs: the two watermark-split page blocks and the two clean ones then read through one code path, and a re-typeset source fails the banding rather than pairing a label with another row's cells. `hitopsr_devstats` carries `scale`, `camelCase`, `type`, `nItems`, `reliability`, `reliabilityType`, `mean`, `sd` — the stem so a scored column finds its row, the type so the 17 subscale rows are distinguishable from the 76 scale rows without a join. Oracle records go in one file, `cairn/ORACLES.md`, with `cairn/DESIGN.md` Conventions carrying the pointer line. `interval_hitopsr(data, scores, srange = c(1, 4), prefix = "hsr_", level = 0.95, append = TRUE)` mirrors `norm_pid5()`; falsified by a caller needing every prefixed column converted without naming them.
+- 2026-08-28: T1 and T2 done. `cairn/references/simms2026.md` anchors Table 1 (shelf pp. 49-51, 101 rows in 13 sections, columns `# Items`/`alpha`/`M`/`SD`/`Range`/`Skewness`/`Kurtosis` on the 1-4 item-mean coding) and Development Sample 2 (N = 780, pp. 15-16); `cairn/references/schmukle2026.md` quotes Eqs (1)-(12) with page anchors. Both carry their `INDEX.md` line. Schmukle's Box 1 (p. 823) was recomputed: the estimates and standard errors reproduce exactly, and both printed upper bounds are 0.01 below the unrounded value because the article substitutes its own rounded intermediates — so Box 1 is not usable as a last-digit pin, and the page says so.
 
 ## Decisions
 
