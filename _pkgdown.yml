@@ -70,6 +70,7 @@ reference:
 - title: Norms
   contents:
   - norm_pid5
+  - interval_hitopsr
 - title: Plots
   contents:
   - plot_pid5

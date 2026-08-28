@@ -306,6 +306,32 @@ validate_numeric_columns <- function(columns, headline, info,
   )
 }
 
+# A confidence level is a single probability strictly inside (0, 1). Both ends
+# are excluded rather than clamped: a level of 1 asks for an infinitely wide
+# interval and a level of 0 for a point, and neither is a request the caller
+# meant. Reported as two checks so the message says which one failed -- 95 is a
+# well-formed number on the wrong scale, which is a different mistake from "95%".
+validate_level <- function(x, arg = "level", call = rlang::caller_env()) {
+  cli_assert(
+    condition = rlang::is_double(x, n = 1) && !is.na(x),
+    message = c(
+      "The {.arg {arg}} argument must be a single number.",
+      "x" = "You supplied {.cls {class(x)}} of length {length(x)}."
+    ),
+    call = call
+  )
+  cli_assert(
+    condition = x > 0 && x < 1,
+    message = c(
+      "The {.arg {arg}} argument must be a proportion between 0 and 1.",
+      "x" = "You supplied {x}.",
+      "i" = "A 95% interval is {.code level = 0.95}, not {.code 95}."
+    ),
+    call = call
+  )
+  invisible(NULL)
+}
+
 # Remove a leading `prefix` from each name by *literal* match (D-026). The
 # obvious `sub(paste0("^", prefix), "", x)` compiles the caller's string as a
 # regular expression, so a prefix containing `(` aborts with a regex error the
