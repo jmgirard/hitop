@@ -1,11 +1,11 @@
 # M061: The reliability family invents scale display names instead of reading them
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP2, GP3, GP4
-- **Branch/PR:** —
+- **Branch/PR:** `m061-scale-name-consistency`
 
 ## Goal
 
@@ -160,6 +160,25 @@ spelling the table ships today and is unaffected by how that row settles.
   `data-raw/` regeneration failing for a contributor who reads DESCRIPTION as the
   dependency list.
 
+- 2026-08-28: implementation gate chose running both sides of the characterization
+  harness cold on every run over reusing the merge-base recording, Jeff's call on
+  the recommendation, because a reused recording is a place the evidence could
+  silently go stale; the full matrix costs ~18 min per run and ~2 h across AC7's
+  seven runs. Falsified by the cold runs blocking the milestone's other work.
+- 2026-08-28: implementation gate chose recording the `snakecase` requirement of the
+  five `data-raw/` scripts both as a script header note and as a
+  `Config/Needs/data-raw` line in DESCRIPTION, Jeff's call.
+- 2026-08-28: T1 checkpoint (in progress): harness written, 48 cells per side
+  built and smoke-tested, control run started. Tests for AC1-AC5 drafted.
+
 ## Decisions
+
+- **M061-D1: the module path reads its display names from `hitopsr_scales`, not
+  from the module object.** T2 permitted either. AC1 compares the module path's
+  returned column against `hitop_module()`'s own `$scales`, so taking the names
+  from `module$scales` would make that comparison an identity between an output
+  and its own input, testing nothing (IP2). Reading them from the keying table
+  instead leaves `hitop_module()` and `reliability_hitopsr()` as two independent
+  readers of the same column, which is what AC1 then checks.
 
 ## Review
