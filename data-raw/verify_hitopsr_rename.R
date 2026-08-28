@@ -311,10 +311,15 @@ if (!length(missing_old) && !length(missing_new)) {
     } else {
       cat("   every column identical in value once the two columns are renamed\n")
       if (!identical(names(renamed), names(here_scored))) {
-        from <- which(names(renamed) == unname(rename_map)[[1]])
-        to <- which(names(here_scored) == unname(rename_map)[[1]])
-        cat("   column order moves: ", unname(rename_map)[[1]], " from position ",
-            from, " to ", to, " (follows hitopsr_scales' sort order, expected)\n", sep = "")
+        ## Both renamed columns are reported, not just the score column: the
+        ## `_se` sibling moves by the same amount and breaks positional
+        ## selection identically, and NEWS records both figures from here.
+        for (nm in unname(rename_map)) {
+          cat("   column order moves: ", nm, " from position ",
+              which(names(renamed) == nm), " to ",
+              which(names(here_scored) == nm),
+              " (follows hitopsr_scales' sort order, expected)\n", sep = "")
+        }
         others <- setdiff(names(renamed), unname(rename_map))
         if (!identical(others[order(match(others, names(renamed)))],
                        others[order(match(others, names(here_scored)))])) {

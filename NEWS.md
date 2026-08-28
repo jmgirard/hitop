@@ -9,9 +9,10 @@ before a CRAN submission.
   *Breaking:* `score_hitopsr()` returns `hsr_nonSuicidalSelfInjury` and
   `hsr_nonSuicidalSelfInjury_se` where it returned `hsr_nssi` and
   `hsr_nssi_se`; code selecting the old names must be updated. Because the
-  scale tables are sorted by name, that column also moves position in the
-  returned tibble, from 448 to 451 — code selecting scored columns by position
-  rather than by name must be updated too. No score changes: every other
+  scale tables are sorted by name, both columns also move position in the
+  returned tibble, the score from 448 to 451 and its standard error from 524
+  to 527 — code selecting scored columns by position rather than by name must
+  be updated too. No score changes: every other
   column, that one included, returns exactly the values it did before. The
   name also changes on the scoring page of the two Word questionnaires; the
   Qualtrics and REDCap exports print no scale names and are unchanged.
