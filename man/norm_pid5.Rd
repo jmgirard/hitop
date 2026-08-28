@@ -127,6 +127,17 @@ silent coercion -- a factor's integer codes are not its scores, and a
 character column would coerce to \code{NA}. Logical columns are accepted, since
 a 0/1 indicator converts as it reads.
 
+A \code{scores} argument that names no columns is an error rather than a silent
+return of \code{data} unchanged, and it is reported ahead of the other selection
+arguments, so the cause named is the empty selection and not a consequence
+of it.
+
+With \code{append = TRUE}, a column of \code{data} whose name this call would also
+produce is an error rather than an overwrite or a duplicated column: the
+message names every colliding column. Re-run with \code{append = FALSE} to
+return only the new columns, or drop the colliding columns from \code{data}
+first.
+
 \strong{Response coding.} The normative tables are built on the official
 four-option 0-3 coding. Data collected on a four-option coding that merely
 starts elsewhere -- 1-4, say -- carries the same information, so each score

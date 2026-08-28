@@ -102,6 +102,12 @@ published rule applied as written, not an oversight.
 
 The FULL and SF versions have no total score: the PID-5 book defines one
 only for the brief form.
+
+\strong{Errors.} With \code{append = TRUE}, a column of \code{data} whose name this call
+would also produce is an error rather than an overwrite or a duplicated
+column: the message names every colliding column. Re-run with
+\code{append = FALSE} to return only the new columns, or drop the colliding
+columns from \code{data} first.
 }
 }
 \examples{

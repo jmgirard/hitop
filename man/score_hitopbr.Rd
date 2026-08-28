@@ -57,6 +57,12 @@ Create a data frame with scores on all the HiTOP-BR scales.
 \details{
 For per-scale reliability estimates (Cronbach's alpha, McDonald's
 omega), use \code{\link[=reliability_hitopbr]{reliability_hitopbr()}}.
+
+\strong{Errors.} With \code{append = TRUE}, a column of \code{data} whose name this call
+would also produce is an error rather than an overwrite or a duplicated
+column: the message names every colliding column. Re-run with
+\code{append = FALSE} to return only the new columns, or drop the colliding
+columns from \code{data} first.
 }
 \examples{
 # Score all HiTOP-BR scales from the simulated data

@@ -64,6 +64,12 @@ to \code{srange}, so scoring items on another scale (e.g. 1-4) mis-flags
 respondents; a warning is issued when \code{srange} is not \code{c(0, 3)}. The BF
 version computes only the percent-missing (PNA) index and no cut-score
 scales.
+
+\strong{Errors.} With \code{append = TRUE}, a column of \code{data} whose name this call
+would also produce is an error rather than an overwrite or a duplicated
+column: the message names every colliding column. Re-run with
+\code{append = FALSE} to return only the new columns, or drop the colliding
+columns from \code{data} first.
 }
 \examples{
 # Compute the PID-5 validity scales and flag likely-invalid responders.

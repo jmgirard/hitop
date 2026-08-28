@@ -96,6 +96,17 @@
 #'   silent coercion -- a factor's integer codes are not its scores, and a
 #'   character column would coerce to `NA`. Logical columns are accepted.
 #'
+#'   A `scores` argument that names no columns is an error rather than a silent
+#'   return of `data` unchanged, and it is reported ahead of the other selection
+#'   arguments, so the cause named is the empty selection and not a consequence
+#'   of it.
+#'
+#'   With `append = TRUE`, a column of `data` whose name this call would also
+#'   produce is an error rather than an overwrite or a duplicated column: the
+#'   message names every colliding column. Re-run with `append = FALSE` to
+#'   return only the new columns, or drop the colliding columns from `data`
+#'   first.
+#'
 #' @return A \link[tibble]{tibble} with an `_est`, `_lo` and `_hi` column for
 #'   every requested score column, alongside all original `data` columns if
 #'   requested. An `NA` score returns `NA` in all three.

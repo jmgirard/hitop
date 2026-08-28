@@ -102,13 +102,13 @@ an empty selection aborts.
       `interval_engine()` and `rank_scales()` at the position AC2's precedence
       requires — after `validate_data()`, before the rest.
 - [x] **T6.** Run T1's harness against the branch; record the comparison.
-- [ ] **T7.** Roxygen **Errors** prose on the affected exports, `NEWS.md`, and the
+- [x] **T7.** Roxygen **Errors** prose on the affected exports, `NEWS.md`, and the
       AC4 Rd test — assert both cut boundaries of the Errors passage are found and
       exclude the anchor from the passage (M041/M046: a guard that cuts what it
       asserts over widens to the whole file when the anchor misses, and this
       package's Rd files carry Errors in two forms, `**Errors.**` inline and
       `\section{Errors}`).
-- [ ] **T8.** `devtools::document()` + `devtools::test()` clean; confirm the
+- [x] **T8.** `devtools::document()` + `devtools::test()` clean; confirm the
       shipped behavior matches D-045(a)-(d) as written at the plan gate.
 
 ## Work log
@@ -127,6 +127,9 @@ an empty selection aborts.
 - 2026-08-28: T4 — `validate_no_output_collision()` in `R/util.R`, called at the five append sites, each after that site's existing argument checks and before any output column is built. `validity_pid5()`'s four cutoff abbreviations are now resolved once into `cutoff_vars` and read by both the enumeration and the four scale blocks, so the two cannot drift.
 - 2026-08-28: T5 — `validate_nonempty_selection()` in `R/util.R`, called in `rank_scales()`, `norm_pid5()` and `interval_engine()` after the selection's own type check and before the rest of the selection family. Full suite clean after both: FAIL 0, WARN 0, SKIP 5, PASS 15087.
 - 2026-08-28: T6 — harness run against the branch at 50698d2, merge base 108f126: 7 calls compared, 0 differ. Every call kept its returned object, its accept/reject verdict and its conditions; `validity_pid5()`'s six alerts are byte-identical on both sides.
+- 2026-08-28: T7 — **Errors** prose added to all seven help pages (five new passages, `norm_pid5()`'s and `interval_hitopsr()`'s existing ones extended) and a `NEWS.md` entry under 0.2.0 naming both classes. `tests/testthat/test-error-prose.R` resolves each swept export to its Rd through the `\alias{}` index across `man/`, cuts the Errors passage between anchors the Rd owns with both ends asserted found, and drops the opening anchor. `\examples{` terminates six pages; `norm_pid5()`'s Errors passage is followed by a further bold heading, which is the tighter cut. Proven able to fail on three planted defects with a clean control: a reversed sentence in one Rd (1 failure), a removed class name in NEWS (1), and a terminator matching nothing (7 — the widening trap fails rather than passing on later text).
+- 2026-08-28: T7 — a fourth test asserts the four non-selection exports do *not* promise an empty-selection refusal, so a page cannot claim a refusal its function does not make.
+- 2026-08-28: T8 — `devtools::document()` reproduces the committed `man/` with no further diff and leaves `NAMESPACE` unchanged (both validators are internal). `devtools::test()`: FAIL 0, WARN 0, SKIP 5, PASS 15179. Shipped behavior matches D-045(a)-(d): aborts on collision naming every colliding column; aborts on an empty selection naming the argument, ahead of the other selection arguments and behind `data`; both conditions classed and public; no returned value changed (T6).
 
 ## Decisions
 
