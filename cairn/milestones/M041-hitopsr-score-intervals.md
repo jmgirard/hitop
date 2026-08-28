@@ -258,7 +258,7 @@ evidence below is from the branch as it will merge.
 ### Consistency gate
 
 - `cairn_validate.py`: exit 0, all checks passed, 22 advisory warnings (20
-  pre-existing dangling legacy D-001..D-012 tokens; 2 references-staleness
+  pre-existing dangling legacy decision tokens from the pre-migration numbering; 2 references-staleness
   advisories on this milestone's two new source notes, logged as a finding
   below).
 - No `DESIGN.md` IP/GP principle text changed -- the diff adds an oracle-records
