@@ -1,19 +1,18 @@
 # Roadmap
 
-_Last hygiene check: 2026-08-27 (M057 done and archived — `available_scales()` carries each HiTOP-SR scale's clinician definition and the builder page shows it. Its two deferred review findings, both latent until a second instrument gains a scale table, went onto the standing "Generalize modularization to BR/PID-5" row rather than opening a new one; no other candidate row moved and nothing was pruned. No D-entry: the milestone made no cross-cutting decision. Two LESSONS lines extended in place (M043's `call =` family, M056's browser-driving family), so the file holds at 49 lines; nothing retired, since M057's one new guard covers a single function rather than the M043 lesson's package-wide claim. Both byte budgets are over and neither was met by pruning: ROADMAP 59 lines / 29,342 bytes against 24,000, the overage recorded per Jeff's 2026-08-24 choice; LESSONS 49 lines / 20,808 bytes against 20,000, first noticed here — it was already at 20,015 before this pass, so the line-count check alone has been missing it. Worth a decision next session: prune the stalest LESSONS lines, or record this overage the way ROADMAP's is.)_
+_Last hygiene check: 2026-08-27 (M058 done and archived — the HiTOP-SR scale abbreviated `NSSI` is named `Non-suicidal Self-injury` everywhere the package prints or returns it, renaming a scored column and rebuilding the two Word questionnaires. Two review passes; pass 1 returned on a weight-cap and date-format gate failure, pass 2 passed the gate clean. Of the second pass's 14 findings, 6 were fixed before merge, 1 was reverted because landing it would have required amending an acceptance criterion, and 8 were clustered onto the existing `data-raw/` maintainer-tooling candidate row together with M035's two — a clustering that also kept ROADMAP inside its 60-line cap. D-041 was written during implementation, so this pass added no D-entry. Three LESSONS lines extended in place (M025's `on.exit()` family, M020's container-comparison family, M035's keyed-diff family), so the file holds at 49 lines; nothing retired, since M058's one new test pins a single scale's spelling rather than enforcing any lesson's claim. M053's row was pruned under the 5-row terminal retention. Both byte budgets remain over and neither was met by pruning: ROADMAP 58 lines / 32,581 bytes against 24,000, the overage standing per Jeff's 2026-08-24 choice; LESSONS 49 lines / 22,195 bytes against 20,000, up from 20,808 — the decision M057 flagged, whether to prune the stalest lines or record this overage the way ROADMAP's is, is still open and was not taken here.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M059)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M053 | A format-first flow for the browser module builder | done | M052 | normal | milestones/archive/M053-builder-format-first-flow.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | — | normal | milestones/M041-hitopsr-score-intervals.md |
 | M054 | A saved module descriptor that reads back for scoring | done | — | normal | milestones/archive/M054-module-descriptor-file.md |
 | M055 | The HiTOP-SR generators write a descriptor beside the file they build | done | M054 | normal | milestones/archive/M055-generator-descriptor-sidecar.md |
 | M056 | The browser builder offers the module descriptor as a download | done | M055 | normal | milestones/archive/M056-builder-descriptor-download.md |
 | M057 | Each scale in the browser builder shows its clinician definition | done | — | normal | milestones/archive/M057-builder-scale-definitions.md |
-| M058 | The HiTOP-SR's NSSI scale is named in full | review | M057 | normal | milestones/M058-nssi-scale-name.md |
+| M058 | The HiTOP-SR's NSSI scale is named in full | done | M057 | normal | milestones/archive/M058-nssi-scale-name.md |
 
 ## Candidates
 
