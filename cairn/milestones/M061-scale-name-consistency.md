@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, GP2, GP3, GP4
-- **Branch/PR:** `m061-scale-name-consistency`
+- **Branch/PR:** `m061-scale-name-consistency` / https://github.com/jmgirard/hitop/pull/68
 
 ## Goal
 
@@ -223,6 +223,10 @@ spelling the table ships today and is unaffected by how that row settles.
   were never among the nine). `devtools::document()` leaves no diff;
   `devtools::test()` FAIL 0, WARN 0, SKIP 4, PASS 15500; `devtools::check()`
   0 errors, 0 warnings, 0 notes. All nine tasks checked; status set to review.
+
+- 2026-08-28: review opened. Branch pushed; draft PR #68 opened for CI. AC6, AC7
+  and AC9 evidence runs in flight (check, then seven harness runs); AC1-AC5 and AC8
+  evidence recorded in the Review section.
 
 ## Decisions
 
