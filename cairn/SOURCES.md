@@ -389,9 +389,10 @@ shelf and `pdftotext`. It exits non-zero on any mismatch.
 
 ## Open questions (need source adjudication)
 
-OQ-1 and OQ-2 are encoded as `skip()`-ed tests in `test-keying.R` so the suite stays
-green while the questions remain visible. **Neither has been resolved by editing
-`pid_items`** — that must not change without maintainer sign-off. OQ-3 carries no
+OQ-1 is encoded as a `skip()`-ed test in `test-keying.R` so the suite stays green
+while the question remains visible; OQ-2 was resolved on 2026-07-09 and its heading
+records how. **Neither was resolved by editing `pid_items`** — that must not change
+without maintainer sign-off. OQ-3 carries no
 such test: it records a disagreement among renderings of one name rather than a
 falsifiable keying assertion, and its instrument is
 `data-raw/verify_hitopsr_scale_name.R`, which cannot run in CI.

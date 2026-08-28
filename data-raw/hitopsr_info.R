@@ -48,8 +48,11 @@ usethis::use_data(hitopsr_subscales, overwrite = TRUE)
 # to the case conversion throughout. A `definition_scale_labels` map lived here
 # until M058, pairing this file's spelling of one scale against the abbreviated
 # form the keying table then used; the M058 rename made it inert and it was
-# removed. The `stopifnot` below is what catches a genuine drift, and is why no
-# such map is needed to notice one.
+# removed. The `stopifnot` below catches a stem-level drift -- a label that
+# converts to a stem the scale table does not have, or a duplicate -- but not a
+# casing-only divergence between the two files, since every casing of a name
+# converts to the same stem; `tests/testthat/test-scale-name-hitopsr.R` pins the
+# literal spelling for the one scale whose name was sourced.
 
 hitopsr_definitions <-
   readr::read_csv("data-raw/hitopsr_definitions.csv", show_col_types = FALSE) |>

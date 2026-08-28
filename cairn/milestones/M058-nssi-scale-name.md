@@ -191,6 +191,8 @@ D-041.
 
 - 2026-08-27: /milestone-review pass 2. All seven criteria re-verified with fresh evidence and the consistency gate passes in full (`cairn_validate` exit 0; every `r-package` toolchain check clean). The three-lens fan-out ran again fresh-context: both [S] lenses report no findings, the [O] lens 14, of which 2 are new this pass — stale prose in `R/available_scales.R` and its test claiming the two HiTOP-SR tables still disagree on one label, which this rename made false, and a `cairn/SOURCES.md` OQ preamble the branch reworded into saying OQ-2 is unresolved when its own heading marks it resolved. No finding qualifies under the return floor; all 14 go to Jeff at the gate.
 
+- 2026-08-27: gate triage. Jeff took the cheap-fixes option and authorized the merge. Six findings fixed on the branch (the two stale table-disagreement comments, the build script's overclaiming comment, the OQ preamble, NEWS's missing module break and its two wording defects); finding 12's doc note was written and reverted, because adding `?score_hitopsr` to AC2's enumerated allow-list is a criterion amendment rather than a review-side edit; the eight tooling findings were clustered onto the existing M035 `data-raw/` tooling candidate row, which also held ROADMAP at its line cap.
+
 ## Decisions
 
 - 2026-08-27 (RR04, advisory — ingested, no keying decision taken): the reviewer's holdings, recorded here because the adoption decision itself is Jeff's and its `DECISIONS.md` entry lands with AC6, when a string is adopted.
@@ -374,3 +376,29 @@ instruments, reported by the reviewer rather than shown to have let a defect
 through, and findings 2, 3, 4, 9 and 11-14 fall outside what any criterion
 quantifies over. So no finding returns the milestone from this gate; all 14 go
 to the maintainer for triage.
+
+### Triage at the gate
+
+Jeff chose the cheap-fixes option: fix the statements that are wrong or missing
+in what ships, and send the maintainer-run tooling gaps to one candidate row.
+
+- **Fixed on the branch — findings 2, 3, 4, 9, 13, 14.** The two comments
+  claiming the scale and definitions tables still disagree on one label now say
+  they agree and explain what the stem join actually protects against; the build
+  script's comment now says what its `stopifnot` does and does not catch, naming
+  the casing case it cannot see and the test that pins the literal spelling;
+  `cairn/SOURCES.md`'s OQ preamble now says only OQ-1 carries a skipped test and
+  that OQ-2 was resolved; NEWS gains the module half of the break, verified by
+  running it (`hitop_module("hitopsr", "NSSI")` aborts and `read_module()`
+  rejects a descriptor recording it — `available_scales()` takes no scale
+  argument, so the reviewer's mention of it was dropped), loses the reading that
+  attributed all 76 names to the paper, and is rewrapped.
+- **Reverted, then filed — finding 12.** The also-known-as note was added to
+  `?score_hitopsr` and reverted: AC2 enumerates its own sweep allow-list, so
+  adding a path is a criterion amendment, and that is not a review-side edit.
+  Filed on the candidate row instead.
+- **Follow-up row — findings 1, 5, 6, 7, 8, 10, 11, 12.** All are limits of the
+  two maintainer-run verifiers rather than defects in what shipped. Search-first
+  found the M035 `data-raw/` tooling row of the same class; the two are clustered
+  into one row, which also kept `cairn/ROADMAP.md` at its 60-line cap.
+- **Rejected — none.**
