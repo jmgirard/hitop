@@ -1,6 +1,6 @@
 # M061: The reliability family invents scale display names instead of reading them
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -128,7 +128,7 @@ spelling the table ships today and is unaffected by how that row settles.
       (`expect_equal(rel$scale, snakecase::to_title_case(names(scales)))`) — it derives
       its expectation by re-applying the transformation under test, which IP2 forbids —
       to compare against the canonical dataset column.
-- [ ] T7 Run the harness against the merge base and record its output;
+- [x] T7 Run the harness against the merge base and record its output;
       `devtools::document()`, `devtools::test()`, `devtools::check()`.
 - [x] T8 `NEWS.md`: the nine old→new name pairs and the `scale` → `Scale` rename, as a
       migration note. Two `cairn/DECISIONS.md` entries — the emitted-name alignment plus
@@ -217,6 +217,12 @@ spelling the table ships today and is unaffected by how that row settles.
   leaves Imports) appended to `cairn/DECISIONS.md`.
 - 2026-08-28: T9 done. `cairn/DESIGN.md` lines 70 and 106 corrected in place and
   marked; the embedded historical decision log's mention left verbatim (IP4).
+- 2026-08-28: T7 done. Characterization harness run against the merge base:
+  48 cells compared, 0 differ outside the display-name column, 40 carry a
+  display-name change (the 8 that do not are the module cells, whose three scales
+  were never among the nine). `devtools::document()` leaves no diff;
+  `devtools::test()` FAIL 0, WARN 0, SKIP 4, PASS 15500; `devtools::check()`
+  0 errors, 0 warnings, 0 notes. All nine tasks checked; status set to review.
 
 ## Decisions
 
