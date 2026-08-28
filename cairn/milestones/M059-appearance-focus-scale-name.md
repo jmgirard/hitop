@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP2
-- **Branch/PR:** `m059-appearance-focus-scale-name`
+- **Branch/PR:** `m059-appearance-focus-scale-name` — https://github.com/jmgirard/hitop/pull/65
 
 ## Goal
 
@@ -38,14 +38,14 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
 
 ## Acceptance criteria
 
-- [ ] AC1 `score_hitopsr()` returns `hsr_appearanceFocus` and
+- [x] AC1 `score_hitopsr()` returns `hsr_appearanceFocus` and
       `hsr_appearanceFocus_se`, and no column matching `body ?focus`
       case-insensitively, over a probe set varying `calc_se`, both `missing`
       settings and an NA-injected copy of `sim_hitopsr`. The scale's scored
       column equals a row mean recomputed by hand from items 16, 79, 201, 335
       and 350 — an independent recomputation, never the package's own output
       as truth — so no scored value changed with the name.
-- [ ] AC2 A keyed diff of `hitopsr_items`, `hitopsr_scales` and
+- [x] AC2 A keyed diff of `hitopsr_items`, `hitopsr_scales` and
       `hitopsr_definitions` against their merge-base copies — joined on `HSR`
       for the first and on the renamed scale for the other two, comparing every
       column and, for `hitopsr_scales`, the element names of the `itemNumbers`
@@ -54,14 +54,14 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
       those element names, and the row order the name induces. Item membership,
       reverse flags, item text and subscale assignment are unchanged, and
       `hitopsr_subscales` is identical to its merge-base copy.
-- [ ] AC3 `data-raw/verify_hitopsr_scale_name.R` reads the shelved manuscript at
+- [x] AC3 `data-raw/verify_hitopsr_scale_name.R` reads the shelved manuscript at
       run time and reports no discrepancy for either renamed scale — this one
       and M058's — comparing each committed name character for character
       against its Table 1 cell. It identifies the committed name by the scale's
       pinned item numbers rather than by grepping item text, and identifies the
       source cell on a row whose label and numeric cells share an extracted
       line as well as on one where the label stands alone.
-- [ ] AC4 `data-raw/verify_hitopsr_names.R` checks the shelf copy's sha256
+- [x] AC4 `data-raw/verify_hitopsr_names.R` checks the shelf copy's sha256
       against the pin in `data-raw/hitopsr_table1.R` and stops when it differs,
       then reports, for Table 1: the 13 section headers, each named; the 8
       members of the Superspectra and Spectra block, which are `Externalizing`,
@@ -75,21 +75,21 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
       It exits non-zero on any departure from that report, shown red under
       three planted defects: one extracted label suppressed, the watermark
       stripping disabled, and a label's trailing footnote marker truncated.
-- [ ] AC5 Within `inst/extdata/` and `pkgdown/assets/downloads/`, `git diff
+- [x] AC5 Within `inst/extdata/` and `pkgdown/assets/downloads/`, `git diff
       --name-only` against the merge base names exactly
       `hitopsr_{US,A4}.docx` and their two staged copies and nothing else;
       `hitop_artifacts` gains one row per rebuilt artifact — two, the manifest
       keying on `inst/extdata/` basenames — and
       `tests/testthat/test-artifacts.R` passes, which is what locks the staged
       copies to those rows.
-- [ ] AC6 No shipped surface still carries the old name: a test enumerates the
+- [x] AC6 No shipped surface still carries the old name: a test enumerates the
       package's exported datasets with `utils::data()` — never a hand-written
       list — and walks every character leaf and list-element name in each,
       asserting no match for `body ?focus` case-insensitively; and it extracts
       the document text of the four rebuilt Word files and asserts the same.
       NEWS names both renamed columns and the module-name break, and the
       `?hitopsr_items` note names `Body Focus` as the former name.
-- [ ] AC7 `devtools::document()` produces no diff, and `devtools::test()` and
+- [x] AC7 `devtools::document()` produces no diff, and `devtools::test()` and
       `devtools::check()` are clean.
 
 ## Coverage
@@ -163,7 +163,112 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
 - 2026-08-27: T7 done. NEWS's two HiTOP-SR rename entries were merged into one, per the implementation gate, and its position figures were measured rather than carried over: at v0.1.0 `hsr_nssi` sat at 448 and `hsr_nssi_se` at 524, `hsr_bodyFocus` at 412 and `hsr_bodyFocus_se` at 488; they are now 451/527 and 408/484. The entry's claims are enforced by three added test blocks — the four column positions, `hitop_module()` rejecting either retired name with the unknown-scale error rather than a bare failure, and `read_module()` rejecting a descriptor whose recorded scale name was rewritten to `Body Focus`. Its "no score changes" claim rests on AC2's keyed diff, which shows item membership and reverse flags unmoved; separately checked against a v0.1.0 worktree, where the whole scored matrix is identical after renaming the four columns. The `?hitopsr_items` note now names both former spellings.
 - 2026-08-27: completion. `devtools::document()` produces no further diff, `devtools::test()` is clean at 14771 passing with 1 skip (the pre-existing OQ-1 skip), and `devtools::check()` is 0 errors, 0 warnings, 0 notes. `cairn_validate` passes with 20 advisory warnings, all of them the legacy D-001-D-012 references that predate this branch. The line-ending policy check passes. Status set to `review`.
 - 2026-08-27: two ROADMAP edits. A new candidate row records that the manuscript prints `p-factor` 15 times where `hitopbr_scales$Scale` ships `p-Factor` and the capitalized form appears nowhere in the document — surfaced by AC4's second criteria audit, kept out of AC4 because it is a HiTOP-BR name outside D-042's allowance, and cheap only in the sense that both spellings derive the same stem. The existing `data-raw/` maintainer-tooling row was corrected in place: its claim that `verify_hitopsr_scale_name.R` greps item text no longer holds, and `verify_hitopsr_rename.R`'s new staleness was added there per the implementation gate. Removing three cosmetic blank separators in the Candidates block kept the file at 57 lines against the 60-line cap; the byte budget stays over at 33,914, the standing overage.
+- 2026-08-28: review — all seven acceptance criteria executed with fresh evidence and ticked; consistency gate passed (`cairn_validate` clean, `document()` no-diff, `pkgdown::check_pkgdown()` clean, `check()` 0/0/0, line endings clean). Draft PR #65 opened.
 
 ## Decisions
 
 ## Review
+
+PR: https://github.com/jmgirard/hitop/pull/65 (draft while the review ran).
+Branch already contained `origin/main` at review time, so no merge was needed;
+tree clean.
+
+### Acceptance-criterion evidence (2026-08-28, all measured this session)
+
+- **AC1** — 8 probes over `score_hitopsr(sim_hitopsr, items = paste0("hsr_", 1:405))`
+  crossing whole vs. one-NA-per-column data, `calc_se` on/off and
+  `missing = "available"/"complete"`: `hsr_appearanceFocus` present in all 8,
+  `hsr_appearanceFocus_se` in the 4 `calc_se = TRUE` probes, and no column
+  matching `body ?focus` case-insensitively in any of the 8. A hand row mean of
+  items 16, 79, 201, 335 and 350 — all five read as forward-keyed from
+  `hitopsr_items$Reverse` before use, computed outside the package — equals the
+  scored column exactly (max absolute difference 0).
+- **AC2** — Keyed diff against the merge-base `.rda` copies read with
+  `git show <merge-base>:data/*.rda`. `hitopsr_items` joined on `HSR` (405 rows
+  both sides, identical column sets): the only difference is `Scale` on the 5
+  rows HSR 16/79/201/335/350, `Body Focus` to `Appearance Focus`; item text,
+  reverse flags and row order unchanged. `hitopsr_scales` (76 rows) and
+  `hitopsr_definitions` (93 rows) joined on the renamed scale: differences only
+  in `Scale`, in the derived `camelCase` stem (`bodyFocus` to
+  `appearanceFocus`), and in row order. The `itemNumbers` list-column's element
+  names change exactly `bodyFocus` to `appearanceFocus` and nothing else, and
+  that element's item numbers are identical (16, 79, 201, 335, 350); the
+  `itemdata` list-column's per-element values and names are unchanged on every
+  row. `data/hitopsr_subscales.rda` is byte-identical to its merge-base copy
+  (`cmp`, and it does not appear in the branch's changed-file list).
+- **AC3** — `Rscript data-raw/verify_hitopsr_scale_name.R` exits 0. It confirms
+  the shelf sha256 pin, extracts 114 Table 1 rows (13 section headers, 101
+  labels; 66 with-cells, 48 label-only), and matches both committed names
+  character for character: `Non-suicidal Self-injury` to a label-only row on
+  p. 49 and `Appearance Focus` to a with-cells row on p. 49 — both row shapes
+  exercised by the pinned scales themselves. The committed side is read from
+  `data-raw/hitopsr_items.csv` by pinned item numbers
+  (46/215/235/298/387/404 and 16/79/201/335/350), not by grepping item text;
+  the script asserts each pinned set resolves to exactly one scale.
+- **AC4** — `Rscript data-raw/verify_hitopsr_names.R` exits 0 and reports the
+  13 section headers by name, the 8-member Superspectra and Spectra block
+  (`Externalizing`, `p-factor`, `Internalizing`, `Somatoform`, `Detachment`,
+  `Thought Disorder`, `Disinhibition`, `Antagonism`), 93 extracted labels
+  outside that block against the 93 the paper's own prose states on shelf
+  pp. 5, 17 and 24, and a symmetric difference whose only members are
+  source-only `Manic Energy†` and package-only `Manic Energy`. Four planted
+  defects each exited 1 with a named departure: suppressing the `Workaholism`
+  label reported 92 labels and a package-only `Workaholism`; disabling the
+  watermark stripping reported 108 labels, five surviving fragments and a
+  corrupted block listing; truncating a trailing footnote dagger emptied both
+  sides of the difference and tripped the marker control; and a falsified
+  sha256 pin stopped the run before extraction.
+- **AC5** — `git diff --name-only <merge-base>..HEAD -- inst/extdata
+  pkgdown/assets/downloads` names exactly four paths: `inst/extdata/hitopsr_US.docx`,
+  `inst/extdata/hitopsr_A4.docx` and their two `pkgdown/assets/downloads/`
+  copies, and nothing else in either directory. `hitop_artifacts` goes 35 rows
+  to 37 — one per rebuilt artifact, the manifest keying on `inst/extdata/`
+  basenames — the two added rows being `hitopsr_US.docx` and `hitopsr_A4.docx`.
+  `tests/testthat/test-artifacts.R` passes, 121 assertions, 0 failures.
+- **AC6** — A walk over the 21 datasets `utils::data(package = "hitop")`
+  enumerates, descending every list element and comparing every character leaf
+  and every element name, finds 0 matches for `body ?focus` case-insensitively.
+  Extracting `word/*.xml` from all four rebuilt Word files gives 0 occurrences
+  of `body ?focus` and 1 of `Appearance Focus` in each. NEWS names
+  `hsr_appearanceFocus` and `hsr_appearanceFocus_se` beside the M058 pair, and
+  states that `hitop_module()` no longer accepts `"Body Focus"` and that
+  `read_module()` rejects a descriptor recording it. `man/hitopsr_items.Rd`
+  names `Body Focus` as the name used here before version 0.2.0.
+- **AC7** — `devtools::document()` produces no diff (`git status` after the run
+  names only the milestone file this review is writing). `devtools::test()` is
+  clean: 14771 passing, 0 failures, 0 warnings, 1 skip — the pre-existing OQ-1
+  skip, so AC2's and AC5's merge-base tests did run rather than skipping.
+  `devtools::check()` is `Status: OK`, 0 errors / 0 warnings / 0 notes, 4m 0.4s.
+
+
+All seven criteria pass. No `Driving RR:` on this milestone, so there are no
+carried numeric projections to set against measured outcomes.
+
+### Consistency gate (2026-08-28)
+
+Universal cairn-file checks:
+
+- `cairn_validate.py` exits 0, all checks PASS, including `scaffold present`
+  and `coverage complete`. 22 advisory warnings, every one a dangling
+  `D-001`–`D-012` token in files that predate this branch; the two attributed
+  to this milestone file are its own work-log prose naming that legacy range.
+- `cairn_impact.py --changed` skipped: the diff does not touch `cairn/DESIGN.md`,
+  so no IP/GP principle changed.
+
+Toolchain checks, from the `r-package` profile's `consistency-gate` slot:
+
+- `devtools::document()` produces no diff.
+- Generated files (`NAMESPACE`, `man/`, `data/*.rda`) all regenerate — the
+  no-diff `document()` run plus the `data-raw/` rebuild recorded under AC2/AC5.
+- README: `README.Rmd` is unmodified on this branch and both README files last
+  changed in the same commit, so they are in sync.
+- `pkgdown::check_pkgdown()`: no problems found.
+- `NEWS.md` carries the user-visible entry (AC6 evidence above); no milestone
+  numbers in it.
+- No new top-level files. The three added files are `data-raw/hitopsr_table1.R`,
+  `data-raw/verify_hitopsr_names.R` and `tests/testthat/helper-merge-base.R`,
+  all under directories already covered; `check()` reports 0 notes.
+- `devtools::check()` clean, as recorded for AC7.
+- `data-raw/check_line_endings.R` passes.
+
+Gate result: pass.
