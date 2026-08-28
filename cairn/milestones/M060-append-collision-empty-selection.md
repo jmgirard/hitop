@@ -1,6 +1,6 @@
 # M060: The scoring and conversion family refuses two argument shapes it lets fall through
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -117,22 +117,22 @@ an empty selection aborts.
       `\section{Errors}`).
 - [x] **T8.** `devtools::document()` + `devtools::test()` clean; confirm the
       shipped behavior matches D-045(a)-(d) as written at the plan gate.
-- [ ] **T9.** Repair AC1 (defect return 1): collapse the collision list without
+- [x] **T9.** Repair AC1 (defect return 1): collapse the collision list without
       cli's `vec_trunc` elision, place each `qty()` beside the marker it governs,
       list collisions in the caller's column order, and replace the loop's
       `skip_if` with an asserted single-column exemption so all seven exports are
       probed. New probes for output width beyond 20, headline number, and a
       collision ahead of every other column of `data`.
-- [ ] **T10.** Repair the consistency gate: guard `test-error-prose.R`'s
+- [x] **T10.** Repair the consistency gate: guard `test-error-prose.R`'s
       `DESCRIPTION` read with the same `skip_if` every other source-tree read in
       that file carries, so `devtools::check()` skips rather than errors.
-- [ ] **T11.** Review findings 6-11: correct the empty-selection prose that
+- [x] **T11.** Review findings 6-11: correct the empty-selection prose that
       described the rejected design alternative as prior behavior, name both
       condition classes on the pages that signal them, move `validity_pid5()`'s
       collision refusal ahead of its `srange` warning as at the other four sites,
       give `validate_nonempty_selection()`'s `arg` a default, and use
       `between()`'s `info`.
-- [ ] **T12.** `devtools::document()` no diff, `devtools::test()` and
+- [x] **T12.** `devtools::document()` no diff, `devtools::test()` and
       `devtools::check()` clean; re-run T1's harness against the repaired branch.
 
 ## Work log
@@ -161,6 +161,8 @@ an empty selection aborts.
 - 2026-08-28: T10 — `test-error-prose.R`'s `DESCRIPTION` read is guarded by the same `skip_if(!file.exists(...))` every other source-tree read in that file carries, so it skips under `R CMD check` as the file's header says rather than erroring.
 - 2026-08-28: T11 — review findings 6-11. The empty-selection prose on `norm_pid5()`, `interval_hitopsr()` and `rank_scales()` no longer says the refusal replaces "a silent return of `data` unchanged", which described the rejected design alternative rather than any released behavior; `NEWS.md` already described the real prior behavior and is unchanged. Both condition classes are now named on the pages that signal them (seven for the collision, three for the empty selection), asserted in the same cut passages and asserted absent from the four non-selection pages; proven able to fail by planting a renamed class in two Rd files. `validity_pid5()`'s collision refusal moved ahead of its `srange` warning, as at the other four sites, with a test that a colliding call raises no warning and a control showing the same call warns without the collision — red against the prior order. `validate_nonempty_selection()`'s `arg` gained a default and `between()` now uses its `info`.
 - 2026-08-28: checkpoint, half-done. T9-T11's code, tests and docs are written and each new check was proven able to fail on a planted defect, but the profile's verify slot has not yet been run clean over the whole tree at this state — `devtools::test()` was still running at the checkpoint and `devtools::check()` has not been run since the `DESCRIPTION` guard landed. T9-T12 stay unticked until it is.
+- 2026-08-28: T12 — `devtools::document()` reproduces the committed `man/` with no further diff; `devtools::test()` FAIL 0, WARN 0, SKIP 4, PASS 15218 (one fewer skip than before the repair: the multi-column probe no longer skips); `devtools::check()` 0 errors, 0 warnings, 0 notes, so the `test-error-prose.R` error the review found is gone. T1's harness re-run against the branch at 1bb0f2d, merge base 108f126: 7 probes each side, 7 calls compared, 0 differ; `validity_pid5()`'s six conditions identical on both sides.
+- 2026-08-28: repair complete; status set to `review`. AC1's checkbox stays unticked for the review to verify against the amended wording.
 
 ## Decisions
 
