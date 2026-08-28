@@ -57,7 +57,7 @@ row per artifact build and 7 columns:
 
 ``` r
 hitop_artifacts
-#> # A tibble: 35 × 7
+#> # A tibble: 37 × 7
 #>    file            instrument format instrument_version build_date md5   changes
 #>    <chr>           <chr>      <chr>  <chr>              <date>     <chr> <chr>  
 #>  1 hitopbr_A4.docx HiTOP-BR   docx_… 1.0                2026-07-16 f629… Versio…
@@ -70,5 +70,5 @@ hitop_artifacts
 #>  8 hitophsum_redc… HiTOP-HSUM redcap 1.0                2026-07-16 e308… Versio…
 #>  9 hitophsum_US.d… HiTOP-HSUM docx_… 1.0                2026-07-16 116c… Versio…
 #> 10 hitopsr_A4.docx HiTOP-SR   docx_… 1.0                2026-07-16 aec8… Versio…
-#> # ℹ 25 more rows
+#> # ℹ 27 more rows
 ```

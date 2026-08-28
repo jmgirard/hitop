@@ -71,21 +71,21 @@ scores <- score_hitopsr(
 )
 scores
 #> # A tibble: 411 × 76
-#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss hsr_bingeEating
-#>              <dbl>                  <dbl>            <dbl>           <dbl>
-#>  1             2                     1.12             1               1.67
-#>  2             1.4                   1.75             1               2.67
-#>  3             2.2                   2.12             2               2.33
-#>  4             1.2                   1.25             1               2.33
-#>  5             2                     1.88             2               2.33
-#>  6             1                     1.25             1               1.33
-#>  7             1                     1                1.67            1.67
-#>  8             1.6                   1.62             1               1.33
-#>  9             1.4                   1.25             1.67            2   
-#> 10             1.2                   1.38             1               1   
+#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss
+#>              <dbl>                  <dbl>               <dbl>            <dbl>
+#>  1             2                     1.12                 1.2             1   
+#>  2             1.4                   1.75                 2.2             1   
+#>  3             2.2                   2.12                 1.4             2   
+#>  4             1.2                   1.25                 1.6             1   
+#>  5             2                     1.88                 1.6             2   
+#>  6             1                     1.25                 1               1   
+#>  7             1                     1                    1               1.67
+#>  8             1.6                   1.62                 1.4             1   
+#>  9             1.4                   1.25                 1.8             1.67
+#> 10             1.2                   1.38                 1.4             1   
 #> # ℹ 401 more rows
-#> # ℹ 72 more variables: hsr_bodilyDistress <dbl>, hsr_bodyDissatisfaction <dbl>,
-#> #   hsr_bodyFocus <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
+#> # ℹ 72 more variables: hsr_bingeEating <dbl>, hsr_bodilyDistress <dbl>,
+#> #   hsr_bodyDissatisfaction <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
 #> #   hsr_cleaning <dbl>, hsr_cognitiveProblems <dbl>,
 #> #   hsr_conversionSymptoms <dbl>, hsr_counting <dbl>,
 #> #   hsr_dietaryRestraint <dbl>, hsr_difficultiesReachingOrgasm <dbl>,
@@ -147,21 +147,21 @@ scores <- score_hitopsr(
 )
 scores
 #> # A tibble: 411 × 76
-#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss hsr_bingeEating
-#>              <dbl>                  <dbl>            <dbl>           <dbl>
-#>  1             2                     1.12             1               1.67
-#>  2             1.4                   1.75             1               2.67
-#>  3             2.2                   2.12             2               2.33
-#>  4             1.2                   1.25             1               2.33
-#>  5             2                     1.88             2               2.33
-#>  6             1                     1.25             1               1.33
-#>  7             1                     1                1.67            1.67
-#>  8             1.6                   1.62             1               1.33
-#>  9             1.4                   1.25             1.67            2   
-#> 10             1.2                   1.38             1               1   
+#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss
+#>              <dbl>                  <dbl>               <dbl>            <dbl>
+#>  1             2                     1.12                 1.2             1   
+#>  2             1.4                   1.75                 2.2             1   
+#>  3             2.2                   2.12                 1.4             2   
+#>  4             1.2                   1.25                 1.6             1   
+#>  5             2                     1.88                 1.6             2   
+#>  6             1                     1.25                 1               1   
+#>  7             1                     1                    1               1.67
+#>  8             1.6                   1.62                 1.4             1   
+#>  9             1.4                   1.25                 1.8             1.67
+#> 10             1.2                   1.38                 1.4             1   
 #> # ℹ 401 more rows
-#> # ℹ 72 more variables: hsr_bodilyDistress <dbl>, hsr_bodyDissatisfaction <dbl>,
-#> #   hsr_bodyFocus <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
+#> # ℹ 72 more variables: hsr_bingeEating <dbl>, hsr_bodilyDistress <dbl>,
+#> #   hsr_bodyDissatisfaction <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
 #> #   hsr_cleaning <dbl>, hsr_cognitiveProblems <dbl>,
 #> #   hsr_conversionSymptoms <dbl>, hsr_counting <dbl>,
 #> #   hsr_dietaryRestraint <dbl>, hsr_difficultiesReachingOrgasm <dbl>,
@@ -184,25 +184,25 @@ scores <- score_hitopsr(
 )
 scores
 #> # A tibble: 411 × 76
-#>    hitop_agoraphobia hitop_antisocialBeha…¹ hitop_appetiteLoss hitop_bingeEating
-#>                <dbl>                  <dbl>              <dbl>             <dbl>
-#>  1               2                     1.12               1                 1.67
-#>  2               1.4                   1.75               1                 2.67
-#>  3               2.2                   2.12               2                 2.33
-#>  4               1.2                   1.25               1                 2.33
-#>  5               2                     1.88               2                 2.33
-#>  6               1                     1.25               1                 1.33
-#>  7               1                     1                  1.67              1.67
-#>  8               1.6                   1.62               1                 1.33
-#>  9               1.4                   1.25               1.67              2   
-#> 10               1.2                   1.38               1                 1   
+#>    hitop_agoraphobia hitop_antisocialBehavior hitop_appearanceFocus
+#>                <dbl>                    <dbl>                 <dbl>
+#>  1               2                       1.12                   1.2
+#>  2               1.4                     1.75                   2.2
+#>  3               2.2                     2.12                   1.4
+#>  4               1.2                     1.25                   1.6
+#>  5               2                       1.88                   1.6
+#>  6               1                       1.25                   1  
+#>  7               1                       1                      1  
+#>  8               1.6                     1.62                   1.4
+#>  9               1.4                     1.25                   1.8
+#> 10               1.2                     1.38                   1.4
 #> # ℹ 401 more rows
-#> # ℹ abbreviated name: ¹​hitop_antisocialBehavior
-#> # ℹ 72 more variables: hitop_bodilyDistress <dbl>,
-#> #   hitop_bodyDissatisfaction <dbl>, hitop_bodyFocus <dbl>,
+#> # ℹ 73 more variables: hitop_appetiteLoss <dbl>, hitop_bingeEating <dbl>,
+#> #   hitop_bodilyDistress <dbl>, hitop_bodyDissatisfaction <dbl>,
 #> #   hitop_callousness <dbl>, hitop_checking <dbl>, hitop_cleaning <dbl>,
 #> #   hitop_cognitiveProblems <dbl>, hitop_conversionSymptoms <dbl>,
-#> #   hitop_counting <dbl>, hitop_dietaryRestraint <dbl>, …
+#> #   hitop_counting <dbl>, hitop_dietaryRestraint <dbl>,
+#> #   hitop_difficultiesReachingOrgasm <dbl>, hitop_diseaseConviction <dbl>, …
 ```
 
 ## Simple Standard Errors
@@ -229,22 +229,22 @@ scores <- score_hitopsr(
 )
 scores
 #> # A tibble: 411 × 152
-#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss hsr_bingeEating
-#>              <dbl>                  <dbl>            <dbl>           <dbl>
-#>  1             2                     1.12             1               1.67
-#>  2             1.4                   1.75             1               2.67
-#>  3             2.2                   2.12             2               2.33
-#>  4             1.2                   1.25             1               2.33
-#>  5             2                     1.88             2               2.33
-#>  6             1                     1.25             1               1.33
-#>  7             1                     1                1.67            1.67
-#>  8             1.6                   1.62             1               1.33
-#>  9             1.4                   1.25             1.67            2   
-#> 10             1.2                   1.38             1               1   
+#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss
+#>              <dbl>                  <dbl>               <dbl>            <dbl>
+#>  1             2                     1.12                 1.2             1   
+#>  2             1.4                   1.75                 2.2             1   
+#>  3             2.2                   2.12                 1.4             2   
+#>  4             1.2                   1.25                 1.6             1   
+#>  5             2                     1.88                 1.6             2   
+#>  6             1                     1.25                 1               1   
+#>  7             1                     1                    1               1.67
+#>  8             1.6                   1.62                 1.4             1   
+#>  9             1.4                   1.25                 1.8             1.67
+#> 10             1.2                   1.38                 1.4             1   
 #> # ℹ 401 more rows
-#> # ℹ 148 more variables: hsr_bodilyDistress <dbl>,
-#> #   hsr_bodyDissatisfaction <dbl>, hsr_bodyFocus <dbl>, hsr_callousness <dbl>,
-#> #   hsr_checking <dbl>, hsr_cleaning <dbl>, hsr_cognitiveProblems <dbl>,
+#> # ℹ 148 more variables: hsr_bingeEating <dbl>, hsr_bodilyDistress <dbl>,
+#> #   hsr_bodyDissatisfaction <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
+#> #   hsr_cleaning <dbl>, hsr_cognitiveProblems <dbl>,
 #> #   hsr_conversionSymptoms <dbl>, hsr_counting <dbl>,
 #> #   hsr_dietaryRestraint <dbl>, hsr_difficultiesReachingOrgasm <dbl>,
 #> #   hsr_diseaseConviction <dbl>, hsr_dishonesty <dbl>, …
@@ -284,11 +284,11 @@ reliability_hitopsr(
 #>    <chr>                 <int> <dbl>  <dbl>
 #>  1 Agoraphobia               5 0.419  0.431
 #>  2 Antisocial Behavior       8 0.545  0.553
-#>  3 Appetite Loss             3 0.367 NA    
-#>  4 Binge Eating              3 0.110  0.218
-#>  5 Bodily Distress           6 0.396  0.469
-#>  6 Body Dissatisfaction      4 0.294 NA    
-#>  7 Body Focus                5 0.394  0.436
+#>  3 Appearance Focus          5 0.394  0.436
+#>  4 Appetite Loss             3 0.367 NA    
+#>  5 Binge Eating              3 0.110  0.218
+#>  6 Bodily Distress           6 0.396  0.469
+#>  7 Body Dissatisfaction      4 0.294 NA    
 #>  8 Callousness               6 0.482  0.490
 #>  9 Checking                  5 0.601  0.605
 #> 10 Cleaning                  6 0.480  0.526

@@ -33,6 +33,22 @@ or threatening to hurt someone, or hurting animals.
 
 ------------------------------------------------------------------------
 
+## Appearance Focus
+
+###### Clinician Brief
+
+Excessive focus on appearance, with frequent checking, grooming, and
+concern about looks
+
+###### Client-Facing
+
+Strong focus on appearance and frequent attention to how you look.
+Examples include spending a lot of time looking in mirrors or
+reflections, grooming or getting ready, and paying close attention to
+your appearance before going out.
+
+------------------------------------------------------------------------
+
 ## Appetite Loss
 
 ###### Clinician Brief
@@ -93,22 +109,6 @@ Ongoing unhappiness with your body shape, attractiveness, or perceived
 flaws. Examples include comparing your body to others, wishing to change
 certain features, feeling dissatisfied with your shape, or disliking
 your weight on the scale.
-
-------------------------------------------------------------------------
-
-## Body Focus
-
-###### Clinician Brief
-
-Excessive focus on appearance, with frequent checking, grooming, and
-concern about looks
-
-###### Client-Facing
-
-Strong focus on appearance and frequent attention to how you look.
-Examples include spending a lot of time looking in mirrors or
-reflections, grooming or getting ready, and paying close attention to
-your appearance before going out.
 
 ------------------------------------------------------------------------
 

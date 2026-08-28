@@ -123,6 +123,14 @@ named in full there as Non-suicidal Self-injury. Item text, item
 numbers, response options, and every other scale name are unchanged.  
 `hitopsr_A4.docx`, `hitopsr_US.docx`
 
+2026-08-27
+
+One scale's name on the scoring page is corrected to the spelling the
+instrument's introduction paper prints, Appearance Focus. Item text,
+item numbers, response options, and every other scale name are
+unchanged.  
+`hitopsr_A4.docx`, `hitopsr_US.docx`
+
 2026-07-16
 
 Versioning system introduced: files renamed from the \_1.0\_ filename

@@ -103,21 +103,21 @@ omega), use
 # Score all HiTOP-SR scales from the simulated data
 score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
 #> # A tibble: 100 × 76
-#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss hsr_bingeEating
-#>              <dbl>                  <dbl>            <dbl>           <dbl>
-#>  1             2.8                   2.75             2.67            2.67
-#>  2             2.6                   2.75             3               2.33
-#>  3             2.4                   2.75             2.67            2.33
-#>  4             2.4                   2.38             2               2.67
-#>  5             2.6                   2.5              2               2.67
-#>  6             2.4                   3.12             2.67            2.33
-#>  7             2.6                   2.38             2.33            1.33
-#>  8             3                     2.38             2.67            1.67
-#>  9             2.4                   2.38             1.67            2.33
-#> 10             2.4                   2                2.33            1.67
+#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss
+#>              <dbl>                  <dbl>               <dbl>            <dbl>
+#>  1             2.8                   2.75                 2.8             2.67
+#>  2             2.6                   2.75                 2.8             3   
+#>  3             2.4                   2.75                 2.4             2.67
+#>  4             2.4                   2.38                 3.4             2   
+#>  5             2.6                   2.5                  1.8             2   
+#>  6             2.4                   3.12                 2.2             2.67
+#>  7             2.6                   2.38                 2.4             2.33
+#>  8             3                     2.38                 3.2             2.67
+#>  9             2.4                   2.38                 2.2             1.67
+#> 10             2.4                   2                    3               2.33
 #> # ℹ 90 more rows
-#> # ℹ 72 more variables: hsr_bodilyDistress <dbl>, hsr_bodyDissatisfaction <dbl>,
-#> #   hsr_bodyFocus <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
+#> # ℹ 72 more variables: hsr_bingeEating <dbl>, hsr_bodilyDistress <dbl>,
+#> #   hsr_bodyDissatisfaction <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
 #> #   hsr_cleaning <dbl>, hsr_cognitiveProblems <dbl>,
 #> #   hsr_conversionSymptoms <dbl>, hsr_counting <dbl>,
 #> #   hsr_dietaryRestraint <dbl>, hsr_difficultiesReachingOrgasm <dbl>,

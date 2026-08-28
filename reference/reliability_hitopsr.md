@@ -92,11 +92,11 @@ reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
 #>    <chr>                 <int>    <dbl>
 #>  1 Agoraphobia               5 -0.108  
 #>  2 Antisocial Behavior       8 -0.136  
-#>  3 Appetite Loss             3  0.00603
-#>  4 Binge Eating              3  0.0509 
-#>  5 Bodily Distress           6  0.0879 
-#>  6 Body Dissatisfaction      4 -0.0891 
-#>  7 Body Focus                5 -0.0282 
+#>  3 Appearance Focus          5 -0.0282 
+#>  4 Appetite Loss             3  0.00603
+#>  5 Binge Eating              3  0.0509 
+#>  6 Bodily Distress           6  0.0879 
+#>  7 Body Dissatisfaction      4 -0.0891 
 #>  8 Callousness               6 -0.347  
 #>  9 Checking                  5 -0.247  
 #> 10 Cleaning                  6  0.174  
