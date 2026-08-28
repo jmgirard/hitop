@@ -102,9 +102,14 @@ if (length(wrapped)) {
 ## table-cell signature, since the paper's prose always continues the sentence
 ## on the same line. The scan is over every page rather than over pages chosen
 ## by the committed string, which would make the comparison circular.
+## A trailing parenthetical is admitted into the cell rather than excluded from
+## the match: AC1 stops on a glossed cell rather than stripping the gloss, and a
+## cell regex that refused to match one would report "found 0" instead, leaving
+## that branch unreachable.
+cell_pattern <- paste0("^", pattern, "( *\\([^)]*\\))?$")
 cells <- unique(unlist(lapply(pages, function(p) {
   lines <- trimws(p)
-  lines[grepl(paste0("^", pattern, "$"), lines)]
+  lines[grepl(cell_pattern, lines)]
 })))
 
 cat("\nCell read from the paper's tables: ",
