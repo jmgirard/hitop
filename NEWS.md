@@ -3,6 +3,34 @@
 This release makes several **breaking** API changes to stabilize the interface
 before a CRAN submission.
 
+* **Scoring and converting now refuse two argument shapes they used to let
+  fall through.** Re-running `score_pid5()`, `score_hitopsr()`,
+  `score_hitopbr()`, `validity_pid5()`, `norm_pid5()`, `rank_scales()` or
+  `interval_hitopsr()` with `append = TRUE` over data that already holds the
+  columns that call produces is now an error naming every colliding column,
+  where before it reached tibble's duplicated-names complaint, which named
+  neither the argument nor the function. Nothing is overwritten: a same-named
+  column in your data need not have come from this package, so it is not
+  destroyed on your behalf. Pass `append = FALSE` to get only the new columns,
+  or drop the colliding columns first. The condition is classed
+  `hitop_append_collision`.
+
+  Separately, a `scores` argument to `norm_pid5()` or `interval_hitopsr()`, or
+  a `scales` argument to `rank_scales()`, that names no columns is now an error
+  rather than a base-R complaint about differing numbers of rows -- and, in
+  `rank_scales()`, rather than a report that `top` was out of range "between 1
+  and 0", which blamed a consequence of the empty selection for its cause. The
+  empty selection is reported ahead of the other selection arguments, so the
+  cause named is the empty selection itself; an invalid `data` is still
+  reported first. The condition is classed `hitop_empty_selection`. Both
+  classes are part of the package's public contract.
+
+  Scoring and converting return exactly what they returned before for every
+  call that still succeeds; no arithmetic changed. Two calls that used to
+  succeed no longer do: `norm_pid5()` and `interval_hitopsr()` with
+  `append = FALSE` and an empty `scores` returned an empty tibble, and now
+  raise the empty-selection error along with every other shape of that call.
+
 * **`interval_hitopsr()` puts a confidence interval around a HiTOP-SR scale
   score.** Give it scored columns and it returns three per scale: `_est`, a
   regression-based estimate of the respondent's true score, and `_lo` and `_hi`,

@@ -47,6 +47,18 @@
 #' added after the existing columns of \code{data} (whose order is preserved);
 #' when \code{append = FALSE} the result is a one-column tibble.
 #'
+#'   **Errors.** A `scales` argument that names no columns is an error, reported
+#'   ahead of the other selection arguments, so the cause named is the empty
+#'   selection and not a consequence of it. The condition is classed
+#'   `hitop_empty_selection`, so a caller can catch this refusal by name.
+#'
+#'   With `append = TRUE`, a column of `data` whose name this call would also
+#'   produce is an error rather than an overwrite or a duplicated column: the
+#'   message names every colliding column. Re-run with `append = FALSE` to
+#'   return only the new columns, or drop the colliding columns from `data`
+#'   first. The condition is classed
+#'   `hitop_append_collision`, so a caller can catch this refusal by name.
+#'
 #' @return A \link[tibble]{tibble}. If \code{append = TRUE}, it is \code{data}
 #'   with an added character column named by \code{name}. If \code{append =
 #'   FALSE}, it is a one-column tibble (named by \code{name}) whose values are
@@ -73,6 +85,12 @@ rank_scales <- function(
   ## Validate args
   validate_data(data)
   validate_scales(scales)
+  ## A selection that names no column aborts here, after its own type check and
+  ## ahead of the rest of the selection family (D-045(b)). Before this, a
+  ## zero-length `scales` made validate_count() below report `top` as out of
+  ## range "between 1 and 0" -- a consequence of the empty selection blamed as
+  ## its cause.
+  validate_nonempty_selection(scales, arg = "scales")
   validate_string(prefix, arg = "prefix", allow_null = TRUE)
   ## `top` cannot ask for more scales than were supplied, so its upper bound is
   ## the length of `scales` rather than a constant.
@@ -116,6 +134,15 @@ rank_scales <- function(
   col_names <- colnames(data_scales)
   if (!is.null(prefix)) {
     col_names <- strip_prefix(col_names, prefix)
+  }
+
+  ## Refuse an append that would collide with a column `data` already holds
+  ## (D-045(a)). This function appends exactly one column, under the name the
+  ## caller gave in `name`. Placed after the `reverse`/`srange` block so every
+  ## existing complaint still reports first, and before the ranking below, which
+  ## is the output column's content.
+  if (append) {
+    validate_no_output_collision(name, data)
   }
 
   ## Find the top scales per subject

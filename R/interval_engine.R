@@ -48,6 +48,10 @@ interval_engine <- function(
   ## actually wrote, rather than the `items` the scoring family passes these
   ## validators.
   validate_scales(scores, arg = "scores", call = call)
+  ## A selection that names no column aborts here, after its own type check and
+  ## ahead of `srange`, `prefix`, `level` and `append` (D-045(b)). `data` is
+  ## checked above and is exempt.
+  validate_nonempty_selection(scores, arg = "scores", call = call)
   validate_item_uniqueness(scores, arg = "scores", unit = "score", call = call)
   validate_items_present(data, scores, arg = "scores", call = call)
   validate_range(srange, call = call)
@@ -73,6 +77,20 @@ interval_engine <- function(
     },
     call = call
   )
+
+  ## Refuse an append that would collide with a column `data` already holds
+  ## (D-045(a)). Every requested column gets all three suffixes whatever its
+  ## coverage, so the output names follow from `col_names` alone. Placed before
+  ## the two reports below so a colliding call is told about the collision
+  ## alone, not about an unusable coding or an uncovered scale on the way to a
+  ## result it will not return.
+  if (append) {
+    validate_no_output_collision(
+      paste0(rep(col_names, each = 3L), c("_est", "_lo", "_hi")),
+      data,
+      call = call
+    )
+  }
 
   ## The reference mean and SD are printed on one response coding. A score
   ## computed on any other coding is a different quantity -- a shift moves the

@@ -29,6 +29,13 @@
 #'   version computes only the percent-missing (PNA) index and no cut-score
 #'   scales.
 #'
+#'   **Errors.** With `append = TRUE`, a column of `data` whose name this call
+#'   would also produce is an error rather than an overwrite or a duplicated
+#'   column: the message names every colliding column. Re-run with
+#'   `append = FALSE` to return only the new columns, or drop the colliding
+#'   columns from `data` first. The condition is classed
+#'   `hitop_append_collision`, so a caller can catch this refusal by name.
+#'
 #' @references Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
 #'   E. H. (2016). Development of a Response Inconsistency Scale for the
 #'   Personality Inventory for DSM-5. *Journal of Personality Assessment,
@@ -85,6 +92,29 @@ validity_pid5 <- function(
   validate_string(prefix, arg = "prefix")
   validate_flag(append, arg = "append")
 
+  ## Refuse an append that would collide with a column `data` already holds
+  ## (D-045(a)). The output is the prefix plus PNA and, for FULL/SF, the four
+  ## cutoff-scale abbreviations, all of which are known from `version` alone --
+  ## so the refusal lands before any column is built and after the existing
+  ## argument checks. It also precedes the `srange` warning below, as the four
+  ## other appending sites precede theirs: a colliding call returns nothing, so
+  ## it is told about the collision alone rather than warned about a result it
+  ## will not receive. The abbreviations are resolved here and reused below, so
+  ## the enumeration and the columns cannot drift apart.
+  cutoff_vars <- if (!version %in% c("FULL", "SF")) {
+    stats::setNames(character(0), character(0))
+  } else if (version == "FULL") {
+    c(inc = "INC", ors = "ORS", prd = "PRD", sdtd = "SDTD")
+  } else {
+    c(inc = "INCS", ors = "ORSS", prd = "PRDS", sdtd = "SDTDS")
+  }
+  if (append) {
+    validate_no_output_collision(
+      paste0(prefix, c("PNA", unname(cutoff_vars))),
+      data
+    )
+  }
+
   ## The published PRD and SD-TD cut scores are raw sums compared to fixed
   ## thresholds (10, 11, 19) that assume items coded 0-3; unlike INC/ORS they do
   ## not adapt to `srange`, so a non-0-3 coding silently mis-flags respondents.
@@ -112,7 +142,7 @@ validity_pid5 <- function(
   ## For FULL and SF versions
   if (version %in% c("FULL", "SF")) {
     ### Response Inconsistency Scale (INC)
-    inc_var <- ifelse(version == "FULL", "INC", "INCS")
+    inc_var <- cutoff_vars[["inc"]]
     inc_items <- pid_items[!is.na(pid_items[[inc_var]]), c(version, inc_var)]
     inc_items <- inc_items[order(inc_items[[inc_var]]), , drop = FALSE]
     inc_items$VAR <- rep(1:2, times = nrow(inc_items) / 2)
@@ -148,7 +178,7 @@ validity_pid5 <- function(
     out[[inc_col]] <- inc_vec
 
     ### Over-Reporting Scale (ORS)
-    ors_var <- ifelse(version == "FULL", "ORS", "ORSS")
+    ors_var <- cutoff_vars[["ors"]]
     ors_items <- pid_items[!is.na(pid_items[[ors_var]]), version, drop = TRUE]
     ors_vec <- rowSums(data_items[, ors_items, drop = FALSE] == srange[[2]])
     ors_col <- paste0(prefix, ors_var)
@@ -167,7 +197,7 @@ validity_pid5 <- function(
     out[[ors_col]] <- ors_vec
 
     ### Positive Impression Management Response Distortion Scale (PRD)
-    prd_var <- ifelse(version == "FULL", "PRD", "PRDS")
+    prd_var <- cutoff_vars[["prd"]]
     prd_items <- pid_items[!is.na(pid_items[[prd_var]]), version, drop = TRUE]
     prd_vec <- rowSums(data_items[, prd_items, drop = FALSE])
     prd_col <- paste0(prefix, prd_var)
@@ -186,7 +216,7 @@ validity_pid5 <- function(
     out[[prd_col]] <- prd_vec
 
     ### Social Desirability Total Denial Scale (SD-TD)
-    sdtd_var <- ifelse(version == "FULL", "SDTD", "SDTDS")
+    sdtd_var <- cutoff_vars[["sdtd"]]
     sdtd_items <- pid_items[!is.na(pid_items[[sdtd_var]]), version, drop = TRUE]
     sdtd_vec <- rowSums(data_items[, sdtd_items, drop = FALSE])
     sdtd_col <- paste0(prefix, sdtd_var)

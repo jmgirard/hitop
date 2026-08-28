@@ -122,6 +122,18 @@ same score column twice is an error rather than a duplicated set of output
 columns, and a factor or character score column is an error rather than a
 silent coercion -- a factor's integer codes are not its scores, and a
 character column would coerce to \code{NA}. Logical columns are accepted.
+
+A \code{scores} argument that names no columns is an error, reported ahead of the
+other selection arguments, so the cause named is the empty selection and
+not a consequence of it. The condition is classed
+\code{hitop_empty_selection}, so a caller can catch this refusal by name.
+
+With \code{append = TRUE}, a column of \code{data} whose name this call would also
+produce is an error rather than an overwrite or a duplicated column: the
+message names every colliding column. Re-run with \code{append = FALSE} to
+return only the new columns, or drop the colliding columns from \code{data}
+first. The condition is classed
+\code{hitop_append_collision}, so a caller can catch this refusal by name.
 }
 \examples{
 # Score the HiTOP-SR, then put an interval around two scales

@@ -334,6 +334,92 @@ validate_level <- function(x, arg = "level", call = rlang::caller_env()) {
   invisible(NULL)
 }
 
+# Refuse to append output columns over columns `data` already holds (D-045(a)).
+#
+# Every function in the appending family builds its result with cbind(data, out)
+# and hands it to tibble::as_tibble(), which aborts on duplicated names -- naming
+# neither the argument nor the function, so a caller re-running a scorer over
+# already-scored data saw tibble's complaint rather than this package's. The
+# alternative, overwriting, was rejected at the M060 plan gate: a same-named
+# column need not have come from this package, and destroying it silently is the
+# change GP2 exists to stop.
+#
+# `produced` is the full set of names the call would append, so the message can
+# say which of them collide and, by omission, which do not. Called once per
+# appending site, positioned after that site's existing argument checks and
+# before any output column is built: a call that is both colliding and otherwise
+# invalid still reports the existing complaint (the 2026-08-28 M060
+# implementation gate), and a colliding call never emits the warnings its
+# conversion loop would have raised on the way to a result it will not return.
+#
+# `arg` names the argument the caller would change. It is `data` at every site
+# today; it is a parameter so a future site whose collision is the caller's fault
+# in some other argument can say so.
+validate_no_output_collision <- function(
+  produced,
+  data,
+  arg = "data",
+  call = rlang::caller_env()
+) {
+  # Listed in the caller's own column order, not the order this call would have
+  # produced them: the caller reads the list against the frame in front of them.
+  collide <- intersect(names(data), produced)
+  if (length(collide) == 0L) {
+    return(invisible(NULL))
+  }
+  n <- length(collide)
+  # cli collapses an inline vector at `cli.vec_trunc` (20 by default) and prints
+  # an ellipsis for the rest, which would name 20 of the 76 columns a re-run of
+  # score_hitopsr() collides on. A caller cannot drop what the message does not
+  # name, so this vector is styled to collapse without truncating.
+  listed <- cli::cli_vec(collide, style = list(vec_trunc = Inf))
+  # `cli::qty()` sets the number for the *next* pluralization marker only, and
+  # any substitution in between cancels it, so each qty() here sits immediately
+  # before the marker it governs (LESSONS: M030, extended M027).
+  cli::cli_abort(
+    c(
+      "The {.arg {arg}} argument already {cli::qty(n)}{?holds a column/holds columns} this call would append.",
+      "x" = "{cli::qty(n)}Colliding column{?s}: {.val {listed}}.",
+      "i" = "Set {.code append = FALSE} to return only the new columns, or drop {cli::qty(n)}{?it/them} from {.arg {arg}} first."
+    ),
+    class = "hitop_append_collision",
+    call = call
+  )
+}
+
+# Refuse a variable-length column selection that selects nothing (D-045(b)).
+#
+# A zero-length `scores`/`scales` used to reach data.frame() with a zero-column
+# result ("arguments imply differing number of rows"), except in rank_scales(),
+# where validate_count() fired first and reported `top` as out of range "between
+# 1 and 0" -- a consequence of the empty selection reported as its cause.
+# Returning `data` unchanged was rejected at the M060 plan gate: a mistyped
+# `prefix` matching nothing would then return silently unconverted data.
+#
+# Positioned after the selection's own type check and before the rest of the
+# selection family, so a wrong *type* is still a type error and the empty
+# selection outranks `top`, `srange`, `prefix`, `level` and `append`. `data` is
+# checked earlier still and is exempt: a selection cannot be read against a frame
+# that is not one.
+validate_nonempty_selection <- function(
+  x,
+  arg = "scores",
+  call = rlang::caller_env()
+) {
+  if (length(x) > 0L) {
+    return(invisible(NULL))
+  }
+  cli::cli_abort(
+    c(
+      "The {.arg {arg}} argument selects no columns.",
+      "x" = "You supplied a {.cls {class(x)}} of length 0.",
+      "i" = "Name at least one column of {.arg data} to work on."
+    ),
+    class = "hitop_empty_selection",
+    call = call
+  )
+}
+
 # Remove a leading `prefix` from each name by *literal* match (D-026). The
 # obvious `sub(paste0("^", prefix), "", x)` compiles the caller's string as a
 # regular expression, so a prefix containing `(` aborts with a regex error the

@@ -67,6 +67,20 @@ score_engine <- function(
     call = call
   )
 
+  ## Refuse an append that would collide with a column `data` already holds
+  ## (D-045(a)). The output names are derivable before any scoring happens --
+  ## they are the prefix plus the scale and domain names, plus a `_se` for each
+  ## under `calc_se` -- so the refusal lands before a column is built, and after
+  ## prep_items() so an invalid `data`/`items`/`srange` still reports as such.
+  if (append) {
+    scale_out <- c(names(items_scales), names(domain_map))
+    produced <- paste0(prefix, scale_out)
+    if (calc_se) {
+      produced <- c(produced, paste0(prefix, scale_out, "_se"))
+    }
+    validate_no_output_collision(produced, data, call = call)
+  }
+
   ## Calculate scores per scale (facets for FULL/SF, domains for BF, scales for
   ## HiTOP-SR/BR). `missing` selects the algorithm: apa_mean applies the
   ## 25%-missing cutoff and proration; "available" averages whatever items are
