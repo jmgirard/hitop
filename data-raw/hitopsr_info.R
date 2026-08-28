@@ -44,15 +44,15 @@ usethis::use_data(hitopsr_subscales, overwrite = TRUE)
 
 ## HiTOP-SR Definitions
 
-# One display label differs between the two sources: the definitions CSV writes
-# the scale out as "Non-suicidal Self-injury" where `hitopsr_items` abbreviates
-# it to "NSSI". Deriving the stem from the printed label alone would give this
-# one row `nonSuicidalSelfInjury` against the scale table's `nssi`, so the pair
-# is stated here rather than left to the case conversion. Every other label
-# converts identically in both places. (Renaming the scale itself would make
-# this pairing inert but harmless -- the check below is what would then catch a
-# genuine drift.)
-definition_scale_labels <- c("Non-suicidal Self-injury" = "NSSI")
+# Every scale label now converts identically in both tables, so the stem is left
+# to the case conversion throughout. A `definition_scale_labels` map lived here
+# until M058, pairing this file's spelling of one scale against the abbreviated
+# form the keying table then used; the M058 rename made it inert and it was
+# removed. The `stopifnot` below catches a stem-level drift -- a label that
+# converts to a stem the scale table does not have, or a duplicate -- but not a
+# casing-only divergence between the two files, since every casing of a name
+# converts to the same stem; `tests/testthat/test-scale-name-hitopsr.R` pins the
+# literal spelling for the one scale whose name was sourced.
 
 hitopsr_definitions <-
   readr::read_csv("data-raw/hitopsr_definitions.csv", show_col_types = FALSE) |>
@@ -64,7 +64,7 @@ hitopsr_definitions <-
     camelCase = snakecase::to_any_case(
       dplyr::coalesce(
         dplyr::na_if(Subscale, ""),
-        dplyr::coalesce(unname(definition_scale_labels[Scale]), Scale)
+        Scale
       ),
       case = "lower_camel"
     )

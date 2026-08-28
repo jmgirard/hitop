@@ -53,8 +53,8 @@ available_scales <- function(instrument = "hitopsr") {
 }
 
 # The definitions are matched on the camelCase stem, never on the printed
-# display name: the two tables disagree on one HiTOP-SR label, so a name join
-# would drop that scale, and a relabelling in either table would drop another.
+# display name: the two tables agree on every HiTOP-SR label today, but a
+# relabelling in either table would drop that scale from a name join.
 # Abort rather than return a column with a hole in it -- a silently missing
 # definition reaches a caller as a blank where a definition should be, and an
 # instrument added without a definitions table would return a column of NA.

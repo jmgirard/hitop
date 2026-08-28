@@ -123,10 +123,10 @@ test_that("available_scales() carries each scale's clinician definition", {
 })
 
 test_that("the definitions table keys on a stem, not a printed scale name", {
-  # The two tables disagree on one display label, so a join on `Scale` would
-  # lose that scale. This states the disagreement rather than assuming it away:
-  # if a later milestone reconciles the labels, this test says so out loud
-  # instead of the stem join quietly becoming untested.
+  # The two tables agree on every display label today, so a join on
+  # `Scale` would happen to work. The stem join is what the code relies on,
+  # and this test pins the stem sets rather than the labels, so a future
+  # relabelling of either table fails here instead of silently dropping a scale.
   defs <- hitopsr_definitions[is.na(hitopsr_definitions$Subscale), ]
   expect_setequal(defs$camelCase, hitopsr_scales$camelCase)
   expect_false(anyDuplicated(defs$camelCase) > 0L)

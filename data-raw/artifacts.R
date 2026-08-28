@@ -31,7 +31,7 @@ extdata <- "inst/extdata"
 ## below still reads every file from disk, which is how a replaced HSUM QSF
 ## (built elsewhere, by devel/qualtrics_hitophsum.R) gains its row without
 ## churning the checksum of any artifact this script does rebuild.
-rebuild_stems <- character(0)
+rebuild_stems <- "hitopsr"
 
 ## Restrict the rebuild to specific output formats, e.g. c("docx"); NULL rebuilds
 ## every format for the selected stems. Format matters independently of stem: a
@@ -40,7 +40,7 @@ rebuild_stems <- character(0)
 ## exports emit), and because DOCX/zip rebuilds are not byte-deterministic, a
 ## needless rebuild churns a checksum and records a manifest revision that isn't
 ## one. Restrict to the format whose content actually changed.
-rebuild_formats <- NULL
+rebuild_formats <- "docx"
 
 ## Both filters are plain string matches, so a typo ("pid5_bf"), a case slip
 ## ("DOCX"), or the manifest's own format vocabulary ("docx_us") would match
@@ -126,9 +126,9 @@ check_filters_matched <- function() {
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "Response-option legend split across two header lines (values 0 and 1 on",
-  "the first, 2 and 3 on the second) so no option phrase breaks mid-phrase;",
-  "legend wording, values, and labels are unchanged."
+  "One scale, previously shown on the scoring page by an abbreviation, is",
+  "named in full there as Non-suicidal Self-injury. Item text, item numbers,",
+  "response options, and every other scale name are unchanged."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(

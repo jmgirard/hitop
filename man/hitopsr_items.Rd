@@ -21,6 +21,14 @@ hitopsr_items
 \description{
 Information about items in the HiTOP-SR.
 }
+\details{
+One scale is widely written in the literature by its abbreviation: the scale
+this table calls \verb{Non-suicidal Self-injury}, the name printed in the
+HiTOP-SR introduction paper's Table 1, is also known as \strong{NSSI}, and was
+named that way in this package before version 0.2.0. Scoring functions
+derive a column name from each scale name, so that scale's scored column is
+\code{hsr_nonSuicidalSelfInjury}.
+}
 \examples{
 hitopsr_items
 }

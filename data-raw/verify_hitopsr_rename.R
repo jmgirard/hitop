@@ -1,0 +1,464 @@
+# Verify that the NSSI rename moved what it had to and nothing else (M058, AC2/AC3)
+#
+# Five checks that need something the test suite cannot reach -- the git
+# history, and a second build of the package -- so they live here rather than in
+# tests/testthat/. The shipped-object half of AC2 and AC3 is
+# tests/testthat/test-scale-name-hitopsr.R, which runs everywhere.
+#
+#   1. Working-tree sweep (AC2). No case-insensitive `nssi` survives outside the
+#      allow-list written below, where the old name is deliberate.
+#   2. Keying-table invariance (AC2). The four HiTOP-SR tables against the same
+#      objects from a git worktree of the merge-base, identical outside the
+#      renamed cells, with every other row's relative order asserted directly
+#      and the renamed row's new position asserted against a recomputed sort.
+#   3. Scored-output invariance (AC3).
+#      score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE) against the
+#      merge-base build: same column set, every column identical in value.
+#   4. Word-form text (AC4). Each rebuilt DOCX against the merge-base build,
+#      differing only at the scale-name row, with the footer stamp changed.
+#   5. Distributed files and manifest (AC5). Both distribution directories
+#      listed rather than read from the manifest, and the manifest required to
+#      gain one row per rebuilt file while every pre-existing row holds.
+#
+# The merge-base build is a reference for *invariance only*. It certifies that
+# this milestone changed nothing it did not intend; it never certifies that a
+# value is correct. The name itself is verified against the published source by
+# data-raw/verify_hitopsr_scale_name.R, which is the only oracle for that.
+#
+# Maintainer-run, never CI: it shells out to git and builds the package twice.
+# Exits non-zero on any discrepancy.
+
+old_pattern <- "nssi"
+
+## Where the old name is history rather than a leftover. Anchored at the repo
+## root and matched against paths, so a new file cannot inherit an exemption by
+## resembling one of these.
+allow <- c(
+  "^NEWS\\.md$",              # the rename is announced there by name
+  "^cairn/",                  # tracking: the milestone, decisions, reviews
+  "^data-raw/verify_hitopsr_", # these verifiers name the old spelling
+  "^tests/testthat/test-scale-name-hitopsr\\.R$", # the sweep names what it forbids
+  ## D-041 keeps `NSSI` as an also-known-as note for a name the literature will
+  ## go on using -- D-018's pattern. These two carry that note (the second is
+  ## generated from the first), which is deliberate documentation, not a
+  ## leftover.
+  "^R/data\\.R$",
+  "^man/hitopsr_items\\.Rd$"
+)
+
+fail <- character(0)
+note <- function(...) fail <<- c(fail, paste0(...))
+
+repo <- normalizePath(".")
+stopifnot("run from the package root" = file.exists(file.path(repo, "DESCRIPTION")))
+
+## ---------------------------------------------------------------- 1. tree ---
+
+tracked <- system2("git", c("ls-files"), stdout = TRUE)
+exempt <- Reduce(`|`, lapply(allow, function(a) grepl(a, tracked)))
+candidates <- tracked[!exempt]
+
+## Every character vector reachable inside an R object, list names included --
+## a named list keyed by scale stem can hold the old spelling with every value
+## clean.
+character_leaves <- function(x) {
+  if (is.character(x)) return(x)
+  if (is.factor(x)) return(as.character(x))
+  if (!is.list(x)) return(character(0))
+  c(if (!is.null(names(x))) names(x) else character(0),
+    unlist(lapply(x, character_leaves), use.names = FALSE))
+}
+
+## A compressed file cannot be searched as bytes: `.rda` is gzip, and `.docx`
+## and `.zip` are zip containers, so a raw scan reads them as noise and passes
+## whatever they contain. Both are surfaces this rename reaches -- R/sysdata.rda
+## holds the administration text, and the Word forms print the scale name -- so
+## each is opened in its own format rather than sniffed.
+scan_file <- function(f) {
+  ext <- tolower(tools::file_ext(f))
+  if (ext %in% c("rda", "rdata")) {
+    e <- new.env()
+    load(f, envir = e)
+    return(character_leaves(as.list(e)))
+  }
+  if (ext == "rds") {
+    return(character_leaves(readRDS(f)))
+  }
+  if (ext %in% c("docx", "zip", "xlsx", "qsf")) {
+    members <- tryCatch(utils::unzip(f, list = TRUE)$Name, error = function(e) NULL)
+    if (is.null(members)) {
+      raw <- readBin(f, "raw", file.size(f))
+      txt <- rawToChar(raw[raw != as.raw(0)])
+      Encoding(txt) <- "bytes"
+      return(c(basename(f), txt))
+    }
+    inner <- unlist(lapply(members, function(m) {
+      con <- unz(f, m, open = "rb")
+      on.exit(close(con))
+      raw <- readBin(con, "raw", 50e6)
+      txt <- rawToChar(raw[raw != as.raw(0)])
+      Encoding(txt) <- "bytes"
+      txt
+    }), use.names = FALSE)
+    return(c(members, inner))
+  }
+  raw <- readBin(f, "raw", file.size(f))
+  txt <- rawToChar(raw[raw != as.raw(0)])
+  Encoding(txt) <- "bytes"
+  txt
+}
+
+hits <- character(0)
+for (f in candidates) {
+  if (grepl(old_pattern, f, ignore.case = TRUE)) {
+    hits <- c(hits, paste0(f, " (filename)"))
+    next
+  }
+  strings <- tryCatch(scan_file(f), error = function(e) {
+    note("could not read ", f, ": ", conditionMessage(e))
+    character(0)
+  })
+  if (any(grepl(old_pattern, strings, ignore.case = TRUE, useBytes = TRUE))) {
+    hits <- c(hits, f)
+  }
+}
+
+cat("1. Working-tree sweep over ", length(candidates), " tracked files ",
+    "(", length(tracked) - length(candidates), " allow-listed)\n", sep = "")
+if (length(hits)) {
+  note(length(hits), " file(s) still carry \"", old_pattern, "\": ",
+       paste(hits, collapse = ", "))
+  for (h in hits) cat("   - ", h, "\n", sep = "")
+} else {
+  cat("   clean\n")
+}
+
+## ------------------------------------------------------------ 2/3. base ---
+
+base <- system2("git", c("merge-base", "HEAD", "origin/main"), stdout = TRUE)
+if (!length(base) || !nzchar(base)) stop("could not resolve the merge-base", call. = FALSE)
+cat("\nMerge-base with origin/main: ", base, "\n", sep = "")
+
+wt <- file.path(tempdir(), paste0("m058-base-", substr(base, 1, 8)))
+if (dir.exists(wt)) system2("git", c("worktree", "remove", "--force", shQuote(wt)))
+st <- system2("git", c("worktree", "add", "--detach", shQuote(wt), base),
+              stdout = TRUE, stderr = TRUE)
+if (!dir.exists(wt)) stop("git worktree add failed: ", paste(st, collapse = " "), call. = FALSE)
+on.exit(system2("git", c("worktree", "remove", "--force", shQuote(wt))), add = TRUE)
+
+keying <- c("hitopsr_items", "hitopsr_scales", "hitopsr_subscales", "hitopsr_definitions")
+
+base_env <- new.env()
+for (nm in keying) load(file.path(wt, "data", paste0(nm, ".rda")), envir = base_env)
+here_env <- new.env()
+for (nm in keying) load(file.path(repo, "data", paste0(nm, ".rda")), envir = here_env)
+
+## Blank every cell that held the old name on the base side and its counterpart
+## on this side, then require what is left to be identical. Any other movement
+## -- an item text, a reverse flag, a row order, an item count -- survives the
+## blanking and fails the comparison.
+## Both spellings, so the same pattern blanks both sides. Blanking each side
+## with only its own spelling would leave a table that already carried the new
+## name -- hitopsr_definitions did -- blanked on one side and not the other, and
+## report a difference that is an artifact of the comparison.
+renamed_cell <- "nssi|Non-suicidal Self-injury|nonSuicidalSelfInjury"
+
+## Structure-preserving: a data frame comes back a data frame with the same
+## class and attributes, so the comparison below still sees a tibble.
+blank_renamed <- function(x, pattern = renamed_cell) {
+  if (is.character(x)) {
+    x[grepl(pattern, x, ignore.case = TRUE)] <- NA_character_
+    return(x)
+  }
+  if (is.list(x)) {
+    if (!is.null(names(x))) {
+      names(x)[grepl(pattern, names(x), ignore.case = TRUE)] <- NA_character_
+    }
+    for (i in seq_along(x)) x[[i]] <- blank_renamed(x[[i]], pattern)
+    return(x)
+  }
+  x
+}
+
+## Renaming a scale moves its row, because the tables are sorted by name and
+## `dplyr::arrange()` sorts in the C locale: `NSSI` sorted among the uppercase
+## names, `Non-suicidal Self-injury` sorts after `Non-planfulness`. That is a
+## consequence of the rename, not a second change, so rows are matched by
+## identity rather than by position and any move is reported rather than failed.
+row_key <- function(df) {
+  if ("HSR" %in% names(df)) return(as.character(df$HSR))
+  if ("itemNumbers" %in% names(df)) {
+    return(vapply(df$itemNumbers, function(x) paste(x, collapse = ","), character(1)))
+  }
+  ## hitopsr_definitions keys on what each row defines, minus the renamed stem.
+  apply(as.data.frame(lapply(df[intersect(c("Scale", "Subscale"), names(df))],
+                             function(col) blank_renamed(as.character(col)))),
+        1, paste, collapse = "|")
+}
+
+cat("\n2. Keying-table invariance against the merge-base\n")
+for (nm in keying) {
+  b <- get(nm, envir = base_env)
+  h <- get(nm, envir = here_env)
+  if (!identical(dim(b), dim(h))) {
+    note(nm, ": dimensions moved, ", paste(dim(b), collapse = "x"), " -> ",
+         paste(dim(h), collapse = "x"))
+    cat("   ", nm, ": FAIL (dimensions)\n", sep = "")
+    next
+  }
+  bk <- row_key(b)
+  hk <- row_key(h)
+  if (!setequal(bk, hk) || anyDuplicated(bk) || anyDuplicated(hk)) {
+    note(nm, ": the set of rows changed, or a row key is not unique")
+    cat("   ", nm, ": FAIL (row set)\n", sep = "")
+    next
+  }
+  moved <- which(bk != hk)
+  bb <- blank_renamed(b)
+  hh <- blank_renamed(h)[match(bk, hk), ]
+  ## Row names carry the pre-reorder positions after the match, and are not data.
+  attr(bb, "row.names") <- attr(hh, "row.names") <- seq_len(nrow(b))
+
+  ## Matching rows by key absorbs ANY permutation, so the comparison above
+  ## cannot by itself distinguish the renamed row's move from a second, genuine
+  ## reordering of unrelated scales -- verified by planting a clean two-scale
+  ## swap, which passed it. The relative order of every other row is therefore
+  ## asserted directly: drop the renamed row from each side and the two key
+  ## sequences must be identical element for element.
+  b_rest <- bk[!grepl(old_pattern, do.call(paste, c(b, sep = " ")), ignore.case = TRUE)]
+  h_rest <- hk[!grepl("Non-suicidal Self-injury", do.call(paste, c(h, sep = " ")), fixed = TRUE)]
+  if (!identical(b_rest, h_rest)) {
+    note(nm, ": rows other than the renamed one changed their relative order")
+    cat("   ", nm, ": FAIL (order of other rows)\n", sep = "")
+    next
+  }
+
+  if (!identical(bb, hh)) {
+    note(nm, ": differs from the merge-base outside the renamed cells")
+    cat("   ", nm, ": FAIL\n", sep = "")
+  } else if (length(moved)) {
+    from <- which(grepl(old_pattern, do.call(paste, c(b, sep = " ")), ignore.case = TRUE))[1]
+    to <- which(grepl("Non-suicidal Self-injury", do.call(paste, c(h, sep = " ")), fixed = TRUE))[1]
+    ## The new position is asserted, not merely printed. The renamed cells are
+    ## blanked before the comparison above, so position is the only remaining
+    ## signal that the sort key is the string we think it is: a plausible-looking
+    ## variant (a stray space, a different hyphen) would land somewhere else.
+    ## Recomputed here from the base's own names rather than read off
+    ## `dplyr::arrange()`'s output, which is the thing under test (IP2).
+    if ("Scale" %in% names(b)) {
+      base_names <- b$Scale
+      base_names[grepl(old_pattern, base_names, ignore.case = TRUE)] <- "Non-suicidal Self-injury"
+      expected <- which(sort(base_names, method = "radix") == "Non-suicidal Self-injury")
+      if (!identical(as.integer(to), as.integer(expected))) {
+        note(nm, ": renamed row sits at ", to, " where the adopted name sorts to ", expected)
+        cat("   ", nm, ": FAIL (position ", to, " != expected ", expected, ")\n", sep = "")
+        next
+      }
+    }
+    cat("   ", nm, ": identical outside the renamed cells; every other row keeps ",
+        "its relative order; the renamed row moves from position ", from, " to ", to,
+        " (where the adopted name sorts, expected)\n", sep = "")
+  } else {
+    cat("   ", nm, ": identical outside the renamed cells\n", sep = "")
+  }
+}
+
+## ------------------------------------------------------------ 3. scored ---
+
+score_in <- function(pkg_dir, out) {
+  code <- sprintf(
+    'suppressMessages(devtools::load_all(%s, quiet = TRUE)); saveRDS(score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE), %s)',
+    shQuote(pkg_dir), shQuote(out))
+  res <- system2("Rscript", c("-e", shQuote(code)), stdout = TRUE, stderr = TRUE)
+  if (!file.exists(out)) stop("scoring failed in ", pkg_dir, ":\n", paste(res, collapse = "\n"), call. = FALSE)
+  readRDS(out)
+}
+
+cat("\n3. Scored-output invariance against the merge-base\n")
+base_scored <- score_in(wt, file.path(tempdir(), "m058-base-scored.rds"))
+here_scored <- score_in(repo, file.path(tempdir(), "m058-here-scored.rds"))
+
+## Written literally, never re-derived by snakecase::to_any_case() -- that is
+## the function the rename itself used.
+rename_map <- c(hsr_nssi = "hsr_nonSuicidalSelfInjury",
+                hsr_nssi_se = "hsr_nonSuicidalSelfInjury_se")
+
+missing_old <- setdiff(names(rename_map), names(base_scored))
+missing_new <- setdiff(unname(rename_map), names(here_scored))
+if (length(missing_old)) note("merge-base output lacks: ", paste(missing_old, collapse = ", "))
+if (length(missing_new)) note("current output lacks: ", paste(missing_new, collapse = ", "))
+
+if (!length(missing_old) && !length(missing_new)) {
+  renamed <- base_scored
+  names(renamed)[match(names(rename_map), names(renamed))] <- unname(rename_map)
+
+  ## The column set and every column's values must be identical. Position is
+  ## checked separately and reported rather than failed: the scored columns
+  ## follow `hitopsr_scales`'s row order, which the rename moves for the same
+  ## sort reason the table itself moves, so a position change is a consequence
+  ## of the rename rather than a second change. A value change is not.
+  if (!setequal(names(renamed), names(here_scored))) {
+    note("scored output's column set changed: ",
+         "added ", paste(setdiff(names(here_scored), names(renamed)), collapse = ", "), "; ",
+         "dropped ", paste(setdiff(names(renamed), names(here_scored)), collapse = ", "))
+    cat("   FAIL (column set)\n")
+  } else {
+    moved <- names(here_scored)[!vapply(names(here_scored), function(k)
+      identical(renamed[[k]], here_scored[[k]]), logical(1))]
+    if (length(moved)) {
+      note("scored values changed in: ", paste(moved, collapse = ", "))
+      cat("   FAIL (values in ", paste(moved, collapse = ", "), ")\n", sep = "")
+    } else {
+      cat("   every column identical in value once the two columns are renamed\n")
+      if (!identical(names(renamed), names(here_scored))) {
+        ## Both renamed columns are reported, not just the score column: the
+        ## `_se` sibling moves by the same amount and breaks positional
+        ## selection identically, and NEWS records both figures from here.
+        for (nm in unname(rename_map)) {
+          cat("   column order moves: ", nm, " from position ",
+              which(names(renamed) == nm), " to ",
+              which(names(here_scored) == nm),
+              " (follows hitopsr_scales' sort order, expected)\n", sep = "")
+        }
+        others <- setdiff(names(renamed), unname(rename_map))
+        if (!identical(others[order(match(others, names(renamed)))],
+                       others[order(match(others, names(here_scored)))])) {
+          note("scored output reorders columns other than the renamed pair")
+          cat("   FAIL (other columns reordered)\n")
+        }
+      }
+    }
+  }
+}
+
+## ------------------------------------------------------------ 4. artifacts ---
+
+## The two Word forms are the only distributed artifacts that print a scale
+## name, so they are the only ones rebuilt. Their extracted text must differ
+## from the merge-base build in the scale-name row and the build stamp and
+## nowhere else -- an item's text, a response option or another scale's name
+## moving would show up here as a third difference.
+cat("\n4. Word-form text against the merge-base build\n")
+docx <- c("inst/extdata/hitopsr_US.docx", "inst/extdata/hitopsr_A4.docx")
+
+docx_text <- function(path) {
+  s <- officer::docx_summary(officer::read_docx(path))
+  s$text[!is.na(s$text)]
+}
+## The footer carries the build stamp, which docx_summary() does not return.
+docx_footer <- function(path) {
+  tmp <- file.path(tempdir(), paste0("unz-", basename(path)))
+  unlink(tmp, recursive = TRUE)
+  utils::unzip(path, exdir = tmp)
+  ft <- list.files(file.path(tmp, "word"), pattern = "^footer.*\\.xml$", full.names = TRUE)
+  paste(vapply(ft, function(f) paste(readLines(f, warn = FALSE), collapse = ""), character(1)),
+        collapse = "")
+}
+
+for (f in docx) {
+  b <- docx_text(file.path(wt, f))
+  h <- docx_text(f)
+  if (length(b) != length(h)) {
+    note(basename(f), ": paragraph count moved, ", length(b), " -> ", length(h))
+    cat("   ", basename(f), ": FAIL (paragraph count)\n", sep = "")
+    next
+  }
+  d <- which(b != h)
+  ok <- length(d) == 1L && grepl(old_pattern, b[d], ignore.case = TRUE) &&
+    identical(h[d], "Non-suicidal Self-injury")
+  if (!ok) {
+    note(basename(f), ": body text differs in ", length(d),
+         " place(s), not the one scale-name row")
+    cat("   ", basename(f), ": FAIL -- differing rows: ",
+        paste(sprintf("[%d] %s -> %s", d, b[d], h[d]), collapse = "; "), "\n", sep = "")
+  } else {
+    cat("   ", basename(f), ": body text differs only at row ", d,
+        " (", b[d], " -> ", h[d], ")\n", sep = "")
+  }
+  ## The stamp must move (the build date changed) and must be the only footer
+  ## difference; a footer identical to the base would mean the stamp never
+  ## updated, which D-016 relies on.
+  if (identical(docx_footer(file.path(wt, f)), docx_footer(f))) {
+    note(basename(f), ": footer build stamp did not change")
+    cat("   ", basename(f), ": FAIL (stamp unchanged)\n", sep = "")
+  }
+}
+
+## ------------------------------------------------------- 5. distribution ---
+
+## Every distributed file, enumerated by listing the two directories rather than
+## by the manifest -- a manifest that lost rows would otherwise shrink the sweep
+## and pass vacuously. The listings themselves are compared too, so a file
+## deleted at the merge-base or added here is caught, which a per-file loop over
+## the current tree cannot see.
+cat("\n5. Distributed files against the merge-base\n")
+dist_dirs <- c("inst/extdata", "pkgdown/assets/downloads")
+rebuilt <- c("hitopsr_US.docx", "hitopsr_A4.docx")
+
+for (d in dist_dirs) {
+  here_files <- sort(list.files(d))
+  base_files <- sort(list.files(file.path(wt, d)))
+  if (!identical(here_files, base_files)) {
+    note(d, ": file listing changed -- added ",
+         paste(setdiff(here_files, base_files), collapse = ", "), "; removed ",
+         paste(setdiff(base_files, here_files), collapse = ", "))
+    cat("   ", d, ": FAIL (listing)\n", sep = "")
+    next
+  }
+  moved_files <- here_files[vapply(here_files, function(f)
+    !identical(unname(tools::md5sum(file.path(d, f))),
+               unname(tools::md5sum(file.path(wt, d, f)))), logical(1))]
+  unexpected <- setdiff(moved_files, rebuilt)
+  if (length(unexpected)) {
+    note(d, ": changed outside the two rebuilt DOCX: ",
+         paste(unexpected, collapse = ", "))
+    cat("   ", d, ": FAIL -- ", paste(unexpected, collapse = ", "), "\n", sep = "")
+  } else {
+    cat("   ", d, ": ", length(here_files), " files, listing identical, ",
+        length(moved_files), " changed (", paste(moved_files, collapse = ", "),
+        ")\n", sep = "")
+  }
+}
+
+## D-016's version bump: the manifest must GAIN a row per rebuilt file and keep
+## every pre-existing row. Without this a rebuild could land with no bump, which
+## AC5's freeze on old rows would not notice.
+base_man <- new.env(); load(file.path(wt, "data", "hitop_artifacts.rda"), envir = base_man)
+here_man <- new.env(); load("data/hitop_artifacts.rda", envir = here_man)
+bm <- base_man$hitop_artifacts
+hm <- here_man$hitop_artifacts
+
+## The manifest is kept sorted rather than appended to, so a new row lands
+## among the old ones -- rows are matched by content, never by position.
+row_id <- function(m) do.call(paste, c(as.data.frame(m), sep = ""))
+bid <- row_id(bm)
+hid <- row_id(hm)
+
+if (!setequal(unique(bm$file), unique(hm$file))) {
+  note("hitop_artifacts' set of files changed")
+  cat("   manifest: FAIL (file set)\n")
+} else if (length(setdiff(bid, hid))) {
+  note("hitop_artifacts lost or altered ", length(setdiff(bid, hid)),
+       " pre-existing row(s)")
+  cat("   manifest: FAIL (pre-existing rows)\n")
+} else {
+  added <- hm[!hid %in% bid, ]
+  if (!setequal(added$file, rebuilt) || nrow(added) != length(rebuilt)) {
+    note("hitop_artifacts gained ", nrow(added), " row(s) for ",
+         paste(added$file, collapse = ", "), "; expected one per rebuilt DOCX")
+    cat("   manifest: FAIL (added rows)\n")
+  } else {
+    cat("   manifest: ", nrow(bm), " rows unchanged, ", nrow(added),
+        " added (", paste(added$file, collapse = ", "), "), changes note: ",
+        encodeString(unique(added$changes), quote = '"'), "\n", sep = "")
+  }
+}
+
+cat("\n")
+if (!length(fail)) {
+  cat("RESULT: the rename reached every place the old name lived and moved nothing else.\n")
+} else {
+  cat("RESULT: ", length(fail), " discrepancy/discrepancies\n\n", sep = "")
+  for (f in fail) cat("  - ", f, "\n", sep = "")
+  stop(length(fail), " discrepancy/discrepancies", call. = FALSE)
+}
