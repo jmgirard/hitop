@@ -1,6 +1,6 @@
 # M058: The HiTOP-SR's NSSI scale is named in full
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M057
 - **Driving RR:** —
@@ -15,25 +15,31 @@ package prints or returns it, so the picker, the forms and the scored output agr
 ## Scope
 
 Surface tier: **user-facing** — the deliverable renames a scored output column, a
-scale name printed on four distributed questionnaires, and the keying tables those
-derive from.
+scale name printed on the two distributed Word questionnaires, and the keying tables
+those derive from.
 
 **In:** The rename in the keying source `data-raw/hitopsr_items.csv`, sourced against
 a cited authority (RB tripwire: ip-touching); the regenerated `hitopsr_items`,
 `hitopsr_scales`, `hitopsr_subscales` and `hitopsr_definitions`; the derived
 `camelCase` stem and therefore the scored output column `hsr_nssi` and its `_se`
-sibling; the four rebuilt `inst/extdata/hitopsr_*` artifacts, their
+sibling; the two rebuilt `inst/extdata/hitopsr_*.docx` artifacts, their
 `pkgdown/assets/downloads/` copies and `hitop_artifacts` rows; NEWS, a `DECISIONS.md`
 entry, and every doc surface the AC2 sweep reaches.
 
-**Gate condition, not an acceptance criterion:** if no citable source printing the
-scale's full name can be obtained — the Society's published HiTOP-SR form and the
-measure's publication are the documents to check, and `hitopsr_definitions`'s own
-spelling is not one of them, having been authored in-repo — this milestone does not
-proceed. It returns to the plan gate, and the `NSSI` / `Non-suicidal Self-injury`
-discrepancy is instead recorded as a visible open question, which is what IP1
-requires of a discrepancy that cannot be sourced. The criteria below all assume the
-sourced branch.
+**Gate condition, discharged 2026-08-27:** this milestone proceeds only against a
+citable source printing the scale's full name. The source obtained is the HiTOP-SR
+introduction paper (*Assessment* submission `ASMNT-26-0390`, shelved as
+`cairn/references/sources/ASMNT-26-0390_Proof_hi.pdf`), whose Tables 1-3 print
+`Non-suicidal Self-injury`. Jeff accepted it on 2026-08-27 as the source while it is
+still under peer review, undertaking to re-shelve the accepted version once it
+exists; the AC6 `DECISIONS.md` entry carries that reconciliation commitment and the
+D-032 reasoning. `hitopsr_definitions`'s spelling is no part of the sourcing, and for
+a sharper reason than this file first gave: those definitions are Jeff's own text,
+supplied to the paper's authors and published as its Appendix A, so the appendix
+descends from this package. Tables 1-3 predate that supply and stand independent of
+it. Had no source been obtainable, this milestone would have returned to the plan
+gate with the discrepancy recorded as a visible open question, which is what IP1
+requires.
 
 **Out:**
 - A `lifecycle` deprecation shim for the old scored column name — the package is
@@ -44,12 +50,24 @@ sourced branch.
 
 ## Acceptance criteria
 
-- [ ] AC1 The adopted name is sourced, not chosen: `cairn/SOURCES.md` gains a line
-      naming the HiTOP-SR source that prints the scale's full name and where in it,
-      and the string written into `data-raw/hitopsr_items.csv` is compared character
-      for character against that source document read at verification time — never
-      against a transcription kept in this file, which would compare one author's
-      transcription against itself.
+- [ ] AC1 The adopted name is sourced, not chosen. Which source, and why it clears
+      D-032's "nothing ships from a draft" bar while under peer review, and why it
+      outranks the December 2023 Workgroup deck under D-018's per-content-type rule,
+      are settled in the AC6 `DECISIONS.md` entry, not here. The string written into
+      `data-raw/hitopsr_items.csv` is compared character for character against the
+      whole cell in Table 1 of `cairn/references/sources/ASMNT-26-0390_Proof_hi.pdf`
+      (sha256 `1c211219b7fe13f8ed172f9210c152a642a9be77d790e08d795843c25da8e425`),
+      read at verification time on a machine carrying that gitignored shelf — never
+      against any transcription held in this repo. Table 1's cell carries the bare
+      name with no `(NSSI)` gloss; a cell read at verification time that carries a
+      parenthetical stops the milestone and returns it to the question gate rather
+      than being stripped. `cairn/SOURCES.md` gains a numbered `OQ-n` entry in the
+      form OQ-1 and OQ-2 use, recording the source's disagreement with itself and
+      with the deck, its per-variant occurrence counts produced by a re-runnable text
+      search of the PDF rather than copied from this file, and — attributed to the
+      maintainer and dated 2026-08-27 — that Appendix A is `hitopsr_definitions`'s
+      own text supplied after Tables 1-3 already existed, so Tables 1-3 stand
+      independent of this package and Appendix A does not corroborate them.
 - [ ] AC2 The rename reaches every place the old name lived and moves nothing else.
       No stale spelling survives: a check enumerates every dataset the package
       exports programmatically rather than by hand-list, sweeps every character
@@ -66,20 +84,35 @@ sourced branch.
       after renaming the two affected columns. The expected new column names are
       written literally in the test, never re-derived by `snakecase::to_any_case()`,
       which is the function the deliverable itself used.
-- [ ] AC4 Each of the four rebuilt HiTOP-SR artifacts carries the new name, read back
-      by parsing the file: both DOCX variants, the Qualtrics `.txt`, and the REDCap
-      `.zip`'s data dictionary. Each file's `pkgdown/assets/downloads/` copy is
-      byte-identical to the freshly built `inst/extdata/` file. Text extracted from
-      each rebuilt DOCX differs from the merge-base build's only in the scale-name
-      lines and the build-date stamp. Re-locking `test-artifacts.R` to fresh
-      checksums is a required step (T5), not evidence — its expected values are
-      regenerated from the files just built.
-- [ ] AC5 No other distributed file moves: every file under `inst/extdata/` and
+- [ ] AC4 Exactly two files are rebuilt: `data-raw/artifacts.R` runs with
+      `rebuild_stems <- "hitopsr"` and `rebuild_formats <- "docx"`, producing
+      `hitopsr_US.docx` and `hitopsr_A4.docx`. The REDCap zip is deliberately not
+      rebuilt — `zip::zip` stores the intermediate CSV's mtime, so the file is not
+      byte-reproducible and a rebuild would churn a checksum and record a D-016
+      manifest revision that is not one; the Qualtrics `.txt` is byte-reproducible
+      but prints no scale name, so it has nothing to rebuild for. All four
+      distributed artifacts are then read back by parsing the file: the two rebuilt
+      DOCX carry the new name and no occurrence of `NSSI`, and
+      `hitopsr_qualtrics.txt` and the `instrument.csv` inside `hitopsr_redcap.zip`
+      carry neither `NSSI` nor the new name — which is what makes their unchanged
+      bytes a result rather than an oversight. Each rebuilt DOCX's
+      `pkgdown/assets/downloads/` copy is byte-identical to the `inst/extdata/` file
+      just built. Text extracted with `officer::docx_summary()`, plus the footer read
+      separately, differs from the same extraction of the merge-base build only in
+      the scale-name row — in place or moved, since the scoring table sorts on
+      `Scale` (`R/generate_docx.R:491`) under the running locale's collation — and in
+      the footer's `Generated` date.
+- [ ] AC5 No other distributed file moves: the file listings of `inst/extdata/` and
       `pkgdown/assets/downloads/`, enumerated by listing both directories rather than
-      by the manifest, is byte-identical to the merge-base outside the four rebuilt
-      files and their copies. `hitop_artifacts`'s set of files, and its rows for every
-      file but those four, are unchanged from the merge-base — without which a
-      manifest that lost rows would shrink the sweep and pass vacuously.
+      by the manifest, are identical to the merge-base's listings — nothing added,
+      renamed or removed — and every file in them is byte-identical to the merge-base
+      outside the two rebuilt DOCX and their copies, the HiTOP-SR Qualtrics and
+      REDCap files included, since a byte change in either would mean the rebuild
+      moved something this milestone did not intend. `hitop_artifacts` gains exactly
+      two rows, one per rebuilt DOCX, each carrying the rebuild's build date and a
+      `changes` note naming the scale rename, and every pre-existing row is
+      unchanged — without which a manifest that lost rows would shrink the sweep and
+      pass vacuously, or a rebuild could land with no version bump against D-016.
 - [ ] AC6 The sign-off is recorded before the keying edit lands: `cairn/DECISIONS.md`
       carries an entry citing the source line AC1 adds, naming the adopted name and
       the scored-column rename, committed no later than the commit that edits
@@ -110,9 +143,13 @@ sourced branch.
 - [ ] T3 Rename in `data-raw/hitopsr_items.csv` and regenerate the four tables via
       `data-raw/hitopsr_info.R`; confirm the sweep and invariance check green.
 - [ ] T4 Run the AC3 comparison against a merge-base worktree build.
-- [ ] T5 Regenerate the four artifacts, their `pkgdown/assets/downloads/` copies and
-      the `hitop_artifacts` rows via `data-raw/artifacts.R`; re-lock the checksums.
-- [ ] T6 The AC4 parse-backs for all four formats and the bounded DOCX text diff.
+- [ ] T5 Rebuild the two DOCX artifacts and their `pkgdown/assets/downloads/` copies
+      via `data-raw/artifacts.R` with `rebuild_stems <- "hitopsr"` and
+      `rebuild_formats <- "docx"`; confirm it appended exactly two `hitop_artifacts`
+      rows and left the REDCap and Qualtrics files untouched.
+- [ ] T6 The AC4 parse-backs for all four formats — the new name and no `NSSI` in
+      both DOCX, neither name in the Qualtrics `.txt` and the REDCap dictionary —
+      and the bounded DOCX text-plus-footer diff.
 - [ ] T7 The AC5 directory-listing sweep and the manifest file-set anchor.
 - [ ] T8 NEWS; fix every doc surface the AC2 sweep flags (`?score_hitopsr`,
       `R/data.R`, `README.Rmd`, `_pkgdown.yml`, the vignettes); `build_readme()`.
@@ -130,7 +167,9 @@ sourced branch.
 - 2026-08-27: RR04's three corrections to RB04 were verified independently before ingestion rather than taken on the reviewer's word. M041 T3 does enumerate the four non-joining Table 1 labels and one is this scale, printed `Non-suicidal Self-injury`; `snakecase::to_any_case("Nonsuicidal Self-Injury", case = "lower_camel")` returns `nonsuicidalSelfInjury`, so RB04's claim that every variant converges on one stem is false; and `inst/extdata/hitopsr_qualtrics.txt` and the REDCap `instrument.csv` return zero matches for `nssi` and for the control name `Aloofness`, while both DOCX files carry exactly one `NSSI` and one `Social Aloofness` — so AC4's promise over four artifacts cannot be met by two of them. No `DECISIONS.md` entry is written by this ingestion: no decision has been taken, and AC6 already requires the sign-off entry to land with the adopted name.
 - 2026-08-27: Jeff shelved `cairn/references/sources/Prolific data HiTOP-SR.sav` (7.8 MB, SPSS, the Prolific dataset the introduction paper is based on). Checked against the naming question and it does not answer it, so the block stands. The file carries 1,362 variables, 1,265 of them labelled; the labels are item text and survey metadata. All 93 scale and subscale score variables are among the 97 *unlabelled* ones, and every one of them is a compressed working abbreviation rather than a name — `SocAloofness`, `DiffReachingOrgasm`, `AffLability`, `RestrictedAffect`, `Anehdonia` (sic) — with `NSSI` sitting in that set as one abbreviation among 93. Of the package's 76 full scale names, three (`Gambling`, `Nightmares`, `Restlessness`) occur inside some variable label, all as incidental words in item text; no label anywhere contains `injury` or `suicidal` except a consent paragraph and the item "I exercised when I was injured." So the dataset asserts nothing about what the scale is called, and unlike the development workbook it does not even use full names for the other scales. It also does not substitute for the paper on M041: D-032 makes the paper's published Table 1 the ingestion source, and computing alpha, mean and SD ourselves from the raw responses would be a re-derivation, not a published citable table (IP3). It would serve as an independent check on Table 1's cells once the paper is in hand.
 - 2026-08-27: Jeff shelved `cairn/references/sources/ASMNT-26-0390_Proof_hi.pdf` (5.7 MB; sha256 `1c211219b7fe13f8ed172f9210c152a642a9be77d790e08d795843c25da8e425`; PDF CreationDate 2026-06-03), downloaded from Manuscript Central. RB04's blocker is discharged: this is the introduction paper. **What the file is**, stated because it bears on D-032: the ScholarOne submission PDF of *Assessment of the Hierarchical Taxonomy Of Psychopathology (HiTOP): Introducing the HiTOP Self-Report (HiTOP-SR) and Brief Report (HiTOP-BR)*, journal *Assessment*, Manuscript ID `ASMNT-26-0390` with no revision suffix, 1,107 pages, carrying the rotated "For Peer Review" watermark on essentially every page. It is a manuscript under review, not a publisher's typeset proof and not an accepted or in-press version — so whether it satisfies D-032's "nothing ships from a draft: the final submitted paper is the ingestion source" is a live gate question, not something this session settles. **What it prints.** Four occurrences, all in tables, all `Non-suicidal Self-injury`: Table 1 (descriptive statistics and internal consistencies for all primary scales and subscales), Table 2 (descriptives by biological sex), Table 3 (mean correlations), and Appendix A (definitions and client-facing descriptions). Two occurrences in prose, both capitalising the S: `Non-Suicidal Self-Injury (NSSI)` at first mention, where the abbreviation is introduced, and `Non-Suicidal Self-injury` later in the results. The paper therefore disagrees with itself across three renderings, which is D-018's "not a reliable naming authority even about itself" pattern arising inside a single document. **The lowercase form is idiosyncratic to this scale, not a house style:** the paper Title-Cases every other multi-word scale name, with zero sentence-case occurrences across six probes (`Social Aloofness` 5, `Anxious Worry` 5, `Angry Hostility` 4, `Manic Energy` 9, `Restricted Affectivity` 4, `Trauma Reactions` 6; each lowercase variant 0). **Corroboration of the deck:** Table 1's row for the scale gives 6 items and alpha 0.83, identical to slide 34 of the December 2023 Workgroup deck, so the deck's table and Table 1 are the same content at two dates.
-- 2026-08-27: **RB04's premise that `hitopsr_definitions.csv` is in-repo authoring is false, and the milestone's Scope sentence saying so must be corrected at the resume gate.** The CSV is a transcription of the paper's Appendix A: row 59's clinician definition ("Deliberate harming of one's body (cutting, burning, scratching) that isn't meant to cause death") and its client-facing description both match Appendix A word for word, and `git log` shows Jeff added the file on 2026-06-04, one day after this PDF's CreationDate. That explains what looked like a coincidence at the RR04 ingest — the CSV's `Non-suicidal Self-injury` is the paper's own table spelling, not an independent authoring choice — and it makes RR04's finding 4 the correct reading. It also means the definitions table has a source and `cairn/SOURCES.md` records no provenance line for it, a gap this milestone's AC1 line can close alongside the scale name.
+- 2026-08-27: the provenance of `hitopsr_definitions.csv` runs the other way, corrected by Jeff on 2026-08-27 after this session first recorded it backwards. Jeff wrote the clinician and client-facing definitions for the Society, sent them to Len, and they were then published as the paper's Appendix A — so the paper's appendix descends from the repo's text, not the repo's text from the paper. RB04's "in-repo authored" characterization was right and the milestone's Scope sentence saying so needs no correction; RR04's Beyond-the-brief finding 4, which read the matching spelling as evidence the CSV's author had followed the draft, is wrong in direction. What the correction leaves open is an IP2 question this session did not anticipate: the paper's four tables print `Non-suicidal Self-injury`, the same string Jeff supplied, so adopting it may be adopting the package's own text round-tripped through a publication rather than an independent naming decision — where the two renderings demonstrably not traceable to Jeff's text, the December 2023 deck's `Non-suicidal Self-Injury` and the paper's prose `Non-Suicidal Self-Injury`, both capitalise `Injury`.
+- 2026-08-27: amendment gate. Jeff adopted the four-part amendment package (Scope's gate condition, AC1, AC4, AC5) at the mini gate; the amended AC wording then went to a fresh-context [O] criteria audit in full mode (user-facing tier), which returned 14 findings and pronounced AC5's manifest anchor and AC4's DOCX parse-back sound. Three findings changed substance rather than wording, and each was verified in this session before being applied rather than taken on the reader's word. **Only two artifacts are rebuilt, not four:** `zip::zip` stores the intermediate CSV's mtime in `hitopsr_redcap.zip` (confirmed — the committed archive carries a `07-16-2026 22:33` member date), so the zip is not byte-reproducible and rebuilding it would churn a checksum and record a D-016 manifest revision that is not one, while `hitopsr_qualtrics.txt` is byte-reproducible but prints no scale name; `data-raw/artifacts.R` already takes `rebuild_stems`/`rebuild_formats` filters to express this. Scope's "In" clause, its surface-tier sentence, AC4, AC5 and T5 all moved from four to two. **Nothing required the manifest to gain rows:** AC5 froze pre-existing rows and AC4 demoted the re-lock to a step, so a rebuild landing with no version bump would have passed; AC5 now requires exactly two new rows with a `changes` note. **AC4 named an instrument that does not exist:** `tests/testthat/test-artifacts.R` holds no checksums to re-lock — it recomputes `tools::md5sum()` against the latest `hitop_artifacts` row (confirmed at `test-artifacts.R:43`), so the manifest is what changes. Also applied: AC1 now defers the D-032 and D-018 source reasoning to the AC6 entry instead of settling it silently, names the shelf path, sha256 and Table 1 as the compared cell, requires a numbered `OQ-n` in `cairn/SOURCES.md` rather than "a line", bars comparison against any transcription held in this repo rather than only against this file, fixes the rule for a glossed cell, and attributes the Appendix A provenance to the maintainer with its date; AC4 names `officer::docx_summary()` plus a separate footer read as the extractor and allows the scale-name row to move, since the DOCX scoring table sorts on `Scale` (`R/generate_docx.R:491`) — verified that `NSSI` and `Non-suicidal Self-injury` both land at index 46 under `en_US` collation, so a move would be a diff to explain rather than an expected outcome; AC5 asserts the two directory listings are identical to the merge-base's, closing the deleted-file hole. Plan-owned body is 148 lines against the 150 cap; no compression needed.
+- 2026-08-27: adopted string settled — `Non-suicidal Self-injury`, as printed in Tables 1-3 of `ASMNT-26-0390`. Jeff settled the two questions the source raised: to proceed on the peer-review-stage submission now and re-shelve the accepted version later, and that the casing did not warrant further deliberation given both hyphenated forms derive the same stem. The IP2 circularity this session raised against that string is resolved rather than merely recorded: Jeff confirmed on 2026-08-27 that Tables 1-3 existed before he sent the paper's authors the definitions CSV, so their spelling is the authors' own and independent of this package, and only Appendix A descends from it.
 
 ## Decisions
 
