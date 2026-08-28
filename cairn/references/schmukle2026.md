@@ -7,10 +7,10 @@ the running heads, so every anchor below is the printed journal page. Extraction
 verified 2026-08-28 against the source — each equation below was read from the
 typeset page, and Box 1's two worked examples were recomputed from Equations
 (10)-(12): both estimates and both standard errors reproduce the printed two
-decimals exactly, and both upper bounds land 0.01 above the printed figure because
-the article forms its bound from the rounded estimate and standard error it has
-just printed (58.94 + 1.96 x 4.47 = 67.70, against 67.71 unrounded) — observed
-2026-08-28.
+decimals exactly, and both recomputed upper bounds land 0.01 above the printed
+figure because the article forms its bound from the rounded estimate and standard
+error it has just printed (58.94 + 1.96 x 4.47 = 67.70, against 67.71 unrounded)
+— observed 2026-08-28.
 
 **Citation.** Schmukle, S. C. (2026). Unbiased confidence intervals for
 psychological testing: The regression-based true score approach with scale

@@ -77,9 +77,7 @@ interval_engine <- function(
   ## The reference mean and SD are printed on one response coding. A score
   ## computed on any other coding is a different quantity -- a shift moves the
   ## mean, a stretch moves both -- and no mapping onto these statistics is
-  ## published, so nothing is converted. Checked before coverage, because on a
-  ## mismatched coding every column is NA anyway and naming the uncovered ones
-  ## as well would report two problems where the caller has one.
+  ## published, so nothing is converted.
   usable <- isTRUE(all.equal(as.numeric(srange), as.numeric(ref_srange)))
   if (!usable) {
     cli::cli_warn(
@@ -124,8 +122,12 @@ interval_engine <- function(
   ## An uncovered column still gets all three columns, filled with NA, so a
   ## missing interval is visible in the output rather than absent from it. Both
   ## reports are warning conditions, so one suppressWarnings() silences the
-  ## function and either can be caught on its own (D-025's posture).
-  if (usable && any(!covered)) {
+  ## function and either can be caught on its own (D-025's posture, D-044's
+  ## classes). This one is raised whether or not the coding matched: the two say
+  ## different things -- that this column has no reference row at all, and that
+  ## no column is convertible on this coding -- so a caller hitting both is told
+  ## both rather than one standing in for the other.
+  if (any(!covered)) {
     uncovered <- col_names[!covered]
     cli::cli_warn(
       c(

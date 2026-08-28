@@ -19,6 +19,9 @@
 #   3. Table 1's own label indentation against the shipped `type` column -- the
 #      one thing in the shipped table that Table 1 states and the CSV does not
 #      carry.
+#   4. Table 1's Range column against the response coding `interval_hitopsr()`
+#      converts on -- the one number that function hardcodes and that nothing
+#      else traces back to the source.
 #
 # What this script cannot do: it needs the gitignored source shelf and
 # pdftotext, so it never runs in CI. The CI-runnable half of AC2 is in
@@ -166,6 +169,24 @@ if (length(bad)) {
 }
 cat("3. type vs Table 1's indentation: ", sum(paired2), " rows compared (",
     sum(want == "subscale"), " indented)\n\n", sep = "")
+
+## ---- 4. Table 1's Range against the coding the package converts on ---------
+
+## `interval_hitopsr()` refuses to convert a score computed on any coding other
+## than c(1, 4), and that constant is written in the wrapper, not read from the
+## data. Table 1 is where it comes from: every Range cell opens at 1.0 and the
+## widest closes at 4.0, so the printed range is the source's own statement of
+## the coding the mean and SD belong to.
+ref_srange <- c(1, 4)
+observed <- c(min(table1$rangeLo), max(table1$rangeHi))
+if (!isTRUE(all.equal(observed, ref_srange))) {
+  discrepancies <- c(discrepancies, sprintf(
+    "coding: Table 1's Range column spans [%s, %s], but interval_hitopsr() converts on c(%s, %s)",
+    format(observed[1]), format(observed[2]),
+    format(ref_srange[1]), format(ref_srange[2])))
+}
+cat("4. Range vs the conversion coding: Table 1 spans [",
+    format(observed[1]), ", ", format(observed[2]), "]\n\n", sep = "")
 
 ## ---- result ----------------------------------------------------------------
 
