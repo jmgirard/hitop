@@ -8,10 +8,14 @@ by the maintainer, admitted as this package's source by D-042. Pagination: PDF
 pages of that shelf copy. The document also prints its own manuscript page number
 one lower in the running head, so Table 1 begins on shelf page 49 and prints
 "Assessing the HiTOP Model 48"; every anchor below is the shelf page.
-Extraction: unverified — Table 1's 101 rows were transcribed by reading the three
-table pages rendered at 200 dpi, and have not yet been re-read against the
-machine extraction `data-raw/verify_hitopsr_devstats.R` performs — observed
-2026-08-28.
+Extraction: verified — Table 1's 93 primary-scale and subscale rows were
+transcribed by reading the three table pages rendered at 200 dpi, and were
+re-read against the independent coordinate extraction
+`data-raw/verify_hitopsr_devstats.R` performs at the M041 review, 2026-08-28:
+372 cells against the committed CSV and 372 against the shipped
+`hitopsr_devstats`, none differing, plus the 17 indented labels against the 17
+`subscale` rows. The eight Superspectra and Spectra rows are not transcribed and
+so are not covered by that check — observed 2026-08-28.
 
 **Citation.** Simms, L. J., Naragon-Gainey, K., Wright, A. G. C., Bornovalova, M.,
 Cicero, D. C., Clark, L. A., Forbes, M. K., et al. *Assessment of the Hierarchical
@@ -124,6 +128,19 @@ appears anywhere in the document — observed 2026-08-28.
   recomputed rather than transcribed. M041 does not: the recomputation needs its own
   analytic decisions and is the standing ROADMAP candidate D-043 makes condition one
   for shipping any coefficient this table does not print — observed 2026-08-28.
+- **The paper's prose contradicts its own Table 1 on the lowest alpha.** p. 24
+  states that of the 16 scales below .80, "most of these alphas [are] still in
+  the acceptable range (between .66 and .79)", and names the lowest three as
+  Blood-Injection Phobia (.66), Trichotillomania (.67) and Purging (.66). Table 1
+  prints **.61** for Situational Phobias, below all three, and the independent
+  coordinate extraction confirms that cell. Exactly 16 rows do fall below .80, as
+  the prose says, so the disagreement is over which is lowest and not over the
+  count. Nothing shipped depends on the prose — `hitopsr_devstats` carries the
+  printed cell — but 0.61 is the constant anchoring the closed-form oracle O-001
+  and the discriminating cell of the coverage oracle O-003, so the discrepancy is
+  recorded rather than reconciled (IP1). Reconcilable against the accepted
+  version, or by the raw-data recomputation the ROADMAP carries as a candidate —
+  observed 2026-08-28 (M041 review).
 - The paper prints **no reliability coefficient other than alpha** for these scales,
   so nothing here bears on the omega-ordinal question D-043 settles — observed
   2026-08-28.

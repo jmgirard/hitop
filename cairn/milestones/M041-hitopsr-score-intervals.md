@@ -184,6 +184,7 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 - 2026-08-28: T6 oracles and behavior tests landed; the AC6 wording guard waits on T7's artifacts. `cairn/ORACLES.md` holds four records and `cairn/DESIGN.md`'s Testing section declares it as the location. The coverage oracle's generative model was worked out against the source rather than assumed, and the first model tried was wrong: drawing the true score at the classical true score's spread makes Eq (12) conservative (0.967 at reliability 0.80) and Eq (7) nominal, the reverse of the source's Table 1. The model that reproduces the source draws the true score on the observed score's own metric, so the two share an SD and correlate at sqrt(rel); `cairn/references/schmukle2026.md` now states it in that form and says why the metric is load-bearing. Discrimination checked against four wrong estimators, all outside tolerance at reliability 0.61 and three of four inside it at 0.96 -- so the low-reliability cell carries the oracle, which the record says. The join checker's third probe was adjusted: with the exception set empty there is no member to delete, so the test builds the world where one exists (row gone and declared, checker silent) and deletes the declaration. Minor task edit. Full suite: 14786 passing, 0 failures, 4 skips.
 - 2026-08-28: T7 and the rest of T6 done. NEWS entry, a Confidence Intervals section in `vignettes/hitopsr_scoring.Rmd` (with a pointer to it from the standard-error section, which already said those numbers give no interval), and a `Score Intervals` pkgdown section carrying the reference group in its `desc` -- a bare `contents:` row holds no prose, so the reference entry AC6 names had to become its own section for the statement to have somewhere to live. `pkgdown::check_pkgdown()` clean. `tests/testthat/test-interval-prose.R` cuts the one passage about this function out of each of the four artifacts, asserts `Development Sample 2`, a plain-words `development sample`, and `not a community norm` on each, and asserts every `N =` each states against the figure `?hitopsr_devstats` documents rather than a typed literal. Writing that guard found the changelog and the vignette naming the sample only by its proper noun; both now say in plain words that it is a development sample.
 - 2026-08-28: `hitopsr_devstats` added to the `utils::globalVariables()` list in `R/hitop-package.R`, alongside the twelve datasets already there; without it `R CMD check` flags the lazy-loaded dataset `interval_hitopsr()` names as an undefined global. `devtools::check()` then 0 errors / 0 warnings / 0 notes, `devtools::test()` 14904 passing with 4 skips, `devtools::document()` no diff, `pkgdown::check_pkgdown()` clean, line-ending policy check passed. All seven tasks done; status review.
+- 2026-08-28: /milestone-review — draft PR #66 opened, all seven criteria verified with fresh evidence, three-lens fan-out returned 11 findings (two lenses clean) plus 2 from the review session; none showed a criterion failing, so the return floor did not fire. Jeff approved with the five recommended fixes applied.
 
 ## Decisions
 
@@ -253,7 +254,9 @@ evidence below is from the branch as it will merge.
   phrase and a changed N.
 - **AC7 — pass.** `devtools::test()`: 14904 passing, 0 failures, 0 warnings, 4
   skips. `devtools::document()`: no diff. `devtools::check()`: 0 errors, 0
-  warnings, 0 notes.
+  warnings, 0 notes. Re-run after the gate's fix-now work landed:
+  `devtools::check()` again 0 errors / 0 warnings / 0 notes in 7m 14s, its test
+  phase OK, and `devtools::document()` no diff.
 
 ### Consistency gate
 
@@ -402,4 +405,42 @@ criterion failing, so the return floor did not fire.**
     matched. **Disposition: fix now** (`simms2026.md`'s stale sentence; the
     `schmukle2026.md` advisory is a checker line-wrap artifact and is left).
 
+### Triage outcome
 
+Put to the maintainer at the approval gate, 2026-08-28. Jeff selected "apply the
+five fixes, then merge", and — on finding 9, put as its own question — chose to
+leave `hitopsr_devstats` indexed under the pkgdown "Score Intervals" section
+rather than moving it beside `pid_norms` under "Instrument Data", the section's
+`desc` being where AC6's development-sample statement lives.
+
+Fixed on the branch after the gate, before the approval marker:
+
+- **1** — `between()` in `tests/testthat/test-interval-prose.R` now asserts the
+  terminator was found as well as the anchor, and drops the anchor from the
+  passage it returns, so no assertion can be answered by the words that located
+  it. The help-page cut runs between the Rd's two bold headings; the changelog
+  cut terminates on the start of whatever the next entry is (`"* **"`) rather
+  than on that entry's wording, which also closes finding 11's NEWS fragility.
+  Dropping the anchor made the help page's plain-words assertion fail honestly —
+  the phrase lived only in the heading — so the roxygen paragraph now states it
+  in the body: "That is a development sample and not a community norm."
+- **2** — `validate_level()` takes `rlang::is_bare_numeric` in place of
+  `rlang::is_double`, so `level = 1L` is reported as out of range rather than as
+  the wrong type; the new case is pinned in the level-validation test.
+- **5** — the AC1 join test now asserts `hitopsr_devstats$camelCase` carries no
+  duplicate, the key the engine actually joins on.
+- **6** — `interval_hitopsr()`'s opening paragraph no longer says scores come
+  from `score_hitopsr()` unqualified: it names the 76 scale columns that function
+  produces and says the 17 subscale rows have no column it emits.
+- **12** — `cairn/references/simms2026.md` gains an Open-questions bullet
+  recording that the paper's p. 24 prose names .66 as the lowest alpha while its
+  own Table 1 prints .61 for Situational Phobias, with the extraction that
+  confirms the cell and the two oracles the constant anchors.
+- **13** — the same file's provenance block, which still said the transcription
+  had not been re-read against the machine extraction, now records the M041
+  review's run and its counts. `cairn_validate.py`'s references-staleness
+  advisories drop from 2 to 1; the remaining one is a line-wrap artifact on
+  `schmukle2026.md`, which does state `Extraction: verified`.
+
+Filed as follow-ups (findings 3, 4, 10) and rejected (7, 8, 11) as recorded
+above.

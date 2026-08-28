@@ -311,9 +311,11 @@ validate_numeric_columns <- function(columns, headline, info,
 # interval and a level of 0 for a point, and neither is a request the caller
 # meant. Reported as two checks so the message says which one failed -- 95 is a
 # well-formed number on the wrong scale, which is a different mistake from "95%".
+# The type check accepts an integer, as validate_range() next door does: `1L` is
+# a number on the right scale and belongs in the range message, not the type one.
 validate_level <- function(x, arg = "level", call = rlang::caller_env()) {
   cli_assert(
-    condition = rlang::is_double(x, n = 1) && !is.na(x),
+    condition = rlang::is_bare_numeric(x, n = 1) && !is.na(x),
     message = c(
       "The {.arg {arg}} argument must be a single number.",
       "x" = "You supplied {.cls {class(x)}} of length {length(x)}."

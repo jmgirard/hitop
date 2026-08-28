@@ -29,12 +29,18 @@ artifact_text <- function(relative) {
 # The one section of each artifact that is about this function, so a phrase
 # occurring elsewhere in a long file cannot satisfy the assertion. Each cut is
 # anchored on text the artifact itself owns.
+#
+# BOTH ends are asserted found. A terminator that matches nothing would silently
+# widen the cut to the whole remainder of the file, and the assertions below
+# would then be answered by text that is not about this function at all -- which
+# is what a missing terminator did here until the M041 review caught it.
 between <- function(text, from, to) {
   start <- regexpr(from, text, fixed = TRUE)
   expect_gt(start, 0L)
-  rest <- substring(text, start)
+  rest <- substring(text, nchar(from) + start)
   stop_at <- regexpr(to, rest, fixed = TRUE)
-  if (stop_at > 0L) substring(rest, 1L, stop_at - 1L) else rest
+  expect_gt(stop_at, 0L)
+  substring(rest, 1L, stop_at - 1L)
 }
 
 # Every "N = <number>" the passage states.
@@ -45,15 +51,21 @@ sample_sizes <- function(passage) {
 
 surfaces <- function() {
   list(
+    ## The Rd's own bold heading opens the passage and the next bold heading
+    ## closes it. The cut drops the anchor, so every phrase below is asserted
+    ## against the paragraph rather than against the words that located it.
     "help page" = between(
       artifact_text("man/interval_hitopsr.Rd"),
-      "The reference group is a development sample",
-      "\\section"
+      "\\strong{The reference group is a development sample.}",
+      "\\strong{Two limitations worth stating.}"
     ),
+    ## Terminated on the start of whatever the next changelog entry is, rather
+    ## than on that entry's wording, so inserting an entry between the two does
+    ## not silently widen this cut.
     "changelog" = between(
       artifact_text("NEWS.md"),
       "* **`interval_hitopsr()` puts a confidence interval",
-      "* **Two HiTOP-SR scales"
+      "* **"
     ),
     "pkgdown reference index" = between(
       artifact_text("_pkgdown.yml"),

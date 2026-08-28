@@ -45,8 +45,11 @@ requested. An \code{NA} score returns \code{NA} in all three.
 \description{
 Converts scored HiTOP-SR columns into a regression-based true-score estimate
 and a confidence interval around it, using the development-sample mean,
-standard deviation and reliability shipped as \link{hitopsr_devstats}. Scores are
-produced by \code{\link[=score_hitopsr]{score_hitopsr()}}; this function converts them and never rescores.
+standard deviation and reliability shipped as \link{hitopsr_devstats}. This
+function converts already-scored columns and never rescores: the 76 scale
+columns \code{\link[=score_hitopsr]{score_hitopsr()}} produces are the ones it is built for. The 17
+subscale rows \link{hitopsr_devstats} also carries have no column that function
+emits, so an interval on a subscale needs a column scored by other means.
 }
 \details{
 \strong{What is computed.} For a score \eqn{x} on a scale whose reference
@@ -69,11 +72,12 @@ against each other.
 \strong{The reference group is a development sample.} \link{hitopsr_devstats} carries
 the statistics printed for the HiTOP-SR introduction paper's Development
 Sample 2: N = 780 Prolific Academic participants stratified by sex and age
-to approximate a community-representative United States population. It is
-not a community norm -- no census weighting was applied and no raw-score to
-T-score table is published -- so an interval from this function says where a
-score sits relative to the sample the instrument was developed on, and not
-what percentile it occupies in any population.
+to approximate a community-representative United States population. That is
+a development sample and not a community norm -- no census weighting was
+applied and no raw-score to T-score table is published -- so an interval
+from this function says where a score sits relative to the sample the
+instrument was developed on, and not what percentile it occupies in any
+population.
 
 \strong{Two limitations worth stating.} Equation (12)'s interval is symmetric
 about the estimate and the same width for every respondent on a given scale,

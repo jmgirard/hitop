@@ -2,8 +2,11 @@
 #'
 #' Converts scored HiTOP-SR columns into a regression-based true-score estimate
 #' and a confidence interval around it, using the development-sample mean,
-#' standard deviation and reliability shipped as [hitopsr_devstats]. Scores are
-#' produced by [score_hitopsr()]; this function converts them and never rescores.
+#' standard deviation and reliability shipped as [hitopsr_devstats]. This
+#' function converts already-scored columns and never rescores: the 76 scale
+#' columns [score_hitopsr()] produces are the ones it is built for. The 17
+#' subscale rows [hitopsr_devstats] also carries have no column that function
+#' emits, so an interval on a subscale needs a column scored by other means.
 #'
 #' @param data A data frame containing scored HiTOP-SR columns.
 #' @param scores The score columns to convert, as column names or column
@@ -43,11 +46,12 @@
 #'   **The reference group is a development sample.** [hitopsr_devstats] carries
 #'   the statistics printed for the HiTOP-SR introduction paper's Development
 #'   Sample 2: N = 780 Prolific Academic participants stratified by sex and age
-#'   to approximate a community-representative United States population. It is
-#'   not a community norm -- no census weighting was applied and no raw-score to
-#'   T-score table is published -- so an interval from this function says where a
-#'   score sits relative to the sample the instrument was developed on, and not
-#'   what percentile it occupies in any population.
+#'   to approximate a community-representative United States population. That is
+#'   a development sample and not a community norm -- no census weighting was
+#'   applied and no raw-score to T-score table is published -- so an interval
+#'   from this function says where a score sits relative to the sample the
+#'   instrument was developed on, and not what percentile it occupies in any
+#'   population.
 #'
 #'   **Two limitations worth stating.** Equation (12)'s interval is symmetric
 #'   about the estimate and the same width for every respondent on a given scale,

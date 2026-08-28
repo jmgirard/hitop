@@ -68,6 +68,14 @@ test_that("every HiTOP-SR scale and subscale outside the exception set has exact
     character(0)
   )
 
+  ## The engine joins a score column on `camelCase`, not on `scale`, and
+  ## `match()` would silently take the first of two rows sharing a stem. The
+  ## printed names differ, so the checks above would not see it.
+  expect_identical(
+    unique(hitopsr_devstats$camelCase[duplicated(hitopsr_devstats$camelCase)]),
+    character(0)
+  )
+
   ## Nothing is covered twice, and the stems and kinds agree with the tables
   ## they were derived from.
   keyed <- merge(tables, as.data.frame(hitopsr_devstats), by = "scale")
@@ -627,6 +635,12 @@ test_that("the confidence level is rejected on its type and on its range, separa
   )
   expect_error(
     interval_hitopsr(scored, scores = "hsr_agoraphobia", level = 1),
+    "proportion between 0 and 1"
+  )
+  ## An integer is a number on the right scale, so it is out of range rather
+  ## than the wrong type -- the two messages must not swap places.
+  expect_error(
+    interval_hitopsr(scored, scores = "hsr_agoraphobia", level = 1L),
     "proportion between 0 and 1"
   )
 })
