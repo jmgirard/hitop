@@ -33,7 +33,8 @@
 #'   would also produce is an error rather than an overwrite or a duplicated
 #'   column: the message names every colliding column. Re-run with
 #'   `append = FALSE` to return only the new columns, or drop the colliding
-#'   columns from `data` first.
+#'   columns from `data` first. The condition is classed
+#'   `hitop_append_collision`, so a caller can catch this refusal by name.
 #'
 #' @references Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
 #'   E. H. (2016). Development of a Response Inconsistency Scale for the
@@ -91,22 +92,14 @@ validity_pid5 <- function(
   validate_string(prefix, arg = "prefix")
   validate_flag(append, arg = "append")
 
-  ## The published PRD and SD-TD cut scores are raw sums compared to fixed
-  ## thresholds (10, 11, 19) that assume items coded 0-3; unlike INC/ORS they do
-  ## not adapt to `srange`, so a non-0-3 coding silently mis-flags respondents.
-  ## Only FULL/SF compute cutoff scales (BF returns PNA only).
-  if (version %in% c("FULL", "SF") && !isTRUE(all.equal(srange, c(0, 3)))) {
-    cli::cli_warn(c(
-      "!" = "The published PID-5 validity cut scores (PRD, SD-TD) assume items coded 0-3, but {.arg srange} is {.code c({srange[[1]]}, {srange[[2]]})}.",
-      "i" = "PRD and SD-TD are raw sums compared to fixed thresholds and will be mis-flagged under other codings. Recode items to 0-3 before screening."
-    ))
-  }
-
   ## Refuse an append that would collide with a column `data` already holds
   ## (D-045(a)). The output is the prefix plus PNA and, for FULL/SF, the four
   ## cutoff-scale abbreviations, all of which are known from `version` alone --
   ## so the refusal lands before any column is built and after the existing
-  ## argument checks. The abbreviations are resolved here and reused below, so
+  ## argument checks. It also precedes the `srange` warning below, as the four
+  ## other appending sites precede theirs: a colliding call returns nothing, so
+  ## it is told about the collision alone rather than warned about a result it
+  ## will not receive. The abbreviations are resolved here and reused below, so
   ## the enumeration and the columns cannot drift apart.
   cutoff_vars <- if (!version %in% c("FULL", "SF")) {
     stats::setNames(character(0), character(0))
@@ -120,6 +113,17 @@ validity_pid5 <- function(
       paste0(prefix, c("PNA", unname(cutoff_vars))),
       data
     )
+  }
+
+  ## The published PRD and SD-TD cut scores are raw sums compared to fixed
+  ## thresholds (10, 11, 19) that assume items coded 0-3; unlike INC/ORS they do
+  ## not adapt to `srange`, so a non-0-3 coding silently mis-flags respondents.
+  ## Only FULL/SF compute cutoff scales (BF returns PNA only).
+  if (version %in% c("FULL", "SF") && !isTRUE(all.equal(srange, c(0, 3)))) {
+    cli::cli_warn(c(
+      "!" = "The published PID-5 validity cut scores (PRD, SD-TD) assume items coded 0-3, but {.arg srange} is {.code c({srange[[1]]}, {srange[[2]]})}.",
+      "i" = "PRD and SD-TD are raw sums compared to fixed thresholds and will be mis-flagged under other codings. Recode items to 0-3 before screening."
+    ))
   }
 
   ## Extract item columns

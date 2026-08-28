@@ -76,7 +76,8 @@ omega), use \code{\link[=reliability_hitopsr]{reliability_hitopsr()}}.
 would also produce is an error rather than an overwrite or a duplicated
 column: the message names every colliding column. Re-run with
 \code{append = FALSE} to return only the new columns, or drop the colliding
-columns from \code{data} first.
+columns from \code{data} first. The condition is classed
+\code{hitop_append_collision}, so a caller can catch this refusal by name.
 }
 \examples{
 # Score all HiTOP-SR scales from the simulated data

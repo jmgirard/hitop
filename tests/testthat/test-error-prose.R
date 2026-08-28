@@ -63,12 +63,12 @@ artifact_text <- function(path) {
 # on the page would then satisfy the assertion (the M041/M046 trap).
 between <- function(text, from, to, info) {
   start <- regexpr(from, text, fixed = TRUE)
-  expect_gt(start, 0L)
+  expect_true(start > 0L, info = paste(info, "opening anchor"))
   rest <- substring(text, nchar(from) + start)
   stop_at <- regexpr(to, rest, fixed = TRUE)
-  expect_gt(stop_at, 0L)
+  expect_true(stop_at > 0L, info = paste(info, "closing anchor"))
   passage <- substring(rest, 1L, stop_at - 1L)
-  expect_gt(nchar(passage), 50L)
+  expect_true(nchar(passage) > 50L, info = paste(info, "passage length"))
   passage
 }
 
@@ -92,7 +92,12 @@ errors_terminator <- function() {
 COLLISION_PHRASE <-
   "would also produce is an error rather than an overwrite or a duplicated column"
 EMPTY_PHRASE <-
-  "argument that names no columns is an error rather than a silent return of"
+  "argument that names no columns is an error, reported ahead of the"
+
+# The two condition classes, named on the pages that signal them so a caller can
+# find the name to catch without reading the release notes.
+COLLISION_CLASS <- "hitop_append_collision"
+EMPTY_CLASS <- "hitop_empty_selection"
 
 # The three exports taking a variable-length column selection.
 selection_exports <- c("interval_hitopsr", "norm_pid5", "rank_scales")
@@ -124,6 +129,7 @@ test_that("every appending export states the collision refusal on its help page"
       info = nm
     )
     expect_match(passage, COLLISION_PHRASE, fixed = TRUE, info = nm)
+    expect_match(passage, COLLISION_CLASS, fixed = TRUE, info = nm)
   }
 })
 
@@ -142,6 +148,7 @@ test_that("the three selection exports state the empty-selection refusal", {
     # The argument the caller wrote, named in the passage that promises it.
     arg <- if (nm == "rank_scales") "scales" else "scores"
     expect_match(passage, arg, fixed = TRUE, info = nm)
+    expect_match(passage, EMPTY_CLASS, fixed = TRUE, info = nm)
   }
 })
 
@@ -162,13 +169,16 @@ test_that("the four non-selection exports do not promise an empty-selection refu
       info = nm
     )
     expect_no_match(passage, EMPTY_PHRASE, fixed = TRUE, info = nm)
+    expect_no_match(passage, EMPTY_CLASS, fixed = TRUE, info = nm)
   }
 })
 
 test_that("NEWS.md records both refusals under the current version", {
-  version <- as.character(
-    read.dcf(file.path(root(), "DESCRIPTION"), fields = "Version")[[1]]
-  )
+  desc <- file.path(root(), "DESCRIPTION")
+  # Guarded like every other source-tree read in this file: under R CMD check
+  # the source tree is absent, and an unguarded read errors rather than skips.
+  skip_if(!file.exists(desc), "DESCRIPTION not available")
+  version <- as.character(read.dcf(desc, fields = "Version")[[1]])
   news <- artifact_text(file.path(root(), "NEWS.md"))
   heading <- paste("# hitop", version)
   # Cut at the current version's heading and stop at the next one, so an entry

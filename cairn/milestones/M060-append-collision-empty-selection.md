@@ -37,15 +37,22 @@ an empty selection aborts.
 ## Acceptance criteria
 
 - [ ] **AC1.** Every exported function of this package whose `formals()` carry an
-      `append` argument aborts, before constructing any output column, when
-      `append = TRUE` and `data` already holds a column that call would produce.
-      The condition is classed `hitop_append_collision` and its message names
-      every colliding column and no other. The domain is enumerated by a test
-      reading `getNamespaceExports("hitop")` and keeping the exports whose
-      `formals()` carry `append`. Probes vary the collision's form as well as its
-      location: for each enumerated export, one colliding column and several; and
-      on the exports that emit them, a `_se` column and a validity abbreviation
-      (`pid_PNA`) as well as a scale column.
+      `append` argument aborts, signalling none of the warnings its
+      output-building path would raise, when `append = TRUE` and `data` already
+      holds a column that call would produce. The condition is classed
+      `hitop_append_collision`, and its message names exactly the colliding
+      columns: the set of column names it quotes equals the set of collisions,
+      with nothing else quoted (the one message-text promise this package makes,
+      on top of the class contract of D-034(c), authorized by D-045(a)). The
+      claim is over the set of such exports, asserted non-empty and asserted to
+      match the probe table exactly. Probes vary the collision's form as well as
+      its location: for each enumerated export, one colliding column, and several
+      for every export whose probe output exceeds one column at that probe's own
+      arguments; an export that appends exactly one column by construction —
+      `rank_scales()`, which appends only `name` — is covered by that
+      single-column probe and its output width asserted to be one, rather than
+      being skipped; and on the exports that emit them, a `_se` column and a
+      validity abbreviation (`pid_PNA`) as well as a scale column.
 - [x] **AC2.** `norm_pid5()` and `interval_hitopsr()` on a zero-length `scores`,
       and `rank_scales()` on a zero-length `scales`, each abort with a condition
       classed `hitop_empty_selection` whose message names that argument. For a
@@ -72,11 +79,11 @@ an empty selection aborts.
 
 ## Coverage
 
-- AC1 → T2, T4
+- AC1 → T2, T4, T9
 - AC2 → T3, T5
-- AC3 → T1, T6
-- AC4 → T7
-- AC5 → T8
+- AC3 → T1, T6, T12
+- AC4 → T7, T11
+- AC5 → T8, T10, T12
 
 ## Tasks
 
@@ -110,6 +117,23 @@ an empty selection aborts.
       `\section{Errors}`).
 - [x] **T8.** `devtools::document()` + `devtools::test()` clean; confirm the
       shipped behavior matches D-045(a)-(d) as written at the plan gate.
+- [ ] **T9.** Repair AC1 (defect return 1): collapse the collision list without
+      cli's `vec_trunc` elision, place each `qty()` beside the marker it governs,
+      list collisions in the caller's column order, and replace the loop's
+      `skip_if` with an asserted single-column exemption so all seven exports are
+      probed. New probes for output width beyond 20, headline number, and a
+      collision ahead of every other column of `data`.
+- [ ] **T10.** Repair the consistency gate: guard `test-error-prose.R`'s
+      `DESCRIPTION` read with the same `skip_if` every other source-tree read in
+      that file carries, so `devtools::check()` skips rather than errors.
+- [ ] **T11.** Review findings 6-11: correct the empty-selection prose that
+      described the rejected design alternative as prior behavior, name both
+      condition classes on the pages that signal them, move `validity_pid5()`'s
+      collision refusal ahead of its `srange` warning as at the other four sites,
+      give `validate_nonempty_selection()`'s `arg` a default, and use
+      `between()`'s `info`.
+- [ ] **T12.** `devtools::document()` no diff, `devtools::test()` and
+      `devtools::check()` clean; re-run T1's harness against the repaired branch.
 
 ## Work log
 
@@ -132,6 +156,11 @@ an empty selection aborts.
 - 2026-08-28: T8 — `devtools::document()` reproduces the committed `man/` with no further diff and leaves `NAMESPACE` unchanged (both validators are internal). `devtools::test()`: FAIL 0, WARN 0, SKIP 5, PASS 15179. Shipped behavior matches D-045(a)-(d): aborts on collision naming every colliding column; aborts on an empty selection naming the argument, ahead of the other selection arguments and behind `data`; both conditions classed and public; no returned value changed (T6).
 - 2026-08-28: all eight tasks done; status set to `review`. `devtools::document()` no diff, `devtools::test()` FAIL 0 / PASS 15179, `cairn_validate` all checks passed (21 pre-existing advisories, none from this branch).
 - 2026-08-28: review returned to `in-progress` (defect return 1). AC1 fails: the collision message names only the first 20 colliding columns (cli's `vec_trunc` default) — 20 of 30 on `score_pid5()`, 20 of 76 on `score_hitopsr()`; and the multi-column probe covers 2 of 7 exports, because `skip_if` inside the loop aborts the whole `test_that` at `rank_scales()`. Consistency gate fails: `devtools::check()` 1 ERROR — `test-error-prose.R:169` reads `DESCRIPTION` outside the `artifact_text()` skip guard, so it errors under `R CMD check` instead of skipping. AC2-AC5 verified with fresh evidence. Eight further findings logged in the Review section for triage during the repair.
+- 2026-08-28: amendment gate (defect return 1). AC1 amended; criteria audit ran in FULL mode over the amended wording, fresh-context [O] reader, and returned eight findings. Five folded in as clear repairs: an unobservable "before constructing any output column" clause replaced by the observable form; "every export whose output can exceed one column" narrowed to the probe's own arguments; the harness obligation restated as the deliverable fact about `rank_scales()`; the `getNamespaceExports()` mechanism sentence reduced to the non-vacuity guarantee; "and no other" sharpened from produced columns to every name the message quotes. Three widening findings went to the gate and Jeff chose holding the criteria set (D-118), with the gap recorded as a ROADMAP candidate row; the three probes ship in the tests regardless.
+- 2026-08-28: T9 — the collision list is collapsed through `cli::cli_vec(collide, style = list(vec_trunc = Inf))`, each `cli::qty()` sits beside the marker it governs, and `intersect()` is reversed so collisions list in the caller's column order. The loop's `skip_if` is replaced by a `SINGLE_COLUMN_EXPORTS` exemption asserted rather than skipped, and a closing `expect_setequal` proves every other export received a multi-column probe; the `and no other` assertions now compare the full set of quoted names, not its intersection with the produced columns. Three probes added: 30 colliding columns (past cli's 20-item elision), the headline at one column and at eight, and a collision placed first in `data`. The first two were confirmed red before the fix; the third was proven able to fail by planting a first-column blind spot in the validator, which failed that probe alone.
+- 2026-08-28: T10 — `test-error-prose.R`'s `DESCRIPTION` read is guarded by the same `skip_if(!file.exists(...))` every other source-tree read in that file carries, so it skips under `R CMD check` as the file's header says rather than erroring.
+- 2026-08-28: T11 — review findings 6-11. The empty-selection prose on `norm_pid5()`, `interval_hitopsr()` and `rank_scales()` no longer says the refusal replaces "a silent return of `data` unchanged", which described the rejected design alternative rather than any released behavior; `NEWS.md` already described the real prior behavior and is unchanged. Both condition classes are now named on the pages that signal them (seven for the collision, three for the empty selection), asserted in the same cut passages and asserted absent from the four non-selection pages; proven able to fail by planting a renamed class in two Rd files. `validity_pid5()`'s collision refusal moved ahead of its `srange` warning, as at the other four sites, with a test that a colliding call raises no warning and a control showing the same call warns without the collision — red against the prior order. `validate_nonempty_selection()`'s `arg` gained a default and `between()` now uses its `info`.
+- 2026-08-28: checkpoint, half-done. T9-T11's code, tests and docs are written and each new check was proven able to fail on a planted defect, but the profile's verify slot has not yet been run clean over the whole tree at this state — `devtools::test()` was still running at the checkpoint and `devtools::check()` has not been run since the `DESCRIPTION` guard landed. T9-T12 stay unticked until it is.
 
 ## Decisions
 

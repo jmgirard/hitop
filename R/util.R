@@ -361,15 +361,25 @@ validate_no_output_collision <- function(
   arg = "data",
   call = rlang::caller_env()
 ) {
-  collide <- intersect(produced, names(data))
+  # Listed in the caller's own column order, not the order this call would have
+  # produced them: the caller reads the list against the frame in front of them.
+  collide <- intersect(names(data), produced)
   if (length(collide) == 0L) {
     return(invisible(NULL))
   }
   n <- length(collide)
+  # cli collapses an inline vector at `cli.vec_trunc` (20 by default) and prints
+  # an ellipsis for the rest, which would name 20 of the 76 columns a re-run of
+  # score_hitopsr() collides on. A caller cannot drop what the message does not
+  # name, so this vector is styled to collapse without truncating.
+  listed <- cli::cli_vec(collide, style = list(vec_trunc = Inf))
+  # `cli::qty()` sets the number for the *next* pluralization marker only, and
+  # any substitution in between cancels it, so each qty() here sits immediately
+  # before the marker it governs (LESSONS: M030, extended M027).
   cli::cli_abort(
     c(
-      "{cli::qty(n)}The {.arg {arg}} argument already {?holds a column/holds columns} this call would append.",
-      "x" = "{cli::qty(n)}Colliding column{?s}: {.val {collide}}.",
+      "The {.arg {arg}} argument already {cli::qty(n)}{?holds a column/holds columns} this call would append.",
+      "x" = "{cli::qty(n)}Colliding column{?s}: {.val {listed}}.",
       "i" = "Set {.code append = FALSE} to return only the new columns, or drop {cli::qty(n)}{?it/them} from {.arg {arg}} first."
     ),
     class = "hitop_append_collision",
@@ -391,7 +401,11 @@ validate_no_output_collision <- function(
 # selection outranks `top`, `srange`, `prefix`, `level` and `append`. `data` is
 # checked earlier still and is exempt: a selection cannot be read against a frame
 # that is not one.
-validate_nonempty_selection <- function(x, arg, call = rlang::caller_env()) {
+validate_nonempty_selection <- function(
+  x,
+  arg = "scores",
+  call = rlang::caller_env()
+) {
   if (length(x) > 0L) {
     return(invisible(NULL))
   }

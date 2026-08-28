@@ -84,12 +84,13 @@ when \code{append = FALSE} the result is a one-column tibble.
 would also produce is an error rather than an overwrite or a duplicated
 column: the message names every colliding column. Re-run with
 \code{append = FALSE} to return only the new columns, or drop the colliding
-columns from \code{data} first.
+columns from \code{data} first. The condition is classed
+\code{hitop_append_collision}, so a caller can catch this refusal by name.
 
-A \code{scales} argument that names no columns is an error rather than a silent
-return of \code{data} unchanged, and it is reported ahead of the other selection
-arguments, so the cause named is the empty selection and not a consequence
-of it.
+A \code{scales} argument that names no columns is an error, reported ahead of the
+other selection arguments, so the cause named is the empty selection and
+not a consequence of it. The condition is classed
+\code{hitop_empty_selection}, so a caller can catch this refusal by name.
 }
 \examples{
 # List each respondent's 3 highest-scoring HiTOP-BR scales

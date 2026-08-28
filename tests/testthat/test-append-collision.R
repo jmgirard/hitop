@@ -153,20 +153,40 @@ test_that("every appending export refuses a single output-column collision", {
       class = "hitop_append_collision"
     )
     named <- named_columns(conditionMessage(err))
-    # Names the colliding column, and no other column the call would produce.
-    expect_true(collide %in% named, info = nm)
-    expect_length(intersect(named, setdiff(produced, collide)), 0)
+    # Set equality against the collision, not against the produced columns: an
+    # intersection with `produced` cannot see a name quoted that no call would
+    # produce, and "no other" is a promise over every name the message quotes.
+    expect_setequal(named, collide)
   }
 })
+
+# The exports that append exactly one column by construction. `rank_scales()`
+# appends the single column named in its `name` argument, so a several-column
+# collision cannot exist for it; every other swept export can exceed one column.
+# The exemption is asserted rather than skipped: a `skip_if` inside the loop
+# below aborts the whole `test_that`, not that iteration, so the four exports
+# sorting after `rank_scales` never received a multi-column probe (M060 review,
+# defect return 1). If this export ever appends more than one column, the
+# assertion fails instead of the exemption going stale.
+SINGLE_COLUMN_EXPORTS <- "rank_scales"
 
 test_that("a collision message names every colliding column and no other", {
   probes <- collision_probes()
   exports <- append_exports()
   expect_true(length(exports) > 0)
+  multi <- character(0)
 
   for (nm in exports) {
     p <- resolve_probe(nm, probes[[nm]])
     produced <- produced_columns(p)
+
+    if (nm %in% SINGLE_COLUMN_EXPORTS) {
+      expect_length(produced, 1L)
+      next
+    }
+    expect_true(length(produced) > 1L, info = nm)
+    multi <- c(multi, nm)
+
     # Several at once, taken from both ends of the output so the set is not a
     # contiguous run the guard could happen to report as a range.
     collide <- unique(c(
@@ -174,7 +194,7 @@ test_that("a collision message names every colliding column and no other", {
       produced[[ceiling(length(produced) / 2)]],
       produced[[length(produced)]]
     ))
-    skip_if(length(collide) < 2, paste(nm, "produces too few columns"))
+    expect_true(length(collide) > 1L, info = nm)
 
     dirty <- p$data
     for (cc in collide) dirty[[cc]] <- NA_real_
@@ -183,9 +203,60 @@ test_that("a collision message names every colliding column and no other", {
       class = "hitop_append_collision"
     )
     named <- named_columns(conditionMessage(err))
-    expect_setequal(intersect(named, produced), collide)
-    expect_true(all(collide %in% named))
+    expect_setequal(named, collide)
   }
+
+  # Every export that can collide on several columns was probed with several --
+  # the loop cannot have exited early or dropped an export silently.
+  expect_setequal(multi, setdiff(exports, SINGLE_COLUMN_EXPORTS))
+})
+
+test_that("a collision wider than cli's inline vector limit names every column", {
+  # cli collapses an inline vector at `cli.vec_trunc` (20 by default) and prints
+  # an ellipsis in place of the rest. A caller cannot drop a column the message
+  # does not name, so the guard has to defeat that truncation: this probe
+  # collides on every column `score_pid5()` produces, which is more than 20.
+  produced <- names(suppressWarnings(
+    hitop::score_pid5(hitop::sim_pid5, items = 1:220, append = FALSE)
+  ))
+  expect_true(length(produced) > 20L)
+
+  dirty <- hitop::sim_pid5
+  for (cc in produced) dirty[[cc]] <- NA_real_
+  err <- expect_error(
+    suppressWarnings(hitop::score_pid5(dirty, items = 1:220)),
+    class = "hitop_append_collision"
+  )
+  msg <- cli::ansi_strip(conditionMessage(err))
+  expect_setequal(named_columns(msg), produced)
+  expect_no_match(msg, "\u2026", fixed = TRUE)
+})
+
+test_that("the collision headline agrees in number with the columns it names", {
+  # `cli::qty()` sets the number for the *next* pluralization marker only, and
+  # an intervening substitution cancels it, so a marker placed after one reads
+  # singular however many columns collided (LESSONS: M030, extended M027).
+  produced <- names(suppressWarnings(
+    hitop::score_hitopbr(hitop::sim_hitopbr, items = 1:45, append = FALSE)
+  ))
+  expect_true(length(produced) > 1L)
+
+  headline <- function(cols) {
+    dirty <- hitop::sim_hitopbr
+    for (cc in cols) dirty[[cc]] <- NA_real_
+    err <- expect_error(
+      suppressWarnings(hitop::score_hitopbr(dirty, items = 1:45)),
+      class = "hitop_append_collision"
+    )
+    cli::ansi_strip(conditionMessage(err))
+  }
+
+  one <- headline(produced[[1]])
+  expect_match(one, "argument already holds a column", fixed = TRUE)
+
+  many <- headline(produced)
+  expect_match(many, "argument already holds columns", fixed = TRUE)
+  expect_no_match(many, "argument already holds a column", fixed = TRUE)
 })
 
 test_that("a standard-error column collides in its own right", {
@@ -205,10 +276,9 @@ test_that("a standard-error column collides in its own right", {
       class = "hitop_append_collision"
     )
     named <- named_columns(conditionMessage(err))
-    expect_true(collide %in% named, info = nm)
     # The scale column the standard error is built on did not collide and must
     # not be reported: `hsr_agoraphobia_se` collided, `hsr_agoraphobia` did not.
-    expect_length(intersect(named, setdiff(produced, collide)), 0)
+    expect_setequal(named, collide)
   }
 })
 
@@ -225,8 +295,7 @@ test_that("a validity-scale abbreviation collides in its own right", {
     class = "hitop_append_collision"
   )
   named <- named_columns(conditionMessage(err))
-  expect_true("pid_PNA" %in% named)
-  expect_length(intersect(named, setdiff(produced, "pid_PNA")), 0)
+  expect_setequal(named, "pid_PNA")
 })
 
 test_that("append = FALSE is unaffected by a column of the same name in data", {
@@ -250,4 +319,46 @@ test_that("the collision is reported after the existing argument checks", {
   )
   expect_false(inherits(err, "hitop_append_collision"))
   expect_match(conditionMessage(err), "items", fixed = TRUE)
+})
+
+test_that("a collision is found wherever the column sits in data", {
+  # Every other probe writes the colliding column onto the end of `data`. A
+  # guard reading column positions rather than names would pass all of them, so
+  # this probe puts the collision ahead of every column the call reads.
+  produced <- names(suppressWarnings(
+    hitop::score_hitopbr(hitop::sim_hitopbr, items = 1:45, append = FALSE)
+  ))
+  collide <- produced[[1]]
+  dirty <- hitop::sim_hitopbr
+  dirty[[collide]] <- NA_real_
+  dirty <- dirty[c(collide, setdiff(names(dirty), collide))]
+  expect_identical(names(dirty)[[1]], collide)
+
+  err <- expect_error(
+    suppressWarnings(hitop::score_hitopbr(dirty, items = 2:46)),
+    class = "hitop_append_collision"
+  )
+  expect_setequal(named_columns(conditionMessage(err)), collide)
+})
+
+test_that("a colliding validity call is not also warned about its coding", {
+  # The four other appending sites refuse ahead of their warnings, on the
+  # reasoning that a call returning nothing is told about the collision alone.
+  # `validity_pid5()` warned first until the M060 repair.
+  dirty <- hitop::sim_pid5
+  dirty[["pid_PNA"]] <- NA_real_
+  expect_no_warning(
+    expect_error(
+      hitop::validity_pid5(dirty, items = 1:220, srange = c(1, 4)),
+      class = "hitop_append_collision"
+    )
+  )
+  # Control: the same call without the collision does warn about the coding, so
+  # the silence above is the abort's doing and not a warning that never fires.
+  expect_warning(
+    suppressMessages(
+      hitop::validity_pid5(hitop::sim_pid5, items = 1:220, srange = c(1, 4))
+    ),
+    "assume items coded 0-3"
+  )
 })

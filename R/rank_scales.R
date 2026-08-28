@@ -51,12 +51,13 @@
 #'   would also produce is an error rather than an overwrite or a duplicated
 #'   column: the message names every colliding column. Re-run with
 #'   `append = FALSE` to return only the new columns, or drop the colliding
-#'   columns from `data` first.
+#'   columns from `data` first. The condition is classed
+#'   `hitop_append_collision`, so a caller can catch this refusal by name.
 #'
-#'   A `scales` argument that names no columns is an error rather than a silent
-#'   return of `data` unchanged, and it is reported ahead of the other selection
-#'   arguments, so the cause named is the empty selection and not a consequence
-#'   of it.
+#'   A `scales` argument that names no columns is an error, reported ahead of the
+#'   other selection arguments, so the cause named is the empty selection and
+#'   not a consequence of it. The condition is classed
+#'   `hitop_empty_selection`, so a caller can catch this refusal by name.
 #'
 #' @return A \link[tibble]{tibble}. If \code{append = TRUE}, it is \code{data}
 #'   with an added character column named by \code{name}. If \code{append =
