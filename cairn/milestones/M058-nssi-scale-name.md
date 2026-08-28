@@ -1,6 +1,6 @@
 # M058: The HiTOP-SR's NSSI scale is named in full
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M057
 - **Driving RR:** —
@@ -187,6 +187,7 @@ D-041.
 - 2026-08-27: AC1's sha256 was wrong in the committed criterion and the audit confirmed the diagnosis independently: `1c211219…4681a` spliced the shelf PDF's head onto the December 2023 deck's tail, and an 8-plus-5 elision hid it through a full criteria audit and a full review. Rather than restate the digest, AC1 now points at where it is pinned and recorded — `data-raw/verify_hitopsr_scale_name.R` and `cairn/SOURCES.md`, which agree on `1c211219b7fe…5da8e425` and are what the run checks against.
 - 2026-08-27: the audit also found AC1's stop-on-a-glossed-cell branch unreachable in its instrument, pre-existing and true: the cell regex anchored the name to a whole line, so a glossed cell matched nothing and the run would have reported "found 0" rather than the stop. The cell pattern now admits a trailing parenthetical, and the branch was proved able to fire before the fix was trusted — planted cells `Non-suicidal Self-injury (NSSI)` and `(self-harm)` both reach the stop, prose lines and other scale names still match nothing, and the old pattern matched none of the planted cells. `verify_hitopsr_scale_name.R` re-run against the shelf PDF stays green, exit 0, the cell reading `Non-suicidal Self-injury`.
 - 2026-08-27: the compression landed at 149 plan-owned lines against the <150 cap, from 172. Acceptance criteria 90 to 81, Scope 36 to 28, Coverage 10 to 5 (the criterion-to-task map rewritten two lines wide, no mapping changed), Tasks 22 to 21. The audit's one finding it asked no repair for is recorded rather than actioned: AC1's clause requiring the OQ's counts to come from a re-runnable search binds how the evidence was produced rather than a property of the deliverable, which is pre-existing wording the compression neither introduced nor worsened.
+- 2026-08-27: return 1 closed. `cairn_validate` passes every check (22 pre-existing dangling-id advisories, all D-001-D-012 legacy references, unchanged). `devtools::document()` leaves the tree clean, `devtools::test()` is FAIL 0 | WARN 0 | SKIP 1 | PASS 14598 with the one skip the pre-existing `test-keying.R:102` PID-5 placeholder, and `devtools::check()` is Status OK with 0 errors, 0 warnings, 0 notes. Status back to `review`; the ten review findings left undisposed still go to Jeff at the gate.
 
 ## Decisions
 
