@@ -196,6 +196,44 @@
 #' hitopsr_definitions
 "hitopsr_definitions"
 
+#' HiTOP-SR Development-Sample Statistics
+#'
+#' Descriptive statistics for each HiTOP-SR primary scale and subscale, as
+#' printed in Table 1 of the HiTOP-SR introduction paper. The reference group is
+#' that paper's **Development Sample 2**, N = 780 Prolific Academic participants
+#' stratified by sex and age to approximate a community-representative United
+#' States population. It is a development sample, not a community norm: no
+#' weighting to a census frame was applied and the paper publishes no raw-score
+#' to T-score table. Read a score against these statistics as a comparison with
+#' the sample the instrument was developed on.
+#'
+#' Every statistic is a printed cell of that table, transcribed and verified
+#' against it; nothing here is computed from data by this package. The `mean` and
+#' `sd` are on the HiTOP-SR's own four-option 1-4 response coding, and scale
+#' scores are item means, so a score computed on another coding is not comparable
+#' to them. [interval_hitopsr()] reads this table.
+#'
+#' @format A \link[tibble]{tibble} with 93 rows and 8 columns:
+#' \describe{
+#'   \item{scale}{The name of the scale or subscale. Matches
+#'     \link{hitopsr_scales}$Scale on the scale rows and
+#'     \link{hitopsr_subscales}$Subscale on the subscale rows.}
+#'   \item{camelCase}{That name converted to camel case -- the stem
+#'     [score_hitopsr()] appends to its `prefix` when it names a score column}
+#'   \item{type}{Either `"scale"` (76 rows) or `"subscale"` (17 rows)}
+#'   \item{nItems}{The number of items in the scale or subscale}
+#'   \item{reliability}{The internal-consistency reliability coefficient printed
+#'     for that scale}
+#'   \item{reliabilityType}{What that coefficient is. `"alpha"` throughout:
+#'     Cronbach's alpha is what the paper prints. Supplied by this package, not
+#'     read from the table.}
+#'   \item{mean}{The scale score's mean in the development sample}
+#'   \item{sd}{The scale score's standard deviation in the development sample}
+#' }
+#' @examples
+#' hitopsr_devstats
+"hitopsr_devstats"
+
 #' HiTOP-BR Item Data
 #'
 #' Information about items in the HiTOP-BR.
