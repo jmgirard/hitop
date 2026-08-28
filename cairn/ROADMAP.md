@@ -7,7 +7,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M060 | The scoring and conversion family refuses two argument shapes it lets fall through | planned | — | normal | milestones/M060-append-collision-empty-selection.md |
+| M060 | The scoring and conversion family refuses two argument shapes it lets fall through | in-progress | — | normal | milestones/M060-append-collision-empty-selection.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | done | M059 | normal | milestones/archive/M041-hitopsr-score-intervals.md |
 | M059 | The HiTOP-SR's Body Focus scale is named Appearance Focus | done | — | normal | milestones/archive/M059-appearance-focus-scale-name.md |
 | M056 | The browser builder offers the module descriptor as a download | done | M055 | normal | milestones/archive/M056-builder-descriptor-download.md |

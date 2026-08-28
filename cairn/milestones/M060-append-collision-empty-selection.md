@@ -1,11 +1,11 @@
 # M060: The scoring and conversion family refuses two argument shapes it lets fall through
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m060-append-collision-empty-selection`
 
 ## Goal
 
@@ -119,6 +119,8 @@ an empty selection aborts.
 - 2026-08-28: plan gate chose aborting on an output-column collision over overwriting (with or without a warning), because an overwrite destroys a same-named column that need not have come from this package; falsified by a report that re-running a call is common enough that a two-step re-run is the worse cost.
 - 2026-08-28: plan gate chose all seven `append`-carrying exports over the two the candidate row named, because the collision reproduces on all seven from one shared check at five sites; falsified by the shared validator proving not to fit a site's output shape.
 - 2026-08-28: plan gate chose narrowing AC3's promise to its enumerated calls over an argument grid over `append`/`missing`/`calc_se`/`srange`/`version`, because the change adds refusals and touches no arithmetic; falsified by a value difference the existing suite catches that the 7-call harness does not.
+- 2026-08-28: implementation gate chose a maintainer-run `data-raw/` script for the characterization harness over a testthat helper, because the comparison needs a git checkout of the merge base and `R CMD check` runs against a built copy with no repository, where the helper would skip silently.
+- 2026-08-28: implementation gate chose reporting the existing argument checks ahead of the output-column collision over the collision first, because the collision check adds a refusal and the alternative would change what an already-invalid call reports today.
 
 ## Decisions
 
