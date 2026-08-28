@@ -1,11 +1,11 @@
 # M059: The HiTOP-SR's Body Focus scale is named Appearance Focus
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP2
-- **Branch/PR:** —
+- **Branch/PR:** `m059-appearance-focus-scale-name`
 
 ## Goal
 
@@ -98,10 +98,11 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
 
 ## Tasks
 
-- [ ] T1 Extend `cairn/SOURCES.md`'s HiTOP-SR scale-names section to this
-      scale, quoting Table 1's cell and the manuscript's five prose uses of
-      `Appearance Focus`, and cite D-042, which the plan gate already recorded
-      as the source allowance this rename runs on.
+- [x] T1 Extend `cairn/SOURCES.md`'s HiTOP-SR scale-names section to this
+      scale, quoting Table 1's cell and the manuscript's five uses of
+      `Appearance Focus` (one prose, three tables, one appendix), and cite
+      D-042, which the plan gate already recorded as the source allowance this
+      rename runs on.
 - [ ] T2 Rename in `data-raw/hitopsr_items.csv` (5 rows) and
       `data-raw/hitopsr_definitions.csv` (1 row), rerun the `data-raw/` scripts
       that build the four keying tables, then `data-raw/artifacts.R` for the two
@@ -137,6 +138,10 @@ candidate row. Any further Table 1 divergence the reconciliation turns up → a
 - 2026-08-27: plan chose to anchor the source check on the scale's pinned item numbers over M058's item-text grep, since a sanctioned item-text edit would break the grep (LESSONS, M058 finding 12); falsified by an item's number changing, which a keying revision could do and item text alone would survive.
 - 2026-08-27: plan chose one reconciliation over all 93 names over checking only the scale being renamed, so a second divergence surfaces as a candidate row rather than after a user reports it; falsified by the extraction proving unmaintainable across source revisions.
 - 2026-08-27: the fresh-context criteria audit ran in full mode (declared surface tier: user-facing) and returned 16 findings on AC1-AC6, none on AC7; all 16 were accepted and the criteria and T3/T4/T6 rewritten. AC1 was unsatisfiable — it demanded identical score matrices from a rename the same file says reorders columns — and named a merge-base build the test suite cannot reach, so it now asserts the renamed columns over a probe set varying `calc_se`, `missing` and NA patterns, against a hand recomputation from the pinned item numbers. AC2 diffed four tables where `hitopsr_subscales` neither changes nor joins, and its allow-list omitted `itemNumbers`' element names, which are keyed by the stem the rename changes — the trap that made widening M058's allow-list a criterion amendment. AC3 and AC4 described what a script does without requiring it to pass, and bound "run output recorded in the Review", an instrument property now carried by T5. AC4 also predicted an exception set that T4's own stripping rule could empty, and both it and T4 assumed `pdftotext -layout` puts every label and its cells on one line, which two Table 1 blocks contradict. AC5 demanded four manifest rows where the manifest keys on `inst/extdata/` basenames and gains two, and quantified over "built files" while diffing two directories. AC6 leaned on a file-path allow-list that would have excluded the sweep's own test and could not see the binary surfaces at all; it now walks the datasets `utils::data()` enumerates and extracts the Word documents' text.
+- 2026-08-27: implementation gate, question 1 — AC2's merge-base keyed diff and AC5's `git diff --name-only` land as testthat tests that skip when the repo's git history is unreachable, over a maintainer-run `data-raw/` script; chosen so they run on every local `devtools::test()`, at the cost of being skipped under `R CMD check`, where the suite runs from a tarball with no `.git`.
+- 2026-08-27: implementation gate, question 2 — NEWS merges both HiTOP-SR renames into one entry rather than adding a second parallel bullet, on Jeff's selection; the M058 entry's text is rewritten to cover both scales.
+- 2026-08-27: implementation gate, question 3 — `data-raw/verify_hitopsr_rename.R` is left untouched; its keyed-diff step would now misreport this rename as unexpected, and that is added to the existing `data-raw/` maintainer-tooling candidate row rather than fixed here.
+- 2026-08-27: T1 done. `cairn/SOURCES.md`'s scale-names section now covers both adopted names, cites D-042's widened allowance, and records the source reading: Table 1 row 54 on p. 49 prints `Appearance Focus`, the document contains no `body focus` in any case, and `Appearance Focus` appears five times with identical capitalization (p. 19 prose, Tables 1-3 on pp. 49/52/55, Appendix A on p. 62, the last not evidence) — so unlike M058's scale there is no rendering discrepancy to keep visible. T1's wording said "five prose uses"; corrected to five uses, one of which is prose.
 
 ## Decisions
 

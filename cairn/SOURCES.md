@@ -342,7 +342,7 @@ bolding; the "other" substance name piped from `hsum_oth_txt`):
   (the sheet's sanctioned loosening, row 105) rather than the
   most-frequent-drug default of the REDCap export.
 
-## HiTOP-SR scale names (2026-08-27, M058)
+## HiTOP-SR scale names (2026-08-27, M058 and M059)
 
 **Source.** Simms, L. J., et al. *Assessment of the Hierarchical Taxonomy Of
 Psychopathology (HiTOP): Introducing the HiTOP Self-Report (HiTOP-SR) and Brief
@@ -361,8 +361,10 @@ was built from — and prints no full name for the one scale it abbreviates.
 accepted or published version. Jeff accepted it as the ingestion source on
 2026-08-27 with the commitment recorded in [D-041](DECISIONS.md) that the accepted
 version replaces it on the shelf and the adopted name is re-verified against its
-Table 1. Nothing else in the package ships from it; M041's development statistics
-still await the accepted version on D-032's terms.
+Table 1. [D-042](DECISIONS.md) widened that allowance the same day from the one
+name D-041 covered to this document's HiTOP-SR scale names generally and to
+Table 1's development statistics, so the reconciliation commitment now covers
+both names adopted below and M041 no longer waits on the accepted version.
 
 **Corroborating document.** The HiTOP Measures Development Workgroup deck
 *Measurement Workgroup Presentation December 2023* (Leonard Simms; PDF CreationDate
@@ -380,6 +382,19 @@ for HiTOP-SR primary scales and subscales"). The appendix therefore descends fro
 this package and cannot stand as ground truth for it (IP2). Established with Jeff,
 2026-08-27, who also confirmed that Tables 1-3 already existed when he supplied the
 definitions — which is what leaves those tables independent.
+
+**Second name read from this source (M059).** Table 1's row 54 on p. 49 of the
+shelf PDF reads `Appearance Focus                   5      0.81       1.72
+0.68        [1.0, 4.0]     1.10      0.69`, where this package printed
+`Body Focus`. No occurrence of `body focus` in any case appears anywhere in the
+document. `Appearance Focus` appears five times, capitalized identically each
+time: p. 19, prose, "whereas Appearance Focus reflects a heightened
+preoccupation with appearance and body shape."; p. 49, Table 1; p. 52, Table 2;
+p. 55, Table 3; and p. 62, Appendix A. The appendix occurrence is the
+maintainer's own definition text and is not evidence, for the reason the
+paragraph above gives. Unlike the scale in OQ-3, this name is rendered one way
+throughout the document, so there is no discrepancy to keep visible. The
+allowance this reading runs on is D-042.
 
 **Verification.** `data-raw/verify_hitopsr_scale_name.R` reads the shelf PDF at run
 time, checks its sha256, inventories every rendering of the name with the page of

@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M041 | Confidence intervals for HiTOP-SR scale scores | planned | M059 | normal | milestones/M041-hitopsr-score-intervals.md |
-| M059 | The HiTOP-SR's Body Focus scale is named Appearance Focus | planned | — | normal | milestones/M059-appearance-focus-scale-name.md |
+| M059 | The HiTOP-SR's Body Focus scale is named Appearance Focus | in-progress | — | normal | milestones/M059-appearance-focus-scale-name.md |
 | M054 | A saved module descriptor that reads back for scoring | done | — | normal | milestones/archive/M054-module-descriptor-file.md |
 | M055 | The HiTOP-SR generators write a descriptor beside the file they build | done | M054 | normal | milestones/archive/M055-generator-descriptor-sidecar.md |
 | M056 | The browser builder offers the module descriptor as a download | done | M055 | normal | milestones/archive/M056-builder-descriptor-download.md |
