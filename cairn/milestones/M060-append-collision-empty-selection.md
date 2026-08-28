@@ -101,7 +101,7 @@ an empty selection aborts.
 - [x] **T5.** Add `validate_nonempty_selection()` and call it in `norm_pid5()`,
       `interval_engine()` and `rank_scales()` at the position AC2's precedence
       requires — after `validate_data()`, before the rest.
-- [ ] **T6.** Run T1's harness against the branch; record the comparison.
+- [x] **T6.** Run T1's harness against the branch; record the comparison.
 - [ ] **T7.** Roxygen **Errors** prose on the affected exports, `NEWS.md`, and the
       AC4 Rd test — assert both cut boundaries of the Errors passage are found and
       exclude the anchor from the passage (M041/M046: a guard that cuts what it
@@ -126,6 +126,7 @@ an empty selection aborts.
 - 2026-08-28: T3 — `tests/testthat/test-empty-selection.R` written. Confirmed red on all three exports, each reaching base R's "arguments imply differing number of rows" or `validate_count()`'s "between 1 and 0". The precedence test asserts each competing argument is invalid on its own before asserting the empty selection outranks it. The `data`-first and wrong-type tests are green already. Tests-first tasks are red by construction; the profile's verify slot is run clean at T4/T5, when the guards land.
 - 2026-08-28: T4 — `validate_no_output_collision()` in `R/util.R`, called at the five append sites, each after that site's existing argument checks and before any output column is built. `validity_pid5()`'s four cutoff abbreviations are now resolved once into `cutoff_vars` and read by both the enumeration and the four scale blocks, so the two cannot drift.
 - 2026-08-28: T5 — `validate_nonempty_selection()` in `R/util.R`, called in `rank_scales()`, `norm_pid5()` and `interval_engine()` after the selection's own type check and before the rest of the selection family. Full suite clean after both: FAIL 0, WARN 0, SKIP 5, PASS 15087.
+- 2026-08-28: T6 — harness run against the branch at 50698d2, merge base 108f126: 7 calls compared, 0 differ. Every call kept its returned object, its accept/reject verdict and its conditions; `validity_pid5()`'s six alerts are byte-identical on both sides.
 
 ## Decisions
 
