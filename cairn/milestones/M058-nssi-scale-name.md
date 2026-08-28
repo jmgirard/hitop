@@ -1,6 +1,6 @@
 # M058: The HiTOP-SR's NSSI scale is named in full
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M057
 - **Driving RR:** —
@@ -50,7 +50,7 @@ requires.
 
 ## Acceptance criteria
 
-- [ ] AC1 The adopted name is sourced, not chosen. Which source, and why it clears
+- [x] AC1 The adopted name is sourced, not chosen. Which source, and why it clears
       D-032's draft bar while under peer review and outranks the December 2023
       Workgroup deck under D-018, are settled in the AC6 `DECISIONS.md` entry, not
       here. The string in `data-raw/hitopsr_items.csv` is compared character for
@@ -67,7 +67,7 @@ requires.
       `hitopsr_definitions`'s own text supplied after Tables 1-3 existed, so those
       tables stand independent of this package and the appendix does not.
       Instrument: `data-raw/verify_hitopsr_scale_name.R`.
-- [ ] AC2 The rename reaches every place the old name lived and moves nothing else.
+- [x] AC2 The rename reaches every place the old name lived and moves nothing else.
       A check enumerates the package's exported datasets programmatically, sweeps
       every character leaf including a list's own names, and sweeps every tracked
       file (`git ls-files`) — opening each format in its own terms, never as bytes,
@@ -92,7 +92,7 @@ requires.
       `sort(method = "radix")` over the merge-base's names with the old one replaced,
       recomputed rather than read off `arrange()`, which is the thing under test.
       The base-commit reference serves invariance only; it never certifies a value.
-- [ ] AC3 Scored output renames once and nothing else moves:
+- [x] AC3 Scored output renames once and nothing else moves:
       `score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE)` against the
       merge-base build over the whole tibble, after renaming the two affected
       columns: the column set equal and every column identical in value. The renamed
@@ -102,7 +102,7 @@ requires.
       positional selection being a break GP2 requires be visible. Expected new column
       names are written literally, never re-derived by `snakecase::to_any_case()`,
       the function the deliverable itself used.
-- [ ] AC4 Exactly two files are rebuilt: `data-raw/artifacts.R` with
+- [x] AC4 Exactly two files are rebuilt: `data-raw/artifacts.R` with
       `rebuild_stems <- "hitopsr"` and `rebuild_formats <- "docx"`, producing
       `hitopsr_US.docx` and `hitopsr_A4.docx`. The REDCap zip is deliberately not
       rebuilt — `zip::zip` stores the intermediate CSV's mtime, so it is not
@@ -117,7 +117,7 @@ requires.
       from the merge-base build only at the scale-name row — in place or moved, the
       scoring table sorting on `Scale` (`R/generate_docx.R:491`) under the running
       locale — and in the footer's `Generated` date, which must have changed.
-- [ ] AC5 No other distributed file moves: the listings of `inst/extdata/` and
+- [x] AC5 No other distributed file moves: the listings of `inst/extdata/` and
       `pkgdown/assets/downloads/`, enumerated by listing both directories rather than
       by the manifest, are identical to the merge-base's — nothing added, renamed or
       removed — and every file in them is byte-identical to the merge-base outside
@@ -128,12 +128,12 @@ requires.
       every pre-existing row is unchanged — without which a manifest that lost rows
       would shrink the sweep and pass vacuously, or a rebuild land with no version
       bump against D-016.
-- [ ] AC6 The sign-off is recorded before the keying edit lands: `cairn/DECISIONS.md`
+- [x] AC6 The sign-off is recorded before the keying edit lands: `cairn/DECISIONS.md`
       carries an entry citing the source line AC1 adds, naming the adopted name and
       the scored-column rename, committed no later than the commit that edits
       `data-raw/hitopsr_items.csv`. NEWS records the rename as a breaking
       column-name change.
-- [ ] AC7 `devtools::document()` no diff; `devtools::test()` clean with zero skips in
+- [x] AC7 `devtools::document()` no diff; `devtools::test()` clean with zero skips in
       `test-artifacts.R` and the HiTOP-SR keying tests, since those skip themselves
       when Suggests are absent and are what AC4 leans on; `devtools::check()` 0
       errors, 0 warnings, every remaining NOTE listed in this file with a reason.
@@ -200,6 +200,7 @@ requires.
 - 2026-08-27: T8 — NEWS entry written, recording the rename as breaking, naming both old and new column names, and per AC3's amendment stating the position move from 448 to 451 so positional selection is warned about rather than left to surprise; it also records that no score changed and that the Qualtrics and REDCap exports are unaffected. The AC2 sweep flagged no doc surface: `?score_hitopsr`, `R/data.R`, `README.Rmd`, `_pkgdown.yml` and the vignettes carried no occurrence of the old name, so there was nothing to fix there, and `README.md` needed no re-knit. What T8 did add is the also-known-as note D-041 committed to, in `hitopsr_items`'s `@details`: it names `NSSI` as the literature's abbreviation for the scale, says the package used it before 0.2.0, and gives the derived column name. That note is itself an occurrence of the old spelling, so the sweep flagged `R/data.R` and its generated `man/hitopsr_items.Rd` — a third touch on AC2's allow-list, put to Jeff rather than edited in, since AC2 had already had its gate and its audit. He chose to amend the allow-list over dropping the note (which would reverse D-041) or writing a note that never spells the name a reader would search for. Both paths added, with the reason recorded beside them in the check.
 - 2026-08-27: T9 — `devtools::document()` produces no diff (`man/` and `NAMESPACE` unchanged after a fresh run). `devtools::test()` is FAIL 0 | WARN 0 | SKIP 1 | PASS 14598; the single skip is `test-keying.R:102`, the pre-existing OQ-1 placeholder for the disputed PID-5 SD-TD item 38, which this milestone does not touch — AC7's clause names `test-artifacts.R` and the HiTOP-SR keying tests, and both were run directly at 0 skips (121 and 12 passing). `devtools::check()` is Status: OK, 0 errors, 0 warnings, 0 notes, so AC7's "every remaining NOTE listed in this file with a reason" has an empty obligation. A duplicate `devtools::test()` process from an earlier invocation had to be killed part-way: two runs were contending for the machine and neither was progressing, which is why the first suite log came back empty.
 - 2026-08-27: all nine tasks checked; status `review`. Branch pushed and PR opened: https://github.com/jmgirard/hitop/pull/64.
+- 2026-08-27: /milestone-review ran. All seven acceptance criteria verified with fresh evidence (recorded in the Review section) and every toolchain consistency check is clean, but the universal consistency gate FAILED: `cairn_validate.py` exits 1 on `weight caps` (this file, 172 plan-owned lines against the <150 cap, shed >=23; heaviest Acceptance criteria 90, Scope 36) and on `iso date format` (line 186, the non-ISO `07-16-2026` zip member mtime quoted in a work-log entry). Status returns to `in-progress`; defect return 1 for this milestone. The three-lens review ran and its 13 findings (all from the [O] diff lens; the two [S] lenses found none) are recorded undisposed in the Review section for triage at the next review's gate.
 
 ## Decisions
 
@@ -212,3 +213,152 @@ requires.
   - **The stem stays mechanically derived; the name-to-stem exception is rejected.** The length objection is empirically hollow: `hsr_difficultiesReachingOrgasm` (26) and `hsr_sexRelatedSubstanceUse` (22) already exceed `nonSuicidalSelfInjury` (21), verified against `hitopsr_scales`. An exception would break the invariant that `camelCase` names the `itemNumbers`, the scored columns, the definitions join and M057's tooltip join alike, and would move `definition_scale_labels`' special case out of a build script and into shipped code. The abbreviation-column convention (`pid_INC`, `pid_PNA`) is for validity scales; NSSI is a content scale.
 
 ## Review
+
+Reviewed 2026-08-27 against branch `m058-nssi-scale-name` at `f92f49f`, merge-base
+`df14f3c` (`origin/main` had not moved since the branch was cut, so no merge was
+needed). All seven criteria verified with fresh evidence; the consistency gate then
+failed on two `cairn_validate` checks, so the milestone returns to `in-progress`.
+
+### Acceptance-criterion evidence
+
+- **AC1 — met.** `Rscript data-raw/verify_hitopsr_scale_name.R` run fresh, exit 0:
+  the shelf PDF's sha256 matches `1c211219…8e425`; the rendering inventory is
+  `Non-suicidal Self-injury` 3 (pp. 49, 52, 55 — Tables 1-3), `Non-Suicidal
+  Self-injury` 1 (p. 23), `Non-Suicidal Self-Injury` 1 (p. 18), plus the reported
+  wrapped occurrence on p. 69; the table cell reads `Non-suicidal Self-injury` and
+  matches the string committed in `data-raw/hitopsr_items.csv` character for
+  character. The cell carries no parenthetical, so AC1's stop condition did not
+  fire. The script reads the committed string out of the CSV rather than carrying a
+  copy, so the comparison is not circular, and it scans every page rather than pages
+  chosen by the committed string. `cairn/SOURCES.md` carries the "HiTOP-SR scale
+  names" provenance section and a numbered **OQ-3** in OQ-1's form, whose per-variant
+  counts are this script's own output and whose Appendix A note is attributed to Jeff
+  and dated 2026-08-27.
+- **AC2 — met.** `Rscript data-raw/verify_hitopsr_rename.R` step 1: the sweep runs
+  over 289 tracked files (71 allow-listed) and is clean; each format is opened in its
+  own terms rather than as bytes. Step 2: all four keying tables identical to the
+  merge-base outside the renamed cells; every other row keeps its relative order,
+  asserted directly; the renamed `hitopsr_scales` row moves 43 → 46, equal to where
+  the adopted name sorts under a recomputed `sort(method = "radix")` over the
+  merge-base's names. The allow-list in the check matches AC2's enumeration
+  (`NEWS.md`, `cairn/`, `data-raw/verify_hitopsr_*`, the sweep's test file, `R/data.R`
+  and `man/hitopsr_items.Rd`).
+- **AC3 — met.** Step 3 of the same run: against the merge-base build,
+  `score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE)` returns the same column
+  set once the two columns are renamed, and every column is identical in value. The
+  renamed column moves 448 → 451, following `hitopsr_scales`' order; no other column
+  reorders. NEWS records the position move.
+- **AC4 — met.** Exactly the two DOCX were rebuilt. Verified independently of the
+  script: each `pkgdown/assets/downloads/` copy is byte-identical to its
+  `inst/extdata/` file (sha256 `c6f2b537…6f1a` for US, `2b586012…ad968` for A4); both
+  DOCX carry `Non-suicidal Self-injury` once and `NSSI` zero times;
+  `hitopsr_qualtrics.txt` and the REDCap `instrument.csv` carry neither spelling.
+  Step 4 of the verifier: each Word form's `officer::docx_summary()` text differs from
+  the merge-base build in exactly one paragraph (row 2064, `NSSI` →
+  `Non-suicidal Self-injury`), and the separately read footer is asserted to have
+  changed.
+- **AC5 — met.** Step 5: `inst/extdata/` and `pkgdown/assets/downloads/` each hold 24
+  files, both listings identical to the merge-base's, and in each directory exactly
+  the two DOCX differ. `hitop_artifacts`: 33 rows unchanged, exactly 2 added, one per
+  rebuilt DOCX.
+- **AC6 — met.** `cairn/DECISIONS.md` D-041 landed in `93106a8`; the keying edit to
+  `data-raw/hitopsr_items.csv` landed in `891e7f1`, the next commit — so the sign-off
+  precedes the edit as AC6 requires. D-041 cites the `SOURCES.md` provenance section
+  and OQ-3, names the adopted string and the `hsr_nssi` → `hsr_nonSuicidalSelfInjury`
+  rename. NEWS records the rename as breaking, naming both old and new column names.
+- **AC7 — met.** `devtools::document()` leaves the tree clean (`git status` empty
+  after a fresh run). `devtools::test()`: FAIL 0 | WARN 0 | SKIP 1 | PASS 14598; the
+  single skip is `test-keying.R:102`, the pre-existing OQ-1 PID-5 placeholder, which
+  this milestone does not touch — `test-artifacts.R` and
+  `test-scale-name-hitopsr.R` each ran at 0 skips. `devtools::check()`: Status OK,
+  0 errors, 0 warnings, 0 notes, so AC7's NOTE-listing obligation is empty.
+
+### Consistency gate — FAILED
+
+`cairn_validate.py` exits 1 on two checks, both in this milestone's own tracking file:
+
+- **weight caps:** `cairn/milestones/M058-nssi-scale-name.md` has 172 plan-owned
+  lines against the <150 cap (shed ≥23); heaviest first, Acceptance criteria 90 ·
+  Scope 36 · Tasks 22 · Coverage 10 · Goal 5. The 2026-08-27 work-log entry recorded
+  an overage of 11 lines as accepted after one compression pass; the file has since
+  grown to 22 over, and the cap is a validator FAIL rather than a judgment call.
+- **iso date format:** line 186 carries the non-ISO date `07-16-2026`, a zip member
+  mtime quoted inside a work-log entry.
+
+Advisories (not gate failures): 20 dangling id tokens, all pre-existing D-001–D-012
+legacy references in `DESIGN.md`/`SOURCES.md`. `cairn_impact.py` was skipped —
+`cairn/DESIGN.md` is not in the diff, so no IP/GP principle changed.
+
+Toolchain checks (`r-package` profile `consistency-gate` slot), all clean:
+`devtools::document()` no diff; no hand-edit to `NAMESPACE`/`man/`/`data/*.rda`
+(all regenerate); `README.Rmd`/`README.md` untouched by the branch and in sync;
+`pkgdown::check_pkgdown()` "No problems found"; NEWS carries the user-visible entry
+with no milestone number; no new top-level files, so no `.Rbuildignore` entry owed;
+`devtools::check()` clean.
+
+### Independent review — three lenses, 13 findings
+
+Full three-lens fan-out (the diff touches executable surface). Triage is **deferred**:
+the gate failed before the step-7 approval gate, which is the triage surface, so every
+finding is recorded here undisposed and goes to Jeff at the next review.
+
+- **[S] blame-history: no findings.** Confirmed the `definition_scale_labels` map
+  deleted from `data-raw/hitopsr_info.R` was added (in `7e545ba`) precisely to paper
+  over the spelling mismatch this rename removes, and that the `stopifnot` added
+  alongside it is untouched; confirmed the manifest rows and `.rda` regeneration match
+  what NEWS and D-041 describe.
+- **[S] prior-PR-comments: no findings.** Archived `## Review` sections on the touched
+  files (M057 on `hitopsr_info.R`, M042 on `artifacts.R`, M026's roxygen lesson,
+  M035's `NA`-comparison lesson) are all clean against this diff. The GitHub probe
+  `gh api repos/jmgirard/hitop/pulls/comments?per_page=1` returned `[]`, so the
+  per-PR walk was skipped.
+- **[O] diff-bug: 13 findings**, ranked as the reviewer ranked them. Findings 1, 2, 3
+  and 5 were re-verified in this session against the implementation rather than taken
+  on the reviewer's word.
+  1. `data-raw/verify_hitopsr_rename.R` leaks a `git worktree` on every run: the
+     `on.exit()` cleanup never fires in `Rscript` at top level, and the `dir.exists()`
+     guard cannot fire because `tempdir()` differs each run. **Verified** — 15 stale
+     `m058-base-df14f3c8` worktrees were registered in the primary checkout. Pruned
+     during this review (`git worktree prune`); the script defect stands.
+  2. `R/data.R:133-139` and its generated `man/hitopsr_items.Rd` tell users "Scale
+     names are those printed in the HiTOP-SR introduction paper's Table 1", but only
+     this one scale's name was sourced there — `cairn/SOURCES.md` names the
+     development workbook as primary for the other 75, and M041 records four Table 1
+     labels that do not join the package's names at all. **Verified** in the diff. A
+     user-facing provenance claim the repo's own record contradicts.
+  3. The comment replacing `definition_scale_labels` claims the `stopifnot` "is what
+     catches a genuine drift", but that check compares stems, and
+     `snakecase::to_any_case()` maps every casing of the name to one stem — so the
+     casing divergence D-041's reconciliation clause plans for would pass silently.
+     **Verified** against `data-raw/hitopsr_info.R:74-84`.
+  4. The break reaches beyond the scored columns: `hitop_module("hitopsr", "NSSI")`
+     now aborts, as does `read_module()` on any descriptor recording `"NSSI"`. NEWS
+     and D-041 mention only `score_hitopsr()`'s columns. Mitigating: modules ship
+     first in this same unreleased 0.2.0.
+  5. `data-raw/artifacts.R` merges with `rebuild_stems <- "hitopsr"` /
+     `rebuild_formats <- "docx"` and the M058 build note still loaded. **Checked
+     against the file's own header**, which states the convention: "Both settings are
+     left as the last build ran them, so the script records what it last did."
+  6. AC5's per-row manifest requirements are printed, not asserted: step 5 asserts the
+     added-row count and file names, then `cat`s the `changes` string, so a stale date
+     or empty note would pass.
+  7. Step 2's position oracle assumes unique `Scale` values; on `hitopsr_items` (6
+     matches) and `hitopsr_definitions` (2) it would return a vector and fail
+     spuriously. Unreached because neither table's rows move — a false-fail risk, so
+     the oracle is exercised on only one of four tables.
+  8. `blank_renamed()` blanks a whole cell on substring match, so a real change
+     co-located with the name in one cell would be invisible. Checked: no such cell
+     exists today.
+  9. AC4's "carry neither" is half-verified for the two unrebuilt formats — the sweep
+     proves no `nssi`, but nothing asserts they carry no `Non-suicidal Self-injury`.
+  10. Scope's "Out" bullet promising a candidate row for renaming any other scale is
+      undischarged; no such row is in `cairn/ROADMAP.md`.
+  11. The manifest `changes` note was reworded to pass the sweep rather than
+      allow-listed, so the pkgdown version history now says "One scale … by an
+      abbreviation" without naming which scale.
+  12. NEWS gives the position move for `hsr_nonSuicidalSelfInjury` (448 → 451) but not
+      for `hsr_nonSuicidalSelfInjury_se` (524 → 527), which breaks positional
+      selection identically.
+  13. `verify_hitopsr_scale_name.R:35` identifies the committed name by grepping item
+      text, coupling the source check to wording IP1 could change; guarded by a
+      `length == 1` `stopifnot`, so it fails loudly rather than silently.
