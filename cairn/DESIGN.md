@@ -67,7 +67,7 @@ Carve-out (D-024, narrowed by D-025): a report the caller is expected to *catch 
 
 ### Internal style
 
-Base-R data manipulation internally (subsetting, `rowMeans`, `cbind`). {tibble} is an Import (tibble output is the default); {lavaan} stays in Suggests and is checked with `rlang::is_installed()` before `calc_omega()` runs. Document/generator work uses {officer}/{flextable}. Dependency posture: a whole function *family* can earn new Imports (as the generators did for {officer}/{flextable}/{snakecase}); a per-function need uses Suggests + `rlang::is_installed()` (the {lavaan}/`calc_omega()` pattern).
+Base-R data manipulation internally (subsetting, `rowMeans`, `cbind`). {tibble} is an Import (tibble output is the default); {lavaan} stays in Suggests and is checked with `rlang::is_installed()` before `calc_omega()` runs. Document/generator work uses {officer}/{flextable}. Dependency posture: a whole function *family* can earn new Imports (as the generators did for {officer}/{flextable}); a dependency no shipped code uses is declared as a `Config/Needs/` field instead (corrected M061 — {snakecase} was listed here as a generator Import, which it never was, and it left Imports entirely); a per-function need uses Suggests + `rlang::is_installed()` (the {lavaan}/`calc_omega()` pattern).
 
 ### Testing & oracle strategy
 
@@ -103,7 +103,7 @@ The prebuilt `inst/extdata/` artifacts are versioned by **build date** via the e
 - GP1: **Published rules win the defaults; deviations are loud.** Where an official published algorithm exists it is the default (APA proration, D-009) and alternatives are explicit opt-ins; a published cutoff applied outside its validated conditions warns rather than silently proceeding (M011). Where no published rule exists, defaults are chosen and documented on their merits (SR/BR `missing = "available"`). *(Mined from D-008/D-009/M011.)*
 - GP2: **Scored output never changes silently.** Any change to scored values is NEWS-flagged and decision-recorded even pre-CRAN — signatures may break freely with NEWS, numbers never change quietly — and behavior-preserving engine refactors prove identity mechanically (the D-011 characterization-harness pattern). *(Mined from D-009/D-011/mask_se_na.)*
 - GP3: **Researcher-first ergonomics.** In API design conflicts, the applied researcher processing response data wins over registry elegance or future-clinician needs (tibble outputs, actionable {cli} suggestions). IP1–IP4 outrank convenience wherever they apply. *(Banked B1.)*
-- GP4: **Lean base-R core; families earn Imports.** Internals are base R (D-002); a whole function family can justify new Imports (generators → {officer}/{flextable}/{snakecase}); a per-function need uses Suggests + `rlang::is_installed()` (the {lavaan} pattern). Dependency changes go through the question gate and a D-entry. *(Banked B7 + D-002.)*
+- GP4: **Lean base-R core; families earn Imports.** Internals are base R (D-002); a whole function family can justify new Imports (generators → {officer}/{flextable}; corrected M061 — {snakecase} was named here and was never a generator Import, and it left Imports entirely); a per-function need uses Suggests + `rlang::is_installed()` (the {lavaan} pattern). Dependency changes go through the question gate and a D-entry. *(Banked B7 + D-002.)*
 
 **Candidate dispositions (2026-07-16 interview):** B1→GP3 · B2→IP4 · B3/B6/B9→prose facts in "Audience, boundary & governance" (time-bound postures, deliberately unnumbered) · B4→merged into IP1 · B5+B8→IP3 · B7→GP4 · mined C5→GP1 · C6→GP2.
 

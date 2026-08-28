@@ -75,9 +75,16 @@ spelling the table ships today and is unaffected by how that row settles.
       condition that leaves every returned value identical, and a deleted probe — each
       run one at a time, each exiting non-zero, with a clean control run before and
       after each.
-- [ ] AC8 `snakecase` appears in neither `DESCRIPTION` nor any file under `R/`, verified
-      by `grep -n snakecase DESCRIPTION` and `grep -rn snakecase R/` each returning no
-      hits.
+- [ ] AC8 `snakecase` is not a declared dependency of the package:
+      `grep -rn snakecase R/ NAMESPACE` returns no hits, and
+      `grep -n snakecase DESCRIPTION` returns exactly one line, belonging to the
+      `Config/Needs/data-raw` field and to no other field — in particular not to
+      `Imports:`, `Suggests:`, `Depends:`, `LinkingTo:` or `Enhances:`. Stated once
+      more independently of that text read: `packageDescription("hitop")$Imports`,
+      `$Suggests` and `$Depends` each name no `snakecase`. Each of
+      `data-raw/pid_info.R`, `data-raw/hitopsr_info.R` and `data-raw/hitopbr_info.R` —
+      the three scripts that call `snakecase::to_any_case()` — carries a header note
+      saying it needs `snakecase` installed and that it is not a package dependency.
 - [ ] AC9 The profile verify slot is clean: `Rscript -e 'devtools::test()'` passes and
       `Rscript -e 'devtools::check()'` reports 0 errors, 0 warnings, 0 notes.
 
@@ -112,8 +119,9 @@ spelling the table ships today and is unaffected by how that row settles.
       `vignettes/` and `README.Rmd` for readers of the old name.
 - [x] T4 Coerce `nItems` to integer in `available_scales()` (`R/available_scales.R:50`,
       copied from the dataset's double).
-- [ ] T5 Drop `snakecase` from `DESCRIPTION` Imports; note in the `data-raw/` scripts
-      that still call `to_any_case()` that they need it installed.
+- [x] T5 Drop `snakecase` from `DESCRIPTION` Imports; note in the `data-raw/` scripts
+      that still call `to_any_case()` that they need it installed, and declare the
+      need as `Config/Needs/data-raw`.
 - [x] T6 Tests: AC1's 79-call elementwise comparison, AC2's nine literal pairs, AC3's
       76-value round-trip, AC5's five type assertions. Rewrite
       `tests/testthat/test-reliability.R:119`
@@ -122,11 +130,15 @@ spelling the table ships today and is unaffected by how that row settles.
       to compare against the canonical dataset column.
 - [ ] T7 Run the harness against the merge base and record its output;
       `devtools::document()`, `devtools::test()`, `devtools::check()`.
-- [ ] T8 `NEWS.md`: the nine old→new name pairs and the `scale` → `Scale` rename, as a
+- [x] T8 `NEWS.md`: the nine old→new name pairs and the `scale` → `Scale` rename, as a
       migration note. Two `cairn/DECISIONS.md` entries — the emitted-name alignment plus
       the column rename (GP2; D-018's one-release, no-dual-column migration pattern),
       and removing `snakecase` from Imports (GP4 routes dependency changes through the
       gate).
+- [x] T9 (discovered at the AC8 amendment audit) Correct `cairn/DESIGN.md`'s two
+      current-knowledge mentions of `{snakecase}` as a generator-family Import — lines
+      70 and 106 — which this milestone makes false. The embedded historical decision
+      log's mention stays verbatim (IP4).
 
 ## Work log
 
@@ -182,6 +194,29 @@ spelling the table ships today and is unaffected by how that row settles.
   `scale` -> `Scale` in the engine, the three `@return` sections, and seven reader
   sites across `test-reliability.R` and `test-deprecated.R`. `available_scales()`
   coerces `nItems` to integer. `devtools::test()`: FAIL 0, PASS 15500, SKIP 4.
+- 2026-08-28: correction to the gate line above: three `data-raw/` scripts call
+  `snakecase::to_any_case()` and carry the header note, not five —
+  `pid_info.R`, `hitopsr_info.R`, `hitopbr_info.R`. `verify_hitopsr_rename.R` and
+  `test-scale-name-hitopsr.R` mention the package in prose only.
+- 2026-08-28: T5 done. `snakecase` removed from Imports; `Config/Needs/data-raw:
+  snakecase` added; header note in the three calling scripts. This made AC8
+  unsatisfiable as written (its DESCRIPTION grep now returns the Config line), so
+  AC8 was amended at a mini gate.
+- 2026-08-28: AC8 amended. The criteria audit ran in FULL mode (user-facing tier) on
+  the amended wording, fresh-context [O] reader that did not author it. It returned
+  OK on satisfiability, deliverable-vs-instrument and proportionality, and two
+  findings: the draft pinned one literal DESCRIPTION line, which an indented DCF
+  continuation would break, and its greps omitted `NAMESPACE`, a declaration site
+  outside `R/`. It also noted the gate decision's header-note half was unasserted.
+  Jeff took the auditor's replacement wording in full at the mini gate, which fixes
+  both findings and adds the header-note clause; that clause widens AC8. The audit's
+  two other observations became the "five scripts" correction above and task T9.
+- 2026-08-28: T8 done. `NEWS.md` gains the nine old->new name pairs, the
+  `scale` -> `Scale` migration note, the integer `nItems` change and the dependency
+  removal. D-046 (emitted-name alignment + column rename) and D-047 (`snakecase`
+  leaves Imports) appended to `cairn/DECISIONS.md`.
+- 2026-08-28: T9 done. `cairn/DESIGN.md` lines 70 and 106 corrected in place and
+  marked; the embedded historical decision log's mention left verbatim (IP4).
 
 ## Decisions
 

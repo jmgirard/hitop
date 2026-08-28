@@ -1,4 +1,8 @@
 ## PID Items
+## Needs {snakecase} installed. It is not a package dependency -- no code under
+## R/ uses it -- so it is declared in DESCRIPTION under Config/Needs/data-raw
+## rather than Imports, and a contributor regenerating this data must install it
+## themselves: install.packages("snakecase").
 pid_items <- readr::read_csv("data-raw/pid_items.csv", show_col_types = FALSE)
 usethis::use_data(pid_items, overwrite = TRUE)
 
