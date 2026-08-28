@@ -408,6 +408,66 @@ checked on 2026-08-27 against that day's committed keying by writing
 `Appearance focus` in place of `Appearance Focus`, which reported the case
 difference and exited 1.
 
+## HiTOP-SR development statistics (2026-08-28, M041)
+
+**Source.** The same document as the section above: Simms, L. J., et al.,
+Manuscript ID `ASMNT-26-0390`, shelf copy
+`cairn/references/sources/ASMNT-26-0390_Proof_hi.pdf`, sha256
+`1c211219b7fe13f8ed172f9210c152a642a9be77d790e08d795843c25da8e425`. The ingested
+page is [`cairn/references/simms2026.md`](references/simms2026.md), which carries
+Table 1's anchors, the sample description and the paper's own wording. D-032
+admits a peer-reviewed instrument paper's descriptive table as a published source
+under IP3; D-042 admits this document for it.
+
+**What was read.** Table 1 (shelf pp. 49-51) prints 101 data rows in 13 sections.
+The 93 rows of the first 12 sections -- the HiTOP-SR primary scales and subscales
+-- supply four cells each: `# Items`, `alpha`, `M` and `SD`. Those are transcribed
+verbatim into `data-raw/hitopsr_devstats.csv` and built into
+`data/hitopsr_devstats.rda` by `data-raw/hitopsr_devstats.R`. The `Range`,
+`Skewness` and `Kurtosis` columns are read but not shipped. The 13th section,
+"Superspectra and Spectra Scales", is the eight HiTOP-BR scales; it is not
+transcribed, because Table 1 and `hitopbr_scales` disagree on the item counts of
+Detachment and Internalizing and the accepted paper has to settle that first.
+
+**The reference group.** Development Sample 2: N = 780 (Table 1's Note, p. 51),
+"a new sample of 780 Prolific Academic participants, who were stratified by sex
+and age to approximate a community-representative population from the United
+States" (p. 15). It is a development sample and not a norming sample -- no census
+weighting is reported and the document publishes no raw-to-T table -- and every
+user-facing surface that shows an interval says so.
+
+**The name map.** All 93 labels reconcile with `hitopsr_scales$Scale` and
+`hitopsr_subscales$Subscale` except `Manic Energy†`, whose dagger is Table 1's own
+footnote marker ("Manic Energy is defined in the model to split between the
+Thought Disorder and Internalizing spectra", p. 51) rather than part of the name.
+`data-raw/hitopsr_devstats.R` maps that one label and declares the package-side
+exception set empty; the correspondence is cited to the 2026-08-28 run of
+`data-raw/verify_hitopsr_names.R`, not re-derived. The `camelCase` stem and the
+`type` column are the package's own, taken from the two shipped tables: Table 1
+marks a subscale only by indenting its label and prints no stem.
+
+**Two routes, kept apart.** The CSV is a transcription -- the three table pages
+were rendered at 200 dpi and read. The verification is a machine extraction:
+`data-raw/hitopsr_table1.R`'s `hitopsr_table1_cells()` reads every word's page
+coordinates and rebuilds the table by banding rows on the vertical axis and
+columns on the horizontal one, which is also how it recovers the indentation that
+marks a subscale. Neither route sees the other, so the diff between them is a
+check rather than a restatement (IP2).
+
+**Verification.** `data-raw/verify_hitopsr_devstats.R` diffs that extraction cell
+by cell against both the CSV and the built `hitopsr_devstats`. Maintainer-run,
+never CI: it needs the gitignored shelf and `pdftotext`. On 2026-08-28 it
+compared 372 cells against the CSV and 372 against the shipped object, over 93
+rows each, and reported none differing; its 17 indented labels matched the 17
+`subscale` rows. It exits non-zero on any discrepancy -- checked the same day by
+planting six defects in turn (a changed CSV cell, a removed CSV row, a nudged
+shipped reliability, a flipped `type`, a relabelled `reliabilityType`, a dropped
+shipped row), each of which it named and exited 1 on, with a clean control before
+and after. A CI-runnable second
+oracle, in `tests/testthat/test-interval_hitopsr.R`, asserts that every shipped
+`nItems` equals that scale's `nItems` in `hitopsr_scales`/`hitopsr_subscales` --
+which no transcription error could survive without also moving a row.
+
 ## Open questions (need source adjudication)
 
 OQ-1 is encoded as a `skip()`-ed test in `test-keying.R` so the suite stays green
