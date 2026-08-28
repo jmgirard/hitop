@@ -5,7 +5,7 @@
 - **Depends on:** M059
 - **Driving RR:** —
 - **Principles touched:** IP2, IP3
-- **Branch/PR:** `m041-hitopsr-score-intervals`
+- **Branch/PR:** `m041-hitopsr-score-intervals` — https://github.com/jmgirard/hitop/pull/66
 
 ## Goal
 
@@ -37,7 +37,7 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 
 ## Acceptance criteria
 
-- [ ] AC1 `hitopsr_devstats` ships one row per HiTOP-SR primary scale and
+- [x] AC1 `hitopsr_devstats` ships one row per HiTOP-SR primary scale and
       subscale Table 1 covers, keyed by scale name and carrying item count,
       mean, SD, and a `reliability`/`reliabilityType` pair holding Table 1's
       printed Cronbach's alpha and the constant `"alpha"`. The four
@@ -55,7 +55,7 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
       that the package-side residue it computes is exactly what the map
       declares; the Table 1 side is not computable in CI and is not claimed
       to be.
-- [ ] AC2 `data-raw/verify_hitopsr_devstats.R` extracts Table 1 from the source
+- [x] AC2 `data-raw/verify_hitopsr_devstats.R` extracts Table 1 from the source
       file on the gitignored `references/sources/` shelf and reports zero
       differing cells against both the committed CSV and the built
       `hitopsr_devstats`; its run output is recorded in the Review. Because
@@ -64,7 +64,7 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
       in `hitopsr_scales`/`hitopsr_subscales`. Where the source's format
       admits no deterministic extraction, an independent second transcription
       diffed against the first stands in for the extraction half.
-- [ ] AC3 `interval_hitopsr()` returns `_est`, `_lo`, and `_hi` per requested
+- [x] AC3 `interval_hitopsr()` returns `_est`, `_lo`, and `_hi` per requested
       score column at a `level` argument defaulting to 0.95, and its help page
       states the estimate and bound formulas with a page anchor into Schmukle
       (2026). A score column with no `hitopsr_devstats` row, and a call whose
@@ -74,14 +74,14 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
       columns are not detectable and are not claimed to be: the help page
       states that a scale scored from fewer than its full items is not
       comparable to the reference statistics.
-- [ ] AC4 A test recomputes the estimate and both bounds in hand-written
+- [x] AC4 A test recomputes the estimate and both bounds in hand-written
       arithmetic, the arithmetic in comments, for two scales at opposite ends
       of the shipped `reliability` range, each at a score below, at, and above the
       reference mean, and at two confidence levels, matching the function's
       output to within 1e-8 (closed-form oracle). Each oracle is recorded by
       id, type, and asserting `test:line` at the location `cairn/DESIGN.md`
       declares for oracle records.
-- [ ] AC5 A test asserts *marginal* coverage — true scores drawn from the
+- [x] AC5 A test asserts *marginal* coverage — true scores drawn from the
       reference population and observed scores generated from them under the
       measurement model the ingested Schmukle (2026) source note records, never
       a single fixed true score, whose conditional coverage a mean-shrunken
@@ -90,13 +90,13 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
       replication count fixed in the test and the tolerance stated as a
       Monte-Carlo bound (simulation-coverage oracle, the primary oracle for an
       interval method).
-- [ ] AC6 The help page, the NEWS entry, the `_pkgdown.yml` reference entry,
+- [x] AC6 The help page, the NEWS entry, the `_pkgdown.yml` reference entry,
       and the vignette section each name the reference group as the paper's
       development sample and its N, and say it is not a community norm; a test
       asserts that wording as text over all four artifacts — the generated
       `man/*.Rd`, `NEWS.md`, `_pkgdown.yml`, and the vignette `.Rmd` — and
       asserts the N it finds equals the N documented for `hitopsr_devstats`.
-- [ ] AC7 `devtools::document()` produces no diff and `devtools::test()` and
+- [x] AC7 `devtools::document()` produces no diff and `devtools::test()` and
       `devtools::check()` are clean.
 
 ## Coverage
@@ -191,3 +191,215 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 - 2026-08-28 (from RR05): the source's validating simulation chose item thresholds giving approximately normal item responses, so its coverage result does not certify the badly skewed HiTOP-SR scales. AC5's simulation oracle generates under that same linear-normal model and so verifies the implementation, not robustness to skew; T7's help-page limitation is what carries the difference, and neither is claimed to do the other's job.
 
 ## Review
+
+Reviewed 2026-08-28 on branch `m041-hitopsr-score-intervals`, PR
+https://github.com/jmgirard/hitop/pull/66. The default branch was fetched
+first and is an ancestor of HEAD at `1710e25`, so no merge was needed and the
+evidence below is from the branch as it will merge.
+
+### Acceptance criteria
+
+- **AC1 — pass.** `hitopsr_devstats` loads as 93 rows x 8 columns
+  (`scale`, `camelCase`, `type`, `nItems`, `reliability`, `reliabilityType`,
+  `mean`, `sd`), keyed by `camelCase` with zero duplicates; `type` splits 76
+  scale / 17 subscale and `reliabilityType` is the constant `"alpha"` on every
+  row, with `reliability` spanning 0.61 to 0.96. The four source-drawn cells
+  are established as printed by AC2's cell-by-cell diff below, against the
+  SHA-256 `data-raw/hitopsr_table1.R` pins, which the verifier reports as
+  matching. The name map and its exception set live in
+  `data-raw/hitopsr_devstats.R`, citing the `data-raw/verify_hitopsr_names.R`
+  run; the set is empty, and empty is the finding. The join test at
+  `tests/testthat/test-interval_hitopsr.R:52` iterates `hitopsr_scales` and
+  `hitopsr_subscales` rather than a hand-written list and passes, and the probe
+  at `:79` shows the checker naming a removed, a duplicated and an undeclared
+  row.
+- **AC2 — pass.** Fresh run of `Rscript data-raw/verify_hitopsr_devstats.R`,
+  exit 0: source sha256 matches the pin; Table 1 found on pages 49-51; 101 data
+  rows extracted (93 primary scales and subscales, 8 Superspectra and Spectra);
+  372 cells compared against the CSV over 93 rows and 372 against the shipped
+  `hitopsr_devstats` over 93 rows, with none differing; 93 rows compared on
+  `type` against Table 1's indentation (17 indented); Table 1's Range column
+  reported as spanning [1, 4]. The CI-runnable half is the item-count oracle at
+  `test-interval_hitopsr.R:119`, which passes.
+- **AC3 — pass.** Live call on `sim_hitopsr` returns `_est`, `_lo`, `_hi` per
+  requested score column; `formals(interval_hitopsr)$level` is `0.95`. A score
+  column with no reference row raises a warning of class
+  `hitop_interval_uncovered` and returns `NA` in all three columns; a call with
+  `srange = c(0, 3)` raises `hitop_interval_coding` and converts nothing. Both
+  classes are named in D-044. The help page states Eqs (10)-(12) with the
+  p. 821 anchor and states the subset-scoring limitation. Tests at `:439`,
+  `:463`, `:484`, `:513`, `:538`, `:568`, `:609`, `:634` all pass.
+- **AC4 — pass.** The closed-form oracle at `test-interval_hitopsr.R:172`
+  passes: Situational Phobias (alpha 0.61) and Distress-Dysphoria (0.96), each
+  at a score below, at and above its reference mean, at levels 0.95 and 0.80,
+  with the arithmetic in comments, constants read off Table 1 rather than from
+  the shipped table, and agreement to 1e-8. Recorded as O-001 in
+  `cairn/ORACLES.md`, the location `cairn/DESIGN.md`'s Testing section declares.
+- **AC5 — pass.** The simulation-coverage oracle at
+  `test-interval_hitopsr.R:351` passes: true scores drawn from the reference
+  population and observed scores generated under the model
+  `cairn/references/schmukle2026.md` records, swept over reliabilities 0.61,
+  0.84 and 0.96 (read from the shipped table) at levels 0.95 and 0.80, seed
+  20260828 + cell index and 200,000 replications fixed in the test, tolerance
+  stated as a four-standard-error Monte-Carlo bound. The companion at `:394`
+  pins that conditional coverage at a fixed true score is not nominal.
+  Recorded as O-003.
+- **AC6 — pass.** `tests/testthat/test-interval-prose.R` passes all three
+  tests: each of `man/interval_hitopsr.Rd`, `NEWS.md`, `_pkgdown.yml` and
+  `vignettes/hitopsr_scoring.Rmd` carries "Development Sample 2", plain-words
+  "development sample" and "not a community norm" in the passage about this
+  function, every `N =` each states equals the 780 documented in
+  `man/hitopsr_devstats.Rd`, and the guard is shown able to fail on a stripped
+  phrase and a changed N.
+- **AC7 — pass.** `devtools::test()`: 14904 passing, 0 failures, 0 warnings, 4
+  skips. `devtools::document()`: no diff. `devtools::check()`: 0 errors, 0
+  warnings, 0 notes.
+
+### Consistency gate
+
+- `cairn_validate.py`: exit 0, all checks passed, 22 advisory warnings (20
+  pre-existing dangling legacy D-001..D-012 tokens; 2 references-staleness
+  advisories on this milestone's two new source notes, logged as a finding
+  below).
+- No `DESIGN.md` IP/GP principle text changed -- the diff adds an oracle-records
+  paragraph to the Testing section -- so `cairn_impact.py` was skipped.
+- `r-package` profile `consistency-gate`: `devtools::document()` no diff;
+  `NAMESPACE`, `man/` and `data/*.rda` all regenerated, none hand-edited;
+  README.Rmd untouched so README.md is in sync; `pkgdown::check_pkgdown()`
+  clean; `NEWS.md` carries the user-visible entry with no milestone numbers;
+  no new top-level files needing `.Rbuildignore`; `devtools::check()` clean.
+  Line-ending policy check passed.
+
+### Findings
+
+Three fresh-context lenses ran in parallel over distinct evidence bases (the
+milestone's tier is user-facing and the diff touches executable surface, so the
+full fan-out applied). The **[S] blame-history lens reported no findings**,
+having checked every modified pre-existing file against its history; it
+specifically cleared the `skip_without_rename_base()` change as strengthening
+rather than weakening M059's guard, and confirmed the `hitopsr_table1.R` page-
+range extraction is behaviour-preserving. The **[S] prior-review lens reported
+no findings**: it found real prior-review evidence (RB05/RR05, on exactly these
+files) and judged every applied recommendation implemented without
+contradiction; the GitHub inline-comment probe returned `[]`, so that surface
+contributed nothing. The **[O] diff-bug lens verified the math independently**
+— Eqs (10)-(12) reproduced, the AC4 constants matched against the CSV, the
+shipped table checked for NA/duplicates/type split, the `hsr_conversionSymptoms`
+floor claim confirmed at lo = 0.754 — and reported eleven findings. Two more
+were raised by the review session itself. **None demonstrates an acceptance
+criterion failing, so the return floor did not fire.**
+
+1. *"The AC6 wording guard does not scope the help-page passage
+   (`tests/testthat/test-interval-prose.R:56`). `between()` cuts to the
+   terminator `"\\section"`, but `man/interval_hitopsr.Rd` contains zero
+   occurrences of the string `section` (verified), so `regexpr` returns -1 and
+   the 'passage' is the entire remainder of the Rd — `\references`,
+   `\examples`, everything. It passes, but not for the reason the file's
+   comment states, and any future `N = ...` elsewhere in that Rd would silently
+   enter the sample-size assertion. Separately, on that surface the
+   `expect_match(passage, "development sample")` is satisfied by the cut's own
+   anchor text (`"The reference group is a development sample"`), so it asserts
+   nothing."* — **verified independently** (`grep -c 'section'
+   man/interval_hitopsr.Rd` returns 0). AC6 as written still passes: the
+   assertion does run over all four artifacts and the Rd does carry the wording.
+   **Disposition: fix now.**
+2. *"`validate_level()` rejects integer input with a self-contradicting message
+   (`R/util.R:314`). `rlang::is_double(1L, n = 1)` is `FALSE` (verified), so an
+   integer aborts with 'must be a single number. You supplied `<integer>` of
+   length 1'. `validate_range()` next door uses `is_integerish`;
+   `is.numeric`/`is_bare_numeric` would be the consistent predicate."* —
+   **verified independently.** **Disposition: fix now.**
+3. *"Empty `scores` produces a raw base-R error. Nothing rejects
+   `scores = character(0)`; the engine then builds a 0x0 `out` and
+   `cbind(data, out)` aborts with 'arguments imply differing number of rows: 3,
+   0' (reproduced directly). Same shape as `norm_pid5()`, so a pre-existing
+   family pattern rather than a regression, but the new function inherits
+   it."* — **verified independently, and `norm_pid5()` reproduces the identical
+   message**, so it is a family-wide gap the diff did not introduce.
+   **Disposition: follow-up (candidate row, family-wide).**
+4. *"Output-name collision aborts obscurely. With `append = TRUE` and an input
+   already carrying `<score>_est`, `tibble::as_tibble()` raises 'Column name
+   must not be duplicated' (reproduced). Also shared with `norm_pid5()`."* —
+   **verified independently.** **Disposition: follow-up (same row as 3).**
+5. *"The engine joins on `camelCase` but nothing asserts that key is unique.
+   `hit <- match(stems, refstats$camelCase)` silently takes the first row; the
+   AC1 join test checks duplicates on `scale` only (`join_duplicates()`). The
+   shipped table is clean today, so this is a gap, not a defect."* — **verified
+   independently** (0 duplicate `camelCase` shipped; the test's
+   `join_duplicates()` reads `devstats$scale`). **Disposition: fix now** (one
+   added assertion).
+6. *"`Situational Phobias` is a subscale, and `score_hitopsr()` cannot produce
+   it. `score_hitopsr()` scores only `hitopsr_scales$itemNumbers` (76 scales);
+   the 17 `type == 'subscale'` rows of `hitopsr_devstats` have no column the
+   package's own scoring emits. AC4/`cairn/ORACLES.md` O-001 call these 'two
+   scales at the ends of the reliability range' — one is a subscale — and
+   `interval_hitopsr()`'s opening line ('Scores are produced by
+   `score_hitopsr()`') is not true for those 17 rows. The oracle itself is fine;
+   it builds the column by hand."* — **verified independently**: 17 subscale
+   rows, 0 of them in `hitopsr_scales$Scale`, and `score_hitopsr()` emits 76
+   columns. AC4 is not falsified — it asks for the ends of *the shipped
+   `reliability` range*, and 0.61 is that minimum — but the help page's opening
+   sentence overstates. **Disposition: fix now** (the doc sentence); the wider
+   question of whether the package should score subscales is out of scope.
+7. *"The coverage oracle never exercises the wrapper or the shipped statistics.
+   O-003 calls `interval_engine()` directly with synthetic `refstats` at M = 50,
+   SD = 10, sweeping only the shipped reliabilities. Coverage is scale-invariant
+   under the linear-normal model so it is mathematically sound, but AC5's 'drawn
+   from the reference population' is met only in the reliability dimension, and
+   the wiring of `hitopsr_devstats$mean`/`$sd` into the right formula slots is
+   pinned solely by O-001."* — **Disposition: reject.** Coverage is invariant to
+   the location and scale of the metric under this model, so reliability is the
+   only dimension in which the sweep can carry information; AC5 names the
+   reliability sweep and the measurement model, both of which are met, and O-001
+   pins the wiring against Table 1's own constants.
+8. *"Warning style diverges from the `norm_pid5()` mirror AC3 names. The
+   interval warnings pass `call =`, so they print `In interval_hitopsr() : ...`;
+   `norm_pid5()`'s do not pass `call` and print bare. Cosmetic, but the two
+   functions are meant to read alike."* — **Disposition: reject.** The classed,
+   `call`-carrying conditions are the deliberate improvement D-044 records; the
+   divergence runs in the direction the decision chose.
+9. *"`hitopsr_devstats` is filed under the new 'Score Intervals' pkgdown
+   section, whereas its closest precedent `pid_norms` sits under 'Instrument
+   Data'. Deliberate per the work log (the section exists so the `desc` has
+   somewhere to live), but it is an index-organisation departure worth a
+   conscious sign-off."* — **Disposition: maintainer's call at the gate.**
+10. *"Loose watermark filter in the maintainer extractor
+    (`data-raw/hitopsr_table1.R`): `grepl(t, "ForPeerReview", fixed = TRUE)`
+    uses the token as the *pattern* and the phrase as the *subject*, so any
+    substring — `"e"`, `"or"`, `"view"` — is accepted as watermark rather than
+    reported as stray text. Weakens the 'nothing lost in silence' guard."* —
+    **verified independently** (`data-raw/hitopsr_table1.R:289`). Maintainer
+    tooling only; the verifier run above reported no stray text and matched all
+    372 cells. **Disposition: follow-up onto the standing `data-raw/`
+    maintainer-tooling candidate row.**
+11. *"Nits. `sim_coverage()` names a parameter `mean` and calls `mean()` in the
+    same body (works only because R skips non-function bindings during call
+    lookup); `table1$name[!is.na(hit)] <- label_map$package[stats::na.omit(hit)]`
+    in `data-raw/hitopsr_devstats.R` would read plainer as `hit[!is.na(hit)]`;
+    the prose guard's NEWS cut (`"* **Two HiTOP-SR scales"` as terminator)
+    breaks if an entry is inserted between the two; `hitopsr_table1_rows()` now
+    shells out to `pdftotext` twice."* — **Disposition: reject** as style
+    nitpicks under the out-of-scope taxonomy, except the NEWS-cut fragility,
+    which is folded into finding 1's fix.
+12. *(review session)* `cairn/references/simms2026.md` quotes the paper's p. 24
+    prose — "The remaining 16 scales (17.2%) fell below this threshold, with
+    most of these alphas still in the acceptable range (between .66 and .79)",
+    naming Blood-Injection Phobia (.66), Trichotillomania (.67) and Purging
+    (.66) as the lowest — without recording that Table 1 prints .61 for
+    Situational Phobias, below all three. The shipped table is correct: the
+    independent extraction confirms Table 1 prints 0.61, and exactly 16 rows
+    fall below .80 as the prose says. So the source contradicts itself on its
+    own lowest alpha, and the note does not say so. This is material because
+    0.61 anchors both O-001 and the discriminating cell of O-003.
+    **Disposition: fix now** (an Open-questions bullet, IP1's posture).
+13. *(review session)* `cairn_validate.py` raises two `references staleness`
+    advisories on the new source notes: `schmukle2026.md` "provenance records no
+    extraction status" (the note does say `Extraction: verified 2026-08-28`, but
+    across a line break the checker does not read), and `simms2026.md`
+    "extraction records no verified re-check against the source" — whose text
+    still reads "have not yet been re-read against the machine extraction",
+    which stopped being true once `data-raw/verify_hitopsr_devstats.R` ran and
+    matched. **Disposition: fix now** (`simms2026.md`'s stale sentence; the
+    `schmukle2026.md` advisory is a checker line-wrap artifact and is left).
+
+
