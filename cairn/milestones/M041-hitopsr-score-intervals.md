@@ -1,11 +1,11 @@
 # M041: Confidence intervals for HiTOP-SR scale scores
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M059
 - **Driving RR:** —
 - **Principles touched:** IP2, IP3
-- **Branch/PR:** —
+- **Branch/PR:** `m041-hitopsr-score-intervals`
 
 ## Goal
 
@@ -152,6 +152,7 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 - 2026-08-27: the T2 formula question is settled by the primary source and neither candidate was right. Schmukle (2026, *Assessment*, 33(5), 817-825) Eqs (10)-(12), p. 821: `RETS = M + sqrt(rel) * (x - M)`, `SERE = SD * sqrt(1 - rel)` (which the paper notes equals the SEM), `CI = RETS +/- z * SERE`. The half-width is the `sqrt(1 - rel)` form, and the estimator shrinks by `sqrt(rel)`, not by `rel`; `SD * sqrt(rel * (1 - rel))` is Eq (6), the uncorrected regression approach the paper argues against. T2 still ingests the source note; nothing ships from this line.
 - 2026-08-27: `pdftotext -layout` extracts Table 1's labels and all five numeric columns cleanly, so AC2's deterministic-extraction half is viable and the second-transcription fallback should not be needed; two blocks put the label and its cells on separate lines, which M059's T4 handles first.
 - 2026-08-27: amended at the M059 plan gate — `Depends on: M059`, the Schmukle citation corrected to 2026 (33(5)), T1 and T2 re-pointed at the shelved sources, and T3's exception set corrected: `Appearance Focus` does match a package scale, `Body Focus`, which M059 renames, leaving `Manic Energy†` and `p-factor`.
+- 2026-08-28: /milestone-implement started; status in-progress on branch `m041-hitopsr-score-intervals`, cut from the pushed default branch.
 
 ## Decisions
 
