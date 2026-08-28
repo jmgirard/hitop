@@ -1,11 +1,11 @@
 # M058: The HiTOP-SR's NSSI scale is named in full
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M057
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP2
-- **Branch/PR:** `m058-nssi-scale-name`
+- **Branch/PR:** `m058-nssi-scale-name` / https://github.com/jmgirard/hitop/pull/64
 
 ## Goal
 
@@ -199,6 +199,7 @@ requires.
 - 2026-08-27: T7 — the AC5 sweep added to `verify_hitopsr_rename.R` as a fifth step. Both distribution directories hold 24 files, their listings are identical to the merge-base's (so a deleted or added file would be caught, which a loop over the current tree alone cannot see), and exactly the two DOCX differ in each. The manifest anchor caught a wrong assumption of my own first: `hitop_artifacts` is kept sorted rather than appended to — the new rows landed at indices 11 and 15, not at the end — so comparing the first `nrow(base)` rows positionally reported the pre-existing rows as changed when none had. Rows are now matched by content: 33 unchanged, exactly 2 added, one per rebuilt DOCX. All five verifier steps green.
 - 2026-08-27: T8 — NEWS entry written, recording the rename as breaking, naming both old and new column names, and per AC3's amendment stating the position move from 448 to 451 so positional selection is warned about rather than left to surprise; it also records that no score changed and that the Qualtrics and REDCap exports are unaffected. The AC2 sweep flagged no doc surface: `?score_hitopsr`, `R/data.R`, `README.Rmd`, `_pkgdown.yml` and the vignettes carried no occurrence of the old name, so there was nothing to fix there, and `README.md` needed no re-knit. What T8 did add is the also-known-as note D-041 committed to, in `hitopsr_items`'s `@details`: it names `NSSI` as the literature's abbreviation for the scale, says the package used it before 0.2.0, and gives the derived column name. That note is itself an occurrence of the old spelling, so the sweep flagged `R/data.R` and its generated `man/hitopsr_items.Rd` — a third touch on AC2's allow-list, put to Jeff rather than edited in, since AC2 had already had its gate and its audit. He chose to amend the allow-list over dropping the note (which would reverse D-041) or writing a note that never spells the name a reader would search for. Both paths added, with the reason recorded beside them in the check.
 - 2026-08-27: T9 — `devtools::document()` produces no diff (`man/` and `NAMESPACE` unchanged after a fresh run). `devtools::test()` is FAIL 0 | WARN 0 | SKIP 1 | PASS 14598; the single skip is `test-keying.R:102`, the pre-existing OQ-1 placeholder for the disputed PID-5 SD-TD item 38, which this milestone does not touch — AC7's clause names `test-artifacts.R` and the HiTOP-SR keying tests, and both were run directly at 0 skips (121 and 12 passing). `devtools::check()` is Status: OK, 0 errors, 0 warnings, 0 notes, so AC7's "every remaining NOTE listed in this file with a reason" has an empty obligation. A duplicate `devtools::test()` process from an earlier invocation had to be killed part-way: two runs were contending for the machine and neither was progressing, which is why the first suite log came back empty.
+- 2026-08-27: all nine tasks checked; status `review`. Branch pushed and PR opened: https://github.com/jmgirard/hitop/pull/64.
 
 ## Decisions
 
