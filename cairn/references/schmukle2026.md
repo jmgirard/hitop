@@ -114,12 +114,37 @@ What the article's coverage result was produced under, in its own terms:
   scores, regardless of the reliability of the test and regardless of the observed
   T-score" (p. 823).
 
+**The generative model, stated in the form a check can reproduce.** The article
+describes the simulation in its own terms above; the two sentences that fix the
+model are that true scores are drawn on the standard T scale (M = 50, SD = 10) and
+that the observed item sum is "standardized to obtain observed scores that are
+T-scaled (M = 50, SD = 10)" (p. 822). True and observed scores therefore sit on the
+*same* metric with the *same* standard deviation, which makes their correlation the
+reliability index `sqrt(r_xx)`:
+
+    t ~ Normal(M, SD)
+    x = M + sqrt(r_xx) * (t - M) + e,   e ~ Normal(0, SD * sqrt(1 - r_xx))
+
+Equation (10) is then exactly the regression of `t` on `x`, and Equation (11)'s
+`SD * sqrt(1 - r_xx)` is exactly that regression's residual standard deviation —
+which is why Table 1's coverage is nominal at every reliability, and why Equation
+(11) coincides with the SEM.
+
+Note what `t` is here: the quantity drawn on the observed score's own metric, not
+the classical true score of the composite, whose standard deviation is
+`sqrt(r_xx) * SD` by Equation (8). Generating `t` at that smaller spread instead
+produces a different result — Equation (7)'s uncorrected interval becomes the
+nominal one and Equation (12)'s becomes conservative — so the metric `t` is drawn
+on is the load-bearing detail of any reproduction.
+
 **What the coverage claim is over.** The proportion is taken over the simulated
-population — a million true scores drawn from the reference distribution, with
-observed scores generated from each. It is marginal coverage under the article's
-linear-normal measurement model, not coverage conditional on a fixed true score.
-The dichotomous-item simulation (Table 2, p. 823), where that model does not hold,
-is where the article's own coverage degrades at extreme scores.
+population — a million true scores drawn as above, with an observed score
+generated from each. It is coverage over that population, and Table 1 also reports
+it at fixed *observed* T-scores of 50 and of 30 or 70, where it is likewise
+nominal. It is **not** coverage at a fixed *true* score, which this estimator does
+not promise and which varies with how far that true score sits from the mean. The
+dichotomous-item simulation (Table 2, p. 823), where the linear model does not
+hold, is where the article's own coverage degrades at extreme scores.
 
 ### Stated limitations
 
