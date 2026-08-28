@@ -2,7 +2,7 @@
 
 - **Status:** planned
 - **Priority:** normal
-- **Depends on:** —
+- **Depends on:** M059
 - **Driving RR:** —
 - **Principles touched:** IP2, IP3
 - **Branch/PR:** —
@@ -21,7 +21,7 @@ the HiTOP-SR introduction paper (Development Sample 2), built by a `data-raw/`
 script from a committed CSV and checked cell-by-cell against the source by a
 companion verification script; an unexported interval engine and an exported
 `interval_hitopsr()` returning an estimate and bounds per score column, using
-the regression-based true score with scale correction (Schmukle, 2025);
+the regression-based true score with scale correction (Schmukle, 2026);
 `references/` source notes for both papers; and user-facing text — help page,
 NEWS, pkgdown, vignette — stating the reference group is a development sample
 rather than a community norm.
@@ -74,7 +74,7 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
       declares for oracle records.
 - [ ] AC5 A test asserts *marginal* coverage — true scores drawn from the
       reference population and observed scores generated from them under the
-      measurement model the ingested Schmukle (2025) source note records, never
+      measurement model the ingested Schmukle (2026) source note records, never
       a single fixed true score, whose conditional coverage a mean-shrunken
       estimator does not promise — swept over the lowest, median, and highest
       alpha in `hitopsr_devstats` and two nominal levels, with seed and
@@ -102,23 +102,24 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 
 ## Tasks
 
-- [ ] T1 Ingest the final submitted HiTOP-SR introduction paper as a
-      `cairn/references/` source note with Table 1's anchors, plus its
-      `SOURCES.md` provenance entry and `INDEX.md` line. Needs the final
-      version from Len; the 2026-03-24 tracked-changes draft is scoping
-      evidence only and no number ships from it.
-- [ ] T2 Ingest Schmukle (2025, *Assessment*, 33, 817-825) as a
-      `cairn/references/` source note, quoting the estimate and interval
-      formulas verbatim with page anchors. Needs the PDF from the maintainer.
+- [ ] T1 Ingest the HiTOP-SR introduction paper as a `cairn/references/`
+      source note with Table 1's anchors, plus its `INDEX.md` line; the
+      `SOURCES.md` provenance section M058 opened is extended, not duplicated.
+      The shelved manuscript is the source, on Jeff's 2026-08-27 direction that
+      it stands in for the accepted version here as it does for the two scale
+      names (M059's D-entry).
+- [ ] T2 Ingest Schmukle (2026, *Assessment*, 33(5), 817-825,
+      `cairn/references/sources/schmukle2026.pdf`) as a `cairn/references/`
+      source note, quoting Eqs (5)-(12) verbatim with page anchors.
 - [ ] T3 Transcribe Table 1 to `data-raw/hitopsr_devstats.csv` and write
       `data-raw/hitopsr_devstats.R` building `data/hitopsr_devstats.rda`,
-      committing the source-cited name map and its exception set. Four Table 1
-      labels do not join: `Manic Energy†` and `Non-suicidal Self-injury` are
-      typography and abbreviation, `p-factor` belongs to `hitopbr_scales` and
-      so falls outside this milestone's scope, and `Appearance Focus` matches
-      no package scale at all — it stays an open question on the map rather
-      than being resolved by whichever mapping turns a test green (IP1:
-      discrepancies stay visible, never silently patched).
+      committing the source-cited name map and its exception set. After M059
+      renames `Body Focus` to `Appearance Focus`, two Table 1 labels do not
+      join — `Manic Energy†`, a footnote marker, and `p-factor`, a HiTOP-BR
+      scale outside this milestone's scope — and M059's
+      `data-raw/verify_hitopsr_names.R` is what establishes that, so the map
+      cites its run rather than re-deriving the set (IP1: discrepancies stay
+      visible, never silently patched).
 - [ ] T4 Write `data-raw/verify_hitopsr_devstats.R` on the pattern of
       `data-raw/verify_norms_against_book.R`, extracting Table 1 from the
       shelved source and diffing every cell against the committed CSV.
@@ -146,6 +147,11 @@ wording → its own hotfix. Plotting the intervals → not this milestone.
 - 2026-08-13: the fresh-context criteria audit returned findings on AC1-AC6 and none on AC7; all six were accepted and the criteria rewritten. AC1 asserted a bijection its own task contradicted (four Table 1 labels do not join, one of them unresolvable) — now a committed name map plus a declared exception set. AC2 verified the CSV rather than the shipped object and named a script that cannot run in CI, leaving the constants with no CI-visible oracle — now diffs the built object too and adds a CI-runnable item-count oracle. AC3 constrained output shape only — now names the `level` default and the two mismatch branches, and declines to claim subset detection it cannot perform. AC4's single hand-computed point left the sign of the mean deviation, the alpha range, and the level unprobed — now two scales, three score positions, two levels. AC5 asserted coverage at a fixed true score, which a mean-shrunken estimator does not promise — now marginal coverage under the source's own measurement model, with seed, replications, and a Monte-Carlo tolerance fixed in the test. AC6 quantified over four surfaces and tested two, one of them untestable against an uninstalled package — now asserted over all four as text.
 - 2026-08-13: the audit also surfaced a substantive open question for T2: it derives the interval half-width as `z * SD * sqrt(rel * (1 - rel))`, the classical standard error of the true-score estimate, where Johannes Zimmermann's proposal states `z * SD * sqrt(1 - rel)`. Which is Schmukle's scale-corrected form is not decidable from any secondary description in hand and is settled by the primary source, not here.
 - 2026-08-13: two external inputs block implementation — the final submitted paper (T1) and the Schmukle PDF (T2); T5's engine and T6's oracles can be built ahead of both.
+
+- 2026-08-27: both blockers cleared. `schmukle2026.pdf` is on the shelf, and Jeff directed that the under-review HiTOP-SR manuscript stands in for the accepted version here (D-042), so T1 no longer waits on Len.
+- 2026-08-27: the T2 formula question is settled by the primary source and neither candidate was right. Schmukle (2026, *Assessment*, 33(5), 817-825) Eqs (10)-(12), p. 821: `RETS = M + sqrt(rel) * (x - M)`, `SERE = SD * sqrt(1 - rel)` (which the paper notes equals the SEM), `CI = RETS +/- z * SERE`. The half-width is the `sqrt(1 - rel)` form, and the estimator shrinks by `sqrt(rel)`, not by `rel`; `SD * sqrt(rel * (1 - rel))` is Eq (6), the uncorrected regression approach the paper argues against. T2 still ingests the source note; nothing ships from this line.
+- 2026-08-27: `pdftotext -layout` extracts Table 1's labels and all five numeric columns cleanly, so AC2's deterministic-extraction half is viable and the second-transcription fallback should not be needed; two blocks put the label and its cells on separate lines, which M059's T4 handles first.
+- 2026-08-27: amended at the M059 plan gate — `Depends on: M059`, the Schmukle citation corrected to 2026 (33(5)), T1 and T2 re-pointed at the shelved sources, and T3's exception set corrected: `Appearance Focus` does match a package scale, `Body Focus`, which M059 renames, leaving `Manic Energy†` and `p-factor`.
 
 ## Decisions
 
