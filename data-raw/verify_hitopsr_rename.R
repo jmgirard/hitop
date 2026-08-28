@@ -368,6 +368,76 @@ for (f in docx) {
   }
 }
 
+## ------------------------------------------------------- 5. distribution ---
+
+## Every distributed file, enumerated by listing the two directories rather than
+## by the manifest -- a manifest that lost rows would otherwise shrink the sweep
+## and pass vacuously. The listings themselves are compared too, so a file
+## deleted at the merge-base or added here is caught, which a per-file loop over
+## the current tree cannot see.
+cat("\n5. Distributed files against the merge-base\n")
+dist_dirs <- c("inst/extdata", "pkgdown/assets/downloads")
+rebuilt <- c("hitopsr_US.docx", "hitopsr_A4.docx")
+
+for (d in dist_dirs) {
+  here_files <- sort(list.files(d))
+  base_files <- sort(list.files(file.path(wt, d)))
+  if (!identical(here_files, base_files)) {
+    note(d, ": file listing changed -- added ",
+         paste(setdiff(here_files, base_files), collapse = ", "), "; removed ",
+         paste(setdiff(base_files, here_files), collapse = ", "))
+    cat("   ", d, ": FAIL (listing)\n", sep = "")
+    next
+  }
+  moved_files <- here_files[vapply(here_files, function(f)
+    !identical(unname(tools::md5sum(file.path(d, f))),
+               unname(tools::md5sum(file.path(wt, d, f)))), logical(1))]
+  unexpected <- setdiff(moved_files, rebuilt)
+  if (length(unexpected)) {
+    note(d, ": changed outside the two rebuilt DOCX: ",
+         paste(unexpected, collapse = ", "))
+    cat("   ", d, ": FAIL -- ", paste(unexpected, collapse = ", "), "\n", sep = "")
+  } else {
+    cat("   ", d, ": ", length(here_files), " files, listing identical, ",
+        length(moved_files), " changed (", paste(moved_files, collapse = ", "),
+        ")\n", sep = "")
+  }
+}
+
+## D-016's version bump: the manifest must GAIN a row per rebuilt file and keep
+## every pre-existing row. Without this a rebuild could land with no bump, which
+## AC5's freeze on old rows would not notice.
+base_man <- new.env(); load(file.path(wt, "data", "hitop_artifacts.rda"), envir = base_man)
+here_man <- new.env(); load("data/hitop_artifacts.rda", envir = here_man)
+bm <- base_man$hitop_artifacts
+hm <- here_man$hitop_artifacts
+
+## The manifest is kept sorted rather than appended to, so a new row lands
+## among the old ones -- rows are matched by content, never by position.
+row_id <- function(m) do.call(paste, c(as.data.frame(m), sep = ""))
+bid <- row_id(bm)
+hid <- row_id(hm)
+
+if (!setequal(unique(bm$file), unique(hm$file))) {
+  note("hitop_artifacts' set of files changed")
+  cat("   manifest: FAIL (file set)\n")
+} else if (length(setdiff(bid, hid))) {
+  note("hitop_artifacts lost or altered ", length(setdiff(bid, hid)),
+       " pre-existing row(s)")
+  cat("   manifest: FAIL (pre-existing rows)\n")
+} else {
+  added <- hm[!hid %in% bid, ]
+  if (!setequal(added$file, rebuilt) || nrow(added) != length(rebuilt)) {
+    note("hitop_artifacts gained ", nrow(added), " row(s) for ",
+         paste(added$file, collapse = ", "), "; expected one per rebuilt DOCX")
+    cat("   manifest: FAIL (added rows)\n")
+  } else {
+    cat("   manifest: ", nrow(bm), " rows unchanged, ", nrow(added),
+        " added (", paste(added$file, collapse = ", "), "), changes note: ",
+        encodeString(unique(added$changes), quote = '"'), "\n", sep = "")
+  }
+}
+
 cat("\n")
 if (!length(fail)) {
   cat("RESULT: the rename reached every place the old name lived and moved nothing else.\n")
