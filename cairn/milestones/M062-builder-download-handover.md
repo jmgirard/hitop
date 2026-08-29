@@ -56,7 +56,7 @@ this plan gate (work log). The descriptor's JSON format is untouched.
       in Chrome and one in Safari, and the milestone records for each browser
       which two files arrived in the downloads folder. Automation cannot see the
       downloads folder, so this criterion, not AC1, is what proves arrival.
-- [ ] AC6 The change ships: a merged pull request in `jmgirard/hitop-builder`
+- [x] AC6 The change ships: a merged pull request in `jmgirard/hitop-builder`
       whose URL is in this file's header, and the page served at
       `https://jmgirard.github.io/hitop-builder/` matches that commit's
       `index.html` byte for byte.
@@ -92,7 +92,7 @@ this plan gate (work log). The descriptor's JSON format is untouched.
       coordinates, with the `click` wrapper and the M050 blob capture in place;
       record the tables AC1 and AC2 read.
 - [x] T5 Compare each format's logged call string against T1's literal.
-- [ ] T6 Open the builder pull request; after merge, fetch the deployed page and
+- [x] T6 Open the builder pull request; after merge, fetch the deployed page and
       compare bytes; write the URL into the header.
 - [x] T7 Hand the maintainer the Chrome and Safari runs and record what arrived.
 
@@ -177,6 +177,8 @@ descriptor because the first still sat in the folder, the case M063 fixes.
 
 - 2026-08-29: AC5 re-run on builder `cc48256` at Jeff's selection — Chrome then Safari, both pairs arrived and each questionnaire's item set matches its own descriptor exactly. Merge authorized for builder PR #7 first, then hitop PR #69 once the deployed bytes match and CI is green.
 
+- 2026-08-29: T6 second half and AC6 — builder PR #7 merged as `9f8b615`, the Pages deploy completed, and the served page is byte-identical to that commit's `index.html` (sha256 `aaa69d7c…`, `cmp` clean). Every criterion is now verified.
+
 ## Decisions
 
 - 2026-08-28: the descriptor button stays offered after the visitor takes it, until the next completed build replaces it. Saving twice costs nothing, and a first save that landed somewhere unintended would otherwise need a whole rebuild to recover from. The held pair carries a `taken` flag, so a replacement reports a loss only when the file was never taken.
@@ -245,8 +247,12 @@ downloads folder.
   its descriptor because the earlier one still sat in the folder — the M063
   case, recorded here as evidence rather than as a defect. The 2026-08-29 run
   against `5a7cea0` recorded above stands as the earlier observation.
-- **AC6 — not verified; open.** Builder PR #7 is open, not merged, so no deployed
-  page exists to compare bytes against. This is the gate's open item.
+- **AC6 — verified.** Builder PR #7 merged 2026-08-29 as `9f8b615` on
+  `jmgirard/hitop-builder`, its URL in this file's header. The page served at
+  `https://jmgirard.github.io/hitop-builder/` (HTTP 200) is byte-identical to
+  that commit's `index.html`: both sha256 `aaa69d7c4d6d7db407c54f2b1213a8ac…`,
+  and `cmp` reports no difference. The Pages deployment for `9f8b615` completed
+  successfully.
 - **AC7 — verified.** `git diff --name-only origin/main...HEAD` lists
   `cairn/ROADMAP.md` and this file only. `devtools::test()` FAIL 0 / WARN 0 /
   SKIP 4 / PASS 15504.
