@@ -1,6 +1,6 @@
 # M067: The modules article and the generator help pages describe what the generators do
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -47,7 +47,7 @@ Surface tier: **user-facing** — the deliverables are `vignettes/articles/modul
 - [x] T4: Add the console-announcement sentence to the three `@param descriptor` blocks (`generate_docx.R:128-142`, `generate_qualtrics.R:67-78`, `generate_redcap.R:68-79`); avoid `[...]` in the tag, which roxygen parses as a link. Run `devtools::document()`.
 - [x] T5: Run the AC5 grep, enumerate its `module` conditionals, and for each either add article prose or log why it stays out. A behavior defect found here is captured as a candidate row, not fixed.
 - [x] T6: Write `tests/testthat/test-module-doc-prose.R` locking AC1-AC4's claims across the article and the three Rd files. Show every assertion red against the pre-edit text; assert both boundaries of any section cut were found, and `next` after any expectation whose value is reused in a loop.
-- [ ] T7: Add the NEWS bullet, render the modules article against a fresh `devtools::install()`, and run the profile's verify and consistency-gate commands.
+- [x] T7: Add the NEWS bullet, render the modules article against a fresh `devtools::install()`, and run the profile's verify and consistency-gate commands.
 
 ## Work log
 
@@ -58,6 +58,7 @@ Surface tier: **user-facing** — the deliverables are `vignettes/articles/modul
 - 2026-08-30: AC3 grep returned 47 hits (non-empty). Three are reorder-recipe passages and all three now carry the printed-order precondition: `modules-hitopsr.Rmd:118` and the `:300`/`:306` passage, plus `R/generate_docx.R:125`. The other 44 are not recipes -- 6 in `NEWS.md` and `module_file.R` roxygen describing the attribute, and 38 in R sources naming the variable, the `write_module()` argument, the `hitop_module_file_bad_item_order` class, or `warn_item_order()`, which is unrelated PID-5 code.
 - 2026-08-30: AC5 grep returned 85 non-`#'` hits across the four files; the conditionals on `module` among them are five. `generate_docx.R:222` (module header) and `:227` (`include_subscales` refused with `module`) were both absent from the article and are now added -- `:227` is the gap the sweep found that the plan did not name. `:323` (crosswalk) is AC2. `module.R:154` (`apply_module` returns the full tables under `module = NULL`) and `:267` (`hitopsr_engine_inputs` scores all 405 under `module = NULL`) stay out of the article deliberately: both are the "pass a module, get only its items" and "items addressed by position in `module$items`" behavior the article already describes in its own terms, and naming the internal helpers would not help a reader.
 - 2026-08-30: T6 done. `test-module-doc-prose.R` added (6 blocks). Discrimination shown per claim, one plant at a time: gutting the header sentence, restoring the old unconditional crosswalk sentence, removing the article precondition, removing the help-page precondition, and softening the `include_subscales` refusal each turned exactly its own block red and left the other five green; rewording an unrelated sentence left all six green. The descriptor block was proved separately against each of the three Rd files, red on each in turn, so the loop is not truncating. A first plant of the console sentence scored green because the Rd line-wraps the phrase and the plant's literal replace missed it -- the plant was wrong, not the test; re-run against the wrapped text it goes red.
+- 2026-08-30: T7 done. NEWS bullet added under 0.2.0, claiming only what `test-module-doc-prose.R` asserts. Article rendered after `devtools::install()` (pkgdown reads the installed package) -- `pkgdown::build_article("articles/modules-hitopsr")` clean, and the six added phrases were read back out of `docs/articles/modules-hitopsr.html`. `devtools::test()`: 0 failures, 0 warnings, 4 skips, 15642 passes. `devtools::check()`: 0 errors, 0 warnings, 0 notes, so nothing is present that was absent at the branch point. `devtools::document()` leaves no diff.
 - 2026-08-29: criteria audit ran in **full mode** (user-facing tier), inline rather than in a fresh-context reader — this session is configured not to spawn subagents, so the audit's freshness property was unavailable. Three findings, all fixed before the gate: a criterion binding "a prose test file fails when a sentence is removed" bound an instrument property and moved to T6; a criterion promising the article's module-vs-full enumeration was complete quantified over behavior differences that no grep enumerates, and was narrowed to the conditionals the AC5 grep returns; a criterion promising "every site giving the recipe" rested on a hand-list and was narrowed to the AC3 grep's hits.
 
 ## Decisions
