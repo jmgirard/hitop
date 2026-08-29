@@ -211,7 +211,9 @@ interface before a CRAN submission.
   else, since no crosswalk is printed for one. The descriptor is written
   before the instrument file, so an unwritable path is reported before
   any form is produced, and it is removed again if the form itself
-  cannot be written.
+  cannot be written. Once both files are on disk, the console names the
+  descriptor it saved, after the message naming the form itself; a call
+  that passes no `descriptor` says nothing about one.
   [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
   now writes an `item_order` attribute as the file’s `itemOrder` field,
   so a descriptor read and written again keeps the order it recorded.
