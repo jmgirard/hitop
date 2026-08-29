@@ -85,7 +85,7 @@ spelling the table ships today and is unaffected by how that row settles.
       `data-raw/pid_info.R`, `data-raw/hitopsr_info.R` and `data-raw/hitopbr_info.R` —
       the three scripts that call `snakecase::to_any_case()` — carries a header note
       saying it needs `snakecase` installed and that it is not a package dependency.
-- [ ] AC9 The profile verify slot is clean: `Rscript -e 'devtools::test()'` passes and
+- [x] AC9 The profile verify slot is clean: `Rscript -e 'devtools::test()'` passes and
       `Rscript -e 'devtools::check()'` reports 0 errors, 0 warnings, 0 notes.
 
 ## Coverage
@@ -307,3 +307,26 @@ PR: https://github.com/jmgirard/hitop/pull/68
   in full and name no `snakecase`, and no `LinkingTo:` or `Enhances:` field
   exists. Each of `data-raw/pid_info.R`, `data-raw/hitopsr_info.R` and
   `data-raw/hitopbr_info.R` carries the header note.
+- **AC9 — verified.** `Rscript -e 'devtools::test()'`: FAIL 0, ERROR 0, WARN 0,
+  SKIP 4, PASS 15500. `Rscript -e 'devtools::check()'`: **0 errors, 0 warnings,
+  0 notes** (`Status: OK`, hitop 0.2.0, 4m58s; `Running 'testthat.R' [215s]` OK).
+
+### Consistency gate
+
+- `cairn_validate.py` exits 0 — every check PASS, including `coverage complete`,
+  `scaffold present` and `binding criteria`. 87 advisory warnings, all
+  pre-existing shapes (`sizing` on 9 criteria, `work-log format` on the
+  milestone's wrapped lines, `dangling id tokens` on the legacy D-001..D-012
+  citations, `references staleness` on `schmukle2026.md`).
+- `cairn_impact.py --changed`: GP4's line changed, 16 references listed. The
+  edit removes a false example ({snakecase} as a generator Import) and leaves
+  the principle's stance untouched; every citing D-entry cites the posture, not
+  the example, and D-047 is this milestone's reconciliation. No divergence left
+  open.
+- Toolchain slot (`r-package`): `devtools::document()` leaves no diff;
+  `pkgdown::check_pkgdown()` "No problems found"; `devtools::build_readme()`
+  leaves `README.md` unchanged; `NEWS.md` carries the user-visible entry with no
+  milestone number in it; the branch adds no top-level file, so no
+  `.Rbuildignore` entry is owed; `check()` is clean as recorded under AC9.
+- CI on PR #68: green on all eight jobs (line endings, pkgdown, test-coverage,
+  macOS release, Windows release, Ubuntu release/devel/oldrel-1).
