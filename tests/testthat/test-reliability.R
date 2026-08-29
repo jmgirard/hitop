@@ -116,7 +116,8 @@ test_that("reliability_hitopbr() matches independently recomputed alphas (M013 o
   rel <- reliability_hitopbr(d, items = items, omega = FALSE)
   expect_equal(rel$alpha, unname(exp_alpha))
   expect_equal(rel$nItems, unname(lengths(scales)))
-  expect_equal(rel$scale, snakecase::to_title_case(names(scales)))
+  # The canonical column of the keying table, not the transformation under test.
+  expect_equal(rel$Scale, hitopbr_scales$Scale)
 
   # Independent, HARDCODED oracle for one scale (guards the BR scales table
   # itself, not just the plumbing): Detachment = items 7,12,30,31,36,37 copied
@@ -161,7 +162,7 @@ test_that("reliability_*() return a per-scale tibble with the requested columns"
   rel <- reliability_hitopbr(sim_hitopbr, items = 1:45, omega = FALSE)
   expect_s3_class(rel, "tbl_df")
   expect_equal(nrow(rel), nrow(hitopbr_scales))
-  expect_identical(names(rel), c("scale", "nItems", "alpha"))  # omega omitted when FALSE
+  expect_identical(names(rel), c("Scale", "nItems", "alpha"))  # omega omitted when FALSE
 
   # PID-5 reliability is facet-level (25), before FULL/SF domain aggregation.
   rel_pid <- reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)
@@ -169,8 +170,8 @@ test_that("reliability_*() return a per-scale tibble with the requested columns"
   # BF is 5 domains + the 25-item total (M026), so 6 rows.
   rel_bf <- reliability_pid5(sim_pid5bf, items = 1:25, version = "BF", omega = FALSE)
   expect_equal(nrow(rel_bf), 6L)
-  expect_true("Total" %in% rel_bf$scale)
-  expect_equal(rel_bf$nItems[rel_bf$scale == "Total"], 25)
+  expect_true("Total" %in% rel_bf$Scale)
+  expect_equal(rel_bf$nItems[rel_bf$Scale == "Total"], 25L)
 })
 
 test_that("reliability alpha is NA-safe on a zero-variance scale (no abort)", {
@@ -204,13 +205,13 @@ test_that("reliability_hitopsr(module=) returns one row per module scale", {
 
   # Row order follows hitopsr_scales, not the order the scales were named.
   expect_equal(
-    part$scale,
+    part$Scale,
     c("Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest")
   )
   # nItems comes from the remapped positions; it must still match the table.
   expect_equal(
     part$nItems,
-    hitopsr_scales$nItems[match(part$scale, hitopsr_scales$Scale)]
+    as.integer(hitopsr_scales$nItems[match(part$Scale, hitopsr_scales$Scale)])
   )
 })
 
@@ -222,7 +223,7 @@ test_that("reliability_hitopsr(module=) gives the full run's alpha for its scale
   part <- reliability_hitopsr(
     sim_hitopsr[s$items], items = seq_len(s$nItems), module = s, omega = FALSE
   )
-  expect_equal(part, full[match(part$scale, full$scale), ], ignore_attr = "row.names")
+  expect_equal(part, full[match(part$Scale, full$Scale), ], ignore_attr = "row.names")
 })
 
 test_that("the module argument's three error paths blame the exported wrapper", {

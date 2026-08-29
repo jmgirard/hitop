@@ -8,6 +8,74 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-047 (2026-08-28): {snakecase} leaves Imports and is declared as a data-generation need instead (applies GP4's dependency posture to a dependency that no shipped code uses)
+
+**Context:** {snakecase} entered Imports for the `camelCase` derivations in the
+`data-raw/` regeneration scripts, and one call site under `R/` reused it to build
+the reliability family's display names. D-041 had already deleted the
+name-to-stem exception map those derivations needed, fixing that one printed name
+drives the stems, the scored columns and the joins alike; M061 removes the `R/`
+call site by reading the printed name from the keying table (D-046). Nothing the
+installed package runs then references the dependency, while three maintainer-run
+scripts still do.
+
+**Decision:** {snakecase} is removed from `DESCRIPTION` Imports outright rather
+than moved to Suggests, and its remaining requirement is declared as
+`Config/Needs/data-raw: snakecase` — a field R's own dependency resolution
+ignores, so it installs for nobody and documents the need for a contributor
+regenerating the data. Each of the three scripts that calls it carries a header
+note saying so. Decided by Jeff at the 2026-08-28 M061 plan gate (removal over
+Suggests, over the recommendation) and at the 2026-08-28 implementation gate (the
+`Config/Needs` line alongside the header notes). Rejected: Suggests, which would
+still install the package for every `dependencies = TRUE` user for the benefit of
+scripts that never ship; and header notes alone, which are invisible to anyone
+reading DESCRIPTION as the dependency list.
+
+**Consequences:** A contributor regenerating `hitopsr_scales`, `pid_scales` or
+`hitopbr_scales` must install {snakecase} themselves; the three scripts say so
+where they are opened, and DESCRIPTION says so where a dependency is looked up.
+The evidence that would reopen this is any package code needing a case
+conversion, which would make it an ordinary Imports question again.
+
+### D-046 (2026-08-28): The reliability family returns the keying table's printed scale name in a column named `Scale` (applies GP2 and IP2 to a public return value; takes D-018's one-release, no-dual-column migration path)
+
+**Context:** `reliability_engine()` built its display-name column by applying a
+title-case transformation to the camelCase stem, which is derived FROM the
+printed name — so the family reconstructed a name the package already stores, and
+the round trip was lossy on nine scales across three instruments (hyphenated
+HiTOP-SR names, `p-Factor`, the PID-5's ampersand, and the PID-5-BF's sentence-case
+domain). D-041 fixed the invariant that one printed name drives the stems, the
+scored columns and the joins alike, and deleted the exception map that had papered
+over a case like this in a build script. The divergence also cost the family a
+property `available_scales()` has: none of the nine spellings is a name
+`hitop_module()` accepts, so a returned name could not be fed back in. The column
+was additionally the only public scale-name column in the package spelled
+lowercase.
+
+**Decision:** The family reads each scale's name from the table its scales came
+from — `pid_scales[[version]]$Facet` or `$Domain`, `hitopsr_scales$Scale`,
+`hitopbr_scales$Scale`, and for a module the same `hitopsr_scales$Scale` rows the
+module keeps — and never derives one. The module path reads the table rather than
+the module object it was handed, so the module and the reliability call stay two
+independent readers of one column (IP2; M061-D1 in the milestone file). The
+returned column is renamed `scale` to `Scale`, matching `available_scales()`.
+Rejected at the 2026-08-28 M061 plan gate: keeping a derived name and making the
+derivation lossless, by an exception map or by respelling the tables' stored
+names — the first is the special case D-041 deleted, the second changes IP1
+content to suit a derivation. The nine pairs and the migration note are in
+`NEWS.md`; the milestone file carries the criteria and the characterization
+evidence.
+
+**Consequences:** A GP2 change to a public return value. Pre-1.0 it takes the
+migration path D-018 recorded for an output-column rename: one release, all
+surfaces at once, no dual column and no `lifecycle` shim. Code selecting
+`rel$scale` must migrate. No number moves — a characterization harness over the
+family's whole argument matrix records value and conditions on both sides of the
+change (M061 AC6/AC7). Adding a `camelCase` stem column beside `Scale` was left
+out of scope and is a ROADMAP candidate row. The evidence that would reopen this
+is a scale whose printed name is genuinely unavailable where the engine is
+called.
+
 ### D-045 (2026-08-28): The scoring and conversion family aborts on an output-column collision and on an empty column selection, under two new public condition classes (applies GP2/GP3 to the family's argument surface; meets D-034(c) for new exported conditions, as D-044 did)
 
 **Context:** Seven exported functions carry an `append` argument and build their

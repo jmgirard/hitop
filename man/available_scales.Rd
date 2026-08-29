@@ -12,7 +12,7 @@ is supported. (default = \code{"hitopsr"})}
 }
 \value{
 A tibble with one row per scale and four columns: \code{Scale} (the
-display name), \code{camelCase} (the scored-output stem), \code{nItems}, and \code{Brief}
+display name), \code{camelCase} (the scored-output stem), \code{nItems} (integer), and \code{Brief}
 (the clinician-facing definition, as \link{hitopsr_definitions} carries it).
 }
 \description{

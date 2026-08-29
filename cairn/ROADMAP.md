@@ -7,7 +7,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M061 | The reliability family invents scale display names instead of reading them | planned | — | normal | milestones/M061-scale-name-consistency.md |
+| M061 | The reliability family invents scale display names instead of reading them | review | — | normal | milestones/M061-scale-name-consistency.md |
 | M060 | The scoring and conversion family refuses two argument shapes it lets fall through | done | — | normal | milestones/archive/M060-append-collision-empty-selection.md |
 | M041 | Confidence intervals for HiTOP-SR scale scores | done | M059 | normal | milestones/archive/M041-hitopsr-score-intervals.md |
 | M059 | The HiTOP-SR's Body Focus scale is named Appearance Focus | done | — | normal | milestones/archive/M059-appearance-focus-scale-name.md |

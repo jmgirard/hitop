@@ -33,8 +33,9 @@
 #'   non-converging CFA or an uninstalled \pkg{lavaan}) is returned as `NA`
 #'   rather than aborting the call.
 #'
-#' @return A \link[tibble]{tibble} with one row per scale and columns `scale`,
-#'   `nItems`, and (when requested) `alpha` and `omega`.
+#' @return A \link[tibble]{tibble} with one row per scale and columns `Scale`
+#'   (the scale's canonical display name, as the instrument's keying table spells
+#'   it), `nItems`, and (when requested) `alpha` and `omega`.
 #'
 #' @examples
 #' # Per-scale alpha for the HiTOP-SR
@@ -68,6 +69,7 @@ reliability_hitopsr <- function(
     n_items = inputs$n_items,
     reverse_items = inputs$reverse_items,
     items_scales = inputs$items_scales,
+    scale_names = inputs$scale_names,
     srange = srange,
     alpha = alpha,
     omega = omega

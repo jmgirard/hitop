@@ -24,8 +24,9 @@ per scale. (default = \code{TRUE})}
 package). (default = \code{TRUE})}
 }
 \value{
-A \link[tibble]{tibble} with one row per scale and columns \code{scale},
-\code{nItems}, and (when requested) \code{alpha} and \code{omega}.
+A \link[tibble]{tibble} with one row per scale and columns \code{Scale}
+(the scale's canonical display name, as the instrument's keying table spells
+it), \code{nItems}, and (when requested) \code{alpha} and \code{omega}.
 }
 \description{
 Compute per-scale internal-consistency reliability — Cronbach's alpha and
