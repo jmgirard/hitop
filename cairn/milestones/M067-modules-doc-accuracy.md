@@ -96,3 +96,13 @@ Surface tier is user-facing, so the full three-lens fan-out applies. All three l
 1. `tests/testthat/test-module-doc-prose.R:118` anchors the recipe block on `expect_match(section, "order(", fixed = TRUE)`, which any `order(` inside a ~80-line section satisfies — including the unrelated `scale_menu[order(...)]` sort. The block's discrimination therefore rests entirely on the two precondition phrases beside it, in a test file whose purpose is to lock prose that has drifted three times.
 2. The article states the refused combination as `include_subscales = TRUE` together with `module`, where `R/generate_docx.R:232` refuses any truthy `include_subscales` — deliberately not `isTRUE()`, per M024's review fix. A reader passing `include_subscales = 1` is also refused. The help page at `R/generate_docx.R:94-102` words it the same way, so the article is consistent with the surface it describes.
 3. `vignettes/articles/modules-hitopsr.Rmd:322-326` leaves "with" alone on its own source line after the inserted appositive. Renders identically; source formatting only.
+
+### Triage
+
+- Finding 1 — **fixed at the gate** (Jeff's decision). `test-module-doc-prose.R:119` now anchors on `collected[order(`, the recipe's own shape, with a comment naming the unrelated `scale_menu[order(...)]` sort a bare `order(` would accept. Shown able to fail: renaming the article's `collected[...]` to `responses[...]` — a change the old anchor passed — turns that block and only that block red, then green again on restore. AC3 and AC7 re-verified after the change.
+- Finding 2 — **logged, no change.** The article's `include_subscales = TRUE` wording matches the help page it describes; the guard's plain-truthiness form is M024's deliberate fix.
+- Finding 3 — **logged, no change.** Source formatting only; the rendered article is identical.
+
+### Work log addendum
+
+- 2026-08-30: review pass 1. All seven criteria verified fresh, gate clean, three lenses run inline (session cannot spawn agents). Three findings, none floor-qualifying; finding 1 fixed at the gate. Defect returns: 0.

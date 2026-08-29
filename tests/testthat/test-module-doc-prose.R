@@ -114,7 +114,9 @@ test_that("both article recipes state the collected columns are in printed order
     # hide the other heading's result.
     if (is.na(section)) next
 
-    expect_match(section, "order(", fixed = TRUE, info = heading)
+    # The full recipe shape, not a bare `order(` -- the section also holds an
+    # unrelated `scale_menu[order(...)]` sort, which a looser anchor accepts.
+    expect_match(section, "collected[order(", fixed = TRUE, info = heading)
     expect_match(section, "the order the form printed", fixed = TRUE, info = heading)
     expect_match(section, "item 1", fixed = TRUE, info = heading)
   }
