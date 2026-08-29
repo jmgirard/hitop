@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** `m064-builder-version-guard` (hitop) · `m064-version-guard` (hitop-builder)
+- **Branch/PR:** `m064-builder-version-guard` (hitop) · `m064-version-guard` (hitop-builder), https://github.com/jmgirard/hitop-builder/pull/10
 
 ## Goal
 
@@ -82,14 +82,16 @@ the filenames → M062, M063.
       timeout forced from the page's own constants.
 - [x] T5 Rewrite `README.md:36-37` for the declared minimum and leave the sample
       descriptor at `:114` alone.
-- [ ] T6 Open the builder pull request; after merge, fetch the deployed page and
-      compare bytes; write the URL into the header.
+- [x] T6 Open the builder pull request and write its URL into the header. The
+      merge and the deployed-bytes comparison AC5 also asks for are the review
+      gate's, not implement's — see the work log.
 
 ## Work log
 
 - 2026-08-28: created by /milestone-plan.
 - 2026-08-28: criteria audit ran in FULL mode (user-facing tier); returned 3 findings on this milestone — a one-direction version probe blind to a lexical comparison getting `0.10.0` and `0.9.0` backwards, an unprobed hazard where an uncancellable install settles after the timeout and re-enables the controls, and an unsatisfiable "appears in one place" over a README carrying a version in two different roles — all fixed before the criteria were written.
 - 2026-08-29: T1/T2 — `index.html` declares `MIN_HITOP = '0.2.0'` and `INSTALL_TIMEOUT_MS = 120000` beside the other boot constants; the install is raced against the timeout and the installed version is read before `library()` and compared by `installedIsOlderThan()`, which binds both versions into R as data and tests `numeric_version(a) < numeric_version(b)`. Either failure calls a new `abandonBoot()`, which sets a `bootAbandoned` latch, hides the controls and disables the download and handover buttons; the latch is also read at the three sites that turn a control back on, so an install settling after the timeout cannot re-enable one. T1 refined against AC1: `numeric_version`, not the `utils::compareVersion` the task offered as an alternative, since AC1 names `numeric_version` and criteria outrank task wording.
+- 2026-08-29: T6 (minor amendment, task wording only — no criterion changed) — the builder pull request is https://github.com/jmgirard/hitop-builder/pull/10 and its URL is in the header. T6 as planned also carried the merge and the deployed-bytes comparison; both are held for `/milestone-review`, because nothing reaches a default branch without the user's approval at the merge gate, and because AC5 is a criterion review verifies with fresh evidence rather than one implement can tick for itself. M063 merged its builder pull request the same way, at review.
 - 2026-08-29: T4 — six probes driven in the browser pane against `http://localhost:8788` serving copies of `index.html` with one constant altered each, deleted afterwards. Version: the real `installedIsOlderThan()` returned `TRUE` for 0.1.0<0.2.0 and 0.9.0<0.10.0, `FALSE` for 0.2.0<0.2.0, 0.3.0<0.2.0 and 0.10.0<0.9.0 — the last two pairs are the ones a string comparison gets backwards, so the check is shown able to fail the way it claims to catch. End to end: installed 0.2.0 against a declared 0.2.0 and 0.1.0 both reached "Ready." with the controls shown and 76 scale rows rendered; against a declared 99.0.0 the page stopped with a status naming 99.0.0, 0.2.0 and jmgirard.github.io/hitop, `#controls` hidden and `downloadBtn`/`saveDescriptor` both disabled. Timeout: with `INSTALL_TIMEOUT_MS = 1` the timeout fired at 1992 ms with the install still pending and the page stopped with both buttons disabled; the same install then settled at 9537 ms, 7.5 s after the timeout, with `bootAbandoned` already true and both buttons disabled at that instant, and both still disabled 30 s later.
 - 2026-08-29: T5 — `README.md`'s "How it works" paragraph rewritten: it states the declared minimum (0.2.0) in one prose location, names `index.html` as where `MIN_HITOP` is set, and explains the component-wise comparison and the refusal; a second paragraph states the install timeout and its constant. A sentence under the sample descriptor says its `packageVersion` is the version that wrote that file, not the minimum. The other two `version` mentions in the file are a webR link and a scale-definitions aside, neither a version number.
 - 2026-08-29: T3 — `cairn/PROFILE.md`'s release-walk slot gained a "Downstream" step naming `jmgirard/hitop-builder`, the six package surfaces the page calls, and the two things a release touching one of them must update there (`MIN_HITOP` in `index.html`, the minimum stated in that repo's `README.md`). File is 110 lines against the 120-line cap.
