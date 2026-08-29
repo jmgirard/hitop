@@ -66,7 +66,7 @@ which fields it carries, are untouched. The handover mechanism → M062.
 
 - [x] T1 Write the naming table: for each format x wholeness x shuffle
       combination, the expected stem, derived from the settings alone.
-- [ ] T2 Build the stem in `download()` from the format key, `wholeInstrument()`
+- [x] T2 Build the stem in `download()` from the format key, `wholeInstrument()`
       and the shuffle state, and give the descriptor the same stem
       (`hitop-builder/index.html:1008-1019`).
 - [ ] T3 Update `README.md`'s per-format download descriptions and any page copy
@@ -83,6 +83,7 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - 2026-08-28: criteria audit ran in FULL mode (user-facing tier); returned 3 findings on this milestone — a promise quantifying over naming axes the enumeration omitted, a universal over "the same build" naming no procedure, and a filename regex excluding digits and underscores so `hitopsr-a4.docx` escaped it — all fixed before the criteria were written.
 - 2026-08-28: plan gate chose three recoverable axes in the name over a short digest of the full settings (rejected: uglier names carrying a code that means nothing to a reader, for a collision only two same-format builds with different scale sets can hit) and over naming the format alone (rejected: leaves a shuffled Word form and an unshuffled one indistinguishable, which is the confusion this milestone exists to close); falsified by a report of two same-format builds with different scale selections being confused on disk.
 - 2026-08-29: implement gate chose the format words `word`/`qualtrics`/`redcap` over the page's `docx`/`txt`/`zip` keys, and kept `-module` with the whole instrument unmarked over an explicit `-full`; naming table written (M063-D1).
+- 2026-08-29: T2 — `downloadStem(format, whole, shuffle)` composes the stem from `FORMATS[].name`, wholeness and shuffle; `download()` calls it for both files (builder `e660cee`). Page served from the branch boots clean: webR installed, 76 scales, status Ready.
 
 ## Decisions
 
