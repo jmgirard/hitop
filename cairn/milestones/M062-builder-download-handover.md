@@ -1,6 +1,6 @@
 # M062: Both files a builder download produces reach the visitor's disk
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -206,6 +206,8 @@ nothing on either naming the build it belongs to — the case M063 exists to fix
 - 2026-08-29: the step-bar chevrons Jeff also asked for were routed out of this milestone at a question gate — `#stepbar` is nothing M062 touches — and went to their own builder PR https://github.com/jmgirard/hitop-builder/pull/8 off `main`, keeping PR #7 single-subject.
 
 - 2026-08-29: T7 — the maintainer built one form in Chrome and one in Safari against the branch page and both pairs reached the downloads folder; each questionnaire's item set matches its own descriptor's `items` exactly. AC5 ticked. Safari's collision rename of the second descriptor is recorded as evidence for M063, not a defect here.
+
+- 2026-08-29: implement closes with `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504 and `git diff --name-only origin/main...HEAD` still listing only the two `cairn/` paths. Every task but T6 is checked; T6's remaining half — fetch the deployed page and compare bytes — and AC6 with it cannot run before PR #7 merges, so they carry to the review gate as recorded on 2026-08-28.
 
 ## Decisions
 
