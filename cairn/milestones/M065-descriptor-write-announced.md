@@ -127,9 +127,9 @@ merge was needed). PR https://github.com/jmgirard/hitop/pull/72.
   T1's `d927234` merge-base baseline (Status OK, 0/0/0, 5m35s), so the branch
   adds no error, warning or note the baseline does not already carry. The
   targeted `test_local(filter = "generator-descriptor")` run was green over the
-  whole file with all three generators exercised. The check ran against the
-  tree at `b0ae919`; the commits after it touch only `cairn/`, which
-  `.Rbuildignore`'s `^cairn$` entry keeps out of the built package.
+  whole file with all three generators exercised. Re-verified after the
+  gate-directed test hardening: `check()` Status OK, 0/0/0, 5m46s on the final
+  tree, and the descriptor test file green.
 
 ### Consistency gate
 
@@ -187,3 +187,48 @@ all in the tests, docs or tracking, ranked below with their disposition.
 
 None of the twelve demonstrates an acceptance criterion failing, so none meets
 the return floor; dispositions are taken at the merge gate.
+
+### Disposition
+
+Fixed at the gate, on Jeff's direction (findings 1, 2, 3, 4, 6 — all in the new
+test code; the exported behavior is unchanged):
+
+- 1 — `next` guards after the two `expect_length()` calls in the AC1 loop, so an
+  absent announcement no longer throws and aborts the loop. Demonstrated: with
+  the three `R/generate_*.R` hunks reverted, the AC1 test now reports three
+  failures, one per generator, where it previously reported one failure and an
+  error from the first.
+- 3 — the AC1 test now also asserts the alert's `^v ` severity prefix and the
+  path in the single quotes `{.file }` renders, so the criterion's
+  `cli_alert_success()` and `{.file }` wording is fenced. Demonstrated: with the
+  three call sites demoted to `cli::cli_alert_info()` and `{.file }` kept, the
+  prefix assertion fails for all three generators.
+- 4 — `CLI_PLAIN` gains `cli.condition_width = Inf` (so a long `TMPDIR` cannot
+  wrap the path an abort message is grepped for) and `cli.unicode = FALSE` (so
+  the severity prefix asserted above is deterministic ASCII).
+- 2 — each of the three `verify()` closures returns early when the call did not
+  abort, instead of letting `conditionMessage(NULL)` throw and take the
+  remaining generator x case combinations with it.
+- 6 — `capture_generator_failure()` now records the warnings it muffles, and the
+  AC2 test asserts none of them names a descriptor, so the muffling cannot hide
+  an announcement raised as a warning.
+
+Rejected, with reason:
+
+- 5 (triplicated emit block) — matches the house pattern the blame-history lens
+  independently confirmed: each generator already inlines its own near-identical
+  instrument-file message. Extracting a helper is a change to established style,
+  not a defect in this diff.
+- 9 — already resolved at `0dd4923`; the file was mid-write when the lens ran.
+- 10 — the GP2 citation sits in plan-owned Scope text, which review does not
+  edit. Recorded here; the entry is correct that the NEWS obligation is better
+  read from GP3 than GP2.
+- 8, 11, 12 — accurate observations, no change warranted: 8 describes the
+  criteria audit's deliberately wide domain, 11 is console noise in a test run,
+  12 is bullet ordering in an unreleased NEWS entry.
+
+Deferred:
+
+- 7 — the `@param descriptor` roxygen does not mention the console message.
+  Out of the milestone's scope, which named the alert, its tests and the NEWS
+  entry. Filed as a candidate row at the hygiene pass.

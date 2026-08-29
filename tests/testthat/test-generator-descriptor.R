@@ -465,11 +465,17 @@ test_that("every generator refuses a descriptor naming the instrument file", {
 # The cli options are pinned so the assertions below read the message text and
 # not the terminal's rendering of it: an unpinned width wraps a long temporary
 # path across two lines, and hyperlinking would replace the path with a label.
+# `cli.condition_width` is pinned too: the failure assertions below read a path
+# back out of an abort message, and a long `TMPDIR` on another machine would
+# otherwise wrap it. `cli.unicode` is pinned so the alert's severity prefix is
+# always the ASCII "v " / "i " and can be asserted on.
 CLI_PLAIN <- list(
   cli.width = 10000L,
   cli.num_colors = 1L,
   cli.hyperlink = FALSE,
-  cli.hyperlink_path = FALSE
+  cli.hyperlink_path = FALSE,
+  cli.condition_width = Inf,
+  cli.unicode = FALSE
 )
 
 capture_generator_messages <- function(fn, args) {
@@ -480,11 +486,14 @@ capture_generator_messages <- function(fn, args) {
 # The same, for a call expected to abort: the messages emitted on the way to
 # the failure, plus the condition itself, so a test can say WHICH failure it
 # saw rather than that something went wrong. A failing builder may warn on its
-# connection before aborting; those warnings are muffled because the abort is
-# the event under test.
+# connection before aborting; those warnings are muffled so they do not reach
+# the console, but they are RECORDED rather than discarded -- a "no descriptor
+# was announced" assertion that quietly threw away warnings could not tell
+# silence from an announcement raised as one.
 capture_generator_failure <- function(fn, args) {
   withr::local_options(CLI_PLAIN)
   msgs <- character()
+  warns <- character()
   err <- NULL
   withCallingHandlers(
     tryCatch(do.call(fn, args), error = function(e) err <<- e),
@@ -492,9 +501,12 @@ capture_generator_failure <- function(fn, args) {
       msgs <<- c(msgs, conditionMessage(m))
       invokeRestart("muffleMessage")
     },
-    warning = function(w) invokeRestart("muffleWarning")
+    warning = function(w) {
+      warns <<- c(warns, conditionMessage(w))
+      invokeRestart("muffleWarning")
+    }
   )
-  list(messages = msgs, error = err)
+  list(messages = msgs, warnings = warns, error = err)
 }
 
 # The three ways a call carrying a `descriptor` can fail, as (file, descriptor)
@@ -518,6 +530,9 @@ descriptor_failure_cases <- function(ext) {
       },
       verify = function(err, paths, info) {
         testthat::expect_s3_class(err, "rlang_error")
+        if (!inherits(err, "error")) {
+          return(invisible(NULL))
+        }
         testthat::expect_match(
           conditionMessage(err),
           paths$descriptor,
@@ -535,6 +550,9 @@ descriptor_failure_cases <- function(ext) {
       },
       verify = function(err, paths, info) {
         testthat::expect_s3_class(err, "rlang_error")
+        if (!inherits(err, "error")) {
+          return(invisible(NULL))
+        }
         testthat::expect_match(
           conditionMessage(err),
           "different",
@@ -554,6 +572,12 @@ descriptor_failure_cases <- function(ext) {
       },
       verify = function(err, paths, info) {
         testthat::expect_s3_class(err, "error")
+        # A call that did not abort has no message to read; return rather than
+        # let `conditionMessage(NULL)` throw and abort the enclosing loop,
+        # which would take the remaining generators' cases with it.
+        if (!inherits(err, "error")) {
+          return(invisible(NULL))
+        }
         # Not the descriptor's own refusal: that failure names the descriptor
         # path, and this one must not, or the case would never have reached
         # the builder at all.
@@ -585,12 +609,35 @@ test_that("every generator announces the descriptor it wrote, after the instrume
     # path and not by matching the word "descriptor" somewhere in the output.
     said <- grep(descriptor, msgs, fixed = TRUE)
     expect_length(said, 1L)
+    # Without this guard an absent announcement makes `msgs[[said]]` throw,
+    # which aborts the whole loop and leaves the generators after this one
+    # unexercised -- so a red run would report on one generator, not three.
+    if (length(said) != 1L) {
+      next
+    }
     expect_match(msgs[[said]], "descriptor", ignore.case = TRUE, info = fn)
+
+    # A success alert, not an info or warning one: under CLI_PLAIN the severity
+    # prefix is the ASCII "v ", where `cli_alert_info()` would give "i ".
+    # Asserting it keeps a demotion of the call from passing silently.
+    expect_match(msgs[[said]], "^v ", info = fn)
+
+    # `{.file }` styling, not bare interpolation: cli renders a file path
+    # inside single quotes, so the path appears quoted rather than loose.
+    expect_match(
+      msgs[[said]],
+      paste0("'", descriptor, "'"),
+      fixed = TRUE,
+      info = fn
+    )
 
     # After the instrument file's message, not before it: a reader following
     # the console top to bottom meets the form first and its sidecar second.
     instrument <- grep(target, msgs, fixed = TRUE)
     expect_length(instrument, 1L)
+    if (length(instrument) != 1L) {
+      next
+    }
     expect_gt(said, instrument)
 
     # The announcement is true: the file it names is on disk.
@@ -636,6 +683,13 @@ test_that("no descriptor is announced on any of the three failure forms", {
 
       expect_false(
         any(grepl("descriptor", seen$messages, ignore.case = TRUE)),
+        info = label
+      )
+      # Warnings are checked too, not just messages: the helper muffles them so
+      # they stay off the console, and this is what keeps that muffling from
+      # hiding an announcement raised as a warning rather than a message.
+      expect_false(
+        any(grepl("descriptor", seen$warnings, ignore.case = TRUE)),
         info = label
       )
       expect_false(file.exists(paths$descriptor), info = label)
