@@ -31,14 +31,14 @@ this plan gate (work log). The descriptor's JSON format is untouched.
 
 ## Acceptance criteria
 
-- [ ] AC1 For each of the six builds the driven run constructs — the page's own
+- [x] AC1 For each of the six builds the driven run constructs — the page's own
       three `FORMATS` keys crossed with a selection of every scale (so
       `wholeInstrument()` is true) and a proper subset — the completed build
       calls `HTMLAnchorElement.prototype.click` exactly once, for the
       questionnaire file, and the descriptor's `click` is reached only with the
       provenance flag the descriptor control's own handler sets. Verified from
       the wrapper's recorded table of `download` attribute and flag per call.
-- [ ] AC2 The descriptor offer survives until taken or replaced: after a build
+- [x] AC2 The descriptor offer survives until taken or replaced: after a build
       the control is visible, enabled and names the descriptor's filename; it is
       still so after a move to the format step and back; a later completed build
       replaces the held descriptor and the page's log records the replacement.
@@ -46,10 +46,10 @@ this plan gate (work log). The descriptor's JSON format is untouched.
       (a different scale set), the same two in reverse, and a same-format
       rebuild — with the saved JSON asserted against the `scales` and `itemOrder`
       of the build that should be held.
-- [ ] AC3 Neither the R code the page evaluates nor the arguments it passes
+- [x] AC3 Neither the R code the page evaluates nor the arguments it passes
       changes: for each of the three formats the call string the page logs equals
       the literal recorded from the merge base in T1, character for character.
-- [ ] AC4 Every copy node describing what a download produces — `#descriptorNote`,
+- [x] AC4 Every copy node describing what a download produces — `#descriptorNote`,
       `#downloadHint`, the shuffle notice, and `README.md`'s *What the page shows*
       section — describes the two-step handover, each read and checked by id.
 - [x] AC5 A real download is observed end to end: the maintainer builds one form
@@ -60,7 +60,7 @@ this plan gate (work log). The descriptor's JSON format is untouched.
       whose URL is in this file's header, and the page served at
       `https://jmgirard.github.io/hitop-builder/` matches that commit's
       `index.html` byte for byte.
-- [ ] AC7 The `hitop` package is untouched — `git diff --name-only` against the
+- [x] AC7 The `hitop` package is untouched — `git diff --name-only` against the
       merge base lists only paths under `cairn/` — and `devtools::test()` is
       clean.
 
@@ -171,8 +171,87 @@ descriptor because the first still sat in the folder, the case M063 fixes.
 
 - 2026-08-29: the two evidence sections were compressed into one and the milestone file is back under the plan-owned cap — 148 lines against <150, `cairn_validate` `weight caps` PASS; the driven-run tables and the downloads table became prose, keeping the six call-string literals AC3 compares against, the provenance flags, the three replacement orderings, the layout measurements and the per-browser file lists. `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504 and the branch diff still lists only the two `cairn/` paths. Status back to review.
 
+- 2026-08-29: review pass 1 — AC1-AC4 and AC7 verified fresh (six driven builds, 12 clicks, six call strings identical to T1's literals with the comparison proven able to fail, copy read by id, `check()` 0/0/0, `test()` PASS 15504); AC5 verified against the recorded maintainer run on the same builder commit; AC6 open until builder PR #7 merges. Three-lens fan-out returned 9 findings, all from the [O] lens; the session reproduced its first on the live page.
+
 ## Decisions
 
 - 2026-08-28: the descriptor button stays offered after the visitor takes it, until the next completed build replaces it. Saving twice costs nothing, and a first save that landed somewhere unintended would otherwise need a whole rebuild to recover from. The held pair carries a `taken` flag, so a replacement reports a loss only when the file was never taken.
 
 ## Review
+
+Reviewed 2026-08-29 on `m062-builder-download-handover` (hitop `90524c7`) against
+builder `m062-descriptor-handover` at `5a7cea0`, both containing their repo's
+`origin/main` tip. The page was re-driven fresh from the local checkout served at
+`http://localhost:8788/`, with `HTMLAnchorElement.prototype.click` wrapped to
+record `download` and `data-origin` without calling through, so no file reached a
+downloads folder.
+
+### Acceptance criteria
+
+- **AC1 — verified.** Six builds driven fresh: selection **A** = `appearanceFocus`
+  + `appetiteLoss` (2 of 76, 8 items) and **B** = all 76 (405 items, `module`
+  dropped from the call), each crossed with the three `FORMATS` keys. The click
+  table holds 12 entries, strictly alternating: one `build` click per completed
+  build, for the questionnaire only — `hitopsr-module.{docx,txt,zip}` under A,
+  `hitopsr.{docx,txt,zip}` under B — each followed by one `visitor` click for the
+  `.json`. No `.json` click carried `build`, and no build fired a second click.
+- **AC2 — verified.** After each build the control is visible, `disabled = false`
+  and named `Save the scoring file (<file>.json)`; it is still so after stepping
+  out to the format step and back (checked on the Qualtrics panel, heading and
+  download-button label both changed, handover button unchanged), and still
+  enabled after *Clear all*, which disables the download button. Three orderings,
+  each asserted against the taken JSON: Word-shuffled A untaken → Qualtrics with
+  `agoraphobia`+`callousness`+`checking` held the Qualtrics build (`scales`
+  Agoraphobia/Callousness/Checking, no `itemOrder`); the reverse held the
+  Word-shuffled A build (`scales` Appearance Focus/Appetite Loss, `itemOrder`
+  `[202,350,144,389,16,335,79,201]`); both logged "replaced before you took it".
+  The same-format rebuild taken after each logged "the one you already saved is
+  unaffected" and held a second, different shuffle
+  (`[202,201,350,144,16,389,79,335]`).
+- **AC3 — verified.** All six logged call strings compared mechanically against
+  T1's literals as recorded at commit `03b190e`: 6 of 6 identical, 0 differ. The
+  comparison is discriminating — replanting `desc_path` → `desc2` in one observed
+  string makes it report exactly that one difference. `git diff -U0
+  origin/main...HEAD` on the builder touches no call-construction line: filtering
+  the diff for `evalRVoid`, `generate_`, `extra`, `naming`, `moduleArg`,
+  `modulePrelude`, `out_path`, `desc_path`, `bind(`, and every generator argument
+  name matches one added comment line and no code.
+- **AC4 — verified.** Read by id on the running page: `#descriptorNote` opens "A
+  download here is two files, and takes two clicks" and describes the second
+  button; `#downloadHint` names both buttons, when each turns on, and that the
+  offer persists; `#shuffleCrosswalk` was read in all three branches — the
+  module/renumber and whole-instrument branches both name the `.json` the second
+  button hands over, and the original-numbering branch describes the printed
+  numbering only, having no download-content claim to make. `README.md`'s *What
+  the page shows* section (and *The scoring file* and *Shuffling the Word form*)
+  describes the two-step handover; no "This page saves two files" string survives
+  in either file.
+- **AC5 — verified against the recorded maintainer run, not re-executed.** The
+  criterion's own text puts this outside automation. The recorded run of
+  2026-08-29 was made against builder `5a7cea0`, the commit under review, and is
+  in the evidence section above: Chrome received `hitopsr-module.txt` and
+  `hitopsr-module.json`, Safari `hitopsr-module.zip` and
+  `hitopsr-module-2.json`, each pair matched by content.
+- **AC6 — not verified; open.** Builder PR #7 is open, not merged, so no deployed
+  page exists to compare bytes against. This is the gate's open item.
+- **AC7 — verified.** `git diff --name-only origin/main...HEAD` lists
+  `cairn/ROADMAP.md` and this file only. `devtools::test()` FAIL 0 / WARN 0 /
+  SKIP 4 / PASS 15504.
+
+### Consistency gate
+
+`cairn_validate.py` exit 0, all checks PASS (21 advisories, all pre-existing:
+20 dangling id tokens, 1 references-staleness). Toolchain slot: `document()`
+leaves no diff, `pkgdown::check_pkgdown()` reports no problems, `devtools::check()`
+is 0 errors / 0 warnings / 0 notes, and no NEWS entry is owed because the package
+carries no user-visible change (AC7). No principle changed, so no impact report.
+
+### Findings
+
+Three fresh-context lenses. The blame-history and prior-PR-comment lenses each
+returned no finding: the first records that this change is the documented
+follow-up to a hazard M056's own review flagged and deferred, and that
+`#saveDescriptor` being outside `.downloads` is deliberate and commented; the
+second found both GitHub inline-comment probes empty and no archived review
+finding contradicted. The [O] diff lens returned nine, ranked, listed with their
+disposition at the gate.
