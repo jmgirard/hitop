@@ -59,11 +59,11 @@ already happens.
 - [x] T1 Record the merge-base `devtools::check()` baseline into this file, with
       the Imports the local run needs installed, so AC4 compares against a known
       state rather than assuming 0/0/0.
-- [ ] T2 Write the AC1 and AC2 tests first and see them red: the message
+- [x] T2 Write the AC1 and AC2 tests first and see them red: the message
       assertions against the current silence, and the three failure forms against
       the existing rollback (`R/generate_docx.R:330-348`,
       `R/generate_qualtrics.R:112-125`, `R/generate_redcap.R:112-125`).
-- [ ] T3 Emit the alert at each of the three call sites after the build is marked
+- [x] T3 Emit the alert at each of the three call sites after the build is marked
       complete and after the instrument file's own alert, never in
       `write_descriptor_sidecar()` (`R/module_file.R:505`), which runs before the
       instrument file exists and whose write is rolled back on failure.
@@ -78,6 +78,8 @@ already happens.
 - 2026-08-28: plan chose the alert at the three call sites over one alert inside the shared sidecar writer (rejected: the writer runs before the instrument file is built and its file is removed when the build fails, so an alert there would announce a descriptor that does not survive the call); falsified by the sidecar write moving to after the instrument build, which would make the shared writer the right home.
 - 2026-08-29: /milestone-implement started on branch `m065-descriptor-write-announced`; gate settled the message wording as "Module descriptor successfully written to <path>".
 - 2026-08-29: T1 merge-base `devtools::check()` baseline at `d927234` on R 4.6.1 with officer, flextable, snakecase, zip, jsonlite and lavaan installed: Status OK, 0 errors, 0 warnings, 0 notes (5m35s).
+- 2026-08-29: T2 added three tests to `tests/testthat/test-generator-descriptor.R` — the announcement and its order after the instrument message, the no-`descriptor` silent control, and the three failure forms with a per-case condition check plus a writable-target control on the rollback form; seen red (2 failures on the announcement, 3 on the rollback control) before T3.
+- 2026-08-29: T3 emitted `cli::cli_alert_success("Module descriptor successfully written to {.file {descriptor}}")` after `built <- TRUE` in each of the three generators; the descriptor test file is green (190 passing) and `devtools::test()` is clean (15,567 passing, 4 skipped).
 
 ## Decisions
 

@@ -365,6 +365,15 @@ generate_docx_hitopsr <- function(
   )
   built <- TRUE
 
+  # Said only once the form is on disk. The sidecar was written before the
+  # build and is removed again if the build fails, so an alert any earlier
+  # could name a descriptor that no longer exists when the call returns.
+  if (!is.null(descriptor)) {
+    cli::cli_alert_success(
+      "Module descriptor successfully written to {.file {descriptor}}"
+    )
+  }
+
   invisible(structure(out, item_order = item_order))
 }
 
