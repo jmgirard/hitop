@@ -7,7 +7,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M062 | Both files a builder download produces reach the visitor's disk | review | — | normal | milestones/M062-builder-download-handover.md |
+| M062 | Both files a builder download produces reach the visitor's disk | in-progress | — | normal | milestones/M062-builder-download-handover.md |
 | M063 | Every file the builder writes says which form it belongs to | planned | M062 | normal | milestones/M063-builder-download-naming.md |
 | M064 | The builder refuses loudly when the package it installs no longer matches it | planned | — | normal | milestones/M064-builder-version-guard.md |
 | M065 | The generators announce the descriptor they write | planned | — | normal | milestones/M065-descriptor-write-announced.md |

@@ -1,11 +1,11 @@
 # M062: Both files a builder download produces reach the visitor's disk
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** `m062-builder-download-handover` (hitop); builder PR https://github.com/jmgirard/hitop-builder/pull/7 on `m062-descriptor-handover` (rebased onto `8b30f96`)
+- **Branch/PR:** `m062-builder-download-handover` (hitop) → https://github.com/jmgirard/hitop/pull/69; builder PR https://github.com/jmgirard/hitop-builder/pull/7 on `m062-descriptor-handover` (rebased onto `8b30f96`)
 
 ## Goal
 
@@ -208,6 +208,8 @@ nothing on either naming the build it belongs to — the case M063 exists to fix
 - 2026-08-29: T7 — the maintainer built one form in Chrome and one in Safari against the branch page and both pairs reached the downloads folder; each questionnaire's item set matches its own descriptor's `items` exactly. AC5 ticked. Safari's collision rename of the second descriptor is recorded as evidence for M063, not a defect here.
 
 - 2026-08-29: implement closes with `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504 and `git diff --name-only origin/main...HEAD` still listing only the two `cairn/` paths. Every task but T6 is checked; T6's remaining half — fetch the deployed page and compare bytes — and AC6 with it cannot run before PR #7 merges, so they carry to the review gate as recorded on 2026-08-28.
+
+- 2026-08-29: review gate failed before any acceptance criterion was verified — `cairn_validate.py` FAILs `weight caps`: this file's plan-owned body is 190 lines against the <150 cap (shed >=41), heaviest section `Evidence: baseline and driven run (T1, T4, T5)` at 68 lines. Status back to in-progress for a compressing rewrite; the `hitop` package itself is unaffected (`devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504, and `git diff --name-only origin/main...HEAD` still lists only the two `cairn/` paths). Review PR https://github.com/jmgirard/hitop/pull/69 opened as a draft and left open.
 
 ## Decisions
 
