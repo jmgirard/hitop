@@ -146,6 +146,24 @@ takes two clicks"; `#downloadHint` names both buttons and when each turns on;
 one ending "take it, or the order is lost." The rebase leaves the picker's 76
 definition popups intact and non-empty.
 
+### Layout revision (2026-08-29)
+
+At Jeff's request the descriptor button now sits *beside* the questionnaire
+button rather than under it. `.downloads` and `.handover` share one
+`.downloadrow` flex row; they stay separate containers, because
+`refreshTally()` disables `.downloads button` and must not reach the handover
+button. Re-driven on the branch at 1100x900 (one build, A/docx, not the whole
+six): the two buttons report `top` 296 both, the descriptor's `left` 422 against
+the download's `right` 414 — one row, an 8px `--s2` gap — and the clicks are one
+`build` for `hitopsr-module.docx` then one `visitor` for `hitopsr-module.json`.
+After *Clear all* the download button is `disabled` and the descriptor button is
+still shown, enabled and named `Save the scoring file (hitopsr-module.json)`, so
+the separation invariant survives the regrouping. At 375px the row's children go
+full width and stack, both at `left` 16. `#descriptorNote` no longer names a
+position — "A second button then appears" — since only the wide layout puts it
+beside; re-read by id, it and `#downloadHint` still describe the two-step
+handover, so AC4 holds. Builder commit `5a7cea0`.
+
 ## Work log
 
 - 2026-08-28: created by /milestone-plan.
@@ -160,6 +178,9 @@ definition popups intact and non-empty.
 - 2026-08-28: T6 first half — builder PR #7 opened from `m062-descriptor-handover`. Its second half (fetch the deployed page after merge and compare bytes) can only run past the merge, so it and AC6 land at the review gate; T6 stays unticked until then.
 - 2026-08-28: AC7 verified — `git diff --name-only origin/main...HEAD` lists only `cairn/ROADMAP.md` and this file, and `devtools::test()` is FAIL 0 / WARN 0 / SKIP 4 / PASS 15504.
 - 2026-08-29: at Jeff's direction the parked builder PR #6 (M057's scale-definition popups) was merged first, its r-universe blocker having cleared — the served `hitop` 0.2.0 is now built from `d6de830`, which carries the `Brief` column the popups read. `m062-descriptor-handover` was rebased onto the new `main` (`8b30f96`); the rebase applied cleanly, the branch diff is unchanged at 119/37 lines, and both features coexist. All six builds, the three replacement orderings and the copy checks were re-driven on the rebased branch; the evidence section above records the re-run, and PR #6 changing no call-construction line is what carries T1's literals to the new merge base.
+- 2026-08-29: minor amendment at Jeff's request — the descriptor button moved from under the download button to beside it (`.downloadrow`), and `#descriptorNote` dropped its position claim so the copy is true in both the wide and the stacked layout. No criterion text changes; AC4's nodes re-read by id. Re-driven for one build rather than six, since the handover logic is untouched. Builder commit `5a7cea0`.
+- 2026-08-29: the step-bar chevrons Jeff also asked for were routed out of this milestone at a question gate — `#stepbar` is nothing M062 touches — and went to their own builder PR https://github.com/jmgirard/hitop-builder/pull/8 off `main`, keeping PR #7 single-subject.
+
 ## Decisions
 
 - 2026-08-28: the descriptor button stays offered after the visitor takes it, until the next completed build replaces it. Saving twice costs nothing, and a first save that landed somewhere unintended would otherwise need a whole rebuild to recover from. The held pair carries a `taken` flag, so a replacement reports a loss only when the file was never taken.
