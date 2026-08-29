@@ -1,6 +1,6 @@
 # M065: The generators announce the descriptor they write
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -68,7 +68,7 @@ already happens.
       `write_descriptor_sidecar()` (`R/module_file.R:505`), which runs before the
       instrument file exists and whose write is rolled back on failure.
 - [x] T4 Add the NEWS entry.
-- [ ] T5 Run `devtools::document()`, `devtools::test()` and `devtools::check()`
+- [x] T5 Run `devtools::document()`, `devtools::test()` and `devtools::check()`
       and compare against T1's baseline.
 
 ## Work log
@@ -81,6 +81,8 @@ already happens.
 - 2026-08-29: T2 added three tests to `tests/testthat/test-generator-descriptor.R` — the announcement and its order after the instrument message, the no-`descriptor` silent control, and the three failure forms with a per-case condition check plus a writable-target control on the rollback form; seen red (2 failures on the announcement, 3 on the rollback control) before T3.
 - 2026-08-29: T3 emitted `cli::cli_alert_success("Module descriptor successfully written to {.file {descriptor}}")` after `built <- TRUE` in each of the three generators; the descriptor test file is green (190 passing) and `devtools::test()` is clean (15,567 passing, 4 skipped).
 - 2026-08-29: T4 extended the existing unreleased `descriptor` bullet in `NEWS.md` rather than adding a second one for the same feature; the sentence landed in the T2/T3 commit, which staged the whole tree.
+- 2026-08-29: T5 `devtools::document()` left no diff; `devtools::test()` clean (15,567 passing, 4 skipped); branch `devtools::check()` Status OK, 0 errors, 0 warnings, 0 notes — the same figures as T1's `d927234` baseline.
+- 2026-08-29: all tasks checked; status set to review.
 
 ## Decisions
 
