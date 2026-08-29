@@ -31,25 +31,25 @@ which fields it carries, are untouched. The handover mechanism → M062.
 
 ## Acceptance criteria
 
-- [ ] AC1 Over the eight builds the driven run constructs — the page's own three
+- [x] AC1 Over the eight builds the driven run constructs — the page's own three
       `FORMATS` keys crossed with a whole-scale and a proper-subset selection,
       and for the Word format only crossed again with the shuffle control — the
       sixteen filenames the page requests are pairwise distinct. Verified from
       the recorded `download` attributes.
-- [ ] AC2 Each of those sixteen filenames equals the name its build's format,
+- [x] AC2 Each of those sixteen filenames equals the name its build's format,
       wholeness and shuffle settings determine, checked against the table of
       expected stems written in T1 from those settings and never read off the
       page.
-- [ ] AC3 In each of those eight recorded pairs, the descriptor and the
+- [x] AC3 In each of those eight recorded pairs, the descriptor and the
       questionnaire file share a stem and differ only in extension.
-- [ ] AC4 Every string matching `[A-Za-z0-9._-]+\.(docx|txt|zip|json)` in
+- [x] AC4 Every string matching `[A-Za-z0-9._-]+\.(docx|txt|zip|json)` in
       `index.html` and `README.md` is triaged, and each hit that names a file the
       page writes names one this scheme produces.
 - [ ] AC5 The change ships: a merged pull request in `jmgirard/hitop-builder`
       whose URL is in this file's header, and the page served at
       `https://jmgirard.github.io/hitop-builder/` matches that commit's
       `index.html` byte for byte.
-- [ ] AC6 The `hitop` package is untouched — `git diff --name-only` against the
+- [x] AC6 The `hitop` package is untouched — `git diff --name-only` against the
       merge base lists only paths under `cairn/` — and `devtools::test()` is
       clean.
 
@@ -90,6 +90,7 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - 2026-08-29: T5 — the AC4 grep returns 17 distinct hits across both files. Sixteen name downloads and each is one of the sixteen names T4 recorded; the seventeenth, `module.json` at `index.html:1088`, is the descriptor's path inside webR's virtual filesystem and never a name the browser is asked to save. No recorded name goes unmentioned.
 - 2026-08-29: T6 first half — builder PR #9 opened from `m063-download-naming`. Its second half (fetch the deployed page after merge and compare bytes) can only run past the merge, so it and AC5 land at the review gate; T6 stays unticked until then.
 - 2026-08-29: implement closes with `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504 and `git diff --name-only origin/main...HEAD` listing only `cairn/ROADMAP.md` and this file. Every task but T6 is checked; T6's remaining half and AC5 with it cannot run before PR #9 merges.
+- 2026-08-29: review — AC1-AC4 and AC6 verified with fresh evidence (eight driven builds, sixteen distinct names matching independently composed stems, the AC4 grep set-equal to them, `check()` 0/0/0, `test()` PASS 15504); AC5 waits on builder PR #9 merging. Three-lens fan-out returned 8 findings, all in prose; none falsifies a criterion.
 
 ## Decisions
 
@@ -119,3 +120,60 @@ with two selections, the Word pair crossed again with the shuffle box:
 | REDCap | some scales | — | `hitopsr-redcap-module` |
 
 ## Review
+
+Reviewed 2026-08-29. Branch merged up to date with `origin/main` (`d43d8fc`); no
+merge was needed. hitop PR #70 (draft, tracking-only)
+https://github.com/jmgirard/hitop/pull/70; builder PR #9
+https://github.com/jmgirard/hitop-builder/pull/9.
+
+**Evidence per criterion.** All browser evidence is a fresh review-time run
+against the branch page served from `../hitop-builder` on `localhost:8788`, the
+eight builds driven end to end from the page's own controls, with
+`HTMLAnchorElement.prototype.click` patched to record every `download`
+attribute and suppress the save.
+
+- AC1 — the eight-build run recorded 16 requested filenames; `new Set(names).size`
+  is 16 over 16, so they are pairwise distinct.
+- AC2 — each build's pair was compared against a stem composed at review time
+  from the build's own format, wholeness and shuffle settings, never read off
+  the page: 8 of 8 matched, 0 mismatches. Discrimination: re-running the same
+  comparison against a planted expectation that drops `-shuffled` reddens
+  exactly the two shuffled Word builds, so the comparison can fail. The eight
+  stems also equal the M063-D1 table row for row, and the run's own settings are
+  independently confirmed by the page tally (76 of 76 scales on the four whole
+  builds, 2 of 76 on the four subset builds) and by the shuffle box's state.
+- AC3 — in all eight pairs the two names share a stem and differ only in
+  extension, the questionnaire taking its format's extension and the second file
+  `.json`; asserted per pair, 8 of 8.
+- AC4 — the AC4 regex over `index.html` and `README.md` returns 17 distinct
+  hits. Sixteen are exactly the 16 names the run recorded, set-equal in both
+  directions: no hit outside the recorded set but one, and no recorded name
+  unmentioned. The one remaining hit, `module.json` at `index.html:1088`, is
+  `descPath` — a path inside webR's virtual filesystem, never a name the browser
+  is asked to save.
+- AC5 — pending: PR #9 is open and mergeable, so the deployed-page byte
+  comparison cannot run until it merges. Verified after the merge at the gate.
+- AC6 — `git diff --name-only origin/main...HEAD` lists `cairn/ROADMAP.md` and
+  this file only; `devtools::test()` gave FAIL 0 / WARN 0 / SKIP 4 / PASS 15504.
+
+**Consistency gate.** `cairn_validate.py` exit 0, all 16 checks PASS, 21 advisory
+warnings (20 dangling `D-00x` tokens predating this milestone, 1 references
+staleness), none a gate failure. No `DESIGN.md` principle changed, so
+`cairn_impact.py` was skipped. Toolchain slot: `devtools::document()` and
+`devtools::build_readme()` each left the tree clean, `pkgdown::check_pkgdown()`
+found no problems, `devtools::check()` was 0 errors / 0 warnings / 0 notes, and
+NEWS.md takes no entry because the R package's behavior is unchanged. Byte
+budgets measured by hand: `ROADMAP.md` 39,318 bytes and `LESSONS.md` 25,286
+bytes both exceed their budgets — pre-existing, remedied at the hygiene pass.
+
+**No Driving RR**, so no projection-vs-outcome pairs.
+
+**Independent review.** Three fresh-context lenses, distinct evidence bases.
+[S] prior-PR-comments: no findings — both GitHub inline-comment probes came back
+empty, and the archived Review sections on these files (M056, M062) show this
+milestone closing M056's cross-format collision finding without disturbing
+M062's handover logic. [S] blame-history: one finding, the stale M062
+disable-guard rationale, which the [O] lens raised as its finding 6. [O]
+diff-bug: `downloadStem` itself correct over every reachable combination, with
+seven findings in prose.
+
