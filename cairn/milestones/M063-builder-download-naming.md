@@ -71,8 +71,8 @@ which fields it carries, are untouched. The handover mechanism → M062.
       (`hitop-builder/index.html:1008-1019`).
 - [ ] T3 Update `README.md`'s per-format download descriptions and any page copy
       naming a written file.
-- [x] T4 Drive the eight builds in the browser pane through `read_page` refs and
-      `form_input`, recording the sixteen requested filenames.
+- [x] T4 Drive the eight builds in the browser pane, actuating the page's own
+      controls, and record the sixteen requested filenames.
 - [ ] T5 Run the AC4 grep over both files and triage every hit.
 - [ ] T6 Open the builder pull request; after merge, fetch the deployed page and
       compare bytes; write the URL into the header.
