@@ -160,14 +160,14 @@ Supplying both <code>module</code> and <code>subset</code> is an error. (default
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Write a HiTOP-SR REDCap instrument ZIP to a temporary location</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitopsr</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpRwhBkk/file1b3b4febad86.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpVKXOEy/file1a96cdb035.zip</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A two-scale module, original numbering preserved (unlike the Word form)</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitopsr</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpRwhBkk/file1b3b468cfc25.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpVKXOEy/file1a965f641b4f.zip</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
