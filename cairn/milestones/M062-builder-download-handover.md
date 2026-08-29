@@ -1,11 +1,11 @@
 # M062: Both files a builder download produces reach the visitor's disk
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m062-builder-download-handover` (hitop); builder branch `m062-descriptor-handover` in `jmgirard/hitop-builder`
 
 ## Goal
 
@@ -76,7 +76,7 @@ this plan gate (work log). The descriptor's JSON format is untouched.
 
 ## Tasks
 
-- [ ] T1 Record the merge-base baseline: drive the deployed page once per format
+- [x] T1 Record the merge-base baseline: drive the deployed page once per format
       and copy the logged R call string and `extra`/`naming` values verbatim into
       this file, as the literals AC3 compares against.
 - [ ] T2 `saveFile()` takes a provenance flag; `download()` stops saving the
@@ -96,10 +96,41 @@ this plan gate (work log). The descriptor's JSON format is untouched.
       compare bytes; write the URL into the header.
 - [ ] T7 Hand the maintainer the Chrome and Safari runs and record what arrived.
 
+## Baseline (T1)
+
+Recorded 2026-08-28 by driving `https://jmgirard.github.io/hitop-builder/`, whose
+`index.html` matches builder `main` at `d046d03` byte for byte (sha256
+`0386d1c4…73450` both sides). Two selections: **A** = `appearanceFocus` +
+`appetiteLoss` (2 of 76 scales, 8 items), a proper subset; **B** = every scale
+(76 of 76, 405 items), so `wholeInstrument()` is true. Every format option left
+at the page's own defaults (US Letter, renumber, shuffle off, required ticked).
+
+The six logged call strings, verbatim, as AC3's literals:
+
+| Build | Logged call string |
+|---|---|
+| A docx | `> generate_docx_hitopsr(file = out_path, descriptor = desc_path, module = <2 scales>)` |
+| A qualtrics | `> generate_qualtrics_hitopsr(file = out_path, descriptor = desc_path, module = <2 scales>, block_name = "HiTOP-SR", id_prefix = "HSR")` |
+| A redcap | `> generate_redcap_hitopsr(file = out_path, descriptor = desc_path, module = <2 scales>, form_name = "hitopsr_questionnaire", required = TRUE)` |
+| B docx | `> generate_docx_hitopsr(file = out_path, descriptor = desc_path)` |
+| B qualtrics | `> generate_qualtrics_hitopsr(file = out_path, descriptor = desc_path, block_name = "HiTOP-SR", id_prefix = "HSR")` |
+| B redcap | `> generate_redcap_hitopsr(file = out_path, descriptor = desc_path, form_name = "hitopsr_questionnaire", required = TRUE)` |
+
+The `extra`/`naming` strings the log does not print, read from the merge base's
+`index.html:985-1000` under these same defaults: docx `, papersize = paper_size,
+renumber = TRUE, randomize = FALSE`; qualtrics `, block_name = block_name,
+id_prefix = id_prefix`; redcap `, form_name = form_name, required = TRUE`.
+
+Each of the six builds drove `HTMLAnchorElement.prototype.click` **twice** — the
+questionnaire and then the descriptor, both synthetic, neither behind a visitor
+gesture. That second call is what this milestone removes.
+
 ## Work log
 
 - 2026-08-28: created by /milestone-plan.
 - 2026-08-28: criteria audit ran in FULL mode (user-facing tier); returned 6 findings on this milestone — a `userActivation` race, a non-existent whole-instrument toggle, an unobservable disk-arrival promise, an inert replacement probe, a one-exemplar replacement family, and a `git diff` with no sub-function scope — all fixed before the criteria were written.
+- 2026-08-28: T1 — recorded the merge-base baseline from the deployed page (six builds, two selections x three formats); every build fired two synthetic anchor clicks.
+- 2026-08-28: implement gate kept the plan's button-and-flag handover (a save started inside the visitor's own click carries fresh user activation, so it is not withheld), keeps the descriptor button offered after it is taken until the next build replaces it, and merges this milestone's builder pull request ahead of the parked scale-definitions one (PR #6, waiting on an r-universe rebuild).
 - 2026-08-28: plan gate chose a held descriptor with its own button over one archive holding both files (rejected: only one of the three formats is an archive, so REDCap would nest, and the visitor must unzip) and over two buttons with nothing automatic (rejected: adds a click to every build for a hazard that only affects the second file); falsified by a report of the questionnaire file itself being withheld, which would mean no automatic save is safe.
 
 ## Decisions
