@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** `m064-builder-version-guard` (hitop) · `m064-version-guard` (hitop-builder), https://github.com/jmgirard/hitop-builder/pull/10
+- **Branch/PR:** `m064-builder-version-guard` (hitop), https://github.com/jmgirard/hitop/pull/71 · `m064-version-guard` (hitop-builder), https://github.com/jmgirard/hitop-builder/pull/10
 
 ## Goal
 
@@ -31,7 +31,7 @@ the filenames → M062, M063.
 
 ## Acceptance criteria
 
-- [ ] AC1 The page declares a minimum `hitop` version and compares it against the
+- [x] AC1 The page declares a minimum `hitop` version and compares it against the
       installed version with `numeric_version`, not string comparison; below the
       minimum the page stops with a message naming the declared minimum, the
       installed version and where to get a working page, and no download control
@@ -39,15 +39,15 @@ the filenames → M062, M063.
       above the declared minimum, and on a pair whose components differ in digit
       count (`0.9.0` against `0.10.0`), so the comparison is exercised in both
       directions and in both version forms.
-- [ ] AC2 A stalled install does not hang and cannot un-stall itself: the
+- [x] AC2 A stalled install does not hang and cannot un-stall itself: the
       `installPackages` call is raced against a stated timeout; on timeout the
       status line says the install did not finish and what to try, and the
       download controls stay disabled. Probed twice — a timeout that fires with
       the install still pending, and a timeout that fires before an install which
       then settles — with the controls asserted still disabled in both.
-- [ ] AC3 `cairn/PROFILE.md`'s release-walk slot carries a step naming
+- [x] AC3 `cairn/PROFILE.md`'s release-walk slot carries a step naming
       `jmgirard/hitop-builder` and what a `hitop` release must update there.
-- [ ] AC4 `README.md` states the declared minimum in exactly one prose location
+- [x] AC4 `README.md` states the declared minimum in exactly one prose location
       and says `index.html` is where it is declared. The sample descriptor's
       `packageVersion` is excluded by name, since it records the version that
       wrote a file rather than a minimum.
@@ -55,7 +55,7 @@ the filenames → M062, M063.
       whose URL is in this file's header, and the page served at
       `https://jmgirard.github.io/hitop-builder/` matches that commit's
       `index.html` byte for byte.
-- [ ] AC6 The `hitop` package's code, tests, data and documentation are
+- [x] AC6 The `hitop` package's code, tests, data and documentation are
       untouched — `git diff --name-only` against the merge base lists nothing
       outside `cairn/` — and `devtools::test()` is clean.
 
@@ -102,3 +102,136 @@ the filenames → M062, M063.
 ## Decisions
 
 ## Review
+
+### Acceptance criteria
+
+- **AC1 — verified 2026-08-29.** Probed fresh in the browser pane against
+  `http://localhost:8788` serving copies of the branch's `index.html` with one
+  constant altered each, deleted afterwards. `installedIsOlderThan()` called
+  directly on seven pairs returned `TRUE` for 0.1.0<0.2.0, 0.9.0<0.10.0 and
+  0.2.0<0.10.0, `FALSE` for 0.2.0<0.2.0, 0.3.0<0.2.0, 0.10.0<0.9.0 and
+  0.10.0<0.2.0 — the two 0.10.0/0.9.0 pairs are the ones a string comparison
+  reverses, so the comparison is exercised in both directions and in both digit
+  forms, and the check is shown able to fail the way it claims to catch. End to
+  end with the installed 0.2.0: declared 0.2.0 (equal) and 0.1.0 (below) both
+  reached "Ready." with `#controls` shown and 78 scale checkboxes rendered;
+  declared 99.0.0 stopped the page with the status "This page needs hitop
+  99.0.0 or newer, and the version it just installed is 0.2.0. … A working page
+  and the complete instruments are at jmgirard.github.io/hitop.", `#controls`
+  hidden, `downloadBtn` and `saveDescriptor` both disabled and zero enabled
+  buttons under `.downloads`/`.handover`.
+
+- **AC2 — verified 2026-08-29.** Same server, a copy with
+  `INSTALL_TIMEOUT_MS = 1`. Probe one: the timeout fired with the install still
+  pending and the page stopped with "The hitop package did not finish
+  downloading within 0.001 seconds, so this page cannot build anything. Reload
+  to try again; if it keeps failing, the complete instruments are ready to
+  download at jmgirard.github.io/hitop." — `#controls` hidden, `downloadBtn`
+  and `saveDescriptor` disabled, zero enabled download or handover buttons.
+  Probe two: with the page already latched off, `packageVersion("hitop")`
+  polled through webR first succeeded 3,705 ms later, returning 0.2.0 — the
+  abandoned install had settled — and at that instant `bootAbandoned` was true
+  with every control still disabled and `#controls` still hidden; re-checked 25
+  seconds after that, all still disabled.
+
+- **AC3 — verified 2026-08-29.** `cairn/PROFILE.md`'s `## release-walk` slot
+  ends with a "Downstream" bullet naming `jmgirard/hitop-builder`, the six
+  package surfaces the page calls (`available_scales()`, `hitop_module()`,
+  `scale_definitions()`, the three `generate_*_hitopsr()` functions and their
+  `descriptor` argument), and the two things a release touching one of them
+  must update there — `MIN_HITOP` in `index.html` and the minimum stated in
+  that repo's `README.md`, in a pull request of its own. File is 110 lines
+  against the profile's 120-line cap.
+
+- **AC4 — verified 2026-08-29.** `grep -n '0\.2\.0' README.md` in
+  `hitop-builder` returns two lines: `:42`, the prose sentence "today it is
+  **0.2.0**", and `:141`, the `packageVersion` field inside the sample
+  descriptor's JSON block — so the minimum appears in exactly one prose
+  location. `:41` says `MIN_HITOP` in `index.html` "is the one place that
+  minimum is set", and `:151-152` says the sample's `packageVersion` "is the
+  version that wrote this particular file, not the minimum", naming the
+  exclusion.
+
+- **AC6 — verified 2026-08-29.** `git diff --name-only origin/main...HEAD`
+  lists `cairn/PROFILE.md`, `cairn/ROADMAP.md` and this file — nothing outside
+  `cairn/`. `devtools::test()` clean: FAIL 0, WARN 0, SKIP 4, PASS 15504.
+
+- **AC5 — not yet verified.** The builder pull request
+  (jmgirard/hitop-builder#10) is open and unmerged; the merge and the
+  deployed-bytes comparison run at the merge gate below.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0 — all 16 checks PASS, 4 OK, 21 advisory warnings
+  (20 dangling `D-00N` id tokens in DESIGN/DECISIONS/SOURCES and one
+  references-staleness line on `schmukle2026.md`, all pre-existing and none a
+  gate failure). `coverage complete` and `scaffold present` both PASS.
+- No `DESIGN.md` principle changed on this branch, so `cairn_impact.py` was
+  skipped.
+- r-package profile `consistency-gate`: `devtools::document()` produced no diff;
+  `pkgdown::check_pkgdown()` "No problems found."; `README.md` is current
+  against `README.Rmd`; no new top-level files, so no `.Rbuildignore` entry is
+  owed; no user-visible package change, so no NEWS entry is owed;
+  `devtools::check()` 0 errors, 0 warnings, 0 notes.
+
+### Independent review — three lenses, fresh context
+
+Full three-lens fan-out (user-facing tier, executable surface touched). Every
+reported finding is listed with its disposition.
+
+**[O] diff-bug (Opus), ranked:**
+
+1. The "Lost the connection to R" handler disables `.downloads button` directly
+   and returns without setting `bootAbandoned`, so if the R channel dies after
+   `#controls` is shown, the next `refreshTally()` (any checkbox) re-enables the
+   build button over a dead R. — Confirmed against the implementation
+   (`index.html`, the `webR.read()` reader loop); the handler predates this
+   branch and the diff does not touch it, so it is pre-existing rather than
+   introduced. Disposition: **to the maintainer at the gate** — one line
+   (`abandonBoot(...)` in that handler) closes it, and it is the same hazard
+   class this milestone is about.
+2. The losing branch of the install `Promise.race` has no `.catch`, so an
+   install that rejects after the timeout raises an unhandled promise rejection.
+   — Confirmed by reading; controls stay off, so console noise, not a state bug.
+   Disposition: **to the maintainer at the gate**.
+3. An install that rejects *before* the timeout propagates to the top-level
+   catch, which says "Could not start R" though R started; `bootAbandoned` stays
+   false and the two-minute timer is never cleared. — Confirmed; safe only
+   because `#controls` is still hidden there. Disposition: **to the maintainer
+   at the gate**.
+4. The timeout races only `installPackages`, not `import(WEBR_URL)` or
+   `webR.init()`, so a stall in the webR download still hangs on "Starting R in
+   your browser…". — Correct, and outside AC2 and the milestone's In scope,
+   which name the `installPackages` call. Disposition: **follow-up candidate**.
+5. If `evalRString`/`evalRBoolean` rejects, the version guard throws to the
+   top-level catch instead of refusing through `abandonBoot()`. — Confirmed;
+   page is safe because `#controls` is still hidden. Disposition: **to the
+   maintainer at the gate**.
+6. The refusal messages point at jmgirard.github.io/hitop, which serves the
+   prebuilt instruments rather than another builder page. — Wording judgment;
+   AC1 asks the message to name where to get a working page and it names a
+   destination. Disposition: **to the maintainer at the gate**.
+7. The page says "120 seconds" while `README.md` says "two minutes". —
+   Confirmed; same value, two forms, and AC4 pins only the minimum.
+   Disposition: **reject, style**.
+8. `installedIsOlderThan` leaves `.installed_version` and `.minimum_version`
+   bound in R's global environment. — Confirmed, and it matches how the page
+   binds every other value. Disposition: **reject, convention-conforming**.
+
+**[S] blame-history (Sonnet):** one finding — `abandonBoot()`'s blanket disable
+reaches the handover button that M062 deliberately kept independent of selection
+state, though it is inert because `abandonBoot()` only fires during boot, before
+any descriptor exists. Confirmed by reading; disposition: **reject, no
+collision reachable**. The lens found no undone intent elsewhere: the
+`packageVersion`-before-`library()` reorder has no prior deliberate ordering to
+contradict, and the `bootAbandoned` guards are additive.
+
+**[S] prior-review record (Sonnet):** "no prior-review evidence" — the M045,
+M062, M063 and M066 archived `## Review` findings on these files are all still
+satisfied, and both `gh api .../pulls/comments` probes returned empty, so no
+per-PR walk was paid for. Zero findings.
+
+**Return floor.** No finding demonstrates an acceptance criterion failing inside
+its named procedure's domain: AC1 and AC2 were probed and passed, and finding 4
+falls outside AC2's stated `installPackages` domain. Status stays `review`.
+
