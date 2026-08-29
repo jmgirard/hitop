@@ -1,11 +1,11 @@
 # M063: Every file the builder writes says which form it belongs to
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M062
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** `m063-builder-download-naming` (hitop); `m063-download-naming` (hitop-builder)
+- **Branch/PR:** `m063-builder-download-naming` (hitop); builder PR #9 https://github.com/jmgirard/hitop-builder/pull/9 (`m063-download-naming`)
 
 ## Goal
 
@@ -88,6 +88,8 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - 2026-08-29: T4's method refined from the plan's `read_page` refs to actuating the page's own controls from the console — the recorded lesson that a ref click can land in a viewport dead band and report a coordinate anyway, where the page's handlers are exact.
 - 2026-08-29: T3 — README's three filename passages rewritten to the new stems, a *What the downloads are named* section added tabulating the eight builds' pairs, and the page's two-files notice gained a sentence on what a name carries; the notice re-read off the served branch copy. Written from T4's recorded names, not composed (builder `a03db3b`).
 - 2026-08-29: T5 — the AC4 grep returns 17 distinct hits across both files. Sixteen name downloads and each is one of the sixteen names T4 recorded; the seventeenth, `module.json` at `index.html:1088`, is the descriptor's path inside webR's virtual filesystem and never a name the browser is asked to save. No recorded name goes unmentioned.
+- 2026-08-29: T6 first half — builder PR #9 opened from `m063-download-naming`. Its second half (fetch the deployed page after merge and compare bytes) can only run past the merge, so it and AC5 land at the review gate; T6 stays unticked until then.
+- 2026-08-29: implement closes with `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504 and `git diff --name-only origin/main...HEAD` listing only `cairn/ROADMAP.md` and this file. Every task but T6 is checked; T6's remaining half and AC5 with it cannot run before PR #9 merges.
 
 ## Decisions
 
