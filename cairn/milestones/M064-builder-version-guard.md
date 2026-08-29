@@ -51,7 +51,7 @@ the filenames → M062, M063.
       and says `index.html` is where it is declared. The sample descriptor's
       `packageVersion` is excluded by name, since it records the version that
       wrote a file rather than a minimum.
-- [ ] AC5 The change ships: a merged pull request in `jmgirard/hitop-builder`
+- [x] AC5 The change ships: a merged pull request in `jmgirard/hitop-builder`
       whose URL is in this file's header, and the page served at
       `https://jmgirard.github.io/hitop-builder/` matches that commit's
       `index.html` byte for byte.
@@ -99,6 +99,7 @@ the filenames → M062, M063.
 - 2026-08-29: gate chose `MIN_HITOP = '0.2.0'` (the current released version, and the one every page-called surface is present in) and a 120-second install timeout (six times the README's stated twenty-second first load).
 - 2026-08-29: /milestone-review — hitop PR #71 (draft) opened for the tracking half; AC1-AC4 and AC6 verified with fresh evidence, AC5 held for the merge gate; consistency gate clean (`cairn_validate` exit 0, `document()` no diff, `check_pkgdown()` clean, `devtools::check()` 0 errors 0 warnings 0 notes); three-lens review returned nine findings, none floor-qualifying — five to the maintainer at the gate, one follow-up candidate, three rejected.
 - 2026-08-29: gate — maintainer chose to fix four of the five findings before merging (finding 6's wording left as is) and approved merging both pull requests; hitop-builder `3d91721` lands the fixes and every branch was re-probed clean, including a discriminating channel-loss probe.
+- 2026-08-29: builder pull request squash-merged as `2a7f2ae`; Pages redeployed and the served page is byte-identical to that commit's `index.html` (64,734 bytes, matching SHA-256) — AC5 verified, every criterion now ticked against recorded evidence.
 - 2026-08-28: plan chose a declared minimum plus a release-walk step over a release-walk step alone (rejected: it keeps the page correct only for as long as nobody forgets, and the failure it misses is silent mid-build) and over a hard version pin (rejected as unavailable — r-universe serves only its current build and the install call takes no version); falsified by r-universe gaining versioned installs, which would make a pin the better answer.
 
 ## Decisions
@@ -158,9 +159,13 @@ the filenames → M062, M063.
   lists `cairn/PROFILE.md`, `cairn/ROADMAP.md` and this file — nothing outside
   `cairn/`. `devtools::test()` clean: FAIL 0, WARN 0, SKIP 4, PASS 15504.
 
-- **AC5 — not yet verified.** The builder pull request
-  (jmgirard/hitop-builder#10) is open and unmerged; the merge and the
-  deployed-bytes comparison run at the merge gate below.
+- **AC5 — verified 2026-08-29.** jmgirard/hitop-builder#10 squash-merged as
+  `2a7f2ae` on that repo's `main`, its URL in this file's header; the Deploy to
+  Pages run for that commit finished successfully. `git show
+  2a7f2ae:index.html` and the page fetched from
+  `https://jmgirard.github.io/hitop-builder/` are both 64,734 bytes with SHA-256
+  `f191d835f71c9cfa8ebb2da9bb680bae48a53934df84147115f1c85f72b7635f`, and `cmp`
+  reports no difference.
 
 ### Consistency gate
 
