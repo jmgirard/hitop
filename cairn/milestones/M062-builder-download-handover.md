@@ -175,6 +175,8 @@ descriptor because the first still sat in the folder, the case M063 fixes.
 
 - 2026-08-29: review gate — Jeff triaged the nine findings fix-now; builder `cc48256` closes the mid-build mismatch window, announces the handover in a polite live region, hides the empty container and un-indents the descriptor's log line, and the record corrections for findings 5 and 6 are in the Review section. AC1-AC4 re-verified against `cc48256`.
 
+- 2026-08-29: AC5 re-run on builder `cc48256` at Jeff's selection — Chrome then Safari, both pairs arrived and each questionnaire's item set matches its own descriptor exactly. Merge authorized for builder PR #7 first, then hitop PR #69 once the deployed bytes match and CI is green.
+
 ## Decisions
 
 - 2026-08-28: the descriptor button stays offered after the visitor takes it, until the next completed build replaces it. Saving twice costs nothing, and a first save that landed somewhere unintended would otherwise need a whole rebuild to recover from. The held pair carries a `taken` flag, so a replacement reports a loss only when the file was never taken.
@@ -228,12 +230,21 @@ downloads folder.
   the page shows* section (and *The scoring file* and *Shuffling the Word form*)
   describes the two-step handover; no "This page saves two files" string survives
   in either file.
-- **AC5 — verified against the recorded maintainer run, not re-executed.** The
-  criterion's own text puts this outside automation. The recorded run of
-  2026-08-29 was made against builder `5a7cea0`, the commit under review, and is
-  in the evidence section above: Chrome received `hitopsr-module.txt` and
-  `hitopsr-module.json`, Safari `hitopsr-module.zip` and
-  `hitopsr-module-2.json`, each pair matched by content.
+- **AC5 — verified, re-run against the shipped commit.** At Jeff's selection the
+  test was repeated on builder `cc48256`, Chrome first and then Safari, against
+  the branch page served from the local checkout. Four files reached the
+  downloads folder. Chrome (Qualtrics, Bodily Distress + Entitlement) received
+  `hitopsr-module.txt` 2737 B and `hitopsr-module.json` 261 B; Safari (REDCap,
+  Hoarding + Manic Energy + Muscle Building) received `hitopsr-module.zip`
+  1107 B and `hitopsr-module-2.json` 304 B. Each pair is matched by content, not
+  timestamp: the `.txt`'s twelve `[[ID:HSR_nnn]]` values are exactly the first
+  descriptor's `items` (10, 30, 58, 63, 95, 115, 133, 189, 324, 336, 371, 379),
+  and the `.zip`'s eighteen `instrument.csv` field names are exactly the
+  second's (9, 48, 77, 78, 105, 121, 129, 134, 178, 244, 279, 288, 319, 326,
+  369, 372, 381, 396). Both browsers delivered both files. Safari again renamed
+  its descriptor because the earlier one still sat in the folder — the M063
+  case, recorded here as evidence rather than as a defect. The 2026-08-29 run
+  against `5a7cea0` recorded above stands as the earlier observation.
 - **AC6 — not verified; open.** Builder PR #7 is open, not merged, so no deployed
   page exists to compare bytes against. This is the gate's open item.
 - **AC7 — verified.** `git diff --name-only origin/main...HEAD` lists
