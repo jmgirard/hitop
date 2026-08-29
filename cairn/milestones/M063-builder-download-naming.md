@@ -69,11 +69,11 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - [x] T2 Build the stem in `download()` from the format key, `wholeInstrument()`
       and the shuffle state, and give the descriptor the same stem
       (`hitop-builder/index.html:1008-1019`).
-- [ ] T3 Update `README.md`'s per-format download descriptions and any page copy
+- [x] T3 Update `README.md`'s per-format download descriptions and any page copy
       naming a written file.
 - [x] T4 Drive the eight builds in the browser pane, actuating the page's own
       controls, and record the sixteen requested filenames.
-- [ ] T5 Run the AC4 grep over both files and triage every hit.
+- [x] T5 Run the AC4 grep over both files and triage every hit.
 - [ ] T6 Open the builder pull request; after merge, fetch the deployed page and
       compare bytes; write the URL into the header.
 
@@ -86,6 +86,8 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - 2026-08-29: T2 — `downloadStem(format, whole, shuffle)` composes the stem from `FORMATS[].name`, wholeness and shuffle; `download()` calls it for both files (builder `e660cee`). Page served from the branch boots clean: webR installed, 76 scales, status Ready.
 - 2026-08-29: T4 — eight builds driven on the branch page (localhost copy): three formats x whole/two-scale selection, the Word pair crossed with the shuffle box. Sixteen saves recorded off a patched `HTMLAnchorElement.click`, eight `build` and eight `visitor`, all sixteen names distinct; each pair shares a stem and differs only in extension; all eight match the M063-D1 table typed independently, and planting one wrong expectation put that build in the mismatch list, so the comparison can fail. The eight logged R calls confirm the settings apart from the names: four with no `module`, four with `module = <2 scales>`, `randomize = TRUE` on exactly the two shuffled builds.
 - 2026-08-29: T4's method refined from the plan's `read_page` refs to actuating the page's own controls from the console — the recorded lesson that a ref click can land in a viewport dead band and report a coordinate anyway, where the page's handlers are exact.
+- 2026-08-29: T3 — README's three filename passages rewritten to the new stems, a *What the downloads are named* section added tabulating the eight builds' pairs, and the page's two-files notice gained a sentence on what a name carries; the notice re-read off the served branch copy. Written from T4's recorded names, not composed (builder `a03db3b`).
+- 2026-08-29: T5 — the AC4 grep returns 17 distinct hits across both files. Sixteen name downloads and each is one of the sixteen names T4 recorded; the seventeenth, `module.json` at `index.html:1088`, is the descriptor's path inside webR's virtual filesystem and never a name the browser is asked to save. No recorded name goes unmentioned.
 
 ## Decisions
 
