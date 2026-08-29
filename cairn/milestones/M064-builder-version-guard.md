@@ -1,11 +1,11 @@
 # M064: The builder refuses loudly when the package it installs no longer matches it
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m064-builder-version-guard` (hitop) · `m064-version-guard` (hitop-builder)
 
 ## Goal
 
@@ -70,11 +70,11 @@ the filenames → M062, M063.
 
 ## Tasks
 
-- [ ] T1 Declare `MIN_HITOP` in `index.html` beside the other boot constants
+- [x] T1 Declare `MIN_HITOP` in `index.html` beside the other boot constants
       (`hitop-builder/index.html:546-549`), compare it against the version the
       page already reads (`:1079-1081`) via `utils::compareVersion` or an R-side
       `numeric_version` test, and take the refusal path.
-- [ ] T2 Race `webR.installPackages` (`index.html:1072`) against a stated timeout
+- [x] T2 Race `webR.installPackages` (`index.html:1072`) against a stated timeout
       with a latch that keeps the controls disabled once the timeout has fired.
 - [ ] T3 Add the builder step to `cairn/PROFILE.md`'s release-walk slot.
 - [ ] T4 Drive the four version probes and the two timeout probes in the browser
@@ -89,6 +89,8 @@ the filenames → M062, M063.
 
 - 2026-08-28: created by /milestone-plan.
 - 2026-08-28: criteria audit ran in FULL mode (user-facing tier); returned 3 findings on this milestone — a one-direction version probe blind to a lexical comparison getting `0.10.0` and `0.9.0` backwards, an unprobed hazard where an uncancellable install settles after the timeout and re-enables the controls, and an unsatisfiable "appears in one place" over a README carrying a version in two different roles — all fixed before the criteria were written.
+- 2026-08-29: T1/T2 — `index.html` declares `MIN_HITOP = '0.2.0'` and `INSTALL_TIMEOUT_MS = 120000` beside the other boot constants; the install is raced against the timeout and the installed version is read before `library()` and compared by `installedIsOlderThan()`, which binds both versions into R as data and tests `numeric_version(a) < numeric_version(b)`. Either failure calls a new `abandonBoot()`, which sets a `bootAbandoned` latch, hides the controls and disables the download and handover buttons; the latch is also read at the three sites that turn a control back on, so an install settling after the timeout cannot re-enable one. T1 refined against AC1: `numeric_version`, not the `utils::compareVersion` the task offered as an alternative, since AC1 names `numeric_version` and criteria outrank task wording.
+- 2026-08-29: gate chose `MIN_HITOP = '0.2.0'` (the current released version, and the one every page-called surface is present in) and a 120-second install timeout (six times the README's stated twenty-second first load).
 - 2026-08-28: plan chose a declared minimum plus a release-walk step over a release-walk step alone (rejected: it keeps the page correct only for as long as nobody forgets, and the failure it misses is silent mid-build) and over a hard version pin (rejected as unavailable — r-universe serves only its current build and the install call takes no version); falsified by r-universe gaining versioned installs, which would make a pin the better answer.
 
 ## Decisions
