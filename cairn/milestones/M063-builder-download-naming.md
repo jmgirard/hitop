@@ -71,7 +71,7 @@ which fields it carries, are untouched. The handover mechanism → M062.
       (`hitop-builder/index.html:1008-1019`).
 - [ ] T3 Update `README.md`'s per-format download descriptions and any page copy
       naming a written file.
-- [ ] T4 Drive the eight builds in the browser pane through `read_page` refs and
+- [x] T4 Drive the eight builds in the browser pane through `read_page` refs and
       `form_input`, recording the sixteen requested filenames.
 - [ ] T5 Run the AC4 grep over both files and triage every hit.
 - [ ] T6 Open the builder pull request; after merge, fetch the deployed page and
@@ -84,6 +84,8 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - 2026-08-28: plan gate chose three recoverable axes in the name over a short digest of the full settings (rejected: uglier names carrying a code that means nothing to a reader, for a collision only two same-format builds with different scale sets can hit) and over naming the format alone (rejected: leaves a shuffled Word form and an unshuffled one indistinguishable, which is the confusion this milestone exists to close); falsified by a report of two same-format builds with different scale selections being confused on disk.
 - 2026-08-29: implement gate chose the format words `word`/`qualtrics`/`redcap` over the page's `docx`/`txt`/`zip` keys, and kept `-module` with the whole instrument unmarked over an explicit `-full`; naming table written (M063-D1).
 - 2026-08-29: T2 — `downloadStem(format, whole, shuffle)` composes the stem from `FORMATS[].name`, wholeness and shuffle; `download()` calls it for both files (builder `e660cee`). Page served from the branch boots clean: webR installed, 76 scales, status Ready.
+- 2026-08-29: T4 — eight builds driven on the branch page (localhost copy): three formats x whole/two-scale selection, the Word pair crossed with the shuffle box. Sixteen saves recorded off a patched `HTMLAnchorElement.click`, eight `build` and eight `visitor`, all sixteen names distinct; each pair shares a stem and differs only in extension; all eight match the M063-D1 table typed independently, and planting one wrong expectation put that build in the mismatch list, so the comparison can fail. The eight logged R calls confirm the settings apart from the names: four with no `module`, four with `module = <2 scales>`, `randomize = TRUE` on exactly the two shuffled builds.
+- 2026-08-29: T4's method refined from the plan's `read_page` refs to actuating the page's own controls from the console — the recorded lesson that a ref click can land in a viewport dead band and report a coordinate anyway, where the page's handlers are exact.
 
 ## Decisions
 
