@@ -1,11 +1,11 @@
 # M067: The modules article and the generator help pages describe what the generators do
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m067-modules-doc-accuracy`
 
 ## Goal
 
