@@ -1,0 +1,11 @@
+# M061: The reliability family invents scale display names instead of reading them
+
+**Status:** done (2026-08-28, PR #68 https://github.com/jmgirard/hitop/pull/68)
+
+**Goal:** The three `reliability_*()` exports return each scale's canonical display name read from the keying tables, not one rebuilt from the camelCase stem.
+
+**Outcome:** `reliability_engine()` takes a `scale_names` argument in place of the `snakecase::to_title_case(names(items_scales))` derivation; suppliers are `pid_scales[[version]]$Facet` (FULL/SF) or `$Domain` (BF), `hitopbr_scales$Scale`, `hitopsr_scales$Scale`, and on the module path `module_engine_inputs()`'s new `display_col`. Nine names change: `Distress-Dysphoria`, `Non-persistence`, `Non-planfulness`, `Non-suicidal Self-injury`, `Sex-Related Substance Use`, `Well-being`, `p-Factor`, `Unusual Beliefs & Experiences`, `Negative affectivity`. Every returned HiTOP-SR name is now one `hitop_module()` accepts; none of the six old spellings was. Column renamed `scale` to `Scale`; `available_scales()$nItems` coerced to integer; `snakecase` left `Imports` for `Config/Needs/data-raw`. No scored number changes.
+
+**Decisions:** M061-D1 (the module path reads names from `hitopsr_scales`, not the module object, so module and reliability call stay independent readers). Cross-cutting: D-046, D-047.
+
+**Review:** One pass, no returns; all nine criteria fresh (`check()` 0/0/0, `test()` PASS 15504, harness 48 cells / 0 differ, AC7 re-proved on three planted defects with four clean controls). Nine findings, all from the [O] lens and the session itself; blame-history and prior-review returned none; none showed a criterion failing. Six fixed at the gate — chiefly a roxygen claim that `data.frame()` catches a bad `scale_names` length, which it does not for a divisor length, replaced by a real `cli_assert()` guard and a test proven able to fail; also a stale DESIGN line, two stale comments, a test blind to the integer coercion, a NEWS omission that `*_scales$nItems` stays double, and a wrong plan-gate date in D-046/D-047. Three harness guard-reach findings filed to the `data-raw/` verification-tooling row at Jeff's disposition. Nothing rejected, graduated, or retired.
