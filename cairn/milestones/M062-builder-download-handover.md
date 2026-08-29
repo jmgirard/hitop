@@ -52,7 +52,7 @@ this plan gate (work log). The descriptor's JSON format is untouched.
 - [ ] AC4 Every copy node describing what a download produces — `#descriptorNote`,
       `#downloadHint`, the shuffle notice, and `README.md`'s *What the page shows*
       section — describes the two-step handover, each read and checked by id.
-- [ ] AC5 A real download is observed end to end: the maintainer builds one form
+- [x] AC5 A real download is observed end to end: the maintainer builds one form
       in Chrome and one in Safari, and the milestone records for each browser
       which two files arrived in the downloads folder. Automation cannot see the
       downloads folder, so this criterion, not AC1, is what proves arrival.
@@ -94,7 +94,7 @@ this plan gate (work log). The descriptor's JSON format is untouched.
 - [x] T5 Compare each format's logged call string against T1's literal.
 - [ ] T6 Open the builder pull request; after merge, fetch the deployed page and
       compare bytes; write the URL into the header.
-- [ ] T7 Hand the maintainer the Chrome and Safari runs and record what arrived.
+- [x] T7 Hand the maintainer the Chrome and Safari runs and record what arrived.
 
 ## Evidence: baseline and driven run (T1, T4, T5)
 
@@ -164,6 +164,30 @@ position — "A second button then appears" — since only the wide layout puts 
 beside; re-read by id, it and `#downloadHint` still describe the two-step
 handover, so AC4 holds. Builder commit `5a7cea0`.
 
+## Evidence: the real downloads (T7, AC5)
+
+Run by the maintainer on 2026-08-29 against the branch page served from the
+local checkout at `http://localhost:8087/`, one build per browser, taking the
+descriptor with its own button each time. Automation never saw the folder; the
+four files below are what `ls -lT ~/Downloads` reported afterwards.
+
+| Browser | Build | Files that arrived | Descriptor's scales |
+|---|---|---|---|
+| Chrome | Qualtrics, 2 scales | `hitopsr-module.txt` 2337 B (23:10:04), `hitopsr-module.json` 258 B (23:10:09) | Body Dissatisfaction, Callousness |
+| Safari | REDCap, 2 scales | `hitopsr-module.zip` 738 B (23:11:11), `hitopsr-module-2.json` 248 B (23:11:13) | Binge Eating, Difficulties Reaching Orgasm |
+
+Each pair is matched from the file contents, not from the timestamps: the
+`.txt`'s ten `[[ID:HSR_nnn]]` values are exactly the first descriptor's `items`
+(34, 43, 67, 211, 236, 250, 255, 271, 329, 395), and the `.zip`'s six
+`instrument.csv` field names are exactly the second's (82, 124, 151, 358, 392,
+398). Two files arrived per build in both browsers, so no browser withheld the
+descriptor once it was the visitor's own click.
+
+Safari renamed the second descriptor `hitopsr-module-2.json` because the first
+still sat in the folder. Nothing was lost and nothing here is wrong, but a
+visitor who builds twice ends up with two identically-stemmed scoring files and
+nothing on either naming the build it belongs to — the case M063 exists to fix.
+
 ## Work log
 
 - 2026-08-28: created by /milestone-plan.
@@ -180,6 +204,8 @@ handover, so AC4 holds. Builder commit `5a7cea0`.
 - 2026-08-29: at Jeff's direction the parked builder PR #6 (M057's scale-definition popups) was merged first, its r-universe blocker having cleared — the served `hitop` 0.2.0 is now built from `d6de830`, which carries the `Brief` column the popups read. `m062-descriptor-handover` was rebased onto the new `main` (`8b30f96`); the rebase applied cleanly, the branch diff is unchanged at 119/37 lines, and both features coexist. All six builds, the three replacement orderings and the copy checks were re-driven on the rebased branch; the evidence section above records the re-run, and PR #6 changing no call-construction line is what carries T1's literals to the new merge base.
 - 2026-08-29: minor amendment at Jeff's request — the descriptor button moved from under the download button to beside it (`.downloadrow`), and `#descriptorNote` dropped its position claim so the copy is true in both the wide and the stacked layout. No criterion text changes; AC4's nodes re-read by id. Re-driven for one build rather than six, since the handover logic is untouched. Builder commit `5a7cea0`.
 - 2026-08-29: the step-bar chevrons Jeff also asked for were routed out of this milestone at a question gate — `#stepbar` is nothing M062 touches — and went to their own builder PR https://github.com/jmgirard/hitop-builder/pull/8 off `main`, keeping PR #7 single-subject.
+
+- 2026-08-29: T7 — the maintainer built one form in Chrome and one in Safari against the branch page and both pairs reached the downloads folder; each questionnaire's item set matches its own descriptor's `items` exactly. AC5 ticked. Safari's collision rename of the second descriptor is recorded as evidence for M063, not a defect here.
 
 ## Decisions
 
