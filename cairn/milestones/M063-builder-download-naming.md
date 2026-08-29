@@ -1,11 +1,11 @@
 # M063: Every file the builder writes says which form it belongs to
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M062
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m063-builder-download-naming` (hitop); `m063-download-naming` (hitop-builder)
 
 ## Goal
 
@@ -64,7 +64,7 @@ which fields it carries, are untouched. The handover mechanism → M062.
 
 ## Tasks
 
-- [ ] T1 Write the naming table: for each format x wholeness x shuffle
+- [x] T1 Write the naming table: for each format x wholeness x shuffle
       combination, the expected stem, derived from the settings alone.
 - [ ] T2 Build the stem in `download()` from the format key, `wholeInstrument()`
       and the shuffle state, and give the descriptor the same stem
@@ -82,7 +82,33 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - 2026-08-28: created by /milestone-plan.
 - 2026-08-28: criteria audit ran in FULL mode (user-facing tier); returned 3 findings on this milestone — a promise quantifying over naming axes the enumeration omitted, a universal over "the same build" naming no procedure, and a filename regex excluding digits and underscores so `hitopsr-a4.docx` escaped it — all fixed before the criteria were written.
 - 2026-08-28: plan gate chose three recoverable axes in the name over a short digest of the full settings (rejected: uglier names carrying a code that means nothing to a reader, for a collision only two same-format builds with different scale sets can hit) and over naming the format alone (rejected: leaves a shuffled Word form and an unshuffled one indistinguishable, which is the confusion this milestone exists to close); falsified by a report of two same-format builds with different scale selections being confused on disk.
+- 2026-08-29: implement gate chose the format words `word`/`qualtrics`/`redcap` over the page's `docx`/`txt`/`zip` keys, and kept `-module` with the whole instrument unmarked over an explicit `-full`; naming table written (M063-D1).
 
 ## Decisions
+
+### M063-D1 (2026-08-29): A download's stem is the instrument, the format's word, `-module`, `-shuffled`
+
+The stem every build writes is `hitopsr`, then the format's own word, then
+`-module` when the build covers a selection of scales rather than the whole
+instrument, then `-shuffled` when a Word form's printed item order was
+shuffled. The questionnaire takes its format's extension and the scoring file
+takes `.json` on that same stem. Chosen at the implement gate over the page's
+three format keys (`docx`/`txt`/`zip`), which name the file type twice on the
+questionnaire, and over marking the whole instrument with a word of its own,
+which would rename files visitors already hold.
+
+Shuffle is a Word-only control, so the eight builds are three formats crossed
+with two selections, the Word pair crossed again with the shuffle box:
+
+| Format | Selection | Shuffled | Stem |
+|---|---|---|---|
+| Word | whole instrument | no | `hitopsr-word` |
+| Word | whole instrument | yes | `hitopsr-word-shuffled` |
+| Word | some scales | no | `hitopsr-word-module` |
+| Word | some scales | yes | `hitopsr-word-module-shuffled` |
+| Qualtrics | whole instrument | — | `hitopsr-qualtrics` |
+| Qualtrics | some scales | — | `hitopsr-qualtrics-module` |
+| REDCap | whole instrument | — | `hitopsr-redcap` |
+| REDCap | some scales | — | `hitopsr-redcap-module` |
 
 ## Review
