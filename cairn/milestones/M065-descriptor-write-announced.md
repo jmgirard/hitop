@@ -1,11 +1,11 @@
 # M065: The generators announce the descriptor they write
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m065-descriptor-write-announced`
 
 ## Goal
 
@@ -56,7 +56,7 @@ already happens.
 
 ## Tasks
 
-- [ ] T1 Record the merge-base `devtools::check()` baseline into this file, with
+- [x] T1 Record the merge-base `devtools::check()` baseline into this file, with
       the Imports the local run needs installed, so AC4 compares against a known
       state rather than assuming 0/0/0.
 - [ ] T2 Write the AC1 and AC2 tests first and see them red: the message
@@ -76,6 +76,8 @@ already happens.
 - 2026-08-28: created by /milestone-plan.
 - 2026-08-28: criteria audit ran in FULL mode (user-facing tier); returned 2 findings on this milestone — a rollback probe standing one failure form in for a family of three, and a promise of a note-free `check()` bound to the harness rather than the deliverable and unverified against this repo's actual baseline — both fixed before the criteria were written.
 - 2026-08-28: plan chose the alert at the three call sites over one alert inside the shared sidecar writer (rejected: the writer runs before the instrument file is built and its file is removed when the build fails, so an alert there would announce a descriptor that does not survive the call); falsified by the sidecar write moving to after the instrument build, which would make the shared writer the right home.
+- 2026-08-29: /milestone-implement started on branch `m065-descriptor-write-announced`; gate settled the message wording as "Module descriptor successfully written to <path>".
+- 2026-08-29: T1 merge-base `devtools::check()` baseline at `d927234` on R 4.6.1 with officer, flextable, snakecase, zip, jsonlite and lavaan installed: Status OK, 0 errors, 0 warnings, 0 notes (5m35s).
 
 ## Decisions
 
