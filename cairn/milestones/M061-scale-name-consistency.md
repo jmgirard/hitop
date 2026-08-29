@@ -454,3 +454,14 @@ question the records-hygiene rules put to the maintainer.
 - **9 fixed.** D-046 and D-047 now date the plan gate `2026-08-28`. Both entries
   are unmerged, so this is a correction before the record becomes history, not an
   edit to history.
+
+#### Re-verification after the gate fixes
+
+Every gate check re-run on the fixed branch, since finding 1's fix touches
+`reliability_engine()`: `devtools::document()` no diff; `devtools::check()`
+0 errors, 0 warnings, 0 notes; `devtools::test()` FAIL 0, ERROR 0, WARN 0,
+SKIP 4, PASS 15504 (up 4, the new guard test); characterization harness re-run
+cold on both sides — 48 cells compared, 0 differ outside the display-name column,
+40 carry a display-name change, exit 0, so the added guard moved no number and
+raised no condition on any matrix cell. `cairn_validate.py` exits 0 with weight
+caps PASS. CI re-run green on PR #68.
