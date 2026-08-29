@@ -98,12 +98,12 @@ reliability_pid5(
   version = "BF"
 )
 #> # A tibble: 6 × 4
-#>   scale                nItems   alpha    omega
+#>   Scale                nItems   alpha    omega
 #>   <chr>                 <int>   <dbl>    <dbl>
 #> 1 Disinhibition             5 -0.260  0.00111 
 #> 2 Detachment                5  0.238  0.365   
 #> 3 Psychoticism              5  0.0658 0.0863  
-#> 4 Negative Affectivity      5 -0.0852 0.000422
+#> 4 Negative affectivity      5 -0.0852 0.000422
 #> 5 Antagonism                5 -0.0967 0.105   
 #> 6 Total                    25 -0.0719 0.0575
 ```

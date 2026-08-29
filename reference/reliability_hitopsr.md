@@ -69,8 +69,9 @@ reliability_hitopsr(
 ## Value
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
-row per scale and columns `scale`, `nItems`, and (when requested)
-`alpha` and `omega`.
+row per scale and columns `Scale` (the scale's canonical display name,
+as the instrument's keying table spells it), `nItems`, and (when
+requested) `alpha` and `omega`.
 
 ## Details
 
@@ -88,7 +89,7 @@ uninstalled lavaan) is returned as `NA` rather than aborting the call.
 # Per-scale alpha for the HiTOP-SR
 reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
 #> # A tibble: 76 × 3
-#>    scale                nItems    alpha
+#>    Scale                nItems    alpha
 #>    <chr>                 <int>    <dbl>
 #>  1 Agoraphobia               5 -0.108  
 #>  2 Antisocial Behavior       8 -0.136  
@@ -109,7 +110,7 @@ m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
 collected <- sim_hitopsr[paste0("hsr_", m$items)]
 reliability_hitopsr(collected, items = names(collected), module = m, omega = FALSE)
 #> # A tibble: 2 × 3
-#>   scale         nItems    alpha
+#>   Scale         nItems    alpha
 #>   <chr>          <int>    <dbl>
 #> 1 Agoraphobia        5 -0.108  
 #> 2 Appetite Loss      3  0.00603

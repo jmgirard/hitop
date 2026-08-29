@@ -118,8 +118,9 @@ package). (default = <code>TRUE</code>)</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with one row per scale and columns <code>scale</code>,
-<code>nItems</code>, and (when requested) <code>alpha</code> and <code>omega</code>.</p>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with one row per scale and columns <code>Scale</code>
+(the scale's canonical display name, as the instrument's keying table spells
+it), <code>nItems</code>, and (when requested) <code>alpha</code> and <code>omega</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -136,7 +137,7 @@ scales are included alongside the six base spectra.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Per-scale alpha for the HiTOP-BR</span></span></span>
 <span class="r-in"><span><span class="fu">reliability_hitopbr</span><span class="op">(</span><span class="va">sim_hitopbr</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">45</span>, omega <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   scale            nItems    alpha</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Scale            nItems    alpha</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Antagonism            9 -<span style="color: #BB0000;">0.160</span>  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Detachment            6 -<span style="color: #BB0000;">0.070</span><span style="color: #BB0000; text-decoration: underline;">6</span> </span>
@@ -145,7 +146,7 @@ scales are included alongside the six base spectra.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Somatoform            8  0.052<span style="text-decoration: underline;">7</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Thought Disorder      6  0.007<span style="text-decoration: underline;">54</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> Externalizing        10  0.145  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> P Factor             12 -<span style="color: #BB0000;">0.111</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> p-Factor             12 -<span style="color: #BB0000;">0.111</span>  </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

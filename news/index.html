@@ -71,6 +71,32 @@
 <h2 class="pkg-version" data-toc-text="0.2.0" id="hitop-020">hitop 0.2.0<a class="anchor" aria-label="anchor" href="#hitop-020"></a></h2>
 <p>This release makes several <strong>breaking</strong> API changes to stabilize the interface before a CRAN submission.</p>
 <ul><li>
+<p><strong>Reliability tables now print each scale’s canonical name, in a column named <code>Scale</code>.</strong> <code><a href="../reference/reliability_pid5.html">reliability_pid5()</a></code>, <code><a href="../reference/reliability_hitopsr.html">reliability_hitopsr()</a></code> and <code><a href="../reference/reliability_hitopbr.html">reliability_hitopbr()</a></code> used to rebuild a display name from the camelCase stem that names the scored column, which got nine names wrong. They now read the name from the same keying table the questionnaires and <code><a href="../reference/available_scales.html">available_scales()</a></code> print, so the nine change as follows:</p>
+<table class="table"><thead><tr><th>was</th>
+<th>is</th>
+</tr></thead><tbody><tr><td><code>Distress Dysphoria</code></td>
+<td><code>Distress-Dysphoria</code></td>
+</tr><tr><td><code>Non Persistence</code></td>
+<td><code>Non-persistence</code></td>
+</tr><tr><td><code>Non Planfulness</code></td>
+<td><code>Non-planfulness</code></td>
+</tr><tr><td><code>Non Suicidal Self Injury</code></td>
+<td><code>Non-suicidal Self-injury</code></td>
+</tr><tr><td><code>Sex Related Substance Use</code></td>
+<td><code>Sex-Related Substance Use</code></td>
+</tr><tr><td><code>Well Being</code></td>
+<td><code>Well-being</code></td>
+</tr><tr><td><code>P Factor</code></td>
+<td><code>p-Factor</code></td>
+</tr><tr><td><code>Unusual Beliefs Experiences</code></td>
+<td><code>Unusual Beliefs &amp; Experiences</code></td>
+</tr><tr><td><code>Negative Affectivity</code></td>
+<td><code>Negative affectivity</code></td>
+</tr></tbody></table><p>The first six are HiTOP-SR scales, the seventh is HiTOP-BR, <code>Unusual Beliefs &amp; Experiences</code> is a PID-5 facet on both the full and short forms, and <code>Negative affectivity</code> is a PID-5-BF domain. Every HiTOP-SR name <code><a href="../reference/reliability_hitopsr.html">reliability_hitopsr()</a></code> returns is now a name <code><a href="../reference/hitop_module.html">hitop_module()</a></code> accepts and hands back unchanged; <code><a href="../reference/hitop_module.html">hitop_module()</a></code> rejected all six of the old HiTOP-SR spellings.</p>
+<p>The column carrying those names is renamed <code>scale</code> to <code>Scale</code>, matching <code><a href="../reference/available_scales.html">available_scales()</a></code>. Code selecting <code>rel$scale</code> must migrate to <code>rel$Scale</code>; there is no dual column and no deprecation shim, the same one-release migration this package uses for its other renamed output columns. Nothing else about these functions’ output changed – the same rows in the same order, and the same <code>nItems</code>, <code>alpha</code> and <code>omega</code> values.</p>
+<p>Relatedly, <code><a href="../reference/available_scales.html">available_scales()</a></code> returns <code>nItems</code> as an integer rather than a double, so it now matches the <code>nItems</code> of <code><a href="../reference/hitop_module.html">hitop_module()</a></code> and of the reliability tables. The shipped <code>hitopsr_scales</code> and <code>hitopbr_scales</code> datasets still store <code>nItems</code> as a double, so <code><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical()</a></code> between one of those columns and <code>available_scales()$nItems</code> now returns <code>FALSE</code> where it used to return <code>TRUE</code>; <code>==</code> and <code>dplyr</code> joins are unaffected. The <strong>snakecase</strong> package is no longer an import; the regeneration scripts under <code>data-raw/</code> still use it, and say so.</p>
+</li>
+<li>
 <p><strong>Scoring and converting now refuse two argument shapes they used to let fall through.</strong> Re-running <code><a href="../reference/score_pid5.html">score_pid5()</a></code>, <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code>, <code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code>, <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code>, <code><a href="../reference/norm_pid5.html">norm_pid5()</a></code>, <code><a href="../reference/rank_scales.html">rank_scales()</a></code> or <code><a href="../reference/interval_hitopsr.html">interval_hitopsr()</a></code> with <code>append = TRUE</code> over data that already holds the columns that call produces is now an error naming every colliding column, where before it reached tibble’s duplicated-names complaint, which named neither the argument nor the function. Nothing is overwritten: a same-named column in your data need not have come from this package, so it is not destroyed on your behalf. Pass <code>append = FALSE</code> to get only the new columns, or drop the colliding columns first. The condition is classed <code>hitop_append_collision</code>.</p>
 <p>Separately, a <code>scores</code> argument to <code><a href="../reference/norm_pid5.html">norm_pid5()</a></code> or <code><a href="../reference/interval_hitopsr.html">interval_hitopsr()</a></code>, or a <code>scales</code> argument to <code><a href="../reference/rank_scales.html">rank_scales()</a></code>, that names no columns is now an error rather than a base-R complaint about differing numbers of rows – and, in <code><a href="../reference/rank_scales.html">rank_scales()</a></code>, rather than a report that <code>top</code> was out of range “between 1 and 0”, which blamed a consequence of the empty selection for its cause. The empty selection is reported ahead of the other selection arguments, so the cause named is the empty selection itself; an invalid <code>data</code> is still reported first. The condition is classed <code>hitop_empty_selection</code>. Both classes are part of the package’s public contract.</p>
 <p>Scoring and converting return exactly what they returned before for every call that still succeeds; no arithmetic changed. Two calls that used to succeed no longer do: <code><a href="../reference/norm_pid5.html">norm_pid5()</a></code> and <code><a href="../reference/interval_hitopsr.html">interval_hitopsr()</a></code> with <code>append = FALSE</code> and an empty <code>scores</code> returned an empty tibble, and now raise the empty-selection error along with every other shape of that call.</p>

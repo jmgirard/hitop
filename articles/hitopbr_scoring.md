@@ -267,7 +267,7 @@ reliability_hitopbr(
   items = sprintf("hbr%02d", 1:45)
 )
 #> # A tibble: 8 × 4
-#>   scale            nItems alpha omega
+#>   Scale            nItems alpha omega
 #>   <chr>             <int> <dbl> <dbl>
 #> 1 Antagonism            9 0.805 0.811
 #> 2 Detachment            6 0.785 0.778
@@ -276,5 +276,5 @@ reliability_hitopbr(
 #> 5 Somatoform            8 0.825 0.832
 #> 6 Thought Disorder      6 0.731 0.739
 #> 7 Externalizing        10 0.817 0.818
-#> 8 P Factor             12 0.804 0.811
+#> 8 p-Factor             12 0.804 0.811
 ```

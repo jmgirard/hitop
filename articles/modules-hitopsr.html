@@ -129,7 +129,7 @@ truncated; <code>hitopsr_definitions</code> carries it in full).</p>
 <span><span class="va">scale_menu</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 76 × 4</span></span></span>
 <span><span class="co">#&gt;    Scale                camelCase           nItems Brief                        </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Agoraphobia          agoraphobia              5 Fear and avoidance of situat…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Antisocial Behavior  antisocialBehavior       8 Behavior that goes against s…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Appearance Focus     appearanceFocus          5 Excessive focus on appearanc…</span></span>
@@ -156,7 +156,7 @@ length of your module. For example, to see the shortest scales:</p>
 <code class="sourceCode R"><span><span class="va">scale_menu</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">scale_menu</span><span class="op">$</span><span class="va">nItems</span><span class="op">)</span>, <span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 4</span></span></span>
 <span><span class="co">#&gt;   Scale                        camelCase                  nItems Brief          </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Appetite Loss                appetiteLoss                    3 <span style="color: #949494;">"</span>Decreased app…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Binge Eating                 bingeEating                     3 <span style="color: #949494;">"</span>Eating unusua…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Difficulties Reaching Orgasm difficultiesReachingOrgasm      3 <span style="color: #949494;">"</span>Trouble reach…</span></span>
@@ -360,7 +360,7 @@ returns one row per module scale.</p>
 <span>  omega <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 3</span></span></span>
-<span><span class="co">#&gt;   scale                nItems   alpha</span></span>
+<span><span class="co">#&gt;   Scale                nItems   alpha</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Agoraphobia               5  0.419 </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Antisocial Behavior       8  0.545 </span></span>
@@ -394,7 +394,7 @@ file you can keep beside the forms you generated:</p>
 <span><span class="co">#&gt;   "format": "1.0",</span></span>
 <span><span class="co">#&gt;   "package": "hitop",</span></span>
 <span><span class="co">#&gt;   "packageVersion": "0.2.0",</span></span>
-<span><span class="co">#&gt;   "buildDate": "2026-08-28",</span></span>
+<span><span class="co">#&gt;   "buildDate": "2026-08-29",</span></span>
 <span><span class="co">#&gt;   "instrument": "hitopsr",</span></span>
 <span><span class="co">#&gt;   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],</span></span>
 <span><span class="co">#&gt;   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],</span></span>

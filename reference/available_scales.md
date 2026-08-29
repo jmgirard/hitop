@@ -25,8 +25,8 @@ available_scales(instrument = "hitopsr")
 ## Value
 
 A tibble with one row per scale and four columns: `Scale` (the display
-name), `camelCase` (the scored-output stem), `nItems`, and `Brief` (the
-clinician-facing definition, as
+name), `camelCase` (the scored-output stem), `nItems` (integer), and
+`Brief` (the clinician-facing definition, as
 [hitopsr_definitions](https://jmgirard.github.io/hitop/reference/hitopsr_definitions.md)
 carries it).
 
@@ -52,7 +52,7 @@ which carries the definitions in full.
 available_scales("hitopsr")
 #> # A tibble: 76 × 4
 #>    Scale                camelCase           nItems Brief                        
-#>    <chr>                <chr>                <dbl> <chr>                        
+#>    <chr>                <chr>                <int> <chr>                        
 #>  1 Agoraphobia          agoraphobia              5 Fear and avoidance of situat…
 #>  2 Antisocial Behavior  antisocialBehavior       8 Behavior that goes against s…
 #>  3 Appearance Focus     appearanceFocus          5 Excessive focus on appearanc…

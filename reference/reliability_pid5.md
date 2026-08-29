@@ -62,8 +62,9 @@ reliability_pid5(
 ## Value
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
-row per scale and columns `scale`, `nItems`, and (when requested)
-`alpha` and `omega`.
+row per scale and columns `Scale` (the scale's canonical display name,
+as the instrument's keying table spells it), `nItems`, and (when
+requested) `alpha` and `omega`.
 
 ## Details
 
@@ -81,7 +82,7 @@ uninstalled lavaan) is returned as `NA` rather than aborting the call.
 # Facet-level reliability for the full PID-5 (alpha only)
 reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)
 #> # A tibble: 25 × 3
-#>    scale                  nItems   alpha
+#>    Scale                  nItems   alpha
 #>    <chr>                   <int>   <dbl>
 #>  1 Anhedonia                   8 -0.211 
 #>  2 Suspiciousness              7 -0.211 

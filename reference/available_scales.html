@@ -107,7 +107,7 @@ is supported. (default = <code>"hitopsr"</code>)</p></dd>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A tibble with one row per scale and four columns: <code>Scale</code> (the
-display name), <code>camelCase</code> (the scored-output stem), <code>nItems</code>, and <code>Brief</code>
+display name), <code>camelCase</code> (the scored-output stem), <code>nItems</code> (integer), and <code>Brief</code>
 (the clinician-facing definition, as <a href="hitopsr_definitions.html">hitopsr_definitions</a> carries it).</p>
     </div>
     <div class="section level2">
@@ -130,7 +130,7 @@ the two tables carry the same stems.</p>
 <span class="r-in"><span><span class="fu">available_scales</span><span class="op">(</span><span class="st">"hitopsr"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 76 × 4</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Scale                camelCase           nItems Brief                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Agoraphobia          agoraphobia              5 Fear and avoidance of situat…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Antisocial Behavior  antisocialBehavior       8 Behavior that goes against s…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Appearance Focus     appearanceFocus          5 Excessive focus on appearanc…</span>

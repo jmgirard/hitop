@@ -282,7 +282,7 @@ reliability_hitopsr(
   items = sprintf("hsr%03d", 1:405)
 )
 #> # A tibble: 76 × 4
-#>    scale                nItems alpha  omega
+#>    Scale                nItems alpha  omega
 #>    <chr>                 <int> <dbl>  <dbl>
 #>  1 Agoraphobia               5 0.419  0.431
 #>  2 Antisocial Behavior       8 0.545  0.553

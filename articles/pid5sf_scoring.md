@@ -201,7 +201,7 @@ reliability_pid5(
   version = "SF"
 )
 #> # A tibble: 25 × 4
-#>    scale                    nItems alpha omega
+#>    Scale                    nItems alpha omega
 #>    <chr>                     <int> <dbl> <dbl>
 #>  1 Suspiciousness                4 0.663 0.665
 #>  2 Impulsivity                   4 0.804 0.808

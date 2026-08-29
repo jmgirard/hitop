@@ -32,7 +32,7 @@ scale_menu <- available_scales("hitopsr")
 scale_menu
 #> # A tibble: 76 × 4
 #>    Scale                camelCase           nItems Brief                        
-#>    <chr>                <chr>                <dbl> <chr>                        
+#>    <chr>                <chr>                <int> <chr>                        
 #>  1 Agoraphobia          agoraphobia              5 Fear and avoidance of situat…
 #>  2 Antisocial Behavior  antisocialBehavior       8 Behavior that goes against s…
 #>  3 Appearance Focus     appearanceFocus          5 Excessive focus on appearanc…
@@ -66,7 +66,7 @@ length of your module. For example, to see the shortest scales:
 scale_menu[order(scale_menu$nItems), ][1:5, ]
 #> # A tibble: 5 × 4
 #>   Scale                        camelCase                  nItems Brief          
-#>   <chr>                        <chr>                       <dbl> <chr>          
+#>   <chr>                        <chr>                       <int> <chr>          
 #> 1 Appetite Loss                appetiteLoss                    3 "Decreased app…
 #> 2 Binge Eating                 bingeEating                     3 "Eating unusua…
 #> 3 Difficulties Reaching Orgasm difficultiesReachingOrgasm      3 "Trouble reach…
@@ -313,7 +313,7 @@ reliability_hitopsr(
   omega = FALSE
 )
 #> # A tibble: 4 × 3
-#>   scale                nItems   alpha
+#>   Scale                nItems   alpha
 #>   <chr>                 <int>   <dbl>
 #> 1 Agoraphobia               5  0.419 
 #> 2 Antisocial Behavior       8  0.545 
@@ -354,7 +354,7 @@ cat(readLines(descriptor), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-08-28",
+#>   "buildDate": "2026-08-29",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],
 #>   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],

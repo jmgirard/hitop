@@ -5,6 +5,63 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+- **Reliability tables now print each scale’s canonical name, in a
+  column named `Scale`.**
+  [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  and
+  [`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md)
+  used to rebuild a display name from the camelCase stem that names the
+  scored column, which got nine names wrong. They now read the name from
+  the same keying table the questionnaires and
+  [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
+  print, so the nine change as follows:
+
+  | was                           | is                              |
+  |-------------------------------|---------------------------------|
+  | `Distress Dysphoria`          | `Distress-Dysphoria`            |
+  | `Non Persistence`             | `Non-persistence`               |
+  | `Non Planfulness`             | `Non-planfulness`               |
+  | `Non Suicidal Self Injury`    | `Non-suicidal Self-injury`      |
+  | `Sex Related Substance Use`   | `Sex-Related Substance Use`     |
+  | `Well Being`                  | `Well-being`                    |
+  | `P Factor`                    | `p-Factor`                      |
+  | `Unusual Beliefs Experiences` | `Unusual Beliefs & Experiences` |
+  | `Negative Affectivity`        | `Negative affectivity`          |
+
+  The first six are HiTOP-SR scales, the seventh is HiTOP-BR,
+  `Unusual Beliefs & Experiences` is a PID-5 facet on both the full and
+  short forms, and `Negative affectivity` is a PID-5-BF domain. Every
+  HiTOP-SR name
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  returns is now a name
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  accepts and hands back unchanged;
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  rejected all six of the old HiTOP-SR spellings.
+
+  The column carrying those names is renamed `scale` to `Scale`,
+  matching
+  [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md).
+  Code selecting `rel$scale` must migrate to `rel$Scale`; there is no
+  dual column and no deprecation shim, the same one-release migration
+  this package uses for its other renamed output columns. Nothing else
+  about these functions’ output changed – the same rows in the same
+  order, and the same `nItems`, `alpha` and `omega` values.
+
+  Relatedly,
+  [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
+  returns `nItems` as an integer rather than a double, so it now matches
+  the `nItems` of
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  and of the reliability tables. The shipped `hitopsr_scales` and
+  `hitopbr_scales` datasets still store `nItems` as a double, so
+  [`identical()`](https://rdrr.io/r/base/identical.html) between one of
+  those columns and `available_scales()$nItems` now returns `FALSE`
+  where it used to return `TRUE`; `==` and `dplyr` joins are unaffected.
+  The **snakecase** package is no longer an import; the regeneration
+  scripts under `data-raw/` still use it, and say so.
+
 - **Scoring and converting now refuse two argument shapes they used to
   let fall through.** Re-running
   [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),

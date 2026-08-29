@@ -44,8 +44,9 @@ reliability_hitopbr(data, items, srange = c(1, 4), alpha = TRUE, omega = TRUE)
 ## Value
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
-row per scale and columns `scale`, `nItems`, and (when requested)
-`alpha` and `omega`.
+row per scale and columns `Scale` (the scale's canonical display name,
+as the instrument's keying table spells it), `nItems`, and (when
+requested) `alpha` and `omega`.
 
 ## Details
 
@@ -65,7 +66,7 @@ alongside the six base spectra.
 # Per-scale alpha for the HiTOP-BR
 reliability_hitopbr(sim_hitopbr, items = 1:45, omega = FALSE)
 #> # A tibble: 8 × 3
-#>   scale            nItems    alpha
+#>   Scale            nItems    alpha
 #>   <chr>             <int>    <dbl>
 #> 1 Antagonism            9 -0.160  
 #> 2 Detachment            6 -0.0706 
@@ -74,5 +75,5 @@ reliability_hitopbr(sim_hitopbr, items = 1:45, omega = FALSE)
 #> 5 Somatoform            8  0.0527 
 #> 6 Thought Disorder      6  0.00754
 #> 7 Externalizing        10  0.145  
-#> 8 P Factor             12 -0.111  
+#> 8 p-Factor             12 -0.111  
 ```

@@ -185,7 +185,7 @@ reliability_pid5(
   version = "FULL"
 )
 #> # A tibble: 25 × 4
-#>    scale                  nItems   alpha    omega
+#>    Scale                  nItems   alpha    omega
 #>    <chr>                   <int>   <dbl>    <dbl>
 #>  1 Anhedonia                   8 -0.211  NA      
 #>  2 Suspiciousness              7 -0.211   0.0411 
