@@ -70,7 +70,7 @@ spelling the table ships today and is unaffected by how that row settles.
       subprocesses, and reports zero differing cells outside the renamed display-name
       column. The script aborts rather than passing if its enumeration comes back empty
       or any enumerated call has no probe.
-- [ ] AC7 That harness is proven able to report a difference by three planted defects
+- [x] AC7 That harness is proven able to report a difference by three planted defects
       differing in form, not only in location — a changed returned number, an added
       condition that leaves every returned value identical, and a deleted probe — each
       run one at a time, each exiting non-zero, with a clean control run before and
@@ -283,6 +283,24 @@ PR: https://github.com/jmgirard/hitop/pull/68
   `Binge Eating`) are none of the nine. The enumeration guards are exercised
   rather than assumed: the empty-enumeration and cell-count guards run on every
   pass, and the no-probe guard is fired by AC7's third planted defect below.
+- **AC7 — verified.** Seven harness runs re-executed at review, one planted
+  defect at a time, each with a clean control before and after it (four controls,
+  each 48 cells / 0 differ / exit 0). Each defect fired on its own dimension and
+  each exited 1:
+  - *a changed returned number* (`out$alpha + 1e-6` in `reliability_engine()`) —
+    24 differing cells, exactly the 24 `alpha = TRUE` cells, all reported as
+    "returned value changed"; conditions changed on 0 cells, verdicts on 0.
+  - *an added condition leaving every value identical* (a `warning()` before the
+    engine's return) — all 48 cells reported as "conditions changed", value
+    changes on 0 cells. The recorded signatures are non-empty on both sides
+    (39 -> 40 conditions on the first cell, real lavaan convergence and
+    reverse-scoring warnings), so the dimension compares content rather than two
+    empty lists.
+  - *a deleted probe* (the HiTOP-BR path removed from `build_paths()`) —
+    `Error: No probe for: reliability_hitopbr`, aborting rather than silently
+    comparing the 40 remaining cells.
+  The working tree was byte-restored after each run (`git status` clean at the
+  end), so no planted defect reached the branch.
 - **AC8 — verified.** `grep -rn snakecase R/ NAMESPACE` exits 1 with no hits.
   `grep -n snakecase DESCRIPTION` returns exactly one line, `43:Config/Needs/data-raw:
   snakecase`; the file's `Imports:`, `Suggests:` and `Depends:` fields were read
