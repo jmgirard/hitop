@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** `m062-builder-download-handover` (hitop); builder branch `m062-descriptor-handover` in `jmgirard/hitop-builder`
+- **Branch/PR:** `m062-builder-download-handover` (hitop); builder PR https://github.com/jmgirard/hitop-builder/pull/7 on `m062-descriptor-handover`
 
 ## Goal
 
@@ -156,6 +156,8 @@ the whole-instrument one ending "take it, or the order is lost."
 - 2026-08-28: T4/T5 — drove six builds and three replacement orderings on the branch; one `build` click per build, `visitor` on every descriptor click, all six logged call strings identical to T1's, and `git diff -U0 origin/main` touches no call-construction line.
 - 2026-08-28: two defects in this session's own work, caught by the driven run and fixed before the evidence was recorded — the replacement notice claimed a loss even after the visitor had taken the file, and `#descriptorNote` said the second button appears beside the first when it appears under it.
 
+- 2026-08-28: T6 first half — builder PR #7 opened from `m062-descriptor-handover`. Its second half (fetch the deployed page after merge and compare bytes) can only run past the merge, so it and AC6 land at the review gate; T6 stays unticked until then.
+- 2026-08-28: AC7 verified — `git diff --name-only origin/main...HEAD` lists only `cairn/ROADMAP.md` and this file, and `devtools::test()` is FAIL 0 / WARN 0 / SKIP 4 / PASS 15504.
 ## Decisions
 
 - 2026-08-28: the descriptor button stays offered after the visitor takes it, until the next completed build replaces it. Saving twice costs nothing, and a first save that landed somewhere unintended would otherwise need a whole rebuild to recover from. The held pair carries a `taken` flag, so a replacement reports a loss only when the file was never taken.
