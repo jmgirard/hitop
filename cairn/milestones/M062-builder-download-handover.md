@@ -173,6 +173,8 @@ descriptor because the first still sat in the folder, the case M063 fixes.
 
 - 2026-08-29: review pass 1 — AC1-AC4 and AC7 verified fresh (six driven builds, 12 clicks, six call strings identical to T1's literals with the comparison proven able to fail, copy read by id, `check()` 0/0/0, `test()` PASS 15504); AC5 verified against the recorded maintainer run on the same builder commit; AC6 open until builder PR #7 merges. Three-lens fan-out returned 9 findings, all from the [O] lens; the session reproduced its first on the live page.
 
+- 2026-08-29: review gate — Jeff triaged the nine findings fix-now; builder `cc48256` closes the mid-build mismatch window, announces the handover in a polite live region, hides the empty container and un-indents the descriptor's log line, and the record corrections for findings 5 and 6 are in the Review section. AC1-AC4 re-verified against `cc48256`.
+
 ## Decisions
 
 - 2026-08-28: the descriptor button stays offered after the visitor takes it, until the next completed build replaces it. Saving twice costs nothing, and a first save that landed somewhere unintended would otherwise need a whole rebuild to recover from. The held pair carries a `taken` flag, so a replacement reports a loss only when the file was never taken.
@@ -255,3 +257,65 @@ follow-up to a hazard M056's own review flagged and deferred, and that
 second found both GitHub inline-comment probes empty and no archived review
 finding contradicted. The [O] diff lens returned nine, ranked, listed with their
 disposition at the gate.
+
+### Findings and disposition
+
+Nine findings, all from the [O] diff lens. Jeff triaged them at the gate on
+2026-08-29; the fixes below landed on builder `cc48256` and every criterion was
+re-verified against it.
+
+1. **Fixed.** The descriptor button stayed clickable during the next build,
+   still holding the previous build's JSON under the stem the new questionnaire
+   was about to take, so a click mid-build handed over a matched-looking pair
+   describing different forms. Reproduced before the fix: with a 2-scale
+   descriptor held and untaken, a 3-scale build in flight, the button saved
+   `hitopsr-module.json` carrying Appearance Focus and Appetite Loss while the
+   `hitopsr-module.docx` that landed was the 3-scale form. `download()` now
+   disables `#saveDescriptor` for the duration of a build; `offerDescriptor()`
+   re-enables it with the new file, and a failed build restores the previous
+   offer in the `finally`. Re-probed after the fix: mid-build the button reports
+   `disabled = true` and a click records no visitor save; the take that follows
+   the build carries the new build's three scales.
+2. **Fixed by the same change.** A failed build left the previous build's
+   descriptor on offer with only a log line; the offer is now restored
+   deliberately, by a `finally` that re-enables only what is still held.
+3. **Fixed.** The untaken-replacement warning reached only `#log`, which carries
+   `aria-live="off"`.
+4. **Fixed.** Nothing announced the second button's appearance, a regression for
+   a screen-reader visitor who used to get the file automatically. A new
+   `#handoverLive` polite region beside the buttons now says which scoring file
+   is on offer, when a replacement took an untaken one away, and when a click
+   saved one. `#downloadHint` and README gained the during-build clause so the
+   copy stays true.
+5. **Corrected here rather than in Tasks** (implement owns that section): T2's
+   `index.html:912-1024` and T3's `:499-512`, `:860-872` were left behind by the
+   `5a7cea0` layout move. At `5a7cea0` the real anchors were `saveFile` 955,
+   `offerDescriptor` 981, `takeDescriptor` 1000, `#descriptorNote` 519,
+   `crosswalkSentence()` 888; `cc48256` moves them again.
+6. **Corrected.** The 2026-08-29 work-log line gives the rebased branch diff as
+   "119/37 lines". `git diff --numstat origin/main...2b7667b` is 121 added / 35
+   removed. The line stands as history; this is its correction.
+7. **Fixed.** `.handover` is `hidden` until a build fills it, so the empty
+   container no longer takes a gap beside the download button or a full-width
+   row of its own under the narrow breakpoint.
+8. **Fixed.** `takeDescriptor()`'s log line drops the two-space indent that
+   marks output of the R call above it, which it does not follow.
+9. **Acknowledged.** AC6 and T6's second half are open until builder PR #7
+   merges; no criterion was ticked on the PR URL alone.
+
+### Re-verification after the fixes (builder `cc48256`)
+
+Driven fresh on the reloaded page, page controls actuated through the page's own
+handlers and every save intercepted by the same `click` wrapper. Six builds:
+12 clicks, one `build` per build for the questionnaire and one `visitor` per
+descriptor, and zero `.json` clicks with any origin but `visitor`. The six
+logged call strings compare 0-differ against T1's literals, and the whole
+builder diff still touches no call-construction line. The three orderings hold:
+Word-shuffled A untaken → Qualtrics held the Qualtrics build's three scales with
+no `itemOrder`; the reverse held A's two with an `itemOrder`; the same-format
+rebuild taken after each logged "the one you already saved is unaffected" and
+held a second, different shuffle. The offer survives a move to the format step
+and back and survives *Clear all*, which disables the download button. The three
+`#shuffleCrosswalk` branches, `#descriptorNote` and `#downloadHint` read
+correctly. Both buttons still report one row (`top` equal, download `right` 414
+against descriptor `left` 422), and the handover container is `hidden` at load.
