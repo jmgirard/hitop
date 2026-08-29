@@ -124,7 +124,11 @@ generate_docx_hitopbr <- function(
 #'   collected columns through `item_order` before scoring:
 #'   `collected[order(attr(out, "item_order"))]`. Scoring printed-order columns
 #'   directly returns wrong scale scores and raises no error --- or pass
-#'   `descriptor` and let the saved file carry the order for you.
+#'   `descriptor` and let the saved file carry the order for you. The recipe
+#'   assumes `collected` is in the order the form printed, its first column
+#'   holding the answer to the paper's item 1; columns already in instrument
+#'   order need no reordering, and applying it to them scrambles what was
+#'   right.
 #' @param descriptor An optional path to write a module descriptor to, beside
 #'   the Word file. The saved file records which scales the form covers and
 #'   which instrument items they draw on, so [read_module()] hands the module
@@ -139,7 +143,8 @@ generate_docx_hitopbr <- function(
 #'   already at that path included.
 #'   It must name a path of its own: an empty string, or the same path as
 #'   `file`, is refused rather than leaving you with no descriptor and no
-#'   error. (default = `NULL`)
+#'   error. Once both files are on disk the descriptor's path is announced on
+#'   the console, after the message naming the Word file. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'

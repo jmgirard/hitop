@@ -73,7 +73,11 @@ original order — not the order a shuffled form prints them in. Reorder the
 collected columns through \code{item_order} before scoring:
 \code{collected[order(attr(out, "item_order"))]}. Scoring printed-order columns
 directly returns wrong scale scores and raises no error --- or pass
-\code{descriptor} and let the saved file carry the order for you.}
+\code{descriptor} and let the saved file carry the order for you. The recipe
+assumes \code{collected} is in the order the form printed, its first column
+holding the answer to the paper's item 1; columns already in instrument
+order need no reordering, and applying it to them scrambles what was
+right.}
 
 \item{descriptor}{An optional path to write a module descriptor to, beside
 the Word file. The saved file records which scales the form covers and
@@ -89,7 +93,8 @@ then cannot be written, the descriptor is removed again, a file that was
 already at that path included.
 It must name a path of its own: an empty string, or the same path as
 \code{file}, is refused rather than leaving you with no descriptor and no
-error. (default = \code{NULL})}
+error. Once both files are on disk the descriptor's path is announced on
+the console, after the message naming the Word file. (default = \code{NULL})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}
