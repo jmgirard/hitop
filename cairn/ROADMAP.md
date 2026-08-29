@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-08-29 (third pass. M064 merged and archived — hitop PR #71 squash-merged `ea2be47`, hitop-builder PR #10 squash-merged `2a7f2ae`, Pages green and byte-matched. Four review findings were fixed at the gate before merge; the untimed webR runtime download was added to the builder row at Jeff's disposition under the finding-absorbing rule, and the refusal messages' destination was accepted as DESIGN Known issue 8. M060's terminal row pruned under the five-row retention rule. Byte budgets: `ROADMAP.md` 24,354 against 24,000 — over, see below — and `LESSONS.md` 19,974 against 20,000, held under by compressing the two browser-pane entries to make room for M064's probing technique. M065 stays planned.)_
+_Last hygiene check: 2026-08-29 (fourth pass. M065 merged and archived — PR #72 squash-merged `5b89bf0`, all eight CI checks green across Linux, macOS and Windows. Five review findings fixed at the gate, each shown able to fail; finding 7 routed to the docs candidate row at Jeff's disposition. M061's terminal row pruned under the five-row retention rule. Byte budgets: `ROADMAP.md` 23,429 against 24,000 and `LESSONS.md` 19,990 against 20,000, the latter held under by compressing the M032 abort-the-block entry as it absorbed M065's loop case.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M067)._
 
 ## Milestones
@@ -10,9 +10,8 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | M066 | The step bar shows its three buttons run in order | done | — | normal | milestones/archive/M066-builder-stepbar-chevrons.md |
 | M063 | Every file the builder writes says which form it belongs to | done | M062 | normal | milestones/archive/M063-builder-download-naming.md |
 | M064 | The builder refuses loudly when the package it installs no longer matches it | done | — | normal | milestones/archive/M064-builder-version-guard.md |
-| M065 | The generators announce the descriptor they write | review | — | normal | milestones/M065-descriptor-write-announced.md |
+| M065 | The generators announce the descriptor they write | done | — | normal | milestones/archive/M065-descriptor-write-announced.md |
 | M062 | Both files a builder download produces reach the visitor's disk | done | — | normal | milestones/archive/M062-builder-download-handover.md |
-| M061 | The reliability family invents scale display names instead of reading them | done | — | normal | milestones/archive/M061-scale-name-consistency.md |
 
 ## Candidates
 
