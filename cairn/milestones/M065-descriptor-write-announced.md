@@ -136,3 +136,44 @@ carries the entry with no milestone number in it; no new top-level file, so no
 
 Executable surface touched, user-facing tier, so the full three-lens fan-out ran
 in fresh context.
+
+Three fresh-context lenses ran. The blame-history lens reported no conflict: the
+alert sits after `built <- TRUE`, outside the rollback window M055 built, and
+`write_descriptor_sidecar()` is untouched. The prior-review lens reported no
+prior-review evidence on GitHub (`pulls/comments` empty) and no regression
+against the archived Review sections of M054/M055/M056 or `LESSONS.md`. The
+diff-bug lens found no correctness bug in `R/` and returned twelve findings,
+all in the tests, docs or tracking, ranked below with their disposition.
+
+1. The AC1 loop aborts on the first generator when the feature is absent:
+   `msgs[[said]]` with `said` empty throws, so the red-phase run covered only
+   `generate_docx_hitopsr`. Confirmed against
+   `tests/testthat/test-generator-descriptor.R:586-588`.
+2. The same abort-the-loop fragility in AC2's rollback `verify`:
+   `conditionMessage(err)` with `err` NULL would take the remaining
+   generator x case combinations with it.
+3. AC1 asserts message text and order but not the `cli_alert_success` prefix or
+   the `{.file }` styling the criterion names, so demoting the call to
+   `cli_alert_info()` would leave the suite green.
+4. `CLI_PLAIN` pins `cli.width` but not `cli.condition_width`; AC2's first case
+   greps the descriptor path out of an abort message, which a long `TMPDIR` on
+   another runner could wrap.
+5. The nine-line emit block is triplicated verbatim across the three
+   generators.
+6. `capture_generator_failure()` muffles every warning unconditionally, not
+   only the builder's connection warnings its comment names.
+7. The `@param descriptor` roxygen narrates the write-and-rollback behavior but
+   not the new console message.
+8. AC2's refused-path and colliding-path forms abort before any write, so they
+   hold regardless of this milestone's change; only the rollback form and its
+   writable-target control discriminate.
+9. The milestone file was uncommitted when the lens ran. Resolved at `0dd4923`.
+10. Scope cites GP2 for the NEWS entry, but GP2 is "Scored output never changes
+    silently" (`cairn/DESIGN.md:104`) and this changes no scored value.
+11. The new alert prints into the suite's console output from the pre-existing
+    tests that pass `descriptor` without capturing messages.
+12. The NEWS bullet now reads write -> rollback -> console -> `itemOrder`,
+    interleaving two topics.
+
+None of the twelve demonstrates an acceptance criterion failing, so none meets
+the return floor; dispositions are taken at the merge gate.
