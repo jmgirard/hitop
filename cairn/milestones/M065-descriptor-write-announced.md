@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
-- **Branch/PR:** `m065-descriptor-write-announced`
+- **Branch/PR:** `m065-descriptor-write-announced` / https://github.com/jmgirard/hitop/pull/72
 
 ## Goal
 
@@ -29,19 +29,19 @@ already happens.
 
 ## Acceptance criteria
 
-- [ ] AC1 Each of the three generators, called with `descriptor = <path>`, emits
+- [x] AC1 Each of the three generators, called with `descriptor = <path>`, emits
       a `cli::cli_alert_success()` naming that path with `{.file }`, after the
       alert naming the instrument file; called without `descriptor`, none of them
       emits such a message. Verified by a test whose domain is the three
       generator names crossed with descriptor and no-descriptor, asserting on the
       captured message text and its order relative to the instrument alert.
-- [ ] AC2 The message never announces a descriptor that is not on disk when the
+- [x] AC2 The message never announces a descriptor that is not on disk when the
       call returns: for each generator crossed with each of the three failure
       forms the code can take — the descriptor path refused before any write, the
       descriptor and instrument paths colliding, and the instrument write failing
       after the sidecar was written and rolled back — the test asserts no
       descriptor success message was emitted and no descriptor file remains.
-- [ ] AC3 `NEWS.md` records the new console output, and the entry names a
+- [x] AC3 `NEWS.md` records the new console output, and the entry names a
       behavior the AC1 test would fail without.
 - [ ] AC4 `devtools::document()` leaves no diff, `devtools::test()` is clean, and
       `devtools::check()` reports no error, warning or note that the merge-base
@@ -83,7 +83,56 @@ already happens.
 - 2026-08-29: T4 extended the existing unreleased `descriptor` bullet in `NEWS.md` rather than adding a second one for the same feature; the sentence landed in the T2/T3 commit, which staged the whole tree.
 - 2026-08-29: T5 `devtools::document()` left no diff; `devtools::test()` clean (15,567 passing, 4 skipped); branch `devtools::check()` Status OK, 0 errors, 0 warnings, 0 notes — the same figures as T1's `d927234` baseline.
 - 2026-08-29: all tasks checked; status set to review.
+- 2026-08-29: /milestone-review opened draft PR #72; AC1/AC2/AC3 verified with fresh evidence including a feature-reverted discrimination run; consistency gate clean; AC4 and the diff-bug lens still in flight at this checkpoint.
 
 ## Decisions
 
 ## Review
+
+Reviewed 2026-08-29 on branch `m065-descriptor-write-announced` at `b0ae919`,
+merge base `d927234` (`origin/main` unmoved since the branch was cut, so no
+merge was needed). PR https://github.com/jmgirard/hitop/pull/72.
+
+### Acceptance-criterion evidence
+
+- **AC1** — `testthat::test_local(filter = "generator-descriptor")` green over
+  the whole file. The announcement test loops the three generator names, finds
+  exactly one message carrying the descriptor's own path in each, matches
+  "descriptor" in it, and asserts its index is greater than the index of the
+  message carrying the instrument path; the no-`descriptor` companion asserts
+  the instrument message is still present and no message mentions a descriptor.
+  Discrimination shown fresh in a throwaway clone with only the three
+  `R/generate_*.R` hunks reverted to `origin/main`: the announcement test goes
+  red (`Expected said to have length 1. Actual length: 0.`) while the silent
+  control stays green.
+- **AC2** — same run. The failure-form test crosses the three generators with
+  the three failure forms; each case names the failure it must be (rlang error
+  quoting the descriptor path; rlang error saying "different"; a builder error
+  that must *not* quote the descriptor path) before asserting no descriptor
+  message and no descriptor file. The rollback form's writable-target control
+  asserts the same descriptor path is written and announced when the builder
+  can open its target — and that control goes red in the feature-reverted
+  clone (three failures, one per generator), so the case reaches the sidecar
+  rather than passing by never getting there.
+- **AC3** — `NEWS.md` extends the unreleased `descriptor` bullet with: the
+  console names the descriptor it saved, after the message naming the form
+  itself, and a call passing no `descriptor` says nothing about one. Both
+  clauses are what the AC1 test asserts (path present + index ordering; the
+  silent control), and both were observed failing in the reverted clone.
+- **AC4** — pending: `devtools::check()` still running.
+
+### Consistency gate
+
+`cairn_validate.py` exit 0, all 16 checks PASS (21 advisories, all pre-existing:
+20 dangling legacy D-id tokens and one references-staleness note on
+`schmukle2026.md`, none touched by this diff). No `DESIGN.md` principle changed,
+so `cairn_impact.py` was not run. Toolchain slot: `document()` no diff; no
+generated file hand-edited; `README.Rmd`/`README.md` untouched and last written
+by the same commit; `pkgdown::check_pkgdown()` reports no problems; `NEWS.md`
+carries the entry with no milestone number in it; no new top-level file, so no
+`.Rbuildignore` entry owed; `check()` clean. Line-ending policy check passed.
+
+### Independent review
+
+Executable surface touched, user-facing tier, so the full three-lens fan-out ran
+in fresh context.
