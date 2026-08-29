@@ -1,6 +1,6 @@
 # M062: Both files a builder download produces reach the visitor's disk
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -96,97 +96,55 @@ this plan gate (work log). The descriptor's JSON format is untouched.
       compare bytes; write the URL into the header.
 - [x] T7 Hand the maintainer the Chrome and Safari runs and record what arrived.
 
-## Evidence: baseline and driven run (T1, T4, T5)
+## Evidence: baseline, driven run and real downloads (T1, T4, T5, T7)
 
-Merge base = builder `main` at `8b30f96` (`d046d03` plus the merged
-scale-definition popups). T1's baseline was driven on the deployed page at
-`d046d03` (sha256 `0386d1c4…73450`, matching byte for byte); `git diff -U0
-d046d03 8b30f96` touches no call-construction line, so its literals are the
-merge base's. The branch was re-driven locally after rebasing onto `8b30f96`.
-Selections: **A** = `appearanceFocus` + `appetiteLoss` (2 of 76 scales, 8
-items); **B** = all 76 (405 items), so `wholeInstrument()` is true; format
-options at the page's defaults. Both runs wrap
+Merge base = builder `main` at `8b30f96`. T1's baseline was driven on the page
+deployed at `d046d03`, byte-identical to that commit, and no diff from there to
+`8b30f96` or to the branch touches a call-construction line, so T1's literals
+are the merge base's and the branch's alike. Selections: **A** =
+`appearanceFocus` + `appetiteLoss` (2 of 76 scales, 8 items); **B** = all 76
+(405 items, `wholeInstrument()` true). Both runs wrap
 `HTMLAnchorElement.prototype.click` to record `download` and `data-origin`
-without calling through, so the tables are what the page attempted and no file
-reached a downloads folder; controls are driven through `read_page` refs.
+without calling through, so no file reached a downloads folder.
 
-| Build | Logged call string (identical merge base and branch, character for character) | Base | Branch |
-|---|---|---|---|
-| A docx | `> generate_docx_hitopsr(file = out_path, descriptor = desc_path, module = <2 scales>)` | `.docx`, `.json` | `.docx` |
-| A qualtrics | `> generate_qualtrics_hitopsr(file = out_path, descriptor = desc_path, module = <2 scales>, block_name = "HiTOP-SR", id_prefix = "HSR")` | `.txt`, `.json` | `.txt` |
-| A redcap | `> generate_redcap_hitopsr(file = out_path, descriptor = desc_path, module = <2 scales>, form_name = "hitopsr_questionnaire", required = TRUE)` | `.zip`, `.json` | `.zip` |
-| B docx | `> generate_docx_hitopsr(file = out_path, descriptor = desc_path)` | `.docx`, `.json` | `.docx` |
-| B qualtrics | `> generate_qualtrics_hitopsr(file = out_path, descriptor = desc_path, block_name = "HiTOP-SR", id_prefix = "HSR")` | `.txt`, `.json` | `.txt` |
-| B redcap | `> generate_redcap_hitopsr(file = out_path, descriptor = desc_path, form_name = "hitopsr_questionnaire", required = TRUE)` | `.zip`, `.json` | `.zip` |
+The six logged call strings, identical base and branch character for character,
+are `> generate_{docx,qualtrics,redcap}_hitopsr(file = out_path, descriptor =
+desc_path`, then `, module = <2 scales>` under A and nothing under B, then `)`
+· `, block_name = "HiTOP-SR", id_prefix = "HSR")` · `, form_name =
+"hitopsr_questionnaire", required = TRUE)`. A planted `desc_path` → `desc2`
+edit made the comparison report a difference, so it fails when it should.
 
 Each baseline build fired two synthetic clicks; each branch build fires one,
-`data-origin="build"`, for the questionnaire. In all six the descriptor's own
-button was then pressed and its click carried `data-origin="visitor"`, the value
-only that handler sets. The `extra`/`naming` strings the log omits — docx `,
-papersize = paper_size, renumber = TRUE, randomize = FALSE`; qualtrics `,
-block_name = block_name, id_prefix = id_prefix`; redcap `, form_name =
-form_name, required = TRUE` — are unchanged: `git diff -U0 origin/main` touches
-no call-construction line. A planted `desc_path` → `desc2` edit made the
-six-string comparison report a difference, so it can fail.
+`data-origin="build"`, for the questionnaire, and the descriptor's own button
+then carried `data-origin="visitor"`, the value only that handler sets. The
+control stays visible, enabled and named for the file after a build, across a
+trip to the format step and back, and after *Clear all*, since it sits outside
+`.downloads`, whose buttons `refreshTally()` disables. Three orderings —
+Word-shuffled A → Qualtrics, the reverse, and a same-format rebuild taken after
+each — were asserted against the held JSON's `scales` and `itemOrder`, and the
+replacement log read correctly in each. `#descriptorNote`, `#downloadHint` and
+`#shuffleCrosswalk`, read by id, describe the two-step handover in every
+branch.
 
-After a build the control is visible, enabled and named for the file, still so
-after stepping out to the format screen and back, and still enabled after
-*Clear all* empties the selection and disables the download button — it sits
-outside `.downloads`, whose buttons `refreshTally()` disables. Three orderings:
+The 2026-08-29 layout move (builder `5a7cea0`) puts both buttons in one
+`.downloadrow` flex row, `.downloads` and `.handover` staying separate
+containers because `refreshTally()` disables `.downloads button`. Re-driven at
+1100x900 for one A/docx build: both buttons on one row (`top` 296 each,
+descriptor `left` 422 against download `right` 414), one `build` click then one
+`visitor` click, and the descriptor button still enabled and named after *Clear
+all*. `#descriptorNote` names no position, so AC4 holds in the stacked 375px
+layout too.
 
-| Ordering | Held after the second build | Log |
-|---|---|---|
-| Word shuffled A → Qualtrics with `agoraphobia`+`callousness`+`checking` | those three, no `itemOrder` | "replaced before you took it" |
-| the same two reversed | A's two, `itemOrder` `[350,335,79,202,16,144,389,201]` | "replaced before you took it" |
-| Word shuffled A rebuilt, taken after each | `[335,79,202,201,350,389,144,16]` then `[202,335,201,389,79,350,144,16]` | "the one you already saved is unaffected" |
-
-Copy read by id: `#descriptorNote` opens "A download here is two files, and
-takes two clicks"; `#downloadHint` names both buttons and when each turns on;
-`#shuffleCrosswalk` reads correctly in all three branches, the whole-instrument
-one ending "take it, or the order is lost." The rebase leaves the picker's 76
-definition popups intact and non-empty.
-
-### Layout revision (2026-08-29)
-
-At Jeff's request the descriptor button now sits *beside* the questionnaire
-button rather than under it. `.downloads` and `.handover` share one
-`.downloadrow` flex row; they stay separate containers, because
-`refreshTally()` disables `.downloads button` and must not reach the handover
-button. Re-driven on the branch at 1100x900 (one build, A/docx, not the whole
-six): the two buttons report `top` 296 both, the descriptor's `left` 422 against
-the download's `right` 414 — one row, an 8px `--s2` gap — and the clicks are one
-`build` for `hitopsr-module.docx` then one `visitor` for `hitopsr-module.json`.
-After *Clear all* the download button is `disabled` and the descriptor button is
-still shown, enabled and named `Save the scoring file (hitopsr-module.json)`, so
-the separation invariant survives the regrouping. At 375px the row's children go
-full width and stack, both at `left` 16. `#descriptorNote` no longer names a
-position — "A second button then appears" — since only the wide layout puts it
-beside; re-read by id, it and `#downloadHint` still describe the two-step
-handover, so AC4 holds. Builder commit `5a7cea0`.
-
-## Evidence: the real downloads (T7, AC5)
-
-Run by the maintainer on 2026-08-29 against the branch page served from the
-local checkout at `http://localhost:8087/`, one build per browser, taking the
-descriptor with its own button each time. Automation never saw the folder; the
-four files below are what `ls -lT ~/Downloads` reported afterwards.
-
-| Browser | Build | Files that arrived | Descriptor's scales |
-|---|---|---|---|
-| Chrome | Qualtrics, 2 scales | `hitopsr-module.txt` 2337 B (23:10:04), `hitopsr-module.json` 258 B (23:10:09) | Body Dissatisfaction, Callousness |
-| Safari | REDCap, 2 scales | `hitopsr-module.zip` 738 B (23:11:11), `hitopsr-module-2.json` 248 B (23:11:13) | Binge Eating, Difficulties Reaching Orgasm |
-
-Each pair is matched from the file contents, not from the timestamps: the
-`.txt`'s ten `[[ID:HSR_nnn]]` values are exactly the first descriptor's `items`
-(34, 43, 67, 211, 236, 250, 255, 271, 329, 395), and the `.zip`'s six
-`instrument.csv` field names are exactly the second's (82, 124, 151, 358, 392,
-398). Two files arrived per build in both browsers, so no browser withheld the
-descriptor once it was the visitor's own click.
-
-Safari renamed the second descriptor `hitopsr-module-2.json` because the first
-still sat in the folder. Nothing was lost and nothing here is wrong, but a
-visitor who builds twice ends up with two identically-stemmed scoring files and
-nothing on either naming the build it belongs to — the case M063 exists to fix.
+T7: the maintainer built one form per browser on 2026-08-29 against the branch
+page served from a local checkout, taking the descriptor with its own button;
+automation never saw the folder. Chrome (Qualtrics, 2 scales) received
+`hitopsr-module.txt` and `hitopsr-module.json`; Safari (REDCap, 2 scales)
+received `hitopsr-module.zip` and `hitopsr-module-2.json`. Each pair is matched
+by content, not timestamp: the `.txt`'s ten `[[ID:HSR_nnn]]` values are exactly
+the first descriptor's `items`, the `.zip`'s six `instrument.csv` field names
+exactly the second's. Both browsers delivered both files, so neither withheld
+the descriptor once it was the visitor's own click. Safari renamed the second
+descriptor because the first still sat in the folder, the case M063 fixes.
 
 ## Work log
 
@@ -210,6 +168,8 @@ nothing on either naming the build it belongs to — the case M063 exists to fix
 - 2026-08-29: implement closes with `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504 and `git diff --name-only origin/main...HEAD` still listing only the two `cairn/` paths. Every task but T6 is checked; T6's remaining half — fetch the deployed page and compare bytes — and AC6 with it cannot run before PR #7 merges, so they carry to the review gate as recorded on 2026-08-28.
 
 - 2026-08-29: review gate failed before any acceptance criterion was verified — `cairn_validate.py` FAILs `weight caps`: this file's plan-owned body is 190 lines against the <150 cap (shed >=41), heaviest section `Evidence: baseline and driven run (T1, T4, T5)` at 68 lines. Status back to in-progress for a compressing rewrite; the `hitop` package itself is unaffected (`devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504, and `git diff --name-only origin/main...HEAD` still lists only the two `cairn/` paths). Review PR https://github.com/jmgirard/hitop/pull/69 opened as a draft and left open.
+
+- 2026-08-29: the two evidence sections were compressed into one and the milestone file is back under the plan-owned cap — 148 lines against <150, `cairn_validate` `weight caps` PASS; the driven-run tables and the downloads table became prose, keeping the six call-string literals AC3 compares against, the provenance flags, the three replacement orderings, the layout measurements and the per-browser file lists. `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504 and the branch diff still lists only the two `cairn/` paths. Status back to review.
 
 ## Decisions
 
