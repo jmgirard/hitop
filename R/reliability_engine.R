@@ -18,8 +18,9 @@
 #'   to `items_scales`. Read from the instrument's keying table by the caller and
 #'   passed through unchanged: the engine never derives a printed name from a
 #'   camelCase stem, because the two spellings diverge on nine scales and the
-#'   table's is the canonical one. A length that disagrees with `items_scales`
-#'   is caught by `data.frame()` below, which is why no separate guard is added.
+#'   table's is the canonical one. A length that disagrees with `items_scales` is
+#'   guarded explicitly below: `data.frame()` would recycle a divisor length
+#'   rather than abort, silently labelling the rows with a repeating name.
 #' @param alpha,omega Logical; whether to compute each coefficient. A coefficient
 #'   is included as an output column only when its flag is TRUE.
 #' @param call The calling environment, forwarded to the validators so aborts are
@@ -47,6 +48,20 @@ reliability_engine <- function(
     n_items = n_items,
     reverse_items = reverse_items,
     srange = srange,
+    call = call
+  )
+
+  ## An explicit guard, not data.frame()'s: data.frame() aborts only when
+  ## neither length divides the other, so a supplier handing over a shorter name
+  ## vector whose length divides the scale count would recycle it and label the
+  ## rows with a repeating name -- the wrong-name class this engine exists to
+  ## avoid.
+  cli_assert(
+    length(scale_names) == length(items_scales),
+    c(
+      "{.arg scale_names} must have one name per scale.",
+      "x" = "Got {length(scale_names)} name{?s} for {length(items_scales)} scale{?s}."
+    ),
     call = call
   )
 

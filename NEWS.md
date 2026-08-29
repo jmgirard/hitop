@@ -37,7 +37,10 @@ before a CRAN submission.
 
   Relatedly, `available_scales()` returns `nItems` as an integer rather than a
   double, so it now matches the `nItems` of `hitop_module()` and of the
-  reliability tables. The **snakecase** package is no longer an import; the
+  reliability tables. The shipped `hitopsr_scales` and `hitopbr_scales` datasets
+  still store `nItems` as a double, so `identical()` between one of those columns
+  and `available_scales()$nItems` now returns `FALSE` where it used to return
+  `TRUE`; `==` and `dplyr` joins are unaffected. The **snakecase** package is no longer an import; the
   regeneration scripts under `data-raw/` still use it, and say so.
 
 * **Scoring and converting now refuse two argument shapes they used to let

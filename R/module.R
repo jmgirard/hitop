@@ -181,8 +181,8 @@ apply_module <- function(
 # address items by
 # POSITION within the columns the caller supplied, so scoring module-collected
 # data needs the module's original numbers translated into positions within
-# `module$items` (which is ascending). Returns `n_items`, `reverse_items`, and
-# `items_scales` ready for score_engine()/reliability_engine().
+# `module$items` (which is ascending). Returns `n_items`, `reverse_items`,
+# `items_scales` and `scale_names` ready for score_engine()/reliability_engine().
 #
 # `items` and `scales` are the instrument's own tables, so the reverse key is
 # read from the package's canonical source rather than trusted from the

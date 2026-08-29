@@ -136,3 +136,53 @@ test_that("every emitted nItems is integer", {
 # --- AC8: the dependency is gone ---------------------------------------------
 # Verified by the grep AC8 names, run at review; nothing in R/ can assert the
 # absence of a package it no longer references.
+
+# --- the engine's scale_names length guard ------------------------------------
+# Added at the M061 review. data.frame() aborts only when neither length divides
+# the other, so a supplier handing over a divisor-length name vector would have
+# been recycled into a repeating name rather than refused. The guard is on the
+# unexported engine, which no exported call can reach with a bad length today,
+# so it is fired directly.
+
+test_that("reliability_engine() refuses a scale_names length that is not one per scale", {
+  scales <- hitopbr_scales$itemNumbers
+  args <- list(
+    data = sim_hitopbr,
+    items = 1:45,
+    n_items = 45,
+    reverse_items =
+      hitopbr_items[hitopbr_items$Reverse == TRUE, "HBR", drop = TRUE],
+    items_scales = scales,
+    srange = c(1, 4),
+    alpha = FALSE,
+    omega = FALSE
+  )
+
+  # A divisor length: 4 names for 8 scales. data.frame() would have recycled
+  # this into a,b,c,d,a,b,c,d without complaint.
+  expect_equal(length(scales) %% 4L, 0L)
+  expect_error(
+    do.call(
+      reliability_engine,
+      c(args, list(scale_names = hitopbr_scales$Scale[1:4]))
+    ),
+    "one name per scale"
+  )
+
+  # A non-divisor length, which data.frame() would also have caught -- asserted
+  # here so the guard, not data.frame(), is what reports it.
+  expect_error(
+    do.call(
+      reliability_engine,
+      c(args, list(scale_names = hitopbr_scales$Scale[1:3]))
+    ),
+    "one name per scale"
+  )
+
+  # The control: the correct length still returns, and returns those names.
+  ok <- do.call(
+    reliability_engine,
+    c(args, list(scale_names = hitopbr_scales$Scale))
+  )
+  expect_identical(ok$Scale, hitopbr_scales$Scale)
+})

@@ -78,7 +78,7 @@ score_hitopsr <- function(
   missing <- match.arg(missing)
   module <- resolve_module_arg(module, subset)
   ## Resolve this instrument's data: which items reverse and the per-scale
-  ## item-number lists. With a `module`, the same three inputs are remapped to
+  ## item-number lists. With a `module`, the same inputs are remapped to
   ## positions within the module's own columns; without one, item number and
   ## position coincide. Shared arg validation and the pipeline run in the engine.
   inputs <- hitopsr_engine_inputs(module)

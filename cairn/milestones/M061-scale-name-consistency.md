@@ -423,3 +423,34 @@ what the run reports. Status stays `review`; all nine go to triage at the gate.
    activity happened on the 27th. Both entries are on this branch and unmerged,
    so they are not yet history and can be corrected in place rather than
    superseded. **Disposition: fix now.**
+
+#### Triage outcome (2026-08-28 gate)
+
+Jeff selected "fix six, then merge". Findings 1, 2, 5, 6, 7 and 9 were fixed on
+the branch before the approval marker was written; findings 3, 4 and 8 — all
+harness guard-reach, none a wrong answer on any current input — were filed as a
+follow-up candidate row. Nothing was rejected. That row is filed at the
+post-merge hygiene pass rather than here: ROADMAP.md sits at its 59-line cap,
+and search-first puts these three with the existing maintainer-run
+`data-raw/` verification-tooling row, whose extension needs the disposition
+question the records-hygiene rules put to the maintainer.
+
+- **1 fixed.** `reliability_engine()` gains an explicit `cli_assert()` that
+  `length(scale_names) == length(items_scales)`, and the roxygen now says what is
+  true: `data.frame()` would recycle a divisor length rather than abort. A test
+  in `test-reliability-scale-names.R` fires the guard on a divisor length (4
+  names for 8 scales) and on a non-divisor length, asserts the message rather
+  than bare failure, and keeps a passing control. Proven able to fail: with the
+  `cli_assert()` block deleted the file goes red, and green again once restored.
+- **2 fixed.** `cairn/DESIGN.md:44` corrected in place and marked
+  (`corrected M061`).
+- **5 fixed.** `R/module.R:184` now names the fourth element; `R/score_hitopsr.R:81`
+  no longer says "three".
+- **6 fixed.** `tests/testthat/test-available_scales.R` compares with
+  `expect_identical(out$nItems, as.integer(hitopsr_scales$nItems))` and says why.
+- **7 fixed.** `NEWS.md` now states that the shipped `*_scales` datasets keep a
+  double `nItems`, so `identical()` against `available_scales()$nItems` flips to
+  `FALSE` while `==` and joins are unaffected.
+- **9 fixed.** D-046 and D-047 now date the plan gate `2026-08-28`. Both entries
+  are unmerged, so this is a correction before the record becomes history, not an
+  edit to history.

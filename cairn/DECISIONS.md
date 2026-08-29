@@ -24,7 +24,7 @@ than moved to Suggests, and its remaining requirement is declared as
 `Config/Needs/data-raw: snakecase` — a field R's own dependency resolution
 ignores, so it installs for nobody and documents the need for a contributor
 regenerating the data. Each of the three scripts that calls it carries a header
-note saying so. Decided by Jeff at the 2026-08-27 M061 plan gate (removal over
+note saying so. Decided by Jeff at the 2026-08-28 M061 plan gate (removal over
 Suggests, over the recommendation) and at the 2026-08-28 implementation gate (the
 `Config/Needs` line alongside the header notes). Rejected: Suggests, which would
 still install the package for every `dependencies = TRUE` user for the benefit of
@@ -59,7 +59,7 @@ module keeps — and never derives one. The module path reads the table rather t
 the module object it was handed, so the module and the reliability call stay two
 independent readers of one column (IP2; M061-D1 in the milestone file). The
 returned column is renamed `scale` to `Scale`, matching `available_scales()`.
-Rejected at the 2026-08-27 M061 plan gate: keeping a derived name and making the
+Rejected at the 2026-08-28 M061 plan gate: keeping a derived name and making the
 derivation lossless, by an exception map or by respelling the tables' stored
 names — the first is the special case D-041 deleted, the second changes IP1
 content to suit a derivation. The nine pairs and the migration note are in
