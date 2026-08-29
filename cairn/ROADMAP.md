@@ -9,7 +9,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 |---|---|---|---|---|---|
 | M066 | The step bar shows its three buttons run in order | done | — | normal | milestones/archive/M066-builder-stepbar-chevrons.md |
 | M063 | Every file the builder writes says which form it belongs to | done | M062 | normal | milestones/archive/M063-builder-download-naming.md |
-| M064 | The builder refuses loudly when the package it installs no longer matches it | planned | — | normal | milestones/M064-builder-version-guard.md |
+| M064 | The builder refuses loudly when the package it installs no longer matches it | review | — | normal | milestones/M064-builder-version-guard.md |
 | M065 | The generators announce the descriptor they write | planned | — | normal | milestones/M065-descriptor-write-announced.md |
 | M062 | Both files a builder download produces reach the visitor's disk | done | — | normal | milestones/archive/M062-builder-download-handover.md |
 | M061 | The reliability family invents scale display names instead of reading them | done | — | normal | milestones/archive/M061-scale-name-consistency.md |

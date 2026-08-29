@@ -75,6 +75,15 @@ Followed by `/cairn-release` — a CRAN release walk (never self-submits):
 - Bump `Version:` in DESCRIPTION.
 - Handoff checklist (user runs): `devtools::submit_cran()`, confirm the CRAN
   email, then `usethis::use_github_release()` + `usethis::use_dev_version()`.
+- Downstream: the browser builder [`jmgirard/hitop-builder`](https://github.com/jmgirard/hitop-builder)
+  installs this package from r-universe at page load and declares the oldest
+  version it will build against as `MIN_HITOP` in its `index.html`. If the
+  release changes any surface that page calls — `available_scales()`,
+  `hitop_module()`, `scale_definitions()`, or the three `generate_*_hitopsr()`
+  functions including their `descriptor` argument — raise `MIN_HITOP` to this
+  version and update the minimum stated in that repo's `README.md`, in a pull
+  request of its own. A release touching none of those surfaces leaves both
+  alone.
 
 ## changelog
 The repo's changelog file, read by `/hotfix`, the release-walk, and the
