@@ -94,12 +94,12 @@ for the descriptor file.
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmpAxIdNw/file1b884e4842e.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpdEJoNK/file1b904fdfc02f.zip
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Instrument successfully zipped to /tmp/RtmpAxIdNw/file1b882e47b45e.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpdEJoNK/file1b905eef7c8e.zip
 ```
