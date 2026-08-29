@@ -98,6 +98,7 @@ the filenames → M062, M063.
 - 2026-08-29: T3 — `cairn/PROFILE.md`'s release-walk slot gained a "Downstream" step naming `jmgirard/hitop-builder`, the six package surfaces the page calls, and the two things a release touching one of them must update there (`MIN_HITOP` in `index.html`, the minimum stated in that repo's `README.md`). File is 110 lines against the 120-line cap.
 - 2026-08-29: gate chose `MIN_HITOP = '0.2.0'` (the current released version, and the one every page-called surface is present in) and a 120-second install timeout (six times the README's stated twenty-second first load).
 - 2026-08-29: /milestone-review — hitop PR #71 (draft) opened for the tracking half; AC1-AC4 and AC6 verified with fresh evidence, AC5 held for the merge gate; consistency gate clean (`cairn_validate` exit 0, `document()` no diff, `check_pkgdown()` clean, `devtools::check()` 0 errors 0 warnings 0 notes); three-lens review returned nine findings, none floor-qualifying — five to the maintainer at the gate, one follow-up candidate, three rejected.
+- 2026-08-29: gate — maintainer chose to fix four of the five findings before merging (finding 6's wording left as is) and approved merging both pull requests; hitop-builder `3d91721` lands the fixes and every branch was re-probed clean, including a discriminating channel-loss probe.
 - 2026-08-28: plan chose a declared minimum plus a release-walk step over a release-walk step alone (rejected: it keeps the page correct only for as long as nobody forgets, and the failure it misses is silent mid-build) and over a hard version pin (rejected as unavailable — r-universe serves only its current build and the install call takes no version); falsified by r-universe gaining versioned installs, which would make a pin the better answer.
 
 ## Decisions
@@ -235,4 +236,40 @@ per-PR walk was paid for. Zero findings.
 **Return floor.** No finding demonstrates an acceptance criterion failing inside
 its named procedure's domain: AC1 and AC2 were probed and passed, and finding 4
 falls outside AC2's stated `installPackages` domain. Status stays `review`.
+
+### Fix-now work directed at the gate (2026-08-29)
+
+The maintainer chose to fix four of the five findings put to the gate before
+merging, and to leave finding 6's wording as it stands. `hitop-builder` commit
+`3d91721` on `m064-version-guard`:
+
+- Finding 1 — the lost-connection handler now calls `abandonBoot()` instead of
+  disabling the download buttons directly.
+- Findings 2 and 3 — the install branch of the race carries its own rejection
+  handler, so a rejection arriving after the timeout is logged and dropped
+  rather than left unhandled, and a rejection arriving before it refuses
+  through `abandonBoot()` saying the package download failed, instead of
+  reaching the top-level catch as "Could not start R".
+- Finding 5 — the version read and the comparison sit in a `try`, and a failure
+  in either refuses through `abandonBoot()`.
+
+Re-verified in the browser pane against the fixed page, probes deleted
+afterwards:
+
+- Channel loss, discriminating: with one scale selected the build button was
+  enabled (so the probe could have failed); forcing `webR.read()` to reject
+  latched the page — status "Lost the connection to R — reload the page to
+  start over.", `#controls` hidden — and two further selection changes, the
+  exact path that used to re-enable it, left zero enabled buttons.
+- Forced install rejection: status "The hitop package could not be downloaded,
+  so this page cannot build anything. …", log line
+  `installPackages("hitop") failed: probe: forced install failure`, controls
+  hidden, zero enabled buttons, and no `unhandledrejection` events.
+- Version refusal (declared 99.0.0) and the timeout pair both still behave as
+  recorded above: refusal message names 99.0.0 and 0.2.0, timeout latched the
+  page and the abandoned install settled 4,589 ms later with every control
+  still disabled; no `unhandledrejection` events in either.
+- Happy path unaffected: declared 0.2.0 against installed 0.2.0 reached
+  "Ready." with 78 scale checkboxes, and the seven comparison pairs returned
+  the same values as before the fix.
 
