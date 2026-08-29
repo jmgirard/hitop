@@ -67,7 +67,7 @@ already happens.
       complete and after the instrument file's own alert, never in
       `write_descriptor_sidecar()` (`R/module_file.R:505`), which runs before the
       instrument file exists and whose write is rolled back on failure.
-- [ ] T4 Add the NEWS entry.
+- [x] T4 Add the NEWS entry.
 - [ ] T5 Run `devtools::document()`, `devtools::test()` and `devtools::check()`
       and compare against T1's baseline.
 
@@ -80,6 +80,7 @@ already happens.
 - 2026-08-29: T1 merge-base `devtools::check()` baseline at `d927234` on R 4.6.1 with officer, flextable, snakecase, zip, jsonlite and lavaan installed: Status OK, 0 errors, 0 warnings, 0 notes (5m35s).
 - 2026-08-29: T2 added three tests to `tests/testthat/test-generator-descriptor.R` — the announcement and its order after the instrument message, the no-`descriptor` silent control, and the three failure forms with a per-case condition check plus a writable-target control on the rollback form; seen red (2 failures on the announcement, 3 on the rollback control) before T3.
 - 2026-08-29: T3 emitted `cli::cli_alert_success("Module descriptor successfully written to {.file {descriptor}}")` after `built <- TRUE` in each of the three generators; the descriptor test file is green (190 passing) and `devtools::test()` is clean (15,567 passing, 4 skipped).
+- 2026-08-29: T4 extended the existing unreleased `descriptor` bullet in `NEWS.md` rather than adding a second one for the same feature; the sentence landed in the T2/T3 commit, which staged the whole tree.
 
 ## Decisions
 
