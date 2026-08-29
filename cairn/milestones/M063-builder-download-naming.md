@@ -5,7 +5,7 @@
 - **Depends on:** M062
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** `m063-builder-download-naming` (hitop); builder PR #9 https://github.com/jmgirard/hitop-builder/pull/9 (`m063-download-naming`)
+- **Branch/PR:** `m063-builder-download-naming` (hitop); hitop PR #70 https://github.com/jmgirard/hitop/pull/70; builder PR #9 https://github.com/jmgirard/hitop-builder/pull/9 (merged as `afb1535`)
 
 ## Goal
 
@@ -45,7 +45,7 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - [x] AC4 Every string matching `[A-Za-z0-9._-]+\.(docx|txt|zip|json)` in
       `index.html` and `README.md` is triaged, and each hit that names a file the
       page writes names one this scheme produces.
-- [ ] AC5 The change ships: a merged pull request in `jmgirard/hitop-builder`
+- [x] AC5 The change ships: a merged pull request in `jmgirard/hitop-builder`
       whose URL is in this file's header, and the page served at
       `https://jmgirard.github.io/hitop-builder/` matches that commit's
       `index.html` byte for byte.
@@ -74,7 +74,7 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - [x] T4 Drive the eight builds in the browser pane, actuating the page's own
       controls, and record the sixteen requested filenames.
 - [x] T5 Run the AC4 grep over both files and triage every hit.
-- [ ] T6 Open the builder pull request; after merge, fetch the deployed page and
+- [x] T6 Open the builder pull request; after merge, fetch the deployed page and
       compare bytes; write the URL into the header.
 
 ## Work log
@@ -91,6 +91,7 @@ which fields it carries, are untouched. The handover mechanism → M062.
 - 2026-08-29: T6 first half — builder PR #9 opened from `m063-download-naming`. Its second half (fetch the deployed page after merge and compare bytes) can only run past the merge, so it and AC5 land at the review gate; T6 stays unticked until then.
 - 2026-08-29: implement closes with `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 15504 and `git diff --name-only origin/main...HEAD` listing only `cairn/ROADMAP.md` and this file. Every task but T6 is checked; T6's remaining half and AC5 with it cannot run before PR #9 merges.
 - 2026-08-29: review — AC1-AC4 and AC6 verified with fresh evidence (eight driven builds, sixteen distinct names matching independently composed stems, the AC4 grep set-equal to them, `check()` 0/0/0, `test()` PASS 15504); AC5 waits on builder PR #9 merging. Three-lens fan-out returned 8 findings, all in prose; none falsifies a criterion.
+- 2026-08-29: gate triage — Jeff chose fix-wording-then-ship. Four prose findings fixed in builder `aef66b8` (two false never-collide claims, the self-contradicting `downloadStem` comment, one over-long line), three deferred, none rejected. Builder PR #9 merged as `afb1535`; the deployed page is byte-identical to it, so AC5 and T6 close.
 
 ## Decisions
 
@@ -151,8 +152,12 @@ attribute and suppress the save.
   unmentioned. The one remaining hit, `module.json` at `index.html:1088`, is
   `descPath` — a path inside webR's virtual filesystem, never a name the browser
   is asked to save.
-- AC5 — pending: PR #9 is open and mergeable, so the deployed-page byte
-  comparison cannot run until it merges. Verified after the merge at the gate.
+- AC5 — builder PR #9 merged as `afb1535`, its URL in this file's header. The
+  page fetched from `https://jmgirard.github.io/hitop-builder/index.html` after
+  the Pages deploy is 57,732 bytes with SHA-256 `e6605ea0…49ce7`, equal to
+  `git show afb1535:index.html`; `cmp` reports no difference. Discrimination:
+  the same `cmp` against the pre-merge commit `9f8b615` differs, so the
+  comparison can fail.
 - AC6 — `git diff --name-only origin/main...HEAD` lists `cairn/ROADMAP.md` and
   this file only; `devtools::test()` gave FAIL 0 / WARN 0 / SKIP 4 / PASS 15504.
 
@@ -177,3 +182,44 @@ disable-guard rationale, which the [O] lens raised as its finding 6. [O]
 diff-bug: `downloadStem` itself correct over every reachable combination, with
 seven findings in prose.
 
+**Triage.** All eight findings were surfaced at the gate; Jeff chose to fix the
+wording and ship. Four fixed now, on the builder branch, in `aef66b8` before the
+merge:
+
+- Fixed — `README.md:150-152`, *"Two builds made in one session therefore never
+  arrive under the same name, so neither can overwrite the other's scoring file
+  in your downloads folder."* False, and contradicted by the same section twenty
+  lines down.
+- Fixed — `index.html:526-531`, the same claim in visitor-facing copy: *"so a
+  second build never lands on top of the first."*
+- Fixed — `index.html:641-648`, `downloadStem`'s own comment asserting both
+  *"two builds made in one session never arrive under one name, and no build's
+  descriptor can shadow another's"* and *"two different scale selections in one
+  format do still share a filename."*
+- Fixed — `README.md:76`, a 99-character line in a file wrapped at ~76,
+  introduced by the T3 edit. The whole walkthrough paragraph was rewrapped.
+
+The three corrected passages are now written against an observed run rather than
+composed: two Word builds driven back to back on the branch page, the first over
+`agoraphobia` + `antisocialBehavior` and the second over `appearanceFocus` +
+`appetiteLoss`, both requested `hitopsr-word-module.docx` and
+`hitopsr-word-module.json` — the collision the old prose denied.
+
+Deferred to follow-up, no change on this branch:
+
+- `index.html:539-542`, `index.html:1073-1077`, `README.md:79-80` — the
+  handover-disable guard's rationale, *"under the name the new one is about to
+  take"*, was written when every build shared one of two stems and now overstates
+  the hazard. Behavior correct and still needed.
+- `README.md:148` / `index.html:528` — *"`-module` unless you ticked every
+  scale"* omits `wholeInstrument()`'s `tilesExactly` gate. True of HiTOP-SR as
+  shipped; `README.md:243` carries the same shape and predates this diff.
+- M063-D1 rejects marking the whole instrument because it *"would rename files
+  visitors already hold"*, but the format word renames those same files anyway
+  (`hitopsr.docx` → `hitopsr-word.docx`). The rationale is wrong; the choice
+  stands, and the entry is history, so it is not edited (IP4). Nothing tells a
+  returning visitor the names changed.
+
+None was rejected. No finding demonstrated an acceptance criterion failing, so
+the return floor did not fire; the first two are false statements to users, which
+is why they were fixed before the merge rather than after.
