@@ -43,7 +43,7 @@ already happens.
       descriptor success message was emitted and no descriptor file remains.
 - [x] AC3 `NEWS.md` records the new console output, and the entry names a
       behavior the AC1 test would fail without.
-- [ ] AC4 `devtools::document()` leaves no diff, `devtools::test()` is clean, and
+- [x] AC4 `devtools::document()` leaves no diff, `devtools::test()` is clean, and
       `devtools::check()` reports no error, warning or note that the merge-base
       baseline recorded in T1 does not already carry.
 
@@ -84,6 +84,7 @@ already happens.
 - 2026-08-29: T5 `devtools::document()` left no diff; `devtools::test()` clean (15,567 passing, 4 skipped); branch `devtools::check()` Status OK, 0 errors, 0 warnings, 0 notes — the same figures as T1's `d927234` baseline.
 - 2026-08-29: all tasks checked; status set to review.
 - 2026-08-29: /milestone-review opened draft PR #72; AC1/AC2/AC3 verified with fresh evidence including a feature-reverted discrimination run; consistency gate clean; AC4 and the diff-bug lens still in flight at this checkpoint.
+- 2026-08-29: AC4 verified fresh — check() Status OK 0/0/0 in 5m52.8s, matching T1's baseline; all four criteria ticked. Three lenses reported: no correctness bug in R/, twelve findings all in tests/docs/tracking, none meeting the return floor.
 
 ## Decisions
 
@@ -119,7 +120,16 @@ merge was needed). PR https://github.com/jmgirard/hitop/pull/72.
   itself, and a call passing no `descriptor` says nothing about one. Both
   clauses are what the AC1 test asserts (path present + index ordering; the
   silent control), and both were observed failing in the reverted clone.
-- **AC4** — pending: `devtools::check()` still running.
+- **AC4** — `devtools::document()` left the working tree clean apart from this
+  milestone file (no `man/`, `NAMESPACE` or `DESCRIPTION` diff).
+  `devtools::check()` on the branch tree: **Status OK, 0 errors, 0 warnings,
+  0 notes**, 5m52.8s, its `testthat.R` run green in 260s — the same figures as
+  T1's `d927234` merge-base baseline (Status OK, 0/0/0, 5m35s), so the branch
+  adds no error, warning or note the baseline does not already carry. The
+  targeted `test_local(filter = "generator-descriptor")` run was green over the
+  whole file with all three generators exercised. The check ran against the
+  tree at `b0ae919`; the commits after it touch only `cairn/`, which
+  `.Rbuildignore`'s `^cairn$` entry keeps out of the built package.
 
 ### Consistency gate
 
