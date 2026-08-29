@@ -330,3 +330,96 @@ PR: https://github.com/jmgirard/hitop/pull/68
   `.Rbuildignore` entry is owed; `check()` is clean as recorded under AC9.
 - CI on PR #68: green on all eight jobs (line endings, pkgdown, test-coverage,
   macOS release, Windows release, Ubuntu release/devel/oldrel-1).
+
+### Independent fresh-context review
+
+Surface tier is user-facing and the diff touches executable surface, so the full
+three-lens fan-out ran, each lens on a distinct evidence base, none having seen
+the implementation.
+
+- **[S] blame-history** — no findings. It read `git log`/`git blame` on every
+  modified line and reports the column rename takes D-018's recorded migration
+  path (as D-041's rename did), the table-read replaces exactly the lossy
+  derivation D-041's fix flagged, and M061-D1's module-path choice preserves the
+  two-independent-readers property.
+- **[S] prior-PR-comments** — no findings. Its existence probe found no inline
+  review comments on any PR in the repo, so the thread walk was skipped; against
+  the archived `## Review` sections touching these files (M037, M041) it found no
+  point the diff reintroduces or contradicts.
+- **[O] diff-bug** — 8 findings, ranked below. It could not re-verify AC6 itself:
+  its own background harness rerun was killed by the environment twice before the
+  merge-base side finished. That claim is covered by this session's own run.
+
+Each [O] finding was re-verified against the implementation rather than against
+the reviewer's account of it; all 8 hold. Finding 9 is this session's own.
+
+**Return floor: not met.** None of the nine demonstrates an acceptance criterion
+failing inside the domain of the procedure it names. Findings 3 and 4 bear on
+AC6's harness, but AC6's abort promise is over the export enumeration the script
+performs, and a deleted *path* leaves every enumerated export still probed; AC6's
+diff promise is over cells differing outside the display-name column, which is
+what the run reports. Status stays `review`; all nine go to triage at the gate.
+
+#### Findings, ranked, with dispositions
+
+1. `R/reliability_engine.R:19-20` — **the documented length guard does not
+   exist.** The roxygen says a `scale_names` length disagreeing with
+   `items_scales` "is caught by `data.frame()` below, which is why no separate
+   guard is added". `data.frame()` recycles any vector whose length divides the
+   other's: `data.frame(Scale = c("a","b"), nItems = 1:4)` returns 4 rows named
+   `a,b,a,b` with no error (re-verified in a vanilla R session; a
+   non-divisor length does abort). All four current suppliers are correct, so
+   nothing is broken today — the defect is a false claim in a docstring, and a
+   guard declined on it. Failure: a future caller hands 5 domain names to the 25
+   facet scales and the engine silently returns 25 rows with 5 names cycling,
+   the wrong-name class this milestone exists to remove. **Disposition: fix now.**
+2. `cairn/DESIGN.md:44` — **a current-knowledge line the diff falsifies was
+   missed.** The Function families bullet still says the reliability family
+   "returns a per-scale tibble (`scale`, `nItems`, `alpha`, `omega`)". T9
+   corrected lines 70 and 106 only; line 196 is the embedded historical log and
+   correctly left verbatim. **Disposition: fix now** (corrected in place, marked,
+   per the current-knowledge correction rule).
+3. `data-raw/verify_m061_characterization.R:246-258` — **the missing-probe guard
+   is per-export, not per-path.** `expected` is recomputed from the same
+   `build_paths()` a deletion mutates, and the check is
+   `setdiff(exports, probed)` at export granularity. Deleting the
+   `hitopsr_module` block — the only cell exercising the new module-path name
+   supplier — or `pid5_SF` leaves both exports still probed, `expected` shrinks
+   to match, and the run reports "40 cells compared; 0 differ" and exits 0.
+   Guard reach, not a wrong answer on any current input. **Disposition:
+   follow-up candidate row.**
+4. `data-raw/verify_m061_characterization.R:342-347, 384-397` — **losing the
+   display-name column entirely passes.** `without_names()` drops the column when
+   present, so a branch returning none reduces to the same
+   `(nItems, alpha, omega)` as the base side and `identical()` succeeds; the
+   shape change lands in `renamed_cells`, which is printed but never added to
+   `differ`. AC4's test catches this case, so it is guard reach.
+   **Disposition: follow-up candidate row.**
+5. `R/module.R:184` and `R/score_hitopsr.R:81` — **comments stale after the
+   fourth return element.** Both still describe `module_engine_inputs()` as
+   returning three values; it now returns four. No behavioral effect — every
+   consumer extracts by name. **Disposition: fix now.**
+6. `tests/testthat/test-available_scales.R:14` — **the function's own
+   view-of-the-table test is blind to T4's type change.**
+   `expect_equal(out$nItems, hitopsr_scales$nItems)` treats integer and double as
+   equal under edition 3, so the coercion rests on the single new AC5
+   `expect_type`; lines 51-52's `as.integer(out$nItems[[i]])` is now a no-op.
+   **Disposition: fix now.**
+7. `NEWS.md` — **the `nItems` note omits the half that can break code.** It says
+   the column is now integer and matches the module and reliability tables, but
+   not that `hitopsr_scales$nItems` deliberately stays double (Scope; candidate
+   row), so `identical(available_scales()$nItems, hitopsr_scales$nItems)` flips
+   from TRUE to FALSE with nothing in NEWS pointing at it. Confirmed:
+   `typeof(hitopsr_scales$nItems)` is `double`. Nothing NEWS says is false; it is
+   incomplete on a user-facing surface. **Disposition: fix now.**
+8. `data-raw/verify_m061_characterization.R:300-308` — **`origin/HEAD` assumed
+   present and `git archive`'s exit status unchecked.** In a clone with no
+   `origin/HEAD`, `base_sha` is empty, no tarball is written, and the failure
+   surfaces as an `untar()` error rather than a diagnosis. Loud, not silent.
+   **Disposition: follow-up candidate row** (same row as 3 and 4).
+9. `cairn/DECISIONS.md:27` and `:62` — **D-046 and D-047 both date the M061 plan
+   gate `2026-08-27`.** The milestone file records its creation and every gate on
+   `2026-08-28`, and all three branch commits are dated `2026-08-28`; no M061
+   activity happened on the 27th. Both entries are on this branch and unmerged,
+   so they are not yet history and can be corrected in place rather than
+   superseded. **Disposition: fix now.**
