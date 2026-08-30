@@ -73,10 +73,11 @@ between <- function(text, from, to, info) {
 }
 
 # The closing anchor per export. `\examples{` is the next top-level macro on
-# six of the seven pages; on norm_pid5 the Errors passage is followed by a
+# seven of the eight pages; on norm_pid5 the Errors passage is followed by a
 # further bold heading, which is the tighter cut.
 errors_terminator <- function() {
   c(
+    interval_hitopbr = "\\examples{",
     interval_hitopsr = "\\examples{",
     norm_pid5 = "\\strong{Response coding.}",
     rank_scales = "\\examples{",
@@ -99,8 +100,9 @@ EMPTY_PHRASE <-
 COLLISION_CLASS <- "hitop_append_collision"
 EMPTY_CLASS <- "hitop_empty_selection"
 
-# The three exports taking a variable-length column selection.
-selection_exports <- c("interval_hitopsr", "norm_pid5", "rank_scales")
+# The four exports taking a variable-length column selection.
+selection_exports <- c("interval_hitopbr", "interval_hitopsr", "norm_pid5",
+                       "rank_scales")
 
 test_that("the sweep matches the terminator table and resolves through the aliases", {
   exports <- prose_exports()

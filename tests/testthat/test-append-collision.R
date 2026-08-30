@@ -92,16 +92,27 @@ collision_probes <- function() {
       data = NULL,
       args = list(),
       extra = NULL
+    ),
+    interval_hitopbr = list(
+      data = NULL,
+      args = list(),
+      extra = NULL
     )
   )
 }
 
-# The three conversion exports read a score frame, so their `data` and their
+# The four conversion exports read a score frame, so their `data` and their
 # selection argument are built here rather than shipped in the table above.
 conversion_input <- function(nm) {
   if (nm == "norm_pid5") {
     scored <- suppressWarnings(
       hitop::score_pid5(hitop::sim_pid5, items = 1:220, append = FALSE)
+    )
+    return(list(data = scored, args = list(scores = names(scored))))
+  }
+  if (nm == "interval_hitopbr") {
+    scored <- suppressWarnings(
+      hitop::score_hitopbr(hitop::sim_hitopbr, items = 1:45, append = FALSE)
     )
     return(list(data = scored, args = list(scores = names(scored))))
   }
