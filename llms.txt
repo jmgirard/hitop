@@ -169,15 +169,19 @@ Write Package Paper
 
 ## Score Intervals
 
-Confidence intervals for HiTOP-SR scale scores, computed against the
-statistics printed for the instrument’s introduction paper Development
-Sample 2 (N = 780). That is a development sample and not a community
-norm.
+Confidence intervals for HiTOP-SR and HiTOP-BR scale scores, computed
+against the statistics printed for the instruments’ introduction paper
+Development Sample 2 (N = 780). That is a development sample and not a
+community norm.
 
 - [`interval_hitopsr()`](https://jmgirard.github.io/hitop/reference/interval_hitopsr.md)
   : Confidence intervals for HiTOP-SR scale scores
 - [`hitopsr_devstats`](https://jmgirard.github.io/hitop/reference/hitopsr_devstats.md)
   : HiTOP-SR Development-Sample Statistics
+- [`interval_hitopbr()`](https://jmgirard.github.io/hitop/reference/interval_hitopbr.md)
+  : Confidence intervals for HiTOP-BR scale scores
+- [`hitopbr_devstats`](https://jmgirard.github.io/hitop/reference/hitopbr_devstats.md)
+  : HiTOP-BR Development-Sample Statistics
 
 ## Plots
 

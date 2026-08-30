@@ -68,6 +68,21 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="hitop-development-version">hitop (development version)<a class="anchor" aria-label="anchor" href="#hitop-development-version"></a></h2>
+<div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li><p><strong><code><a href="../reference/interval_hitopbr.html">interval_hitopbr()</a></code> puts a confidence interval around a HiTOP-BR scale score.</strong> Given columns that <code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code> produced, it returns an <code>_est</code>, <code>_lo</code> and <code>_hi</code> column for each: an estimate of the respondent’s true score and the bounds of a confidence interval around it, by the regression-based approach with scale correction of Schmukle (2026). The reference mean, standard deviation and reliability come from the new <code>hitopbr_devstats</code> dataset.</p></li>
+<li><p><strong><code>hitopbr_devstats</code> ships the HiTOP-BR development-sample statistics.</strong> One row per scale, carrying the item count, Cronbach’s alpha, mean and standard deviation printed for it in the HiTOP-SR introduction paper’s Table 1. That reference group is the paper’s Development Sample 2, N = 780 Prolific Academic participants stratified by sex and age to approximate a community-representative United States population. It is a development sample and not a community norm: no census weighting was applied and the paper publishes no raw-score to T-score table, so an interval says where a score sits relative to the sample the instrument was developed on, not what percentile it occupies in any population.</p></li>
+</ul></div>
+<div class="section level3">
+<h3 id="breaking-changes-development-version">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<ul><li>
+<p><strong>One HiTOP-BR item moved to the scale its development workbook gives it.</strong> Item 36 (“I had a hard time asserting myself to others.”) was keyed to <code>Detachment</code>; the HiTOP Society development workbook this keying was built from puts it under <code>Internalizing</code>, in its item-to-scale sheet and again in its scoring syntax, and the instrument’s introduction paper agrees in both its descriptive table and its factor table. It was the only HiTOP-BR item where the package and the workbook disagreed.</p>
+<p><code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code> and <code><a href="../reference/reliability_hitopbr.html">reliability_hitopbr()</a></code> therefore return different values for <code>hbr_detachment</code> (now 5 items: 7, 12, 30, 31, 37) and <code>hbr_internalizing</code> (now 8 items: 8, 9, 18, 22, 23, 36, 42, 44). No other scale changes, and no item text, item number or response option changes. Scores computed with an earlier version are not comparable for those two scales. The scoring-key page of the two HiTOP-BR Word forms in <code>inst/extdata/</code> has been rebuilt with the corrected item lists.</p>
+</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="hitop-020">hitop 0.2.0<a class="anchor" aria-label="anchor" href="#hitop-020"></a></h2>
 <p>This release makes several <strong>breaking</strong> API changes to stabilize the interface before a CRAN submission.</p>
 <div class="section level3">

@@ -73,16 +73,16 @@ scores
 #> # A tibble: 411 × 8
 #>    hbr_antagonism hbr_detachment hbr_disinhibition hbr_internalizing
 #>             <dbl>          <dbl>             <dbl>             <dbl>
-#>  1           1.44           1.33              1.33              1.14
-#>  2           1.33           1.33              1.33              2.43
-#>  3           2.11           2.33              2.33              2.86
-#>  4           1.11           1.17              1.33              1.14
-#>  5           2.44           1.17              2.22              1.86
-#>  6           1              1.17              1.22              1.14
-#>  7           1              1                 1                 1   
-#>  8           1.67           1.5               1.33              1.86
-#>  9           1.44           1.33              1.56              1.14
-#> 10           1.33           1                 1                 1.29
+#>  1           1.44            1.4              1.33              1.12
+#>  2           1.33            1.4              1.33              2.25
+#>  3           2.11            2.4              2.33              2.75
+#>  4           1.11            1.2              1.33              1.12
+#>  5           2.44            1                2.22              1.88
+#>  6           1               1.2              1.22              1.12
+#>  7           1               1                1                 1   
+#>  8           1.67            1.6              1.33              1.75
+#>  9           1.44            1.4              1.56              1.12
+#> 10           1.33            1                1                 1.25
 #> # ℹ 401 more rows
 #> # ℹ 4 more variables: hbr_somatoform <dbl>, hbr_thoughtDisorder <dbl>,
 #> #   hbr_externalizing <dbl>, hbr_pFactor <dbl>
@@ -145,16 +145,16 @@ scores
 #> # A tibble: 411 × 8
 #>    hbr_antagonism hbr_detachment hbr_disinhibition hbr_internalizing
 #>             <dbl>          <dbl>             <dbl>             <dbl>
-#>  1           1.44           1.33              1.33              1.14
-#>  2           1.33           1.33              1.33              2.43
-#>  3           2.11           2.33              2.33              2.86
-#>  4           1.11           1.17              1.33              1.14
-#>  5           2.44           1.17              2.22              1.86
-#>  6           1              1.17              1.22              1.14
-#>  7           1              1                 1                 1   
-#>  8           1.67           1.5               1.33              1.86
-#>  9           1.44           1.33              1.56              1.14
-#> 10           1.33           1                 1                 1.29
+#>  1           1.44            1.4              1.33              1.12
+#>  2           1.33            1.4              1.33              2.25
+#>  3           2.11            2.4              2.33              2.75
+#>  4           1.11            1.2              1.33              1.12
+#>  5           2.44            1                2.22              1.88
+#>  6           1               1.2              1.22              1.12
+#>  7           1               1                1                 1   
+#>  8           1.67            1.6              1.33              1.75
+#>  9           1.44            1.4              1.56              1.12
+#> 10           1.33            1                1                 1.25
 #> # ℹ 401 more rows
 #> # ℹ 4 more variables: hbr_somatoform <dbl>, hbr_thoughtDisorder <dbl>,
 #> #   hbr_externalizing <dbl>, hbr_pFactor <dbl>
@@ -178,16 +178,16 @@ scores
 #> # A tibble: 411 × 8
 #>    antagonism detachment disinhibition internalizing somatoform thoughtDisorder
 #>         <dbl>      <dbl>         <dbl>         <dbl>      <dbl>           <dbl>
-#>  1       1.44       1.33          1.33          1.14       1.25            1   
-#>  2       1.33       1.33          1.33          2.43       1.25            1   
-#>  3       2.11       2.33          2.33          2.86       2.88            1.83
-#>  4       1.11       1.17          1.33          1.14       1.38            1   
-#>  5       2.44       1.17          2.22          1.86       1.25            1   
-#>  6       1          1.17          1.22          1.14       1               1   
-#>  7       1          1             1             1          1               1   
-#>  8       1.67       1.5           1.33          1.86       1.75            1.17
-#>  9       1.44       1.33          1.56          1.14       1.38            1   
-#> 10       1.33       1             1             1.29       1               1   
+#>  1       1.44        1.4          1.33          1.12       1.25            1   
+#>  2       1.33        1.4          1.33          2.25       1.25            1   
+#>  3       2.11        2.4          2.33          2.75       2.88            1.83
+#>  4       1.11        1.2          1.33          1.12       1.38            1   
+#>  5       2.44        1            2.22          1.88       1.25            1   
+#>  6       1           1.2          1.22          1.12       1               1   
+#>  7       1           1            1             1          1               1   
+#>  8       1.67        1.6          1.33          1.75       1.75            1.17
+#>  9       1.44        1.4          1.56          1.12       1.38            1   
+#> 10       1.33        1            1             1.25       1               1   
 #> # ℹ 401 more rows
 #> # ℹ 2 more variables: externalizing <dbl>, pFactor <dbl>
 ```
@@ -204,7 +204,8 @@ Note what these numbers do and do not describe. Each one summarizes how
 much a respondent’s answers varied within a scale; it is not an estimate
 of how precisely the scale measures the underlying trait, so it does not
 give a confidence interval for a respondent’s true score. For
-measurement precision, see the reliability coefficients below.
+measurement precision, see the confidence intervals and the reliability
+coefficients below.
 
 ``` r
 
@@ -218,16 +219,16 @@ scores
 #> # A tibble: 411 × 16
 #>    hbr_antagonism hbr_detachment hbr_disinhibition hbr_internalizing
 #>             <dbl>          <dbl>             <dbl>             <dbl>
-#>  1           1.44           1.33              1.33              1.14
-#>  2           1.33           1.33              1.33              2.43
-#>  3           2.11           2.33              2.33              2.86
-#>  4           1.11           1.17              1.33              1.14
-#>  5           2.44           1.17              2.22              1.86
-#>  6           1              1.17              1.22              1.14
-#>  7           1              1                 1                 1   
-#>  8           1.67           1.5               1.33              1.86
-#>  9           1.44           1.33              1.56              1.14
-#> 10           1.33           1                 1                 1.29
+#>  1           1.44            1.4              1.33              1.12
+#>  2           1.33            1.4              1.33              2.25
+#>  3           2.11            2.4              2.33              2.75
+#>  4           1.11            1.2              1.33              1.12
+#>  5           2.44            1                2.22              1.88
+#>  6           1               1.2              1.22              1.12
+#>  7           1               1                1                 1   
+#>  8           1.67            1.6              1.33              1.75
+#>  9           1.44            1.4              1.56              1.12
+#> 10           1.33            1                1                 1.25
 #> # ℹ 401 more rows
 #> # ℹ 12 more variables: hbr_somatoform <dbl>, hbr_thoughtDisorder <dbl>,
 #> #   hbr_externalizing <dbl>, hbr_pFactor <dbl>, hbr_antagonism_se <dbl>,
@@ -240,6 +241,132 @@ scores
 Note how there are now 16 columns instead of 8. The extra columns aren’t
 shown in the preview above, but they are named with the `_se` suffix,
 e.g., `hbr_somatoform_se`.
+
+## Confidence Intervals
+
+A scale score is measured with error, so it is worth reporting a range
+rather than a single number.
+[`interval_hitopbr()`](https://jmgirard.github.io/hitop/reference/interval_hitopbr.md)
+returns three columns per scale: `_est`, an estimate of the respondent’s
+true score, and `_lo` and `_hi`, the bounds of a confidence interval
+around it.
+
+``` r
+
+scored <- score_hitopbr(
+  data = ku_hitopbr,
+  items = sprintf("hbr%02d", 1:45),
+  append = FALSE
+)
+
+interval_hitopbr(
+  data = scored,
+  scores = c("hbr_detachment", "hbr_pFactor"),
+  append = FALSE
+)
+#> # A tibble: 411 × 6
+#>    hbr_detachment_est hbr_detachment_lo hbr_detachment_hi hbr_pFactor_est
+#>                 <dbl>             <dbl>             <dbl>           <dbl>
+#>  1               1.45             0.808              2.10            1.44
+#>  2               1.45             0.808              2.10            1.44
+#>  3               2.38             1.74               3.03            2.36
+#>  4               1.27             0.622              1.91            1.13
+#>  5               1.08             0.437              1.73            1.51
+#>  6               1.27             0.622              1.91            1.28
+#>  7               1.08             0.437              1.73            1.05
+#>  8               1.64             0.993              2.28            1.51
+#>  9               1.45             0.808              2.10            1.28
+#> 10               1.08             0.437              1.73            1.13
+#> # ℹ 401 more rows
+#> # ℹ 2 more variables: hbr_pFactor_lo <dbl>, hbr_pFactor_hi <dbl>
+```
+
+The estimate is not the observed score. It is the observed score pulled
+toward the reference group’s mean, because with imperfect measurement a
+true score tends to lie nearer the mean than the observed score does –
+the less reliable the scale, the further it is pulled. The method is the
+regression approach with scale correction from Schmukle (2026), which
+puts the estimate back on the same metric as the observed score so the
+two can be read against each other.
+
+The width comes from the scale’s reliability and the reference group’s
+standard deviation, so it is the same for every respondent on a given
+scale and it narrows as reliability rises. Widen or narrow the interval
+with `level`:
+
+``` r
+
+interval_hitopbr(
+  data = scored,
+  scores = "hbr_detachment",
+  level = 0.80,
+  append = FALSE
+)
+#> # A tibble: 411 × 3
+#>    hbr_detachment_est hbr_detachment_lo hbr_detachment_hi
+#>                 <dbl>             <dbl>             <dbl>
+#>  1               1.45             1.03               1.87
+#>  2               1.45             1.03               1.87
+#>  3               2.38             1.96               2.80
+#>  4               1.27             0.846              1.69
+#>  5               1.08             0.660              1.50
+#>  6               1.27             0.846              1.69
+#>  7               1.08             0.660              1.50
+#>  8               1.64             1.22               2.06
+#>  9               1.45             1.03               1.87
+#> 10               1.08             0.660              1.50
+#> # ℹ 401 more rows
+```
+
+### What the reference group is
+
+The mean, standard deviation and reliability behind every number above
+are shipped as `hitopbr_devstats`, transcribed from the Superspectra and
+Spectra block of Table 1 of the HiTOP-SR introduction paper.
+
+``` r
+
+hitopbr_devstats
+#> # A tibble: 8 × 8
+#>   scale           camelCase type  nItems reliability reliabilityType  mean    sd
+#>   <chr>           <chr>     <chr>  <int>       <dbl> <chr>           <dbl> <dbl>
+#> 1 Antagonism      antagoni… scale      9        0.82 alpha            1.42  0.45
+#> 2 Detachment      detachme… scale      5        0.86 alpha            2.13  0.88
+#> 3 Disinhibition   disinhib… scale      9        0.86 alpha            1.65  0.6 
+#> 4 Externalizing   external… scale     10        0.83 alpha            1.54  0.49
+#> 5 Internalizing   internal… scale      8        0.9  alpha            1.85  0.77
+#> 6 p-Factor        pFactor   scale     12        0.86 alpha            1.68  0.55
+#> 7 Somatoform      somatofo… scale      8        0.88 alpha            1.82  0.71
+#> 8 Thought Disord… thoughtD… scale      6        0.85 alpha            1.26  0.46
+```
+
+**That reference group is the paper’s Development Sample 2, N = 780
+Prolific Academic participants stratified by sex and age to approximate
+a community-representative United States population. It is a development
+sample, and not a community norm.** No census weighting was applied and
+the paper publishes no raw-score to T-score table. So an interval here
+says where a score sits relative to the sample the instrument was
+developed on; it does not say what percentile that score occupies in any
+population.
+
+Three further limits are worth knowing before you report one of these
+intervals.
+
+- The interval is symmetric and the same width for every respondent on a
+  scale, which is what classical test theory implies, and it is **not**
+  clipped to the 1-4 response range. Every HiTOP-BR scale is skewed
+  enough for this to show: on all eight, a score at the response floor
+  of 1 returns a lower bound below
+  1.  
+- The coverage the method demonstrates is across a population of
+  respondents: about `level` of the intervals contain the true score
+  when respondents are drawn from the reference distribution. It is not
+  a guarantee for any one respondent.
+- The eight scales overlap. Externalizing and p-Factor are drawn from
+  the same items as the six spectrum scales rather than added to them,
+  so a respondent contributes the same answers to several of these
+  intervals; read them as eight views of one response set rather than
+  eight independent measurements.
 
 ## Scale Reliability
 
@@ -270,9 +397,9 @@ reliability_hitopbr(
 #>   Scale            nItems alpha omega
 #>   <chr>             <int> <dbl> <dbl>
 #> 1 Antagonism            9 0.805 0.811
-#> 2 Detachment            6 0.785 0.778
+#> 2 Detachment            5 0.801 0.792
 #> 3 Disinhibition         9 0.807 0.810
-#> 4 Internalizing         7 0.825 0.827
+#> 4 Internalizing         8 0.834 0.836
 #> 5 Somatoform            8 0.825 0.832
 #> 6 Thought Disorder      6 0.731 0.739
 #> 7 Externalizing        10 0.817 0.818

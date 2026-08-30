@@ -93,16 +93,16 @@ score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE)
 #> # A tibble: 100 × 8
 #>    hbr_antagonism hbr_detachment hbr_disinhibition hbr_internalizing
 #>             <dbl>          <dbl>             <dbl>             <dbl>
-#>  1           2.56           2.5               1.67              2.29
-#>  2           2.11           1.67              2.67              2.57
-#>  3           2.44           3                 2.22              2.14
-#>  4           2.67           2.33              2.22              2.29
-#>  5           2.78           2.17              2.78              2   
-#>  6           2              2.5               3.22              2.86
-#>  7           2.44           2.17              3.11              2.29
-#>  8           2.78           2.17              2.33              2.43
-#>  9           1.89           2.67              2.67              2.43
-#> 10           2.89           2                 2.78              2.71
+#>  1           2.56            2.8              1.67              2.12
+#>  2           2.11            1.6              2.67              2.5 
+#>  3           2.44            2.8              2.22              2.38
+#>  4           2.67            2.6              2.22              2.12
+#>  5           2.78            2.2              2.78              2   
+#>  6           2               2.4              3.22              2.88
+#>  7           2.44            2.4              3.11              2.12
+#>  8           2.78            2.4              2.33              2.25
+#>  9           1.89            2.6              2.67              2.5 
+#> 10           2.89            2.2              2.78              2.5 
 #> # ℹ 90 more rows
 #> # ℹ 4 more variables: hbr_somatoform <dbl>, hbr_thoughtDisorder <dbl>,
 #> #   hbr_externalizing <dbl>, hbr_pFactor <dbl>

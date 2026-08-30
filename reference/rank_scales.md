@@ -124,15 +124,15 @@ rank_scales(scored, scales = names(scored), prefix = "hbr_", top = 3,
 #> # A tibble: 100 × 1
 #>    top_scales                                 
 #>    <chr>                                      
-#>  1 somatoform,antagonism,detachment           
+#>  1 detachment,somatoform,antagonism           
 #>  2 thoughtDisorder,disinhibition,internalizing
 #>  3 detachment,somatoform,antagonism           
 #>  4 antagonism,somatoform,detachment           
 #>  5 externalizing,thoughtDisorder,antagonism   
-#>  6 disinhibition,thoughtDisorder,somatoform   
+#>  6 disinhibition,thoughtDisorder,internalizing
 #>  7 disinhibition,thoughtDisorder,externalizing
 #>  8 antagonism,pFactor,externalizing           
-#>  9 detachment,disinhibition,internalizing     
+#>  9 disinhibition,detachment,internalizing     
 #> 10 somatoform,antagonism,thoughtDisorder      
 #> # ℹ 90 more rows
 ```

@@ -69,9 +69,9 @@ reliability_hitopbr(sim_hitopbr, items = 1:45, omega = FALSE)
 #>   Scale            nItems    alpha
 #>   <chr>             <int>    <dbl>
 #> 1 Antagonism            9 -0.160  
-#> 2 Detachment            6 -0.0706 
+#> 2 Detachment            5  0.00188
 #> 3 Disinhibition         9  0.145  
-#> 4 Internalizing         7  0.0344 
+#> 4 Internalizing         8  0.0892 
 #> 5 Somatoform            8  0.0527 
 #> 6 Thought Disorder      6  0.00754
 #> 7 Externalizing        10  0.145  

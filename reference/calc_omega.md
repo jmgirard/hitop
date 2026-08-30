@@ -57,7 +57,7 @@ naming any of your items that.
 
 ``` r
 # McDonald's omega-total for the HiTOP-BR Detachment scale
-detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 36, 37))
+detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 37))
 calc_omega(ku_hitopbr[detach_items])
-#> [1] 0.7779365
+#> [1] 0.7921149
 ```

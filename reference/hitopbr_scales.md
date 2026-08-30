@@ -41,9 +41,9 @@ hitopbr_scales
 #>   Scale            itemdata          nItems itemNumbers  camelCase      
 #>   <chr>            <list>             <dbl> <named list> <chr>          
 #> 1 Antagonism       <tibble [9 × 5]>       9 <dbl [9]>    antagonism     
-#> 2 Detachment       <tibble [6 × 5]>       6 <dbl [6]>    detachment     
+#> 2 Detachment       <tibble [5 × 5]>       5 <dbl [5]>    detachment     
 #> 3 Disinhibition    <tibble [9 × 5]>       9 <dbl [9]>    disinhibition  
-#> 4 Internalizing    <tibble [7 × 5]>       7 <dbl [7]>    internalizing  
+#> 4 Internalizing    <tibble [8 × 5]>       8 <dbl [8]>    internalizing  
 #> 5 Somatoform       <tibble [8 × 5]>       8 <dbl [8]>    somatoform     
 #> 6 Thought Disorder <tibble [6 × 5]>       6 <dbl [6]>    thoughtDisorder
 #> 7 Externalizing    <tibble [10 × 5]>     10 <dbl [10]>   externalizing  

@@ -17,9 +17,9 @@ Use these Microsoft Word documents for printing, paper administration,
 or sending to the IRB.
 
 [English (A4
-Paper)2026-07-16](https://jmgirard.github.io/hitop/downloads/hitopbr_A4.docx)
+Paper)2026-08-30](https://jmgirard.github.io/hitop/downloads/hitopbr_A4.docx)
 [English (US
-Paper)2026-07-16](https://jmgirard.github.io/hitop/downloads/hitopbr_US.docx)
+Paper)2026-08-30](https://jmgirard.github.io/hitop/downloads/hitopbr_US.docx)
 
 ##### 📊 Qualtrics Import
 
@@ -103,16 +103,24 @@ Current builds & version history
 
 | File                    | Format           | Instrument version | Build date |
 |-------------------------|------------------|--------------------|------------|
-| `hitopbr_A4.docx`       | DOCX (A4 paper)  | 1.0                | 2026-07-16 |
+| `hitopbr_A4.docx`       | DOCX (A4 paper)  | 1.0                | 2026-08-30 |
 | `hitopbr_qualtrics.txt` | Qualtrics import | 1.0                | 2026-07-16 |
 | `hitopbr_redcap.zip`    | REDCap import    | 1.0                | 2026-07-16 |
-| `hitopbr_US.docx`       | DOCX (US paper)  | 1.0                | 2026-07-16 |
+| `hitopbr_US.docx`       | DOCX (US paper)  | 1.0                | 2026-08-30 |
 
 If your downloaded file shows an older build date, simply re-download it
 to get the latest build. The full build manifest (including file
 checksums) ships in the package as `hitop_artifacts`.
 
 #### Version history
+
+2026-08-30
+
+One item's scale membership on the scoring page is corrected to the
+development workbook's: item 36 moves from Detachment to Internalizing.
+Item text, item numbers, response options, and scale names are
+unchanged.  
+`hitopbr_A4.docx`, `hitopbr_US.docx`
 
 2026-07-16
 
