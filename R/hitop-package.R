@@ -22,6 +22,7 @@ utils::globalVariables(c(
   "hitopsr_devstats",
   "hitopbr_items",
   "hitopbr_scales",
+  "hitopbr_devstats",
   "hitophsum_items",
   "hitophsum_choices"
 ))

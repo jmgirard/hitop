@@ -1,6 +1,6 @@
 # M068: The HiTOP-BR carries score intervals against the paper's development sample
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -109,7 +109,7 @@ standing column-shape candidate row; this table matches its sibling as built.
       classes, and the argument-surface cases `test-interval_hitopsr.R` covers;
       register the new oracles as rows in `cairn/ORACLES.md`.
 - [x] T7 NEWS.md entry and the AC6 prose guards.
-- [ ] T8 Append the D-entry widening D-032/D-042's source admission from the
+- [x] T8 Append the D-entry widening D-032/D-042's source admission from the
       HiTOP-SR rows of Table 1 to its Superspectra and Spectra block; run the
       full consistency gate.
 
@@ -130,6 +130,7 @@ standing column-shape candidate row; this table matches its sibling as built.
 - 2026-08-30: T6 done. `tests/testthat/test-interval_hitopbr.R` carries the closed-form oracle over all eight scales at three probe scores and two levels, the two CI-runnable invariants, both condition classes asserted by class and by the dataset each report names, and the argument surface `test-interval_hitopsr.R` covers. Three oracle rows added to `cairn/ORACLES.md`.
 - 2026-08-30: T7 done. NEWS gains a development-version heading with the new-feature entries and the breaking change; `vignettes/hitopbr_scoring.Rmd` gains a Confidence Intervals section with the reference-group caveat; `tests/testthat/test-interval-br-prose.R` asserts the caveat and the N on all four surfaces, shown red by removing the phrase from the vignette and by a terminator matching nothing.
 - 2026-08-30: T8 consistency gate. Two existing exhaustive export sweeps went red on the new function and were extended to it: `test-append-collision.R`'s probe table (with a HiTOP-BR score frame as its input) and `test-error-prose.R`'s terminator table and selection list. `cairn_validate` all checks pass with 23 pre-existing advisories; `cairn_impact` reports no changed principles; `pkgdown::check_pkgdown()` finds no problems.
+- 2026-08-30: T8 done. D-048 appended; `hitopbr_devstats` added to the `utils::globalVariables()` declaration, which cleared the one NOTE `R CMD check` raised for it. Gate results on the final tree: `devtools::document()` no diff, `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16071, `devtools::check()` 0 errors / 0 warnings / 0 notes (15m 22s), `pkgdown::check_pkgdown()` no problems, `cairn_validate` all checks pass.
 
 ## Decisions
 
