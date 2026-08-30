@@ -1,0 +1,11 @@
+# M068: The HiTOP-BR carries score intervals against the paper's development sample
+
+**Status:** done (2026-08-30, PR #74 https://github.com/jmgirard/hitop/pull/74)
+
+**Goal:** `interval_hitopbr()` converts scored HiTOP-BR columns into a regression-based true-score estimate and confidence interval against the eight "Superspectra and Spectra Scales" rows of simms2026 Table 1, shipped as `hitopbr_devstats`.
+
+**Outcome:** `hitopbr_devstats` ships eight rows on `hitopsr_devstats`'s column contract, built by `data-raw/hitopbr_devstats.R` from the transcription in `data-raw/hitopbr_table1.R`. `data-raw/verify_hitopbr_devstats.R` is the independent coordinate extraction — five comparisons over 48 transcription and 32 shipped cells plus the item counts and the Range coding, proven able to fail on eight plants varying form and location. `R/interval_hitopbr.R` wraps `interval_engine()` and reports `hitop_interval_uncovered` and `hitop_interval_coding`. Keying correction at the question gate: `hitopbr_items` row 36 (`HiTOP_69`) moved Detachment -> Internalizing on four independent statements, rebuilding `hitopbr_items`, `hitopbr_scales`, both HiTOP-BR Word forms and the artifact manifest — a breaking change to `score_hitopbr()` and `reliability_hitopbr()`. Three oracle rows added to `cairn/ORACLES.md`; `test-append-collision.R` and `test-error-prose.R` extended to the new export.
+
+**Decisions:** D-048 (widens D-032/D-042's source admission to Table 1's Superspectra and Spectra block). Milestone-local: `type = "scale"` for all eight rows rather than reading superspectrum/spectrum out of a typographic gap; `hitopbr_devstats` matches its sibling's column names verbatim.
+
+**Review:** Three-lens fan-out. Blame-history no findings, prior-review one, diff-bug nine. Five fixed at the gate — the `calc_alpha()`/`calc_omega()` examples still keyed to the superseded six-item Detachment set, the stale memberships in `helper-fixtures.R`'s header, `schmukle2026.md`'s role and trace list widened to the BR reader, `corrected M68` spelled `M068`, and the warn-before-abort probe extended to `interval_hitopbr()`. One rejected as pre-existing (DESIGN.md's missing interval family), one left to the release walk (version string), three filed to candidate rows. All eight CI checks green.
