@@ -100,11 +100,21 @@ run_mutations <- function(pristine) {
   missed <- character(0)
   errored <- character(0)
   for (m in norms_mutations) {
-    load(pristine)                     # pristine pid_norms
-    pid_norms <- m$f(pid_norms)
-    save(pid_norms, file = rda, compress = "bzip2", version = 2)
-
-    res <- book_check()
+    ## Applying the mutation is itself a run that can stop -- `row_of()` asserts
+    ## the row it addresses exists, so a regenerated pid_norms missing that row
+    ## aborts here. Unhandled that would kill the sweep with no verdict for this
+    ## mutation and none for the ones after it, which is the same crash-read-as-
+    ## something-else the verdict below exists to prevent, one layer up. So this
+    ## step files its own errored verdict and the loop carries on.
+    res <- tryCatch({
+      load(pristine)                   # pristine pid_norms
+      pid_norms <- m$f(pid_norms)
+      save(pid_norms, file = rda, compress = "bzip2", version = 2)
+      book_check()
+    }, error = function(e) {
+      list(ran = FALSE, tail = paste("applying the mutation:",
+                                     conditionMessage(e)))
+    })
     cat(m$ac, " ", m$desc, "\n", sep = "")
     switch(
       book_verdict(res),
@@ -112,7 +122,14 @@ run_mutations <- function(pristine) {
         cat("  CAUGHT -- pid_norms-only rows ", res$counts[[1]],
             ", book-only rows ", res$counts[[2]],
             ", differing values ", res$counts[[3]], "\n", sep = "")
-        cat("    e.g. ", trimws(res$lines[[1]]), "\n\n", sep = "")
+        ## The assembly lines and the counts are printed by the same step, so a
+        ## reported mutation has at least one; guarded anyway, because losing a
+        ## verdict to a subscript error is the failure this loop is built to avoid.
+        if (length(res$lines)) {
+          cat("    e.g. ", trimws(res$lines[[1]]), "\n\n", sep = "")
+        } else {
+          cat("    (the comparison printed counts but no assembly line)\n\n")
+        }
       },
       `not caught` = {
         missed <- c(missed, m$id)

@@ -92,7 +92,12 @@ hitopsr_table1_watermark_fragments <- c("Fo", "rP", "ee", "rR", "ev", "iew")
 ## A token is watermark when it is part of the phrase those fragments spell. The
 ## phrase is built from the vector above rather than written out a second time,
 ## so a source whose watermark changes moves the stripping step and this test
-## together.
+## together. The two join the vector differently -- the stripping step with
+## `collapse = "|"` as a regex alternation, this test with `collapse = ""` as a
+## literal phrase -- so that coupling holds only while the vector spells the
+## watermark in order, with no fragment overlapping another and no regex
+## metacharacter in any of them. A new source's fragments are listed under that
+## rule or the two consumers drift apart.
 ##
 ## The accepted set reaches down to single letters, which reads loose and is not.
 ## `-bbox` breaks the rotated stamp wherever its own boxes fall, so the numeric
