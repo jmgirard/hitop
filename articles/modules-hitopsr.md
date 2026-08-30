@@ -353,7 +353,10 @@ package.
 The `srange`, `prefix`, `missing`, `calc_se`, and `append` arguments all
 behave exactly as they do for a full administration; see [Scoring the
 HiTOP-SR](https://jmgirard.github.io/hitop/articles/hitopsr_scoring.md)
-for those.
+for those. `calc_se` is **deprecated** there and here alike — it, and
+the `_se` columns it adds, will be removed in a future release, and
+[`interval_hitopsr()`](https://jmgirard.github.io/hitop/reference/interval_hitopsr.md)
+replaces it.
 
 ## Saving the Module Beside the Form
 

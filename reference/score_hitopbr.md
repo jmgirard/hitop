@@ -51,13 +51,20 @@ score_hitopbr(
 
 - calc_se:
 
-  An optional logical indicating whether to calculate a standard error
-  for each scale score: the SD of the items the respondent actually
-  answered divided by the square root of how many of those items they
-  answered. Each one summarizes how much a respondent's answers varied
-  within a scale. It is not a standard error of measurement — no
-  reliability estimate enters it — so it does not give a confidence
-  interval for a respondent's true score; for measurement precision see
+  **Deprecated.** This argument, and the `_se` columns it adds, will be
+  removed in a future release; a call with `calc_se = TRUE` warns; the
+  warning is classed `hitop_deprecated_calc_se`, so a caller can silence
+  it by name. Use
+  [`interval_hitopbr()`](https://jmgirard.github.io/hitop/reference/interval_hitopbr.md)
+  for an interval around a respondent's true score. What it does while
+  it lasts: an optional logical indicating whether to calculate a
+  standard error for each scale score: the SD of the items the
+  respondent actually answered divided by the square root of how many of
+  those items they answered. Each one summarizes how much a respondent's
+  answers varied within a scale. It is not a standard error of
+  measurement — no reliability estimate enters it — so it does not give
+  a confidence interval for a respondent's true score; for measurement
+  precision see
   [`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md).
   (default = `FALSE`)
 

@@ -395,7 +395,10 @@ stable, but shortness alone does not produce a negative value. Set
 <strong>lavaan</strong> package.</p>
 <p>The <code>srange</code>, <code>prefix</code>, <code>missing</code>,
 <code>calc_se</code>, and <code>append</code> arguments all behave
-exactly as they do for a full administration; see <a href="hitopsr_scoring.html">Scoring the HiTOP-SR</a> for those.</p>
+exactly as they do for a full administration; see <a href="hitopsr_scoring.html">Scoring the HiTOP-SR</a> for those.
+<code>calc_se</code> is <strong>deprecated</strong> there and here alike
+— it, and the <code>_se</code> columns it adds, will be removed in a
+future release, and <code><a href="../reference/interval_hitopsr.html">interval_hitopsr()</a></code> replaces it.</p>
 </div>
 <div class="section level2">
 <h2 id="saving-the-module-beside-the-form">Saving the Module Beside the Form<a class="anchor" aria-label="anchor" href="#saving-the-module-beside-the-form"></a>

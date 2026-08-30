@@ -65,18 +65,26 @@ score_pid5(
 
 - calc_se:
 
-  An optional logical indicating whether to calculate a standard error
-  for each scale score. For the 25 facets, and for the brief form's
-  domains and total, this is the SD of the items the respondent actually
-  answered divided by the square root of how many of those items they
-  answered. The FULL and SF domain scores are means of three facet
-  scores rather than of items, so their standard errors are taken one
-  level up: the SD of the three contributing facet scores divided by the
-  square root of 3. Standard errors are `NA` wherever their scale score
-  is `NA`. Each one summarizes how much a respondent's answers varied
-  within a scale. It is not a standard error of measurement — no
-  reliability estimate enters it — so it does not give a confidence
-  interval for a respondent's true score; for measurement precision see
+  **Deprecated.** This argument, and the `_se` columns it adds, will be
+  removed in a future release; a call with `calc_se = TRUE` warns; the
+  warning is classed `hitop_deprecated_calc_se`, so a caller can silence
+  it by name. This package has no interval function for the PID-5, so
+  there is no replacement for it on this instrument; for measurement
+  precision see
+  [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md).
+  What it does while it lasts: an optional logical indicating whether to
+  calculate a standard error for each scale score. For the 25 facets,
+  and for the brief form's domains and total, this is the SD of the
+  items the respondent actually answered divided by the square root of
+  how many of those items they answered. The FULL and SF domain scores
+  are means of three facet scores rather than of items, so their
+  standard errors are taken one level up: the SD of the three
+  contributing facet scores divided by the square root of 3. Standard
+  errors are `NA` wherever their scale score is `NA`. Each one
+  summarizes how much a respondent's answers varied within a scale. It
+  is not a standard error of measurement — no reliability estimate
+  enters it — so it does not give a confidence interval for a
+  respondent's true score; for measurement precision see
   [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md).
   (default = `FALSE`)
 
@@ -212,9 +220,15 @@ score_pid5(sim_pid5sf, items = sprintf("pid_%d", 1:100), version = "SF",
 #> #   pid_attentionSeeking <dbl>, pid_anxiousness <dbl>, pid_depressivity <dbl>,
 #> #   pid_withdrawal <dbl>, pid_restrictedAffectivity <dbl>, …
 
-# Brief form (5 domains + the total) with standard errors
+# Brief form (5 domains + the total) with standard errors. `calc_se` is
+# deprecated, so this call warns; the PID-5 has no interval function to
+# replace it with.
 score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
            append = FALSE)
+#> Warning: The `calc_se` argument is deprecated.
+#> ℹ It, and the `_se` columns it adds, will be removed in a future release.
+#> ℹ This package has no interval function for the PID-5; for measurement
+#>   precision see `reliability_pid5()`.
 #> # A tibble: 100 × 12
 #>    pid_disinhibition pid_detachment pid_psychoticism pid_negativeAffectivity
 #>                <dbl>          <dbl>            <dbl>                   <dbl>

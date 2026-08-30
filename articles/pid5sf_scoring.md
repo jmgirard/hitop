@@ -121,23 +121,27 @@ validity_pid5(
 #> # ℹ 376 more rows
 ```
 
-## Simple Standard Errors
+## Simple Standard Errors (deprecated)
 
-In addition to calculating each scale score as the mean of its
-corresponding items, we can also calculate a standard error for each
-scale score. For the 25 facets, this is the SD of the items the
-respondent actually answered divided by the square root of how many of
-those items they answered. The 5 domain scores are means of three facet
-scores rather than means of items, so their standard errors are taken
-one level up: the SD of the three contributing facet scores divided by
-the square root of 3. A standard error is `NA` wherever its scale score
-is `NA`. We turn this on using `calc_se`.
+The `calc_se` argument is **deprecated**. It, and the `_se` columns it
+adds, will be removed in a future release, and the call below warns
+because it passes `calc_se = TRUE`. This package has no interval
+function for the PID-5, so there is no replacement for it on this
+instrument; for measurement precision, see the reliability coefficients
+below.
+
+What the argument computes, while it lasts: for the 25 facets, this is
+the SD of the items the respondent actually answered divided by the
+square root of how many of those items they answered. The 5 domain
+scores are means of three facet scores rather than means of items, so
+their standard errors are taken one level up: the SD of the three
+contributing facet scores divided by the square root of 3. A standard
+error is `NA` wherever its scale score is `NA`.
 
 Note what these numbers do and do not describe. Each one summarizes how
 much a respondent’s answers varied within a scale; it is not an estimate
 of how precisely the scale measures the underlying trait, so it does not
-give a confidence interval for a respondent’s true score. For
-measurement precision, see the reliability coefficients below.
+give a confidence interval for a respondent’s true score.
 
 ``` r
 
@@ -148,6 +152,10 @@ score_pid5(
   calc_se = TRUE,
   append = FALSE
 )
+#> Warning in score_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF", : The `calc_se` argument is deprecated.
+#> ℹ It, and the `_se` columns it adds, will be removed in a future release.
+#> ℹ This package has no interval function for the PID-5; for measurement
+#>   precision see `reliability_pid5()`.
 #> # A tibble: 386 × 60
 #>    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness
 #>                 <dbl>           <dbl>              <dbl>           <dbl>

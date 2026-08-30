@@ -205,56 +205,23 @@ scores
 #> #   hitop_difficultiesReachingOrgasm <dbl>, hitop_diseaseConviction <dbl>, …
 ```
 
-## Simple Standard Errors
+## Simple Standard Errors (deprecated)
 
-In addition to calculating each scale score as the mean of its
-corresponding items, we can also calculate a standard error for each
-scale score: the SD of the items the respondent actually answered
-divided by the square root of how many of those items they answered. We
-turn this on using `calc_se`.
+The `calc_se` argument is **deprecated**. It, and the `_se` columns it
+adds, will be removed in a future release, and a call that passes
+`calc_se = TRUE` now warns. Use
+[`interval_hitopsr()`](https://jmgirard.github.io/hitop/reference/interval_hitopsr.md)
+instead, shown under [Confidence Intervals](#confidence-intervals)
+below.
 
-Note what these numbers do and do not describe. Each one summarizes how
-much a respondent’s answers varied within a scale; it is not an estimate
-of how precisely the scale measures the underlying trait, so it does not
-give a confidence interval for a respondent’s true score. For
-measurement precision, see the reliability coefficients below, and for
-an interval around a respondent’s true score, see [Confidence
-Intervals](#confidence-intervals).
-
-``` r
-
-scores <- score_hitopsr(
-  data = ku_hitopsr,
-  items = sprintf("hsr%03d", 1:405),
-  calc_se = TRUE,
-  append = FALSE
-)
-scores
-#> # A tibble: 411 × 152
-#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss
-#>              <dbl>                  <dbl>               <dbl>            <dbl>
-#>  1             2                     1.12                 1.2             1   
-#>  2             1.4                   1.75                 2.2             1   
-#>  3             2.2                   2.12                 1.4             2   
-#>  4             1.2                   1.25                 1.6             1   
-#>  5             2                     1.88                 1.6             2   
-#>  6             1                     1.25                 1               1   
-#>  7             1                     1                    1               1.67
-#>  8             1.6                   1.62                 1.4             1   
-#>  9             1.4                   1.25                 1.8             1.67
-#> 10             1.2                   1.38                 1.4             1   
-#> # ℹ 401 more rows
-#> # ℹ 148 more variables: hsr_bingeEating <dbl>, hsr_bodilyDistress <dbl>,
-#> #   hsr_bodyDissatisfaction <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
-#> #   hsr_cleaning <dbl>, hsr_cognitiveProblems <dbl>,
-#> #   hsr_conversionSymptoms <dbl>, hsr_counting <dbl>,
-#> #   hsr_dietaryRestraint <dbl>, hsr_difficultiesReachingOrgasm <dbl>,
-#> #   hsr_diseaseConviction <dbl>, hsr_dishonesty <dbl>, …
-```
-
-Note how there are now 152 columns instead of 76. The extra columns
-aren’t shown in the preview above, but they are named with the `_se`
-suffix, e.g., `hsr_agoraphobia_se`.
+What the argument computes, while it lasts: the SD of the items the
+respondent actually answered divided by the square root of how many of
+those items they answered. Each one summarizes how much a respondent’s
+answers varied within a scale; it is not an estimate of how precisely
+the scale measures the underlying trait, so it does not give a
+confidence interval for a respondent’s true score. That is what replaces
+it: an interval, from the reliability of the scale rather than from one
+respondent’s spread of answers.
 
 ## Scale Reliability
 

@@ -221,23 +221,26 @@ validity problems since this is real data. We can also retain un-scored
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 376 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="simple-standard-errors">Simple Standard Errors<a class="anchor" aria-label="anchor" href="#simple-standard-errors"></a>
+<h2 id="simple-standard-errors-deprecated">Simple Standard Errors (deprecated)<a class="anchor" aria-label="anchor" href="#simple-standard-errors-deprecated"></a>
 </h2>
-<p>In addition to calculating each scale score as the mean of its
-corresponding items, we can also calculate a standard error for each
-scale score. For the 25 facets, this is the SD of the items the
-respondent actually answered divided by the square root of how many of
-those items they answered. The 5 domain scores are means of three facet
-scores rather than means of items, so their standard errors are taken
-one level up: the SD of the three contributing facet scores divided by
-the square root of 3. A standard error is <code>NA</code> wherever its
-scale score is <code>NA</code>. We turn this on using
-<code>calc_se</code>.</p>
+<p>The <code>calc_se</code> argument is <strong>deprecated</strong>. It,
+and the <code>_se</code> columns it adds, will be removed in a future
+release, and the call below warns because it passes
+<code>calc_se = TRUE</code>. This package has no interval function for
+the PID-5, so there is no replacement for it on this instrument; for
+measurement precision, see the reliability coefficients below.</p>
+<p>What the argument computes, while it lasts: for the 25 facets, this
+is the SD of the items the respondent actually answered divided by the
+square root of how many of those items they answered. The 5 domain
+scores are means of three facet scores rather than means of items, so
+their standard errors are taken one level up: the SD of the three
+contributing facet scores divided by the square root of 3. A standard
+error is <code>NA</code> wherever its scale score is
+<code>NA</code>.</p>
 <p>Note what these numbers do and do not describe. Each one summarizes
 how much a respondent’s answers varied within a scale; it is not an
 estimate of how precisely the scale measures the underlying trait, so it
-does not give a confidence interval for a respondent’s true score. For
-measurement precision, see the reliability coefficients below.</p>
+does not give a confidence interval for a respondent’s true score.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span></span>
 <span>  <span class="va">ku_pid5sf</span>,</span>
@@ -246,6 +249,10 @@ measurement precision, see the reliability coefficients below.</p>
 <span>  calc_se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in score_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF", : The `calc_se` argument is deprecated.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> It, and the `_se` columns it adds, will be removed in a future release.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> This package has no interval function for the PID-5; for measurement</span></span>
+<span><span class="co">#&gt;   precision see `reliability_pid5()`.</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 386 × 60</span></span></span>
 <span><span class="co">#&gt;    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness</span></span>
 <span><span class="co">#&gt;                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>

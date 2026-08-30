@@ -124,7 +124,12 @@ scale with a missing item (<code>rowMeans(na.rm = FALSE)</code>). (default =
 
 
 <dt id="arg-calc-se">calc_se<a class="anchor" aria-label="anchor" href="#arg-calc-se"></a></dt>
-<dd><p>An optional logical indicating whether to calculate a
+<dd><p><strong>Deprecated.</strong> This argument, and the <code>_se</code> columns it
+adds, will be removed in a future release; a call with <code>calc_se = TRUE</code>
+warns; the warning is classed <code>hitop_deprecated_calc_se</code>, so a caller can
+silence it by name. Use <code><a href="interval_hitopsr.html">interval_hitopsr()</a></code> for an interval around a respondent's
+true score. What it does while it lasts:
+an optional logical indicating whether to calculate a
 standard error for each scale score: the SD of the items the respondent
 actually answered divided by the square root of how many of those items
 they answered. Each one summarizes how much a respondent's answers varied

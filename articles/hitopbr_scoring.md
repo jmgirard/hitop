@@ -192,55 +192,23 @@ scores
 #> # ℹ 2 more variables: externalizing <dbl>, pFactor <dbl>
 ```
 
-## Simple Standard Errors
+## Simple Standard Errors (deprecated)
 
-In addition to calculating each scale score as the mean of its
-corresponding items, we can also calculate a standard error for each
-scale score: the SD of the items the respondent actually answered
-divided by the square root of how many of those items they answered. We
-turn this on using `calc_se`.
+The `calc_se` argument is **deprecated**. It, and the `_se` columns it
+adds, will be removed in a future release, and a call that passes
+`calc_se = TRUE` now warns. Use
+[`interval_hitopbr()`](https://jmgirard.github.io/hitop/reference/interval_hitopbr.md)
+instead, shown under [Confidence Intervals](#confidence-intervals)
+below.
 
-Note what these numbers do and do not describe. Each one summarizes how
-much a respondent’s answers varied within a scale; it is not an estimate
-of how precisely the scale measures the underlying trait, so it does not
-give a confidence interval for a respondent’s true score. For
-measurement precision, see the confidence intervals and the reliability
-coefficients below.
-
-``` r
-
-scores <- score_hitopbr(
-  data = ku_hitopbr,
-  items = sprintf("hbr%02d", 1:45),
-  calc_se = TRUE,
-  append = FALSE
-)
-scores
-#> # A tibble: 411 × 16
-#>    hbr_antagonism hbr_detachment hbr_disinhibition hbr_internalizing
-#>             <dbl>          <dbl>             <dbl>             <dbl>
-#>  1           1.44            1.4              1.33              1.12
-#>  2           1.33            1.4              1.33              2.25
-#>  3           2.11            2.4              2.33              2.75
-#>  4           1.11            1.2              1.33              1.12
-#>  5           2.44            1                2.22              1.88
-#>  6           1               1.2              1.22              1.12
-#>  7           1               1                1                 1   
-#>  8           1.67            1.6              1.33              1.75
-#>  9           1.44            1.4              1.56              1.12
-#> 10           1.33            1                1                 1.25
-#> # ℹ 401 more rows
-#> # ℹ 12 more variables: hbr_somatoform <dbl>, hbr_thoughtDisorder <dbl>,
-#> #   hbr_externalizing <dbl>, hbr_pFactor <dbl>, hbr_antagonism_se <dbl>,
-#> #   hbr_detachment_se <dbl>, hbr_disinhibition_se <dbl>,
-#> #   hbr_internalizing_se <dbl>, hbr_somatoform_se <dbl>,
-#> #   hbr_thoughtDisorder_se <dbl>, hbr_externalizing_se <dbl>,
-#> #   hbr_pFactor_se <dbl>
-```
-
-Note how there are now 16 columns instead of 8. The extra columns aren’t
-shown in the preview above, but they are named with the `_se` suffix,
-e.g., `hbr_somatoform_se`.
+What the argument computes, while it lasts: the SD of the items the
+respondent actually answered divided by the square root of how many of
+those items they answered. Each one summarizes how much a respondent’s
+answers varied within a scale; it is not an estimate of how precisely
+the scale measures the underlying trait, so it does not give a
+confidence interval for a respondent’s true score. That is what replaces
+it: an interval, from the reliability of the scale rather than from one
+respondent’s spread of answers.
 
 ## Confidence Intervals
 

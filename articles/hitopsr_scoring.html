@@ -296,50 +296,20 @@ even turn it off (e.g., setting it to <code>""</code>) using the
 <span><span class="co">#&gt; <span style="color: #949494;">#   hitop_difficultiesReachingOrgasm &lt;dbl&gt;, hitop_diseaseConviction &lt;dbl&gt;, …</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="simple-standard-errors">Simple Standard Errors<a class="anchor" aria-label="anchor" href="#simple-standard-errors"></a>
+<h2 id="simple-standard-errors-deprecated">Simple Standard Errors (deprecated)<a class="anchor" aria-label="anchor" href="#simple-standard-errors-deprecated"></a>
 </h2>
-<p>In addition to calculating each scale score as the mean of its
-corresponding items, we can also calculate a standard error for each
-scale score: the SD of the items the respondent actually answered
-divided by the square root of how many of those items they answered. We
-turn this on using <code>calc_se</code>.</p>
-<p>Note what these numbers do and do not describe. Each one summarizes
-how much a respondent’s answers varied within a scale; it is not an
-estimate of how precisely the scale measures the underlying trait, so it
-does not give a confidence interval for a respondent’s true score. For
-measurement precision, see the reliability coefficients below, and for
-an interval around a respondent’s true score, see <a href="#confidence-intervals">Confidence Intervals</a>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
-<span>  calc_se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">scores</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 411 × 152</span></span></span>
-<span><span class="co">#&gt;    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss</span></span>
-<span><span class="co">#&gt;              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>             2                     1.12                 1.2             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>             1.4                   1.75                 2.2             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>             2.2                   2.12                 1.4             2   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>             1.2                   1.25                 1.6             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>             2                     1.88                 1.6             2   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>             1                     1.25                 1               1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>             1                     1                    1               1.67</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>             1.6                   1.62                 1.4             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>             1.4                   1.25                 1.8             1.67</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>             1.2                   1.38                 1.4             1   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 401 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 148 more variables: hsr_bingeEating &lt;dbl&gt;, hsr_bodilyDistress &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_bodyDissatisfaction &lt;dbl&gt;, hsr_callousness &lt;dbl&gt;, hsr_checking &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_cleaning &lt;dbl&gt;, hsr_cognitiveProblems &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_conversionSymptoms &lt;dbl&gt;, hsr_counting &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_dietaryRestraint &lt;dbl&gt;, hsr_difficultiesReachingOrgasm &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_diseaseConviction &lt;dbl&gt;, hsr_dishonesty &lt;dbl&gt;, …</span></span></span></code></pre></div>
-<p>Note how there are now 152 columns instead of 76. The extra columns
-aren’t shown in the preview above, but they are named with the
-<code>_se</code> suffix, e.g., <code>hsr_agoraphobia_se</code>.</p>
+<p>The <code>calc_se</code> argument is <strong>deprecated</strong>. It,
+and the <code>_se</code> columns it adds, will be removed in a future
+release, and a call that passes <code>calc_se = TRUE</code> now warns.
+Use <code><a href="../reference/interval_hitopsr.html">interval_hitopsr()</a></code> instead, shown under <a href="#confidence-intervals">Confidence Intervals</a> below.</p>
+<p>What the argument computes, while it lasts: the SD of the items the
+respondent actually answered divided by the square root of how many of
+those items they answered. Each one summarizes how much a respondent’s
+answers varied within a scale; it is not an estimate of how precisely
+the scale measures the underlying trait, so it does not give a
+confidence interval for a respondent’s true score. That is what replaces
+it: an interval, from the reliability of the scale rather than from one
+respondent’s spread of answers.</p>
 </div>
 <div class="section level2">
 <h2 id="scale-reliability">Scale Reliability<a class="anchor" aria-label="anchor" href="#scale-reliability"></a>
@@ -359,7 +329,7 @@ the number of items and the requested coefficients. By default it
 computes both <code>alpha</code> and <code>omega</code>; for the latter,
 we will need the <strong>lavaan</strong> package installed (set
 <code>omega = FALSE</code> to skip it).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability_hitopsr.html">reliability_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
 <span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span></span>
@@ -387,7 +357,7 @@ range rather than a single number. <code><a href="../reference/interval_hitopsr.
 returns three columns per scale: <code>_est</code>, an estimate of the
 respondent’s true score, and <code>_lo</code> and <code>_hi</code>, the
 bounds of a confidence interval around it.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
 <span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
@@ -425,7 +395,7 @@ score so the two can be read against each other.</p>
 group’s standard deviation, so it is the same for every respondent on a
 given scale and it narrows as reliability rises. Widen or narrow the
 interval with <code>level</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/interval_hitopsr.html">interval_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">scored</span>,</span>
 <span>  scores <span class="op">=</span> <span class="st">"hsr_agoraphobia"</span>,</span>
@@ -452,7 +422,7 @@ interval with <code>level</code>:</p>
 <p>The mean, standard deviation and reliability behind every number
 above are shipped as <code>hitopsr_devstats</code>, transcribed from
 Table 1 of the HiTOP-SR introduction paper.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hitopsr_devstats</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 93 × 8</span></span></span>
 <span><span class="co">#&gt;    scale          camelCase type  nItems reliability reliabilityType  mean    sd</span></span>
@@ -520,7 +490,7 @@ via two approaches.</p>
 Ext_432), use <code>method = "original"</code>. The function scans your
 data frame columns, matches them against the package’s built-in item
 database, and renames them to standard names.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setup a mock dataset with older legacy column names</span></span>
 <span><span class="va">legacy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  HiTOP_659 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,</span>
@@ -549,7 +519,7 @@ database, and renames them to standard names.</p>
 tracked the exact question prompts presented to your participants, use
 <code>method = "text"</code>. Provide a vector of your current column
 names alongside a matching vector of literal item text strings.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setup a mock dataset with completely custom column names</span></span>
 <span><span class="va">custom_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  q_party <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>,</span>
