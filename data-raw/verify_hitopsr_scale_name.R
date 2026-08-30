@@ -86,9 +86,44 @@ flat <- vapply(pages, function(p) {
 rendering_pattern <- function(name) {
   esc <- gsub("([.^$*+?()\\[\\]{}|\\\\])", "\\\\\\1", name, perl = TRUE)
   esc <- gsub("-", "-?", esc, fixed = TRUE)
+  ## A name ending in `y` pluralizes by replacing that letter: `Self-injury`
+  ## prints as `Self-injuries`, never as `Self-injuryies`. The alternation goes
+  ## in before the case fold below, so it is folded with the rest of the name.
+  plural_y <- grepl("y$", name)
+  if (plural_y) esc <- sub("y$", "(y|ies)", esc)
   esc <- gsub("([A-Za-z])", "[\\L\\1\\U\\1]", esc, perl = TRUE)
-  paste0(esc, "(y|ies)?")
+  if (plural_y) esc else paste0(esc, "(y|ies)?")
 }
+
+## The pattern is the instrument the inventory below is read through, so the
+## two ways it can silently under-report are checked before it is used: a name
+## the paper renders in capitals, and the plural of a name ending in `y`. The
+## capital-letter case already held; the plural did not -- until M071 the
+## alternation trailed the whole name.
+for (p in pinned) {
+  re <- rendering_pattern(p$committed)
+  if (!grepl(re, toupper(p$committed), perl = TRUE)) {
+    stop("rendering_pattern() does not match an all-capitals ",
+         encodeString(p$committed, quote = '"'),
+         ", so any such rendering would be missing from the inventory",
+         call. = FALSE)
+  }
+  if (grepl("y$", p$committed)) {
+    plural <- sub("y$", "ies", p$committed)
+    if (!grepl(re, plural, perl = TRUE)) {
+      stop("rendering_pattern() does not match ", encodeString(plural,
+           quote = '"'), ", the plural of ",
+           encodeString(p$committed, quote = '"'), call. = FALSE)
+    }
+  }
+}
+ends_in_y <- vapply(pinned, function(p) grepl("y$", p$committed), logical(1))
+cat("rendering_pattern() checked on ", length(pinned),
+    " committed name(s): capitals on each, the y/ies plural on ",
+    if (any(ends_in_y)) {
+      paste(vapply(pinned[ends_in_y], function(p) p$committed, character(1)),
+            collapse = ", ")
+    } else "none of them (no pinned name ends in y)", "\n", sep = "")
 
 cat("Source: ", hitopsr_source_pdf, "\n", sep = "")
 cat("sha256: ", sha, " (matches)\n", sep = "")
