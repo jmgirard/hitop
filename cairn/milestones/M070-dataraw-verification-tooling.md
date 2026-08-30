@@ -9,7 +9,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2
-- **Branch/PR:** `m070-dataraw-verification-tooling`
+- **Branch/PR:** `m070-dataraw-verification-tooling` · [PR #76](https://github.com/jmgirard/hitop/pull/76)
 
 ## Goal
 
@@ -25,11 +25,11 @@ Internal tier: every script here is `.Rbuildignore`d maintainer tooling, so no e
 
 ## Acceptance criteria
 
-- [ ] AC1 `data-raw/verify_hitopsr_rename.R`, `data-raw/verify_m060_characterization.R` and `data-raw/verify_m061_characterization.R` are absent from the working tree, and `git grep -n -F` over the tracked tree for each of the three basenames returns hits only under `cairn/milestones/archive/` and in this milestone's own file, which name what was deleted.
-- [ ] AC2 The stray-text guard in `data-raw/hitopsr_table1.R` classifies tokens through a named predicate whose accepted set is derived from the single fragment vector the script's stripping step also builds its pattern from; evaluated over the token vector `c("Fo", "rP", "ee", "rR", "ev", "iew", "ForPeer", "eview", "e", "o", "r", "w", "Anhedonia")` that predicate returns `TRUE` for the first twelve and `FALSE` for `"Anhedonia"`.
-- [ ] AC3 With that repair in place, `data-raw/verify_hitopsr_names.R`, `data-raw/verify_hitopsr_devstats.R` and `data-raw/verify_hitopbr_devstats.R` each exit 0 against the shelf PDF and report no stray text.
-- [ ] AC4 For every mutation in `data-raw/norms_mutations.R`, `data-raw/mutate_norms_book_check.R` reports exactly one of three verdicts — caught, not caught, or errored — and a sweep in which any run errors exits non-zero naming that mutation as errored rather than as a miss.
-- [ ] AC5 `Rscript -e 'devtools::test()'` clean and `Rscript -e 'devtools::check()'` 0 errors / 0 warnings, NOTEs justified.
+- [x] AC1 `data-raw/verify_hitopsr_rename.R`, `data-raw/verify_m060_characterization.R` and `data-raw/verify_m061_characterization.R` are absent from the working tree, and `git grep -n -F` over the tracked tree for each of the three basenames returns hits only under `cairn/milestones/archive/` and in this milestone's own file, which name what was deleted.
+- [x] AC2 The stray-text guard in `data-raw/hitopsr_table1.R` classifies tokens through a named predicate whose accepted set is derived from the single fragment vector the script's stripping step also builds its pattern from; evaluated over the token vector `c("Fo", "rP", "ee", "rR", "ev", "iew", "ForPeer", "eview", "e", "o", "r", "w", "Anhedonia")` that predicate returns `TRUE` for the first twelve and `FALSE` for `"Anhedonia"`.
+- [x] AC3 With that repair in place, `data-raw/verify_hitopsr_names.R`, `data-raw/verify_hitopsr_devstats.R` and `data-raw/verify_hitopbr_devstats.R` each exit 0 against the shelf PDF and report no stray text.
+- [x] AC4 For every mutation in `data-raw/norms_mutations.R`, `data-raw/mutate_norms_book_check.R` reports exactly one of three verdicts — caught, not caught, or errored — and a sweep in which any run errors exits non-zero naming that mutation as errored rather than as a miss.
+- [x] AC5 `Rscript -e 'devtools::test()'` clean and `Rscript -e 'devtools::check()'` 0 errors / 0 warnings, NOTEs justified.
 
 ## Coverage
 
@@ -77,3 +77,20 @@ Internal tier: every script here is `.Rbuildignore`d maintainer tooling, so no e
 ## Review
 
 <!-- owner: review · exclusive -->
+
+**AC1 — the three spent one-shot verifiers are gone, and nothing live names them.** `ls data-raw/<basename>` returns "No such file or directory" for all three. `git grep -n -F` over the tracked tree hits, per basename: `verify_hitopsr_rename.R` — 2 in this milestone's file, 1 in `cairn/milestones/archive/M058-nssi-scale-name.md`; `verify_m060_characterization.R` — 2 here, 1 in `cairn/milestones/archive/M060-append-collision-empty-selection.md`; `verify_m061_characterization.R` — 2 here, 0 elsewhere. Every hit is inside the permitted region (the archives, which are history, and this file, which names what was deleted).
+
+
+**AC2 — the guard is a named predicate reading the stripping step's own fragment vector, and it classifies AC2's tokens as stated.** `data-raw/hitopsr_table1.R:90` defines `hitopsr_table1_watermark_fragments <- c("Fo", "rP", "ee", "rR", "ev", "iew")`; `hitopsr_table1_is_watermark()` at line 106 pastes that vector into the phrase it tests against, and `hitopsr_table1_rows()`'s stripping step at line 121 builds its `gsub` pattern by pasting the same vector — one source, no second spelling. Driven over AC2's thirteen-token vector in a fresh R session, the predicate returned `TRUE` for `Fo rP ee rR ev iew ForPeer eview e o r w` (all twelve) and `FALSE` for `Anhedonia`.
+
+**AC3 — all three durable Table 1 verifiers exit 0 against the shelf PDF with no stray text.** Re-run at review against `cairn/references/sources/ASMNT-26-0390_Proof_hi.pdf` (sha256 `1c2112…a425`, reported as matching by both devstats verifiers): `verify_hitopsr_names.R` exit 0, `verify_hitopsr_devstats.R` exit 0, `verify_hitopbr_devstats.R` exit 0; grepping each run's combined output for the guard's `non-watermark text` message returns 0 hits. Names run: 13 section headers, 93 labels outside the Superspectra block against the paper's stated 93, `Manic Energy†` the only diff. HiTOP-SR devstats: 101 data rows (93 + 8), label positions 43.2/61.2, comparisons of 372, 372 and 93 rows. HiTOP-BR devstats: comparisons of 48, 32 and 8 rows, 0 disagreeing. Figures match those T3 recorded.
+
+**AC4 — the sweep gives every mutation exactly one of three verdicts, and an errored run exits non-zero named as errored, not as a miss.** Both runs were made against a `git archive HEAD` export with the shelf epub copied in, never the checkout (the M034/M035 lesson). Clean sweep: baseline silent, then 13 verdict lines for the 13 entries in `norms_mutations` (`length(norms_mutations)` is 13) — 13 CAUGHT, 0 NOT CAUGHT, 0 ERRORED — exit 0, closing with `restored data/pid_norms.rda … (unchanged)`. Planted sweep: a fourteenth mutation renaming `pid_norms`'s `version` column aborts the assembly step (`Error: !anyDuplicated(ks) is not TRUE`); the sweep files it `ERRORED`, prints the run's last three lines, exits 1, and the closing message reads `1 mutation(s) errored before the comparison ran: PLANT-abort-extraction` — the errored group named separately from the miss group. The plant lived only in a throwaway copy of the export and is not on the branch.
+
+**AC5 — test and check clean at review.** `devtools::test()`: FAIL 0 | WARN 0 | SKIP 4 | PASS 16151. `devtools::check(document = FALSE)`: Status OK, 0 errors / 0 warnings / 0 notes, 4m 10s — no NOTE to justify.
+
+### Consistency gate
+
+Universal cairn-file checks: `cairn_validate.py` exits 0, all 16 checks PASS (`coverage complete` and `scaffold present` among them); 22 advisories — 21 dangling `D-0NN` tokens in `DESIGN.md`/`SOURCES.md`/`DECISIONS.md` and one references-staleness on `schmukle2026.md` — all present on `origin/main` and untouched by this branch. No `DESIGN.md` principle changed on the diff, so `cairn_impact.py` is skipped.
+
+Toolchain checks from the `r-package` profile's `consistency-gate` slot: `devtools::document()` produces no diff (`git status` clean but for this file); `NAMESPACE`, `man/` and `data/*.rda` unchanged on the diff; `devtools::build_readme()` leaves `README.md` unchanged; `pkgdown::check_pkgdown()` reports no problems; no `NEWS.md` entry, correctly — every file touched is under `data-raw/`, which `.Rbuildignore:5` excludes from the built package, so nothing user-visible changed; no new top-level files, and `check()` raised no NOTE; full `check()` clean as recorded under AC5.
