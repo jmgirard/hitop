@@ -5,6 +5,8 @@
 This release makes several **breaking** API changes to stabilize the
 interface before a CRAN submission.
 
+### Breaking changes
+
 - **Reliability tables now print each scale’s canonical name, in a
   column named `Scale`.**
   [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
@@ -62,6 +64,52 @@ interface before a CRAN submission.
   The **snakecase** package is no longer an import; the regeneration
   scripts under `data-raw/` still use it, and say so.
 
+- **Two HiTOP-SR scales are now named the way the instrument’s
+  introduction paper prints them.** The scale abbreviated `NSSI` is
+  named in full, `Non-suicidal Self-injury`, spelled out the way the
+  other 75 scales already were; and the scale called `Body Focus` is
+  named `Appearance Focus`. *Breaking:*
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  returns `hsr_nonSuicidalSelfInjury` and `hsr_nonSuicidalSelfInjury_se`
+  where it returned `hsr_nssi` and `hsr_nssi_se`, and
+  `hsr_appearanceFocus` and `hsr_appearanceFocus_se` where it returned
+  `hsr_bodyFocus` and `hsr_bodyFocus_se`; code selecting the old names
+  must be updated. Because the scale tables are sorted by name, both
+  scales also move position in the returned tibble — the first from 448
+  to 451 and its standard error from 524 to 527, the second from 412 to
+  408 and its standard error from 488 to 484 — and the columns lying
+  between an old and a new position shift by one, so code selecting
+  scored columns by position rather than by name must be updated too.
+  Both scales are also addressed by name elsewhere:
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  no longer accepts `"NSSI"` or `"Body Focus"`, and
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  rejects a saved module descriptor that records either, so any
+  descriptor written before this release must be rebuilt;
+  `available_scales("hitopsr")` lists the new names. No score changes:
+  every column, those two included, returns exactly the values it did
+  before. The names also change on the scoring page of the two Word
+  questionnaires; the Qualtrics and REDCap exports print no scale names
+  and are unchanged.
+
+- **PID-5-BF total score** (breaking). `score_pid5(version = "BF")` now
+  returns a `total` column after its five domains, so the brief form’s
+  normed total score in `pid_norms` has something to convert. Following
+  Markon et al. (2024, p. 23), it is the item-level mean over all 25
+  items rather than the mean of the five domain means; the two agree on
+  complete data and differ only when items are missing. Because each
+  scale applies the `missing` rule independently, a total can be
+  reported alongside one or more `NA` domains — see
+  [`?score_pid5`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+  for the exact bounds. Two consequences for existing code:
+  `reliability_pid5(version = "BF")` now returns **six** rows rather
+  than five, and the printed scoring table on the PID-5-BF Word forms
+  gains a `Total` row listing all 25 items (both forms are rebuilt, with
+  new `hitop_artifacts` entries). Code that counts the columns of
+  `score_pid5(version = "BF")` or the rows of
+  `reliability_pid5(version = "BF")` must be updated. The PID-5 and
+  PID-5-SF are unaffected.
+
 - **Scoring and converting now refuse two argument shapes they used to
   let fall through.** Re-running
   [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
@@ -108,6 +156,84 @@ interface before a CRAN submission.
   and now raise the empty-selection error along with every other shape
   of that call.
 
+- **The Qualtrics and REDCap generators now check their arguments**
+  (breaking). `block_name`, `id_prefix`, and `include_instructions` on
+  every `generate_qualtrics_*()`, `form_name` and `required` on every
+  `generate_redcap_*()`, and `breaks` on every generator that takes it,
+  previously wrote whatever they were handed into the import file:
+  `id_prefix = 1` wrote question IDs reading `1_001`, and
+  `required = "yes"` left the dictionary’s required column blank on
+  every row instead of marking anything. Each now raises an error naming
+  the argument, and no file is written. `breaks` still accepts `0` and
+  `NULL` to turn pagination off. Files built from valid arguments are
+  byte-for-byte unchanged.
+
+- [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)’s
+  `prefix` argument is now matched **literally** (breaking). It was
+  previously compiled as a regular expression anchored to the start of
+  the column name, which meant a prefix containing `(` failed with a
+  regex error and one containing `.` could strip a prefix that was never
+  there. A column name that does not begin with exactly `prefix` is now
+  carried through whole. Code relying on a regex `prefix` must pre-strip
+  the names instead.
+  [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
+  matches `prefix` the same way.
+
+- **New
+  [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md),
+  and
+  [`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md)
+  functions** return a per-scale tibble (`scale`, `nItems`, `alpha`,
+  `omega`). These replace the `alpha` and `omega` arguments of
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  and
+  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
+  which only *printed* a reliability table as a side effect and have
+  been **removed**
+
+- **[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  and
+  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
+  now take a single `missing` argument** in place of the previous
+  `na.rm` (and, for
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  `apa_scoring`) arguments. For
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  `missing = "apa"` (the default) applies the APA missing-data/proration
+  rule, `"available"` averages the present items (the old
+  `apa_scoring = FALSE, na.rm = TRUE`), and `"complete"` returns `NA`
+  for any scale with a missing item (the old `na.rm = FALSE`).
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)/[`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
+  offer `"available"` (default) and `"complete"`. Default behavior is
+  unchanged
+
+- **The `tibble` argument has been removed** from
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
+  [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md),
+  and
+  [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md);
+  these functions now always return a tibble
+
+- **Distribution artifacts are now versioned.** The new
+  `hitop_artifacts` manifest dataset identifies every prebuilt file in
+  `inst/extdata/` by build date and MD5 checksum (one row per build,
+  history kept); the website’s download pages show each instrument’s
+  current builds and a version history; and generated Word documents
+  carry a build stamp in the footer (“Generated YYYY-MM-DD · hitop
+  X.Y.Z”). A test suite locks the committed files to the manifest, so no
+  distributed artifact can change again without a visible version bump.
+  **Artifact filenames no longer carry the instrument version** (e.g.,
+  `pid5_1.0_A4.docx` is now `pid5_A4.docx`, so previously shared
+  download URLs no longer resolve), and the `generate_docx_*` default
+  `file` arguments dropped `_1.0` accordingly
+
+### New features
+
 - **[`interval_hitopsr()`](https://jmgirard.github.io/hitop/reference/interval_hitopsr.md)
   puts a confidence interval around a HiTOP-SR scale score.** Give it
   scored columns and it returns three per scale: `_est`, a
@@ -134,34 +260,6 @@ interface before a CRAN submission.
   coverage the method demonstrates holds across a population of
   respondents rather than for any one of them.
 
-- **Two HiTOP-SR scales are now named the way the instrument’s
-  introduction paper prints them.** The scale abbreviated `NSSI` is
-  named in full, `Non-suicidal Self-injury`, spelled out the way the
-  other 75 scales already were; and the scale called `Body Focus` is
-  named `Appearance Focus`. *Breaking:*
-  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-  returns `hsr_nonSuicidalSelfInjury` and `hsr_nonSuicidalSelfInjury_se`
-  where it returned `hsr_nssi` and `hsr_nssi_se`, and
-  `hsr_appearanceFocus` and `hsr_appearanceFocus_se` where it returned
-  `hsr_bodyFocus` and `hsr_bodyFocus_se`; code selecting the old names
-  must be updated. Because the scale tables are sorted by name, both
-  scales also move position in the returned tibble — the first from 448
-  to 451 and its standard error from 524 to 527, the second from 412 to
-  408 and its standard error from 488 to 484 — and the columns lying
-  between an old and a new position shift by one, so code selecting
-  scored columns by position rather than by name must be updated too.
-  Both scales are also addressed by name elsewhere:
-  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
-  no longer accepts `"NSSI"` or `"Body Focus"`, and
-  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
-  rejects a saved module descriptor that records either, so any
-  descriptor written before this release must be rebuilt;
-  `available_scales("hitopsr")` lists the new names. No score changes:
-  every column, those two included, returns exactly the values it did
-  before. The names also change on the scoring page of the two Word
-  questionnaires; the Qualtrics and REDCap exports print no scale names
-  and are unchanged.
-
 - **A chosen set of an instrument’s scales is called a *module*.** The
   entries below describe that feature under its final names. *For
   development- version users only:* these were briefly called
@@ -174,6 +272,75 @@ interface before a CRAN submission.
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
   the abbreviation `m =` is now ambiguous between `module` and `missing`
   and errors — write `mo =` and `mi =`, or spell the arguments out.
+
+- **Generate a HiTOP-SR module from selected scales.** The new
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  describes a chosen set of an instrument’s scales, and
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
+  [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md),
+  and
+  [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
+  each take it as a `module` argument to emit a form containing only
+  those scales’ items. The Qualtrics and REDCap exports keep each item’s
+  original HiTOP-SR number, because there an item number names a
+  collected data column; the Word form numbers its items `1` to `n` down
+  the page (see the entry above). Scale names may be given as printed on
+  the instrument (`"Antisocial Behavior"`) or as the camelCase stems
+  used in scored output (`"antisocialBehavior"`), in any mixture and
+  ignoring case. Subsetting is currently available for the HiTOP-SR
+  only.
+
+- **Scoring modules.**
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  gain a `module` argument taking the same description that
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  builds and the `generate_*_hitopsr()` functions consume. Give it the
+  item columns you actually collected and it scores only that module’s
+  scales, returning the same values a full 405-item administration would
+  have produced for them. Without the argument both functions behave
+  exactly as before. See
+  [`vignette("hitopsr_scoring")`](https://jmgirard.github.io/hitop/articles/hitopsr_scoring.md).
+
+- **HiTOP-SR module Word forms are numbered `1` to `n`, and can be
+  shuffled.**
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+  gains `renumber` (default `TRUE`), so a module’s paper form no longer
+  prints the full instrument’s gapped numbers; pass `renumber = FALSE`
+  for the previous behavior. It also gains `randomize` (default
+  `FALSE`), which prints the items in a random order and appends a
+  crosswalk from each printed number back to its original HiTOP-SR
+  number, so a shuffled form is still scoreable from the paper alone.
+  Use [`set.seed()`](https://rdrr.io/r/base/Random.html) to make an
+  order reproducible. Every call’s invisible return value now carries an
+  `item_order` attribute holding the original item numbers in printed
+  order. Data collected on a shuffled form must be reordered through
+  that attribute before
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  which addresses a module’s items in ascending original order;
+  [`?generate_docx_hitopsr`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+  shows the idiom.
+  [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
+  and
+  [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
+  are deliberately unchanged: there an item number names a collected
+  data column. No distributed form under `inst/extdata/` changed, since
+  each is the full instrument and already numbered from one. The two new
+  arguments sit between `module` and `subset` in the signature, so any
+  call passing arguments positionally past `font_family` must be
+  respelled by name.
+
+- **A HiTOP-SR Word form built from a module says so in its header.**
+  With no `title` of your own,
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+  now heads a module form `"HiTOP-SR Module (v1.0)"` and a
+  full-instrument form `"HiTOP-SR (v1.0)"`, so a paper holding a handful
+  of scales is no longer titled as the whole 405-item instrument.
+  Passing `title` still prints exactly what you pass, including on a
+  module form. The item text, response options, and administration
+  instructions are untouched, and no distributed form under
+  `inst/extdata/` changed, since each is the full instrument.
 
 - **[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
   and
@@ -218,12 +385,6 @@ interface before a CRAN submission.
   now writes an `item_order` attribute as the file’s `itemOrder` field,
   so a descriptor read and written again keeps the order it recorded.
 
-- **The jsonlite package moved from Suggests to Imports**, so it is now
-  installed with hitop rather than optionally.
-  [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
-  needs it, and the browser module builder runs in an environment where
-  suggested packages are not installed.
-
 - **[`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
   lists the scales you can build a module from**, with the name printed
   on the form, the camelCase stem that names the scored output column,
@@ -239,40 +400,6 @@ interface before a CRAN submission.
   [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md)
   joins on, and it lines up with `hitopsr_scales$camelCase` and
   `hitopsr_subscales$camelCase`.
-
-- **The [browser module
-  builder](https://jmgirard.github.io/hitop-builder/) shows those
-  definitions while you pick.** Pointing at a scale, or reaching its
-  checkbox with the Tab key, brings up that scale’s definition; Escape
-  dismisses it. The page reads the text from the installed package
-  rather than keeping a copy, so a version that does not supply it shows
-  the list exactly as before.
-
-- **The modules article and the three HiTOP-SR generator help pages
-  describe the module behavior the generators have.** [Building HiTOP-SR
-  Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.html)
-  now names the `HiTOP-SR Module (v1.0)` header a module Word form
-  carries, and `title =` as the way to override it; says that a form
-  built with `renumber = FALSE` prints no printed-number crosswalk; and
-  says that `include_subscales = TRUE` cannot be combined with `module`.
-  The recipe for putting columns collected on a shuffled form back into
-  instrument order, `collected[order(item_order)]`, now states – in the
-  article and in
-  [`?generate_docx_hitopsr`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
-  – that it applies only to columns that are in the order the form
-  printed. And the `descriptor` argument of all three
-  `generate_*_hitopsr()` functions now says the descriptor’s path is
-  announced on the console once both files are written. No behavior
-  changed; the wording is locked by
-  `tests/testthat/test-module-doc-prose.R`.
-
-- **A new article, [Building HiTOP-SR
-  Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.html),
-  walks the whole module workflow**: choosing scales, describing the
-  module, generating the paper, Qualtrics, and REDCap files, selecting
-  the collected item columns, and scoring plus reliability. The HiTOP-SR
-  scoring vignette now links to it rather than carrying its own shorter
-  copy.
 
 - **A new web app builds HiTOP-SR modules in your browser.** Tick the
   scales you want at
@@ -295,76 +422,13 @@ interface before a CRAN submission.
   that Word form is headed `HiTOP-SR (v1.0)` and the three downloads are
   named for the instrument.
 
-- **The Qualtrics and REDCap generators now check their arguments**
-  (breaking). `block_name`, `id_prefix`, and `include_instructions` on
-  every `generate_qualtrics_*()`, `form_name` and `required` on every
-  `generate_redcap_*()`, and `breaks` on every generator that takes it,
-  previously wrote whatever they were handed into the import file:
-  `id_prefix = 1` wrote question IDs reading `1_001`, and
-  `required = "yes"` left the dictionary’s required column blank on
-  every row instead of marking anything. Each now raises an error naming
-  the argument, and no file is written. `breaks` still accepts `0` and
-  `NULL` to turn pagination off. Files built from valid arguments are
-  byte-for-byte unchanged.
-
-- **The REDCap generators no longer need an external `zip` program.**
-  They built the instrument archive by running the system’s `zip`
-  command, which silently failed wherever no such program was installed
-  – commonly on Windows. The archive is now written by the {zip}
-  package, in R, with no outside program involved. The file REDCap
-  receives is unchanged.
-
-- The download buttons on the instrument pages now serve the files from
-  the package website itself, so a browser saves each one under its own
-  name. The Qualtrics survey files used to open as text in a new tab,
-  because GitHub serves them as plain text; they now download ready to
-  import. The GitHub links keep working for anyone who saved them.
-
-- The HiTOP-HSUM Qualtrics survey file (`hitophsum_qualtrics.qsf`) now
-  imports into Qualtrics. The previous build was exported through the
-  Qualtrics API, which writes absent values as empty objects rather than
-  as JSON `null`; the importer rejects that file with an internal error.
-  The file now carries the same encoding as a survey exported from the
-  Qualtrics interface. Its content — questions, response choices, and
-  skip/display logic — is unchanged.
-
-- The Qualtrics import instructions note that a browser may save the
-  survey file with a `.txt` extension, and that renaming it back to
-  `.qsf` is safe.
-
-- [`?hitop_module`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
-  now says that a module naming every scale holds exactly the
-  instrument’s own items but is still framed as a module by
-  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
-  – the `HiTOP-SR Module` header, and a crosswalk when the form is
-  shuffled – so a caller wanting the full instrument’s framing passes no
-  `module` at all.
-
-- The `calc_se` help text on
-  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
-  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
-  and
-  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
-  now states what these standard errors are computed over and says
-  plainly that they are not standard errors of measurement. Each is the
-  SD of the items a respondent actually answered over the square root of
-  how many they answered (for a PID-5 full- or short-form domain, over
-  its three contributing facet scores), so no reliability estimate
-  enters it: it describes how much a respondent’s answers varied within
-  a scale, not how precisely the scale measures. The reliability
-  functions are named for that. The vignettes already said this; the
-  help pages said only “the standard error of each scale score”, which
-  reads as a standard error of measurement.
-
-- The scoring vignettes described the `calc_se` standard errors
-  incorrectly and now describe what is actually computed. The divisor is
-  the number of items a respondent answered, not the number of items on
-  the scale. A PID-5 short-form domain score is a mean of three facet
-  scores rather than of items, so its standard error is taken over those
-  three facet scores. The vignettes also no longer suggest converting
-  these standard errors into confidence intervals: they summarize how
-  much a respondent’s answers varied within a scale, not how precisely
-  the scale measures the trait.
+- **The [browser module
+  builder](https://jmgirard.github.io/hitop-builder/) shows those
+  definitions while you pick.** Pointing at a scale, or reaching its
+  checkbox with the Tab key, brings up that scale’s definition; Escape
+  dismisses it. The page reads the text from the installed package
+  rather than keeping a copy, so a version that does not supply it shows
+  the list exactly as before.
 
 - **Norm-referenced profile plots.** New
   [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
@@ -382,57 +446,6 @@ interface before a CRAN submission.
   [`vignette("pid5sf_scoring")`](https://jmgirard.github.io/hitop/articles/pid5sf_scoring.md),
   and
   [`vignette("pid5bf_scoring")`](https://jmgirard.github.io/hitop/articles/pid5bf_scoring.md).
-
-- `plot_pid5(labels = FALSE)` no longer reserves the extra room a value
-  label would need on the score axis. That padding is the label’s, and
-  reserving it when no label is drawn spent width on empty margin —
-  exactly the width `labels = FALSE` is asked for to save. Profiles
-  drawn with labels are unchanged.
-
-- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
-  now reports a non-numeric normed column the way
-  [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
-  already did: one bullet per offending column, each naming that column
-  and its own class, rather than a single line listing the names with no
-  types, and a closing line saying what to do about it. The two
-  functions now share one guard, so the two messages cannot drift apart.
-
-- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
-  now places each value label to the right of its point rather than
-  above it, and pads the score axis to hold it. Offsetting upward took
-  the room out of the panel’s height, where it ran out on a smaller
-  figure and the top label in each panel was clipped. The labels fit on
-  figures about 7 inches wide or more; see `labels` below for narrower
-  ones.
-
-- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
-  gains a `labels` argument. The value labels need a figure about 7
-  inches wide or more; set `labels = FALSE` for a narrower one and the
-  points and profile line are drawn without them.
-
-- **Scoring modules.**
-  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-  and
-  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
-  gain a `module` argument taking the same description that
-  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
-  builds and the `generate_*_hitopsr()` functions consume. Give it the
-  item columns you actually collected and it scores only that module’s
-  scales, returning the same values a full 405-item administration would
-  have produced for them. Without the argument both functions behave
-  exactly as before. See
-  [`vignette("hitopsr_scoring")`](https://jmgirard.github.io/hitop/articles/hitopsr_scoring.md).
-
-- **Clearer errors for bad arguments.** Every argument check across the
-  package now reports which argument was wrong, what was supplied, and
-  which function was called, instead of printing the internal test that
-  failed. This affects `data`, `prefix`, `name`, `append`, `calc_se`,
-  `alpha`, `omega`, and `top` throughout the scoring, reliability,
-  norming, labelling, and ranking functions. A bad `dir` in
-  [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
-  now lists the permitted values and suggests the closest match. No
-  function accepts or rejects anything it did not before — only the
-  messages changed.
 
 - **PID-5 normative tables.** The new `pid_norms` dataset carries the
   published normative score distributions for the PID-5, PID-5-SF, and
@@ -482,88 +495,27 @@ interface before a CRAN submission.
   back `NA` with the warning above. The PID-5, PID-5-SF, and PID-5-BF
   vignettes each gain a section demonstrating the conversion.
 
-- **PID-5-BF total score** (breaking). `score_pid5(version = "BF")` now
-  returns a `total` column after its five domains, so the brief form’s
-  normed total score in `pid_norms` has something to convert. Following
-  Markon et al. (2024, p. 23), it is the item-level mean over all 25
-  items rather than the mean of the five domain means; the two agree on
-  complete data and differ only when items are missing. Because each
-  scale applies the `missing` rule independently, a total can be
-  reported alongside one or more `NA` domains — see
-  [`?score_pid5`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
-  for the exact bounds. Two consequences for existing code:
-  `reliability_pid5(version = "BF")` now returns **six** rows rather
-  than five, and the printed scoring table on the PID-5-BF Word forms
-  gains a `Total` row listing all 25 items (both forms are rebuilt, with
-  new `hitop_artifacts` entries). Code that counts the columns of
-  `score_pid5(version = "BF")` or the rows of
-  `reliability_pid5(version = "BF")` must be updated. The PID-5 and
-  PID-5-SF are unaffected.
+- **[`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
+  gains a `name` argument** (default `"top_scales"`) naming its output
+  column, which was previously hard-coded as `"out"`. It also gains
+  `reverse` and `srange` arguments: scales named in `reverse` are
+  reflected via `sum(srange) - value` before ranking, so a
+  reverse-directioned scale (e.g. a well-being scale, where higher =
+  healthier) ranks on the same “higher = more elevated” metric as the
+  other scales
 
-- **PID-5 Word forms print the response options on two lines.** The
-  response scale printed above the items on the PID-5, PID-5-SF, and
-  PID-5-BF Word forms now runs across two lines — `0` and `1` on the
-  first, `2` and `3` on the second — so that no option phrase is broken
-  partway through by the column width. The option values and wording are
-  unchanged, and the HiTOP-SR and HiTOP-BR forms keep their single-line
-  scale. All six PID Word files (US and A4) were regenerated, with new
-  `hitop_artifacts` entries.
+### Improvements and fixes
 
-- **HiTOP-SR module Word forms are numbered `1` to `n`, and can be
-  shuffled.**
-  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
-  gains `renumber` (default `TRUE`), so a module’s paper form no longer
-  prints the full instrument’s gapped numbers; pass `renumber = FALSE`
-  for the previous behavior. It also gains `randomize` (default
-  `FALSE`), which prints the items in a random order and appends a
-  crosswalk from each printed number back to its original HiTOP-SR
-  number, so a shuffled form is still scoreable from the paper alone.
-  Use [`set.seed()`](https://rdrr.io/r/base/Random.html) to make an
-  order reproducible. Every call’s invisible return value now carries an
-  `item_order` attribute holding the original item numbers in printed
-  order. Data collected on a shuffled form must be reordered through
-  that attribute before
-  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
-  which addresses a module’s items in ascending original order;
-  [`?generate_docx_hitopsr`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
-  shows the idiom.
-  [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
-  and
-  [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
-  are deliberately unchanged: there an item number names a collected
-  data column. No distributed form under `inst/extdata/` changed, since
-  each is the full instrument and already numbered from one. The two new
-  arguments sit between `module` and `subset` in the signature, so any
-  call passing arguments positionally past `font_family` must be
-  respelled by name.
-
-- **A HiTOP-SR Word form built from a module says so in its header.**
-  With no `title` of your own,
-  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
-  now heads a module form `"HiTOP-SR Module (v1.0)"` and a
-  full-instrument form `"HiTOP-SR (v1.0)"`, so a paper holding a handful
-  of scales is no longer titled as the whole 405-item instrument.
-  Passing `title` still prints exactly what you pass, including on a
-  module form. The item text, response options, and administration
-  instructions are untouched, and no distributed form under
-  `inst/extdata/` changed, since each is the full instrument.
-
-- **Generate a HiTOP-SR module from selected scales.** The new
-  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
-  describes a chosen set of an instrument’s scales, and
-  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
-  [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md),
-  and
-  [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
-  each take it as a `module` argument to emit a form containing only
-  those scales’ items. The Qualtrics and REDCap exports keep each item’s
-  original HiTOP-SR number, because there an item number names a
-  collected data column; the Word form numbers its items `1` to `n` down
-  the page (see the entry above). Scale names may be given as printed on
-  the instrument (`"Antisocial Behavior"`) or as the camelCase stems
-  used in scored output (`"antisocialBehavior"`), in any mixture and
-  ignoring case. Subsetting is currently available for the HiTOP-SR
-  only.
+- **Clearer errors for bad arguments.** Every argument check across the
+  package now reports which argument was wrong, what was supplied, and
+  which function was called, instead of printing the internal test that
+  failed. This affects `data`, `prefix`, `name`, `append`, `calc_se`,
+  `alpha`, `omega`, and `top` throughout the scoring, reliability,
+  norming, labelling, and ranking functions. A bad `dir` in
+  [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
+  now lists the permitted values and suggests the closest match. No
+  function accepts or rejects anything it did not before — only the
+  messages changed.
 
 - [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
   now checks its `scores` argument before converting anything. Naming
@@ -580,57 +532,73 @@ interface before a CRAN submission.
   [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
   rather than to the internal helper that raised them.
 
-- [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)’s
-  `prefix` argument is now matched **literally** (breaking). It was
-  previously compiled as a regular expression anchored to the start of
-  the column name, which meant a prefix containing `(` failed with a
-  regex error and one containing `.` could strip a prefix that was never
-  there. A column name that does not begin with exactly `prefix` is now
-  carried through whole. Code relying on a regex `prefix` must pre-strip
-  the names instead.
+- `plot_pid5(labels = FALSE)` no longer reserves the extra room a value
+  label would need on the score axis. That padding is the label’s, and
+  reserving it when no label is drawn spent width on empty margin —
+  exactly the width `labels = FALSE` is asked for to save. Profiles
+  drawn with labels are unchanged.
+
+- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+  now reports a non-numeric normed column the way
   [`norm_pid5()`](https://jmgirard.github.io/hitop/reference/norm_pid5.md)
-  matches `prefix` the same way.
+  already did: one bullet per offending column, each naming that column
+  and its own class, rather than a single line listing the names with no
+  types, and a closing line saying what to do about it. The two
+  functions now share one guard, so the two messages cannot drift apart.
+
+- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+  now places each value label to the right of its point rather than
+  above it, and pads the score axis to hold it. Offsetting upward took
+  the room out of the panel’s height, where it ran out on a smaller
+  figure and the top label in each panel was clipped. The labels fit on
+  figures about 7 inches wide or more; see `labels` below for narrower
+  ones.
+
+- [`plot_pid5()`](https://jmgirard.github.io/hitop/reference/plot_pid5.md)
+  gains a `labels` argument. The value labels need a figure about 7
+  inches wide or more; set `labels = FALSE` for a narrower one and the
+  points and profile line are drawn without them.
 
 - Qualtrics question IDs are now zero-padded to the width of the largest
   item number rather than the number of items. Output for every full
   instrument is unchanged; the change keeps IDs uniform in a module
   file.
 
-- **New instrument overview page.** A single “HiTOP Instruments” page
-  presents the three self-report measures — HiTOP-SR, HiTOP-BR, and
-  HiTOP-HSUM — as at-a-glance summary cards, each linking to its full
-  download page. It is the first entry in the website’s “Instruments”
-  menu. Its HiTOP-BR card now describes the eight scales at their true
-  hierarchy levels — six spectra plus the Externalizing superspectrum
-  and a general p-factor — rather than calling all eight “spectra”.
+- **PID-5 Word forms print the response options on two lines.** The
+  response scale printed above the items on the PID-5, PID-5-SF, and
+  PID-5-BF Word forms now runs across two lines — `0` and `1` on the
+  first, `2` and `3` on the second — so that no option phrase is broken
+  partway through by the column width. The option values and wording are
+  unchanged, and the HiTOP-SR and HiTOP-BR forms keep their single-line
+  scale. All six PID Word files (US and A4) were regenerated, with new
+  `hitop_artifacts` entries.
 
-- **Redesigned instrument download pages.** Each download button on the
-  website’s instrument pages now shows its file’s build date, and the
-  version tables are replaced by a collapsible “Current builds & version
-  history” panel rendered from the `hitop_artifacts` manifest. The
-  manifest’s change notes were reworded for a general audience (data
-  unchanged otherwise).
+- **The REDCap generators no longer need an external `zip` program.**
+  They built the instrument archive by running the system’s `zip`
+  command, which silently failed wherever no such program was installed
+  – commonly on Windows. The archive is now written by the {zip}
+  package, in R, with no outside program involved. The file REDCap
+  receives is unchanged.
 
-- **Centralized import instructions.** A new “Importing into Qualtrics &
-  REDCap” article gives step-by-step instructions for all three import
-  formats — Qualtrics survey files (`.qsf`), Qualtrics questions files
-  (`.txt`), and REDCap instrument ZIPs — and every instrument download
-  page now links its Qualtrics and REDCap cards to it. The REDCap import
-  steps previously embedded in each `generate_redcap_*()` help page now
-  live in that article, which the functions point to via “See also”.
+- **The jsonlite package moved from Suggests to Imports**, so it is now
+  installed with hitop rather than optionally.
+  [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+  needs it, and the browser module builder runs in an environment where
+  suggested packages are not installed.
 
-- **Distribution artifacts are now versioned.** The new
-  `hitop_artifacts` manifest dataset identifies every prebuilt file in
-  `inst/extdata/` by build date and MD5 checksum (one row per build,
-  history kept); the website’s download pages show each instrument’s
-  current builds and a version history; and generated Word documents
-  carry a build stamp in the footer (“Generated YYYY-MM-DD · hitop
-  X.Y.Z”). A test suite locks the committed files to the manifest, so no
-  distributed artifact can change again without a visible version bump.
-  **Artifact filenames no longer carry the instrument version** (e.g.,
-  `pid5_1.0_A4.docx` is now `pid5_A4.docx`, so previously shared
-  download URLs no longer resolve), and the `generate_docx_*` default
-  `file` arguments dropped `_1.0` accordingly
+- The download buttons on the instrument pages now serve the files from
+  the package website itself, so a browser saves each one under its own
+  name. The Qualtrics survey files used to open as text in a new tab,
+  because GitHub serves them as plain text; they now download ready to
+  import. The GitHub links keep working for anyone who saved them.
+
+- The HiTOP-HSUM Qualtrics survey file (`hitophsum_qualtrics.qsf`) now
+  imports into Qualtrics. The previous build was exported through the
+  Qualtrics API, which writes absent values as empty objects rather than
+  as JSON `null`; the importer rejects that file with an internal error.
+  The file now carries the same encoding as a survey exported from the
+  Qualtrics interface. Its content — questions, response choices, and
+  skip/display logic — is unchanged.
 
 - **HiTOP-HSUM aligned to its authoritative source** (the HiTOP
   Society’s “revised SUD module-August 2024” development worksheet):
@@ -662,54 +630,102 @@ interface before a CRAN submission.
   at least monthly (the source module’s sanctioned loosening), whereas
   the REDCap export defaults to the most-frequently-used other drug only
 
-- **New
-  [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
-  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md),
-  and
-  [`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md)
-  functions** return a per-scale tibble (`scale`, `nItems`, `alpha`,
-  `omega`). These replace the `alpha` and `omega` arguments of
-  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
-  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
-  and
-  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
-  which only *printed* a reliability table as a side effect and have
-  been **removed**
+- **Standardized item-text punctuation** in `hitopsr_items` (7 items)
+  and `hitopbr_items` (1 item): every item now ends in a period. The
+  affected items (HSR 5, 27, 30, 284, 314, 332, 382 and HBR 41) lack the
+  period in the source instrument itself, where 398 of 405 HiTOP-SR
+  items have one; the omissions are treated as typographical oversights.
+  The derived `*_scales`/`*_subscales` tables and the prebuilt
+  DOCX/Qualtrics/REDCap artifacts in `inst/extdata/` were regenerated to
+  match
 
-- **[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+### Documentation and website
+
+- **A new article, [Building HiTOP-SR
+  Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.html),
+  walks the whole module workflow**: choosing scales, describing the
+  module, generating the paper, Qualtrics, and REDCap files, selecting
+  the collected item columns, and scoring plus reliability. The HiTOP-SR
+  scoring vignette now links to it rather than carrying its own shorter
+  copy.
+
+- **The modules article and the three HiTOP-SR generator help pages
+  describe the module behavior the generators have.** [Building HiTOP-SR
+  Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.html)
+  now names the `HiTOP-SR Module (v1.0)` header a module Word form
+  carries, and `title =` as the way to override it; says that a form
+  built with `renumber = FALSE` prints no printed-number crosswalk; and
+  says that `include_subscales = TRUE` cannot be combined with `module`.
+  The recipe for putting columns collected on a shuffled form back into
+  instrument order, `collected[order(item_order)]`, now states – in the
+  article and in
+  [`?generate_docx_hitopsr`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+  – that it applies only to columns that are in the order the form
+  printed. And the `descriptor` argument of all three
+  `generate_*_hitopsr()` functions now says the descriptor’s path is
+  announced on the console once both files are written. No behavior
+  changed.
+
+- [`?hitop_module`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  now says that a module naming every scale holds exactly the
+  instrument’s own items but is still framed as a module by
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+  – the `HiTOP-SR Module` header, and a crosswalk when the form is
+  shuffled – so a caller wanting the full instrument’s framing passes no
+  `module` at all.
+
+- The `calc_se` help text on
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
   and
   [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
-  now take a single `missing` argument** in place of the previous
-  `na.rm` (and, for
-  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
-  `apa_scoring`) arguments. For
-  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
-  `missing = "apa"` (the default) applies the APA missing-data/proration
-  rule, `"available"` averages the present items (the old
-  `apa_scoring = FALSE, na.rm = TRUE`), and `"complete"` returns `NA`
-  for any scale with a missing item (the old `na.rm = FALSE`).
-  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)/[`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
-  offer `"available"` (default) and `"complete"`. Default behavior is
-  unchanged
+  now states what these standard errors are computed over and says
+  plainly that they are not standard errors of measurement. Each is the
+  SD of the items a respondent actually answered over the square root of
+  how many they answered (for a PID-5 full- or short-form domain, over
+  its three contributing facet scores), so no reliability estimate
+  enters it: it describes how much a respondent’s answers varied within
+  a scale, not how precisely the scale measures. The reliability
+  functions are named for that. The vignettes already said this; the
+  help pages said only “the standard error of each scale score”, which
+  reads as a standard error of measurement.
 
-- **[`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
-  gains a `name` argument** (default `"top_scales"`) naming its output
-  column, which was previously hard-coded as `"out"`. It also gains
-  `reverse` and `srange` arguments: scales named in `reverse` are
-  reflected via `sum(srange) - value` before ranking, so a
-  reverse-directioned scale (e.g. a well-being scale, where higher =
-  healthier) ranks on the same “higher = more elevated” metric as the
-  other scales
+- The scoring vignettes described the `calc_se` standard errors
+  incorrectly and now describe what is actually computed. The divisor is
+  the number of items a respondent answered, not the number of items on
+  the scale. A PID-5 short-form domain score is a mean of three facet
+  scores rather than of items, so its standard error is taken over those
+  three facet scores. The vignettes also no longer suggest converting
+  these standard errors into confidence intervals: they summarize how
+  much a respondent’s answers varied within a scale, not how precisely
+  the scale measures the trait.
 
-- **The `tibble` argument has been removed** from
-  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
-  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
-  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
-  [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md),
-  and
-  [`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md);
-  these functions now always return a tibble
+- The Qualtrics import instructions note that a browser may save the
+  survey file with a `.txt` extension, and that renaming it back to
+  `.qsf` is safe.
+
+- **New instrument overview page.** A single “HiTOP Instruments” page
+  presents the three self-report measures — HiTOP-SR, HiTOP-BR, and
+  HiTOP-HSUM — as at-a-glance summary cards, each linking to its full
+  download page. It is the first entry in the website’s “Instruments”
+  menu. Its HiTOP-BR card now describes the eight scales at their true
+  hierarchy levels — six spectra plus the Externalizing superspectrum
+  and a general p-factor — rather than calling all eight “spectra”.
+
+- **Redesigned instrument download pages.** Each download button on the
+  website’s instrument pages now shows its file’s build date, and the
+  version tables are replaced by a collapsible “Current builds & version
+  history” panel rendered from the `hitop_artifacts` manifest. The
+  manifest’s change notes were reworded for a general audience (data
+  unchanged otherwise).
+
+- **Centralized import instructions.** A new “Importing into Qualtrics &
+  REDCap” article gives step-by-step instructions for all three import
+  formats — Qualtrics survey files (`.qsf`), Qualtrics questions files
+  (`.txt`), and REDCap instrument ZIPs — and every instrument download
+  page now links its Qualtrics and REDCap cards to it. The REDCap import
+  steps previously embedded in each `generate_redcap_*()` help page now
+  live in that article, which the functions point to via “See also”.
 
 - **Documentation accuracy and polish** across the scoring tutorials and
   pkgdown instrument pages: corrected stale column/dataset names in the
@@ -721,15 +737,6 @@ interface before a CRAN submission.
   fixed a mis-targeted REDCap “Import Instructions” link on the PID-5
   download page, and reconciled the instrument download pages so each
   describes only the resources it actually links
-
-- **Standardized item-text punctuation** in `hitopsr_items` (7 items)
-  and `hitopbr_items` (1 item): every item now ends in a period. The
-  affected items (HSR 5, 27, 30, 284, 314, 332, 382 and HBR 41) lack the
-  period in the source instrument itself, where 398 of 405 HiTOP-SR
-  items have one; the omissions are treated as typographical oversights.
-  The derived `*_scales`/`*_subscales` tables and the prebuilt
-  DOCX/Qualtrics/REDCap artifacts in `inst/extdata/` were regenerated to
-  match
 
 ## hitop 0.1.0
 
