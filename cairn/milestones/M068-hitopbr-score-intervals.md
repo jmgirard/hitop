@@ -92,23 +92,23 @@ standing column-shape candidate row; this table matches its sibling as built.
 - [x] T1 Read Table 1's Superspectra and Spectra block (shelf pp. 49–51) and
       transcribe the eight rows into `data-raw/hitopbr_table1.R`, mirroring
       `data-raw/hitopsr_table1.R`'s structure and its SHA-256 shelf pin.
-- [ ] T2 Write `data-raw/verify_hitopbr_devstats.R` as an independent coordinate
+- [x] T2 Write `data-raw/verify_hitopbr_devstats.R` as an independent coordinate
       extraction of the same pages (the existing extractor already returns
       `rangeLo`/`rangeHi` for `block == "superspectra"`); prove it able to fail
       one planted defect at a time, varying form, with clean controls, and record
       that run in its header.
-- [ ] T3 Tabulate each BR scale's item count from `hitopbr_items` against Table
+- [x] T3 Tabulate each BR scale's item count from `hitopbr_items` against Table
       1's printed `# Items`; bring every disagreement to Jeff for sign-off; write
       the agreed disposition into `cairn/references/simms2026.md`,
       `cairn/SOURCES.md`, and the `hitopbr_devstats` help page.
-- [ ] T4 Build and ship `hitopbr_devstats` (data-raw script, `R/data.R` doc,
+- [x] T4 Build and ship `hitopbr_devstats` (data-raw script, `R/data.R` doc,
       `_pkgdown.yml` row), matching `hitopsr_devstats`'s eight columns.
-- [ ] T5 Add `R/interval_hitopbr.R` as a thin `interval_engine()` wrapper, with
+- [x] T5 Add `R/interval_hitopbr.R` as a thin `interval_engine()` wrapper, with
       roxygen mirroring `R/interval_hitopsr.R`'s Details and its two reports.
-- [ ] T6 Tests: the AC1 closed-form oracle, the AC3 invariants, both condition
+- [x] T6 Tests: the AC1 closed-form oracle, the AC3 invariants, both condition
       classes, and the argument-surface cases `test-interval_hitopsr.R` covers;
       register the new oracles as rows in `cairn/ORACLES.md`.
-- [ ] T7 NEWS.md entry and the AC6 prose guards.
+- [x] T7 NEWS.md entry and the AC6 prose guards.
 - [ ] T8 Append the D-entry widening D-032/D-042's source admission from the
       HiTOP-SR rows of Table 1 to its Superspectra and Spectra block; run the
       full consistency gate.
@@ -123,6 +123,12 @@ standing column-shape candidate row; this table matches its sibling as built.
 - 2026-08-30: question gate chose `type = "scale"` for all eight `hitopbr_devstats` rows over `superspectrum`/`spectrum`, because Table 1 separates Externalizing and p-factor from the other six by a blank row and no printed label, and reading a shipped content column out of a typographic gap is inference (IP2).
 - 2026-08-30: T3 grew the keying correction the gate approved and its ripple — rebuilt `hitopbr_items`/`hitopbr_scales`, the two HiTOP-BR Word forms whose scoring-key page prints the item lists, and a breaking-change NEWS entry; tasks reordered to run T3 and T4 before T2, since the verifier diffs a shipped table that must exist first.
 - 2026-08-30: T1 done. `data-raw/hitopbr_table1.R` transcribes Table 1's eight Superspectra and Spectra rows read at 200 dpi (the two disputed `# Items` cells re-read from a 400 dpi crop), pins the shelf sha256 under its own name, and sources no extractor.
+- 2026-08-30: T3 done. `hitopbr_items` row 36 corrected to `Internalizing`; `hitopbr_items`/`hitopbr_scales` rebuilt, the two HiTOP-BR Word forms and their staged copies rebuilt (their scoring-key page now prints Detachment 7, 12, 30, 31, 37 and Internalizing 8, 9, 18, 22, 23, 36, 42, 44), the manifest re-stamped, a breaking-change NEWS entry added, and the disposition recorded as resolved in `cairn/references/simms2026.md` and as a new `cairn/SOURCES.md` section. The existing hardcoded Detachment alpha oracle in `test-reliability.R` went red on the change and was corrected, with an Internalizing counterpart added; a new membership oracle in `test-score_hitopbr.R` states the workbook's six primary sections by the source's own item identifiers, shown red by putting item 36 back and green on the restored control.
+- 2026-08-30: T4 done. `data-raw/hitopbr_devstats.R` builds `hitopbr_devstats` from the transcription with a one-entry name map (`p-factor` -> `p-Factor`), an empty declared exception set re-derived at every rebuild, and stopifnot guards on row count, residue, item counts, reliability range and coding range; help page in `R/data.R` and two `_pkgdown.yml` rows added.
+- 2026-08-30: T2 done. `data-raw/verify_hitopbr_devstats.R` runs five comparisons — shelf pins, Table 1 against the transcription (48 cells), Table 1 against the shipped object (32 cells), printed `# Items` against the keying tables (0 disagreeing), and the Range column against the `c(1, 4)` coding. Proven able to fail on eight plants varying form and location across all five comparisons, each named and exiting 1, with clean controls before and after; the run is recorded in the script header.
+- 2026-08-30: T5 done. `R/interval_hitopbr.R` wraps `interval_engine()`; its Details mirror `interval_hitopsr()`'s and add the two BR-specific facts — every scale returns a lower bound below the response floor at a floor score, and Externalizing and p-Factor draw on the same items as the six spectra. The engine's stale "only interval_hitopsr() calls this" comment corrected.
+- 2026-08-30: T6 done. `tests/testthat/test-interval_hitopbr.R` carries the closed-form oracle over all eight scales at three probe scores and two levels, the two CI-runnable invariants, both condition classes asserted by class and by the dataset each report names, and the argument surface `test-interval_hitopsr.R` covers. Three oracle rows added to `cairn/ORACLES.md`.
+- 2026-08-30: T7 done. NEWS gains a development-version heading with the new-feature entries and the breaking change; `vignettes/hitopbr_scoring.Rmd` gains a Confidence Intervals section with the reference-group caveat; `tests/testthat/test-interval-br-prose.R` asserts the caveat and the N on all four surfaces, shown red by removing the phrase from the vignette and by a terminator matching nothing.
 
 ## Decisions
 

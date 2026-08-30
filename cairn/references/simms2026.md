@@ -119,10 +119,21 @@ appears anywhere in the document — observed 2026-08-28.
   reconciliation commitment, widened by D-042, stands: when the accepted version is
   shelved, every value read from here is re-verified against its Table 1 cell —
   observed 2026-08-28.
-- Table 1 and `hitopbr_scales` disagree on the item counts of **Detachment** and
-  **Internalizing** in the Superspectra and Spectra block. That block is out of
-  M041's scope for exactly this reason, and the eight HiTOP-BR rows are not
-  transcribed — observed 2026-08-28.
+- **[RESOLVED 2026-08-30, corrected M68]** Table 1 and `hitopbr_scales` disagreed
+  on the item counts of **Detachment** (printed 5, package 6) and
+  **Internalizing** (printed 8, package 7), which is why M041 left the
+  Superspectra and Spectra block untranscribed. One item accounts for both:
+  `hitopbr_items` row 36, `HiTOP_69`, "I had a hard time asserting myself to
+  others.", was keyed `Detachment`. Four statements put it under Internalizing —
+  the development workbook `B-HiTOP overview.xlsx`'s `item-to-scale` sheet and,
+  independently, the same workbook's `scoring syntax` sheet (`BInternalizing =
+  MEAN.7(HiTOP_69, ...)` against a five-item `BDetachment`); this paper's Table 4
+  (p. 57 of the shelf PDF), which loads "Hard to assert self" at .67 on INT and
+  prints no DET loading; and the item's own HiTOP-SR home, the `Submissiveness`
+  scale. Across all 45 HiTOP-BR items it was the only place the workbook and
+  `hitopbr_items` disagreed. M068 corrected the keying at Jeff's sign-off, and
+  the printed counts now agree with the package's own for all eight rows — see
+  `cairn/SOURCES.md`, "HiTOP-BR item-to-scale membership".
 - The raw responses behind Table 1 are on the shelf as `Prolific data HiTOP-SR.sav`
   (Development Sample 2, N = 780), so every printed cell could in principle be
   recomputed rather than transcribed. M041 does not: the recomputation needs its own

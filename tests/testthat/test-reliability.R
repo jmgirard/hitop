@@ -119,12 +119,21 @@ test_that("reliability_hitopbr() matches independently recomputed alphas (M013 o
   # The canonical column of the keying table, not the transformation under test.
   expect_equal(rel$Scale, hitopbr_scales$Scale)
 
-  # Independent, HARDCODED oracle for one scale (guards the BR scales table
-  # itself, not just the plumbing): Detachment = items 7,12,30,31,36,37 copied
-  # from the source key; BR has no reverse items so no reverse-keying is applied.
-  detach_alpha <- calc_alpha(di[c(7, 12, 30, 31, 36, 37)])
+  # Independent, HARDCODED oracles for the two scales whose membership the
+  # workbook and this package once disagreed about (they guard the BR scales
+  # table itself, not just the plumbing). Both item lists are copied from the
+  # `item-to-scale` sheet of `B-HiTOP overview.xlsx`, translated to HBR numbers:
+  # Detachment = HiTOP_50, 624, 44, 625, 657 and Internalizing = HiTOP_69, 187,
+  # 378, 570, 333, 356, 368, 215. Item 36 belongs to the second list, not the
+  # first (SOURCES.md, "HiTOP-BR item-to-scale membership"). BR has no reverse
+  # items, so no reverse-keying is applied.
+  detach_alpha <- calc_alpha(di[c(7, 12, 30, 31, 37)])
   idet <- which(hitopbr_scales$camelCase == "detachment")
   expect_equal(rel$alpha[idet], detach_alpha)
+
+  int_alpha <- calc_alpha(di[c(8, 9, 18, 22, 23, 36, 42, 44)])
+  iint <- which(hitopbr_scales$camelCase == "internalizing")
+  expect_equal(rel$alpha[iint], int_alpha)
 })
 
 test_that("reliability_hitopsr() reverse-keys before estimating (independent recompute)", {
