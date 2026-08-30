@@ -1,11 +1,11 @@
 # M068: The HiTOP-BR carries score intervals against the paper's development sample
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, IP3
-- **Branch/PR:** —
+- **Branch/PR:** `m068-hitopbr-score-intervals`
 
 ## Goal
 
@@ -89,7 +89,7 @@ standing column-shape candidate row; this table matches its sibling as built.
 
 ## Tasks
 
-- [ ] T1 Read Table 1's Superspectra and Spectra block (shelf pp. 49–51) and
+- [x] T1 Read Table 1's Superspectra and Spectra block (shelf pp. 49–51) and
       transcribe the eight rows into `data-raw/hitopbr_table1.R`, mirroring
       `data-raw/hitopsr_table1.R`'s structure and its SHA-256 shelf pin.
 - [ ] T2 Write `data-raw/verify_hitopbr_devstats.R` as an independent coordinate
@@ -119,6 +119,10 @@ standing column-shape candidate row; this table matches its sibling as built.
 - 2026-08-30: criteria audit ran in FULL mode (user-facing tier) in a fresh-context [O] reader Jeff authorized at the gate; it returned 10 findings on this milestone's criteria — source admission unentried, oracle constants self-referential, probe axes unvaried, verifier promise instrument-bound with no CI-runnable half and no falsifiability requirement, nItems contradiction, pre-counted disagreement domain, disposition unbound to a shipped surface, the c(1,4) constant unchecked against IP2, D-032's caveat bound only to NEWS, and a hand-listed consistency gate — every one fixed in the criteria above before committing.
 - 2026-08-30: plan gate chose reconciling the disputed `# Items` against `hitopbr_items` at Jeff's sign-off over recording the divergence unreconciled (M041's posture for Table 1's contradicted .61 alpha), because leaving it standing blocks the CI-runnable invariant that is the only in-suite guard on a transcribed table; falsified by the accepted paper printing counts that agree with neither side.
 - 2026-08-30: plan chose `hitopbr_devstats` matching `hitopsr_devstats`'s columns verbatim — including the lowercase `scale` the standing column-shape candidate row flags — over naming it `Scale` to match the four keying tables, because the two devstats tables feed one shared engine and the candidate row exists to rename them together; falsified by a user joining a devstats table to a keying table and hitting the mismatch before that rename lands.
+- 2026-08-30: question gate. Jeff signed off on correcting `hitopbr_items` row 36 (`HiTOP_69`, "I had a hard time asserting myself to others.") from `Detachment` to `Internalizing` inside this milestone, after asking whether the paper could be the wrong side; four statements say Internalizing and none but the package's own CSV says Detachment — the development workbook's `item-to-scale` sheet, the same workbook's `scoring syntax` (`BInternalizing = MEAN.7(HiTOP_69, ...)`, `BDetachment = MEAN.4(...)` over five items), Table 4's promax loadings (.67 on INT, blank on DET), and the item's HiTOP-SR home (Submissiveness). The CSV has carried `Detachment` since `64b36178` (2025-06-08) with no recorded source.
+- 2026-08-30: question gate chose `type = "scale"` for all eight `hitopbr_devstats` rows over `superspectrum`/`spectrum`, because Table 1 separates Externalizing and p-factor from the other six by a blank row and no printed label, and reading a shipped content column out of a typographic gap is inference (IP2).
+- 2026-08-30: T3 grew the keying correction the gate approved and its ripple — rebuilt `hitopbr_items`/`hitopbr_scales`, the two HiTOP-BR Word forms whose scoring-key page prints the item lists, and a breaking-change NEWS entry; tasks reordered to run T3 and T4 before T2, since the verifier diffs a shipped table that must exist first.
+- 2026-08-30: T1 done. `data-raw/hitopbr_table1.R` transcribes Table 1's eight Superspectra and Spectra rows read at 200 dpi (the two disputed `# Items` cells re-read from a 400 dpi crop), pins the shelf sha256 under its own name, and sources no extractor.
 
 ## Decisions
 
