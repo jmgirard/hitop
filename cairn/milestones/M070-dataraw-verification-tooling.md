@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M070: `data-raw/` verification tooling is reduced to what still re-runs, with its live guard defects repaired
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -46,7 +46,7 @@ Internal tier: every script here is `.Rbuildignore`d maintainer tooling, so no e
 - [x] T3 Run the three durable Table 1 verifiers against the shelf PDF; record exit status, stray-text report and the label and cell counts each prints.
 - [x] T4 Give `data-raw/mutate_norms_book_check.R` a three-way verdict separating a non-zero exit carrying no comparison counts from one that carries them; prove it able to fail by planting a mutation that aborts the book extraction, confirming the sweep exits non-zero naming it errored, then removing the plant. Run the sweep against a `git archive` export of HEAD, not the checkout (the M034/M035 lesson: the harness swaps `data/pid_norms.rda` in place).
 - [x] T5 The narrowed candidate row landed with this plan and points at this file's Out scope for the twelve items' detail. Before archiving, move that detail back into the row (the archive summary is too short to hold it) and confirm the row names no script this milestone deleted.
-- [ ] T6 Profile verify slot: `devtools::test()`, then `devtools::check()` at the gate.
+- [x] T6 Profile verify slot: `devtools::test()`, then `devtools::check()` at the gate.
 
 ## Work log
 
@@ -65,6 +65,7 @@ Internal tier: every script here is `.Rbuildignore`d maintainer tooling, so no e
 - 2026-08-30: T4 — clean sweep over a `git archive HEAD` export with the shelf epub copied in (never the checkout: the harness swaps `data/pid_norms.rda` in place): 13 mutations, 13 CAUGHT, 0 NOT CAUGHT, 0 ERRORED, exit 0, `restored data/pid_norms.rda … (unchanged)`. The unmutated baseline is the must-stay-silent case; the sweep stops before any mutation if it reports anything.
 - 2026-08-30: T5 — the twelve items' detail moved from this file's Out scope into the ROADMAP candidate row, which now names each of the six extractor items, all four M059 test-file items, the Range comparison and the CI-fixture decision. The row names `hitopsr_table1.R`, `verify_hitopsr_names.R` and `verify_hitopbr_devstats.R` and no script this milestone deleted (`git grep` for the three basenames returns 0 hits in `ROADMAP.md`).
 - 2026-08-30: T5 — `ROADMAP.md` is 24,739 bytes against the 24,000 budget, 739 over. Four rows compressed in part payment (the M068/M069 test-reach row, the browser builder, D-045(d), the `calc_se` removal); the remaining rows are dense enough that further cuts would drop facts, so the overage goes to the review gate rather than a forced compression. 57 lines against the 60-line cap.
+- 2026-08-30: T6 — `devtools::test()` FAIL 0 | WARN 0 | SKIP 4 | PASS 16151. `devtools::check()` Status OK, 0 errors / 0 warnings / 0 notes, 4m 10s. `devtools::document()` no diff. `cairn_validate` all checks pass; its 22 advisories (21 dangling `D-0NN` tokens in DESIGN/SOURCES, one references-staleness on `schmukle2026.md`) all predate this branch. No `NEWS.md` entry: every file this milestone touches is `.Rbuildignore`d maintainer tooling, so nothing user-visible changed.
 - 2026-08-30: plan gate chose leaving the twelve unfixed items on one narrowed candidate row over planning a second milestone for the six extractor items now; falsified by two or more of them being reached by one source revision, which would make them a bounded scope rather than a watch list.
 
 ## Decisions

@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / N
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M070 | `data-raw/` verification tooling is reduced to what still re-runs, with its live guard defects repaired | in-progress | — | normal | milestones/M070-dataraw-verification-tooling.md |
+| M070 | `data-raw/` verification tooling is reduced to what still re-runs, with its live guard defects repaired | review | — | normal | milestones/M070-dataraw-verification-tooling.md |
 | M068 | The HiTOP-BR carries score intervals against the paper's development sample | done | — | normal | milestones/archive/M068-hitopbr-score-intervals.md |
 | M069 | `calc_se` is deprecated in favour of the interval functions | done | M068 | normal | milestones/archive/M069-calc-se-deprecation.md |
 | M067 | The modules article and the generator help pages describe what the generators do | done | — | normal | milestones/archive/M067-modules-doc-accuracy.md |
