@@ -195,9 +195,9 @@ fx_hitopsr <- function() {
 # and pFactor scales are OVERLAPPING supersets built from the marker columns
 # hitopbr_items$Externalizing / $Pfactor:
 #   antagonism      = 1,2,5,13,25,27,33,40,45              (n=9)
-#   detachment      = 7,12,30,31,36,37                     (n=6)
+#   detachment      = 7,12,30,31,37                        (n=5)
 #   disinhibition   = 15,16,20,24,29,32,34,35,43           (n=9)
-#   internalizing   = 8,9,18,22,23,42,44                   (n=7)
+#   internalizing   = 8,9,18,22,23,36,42,44                (n=8)
 #   somatoform      = 6,10,14,17,19,21,26,41               (n=8)
 #   thoughtDisorder = 3,4,11,28,38,39                      (n=6)
 #   externalizing   = 1,13,15,16,25,32,34,35,40,45         (n=10)

@@ -22,8 +22,8 @@ code at https://osf.io/pfwav/ — neither is on the shelf, and neither was read 
 observed 2026-08-28.
 
 **Role.** The primary source for the estimate and the bounds `interval_hitopsr()`
-returns. It settles which of the three classical-test-theory interval approaches
-the package computes, the exact form of the point estimate and half-width, and what
+and `interval_hitopbr()` return. It settles which of the three classical-test-theory
+interval approaches the package computes, the exact form of the point estimate and half-width, and what
 the method's coverage claim does and does not cover. D-043 reads Equation (8) here
 to fix which *kind* of reliability may enter Equation (11).
 
@@ -168,12 +168,15 @@ hold, is where the article's own coverage degrades at extreme scores.
 ## Traces to
 
 - `R/interval_engine.R` — computes Equations (10)–(12).
-- `R/interval_hitopsr.R` and its help page — the exported wrapper, the page anchor
-  it cites, and the two limitations it prints.
+- `R/interval_hitopsr.R`, `R/interval_hitopbr.R` and their help pages — the two
+  exported wrappers, the page anchor each cites, and the two limitations each
+  prints.
 - `tests/testthat/test-interval_hitopsr.R` — the closed-form oracle recomputes
   Equations (10)–(12) in hand arithmetic; the simulation-coverage oracle generates
   under the measurement model recorded above.
-- `cairn/ORACLES.md` — both oracles' registry entries name this page.
+- `tests/testthat/test-interval_hitopbr.R` — the HiTOP-BR closed-form oracle
+  recomputes the same equations over the eight HiTOP-BR scales.
+- `cairn/ORACLES.md` — the registry entries for every oracle above name this page.
 - `cairn/DECISIONS.md`, D-043 — reads Equation (8) to fix which reliability may
   enter Equation (11).
 

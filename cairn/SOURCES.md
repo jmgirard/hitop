@@ -427,7 +427,7 @@ verbatim into `data-raw/hitopsr_devstats.csv` and built into
 `Skewness` and `Kurtosis` columns are read but not shipped. The 13th section,
 "Superspectra and Spectra Scales", is the eight HiTOP-BR scales; M041 left it
 untranscribed because Table 1 and `hitopbr_scales` disagreed on the item counts
-of Detachment and Internalizing. M068 transcribed it (corrected M68): the
+of Detachment and Internalizing. M068 transcribed it (corrected M068): the
 disagreement was one item on the package's side, corrected under the section
 "HiTOP-BR item-to-scale membership" below, and D-048 admits the block on the
 same terms as this one.

@@ -131,6 +131,7 @@ standing column-shape candidate row; this table matches its sibling as built.
 - 2026-08-30: T7 done. NEWS gains a development-version heading with the new-feature entries and the breaking change; `vignettes/hitopbr_scoring.Rmd` gains a Confidence Intervals section with the reference-group caveat; `tests/testthat/test-interval-br-prose.R` asserts the caveat and the N on all four surfaces, shown red by removing the phrase from the vignette and by a terminator matching nothing.
 - 2026-08-30: T8 consistency gate. Two existing exhaustive export sweeps went red on the new function and were extended to it: `test-append-collision.R`'s probe table (with a HiTOP-BR score frame as its input) and `test-error-prose.R`'s terminator table and selection list. `cairn_validate` all checks pass with 23 pre-existing advisories; `cairn_impact` reports no changed principles; `pkgdown::check_pkgdown()` finds no problems.
 - 2026-08-30: T8 done. D-048 appended; `hitopbr_devstats` added to the `utils::globalVariables()` declaration, which cleared the one NOTE `R CMD check` raised for it. Gate results on the final tree: `devtools::document()` no diff, `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16071, `devtools::check()` 0 errors / 0 warnings / 0 notes (15m 22s), `pkgdown::check_pkgdown()` no problems, `cairn_validate` all checks pass.
+- 2026-08-30: review gate. Five of ten findings fixed on the branch at Jeff's direction: the `calc_alpha()`/`calc_omega()` examples rekeyed off the superseded six-item Detachment set, the stale HiTOP-BR memberships in `helper-fixtures.R`'s header, `schmukle2026.md`'s role and trace list widened to the BR reader, `corrected M68` spelled `M068` in two files, and `test-append-collision.R`'s warn-before-abort probe extended to `interval_hitopbr()` with its own control. Re-run after the fixes: `document()` no diff, `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16074, `pkgdown::check_pkgdown()` no problems, `cairn_validate` all checks pass with 23 advisories.
 
 ## Decisions
 
@@ -189,14 +190,16 @@ https://github.com/jmgirard/hitop/pull/74.
   `pkgdown::check_pkgdown()`: no problems found. README.Rmd is untouched by this
   branch, so README.md is in sync. NEWS.md carries the two new-feature entries
   and the breaking-change entry, with no milestone numbers. `devtools::check()`:
-  Status OK, 0 errors / 0 warnings /
-  0 notes (6m 22.2s).
+  Status OK, 0 errors / 0 warnings / 0 notes (6m 22.2s), and again on the tree
+  carrying the gate fixes (6m 39.9s), with `devtools::test()` then at
+  FAIL 0 | WARN 0 | SKIP 4 | PASS 16074.
 
 ## Consistency gate
 
-- `cairn_validate.py` exits 0, all checks pass, 23 advisory warnings (22
-  pre-existing dangling `D-001`-`D-012` tokens, 1 pre-existing references
-  staleness on `schmukle2026.md`); `release window` is OK.
+- `cairn_validate.py` exits 0, all checks pass, 23 advisory warnings: 22
+  pre-existing dangling decision-id tokens in `DESIGN.md`, `SOURCES.md` and
+  `DECISIONS.md`, and one pre-existing references-staleness note on
+  `schmukle2026.md`. `release window` is OK.
 - `cairn_impact.py` not run: this branch changes no `DESIGN.md` principle
   (`cairn/DESIGN.md` is not in the diff).
 - Toolchain half, from `cairn/PROFILE.md`'s `## consistency-gate` slot: all
@@ -211,52 +214,70 @@ the regenerated manifest are all deliberate, documented and traceable. [S]
 prior-review found one gap; [O] diff-bug found nine. Ranked, with disposition:
 
 1. **[O] The item-36 correction was not propagated to the `calc_alpha()` /
-   `calc_omega()` examples — the shipped help pages now teach a wrong Detachment
-   scale.** `R/reliability.R:36-37` and `:125` (into `man/calc_alpha.Rd:42-43`
-   and `man/calc_omega.Rd:42`) still read
-   `detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 36, 37))`. Confirmed by
-   inspection. A user copying the example gets 0.7847 where
-   `reliability_hitopbr()` gives 0.8009 for Detachment. — disposition: TBD at
-   gate.
-2. **[O] `cairn/references/schmukle2026.md` was not widened to the new reader.**
-   Its **Role** paragraph (`:24-28`) still names only `interval_hitopsr()`, and
-   its **Traces to** list (`:170-176`) omits `R/interval_hitopbr.R` and
-   `tests/testthat/test-interval_hitopbr.R`, although `cairn/ORACLES.md:20`
-   cites the page as the BR oracle's source. Confirmed. — disposition: TBD at
-   gate.
+   `calc_omega()` examples — the shipped help pages now teach a wrong
+   Detachment scale.** `R/reliability.R:36-37` and `:125` (into
+   `man/calc_alpha.Rd:42-43` and `man/calc_omega.Rd:42`) still read
+   `detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 36, 37))`. Confirmed
+   by inspection. A user copying the example gets 0.7847 where
+   `reliability_hitopbr()` gives 0.8009 for Detachment. — disposition: fixed
+   at the gate. `R/reliability.R:36-37` and `:125` now read `c(7, 12, 30, 31,
+   37)`; `man/calc_alpha.Rd` and `man/calc_omega.Rd` regenerated.
+2. **[O] `cairn/references/schmukle2026.md` was not widened to the new
+   reader.** Its **Role** paragraph (`:24-28`) still names only
+   `interval_hitopsr()`, and its **Traces to** list (`:170-176`) omits
+   `R/interval_hitopbr.R` and `tests/testthat/test-interval_hitopbr.R`,
+   although `cairn/ORACLES.md:20` cites the page as the BR oracle's source.
+   Confirmed. — disposition: fixed at the gate. The **Role** paragraph now
+   names both wrappers and the **Traces to** list carries
+   `R/interval_hitopbr.R` and `tests/testthat/test-interval_hitopbr.R`.
 3. **[O] Stale fixture header in `tests/testthat/helper-fixtures.R:198,200`.**
-   Still records `detachment = 7,12,30,31,36,37 (n=6)` and
-   `internalizing = 8,9,18,22,23,42,44 (n=7)`. The four fixture rows are
-   insensitive to the move, so nothing fails today. Confirmed. — disposition:
-   TBD at gate.
+   Still records `detachment = 7,12,30,31,36,37 (n=6)` and `internalizing =
+   8,9,18,22,23,42,44 (n=7)`. The four fixture rows are insensitive to the
+   move, so nothing fails today. Confirmed. — disposition: fixed at the gate.
+   The header now records `detachment` as `7,12,30,31,37 (n=5)` and
+   `internalizing` as `8,9,18,22,23,36,42,44 (n=8)`.
 4. **[O] A breaking scoring change lands under an unchanged version string.**
    `NEWS.md` opens a development-version heading while `DESCRIPTION` stays
-   `Version: 0.2.0`. — disposition: TBD at gate.
-5. **[O] `data-raw/verify_hitopbr_devstats.R:216-226` checks the Range column in
-   aggregate, not per cell** — it compares `c(min(rangeLo), max(rangeHi))` to
-   `c(1, 4)`, so a wrong cell inside the span passes comparison 5. Compensated:
-   comparison 2 diffs `rangeLo`/`rangeHi` cell by cell against the extraction.
-   — disposition: TBD at gate.
+   `Version: 0.2.0`. — disposition: not actioned. Release timing is
+   user-declared (D-050) and a version bump belongs to the release walk, not
+   to this milestone; the breaking change is under a development-version
+   heading in `NEWS.md`, which is where the release walk will read it.
+5. **[O] `data-raw/verify_hitopbr_devstats.R:216-226` checks the Range column
+   in aggregate, not per cell** — it compares `c(min(rangeLo), max(rangeHi))`
+   to `c(1, 4)`, so a wrong cell inside the span passes comparison 5.
+   Compensated: comparison 2 diffs `rangeLo`/`rangeHi` cell by cell against
+   the extraction. — disposition: not actioned; filed to the standing
+   candidate row for maintainer-run verification tooling in `data-raw/`.
+   Comparison 2 already diffs `rangeLo`/`rangeHi` cell by cell against the
+   extraction, so the gap is in the coding-derivation claim alone.
 6. **[O] The BR closed-form oracle probes one score column per call**
    (`tests/testthat/test-interval_hitopbr.R:159-168`), so a per-column
    mis-indexing bug in the engine's loop is caught only by the multi-column
-   HiTOP-SR oracle. — disposition: TBD at gate.
-7. **[O] `hitopbr_devstats`'s per-row `scale` <-> `camelCase` pairing has no CI
-   assertion** — `test-interval_hitopbr.R:36` and `:57` check both columns only
-   as sets, so a row pairing the wrong display name with a stem passes every CI
-   test. — disposition: TBD at gate.
+   HiTOP-SR oracle. — disposition: not actioned; filed with finding 7 to a new
+   candidate row for HiTOP-BR interval test coverage. The engine is shared and
+   `test-interval_hitopsr.R`'s multi-column oracle covers the loop.
+7. **[O] `hitopbr_devstats`'s per-row `scale` <-> `camelCase` pairing has no
+   CI assertion** — `test-interval_hitopbr.R:36` and `:57` check both columns
+   only as sets, so a row pairing the wrong display name with a stem passes
+   every CI test. — disposition: not actioned; filed with finding 6 to that
+   same new row.
 8. **[O] `cairn/DESIGN.md`'s "Function families" has no entry for the interval
    family at all** (missing since M041). Pre-existing; this diff changes
-   nothing there. — disposition: TBD at gate.
-9. **[O] `cairn/SOURCES.md:430` and `cairn/references/simms2026.md:21,134` write
-   the correction marker as `corrected M68` where the milestone ID is `M068`.**
-   Confirmed. — disposition: TBD at gate.
+   nothing there. — disposition: rejected as out of scope — a pre-existing gap
+   this diff did not introduce.
+9. **[O] `cairn/SOURCES.md:430` and `cairn/references/simms2026.md:21,134`
+   write the correction marker as `corrected M68` where the milestone ID is
+   `M068`.** Confirmed. — disposition: fixed at the gate. Both files now read
+   `corrected M068`.
 10. **[S prior-review] `tests/testthat/test-append-collision.R:340-403`'s
     warn-before-abort ordering probe was not extended to `interval_hitopbr`,**
     although the collision-probe sweep just above it was. Not a functional
     regression — the shared engine's ordering is already validated for
     `interval_hitopsr()` — but the same coverage-gap shape M060's review
-    flagged. — disposition: TBD at gate.
+    flagged. — disposition: fixed at the gate.
+    `tests/testthat/test-append-collision.R` now probes `interval_hitopbr()`
+    for warn-before-abort silence with its own non-colliding control,
+    alongside the two exports already covered.
 
 No finding demonstrates an acceptance criterion failing, so none meets the
 return floor on that limb; whether finding 1 is a load-bearing defect in a

@@ -39,8 +39,8 @@ columns are truly numeric item responses or pre-process as needed.
 }
 }
 \examples{
-# Cronbach's alpha for the HiTOP-BR Detachment scale (items 7, 12, 30, 31, 36, 37)
-detach_items <- sprintf("hbr\%02d", c(7, 12, 30, 31, 36, 37))
+# Cronbach's alpha for the HiTOP-BR Detachment scale (items 7, 12, 30, 31, 37)
+detach_items <- sprintf("hbr\%02d", c(7, 12, 30, 31, 37))
 calc_alpha(ku_hitopbr[detach_items])
 
 }

@@ -344,7 +344,7 @@ test_that("a validity-scale abbreviation collides in its own right", {
 
 test_that("no appending site warns on the way to a collision abort", {
   # AC1 promises the abort signals none of the warnings the output-building path
-  # would raise. `validity_pid5()` is covered above; these are the other two
+  # would raise. `validity_pid5()` is covered above; these are the other three
   # exports whose output path warns. Each pairs the silence with a control
   # showing the same call does warn when it is not colliding, so a guard moved
   # back behind its warning goes red here.
@@ -384,6 +384,25 @@ test_that("no appending site warns on the way to a collision abort", {
   expect_s3_class(got2$error, "hitop_append_collision")
   expect_identical(got2$warnings, character(0))
 
+  # M068: `interval_hitopbr()` shares the engine `interval_hitopsr()` calls, but
+  # the guard it aborts from is its own wrapper's, so the ordering is probed per
+  # export rather than inherited from the sibling above.
+  scored_br <- suppressWarnings(
+    hitop::score_hitopbr(hitop::sim_hitopbr, items = 1:45, append = FALSE)
+  )
+  intervals_br <- suppressWarnings(
+    hitop::interval_hitopbr(scored_br, scores = names(scored_br), append = FALSE)
+  )
+  got3 <- warnings_before_error(
+    hitop::interval_hitopbr(
+      cbind(scored_br, intervals_br),
+      scores = names(scored_br),
+      srange = c(0, 3)
+    )
+  )
+  expect_s3_class(got3$error, "hitop_append_collision")
+  expect_identical(got3$warnings, character(0))
+
   # Controls: without the collision, each of these calls does warn, so the
   # silence above is the abort's doing and not a warning that never fires.
   expect_warning(
@@ -398,6 +417,15 @@ test_that("no appending site warns on the way to a collision abort", {
     hitop::interval_hitopsr(
       scored_sr,
       scores = names(scored_sr),
+      srange = c(0, 3),
+      append = FALSE
+    ),
+    class = "hitop_interval_coding"
+  )
+  expect_warning(
+    hitop::interval_hitopbr(
+      scored_br,
+      scores = names(scored_br),
       srange = c(0, 3),
       append = FALSE
     ),

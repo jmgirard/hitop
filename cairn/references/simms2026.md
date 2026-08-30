@@ -18,7 +18,7 @@ re-read against the independent coordinate extraction
 separately at M068 and re-read against the same extraction by
 `data-raw/verify_hitopbr_devstats.R`, 2026-08-30: 48 cells against the committed
 transcription and 32 against the shipped `hitopbr_devstats`, none differing
-(corrected M68 — the earlier note that this block was untranscribed no longer
+(corrected M068 — the earlier note that this block was untranscribed no longer
 holds) — observed 2026-08-30.
 
 **Citation.** Simms, L. J., Naragon-Gainey, K., Wright, A. G. C., Bornovalova, M.,
@@ -131,7 +131,7 @@ appears anywhere in the document — observed 2026-08-28.
   reconciliation commitment, widened by D-042, stands: when the accepted version is
   shelved, every value read from here is re-verified against its Table 1 cell —
   observed 2026-08-28.
-- **[RESOLVED 2026-08-30, corrected M68]** Table 1 and `hitopbr_scales` disagreed
+- **[RESOLVED 2026-08-30, corrected M068]** Table 1 and `hitopbr_scales` disagreed
   on the item counts of **Detachment** (printed 5, package 6) and
   **Internalizing** (printed 8, package 7), which is why M041 left the
   Superspectra and Spectra block untranscribed. One item accounts for both:
