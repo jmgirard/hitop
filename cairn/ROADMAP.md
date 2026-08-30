@@ -1,18 +1,17 @@
 # Roadmap
 
-_Last hygiene check: 2026-08-29 (fourth pass. M065 merged and archived — PR #72 squash-merged `5b89bf0`, all eight CI checks green across Linux, macOS and Windows. Five review findings fixed at the gate, each shown able to fail; finding 7 absorbed into the docs candidate row, which Jeff dispositioned for promotion to a bounded milestone rather than a fourth silent extension. M061's terminal row pruned under the five-row retention rule. Byte budgets: `ROADMAP.md` 23,803 against 24,000 and `LESSONS.md` 19,990 against 20,000, the latter held under by compressing the M032 abort-the-block entry as it absorbed M065's loop case.)_
+_Last hygiene check: 2026-08-30 (fifth pass. M067 merged and archived — PR #73 squash-merged `67649f51`, all eight CI checks green. One review finding fixed at the gate: the new prose test's recipe anchor tightened from a bare `order(` to `collected[order(`, shown red on a renamed recipe the loose anchor passed. Two findings logged without change. M062's terminal row pruned under the five-row retention rule. The M046 prose-guard lesson extended with the anchor-fragment and wrong-plant cases; M021's raw-HTML-fence line pruned as the stalest to hold the byte budget. Byte budgets: `ROADMAP.md` 22,850 against 24,000 and `LESSONS.md` 19,911 against 20,000.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M068)._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M067 | The modules article and the generator help pages describe what the generators do | review | — | normal | milestones/M067-modules-doc-accuracy.md |
+| M067 | The modules article and the generator help pages describe what the generators do | done | — | normal | milestones/archive/M067-modules-doc-accuracy.md |
 | M066 | The step bar shows its three buttons run in order | done | — | normal | milestones/archive/M066-builder-stepbar-chevrons.md |
 | M063 | Every file the builder writes says which form it belongs to | done | M062 | normal | milestones/archive/M063-builder-download-naming.md |
 | M064 | The builder refuses loudly when the package it installs no longer matches it | done | — | normal | milestones/archive/M064-builder-version-guard.md |
 | M065 | The generators announce the descriptor they write | done | — | normal | milestones/archive/M065-descriptor-write-announced.md |
-| M062 | Both files a builder download produces reach the visitor's disk | done | — | normal | milestones/archive/M062-builder-download-handover.md |
 
 ## Candidates
 
