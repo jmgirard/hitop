@@ -89,6 +89,45 @@ hitopsr_table1_pages <- function(pdf = hitopsr_source_pdf) {
 ## columns is a piece of the watermark or a cell the extraction is losing.
 hitopsr_table1_watermark_fragments <- c("Fo", "rP", "ee", "rR", "ev", "iew")
 
+## The eight scales of Table 1's last section, as the table prints them. The
+## partition below reads this list rather than counting rows after the section
+## header: a source revision that moved a row to the other side of that header
+## would leave both block counts intact, so the positional split cannot see it.
+## These are the table's own labels, never a committed name -- `Externalizing`
+## and the rest are HiTOP-BR scales, and this extraction stays blind to what
+## `hitopbr_scales` ships (IP2).
+##
+## `data-raw/verify_hitopsr_names.R` pins the same eight names again. That copy
+## is deliberate and must not be collapsed into this one: it is that script's
+## independent record of what M059 measured, and reading this vector instead
+## would make its check a comparison against the list that produced the answer.
+hitopsr_table1_superspectra_scales <- c(
+  "Externalizing", "p-factor", "Internalizing", "Somatoform",
+  "Detachment", "Thought Disorder", "Disinhibition", "Antagonism"
+)
+
+## Table 1's own section headers, as the table prints them. A row is a header
+## because it is one of these, not because its label carries the word `Scales`:
+## that test misclassifies in both directions -- a header a revision renames
+## without the word reads as a scale, and a scale whose name carries it reads as
+## a header and drops out of `data-raw/verify_hitopsr_names.R`'s reconciliation
+## entirely. Like the Superspectra names above, these are the table's own labels.
+hitopsr_table1_section_headers <- c(
+  "Somatoform Scales",
+  "Internalizing-Distress Scales",
+  "Internalizing-Fear Scales",
+  "Internalizing-Eating Pathology and Body Image Scales",
+  "Internalizing-Sexual Problems Scales",
+  "Thought Disorder Scales",
+  "Detachment Scales",
+  "Disinhibited Externalizing Scales",
+  "Overcontrol Scales (low Disinhibited Externalizing in the HiTOP model)",
+  "Antagonistic Externalizing Scales",
+  "Antisocial Scales",
+  "Unassigned Scales",
+  "Superspectra and Spectra Scales"
+)
+
 ## A token is watermark when it is part of the phrase those fragments spell. The
 ## phrase is built from the vector above rather than written out a second time,
 ## so a source whose watermark changes moves the stripping step and this test
@@ -114,8 +153,41 @@ hitopsr_table1_is_watermark <- function(token) {
          logical(1), USE.NAMES = FALSE)
 }
 
-hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf) {
-  txt <- system2("pdftotext", c("-layout", shQuote(pdf), "-"), stdout = TRUE)
+## Remove the watermark fragments from a page's lines.
+##
+## Three cases, in the order the proof produces them: a fragment carrying a
+## digit on its left ("0.86rR"), one carrying a digit on its right ("ee0.67"),
+## and one standing in a column gap ("Fo    3"). All three are bounded by
+## `(?<![A-Za-z])` and `(?![A-Za-z])`, so a fragment sitting inside a word is
+## left where it is -- without those bounds the second call rewrote `committee1`
+## to `committ1` and `free1` to `fr1`, silently editing a label.
+##
+## Bounding them that way makes the first two calls select subsets of the
+## third's matches: a fragment with a digit beside it is, by that fact, not
+## beside a letter there. They are kept as the source's own two named cases,
+## and the strip they produce is the third's. Measured over the pinned proof:
+## the three calls and the third alone return identical text for every line of
+## Table 1's pages. What no longer strips is a run of fragments spelling into
+## each other ("0.86rRev"), where each is the other's letter neighbour; the
+## proof's pages carry none.
+hitopsr_table1_strip_watermark <- function(line) {
+  wm <- paste(hitopsr_table1_watermark_fragments, collapse = "|")
+  bounded <- function(before = "", after = "") {
+    paste0(before, "(?<![A-Za-z])(", wm, ")(?![A-Za-z])", after)
+  }
+  line <- gsub(bounded(before = "(?<=[0-9])"), "", line, perl = TRUE)
+  line <- gsub(bounded(after = "(?=[0-9])"), "", line, perl = TRUE)
+  gsub(bounded(), "", line, perl = TRUE)
+}
+
+## `txt` is the `pdftotext -layout` dump the extraction reads, defaulted to the
+## one this run produces, and an argument for the same reason `xml` is one on
+## `hitopsr_table1_cells()` below: a control can hand in a mutated dump and see
+## the guards stop on it.
+hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf, txt = NULL) {
+  if (is.null(txt)) {
+    txt <- system2("pdftotext", c("-layout", shQuote(pdf), "-"), stdout = TRUE)
+  }
   pages <- split(txt, cumsum(grepl("\f", txt)))
   idx <- hitopsr_table1_pages(pdf)
 
@@ -123,10 +195,7 @@ hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf) {
   line <- gsub("\f", "", unlist(pages[idx], use.names = FALSE))
 
   ## 1. The watermark.
-  wm <- paste(hitopsr_table1_watermark_fragments, collapse = "|")
-  line <- gsub(paste0("(?<=[0-9])(", wm, ")"), "", line, perl = TRUE)
-  line <- gsub(paste0("(", wm, ")(?=[0-9])"), "", line, perl = TRUE)
-  line <- gsub(paste0("(?<![A-Za-z])(", wm, ")(?![A-Za-z])"), "", line, perl = TRUE)
+  line <- hitopsr_table1_strip_watermark(line)
 
   ## 3a. The manuscript's left-margin line numbers, and blank lines.
   line <- sub("^ *[0-9]{1,2}(?= {2,}| *$)", "", line, perl = TRUE)
@@ -167,7 +236,7 @@ hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf) {
     label = label,
     page = page_no,
     shape = shape,
-    section = grepl("\\bScales\\b", label),
+    section = label %in% hitopsr_table1_section_headers,
     stringsAsFactors = FALSE
   )
 
@@ -182,8 +251,13 @@ hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf) {
          paste(unique(out$shape), collapse = ", "),
          "); the extraction no longer exercises both", call. = FALSE)
   }
-  if (!any(out$section)) {
-    stop("Table 1 extracted no section headers", call. = FALSE)
+  absent <- setdiff(hitopsr_table1_section_headers, out$label)
+  if (length(absent)) {
+    stop("Table 1's section headers not found among the extracted labels: ",
+         paste(absent, collapse = " | "),
+         " -- the sections are pinned by label, so a renamed or unextracted ",
+         "header stops the run rather than being read as a scale",
+         call. = FALSE)
   }
   out
 }
@@ -219,13 +293,19 @@ hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf) {
 hitopsr_table1_margin_x <- 15
 hitopsr_table1_cell_x <- 175
 
-hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf) {
+## `xml` is the `pdftotext -bbox` dump the extraction reads, defaulted to the
+## one this run produces. It is an argument so that a control can feed in a
+## mutated extraction -- rows moved, a header renamed -- and see the guards
+## below stop on it; production callers pass nothing and read the source.
+hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf, xml = NULL) {
   idx <- hitopsr_table1_pages(pdf)
-  xml <- system2(
-    "pdftotext",
-    c("-bbox", "-f", idx[1], "-l", idx[length(idx)], shQuote(pdf), "-"),
-    stdout = TRUE
-  )
+  if (is.null(xml)) {
+    xml <- system2(
+      "pdftotext",
+      c("-bbox", "-f", idx[1], "-l", idx[length(idx)], shQuote(pdf), "-"),
+      stdout = TRUE
+    )
+  }
   is_word <- grepl("<word ", xml)
   if (!any(is_word)) {
     stop("pdftotext -bbox returned no words for Table 1's pages", call. = FALSE)
@@ -325,8 +405,9 @@ hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf) {
 
   ## The table's last section is the eight HiTOP-BR scales. It is separated
   ## rather than dropped, so a caller sees the partition instead of a silently
-  ## shorter table. The partition assumes that section is last, which is what the
-  ## row count check below would catch if a revision moved it.
+  ## shorter table. Which rows belong to it is read off the pinned scale names
+  ## above; the section header is still located, but only so the two statements
+  ## of the partition can be compared.
   header <- which(n_cells == 0L & grepl("^Superspectra and Spectra Scales$",
                                         vapply(bands, function(b) b$label,
                                                character(1))))
@@ -336,8 +417,31 @@ hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf) {
   }
 
   data_at <- which(n_cells == 8L)
-  out <- do.call(rbind, lapply(data_at, function(i) {
-    b <- bands[[i]]
+  data_label <- vapply(bands[data_at], function(b) b$label, character(1))
+  by_name <- data_label %in% hitopsr_table1_superspectra_scales
+  by_header <- data_at > header
+
+  ## Both ways of stating the partition have to agree. A pinned name that
+  ## reached no data row, or a row whose name and printed position disagree, is
+  ## a revision a person adjudicates -- not something a run absorbs by counting
+  ## eight rows after the header and calling them the right eight.
+  absent <- setdiff(hitopsr_table1_superspectra_scales, data_label)
+  if (length(absent)) {
+    stop("Table 1's Superspectra partition could not place: ",
+         paste(absent, collapse = " | "),
+         " -- pinned as a Superspectra scale, extracted as no data row",
+         call. = FALSE)
+  }
+  displaced <- which(by_name != by_header)
+  if (length(displaced)) {
+    stop("Table 1's Superspectra partition could not place: ",
+         paste(data_label[displaced], collapse = " | "),
+         " -- the pinned scale names and the section header disagree on which ",
+         "block each row belongs to", call. = FALSE)
+  }
+
+  out <- do.call(rbind, lapply(seq_along(data_at), function(k) {
+    b <- bands[[data_at[k]]]
     num <- function(k) as.numeric(gsub("[^0-9.-]", "", b$cells[[k]]))
     data.frame(
       label = b$label,
@@ -351,7 +455,7 @@ hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf) {
       rangeHi = num(6),
       skewness = num(7),
       kurtosis = num(8),
-      block = if (i > header) "superspectra" else "primary",
+      block = if (by_name[k]) "superspectra" else "primary",
       stringsAsFactors = FALSE
     )
   }))

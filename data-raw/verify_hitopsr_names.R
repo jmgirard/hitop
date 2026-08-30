@@ -163,7 +163,7 @@ if (!identical(only_package, expected_package)) {
 ## (a) The watermark is really there to be stripped. Without this, a pdftotext
 ## that stopped emitting the fragments would leave the stripping untested and
 ## every report unchanged.
-fragments <- c("Fo", "rP", "ee", "rR", "ev", "iew")
+fragments <- hitopsr_table1_watermark_fragments
 raw_pages <- unlist(pages[unique(rows$page)], use.names = FALSE)
 present <- fragments[vapply(fragments, function(f) {
   any(grepl(paste0("(?<![A-Za-z])", f, "(?![A-Za-z])|[0-9]", f, "|", f, "[0-9]"),
@@ -202,6 +202,102 @@ if (!all(c("label-only", "with-cells") %in% shapes)) {
   note("labels extracted in only the ", paste(shapes, collapse = ", "),
        " shape; one branch of the extraction is untested")
 }
+
+## (e) The watermark strip removes the fragments and nothing else. Each
+## fragment spells an ordinary letter run, so a strip that is not bounded by
+## `(?<![A-Za-z])` and `(?![A-Za-z])` edits any word carrying one: before M071
+## the digit-anchored calls rewrote `committee1` to `committ1` and `free1` to
+## `fr1`. Checked on synthetic text rather than the proof, because the proof
+## prints no such label -- which is why the defect survived every run over it.
+##
+## The probes are assembled from the fragment vector rather than spelled out,
+## so a source whose watermark changes moves them with it, and so this file
+## states the fragments exactly once.
+inside <- c(paste0("a", fragments, "1"), paste0("1", fragments, "a"))
+kept <- hitopsr_table1_strip_watermark(inside)
+if (!identical(kept, inside)) {
+  note("the watermark strip edits a word carrying a fragment inside it: ",
+       paste(sprintf("%s -> %s", inside[kept != inside], kept[kept != inside]),
+             collapse = ", "))
+}
+## ...and the passing half, so the control cannot be green by stripping nothing
+## at all. These are the three shapes the proof prints: a fragment after a
+## number, before one, and standing in a column gap.
+glued <- c(paste0("0.86", fragments), paste0(fragments, "0.67"),
+           paste0(fragments, "   3"))
+want <- rep(c("0.86", "0.67", "   3"), each = length(fragments))
+got <- hitopsr_table1_strip_watermark(glued)
+if (!identical(got, want)) {
+  note("the watermark strip no longer removes the fragments the proof prints: ",
+       paste(sprintf("%s -> %s", glued[got != want], got[got != want]),
+             collapse = ", "))
+}
+cat("Watermark strip on synthetic text: ", length(inside),
+    " words carrying a fragment left unchanged, ", length(glued),
+    " watermarked cells stripped\n", sep = "")
+
+## (f) A section header is recognized because it is one of Table 1's thirteen
+## pinned headers, not because its label carries the word `Scales`. That older
+## test misclassified in both directions and the reconciliation above absorbed
+## each in silence: a header a revision renames without the word joined the
+## label set, and a scale whose printed name carried the word left it. The
+## control renames one of each in the `-layout` dump the extraction reads.
+hitopsr_table1_rename_label <- function(txt, from, to) {
+  group <- cumsum(grepl("\f", txt))
+  on_table <- which(group %in% (hitopsr_table1_pages() - 1L) &
+                      grepl(from, txt, fixed = TRUE))
+  if (length(on_table) != 1L) {
+    stop("the control's label ", encodeString(from, quote = '"'), " matched ",
+         length(on_table), " of Table 1's lines, not one", call. = FALSE)
+  }
+  txt[on_table] <- sub(from, to, txt[on_table], fixed = TRUE)
+  txt
+}
+
+raw_txt <- system2(
+  "pdftotext", c("-layout", shQuote(hitopsr_source_pdf), "-"), stdout = TRUE
+)
+## The passing half: the same dump, handed in rather than read, is the same
+## table -- so a mutation's effect below is the mutation's, not the seam's.
+if (!identical(hitopsr_table1_rows(txt = raw_txt), rows)) {
+  note("handing the -layout dump in returns a different table than reading ",
+       "it, so the header controls below prove nothing")
+}
+
+## A header renamed to carry no `Scales`. Before M071 it read as a scale and
+## joined the reconciliation's label set; now the run stops naming it.
+renamed <- hitopsr_table1_rename_label(raw_txt, "Antisocial Scales",
+                                       "Antisocial")
+control <- try(hitopsr_table1_rows(txt = renamed), silent = TRUE)
+if (!inherits(control, "try-error")) {
+  note("a section header renamed to carry no 'Scales' left ",
+       sum(control$section), " headers and ", sum(!control$section),
+       " labels without stopping")
+} else {
+  msg <- conditionMessage(attr(control, "condition"))
+  ## Which failure: the pinned-header report naming the renamed one, not the
+  ## empty-table or single-shape guard that stops in the same place.
+  if (!grepl("section headers not found among the extracted labels", msg,
+             fixed = TRUE) ||
+        !grepl("Antisocial Scales", msg, fixed = TRUE)) {
+    note("renaming a section header stopped the extraction with ",
+         encodeString(msg, quote = '"'),
+         ", which is not the pinned-header report naming it")
+  }
+}
+
+## ...and the other direction: a scale whose printed name carries the word.
+## Before M071 it read as a header and dropped out of the reconciliation.
+carrying <- hitopsr_table1_rename_label(raw_txt, "Trichotillomania",
+                                        "Trichotillomania Scales")
+control2 <- hitopsr_table1_rows(txt = carrying)
+if (sum(control2$section) != 13L ||
+      !"Trichotillomania Scales" %in% control2$label[!control2$section]) {
+  note("a scale printed as 'Trichotillomania Scales' was read as a section ",
+       "header, so it would leave the reconciliation without a word")
+}
+cat("Section headers on a mutated dump: renaming 'Antisocial Scales' stops ",
+    "the run; a scale named 'Trichotillomania Scales' stays a scale\n", sep = "")
 
 cat("\n")
 if (!length(bad)) {

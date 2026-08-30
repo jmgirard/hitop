@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / N
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M071 | The Table 1 extractor and the staged-artifact guards no longer return a verdict a wrong input cannot change | planned | — | normal | milestones/M071-verification-guard-repairs.md |
+| M071 | The Table 1 extractor and the staged-artifact guards no longer return a verdict a wrong input cannot change | review | — | normal | milestones/M071-verification-guard-repairs.md |
 | M070 | `data-raw/` verification tooling is reduced to what still re-runs, with its live guard defects repaired | done | — | normal | milestones/archive/M070-dataraw-verification-tooling.md |
 | M068 | The HiTOP-BR carries score intervals against the paper's development sample | done | — | normal | milestones/archive/M068-hitopbr-score-intervals.md |
 | M069 | `calc_se` is deprecated in favour of the interval functions | done | M068 | normal | milestones/archive/M069-calc-se-deprecation.md |

@@ -348,6 +348,10 @@ test_that("the rebuilt Word forms print the adopted names and no retired one", {
     repo_root(), "pkgdown", "assets", "downloads",
     c("hitopsr_US.docx", "hitopsr_A4.docx")
   )
+  ## The staged copies are dropped when they are not there, so this sweep can
+  ## run from a built tarball that carries only the installed pair. That the
+  ## directory exists at all in a checkout is asserted once, in
+  ## test-artifacts.R.
   files <- c(installed, staged[file.exists(staged)])
   expect_gte(length(files), 2L)
 
