@@ -21,6 +21,22 @@
   sits relative to the sample the instrument was developed on, not what
   percentile it occupies in any population.
 
+## Deprecations
+
+* **`calc_se` is deprecated in `score_pid5()`, `score_hitopsr()` and
+  `score_hitopbr()`.** Calling any of the three with `calc_se = TRUE` now warns.
+  The argument, and the `_se` columns it adds, will be removed in a future
+  release; the deprecation adds a warning and moves no value they hold. (The
+  HiTOP-BR item-36 rekey under Breaking changes below does move
+  `hbr_detachment_se` and `hbr_internalizing_se`.) The number was never
+  a standard error of measurement — no reliability estimate entered it — so it
+  never gave a confidence interval for a respondent's true score. Use
+  `interval_hitopsr()` or `interval_hitopbr()` for that. The PID-5 has no
+  interval function in this package; for measurement precision on it, see
+  `reliability_pid5()`. The warning carries the condition class
+  `hitop_deprecated_calc_se`, so a caller who wants the columns without the
+  notice can silence it by class.
+
 ## Breaking changes
 
 * **One HiTOP-BR item moved to the scale its development workbook gives it.**

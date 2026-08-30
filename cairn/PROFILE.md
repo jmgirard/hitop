@@ -52,8 +52,11 @@ rules in tracking-rules:
   `.github/` workflow dir an `.Rbuildignore` `^\.github$` entry (usethis adds it)
   so it stays out of the built package.
 - Change governance renders here as: the dependency surface is DESCRIPTION
-  Imports/Suggests; a breaking-change deprecation cycle warns via `lifecycle`
-  (`deprecate_warn()`) before removal. The gates themselves — question-gate +
+  Imports/Suggests; a breaking-change deprecation cycle warns before removal.
+  This repo hand-rolls that warning with `cli::cli_warn()` under a named
+  condition class rather than adopting {lifecycle}, which D-034(d) rejected as
+  a dependency one deprecation does not earn; the class is a public contract
+  (D-034(c), D-049). The gates themselves — question-gate +
   D-entry for dependencies, pre-1.0 waiver rule — are universal
   (tracking-rules "Universal tracking rules").
 - Every newly exported object gets a `_pkgdown.yml` reference-index row in the same commit.

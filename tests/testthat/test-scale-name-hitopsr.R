@@ -133,7 +133,7 @@ test_that("the dataset sweep can see a retired name where one hides", {
 })
 
 test_that("scored output names each scale by its stem", {
-  scored <- score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE)
+  scored <- hush_se(score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE))
 
   ## Written literally, never re-derived: these are the four columns the two
   ## renames produce, and the point of the test is that the deliverable
@@ -169,13 +169,13 @@ test_that("the renamed scale scores over every probe, matching a hand mean", {
     raw <- as.matrix(dat[paste0("hsr_", items)])
     for (miss in c("available", "complete")) {
       for (se in c(FALSE, TRUE)) {
-        scored <- score_hitopsr(
+        scored <- hush_se(score_hitopsr(
           dat,
           items = 1:405,
           missing = miss,
           calc_se = se,
           append = FALSE
-        )
+        ))
         expect_true("hsr_appearanceFocus" %in% names(scored))
         expect_false(any(grepl("body ?focus", names(scored), ignore.case = TRUE)))
 
@@ -369,7 +369,7 @@ test_that("the rebuilt Word forms print the adopted names and no retired one", {
 # ---- The changelog's claims, enforced ---------------------------------------
 
 test_that("the renamed columns sit where NEWS says they do", {
-  scored <- score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE)
+  scored <- hush_se(score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE))
   ## NEWS tells a reader selecting scored columns by position where the two
   ## renamed scales moved to. Written as literals, since the point is that
   ## these are the positions the release notes name.

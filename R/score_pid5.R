@@ -27,7 +27,13 @@
 #'   `"complete"` returns `NA` for any scale with a missing item
 #'   (`rowMeans(na.rm = FALSE)`). With no missing items the three agree. (default
 #'   = `"apa"`)
-#' @param calc_se An optional logical indicating whether to calculate a
+#' @param calc_se **Deprecated.** This argument, and the `_se` columns it
+#'   adds, will be removed in a future release; a call with `calc_se = TRUE`
+#'   warns; the warning is classed `hitop_deprecated_calc_se`, so a caller can
+#'   silence it by name. This package has no interval function for the PID-5, so there is
+#'   no replacement for it on this instrument; for measurement precision see
+#'   [reliability_pid5()]. What it does while it lasts:
+#'   an optional logical indicating whether to calculate a
 #'   standard error for each scale score. For the 25 facets, and for the brief
 #'   form's domains and total, this is the SD of the items the respondent
 #'   actually answered divided by the square root of how many of those items
@@ -114,7 +120,9 @@
 #' score_pid5(sim_pid5sf, items = sprintf("pid_%d", 1:100), version = "SF",
 #'            append = FALSE)
 #'
-#' # Brief form (5 domains + the total) with standard errors
+#' # Brief form (5 domains + the total) with standard errors. `calc_se` is
+#' # deprecated, so this call warns; the PID-5 has no interval function to
+#' # replace it with.
 #' score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
 #'            append = FALSE)
 #'
@@ -164,6 +172,10 @@ score_pid5 <- function(
     prefix = prefix,
     missing = missing,
     calc_se = calc_se,
+    se_instead = paste(
+      "This package has no interval function for the PID-5;",
+      "for measurement precision see {.fn reliability_pid5}."
+    ),
     append = append,
     domain_map = domain_map,
     mask_se_na = TRUE

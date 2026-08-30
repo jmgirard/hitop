@@ -45,7 +45,7 @@ test_that("score_hitopsr() honors invariants: se, prefix, row count", {
 
   # calc_se adds a _se column per scale iff requested.
   base <- score_hitopsr(df, items = items, append = FALSE)
-  with_se <- score_hitopsr(df, items = items, calc_se = TRUE, append = FALSE)
+  with_se <- hush_se(score_hitopsr(df, items = items, calc_se = TRUE, append = FALSE))
   expect_false(any(grepl("_se$", names(base))))
   expect_equal(sum(grepl("_se$", names(with_se))), nrow(hitopsr_scales))
   expect_true(all(paste0(names(base), "_se") %in% names(with_se)))
@@ -142,11 +142,11 @@ test_that("score_hitopsr(module=) reverse-keys HSR 310 at its module position", 
 
 test_that("score_hitopsr(module=) returns standard errors for just its scales", {
   s <- sub_four()
-  full <- score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE, append = FALSE)
-  part <- score_hitopsr(
+  full <- hush_se(score_hitopsr(sim_hitopsr, items = 1:405, calc_se = TRUE, append = FALSE))
+  part <- hush_se(score_hitopsr(
     sub_data(s), items = seq_len(s$nItems),
     module = s, calc_se = TRUE, append = FALSE
-  )
+  ))
 
   expect_equal(
     names(part),

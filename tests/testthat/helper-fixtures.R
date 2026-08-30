@@ -233,3 +233,17 @@ fx_hitopbr <- function() {
 #   hbr_antagonism    = c(1, 4, 2,   3)
 #   hbr_externalizing = c(1, 4, 3.0, 3)   # overlap: 5 disinhibition members
 #   hbr_pFactor       = c(1, 4, 7/3, 3)   # overlap: 2 disinhibition members
+
+# Muffle only the `calc_se` deprecation warning, leaving every other condition
+# the call signals to reach the test. The argument is deprecated but its
+# behavior is still under test all over this suite; without this the warning
+# would be reported from all 23 wrapped call sites and bury a warning worth
+# reading.
+# Targeted by class rather than suppressWarnings() for exactly that reason.
+# The warning itself is asserted in test-deprecated-calc_se.R.
+hush_se <- function(expr) {
+  withCallingHandlers(
+    expr,
+    hitop_deprecated_calc_se = function(w) invokeRestart("muffleWarning")
+  )
+}

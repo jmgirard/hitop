@@ -12,6 +12,8 @@
 #' here — it moved to the returning reliability_*() family (M015).
 #'
 #' @param data,items,srange,prefix,calc_se,append As in the wrappers.
+#' @param se_instead A single string: the instrument-specific sentence the
+#'   `calc_se` deprecation warning ends with, naming what replaces it.
 #' @param n_items Expected length of `items` (the instrument's item count).
 #' @param reverse_items Integer positions within `items` to reverse-key (may be
 #'   empty).
@@ -44,6 +46,7 @@ score_engine <- function(
   missing,
   calc_se,
   append,
+  se_instead,
   domain_map = NULL,
   mask_se_na = FALSE,
   call = rlang::caller_env()
@@ -117,6 +120,11 @@ score_engine <- function(
 
   ## Add standard errors to output if requested
   if (calc_se) {
+    ## The deprecation warning fires here rather than beside the
+    ## `calc_se` flag check so a call that aborts on its data, items, or an
+    ## append collision reports that and nothing else. `se_instead` is the
+    ## wrapper's own replacement sentence; `call` blames the wrapper.
+    deprecate_calc_se(se_instead, call = call)
     sems_scales <-
       bind_columns(
         lapply(

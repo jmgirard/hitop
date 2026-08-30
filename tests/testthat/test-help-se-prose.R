@@ -69,3 +69,37 @@ test_that("the PID-5 calc_se help text derives domain SEs from the 3 facet score
   expect_match(param, "three contributing facet scores")
   expect_match(param, "square root of 3", fixed = TRUE)
 })
+
+# ---- The deprecation, and where each instrument's reader is sent ------------
+
+test_that("the calc_se help text says the argument is deprecated", {
+  for (rd in score_help) {
+    param <- se_param(rd)
+
+    expect_match(param, "Deprecated", info = rd)
+    # A deprecation notice that does not say what goes away leaves a reader
+    # guessing whether their `_se` columns survive it.
+    expect_match(param, "removed in a future release", info = rd)
+    expect_match(param, "_se", fixed = TRUE, info = rd)
+  }
+})
+
+test_that("each calc_se help page names the replacement for its own instrument", {
+  # The routing, not the wording: a HiTOP-BR reader sent to interval_hitopsr()
+  # has been pointed at a function that does not take their data. The PID-5
+  # page has no interval function to name and must say so rather than stay
+  # silent, which would read as an oversight.
+  expect_match(se_param("score_hitopsr.Rd"), "interval_hitopsr", fixed = TRUE)
+  expect_false(
+    grepl("interval_hitopbr", se_param("score_hitopsr.Rd"), fixed = TRUE)
+  )
+
+  expect_match(se_param("score_hitopbr.Rd"), "interval_hitopbr", fixed = TRUE)
+  expect_false(
+    grepl("interval_hitopsr", se_param("score_hitopbr.Rd"), fixed = TRUE)
+  )
+
+  pid <- se_param("score_pid5.Rd")
+  expect_match(pid, "no interval function for the PID-5", fixed = TRUE)
+  expect_false(grepl("interval_hitop", pid, fixed = TRUE))
+})

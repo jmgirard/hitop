@@ -20,7 +20,7 @@ se_section <- function(vignette) {
   # The section body: from its heading to the next top-level heading.
   m <- regmatches(
     text,
-    regexpr("(?s)## Simple Standard Errors\n.*?(?=\n## )", text, perl = TRUE)
+    regexpr("(?s)## Simple Standard Errors[^\n]*\n.*?(?=\n## )", text, perl = TRUE)
   )
   expect_length(m, 1L)
   m
@@ -73,4 +73,55 @@ test_that("the PID-5 SF section derives domain SEs from the 3 facet scores", {
 
   # And an SE is masked wherever its scale score is NA (mask_se_na = TRUE).
   expect_match(section, "`NA` wherever its scale score is `NA`", fixed = TRUE)
+})
+
+# ---- The deprecation, across every vignette that mentions the argument ------
+
+# The domain is discovered, not listed: AC4 of the deprecation milestone binds
+# every file under vignettes/ that mentions `calc_se`, so a new vignette that
+# mentions it is caught here rather than quietly exempted.
+vignettes_mentioning_se <- function() {
+  vdir <- testthat::test_path("..", "..", "vignettes")
+  skip_if(!dir.exists(vdir), "vignettes/ not available")
+
+  files <- list.files(vdir, pattern = "[.]Rmd$", recursive = TRUE)
+  hits <- Filter(
+    function(f) any(grepl("calc_se", readLines(file.path(vdir, f), warn = FALSE))),
+    files
+  )
+  # A silently empty domain would make every assertion below vacuous.
+  expect_gte(length(hits), 4L)
+  hits
+}
+
+# What each file must send its reader to. A file the map does not know fails
+# rather than passing by default: adding a vignette that mentions the argument
+# is a decision about where its readers go, not an omission.
+se_replacement <- c(
+  "pid5sf_scoring.Rmd" = "no interval function for the PID-5",
+  "hitopsr_scoring.Rmd" = "interval_hitopsr()",
+  "hitopbr_scoring.Rmd" = "interval_hitopbr()",
+  "articles/modules-hitopsr.Rmd" = "interval_hitopsr()"
+)
+
+test_that("every vignette mentioning calc_se says it is deprecated", {
+  for (v in vignettes_mentioning_se()) {
+    text <- paste(
+      readLines(testthat::test_path("..", "..", "vignettes", v), warn = FALSE),
+      collapse = " "
+    )
+    expect_match(text, "deprecated", ignore.case = TRUE, info = v)
+    expect_match(text, "removed in a future release", info = v)
+  }
+})
+
+test_that("every vignette mentioning calc_se names its instrument's replacement", {
+  for (v in vignettes_mentioning_se()) {
+    expect_true(v %in% names(se_replacement), info = v)
+    text <- paste(
+      readLines(testthat::test_path("..", "..", "vignettes", v), warn = FALSE),
+      collapse = " "
+    )
+    expect_match(text, se_replacement[[v]], fixed = TRUE, info = v)
+  }
 })

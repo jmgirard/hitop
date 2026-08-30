@@ -20,7 +20,12 @@
 #'   are present (`rowMeans(na.rm = TRUE)`); `"complete"` returns `NA` for any
 #'   scale with a missing item (`rowMeans(na.rm = FALSE)`). (default =
 #'   `"available"`)
-#' @param calc_se An optional logical indicating whether to calculate a
+#' @param calc_se **Deprecated.** This argument, and the `_se` columns it
+#'   adds, will be removed in a future release; a call with `calc_se = TRUE`
+#'   warns; the warning is classed `hitop_deprecated_calc_se`, so a caller can
+#'   silence it by name. Use [interval_hitopsr()] for an interval around a respondent's
+#'   true score. What it does while it lasts:
+#'   an optional logical indicating whether to calculate a
 #'   standard error for each scale score: the SD of the items the respondent
 #'   actually answered divided by the square root of how many of those items
 #'   they answered. Each one summarizes how much a respondent's answers varied
@@ -93,6 +98,7 @@ score_hitopsr <- function(
     prefix = prefix,
     missing = missing,
     calc_se = calc_se,
+    se_instead = "Use {.fn interval_hitopsr} for an interval around a true score.",
     append = append
   )
 }

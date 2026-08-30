@@ -518,6 +518,24 @@ deprecate_subset <- function(what, instead, call = rlang::caller_env()) {
   )
 }
 
+# Internal Helper: the `calc_se` deprecation warning, classed like its sibling
+#
+# Same hand-rolled shape as deprecate_subset() above and for the same reason
+# ({lifecycle} is not a dependency). `instead` is the instrument-specific
+# sentence the wrapper supplies: the three scoring functions have three
+# different replacements, and only one of them applies to any given caller.
+deprecate_calc_se <- function(instead, call = rlang::caller_env()) {
+  cli::cli_warn(
+    c(
+      "The {.arg calc_se} argument is deprecated.",
+      i = "It, and the {.code _se} columns it adds, will be removed in a future release.",
+      i = instead
+    ),
+    class = "hitop_deprecated_calc_se",
+    call = call
+  )
+}
+
 # Internal Helper: validate and normalize an instrument name for the module API
 #
 # Shared by hitop_module() and available_scales() so the two cannot drift: the

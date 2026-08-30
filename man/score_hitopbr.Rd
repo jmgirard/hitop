@@ -35,7 +35,12 @@ are present (\code{rowMeans(na.rm = TRUE)}); \code{"complete"} returns \code{NA}
 scale with a missing item (\code{rowMeans(na.rm = FALSE)}). (default =
 \code{"available"})}
 
-\item{calc_se}{An optional logical indicating whether to calculate a
+\item{calc_se}{\strong{Deprecated.} This argument, and the \verb{_se} columns it
+adds, will be removed in a future release; a call with \code{calc_se = TRUE}
+warns; the warning is classed \code{hitop_deprecated_calc_se}, so a caller can
+silence it by name. Use \code{\link[=interval_hitopbr]{interval_hitopbr()}} for an interval around a respondent's
+true score. What it does while it lasts:
+an optional logical indicating whether to calculate a
 standard error for each scale score: the SD of the items the respondent
 actually answered divided by the square root of how many of those items
 they answered. Each one summarizes how much a respondent's answers varied

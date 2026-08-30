@@ -269,7 +269,7 @@ test_that("domain _se columns appear iff calc_se and derive from the 3 facet sco
   f0 <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", append = FALSE)
   expect_false(any(grepl("_se$", names(f0))))
 
-  f <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
+  f <- hush_se(score_pid5(fx_pid5(), items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE))
   expect_true("pid_detachment_se" %in% names(f))
   # SEM of the 3 detachment facet scores on R2 = sd(facets)/sqrt(3)
   facets_r2 <- c(f$pid_withdrawal[2], f$pid_anhedonia[2], f$pid_intimacyAvoidance[2])
@@ -353,7 +353,7 @@ test_that("APA domain is NA when any one contributing facet is NA (FULL Disinhib
 })
 
 test_that("APA SE is NA wherever the scale score is NA", {
-  se <- score_pid5(fx_pid5(), items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
+  se <- hush_se(score_pid5(fx_pid5(), items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE))
   # R4 Impulsivity facet and Disinhibition domain are NA -> their _se must be NA.
   expect_true(is.na(se$pid_impulsivity[4]))
   expect_true(is.na(se$pid_impulsivity_se[4]))
@@ -400,7 +400,7 @@ test_that("missing = complete returns NA for any scale touching a missing item",
 test_that("FULL single-row calc_se returns per-scale SEs (no drop-to-vector error)", {
   x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 220))
   names(x1) <- paste0("pid_", seq_len(220))
-  f <- score_pid5(x1, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
+  f <- hush_se(score_pid5(x1, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE))
 
   expect_equal(nrow(f), 1L)
   expect_true("pid_anhedonia_se" %in% names(f))
@@ -419,7 +419,7 @@ test_that("SF single-row calc_se matches a hand-computed facet SE", {
   x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 100))
   names(x1) <- paste0("pid_", seq_len(100))
   x1[1, c(9, 11, 43, 65)] <- c(0L, 1L, 2L, 3L)  # SF Anhedonia items (no reversal)
-  f <- score_pid5(x1, items = 1:100, version = "SF", calc_se = TRUE, append = FALSE)
+  f <- hush_se(score_pid5(x1, items = 1:100, version = "SF", calc_se = TRUE, append = FALSE))
 
   expect_equal(nrow(f), 1L)
   # SF Anhedonia = items 9,11,43,65 = 0,1,2,3 -> sd(c(0,1,2,3)) / sqrt(4).
@@ -430,7 +430,7 @@ test_that("BF single-row calc_se matches a hand-computed domain SE", {
   x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 25))
   names(x1) <- paste0("pid_", seq_len(25))
   x1[1, c(1, 2, 3, 5, 6)] <- c(0L, 1L, 2L, 3L, 3L)  # BF Disinhibition items
-  d <- score_pid5(x1, items = 1:25, version = "BF", calc_se = TRUE, append = FALSE)
+  d <- hush_se(score_pid5(x1, items = 1:25, version = "BF", calc_se = TRUE, append = FALSE))
 
   expect_equal(nrow(d), 1L)
   # BF Disinhibition = items 1,2,3,5,6 = 0,1,2,3,3 -> sd / sqrt(5).
@@ -440,10 +440,10 @@ test_that("BF single-row calc_se matches a hand-computed domain SE", {
 test_that("single-row calc_se equals the first row of a multi-row score", {
   # Guards against the fix altering multi-row behavior: scoring one row alone
   # must reproduce that row's SEs from a multi-row call.
-  multi <- score_pid5(fx_pid5(), items = 1:220, version = "FULL",
-                      calc_se = TRUE, missing = "available", append = FALSE)
-  one <- score_pid5(fx_pid5()[2, ], items = 1:220, version = "FULL",
-                    calc_se = TRUE, missing = "available", append = FALSE)
+  multi <- hush_se(score_pid5(fx_pid5(), items = 1:220, version = "FULL",
+                      calc_se = TRUE, missing = "available", append = FALSE))
+  one <- hush_se(score_pid5(fx_pid5()[2, ], items = 1:220, version = "FULL",
+                    calc_se = TRUE, missing = "available", append = FALSE))
   se_names <- grep("_se$", names(multi), value = TRUE)
   expect_equal(as.numeric(one[1, se_names]), as.numeric(multi[2, se_names]))
 })
@@ -486,8 +486,8 @@ test_that("BF total standard error is the SEM over its answered items", {
   # F9 (M026 review): six `_se` columns were counted but none checked by value.
   # Recomputed here from the fixture with base R, independent of calc_sem().
   x <- fx_pid5bf()
-  d <- score_pid5(x, items = 1:25, version = "BF", missing = "apa",
-                  calc_se = TRUE, append = FALSE)
+  d <- hush_se(score_pid5(x, items = 1:25, version = "BF", missing = "apa",
+                  calc_se = TRUE, append = FALSE))
 
   # Rows 1, 2 and 4 have zero variance among answered items -> SE exactly 0.
   expect_equal(d$pid_total_se[c(1, 2, 4)], c(0, 0, 0))
@@ -505,8 +505,8 @@ test_that("BF total standard error is the SEM over its answered items", {
   # And an SE is NA wherever its score is NA (mask_se_na), including the total.
   y <- x
   y[4, 1:7] <- NA_integer_   # 7 unanswered -> total drops
-  dy <- score_pid5(y, items = 1:25, version = "BF", missing = "apa",
-                   calc_se = TRUE, append = FALSE)
+  dy <- hush_se(score_pid5(y, items = 1:25, version = "BF", missing = "apa",
+                   calc_se = TRUE, append = FALSE))
   expect_true(is.na(dy$pid_total[[4]]))
   expect_true(is.na(dy$pid_total_se[[4]]))
 })
