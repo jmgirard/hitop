@@ -46,7 +46,8 @@ cannot be written, the descriptor is removed again, a file that was
 already at that path included.
 It must name a path of its own: an empty string, or the same path as
 \code{file}, is refused rather than leaving you with no descriptor and no
-error. (default = \code{NULL})}
+error. Once both files are on disk the descriptor's path is announced on
+the console, after the message naming the instrument ZIP. (default = \code{NULL})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}

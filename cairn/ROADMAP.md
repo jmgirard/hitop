@@ -7,7 +7,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M067 | The modules article and the generator help pages describe what the generators do | planned | — | normal | milestones/M067-modules-doc-accuracy.md |
+| M067 | The modules article and the generator help pages describe what the generators do | review | — | normal | milestones/M067-modules-doc-accuracy.md |
 | M066 | The step bar shows its three buttons run in order | done | — | normal | milestones/archive/M066-builder-stepbar-chevrons.md |
 | M063 | Every file the builder writes says which form it belongs to | done | M062 | normal | milestones/archive/M063-builder-download-naming.md |
 | M064 | The builder refuses loudly when the package it installs no longer matches it | done | — | normal | milestones/archive/M064-builder-version-guard.md |

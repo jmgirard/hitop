@@ -76,7 +76,8 @@ generate_redcap_hitopbr <- function(
 #'   already at that path included.
 #'   It must name a path of its own: an empty string, or the same path as
 #'   `file`, is refused rather than leaving you with no descriptor and no
-#'   error. (default = `NULL`)
+#'   error. Once both files are on disk the descriptor's path is announced on
+#'   the console, after the message naming the instrument ZIP. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'

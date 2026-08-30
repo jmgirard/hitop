@@ -185,6 +185,21 @@ before a CRAN submission.
   the text from the installed package rather than keeping a copy, so a version
   that does not supply it shows the list exactly as before.
 
+* **The modules article and the three HiTOP-SR generator help pages describe
+  the module behavior the generators have.** [Building HiTOP-SR
+  Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.html) now
+  names the `HiTOP-SR Module (v1.0)` header a module Word form carries, and
+  `title =` as the way to override it; says that a form built with
+  `renumber = FALSE` prints no printed-number crosswalk; and says that
+  `include_subscales = TRUE` cannot be combined with `module`. The recipe for
+  putting columns collected on a shuffled form back into instrument order,
+  `collected[order(item_order)]`, now states -- in the article and in
+  `?generate_docx_hitopsr` -- that it applies only to columns that are in the
+  order the form printed. And the `descriptor` argument of all three
+  `generate_*_hitopsr()` functions now says the descriptor's path is announced
+  on the console once both files are written. No behavior changed; the wording
+  is locked by `tests/testthat/test-module-doc-prose.R`.
+
 * **A new article, [Building HiTOP-SR
   Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.html),
   walks the whole module workflow**: choosing scales, describing the module,
