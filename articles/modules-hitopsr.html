@@ -216,23 +216,42 @@ numbers instead. In the Qualtrics and REDCap exports an item number
 names a collected data column, so those keep the original HiTOP-SR
 numbers always; renumbering them would rename variables in dictionaries
 already in the field.</p>
+<p>A Word form also says on its face that it is a module.
+<code><a href="../reference/generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> heads a module form
+<code>HiTOP-SR Module (v1.0)</code> where it heads a full-instrument
+form <code>HiTOP-SR (v1.0)</code>. Pass <code>title =</code> to print
+something else — a study name, say — and that string is used verbatim on
+either kind of form.</p>
+<p>One combination the Word generator refuses is
+<code>include_subscales = TRUE</code> together with <code>module</code>:
+a subscale can draw items from scales outside the module, so its scoring
+row would list items the form does not contain. The call aborts rather
+than print a row that cannot be scored.</p>
 <p><code><a href="../reference/generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> also takes
 <code>randomize = TRUE</code>, which prints the items in a random order.
-The page is still numbered <code>1</code> to <code>n</code>, and a
-module form also carries a crosswalk from each printed number back to
-its original HiTOP-SR number — printed whether or not
-<code>include_scoring</code> appends the key — so a shuffled module form
-can be scored from the paper alone. Shuffling the full instrument prints
-no crosswalk, since 405 pairs would fill a page; read the order from the
-<code>item_order</code> attribute of the returned path, or save it with
-<code>descriptor =</code> below. Call <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> beforehand
-to make an order reproducible.</p>
+A renumbered module form — the default — is still numbered
+<code>1</code> to <code>n</code> and carries a crosswalk from each
+printed number back to its original HiTOP-SR number, printed whether or
+not <code>include_scoring</code> appends the key, so it can be scored
+from the paper alone. That is the only case the crosswalk is printed in.
+Under <code>renumber = FALSE</code> there is none, because the printed
+numbers already are the original ones; and shuffling the full instrument
+prints none either, since 405 pairs would fill a page. In both of those
+cases read the order from the <code>item_order</code> attribute of the
+returned path, or save it with <code>descriptor =</code> below. Call
+<code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> beforehand to make an order reproducible.</p>
 <p>One thing to watch: <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code> addresses a module’s
 items by their position in <code>module$items</code>, which is ascending
 <strong>original</strong> order, not the order a shuffled form prints
 them in. Reorder the collected columns through <code>item_order</code>
 first — <code>collected[order(attr(out, "item_order"))]</code> — or the
 scale scores come back wrong with no error raised.</p>
+<p>That recipe assumes <code>collected</code> is in the order the form
+printed: its first column holds the answer to the paper’s item 1, its
+second the answer to item 2, and so on, which is what data entered
+straight off a shuffled form looks like. Columns already in instrument
+order need no reordering, and applying the recipe to them scrambles what
+was right.</p>
 <p>Here we write all three formats into a temporary folder; in your own
 work you would give a real path or let the default filename land in your
 working directory.</p>
@@ -394,7 +413,7 @@ file you can keep beside the forms you generated:</p>
 <span><span class="co">#&gt;   "format": "1.0",</span></span>
 <span><span class="co">#&gt;   "package": "hitop",</span></span>
 <span><span class="co">#&gt;   "packageVersion": "0.2.0",</span></span>
-<span><span class="co">#&gt;   "buildDate": "2026-08-29",</span></span>
+<span><span class="co">#&gt;   "buildDate": "2026-08-30",</span></span>
 <span><span class="co">#&gt;   "instrument": "hitopsr",</span></span>
 <span><span class="co">#&gt;   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],</span></span>
 <span><span class="co">#&gt;   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],</span></span>
@@ -429,8 +448,9 @@ crosswalk is printed for one:</p>
 <span><span class="co">#&gt;  [1] 291 118  42 185 109  66 310 338 156 152 390 167 389 144 187 274 239  68 202</span></span>
 <span><span class="co">#&gt; [20] 260 268</span></span></code></pre></div>
 <p>Those are the original HiTOP-SR item numbers in the order the page
-printed them, so responses entered off that form go back into instrument
-order with <code>collected[order(printed_order)]</code>.</p>
+printed them, so responses entered off that form — columns in the order
+the form printed, the first column the paper’s item 1 — go back into
+instrument order with <code>collected[order(printed_order)]</code>.</p>
 <p>The file is plain text, so you can read it, edit it, and send it to a
 collaborator. <code><a href="../reference/read_module.html">read_module()</a></code> turns it back into a
 module:</p>

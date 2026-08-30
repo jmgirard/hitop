@@ -133,15 +133,29 @@ names a collected data column, so those keep the original HiTOP-SR
 numbers always; renumbering them would rename variables in dictionaries
 already in the field.
 
+A Word form also says on its face that it is a module.
+[`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+heads a module form `HiTOP-SR Module (v1.0)` where it heads a
+full-instrument form `HiTOP-SR (v1.0)`. Pass `title =` to print
+something else — a study name, say — and that string is used verbatim on
+either kind of form.
+
+One combination the Word generator refuses is `include_subscales = TRUE`
+together with `module`: a subscale can draw items from scales outside
+the module, so its scoring row would list items the form does not
+contain. The call aborts rather than print a row that cannot be scored.
+
 [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
 also takes `randomize = TRUE`, which prints the items in a random order.
-The page is still numbered `1` to `n`, and a module form also carries a
-crosswalk from each printed number back to its original HiTOP-SR number
-— printed whether or not `include_scoring` appends the key — so a
-shuffled module form can be scored from the paper alone. Shuffling the
-full instrument prints no crosswalk, since 405 pairs would fill a page;
-read the order from the `item_order` attribute of the returned path, or
-save it with `descriptor =` below. Call
+A renumbered module form — the default — is still numbered `1` to `n`
+and carries a crosswalk from each printed number back to its original
+HiTOP-SR number, printed whether or not `include_scoring` appends the
+key, so it can be scored from the paper alone. That is the only case the
+crosswalk is printed in. Under `renumber = FALSE` there is none, because
+the printed numbers already are the original ones; and shuffling the
+full instrument prints none either, since 405 pairs would fill a page.
+In both of those cases read the order from the `item_order` attribute of
+the returned path, or save it with `descriptor =` below. Call
 [`set.seed()`](https://rdrr.io/r/base/Random.html) beforehand to make an
 order reproducible.
 
@@ -152,6 +166,12 @@ ascending **original** order, not the order a shuffled form prints them
 in. Reorder the collected columns through `item_order` first —
 `collected[order(attr(out, "item_order"))]` — or the scale scores come
 back wrong with no error raised.
+
+That recipe assumes `collected` is in the order the form printed: its
+first column holds the answer to the paper’s item 1, its second the
+answer to item 2, and so on, which is what data entered straight off a
+shuffled form looks like. Columns already in instrument order need no
+reordering, and applying the recipe to them scrambles what was right.
 
 Here we write all three formats into a temporary folder; in your own
 work you would give a real path or let the default filename land in your
@@ -354,7 +374,7 @@ cat(readLines(descriptor), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-08-29",
+#>   "buildDate": "2026-08-30",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],
 #>   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],
@@ -399,8 +419,9 @@ printed_order
 ```
 
 Those are the original HiTOP-SR item numbers in the order the page
-printed them, so responses entered off that form go back into instrument
-order with `collected[order(printed_order)]`.
+printed them, so responses entered off that form — columns in the order
+the form printed, the first column the paper’s item 1 — go back into
+instrument order with `collected[order(printed_order)]`.
 
 The file is plain text, so you can read it, edit it, and send it to a
 collaborator.

@@ -68,7 +68,9 @@ generate_redcap_hitopsr(
   descriptor is removed again, a file that was already at that path
   included. It must name a path of its own: an empty string, or the same
   path as `file`, is refused rather than leaving you with no descriptor
-  and no error. (default = `NULL`)
+  and no error. Once both files are on disk the descriptor's path is
+  announced on the console, after the message naming the instrument ZIP.
+  (default = `NULL`)
 
 - subset:
 
@@ -94,12 +96,12 @@ for the descriptor file.
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmpaqKm8i/file1a8d39964fbf.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpWEct8R/file1b677f5820be.zip
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Instrument successfully zipped to /tmp/RtmpaqKm8i/file1a8d5e966294.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpWEct8R/file1b67dacc187.zip
 ```
