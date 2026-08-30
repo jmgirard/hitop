@@ -20,7 +20,7 @@ se_section <- function(vignette) {
   # The section body: from its heading to the next top-level heading.
   m <- regmatches(
     text,
-    regexpr("(?s)## Simple Standard Errors\n.*?(?=\n## )", text, perl = TRUE)
+    regexpr("(?s)## Simple Standard Errors[^\n]*\n.*?(?=\n## )", text, perl = TRUE)
   )
   expect_length(m, 1L)
   m

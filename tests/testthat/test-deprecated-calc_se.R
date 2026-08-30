@@ -42,7 +42,7 @@ test_that("calc_se = TRUE signals exactly one deprecation condition of a stable 
   for (fn in names(calls)) {
     w <- se_warnings(calls[[fn]](calc_se = TRUE))
 
-    expect_length(w, 1L)
+    expect_equal(length(w), 1L, info = fn)
     expect_s3_class(w[[1]], "hitop_deprecated_calc_se")
   }
 })
@@ -50,8 +50,8 @@ test_that("calc_se = TRUE signals exactly one deprecation condition of a stable 
 test_that("the deprecation condition is absent without calc_se = TRUE", {
   for (fn in names(calls)) {
     # Explicitly off, and omitted entirely (the default is FALSE).
-    expect_length(se_warnings(calls[[fn]](calc_se = FALSE)), 0L)
-    expect_length(se_warnings(calls[[fn]]()), 0L)
+    expect_equal(length(se_warnings(calls[[fn]](calc_se = FALSE))), 0L, info = fn)
+    expect_equal(length(se_warnings(calls[[fn]]())), 0L, info = fn)
   }
 })
 

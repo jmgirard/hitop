@@ -29,7 +29,8 @@
 #'   = `"apa"`)
 #' @param calc_se **Deprecated.** This argument, and the `_se` columns it
 #'   adds, will be removed in a future release; a call with `calc_se = TRUE`
-#'   warns. This package has no interval function for the PID-5, so there is
+#'   warns; the warning is classed `hitop_deprecated_calc_se`, so a caller can
+#'   silence it by name. This package has no interval function for the PID-5, so there is
 #'   no replacement for it on this instrument; for measurement precision see
 #'   [reliability_pid5()]. What it does while it lasts:
 #'   an optional logical indicating whether to calculate a
@@ -119,7 +120,9 @@
 #' score_pid5(sim_pid5sf, items = sprintf("pid_%d", 1:100), version = "SF",
 #'            append = FALSE)
 #'
-#' # Brief form (5 domains + the total) with standard errors
+#' # Brief form (5 domains + the total) with standard errors. `calc_se` is
+#' # deprecated, so this call warns; the PID-5 has no interval function to
+#' # replace it with.
 #' score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
 #'            append = FALSE)
 #'

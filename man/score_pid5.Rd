@@ -47,7 +47,8 @@ FULL/SF domain is \code{NA} if any one of its three contributing facets is \code
 
 \item{calc_se}{\strong{Deprecated.} This argument, and the \verb{_se} columns it
 adds, will be removed in a future release; a call with \code{calc_se = TRUE}
-warns. This package has no interval function for the PID-5, so there is
+warns; the warning is classed \code{hitop_deprecated_calc_se}, so a caller can
+silence it by name. This package has no interval function for the PID-5, so there is
 no replacement for it on this instrument; for measurement precision see
 \code{\link[=reliability_pid5]{reliability_pid5()}}. What it does while it lasts:
 an optional logical indicating whether to calculate a
@@ -124,7 +125,9 @@ score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
 score_pid5(sim_pid5sf, items = sprintf("pid_\%d", 1:100), version = "SF",
            append = FALSE)
 
-# Brief form (5 domains + the total) with standard errors
+# Brief form (5 domains + the total) with standard errors. `calc_se` is
+# deprecated, so this call warns; the PID-5 has no interval function to
+# replace it with.
 score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
            append = FALSE)
 

@@ -20,7 +20,8 @@
 #'   `"available"`)
 #' @param calc_se **Deprecated.** This argument, and the `_se` columns it
 #'   adds, will be removed in a future release; a call with `calc_se = TRUE`
-#'   warns. Use [interval_hitopbr()] for an interval around a respondent's
+#'   warns; the warning is classed `hitop_deprecated_calc_se`, so a caller can
+#'   silence it by name. Use [interval_hitopbr()] for an interval around a respondent's
 #'   true score. What it does while it lasts:
 #'   an optional logical indicating whether to calculate a
 #'   standard error for each scale score: the SD of the items the respondent

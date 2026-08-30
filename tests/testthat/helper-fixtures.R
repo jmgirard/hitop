@@ -237,7 +237,8 @@ fx_hitopbr <- function() {
 # Muffle only the `calc_se` deprecation warning, leaving every other condition
 # the call signals to reach the test. The argument is deprecated but its
 # behavior is still under test all over this suite; without this the warning
-# would be reported ~25 times per run and bury a warning worth reading.
+# would be reported from all 23 wrapped call sites and bury a warning worth
+# reading.
 # Targeted by class rather than suppressWarnings() for exactly that reason.
 # The warning itself is asserted in test-deprecated-calc_se.R.
 hush_se <- function(expr) {

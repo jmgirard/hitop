@@ -86,7 +86,7 @@ scores <- score_hitopsr(
 scores
 ```
 
-## Simple Standard Errors
+## Simple Standard Errors (deprecated)
 
 The `calc_se` argument is **deprecated**. It, and the `_se` columns it adds, will be removed in a future release, and a call that passes `calc_se = TRUE` now warns. Use `interval_hitopsr()` instead, shown under [Confidence Intervals](#confidence-intervals) below.
 

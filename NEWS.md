@@ -26,7 +26,9 @@
 * **`calc_se` is deprecated in `score_pid5()`, `score_hitopsr()` and
   `score_hitopbr()`.** Calling any of the three with `calc_se = TRUE` now warns.
   The argument, and the `_se` columns it adds, will be removed in a future
-  release; nothing about the values they hold has changed. The number was never
+  release; the deprecation adds a warning and moves no value they hold. (The
+  HiTOP-BR item-36 rekey under Breaking changes below does move
+  `hbr_detachment_se` and `hbr_internalizing_se`.) The number was never
   a standard error of measurement — no reliability estimate entered it — so it
   never gave a confidence interval for a respondent's true score. Use
   `interval_hitopsr()` or `interval_hitopbr()` for that. The PID-5 has no
