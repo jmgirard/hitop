@@ -9,7 +9,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / N
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M068 | The HiTOP-BR carries score intervals against the paper's development sample | done | — | normal | milestones/archive/M068-hitopbr-score-intervals.md |
-| M069 | `calc_se` is deprecated in favour of the interval functions | in-progress | M068 | normal | milestones/M069-calc-se-deprecation.md |
+| M069 | `calc_se` is deprecated in favour of the interval functions | review | M068 | normal | milestones/M069-calc-se-deprecation.md |
 | M067 | The modules article and the generator help pages describe what the generators do | done | — | normal | milestones/archive/M067-modules-doc-accuracy.md |
 | M066 | The step bar shows its three buttons run in order | done | — | normal | milestones/archive/M066-builder-stepbar-chevrons.md |
 | M063 | Every file the builder writes says which form it belongs to | done | M062 | normal | milestones/archive/M063-builder-download-naming.md |

@@ -1,6 +1,6 @@
 # M069: `calc_se` is deprecated in favour of the interval functions
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M068
 - **Driving RR:** —
@@ -98,7 +98,7 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
       condition class per D-034(c) and recording the deprecation's rationale and
       rejected alternative; ROADMAP candidate row for the removal; retire the
       `mask_se_na` candidate row and mark DESIGN Known issue #4 superseded.
-- [ ] T7 Correct `cairn/PROFILE.md`'s `## test-doctrine` line that still says a
+- [x] T7 Correct `cairn/PROFILE.md`'s `## test-doctrine` line that still says a
       deprecation cycle warns via `lifecycle::deprecate_warn()`, which D-034(d)
       overrode; run the full consistency gate.
 
@@ -119,6 +119,8 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
 - 2026-08-30: T4 — each `calc_se` help page now opens with the deprecation, what goes away with it, and its own instrument's replacement; the existing description stands after it unchanged. `test-help-se-prose.R` extended and shown to fail 9 assertions against the pre-change wording.
 - 2026-08-30: T5 — the HiTOP-SR and HiTOP-BR vignettes' standard-error sections keep the description and hand the demonstration to their existing Confidence Intervals sections; the PID-5 short-form vignette keeps its call, having no replacement to switch to; `modules-hitopsr.Rmd` says the argument is deprecated where it points readers elsewhere. `test-vignette-se-prose.R` now discovers its file set by scanning `vignettes/` for the argument rather than listing it, refuses a discovered file it has no replacement for, and was shown to fail 2 assertions with one vignette's notice removed. T4 and T5 verified by the one `devtools::test()` run: FAIL 0, WARN 0, PASS 16151.
 - 2026-08-30: T6 — NEWS gains a Deprecations section; D-049 records the deprecation, the public condition class, the per-instrument routing and the rejected shared-message and remove-outright alternatives; the ROADMAP's `mask_se_na` row is retired as moot and absorbed into a new removal candidate; DESIGN Known issue #4 corrected in place to say the inconsistency will not be repaired. `ROADMAP.md` was over its byte budget at 24,002 before this edit and is 23,976 after, three of its widest rows compressed to make room.
+- 2026-08-30: T7 — `cairn/PROFILE.md`'s deprecation-mechanics line now names the hand-rolled classed warning this repo actually uses instead of `lifecycle::deprecate_warn()` (the edit rode in with T6's commit). Consistency gate: `devtools::document()` no diff, `pkgdown::check_pkgdown()` no problems, `data-raw/check_line_endings.R` passed, `devtools::check()` 0 errors / 0 warnings / 0 notes with vignettes rebuilt and the test run OK, `devtools::test()` FAIL 0, WARN 0, PASS 16151.
+- 2026-08-30: all tasks complete; status to review.
 
 ## Decisions
 
