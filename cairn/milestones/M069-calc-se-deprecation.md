@@ -88,10 +88,10 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
 - [x] T3 Run the D-011 characterization harness (`data-raw/characterize_calc_se.R`)
       against commit `1dec0a4` over the AC2 matrix; record the config count and
       the `identical()` result.
-- [ ] T4 Rewrite the `calc_se` roxygen on the three wrappers; extend
+- [x] T4 Rewrite the `calc_se` roxygen on the three wrappers; extend
       `tests/testthat/test-help-se-prose.R` to the deprecation and replacement
       sentences and confirm it fails against the current wording.
-- [ ] T5 Rewrite the `calc_se` prose in every vignette `grep -rl` returns (four
+- [x] T5 Rewrite the `calc_se` prose in every vignette `grep -rl` returns (four
       today, including `vignettes/articles/modules-hitopsr.Rmd:271`); extend
       `tests/testthat/test-vignette-se-prose.R` the same way.
 - [ ] T6 NEWS.md entry; D-entry naming `hitop_deprecated_calc_se` as a public
@@ -116,6 +116,8 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
 - 2026-08-30: criteria audit on the amended AC2 ran in FULL mode (user-facing tier) in a fresh-context [O] reader that did not author it; 3 findings — an unsatisfiable function x dataset cross product, a headline promising more than the walk covers, and a `missing` axis inert on all three PID-5 datasets (each carries no `NA`). All three fixed at the mini gate, which also widened AC2 by adding `ku_pid5sf`, the one shipped dataset with missing PID-5 data and the only one entering the PID-5 `_se`-masking path (34 configurations -> 40).
 - 2026-08-30: the once-only re-entry of the fixed AC2 wording ran in a second fresh-context [O] reader; 2 findings, both taken to the user and adopted — `score_hitopsr()`'s `module` path unprobed, and a blanket `suppressWarnings()` discarding the condition channel the D-011 pattern compares. AC2 widened again: module runs added and warnings compared alongside values (40 -> 48). Criteria widened or added: AC2 only.
 - 2026-08-30: T3 — `data-raw/characterize_calc_se.R` committed as the harness; 48 configurations, all 48 `identical()` (value and condition classes) between `1dec0a4` and the branch. Condition-channel comparison shown non-vacuous: a planted extra warning in `score_engine()` reddens all 48 while the values alone stay identical.
+- 2026-08-30: T4 — each `calc_se` help page now opens with the deprecation, what goes away with it, and its own instrument's replacement; the existing description stands after it unchanged. `test-help-se-prose.R` extended and shown to fail 9 assertions against the pre-change wording.
+- 2026-08-30: T5 — the HiTOP-SR and HiTOP-BR vignettes' standard-error sections keep the description and hand the demonstration to their existing Confidence Intervals sections; the PID-5 short-form vignette keeps its call, having no replacement to switch to; `modules-hitopsr.Rmd` says the argument is deprecated where it points readers elsewhere. `test-vignette-se-prose.R` now discovers its file set by scanning `vignettes/` for the argument rather than listing it, refuses a discovered file it has no replacement for, and was shown to fail 2 assertions with one vignette's notice removed. T4 and T5 verified by the one `devtools::test()` run: FAIL 0, WARN 0, PASS 16151.
 
 ## Decisions
 

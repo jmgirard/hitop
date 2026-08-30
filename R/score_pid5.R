@@ -27,7 +27,12 @@
 #'   `"complete"` returns `NA` for any scale with a missing item
 #'   (`rowMeans(na.rm = FALSE)`). With no missing items the three agree. (default
 #'   = `"apa"`)
-#' @param calc_se An optional logical indicating whether to calculate a
+#' @param calc_se **Deprecated.** This argument, and the `_se` columns it
+#'   adds, will be removed in a future release; a call with `calc_se = TRUE`
+#'   warns. This package has no interval function for the PID-5, so there is
+#'   no replacement for it on this instrument; for measurement precision see
+#'   [reliability_pid5()]. What it does while it lasts:
+#'   an optional logical indicating whether to calculate a
 #'   standard error for each scale score. For the 25 facets, and for the brief
 #'   form's domains and total, this is the SD of the items the respondent
 #'   actually answered divided by the square root of how many of those items

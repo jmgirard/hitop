@@ -270,7 +270,9 @@ which needs the **lavaan** package.
 
 The `srange`, `prefix`, `missing`, `calc_se`, and `append` arguments all behave
 exactly as they do for a full administration; see [Scoring the
-HiTOP-SR](hitopsr_scoring.html) for those.
+HiTOP-SR](hitopsr_scoring.html) for those. `calc_se` is **deprecated** there and
+here alike — it, and the `_se` columns it adds, will be removed in a future
+release, and `interval_hitopsr()` replaces it.
 
 ## Saving the Module Beside the Form
 
