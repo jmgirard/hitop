@@ -89,22 +89,24 @@ hitopsr_table1_pages <- function(pdf = hitopsr_source_pdf) {
 ## columns is a piece of the watermark or a cell the extraction is losing.
 hitopsr_table1_watermark_fragments <- c("Fo", "rP", "ee", "rR", "ev", "iew")
 
-## A token is watermark when it is part of the phrase those fragments spell and
-## carries at least one whole fragment. Both halves are read off the vocabulary
-## above rather than stated separately, so a source whose watermark changes moves
-## the vocabulary and the guard together. Being part of the phrase alone is not
-## enough -- every single letter of "ForPeerReview" is -- and carrying a fragment
-## alone is not either, since a real label may contain one ("Feeding" carries
-## "ee"). Requiring both accepts what the page produces, whether a bare fragment
-## ("rR") or a run of them the layout glued together ("ForPeer", "eview"), and
-## rejects the stray single letters this guard exists to stop.
+## A token is watermark when it is part of the phrase those fragments spell. The
+## phrase is built from the vector above rather than written out a second time,
+## so a source whose watermark changes moves the stripping step and this test
+## together.
+##
+## The accepted set reaches down to single letters, which reads loose and is not.
+## `-bbox` breaks the rotated stamp wherever its own boxes fall, so the numeric
+## columns of the three table pages carry it as "r P ee r R ev" (page 49),
+## "r P ee ev" (50) and "r P ee" (51) -- read down each page, the stamp. Nor can
+## a single letter be a cell this extraction is losing: `cells` above is defined
+## as the tokens carrying a digit, so every token reaching here is by
+## construction not one. What the test does reject is prose at these
+## coordinates -- a label that overflowed the cut, a caption runover, a footnote
+## -- which is the banding failure worth stopping on.
 hitopsr_table1_is_watermark <- function(token) {
   phrase <- paste(hitopsr_table1_watermark_fragments, collapse = "")
-  vapply(token, function(t) {
-    grepl(t, phrase, fixed = TRUE) &&
-      any(vapply(hitopsr_table1_watermark_fragments,
-                 function(f) grepl(f, t, fixed = TRUE), logical(1)))
-  }, logical(1), USE.NAMES = FALSE)
+  vapply(token, function(t) grepl(t, phrase, fixed = TRUE),
+         logical(1), USE.NAMES = FALSE)
 }
 
 hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf) {
