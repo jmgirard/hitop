@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, IP3
-- **Branch/PR:** `m068-hitopbr-score-intervals`
+- **Branch/PR:** `m068-hitopbr-score-intervals` / https://github.com/jmgirard/hitop/pull/74
 
 ## Goal
 
@@ -34,7 +34,7 @@ standing column-shape candidate row; this table matches its sibling as built.
 
 ## Acceptance criteria
 
-- [ ] AC1 `interval_hitopbr(data, scores, srange, prefix, level, append)` is
+- [x] AC1 `interval_hitopbr(data, scores, srange, prefix, level, append)` is
       exported, documented, and carries a `_pkgdown.yml` reference row; for each
       of the eight scales `hitopbr_devstats` carries it returns the estimate and
       bounds of Schmukle (2026) Eqs (10)–(12), p. 821. Verified by a closed-form
@@ -42,7 +42,7 @@ standing column-shape candidate row; this table matches its sibling as built.
       into the test as printed in Table 1, **not** read from `hitopbr_devstats`,
       each scale probed at a score below, at, and above its reference mean and
       at levels 0.95 and 0.80.
-- [ ] AC2 `hitopbr_devstats` ships one row per HiTOP-BR scale with
+- [x] AC2 `hitopbr_devstats` ships one row per HiTOP-BR scale with
       `hitopsr_devstats`'s column contract, and every numeric cell equals its
       Table 1 printed cell — checked cell by cell by a new
       `data-raw/verify_hitopbr_devstats.R`, an independent coordinate extraction
@@ -50,29 +50,29 @@ standing column-shape candidate row; this table matches its sibling as built.
       the `c(1, 4)` coding `interval_hitopbr()` hardcodes (IP2), and whose header
       records a planted-defect demonstration varying defect form as well as
       location, in the form `data-raw/verify_hitopsr_devstats.R:32-40` records.
-- [ ] AC3 A CI-runnable invariant in `tests/` asserts, for every row of
+- [x] AC3 A CI-runnable invariant in `tests/` asserts, for every row of
       `hitopbr_devstats`, that its `nItems` equals `lengths(hitopbr_scales$itemNumbers)`
       for the same stem, carrying the reconciled disposition for any row AC5
       records as disputed; and `setdiff(sub("^hbr_", "", names(score_hitopbr(sim_hitopbr,
       items = 1:45, append = FALSE))), hitopbr_devstats$camelCase)` is empty.
-- [ ] AC4 `interval_hitopbr()` reports the two conditions `interval_hitopsr()`
+- [x] AC4 `interval_hitopbr()` reports the two conditions `interval_hitopsr()`
       does, naming the BR dataset: a score column with no `hitopbr_devstats` row
       returns `NA` in all three interval columns under a warning of class
       `hitop_interval_uncovered`, and a call whose `srange` is not `c(1, 4)`
       returns `NA` in every interval column under `hitop_interval_coding`.
-- [ ] AC5 For every row where Table 1's printed `# Items` differs from the count
+- [x] AC5 For every row where Table 1's printed `# Items` differs from the count
       `hitopbr_items` yields — the set `data-raw/verify_hitopbr_devstats.R`
       reports, not a pre-counted list — the `hitopbr_devstats` help page states
       both counts and the disposition Jeff signed off on, and
       `cairn/references/simms2026.md` and `cairn/SOURCES.md` carry the same
       disposition as a resolved or standing OQ (IP1).
-- [ ] AC6 The development-sample caveat D-032 requires appears wherever these
+- [x] AC6 The development-sample caveat D-032 requires appears wherever these
       numbers surface — the `interval_hitopbr()` and `hitopbr_devstats` help
       pages, `vignettes/hitopbr_scoring.Rmd`, and NEWS.md — each saying the
       reference group is a development sample and not a community norm; asserted
       by a prose guard over the generated Rd and the vignette, in the form
       `tests/testthat/test-help-se-prose.R` uses.
-- [ ] AC7 The checks `cairn/PROFILE.md`'s `## consistency-gate` slot lists are
+- [x] AC7 The checks `cairn/PROFILE.md`'s `## consistency-gate` slot lists are
       clean, including `devtools::document()` with no diff, `devtools::test()`
       FAIL 0, `devtools::check()` 0 errors and 0 warnings, and
       `pkgdown::check_pkgdown()`.
@@ -135,3 +135,129 @@ standing column-shape candidate row; this table matches its sibling as built.
 ## Decisions
 
 ## Review
+
+Evidence gathered 2026-08-30 on `m068-hitopbr-score-intervals` at `efb1bdf`,
+against `main` (branch 5 ahead, 0 behind; no merge needed). PR
+https://github.com/jmgirard/hitop/pull/74.
+
+- **AC1 — met.** `interval_hitopbr` is exported (`NAMESPACE:27`), documented
+  (`man/interval_hitopbr.Rd`) and carries a reference row (`_pkgdown.yml:82`).
+  The closed-form oracle at `tests/testthat/test-interval_hitopbr.R:98-131`
+  holds all eight scales' `M`, `SD` and alpha as literals as Table 1 prints
+  them, and `:135-142` asserts the sweep's scale set equals
+  `hitopbr_devstats$camelCase`, so a subset cannot pass. Each scale's `x` runs
+  below, at, and above its own reference mean, at levels 0.95 and 0.80. The
+  targeted run of this file and its five siblings: 974 assertions, 0 failures.
+  The [O] reviewer recomputed all 48 hardcoded expectations from the Table 1
+  constants independently — maximum deviation 4.4e-16.
+- **AC2 — met.** `names(hitopbr_devstats)` is identical to
+  `names(hitopsr_devstats)`, 8 rows, one per scale.
+  `Rscript data-raw/verify_hitopbr_devstats.R` re-run today exits 0: shelf
+  sha256 matches and both files pin it, 48 transcription cells and 32 shipped
+  cells compared over the eight rows, all matching, and Table 1's `Range` block
+  spans [1, 4]. Its header records eight plants, varying form as well as
+  location, reaching all five comparisons, each named and exiting 1 with clean
+  controls either side.
+- **AC3 — met.** `tests/testthat/test-interval_hitopbr.R:14-36` asserts each
+  row's `nItems` against `lengths(hitopbr_scales$itemNumbers)` joined by stem,
+  and the `setdiff` of `score_hitopbr()`'s emitted stems against
+  `hitopbr_devstats$camelCase` as empty, with an `expect_setequal` beside it to
+  close the direction `setdiff` cannot see. Both green in the run above and in
+  `devtools::test()`.
+- **AC4 — met.** Fired live today against `sim_hitopbr`: a `hbr_bogus` column
+  returns all-`NA` across the three interval columns under a warning of class
+  `hitop_interval_uncovered` whose message names `hitopbr_devstats`;
+  `srange = c(0, 3)` returns all-`NA` across the three columns under
+  `hitop_interval_coding`.
+- **AC5 — met.** The set the verifier reports is empty — comparison 4 reads "8
+  rows compared, 0 disagreeing" — because the milestone reconciled the one row
+  that disagreed. The disposition is recorded on all three required surfaces
+  regardless: `man/hitopbr_devstats.Rd`'s "Item counts" section states the
+  printed counts against the package's former ones and the correction;
+  `cairn/references/simms2026.md:134` carries it as a RESOLVED open question
+  with the four independent statements behind it; `cairn/SOURCES.md:428` and its
+  "HiTOP-BR item-to-scale membership" section carry the same disposition.
+- **AC6 — met.** `tests/testthat/test-interval-br-prose.R:54-84` cuts the
+  passage from each of the four surfaces — `man/interval_hitopbr.Rd`,
+  `man/hitopbr_devstats.Rd`, `NEWS.md`, `vignettes/hitopbr_scoring.Rmd` — with
+  both ends anchored and the anchors dropped from the cut, then asserts
+  "Development Sample 2", "development sample" and "not a community norm" on
+  each, plus `N = 780` against the documented figure. `:111-127` shows the guard
+  red on a surface that stops saying it and on a renumbered sample size.
+- **AC7 — met.** `devtools::document()` produced no diff.
+  `devtools::test()`: FAIL 0 | WARN 0 | SKIP 4 | PASS 16071.
+  `pkgdown::check_pkgdown()`: no problems found. README.Rmd is untouched by this
+  branch, so README.md is in sync. NEWS.md carries the two new-feature entries
+  and the breaking-change entry, with no milestone numbers. `devtools::check()`:
+  Status OK, 0 errors / 0 warnings /
+  0 notes (6m 22.2s).
+
+## Consistency gate
+
+- `cairn_validate.py` exits 0, all checks pass, 23 advisory warnings (22
+  pre-existing dangling `D-001`-`D-012` tokens, 1 pre-existing references
+  staleness on `schmukle2026.md`); `release window` is OK.
+- `cairn_impact.py` not run: this branch changes no `DESIGN.md` principle
+  (`cairn/DESIGN.md` is not in the diff).
+- Toolchain half, from `cairn/PROFILE.md`'s `## consistency-gate` slot: all
+  seven checks clean, recorded under AC7 above.
+
+## Review findings
+
+Three fresh-context reviewers, distinct evidence bases. [S] blame-history
+reported no findings: the row-36 rekey, the strengthened alpha oracles, the
+`interval_engine.R` comment, the two extended sweeps, `data-raw/artifacts.R` and
+the regenerated manifest are all deliberate, documented and traceable. [S]
+prior-review found one gap; [O] diff-bug found nine. Ranked, with disposition:
+
+1. **[O] The item-36 correction was not propagated to the `calc_alpha()` /
+   `calc_omega()` examples — the shipped help pages now teach a wrong Detachment
+   scale.** `R/reliability.R:36-37` and `:125` (into `man/calc_alpha.Rd:42-43`
+   and `man/calc_omega.Rd:42`) still read
+   `detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 36, 37))`. Confirmed by
+   inspection. A user copying the example gets 0.7847 where
+   `reliability_hitopbr()` gives 0.8009 for Detachment. — disposition: TBD at
+   gate.
+2. **[O] `cairn/references/schmukle2026.md` was not widened to the new reader.**
+   Its **Role** paragraph (`:24-28`) still names only `interval_hitopsr()`, and
+   its **Traces to** list (`:170-176`) omits `R/interval_hitopbr.R` and
+   `tests/testthat/test-interval_hitopbr.R`, although `cairn/ORACLES.md:20`
+   cites the page as the BR oracle's source. Confirmed. — disposition: TBD at
+   gate.
+3. **[O] Stale fixture header in `tests/testthat/helper-fixtures.R:198,200`.**
+   Still records `detachment = 7,12,30,31,36,37 (n=6)` and
+   `internalizing = 8,9,18,22,23,42,44 (n=7)`. The four fixture rows are
+   insensitive to the move, so nothing fails today. Confirmed. — disposition:
+   TBD at gate.
+4. **[O] A breaking scoring change lands under an unchanged version string.**
+   `NEWS.md` opens a development-version heading while `DESCRIPTION` stays
+   `Version: 0.2.0`. — disposition: TBD at gate.
+5. **[O] `data-raw/verify_hitopbr_devstats.R:216-226` checks the Range column in
+   aggregate, not per cell** — it compares `c(min(rangeLo), max(rangeHi))` to
+   `c(1, 4)`, so a wrong cell inside the span passes comparison 5. Compensated:
+   comparison 2 diffs `rangeLo`/`rangeHi` cell by cell against the extraction.
+   — disposition: TBD at gate.
+6. **[O] The BR closed-form oracle probes one score column per call**
+   (`tests/testthat/test-interval_hitopbr.R:159-168`), so a per-column
+   mis-indexing bug in the engine's loop is caught only by the multi-column
+   HiTOP-SR oracle. — disposition: TBD at gate.
+7. **[O] `hitopbr_devstats`'s per-row `scale` <-> `camelCase` pairing has no CI
+   assertion** — `test-interval_hitopbr.R:36` and `:57` check both columns only
+   as sets, so a row pairing the wrong display name with a stem passes every CI
+   test. — disposition: TBD at gate.
+8. **[O] `cairn/DESIGN.md`'s "Function families" has no entry for the interval
+   family at all** (missing since M041). Pre-existing; this diff changes
+   nothing there. — disposition: TBD at gate.
+9. **[O] `cairn/SOURCES.md:430` and `cairn/references/simms2026.md:21,134` write
+   the correction marker as `corrected M68` where the milestone ID is `M068`.**
+   Confirmed. — disposition: TBD at gate.
+10. **[S prior-review] `tests/testthat/test-append-collision.R:340-403`'s
+    warn-before-abort ordering probe was not extended to `interval_hitopbr`,**
+    although the collision-probe sweep just above it was. Not a functional
+    regression — the shared engine's ordering is already validated for
+    `interval_hitopsr()` — but the same coverage-gap shape M060's review
+    flagged. — disposition: TBD at gate.
+
+No finding demonstrates an acceptance criterion failing, so none meets the
+return floor on that limb; whether finding 1 is a load-bearing defect in a
+shipped deliverable is the maintainer's call at the gate.
