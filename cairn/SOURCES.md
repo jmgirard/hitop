@@ -425,9 +425,12 @@ The 93 rows of the first 12 sections -- the HiTOP-SR primary scales and subscale
 verbatim into `data-raw/hitopsr_devstats.csv` and built into
 `data/hitopsr_devstats.rda` by `data-raw/hitopsr_devstats.R`. The `Range`,
 `Skewness` and `Kurtosis` columns are read but not shipped. The 13th section,
-"Superspectra and Spectra Scales", is the eight HiTOP-BR scales; it is not
-transcribed, because Table 1 and `hitopbr_scales` disagree on the item counts of
-Detachment and Internalizing and the accepted paper has to settle that first.
+"Superspectra and Spectra Scales", is the eight HiTOP-BR scales; M041 left it
+untranscribed because Table 1 and `hitopbr_scales` disagreed on the item counts
+of Detachment and Internalizing. M068 transcribed it (corrected M68): the
+disagreement was one item on the package's side, corrected under the section
+"HiTOP-BR item-to-scale membership" below, and D-048 admits the block on the
+same terms as this one.
 
 **The reference group.** Development Sample 2: N = 780 (Table 1's Note, p. 51),
 "a new sample of 780 Prolific Academic participants, who were stratified by sex

@@ -8,6 +8,45 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-048 (2026-08-30): Table 1's Superspectra and Spectra block is admitted on the same terms as its primary-scale block, and the development workbook stays primary for HiTOP-BR item-to-scale membership (widens D-032/D-042's admission to the block M041 left out; applies D-018's per-content-type rule to a second HiTOP-BR content type)
+
+**Context:** D-032 admits a peer-reviewed instrument paper's descriptive table as
+a published source under IP3, and D-042 admits this document for it. Both were
+written for the 93 primary-scale and subscale rows M041 shipped. The eight rows
+of Table 1's last section, the HiTOP-BR scales, were left out for a stated
+reason: Table 1's printed `# Items` disagreed with `hitopbr_scales` on Detachment
+and Internalizing, and `cairn/SOURCES.md` recorded that the accepted paper would
+have to settle it first. M068 found the disagreement to be one item on the
+package's side of the ledger, not the paper's — `hitopbr_items` row 36 keyed to
+`Detachment` where the development workbook `B-HiTOP overview.xlsx` puts it under
+`Internalizing`, in its item-to-scale sheet and again in its scoring syntax.
+Nothing but this package said `Detachment`, and it had since 2025-06-08 with no
+source recorded.
+
+**Decision:** The Superspectra and Spectra block is admitted on exactly the terms
+D-032 and D-042 give the primary-scale block — same document, same shelf pin,
+same reconciliation commitment when the accepted version is shelved — so
+`hitopbr_devstats` ships its four cells per row and `interval_hitopbr()` reads
+them. Separately, and not by that admission: the development workbook remains
+this package's primary source for HiTOP-BR item-to-scale membership under
+D-018's per-content-type rule, the standing `HiTOP-SR-Final.xlsx` has for the
+HiTOP-SR. Item 36 was corrected to the workbook's grouping with Jeff's sign-off
+at the 2026-08-30 implementation gate (IP1), after he asked whether the paper
+could be the wrong side; the paper's agreement is corroboration for that
+correction, never its authority. Rejected: shipping the block with the two
+disputed counts recorded unreconciled, which would leave two scales' reference
+statistics describing an item set the package does not score; and holding the
+whole block for the accepted version, which the correction removes the reason
+for.
+
+**Consequences:** `score_hitopbr()` and `reliability_hitopbr()` return different
+values for `hbr_detachment` and `hbr_internalizing`, a breaking change NEWS
+records and the two HiTOP-BR Word forms were rebuilt for. The paper's `# Items`
+column now agrees with the package's own keying on all eight rows, which is what
+the CI-runnable invariant in `tests/testthat/test-interval_hitopbr.R` asserts.
+The evidence that would reopen either half: an accepted version printing counts
+that agree with neither side, or a workbook revision moving an item.
+
 ### D-047 (2026-08-28): {snakecase} leaves Imports and is declared as a data-generation need instead (applies GP4's dependency posture to a dependency that no shipped code uses)
 
 **Context:** {snakecase} entered Imports for the `camelCase` derivations in the
