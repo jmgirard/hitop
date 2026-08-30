@@ -77,3 +77,54 @@ test_that("score_hitopbr() honors invariants: se, prefix, row count", {
 
 # Reliability moved out of score_hitopbr() into reliability_hitopbr() (M015); the
 # per-scale alpha/omega oracle now lives in test-reliability.R.
+
+test_that("every HiTOP-BR item sits on the scale the development workbook gives it", {
+  # The primary source for HiTOP-BR item-to-scale membership is the Society
+  # workbook `B-HiTOP overview.xlsx` (SOURCES.md, "HiTOP-BR item-to-scale
+  # membership"), which is gitignored and so unreadable from CI. Its
+  # `item-to-scale` sheet is transcribed below by the source's own item
+  # identifiers -- the `Original` names -- rather than by HBR numbers, so this
+  # oracle states the source's grouping and never the package's own numbering.
+  # Item 36 (`HiTOP_69`) is the row M068 corrected from Detachment to
+  # Internalizing.
+  workbook <- list(
+    Internalizing = c(
+      "HiTOP_69", "HiTOP_187", "HiTOP_378", "HiTOP_570",
+      "HiTOP_333", "HiTOP_356", "HiTOP_368", "HiTOP_215"
+    ),
+    Somatoform = c(
+      "HiTOP_479", "HiTOP_449", "HiTOP_451", "HiTOP_490",
+      "HiTOP_494", "HiTOP_456", "HiTOP_487", "HiTOP_492"
+    ),
+    Detachment = c("HiTOP_50", "HiTOP_624", "HiTOP_44", "HiTOP_625", "HiTOP_657"),
+    `Thought Disorder` = c(
+      "HiTOP_606", "HiTOP_596", "HiTOP_554",
+      "HiTOP_558", "HiTOP_583", "HiTOP_557"
+    ),
+    Disinhibition = c(
+      "Ext_102", "Ext_320", "Ext_256", "Ext_361", "Ext_374",
+      "Ext_166", "Ext_281", "Ext_97", "Ext_13"
+    ),
+    Antagonism = c(
+      "Ext_262", "Ext_22", "Ext_370", "Ext_175", "HiTOP_577",
+      "HiTOP_11", "Ext_367", "HiTOP_21", "Ext_50"
+    )
+  )
+
+  # The six sheet sections partition the 45 items, so a member moved from one
+  # scale to another fails on both, and the count guards against a section this
+  # transcription dropped.
+  expect_equal(sum(lengths(workbook)), 45L)
+  expect_setequal(unlist(workbook, use.names = FALSE), hitopbr_items$Original)
+
+  for (scale in names(workbook)) {
+    expect_setequal(
+      hitopbr_items$Original[hitopbr_items$Scale == scale],
+      workbook[[scale]]
+    )
+  }
+
+  # The item the correction moved, named on its own so a regression says which
+  # item rather than only which scale.
+  expect_equal(hitopbr_items$Scale[hitopbr_items$Original == "HiTOP_69"], "Internalizing")
+})

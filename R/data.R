@@ -234,6 +234,59 @@
 #' hitopsr_devstats
 "hitopsr_devstats"
 
+#' HiTOP-BR Development-Sample Statistics
+#'
+#' Descriptive statistics for each HiTOP-BR scale, as printed in the
+#' "Superspectra and Spectra Scales" block of Table 1 of the HiTOP-SR
+#' introduction paper. The reference group is that paper's **Development Sample
+#' 2**, N = 780 Prolific Academic participants stratified by sex and age to
+#' approximate a community-representative United States population. It is a
+#' development sample, not a community norm: no weighting to a census frame was
+#' applied and the paper publishes no raw-score to T-score table. Read a score
+#' against these statistics as a comparison with the sample the instrument was
+#' developed on.
+#'
+#' Every statistic is a printed cell of that table, transcribed and verified
+#' against it; nothing here is computed from data by this package. The `mean` and
+#' `sd` are on the HiTOP-BR's own four-option 1-4 response coding, and scale
+#' scores are item means, so a score computed on another coding is not comparable
+#' to them. [interval_hitopbr()] reads this table.
+#'
+#' The HiTOP-BR scales were developed independently of the HiTOP-SR primary
+#' scales, drawing on the same item pool, and are not a short form of them
+#' (Table 1's Note), so these statistics are not comparable with
+#' [hitopsr_devstats].
+#'
+#' @section Item counts: Table 1's printed `# Items` agrees with the item count
+#'   [hitopbr_scales] derives from [hitopbr_items] for all eight scales. It did
+#'   not always: item 36 ("I had a hard time asserting myself to others.") was
+#'   keyed to `Detachment` in this package until it was corrected to
+#'   `Internalizing`, the scale the instrument's development workbook gives it in
+#'   both its item-to-scale sheet and its scoring syntax, and the scale the
+#'   paper's own factor table loads it on. `Detachment` therefore has 5 items and
+#'   `Internalizing` 8, which is what Table 1 prints for each.
+#'
+#' @format A \link[tibble]{tibble} with 8 rows and 8 columns:
+#' \describe{
+#'   \item{scale}{The name of the scale. Matches \link{hitopbr_scales}$Scale.}
+#'   \item{camelCase}{That name converted to camel case -- the stem
+#'     [score_hitopbr()] appends to its `prefix` when it names a score column}
+#'   \item{type}{`"scale"` throughout. Table 1 prints all eight rows under one
+#'     heading and labels none of them a superspectrum or a spectrum, so no such
+#'     distinction is recorded here.}
+#'   \item{nItems}{The number of items in the scale}
+#'   \item{reliability}{The internal-consistency reliability coefficient printed
+#'     for that scale}
+#'   \item{reliabilityType}{What that coefficient is. `"alpha"` throughout:
+#'     Cronbach's alpha is what the paper prints. Supplied by this package, not
+#'     read from the table.}
+#'   \item{mean}{The scale score's mean in the development sample}
+#'   \item{sd}{The scale score's standard deviation in the development sample}
+#' }
+#' @examples
+#' hitopbr_devstats
+"hitopbr_devstats"
+
 #' HiTOP-BR Item Data
 #'
 #' Information about items in the HiTOP-BR.

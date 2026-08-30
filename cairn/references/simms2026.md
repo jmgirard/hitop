@@ -1,4 +1,4 @@
-# simms2026 — the HiTOP-SR introduction paper: Table 1's development-sample statistics and the HiTOP-SR scale names
+# simms2026 — the HiTOP-SR introduction paper: Table 1's development-sample statistics (HiTOP-SR and HiTOP-BR) and the HiTOP-SR scale names
 
 **Provenance.** Ingested 2026-08-28 by M041 from
 `cairn/references/sources/ASMNT-26-0390_Proof_hi.pdf` (gitignored; sha256
@@ -14,8 +14,12 @@ re-read against the independent coordinate extraction
 `data-raw/verify_hitopsr_devstats.R` performs at the M041 review, 2026-08-28:
 372 cells against the committed CSV and 372 against the shipped
 `hitopsr_devstats`, none differing, plus the 17 indented labels against the 17
-`subscale` rows. The eight Superspectra and Spectra rows are not transcribed and
-so are not covered by that check — observed 2026-08-28.
+`subscale` rows. The eight Superspectra and Spectra rows were transcribed
+separately at M068 and re-read against the same extraction by
+`data-raw/verify_hitopbr_devstats.R`, 2026-08-30: 48 cells against the committed
+transcription and 32 against the shipped `hitopbr_devstats`, none differing
+(corrected M068 — the earlier note that this block was untranscribed no longer
+holds) — observed 2026-08-30.
 
 **Citation.** Simms, L. J., Naragon-Gainey, K., Wright, A. G. C., Bornovalova, M.,
 Cicero, D. C., Clark, L. A., Forbes, M. K., et al. *Assessment of the Hierarchical
@@ -25,12 +29,15 @@ and Brief Report (HiTOP-BR).* Manuscript submitted to *Assessment*; Manuscript I
 document is a review proof, not a published article. The running head is
 "Assessing the HiTOP Model".
 
-**Role.** The published-source authority (IP3) for two things this package ships.
-First, HiTOP-SR **scale names**, already read by M058 and M059 through
-`cairn/SOURCES.md`'s "HiTOP-SR scale names" section. Second, the **development-sample
-descriptive statistics** `hitopsr_devstats` carries and `interval_hitopsr()` reads:
-per scale and subscale, the item count, Cronbach's alpha, mean and SD. It is *not*
-a norming source — see "Open questions".
+**Role.** The published-source authority (IP3) for three things this package
+ships. First, HiTOP-SR **scale names**, already read by M058 and M059 through
+`cairn/SOURCES.md`'s "HiTOP-SR scale names" section. Second, the
+**development-sample descriptive statistics** `hitopsr_devstats` carries and
+`interval_hitopsr()` reads: per scale and subscale, the item count, Cronbach's
+alpha, mean and SD. Third, the **HiTOP-BR development statistics**
+`hitopbr_devstats` carries and `interval_hitopbr()` reads: the same four cells
+for each of the eight scales of Table 1's last section, admitted by D-048 on the
+same terms. It is *not* a norming source — see "Open questions".
 
 ## Extracted values
 
@@ -106,12 +113,17 @@ appears anywhere in the document — observed 2026-08-28.
   columns by word coordinates.
 - `data-raw/verify_hitopsr_devstats.R` — diffs that extraction cell by cell against
   the CSV and against the built `hitopsr_devstats`.
+- `data-raw/hitopbr_table1.R` — the hand transcription of the eight Superspectra
+  and Spectra rows; `data-raw/hitopbr_devstats.R` builds
+  `data/hitopbr_devstats.rda` from it, and `data-raw/verify_hitopbr_devstats.R`
+  diffs both against the same extraction.
 - `data-raw/verify_hitopsr_names.R`, `data-raw/verify_hitopsr_scale_name.R` — the
   M058/M059 name verifiers, which read the same table.
-- `cairn/SOURCES.md`, "HiTOP-SR scale names" and "HiTOP-SR development statistics"
-  sections.
-- `R/interval_hitopsr.R` and its help page — the mean, SD and reliability it reads,
-  and the development-sample caveat it prints.
+- `cairn/SOURCES.md`, "HiTOP-SR scale names", "HiTOP-SR development statistics"
+  and "HiTOP-BR item-to-scale membership" sections.
+- `R/interval_hitopsr.R` and `R/interval_hitopbr.R` and their help pages — the
+  mean, SD and reliability each reads, and the development-sample caveat each
+  prints.
 
 ## Open questions
 
@@ -119,10 +131,21 @@ appears anywhere in the document — observed 2026-08-28.
   reconciliation commitment, widened by D-042, stands: when the accepted version is
   shelved, every value read from here is re-verified against its Table 1 cell —
   observed 2026-08-28.
-- Table 1 and `hitopbr_scales` disagree on the item counts of **Detachment** and
-  **Internalizing** in the Superspectra and Spectra block. That block is out of
-  M041's scope for exactly this reason, and the eight HiTOP-BR rows are not
-  transcribed — observed 2026-08-28.
+- **[RESOLVED 2026-08-30, corrected M068]** Table 1 and `hitopbr_scales` disagreed
+  on the item counts of **Detachment** (printed 5, package 6) and
+  **Internalizing** (printed 8, package 7), which is why M041 left the
+  Superspectra and Spectra block untranscribed. One item accounts for both:
+  `hitopbr_items` row 36, `HiTOP_69`, "I had a hard time asserting myself to
+  others.", was keyed `Detachment`. Four statements put it under Internalizing —
+  the development workbook `B-HiTOP overview.xlsx`'s `item-to-scale` sheet and,
+  independently, the same workbook's `scoring syntax` sheet (`BInternalizing =
+  MEAN.7(HiTOP_69, ...)` against a five-item `BDetachment`); this paper's Table 4
+  (p. 57 of the shelf PDF), which loads "Hard to assert self" at .67 on INT and
+  prints no DET loading; and the item's own HiTOP-SR home, the `Submissiveness`
+  scale. Across all 45 HiTOP-BR items it was the only place the workbook and
+  `hitopbr_items` disagreed. M068 corrected the keying at Jeff's sign-off, and
+  the printed counts now agree with the package's own for all eight rows — see
+  `cairn/SOURCES.md`, "HiTOP-BR item-to-scale membership".
 - The raw responses behind Table 1 are on the shelf as `Prolific data HiTOP-SR.sav`
   (Development Sample 2, N = 780), so every printed cell could in principle be
   recomputed rather than transcribed. M041 does not: the recomputation needs its own

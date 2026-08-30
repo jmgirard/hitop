@@ -1,3 +1,44 @@
+# hitop (development version)
+
+## New features
+
+* **`interval_hitopbr()` puts a confidence interval around a HiTOP-BR scale
+  score.** Given columns that `score_hitopbr()` produced, it returns an `_est`,
+  `_lo` and `_hi` column for each: an estimate of the respondent's true score
+  and the bounds of a confidence interval around it, by the regression-based
+  approach with scale correction of Schmukle (2026). The reference mean,
+  standard deviation and reliability come from the new `hitopbr_devstats`
+  dataset.
+
+* **`hitopbr_devstats` ships the HiTOP-BR development-sample statistics.** One
+  row per scale, carrying the item count, Cronbach's alpha, mean and standard
+  deviation printed for it in the HiTOP-SR introduction paper's Table 1. That
+  reference group is the paper's Development Sample 2, N = 780 Prolific Academic
+  participants stratified by sex and age to approximate a
+  community-representative United States population. It is a development sample
+  and not a community norm: no census weighting was applied and the paper
+  publishes no raw-score to T-score table, so an interval says where a score
+  sits relative to the sample the instrument was developed on, not what
+  percentile it occupies in any population.
+
+## Breaking changes
+
+* **One HiTOP-BR item moved to the scale its development workbook gives it.**
+  Item 36 ("I had a hard time asserting myself to others.") was keyed to
+  `Detachment`; the HiTOP Society development workbook this keying was built
+  from puts it under `Internalizing`, in its item-to-scale sheet and again in
+  its scoring syntax, and the instrument's introduction paper agrees in both its
+  descriptive table and its factor table. It was the only HiTOP-BR item where
+  the package and the workbook disagreed.
+
+  `score_hitopbr()` and `reliability_hitopbr()` therefore return different
+  values for `hbr_detachment` (now 5 items: 7, 12, 30, 31, 37) and
+  `hbr_internalizing` (now 8 items: 8, 9, 18, 22, 23, 36, 42, 44). No other
+  scale changes, and no item text, item number or response option changes.
+  Scores computed with an earlier version are not comparable for those two
+  scales. The scoring-key page of the two HiTOP-BR Word forms in `inst/extdata/`
+  has been rebuilt with the corrected item lists.
+
 # hitop 0.2.0
 
 This release makes several **breaking** API changes to stabilize the interface

@@ -15,9 +15,10 @@
 #' scale a bound can fall outside it, and clamping would compute something other
 #' than the cited equation (M041 Decisions, from RR05).
 #'
-#' Only `interval_hitopsr()` calls this today. It takes the reference statistics
-#' as an argument rather than reading a dataset, so a HiTOP-BR or PID-5 wrapper
-#' can hand it a different table without the engine learning about instruments.
+#' `interval_hitopsr()` and `interval_hitopbr()` call this. It takes the
+#' reference statistics as an argument rather than reading a dataset, so a
+#' further wrapper -- a PID-5 one -- can hand it a different table without the
+#' engine learning about instruments.
 #'
 #' @param data,scores,srange,prefix,level,append As in the wrappers.
 #' @param refstats A data frame of reference statistics with columns `camelCase`

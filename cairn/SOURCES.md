@@ -425,9 +425,12 @@ The 93 rows of the first 12 sections -- the HiTOP-SR primary scales and subscale
 verbatim into `data-raw/hitopsr_devstats.csv` and built into
 `data/hitopsr_devstats.rda` by `data-raw/hitopsr_devstats.R`. The `Range`,
 `Skewness` and `Kurtosis` columns are read but not shipped. The 13th section,
-"Superspectra and Spectra Scales", is the eight HiTOP-BR scales; it is not
-transcribed, because Table 1 and `hitopbr_scales` disagree on the item counts of
-Detachment and Internalizing and the accepted paper has to settle that first.
+"Superspectra and Spectra Scales", is the eight HiTOP-BR scales; M041 left it
+untranscribed because Table 1 and `hitopbr_scales` disagreed on the item counts
+of Detachment and Internalizing. M068 transcribed it (corrected M068): the
+disagreement was one item on the package's side, corrected under the section
+"HiTOP-BR item-to-scale membership" below, and D-048 admits the block on the
+same terms as this one.
 
 **The reference group.** Development Sample 2: N = 780 (Table 1's Note, p. 51),
 "a new sample of 780 Prolific Academic participants, who were stratified by sex
@@ -467,6 +470,46 @@ and after. A CI-runnable second
 oracle, in `tests/testthat/test-interval_hitopsr.R`, asserts that every shipped
 `nItems` equals that scale's `nItems` in `hitopsr_scales`/`hitopsr_subscales` --
 which no transcription error could survive without also moving a row.
+
+## HiTOP-BR item-to-scale membership (2026-08-30, M068)
+
+**Source.** The HiTOP Society development workbook *B-HiTOP overview.xlsx*
+(shelf copy `cairn/references/sources/B-HiTOP overview.xlsx`, gitignored). It is
+the primary source for HiTOP-BR item-to-scale membership under D-018's
+per-content-type rule, the same standing `HiTOP-SR-Final.xlsx` has for the
+HiTOP-SR. Two of its sheets state the membership independently: `item-to-scale`
+lists each scale's items by their `Original` name, and `scoring syntax` writes
+the same scales as SPSS `MEAN.n(...)` expressions.
+
+**One item corrected.** `hitopbr_items` row 36 -- `HiTOP_69`, "I had a hard time
+asserting myself to others.", HiTOP-SR item 122 -- was keyed `Detachment`. It is
+`Internalizing` in both workbook sheets: `item-to-scale` lists it first under
+Internalizing and gives Detachment five items without it, and `scoring syntax`
+reads `BInternalizing = MEAN.7(HiTOP_69, HiTOP_187, HiTOP_378, HiTOP_570,
+HiTOP_333, HiTOP_356, HiTOP_368, HiTOP_215).` against `BDetachment =
+MEAN.4(HiTOP_50, HiTOP_624, HiTOP_44, HiTOP_625, HiTOP_657).` Two further
+statements agree, neither of them the workbook: Table 1 of the introduction
+manuscript prints `# Items` of 8 for Internalizing and 5 for Detachment
+(`cairn/references/simms2026.md`), and its Table 4 loads "Hard to assert self"
+at .67 on the INT factor with a blank DET cell. The item's HiTOP-SR home is the
+`Submissiveness` scale, where the package's five other Detachment items are
+Social Aloofness (2) and Romantic Disinterest (3). Nothing but
+`data-raw/hitopbr_items.csv` said `Detachment`, which it had since `64b36178`
+(2025-06-08) with no source recorded, so this is read as a typing slip against
+the workbook rather than a divergence anyone chose.
+
+Corrected with Jeff's sign-off on 2026-08-30 (IP1). It changes what
+`score_hitopbr()` returns for `hbr_detachment` and `hbr_internalizing`, and the
+two HiTOP-BR Word forms, whose scoring-key page prints each scale's item numbers,
+were rebuilt with it. No other item moved: across all 45 items and all eight
+scales, including Externalizing and p-Factor, this was the only place the
+workbook and `hitopbr_items` disagreed.
+
+**Verification.** `tests/testthat/test-score_hitopbr.R` asserts the membership of
+both corrected scales against the workbook's numbers, and the CI-runnable
+invariant in `tests/testthat/test-interval_hitopbr.R` asserts every shipped
+`hitopbr_devstats$nItems` against `lengths(hitopbr_scales$itemNumbers)`, which
+Table 1's printed counts now agree with row for row.
 
 ## Open questions (need source adjudication)
 
