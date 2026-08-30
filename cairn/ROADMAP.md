@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-08-30 (sixth pass. M068 merged and archived — PR #74 squash-merged `0ffff78`, all eight CI checks green. Five review findings fixed at the gate, chief among them the `calc_alpha()`/`calc_omega()` examples still keyed to the superseded six-item HiTOP-BR Detachment set; three filed to candidate rows, one rejected as pre-existing, one left to the release walk. Jeff dispositioned the maintainer-verification row for promotion into a bounded milestone rather than a sixth extension. M065's terminal row pruned; five candidate rows compressed to hold the byte budget. M026's roxygen bracket line pruned as the stalest to make room for M068's keying-provenance lesson. Byte budgets: `ROADMAP.md` 23,998 against 24,000 and `LESSONS.md` 19,918 against 20,000.)_
+_Last hygiene check: 2026-08-30 (seventh pass. M069 merged and archived — PR #75 squash-merged `6de4c57`, all eight CI checks green. Twelve review findings: ten fixed at the gate, chief among them a botched compression in this file that deleted the maintainer-run verification-tooling candidate row and left a duplicate of the browser-builder row in its place, both now repaired; two filed into the M068 test-reach row. Eight of the widest candidate rows compressed in exchange. M063's terminal row pruned. No lesson captured — what M069 taught about empty-domain checks is already doctrine. Byte budgets: `ROADMAP.md` OVER at 24,138 against 24,000, accepted by Jeff at the merge gate rather than drop the two filings; promoting the verification-tooling row into the bounded milestone it is dispositioned for frees roughly 1,000 bytes. `LESSONS.md` 19,918 against 20,000.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M070)._
 _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / New features / Improvements and fixes / Documentation and website; `document()` no diff, `R CMD check` 0/0/0, `check_pkgdown()` and `url_check()` clean. Tag and GitHub release pending the maintainer._
 
@@ -9,10 +9,9 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / N
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M068 | The HiTOP-BR carries score intervals against the paper's development sample | done | — | normal | milestones/archive/M068-hitopbr-score-intervals.md |
-| M069 | `calc_se` is deprecated in favour of the interval functions | review | M068 | normal | milestones/M069-calc-se-deprecation.md |
+| M069 | `calc_se` is deprecated in favour of the interval functions | done | M068 | normal | milestones/archive/M069-calc-se-deprecation.md |
 | M067 | The modules article and the generator help pages describe what the generators do | done | — | normal | milestones/archive/M067-modules-doc-accuracy.md |
 | M066 | The step bar shows its three buttons run in order | done | — | normal | milestones/archive/M066-builder-stepbar-chevrons.md |
-| M063 | Every file the builder writes says which form it belongs to | done | M062 | normal | milestones/archive/M063-builder-download-naming.md |
 | M064 | The builder refuses loudly when the package it installs no longer matches it | done | — | normal | milestones/archive/M064-builder-version-guard.md |
 
 ## Candidates
