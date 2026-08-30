@@ -38,12 +38,16 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
       exactly one warning of class `hitop_deprecated_calc_se` when called with
       `calc_se = TRUE`, and no warning of that class when called with
       `calc_se = FALSE` or with the argument omitted.
-- [ ] AC2 Scored output is unchanged: for each of the three functions, over every
-      combination of `version` (where the signature admits one), `missing` and
-      `append` that signature accepts, on the shipped `sim_pid5`, `sim_pid5sf`,
-      `sim_pid5bf`, `sim_hitopsr`, `sim_hitopbr`, `ku_hitopsr` and `ku_hitopbr`
-      datasets, a `calc_se = TRUE` call under `suppressWarnings()` returns a
-      result `identical()` to the same call at the `v0.2.0` tag — the D-011
+- [ ] AC2 Scored output is unchanged over the configurations below: for each of
+      the three functions, over every combination of `missing` and `append` that
+      its signature accepts, on each shipped dataset that function can score —
+      `score_pid5()` on `sim_pid5` (`version = "FULL"`), `sim_pid5sf` and
+      `ku_pid5sf` (`"SF"`) and `sim_pid5bf` (`"BF"`); `score_hitopsr()` on
+      `sim_hitopsr` and `ku_hitopsr`, each both without a `module` and with one;
+      `score_hitopbr()` on `sim_hitopbr` and `ku_hitopbr` — a `calc_se = TRUE`
+      call returns a result `identical()` to the same call at commit `1dec0a4`,
+      the commit this milestone's branch was cut from, and signals the same
+      warnings apart from the new `hitop_deprecated_calc_se` one — the D-011
       characterization-harness pattern.
 - [ ] AC3 Each of the three `calc_se` help pages states that the argument is
       deprecated and names what replaces it for that instrument —
@@ -81,8 +85,9 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
       called, not the engine.
 - [x] T2 Tests for the warning class and its absence, three functions × three
       argument cases.
-- [ ] T3 Run the D-011 characterization harness against the `v0.2.0` tag over the
-      AC2 matrix; record the config count and the `identical()` result.
+- [x] T3 Run the D-011 characterization harness (`data-raw/characterize_calc_se.R`)
+      against commit `1dec0a4` over the AC2 matrix; record the config count and
+      the `identical()` result.
 - [ ] T4 Rewrite the `calc_se` roxygen on the three wrappers; extend
       `tests/testthat/test-help-se-prose.R` to the deprecation and replacement
       sentences and confirm it fails against the current wording.
@@ -107,6 +112,10 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
 - 2026-08-30: implement gate chose switching the HiTOP-SR and HiTOP-BR vignette demonstrations over to their interval functions rather than showing or hiding the warning; the PID-5 short-form vignette and the `score_pid5()` help example keep their `calc_se = TRUE` calls, there being no replacement to switch to.
 - 2026-08-30: T1, T2 — warning fires from `score_engine()` inside the `calc_se` block, so a call aborting on its data, items or an append collision reports that alone; both new checks proven able to fail (an unconditional warning reddens the absence test; a wrong `se_instead` reddens the routing test).
 - 2026-08-30: [S] delegation wrapped 22 pre-existing `calc_se = TRUE` test call sites in a new class-targeted `hush_se()` helper so the deprecation does not bury the suite's warning channel; diff verified, `devtools::test()` FAIL 0 WARN 0 PASS 16098 (WARN 28 before the wrapping).
+- 2026-08-30: amendment (substantive, mini gate): AC2's `v0.2.0` baseline is unsatisfiable through no fault of this milestone — M068's NEWS-flagged HiTOP-BR item-36 rekey landed after that tag and before this branch was cut, and moved 8 of 34 configurations. Baseline moved to commit `1dec0a4`, the branch point.
+- 2026-08-30: criteria audit on the amended AC2 ran in FULL mode (user-facing tier) in a fresh-context [O] reader that did not author it; 3 findings — an unsatisfiable function x dataset cross product, a headline promising more than the walk covers, and a `missing` axis inert on all three PID-5 datasets (each carries no `NA`). All three fixed at the mini gate, which also widened AC2 by adding `ku_pid5sf`, the one shipped dataset with missing PID-5 data and the only one entering the PID-5 `_se`-masking path (34 configurations -> 40).
+- 2026-08-30: the once-only re-entry of the fixed AC2 wording ran in a second fresh-context [O] reader; 2 findings, both taken to the user and adopted — `score_hitopsr()`'s `module` path unprobed, and a blanket `suppressWarnings()` discarding the condition channel the D-011 pattern compares. AC2 widened again: module runs added and warnings compared alongside values (40 -> 48). Criteria widened or added: AC2 only.
+- 2026-08-30: T3 — `data-raw/characterize_calc_se.R` committed as the harness; 48 configurations, all 48 `identical()` (value and condition classes) between `1dec0a4` and the branch. Condition-channel comparison shown non-vacuous: a planted extra warning in `score_engine()` reddens all 48 while the values alone stay identical.
 
 ## Decisions
 
