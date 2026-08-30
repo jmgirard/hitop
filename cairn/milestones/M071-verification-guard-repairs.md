@@ -1,6 +1,6 @@
 # M071: The Table 1 extractor and the staged-artifact guards no longer return a verdict a wrong input cannot change
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -58,7 +58,7 @@ The deliverable is **internal-tier**: `data-raw/` is `.Rbuildignore`d maintainer
 - [x] T5: Assert `pkgdown/assets/downloads/` exists when the suite runs from a git checkout, covering both `test-scale-name-hitopsr.R:342-352` and `test-artifacts.R:197`; prove it red by renaming the directory and green with it present.
 - [x] T6: Point `verify_hitopsr_names.R:166-178`'s control at `hitopsr_table1_watermark_fragments`; delete the hardcoded copy.
 - [x] T7: Fix `rendering_pattern()`'s case-fold and plural order at `verify_hitopsr_scale_name.R:86-91`; assert the uppercase and `y`→`ies` cases over the pinned names.
-- [ ] T8: Run `document()`, `test()` and `check()`; narrow the ROADMAP verification-tooling row to what stands after this milestone and bring `cairn/ROADMAP.md` under 24,000 bytes.
+- [x] T8: Run `document()`, `test()` and `check()`; narrow the ROADMAP verification-tooling row to what stands after this milestone and bring `cairn/ROADMAP.md` under 24,000 bytes.
 
 ## Work log
 
@@ -76,6 +76,7 @@ The deliverable is **internal-tier**: `data-raw/` is `.Rbuildignore`d maintainer
 - 2026-08-30: T6 done. `verify_hitopsr_names.R`'s watermark control reads `hitopsr_table1_watermark_fragments`; the hardcoded copy is gone. AC5's grep over that file returns one match outside a comment — `devtools::load_all(quiet = TRUE)` at line 20, the letters `ev` inside a package name, not a fragment string. T3, T4 and T6 land in one commit: T3's control and T6's single-source change are the same lines.
 - 2026-08-30: T5 done. `test-artifacts.R` asserts `pkgdown/assets/downloads/` exists whenever the suite runs from a git checkout (`git_ok()`), so the tarball run under `R CMD check` still skips. With the directory renamed the suite fails at `test-artifacts.R:207` naming it and telling the reader to restage via `data-raw/artifacts.R`, while the manifest sweep skipped and the Word-form sweep passed on the two installed copies — the two tolerances the floor now backstops. With it present: 0 failures, 16152 passing.
 - 2026-08-30: T7 done. `rendering_pattern()` now replaces a name's final `y` with a case-folded `(y|ies)` instead of trailing the alternation after the whole name, and the script asserts both properties over each pinned committed name before using the pattern. The scope's premise that the pattern matches no all-uppercase rendering is refuted: the per-letter fold `[\L\1\U\1]` already expands to `[aA]`, so `APPEARANCE FOCUS` and `NON-SUICIDAL SELF-INJURY` matched before this change — that half of AC6 is a passing control, not a repair. The plural half was real: the old pattern spelled `Self-injuryies` and did not match `Non-suicidal Self-injuries`. Inventory output over the pinned proof is byte-identical apart from the new control line; the script still exits 0.
+- 2026-08-30: T8 done. `devtools::document()` no diff, `devtools::test()` 0 failures / 16152 passing / 4 skips, `devtools::check()` 0 errors / 0 warnings / 0 notes (4m 7s; the new checkout floor skips there, as the tarball carries no repository). All three touched verifiers exit 0 over the pinned proof; `check_line_endings.R` passes. The ROADMAP work is a no-op: the verification-tooling candidate row was already dispositioned and removed at the plan gate, and `ROADMAP.md` is 23,262 bytes against the 24,000 budget.
 
 ## Decisions
 
