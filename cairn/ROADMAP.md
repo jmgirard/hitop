@@ -2,6 +2,7 @@
 
 _Last hygiene check: 2026-08-30 (fifth pass. M067 merged and archived — PR #73 squash-merged `67649f51`, all eight CI checks green. One review finding fixed at the gate: the new prose test's recipe anchor tightened from a bare `order(` to `collected[order(`, shown red on a renamed recipe the loose anchor passed. Two findings logged without change. M062's terminal row pruned under the five-row retention rule. The M046 prose-guard lesson extended with the anchor-fragment and wrong-plant cases; M021's raw-HTML-fence line pruned as the stalest to hold the byte budget. Byte budgets: `ROADMAP.md` 22,850 against 24,000 and `LESSONS.md` 19,911 against 20,000.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M068)._
+_Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / New features / Improvements and fixes / Documentation and website; `document()` no diff, `R CMD check` 0/0/0, `check_pkgdown()` and `url_check()` clean. Tag and GitHub release pending the maintainer._
 
 ## Milestones
 
