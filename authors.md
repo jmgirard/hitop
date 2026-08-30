@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/jmgirard/hitop/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/jmgirard/hitop/blob/v0.2.0/DESCRIPTION)
 
 Girard J (2026). *hitop: Score and Distribute HiTOP Society
 Questionnaire Instruments*. R package version 0.2.0,
