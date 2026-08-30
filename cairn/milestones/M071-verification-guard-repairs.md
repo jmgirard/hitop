@@ -1,11 +1,11 @@
 # M071: The Table 1 extractor and the staged-artifact guards no longer return a verdict a wrong input cannot change
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2
-- **Branch/PR:** —
+- **Branch/PR:** `m071-verification-guard-repairs`
 
 ## Goal
 
@@ -51,7 +51,7 @@ The deliverable is **internal-tier**: `data-raw/` is `.Rbuildignore`d maintainer
 
 ## Tasks
 
-- [ ] T1: Capture the pre-change baselines the no-regression halves compare against — the `block`/`section`/label output of `data-raw/hitopsr_table1.R` and the counts `verify_hitopsr_names.R` reports — into the milestone file, so AC1-AC3's "same as today" has a recorded referent rather than a re-run.
+- [x] T1: Capture the pre-change baselines the no-regression halves compare against — the `block`/`section`/label output of `data-raw/hitopsr_table1.R` and the counts `verify_hitopsr_names.R` reports — into the milestone file, so AC1-AC3's "same as today" has a recorded referent rather than a re-run.
 - [ ] T2: Pin the Superspectra/primary partition by scale name in `hitopsr_table1.R:328-336,354`; build the moved-rows `-bbox` fixture and confirm the pre-change script accepts it before the fix and the fixed script errors on it.
 - [ ] T3: Letter-bound the two digit-anchored strips at `hitopsr_table1.R:126-129`; add the `committee1` page probe and confirm it is rewritten before the fix.
 - [ ] T4: Replace the `\bScales\b` test at `hitopsr_table1.R:170` with the thirteen pinned header labels; build the renamed-header fixture and confirm the pre-change script silently drops that block's rows.
@@ -69,6 +69,7 @@ The deliverable is **internal-tier**: `data-raw/` is `.Rbuildignore`d maintainer
 - 2026-08-31: plan gate chose failing on an absent `pkgdown/assets/downloads/` over fixing only the byte-lock block, because the document sweep's floor can otherwise never fail; falsified by a legitimate checkout that lacks the directory.
 - 2026-08-31: plan gate rejected norms CSVs as CI fixtures — the nine CSVs (41,975 bytes) are the build input `data-raw/norms_pid5.R` writes `pid_norms` from, so a test comparing them to the shipped table asserts the build's own output as truth, which IP2 bars; a single-copy relocation would remove the drift risk but not the self-reference. Falsified by an independent extraction of the same values that is not the build input.
 - 2026-08-31: plan gate dropped `verify_hitopbr_devstats.R`'s comparison 5 and AC1's `missing` probe as reported gaps — comparison 5's span read is unreachable while the source SHA is pinned and `hitopbr_devstats` ships no range columns; the `missing` probe does separate the two settings, per `R/score_engine.R:94-95`.
+- 2026-08-30: T1 baseline over the pinned proof PDF (sha256 1c21121…8e425), pre-change: `hitopsr_table1_rows()` 114 rows = 13 section headers + 101 labels, shapes 48 label-only / 66 with-cells; `hitopsr_table1_cells()` 101 data rows = 93 `primary` + 8 `superspectra`, pages 49-51; `verify_hitopsr_names.R` exits 0 reporting 13 headers, an 8-member block, 93 labels against the prose's 93, and the single `Manic Energy†`/`Manic Energy` dagger pair. The thirteen header labels and the eight block names are pinned in `data-raw/hitopsr_table1.R` by T4 and T2, so the lists themselves live in code, not here.
 
 ## Decisions
 
