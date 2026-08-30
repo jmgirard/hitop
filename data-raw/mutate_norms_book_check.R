@@ -15,6 +15,20 @@
 # corruption in the list, so the script asserts all of them and stops if any
 # goes unreported.
 #
+# Each run gets exactly one of three verdicts, because a run that never reached
+# the comparison says nothing about what the comparison would have seen and must
+# not be read as a miss:
+#
+#   CAUGHT      the comparison ran, reported the mutation, and the script exited
+#               non-zero
+#   NOT CAUGHT  the comparison ran and reported nothing
+#   ERRORED     the comparison did not run -- the book extraction, the CSV layer
+#               or the script's own setup stopped first
+#
+# The three are told apart by the comparison's own count line rather than by the
+# exit status, which a crash and a catch share. A sweep carrying any errored run
+# exits non-zero naming those runs separately from the misses.
+#
 # Needs the gitignored shelf epub that verify_norms_against_book.R reads, so
 # like that script this is a maintainer tool and cannot run in CI. Each run
 # re-parses the book, so the whole sweep takes a few minutes.
@@ -31,6 +45,12 @@ stopifnot(file.exists(verify))
 ## The CSV comparison in that script reads the data-raw CSVs, which no mutation
 ## here touches, so attributing a failure to the assembly layer means reading
 ## its own three counts rather than merely the exit status.
+##
+## `ran` is what separates a crash from a miss. The count line is printed once,
+## by the assembly comparison, after it has finished diffing; a run that stops
+## earlier -- a missing shelf epub, a parse failure, a mutation the assembly step
+## itself cannot load -- never prints it. So the count line's presence, not the
+## exit status, says whether there is a verdict to read at all.
 book_check <- function() {
   out <- suppressWarnings(system2(
     "Rscript", verify, stdout = TRUE, stderr = TRUE))
@@ -44,42 +64,101 @@ book_check <- function() {
   list(
     stopped = !is.null(status) && status != 0L,
     counts = n,
+    ran = length(n) == 3L,
     reported = length(n) == 3L && sum(n) > 0L,
+    tail = utils::tail(out, 3L),
     lines = grep("^  - assembly:", out, value = TRUE)
   )
+}
+
+## The three-way verdict. "errored" is decided first and on its own evidence, so
+## a crashed run can never be filed as a miss.
+book_verdict <- function(res) {
+  if (!res$ran) {
+    "errored"
+  } else if (res$stopped && res$reported) {
+    "caught"
+  } else {
+    "not caught"
+  }
 }
 
 run_mutations <- function(pristine) {
   ## The unmutated dataset must pass, or nothing below means anything.
   cat("baseline (no mutation):\n")
   base <- book_check()
+  if (!base$ran) {
+    cat("  the run did not reach the comparison; its last lines were:\n")
+    for (l in base$tail) cat("    ", l, "\n", sep = "")
+    stop("the book comparison errored before mutation", call. = FALSE)
+  }
   if (base$stopped || base$reported) {
     stop("the book comparison does not pass before mutation")
   }
   cat("  the shipped pid_norms matches the book\n\n")
 
   missed <- character(0)
+  errored <- character(0)
   for (m in norms_mutations) {
-    load(pristine)                     # pristine pid_norms
-    pid_norms <- m$f(pid_norms)
-    save(pid_norms, file = rda, compress = "bzip2", version = 2)
-
-    res <- book_check()
+    ## Applying the mutation is itself a run that can stop -- `row_of()` asserts
+    ## the row it addresses exists, so a regenerated pid_norms missing that row
+    ## aborts here. Unhandled that would kill the sweep with no verdict for this
+    ## mutation and none for the ones after it, which is the same crash-read-as-
+    ## something-else the verdict below exists to prevent, one layer up. So this
+    ## step files its own errored verdict and the loop carries on.
+    res <- tryCatch({
+      load(pristine)                   # pristine pid_norms
+      pid_norms <- m$f(pid_norms)
+      save(pid_norms, file = rda, compress = "bzip2", version = 2)
+      book_check()
+    }, error = function(e) {
+      list(ran = FALSE, tail = paste("applying the mutation:",
+                                     conditionMessage(e)))
+    })
     cat(m$ac, " ", m$desc, "\n", sep = "")
-    if (res$stopped && res$reported) {
-      cat("  CAUGHT -- pid_norms-only rows ", res$counts[[1]],
-          ", book-only rows ", res$counts[[2]],
-          ", differing values ", res$counts[[3]], "\n", sep = "")
-      cat("    e.g. ", trimws(res$lines[[1]]), "\n\n", sep = "")
-    } else {
-      missed <- c(missed, m$id)
-      cat("  NOT CAUGHT -- the book comparison did not report it\n\n")
-    }
+    switch(
+      book_verdict(res),
+      caught = {
+        cat("  CAUGHT -- pid_norms-only rows ", res$counts[[1]],
+            ", book-only rows ", res$counts[[2]],
+            ", differing values ", res$counts[[3]], "\n", sep = "")
+        ## The assembly lines and the counts are printed by the same step, so a
+        ## reported mutation has at least one; guarded anyway, because losing a
+        ## verdict to a subscript error is the failure this loop is built to avoid.
+        if (length(res$lines)) {
+          cat("    e.g. ", trimws(res$lines[[1]]), "\n\n", sep = "")
+        } else {
+          cat("    (the comparison printed counts but no assembly line)\n\n")
+        }
+      },
+      `not caught` = {
+        missed <- c(missed, m$id)
+        cat("  NOT CAUGHT -- the comparison ran and reported nothing\n\n")
+      },
+      errored = {
+        errored <- c(errored, m$id)
+        cat("  ERRORED -- the run never reached the comparison, so it says\n",
+            "    nothing about what the comparison would have seen. Last lines:\n",
+            sep = "")
+        for (l in res$tail) cat("      ", l, "\n", sep = "")
+        cat("\n")
+      }
+    )
   }
 
-  if (length(missed)) {
-    stop(length(missed), " mutation(s) unreported by the book comparison: ",
-         paste(missed, collapse = ", "), call. = FALSE)
+  if (length(errored) || length(missed)) {
+    stop(
+      if (length(errored)) {
+        paste0(length(errored), " mutation(s) errored before the comparison ran: ",
+               paste(errored, collapse = ", "),
+               if (length(missed)) "; " else "")
+      },
+      if (length(missed)) {
+        paste0(length(missed), " mutation(s) unreported by the book comparison: ",
+               paste(missed, collapse = ", "))
+      },
+      call. = FALSE
+    )
   }
   cat("every seeded corruption was reported by the book comparison.\n")
 }

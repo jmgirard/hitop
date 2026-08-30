@@ -82,6 +82,38 @@ hitopsr_table1_pages <- function(pdf = hitopsr_source_pdf) {
   seq(first, after - 1L)
 }
 
+## The rotated watermark, as the fragments pdftotext interleaves it in as. Both
+## extractors below read this one list: `hitopsr_table1_rows()` strips the
+## fragments out of the linearized dump, and `hitopsr_table1_cells()` decides
+## through the predicate below whether a digitless token sitting in the numeric
+## columns is a piece of the watermark or a cell the extraction is losing.
+hitopsr_table1_watermark_fragments <- c("Fo", "rP", "ee", "rR", "ev", "iew")
+
+## A token is watermark when it is part of the phrase those fragments spell. The
+## phrase is built from the vector above rather than written out a second time,
+## so a source whose watermark changes moves the stripping step and this test
+## together. The two join the vector differently -- the stripping step with
+## `collapse = "|"` as a regex alternation, this test with `collapse = ""` as a
+## literal phrase -- so that coupling holds only while the vector spells the
+## watermark in order, with no fragment overlapping another and no regex
+## metacharacter in any of them. A new source's fragments are listed under that
+## rule or the two consumers drift apart.
+##
+## The accepted set reaches down to single letters, which reads loose and is not.
+## `-bbox` breaks the rotated stamp wherever its own boxes fall, so the numeric
+## columns of the three table pages carry it as "r P ee r R ev" (page 49),
+## "r P ee ev" (50) and "r P ee" (51) -- read down each page, the stamp. Nor can
+## a single letter be a cell this extraction is losing: `cells` above is defined
+## as the tokens carrying a digit, so every token reaching here is by
+## construction not one. What the test does reject is prose at these
+## coordinates -- a label that overflowed the cut, a caption runover, a footnote
+## -- which is the banding failure worth stopping on.
+hitopsr_table1_is_watermark <- function(token) {
+  phrase <- paste(hitopsr_table1_watermark_fragments, collapse = "")
+  vapply(token, function(t) grepl(t, phrase, fixed = TRUE),
+         logical(1), USE.NAMES = FALSE)
+}
+
 hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf) {
   txt <- system2("pdftotext", c("-layout", shQuote(pdf), "-"), stdout = TRUE)
   pages <- split(txt, cumsum(grepl("\f", txt)))
@@ -91,7 +123,7 @@ hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf) {
   line <- gsub("\f", "", unlist(pages[idx], use.names = FALSE))
 
   ## 1. The watermark.
-  wm <- "Fo|rP|ee|rR|ev|iew"
+  wm <- paste(hitopsr_table1_watermark_fragments, collapse = "|")
   line <- gsub(paste0("(?<=[0-9])(", wm, ")"), "", line, perl = TRUE)
   line <- gsub(paste0("(", wm, ")(?=[0-9])"), "", line, perl = TRUE)
   line <- gsub(paste0("(?<![A-Za-z])(", wm, ")(?![A-Za-z])"), "", line, perl = TRUE)
@@ -284,11 +316,7 @@ hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf) {
   ## short row. Checked on the data rows only: the caption, the Note and the
   ## running heads have prose at those coordinates and no cells at all.
   stray <- unlist(lapply(bands[n_cells == 8L], function(b) {
-    b$digitless[!vapply(
-      b$digitless,
-      function(t) grepl(t, "ForPeerReview", fixed = TRUE),
-      logical(1)
-    )]
+    b$digitless[!hitopsr_table1_is_watermark(b$digitless)]
   }))
   if (length(stray)) {
     stop("non-watermark text in Table 1's numeric columns: ",
