@@ -1,11 +1,11 @@
 # M069: `calc_se` is deprecated in favour of the interval functions
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M068
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m069-calc-se-deprecation`
 
 ## Goal
 
@@ -75,11 +75,11 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
 
 ## Tasks
 
-- [ ] T1 Add `deprecate_calc_se()` beside `deprecate_subset()` (`R/util.R:509`);
+- [x] T1 Add `deprecate_calc_se()` beside `deprecate_subset()` (`R/util.R:509`);
       fire it from `score_engine()` (`R/score_engine.R:119`) when `calc_se` is
       `TRUE`, with `call` threaded so the warning blames the wrapper the user
       called, not the engine.
-- [ ] T2 Tests for the warning class and its absence, three functions × three
+- [x] T2 Tests for the warning class and its absence, three functions × three
       argument cases.
 - [ ] T3 Run the D-011 characterization harness against the `v0.2.0` tag over the
       AC2 matrix; record the config count and the `identical()` result.
@@ -103,6 +103,10 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
 - 2026-08-30: criteria audit ran in FULL mode (user-facing tier) in the same fresh-context [O] reader; it returned 6 findings on this milestone's criteria — a blanket "no warning" universal, an unentried public condition class against D-034(c) plus a stale PROFILE lifecycle line, a mandated evidence quotation, a self-referential AC2 domain, a factually wrong mandated sentence for the PID-5 domain SEs, and a hand-listed vignette domain — every one fixed in the criteria above before committing.
 - 2026-08-30: plan gate chose deprecating `calc_se` over removing it outright in one milestone, because the argument defaults to `FALSE` so the warning targets only deliberate use, and dropping the `_se` columns is a GP2 scored-output change belonging to the next breaking release; falsified by a user reporting the warning as noise on a call they did not opt into.
 - 2026-08-30: plan gate chose retiring the `mask_se_na` ROADMAP row as moot over unifying the masking first, because unifying is a GP2 scored-output change on output already scheduled for deletion; falsified by the removal candidate row being dropped rather than promoted.
+- 2026-08-30: implement gate chose a per-instrument replacement sentence, threaded from each wrapper into `score_engine()` as `se_instead`, over one shared message naming both interval functions — a PID-5 caller has no interval function to be sent to.
+- 2026-08-30: implement gate chose switching the HiTOP-SR and HiTOP-BR vignette demonstrations over to their interval functions rather than showing or hiding the warning; the PID-5 short-form vignette and the `score_pid5()` help example keep their `calc_se = TRUE` calls, there being no replacement to switch to.
+- 2026-08-30: T1, T2 — warning fires from `score_engine()` inside the `calc_se` block, so a call aborting on its data, items or an append collision reports that alone; both new checks proven able to fail (an unconditional warning reddens the absence test; a wrong `se_instead` reddens the routing test).
+- 2026-08-30: [S] delegation wrapped 22 pre-existing `calc_se = TRUE` test call sites in a new class-targeted `hush_se()` helper so the deprecation does not bury the suite's warning channel; diff verified, `devtools::test()` FAIL 0 WARN 0 PASS 16098 (WARN 28 before the wrapping).
 
 ## Decisions
 

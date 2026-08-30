@@ -93,6 +93,7 @@ score_hitopsr <- function(
     prefix = prefix,
     missing = missing,
     calc_se = calc_se,
+    se_instead = "Use {.fn interval_hitopsr} for an interval around a true score.",
     append = append
   )
 }

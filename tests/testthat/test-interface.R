@@ -54,7 +54,7 @@ test_that("prefix controls the scale-column stem", {
 })
 
 test_that("calc_se adds one _se column per scale", {
-  out <- score_pid5(sim_pid5, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
+  out <- hush_se(score_pid5(sim_pid5, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE))
   se_cols <- grep("_se$", names(out), value = TRUE)
   expect_equal(ncol(out), 60)          # (25 facets + 5 domains) scores + SEs (M007)
   expect_length(se_cols, 30)
@@ -64,9 +64,9 @@ test_that("calc_se adds one _se column per scale", {
 
 test_that("calc_se works on single-row input for every version", {
   # Regression: a 1-row input previously errored in the facet-SE apply().
-  full <- score_pid5(sim_pid5[1, ],   items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
-  sf   <- score_pid5(sim_pid5sf[1, ], items = 1:100, version = "SF",   calc_se = TRUE, append = FALSE)
-  bf   <- score_pid5(sim_pid5bf[1, ], items = 1:25,  version = "BF",   calc_se = TRUE, append = FALSE)
+  full <- hush_se(score_pid5(sim_pid5[1, ],   items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE))
+  sf   <- hush_se(score_pid5(sim_pid5sf[1, ], items = 1:100, version = "SF",   calc_se = TRUE, append = FALSE))
+  bf   <- hush_se(score_pid5(sim_pid5bf[1, ], items = 1:25,  version = "BF",   calc_se = TRUE, append = FALSE))
   expect_equal(nrow(full), 1L)
   expect_equal(nrow(sf), 1L)
   expect_equal(nrow(bf), 1L)
@@ -91,7 +91,7 @@ test_that("missing changes values but not output shape", {
   expect_equal(dim(apa), dim(trad))
   expect_equal(names(apa), names(trad))
   # calc_se still yields one _se column per scale under APA scoring.
-  se <- score_pid5(sim_pid5, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE)
+  se <- hush_se(score_pid5(sim_pid5, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE))
   expect_equal(ncol(se), 60)
   expect_length(grep("_se$", names(se)), 30)
 })

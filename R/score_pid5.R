@@ -164,6 +164,10 @@ score_pid5 <- function(
     prefix = prefix,
     missing = missing,
     calc_se = calc_se,
+    se_instead = paste(
+      "This package has no interval function for the PID-5;",
+      "for measurement precision see {.fn reliability_pid5}."
+    ),
     append = append,
     domain_map = domain_map,
     mask_se_na = TRUE

@@ -72,6 +72,7 @@ score_hitopbr <- function(
     prefix = prefix,
     missing = missing,
     calc_se = calc_se,
+    se_instead = "Use {.fn interval_hitopbr} for an interval around a true score.",
     append = append
   )
 }

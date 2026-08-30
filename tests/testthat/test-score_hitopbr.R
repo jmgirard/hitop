@@ -60,7 +60,7 @@ test_that("score_hitopbr() honors invariants: se, prefix, row count", {
   items <- paste0("HBR_", 1:45)
 
   base <- score_hitopbr(df, items = items, append = FALSE)
-  with_se <- score_hitopbr(df, items = items, calc_se = TRUE, append = FALSE)
+  with_se <- hush_se(score_hitopbr(df, items = items, calc_se = TRUE, append = FALSE))
   expect_false(any(grepl("_se$", names(base))))
   expect_equal(sum(grepl("_se$", names(with_se))), nrow(hitopbr_scales))
   expect_true(all(paste0(names(base), "_se") %in% names(with_se)))

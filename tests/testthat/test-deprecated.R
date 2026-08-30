@@ -176,24 +176,24 @@ module_shapes <- list(
 )
 
 test_that("scores and standard errors are unmoved by the rename", {
-  full <- score_hitopsr(
+  full <- hush_se(score_hitopsr(
     sim_hitopsr,
     items = 1:405,
     calc_se = TRUE,
     append = FALSE
-  )
+  ))
 
   for (shape in names(module_shapes)) {
     m <- hitop_module("hitopsr", module_shapes[[shape]])
     collected <- module_cols(m)
 
-    via_module <- score_hitopsr(
+    via_module <- hush_se(score_hitopsr(
       collected,
       items = names(collected),
       module = m,
       calc_se = TRUE,
       append = FALSE
-    )
+    ))
     via_subset <- suppressWarnings(score_hitopsr(
       collected,
       items = names(collected),
