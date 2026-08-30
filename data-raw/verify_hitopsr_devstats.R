@@ -188,6 +188,115 @@ if (!isTRUE(all.equal(observed, ref_srange))) {
 cat("4. Range vs the conversion coding: Table 1 spans [",
     format(observed[1]), ", ", format(observed[2]), "]\n\n", sep = "")
 
+## ---- 5. control: the partition can still fail -------------------------------
+
+## Comparisons 1-3 all read `cells$block`, so a partition that put the wrong
+## rows on either side of the Superspectra header would send every one of them
+## diffing the wrong rows -- and the block counts would be intact while it did.
+## The control mutates the `-bbox` extraction rather than the source: two
+## Superspectra rows and two primary rows trade printed positions, which leaves
+## 93 and 8 rows on the two sides of the header and changes which rows they are.
+## Before M071 the extraction accepted this and called `Trichotillomania` and
+## `Risky Sex` Superspectra scales.
+
+## Move two rows to each other's printed position in the dump. The row is found
+## by the label it prints and banded the way `hitopsr_table1_cells()` bands it,
+## so the label and its numeric cells travel together.
+hitopsr_table1_move_rows <- function(xml, label_a, label_b) {
+  is_word <- which(grepl("<word ", xml))
+  pg <- cumsum(grepl("<page ", xml))[is_word]
+  attr_of <- function(a) {
+    as.numeric(sub(paste0('.*', a, '="([0-9.-]+)".*'), "\\1", xml[is_word]))
+  }
+  y <- attr_of("yMin")
+  x <- attr_of("xMin")
+  txt <- sub(".*>(.*)</word>", "\\1", xml[is_word])
+
+  ord <- order(pg, y, x)
+  band <- integer(length(is_word))
+  band[ord] <- cumsum(c(1, diff(pg[ord]) != 0 | diff(y[ord]) > 5))
+  label <- vapply(split(seq_along(is_word), band), function(i) {
+    i <- i[x[i] < hitopsr_table1_cell_x & x[i] >= hitopsr_table1_margin_x]
+    paste(txt[i][order(x[i])], collapse = " ")
+  }, character(1))
+
+  pick <- function(lab) {
+    hit <- as.integer(names(label)[label == lab])
+    if (length(hit) != 1L) {
+      stop("the control's row ", encodeString(lab, quote = '"'), " matched ",
+           length(hit), " bands, not one", call. = FALSE)
+    }
+    hit
+  }
+  a <- pick(label_a)
+  b <- pick(label_b)
+  in_a <- which(band == a)
+  in_b <- which(band == b)
+  d <- min(y[in_b]) - min(y[in_a])
+  bump <- function(idx, delta) {
+    for (i in idx) {
+      line <- xml[is_word[i]]
+      for (att in c("yMin", "yMax")) {
+        v <- as.numeric(sub(paste0('.*', att, '="([0-9.-]+)".*'), "\\1", line))
+        line <- sub(paste0(att, '="[0-9.-]+"'),
+                    sprintf('%s="%f"', att, v + delta), line)
+      }
+      xml[is_word[i]] <<- line
+    }
+  }
+  bump(in_a, d)
+  bump(in_b, -d)
+  xml
+}
+
+idx <- hitopsr_table1_pages()
+raw_xml <- system2(
+  "pdftotext",
+  c("-bbox", "-f", idx[1], "-l", idx[length(idx)],
+    shQuote(hitopsr_source_pdf), "-"),
+  stdout = TRUE
+)
+
+## The passing half: the same dump, handed in rather than read, is the same
+## table. Without this the control could be reporting on a seam that changed
+## the answer by itself.
+control_ok <- hitopsr_table1_cells(xml = raw_xml)
+if (!identical(control_ok$label, cells$label) ||
+      !identical(control_ok$block, cells$block)) {
+  discrepancies <- c(discrepancies, paste0(
+    "control: handing the -bbox dump in returns a different table than ",
+    "reading it, so the mutation below proves nothing"))
+}
+
+moved <- c("Externalizing", "Trichotillomania", "Antagonism", "Risky Sex")
+mutated <- hitopsr_table1_move_rows(raw_xml, moved[1], moved[2])
+mutated <- hitopsr_table1_move_rows(mutated, moved[3], moved[4])
+control <- try(hitopsr_table1_cells(xml = mutated), silent = TRUE)
+if (!inherits(control, "try-error")) {
+  discrepancies <- c(discrepancies, paste0(
+    "control: four rows traded sides of the Superspectra header and the ",
+    "extraction returned ", sum(control$block == "primary"), " primary and ",
+    sum(control$block == "superspectra"),
+    " Superspectra rows without stopping"))
+} else {
+  msg <- conditionMessage(attr(control, "condition"))
+  ## Which failure, not merely a failure: the partition's own report, naming
+  ## each moved row. A band that failed to resolve, or a lost section header,
+  ## stops in the same place with a different message.
+  named <- vapply(moved, function(m) grepl(m, msg, fixed = TRUE), logical(1))
+  if (!grepl("Superspectra partition could not place", msg, fixed = TRUE) ||
+        !all(named)) {
+    discrepancies <- c(discrepancies, paste0(
+      "control: the moved rows stopped the extraction with ",
+      encodeString(msg, quote = '"'),
+      ", which is not the partition reporting all four by name"))
+  } else {
+    cat("5. control: four rows traded sides of the Superspectra header; the ",
+        "extraction stopped naming ", paste(moved, collapse = ", "), "\n\n",
+        sep = "")
+  }
+}
+
 ## ---- result ----------------------------------------------------------------
 
 if (!length(discrepancies)) {

@@ -89,6 +89,23 @@ hitopsr_table1_pages <- function(pdf = hitopsr_source_pdf) {
 ## columns is a piece of the watermark or a cell the extraction is losing.
 hitopsr_table1_watermark_fragments <- c("Fo", "rP", "ee", "rR", "ev", "iew")
 
+## The eight scales of Table 1's last section, as the table prints them. The
+## partition below reads this list rather than counting rows after the section
+## header: a source revision that moved a row to the other side of that header
+## would leave both block counts intact, so the positional split cannot see it.
+## These are the table's own labels, never a committed name -- `Externalizing`
+## and the rest are HiTOP-BR scales, and this extraction stays blind to what
+## `hitopbr_scales` ships (IP2).
+##
+## `data-raw/verify_hitopsr_names.R` pins the same eight names again. That copy
+## is deliberate and must not be collapsed into this one: it is that script's
+## independent record of what M059 measured, and reading this vector instead
+## would make its check a comparison against the list that produced the answer.
+hitopsr_table1_superspectra_scales <- c(
+  "Externalizing", "p-factor", "Internalizing", "Somatoform",
+  "Detachment", "Thought Disorder", "Disinhibition", "Antagonism"
+)
+
 ## A token is watermark when it is part of the phrase those fragments spell. The
 ## phrase is built from the vector above rather than written out a second time,
 ## so a source whose watermark changes moves the stripping step and this test
@@ -219,13 +236,19 @@ hitopsr_table1_rows <- function(pdf = hitopsr_source_pdf) {
 hitopsr_table1_margin_x <- 15
 hitopsr_table1_cell_x <- 175
 
-hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf) {
+## `xml` is the `pdftotext -bbox` dump the extraction reads, defaulted to the
+## one this run produces. It is an argument so that a control can feed in a
+## mutated extraction -- rows moved, a header renamed -- and see the guards
+## below stop on it; production callers pass nothing and read the source.
+hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf, xml = NULL) {
   idx <- hitopsr_table1_pages(pdf)
-  xml <- system2(
-    "pdftotext",
-    c("-bbox", "-f", idx[1], "-l", idx[length(idx)], shQuote(pdf), "-"),
-    stdout = TRUE
-  )
+  if (is.null(xml)) {
+    xml <- system2(
+      "pdftotext",
+      c("-bbox", "-f", idx[1], "-l", idx[length(idx)], shQuote(pdf), "-"),
+      stdout = TRUE
+    )
+  }
   is_word <- grepl("<word ", xml)
   if (!any(is_word)) {
     stop("pdftotext -bbox returned no words for Table 1's pages", call. = FALSE)
@@ -325,8 +348,9 @@ hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf) {
 
   ## The table's last section is the eight HiTOP-BR scales. It is separated
   ## rather than dropped, so a caller sees the partition instead of a silently
-  ## shorter table. The partition assumes that section is last, which is what the
-  ## row count check below would catch if a revision moved it.
+  ## shorter table. Which rows belong to it is read off the pinned scale names
+  ## above; the section header is still located, but only so the two statements
+  ## of the partition can be compared.
   header <- which(n_cells == 0L & grepl("^Superspectra and Spectra Scales$",
                                         vapply(bands, function(b) b$label,
                                                character(1))))
@@ -336,8 +360,31 @@ hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf) {
   }
 
   data_at <- which(n_cells == 8L)
-  out <- do.call(rbind, lapply(data_at, function(i) {
-    b <- bands[[i]]
+  data_label <- vapply(bands[data_at], function(b) b$label, character(1))
+  by_name <- data_label %in% hitopsr_table1_superspectra_scales
+  by_header <- data_at > header
+
+  ## Both ways of stating the partition have to agree. A pinned name that
+  ## reached no data row, or a row whose name and printed position disagree, is
+  ## a revision a person adjudicates -- not something a run absorbs by counting
+  ## eight rows after the header and calling them the right eight.
+  absent <- setdiff(hitopsr_table1_superspectra_scales, data_label)
+  if (length(absent)) {
+    stop("Table 1's Superspectra partition could not place: ",
+         paste(absent, collapse = " | "),
+         " -- pinned as a Superspectra scale, extracted as no data row",
+         call. = FALSE)
+  }
+  displaced <- which(by_name != by_header)
+  if (length(displaced)) {
+    stop("Table 1's Superspectra partition could not place: ",
+         paste(data_label[displaced], collapse = " | "),
+         " -- the pinned scale names and the section header disagree on which ",
+         "block each row belongs to", call. = FALSE)
+  }
+
+  out <- do.call(rbind, lapply(seq_along(data_at), function(k) {
+    b <- bands[[data_at[k]]]
     num <- function(k) as.numeric(gsub("[^0-9.-]", "", b$cells[[k]]))
     data.frame(
       label = b$label,
@@ -351,7 +398,7 @@ hitopsr_table1_cells <- function(pdf = hitopsr_source_pdf) {
       rangeHi = num(6),
       skewness = num(7),
       kurtosis = num(8),
-      block = if (i > header) "superspectra" else "primary",
+      block = if (by_name[k]) "superspectra" else "primary",
       stringsAsFactors = FALSE
     )
   }))
