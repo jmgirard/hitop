@@ -9,8 +9,13 @@
 
 repo_root <- function() testthat::test_path("..", "..")
 
+# `.git` is a directory in a primary clone and a file in a linked worktree, so
+# the test is `file.exists()`, not `dir.exists()`: with the latter every check
+# below, and the staged-downloads floor in test-artifacts.R, skipped silently
+# in a worktree. Under `R CMD check` the tarball carries neither, so both
+# forms still skip there.
 git_ok <- function() {
-  nzchar(Sys.which("git")) && dir.exists(file.path(repo_root(), ".git"))
+  nzchar(Sys.which("git")) && file.exists(file.path(repo_root(), ".git"))
 }
 
 git_run <- function(...) {
