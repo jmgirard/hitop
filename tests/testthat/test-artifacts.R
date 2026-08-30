@@ -192,6 +192,27 @@ staged_dir <- function() {
   testthat::test_path("..", "..", "pkgdown", "assets", "downloads")
 }
 
+test_that("a source checkout stages the pkgdown download copies", {
+  # The two sweeps that read the staged copies -- the manifest comparison
+  # below and the Word-form name sweep in test-scale-name-hitopsr.R -- both
+  # tolerate the directory being absent, one by skipping and one by falling
+  # back to the two installed copies. They have to: under `R CMD check` the
+  # suite runs from a built tarball where `.Rbuildignore` has removed
+  # `pkgdown/` entirely. That tolerance also meant a renamed or deleted
+  # directory left both of them green in a checkout, where the 24 staged
+  # files are tracked and are the copies the site serves (D-033). This is the
+  # floor they lean on: in a checkout the directory is there, or the suite
+  # fails.
+  skip_if_not(git_ok(), "not a source checkout (no repository at the root)")
+  expect_true(
+    dir.exists(staged_dir()),
+    info = paste(
+      "pkgdown/assets/downloads is missing from this checkout;",
+      "restage it with data-raw/artifacts.R"
+    )
+  )
+})
+
 test_that("staged pkgdown download copies match the manifest exactly", {
   # Source-checkout only: `.Rbuildignore` keeps `pkgdown/` out of the build.
   skip_if(!dir.exists(staged_dir()), "pkgdown/assets/downloads not available")
