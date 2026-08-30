@@ -100,6 +100,7 @@ fixed. A PID-5 interval surface → the standing ROADMAP candidate.
 ## Work log
 
 - 2026-08-30: created by /milestone-plan.
+- 2026-08-30: criteria audit ran in FULL mode (user-facing tier) in the same fresh-context [O] reader; it returned 6 findings on this milestone's criteria — a blanket "no warning" universal, an unentried public condition class against D-034(c) plus a stale PROFILE lifecycle line, a mandated evidence quotation, a self-referential AC2 domain, a factually wrong mandated sentence for the PID-5 domain SEs, and a hand-listed vignette domain — every one fixed in the criteria above before committing.
 - 2026-08-30: plan gate chose deprecating `calc_se` over removing it outright in one milestone, because the argument defaults to `FALSE` so the warning targets only deliberate use, and dropping the `_se` columns is a GP2 scored-output change belonging to the next breaking release; falsified by a user reporting the warning as noise on a call they did not opt into.
 - 2026-08-30: plan gate chose retiring the `mask_se_na` ROADMAP row as moot over unifying the masking first, because unifying is a GP2 scored-output change on output already scheduled for deletion; falsified by the removal candidate row being dropped rather than promoted.
 
