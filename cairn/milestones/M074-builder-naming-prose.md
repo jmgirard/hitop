@@ -2,12 +2,12 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M074: The builder page's naming prose states the conditions it actually depends on
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** `m074-naming-prose` (this repo); builder branch `m074-naming-prose` in jmgirard/hitop-builder
+- **Branch/PR:** `m074-naming-prose` (this repo); builder PR https://github.com/jmgirard/hitop-builder/pull/11
 
 ## Goal
 
@@ -114,7 +114,7 @@ online naming values.
       compare both against what the line says, read back from the served page.
 - [x] T6: Run the AC4 16-cell regression across the branch page and the deployed
       page in one session, comparing questionnaires and descriptors.
-- [ ] T7: Open the builder PR from `m074-naming-prose`; confirm this repo's
+- [x] T7: Open the builder PR from `m074-naming-prose`; confirm this repo's
       branch diff is tracking-only and `devtools::test()` clean. After the
       builder merge, confirm the deployed page is byte-identical to it.
 
@@ -133,6 +133,9 @@ online naming values.
 - 2026-08-30: T5 — dated rename paragraph added inside the download notice, its own `<p id="renameNote">` behind a comment saying it is deletable in one block (builder `a5267a6`). The ten names were read back out of the served page's rendered `#renameNote`, then split against the eight `downloadStem` produces: the remainder is set-equal to the two the `9f8b615` expression could write, and the rest set-equal to the eight, with no name unaccounted for. Two doctored read-backs (one name dropped, one invented name added) each failed the comparison.
 - 2026-08-30: T6 — the 16-cell matrix built twice in one session, on the served branch page and on https://jmgirard.github.io/hitop-builder/, both logging hitop 0.2.0 and the deployed one carrying no rename note. Each cell's questionnaire and descriptor were captured off a patched `URL.createObjectURL` plus anchor click and reduced to a fingerprint over the Qualtrics `.txt` byte digest, the REDCap `instrument.csv` line digest and member list, the Word header text and anchored `<w:tr[ >]` row digest, and the descriptor byte digest and length; raw DOCX size is excluded, the zip stamps not being reproducible. All 16 fingerprints matched; a doctored copy of one cell mismatched, and the loose `<w:tr` count (3x the anchored one) is recorded per Word cell.
 - 2026-08-31: scope amended at a mini gate to add a fourth prose site — the paragraph under the README's naming table and the code comment above `downloadStem` both said the scoring file records the paper size, the item numbering and the Qualtrics/REDCap naming values. It records none of them: the eight two-scale cells of T6's regression span both paper sizes, both numbering modes and default/custom naming, and every descriptor hashed to `d877679172cacc1464445258f9c7c8d634cef559a8004683dfe6ab7b122786a8`. Jeff chose fixing it here over a candidate row; both sites corrected in builder `0a8780c`, no acceptance criterion changed.
+- 2026-08-31: the 16-cell matrix re-run on the branch page after the last two prose commits. Every questionnaire digest, name, row count and loose/anchored `<w:tr` count matched the earlier run; the descriptors differ only in `buildDate`, and substituting `2026-08-30` back into one reproduced the earlier digest exactly.
+- 2026-08-31: T7 — builder PR https://github.com/jmgirard/hitop-builder/pull/11 opened from `m074-naming-prose`. This repo's branch diff against `origin/main` lists only `cairn/ROADMAP.md` and the milestone file; `devtools::test()` reports FAIL 0, WARN 0, SKIP 4, PASS 16208. The post-merge check that the deployed page matches the merged file is left to review, which is where the merge happens.
+- 2026-08-31: all tasks done, status set to review.
 
 ## Decisions
 
