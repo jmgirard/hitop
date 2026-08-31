@@ -464,7 +464,11 @@ evidence above is superseded.
   https://jmgirard.github.io/hitop-builder/` — so the deployed-page branch of
   the `SMOKE_TARGET` expression is exercised, not merely quoted. `push` and
   `schedule` are verified by the quoted `on:` block, `schedule` because GitHub
-  fires it only from the default branch.
+  fires it only from the default branch. Both re-ran green at the final head
+  `0430a1e` after the merge-gate fix: `pull_request`
+  https://github.com/jmgirard/hitop-builder/actions/runs/33439248445 and
+  `workflow_dispatch`
+  https://github.com/jmgirard/hitop-builder/actions/runs/33439258128.
 - AC4 — met. `index.html:647` declares `const RUNTIME_TIMEOUT_MS = 120000;`
   seven lines above `const INSTALL_TIMEOUT_MS = 120000;` at `:654`, and
   `main()` races one `Promise.race` over the `import(WEBR_URL)` +
