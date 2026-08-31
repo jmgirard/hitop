@@ -46,7 +46,7 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
       a named constant whose comment states it is a deliberate floor and not
       the instrument's scale count. Evidence: the recorded output of both runs,
       beside the constant and its comment.
-- [x] AC2. The smoke test fails against each of six planted copies of
+- [ ] AC2. The smoke test fails against each of six planted copies of
       `index.html`, and passes against the unplanted copy: (a) `MIN_HITOP`
       raised to `99.0.0`, unreachable by construction; (b) `#downloadBtn`
       renamed; (c) `WEBR_URL` pointed at a path that returns 404; (d) the
@@ -57,21 +57,21 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
       planted run the assertion that failed — so every assertion the smoke
       test makes, enumerated from the spec file, is failed by at least one of
       the six.
-- [x] AC3. A workflow in `jmgirard/hitop-builder` runs the smoke test on
+- [ ] AC3. A workflow in `jmgirard/hitop-builder` runs the smoke test on
       `pull_request` and `push` to `main` against the repository's own
       `index.html`, and on a weekly `schedule` and on `workflow_dispatch`
       against the deployed page. Evidence: one green `pull_request` run and
       one green `workflow_dispatch` run recorded by URL; `push` and `schedule`
       verified by quoting the `on:` block, `schedule` because GitHub fires it
       only from the default branch and no pre-merge run of it exists.
-- [x] AC4. `index.html` races the webR runtime download — `import(WEBR_URL)`
+- [ ] AC4. `index.html` races the webR runtime download — `import(WEBR_URL)`
       and `webR.init()` together, under one timeout constant declared beside
       `INSTALL_TIMEOUT_MS` — and on expiry calls `abandonBoot()` with a
       message naming the runtime download rather than the package install.
       Evidence: two probes, one serving a copy whose `WEBR_URL` never settles
       and one whose `WEBR_BASE` never settles, each recording the displayed
       message and that `#controls` is hidden.
-- [x] AC5. The builder `README.md` states the runtime timeout beside the
+- [ ] AC5. The builder `README.md` states the runtime timeout beside the
       install timeout it already states, in a number equal to the constant in
       `index.html`; its "Every tracked file" table lists every file this
       milestone adds to that repo; and this repo's `cairn/PROFILE.md`
@@ -209,6 +209,46 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   with fresh evidence and ticked. Eight further findings (F2-F9) go back with
   it; two (F10, F11) become candidate rows; one rejected. Details in the Review
   section.
+- 2026-08-31: implement gate settled the one open choice in the review return —
+  the Pages deploy stages `index.html` alone rather than uploading the whole
+  checkout, chosen over correcting the three places that already said the
+  deployed site is that one file. Keeps `README.md`, the `package.json`
+  description and D-051 true as written, and stops serving the test files at
+  the public URL.
+- 2026-08-31: F1 (the return) fixed in jmgirard/hitop-builder (`d9a7819`). A3
+  now asserts one non-empty `.nm` name per counted row, not merely that no
+  collected name is blank. Check-discrimination probe: a scratch copy with
+  `name.className` and the filter's selector renamed `nm` → `nmx` fails A3
+  (expected `"named": 76`, received `"named": 0`), which the previous
+  assertion passed over.
+- 2026-08-31: F2-F8 fixed in the same commit. F2: every run logs and annotates
+  the URL it drove, and `smoke.yml` sets `SMOKE_REQUIRE_TARGET` on `schedule`
+  and `workflow_dispatch` so an empty `SMOKE_TARGET` fails instead of falling
+  back (probe: the guard fires). F3: per-test budget 8 → 10 minutes over the
+  480s of waits inside it, plus a 30s `actionTimeout`; two attempts still fit
+  the 25-minute job. F4: plant (b) renames the button at all three sites, so
+  the page boots and the plant fails A6 rather than A1 on a page-init crash.
+  F5: a plant run with no usable report is an error the matrix fails on. F6:
+  `pages.yml` stages `index.html` into `_site`. F7: the runtime race's
+  `no import` and `failed` branches latch through `abandonBoot()`. F8: the
+  `bootAbandoned` comment lists all five call sites.
+- 2026-08-31: F9's premise did not hold. `plants.mjs` held a literal escape
+  byte (`0x1b`) before `\[`, invisible in rendered text, so the regex already
+  stripped ANSI; verified by `od -c`. Rewritten as `\x1b` for a readable
+  source line, same match.
+- 2026-08-31: added A6 to the spec's enumerated assertions (the download button
+  is present and enabled), asserted before the click so plant (b) fails a named
+  assertion rather than a bare locator timeout. AC1 and AC2 quantify over the
+  spec file's enumerated list, so no criterion text changed.
+- 2026-08-31: fresh runs after the fixes — local-checkout smoke green (9.6s),
+  deployed-page smoke green (9.1s), plant matrix green overall with the
+  unplanted copy passing and (a) A1, (b) A6, (c) A1, (d) A4+A5, (e) A2, (f) A3,
+  both runtime probes green.
+- 2026-08-31: AC2-AC5 unticked. Every one rests on evidence taken at branch
+  head `82cff5a` — plant (b) failing A1, a `README.md` table row, two workflow
+  runs, two runtime probes — and this pass moved the head and changed the
+  artifacts under all four. No criterion text changed; all four re-verify at
+  review.
 
 ## Decisions
 
