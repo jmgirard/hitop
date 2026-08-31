@@ -5,7 +5,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
-- **Branch/PR:** `m073-export-vignette-coverage`
+- **Branch/PR:** `m073-export-vignette-coverage` / https://github.com/jmgirard/hitop/pull/79
 
 ## Goal
 
@@ -38,21 +38,21 @@ stays with the HiTOP-HSUM scoring candidate row.
 
 ## Acceptance criteria
 
-- [ ] AC1: A sweep over every `export()` entry in `NAMESPACE` against every
+- [x] AC1: A sweep over every `export()` entry in `NAMESPACE` against every
       `.Rmd` file under `vignettes/` and `vignettes/articles/` reports no export
       that is neither called in an evaluated `{r}` chunk of one of those files,
       nor linked there by an `href` to its own `reference/<name>.html` page, nor
       a function whose own body calls one of `R/util.R`'s `deprecate_*()`
       helpers.
-- [ ] AC2: `vignettes/pid5_scoring.Rmd` demonstrates `rank_scales()` in an
+- [x] AC2: `vignettes/pid5_scoring.Rmd` demonstrates `rank_scales()` in an
       evaluated chunk over scale columns scored earlier in that same vignette,
       with prose naming what the output column holds.
-- [ ] AC3: `vignettes/hitopsr_scoring.Rmd` demonstrates `label_hitopsr()` and
+- [x] AC3: `vignettes/hitopsr_scoring.Rmd` demonstrates `label_hitopsr()` and
       `vignettes/hitopbr_scoring.Rmd` demonstrates `label_hitopbr()`, each in an
       evaluated chunk showing the label attached to a named column.
-- [ ] AC4: `vignettes/articles/download-hitophsum.Rmd` carries a card linking
+- [x] AC4: `vignettes/articles/download-hitophsum.Rmd` carries a card linking
       the reference page of each HiTOP-HSUM generator the package exports.
-- [ ] AC5: `devtools::test()` clean, `devtools::document()` no diff,
+- [x] AC5: `devtools::test()` clean, `devtools::document()` no diff,
       `devtools::check()` 0 errors / 0 warnings, `pkgdown::check_pkgdown()`
       passes.
 
@@ -111,3 +111,130 @@ stays with the HiTOP-HSUM scoring candidate row.
 ## Decisions
 
 ## Review
+
+### Acceptance-criterion evidence (2026-08-30)
+
+- AC1 — `Rscript -e 'devtools::test()'` ran the sweep green: 15 assertions in
+  `test-vignette-export-coverage.R`, whole suite FAIL 0 / WARN 0 with the same 4
+  pre-existing skips as the merge base. Counted at review, the sweep's two
+  enumerations are 39 `export()` entries in `NAMESPACE` and 15 `.Rmd` files
+  under `vignettes/` (5 top-level, 10 under `articles/`); it reports no
+  uncovered export.
+- AC2 — `vignettes/pid5_scoring.Rmd:62-72` carries `## Rank Each Person's
+  Highest Facets`: an evaluated `{r rank}` chunk (no `eval` option) ranking the
+  columns of `score_pid5(sim_pid5, items = 1:220, append = FALSE)`, the same
+  scoring the vignette performs at line 34, and prose naming `top_scales` as
+  holding each participant's five highest-scoring facets as one comma-separated
+  string. Chunk re-run at review: returns a 100 x 31 tibble. Recorded against
+  it: finding 1 below, that the ranked column is truncated out of the tibble the
+  chunk prints.
+- AC3 — `vignettes/hitopsr_scoring.Rmd:245-265` and
+  `vignettes/hitopbr_scoring.Rmd:186-206` each carry a `## Labelling Columns`
+  section with two evaluated chunks, each printing `attr(<column>, "label")` for
+  a column named in the call: `hsr_1` / `hsr_agoraphobia` and `hitopbr_1` /
+  `hbr_antagonism`. `devtools::check()`'s vignette re-build executed both files
+  without error, so the demonstrated labels resolve.
+- AC4 — `NAMESPACE` exports exactly two HiTOP-HSUM generators,
+  `generate_docx_hitophsum` and `generate_redcap_hitophsum`. The card at
+  `vignettes/articles/download-hitophsum.Rmd:60-61` links
+  `../reference/generate_docx_hitophsum.html` and
+  `../reference/generate_redcap_hitophsum.html`; both have an `Rd` page in
+  `man/`, so pkgdown emits the pages those hrefs name. Recorded against it:
+  finding 2 below, on the section's lead sentence.
+- AC5 — run fresh at review on this branch: `devtools::test()` FAIL 0 / WARN 0
+  with 4 pre-existing skips; `devtools::check(document = TRUE)` `Status: OK`
+  (0 errors / 0 warnings / 0 notes), including the vignette re-build;
+  `git status` after that run shows no change under `man/` or `NAMESPACE`, so
+  `document()` produced no diff; `pkgdown::check_pkgdown()` "No problems found."
+
+### Consistency gate (2026-08-30)
+
+- `cairn_validate.py` exit 0, every check PASS. Advisories only: 21 dangling
+  `D-0NN` tokens (all pre-migration D-001..D-012 references, pre-existing) and
+  one references-staleness note on `schmukle2026.md` (pre-existing). The
+  `release window` advisory did not fire.
+- `cairn_impact.py` skipped: the diff changes no `DESIGN.md` principle.
+- Toolchain checks from the `r-package` profile's `consistency-gate` slot:
+  `document()` no diff, no hand-edit to `NAMESPACE`/`man/`/`data/*.rda`,
+  `README.Rmd` and `README.md` both untouched by the branch,
+  `check_pkgdown()` passes, `NEWS.md` carries a "Documentation and website"
+  section under the development heading for the three vignette sections and the
+  HiTOP-HSUM card, no new top-level files so no `.Rbuildignore` entry is owed,
+  and `check()` is clean.
+
+### Independent fresh-context review (2026-08-30)
+
+Three reviewers, none having seen the implementation, each on a distinct
+evidence base: [O] diff-bug over `git diff origin/main..HEAD`, [S]
+blame-history over `git log`/`git blame` on the modified lines, [S]
+prior-review-record over `cairn/milestones/archive/` plus a probe of the
+GitHub inline-comment surface.
+
+[S] blame-history: no findings. It reports that `calc_se` is a scoring-function
+argument rather than an export, so the new sweep cannot touch it; that the new
+vignette sections sit after the prose `test-vignette-se-prose.R` locks; that the
+HSUM card omits a Qualtrics button because no such generator is exported; and
+that the deprecation arm matches only `hitop_subset`.
+
+[S] prior-review-record: the GitHub inline-comment surface is empty
+(`gh api .../pulls/comments` returned `[]`), so the archive is the only record.
+It reports no confirmed regression and two pattern-echoes it declined to call
+hits — M044's finding on unverified vignette prose in `hitopsr_scoring.Rmd`, and
+M039's `info =` labelling of assertions. The first was checked at review: the
+new prose's two behavioural claims hold against `R/label_hitopsr.R` (the
+no-match warning at line 38 and 55, the scale name from `hitopsr_scales$Scale`
+at line 62). The second is a style point on an unmodified convention.
+
+[O] diff-bug returned fourteen ranked findings. Verified at review before
+triage, against the implementation rather than the reviewer's account:
+
+1. `vignettes/pid5_scoring.Rmd:70` — the `rank_scales()` call uses the default
+   `append = TRUE`, so the printed tibble is 100 x 31 and `top_scales` falls
+   into the `27 more variables` truncation. Reproduced at review: the reader
+   sees four facet score columns and never the column the section is about.
+   AC2 as written is still met; the demonstration is not.
+2. `vignettes/articles/download-hitophsum.Rmd:50` — the lead says the package
+   "can already build the distributed files above from scratch", but the three
+   cards above include a Qualtrics file the package exports no generator for.
+   The card body two lines down states the exception, so the paragraph
+   contradicts itself. Confirmed against `NAMESPACE`.
+3. `tests/testthat/test-vignette-export-coverage.R:42` — the unevaluated-chunk
+   detection matches the literal `eval = FALSE` only; `eval=F` is not caught.
+   The reviewer also notes `#| eval: !expr ...` chunks count as evaluated, which
+   is correct behaviour: those chunks do run when the condition holds.
+4. `tests/testthat/test-vignette-export-coverage.R:30,38` — `is_text` is
+   computed and then discarded, and the comment above it states an invariant
+   ("a skipped chunk must not slip back in as a prose mention") that the
+   returned `all = lines` does not enforce. AC1 asks only that the export be
+   "linked there", with no chunk restriction, so behaviour matches the
+   criterion; the dead variable and the false comment do not.
+5. `tests/testthat/test-vignette-export-coverage.R:179-180` — the
+   non-emptiness floors are `>= 30` exports and `>= 10` files while the actual
+   counts are 39 and 15, and nothing asserts the glob still reaches the
+   top-level `vignettes/` directory. The T2 work-log line's "asserts 39 exports
+   and 15 `.Rmd` files" overstates what the floors bind.
+6. `tests/testthat/test-vignette-export-coverage.R:182` — `get0()` is called
+   without `inherits = FALSE`, so lookup walks the namespace's parents.
+7. `tests/testthat/test-vignette-export-coverage.R:186-189` — the deprecation
+   exemption matches any export whose deparsed body calls a `deprecate_*()`
+   helper, so an argument-level deprecation inlined into a scoring function
+   would exempt that whole function from coverage.
+8. `tests/testthat/test-vignette-export-coverage.R:164-167` — the sweep skips
+   when `vignettes/` is absent, which is the case under `R CMD check`, so CI
+   never runs it; it fires only in a local `devtools::test()`.
+9. `tests/testthat/test-vignette-export-coverage.R:51,58` — text-level parsing
+   credits a call inside a string literal and truncates a line at a `#` that
+   sits inside a string. No current vignette line has either shape.
+10. `tests/testthat/test-vignette-export-coverage.R:34` — a chunk with no
+    closing fence is dropped whole, and a four-backtick verbatim block counts
+    as evaluated code.
+11. `tests/testthat/test-vignette-export-coverage.R:63-66` — `linked_in()` does
+    not check that the reference page it matches exists, so a link to a page
+    pkgdown does not emit would still count as coverage.
+12. `vignettes/pid5_scoring.Rmd:70` — `scales = 1:25` couples the demonstration
+    to `score_pid5()`'s column order, which the prose asserts and no test pins.
+13. `cairn/milestones/M073-export-vignette-coverage.md` — the AC checkboxes were
+    unticked at the time the reviewer read the file.
+14. Nits: British "Labelling" against the package's US "labeled"; the two label
+    sections are near-verbatim duplicates; the fixture comparison at line 158
+    depends on `sort()`'s locale.
