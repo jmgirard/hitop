@@ -451,6 +451,41 @@ we will need the <strong>lavaan</strong> package installed (set
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> Externalizing        10 0.817 0.818</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> p-Factor             12 0.804 0.811</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="labelling-columns">Labelling Columns<a class="anchor" aria-label="anchor" href="#labelling-columns"></a>
+</h2>
+<p>Column names like <code>hitopbr_1</code> and
+<code>hbr_antagonism</code> are compact but say nothing about what they
+hold. The <code><a href="../reference/label_hitopbr.html">label_hitopbr()</a></code> function attaches a
+<code>label</code> attribute to each column it recognizes: the literal
+item text for item columns, and the printed scale name for scored
+columns. Tools that read that attribute — data viewers and reporting
+packages — can then show the wording instead of the column name, so the
+labels travel with the data rather than living in a separate lookup
+table.</p>
+<p>Which columns it recognizes depends on <code>prefix</code>, which
+must match how your item columns are actually named. The
+<code>sim_hitopbr</code> dataset numbers its items
+<code>hitopbr_1</code> to <code>hitopbr_45</code>, so
+<code>prefix = "hitopbr_"</code> finds them:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sim_hitopbr"</span><span class="op">)</span></span>
+<span><span class="va">labelled_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/label_hitopbr.html">label_hitopbr</a></span><span class="op">(</span><span class="va">sim_hitopbr</span>, target <span class="op">=</span> <span class="st">"items"</span>, prefix <span class="op">=</span> <span class="st">"hitopbr_"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">labelled_items</span><span class="op">$</span><span class="va">hitopbr_1</span>, <span class="st">"label"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "I found it easy to deceive others."</span></span></code></pre></div>
+<p>Set <code>target = "scales"</code> to label the output of
+<code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code> instead. Here the prefix is the one the
+scoring function put on its output columns, which is <code>"hbr_"</code>
+by default:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sim_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopbr.html">score_hitopbr</a></span><span class="op">(</span><span class="va">sim_hitopbr</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">45</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">labelled_scales</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/label_hitopbr.html">label_hitopbr</a></span><span class="op">(</span><span class="va">sim_scores</span>, target <span class="op">=</span> <span class="st">"scales"</span>, prefix <span class="op">=</span> <span class="st">"hbr_"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">labelled_scales</span><span class="op">$</span><span class="va">hbr_antagonism</span>, <span class="st">"label"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Antagonism"</span></span></code></pre></div>
+<p>Columns the function does not recognize are returned untouched, and
+if no column matches the prefix at all it says so with a warning rather
+than silently returning the data unchanged.</p>
+</div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>

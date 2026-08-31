@@ -373,3 +373,45 @@ reliability_hitopbr(
 #> 7 Externalizing        10 0.817 0.818
 #> 8 p-Factor             12 0.804 0.811
 ```
+
+## Labelling Columns
+
+Column names like `hitopbr_1` and `hbr_antagonism` are compact but say
+nothing about what they hold. The
+[`label_hitopbr()`](https://jmgirard.github.io/hitop/reference/label_hitopbr.md)
+function attaches a `label` attribute to each column it recognizes: the
+literal item text for item columns, and the printed scale name for
+scored columns. Tools that read that attribute — data viewers and
+reporting packages — can then show the wording instead of the column
+name, so the labels travel with the data rather than living in a
+separate lookup table.
+
+Which columns it recognizes depends on `prefix`, which must match how
+your item columns are actually named. The `sim_hitopbr` dataset numbers
+its items `hitopbr_1` to `hitopbr_45`, so `prefix = "hitopbr_"` finds
+them:
+
+``` r
+
+data("sim_hitopbr")
+labelled_items <- label_hitopbr(sim_hitopbr, target = "items", prefix = "hitopbr_")
+attr(labelled_items$hitopbr_1, "label")
+#> [1] "I found it easy to deceive others."
+```
+
+Set `target = "scales"` to label the output of
+[`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
+instead. Here the prefix is the one the scoring function put on its
+output columns, which is `"hbr_"` by default:
+
+``` r
+
+sim_scores <- score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE)
+labelled_scales <- label_hitopbr(sim_scores, target = "scales", prefix = "hbr_")
+attr(labelled_scales$hbr_antagonism, "label")
+#> [1] "Antagonism"
+```
+
+Columns the function does not recognize are returned untouched, and if
+no column matches the prefix at all it says so with a warning rather
+than silently returning the data unchanged.

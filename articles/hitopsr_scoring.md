@@ -487,3 +487,44 @@ item pool,
 will safely issue a cli warning letting you know that fewer than 405
 items were matched. This perfectly accommodates researchers who
 intentionally administer only part of the instrument.*
+
+## Labelling Columns
+
+Column names like `hsr_1` and `hsr_agoraphobia` are compact but say
+nothing about what they hold. The
+[`label_hitopsr()`](https://jmgirard.github.io/hitop/reference/label_hitopsr.md)
+function attaches a `label` attribute to each column it recognizes: the
+literal item text for item columns, and the printed scale name for
+scored columns. Tools that read that attribute — data viewers and
+reporting packages — can then show the wording instead of the column
+name, so the labels travel with the data rather than living in a
+separate lookup table.
+
+Which columns it recognizes depends on `prefix`, which must match how
+your item columns are actually named. The `sim_hitopsr` dataset numbers
+its items `hsr_1` to `hsr_405`, so `prefix = "hsr_"` finds them:
+
+``` r
+
+data("sim_hitopsr")
+labelled_items <- label_hitopsr(sim_hitopsr, target = "items", prefix = "hsr_")
+attr(labelled_items$hsr_1, "label")
+#> [1] "I preferred to stay home than to go to a party."
+```
+
+Set `target = "scales"` to label the output of
+[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+instead. Here the prefix is the one the scoring function put on its
+output columns, which is `"hsr_"` by default:
+
+``` r
+
+sim_scores <- score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
+labelled_scales <- label_hitopsr(sim_scores, target = "scales", prefix = "hsr_")
+attr(labelled_scales$hsr_agoraphobia, "label")
+#> [1] "Agoraphobia"
+```
+
+Columns the function does not recognize are returned untouched, and if
+no column matches the prefix at all it says so with a warning rather
+than silently returning the data unchanged.

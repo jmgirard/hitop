@@ -156,6 +156,46 @@ using its documentation by typing the following into your R console:
 or through the [package
 website](https://jmgirard.github.io/hitop/reference/score_pid5.html).
 
+## Rank Each Person’s Highest Facets
+
+Thirty scale columns is more than can be read at a glance. The
+[`rank_scales()`](https://jmgirard.github.io/hitop/reference/rank_scales.md)
+function condenses them: for each row it sorts the columns you select
+and returns a single string naming the highest-scoring ones, highest
+first. Here we rank the 25 facet scales — the first 25 columns of the
+scored tibble, the last 5 being the domains those facets roll up into —
+and ask for each participant’s top 5. Setting `prefix = "pid_"` strips
+that leading string from the column names, so the string reads as scale
+names.
+
+``` r
+
+facet_scores <- score_pid5(sim_pid5, items = 1:220, append = FALSE)
+rank_scales(facet_scores, scales = 1:25, prefix = "pid_", top = 5, append = FALSE)
+#> # A tibble: 100 × 1
+#>    top_scales                                                                   
+#>    <chr>                                                                        
+#>  1 impulsivity,grandiosity,hostility,perceptualDysregulation,suspiciousness     
+#>  2 distractibility,rigidPerfectionism,impulsivity,attentionSeeking,withdrawal   
+#>  3 submissiveness,depressivity,anhedonia,eccentricity,impulsivity               
+#>  4 suspiciousness,withdrawal,hostility,intimacyAvoidance,callousness            
+#>  5 impulsivity,attentionSeeking,perseveration,perceptualDysregulation,distracti…
+#>  6 distractibility,eccentricity,deceitfulness,separationInsecurity,anhedonia    
+#>  7 rigidPerfectionism,distractibility,riskTaking,grandiosity,perseveration      
+#>  8 unusualBeliefsExperiences,manipulativeness,intimacyAvoidance,attentionSeekin…
+#>  9 rigidPerfectionism,depressivity,irresponsibility,perseveration,distractibili…
+#> 10 intimacyAvoidance,riskTaking,impulsivity,distractibility,suspiciousness      
+#> # ℹ 90 more rows
+```
+
+The `top_scales` column holds one comma-separated string per
+participant: the names of their five highest-scoring facets, in
+descending order. Ties are broken by the order of the columns you
+selected. We passed `append = FALSE` so that the ranked column comes
+back on its own; leaving that argument at its default returns the scored
+tibble with the column added to the end instead. Use `name` to call the
+output column something else and `dir = "low"` to rank from the bottom.
+
 ## Scale Reliability
 
 As we compute scale scores, we can also estimate their inter-item

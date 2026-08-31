@@ -48,6 +48,23 @@ Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html
 
 Scoring functions and example data coming soon.
 
+------------------------------------------------------------------------
+
+### Explore the R Package Features
+
+Scoring for the HiTOP-HSUM is still under development, but the `hitop`
+package can already build the printable and REDCap files from scratch,
+so you can adapt them before fielding the instrument.
+
+##### 🛠️ Custom File Generation
+
+Need to change the formatting, adapt the instructions, or translate the
+text? Build customized DOCX and REDCap files programmatically. The
+Qualtrics survey file is distributed as a prebuilt download only.
+
+[Printable](https://jmgirard.github.io/hitop/reference/generate_docx_hitophsum.md)
+[REDCap](https://jmgirard.github.io/hitop/reference/generate_redcap_hitophsum.md)
+
 ### Versions
 
 Every download button above shows its file’s build date; a new build
