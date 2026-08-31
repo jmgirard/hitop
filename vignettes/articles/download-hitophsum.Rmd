@@ -44,6 +44,28 @@ download_cards("HiTOP-HSUM", list(
 
 Scoring functions and example data coming soon.
 
+```{=html}
+<hr class="mt-5 mb-4">
+
+<h3 class="mb-3">Explore the R Package Features</h3>
+<p class="text-muted">Scoring for the HiTOP-HSUM is still under development, but the <code>hitop</code> package can already build the printable and REDCap files from scratch, so you can adapt them before fielding the instrument.</p>
+
+<div class="row mt-4">
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🛠️ Custom File Generation</h5>
+        <p class="card-text">Need to change the formatting, adapt the instructions, or translate the text? Build customized DOCX and REDCap files programmatically. The Qualtrics survey file is distributed as a prebuilt download only.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/generate_docx_hitophsum.html" class="btn btn-sm btn-outline-secondary">Printable</a>
+          <a href="../reference/generate_redcap_hitophsum.html" class="btn btn-sm btn-outline-secondary">REDCap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
 ```{r versions, echo=FALSE, results='asis'}
 versions_section("HiTOP-HSUM")
 ```

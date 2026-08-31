@@ -55,6 +55,27 @@
   scales. The scoring-key page of the two HiTOP-BR Word forms in `inst/extdata/`
   has been rebuilt with the corrected item lists.
 
+## Documentation and website
+
+* **Three scoring vignettes gained sections for functions they never
+  demonstrated.** *Scoring the PID-5* now ranks each participant's five
+  highest-scoring facets with `rank_scales()`, and the HiTOP-SR and HiTOP-BR
+  scoring vignettes each show `label_hitopsr()` and `label_hitopbr()` attaching
+  the item text to a raw item column and the printed scale name to a scored
+  column.
+
+* **The HiTOP-HSUM download page links its file generators.** It gained the
+  "Custom File Generation" card the five sibling instrument pages already
+  carried, pointing at `generate_docx_hitophsum()` and
+  `generate_redcap_hitophsum()`. The Qualtrics survey file for this instrument
+  is still a prebuilt download only; the package exports no generator for it.
+
+* **The test suite now sweeps every export against the vignettes.** Each entry
+  in `NAMESPACE` must be called in an evaluated chunk of a vignette or article,
+  or link there to its own reference page, unless it is a deprecated function.
+  A name that appears only in prose, in a comment, or inside an unevaluated
+  chunk does not count.
+
 # hitop 0.2.0
 
 This release makes several **breaking** API changes to stabilize the interface

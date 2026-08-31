@@ -59,6 +59,17 @@ scores
 
 There are other useful arguments to the function that you can read about using its documentation by typing the following into your R console: `?score_pid5` or through the [package website](https://jmgirard.github.io/hitop/reference/score_pid5.html).
 
+## Rank Each Person's Highest Facets
+
+Thirty scale columns is more than can be read at a glance. The `rank_scales()` function condenses them: for each row it sorts the columns you select and returns a single string naming the highest-scoring ones, highest first. Here we rank the 25 facet scales — the first 25 columns of the scored tibble, the last 5 being the domains those facets roll up into — and ask for each participant's top 5. Setting `prefix = "pid_"` strips that leading string from the column names, so the string reads as scale names.
+
+```{r rank}
+facet_scores <- score_pid5(sim_pid5, items = 1:220, append = FALSE)
+rank_scales(facet_scores, scales = 1:25, prefix = "pid_", top = 5, append = FALSE)
+```
+
+The `top_scales` column holds one comma-separated string per participant: the names of their five highest-scoring facets, in descending order. Ties are broken by the order of the columns you selected. We passed `append = FALSE` so that the ranked column comes back on its own; leaving that argument at its default returns the scored tibble with the column added to the end instead. Use `name` to call the output column something else and `dir = "low"` to rank from the bottom.
+
 ## Scale Reliability
 
 As we compute scale scores, we can also estimate their inter-item reliability using Cronbach's α (alpha) or McDonald's ω (omega total). α is fast and widely used, but it assumes tau-equivalence (all items load equally on a single factor); violations can make α under- or over-estimate reliability. ω is based on a congeneric single-factor model, allowing items to have different loadings and error variances; it typically provides a more accurate reliability estimate for unit-weighted sums. Both assume the scale is essentially unidimensional; α and ω coincide when tau-equivalence holds.
