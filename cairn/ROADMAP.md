@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / N
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M075 | One REDCap archive writer, using a per-call temporary directory it always cleans up, against a stated {zip} floor | in-progress | — | normal | milestones/M075-redcap-zip-temp-path.md |
+| M075 | One REDCap archive writer, using a per-call temporary directory it always cleans up, against a stated {zip} floor | review | — | normal | milestones/M075-redcap-zip-temp-path.md |
 | M074 | The builder page's naming prose states the conditions it actually depends on | done | — | normal | milestones/archive/M074-builder-naming-prose.md |
 | M073 | Every exported function the package still recommends is demonstrated or linked in the vignettes | done | — | normal | milestones/archive/M073-export-vignette-coverage.md |
 | M072 | The HiTOP-BR interval tests and the collision-ordering sweep fail on the defects they claim to catch | done | — | normal | milestones/archive/M072-interval-collision-test-reach.md |

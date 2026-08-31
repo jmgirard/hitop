@@ -1,6 +1,6 @@
 # M075: One REDCap archive writer, using a per-call temporary directory it always cleans up, against a stated {zip} floor
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -97,7 +97,7 @@ entry name, or the dictionaries themselves → not in this milestone.
 - [x] T4: Identify the earliest `zip` release accepting `mode = "cherry-pick"`
       from the CRAN release record, record the source and the check in the work
       log, and set the `DESCRIPTION` floor to it.
-- [ ] T5: `NEWS.md` entry for the temp-path fix and the new floor; append the
+- [x] T5: `NEWS.md` entry for the temp-path fix and the new floor; append the
       `DECISIONS.md` entry recording the dependency floor (extending the entry
       that adopted `{zip}`) and naming the deferred artifact rebuild.
 
@@ -114,8 +114,12 @@ entry name, or the dictionaries themselves → not in this milestone.
 - 2026-08-31: T2 — both blocks now call `write_redcap_zip()` (`R/generate_redcap.R:369`), which makes the destination absolute, creates `tempfile("hitop-redcap-")`, registers `unlink(recursive = TRUE)` on exit before `dir.create()`, writes `instrument.csv` into it, archives it and reports success. `grep -n "zip::zip("` over `R/` returns one line. T1's test green; the entry-name tests still pass; `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16217.
 - 2026-08-31: T3 — two failure-path tests added (`test-generate_redcap.R:406`, `:439`), each running both generators. Against a copy of the pre-T2 ordering (scratch CSV at `file.path(tempdir(), "instrument.csv")`, removed only after `zip::zip()` returns) both went red, each on a leftover `instrument.csv`; the injected-condition and error-message assertions passed in that run, so the red is the cleanup ordering. The before/after diff alone was not discriminating — the first test's leak was already in `before` for the second, so each test also asserts by name that neither `instrument.csv` nor a `hitop-redcap-*` directory is left in `tempdir()`. Green against T2's code; `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16228.
 - 2026-08-31: T4 — `DESCRIPTION` Imports now reads `zip (>= 2.1.0)`. The check: CRAN's release notes for `zip` first mention the `mode` argument under 2.1.0 and no earlier release mentions it; the r-lib/zip source at tag `v2.1.0` defines `mode = c("mirror", "cherry-pick")`; `zip_2.1.0.tar.gz` is on CRAN dated 2020-08-10. Installed here: 3.0.2. `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16228.
+- 2026-08-31: T5 — `NEWS.md` gains an "Improvements and fixes" section under the development version (the scratch-directory fix and the new floor); `cairn/DECISIONS.md` gains D-050, extending D-035 with the `zip (>= 2.1.0)` floor and naming the deferred artifact rebuild. `devtools::document()` no diff; `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16228.
+- 2026-08-31: all tasks done, status set to review.
 - 2026-08-31: plan gate deferred rebuilding the six committed REDCap artifacts (Jeff's call); falsified by a rebuilt archive differing in any byte from its committed copy.
 
 ## Decisions
+
+- 2026-08-31: the `{zip}` floor and the deferred artifact rebuild are recorded in `cairn/DECISIONS.md` as D-050; both are cross-cutting, so neither is restated here.
 
 ## Review
