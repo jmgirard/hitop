@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / N
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M074 | The builder page's naming prose states the conditions it actually depends on | planned | — | normal | milestones/M074-builder-naming-prose.md |
+| M074 | The builder page's naming prose states the conditions it actually depends on | in-progress | — | normal | milestones/M074-builder-naming-prose.md |
 | M073 | Every exported function the package still recommends is demonstrated or linked in the vignettes | done | — | normal | milestones/archive/M073-export-vignette-coverage.md |
 | M072 | The HiTOP-BR interval tests and the collision-ordering sweep fail on the defects they claim to catch | done | — | normal | milestones/archive/M072-interval-collision-test-reach.md |
 | M071 | The Table 1 extractor and the staged-artifact guards no longer return a verdict a wrong input cannot change | done | — | normal | milestones/archive/M071-verification-guard-repairs.md |

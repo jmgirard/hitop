@@ -2,12 +2,12 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M074: The builder page's naming prose states the conditions it actually depends on
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m074-naming-prose` (this repo); builder branch `m074-naming-prose` in jmgirard/hitop-builder
 
 ## Goal
 
@@ -122,6 +122,7 @@ stems the page wrote before M063 and the eight that replaced them.
 - 2026-08-30: the audit also argued the handover sentence describes a mechanism that cannot exist, `offerDescriptor` storing the held file under its own name (`index.html:1089`); checked and not adopted — that held name equals the running build's descriptor name exactly when the two stems coincide, which is the condition AC1 asks the sentence to state.
 - 2026-08-30: plan gate chose one milestone for the three M063 prose items over one covering all six items on the builder-page row, because the row's own promotion condition has fired only for the prose ("when the builder's prose is next edited"); falsified by a visitor asking for a theme control or a clinician asking for the client wording in the picker, either of which promotes its half.
 - 2026-08-30: plan gate chose a dated, removable rename line over a permanent one and over no line at all, because the rename is a one-time event whose notice should not outlive the visitors holding old files; falsified by the line still earning its place when a later milestone next edits that copy.
+- 2026-08-30: implementation started on `m074-naming-prose`; builder branch of the same name cut from jmgirard/hitop-builder `main` at `2a7f2ae`.
 
 ## Decisions
 
