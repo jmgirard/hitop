@@ -105,7 +105,7 @@ stems the page wrote before M063 and the eight that replaced them.
       coordinate (the M056 lesson). Force `tilesExactly` false by overriding the
       value its R probe sets (`index.html:1400-1407`) before the picker is
       built.
-- [ ] T5: Add the dated rename line to the page, naming `hitopsr` and
+- [x] T5: Add the dated rename line to the page, naming `hitopsr` and
       `hitopsr-module` and what replaced them. Read the old set off builder
       commit `9f8b615`'s stem expression and the new set off `downloadStem`, and
       compare both against what the line says, read back from the served page.
@@ -127,6 +127,7 @@ stems the page wrote before M063 and the eight that replaced them.
 - 2026-08-30: T2 — page hint and README twin rewritten to name the same-format, same-scope, same-shuffle condition (builder `a283dcf`). A fresh [S] reader given only the two shipped sentences, with no map and no repository access, transcribed them to `held.format === running.format && held.whole === running.whole && held.shuffle === running.shuffle`, which disagrees with the map on 0 of 64 pairs.
 - 2026-08-30: T3 — both README passages rewritten to state the start-up gate `wholeInstrument()` applies, naming the page's own log line as where a reader sees the answer (builder `e6b48ee`). The probe checks the union of every scale's items equals 1..N, so the prose says "nothing left out" rather than the no-overlap claim the surrounding code comment makes.
 - 2026-08-30: T4 — four Word builds driven on the served branch page (localhost:8788, hitop 0.2.0), each saved name read off a patched `HTMLAnchorElement.prototype.click` and the descriptor name off the handover button. Gate true / all 76 ticked gave `hitopsr-word.docx` + `hitopsr-word.json`; gate true / {agoraphobia, insomnia} gave `hitopsr-word-module.*`; gate forced false (served copy assigning `tilesExactly = false` after the probe) gave `hitopsr-word-module.*` for all 76 ticked and for the same two scales. The false / all-76 cell is where the old wording and the new one disagree, and the page took `-module`.
+- 2026-08-30: T5 — dated rename paragraph added inside the download notice, its own `<p id="renameNote">` behind a comment saying it is deletable in one block (builder `a5267a6`). The ten names were read back out of the served page's rendered `#renameNote`, then split against the eight `downloadStem` produces: the remainder is set-equal to the two the `9f8b615` expression could write, and the rest set-equal to the eight, with no name unaccounted for. Two doctored read-backs (one name dropped, one invented name added) each failed the comparison.
 
 ## Decisions
 
