@@ -1,6 +1,6 @@
 # M072: The HiTOP-BR interval tests and the collision-ordering sweep fail on the defects they claim to catch
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -88,7 +88,7 @@ already checked in `test-interval_hitopsr.R`.
       usage block to compare values only, and say in the header that the
       condition channel was removed because it recorded nothing on any of the
       matrix's 48 cells. Re-run and confirm 48 value-only entries.
-- [ ] T5: `devtools::document()` (no diff expected), `devtools::test()`,
+- [x] T5: `devtools::document()` (no diff expected), `devtools::test()`,
       `devtools::check()`.
 
 ## Work log
@@ -102,6 +102,8 @@ already checked in `test-interval_hitopsr.R`.
 - 2026-08-30: plan gate chose deleting `characterize_calc_se.R`'s condition channel over adding a matrix cell that signals, because the scope sits near the checker-regress shape — hardening a maintainer harness M069 already shipped — and the channel's stated promise is false as it stands (verified at the gate: 48 cells, 0 conditions); falsified by a `calc_se` change whose only visible effect is a condition the package stops signalling.
 - 2026-08-30: T3 — `test-append-collision.R` gained one block per scoring export (`score_pid5`, `score_hitopsr`, `score_hitopbr`), each asserting a `calc_se = TRUE` colliding call aborts with `hitop_append_collision` naming the collided column and signals no warning, paired with a non-colliding control raising `hitop_deprecated_calc_se`. With `deprecate_calc_se()` moved ahead of the collision guard, those three blocks fail with one failure each and the file's other 13 stay green; all 16 are green unmutated.
 - 2026-08-30: T4 — `characterize_calc_se.R`'s `capture_call()` now returns the call's value and muffles the deprecation instead of recording a condition set; header and usage block say the comparison is of values, and why the channel went. The pre-change script run on this tree captured 48 cells, 0 of them with a non-empty condition set; the rewritten script exits 0, writes 48 entries, none holding a `conditions` element, and all 48 values are `identical()` to the pre-change run's.
+- 2026-08-30: T5 — `devtools::document()` no diff; `devtools::test()` clean (4 pre-existing skips: the OQ-1 keying question and three merge-base-dependent scale-name blocks); `devtools::check()` Status: OK, 0 errors / 0 warnings / 0 notes, tests 196s.
+- 2026-08-30: the first `devtools::check()` run reported 1 ERROR — its test process was SIGTERMed at 304s while three other R jobs of this session were running on the machine. Re-run with nothing else running, the same tree gives Status: OK. No code changed between the two runs.
 
 ## Decisions
 
