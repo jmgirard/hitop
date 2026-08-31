@@ -1,11 +1,11 @@
 # M076: The builder page's boot path is bounded end to end and watched by a headless smoke test in CI
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** `m076-builder-smoke-ci` (both repos)
+- **Branch/PR:** `m076-builder-smoke-ci` — https://github.com/jmgirard/hitop/pull/82 and https://github.com/jmgirard/hitop-builder/pull/12
 
 ## Goal
 
@@ -193,6 +193,14 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   `295b6508`, and trimmed to keep the file under its 120-line cap).
 - 2026-08-31: D-051 recorded — the builder repo's `@playwright/test`
   development dependency, per the implement gate.
+- 2026-08-31: AC3 runs green on the branch — `pull_request`
+  https://github.com/jmgirard/hitop-builder/actions/runs/33426624284 (this
+  checkout) and `workflow_dispatch`
+  https://github.com/jmgirard/hitop-builder/actions/runs/33426646583 (the
+  deployed page). Dispatching from a non-default branch worked, so no
+  amendment to AC3's evidence list was needed.
+- 2026-08-31: all tasks done; `devtools::test()` clean (0 failures, 16228
+  passes, 4 skips) with no R source touched. Status set to review.
 
 ## Decisions
 
