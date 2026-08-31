@@ -259,3 +259,23 @@ implementation before triage.
    short of the pre-change element, and the gate now sits at 764-766.
 
 **Triage.**
+Findings 1-4 fixed now, at Jeff's disposition at the gate, in builder
+`9dcef4b`: the rename note names "one for each format, scope and shuffle
+setting the page builds"; the page hint and its README twin say "the whole
+instrument or a selection" where they said "every scale or a selection"; the
+README's naming-table paragraph now says the questionnaire is the only *file*
+that keeps the paper size, numbering and naming values, "though the build log
+names all but the paper size while the page stays open"; and REDCap's required
+flag joins that enumeration in both the README paragraph and the `downloadStem`
+comment. AC1's 64-pair sweep and AC3's two set-equalities were re-run against
+the changed wording and both still hold; the served page renders the ten names
+and the rewritten hint unchanged otherwise, and no code path was touched, so
+AC4's 16 cells stand. No added line exceeds the file's wrap width.
+
+Finding 5 → follow-up candidate row (a pre-existing claim on lines this diff
+never modified). Finding 6 rejected: the citations sit in plan-owned text,
+which review does not edit, and the Review section above records the gate's
+current location.
+
+No finding demonstrated an acceptance criterion failing, and none met the
+load-bearing-defect bar for a return; the return floor did not fire.
