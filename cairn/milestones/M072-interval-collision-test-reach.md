@@ -83,7 +83,7 @@ already checked in `test-interval_hitopsr.R`.
 - [x] T3: Extend `test-append-collision.R:345`'s block with the three `score_*()`
       cases and their `calc_se = TRUE` controls. Prove each red under the
       reordered `deprecate_calc_se()` plant and green without.
-- [ ] T4: Delete `capture_call()`'s condition capture and the `conditions`
+- [x] T4: Delete `capture_call()`'s condition capture and the `conditions`
       element from `data-raw/characterize_calc_se.R`; rewrite its header and
       usage block to compare values only, and say in the header that the
       condition channel was removed because it recorded nothing on any of the
@@ -101,6 +101,7 @@ already checked in `test-interval_hitopsr.R`.
 - 2026-08-30: T2 — `pairing_residue(devstats, scales)` returns the printed names whose `camelCase` is not the stem `hitopbr_scales` pairs with that name; the shape block asserts `character(0)` and a new block trades two rows' stems and asserts both names come back, after asserting the trade leaves every set comparison over the two columns unchanged. Its code landed in T1's commit — both edits are in the same file and were made before that commit.
 - 2026-08-30: plan gate chose deleting `characterize_calc_se.R`'s condition channel over adding a matrix cell that signals, because the scope sits near the checker-regress shape — hardening a maintainer harness M069 already shipped — and the channel's stated promise is false as it stands (verified at the gate: 48 cells, 0 conditions); falsified by a `calc_se` change whose only visible effect is a condition the package stops signalling.
 - 2026-08-30: T3 — `test-append-collision.R` gained one block per scoring export (`score_pid5`, `score_hitopsr`, `score_hitopbr`), each asserting a `calc_se = TRUE` colliding call aborts with `hitop_append_collision` naming the collided column and signals no warning, paired with a non-colliding control raising `hitop_deprecated_calc_se`. With `deprecate_calc_se()` moved ahead of the collision guard, those three blocks fail with one failure each and the file's other 13 stay green; all 16 are green unmutated.
+- 2026-08-30: T4 — `characterize_calc_se.R`'s `capture_call()` now returns the call's value and muffles the deprecation instead of recording a condition set; header and usage block say the comparison is of values, and why the channel went. The pre-change script run on this tree captured 48 cells, 0 of them with a non-empty condition set; the rewritten script exits 0, writes 48 entries, none holding a `conditions` element, and all 48 values are `identical()` to the pre-change run's.
 
 ## Decisions
 
