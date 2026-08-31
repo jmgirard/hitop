@@ -266,9 +266,14 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   and clears `SMOKE_REQUIRE_TARGET` (F15); the `bootAbandoned` comment names
   all eight call sites and what `main()`'s catch-all does instead (F21); the
   line that shows the controls reads the latch (F13, in part).
-- 2026-08-31: review round 2 — F16 refuted against the dispatch logs, F17
-  accepted as unverifiable before merge, F18-F20, F22 and the carried F10 and
-  F11 to candidate rows, F23 and F12 rejected.
+- 2026-08-31: review round 2 — F16 refuted against the dispatch logs,
+  F18-F20, F22 and the carried F10 and F11 to candidate rows, F23 and F12
+  rejected.
+- 2026-08-31: merge gate — Jeff chose to keep `LICENSE.md` and `README.md`
+  served at the public URL (F17). Builder `0430a1e`: `pages.yml` copies those
+  three files and nothing else; `README.md` and the `package.json` description
+  say which three. `index.html` is byte-identical to `433420f`, so AC1-AC4's
+  evidence stands; both specs re-run green at the new head (3 passed).
 
 ## Decisions
 
@@ -546,12 +551,16 @@ disposition.
   since it was added log `SMOKE_REQUIRE_TARGET: 1` and `smoke target:
   https://jmgirard.github.io/hitop-builder/` — runs 33437130357 (`d9a7819`)
   and 33437603391 (`433420f`).
-- F17 (accepted, for the maintainer's eye) — `pages.yml`'s narrowed deploy has
-  never produced a live deployment: it runs only on `push` to `main` and
-  `workflow_dispatch`, so it first runs at merge. `index.html` carries no
-  relative `href`/`src`, so the page itself is self-contained, but `LICENSE.md`
-  and `README.md` stop being reachable at the public URL. That narrowing is
-  the implement gate's recorded choice; nothing pre-merge can verify it.
+- F17 (fixed at the gate) — `pages.yml`'s narrowed deploy would have dropped
+  `LICENSE.md` and `README.md` from the public URL, where they had been
+  reachable since the repository's first deploy, and it runs only on `push` to
+  `main` and `workflow_dispatch`, so nothing pre-merge could verify it.
+  Jeff chose at the merge gate to keep them served: the workflow now copies
+  those three files and nothing else, and `README.md` and the `package.json`
+  description say which three. D-051's incidental clause "the deployed site is
+  still `index.html` alone" is overtaken by that; the decision it records —
+  that nothing a visitor's browser downloads reads the test tooling — stands,
+  and history is not edited.
 - F18 (follow-up) — no workflow runs `tests/runtime-timeout.spec.js`;
   `smoke.yml` names `tests/smoke.spec.js` alone. The runtime timeout is the
   only shipped page behavior this milestone changes, and its probes run only
@@ -598,7 +607,7 @@ is not a scale count.
 All five criteria met with fresh evidence at branch head `433420f`. No finding
 demonstrates an acceptance criterion failing and none is a load-bearing defect
 in what the page does for a visitor, so the return floor is not reached. F14,
-F15 and F21 were fixed at the gate, F13 in part; F16 was refuted against the
-CI logs; F17 is accepted as unverifiable before merge; F18-F20, F22 and the
+F15, F17 and F21 were fixed at the gate, F13 in part; F16 was refuted against
+the CI logs; F18-F20, F22 and the
 carried F10 and F11 become candidate rows; F23 and F12 stay rejected.
 
