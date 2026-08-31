@@ -31,7 +31,10 @@ the tracking record, as it did for M051, M052, M053 and M063.
 during a build (`index.html:548-555`) and the same sentence in `README.md`; the
 README's account of when a name carries `-module` (`README.md:164` and the
 "Ticking all 76 scales" passage of the same shape); a dated line naming the two
-stems the page wrote before M063 and the eight that replaced them.
+stems the page wrote before M063 and the eight that replaced them; the paragraph
+under the README's naming table and the code comment above `downloadStem`, both
+of which say the scoring file records the paper size, the item numbering and the
+online naming values.
 
 **Out:**
 - A light/dark control of the page's own → stays on the builder-page candidate
@@ -129,6 +132,7 @@ stems the page wrote before M063 and the eight that replaced them.
 - 2026-08-30: T4 — four Word builds driven on the served branch page (localhost:8788, hitop 0.2.0), each saved name read off a patched `HTMLAnchorElement.prototype.click` and the descriptor name off the handover button. Gate true / all 76 ticked gave `hitopsr-word.docx` + `hitopsr-word.json`; gate true / {agoraphobia, insomnia} gave `hitopsr-word-module.*`; gate forced false (served copy assigning `tilesExactly = false` after the probe) gave `hitopsr-word-module.*` for all 76 ticked and for the same two scales. The false / all-76 cell is where the old wording and the new one disagree, and the page took `-module`.
 - 2026-08-30: T5 — dated rename paragraph added inside the download notice, its own `<p id="renameNote">` behind a comment saying it is deletable in one block (builder `a5267a6`). The ten names were read back out of the served page's rendered `#renameNote`, then split against the eight `downloadStem` produces: the remainder is set-equal to the two the `9f8b615` expression could write, and the rest set-equal to the eight, with no name unaccounted for. Two doctored read-backs (one name dropped, one invented name added) each failed the comparison.
 - 2026-08-30: T6 — the 16-cell matrix built twice in one session, on the served branch page and on https://jmgirard.github.io/hitop-builder/, both logging hitop 0.2.0 and the deployed one carrying no rename note. Each cell's questionnaire and descriptor were captured off a patched `URL.createObjectURL` plus anchor click and reduced to a fingerprint over the Qualtrics `.txt` byte digest, the REDCap `instrument.csv` line digest and member list, the Word header text and anchored `<w:tr[ >]` row digest, and the descriptor byte digest and length; raw DOCX size is excluded, the zip stamps not being reproducible. All 16 fingerprints matched; a doctored copy of one cell mismatched, and the loose `<w:tr` count (3x the anchored one) is recorded per Word cell.
+- 2026-08-31: scope amended at a mini gate to add a fourth prose site — the paragraph under the README's naming table and the code comment above `downloadStem` both said the scoring file records the paper size, the item numbering and the Qualtrics/REDCap naming values. It records none of them: the eight two-scale cells of T6's regression span both paper sizes, both numbering modes and default/custom naming, and every descriptor hashed to `d877679172cacc1464445258f9c7c8d634cef559a8004683dfe6ab7b122786a8`. Jeff chose fixing it here over a candidate row; both sites corrected in builder `0a8780c`, no acceptance criterion changed.
 
 ## Decisions
 
