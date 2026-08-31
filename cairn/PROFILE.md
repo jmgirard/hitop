@@ -87,6 +87,12 @@ Followed by `/cairn-release` — a CRAN release walk (never self-submits):
   version and update the minimum stated in that repo's `README.md`, in a pull
   request of its own. A release touching none of those surfaces leaves both
   alone.
+- Downstream watch: that repo's `tests/smoke.spec.js` boots the page headlessly
+  and downloads a Word form, run by `.github/workflows/smoke.yml` on four
+  triggers — `pull_request` and `push` to `main` against its own checkout, a
+  weekly `schedule` and `workflow_dispatch` against the deployed page. The
+  weekly run notices a release breaking the deployed page; after a release
+  raising `MIN_HITOP`, dispatch it rather than wait for the schedule.
 
 ## changelog
 The repo's changelog file, read by `/hotfix`, the release-walk, and the

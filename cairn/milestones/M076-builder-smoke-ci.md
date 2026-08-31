@@ -1,11 +1,11 @@
 # M076: The builder page's boot path is bounded end to end and watched by a headless smoke test in CI
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m076-builder-smoke-ci` (both repos)
 
 ## Goal
 
@@ -88,7 +88,7 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
 
 ## Tasks
 
-- [ ] T1. Add the harness to `hitop-builder`: `package.json` plus a lockfile
+- [x] T1. Add the harness to `hitop-builder`: `package.json` plus a lockfile
       pinning `@playwright/test`, and a smoke spec taking its target from an
       env var and defaulting to a locally served checkout. Budget the run for
       a ~20s cold webR load (per-assertion waits well past Playwright's 30s
@@ -161,6 +161,17 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   upstream hiccup, and an exact count writes instrument content into a repo
   that holds none; falsified by a generator breaking in Qualtrics or REDCap
   alone, or by a scale-list regression landing between 2 and 50 rows.
+- 2026-08-31: implement gate settled three choices: the runtime timeout is two
+  minutes, the same as the install timeout; the Playwright dependency is
+  recorded as a cross-cutting D-entry; the timeout message names R itself
+  rather than the host it comes from.
+- 2026-08-31: tasks reordered to T3, T1, T2, T4, T5 so the smoke test and the
+  plant matrix run against the page as this milestone leaves it. Plan wording
+  unchanged.
+- 2026-08-31: T1 done in jmgirard/hitop-builder (`1b5ec6f`): `package.json`,
+  `package-lock.json` pinning `@playwright/test` 1.56.1, `playwright.config.js`,
+  `tests/serve.mjs` and `tests/smoke.spec.js`. Runs green against the local
+  checkout and against the deployed page.
 
 ## Decisions
 
