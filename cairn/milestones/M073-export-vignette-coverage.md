@@ -1,6 +1,6 @@
 # M073: Every exported function the package still recommends is demonstrated or linked in the vignettes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -66,30 +66,30 @@ stays with the HiTOP-HSUM scoring candidate row.
 
 ## Tasks
 
-- [ ] T1: Write `tests/testthat/test-vignette-export-coverage.R`. Enumerate the
+- [x] T1: Write `tests/testthat/test-vignette-export-coverage.R`. Enumerate the
       `export()` lines of `NAMESPACE`; enumerate `.Rmd` under `vignettes/` and
       `vignettes/articles/`; split each file into evaluated `{r}` chunk bodies
       (skipping `eval = FALSE`) and non-chunk text; classify each export as
       called-in-chunk, linked as `reference/<name>.html`, or exempt because its
       body calls a `deprecate_*()` helper. Skip when `vignettes/` is absent, the
       source-checkout guard at `tests/testthat/test-vignette-se-prose.R:13-15`.
-- [ ] T2: Prove the sweep can fail. Plant one defect per arm — an export named
+- [x] T2: Prove the sweep can fail. Plant one defect per arm — an export named
       only in prose, an export called only inside an `eval = FALSE` chunk, and a
       non-deprecated export mentioned nowhere — and record each red. Confirm both
       enumerations are non-empty in the passing run, and include one export the
       change leaves untouched.
-- [ ] T3: Add a `rank_scales()` section to `vignettes/pid5_scoring.Rmd` after
+- [x] T3: Add a `rank_scales()` section to `vignettes/pid5_scoring.Rmd` after
       `## Score simulated PID-5 data` (line 30), ranking the scored columns with
       `prefix = "pid_"`, plus prose naming what the output column holds.
-- [ ] T4: Add a `label_hitopsr()` demonstration to `vignettes/hitopsr_scoring.Rmd`
+- [x] T4: Add a `label_hitopsr()` demonstration to `vignettes/hitopsr_scoring.Rmd`
       and a `label_hitopbr()` one to `vignettes/hitopbr_scoring.Rmd`, each showing
       the attached label of a named column, modelled on the help-page examples at
       `R/label_hitopsr.R:14-18` and `R/label_hitopbr.R:15-19`.
-- [ ] T5: Add a Custom File Generation card to
+- [x] T5: Add a Custom File Generation card to
       `vignettes/articles/download-hitophsum.Rmd`, modelled on
       `vignettes/articles/download-hitopsr.Rmd:67-79` but carrying only the two
       generators HiTOP-HSUM exports.
-- [ ] T6: NEWS entry for the added vignette sections and the HiTOP-HSUM page's
+- [x] T6: NEWS entry for the added vignette sections and the HiTOP-HSUM page's
       generator links; run `document()`, `test()`, `check()`, `check_pkgdown()`.
 
 ## Work log
@@ -106,6 +106,7 @@ stays with the HiTOP-HSUM scoring candidate row.
 - 2026-08-30: T4 added a `## Labelling Columns` section to each of the HiTOP-SR and HiTOP-BR scoring vignettes, showing the item text on a raw item column and then the printed scale name on a scored column; run against `sim_hitopsr`/`sim_hitopbr` because `ku_hitopsr`'s zero-padded `hsr001` names match no prefix the labeller builds. The sweep is now down to the two HiTOP-HSUM generators.
 - 2026-08-30: T5 added an "Explore the R Package Features" block to the HiTOP-HSUM download article carrying one Custom File Generation card, linking the reference pages of `generate_docx_hitophsum()` and `generate_redcap_hitophsum()` — the only two generators that instrument exports; the card's text says the Qualtrics file is a prebuilt download only, and the section's lead says scoring is still under development. The sweep is green.
 - 2026-08-30: T2 planted each arm in the real files and recorded the red — the `rank_scales()` call demoted to a comment with the prose mention left standing reported `rank_scales`; the same call inside an `eval = FALSE` chunk reported `rank_scales`; deleting the two HiTOP-HSUM card links reported `generate_docx_hitophsum` and `generate_redcap_hitophsum`. Every other export stayed unreported in all three reds. The passing run asserts 39 exports and 15 `.Rmd` files, that the file list reaches `articles/`, and that `hitop_subset` is in the deprecation-exempt set.
+- 2026-08-30: T6 added a NEWS "Documentation and website" section for the three vignette sections, the HiTOP-HSUM generator card, and the sweep. `document()` no diff, `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 16206, `devtools::check()` 0 errors / 0 warnings / 0 notes (8m 48s, vignettes rebuilt), `pkgdown::check_pkgdown()` no problems found. T1-T6 ticked; status to review.
 
 ## Decisions
 
