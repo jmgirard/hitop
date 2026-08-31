@@ -117,6 +117,7 @@ entry name, or the dictionaries themselves → not in this milestone.
 - 2026-08-31: T5 — `NEWS.md` gains an "Improvements and fixes" section under the development version (the scratch-directory fix and the new floor); `cairn/DECISIONS.md` gains D-050, extending D-035 with the `zip (>= 2.1.0)` floor and naming the deferred artifact rebuild. `devtools::document()` no diff; `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16228.
 - 2026-08-31: all tasks done, status set to review.
 - 2026-08-31: plan gate deferred rebuilding the six committed REDCap artifacts (Jeff's call); falsified by a rebuilt archive differing in any byte from its committed copy.
+- 2026-08-31: review — PR #81 opened as a draft; `main` had not moved, so no merge was needed. All five criteria met with fresh evidence, red claims re-run against a scratch clone of `main`. Consistency gate all green (`cairn_validate` exit 0; `check()` 0/0/0). Three-lens fan-out: two lenses clean, [O] returned eight findings, none an acceptance-criterion failure.
 
 ## Decisions
 
@@ -207,7 +208,3 @@ touches these files, and the repo's GitHub inline-comment probe returned empty.
 
 None of the eight demonstrates an acceptance criterion failing, and none is a
 load-bearing defect in what the generators do; status stays `review`.
-
-## Work log (review)
-
-- 2026-08-31: review — PR #81 opened as a draft; `main` had not moved, so no merge was needed. All five criteria met with fresh evidence, red claims re-run against a scratch clone of `main`. Consistency gate all green (`cairn_validate` exit 0; `check()` 0/0/0). Three-lens fan-out: two lenses clean, [O] returned eight findings, none an acceptance-criterion failure.
