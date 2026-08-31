@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-08-30 (eleventh pass. M072 planned; the M067 terminal row pruned to hold the five-row cap. Byte budgets: `ROADMAP.md` 22,579 against 24,000; `LESSONS.md` 19,918 against 20,000.)_
+_Last hygiene check: 2026-08-30 (twelfth pass. M072 done and archived; no terminal row pruned, five exactly. No lesson retired or added — the milestone's craft is already carried by the M046 and M055 lines. Byte budgets: `ROADMAP.md` 22,676 against 24,000; `LESSONS.md` 19,918 against 20,000.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M073)._
 _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / New features / Improvements and fixes / Documentation and website; `document()` no diff, `R CMD check` 0/0/0, `check_pkgdown()` and `url_check()` clean. Tag and GitHub release pending the maintainer._
 
@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / N
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M072 | The HiTOP-BR interval tests and the collision-ordering sweep fail on the defects they claim to catch | review | — | normal | milestones/M072-interval-collision-test-reach.md |
+| M072 | The HiTOP-BR interval tests and the collision-ordering sweep fail on the defects they claim to catch | done | — | normal | milestones/archive/M072-interval-collision-test-reach.md |
 | M071 | The Table 1 extractor and the staged-artifact guards no longer return a verdict a wrong input cannot change | done | — | normal | milestones/archive/M071-verification-guard-repairs.md |
 | M070 | `data-raw/` verification tooling is reduced to what still re-runs, with its live guard defects repaired | done | — | normal | milestones/archive/M070-dataraw-verification-tooling.md |
 | M068 | The HiTOP-BR carries score intervals against the paper's development sample | done | — | normal | milestones/archive/M068-hitopbr-score-intervals.md |
