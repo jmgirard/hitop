@@ -94,7 +94,7 @@ entry name, or the dictionaries themselves → not in this milestone.
 - [x] T3: Write the AC2 failure-path test for both injected mechanisms. Run it
       against a copy of the pre-T2 cleanup ordering and record it red, then
       green against T2's code.
-- [ ] T4: Identify the earliest `zip` release accepting `mode = "cherry-pick"`
+- [x] T4: Identify the earliest `zip` release accepting `mode = "cherry-pick"`
       from the CRAN release record, record the source and the check in the work
       log, and set the `DESCRIPTION` floor to it.
 - [ ] T5: `NEWS.md` entry for the temp-path fix and the new floor; append the
@@ -113,6 +113,7 @@ entry name, or the dictionaries themselves → not in this milestone.
 - 2026-08-31: T1 — path-capture test added at `test-generate_redcap.R:376`; red on HEAD with exactly one failure, `unique(captured)` length 1 against the expected 3 (all three exports wrote to the same `file.path(tempdir(), "instrument.csv")`). The capture itself recorded 3 calls and every other assertion in the file passed, so the mock reaches `zip::zip()` and the red is the shared-path defect, not a broken probe.
 - 2026-08-31: T2 — both blocks now call `write_redcap_zip()` (`R/generate_redcap.R:369`), which makes the destination absolute, creates `tempfile("hitop-redcap-")`, registers `unlink(recursive = TRUE)` on exit before `dir.create()`, writes `instrument.csv` into it, archives it and reports success. `grep -n "zip::zip("` over `R/` returns one line. T1's test green; the entry-name tests still pass; `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16217.
 - 2026-08-31: T3 — two failure-path tests added (`test-generate_redcap.R:406`, `:439`), each running both generators. Against a copy of the pre-T2 ordering (scratch CSV at `file.path(tempdir(), "instrument.csv")`, removed only after `zip::zip()` returns) both went red, each on a leftover `instrument.csv`; the injected-condition and error-message assertions passed in that run, so the red is the cleanup ordering. The before/after diff alone was not discriminating — the first test's leak was already in `before` for the second, so each test also asserts by name that neither `instrument.csv` nor a `hitop-redcap-*` directory is left in `tempdir()`. Green against T2's code; `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16228.
+- 2026-08-31: T4 — `DESCRIPTION` Imports now reads `zip (>= 2.1.0)`. The check: CRAN's release notes for `zip` first mention the `mode` argument under 2.1.0 and no earlier release mentions it; the r-lib/zip source at tag `v2.1.0` defines `mode = c("mirror", "cherry-pick")`; `zip_2.1.0.tar.gz` is on CRAN dated 2020-08-10. Installed here: 3.0.2. `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16228.
 - 2026-08-31: plan gate deferred rebuilding the six committed REDCap artifacts (Jeff's call); falsified by a rebuilt archive differing in any byte from its committed copy.
 
 ## Decisions
