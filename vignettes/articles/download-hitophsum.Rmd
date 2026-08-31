@@ -48,7 +48,7 @@ Scoring functions and example data coming soon.
 <hr class="mt-5 mb-4">
 
 <h3 class="mb-3">Explore the R Package Features</h3>
-<p class="text-muted">Scoring for the HiTOP-HSUM is still under development, but the <code>hitop</code> package can already build the distributed files above from scratch, so you can adapt them before fielding the instrument.</p>
+<p class="text-muted">Scoring for the HiTOP-HSUM is still under development, but the <code>hitop</code> package can already build the printable and REDCap files from scratch, so you can adapt them before fielding the instrument.</p>
 
 <div class="row mt-4">
   <div class="col-md-6 mb-4">

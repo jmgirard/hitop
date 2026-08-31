@@ -107,6 +107,7 @@ stays with the HiTOP-HSUM scoring candidate row.
 - 2026-08-30: T5 added an "Explore the R Package Features" block to the HiTOP-HSUM download article carrying one Custom File Generation card, linking the reference pages of `generate_docx_hitophsum()` and `generate_redcap_hitophsum()` — the only two generators that instrument exports; the card's text says the Qualtrics file is a prebuilt download only, and the section's lead says scoring is still under development. The sweep is green.
 - 2026-08-30: T2 planted each arm in the real files and recorded the red — the `rank_scales()` call demoted to a comment with the prose mention left standing reported `rank_scales`; the same call inside an `eval = FALSE` chunk reported `rank_scales`; deleting the two HiTOP-HSUM card links reported `generate_docx_hitophsum` and `generate_redcap_hitophsum`. Every other export stayed unreported in all three reds. The passing run asserts 39 exports and 15 `.Rmd` files, that the file list reaches `articles/`, and that `hitop_subset` is in the deprecation-exempt set.
 - 2026-08-30: T6 added a NEWS "Documentation and website" section for the three vignette sections, the HiTOP-HSUM generator card, and the sweep. `document()` no diff, `devtools::test()` FAIL 0 / WARN 0 / SKIP 4 / PASS 16206, `devtools::check()` 0 errors / 0 warnings / 0 notes (8m 48s, vignettes rebuilt), `pkgdown::check_pkgdown()` no problems found. T1-T6 ticked; status to review.
+- 2026-08-30: review ran the three-lens fan-out; the maintainer chose at the merge gate to fix findings 1-6 on the branch and file 7-12 as a candidate row. The `eval=F` arm added for finding 3 was shown red against the old regex before the fix was restored. Correcting the T2 line above: the passing run's floors were `>= 30` exports and `>= 10` files, not the 39 and 15 that line claims; finding 5's fix raises them to 39 and 15.
 
 ## Decisions
 
@@ -238,3 +239,42 @@ triage, against the implementation rather than the reviewer's account:
 14. Nits: British "Labelling" against the package's US "labeled"; the two label
     sections are near-verbatim duplicates; the fixture comparison at line 158
     depends on `sort()`'s locale.
+
+### Triage and disposition (2026-08-30)
+
+At the merge gate the maintainer chose to fix findings 1-6 on the branch and
+file 7-12 as a candidate row.
+
+- 1 — fixed. `vignettes/pid5_scoring.Rmd:70` passes `append = FALSE`, so the
+  chunk prints the `top_scales` column itself; the prose below now says which
+  argument produced that shape and what the default returns instead.
+- 2 — fixed. The lead at `vignettes/articles/download-hitophsum.Rmd:51` now
+  names the printable and REDCap files rather than all three downloads.
+- 3 — fixed. The chunk-header test is `eval[ \t]*=[ \t]*F(ALSE)?[ \t]*[,}]`.
+  A fixture arm calling `short_off(x)` in an `{r, eval=F}` chunk was added and
+  shown red against the old regex (2 failures, including the whole-fixture
+  identity assertion) before the fix was restored.
+- 4 — fixed. The dead `is_text` vector is gone and the comment now states what
+  `all = lines` actually means: the link arm is file-wide, only the call arm is
+  chunk-restricted.
+- 5 — fixed. The floors are `>= 39` exports and `>= 15` files, the counts the
+  branch actually has, and a second assertion pins the glob reaching the
+  top-level `vignettes/` directory as well as `articles/`.
+- 6 — fixed. `get0()` takes `inherits = FALSE`.
+- 7-12 — filed as one ROADMAP candidate row, lineage M073 (findings 7-12).
+  None is a wrong verdict on the current vignettes; the row states its
+  promotion condition as the sweep passing an export it should have named, or
+  a vignette adding a line of one of the shapes the parser mishandles.
+- 13 — rejected. The unticked boxes were review's own to tick against evidence,
+  which this section does.
+- 14 — rejected under the out-of-scope taxonomy: style nitpicks (British
+  spelling, near-duplicate sections, `sort()` locale) on lines the milestone
+  either introduced deliberately or did not modify.
+
+Return floor: none of the fourteen demonstrates an acceptance criterion
+failing, so the milestone did not return to `in-progress`.
+
+### Re-verification after the gate fixes (2026-08-30)
+
+- `devtools::test()` FAIL 0 / WARN 0, 4 pre-existing skips; the sweep file
+  itself PASS 17 (up from 15, the two new `eval=F` assertions).

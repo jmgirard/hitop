@@ -27,19 +27,16 @@ split_rmd <- function(lines) {
   closes <- grep("^[ \t]*`{3,}[ \t]*$", lines)
 
   chunk <- character(0)
-  is_text <- rep(TRUE, length(lines))
 
   for (s in opens) {
     e <- closes[closes > s]
     if (length(e) == 0L) next
     e <- e[[1L]]
-    # The whole fenced block leaves the text side either way: a chunk's code is
-    # not prose, and a skipped chunk must not slip back in as a prose mention.
-    is_text[s:e] <- FALSE
     if (e <= s + 1L) next
 
     body <- lines[(s + 1L):(e - 1L)]
-    header_off <- grepl("eval[ \t]*=[ \t]*FALSE", lines[[s]])
+    # Both spellings R accepts in a chunk header: `eval = FALSE` and `eval=F`.
+    header_off <- grepl("eval[ \t]*=[ \t]*F(ALSE)?[ \t]*[,}]", lines[[s]])
     body_off <- any(grepl("^[ \t]*#\\|[ \t]*eval:[ \t]*(false|FALSE)", body))
     if (header_off || body_off) next
 
@@ -50,6 +47,8 @@ split_rmd <- function(lines) {
   # chunk; a name only mentioned there was never called.
   chunk <- sub("#.*$", "", chunk)
 
+  # `all` is every line of the file: a reference link counts wherever it sits,
+  # which is what the link arm asks for. Only the call arm is chunk-restricted.
   list(chunk = chunk, all = lines)
 }
 
@@ -107,6 +106,10 @@ fixture <- c(
   "header_off(x)",
   "```",
   "",
+  "```{r, eval=F}",
+  "short_off(x)",
+  "```",
+  "",
   "```{r}",
   "#| eval: false",
   "body_off(x)",
@@ -119,7 +122,7 @@ fixture <- c(
 
 fixture_exports <- c(
   "covered", "linked", "mentioned", "commented_out",
-  "header_off", "body_off", "absent", "gone"
+  "header_off", "short_off", "body_off", "absent", "gone"
 )
 
 test_that("a call in an evaluated chunk and a reference link both count", {
@@ -137,8 +140,10 @@ test_that("a name in prose or in a comment is not a demonstration", {
 
 test_that("a call in an unevaluated chunk is not a demonstration", {
   out <- uncovered_exports(fixture_exports, list(fixture))
-  # Both spellings of the option: the chunk header and the `#|` body line.
+  # Every spelling: the chunk header, its `eval=F` short form, and the `#|`
+  # body line.
   expect_true("header_off" %in% out)
+  expect_true("short_off" %in% out)
   expect_true("body_off" %in% out)
 })
 
@@ -155,7 +160,10 @@ test_that("an export appearing nowhere is reported, unless it is deprecated", {
 test_that("the whole fixture classifies to exactly the uncovered names", {
   expect_identical(
     uncovered_exports(fixture_exports, list(fixture)),
-    c("absent", "body_off", "commented_out", "gone", "header_off", "mentioned")
+    c(
+      "absent", "body_off", "commented_out", "gone", "header_off", "mentioned",
+      "short_off"
+    )
   )
 })
 
@@ -176,16 +184,17 @@ test_that("every export is demonstrated or linked in a vignette", {
 
   # Neither enumeration may silently empty: a broken glob or a moved NAMESPACE
   # would otherwise make every assertion below vacuously true.
-  expect_gte(length(exports), 30L)
-  expect_gte(length(paths), 10L)
-  # And the file list must reach both directories, not just the top level.
+  expect_gte(length(exports), 39L)
+  expect_gte(length(paths), 15L)
+  # And the file list must reach both directories, not just one of them.
   expect_true(any(grepl("/articles/", paths)))
+  expect_true(any(!grepl("/articles/", paths)))
 
   # Exempt: a function whose own body calls one of R/util.R's deprecate_*()
   # helpers is on its way out, and demonstrating it would teach its use.
   deprecated <- Filter(
     function(e) {
-      obj <- get0(e, envir = asNamespace("hitop"))
+      obj <- get0(e, envir = asNamespace("hitop"), inherits = FALSE)
       is.function(obj) && any(grepl("deprecate_[A-Za-z_]+\\(", deparse(body(obj))))
     },
     exports

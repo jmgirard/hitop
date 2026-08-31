@@ -65,10 +65,10 @@ Thirty scale columns is more than can be read at a glance. The `rank_scales()` f
 
 ```{r rank}
 facet_scores <- score_pid5(sim_pid5, items = 1:220, append = FALSE)
-rank_scales(facet_scores, scales = 1:25, prefix = "pid_", top = 5)
+rank_scales(facet_scores, scales = 1:25, prefix = "pid_", top = 5, append = FALSE)
 ```
 
-The added `top_scales` column holds one comma-separated string per participant: the names of their five highest-scoring facets, in descending order. Ties are broken by the order of the columns you selected. Use `name` to call the output column something else, `dir = "low"` to rank from the bottom instead, and `append = FALSE` to get back the ranked column on its own.
+The `top_scales` column holds one comma-separated string per participant: the names of their five highest-scoring facets, in descending order. Ties are broken by the order of the columns you selected. We passed `append = FALSE` so that the ranked column comes back on its own; leaving that argument at its default returns the scored tibble with the column added to the end instead. Use `name` to call the output column something else and `dir = "low"` to rank from the bottom.
 
 ## Scale Reliability
 
