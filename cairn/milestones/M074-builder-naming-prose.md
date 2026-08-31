@@ -100,7 +100,7 @@ stems the page wrote before M063 and the eight that replaced them.
 - [x] T3: Rewrite the README's `-module` sentence (`README.md:164`) and the
       "Ticking all 76 scales" passage of the same shape to state the
       `tilesExactly` gate.
-- [ ] T4: Drive the four AC2 builds on the served branch page, recording each
+- [x] T4: Drive the four AC2 builds on the served branch page, recording each
       saved name off a patched `HTMLAnchorElement.click` rather than a reported
       coordinate (the M056 lesson). Force `tilesExactly` false by overriding the
       value its R probe sets (`index.html:1400-1407`) before the picker is
@@ -126,6 +126,7 @@ stems the page wrote before M063 and the eight that replaced them.
 - 2026-08-30: T1 — collision map built by extracting `INSTRUMENT`, `FORMATS` and `downloadStem` out of the branch `index.html` and evaluating them over M063-D1's eight builds: 8 of the 64 ordered pairs collide, each a build with itself. The two wrong controls both disagreed with it (all-collide 56, none-collide 8).
 - 2026-08-30: T2 — page hint and README twin rewritten to name the same-format, same-scope, same-shuffle condition (builder `a283dcf`). A fresh [S] reader given only the two shipped sentences, with no map and no repository access, transcribed them to `held.format === running.format && held.whole === running.whole && held.shuffle === running.shuffle`, which disagrees with the map on 0 of 64 pairs.
 - 2026-08-30: T3 — both README passages rewritten to state the start-up gate `wholeInstrument()` applies, naming the page's own log line as where a reader sees the answer (builder `e6b48ee`). The probe checks the union of every scale's items equals 1..N, so the prose says "nothing left out" rather than the no-overlap claim the surrounding code comment makes.
+- 2026-08-30: T4 — four Word builds driven on the served branch page (localhost:8788, hitop 0.2.0), each saved name read off a patched `HTMLAnchorElement.prototype.click` and the descriptor name off the handover button. Gate true / all 76 ticked gave `hitopsr-word.docx` + `hitopsr-word.json`; gate true / {agoraphobia, insomnia} gave `hitopsr-word-module.*`; gate forced false (served copy assigning `tilesExactly = false` after the probe) gave `hitopsr-word-module.*` for all 76 ticked and for the same two scales. The false / all-76 cell is where the old wording and the new one disagree, and the page took `-module`.
 
 ## Decisions
 
