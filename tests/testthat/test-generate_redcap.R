@@ -396,3 +396,69 @@ test_that("each REDCap export writes its CSV into a path of its own", {
     expect_identical(unique(read_redcap_csv(f[[i]])$`Form Name`), forms[[i]])
   }
 })
+
+# A failed export must not leave its scratch CSV behind: the next call would
+# then find a stale file under the name it writes to. Cleanup is registered
+# before the directory is written into, so it runs on the error path too. Two
+# failure mechanisms are injected -- one raised inside the archive call, one
+# raised by the archive call itself against an unwritable destination -- and
+# both generators are exercised under each.
+
+test_that("an error inside the archive call propagates and leaves nothing behind", {
+  local_mocked_bindings(
+    zip = function(...) {
+      rlang::abort("injected archive failure", class = "hitop_test_zip_failure")
+    },
+    .package = "zip"
+  )
+
+  f <- withr::local_tempfile(fileext = rep(".zip", 2L))
+  before <- list.files(tempdir())
+
+  expect_error(
+    suppressMessages(generate_redcap_hitopsr(file = f[[1]])),
+    class = "hitop_test_zip_failure"
+  )
+  expect_error(
+    suppressMessages(generate_redcap_hitophsum(file = f[[2]])),
+    class = "hitop_test_zip_failure"
+  )
+
+  expect_identical(setdiff(list.files(tempdir()), before), character(0))
+
+  # Stated independently of the diff, which goes blind once an earlier leak has
+  # already put the file there: neither name this writer can leave behind --
+  # the fixed member name, or its own scratch directory -- is present.
+  leftovers <- list.files(tempdir())
+  expect_false(any(leftovers == "instrument.csv"))
+  expect_false(any(startsWith(leftovers, "hitop-redcap-")))
+})
+
+test_that("an unwritable destination propagates and leaves nothing behind", {
+  missing_dir <- file.path(tempdir(), "hitop-no-such-dir")
+  expect_false(dir.exists(missing_dir))
+  f <- file.path(missing_dir, c("hsr.zip", "hsum.zip"))
+  before <- list.files(tempdir())
+
+  # {zip} reports which file it could not open; that path is what makes this
+  # the destination failure and not some other error on the way there.
+  expect_error(
+    suppressMessages(generate_redcap_hitopsr(file = f[[1]])),
+    regexp = f[[1]],
+    fixed = TRUE
+  )
+  expect_error(
+    suppressMessages(generate_redcap_hitophsum(file = f[[2]])),
+    regexp = f[[2]],
+    fixed = TRUE
+  )
+
+  expect_identical(setdiff(list.files(tempdir()), before), character(0))
+
+  # Stated independently of the diff, which goes blind once an earlier leak has
+  # already put the file there: neither name this writer can leave behind --
+  # the fixed member name, or its own scratch directory -- is present.
+  leftovers <- list.files(tempdir())
+  expect_false(any(leftovers == "instrument.csv"))
+  expect_false(any(startsWith(leftovers, "hitop-redcap-")))
+})
