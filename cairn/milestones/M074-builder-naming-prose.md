@@ -7,7 +7,7 @@
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
-- **Branch/PR:** `m074-naming-prose` (this repo); builder PR https://github.com/jmgirard/hitop-builder/pull/11
+- **Branch/PR:** `m074-naming-prose` (this repo), PR https://github.com/jmgirard/hitop/pull/80; builder PR https://github.com/jmgirard/hitop-builder/pull/11
 
 ## Goal
 
@@ -48,26 +48,26 @@ online naming values.
 
 ## Acceptance criteria
 
-- [ ] AC1: The page's and README's account of why the scoring-file button
+- [x] AC1: The page's and README's account of why the scoring-file button
       switches off while a build runs names the condition under which the held
       scoring file's own name equals the name the running build's descriptor
       takes — the same format, the same scope, and the same shuffle setting —
       rather than asserting the collision for every rebuild. Verified against a
       computed sweep over all 64 ordered pairs of the eight builds M063-D1
       tabulates, marking each pair's two stems equal or not.
-- [ ] AC2: The README's account of when a download's name carries `-module`
+- [x] AC2: The README's account of when a download's name carries `-module`
       states the `tilesExactly` gate `wholeInstrument()` applies
       (`index.html:745-747`), and predicts the name saved by each of four builds
       driven on the served branch page: `tilesExactly` in {true, false} crossed
       with {every scale ticked, a named two-scale selection}.
-- [ ] AC3: The page carries a dated line telling a visitor holding downloads
+- [x] AC3: The page carries a dated line telling a visitor holding downloads
       made before the rename both which names the page wrote before it and which
       names carry their place now, written so it can be deleted in a later
       milestone without disturbing the surrounding copy. The old stems it names
       are set-equal to the complete set the stem expression at builder commit
       `9f8b615` could write; the new stems it names are set-equal to the eight
       `downloadStem` produces.
-- [ ] AC4: No file the page builds changes across this milestone, over the
+- [x] AC4: No file the page builds changes across this milestone, over the
       matrix {a named two-scale selection, every scale} × {Word: US Letter and
       A4, numbering 1-to-n and original, shuffle off} × {Qualtrics and REDCap:
       the package defaults and one named non-default naming set} — 16 builds,
@@ -77,7 +77,7 @@ online naming values.
       `instrument.csv` line for line, Word on parsed header text and printed
       item rows, a DOCX not being byte-reproducible) and on the `.json`
       descriptor byte for byte.
-- [ ] AC5: The `hitop` package is untouched: `git diff --name-only
+- [x] AC5: The `hitop` package is untouched: `git diff --name-only
       origin/main...HEAD` in this repo lists only files under `cairn/`, and
       `Rscript -e 'devtools::test()'` reports 0 failures.
 
@@ -136,7 +136,126 @@ online naming values.
 - 2026-08-31: the 16-cell matrix re-run on the branch page after the last two prose commits. Every questionnaire digest, name, row count and loose/anchored `<w:tr` count matched the earlier run; the descriptors differ only in `buildDate`, and substituting `2026-08-30` back into one reproduced the earlier digest exactly.
 - 2026-08-31: T7 — builder PR https://github.com/jmgirard/hitop-builder/pull/11 opened from `m074-naming-prose`. This repo's branch diff against `origin/main` lists only `cairn/ROADMAP.md` and the milestone file; `devtools::test()` reports FAIL 0, WARN 0, SKIP 4, PASS 16208. The post-merge check that the deployed page matches the merged file is left to review, which is where the merge happens.
 - 2026-08-31: all tasks done, status set to review.
+- 2026-08-31: review ran on `m074-naming-prose`; all five criteria verified with fresh evidence, consistency gate clean (`cairn_validate` exit 0, `document()` no diff, `check_pkgdown()` clean, `R CMD check` 0/0/0), three-lens fan-out returned six findings from the [O] lens and none from the other two.
 
 ## Decisions
 
 ## Review
+
+Reviewed 2026-08-31 on `m074-naming-prose`. This repo: PR
+https://github.com/jmgirard/hitop/pull/80 (tracking only). Builder: PR
+https://github.com/jmgirard/hitop-builder/pull/11 at `0a8780c`, whose
+`origin/main` base `2a7f2ae` is byte-identical to the page deployed at
+https://jmgirard.github.io/hitop-builder/ (`f191d835…` both).
+
+**AC1 — evidence.** `INSTRUMENT`, `FORMATS` and `downloadStem` extracted from
+the branch `index.html` and evaluated over M063-D1's eight builds: eight
+distinct stems, so of the 64 ordered pairs exactly 8 collide, each a build with
+itself. The condition the shipped page hint and its README twin state — same
+format, same scope, same shuffle — transcribed as a predicate disagrees with
+that map on 0 of 64 pairs; the two wrong controls disagree on 56 (all collide)
+and 8 (none collide). Neither sentence asserts a collision for every rebuild.
+
+**AC2 — evidence.** Four Word builds driven on the served branch page
+(localhost:8788, hitop 0.2.0), each saved name read off a patched
+`HTMLAnchorElement.prototype.click` and the descriptor name off the handover
+button. Gate true (the page's own probe) with all 76 ticked gave
+`hitopsr-word.docx` / `hitopsr-word.json`; gate true with {agoraphobia,
+insomnia} gave `hitopsr-word-module.*`; gate forced false — a served copy
+assigning `tilesExactly = false` after the probe — gave `hitopsr-word-module.*`
+for all 76 ticked and for the same two scales. The README's rewritten passages
+predict all four, including the discriminating false/all-76 cell. The criterion
+cites `index.html:745-747` for the gate; the added prose shifted it to
+`wholeInstrument()` at `index.html:764-766`, same function, same gate.
+
+**AC3 — evidence.** Ten `<code>` names read back out of the served page's
+rendered `#renameNote`: the eight that are set-equal to what `downloadStem`
+produces, and a remainder set-equal to the two the stem expression at builder
+`9f8b615` could write, with no name unaccounted for. Two doctored read-backs
+(one name dropped, one invented name added) each failed the comparison.
+`renameNote` occurs exactly once across `index.html` and `README.md` — no CSS
+rule, no script reference — so the paragraph and its comment delete as one
+block.
+
+**AC4 — evidence.** The 16-cell matrix built twice in one session, on the
+served branch page and on the deployed page, both logging hitop 0.2.0. Each
+cell's questionnaire and descriptor were captured off a patched
+`URL.createObjectURL` plus anchor click and reduced to one fingerprint over the
+Qualtrics `.txt` byte digest, the REDCap `instrument.csv` line count and
+digest, the Word header text and anchored `<w:tr[ >]` row digest and count, and
+the descriptor byte digest and length; raw DOCX size is excluded, the zip
+stamps not being reproducible. All 16 fingerprints match. The fingerprint
+discriminates: it separates the two paper sizes, the two numbering modes on the
+two-scale Word cells, and default from custom naming on both online formats,
+and two planted defects (one flipped `instrument.csv` digest byte, one altered
+Word header word) each changed it.
+
+**AC5 — evidence.** `git diff --name-only origin/main...HEAD` lists
+`cairn/ROADMAP.md` and `cairn/milestones/M074-builder-naming-prose.md` and
+nothing else. `Rscript -e 'devtools::test()'` reports FAIL 0, WARN 0, SKIP 4,
+PASS 16208.
+
+**Consistency gate.** `cairn_validate.py` exit 0, all checks pass; the 22
+advisories are the standing pre-existing ones the fourteenth hygiene stamp
+records (21 dangling `D-0NN` tokens into `legacy/LOG.md`, one references
+staleness WARN), and `release window` did not fire. Profile `r-package`
+toolchain slot: `devtools::document()` left `man/` and `NAMESPACE` unchanged;
+`pkgdown::check_pkgdown()` reports no problems; `README.Rmd`/`README.md`
+untouched on this branch; no `NEWS.md` entry is owed, the package being
+untouched; no new top-level files, so no `.Rbuildignore` entry; `Rscript -e 'devtools::check()'`
+reports 0 errors, 0 warnings, 0 notes (14m 43s).
+
+**Independent review — three-lens fan-out** (declared tier is user-facing, so
+the full fan-out ran even though this repo's own diff is tracking-only; all
+three reviewers read the builder diff).
+
+*[S] blame-history* — no history conflict. It read the builder log and blame on
+the rewritten regions, M063's archive, and the D-034..D-039 entries, and
+reported that each change either narrows an M063 claim to a truer condition or
+closes a claim M063's own review had already flagged false and deferred. Zero
+defects.
+
+*[S] prior-review record* — no prior-review evidence to contradict. The GitHub
+probe returned `[]` inline review comments on both repos, so that surface was
+not walked; the archived `## Review` sections for M051, M052, M053, M056, M062,
+M063, M064, M065 were read instead. It checked hardest that the diff does not
+resurrect the unscoped "two builds never share a name" claim M063's review
+removed, and found it does not. Zero findings.
+
+*[O] diff-bug* — six findings, ranked. Each was verified against the
+implementation before triage.
+
+1. `index.html` `#renameNote`: "Those two names are now eight, one for each
+   build this page can make" is false and contradicts the same notice's own
+   paragraph two above it ("Two builds differing only in which scales you
+   ticked do share a name"). Confirmed by reading the notice: `downloadStem`
+   reads only format, scope and shuffle, so many distinct builds land on one of
+   the eight names. A visitor could conclude no build can overwrite another's
+   files — the hazard the rest of the notice exists to warn about.
+2. `index.html` `#downloadHint` and its README twin state the scope half of the
+   collision condition as "every scale or a selection", where the code's gate is
+   `wholeInstrument()` — `tilesExactly && selected().length === scales.length`.
+   The two coincide on the HiTOP-SR, the only instrument this page builds, so
+   the claim is latently rather than actually false; but the milestone's own new
+   README passage insists on exactly that distinction, so the diff draws it in
+   one place and erases it in another.
+3. `README.md` under the naming table: "the questionnaire itself is the only
+   record of them" is over-general. Confirmed at `index.html:1227-1230` — the
+   page's own build log prints `renumber = FALSE` on original numbering and the
+   Qualtrics/REDCap naming values verbatim. Only the paper size is
+   questionnaire-only.
+4. `README.md` under the naming table and the `downloadStem` comment both
+   enumerate "the paper size, the item numbering and the Qualtrics and REDCap
+   naming values" as what reaches neither name nor descriptor, omitting REDCap's
+   "Mark every item as required", which is a fourth setting in that position.
+   Both passages are newly written by this milestone.
+5. Two code comments (`index.html` above `tilesExactly`, and above the R probe)
+   claim the probe detects scale *overlap*. It cannot: `hitop_module()` computes
+   `items <- sort(unique(unlist(...)))` (`R/module.R:102`), so duplicates are
+   dropped before `identical(as.integer(items), seq_along(items))` runs.
+   Confirmed. Both comment lines are unmodified by this diff.
+6. This milestone file's Scope cites the download hint at `index.html:548-555`
+   and AC2 cites `wholeInstrument()` at `index.html:745-747`; both are one line
+   short of the pre-change element, and the gate now sits at 764-766.
+
+**Triage.**
