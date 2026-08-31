@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-08-30 (thirteenth pass. M073 done and archived; M068's terminal row pruned to hold five. No lesson retired -- the export sweep covers none -- and none added, `LESSONS.md` sitting at 48 lines / 19,918 bytes. One candidate row added for the sweep's reach gaps; the M071 row compressed to stay inside the byte budget. Byte budgets: `ROADMAP.md` 23957 against 24,000; `LESSONS.md` 19,918 against 20,000.)_
+_Last hygiene check: 2026-08-30 (fourteenth pass, audit only. `cairn_validate` all-green; nothing in flight, both GitHub inboxes empty, tree clean. Advisories standing: 21 dangling `D-0NN` tokens in DESIGN/SOURCES pointing at pre-migration decisions entombed in `legacy/LOG.md`, and a staleness WARN on `schmukle2026.md`, whose provenance does record a 2026-08-28 verified extraction. Bytes: `ROADMAP.md` under 24,000; `LESSONS.md` 19,918.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M074)._
 _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / New features / Improvements and fixes / Documentation and website; `document()` no diff, `R CMD check` 0/0/0, `check_pkgdown()` and `url_check()` clean. Tag and GitHub release pending the maintainer._
 
