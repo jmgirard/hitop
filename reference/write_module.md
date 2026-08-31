@@ -109,7 +109,7 @@ cat(readLines(f), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-08-30",
+#>   "buildDate": "2026-08-31",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Appetite Loss"],
 #>   "items": [66, 109, 118, 144, 202, 260, 291, 389],
