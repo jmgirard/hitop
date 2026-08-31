@@ -151,9 +151,10 @@ stays with the HiTOP-HSUM scoring candidate row.
 ### Consistency gate (2026-08-30)
 
 - `cairn_validate.py` exit 0, every check PASS. Advisories only: 21 dangling
-  `D-0NN` tokens (all pre-migration D-001..D-012 references, pre-existing) and
-  one references-staleness note on `schmukle2026.md` (pre-existing). The
-  `release window` advisory did not fire.
+  decision-id tokens (all pre-migration references carried by `DESIGN.md`,
+  `DECISIONS.md` and `SOURCES.md`, pre-existing) and one references-staleness
+  note on `schmukle2026.md` (pre-existing). The `release window` advisory did
+  not fire.
 - `cairn_impact.py` skipped: the diff changes no `DESIGN.md` principle.
 - Toolchain checks from the `r-package` profile's `consistency-gate` slot:
   `document()` no diff, no hand-edit to `NAMESPACE`/`man/`/`data/*.rda`,
@@ -278,3 +279,7 @@ failing, so the milestone did not return to `in-progress`.
 
 - `devtools::test()` FAIL 0 / WARN 0, 4 pre-existing skips; the sweep file
   itself PASS 17 (up from 15, the two new `eval=F` assertions).
+- `devtools::check(document = TRUE)` `Status: OK` -- 0 errors / 0 warnings /
+  0 notes in 6m 13s, vignettes rebuilt, and a clean `git status` afterwards, so
+  `document()` still produces no diff. `pkgdown::check_pkgdown()` "No problems
+  found."
