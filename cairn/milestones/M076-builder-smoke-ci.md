@@ -254,6 +254,10 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   run is green at head `d9a7819`
   (https://github.com/jmgirard/hitop-builder/actions/runs/33433797684). Status
   set to review.
+- 2026-08-31: this repo's CI at head `dc8411e9` — `pkgdown`, `test-coverage`
+  and `line endings` green; the five-platform `R CMD check` matrix still
+  running when the wait was stopped. The diff here is markdown only. Review
+  re-derives CI state from `gh pr checks`.
 
 ## Decisions
 
