@@ -111,7 +111,7 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
       `main` serving the checkout on localhost, `schedule` (weekly) and
       `workflow_dispatch` against the deployed page, with one retry before the
       job goes red.
-- [ ] T5. Update the builder `README.md` (the runtime timeout beside the
+- [x] T5. Update the builder `README.md` (the runtime timeout beside the
       install timeout in "How it works"; the repository-layout table) and this
       repo's `cairn/PROFILE.md` Downstream step (`PROFILE.md:81-90`).
 
@@ -186,6 +186,13 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   `.github/workflows/smoke.yml`, four triggers, `SMOKE_TARGET` set to the
   deployed page on `schedule` and `workflow_dispatch` and empty otherwise.
   Retries come from `playwright.config.js`, which allows one under `CI`.
+- 2026-08-31: T5 done. Builder `README.md` (`82cff5a`) states both timeouts as
+  `120000` milliseconds and lists the seven files this milestone adds; this
+  repo's `cairn/PROFILE.md` gained a Downstream watch bullet naming the smoke
+  test and its four triggers (committed early, in T1's tracking commit
+  `295b6508`, and trimmed to keep the file under its 120-line cap).
+- 2026-08-31: D-051 recorded — the builder repo's `@playwright/test`
+  development dependency, per the implement gate.
 
 ## Decisions
 

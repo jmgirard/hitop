@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-051 (2026-08-31): The builder repo takes a Node development dependency on `@playwright/test`, pinned in a committed `package-lock.json` and installed only by CI (extends GP4's dependency posture to the downstream builder repo, as D-038 extended IP1 to it)
+
+**Context:** `jmgirard/hitop-builder` had no dependency of any kind: the deployed site was `index.html` alone, and the repository held no build step, no test and no lockfile. What it also had was no check — a `hitop` release that changed a surface the page calls, or a webR release that changed how it boots, would reach visitors before anyone noticed. M076's smoke test is that check, and it needs a real browser driven headlessly.
+
+**Decision:** The repo gains `package.json` and `package-lock.json` declaring `@playwright/test` as its only dependency, under `devDependencies`, pinned to 1.56.1. Nothing the page serves reads them: the deployed site is still `index.html` alone, and a visitor's browser downloads no part of this. Chosen by Jeff at the 2026-08-31 M076 implementation gate over recording it in the milestone file alone, rejected because the choice outlives the milestone and would be hard to find once M076 is archived. Playwright itself was chosen at that milestone's plan gate over Puppeteer and over a network-free static check of `index.html`: the page hands its file over on an anchor click and webR requests from a Web Worker, which Playwright captures and Puppeteer does not do as usefully, and a static check cannot catch r-universe serving a `hitop` the page no longer matches.
+
+**Consequences:** The builder repo now has a `node_modules` install step in CI and a lockfile to keep current, and its `.gitignore` covers `node_modules/` and Playwright's run output. This package's own `DESCRIPTION` is untouched — nothing here reaches an R user's install. The evidence that would reopen this is Playwright's install becoming unreliable enough in CI to be the thing that turns runs red, or a browser-driving option arriving that needs no dependency at all.
+
 ### D-050 (2026-08-31): {zip} carries a `>= 2.1.0` floor in Imports, declared in `DESCRIPTION` alone (extends D-035, which adopted {zip} with no version stated; applies GP4's dependency posture to a re-pin)
 
 **Context:** D-035 moved both REDCap archive writers to `zip::zip(mode = "cherry-pick")` and put {zip} in Imports with no version. The `mode` argument is not in every release: CRAN's release notes for the package record it arriving in 2.1.0 — "zip functions now have a `mode` argument to choose how files and directories are assembled into the archive" — and no earlier release mentions it. An install that resolved {zip} to 2.0.4 or older would install cleanly and fail at the call.
