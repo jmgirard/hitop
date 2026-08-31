@@ -107,7 +107,7 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
       download. Follow the existing install race: handle the loser's rejection
       in place so a late settle cannot reach an unhandled rejection or turn a
       control back on past the `bootAbandoned` latch.
-- [ ] T4. Add `.github/workflows/smoke.yml`: `pull_request` and `push` to
+- [x] T4. Add `.github/workflows/smoke.yml`: `pull_request` and `push` to
       `main` serving the checkout on localhost, `schedule` (weekly) and
       `workflow_dispatch` against the deployed page, with one retry before the
       job goes red.
@@ -182,6 +182,10 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   unplanted copy passed; (a), (b) and (c) failed A1, (d) failed A4 and A5, (e)
   failed A2, (f) failed A3 — all five enumerated assertions covered, the list
   read from the spec file rather than restated.
+- 2026-08-31: T4 done in jmgirard/hitop-builder (`ab87b59`):
+  `.github/workflows/smoke.yml`, four triggers, `SMOKE_TARGET` set to the
+  deployed page on `schedule` and `workflow_dispatch` and empty otherwise.
+  Retries come from `playwright.config.js`, which allows one under `CI`.
 
 ## Decisions
 
