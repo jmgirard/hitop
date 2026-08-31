@@ -27,7 +27,7 @@ Imports:
     stats,
     tibble,
     utils,
-    zip
+    zip (>= 2.1.0)
 Suggests:
     covr,
     ggplot2 (>= 3.4.0),
