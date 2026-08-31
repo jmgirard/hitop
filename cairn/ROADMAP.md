@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / N
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M073 | Every exported function the package still recommends is demonstrated or linked in the vignettes | planned | — | normal | milestones/M073-export-vignette-coverage.md |
+| M073 | Every exported function the package still recommends is demonstrated or linked in the vignettes | in-progress | — | normal | milestones/M073-export-vignette-coverage.md |
 | M072 | The HiTOP-BR interval tests and the collision-ordering sweep fail on the defects they claim to catch | done | — | normal | milestones/archive/M072-interval-collision-test-reach.md |
 | M071 | The Table 1 extractor and the staged-artifact guards no longer return a verdict a wrong input cannot change | done | — | normal | milestones/archive/M071-verification-guard-repairs.md |
 | M070 | `data-raw/` verification tooling is reduced to what still re-runs, with its live guard defects repaired | done | — | normal | milestones/archive/M070-dataraw-verification-tooling.md |
