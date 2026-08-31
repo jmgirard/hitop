@@ -87,6 +87,11 @@
 </li>
 </ul></div>
 <div class="section level3">
+<h3 id="improvements-and-fixes-development-version">Improvements and fixes<a class="anchor" aria-label="anchor" href="#improvements-and-fixes-development-version"></a></h3>
+<ul><li><p><strong>Each REDCap export now stages its data dictionary in a directory of its own.</strong> Every <code>generate_redcap_*()</code> call wrote that dictionary to the same path inside the session’s temporary directory before packing it, so two exports in one session used one file, and an export that failed left the file behind for the next call to find. Each call now gets a directory created for it and removed whether or not the archive is written.</p></li>
+<li><p><strong><code>zip</code> is now required at version 2.1.0 or later.</strong> That is the first release whose <code><a href="https://rdrr.io/r/utils/zip.html" class="external-link">zip()</a></code> accepts the archive mode the REDCap exports pass it; an older version installed cleanly and then failed at the call.</p></li>
+</ul></div>
+<div class="section level3">
 <h3 id="documentation-and-website-development-version">Documentation and website<a class="anchor" aria-label="anchor" href="#documentation-and-website-development-version"></a></h3>
 <ul><li><p><strong>Three scoring vignettes gained sections for functions they never demonstrated.</strong> <em>Scoring the PID-5</em> now ranks each participant’s five highest-scoring facets with <code><a href="../reference/rank_scales.html">rank_scales()</a></code>, and the HiTOP-SR and HiTOP-BR scoring vignettes each show <code><a href="../reference/label_hitopsr.html">label_hitopsr()</a></code> and <code><a href="../reference/label_hitopbr.html">label_hitopbr()</a></code> attaching the item text to a raw item column and the printed scale name to a scored column.</p></li>
 <li><p><strong>The HiTOP-HSUM download page links its file generators.</strong> It gained the “Custom File Generation” card the five sibling instrument pages already carried, pointing at <code><a href="../reference/generate_docx_hitophsum.html">generate_docx_hitophsum()</a></code> and <code><a href="../reference/generate_redcap_hitophsum.html">generate_redcap_hitophsum()</a></code>. The Qualtrics survey file for this instrument is still a prebuilt download only; the package exports no generator for it.</p></li>

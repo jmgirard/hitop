@@ -73,6 +73,21 @@
   two HiTOP-BR Word forms in `inst/extdata/` has been rebuilt with the
   corrected item lists.
 
+### Improvements and fixes
+
+- **Each REDCap export now stages its data dictionary in a directory of
+  its own.** Every `generate_redcap_*()` call wrote that dictionary to
+  the same path inside the session’s temporary directory before packing
+  it, so two exports in one session used one file, and an export that
+  failed left the file behind for the next call to find. Each call now
+  gets a directory created for it and removed whether or not the archive
+  is written.
+
+- **`zip` is now required at version 2.1.0 or later.** That is the first
+  release whose [`zip()`](https://rdrr.io/r/utils/zip.html) accepts the
+  archive mode the REDCap exports pass it; an older version installed
+  cleanly and then failed at the call.
+
 ### Documentation and website
 
 - **Three scoring vignettes gained sections for functions they never
