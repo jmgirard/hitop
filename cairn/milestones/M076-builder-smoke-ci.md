@@ -100,7 +100,7 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
       smoke test against each and against the unplanted copy, and printing
       which assertion failed for each, against the spec file's own
       enumerated assertions.
-- [ ] T3. In `index.html`, declare `RUNTIME_TIMEOUT_MS` beside
+- [x] T3. In `index.html`, declare `RUNTIME_TIMEOUT_MS` beside
       `INSTALL_TIMEOUT_MS` (`index.html:640`) and race the `import(WEBR_URL)`
       + `webR.init()` pair against it inside `main()` (`index.html:1277-1291`),
       calling `abandonBoot()` on expiry with a message naming the runtime
@@ -172,6 +172,12 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   `package-lock.json` pinning `@playwright/test` 1.56.1, `playwright.config.js`,
   `tests/serve.mjs` and `tests/smoke.spec.js`. Runs green against the local
   checkout and against the deployed page.
+- 2026-08-31: T3 done in jmgirard/hitop-builder (`63584dd`): `RUNTIME_TIMEOUT_MS`
+  = 120000 beside `INSTALL_TIMEOUT_MS`, racing `import(WEBR_URL)` and
+  `webR.init()` together. `tests/runtime-timeout.spec.js` stalls each half
+  against a request the local server never answers; both see the message and
+  `#controls` hidden, where the page before this change sits on "Starting R in
+  your browser…" indefinitely.
 
 ## Decisions
 
