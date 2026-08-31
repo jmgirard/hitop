@@ -547,8 +547,10 @@ test_that("two scales converted in one call each use their own reference row", {
     hbr_internalizing = second$x,
     hbr_antagonism = first$x
   )
-  ## Requested in the opposite order to the one `data` holds, so the engine's
-  ## row lookup is exercised on a selection that is not the column order.
+  ## Requested in the opposite order to the one `data` holds. The engine reads
+  ## its column names off `scores`, not off `data`, so what this exercises is
+  ## that each requested column is matched to its own reference row -- not that
+  ## `data`'s order is honoured, which the engine never sees.
   got <- interval_hitopbr(
     scored,
     scores = c("hbr_antagonism", "hbr_internalizing"),
