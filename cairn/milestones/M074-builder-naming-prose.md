@@ -97,7 +97,7 @@ stems the page wrote before M063 and the eight that replaced them.
       so the reason names the same-format, same-scope, same-shuffle condition.
       Transcribe the shipped sentence into a predicate by reading that sentence
       alone, without the map open, then compare it against T1's 64 pairs.
-- [ ] T3: Rewrite the README's `-module` sentence (`README.md:164`) and the
+- [x] T3: Rewrite the README's `-module` sentence (`README.md:164`) and the
       "Ticking all 76 scales" passage of the same shape to state the
       `tilesExactly` gate.
 - [ ] T4: Drive the four AC2 builds on the served branch page, recording each
@@ -125,6 +125,7 @@ stems the page wrote before M063 and the eight that replaced them.
 - 2026-08-30: implementation started on `m074-naming-prose`; builder branch of the same name cut from jmgirard/hitop-builder `main` at `2a7f2ae`.
 - 2026-08-30: T1 — collision map built by extracting `INSTRUMENT`, `FORMATS` and `downloadStem` out of the branch `index.html` and evaluating them over M063-D1's eight builds: 8 of the 64 ordered pairs collide, each a build with itself. The two wrong controls both disagreed with it (all-collide 56, none-collide 8).
 - 2026-08-30: T2 — page hint and README twin rewritten to name the same-format, same-scope, same-shuffle condition (builder `a283dcf`). A fresh [S] reader given only the two shipped sentences, with no map and no repository access, transcribed them to `held.format === running.format && held.whole === running.whole && held.shuffle === running.shuffle`, which disagrees with the map on 0 of 64 pairs.
+- 2026-08-30: T3 — both README passages rewritten to state the start-up gate `wholeInstrument()` applies, naming the page's own log line as where a reader sees the answer (builder `e6b48ee`). The probe checks the union of every scale's items equals 1..N, so the prose says "nothing left out" rather than the no-overlap claim the surrounding code comment makes.
 
 ## Decisions
 
