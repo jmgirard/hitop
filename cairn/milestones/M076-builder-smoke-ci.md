@@ -1,6 +1,6 @@
 # M076: The builder page's boot path is bounded end to end and watched by a headless smoke test in CI
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -249,6 +249,11 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   runs, two runtime probes — and this pass moved the head and changed the
   artifacts under all four. No criterion text changed; all four re-verify at
   review.
+- 2026-08-31: `devtools::test()` clean (0 failures, 16228 passes, 4 skips) with
+  no R source touched. Both branches pushed; the builder's `pull_request` smoke
+  run is green at head `d9a7819`
+  (https://github.com/jmgirard/hitop-builder/actions/runs/33433797684). Status
+  set to review.
 
 ## Decisions
 
