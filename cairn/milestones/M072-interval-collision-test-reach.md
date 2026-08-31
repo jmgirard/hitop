@@ -76,7 +76,7 @@ already checked in `test-interval_hitopsr.R`.
       `br_reference` constants already transcribed there (two scales whose `r`
       differs most, so the halves differ visibly). Prove it red under the
       `hit[[1]]` mutation and green without, recording both runs.
-- [ ] T2: Factor the pairing check into a returning helper beside the existing
+- [x] T2: Factor the pairing check into a returning helper beside the existing
       `test_that()` at `test-interval_hitopbr.R:16`, in the shape
       `test-interval_hitopsr.R`'s `join_residue()` family uses, and add the
       exchanged-`camelCase` probe block.
@@ -98,6 +98,7 @@ already checked in `test-interval_hitopsr.R`.
 - 2026-08-30: the five audit findings fixed at the gate — AC1 and AC3 stated their mutation kill over a whole filtered `devtools::test()` run, so a pre-existing test could supply the failure (narrowed to the added blocks); AC2 pinned its helper's form to `test-interval_hitopsr.R:81-83`, a line-numbered address that drifts (restated behaviorally); AC2's two halves named incompatible shapes, lines 81-83 being inline `expect_identical()` calls that return nothing while the plant test needs a helper naming the offending scales (repaired to the returning-helper shape); AC4 bound the script's header prose, satisfiable by writing a comment (moved to T4); AC4's rationale clause overclaimed sensitivity across the whole condition channel from one signalling cell (narrowed).
 - 2026-08-30: plan gate chose hand-listing the three `score_*()` exports in `test-append-collision.R` over driving that block from the file's own `append_exports()` sweep, because the sweep-driven form needs a per-export "does its output path warn" registry and the internal-tier criteria standard warns against exemption registries; falsified by an eighth appending export landing with a warning output path and going uncovered.
 - 2026-08-30: T1 — `test-interval_hitopbr.R` gained a two-column block (antagonism r = .82, internalizing r = .90, requested in the order opposite to `data`), expectations from Table 1's printed constants; under `refstats[hit[[1]], ]` that block alone reports 4 failures and the file's other 16 blocks report none, and it is green on the unmutated tree.
+- 2026-08-30: T2 — `pairing_residue(devstats, scales)` returns the printed names whose `camelCase` is not the stem `hitopbr_scales` pairs with that name; the shape block asserts `character(0)` and a new block trades two rows' stems and asserts both names come back, after asserting the trade leaves every set comparison over the two columns unchanged. Its code landed in T1's commit — both edits are in the same file and were made before that commit.
 - 2026-08-30: plan gate chose deleting `characterize_calc_se.R`'s condition channel over adding a matrix cell that signals, because the scope sits near the checker-regress shape — hardening a maintainer harness M069 already shipped — and the channel's stated promise is false as it stands (verified at the gate: 48 cells, 0 conditions); falsified by a `calc_se` change whose only visible effect is a condition the package stops signalling.
 
 ## Decisions
