@@ -88,12 +88,12 @@ stems the page wrote before M063 and the eight that replaced them.
 
 ## Tasks
 
-- [ ] T1: Compute the collision map — the eight stems `downloadStem(format,
+- [x] T1: Compute the collision map — the eight stems `downloadStem(format,
       whole, shuffle)` produces for M063-D1's eight builds, then all 64 ordered
       pairs marked equal or not. Prove the comparison able to fail by running
       two deliberately wrong predicates against it, one asserting a collision on
       every pair and one on none; both must land in the disagreement list.
-- [ ] T2: Rewrite the download hint (`index.html:548-555`) and its README twin
+- [x] T2: Rewrite the download hint (`index.html:548-555`) and its README twin
       so the reason names the same-format, same-scope, same-shuffle condition.
       Transcribe the shipped sentence into a predicate by reading that sentence
       alone, without the map open, then compare it against T1's 64 pairs.
@@ -123,6 +123,8 @@ stems the page wrote before M063 and the eight that replaced them.
 - 2026-08-30: plan gate chose one milestone for the three M063 prose items over one covering all six items on the builder-page row, because the row's own promotion condition has fired only for the prose ("when the builder's prose is next edited"); falsified by a visitor asking for a theme control or a clinician asking for the client wording in the picker, either of which promotes its half.
 - 2026-08-30: plan gate chose a dated, removable rename line over a permanent one and over no line at all, because the rename is a one-time event whose notice should not outlive the visitors holding old files; falsified by the line still earning its place when a later milestone next edits that copy.
 - 2026-08-30: implementation started on `m074-naming-prose`; builder branch of the same name cut from jmgirard/hitop-builder `main` at `2a7f2ae`.
+- 2026-08-30: T1 — collision map built by extracting `INSTRUMENT`, `FORMATS` and `downloadStem` out of the branch `index.html` and evaluating them over M063-D1's eight builds: 8 of the 64 ordered pairs collide, each a build with itself. The two wrong controls both disagreed with it (all-collide 56, none-collide 8).
+- 2026-08-30: T2 — page hint and README twin rewritten to name the same-format, same-scope, same-shuffle condition (builder `a283dcf`). A fresh [S] reader given only the two shipped sentences, with no map and no repository access, transcribed them to `held.format === running.format && held.whole === running.whole && held.shuffle === running.shuffle`, which disagrees with the map on 0 of 64 pairs.
 
 ## Decisions
 
