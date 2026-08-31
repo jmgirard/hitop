@@ -103,6 +103,7 @@ stays with the HiTOP-HSUM scoring candidate row.
 - 2026-08-30: implement gate chose ranking the 25 facet columns over all 30 scored columns, so a domain built from facets cannot outrank them, and chose demonstrating both label targets (item wording, then scale name) over the help page's items-only example.
 - 2026-08-30: T1 written tests-first and red on exactly the five real gaps (`generate_docx_hitophsum`, `generate_redcap_hitophsum`, `label_hitopbr`, `label_hitopsr`, `rank_scales`); the fixture arms pass 14 assertions, so the classifier's silence on `covered`/`linked` and its report on the prose, comment, `eval = FALSE` header, `#| eval: false` body, and absent arms are all shown.
 - 2026-08-30: T3 added a `## Rank Each Person's Highest Facets` section to the full-form PID-5 vignette ranking the 25 facet columns with `top = 5`; the sweep no longer names `rank_scales`, leaving four gaps. Boxes stay unticked until the suite is green, since the sweep is red by design until T5 lands.
+- 2026-08-30: T4 added a `## Labelling Columns` section to each of the HiTOP-SR and HiTOP-BR scoring vignettes, showing the item text on a raw item column and then the printed scale name on a scored column; run against `sim_hitopsr`/`sim_hitopbr` because `ku_hitopsr`'s zero-padded `hsr001` names match no prefix the labeller builds. The sweep is now down to the two HiTOP-HSUM generators.
 
 ## Decisions
 
