@@ -95,7 +95,7 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
       default); capture the download through Playwright's `download` event —
       the page hands the file over on an anchor with a `download` attribute,
       and webR's own requests come from a Web Worker (the M045 lesson).
-- [ ] T2. Add the plant matrix: a committed script writing the six planted
+- [x] T2. Add the plant matrix: a committed script writing the six planted
       copies of `index.html` (AC2 a–f) to a scratch directory, running the
       smoke test against each and against the unplanted copy, and printing
       which assertion failed for each, against the spec file's own
@@ -178,6 +178,10 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   against a request the local server never answers; both see the message and
   `#controls` hidden, where the page before this change sits on "Starting R in
   your browser…" indefinitely.
+- 2026-08-31: T2 done in jmgirard/hitop-builder (`ea14c2f`). Matrix run: the
+  unplanted copy passed; (a), (b) and (c) failed A1, (d) failed A4 and A5, (e)
+  failed A2, (f) failed A3 — all five enumerated assertions covered, the list
+  read from the spec file rather than restated.
 
 ## Decisions
 
