@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under its four headings; `
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M076 | The builder page's boot path is bounded end to end and watched by a headless smoke test in CI | review | — | normal | milestones/M076-builder-smoke-ci.md |
+| M076 | The builder page's boot path is bounded end to end and watched by a headless smoke test in CI | in-progress | — | normal | milestones/M076-builder-smoke-ci.md |
 | M075 | One REDCap archive writer, using a per-call temporary directory it always cleans up, against a stated {zip} floor | done | — | normal | milestones/archive/M075-redcap-zip-temp-path.md |
 | M074 | The builder page's naming prose states the conditions it actually depends on | done | — | normal | milestones/archive/M074-builder-naming-prose.md |
 | M073 | Every exported function the package still recommends is demonstrated or linked in the vignettes | done | — | normal | milestones/archive/M073-export-vignette-coverage.md |
