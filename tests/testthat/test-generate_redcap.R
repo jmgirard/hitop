@@ -357,3 +357,42 @@ test_that("the HiTOP-HSUM REDCap archive also needs no external zip program", {
   expect_true(file.exists(f))
   expect_identical(utils::unzip(f, list = TRUE)$Name, "instrument.csv")
 })
+
+# ---- Per-call scratch directory ---------------------------------------------
+#
+# The data dictionary is written to disk before it is archived. Two exports in
+# one session must not aim that write at the same path: the second call would
+# otherwise overwrite the first call's file while it is still in use, and a
+# failed export would leave the file behind. The mock records the path handed
+# to zip::zip() and then lets the real call run, so the archives are still the
+# ones the generators would have written.
+
+test_that("each REDCap export writes its CSV into a path of its own", {
+  captured <- character()
+  real_zip <- zip::zip
+  local_mocked_bindings(
+    zip = function(zipfile, files, ...) {
+      captured <<- c(captured, files)
+      real_zip(zipfile = zipfile, files = files, ...)
+    },
+    .package = "zip"
+  )
+
+  forms <- c("hsr_first", "hsr_second", "hsum_only")
+  f <- withr::local_tempfile(fileext = rep(".zip", 3L))
+  suppressMessages(generate_redcap_hitopsr(file = f[[1]], form_name = forms[[1]]))
+  suppressMessages(generate_redcap_hitopsr(file = f[[2]], form_name = forms[[2]]))
+  suppressMessages(generate_redcap_hitophsum(file = f[[3]], form_name = forms[[3]]))
+
+  # Three exports, three distinct paths, each still named instrument.csv --
+  # the name zip(mode = "cherry-pick") stores the member under.
+  expect_length(captured, 3L)
+  expect_length(unique(captured), 3L)
+  expect_identical(basename(captured), rep("instrument.csv", 3L))
+
+  # Each archive holds one entry, and it is that call's own dictionary.
+  for (i in seq_along(forms)) {
+    expect_identical(utils::unzip(f[[i]], list = TRUE)$Name, "instrument.csv")
+    expect_identical(unique(read_redcap_csv(f[[i]])$`Form Name`), forms[[i]])
+  }
+})

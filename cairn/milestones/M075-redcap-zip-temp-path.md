@@ -1,11 +1,11 @@
 # M075: One REDCap archive writer, using a per-call temporary directory it always cleans up, against a stated {zip} floor
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP4
-- **Branch/PR:** —
+- **Branch/PR:** `m075-redcap-zip-temp-path`
 
 ## Goal
 
@@ -78,7 +78,7 @@ entry name, or the dictionaries themselves → not in this milestone.
 
 ## Tasks
 
-- [ ] T1: Write the path-capture test for AC1 in
+- [x] T1: Write the path-capture test for AC1 in
       `tests/testthat/test-generate_redcap.R` — mock `zip::zip()` to record its
       `files` argument, then let the real call run — covering two successive
       `generate_redcap_hitopsr()` calls and one
@@ -108,6 +108,9 @@ entry name, or the dictionaries themselves → not in this milestone.
 - 2026-08-31: plan gate chose merging both archive-writing blocks into one internal function over fixing each copy in place (Jeff's call), because one writing path removes the class of divergence rather than one instance of it; falsified by the merge forcing a signature or behavior difference between the two generators that the shared function cannot carry.
 - 2026-08-31: plan gate chose a per-call temporary *directory* holding a file named `instrument.csv` over a `tempfile()`-named CSV, because `zip::zip(mode = "cherry-pick")` stores a member by its basename and REDCap's instrument format requires that name, pinned by `test-generate_redcap.R:345-346`; falsified by REDCap accepting an archive whose member carries any other name.
 - 2026-08-31: plan gate chose declaring the `{zip}` floor in `DESCRIPTION` alone over also guarding at the call site, because R enforces an `Imports` version requirement when the namespace loads, where the Suggests floor of the earlier ggplot2 decision was not enforced; falsified by an install of the package succeeding against a `zip` below the declared floor.
+- 2026-08-31: implement gate — the merged writer absorbs the whole duplicated block (relative-to-absolute destination path, temporary CSV, archive write, success message), not only the two lines the plan names (Jeff's call).
+- 2026-08-31: implement gate — `{zip}` floor set to 2.1.0 (Jeff's call). Source: CRAN's release record for `zip` — the NEWS entry for 2.1.0 is the first to state that "zip functions now have a `mode` argument"; no earlier release mentions `mode`. The r-lib/zip source at tag `v2.1.0` defines `zip(mode = c("mirror", "cherry-pick"))`, so `"cherry-pick"` is accepted from that release; `zip_2.1.0.tar.gz` is on CRAN dated 2020-08-10.
+- 2026-08-31: T1 — path-capture test added at `test-generate_redcap.R:376`; red on HEAD with exactly one failure, `unique(captured)` length 1 against the expected 3 (all three exports wrote to the same `file.path(tempdir(), "instrument.csv")`). The capture itself recorded 3 calls and every other assertion in the file passed, so the mock reaches `zip::zip()` and the red is the shared-path defect, not a broken probe.
 - 2026-08-31: plan gate deferred rebuilding the six committed REDCap artifacts (Jeff's call); falsified by a rebuilt archive differing in any byte from its committed copy.
 
 ## Decisions
