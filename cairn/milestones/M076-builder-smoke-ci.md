@@ -35,7 +35,7 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
 
 ## Acceptance criteria
 
-- [ ] AC1. A committed smoke-test script drives a headless browser through the
+- [x] AC1. A committed smoke-test script drives a headless browser through the
       page and asserts, in one run against a locally served copy of the
       repository's own `index.html` and one run against the deployed page, in
       this order: the status region reaches `Ready.`; more than 50 scale rows
@@ -46,7 +46,7 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
       a named constant whose comment states it is a deliberate floor and not
       the instrument's scale count. Evidence: the recorded output of both runs,
       beside the constant and its comment.
-- [ ] AC2. The smoke test fails against each of six planted copies of
+- [x] AC2. The smoke test fails against each of six planted copies of
       `index.html`, and passes against the unplanted copy: (a) `MIN_HITOP`
       raised to `99.0.0`, unreachable by construction; (b) `#downloadBtn`
       renamed; (c) `WEBR_URL` pointed at a path that returns 404; (d) the
@@ -57,21 +57,21 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
       planted run the assertion that failed — so every assertion the smoke
       test makes, enumerated from the spec file, is failed by at least one of
       the six.
-- [ ] AC3. A workflow in `jmgirard/hitop-builder` runs the smoke test on
+- [x] AC3. A workflow in `jmgirard/hitop-builder` runs the smoke test on
       `pull_request` and `push` to `main` against the repository's own
       `index.html`, and on a weekly `schedule` and on `workflow_dispatch`
       against the deployed page. Evidence: one green `pull_request` run and
       one green `workflow_dispatch` run recorded by URL; `push` and `schedule`
       verified by quoting the `on:` block, `schedule` because GitHub fires it
       only from the default branch and no pre-merge run of it exists.
-- [ ] AC4. `index.html` races the webR runtime download — `import(WEBR_URL)`
+- [x] AC4. `index.html` races the webR runtime download — `import(WEBR_URL)`
       and `webR.init()` together, under one timeout constant declared beside
       `INSTALL_TIMEOUT_MS` — and on expiry calls `abandonBoot()` with a
       message naming the runtime download rather than the package install.
       Evidence: two probes, one serving a copy whose `WEBR_URL` never settles
       and one whose `WEBR_BASE` never settles, each recording the displayed
       message and that `#controls` is hidden.
-- [ ] AC5. The builder `README.md` states the runtime timeout beside the
+- [x] AC5. The builder `README.md` states the runtime timeout beside the
       install timeout it already states, in a number equal to the constant in
       `index.html`; its "Every tracked file" table lists every file this
       milestone adds to that repo; and this repo's `cairn/PROFILE.md`
@@ -258,10 +258,23 @@ copy and remaining comment-accuracy gaps → their standing candidate rows.
   and `line endings` green; the five-platform `R CMD check` matrix still
   running when the wait was stopped. The diff here is markdown only. Review
   re-derives CI state from `gh pr checks`.
+- 2026-08-31: review round 2 — all five criteria re-verified at builder head
+  `433420f`; local and deployed smoke runs, plant matrix and both runtime
+  probes green, `pull_request` and `workflow_dispatch` green in CI.
+- 2026-08-31: review round 2 fix-now work (`433420f`): the plant matrix fails
+  a planted run that went red without failing an enumerated assertion (F14)
+  and clears `SMOKE_REQUIRE_TARGET` (F15); the `bootAbandoned` comment names
+  all eight call sites and what `main()`'s catch-all does instead (F21); the
+  line that shows the controls reads the latch (F13, in part).
+- 2026-08-31: review round 2 — F16 refuted against the dispatch logs, F17
+  accepted as unverifiable before merge, F18-F20, F22 and the carried F10 and
+  F11 to candidate rows, F23 and F12 rejected.
 
 ## Decisions
 
 ## Review
+
+### Round 1 (2026-08-31) — returned on F1
 
 Reviewed 2026-08-31 on `m076-builder-smoke-ci`. `origin/main` had not moved
 since the branch was cut, so no merge was needed. PRs:
@@ -401,4 +414,191 @@ past guard or archived review finding is undone by this diff.
 Returned to `in-progress` on F1: AC1 requires the smoke test to assert that
 every scale row carries a non-empty `.nm` name, and it does not. F2-F9 go back
 with it; F10 and F11 become candidate rows at the next review.
+
+### Round 2 (2026-08-31) — re-review after the F1 return
+
+Re-reviewed 2026-08-31 on `m076-builder-smoke-ci`, branch head `433420f` in
+`jmgirard/hitop-builder`. `origin/main` had not moved in either repo since the
+branch was cut, so no merge was needed. PRs unchanged:
+https://github.com/jmgirard/hitop/pull/82 and
+https://github.com/jmgirard/hitop-builder/pull/12. Every criterion was
+unticked at the return and is re-verified here from scratch; the round-1
+evidence above is superseded.
+
+#### Acceptance criteria
+
+- AC1 — met. A3 (`tests/smoke.spec.js:106-113`) now binds the name check to the
+  row count: it asserts `{named: names.length, blank}` equals
+  `{named: rowCount, blank: []}`, so a render that drops the name span or
+  renames its class gives `named: 0` against a `rowCount` A2 has already
+  floored above 50, and fails. That is AC1's "each carrying a non-empty `.nm`
+  name"; the empty-domain path F1 named is gone. Both runs green at review
+  time: local server over this checkout (13.5s) and
+  `SMOKE_TARGET=https://jmgirard.github.io/hitop-builder/` (20.7s), each
+  logging the URL it drove. Order, ZIP magic bytes and the 10,000-byte floor
+  are as AC1 states. `const MIN_SCALE_ROWS = 50;`
+  (`tests/smoke.spec.js:47-52`) carries the comment "A deliberate floor, set
+  well under the number of scales the instrument actually has. It is NOT the
+  instrument's scale count and must not be 'tightened' into one".
+- AC2 — met. `npm run plants` at review time, at branch head `433420f`,
+  reading the six enumerated assertions out of `tests/smoke.spec.js` rather
+  than restating them. The unplanted copy passed; (a) `MIN_HITOP` = `99.0.0`
+  failed A1; (b) `#downloadBtn` renamed failed A6; (c) `WEBR_URL` at a 404
+  path failed A1; (d) the 12-byte non-ZIP blob failed A4 and A5; (e) the
+  render truncated to one row failed A2; (f) one row given an empty name
+  failed A3. Every enumerated assertion is failed by at least one plant, and
+  the script exits 0 on that condition alone.
+- AC3 — met. `.github/workflows/smoke.yml` declares all four triggers:
+  `on:` / `pull_request:` / `push:` `branches: [main]` / `schedule:`
+  `- cron: '0 6 * * 1'` / `workflow_dispatch:`. Green runs at branch head
+  `433420f`: `pull_request`
+  https://github.com/jmgirard/hitop-builder/actions/runs/33437555420 (the
+  checkout) and `workflow_dispatch`
+  https://github.com/jmgirard/hitop-builder/actions/runs/33437603391, whose
+  log shows `SMOKE_REQUIRE_TARGET: 1` and `smoke target:
+  https://jmgirard.github.io/hitop-builder/` — so the deployed-page branch of
+  the `SMOKE_TARGET` expression is exercised, not merely quoted. `push` and
+  `schedule` are verified by the quoted `on:` block, `schedule` because GitHub
+  fires it only from the default branch.
+- AC4 — met. `index.html:647` declares `const RUNTIME_TIMEOUT_MS = 120000;`
+  seven lines above `const INSTALL_TIMEOUT_MS = 120000;` at `:654`, and
+  `main()` races one `Promise.race` over the `import(WEBR_URL)` +
+  `webR.init()` pair against a single timer on that constant
+  (`index.html:1298-1352`). On expiry it calls `abandonBoot()` with "R in your
+  browser did not finish downloading within 120 seconds, so this page cannot
+  build anything" — R itself, not the package install, whose message names
+  "The hitop package" at `:1416`. Both probes green at review time
+  (`tests/runtime-timeout.spec.js`, 2 passed): one stalls `WEBR_URL` and one
+  stalls `WEBR_BASE`, each against a `/hang/` path the local server holds open
+  and never answers, and each asserts the displayed `#status` text matches the
+  runtime-download message and that `#controls` is hidden.
+- AC5 — met. Builder `README.md:50-56`: "Downloading R itself — the webR
+  module import and the `init()` that fetches the WebAssembly build behind it
+  — is raced against `RUNTIME_TIMEOUT_MS`, and `installPackages` against
+  `INSTALL_TIMEOUT_MS`. Both are stated in `index.html`, both set to `120000`
+  milliseconds — two minutes" — equal to the two constants quoted under AC4.
+  Its "Every tracked file" table (`README.md:343-349`) lists all eight files
+  the branch adds: `.github/workflows/smoke.yml`, `tests/smoke.spec.js`,
+  `tests/runtime-timeout.spec.js`, `tests/plants.mjs`, `tests/serve.mjs`,
+  `playwright.config.js`, `package.json` and `package-lock.json`;
+  `git diff --name-status origin/main..HEAD` shows exactly those eight
+  additions and no ninth. This repo's `cairn/PROFILE.md:90-95` Downstream
+  watch bullet: "that repo's `tests/smoke.spec.js` boots the page headlessly
+  and downloads a Word form, run by `.github/workflows/smoke.yml` on four
+  triggers — `pull_request` and `push` to `main` against its own checkout, a
+  weekly `schedule` and `workflow_dispatch` against the deployed page."
+
+#### Consistency gate
+
+Universal cairn-file checks: `cairn_validate.py` exits 0, every check PASS.
+Advisories are the standing three (`work-log format`, `dangling id tokens`,
+`references staleness`), unchanged in kind by this milestone; `release window`
+did not fire. No principle changed (`Principles touched: —`), so
+`cairn_impact.py` was skipped.
+
+Toolchain checks from the `r-package` profile's `consistency-gate` slot, all
+run at review time in this repo: `devtools::document()` produced no diff (tree
+clean after it); `devtools::check()` 0 errors, 0 warnings, 0 notes (6m53s);
+`pkgdown::check_pkgdown()` "No problems found"; `data-raw/check_line_endings.R`
+passed. `README.md` is newer than `README.Rmd` and neither is touched by this
+branch. No generated file was hand-edited and no R source was touched. NEWS.md
+needs no entry: nothing in this milestone changes the package's own behavior.
+
+#### Independent review
+
+Three fresh-context reviewers, none having seen the implementation, on distinct
+evidence bases. The blame-history lens reported no finding: it traced
+`pages.yml`'s `path: .` to the builder repo's founding commit `b1442ca`
+("there is no build step: the files in the repository root are the site") and
+judged the change to `_site` as preserving that intent now that the repo holds
+test tooling, and read M064's runtime-download gap as the one this milestone
+closes rather than undoes. The prior-review lens reported no finding: it
+confirmed F1-F9 fixed at head and found no archived `## Review` finding on the
+touched files that this diff regresses; the GitHub probe
+(`gh api .../pulls/comments?per_page=1`) returned `[]` on both repos, so no
+threads were walked. The diff-bug lens returned eleven, ranked below with
+disposition.
+
+- F13 (fixed in part; remainder → candidate row) — `main()`'s module-level
+  `catch` (`index.html:1534`) reports "Could not start R" without latching
+  `bootAbandoned` or hiding the controls, so a throw after the controls are
+  shown leaves them on. The reachable half is fixed here: the line that shows
+  the controls now returns early on the latch, so an `abandonBoot()` fired by
+  the stdout reader while `main()` is still working cannot have its work
+  undone. The catch-all's own non-latching remains, on a path with no observed
+  trigger.
+- F14 (fixed now) — `tests/plants.mjs` credited a planted run that went red
+  without failing any enumerated assertion. A run that times out or is
+  interrupted returns `{passed: false, failed: []}`, and if another plant
+  covers the same assertion the matrix still exits 0, reporting a plant that
+  demonstrated nothing. A `redButSilent` check now fails the matrix on it.
+  Discrimination probe: a scratch copy with `data-goto="1"` renamed makes the
+  run fail with no `A<n>` token in any error message (`statuses: failed |
+  enumerated assertions failed: []`) — the exact shape the new check catches
+  and the old code credited.
+- F15 (fixed now) — `plants.mjs` cleared `SMOKE_TARGET` but inherited
+  `SMOKE_REQUIRE_TARGET` from the caller's shell, so a developer who had
+  exported it to run the deployed-page test by hand would make all seven runs
+  throw the spec's guard before loading a page. It is cleared alongside the
+  other three.
+- F16 (refuted) — the lens held that `smoke.yml`'s `SMOKE_REQUIRE_TARGET`
+  expression had never been evaluated in CI. Both `workflow_dispatch` runs
+  since it was added log `SMOKE_REQUIRE_TARGET: 1` and `smoke target:
+  https://jmgirard.github.io/hitop-builder/` — runs 33437130357 (`d9a7819`)
+  and 33437603391 (`433420f`).
+- F17 (accepted, for the maintainer's eye) — `pages.yml`'s narrowed deploy has
+  never produced a live deployment: it runs only on `push` to `main` and
+  `workflow_dispatch`, so it first runs at merge. `index.html` carries no
+  relative `href`/`src`, so the page itself is self-contained, but `LICENSE.md`
+  and `README.md` stop being reachable at the public URL. That narrowing is
+  the implement gate's recorded choice; nothing pre-merge can verify it.
+- F18 (follow-up) — no workflow runs `tests/runtime-timeout.spec.js`;
+  `smoke.yml` names `tests/smoke.spec.js` alone. The runtime timeout is the
+  only shipped page behavior this milestone changes, and its probes run only
+  from a developer's checkout. → candidate row.
+- F19 (follow-up) — the second runtime probe rewrites `WEBR_BASE` to `/hang/`
+  but leaves `WEBR_URL` on the live CDN, so half its boot is a network fetch;
+  offline it fails on the wrong branch and reports a broken timeout. →
+  candidate row.
+- F20 (follow-up) — `playwright.config.js`'s 10-minute per-test budget times
+  two attempts is 20 minutes against `smoke.yml`'s `timeout-minutes: 25`,
+  before checkout, `setup-node`, `npm ci` and the browser install. The
+  config's comment states the fit as fact; it holds only while setup stays
+  under five minutes. → candidate row.
+- F21 (fixed now) — the `bootAbandoned` comment claimed to list every call
+  site and listed five causes against eight sites. It now names all eight and
+  says what `main()`'s catch-all does instead.
+- F22 (follow-up) — A2 and A3 read the DOM one-shot, sound only because
+  `renderScales()` completes before `status('Ready.')`; a chunked or deferred
+  render would surface as a confusing `named: 0` name regression. → candidate
+  row.
+- F23 (reject) — `tests/serve.mjs` never percent-decodes `url.pathname`, so a
+  request for an encoded filename 404s. Only `/index.html` and `/hang/*` are
+  ever requested; a tidiness point on a file the diff adds for its own use.
+
+Carried from round 1: F10 (`plants.mjs` walks only top-level suites, so adding
+a `test.describe` would make every run read as failed) and F11 (`plants.mjs`
+and `runtime-timeout.spec.js` pin literal `MIN_HITOP`, `WEBR_URL`, `WEBR_BASE`
+and `RUNTIME_TIMEOUT_MS` strings from `index.html`) both become candidate rows
+in this pass. F12 (unpruned `/hang/` Set in `serve.mjs`) stays rejected.
+
+Reviewer clearances worth recording: F1 is genuinely fixed and no assertion
+retains a vacuous path — A1, A6 and the download wait all fail on a missing
+element, and A4/A5 read real bytes; the assertion enumeration regex matches the
+six header lines and no prose comment; plant (b) now boots the page and fails
+A6 rather than crashing page init; the runtime race clears its timer on every
+path, absorbs the loser's rejection, and publishes `webR` only after `init()`
+resolves; `package-lock.json` matches `package.json` and D-051 describes the
+dependency accurately; `serve.mjs`'s traversal guard is correct; and IP1 is
+untouched — the builder repo gained no instrument content and the floor of 50
+is not a scale count.
+
+#### Outcome
+
+All five criteria met with fresh evidence at branch head `433420f`. No finding
+demonstrates an acceptance criterion failing and none is a load-bearing defect
+in what the page does for a visitor, so the return floor is not reached. F14,
+F15 and F21 were fixed at the gate, F13 in part; F16 was refuted against the
+CI logs; F17 is accepted as unverifiable before merge; F18-F20, F22 and the
+carried F10 and F11 become candidate rows; F23 and F12 stay rejected.
 
