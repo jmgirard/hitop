@@ -355,13 +355,29 @@ build_redcap_zip <- function(
   }
 
   # 7. Export directly to ZIP
+  write_redcap_zip(data_dictionary, file)
+}
+
+
+# The one path by which every REDCap instrument archive is written. REDCap
+# imports an archive holding a single member named `instrument.csv`, so the
+# dictionary is staged under that fixed name -- inside a directory created for
+# this call alone, so two exports in one session never write to the same
+# scratch path. The directory's removal is registered before anything is
+# written into it, so it is cleaned up whether or not the archive write
+# succeeds.
+write_redcap_zip <- function(data_dictionary, file) {
   if (!grepl("^/|^[A-Za-z]:", file)) {
     absolute_file_path <- file.path(getwd(), file)
   } else {
     absolute_file_path <- file
   }
 
-  temp_csv <- file.path(tempdir(), "instrument.csv")
+  scratch_dir <- tempfile("hitop-redcap-")
+  on.exit(unlink(scratch_dir, recursive = TRUE), add = TRUE)
+  dir.create(scratch_dir)
+
+  temp_csv <- file.path(scratch_dir, "instrument.csv")
   write.csv(data_dictionary, file = temp_csv, row.names = FALSE, na = "")
 
   # {zip} implements the archive format in C, so no `zip` executable need
@@ -373,8 +389,6 @@ build_redcap_zip <- function(
     files = temp_csv,
     mode = "cherry-pick"
   )
-
-  file.remove(temp_csv)
 
   cli::cli_alert_success("Instrument successfully zipped to {.file {file}}")
 
@@ -655,28 +669,5 @@ generate_redcap_hitophsum <- function(
   }
 
   # 9. Export directly to ZIP
-  if (!grepl("^/|^[A-Za-z]:", file)) {
-    absolute_file_path <- file.path(getwd(), file)
-  } else {
-    absolute_file_path <- file
-  }
-
-  temp_csv <- file.path(tempdir(), "instrument.csv")
-  write.csv(data_dictionary, file = temp_csv, row.names = FALSE, na = "")
-
-  # {zip} implements the archive format in C, so no `zip` executable need
-  # exist and no child process is spawned -- the property WebAssembly needs,
-  # where `system()` is unavailable (D-035). "cherry-pick" stores the file by
-  # its basename, reproducing what `utils::zip()`'s `-j` gave.
-  zip::zip(
-    zipfile = absolute_file_path,
-    files = temp_csv,
-    mode = "cherry-pick"
-  )
-
-  file.remove(temp_csv)
-
-  cli::cli_alert_success("Instrument successfully zipped to {.file {file}}")
-
-  invisible(file)
+  write_redcap_zip(data_dictionary, file)
 }

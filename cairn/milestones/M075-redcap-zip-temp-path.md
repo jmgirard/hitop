@@ -83,7 +83,7 @@ entry name, or the dictionaries themselves → not in this milestone.
       `files` argument, then let the real call run — covering two successive
       `generate_redcap_hitopsr()` calls and one
       `generate_redcap_hitophsum()` call. Run it on HEAD and record it red.
-- [ ] T2: Merge `R/generate_redcap.R:364-377` and `:664-677` into one internal
+- [x] T2: Merge `R/generate_redcap.R:364-377` and `:664-677` into one internal
       function taking the data dictionary and the destination path. It creates a
       per-call temporary directory, **registers that directory's removal before
       writing anything into it**, writes `instrument.csv` inside it, and calls
@@ -111,6 +111,7 @@ entry name, or the dictionaries themselves → not in this milestone.
 - 2026-08-31: implement gate — the merged writer absorbs the whole duplicated block (relative-to-absolute destination path, temporary CSV, archive write, success message), not only the two lines the plan names (Jeff's call).
 - 2026-08-31: implement gate — `{zip}` floor set to 2.1.0 (Jeff's call). Source: CRAN's release record for `zip` — the NEWS entry for 2.1.0 is the first to state that "zip functions now have a `mode` argument"; no earlier release mentions `mode`. The r-lib/zip source at tag `v2.1.0` defines `zip(mode = c("mirror", "cherry-pick"))`, so `"cherry-pick"` is accepted from that release; `zip_2.1.0.tar.gz` is on CRAN dated 2020-08-10.
 - 2026-08-31: T1 — path-capture test added at `test-generate_redcap.R:376`; red on HEAD with exactly one failure, `unique(captured)` length 1 against the expected 3 (all three exports wrote to the same `file.path(tempdir(), "instrument.csv")`). The capture itself recorded 3 calls and every other assertion in the file passed, so the mock reaches `zip::zip()` and the red is the shared-path defect, not a broken probe.
+- 2026-08-31: T2 — both blocks now call `write_redcap_zip()` (`R/generate_redcap.R:369`), which makes the destination absolute, creates `tempfile("hitop-redcap-")`, registers `unlink(recursive = TRUE)` on exit before `dir.create()`, writes `instrument.csv` into it, archives it and reports success. `grep -n "zip::zip("` over `R/` returns one line. T1's test green; the entry-name tests still pass; `devtools::test()` FAIL 0 WARN 0 SKIP 4 PASS 16217.
 - 2026-08-31: plan gate deferred rebuilding the six committed REDCap artifacts (Jeff's call); falsified by a rebuilt archive differing in any byte from its committed copy.
 
 ## Decisions
