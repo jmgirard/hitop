@@ -433,6 +433,68 @@ test_that("no appending site warns on the way to a collision abort", {
   )
 })
 
+# The three scoring exports whose output path raises the `calc_se` deprecation.
+# Hand-listed rather than swept from `append_exports()`: the sweep cannot say
+# which exports warn on their output path, and a per-export registry of that is
+# the exemption list this file exists to avoid (the 2026-08-30 M072 plan gate).
+calc_se_cases <- function() {
+  list(
+    score_pid5 = list(
+      fn = hitop::score_pid5, data = hitop::sim_pid5,
+      args = list(items = 1:220, version = "FULL")
+    ),
+    score_hitopsr = list(
+      fn = hitop::score_hitopsr, data = hitop::sim_hitopsr,
+      args = list(items = 1:405)
+    ),
+    score_hitopbr = list(
+      fn = hitop::score_hitopbr, data = hitop::sim_hitopbr,
+      args = list(items = 1:45)
+    )
+  )
+}
+
+for (nm in names(calc_se_cases())) {
+  test_that(paste0(nm, "() does not warn its calc_se deprecation before a collision abort"), {
+    # `score_engine()`'s comment says the deprecation fires after the
+    # append-collision guard, so a colliding call is told about the collision
+    # alone. Until now nothing exercised that ordering for any of the three
+    # scoring exports: the collision probes above all run at the `calc_se =
+    # FALSE` default, where the output path raises nothing to be pre-empted.
+    case <- calc_se_cases()[[nm]]
+    produced <- suppressWarnings(names(do.call(
+      case$fn,
+      c(list(data = case$data), case$args, list(calc_se = TRUE, append = FALSE))
+    )))
+    # The call must really produce columns, or the collision below is built on
+    # nothing and the silence would be vacuous.
+    expect_true(length(produced) > 0)
+    expect_true(any(grepl("_se$", produced)))
+
+    collide <- produced[[1]]
+    dirty <- case$data
+    dirty[[collide]] <- NA_real_
+    got <- warnings_before_error(do.call(
+      case$fn,
+      c(list(data = dirty), case$args, list(calc_se = TRUE))
+    ))
+    expect_s3_class(got$error, "hitop_append_collision")
+    expect_setequal(named_columns(conditionMessage(got$error)), collide)
+    expect_identical(got$warnings, character(0), info = collide)
+
+    # Control: the same call without the collision does raise the deprecation,
+    # so the silence above is the abort pre-empting a warning that fires, not a
+    # warning that never had anything to say.
+    expect_warning(
+      do.call(
+        case$fn,
+        c(list(data = case$data), case$args, list(calc_se = TRUE, append = FALSE))
+      ),
+      class = "hitop_deprecated_calc_se"
+    )
+  })
+}
+
 test_that("both new conditions carry a call naming the export the caller wrote", {
   # M043/M054/M057: a validator that lets `conditionCall()` fall to NULL reports
   # a refusal the caller cannot trace back to the function they called.
