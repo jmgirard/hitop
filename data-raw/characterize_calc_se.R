@@ -15,16 +15,23 @@
 #               stopifnot(identical(names(a), names(b)));
 #               print(sum(mapply(identical, a, b[names(a)])))'
 #
+# Each element of either RDS is one call's returned value, so that comparison is
+# a comparison of values and of nothing else. It prints the number of matching
+# cells; the run is clean when that number is length(a).
+#
 # The datasets come from the loaded checkout, not from a fixture, so each run
 # scores that version's own shipped data. Each function is paired only with the
 # datasets it can score; `missing` and `append` are crossed over those pairings,
 # and `score_hitopsr()` is run both on a full administration and through a
 # module, which resolves a different item count, reverse-item set and scale map.
 #
-# Each entry records the returned value AND the classes of every condition the
-# call signalled, less the `calc_se` deprecation the milestone adds -- the
-# deprecation is meant to be the only new one, and a comparison that discarded
-# the condition channel could not tell.
+# Each entry is the value the call returned, and nothing else. It once also
+# recorded the classes of every condition the call signalled bar the `calc_se`
+# deprecation; that channel was deleted at M072 because it recorded nothing:
+# on the 2026-08-30 run of this script over the whole matrix, all 48 cells
+# captured an empty condition set, so a comparison of the channel could report
+# an added condition but never a removed one, while the header claimed it
+# covered both. What a run compares is the returned values.
 
 `%||%` <- function(x, y) if (is.null(x)) y else x
 
@@ -76,21 +83,17 @@ module_scales <- c(
   "Agoraphobia", "Appetite Loss", "Antisocial Behavior", "Romantic Disinterest"
 )
 
-# Run one call, returning both what it produced and the classes of every
-# condition it signalled bar the deprecation itself.
+# Run one call and return what it produced. The `calc_se` deprecation the
+# milestone adds is muffled rather than recorded: every call here passes
+# `calc_se = TRUE`, so it fires on all of them and says nothing about the
+# values being compared.
 capture_call <- function(fun, call_args) {
-  seen <- character(0)
-  value <- withCallingHandlers(
+  withCallingHandlers(
     do.call(fun, call_args),
-    condition = function(cnd) {
-      if (!inherits(cnd, "hitop_deprecated_calc_se")) {
-        seen <<- c(seen, paste(class(cnd), collapse = "+"))
-      } else if (inherits(cnd, "warning")) {
-        invokeRestart("muffleWarning")
-      }
+    hitop_deprecated_calc_se = function(cnd) {
+      if (inherits(cnd, "warning")) invokeRestart("muffleWarning")
     }
   )
-  list(value = value, conditions = seen)
 }
 
 results <- list()

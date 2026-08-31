@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated under Breaking changes / N
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M072 | The HiTOP-BR interval tests and the collision-ordering sweep fail on the defects they claim to catch | planned | — | normal | milestones/M072-interval-collision-test-reach.md |
+| M072 | The HiTOP-BR interval tests and the collision-ordering sweep fail on the defects they claim to catch | review | — | normal | milestones/M072-interval-collision-test-reach.md |
 | M071 | The Table 1 extractor and the staged-artifact guards no longer return a verdict a wrong input cannot change | done | — | normal | milestones/archive/M071-verification-guard-repairs.md |
 | M070 | `data-raw/` verification tooling is reduced to what still re-runs, with its live guard defects repaired | done | — | normal | milestones/archive/M070-dataraw-verification-tooling.md |
 | M068 | The HiTOP-BR carries score intervals against the paper's development sample | done | — | normal | milestones/archive/M068-hitopbr-score-intervals.md |

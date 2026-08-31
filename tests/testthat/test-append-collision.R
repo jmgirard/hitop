@@ -433,6 +433,86 @@ test_that("no appending site warns on the way to a collision abort", {
   )
 })
 
+# The three scoring exports whose output path raises the `calc_se` deprecation.
+# The call arguments are hand-written, but the domain they must cover is not:
+# the block below derives it from the `calc_se` formal and fails if this table
+# and that domain ever disagree, so an eighth appending export that warns on its
+# output path cannot go uncovered in silence.
+calc_se_cases <- function() {
+  list(
+    score_pid5 = list(
+      fn = hitop::score_pid5, data = hitop::sim_pid5,
+      args = list(items = 1:220, version = "FULL")
+    ),
+    score_hitopsr = list(
+      fn = hitop::score_hitopsr, data = hitop::sim_hitopsr,
+      args = list(items = 1:405)
+    ),
+    score_hitopbr = list(
+      fn = hitop::score_hitopbr, data = hitop::sim_hitopbr,
+      args = list(items = 1:45)
+    )
+  )
+}
+
+test_that("the calc_se probe table is exactly the exports carrying a calc_se formal", {
+  # The domain must not be able to empty or drift silently: with no cases
+  # enumerated the loop below would generate no blocks at all and the file would
+  # still pass green. `calc_se` is the formal that puts an export on the output
+  # path the deprecation fires from, so the set of exports carrying it is the
+  # domain, stated independently of this file's own table.
+  ns <- asNamespace("hitop")
+  warns <- Filter(
+    function(n) "calc_se" %in% names(formals(get(n, envir = ns))),
+    append_exports()
+  )
+  expect_true(length(warns) > 0)
+  expect_setequal(names(calc_se_cases()), warns)
+})
+
+for (nm in names(calc_se_cases())) {
+  test_that(paste0(nm, "() does not warn its calc_se deprecation before a collision abort"), {
+    # `score_engine()`'s comment says the deprecation fires after the
+    # append-collision guard, so a colliding call is told about the collision
+    # alone. Until now nothing exercised that ordering for any of the three
+    # scoring exports: the collision probes above all run at the `calc_se =
+    # FALSE` default, where the output path raises nothing to be pre-empted.
+    case <- calc_se_cases()[[nm]]
+    produced <- suppressWarnings(names(do.call(
+      case$fn,
+      c(list(data = case$data), case$args, list(calc_se = TRUE, append = FALSE))
+    )))
+    # The call must really produce columns, or the collision below is built on
+    # nothing and the silence would be vacuous.
+    expect_true(length(produced) > 0)
+    expect_true(any(grepl("_se$", produced)))
+
+    collide <- produced[[1]]
+    dirty <- case$data
+    dirty[[collide]] <- NA_real_
+    got <- warnings_before_error(do.call(
+      case$fn,
+      c(list(data = dirty), case$args, list(calc_se = TRUE))
+    ))
+    expect_s3_class(got$error, "hitop_append_collision")
+    expect_setequal(named_columns(conditionMessage(got$error)), collide)
+    expect_identical(got$warnings, character(0), info = collide)
+
+    # Control: the same call, differing only in that `data` does not collide,
+    # does raise the deprecation -- so the silence above is the abort pre-empting
+    # a warning that fires, not a warning that never had anything to say. The
+    # append setting is left as the colliding call made it, so the control runs
+    # the same branch and the collision is the only thing that changed.
+    expect_warning(
+      do.call(
+        case$fn,
+        c(list(data = case$data), case$args, list(calc_se = TRUE))
+      ),
+      class = "hitop_deprecated_calc_se"
+    )
+  })
+}
+
 test_that("both new conditions carry a call naming the export the caller wrote", {
   # M043/M054/M057: a validator that lets `conditionCall()` fall to NULL reports
   # a refusal the caller cannot trace back to the function they called.
