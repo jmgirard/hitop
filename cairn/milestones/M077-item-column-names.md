@@ -1,0 +1,62 @@
+# M077: The shipped HiTOP datasets, `rename_hitopsr_items()` and the `label_*()` family name item columns as the REDCap export does
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** GP2, GP3
+- **Branch/PR:** —
+
+## Goal
+
+One item-column naming pattern for the HiTOP instruments — the one `generate_redcap_*()` already writes — so data collected through the package's own exports, the shipped example datasets, and the rename and label helpers agree, and a reader keeps one selection idiom across every HiTOP-SR and HiTOP-BR example.
+
+## Scope
+
+User-facing tier: the deliverable renames columns in four exported datasets and changes what three exported functions build or match.
+
+The pattern is the item variable `build_redcap_zip()` writes at `R/generate_redcap.R:288-292`: lowercase stem, underscore, item number zero-padded to the width of the instrument's largest item number — `hsr_001`..`hsr_405`, `hbr_01`..`hbr_45`.
+
+**In:** rename the item columns of `ku_hitopsr` and `sim_hitopsr` to `hsr_001`.. and of `ku_hitopbr` and `sim_hitopbr` to `hbr_01`.., by a committed `data-raw/` script that loads, renames and re-saves the shipped objects (the sim scripts draw with no seed and `data-raw/ku_data.R` reads a network drive, so neither regenerates here), while `data-raw/sim_hitopsr.R:8`, `data-raw/sim_hitopbr.R:8` and `data-raw/ku_data.R:9,34,55,60,65` are edited to build the same names next time they run. One internal helper builds the pattern for `build_redcap_zip()`, `rename_hitopsr_items()` (`R/rename_hitopsr_items.R:56,99`), `label_hitopsr()` (`R/label_hitopsr.R:33`) and `label_hitopbr()` (`R/label_hitopbr.R:34`) — today those three paste an unpadded integer for every `prefix`, so this is a padding change for all callers plus a default `prefix` change to `"hsr_"` / `"hbr_"`, with no deprecation cycle (waived by Jeff at the 2026-09-01 plan gate, D-052). A consequence to declare: `label_hitopsr(x, target = "scales")` with no `prefix` now matches `score_hitopsr()`'s default output. The `@format` blocks in `R/data.R`, the two scoring vignettes, the three articles referencing the datasets, the roxygen examples and the tests move to the new names; `cairn/DESIGN.md:45` stops saying `HSR_*`; NEWS Breaking-changes entry.
+
+**Out:** the PID-5 datasets (`pid_1` today, `pid5_001` in the exports) → the candidate row added 2026-09-01; a `label_*()` that also accepts unpadded or differently cased names → rejected at planning (work log), reopened by a user report; naming guidance in `vignettes/articles/import-instructions.Rmd` → not planned; the Qualtrics and REDCap generators' own variable names and the locked artifacts → untouched, they are the reference the datasets move to.
+
+## Acceptance criteria
+
+- [ ] AC1. The item columns of `ku_hitopsr`, `sim_hitopsr`, `ku_hitopbr` and `sim_hitopbr` are named by the pattern stated independently of any generator: a test asserts `names(ku_hitopsr)[-(1:2)]` and `names(sim_hitopsr)` are identical to `sprintf("hsr_%03d", hitopsr_items$HSR)`, and `names(ku_hitopbr)[-(1:2)]` and `names(sim_hitopbr)` to `sprintf("hbr_%02d", hitopbr_items$HBR)`; the REDCap dictionary tests in `tests/testthat/test-generate_redcap.R` keep asserting the dictionary's item variables against the same two expressions.
+- [ ] AC2. Only the names changed, and each column kept its item: for each of the four datasets, with `old` loaded from `git show 7e06f40e:data/<name>.rda` and `new` the committed object, `identical(unname(as.list(new)), unname(as.list(old)))` is `TRUE`, and the trailing integer of every old item name (`sub("^\\D+", "", x)`) equals the trailing integer of the new name in the same position.
+- [ ] AC3. For any `prefix`, `rename_hitopsr_items()` (both methods), `label_hitopsr()` and `label_hitopbr()` build item names zero-padded to the instrument's width: tests assert items 1, 10 and the last item — `hsr_001`, `hsr_010`, `hsr_405`; `hbr_01`, `hbr_10`, `hbr_45` — from each rename method and from each label function with the default `prefix` against `ku_hitopsr` / `ku_hitopbr`; a test asserts `label_hitopsr(x, prefix = "HSR_")` labels a frame named `HSR_001`..`HSR_405`; and a test asserts `label_hitopsr(score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE), target = "scales")` labels every scale column with no `prefix` given.
+- [ ] AC4. `grep -rnE` over `R/`, `vignettes/`, `tests/`, `data-raw/` and `man/` for `hsr[0-9]{3}`, `hsr%0?3?d`, `hsr_[0-9]{1,2}\b`, `HSR_[0-9]{1,2}\b`, `hbr[0-9]{2}`, `hbr%0?2?d`, `hitopbr_[0-9]`, `HBR_[0-9]\b` and `num_range\("h(s|b)r"` returns no line. This claims only those nine spellings; names built at run time from a stem and a number are covered by AC6's executed examples and articles, not by this sweep.
+- [ ] AC5. `NEWS.md` carries a Breaking-changes entry naming the four renamed datasets, the three functions whose item names are now zero-padded for every `prefix` (so a caller passing a custom `prefix` against unpadded columns stops matching), their new default `prefix`, and the `target = "scales"` consequence; `cairn/DESIGN.md`'s utilities line stops saying `HSR_*`.
+- [ ] AC6. `devtools::document()` produces no diff, `devtools::test()` is clean, `devtools::check()` reports 0 errors / 0 warnings (building `vignettes/*.Rmd` and running every roxygen example), and `pkgdown::build_articles()` renders with no chunk error (`vignettes/articles/` is not registered as vignettes, so nothing else executes them).
+
+## Coverage
+
+- AC1 → T2, T5
+- AC2 → T2
+- AC3 → T3
+- AC4 → T4
+- AC5 → T5
+- AC6 → T4, T5
+
+## Tasks
+
+- [ ] T1. Add an internal helper (`R/util.R`) that builds `paste0(tolower(stem), "_", zero-padded n)` with the width taken from the instrument's largest item number, unit-tested on both widths; route `build_redcap_zip()` (`R/generate_redcap.R:288-292`) through it with `tests/testthat/test-generate_redcap.R` unchanged and green.
+- [ ] T2. Write `data-raw/rename_item_columns.R`: load each of the four objects from `data/`, rewrite item names positionally from each name's trailing integer through the helper (no literal old spelling, so AC4's sweep covers the script), assert the AC2 identity and pairing against `git show 7e06f40e:data/<name>.rda` (M026 lesson: compare loaded objects, never the `.rda` bytes), `usethis::use_data(overwrite = TRUE)`; edit `data-raw/sim_hitopsr.R:8`, `data-raw/sim_hitopbr.R:8`, `data-raw/ku_data.R:9,34,55,60,65` to build the new names; update the four `@format` blocks in `R/data.R`; add the AC1 test.
+- [ ] T3. Tests first for AC3, then route `rename_hitopsr_items()` (`:56,99`), `label_hitopsr()` (`:33`) and `label_hitopbr()` (`:34`) through the helper and set their default `prefix` to `"hsr_"` / `"hbr_"`; update their roxygen (`@param prefix`, examples) and `tests/testthat/test-rename_hitopsr_items.R`, `test-label_scales.R`.
+- [ ] T4. Sweep: `vignettes/hitopsr_scoring.Rmd` (`:30,64-69,82,105,119,249-254`), `vignettes/hitopbr_scoring.Rmd` (`:65,70,182,190-195`), `vignettes/articles/modules-hitopsr.Rmd` (`:193,245`), `download-hitopsr.Rmd`, `download-hitopbr.Rmd`, roxygen examples in `R/score_hitopsr.R:68`, `R/reliability_hitopsr.R:48`, `R/module.R:52`, and every test named by the AC4 grep plus the run-time constructions the audit listed (`test-module_file.R:283`, `test-generator-descriptor.R:195`, `test-deprecated.R:16`, `test-scale-name-hitopsr.R:164-169`, `test-item-guards.R:16-17,42-43`, `helper-fixtures.R:160,175`, `test-test-pipeline_hitopsr.R:14`); run the AC4 grep and `pkgdown::build_articles()`.
+- [ ] T5. NEWS Breaking-changes entry (AC5), `cairn/DESIGN.md:45`, `devtools::document()`, `devtools::test()`, `devtools::check()`.
+
+## Work log
+
+- 2026-09-01: created by /milestone-plan; absorbs the 2026-08-21 naming candidate row (lineage M044). Pattern, scope, deprecation waiver and regeneration route chosen by Jeff at the plan gate; D-052 records the pattern and the waiver.
+- 2026-09-01: criteria audit ran in full mode ([O] fresh reader) after the gate, since the gate was posed as an assessment; it returned five findings, all fixed here: AC1 now uses the independently stated pattern rather than the generator as oracle (IP2 direction); AC2 gained the column-to-item pairing fact and lost its review-re-run clause; AC3 restated as a padding change at four sites with probes at items 1, 10 and last, both rename methods, and the `target = "scales"` consequence pinned; AC4 narrowed to the nine grep spellings with run-time constructions routed to AC6; AC5 names three functions and the wider breaking surface, and lost its instrument-bound clause; AC6 names `pkgdown::build_articles()`.
+- 2026-09-01: plan gate chose the REDCap export's padded lowercase pattern over the sims' unpadded `hsr_1` because package-fielded data then matches shipped data and `label_*()` can read it unrenamed; falsified by users reporting hand-named unpadded data as the common case.
+- 2026-09-01: plan gate chose a strict single pattern in `label_*()` over lenient matching (any padding or case after the literal prefix) because one pattern is one promise to test; falsified by a user report of `label_*()` refusing data the package's own vignettes once taught.
+- 2026-09-01: plan gate chose renaming the shipped objects in a `data-raw/` script over seeding and regenerating the sims because the sims' values would change and every pinned example output with them; falsified by a value-level defect found in the shipped sims.
+- 2026-09-01: plan gate chose waiving the deprecation cycle (pre-1.0) over a one-release warning because the warning would fire on every default-prefix call; falsified by a downstream caller breaking on the release.
+- 2026-09-01: audit chose the independently written pattern as AC1's oracle over the generator's dictionary because a generator change would move both sides; falsified by the dictionary and the datasets diverging while both tests stay green.
+
+## Decisions
+
+## Review
