@@ -92,4 +92,5 @@ Independent review, three fresh-context lenses:
   Checked correct by the lens: AC1/AC2/AC3 independently re-verified (AC3's assertions fail under the old behavior), `build_redcap_zip()` refactor behavior-preserving, `rename_hitopsr_items()` and `label_*()` agree on `max_n` for any prefix, a wider grep over `devel/`, `inst/`, `pkgdown/`, `.github/`, README, and the hitop-builder repo found no stale spelling.
 
 Fix-now commits after the pre-gate checkpoint: `c7f74add` (characterize script), `5e1ffea2` (docs, NEWS, `item_names()` empty case). After them: `document()` no diff, AC4 grep no line, the three touched test files green; full `test()` and `check()` re-run on the final head recorded below.
+Final-head re-run (`73ac3200`, code last touched at `5e1ffea2`): `devtools::test()` 0 failures; `devtools::check()` 0 errors / 0 warnings / 0 notes; `document()` no diff; AC4 grep no line. AC5 and AC6 evidence above stands against this head.
 
