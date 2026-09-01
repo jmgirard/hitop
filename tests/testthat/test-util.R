@@ -76,3 +76,22 @@ test_that("apa_mean() operates row-wise on a multi-respondent matrix", {
               nrow = 3, byrow = TRUE)
   expect_equal(apa_mean(m), c(2, 7 / 4, NA))
 })
+
+test_that("item_names() zero-pads item numbers to the width of `max_n`", {
+  # Both instrument widths, probed at items 1, 10 and the last item.
+  expect_identical(
+    item_names("hsr_", c(1, 10, 405), max_n = 405),
+    c("hsr_001", "hsr_010", "hsr_405")
+  )
+  expect_identical(
+    item_names("hbr_", c(1, 10, 45), max_n = 45),
+    c("hbr_01", "hbr_10", "hbr_45")
+  )
+  # The width comes from `max_n`, not from the numbers passed: a subset of
+  # low-numbered items still pads to the instrument's width.
+  expect_identical(item_names("hsr_", 7, max_n = 405), "hsr_007")
+  # `max_n` defaults to the largest number given.
+  expect_identical(item_names("x", c(3, 12)), c("x03", "x12"))
+  # `prefix` is pasted literally, never lowercased.
+  expect_identical(item_names("HSR_", 1, max_n = 405), "HSR_001")
+})
