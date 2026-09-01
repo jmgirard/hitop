@@ -583,6 +583,7 @@ validate_module_instrument <- function(instrument, call = rlang::caller_env()) {
 # generators. `item_names("hsr_", 7, 405)` is "hsr_007"; `item_names("hbr_",
 # 7, 45)` is "hbr_07".
 item_names <- function(prefix, n, max_n = max(n)) {
+  if (length(n) == 0L) return(character(0))
   width <- nchar(as.character(as.integer(max_n)))
   paste0(prefix, sprintf(sprintf("%%0%dd", width), as.integer(n)))
 }

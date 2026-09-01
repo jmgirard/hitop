@@ -15,7 +15,11 @@ columns with questionnaire text, or \code{"scales"} to label computed scale colu
 \item{prefix}{A string specifying the prefix used on the column names. Item
 columns are expected as the prefix followed by the item number zero-padded
 to three digits (\code{hsr_001} to \code{hsr_405} under the default, the pattern the
-shipped datasets and the package's Qualtrics and REDCap exports use); scale
+shipped datasets and the package's REDCap export use; the Qualtrics export
+writes \code{HSR_001}, matched by \code{prefix = "HSR_"}). Names whose number is
+not padded match only where padding makes no difference (items 100 and
+up), and the "no columns matched" warning fires only when nothing matched;
+scale
 columns as the prefix followed by the scale's \code{camelCase} name, which is
 what \code{\link[=score_hitopsr]{score_hitopsr()}} writes under its own default \code{prefix}.
 (default = \code{"hsr_"})}

@@ -27,8 +27,8 @@ exactly to the columns specified in \code{item_cols}. Required if \code{method =
 
 \item{prefix}{A string pasted literally before each standardized item
 number, which is zero-padded to three digits: \code{hsr_001} to \code{hsr_405} under
-the default, the pattern the shipped datasets and the package's Qualtrics
-and REDCap exports use. (default = \code{"hsr_"})}
+the default, the pattern the shipped datasets and the package's REDCap
+export use (the Qualtrics export writes \code{HSR_001}). (default = \code{"hsr_"})}
 }
 \value{
 A data frame with renamed column names for the matched HiTOP-SR items.

@@ -10,7 +10,11 @@
 #' @param prefix A string specifying the prefix used on the column names. Item
 #'   columns are expected as the prefix followed by the item number zero-padded
 #'   to two digits (`hbr_01` to `hbr_45` under the default, the pattern the
-#'   shipped datasets and the package's Qualtrics and REDCap exports use); scale
+#'   shipped datasets and the package's REDCap export use; the Qualtrics export
+#'   writes `HBR_01`, matched by `prefix = "HBR_"`). Names whose number is
+#'   not padded match only where padding makes no difference (items 10 and
+#'   up), and the "no columns matched" warning fires only when nothing matched;
+#'   scale
 #'   columns as the prefix followed by the scale's `camelCase` name, which is
 #'   what [score_hitopbr()] writes under its own default `prefix`.
 #'   (default = `"hbr_"`)

@@ -94,4 +94,6 @@ test_that("item_names() zero-pads item numbers to the width of `max_n`", {
   expect_identical(item_names("x", c(3, 12)), c("x03", "x12"))
   # `prefix` is pasted literally, never lowercased.
   expect_identical(item_names("HSR_", 1, max_n = 405), "HSR_001")
+  # No items gives no names, never the bare prefix.
+  expect_identical(item_names("hsr_", integer(0)), character(0))
 })
