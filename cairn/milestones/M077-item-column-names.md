@@ -1,11 +1,11 @@
 # M077: The shipped HiTOP datasets, `rename_hitopsr_items()` and the `label_*()` family name item columns as the REDCap export does
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
-- **Branch/PR:** —
+- **Branch/PR:** `m077-item-column-names`
 
 ## Goal
 
@@ -55,7 +55,7 @@ The pattern is the item variable `build_redcap_zip()` writes at `R/generate_redc
 - 2026-09-01: plan gate chose a strict single pattern in `label_*()` over lenient matching (any padding or case after the literal prefix) because one pattern is one promise to test; falsified by a user report of `label_*()` refusing data the package's own vignettes once taught.
 - 2026-09-01: plan gate chose renaming the shipped objects in a `data-raw/` script over seeding and regenerating the sims because the sims' values would change and every pinned example output with them; falsified by a value-level defect found in the shipped sims.
 - 2026-09-01: plan gate chose waiving the deprecation cycle (pre-1.0) over a one-release warning because the warning would fire on every default-prefix call; falsified by a downstream caller breaking on the release.
-- 2026-09-01: audit chose the independently written pattern as AC1's oracle over the generator's dictionary because a generator change would move both sides; falsified by the dictionary and the datasets diverging while both tests stay green.
+- 2026-09-01: audit chose the independently written pattern as AC1's oracle over the generator's dictionary because a generator change would move both sides; falsified by the dictionary and the datasets diverging while both tests stay green.- 2026-09-01: /milestone-implement started; branch `m077-item-column-names` cut from pushed main. Implement gate (one question): module REDCap exports keep padding to the widest item in the module, so the generator's output is unchanged on this branch; the small-module mismatch with `label_hitopsr()` is a new candidate ROADMAP row (both online generators). Jeff asked mid-session whether module items should carry a marker such as `hsr_m001`; advised against, since the original item number is what `score_hitopsr(module =)` and `label_hitopsr()` match on. ROADMAP rows compressed to stay under the byte budget.
 
 ## Decisions
 
