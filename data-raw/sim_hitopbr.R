@@ -5,7 +5,7 @@ sim_hitopbr <- function(n_subjects) {
     nrow = n_subjects,
     ncol = 45
   )
-  colnames(out) <- paste0("hitopbr_", 1:45)
+  colnames(out) <- sprintf("hbr_%02d", 1:45)
   tibble::as_tibble(out)
 }
 

@@ -157,7 +157,7 @@ fx_pid5bf <- function() {
 #   appetiteLoss        = 144,202,389         (n=3; no reverse)
 #   bingeEating         = 358,392,398         (n=3; no reverse)
 #
-# Rows (columns are HSR_1 .. HSR_405, passed to score_hitopsr in order):
+# Rows (columns are hsr_001 .. hsr_405, passed to score_hitopsr in order):
 #   R1  all items = 1 (scale minimum)
 #       romanticDisinterest: 1,1,1,reverse(1)=4,1 -> (1+1+1+4+1)/5 = 8/5  = 1.6
 #       appetiteLoss / bingeEating: all 1          -> 1
@@ -172,7 +172,7 @@ fx_pid5bf <- function() {
 #       romanticDisinterest: 3,3,3,reverse(3)=2,3  -> (3+3+3+2+3)/5 = 14/5 = 2.8
 fx_hitopsr <- function() {
   df <- as.data.frame(matrix(NA_integer_, nrow = 4, ncol = 405))
-  names(df) <- paste0("HSR_", seq_len(405))
+  names(df) <- sprintf("hsr_%03d", seq_len(405))
   df[1, ] <- 1L
   df[2, ] <- 4L
   df[3, ] <- 2L
@@ -203,7 +203,7 @@ fx_hitopsr <- function() {
 #   externalizing   = 1,13,15,16,25,32,34,35,40,45         (n=10)
 #   pFactor         = 1,6,11,14,22,23,25,28,31,32,35,37    (n=12)
 #
-# Rows (columns HBR_1 .. HBR_45, passed to score_hitopbr in order):
+# Rows (columns hbr_01 .. hbr_45, passed to score_hitopbr in order):
 #   R1  all items = 1 -> every scale = 1
 #   R2  all items = 4 -> every scale = 4
 #   R3  all items = 2, disinhibition items (15,16,20,24,29,32,34,35,43) = 4

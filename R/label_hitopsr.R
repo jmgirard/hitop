@@ -6,21 +6,29 @@
 #' @param data A data frame containing HiTOP-SR items or scales.
 #' @param target A string specifying what to label: `"items"` to label raw item
 #'   columns with questionnaire text, or `"scales"` to label computed scale columns.
-#' @param prefix An optional string specifying the prefix used on the column names.
-#'   (default = `"HSR_"`)
+#' @param prefix A string specifying the prefix used on the column names. Item
+#'   columns are expected as the prefix followed by the item number zero-padded
+#'   to three digits (`hsr_001` to `hsr_405` under the default, the pattern the
+#'   shipped datasets and the package's REDCap export use; the Qualtrics export
+#'   writes `HSR_001`, matched by `prefix = "HSR_"`). Columns that carry the
+#'   prefix and a number without that padding are not labelled, and a warning
+#'   of class `hitop_unpadded_items` names them; scale
+#'   columns as the prefix followed by the scale's `camelCase` name, which is
+#'   what [score_hitopsr()] writes under its own default `prefix`.
+#'   (default = `"hsr_"`)
 #'
 #' @return A data frame with labeled columns.
 #'
 #' @examples
 #' # Attach item text as a `label` attribute to the raw item columns
-#' labeled <- label_hitopsr(sim_hitopsr, target = "items", prefix = "hsr_")
-#' attr(labeled$hsr_1, "label")
+#' labeled <- label_hitopsr(sim_hitopsr, target = "items")
+#' attr(labeled$hsr_001, "label")
 #'
 #' @export
 label_hitopsr <- function(
   data,
   target = c("items", "scales"),
-  prefix = "HSR_"
+  prefix = "hsr_"
 ) {
   target <- match.arg(target)
   validate_data(data)
@@ -30,7 +38,7 @@ label_hitopsr <- function(
 
   if (target == "items") {
     # Reconstruct expected column names based on the prefix
-    expected_names <- paste0(prefix, hitopsr_items$HSR)
+    expected_names <- item_names(prefix, hitopsr_items$HSR)
     locs <- match(data_cols, expected_names)
     matched_idx <- which(!is.na(locs))
 
@@ -44,9 +52,12 @@ label_hitopsr <- function(
     for (i in matched_idx) {
       attr(data[[i]], "label") <- hitopsr_items$Text[locs[i]]
     }
+    warn_unpadded_items(
+      unpadded_item_cols(data_cols, prefix, expected_names),
+      width = 3L, instrument = "HiTOP-SR"
+    )
   } else if (target == "scales") {
-    # Assuming hitopsr_scales uses the raw names or camelCase as keys
-    # Adjust the matching column if your score_hitopsr function outputs snake_case
+    # Scale columns carry the camelCase name score_hitopsr() writes.
     expected_names <- paste0(prefix, hitopsr_scales$camelCase)
     locs <- match(data_cols, expected_names)
     matched_idx <- which(!is.na(locs))

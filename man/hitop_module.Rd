@@ -60,7 +60,7 @@ m$items
 # holds item numbers, which are column positions only in a frame that is
 # exactly the 405 items in order. `ku_hitopsr` leads with `participant` and
 # `biosex`, so `ku_hitopsr[m$items]` would quietly return the wrong columns.
-collected <- ku_hitopsr[sprintf("hsr\%03d", m$items)]
+collected <- ku_hitopsr[sprintf("hsr_\%03d", m$items)]
 ncol(collected) == m$nItems
 
 }

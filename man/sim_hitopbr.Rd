@@ -7,7 +7,7 @@
 \format{
 A \link[tibble]{tibble} with 100 rows and 45 columns.
 \describe{
-\item{hitopbr_1 to hitopbr_45}{Responses on each item}
+\item{hbr_01 to hbr_45}{Responses on each item}
 }
 }
 \usage{

@@ -397,7 +397,7 @@
 #'
 #' @format A \link[tibble]{tibble} with 100 rows and 405 columns.
 #' \describe{
-#'   \item{hsr_1 to hsr_405}{Responses on each item}
+#'   \item{hsr_001 to hsr_405}{Responses on each item}
 #' }
 #' @examples
 #' sim_hitopsr
@@ -413,7 +413,7 @@
 #'
 #' @format A \link[tibble]{tibble} with 100 rows and 45 columns.
 #' \describe{
-#'   \item{hitopbr_1 to hitopbr_45}{Responses on each item}
+#'   \item{hbr_01 to hbr_45}{Responses on each item}
 #' }
 #' @examples
 #' sim_hitopbr
@@ -477,7 +477,7 @@
 #' \describe{
 #'   \item{participant}{An anonymized id for each participant}
 #'   \item{biosex}{A factor indicating each participant's biological sex}
-#'   \item{hbr01 to hbr45}{Responses on each item}
+#'   \item{hbr_01 to hbr_45}{Responses on each item}
 #' }
 #' @examples
 #' ku_hitopbr
@@ -491,7 +491,7 @@
 #' \describe{
 #'   \item{participant}{An anonymized id for each participant}
 #'   \item{biosex}{A factor indicating each participant's biological sex}
-#'   \item{hsr001 to hsr405}{Responses on each item}
+#'   \item{hsr_001 to hsr_405}{Responses on each item}
 #' }
 #' @examples
 #' ku_hitopsr

@@ -9,7 +9,7 @@ A \link[tibble]{tibble} with 411 rows and 407 columns.
 \describe{
 \item{participant}{An anonymized id for each participant}
 \item{biosex}{A factor indicating each participant's biological sex}
-\item{hsr001 to hsr405}{Responses on each item}
+\item{hsr_001 to hsr_405}{Responses on each item}
 }
 }
 \usage{

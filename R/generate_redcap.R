@@ -284,16 +284,17 @@ build_redcap_zip <- function(
   )
   formatted_choices <- paste(choice_pairs, collapse = " | ")
 
-  # 2. Determine the padding width automatically
-  max_w <- max(nchar(items[[1]]), na.rm = TRUE)
+  # 2. Build the item variable names: lowercase stem, underscore, item number
+  #    zero-padded to the widest number in `items` (a module's, when reduced)
+  variable_names <- item_names(
+    prefix = paste0(tolower(instrument), "_"),
+    n = items[[1]],
+    max_n = max(items[[1]], na.rm = TRUE)
+  )
 
-  # 3. Create the zero-padded format string and apply it
-  fmt <- sprintf("%%0%dd", max_w)
-  padded_num <- sprintf(fmt, items[[1]])
-
-  # 4. Build the complete Data Dictionary data frame for items
+  # 3. Build the complete Data Dictionary data frame for items
   item_rows <- data.frame(
-    `Variable / Field Name` = paste0(tolower(instrument), "_", padded_num),
+    `Variable / Field Name` = variable_names,
     `Form Name` = form_name,
     `Section Header` = NA_character_,
     `Field Type` = "radio",
@@ -312,7 +313,7 @@ build_redcap_zip <- function(
     stringsAsFactors = FALSE
   )
 
-  # 5. Insert Page Breaks based on the 'breaks' argument
+  # 4. Insert Page Breaks based on the 'breaks' argument
   if (!is.null(breaks) && breaks > 0 && nrow(item_rows) > breaks) {
     # Find the positions where breaks should occur
     break_positions <- seq(from = breaks + 1, to = nrow(item_rows), by = breaks)
@@ -321,7 +322,7 @@ build_redcap_zip <- function(
     item_rows$`Section Header`[break_positions] <- "<br>"
   }
 
-  # 6. Build the Instructions Row
+  # 5. Build the Instructions Row
   instruction_text <- instructions$start[1]
   if (
     !is.null(instruction_text) &&
@@ -354,7 +355,7 @@ build_redcap_zip <- function(
     data_dictionary <- item_rows
   }
 
-  # 7. Export directly to ZIP
+  # 6. Export directly to ZIP
   write_redcap_zip(data_dictionary, file)
 }
 

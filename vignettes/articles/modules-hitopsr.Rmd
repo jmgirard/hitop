@@ -177,7 +177,7 @@ Both scoring functions need you to name those item columns.
 
 We will stand in for module-collected data using `ku_hitopsr`, the package's
 real example dataset. Its first two columns are `participant` and `biosex`, and
-its 405 item columns are named `hsr001` through `hsr405`:
+its 405 item columns are named `hsr_001` through `hsr_405`:
 
 ```{r}
 data("ku_hitopsr")
@@ -190,7 +190,7 @@ a data frame that is exactly the 405 items in order — and this one is not,
 because two other columns come first. Build the column names instead:
 
 ```{r}
-item_cols <- sprintf("hsr%03d", four_scale$items)
+item_cols <- sprintf("hsr_%03d", four_scale$items)
 collected <- ku_hitopsr[item_cols]
 ncol(collected)
 ```
@@ -242,7 +242,7 @@ dropping the other 72 scales' columns cannot move it:
 ```{r}
 full_scores <- score_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hsr%03d", 1:405),
+  items = sprintf("hsr_%03d", 1:405),
   append = FALSE
 )
 all.equal(module_scores, full_scores[names(module_scores)])

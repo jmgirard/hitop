@@ -161,12 +161,12 @@ test_that("the renamed scale scores over every probe, matching a hand mean", {
   ## one item of the scale, respondent 2 loses two, respondent 3 loses all
   ## five, and respondent 4 keeps every item.
   holes <- sim_hitopsr
-  holes[1, paste0("hsr_", items[1])] <- NA
-  holes[2, paste0("hsr_", items[1:2])] <- NA
-  holes[3, paste0("hsr_", items)] <- NA
+  holes[1, sprintf("hsr_%03d", items[1])] <- NA
+  holes[2, sprintf("hsr_%03d", items[1:2])] <- NA
+  holes[3, sprintf("hsr_%03d", items)] <- NA
 
   for (dat in list(whole = sim_hitopsr, holed = holes)) {
-    raw <- as.matrix(dat[paste0("hsr_", items)])
+    raw <- as.matrix(dat[sprintf("hsr_%03d", items)])
     for (miss in c("available", "complete")) {
       for (se in c(FALSE, TRUE)) {
         scored <- hush_se(score_hitopsr(

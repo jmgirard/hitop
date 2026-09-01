@@ -101,7 +101,7 @@ test_that("calc_omega() rejects degenerate input", {
 # a transcription error in the scales tables or a broken reverse-key in the prep.
 
 test_that("reliability_hitopbr() matches independently recomputed alphas (M013 oracle)", {
-  # ku_hitopbr: columns 1-2 are participant/biosex, then hbr01..hbr45.
+  # ku_hitopbr: columns 1-2 are participant/biosex, then hbr_01..hbr_45.
   d <- ku_hitopbr
   items <- 3:47
   di <- as.data.frame(lapply(d[items], as.numeric))

@@ -28,7 +28,7 @@ First, we load the package into memory using the `library()` function. If this d
 library(hitop)
 ```
 
-Next, we can load the example dataset from the package using the `data()` function. It is a large tibble that contains a `participant` column with a unique identifier for each participant, a `biosex` column indicating whether each participant is "female" or "male", and then 45 columns numbered `hbr01` to `hbr45` containing each participant's rating on each item of the HiTOP-BR (on a numerical scale from 1 to 4).
+Next, we can load the example dataset from the package using the `data()` function. It is a large tibble that contains a `participant` column with a unique identifier for each participant, a `biosex` column indicating whether each participant is "female" or "male", and then 45 columns numbered `hbr_01` to `hbr_45` containing each participant's rating on each item of the HiTOP-BR (on a numerical scale from 1 to 4).
 
 ```{r}
 data("ku_hitopbr")
@@ -62,12 +62,12 @@ scores
 
 ## Items as Strings
 
-Alternatively, we could provide the item column names as a character string. Typing out all 45 item names would be a hassle, but luckily this dataset named them consistently so we can build the names automatically using `sprintf()`. If we use the "hbr%02d" format and apply that across the numbers 1 to 45, that will create the zero-padded column names we need. If there was no zero-padding, we could have just used "hbr%d".
+Alternatively, we could provide the item column names as a character string. Typing out all 45 item names would be a hassle, but luckily this dataset named them consistently so we can build the names automatically using `sprintf()`. If we use the "hbr_%02d" format and apply that across the numbers 1 to 45, that will create the zero-padded column names we need. The same pattern names the items in the package's other example dataset (`sim_hitopbr`) and in data collected through its Qualtrics and REDCap exports, so this one expression selects the items in all of them.
 
 ```{r}
 scores <- score_hitopbr(
   data = ku_hitopbr,
-  items = sprintf("hbr%02d", 1:45),
+  items = sprintf("hbr_%02d", 1:45),
   append = FALSE
 )
 scores
@@ -80,7 +80,7 @@ Also note that each scale column has the prefix "hbr_" in its name. You can chan
 ```{r}
 scores <- score_hitopbr(
   data = ku_hitopbr,
-  items = sprintf("hbr%02d", 1:45),
+  items = sprintf("hbr_%02d", 1:45),
   prefix = "",
   append = FALSE
 )
@@ -103,7 +103,7 @@ bounds of a confidence interval around it.
 ```{r}
 scored <- score_hitopbr(
   data = ku_hitopbr,
-  items = sprintf("hbr%02d", 1:45),
+  items = sprintf("hbr_%02d", 1:45),
   append = FALSE
 )
 
@@ -179,27 +179,27 @@ We estimate reliability with the `reliability_hitopbr()` function, which returns
 #| warning: false
 reliability_hitopbr(
   data = ku_hitopbr,
-  items = sprintf("hbr%02d", 1:45)
+  items = sprintf("hbr_%02d", 1:45)
 )
 ```
 
 ## Labelling Columns
 
-Column names like `hitopbr_1` and `hbr_antagonism` are compact but say nothing about what they hold. The `label_hitopbr()` function attaches a `label` attribute to each column it recognizes: the literal item text for item columns, and the printed scale name for scored columns. Tools that read that attribute — data viewers and reporting packages — can then show the wording instead of the column name, so the labels travel with the data rather than living in a separate lookup table.
+Column names like `hbr_01` and `hbr_antagonism` are compact but say nothing about what they hold. The `label_hitopbr()` function attaches a `label` attribute to each column it recognizes: the literal item text for item columns, and the printed scale name for scored columns. Tools that read that attribute — data viewers and reporting packages — can then show the wording instead of the column name, so the labels travel with the data rather than living in a separate lookup table.
 
-Which columns it recognizes depends on `prefix`, which must match how your item columns are actually named. The `sim_hitopbr` dataset numbers its items `hitopbr_1` to `hitopbr_45`, so `prefix = "hitopbr_"` finds them:
+Which columns it recognizes depends on `prefix`, which must match how your item columns are actually named. The default, `"hbr_"`, is how both example datasets and the package's REDCap export name them (`hbr_01` to `hbr_45`), so `sim_hitopbr` needs no `prefix`; data collected through the package's Qualtrics export is named `HBR_01` to `HBR_45` and would pass `prefix = "HBR_"`. The number must be zero-padded to two digits: columns carrying the prefix and a number without the leading zero are not labelled, and the function warns and names them.
 
 ```{r label-items}
 data("sim_hitopbr")
-labelled_items <- label_hitopbr(sim_hitopbr, target = "items", prefix = "hitopbr_")
-attr(labelled_items$hitopbr_1, "label")
+labelled_items <- label_hitopbr(sim_hitopbr, target = "items")
+attr(labelled_items$hbr_01, "label")
 ```
 
-Set `target = "scales"` to label the output of `score_hitopbr()` instead. Here the prefix is the one the scoring function put on its output columns, which is `"hbr_"` by default:
+Set `target = "scales"` to label the output of `score_hitopbr()` instead. Here `prefix` is the one the scoring function put on its output columns. Both functions default to `"hbr_"`, so a scored frame built with default settings labels with none given:
 
 ```{r label-scales}
 sim_scores <- score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE)
-labelled_scales <- label_hitopbr(sim_scores, target = "scales", prefix = "hbr_")
+labelled_scales <- label_hitopbr(sim_scores, target = "scales")
 attr(labelled_scales$hbr_antagonism, "label")
 ```
 

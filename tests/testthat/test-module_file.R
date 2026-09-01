@@ -280,7 +280,7 @@ test_that("a module read from a file scores and estimates reliability identicall
   f <- withr::local_tempfile(fileext = ".json")
   write_module(m, f)
 
-  collected <- sim_hitopsr[sprintf("hsr_%d", m$items)]
+  collected <- sim_hitopsr[sprintf("hsr_%03d", m$items)]
 
   expect_identical(
     suppressMessages(
