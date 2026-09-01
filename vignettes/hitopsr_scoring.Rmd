@@ -246,7 +246,7 @@ standardized_custom
 
 Column names like `hsr_001` and `hsr_agoraphobia` are compact but say nothing about what they hold. The `label_hitopsr()` function attaches a `label` attribute to each column it recognizes: the literal item text for item columns, and the printed scale name for scored columns. Tools that read that attribute — data viewers and reporting packages — can then show the wording instead of the column name, so the labels travel with the data rather than living in a separate lookup table.
 
-Which columns it recognizes depends on `prefix`, which must match how your item columns are actually named. The default, `"hsr_"`, is how both example datasets and the package's REDCap export name them (`hsr_001` to `hsr_405`), so `sim_hitopsr` needs no `prefix`; data collected through the package's Qualtrics export is named `HSR_001` to `HSR_405` and would pass `prefix = "HSR_"`. The number must be zero-padded to three digits: names without the leading zeros are matched only from item 100 up, and the function warns only when no column at all matched.
+Which columns it recognizes depends on `prefix`, which must match how your item columns are actually named. The default, `"hsr_"`, is how both example datasets and the package's REDCap export name them (`hsr_001` to `hsr_405`), so `sim_hitopsr` needs no `prefix`; data collected through the package's Qualtrics export is named `HSR_001` to `HSR_405` and would pass `prefix = "HSR_"`. The number must be zero-padded to three digits: columns carrying the prefix and a number without the leading zeros are not labelled, and the function warns and names them.
 
 ```{r label-items}
 data("sim_hitopsr")

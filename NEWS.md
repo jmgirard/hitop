@@ -51,9 +51,10 @@
   and their default `prefix` is `"hsr_"` / `"hbr_"` rather than `"HSR_"` /
   `"HBR_"`. So `rename_hitopsr_items()` writes `hsr_001` where it wrote
   `HSR_1`; `label_*()` with a custom `prefix` against unpadded columns such
-  as `HSR_1` now matches only the items where padding makes no difference
-  (HiTOP-SR items 100 and up, HiTOP-BR items 10 and up) and warns only when
-  no column at all matched, so check the labelled count on such data; and
+  as `HSR_1` no longer labels them (only items where padding makes no
+  difference, HiTOP-SR 100 and up and HiTOP-BR 10 and up, still match) and
+  warns, under the condition class `hitop_unpadded_items`, naming the
+  columns it skipped; and
   `label_hitopsr(x, target = "scales")` with no `prefix` now matches
   `score_hitopsr()`'s default output (likewise for the HiTOP-BR pair). Code
   selecting the old names — `sprintf("hsr%03d", 1:405)` and

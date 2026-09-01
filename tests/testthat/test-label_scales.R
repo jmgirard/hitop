@@ -187,3 +187,36 @@ test_that("label_hitopbr() labels ku_hitopbr items 1, 10 and 45 with no prefix g
   }
   expect_null(attr(labeled$participant, "label"))
 })
+
+# ---- unpadded item numbers under the prefix are reported, not silently skipped ----
+
+test_that("label_hitopsr() warns when prefixed columns carry unpadded item numbers", {
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = 405))
+  names(df) <- paste0("HSR_", 1:405)
+  expect_warning(
+    res <- label_hitopsr(df, prefix = "HSR_"),
+    class = "hitop_unpadded_items"
+  )
+  # Items 100 and up match regardless of padding and are labelled; the rest are not.
+  expect_identical(attr(res$HSR_405, "label"), hitopsr_items$Text[hitopsr_items$HSR == 405])
+  expect_null(attr(res[[names(df)[1]]], "label"))
+  # A padded subset (a module's items) is not a padding problem: no warning.
+  sub <- ku_hitopsr[, c("participant", "hsr_001", "hsr_002")]
+  expect_no_warning(label_hitopsr(sub))
+  # Nothing matching at all still reports that, not padding.
+  expect_warning(label_hitopsr(data.frame(a = 1)), "No columns matched")
+})
+
+test_that("label_hitopbr() warns when prefixed columns carry unpadded item numbers", {
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = 45))
+  names(df) <- paste0("HBR_", 1:45)
+  expect_warning(
+    res <- label_hitopbr(df, prefix = "HBR_"),
+    class = "hitop_unpadded_items"
+  )
+  expect_identical(attr(res$HBR_45, "label"), hitopbr_items$Text[hitopbr_items$HBR == 45])
+  expect_null(attr(res[[names(df)[1]]], "label"))
+  sub <- ku_hitopbr[, c("participant", "hbr_01", "hbr_02")]
+  expect_no_warning(label_hitopbr(sub))
+  expect_warning(label_hitopbr(data.frame(a = 1)), "No columns matched")
+})

@@ -11,10 +11,9 @@
 #'   columns are expected as the prefix followed by the item number zero-padded
 #'   to two digits (`hbr_01` to `hbr_45` under the default, the pattern the
 #'   shipped datasets and the package's REDCap export use; the Qualtrics export
-#'   writes `HBR_01`, matched by `prefix = "HBR_"`). Names whose number is
-#'   not padded match only where padding makes no difference (items 10 and
-#'   up), and the "no columns matched" warning fires only when nothing matched;
-#'   scale
+#'   writes `HBR_01`, matched by `prefix = "HBR_"`). Columns that carry the
+#'   prefix and a number without that padding are not labelled, and a warning
+#'   of class `hitop_unpadded_items` names them; scale
 #'   columns as the prefix followed by the scale's `camelCase` name, which is
 #'   what [score_hitopbr()] writes under its own default `prefix`.
 #'   (default = `"hbr_"`)
@@ -54,6 +53,10 @@ label_hitopbr <- function(
     for (i in matched_idx) {
       attr(data[[i]], "label") <- hitopbr_items$Text[locs[i]]
     }
+    warn_unpadded_items(
+      unpadded_item_cols(data_cols, prefix, expected_names),
+      width = 2L, instrument = "HiTOP-BR"
+    )
   } else if (target == "scales") {
     expected_names <- paste0(prefix, hitopbr_scales$camelCase)
     locs <- match(data_cols, expected_names)

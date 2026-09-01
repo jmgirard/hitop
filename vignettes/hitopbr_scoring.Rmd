@@ -187,7 +187,7 @@ reliability_hitopbr(
 
 Column names like `hbr_01` and `hbr_antagonism` are compact but say nothing about what they hold. The `label_hitopbr()` function attaches a `label` attribute to each column it recognizes: the literal item text for item columns, and the printed scale name for scored columns. Tools that read that attribute — data viewers and reporting packages — can then show the wording instead of the column name, so the labels travel with the data rather than living in a separate lookup table.
 
-Which columns it recognizes depends on `prefix`, which must match how your item columns are actually named. The default, `"hbr_"`, is how both example datasets and the package's REDCap export name them (`hbr_01` to `hbr_45`), so `sim_hitopbr` needs no `prefix`; data collected through the package's Qualtrics export is named `HBR_01` to `HBR_45` and would pass `prefix = "HBR_"`. The number must be zero-padded to two digits: names without the leading zero are matched only from item 10 up, and the function warns only when no column at all matched.
+Which columns it recognizes depends on `prefix`, which must match how your item columns are actually named. The default, `"hbr_"`, is how both example datasets and the package's REDCap export name them (`hbr_01` to `hbr_45`), so `sim_hitopbr` needs no `prefix`; data collected through the package's Qualtrics export is named `HBR_01` to `HBR_45` and would pass `prefix = "HBR_"`. The number must be zero-padded to two digits: columns carrying the prefix and a number without the leading zero are not labelled, and the function warns and names them.
 
 ```{r label-items}
 data("sim_hitopbr")

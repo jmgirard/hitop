@@ -582,6 +582,32 @@ validate_module_instrument <- function(instrument, call = rlang::caller_env()) {
 # for the datasets and the label/rename helpers, the export's for the
 # generators. `item_names("hsr_", 7, 405)` is "hsr_007"; `item_names("hbr_",
 # 7, 45)` is "hbr_07".
+# Columns that begin with `prefix` and end in a bare number but are not among
+# `expected` -- item names whose number lacks the zero-padding `expected`
+# carries. `label_*()` warns on them rather than skipping them silently.
+unpadded_item_cols <- function(cols, prefix, expected) {
+  pattern <- paste0("^", gsub("([][{}()+*^$|\\\\?.])", "\\\\\\1", prefix), "[0-9]+$")
+  cols[grepl(pattern, cols) & !cols %in% expected]
+}
+
+warn_unpadded_items <- function(unpadded, width, instrument) {
+  if (length(unpadded) == 0) return(invisible(NULL))
+  first <- unpadded[1]
+  example <- item_names(
+    sub("[0-9]+$", "", first),
+    as.integer(sub("^.*?([0-9]+)$", "\\1", first)),
+    max_n = 10^width - 1
+  )
+  shown <- cli::cli_vec(unpadded, list("vec-trunc" = 5))
+  cli::cli_warn(
+    c(
+      "{length(unpadded)} column{?s} {?is/are} named like {instrument} items but not zero-padded to {width} digits, so {?it was/they were} not labelled: {.val {shown}}.",
+      "i" = "Item numbers are expected as {.code {example}}."
+    ),
+    class = "hitop_unpadded_items"
+  )
+}
+
 item_names <- function(prefix, n, max_n = max(n)) {
   if (length(n) == 0L) return(character(0))
   width <- nchar(as.character(as.integer(max_n)))
