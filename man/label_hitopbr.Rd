@@ -4,7 +4,7 @@
 \alias{label_hitopbr}
 \title{Label HiTOP-BR Columns with Semantic Descriptions}
 \usage{
-label_hitopbr(data, target = c("items", "scales"), prefix = "HBR_")
+label_hitopbr(data, target = c("items", "scales"), prefix = "hbr_")
 }
 \arguments{
 \item{data}{A data frame containing HiTOP-BR items or scales.}
@@ -12,8 +12,13 @@ label_hitopbr(data, target = c("items", "scales"), prefix = "HBR_")
 \item{target}{A string specifying what to label: \code{"items"} to label raw item
 columns with questionnaire text, or \code{"scales"} to label computed scale columns.}
 
-\item{prefix}{An optional string specifying the prefix used on the column names.
-(default = \code{"HBR_"})}
+\item{prefix}{A string specifying the prefix used on the column names. Item
+columns are expected as the prefix followed by the item number zero-padded
+to two digits (\code{hbr_01} to \code{hbr_45} under the default, the pattern the
+shipped datasets and the package's Qualtrics and REDCap exports use); scale
+columns as the prefix followed by the scale's \code{camelCase} name, which is
+what \code{\link[=score_hitopbr]{score_hitopbr()}} writes under its own default \code{prefix}.
+(default = \code{"hbr_"})}
 }
 \value{
 A data frame with labeled columns.
@@ -25,7 +30,7 @@ data viewers and reporting packages.
 }
 \examples{
 # Attach item text as a `label` attribute to the raw item columns
-labeled <- label_hitopbr(sim_hitopbr, target = "items", prefix = "hitopbr_")
-attr(labeled$hitopbr_1, "label")
+labeled <- label_hitopbr(sim_hitopbr, target = "items")
+attr(labeled$hbr_01, "label")
 
 }

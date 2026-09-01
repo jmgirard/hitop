@@ -13,8 +13,8 @@ test_that("warn_item_order() fires only for misordered common-prefix numbered na
   expect_warning(warn_item_order(c("pid_2", "pid_1", "pid_3")), "ascending")
   expect_warning(warn_item_order(paste0("hsr", c(2, 1, 3))), "ascending")
   # Zero-padding does not confuse the integer comparison
-  expect_warning(warn_item_order(sprintf("hsr%03d", c(1, 3, 2))), "ascending")
-  expect_no_warning(warn_item_order(sprintf("hsr%03d", 1:10)))
+  expect_warning(warn_item_order(sprintf("hsr_%03d", c(1, 3, 2))), "ascending")
+  expect_no_warning(warn_item_order(sprintf("hsr_%03d", 1:10)))
 
   # No fire: ascending names
   expect_no_warning(warn_item_order(c("pid_1", "pid_2", "pid_3")))
@@ -39,8 +39,8 @@ test_that("validate_item_uniqueness() errors on duplicates and names them", {
 
 test_that("misordered `items` names warn in every data-taking function", {
   bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
-  sr <- setNames(sim_hitopsr, paste0("hsr_", 1:405))
-  br <- setNames(sim_hitopbr, paste0("hbr_", 1:45))
+  sr <- sim_hitopsr
+  br <- sim_hitopbr
   full <- setNames(sim_pid5, paste0("pid_", 1:220))
 
   expect_warning(
@@ -48,11 +48,11 @@ test_that("misordered `items` names warn in every data-taking function", {
     "ascending"
   )
   expect_warning(
-    score_hitopsr(sr, items = paste0("hsr_", c(2, 1, 3:405))),
+    score_hitopsr(sr, items = sprintf("hsr_%03d", c(2, 1, 3:405))),
     "ascending"
   )
   expect_warning(
-    score_hitopbr(br, items = paste0("hbr_", c(2, 1, 3:45))),
+    score_hitopbr(br, items = sprintf("hbr_%02d", c(2, 1, 3:45))),
     "ascending"
   )
   expect_warning(

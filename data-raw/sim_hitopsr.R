@@ -5,7 +5,7 @@ sim_hitopsr <- function(n_subjects) {
     nrow = n_subjects,
     ncol = 405
   )
-  colnames(out) <- paste0("hsr_", 1:405)
+  colnames(out) <- sprintf("hsr_%03d", 1:405)
   tibble::as_tibble(out)
 }
 

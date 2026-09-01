@@ -9,7 +9,7 @@ rename_hitopsr_items(
   method = c("original", "text"),
   item_cols = NULL,
   item_text = NULL,
-  prefix = "HSR_"
+  prefix = "hsr_"
 )
 }
 \arguments{
@@ -25,8 +25,10 @@ be renamed. Required if \code{method = "text"}.}
 \item{item_text}{An optional character vector of item texts corresponding
 exactly to the columns specified in \code{item_cols}. Required if \code{method = "text"}.}
 
-\item{prefix}{An optional string to add before each standardized item number.
-(default = \code{"HSR_"})}
+\item{prefix}{A string pasted literally before each standardized item
+number, which is zero-padded to three digits: \code{hsr_001} to \code{hsr_405} under
+the default, the pattern the shipped datasets and the package's Qualtrics
+and REDCap exports use. (default = \code{"hsr_"})}
 }
 \value{
 A data frame with renamed column names for the matched HiTOP-SR items.

@@ -11,8 +11,10 @@
 #'   be renamed. Required if `method = "text"`.
 #' @param item_text An optional character vector of item texts corresponding
 #'   exactly to the columns specified in `item_cols`. Required if `method = "text"`.
-#' @param prefix An optional string to add before each standardized item number.
-#'   (default = `"HSR_"`)
+#' @param prefix A string pasted literally before each standardized item
+#'   number, which is zero-padded to three digits: `hsr_001` to `hsr_405` under
+#'   the default, the pattern the shipped datasets and the package's Qualtrics
+#'   and REDCap exports use. (default = `"hsr_"`)
 #'
 #' @return A data frame with renamed column names for the matched HiTOP-SR items.
 #'
@@ -29,7 +31,7 @@ rename_hitopsr_items <- function(
   method = c("original", "text"),
   item_cols = NULL,
   item_text = NULL,
-  prefix = "HSR_"
+  prefix = "hsr_"
 ) {
   method <- match.arg(method)
 
@@ -53,7 +55,9 @@ rename_hitopsr_items <- function(
     }
 
     matched_hsr <- hitopsr_items$HSR[locs[matched_idx]]
-    colnames(data)[matched_idx] <- paste0(prefix, matched_hsr)
+    colnames(data)[matched_idx] <- item_names(
+      prefix, matched_hsr, max_n = max(hitopsr_items$HSR)
+    )
   } else if (method == "text") {
     if (is.null(item_cols) || is.null(item_text)) {
       cli::cli_abort(
@@ -96,7 +100,9 @@ rename_hitopsr_items <- function(
 
     if (length(locs) > 0) {
       matched_hsr <- hitopsr_items$HSR[locs]
-      colnames(data)[data_locs] <- paste0(prefix, matched_hsr)
+      colnames(data)[data_locs] <- item_names(
+        prefix, matched_hsr, max_n = max(hitopsr_items$HSR)
+      )
     }
   }
 

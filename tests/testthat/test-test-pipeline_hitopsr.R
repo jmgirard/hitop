@@ -8,10 +8,10 @@ test_that("end-to-end workflow successfully processes ku_hitopsr from legacy ren
   # We expect this to run silently because all 405 items are present (no subset warnings).
   expect_silent({
     processed_data <- test_data |>
-      rename_hitopsr_items(method = "original", prefix = "HSR_") |>
-      label_hitopsr(target = "items", prefix = "HSR_") |>
+      rename_hitopsr_items(method = "original") |>
+      label_hitopsr(target = "items") |>
       score_hitopsr(
-        items = paste0("HSR_", 1:405),
+        items = sprintf("hsr_%03d", 1:405),
         prefix = "score_",
         append = TRUE
       ) |>
@@ -19,17 +19,17 @@ test_that("end-to-end workflow successfully processes ku_hitopsr from legacy ren
   })
 
   # Step 3: Assertions on column renaming and structure
-  # Check that the items were correctly turned into the HSR_* format
-  expect_contains(colnames(processed_data), paste0("HSR_", 1:405))
+  # Check that the items were correctly turned into the hsr_001 .. hsr_405 format
+  expect_contains(colnames(processed_data), sprintf("hsr_%03d", 1:405))
 
   # Check that scale columns were properly generated with our custom 'score_' prefix
   expected_scales <- paste0("score_", hitopsr_scales$camelCase)
   expect_contains(colnames(processed_data), expected_scales)
 
   # Step 4: Assertions on item-level metadata labeling
-  # Verify that HSR_1 received its exact question prompt text attribute
+  # Verify that hsr_001 received its exact question prompt text attribute
   expect_identical(
-    attr(processed_data$HSR_1, "label"),
+    attr(processed_data$hsr_001, "label"),
     hitopsr_items$Text[hitopsr_items$HSR == 1]
   )
 

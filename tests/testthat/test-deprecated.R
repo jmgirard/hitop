@@ -13,7 +13,7 @@ module_cols <- function(m, data = sim_hitopsr) {
   # Select by NAME, never by `m$items`: those are original HiTOP-SR numbers,
   # which are column positions only in a frame that is exactly the 405 items
   # in order.
-  data[paste0("hsr_", m$items)]
+  data[sprintf("hsr_%03d", m$items)]
 }
 
 # --- AC1: the two constructors differ only in class -------------------------

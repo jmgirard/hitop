@@ -5,15 +5,16 @@
 # ---- label_hitopsr() --------------------------------------------------------
 
 test_that("label_hitopsr() attaches item text and scale names", {
-  # Items: HSR_1 / HSR_2 get their questionnaire prompt text as a label.
-  df_items <- data.frame(HSR_1 = c(1, 2), HSR_2 = c(3, 4))
+  # Items: a frame named HSR_001 .. HSR_405 is matched under prefix = "HSR_".
+  df_items <- as.data.frame(matrix(1, nrow = 2, ncol = 405))
+  names(df_items) <- sprintf("HSR_%03d", 1:405)
   labeled <- label_hitopsr(df_items, target = "items", prefix = "HSR_")
   expect_identical(
-    attr(labeled$HSR_1, "label"),
+    attr(labeled$HSR_001, "label"),
     hitopsr_items$Text[hitopsr_items$HSR == 1]
   )
   expect_identical(
-    attr(labeled$HSR_2, "label"),
+    attr(labeled$HSR_002, "label"),
     hitopsr_items$Text[hitopsr_items$HSR == 2]
   )
 
@@ -35,10 +36,10 @@ test_that("label_hitopsr() warns and returns data unchanged on no match", {
 # ---- label_hitopbr() --------------------------------------------------------
 
 test_that("label_hitopbr() attaches item text and scale names", {
-  df_items <- data.frame(HBR_1 = c(1, 2), HBR_2 = c(3, 4))
+  df_items <- data.frame(HBR_01 = c(1, 2), HBR_02 = c(3, 4))
   labeled <- label_hitopbr(df_items, target = "items", prefix = "HBR_")
   expect_identical(
-    attr(labeled$HBR_1, "label"),
+    attr(labeled$HBR_01, "label"),
     hitopbr_items$Text[hitopbr_items$HBR == 1]
   )
 
@@ -151,4 +152,38 @@ test_that("rank_scales() reflects reverse-directioned scales before ranking", {
     rank_scales(df, scales, top = 1, reverse = "hsr_wellBeing"),
     "srange"
   )
+})
+
+# ---- default prefix matches the shipped datasets and scored output ----------
+
+test_that("label_hitopsr() labels ku_hitopsr items 1, 10 and 405 with no prefix given", {
+  labeled <- label_hitopsr(ku_hitopsr, target = "items")
+  for (n in c(1, 10, 405)) {
+    expect_identical(
+      attr(labeled[[sprintf("hsr_%03d", n)]], "label"),
+      hitopsr_items$Text[hitopsr_items$HSR == n]
+    )
+  }
+  # Non-item columns are left unlabeled.
+  expect_null(attr(labeled$participant, "label"))
+})
+
+test_that("label_hitopsr(target = 'scales') labels score_hitopsr()'s default output with no prefix given", {
+  scored <- score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
+  labeled <- label_hitopsr(scored, target = "scales")
+  expect_identical(
+    vapply(labeled, function(col) attr(col, "label"), character(1), USE.NAMES = FALSE),
+    hitopsr_scales$Scale[match(sub("^hsr_", "", names(scored)), hitopsr_scales$camelCase)]
+  )
+})
+
+test_that("label_hitopbr() labels ku_hitopbr items 1, 10 and 45 with no prefix given", {
+  labeled <- label_hitopbr(ku_hitopbr, target = "items")
+  for (n in c(1, 10, 45)) {
+    expect_identical(
+      attr(labeled[[sprintf("hbr_%02d", n)]], "label"),
+      hitopbr_items$Text[hitopbr_items$HBR == n]
+    )
+  }
+  expect_null(attr(labeled$participant, "label"))
 })

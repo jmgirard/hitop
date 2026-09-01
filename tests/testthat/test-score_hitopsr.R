@@ -2,7 +2,7 @@
 # Fixtures + hand-computed expectations live in helper-fixtures.R (fx_hitopsr).
 
 test_that("score_hitopsr() matches hand-computed scores (incl. reverse item 310)", {
-  out <- score_hitopsr(fx_hitopsr(), items = paste0("HSR_", 1:405))
+  out <- score_hitopsr(fx_hitopsr(), items = sprintf("hsr_%03d", 1:405))
 
   # Romantic Disinterest carries the ONLY reverse-keyed HiTOP-SR item (HSR 310).
   # If reverse-keying were skipped, R1 would be mean(1,1,1,1,1) = 1, not 1.6.
@@ -32,16 +32,16 @@ test_that("score_hitopsr() independently recomputes a scale from hardcoded numbe
     sample(1:4, 6 * 405, replace = TRUE),
     nrow = 6, ncol = 405
   ))
-  names(df) <- paste0("HSR_", seq_len(405))
-  manual <- rowMeans(df[, paste0("HSR_", appetite_items)])
+  names(df) <- sprintf("hsr_%03d", seq_len(405))
+  manual <- rowMeans(df[, sprintf("hsr_%03d", appetite_items)])
 
-  out <- score_hitopsr(df, items = paste0("HSR_", 1:405), append = FALSE)
+  out <- score_hitopsr(df, items = sprintf("hsr_%03d", 1:405), append = FALSE)
   expect_equal(out$hsr_appetiteLoss, manual)
 })
 
 test_that("score_hitopsr() honors invariants: se, prefix, row count", {
   df <- fx_hitopsr()
-  items <- paste0("HSR_", 1:405)
+  items <- sprintf("hsr_%03d", 1:405)
 
   # calc_se adds a _se column per scale iff requested.
   base <- score_hitopsr(df, items = items, append = FALSE)

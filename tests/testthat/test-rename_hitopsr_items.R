@@ -11,7 +11,7 @@ test_that("rename_hitopsr_items works with method = 'original'", {
   })
 
   expect_match(warnings, "out of 405 HiTOP-SR items")
-  expect_named(res, c("HSR_1", "HSR_2", "Unrelated_Col"))
+  expect_named(res, c("HSR_001", "HSR_002", "Unrelated_Col"))
 })
 
 test_that("rename_hitopsr_items works with method = 'text'", {
@@ -38,7 +38,7 @@ test_that("rename_hitopsr_items works with method = 'text'", {
   })
 
   expect_match(warnings, "out of 405 HiTOP-SR items")
-  expect_named(res, c("HSR_1", "HSR_2", "Unrelated_Col"))
+  expect_named(res, c("HSR_001", "HSR_002", "Unrelated_Col"))
 })
 
 test_that("rename_hitopsr_items handles unmatched columns and structural errors gracefully", {
@@ -103,5 +103,33 @@ test_that("rename_hitopsr_items warns about skipped text mismatches and processe
   expect_match(warnings[2], "out of 405 HiTOP-SR items")
 
   # Verify processing continued for the valid item
-  expect_named(res, c("HSR_1", "col_b"))
+  expect_named(res, c("hsr_001", "col_b"))
+})
+
+# ---- zero-padded item names under the default prefix ------------------------
+
+test_that("rename_hitopsr_items() zero-pads item numbers to three digits (both methods)", {
+  probe <- c(1, 10, 405)
+  rows <- match(probe, hitopsr_items$HSR)
+  expected <- c("hsr_001", "hsr_010", "hsr_405")
+
+  df_legacy <- as.data.frame(matrix(0, nrow = 2, ncol = 3))
+  names(df_legacy) <- hitopsr_items$Original[rows]
+  res_orig <- suppressWarnings(rename_hitopsr_items(df_legacy, method = "original"))
+  expect_named(res_orig, expected)
+
+  df_text <- data.frame(a = 0, b = 0, c = 0)
+  res_text <- suppressWarnings(rename_hitopsr_items(
+    df_text,
+    method = "text",
+    item_cols = c("a", "b", "c"),
+    item_text = hitopsr_items$Text[rows]
+  ))
+  expect_named(res_text, expected)
+
+  # A custom prefix is pasted literally; only the number is padded.
+  res_custom <- suppressWarnings(
+    rename_hitopsr_items(df_legacy, method = "original", prefix = "HSR_")
+  )
+  expect_named(res_custom, c("HSR_001", "HSR_010", "HSR_405"))
 })

@@ -4,7 +4,7 @@
 \alias{label_hitopsr}
 \title{Label HiTOP-SR Columns with Semantic Descriptions}
 \usage{
-label_hitopsr(data, target = c("items", "scales"), prefix = "HSR_")
+label_hitopsr(data, target = c("items", "scales"), prefix = "hsr_")
 }
 \arguments{
 \item{data}{A data frame containing HiTOP-SR items or scales.}
@@ -12,8 +12,13 @@ label_hitopsr(data, target = c("items", "scales"), prefix = "HSR_")
 \item{target}{A string specifying what to label: \code{"items"} to label raw item
 columns with questionnaire text, or \code{"scales"} to label computed scale columns.}
 
-\item{prefix}{An optional string specifying the prefix used on the column names.
-(default = \code{"HSR_"})}
+\item{prefix}{A string specifying the prefix used on the column names. Item
+columns are expected as the prefix followed by the item number zero-padded
+to three digits (\code{hsr_001} to \code{hsr_405} under the default, the pattern the
+shipped datasets and the package's Qualtrics and REDCap exports use); scale
+columns as the prefix followed by the scale's \code{camelCase} name, which is
+what \code{\link[=score_hitopsr]{score_hitopsr()}} writes under its own default \code{prefix}.
+(default = \code{"hsr_"})}
 }
 \value{
 A data frame with labeled columns.
@@ -24,7 +29,7 @@ columns, making them readable by data viewers and reporting packages.
 }
 \examples{
 # Attach item text as a `label` attribute to the raw item columns
-labeled <- label_hitopsr(sim_hitopsr, target = "items", prefix = "hsr_")
-attr(labeled$hsr_1, "label")
+labeled <- label_hitopsr(sim_hitopsr, target = "items")
+attr(labeled$hsr_001, "label")
 
 }

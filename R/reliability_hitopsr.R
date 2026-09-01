@@ -45,7 +45,7 @@
 #' # item columns by name: `m$items` holds original HiTOP-SR numbers, which are
 #' # column positions only in a data frame that is exactly the 405 items in order.
 #' m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
-#' collected <- sim_hitopsr[paste0("hsr_", m$items)]
+#' collected <- sim_hitopsr[sprintf("hsr_%03d", m$items)]
 #' reliability_hitopsr(collected, items = names(collected), module = m, omega = FALSE)
 #'
 #' @export

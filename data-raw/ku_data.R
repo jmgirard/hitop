@@ -6,7 +6,7 @@ ku_items <-
     show_col_types = FALSE
   ) |>
   dplyr::inner_join(hitopsr_items, by = "Text") |>
-  dplyr::mutate(name = sprintf("hsr%03d", HSR)) |>
+  dplyr::mutate(name = sprintf("hsr_%03d", HSR)) |>
   dplyr::pull(Old, name)
 
 ku_hitopsr <-
@@ -31,7 +31,7 @@ ku_hitopsr <-
   dplyr::select(
     participant,
     biosex,
-    dplyr::num_range("hsr", range = 1:405, width = 3)
+    dplyr::all_of(sprintf("hsr_%03d", 1:405))
   )
 usethis::use_data(ku_hitopsr, overwrite = TRUE)
 
@@ -52,17 +52,17 @@ ku_hitopbr <-
   dplyr::select(
     participant,
     biosex,
-    sprintf("hsr%03d", item_conversion$HSR)
+    sprintf("hsr_%03d", item_conversion$HSR)
   ) |>
   setNames(c(
     "participant",
     "biosex",
-    sprintf("hbr%02d", item_conversion$HBR)
+    sprintf("hbr_%02d", item_conversion$HBR)
   )) |>
   dplyr::select(
     participant,
     biosex,
-    dplyr::num_range("hbr", range = 1:45, width = 2)
+    dplyr::all_of(sprintf("hbr_%02d", 1:45))
   )
 usethis::use_data(ku_hitopbr, overwrite = TRUE)
 

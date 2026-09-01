@@ -192,7 +192,7 @@ test_that("a shuffled Word form's descriptor records the printed order in origin
     # Responses laid out in INSTRUMENT order, and the scores they earn. Both
     # are built by item number straight from `sim_hitopsr`, never through the
     # `itemOrder` under test.
-    collected <- sim_hitopsr[sprintf("hsr_%d", covered)]
+    collected <- sim_hitopsr[sprintf("hsr_%03d", covered)]
     # Items are addressed by POSITION on both sides: what the reordering has
     # to restore is the column order, and a name would let the scorer succeed
     # for a reason the printed form never supplies.
