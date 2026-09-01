@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M078 | The per-scale tables the package ships or returns join on one column shape | planned | — | normal | milestones/M078-column-shape.md |
+| M078 | The per-scale tables the package ships or returns join on one column shape | in-progress | — | normal | milestones/M078-column-shape.md |
 | M077 | The shipped HiTOP datasets, `rename_hitopsr_items()` and the `label_*()` family name item columns as the REDCap export does | done | — | normal | milestones/archive/M077-item-column-names.md |
 | M076 | The builder page's boot path is bounded end to end and watched by a headless smoke test in CI | done | — | normal | milestones/archive/M076-builder-smoke-ci.md |
 | M075 | One REDCap archive writer, using a per-call temporary directory it always cleans up, against a stated {zip} floor | done | — | normal | milestones/archive/M075-redcap-zip-temp-path.md |

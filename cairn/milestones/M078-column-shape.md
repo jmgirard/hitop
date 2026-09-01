@@ -1,11 +1,11 @@
 # M078: The per-scale tables the package ships or returns join on one column shape
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3, IP1
-- **Branch/PR:** —
+- **Branch/PR:** `m078-column-shape`
 
 ## Goal
 
