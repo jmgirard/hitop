@@ -58,7 +58,7 @@ means:
 
 ``` r
 # Cronbach's alpha for the HiTOP-BR Detachment scale (items 7, 12, 30, 31, 37)
-detach_items <- sprintf("hbr%02d", c(7, 12, 30, 31, 37))
+detach_items <- sprintf("hbr_%02d", c(7, 12, 30, 31, 37))
 calc_alpha(ku_hitopbr[detach_items])
 #> [1] 0.800933
 ```

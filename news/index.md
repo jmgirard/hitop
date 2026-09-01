@@ -53,6 +53,38 @@
 
 ### Breaking changes
 
+- **The HiTOP example datasets and the item-naming helpers now use one
+  item column pattern, the one the package’s own REDCap export writes**
+  (the Qualtrics export writes the same pattern with an uppercase stem,
+  `HSR_001` and `HBR_01`, which `prefix = "HSR_"` / `"HBR_"` matches).
+  The item columns of `ku_hitopsr` and `sim_hitopsr` are now `hsr_001`
+  to `hsr_405`, and those of `ku_hitopbr` and `sim_hitopbr` are `hbr_01`
+  to `hbr_45`; only the names changed, every value and column position
+  is as it was.
+  [`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md),
+  [`label_hitopsr()`](https://jmgirard.github.io/hitop/reference/label_hitopsr.md)
+  and
+  [`label_hitopbr()`](https://jmgirard.github.io/hitop/reference/label_hitopbr.md)
+  now zero-pad the item number to the instrument’s width (three digits
+  for the HiTOP-SR, two for the HiTOP-BR) for every `prefix`, and their
+  default `prefix` is `"hsr_"` / `"hbr_"` rather than `"HSR_"` /
+  `"HBR_"`. So
+  [`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md)
+  writes `hsr_001` where it wrote `HSR_1`; `label_*()` with a custom
+  `prefix` against unpadded columns such as `HSR_1` no longer labels
+  them (only items where padding makes no difference, HiTOP-SR 100 and
+  up and HiTOP-BR 10 and up, still match) and warns, under the condition
+  class `hitop_unpadded_items`, naming the columns it skipped; and
+  `label_hitopsr(x, target = "scales")` with no `prefix` now matches
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)’s
+  default output (likewise for the HiTOP-BR pair). Code selecting the
+  old names — `sprintf("hsr%03d", 1:405)` and `paste0("hsr_", 1:405)`
+  for the two HiTOP-SR datasets, `sprintf("hbr%02d", 1:45)` and
+  `paste0("hitopbr_", 1:45)` for the two HiTOP-BR datasets — must move
+  to `sprintf("hsr_%03d", 1:405)` and `sprintf("hbr_%02d", 1:45)`; the
+  vignettes show the new idiom. No deprecation period precedes this
+  change.
+
 - **One HiTOP-BR item moved to the scale its development workbook gives
   it.** Item 36 (“I had a hard time asserting myself to others.”) was
   keyed to `Detachment`; the HiTOP Society development workbook this

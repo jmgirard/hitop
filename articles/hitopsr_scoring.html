@@ -121,32 +121,32 @@ installed the package properly (see the README on <a href="https://github.com/jm
 <code>participant</code> column with a unique identifier for each
 participant, a <code>biosex</code> column indicating whether each
 participant is “female” or “male”, and then 405 columns numbered
-<code>hsr001</code> to <code>hsr405</code> containing each participant’s
-rating on each item of the HiTOP-SR (on a numerical scale from 1 to
-4).</p>
+<code>hsr_001</code> to <code>hsr_405</code> containing each
+participant’s rating on each item of the HiTOP-SR (on a numerical scale
+from 1 to 4).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ku_hitopsr"</span><span class="op">)</span></span>
 <span><span class="va">ku_hitopsr</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 411 × 407</span></span></span>
-<span><span class="co">#&gt;    participant biosex hsr001 hsr002 hsr003 hsr004 hsr005 hsr006 hsr007 hsr008</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> P001        male        1      1      1      1      1      2      1      2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> P002        male        2      1      1      1      2      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> P003        male        1      2      2      3      2      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> P004        male        1      1      2      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> P005        male        1      2      1      1      3      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> P006        female      1      1      1      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> P007        female      1      1      1      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> P008        male        1      1      1      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> P009        female      3      2      3      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> P010        female      1      1      1      1      1      1      1      1</span></span>
+<span><span class="co">#&gt;    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> P001        male         1       1       1       1       1       2       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> P002        male         2       1       1       1       2       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> P003        male         1       2       2       3       2       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> P004        male         1       1       2       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> P005        male         1       2       1       1       3       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> P006        female       1       1       1       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> P007        female       1       1       1       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> P008        male         1       1       1       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> P009        female       3       2       3       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> P010        female       1       1       1       1       1       1       1</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 401 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 397 more variables: hsr009 &lt;dbl&gt;, hsr010 &lt;dbl&gt;, hsr011 &lt;dbl&gt;, hsr012 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr013 &lt;dbl&gt;, hsr014 &lt;dbl&gt;, hsr015 &lt;dbl&gt;, hsr016 &lt;dbl&gt;, hsr017 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr018 &lt;dbl&gt;, hsr019 &lt;dbl&gt;, hsr020 &lt;dbl&gt;, hsr021 &lt;dbl&gt;, hsr022 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr023 &lt;dbl&gt;, hsr024 &lt;dbl&gt;, hsr025 &lt;dbl&gt;, hsr026 &lt;dbl&gt;, hsr027 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr028 &lt;dbl&gt;, hsr029 &lt;dbl&gt;, hsr030 &lt;dbl&gt;, hsr031 &lt;dbl&gt;, hsr032 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr033 &lt;dbl&gt;, hsr034 &lt;dbl&gt;, hsr035 &lt;dbl&gt;, hsr036 &lt;dbl&gt;, hsr037 &lt;dbl&gt;, …</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 398 more variables: hsr_008 &lt;dbl&gt;, hsr_009 &lt;dbl&gt;, hsr_010 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_011 &lt;dbl&gt;, hsr_012 &lt;dbl&gt;, hsr_013 &lt;dbl&gt;, hsr_014 &lt;dbl&gt;, hsr_015 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_016 &lt;dbl&gt;, hsr_017 &lt;dbl&gt;, hsr_018 &lt;dbl&gt;, hsr_019 &lt;dbl&gt;, hsr_020 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_021 &lt;dbl&gt;, hsr_022 &lt;dbl&gt;, hsr_023 &lt;dbl&gt;, hsr_024 &lt;dbl&gt;, hsr_025 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_026 &lt;dbl&gt;, hsr_027 &lt;dbl&gt;, hsr_028 &lt;dbl&gt;, hsr_029 &lt;dbl&gt;, hsr_030 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_031 &lt;dbl&gt;, hsr_032 &lt;dbl&gt;, hsr_033 &lt;dbl&gt;, hsr_034 &lt;dbl&gt;, …</span></span></span></code></pre></div>
 <div class="section level2">
 <h2 id="basic-scoring">Basic Scoring<a class="anchor" aria-label="anchor" href="#basic-scoring"></a>
 </h2>
@@ -201,25 +201,25 @@ below how we now have 483 columns instead of 407.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">scores</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 411 × 483</span></span></span>
-<span><span class="co">#&gt;    participant biosex hsr001 hsr002 hsr003 hsr004 hsr005 hsr006 hsr007 hsr008</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> P001        male        1      1      1      1      1      2      1      2</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> P002        male        2      1      1      1      2      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> P003        male        1      2      2      3      2      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> P004        male        1      1      2      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> P005        male        1      2      1      1      3      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> P006        female      1      1      1      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> P007        female      1      1      1      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> P008        male        1      1      1      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> P009        female      3      2      3      1      1      1      1      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> P010        female      1      1      1      1      1      1      1      1</span></span>
+<span><span class="co">#&gt;    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> P001        male         1       1       1       1       1       2       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> P002        male         2       1       1       1       2       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> P003        male         1       2       2       3       2       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> P004        male         1       1       2       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> P005        male         1       2       1       1       3       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> P006        female       1       1       1       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> P007        female       1       1       1       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> P008        male         1       1       1       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> P009        female       3       2       3       1       1       1       1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> P010        female       1       1       1       1       1       1       1</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 401 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 473 more variables: hsr009 &lt;dbl&gt;, hsr010 &lt;dbl&gt;, hsr011 &lt;dbl&gt;, hsr012 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr013 &lt;dbl&gt;, hsr014 &lt;dbl&gt;, hsr015 &lt;dbl&gt;, hsr016 &lt;dbl&gt;, hsr017 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr018 &lt;dbl&gt;, hsr019 &lt;dbl&gt;, hsr020 &lt;dbl&gt;, hsr021 &lt;dbl&gt;, hsr022 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr023 &lt;dbl&gt;, hsr024 &lt;dbl&gt;, hsr025 &lt;dbl&gt;, hsr026 &lt;dbl&gt;, hsr027 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr028 &lt;dbl&gt;, hsr029 &lt;dbl&gt;, hsr030 &lt;dbl&gt;, hsr031 &lt;dbl&gt;, hsr032 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hsr033 &lt;dbl&gt;, hsr034 &lt;dbl&gt;, hsr035 &lt;dbl&gt;, hsr036 &lt;dbl&gt;, hsr037 &lt;dbl&gt;, …</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 474 more variables: hsr_008 &lt;dbl&gt;, hsr_009 &lt;dbl&gt;, hsr_010 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_011 &lt;dbl&gt;, hsr_012 &lt;dbl&gt;, hsr_013 &lt;dbl&gt;, hsr_014 &lt;dbl&gt;, hsr_015 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_016 &lt;dbl&gt;, hsr_017 &lt;dbl&gt;, hsr_018 &lt;dbl&gt;, hsr_019 &lt;dbl&gt;, hsr_020 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_021 &lt;dbl&gt;, hsr_022 &lt;dbl&gt;, hsr_023 &lt;dbl&gt;, hsr_024 &lt;dbl&gt;, hsr_025 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_026 &lt;dbl&gt;, hsr_027 &lt;dbl&gt;, hsr_028 &lt;dbl&gt;, hsr_029 &lt;dbl&gt;, hsr_030 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_031 &lt;dbl&gt;, hsr_032 &lt;dbl&gt;, hsr_033 &lt;dbl&gt;, hsr_034 &lt;dbl&gt;, …</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="items-as-strings">Items as Strings<a class="anchor" aria-label="anchor" href="#items-as-strings"></a>
@@ -227,14 +227,16 @@ below how we now have 483 columns instead of 407.</p>
 <p>Alternatively, we could provide the item column names as a character
 string. Typing out all 405 item names would be a hassle, but luckily
 this dataset named them consistently so we can build the names
-automatically using <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. If we use the “hsr%03d”
+automatically using <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. If we use the “hsr_%03d”
 format and apply that across the numbers 1 to 405, that will create the
-zero-padded column names we need. If there was no zero-padding, we could
-have just used “hsr%d”.</p>
+zero-padded column names we need. The same pattern names the items in
+the package’s other example dataset (<code>sim_hitopsr</code>) and in
+data collected through its Qualtrics and REDCap exports, so this one
+expression selects the items in all of them.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">scores</span></span>
@@ -269,7 +271,7 @@ even turn it off (e.g., setting it to <code>""</code>) using the
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="st">"hitop_"</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -332,7 +334,7 @@ we will need the <strong>lavaan</strong> package installed (set
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability_hitopsr.html">reliability_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span></span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 76 × 4</span></span></span>
 <span><span class="co">#&gt;    Scale                nItems alpha  omega</span></span>
@@ -360,7 +362,7 @@ bounds of a confidence interval around it.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -507,10 +509,10 @@ database, and renames them to standard names.</p>
 <span><span class="co">#&gt;   the data frame as `NA` columns.</span></span>
 <span></span>
 <span><span class="va">standardized_legacy</span></span>
-<span><span class="co">#&gt;   HSR_1 HSR_2 ParticipantID</span></span>
-<span><span class="co">#&gt; 1     1     3           101</span></span>
-<span><span class="co">#&gt; 2     2     4           102</span></span>
-<span><span class="co">#&gt; 3     4     2           103</span></span></code></pre></div>
+<span><span class="co">#&gt;   HSR_001 HSR_002 ParticipantID</span></span>
+<span><span class="co">#&gt; 1       1       3           101</span></span>
+<span><span class="co">#&gt; 2       2       4           102</span></span>
+<span><span class="co">#&gt; 3       4       2           103</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="method-2-matching-via-literal-item-text">Method 2: Matching via Literal Item Text<a class="anchor" aria-label="anchor" href="#method-2-matching-via-literal-item-text"></a>
@@ -547,10 +549,10 @@ names alongside a matching vector of literal item text strings.</p>
 <span><span class="co">#&gt;   the data frame as `NA` columns.</span></span>
 <span></span>
 <span><span class="va">standardized_custom</span></span>
-<span><span class="co">#&gt;   HSR_1 HSR_2 Age</span></span>
-<span><span class="co">#&gt; 1     1     4  21</span></span>
-<span><span class="co">#&gt; 2     2     3  25</span></span>
-<span><span class="co">#&gt; 3     1     4  30</span></span></code></pre></div>
+<span><span class="co">#&gt;   HSR_001 HSR_002 Age</span></span>
+<span><span class="co">#&gt; 1       1       4  21</span></span>
+<span><span class="co">#&gt; 2       2       3  25</span></span>
+<span><span class="co">#&gt; 3       1       4  30</span></span></code></pre></div>
 <p><em>Note: Because these small mock examples contain only some of the
 full item pool, <code><a href="../reference/rename_hitopsr_items.html">rename_hitopsr_items()</a></code> will safely issue a
 cli warning letting you know that fewer than 405 items were matched.
@@ -561,30 +563,38 @@ only part of the instrument.</em></p>
 <div class="section level2">
 <h2 id="labelling-columns">Labelling Columns<a class="anchor" aria-label="anchor" href="#labelling-columns"></a>
 </h2>
-<p>Column names like <code>hsr_1</code> and <code>hsr_agoraphobia</code>
-are compact but say nothing about what they hold. The
-<code><a href="../reference/label_hitopsr.html">label_hitopsr()</a></code> function attaches a <code>label</code>
-attribute to each column it recognizes: the literal item text for item
-columns, and the printed scale name for scored columns. Tools that read
-that attribute — data viewers and reporting packages — can then show the
-wording instead of the column name, so the labels travel with the data
-rather than living in a separate lookup table.</p>
+<p>Column names like <code>hsr_001</code> and
+<code>hsr_agoraphobia</code> are compact but say nothing about what they
+hold. The <code><a href="../reference/label_hitopsr.html">label_hitopsr()</a></code> function attaches a
+<code>label</code> attribute to each column it recognizes: the literal
+item text for item columns, and the printed scale name for scored
+columns. Tools that read that attribute — data viewers and reporting
+packages — can then show the wording instead of the column name, so the
+labels travel with the data rather than living in a separate lookup
+table.</p>
 <p>Which columns it recognizes depends on <code>prefix</code>, which
-must match how your item columns are actually named. The
-<code>sim_hitopsr</code> dataset numbers its items <code>hsr_1</code> to
-<code>hsr_405</code>, so <code>prefix = "hsr_"</code> finds them:</p>
+must match how your item columns are actually named. The default,
+<code>"hsr_"</code>, is how both example datasets and the package’s
+REDCap export name them (<code>hsr_001</code> to <code>hsr_405</code>),
+so <code>sim_hitopsr</code> needs no <code>prefix</code>; data collected
+through the package’s Qualtrics export is named <code>HSR_001</code> to
+<code>HSR_405</code> and would pass <code>prefix = "HSR_"</code>. The
+number must be zero-padded to three digits: columns carrying the prefix
+and a number without the leading zeros are not labelled, and the
+function warns and names them.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sim_hitopsr"</span><span class="op">)</span></span>
-<span><span class="va">labelled_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/label_hitopsr.html">label_hitopsr</a></span><span class="op">(</span><span class="va">sim_hitopsr</span>, target <span class="op">=</span> <span class="st">"items"</span>, prefix <span class="op">=</span> <span class="st">"hsr_"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">labelled_items</span><span class="op">$</span><span class="va">hsr_1</span>, <span class="st">"label"</span><span class="op">)</span></span>
+<span><span class="va">labelled_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/label_hitopsr.html">label_hitopsr</a></span><span class="op">(</span><span class="va">sim_hitopsr</span>, target <span class="op">=</span> <span class="st">"items"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">labelled_items</span><span class="op">$</span><span class="va">hsr_001</span>, <span class="st">"label"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "I preferred to stay home than to go to a party."</span></span></code></pre></div>
 <p>Set <code>target = "scales"</code> to label the output of
-<code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code> instead. Here the prefix is the one the
-scoring function put on its output columns, which is <code>"hsr_"</code>
-by default:</p>
+<code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code> instead. Here <code>prefix</code> is the
+one the scoring function put on its output columns. Both functions
+default to <code>"hsr_"</code>, so a scored frame built with default
+settings labels with none given:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span><span class="va">sim_hitopsr</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">405</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">labelled_scales</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/label_hitopsr.html">label_hitopsr</a></span><span class="op">(</span><span class="va">sim_scores</span>, target <span class="op">=</span> <span class="st">"scales"</span>, prefix <span class="op">=</span> <span class="st">"hsr_"</span><span class="op">)</span></span>
+<span><span class="va">labelled_scales</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/label_hitopsr.html">label_hitopsr</a></span><span class="op">(</span><span class="va">sim_scores</span>, target <span class="op">=</span> <span class="st">"scales"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">labelled_scales</span><span class="op">$</span><span class="va">hsr_agoraphobia</span>, <span class="st">"label"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Agoraphobia"</span></span></code></pre></div>
 <p>Columns the function does not recognize are returned untouched, and

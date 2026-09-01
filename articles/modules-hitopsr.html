@@ -290,19 +290,19 @@ those item columns.</p>
 <p>We will stand in for module-collected data using
 <code>ku_hitopsr</code>, the package’s real example dataset. Its first
 two columns are <code>participant</code> and <code>biosex</code>, and
-its 405 item columns are named <code>hsr001</code> through
-<code>hsr405</code>:</p>
+its 405 item columns are named <code>hsr_001</code> through
+<code>hsr_405</code>:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ku_hitopsr"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ku_hitopsr</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] "participant" "biosex"      "hsr001"      "hsr002"      "hsr003"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "participant" "biosex"      "hsr_001"     "hsr_002"     "hsr_003"</span></span></code></pre></div>
 <p><strong>Select the item columns by name, never by position.</strong>
 The numbers in <code>four_scale$items</code> are item numbers, not
 column numbers. They coincide only in a data frame that is exactly the
 405 items in order — and this one is not, because two other columns come
 first. Build the column names instead:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">item_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="va">four_scale</span><span class="op">$</span><span class="va">items</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">item_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="va">four_scale</span><span class="op">$</span><span class="va">items</span><span class="op">)</span></span>
 <span><span class="va">collected</span> <span class="op">&lt;-</span> <span class="va">ku_hitopsr</span><span class="op">[</span><span class="va">item_cols</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">ncol</a></span><span class="op">(</span><span class="va">collected</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 21</span></span></code></pre></div>
@@ -316,7 +316,7 @@ selected columns 42, 66, 68, and so on <em>by position</em>, which in
 this frame are the wrong items — shifted by the two leading columns:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ku_hitopsr</span><span class="op">[</span><span class="va">four_scale</span><span class="op">$</span><span class="va">items</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span></span>
-<span><span class="co">#&gt; [1] "hsr040" "hsr064" "hsr066" "hsr107"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "hsr_040" "hsr_064" "hsr_066" "hsr_107"</span></span></code></pre></div>
 <p>Those are items 40, 64, 66, and 107 masquerading as the module’s
 items. Nothing would have failed loudly; the scores would simply have
 been wrong. If your item columns carry other names,
@@ -364,7 +364,7 @@ cannot move it:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">full_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal</a></span><span class="op">(</span><span class="va">module_scores</span>, <span class="va">full_scores</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">module_scores</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>

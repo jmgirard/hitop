@@ -11,7 +11,7 @@ rename_hitopsr_items(
   method = c("original", "text"),
   item_cols = NULL,
   item_text = NULL,
-  prefix = "HSR_"
+  prefix = "hsr_"
 )
 ```
 
@@ -39,8 +39,11 @@ rename_hitopsr_items(
 
 - prefix:
 
-  An optional string to add before each standardized item number.
-  (default = `"HSR_"`)
+  A string pasted literally before each standardized item number, which
+  is zero-padded to three digits: `hsr_001` to `hsr_405` under the
+  default, the pattern the shipped datasets and the package's REDCap
+  export use (the Qualtrics export writes `HSR_001`). (default =
+  `"hsr_"`)
 
 ## Value
 
@@ -57,5 +60,5 @@ names(rename_hitopsr_items(df, method = "original"))
 #> Warning: Only 3 out of 405 HiTOP-SR items were successfully matched and renamed.
 #> ℹ Note: If you plan to use `score_hitopsr()`, ensure uncollected items exist in
 #>   the data frame as `NA` columns.
-#> [1] "HSR_1" "HSR_2" "HSR_3"
+#> [1] "hsr_001" "hsr_002" "hsr_003"
 ```

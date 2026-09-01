@@ -20,7 +20,7 @@ Next, we can load the example dataset from the package using the
 [`data()`](https://rdrr.io/r/utils/data.html) function. It is a large
 tibble that contains a `participant` column with a unique identifier for
 each participant, a `biosex` column indicating whether each participant
-is “female” or “male”, and then 45 columns numbered `hbr01` to `hbr45`
+is “female” or “male”, and then 45 columns numbered `hbr_01` to `hbr_45`
 containing each participant’s rating on each item of the HiTOP-BR (on a
 numerical scale from 1 to 4).
 
@@ -29,25 +29,25 @@ numerical scale from 1 to 4).
 data("ku_hitopbr")
 ku_hitopbr
 #> # A tibble: 411 × 47
-#>    participant biosex hbr01 hbr02 hbr03 hbr04 hbr05 hbr06 hbr07 hbr08 hbr09
-#>    <chr>       <fct>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#>  1 P001        male       1     1     1     1     2     1     1     1     1
-#>  2 P002        male       1     1     1     1     2     2     2     1     2
-#>  3 P003        male       1     2     1     2     3     4     3     3     3
-#>  4 P004        male       1     1     1     1     2     1     1     1     1
-#>  5 P005        male       1     4     1     1     3     1     1     1     2
-#>  6 P006        female     1     1     1     1     1     1     1     1     1
-#>  7 P007        female     1     1     1     1     1     1     1     1     1
-#>  8 P008        male       2     1     1     1     3     1     3     2     2
-#>  9 P009        female     1     1     1     1     3     1     1     1     1
-#> 10 P010        female     1     1     1     1     2     1     1     1     1
+#>    participant biosex hbr_01 hbr_02 hbr_03 hbr_04 hbr_05 hbr_06 hbr_07 hbr_08
+#>    <chr>       <fct>   <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+#>  1 P001        male        1      1      1      1      2      1      1      1
+#>  2 P002        male        1      1      1      1      2      2      2      1
+#>  3 P003        male        1      2      1      2      3      4      3      3
+#>  4 P004        male        1      1      1      1      2      1      1      1
+#>  5 P005        male        1      4      1      1      3      1      1      1
+#>  6 P006        female      1      1      1      1      1      1      1      1
+#>  7 P007        female      1      1      1      1      1      1      1      1
+#>  8 P008        male        2      1      1      1      3      1      3      2
+#>  9 P009        female      1      1      1      1      3      1      1      1
+#> 10 P010        female      1      1      1      1      2      1      1      1
 #> # ℹ 401 more rows
-#> # ℹ 36 more variables: hbr10 <dbl>, hbr11 <dbl>, hbr12 <dbl>, hbr13 <dbl>,
-#> #   hbr14 <dbl>, hbr15 <dbl>, hbr16 <dbl>, hbr17 <dbl>, hbr18 <dbl>,
-#> #   hbr19 <dbl>, hbr20 <dbl>, hbr21 <dbl>, hbr22 <dbl>, hbr23 <dbl>,
-#> #   hbr24 <dbl>, hbr25 <dbl>, hbr26 <dbl>, hbr27 <dbl>, hbr28 <dbl>,
-#> #   hbr29 <dbl>, hbr30 <dbl>, hbr31 <dbl>, hbr32 <dbl>, hbr33 <dbl>,
-#> #   hbr34 <dbl>, hbr35 <dbl>, hbr36 <dbl>, hbr37 <dbl>, hbr38 <dbl>, …
+#> # ℹ 37 more variables: hbr_09 <dbl>, hbr_10 <dbl>, hbr_11 <dbl>, hbr_12 <dbl>,
+#> #   hbr_13 <dbl>, hbr_14 <dbl>, hbr_15 <dbl>, hbr_16 <dbl>, hbr_17 <dbl>,
+#> #   hbr_18 <dbl>, hbr_19 <dbl>, hbr_20 <dbl>, hbr_21 <dbl>, hbr_22 <dbl>,
+#> #   hbr_23 <dbl>, hbr_24 <dbl>, hbr_25 <dbl>, hbr_26 <dbl>, hbr_27 <dbl>,
+#> #   hbr_28 <dbl>, hbr_29 <dbl>, hbr_30 <dbl>, hbr_31 <dbl>, hbr_32 <dbl>,
+#> #   hbr_33 <dbl>, hbr_34 <dbl>, hbr_35 <dbl>, hbr_36 <dbl>, hbr_37 <dbl>, …
 ```
 
 ## Basic Scoring
@@ -103,25 +103,25 @@ scores <- score_hitopbr(
 )
 scores
 #> # A tibble: 411 × 55
-#>    participant biosex hbr01 hbr02 hbr03 hbr04 hbr05 hbr06 hbr07 hbr08 hbr09
-#>    <chr>       <fct>  <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
-#>  1 P001        male       1     1     1     1     2     1     1     1     1
-#>  2 P002        male       1     1     1     1     2     2     2     1     2
-#>  3 P003        male       1     2     1     2     3     4     3     3     3
-#>  4 P004        male       1     1     1     1     2     1     1     1     1
-#>  5 P005        male       1     4     1     1     3     1     1     1     2
-#>  6 P006        female     1     1     1     1     1     1     1     1     1
-#>  7 P007        female     1     1     1     1     1     1     1     1     1
-#>  8 P008        male       2     1     1     1     3     1     3     2     2
-#>  9 P009        female     1     1     1     1     3     1     1     1     1
-#> 10 P010        female     1     1     1     1     2     1     1     1     1
+#>    participant biosex hbr_01 hbr_02 hbr_03 hbr_04 hbr_05 hbr_06 hbr_07 hbr_08
+#>    <chr>       <fct>   <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
+#>  1 P001        male        1      1      1      1      2      1      1      1
+#>  2 P002        male        1      1      1      1      2      2      2      1
+#>  3 P003        male        1      2      1      2      3      4      3      3
+#>  4 P004        male        1      1      1      1      2      1      1      1
+#>  5 P005        male        1      4      1      1      3      1      1      1
+#>  6 P006        female      1      1      1      1      1      1      1      1
+#>  7 P007        female      1      1      1      1      1      1      1      1
+#>  8 P008        male        2      1      1      1      3      1      3      2
+#>  9 P009        female      1      1      1      1      3      1      1      1
+#> 10 P010        female      1      1      1      1      2      1      1      1
 #> # ℹ 401 more rows
-#> # ℹ 44 more variables: hbr10 <dbl>, hbr11 <dbl>, hbr12 <dbl>, hbr13 <dbl>,
-#> #   hbr14 <dbl>, hbr15 <dbl>, hbr16 <dbl>, hbr17 <dbl>, hbr18 <dbl>,
-#> #   hbr19 <dbl>, hbr20 <dbl>, hbr21 <dbl>, hbr22 <dbl>, hbr23 <dbl>,
-#> #   hbr24 <dbl>, hbr25 <dbl>, hbr26 <dbl>, hbr27 <dbl>, hbr28 <dbl>,
-#> #   hbr29 <dbl>, hbr30 <dbl>, hbr31 <dbl>, hbr32 <dbl>, hbr33 <dbl>,
-#> #   hbr34 <dbl>, hbr35 <dbl>, hbr36 <dbl>, hbr37 <dbl>, hbr38 <dbl>, …
+#> # ℹ 45 more variables: hbr_09 <dbl>, hbr_10 <dbl>, hbr_11 <dbl>, hbr_12 <dbl>,
+#> #   hbr_13 <dbl>, hbr_14 <dbl>, hbr_15 <dbl>, hbr_16 <dbl>, hbr_17 <dbl>,
+#> #   hbr_18 <dbl>, hbr_19 <dbl>, hbr_20 <dbl>, hbr_21 <dbl>, hbr_22 <dbl>,
+#> #   hbr_23 <dbl>, hbr_24 <dbl>, hbr_25 <dbl>, hbr_26 <dbl>, hbr_27 <dbl>,
+#> #   hbr_28 <dbl>, hbr_29 <dbl>, hbr_30 <dbl>, hbr_31 <dbl>, hbr_32 <dbl>,
+#> #   hbr_33 <dbl>, hbr_34 <dbl>, hbr_35 <dbl>, hbr_36 <dbl>, hbr_37 <dbl>, …
 ```
 
 ## Items as Strings
@@ -130,15 +130,17 @@ Alternatively, we could provide the item column names as a character
 string. Typing out all 45 item names would be a hassle, but luckily this
 dataset named them consistently so we can build the names automatically
 using [`sprintf()`](https://rdrr.io/r/base/sprintf.html). If we use the
-“hbr%02d” format and apply that across the numbers 1 to 45, that will
-create the zero-padded column names we need. If there was no
-zero-padding, we could have just used “hbr%d”.
+“hbr\_%02d” format and apply that across the numbers 1 to 45, that will
+create the zero-padded column names we need. The same pattern names the
+items in the package’s other example dataset (`sim_hitopbr`) and in data
+collected through its Qualtrics and REDCap exports, so this one
+expression selects the items in all of them.
 
 ``` r
 
 scores <- score_hitopbr(
   data = ku_hitopbr,
-  items = sprintf("hbr%02d", 1:45),
+  items = sprintf("hbr_%02d", 1:45),
   append = FALSE
 )
 scores
@@ -170,7 +172,7 @@ off (e.g., setting it to `""`) using the `prefix` argument.
 
 scores <- score_hitopbr(
   data = ku_hitopbr,
-  items = sprintf("hbr%02d", 1:45),
+  items = sprintf("hbr_%02d", 1:45),
   prefix = "",
   append = FALSE
 )
@@ -223,7 +225,7 @@ around it.
 
 scored <- score_hitopbr(
   data = ku_hitopbr,
-  items = sprintf("hbr%02d", 1:45),
+  items = sprintf("hbr_%02d", 1:45),
   append = FALSE
 )
 
@@ -359,7 +361,7 @@ computes both `alpha` and `omega`; for the latter, we will need the
 
 reliability_hitopbr(
   data = ku_hitopbr,
-  items = sprintf("hbr%02d", 1:45)
+  items = sprintf("hbr_%02d", 1:45)
 )
 #> # A tibble: 8 × 4
 #>   Scale            nItems alpha omega
@@ -376,7 +378,7 @@ reliability_hitopbr(
 
 ## Labelling Columns
 
-Column names like `hitopbr_1` and `hbr_antagonism` are compact but say
+Column names like `hbr_01` and `hbr_antagonism` are compact but say
 nothing about what they hold. The
 [`label_hitopbr()`](https://jmgirard.github.io/hitop/reference/label_hitopbr.md)
 function attaches a `label` attribute to each column it recognizes: the
@@ -387,27 +389,32 @@ name, so the labels travel with the data rather than living in a
 separate lookup table.
 
 Which columns it recognizes depends on `prefix`, which must match how
-your item columns are actually named. The `sim_hitopbr` dataset numbers
-its items `hitopbr_1` to `hitopbr_45`, so `prefix = "hitopbr_"` finds
-them:
+your item columns are actually named. The default, `"hbr_"`, is how both
+example datasets and the package’s REDCap export name them (`hbr_01` to
+`hbr_45`), so `sim_hitopbr` needs no `prefix`; data collected through
+the package’s Qualtrics export is named `HBR_01` to `HBR_45` and would
+pass `prefix = "HBR_"`. The number must be zero-padded to two digits:
+columns carrying the prefix and a number without the leading zero are
+not labelled, and the function warns and names them.
 
 ``` r
 
 data("sim_hitopbr")
-labelled_items <- label_hitopbr(sim_hitopbr, target = "items", prefix = "hitopbr_")
-attr(labelled_items$hitopbr_1, "label")
+labelled_items <- label_hitopbr(sim_hitopbr, target = "items")
+attr(labelled_items$hbr_01, "label")
 #> [1] "I found it easy to deceive others."
 ```
 
 Set `target = "scales"` to label the output of
 [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
-instead. Here the prefix is the one the scoring function put on its
-output columns, which is `"hbr_"` by default:
+instead. Here `prefix` is the one the scoring function put on its output
+columns. Both functions default to `"hbr_"`, so a scored frame built
+with default settings labels with none given:
 
 ``` r
 
 sim_scores <- score_hitopbr(sim_hitopbr, items = 1:45, append = FALSE)
-labelled_scales <- label_hitopbr(sim_scores, target = "scales", prefix = "hbr_")
+labelled_scales <- label_hitopbr(sim_scores, target = "scales")
 attr(labelled_scales$hbr_antagonism, "label")
 #> [1] "Antagonism"
 ```

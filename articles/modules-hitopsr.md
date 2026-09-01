@@ -219,14 +219,14 @@ columns.
 
 We will stand in for module-collected data using `ku_hitopsr`, the
 package’s real example dataset. Its first two columns are `participant`
-and `biosex`, and its 405 item columns are named `hsr001` through
-`hsr405`:
+and `biosex`, and its 405 item columns are named `hsr_001` through
+`hsr_405`:
 
 ``` r
 
 data("ku_hitopsr")
 names(ku_hitopsr)[1:5]
-#> [1] "participant" "biosex"      "hsr001"      "hsr002"      "hsr003"
+#> [1] "participant" "biosex"      "hsr_001"     "hsr_002"     "hsr_003"
 ```
 
 **Select the item columns by name, never by position.** The numbers in
@@ -237,7 +237,7 @@ instead:
 
 ``` r
 
-item_cols <- sprintf("hsr%03d", four_scale$items)
+item_cols <- sprintf("hsr_%03d", four_scale$items)
 collected <- ku_hitopsr[item_cols]
 ncol(collected)
 #> [1] 21
@@ -259,7 +259,7 @@ Indexing by `four_scale$items` directly would have selected columns 42,
 ``` r
 
 names(ku_hitopsr[four_scale$items])[1:4]
-#> [1] "hsr040" "hsr064" "hsr066" "hsr107"
+#> [1] "hsr_040" "hsr_064" "hsr_066" "hsr_107"
 ```
 
 Those are items 40, 64, 66, and 107 masquerading as the module’s items.
@@ -314,7 +314,7 @@ own items, so dropping the other 72 scales’ columns cannot move it:
 
 full_scores <- score_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hsr%03d", 1:405),
+  items = sprintf("hsr_%03d", 1:405),
   append = FALSE
 )
 all.equal(module_scores, full_scores[names(module_scores)])

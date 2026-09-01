@@ -17,7 +17,7 @@ sim_hitopbr
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 100
 rows and 45 columns.
 
-- hitopbr_1 to hitopbr_45:
+- hbr_01 to hbr_45:
 
   Responses on each item
 
@@ -26,23 +26,23 @@ rows and 45 columns.
 ``` r
 sim_hitopbr
 #> # A tibble: 100 × 45
-#>    hitopbr_1 hitopbr_2 hitopbr_3 hitopbr_4 hitopbr_5 hitopbr_6 hitopbr_7
-#>        <int>     <int>     <int>     <int>     <int>     <int>     <int>
-#>  1         3         3         3         2         2         3         2
-#>  2         1         2         2         4         1         1         3
-#>  3         3         4         3         2         1         1         2
-#>  4         1         3         3         2         3         3         2
-#>  5         4         4         4         3         1         2         3
-#>  6         1         3         3         3         3         3         4
-#>  7         2         2         4         3         4         3         1
-#>  8         3         3         1         2         3         4         1
-#>  9         2         4         1         1         2         2         2
-#> 10         4         2         4         2         4         4         1
+#>    hbr_01 hbr_02 hbr_03 hbr_04 hbr_05 hbr_06 hbr_07 hbr_08 hbr_09 hbr_10 hbr_11
+#>     <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>  <int>
+#>  1      3      3      3      2      2      3      2      1      2      3      4
+#>  2      1      2      2      4      1      1      3      3      2      3      4
+#>  3      3      4      3      2      1      1      2      1      3      4      1
+#>  4      1      3      3      2      3      3      2      1      2      2      2
+#>  5      4      4      4      3      1      2      3      2      1      1      4
+#>  6      1      3      3      3      3      3      4      1      4      3      2
+#>  7      2      2      4      3      4      3      1      2      4      1      4
+#>  8      3      3      1      2      3      4      1      4      1      1      1
+#>  9      2      4      1      1      2      2      2      3      1      3      1
+#> 10      4      2      4      2      4      4      1      4      3      4      3
 #> # ℹ 90 more rows
-#> # ℹ 38 more variables: hitopbr_8 <int>, hitopbr_9 <int>, hitopbr_10 <int>,
-#> #   hitopbr_11 <int>, hitopbr_12 <int>, hitopbr_13 <int>, hitopbr_14 <int>,
-#> #   hitopbr_15 <int>, hitopbr_16 <int>, hitopbr_17 <int>, hitopbr_18 <int>,
-#> #   hitopbr_19 <int>, hitopbr_20 <int>, hitopbr_21 <int>, hitopbr_22 <int>,
-#> #   hitopbr_23 <int>, hitopbr_24 <int>, hitopbr_25 <int>, hitopbr_26 <int>,
-#> #   hitopbr_27 <int>, hitopbr_28 <int>, hitopbr_29 <int>, hitopbr_30 <int>, …
+#> # ℹ 34 more variables: hbr_12 <int>, hbr_13 <int>, hbr_14 <int>, hbr_15 <int>,
+#> #   hbr_16 <int>, hbr_17 <int>, hbr_18 <int>, hbr_19 <int>, hbr_20 <int>,
+#> #   hbr_21 <int>, hbr_22 <int>, hbr_23 <int>, hbr_24 <int>, hbr_25 <int>,
+#> #   hbr_26 <int>, hbr_27 <int>, hbr_28 <int>, hbr_29 <int>, hbr_30 <int>,
+#> #   hbr_31 <int>, hbr_32 <int>, hbr_33 <int>, hbr_34 <int>, hbr_35 <int>,
+#> #   hbr_36 <int>, hbr_37 <int>, hbr_38 <int>, hbr_39 <int>, hbr_40 <int>, …
 ```

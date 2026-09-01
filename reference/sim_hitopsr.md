@@ -17,7 +17,7 @@ sim_hitopsr
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 100
 rows and 405 columns.
 
-- hsr_1 to hsr_405:
+- hsr_001 to hsr_405:
 
   Responses on each item
 
@@ -26,23 +26,23 @@ rows and 405 columns.
 ``` r
 sim_hitopsr
 #> # A tibble: 100 × 405
-#>    hsr_1 hsr_2 hsr_3 hsr_4 hsr_5 hsr_6 hsr_7 hsr_8 hsr_9 hsr_10 hsr_11 hsr_12
-#>    <int> <int> <int> <int> <int> <int> <int> <int> <int>  <int>  <int>  <int>
-#>  1     2     2     2     3     2     1     3     1     1      3      3      3
-#>  2     3     4     4     1     1     3     4     1     1      3      4      4
-#>  3     3     2     2     3     2     3     3     3     1      4      2      1
-#>  4     3     3     4     2     2     3     4     4     1      1      1      2
-#>  5     1     3     4     1     2     1     4     3     2      3      3      1
-#>  6     1     1     2     3     1     2     2     4     1      3      2      4
-#>  7     2     1     1     3     2     1     2     3     4      4      4      1
-#>  8     1     1     3     3     1     1     3     2     3      3      3      2
-#>  9     3     4     4     3     4     3     3     2     3      1      4      2
-#> 10     2     4     1     1     2     2     3     2     2      3      1      4
+#>    hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007 hsr_008 hsr_009
+#>      <int>   <int>   <int>   <int>   <int>   <int>   <int>   <int>   <int>
+#>  1       2       2       2       3       2       1       3       1       1
+#>  2       3       4       4       1       1       3       4       1       1
+#>  3       3       2       2       3       2       3       3       3       1
+#>  4       3       3       4       2       2       3       4       4       1
+#>  5       1       3       4       1       2       1       4       3       2
+#>  6       1       1       2       3       1       2       2       4       1
+#>  7       2       1       1       3       2       1       2       3       4
+#>  8       1       1       3       3       1       1       3       2       3
+#>  9       3       4       4       3       4       3       3       2       3
+#> 10       2       4       1       1       2       2       3       2       2
 #> # ℹ 90 more rows
-#> # ℹ 393 more variables: hsr_13 <int>, hsr_14 <int>, hsr_15 <int>, hsr_16 <int>,
-#> #   hsr_17 <int>, hsr_18 <int>, hsr_19 <int>, hsr_20 <int>, hsr_21 <int>,
-#> #   hsr_22 <int>, hsr_23 <int>, hsr_24 <int>, hsr_25 <int>, hsr_26 <int>,
-#> #   hsr_27 <int>, hsr_28 <int>, hsr_29 <int>, hsr_30 <int>, hsr_31 <int>,
-#> #   hsr_32 <int>, hsr_33 <int>, hsr_34 <int>, hsr_35 <int>, hsr_36 <int>,
-#> #   hsr_37 <int>, hsr_38 <int>, hsr_39 <int>, hsr_40 <int>, hsr_41 <int>, …
+#> # ℹ 396 more variables: hsr_010 <int>, hsr_011 <int>, hsr_012 <int>,
+#> #   hsr_013 <int>, hsr_014 <int>, hsr_015 <int>, hsr_016 <int>, hsr_017 <int>,
+#> #   hsr_018 <int>, hsr_019 <int>, hsr_020 <int>, hsr_021 <int>, hsr_022 <int>,
+#> #   hsr_023 <int>, hsr_024 <int>, hsr_025 <int>, hsr_026 <int>, hsr_027 <int>,
+#> #   hsr_028 <int>, hsr_029 <int>, hsr_030 <int>, hsr_031 <int>, hsr_032 <int>,
+#> #   hsr_033 <int>, hsr_034 <int>, hsr_035 <int>, hsr_036 <int>, …
 ```

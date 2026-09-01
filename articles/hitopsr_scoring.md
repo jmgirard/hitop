@@ -20,8 +20,8 @@ Next, we can load the example dataset from the package using the
 [`data()`](https://rdrr.io/r/utils/data.html) function. It is a large
 tibble that contains a `participant` column with a unique identifier for
 each participant, a `biosex` column indicating whether each participant
-is “female” or “male”, and then 405 columns numbered `hsr001` to
-`hsr405` containing each participant’s rating on each item of the
+is “female” or “male”, and then 405 columns numbered `hsr_001` to
+`hsr_405` containing each participant’s rating on each item of the
 HiTOP-SR (on a numerical scale from 1 to 4).
 
 ``` r
@@ -29,25 +29,25 @@ HiTOP-SR (on a numerical scale from 1 to 4).
 data("ku_hitopsr")
 ku_hitopsr
 #> # A tibble: 411 × 407
-#>    participant biosex hsr001 hsr002 hsr003 hsr004 hsr005 hsr006 hsr007 hsr008
-#>    <chr>       <fct>   <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#>  1 P001        male        1      1      1      1      1      2      1      2
-#>  2 P002        male        2      1      1      1      2      1      1      1
-#>  3 P003        male        1      2      2      3      2      1      1      1
-#>  4 P004        male        1      1      2      1      1      1      1      1
-#>  5 P005        male        1      2      1      1      3      1      1      1
-#>  6 P006        female      1      1      1      1      1      1      1      1
-#>  7 P007        female      1      1      1      1      1      1      1      1
-#>  8 P008        male        1      1      1      1      1      1      1      1
-#>  9 P009        female      3      2      3      1      1      1      1      1
-#> 10 P010        female      1      1      1      1      1      1      1      1
+#>    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007
+#>    <chr>       <fct>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+#>  1 P001        male         1       1       1       1       1       2       1
+#>  2 P002        male         2       1       1       1       2       1       1
+#>  3 P003        male         1       2       2       3       2       1       1
+#>  4 P004        male         1       1       2       1       1       1       1
+#>  5 P005        male         1       2       1       1       3       1       1
+#>  6 P006        female       1       1       1       1       1       1       1
+#>  7 P007        female       1       1       1       1       1       1       1
+#>  8 P008        male         1       1       1       1       1       1       1
+#>  9 P009        female       3       2       3       1       1       1       1
+#> 10 P010        female       1       1       1       1       1       1       1
 #> # ℹ 401 more rows
-#> # ℹ 397 more variables: hsr009 <dbl>, hsr010 <dbl>, hsr011 <dbl>, hsr012 <dbl>,
-#> #   hsr013 <dbl>, hsr014 <dbl>, hsr015 <dbl>, hsr016 <dbl>, hsr017 <dbl>,
-#> #   hsr018 <dbl>, hsr019 <dbl>, hsr020 <dbl>, hsr021 <dbl>, hsr022 <dbl>,
-#> #   hsr023 <dbl>, hsr024 <dbl>, hsr025 <dbl>, hsr026 <dbl>, hsr027 <dbl>,
-#> #   hsr028 <dbl>, hsr029 <dbl>, hsr030 <dbl>, hsr031 <dbl>, hsr032 <dbl>,
-#> #   hsr033 <dbl>, hsr034 <dbl>, hsr035 <dbl>, hsr036 <dbl>, hsr037 <dbl>, …
+#> # ℹ 398 more variables: hsr_008 <dbl>, hsr_009 <dbl>, hsr_010 <dbl>,
+#> #   hsr_011 <dbl>, hsr_012 <dbl>, hsr_013 <dbl>, hsr_014 <dbl>, hsr_015 <dbl>,
+#> #   hsr_016 <dbl>, hsr_017 <dbl>, hsr_018 <dbl>, hsr_019 <dbl>, hsr_020 <dbl>,
+#> #   hsr_021 <dbl>, hsr_022 <dbl>, hsr_023 <dbl>, hsr_024 <dbl>, hsr_025 <dbl>,
+#> #   hsr_026 <dbl>, hsr_027 <dbl>, hsr_028 <dbl>, hsr_029 <dbl>, hsr_030 <dbl>,
+#> #   hsr_031 <dbl>, hsr_032 <dbl>, hsr_033 <dbl>, hsr_034 <dbl>, …
 ```
 
 ## Basic Scoring
@@ -107,25 +107,25 @@ scores <- score_hitopsr(
 )
 scores
 #> # A tibble: 411 × 483
-#>    participant biosex hsr001 hsr002 hsr003 hsr004 hsr005 hsr006 hsr007 hsr008
-#>    <chr>       <fct>   <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#>  1 P001        male        1      1      1      1      1      2      1      2
-#>  2 P002        male        2      1      1      1      2      1      1      1
-#>  3 P003        male        1      2      2      3      2      1      1      1
-#>  4 P004        male        1      1      2      1      1      1      1      1
-#>  5 P005        male        1      2      1      1      3      1      1      1
-#>  6 P006        female      1      1      1      1      1      1      1      1
-#>  7 P007        female      1      1      1      1      1      1      1      1
-#>  8 P008        male        1      1      1      1      1      1      1      1
-#>  9 P009        female      3      2      3      1      1      1      1      1
-#> 10 P010        female      1      1      1      1      1      1      1      1
+#>    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007
+#>    <chr>       <fct>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+#>  1 P001        male         1       1       1       1       1       2       1
+#>  2 P002        male         2       1       1       1       2       1       1
+#>  3 P003        male         1       2       2       3       2       1       1
+#>  4 P004        male         1       1       2       1       1       1       1
+#>  5 P005        male         1       2       1       1       3       1       1
+#>  6 P006        female       1       1       1       1       1       1       1
+#>  7 P007        female       1       1       1       1       1       1       1
+#>  8 P008        male         1       1       1       1       1       1       1
+#>  9 P009        female       3       2       3       1       1       1       1
+#> 10 P010        female       1       1       1       1       1       1       1
 #> # ℹ 401 more rows
-#> # ℹ 473 more variables: hsr009 <dbl>, hsr010 <dbl>, hsr011 <dbl>, hsr012 <dbl>,
-#> #   hsr013 <dbl>, hsr014 <dbl>, hsr015 <dbl>, hsr016 <dbl>, hsr017 <dbl>,
-#> #   hsr018 <dbl>, hsr019 <dbl>, hsr020 <dbl>, hsr021 <dbl>, hsr022 <dbl>,
-#> #   hsr023 <dbl>, hsr024 <dbl>, hsr025 <dbl>, hsr026 <dbl>, hsr027 <dbl>,
-#> #   hsr028 <dbl>, hsr029 <dbl>, hsr030 <dbl>, hsr031 <dbl>, hsr032 <dbl>,
-#> #   hsr033 <dbl>, hsr034 <dbl>, hsr035 <dbl>, hsr036 <dbl>, hsr037 <dbl>, …
+#> # ℹ 474 more variables: hsr_008 <dbl>, hsr_009 <dbl>, hsr_010 <dbl>,
+#> #   hsr_011 <dbl>, hsr_012 <dbl>, hsr_013 <dbl>, hsr_014 <dbl>, hsr_015 <dbl>,
+#> #   hsr_016 <dbl>, hsr_017 <dbl>, hsr_018 <dbl>, hsr_019 <dbl>, hsr_020 <dbl>,
+#> #   hsr_021 <dbl>, hsr_022 <dbl>, hsr_023 <dbl>, hsr_024 <dbl>, hsr_025 <dbl>,
+#> #   hsr_026 <dbl>, hsr_027 <dbl>, hsr_028 <dbl>, hsr_029 <dbl>, hsr_030 <dbl>,
+#> #   hsr_031 <dbl>, hsr_032 <dbl>, hsr_033 <dbl>, hsr_034 <dbl>, …
 ```
 
 ## Items as Strings
@@ -134,15 +134,17 @@ Alternatively, we could provide the item column names as a character
 string. Typing out all 405 item names would be a hassle, but luckily
 this dataset named them consistently so we can build the names
 automatically using [`sprintf()`](https://rdrr.io/r/base/sprintf.html).
-If we use the “hsr%03d” format and apply that across the numbers 1 to
-405, that will create the zero-padded column names we need. If there was
-no zero-padding, we could have just used “hsr%d”.
+If we use the “hsr\_%03d” format and apply that across the numbers 1 to
+405, that will create the zero-padded column names we need. The same
+pattern names the items in the package’s other example dataset
+(`sim_hitopsr`) and in data collected through its Qualtrics and REDCap
+exports, so this one expression selects the items in all of them.
 
 ``` r
 
 scores <- score_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hsr%03d", 1:405),
+  items = sprintf("hsr_%03d", 1:405),
   append = FALSE
 )
 scores
@@ -178,7 +180,7 @@ off (e.g., setting it to `""`) using the `prefix` argument.
 
 scores <- score_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hsr%03d", 1:405),
+  items = sprintf("hsr_%03d", 1:405),
   prefix = "hitop_",
   append = FALSE
 )
@@ -246,7 +248,7 @@ computes both `alpha` and `omega`; for the latter, we will need the
 
 reliability_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hsr%03d", 1:405)
+  items = sprintf("hsr_%03d", 1:405)
 )
 #> # A tibble: 76 × 4
 #>    Scale                nItems alpha  omega
@@ -277,7 +279,7 @@ around it.
 
 scored <- score_hitopsr(
   data = ku_hitopsr,
-  items = sprintf("hsr%03d", 1:405),
+  items = sprintf("hsr_%03d", 1:405),
   append = FALSE
 )
 
@@ -433,10 +435,10 @@ standardized_legacy <-
 #>   the data frame as `NA` columns.
 
 standardized_legacy
-#>   HSR_1 HSR_2 ParticipantID
-#> 1     1     3           101
-#> 2     2     4           102
-#> 3     4     2           103
+#>   HSR_001 HSR_002 ParticipantID
+#> 1       1       3           101
+#> 2       2       4           102
+#> 3       4       2           103
 ```
 
 ### Method 2: Matching via Literal Item Text
@@ -475,10 +477,10 @@ standardized_custom <- custom_data |>
 #>   the data frame as `NA` columns.
 
 standardized_custom
-#>   HSR_1 HSR_2 Age
-#> 1     1     4  21
-#> 2     2     3  25
-#> 3     1     4  30
+#>   HSR_001 HSR_002 Age
+#> 1       1       4  21
+#> 2       2       3  25
+#> 3       1       4  30
 ```
 
 *Note: Because these small mock examples contain only some of the full
@@ -490,7 +492,7 @@ intentionally administer only part of the instrument.*
 
 ## Labelling Columns
 
-Column names like `hsr_1` and `hsr_agoraphobia` are compact but say
+Column names like `hsr_001` and `hsr_agoraphobia` are compact but say
 nothing about what they hold. The
 [`label_hitopsr()`](https://jmgirard.github.io/hitop/reference/label_hitopsr.md)
 function attaches a `label` attribute to each column it recognizes: the
@@ -501,26 +503,32 @@ name, so the labels travel with the data rather than living in a
 separate lookup table.
 
 Which columns it recognizes depends on `prefix`, which must match how
-your item columns are actually named. The `sim_hitopsr` dataset numbers
-its items `hsr_1` to `hsr_405`, so `prefix = "hsr_"` finds them:
+your item columns are actually named. The default, `"hsr_"`, is how both
+example datasets and the package’s REDCap export name them (`hsr_001` to
+`hsr_405`), so `sim_hitopsr` needs no `prefix`; data collected through
+the package’s Qualtrics export is named `HSR_001` to `HSR_405` and would
+pass `prefix = "HSR_"`. The number must be zero-padded to three digits:
+columns carrying the prefix and a number without the leading zeros are
+not labelled, and the function warns and names them.
 
 ``` r
 
 data("sim_hitopsr")
-labelled_items <- label_hitopsr(sim_hitopsr, target = "items", prefix = "hsr_")
-attr(labelled_items$hsr_1, "label")
+labelled_items <- label_hitopsr(sim_hitopsr, target = "items")
+attr(labelled_items$hsr_001, "label")
 #> [1] "I preferred to stay home than to go to a party."
 ```
 
 Set `target = "scales"` to label the output of
 [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-instead. Here the prefix is the one the scoring function put on its
-output columns, which is `"hsr_"` by default:
+instead. Here `prefix` is the one the scoring function put on its output
+columns. Both functions default to `"hsr_"`, so a scored frame built
+with default settings labels with none given:
 
 ``` r
 
 sim_scores <- score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
-labelled_scales <- label_hitopsr(sim_scores, target = "scales", prefix = "hsr_")
+labelled_scales <- label_hitopsr(sim_scores, target = "scales")
 attr(labelled_scales$hsr_agoraphobia, "label")
 #> [1] "Agoraphobia"
 ```

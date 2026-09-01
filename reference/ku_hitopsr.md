@@ -22,7 +22,7 @@ rows and 407 columns.
 
   A factor indicating each participant's biological sex
 
-- hsr001 to hsr405:
+- hsr_001 to hsr_405:
 
   Responses on each item
 
@@ -31,23 +31,23 @@ rows and 407 columns.
 ``` r
 ku_hitopsr
 #> # A tibble: 411 × 407
-#>    participant biosex hsr001 hsr002 hsr003 hsr004 hsr005 hsr006 hsr007 hsr008
-#>    <chr>       <fct>   <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>  <dbl>
-#>  1 P001        male        1      1      1      1      1      2      1      2
-#>  2 P002        male        2      1      1      1      2      1      1      1
-#>  3 P003        male        1      2      2      3      2      1      1      1
-#>  4 P004        male        1      1      2      1      1      1      1      1
-#>  5 P005        male        1      2      1      1      3      1      1      1
-#>  6 P006        female      1      1      1      1      1      1      1      1
-#>  7 P007        female      1      1      1      1      1      1      1      1
-#>  8 P008        male        1      1      1      1      1      1      1      1
-#>  9 P009        female      3      2      3      1      1      1      1      1
-#> 10 P010        female      1      1      1      1      1      1      1      1
+#>    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007
+#>    <chr>       <fct>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+#>  1 P001        male         1       1       1       1       1       2       1
+#>  2 P002        male         2       1       1       1       2       1       1
+#>  3 P003        male         1       2       2       3       2       1       1
+#>  4 P004        male         1       1       2       1       1       1       1
+#>  5 P005        male         1       2       1       1       3       1       1
+#>  6 P006        female       1       1       1       1       1       1       1
+#>  7 P007        female       1       1       1       1       1       1       1
+#>  8 P008        male         1       1       1       1       1       1       1
+#>  9 P009        female       3       2       3       1       1       1       1
+#> 10 P010        female       1       1       1       1       1       1       1
 #> # ℹ 401 more rows
-#> # ℹ 397 more variables: hsr009 <dbl>, hsr010 <dbl>, hsr011 <dbl>, hsr012 <dbl>,
-#> #   hsr013 <dbl>, hsr014 <dbl>, hsr015 <dbl>, hsr016 <dbl>, hsr017 <dbl>,
-#> #   hsr018 <dbl>, hsr019 <dbl>, hsr020 <dbl>, hsr021 <dbl>, hsr022 <dbl>,
-#> #   hsr023 <dbl>, hsr024 <dbl>, hsr025 <dbl>, hsr026 <dbl>, hsr027 <dbl>,
-#> #   hsr028 <dbl>, hsr029 <dbl>, hsr030 <dbl>, hsr031 <dbl>, hsr032 <dbl>,
-#> #   hsr033 <dbl>, hsr034 <dbl>, hsr035 <dbl>, hsr036 <dbl>, hsr037 <dbl>, …
+#> # ℹ 398 more variables: hsr_008 <dbl>, hsr_009 <dbl>, hsr_010 <dbl>,
+#> #   hsr_011 <dbl>, hsr_012 <dbl>, hsr_013 <dbl>, hsr_014 <dbl>, hsr_015 <dbl>,
+#> #   hsr_016 <dbl>, hsr_017 <dbl>, hsr_018 <dbl>, hsr_019 <dbl>, hsr_020 <dbl>,
+#> #   hsr_021 <dbl>, hsr_022 <dbl>, hsr_023 <dbl>, hsr_024 <dbl>, hsr_025 <dbl>,
+#> #   hsr_026 <dbl>, hsr_027 <dbl>, hsr_028 <dbl>, hsr_029 <dbl>, hsr_030 <dbl>,
+#> #   hsr_031 <dbl>, hsr_032 <dbl>, hsr_033 <dbl>, hsr_034 <dbl>, …
 ```
