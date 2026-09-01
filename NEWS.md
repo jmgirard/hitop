@@ -39,6 +39,25 @@
 
 ## Breaking changes
 
+* **The HiTOP example datasets and the item-naming helpers now use one item
+  column pattern, the one the package's own Qualtrics and REDCap exports
+  write.** The item columns of `ku_hitopsr` and `sim_hitopsr` are now
+  `hsr_001` to `hsr_405`, and those of `ku_hitopbr` and `sim_hitopbr` are
+  `hbr_01` to `hbr_45`; only the names changed, every value and column
+  position is as it was. `rename_hitopsr_items()`, `label_hitopsr()` and
+  `label_hitopbr()` now zero-pad the item number to the instrument's width
+  (three digits for the HiTOP-SR, two for the HiTOP-BR) for every `prefix`,
+  and their default `prefix` is `"hsr_"` / `"hbr_"` rather than `"HSR_"` /
+  `"HBR_"`. So `rename_hitopsr_items()` writes `hsr_001` where it wrote
+  `HSR_1`; `label_*()` with a custom `prefix` against unpadded columns such
+  as `HSR_1` no longer matches them and warns that no column matched; and
+  `label_hitopsr(x, target = "scales")` with no `prefix` now matches
+  `score_hitopsr()`'s default output (likewise for the HiTOP-BR pair). Code
+  selecting the old names, such as `sprintf("hsr%03d", 1:405)` or
+  `paste0("hitopbr_", 1:45)`, must move to `sprintf("hsr_%03d", 1:405)` and
+  `sprintf("hbr_%02d", 1:45)`; the vignettes show the new idiom. No
+  deprecation period precedes this change.
+
 * **One HiTOP-BR item moved to the scale its development workbook gives it.**
   Item 36 ("I had a hard time asserting myself to others.") was keyed to
   `Detachment`; the HiTOP Society development workbook this keying was built
