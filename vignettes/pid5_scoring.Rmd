@@ -29,7 +29,7 @@ library(hitop)
 
 ## Score simulated PID-5 data
 
-The `sim_pid5` dataset is built into the package and can be loaded using the `data()` function. It contains 100 rows (each representing a simulated participant) and 220 columns named `pid5_001` to `pid5_220` (each representing an item from the PID-5).
+The `sim_pid5` dataset is built into the package and can be loaded using the `data()` function. It contains 100 rows (each representing a simulated participant) and 220 columns named `pid5_001` to `pid5_220` (each representing an item from the PID-5). If your own PID-5 columns are named some other way, `rename_pid5_items()` will rename them to this pattern, matching either on the item number already in the name or on the item text.
 
 ```{r}
 data("sim_pid5")

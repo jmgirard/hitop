@@ -610,6 +610,27 @@ warn_unpadded_items <- function(unpadded, width, instrument) {
   )
 }
 
+# Inputs a rename helper could not match, reported under the public class
+# `hitop_unmatched_items` (D-057). Both matching methods raise it: `what`
+# names the kind of input being reported ("item text" or "column"), since
+# `method = "text"` reports item prompts and `method = "number"` reports
+# column names.
+warn_unmatched_items <- function(unmatched, what) {
+  if (length(unmatched) == 0) return(invisible(NULL))
+  plural <- length(unmatched) > 1L
+  header <- sprintf(
+    "The following %s%s could not be matched and %s skipped:",
+    what,
+    if (plural) "s" else "",
+    if (plural) "were" else "was"
+  )
+  # Bullets are caller-supplied text, so double any braces cli would read as
+  # an inline expression; name the elements "x" for red error bullets.
+  bullets <- gsub("\\}", "}}", gsub("\\{", "{{", unmatched))
+  names(bullets) <- rep("x", length(bullets))
+  cli::cli_warn(c(header, bullets), class = "hitop_unmatched_items")
+}
+
 item_names <- function(prefix, n, max_n = max(n)) {
   if (length(n) == 0L) return(character(0))
   width <- nchar(as.character(as.integer(max_n)))

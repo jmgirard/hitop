@@ -1,12 +1,12 @@
 # M082: `rename_pid5_items()`
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m082-rename-pid5-items`
 
 ## Goal
 
@@ -112,18 +112,18 @@ arguments, defaults and reports.
 
 ## Tasks
 
-- [ ] T1: Append the `cairn/DECISIONS.md` entry D-034(c) requires for the new
+- [x] T1: Append the `cairn/DECISIONS.md` entry D-034(c) requires for the new
       unmatched-item condition class, naming the class and both methods that
       raise it; add the internal raiser beside `warn_unpadded_items()`
       (`R/util.R:595`).
-- [ ] T2: Write `tests/testthat/test-rename_pid5_items.R` red — AC1's per-form
+- [x] T2: Write `tests/testthat/test-rename_pid5_items.R` red — AC1's per-form
       text sweep, AC2's number method with its enumerated non-matching family,
       AC3's unmatchable family per method, AC4's literal-expectation defaults.
-- [ ] T3: Implement `R/rename_pid5_items.R`, modelled on
+- [x] T3: Implement `R/rename_pid5_items.R`, modelled on
       `R/rename_hitopsr_items.R`, with the `version` resolution `score_pid5()`
       uses (`R/score_pid5.R:142`) and `item_names()` for the padded names; run T2
       green.
-- [ ] T4: Roxygen docs and example, `document()`, the NEWS bullet, the
+- [x] T4: Roxygen docs and example, `document()`, the NEWS bullet, the
       `_pkgdown.yml` entry, and the three vignette mentions.
 - [ ] T5: Run the profile's verify and review checks; record the output.
 
@@ -135,6 +135,12 @@ arguments, defaults and reports.
 - 2026-09-02: sizing tripwire fired on the unsplit scope (9 acceptance criteria, 7 tasks); split into M082 and M083 rather than compressed, the two functions having disjoint implementations, test files and failure modes.
 - 2026-09-02: plan gate chose `method = c("text", "number")` over text-only because D-055 renamed `pid_1` to `pid5_001` with no in-package migration path; falsified by users reaching for the text method to migrate package-named data.
 - 2026-09-02: plan gate chose a public condition class with a D-entry over the classless `cli_warn()` the HiTOP sibling uses because a test can otherwise only assert on message prose; falsified by the class going unused by any caller while the sibling's classless report causes no trouble.
+- 2026-09-02: implementation gate chose `method = "number"` as the default (the migration from the package's own pre-rename spelling), the condition class name `hitop_unmatched_items`, and keeping the sibling's completeness warning on both methods.
+- 2026-09-02: T1 — D-057 appended; `warn_unmatched_items()` added beside `warn_unpadded_items()` in `R/util.R`, raising the class for both methods and doubling braces in caller-supplied bullet text so cli does not read one as an expression.
+- 2026-09-02: T2/T3 — `tests/testthat/test-rename_pid5_items.R` written red (function absent), then `R/rename_pid5_items.R` implemented green. Four planted defects each went red: a wrong `from_prefix` default, a report naming every pattern-matching column, a pad width fixed at 220, and text matched against all of `pid_items` rather than the named form's rows. The second exposed AC2's report check as too loose — it never asserted the renamed item columns were absent — so the check now compares the report's bullets as a set.
+- 2026-09-02: AC3's off-form-text member is empty for `version = "FULL"`, every `pid_items` row carrying a FULL number; the test asserts that emptiness holds for FULL and for no other form rather than skipping it silently.
+- 2026-09-02: T4 — roxygen docs and example, `document()`, the NEWS bullet, the `_pkgdown.yml` Utilities entry, and one mention in each of the three PID-5 scoring vignettes.
+- 2026-09-02: checkpoint at T1-T4. `test-rename_pid5_items.R` green on its own and four planted defects each red; the full `devtools::test()` run was still in flight at the commit, so T5 remains open.
 
 ## Decisions
 
