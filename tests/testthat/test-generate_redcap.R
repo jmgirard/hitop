@@ -305,7 +305,8 @@ test_that("generate_redcap_hitopsr(module =) emits exactly the module's fields",
 
   expect_equal(nrow(item_rows), 8)
   expect_equal(item_rows$`Field Label`, kept$Text)
-  # Field names carry the ORIGINAL HSR numbers, zero-padded to the widest.
+  # Field names carry the ORIGINAL HSR numbers, zero-padded to the width of
+  # the instrument's largest item number, not of this module's largest.
   expect_equal(
     item_rows$`Variable / Field Name`,
     sprintf("hsr_%03d", kept$HSR)

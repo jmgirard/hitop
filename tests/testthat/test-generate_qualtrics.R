@@ -25,7 +25,8 @@ test_that("generate_qualtrics_hitopbr transcribes every item and choice", {
   expected_text <- hitopbr_items$Text[match(q$questions$num, hitopbr_items$HBR)]
   expect_identical(q$questions$text, expected_text)
 
-  # IDs are the prefix + zero-padded number (width = digits in item count = 2).
+  # IDs are the prefix + zero-padded number, the width of the instrument's
+  # largest item number (45, so 2 digits).
   expect_identical(q$questions$id, sprintf("HBR_%02d", q$questions$num))
 
   # Choices equal the instruction options exactly.
@@ -120,7 +121,8 @@ test_that("generate_qualtrics_hitopsr(module =) emits exactly the module's items
   expect_equal(parsed$questions$text, kept$Text)
   expect_equal(nrow(parsed$questions), 8)
 
-  # Original numbering, uniformly zero-padded to the widest item number.
+  # Original numbering, uniformly zero-padded to the instrument's largest item
+  # number -- not to the largest number this module exports.
   expect_equal(parsed$questions$id[1], "HSR_066")
   expect_equal(parsed$questions$id[8], "HSR_389")
   expect_true(all(nchar(parsed$questions$id) == nchar("HSR_066")))
@@ -141,7 +143,7 @@ test_that("module = NULL leaves Qualtrics output byte-identical for all instrume
     generate_qualtrics_pid5sf,
     generate_qualtrics_pid5bf
   )
-  widths <- c(3, 2, 3, 3, 2) # 405, 45, 220, 100, 25 items
+  widths <- c(3, 2, 3, 3, 2) # largest item numbers 405, 45, 220, 100, 25
   for (i in seq_along(gens)) {
     f <- withr::local_tempfile(fileext = ".txt")
     suppressMessages(gens[[i]](file = f))

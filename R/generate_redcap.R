@@ -32,6 +32,7 @@ generate_redcap_hitopbr <- function(
 ) {
   build_redcap_zip(
     items = hitopbr_items,
+    max_n = max(hitopbr_items$HBR),
     instructions = hitopbr_instructions,
     file = file,
     instrument = "HBR",
@@ -64,7 +65,9 @@ generate_redcap_hitopbr <- function(
 #'   numbers. This is deliberately unlike [generate_docx_hitopsr()], whose
 #'   module forms are numbered `1` to `n`: here an item number names a
 #'   collected data column, so renumbering would rename variables in
-#'   dictionaries already in the field. (default = `NULL`)
+#'   dictionaries already in the field. The zero-padding is the full
+#'   instrument's for the same reason: item 4 is `hsr_004` in a module
+#'   dictionary as in the complete one, never `hsr_04`. (default = `NULL`)
 #' @param descriptor An optional path to write a module descriptor to, beside
 #'   the instrument file. The saved file records which scales the form covers
 #'   and which instrument items they draw on, so [read_module()] hands the
@@ -130,6 +133,7 @@ generate_redcap_hitopsr <- function(
 
   out <- build_redcap_zip(
     items = reduced$items,
+    max_n = max(hitopsr_items$HSR),
     instructions = hitopsr_instructions,
     file = file,
     instrument = "HSR",
@@ -181,6 +185,7 @@ generate_redcap_pid5 <- function(
 
   build_redcap_zip(
     items = items,
+    max_n = max(pid_items$FULL, na.rm = TRUE),
     instructions = pid_instructions,
     file = file,
     instrument = "PID5",
@@ -214,6 +219,7 @@ generate_redcap_pid5sf <- function(
 
   build_redcap_zip(
     items = items,
+    max_n = max(pid_items$SF, na.rm = TRUE),
     instructions = pid_instructions,
     file = file,
     instrument = "PID5SF",
@@ -247,6 +253,7 @@ generate_redcap_pid5bf <- function(
 
   build_redcap_zip(
     items = items,
+    max_n = max(pid_items$BF, na.rm = TRUE),
     instructions = pid_instructions,
     file = file,
     instrument = "PID5BF",
@@ -259,6 +266,7 @@ generate_redcap_pid5bf <- function(
 # Internal Helper: Build the REDCap ZIP file
 build_redcap_zip <- function(
   items,
+  max_n,
   instructions,
   file,
   instrument,
@@ -272,6 +280,12 @@ build_redcap_zip <- function(
   # `form_name` takes no NULL here -- it is written into every dictionary row,
   # and a NULL would recycle into a zero-row data frame rather than a form
   # anyone could import.
+  # `max_n` is the instrument's largest item number, not this export's: a
+  # module export keeps the full instrument's item-name width, so it has no
+  # default to fall back on and every wrapper must state it.
+  rlang::check_required(max_n, call = call)
+  validate_count(max_n, arg = "max_n", min = 1, call = call)
+
   validate_string(form_name, arg = "form_name", call = call)
   validate_flag(required, arg = "required", call = call)
   validate_count(breaks, arg = "breaks", min = 0, allow_null = TRUE, call = call)
@@ -285,11 +299,14 @@ build_redcap_zip <- function(
   formatted_choices <- paste(choice_pairs, collapse = " | ")
 
   # 2. Build the item variable names: lowercase stem, underscore, item number
-  #    zero-padded to the widest number in `items` (a module's, when reduced)
+  #    zero-padded to the width of the INSTRUMENT's largest item number
+  #    (`max_n`), not of the items this call exports -- a module export keeps
+  #    the full instrument's width, so item 7 of the HiTOP-SR is `hsr_007`
+  #    whether or not items above 99 are in the module.
   variable_names <- item_names(
     prefix = paste0(tolower(instrument), "_"),
     n = items[[1]],
-    max_n = max(items[[1]], na.rm = TRUE)
+    max_n = max_n
   )
 
   # 3. Build the complete Data Dictionary data frame for items
