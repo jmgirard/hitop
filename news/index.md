@@ -15,10 +15,9 @@
   domain and total names for the brief form. The column-name prefix
   defaults to the form’s own stem for items (`pid5_`, `pid5sf_`,
   `pid5bf_`) and to `pid_` for scales. An item column carrying the
-  prefix and a number that is not zero-padded to the form’s width is
+  prefix and a number that is not one of the form’s expected names is
   left unlabelled and named in a warning of class
-  `hitop_unpadded_items`, as the two HiTOP labelling functions already
-  do.
+  `hitop_unpadded_items`, as the two HiTOP labelling functions do.
 
 - **[`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
   renames PID-5 item columns to the standard names.** Given a data frame
@@ -198,6 +197,22 @@
   corrected item lists.
 
 ### Improvements and fixes
+
+- **The `label_*()` family reports every item column it could not label,
+  and says what is wrong with each.**
+  [`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md),
+  [`label_hitopsr()`](https://jmgirard.github.io/hitop/reference/label_hitopsr.md)
+  and
+  [`label_hitopbr()`](https://jmgirard.github.io/hitop/reference/label_hitopbr.md)
+  raise the `hitop_unpadded_items` warning whether or not any other
+  column matched, so a frame whose item columns are every one mis-padded
+  is told which names were skipped rather than only that nothing
+  matched. The report separates the two mistakes it finds: a number
+  padded to the wrong width is reported as not zero-padded, and a number
+  outside the instrument’s item range is reported as out of range in its
+  own sentence naming that range, with one hint at the end showing the
+  spelling expected. Each sentence is pluralized by the number of
+  columns it names.
 
 - **`nItems` is an integer in every shipped per-scale table.**
   `pid_scales` (each of its three elements), `hitopsr_scales`,

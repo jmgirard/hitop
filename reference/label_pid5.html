@@ -119,10 +119,11 @@ export use; under <code>target = "scales"</code>, <code>"pid_"</code>, which is 
 zero-padded to the width of the form's largest item number (<code>pid5_001</code> to
 <code>pid5_220</code> for the full form, <code>pid5bf_01</code> to <code>pid5bf_25</code> for the brief
 form). A column carrying the prefix and a number that is not one of those
-expected names – a number padded to some other width, or one outside the
-form's range – is not labelled, and a warning of class
-<code>hitop_unpadded_items</code> names it. That warning is raised only when at least
-one column did match; see the return value.
+expected names is not labelled, and a warning of class
+<code>hitop_unpadded_items</code> names it, in a sentence per kind: a number padded to
+some other width is reported as not zero-padded to the form's width, and a
+number outside the form's range is reported as out of range, whatever its
+padding. That warning is raised whether or not any other column matched.
 Scale columns are expected as the prefix followed by the scale's
 <code>camelCase</code> name.</p></dd>
 
@@ -134,7 +135,8 @@ recognize keep whatever attributes they had. The validity-scale columns
 <code><a href="validity_pid5.html">validity_pid5()</a></code> writes and the <code>_se</code> columns
 <code>score_pid5(calc_se = TRUE)</code> writes are not labelled. If no column matched
 the expected names at all, <code>data</code> is returned unchanged and a warning says
-so, in place of any other report.</p>
+so; the <code>hitop_unpadded_items</code> report still names every prefixed item
+column it found.</p>
     </div>
 
     <div class="section level2">

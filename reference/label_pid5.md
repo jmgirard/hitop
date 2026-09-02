@@ -49,11 +49,13 @@ label_pid5(
   zero-padded to the width of the form's largest item number (`pid5_001`
   to `pid5_220` for the full form, `pid5bf_01` to `pid5bf_25` for the
   brief form). A column carrying the prefix and a number that is not one
-  of those expected names – a number padded to some other width, or one
-  outside the form's range – is not labelled, and a warning of class
-  `hitop_unpadded_items` names it. That warning is raised only when at
-  least one column did match; see the return value. Scale columns are
-  expected as the prefix followed by the scale's `camelCase` name.
+  of those expected names is not labelled, and a warning of class
+  `hitop_unpadded_items` names it, in a sentence per kind: a number
+  padded to some other width is reported as not zero-padded to the
+  form's width, and a number outside the form's range is reported as out
+  of range, whatever its padding. That warning is raised whether or not
+  any other column matched. Scale columns are expected as the prefix
+  followed by the scale's `camelCase` name.
 
 ## Value
 
@@ -62,7 +64,8 @@ recognize keep whatever attributes they had. The validity-scale columns
 [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
 writes and the `_se` columns `score_pid5(calc_se = TRUE)` writes are not
 labelled. If no column matched the expected names at all, `data` is
-returned unchanged and a warning says so, in place of any other report.
+returned unchanged and a warning says so; the `hitop_unpadded_items`
+report still names every prefixed item column it found.
 
 ## Examples
 
