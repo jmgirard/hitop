@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M084 | The `label_*()` family's unpadded-item report | in-progress | — | normal | milestones/M084-unpadded-item-report.md |
+| M084 | The `label_*()` family's unpadded-item report | review | — | normal | milestones/M084-unpadded-item-report.md |
 | M083 | `label_pid5()` | done | — | normal | milestones/archive/M083-label-pid5.md |
 | M082 | `rename_pid5_items()` | done | — | normal | milestones/archive/M082-rename-pid5-items.md |
 | M081 | Every item number the package ships is an integer | done | — | normal | milestones/archive/M081-item-number-integers.md |

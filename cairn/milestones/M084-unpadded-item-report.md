@@ -1,6 +1,6 @@
 # M084: The `label_*()` family's unpadded-item report
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -113,7 +113,7 @@ gate; the same class carries both sentences.
       M032).
 - [x] T7: Update the three helpers' `@param prefix` and `@return` roxygen, run
       `devtools::document()`, add the `NEWS.md` bullet.
-- [ ] T8: Run `devtools::test()` and `devtools::check()`; compare against T1's
+- [x] T8: Run `devtools::test()` and `devtools::check()`; compare against T1's
       baseline and record the comparison.
 
 ## Work log
@@ -139,6 +139,7 @@ gate; the same class carries both sentences.
 - 2026-09-02: T5 added out-of-range, mixed and one-versus-two-column probes on all five forms. Discrimination: planting the pre-split classification (every unmatched column called mis-padded) reddened 20 assertions across both files; planting the missing `cli::qty()` reddened the 6 pluralization assertions. Full suite FAIL 0 / WARN 0 / SKIP 9 / PASS 17159.
 - 2026-09-02: T6 added the silence regression over the eight shipped item frames, two module subsets and a frame with no prefixed column, capturing with `withCallingHandlers`; each shipped frame is also shown to label something, so the domain cannot silently empty. Discrimination: reporting every prefixed column regardless of `expected` reddened it. Full suite PASS 17186.
 - 2026-09-02: T7 rewrote the three helpers' `@param prefix` and `@return` and added the `NEWS.md` bullet under "Improvements and fixes"; `devtools::document()` rewrote the three `.Rd` files and a second run left no further diff. Each of the three carries "raised whether or not any other column matched" and "reported as out of range", and AC4's grep for the removed sentence returns nothing.
+- 2026-09-02: T8 final results against T1's baseline: `devtools::test()` FAIL 0 / WARN 0 / SKIP 9 / PASS 17186 (baseline 17043, +143 from this milestone's tests); `devtools::check()` Status OK, 0 errors / 0 warnings / 0 notes, identical to the baseline -- no error, warning or note absent from it. `devtools::document()` produces no diff.
 - 2026-09-02: criteria audit ran in full mode ([O] fresh reader, user-facing
   tier); it returned findings on AC1 (unsatisfiable — cli truncates lists past
   five, and `hsr_1`..`hsr_405` does not reach the no-match path), AC2 (no class
