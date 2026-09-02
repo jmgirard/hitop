@@ -141,6 +141,7 @@ arguments, defaults and reports.
 - 2026-09-02: AC3's off-form-text member is empty for `version = "FULL"`, every `pid_items` row carrying a FULL number; the test asserts that emptiness holds for FULL and for no other form rather than skipping it silently.
 - 2026-09-02: T4 — roxygen docs and example, `document()`, the NEWS bullet, the `_pkgdown.yml` Utilities entry, and one mention in each of the three PID-5 scoring vignettes.
 - 2026-09-02: checkpoint at T1-T4. `test-rename_pid5_items.R` green on its own and four planted defects each red; the full `devtools::test()` run was still in flight at the commit, so T5 remains open.
+- 2026-09-02: the full suite's export-coverage guard went red on `rename_pid5_items()` — it counts a call in an evaluated vignette chunk or a reference link, not a prose mention, so AC5's naming alone does not satisfy it. The full-form vignette's mention became a worked chunk renaming `pid_1`/`pid_2`; the short- and brief-form mentions stay prose.
 
 ## Decisions
 

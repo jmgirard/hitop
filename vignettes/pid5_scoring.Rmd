@@ -29,11 +29,19 @@ library(hitop)
 
 ## Score simulated PID-5 data
 
-The `sim_pid5` dataset is built into the package and can be loaded using the `data()` function. It contains 100 rows (each representing a simulated participant) and 220 columns named `pid5_001` to `pid5_220` (each representing an item from the PID-5). If your own PID-5 columns are named some other way, `rename_pid5_items()` will rename them to this pattern, matching either on the item number already in the name or on the item text.
+The `sim_pid5` dataset is built into the package and can be loaded using the `data()` function. It contains 100 rows (each representing a simulated participant) and 220 columns named `pid5_001` to `pid5_220` (each representing an item from the PID-5).
 
 ```{r}
 data("sim_pid5")
 sim_pid5
+```
+
+If your own PID-5 columns are named some other way, `rename_pid5_items()` will rename them to this pattern. By default it reads the item number out of a column already named `pid_1`, `pid_2` and so on -- the spelling this package's own datasets used before they were renamed to match the exports. Setting `method = "text"` instead matches the literal item prompts. Columns it cannot match keep their names and are reported, and a partial rename warns that fewer than 220 items were matched, which suits a study that administered only some of them.
+
+```{r}
+old_names <- data.frame(pid_1 = c(0, 1), pid_2 = c(2, 3), age = c(30, 40))
+
+rename_pid5_items(old_names, version = "FULL")
 ```
 
 To turn these item-level data into scale scores on the 25 facets and 5 domains, we can use the `score_pid5()` function. We will need to tell the function which columns contain our items and which version of the PID this is. There are several ways we can specify the items. First, we can provide the column numbers and use the `:` shortcut. In this tibble, the items are from column 1 to column 220 so we can use `items = 1:220`. I am going to also set `append = FALSE` so that you can quickly see the scale scores. I also can set the version to `"FULL"` (or leave that argument off, as that is the default, shown in the example below) to let it know we are using the full 220-item version.
