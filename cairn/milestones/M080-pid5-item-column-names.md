@@ -45,10 +45,22 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
       `names(sim_pid5bf)` is `pid5bf_01`..`pid5bf_25`, each in ascending item
       order and each compared against a vector built from the matching
       `pid_items` version column, never read off the dataset under test.
-- [ ] AC2 Each of the four objects is otherwise identical to the object at the
-      commit hardcoded in `data-raw/rename_pid_item_columns.R`:
-      `identical(unname(as.list(new)), unname(as.list(old)))` holds for all
-      four, and a planted one-cell change is shown to fail that assertion.
+- [ ] AC2 Each of the four objects carries the same columns, in the same order,
+      as the object at the commit hardcoded in
+      `data-raw/rename_pid_item_columns.R`: `identical(unname(lapply(new,
+      identity)), unname(lapply(old, identity)))` holds for all four. Every
+      attribute other than `names` is `identical()` to the pinned object's,
+      except `ku_pid5sf`'s readr `spec`, whose recorded column names are renamed
+      with the columns; that check also shows the three `sim_*` objects carry no
+      attribute recording item names. Four plants, each applied to the renamed
+      object immediately before the assertion it targets, are shown red: a
+      changed cell, a dropped column and a reordered pair of columns against the
+      column comparison, on `sim_pid5bf` and on `ku_pid5sf`; an un-renamed
+      `spec` against the attribute check. And `ku_pid5sf` as the script writes
+      it carries the same names, `spec` and columns as the object
+      `readr::read_csv()` builds from the renamed `data-raw/ku_pid5sf.csv` —
+      whole-object `identical()` is unreachable across a save and load, a readr
+      tibble's `problems` attribute being an external pointer.
 - [ ] AC3 Re-running the generating code reproduces the shipped names:
       `data-raw/sim_pid.R` executed in full, and the two PID-5 statements of
       `data-raw/ku_data.R` evaluated on their own (its earlier lines read a KU
@@ -116,6 +128,9 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
 - 2026-09-02: implement gate chose keeping AC4's wording and recording a supplementary search for *built* old names (`paste0("pid_", 1:220)`, `sprintf("pid_%d", 1:100)`) as extra evidence, over amending the criterion — AC4's first sentence already binds the whole domain and every such site moves either way; Jeff left the call to the session.
 - 2026-09-02: implement gate chose `q_` as the neutral stem for the generic item-order probes, over `item_` (collides with the package's own vocabulary) and `v_` (says nothing).
 - 2026-09-02: checkpoint — the migration, the new `test-data-item-names.R` cases, the dataset roxygen, the regenerated `man/` pages and the NEWS entry are on the branch; `devtools::test()` was still running when this commit was made, so no task box is ticked yet.
+- 2026-09-02: defect found verifying AC3 — `ku_pid5sf` is a readr tibble, and the rename script left its `spec` attribute recording the 100 old names `pid_1`..`pid_100`, invisible to a `names()`-only scan and disagreeing with what re-reading the renamed CSV builds. The script now renames those alongside the columns.
+- 2026-09-02: substantive amendment to AC2, adopted at a mini gate — the criterion's `as.list()` comparison cannot tell a moved value from that `spec` rename, so it now compares the columns alone, binds every other attribute to the pinned object's, and names four plants instead of one. Amended wording audited in full mode by a fresh-context [O] reader that did not author it; six findings, all folded in before the text was written.
+- 2026-09-02: `data-raw/check_pid_item_names.R` commits AC4's second procedure — it walks attributes as well as names, and was shown returning 100 hits against the pre-fix object and 0 across 24 object files and 198 archive members after.
 
 ## Decisions
 

@@ -33,13 +33,34 @@ rename_items <- function(name, id_cols, prefix, max_n) {
   stopifnot(!anyNA(n), identical(n, seq_len(max_n)))
 
   new <- old
-  names(new)[is_item] <- item_names(prefix, n, max_n = max_n)
+  renamed <- item_names(prefix, n, max_n = max_n)
+  names(new)[is_item] <- renamed
 
-  # Only the names changed, and each column kept its item.
+  # `ku_pid5sf` is a readr tibble, so it carries a `spec` attribute recording
+  # the column names the CSV was read under. Left alone it would keep the old
+  # names inside the shipped object, where a names() scan cannot see them and
+  # where they would not match what re-reading the renamed CSV produces.
+  spec <- attr(new, "spec")
+  if (!is.null(spec)) {
+    names(spec$cols)[is_item] <- renamed
+    attr(new, "spec") <- spec
+  }
+
+  # Only the names changed, and each column kept its item. The comparison is
+  # over the columns alone: `as.list()` on a data frame keeps the object's
+  # remaining attributes, `spec` among them, so it cannot tell a moved value
+  # from the rename this script makes to the `spec` above.
   stopifnot(
-    identical(unname(as.list(new)), unname(as.list(old))),
+    identical(unname(lapply(new, identity)), unname(lapply(old, identity))),
     identical(trailing_integer(names(new)[is_item]), n)
   )
+
+  # Nothing but the names and that `spec` moved.
+  strip <- function(x) {
+    a <- attributes(x)
+    a[setdiff(names(a), c("names", "spec"))]
+  }
+  stopifnot(identical(strip(new), strip(old)))
   new
 }
 
