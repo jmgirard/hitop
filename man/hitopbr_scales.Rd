@@ -9,7 +9,7 @@ A \link[tibble]{tibble} with 8 rows and 5 columns:
 \describe{
 \item{Scale}{Name of the scale}
 \item{itemdata}{A list column containing one item-data tibble per scale}
-\item{nItems}{The number of items in the scale}
+\item{nItems}{The number of items in the scale (integer)}
 \item{itemNumbers}{A list column containing one item-number vector per scale}
 \item{camelCase}{The name of the scale converted to camel case}
 }

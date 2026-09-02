@@ -82,13 +82,13 @@ table1$name[!is.na(hit)] <- label_map$package[stats::na.omit(hit)]
 ## cross-checked rather than assumed.
 package_names <- rbind(
   data.frame(
-    scale = hitopsr_scales$Scale,
+    Scale = hitopsr_scales$Scale,
     camelCase = hitopsr_scales$camelCase,
     type = "scale",
     stringsAsFactors = FALSE
   ),
   data.frame(
-    scale = hitopsr_subscales$Subscale,
+    Scale = hitopsr_subscales$Subscale,
     camelCase = hitopsr_subscales$camelCase,
     type = "subscale",
     stringsAsFactors = FALSE
@@ -98,14 +98,14 @@ package_names <- rbind(
 joined <- merge(
   package_names,
   table1[c("name", "nItems", "alpha", "mean", "sd")],
-  by.x = "scale",
+  by.x = "Scale",
   by.y = "name",
   all.x = TRUE,
   sort = FALSE
 )
 
 hitopsr_devstats <- tibble::tibble(
-  scale = joined$scale,
+  Scale = joined$Scale,
   camelCase = joined$camelCase,
   type = joined$type,
   nItems = as.integer(joined$nItems),
@@ -121,18 +121,18 @@ hitopsr_devstats <- tibble::tibble(
   sd = joined$sd
 )
 hitopsr_devstats <-
-  hitopsr_devstats[order(hitopsr_devstats$type, hitopsr_devstats$scale), ]
+  hitopsr_devstats[order(hitopsr_devstats$type, hitopsr_devstats$Scale), ]
 
 # ------------------------------------------------------------------------------
 ## Refuse to write a stale table
 
-residue <- hitopsr_devstats$scale[is.na(hitopsr_devstats$reliability)]
-unmapped <- setdiff(table1$name, package_names$scale)
+residue <- hitopsr_devstats$Scale[is.na(hitopsr_devstats$reliability)]
+unmapped <- setdiff(table1$name, package_names$Scale)
 
 stopifnot(
   "Table 1 transcription is not 93 rows" = nrow(table1) == 93L,
   "a Table 1 label appears twice" = !anyDuplicated(table1$name),
-  "a package scale appears twice" = !anyDuplicated(package_names$scale),
+  "a package scale appears twice" = !anyDuplicated(package_names$Scale),
   "the package-side residue is not the declared exception set" =
     setequal(residue, package_exceptions),
   "a Table 1 label resolves to no package scale" = length(unmapped) == 0L,
@@ -140,7 +140,7 @@ stopifnot(
     hitopsr_devstats$nItems ==
       c(hitopsr_scales$nItems, hitopsr_subscales$nItems)[
         match(
-          hitopsr_devstats$scale,
+          hitopsr_devstats$Scale,
           c(hitopsr_scales$Scale, hitopsr_subscales$Subscale)
         )
       ]

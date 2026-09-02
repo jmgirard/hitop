@@ -17,7 +17,7 @@ hitopsr_scales <-
     .by = Scale
   ) |>
   dplyr::mutate(
-    nItems = purrr::map_dbl(itemdata, nrow),
+    nItems = purrr::map_int(itemdata, nrow),
     itemNumbers = purrr::map(itemdata, "HSR"),
     camelCase = snakecase::to_any_case(Scale, case = "lower_camel")
   ) |>
@@ -36,7 +36,7 @@ hitopsr_subscales <-
     .by = c(Subscale, Scale)
   ) |>
   dplyr::mutate(
-    nItems = purrr::map_dbl(itemdata, nrow),
+    nItems = purrr::map_int(itemdata, nrow),
     itemNumbers = purrr::map(itemdata, "HSR"),
     camelCase = snakecase::to_any_case(Subscale, case = "lower_camel")
   ) |>

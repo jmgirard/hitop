@@ -96,7 +96,7 @@ What the argument computes, while it lasts: the SD of the items the respondent a
 
 As we compute scale scores, we can also estimate their inter-item reliability using Cronbach's α (alpha) or McDonald's ω (omega total). α is fast and widely used, but it assumes tau-equivalence (all items load equally on a single factor); violations can make α under- or over-estimate reliability. ω is based on a congeneric single-factor model, allowing items to have different loadings and error variances; it typically provides a more accurate reliability estimate for unit-weighted sums. Both assume the scale is essentially unidimensional; α and ω coincide when tau-equivalence holds.
 
-We estimate reliability with the `reliability_hitopsr()` function, which returns a tibble with one row per scale and columns for the number of items and the requested coefficients. By default it computes both `alpha` and `omega`; for the latter, we will need the **lavaan** package installed (set `omega = FALSE` to skip it).
+We estimate reliability with the `reliability_hitopsr()` function, which returns a tibble with one row per scale: its printed name (`Scale`), the stem that names its column in the scored output (`camelCase`), the number of items (`nItems`), and the requested coefficients. By default it computes both `alpha` and `omega`; for the latter, we will need the **lavaan** package installed (set `omega = FALSE` to skip it).
 
 ```{r reliability}
 #| warning: false

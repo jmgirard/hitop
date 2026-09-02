@@ -47,10 +47,7 @@ available_scales <- function(instrument = "hitopsr") {
   tibble::tibble(
     Scale = ref$Scale,
     camelCase = ref$camelCase,
-    # The shipped tables store nItems as a double; the engines return the
-    # integer lengths(itemNumbers). Coerced here so a caller comparing this
-    # column with a scored output's or a module's nItems meets one type.
-    nItems = as.integer(ref$nItems),
+    nItems = ref$nItems,
     Brief = brief
   )
 }

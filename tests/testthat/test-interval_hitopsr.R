@@ -9,15 +9,15 @@
 package_names <- function() {
   rbind(
     data.frame(
-      scale = hitopsr_scales$Scale,
-      nItems = as.integer(hitopsr_scales$nItems),
+      Scale = hitopsr_scales$Scale,
+      nItems = hitopsr_scales$nItems,
       camelCase = hitopsr_scales$camelCase,
       type = "scale",
       stringsAsFactors = FALSE
     ),
     data.frame(
-      scale = hitopsr_subscales$Subscale,
-      nItems = as.integer(hitopsr_subscales$nItems),
+      Scale = hitopsr_subscales$Subscale,
+      nItems = hitopsr_subscales$nItems,
       camelCase = hitopsr_subscales$camelCase,
       type = "subscale",
       stringsAsFactors = FALSE
@@ -31,13 +31,13 @@ package_names <- function() {
 # probes below can run them over a deliberately broken table. Each returns the
 # offending scale *names*, so a failure says which row rather than how many.
 join_residue <- function(devstats, tables, declared) {
-  setdiff(setdiff(tables$scale, devstats$scale), declared)
+  setdiff(setdiff(tables$Scale, devstats$Scale), declared)
 }
 join_missing_exceptions <- function(devstats, tables, declared) {
-  intersect(declared, devstats$scale)
+  intersect(declared, devstats$Scale)
 }
 join_duplicates <- function(devstats, tables) {
-  covered <- devstats$scale[devstats$scale %in% tables$scale]
+  covered <- devstats$Scale[devstats$Scale %in% tables$Scale]
   unique(covered[duplicated(covered)])
 }
 
@@ -78,7 +78,7 @@ test_that("every HiTOP-SR scale and subscale outside the exception set has exact
 
   ## Nothing is covered twice, and the stems and kinds agree with the tables
   ## they were derived from.
-  keyed <- merge(tables, as.data.frame(hitopsr_devstats), by = "scale")
+  keyed <- merge(tables, as.data.frame(hitopsr_devstats), by = "Scale")
   expect_identical(nrow(keyed), nrow(tables))
   expect_identical(keyed$camelCase.x, keyed$camelCase.y)
   expect_identical(keyed$type.x, keyed$type.y)
@@ -87,16 +87,16 @@ test_that("every HiTOP-SR scale and subscale outside the exception set has exact
 test_that("the join checker reports a removed, a duplicated, and an undeclared row by name", {
   tables <- package_names()
   victim <- "Agoraphobia"
-  expect_true(victim %in% hitopsr_devstats$scale)
+  expect_true(victim %in% hitopsr_devstats$Scale)
 
   ## (1) A row removed and not declared: the residue names it.
-  removed <- hitopsr_devstats[hitopsr_devstats$scale != victim, ]
+  removed <- hitopsr_devstats[hitopsr_devstats$Scale != victim, ]
   expect_identical(join_residue(removed, tables, character(0)), victim)
 
   ## (2) A row duplicated: the duplicate check names it.
   doubled <- rbind(
     hitopsr_devstats,
-    hitopsr_devstats[hitopsr_devstats$scale == victim, ]
+    hitopsr_devstats[hitopsr_devstats$Scale == victim, ]
   )
   expect_identical(join_duplicates(doubled, tables), victim)
 
@@ -126,7 +126,7 @@ test_that("the join checker reports a removed, a duplicated, and an undeclared r
 # have moved an item count too.
 test_that("every transcribed item count equals the scale's item count in the keying tables", {
   tables <- package_names()
-  keyed <- merge(tables, as.data.frame(hitopsr_devstats), by = "scale")
+  keyed <- merge(tables, as.data.frame(hitopsr_devstats), by = "Scale")
   expect_identical(nrow(keyed), 93L)
   expect_identical(keyed$nItems.y, keyed$nItems.x)
 })

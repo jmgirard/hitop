@@ -15,8 +15,8 @@
 # any row whose name the keying table does not carry at all -- so a failure says
 # which scale rather than how many.
 pairing_residue <- function(devstats, scales) {
-  keyed <- scales$camelCase[match(devstats$scale, scales$Scale)]
-  devstats$scale[is.na(keyed) | keyed != devstats$camelCase]
+  keyed <- scales$camelCase[match(devstats$Scale, scales$Scale)]
+  devstats$Scale[is.na(keyed) | keyed != devstats$camelCase]
 }
 
 # data-raw/verify_hitopbr_devstats.R diffs every shipped cell against Table 1,
@@ -65,7 +65,7 @@ test_that("the reference statistics are the shape a reference table must be", {
   expect_true(all(hitopbr_devstats$mean >= 1 & hitopbr_devstats$mean <= 4))
   expect_true(all(hitopbr_devstats$sd > 0))
   ## The names are the keying table's own, not a second spelling of them.
-  expect_setequal(hitopbr_devstats$scale, hitopbr_scales$Scale)
+  expect_setequal(hitopbr_devstats$Scale, hitopbr_scales$Scale)
   ## And each name sits beside the stem the keying table pairs it with. The
   ## set comparison above holds under any permutation of one column against the
   ## other; this is the per-row check it cannot make.
@@ -78,13 +78,13 @@ test_that("the pairing checker names both rows of an exchanged stem", {
   ## columns' contents -- and every set comparison over them -- unchanged.
   swapped <- hitopbr_devstats
   victims <- c("Detachment", "Internalizing")
-  i <- match(victims, swapped$scale)
+  i <- match(victims, swapped$Scale)
   expect_false(anyNA(i))
   swapped$camelCase[i] <- swapped$camelCase[rev(i)]
 
   ## The exchange is invisible to the set comparison, which is the point.
   expect_setequal(swapped$camelCase, hitopbr_devstats$camelCase)
-  expect_setequal(swapped$scale, hitopbr_scales$Scale)
+  expect_setequal(swapped$Scale, hitopbr_scales$Scale)
 
   expect_setequal(pairing_residue(swapped, hitopbr_scales), victims)
   ## And the shipped table is still silent, so the check is not simply always

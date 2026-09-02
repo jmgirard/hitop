@@ -33,7 +33,7 @@ hitopbr_scales <-
     )
   ) |>
   dplyr::mutate(
-    nItems = purrr::map_dbl(itemdata, nrow),
+    nItems = purrr::map_int(itemdata, nrow),
     itemNumbers = purrr::map(itemdata, "HBR"),
     camelCase = snakecase::to_any_case(Scale, case = "lower_camel")
   )

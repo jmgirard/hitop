@@ -7,13 +7,13 @@
 \format{
 A \link[tibble]{tibble} with 93 rows and 8 columns:
 \describe{
-\item{scale}{The name of the scale or subscale. Matches
+\item{Scale}{The name of the scale or subscale. Matches
 \link{hitopsr_scales}$Scale on the scale rows and
 \link{hitopsr_subscales}$Subscale on the subscale rows.}
 \item{camelCase}{That name converted to camel case -- the stem
 \code{\link[=score_hitopsr]{score_hitopsr()}} appends to its \code{prefix} when it names a score column}
 \item{type}{Either \code{"scale"} (76 rows) or \code{"subscale"} (17 rows)}
-\item{nItems}{The number of items in the scale or subscale}
+\item{nItems}{The number of items in the scale or subscale (integer)}
 \item{reliability}{The internal-consistency reliability coefficient printed
 for that scale}
 \item{reliabilityType}{What that coefficient is. \code{"alpha"} throughout:

@@ -11,10 +11,10 @@ test_that("available_scales() returns one row per HiTOP-SR scale", {
   expect_equal(nrow(out), nrow(hitopsr_scales))
   expect_equal(out$Scale, hitopsr_scales$Scale)
   expect_equal(out$camelCase, hitopsr_scales$camelCase)
-  # expect_identical, not expect_equal: the column is coerced to integer here
-  # while the shipped table stores a double, and expect_equal() treats the two
-  # as equal, so it would not see the coercion being reverted.
-  expect_identical(out$nItems, as.integer(hitopsr_scales$nItems))
+  # expect_identical, not expect_equal: the shipped table stores an integer
+  # and this column is read from it unchanged; expect_equal() would not see a
+  # double creeping back in on either side.
+  expect_identical(out$nItems, hitopsr_scales$nItems)
 })
 
 test_that("available_scales() defaults to the HiTOP-SR", {

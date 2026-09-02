@@ -10,7 +10,7 @@ A \link[tibble]{tibble} with 17 rows and 6 columns:
 \item{Subscale}{Name of the subscale}
 \item{Scale}{Name of the scale that the subscale is part of}
 \item{itemdata}{A list column containing one item-data tibble per subscale}
-\item{nItems}{The number of items in the subscale}
+\item{nItems}{The number of items in the subscale (integer)}
 \item{itemNumbers}{A list column containing one item-number vector per subscale}
 \item{camelCase}{The name of the subscale converted to camel case}
 }

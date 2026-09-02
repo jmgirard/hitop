@@ -34,7 +34,7 @@
 #'   element carries a sixth row, `Total`, which is not a domain but the whole
 #'   25-item form scored as one scale (see [score_pid5()])}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale}
-#'   \item{nItems}{The number of items in the scale}
+#'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{itemNumbers}{A list column containing one item-number vector per scale}
 #'   \item{camelCase}{The name of the scale converted to camel case (the score-output column stem)}
 #' }
@@ -151,7 +151,7 @@
 #' \describe{
 #'   \item{Scale}{Name of the scale}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale}
-#'   \item{nItems}{The number of items in the scale}
+#'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{itemNumbers}{A list column containing one item-number vector per scale}
 #'   \item{camelCase}{The name of the scale converted to camel case}
 #' }
@@ -168,7 +168,7 @@
 #'   \item{Subscale}{Name of the subscale}
 #'   \item{Scale}{Name of the scale that the subscale is part of}
 #'   \item{itemdata}{A list column containing one item-data tibble per subscale}
-#'   \item{nItems}{The number of items in the subscale}
+#'   \item{nItems}{The number of items in the subscale (integer)}
 #'   \item{itemNumbers}{A list column containing one item-number vector per subscale}
 #'   \item{camelCase}{The name of the subscale converted to camel case}
 #' }
@@ -215,13 +215,13 @@
 #'
 #' @format A \link[tibble]{tibble} with 93 rows and 8 columns:
 #' \describe{
-#'   \item{scale}{The name of the scale or subscale. Matches
+#'   \item{Scale}{The name of the scale or subscale. Matches
 #'     \link{hitopsr_scales}$Scale on the scale rows and
 #'     \link{hitopsr_subscales}$Subscale on the subscale rows.}
 #'   \item{camelCase}{That name converted to camel case -- the stem
 #'     [score_hitopsr()] appends to its `prefix` when it names a score column}
 #'   \item{type}{Either `"scale"` (76 rows) or `"subscale"` (17 rows)}
-#'   \item{nItems}{The number of items in the scale or subscale}
+#'   \item{nItems}{The number of items in the scale or subscale (integer)}
 #'   \item{reliability}{The internal-consistency reliability coefficient printed
 #'     for that scale}
 #'   \item{reliabilityType}{What that coefficient is. `"alpha"` throughout:
@@ -268,13 +268,13 @@
 #'
 #' @format A \link[tibble]{tibble} with 8 rows and 8 columns:
 #' \describe{
-#'   \item{scale}{The name of the scale. Matches \link{hitopbr_scales}$Scale.}
+#'   \item{Scale}{The name of the scale. Matches \link{hitopbr_scales}$Scale.}
 #'   \item{camelCase}{That name converted to camel case -- the stem
 #'     [score_hitopbr()] appends to its `prefix` when it names a score column}
 #'   \item{type}{`"scale"` throughout. Table 1 prints all eight rows under one
 #'     heading and labels none of them a superspectrum or a spectrum, so no such
 #'     distinction is recorded here.}
-#'   \item{nItems}{The number of items in the scale}
+#'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{reliability}{The internal-consistency reliability coefficient printed
 #'     for that scale}
 #'   \item{reliabilityType}{What that coefficient is. `"alpha"` throughout:
@@ -314,7 +314,7 @@
 #' \describe{
 #'   \item{Scale}{Name of the scale}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale}
-#'   \item{nItems}{The number of items in the scale}
+#'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{itemNumbers}{A list column containing one item-number vector per scale}
 #'   \item{camelCase}{The name of the scale converted to camel case}
 #' }

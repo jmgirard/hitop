@@ -113,8 +113,8 @@ cat("1. CSV vs Table 1: ", n_csv_cells, " cells compared over ",
 ## ---- 2. Table 1 against the shipped object ---------------------------------
 
 source_name <- strip_marker(table1$label)
-only_source2 <- setdiff(source_name, hitopsr_devstats$scale)
-only_ship <- setdiff(hitopsr_devstats$scale, source_name)
+only_source2 <- setdiff(source_name, hitopsr_devstats$Scale)
+only_ship <- setdiff(hitopsr_devstats$Scale, source_name)
 if (length(only_source2)) {
   discrepancies <- c(discrepancies, sprintf(
     "rda: Table 1 prints a scale hitopsr_devstats does not carry -- %s",
@@ -126,7 +126,7 @@ if (length(only_ship)) {
     only_ship))
 }
 
-j <- match(hitopsr_devstats$scale, source_name)
+j <- match(hitopsr_devstats$Scale, source_name)
 paired2 <- !is.na(j)
 ship_cols <- c(nItems = "nItems", reliability = "alpha",
                mean = "mean", sd = "sd")
@@ -139,7 +139,7 @@ for (k in seq_along(ship_cols)) {
   if (length(bad)) {
     discrepancies <- c(discrepancies, sprintf(
       "rda: %s %s -- Table 1 prints %s, hitopsr_devstats carries %s",
-      hitopsr_devstats$scale[paired2][bad], names(ship_cols)[k],
+      hitopsr_devstats$Scale[paired2][bad], names(ship_cols)[k],
       format(b[bad]), format(a[bad])))
   }
 }
@@ -148,7 +148,7 @@ cat("2. hitopsr_devstats vs Table 1: ", n_rda_cells, " cells compared over ",
 
 ## Every reliability the package ships must be labelled for what Table 1's
 ## column is. A row labelled anything else did not come from this table.
-wrong_type <- hitopsr_devstats$scale[hitopsr_devstats$reliabilityType != "alpha"]
+wrong_type <- hitopsr_devstats$Scale[hitopsr_devstats$reliabilityType != "alpha"]
 if (length(wrong_type)) {
   discrepancies <- c(discrepancies, sprintf(
     "rda: %s carries reliabilityType %s, but Table 1's column is alpha",
@@ -165,7 +165,7 @@ bad <- which(want != got)
 if (length(bad)) {
   discrepancies <- c(discrepancies, sprintf(
     "type: %s -- Table 1 indents it as a %s, hitopsr_devstats calls it a %s",
-    hitopsr_devstats$scale[paired2][bad], want[bad], got[bad]))
+    hitopsr_devstats$Scale[paired2][bad], want[bad], got[bad]))
 }
 cat("3. type vs Table 1's indentation: ", sum(paired2), " rows compared (",
     sum(want == "subscale"), " indented)\n\n", sep = "")
