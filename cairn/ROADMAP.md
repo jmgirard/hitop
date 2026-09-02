@@ -1,13 +1,14 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-02 (twenty-fifth pass, at M083 review: M083 archived and done, the M078 row pruned under terminal-row retention, M083's four deferred findings promoted to a bounded milestone row rather than absorbed, five candidate rows compressed to hold the byte budget, no lesson added. Bytes: `ROADMAP.md` under 24,000; `LESSONS.md` 45 lines / 19,992 bytes, under 20,000.)_
-_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M084)._
+_Last hygiene check: 2026-09-02 (twenty-sixth pass, at M084 planning: the M083-promoted candidate row graduated into M084 and removed, the next-ID note advanced to M085; no other row touched, no lesson added. Bytes: `ROADMAP.md` under 24,000; `LESSONS.md` 45 lines / 19,992 bytes, under 20,000.)_
+_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M085)._
 _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R CMD check` 0/0/0, pkgdown and URLs clean. Tag and GitHub release pending the maintainer._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M084 | The `label_*()` family's unpadded-item report | planned | — | normal | milestones/M084-unpadded-item-report.md |
 | M083 | `label_pid5()` | done | — | normal | milestones/archive/M083-label-pid5.md |
 | M082 | `rename_pid5_items()` | done | — | normal | milestones/archive/M082-rename-pid5-items.md |
 | M081 | Every item number the package ships is an integer | done | — | normal | milestones/archive/M081-item-number-integers.md |
@@ -16,7 +17,6 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 ## Candidates
 
-- Promoted at M083's hygiene pass (Jeff's decision): the `label_*()` family's unpadded-item report — three defects and one test gap, all three helpers sharing each. Each returns early on "no columns matched" before `warn_unpadded_items()` runs, so a frame whose item columns are *all* mis-padded escapes the `hitop_unpadded_items` report (M083 F1); `unpadded_item_cols()` (`R/util.R:590`) calls a padded but out-of-range column unpadded and offers the offending name as the hint (F2); that warning's third cli marker does not re-key on quantity, so one column reads "1 column ... so they were not labelled" (F3); and each helper's unpadded test leaves padded neighbours, so none can catch F1 (F9). Plan next — added 2026-09-02 — lineage: M077, M083 (findings 1, 2, 3, 9)
 - The three `ku_*` datasets store their 550 response columns as doubles where all five `sim_*` datasets store theirs as integers, so the package's real and simulated example data disagree on the type of the same kind of value. Left out of M081, which retypes item numbers only: these hold answers, and `data-raw/ku_data.R` reads a university network drive so cannot be re-run — evening them out needs an in-place conversion script against a pinned commit plus its own proof that no answer moved. `R/sysdata.rda` carries the same split (`pid_instructions$options$value` integer, the two HiTOP ones doubles), and internal data is out of reach of the `data(package = "hitop")` sweep M081 shipped. Promote if a user reports the disagreement, or when the `ku_*` datasets are next regenerated — added 2026-09-02, extended and compressed 2026-09-02 — lineage: M081 (plan gate; review finding 8)
 - Twenty verification-reach gaps four reviews left open, none a wrong result or verdict today; each archive summary names its own, and this row exists to keep them visible. M079's and M080's ten run to test reach, not behavior — missing guards, unstated ordering and zero-row assumptions, sweeps blind to a `paste0()`-built name, a pad width pinned as a literal in two suites, and `check_pid_item_names.R` running in no workflow. M071's and M073's ten are M073's export-vignette sweep and M071's Table 1 extraction guards. Promote when the builders, their tests or the PID-5 generators are next edited, if either sweep returns a wrong verdict, or when the proof PDF is repinned — added 2026-08-30 and 2026-09-01, merged 2026-09-02, compressed 2026-09-02 — lineage: M071 (findings 1, 5, 7, 8), M073, M079, M080
 - The builder smoke test M076 ships drives the Word download path only and goes red on a `webr.r-wasm.org` or `jmgirard.r-universe.dev` outage after one retry rather than reporting the outage as its own outcome; both declined at M076's plan gate. Seven deferred review gaps are named in its archive summary (F10, F11, F13 in part, F18-F20, F22). Promote if a generator breaks in Qualtrics or REDCap alone while the smoke test stays green, if false reds become routine, or when the harness is next edited — added 2026-08-31 — lineage: M076
