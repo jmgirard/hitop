@@ -121,6 +121,7 @@ arguments, defaults and reports.
 - 2026-09-02: T4 done — `devtools::document()` leaves no diff, `devtools::test()` 0 failures / 17043 passes / 9 skips, `devtools::check()` 0 errors 0 warnings 0 notes (4m 14s), `pkgdown::check_pkgdown()` clean, `data-raw/check_line_endings.R` passes.
 - 2026-09-02: T3 done — roxygen docs and a runnable example (output verified), the NEWS bullet, the `_pkgdown.yml` reference row (`check_pkgdown()` clean), and a mention in each of the three PID-5 scoring vignettes; `build_vignettes()` runs all three clean.
 - 2026-09-02: T2 done — `R/label_pid5.R` added; the whole suite passes (0 failures, 17043 passes, 9 pre-existing skips). Check discrimination: dropping `pid_domains` from the scale lookup, hardcoding the item prefix to `pid5_`, removing the `warn_unpadded_items()` call, and reversing the item-text lookup each turn the new file red.
+- 2026-09-02: step-7 approval: PR #90 approved for merge.
 - 2026-09-02: T1 done — `tests/testthat/test-label_pid5.R` written red (6 failures, all `could not find function "label_pid5"`); the suite is red by design until T2, so the profile's verify slot runs at T2.
 
 ## Decisions
