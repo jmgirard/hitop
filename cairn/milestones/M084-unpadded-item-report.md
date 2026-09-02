@@ -107,7 +107,7 @@ gate; the same class carries both sentences.
       out-of-range + mis-padded frame per instrument, and one- versus two-column
       wording at both widths. Show each red by reverting T4's change before
       trusting its green.
-- [ ] T6: Silence-regression tests for AC5, capturing conditions with
+- [x] T6: Silence-regression tests for AC5, capturing conditions with
       `withCallingHandlers`, never `expect_no_warning(message = )`, which takes
       `message` as a regexp selector and passes on a raised warning (LESSONS
       M032).
@@ -137,6 +137,7 @@ gate; the same class carries both sentences.
 - 2026-09-02: T3 ran the report after the no-match warning instead of behind an early return in all three helpers; the five T2 probes green, and the full suite FAIL 0 / WARN 0 / SKIP 9 / PASS 17088 with no other test newly raising a warning.
 - 2026-09-02: T4 split `unpadded_item_cols()` into `mispadded` and `out_of_range` and gave `warn_unpadded_items()` the signature `(cols, prefix, expected, max_n, instrument)`, folding the split in; the three call sites pass `max_n` instead of a digit width. Minor task edit: T4 now says the range is stated in the out-of-range sentence rather than in a separate `i` hint, which would only repeat it.
 - 2026-09-02: T5 added out-of-range, mixed and one-versus-two-column probes on all five forms. Discrimination: planting the pre-split classification (every unmatched column called mis-padded) reddened 20 assertions across both files; planting the missing `cli::qty()` reddened the 6 pluralization assertions. Full suite FAIL 0 / WARN 0 / SKIP 9 / PASS 17159.
+- 2026-09-02: T6 added the silence regression over the eight shipped item frames, two module subsets and a frame with no prefixed column, capturing with `withCallingHandlers`; each shipped frame is also shown to label something, so the domain cannot silently empty. Discrimination: reporting every prefixed column regardless of `expected` reddened it. Full suite PASS 17186.
 - 2026-09-02: criteria audit ran in full mode ([O] fresh reader, user-facing
   tier); it returned findings on AC1 (unsatisfiable — cli truncates lists past
   five, and `hsr_1`..`hsr_405` does not reach the no-match path), AC2 (no class
