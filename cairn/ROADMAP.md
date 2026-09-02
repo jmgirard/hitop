@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M080 | The shipped PID-5 datasets name item columns as the online exports do | review | — | normal | milestones/M080-pid5-item-column-names.md |
+| M080 | The shipped PID-5 datasets name item columns as the online exports do | in-progress | — | normal | milestones/M080-pid5-item-column-names.md |
 | M079 | The online exports pad item numbers to the instrument's width, not to the export's own | done | — | normal | milestones/archive/M079-export-padding-width.md |
 | M078 | The per-scale tables the package ships or returns join on one column shape | done | — | normal | milestones/archive/M078-column-shape.md |
 | M077 | The shipped HiTOP datasets, `rename_hitopsr_items()` and the `label_*()` family name item columns as the REDCap export does | done | — | normal | milestones/archive/M077-item-column-names.md |
