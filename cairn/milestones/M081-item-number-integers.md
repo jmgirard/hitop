@@ -1,12 +1,12 @@
 # M081: Every item number the package ships is an integer
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, GP2, GP3
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m081-item-number-integers`
 
 ## Goal
 
@@ -82,7 +82,7 @@ which take caller-supplied `n` → stays. The hitop-builder repo's now-redundant
 
 ## Tasks
 
-- [ ] T1: Add an explicit `col_types` with `readr::col_integer()` on the item-number columns
+- [x] T1: Add an explicit `col_types` with `readr::col_integer()` on the item-number columns
       to `data-raw/pid_info.R:6`, `hitopsr_info.R:6`, `hitopbr_info.R:6` and
       `hitophsum_info.R:2`; re-run all four builders; confirm the eight shipped objects and
       their `spec` attributes carry integer collectors on those columns. Setting the type at
@@ -119,6 +119,7 @@ which take caller-supplied `n` → stays. The hitop-builder repo's now-redundant
 - 2026-09-02: plan gate chose retyping all 29 item-number paths over the narrower set the ROADMAP candidate row named, because one `col_types` edit per builder reaches all of them and a partial retype leaves an odd one out as M078's did; falsified by a downstream caller depending on a double in one of the added paths.
 - 2026-09-02: plan gate chose leaving the three `ku_*` datasets' 550 response columns as doubles over evening them out with the five already-integer `sim_*` datasets, because response values are not item numbers and `data-raw/ku_data.R` reads a university network drive so cannot be re-run; falsified by a user reporting the simulated/real disagreement.
 - 2026-09-02: Jeff signed off at the plan gate on regenerating the four keying-table files and waived the deprecation cycle as pre-1.0, as at M078's and M080's gates.
+- 2026-09-02: T1 — the four builders read their item-number columns with `readr::col_integer()`; all eight shipped objects now store every Scope-named item-number path as integer at every depth, and the `spec` attributes of `pid_items`, `hitopbr_items` and `hitophsum_items` carry integer collectors on those columns (`hitopsr_items` carries no `spec`: `dplyr::select()` drops it, at the merge base too). `devtools::test()`: 0 failures, 16431 passes, 7 skips.
 
 ## Decisions
 

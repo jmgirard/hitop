@@ -3,7 +3,15 @@
 ## R/ uses it -- so it is declared in DESCRIPTION under Config/Needs/data-raw
 ## rather than Imports, and a contributor regenerating this data must install it
 ## themselves: install.packages("snakecase").
-hitopbr_items <- readr::read_csv("data-raw/hitopbr_items.csv")
+## Item numbers are read as integers, never guessed and coerced afterwards, so
+## the `spec` attribute the reader stores stays a truthful record of the types.
+hitopbr_items <- readr::read_csv(
+  "data-raw/hitopbr_items.csv",
+  col_types = readr::cols(
+    HBR = readr::col_integer(),
+    HSR = readr::col_integer()
+  )
+)
 usethis::use_data(hitopbr_items, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------

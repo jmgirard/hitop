@@ -1,5 +1,10 @@
 ## HiTOP-HSUM Items
-hitophsum_items <- readr::read_csv("data-raw/hitophsum_items.csv")
+## Item numbers are read as integers, never guessed and coerced afterwards, so
+## the `spec` attribute the reader stores stays a truthful record of the types.
+hitophsum_items <- readr::read_csv(
+  "data-raw/hitophsum_items.csv",
+  col_types = readr::cols(Item = readr::col_integer())
+)
 usethis::use_data(hitophsum_items, overwrite = TRUE)
 
 ## HiTOP-HSUM Choices
