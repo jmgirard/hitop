@@ -105,7 +105,7 @@ which take caller-supplied `n` → stays. The hitop-builder repo's now-redundant
       `tests/testthat/test-generate_docx.R:218`'s `as.numeric(1:25)`; run `devtools::test()`.
       The file-side coercions in `read_module_numbers()` stay — JSON gives whatever its author
       wrote.
-- [ ] T5: Confirm `inst/extdata/` and `pkgdown/assets/downloads/` are unmodified against the
+- [x] T5: Confirm `inst/extdata/` and `pkgdown/assets/downloads/` are unmodified against the
       merge base; run the generator tests; produce the module round-trip evidence AC4 names.
 - [ ] T6: Update `R/data.R`'s roxygen for the retyped columns, the two `cairn/DESIGN.md`
       data-model bullets and `NEWS.md`; append the `DECISIONS.md` entry; run
@@ -123,6 +123,7 @@ which take caller-supplied `n` → stays. The hitop-builder repo's now-redundant
 - 2026-09-02: T2 — `tests/testthat/test-item-number-type.R` sweeps the 23 datasets `data(package = "hitop")` lists, recursing through list elements, list-columns and nested frames, and reports exactly the 550 `ku_*` response columns plus `hitophsum_choices$Value`; the three plants (plain column, list-column element, nested-frame column) were each substituted into the sweep on their own and the criterion assertion went red naming that path, with the unplanted baseline green.
 - 2026-09-02: T3 — `tests/testthat/test-item-number-merge-base.R` rebuilds each of the eight merge-base objects with its item-number columns retyped at every depth and its `spec` collectors retyped, and finds them identical to the shipped objects; a second test pins that `expect_equal()` passes over the difference `expect_identical()` catches. All eight ran (no skips). `devtools::test()`: 0 failures, 16455 passes, 7 skips.
 - 2026-09-02: T4 — the seven coercions are gone: `item_order` in `reduce_hitopsr()` and its comment, the `items`/`nItems` payload fields, the `item_order` usability check's `module$items` coercion, and `read_module()`'s `covered`, `nItems` and `itemOrder` comparisons; `matched_hsr` initializes as `integer(0)` and the two tests compare item numbers as stored. `as.integer(item_order)` stays at both sites that normalize a hand-set attribute, as does `read_module_numbers()`. The three behaviors AC5 names are each held by a named test already in the suite (`test-docx-numbering.R:281`, `test-generator-descriptor.R:179`, `test-module_file.R:105`). `devtools::test()`: 0 failures, 16455 passes, 7 skips.
+- 2026-09-02: T5 — `git diff` against merge base `8dd3942` reports no file changed under `inst/extdata/` or `pkgdown/assets/downloads/`; the generator and artifact test files pass (0 failures, 10338 passes, 0 skips). Module round trip over a one-scale, a three-scale and the 405-item all-scales module: `$items` is integer on the branch where the merge base returned a double for all three, each descriptor `write_module()` emits is byte-identical to the merge base's for the same module, and `read_module()` returns an object identical to the module written.
 
 ## Decisions
 
