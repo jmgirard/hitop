@@ -1,12 +1,12 @@
 # M083: `label_pid5()`
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m083-label-pid5`
 
 ## Goal
 
@@ -97,7 +97,7 @@ arguments, defaults and reports.
 
 ## Tasks
 
-- [ ] T1: Write `tests/testthat/test-label_pid5.R` red — AC1's per-item label
+- [x] T1: Write `tests/testthat/test-label_pid5.R` red — AC1's per-item label
       sweep across the three simulated datasets, AC2's scale sweep across
       `pid_scales` and `pid_domains`, AC3's literal-expectation defaults, AC4's
       unpadded spellings.
@@ -117,6 +117,8 @@ arguments, defaults and reports.
 - 2026-09-02: sizing tripwire fired on the unsplit scope (9 acceptance criteria, 7 tasks); split into M082 and M083 rather than compressed, the two functions having disjoint implementations, test files and failure modes.
 - 2026-09-02: plan gate chose `prefix = NULL` resolved per `version`/`target` over splitting into `label_pid5_items()`/`label_pid5_scales()` because the split breaks the `label_*(data, target, prefix)` idiom the two HiTOP helpers set; falsified by the NULL default proving hard to document or to predict.
 - 2026-09-02: plan gate chose leaving `validity_pid5()`'s columns unlabelled over sourcing their display names because D-018 fixes those names to the scale-development papers and none is on the `references/` shelf (IP2); falsified by a citable source arriving with the five names.
+- 2026-09-02: implementation gate chose leaving the no-columns-matched warning unclassed, matching `label_hitopsr()` and `label_hitopbr()`, over giving it a public class; falsified by a user needing to silence it without silencing the rest of the call.
+- 2026-09-02: T1 done — `tests/testthat/test-label_pid5.R` written red (6 failures, all `could not find function "label_pid5"`); the suite is red by design until T2, so the profile's verify slot runs at T2.
 
 ## Decisions
 
