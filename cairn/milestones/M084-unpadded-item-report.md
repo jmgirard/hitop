@@ -155,6 +155,7 @@ gate; the same class carries both sentences.
 - 2026-09-02: review step 5 -- three fresh-context lenses; the prior-review lens found nothing, the blame lens one item, the diff-bug lens ten and no correctness bug. Six triaged fix-now, one to the standing candidate row, two rejected as out of scope, one stale. Dispositions in the Review section.
 - 2026-09-02: gate triage -- Jeff chose fixing the six before merging. Applied: the NEWS bullet rewritten to describe the report rather than a regression no release had (and the `label_pid5()` bullet's narrower rule corrected), the padding hint moved after both sentences, D-058 appended annotating D-052's stripping consequence, the contiguous-numbering assumption recorded in `unpadded_item_cols()`'s comment, the test helper `at()` renamed `sentence_pos()`, and the `item_names()` comment block separated from `item_col_numbers()`'s. Suite re-run FAIL 0 / WARN 0 / SKIP 9 / PASS 17186, unchanged; `document()` no diff.
 - 2026-09-02: step-7 approval: PR #91 approved for merge (Jeff, at the merge chip, choosing the fix-then-merge option).
+- 2026-09-02: CI watch hit the harness ceiling with four of eight checks pending; the moved task was stopped and the session closed before the merge. Local `check()` on the final tree is 0/0/0 and the suite is green; PR #91 stays open with the approval recorded.
 
 ## Review
 
@@ -283,4 +284,21 @@ which columns are labelled or which are reported, so AC1-AC6 stand as evidenced
 own sentence, the hint now last and still naming no out-of-range column).
 `devtools::test()` re-run: FAIL 0 / WARN 0 / SKIP 9 / PASS 17186, unchanged.
 `devtools::document()`: no diff.
+
+### AC7 re-verified on the final tree
+
+After the gate fixes, at `321f0598`: `devtools::test()` FAIL 0 / WARN 0 / SKIP 9
+/ PASS 17186; `devtools::check()` Status OK, 0 errors / 0 warnings / 0 notes,
+duration 10m 9s — still identical to the T1 baseline; `devtools::document()` no
+diff.
+
+### CI wait, 2026-09-02
+
+The foreground `gh pr checks 91 --watch --fail-fast` reached the harness
+ceiling and was moved to the background, then stopped with `TaskStop` — no
+watcher left armed. Fresh state at that moment: `macos-latest (release)`,
+`test-coverage`, `line endings` and `pkgdown` pass; `ubuntu-latest` (devel,
+oldrel-1, release) and `windows-latest (release)` pending. The merge did not
+run; PR #91 is open, ready for review, with the step-7 approval recorded above.
+Resume re-derives the check and merge state from `gh pr checks` / `gh pr view`.
 
