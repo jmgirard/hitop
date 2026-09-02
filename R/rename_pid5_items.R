@@ -15,6 +15,12 @@
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
 #'   match against the literal item prompt text in `pid_items$Text`.
 #'   (default = `"number"`)
+#'
+#'   The three forms number their items independently, so `"number"` reads the
+#'   digits as an item number of the form named by `version`: under
+#'   `version = "SF"`, `pid_7` is short-form item 7, not the full-form item the
+#'   short form numbers 7. Data labelled by full-form item numbers must be
+#'   renamed with `version = "FULL"` first, or matched with `method = "text"`.
 #' @param item_cols An optional character vector of current column names to
 #'   be renamed. Required if `method = "text"`.
 #' @param item_text An optional character vector of item texts corresponding
@@ -30,10 +36,16 @@
 #'   `"pid5bf_"`. (default = `NULL`)
 #'
 #' @return A data frame with renamed column names for the matched PID-5 items.
-#'   Columns that could not be matched keep their names.
+#'   Columns that could not be matched keep their names. Under
+#'   `method = "number"`, a column spelled like an item of the instrument whose
+#'   number names no item of this form, and under `method = "text"`, an
+#'   `item_text` entry matching no item of this form, are skipped and named in
+#'   a warning of class `hitop_unmatched_items`, which callers may catch or
+#'   suppress by class. A column not spelled like an item number is left alone
+#'   and not reported.
 #'
 #' @examples
-#' # Rename columns named as this package's datasets were before 0.3.0
+#' # Rename columns named as this package's datasets were before the rename
 #' df <- data.frame(pid_1 = c(0, 1), pid_2 = c(2, 3), age = c(30, 40))
 #' names(suppressWarnings(rename_pid5_items(df, version = "FULL")))
 #'
@@ -54,14 +66,14 @@ rename_pid5_items <- function(
   validate_string(from_prefix, arg = "from_prefix")
   validate_string(prefix, arg = "prefix", allow_null = TRUE)
 
-  ## Resolve the version and its item count, as `score_pid5()` does
+  ## Resolve the version, as `score_pid5()` does
   version <- toupper(version)
   version <- match.arg(version, choices = c("FULL", "SF", "BF"))
-  n_items <- switch(version, "FULL" = 220L, "SF" = 100L, "BF" = 25L)
 
   ## Resolve this form's rows, its output stem and its padding width
   form <- pid_items[!is.na(pid_items[[version]]), ]
   form_numbers <- form[[version]]
+  n_items <- length(form_numbers)
   max_n <- max(form_numbers)
   if (is.null(prefix)) {
     prefix <- switch(

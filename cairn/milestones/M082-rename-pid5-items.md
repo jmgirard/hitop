@@ -145,6 +145,7 @@ arguments, defaults and reports.
 - 2026-09-02: T5 — `devtools::test()` FAIL 0 | WARN 0 | SKIP 9 | PASS 16502; `devtools::check()` 0 errors, 0 warnings, 0 notes (5m 38s); `pkgdown::check_pkgdown()` no problems; `devtools::document()` leaves no diff. Status set to review.
 - 2026-09-02: review opened; draft PR #89 created, main unmoved since the branch was cut. `cairn_validate.py` passes (exit 0). Acceptance-criterion evidence pending the in-flight `devtools::test()`/`check()` run and the three review lenses.
 - 2026-09-02: review evidence recorded for AC1-AC6, all met; consistency gate clean. Three review lenses: prior-review and blame-history clean, the diff-bug lens returned 16 ranked findings, dispositions proposed in the Review section and pending the gate. No finding meets the return floor.
+- 2026-09-02: merge approved at the gate with the seven fix-now findings directed; applied on the branch and the profile's checks re-run clean (PASS 16504, check 0/0/0).
 
 ## Decisions
 
@@ -191,3 +192,17 @@ Findings and proposed dispositions (verified against the implementation at revie
 16. `expect_error(rename_pid5_items(df, version = "XL"), "arg")` matches nearly any error containing "arg" rather than pinning the `match.arg` failure. Proposed: fix now.
 
 Return floor: no finding demonstrates an acceptance criterion failing. Finding 4 was weighed against AC5 and judged not a failure of it — AC5 promises one bullet under the development-version heading stating what the function does, and that bullet exists and describes it; one clause of it overstates the report, which is a defect in the bullet, not an absent artifact. Recorded so the maintainer can overrule.
+
+### Gate triage and fix-now work
+
+Maintainer's disposition at the 2026-09-02 merge gate: fix findings 1, 4, 5, 8, 10, 12 and 16 on the branch, then merge; reject finding 3; defer 2, 6, 7, 9, 11, 13, 14 and 15 to the PID-5 helpers candidate row. Applied:
+
+- 1: `@param method` now states that the digits are read as an item number of the form named by `version`, with the `pid_7` short-form example and the two ways out.
+- 4: the NEWS bullet now says item text and columns numbered outside the form are named in the warning, and that a column looking like no item at all is left alone without comment.
+- 5: `@return` names `hitop_unmatched_items`, what raises it under each method, and that callers may catch or suppress by class.
+- 8: `n_items <- length(form_numbers)` replaces the hardcoded 220/100/25 switch.
+- 10: a new test honours `prefix = "x."` on BF and `from_prefix = "pid."` over `pid.1`, `pid.25` and `pidX1`. Discrimination shown: dropping the regex escaping so `.` matches any character turns it red (FAIL 1), restored green.
+- 12: the example comment now reads "before the rename" rather than naming 0.3.0.
+- 16: the `match.arg` test pins `'should be one of "FULL", "SF", "BF"'` under `fixed = TRUE`.
+
+Re-verified after the fixes: `devtools::document()` wrote `rename_pid5_items.Rd` and left nothing else; `devtools::test()` FAIL 0 | WARN 0 | SKIP 9 | PASS 16504; `pkgdown::check_pkgdown()` no problems; `devtools::check()` Status OK, 0 errors | 0 warnings | 0 notes (6m 23s).

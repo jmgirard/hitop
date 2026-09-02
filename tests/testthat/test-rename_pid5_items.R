@@ -213,12 +213,46 @@ test_that("prefix and from_prefix default per version", {
   }
 })
 
+# Non-default prefixes --------------------------------------------------------
+
+test_that("prefix and from_prefix are honoured at non-default values", {
+  # `prefix` replaces the form's own stem, the padding width still coming from
+  # the form's largest item number.
+  df <- as.data.frame(
+    matrix(0, nrow = 1, ncol = 2, dimnames = list(NULL, c("pid_1", "pid_25")))
+  )
+  res <- suppressWarnings(
+    rename_pid5_items(df, version = "BF", prefix = "x.")
+  )
+  expect_identical(colnames(res), c("x.01", "x.25"))
+
+  # `from_prefix` is matched literally, not as a regular expression: the `.`
+  # below matches only itself, so `pidX1` is left alone.
+  df2 <- as.data.frame(
+    matrix(
+      0,
+      nrow = 1,
+      ncol = 3,
+      dimnames = list(NULL, c("pid.1", "pid.25", "pidX1"))
+    )
+  )
+  res2 <- suppressWarnings(
+    rename_pid5_items(df2, version = "BF", from_prefix = "pid.")
+  )
+  expect_identical(colnames(res2), c("pid5bf_01", "pid5bf_25", "pidX1"))
+})
+
+
 # Argument validation ---------------------------------------------------------
 
 test_that("rename_pid5_items validates its arguments", {
   df <- data.frame(pid_1 = 1:2)
 
-  expect_error(rename_pid5_items(df, version = "XL"), "arg")
+  expect_error(
+    rename_pid5_items(df, version = "XL"),
+    'should be one of "FULL", "SF", "BF"',
+    fixed = TRUE
+  )
   expect_error(
     rename_pid5_items(df, version = "FULL", method = "text"),
     "item_cols"

@@ -24,7 +24,13 @@ case-insensitively. (default = \code{"FULL"})}
 \item{method}{A string specifying the matching method: \code{"number"} to rename
 columns spelled \code{from_prefix} followed by an item number, or \code{"text"} to
 match against the literal item prompt text in \code{pid_items$Text}.
-(default = \code{"number"})}
+(default = \code{"number"})
+
+The three forms number their items independently, so \code{"number"} reads the
+digits as an item number of the form named by \code{version}: under
+\code{version = "SF"}, \code{pid_7} is short-form item 7, not the full-form item the
+short form numbers 7. Data labelled by full-form item numbers must be
+renamed with \code{version = "FULL"} first, or matched with \code{method = "text"}.}
 
 \item{item_cols}{An optional character vector of current column names to
 be renamed. Required if \code{method = "text"}.}
@@ -45,7 +51,13 @@ number. \code{NULL} resolves to the form's own stem: \code{"pid5_"}, \code{"pid5
 }
 \value{
 A data frame with renamed column names for the matched PID-5 items.
-Columns that could not be matched keep their names.
+Columns that could not be matched keep their names. Under
+\code{method = "number"}, a column spelled like an item of the instrument whose
+number names no item of this form, and under \code{method = "text"}, an
+\code{item_text} entry matching no item of this form, are skipped and named in
+a warning of class \code{hitop_unmatched_items}, which callers may catch or
+suppress by class. A column not spelled like an item number is left alone
+and not reported.
 }
 \description{
 Rename data frame columns to the standard PID-5 item names of one form,
@@ -56,7 +68,7 @@ REDCap and Qualtrics exports write and the shipped datasets carry:
 the short form, and \code{pid5bf_01} to \code{pid5bf_25} for the brief form.
 }
 \examples{
-# Rename columns named as this package's datasets were before 0.3.0
+# Rename columns named as this package's datasets were before the rename
 df <- data.frame(pid_1 = c(0, 1), pid_2 = c(2, 3), age = c(30, 40))
 names(suppressWarnings(rename_pid5_items(df, version = "FULL")))
 
