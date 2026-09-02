@@ -87,7 +87,7 @@ which take caller-supplied `n` → stays. The hitop-builder repo's now-redundant
       `hitophsum_info.R:2`; re-run all four builders; confirm the eight shipped objects and
       their `spec` attributes carry integer collectors on those columns. Setting the type at
       the read (never a post-hoc `as.integer()`) is what keeps `spec` truthful.
-- [ ] T2: Write the whole-number-double sweep test — dataset list from
+- [x] T2: Write the whole-number-double sweep test — dataset list from
       `data(package = "hitop")`, asserted non-empty and to contain the eight keying datasets
       by name; recursing into list elements, list-columns and nested frames; columns carrying
       a class attribute excluded, so `hitop_artifacts$build_date` (a `Date`, and so a double)
@@ -95,7 +95,7 @@ which take caller-supplied `n` → stays. The hitop-builder repo's now-redundant
       plain column (`hitopsr_items$HSR`), a list-column element
       (`pid_scales$FULL$itemNumbers[[1]]`) and a nested-frame column
       (`hitopsr_scales$itemdata[[1]]$HSR`).
-- [ ] T3: Write the merge-base identity tests for the eight objects with a skip-guard on the
+- [x] T3: Write the merge-base identity tests for the eight objects with a skip-guard on the
       merge base already carrying the change, following `tests/testthat/test-column-shape.R:61-98`.
       No existing test needs repair: that file's own `nItems` identity tests and
       `test-scale-name-hitopsr.R:205-250`'s rename-diff tests each already skip on a merge
@@ -120,6 +120,8 @@ which take caller-supplied `n` → stays. The hitop-builder repo's now-redundant
 - 2026-09-02: plan gate chose leaving the three `ku_*` datasets' 550 response columns as doubles over evening them out with the five already-integer `sim_*` datasets, because response values are not item numbers and `data-raw/ku_data.R` reads a university network drive so cannot be re-run; falsified by a user reporting the simulated/real disagreement.
 - 2026-09-02: Jeff signed off at the plan gate on regenerating the four keying-table files and waived the deprecation cycle as pre-1.0, as at M078's and M080's gates.
 - 2026-09-02: T1 — the four builders read their item-number columns with `readr::col_integer()`; all eight shipped objects now store every Scope-named item-number path as integer at every depth, and the `spec` attributes of `pid_items`, `hitopbr_items` and `hitophsum_items` carry integer collectors on those columns (`hitopsr_items` carries no `spec`: `dplyr::select()` drops it, at the merge base too). `devtools::test()`: 0 failures, 16431 passes, 7 skips.
+- 2026-09-02: T2 — `tests/testthat/test-item-number-type.R` sweeps the 23 datasets `data(package = "hitop")` lists, recursing through list elements, list-columns and nested frames, and reports exactly the 550 `ku_*` response columns plus `hitophsum_choices$Value`; the three plants (plain column, list-column element, nested-frame column) were each substituted into the sweep on their own and the criterion assertion went red naming that path, with the unplanted baseline green.
+- 2026-09-02: T3 — `tests/testthat/test-item-number-merge-base.R` rebuilds each of the eight merge-base objects with its item-number columns retyped at every depth and its `spec` collectors retyped, and finds them identical to the shipped objects; a second test pins that `expect_equal()` passes over the difference `expect_identical()` catches. All eight ran (no skips). `devtools::test()`: 0 failures, 16455 passes, 7 skips.
 
 ## Decisions
 
