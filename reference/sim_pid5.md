@@ -13,7 +13,7 @@ sim_pid5
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 100
 rows and 220 columns.
 
-- pid_1 to pid_220:
+- pid5_001 to pid5_220:
 
   Responses on each item
 
@@ -22,23 +22,23 @@ rows and 220 columns.
 ``` r
 sim_pid5
 #> # A tibble: 100 × 220
-#>    pid_1 pid_2 pid_3 pid_4 pid_5 pid_6 pid_7 pid_8 pid_9 pid_10 pid_11 pid_12
-#>    <int> <int> <int> <int> <int> <int> <int> <int> <int>  <int>  <int>  <int>
-#>  1     0     3     2     1     1     3     1     3     3      0      0      3
-#>  2     3     3     0     3     0     3     2     2     1      2      0      0
-#>  3     3     2     3     2     3     3     0     3     3      2      3      3
-#>  4     1     3     0     2     1     0     2     0     3      2      3      2
-#>  5     0     1     3     2     3     1     0     1     2      2      2      2
-#>  6     2     1     1     3     3     2     2     0     1      3      1      3
-#>  7     1     1     3     3     1     3     1     0     1      1      0      2
-#>  8     2     0     3     0     3     2     0     1     3      1      2      0
-#>  9     1     1     3     0     1     1     2     3     1      1      3      1
-#> 10     0     3     2     3     3     0     1     2     1      3      0      2
+#>    pid5_001 pid5_002 pid5_003 pid5_004 pid5_005 pid5_006 pid5_007 pid5_008
+#>       <int>    <int>    <int>    <int>    <int>    <int>    <int>    <int>
+#>  1        0        3        2        1        1        3        1        3
+#>  2        3        3        0        3        0        3        2        2
+#>  3        3        2        3        2        3        3        0        3
+#>  4        1        3        0        2        1        0        2        0
+#>  5        0        1        3        2        3        1        0        1
+#>  6        2        1        1        3        3        2        2        0
+#>  7        1        1        3        3        1        3        1        0
+#>  8        2        0        3        0        3        2        0        1
+#>  9        1        1        3        0        1        1        2        3
+#> 10        0        3        2        3        3        0        1        2
 #> # ℹ 90 more rows
-#> # ℹ 208 more variables: pid_13 <int>, pid_14 <int>, pid_15 <int>, pid_16 <int>,
-#> #   pid_17 <int>, pid_18 <int>, pid_19 <int>, pid_20 <int>, pid_21 <int>,
-#> #   pid_22 <int>, pid_23 <int>, pid_24 <int>, pid_25 <int>, pid_26 <int>,
-#> #   pid_27 <int>, pid_28 <int>, pid_29 <int>, pid_30 <int>, pid_31 <int>,
-#> #   pid_32 <int>, pid_33 <int>, pid_34 <int>, pid_35 <int>, pid_36 <int>,
-#> #   pid_37 <int>, pid_38 <int>, pid_39 <int>, pid_40 <int>, pid_41 <int>, …
+#> # ℹ 212 more variables: pid5_009 <int>, pid5_010 <int>, pid5_011 <int>,
+#> #   pid5_012 <int>, pid5_013 <int>, pid5_014 <int>, pid5_015 <int>,
+#> #   pid5_016 <int>, pid5_017 <int>, pid5_018 <int>, pid5_019 <int>,
+#> #   pid5_020 <int>, pid5_021 <int>, pid5_022 <int>, pid5_023 <int>,
+#> #   pid5_024 <int>, pid5_025 <int>, pid5_026 <int>, pid5_027 <int>,
+#> #   pid5_028 <int>, pid5_029 <int>, pid5_030 <int>, pid5_031 <int>, …
 ```

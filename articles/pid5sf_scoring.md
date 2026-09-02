@@ -71,7 +71,7 @@ data("ku_pid5sf")
 
 score_pid5(
   ku_pid5sf,
-  items = paste0("pid_", 1:100),
+  items = sprintf("pid5sf_%03d", 1:100),
   version = "SF",
   append = FALSE
 )
@@ -98,7 +98,7 @@ score_pid5(
 
 validity_pid5(
   ku_pid5sf,
-  items = paste0("pid_", 1:100),
+  items = sprintf("pid5sf_%03d", 1:100),
   version = "SF",
   append = FALSE
 )
@@ -147,12 +147,12 @@ give a confidence interval for a respondent’s true score.
 
 score_pid5(
   ku_pid5sf,
-  items = paste0("pid_", 1:100),
+  items = sprintf("pid5sf_%03d", 1:100),
   version = "SF",
   calc_se = TRUE,
   append = FALSE
 )
-#> Warning in score_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF", : The `calc_se` argument is deprecated.
+#> Warning in score_pid5(ku_pid5sf, items = sprintf("pid5sf_%03d", 1:100), : The `calc_se` argument is deprecated.
 #> ℹ It, and the `_se` columns it adds, will be removed in a future release.
 #> ℹ This package has no interval function for the PID-5; for measurement
 #>   precision see `reliability_pid5()`.
@@ -207,7 +207,7 @@ latter, we will need the **lavaan** package installed (set
 
 reliability_pid5(
   data = ku_pid5sf,
-  items = sprintf("pid_%d", 1:100),
+  items = sprintf("pid5sf_%03d", 1:100),
   version = "SF"
 )
 #> # A tibble: 25 × 5
@@ -243,8 +243,8 @@ if we want those scales converted too.
 
 ``` r
 
-scored <- score_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF")
-scored <- validity_pid5(scored, items = paste0("pid_", 1:100), version = "SF")
+scored <- score_pid5(ku_pid5sf, items = sprintf("pid5sf_%03d", 1:100), version = "SF")
+scored <- validity_pid5(scored, items = sprintf("pid5sf_%03d", 1:100), version = "SF")
 ```
 
 For the short form the published tables cover the five domain scales,

@@ -13,8 +13,8 @@ functionality using some simulated data.
 ## Score simulated PID-5-BF data
 
 The `sim_pid5bf` dataset is built into the package and contains 100 rows
-(each a simulated participant) across 25 columns named `pid_1` to
-`pid_25`. To compute the 5 domain scores and the total, we use
+(each a simulated participant) across 25 columns named `pid5bf_01` to
+`pid5bf_25`. To compute the 5 domain scores and the total, we use
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
 with `version = "BF"`. As with the other forms, we can specify the items
 by column number (`items = 1:25`) and set `append = FALSE` to see just

@@ -171,7 +171,7 @@ validity problems since this is real data. We can also retain un-scored
 <span></span>
 <span><span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span></span>
 <span>  <span class="va">ku_pid5sf</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5sf_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span>
 <span>  version <span class="op">=</span> <span class="st">"SF"</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -198,7 +198,7 @@ validity problems since this is real data. We can also retain un-scored
 <span></span>
 <span><span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span></span>
 <span>  <span class="va">ku_pid5sf</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5sf_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span>
 <span>  version <span class="op">=</span> <span class="st">"SF"</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
@@ -244,12 +244,12 @@ does not give a confidence interval for a respondent’s true score.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span></span>
 <span>  <span class="va">ku_pid5sf</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5sf_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span>
 <span>  version <span class="op">=</span> <span class="st">"SF"</span>,</span>
 <span>  calc_se <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in score_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF", : The `calc_se` argument is deprecated.</span></span>
+<span><span class="co">#&gt; Warning in score_pid5(ku_pid5sf, items = sprintf("pid5sf_%03d", 1:100), : The `calc_se` argument is deprecated.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> It, and the `_se` columns it adds, will be removed in a future release.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> This package has no interval function for the PID-5; for measurement</span></span>
 <span><span class="co">#&gt;   precision see `reliability_pid5()`.</span></span>
@@ -300,7 +300,7 @@ we will need the <strong>lavaan</strong> package installed (set
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability_pid5.html">reliability_pid5</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_pid5sf</span>,</span>
-<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid_%d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5sf_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>,</span>
 <span>  version <span class="op">=</span> <span class="st">"SF"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 25 × 5</span></span></span>
@@ -330,8 +330,8 @@ scores rather than computing them, so we hand it the output of
 <code><a href="../reference/score_pid5.html">score_pid5()</a></code> — and of <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code>, if we
 want those scales converted too.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">ku_pid5sf</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>, version <span class="op">=</span> <span class="st">"SF"</span><span class="op">)</span></span>
-<span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span><span class="va">scored</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pid_"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>, version <span class="op">=</span> <span class="st">"SF"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">ku_pid5sf</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5sf_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>, version <span class="op">=</span> <span class="st">"SF"</span><span class="op">)</span></span>
+<span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span><span class="va">scored</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5sf_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">100</span><span class="op">)</span>, version <span class="op">=</span> <span class="st">"SF"</span><span class="op">)</span></span></code></pre></div>
 <p>For the short form the published tables cover the five domain scales,
 all 25 facet scales, and the INC-S inconsistency scale. Each converted
 scale gains a <code>_ptl</code> column, and those whose tables print T

@@ -197,7 +197,7 @@ score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
 #> #   pid_irresponsibility <dbl>, pid_rigidPerfectionism <dbl>, …
 
 # Short form, using the item column names instead of positions
-score_pid5(sim_pid5sf, items = sprintf("pid_%d", 1:100), version = "SF",
+score_pid5(sim_pid5sf, items = sprintf("pid5sf_%03d", 1:100), version = "SF",
            append = FALSE)
 #> # A tibble: 100 × 30
 #>    pid_suspiciousness pid_impulsivity pid_submissiveness pid_callousness
