@@ -7,13 +7,13 @@
 \format{
 A \link[tibble]{tibble} with 45 rows and 8 columns:
 \describe{
-\item{HBR}{Item number on the HITOP-BR}
+\item{HBR}{Item number on the HITOP-BR (integer)}
 \item{Reverse}{Whether the item needs to be reverse scored}
 \item{Scale}{Name of the scale}
 \item{Externalizing}{Whether the item is part of the Externalizing scale}
 \item{Pfactor}{Whether the item is part of the p-Factor scale}
 \item{Text}{Item text}
-\item{HSR}{Item number on the HiTOP-SR}
+\item{HSR}{Item number on the HiTOP-SR (integer)}
 \item{Original}{Item ID in the original, development item pool}
 }
 }

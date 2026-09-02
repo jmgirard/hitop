@@ -7,7 +7,7 @@
 \format{
 A \link[tibble]{tibble} with 650 rows and 9 columns:
 \describe{
-\item{Item}{Item number}
+\item{Item}{Item number (integer)}
 \item{Variable}{Variable name for the item}
 \item{Substance}{Name of the substance the item refers to}
 \item{Tier}{The assessment tier the item belongs to (e.g. Screening)}

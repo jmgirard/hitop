@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M081 | Every item number the package ships is an integer | in-progress | — | normal | milestones/M081-item-number-integers.md |
+| M081 | Every item number the package ships is an integer | review | — | normal | milestones/M081-item-number-integers.md |
 | M080 | The shipped PID-5 datasets name item columns as the online exports do | done | — | normal | milestones/archive/M080-pid5-item-column-names.md |
 | M079 | The online exports pad item numbers to the instrument's width, not to the export's own | done | — | normal | milestones/archive/M079-export-padding-width.md |
 | M078 | The per-scale tables the package ships or returns join on one column shape | done | — | normal | milestones/archive/M078-column-shape.md |

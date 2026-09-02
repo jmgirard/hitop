@@ -39,6 +39,21 @@
 
 ## Breaking changes
 
+* **Every item number the package ships is an integer.** `pid_items`' `FULL`,
+  `SF`, `BF`, `INC`, `INCS`, `ORS`, `ORSS`, `PRD`, `PRDS`, `SDTD` and `SDTDS`
+  columns, `hitopsr_items$HSR`, `hitopbr_items$HBR` and `$HSR`,
+  `hitophsum_items$Item`, the `itemNumbers` vectors and the item-number columns
+  of the nested `itemdata` frames in `pid_scales`, `hitopsr_scales`,
+  `hitopsr_subscales` and `hitopbr_scales`, and the `items` element of what
+  `hitop_module()` returns, are all stored as integers where they were doubles.
+  No value moved and no exported file changed: only the type differs, so
+  arithmetic, subsetting and `==` behave as before. What changes is
+  `identical()`, which distinguishes an integer from a double: a test written as
+  `identical(hitopsr_scales$itemNumbers[["agoraphobia"]], c(1, 2, 3))` now fails
+  and wants `c(1L, 2L, 3L)` (or `expect_equal()`, which ignores the
+  difference). `typeof()`, `is.integer()` and `str()` also report the new type.
+  No deprecation period precedes this change.
+
 * **The PID-5 example datasets now use the item column pattern the package's
   own REDCap export writes.** `sim_pid5`'s item columns are now `pid5_001` to
   `pid5_220`; `sim_pid5sf`'s, and the item columns of `ku_pid5sf`, are

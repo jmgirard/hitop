@@ -28,8 +28,8 @@
 #'
 #' @return An object of class `hitop_module`: a list with the resolved
 #'   `instrument`, the canonical display `scales` and their `camelCase` stems,
-#'   the `items` kept (original instrument numbering, ascending), the parallel
-#'   `reverse` keying flags, and `nItems`.
+#'   the integer `items` kept (original instrument numbering, ascending), the
+#'   parallel `reverse` keying flags, and `nItems`.
 #'
 #' @seealso [available_scales()] for the scale names this accepts;
 #'   [generate_docx_hitopsr()], [generate_qualtrics_hitopsr()], and

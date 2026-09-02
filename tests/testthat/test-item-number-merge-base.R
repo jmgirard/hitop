@@ -52,12 +52,18 @@ retype_item_numbers <- function(x, columns) {
 
 # The reader's record of the types it used. `readr` stores it as a `spec`
 # attribute of collector objects; retyping the columns without retyping this
-# would leave the object claiming it read doubles.
+# would leave the object claiming it read doubles. The retype is done by
+# renaming the class of the merge base's own collector, so the test states the
+# difference it expects and takes no dependency on {readr}, which this package
+# uses only under `data-raw/`.
 retype_spec <- function(x, columns) {
   spec <- attr(x, "spec")
   if (is.null(spec)) return(x)
   for (nm in intersect(names(spec$cols), columns)) {
-    spec$cols[[nm]] <- readr::col_integer()
+    collector <- spec$cols[[nm]]
+    expect_s3_class(collector, "collector_double")
+    class(collector) <- sub("^collector_double$", "collector_integer", class(collector))
+    spec$cols[[nm]] <- collector
   }
   attr(x, "spec") <- spec
   x
