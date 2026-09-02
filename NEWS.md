@@ -2,6 +2,17 @@
 
 ## New features
 
+* **`rename_pid5_items()` renames PID-5 item columns to the standard names.**
+  Given a data frame and the form its items belong to, it renames the item
+  columns to `pid5_001`-style names: `method = "number"` (the default) reads the
+  item number out of a column already named `pid_1`, `pid_2` and so on, the
+  spelling this package's own PID-5 datasets carried before they were renamed to
+  match the exports, and `method = "text"` matches the literal item prompts in
+  `pid_items$Text` for callers whose data came from elsewhere. Item text, and
+  columns spelled like an item number but numbered outside the form, are left
+  alone and named in a warning of class `hitop_unmatched_items`; a column that
+  looks like no item at all is left alone without comment.
+
 * **`interval_hitopbr()` puts a confidence interval around a HiTOP-BR scale
   score.** Given columns that `score_hitopbr()` produced, it returns an `_est`,
   `_lo` and `_hi` column for each: an estimate of the respondent's true score
