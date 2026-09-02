@@ -101,7 +101,7 @@ arguments, defaults and reports.
       sweep across the three simulated datasets, AC2's scale sweep across
       `pid_scales` and `pid_domains`, AC3's literal-expectation defaults, AC4's
       unpadded spellings.
-- [ ] T2: Implement `R/label_pid5.R`, modelled on `R/label_hitopsr.R`, resolving
+- [x] T2: Implement `R/label_pid5.R`, modelled on `R/label_hitopsr.R`, resolving
       `prefix = NULL` per `version`/`target`, reading scale display names from
       `pid_scales[[version]]` plus `pid_domains`, and reusing
       `warn_unpadded_items()`; run T1 green.
@@ -118,6 +118,7 @@ arguments, defaults and reports.
 - 2026-09-02: plan gate chose `prefix = NULL` resolved per `version`/`target` over splitting into `label_pid5_items()`/`label_pid5_scales()` because the split breaks the `label_*(data, target, prefix)` idiom the two HiTOP helpers set; falsified by the NULL default proving hard to document or to predict.
 - 2026-09-02: plan gate chose leaving `validity_pid5()`'s columns unlabelled over sourcing their display names because D-018 fixes those names to the scale-development papers and none is on the `references/` shelf (IP2); falsified by a citable source arriving with the five names.
 - 2026-09-02: implementation gate chose leaving the no-columns-matched warning unclassed, matching `label_hitopsr()` and `label_hitopbr()`, over giving it a public class; falsified by a user needing to silence it without silencing the rest of the call.
+- 2026-09-02: T2 done — `R/label_pid5.R` added; the whole suite passes (0 failures, 17043 passes, 9 pre-existing skips). Check discrimination: dropping `pid_domains` from the scale lookup, hardcoding the item prefix to `pid5_`, removing the `warn_unpadded_items()` call, and reversing the item-text lookup each turn the new file red.
 - 2026-09-02: T1 done — `tests/testthat/test-label_pid5.R` written red (6 failures, all `could not find function "label_pid5"`); the suite is red by design until T2, so the profile's verify slot runs at T2.
 
 ## Decisions
