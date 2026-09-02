@@ -111,7 +111,7 @@ gate; the same class carries both sentences.
       `withCallingHandlers`, never `expect_no_warning(message = )`, which takes
       `message` as a regexp selector and passes on a raised warning (LESSONS
       M032).
-- [ ] T7: Update the three helpers' `@param prefix` and `@return` roxygen, run
+- [x] T7: Update the three helpers' `@param prefix` and `@return` roxygen, run
       `devtools::document()`, add the `NEWS.md` bullet.
 - [ ] T8: Run `devtools::test()` and `devtools::check()`; compare against T1's
       baseline and record the comparison.
@@ -138,6 +138,7 @@ gate; the same class carries both sentences.
 - 2026-09-02: T4 split `unpadded_item_cols()` into `mispadded` and `out_of_range` and gave `warn_unpadded_items()` the signature `(cols, prefix, expected, max_n, instrument)`, folding the split in; the three call sites pass `max_n` instead of a digit width. Minor task edit: T4 now says the range is stated in the out-of-range sentence rather than in a separate `i` hint, which would only repeat it.
 - 2026-09-02: T5 added out-of-range, mixed and one-versus-two-column probes on all five forms. Discrimination: planting the pre-split classification (every unmatched column called mis-padded) reddened 20 assertions across both files; planting the missing `cli::qty()` reddened the 6 pluralization assertions. Full suite FAIL 0 / WARN 0 / SKIP 9 / PASS 17159.
 - 2026-09-02: T6 added the silence regression over the eight shipped item frames, two module subsets and a frame with no prefixed column, capturing with `withCallingHandlers`; each shipped frame is also shown to label something, so the domain cannot silently empty. Discrimination: reporting every prefixed column regardless of `expected` reddened it. Full suite PASS 17186.
+- 2026-09-02: T7 rewrote the three helpers' `@param prefix` and `@return` and added the `NEWS.md` bullet under "Improvements and fixes"; `devtools::document()` rewrote the three `.Rd` files and a second run left no further diff. Each of the three carries "raised whether or not any other column matched" and "reported as out of range", and AC4's grep for the removed sentence returns nothing.
 - 2026-09-02: criteria audit ran in full mode ([O] fresh reader, user-facing
   tier); it returned findings on AC1 (unsatisfiable — cli truncates lists past
   five, and `hsr_1`..`hsr_405` does not reach the no-match path), AC2 (no class

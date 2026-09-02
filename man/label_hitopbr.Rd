@@ -17,14 +17,21 @@ columns are expected as the prefix followed by the item number zero-padded
 to two digits (\code{hbr_01} to \code{hbr_45} under the default, the pattern the
 shipped datasets and the package's REDCap export use; the Qualtrics export
 writes \code{HBR_01}, matched by \code{prefix = "HBR_"}). Columns that carry the
-prefix and a number without that padding are not labelled, and a warning
-of class \code{hitop_unpadded_items} names them; scale
-columns as the prefix followed by the scale's \code{camelCase} name, which is
-what \code{\link[=score_hitopbr]{score_hitopbr()}} writes under its own default \code{prefix}.
-(default = \code{"hbr_"})}
+prefix and a number that is not one of those expected names are not
+labelled, and a warning of class \code{hitop_unpadded_items} names them, in a
+sentence per kind: a number without that padding is reported as not
+zero-padded to two digits, and a number outside 1 to 45 is reported as out
+of range, whatever its padding. That warning is raised whether or not any
+other column matched. Scale
+columns are expected as the prefix followed by the scale's \code{camelCase}
+name, which is what \code{\link[=score_hitopbr]{score_hitopbr()}} writes under its own default
+\code{prefix}. (default = \code{"hbr_"})}
 }
 \value{
-A data frame with labeled columns.
+A data frame with labeled columns. If no column matched the expected
+names at all, \code{data} is returned unchanged and a warning says so; the
+\code{hitop_unpadded_items} report still names every prefixed item column it
+found.
 }
 \description{
 Add literal item text or clean scale names as attributes to data frame

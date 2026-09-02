@@ -154,6 +154,19 @@
 
 ## Improvements and fixes
 
+* **The `label_*()` family reports every item column it could not label, and
+  says what is wrong with each.** `label_pid5()`, `label_hitopsr()` and
+  `label_hitopbr()` used to skip the report entirely when no column at all
+  matched, so a frame whose item columns were every one mis-padded got only
+  "No columns matched" and no list of the offending names; the
+  `hitop_unpadded_items` warning is now raised whether or not another column
+  matched. The report also separates the two mistakes it finds: a number padded
+  to the wrong width is reported as not zero-padded, with a hint showing the
+  spelling expected, and a number outside the instrument's item range is
+  reported as out of range in its own sentence naming that range. Each sentence
+  is pluralized by the number of columns it names, so a one-column report no
+  longer reads "they were not labelled".
+
 * **`nItems` is an integer in every shipped per-scale table.** `pid_scales`
   (each of its three elements), `hitopsr_scales`, `hitopsr_subscales` and
   `hitopbr_scales` stored the item count as a double where `available_scales()`,
