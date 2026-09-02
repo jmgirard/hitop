@@ -45,7 +45,7 @@ arguments, defaults and reports.
 
 ## Acceptance criteria
 
-- [ ] AC1: `rename_pid5_items()` is exported and, for each of
+- [x] AC1: `rename_pid5_items()` is exported and, for each of
       `version = "FULL"`, `"SF"` and `"BF"`, `method = "text"` renames every one
       of that form's items to its canonical padded name. Evidence: a test that,
       per version, selects the rows of `pid_items` whose column for that form is
@@ -54,7 +54,7 @@ arguments, defaults and reports.
       `Text` as `item_text`, and asserts the returned `colnames()` are
       `identical()` to `item_names(prefix, <those rows' form numbers>,
       max_n = <the form's largest number>)` — 220, 100 and 25 columns.
-- [ ] AC2: With `method = "number"`, a column spelled `<from_prefix><digits>`
+- [x] AC2: With `method = "number"`, a column spelled `<from_prefix><digits>`
       whose number names an item of the form is renamed to that item's canonical
       padded name; a column spelled `<from_prefix><digits>` whose number names no
       item of the form keeps its name and is named in the report; a column not
@@ -70,7 +70,7 @@ arguments, defaults and reports.
       asserts each item column's returned name is `identical()` to its canonical
       name, every other name is unchanged, and the report names exactly the
       matching-but-unnamed columns.
-- [ ] AC3: Under `method = "text"`, an `item_text` entry matching no item of the
+- [x] AC3: Under `method = "text"`, an `item_text` entry matching no item of the
       named form is skipped, the column it referred to keeps its name, and a
       condition of this milestone's new class is signalled naming it; the
       `method = "number"` report is AC2's. Evidence: a test, per version,
@@ -82,7 +82,7 @@ arguments, defaults and reports.
       entry differing from a real item's `Text` only in surrounding whitespace is
       matched and renamed, `rename_hitopsr_items()` comparing under `trimws()`
       (`R/rename_hitopsr_items.R:81`), so that the family above is not vacuous.
-- [ ] AC4: `prefix = NULL` resolves to `"pid5_"`, `"pid5sf_"` and `"pid5bf_"`
+- [x] AC4: `prefix = NULL` resolves to `"pid5_"`, `"pid5sf_"` and `"pid5bf_"`
       under `version = "FULL"`, `"SF"` and `"BF"`, and `from_prefix` defaults to
       `"pid_"`. Evidence: a test asserting, for all three versions, that a
       `method = "text"` call with neither argument given returns `colnames()`
@@ -91,12 +91,12 @@ arguments, defaults and reports.
       `pid_<number>`, does the same — the second call renaming nothing unless
       `from_prefix` defaults as promised. Neither expectation is re-derived by
       calling the function.
-- [ ] AC5: The function is documented with a runnable roxygen example, carries
+- [x] AC5: The function is documented with a runnable roxygen example, carries
       one `NEWS.md` bullet under the development-version heading stating what it
       does, has a `_pkgdown.yml` reference entry, and is named once in each of
       `vignettes/pid5_scoring.Rmd`, `pid5sf_scoring.Rmd` and
       `pid5bf_scoring.Rmd`.
-- [ ] AC6: The active profile's verify and review checks are clean:
+- [x] AC6: The active profile's verify and review checks are clean:
       `devtools::test()` passes, `devtools::document()` leaves no diff,
       `devtools::check()` reports 0 errors and 0 warnings with any NOTE
       justified, and `pkgdown::check_pkgdown()` passes.
@@ -144,7 +144,50 @@ arguments, defaults and reports.
 - 2026-09-02: the full suite's export-coverage guard went red on `rename_pid5_items()` — it counts a call in an evaluated vignette chunk or a reference link, not a prose mention, so AC5's naming alone does not satisfy it. The full-form vignette's mention became a worked chunk renaming `pid_1`/`pid_2`; the short- and brief-form mentions stay prose.
 - 2026-09-02: T5 — `devtools::test()` FAIL 0 | WARN 0 | SKIP 9 | PASS 16502; `devtools::check()` 0 errors, 0 warnings, 0 notes (5m 38s); `pkgdown::check_pkgdown()` no problems; `devtools::document()` leaves no diff. Status set to review.
 - 2026-09-02: review opened; draft PR #89 created, main unmoved since the branch was cut. `cairn_validate.py` passes (exit 0). Acceptance-criterion evidence pending the in-flight `devtools::test()`/`check()` run and the three review lenses.
+- 2026-09-02: review evidence recorded for AC1-AC6, all met; consistency gate clean. Three review lenses: prior-review and blame-history clean, the diff-bug lens returned 16 ranked findings, dispositions proposed in the Review section and pending the gate. No finding meets the return floor.
 
 ## Decisions
 
 ## Review
+
+- AC1 — met. `devtools::test()` on 2026-09-02: FAIL 0 | WARN 0 | SKIP 9 | PASS 16502, `test-rename_pid5_items.R` among them. Its first test sweeps `method = "text"` per form and compares `colnames()` with `item_names()` under `expect_identical()`, plus a guard asserting the three form widths are 220/100/25 so the sweep is not vacuous.
+
+- AC2 — met. The second test in `test-rename_pid5_items.R` passes in the run above. Per form it feeds one `pid_<unpadded number>` column per item, the matching-but-unnamed family (`max_n + 1`, `0`, and for SF/BF the numbers 150 and 100), and the four non-matching spellings; it compares the item block and the remainder with `expect_identical()` and the report bullets as a set with `expect_setequal()` plus `expect_length()`. Checked at review: each form numbers 1..N contiguously (`identical(sort(n), seq_len(max(n)))` TRUE for all three), so SF 150 and BF 100 do name a FULL item and no item of their own form — the third family member is instantiated, though it coincides with the first.
+
+- AC3 — met. The third test passes in the run above: per form it plants a foreign string and, for SF/BF, the `Text` of a row the form does not carry, asserts `expect_s3_class(caught, "hitop_unmatched_items")`, matches each planted entry in the report, and compares all `colnames()` with `expect_identical()`. The whitespace-padded positive control renames, so the unmatchable family is not vacuous; the FULL form has no off-form text and the test asserts that emptiness holds for FULL and no other form.
+
+- AC4 — met. The fourth test passes in the run above, comparing `colnames()` with the literal vectors `pid5_001/002/220`, `pid5sf_001/002/100` and `pid5bf_01/02/25` under `expect_identical()` for a `method = "text"` call and a `method = "number"` call over `pid_<number>` columns, neither giving `prefix` or `from_prefix`. Expectations are literals, not re-derived from the function.
+
+- AC5 — met. `NAMESPACE:39` exports it; `man/rename_pid5_items.Rd` exists with an `@examples` block that `R CMD check`'s "checking examples" step ran OK; one bullet sits under the `# hitop (development version)` heading of `NEWS.md`; `_pkgdown.yml:98` carries the reference entry; and `rename_pid5_items` appears in `vignettes/pid5_scoring.Rmd` (prose plus a worked chunk), `pid5sf_scoring.Rmd:30` and `pid5bf_scoring.Rmd:30`. Judgment recorded: the bullet exists, sits under the right heading and describes the function, so the criterion is met — one clause of it overstates the report, logged below as finding 4 and triaged rather than treated as an AC failure.
+
+- AC6 — met. Fresh run on 2026-09-02 from the branch tip: `devtools::test()` FAIL 0 | WARN 0 | SKIP 9 | PASS 16502; `devtools::document()` left `git status` empty; `pkgdown::check_pkgdown()` "No problems found"; `devtools::check()` Status OK, 0 errors | 0 warnings | 0 notes (7m 8s).
+
+### Consistency gate
+
+- Universal: `cairn_validate.py` exit 0, all checks PASS, 24 advisories (23 dangling pre-migration D-ids, 1 references-staleness) — none a gate failure, none introduced by this branch. `release window` OK. No `DESIGN.md` principle changed, so `cairn_impact.py` was skipped.
+- Toolchain (`r-package` consistency-gate slot): `document()` no diff; no hand-edits to `NAMESPACE`/`man/`/`data/*.rda` (the no-diff run covers it); `README.Rmd` untouched; `pkgdown::check_pkgdown()` clean; `NEWS.md` carries the user-visible entry; no new top-level files, so no `.Rbuildignore` entry owed; `devtools::check()` 0/0/0.
+
+### Independent review
+
+Three fresh-context lenses, distinct evidence bases. [S] prior-review: no prior-review evidence on GitHub (`gh api .../pulls/comments?per_page=1` empty), archived `## Review` sections on the touched files checked — no regression of a past lesson, zero findings. [S] blame-history: no blocking or moderate findings; two informational notes (the sibling `rename_hitopsr_items()` passes unmatched text to cli unescaped where the new helper escapes braces — pre-existing and covered by D-057's recorded unevenness; and the AC boxes were unticked at spawn time, which is the expected pre-gate state). [O] diff-bug: 16 ranked findings, below.
+
+Findings and proposed dispositions (verified against the implementation at review, not against the reviewer's account):
+
+1. `method = "number"` reads the digits as the *named form's* item number, so SF/BF data numbered by FULL item numbers is renamed to the wrong columns with no report — every number 1..100 is a valid SF number. Nothing in the roxygen, NEWS or the vignettes says which numbering the digits are read as. Proposed: fix now, one documented sentence.
+2. Duplicate column names are produced silently: `data.frame(pid_1 = 1, pid5_001 = 2)` returns two columns named `pid5_001` (verified). Proposed: follow-up.
+3. Replacing `numbers %in% form_numbers` with a `1 <= n <= max_n` range check leaves the test file green, and AC2's third family member is said to be unrealizable. Proposed: reject. Verified here that each form numbers 1..N contiguously, so the two predicates are extensionally equivalent — no input distinguishes them, and nothing is left untested; and SF 150 / BF 100 do instantiate the third member, so AC2's evidence is met.
+4. The NEWS bullet says item text or columns it cannot match "are left alone and reported under the condition class `hitop_unmatched_items`". Under `method = "number"` an unshaped column such as `age` is left alone and never reported, and the no-column-matches path raises a classless `rlang_warning` (both verified). Proposed: fix now, narrow the wording.
+5. `hitop_unmatched_items` is a public contract under D-057 but appears in no `@return`; the package documents `hitop_unpadded_items` that way (`man/label_hitopsr.Rd:21`). Proposed: fix now.
+6. `item_cols` and `item_text` are silently ignored under the default `method = "number"` — a caller copying the `rename_hitopsr_items()` idiom gets no error and no rename (verified). Proposed: follow-up.
+7. `pid_99999999999` leaks base R's "NAs introduced by coercion to integer range" beside the classed report, against the cli-only messaging convention. Proposed: follow-up.
+8. `n_items <- switch(version, "FULL" = 220L, ...)` hardcodes counts already derived two lines earlier as `length(form_numbers)`, against CLAUDE.md's never-hardcode rule. Proposed: fix now.
+9. Duplicate entries in `item_cols` drop a mapping unreported; inherited from the sibling. Proposed: follow-up.
+10. `prefix` and `from_prefix` are never exercised at a non-default value, so the regex-escaping branch has no test. Proposed: fix now, add the test.
+11. The regex-escaping expression is duplicated between `unpadded_item_cols()` in `R/util.R` and `R/rename_pid5_items.R`. Proposed: follow-up.
+12. The example comment reads "before 0.3.0"; DESCRIPTION is 0.2.0 and the rename lands in the unreleased development version. Proposed: fix now.
+13. AC3's `expect_match(..., fixed = TRUE)` is coupled to cli's 80-column wrapping — today's planted text is 60 characters but `pid_items$Text` runs to 98. Proposed: follow-up.
+14. The no-column-matches early return raises a classless warning and skips the completeness check; D-057 describes one class over both methods' unmatched reports. Proposed: follow-up.
+15. `NA` in `item_text` is reported as the bare bullet `NA`, indistinguishable from an item whose text is "NA". Proposed: follow-up, with 14.
+16. `expect_error(rename_pid5_items(df, version = "XL"), "arg")` matches nearly any error containing "arg" rather than pinning the `match.arg` failure. Proposed: fix now.
+
+Return floor: no finding demonstrates an acceptance criterion failing. Finding 4 was weighed against AC5 and judged not a failure of it — AC5 promises one bullet under the development-version heading stating what the function does, and that bullet exists and describes it; one clause of it overstates the report, which is a defect in the bullet, not an absent artifact. Recorded so the maintainer can overrule.
