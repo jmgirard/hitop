@@ -220,7 +220,7 @@ test_that("reliability_hitopsr(module=) returns one row per module scale", {
   # nItems comes from the remapped positions; it must still match the table.
   expect_equal(
     part$nItems,
-    as.integer(hitopsr_scales$nItems[match(part$Scale, hitopsr_scales$Scale)])
+    hitopsr_scales$nItems[match(part$Scale, hitopsr_scales$Scale)]
   )
 })
 

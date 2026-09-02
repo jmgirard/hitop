@@ -10,14 +10,14 @@ package_names <- function() {
   rbind(
     data.frame(
       Scale = hitopsr_scales$Scale,
-      nItems = as.integer(hitopsr_scales$nItems),
+      nItems = hitopsr_scales$nItems,
       camelCase = hitopsr_scales$camelCase,
       type = "scale",
       stringsAsFactors = FALSE
     ),
     data.frame(
       Scale = hitopsr_subscales$Subscale,
-      nItems = as.integer(hitopsr_subscales$nItems),
+      nItems = hitopsr_subscales$nItems,
       camelCase = hitopsr_subscales$camelCase,
       type = "subscale",
       stringsAsFactors = FALSE
