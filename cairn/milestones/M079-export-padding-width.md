@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M079: The online exports pad item numbers to the instrument's width, not to the export's own
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -36,8 +36,8 @@ that hold it there — no shipped or generated file moves.
 `generate_{qualtrics,redcap}_*` wrappers from the instrument's own item table;
 the Qualtrics builder's inline width computation replaced by `item_names()`
 (the M077 review's finding 5); tests for the width source, the required
-argument, and a rebuild of every shipped online export against the committed
-copy; the padding comments in `R/util.R:583-586` and both builders; the two
+argument, and a rebuild of every generator-backed online export in the
+manifest against the committed copy; the padding comments in `R/util.R:583-586` and both builders; the two
 HiTOP-SR online generators' help pages stating that a module export keeps the
 full instrument's width.
 
@@ -59,9 +59,11 @@ item-column naming → its own candidate row.
 - [x] AC2: Both builders require that width — a direct call omitting it aborts,
       rather than falling back to the exported items' own largest number.
 - [ ] AC3: No shipped online export's item names move: for every row of
-      `hitop_artifacts` whose `format` is `qualtrics` or `redcap` — the domain
-      enumerated from the manifest — a fresh default build's item variable
-      names are identical to those in the committed file the row names.
+      `hitop_artifacts` whose `format` is `qualtrics` or `redcap` and for whose
+      file this package exports a generator — the domain enumerated from the
+      manifest by that same generator lookup, which today excludes only
+      `hitophsum_qualtrics.qsf` — a fresh default build's item variable names
+      are identical to those in the committed file the row names.
 - [x] AC4: `Rscript -e 'devtools::test()'` clean and
       `Rscript -e 'devtools::document()'` producing no diff (the profile's
       `verify` slot).
@@ -123,6 +125,9 @@ item-column naming → its own candidate row.
 - 2026-09-01: the AC3 test compares fresh builds against the committed `inst/extdata/` artifacts, which `cairn/DESIGN.md`'s generator-testing decision says are not used as an oracle; the test comment states the distinction (a no-regression lock over names, not a content oracle) and leaves the DESIGN wording for review to rule on.
 - 2026-09-01: all tasks done; `devtools::test()` clean, `devtools::document()` idempotent, `R CMD check` 0 errors / 0 warnings / 0 notes on the final tree; status to review.
 - 2026-09-01: amendment return: AC3 — "for every row of `hitop_artifacts` whose `format` is `qualtrics` or `redcap`" — the manifest names `hitophsum_qualtrics.qsf`, which this package ships but has no generator for, so no fresh default build exists to compare; AC1, AC2 and AC4 verified, consistency gate green, review stops for the amendment alone.
+- 2026-09-01: criteria audit on the amended AC3 and Scope wording ran in reduced mode ([O], fresh context, authored neither text; internal tier) and returned one finding — the draft bound what the test asserts about `hitophsum_qualtrics.qsf` into the criterion; it had one clear answer and was fixed to the plain package fact before writing.
+- 2026-09-01: amendment return: AC3 — "for every row of `hitop_artifacts` whose `format` is `qualtrics` or `redcap` and for whose file this package exports a generator — the domain enumerated from the manifest by that same generator lookup, which today excludes only `hitophsum_qualtrics.qsf`" — executing the review's return of the same round, at the mini gate (Jeff, narrow both); the Scope In clause narrowed to match, no code or test change.
+- 2026-09-01: amendment applied, `devtools::test()` clean (FAIL 0 | WARN 0 | SKIP 7 | PASS 16423); status back to review for AC3's re-verification.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
