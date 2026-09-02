@@ -91,7 +91,7 @@ gate; the same class carries both sentences.
       `test-label_scales.R` for SR (wider spelling) and BR. ≤5 columns per
       probe, asserting the class and every named column. Run each against the
       current `R/` and record it red.
-- [ ] T3: Move `warn_unpadded_items()` ahead of the no-match early return in
+- [x] T3: Move `warn_unpadded_items()` ahead of the no-match early return in
       `R/label_pid5.R:83`, `R/label_hitopsr.R:45` and `R/label_hitopbr.R:46` so
       both warnings fire. T2 green; the existing no-match assertions
       (`test-label_pid5.R:185`, `test-label_scales.R:206,220`) still pass. Sweep
@@ -133,6 +133,7 @@ gate; the same class carries both sentences.
 - 2026-09-02: T1 baseline at the branch point (6f75befc's parent): `devtools::test()` FAIL 0 / WARN 0 / SKIP 9 / PASS 17043; `devtools::check()` Status OK, 0 errors / 0 warnings / 0 notes.
 - 2026-09-02: implementation gate chose reporting a column that is both mis-padded and out of range under out-of-range alone over the padding sentence or both, because the padding hint would otherwise name a column the form does not carry either; and chose the no-match warning ahead of the padding report, matching the order a partly-matching frame already reads in.
 - 2026-09-02: T2 added five all-mis-padded probes (`label_pid5()` FULL/SF/BF, `label_hitopsr()` at `hsr_0001`, `label_hitopbr()` at `hbr_1`) plus the `collect_warnings()`/`warning_text()` test helpers; all five red against the current `R/`, each raising 1 warning where 2 are expected.
+- 2026-09-02: T3 ran the report after the no-match warning instead of behind an early return in all three helpers; the five T2 probes green, and the full suite FAIL 0 / WARN 0 / SKIP 9 / PASS 17088 with no other test newly raising a warning.
 - 2026-09-02: criteria audit ran in full mode ([O] fresh reader, user-facing
   tier); it returned findings on AC1 (unsatisfiable — cli truncates lists past
   five, and `hsr_1`..`hsr_405` does not reach the no-match path), AC2 (no class

@@ -84,12 +84,14 @@ label_pid5 <- function(
       cli::cli_warn(
         "No columns matched the expected item names with prefix {.str {prefix}}."
       )
-      return(data)
+    } else {
+      for (i in matched_idx) {
+        attr(data[[i]], "label") <- form$Text[locs[i]]
+      }
     }
-
-    for (i in matched_idx) {
-      attr(data[[i]], "label") <- form$Text[locs[i]]
-    }
+    ## The report runs whether or not anything matched, and after the no-match
+    ## warning: a frame whose item columns are ALL mis-padded is exactly the
+    ## case worth naming, and it is the one an early return used to swallow.
     warn_unpadded_items(
       unpadded_item_cols(data_cols, prefix, expected_names),
       width = nchar(as.character(max_n)),
