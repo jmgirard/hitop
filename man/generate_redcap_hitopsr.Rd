@@ -33,7 +33,9 @@ to the items of the chosen scales, keeping their original HiTOP-SR item
 numbers. This is deliberately unlike \code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}}, whose
 module forms are numbered \code{1} to \code{n}: here an item number names a
 collected data column, so renumbering would rename variables in
-dictionaries already in the field. (default = \code{NULL})}
+dictionaries already in the field. The zero-padding is the full
+instrument's for the same reason: item 4 is \code{hsr_004} in a module
+dictionary as in the complete one, never \code{hsr_04}. (default = \code{NULL})}
 
 \item{descriptor}{An optional path to write a module descriptor to, beside
 the instrument file. The saved file records which scales the form covers

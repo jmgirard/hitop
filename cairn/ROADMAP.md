@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M079 | The online exports pad item numbers to the instrument's width, not to the export's own | planned | — | normal | milestones/M079-export-padding-width.md |
+| M079 | The online exports pad item numbers to the instrument's width, not to the export's own | in-progress | — | normal | milestones/M079-export-padding-width.md |
 | M078 | The per-scale tables the package ships or returns join on one column shape | done | — | normal | milestones/archive/M078-column-shape.md |
 | M077 | The shipped HiTOP datasets, `rename_hitopsr_items()` and the `label_*()` family name item columns as the REDCap export does | done | — | normal | milestones/archive/M077-item-column-names.md |
 | M076 | The builder page's boot path is bounded end to end and watched by a headless smoke test in CI | done | — | normal | milestones/archive/M076-builder-smoke-ci.md |

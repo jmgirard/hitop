@@ -4,12 +4,12 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M079: The online exports pad item numbers to the instrument's width, not to the export's own
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP2, GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m079-export-padding-width`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -78,27 +78,27 @@ item-column naming → its own candidate row.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: Give `build_qualtrics_txt()` (`R/generate_qualtrics.R:252`) and
+- [x] T1: Give `build_qualtrics_txt()` (`R/generate_qualtrics.R:252`) and
       `build_redcap_zip()` (`R/generate_redcap.R:260`) a required instrument-width
       argument; build the Qualtrics ids through `item_names()` instead of the
       inline `nchar(as.character(max(items[[1]])))` at `R/generate_qualtrics.R:287`;
       pass the width from all ten wrappers, read from the instrument's own item
       table (`max(hitopsr_items$HSR)`, `max(hitopbr_items$HBR)`, the PID-5
       version columns).
-- [ ] T2: Test AC1 and AC2 by direct call on both builders with a synthetic
+- [x] T2: Test AC1 and AC2 by direct call on both builders with a synthetic
       items frame. Prove the AC1 test discriminates: revert each builder to
       `max(items[[1]])`, record the red run in the work log, restore.
-- [ ] T3: End-to-end smoke — a multi-scale HiTOP-SR module through
+- [x] T3: End-to-end smoke — a multi-scale HiTOP-SR module through
       `generate_qualtrics_hitopsr()` and `generate_redcap_hitopsr()` names its
       items exactly `item_names(prefix, <the module's numbers>, max_n =
       max(hitopsr_items$HSR))`.
-- [ ] T4: Test AC3 — iterate the `qualtrics`/`redcap` rows of
+- [x] T4: Test AC3 — iterate the `qualtrics`/`redcap` rows of
       `hitop_artifacts`, rebuild each with its generator's defaults into a temp
       file, and compare item variable names against the committed
       `inst/extdata/` file. Parse inside the REDCap container (zip builds are
       not byte-deterministic) and read the expected names off the committed
       artifact, never off the fresh build.
-- [ ] T5: Correct the padding comments (`R/util.R:583-586` says the width is
+- [x] T5: Correct the padding comments (`R/util.R:583-586` says the width is
       "the export's for the generators") and both builders' comments; add to
       `generate_qualtrics_hitopsr()` and `generate_redcap_hitopsr()` help that a
       module export keeps the full instrument's item-name width; `document()`.
@@ -111,6 +111,15 @@ item-column naming → its own candidate row.
 - 2026-09-01: plan gate chose an instrument-width argument on the two builders over deriving the width inside `apply_module()` because the five PID-5 wrappers of each family never call `apply_module()` and would keep a second width source; falsified by a wrapper family that cannot name its instrument's item table.
 - 2026-09-01: plan gate chose comparing rebuilt exports' item names over comparing whole files because the committed artifacts carry build stamps unrelated to naming; falsified by a naming drift that leaves the item names equal while changing the rest of the file.
 - 2026-09-01: plan gate chose fixing the latent defect over closing or narrowing the candidate row (Jeff, at the gate); falsified by the fix proving larger than the ten call sites and three tests scoped here.
+- 2026-09-01: implement gate chose passing the instrument's largest item number over passing a digit count, because `item_names()` already derives the width from a largest number and a count would be recomputed in each of the ten wrappers; falsified by a caller that knows its width in digits but not its largest item number.
+- 2026-09-01: implement gate chose `rlang::check_required()` over R's own missing-argument error for AC2, because it fires before any build work and names the argument in an assertable message; falsified by a caller relying on lazily-supplied `max_n`.
+- 2026-09-01: implement gate chose covering all eleven generator-backed manifest exports in the AC3 rebuild test over covering only the nine numbered ones, pinning `hitophsum_qualtrics.qsf` by name as the sole file this package does not build; falsified by that .qsf gaining a generator.
+- 2026-09-01: T1 done - both builders take a required `max_n`, the Qualtrics ids now come from `item_names()` rather than an inline `sprintf` format, and all ten wrappers pass their instrument's own table maximum (405, 45, 220, 100, 25).
+- 2026-09-01: T2 done - AC1/AC2 tested by direct call on both builders with HiTOP-SR items 7 and 45. Discrimination proved: with each builder reverted to `max(items[[1]])` the two AC1 tests went red as `HSR_07`/`hsr_07` against the expected `HSR_007`/`hsr_007`, the other 36 assertions staying green; restored.
+- 2026-09-01: T3 done - the three narrowest HiTOP-SR scales built through both online generators name items at the instrument's width; recorded in the test that this is a pass-through smoke check, not a discriminator, since the narrowest buildable module is still three digits.
+- 2026-09-01: T4 done - the AC3 test enumerates the manifest's qualtrics/redcap files, derives each generator from the file name, asserts the one file without a generator is `hitophsum_qualtrics.qsf`, and compares eleven fresh default builds against the committed artifacts, parsing inside the REDCap zips. Proved able to fail: multiplying the HiTOP-BR Qualtrics width by ten turned it red naming `hitopbr_qualtrics.txt`; restored.
+- 2026-09-01: T5 done - the `item_names()` comment no longer says the generators pad to the export's own width, both builders' padding comments state the instrument-width rule, and the two HiTOP-SR online generators' `module` help says item 4 stays `HSR_004`/`hsr_004`; `document()` rewrote those two .Rd files and a second run added nothing.
+- 2026-09-01: `devtools::test()` clean (7 pre-existing skips: three merge-base guards, three keying-diff guards, OQ-1).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

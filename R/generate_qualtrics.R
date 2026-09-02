@@ -32,6 +32,7 @@ generate_qualtrics_hitopbr <- function(
 ) {
   build_qualtrics_txt(
     items = hitopbr_items,
+    max_n = max(hitopbr_items$HBR),
     instructions = hitopbr_instructions,
     file = file,
     block_name = block_name,
@@ -63,7 +64,9 @@ generate_qualtrics_hitopbr <- function(
 #'   This is deliberately unlike [generate_docx_hitopsr()], whose module forms
 #'   are numbered `1` to `n`: here an item number names a collected data
 #'   column, so renumbering would rename variables in dictionaries already in
-#'   the field. (default = `NULL`)
+#'   the field. The zero-padding is the full instrument's for the same reason:
+#'   item 4 is `HSR_004` in a module file as in the complete one, never
+#'   `HSR_04`. (default = `NULL`)
 #' @param descriptor An optional path to write a module descriptor to, beside
 #'   the instrument file. The saved file records which scales the form covers
 #'   and which instrument items they draw on, so [read_module()] hands the
@@ -130,6 +133,7 @@ generate_qualtrics_hitopsr <- function(
 
   out <- build_qualtrics_txt(
     items = reduced$items,
+    max_n = max(hitopsr_items$HSR),
     instructions = hitopsr_instructions,
     file = file,
     block_name = block_name,
@@ -177,6 +181,7 @@ generate_qualtrics_pid5 <- function(
 
   build_qualtrics_txt(
     items = items,
+    max_n = max(pid_items$FULL, na.rm = TRUE),
     instructions = pid_instructions,
     file = file,
     block_name = block_name,
@@ -208,6 +213,7 @@ generate_qualtrics_pid5sf <- function(
 
   build_qualtrics_txt(
     items = items,
+    max_n = max(pid_items$SF, na.rm = TRUE),
     instructions = pid_instructions,
     file = file,
     block_name = block_name,
@@ -239,6 +245,7 @@ generate_qualtrics_pid5bf <- function(
 
   build_qualtrics_txt(
     items = items,
+    max_n = max(pid_items$BF, na.rm = TRUE),
     instructions = pid_instructions,
     file = file,
     block_name = block_name,
@@ -251,6 +258,7 @@ generate_qualtrics_pid5bf <- function(
 # Internal Helper: Build the Qualtrics text file
 build_qualtrics_txt <- function(
   items,
+  max_n,
   instructions,
   file,
   block_name,
@@ -267,6 +275,12 @@ build_qualtrics_txt <- function(
   # `block_name` allows NULL because the block-line branch below already treats
   # NULL and "" alike as "write no block line"; guarding it as a plain string
   # would turn a call that works today into an error.
+  # `max_n` is the instrument's largest item number, not this export's: a
+  # module export keeps the full instrument's item-name width, so it has no
+  # default to fall back on and every wrapper must state it.
+  rlang::check_required(max_n, call = call)
+  validate_count(max_n, arg = "max_n", min = 1, call = call)
+
   validate_string(block_name, arg = "block_name", allow_null = TRUE, call = call)
   validate_string(id_prefix, arg = "id_prefix", call = call)
   validate_flag(include_instructions, arg = "include_instructions", call = call)
@@ -280,12 +294,12 @@ build_qualtrics_txt <- function(
     out <- c(out, paste0("[[Block:", block_name, "]]"), "")
   }
 
-  # Determine padding width automatically for question IDs. The width comes
-  # from the largest item NUMBER, not the row count: a module keeps original
-  # numbering, so its row count under-pads (item 7 as `_07` beside `_312`).
-  # For a full instrument the two agree, so existing output is unchanged.
-  max_w <- nchar(as.character(max(items[[1]])))
-  fmt <- sprintf("[[ID:%s_%%0%dd]]", id_prefix, max_w)
+  # Question IDs, padded to the width of the INSTRUMENT's largest item number
+  # (`max_n`), not of the items this call exports: a module keeps its original
+  # numbering, so padding to the exported items would write item 7 as `_07`
+  # where the full instrument writes `_007`. For a full-instrument export the
+  # two agree, so existing output is unchanged.
+  question_ids <- item_names(paste0(id_prefix, "_"), items[[1]], max_n = max_n)
 
   # 3. Add the starting instructions as a Descriptive Block (DB)
   if (include_instructions) {
@@ -310,12 +324,11 @@ build_qualtrics_txt <- function(
 
   # 5. Loop through the items dataframe and append each question
   for (i in seq_len(nrow(items))) {
-    item_num <- items[[i, 1]]
     item_text <- items$Text[i]
 
     q_block <- c(
       "[[Question:MC:SingleAnswer]]",
-      sprintf(fmt, item_num),
+      paste0("[[ID:", question_ids[i], "]]"),
       item_text,
       choices_block,
       ""
