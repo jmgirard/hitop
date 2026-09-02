@@ -122,7 +122,9 @@ to the items of the chosen scales, keeping their original HiTOP-SR item
 numbers. This is deliberately unlike <code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code>, whose
 module forms are numbered <code>1</code> to <code>n</code>: here an item number names a
 collected data column, so renumbering would rename variables in
-dictionaries already in the field. (default = <code>NULL</code>)</p></dd>
+dictionaries already in the field. The zero-padding is the full
+instrument's for the same reason: item 4 is <code>hsr_004</code> in a module
+dictionary as in the complete one, never <code>hsr_04</code>. (default = <code>NULL</code>)</p></dd>
 
 
 <dt id="arg-descriptor">descriptor<a class="anchor" aria-label="anchor" href="#arg-descriptor"></a></dt>
@@ -161,14 +163,14 @@ Supplying both <code>module</code> and <code>subset</code> is an error. (default
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Write a HiTOP-SR REDCap instrument ZIP to a temporary location</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitopsr</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpTNndu9/file1d763a9f315d.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpEPcO51/file1cd51eb5015b.zip</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A two-scale module, original numbering preserved (unlike the Word form)</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitopsr</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpTNndu9/file1d76357b090f.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmpEPcO51/file1cd54657d96e.zip</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

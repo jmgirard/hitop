@@ -56,7 +56,9 @@ generate_qualtrics_hitopsr(
   [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
   whose module forms are numbered `1` to `n`: here an item number names
   a collected data column, so renumbering would rename variables in
-  dictionaries already in the field. (default = `NULL`)
+  dictionaries already in the field. The zero-padding is the full
+  instrument's for the same reason: item 4 is `HSR_004` in a module file
+  as in the complete one, never `HSR_04`. (default = `NULL`)
 
 - descriptor:
 
@@ -98,12 +100,12 @@ for the descriptor file.
 ``` r
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpTNndu9/file1d7642cdbefd.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpEPcO51/file1cd57ca8e4d7.txt
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_qualtrics_hitopsr(
   file = tempfile(fileext = ".txt"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpTNndu9/file1d766c33b50c.txt
+#> ✔ Qualtrics import file successfully created at /tmp/RtmpEPcO51/file1cd55a0c352.txt
 ```

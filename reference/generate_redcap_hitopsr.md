@@ -51,7 +51,9 @@ generate_redcap_hitopsr(
   [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md),
   whose module forms are numbered `1` to `n`: here an item number names
   a collected data column, so renumbering would rename variables in
-  dictionaries already in the field. (default = `NULL`)
+  dictionaries already in the field. The zero-padding is the full
+  instrument's for the same reason: item 4 is `hsr_004` in a module
+  dictionary as in the complete one, never `hsr_04`. (default = `NULL`)
 
 - descriptor:
 
@@ -96,12 +98,12 @@ for the descriptor file.
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmpTNndu9/file1d763a9f315d.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpEPcO51/file1cd51eb5015b.zip
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Instrument successfully zipped to /tmp/RtmpTNndu9/file1d76357b090f.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpEPcO51/file1cd54657d96e.zip
 ```
