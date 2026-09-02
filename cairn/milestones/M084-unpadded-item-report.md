@@ -85,9 +85,9 @@ gate; the same class carries both sentences.
 
 ## Tasks
 
-- [ ] T1: Record the pre-work `devtools::check()` and `devtools::test()` results
+- [x] T1: Record the pre-work `devtools::check()` and `devtools::test()` results
       as one work-log line — the baseline AC7 measures against.
-- [ ] T2: Add the all-mispadded probes: `test-label_pid5.R` for FULL, SF and BF;
+- [x] T2: Add the all-mispadded probes: `test-label_pid5.R` for FULL, SF and BF;
       `test-label_scales.R` for SR (wider spelling) and BR. ≤5 columns per
       probe, asserting the class and every named column. Run each against the
       current `R/` and record it red.
@@ -130,6 +130,9 @@ gate; the same class carries both sentences.
 - 2026-09-02: plan gate chose a baseline-relative check bar over `check()`
   0/0/0 because a pre-existing note would otherwise block work that did not
   cause it; falsified by the baseline hiding a note this milestone introduced.
+- 2026-09-02: T1 baseline at the branch point (6f75befc's parent): `devtools::test()` FAIL 0 / WARN 0 / SKIP 9 / PASS 17043; `devtools::check()` Status OK, 0 errors / 0 warnings / 0 notes.
+- 2026-09-02: implementation gate chose reporting a column that is both mis-padded and out of range under out-of-range alone over the padding sentence or both, because the padding hint would otherwise name a column the form does not carry either; and chose the no-match warning ahead of the padding report, matching the order a partly-matching frame already reads in.
+- 2026-09-02: T2 added five all-mis-padded probes (`label_pid5()` FULL/SF/BF, `label_hitopsr()` at `hsr_0001`, `label_hitopbr()` at `hbr_1`) plus the `collect_warnings()`/`warning_text()` test helpers; all five red against the current `R/`, each raising 1 warning where 2 are expected.
 - 2026-09-02: criteria audit ran in full mode ([O] fresh reader, user-facing
   tier); it returned findings on AC1 (unsatisfiable — cli truncates lists past
   five, and `hsr_1`..`hsr_405` does not reach the no-match path), AC2 (no class

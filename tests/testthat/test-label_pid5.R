@@ -205,3 +205,36 @@ test_that("label_pid5() matches `version` case-insensitively and validates its a
   expect_error(label_pid5(df, target = "items", version = "BF", prefix = 1))
   expect_error(label_pid5("not a data frame", target = "items", version = "BF"))
 })
+
+# ---- AC1: the padding report fires even when no column matched --------------
+
+test_that("label_pid5(target = 'items') reports mis-padded columns when nothing matched", {
+  # Five columns per form, each spelled at a width the form does not use, so
+  # `match()` finds nothing and the helper takes its no-match path. Five is the
+  # most cli lists before truncating, so every name stays readable.
+  probes <- list(
+    FULL = paste0("pid5_", 1:5),
+    SF = paste0("pid5sf_", 1:5),
+    BF = paste0("pid5bf_", 1:5)
+  )
+  for (version in names(probes)) {
+    cols <- probes[[version]]
+    df <- as.data.frame(matrix(0, nrow = 1, ncol = length(cols)))
+    names(df) <- cols
+
+    caught <- collect_warnings(
+      label_pid5(df, target = "items", version = version)
+    )
+    expect_length(caught$warnings, 2L)
+    if (length(caught$warnings) != 2L) next
+    expect_match(warning_text(caught, 1L), "No columns matched", info = version)
+    expect_s3_class(caught$warnings[[2]], "hitop_unpadded_items")
+
+    msg <- warning_text(caught, 2L)
+    for (nm in cols) {
+      expect_true(grepl(nm, msg, fixed = TRUE), info = paste(version, nm))
+    }
+    # Nothing matched, so nothing is labelled and the frame comes back as it went in.
+    expect_identical(caught$value, df, info = version)
+  }
+})

@@ -220,3 +220,39 @@ test_that("label_hitopbr() warns when prefixed columns carry unpadded item numbe
   expect_no_warning(label_hitopbr(sub))
   expect_warning(label_hitopbr(data.frame(a = 1)), "No columns matched")
 })
+
+# ---- AC1: the padding report fires even when no column matched --------------
+
+test_that("label_hitopsr() reports mis-padded columns when nothing matched", {
+  # A spelling WIDER than the instrument's three digits: `hsr_1`..`hsr_405`
+  # would still match items 100 and up, so it never reaches the no-match path.
+  cols <- sprintf("hsr_%04d", 1:5)
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = length(cols)))
+  names(df) <- cols
+
+  caught <- collect_warnings(label_hitopsr(df, target = "items"))
+  expect_length(caught$warnings, 2L)
+  if (length(caught$warnings) == 2L) {
+    expect_match(warning_text(caught, 1L), "No columns matched")
+    expect_s3_class(caught$warnings[[2]], "hitop_unpadded_items")
+    msg <- warning_text(caught, 2L)
+    for (nm in cols) expect_true(grepl(nm, msg, fixed = TRUE), info = nm)
+  }
+  expect_identical(caught$value, df)
+})
+
+test_that("label_hitopbr() reports mis-padded columns when nothing matched", {
+  cols <- paste0("hbr_", 1:5)
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = length(cols)))
+  names(df) <- cols
+
+  caught <- collect_warnings(label_hitopbr(df, target = "items"))
+  expect_length(caught$warnings, 2L)
+  if (length(caught$warnings) == 2L) {
+    expect_match(warning_text(caught, 1L), "No columns matched")
+    expect_s3_class(caught$warnings[[2]], "hitop_unpadded_items")
+    msg <- warning_text(caught, 2L)
+    for (nm in cols) expect_true(grepl(nm, msg, fixed = TRUE), info = nm)
+  }
+  expect_identical(caught$value, df)
+})

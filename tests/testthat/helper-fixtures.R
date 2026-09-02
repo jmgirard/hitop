@@ -247,3 +247,26 @@ hush_se <- function(expr) {
     hitop_deprecated_calc_se = function(w) invokeRestart("muffleWarning")
   )
 }
+
+# Every warning a call signals, in order, alongside the call's value. Needed
+# where one call now raises more than one warning and each must be named by
+# class: `expect_warning()` sees only the first, and `expect_no_warning(message
+# = )` reads `message` as a selector, so it passes on a warning it did not
+# select (M032).
+collect_warnings <- function(expr) {
+  found <- list()
+  value <- withCallingHandlers(
+    expr,
+    warning = function(w) {
+      found[[length(found) + 1L]] <<- w
+      invokeRestart("muffleWarning")
+    }
+  )
+  list(value = value, warnings = found)
+}
+
+# The plain-text message of the `i`th warning `collect_warnings()` caught, with
+# cli's styling removed so `grepl(fixed = TRUE)` can look for a column name.
+warning_text <- function(caught, i = 1L) {
+  cli::ansi_strip(conditionMessage(caught$warnings[[i]]))
+}
