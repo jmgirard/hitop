@@ -47,7 +47,8 @@
   `hitopsr_subscales` and `hitopbr_scales`, and the `items` element of what
   `hitop_module()` returns, are all stored as integers where they were doubles.
   No value moved and no exported file changed: only the type differs, so
-  arithmetic, subsetting and `==` behave as before. What changes is
+  subsetting, `==` and arithmetic on these numbers behave as before, integer
+  overflow being unreachable at these magnitudes. What changes is
   `identical()`, which distinguishes an integer from a double: a test written as
   `identical(hitopsr_scales$itemNumbers[["agoraphobia"]], c(1, 2, 3))` now fails
   and wants `c(1L, 2L, 3L)` (or `expect_equal()`, which ignores the

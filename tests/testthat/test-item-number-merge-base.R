@@ -71,11 +71,13 @@ retype_spec <- function(x, columns) {
 
 skip_without_double_base <- function(name, sha) {
   old <- merge_base_object(name, sha)
-  probe <- if (is.data.frame(old)) old else old[[1L]]
-  first <- item_number_columns[[name]][[1L]]
+  # The guard is the retype itself being a no-op, not a probe on one named
+  # column: four of these eight objects hold their item numbers only inside
+  # list-columns and nested frames, so a top-level probe reads NULL on them and
+  # never skips.
   testthat::skip_if(
-    is.integer(probe[[first]]),
-    paste0("the merge base already stores ", name, "$", first, " as integer")
+    identical(retype_item_numbers(old, item_number_columns[[name]]), old),
+    paste0("the merge base already stores ", name, "'s item numbers as integer")
   )
   old
 }
