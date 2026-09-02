@@ -158,6 +158,8 @@ gate; the same class carries both sentences.
 - 2026-09-02: resume: PR #91 read OPEN, `origin/main` unmoved at `05b3e485`, branch head already pushed; step 1 needed no merge and step 3's evidence stands. step-7 approval: PR #91 approved for merge (re-posed chip, Jeff choosing merge).
 - 2026-09-02: CI watch hit the harness ceiling with four of eight checks pending; the moved task was stopped and the session closed before the merge. Local `check()` on the final tree is 0/0/0 and the suite is green; PR #91 stays open with the approval recorded.
 
+- 2026-09-02: second CI watch also hit the harness ceiling; the moved task was stopped with `TaskStop`. Fresh state at that moment: `macos-latest (release)`, `test-coverage`, `pkgdown`, `line endings`, `ubuntu-latest` (devel and release) pass; `ubuntu-latest (oldrel-1)` and `windows-latest (release)` pending. No merge run; the marker was never written, so no approval is armed. PR #91 open with the step-7 approval recorded.
+
 ## Review
 
 Evidence gathered 2026-09-02 on `m084-unpadded-item-report` at `b8b1986e`, PR
@@ -293,7 +295,7 @@ After the gate fixes, at `321f0598`: `devtools::test()` FAIL 0 / WARN 0 / SKIP 9
 duration 10m 9s — still identical to the T1 baseline; `devtools::document()` no
 diff.
 
-### CI wait, 2026-09-02
+### CI wait, 2026-09-02 (two attempts)
 
 The foreground `gh pr checks 91 --watch --fail-fast` reached the harness
 ceiling and was moved to the background, then stopped with `TaskStop` — no
@@ -303,3 +305,9 @@ oldrel-1, release) and `windows-latest (release)` pending. The merge did not
 run; PR #91 is open, ready for review, with the step-7 approval recorded above.
 Resume re-derives the check and merge state from `gh pr checks` / `gh pr view`.
 
+Second attempt, after the resume re-approval, at `1e0ecac9`: the watch again
+reached the ceiling and was stopped with `TaskStop` — no watcher armed and no
+merge attempted. Six of eight checks pass (`macos-latest (release)`,
+`test-coverage`, `pkgdown`, `line endings`, `ubuntu-latest` devel and release);
+`ubuntu-latest (oldrel-1)` and `windows-latest (release)` were still pending.
+Resume re-derives the check and merge state from `gh pr checks` / `gh pr view`.
