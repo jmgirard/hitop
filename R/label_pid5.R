@@ -24,10 +24,11 @@
 #'   zero-padded to the width of the form's largest item number (`pid5_001` to
 #'   `pid5_220` for the full form, `pid5bf_01` to `pid5bf_25` for the brief
 #'   form). A column carrying the prefix and a number that is not one of those
-#'   expected names -- a number padded to some other width, or one outside the
-#'   form's range -- is not labelled, and a warning of class
-#'   `hitop_unpadded_items` names it. That warning is raised only when at least
-#'   one column did match; see the return value.
+#'   expected names is not labelled, and a warning of class
+#'   `hitop_unpadded_items` names it, in a sentence per kind: a number padded to
+#'   some other width is reported as not zero-padded to the form's width, and a
+#'   number outside the form's range is reported as out of range, whatever its
+#'   padding. That warning is raised whether or not any other column matched.
 #'   Scale columns are expected as the prefix followed by the scale's
 #'   `camelCase` name.
 #'
@@ -36,7 +37,8 @@
 #'   [validity_pid5()] writes and the `_se` columns
 #'   `score_pid5(calc_se = TRUE)` writes are not labelled. If no column matched
 #'   the expected names at all, `data` is returned unchanged and a warning says
-#'   so, in place of any other report.
+#'   so; the `hitop_unpadded_items` report still names every prefixed item
+#'   column it found.
 #'
 #' @examples
 #' # Attach item text as a `label` attribute to the raw item columns
@@ -84,15 +86,19 @@ label_pid5 <- function(
       cli::cli_warn(
         "No columns matched the expected item names with prefix {.str {prefix}}."
       )
-      return(data)
+    } else {
+      for (i in matched_idx) {
+        attr(data[[i]], "label") <- form$Text[locs[i]]
+      }
     }
-
-    for (i in matched_idx) {
-      attr(data[[i]], "label") <- form$Text[locs[i]]
-    }
+    ## The report runs whether or not anything matched, and after the no-match
+    ## warning: a frame whose item columns are ALL mis-padded is exactly the
+    ## case worth naming, and it is the one an early return used to swallow.
     warn_unpadded_items(
-      unpadded_item_cols(data_cols, prefix, expected_names),
-      width = nchar(as.character(max_n)),
+      data_cols,
+      prefix = prefix,
+      expected = expected_names,
+      max_n = max_n,
       instrument = switch(
         version,
         "FULL" = "PID-5",

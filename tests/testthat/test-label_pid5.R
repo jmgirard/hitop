@@ -205,3 +205,134 @@ test_that("label_pid5() matches `version` case-insensitively and validates its a
   expect_error(label_pid5(df, target = "items", version = "BF", prefix = 1))
   expect_error(label_pid5("not a data frame", target = "items", version = "BF"))
 })
+
+# ---- AC1: the padding report fires even when no column matched --------------
+
+test_that("label_pid5(target = 'items') reports mis-padded columns when nothing matched", {
+  # Five columns per form, each spelled at a width the form does not use, so
+  # `match()` finds nothing and the helper takes its no-match path. Five is the
+  # most cli lists before truncating, so every name stays readable.
+  probes <- list(
+    FULL = paste0("pid5_", 1:5),
+    SF = paste0("pid5sf_", 1:5),
+    BF = paste0("pid5bf_", 1:5)
+  )
+  for (version in names(probes)) {
+    cols <- probes[[version]]
+    df <- frame_of_cols(cols)
+
+    caught <- collect_warnings(
+      label_pid5(df, target = "items", version = version)
+    )
+    expect_length(caught$warnings, 2L)
+    if (length(caught$warnings) != 2L) next
+    expect_match(warning_text(caught, 1L), "No columns matched", info = version)
+    expect_s3_class(caught$warnings[[2]], "hitop_unpadded_items")
+
+    msg <- warning_text(caught, 2L)
+    for (nm in cols) {
+      expect_true(grepl(nm, msg, fixed = TRUE), info = paste(version, nm))
+    }
+    # Nothing matched, so nothing is labelled and the frame comes back as it went in.
+    expect_identical(caught$value, df, info = version)
+  }
+})
+
+# ---- AC2/AC3: two kinds of unlabelled column, two sentences -----------------
+
+# A number no item of the form carries, at the form's own padding width.
+out_of_range_probe <- c(FULL = "pid5_221", SF = "pid5sf_101", BF = "pid5bf_26")
+
+test_that("label_pid5(target = 'items') sorts mis-padded and out-of-range columns into their own sentences", {
+  for (version in c("FULL", "SF", "BF")) {
+    stem <- item_stem[[version]]
+    width <- item_width[[version]]
+    keep <- sprintf(paste0(stem, "%0", width, "d"), 1L)   # a correctly padded neighbour
+    mis <- paste0(stem, "3")                              # item 3, one digit wide
+    oor <- out_of_range_probe[[version]]
+    hint <- sprintf(paste0(stem, "%0", width, "d"), 3L)
+
+    caught <- collect_warnings(
+      label_pid5(frame_of_cols(c(keep, mis, oor)), target = "items", version = version)
+    )
+    expect_length(caught$warnings, 1L)
+    if (length(caught$warnings) != 1L) next
+    expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
+
+    msg <- squashed_warning(caught)
+    mis_head <- sentence_pos(msg, "not zero-padded to")
+    oor_head <- sentence_pos(msg, "outside the range 1 to")
+    expect_true(mis_head > 0, info = version)
+    expect_true(oor_head > mis_head, info = version)
+    # Each name lands in its own sentence: the mis-padded one before the
+    # out-of-range sentence opens, the out-of-range one after.
+    expect_true(sentence_pos(msg, mis) > mis_head && sentence_pos(msg, mis) < oor_head, info = version)
+    expect_true(sentence_pos(msg, oor) > oor_head, info = version)
+    # The hint names a column the form really carries, never the out-of-range one.
+    expect_true(grepl(paste0("expected as `", hint, "`"), msg, fixed = TRUE), info = version)
+    expect_false(grepl(paste0("expected as `", oor, "`"), msg, fixed = TRUE), info = version)
+    # The neighbour that is spelled correctly is still labelled.
+    expect_false(is.null(attr(caught$value[[keep]], "label")), info = version)
+  }
+})
+
+test_that("label_pid5(target = 'items') calls a wrongly padded out-of-range number out of range", {
+  # `pid5_0221` is both: four digits where the form uses three, and past item
+  # 220. Reported as out of range, since a padding hint would name `pid5_221`,
+  # which the form does not carry either.
+  caught <- collect_warnings(
+    label_pid5(frame_of_cols(c("pid5_001", "pid5_0221")), target = "items", version = "FULL")
+  )
+  expect_length(caught$warnings, 1L)
+  msg <- squashed_warning(caught)
+  expect_true(grepl("outside the range 1 to 220", msg, fixed = TRUE))
+  expect_false(grepl("not zero-padded", msg, fixed = TRUE))
+  expect_false(grepl("expected as", msg, fixed = TRUE))
+})
+
+test_that("label_pid5(target = 'items') pluralizes each sentence by its own column count", {
+  # Width 3 (FULL) and width 2 (BF) -- the two the PID-5 helpers pass -- each at
+  # one and at two reported columns per sentence.
+  cases <- list(
+    list(version = "FULL", stem = "pid5_", keep = "pid5_001", instrument = "PID-5",
+         width = 3L, mis = c("pid5_3", "pid5_4"), oor = c("pid5_221", "pid5_222")),
+    list(version = "BF", stem = "pid5bf_", keep = "pid5bf_01", instrument = "PID-5-BF",
+         width = 2L, mis = c("pid5bf_3", "pid5bf_4"), oor = c("pid5bf_26", "pid5bf_27"))
+  )
+  for (case in cases) {
+    for (n in 1:2) {
+      caught <- collect_warnings(label_pid5(
+        frame_of_cols(c(case$keep, case$mis[seq_len(n)], case$oor[seq_len(n)])),
+        target = "items",
+        version = case$version
+      ))
+      msg <- squashed_warning(caught)
+      subject <- if (n == 1L) "1 column is" else "2 columns are"
+      tail_clause <- if (n == 1L) "so it was not labelled" else "so they were not labelled"
+      number <- if (n == 1L) "its number is" else "their numbers are"
+      expect_true(
+        grepl(
+          paste0(subject, " named like ", case$instrument, " items but not zero-padded to ",
+                 case$width, " digits, ", tail_clause),
+          msg, fixed = TRUE
+        ),
+        info = paste(case$version, n, "mis-padded")
+      )
+      expect_true(
+        grepl(
+          paste0(subject, " named like ", case$instrument, " items but ", number,
+                 " outside the range 1 to "),
+          msg, fixed = TRUE
+        ),
+        info = paste(case$version, n, "out of range")
+      )
+      # The out-of-range sentence's closing clause, read from that sentence
+      # alone rather than from anywhere in the two-sentence message.
+      oor_sentence <- sub("^.*outside the range", "", msg)
+      expect_true(
+        grepl(tail_clause, oor_sentence, fixed = TRUE),
+        info = paste(case$version, n, "out-of-range tail")
+      )
+    }
+  }
+})

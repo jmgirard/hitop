@@ -247,3 +247,48 @@ hush_se <- function(expr) {
     hitop_deprecated_calc_se = function(w) invokeRestart("muffleWarning")
   )
 }
+
+# Every warning a call signals, in order, alongside the call's value. Needed
+# where one call now raises more than one warning and each must be named by
+# class: `expect_warning()` sees only the first, and `expect_no_warning(message
+# = )` reads `message` as a selector, so it passes on a warning it did not
+# select (M032).
+collect_warnings <- function(expr) {
+  found <- list()
+  value <- withCallingHandlers(
+    expr,
+    warning = function(w) {
+      found[[length(found) + 1L]] <<- w
+      invokeRestart("muffleWarning")
+    }
+  )
+  list(value = value, warnings = found)
+}
+
+# The plain-text message of the `i`th warning `collect_warnings()` caught, with
+# cli's styling removed so `grepl(fixed = TRUE)` can look for a column name.
+warning_text <- function(caught, i = 1L) {
+  cli::ansi_strip(conditionMessage(caught$warnings[[i]]))
+}
+
+# A one-row numeric frame carrying exactly the named columns, for probing which
+# column names a label helper recognizes.
+frame_of_cols <- function(cols) {
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = length(cols)))
+  names(df) <- cols
+  df
+}
+
+# One caught warning with cli's styling and line wrapping flattened, so a whole
+# sentence can be looked for as a single string.
+squashed_warning <- function(caught, i = 1L) {
+  gsub("[[:space:]]+", " ", warning_text(caught, i))
+}
+
+# Where `needle` first appears in `haystack`, as a character position, or -1.
+# Used to place a reported column name inside one sentence of a two-sentence
+# report rather than merely somewhere in the message. Named for that job: a
+# helper file every test sees is no place for a name as broad as `at()`.
+sentence_pos <- function(haystack, needle) {
+  regexpr(needle, haystack, fixed = TRUE)[[1]]
+}

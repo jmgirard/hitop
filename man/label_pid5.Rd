@@ -36,10 +36,11 @@ Item columns are expected as the prefix followed by the item number
 zero-padded to the width of the form's largest item number (\code{pid5_001} to
 \code{pid5_220} for the full form, \code{pid5bf_01} to \code{pid5bf_25} for the brief
 form). A column carrying the prefix and a number that is not one of those
-expected names -- a number padded to some other width, or one outside the
-form's range -- is not labelled, and a warning of class
-\code{hitop_unpadded_items} names it. That warning is raised only when at least
-one column did match; see the return value.
+expected names is not labelled, and a warning of class
+\code{hitop_unpadded_items} names it, in a sentence per kind: a number padded to
+some other width is reported as not zero-padded to the form's width, and a
+number outside the form's range is reported as out of range, whatever its
+padding. That warning is raised whether or not any other column matched.
 Scale columns are expected as the prefix followed by the scale's
 \code{camelCase} name.}
 }
@@ -49,7 +50,8 @@ recognize keep whatever attributes they had. The validity-scale columns
 \code{\link[=validity_pid5]{validity_pid5()}} writes and the \verb{_se} columns
 \code{score_pid5(calc_se = TRUE)} writes are not labelled. If no column matched
 the expected names at all, \code{data} is returned unchanged and a warning says
-so, in place of any other report.
+so; the \code{hitop_unpadded_items} report still names every prefixed item
+column it found.
 }
 \description{
 Add literal item text or clean scale names as attributes to data frame

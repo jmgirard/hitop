@@ -220,3 +220,163 @@ test_that("label_hitopbr() warns when prefixed columns carry unpadded item numbe
   expect_no_warning(label_hitopbr(sub))
   expect_warning(label_hitopbr(data.frame(a = 1)), "No columns matched")
 })
+
+# ---- AC1: the padding report fires even when no column matched --------------
+
+test_that("label_hitopsr() reports mis-padded columns when nothing matched", {
+  # A spelling WIDER than the instrument's three digits: `hsr_1`..`hsr_405`
+  # would still match items 100 and up, so it never reaches the no-match path.
+  cols <- sprintf("hsr_%04d", 1:5)
+  df <- frame_of_cols(cols)
+
+  caught <- collect_warnings(label_hitopsr(df, target = "items"))
+  expect_length(caught$warnings, 2L)
+  if (length(caught$warnings) == 2L) {
+    expect_match(warning_text(caught, 1L), "No columns matched")
+    expect_s3_class(caught$warnings[[2]], "hitop_unpadded_items")
+    msg <- warning_text(caught, 2L)
+    for (nm in cols) expect_true(grepl(nm, msg, fixed = TRUE), info = nm)
+  }
+  expect_identical(caught$value, df)
+})
+
+test_that("label_hitopbr() reports mis-padded columns when nothing matched", {
+  cols <- paste0("hbr_", 1:5)
+  df <- frame_of_cols(cols)
+
+  caught <- collect_warnings(label_hitopbr(df, target = "items"))
+  expect_length(caught$warnings, 2L)
+  if (length(caught$warnings) == 2L) {
+    expect_match(warning_text(caught, 1L), "No columns matched")
+    expect_s3_class(caught$warnings[[2]], "hitop_unpadded_items")
+    msg <- warning_text(caught, 2L)
+    for (nm in cols) expect_true(grepl(nm, msg, fixed = TRUE), info = nm)
+  }
+  expect_identical(caught$value, df)
+})
+
+# ---- AC2/AC3: two kinds of unlabelled column, two sentences -----------------
+
+test_that("label_hitopsr() sorts mis-padded and out-of-range columns into their own sentences", {
+  caught <- collect_warnings(
+    label_hitopsr(frame_of_cols(c("hsr_001", "hsr_3", "hsr_406")), target = "items")
+  )
+  expect_length(caught$warnings, 1L)
+  expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
+
+  msg <- squashed_warning(caught)
+  mis_head <- sentence_pos(msg, "not zero-padded to")
+  oor_head <- sentence_pos(msg, "outside the range 1 to")
+  expect_true(mis_head > 0)
+  expect_true(oor_head > mis_head)
+  expect_true(sentence_pos(msg, "hsr_3") > mis_head && sentence_pos(msg, "hsr_3") < oor_head)
+  expect_true(sentence_pos(msg, "hsr_406") > oor_head)
+  expect_true(grepl("expected as `hsr_003`", msg, fixed = TRUE))
+  expect_false(grepl("expected as `hsr_406`", msg, fixed = TRUE))
+  expect_true(grepl("outside the range 1 to 405", msg, fixed = TRUE))
+  expect_false(is.null(attr(caught$value$hsr_001, "label")))
+})
+
+test_that("label_hitopbr() sorts mis-padded and out-of-range columns into their own sentences", {
+  caught <- collect_warnings(
+    label_hitopbr(frame_of_cols(c("hbr_01", "hbr_3", "hbr_46")), target = "items")
+  )
+  expect_length(caught$warnings, 1L)
+  expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
+
+  msg <- squashed_warning(caught)
+  mis_head <- sentence_pos(msg, "not zero-padded to")
+  oor_head <- sentence_pos(msg, "outside the range 1 to")
+  expect_true(mis_head > 0)
+  expect_true(oor_head > mis_head)
+  expect_true(sentence_pos(msg, "hbr_3") > mis_head && sentence_pos(msg, "hbr_3") < oor_head)
+  expect_true(sentence_pos(msg, "hbr_46") > oor_head)
+  expect_true(grepl("expected as `hbr_03`", msg, fixed = TRUE))
+  expect_false(grepl("expected as `hbr_46`", msg, fixed = TRUE))
+  expect_true(grepl("outside the range 1 to 45", msg, fixed = TRUE))
+  expect_false(is.null(attr(caught$value$hbr_01, "label")))
+})
+
+test_that("the label helpers report an out-of-range column on a frame carrying nothing else wrong", {
+  # No mis-padded column at all, so the report is the out-of-range sentence
+  # alone -- and carries no "expected as" hint to point anywhere.
+  for (case in list(
+    list(fn = function(d) label_hitopsr(d, target = "items"),
+         cols = c("hsr_001", "hsr_406"), range = "1 to 405"),
+    list(fn = function(d) label_hitopbr(d, target = "items"),
+         cols = c("hbr_01", "hbr_46"), range = "1 to 45")
+  )) {
+    caught <- collect_warnings(case$fn(frame_of_cols(case$cols)))
+    expect_length(caught$warnings, 1L)
+    msg <- squashed_warning(caught)
+    expect_true(grepl(paste0("outside the range ", case$range), msg, fixed = TRUE),
+      info = case$cols[2])
+    expect_false(grepl("not zero-padded", msg, fixed = TRUE), info = case$cols[2])
+    expect_false(grepl("expected as", msg, fixed = TRUE), info = case$cols[2])
+  }
+})
+
+# ---- AC5: frames spelled correctly raise no padding report ------------------
+
+test_that("the label helpers stay silent on correctly padded frames", {
+  # `withCallingHandlers` rather than `expect_no_warning(message = )`, which
+  # reads `message` as a selector and passes on a warning it did not select
+  # (M032). Every warning is caught, and the class is asserted absent.
+  no_padding_report <- function(expr, info) {
+    caught <- collect_warnings(expr)
+    classed <- vapply(
+      caught$warnings,
+      function(w) inherits(w, "hitop_unpadded_items"),
+      logical(1)
+    )
+    expect_false(any(classed), info = info)
+    caught
+  }
+
+  # The shipped item frames, whose columns are padded to each instrument's
+  # width. Each is also shown to label something, so the silence above is the
+  # helper finding nothing to report rather than the frame carrying no item
+  # column the helper ever looked at.
+  shipped <- list(
+    sim_pid5 = function() label_pid5(sim_pid5, target = "items", version = "FULL"),
+    sim_pid5sf = function() label_pid5(sim_pid5sf, target = "items", version = "SF"),
+    sim_pid5bf = function() label_pid5(sim_pid5bf, target = "items", version = "BF"),
+    ku_pid5sf = function() label_pid5(ku_pid5sf, target = "items", version = "SF"),
+    sim_hitopsr = function() label_hitopsr(sim_hitopsr, target = "items"),
+    sim_hitopbr = function() label_hitopbr(sim_hitopbr, target = "items"),
+    ku_hitopsr = function() label_hitopsr(ku_hitopsr, target = "items"),
+    ku_hitopbr = function() label_hitopbr(ku_hitopbr, target = "items")
+  )
+  for (nm in names(shipped)) {
+    caught <- no_padding_report(shipped[[nm]](), nm)
+    labelled <- sum(!vapply(
+      caught$value, function(x) is.null(attr(x, "label")), logical(1)
+    ))
+    expect_true(labelled > 0, info = nm)
+  }
+
+  # A module subset -- fewer items than the instrument, each still padded to the
+  # instrument's width -- is not a padding problem.
+  no_padding_report(
+    label_hitopsr(ku_hitopsr[, c("participant", "hsr_001", "hsr_002")], target = "items"),
+    "hitopsr module subset"
+  )
+  no_padding_report(
+    label_hitopbr(ku_hitopbr[, c("participant", "hbr_01", "hbr_02")], target = "items"),
+    "hitopbr module subset"
+  )
+
+  # A frame carrying no prefixed column at all raises the no-match warning and
+  # nothing else -- the padding report has nothing to name.
+  for (case in list(
+    list(fn = function(d) label_pid5(d, target = "items", version = "FULL"), label = "label_pid5"),
+    list(fn = function(d) label_hitopsr(d, target = "items"), label = "label_hitopsr"),
+    list(fn = function(d) label_hitopbr(d, target = "items"), label = "label_hitopbr")
+  )) {
+    caught <- no_padding_report(case$fn(data.frame(a = 1)), case$label)
+    expect_length(caught$warnings, 1L)
+    if (length(caught$warnings) == 1L) {
+      expect_match(warning_text(caught, 1L), "No columns matched", info = case$label)
+    }
+  }
+})

@@ -11,13 +11,20 @@
 #'   to three digits (`hsr_001` to `hsr_405` under the default, the pattern the
 #'   shipped datasets and the package's REDCap export use; the Qualtrics export
 #'   writes `HSR_001`, matched by `prefix = "HSR_"`). Columns that carry the
-#'   prefix and a number without that padding are not labelled, and a warning
-#'   of class `hitop_unpadded_items` names them; scale
-#'   columns as the prefix followed by the scale's `camelCase` name, which is
-#'   what [score_hitopsr()] writes under its own default `prefix`.
-#'   (default = `"hsr_"`)
+#'   prefix and a number that is not one of those expected names are not
+#'   labelled, and a warning of class `hitop_unpadded_items` names them, in a
+#'   sentence per kind: a number without that padding is reported as not
+#'   zero-padded to three digits, and a number outside 1 to 405 is reported as
+#'   out of range, whatever its padding. That warning is raised whether or not
+#'   any other column matched. Scale
+#'   columns are expected as the prefix followed by the scale's `camelCase`
+#'   name, which is what [score_hitopsr()] writes under its own default
+#'   `prefix`. (default = `"hsr_"`)
 #'
-#' @return A data frame with labeled columns.
+#' @return A data frame with labeled columns. If no column matched the expected
+#'   names at all, `data` is returned unchanged and a warning says so; the
+#'   `hitop_unpadded_items` report still names every prefixed item column it
+#'   found.
 #'
 #' @examples
 #' # Attach item text as a `label` attribute to the raw item columns
@@ -46,15 +53,20 @@ label_hitopsr <- function(
       cli::cli_warn(
         "No columns matched the expected item names with prefix {.str {prefix}}."
       )
-      return(data)
+    } else {
+      for (i in matched_idx) {
+        attr(data[[i]], "label") <- hitopsr_items$Text[locs[i]]
+      }
     }
-
-    for (i in matched_idx) {
-      attr(data[[i]], "label") <- hitopsr_items$Text[locs[i]]
-    }
+    ## The report runs whether or not anything matched, and after the no-match
+    ## warning: a frame whose item columns are ALL mis-padded is exactly the
+    ## case worth naming, and it is the one an early return used to swallow.
     warn_unpadded_items(
-      unpadded_item_cols(data_cols, prefix, expected_names),
-      width = 3L, instrument = "HiTOP-SR"
+      data_cols,
+      prefix = prefix,
+      expected = expected_names,
+      max_n = max(hitopsr_items$HSR),
+      instrument = "HiTOP-SR"
     )
   } else if (target == "scales") {
     # Scale columns carry the camelCase name score_hitopsr() writes.
