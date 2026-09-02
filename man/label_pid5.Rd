@@ -35,8 +35,11 @@ export use; under \code{target = "scales"}, \code{"pid_"}, which is what
 Item columns are expected as the prefix followed by the item number
 zero-padded to the width of the form's largest item number (\code{pid5_001} to
 \code{pid5_220} for the full form, \code{pid5bf_01} to \code{pid5bf_25} for the brief
-form). Columns that carry the prefix and a number without that padding are
-not labelled, and a warning of class \code{hitop_unpadded_items} names them.
+form). A column carrying the prefix and a number that is not one of those
+expected names -- a number padded to some other width, or one outside the
+form's range -- is not labelled, and a warning of class
+\code{hitop_unpadded_items} names it. That warning is raised only when at least
+one column did match; see the return value.
 Scale columns are expected as the prefix followed by the scale's
 \code{camelCase} name.}
 }
@@ -44,7 +47,9 @@ Scale columns are expected as the prefix followed by the scale's
 A data frame with labeled columns. Columns the named form does not
 recognize keep whatever attributes they had. The validity-scale columns
 \code{\link[=validity_pid5]{validity_pid5()}} writes and the \verb{_se} columns
-\code{score_pid5(calc_se = TRUE)} writes are not labelled.
+\code{score_pid5(calc_se = TRUE)} writes are not labelled. If no column matched
+the expected names at all, \code{data} is returned unchanged and a warning says
+so, in place of any other report.
 }
 \description{
 Add literal item text or clean scale names as attributes to data frame
