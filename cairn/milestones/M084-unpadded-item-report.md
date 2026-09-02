@@ -152,6 +152,7 @@ gate; the same class carries both sentences.
 
 ## Decisions
 - 2026-09-02: review step 3-4 -- all seven criteria executed with fresh evidence and ticked; `cairn_validate` exit 0 and every r-package toolchain check green; PR #91 open as a draft with CI running. Independent review pending (the diff-bug lens still running; the blame-history and prior-review lenses returned).
+- 2026-09-02: review step 5 -- three fresh-context lenses; the prior-review lens found nothing, the blame lens one item, the diff-bug lens ten and no correctness bug. Six triaged fix-now, one to the standing candidate row, two rejected as out of scope, one stale. Dispositions in the Review section.
 
 ## Review
 
@@ -220,4 +221,52 @@ transcript is summarized below, never pasted.
   the branch adds no top-level file (`NEWS.md` is the only top-level path it
   touches), so no `.Rbuildignore` entry is owed; `devtools::check()` 0/0/0. No
   newly exported object, so no `_pkgdown.yml` row is owed.
+
+### Independent review (three lenses, fresh context)
+
+- **[S] prior-PR-comments:** no findings. It located prior-review evidence on
+  the touched files (M077's "half-labelling unpadded data silently" and M083's
+  two roxygen fixes) and reports the diff resolves rather than regresses each.
+  The GitHub inline-comment probe returned `[]`, so that surface was skipped.
+- **[S] blame-history:** one item, matching the diff-bug lens's F3 below; it
+  found no change contradicting a decision, resurrecting a fixed bug, or
+  undoing deliberate past work, and confirmed the removed early return was
+  never itself a recorded decision.
+- **[O] diff-bug:** no correctness bug. It independently reproduced AC1-AC6 by
+  probe, confirmed the suite at FAIL 0 / PASS 17186, and confirmed the new
+  tests discriminate (reverting the split reddens the range assertions,
+  dropping `cli::qty()` reddens the pluralization assertions, restoring the
+  early return reddens the two-warning probes). Ten ranked findings follow.
+
+**Findings and disposition** (ranked as reported; every one logged):
+
+1. *"The NEWS bullet fixes a defect that never shipped."* `hitop_unpadded_items`
+   is itself new in the same unreleased development-version section
+   (`NEWS.md:13` and `NEWS.md:128`), so a reader is told about a regression no
+   release ever had. — **fix now.**
+2. *"The out-of-range sentence renders after the mis-padded sentence's `i` hint,
+   and as an unnamed line,"* so the hint sits between the two sentences and
+   reads as if it governs both. — **fix now.**
+3. *"D-052's standing consequence is now false"* — it says `prefix` is "still
+   pasted, never stripped, in these functions," and `item_col_numbers()` strips
+   it. Raised independently by the blame-history lens. — **fix now**, as an
+   annotating D-entry (`DECISIONS.md` is append-only).
+4. *"`in_range` uses `1..max_n` as a proxy for 'names an item of the form'."*
+   Exact for all five forms today (each contiguous 1..max, verified), but the
+   assumption is unrecorded. — **fix now**, as a comment.
+5. *"The class and helper names now cover columns that are not unpadded."* —
+   **rejected:** the plan gate declined a second condition class deliberately,
+   and the same class carrying both sentences is what the milestone planned.
+6. *"Untested edge: the only path where `item_col_numbers()` returns `NA`"* — a
+   number too large for an integer, and `pid5_000`. Both behave sensibly on
+   probe; neither is pinned. — **follow-up**, absorbed into the standing
+   "four remainders M082 and M083 left" candidate row.
+7. *"Duplicate column names are reported twice."* — **rejected:** pre-existing
+   and unchanged by the diff (the reviewer says so itself).
+8. *"`at()` is a very broad name in a shared helper file"* — a generic
+   `at(haystack, needle)` in the namespace every test file sees. — **fix now.**
+9. *"The `item_names()` comment block is now further orphaned."* — **fix now.**
+10. *"AC7 is still unchecked."* — **no longer applicable:** the reviewer read
+    the file before this review's step-3 pass ticked AC7 against its evidence
+    line; the box is ticked and evidenced above.
 
