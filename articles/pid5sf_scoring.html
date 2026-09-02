@@ -118,7 +118,10 @@ have not, to my knowledge, been examined with the FSF.</p>
 <p>The <code>sim_pid5sf</code> dataset names its items
 <code>pid5sf_001</code> to <code>pid5sf_100</code>. If your own PID-5-SF
 columns are named some other way, <code><a href="../reference/rename_pid5_items.html">rename_pid5_items()</a></code> with
-<code>version = "SF"</code> will rename them to this pattern.</p>
+<code>version = "SF"</code> will rename them to this pattern.
+<code><a href="../reference/label_pid5.html">label_pid5()</a></code> with <code>version = "SF"</code> then attaches
+the item prompts, or the scale display names under
+<code>target = "scales"</code>, as <code>label</code> attributes.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sim_pid5sf"</span><span class="op">)</span></span>
 <span></span>

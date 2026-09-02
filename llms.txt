@@ -213,6 +213,8 @@ community norm.
   : Label HiTOP-SR Columns with Semantic Descriptions
 - [`label_hitopbr()`](https://jmgirard.github.io/hitop/reference/label_hitopbr.md)
   : Label HiTOP-BR Columns with Semantic Descriptions
+- [`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+  : Label PID-5 Columns with Semantic Descriptions
 
 ## Item Export
 

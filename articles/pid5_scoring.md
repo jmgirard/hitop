@@ -71,6 +71,22 @@ rename_pid5_items(old_names, version = "FULL")
 #> 2        1        3  40
 ```
 
+[`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+is the companion helper: it attaches each item’s questionnaire prompt to
+that item’s column as a `label` attribute, which data viewers and
+reporting packages can display in place of the column name. With
+`target = "scales"` it does the same for the columns
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+writes, attaching each facet and domain its display name.
+
+``` r
+
+labeled <- label_pid5(sim_pid5, target = "items", version = "FULL")
+
+attr(labeled$pid5_001, "label")
+#> [1] "I don't get as much pleasure out of things as others seem to"
+```
+
 To turn these item-level data into scale scores on the 25 facets and 5
 domains, we can use the
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)

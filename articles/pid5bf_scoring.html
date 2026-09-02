@@ -119,13 +119,17 @@ package’s functionality using some simulated data.</p>
 contains 100 rows (each a simulated participant) across 25 columns named
 <code>pid5bf_01</code> to <code>pid5bf_25</code>. If your own PID-5-BF
 columns are named some other way, <code><a href="../reference/rename_pid5_items.html">rename_pid5_items()</a></code> with
-<code>version = "BF"</code> will rename them to this pattern. To compute
-the 5 domain scores and the total, we use <code><a href="../reference/score_pid5.html">score_pid5()</a></code> with
-<code>version = "BF"</code>. As with the other forms, we can specify the
-items by column number (<code>items = 1:25</code>) and set
-<code>append = FALSE</code> to see just the scores. The only validity
-scale calculable from this subset of items is the percentage of missing
-items (PNA), which <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> returns.</p>
+<code>version = "BF"</code> will rename them to this pattern.
+<code><a href="../reference/label_pid5.html">label_pid5()</a></code> with <code>version = "BF"</code> then attaches
+the item prompts, or the domain and total display names under
+<code>target = "scales"</code>, as <code>label</code> attributes. To
+compute the 5 domain scores and the total, we use
+<code><a href="../reference/score_pid5.html">score_pid5()</a></code> with <code>version = "BF"</code>. As with the
+other forms, we can specify the items by column number
+(<code>items = 1:25</code>) and set <code>append = FALSE</code> to see
+just the scores. The only validity scale calculable from this subset of
+items is the percentage of missing items (PNA), which
+<code><a href="../reference/validity_pid5.html">validity_pid5()</a></code> returns.</p>
 <p>The <code>pid_total</code> column is the mean of all 25 items,
 following Markon et al. (2024, p. 23). Note that this is <em>not</em>
 the same as averaging the 5 domain scores whenever any items are

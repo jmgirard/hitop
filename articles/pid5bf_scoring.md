@@ -16,8 +16,11 @@ The `sim_pid5bf` dataset is built into the package and contains 100 rows
 (each a simulated participant) across 25 columns named `pid5bf_01` to
 `pid5bf_25`. If your own PID-5-BF columns are named some other way,
 [`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
-with `version = "BF"` will rename them to this pattern. To compute the 5
-domain scores and the total, we use
+with `version = "BF"` will rename them to this pattern.
+[`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+with `version = "BF"` then attaches the item prompts, or the domain and
+total display names under `target = "scales"`, as `label` attributes. To
+compute the 5 domain scores and the total, we use
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
 with `version = "BF"`. As with the other forms, we can specify the items
 by column number (`items = 1:25`) and set `append = FALSE` to see just

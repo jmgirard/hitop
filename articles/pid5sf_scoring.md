@@ -16,6 +16,9 @@ The `sim_pid5sf` dataset names its items `pid5sf_001` to `pid5sf_100`.
 If your own PID-5-SF columns are named some other way,
 [`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
 with `version = "SF"` will rename them to this pattern.
+[`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+with `version = "SF"` then attaches the item prompts, or the scale
+display names under `target = "scales"`, as `label` attributes.
 
 ``` r
 
