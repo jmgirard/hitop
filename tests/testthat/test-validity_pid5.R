@@ -121,7 +121,7 @@ test_that("SF missing items propagate to NA (INCS unaffected by items 1:10)", {
 test_that("SF INCS warns past the published cutoff (>= 8)", {
   # Two respondents; the first has INCS >= 8 (maximize three pairs, 3 each = 9).
   x <- as.data.frame(matrix(1L, nrow = 2, ncol = 100))
-  names(x) <- paste0("pid_", seq_len(100))
+  names(x) <- sprintf("pid5sf_%03d", seq_len(100))
   x[1, c(24, 78)] <- c(3L, 0L)
   x[1, c(53, 81)] <- c(3L, 0L)
   x[1, c(25, 46)] <- c(3L, 0L)   # INCS = 9
@@ -147,7 +147,7 @@ test_that("FULL validity handles single-row input (no drop-to-vector error)", {
   # Before the drop = FALSE fix this errored: 'x' must be an array of at least
   # two dimensions (ORS/PRD/SDTD indexed a 1-row matrix down to a vector).
   x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 220))
-  names(x1) <- paste0("pid_", seq_len(220))
+  names(x1) <- sprintf("pid5_%03d", seq_len(220))
   v <- suppressMessages(
     validity_pid5(x1, items = 1:220, version = "FULL", append = FALSE)
   )
@@ -162,7 +162,7 @@ test_that("FULL validity handles single-row input (no drop-to-vector error)", {
 test_that("SF validity handles single-row input", {
   # One respondent, all items = 1: PRDS 12 (12x1), SDTDS 8 (8x1), ORSS 0, INCS 0.
   x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 100))
-  names(x1) <- paste0("pid_", seq_len(100))
+  names(x1) <- sprintf("pid5sf_%03d", seq_len(100))
   v <- suppressMessages(
     validity_pid5(x1, items = 1:100, version = "SF", append = FALSE)
   )

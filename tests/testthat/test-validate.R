@@ -128,7 +128,7 @@ test_that("exported functions reject bad input end-to-end", {
 
 test_that("missing `items` are caught before extraction, end-to-end", {
   # A bad NAME among otherwise-valid PID-5 items
-  bad_name <- sprintf("pid_%d", 1:220)
+  bad_name <- sprintf("pid5_%03d", 1:220)
   bad_name[5] <- "not_a_column"
   expect_error(
     score_pid5(sim_pid5, items = bad_name, version = "FULL"),

@@ -117,7 +117,7 @@
 #' score_pid5(sim_pid5, items = 1:220, version = "FULL", append = FALSE)
 #'
 #' # Short form, using the item column names instead of positions
-#' score_pid5(sim_pid5sf, items = sprintf("pid_%d", 1:100), version = "SF",
+#' score_pid5(sim_pid5sf, items = sprintf("pid5sf_%03d", 1:100), version = "SF",
 #'            append = FALSE)
 #'
 #' # Brief form (5 domains + the total) with standard errors. `calc_se` is

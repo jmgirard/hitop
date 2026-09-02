@@ -27,7 +27,7 @@ The PID-5-BF (Brief Form) is a 25-item version of the PID-5 that yields the 5 pe
 
 ## Score simulated PID-5-BF data
 
-The `sim_pid5bf` dataset is built into the package and contains 100 rows (each a simulated participant) across 25 columns named `pid_1` to `pid_25`. To compute the 5 domain scores and the total, we use `score_pid5()` with `version = "BF"`. As with the other forms, we can specify the items by column number (`items = 1:25`) and set `append = FALSE` to see just the scores. The only validity scale calculable from this subset of items is the percentage of missing items (PNA), which `validity_pid5()` returns.
+The `sim_pid5bf` dataset is built into the package and contains 100 rows (each a simulated participant) across 25 columns named `pid5bf_01` to `pid5bf_25`. To compute the 5 domain scores and the total, we use `score_pid5()` with `version = "BF"`. As with the other forms, we can specify the items by column number (`items = 1:25`) and set `append = FALSE` to see just the scores. The only validity scale calculable from this subset of items is the percentage of missing items (PNA), which `validity_pid5()` returns.
 
 The `pid_total` column is the mean of all 25 items, following Markon et al. (2024, p. 23). Note that this is *not* the same as averaging the 5 domain scores whenever any items are missing: each scale applies the `missing` rule to its own items, so the total tolerates up to 6 unanswered items while a 5-item domain tolerates only 1. See `?score_pid5` for the details.
 
