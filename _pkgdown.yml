@@ -98,6 +98,7 @@ reference:
   - rename_pid5_items
   - label_hitopsr
   - label_hitopbr
+  - label_pid5
 - title: Item Export
   contents:
   - hitop_module

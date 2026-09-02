@@ -2,6 +2,18 @@
 
 ## New features
 
+* **`label_pid5()` attaches PID-5 item text and scale names to columns.** Given
+  a data frame and the form its columns belong to, `target = "items"` attaches
+  each item's questionnaire prompt to that item's column as a `label`
+  attribute, and `target = "scales"` attaches each scale's display name to the
+  columns `score_pid5()` writes -- the facet and domain names for the full and
+  short forms, the domain and total names for the brief form. The column-name
+  prefix defaults to the form's own stem for items (`pid5_`, `pid5sf_`,
+  `pid5bf_`) and to `pid_` for scales. An item column carrying the prefix and a
+  number that is not zero-padded to the form's width is left unlabelled and
+  named in a warning of class `hitop_unpadded_items`, as the two HiTOP
+  labelling functions already do.
+
 * **`rename_pid5_items()` renames PID-5 item columns to the standard names.**
   Given a data frame and the form its items belong to, it renames the item
   columns to `pid5_001`-style names: `method = "number"` (the default) reads the
