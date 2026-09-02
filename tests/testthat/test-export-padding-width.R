@@ -140,7 +140,6 @@ test_that("a HiTOP-SR module export names items at the full instrument width", {
     hitopsr_scales$camelCase %in% sr_probe_scales
   ])
   nums <- sort(unique(as.integer(nums)))
-  expect_length(sr_probe_scales, 3L)
   expect_lt(max(nums), max(hitopsr_items$HSR))
 
   f_q <- withr::local_tempfile(fileext = ".txt")
@@ -168,13 +167,27 @@ manifest_generator <- function(file) {
   paste0("generate_", parts[[2]], "_", parts[[1]])
 }
 
+# Whether this package EXPORTS that generator -- the question AC3's domain is
+# stated in, asked of the namespace's export list rather than of the search
+# path, as `test-export-arg-guards.R` asks it.
+has_manifest_generator <- function(file) {
+  manifest_generator(file) %in% getNamespaceExports("hitop")
+}
+
+manifest_generator_fn <- function(file) {
+  getExportedValue("hitop", manifest_generator(file))
+}
+
 # Item variable names as the committed or freshly built file carries them.
+# Routed on the extension explicitly: an unknown container aborts here rather
+# than reaching whichever reader the `else` branch happened to name.
 export_item_names <- function(file) {
-  if (grepl("\\.txt$", file)) {
-    read_qualtrics(file)$questions$id
-  } else {
-    read_redcap_csv(file)[["Variable / Field Name"]]
-  }
+  switch(
+    tools::file_ext(file),
+    txt = read_qualtrics(file)$questions$id,
+    zip = read_redcap_csv(file)[["Variable / Field Name"]],
+    stop("no reader for ", file)
+  )
 }
 
 online_manifest <- function() {
@@ -185,11 +198,7 @@ online_manifest <- function() {
 test_that("only the HiTOP-HSUM Qualtrics survey has no generator in this package", {
   files <- online_manifest()
   expect_gt(length(files), 0)
-  has_generator <- vapply(
-    files,
-    function(f) exists(manifest_generator(f), mode = "function"),
-    logical(1)
-  )
+  has_generator <- vapply(files, has_manifest_generator, logical(1))
   # That .qsf is exported from Qualtrics itself, not written by this package
   # (`hitop_artifacts`' changes column records the API build). Naming it here
   # means a generator appearing for it later turns this red rather than
@@ -202,20 +211,16 @@ test_that("only the HiTOP-HSUM Qualtrics survey has no generator in this package
 # item names did not MOVE, never that they are the right names. What the names
 # ought to be is derived from the instrument datasets by the tests above and in
 # test-generate_{qualtrics,redcap}.R, so the committed artifacts are not
-# standing in as an oracle for their own content (`cairn/DESIGN.md`'s
-# generator-testing decision).
+# standing in as an oracle for their own content (D-054, annotating D-010).
 test_that("a fresh default build reproduces every shipped export's item names", {
   extdata <- system.file("extdata", package = "hitop")
-  files <- Filter(
-    function(f) exists(manifest_generator(f), mode = "function"),
-    online_manifest()
-  )
+  files <- Filter(has_manifest_generator, online_manifest())
   expect_equal(length(files), 11L)
 
   for (f in files) {
     ext <- paste0(".", tools::file_ext(f))
     fresh <- withr::local_tempfile(fileext = ext)
-    generator <- get(manifest_generator(f), mode = "function")
+    generator <- manifest_generator_fn(f)
     suppressMessages(generator(file = fresh))
 
     # The expectation is read off the COMMITTED artifact, never off the fresh

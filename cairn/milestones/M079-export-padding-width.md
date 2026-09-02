@@ -129,6 +129,7 @@ item-column naming → its own candidate row.
 - 2026-09-01: amendment return: AC3 — "for every row of `hitop_artifacts` whose `format` is `qualtrics` or `redcap` and for whose file this package exports a generator — the domain enumerated from the manifest by that same generator lookup, which today excludes only `hitophsum_qualtrics.qsf`" — executing the review's return of the same round, at the mini gate (Jeff, narrow both); the Scope In clause narrowed to match, no code or test change.
 - 2026-09-01: amendment applied, `devtools::test()` clean (FAIL 0 | WARN 0 | SKIP 7 | PASS 16423); status back to review for AC3's re-verification.
 - 2026-09-01: re-review round 2 — AC1-AC4 all verified fresh at b04a0c3f, consistency gate green (`cairn_validate` exit 0, `check()` 0/0/0); [O] lens re-spawned on the amended criteria and returned nine new findings, the two [S] lenses not re-spawned on a byte-identical code diff (logged deviation); no return-floor finding.
+- 2026-09-01: at the merge gate Jeff directed the five fix-now findings (export lookup, reader routing, five stale test comments, the util.R comment, the vacuous assertion) and a decision entry for the shipped-file comparison; applied on the branch, D-054 written, `devtools::test()` clean (FAIL 0 | WARN 0 | SKIP 7 | PASS 16422).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -300,3 +301,40 @@ AC3's promise measured true over its whole amended domain — and none is a
 load-bearing defect in what the package does for its users: both builders are
 unexported, every wrapper passes its instrument's own width, and the remaining
 findings are test-side or comment-side. No return.
+
+### Triage at the gate
+
+Jeff directed, at the merge chip: fix five on the branch, and record the
+shipped-file comparison as a decision entry.
+
+Fixed on the branch:
+- Round-1 finding 4 / round-2 sharpening — the AC3 test now asks
+  `getNamespaceExports("hitop")` and calls through `getExportedValue()`, the
+  question AC3's domain is stated in and the idiom
+  `test-export-arg-guards.R` already uses.
+- Round-2 finding 2 — `export_item_names()` routes on `tools::file_ext()` with
+  an explicit `stop()` for an unknown container.
+- Round-1 finding 3, widened by round 2 to five comments —
+  `test-generate_qualtrics.R:28`, `:123`, `:135`, `:144` and
+  `test-generate_redcap.R:308` now state the instrument-width rule and stop
+  calling largest item numbers item counts.
+- Round-2 finding 6 — the `R/util.R` comment states `item_names()`'s actual
+  contract (the width the caller passes) and then who passes what.
+- Round-2 finding 4 — the vacuous `expect_length()` removed.
+
+Recorded: D-054, annotating D-010 — a rebuild comparison asserting a shipped
+export's names did not move is a no-regression lock, admitted; an oracle must
+still be derived independently of the artifact. The test's comment cites it.
+
+Deferred to a candidate row: round-1 findings 2 and 5 (no coherence guard
+between `max_n` and the exported items; the file-name grammar and the
+hardcoded 11-file census), round-2 findings 3, 5, 8 and 9 (two manifest
+enumeration idioms; T3's unstated ordering assumption; the lost
+character/factor tripwire on the Qualtrics path; untested zero-row behavior).
+
+Rejected: round-2 finding 7 — `max_n` as the second positional parameter of two
+unexported builders, every call site passing by name; a style preference about
+an internal signature the milestone deliberately changed.
+
+`devtools::test()` after the fixes: FAIL 0 | WARN 0 | SKIP 7 | PASS 16422 (one
+fewer than before, the removed vacuous assertion).

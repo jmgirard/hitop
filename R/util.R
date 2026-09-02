@@ -578,9 +578,10 @@ validate_module_instrument <- function(instrument, call = rlang::caller_env()) {
 
 # Item column names in the pattern the online exports write: `prefix` pasted
 # literally (never lowercased or stripped, D-026), then the item number
-# zero-padded to the width of `max_n` -- always the instrument's largest item
-# number, for the datasets, the label/rename helpers and the online generators
-# alike, so a module export's names match the full instrument's.
+# zero-padded to the width of `max_n`, whatever the caller states it to be.
+# The datasets, the label/rename helpers and the online generators all pass the
+# instrument's largest item number, so a module export's names match the full
+# instrument's.
 # `item_names("hsr_", 7, 405)` is "hsr_007"; `item_names("hbr_", 7, 45)` is
 # "hbr_07".
 # Columns that begin with `prefix` and end in a bare number but are not among
