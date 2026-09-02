@@ -1,6 +1,6 @@
 # M080: The shipped PID-5 datasets name item columns as the online exports do
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -86,9 +86,9 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
 - AC1 → T1, T2, T3
 - AC2 → T1
 - AC3 → T2
-- AC4 → T4, T5, T7
-- AC5 → T6, T7
-- AC6 → T6, T7
+- AC4 → T4, T5, T7, T8, T9
+- AC5 → T6, T7, T8
+- AC6 → T6, T7, T9
 
 ## Tasks
 
@@ -114,6 +114,14 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
       vignettes' prose naming the columns; run `devtools::document()`.
 - [x] T7 Write the NEWS Breaking-changes entry; run `devtools::test()` and
       `R CMD check`; re-run both AC4 procedures green.
+- [x] T8 Close the two criteria the review gate failed: reword
+      `data-raw/check_pid_item_names.R:10` so AC4's text search is empty, and
+      give the NEWS entry the brief form's old spelling alongside the other two.
+- [x] T9 Fold in the review findings taken at the return gate: restore an
+      unpadded ascending order probe past item 9 (F2), assert the readr `spec`
+      rename lands on slots matching the object's own names (F3), read archive
+      member contents as well as member names in the sweep script (F1), and
+      assert the shipped `spec` names against the columns in the suite (F4).
 
 ## Work log
 
@@ -135,6 +143,12 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
 - 2026-09-02: both AC4 procedures run at d3ac6695 and now — the text search over tracked files, 18 hits then, none now; the binary sweep, 445 old names across the four objects then, 0 over 24 object files and 198 archive members now. The supplementary search for built old names went from 28 hits to 2, both in the NEWS migration instructions that AC5 asks for.
 - 2026-09-02: review opened; draft PR #86 pushed, CI running.
 - 2026-09-02: review gate failed, status back to in-progress. AC4: `git grep -nE 'pid_[0-9]' -- . ':!cairn/'` returns one hit, `data-raw/check_pid_item_names.R:10`, where the criterion requires none. AC5: the NEWS entry gives the old spelling for the full and short forms but not the brief form. AC1, AC2, AC3, AC6 and the consistency gate pass on fresh evidence; five review findings logged, F2 (a lost order-guard probe) and F3 (an unguarded `spec` rename) proposed as fix-now.
+- 2026-09-02: return gate — Jeff chose reading archive member contents (F1) and adding the read-spec guard test (F4) now, both without touching a criterion, and filing the generator's duplicated padding rule (F5) as a candidate row.
+- 2026-09-02: minor amendment — T8 and T9 appended for the return's repair and the accepted findings; Coverage extended for AC4, AC5 and AC6. No criterion text changed.
+- 2026-09-02: T8 — the sweep script's comment no longer spells an old name, so `git grep -nE 'pid_[0-9]' -- . ':!cairn/'` exits 1 with no output; the NEWS entry now gives all three forms' old spelling, each paired with its replacement.
+- 2026-09-02: T9 — the order guard regains an unpadded ascending probe (helper level and end to end); a mutant comparing trailing digits as strings survives every padded probe and is killed by it. The rename script asserts `spec$cols` names equal the object's names before and after the rename; a planted permutation is red on `ku_pid5sf`. The sweep script now reads all 198 archive member bodies as raw bytes; searching it for the *new* pattern reports `inst/extdata/pid5_redcap.zip::instrument.csv`, so the content half is shown non-empty. A new test asserts the shipped `spec` names against `ku_pid5sf`'s columns and is red on a planted stale spec.
+- 2026-09-02: candidate row filed for F5 by absorbing it into the standing M079 export-padding row; `ROADMAP.md` is at 59 lines and within 200 bytes of its budget, so the next hygiene pass has compression to do.
+- 2026-09-02: return closed, status review. `devtools::test()`: FAIL 0, WARN 0, SKIP 7, PASS 16431 (the same 7 pre-existing skips). `devtools::document()` leaves no diff. `R CMD check`: Status OK, 0 errors, 0 warnings, 0 notes. AC4's text search exits 1 with no output; the sweep script reports 0 hits over 24 object files and 198 archive members with all 198 bodies read.
 
 ## Decisions
 

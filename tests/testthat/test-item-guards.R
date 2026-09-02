@@ -15,6 +15,12 @@ test_that("warn_item_order() fires only for misordered common-prefix numbered na
   # Zero-padding does not confuse the integer comparison
   expect_warning(warn_item_order(sprintf("hsr_%03d", c(1, 3, 2))), "ascending")
   expect_no_warning(warn_item_order(sprintf("hsr_%03d", 1:10)))
+  # Unpadded names running past item 9: the trailing numbers are compared as
+  # integers, never as strings, where "q_10" would sort before "q_9" and an
+  # ascending run would warn. Every shipped dataset is zero-padded, so this is
+  # the suite's probe for unpadded columns a caller supplies.
+  expect_no_warning(warn_item_order(paste0("q_", 1:25)))
+  expect_warning(warn_item_order(paste0("q_", c(2, 1, 3:25))), "ascending")
 
   # No fire: ascending names
   expect_no_warning(warn_item_order(c("q_1", "q_2", "q_3")))
@@ -98,6 +104,11 @@ test_that("ascending names and integer positions do not warn about order", {
   full <- sim_pid5
   expect_no_warning(score_pid5(bf, items = sprintf("pid5bf_%02d", 1:25), version = "BF"))
   expect_no_warning(score_pid5(sim_pid5bf, items = 1:25, version = "BF"))
+  # The same unpadded-past-9 case end to end, on columns named as a caller's
+  # own unpadded data would be.
+  unpadded <- sim_pid5bf
+  names(unpadded) <- paste0("q_", 1:25)
+  expect_no_warning(score_pid5(unpadded, items = paste0("q_", 1:25), version = "BF"))
   expect_no_warning(score_hitopbr(sim_hitopbr, items = 1:45))
   expect_no_warning(score_hitopsr(sim_hitopsr, items = 1:405))
   # validity_pid5: ascending names and integer positions must not warn about order

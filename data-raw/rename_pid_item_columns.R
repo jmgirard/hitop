@@ -42,8 +42,14 @@ rename_items <- function(name, id_cols, prefix, max_n) {
   # where they would not match what re-reading the renamed CSV produces.
   spec <- attr(new, "spec")
   if (!is.null(spec)) {
+    # The rename below writes by position, so the recorded names must be the
+    # object's own names, in the same order: otherwise a new name would land on
+    # a slot describing a different column and every check below would still
+    # pass.
+    stopifnot(identical(names(spec$cols), names(old)))
     names(spec$cols)[is_item] <- renamed
     attr(new, "spec") <- spec
+    stopifnot(identical(names(spec$cols), names(new)))
   }
 
   # Only the names changed, and each column kept its item. The comparison is

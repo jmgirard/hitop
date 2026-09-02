@@ -49,9 +49,10 @@
   is full-form item 16, and brief-form item 5 is full-form item 31 -- so one
   shared stem would give one name to different items. The Qualtrics export
   writes the same pattern with an uppercase stem: `PID5_001`, `PID5SF_001`,
-  `PID5BF_01`. Code selecting the old names -- `paste0("pid_", 1:220)`,
-  `sprintf("pid_%d", 1:100)` and the like -- moves to
-  `sprintf("pid5_%03d", 1:220)`, `sprintf("pid5sf_%03d", 1:100)` and
+  `PID5BF_01`. All three forms previously shared one unpadded stem, so code
+  selecting the old names moves form by form: `paste0("pid_", 1:220)` becomes
+  `sprintf("pid5_%03d", 1:220)`, `paste0("pid_", 1:100)` becomes
+  `sprintf("pid5sf_%03d", 1:100)`, and `paste0("pid_", 1:25)` becomes
   `sprintf("pid5bf_%02d", 1:25)`; the PID-5 vignettes show the new idiom.
   Selecting items by position (`items = 1:220`) is unaffected. The scoring
   functions' `prefix` argument names the *output* score columns and still

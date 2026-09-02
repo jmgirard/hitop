@@ -35,3 +35,14 @@ test_that("the PID-5 brief-form dataset names items pid5bf_01..pid5bf_25", {
   expected <- sprintf("pid5bf_%02d", sort(pid_items$BF))
   expect_identical(names(sim_pid5bf), expected)
 })
+
+# `ku_pid5sf` is a readr tibble, so it also records the names its columns were
+# read under one attribute down, in `spec$cols`, where a names() check does not
+# reach. A regeneration from a stale CSV would leave the columns named right and
+# that record naming the old columns, so it is asserted against the columns.
+
+test_that("ku_pid5sf's recorded read spec names its columns as they are named", {
+  spec <- attr(ku_pid5sf, "spec")
+  expect_false(is.null(spec))
+  expect_identical(names(spec$cols), names(ku_pid5sf))
+})
