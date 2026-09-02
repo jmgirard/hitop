@@ -58,7 +58,7 @@ item-column naming → its own candidate row.
       variable name `hsr_007` for item 7.
 - [x] AC2: Both builders require that width — a direct call omitting it aborts,
       rather than falling back to the exported items' own largest number.
-- [ ] AC3: No shipped online export's item names move: for every row of
+- [x] AC3: No shipped online export's item names move: for every row of
       `hitop_artifacts` whose `format` is `qualtrics` or `redcap` and for whose
       file this package exports a generator — the domain enumerated from the
       manifest by that same generator lookup, which today excludes only
@@ -128,6 +128,7 @@ item-column naming → its own candidate row.
 - 2026-09-01: criteria audit on the amended AC3 and Scope wording ran in reduced mode ([O], fresh context, authored neither text; internal tier) and returned one finding — the draft bound what the test asserts about `hitophsum_qualtrics.qsf` into the criterion; it had one clear answer and was fixed to the plain package fact before writing.
 - 2026-09-01: amendment return: AC3 — "for every row of `hitop_artifacts` whose `format` is `qualtrics` or `redcap` and for whose file this package exports a generator — the domain enumerated from the manifest by that same generator lookup, which today excludes only `hitophsum_qualtrics.qsf`" — executing the review's return of the same round, at the mini gate (Jeff, narrow both); the Scope In clause narrowed to match, no code or test change.
 - 2026-09-01: amendment applied, `devtools::test()` clean (FAIL 0 | WARN 0 | SKIP 7 | PASS 16423); status back to review for AC3's re-verification.
+- 2026-09-01: re-review round 2 — AC1-AC4 all verified fresh at b04a0c3f, consistency gate green (`cairn_validate` exit 0, `check()` 0/0/0); [O] lens re-spawned on the amended criteria and returned nine new findings, the two [S] lenses not re-spawned on a byte-identical code diff (logged deviation); no return-floor finding.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -225,3 +226,77 @@ not the work's: it routes to the gated criterion-amendment protocol
 (`/milestone-implement` step 6) to narrow AC3's domain to the manifest's
 generator-backed rows, with `hitophsum_qualtrics.qsf` excluded by name as the
 test already asserts. No other work is convened by this return.
+
+### Re-review after the AC3 amendment (round 2)
+
+2026-09-01. Evidence re-gathered fresh on the branch at commit b04a0c3f. The
+amendment commit changed only this milestone file (`git diff 94db275a..HEAD
+--name-only`), so the code diff under review is byte-identical to round 1's.
+
+**Sync.** `git fetch`; `origin/main` at 68ce4ae7, the branch 0 behind / 5 ahead
+— no merge needed. PR #85 open as a draft.
+
+- **AC1 — verified.** Direct call on both builders with an items frame whose
+  largest number is 45 and `max_n = 405`: `build_qualtrics_txt()` wrote
+  `HSR_007`, `HSR_045`; `build_redcap_zip()` wrote `hsr_instructions`,
+  `hsr_007`, `hsr_045`.
+- **AC2 — verified.** The same two calls with `max_n` omitted each aborted with
+  an `rlang_error` reading "`max_n` is absent but must be supplied".
+- **AC3 — verified.** Enumerated independently of the test's helpers: the
+  manifest holds 12 distinct `qualtrics`/`redcap` files, 11 of which this
+  package has a `generate_*` function for, the sole exclusion being
+  `hitophsum_qualtrics.qsf`. All 11 fresh default builds produced item names
+  `identical()` to the committed `inst/extdata/` file (45, 46, 651, 405, 406,
+  220, 221, 25, 26, 100, 101 names respectively).
+- **AC4 — verified.** `devtools::test()` → `FAIL 0 | WARN 0 | SKIP 7 | PASS
+  16423`; `devtools::document()` left the tree unchanged.
+
+**Consistency gate.** `cairn_validate.py` exit 0, all checks PASS (22
+pre-existing advisories, none introduced here; the release-window advisory did
+not fire). No `DESIGN.md` principle changed → `cairn_impact.py` not run.
+Profile `consistency-gate`: `document()` no diff; `pkgdown::check_pkgdown()`
+"No problems found"; `devtools::check()` 0 errors / 0 warnings / 0 notes;
+line-ending policy check passed; README untouched; no NEWS entry, matching the
+plan gate's internal-tier choice; no new top-level files.
+
+**Independent review.** The [O] diff-bug lens was re-spawned fresh against the
+amended criteria. The two [S] lenses were not re-spawned: their evidence bases
+(the history of the modified lines; the prior-review record on the modified
+files) are unchanged since their round-1 run recorded above, on a byte-identical
+code diff. Logged as a deliberate deviation from the three-lens fan-out.
+
+The [O] lens confirmed all five round-1 findings and reported nine more,
+ranked:
+
+1. `rlang::check_required()` is the only use of that mechanism in `R/`, against
+   the `validate_*()`/`cli_assert()` convention CLAUDE.md states; the abort
+   carries no `hitop_*` class and the AC2 tests assert rlang's own wording.
+2. The AC3 test's `export_item_names()` routes by extension with a bare `else`,
+   so a `.qsf` entering the domain would reach the REDCap zip reader.
+3. The AC3 test enumerates manifest files with `unique(m$file)` while
+   `test-artifacts.R` defines `latest_manifest()` for the same question.
+4. `expect_length(sr_probe_scales, 3L)` asserts the length of a literal defined
+   three lines above it.
+5. The T3 expectation compares against sorted item numbers, coupling a padding
+   test to an emission-order guarantee it never states.
+6. The rewritten `R/util.R` comment says `max_n` is "always the instrument's
+   largest item number", but `item_names()` keeps a `max(n)` default and
+   `warn_unpadded_items()` passes a synthetic width.
+7. `max_n` was inserted as the second positional parameter of both builders; no
+   call site passes positionally.
+8. The Qualtrics path lost a type tripwire — the old `sprintf` errored on a
+   character/factor item column where `item_names()` coerces.
+9. Zero-row items behavior changed (a `-Inf` width became `character(0)`)
+   untested.
+
+On round-1 finding 4 the lens sharpened the point: AC3's amended text defines
+its domain as the rows "for whose file this package exports a generator", while
+the test asks `exists(..., mode = "function")`, a search-path question;
+`test-export-arg-guards.R` already uses `getNamespaceExports()` for this
+enumeration. The measured domain is correct today, so AC3 holds as written.
+
+**Return floor.** No finding demonstrates an acceptance criterion failing —
+AC3's promise measured true over its whole amended domain — and none is a
+load-bearing defect in what the package does for its users: both builders are
+unexported, every wrapper passes its instrument's own width, and the remaining
+findings are test-side or comment-side. No return.
