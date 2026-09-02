@@ -154,6 +154,7 @@ gate; the same class carries both sentences.
 - 2026-09-02: review step 3-4 -- all seven criteria executed with fresh evidence and ticked; `cairn_validate` exit 0 and every r-package toolchain check green; PR #91 open as a draft with CI running. Independent review pending (the diff-bug lens still running; the blame-history and prior-review lenses returned).
 - 2026-09-02: review step 5 -- three fresh-context lenses; the prior-review lens found nothing, the blame lens one item, the diff-bug lens ten and no correctness bug. Six triaged fix-now, one to the standing candidate row, two rejected as out of scope, one stale. Dispositions in the Review section.
 - 2026-09-02: gate triage -- Jeff chose fixing the six before merging. Applied: the NEWS bullet rewritten to describe the report rather than a regression no release had (and the `label_pid5()` bullet's narrower rule corrected), the padding hint moved after both sentences, D-058 appended annotating D-052's stripping consequence, the contiguous-numbering assumption recorded in `unpadded_item_cols()`'s comment, the test helper `at()` renamed `sentence_pos()`, and the `item_names()` comment block separated from `item_col_numbers()`'s. Suite re-run FAIL 0 / WARN 0 / SKIP 9 / PASS 17186, unchanged; `document()` no diff.
+- 2026-09-02: step-7 approval: PR #91 approved for merge (Jeff, at the merge chip, choosing the fix-then-merge option).
 
 ## Review
 
