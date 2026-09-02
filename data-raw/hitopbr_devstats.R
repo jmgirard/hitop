@@ -66,7 +66,7 @@ table1$name[!is.na(hit)] <- label_map$package[stats::na.omit(hit)]
 ## superspectrum/spectrum column would be read out of a typographic gap rather
 ## than out of the source (IP2; M068 question gate).
 package_names <- data.frame(
-  scale = hitopbr_scales$Scale,
+  Scale = hitopbr_scales$Scale,
   camelCase = hitopbr_scales$camelCase,
   type = "scale",
   stringsAsFactors = FALSE
@@ -75,14 +75,14 @@ package_names <- data.frame(
 joined <- merge(
   package_names,
   table1[c("name", "nItems", "alpha", "mean", "sd")],
-  by.x = "scale",
+  by.x = "Scale",
   by.y = "name",
   all.x = TRUE,
   sort = FALSE
 )
 
 hitopbr_devstats <- tibble::tibble(
-  scale = joined$scale,
+  Scale = joined$Scale,
   camelCase = joined$camelCase,
   type = joined$type,
   nItems = as.integer(joined$nItems),
@@ -98,18 +98,18 @@ hitopbr_devstats <- tibble::tibble(
   sd = joined$sd
 )
 hitopbr_devstats <-
-  hitopbr_devstats[order(hitopbr_devstats$type, hitopbr_devstats$scale), ]
+  hitopbr_devstats[order(hitopbr_devstats$type, hitopbr_devstats$Scale), ]
 
 # ------------------------------------------------------------------------------
 ## Refuse to write a stale table
 
-residue <- hitopbr_devstats$scale[is.na(hitopbr_devstats$reliability)]
-unmapped <- setdiff(table1$name, package_names$scale)
+residue <- hitopbr_devstats$Scale[is.na(hitopbr_devstats$reliability)]
+unmapped <- setdiff(table1$name, package_names$Scale)
 
 stopifnot(
   "the Table 1 transcription is not 8 rows" = nrow(table1) == 8L,
   "a Table 1 label appears twice" = !anyDuplicated(table1$name),
-  "a package scale appears twice" = !anyDuplicated(package_names$scale),
+  "a package scale appears twice" = !anyDuplicated(package_names$Scale),
   "the package-side residue is not the declared exception set" =
     setequal(residue, package_exceptions),
   "a Table 1 label resolves to no package scale" = length(unmapped) == 0L,

@@ -7,13 +7,13 @@
 \format{
 A \link[tibble]{tibble} with 8 rows and 8 columns:
 \describe{
-\item{scale}{The name of the scale. Matches \link{hitopbr_scales}$Scale.}
+\item{Scale}{The name of the scale. Matches \link{hitopbr_scales}$Scale.}
 \item{camelCase}{That name converted to camel case -- the stem
 \code{\link[=score_hitopbr]{score_hitopbr()}} appends to its \code{prefix} when it names a score column}
 \item{type}{\code{"scale"} throughout. Table 1 prints all eight rows under one
 heading and labels none of them a superspectrum or a spectrum, so no such
 distinction is recorded here.}
-\item{nItems}{The number of items in the scale}
+\item{nItems}{The number of items in the scale (integer)}
 \item{reliability}{The internal-consistency reliability coefficient printed
 for that scale}
 \item{reliabilityType}{What that coefficient is. \code{"alpha"} throughout:

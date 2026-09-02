@@ -203,3 +203,14 @@ test_that("prefix + camelCase names a column of the matching score_*() output", 
     }
   }
 })
+
+# ---- AC5: the devstats tables spell their display column as the rest do -----
+
+test_that("the two devstats tables carry exactly the documented columns, Scale first", {
+  want <- c(
+    "Scale", "camelCase", "type", "nItems",
+    "reliability", "reliabilityType", "mean", "sd"
+  )
+  expect_identical(names(hitopsr_devstats), want)
+  expect_identical(names(hitopbr_devstats), want)
+})

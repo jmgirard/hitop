@@ -215,13 +215,13 @@
 #'
 #' @format A \link[tibble]{tibble} with 93 rows and 8 columns:
 #' \describe{
-#'   \item{scale}{The name of the scale or subscale. Matches
+#'   \item{Scale}{The name of the scale or subscale. Matches
 #'     \link{hitopsr_scales}$Scale on the scale rows and
 #'     \link{hitopsr_subscales}$Subscale on the subscale rows.}
 #'   \item{camelCase}{That name converted to camel case -- the stem
 #'     [score_hitopsr()] appends to its `prefix` when it names a score column}
 #'   \item{type}{Either `"scale"` (76 rows) or `"subscale"` (17 rows)}
-#'   \item{nItems}{The number of items in the scale or subscale}
+#'   \item{nItems}{The number of items in the scale or subscale (integer)}
 #'   \item{reliability}{The internal-consistency reliability coefficient printed
 #'     for that scale}
 #'   \item{reliabilityType}{What that coefficient is. `"alpha"` throughout:
@@ -268,13 +268,13 @@
 #'
 #' @format A \link[tibble]{tibble} with 8 rows and 8 columns:
 #' \describe{
-#'   \item{scale}{The name of the scale. Matches \link{hitopbr_scales}$Scale.}
+#'   \item{Scale}{The name of the scale. Matches \link{hitopbr_scales}$Scale.}
 #'   \item{camelCase}{That name converted to camel case -- the stem
 #'     [score_hitopbr()] appends to its `prefix` when it names a score column}
 #'   \item{type}{`"scale"` throughout. Table 1 prints all eight rows under one
 #'     heading and labels none of them a superspectrum or a spectrum, so no such
 #'     distinction is recorded here.}
-#'   \item{nItems}{The number of items in the scale}
+#'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{reliability}{The internal-consistency reliability coefficient printed
 #'     for that scale}
 #'   \item{reliabilityType}{What that coefficient is. `"alpha"` throughout:

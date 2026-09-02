@@ -146,8 +146,8 @@ cat("2. transcription vs Table 1: ", n_cells, " cells compared over ",
 ## ---- 3. Table 1 against the shipped object ---------------------------------
 
 source_name <- to_package_name(table1$label)
-only_source2 <- setdiff(source_name, hitopbr_devstats$scale)
-only_ship <- setdiff(hitopbr_devstats$scale, source_name)
+only_source2 <- setdiff(source_name, hitopbr_devstats$Scale)
+only_ship <- setdiff(hitopbr_devstats$Scale, source_name)
 if (length(only_source2)) {
   discrepancies <- c(discrepancies, sprintf(
     "rda: Table 1 prints a scale hitopbr_devstats does not carry -- %s",
@@ -159,7 +159,7 @@ if (length(only_ship)) {
     only_ship))
 }
 
-j <- match(hitopbr_devstats$scale, source_name)
+j <- match(hitopbr_devstats$Scale, source_name)
 paired2 <- !is.na(j)
 ship_cols <- c(nItems = "nItems", reliability = "alpha",
                mean = "mean", sd = "sd")
@@ -172,7 +172,7 @@ for (k in seq_along(ship_cols)) {
   if (length(bad)) {
     discrepancies <- c(discrepancies, sprintf(
       "rda: %s %s -- Table 1 prints %s, hitopbr_devstats carries %s",
-      hitopbr_devstats$scale[paired2][bad], names(ship_cols)[k],
+      hitopbr_devstats$Scale[paired2][bad], names(ship_cols)[k],
       format(b[bad]), format(a[bad])))
   }
 }
@@ -185,7 +185,7 @@ wrong_type <- hitopbr_devstats$reliabilityType != "alpha"
 if (any(wrong_type)) {
   discrepancies <- c(discrepancies, sprintf(
     "rda: %s carries reliabilityType %s, but Table 1's column is alpha",
-    hitopbr_devstats$scale[wrong_type],
+    hitopbr_devstats$Scale[wrong_type],
     hitopbr_devstats$reliabilityType[wrong_type]))
 }
 
@@ -207,7 +207,7 @@ disputed <- which(!is.na(keyed[paired2]) & printed != keyed[paired2])
 if (length(disputed)) {
   discrepancies <- c(discrepancies, sprintf(
     "items: %s -- Table 1 prints %s items, hitopbr_items yields %s",
-    hitopbr_devstats$scale[paired2][disputed],
+    hitopbr_devstats$Scale[paired2][disputed],
     format(printed[disputed]), format(keyed[paired2][disputed])))
 }
 cat("4. `# Items` vs the keying tables: ", sum(paired2), " rows compared, ",
