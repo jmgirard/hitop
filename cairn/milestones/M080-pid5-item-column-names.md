@@ -66,13 +66,13 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
       `data-raw/ku_data.R` evaluated on their own (its earlier lines read a KU
       network drive), each yield names equal to `item_names()` applied to the
       matching `pid_items` version column.
-- [ ] AC4 No PID-5 item column is named by the old pattern in any tracked file.
+- [x] AC4 No PID-5 item column is named by the old pattern in any tracked file.
       Two procedures enumerate the domain: `git grep -nE 'pid_[0-9]' -- .
       ':!cairn/'` returns nothing, and a second pass that `load()`s every
       `data/*.rda` and `R/sysdata.rda` and lists the members of each
       `inst/extdata/` archive finds no `pid_<n>` name. Both are shown returning
       hits at the pre-rename commit, so neither passes over an empty domain.
-- [ ] AC5 `NEWS.md` carries a Breaking-changes entry naming the four datasets,
+- [x] AC5 `NEWS.md` carries a Breaking-changes entry naming the four datasets,
       the old and new spelling for each of the three forms, the Qualtrics
       uppercase variant, and how a caller migrates an `items =` selection;
       `R/data.R`'s four dataset `\item{}` lines and the regenerated `man/`
@@ -149,146 +149,166 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
 - 2026-09-02: T9 — the order guard regains an unpadded ascending probe (helper level and end to end); a mutant comparing trailing digits as strings survives every padded probe and is killed by it. The rename script asserts `spec$cols` names equal the object's names before and after the rename; a planted permutation is red on `ku_pid5sf`. The sweep script now reads all 198 archive member bodies as raw bytes; searching it for the *new* pattern reports `inst/extdata/pid5_redcap.zip::instrument.csv`, so the content half is shown non-empty. A new test asserts the shipped `spec` names against `ku_pid5sf`'s columns and is red on a planted stale spec.
 - 2026-09-02: candidate row filed for F5 by absorbing it into the standing M079 export-padding row; `ROADMAP.md` is at 59 lines and within 200 bytes of its budget, so the next hygiene pass has compression to do.
 - 2026-09-02: return closed, status review. `devtools::test()`: FAIL 0, WARN 0, SKIP 7, PASS 16431 (the same 7 pre-existing skips). `devtools::document()` leaves no diff. `R CMD check`: Status OK, 0 errors, 0 warnings, 0 notes. AC4's text search exits 1 with no output; the sweep script reports 0 hits over 24 object files and 198 archive members with all 198 bodies read.
+- 2026-09-02: second review round — all six criteria re-executed on fresh evidence and pass; consistency gate green (`cairn_validate` exit 0, `document()` no diff, `check()` 0/0/0, `pkgdown` clean). Three lenses: blame-history and prior-review no findings, [O] diff-bug eight, none an AC failure or a user-facing defect.
 
 ## Decisions
 
 ## Review
 
-Reviewed 2026-09-02 against PR #86. Evidence below is fresh, gathered this
-session by command; AC4 and AC5 fail as written, so the milestone returns to
-`in-progress`.
+Second review round, 2026-09-02, against PR #86. The first round failed AC4 and
+AC5 and returned the milestone; every criterion below is re-executed with fresh
+evidence gathered this session by command against the branch tip.
 
 ### Acceptance criteria
 
 - **AC1 — pass.** Expectations built from `pid_items` in a session that never
-  reads the names off the datasets: `sprintf("pid5_%03d", sort(pid_items$FULL))`
-  (220 names, `pid5_001`..`pid5_220`), `sprintf("pid5sf_%03d", sort(pid_items$SF))`
+  reads names off the datasets: `sprintf("pid5_%03d", sort(pid_items$FULL))`
+  (220, `pid5_001`..`pid5_220`), `sprintf("pid5sf_%03d", sort(pid_items$SF))`
   (100, `pid5sf_001`..`pid5sf_100`), `sprintf("pid5bf_%02d", sort(pid_items$BF))`
   (25, `pid5bf_01`..`pid5bf_25`). `identical()` holds against `names(sim_pid5)`,
-  `names(sim_pid5sf)`, `names(ku_pid5sf)[-1]` and `names(sim_pid5bf)`;
-  `ku_pid5sf`'s first column is `response_id`. `sort(pid_items$FULL)` is
-  `seq_len(220)`, so the order is ascending item order.
-- **AC2 — pass.** Against the objects at the pinned commit `d3ac6695`, the
-  column comparison `identical(unname(lapply(new, identity)), unname(lapply(old,
-  identity)))` holds for all four. Attributes other than `names` are `identical()`
-  for the three `sim_*` objects, whose only attributes are `class`, `row.names`
-  and `names` — none recording item names. `ku_pid5sf` matches on every attribute
-  but `names` and `spec`; its `spec$cols` names now equal its column names, where
-  the pinned object's second `spec` entry was `pid_1`. Four plants, each applied
-  to the renamed object immediately before its assertion, all red: a changed cell
-  and a dropped column on `sim_pid5bf`, a reordered pair of columns on
-  `ku_pid5sf` (all three FALSE against the column comparison), and the pinned
-  `spec` restored on `ku_pid5sf` (FALSE against the attribute check). Re-reading
-  the renamed `data-raw/ku_pid5sf.csv` with `readr::read_csv()` reproduces the
+  `names(sim_pid5sf)`, `names(sim_pid5bf)` and `names(ku_pid5sf)[-1]`;
+  `ku_pid5sf`'s first column is `response_id`. `sort(pid_items[[v]])` equals
+  `seq_len(n)` for all three versions, so the order is ascending item order.
+- **AC2 — pass.** Against the objects at the pinned commit `d3ac6695`, the column
+  comparison `identical(unname(lapply(new, identity)), unname(lapply(old,
+  identity)))` holds for all four. The three `sim_*` objects carry only `class`,
+  `row.names` and `names` — none recording item names — and are `identical()` to
+  the pinned objects once `names` is dropped. `ku_pid5sf` matches on every
+  attribute but `names` and `spec`; its `spec$cols` names now equal its own
+  column names, where the pinned object's second `spec` entry was `pid_1`. Four
+  plants, each applied to the renamed object immediately before its assertion,
+  all red: a changed cell and a dropped column on `sim_pid5bf` and a reordered
+  pair of columns on `ku_pid5sf` against the column comparison, and the pinned
+  `spec` restored on `ku_pid5sf` against the attribute check. Re-reading the
+  renamed `data-raw/ku_pid5sf.csv` with `readr::read_csv()` reproduces the
   shipped object's names, columns and `spec` identically.
 - **AC3 — pass.** `data-raw/sim_pid.R` sourced in full in a clean environment
   yields names equal to `item_names()` on the matching `pid_items` column for all
   three `sim_*` objects, and the objects themselves are `identical()` to the
   shipped ones. The two PID-5 statements of `data-raw/ku_data.R` (lines 72-73),
-  evaluated on their own, yield `ku_pid5sf` item names equal to
-  `item_names("pid5sf_", sort(pid_items$SF))`. (`usethis::use_data()` rewrote
-  `data/` during the run; the four files were restored with `git checkout` and
-  the tree is clean. Only the container bytes differed — the loaded objects
-  compared identical.)
-- **AC4 — FAIL.** The second procedure passes: `data-raw/check_pid_item_names.R`
-  reports 0 hits over 24 object files and 198 archive members, and the same
-  collector run against the four pinned objects finds 445 old names, so the
-  domain is not empty. The first procedure does not.
-  `git grep -nE 'pid_[0-9]' -- . ':!cairn/'` returns one hit:
-  `data-raw/check_pid_item_names.R:10`, a comment spelling `pid_1`..`pid_100`
-  while describing the defect found mid-implementation. The criterion requires
-  it to return nothing. No PID-5 item column carries the old name — the headline
-  promise holds — but the procedure the criterion names is not empty. Run across
-  the branch: `35f8a6d3` clean, `badd41a5` one hit, `d7614828` one hit; the hit
-  entered with the sweep script, one commit before the work-log line claiming
-  "none now".
-- **AC5 — FAIL.** The `NEWS.md` Breaking-changes entry names all four datasets,
-  the new spelling for each of the three forms, the Qualtrics uppercase variant
-  (`PID5_001`, `PID5SF_001`, `PID5BF_01` — verified against real exports from the
-  three generators), and the migration idiom. It gives the old spelling for two
-  forms only — `paste0("pid_", 1:220)` and `sprintf("pid_%d", 1:100)`, then "and
-  the like"; the brief form's old spelling (`pid_1` to `pid_25`) appears nowhere,
-  where the criterion asks for the old and new spelling for each of the three
-  forms. `R/data.R`'s four `\item{}` lines and the four regenerated `man/` pages
-  state the new names.
-- **AC6 — pass.** `devtools::document()` leaves no diff (tree clean afterwards).
-  `devtools::test()` exits 0 with no failures and 7 skips, all pre-existing
-  merge-base and keying skips (`test-column-shape.R`, `test-keying.R`,
-  `test-scale-name-hitopsr.R`); none is PID-5 related. `R CMD check`: Status OK,
-  0 errors, 0 warnings, 0 notes, so no NOTE is added over the merge base.
+  evaluated alone, yield `ku_pid5sf` item names equal to `item_names("pid5sf_",
+  sort(pid_items$SF))`. The full source rewrote the three `sim_*` files under
+  `data/`; they were restored with `git checkout` and the tree is clean. The
+  re-read `ku_pid5sf` differs from the shipped object on `problems` alone, an
+  external pointer — names, columns, `row.names`, `class` and `spec` are all
+  `identical()`.
+- **AC4 — pass.** `git grep -nE 'pid_[0-9]' -- . ':!cairn/'` exits 1 with no
+  output at the branch tip, and returns 18 hits across 11 files at `d3ac6695`.
+  `data-raw/check_pid_item_names.R` reports 0 hits over 24 object files and 198
+  archive members across 24 archives, all 198 member bodies read; the same script
+  run against the pre-rename tree (extracted with `git archive d3ac6695`) reports
+  445 hits and exits non-zero. Neither procedure passes over an empty domain. The
+  archive-content half is separately shown non-empty: with the pattern swapped to
+  the new spelling it reports `inst/extdata/pid5_redcap.zip::instrument.csv`.
+- **AC5 — pass.** The `NEWS.md` Breaking-changes entry names all four datasets,
+  gives the old and new spelling for each of the three forms — `paste0("pid_",
+  1:220)` to `sprintf("pid5_%03d", 1:220)`, `paste0("pid_", 1:100)` to
+  `sprintf("pid5sf_%03d", 1:100)`, `paste0("pid_", 1:25)` to
+  `sprintf("pid5bf_%02d", 1:25)` — names the Qualtrics uppercase variant, and
+  states the migration idiom for an `items =` selection. The uppercase claim was
+  checked against real exports: the three Qualtrics generators emit 220, 100 and
+  25 ids, `PID5_001`..`PID5_220`, `PID5SF_001`..`PID5SF_100` and
+  `PID5BF_01`..`PID5BF_25`. `R/data.R`'s four `\item{}` lines and the four
+  regenerated `man/` pages state the new names; no old-pattern name survives in
+  `R/` or `man/`.
+- **AC6 — pass.** `devtools::document()` exits 0 and leaves the tree clean.
+  `devtools::test()`: FAIL 0, WARN 0, SKIP 7, PASS 16431; the 7 skips are the
+  pre-existing merge-base and keying skips (`test-column-shape.R` x3,
+  `test-keying.R`, `test-scale-name-hitopsr.R` x3), none PID-5 related.
+  `devtools::check()`: Status OK, 0 errors, 0 warnings, 0 notes, so no NOTE is
+  added over the merge base.
 
 ### Consistency gate
 
-`cairn_validate.py` exit 0, all checks PASS; 24 advisories, all pre-existing
-(dangling D-ids inherited from the legacy migration, one references-staleness
-note on a page this milestone does not touch). The `release window` advisory did
-not fire. No `DESIGN.md` principle changed, so `cairn_impact.py` was skipped.
-Toolchain gate (`r-package` profile): `document()` no diff; generated files not
-hand-edited; `README.Rmd` untouched by the branch; `pkgdown::check_pkgdown()`
-reports no problems; `NEWS.md` carries the user-visible entry; `data-raw/` is
-already in `.Rbuildignore`; `check()` clean. Draft PR #86 CI was re-triggered by
-the review commit and is pending — not waited on, as the milestone returns.
+`cairn_validate.py` exit 0, every check PASS; two advisories, both pre-existing
+(23 dangling D-id tokens inherited from the legacy migration, one
+references-staleness note on a page this milestone does not touch). The `release
+window` advisory did not fire. No `DESIGN.md` principle changed, so
+`cairn_impact.py` was skipped. Toolchain gate (`r-package` profile):
+`document()` no diff; `NAMESPACE`, `man/` and `data/*.rda` regenerate rather than
+hand-edited; `README.Rmd`/`README.md` untouched by the branch;
+`pkgdown::check_pkgdown()` reports no problems; `NEWS.md` carries the
+user-visible entry; both new top-level files sit under `data-raw/`, already in
+`.Rbuildignore`; `check()` clean. Branch is in sync with `main`, which has not
+moved since the cut.
 
 ### Independent review
 
 Three fresh-context lenses, none having authored the work.
 
-- **[S] blame-history — no findings.** Verified that every modified line changes
-  only the string literal building column names, leaving the indices, values and
-  assertions each line was introduced for intact.
+- **[S] blame-history — no findings.** Ran `git blame`/`git log -L` on the
+  modified lines of every touched file: each changes only the string literal or
+  format spec that builds column names, leaving indices, values and assertions
+  intact, and nothing undoes a past commit's intent or contradicts a D-entry.
+  Confirmed `prefix = "pid_"` for score output is untouched (D-026).
 - **[S] prior-review record — no regressions.** The GitHub inline-comment probe
-  returned empty, so the archived `## Review` sections were the evidence base.
-  M077's two findings (migration examples covering only some old spellings; docs
-  mis-crediting the Qualtrics export with the lowercase pattern) are not
-  repeated. Raised F5 below as a shared observation.
-- **[O] diff-bug — five findings, no correctness bug in shipped code.**
+  (`gh api repos/jmgirard/hitop/pulls/comments?per_page=1`) returned empty, so
+  the archived `## Review` sections were the evidence base. M077's two findings
+  on this same class of work — migration examples covering only some old
+  spellings, and docs mis-crediting the Qualtrics export with the lowercase
+  pattern — are not repeated here.
+- **[O] diff-bug — eight findings, no correctness defect in shipped code or
+  data.** Independently reproduced the AC4 procedures, the pinned-object column
+  comparison, the `spec` guard, and the order-guard mutant kill.
 
 Findings, as reported and ranked, with disposition:
 
-1. **F1 — AC4's archive half lists member names, never member contents.** The six
-   `*_redcap.zip` files each hold one member, `instrument.csv`, whose field names
-   are never read; `git grep` cannot see inside the zip either, so the one binary
-   artifact recording item variable names is scanned by neither procedure. Of the
-   198 members counted, 192 are `.docx` internal part names and 6 are those
-   `instrument.csv` entries; the `.txt`/`.qsf` files hit the `tryCatch` and
-   contribute 0 silently (they are reached by the text search, so no gap there).
-   Confirmed at review by listing every archive. Not a live defect: the three
-   PID-5 `instrument.csv` files were unzipped and read at review and carry
-   `pid5_001`..`pid5_220`, `pid5sf_001`..`pid5sf_100` and `pid5bf_01`..`pid5bf_25`
-   with no old-pattern hit. The criterion says "lists the members", which the
-   script does, so this is criterion strength, not an AC failure. Disposition:
-   maintainer's call at the next gate.
-2. **F2 — the fixture rename removed the suite's only unpadded ascending probe.**
-   `test-item-guards.R` previously asserted `expect_no_warning(score_pid5(bf,
-   items = paste0("pid_", 1:25)))`; every probe now in the file is either
-   zero-padded or stops at 9. Reproduced independently at review: a mutant of
-   `warn_item_order()` comparing trailing digits lexicographically instead of
-   `as.integer()` survives `pid5bf_%02d` 1:25, `pid5_%03d` 1:220, `hsr_%03d` 1:10
-   and `q_1..q_3`, and is killed only by an unpadded run past item 9. A user with
-   unpadded columns would then get a spurious ascending-order warning with the
-   suite green. Disposition: fix-now candidate in the return.
-3. **F3 — the rename script's own assertions do not cover the `spec` rename.**
-   `strip()` in `data-raw/rename_pid_item_columns.R` drops `spec` from the
-   attribute comparison, and `names(spec$cols)[is_item] <- renamed` assumes
-   `spec$cols` matches `names(old)` in order and length. If that ever failed, the
-   new names would land on the wrong `spec` slots and all four `stopifnot()`s
-   would still pass. One added assertion closes it. Disposition: fix-now
-   candidate in the return.
-4. **F4 — nothing guards `ku_pid5sf`'s `spec` in CI.** The new tests check
-   `names()` only, and `check_pid_item_names.R` is run by no workflow
-   (`R-CMD-check.yaml` runs only `check_line_endings.R`). A regeneration from a
-   stale CSV would leave `names()` right and the suite green — the same defect
-   class the work log records finding by hand. Disposition: fix-now candidate or
-   follow-up row.
-5. **F5 — `data-raw/sim_pid.R` reimplements the padding rule.** `sprintf("%s%0*d",
-   prefix, nchar(as.character(n_items)), 1:n_items)` pads to the item *count*
-   where `item_names()` pads to the largest item *number*; the two agree only
-   because count equals max number on all three forms. Raised by both the [O] and
-   the prior-review lens. Disposition: style/DRY, follow-up.
+1. **F1 — `sim_pid()`'s new comment states a rule its code does not implement**
+   (`data-raw/sim_pid.R:3-14`). The comment says names are "zero-padded to the
+   width of that form's last item", but the code pads to
+   `nchar(as.character(n_items))`, the item *count*. These coincide on all three
+   PID-5 forms and diverge for any instrument whose largest item number exceeds
+   its count. The underlying code duplication is F5 of the first round, filed as
+   a candidate row — but the comment is new text in this diff asserting the
+   `item_names()` semantics the line does not have. Confirmed at review against
+   `git diff main..HEAD`.
+2. **F2 — AC4's procedures cannot see old names that are built rather than
+   spelled.** `paste0("pid_", 1:100)` matches neither the criterion's regex
+   (which needs a literal digit after the underscore) nor the binary sweep (which
+   reads shipped objects only). Confirmed nothing is wrong today: the only
+   built-form occurrences are the three intentional ones in the NEWS migration
+   text. The supplementary search the work log records was a one-off, not a
+   committed procedure, so the gap reopens on the next edit.
+3. **F3 — re-running the rename script would silently revert the four datasets
+   to the pinned commit** (`data-raw/rename_pid_item_columns.R:14-86`). It loads
+   each object from `d3ac6695`, renames, and `use_data(overwrite = TRUE)` with no
+   already-applied guard, so any future change to these datasets would be
+   discarded, values and all, by an innocent re-run. Same shape as M077's
+   `rename_item_columns.R`, so it is precedent-consistent; the risk compounds as
+   such scripts accumulate.
+4. **F4 — the sweep script counts non-zip files as scanned archives**
+   (`data-raw/check_pid_item_names.R:70-87`). Confirmed at review: of the 24
+   files in `inst/extdata`, 6 are `.txt`/`.qsf` and are not archives — they hit
+   the `tryCatch` and contribute 0 members — yet the summary prints "24
+   archives", implying they were searched. They are in fact covered by the text
+   search, so joint coverage is complete; the report line overstates what this
+   half did.
+5. **F5 — `strip()` exempts `spec` for all four objects, not just the readr
+   one** (`data-raw/rename_pid_item_columns.R:63-67`). AC2 exempts `spec` only
+   for `ku_pid5sf`. If a `sim_*` object ever carried one, the attribute-equality
+   assertion would skip it silently. Unreachable today — the three sims carry
+   only `class`, `row.names` and `names`.
+6. **F6 — dataset expectations hardcode the pad width instead of deriving it
+   from `item_names()`** (`tests/testthat/test-data-item-names.R:24,30,36` use
+   literal `%03d`/`%02d`). The datasets and the exports are each pinned to
+   literals separately, so nothing asserts the invariant the milestone exists
+   for: that the shipped names equal what the export generator writes. A change
+   to `item_names()`'s padding rule would move the exports and leave both suites
+   green.
+7. **F7 — nothing guards `data-raw/ku_pid5sf.csv`'s header.** The new `spec`
+   test catches a regeneration from a stale CSV, but not a CSV header that drifts
+   from the shipped object without a regeneration, and
+   `check_pid_item_names.R` is run by no workflow (`R-CMD-check.yaml` runs only
+   `check_line_endings.R`). Residue of the first round's F4.
+8. **F8 — dead aliases left in the guard tests**
+   (`tests/testthat/test-item-guards.R:47-50,79-80,125-126,143`). `bf <-
+   sim_pid5bf` and the three like it are now pure renames of package objects;
+   they were meaningful when they carried a `setNames()` call.
 
-### Outcome
+### Return floor
 
-Two criteria fail as written, so the milestone returns to `in-progress` rather
-than reaching the merge gate. Both failures are small and local: one comment
-line spelling a literal the criterion's own search forbids, and one missing old
-spelling in the NEWS entry. F2 and F3 are worth folding into the same return.
+No finding demonstrates an acceptance criterion failing, and none is a
+load-bearing defect in what the package does for its users: the rename is
+value-preserving and complete, and both procedures AC4 names are green over a
+domain shown non-empty. The milestone reaches the merge gate; dispositions
+below were taken there.
