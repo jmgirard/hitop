@@ -124,6 +124,7 @@ arguments, defaults and reports.
 - 2026-09-02: step-7 approval: PR #90 approved for merge.
 - 2026-09-02: CI wait hit the harness ceiling with the PR #90 run still pending (2 of 8 checks green, 6 pending); watcher stopped, PR marked ready and left unmerged, approval marker on disk. Resume with /milestone-review M083.
 - 2026-09-02: resume: PR #90 OPEN with every criterion evidenced and step-7 approval on record; re-entered at step 1 (main unmoved, branch in sync), merge chip re-posed and approved. step-7 approval: PR #90 approved for merge.
+- 2026-09-02: CI wait hit the harness ceiling a second time on the re-approved head (PR #90: pkgdown and line endings pass, 6 checks still pending); watcher stopped, PR left ready and unmerged, approval marker on disk naming PR #90. Resume with /milestone-review M083.
 - 2026-09-02: T1 done — `tests/testthat/test-label_pid5.R` written red (6 failures, all `could not find function "label_pid5"`); the suite is red by design until T2, so the profile's verify slot runs at T2.
 
 ## Decisions
