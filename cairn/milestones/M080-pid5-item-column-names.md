@@ -150,6 +150,7 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
 - 2026-09-02: candidate row filed for F5 by absorbing it into the standing M079 export-padding row; `ROADMAP.md` is at 59 lines and within 200 bytes of its budget, so the next hygiene pass has compression to do.
 - 2026-09-02: return closed, status review. `devtools::test()`: FAIL 0, WARN 0, SKIP 7, PASS 16431 (the same 7 pre-existing skips). `devtools::document()` leaves no diff. `R CMD check`: Status OK, 0 errors, 0 warnings, 0 notes. AC4's text search exits 1 with no output; the sweep script reports 0 hits over 24 object files and 198 archive members with all 198 bodies read.
 - 2026-09-02: second review round — all six criteria re-executed on fresh evidence and pass; consistency gate green (`cairn_validate` exit 0, `document()` no diff, `check()` 0/0/0, `pkgdown` clean). Three lenses: blame-history and prior-review no findings, [O] diff-bug eight, none an AC failure or a user-facing defect.
+- 2026-09-02: merge gate — Jeff chose fixing F1 and F4 on the branch (both branch-added prose claims overstating what the code does) and merging; F2, F3, F6 and F7 to candidate rows; F5 and F8 rejected as unreachable and cosmetic.
 
 ## Decisions
 
@@ -195,7 +196,8 @@ evidence gathered this session by command against the branch tip.
 - **AC4 — pass.** `git grep -nE 'pid_[0-9]' -- . ':!cairn/'` exits 1 with no
   output at the branch tip, and returns 18 hits across 11 files at `d3ac6695`.
   `data-raw/check_pid_item_names.R` reports 0 hits over 24 object files and 198
-  archive members across 24 archives, all 198 member bodies read; the same script
+  archive members across 18 archives, all 198 member bodies read (the other 6
+  files in `inst/extdata` are not archives and are left to the text search); the same script
   run against the pre-rename tree (extracted with `git archive d3ac6695`) reports
   445 hits and exits non-zero. Neither procedure passes over an empty domain. The
   archive-content half is separately shown non-empty: with the pattern swapped to
@@ -305,10 +307,23 @@ Findings, as reported and ranked, with disposition:
    sim_pid5bf` and the three like it are now pure renames of package objects;
    they were meaningful when they carried a `setNames()` call.
 
-### Return floor
+### Return floor and dispositions
 
 No finding demonstrates an acceptance criterion failing, and none is a
 load-bearing defect in what the package does for its users: the rename is
 value-preserving and complete, and both procedures AC4 names are green over a
-domain shown non-empty. The milestone reaches the merge gate; dispositions
-below were taken there.
+domain shown non-empty. The milestone reached the merge gate. Dispositions taken
+there by the maintainer:
+
+- **F1, F4 — fixed now**, both branch-added prose overstating what code does.
+  `data-raw/sim_pid.R`'s comment now names the width it actually uses, the item
+  count, and says where that parts from `item_names()`. The sweep script now
+  counts the 6 non-archive files in `inst/extdata` separately and reports 18
+  archives, not 24; re-run after the fix it reports 0 hits at the branch tip and
+  445 against the pre-rename tree, and AC4's text search still exits 1 with no
+  output.
+- **F2, F3, F6, F7 — follow-up**, filed as candidate rows.
+- **F5, F8 — rejected.** F5 is unreachable: the three `sim_*` objects carry only
+  `class`, `row.names` and `names`, so `strip()`'s blanket `spec` exemption can
+  never skip a live attribute. F8 is a style nitpick on lines the milestone did
+  not introduce a defect into.

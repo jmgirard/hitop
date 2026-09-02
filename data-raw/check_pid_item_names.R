@@ -59,12 +59,22 @@ raw_member <- function(z, m) {
   out
 }
 
-archives <- list.files("inst/extdata", full.names = TRUE)
+# Not every file here is a zip: the Qualtrics exports are plain `.txt`/`.qsf`,
+# which `unzip()` cannot open. Those are reached by the text search instead, so
+# they are counted separately rather than reported as archives this pass read.
+bundles <- list.files("inst/extdata", full.names = TRUE)
+archives <- 0L
+non_archives <- 0L
 members <- 0L
 read_members <- 0L
-for (z in archives) {
+for (z in bundles) {
   mem <- tryCatch(as.character(utils::unzip(z, list = TRUE)$Name),
-                  error = function(e) character(0))
+                  error = function(e) NULL)
+  if (is.null(mem)) {
+    non_archives <- non_archives + 1L
+    next
+  }
+  archives <- archives + 1L
   members <- members + length(mem)
   bad <- grep(pattern, mem, value = TRUE)
   if (length(bad)) {
@@ -82,6 +92,7 @@ for (z in archives) {
 }
 
 cat(sprintf(paste0("scanned %d object files and %d members across %d archives ",
-                   "(%d member bodies read); %d hits\n"),
-            length(files), members, length(archives), read_members, hits))
+                   "(%d member bodies read); %d file(s) in inst/extdata are not ",
+                   "archives and were left to the text search; %d hits\n"),
+            length(files), members, archives, read_members, non_archives, hits))
 if (hits > 0L) stop("old-pattern PID-5 item names are still shipped")
