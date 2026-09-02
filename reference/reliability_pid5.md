@@ -63,8 +63,10 @@ reliability_pid5(
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
 row per scale and columns `Scale` (the scale's canonical display name,
-as the instrument's keying table spells it), `nItems`, and (when
-requested) `alpha` and `omega`.
+as the instrument's keying table spells it), `camelCase` (the stem that
+names the scale's column in the matching `score_*()` output, read from
+the same keying-table row), `nItems` (integer), and (when requested)
+`alpha` and `omega`.
 
 ## Details
 
@@ -81,18 +83,18 @@ uninstalled lavaan) is returned as `NA` rather than aborting the call.
 ``` r
 # Facet-level reliability for the full PID-5 (alpha only)
 reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)
-#> # A tibble: 25 × 3
-#>    Scale                  nItems   alpha
-#>    <chr>                   <int>   <dbl>
-#>  1 Anhedonia                   8 -0.211 
-#>  2 Suspiciousness              7 -0.211 
-#>  3 Risk Taking                14 -0.0128
-#>  4 Impulsivity                 6  0.141 
-#>  5 Eccentricity               13  0.0554
-#>  6 Distractibility             9 -0.154 
-#>  7 Restricted Affectivity      7 -0.144 
-#>  8 Submissiveness              4 -0.194 
-#>  9 Withdrawal                 10 -0.0290
-#> 10 Callousness                14  0.0147
+#> # A tibble: 25 × 4
+#>    Scale                  camelCase             nItems   alpha
+#>    <chr>                  <chr>                  <int>   <dbl>
+#>  1 Anhedonia              anhedonia                  8 -0.211 
+#>  2 Suspiciousness         suspiciousness             7 -0.211 
+#>  3 Risk Taking            riskTaking                14 -0.0128
+#>  4 Impulsivity            impulsivity                6  0.141 
+#>  5 Eccentricity           eccentricity              13  0.0554
+#>  6 Distractibility        distractibility            9 -0.154 
+#>  7 Restricted Affectivity restrictedAffectivity      7 -0.144 
+#>  8 Submissiveness         submissiveness             4 -0.194 
+#>  9 Withdrawal             withdrawal                10 -0.0290
+#> 10 Callousness            callousness               14  0.0147
 #> # ℹ 15 more rows
 ```

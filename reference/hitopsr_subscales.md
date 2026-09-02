@@ -27,7 +27,7 @@ rows and 6 columns:
 
 - nItems:
 
-  The number of items in the subscale
+  The number of items in the subscale (integer)
 
 - itemNumbers:
 
@@ -43,7 +43,7 @@ rows and 6 columns:
 hitopsr_subscales
 #> # A tibble: 17 × 6
 #>    Subscale               Scale            itemdata nItems itemNumbers camelCase
-#>    <chr>                  <chr>            <list>    <dbl> <named lis> <chr>    
+#>    <chr>                  <chr>            <list>    <int> <named lis> <chr>    
 #>  1 Affective Lability     Emotionality     <tibble>      3 <dbl [3]>   affectiv…
 #>  2 Angry Hostility        Emotionality     <tibble>      4 <dbl [4]>   angryHos…
 #>  3 Anhedonia              Distress-Dyspho… <tibble>      3 <dbl [3]>   anhedonia

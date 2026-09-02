@@ -21,7 +21,7 @@ hitopsr_devstats
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 93
 rows and 8 columns:
 
-- scale:
+- Scale:
 
   The name of the scale or subscale. Matches
   [hitopsr_scales](https://jmgirard.github.io/hitop/reference/hitopsr_scales.md)\$Scale
@@ -41,7 +41,7 @@ rows and 8 columns:
 
 - nItems:
 
-  The number of items in the scale or subscale
+  The number of items in the scale or subscale (integer)
 
 - reliability:
 
@@ -77,7 +77,7 @@ reads this table.
 ``` r
 hitopsr_devstats
 #> # A tibble: 93 × 8
-#>    scale          camelCase type  nItems reliability reliabilityType  mean    sd
+#>    Scale          camelCase type  nItems reliability reliabilityType  mean    sd
 #>    <chr>          <chr>     <chr>  <int>       <dbl> <chr>           <dbl> <dbl>
 #>  1 Agoraphobia    agorapho… scale      5        0.86 alpha            1.62  0.77
 #>  2 Antisocial Be… antisoci… scale      8        0.86 alpha            1.07  0.25

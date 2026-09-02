@@ -23,7 +23,7 @@ rows and 5 columns:
 
 - nItems:
 
-  The number of items in the scale
+  The number of items in the scale (integer)
 
 - itemNumbers:
 
@@ -39,7 +39,7 @@ rows and 5 columns:
 hitopsr_scales
 #> # A tibble: 76 × 5
 #>    Scale                itemdata         nItems itemNumbers  camelCase          
-#>    <chr>                <list>            <dbl> <named list> <chr>              
+#>    <chr>                <list>            <int> <named list> <chr>              
 #>  1 Agoraphobia          <tibble [5 × 4]>      5 <dbl [5]>    agoraphobia        
 #>  2 Antisocial Behavior  <tibble [8 × 4]>      8 <dbl [8]>    antisocialBehavior 
 #>  3 Appearance Focus     <tibble [5 × 4]>      5 <dbl [5]>    appearanceFocus    

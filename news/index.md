@@ -53,6 +53,25 @@
 
 ### Breaking changes
 
+- **The per-scale tables the package ships or returns now join on one
+  column shape.** `hitopsr_devstats` and `hitopbr_devstats` name their
+  display-name column `Scale`, as
+  [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md),
+  the `reliability_*()` family and every keying table already spelled
+  it; it was `scale`. And
+  [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  and
+  [`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md)
+  return a `camelCase` column, holding the stem that names the scale’s
+  column in the matching `score_*()` output, read from the keying table
+  on the same row as `Scale`; it sits second, between `Scale` and
+  `nItems`, so `nItems`, `alpha` and `omega` each move one position to
+  the right. Code reading `hitopsr_devstats$scale` or selecting
+  reliability columns by position must migrate; no reliability, interval
+  or reference value moves. No deprecation period precedes either
+  change.
+
 - **The HiTOP example datasets and the item-naming helpers now use one
   item column pattern, the one the package’s own REDCap export writes**
   (the Qualtrics export writes the same pattern with an uppercase stem,
@@ -106,6 +125,19 @@
   corrected item lists.
 
 ### Improvements and fixes
+
+- **`nItems` is an integer in every shipped per-scale table.**
+  `pid_scales` (each of its three elements), `hitopsr_scales`,
+  `hitopsr_subscales` and `hitopbr_scales` stored the item count as a
+  double where
+  [`available_scales()`](https://jmgirard.github.io/hitop/reference/available_scales.md),
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  and the reliability family returned an integer, so
+  [`identical()`](https://rdrr.io/r/base/identical.html) across that
+  boundary was `FALSE` on type alone. The tables are rebuilt with an
+  integer count and nothing else in them changed;
+  `identical(available_scales()$nItems, hitopsr_scales$nItems)` now
+  holds.
 
 - **Each REDCap export now stages its data dictionary in a directory of
   its own.** Every `generate_redcap_*()` call wrote that dictionary to

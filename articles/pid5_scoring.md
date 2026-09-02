@@ -210,12 +210,14 @@ unit-weighted sums. Both assume the scale is essentially unidimensional;
 
 We estimate reliability with the
 [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md)
-function, which returns a tibble with one row per scale and columns for
-the number of items and the requested coefficients. By default it
-computes both `alpha` and `omega`; for the latter, we will need the
-**lavaan** package installed (set `omega = FALSE` to skip it). Note
-that, because this is naively simulated data, we would expect the
-reliability in this example to be poor.
+function, which returns a tibble with one row per scale: its printed
+name (`Scale`), the stem that names its column in the scored output
+(`camelCase`), the number of items (`nItems`), and the requested
+coefficients. By default it computes both `alpha` and `omega`; for the
+latter, we will need the **lavaan** package installed (set
+`omega = FALSE` to skip it). Note that, because this is naively
+simulated data, we would expect the reliability in this example to be
+poor.
 
 ``` r
 
@@ -224,19 +226,19 @@ reliability_pid5(
   items = sprintf("pid_%d", 1:220),
   version = "FULL"
 )
-#> # A tibble: 25 × 4
-#>    Scale                  nItems   alpha    omega
-#>    <chr>                   <int>   <dbl>    <dbl>
-#>  1 Anhedonia                   8 -0.211  NA      
-#>  2 Suspiciousness              7 -0.211   0.0411 
-#>  3 Risk Taking                14 -0.0128  0.00697
-#>  4 Impulsivity                 6  0.141  NA      
-#>  5 Eccentricity               13  0.0554  0.152  
-#>  6 Distractibility             9 -0.154   0.00807
-#>  7 Restricted Affectivity      7 -0.144  NA      
-#>  8 Submissiveness              4 -0.194   0.116  
-#>  9 Withdrawal                 10 -0.0290 NA      
-#> 10 Callousness                14  0.0147  0.0279 
+#> # A tibble: 25 × 5
+#>    Scale                  camelCase             nItems   alpha    omega
+#>    <chr>                  <chr>                  <int>   <dbl>    <dbl>
+#>  1 Anhedonia              anhedonia                  8 -0.211  NA      
+#>  2 Suspiciousness         suspiciousness             7 -0.211   0.0411 
+#>  3 Risk Taking            riskTaking                14 -0.0128  0.00697
+#>  4 Impulsivity            impulsivity                6  0.141  NA      
+#>  5 Eccentricity           eccentricity              13  0.0554  0.152  
+#>  6 Distractibility        distractibility            9 -0.154   0.00807
+#>  7 Restricted Affectivity restrictedAffectivity      7 -0.144  NA      
+#>  8 Submissiveness         submissiveness             4 -0.194   0.116  
+#>  9 Withdrawal             withdrawal                10 -0.0290 NA      
+#> 10 Callousness            callousness               14  0.0147  0.0279 
 #> # ℹ 15 more rows
 ```
 

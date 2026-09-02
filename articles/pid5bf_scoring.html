@@ -180,8 +180,10 @@ typically provides a more accurate reliability estimate for
 unit-weighted sums. Both assume the scale is essentially unidimensional;
 α and ω coincide when tau-equivalence holds.</p>
 <p>We estimate reliability with the <code><a href="../reference/reliability_pid5.html">reliability_pid5()</a></code>
-function, which returns a tibble with one row per scale and columns for
-the number of items and the requested coefficients. By default it
+function, which returns a tibble with one row per scale: its printed
+name (<code>Scale</code>), the stem that names its column in the scored
+output (<code>camelCase</code>), the number of items
+(<code>nItems</code>), and the requested coefficients. By default it
 computes both <code>alpha</code> and <code>omega</code>; for the latter,
 we will need the <strong>lavaan</strong> package installed (set
 <code>omega = FALSE</code> to skip it). Note that, because this is
@@ -193,15 +195,15 @@ to be poor.</p>
 <span>  items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>,</span>
 <span>  version <span class="op">=</span> <span class="st">"BF"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
-<span><span class="co">#&gt;   Scale                nItems   alpha    omega</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Disinhibition             5 -<span style="color: #BB0000;">0.260</span>  0.001<span style="text-decoration: underline;">11</span> </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Detachment                5  0.238  0.365   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Psychoticism              5  0.065<span style="text-decoration: underline;">8</span> 0.086<span style="text-decoration: underline;">3</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Negative affectivity      5 -<span style="color: #BB0000;">0.085</span><span style="color: #BB0000; text-decoration: underline;">2</span> 0.000<span style="text-decoration: underline;">422</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Antagonism                5 -<span style="color: #BB0000;">0.096</span><span style="color: #BB0000; text-decoration: underline;">7</span> 0.105   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Total                    25 -<span style="color: #BB0000;">0.071</span><span style="color: #BB0000; text-decoration: underline;">9</span> 0.057<span style="text-decoration: underline;">5</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 5</span></span></span>
+<span><span class="co">#&gt;   Scale                camelCase           nItems   alpha    omega</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Disinhibition        disinhibition            5 -<span style="color: #BB0000;">0.260</span>  0.001<span style="text-decoration: underline;">11</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Detachment           detachment               5  0.238  0.365   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Psychoticism         psychoticism             5  0.065<span style="text-decoration: underline;">8</span> 0.086<span style="text-decoration: underline;">3</span>  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Negative affectivity negativeAffectivity      5 -<span style="color: #BB0000;">0.085</span><span style="color: #BB0000; text-decoration: underline;">2</span> 0.000<span style="text-decoration: underline;">422</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Antagonism           antagonism               5 -<span style="color: #BB0000;">0.096</span><span style="color: #BB0000; text-decoration: underline;">7</span> 0.105   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Total                total                   25 -<span style="color: #BB0000;">0.071</span><span style="color: #BB0000; text-decoration: underline;">9</span> 0.057<span style="text-decoration: underline;">5</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="normative-scores">Normative Scores<a class="anchor" aria-label="anchor" href="#normative-scores"></a>

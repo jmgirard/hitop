@@ -83,12 +83,14 @@ unit-weighted sums. Both assume the scale is essentially unidimensional;
 
 We estimate reliability with the
 [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md)
-function, which returns a tibble with one row per scale and columns for
-the number of items and the requested coefficients. By default it
-computes both `alpha` and `omega`; for the latter, we will need the
-**lavaan** package installed (set `omega = FALSE` to skip it). Note
-that, because this is naively simulated data, we would expect the
-reliability in this example to be poor.
+function, which returns a tibble with one row per scale: its printed
+name (`Scale`), the stem that names its column in the scored output
+(`camelCase`), the number of items (`nItems`), and the requested
+coefficients. By default it computes both `alpha` and `omega`; for the
+latter, we will need the **lavaan** package installed (set
+`omega = FALSE` to skip it). Note that, because this is naively
+simulated data, we would expect the reliability in this example to be
+poor.
 
 ``` r
 
@@ -97,15 +99,15 @@ reliability_pid5(
   items = 1:25,
   version = "BF"
 )
-#> # A tibble: 6 × 4
-#>   Scale                nItems   alpha    omega
-#>   <chr>                 <int>   <dbl>    <dbl>
-#> 1 Disinhibition             5 -0.260  0.00111 
-#> 2 Detachment                5  0.238  0.365   
-#> 3 Psychoticism              5  0.0658 0.0863  
-#> 4 Negative affectivity      5 -0.0852 0.000422
-#> 5 Antagonism                5 -0.0967 0.105   
-#> 6 Total                    25 -0.0719 0.0575
+#> # A tibble: 6 × 5
+#>   Scale                camelCase           nItems   alpha    omega
+#>   <chr>                <chr>                <int>   <dbl>    <dbl>
+#> 1 Disinhibition        disinhibition            5 -0.260  0.00111 
+#> 2 Detachment           detachment               5  0.238  0.365   
+#> 3 Psychoticism         psychoticism             5  0.0658 0.0863  
+#> 4 Negative affectivity negativeAffectivity      5 -0.0852 0.000422
+#> 5 Antagonism           antagonism               5 -0.0967 0.105   
+#> 6 Total                total                   25 -0.0719 0.0575
 ```
 
 ## Normative Scores

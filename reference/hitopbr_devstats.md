@@ -21,7 +21,7 @@ hitopbr_devstats
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 8
 rows and 8 columns:
 
-- scale:
+- Scale:
 
   The name of the scale. Matches
   [hitopbr_scales](https://jmgirard.github.io/hitop/reference/hitopbr_scales.md)\$Scale.
@@ -40,7 +40,7 @@ rows and 8 columns:
 
 - nItems:
 
-  The number of items in the scale
+  The number of items in the scale (integer)
 
 - reliability:
 
@@ -95,7 +95,7 @@ Table 1 prints for each.
 ``` r
 hitopbr_devstats
 #> # A tibble: 8 × 8
-#>   scale           camelCase type  nItems reliability reliabilityType  mean    sd
+#>   Scale           camelCase type  nItems reliability reliabilityType  mean    sd
 #>   <chr>           <chr>     <chr>  <int>       <dbl> <chr>           <dbl> <dbl>
 #> 1 Antagonism      antagoni… scale      9        0.82 alpha            1.42  0.45
 #> 2 Detachment      detachme… scale      5        0.86 alpha            2.13  0.88

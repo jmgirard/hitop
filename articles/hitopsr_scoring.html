@@ -326,8 +326,10 @@ typically provides a more accurate reliability estimate for
 unit-weighted sums. Both assume the scale is essentially unidimensional;
 α and ω coincide when tau-equivalence holds.</p>
 <p>We estimate reliability with the <code><a href="../reference/reliability_hitopsr.html">reliability_hitopsr()</a></code>
-function, which returns a tibble with one row per scale and columns for
-the number of items and the requested coefficients. By default it
+function, which returns a tibble with one row per scale: its printed
+name (<code>Scale</code>), the stem that names its column in the scored
+output (<code>camelCase</code>), the number of items
+(<code>nItems</code>), and the requested coefficients. By default it
 computes both <code>alpha</code> and <code>omega</code>; for the latter,
 we will need the <strong>lavaan</strong> package installed (set
 <code>omega = FALSE</code> to skip it).</p>
@@ -336,19 +338,19 @@ we will need the <strong>lavaan</strong> package installed (set
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
 <span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 76 × 4</span></span></span>
-<span><span class="co">#&gt;    Scale                nItems alpha  omega</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Agoraphobia               5 0.419  0.431</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Antisocial Behavior       8 0.545  0.553</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Appearance Focus          5 0.394  0.436</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Appetite Loss             3 0.367 <span style="color: #BB0000;">NA</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Binge Eating              3 0.110  0.218</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Bodily Distress           6 0.396  0.469</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Body Dissatisfaction      4 0.294 <span style="color: #BB0000;">NA</span>    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Callousness               6 0.482  0.490</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Checking                  5 0.601  0.605</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Cleaning                  6 0.480  0.526</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 76 × 5</span></span></span>
+<span><span class="co">#&gt;    Scale                camelCase           nItems alpha  omega</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Agoraphobia          agoraphobia              5 0.419  0.431</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Antisocial Behavior  antisocialBehavior       8 0.545  0.553</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Appearance Focus     appearanceFocus          5 0.394  0.436</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Appetite Loss        appetiteLoss             3 0.367 <span style="color: #BB0000;">NA</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Binge Eating         bingeEating              3 0.110  0.218</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> Bodily Distress      bodilyDistress           6 0.396  0.469</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> Body Dissatisfaction bodyDissatisfaction      4 0.294 <span style="color: #BB0000;">NA</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> Callousness          callousness              6 0.482  0.490</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Checking             checking                 5 0.601  0.605</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Cleaning             cleaning                 6 0.480  0.526</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 66 more rows</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -427,7 +429,7 @@ Table 1 of the HiTOP-SR introduction paper.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hitopsr_devstats</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 93 × 8</span></span></span>
-<span><span class="co">#&gt;    scale          camelCase type  nItems reliability reliabilityType  mean    sd</span></span>
+<span><span class="co">#&gt;    Scale          camelCase type  nItems reliability reliabilityType  mean    sd</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Agoraphobia    agorapho… scale      5        0.86 alpha            1.62  0.77</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Antisocial Be… antisoci… scale      8        0.86 alpha            1.07  0.25</span></span>

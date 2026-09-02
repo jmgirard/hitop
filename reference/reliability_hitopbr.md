@@ -45,8 +45,10 @@ reliability_hitopbr(data, items, srange = c(1, 4), alpha = TRUE, omega = TRUE)
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
 row per scale and columns `Scale` (the scale's canonical display name,
-as the instrument's keying table spells it), `nItems`, and (when
-requested) `alpha` and `omega`.
+as the instrument's keying table spells it), `camelCase` (the stem that
+names the scale's column in the matching `score_*()` output, read from
+the same keying-table row), `nItems` (integer), and (when requested)
+`alpha` and `omega`.
 
 ## Details
 
@@ -65,15 +67,15 @@ alongside the six base spectra.
 ``` r
 # Per-scale alpha for the HiTOP-BR
 reliability_hitopbr(sim_hitopbr, items = 1:45, omega = FALSE)
-#> # A tibble: 8 × 3
-#>   Scale            nItems    alpha
-#>   <chr>             <int>    <dbl>
-#> 1 Antagonism            9 -0.160  
-#> 2 Detachment            5  0.00188
-#> 3 Disinhibition         9  0.145  
-#> 4 Internalizing         8  0.0892 
-#> 5 Somatoform            8  0.0527 
-#> 6 Thought Disorder      6  0.00754
-#> 7 Externalizing        10  0.145  
-#> 8 p-Factor             12 -0.111  
+#> # A tibble: 8 × 4
+#>   Scale            camelCase       nItems    alpha
+#>   <chr>            <chr>            <int>    <dbl>
+#> 1 Antagonism       antagonism           9 -0.160  
+#> 2 Detachment       detachment           5  0.00188
+#> 3 Disinhibition    disinhibition        9  0.145  
+#> 4 Internalizing    internalizing        8  0.0892 
+#> 5 Somatoform       somatoform           8  0.0527 
+#> 6 Thought Disorder thoughtDisorder      6  0.00754
+#> 7 Externalizing    externalizing       10  0.145  
+#> 8 p-Factor         pFactor             12 -0.111  
 ```

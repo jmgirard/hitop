@@ -148,7 +148,9 @@ package). (default = <code>TRUE</code>)</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with one row per scale and columns <code>Scale</code>
 (the scale's canonical display name, as the instrument's keying table spells
-it), <code>nItems</code>, and (when requested) <code>alpha</code> and <code>omega</code>.</p>
+it), <code>camelCase</code> (the stem that names the scale's column in the matching
+<code>score_*()</code> output, read from the same keying-table row), <code>nItems</code>
+(integer), and (when requested) <code>alpha</code> and <code>omega</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -163,19 +165,19 @@ rather than aborting the call.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Facet-level reliability for the full PID-5 (alpha only)</span></span></span>
 <span class="r-in"><span><span class="fu">reliability_pid5</span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, omega <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 25 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Scale                  nItems   alpha</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Anhedonia                   8 -<span style="color: #BB0000;">0.211</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Suspiciousness              7 -<span style="color: #BB0000;">0.211</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Risk Taking                14 -<span style="color: #BB0000;">0.012</span><span style="color: #BB0000; text-decoration: underline;">8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Impulsivity                 6  0.141 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Eccentricity               13  0.055<span style="text-decoration: underline;">4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Distractibility             9 -<span style="color: #BB0000;">0.154</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Restricted Affectivity      7 -<span style="color: #BB0000;">0.144</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Submissiveness              4 -<span style="color: #BB0000;">0.194</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Withdrawal                 10 -<span style="color: #BB0000;">0.029</span><span style="color: #BB0000; text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Callousness                14  0.014<span style="text-decoration: underline;">7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 25 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Scale                  camelCase             nItems   alpha</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Anhedonia              anhedonia                  8 -<span style="color: #BB0000;">0.211</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Suspiciousness         suspiciousness             7 -<span style="color: #BB0000;">0.211</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Risk Taking            riskTaking                14 -<span style="color: #BB0000;">0.012</span><span style="color: #BB0000; text-decoration: underline;">8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Impulsivity            impulsivity                6  0.141 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Eccentricity           eccentricity              13  0.055<span style="text-decoration: underline;">4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Distractibility        distractibility            9 -<span style="color: #BB0000;">0.154</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Restricted Affectivity restrictedAffectivity      7 -<span style="color: #BB0000;">0.144</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Submissiveness         submissiveness             4 -<span style="color: #BB0000;">0.194</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Withdrawal             withdrawal                10 -<span style="color: #BB0000;">0.029</span><span style="color: #BB0000; text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Callousness            callousness               14  0.014<span style="text-decoration: underline;">7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 15 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

@@ -298,7 +298,7 @@ Spectra block of Table 1 of the HiTOP-SR introduction paper.
 
 hitopbr_devstats
 #> # A tibble: 8 × 8
-#>   scale           camelCase type  nItems reliability reliabilityType  mean    sd
+#>   Scale           camelCase type  nItems reliability reliabilityType  mean    sd
 #>   <chr>           <chr>     <chr>  <int>       <dbl> <chr>           <dbl> <dbl>
 #> 1 Antagonism      antagoni… scale      9        0.82 alpha            1.42  0.45
 #> 2 Detachment      detachme… scale      5        0.86 alpha            2.13  0.88
@@ -352,10 +352,12 @@ unit-weighted sums. Both assume the scale is essentially unidimensional;
 
 We estimate reliability with the
 [`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md)
-function, which returns a tibble with one row per scale and columns for
-the number of items and the requested coefficients. By default it
-computes both `alpha` and `omega`; for the latter, we will need the
-**lavaan** package installed (set `omega = FALSE` to skip it).
+function, which returns a tibble with one row per scale: its printed
+name (`Scale`), the stem that names its column in the scored output
+(`camelCase`), the number of items (`nItems`), and the requested
+coefficients. By default it computes both `alpha` and `omega`; for the
+latter, we will need the **lavaan** package installed (set
+`omega = FALSE` to skip it).
 
 ``` r
 
@@ -363,17 +365,17 @@ reliability_hitopbr(
   data = ku_hitopbr,
   items = sprintf("hbr_%02d", 1:45)
 )
-#> # A tibble: 8 × 4
-#>   Scale            nItems alpha omega
-#>   <chr>             <int> <dbl> <dbl>
-#> 1 Antagonism            9 0.805 0.811
-#> 2 Detachment            5 0.801 0.792
-#> 3 Disinhibition         9 0.807 0.810
-#> 4 Internalizing         8 0.834 0.836
-#> 5 Somatoform            8 0.825 0.832
-#> 6 Thought Disorder      6 0.731 0.739
-#> 7 Externalizing        10 0.817 0.818
-#> 8 p-Factor             12 0.804 0.811
+#> # A tibble: 8 × 5
+#>   Scale            camelCase       nItems alpha omega
+#>   <chr>            <chr>            <int> <dbl> <dbl>
+#> 1 Antagonism       antagonism           9 0.805 0.811
+#> 2 Detachment       detachment           5 0.801 0.792
+#> 3 Disinhibition    disinhibition        9 0.807 0.810
+#> 4 Internalizing    internalizing        8 0.834 0.836
+#> 5 Somatoform       somatoform           8 0.825 0.832
+#> 6 Thought Disorder thoughtDisorder      6 0.731 0.739
+#> 7 Externalizing    externalizing       10 0.817 0.818
+#> 8 p-Factor         pFactor             12 0.804 0.811
 ```
 
 ## Labelling Columns

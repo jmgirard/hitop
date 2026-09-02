@@ -196,10 +196,12 @@ unit-weighted sums. Both assume the scale is essentially unidimensional;
 
 We estimate reliability with the
 [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md)
-function, which returns a tibble with one row per scale and columns for
-the number of items and the requested coefficients. By default it
-computes both `alpha` and `omega`; for the latter, we will need the
-**lavaan** package installed (set `omega = FALSE` to skip it).
+function, which returns a tibble with one row per scale: its printed
+name (`Scale`), the stem that names its column in the scored output
+(`camelCase`), the number of items (`nItems`), and the requested
+coefficients. By default it computes both `alpha` and `omega`; for the
+latter, we will need the **lavaan** package installed (set
+`omega = FALSE` to skip it).
 
 ``` r
 
@@ -208,19 +210,19 @@ reliability_pid5(
   items = sprintf("pid_%d", 1:100),
   version = "SF"
 )
-#> # A tibble: 25 × 4
-#>    Scale                    nItems alpha omega
-#>    <chr>                     <int> <dbl> <dbl>
-#>  1 Suspiciousness                4 0.663 0.665
-#>  2 Impulsivity                   4 0.804 0.808
-#>  3 Submissiveness                4 0.818 0.818
-#>  4 Callousness                   4 0.816 0.816
-#>  5 Anhedonia                     4 0.864 0.865
-#>  6 Eccentricity                  4 0.832 0.833
-#>  7 Hostility                     4 0.748 0.762
-#>  8 Risk Taking                   4 0.782 0.785
-#>  9 Grandiosity                   4 0.763 0.772
-#> 10 Perceptual Dysregulation      4 0.690 0.689
+#> # A tibble: 25 × 5
+#>    Scale                    camelCase               nItems alpha omega
+#>    <chr>                    <chr>                    <int> <dbl> <dbl>
+#>  1 Suspiciousness           suspiciousness               4 0.663 0.665
+#>  2 Impulsivity              impulsivity                  4 0.804 0.808
+#>  3 Submissiveness           submissiveness               4 0.818 0.818
+#>  4 Callousness              callousness                  4 0.816 0.816
+#>  5 Anhedonia                anhedonia                    4 0.864 0.865
+#>  6 Eccentricity             eccentricity                 4 0.832 0.833
+#>  7 Hostility                hostility                    4 0.748 0.762
+#>  8 Risk Taking              riskTaking                   4 0.782 0.785
+#>  9 Grandiosity              grandiosity                  4 0.763 0.772
+#> 10 Perceptual Dysregulation perceptualDysregulation      4 0.690 0.689
 #> # ℹ 15 more rows
 ```
 

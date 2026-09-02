@@ -239,10 +239,12 @@ unit-weighted sums. Both assume the scale is essentially unidimensional;
 
 We estimate reliability with the
 [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
-function, which returns a tibble with one row per scale and columns for
-the number of items and the requested coefficients. By default it
-computes both `alpha` and `omega`; for the latter, we will need the
-**lavaan** package installed (set `omega = FALSE` to skip it).
+function, which returns a tibble with one row per scale: its printed
+name (`Scale`), the stem that names its column in the scored output
+(`camelCase`), the number of items (`nItems`), and the requested
+coefficients. By default it computes both `alpha` and `omega`; for the
+latter, we will need the **lavaan** package installed (set
+`omega = FALSE` to skip it).
 
 ``` r
 
@@ -250,19 +252,19 @@ reliability_hitopsr(
   data = ku_hitopsr,
   items = sprintf("hsr_%03d", 1:405)
 )
-#> # A tibble: 76 × 4
-#>    Scale                nItems alpha  omega
-#>    <chr>                 <int> <dbl>  <dbl>
-#>  1 Agoraphobia               5 0.419  0.431
-#>  2 Antisocial Behavior       8 0.545  0.553
-#>  3 Appearance Focus          5 0.394  0.436
-#>  4 Appetite Loss             3 0.367 NA    
-#>  5 Binge Eating              3 0.110  0.218
-#>  6 Bodily Distress           6 0.396  0.469
-#>  7 Body Dissatisfaction      4 0.294 NA    
-#>  8 Callousness               6 0.482  0.490
-#>  9 Checking                  5 0.601  0.605
-#> 10 Cleaning                  6 0.480  0.526
+#> # A tibble: 76 × 5
+#>    Scale                camelCase           nItems alpha  omega
+#>    <chr>                <chr>                <int> <dbl>  <dbl>
+#>  1 Agoraphobia          agoraphobia              5 0.419  0.431
+#>  2 Antisocial Behavior  antisocialBehavior       8 0.545  0.553
+#>  3 Appearance Focus     appearanceFocus          5 0.394  0.436
+#>  4 Appetite Loss        appetiteLoss             3 0.367 NA    
+#>  5 Binge Eating         bingeEating              3 0.110  0.218
+#>  6 Bodily Distress      bodilyDistress           6 0.396  0.469
+#>  7 Body Dissatisfaction bodyDissatisfaction      4 0.294 NA    
+#>  8 Callousness          callousness              6 0.482  0.490
+#>  9 Checking             checking                 5 0.601  0.605
+#> 10 Cleaning             cleaning                 6 0.480  0.526
 #> # ℹ 66 more rows
 ```
 
@@ -352,7 +354,7 @@ HiTOP-SR introduction paper.
 
 hitopsr_devstats
 #> # A tibble: 93 × 8
-#>    scale          camelCase type  nItems reliability reliabilityType  mean    sd
+#>    Scale          camelCase type  nItems reliability reliabilityType  mean    sd
 #>    <chr>          <chr>     <chr>  <int>       <dbl> <chr>           <dbl> <dbl>
 #>  1 Agoraphobia    agorapho… scale      5        0.86 alpha            1.62  0.77
 #>  2 Antisocial Be… antisoci… scale      8        0.86 alpha            1.07  0.25

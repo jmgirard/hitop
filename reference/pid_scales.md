@@ -34,7 +34,7 @@ row per scale and 5 columns:
 
 - nItems:
 
-  The number of items in the scale
+  The number of items in the scale (integer)
 
 - itemNumbers:
 
@@ -51,7 +51,7 @@ row per scale and 5 columns:
 pid_scales[["BF"]]
 #> # A tibble: 6 × 5
 #>   Domain               itemdata          nItems itemNumbers  camelCase          
-#>   <chr>                <list>             <dbl> <named list> <chr>              
+#>   <chr>                <list>             <int> <named list> <chr>              
 #> 1 Disinhibition        <tibble [5 × 3]>       5 <dbl [5]>    disinhibition      
 #> 2 Detachment           <tibble [5 × 3]>       5 <dbl [5]>    detachment         
 #> 3 Psychoticism         <tibble [5 × 3]>       5 <dbl [5]>    psychoticism       

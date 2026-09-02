@@ -70,8 +70,10 @@ reliability_hitopsr(
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
 row per scale and columns `Scale` (the scale's canonical display name,
-as the instrument's keying table spells it), `nItems`, and (when
-requested) `alpha` and `omega`.
+as the instrument's keying table spells it), `camelCase` (the stem that
+names the scale's column in the matching `score_*()` output, read from
+the same keying-table row), `nItems` (integer), and (when requested)
+`alpha` and `omega`.
 
 ## Details
 
@@ -88,19 +90,19 @@ uninstalled lavaan) is returned as `NA` rather than aborting the call.
 ``` r
 # Per-scale alpha for the HiTOP-SR
 reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
-#> # A tibble: 76 × 3
-#>    Scale                nItems    alpha
-#>    <chr>                 <int>    <dbl>
-#>  1 Agoraphobia               5 -0.108  
-#>  2 Antisocial Behavior       8 -0.136  
-#>  3 Appearance Focus          5 -0.0282 
-#>  4 Appetite Loss             3  0.00603
-#>  5 Binge Eating              3  0.0509 
-#>  6 Bodily Distress           6  0.0879 
-#>  7 Body Dissatisfaction      4 -0.0891 
-#>  8 Callousness               6 -0.347  
-#>  9 Checking                  5 -0.247  
-#> 10 Cleaning                  6  0.174  
+#> # A tibble: 76 × 4
+#>    Scale                camelCase           nItems    alpha
+#>    <chr>                <chr>                <int>    <dbl>
+#>  1 Agoraphobia          agoraphobia              5 -0.108  
+#>  2 Antisocial Behavior  antisocialBehavior       8 -0.136  
+#>  3 Appearance Focus     appearanceFocus          5 -0.0282 
+#>  4 Appetite Loss        appetiteLoss             3  0.00603
+#>  5 Binge Eating         bingeEating              3  0.0509 
+#>  6 Bodily Distress      bodilyDistress           6  0.0879 
+#>  7 Body Dissatisfaction bodyDissatisfaction      4 -0.0891 
+#>  8 Callousness          callousness              6 -0.347  
+#>  9 Checking             checking                 5 -0.247  
+#> 10 Cleaning             cleaning                 6  0.174  
 #> # ℹ 66 more rows
 
 # Per-scale alpha for data collected with a two-scale module. Select the
@@ -109,9 +111,9 @@ reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
 m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
 collected <- sim_hitopsr[sprintf("hsr_%03d", m$items)]
 reliability_hitopsr(collected, items = names(collected), module = m, omega = FALSE)
-#> # A tibble: 2 × 3
-#>   Scale         nItems    alpha
-#>   <chr>          <int>    <dbl>
-#> 1 Agoraphobia        5 -0.108  
-#> 2 Appetite Loss      3  0.00603
+#> # A tibble: 2 × 4
+#>   Scale         camelCase    nItems    alpha
+#>   <chr>         <chr>         <int>    <dbl>
+#> 1 Agoraphobia   agoraphobia       5 -0.108  
+#> 2 Appetite Loss appetiteLoss      3  0.00603
 ```

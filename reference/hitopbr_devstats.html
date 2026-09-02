@@ -103,7 +103,7 @@ developed on.</p>
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 8 rows and 8 columns:</p><dl><dt>scale</dt>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 8 rows and 8 columns:</p><dl><dt>Scale</dt>
 <dd><p>The name of the scale. Matches <a href="hitopbr_scales.html">hitopbr_scales</a>$Scale.</p></dd>
 
 <dt>camelCase</dt>
@@ -116,7 +116,7 @@ heading and labels none of them a superspectrum or a spectrum, so no such
 distinction is recorded here.</p></dd>
 
 <dt>nItems</dt>
-<dd><p>The number of items in the scale</p></dd>
+<dd><p>The number of items in the scale (integer)</p></dd>
 
 <dt>reliability</dt>
 <dd><p>The internal-consistency reliability coefficient printed
@@ -163,7 +163,7 @@ paper's own factor table loads it on. <code>Detachment</code> therefore has 5 it
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hitopbr_devstats</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 8 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   scale           camelCase type  nItems reliability reliabilityType  mean    sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Scale           camelCase type  nItems reliability reliabilityType  mean    sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Antagonism      antagoni… scale      9        0.82 alpha            1.42  0.45</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Detachment      detachme… scale      5        0.86 alpha            2.13  0.88</span>

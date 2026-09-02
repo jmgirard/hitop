@@ -100,7 +100,7 @@ the sample the instrument was developed on.</p>
 
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 93 rows and 8 columns:</p><dl><dt>scale</dt>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 93 rows and 8 columns:</p><dl><dt>Scale</dt>
 <dd><p>The name of the scale or subscale. Matches
 <a href="hitopsr_scales.html">hitopsr_scales</a>$Scale on the scale rows and
 <a href="hitopsr_subscales.html">hitopsr_subscales</a>$Subscale on the subscale rows.</p></dd>
@@ -113,7 +113,7 @@ the sample the instrument was developed on.</p>
 <dd><p>Either <code>"scale"</code> (76 rows) or <code>"subscale"</code> (17 rows)</p></dd>
 
 <dt>nItems</dt>
-<dd><p>The number of items in the scale or subscale</p></dd>
+<dd><p>The number of items in the scale or subscale (integer)</p></dd>
 
 <dt>reliability</dt>
 <dd><p>The internal-consistency reliability coefficient printed
@@ -145,7 +145,7 @@ to them. <code><a href="interval_hitopsr.html">interval_hitopsr()</a></code> rea
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hitopsr_devstats</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 93 × 8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    scale          camelCase type  nItems reliability reliabilityType  mean    sd</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Scale          camelCase type  nItems reliability reliabilityType  mean    sd</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Agoraphobia    agorapho… scale      5        0.86 alpha            1.62  0.77</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Antisocial Be… antisoci… scale      8        0.86 alpha            1.07  0.25</span>

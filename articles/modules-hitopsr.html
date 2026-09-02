@@ -378,13 +378,13 @@ returns one row per module scale.</p>
 <span>  module <span class="op">=</span> <span class="va">four_scale</span>,</span>
 <span>  omega <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 3</span></span></span>
-<span><span class="co">#&gt;   Scale                nItems   alpha</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Agoraphobia               5  0.419 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Antisocial Behavior       8  0.545 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Appetite Loss             3  0.367 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Romantic Disinterest      5 -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">3</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 4</span></span></span>
+<span><span class="co">#&gt;   Scale                camelCase           nItems   alpha</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Agoraphobia          agoraphobia              5  0.419 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Antisocial Behavior  antisocialBehavior       8  0.545 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Appetite Loss        appetiteLoss             3  0.367 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Romantic Disinterest romanticDisinterest      5 -<span style="color: #BB0000;">0.080</span><span style="color: #BB0000; text-decoration: underline;">3</span></span></span></code></pre></div>
 <p>Reliability is worth checking on your own module rather than assumed.
 In this sample the four coefficients run from modest down to negative:
 Romantic Disinterest returns a negative α, which is not a small number
@@ -416,7 +416,7 @@ file you can keep beside the forms you generated:</p>
 <span><span class="co">#&gt;   "format": "1.0",</span></span>
 <span><span class="co">#&gt;   "package": "hitop",</span></span>
 <span><span class="co">#&gt;   "packageVersion": "0.2.0",</span></span>
-<span><span class="co">#&gt;   "buildDate": "2026-09-01",</span></span>
+<span><span class="co">#&gt;   "buildDate": "2026-09-02",</span></span>
 <span><span class="co">#&gt;   "instrument": "hitopsr",</span></span>
 <span><span class="co">#&gt;   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],</span></span>
 <span><span class="co">#&gt;   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],</span></span>
