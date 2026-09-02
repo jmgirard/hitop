@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
-- **Branch/PR:** `m080-pid5-item-column-names`
+- **Branch/PR:** `m080-pid5-item-column-names` / [#86](https://github.com/jmgirard/hitop/pull/86)
 
 ## Goal
 
@@ -133,6 +133,7 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
 - 2026-09-02: `data-raw/check_pid_item_names.R` commits AC4's second procedure — it walks attributes as well as names, and was shown returning 100 hits against the pre-fix object and 0 across 24 object files and 198 archive members after.
 - 2026-09-02: T1-T7 done. `devtools::test()`: FAIL 0, WARN 0, SKIP 7, PASS 16426 (the 7 skips are the pre-existing merge-base and keying skips). `devtools::document()` leaves no diff. `R CMD check`: Status OK, 0 errors, 0 warnings, 0 notes.
 - 2026-09-02: both AC4 procedures run at d3ac6695 and now — the text search over tracked files, 18 hits then, none now; the binary sweep, 445 old names across the four objects then, 0 over 24 object files and 198 archive members now. The supplementary search for built old names went from 28 hits to 2, both in the NEWS migration instructions that AC5 asks for.
+- 2026-09-02: review opened; draft PR #86 pushed, CI running.
 
 ## Decisions
 
