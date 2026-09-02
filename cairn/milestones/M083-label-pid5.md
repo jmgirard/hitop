@@ -1,6 +1,6 @@
 # M083: `label_pid5()`
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -107,7 +107,7 @@ arguments, defaults and reports.
       `warn_unpadded_items()`; run T1 green.
 - [x] T3: Roxygen docs and example, `document()`, the NEWS bullet, the
       `_pkgdown.yml` entry, and the three vignette mentions.
-- [ ] T4: Run the profile's verify and review checks; record the output.
+- [x] T4: Run the profile's verify and review checks; record the output.
 
 ## Work log
 
@@ -118,6 +118,7 @@ arguments, defaults and reports.
 - 2026-09-02: plan gate chose `prefix = NULL` resolved per `version`/`target` over splitting into `label_pid5_items()`/`label_pid5_scales()` because the split breaks the `label_*(data, target, prefix)` idiom the two HiTOP helpers set; falsified by the NULL default proving hard to document or to predict.
 - 2026-09-02: plan gate chose leaving `validity_pid5()`'s columns unlabelled over sourcing their display names because D-018 fixes those names to the scale-development papers and none is on the `references/` shelf (IP2); falsified by a citable source arriving with the five names.
 - 2026-09-02: implementation gate chose leaving the no-columns-matched warning unclassed, matching `label_hitopsr()` and `label_hitopbr()`, over giving it a public class; falsified by a user needing to silence it without silencing the rest of the call.
+- 2026-09-02: T4 done — `devtools::document()` leaves no diff, `devtools::test()` 0 failures / 17043 passes / 9 skips, `devtools::check()` 0 errors 0 warnings 0 notes (4m 14s), `pkgdown::check_pkgdown()` clean, `data-raw/check_line_endings.R` passes.
 - 2026-09-02: T3 done — roxygen docs and a runnable example (output verified), the NEWS bullet, the `_pkgdown.yml` reference row (`check_pkgdown()` clean), and a mention in each of the three PID-5 scoring vignettes; `build_vignettes()` runs all three clean.
 - 2026-09-02: T2 done — `R/label_pid5.R` added; the whole suite passes (0 failures, 17043 passes, 9 pre-existing skips). Check discrimination: dropping `pid_domains` from the scale lookup, hardcoding the item prefix to `pid5_`, removing the `warn_unpadded_items()` call, and reversing the item-text lookup each turn the new file red.
 - 2026-09-02: T1 done — `tests/testthat/test-label_pid5.R` written red (6 failures, all `could not find function "label_pid5"`); the suite is red by design until T2, so the profile's verify slot runs at T2.

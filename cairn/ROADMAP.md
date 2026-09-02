@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M083 | `label_pid5()` | in-progress | — | normal | milestones/M083-label-pid5.md |
+| M083 | `label_pid5()` | review | — | normal | milestones/M083-label-pid5.md |
 | M082 | `rename_pid5_items()` | done | — | normal | milestones/archive/M082-rename-pid5-items.md |
 | M081 | Every item number the package ships is an integer | done | — | normal | milestones/archive/M081-item-number-integers.md |
 | M080 | The shipped PID-5 datasets name item columns as the online exports do | done | — | normal | milestones/archive/M080-pid5-item-column-names.md |
