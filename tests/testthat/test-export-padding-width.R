@@ -198,6 +198,12 @@ test_that("only the HiTOP-HSUM Qualtrics survey has no generator in this package
   expect_equal(sum(has_generator), 11L)
 })
 
+# This is a no-regression lock, not a content oracle: it asserts only that the
+# item names did not MOVE, never that they are the right names. What the names
+# ought to be is derived from the instrument datasets by the tests above and in
+# test-generate_{qualtrics,redcap}.R, so the committed artifacts are not
+# standing in as an oracle for their own content (`cairn/DESIGN.md`'s
+# generator-testing decision).
 test_that("a fresh default build reproduces every shipped export's item names", {
   extdata <- system.file("extdata", package = "hitop")
   files <- Filter(

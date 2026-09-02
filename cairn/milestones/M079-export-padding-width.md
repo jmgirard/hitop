@@ -120,6 +120,7 @@ item-column naming → its own candidate row.
 - 2026-09-01: T4 done - the AC3 test enumerates the manifest's qualtrics/redcap files, derives each generator from the file name, asserts the one file without a generator is `hitophsum_qualtrics.qsf`, and compares eleven fresh default builds against the committed artifacts, parsing inside the REDCap zips. Proved able to fail: multiplying the HiTOP-BR Qualtrics width by ten turned it red naming `hitopbr_qualtrics.txt`; restored.
 - 2026-09-01: T5 done - the `item_names()` comment no longer says the generators pad to the export's own width, both builders' padding comments state the instrument-width rule, and the two HiTOP-SR online generators' `module` help says item 4 stays `HSR_004`/`hsr_004`; `document()` rewrote those two .Rd files and a second run added nothing.
 - 2026-09-01: `devtools::test()` clean (7 pre-existing skips: three merge-base guards, three keying-diff guards, OQ-1).
+- 2026-09-01: the AC3 test compares fresh builds against the committed `inst/extdata/` artifacts, which `cairn/DESIGN.md`'s generator-testing decision says are not used as an oracle; the test comment states the distinction (a no-regression lock over names, not a content oracle) and leaves the DESIGN wording for review to rule on.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
