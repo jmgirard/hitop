@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
-- **Branch/PR:** `m084-unpadded-item-report`
+- **Branch/PR:** `m084-unpadded-item-report` — https://github.com/jmgirard/hitop/pull/91
 
 ## Goal
 
@@ -38,37 +38,37 @@ gate; the same class carries both sentences.
 
 ## Acceptance criteria
 
-- [ ] AC1: On a frame whose every prefixed item column is mis-padded so that no
+- [x] AC1: On a frame whose every prefixed item column is mis-padded so that no
       column matches an expected item name — at most five such columns, cli
       truncating longer lists — each of `label_pid5()` (FULL, SF and BF),
       `label_hitopsr()` and `label_hitopbr()` raises its existing no-match
       warning *and* a warning of class `hitop_unpadded_items` naming every
       mis-padded column. The SR probe uses a wider spelling (`hsr_0001`), since
       `hsr_1`..`hsr_405` still matches items 100 and up.
-- [ ] AC2: A column carrying the prefix and a number padded to the form's width
+- [x] AC2: A column carrying the prefix and a number padded to the form's width
       but naming no item of the form (`pid5_221`, `pid5sf_101`, `pid5bf_26`,
       `hsr_406`, `hbr_46`) is reported under class `hitop_unpadded_items` in its
       own sentence, which states the form's item-number range, not in the
       not-zero-padded sentence; the report's "expected as" hint never repeats an
       out-of-range column's own name. A frame carrying one out-of-range and one
       mis-padded column reports each in its own sentence, on each instrument.
-- [ ] AC3: Every plural marker in the report keys on the number of columns the
+- [x] AC3: Every plural marker in the report keys on the number of columns the
       sentence carrying it reports: a one-column sentence reads "1 column is …
       was not labelled" and a two-column sentence "2 columns are … were not
       labelled", at both instrument widths the helpers pass (2 and 3).
-- [ ] AC4: Each of `man/label_pid5.Rd`, `man/label_hitopsr.Rd` and
+- [x] AC4: Each of `man/label_pid5.Rd`, `man/label_hitopsr.Rd` and
       `man/label_hitopbr.Rd` states that the report is raised whether or not any
       column matched, and that a padded number outside the form's range is
       reported as out of range; `grep -RF "That warning is raised only when at
       least one column did match" R/ man/` returns nothing.
-- [ ] AC5: Correctly padded frames stay silent — the shipped `sim_*` and `ku_*`
+- [x] AC5: Correctly padded frames stay silent — the shipped `sim_*` and `ku_*`
       item frames, a module subset (`ku_hitopsr[, c("participant", "hsr_001",
       "hsr_002")]`), and a frame with no prefixed column (`data.frame(a = 1)`)
       raise no `hitop_unpadded_items` warning, the last raising only the
       no-match warning.
-- [ ] AC6: `NEWS.md` carries a bullet for the development version describing the
+- [x] AC6: `NEWS.md` carries a bullet for the development version describing the
       changed report.
-- [ ] AC7: `Rscript -e 'devtools::test()'` is clean, `Rscript -e
+- [x] AC7: `Rscript -e 'devtools::test()'` is clean, `Rscript -e
       'devtools::document()'` produces no diff, and `Rscript -e
       'devtools::check()'` reports no error, warning or note absent from the
       baseline recorded in this file's work log at implementation start.
@@ -151,5 +151,73 @@ gate; the same class carries both sentences.
   as questions.
 
 ## Decisions
+- 2026-09-02: review step 3-4 -- all seven criteria executed with fresh evidence and ticked; `cairn_validate` exit 0 and every r-package toolchain check green; PR #91 open as a draft with CI running. Independent review pending (the diff-bug lens still running; the blame-history and prior-review lenses returned).
 
 ## Review
+
+Evidence gathered 2026-09-02 on `m084-unpadded-item-report` at `b8b1986e`, PR
+#91, against `origin/main` at `05b3e485`. The AC1-AC3 and AC5 probes ran from a
+scratch script calling the three helpers under `withCallingHandlers`; its
+transcript is summarized below, never pasted.
+
+- **AC1 — met.** Each of the five all-mis-padded frames (five prefixed columns,
+  none matching) raised exactly two warnings: the existing no-match warning
+  first, then one of class `hitop_unpadded_items` naming all five columns.
+  `label_pid5()` FULL (`pid5_1`..`pid5_5`), SF (`pid5sf_1`..`5`), BF
+  (`pid5bf_1`..`5`), `label_hitopsr()` (`hsr_0001`..`hsr_0005`, the wider
+  spelling) and `label_hitopbr()` (`hbr_1`..`hbr_5`). Each report named every
+  one of its five columns and the width expected (3, 3, 2, 3, 2 digits).
+- **AC2 — met.** `pid5_221`, `pid5sf_101`, `pid5bf_26`, `hsr_406` and `hbr_46`
+  each raised `hitop_unpadded_items` reading "its number is outside the range 1
+  to {220,100,25,405,45}", carrying no "not zero-padded" clause and no "expected
+  as" hint. The five mixed frames (one out-of-range plus one mis-padded per
+  instrument) each produced one warning of two sentences, the mis-padded column
+  in the padding sentence with its `i` hint and the out-of-range column in the
+  range sentence. `pid5_0221` — four digits and past item 220 — reported as out
+  of range only, so the hint never handed back a name the form does not carry.
+- **AC3 — met.** At width 2 (`label_hitopbr()`) and width 3
+  (`label_hitopsr()`), a one-column padding sentence read "1 column is … so it
+  was not labelled" and a two-column one "2 columns are … so they were not
+  labelled"; the out-of-range sentence likewise read "1 column is … its number
+  is … it was not labelled" against "2 columns are … their numbers are … they
+  were not labelled". Six of six markers keyed on their own sentence's count.
+- **AC4 — met.** `grep -RF "That warning is raised only when at least one column
+  did match" R/ man/` returns nothing (exit 1). With newlines normalized, each
+  of `man/label_pid5.Rd`, `man/label_hitopsr.Rd` and `man/label_hitopbr.Rd`
+  carries "raised whether or not any other column matched" once and "reported as
+  out of range" once.
+- **AC5 — met.** All eight shipped item frames (`sim_pid5`, `sim_pid5sf`,
+  `sim_pid5bf`, `sim_hitopsr`, `sim_hitopbr`, `ku_pid5sf`, `ku_hitopsr`,
+  `ku_hitopbr` — the package ships no `ku_pid5`) raised zero warnings and each
+  labelled its full item set (220, 100, 25, 405, 45, 100, 405, 45 columns), so
+  the silent domain is non-empty. The module subset `ku_hitopsr[, c("participant",
+  "hsr_001", "hsr_002")]` raised zero warnings and labelled 2 columns.
+  `data.frame(a = 1)` raised the no-match warning alone under each of the three
+  helpers, with no `hitop_unpadded_items`.
+- **AC6 — met.** `NEWS.md` carries one bullet under the development version's
+  "Improvements and fixes" describing the unconditional raise, the two-sentence
+  split and the per-sentence pluralization.
+- **AC7 — met.** `devtools::test()`: FAIL 0 / WARN 0 / SKIP 9 / PASS 17186,
+  against the T1 baseline's FAIL 0 / WARN 0 / SKIP 9 / PASS 17043 (+143).
+  `devtools::check()`: Status OK, 0 errors / 0 warnings / 0 notes, duration
+  6m 23s — identical to the baseline, so no error, warning or note absent from
+  it. `devtools::document()` left the working tree clean apart from this
+  milestone file.
+
+### Consistency gate
+
+- `cairn_validate.py`: exit 0, all 16 checks PASS (`coverage complete` and
+  `scaffold present` among them). 41 advisories, all pre-existing and none a
+  gate failure: `work-log format` on wrapped lines, `dangling id tokens` on the
+  legacy D-001..D-012 references, `references staleness` on
+  `schmukle2026.md`.
+- `cairn_impact.py`: not run — the diff changes no `DESIGN.md` principle
+  (GP3 is applied, not amended; `cairn/DESIGN.md` is untouched by the branch).
+- r-package profile `consistency-gate` slot: `devtools::document()` no diff;
+  no hand-edited generated file (`NAMESPACE`, `data/*.rda` untouched, `man/`
+  regenerated); `README.Rmd`/`README.md` untouched by the branch and in sync;
+  `pkgdown::check_pkgdown()` "No problems found"; `NEWS.md` carries the bullet;
+  the branch adds no top-level file (`NEWS.md` is the only top-level path it
+  touches), so no `.Rbuildignore` entry is owed; `devtools::check()` 0/0/0. No
+  newly exported object, so no `_pkgdown.yml` row is owed.
+
