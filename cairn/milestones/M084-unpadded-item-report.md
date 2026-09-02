@@ -1,12 +1,12 @@
 # M084: The `label_*()` family's unpadded-item report
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m084-unpadded-item-report`
 
 ## Goal
 
