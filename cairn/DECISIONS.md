@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-058 (2026-09-02): The `label_*()` family strips `prefix` from a column name to classify what it could not label, and strips it literally (annotates D-052's "still pasted, never stripped" consequence; applies D-026)
+
+**Context:** D-052 closed with "D-026 is untouched: `prefix` is still pasted, never stripped, in these functions." M084 splits the columns a `label_*()` helper could not label into mis-padded and out-of-range, and that split needs the number a column actually carries, so `item_col_numbers()` reads it back out by removing the prefix. Two review lenses flagged the consequence line as now false.
+
+**Decision:** The stripping stands, and D-052's consequence line no longer holds for the `label_*()` family. Matching and labelling are unchanged — they still compare a column name against pasted expected names — so the stripping serves the report alone. It strips literally, by `nchar(prefix)` rather than by pattern, which is what D-026 requires wherever this package removes a prefix; the regex-metacharacter hazard D-026 closed is not reopened.
+
+**Consequences:** A prefix containing regex metacharacters still classifies correctly, and a number too large for an integer comes back `NA` and reads as naming no item. D-052's decision is otherwise untouched: the item-name pattern and the padding rule stand. The evidence that would reopen this is a stripped number reaching the matching or labelling path rather than only the report.
+
 ### D-057 (2026-09-02): `rename_pid5_items()`'s unmatched-item report is the public condition class `hitop_unmatched_items`, raised by both of its matching methods (the successor entry D-034(c) requires for a new exported condition)
 
 **Context:** `rename_pid5_items()` reports the inputs it could not rename, and the report differs by method: matching by item text names the `item_text` entries that matched no item of the named form, matching by item number names the columns spelled like an item of the instrument whose number names no item of the named form. The HiTOP sibling `rename_hitopsr_items()` raises its equivalent report as a classless `cli::cli_warn()`, so a test can only assert on message prose, which the package promises nothing about. D-034(c) requires every condition this package raises deliberately for callers to catch to be classed and named in a D-entry.

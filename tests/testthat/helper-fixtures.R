@@ -287,5 +287,8 @@ squashed_warning <- function(caught, i = 1L) {
 
 # Where `needle` first appears in `haystack`, as a character position, or -1.
 # Used to place a reported column name inside one sentence of a two-sentence
-# report rather than merely somewhere in the message.
-at <- function(haystack, needle) regexpr(needle, haystack, fixed = TRUE)[[1]]
+# report rather than merely somewhere in the message. Named for that job: a
+# helper file every test sees is no place for a name as broad as `at()`.
+sentence_pos <- function(haystack, needle) {
+  regexpr(needle, haystack, fixed = TRUE)[[1]]
+}

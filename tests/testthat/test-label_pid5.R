@@ -260,14 +260,14 @@ test_that("label_pid5(target = 'items') sorts mis-padded and out-of-range column
     expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
 
     msg <- squashed_warning(caught)
-    mis_head <- at(msg, "not zero-padded to")
-    oor_head <- at(msg, "outside the range 1 to")
+    mis_head <- sentence_pos(msg, "not zero-padded to")
+    oor_head <- sentence_pos(msg, "outside the range 1 to")
     expect_true(mis_head > 0, info = version)
     expect_true(oor_head > mis_head, info = version)
     # Each name lands in its own sentence: the mis-padded one before the
     # out-of-range sentence opens, the out-of-range one after.
-    expect_true(at(msg, mis) > mis_head && at(msg, mis) < oor_head, info = version)
-    expect_true(at(msg, oor) > oor_head, info = version)
+    expect_true(sentence_pos(msg, mis) > mis_head && sentence_pos(msg, mis) < oor_head, info = version)
+    expect_true(sentence_pos(msg, oor) > oor_head, info = version)
     # The hint names a column the form really carries, never the out-of-range one.
     expect_true(grepl(paste0("expected as `", hint, "`"), msg, fixed = TRUE), info = version)
     expect_false(grepl(paste0("expected as `", oor, "`"), msg, fixed = TRUE), info = version)

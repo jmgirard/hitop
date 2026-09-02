@@ -153,6 +153,7 @@ gate; the same class carries both sentences.
 ## Decisions
 - 2026-09-02: review step 3-4 -- all seven criteria executed with fresh evidence and ticked; `cairn_validate` exit 0 and every r-package toolchain check green; PR #91 open as a draft with CI running. Independent review pending (the diff-bug lens still running; the blame-history and prior-review lenses returned).
 - 2026-09-02: review step 5 -- three fresh-context lenses; the prior-review lens found nothing, the blame lens one item, the diff-bug lens ten and no correctness bug. Six triaged fix-now, one to the standing candidate row, two rejected as out of scope, one stale. Dispositions in the Review section.
+- 2026-09-02: gate triage -- Jeff chose fixing the six before merging. Applied: the NEWS bullet rewritten to describe the report rather than a regression no release had (and the `label_pid5()` bullet's narrower rule corrected), the padding hint moved after both sentences, D-058 appended annotating D-052's stripping consequence, the contiguous-numbering assumption recorded in `unpadded_item_cols()`'s comment, the test helper `at()` renamed `sentence_pos()`, and the `item_names()` comment block separated from `item_col_numbers()`'s. Suite re-run FAIL 0 / WARN 0 / SKIP 9 / PASS 17186, unchanged; `document()` no diff.
 
 ## Review
 
@@ -269,4 +270,16 @@ transcript is summarized below, never pasted.
 10. *"AC7 is still unchecked."* — **no longer applicable:** the reviewer read
     the file before this review's step-3 pass ticked AC7 against its evidence
     line; the box is ticked and evidenced above.
+
+### Fix-now work applied at the gate
+
+Findings 1, 2, 3, 4, 8 and 9 were fixed on the branch before the approval
+marker; finding 6 goes to the standing candidate row at hygiene, findings 5 and
+7 were rejected as recorded above, and finding 10 was stale. The fixes touch
+message layout, comments, the changelog and a test-helper name — no change to
+which columns are labelled or which are reported, so AC1-AC6 stand as evidenced
+(re-probed after the change: the mixed frame still reports each column in its
+own sentence, the hint now last and still naming no out-of-range column).
+`devtools::test()` re-run: FAIL 0 / WARN 0 / SKIP 9 / PASS 17186, unchanged.
+`devtools::document()`: no diff.
 

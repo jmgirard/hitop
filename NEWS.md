@@ -10,9 +10,9 @@
   short forms, the domain and total names for the brief form. The column-name
   prefix defaults to the form's own stem for items (`pid5_`, `pid5sf_`,
   `pid5bf_`) and to `pid_` for scales. An item column carrying the prefix and a
-  number that is not zero-padded to the form's width is left unlabelled and
+  number that is not one of the form's expected names is left unlabelled and
   named in a warning of class `hitop_unpadded_items`, as the two HiTOP
-  labelling functions already do.
+  labelling functions do.
 
 * **`rename_pid5_items()` renames PID-5 item columns to the standard names.**
   Given a data frame and the form its items belong to, it renames the item
@@ -156,16 +156,14 @@
 
 * **The `label_*()` family reports every item column it could not label, and
   says what is wrong with each.** `label_pid5()`, `label_hitopsr()` and
-  `label_hitopbr()` used to skip the report entirely when no column at all
-  matched, so a frame whose item columns were every one mis-padded got only
-  "No columns matched" and no list of the offending names; the
-  `hitop_unpadded_items` warning is now raised whether or not another column
-  matched. The report also separates the two mistakes it finds: a number padded
-  to the wrong width is reported as not zero-padded, with a hint showing the
-  spelling expected, and a number outside the instrument's item range is
-  reported as out of range in its own sentence naming that range. Each sentence
-  is pluralized by the number of columns it names, so a one-column report no
-  longer reads "they were not labelled".
+  `label_hitopbr()` raise the `hitop_unpadded_items` warning whether or not any
+  other column matched, so a frame whose item columns are every one mis-padded
+  is told which names were skipped rather than only that nothing matched. The
+  report separates the two mistakes it finds: a number padded to the wrong
+  width is reported as not zero-padded, and a number outside the instrument's
+  item range is reported as out of range in its own sentence naming that range,
+  with one hint at the end showing the spelling expected. Each sentence is
+  pluralized by the number of columns it names.
 
 * **`nItems` is an integer in every shipped per-scale table.** `pid_scales`
   (each of its three elements), `hitopsr_scales`, `hitopsr_subscales` and

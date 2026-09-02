@@ -583,7 +583,8 @@ validate_module_instrument <- function(instrument, call = rlang::caller_env()) {
 # instrument's largest item number, so a module export's names match the full
 # instrument's.
 # `item_names("hsr_", 7, 405)` is "hsr_007"; `item_names("hbr_", 7, 45)` is
-# "hbr_07".
+# "hbr_07".  (`item_names()` itself is defined at the foot of this file.)
+
 # The number a prefixed item column carries, as an integer. `prefix` is stripped
 # by its own length rather than by pattern, since this package matches a prefix
 # literally wherever it strips one (D-026); a number too large for an integer
@@ -602,6 +603,11 @@ item_col_numbers <- function(cols, prefix) {
 # A column that is both (`pid5_0221`, four digits and past item 220) counts as
 # out of range: the padding hint would otherwise point at `pid5_221`, a name the
 # form does not carry either.
+# `1..max_n` stands in for "names an item of the form" because every form this
+# package ships numbers its items contiguously from 1. A gapped form would need
+# membership in the form's own numbers instead: under the range test its
+# correctly padded non-items would be called mis-padded, and the hint would hand
+# back the offending name.
 unpadded_item_cols <- function(cols, prefix, expected, max_n) {
   pattern <- paste0("^", gsub("([][{}()+*^$|\\\\?.])", "\\\\\\1", prefix), "[0-9]+$")
   hits <- cols[grepl(pattern, cols) & !cols %in% expected]
@@ -638,8 +644,7 @@ warn_unpadded_items <- function(cols, prefix, expected, max_n, instrument) {
     shown_mis <- cli::cli_vec(mispadded, list("vec-trunc" = 5))
     msg <- c(
       msg,
-      "{n_mis} column{?s} {cli::qty(n_mis)}{?is/are} named like {instrument} items but not zero-padded to {width} digits, so {cli::qty(n_mis)}{?it was/they were} not labelled: {.val {shown_mis}}.",
-      "i" = "Item numbers are expected as {.code {example}}."
+      "{n_mis} column{?s} {cli::qty(n_mis)}{?is/are} named like {instrument} items but not zero-padded to {width} digits, so {cli::qty(n_mis)}{?it was/they were} not labelled: {.val {shown_mis}}."
     )
   }
 
@@ -650,6 +655,13 @@ warn_unpadded_items <- function(cols, prefix, expected, max_n, instrument) {
       msg,
       "{n_oor} column{?s} {cli::qty(n_oor)}{?is/are} named like {instrument} items but {cli::qty(n_oor)}{?its number is/their numbers are} outside the range 1 to {max_n}, so {cli::qty(n_oor)}{?it was/they were} not labelled: {.val {shown_oor}}."
     )
+  }
+
+  # The padding hint goes last, after both sentences: as an `i` bullet between
+  # them it reads as if it governed the out-of-range sentence too, which has no
+  # spelling to suggest.
+  if (length(mispadded) > 0) {
+    msg <- c(msg, "i" = "Item numbers are expected as {.code {example}}.")
   }
 
   cli::cli_warn(msg, class = "hitop_unpadded_items")
