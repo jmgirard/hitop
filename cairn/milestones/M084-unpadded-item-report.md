@@ -97,12 +97,13 @@ gate; the same class carries both sentences.
       (`test-label_pid5.R:185`, `test-label_scales.R:206,220`) still pass. Sweep
       every test that merely *calls* a label helper for a newly raised warning
       (LESSONS M029).
-- [ ] T4: Split `unpadded_item_cols()` (`R/util.R:590`) into mis-padded and
+- [x] T4: Split `unpadded_item_cols()` (`R/util.R:590`) into mis-padded and
       out-of-range groups; rewrite `warn_unpadded_items()` (`R/util.R:594`) to
       give each group its own sentence, state the form's item-number range in
-      the out-of-range hint, and place `cli::qty()` immediately before each
+      the out-of-range sentence itself (AC2's wording; a separate `i` hint would
+      only repeat it), and place `cli::qty()` immediately before each
       plural marker (LESSONS M030). Update the three call sites' arguments.
-- [ ] T5: Tests for T4 — out-of-range probes on all five forms, a mixed
+- [x] T5: Tests for T4 — out-of-range probes on all five forms, a mixed
       out-of-range + mis-padded frame per instrument, and one- versus two-column
       wording at both widths. Show each red by reverting T4's change before
       trusting its green.
@@ -134,6 +135,8 @@ gate; the same class carries both sentences.
 - 2026-09-02: implementation gate chose reporting a column that is both mis-padded and out of range under out-of-range alone over the padding sentence or both, because the padding hint would otherwise name a column the form does not carry either; and chose the no-match warning ahead of the padding report, matching the order a partly-matching frame already reads in.
 - 2026-09-02: T2 added five all-mis-padded probes (`label_pid5()` FULL/SF/BF, `label_hitopsr()` at `hsr_0001`, `label_hitopbr()` at `hbr_1`) plus the `collect_warnings()`/`warning_text()` test helpers; all five red against the current `R/`, each raising 1 warning where 2 are expected.
 - 2026-09-02: T3 ran the report after the no-match warning instead of behind an early return in all three helpers; the five T2 probes green, and the full suite FAIL 0 / WARN 0 / SKIP 9 / PASS 17088 with no other test newly raising a warning.
+- 2026-09-02: T4 split `unpadded_item_cols()` into `mispadded` and `out_of_range` and gave `warn_unpadded_items()` the signature `(cols, prefix, expected, max_n, instrument)`, folding the split in; the three call sites pass `max_n` instead of a digit width. Minor task edit: T4 now says the range is stated in the out-of-range sentence rather than in a separate `i` hint, which would only repeat it.
+- 2026-09-02: T5 added out-of-range, mixed and one-versus-two-column probes on all five forms. Discrimination: planting the pre-split classification (every unmatched column called mis-padded) reddened 20 assertions across both files; planting the missing `cli::qty()` reddened the 6 pluralization assertions. Full suite FAIL 0 / WARN 0 / SKIP 9 / PASS 17159.
 - 2026-09-02: criteria audit ran in full mode ([O] fresh reader, user-facing
   tier); it returned findings on AC1 (unsatisfiable — cli truncates lists past
   five, and `hsr_1`..`hsr_405` does not reach the no-match path), AC2 (no class

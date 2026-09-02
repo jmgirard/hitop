@@ -227,8 +227,7 @@ test_that("label_hitopsr() reports mis-padded columns when nothing matched", {
   # A spelling WIDER than the instrument's three digits: `hsr_1`..`hsr_405`
   # would still match items 100 and up, so it never reaches the no-match path.
   cols <- sprintf("hsr_%04d", 1:5)
-  df <- as.data.frame(matrix(0, nrow = 1, ncol = length(cols)))
-  names(df) <- cols
+  df <- frame_of_cols(cols)
 
   caught <- collect_warnings(label_hitopsr(df, target = "items"))
   expect_length(caught$warnings, 2L)
@@ -243,8 +242,7 @@ test_that("label_hitopsr() reports mis-padded columns when nothing matched", {
 
 test_that("label_hitopbr() reports mis-padded columns when nothing matched", {
   cols <- paste0("hbr_", 1:5)
-  df <- as.data.frame(matrix(0, nrow = 1, ncol = length(cols)))
-  names(df) <- cols
+  df <- frame_of_cols(cols)
 
   caught <- collect_warnings(label_hitopbr(df, target = "items"))
   expect_length(caught$warnings, 2L)
@@ -255,4 +253,65 @@ test_that("label_hitopbr() reports mis-padded columns when nothing matched", {
     for (nm in cols) expect_true(grepl(nm, msg, fixed = TRUE), info = nm)
   }
   expect_identical(caught$value, df)
+})
+
+# ---- AC2/AC3: two kinds of unlabelled column, two sentences -----------------
+
+test_that("label_hitopsr() sorts mis-padded and out-of-range columns into their own sentences", {
+  caught <- collect_warnings(
+    label_hitopsr(frame_of_cols(c("hsr_001", "hsr_3", "hsr_406")), target = "items")
+  )
+  expect_length(caught$warnings, 1L)
+  expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
+
+  msg <- squashed_warning(caught)
+  mis_head <- at(msg, "not zero-padded to")
+  oor_head <- at(msg, "outside the range 1 to")
+  expect_true(mis_head > 0)
+  expect_true(oor_head > mis_head)
+  expect_true(at(msg, "hsr_3") > mis_head && at(msg, "hsr_3") < oor_head)
+  expect_true(at(msg, "hsr_406") > oor_head)
+  expect_true(grepl("expected as `hsr_003`", msg, fixed = TRUE))
+  expect_false(grepl("expected as `hsr_406`", msg, fixed = TRUE))
+  expect_true(grepl("outside the range 1 to 405", msg, fixed = TRUE))
+  expect_false(is.null(attr(caught$value$hsr_001, "label")))
+})
+
+test_that("label_hitopbr() sorts mis-padded and out-of-range columns into their own sentences", {
+  caught <- collect_warnings(
+    label_hitopbr(frame_of_cols(c("hbr_01", "hbr_3", "hbr_46")), target = "items")
+  )
+  expect_length(caught$warnings, 1L)
+  expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
+
+  msg <- squashed_warning(caught)
+  mis_head <- at(msg, "not zero-padded to")
+  oor_head <- at(msg, "outside the range 1 to")
+  expect_true(mis_head > 0)
+  expect_true(oor_head > mis_head)
+  expect_true(at(msg, "hbr_3") > mis_head && at(msg, "hbr_3") < oor_head)
+  expect_true(at(msg, "hbr_46") > oor_head)
+  expect_true(grepl("expected as `hbr_03`", msg, fixed = TRUE))
+  expect_false(grepl("expected as `hbr_46`", msg, fixed = TRUE))
+  expect_true(grepl("outside the range 1 to 45", msg, fixed = TRUE))
+  expect_false(is.null(attr(caught$value$hbr_01, "label")))
+})
+
+test_that("the label helpers report an out-of-range column on a frame carrying nothing else wrong", {
+  # No mis-padded column at all, so the report is the out-of-range sentence
+  # alone -- and carries no "expected as" hint to point anywhere.
+  for (case in list(
+    list(fn = function(d) label_hitopsr(d, target = "items"),
+         cols = c("hsr_001", "hsr_406"), range = "1 to 405"),
+    list(fn = function(d) label_hitopbr(d, target = "items"),
+         cols = c("hbr_01", "hbr_46"), range = "1 to 45")
+  )) {
+    caught <- collect_warnings(case$fn(frame_of_cols(case$cols)))
+    expect_length(caught$warnings, 1L)
+    msg <- squashed_warning(caught)
+    expect_true(grepl(paste0("outside the range ", case$range), msg, fixed = TRUE),
+      info = case$cols[2])
+    expect_false(grepl("not zero-padded", msg, fixed = TRUE), info = case$cols[2])
+    expect_false(grepl("expected as", msg, fixed = TRUE), info = case$cols[2])
+  }
 })

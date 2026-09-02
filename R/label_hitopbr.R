@@ -56,8 +56,11 @@ label_hitopbr <- function(
     ## warning: a frame whose item columns are ALL mis-padded is exactly the
     ## case worth naming, and it is the one an early return used to swallow.
     warn_unpadded_items(
-      unpadded_item_cols(data_cols, prefix, expected_names),
-      width = 2L, instrument = "HiTOP-BR"
+      data_cols,
+      prefix = prefix,
+      expected = expected_names,
+      max_n = max(hitopbr_items$HBR),
+      instrument = "HiTOP-BR"
     )
   } else if (target == "scales") {
     expected_names <- paste0(prefix, hitopbr_scales$camelCase)

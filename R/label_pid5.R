@@ -93,8 +93,10 @@ label_pid5 <- function(
     ## warning: a frame whose item columns are ALL mis-padded is exactly the
     ## case worth naming, and it is the one an early return used to swallow.
     warn_unpadded_items(
-      unpadded_item_cols(data_cols, prefix, expected_names),
-      width = nchar(as.character(max_n)),
+      data_cols,
+      prefix = prefix,
+      expected = expected_names,
+      max_n = max_n,
       instrument = switch(
         version,
         "FULL" = "PID-5",

@@ -270,3 +270,22 @@ collect_warnings <- function(expr) {
 warning_text <- function(caught, i = 1L) {
   cli::ansi_strip(conditionMessage(caught$warnings[[i]]))
 }
+
+# A one-row numeric frame carrying exactly the named columns, for probing which
+# column names a label helper recognizes.
+frame_of_cols <- function(cols) {
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = length(cols)))
+  names(df) <- cols
+  df
+}
+
+# One caught warning with cli's styling and line wrapping flattened, so a whole
+# sentence can be looked for as a single string.
+squashed_warning <- function(caught, i = 1L) {
+  gsub("[[:space:]]+", " ", warning_text(caught, i))
+}
+
+# Where `needle` first appears in `haystack`, as a character position, or -1.
+# Used to place a reported column name inside one sentence of a two-sentence
+# report rather than merely somewhere in the message.
+at <- function(haystack, needle) regexpr(needle, haystack, fixed = TRUE)[[1]]
