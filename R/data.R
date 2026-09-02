@@ -34,7 +34,7 @@
 #'   element carries a sixth row, `Total`, which is not a domain but the whole
 #'   25-item form scored as one scale (see [score_pid5()])}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale}
-#'   \item{nItems}{The number of items in the scale}
+#'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{itemNumbers}{A list column containing one item-number vector per scale}
 #'   \item{camelCase}{The name of the scale converted to camel case (the score-output column stem)}
 #' }
@@ -151,7 +151,7 @@
 #' \describe{
 #'   \item{Scale}{Name of the scale}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale}
-#'   \item{nItems}{The number of items in the scale}
+#'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{itemNumbers}{A list column containing one item-number vector per scale}
 #'   \item{camelCase}{The name of the scale converted to camel case}
 #' }
@@ -168,7 +168,7 @@
 #'   \item{Subscale}{Name of the subscale}
 #'   \item{Scale}{Name of the scale that the subscale is part of}
 #'   \item{itemdata}{A list column containing one item-data tibble per subscale}
-#'   \item{nItems}{The number of items in the subscale}
+#'   \item{nItems}{The number of items in the subscale (integer)}
 #'   \item{itemNumbers}{A list column containing one item-number vector per subscale}
 #'   \item{camelCase}{The name of the subscale converted to camel case}
 #' }
@@ -314,7 +314,7 @@
 #' \describe{
 #'   \item{Scale}{Name of the scale}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale}
-#'   \item{nItems}{The number of items in the scale}
+#'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{itemNumbers}{A list column containing one item-number vector per scale}
 #'   \item{camelCase}{The name of the scale converted to camel case}
 #' }

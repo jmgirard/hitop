@@ -17,7 +17,7 @@ pid5_scales <-
     .by = Facet
   ) |>
   dplyr::mutate(
-    nItems = purrr::map_dbl(itemdata, nrow),
+    nItems = purrr::map_int(itemdata, nrow),
     itemNumbers = purrr::map(itemdata, "FULL"),
     camelCase = snakecase::to_any_case(Facet, case = "lower_camel")
   )
@@ -32,7 +32,7 @@ pid5sf_scales <-
     .by = Facet
   ) |>
   dplyr::mutate(
-    nItems = purrr::map_dbl(itemdata, nrow),
+    nItems = purrr::map_int(itemdata, nrow),
     itemNumbers = purrr::map(itemdata, "SF"),
     camelCase = snakecase::to_any_case(Facet, case = "lower_camel")
   )
@@ -47,7 +47,7 @@ pid5bf_scales <-
     .by = Domain
   ) |>
   dplyr::mutate(
-    nItems = purrr::map_dbl(itemdata, nrow),
+    nItems = purrr::map_int(itemdata, nrow),
     itemNumbers = purrr::map(itemdata, "BF"),
     camelCase = snakecase::to_any_case(Domain, case = "lower_camel")
   )
@@ -72,7 +72,7 @@ pid5bf_scales <- dplyr::bind_rows(
   tibble::tibble(
     Domain = "Total",
     itemdata = list(pid5bf_total_itemdata),
-    nItems = as.numeric(nrow(pid5bf_total_itemdata)),
+    nItems = as.integer(nrow(pid5bf_total_itemdata)),
     itemNumbers = list(pid5bf_total_itemdata$BF),
     camelCase = "total"
   )
