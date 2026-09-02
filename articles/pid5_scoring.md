@@ -48,6 +48,29 @@ sim_pid5
 #> #   pid5_028 <int>, pid5_029 <int>, pid5_030 <int>, pid5_031 <int>, …
 ```
 
+If your own PID-5 columns are named some other way,
+[`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
+will rename them to this pattern. By default it reads the item number
+out of a column already named `pid_1`, `pid_2` and so on – the spelling
+this package’s own datasets used before they were renamed to match the
+exports. Setting `method = "text"` instead matches the literal item
+prompts. Columns it cannot match keep their names and are reported, and
+a partial rename warns that fewer than 220 items were matched, which
+suits a study that administered only some of them.
+
+``` r
+
+old_names <- data.frame(pid_1 = c(0, 1), pid_2 = c(2, 3), age = c(30, 40))
+
+rename_pid5_items(old_names, version = "FULL")
+#> Warning: Only 2 out of 220 PID-5 items were successfully matched and renamed.
+#> ℹ Note: If you plan to use `score_pid5()`, ensure uncollected items exist in
+#>   the data frame as `NA` columns.
+#>   pid5_001 pid5_002 age
+#> 1        0        2  30
+#> 2        1        3  40
+```
+
 To turn these item-level data into scale scores on the 25 facets and 5
 domains, we can use the
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)

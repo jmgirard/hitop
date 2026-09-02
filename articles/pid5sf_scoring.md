@@ -12,6 +12,11 @@ yields all domain and facet scores. The validity scales are still
 calculable but may have fewer items and their psychometric properties
 have not, to my knowledge, been examined with the FSF.
 
+The `sim_pid5sf` dataset names its items `pid5sf_001` to `pid5sf_100`.
+If your own PID-5-SF columns are named some other way,
+[`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
+with `version = "SF"` will rename them to this pattern.
+
 ``` r
 
 data("sim_pid5sf")

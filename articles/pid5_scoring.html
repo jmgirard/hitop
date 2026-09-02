@@ -146,6 +146,25 @@ item from the PID-5).</p>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid5_020 &lt;int&gt;, pid5_021 &lt;int&gt;, pid5_022 &lt;int&gt;, pid5_023 &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid5_024 &lt;int&gt;, pid5_025 &lt;int&gt;, pid5_026 &lt;int&gt;, pid5_027 &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   pid5_028 &lt;int&gt;, pid5_029 &lt;int&gt;, pid5_030 &lt;int&gt;, pid5_031 &lt;int&gt;, …</span></span></span></code></pre></div>
+<p>If your own PID-5 columns are named some other way,
+<code><a href="../reference/rename_pid5_items.html">rename_pid5_items()</a></code> will rename them to this pattern. By
+default it reads the item number out of a column already named
+<code>pid_1</code>, <code>pid_2</code> and so on – the spelling this
+package’s own datasets used before they were renamed to match the
+exports. Setting <code>method = "text"</code> instead matches the
+literal item prompts. Columns it cannot match keep their names and are
+reported, and a partial rename warns that fewer than 220 items were
+matched, which suits a study that administered only some of them.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">old_names</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>pid_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, pid_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/rename_pid5_items.html">rename_pid5_items</a></span><span class="op">(</span><span class="va">old_names</span>, version <span class="op">=</span> <span class="st">"FULL"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning: Only 2 out of 220 PID-5 items were successfully matched and renamed.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Note: If you plan to use `score_pid5()`, ensure uncollected items exist in</span></span>
+<span><span class="co">#&gt;   the data frame as `NA` columns.</span></span>
+<span><span class="co">#&gt;   pid5_001 pid5_002 age</span></span>
+<span><span class="co">#&gt; 1        0        2  30</span></span>
+<span><span class="co">#&gt; 2        1        3  40</span></span></code></pre></div>
 <p>To turn these item-level data into scale scores on the 25 facets and
 5 domains, we can use the <code><a href="../reference/score_pid5.html">score_pid5()</a></code> function. We will
 need to tell the function which columns contain our items and which
@@ -157,7 +176,7 @@ set <code>append = FALSE</code> so that you can quickly see the scale
 scores. I also can set the version to <code>"FULL"</code> (or leave that
 argument off, as that is the default, shown in the example below) to let
 it know we are using the full 220-item version.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">scores</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 30</span></span></span>
@@ -184,7 +203,7 @@ it know we are using the full 220-item version.</p>
 that is the default), we would get back the <code>sim_pid5</code> tibble
 with the scale scores added to the end as extra columns. Notice below
 how we now have 250 columns instead of 220 or 30.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span></span>
 <span><span class="va">scores</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 250</span></span></span>
@@ -213,7 +232,7 @@ this data named them consistently so we can build the names
 automatically using <code><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf()</a></code>. If we use the “pid5_%03d”
 format and apply that across the numbers 1 to 220, that will create the
 column names we need.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">scores</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 250</span></span></span>
@@ -252,7 +271,7 @@ the first 25 columns of the scored tibble, the last 5 being the domains
 those facets roll up into — and ask for each participant’s top 5.
 Setting <code>prefix = "pid_"</code> strips that leading string from the
 column names, so the string reads as scale names.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">facet_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/rank_scales.html">rank_scales</a></span><span class="op">(</span><span class="va">facet_scores</span>, scales <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, prefix <span class="op">=</span> <span class="st">"pid_"</span>, top <span class="op">=</span> <span class="fl">5</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 1</span></span></span>
@@ -300,7 +319,7 @@ we will need the <strong>lavaan</strong> package installed (set
 <code>omega = FALSE</code> to skip it). Note that, because this is
 naively simulated data, we would expect the reliability in this example
 to be poor.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability_pid5.html">reliability_pid5</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">sim_pid5</span>,</span>
 <span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span>,</span>
@@ -332,7 +351,7 @@ function to calculate these scores and flag issues. The function
 arguments will be consistent with what we just learned. Note that,
 because the data is fake, we would expect there to be lots of validity
 issues.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #BBBB00;">!</span> A total of 99 observations (99.0%) met criteria for inconsistent responding on the INC (0 missing).</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Consider removing them with `dplyr::filter(df, pid_INC &lt; 17)`</span></span>
@@ -366,7 +385,7 @@ against the nearest tabled raw score. It converts scores rather than
 computing them, so we hand it the output of <code><a href="../reference/score_pid5.html">score_pid5()</a></code> —
 and of <code><a href="../reference/validity_pid5.html">validity_pid5()</a></code>, if we want those scales converted
 too.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">sim_pid5</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span></span>
 <span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/validity_pid5.html">validity_pid5</a></span><span class="op">(</span><span class="va">scored</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">220</span><span class="op">)</span></span></code></pre></div>
 <p>For the full form the published tables cover the five domain scales,
@@ -375,7 +394,7 @@ PRD. They do not cover SD-TD at all. Each converted scale gains a
 <code>_ptl</code> column, and those whose tables print T scores also
 gain a <code>_t</code> column. The validity scales are distributed as
 percentiles only, so they get no <code>_t</code> column.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/norm_pid5.html">norm_pid5</a></span><span class="op">(</span></span>
 <span>  <span class="va">scored</span>,</span>
 <span>  scores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
@@ -414,7 +433,7 @@ mean over its eight full-form items, and its table runs from a floor of
 0.00 up to a printed 3.84 — past the 3.00 an item mean can actually
 reach, which is true of most of the facet columns and is a property of
 the published tables rather than of the conversion:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/norm_pid5.html">norm_pid5</a></span><span class="op">(</span><span class="va">scored</span>, scores <span class="op">=</span> <span class="st">"pid_anhedonia"</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 100 × 2</span></span></span>
 <span><span class="co">#&gt;    pid_anhedonia_t pid_anhedonia_ptl</span></span>
@@ -453,14 +472,14 @@ adjusted and which were left alone. The per-scale formulas are given in
 them as a profile against the published metric. It takes one respondent
 — a profile plot shows one person — so we norm the whole dataset and
 hand it a single row.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">domains</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span></span>
 <span>  <span class="st">"pid_"</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"negativeAffectivity"</span>, <span class="st">"detachment"</span>, <span class="st">"antagonism"</span>, <span class="st">"disinhibition"</span>,</span>
 <span>    <span class="st">"psychoticism"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">normed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm_pid5.html">norm_pid5</a></span><span class="op">(</span><span class="va">scored</span>, scores <span class="op">=</span> <span class="va">domains</span>, version <span class="op">=</span> <span class="st">"FULL"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pid5.html">plot_pid5</a></span><span class="op">(</span><span class="va">normed</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, version <span class="op">=</span> <span class="st">"FULL"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="pid5_scoring_files/figure-html/x2f-1.png" class="r-plt" alt="" width="672"></p>
 <p>The dashed line marks T = 50, the normative sample’s mean, and the
@@ -473,7 +492,7 @@ and leaves the interpreting to you.</p>
 grouped into a panel per domain. The APA key ties three facets to each
 domain; the remaining ten define no domain and are grouped separately
 rather than dropped.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">facets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"pid_"</span>, <span class="va">pid_scales</span><span class="op">[[</span><span class="st">"FULL"</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">camelCase</span><span class="op">)</span></span>
 <span><span class="va">normed_facets</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/norm_pid5.html">norm_pid5</a></span><span class="op">(</span><span class="va">scored</span>, scores <span class="op">=</span> <span class="va">facets</span>, version <span class="op">=</span> <span class="st">"FULL"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_pid5.html">plot_pid5</a></span><span class="op">(</span><span class="va">normed_facets</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, level <span class="op">=</span> <span class="st">"facet"</span><span class="op">)</span></span></code></pre></div>
@@ -481,7 +500,7 @@ rather than dropped.</p>
 <p>Set <code>metric = "percentile"</code> for a percentile axis instead
 of T scores. <code><a href="../reference/norm_pid5.html">norm_pid5()</a></code> returns percentiles as a
 proportion; the plot multiplies them by 100 so the axis reads 0–100.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_pid5.html">plot_pid5</a></span><span class="op">(</span><span class="va">normed</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, version <span class="op">=</span> <span class="st">"FULL"</span>, metric <span class="op">=</span> <span class="st">"percentile"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="pid5_scoring_files/figure-html/x2h-1.png" class="r-plt" alt="" width="672"></p>
 <p>The result is an ordinary ggplot object, so you can restyle it with

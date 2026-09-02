@@ -117,8 +117,10 @@ package’s functionality using some simulated data.</p>
 </h2>
 <p>The <code>sim_pid5bf</code> dataset is built into the package and
 contains 100 rows (each a simulated participant) across 25 columns named
-<code>pid5bf_01</code> to <code>pid5bf_25</code>. To compute the 5
-domain scores and the total, we use <code><a href="../reference/score_pid5.html">score_pid5()</a></code> with
+<code>pid5bf_01</code> to <code>pid5bf_25</code>. If your own PID-5-BF
+columns are named some other way, <code><a href="../reference/rename_pid5_items.html">rename_pid5_items()</a></code> with
+<code>version = "BF"</code> will rename them to this pattern. To compute
+the 5 domain scores and the total, we use <code><a href="../reference/score_pid5.html">score_pid5()</a></code> with
 <code>version = "BF"</code>. As with the other forms, we can specify the
 items by column number (<code>items = 1:25</code>) and set
 <code>append = FALSE</code> to see just the scores. The only validity

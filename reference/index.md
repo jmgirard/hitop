@@ -56,6 +56,8 @@ community norm.
   : Rank and list the top-\\n\\ scales per row
 - [`rename_hitopsr_items()`](https://jmgirard.github.io/hitop/reference/rename_hitopsr_items.md)
   : Rename Columns to Standard HiTOP-SR Item Names
+- [`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
+  : Rename Columns to Standard PID-5 Item Names
 - [`label_hitopsr()`](https://jmgirard.github.io/hitop/reference/label_hitopsr.md)
   : Label HiTOP-SR Columns with Semantic Descriptions
 - [`label_hitopbr()`](https://jmgirard.github.io/hitop/reference/label_hitopbr.md)
