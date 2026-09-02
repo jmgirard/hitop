@@ -29,7 +29,7 @@ library(hitop)
 
 ## Score simulated PID-5 data
 
-The `sim_pid5` dataset is built into the package and can be loaded using the `data()` function. It contains 100 rows (each representing a simulated participant) and 220 columns named `pid_1` to `pid_220` (each representing an item from the PID-5).
+The `sim_pid5` dataset is built into the package and can be loaded using the `data()` function. It contains 100 rows (each representing a simulated participant) and 220 columns named `pid5_001` to `pid5_220` (each representing an item from the PID-5).
 
 ```{r}
 data("sim_pid5")
@@ -50,10 +50,10 @@ scores <- score_pid5(sim_pid5, items = 1:220)
 scores
 ```
 
-Alternatively, we could provide the item column names as a character string. Typing out all 220 item names would be a hassle, but luckily this data named them consistently so we can build the names automatically using `sprintf()`. If we use the "pid_%d" format and apply that across the numbers 1 to 220, that will create the column names we need.
+Alternatively, we could provide the item column names as a character string. Typing out all 220 item names would be a hassle, but luckily this data named them consistently so we can build the names automatically using `sprintf()`. If we use the "pid5_%03d" format and apply that across the numbers 1 to 220, that will create the column names we need.
 
 ```{r}
-scores <- score_pid5(sim_pid5, items = sprintf("pid_%d", 1:220))
+scores <- score_pid5(sim_pid5, items = sprintf("pid5_%03d", 1:220))
 scores
 ```
 
@@ -80,7 +80,7 @@ We estimate reliability with the `reliability_pid5()` function, which returns a 
 #| warning: false
 reliability_pid5(
   data = sim_pid5,
-  items = sprintf("pid_%d", 1:220),
+  items = sprintf("pid5_%03d", 1:220),
   version = "FULL"
 )
 ```

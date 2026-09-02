@@ -10,22 +10,22 @@
 
 test_that("warn_item_order() fires only for misordered common-prefix numbered names", {
   # Fires: single prefix, trailing integers out of ascending order
-  expect_warning(warn_item_order(c("pid_2", "pid_1", "pid_3")), "ascending")
+  expect_warning(warn_item_order(c("q_2", "q_1", "q_3")), "ascending")
   expect_warning(warn_item_order(paste0("hsr", c(2, 1, 3))), "ascending")
   # Zero-padding does not confuse the integer comparison
   expect_warning(warn_item_order(sprintf("hsr_%03d", c(1, 3, 2))), "ascending")
   expect_no_warning(warn_item_order(sprintf("hsr_%03d", 1:10)))
 
   # No fire: ascending names
-  expect_no_warning(warn_item_order(c("pid_1", "pid_2", "pid_3")))
+  expect_no_warning(warn_item_order(c("q_1", "q_2", "q_3")))
   # No fire: integer positions (an out-of-order remap can be legitimate)
   expect_no_warning(warn_item_order(c(3L, 1L, 2L)))
   # No fire: mixed prefixes (no single expected order)
-  expect_no_warning(warn_item_order(c("x_99", "pid_1", "pid_2")))
+  expect_no_warning(warn_item_order(c("x_99", "q_1", "q_2")))
   # No fire: names without trailing digits
   expect_no_warning(warn_item_order(c("age", "sex", "id")))
   # No fire: only some names carry trailing digits
-  expect_no_warning(warn_item_order(c("pid_2", "pid_1", "notes")))
+  expect_no_warning(warn_item_order(c("q_2", "q_1", "notes")))
 })
 
 test_that("validate_item_uniqueness() errors on duplicates and names them", {
@@ -38,13 +38,13 @@ test_that("validate_item_uniqueness() errors on duplicates and names them", {
 # ---- end-to-end wiring across all four functions ----------------------------
 
 test_that("misordered `items` names warn in every data-taking function", {
-  bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
+  bf <- sim_pid5bf
   sr <- sim_hitopsr
   br <- sim_hitopbr
-  full <- setNames(sim_pid5, paste0("pid_", 1:220))
+  full <- sim_pid5
 
   expect_warning(
-    score_pid5(bf, items = paste0("pid_", c(2, 1, 3:25)), version = "BF"),
+    score_pid5(bf, items = sprintf("pid5bf_%02d", c(2, 1, 3:25)), version = "BF"),
     "ascending"
   )
   expect_warning(
@@ -57,7 +57,7 @@ test_that("misordered `items` names warn in every data-taking function", {
   )
   expect_warning(
     suppressMessages(
-      validity_pid5(full, items = paste0("pid_", c(2, 1, 3:220)), version = "FULL")
+      validity_pid5(full, items = sprintf("pid5_%03d", c(2, 1, 3:220)), version = "FULL")
     ),
     "ascending"
   )
@@ -70,8 +70,8 @@ test_that("the order warning is attributed to the exported function", {
   # which threads its own `call` down explicitly, while validity_pid5() calls
   # warn_item_order() directly and relies on the caller_env() default. Either
   # mechanism can break without the other.
-  bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
-  full <- setNames(sim_pid5, paste0("pid_", 1:220))
+  bf <- sim_pid5bf
+  full <- sim_pid5
 
   # Dropping `call` leaves conditionCall() NULL, which would make call_name()
   # itself error and abort the block before the second site is reached; the
@@ -82,28 +82,28 @@ test_that("the order warning is attributed to the exported function", {
   }
 
   expect_equal(
-    warner(score_pid5(bf, items = paste0("pid_", c(2, 1, 3:25)), version = "BF")),
+    warner(score_pid5(bf, items = sprintf("pid5bf_%02d", c(2, 1, 3:25)), version = "BF")),
     "score_pid5"
   )
   expect_equal(
     warner(suppressMessages(
-      validity_pid5(full, items = paste0("pid_", c(2, 1, 3:220)), version = "FULL")
+      validity_pid5(full, items = sprintf("pid5_%03d", c(2, 1, 3:220)), version = "FULL")
     )),
     "validity_pid5"
   )
 })
 
 test_that("ascending names and integer positions do not warn about order", {
-  bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
-  full <- setNames(sim_pid5, paste0("pid_", 1:220))
-  expect_no_warning(score_pid5(bf, items = paste0("pid_", 1:25), version = "BF"))
+  bf <- sim_pid5bf
+  full <- sim_pid5
+  expect_no_warning(score_pid5(bf, items = sprintf("pid5bf_%02d", 1:25), version = "BF"))
   expect_no_warning(score_pid5(sim_pid5bf, items = 1:25, version = "BF"))
   expect_no_warning(score_hitopbr(sim_hitopbr, items = 1:45))
   expect_no_warning(score_hitopsr(sim_hitopsr, items = 1:405))
   # validity_pid5: ascending names and integer positions must not warn about order
   # (suppress the flagging-count messages, which are not warnings)
   expect_no_warning(
-    suppressMessages(validity_pid5(full, items = paste0("pid_", 1:220), version = "FULL"))
+    suppressMessages(validity_pid5(full, items = sprintf("pid5_%03d", 1:220), version = "FULL"))
   )
   expect_no_warning(
     suppressMessages(validity_pid5(sim_pid5, items = 1:220, version = "FULL"))
@@ -111,9 +111,9 @@ test_that("ascending names and integer positions do not warn about order", {
 })
 
 test_that("duplicated `items` error in every data-taking function", {
-  bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
+  bf <- sim_pid5bf
   expect_error(
-    score_pid5(bf, items = c("pid_1", paste0("pid_", 1:24)), version = "BF"),
+    score_pid5(bf, items = c("pid5bf_01", sprintf("pid5bf_%02d", 1:24)), version = "BF"),
     "distinct"
   )
   expect_error(score_hitopbr(sim_hitopbr, items = c(1, 1, 3:45)), "distinct")
@@ -129,8 +129,8 @@ test_that("the order guard is a pure side effect (warning-triggering names score
   # given order. The guard must not mutate that selection: scoring the misordered
   # names must equal scoring the very same columns picked by position (which does
   # not warn). Equal => warn_item_order() only emits a message, never reorders.
-  bf <- setNames(sim_pid5bf, paste0("pid_", 1:25))
-  misordered <- paste0("pid_", c(2, 1, 3:25))
+  bf <- sim_pid5bf
+  misordered <- sprintf("pid5bf_%02d", c(2, 1, 3:25))
   by_name <- suppressWarnings(
     score_pid5(bf, items = misordered, version = "BF", append = FALSE)
   )

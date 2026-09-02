@@ -38,7 +38,7 @@
 #     Anhedonia loses item 1 -> (five 1s + two 2s)/7 = 9/7 = 1.285714...
 fx_pid5 <- function() {
   df <- as.data.frame(matrix(NA_integer_, nrow = 4, ncol = 220))
-  names(df) <- paste0("pid_", seq_len(220))
+  names(df) <- sprintf("pid5_%03d", seq_len(220))
   df[1, ] <- 0L
   df[2, ] <- 1L
   df[3, ] <- 1L
@@ -76,7 +76,7 @@ fx_pid5 <- function() {
 #   Grandiosity (SF items 14,37,85,90): R3 untouched = 1
 fx_pid5sf <- function() {
   df <- as.data.frame(matrix(NA_integer_, nrow = 5, ncol = 100))
-  names(df) <- paste0("pid_", seq_len(100))
+  names(df) <- sprintf("pid5sf_%03d", seq_len(100))
   df[1, ] <- 0L
   df[2, ] <- 2L
   df[3, ] <- 1L
@@ -132,7 +132,7 @@ fx_pid5sf <- function() {
 #       rowMeans(na.rm = TRUE) still resolve to 1 (each domain keeps >= 1 item)
 fx_pid5bf <- function() {
   df <- as.data.frame(matrix(NA_integer_, nrow = 4, ncol = 25))
-  names(df) <- paste0("pid_", seq_len(25))
+  names(df) <- sprintf("pid5bf_%02d", seq_len(25))
   df[1, ] <- 0L
   df[2, ] <- 2L
   df[3, ] <- 1L

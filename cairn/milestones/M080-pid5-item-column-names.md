@@ -1,12 +1,12 @@
 # M080: The shipped PID-5 datasets name item columns as the online exports do
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m080-pid5-item-column-names`
 
 ## Goal
 
@@ -111,6 +111,11 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
 - 2026-09-02: plan gate chose a one-step rename over a one-release dual-column deprecation, Jeff waiving the cycle as pre-1.0 (the D-052 precedent); falsified by a downstream package pinned to the old column names.
 - 2026-09-02: plan gate chose renaming the generic item-order fixtures to a neutral stem over allowlisting them in AC4, because an empty exemption list cannot drift; falsified by the neutral stem colliding with a real column name in a later test.
 - 2026-09-02: plan gate chose leaving the PID-5 rename and label helpers out over shipping them here, because they are new exported behavior with their own design questions; falsified by a user reporting they cannot label PID-5 data at all.
+- 2026-09-02: branch `m080-pid5-item-column-names` cut from `main` at d3ac6695; that commit is the pre-rename pin `data-raw/rename_pid_item_columns.R` loads from.
+- 2026-09-02: minor amendment — T1, T2, T4 and T5 are executed and committed as one migration step, because renaming the datasets apart from their call sites leaves the suite red between commits and no per-task check could run clean. T3, T6 and T7 keep their own commits.
+- 2026-09-02: implement gate chose keeping AC4's wording and recording a supplementary search for *built* old names (`paste0("pid_", 1:220)`, `sprintf("pid_%d", 1:100)`) as extra evidence, over amending the criterion — AC4's first sentence already binds the whole domain and every such site moves either way; Jeff left the call to the session.
+- 2026-09-02: implement gate chose `q_` as the neutral stem for the generic item-order probes, over `item_` (collides with the package's own vocabulary) and `v_` (says nothing).
+- 2026-09-02: checkpoint — the migration, the new `test-data-item-names.R` cases, the dataset roxygen, the regenerated `man/` pages and the NEWS entry are on the branch; `devtools::test()` was still running when this commit was made, so no task box is ticked yet.
 
 ## Decisions
 

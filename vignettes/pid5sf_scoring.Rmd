@@ -44,14 +44,14 @@ data("ku_pid5sf")
 
 score_pid5(
   ku_pid5sf,
-  items = paste0("pid_", 1:100),
+  items = sprintf("pid5sf_%03d", 1:100),
   version = "SF",
   append = FALSE
 )
 
 validity_pid5(
   ku_pid5sf,
-  items = paste0("pid_", 1:100),
+  items = sprintf("pid5sf_%03d", 1:100),
   version = "SF",
   append = FALSE
 )
@@ -68,7 +68,7 @@ Note what these numbers do and do not describe. Each one summarizes how much a r
 ```{r se}
 score_pid5(
   ku_pid5sf,
-  items = paste0("pid_", 1:100),
+  items = sprintf("pid5sf_%03d", 1:100),
   version = "SF",
   calc_se = TRUE,
   append = FALSE
@@ -87,7 +87,7 @@ We estimate reliability with the `reliability_pid5()` function, which returns a 
 #| warning: false
 reliability_pid5(
   data = ku_pid5sf,
-  items = sprintf("pid_%d", 1:100),
+  items = sprintf("pid5sf_%03d", 1:100),
   version = "SF"
 )
 ```
@@ -99,8 +99,8 @@ The `pid_norms` dataset carries the normative score distributions published by M
 ```{r x6}
 #| message: false
 #| warning: false
-scored <- score_pid5(ku_pid5sf, items = paste0("pid_", 1:100), version = "SF")
-scored <- validity_pid5(scored, items = paste0("pid_", 1:100), version = "SF")
+scored <- score_pid5(ku_pid5sf, items = sprintf("pid5sf_%03d", 1:100), version = "SF")
+scored <- validity_pid5(scored, items = sprintf("pid5sf_%03d", 1:100), version = "SF")
 ```
 
 For the short form the published tables cover the five domain scales, all 25 facet scales, and the INC-S inconsistency scale. Each converted scale gains a `_ptl` column, and those whose tables print T scores also gain a `_t` column. INC-S is distributed as percentiles only, so it gets no `_t` column. Note that `version = "SF"` selects the short-form tables — the same raw score converts differently across forms.

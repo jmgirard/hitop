@@ -7,7 +7,7 @@
 \format{
 A \link[tibble]{tibble} with 100 rows and 25 columns.
 \describe{
-\item{pid_1 to pid_25}{Responses on each item}
+\item{pid5bf_01 to pid5bf_25}{Responses on each item}
 }
 }
 \usage{

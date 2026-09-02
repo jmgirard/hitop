@@ -39,6 +39,25 @@
 
 ## Breaking changes
 
+* **The PID-5 example datasets now use the item column pattern the package's
+  own REDCap export writes.** `sim_pid5`'s item columns are now `pid5_001` to
+  `pid5_220`; `sim_pid5sf`'s, and the item columns of `ku_pid5sf`, are
+  `pid5sf_001` to `pid5sf_100`; `sim_pid5bf`'s are `pid5bf_01` to `pid5bf_25`.
+  Only the names changed: every value and column position is as it was, and
+  `ku_pid5sf` keeps its `response_id` column. Each form carries its own stem
+  because the three forms number their items independently -- short-form item 5
+  is full-form item 16, and brief-form item 5 is full-form item 31 -- so one
+  shared stem would give one name to different items. The Qualtrics export
+  writes the same pattern with an uppercase stem: `PID5_001`, `PID5SF_001`,
+  `PID5BF_01`. Code selecting the old names -- `paste0("pid_", 1:220)`,
+  `sprintf("pid_%d", 1:100)` and the like -- moves to
+  `sprintf("pid5_%03d", 1:220)`, `sprintf("pid5sf_%03d", 1:100)` and
+  `sprintf("pid5bf_%02d", 1:25)`; the PID-5 vignettes show the new idiom.
+  Selecting items by position (`items = 1:220`) is unaffected. The scoring
+  functions' `prefix` argument names the *output* score columns and still
+  defaults to `"pid_"`, so on this instrument the item columns and the score
+  columns carry different stems. No deprecation period precedes this change.
+
 * **The per-scale tables the package ships or returns now join on one column
   shape.** `hitopsr_devstats` and `hitopbr_devstats` name their display-name
   column `Scale`, as `available_scales()`, the `reliability_*()` family and

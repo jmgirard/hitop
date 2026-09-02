@@ -335,7 +335,7 @@ test_that("APA half-integer prorated raw rounds up (BF Disinhibition)", {
   # 1 of 5 missing (20% <= 25%). Prorated raw = round(2*5/4) = round(2.5). APA
   # rounds half UP -> 3, average = 3/5 = 0.6 (base round-half-to-even gives 0.4).
   b <- as.data.frame(matrix(1L, nrow = 1, ncol = 25))
-  names(b) <- paste0("pid_", 1:25)
+  names(b) <- sprintf("pid5bf_%02d", 1:25)
   b[1, 1] <- NA_integer_
   b[1, c(2, 3, 5, 6)] <- c(0L, 0L, 1L, 1L)
   d <- score_pid5(b, items = 1:25, version = "BF", append = FALSE)
@@ -399,7 +399,7 @@ test_that("missing = complete returns NA for any scale touching a missing item",
 
 test_that("FULL single-row calc_se returns per-scale SEs (no drop-to-vector error)", {
   x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 220))
-  names(x1) <- paste0("pid_", seq_len(220))
+  names(x1) <- sprintf("pid5_%03d", seq_len(220))
   f <- hush_se(score_pid5(x1, items = 1:220, version = "FULL", calc_se = TRUE, append = FALSE))
 
   expect_equal(nrow(f), 1L)
@@ -417,7 +417,7 @@ test_that("FULL single-row calc_se returns per-scale SEs (no drop-to-vector erro
 
 test_that("SF single-row calc_se matches a hand-computed facet SE", {
   x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 100))
-  names(x1) <- paste0("pid_", seq_len(100))
+  names(x1) <- sprintf("pid5sf_%03d", seq_len(100))
   x1[1, c(9, 11, 43, 65)] <- c(0L, 1L, 2L, 3L)  # SF Anhedonia items (no reversal)
   f <- hush_se(score_pid5(x1, items = 1:100, version = "SF", calc_se = TRUE, append = FALSE))
 
@@ -428,7 +428,7 @@ test_that("SF single-row calc_se matches a hand-computed facet SE", {
 
 test_that("BF single-row calc_se matches a hand-computed domain SE", {
   x1 <- as.data.frame(matrix(1L, nrow = 1, ncol = 25))
-  names(x1) <- paste0("pid_", seq_len(25))
+  names(x1) <- sprintf("pid5bf_%02d", seq_len(25))
   x1[1, c(1, 2, 3, 5, 6)] <- c(0L, 1L, 2L, 3L, 3L)  # BF Disinhibition items
   d <- hush_se(score_pid5(x1, items = 1:25, version = "BF", calc_se = TRUE, append = FALSE))
 

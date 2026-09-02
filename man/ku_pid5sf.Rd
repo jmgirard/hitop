@@ -8,7 +8,7 @@
 A \link[tibble]{tibble} with 386 rows and 101 columns.
 \describe{
 \item{response_id}{An anonymized id for each participant}
-\item{pid_1 to pid_100}{Responses on each item}
+\item{pid5sf_001 to pid5sf_100}{Responses on each item}
 }
 }
 \usage{

@@ -135,7 +135,7 @@ validate_item_uniqueness <- function(
 
 # Heuristic guard against a misordered `items` mapping, which silently scores the
 # wrong items. Fires only when every entry is a character name sharing one common
-# prefix followed by a trailing integer (e.g. "pid_1", "pid_2", ...) and those
+# prefix followed by a trailing integer (e.g. "q_1", "q_2", ...) and those
 # integers are not in ascending order. Integer positions are left alone (an
 # out-of-order position vector can be a legitimate remap); mixed prefixes and
 # names without trailing digits are ignored (no reliable order to expect).

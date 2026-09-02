@@ -425,7 +425,7 @@
 #'
 #' @format A \link[tibble]{tibble} with 100 rows and 220 columns.
 #' \describe{
-#'   \item{pid_1 to pid_220}{Responses on each item}
+#'   \item{pid5_001 to pid5_220}{Responses on each item}
 #' }
 #' @examples
 #' sim_pid5
@@ -437,7 +437,7 @@
 #'
 #' @format A \link[tibble]{tibble} with 100 rows and 100 columns.
 #' \describe{
-#'   \item{pid_1 to pid_100}{Responses on each item}
+#'   \item{pid5sf_001 to pid5sf_100}{Responses on each item}
 #' }
 #' @examples
 #' sim_pid5sf
@@ -449,7 +449,7 @@
 #'
 #' @format A \link[tibble]{tibble} with 100 rows and 25 columns.
 #' \describe{
-#'   \item{pid_1 to pid_25}{Responses on each item}
+#'   \item{pid5bf_01 to pid5bf_25}{Responses on each item}
 #' }
 #' @examples
 #' sim_pid5bf
@@ -463,7 +463,7 @@
 #' @format A \link[tibble]{tibble} with 386 rows and 101 columns.
 #' \describe{
 #'   \item{response_id}{An anonymized id for each participant}
-#'   \item{pid_1 to pid_100}{Responses on each item}
+#'   \item{pid5sf_001 to pid5sf_100}{Responses on each item}
 #' }
 #' @examples
 #' ku_pid5sf

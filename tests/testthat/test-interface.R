@@ -2,7 +2,7 @@
 # This API selects the form with `version` (not a `scales`/`id` argument) and
 # requires an explicit `items` argument.
 
-sf_items <- paste0("pid_", 1:100)
+sf_items <- sprintf("pid5sf_%03d", 1:100)
 
 test_that("row count is preserved by every exported function/version", {
   expect_equal(nrow(score_pid5(sim_pid5, items = 1:220, version = "FULL")), nrow(sim_pid5))
@@ -106,7 +106,7 @@ test_that("every scoring/validity output is a tibble", {
 })
 
 test_that("id-style columns pass through when scoring by item name", {
-  # ku_pid5sf carries non-item columns alongside pid_1..pid_100.
+  # ku_pid5sf carries non-item columns alongside pid5sf_001..pid5sf_100.
   out <- score_pid5(ku_pid5sf, items = sf_items, version = "SF", append = TRUE)
   extra <- setdiff(names(ku_pid5sf), sf_items)
   expect_true(all(extra %in% names(out)))
