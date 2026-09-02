@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M079: The online exports pad item numbers to the instrument's width, not to the export's own
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -121,6 +121,7 @@ item-column naming → its own candidate row.
 - 2026-09-01: T5 done - the `item_names()` comment no longer says the generators pad to the export's own width, both builders' padding comments state the instrument-width rule, and the two HiTOP-SR online generators' `module` help says item 4 stays `HSR_004`/`hsr_004`; `document()` rewrote those two .Rd files and a second run added nothing.
 - 2026-09-01: `devtools::test()` clean (7 pre-existing skips: three merge-base guards, three keying-diff guards, OQ-1).
 - 2026-09-01: the AC3 test compares fresh builds against the committed `inst/extdata/` artifacts, which `cairn/DESIGN.md`'s generator-testing decision says are not used as an oracle; the test comment states the distinction (a no-regression lock over names, not a content oracle) and leaves the DESIGN wording for review to rule on.
+- 2026-09-01: all tasks done; `devtools::test()` clean, `devtools::document()` idempotent, `R CMD check` 0 errors / 0 warnings / 0 notes on the final tree; status to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
