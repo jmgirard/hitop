@@ -215,7 +215,7 @@ test_that("the BF scoring table carries the Total row keyed to pid_scales", {
   # It really is all 25 items in ascending order. Asserted against a literal:
   # comparing the vector to its own sort() is satisfied by any vector, and
   # length-25 alone does not pin which items.
-  expect_equal(bf$itemNumbers[["total"]], as.numeric(1:25))
+  expect_identical(bf$itemNumbers[["total"]], 1:25)
 
   # And no item on the printed form carries a reverse mark, because no BF item
   # is reverse-keyed. Checked against the DOCX itself -- the earlier version of
