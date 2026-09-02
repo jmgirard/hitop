@@ -153,6 +153,7 @@ test_that("reliability_engine() refuses a scale_names length that is not one per
     reverse_items =
       hitopbr_items[hitopbr_items$Reverse == TRUE, "HBR", drop = TRUE],
     items_scales = scales,
+    scale_stems = hitopbr_scales$camelCase,
     srange = c(1, 4),
     alpha = FALSE,
     omega = FALSE
@@ -184,5 +185,38 @@ test_that("reliability_engine() refuses a scale_names length that is not one per
     reliability_engine,
     c(args, list(scale_names = hitopbr_scales$Scale))
   )
+  expect_identical(ok$Scale, hitopbr_scales$Scale)
+})
+
+test_that("reliability_engine() refuses a scale_stems length that is not one per scale", {
+  # The same guard for the stem column added with it: a divisor-length stem
+  # vector would otherwise be recycled beside correctly-labelled rows, pairing
+  # each printed name with a repeating stem.
+  scales <- hitopbr_scales$itemNumbers
+  args <- list(
+    data = sim_hitopbr,
+    items = 1:45,
+    n_items = 45,
+    reverse_items =
+      hitopbr_items[hitopbr_items$Reverse == TRUE, "HBR", drop = TRUE],
+    items_scales = scales,
+    scale_names = hitopbr_scales$Scale,
+    srange = c(1, 4),
+    alpha = FALSE,
+    omega = FALSE
+  )
+  expect_equal(length(scales) %% 4L, 0L)
+  expect_error(
+    do.call(reliability_engine, c(args, list(scale_stems = hitopbr_scales$camelCase[1:4]))),
+    "one stem per scale"
+  )
+  expect_error(
+    do.call(reliability_engine, c(args, list(scale_stems = hitopbr_scales$camelCase[1:3]))),
+    "one stem per scale"
+  )
+  # The control: the correct length returns, and returns those stems beside
+  # the names.
+  ok <- do.call(reliability_engine, c(args, list(scale_stems = hitopbr_scales$camelCase)))
+  expect_identical(ok$camelCase, hitopbr_scales$camelCase)
   expect_identical(ok$Scale, hitopbr_scales$Scale)
 })

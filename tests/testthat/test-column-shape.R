@@ -107,3 +107,99 @@ test_that("renaming the devstats display column moved nothing else", {
     expect_identical(new, old, info = nm)
   }
 })
+
+# ---- AC3: the reliability return carries the keying table's stem -------------
+
+# The six calls the reliability family offers, each paired with the keying
+# table its rows come from, that table's display column, and the score_*() call
+# that names the columns the stem is meant to join to. The omega estimator is
+# mocked: these tests are about the columns the return carries under each flag
+# setting, and a real one-factor CFA per scale would cost minutes per call.
+reliability_calls <- function() {
+  m <- hitop_module("hitopsr", c("agoraphobia", "appetiteLoss", "romanticDisinterest"))
+  collected <- sim_hitopsr[sprintf("hsr_%03d", m$items)]
+  list(
+    FULL = list(
+      rel = function(...) reliability_pid5(sim_pid5, items = 1:220, version = "FULL", ...),
+      table = pid_scales[["FULL"]], display = "Facet", prefix = "pid_",
+      scored = score_pid5(sim_pid5, items = 1:220, version = "FULL")
+    ),
+    SF = list(
+      rel = function(...) reliability_pid5(sim_pid5sf, items = 1:100, version = "SF", ...),
+      table = pid_scales[["SF"]], display = "Facet", prefix = "pid_",
+      scored = score_pid5(sim_pid5sf, items = 1:100, version = "SF")
+    ),
+    BF = list(
+      rel = function(...) reliability_pid5(sim_pid5bf, items = 1:25, version = "BF", ...),
+      table = pid_scales[["BF"]], display = "Domain", prefix = "pid_",
+      scored = score_pid5(sim_pid5bf, items = 1:25, version = "BF")
+    ),
+    hitopsr = list(
+      rel = function(...) reliability_hitopsr(sim_hitopsr, items = 1:405, ...),
+      table = hitopsr_scales, display = "Scale", prefix = "hsr_",
+      scored = score_hitopsr(sim_hitopsr, items = 1:405)
+    ),
+    hitopsr_module = list(
+      rel = function(...) reliability_hitopsr(collected, items = names(collected), module = m, ...),
+      table = hitopsr_scales, display = "Scale", prefix = "hsr_",
+      scored = score_hitopsr(collected, items = names(collected), module = m)
+    ),
+    hitopbr = list(
+      rel = function(...) reliability_hitopbr(sim_hitopbr, items = 1:45, ...),
+      table = hitopbr_scales, display = "Scale", prefix = "hbr_",
+      scored = score_hitopbr(sim_hitopbr, items = 1:45)
+    )
+  )
+}
+
+flag_settings <- list(
+  default = list(),
+  no_omega = list(omega = FALSE),
+  no_alpha = list(alpha = FALSE)
+)
+
+test_that("reliability_*() return Scale, camelCase, nItems, then the requested coefficients", {
+  local_mocked_bindings(calc_omega = function(df) 0.5)
+  for (cn in names(reliability_calls())) {
+    call <- reliability_calls()[[cn]]
+    for (sn in names(flag_settings)) {
+      flags <- flag_settings[[sn]]
+      rel <- do.call(call$rel, flags)
+      want <- c("Scale", "camelCase", "nItems")
+      if (!isFALSE(flags$alpha)) want <- c(want, "alpha")
+      if (!isFALSE(flags$omega)) want <- c(want, "omega")
+      expect_identical(names(rel), want, info = paste(cn, sn))
+      expect_true(is.integer(rel$nItems), info = paste(cn, sn))
+    }
+  }
+})
+
+test_that("each returned camelCase is the keying table's stem on the row whose display name is the returned Scale", {
+  local_mocked_bindings(calc_omega = function(df) 0.5)
+  for (cn in names(reliability_calls())) {
+    call <- reliability_calls()[[cn]]
+    for (sn in names(flag_settings)) {
+      rel <- do.call(call$rel, flag_settings[[sn]])
+      # Looked up by the display name, row by row, so a stem column supplied
+      # from a misaligned row is caught; a set comparison would not see it.
+      row <- match(rel$Scale, call$table[[call$display]])
+      expect_false(anyNA(row), info = paste(cn, sn))
+      expect_identical(rel$camelCase, call$table$camelCase[row], info = paste(cn, sn))
+    }
+  }
+})
+
+test_that("prefix + camelCase names a column of the matching score_*() output", {
+  local_mocked_bindings(calc_omega = function(df) 0.5)
+  for (cn in names(reliability_calls())) {
+    call <- reliability_calls()[[cn]]
+    for (sn in names(flag_settings)) {
+      rel <- do.call(call$rel, flag_settings[[sn]])
+      expect_gt(nrow(rel), 0L)
+      expect_true(
+        all(paste0(call$prefix, rel$camelCase) %in% names(call$scored)),
+        info = paste(cn, sn)
+      )
+    }
+  }
+})

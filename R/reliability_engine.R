@@ -21,6 +21,10 @@
 #'   table's is the canonical one. A length that disagrees with `items_scales` is
 #'   guarded explicitly below: `data.frame()` would recycle a divisor length
 #'   rather than abort, silently labelling the rows with a repeating name.
+#' @param scale_stems Character vector of the `camelCase` stems, parallel to
+#'   `items_scales` and read from the same keying-table rows as `scale_names`.
+#'   Returned beside `Scale` so a caller can join the row to the scored column
+#'   the stem names without rebuilding it. Guarded like `scale_names`.
 #' @param alpha,omega Logical; whether to compute each coefficient. A coefficient
 #'   is included as an output column only when its flag is TRUE.
 #' @param call The calling environment, forwarded to the validators so aborts are
@@ -33,6 +37,7 @@ reliability_engine <- function(
   reverse_items,
   items_scales,
   scale_names,
+  scale_stems,
   srange,
   alpha = TRUE,
   omega = TRUE,
@@ -65,8 +70,18 @@ reliability_engine <- function(
     call = call
   )
 
+  cli_assert(
+    length(scale_stems) == length(items_scales),
+    c(
+      "{.arg scale_stems} must have one stem per scale.",
+      "x" = "Got {length(scale_stems)} stem{?s} for {length(items_scales)} scale{?s}."
+    ),
+    call = call
+  )
+
   out <- data.frame(
     Scale = scale_names,
+    camelCase = scale_stems,
     nItems = lengths(items_scales),
     row.names = NULL,
     stringsAsFactors = FALSE

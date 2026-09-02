@@ -33,7 +33,9 @@
 #'
 #' @return A \link[tibble]{tibble} with one row per scale and columns `Scale`
 #'   (the scale's canonical display name, as the instrument's keying table spells
-#'   it), `nItems`, and (when requested) `alpha` and `omega`.
+#'   it), `camelCase` (the stem that names the scale's column in the matching
+#'   `score_*()` output, read from the same keying-table row), `nItems`
+#'   (integer), and (when requested) `alpha` and `omega`.
 #'
 #' @examples
 #' # Facet-level reliability for the full PID-5 (alpha only)
@@ -77,6 +79,7 @@ reliability_pid5 <- function(
     reverse_items = reverse_items,
     items_scales = items_scales,
     scale_names = scale_names,
+    scale_stems = pid_scales[[version]]$camelCase,
     srange = srange,
     alpha = alpha,
     omega = omega

@@ -35,7 +35,9 @@
 #'
 #' @return A \link[tibble]{tibble} with one row per scale and columns `Scale`
 #'   (the scale's canonical display name, as the instrument's keying table spells
-#'   it), `nItems`, and (when requested) `alpha` and `omega`.
+#'   it), `camelCase` (the stem that names the scale's column in the matching
+#'   `score_*()` output, read from the same keying-table row), `nItems`
+#'   (integer), and (when requested) `alpha` and `omega`.
 #'
 #' @examples
 #' # Per-scale alpha for the HiTOP-SR
@@ -70,6 +72,7 @@ reliability_hitopsr <- function(
     reverse_items = inputs$reverse_items,
     items_scales = inputs$items_scales,
     scale_names = inputs$scale_names,
+    scale_stems = inputs$scale_stems,
     srange = srange,
     alpha = alpha,
     omega = omega

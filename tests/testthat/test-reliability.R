@@ -171,7 +171,7 @@ test_that("reliability_*() return a per-scale tibble with the requested columns"
   rel <- reliability_hitopbr(sim_hitopbr, items = 1:45, omega = FALSE)
   expect_s3_class(rel, "tbl_df")
   expect_equal(nrow(rel), nrow(hitopbr_scales))
-  expect_identical(names(rel), c("Scale", "nItems", "alpha"))  # omega omitted when FALSE
+  expect_identical(names(rel), c("Scale", "camelCase", "nItems", "alpha"))  # omega omitted when FALSE
 
   # PID-5 reliability is facet-level (25), before FULL/SF domain aggregation.
   rel_pid <- reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)

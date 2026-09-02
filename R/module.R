@@ -182,7 +182,8 @@ apply_module <- function(
 # POSITION within the columns the caller supplied, so scoring module-collected
 # data needs the module's original numbers translated into positions within
 # `module$items` (which is ascending). Returns `n_items`, `reverse_items`,
-# `items_scales` and `scale_names` ready for score_engine()/reliability_engine().
+# `items_scales`, `scale_names` and `scale_stems` ready for
+# score_engine()/reliability_engine().
 #
 # `items` and `scales` are the instrument's own tables, so the reverse key is
 # read from the package's canonical source rather than trusted from the
@@ -252,7 +253,8 @@ module_engine_inputs <- function(
     # object carries the same names, but taking them from there would make the
     # reliability call and the module that produced it one source rather than
     # two, and nothing downstream could then tell them apart (M061-D1).
-    scale_names = kept[[display_col]]
+    scale_names = kept[[display_col]],
+    scale_stems = kept[[scale_col]]
   )
 }
 
@@ -270,7 +272,8 @@ hitopsr_engine_inputs <- function(module, call = rlang::caller_env()) {
       reverse_items =
         hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE],
       items_scales = hitopsr_scales$itemNumbers,
-      scale_names = hitopsr_scales$Scale
+      scale_names = hitopsr_scales$Scale,
+      scale_stems = hitopsr_scales$camelCase
     ))
   }
 

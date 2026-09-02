@@ -46,7 +46,9 @@ Supplying both \code{module} and \code{subset} is an error. (default = \code{NUL
 \value{
 A \link[tibble]{tibble} with one row per scale and columns \code{Scale}
 (the scale's canonical display name, as the instrument's keying table spells
-it), \code{nItems}, and (when requested) \code{alpha} and \code{omega}.
+it), \code{camelCase} (the stem that names the scale's column in the matching
+\verb{score_*()} output, read from the same keying-table row), \code{nItems}
+(integer), and (when requested) \code{alpha} and \code{omega}.
 }
 \description{
 Compute per-scale internal-consistency reliability — Cronbach's alpha and
