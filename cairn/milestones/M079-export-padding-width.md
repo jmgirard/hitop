@@ -4,12 +4,12 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M079: The online exports pad item numbers to the instrument's width, not to the export's own
 
-- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP2, GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
-- **Branch/PR:** `m079-export-padding-width`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m079-export-padding-width` · https://github.com/jmgirard/hitop/pull/85   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -51,18 +51,18 @@ item-column naming → its own candidate row.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `build_qualtrics_txt()` and `build_redcap_zip()` pad to the
+- [x] AC1: `build_qualtrics_txt()` and `build_redcap_zip()` pad to the
       instrument width they are given, not to the items they are given: called
       directly with an items frame whose largest item number is 45 and an
       instrument width of 405, they write the question id `HSR_007` and the
       variable name `hsr_007` for item 7.
-- [ ] AC2: Both builders require that width — a direct call omitting it aborts,
+- [x] AC2: Both builders require that width — a direct call omitting it aborts,
       rather than falling back to the exported items' own largest number.
 - [ ] AC3: No shipped online export's item names move: for every row of
       `hitop_artifacts` whose `format` is `qualtrics` or `redcap` — the domain
       enumerated from the manifest — a fresh default build's item variable
       names are identical to those in the committed file the row names.
-- [ ] AC4: `Rscript -e 'devtools::test()'` clean and
+- [x] AC4: `Rscript -e 'devtools::test()'` clean and
       `Rscript -e 'devtools::document()'` producing no diff (the profile's
       `verify` slot).
 
@@ -122,9 +122,101 @@ item-column naming → its own candidate row.
 - 2026-09-01: `devtools::test()` clean (7 pre-existing skips: three merge-base guards, three keying-diff guards, OQ-1).
 - 2026-09-01: the AC3 test compares fresh builds against the committed `inst/extdata/` artifacts, which `cairn/DESIGN.md`'s generator-testing decision says are not used as an oracle; the test comment states the distinction (a no-regression lock over names, not a content oracle) and leaves the DESIGN wording for review to rule on.
 - 2026-09-01: all tasks done; `devtools::test()` clean, `devtools::document()` idempotent, `R CMD check` 0 errors / 0 warnings / 0 notes on the final tree; status to review.
+- 2026-09-01: amendment return: AC3 — "for every row of `hitop_artifacts` whose `format` is `qualtrics` or `redcap`" — the manifest names `hitophsum_qualtrics.qsf`, which this package ships but has no generator for, so no fresh default build exists to compare; AC1, AC2 and AC4 verified, consistency gate green, review stops for the amendment alone.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
 
 ## Review
 <!-- owner: review · exclusive -->
+
+2026-09-01. Evidence gathered fresh on the branch at commit 94db275a; `R CMD
+check` and `devtools::test()` run on the working tree with `document()` clean.
+
+**Sync.** `git fetch`; `origin/main` at 68ce4ae7, the branch 0 behind / 3
+ahead — no merge needed. Branch pushed; draft PR
+https://github.com/jmgirard/hitop/pull/85 opened.
+
+### Acceptance criteria
+
+- **AC1 — verified.** Direct call on both builders with an items frame holding
+  HiTOP-SR items 7 and 45 (largest 45) and `max_n = 405`:
+  `build_qualtrics_txt()` wrote the question ids `HSR_007`, `HSR_045`;
+  `build_redcap_zip()` wrote the variable names `hsr_instructions`, `hsr_007`,
+  `hsr_045`. The committed tests assert the same two identities.
+- **AC2 — verified.** The same two direct calls with `max_n` omitted each
+  aborted with an `rlang_error` reading "`max_n` is absent but must be
+  supplied"; neither fell back to the exported items' largest number.
+- **AC3 — not verified as written.** The criterion's domain is every
+  `qualtrics`/`redcap` row of `hitop_artifacts`; that manifest names 12
+  distinct files, and `generate_qualtrics_hitophsum()` does not exist, so
+  `hitophsum_qualtrics.qsf` admits no fresh default build to compare. The
+  implementation covers the other 11 and asserts by name that the .qsf is the
+  sole file this package does not build — the implement gate's logged choice —
+  but that narrowing was never made in the criterion's text. All 11 rebuilds
+  matched their committed artifacts. See the amendment return below.
+- **AC4 — verified.** `Rscript -e 'devtools::test()'` →
+  `FAIL 0 | WARN 0 | SKIP 7 | PASS 16423` (the 7 skips are the pre-existing
+  merge-base, keying-diff and OQ-1 guards). `Rscript -e 'devtools::document()'`
+  left the tree unchanged apart from this milestone file.
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0, all checks PASS; 22 advisories, all pre-existing
+  (20 dangling `D-00x` tokens, 1 references-staleness, none introduced here).
+- No `DESIGN.md` principle changed → `cairn_impact.py` not run.
+- Profile `consistency-gate`: `document()` no diff; `NAMESPACE`/`man/`/`data/`
+  regenerate clean; README untouched by the branch; `pkgdown::check_pkgdown()`
+  "No problems found"; no NEWS entry, matching the plan gate's internal-tier
+  choice; no new top-level files; `devtools::check()` 0 errors / 0 warnings /
+  0 notes; line-ending policy check passed.
+
+### Independent review (three lenses, fresh context)
+
+- **[O] diff-bug.** No correctness defect. Verified all ten wrappers pass the
+  right width (405, 45, 220, 100, 25), no other call site of either builder in
+  `R/`, `tests/`, `data-raw/`, `devel/` or the builder repo, and the roxygen
+  additions match observed behavior. Five ranked findings:
+  1. The AC3 test reads its expectation off the committed `inst/extdata/`
+     artifact, which `cairn/DESIGN.md`'s generator-testing decision says is not
+     used as an oracle; the carve-out is written only in a test comment.
+  2. `max_n` is guarded for shape (`min = 1`) but not for coherence with the
+     items exported, so `max_n = 1` against items numbered to 405 would produce
+     the unpadded names this milestone closes — internal-only, unreachable
+     today.
+  3. Three pre-existing test comments in `test-generate_qualtrics.R` and
+     `test-generate_redcap.R` still state the old "widest exported item" rule;
+     T5's comment sweep did not reach them.
+  4. The AC3 test resolves generators with bare `exists()`/`get()`, which
+     inherit from the search path; `envir = getNamespace("hitop")` would pin
+     them.
+  5. `manifest_generator()` assumes a `<stem>_<format>.<ext>` file-name grammar
+     and hardcodes the census `sum(has_generator) == 11L`; a mis-mapped name is
+     caught, but by the .qsf assertion rather than by a naming assertion.
+- **[S] blame-history.** No conflict with D-036 (the change alters padding
+  width only, never which number names which item) and none with the M077
+  decision this fix was deferred from. No resurrected bug: this is the
+  defect's first fix. Raised the same DESIGN tension as [O] finding 1, and
+  found it pre-existing — several M046/M048-era tests already compare against
+  `inst/extdata/`.
+- **[S] prior-PR-comments.** No prior-review regression. The M077 review's
+  finding 5 (the Qualtrics generator computing its width inline) is what this
+  diff resolves; the M050 `validate_count()` guard pattern is followed; the
+  M024, M075 and remaining M077 findings all concern lines this diff does not
+  touch.
+
+Findings 1–5 are logged here and carried to the next review gate for triage;
+none of them demonstrates an acceptance criterion failing, and none is a
+load-bearing defect in what the package does for its users, so none returns
+the milestone on its own.
+
+### Disposition — amendment return on AC3
+
+AC3 promises the rebuild comparison over every `qualtrics`/`redcap` manifest
+row, and one such row names a file this package ships but does not generate.
+The work is right; the criterion's domain is wider than any implementation
+could satisfy. Under the never-reinterpret rule this is the criterion's defect,
+not the work's: it routes to the gated criterion-amendment protocol
+(`/milestone-implement` step 6) to narrow AC3's domain to the manifest's
+generator-backed rows, with `hitophsum_qualtrics.qsf` excluded by name as the
+test already asserts. No other work is convened by this return.
