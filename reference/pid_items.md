@@ -16,7 +16,7 @@ rows and 15 columns:
 - FULL, SF, BF:
 
   Item number on the full PID-5, PID-5 faceted short form, and PID-5
-  brief form
+  brief form (integer)
 
 - Reverse:
 
@@ -25,20 +25,21 @@ rows and 15 columns:
 - INC,INCS:
 
   Item number on the response inconsistency scale full and short forms
+  (integer)
 
 - ORS,ORSS:
 
-  Item number on the overreporting scale full and short forms
+  Item number on the overreporting scale full and short forms (integer)
 
 - PRD,PRDS:
 
   Item number on the positive impression management response distortion
-  scale full and short forms
+  scale full and short forms (integer)
 
 - SDTD,SDTDS:
 
   Item number on the social desirability-total denial scale full and
-  short forms
+  short forms (integer)
 
 - Facet:
 
@@ -58,7 +59,7 @@ rows and 15 columns:
 pid_items
 #> # A tibble: 220 × 15
 #>     FULL    SF    BF Reverse   INC  INCS   ORS  ORSS   PRD  PRDS  SDTD SDTDS
-#>    <dbl> <dbl> <dbl> <lgl>   <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#>    <int> <int> <int> <lgl>   <int> <int> <int> <int> <int> <int> <int> <int>
 #>  1     1    NA    NA FALSE      NA    NA    NA    NA    NA    NA    NA    NA
 #>  2     2     1    NA FALSE      NA    NA     1     1     1     1     1     1
 #>  3     3    NA     1 FALSE      NA    NA    NA    NA    NA    NA    NA    NA

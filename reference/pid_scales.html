@@ -97,13 +97,13 @@ element carries a sixth row, <code>Total</code>, which is not a domain but the w
 25-item form scored as one scale (see <code><a href="score_pid5.html">score_pid5()</a></code>)</p></dd>
 
 <dt>itemdata</dt>
-<dd><p>A list column containing one item-data tibble per scale</p></dd>
+<dd><p>A list column containing one item-data tibble per scale; its item-number column is an integer</p></dd>
 
 <dt>nItems</dt>
 <dd><p>The number of items in the scale (integer)</p></dd>
 
 <dt>itemNumbers</dt>
-<dd><p>A list column containing one item-number vector per scale</p></dd>
+<dd><p>A list column containing one integer item-number vector per scale</p></dd>
 
 <dt>camelCase</dt>
 <dd><p>The name of the scale converted to camel case (the score-output column stem)</p></dd>
@@ -117,12 +117,12 @@ element carries a sixth row, <code>Total</code>, which is not a domain but the w
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 6 × 5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Domain               itemdata          nItems itemNumbers  camelCase          </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;named list&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Disinhibition        <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;dbl [5]&gt;</span>    disinhibition      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Detachment           <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;dbl [5]&gt;</span>    detachment         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Psychoticism         <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;dbl [5]&gt;</span>    psychoticism       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Negative affectivity <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;dbl [5]&gt;</span>    negativeAffectivity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Antagonism           <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;dbl [5]&gt;</span>    antagonism         </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Total                <span style="color: #949494;">&lt;tibble [25 × 3]&gt;</span>     25 <span style="color: #949494;">&lt;dbl [25]&gt;</span>   total              </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Disinhibition        <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;int [5]&gt;</span>    disinhibition      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Detachment           <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;int [5]&gt;</span>    detachment         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Psychoticism         <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;int [5]&gt;</span>    psychoticism       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> Negative affectivity <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;int [5]&gt;</span>    negativeAffectivity</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> Antagonism           <span style="color: #949494;">&lt;tibble [5 × 3]&gt;</span>       5 <span style="color: #949494;">&lt;int [5]&gt;</span>    antagonism         </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> Total                <span style="color: #949494;">&lt;tibble [25 × 3]&gt;</span>     25 <span style="color: #949494;">&lt;int [25]&gt;</span>   total              </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -83,7 +83,7 @@ Used by the HiTOP-HSUM instrument generators (e.g. <code><a href="generate_redca
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 650 rows and 9 columns:</p><dl><dt>Item</dt>
-<dd><p>Item number</p></dd>
+<dd><p>Item number (integer)</p></dd>
 
 <dt>Variable</dt>
 <dd><p>Variable name for the item</p></dd>
@@ -117,7 +117,7 @@ Used by the HiTOP-HSUM instrument generators (e.g. <code><a href="generate_redca
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hitophsum_items</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 650 × 9</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Item Variable Substance Tier  Field_Type Gate_Variable Gate_Value Choice_Set</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 hsum_alc Alcohol   Scre… radio      <span style="color: #BB0000;">NA</span>            <span style="color: #BB0000;">NA</span>         yn_pnts   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 hsum_can Cannabis  Scre… radio      <span style="color: #BB0000;">NA</span>            <span style="color: #BB0000;">NA</span>         yn_pnts   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 hsum_nic Nicotine  Scre… radio      <span style="color: #BB0000;">NA</span>            <span style="color: #BB0000;">NA</span>         yn_pnts   </span>

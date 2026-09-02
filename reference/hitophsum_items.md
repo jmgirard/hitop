@@ -17,7 +17,7 @@ rows and 9 columns:
 
 - Item:
 
-  Item number
+  Item number (integer)
 
 - Variable:
 
@@ -57,7 +57,7 @@ rows and 9 columns:
 hitophsum_items
 #> # A tibble: 650 × 9
 #>     Item Variable Substance Tier  Field_Type Gate_Variable Gate_Value Choice_Set
-#>    <dbl> <chr>    <chr>     <chr> <chr>      <chr>         <chr>      <chr>     
+#>    <int> <chr>    <chr>     <chr> <chr>      <chr>         <chr>      <chr>     
 #>  1     1 hsum_alc Alcohol   Scre… radio      NA            NA         yn_pnts   
 #>  2     2 hsum_can Cannabis  Scre… radio      NA            NA         yn_pnts   
 #>  3     3 hsum_nic Nicotine  Scre… radio      NA            NA         yn_pnts   

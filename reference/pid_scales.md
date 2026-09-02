@@ -30,7 +30,8 @@ row per scale and 5 columns:
 
 - itemdata:
 
-  A list column containing one item-data tibble per scale
+  A list column containing one item-data tibble per scale; its
+  item-number column is an integer
 
 - nItems:
 
@@ -38,7 +39,7 @@ row per scale and 5 columns:
 
 - itemNumbers:
 
-  A list column containing one item-number vector per scale
+  A list column containing one integer item-number vector per scale
 
 - camelCase:
 
@@ -52,10 +53,10 @@ pid_scales[["BF"]]
 #> # A tibble: 6 × 5
 #>   Domain               itemdata          nItems itemNumbers  camelCase          
 #>   <chr>                <list>             <int> <named list> <chr>              
-#> 1 Disinhibition        <tibble [5 × 3]>       5 <dbl [5]>    disinhibition      
-#> 2 Detachment           <tibble [5 × 3]>       5 <dbl [5]>    detachment         
-#> 3 Psychoticism         <tibble [5 × 3]>       5 <dbl [5]>    psychoticism       
-#> 4 Negative affectivity <tibble [5 × 3]>       5 <dbl [5]>    negativeAffectivity
-#> 5 Antagonism           <tibble [5 × 3]>       5 <dbl [5]>    antagonism         
-#> 6 Total                <tibble [25 × 3]>     25 <dbl [25]>   total              
+#> 1 Disinhibition        <tibble [5 × 3]>       5 <int [5]>    disinhibition      
+#> 2 Detachment           <tibble [5 × 3]>       5 <int [5]>    detachment         
+#> 3 Psychoticism         <tibble [5 × 3]>       5 <int [5]>    psychoticism       
+#> 4 Negative affectivity <tibble [5 × 3]>       5 <int [5]>    negativeAffectivity
+#> 5 Antagonism           <tibble [5 × 3]>       5 <int [5]>    antagonism         
+#> 6 Total                <tibble [25 × 3]>     25 <int [25]>   total              
 ```

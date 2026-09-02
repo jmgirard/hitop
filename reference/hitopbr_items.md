@@ -15,7 +15,7 @@ rows and 8 columns:
 
 - HBR:
 
-  Item number on the HITOP-BR
+  Item number on the HITOP-BR (integer)
 
 - Reverse:
 
@@ -39,7 +39,7 @@ rows and 8 columns:
 
 - HSR:
 
-  Item number on the HiTOP-SR
+  Item number on the HiTOP-SR (integer)
 
 - Original:
 
@@ -51,7 +51,7 @@ rows and 8 columns:
 hitopbr_items
 #> # A tibble: 45 × 8
 #>      HBR Reverse Scale            Externalizing Pfactor Text        HSR Original
-#>    <dbl> <lgl>   <chr>            <lgl>         <lgl>   <chr>     <dbl> <chr>   
+#>    <int> <lgl>   <chr>            <lgl>         <lgl>   <chr>     <int> <chr>   
 #>  1     1 FALSE   Antagonism       TRUE          TRUE    I found …   303 Ext_22  
 #>  2     2 FALSE   Antagonism       FALSE         FALSE   I deserv…    95 Ext_175 
 #>  3     3 FALSE   Thought Disorder FALSE         FALSE   I saw th…     3 HiTOP_5…

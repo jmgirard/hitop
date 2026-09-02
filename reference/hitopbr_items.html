@@ -80,7 +80,7 @@
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 45 rows and 8 columns:</p><dl><dt>HBR</dt>
-<dd><p>Item number on the HITOP-BR</p></dd>
+<dd><p>Item number on the HITOP-BR (integer)</p></dd>
 
 <dt>Reverse</dt>
 <dd><p>Whether the item needs to be reverse scored</p></dd>
@@ -98,7 +98,7 @@
 <dd><p>Item text</p></dd>
 
 <dt>HSR</dt>
-<dd><p>Item number on the HiTOP-SR</p></dd>
+<dd><p>Item number on the HiTOP-SR (integer)</p></dd>
 
 <dt>Original</dt>
 <dd><p>Item ID in the original, development item pool</p></dd>
@@ -111,7 +111,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hitopbr_items</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 45 × 8</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      HBR Reverse Scale            Externalizing Pfactor Text        HSR Original</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 FALSE   Antagonism       TRUE          TRUE    I found …   303 Ext_22  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 FALSE   Antagonism       FALSE         FALSE   I deserv…    95 Ext_175 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 FALSE   Thought Disorder FALSE         FALSE   I saw th…     3 HiTOP_5…</span>

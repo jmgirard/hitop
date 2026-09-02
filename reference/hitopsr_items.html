@@ -80,7 +80,7 @@
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 405 rows and 6 columns:</p><dl><dt>HSR</dt>
-<dd><p>Item number on the full HiTOP-SR</p></dd>
+<dd><p>Item number on the full HiTOP-SR (integer)</p></dd>
 
 <dt>Reverse</dt>
 <dd><p>Whether the item needs to be reverse scored</p></dd>
@@ -116,7 +116,7 @@ name from each scale name, so those scales' scored columns are
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">hitopsr_items</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 405 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      HSR Reverse Scale              Subscale       Text                 Original</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1 FALSE   Social Aloofness   <span style="color: #BB0000;">NA</span>             I preferred to stay… HiTOP_6…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2 FALSE   Perfectionism      <span style="color: #BB0000;">NA</span>             I felt that my work… HiTOP_3…</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3 FALSE   Reality Distortion Hallucinations I saw things that w… HiTOP_5…</span>

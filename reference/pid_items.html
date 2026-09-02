@@ -80,22 +80,22 @@
     <div class="section level2">
     <h2 id="format">Format<a class="anchor" aria-label="anchor" href="#format"></a></h2>
     <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with 220 rows and 15 columns:</p><dl><dt>FULL, SF, BF</dt>
-<dd><p>Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form</p></dd>
+<dd><p>Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form (integer)</p></dd>
 
 <dt>Reverse</dt>
 <dd><p>Whether the item needs to be reverse scored</p></dd>
 
 <dt>INC,INCS</dt>
-<dd><p>Item number on the response inconsistency scale full and short forms</p></dd>
+<dd><p>Item number on the response inconsistency scale full and short forms (integer)</p></dd>
 
 <dt>ORS,ORSS</dt>
-<dd><p>Item number on the overreporting scale full and short forms</p></dd>
+<dd><p>Item number on the overreporting scale full and short forms (integer)</p></dd>
 
 <dt>PRD,PRDS</dt>
-<dd><p>Item number on the positive impression management response distortion scale full and short forms</p></dd>
+<dd><p>Item number on the positive impression management response distortion scale full and short forms (integer)</p></dd>
 
 <dt>SDTD,SDTDS</dt>
-<dd><p>Item number on the social desirability-total denial scale full and short forms</p></dd>
+<dd><p>Item number on the social desirability-total denial scale full and short forms (integer)</p></dd>
 
 <dt>Facet</dt>
 <dd><p>Name of the facet</p></dd>
@@ -114,7 +114,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pid_items</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 220 × 15</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     FULL    SF    BF Reverse   INC  INCS   ORS  ORSS   PRD  PRDS  SDTD SDTDS</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>     1    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span> FALSE      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>     2     1    <span style="color: #BB0000;">NA</span> FALSE      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     1     1     1     1     1     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>     3    <span style="color: #BB0000;">NA</span>     1 FALSE      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span></span>

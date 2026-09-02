@@ -19,7 +19,8 @@ rows and 5 columns:
 
 - itemdata:
 
-  A list column containing one item-data tibble per scale
+  A list column containing one item-data tibble per scale; its
+  item-number column is an integer
 
 - nItems:
 
@@ -27,7 +28,7 @@ rows and 5 columns:
 
 - itemNumbers:
 
-  A list column containing one item-number vector per scale
+  A list column containing one integer item-number vector per scale
 
 - camelCase:
 
@@ -40,15 +41,15 @@ hitopsr_scales
 #> # A tibble: 76 × 5
 #>    Scale                itemdata         nItems itemNumbers  camelCase          
 #>    <chr>                <list>            <int> <named list> <chr>              
-#>  1 Agoraphobia          <tibble [5 × 4]>      5 <dbl [5]>    agoraphobia        
-#>  2 Antisocial Behavior  <tibble [8 × 4]>      8 <dbl [8]>    antisocialBehavior 
-#>  3 Appearance Focus     <tibble [5 × 4]>      5 <dbl [5]>    appearanceFocus    
-#>  4 Appetite Loss        <tibble [3 × 4]>      3 <dbl [3]>    appetiteLoss       
-#>  5 Binge Eating         <tibble [3 × 4]>      3 <dbl [3]>    bingeEating        
-#>  6 Bodily Distress      <tibble [6 × 4]>      6 <dbl [6]>    bodilyDistress     
-#>  7 Body Dissatisfaction <tibble [4 × 4]>      4 <dbl [4]>    bodyDissatisfaction
-#>  8 Callousness          <tibble [6 × 4]>      6 <dbl [6]>    callousness        
-#>  9 Checking             <tibble [5 × 4]>      5 <dbl [5]>    checking           
-#> 10 Cleaning             <tibble [6 × 4]>      6 <dbl [6]>    cleaning           
+#>  1 Agoraphobia          <tibble [5 × 4]>      5 <int [5]>    agoraphobia        
+#>  2 Antisocial Behavior  <tibble [8 × 4]>      8 <int [8]>    antisocialBehavior 
+#>  3 Appearance Focus     <tibble [5 × 4]>      5 <int [5]>    appearanceFocus    
+#>  4 Appetite Loss        <tibble [3 × 4]>      3 <int [3]>    appetiteLoss       
+#>  5 Binge Eating         <tibble [3 × 4]>      3 <int [3]>    bingeEating        
+#>  6 Bodily Distress      <tibble [6 × 4]>      6 <int [6]>    bodilyDistress     
+#>  7 Body Dissatisfaction <tibble [4 × 4]>      4 <int [4]>    bodyDissatisfaction
+#>  8 Callousness          <tibble [6 × 4]>      6 <int [6]>    callousness        
+#>  9 Checking             <tibble [5 × 4]>      5 <int [5]>    checking           
+#> 10 Cleaning             <tibble [6 × 4]>      6 <int [6]>    cleaning           
 #> # ℹ 66 more rows
 ```

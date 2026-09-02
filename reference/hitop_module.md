@@ -59,8 +59,8 @@ hitop_module(instrument = "hitopsr", scales, call = rlang::current_env())
 
 An object of class `hitop_module`: a list with the resolved
 `instrument`, the canonical display `scales` and their `camelCase`
-stems, the `items` kept (original instrument numbering, ascending), the
-parallel `reverse` keying flags, and `nItems`.
+stems, the integer `items` kept (original instrument numbering,
+ascending), the parallel `reverse` keying flags, and `nItems`.
 
 ## See also
 

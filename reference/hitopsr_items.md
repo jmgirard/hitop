@@ -15,7 +15,7 @@ rows and 6 columns:
 
 - HSR:
 
-  Item number on the full HiTOP-SR
+  Item number on the full HiTOP-SR (integer)
 
 - Reverse:
 
@@ -54,7 +54,7 @@ columns are `hsr_nonSuicidalSelfInjury` and `hsr_appearanceFocus`.
 hitopsr_items
 #> # A tibble: 405 × 6
 #>      HSR Reverse Scale              Subscale       Text                 Original
-#>    <dbl> <lgl>   <chr>              <chr>          <chr>                <chr>   
+#>    <int> <lgl>   <chr>              <chr>          <chr>                <chr>   
 #>  1     1 FALSE   Social Aloofness   NA             I preferred to stay… HiTOP_6…
 #>  2     2 FALSE   Perfectionism      NA             I felt that my work… HiTOP_3…
 #>  3     3 FALSE   Reality Distortion Hallucinations I saw things that w… HiTOP_5…
