@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
-- **Branch/PR:** `m082-rename-pid5-items`
+- **Branch/PR:** `m082-rename-pid5-items` / https://github.com/jmgirard/hitop/pull/89
 
 ## Goal
 
@@ -143,6 +143,7 @@ arguments, defaults and reports.
 - 2026-09-02: checkpoint at T1-T4. `test-rename_pid5_items.R` green on its own and four planted defects each red; the full `devtools::test()` run was still in flight at the commit, so T5 remains open.
 - 2026-09-02: the full suite's export-coverage guard went red on `rename_pid5_items()` — it counts a call in an evaluated vignette chunk or a reference link, not a prose mention, so AC5's naming alone does not satisfy it. The full-form vignette's mention became a worked chunk renaming `pid_1`/`pid_2`; the short- and brief-form mentions stay prose.
 - 2026-09-02: T5 — `devtools::test()` FAIL 0 | WARN 0 | SKIP 9 | PASS 16502; `devtools::check()` 0 errors, 0 warnings, 0 notes (5m 38s); `pkgdown::check_pkgdown()` no problems; `devtools::document()` leaves no diff. Status set to review.
+- 2026-09-02: review opened; draft PR #89 created, main unmoved since the branch was cut. `cairn_validate.py` passes (exit 0). Acceptance-criterion evidence pending the in-flight `devtools::test()`/`check()` run and the three review lenses.
 
 ## Decisions
 
