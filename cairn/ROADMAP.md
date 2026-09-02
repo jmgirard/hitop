@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-01 (eighteenth pass, at M077 review: validate all-green, tree clean; M077 archived, the M044 naming row narrowed to its PID-5 half, the M061 column-shape rows merged. Bytes: `ROADMAP.md` under 24,000; `LESSONS.md` under 20,000.)_
+_Last hygiene check: 2026-09-01 (nineteenth pass, at M078 review: validate all-green, tree clean; M078 archived, the M073 terminal row pruned, the M037 `nItems`-double lesson retired under the enforcement exit, an item-number storage-type candidate row filed. Bytes: `ROADMAP.md` under 24,000; `LESSONS.md` under 20,000.)_
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M079)._
 _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R CMD check` 0/0/0, pkgdown and URLs clean. Tag and GitHub release pending the maintainer._
 
@@ -8,15 +8,15 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M078 | The per-scale tables the package ships or returns join on one column shape | review | — | normal | milestones/M078-column-shape.md |
+| M078 | The per-scale tables the package ships or returns join on one column shape | done | — | normal | milestones/archive/M078-column-shape.md |
 | M077 | The shipped HiTOP datasets, `rename_hitopsr_items()` and the `label_*()` family name item columns as the REDCap export does | done | — | normal | milestones/archive/M077-item-column-names.md |
 | M076 | The builder page's boot path is bounded end to end and watched by a headless smoke test in CI | done | — | normal | milestones/archive/M076-builder-smoke-ci.md |
 | M075 | One REDCap archive writer, using a per-call temporary directory it always cleans up, against a stated {zip} floor | done | — | normal | milestones/archive/M075-redcap-zip-temp-path.md |
 | M074 | The builder page's naming prose states the conditions it actually depends on | done | — | normal | milestones/archive/M074-builder-naming-prose.md |
-| M073 | Every exported function the package still recommends is demonstrated or linked in the vignettes | done | — | normal | milestones/archive/M073-export-vignette-coverage.md |
 
 ## Candidates
 
+- The `nItems` shape M078 settled stops at the item *counts*: `hitopsr_items$HSR` and the `itemNumbers` list-columns in every `*_scales` table are still doubles, so `R/generate_docx.R:252` and `tests/testthat/test-scale-name-hitopsr.R:47` each coerce before comparing. No value moves and no scored column changes; what changes is the storage type of the item-number columns and the coercions that compensate for it. `cairn/DESIGN.md`'s scales-table line claims integer for `nItems` alone, so nothing overclaims today. Promote when an item-number column is next edited, or if a caller reports `identical()` failing on item numbers across the boundary — added 2026-09-01 — lineage: M061, M078 (review finding 7)
 - Both online generators pad a module export's item numbers to the widest item *in the module* (`R/generate_redcap.R:288`, `R/generate_qualtrics.R:287`): a HiTOP-SR module with every item below 100 writes `hsr_01`-style names `label_hitopsr()` cannot match. Kept at M077's implement gate, the generators being the reference the datasets move to; the Qualtrics generator computes the width inline, not via `item_names()`. Promote on a user report or when either generator's naming is next edited — added 2026-09-01 — lineage: M077 (review finding 5)
 - The builder smoke test M076 ships drives the Word download path only and goes red on a `webr.r-wasm.org` or `jmgirard.r-universe.dev` outage after one retry rather than reporting the outage as its own outcome; both declined at M076's plan gate (a per-format run triples the ways one upstream hiccup goes red; a reachability probe can mask a real break). Seven deferred review gaps are named in its archive summary (F10, F11, F13 in part, F18-F20, F22). Promote if a generator breaks in Qualtrics or REDCap alone while the smoke test stays green, if false reds become routine, or when the harness is next edited — added 2026-08-31 — lineage: M076
 - Two comments in the builder's `index.html` (above `tilesExactly` and above the R call setting it) say its start-up probe detects scale *overlap*. It cannot: `hitop_module()` sorts and de-duplicates items (`R/module.R:102`) before `identical(as.integer(items), seq_along(items))`, so overlapping scales pass. M074 fixed the shipped prose and the adjacent `downloadStem` comment, leaving these two; the HiTOP-SR tiles, so this is comment accuracy, not a live defect. Promote when a second instrument reaches the page, or when those comments are next edited — added 2026-08-31 — lineage: M063, M074 (finding 5)
