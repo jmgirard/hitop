@@ -1,6 +1,6 @@
 # M080: The shipped PID-5 datasets name item columns as the online exports do
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -92,27 +92,27 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
 
 ## Tasks
 
-- [ ] T1 Write `data-raw/rename_pid_item_columns.R` on the shape of
+- [x] T1 Write `data-raw/rename_pid_item_columns.R` on the shape of
       `data-raw/rename_item_columns.R`: load each of the four objects from the
       pinned pre-rename commit, rename item columns from the trailing integer,
       assert whole-object identity, save with `usethis::use_data()`. Run the
       planted one-cell perturbation and record that the assertion fails.
-- [ ] T2 Rename the item columns in the `data-raw/ku_pid5sf.csv` header
+- [x] T2 Rename the item columns in the `data-raw/ku_pid5sf.csv` header
       (line 1) and the `colnames()` line in `data-raw/sim_pid.R:8` so the next
       run builds the same names; verify each against `item_names()` on
       `pid_items`.
-- [ ] T3 Extend `tests/testthat/test-data-item-names.R` with the four PID-5
+- [x] T3 Extend `tests/testthat/test-data-item-names.R` with the four PID-5
       datasets, expectations built from `pid_items`.
-- [ ] T4 Run both AC4 procedures at the pre-rename commit, record their hits,
+- [x] T4 Run both AC4 procedures at the pre-rename commit, record their hits,
       and move every PID-5 item selection they name to the new names —
       including `data-raw/characterize_calc_se.R:49-58`, `R/score_pid5.R:120`,
       the three PID scoring vignettes and the test files.
-- [ ] T5 Rename the generic item-order fixtures in
+- [x] T5 Rename the generic item-order fixtures in
       `tests/testthat/test-item-guards.R` (lines 13, 20, 24, 28, 116) to a
       non-instrument stem, so no `pid_<digit>` name survives anywhere.
-- [ ] T6 Update `R/data.R`'s four dataset `\item{}` lines and the PID
+- [x] T6 Update `R/data.R`'s four dataset `\item{}` lines and the PID
       vignettes' prose naming the columns; run `devtools::document()`.
-- [ ] T7 Write the NEWS Breaking-changes entry; run `devtools::test()` and
+- [x] T7 Write the NEWS Breaking-changes entry; run `devtools::test()` and
       `R CMD check`; re-run both AC4 procedures green.
 
 ## Work log
@@ -131,6 +131,8 @@ datasets are already done (M077). The Qualtrics export's uppercase variant
 - 2026-09-02: defect found verifying AC3 — `ku_pid5sf` is a readr tibble, and the rename script left its `spec` attribute recording the 100 old names `pid_1`..`pid_100`, invisible to a `names()`-only scan and disagreeing with what re-reading the renamed CSV builds. The script now renames those alongside the columns.
 - 2026-09-02: substantive amendment to AC2, adopted at a mini gate — the criterion's `as.list()` comparison cannot tell a moved value from that `spec` rename, so it now compares the columns alone, binds every other attribute to the pinned object's, and names four plants instead of one. Amended wording audited in full mode by a fresh-context [O] reader that did not author it; six findings, all folded in before the text was written.
 - 2026-09-02: `data-raw/check_pid_item_names.R` commits AC4's second procedure — it walks attributes as well as names, and was shown returning 100 hits against the pre-fix object and 0 across 24 object files and 198 archive members after.
+- 2026-09-02: T1-T7 done. `devtools::test()`: FAIL 0, WARN 0, SKIP 7, PASS 16426 (the 7 skips are the pre-existing merge-base and keying skips). `devtools::document()` leaves no diff. `R CMD check`: Status OK, 0 errors, 0 warnings, 0 notes.
+- 2026-09-02: both AC4 procedures run at d3ac6695 and now — the text search over tracked files, 18 hits then, none now; the binary sweep, 445 old names across the four objects then, 0 over 24 object files and 198 archive members now. The supplementary search for built old names went from 28 hits to 2, both in the NEWS migration instructions that AC5 asks for.
 
 ## Decisions
 
