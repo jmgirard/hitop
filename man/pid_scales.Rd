@@ -13,9 +13,9 @@ per scale and 5 columns:
 facet for the FULL and SF versions, the domain for the BF version. The BF
 element carries a sixth row, \code{Total}, which is not a domain but the whole
 25-item form scored as one scale (see \code{\link[=score_pid5]{score_pid5()}})}
-\item{itemdata}{A list column containing one item-data tibble per scale}
+\item{itemdata}{A list column containing one item-data tibble per scale; its item-number column is an integer}
 \item{nItems}{The number of items in the scale (integer)}
-\item{itemNumbers}{A list column containing one item-number vector per scale}
+\item{itemNumbers}{A list column containing one integer item-number vector per scale}
 \item{camelCase}{The name of the scale converted to camel case (the score-output column stem)}
 }
 }

@@ -249,10 +249,7 @@ generate_docx_hitopsr <- function(
   # 1:x instead of permuting it, which is the classic foot-gun here.
   slot <- seq_len(nrow(reduced$items))
   if (randomize) slot <- sample.int(nrow(reduced$items))
-  # as.integer(): `hitopsr_items$HSR` is a double, and an item number is a
-  # count. Without this the returned attribute is a double and
-  # `identical(attr(out, "item_order"), 1:405)` is FALSE.
-  item_order <- as.integer(reduced$items$HSR[slot])
+  item_order <- reduced$items$HSR[slot]
   printed <- if (renumber) seq_along(item_order) else item_order
   printed_of <- function(x) printed[match(x, item_order)]
 

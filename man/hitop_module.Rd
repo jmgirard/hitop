@@ -24,8 +24,8 @@ actually wrote. (default = this function's frame)}
 \value{
 An object of class \code{hitop_module}: a list with the resolved
 \code{instrument}, the canonical display \code{scales} and their \code{camelCase} stems,
-the \code{items} kept (original instrument numbering, ascending), the parallel
-\code{reverse} keying flags, and \code{nItems}.
+the integer \code{items} kept (original instrument numbering, ascending), the
+parallel \code{reverse} keying flags, and \code{nItems}.
 }
 \description{
 Builds a validated description of a \strong{module}: a chosen set of

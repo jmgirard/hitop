@@ -4,12 +4,12 @@
 #'
 #' @format A \link[tibble]{tibble} with 220 rows and 15 columns:
 #' \describe{
-#'   \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
+#'   \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form (integer)}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
-#'   \item{INC,INCS}{Item number on the response inconsistency scale full and short forms}
-#'   \item{ORS,ORSS}{Item number on the overreporting scale full and short forms}
-#'   \item{PRD,PRDS}{Item number on the positive impression management response distortion scale full and short forms}
-#'   \item{SDTD,SDTDS}{Item number on the social desirability-total denial scale full and short forms}
+#'   \item{INC,INCS}{Item number on the response inconsistency scale full and short forms (integer)}
+#'   \item{ORS,ORSS}{Item number on the overreporting scale full and short forms (integer)}
+#'   \item{PRD,PRDS}{Item number on the positive impression management response distortion scale full and short forms (integer)}
+#'   \item{SDTD,SDTDS}{Item number on the social desirability-total denial scale full and short forms (integer)}
 #'   \item{Facet}{Name of the facet}
 #'   \item{Domain}{Name of the domain}
 #'   \item{Text}{Item text, copyright APA}
@@ -33,9 +33,9 @@
 #'   facet for the FULL and SF versions, the domain for the BF version. The BF
 #'   element carries a sixth row, `Total`, which is not a domain but the whole
 #'   25-item form scored as one scale (see [score_pid5()])}
-#'   \item{itemdata}{A list column containing one item-data tibble per scale}
+#'   \item{itemdata}{A list column containing one item-data tibble per scale; its item-number column is an integer}
 #'   \item{nItems}{The number of items in the scale (integer)}
-#'   \item{itemNumbers}{A list column containing one item-number vector per scale}
+#'   \item{itemNumbers}{A list column containing one integer item-number vector per scale}
 #'   \item{camelCase}{The name of the scale converted to camel case (the score-output column stem)}
 #' }
 #' @examples
@@ -123,7 +123,7 @@
 #'
 #' @format A \link[tibble]{tibble} with 405 rows and 6 columns:
 #' \describe{
-#'   \item{HSR}{Item number on the full HiTOP-SR}
+#'   \item{HSR}{Item number on the full HiTOP-SR (integer)}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{Scale}{Name of the scale (level 2)}
 #'   \item{Subscale}{Name of the subscale (level 1)}
@@ -150,9 +150,9 @@
 #' @format A \link[tibble]{tibble} with 76 rows and 5 columns:
 #' \describe{
 #'   \item{Scale}{Name of the scale}
-#'   \item{itemdata}{A list column containing one item-data tibble per scale}
+#'   \item{itemdata}{A list column containing one item-data tibble per scale; its item-number column is an integer}
 #'   \item{nItems}{The number of items in the scale (integer)}
-#'   \item{itemNumbers}{A list column containing one item-number vector per scale}
+#'   \item{itemNumbers}{A list column containing one integer item-number vector per scale}
 #'   \item{camelCase}{The name of the scale converted to camel case}
 #' }
 #' @examples
@@ -167,9 +167,9 @@
 #' \describe{
 #'   \item{Subscale}{Name of the subscale}
 #'   \item{Scale}{Name of the scale that the subscale is part of}
-#'   \item{itemdata}{A list column containing one item-data tibble per subscale}
+#'   \item{itemdata}{A list column containing one item-data tibble per subscale; its item-number column is an integer}
 #'   \item{nItems}{The number of items in the subscale (integer)}
-#'   \item{itemNumbers}{A list column containing one item-number vector per subscale}
+#'   \item{itemNumbers}{A list column containing one integer item-number vector per subscale}
 #'   \item{camelCase}{The name of the subscale converted to camel case}
 #' }
 #' @examples
@@ -293,13 +293,13 @@
 #'
 #' @format A \link[tibble]{tibble} with 45 rows and 8 columns:
 #' \describe{
-#'   \item{HBR}{Item number on the HITOP-BR}
+#'   \item{HBR}{Item number on the HITOP-BR (integer)}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{Scale}{Name of the scale}
 #'   \item{Externalizing}{Whether the item is part of the Externalizing scale}
 #'   \item{Pfactor}{Whether the item is part of the p-Factor scale}
 #'   \item{Text}{Item text}
-#'   \item{HSR}{Item number on the HiTOP-SR}
+#'   \item{HSR}{Item number on the HiTOP-SR (integer)}
 #'   \item{Original}{Item ID in the original, development item pool}
 #' }
 #' @examples
@@ -313,9 +313,9 @@
 #' @format A \link[tibble]{tibble} with 8 rows and 5 columns:
 #' \describe{
 #'   \item{Scale}{Name of the scale}
-#'   \item{itemdata}{A list column containing one item-data tibble per scale}
+#'   \item{itemdata}{A list column containing one item-data tibble per scale; its two item-number columns are integers}
 #'   \item{nItems}{The number of items in the scale (integer)}
-#'   \item{itemNumbers}{A list column containing one item-number vector per scale}
+#'   \item{itemNumbers}{A list column containing one integer item-number vector per scale}
 #'   \item{camelCase}{The name of the scale converted to camel case}
 #' }
 #' @examples
@@ -329,7 +329,7 @@
 #'
 #' @format A \link[tibble]{tibble} with 650 rows and 9 columns:
 #' \describe{
-#'   \item{Item}{Item number}
+#'   \item{Item}{Item number (integer)}
 #'   \item{Variable}{Variable name for the item}
 #'   \item{Substance}{Name of the substance the item refers to}
 #'   \item{Tier}{The assessment tier the item belongs to (e.g. Screening)}

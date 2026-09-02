@@ -3,7 +3,24 @@
 ## R/ uses it -- so it is declared in DESCRIPTION under Config/Needs/data-raw
 ## rather than Imports, and a contributor regenerating this data must install it
 ## themselves: install.packages("snakecase").
-pid_items <- readr::read_csv("data-raw/pid_items.csv", show_col_types = FALSE)
+## Item numbers are read as integers, never guessed and coerced afterwards, so
+## the `spec` attribute the reader stores stays a truthful record of the types.
+pid_items <- readr::read_csv(
+  "data-raw/pid_items.csv",
+  col_types = readr::cols(
+    FULL = readr::col_integer(),
+    SF = readr::col_integer(),
+    BF = readr::col_integer(),
+    INC = readr::col_integer(),
+    INCS = readr::col_integer(),
+    ORS = readr::col_integer(),
+    ORSS = readr::col_integer(),
+    PRD = readr::col_integer(),
+    PRDS = readr::col_integer(),
+    SDTD = readr::col_integer(),
+    SDTDS = readr::col_integer()
+  )
+)
 usethis::use_data(pid_items, overwrite = TRUE)
 
 # ------------------------------------------------------------------------------

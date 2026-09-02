@@ -7,12 +7,12 @@
 \format{
 A \link[tibble]{tibble} with 220 rows and 15 columns:
 \describe{
-\item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form}
+\item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form (integer)}
 \item{Reverse}{Whether the item needs to be reverse scored}
-\item{INC,INCS}{Item number on the response inconsistency scale full and short forms}
-\item{ORS,ORSS}{Item number on the overreporting scale full and short forms}
-\item{PRD,PRDS}{Item number on the positive impression management response distortion scale full and short forms}
-\item{SDTD,SDTDS}{Item number on the social desirability-total denial scale full and short forms}
+\item{INC,INCS}{Item number on the response inconsistency scale full and short forms (integer)}
+\item{ORS,ORSS}{Item number on the overreporting scale full and short forms (integer)}
+\item{PRD,PRDS}{Item number on the positive impression management response distortion scale full and short forms (integer)}
+\item{SDTD,SDTDS}{Item number on the social desirability-total denial scale full and short forms (integer)}
 \item{Facet}{Name of the facet}
 \item{Domain}{Name of the domain}
 \item{Text}{Item text, copyright APA}

@@ -39,7 +39,7 @@ base_descriptor <- function() {
     format = "1.0",
     instrument = "hitopsr",
     scales = display,
-    items = as.integer(expected_items(display)),
+    items = expected_items(display),
     nItems = length(expected_items(display))
   )
 }
@@ -69,8 +69,8 @@ test_that("write_module() records the package's own tables and read_module() ret
     expect_identical(parsed$instrument, "hitopsr", info = label)
     expect_identical(parsed$scales, display, info = label)
     expect_identical(
-      as.integer(parsed$items),
-      as.integer(expected_items(display)),
+      parsed$items,
+      expected_items(display),
       info = label
     )
     expect_identical(read_module(f), m, info = label)
@@ -88,9 +88,9 @@ test_that("a hand-written descriptor reads back into the module the tables descr
   expect_identical(m$instrument, "hitopsr")
   expect_identical(m$scales, display)
   expect_identical(m$camelCase, av$camelCase[sort(match(display, av$Scale))])
-  expect_identical(as.integer(m$items), as.integer(expected_items(display)))
+  expect_identical(m$items, expected_items(display))
   expect_identical(m$reverse, expected_reverse(display))
-  expect_identical(as.integer(m$nItems), length(expected_items(display)))
+  expect_identical(m$nItems, length(expected_items(display)))
 })
 
 
@@ -269,6 +269,46 @@ test_that("write_module() writes no itemOrder, a module object carrying no print
 
   expect_false("itemOrder" %in% names(jsonlite::fromJSON(f, simplifyVector = TRUE)))
   expect_null(attr(read_module(f), "item_order"))
+})
+
+test_that("write_module() accepts a valid item_order on a module whose items are doubles", {
+  # A `hitop_module` saved to `.rds` before item numbers became integers. The
+  # usability check compares the order against the module's items, so comparing
+  # with identical() would refuse this module on storage type alone -- which is
+  # what it did while the check read `identical(sort(as.integer(item_order)),
+  # module$items)`.
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+  m$items <- as.double(m$items)
+  attr(m, "item_order") <- rev(m$items)
+  f <- withr::local_tempfile(fileext = ".json")
+
+  expect_no_error(write_module(m, f))
+  expect_identical(
+    jsonlite::fromJSON(f, simplifyVector = TRUE)$itemOrder,
+    rev(expected_items(c("Agoraphobia", "Appetite Loss")))
+  )
+})
+
+test_that("write_module() still refuses an item_order that is not a permutation", {
+  withr::local_options(cli.width = 10000)
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+
+  # Three ways to not be a permutation: a substituted number, a repeat, and a
+  # short order. Each must abort whatever the module's storage type, so the
+  # module here carries the doubles the test above admits.
+  m$items <- as.double(m$items)
+  for (order in list(
+    c(999, rev(m$items)[-1L]),
+    c(m$items[[1L]], m$items[-1L][-1L], m$items[[1L]]),
+    m$items[-1L]
+  )) {
+    bad <- m
+    attr(bad, "item_order") <- order
+    f <- withr::local_tempfile(fileext = ".json")
+    e <- expect_error(write_module(bad, f))
+    expect_match(conditionMessage(e), "unusable", fixed = TRUE)
+    expect_false(file.exists(f))
+  }
 })
 
 

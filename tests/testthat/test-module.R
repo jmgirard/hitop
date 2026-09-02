@@ -7,8 +7,11 @@ test_that("hitop_module() resolves items as the sorted union of its scales", {
   # Agoraphobia   = 66, 109, 118, 260, 291
   # Appetite Loss = 144, 202, 389
   s <- hitop_module("hitopsr", c("agoraphobia", "appetiteLoss"))
-  expect_equal(s$items, c(66, 109, 118, 144, 202, 260, 291, 389))
-  expect_equal(s$nItems, 8)
+  # expect_identical(), not expect_equal(): the item numbers are integers, and
+  # expect_equal() passes over an integer/double difference. This is the test
+  # that holds `hitop_module()$items` to the type its `@return` documents.
+  expect_identical(s$items, c(66L, 109L, 118L, 144L, 202L, 260L, 291L, 389L))
+  expect_identical(s$nItems, 8L)
   expect_equal(s$scales, c("Agoraphobia", "Appetite Loss"))
   expect_equal(s$camelCase, c("agoraphobia", "appetiteLoss"))
   expect_s3_class(s, "hitop_module")

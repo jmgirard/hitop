@@ -7,7 +7,7 @@
 \format{
 A \link[tibble]{tibble} with 405 rows and 6 columns:
 \describe{
-\item{HSR}{Item number on the full HiTOP-SR}
+\item{HSR}{Item number on the full HiTOP-SR (integer)}
 \item{Reverse}{Whether the item needs to be reverse scored}
 \item{Scale}{Name of the scale (level 2)}
 \item{Subscale}{Name of the subscale (level 1)}

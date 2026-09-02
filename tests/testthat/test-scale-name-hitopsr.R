@@ -44,11 +44,8 @@ test_that("each scale carries its adopted name in every keying table", {
       a$stem,
       info = a$name
     )
-    ## Coerced, not compared as stored: `itemNumbers` holds doubles because
-    ## `hitopsr_items$HSR` is read as one, a shipped-table type mismatch the
-    ## ROADMAP tracks separately. The item numbers are what this asserts.
     expect_identical(
-      as.integer(hitopsr_scales$itemNumbers[[a$stem]]),
+      hitopsr_scales$itemNumbers[[a$stem]],
       a$items,
       info = a$name
     )

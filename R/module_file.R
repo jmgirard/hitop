@@ -132,8 +132,8 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
     buildDate = jsonlite::unbox(format(Sys.Date())),
     instrument = jsonlite::unbox(module$instrument),
     scales = as.character(module$scales),
-    items = as.integer(module$items),
-    nItems = jsonlite::unbox(as.integer(module$nItems))
+    items = module$items,
+    nItems = jsonlite::unbox(module$nItems)
   )
 
   # A module carrying an `item_order` attribute records the order a shuffled
@@ -144,9 +144,14 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
   # read_module() then refuses.
   item_order <- attr(module, "item_order")
   if (!is.null(item_order)) {
+    # Compared by value rather than with identical(): the module may not be one
+    # this version built. A `hitop_module` saved to `.rds` before item numbers
+    # were integers carries double `items`, and it is still a module whose
+    # `item_order` this function can write.
     usable <- is.numeric(item_order) &&
       !anyNA(item_order) &&
-      identical(sort(as.integer(item_order)), as.integer(module$items))
+      length(item_order) == length(module$items) &&
+      all(sort(as.integer(item_order)) == sort(module$items))
     cli_assert(
       condition = usable,
       message = c(
@@ -325,7 +330,7 @@ read_module <- function(file) {
       file = file,
       class = "hitop_module_file_items_mismatch"
     )
-    covered <- as.integer(module$items)
+    covered <- module$items
     # Compared as a set: the format states no order for `items`, so a
     # hand-written descriptor listing them any way round is a descriptor, not a
     # defect. A repeat is still an error -- it is not a set the module covers.
@@ -372,7 +377,7 @@ read_module <- function(file) {
       class = "hitop_module_file_items_mismatch"
     )
     if (length(recorded_n) != 1L ||
-        !identical(recorded_n, as.integer(module$nItems))) {
+        !identical(recorded_n, module$nItems)) {
       cli::cli_abort(
         c(
           "The module descriptor {.file {file}} disagrees with this package.",
@@ -392,7 +397,7 @@ read_module <- function(file) {
       class = "hitop_module_file_bad_item_order"
     )
     ok <- length(order) == module$nItems &&
-      identical(sort(order), as.integer(module$items))
+      identical(sort(order), module$items)
     if (!ok) {
       cli::cli_abort(
         c(

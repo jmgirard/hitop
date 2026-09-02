@@ -40,7 +40,7 @@ rename_hitopsr_items <- function(
   validate_string(prefix, arg = "prefix")
 
   ## Track matched standard item numbers for the final summary warning
-  matched_hsr <- numeric(0)
+  matched_hsr <- integer(0)
 
   if (method == "original") {
     data_cols <- colnames(data)
