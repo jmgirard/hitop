@@ -146,6 +146,7 @@ arguments, defaults and reports.
 - 2026-09-02: review opened; draft PR #89 created, main unmoved since the branch was cut. `cairn_validate.py` passes (exit 0). Acceptance-criterion evidence pending the in-flight `devtools::test()`/`check()` run and the three review lenses.
 - 2026-09-02: review evidence recorded for AC1-AC6, all met; consistency gate clean. Three review lenses: prior-review and blame-history clean, the diff-bug lens returned 16 ranked findings, dispositions proposed in the Review section and pending the gate. No finding meets the return floor.
 - 2026-09-02: merge approved at the gate with the seven fix-now findings directed; applied on the branch and the profile's checks re-run clean (PASS 16504, check 0/0/0).
+- 2026-09-02: merge approval recorded in `cairn/.merge-approved` for PR #89; PR marked ready. The CI watcher hit the harness ceiling at 540s with seven checks still pending (`line endings` passed); watcher stopped, nothing merged. Resume by re-reading `gh pr checks 89`.
 
 ## Decisions
 
