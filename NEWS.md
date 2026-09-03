@@ -154,6 +154,18 @@
 
 ## Improvements and fixes
 
+* **`ku_hitopsr`'s item columns held the wrong items and have been rebuilt.**
+  The dataset was assembled as though the questionnaire that collected it
+  numbered its questions the way this package numbers HiTOP-SR items. It does
+  not, so all but two of the 405 `hsr_` columns carried another item's answers.
+  The columns are now mapped through the collected questionnaire's own item
+  list, putting each answer under the item it was given for. No answer was
+  added, dropped or changed -- the rebuilt dataset holds the same 405 columns of
+  answers in a different order -- but anything computed from `ku_hitopsr`
+  moves, the worked examples in the HiTOP-SR articles included. `ku_hitopbr`,
+  which was already built from the correct mapping, and every other shipped
+  dataset are unchanged.
+
 * **Every warning `rename_pid5_items()`, `rename_hitopsr_items()`,
   `label_pid5()`, `label_hitopsr()` and `label_hitopbr()` raise now carries a
   condition class**, so a caller catches or suppresses one by class instead of
