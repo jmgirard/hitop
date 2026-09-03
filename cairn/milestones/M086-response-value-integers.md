@@ -61,11 +61,19 @@ under D-056.
       in `R/sysdata.rda` are integer, `pid_instructions$options$value` stays integer, and
       each of the four internal instruction objects is otherwise `identical()` to the
       merge base's.
-- [ ] AC5: The retype moves no distributed artifact: every file named by the latest
-      `hitop_artifacts` row per file still matches its manifest md5, and for each row
-      whose `format` is `qualtrics` or `redcap`, a fresh build from the retyped internal
-      data reproduces the committed artifact's flat text byte for byte — the `.txt` and
-      `.qsf` files whole, the REDCap archive's data dictionary read out of the zip.
+- [ ] AC5: The retype moves no distributed artifact the package builds as flat text:
+      for each latest `hitop_artifacts` row per file whose `format` is `qualtrics` or
+      `redcap` and whose file `data-raw/artifacts.R` builds from a `generate_*`
+      function, a fresh build from the retyped internal data reproduces the committed
+      artifact's flat text byte for byte — the `.txt` files whole, the REDCap
+      archive's data dictionary read out of the zip. `hitophsum_qualtrics.qsf` is
+      outside that check because the package does not build it — it is a Qualtrics
+      API export produced by `devel/qualtrics_hitophsum.R` — and the DOCX rows stay
+      out of scope; the manifest md5 lock already in `test-artifacts.R` holds the
+      committed bytes of all of them. The comparison is a no-regression lock over
+      content, not a probe of the type axis: the generators render a response value
+      through `as.character()`, so a build from doubled internal data emits the same
+      bytes.
 - [ ] AC6: No scored value moves: for each of the three `ku_*` datasets, every
       `score_hitopsr()`, `score_hitopbr()`, `score_pid5()`, `validity_pid5()`,
       `reliability_hitopsr()`, `reliability_hitopbr()`, `reliability_pid5()`,
@@ -115,10 +123,12 @@ under D-056.
       `tests/testthat/helper-merge-base.R` — `merge_base_object()` reads only
       `data/<name>.rda` (`helper-merge-base.R:60`), and `R/sysdata.rda` holds all four
       objects in one file.
-- [ ] T7: Add the artifact and scoring no-move tests (AC5, AC6), building the Qualtrics
+- [x] T7: Add the artifact and scoring no-move tests (AC5, AC6), building the Qualtrics
       and REDCap exports from the retyped internal data and comparing flat text against
       the committed artifacts, and running each scoring entry point against both the
-      committed and merge-base copies of each `ku_*` dataset.
+      committed and merge-base copies of each `ku_*` dataset. The artifact test names
+      `hitophsum_qualtrics.qsf` as its single exemption and fails if the exempt set
+      grows.
 - [ ] T8: `NEWS.md` entry; `DECISIONS.md` entry recording the retype and the pre-1.0
       waiver on the D-056 precedent; run the profile's verify and check slots.
 
@@ -158,6 +168,9 @@ under D-056.
 - 2026-09-03: T4 — the two HiTOP blocks of `data-raw/sysdata.R` write `value = 1:4`; re-run. All three instruction objects carrying options now hold an integer `value` (`pid_instructions` already did), and each of the four is `identical()` to the merge base's after applying only that retype.
 - 2026-09-03: T5 — the sweep's expected set is now empty; the domain test additionally names the three `ku_*`, the five `sim_*` and `hitophsum_choices`; four response-column plants added (`ku_hitopsr$hsr_001`, `ku_hitopbr$hbr_01`, `ku_pid5sf$pid5sf_001`, `hitophsum_choices$Value`), each asserting the planted copy yields exactly that path and the shipped object yields nothing there. File header rewritten to the whole-number promise. Suite 0 failures / 17,244 passes.
 - 2026-09-03: T6 — `merge_base_sysdata()` added to `helper-merge-base.R` (reads `R/sysdata.rda` whole, since it holds all four instruction objects). `test-item-number-merge-base.R` gains the four response objects — retype-only reproduces the committed object for each — a pin that `expect_equal()` passes where `identical()` fails on `ku_hitopsr$hsr_001`, the four instruction objects' retype-only comparison with a guard that the retype was not a no-op, and a type assertion on the three shipped `options$value`. The new blocks run rather than skip; the M081 blocks skip as designed. Suite 0 failures / 17,362 passes.
+- 2026-09-03: substantive amendment to AC5, accepted at the mini gate. As planned it required a fresh build of every `qualtrics`/`redcap` manifest row, but `hitophsum_qualtrics.qsf` has no builder in the package — it is the Qualtrics API export `data-raw/artifacts.R` deliberately does not rebuild. AC5 now promises the flat-text rebuild only over the rows `data-raw/artifacts.R` builds, states the md5 lock as what holds the rest, and records that the rebuild is a no-regression lock over content rather than a probe of the type axis; the exemption-set assertion moved to T7.
+- 2026-09-03: the amended AC5 wording went to a fresh-context [O] reader (full mode, user-facing tier) before it was written. Five findings: the headline quantified over all 24 artifacts where 11 are rebuild-checked; the exemption-registry clause bound the test harness rather than the package; "a `generate_*` function in the package builds" named no procedure deciding membership; "held by the md5 lock alone" overstated the lock. Four fixed in the wording above. The fifth asked for a planted-defect probe on the type axis; it cannot exist — a build with `hitopsr_instructions$options$value` coerced to double reproduces both `hitopsr_qualtrics.txt` and the `hitopsr_redcap.zip` dictionary byte for byte (run this session), because the generators render the value through `as.character()`. That fact is stated in AC5 and in the test file rather than probed.
+- 2026-09-03: T7 — `tests/testthat/test-response-value-no-move.R` added. Artifact half: the eleven `qualtrics`/`redcap` files `data-raw/artifacts.R` builds each rebuild to the committed flat text byte for byte (`.txt` whole, the zip's `instrument.csv` read out), with a test asserting `hitophsum_qualtrics.qsf` is the only manifest row without a builder here. Scoring half: one call per entry point each `ku_*` dataset admits, `append = FALSE` where the argument exists, each `identical()` between the committed dataset and the merge-base copy, guarded against a merge base that already stores integers, with the covered call set asserted rather than derived. Suite 0 failures / 17,402 passes.
 
 ## Decisions
 
