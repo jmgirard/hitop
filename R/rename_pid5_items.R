@@ -110,8 +110,13 @@ rename_pid5_items <- function(
       return(data)
     }
 
+    ## `item_col_numbers()` strips `from_prefix` by its own length, which on a
+    ## shaped column leaves exactly the digits the pattern would have captured,
+    ## and it silences the coercion of a number past R's integer range: such a
+    ## column comes back `NA` and reads below as naming no item, where a bare
+    ## `as.integer()` also leaked base R's "NAs introduced by coercion".
     numbers <- rep(NA_integer_, length(data_cols))
-    numbers[shaped] <- as.integer(sub(pattern, "\\1", data_cols[shaped]))
+    numbers[shaped] <- item_col_numbers(data_cols[shaped], from_prefix)
 
     named <- shaped & numbers %in% form_numbers
     unnamed <- shaped & !named

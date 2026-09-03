@@ -97,11 +97,11 @@ their own candidate row.
       `label_hitopbr.R:54` and `:78`.
 - [x] T3: Add `class = "hitop_incomplete_rename"` at the two completeness sites:
       `rename_pid5_items.R:164`, `rename_hitopsr_items.R:112`.
-- [ ] T4: Route `rename_pid5_items()`'s number matching through
+- [x] T4: Route `rename_pid5_items()`'s number matching through
       `item_col_numbers()` (`R/util.R:592`), or wrap its `as.integer()`
       (`rename_pid5_items.R:114`) the way that helper does, so no base-R
       coercion warning escapes; the past-range column still reports unmatched.
-- [ ] T5: Tests, one per path, asserting class not prose: the eight
+- [x] T5: Tests, one per path, asserting class not prose: the eight
       nothing-matched paths, the two completeness paths, the HiTOP text report;
       the past-integer-range rename path (written and seen red before T4, both
       on the stray warning and on the column still being named); and per
@@ -109,7 +109,7 @@ their own candidate row.
       classification. Convert the prose assertions this duplicates
       (`test-rename_hitopsr_items.R:50` and `:102`, the `"No columns matched"`
       matches in `test-label_pid5.R` and `test-label_scales.R`).
-- [ ] T6: Guard test scanning the five family files for `cli::cli_warn(` call
+- [x] T6: Guard test scanning the five family files for `cli::cli_warn(` call
       sites and failing on any passing no `class =`; assert the scan's domain
       is non-empty, and plant a classless call in both call shapes present
       (single-line and multi-line) to see it red.
@@ -129,6 +129,10 @@ their own candidate row.
 - 2026-09-02: T1 done — `rename_hitopsr_items(method = "text")` raises its unmatched item-text report through `warn_unmatched_items()`; the helper's header and pluralization reproduce the inline block's wording, and its brace escaping now leaves a literal `{x}` in an item text intact. Suite clean (17186 pass, 0 fail).
 - 2026-09-02: T2 done — all eight nothing-matched reports raise `hitop_no_columns_matched`, at the two rename sites and at both targets of each `label_*()` helper. Suite clean (17186 pass, 0 fail).
 - 2026-09-02: T3 done — both completeness reports raise `hitop_incomplete_rename`. Suite clean (17186 pass, 0 fail).
+- 2026-09-02: T4 done — `rename_pid5_items(method = "number")` reads its item numbers through `item_col_numbers()`. The escaping warning was first identified as a base-R `simpleWarning`, "NAs introduced by coercion to integer range", raised alongside the two `hitop_*` reports; the AC4 test was written and seen red on it before the fix.
+- 2026-09-02: T5 done — new `tests/testthat/test-warning-classes.R` pins the eight nothing-matched paths, both completeness paths, the HiTOP item-text report, the past-integer-range rename path and the two out-of-range shapes per `label_*()` helper, all by class; it builds on the existing `collect_warnings()`/`frame_of_cols()` helpers. Ten prose assertions converted to class assertions across `test-rename_hitopsr_items.R`, `test-label_pid5.R` and `test-label_scales.R`.
+- 2026-09-02: T6 done — the guard parses the five family files rather than grepping them, so a multi-line call is read whole and `class =` is a named argument; it pins the domain at the 10 inline sites (11 less the one T1 moved into `warn_unmatched_items()`) and is seen red against planted classless calls in both shapes. A silence control asserts a fully matching `label_hitopbr()` call raises nothing and that an unraised class is not reported.
+- 2026-09-02: T4, T5 and T6 share one commit and one suite run — the tests T5 owns are the evidence T4's fix is checked by, and the guard T6 owns lives in the file T5 creates. Suite clean (17217 pass, 0 fail).
 
 
 ## Decisions
