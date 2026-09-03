@@ -104,7 +104,8 @@ rename_pid5_items <- function(
 
     if (!any(shaped)) {
       cli::cli_warn(
-        "No columns are named {.code {from_prefix}} followed by an item number."
+        "No columns are named {.code {from_prefix}} followed by an item number.",
+        class = "hitop_no_columns_matched"
       )
       return(data)
     }

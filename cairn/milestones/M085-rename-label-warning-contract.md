@@ -91,7 +91,7 @@ their own candidate row.
       unmatched-item-text warning with `warn_unmatched_items(item_text[missing_idx],
       "item text")` (`R/util.R:675`); check the helper's brace escaping and
       pluralization against what the inline block produced.
-- [ ] T2: Add `class = "hitop_no_columns_matched"` at the eight nothing-matched
+- [x] T2: Add `class = "hitop_no_columns_matched"` at the eight nothing-matched
       sites: `rename_pid5_items.R:106`, `rename_hitopsr_items.R:51`,
       `label_pid5.R:86` and `:128`, `label_hitopsr.R:53` and `:78`,
       `label_hitopbr.R:54` and `:78`.
@@ -127,6 +127,8 @@ their own candidate row.
 - 2026-09-02: plan chose adding `class =` at each call site over a shared `warn_no_columns_matched()` helper, because the eight messages differ by prefix, by items-vs-scales and by legacy-name wording, so a helper would carry the differences as arguments and centralize nothing; falsified by the messages converging to one wording.
 - 2026-09-02: plan gate chose folding the stray base-R coercion warning into this milestone over a separate hotfix, because it sits in the code T2/T4 already rewrite and two review cycles over one file buy nothing; falsified by a user reporting the stray warning before this milestone merges.
 - 2026-09-02: T1 done — `rename_hitopsr_items(method = "text")` raises its unmatched item-text report through `warn_unmatched_items()`; the helper's header and pluralization reproduce the inline block's wording, and its brace escaping now leaves a literal `{x}` in an item text intact. Suite clean (17186 pass, 0 fail).
+- 2026-09-02: T2 done — all eight nothing-matched reports raise `hitop_no_columns_matched`, at the two rename sites and at both targets of each `label_*()` helper. Suite clean (17186 pass, 0 fail).
+
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->

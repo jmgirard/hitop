@@ -52,7 +52,8 @@ label_hitopbr <- function(
 
     if (length(matched_idx) == 0) {
       cli::cli_warn(
-        "No columns matched the expected item names with prefix {.str {prefix}}."
+        "No columns matched the expected item names with prefix {.str {prefix}}.",
+        class = "hitop_no_columns_matched"
       )
     } else {
       for (i in matched_idx) {
@@ -76,7 +77,8 @@ label_hitopbr <- function(
 
     if (length(matched_idx) == 0) {
       cli::cli_warn(
-        "No columns matched the expected scale names with prefix {.str {prefix}}."
+        "No columns matched the expected scale names with prefix {.str {prefix}}.",
+        class = "hitop_no_columns_matched"
       )
       return(data)
     }

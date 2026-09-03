@@ -49,7 +49,8 @@ rename_hitopsr_items <- function(
     matched_idx <- !is.na(locs)
     if (!any(matched_idx)) {
       cli::cli_warn(
-        "No columns matched the legacy 'Original' names in {.var hitopsr_items}."
+        "No columns matched the legacy 'Original' names in {.var hitopsr_items}.",
+        class = "hitop_no_columns_matched"
       )
       return(data)
     }
