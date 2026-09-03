@@ -291,16 +291,16 @@ module_scores
 #> # A tibble: 411 × 4
 #>    hsr_agoraphobia hsr_antisocialBehavior hsr_appetiteLoss
 #>              <dbl>                  <dbl>            <dbl>
-#>  1             2                     1.12             1   
-#>  2             1.4                   1.75             1   
-#>  3             2.2                   2.12             2   
-#>  4             1.2                   1.25             1   
-#>  5             2                     1.88             2   
-#>  6             1                     1.25             1   
-#>  7             1                     1                1.67
-#>  8             1.6                   1.62             1   
-#>  9             1.4                   1.25             1.67
-#> 10             1.2                   1.38             1   
+#>  1             1                     1.5              1   
+#>  2             1.4                   1                1.67
+#>  3             2                     1.12             1   
+#>  4             1.2                   1                1.33
+#>  5             1.6                   1                2.67
+#>  6             1                     1                1.33
+#>  7             1                     1                1   
+#>  8             1                     1                1.33
+#>  9             2                     1                1   
+#> 10             1                     1                1   
 #> # ℹ 401 more rows
 #> # ℹ 1 more variable: hsr_romanticDisinterest <dbl>
 ```
@@ -333,12 +333,12 @@ reliability_hitopsr(
   omega = FALSE
 )
 #> # A tibble: 4 × 4
-#>   Scale                camelCase           nItems   alpha
-#>   <chr>                <chr>                <int>   <dbl>
-#> 1 Agoraphobia          agoraphobia              5  0.419 
-#> 2 Antisocial Behavior  antisocialBehavior       8  0.545 
-#> 3 Appetite Loss        appetiteLoss             3  0.367 
-#> 4 Romantic Disinterest romanticDisinterest      5 -0.0803
+#>   Scale                camelCase           nItems alpha
+#>   <chr>                <chr>                <int> <dbl>
+#> 1 Agoraphobia          agoraphobia              5 0.820
+#> 2 Antisocial Behavior  antisocialBehavior       8 0.351
+#> 3 Appetite Loss        appetiteLoss             3 0.762
+#> 4 Romantic Disinterest romanticDisinterest      5 0.821
 ```
 
 Reliability is worth checking on your own module rather than assumed. In

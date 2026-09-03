@@ -31,16 +31,16 @@ ku_hitopsr
 #> # A tibble: 411 × 407
 #>    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007
 #>    <chr>       <fct>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
-#>  1 P001        male         1       1       1       1       1       2       1
-#>  2 P002        male         2       1       1       1       2       1       1
-#>  3 P003        male         1       2       2       3       2       1       1
-#>  4 P004        male         1       1       2       1       1       1       1
-#>  5 P005        male         1       2       1       1       3       1       1
-#>  6 P006        female       1       1       1       1       1       1       1
+#>  1 P001        male         1       1       1       1       1       1       2
+#>  2 P002        male         3       4       1       1       2       2       2
+#>  3 P003        male         3       3       1       1       2       1       2
+#>  4 P004        male         2       3       1       1       1       1       1
+#>  5 P005        male         1       2       1       1       3       1       2
+#>  6 P006        female       2       1       1       1       2       2       2
 #>  7 P007        female       1       1       1       1       1       1       1
-#>  8 P008        male         1       1       1       1       1       1       1
-#>  9 P009        female       3       2       3       1       1       1       1
-#> 10 P010        female       1       1       1       1       1       1       1
+#>  8 P008        male         2       4       1       1       1       1       2
+#>  9 P009        female       4       1       1       1       2       1       3
+#> 10 P010        female       1       3       1       1       1       1       1
 #> # ℹ 401 more rows
 #> # ℹ 398 more variables: hsr_008 <dbl>, hsr_009 <dbl>, hsr_010 <dbl>,
 #> #   hsr_011 <dbl>, hsr_012 <dbl>, hsr_013 <dbl>, hsr_014 <dbl>, hsr_015 <dbl>,
@@ -73,16 +73,16 @@ scores
 #> # A tibble: 411 × 76
 #>    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss
 #>              <dbl>                  <dbl>               <dbl>            <dbl>
-#>  1             2                     1.12                 1.2             1   
-#>  2             1.4                   1.75                 2.2             1   
-#>  3             2.2                   2.12                 1.4             2   
-#>  4             1.2                   1.25                 1.6             1   
-#>  5             2                     1.88                 1.6             2   
-#>  6             1                     1.25                 1               1   
-#>  7             1                     1                    1               1.67
-#>  8             1.6                   1.62                 1.4             1   
-#>  9             1.4                   1.25                 1.8             1.67
-#> 10             1.2                   1.38                 1.4             1   
+#>  1             1                     1.5                  2.2             1   
+#>  2             1.4                   1                    3               1.67
+#>  3             2                     1.12                 2               1   
+#>  4             1.2                   1                    2.6             1.33
+#>  5             1.6                   1                    1.4             2.67
+#>  6             1                     1                    1.6             1.33
+#>  7             1                     1                    1               1   
+#>  8             1                     1                    1.4             1.33
+#>  9             2                     1                    2.2             1   
+#> 10             1                     1                    2.2             1   
 #> # ℹ 401 more rows
 #> # ℹ 72 more variables: hsr_bingeEating <dbl>, hsr_bodilyDistress <dbl>,
 #> #   hsr_bodyDissatisfaction <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
@@ -109,16 +109,16 @@ scores
 #> # A tibble: 411 × 483
 #>    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007
 #>    <chr>       <fct>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
-#>  1 P001        male         1       1       1       1       1       2       1
-#>  2 P002        male         2       1       1       1       2       1       1
-#>  3 P003        male         1       2       2       3       2       1       1
-#>  4 P004        male         1       1       2       1       1       1       1
-#>  5 P005        male         1       2       1       1       3       1       1
-#>  6 P006        female       1       1       1       1       1       1       1
+#>  1 P001        male         1       1       1       1       1       1       2
+#>  2 P002        male         3       4       1       1       2       2       2
+#>  3 P003        male         3       3       1       1       2       1       2
+#>  4 P004        male         2       3       1       1       1       1       1
+#>  5 P005        male         1       2       1       1       3       1       2
+#>  6 P006        female       2       1       1       1       2       2       2
 #>  7 P007        female       1       1       1       1       1       1       1
-#>  8 P008        male         1       1       1       1       1       1       1
-#>  9 P009        female       3       2       3       1       1       1       1
-#> 10 P010        female       1       1       1       1       1       1       1
+#>  8 P008        male         2       4       1       1       1       1       2
+#>  9 P009        female       4       1       1       1       2       1       3
+#> 10 P010        female       1       3       1       1       1       1       1
 #> # ℹ 401 more rows
 #> # ℹ 474 more variables: hsr_008 <dbl>, hsr_009 <dbl>, hsr_010 <dbl>,
 #> #   hsr_011 <dbl>, hsr_012 <dbl>, hsr_013 <dbl>, hsr_014 <dbl>, hsr_015 <dbl>,
@@ -151,16 +151,16 @@ scores
 #> # A tibble: 411 × 76
 #>    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss
 #>              <dbl>                  <dbl>               <dbl>            <dbl>
-#>  1             2                     1.12                 1.2             1   
-#>  2             1.4                   1.75                 2.2             1   
-#>  3             2.2                   2.12                 1.4             2   
-#>  4             1.2                   1.25                 1.6             1   
-#>  5             2                     1.88                 1.6             2   
-#>  6             1                     1.25                 1               1   
-#>  7             1                     1                    1               1.67
-#>  8             1.6                   1.62                 1.4             1   
-#>  9             1.4                   1.25                 1.8             1.67
-#> 10             1.2                   1.38                 1.4             1   
+#>  1             1                     1.5                  2.2             1   
+#>  2             1.4                   1                    3               1.67
+#>  3             2                     1.12                 2               1   
+#>  4             1.2                   1                    2.6             1.33
+#>  5             1.6                   1                    1.4             2.67
+#>  6             1                     1                    1.6             1.33
+#>  7             1                     1                    1               1   
+#>  8             1                     1                    1.4             1.33
+#>  9             2                     1                    2.2             1   
+#> 10             1                     1                    2.2             1   
 #> # ℹ 401 more rows
 #> # ℹ 72 more variables: hsr_bingeEating <dbl>, hsr_bodilyDistress <dbl>,
 #> #   hsr_bodyDissatisfaction <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
@@ -188,16 +188,16 @@ scores
 #> # A tibble: 411 × 76
 #>    hitop_agoraphobia hitop_antisocialBehavior hitop_appearanceFocus
 #>                <dbl>                    <dbl>                 <dbl>
-#>  1               2                       1.12                   1.2
-#>  2               1.4                     1.75                   2.2
-#>  3               2.2                     2.12                   1.4
-#>  4               1.2                     1.25                   1.6
-#>  5               2                       1.88                   1.6
-#>  6               1                       1.25                   1  
+#>  1               1                       1.5                    2.2
+#>  2               1.4                     1                      3  
+#>  3               2                       1.12                   2  
+#>  4               1.2                     1                      2.6
+#>  5               1.6                     1                      1.4
+#>  6               1                       1                      1.6
 #>  7               1                       1                      1  
-#>  8               1.6                     1.62                   1.4
-#>  9               1.4                     1.25                   1.8
-#> 10               1.2                     1.38                   1.4
+#>  8               1                       1                      1.4
+#>  9               2                       1                      2.2
+#> 10               1                       1                      2.2
 #> # ℹ 401 more rows
 #> # ℹ 73 more variables: hitop_appetiteLoss <dbl>, hitop_bingeEating <dbl>,
 #> #   hitop_bodilyDistress <dbl>, hitop_bodyDissatisfaction <dbl>,
@@ -255,16 +255,16 @@ reliability_hitopsr(
 #> # A tibble: 76 × 5
 #>    Scale                camelCase           nItems alpha  omega
 #>    <chr>                <chr>                <int> <dbl>  <dbl>
-#>  1 Agoraphobia          agoraphobia              5 0.419  0.431
-#>  2 Antisocial Behavior  antisocialBehavior       8 0.545  0.553
-#>  3 Appearance Focus     appearanceFocus          5 0.394  0.436
-#>  4 Appetite Loss        appetiteLoss             3 0.367 NA    
-#>  5 Binge Eating         bingeEating              3 0.110  0.218
-#>  6 Bodily Distress      bodilyDistress           6 0.396  0.469
-#>  7 Body Dissatisfaction bodyDissatisfaction      4 0.294 NA    
-#>  8 Callousness          callousness              6 0.482  0.490
-#>  9 Checking             checking                 5 0.601  0.605
-#> 10 Cleaning             cleaning                 6 0.480  0.526
+#>  1 Agoraphobia          agoraphobia              5 0.820  0.840
+#>  2 Antisocial Behavior  antisocialBehavior       8 0.351 NA    
+#>  3 Appearance Focus     appearanceFocus          5 0.776  0.780
+#>  4 Appetite Loss        appetiteLoss             3 0.762  0.797
+#>  5 Binge Eating         bingeEating              3 0.849  0.849
+#>  6 Bodily Distress      bodilyDistress           6 0.787  0.794
+#>  7 Body Dissatisfaction bodyDissatisfaction      4 0.897  0.898
+#>  8 Callousness          callousness              6 0.795  0.800
+#>  9 Checking             checking                 5 0.835  0.836
+#> 10 Cleaning             cleaning                 6 0.785  0.793
 #> # ℹ 66 more rows
 ```
 
@@ -293,16 +293,16 @@ interval_hitopsr(
 #> # A tibble: 411 × 6
 #>    hsr_agoraphobia_est hsr_agoraphobia_lo hsr_agoraphobia_hi hsr_wellBeing_est
 #>                  <dbl>              <dbl>              <dbl>             <dbl>
-#>  1                1.97              1.41                2.54              1.28
-#>  2                1.42              0.851               1.98              1.28
-#>  3                2.16              1.59                2.72              2.41
-#>  4                1.23              0.666               1.80              1.85
-#>  5                1.97              1.41                2.54              2.22
-#>  6                1.05              0.480               1.61              1.47
-#>  7                1.05              0.480               1.61              1.47
-#>  8                1.60              1.04                2.17              2.22
-#>  9                1.42              0.851               1.98              1.66
-#> 10                1.23              0.666               1.80              1.47
+#>  1                1.05              0.480               1.61              3.53
+#>  2                1.42              0.851               1.98              3.53
+#>  3                1.97              1.41                2.54              2.22
+#>  4                1.23              0.666               1.80              3.72
+#>  5                1.60              1.04                2.17              3.16
+#>  6                1.05              0.480               1.61              2.60
+#>  7                1.05              0.480               1.61              3.16
+#>  8                1.05              0.480               1.61              1.85
+#>  9                1.97              1.41                2.54              2.60
+#> 10                1.05              0.480               1.61              2.60
 #> # ℹ 401 more rows
 #> # ℹ 2 more variables: hsr_wellBeing_lo <dbl>, hsr_wellBeing_hi <dbl>
 ```
@@ -331,16 +331,16 @@ interval_hitopsr(
 #> # A tibble: 411 × 3
 #>    hsr_agoraphobia_est hsr_agoraphobia_lo hsr_agoraphobia_hi
 #>                  <dbl>              <dbl>              <dbl>
-#>  1                1.97              1.60                2.34
+#>  1                1.05              0.676               1.41
 #>  2                1.42              1.05                1.79
-#>  3                2.16              1.79                2.53
+#>  3                1.97              1.60                2.34
 #>  4                1.23              0.861               1.60
-#>  5                1.97              1.60                2.34
+#>  5                1.60              1.23                1.97
 #>  6                1.05              0.676               1.41
 #>  7                1.05              0.676               1.41
-#>  8                1.60              1.23                1.97
-#>  9                1.42              1.05                1.79
-#> 10                1.23              0.861               1.60
+#>  8                1.05              0.676               1.41
+#>  9                1.97              1.60                2.34
+#> 10                1.05              0.676               1.41
 #> # ℹ 401 more rows
 ```
 

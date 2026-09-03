@@ -33,16 +33,16 @@ ku_hitopsr
 #> # A tibble: 411 × 407
 #>    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007
 #>    <chr>       <fct>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
-#>  1 P001        male         1       1       1       1       1       2       1
-#>  2 P002        male         2       1       1       1       2       1       1
-#>  3 P003        male         1       2       2       3       2       1       1
-#>  4 P004        male         1       1       2       1       1       1       1
-#>  5 P005        male         1       2       1       1       3       1       1
-#>  6 P006        female       1       1       1       1       1       1       1
+#>  1 P001        male         1       1       1       1       1       1       2
+#>  2 P002        male         3       4       1       1       2       2       2
+#>  3 P003        male         3       3       1       1       2       1       2
+#>  4 P004        male         2       3       1       1       1       1       1
+#>  5 P005        male         1       2       1       1       3       1       2
+#>  6 P006        female       2       1       1       1       2       2       2
 #>  7 P007        female       1       1       1       1       1       1       1
-#>  8 P008        male         1       1       1       1       1       1       1
-#>  9 P009        female       3       2       3       1       1       1       1
-#> 10 P010        female       1       1       1       1       1       1       1
+#>  8 P008        male         2       4       1       1       1       1       2
+#>  9 P009        female       4       1       1       1       2       1       3
+#> 10 P010        female       1       3       1       1       1       1       1
 #> # ℹ 401 more rows
 #> # ℹ 398 more variables: hsr_008 <dbl>, hsr_009 <dbl>, hsr_010 <dbl>,
 #> #   hsr_011 <dbl>, hsr_012 <dbl>, hsr_013 <dbl>, hsr_014 <dbl>, hsr_015 <dbl>,
