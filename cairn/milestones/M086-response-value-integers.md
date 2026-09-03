@@ -147,6 +147,9 @@ under D-056.
   precedent and the pre-1.0 waiver; falsified by a user depending on the double type,
   which no scored result or artifact byte exposes.
 - 2026-09-03: T1 — the two `Y:/VIDAS/Study1/` sources are readable at `/Volumes/general/DATASETS/VIDAS/Study1/` (read-only mount); `data-raw/ku_data.R` keeps its `Y:` path and was run this session against the mounted equivalent.
+- 2026-09-03: T2 — `data-raw/ku_data.R` would not re-run: `d9acc49c` put trailing periods on seven `hitopsr_items$Text` entries the export's item lookup lacks, so the text join matched 398 of 405 and the final `select()` errored. The join now matches on the text with any terminal period removed and is declared one-to-one; 405 unique keys on each side.
+- 2026-09-03: T2 stopped before regenerating any dataset. The re-run showed the shipped `ku_hitopsr`'s 405 item columns are a permutation of the correct item mapping: every rebuilt column matches exactly one committed column and only 2 of 405 are in place. Three checks agree — the committed `ku_hitopbr` cannot be derived from the committed `ku_hitopsr` (0 of 45 columns) though the script derives it from exactly that; the committed `ku_hitopbr` is reproduced column for column by the rebuild (45 of 45); and scale alpha runs 0.441 median (min -0.08) on the committed `ku_hitopsr` against 0.793 (min 0.351) rebuilt, beside 0.806 on the committed `ku_hitopbr`. `ku_hitopbr` and `ku_pid5sf` rebuild identical to what is committed apart from the type.
+- 2026-09-03: T2 left unticked and the working tree's regenerated `data/*.rda` reverted; the mismapping is out of this milestone's scope and AC3 forbids moving a value, so the routing goes to the user at a gate.
 
 ## Decisions
 
