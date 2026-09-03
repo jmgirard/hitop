@@ -104,7 +104,7 @@ under D-056.
       (`data-raw/ku_data.R:47-66`), so it inherits the type; check that it did.
 - [x] T3: Add `col_integer()` for `Value` to `data-raw/hitophsum_info.R:11` and re-run,
       regenerating `hitophsum_choices`.
-- [ ] T4: Change `value = c(1, 2, 3, 4)` to `1:4` in the two HiTOP blocks of
+- [x] T4: Change `value = c(1, 2, 3, 4)` to `1:4` in the two HiTOP blocks of
       `data-raw/sysdata.R` (`:27-42`) and re-run, regenerating `R/sysdata.rda`.
 - [ ] T5: Extend `tests/testthat/test-item-number-type.R`: empty the expected set, add
       the non-empty-domain assertion, and add the four response-column plants (AC2),
@@ -155,6 +155,7 @@ under D-056.
 - 2026-09-03: T2 — `data-raw/ku_data.R` reads the export's response columns with `readr::col_integer()` (the column set read off the file's own header by the same `^hitop` rule the `select()` uses) and `data-raw/ku_pid5sf.csv` with the 100 `pid5sf_NNN` collectors; re-run against the mounted sources. `ku_hitopsr` 405, `ku_hitopbr` 45 (inherited, checked) and `ku_pid5sf` 100 response columns are integer, and each is `identical()` to the merge base after applying only the response-column and `spec` collector retype.
 - 2026-09-03: minor amendment — T2, T3 and T4 each leave `test-item-number-type.R`'s hand-authored expected set stale by construction (it still names the response columns as known doubles), so the suite carries that one failure until T5 empties the set; the profile's verify slot is run clean at T5, not at each of the three.
 - 2026-09-03: T3 — `data-raw/hitophsum_info.R` reads `Value` with `readr::col_integer()`; re-run. `hitophsum_choices$Value` is integer and the object is `identical()` to the merge base after applying only that column's and its `spec` collector's retype; `hitophsum_items.rda` re-saved unchanged.
+- 2026-09-03: T4 — the two HiTOP blocks of `data-raw/sysdata.R` write `value = 1:4`; re-run. All three instruction objects carrying options now hold an integer `value` (`pid_instructions` already did), and each of the four is `identical()` to the merge base's after applying only that retype.
 
 ## Decisions
 

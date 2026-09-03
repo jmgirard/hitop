@@ -25,7 +25,7 @@ hitopsr_instructions <-
   list(
     start = "Please consider whether there have been significant times during the last 12 months during which the following statements applied to you. Then please select the option that best describes how well each statement described you during that period.",
     options = data.frame(
-      value = c(1, 2, 3, 4),
+      value = 1:4,
       label = c("Not at all", "A little", "Moderately", "A lot")
     )
   )
@@ -35,7 +35,7 @@ hitopbr_instructions <-
   list(
     start = "Please consider whether there have been significant times during the last 12 months during which the following statements applied to you. Then please select the option that best describes how well each statement described you during that period.",
     options = data.frame(
-      value = c(1, 2, 3, 4),
+      value = 1:4,
       label = c("Not at all", "A little", "Moderately", "A lot")
     )
   )
