@@ -103,7 +103,7 @@ rename_hitopsr_items <- function(
     cli::cli_warn(c(
       "Only {n_matched} out of 405 HiTOP-SR items were successfully matched and renamed.",
       "i" = "Note: If you plan to use {.fn score_hitopsr}, ensure uncollected items exist in the data frame as {.code NA} columns."
-    ))
+    ), class = "hitop_incomplete_rename")
   }
 
   ## Return output

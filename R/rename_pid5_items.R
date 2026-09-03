@@ -165,7 +165,7 @@ rename_pid5_items <- function(
     cli::cli_warn(c(
       "Only {n_matched} out of {n_items} {label} items were successfully matched and renamed.",
       "i" = "Note: If you plan to use {.fn score_pid5}, ensure uncollected items exist in the data frame as {.code NA} columns."
-    ))
+    ), class = "hitop_incomplete_rename")
   }
 
   ## Return output
