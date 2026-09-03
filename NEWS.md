@@ -165,7 +165,10 @@
   all of a form's items were renamed. `rename_hitopsr_items(method = "text")`
   now raises its unmatched item-text report under the existing
   `hitop_unmatched_items` class, which its PID-5 sibling already used. The
-  messages themselves are unchanged. Separately,
+  wording of every message is unchanged, with one behavioral exception: that
+  same HiTOP-SR report now escapes curly braces in the item text it echoes, so
+  `item_text` containing a `{...}` sequence raises the warning instead of
+  failing with a cli evaluation error. Separately,
   `rename_pid5_items(method = "number")` given a column whose digits exceed R's
   integer range no longer leaks base R's "NAs introduced by coercion" warning;
   the column is still reported as unmatched.

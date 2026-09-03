@@ -138,6 +138,7 @@ their own candidate row.
 - 2026-09-02: review opened — branch pushed, draft PR #92 opened; verification in progress (suite still running).
 - 2026-09-02: review evidence recorded — all seven criteria pass on fresh evidence; cairn_validate exit 0; suite 17217 pass / 0 fail; document() no diff; pkgdown clean. Three review lenses returned nine findings, all from the diff-bug lens, each reproduced or refuted here; none is a return-floor finding.
 - 2026-09-02: consistency gate green — devtools::check() 0 errors, 0 warnings, 0 notes; pkgdown check_pkgdown() no problems; cairn_validate exit 0 with 24 pre-existing advisories.
+- 2026-09-02: gate-directed fixes committed — the guard walks the five functions' bodies instead of reading `R/*.R`, so it no longer skips under `R CMD check`; its domain covers `warning()`/`rlang::warn()` and it requires a literal `hitop_` class; NEWS names the brace-escaping behavior change and a test pins it. Targeted suite 42 pass / 0 skip; seen red against a planted bare `warning()` and a planted `class = NULL`. Full suite and `check()` re-running at commit time.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -250,3 +251,34 @@ verdict below is this session's own reproduction, not the lens's account.
 
 **Return floor:** no finding demonstrates an acceptance criterion failing —
 all seven pass on fresh evidence — so none is a floor return.
+
+**Triage at the 2026-09-02 gate.** Jeff chose to fix the guard and the
+changelog on this branch, and approved the merge.
+
+- Findings 1, 2 and 3 — **fixed now.** The guard no longer reads `R/*.R` off
+  disk: it walks `body()` of the five exported functions, so it runs under
+  `R CMD check` as well as `devtools::test()` and cannot skip. Its domain is
+  widened from `cli::cli_warn` to `warning()`, `base::warning()`, `rlang::warn()`
+  and `warn()` — the shape T4's base-R leak had. A call counts as guarded only
+  when `class` is a character literal whose every element starts with `hitop_`,
+  so `class = NULL`, `class = if (flag) "hitop_x"` and a foreign class are all
+  reported. The pinned count of 10 became a floor (`expect_gte`), so a properly
+  classed addition goes red on the class assertion rather than on arithmetic —
+  which also settles finding 7. Seen red both ways: a planted
+  `warning("planted: a bare base-R warning")` in `R/label_hitopbr.R` failed the
+  guard, and so did replacing that file's `class = "hitop_no_columns_matched"`
+  with `class = NULL`; the file was restored from a backup and `git diff` on it
+  is empty.
+- Finding 5 — **fixed now.** The NEWS sentence "The messages themselves are
+  unchanged" now reads that the wording is unchanged with one behavioral
+  exception, and names it: the HiTOP-SR report escapes braces, so an
+  `item_text` containing `{...}` warns instead of failing with a cli evaluation
+  error. A test in `test-warning-classes.R` pins it — the call raises no error,
+  raises `hitop_unmatched_items`, and the literal `{sad}` survives into the
+  message.
+- Finding 4 — **follow-up.** Pre-existing and deliberately out of the
+  criterion's eight paths; recorded as a candidate row at hygiene.
+- Finding 6 — **rejected.** AC5 asks for exactly this assertion; an intentional
+  change the plan called for.
+- Findings 8 and 9 — **follow-up.** Test-reach only, no wrong verdict today;
+  recorded as a candidate row at hygiene.

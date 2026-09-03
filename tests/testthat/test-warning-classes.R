@@ -33,6 +33,31 @@ test_that("rename_hitopsr_items(method = 'text') reports unmatched text by class
   )
 })
 
+# The report is built by `warn_unmatched_items()`, which escapes braces before
+# cli interpolates. The inline block this replaced did not, so an item text
+# containing `{...}` ERRORED ("Could not evaluate cli `{}` expression") instead
+# of warning. Nothing else pins that, and the changelog covers it in one line.
+test_that("an item text containing braces warns rather than erroring", {
+  df <- data.frame(a = c(1, 2))
+  braced <- "How often do you feel {sad}?"
+
+  expect_no_error(
+    caught <- collect_warnings(
+      rename_hitopsr_items(df, method = "text", item_cols = "a", item_text = braced)
+    )
+  )
+  expect_true(
+    any(vapply(
+      caught$warnings,
+      function(w) inherits(w, "hitop_unmatched_items"),
+      logical(1)
+    ))
+  )
+  # The braces survive into the message rather than being interpolated away.
+  msg <- paste(vapply(caught$warnings, conditionMessage, character(1)), collapse = " ")
+  expect_true(grepl("{sad}", msg, fixed = TRUE))
+})
+
 # ---- AC2: the eight nothing-matched paths -----------------------------------
 
 test_that("rename_pid5_items(method = 'number') reports nothing matched by class", {
@@ -183,33 +208,42 @@ test_that("a fully matching call is silent and an unraised class is not reported
   )
 })
 
-# ---- T6 guard: no classless cli_warn() in the family ------------------------
+# ---- T6 guard: no unclassed warning in the family ---------------------------
 
-# Read from the source tree: `R/` is not installed in this form, so this skips
-# under `R CMD check` and runs under devtools::test(), where the files exist.
-family_files <- function() {
-  file.path(
-    testthat::test_path("..", ".."),
-    "R",
-    c(
-      "rename_pid5_items.R",
-      "rename_hitopsr_items.R",
-      "label_pid5.R",
-      "label_hitopsr.R",
-      "label_hitopbr.R"
-    )
+# The guard reads the five functions themselves rather than their source files.
+# Reading `R/*.R` off disk skipped under `R CMD check`, where the working
+# directory is `<pkg>.Rcheck` and no source tree is unpacked beside it — so the
+# guard never ran in CI, which is exactly where a later classless warning would
+# slip through. A function object carries its body in both settings.
+family_functions <- function() {
+  list(
+    rename_pid5_items = rename_pid5_items,
+    rename_hitopsr_items = rename_hitopsr_items,
+    label_pid5 = label_pid5,
+    label_hitopsr = label_hitopsr,
+    label_hitopbr = label_hitopbr
   )
 }
 
-# Every `cli_warn()` call in `path`, as language objects. Parsing rather than
-# grepping is what lets a call spanning several lines be read whole, and what
-# makes `class =` a named argument rather than a substring.
-cli_warn_calls <- function(path) {
+# The three ways this package could raise a warning. `cli::cli_warn()` is the
+# convention, but a bare `warning()` is what the base-R coercion leak T4 removed
+# looked like, and `rlang::warn()` is one keystroke away from `cli_warn`, so all
+# three are in the domain: a guard that watched only `cli_warn` would have been
+# blind to the very shape this milestone fixed.
+warn_fns <- list(
+  quote(cli::cli_warn), quote(cli_warn),
+  quote(warning), quote(base::warning),
+  quote(rlang::warn), quote(warn)
+)
+
+# Every warning-raising call in `fn`'s body, as language objects. Walking the
+# body rather than the file text is what lets a call spanning several lines be
+# read whole, and what makes `class =` a named argument rather than a substring.
+warn_calls <- function(fn) {
   found <- list()
   walk <- function(e) {
     if (!is.call(e)) return(invisible(NULL))
-    fn <- e[[1]]
-    if (identical(fn, quote(cli::cli_warn)) || identical(fn, quote(cli_warn))) {
+    if (any(vapply(warn_fns, identical, logical(1), y = e[[1]]))) {
       found[[length(found) + 1L]] <<- e
     }
     # An omitted argument (the second in `pid_items[keep, ]`) is the empty
@@ -225,67 +259,76 @@ cli_warn_calls <- function(path) {
     for (kid in kids[keep]) walk(kid)
     invisible(NULL)
   }
-  for (e in as.list(parse(path, keep.source = FALSE))) walk(e)
+  walk(body(fn))
   found
 }
 
-classless <- function(paths) {
+# A call is guarded only by a class this package promises: a literal string
+# starting with `hitop_`. `class = NULL`, and a conditional such as
+# `class = if (flag) "hitop_x"`, both name a `class` argument and both leave the
+# warning unclassed on at least one path, so presence of the argument is not
+# enough.
+unclassed <- function(fns) {
   out <- character(0)
-  for (p in paths) {
-    for (call in cli_warn_calls(p)) {
-      if (!"class" %in% names(call)) {
-        out <- c(out, paste0(basename(p), ": ", deparse(call)[[1]]))
-      }
+  for (nm in names(fns)) {
+    for (call in warn_calls(fns[[nm]])) {
+      cls <- if ("class" %in% names(call)) call[["class"]] else NULL
+      ok <- is.character(cls) && length(cls) >= 1L && all(startsWith(cls, "hitop_"))
+      if (!ok) out <- c(out, paste0(nm, ": ", deparse(call)[[1]]))
     }
   }
   out
 }
 
-test_that("every cli_warn() in the family passes a class", {
-  paths <- family_files()
-  skip_if(!all(file.exists(paths)), "R/ not available")
+test_that("every warning the family raises passes a hitop_ class", {
+  fns <- family_functions()
 
-  calls <- unlist(lapply(paths, cli_warn_calls), recursive = FALSE)
-  # The scan is worthless over an empty domain, so pin the count it found: the
-  # eight nothing-matched sites and the two completeness sites. The family's
-  # eleventh warning, the unmatched-input report, is raised from
+  # The scan is worthless over an empty domain, so pin the count it found. The
+  # floor is the ten inline sites — the eight nothing-matched and the two
+  # completeness reports — stated as a floor rather than an equality so that a
+  # properly classed warning added later goes red on the class assertion below,
+  # which says what is wrong, rather than on an arithmetic mismatch. The
+  # family's eleventh warning, the unmatched-input report, is raised from
   # `warn_unmatched_items()` in `R/util.R` and so is not one of these calls.
-  expect_length(calls, 10)
+  calls <- unlist(lapply(fns, warn_calls), recursive = FALSE)
+  expect_gte(length(calls), 10L)
 
-  expect_identical(classless(paths), character(0))
+  expect_identical(unclassed(fns), character(0))
 })
 
-test_that("the classless-cli_warn scan sees both call shapes it must catch", {
-  dir <- tempfile("m085-scan-")
-  dir.create(dir)
-  on.exit(unlink(dir, recursive = TRUE), add = TRUE)
-
-  single <- file.path(dir, "single.R")
-  writeLines(
-    c('f <- function() {', '  cli::cli_warn("no class here.")', '}'),
-    single
+test_that("the scan catches every unclassed shape it must", {
+  # Each of these raises a warning no caller can catch by a package class, on
+  # at least one path, and each is reported. The single- and multi-line call
+  # shapes are both present in the family, so both are planted.
+  bad <- list(
+    single = function() cli::cli_warn("no class here."),
+    multi = function() {
+      cli::cli_warn(c(
+        "no class here either.",
+        "i" = "a bullet."
+      ))
+    },
+    null_class = function() cli::cli_warn("x", class = NULL),
+    conditional = function(flag) cli::cli_warn("y", class = if (flag) "hitop_z"),
+    foreign_class = function() cli::cli_warn("z", class = "not_ours"),
+    base_warning = function() warning("a bare base-R warning"),
+    rlang_warn = function() rlang::warn("an rlang warning, unclassed")
   )
+  for (nm in names(bad)) {
+    expect_length(unclassed(bad[nm]), 1L)
+  }
 
-  multi <- file.path(dir, "multi.R")
-  writeLines(
-    c(
-      'g <- function() {',
-      '  cli::cli_warn(c(',
-      '    "no class here either.",',
-      '    "i" = "a bullet."',
-      '  ))',
-      '}'
-    ),
-    multi
-  )
+  # The control passes for the reason claimed, not merely because nothing was
+  # scanned: the scan sees the call and accepts its class.
+  good <- list(ok = function() cli::cli_warn("fine.", class = "hitop_x"))
+  expect_length(warn_calls(good$ok), 1L)
+  expect_length(unclassed(good), 0L)
+})
 
-  classed <- file.path(dir, "classed.R")
-  writeLines(
-    c('h <- function() {', '  cli::cli_warn("fine.", class = "hitop_x")', '}'),
-    classed
-  )
-
-  expect_length(classless(single), 1)
-  expect_length(classless(multi), 1)
-  expect_length(classless(classed), 0)
+test_that("the guard reads a function body, so it runs wherever the tests do", {
+  # The predecessor read `R/*.R` off disk and skipped under `R CMD check`. A
+  # body is present in an installed package too, so nothing here can skip.
+  fns <- family_functions()
+  expect_true(all(vapply(fns, is.function, logical(1))))
+  expect_true(all(vapply(fns, function(f) length(warn_calls(f)) > 0L, logical(1))))
 })
