@@ -10,11 +10,16 @@ integer_columns <- function(names) {
   )
 }
 
-## The export's lookup carries the item texts as they were collected, before
-## the trailing periods `hitopsr_items` standardized onto seven of them, so the
+## `study1_items.csv` is the export's own variable dictionary: one row per
+## column, `Old` the column name and `Text` the question it asked. It is what
+## carries the export's administration order onto this package's item numbers,
+## so the lookup below decides which answers land under which item number.
+##
+## The dictionary holds the item texts as they were collected, before the
+## trailing periods `hitopsr_items` standardized onto seven of them, so the
 ## texts are matched with any terminal period removed. The join is declared
 ## one-to-one so that an ambiguous match errors here rather than silently
-## mis-mapping an item's responses.
+## mis-mapping an item's answers, and all 405 items must come back.
 without_terminal_period <- function(x) sub("\\.$", "", x)
 
 ku_items <-

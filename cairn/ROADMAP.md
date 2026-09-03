@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M086 | Every response value the package ships is an integer | blocked | — | normal | milestones/M086-response-value-integers.md |
+| M086 | Every response value the package ships is an integer | in-progress | — | normal | milestones/M086-response-value-integers.md |
 | M085 | The `rename_*`/`label_*` family's warning contract | done | — | normal | milestones/archive/M085-rename-label-warning-contract.md |
 | M084 | The `label_*()` family's unpadded-item report | done | — | normal | milestones/archive/M084-unpadded-item-report.md |
 | M083 | `label_pid5()` | done | — | normal | milestones/archive/M083-label-pid5.md |
