@@ -9,13 +9,13 @@
 # from the keying tables, not from either dataset's generator.
 
 item_crosswalk <- function() {
-  dplyr::full_join(
-    hitopsr_items,
-    hitopbr_items,
-    by = c("Text", "HSR", "Original")
-  ) |>
-    dplyr::select(HSR, HBR) |>
-    tidyr::drop_na()
+  keys <- c("Text", "HSR", "Original")
+  merged <- merge(
+    hitopsr_items[, keys],
+    hitopbr_items[, c(keys, "HBR")],
+    by = keys
+  )
+  merged[order(merged$HBR), c("HSR", "HBR")]
 }
 
 test_that("the crosswalk the mapping check runs over covers all 45 HiTOP-BR items", {
