@@ -10,7 +10,7 @@
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** `m085-rename-label-warning-contract`   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m085-rename-label-warning-contract` · https://github.com/jmgirard/hitop/pull/92   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -135,6 +135,7 @@ their own candidate row.
 - 2026-09-02: T4, T5 and T6 share one commit and one suite run — the tests T5 owns are the evidence T4's fix is checked by, and the guard T6 owns lives in the file T5 creates. Suite clean (17217 pass, 0 fail).
 - 2026-09-02: T7 done — the `@return` of each of the five functions names every class it raises; the "under either method" clause in both rename helpers was checked by running each helper's text method and reading back `hitop_incomplete_rename`. `NEWS.md` gained a bullet under Improvements and fixes. `DECISIONS.md` already carried D-059, appended at plan time. `devtools::document()` regenerated the five Rd files; `R CMD check` 0 errors, 0 warnings, 0 notes (14m 44s), its test stage OK.
 
+- 2026-09-02: review opened — branch pushed, draft PR #92 opened; verification in progress (suite still running).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
