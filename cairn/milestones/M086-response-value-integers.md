@@ -110,7 +110,7 @@ under D-056.
       the non-empty-domain assertion, and add the four response-column plants (AC2),
       each paired against the shipped object. Rename the file's header comment to the
       wider promise it now carries.
-- [ ] T6: Extend `tests/testthat/test-item-number-merge-base.R` to the four retyped
+- [x] T6: Extend `tests/testthat/test-item-number-merge-base.R` to the four retyped
       datasets, and add a `merge_base_sysdata()` loader to
       `tests/testthat/helper-merge-base.R` — `merge_base_object()` reads only
       `data/<name>.rda` (`helper-merge-base.R:60`), and `R/sysdata.rda` holds all four
@@ -157,6 +157,7 @@ under D-056.
 - 2026-09-03: T3 — `data-raw/hitophsum_info.R` reads `Value` with `readr::col_integer()`; re-run. `hitophsum_choices$Value` is integer and the object is `identical()` to the merge base after applying only that column's and its `spec` collector's retype; `hitophsum_items.rda` re-saved unchanged.
 - 2026-09-03: T4 — the two HiTOP blocks of `data-raw/sysdata.R` write `value = 1:4`; re-run. All three instruction objects carrying options now hold an integer `value` (`pid_instructions` already did), and each of the four is `identical()` to the merge base's after applying only that retype.
 - 2026-09-03: T5 — the sweep's expected set is now empty; the domain test additionally names the three `ku_*`, the five `sim_*` and `hitophsum_choices`; four response-column plants added (`ku_hitopsr$hsr_001`, `ku_hitopbr$hbr_01`, `ku_pid5sf$pid5sf_001`, `hitophsum_choices$Value`), each asserting the planted copy yields exactly that path and the shipped object yields nothing there. File header rewritten to the whole-number promise. Suite 0 failures / 17,244 passes.
+- 2026-09-03: T6 — `merge_base_sysdata()` added to `helper-merge-base.R` (reads `R/sysdata.rda` whole, since it holds all four instruction objects). `test-item-number-merge-base.R` gains the four response objects — retype-only reproduces the committed object for each — a pin that `expect_equal()` passes where `identical()` fails on `ku_hitopsr$hsr_001`, the four instruction objects' retype-only comparison with a guard that the retype was not a no-op, and a type assertion on the three shipped `options$value`. The new blocks run rather than skip; the M081 blocks skip as designed. Suite 0 failures / 17,362 passes.
 
 ## Decisions
 

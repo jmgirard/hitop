@@ -69,6 +69,29 @@ merge_base_object <- function(name, sha) {
   get(name, envir = env)
 }
 
+# Load `R/sysdata.rda` as it stood at `sha`, returning an environment holding
+# every object in it. `merge_base_object()` reads one `data/<name>.rda` per
+# call; the internal data lives in a single file carrying all four instruction
+# objects, so the whole file is loaded once and the caller picks objects out of
+# the environment by name.
+merge_base_sysdata <- function(sha) {
+  tmp <- tempfile(fileext = ".rda")
+  on.exit(unlink(tmp), add = TRUE)
+  status <- suppressWarnings(system2(
+    "git",
+    c("-C", shQuote(normalizePath(repo_root())),
+      "show", paste0(sha, ":R/sysdata.rda")),
+    stdout = tmp,
+    stderr = FALSE
+  ))
+  if (!identical(status, 0L) || file.size(tmp) == 0L) {
+    testthat::skip(paste0("could not read R/sysdata.rda at ", sha))
+  }
+  env <- new.env()
+  load(tmp, envir = env)
+  env
+}
+
 # The merge base for M059's rename-diff tests specifically.
 #
 # Those tests compare the branch against the state before the Body Focus ->
