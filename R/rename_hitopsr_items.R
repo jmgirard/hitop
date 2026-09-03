@@ -83,17 +83,7 @@ rename_hitopsr_items <- function(
 
     if (any(is.na(locs))) {
       missing_idx <- which(is.na(locs))
-      unmatched_items <- item_text[missing_idx]
-
-      # Name the vector elements "x" so cli formats them as red error bullets
-      names(unmatched_items) <- rep("x", length(unmatched_items))
-
-      # Use {qty()} to explicitly anchor the pluralization context
-      cli::cli_warn(c(
-        "{cli::qty(length(unmatched_items))}The following item text{?s} could not be matched and {?was/were} skipped:",
-        unmatched_items
-      ))
-
+      warn_unmatched_items(item_text[missing_idx], "item text")
       data_locs <- data_locs[-missing_idx]
       locs <- locs[-missing_idx]
     }

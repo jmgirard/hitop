@@ -4,13 +4,13 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M085: The `rename_*`/`label_*` family's warning contract
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** `m085-rename-label-warning-contract`   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -87,7 +87,7 @@ their own candidate row.
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits) -->
 
-- [ ] T1: In `R/rename_hitopsr_items.R:89-101`, replace the inline
+- [x] T1: In `R/rename_hitopsr_items.R:89-101`, replace the inline
       unmatched-item-text warning with `warn_unmatched_items(item_text[missing_idx],
       "item text")` (`R/util.R:675`); check the helper's brace escaping and
       pluralization against what the inline block produced.
@@ -126,6 +126,7 @@ their own candidate row.
 - 2026-09-02: plan gate chose one shared class name `hitop_no_columns_matched` over per-helper names, because the condition is the same event at every site and D-034(c) names conditions rather than functions; falsified by the same evidence class as above.
 - 2026-09-02: plan chose adding `class =` at each call site over a shared `warn_no_columns_matched()` helper, because the eight messages differ by prefix, by items-vs-scales and by legacy-name wording, so a helper would carry the differences as arguments and centralize nothing; falsified by the messages converging to one wording.
 - 2026-09-02: plan gate chose folding the stray base-R coercion warning into this milestone over a separate hotfix, because it sits in the code T2/T4 already rewrite and two review cycles over one file buy nothing; falsified by a user reporting the stray warning before this milestone merges.
+- 2026-09-02: T1 done — `rename_hitopsr_items(method = "text")` raises its unmatched item-text report through `warn_unmatched_items()`; the helper's header and pluralization reproduce the inline block's wording, and its brace escaping now leaves a literal `{x}` in an item text intact. Suite clean (17186 pass, 0 fail).
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
