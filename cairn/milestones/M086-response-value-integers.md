@@ -1,12 +1,12 @@
 # M086: Every response value the package ships is an integer
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
-- **Branch/PR:** —
+- **Branch/PR:** `m086-response-value-integers`
 
 ## Goal
 
@@ -93,7 +93,7 @@ under D-056.
 
 ## Tasks
 
-- [ ] T1: Get the two `Y:/VIDAS/Study1/` source files (`study1_items.csv`,
+- [x] T1: Get the two `Y:/VIDAS/Study1/` source files (`study1_items.csv`,
       `qualtrics_2026-02-26.csv`) reachable from the checkout; log the date and the path
       used. The milestone is `blocked` until they are.
 - [ ] T2: Add `readr` column types to the two response-column reads in
@@ -146,6 +146,7 @@ under D-056.
 - 2026-09-02: plan gate chose an outright retype over a deprecation cycle, on the D-056
   precedent and the pre-1.0 waiver; falsified by a user depending on the double type,
   which no scored result or artifact byte exposes.
+- 2026-09-03: T1 — the two `Y:/VIDAS/Study1/` sources are readable at `/Volumes/general/DATASETS/VIDAS/Study1/` (read-only mount); `data-raw/ku_data.R` keeps its `Y:` path and was run this session against the mounted equivalent.
 
 ## Decisions
 
