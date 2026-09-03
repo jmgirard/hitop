@@ -29,7 +29,10 @@ test_that("label_hitopsr() attaches item text and scale names", {
 
 test_that("label_hitopsr() warns and returns data unchanged on no match", {
   df <- data.frame(foo = c(1, 2), bar = c(3, 4))
-  expect_warning(res <- label_hitopsr(df, target = "items"), "No columns matched")
+  expect_warning(
+    res <- label_hitopsr(df, target = "items"),
+    class = "hitop_no_columns_matched"
+  )
   expect_identical(res, df)
 })
 
@@ -53,7 +56,10 @@ test_that("label_hitopbr() attaches item text and scale names", {
 
 test_that("label_hitopbr() warns and returns data unchanged on no match", {
   df <- data.frame(foo = c(1, 2))
-  expect_warning(res <- label_hitopbr(df, target = "scales"), "No columns matched")
+  expect_warning(
+    res <- label_hitopbr(df, target = "scales"),
+    class = "hitop_no_columns_matched"
+  )
   expect_identical(res, df)
 })
 
@@ -204,7 +210,7 @@ test_that("label_hitopsr() warns when prefixed columns carry unpadded item numbe
   sub <- ku_hitopsr[, c("participant", "hsr_001", "hsr_002")]
   expect_no_warning(label_hitopsr(sub))
   # Nothing matching at all still reports that, not padding.
-  expect_warning(label_hitopsr(data.frame(a = 1)), "No columns matched")
+  expect_warning(label_hitopsr(data.frame(a = 1)), class = "hitop_no_columns_matched")
 })
 
 test_that("label_hitopbr() warns when prefixed columns carry unpadded item numbers", {
@@ -218,7 +224,7 @@ test_that("label_hitopbr() warns when prefixed columns carry unpadded item numbe
   expect_null(attr(res[[names(df)[1]]], "label"))
   sub <- ku_hitopbr[, c("participant", "hbr_01", "hbr_02")]
   expect_no_warning(label_hitopbr(sub))
-  expect_warning(label_hitopbr(data.frame(a = 1)), "No columns matched")
+  expect_warning(label_hitopbr(data.frame(a = 1)), class = "hitop_no_columns_matched")
 })
 
 # ---- AC1: the padding report fires even when no column matched --------------
@@ -232,7 +238,7 @@ test_that("label_hitopsr() reports mis-padded columns when nothing matched", {
   caught <- collect_warnings(label_hitopsr(df, target = "items"))
   expect_length(caught$warnings, 2L)
   if (length(caught$warnings) == 2L) {
-    expect_match(warning_text(caught, 1L), "No columns matched")
+    expect_s3_class(caught$warnings[[1]], "hitop_no_columns_matched")
     expect_s3_class(caught$warnings[[2]], "hitop_unpadded_items")
     msg <- warning_text(caught, 2L)
     for (nm in cols) expect_true(grepl(nm, msg, fixed = TRUE), info = nm)
@@ -247,7 +253,7 @@ test_that("label_hitopbr() reports mis-padded columns when nothing matched", {
   caught <- collect_warnings(label_hitopbr(df, target = "items"))
   expect_length(caught$warnings, 2L)
   if (length(caught$warnings) == 2L) {
-    expect_match(warning_text(caught, 1L), "No columns matched")
+    expect_s3_class(caught$warnings[[1]], "hitop_no_columns_matched")
     expect_s3_class(caught$warnings[[2]], "hitop_unpadded_items")
     msg <- warning_text(caught, 2L)
     for (nm in cols) expect_true(grepl(nm, msg, fixed = TRUE), info = nm)
@@ -376,7 +382,7 @@ test_that("the label helpers stay silent on correctly padded frames", {
     caught <- no_padding_report(case$fn(data.frame(a = 1)), case$label)
     expect_length(caught$warnings, 1L)
     if (length(caught$warnings) == 1L) {
-      expect_match(warning_text(caught, 1L), "No columns matched", info = case$label)
+      expect_s3_class(caught$warnings[[1]], "hitop_no_columns_matched")
     }
   }
 })

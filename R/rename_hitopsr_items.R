@@ -16,7 +16,15 @@
 #'   the default, the pattern the shipped datasets and the package's REDCap
 #'   export use (the Qualtrics export writes `HSR_001`). (default = `"hsr_"`)
 #'
-#' @return A data frame with renamed column names for the matched HiTOP-SR items.
+#' @return A data frame with renamed column names for the matched HiTOP-SR
+#'   items. Inputs that could not be matched keep their names, and each of the
+#'   three warnings this function raises carries a condition class callers may
+#'   catch or suppress by. Under `method = "original"`, if no column matches a
+#'   legacy name, nothing is renamed and the report is
+#'   `hitop_no_columns_matched`. Under `method = "text"`, an `item_text` entry
+#'   matching no item is skipped and named in a `hitop_unmatched_items` report.
+#'   Under either method, if some but not all of the 405 items were renamed,
+#'   the completeness report is `hitop_incomplete_rename`.
 #'
 #' @examples
 #' # Rename legacy item-pool columns to standard HiTOP-SR item names
@@ -49,7 +57,8 @@ rename_hitopsr_items <- function(
     matched_idx <- !is.na(locs)
     if (!any(matched_idx)) {
       cli::cli_warn(
-        "No columns matched the legacy 'Original' names in {.var hitopsr_items}."
+        "No columns matched the legacy 'Original' names in {.var hitopsr_items}.",
+        class = "hitop_no_columns_matched"
       )
       return(data)
     }
@@ -83,17 +92,7 @@ rename_hitopsr_items <- function(
 
     if (any(is.na(locs))) {
       missing_idx <- which(is.na(locs))
-      unmatched_items <- item_text[missing_idx]
-
-      # Name the vector elements "x" so cli formats them as red error bullets
-      names(unmatched_items) <- rep("x", length(unmatched_items))
-
-      # Use {qty()} to explicitly anchor the pluralization context
-      cli::cli_warn(c(
-        "{cli::qty(length(unmatched_items))}The following item text{?s} could not be matched and {?was/were} skipped:",
-        unmatched_items
-      ))
-
+      warn_unmatched_items(item_text[missing_idx], "item text")
       data_locs <- data_locs[-missing_idx]
       locs <- locs[-missing_idx]
     }
@@ -112,7 +111,7 @@ rename_hitopsr_items <- function(
     cli::cli_warn(c(
       "Only {n_matched} out of 405 HiTOP-SR items were successfully matched and renamed.",
       "i" = "Note: If you plan to use {.fn score_hitopsr}, ensure uncollected items exist in the data frame as {.code NA} columns."
-    ))
+    ), class = "hitop_incomplete_rename")
   }
 
   ## Return output

@@ -44,6 +44,12 @@
 #'   suppress by class. A column not spelled like an item number is left alone
 #'   and not reported.
 #'
+#'   Two other warnings carry a class of their own. Under `method = "number"`,
+#'   if no column at all is named `from_prefix` followed by a number, nothing
+#'   is renamed and the report is `hitop_no_columns_matched`. Under either
+#'   method, if some but not all of the form's items were renamed, the
+#'   completeness report is `hitop_incomplete_rename`.
+#'
 #' @examples
 #' # Rename columns named as this package's datasets were before the rename
 #' df <- data.frame(pid_1 = c(0, 1), pid_2 = c(2, 3), age = c(30, 40))
@@ -104,13 +110,19 @@ rename_pid5_items <- function(
 
     if (!any(shaped)) {
       cli::cli_warn(
-        "No columns are named {.code {from_prefix}} followed by an item number."
+        "No columns are named {.code {from_prefix}} followed by an item number.",
+        class = "hitop_no_columns_matched"
       )
       return(data)
     }
 
+    ## `item_col_numbers()` strips `from_prefix` by its own length, which on a
+    ## shaped column leaves exactly the digits the pattern would have captured,
+    ## and it silences the coercion of a number past R's integer range: such a
+    ## column comes back `NA` and reads below as naming no item, where a bare
+    ## `as.integer()` also leaked base R's "NAs introduced by coercion".
     numbers <- rep(NA_integer_, length(data_cols))
-    numbers[shaped] <- as.integer(sub(pattern, "\\1", data_cols[shaped]))
+    numbers[shaped] <- item_col_numbers(data_cols[shaped], from_prefix)
 
     named <- shaped & numbers %in% form_numbers
     unnamed <- shaped & !named
@@ -164,7 +176,7 @@ rename_pid5_items <- function(
     cli::cli_warn(c(
       "Only {n_matched} out of {n_items} {label} items were successfully matched and renamed.",
       "i" = "Note: If you plan to use {.fn score_pid5}, ensure uncollected items exist in the data frame as {.code NA} columns."
-    ))
+    ), class = "hitop_incomplete_rename")
   }
 
   ## Return output

@@ -184,12 +184,12 @@ test_that("label_pid5() warns and returns data unchanged when nothing matches", 
   df <- data.frame(foo = c(1, 2), bar = c(3, 4))
   expect_warning(
     res <- label_pid5(df, target = "items", version = "FULL"),
-    "No columns matched"
+    class = "hitop_no_columns_matched"
   )
   expect_identical(res, df)
   expect_warning(
     res2 <- label_pid5(df, target = "scales", version = "BF"),
-    "No columns matched"
+    class = "hitop_no_columns_matched"
   )
   expect_identical(res2, df)
 })
@@ -226,7 +226,7 @@ test_that("label_pid5(target = 'items') reports mis-padded columns when nothing 
     )
     expect_length(caught$warnings, 2L)
     if (length(caught$warnings) != 2L) next
-    expect_match(warning_text(caught, 1L), "No columns matched", info = version)
+    expect_s3_class(caught$warnings[[1]], "hitop_no_columns_matched")
     expect_s3_class(caught$warnings[[2]], "hitop_unpadded_items")
 
     msg <- warning_text(caught, 2L)

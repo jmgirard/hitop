@@ -23,9 +23,10 @@
 #'   `prefix`. (default = `"hbr_"`)
 #'
 #' @return A data frame with labeled columns. If no column matched the expected
-#'   names at all, `data` is returned unchanged and a warning says so; the
-#'   `hitop_unpadded_items` report still names every prefixed item column it
-#'   found.
+#'   names at all, `data` is returned unchanged and a warning of class
+#'   `hitop_no_columns_matched` says so; the `hitop_unpadded_items` report
+#'   still names every prefixed item column it found. Both classes may be
+#'   caught or suppressed by callers.
 #'
 #' @examples
 #' # Attach item text as a `label` attribute to the raw item columns
@@ -52,7 +53,8 @@ label_hitopbr <- function(
 
     if (length(matched_idx) == 0) {
       cli::cli_warn(
-        "No columns matched the expected item names with prefix {.str {prefix}}."
+        "No columns matched the expected item names with prefix {.str {prefix}}.",
+        class = "hitop_no_columns_matched"
       )
     } else {
       for (i in matched_idx) {
@@ -76,7 +78,8 @@ label_hitopbr <- function(
 
     if (length(matched_idx) == 0) {
       cli::cli_warn(
-        "No columns matched the expected scale names with prefix {.str {prefix}}."
+        "No columns matched the expected scale names with prefix {.str {prefix}}.",
+        class = "hitop_no_columns_matched"
       )
       return(data)
     }

@@ -49,9 +49,10 @@ A data frame with labeled columns. Columns the named form does not
 recognize keep whatever attributes they had. The validity-scale columns
 \code{\link[=validity_pid5]{validity_pid5()}} writes and the \verb{_se} columns
 \code{score_pid5(calc_se = TRUE)} writes are not labelled. If no column matched
-the expected names at all, \code{data} is returned unchanged and a warning says
-so; the \code{hitop_unpadded_items} report still names every prefixed item
-column it found.
+the expected names at all, \code{data} is returned unchanged and a warning of
+class \code{hitop_no_columns_matched} says so; the \code{hitop_unpadded_items}
+report still names every prefixed item column it found. Both classes may
+be caught or suppressed by callers.
 }
 \description{
 Add literal item text or clean scale names as attributes to data frame

@@ -44,11 +44,9 @@ test_that("rename_hitopsr_items works with method = 'text'", {
 test_that("rename_hitopsr_items handles unmatched columns and structural errors gracefully", {
   df_empty <- data.frame(Wrong_Name = c(1, 2))
 
-  warnings <- capture_warnings({
-    res_orig <- rename_hitopsr_items(df_empty, method = "original")
-  })
-  expect_match(warnings, "No columns matched")
-  expect_identical(res_orig, df_empty)
+  caught <- collect_warnings(rename_hitopsr_items(df_empty, method = "original"))
+  expect_s3_class(caught$warnings[[1]], "hitop_no_columns_matched")
+  expect_identical(caught$value, df_empty)
 
   expect_error(
     rename_hitopsr_items(df_empty, method = "text", item_cols = "Wrong_Name"),
@@ -88,19 +86,21 @@ test_that("rename_hitopsr_items warns about skipped text mismatches and processe
     "This text definitely does not exist in the instrument item pool."
   )
 
-  # Capture both warnings sequentially without nesting
-  warnings <- capture_warnings({
-    res <- rename_hitopsr_items(
+  # Keep both warnings, as conditions rather than as text
+  caught <- collect_warnings(
+    rename_hitopsr_items(
       df_custom,
       method = "text",
       item_cols = user_cols,
       item_text = user_texts
     )
-  })
+  )
+  res <- caught$value
 
-  # Verify both warnings are present using flexible regexes
-  expect_match(warnings[1], "could not be matched")
-  expect_match(warnings[2], "out of 405 HiTOP-SR items")
+  # The skipped-input report is asserted by the class the package promises;
+  # the completeness report keeps its prose check.
+  expect_s3_class(caught$warnings[[1]], "hitop_unmatched_items")
+  expect_match(warning_text(caught, 2L), "out of 405 HiTOP-SR items")
 
   # Verify processing continued for the valid item
   expect_named(res, c("hsr_001", "col_b"))
