@@ -96,7 +96,7 @@ under D-056.
 - [x] T1: Get the two `Y:/VIDAS/Study1/` source files (`study1_items.csv`,
       `qualtrics_2026-02-26.csv`) reachable from the checkout; log the date and the path
       used. The milestone is `blocked` until they are.
-- [ ] T2: Add `readr` column types to the two response-column reads in
+- [x] T2: Add `readr` column types to the two response-column reads in
       `data-raw/ku_data.R` (`:13` and `:69`) — response columns as `col_integer()`, the
       rest unchanged; `:4` reads an item-text lookup and needs none — and re-run the
       script against the real sources, regenerating `ku_hitopsr`, `ku_hitopbr` and
@@ -152,6 +152,8 @@ under D-056.
 - 2026-09-03: T2 left unticked and the working tree's regenerated `data/*.rda` reverted; the mismapping is out of this milestone's scope and AC3 forbids moving a value, so the routing goes to the user at a gate.
 - 2026-09-03: blocked on the `ku_hitopsr` mismapping. Jeff's 2026-09-03 gate: the responses were collected before the package formalized item numbering and were renumbered by hand on the assumption that the export's `hitopNNN` was item NNN; the correction goes through `/hotfix` first, and this milestone resumes on the corrected dataset so its no-value-moved criterion holds. The item-text join fix already on this branch is carried into the hotfix.
 - 2026-09-03: blocker cleared — the `ku_hitopsr` mismapping shipped as the hotfix in PR #93 (`b1b523d1`), which also carries this branch's item-text join fix; `main` merged into the branch, so the merge base AC3/AC6 read against is the corrected dataset. Status back to `in-progress`; T1's sources re-checked readable at `/Volumes/general/DATASETS/VIDAS/Study1/`.
+- 2026-09-03: T2 — `data-raw/ku_data.R` reads the export's response columns with `readr::col_integer()` (the column set read off the file's own header by the same `^hitop` rule the `select()` uses) and `data-raw/ku_pid5sf.csv` with the 100 `pid5sf_NNN` collectors; re-run against the mounted sources. `ku_hitopsr` 405, `ku_hitopbr` 45 (inherited, checked) and `ku_pid5sf` 100 response columns are integer, and each is `identical()` to the merge base after applying only the response-column and `spec` collector retype.
+- 2026-09-03: minor amendment — T2, T3 and T4 each leave `test-item-number-type.R`'s hand-authored expected set stale by construction (it still names the response columns as known doubles), so the suite carries that one failure until T5 empties the set; the profile's verify slot is run clean at T5, not at each of the three.
 
 ## Decisions
 
