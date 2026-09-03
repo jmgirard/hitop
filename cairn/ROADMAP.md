@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M085 | The `rename_*`/`label_*` family's warning contract | in-progress | — | normal | milestones/M085-rename-label-warning-contract.md |
+| M085 | The `rename_*`/`label_*` family's warning contract | review | — | normal | milestones/M085-rename-label-warning-contract.md |
 | M084 | The `label_*()` family's unpadded-item report | done | — | normal | milestones/archive/M084-unpadded-item-report.md |
 | M083 | `label_pid5()` | done | — | normal | milestones/archive/M083-label-pid5.md |
 | M082 | `rename_pid5_items()` | done | — | normal | milestones/archive/M082-rename-pid5-items.md |
