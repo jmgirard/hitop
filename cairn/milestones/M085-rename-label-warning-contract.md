@@ -137,6 +137,7 @@ their own candidate row.
 
 - 2026-09-02: review opened — branch pushed, draft PR #92 opened; verification in progress (suite still running).
 - 2026-09-02: review evidence recorded — all seven criteria pass on fresh evidence; cairn_validate exit 0; suite 17217 pass / 0 fail; document() no diff; pkgdown clean. Three review lenses returned nine findings, all from the diff-bug lens, each reproduced or refuted here; none is a return-floor finding.
+- 2026-09-02: consistency gate green — devtools::check() 0 errors, 0 warnings, 0 notes; pkgdown check_pkgdown() no problems; cairn_validate exit 0 with 24 pre-existing advisories.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
@@ -188,7 +189,7 @@ pre-existing (23 dangling legacy `D-0NN` tokens, one references-staleness note
 on `schmukle2026.md`). No `DESIGN.md` principle changed, so `cairn_impact.py`
 did not apply. Toolchain slot: `document()` no diff; `pkgdown::check_pkgdown()`
 "No problems found"; `NEWS.md` entry present; README untouched and in sync; no
-new top-level files; `devtools::check()` clean.
+new top-level files; `devtools::check()` 0 errors, 0 warnings, 0 notes (16m 56s).
 
 ### Independent review
 
