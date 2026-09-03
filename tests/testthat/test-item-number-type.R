@@ -1,8 +1,10 @@
-# Every item number the package ships is an integer. The sweep below is the
-# criterion in test form: it walks every shipped dataset and reports each bare
-# double column whose values are all whole, so an item number stored as a double
-# anywhere -- a plain column, an element of a list-column, a column of a nested
-# frame -- shows up as a name in the report.
+# Every whole number the package ships is an integer -- item numbers, the
+# collected and simulated responses, and the response values a HiTOP-HSUM choice
+# set offers. The sweep below is the criterion in test form: it walks every
+# shipped dataset and reports each bare double column whose values are all
+# whole, so a whole number stored as a double anywhere -- a plain column, an
+# element of a list-column, a column of a nested frame -- shows up as a name in
+# the report. The report is expected to be empty.
 
 # A column that carries a class attribute is not a bare double: its class names
 # the type, and the value being a double is an implementation detail of that
@@ -55,16 +57,7 @@ sweep_shipped_datasets <- function() {
   found
 }
 
-# The response columns of the three datasets of collected answers. Written out
-# from the naming rule rather than read off the datasets, so the expectation
-# below is not derived from the objects it checks.
-response_columns <- c(
-  paste0("ku_hitopsr$", sprintf("hsr_%03d", 1:405)),
-  paste0("ku_hitopbr$", sprintf("hbr_%02d", 1:45)),
-  paste0("ku_pid5sf$", sprintf("pid5sf_%03d", 1:100))
-)
-
-test_that("the sweep runs over the shipped datasets, keying tables included", {
+test_that("the sweep runs over the shipped datasets, keying and response data included", {
   index <- shipped_datasets()
   expect_gt(length(index), 0L)
   expect_true(
@@ -74,25 +67,32 @@ test_that("the sweep runs over the shipped datasets, keying tables included", {
       "hitopbr_items", "hitopbr_scales", "hitophsum_items"
     ) %in% index)
   )
-})
-
-test_that("no shipped dataset stores an item number as a double", {
-  # The two kinds of number that are deliberately doubles: the collected
-  # responses, and the response values a HiTOP-HSUM choice set offers. Neither
-  # is an item number. Everything else the sweep can see is either an integer,
-  # a classed column, or not whole.
-  expect_setequal(
-    sweep_shipped_datasets(),
-    c(response_columns, "hitophsum_choices$Value")
+  # The datasets that carry response values: the three of collected answers,
+  # the five simulated ones, and the choice set whose `Value` is a response
+  # value. Named here so an index that stops listing one of them fails, rather
+  # than the sweep quietly running over a smaller domain and still reporting
+  # nothing.
+  expect_true(
+    all(c(
+      "ku_hitopsr", "ku_hitopbr", "ku_pid5sf",
+      "sim_hitopsr", "sim_hitopbr", "sim_pid5", "sim_pid5sf", "sim_pid5bf",
+      "hitophsum_choices"
+    ) %in% index)
   )
 })
 
-# ---- the sweep is shown able to catch each shape of item-number column -------
+test_that("no shipped dataset stores a whole number as a bare double", {
+  expect_setequal(sweep_shipped_datasets(), character(0))
+})
 
-# Three plants, one per depth the walk descends to. Each pairs the planted copy
-# against the shipped object it was made from: the shipped object yields no
-# report at that path, the planted one yields exactly that path. Without the
-# pairing a plant proves only that the walk reaches somewhere.
+# ---- the sweep is shown able to catch each shape of whole-number column ------
+
+# Seven plants: three for the depths the walk descends to, and one response
+# column in each of the four datasets whose type this promise moved. Each pairs
+# the planted copy against the shipped object it was made from: the shipped
+# object yields no report at that path, the planted one yields exactly that
+# path. Without the pairing a plant proves only that the walk reaches
+# somewhere.
 
 test_that("the sweep catches a plain item-number column stored as a double", {
   planted <- hitopsr_items
@@ -126,4 +126,32 @@ test_that("the sweep passes over a classed double column", {
   stripped <- hitop_artifacts
   stripped$build_date <- unclass(stripped$build_date)
   expect_true("x$build_date" %in% whole_double_paths(stripped, "x"))
+})
+
+test_that("the sweep catches a HiTOP-SR response column stored as a double", {
+  planted <- ku_hitopsr
+  planted$hsr_001 <- as.double(planted$hsr_001)
+  expect_false("x$hsr_001" %in% whole_double_paths(ku_hitopsr, "x"))
+  expect_identical(whole_double_paths(planted, "x"), "x$hsr_001")
+})
+
+test_that("the sweep catches a HiTOP-BR response column stored as a double", {
+  planted <- ku_hitopbr
+  planted$hbr_01 <- as.double(planted$hbr_01)
+  expect_false("x$hbr_01" %in% whole_double_paths(ku_hitopbr, "x"))
+  expect_identical(whole_double_paths(planted, "x"), "x$hbr_01")
+})
+
+test_that("the sweep catches a PID-5-SF response column stored as a double", {
+  planted <- ku_pid5sf
+  planted$pid5sf_001 <- as.double(planted$pid5sf_001)
+  expect_false("x$pid5sf_001" %in% whole_double_paths(ku_pid5sf, "x"))
+  expect_identical(whole_double_paths(planted, "x"), "x$pid5sf_001")
+})
+
+test_that("the sweep catches a HiTOP-HSUM response value stored as a double", {
+  planted <- hitophsum_choices
+  planted$Value <- as.double(planted$Value)
+  expect_false("x$Value" %in% whole_double_paths(hitophsum_choices, "x"))
+  expect_identical(whole_double_paths(planted, "x"), "x$Value")
 })

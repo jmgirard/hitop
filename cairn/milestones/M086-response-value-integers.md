@@ -106,7 +106,7 @@ under D-056.
       regenerating `hitophsum_choices`.
 - [x] T4: Change `value = c(1, 2, 3, 4)` to `1:4` in the two HiTOP blocks of
       `data-raw/sysdata.R` (`:27-42`) and re-run, regenerating `R/sysdata.rda`.
-- [ ] T5: Extend `tests/testthat/test-item-number-type.R`: empty the expected set, add
+- [x] T5: Extend `tests/testthat/test-item-number-type.R`: empty the expected set, add
       the non-empty-domain assertion, and add the four response-column plants (AC2),
       each paired against the shipped object. Rename the file's header comment to the
       wider promise it now carries.
@@ -156,6 +156,7 @@ under D-056.
 - 2026-09-03: minor amendment — T2, T3 and T4 each leave `test-item-number-type.R`'s hand-authored expected set stale by construction (it still names the response columns as known doubles), so the suite carries that one failure until T5 empties the set; the profile's verify slot is run clean at T5, not at each of the three.
 - 2026-09-03: T3 — `data-raw/hitophsum_info.R` reads `Value` with `readr::col_integer()`; re-run. `hitophsum_choices$Value` is integer and the object is `identical()` to the merge base after applying only that column's and its `spec` collector's retype; `hitophsum_items.rda` re-saved unchanged.
 - 2026-09-03: T4 — the two HiTOP blocks of `data-raw/sysdata.R` write `value = 1:4`; re-run. All three instruction objects carrying options now hold an integer `value` (`pid_instructions` already did), and each of the four is `identical()` to the merge base's after applying only that retype.
+- 2026-09-03: T5 — the sweep's expected set is now empty; the domain test additionally names the three `ku_*`, the five `sim_*` and `hitophsum_choices`; four response-column plants added (`ku_hitopsr$hsr_001`, `ku_hitopbr$hbr_01`, `ku_pid5sf$pid5sf_001`, `hitophsum_choices$Value`), each asserting the planted copy yields exactly that path and the shipped object yields nothing there. File header rewritten to the whole-number promise. Suite 0 failures / 17,244 passes.
 
 ## Decisions
 
