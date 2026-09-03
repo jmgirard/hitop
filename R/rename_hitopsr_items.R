@@ -16,7 +16,15 @@
 #'   the default, the pattern the shipped datasets and the package's REDCap
 #'   export use (the Qualtrics export writes `HSR_001`). (default = `"hsr_"`)
 #'
-#' @return A data frame with renamed column names for the matched HiTOP-SR items.
+#' @return A data frame with renamed column names for the matched HiTOP-SR
+#'   items. Inputs that could not be matched keep their names, and each of the
+#'   three warnings this function raises carries a condition class callers may
+#'   catch or suppress by. Under `method = "original"`, if no column matches a
+#'   legacy name, nothing is renamed and the report is
+#'   `hitop_no_columns_matched`. Under `method = "text"`, an `item_text` entry
+#'   matching no item is skipped and named in a `hitop_unmatched_items` report.
+#'   Under either method, if some but not all of the 405 items were renamed,
+#'   the completeness report is `hitop_incomplete_rename`.
 #'
 #' @examples
 #' # Rename legacy item-pool columns to standard HiTOP-SR item names

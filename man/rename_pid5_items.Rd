@@ -58,6 +58,12 @@ number names no item of this form, and under \code{method = "text"}, an
 a warning of class \code{hitop_unmatched_items}, which callers may catch or
 suppress by class. A column not spelled like an item number is left alone
 and not reported.
+
+Two other warnings carry a class of their own. Under \code{method = "number"},
+if no column at all is named \code{from_prefix} followed by a number, nothing
+is renamed and the report is \code{hitop_no_columns_matched}. Under either
+method, if some but not all of the form's items were renamed, the
+completeness report is \code{hitop_incomplete_rename}.
 }
 \description{
 Rename data frame columns to the standard PID-5 item names of one form,

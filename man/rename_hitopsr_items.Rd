@@ -31,7 +31,15 @@ the default, the pattern the shipped datasets and the package's REDCap
 export use (the Qualtrics export writes \code{HSR_001}). (default = \code{"hsr_"})}
 }
 \value{
-A data frame with renamed column names for the matched HiTOP-SR items.
+A data frame with renamed column names for the matched HiTOP-SR
+items. Inputs that could not be matched keep their names, and each of the
+three warnings this function raises carries a condition class callers may
+catch or suppress by. Under \code{method = "original"}, if no column matches a
+legacy name, nothing is renamed and the report is
+\code{hitop_no_columns_matched}. Under \code{method = "text"}, an \code{item_text} entry
+matching no item is skipped and named in a \code{hitop_unmatched_items} report.
+Under either method, if some but not all of the 405 items were renamed,
+the completeness report is \code{hitop_incomplete_rename}.
 }
 \description{
 Rename data frame columns to standard HiTOP-SR item names based on either

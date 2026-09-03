@@ -44,6 +44,12 @@
 #'   suppress by class. A column not spelled like an item number is left alone
 #'   and not reported.
 #'
+#'   Two other warnings carry a class of their own. Under `method = "number"`,
+#'   if no column at all is named `from_prefix` followed by a number, nothing
+#'   is renamed and the report is `hitop_no_columns_matched`. Under either
+#'   method, if some but not all of the form's items were renamed, the
+#'   completeness report is `hitop_incomplete_rename`.
+#'
 #' @examples
 #' # Rename columns named as this package's datasets were before the rename
 #' df <- data.frame(pid_1 = c(0, 1), pid_2 = c(2, 3), age = c(30, 40))

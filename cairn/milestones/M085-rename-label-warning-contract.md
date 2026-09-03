@@ -113,7 +113,7 @@ their own candidate row.
       sites and failing on any passing no `class =`; assert the scan's domain
       is non-empty, and plant a classless call in both call shapes present
       (single-line and multi-line) to see it red.
-- [ ] T7: `@return` for the five functions names each class raised; `NEWS.md`
+- [x] T7: `@return` for the five functions names each class raised; `NEWS.md`
       bullet; append the `DECISIONS.md` entry; `devtools::document()`, then
       `devtools::test()` and `devtools::check()`.
 
@@ -133,6 +133,7 @@ their own candidate row.
 - 2026-09-02: T5 done — new `tests/testthat/test-warning-classes.R` pins the eight nothing-matched paths, both completeness paths, the HiTOP item-text report, the past-integer-range rename path and the two out-of-range shapes per `label_*()` helper, all by class; it builds on the existing `collect_warnings()`/`frame_of_cols()` helpers. Ten prose assertions converted to class assertions across `test-rename_hitopsr_items.R`, `test-label_pid5.R` and `test-label_scales.R`.
 - 2026-09-02: T6 done — the guard parses the five family files rather than grepping them, so a multi-line call is read whole and `class =` is a named argument; it pins the domain at the 10 inline sites (11 less the one T1 moved into `warn_unmatched_items()`) and is seen red against planted classless calls in both shapes. A silence control asserts a fully matching `label_hitopbr()` call raises nothing and that an unraised class is not reported.
 - 2026-09-02: T4, T5 and T6 share one commit and one suite run — the tests T5 owns are the evidence T4's fix is checked by, and the guard T6 owns lives in the file T5 creates. Suite clean (17217 pass, 0 fail).
+- 2026-09-02: T7 done — the `@return` of each of the five functions names every class it raises; the "under either method" clause in both rename helpers was checked by running each helper's text method and reading back `hitop_incomplete_rename`. `NEWS.md` gained a bullet under Improvements and fixes. `DECISIONS.md` already carried D-059, appended at plan time. `devtools::document()` regenerated the five Rd files; `R CMD check` 0 errors, 0 warnings, 0 notes (14m 44s), its test stage OK.
 
 
 ## Decisions
