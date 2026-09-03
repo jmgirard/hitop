@@ -46,31 +46,31 @@ their own candidate row.
 ## Acceptance criteria
 <!-- owner: plan · create/amend-via-gate; review reads, never reinterprets. -->
 
-- [ ] AC1: `rename_hitopsr_items(method = "text")` raises its unmatched
+- [x] AC1: `rename_hitopsr_items(method = "text")` raises its unmatched
       item-text report through `warn_unmatched_items()`, so the warning carries
       class `hitop_unmatched_items`; a test catches it by class.
-- [ ] AC2: Each of the eight nothing-matched paths raises class
+- [x] AC2: Each of the eight nothing-matched paths raises class
       `hitop_no_columns_matched` — `rename_pid5_items(method = "number")`,
       `rename_hitopsr_items(method = "original")`, and each of `label_pid5()`,
       `label_hitopsr()` and `label_hitopbr()` under both `target = "items"` and
       `target = "scales"` — with one test per path catching it by class.
-- [ ] AC3: Both completeness reports — `rename_pid5_items()`'s and
+- [x] AC3: Both completeness reports — `rename_pid5_items()`'s and
       `rename_hitopsr_items()`'s "only N of M items renamed" — raise class
       `hitop_incomplete_rename`, caught by class in a test for each helper.
-- [ ] AC4: `rename_pid5_items(method = "number")` given a column whose digits
+- [x] AC4: `rename_pid5_items(method = "number")` given a column whose digits
       exceed R's integer range raises no warning outside this package's
       `hitop_*` classes, and still names that column in its
       `hitop_unmatched_items` report; one test asserts both.
-- [ ] AC5: `label_pid5()`, `label_hitopsr()` and `label_hitopbr()` each report a
+- [x] AC5: `label_pid5()`, `label_hitopsr()` and `label_hitopbr()` each report a
       `<prefix>000` column and a past-integer-range column as out of range: a
       test per helper asserts `hitop_unpadded_items` is raised, and asserts
       `unpadded_item_cols()` places both columns in its `out_of_range` group.
-- [ ] AC6: The `@return` section of each of the five family functions names
+- [x] AC6: The `@return` section of each of the five family functions names
       every condition class that function raises; `NEWS.md` carries a bullet
       for the two new classes and the sibling's adopted one; `DECISIONS.md`
       carries the entry naming them and superseding D-057's completeness
       clause.
-- [ ] AC7: `Rscript -e 'devtools::document()'` leaves no diff and
+- [x] AC7: `Rscript -e 'devtools::document()'` leaves no diff and
       `Rscript -e 'devtools::test()'` is clean (the profile's `verify` slot).
 
 ## Coverage
@@ -136,9 +136,116 @@ their own candidate row.
 - 2026-09-02: T7 done — the `@return` of each of the five functions names every class it raises; the "under either method" clause in both rename helpers was checked by running each helper's text method and reading back `hitop_incomplete_rename`. `NEWS.md` gained a bullet under Improvements and fixes. `DECISIONS.md` already carried D-059, appended at plan time. `devtools::document()` regenerated the five Rd files; `R CMD check` 0 errors, 0 warnings, 0 notes (14m 44s), its test stage OK.
 
 - 2026-09-02: review opened — branch pushed, draft PR #92 opened; verification in progress (suite still running).
+- 2026-09-02: review evidence recorded — all seven criteria pass on fresh evidence; cairn_validate exit 0; suite 17217 pass / 0 fail; document() no diff; pkgdown clean. Three review lenses returned nine findings, all from the diff-bug lens, each reproduced or refuted here; none is a return-floor finding.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
 
 ## Review
 <!-- owner: review · exclusive -->
+
+Verification ran 2026-09-02 against branch head `0fff7898`, PR #92. Every
+criterion below was executed fresh in this session: a script loading the branch
+with `pkgload::load_all()` called each path and read back the classes raised
+(`scratchpad/ac-evidence.R`), separately from the suite.
+
+### Acceptance criteria
+
+- **AC1** — pass. `rename_hitopsr_items(method = "text")` on a two-column frame
+  whose `item_text` matches no item raised exactly one warning, of class
+  `hitop_unmatched_items`. `R/rename_hitopsr_items.R:95` calls
+  `warn_unmatched_items()`; the inline block is gone from the diff.
+- **AC2** — pass. All eight nothing-matched paths raised
+  `hitop_no_columns_matched` and nothing else:
+  `rename_pid5_items(method = "number")`,
+  `rename_hitopsr_items(method = "original")`, and `label_pid5()`,
+  `label_hitopsr()`, `label_hitopbr()` under each of `target = "items"` and
+  `target = "scales"`. One test per path in `tests/testthat/test-warning-classes.R`.
+- **AC3** — pass. `rename_pid5_items(version = "FULL")` on two PID-5 columns and
+  `rename_hitopsr_items(method = "original")` on three legacy columns each
+  raised `hitop_incomplete_rename`; one class test per helper.
+- **AC4** — pass. `rename_pid5_items(c("pid_1", "pid_99999999999"), version = "FULL")`
+  raised two warnings, `hitop_unmatched_items` and `hitop_incomplete_rename`,
+  both `hitop_*` and no base-R coercion warning among them; the
+  `hitop_unmatched_items` message names `pid_99999999999`.
+- **AC5** — pass. For each of `pid5_`, `hsr_` and `hbr_`, a frame of
+  `<prefix>000` and `<prefix>99999999999` raised `hitop_unpadded_items`, and
+  `unpadded_item_cols()` put both columns in `out_of_range` with `mispadded`
+  empty.
+- **AC6** — pass. The `@return` of each of the five functions names exactly the
+  classes that function raises, checked against every warning site in each file:
+  three each for the two rename helpers, two each for the three label helpers.
+  `NEWS.md` carries the bullet naming both new classes and the adopted one;
+  `DECISIONS.md` carries D-059, which supersedes D-057's classless-completeness
+  clause.
+- **AC7** — pass. `devtools::document()` exited 0 and left `git status` empty;
+  `devtools::test()` reported `[ FAIL 0 | WARN 0 | SKIP 9 | PASS 17217 ]`.
+
+### Consistency gate
+
+`cairn_validate.py` exit 0, all checks PASS; 24 advisory warnings, all
+pre-existing (23 dangling legacy `D-0NN` tokens, one references-staleness note
+on `schmukle2026.md`). No `DESIGN.md` principle changed, so `cairn_impact.py`
+did not apply. Toolchain slot: `document()` no diff; `pkgdown::check_pkgdown()`
+"No problems found"; `NEWS.md` entry present; README untouched and in sync; no
+new top-level files; `devtools::check()` clean.
+
+### Independent review
+
+Three fresh-context lenses, distinct evidence bases. The blame-history lens and
+the prior-review lens each reported no findings; the prior-review lens found
+M077 and M079 the only archived reviews touching these files and confirmed the
+current diff regresses neither, and its GitHub inline-comment probe returned
+empty. The diff-bug lens reported nine ranked findings; each was reproduced or
+refuted in this session before triage.
+
+### Findings and triage
+
+Nine findings from the diff-bug lens, in the lens's own severity order. Each
+verdict below is this session's own reproduction, not the lens's account.
+
+1. **CONFIRMED — the class guard never runs in CI.** `family_files()`
+   (`test-warning-classes.R:190`) reads `R/` through
+   `testthat::test_path("..", "..")`, which under `R CMD check` resolves to
+   `<pkg>.Rcheck`, where no source `R/` exists, so `skip_if()` fires. CI is
+   `r-lib/actions/check-r-package` (`.github/workflows/R-CMD-check.yaml:47`),
+   so the guard runs only under a local `devtools::test()`. The file comment at
+   `:188` names the skip; nothing records that it leaves CI uncovered.
+2. **CONFIRMED — the guard checks that `class` is present, not that it is
+   usable.** Reproduced: over a file holding `cli::cli_warn("x", class = NULL)`
+   and `cli::cli_warn("y", class = if (flag) "hitop_z")`, `classless()` returned
+   `character(0)`. On the `FALSE` branch cli raises an unclassed warning.
+3. **CONFIRMED — the guard's domain is `cli_warn` alone.** Same probe: a
+   `warning()` and an `rlang::warn()` in the scanned file were invisible both to
+   `classless()` and to the pinned count of 10. This is the shape of the base-R
+   coercion leak T4 removed.
+4. **CONFIRMED, pre-existing — `hitop_no_columns_matched` covers only one of
+   each rename helper's two methods.** Under `method = "text"` with every entry
+   unmatched, `locs` empties, `n_matched` is 0, and the `n_matched > 0` guard
+   (`rename_hitopsr_items.R:110`, unchanged by this diff) suppresses the
+   completeness report too, so the only warning is `hitop_unmatched_items`. The
+   `@return` prose scopes the class correctly; what is at issue is the class's
+   reach, and both the criterion and D-059 enumerate the eight paths deliberately.
+5. **CONFIRMED — the NEWS sentence "The messages themselves are unchanged" is
+   false for one input, and the change it hides is an unpinned bug fix.**
+   Reproduced by running the pre-branch inline block verbatim:
+   `item_text = "How often do you feel {sad}?"` **errored** with "Could not
+   evaluate cli `{}` expression: `sad`". `warn_unmatched_items()` escapes braces,
+   so that input now warns correctly. No test pins it.
+6. **CONFIRMED, intentional — the AC5 block asserts `unpadded_item_cols()`'s
+   return shape**, an unexported helper. AC5 asks for exactly this, so it is a
+   plan-level choice, not a coding defect.
+7. **CONFIRMED, minor — `expect_length(calls, 10)` is an equality, not a
+   floor**, so a properly classed addition to a family file goes red with a
+   count message rather than a class message.
+8. **CONFIRMED, minor — two converted assertions dropped their `info =`.**
+   `test-label_pid5.R:229` and `test-label_scales.R:385` sit in loops;
+   `expect_s3_class()` takes no `info`, so a failure no longer names the
+   iteration (the standing testthat-traps lesson).
+9. **CONFIRMED, minor — `caught$warnings[[1]]` is unguarded** at
+   `test-rename_hitopsr_items.R:48` and `:102`; if the warning stops being
+   raised the test errors on a subscript rather than failing on the class. The
+   sibling conversions in `test-label_scales.R` kept their length guards.
+
+**Return floor:** no finding demonstrates an acceptance criterion failing —
+all seven pass on fresh evidence — so none is a floor return.
