@@ -140,6 +140,7 @@ their own candidate row.
 - 2026-09-02: consistency gate green — devtools::check() 0 errors, 0 warnings, 0 notes; pkgdown check_pkgdown() no problems; cairn_validate exit 0 with 24 pre-existing advisories.
 - 2026-09-02: gate-directed fixes committed — the guard walks the five functions' bodies instead of reading `R/*.R`, so it no longer skips under `R CMD check`; its domain covers `warning()`/`rlang::warn()` and it requires a literal `hitop_` class; NEWS names the brace-escaping behavior change and a test pins it. Targeted suite 42 pass / 0 skip; seen red against a planted bare `warning()` and a planted `class = NULL`. Full suite and `check()` re-running at commit time.
 - 2026-09-02: fixes re-verified — suite 17228 pass / 0 fail / 9 skip with the guard's skip gone; devtools::check() 0/0/0 with its test stage OK, so the guard runs under R CMD check.
+- 2026-09-02: step-7 approval: PR #92 approved for merge.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
