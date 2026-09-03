@@ -64,8 +64,10 @@ recognize keep whatever attributes they had. The validity-scale columns
 [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
 writes and the `_se` columns `score_pid5(calc_se = TRUE)` writes are not
 labelled. If no column matched the expected names at all, `data` is
-returned unchanged and a warning says so; the `hitop_unpadded_items`
-report still names every prefixed item column it found.
+returned unchanged and a warning of class `hitop_no_columns_matched`
+says so; the `hitop_unpadded_items` report still names every prefixed
+item column it found. Both classes may be caught or suppressed by
+callers.
 
 ## Examples
 

@@ -161,6 +161,11 @@ number names no item of this form, and under <code>method = "text"</code>, an
 a warning of class <code>hitop_unmatched_items</code>, which callers may catch or
 suppress by class. A column not spelled like an item number is left alone
 and not reported.</p>
+<p>Two other warnings carry a class of their own. Under <code>method = "number"</code>,
+if no column at all is named <code>from_prefix</code> followed by a number, nothing
+is renamed and the report is <code>hitop_no_columns_matched</code>. Under either
+method, if some but not all of the form's items were renamed, the
+completeness report is <code>hitop_incomplete_rename</code>.</p>
     </div>
 
     <div class="section level2">

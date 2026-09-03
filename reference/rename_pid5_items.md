@@ -83,6 +83,13 @@ in a warning of class `hitop_unmatched_items`, which callers may catch
 or suppress by class. A column not spelled like an item number is left
 alone and not reported.
 
+Two other warnings carry a class of their own. Under
+`method = "number"`, if no column at all is named `from_prefix` followed
+by a number, nothing is renamed and the report is
+`hitop_no_columns_matched`. Under either method, if some but not all of
+the form's items were renamed, the completeness report is
+`hitop_incomplete_rename`.
+
 ## Examples
 
 ``` r

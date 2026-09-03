@@ -42,9 +42,10 @@ label_hitopsr(data, target = c("items", "scales"), prefix = "hsr_")
 ## Value
 
 A data frame with labeled columns. If no column matched the expected
-names at all, `data` is returned unchanged and a warning says so; the
-`hitop_unpadded_items` report still names every prefixed item column it
-found.
+names at all, `data` is returned unchanged and a warning of class
+`hitop_no_columns_matched` says so; the `hitop_unpadded_items` report
+still names every prefixed item column it found. Both classes may be
+caught or suppressed by callers.
 
 ## Examples
 

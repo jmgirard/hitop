@@ -134,9 +134,10 @@ Scale columns are expected as the prefix followed by the scale's
 recognize keep whatever attributes they had. The validity-scale columns
 <code><a href="validity_pid5.html">validity_pid5()</a></code> writes and the <code>_se</code> columns
 <code>score_pid5(calc_se = TRUE)</code> writes are not labelled. If no column matched
-the expected names at all, <code>data</code> is returned unchanged and a warning says
-so; the <code>hitop_unpadded_items</code> report still names every prefixed item
-column it found.</p>
+the expected names at all, <code>data</code> is returned unchanged and a warning of
+class <code>hitop_no_columns_matched</code> says so; the <code>hitop_unpadded_items</code>
+report still names every prefixed item column it found. Both classes may
+be caught or suppressed by callers.</p>
     </div>
 
     <div class="section level2">

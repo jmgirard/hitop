@@ -113,9 +113,10 @@ name, which is what <code><a href="score_hitopsr.html">score_hitopsr()</a></code
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data frame with labeled columns. If no column matched the expected
-names at all, <code>data</code> is returned unchanged and a warning says so; the
-<code>hitop_unpadded_items</code> report still names every prefixed item column it
-found.</p>
+names at all, <code>data</code> is returned unchanged and a warning of class
+<code>hitop_no_columns_matched</code> says so; the <code>hitop_unpadded_items</code> report
+still names every prefixed item column it found. Both classes may be
+caught or suppressed by callers.</p>
     </div>
 
     <div class="section level2">
