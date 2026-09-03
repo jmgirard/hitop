@@ -142,6 +142,7 @@ their own candidate row.
 - 2026-09-02: fixes re-verified — suite 17228 pass / 0 fail / 9 skip with the guard's skip gone; devtools::check() 0/0/0 with its test stage OK, so the guard runs under R CMD check.
 - 2026-09-02: step-7 approval: PR #92 approved for merge.
 - 2026-09-02: CI watch hit the harness ceiling with checks still pending (2 of 8 green: line endings, pkgdown); watcher stopped, no merge made. Approval marker `cairn/.merge-approved` written for PR #92 and standing; re-enter with /milestone-review M085.
+- 2026-09-02: resume — PR #92 OPEN and mergeable, branch head `76e25dd3` pushed, default branch unmoved since the cut, all seven criteria ticked against recorded evidence; re-entering at step 7. All 8 CI checks green (line endings, pkgdown, test-coverage, macos release, ubuntu devel/release/oldrel-1, windows release). step-7 approval re-posed and granted: PR #92 approved for merge.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local -->
