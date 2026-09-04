@@ -8,6 +8,45 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-061 (2026-09-03): Two `append = FALSE` empty-selection calls did lose their returned value at M060 — correcting D-045(d) and the matching sentence of its Context (supersedes those two statements; D-045(a)-(c) stand unchanged)
+
+**Context:** D-045 recorded M060's two new refusals and closed with clause (d),
+"No value a succeeding call returns changes; this entry adds refusals only."
+M060's own second review pass disproved it and corrected `NEWS.md` at the merge
+gate. The same claim in D-045 could not be edited, `DECISIONS.md` being
+append-only, and was filed as a ROADMAP candidate row instead; that row's
+promotion condition — the next append to `DECISIONS.md` — has since fired
+repeatedly without the correction being written, so it is written here on its
+own rather than waiting for another entry to carry it.
+
+**Decision:** Two of D-045's statements are false and are replaced by this
+entry. Clause (d) is replaced by: **M060 removed the returned value of two calls
+that previously succeeded.** `norm_pid5(scores = character(0), append = FALSE)`
+and `interval_hitopsr(scores = character(0), append = FALSE)` each returned a
+0-row, 0-column tibble before M060 and abort with `hitop_empty_selection` after.
+Every other call in the family keeps the value it returned, and no arithmetic
+changed. "This entry adds refusals only" was true of the collision half, D-045(a),
+and false of the empty-selection half, D-045(b). The Context's sentence "a
+zero-length `scores`/`scales` reached `data.frame()` with a zero-column result
+(\"arguments imply differing number of rows\"), except in `rank_scales()`" is
+replaced by: that path was reached **only under `append = TRUE`**. Under
+`append = FALSE` no `cbind()` runs, so `norm_pid5()` and `interval_hitopsr()`
+returned the empty tibble described above rather than erroring. The stated
+`rank_scales()` exception — `validate_count()` firing on `top` as out of range
+"between 1 and 0" — is accurate under both settings.
+
+**Consequences:** D-045(a), (b) and (c) stand: the two refusals and the two
+public condition classes are unchanged. This entry decides nothing about whether
+the `append = FALSE` path *should* refuse — that question was put to Jeff at the
+2026-09-03 gate that produced this entry, and he left the behavior as D-045(b)
+decided, so an empty selection remains one rule across the family. `NEWS.md`'s
+0.2.0 entry already carries the correction and is untouched. The supporting
+evidence is a probe of the five affected calls run against the pre-M060 base
+`108f1269` and against HEAD, its output recorded in the message of the commit
+that adds this entry. What would reopen this is a further call found to have
+lost or changed a returned value at M060, which would extend the correction
+rather than replace it.
+
 ### D-060 (2026-09-03): Every response value the package ships is an integer, in the three `ku_*` datasets, `hitophsum_choices$Value`, and the internal instruction objects' `options$value` (applies GP2 and GP3 to documented dataset columns; completes for response values what D-056 settled for item numbers, and takes the pre-1.0 waiver as D-056 did)
 
 **Context:** D-056 retyped every item number and left the response values alone, carrying the three `ku_*` datasets' answer columns as a candidate row on the grounds that they hold answers rather than item numbers and that their builder reads a network drive. That left the package meeting two types for the same kind of value: the `sim_*` datasets store their simulated responses as integers, the `ku_*` datasets stored their collected ones as doubles, and `hitophsum_choices$Value` — the response values a HiTOP-HSUM choice set offers — was a double where `pid_instructions$options$value` was already an integer.
