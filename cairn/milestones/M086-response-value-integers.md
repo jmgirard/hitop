@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
-- **Branch/PR:** `m086-response-value-integers`
+- **Branch/PR:** `m086-response-value-integers` / https://github.com/jmgirard/hitop/pull/94
 
 ## Goal
 
@@ -43,25 +43,25 @@ under D-056.
 
 ## Acceptance criteria
 
-- [ ] AC1: No dataset the package ships stores a whole-valued number as a bare double:
+- [x] AC1: No dataset the package ships stores a whole-valued number as a bare double:
       the sweep in `tests/testthat/test-item-number-type.R`, walking every dataset
       `data(package = "hitop")` lists into list-columns and nested frames, reports an
       empty set of paths, and a test asserts the sweep's domain is non-empty and
       contains the eight example datasets and `hitophsum_choices`.
-- [ ] AC2: The sweep is shown able to catch a response column stored as a double: for
+- [x] AC2: The sweep is shown able to catch a response column stored as a double: for
       each of `ku_hitopsr`, `ku_hitopbr`, `ku_pid5sf` and `hitophsum_choices`, a planted
       copy with one response column coerced back to double yields exactly that column's
       path, paired against the shipped object yielding nothing at that path.
-- [ ] AC3: Nothing but the type moved: for each of `ku_hitopsr`, `ku_hitopbr`,
+- [x] AC3: Nothing but the type moved: for each of `ku_hitopsr`, `ku_hitopbr`,
       `ku_pid5sf` and `hitophsum_choices`, applying only the response-column retype —
       and, where the object carries one, the matching `readr` `spec` collector retype —
       to the object at the branch's merge base yields an object `identical()` to the
       committed one.
-- [ ] AC4: `hitopsr_instructions$options$value` and `hitopbr_instructions$options$value`
+- [x] AC4: `hitopsr_instructions$options$value` and `hitopbr_instructions$options$value`
       in `R/sysdata.rda` are integer, `pid_instructions$options$value` stays integer, and
       each of the four internal instruction objects is otherwise `identical()` to the
       merge base's.
-- [ ] AC5: The retype moves no distributed artifact the package builds as flat text:
+- [x] AC5: The retype moves no distributed artifact the package builds as flat text:
       for each latest `hitop_artifacts` row per file whose `format` is `qualtrics` or
       `redcap` and whose file `data-raw/artifacts.R` builds from a `generate_*`
       function, a fresh build from the retyped internal data reproduces the committed
@@ -74,18 +74,18 @@ under D-056.
       content, not a probe of the type axis: the generators render a response value
       through `as.character()`, so a build from doubled internal data emits the same
       bytes.
-- [ ] AC6: No scored value moves: for each of the three `ku_*` datasets, every
+- [x] AC6: No scored value moves: for each of the three `ku_*` datasets, every
       `score_hitopsr()`, `score_hitopbr()`, `score_pid5()`, `validity_pid5()`,
       `reliability_hitopsr()`, `reliability_hitopbr()`, `reliability_pid5()`,
       `interval_hitopsr()`, `interval_hitopbr()` and `norm_pid5()` call the dataset
       admits, run with `append = FALSE`, returns an object `identical()` to the same call
       against the merge-base copy of that dataset.
-- [ ] AC7: Every object whose source is committed to the repo is reproduced by re-running
+- [x] AC7: Every object whose source is committed to the repo is reproduced by re-running
       its `data-raw/` script: `ku_pid5sf` from `data-raw/ku_pid5sf.csv`,
       `hitophsum_choices` from `data-raw/hitophsum_choices.csv`, and the four internal
       instruction objects from `data-raw/sysdata.R`, each saved-and-reloaded object
       `identical()` to the committed one.
-- [ ] AC8: `devtools::test()`, `devtools::document()` with no diff, and
+- [x] AC8: `devtools::test()`, `devtools::document()` with no diff, and
       `devtools::check()` at 0 errors / 0 warnings / 0 notes.
 
 ## Coverage
@@ -172,7 +172,137 @@ under D-056.
 - 2026-09-03: the amended AC5 wording went to a fresh-context [O] reader (full mode, user-facing tier) before it was written. Five findings: the headline quantified over all 24 artifacts where 11 are rebuild-checked; the exemption-registry clause bound the test harness rather than the package; "a `generate_*` function in the package builds" named no procedure deciding membership; "held by the md5 lock alone" overstated the lock. Four fixed in the wording above. The fifth asked for a planted-defect probe on the type axis; it cannot exist — a build with `hitopsr_instructions$options$value` coerced to double reproduces both `hitopsr_qualtrics.txt` and the `hitopsr_redcap.zip` dictionary byte for byte (run this session), because the generators render the value through `as.character()`. That fact is stated in AC5 and in the test file rather than probed.
 - 2026-09-03: T7 — `tests/testthat/test-response-value-no-move.R` added. Artifact half: the eleven `qualtrics`/`redcap` files `data-raw/artifacts.R` builds each rebuild to the committed flat text byte for byte (`.txt` whole, the zip's `instrument.csv` read out), with a test asserting `hitophsum_qualtrics.qsf` is the only manifest row without a builder here. Scoring half: one call per entry point each `ku_*` dataset admits, `append = FALSE` where the argument exists, each `identical()` between the committed dataset and the merge-base copy, guarded against a merge base that already stores integers, with the covered call set asserted rather than derived. Suite 0 failures / 17,402 passes.
 - 2026-09-03: T8 — NEWS.md gains a Breaking changes entry for the response-value retype; `DECISIONS.md` gains D-060. `devtools::document()` no diff, `devtools::test()` 0 failures, `devtools::check()` 0 errors / 0 warnings / 0 notes, line-ending check clean. Status to `review`.
+- 2026-09-03: review — PR #94 opened as a draft; all eight criteria executed with fresh evidence and ticked; `cairn_validate` exit 0 and the r-package consistency-gate clean.
+- 2026-09-03: review — three fresh-context reviewers; the two Sonnet lenses returned no findings, the [O] diff-bug lens returned eleven. Five fixed on the branch (all test-only, in the two files this milestone added or extended), one rejected as the accepted AC5 amendment, three sent to a follow-up candidate row, one half-correct and surfaced at the gate. None met the return floor.
 
 ## Decisions
 
 ## Review
+
+Reviewed 2026-09-03 on `m086-response-value-integers` at `6bd80fb6`, against
+`origin/main` at `b1b523d1` (branch 11 ahead, 0 behind — no merge needed).
+PR: https://github.com/jmgirard/hitop/pull/94.
+
+### Acceptance-criterion evidence
+
+- AC1 — `test-item-number-type.R`, 21 passes / 0 failures / 0 skips.
+  "no shipped dataset stores a whole number as a bare double" reports an empty
+  path set; "the sweep runs over the shipped datasets, keying and response data
+  included" asserts the domain non-empty and names the eight example datasets
+  and `hitophsum_choices`.
+- AC2 — same file: four response-column plants
+  (`ku_hitopsr$hsr_001`, `ku_hitopbr$hbr_01`, `ku_pid5sf$pid5sf_001`,
+  `hitophsum_choices$Value`), 2 passes each — the planted copy yields exactly
+  that path, the shipped object yields nothing there.
+- AC3 — `test-item-number-merge-base.R`, "retyping the response columns moved
+  nothing else" 105 passes over the four objects, plus "the response retype is
+  the change, not an equality that hides it" (4 passes) guarding against a
+  merge base that already stored integers. The two skips in this file are the
+  M081 item-number blocks, skipping as designed.
+- AC4 — same file: "the shipped instruction option values are integers" (4
+  passes) and "retyping the instruction option values moved nothing else" (5
+  passes) over the four `R/sysdata.rda` objects, read through the new
+  `merge_base_sysdata()` helper.
+- AC5 — `test-response-value-no-move.R`, "a fresh build reproduces every
+  committed flat-text artifact" 24 passes over the eleven built
+  `qualtrics`/`redcap` files, plus "every flat-text manifest row but the
+  API-built QSF has a builder here" (2 passes) locking the exemption set.
+  `test-artifacts.R`'s md5 manifest lock ran clean at 122 passes.
+- AC6 — same file: "no scored value moved when the response columns became
+  integers", 10 passes — one call per entry point each `ku_*` dataset admits
+  (3 + 3 + 4), each `identical()` against the merge-base copy — plus "the
+  scoring comparison covers every entry point each dataset admits" (4 passes).
+- AC7 — run this session from `scratchpad/ac7.R`: `ku_pid5sf` re-read from
+  `data-raw/ku_pid5sf.csv`, `hitophsum_choices` and `hitophsum_items` from their
+  committed CSVs, and the four instruction objects from `data-raw/sysdata.R`,
+  each saved and reloaded — `identical()` TRUE for all seven, and
+  `hitophsum_choices$Value` reads back as `integer`.
+- AC8 — `devtools::test()` 0 failures / 0 errors / 9 skips / 17,403 passes over
+  647 files; `devtools::document()` left the tree clean;
+  `devtools::check()` 0 errors / 0 warnings / 0 notes (re-run after the fix-now
+  test edits — the pre-fix tree also checked 0/0/0).
+
+### Consistency gate
+
+- `cairn_validate.py` exit 0, all checks passed; 42 advisories (work-log
+  wrapping, dangling pre-migration D-ids, a references-staleness note, and a
+  sizing tripwire on this milestone's 8 criteria) — none a gate failure.
+- No `DESIGN.md` principle changed, so `cairn_impact.py` was not run.
+- Profile `consistency-gate`: `document()` no diff; `NAMESPACE`/`man/`/`data/`
+  regenerate from roxygen and `data-raw/`; README.md newer than README.Rmd and
+  in sync; `pkgdown::check_pkgdown()` "No problems found"; NEWS.md carries a
+  Breaking changes entry for the retype; no new top-level files, so no
+  `.Rbuildignore` change; line-ending policy check passed.
+
+### Independent review
+
+Three fresh-context reviewers, distinct evidence bases (user-facing tier).
+
+- [S] blame-history: no findings. Confirmed the PR #93 item-text join fix
+  survives untouched, the M081 test files were extended rather than weakened,
+  and D-060 matches the change.
+- [S] prior-review record: no findings. The one prior-review record on this
+  subject (LESSONS M081, on asymmetric coercion inside `identical()` and on
+  guards that probe only a top-level column) is not re-violated. The GitHub
+  inline-comment probe returned `[]`, so the PR-thread walk was skipped.
+- [O] diff-bug: eleven findings, ranked. Triage below; nothing met the return
+  floor — no finding demonstrated an acceptance criterion failing, and none was
+  a defect in what the package does for its users.
+
+Finding log (rank order, with disposition):
+
+1. `skip_if()` called inside a `for` loop ends the whole `test_that()` block,
+   not the iteration, so a per-object skip would abandon every later object
+   silently (`test-item-number-merge-base.R:130`,
+   `test-response-value-no-move.R:164`). **Fixed now.** Verified independently:
+   a three-iteration loop skipping at the second records 1 pass where 4 are
+   expected. Both blocks now read every merge-base object first and decide the
+   skip once over all of them, and each asserts by name that every object moved.
+   Planted a non-moving object: all three are still compared and the guard
+   fails, where the old shape skipped whole. No live coverage was lost — all
+   four objects were double at the merge base, so the loops ran whole this run.
+2. `ku_pid5sf`'s id column is `response_id`, not `participant`/`biosex`, so the
+   scoring test's vacuity guard left a character column in the set and could
+   never fire for that dataset (`test-response-value-no-move.R:168`).
+   **Fixed now** — the response columns are named from the instrument's naming
+   rule (`pid5sf_%03d`), the same set the scoring calls use.
+3. One global `changed` flag covered four instruction objects, so one of the two
+   retyped objects failing to move would be masked by the other
+   (`test-item-number-merge-base.R:181-192`). **Fixed now** — a per-object list
+   asserted with `expect_setequal()` against the two objects that must move.
+4. AC5's artifact half cannot fail on the type axis, and duplicates
+   `test-artifacts.R`'s md5 lock. **Rejected** — this is the amendment accepted
+   at the T7 mini gate and stated in AC5's own text; it is an intentional
+   no-regression content lock, not a probe of the type axis.
+5. `grep("^hitop", ...)` is case-sensitive where `dplyr::starts_with("hitop")`
+   is not, so the comment in `data-raw/ku_data.R:39-47` overstates the
+   equivalence. **Follow-up** — no effect on the current run (405 integer
+   `hsr_*` columns, values 1-4).
+6. `col_integer()` coerces an unparseable value to `NA` and records it in
+   `problems()`, which `data-raw/ku_data.R` never asserts empty.
+   **Follow-up** — a data-raw robustness gap, not a defect in what shipped.
+7. `ku_pid5sf`'s collectors are hardcoded as `pid5sf_%03d` where the HiTOP-SR
+   read derives its set from the file header; `readr` only warns on a collector
+   matching no column. **Follow-up**, same row as 5 and 6.
+8. IP1 names response options as instrument content wherever they live,
+   including `R/sysdata.rda`, but the header lists only GP2/GP3.
+   **Surfaced at the gate** — the change is storage type, not content (the
+   values stay 1-4), on the D-028 precedent that a non-content change to
+   instrument material is not an IP1 content change; Jeff's plan-gate sign-off
+   is logged. The finding's second half — that the milestone's `## Decisions`
+   section is empty while D-060 exists — is incorrect: D-060 is cross-cutting
+   and belongs in `DECISIONS.md`.
+9. `expect_null(hitophsum_instructions$options)` relies on `$` partial matching.
+   **Fixed now** — `expect_false("options" %in% names(...))`.
+10. A redundant `expect_setequal()` pair in the exemption-set test.
+    **Fixed now** — the subsumed first assertion removed (a one-line tidy taken
+    while the file was open).
+11. `hitophsum_choices`'s roxygen `@format` says "42 rows and 3 columns"; the
+    object has 185 rows (`R/data.R:350`). **Follow-up** — pre-existing (the
+    merge-base copy is also 185 rows), so out of this diff's scope, but a false
+    documented claim and worth its own row.
+
+Fix-now work is test-only, in the two files this milestone added or extended;
+no package code changed. Both files re-run clean (`test-item-number-merge-base.R`
+106 + 4 + 4 + 5 passes, 2 designed M081 skips; `test-response-value-no-move.R`
+1 + 24 + 4 + 11 passes, 0 skips).

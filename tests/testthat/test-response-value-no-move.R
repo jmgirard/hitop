@@ -42,10 +42,6 @@ test_that("every flat-text manifest row but the API-built QSF has a builder here
   # rather than inherited.
   rows <- current_manifest()
   flat_text <- rows$file[rows$format %in% c("qualtrics", "redcap")]
-  expect_setequal(
-    setdiff(flat_text, names(flat_text_builders)),
-    "hitophsum_qualtrics.qsf"
-  )
   expect_setequal(names(flat_text_builders), setdiff(flat_text, "hitophsum_qualtrics.qsf"))
 })
 
@@ -158,16 +154,35 @@ test_that("the scoring comparison covers every entry point each dataset admits",
   )
 })
 
+# The response columns of each dataset, named from the instrument's own naming
+# rule rather than by excluding the id columns -- `ku_pid5sf`'s id column is
+# `response_id`, not `participant`/`biosex`, so an exclusion list would have left
+# a character column in the set and made the guard below unfalsifiable there.
+response_columns <- list(
+  ku_hitopsr = hitopsr_items_arg,
+  ku_hitopbr = hitopbr_items_arg,
+  ku_pid5sf = pid5sf_items_arg
+)
+
 test_that("no scored value moved when the response columns became integers", {
   base <- skip_without_merge_base()
-  for (name in names(scoring_calls)) {
+  # `testthat::skip_if()` ends the whole block rather than the loop iteration,
+  # so the merge base is read for every dataset first and the skip decided once
+  # over all of them: the loop below runs whole or not at all.
+  bases <- lapply(names(scoring_calls), function(name) {
     old <- merge_base_object(name, base)
-    # Vacuous unless the merge base really stores the responses as doubles.
-    responses <- setdiff(names(old), c("participant", "biosex"))
-    testthat::skip_if(
-      all(vapply(old[responses], is.integer, logical(1))),
-      paste0("the merge base already stores ", name, "'s responses as integer")
+    list(
+      old = old,
+      moved = !all(vapply(old[response_columns[[name]]], is.integer, logical(1)))
     )
+  })
+  names(bases) <- names(scoring_calls)
+  testthat::skip_if(
+    !any(vapply(bases, `[[`, logical(1), "moved")),
+    "the merge base already stores every dataset's responses as integer"
+  )
+  for (name in names(scoring_calls)) {
+    old <- bases[[name]]$old
     for (call in names(scoring_calls[[name]])) {
       fn <- scoring_calls[[name]][[call]]
       expect_identical(
@@ -177,4 +192,10 @@ test_that("no scored value moved when the response columns became integers", {
       )
     }
   }
+  # Each dataset is compared, and each one really moved -- so no comparison
+  # above passed by scoring the same integer data twice.
+  expect_setequal(
+    names(Filter(function(x) x$moved, bases)),
+    names(scoring_calls)
+  )
 })

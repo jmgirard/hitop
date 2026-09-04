@@ -129,28 +129,47 @@ retype_responses <- function(x, columns) {
   x
 }
 
-skip_without_double_responses <- function(name, sha) {
-  old <- merge_base_object(name, sha)
+# `testthat::skip_if()` ends the whole `test_that()` block, not the loop
+# iteration it is called from, so a per-object skip inside a loop would abandon
+# every object after the first one that skipped -- silently, and reported as one
+# clean skip. The merge base is therefore read for every object first, and the
+# skip decided once over all of them: the loop below either runs whole or does
+# not run at all.
+merge_base_responses <- function(sha) {
+  bases <- lapply(names(response_columns), function(name) {
+    old <- merge_base_object(name, sha)
+    list(
+      old = old,
+      moved = !identical(retype_responses(old, response_columns[[name]]), old)
+    )
+  })
+  names(bases) <- names(response_columns)
   testthat::skip_if(
-    identical(retype_responses(old, response_columns[[name]]), old),
-    paste0("the merge base already stores ", name, "'s responses as integer")
+    !any(vapply(bases, `[[`, logical(1), "moved")),
+    "the merge base already stores every response value as integer"
   )
-  old
+  bases
 }
 
 test_that("retyping the response columns moved nothing else", {
   base <- skip_without_merge_base()
+  bases <- merge_base_responses(base)
   for (name in names(response_columns)) {
     columns <- response_columns[[name]]
-    old <- skip_without_double_responses(name, base)
-    old <- retype_spec(retype_responses(old, columns), columns)
+    old <- retype_spec(retype_responses(bases[[name]]$old, columns), columns)
     expect_identical(getExportedValue("hitop", name), old, info = name)
   }
+  # Each object is compared, and each one really moved -- so no comparison above
+  # passed by asserting that nothing changed.
+  expect_setequal(
+    names(Filter(function(x) x$moved, bases)),
+    names(response_columns)
+  )
 })
 
 test_that("the response retype is the change, not an equality that hides it", {
   base <- skip_without_merge_base()
-  old <- skip_without_double_responses("ku_hitopsr", base)
+  old <- merge_base_responses(base)$ku_hitopsr$old
   expect_equal(old$hsr_001, ku_hitopsr$hsr_001)
   expect_false(identical(old$hsr_001, ku_hitopsr$hsr_001))
   expect_type(old$hsr_001, "double")
@@ -172,22 +191,25 @@ test_that("the shipped instruction option values are integers", {
   expect_type(pid_instructions$options$value, "integer")
   expect_type(hitopsr_instructions$options$value, "integer")
   expect_type(hitopbr_instructions$options$value, "integer")
-  expect_null(hitophsum_instructions$options)
+  # `$` partial-matches on a list, so the absence is asserted over the names.
+  expect_false("options" %in% names(hitophsum_instructions))
 })
 
 test_that("retyping the instruction option values moved nothing else", {
   base <- skip_without_merge_base()
   env <- merge_base_sysdata(base)
-  changed <- FALSE
+  moved <- character()
   for (name in instruction_objects) {
     old <- get(name, envir = env)
     if (!is.null(old$options) && !is.integer(old$options$value)) {
       old$options$value <- as.integer(old$options$value)
-      changed <- TRUE
+      moved <- c(moved, name)
     }
     expect_identical(get(name, envir = asNamespace("hitop")), old, info = name)
   }
-  # Without this the block above passes on a merge base that already carries
-  # the change, asserting only that nothing moved at all.
-  expect_true(changed)
+  # Without this the block above passes on a merge base that already carries the
+  # change, asserting only that nothing moved at all. Named per object rather
+  # than as a single flag, so one of the two retyped objects failing to move
+  # cannot be covered by the other one moving.
+  expect_setequal(moved, c("hitopsr_instructions", "hitopbr_instructions"))
 })
