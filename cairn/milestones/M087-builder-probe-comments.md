@@ -1,13 +1,13 @@
 # M087: The builder's start-up probe comments state what the probe establishes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** internal — source comments in the builder page's `index.html`; the visitor-facing README prose and log line M074 shipped are already accurate and are not touched
-- **Branch/PR:** `m087-builder-probe-comments` (hitop, tracking) · `m087-probe-comments` (jmgirard/hitop-builder, code)
+- **Branch/PR:** `m087-builder-probe-comments` (hitop, tracking) · `m087-probe-comments` (jmgirard/hitop-builder, code) — builder PR https://github.com/jmgirard/hitop-builder/pull/13
 
 ## Goal
 
@@ -72,7 +72,7 @@ page → the standing candidate row on generalizing modularization.
 - [x] T3: Grep both builder files case-insensitively for `overlap`; read every
       hit and confirm each either states the probe correctly or is unrelated
       (`index.html:205` is a CSS popup comment).
-- [ ] T4: Check the diff is comment-only, run the Playwright suite as a routine
+- [x] T4: Check the diff is comment-only, run the Playwright suite as a routine
       pre-PR check, and open the builder PR; record the PR URL here.
 
 ## Work log
@@ -101,6 +101,16 @@ page → the standing candidate row on generalizing modularization.
   binding the harness rather than the deliverable. AC3 was cut at the gate; the
   Playwright run stays a task-level check. AC1 was clean on all three questions.
 
+- 2026-09-03: the R suite is red on `main` for a reason independent of this
+  milestone — `test-item-number-merge-base.R:232`, whose guard against a
+  merge base already carrying M086's retype now fires because the merge base
+  does carry it. This branch's diff against `main` is two markdown files, so
+  the failure predates it; captured as a ROADMAP candidate row rather than
+  fixed here, which AC4 and the milestone's scope both bar.
+- 2026-09-03: T4 — `git diff -U0 index.html` on the builder branch changes no
+  non-comment line; `npm run smoke` passed locally against the branch checkout
+  (15.8s, one test); builder PR https://github.com/jmgirard/hitop-builder/pull/13
+  opened at `900feae`, its `smoke` check green (47s).
 - 2026-09-03: T3 — `grep -in overlap index.html README.md` on the branch returns
   two hits and no README hit: `index.html:205`, the CSS comment on the
   definition popup overlapping the next row, unrelated to the probe; and
