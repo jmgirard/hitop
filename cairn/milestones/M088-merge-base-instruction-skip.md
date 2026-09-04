@@ -156,3 +156,8 @@ from the archived `## Review` sections. Ranked, most severe first; each disposit
   preceding `da1d6f09`"; `main`'s first-parent line is `da1d6f09` <- `b1b523d1` <- `c3be8505`, so it is two commits
   earlier. Found while executing AC3 and recorded in that criterion's evidence line above; [O] reported it
   independently. The criterion's operative assertion and the rest of its apposition verify true.
+
+### PR conversation
+
+- conversation: PR #96 — no reviews, no conversation comments, no unresolved review threads (read once immediately
+  before the merge gate; `reviewThreads` paged to `hasNextPage: false`). Nothing to triage, nothing blocking.
