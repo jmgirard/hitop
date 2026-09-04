@@ -100,6 +100,18 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
 - AC3 — met on its operative assertion, with one correction to its parenthetical. One `load_all()` session with the working directory set to `tests/testthat` sourced `helper-merge-base.R` and `test-item-number-merge-base.R` under `with_reporter("summary")`, then evaluated a `test_that()` block calling `merge_base_instructions("c3be8505")`. Reporter line `SSSS....S..`: the file's five branch-level skips, then this block's two `expect_setequal()` calls passing and no sixth skip — the helper did not skip against `c3be8505`, returned all four instruction objects, and its moved set printed as `hitopbr_instructions, hitopsr_instructions`. Correction to the criterion's apposition: `c3be8505` is not the commit immediately preceding `da1d6f09` — `git log --first-parent` gives `da1d6f09` <- `b1b523d1` <- `c3be8505`, so it is two commits earlier. The rest of the apposition holds: reading `R/sysdata.rda` at each of the three commits shows `hitopsr_instructions`/`hitopbr_instructions` option values `double` at `c3be8505` and `b1b523d1` and `integer` at `da1d6f09`, so `da1d6f09` is the commit that made them integers and `c3be8505` does predate the retype. Raised as finding R1 below.
 - AC4 — met. `grep -n 'skip_if\|skip('` over `tests/testthat/test-item-number-merge-base.R` returns six lines: three comments (`:78`, `:152`, `:218`) and three `testthat::skip_if()` calls (`:92`, `:167`, `:235`), the last inside `merge_base_instructions()` after its `lapply()` read of all four objects and before the return. The block itself (`:242-260`) calls `skip_without_merge_base()` at `:243` and `merge_base_instructions()` at `:244`, both before the `for` loop at `:245-251`; the loop body (`:246-250`) holds only the conditional retype and one `expect_identical()`. No object can be abandoned mid-loop, and the AC2 run shows the block reported as one skip.
 
+### Consistency gate
+
+- Universal: `cairn_validate.py` exit 0 — every check PASS, plus 24 advisory warnings, all pre-existing (23 dangling
+  `D-001`..`D-012` tokens pointing into `cairn/legacy/`, and `references/schmukle2026.md` recording no extraction
+  status). The `release window` advisory did not fire. No `DESIGN.md` principle changed (`Principles touched: —`), so
+  `cairn_impact.py` was not run.
+- Toolchain (`r-package` profile's `consistency-gate` slot): `devtools::document()` left the tree clean apart from the
+  milestone file this review was writing — no `NAMESPACE`/`man/` diff. `pkgdown::check_pkgdown()`: "No problems found."
+  `Rscript -e 'devtools::check(document = FALSE)'`: `0 errors | 0 warnings | 0 notes`, tests running 199s inside it.
+  README.Rmd untouched, so no re-knit owed; the diff changes no user-visible behavior, so no NEWS.md entry is owed; no
+  new top-level file, so no `.Rbuildignore` entry is owed.
+
 ### Findings
 
 Three fresh-context reviewers ran (executable surface touched, so the full fan-out): [O] diff-bug, [S] blame-history,
