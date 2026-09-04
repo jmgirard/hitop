@@ -175,6 +175,7 @@ under D-056.
 - 2026-09-03: review — PR #94 opened as a draft; all eight criteria executed with fresh evidence and ticked; `cairn_validate` exit 0 and the r-package consistency-gate clean.
 - 2026-09-03: review — three fresh-context reviewers; the two Sonnet lenses returned no findings, the [O] diff-bug lens returned eleven. Five fixed on the branch (all test-only, in the two files this milestone added or extended), one rejected as the accepted AC5 amendment, three sent to a follow-up candidate row, one half-correct and surfaced at the gate. None met the return floor.
 - 2026-09-03: review — merge gate: Jeff directed two further fixes beyond the five taken at triage — the same loop-abandoning-skip repair on the sibling M081 item-number block, and `hitophsum_choices`'s `@format` row count (42 stated, 185 actual). Both applied; suite, `document()` and `check()` re-run clean.
+- 2026-09-03: step-7 approval: PR #94 approved for merge.
 
 ## Decisions
 
