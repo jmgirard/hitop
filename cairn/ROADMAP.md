@@ -1,18 +1,18 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-03 (thirty-first pass, a `/cairn-triage` sweep of all 50 items — 41 candidates, 9 Known issues): four rows compressed (M085's warning-contract gaps, M054's descriptor-format gaps with its spent M055 trigger restated, the multi-source `pid_norms` row with its `as.integer()` citation repointed to `R/norm_pid5.R:300`, and the someday-maybe cluster trimmed to HiTOP-SR/BR validity scales); the three blocked PID-5 rename/label remainders routed to `DESIGN.md` Known issue 10, leaving M082's five reach gaps on the row; two rows promoted (the builder's overlap-claiming comments, D-045(d)'s supersession) and left in place until they ship; two rows misdated 2026-09-04 corrected. No drops, no merges, so no decision entry. Bytes: `ROADMAP.md` 23,794 (was 24,366, over budget); `LESSONS.md` 44 lines / 19,801. validate green._
-_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M087)._
+_Last hygiene check: 2026-09-03 (thirty-first pass, a `/cairn-triage` sweep of all 50 items — 41 candidates, 9 Known issues): four rows compressed (M085's warning-contract gaps, M054's descriptor-format gaps with its spent M055 trigger restated, the multi-source `pid_norms` row with its `as.integer()` citation repointed to `R/norm_pid5.R:300`, and the someday-maybe cluster trimmed to HiTOP-SR/BR validity scales); the three blocked PID-5 rename/label remainders routed to `DESIGN.md` Known issue 10, leaving M082's five reach gaps on the row; two rows promoted (the builder's overlap-claiming comments, D-045(d)'s supersession) and left in place until they ship; two rows misdated 2026-09-04 corrected. No drops, no merges, so no decision entry. Bytes: `ROADMAP.md` 23,978 (was 24,366, over budget); `LESSONS.md` 44 lines / 19,801. validate green. M087 planned (the builder's probe comments), its candidate row held per records-hygiene 1; M082's terminal row pruned at the line cap._
+_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M088)._
 _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R CMD check` 0/0/0, pkgdown and URLs clean. Tag and GitHub release pending the maintainer._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M087 | The builder's start-up probe comments state what the probe establishes | planned | — | normal | milestones/M087-builder-probe-comments.md |
 | M086 | Every response value the package ships is an integer | done | — | normal | milestones/archive/M086-response-value-integers.md |
 | M085 | The `rename_*`/`label_*` family's warning contract | done | — | normal | milestones/archive/M085-rename-label-warning-contract.md |
 | M084 | The `label_*()` family's unpadded-item report | done | — | normal | milestones/archive/M084-unpadded-item-report.md |
 | M083 | `label_pid5()` | done | — | normal | milestones/archive/M083-label-pid5.md |
-| M082 | `rename_pid5_items()` | done | — | normal | milestones/archive/M082-rename-pid5-items.md |
 
 ## Candidates
 
