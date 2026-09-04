@@ -34,7 +34,7 @@ page → the standing candidate row on generalizing modularization.
 
 ## Acceptance criteria
 
-- [ ] AC1: Every comment block adjacent to an occurrence of `tilesExactly` or
+- [x] AC1: Every comment block adjacent to an occurrence of `tilesExactly` or
       `wholeInstrument` in `index.html` — the occurrences enumerated by
       `grep -n 'tilesExactly\|wholeInstrument' index.html`, each read in full —
       states the probe's promise as what its expression establishes: the union
@@ -183,6 +183,15 @@ page → the standing candidate row on generalizing modularization.
   hitop diff is markdown only. Builder PR #13 green at `c472fbf` (smoke, 2m58s).
   Status set to `review`.
 
+- 2026-09-03: review re-entry after the T5 repair (PR #95 open, AC1 unticked ->
+  route (d)): default branch had not moved under either branch. AC1-AC4 each
+  re-executed against `hitop-builder` `c472fbf` and ticked; evidence in the
+  Review section's second pass. Consistency gate: `cairn_validate` exit 0 (16
+  PASS, advisories only), `document()` no diff, `pkgdown::check_pkgdown()`
+  clean, no principle changed. Blame-history and prior-review lenses returned no
+  findings; the diff-bug lens and `devtools::test()` still running at this
+  checkpoint.
+
 ## Decisions
 
 ### M087-D1 (2026-09-03): The probe establishes coverage of 1..N, not the absence of overlap
@@ -230,6 +239,8 @@ of all 76 scales is 405 items against `nrow(hitopsr_items)` 405, so the tail the
 probe cannot see is not open there.
 
 ## Review
+
+### First pass — returned on AC1
 
 Evidence gathered 2026-09-03 against `jmgirard/hitop-builder` at `900feae`
 (branch `m087-probe-comments`, PR #13) and `hitop` at `ca0c4fae`.
@@ -342,3 +353,50 @@ returned seven, ranked, reproduced below with disposition.
 **Disposition: defect return.** Finding 1 demonstrates AC1 failing inside the
 domain of the procedure AC1 names, so the return floor applies: status goes
 back to `in-progress` and review stops here. Defect returns for M087: 1.
+
+
+### Second pass — after the T5 repair
+
+Evidence gathered 2026-09-03 against `jmgirard/hitop-builder` at `c472fbf`
+(branch `m087-probe-comments`, PR #13) and `hitop` at `3a64d8eb`. The default
+branch had not moved under either branch, so this evidence is against the tree
+that would merge.
+
+- AC1 — met. `grep -n 'tilesExactly\|wholeInstrument' index.html` returns eight
+  occurrences (`:774`, `:784`, `:792`, `:793`, `:1036`, `:1220`, `:1516`,
+  `:1523`), each read in full with its surroundings. Three carry an adjacent
+  comment block. `:765-773`, above `let tilesExactly`, states the promise as a
+  run of item numbers starting at 1 with no gaps whose union is 1..k for k the
+  number of distinct items it holds, says the probe "reads no separate count of
+  the instrument's items, so it cannot see a tail of higher-numbered items that
+  no scale claims", and says whether scales share items "is not asked and does
+  not matter". `:780-791`, above `wholeInstrument()` (the `:784` occurrence
+  falling inside it), states the gate as one-sided — "a gap-free run from 1 that
+  stops short of the instrument's last item passes it, since nothing here reads
+  that last item -- so it rules out one way of being wrong, not every way" — and
+  says sharing items never puts the page in the module-keeping position.
+  `:1490-1515`, above the R call, names both limits under its own heading ("Two
+  things this does not establish"): items above the run, because `seq_along()`
+  measures the union against itself, and overlap, because `hitop_module()`
+  de-duplicates. No block attributes overlap detection to the probe, and none
+  claims it can tell the instrument has no further items above the run. The
+  other five occurrences carry no adjacent comment: `:792`/`:793` are the
+  declaration the second block heads, `:1516` the call the third block heads,
+  `:1036` a branch inside `crosswalkSentence()`, `:1523` a log line following
+  its own code, and `:1220` is separated from the preceding paper-form comment
+  by two intervening statements.
+- AC2 — met. `grep -in overlap index.html README.md` returns two lines, both in
+  `index.html`, no README hit. `:205` is a CSS comment about the definition
+  popup overlapping the row below it, unrelated to the probe. `:1500` is the
+  rewritten block saying overlap is deliberately not asked about and why, which
+  states the promise correctly.
+- AC3 — met. The block at `:1510-1515` gives the reason the cast stays: without
+  it the line "would compare doubles to seq_along()'s integers and be FALSE on
+  any build made before that change, turning a coverage check into a type
+  check", and `MIN_HITOP` cannot back a type assumption "because those older
+  builds report 0.2.0 too -- the same version this page requires". No version
+  number is claimed as the cutover.
+- AC4 — met. `git diff main...HEAD --stat` on the builder branch: `index.html`
+  alone, 41 insertions and 13 deletions; no README, no test, no other file.
+  Filtering the `-U0` diff's changed lines to those not opening with `//`, `/*`
+  or `*` leaves none, so every changed line is a comment line.
