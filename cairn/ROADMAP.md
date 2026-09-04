@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-03 (thirty-second pass, M087's post-merge): M087 archived and its row set done; its candidate row replaced by the follow-up row carrying the two findings review deferred (the start-up log line and README wording, and the `tilesExactly` name). No lesson captured — the transferable point is the rulebook's derived-claims rule. No decision entry. Bytes: `ROADMAP.md` 23,551 (budget 24,000); `LESSONS.md` 44 lines / 19,801. validate green._
+_Last hygiene check: 2026-09-04 (thirty-third pass, M088's post-merge): M088 archived and its row set done; PR #96 squash-merged with 8/8 CI green. One LESSONS line captured (the merge-base `get()`/`test_path()` gotchas), M034's fixture-table line retired to fit the byte budget. M083's row pruned at the 5-deep terminal-row retention. No decision entry; no Known issues entry. Bytes: `ROADMAP.md` 23,063 (budget 24,000); `LESSONS.md` 44 lines / 19,981. validate green._
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M089)._
 _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R CMD check` 0/0/0, pkgdown and URLs clean. Tag and GitHub release pending the maintainer._
 
@@ -8,12 +8,11 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M088 | The instruction-object merge-base block skips when its comparison is vacuous | review | — | high | milestones/M088-merge-base-instruction-skip.md |
+| M088 | The instruction-object merge-base block skips when its comparison is vacuous | done | — | high | milestones/archive/M088-merge-base-instruction-skip.md |
 | M087 | The builder's start-up probe comments state what the probe establishes | done | — | normal | milestones/archive/M087-builder-probe-comments.md |
 | M086 | Every response value the package ships is an integer | done | — | normal | milestones/archive/M086-response-value-integers.md |
 | M085 | The `rename_*`/`label_*` family's warning contract | done | — | normal | milestones/archive/M085-rename-label-warning-contract.md |
 | M084 | The `label_*()` family's unpadded-item report | done | — | normal | milestones/archive/M084-unpadded-item-report.md |
-| M083 | `label_pid5()` | done | — | normal | milestones/archive/M083-label-pid5.md |
 
 ## Candidates
 
