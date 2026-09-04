@@ -179,6 +179,7 @@ under D-056.
 - 2026-09-03: CI wait hit the harness ceiling with 6 of 8 checks pending (line endings and pkgdown passed); watcher stopped, merge not attempted. Resume with /milestone-review M086.
 - 2026-09-03: resume — PR #94 read OPEN with every criterion ticked against recorded evidence and the step-7 approval on record, so review re-entered at route (c): step 1 re-run (`origin/main` at `b1b523d1`, branch 0 behind — no re-verification needed), branch pushed, PR conversation read empty (no reviews, no comments, no unresolved threads), step-7 chip re-posed.
 - 2026-09-03: step-7 approval: PR #94 approved for merge (re-posed at resume).
+- 2026-09-03: CI red on `windows-latest` only — 11 failures in `test-response-value-no-move.R`'s artifact half, all `0d 0a` where the committed file has `0a`. The generators wrote through text-mode connections (`writeLines(out, con = file)`, `write.csv(..., file = temp_csv)`), which Windows translates to CRLF, while `inst/extdata/` is LF. Pre-existing generator behavior the new byte comparison is the first thing to observe. Jeff's gate: make the generators write LF on every platform (option 2), no NEWS entry — no user tracks LF against CRLF. Both writes now go through a binary connection; macOS bytes unchanged (artifact, generator and md5-lock suites green), `document()` no diff, `check()` 0/0/0. Approval re-requested, the fix being package code.
 
 ## Decisions
 
@@ -333,3 +334,31 @@ At the merge gate Jeff directed two further fixes beyond the five taken above.
 After both: `devtools::test()` 0 failures / 0 errors / 9 skips / 17,403 passes,
 `devtools::document()` no diff, `devtools::check()` 0 errors / 0 warnings /
 0 notes.
+
+### CI-directed fix
+
+`windows-latest (release)` failed where the other seven checks passed: 11
+failures at `test-response-value-no-move.R:77` and `:79`, every difference
+`0d 0a` against a committed `0a` and no content byte differing. Cause:
+`generate_qualtrics.R:348` wrote `writeLines(out, con = file)` and
+`generate_redcap.R:399` wrote `write.csv(..., file = temp_csv)` — passing a
+path opens a *text* connection, and Windows translates each `\n` to `\r\n`,
+while the distributed artifacts are LF under the repo's `.gitattributes`
+policy. The behavior predates this milestone; AC5's byte comparison is simply
+the first thing in the suite to build an artifact and compare it against the
+committed one.
+
+Repair chosen at the gate (option 2 of three offered): make the generators
+write LF on every platform rather than relax the criterion. Both writes now go
+through `base::file(..., open = "wb")` — the Qualtrics text as UTF-8 bytes via
+`writeLines(enc2utf8(out), useBytes = TRUE)`, the REDCap dictionary via
+`write.csv()` to the binary connection — so the same call emits the same bytes
+everywhere, and a Windows user's locally built export becomes identical to the
+distributed one. AC5 holds as written; no amendment. No NEWS entry, at Jeff's
+direction: no user of this package tracks LF against CRLF.
+
+Evidence on macOS, where the change is a no-op by construction: the artifact,
+`generate_qualtrics`, `generate_redcap`, `generate_docx` and `test-artifacts.R`
+md5-lock suites all pass with the committed bytes unchanged; `document()` no
+diff; `devtools::check()` 0 errors / 0 warnings / 0 notes (5m50s, tests 253s).
+Windows is confirmed by CI on the pushed branch.

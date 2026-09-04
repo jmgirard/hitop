@@ -396,7 +396,13 @@ write_redcap_zip <- function(data_dictionary, file) {
   dir.create(scratch_dir)
 
   temp_csv <- file.path(scratch_dir, "instrument.csv")
-  write.csv(data_dictionary, file = temp_csv, row.names = FALSE, na = "")
+  # A binary connection rather than the path, for the reason given in
+  # generate_qualtrics.R: writing to a path opens a text connection, which on
+  # Windows turns the "\n" row separator into "\r\n" and puts different bytes
+  # in the archive than the distributed one holds.
+  csv_con <- base::file(temp_csv, open = "wb")
+  utils::write.csv(data_dictionary, file = csv_con, row.names = FALSE, na = "")
+  close(csv_con)
 
   # {zip} implements the archive format in C, so no `zip` executable need
   # exist and no child process is spawned -- the property WebAssembly needs,

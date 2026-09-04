@@ -345,7 +345,13 @@ build_qualtrics_txt <- function(
   }
 
   # 6. Write everything to the specified file
-  writeLines(out, con = file)
+  # A binary connection, not the path: `writeLines()` on a path opens a text
+  # connection, which on Windows translates every "\n" into "\r\n". The
+  # distributed artifacts in inst/extdata are LF, so a text connection would
+  # make the same call emit different bytes on different platforms.
+  con <- base::file(file, open = "wb")
+  on.exit(close(con), add = TRUE)
+  writeLines(enc2utf8(out), con = con, useBytes = TRUE)
   cli::cli_alert_success(
     "Qualtrics import file successfully created at {.file {file}}"
   )
