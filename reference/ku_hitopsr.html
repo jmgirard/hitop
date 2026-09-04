@@ -96,7 +96,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ku_hitopsr</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 411 × 407</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> P001        male         1       1       1       1       1       1       2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> P002        male         3       4       1       1       2       2       2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> P003        male         3       3       1       1       2       1       2</span>
@@ -108,12 +108,12 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> P009        female       4       1       1       1       2       1       3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> P010        female       1       3       1       1       1       1       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 401 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 398 more variables: hsr_008 &lt;dbl&gt;, hsr_009 &lt;dbl&gt;, hsr_010 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_011 &lt;dbl&gt;, hsr_012 &lt;dbl&gt;, hsr_013 &lt;dbl&gt;, hsr_014 &lt;dbl&gt;, hsr_015 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_016 &lt;dbl&gt;, hsr_017 &lt;dbl&gt;, hsr_018 &lt;dbl&gt;, hsr_019 &lt;dbl&gt;, hsr_020 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_021 &lt;dbl&gt;, hsr_022 &lt;dbl&gt;, hsr_023 &lt;dbl&gt;, hsr_024 &lt;dbl&gt;, hsr_025 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_026 &lt;dbl&gt;, hsr_027 &lt;dbl&gt;, hsr_028 &lt;dbl&gt;, hsr_029 &lt;dbl&gt;, hsr_030 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_031 &lt;dbl&gt;, hsr_032 &lt;dbl&gt;, hsr_033 &lt;dbl&gt;, hsr_034 &lt;dbl&gt;, …</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 398 more variables: hsr_008 &lt;int&gt;, hsr_009 &lt;int&gt;, hsr_010 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_011 &lt;int&gt;, hsr_012 &lt;int&gt;, hsr_013 &lt;int&gt;, hsr_014 &lt;int&gt;, hsr_015 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_016 &lt;int&gt;, hsr_017 &lt;int&gt;, hsr_018 &lt;int&gt;, hsr_019 &lt;int&gt;, hsr_020 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_021 &lt;int&gt;, hsr_022 &lt;int&gt;, hsr_023 &lt;int&gt;, hsr_024 &lt;int&gt;, hsr_025 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_026 &lt;int&gt;, hsr_027 &lt;int&gt;, hsr_028 &lt;int&gt;, hsr_029 &lt;int&gt;, hsr_030 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_031 &lt;int&gt;, hsr_032 &lt;int&gt;, hsr_033 &lt;int&gt;, hsr_034 &lt;int&gt;, …</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

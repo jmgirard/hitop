@@ -28,7 +28,7 @@ rows and 101 columns.
 ku_pid5sf
 #> # A tibble: 386 × 101
 #>    response_id pid5sf_001 pid5sf_002 pid5sf_003 pid5sf_004 pid5sf_005 pid5sf_006
-#>    <chr>            <dbl>      <dbl>      <dbl>      <dbl>      <dbl>      <dbl>
+#>    <chr>            <int>      <int>      <int>      <int>      <int>      <int>
 #>  1 R_2BsNloyA…          0          0          2          0          0          0
 #>  2 R_WrIeYf92…          0          0          0          2          0          0
 #>  3 R_3OlvdFDl…          1          1          2          2          2          2
@@ -40,10 +40,10 @@ ku_pid5sf
 #>  9 R_1GEzNhlF…          0          0          2          2          0          0
 #> 10 R_Dl45sKLg…          0          1          2          3          0          0
 #> # ℹ 376 more rows
-#> # ℹ 94 more variables: pid5sf_007 <dbl>, pid5sf_008 <dbl>, pid5sf_009 <dbl>,
-#> #   pid5sf_010 <dbl>, pid5sf_011 <dbl>, pid5sf_012 <dbl>, pid5sf_013 <dbl>,
-#> #   pid5sf_014 <dbl>, pid5sf_015 <dbl>, pid5sf_016 <dbl>, pid5sf_017 <dbl>,
-#> #   pid5sf_018 <dbl>, pid5sf_019 <dbl>, pid5sf_020 <dbl>, pid5sf_021 <dbl>,
-#> #   pid5sf_022 <dbl>, pid5sf_023 <dbl>, pid5sf_024 <dbl>, pid5sf_025 <dbl>,
-#> #   pid5sf_026 <dbl>, pid5sf_027 <dbl>, pid5sf_028 <dbl>, pid5sf_029 <dbl>, …
+#> # ℹ 94 more variables: pid5sf_007 <int>, pid5sf_008 <int>, pid5sf_009 <int>,
+#> #   pid5sf_010 <int>, pid5sf_011 <int>, pid5sf_012 <int>, pid5sf_013 <int>,
+#> #   pid5sf_014 <int>, pid5sf_015 <int>, pid5sf_016 <int>, pid5sf_017 <int>,
+#> #   pid5sf_018 <int>, pid5sf_019 <int>, pid5sf_020 <int>, pid5sf_021 <int>,
+#> #   pid5sf_022 <int>, pid5sf_023 <int>, pid5sf_024 <int>, pid5sf_025 <int>,
+#> #   pid5sf_026 <int>, pid5sf_027 <int>, pid5sf_028 <int>, pid5sf_029 <int>, …
 ```

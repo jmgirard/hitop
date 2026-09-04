@@ -12,7 +12,7 @@ hitophsum_choices
 
 ## Format
 
-A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 42
+A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with 185
 rows and 3 columns:
 
 - Choice_Set:
@@ -33,7 +33,7 @@ rows and 3 columns:
 hitophsum_choices
 #> # A tibble: 185 × 3
 #>    Choice_Set     Value Label                                                   
-#>    <chr>          <dbl> <chr>                                                   
+#>    <chr>          <int> <chr>                                                   
 #>  1 yn_pnts            1 Yes                                                     
 #>  2 yn_pnts            0 No                                                      
 #>  3 yn_pnts           99 Prefer not to say                                       

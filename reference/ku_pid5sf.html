@@ -96,7 +96,7 @@ Kansas students.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ku_pid5sf</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 386 × 101</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    response_id pid5sf_001 pid5sf_002 pid5sf_003 pid5sf_004 pid5sf_005 pid5sf_006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> R_2BsNloyA…          0          0          2          0          0          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> R_WrIeYf92…          0          0          0          2          0          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> R_3OlvdFDl…          1          1          2          2          2          2</span>
@@ -108,12 +108,12 @@ Kansas students.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> R_1GEzNhlF…          0          0          2          2          0          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> R_Dl45sKLg…          0          1          2          3          0          0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 376 more rows</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 94 more variables: pid5sf_007 &lt;dbl&gt;, pid5sf_008 &lt;dbl&gt;, pid5sf_009 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_010 &lt;dbl&gt;, pid5sf_011 &lt;dbl&gt;, pid5sf_012 &lt;dbl&gt;, pid5sf_013 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_014 &lt;dbl&gt;, pid5sf_015 &lt;dbl&gt;, pid5sf_016 &lt;dbl&gt;, pid5sf_017 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_018 &lt;dbl&gt;, pid5sf_019 &lt;dbl&gt;, pid5sf_020 &lt;dbl&gt;, pid5sf_021 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_022 &lt;dbl&gt;, pid5sf_023 &lt;dbl&gt;, pid5sf_024 &lt;dbl&gt;, pid5sf_025 &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_026 &lt;dbl&gt;, pid5sf_027 &lt;dbl&gt;, pid5sf_028 &lt;dbl&gt;, pid5sf_029 &lt;dbl&gt;, …</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 94 more variables: pid5sf_007 &lt;int&gt;, pid5sf_008 &lt;int&gt;, pid5sf_009 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_010 &lt;int&gt;, pid5sf_011 &lt;int&gt;, pid5sf_012 &lt;int&gt;, pid5sf_013 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_014 &lt;int&gt;, pid5sf_015 &lt;int&gt;, pid5sf_016 &lt;int&gt;, pid5sf_017 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_018 &lt;int&gt;, pid5sf_019 &lt;int&gt;, pid5sf_020 &lt;int&gt;, pid5sf_021 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_022 &lt;int&gt;, pid5sf_023 &lt;int&gt;, pid5sf_024 &lt;int&gt;, pid5sf_025 &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid5sf_026 &lt;int&gt;, pid5sf_027 &lt;int&gt;, pid5sf_028 &lt;int&gt;, pid5sf_029 &lt;int&gt;, …</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

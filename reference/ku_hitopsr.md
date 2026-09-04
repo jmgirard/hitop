@@ -32,7 +32,7 @@ rows and 407 columns.
 ku_hitopsr
 #> # A tibble: 411 × 407
 #>    participant biosex hsr_001 hsr_002 hsr_003 hsr_004 hsr_005 hsr_006 hsr_007
-#>    <chr>       <fct>    <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+#>    <chr>       <fct>    <int>   <int>   <int>   <int>   <int>   <int>   <int>
 #>  1 P001        male         1       1       1       1       1       1       2
 #>  2 P002        male         3       4       1       1       2       2       2
 #>  3 P003        male         3       3       1       1       2       1       2
@@ -44,10 +44,10 @@ ku_hitopsr
 #>  9 P009        female       4       1       1       1       2       1       3
 #> 10 P010        female       1       3       1       1       1       1       1
 #> # ℹ 401 more rows
-#> # ℹ 398 more variables: hsr_008 <dbl>, hsr_009 <dbl>, hsr_010 <dbl>,
-#> #   hsr_011 <dbl>, hsr_012 <dbl>, hsr_013 <dbl>, hsr_014 <dbl>, hsr_015 <dbl>,
-#> #   hsr_016 <dbl>, hsr_017 <dbl>, hsr_018 <dbl>, hsr_019 <dbl>, hsr_020 <dbl>,
-#> #   hsr_021 <dbl>, hsr_022 <dbl>, hsr_023 <dbl>, hsr_024 <dbl>, hsr_025 <dbl>,
-#> #   hsr_026 <dbl>, hsr_027 <dbl>, hsr_028 <dbl>, hsr_029 <dbl>, hsr_030 <dbl>,
-#> #   hsr_031 <dbl>, hsr_032 <dbl>, hsr_033 <dbl>, hsr_034 <dbl>, …
+#> # ℹ 398 more variables: hsr_008 <int>, hsr_009 <int>, hsr_010 <int>,
+#> #   hsr_011 <int>, hsr_012 <int>, hsr_013 <int>, hsr_014 <int>, hsr_015 <int>,
+#> #   hsr_016 <int>, hsr_017 <int>, hsr_018 <int>, hsr_019 <int>, hsr_020 <int>,
+#> #   hsr_021 <int>, hsr_022 <int>, hsr_023 <int>, hsr_024 <int>, hsr_025 <int>,
+#> #   hsr_026 <int>, hsr_027 <int>, hsr_028 <int>, hsr_029 <int>, hsr_030 <int>,
+#> #   hsr_031 <int>, hsr_032 <int>, hsr_033 <int>, hsr_034 <int>, …
 ```
