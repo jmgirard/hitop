@@ -1,13 +1,13 @@
 # M088: The instruction-object merge-base block skips when its comparison is vacuous
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** internal — a test-suite repair; no exported behavior, dataset column, or artifact changes
-- **Branch/PR:** —
+- **Branch/PR:** `m088-merge-base-instruction-skip`
 
 ## Goal
 
