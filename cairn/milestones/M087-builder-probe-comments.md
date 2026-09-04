@@ -69,7 +69,7 @@ page → the standing candidate row on generalizing modularization.
       call — why the `as.integer()` stays. (The three blocks sit at `:764`,
       `:774` and `:1483` on `main` at `016b2c8`, one line above the positions
       the plan recorded.)
-- [ ] T3: Grep both builder files case-insensitively for `overlap`; read every
+- [x] T3: Grep both builder files case-insensitively for `overlap`; read every
       hit and confirm each either states the probe correctly or is unrelated
       (`index.html:205` is a CSS popup comment).
 - [ ] T4: Check the diff is comment-only, run the Playwright suite as a routine
@@ -101,6 +101,13 @@ page → the standing candidate row on generalizing modularization.
   binding the harness rather than the deliverable. AC3 was cut at the gate; the
   Playwright run stays a task-level check. AC1 was clean on all three questions.
 
+- 2026-09-03: T3 — `grep -in overlap index.html README.md` on the branch returns
+  two hits and no README hit: `index.html:205`, the CSS comment on the
+  definition popup overlapping the next row, unrelated to the probe; and
+  `index.html:1487`, the rewritten block saying overlap is deliberately not
+  asked about. The AC1 enumeration was swept too — the other two
+  `wholeInstrument()` occurrences (`:1029`, `:1213`) carry no adjacent comment,
+  code intervening at `:1213`.
 - 2026-09-03: T2 — the three comment blocks rewritten in
   `jmgirard/hitop-builder` at `900feae` on `m087-probe-comments`; the diff
   changes comment lines only, and the `as.integer()` note was corrected before
