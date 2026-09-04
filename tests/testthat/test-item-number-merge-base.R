@@ -6,7 +6,9 @@
 # nested frame, every attribute.
 #
 # Skips once the merge base already carries the change, so these run on the
-# branch that made it and never fail a later one.
+# branch that made it and never fail a later one. The instruction-object block
+# at the foot of the file skips on the same terms, against its own merge-base
+# read.
 
 # The item-number columns of each shipped table, by the table they sit in. A
 # column named here is coerced wherever the walk below finds it: as a plain
@@ -213,15 +215,37 @@ test_that("the shipped instruction option values are integers", {
   expect_false("options" %in% names(hitophsum_instructions))
 })
 
+# `testthat::skip_if()` ends the whole `test_that()` block, not the loop
+# iteration it is called from, so a per-object skip inside a loop would abandon
+# every object after the first one that skipped -- silently, and reported as one
+# clean skip. All four objects are therefore read from the merge base first, and
+# the skip decided once over all of them: the loop below either runs whole or
+# does not run at all. The four live in one `R/sysdata.rda`, so the read is a
+# single `merge_base_sysdata()` call rather than one per object.
+merge_base_instructions <- function(sha) {
+  env <- merge_base_sysdata(sha)
+  bases <- lapply(instruction_objects, function(name) {
+    old <- get(name, envir = env)
+    list(
+      old = old,
+      moved = !is.null(old$options) && !is.integer(old$options$value)
+    )
+  })
+  names(bases) <- instruction_objects
+  testthat::skip_if(
+    !any(vapply(bases, `[[`, logical(1), "moved")),
+    "the merge base already stores every instruction option value as integer"
+  )
+  bases
+}
+
 test_that("retyping the instruction option values moved nothing else", {
   base <- skip_without_merge_base()
-  env <- merge_base_sysdata(base)
-  moved <- character()
+  bases <- merge_base_instructions(base)
   for (name in instruction_objects) {
-    old <- get(name, envir = env)
-    if (!is.null(old$options) && !is.integer(old$options$value)) {
+    old <- bases[[name]]$old
+    if (bases[[name]]$moved) {
       old$options$value <- as.integer(old$options$value)
-      moved <- c(moved, name)
     }
     expect_identical(get(name, envir = asNamespace("hitop")), old, info = name)
   }
@@ -229,5 +253,8 @@ test_that("retyping the instruction option values moved nothing else", {
   # change, asserting only that nothing moved at all. Named per object rather
   # than as a single flag, so one of the two retyped objects failing to move
   # cannot be covered by the other one moving.
-  expect_setequal(moved, c("hitopsr_instructions", "hitopbr_instructions"))
+  expect_setequal(
+    names(Filter(function(x) x$moved, bases)),
+    c("hitopsr_instructions", "hitopbr_instructions")
+  )
 })
