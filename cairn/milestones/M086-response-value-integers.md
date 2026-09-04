@@ -180,6 +180,7 @@ under D-056.
 - 2026-09-03: resume — PR #94 read OPEN with every criterion ticked against recorded evidence and the step-7 approval on record, so review re-entered at route (c): step 1 re-run (`origin/main` at `b1b523d1`, branch 0 behind — no re-verification needed), branch pushed, PR conversation read empty (no reviews, no comments, no unresolved threads), step-7 chip re-posed.
 - 2026-09-03: step-7 approval: PR #94 approved for merge (re-posed at resume).
 - 2026-09-03: CI red on `windows-latest` only — 11 failures in `test-response-value-no-move.R`'s artifact half, all `0d 0a` where the committed file has `0a`. The generators wrote through text-mode connections (`writeLines(out, con = file)`, `write.csv(..., file = temp_csv)`), which Windows translates to CRLF, while `inst/extdata/` is LF. Pre-existing generator behavior the new byte comparison is the first thing to observe. Jeff's gate: make the generators write LF on every platform (option 2), no NEWS entry — no user tracks LF against CRLF. Both writes now go through a binary connection; macOS bytes unchanged (artifact, generator and md5-lock suites green), `document()` no diff, `check()` 0/0/0. Approval re-requested, the fix being package code.
+- 2026-09-03: step-7 approval: PR #94 approved for merge (re-approved after the CI-directed generator fix).
 
 ## Decisions
 
