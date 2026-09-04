@@ -192,3 +192,4 @@ Re-verification after the fix, at the same branch head:
   block's per-object comparison loop.
 
 - 2026-09-04: step-7 approval: PR #96 approved for merge.
+- 2026-09-04: the CI watch on PR #96 hit the harness ceiling before the checks finished and was stopped. Fresh `gh pr checks 96` at that moment: `pkgdown` pass, `line endings` pass, and six pending (`macos-latest (release)`, `test-coverage`, `ubuntu-latest` devel/oldrel-1/release, `windows-latest (release)`); nothing red. The merge approval marker for PR #96 is written and unconsumed; re-entry re-derives the check and merge state.
