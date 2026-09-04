@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M087 | The builder's start-up probe comments state what the probe establishes | planned | — | normal | milestones/M087-builder-probe-comments.md |
+| M087 | The builder's start-up probe comments state what the probe establishes | in-progress | — | normal | milestones/M087-builder-probe-comments.md |
 | M086 | Every response value the package ships is an integer | done | — | normal | milestones/archive/M086-response-value-integers.md |
 | M085 | The `rename_*`/`label_*` family's warning contract | done | — | normal | milestones/archive/M085-rename-label-warning-contract.md |
 | M084 | The `label_*()` family's unpadded-item report | done | — | normal | milestones/archive/M084-unpadded-item-report.md |

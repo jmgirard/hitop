@@ -1,13 +1,13 @@
 # M087: The builder's start-up probe comments state what the probe establishes
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** internal — source comments in the builder page's `index.html`; the visitor-facing README prose and log line M074 shipped are already accurate and are not touched
-- **Branch/PR:** —
+- **Branch/PR:** `m087-builder-probe-comments` (hitop, tracking) · `m087-probe-comments` (jmgirard/hitop-builder, code)
 
 ## Goal
 
@@ -58,7 +58,7 @@ page → the standing candidate row on generalizing modularization.
 
 ## Tasks
 
-- [ ] T1: Record the basis for the corrected wording in this file: that
+- [x] T1: Record the basis for the corrected wording in this file: that
       `hitop_module()` de-duplicates at `R/module.R:102`, and the worked case —
       `hitopbr_scales` holds 67 item slots over 45 distinct items, 22 duplicated,
       whose union is exactly 1..45, so a probe of the shipped form returns TRUE
@@ -99,6 +99,30 @@ page → the standing candidate row on generalizing modularization.
   binding the harness rather than the deliverable. AC3 was cut at the gate; the
   Playwright run stays a task-level check. AC1 was clean on all three questions.
 
+- 2026-09-03: T1 — basis for the corrected wording recorded below as M087-D1;
+  the de-duplication site and the HiTOP-BR worked case were both read from the
+  package at `8592e803`.
+
 ## Decisions
+
+### M087-D1 (2026-09-03): The probe establishes coverage of 1..N, not the absence of overlap
+
+`hitop_module()` builds its `items` as
+`sort(unique(unlist(ref$itemNumbers[idx])))` (`R/module.R:102`), so the vector
+the start-up probe reads is de-duplicated and ascending before
+`identical(as.integer(.all$items), seq_along(.all$items))` is evaluated. The
+probe therefore returns TRUE exactly when the union of the ticked scales' items
+is 1..N with no gaps, whether or not those scales share items; overlap is
+invisible to it. Worked case from this package's own keying:
+`hitopbr_scales$itemNumbers` holds 67 item slots over 45 distinct items — 22
+repeat slots across the 18 items that appear in more than one scale — and that
+union is exactly 1..45, so the probe would return TRUE on an instrument whose
+scales overlap heavily. Both figures measured 2026-09-03 by
+`unlist(hitopbr_scales$itemNumbers)` against `hitop` at `8592e803`.
+
+The corrected comments state this promise — the union is 1..N — and say why
+overlap needs no check: a union of 1..N is the same item set however the scales
+share items, and it is the item set, not the scale partition, that
+`wholeInstrument()` turns on.
 
 ## Review
