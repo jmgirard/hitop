@@ -1,13 +1,13 @@
 # M088: The instruction-object merge-base block skips when its comparison is vacuous
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** internal — a test-suite repair; no exported behavior, dataset column, or artifact changes
-- **Branch/PR:** —
+- **Branch/PR:** `m088-merge-base-instruction-skip` / https://github.com/jmgirard/hitop/pull/96
 
 ## Goal
 
@@ -31,17 +31,17 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
 
 ## Acceptance criteria
 
-- [ ] AC1: On a branch cut from `main` at `c60f5f35` or later, `Rscript -e 'devtools::test()'`
+- [x] AC1: On a branch cut from `main` at `c60f5f35` or later, `Rscript -e 'devtools::test()'`
       reports 0 failures.
-- [ ] AC2: On that same branch, a `reporter = "summary"` run of
+- [x] AC2: On that same branch, a `reporter = "summary"` run of
       `test-item-number-merge-base.R` reports the block "retyping the instruction option
       values moved nothing else" as skipped, with a reason naming that the merge base already
       stores the instruction option values as integers.
-- [ ] AC3: Called with `sha = "c3be8505"` — the commit immediately preceding `da1d6f09`, the
+- [x] AC3: Called with `sha = "c3be8505"` — the commit immediately preceding `da1d6f09`, the
       merge that made the shipped instruction option values integers — `merge_base_instructions()`
       does not skip, and the set of objects it reports as moved equals
       `c("hitopsr_instructions", "hitopbr_instructions")`.
-- [ ] AC4: The block calls no `testthat::skip_if()` inside its per-object loop, so no object is
+- [x] AC4: The block calls no `testthat::skip_if()` inside its per-object loop, so no object is
       abandoned mid-loop and reported as one clean skip (the M086 lesson, already stated in the
       comments above both sibling helpers).
 
@@ -54,10 +54,10 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
 
 ## Tasks
 
-- [ ] T1: RED evidence. Cut the milestone branch from `main`, run
+- [x] T1: RED evidence. Cut the milestone branch from `main`, run
       `testthat::test_local(filter = "item-number-merge-base", reporter = "summary")`, and record
       the failure at `test-item-number-merge-base.R:232` verbatim in the work log.
-- [ ] T2: Add `merge_base_instructions(sha)` to `tests/testthat/test-item-number-merge-base.R`,
+- [x] T2: Add `merge_base_instructions(sha)` to `tests/testthat/test-item-number-merge-base.R`,
       shaped after `merge_base_responses()` (`:156`): `lapply()` over `instruction_objects`
       reading each from `merge_base_sysdata(sha)`, each entry `list(old =, moved =)` where
       `moved` is `!is.null(old$options) && !is.integer(old$options$value)`; one
@@ -66,9 +66,9 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
       consume it — compare each object, then `expect_setequal()` over
       `names(Filter(function(x) x$moved, bases))`. Extend the file's header comment (`:1-9`) to
       cover the fourth block.
-- [ ] T3: GREEN evidence. On the branch, re-run the file (expect 5 skips, 0 failures) and then
+- [x] T3: GREEN evidence. On the branch, re-run the file (expect 5 skips, 0 failures) and then
       `Rscript -e 'devtools::test()'` for AC1. Record both.
-- [ ] T4: Discrimination evidence. In one `devtools::load_all()` session, evaluate a
+- [x] T4: Discrimination evidence. In one `devtools::load_all()` session, evaluate a
       `test_that()` block calling `merge_base_instructions("c3be8505")` and asserting AC3's
       outcome — it does not skip, and its moved set is the two instruction objects. Record the
       reporter output. No clone, no ref manipulation: `merge_base_sysdata()` takes the sha as an
@@ -80,8 +80,116 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
 - 2026-09-04: plan gate chose a precompute-then-skip helper matching the two siblings over deleting the file's four now-permanently-skipping blocks, because the file's own header states the skip contract ("never fail a later one") and deleting would end the merge-base proof for both M081's and M086's retypes; falsified by evidence that the shipped objects can be re-proved from a source other than the merge base.
 - 2026-09-04: plan gate chose a precompute-then-skip helper over deleting the `expect_setequal()` vacuity guard, because dropping it reinstates the exact defect M086's review fixed — the block would pass on a merge base already carrying the change while asserting nothing; falsified by evidence that some other test would fail if the instruction option values regressed to double.
 - 2026-09-04: plan gate chose no recurrence meta-check over adding one, because the sweep found every other merge-base block already guarded and M085's lesson makes a source-scanning guard skip silently under `R CMD check` — local-only, never in CI; falsified by a second unguarded merge-base block appearing in a later milestone.
+- 2026-09-04: T1 RED evidence on `m088-merge-base-instruction-skip` at ca70359c (merge base cb409078). `test_local(filter = "item-number-merge-base", reporter = "summary")`: 4 skips, 1 failure — `Failure ('test-item-number-merge-base.R:232:3'): retyping the instruction / Expected `moved` to have the same values as `c("hitopsr_instructions", "hitopbr_instructions")`. / Actual: / Expected: "hitopsr_instructions", "hitopbr_instructions" / Absent: "hitopsr_instructions", "hitopbr_instructions"` — i.e. `moved` is empty because the merge base already stores the option values as integer.
 - 2026-09-04: criteria audit ran in reduced mode ([O] fresh-context reader, internal tier). AC1 and AC2 clean on first pass. AC3 returned findings on all three questions and was rewritten twice — first wording unbounded over "any branch whose merge base predates the retype", second pinned the commit but proved it through a scratch clone with a manipulated `origin/HEAD` (disproportionate for internal tier). Third wording proves it by one in-process call and is clean on all three.
 
+- 2026-09-04: T2 added `merge_base_instructions(sha)` to `test-item-number-merge-base.R` — one `merge_base_sysdata()` read, per-object `list(old =, moved =)` over the four instruction objects, a single `testthat::skip_if()` after the loop, the named list returned; the block now consumes it and keeps `expect_setequal()` over `names(Filter(function(x) x$moved, bases))`. The file header extended to say the instruction block skips on the same terms. `devtools::test()`: 0 failures, 0 warnings, 13 skips, 17277 passes.
+
+- 2026-09-04: T3 GREEN evidence at be2bc415. `test_local(filter = "item-number-merge-base", reporter = "summary")`: 5 skips, 0 failures — skip 5 is `retyping the instruction option values moved nothing else ('test-item-number-merge-base.R:244:3') - Reason: the merge base already stores every instruction option value as integer`. `devtools::test()` at the same commit: `[ FAIL 0 | WARN 0 | SKIP 13 | PASS 17277 ]`.
+
+- 2026-09-04: T4 discrimination evidence at ce8a364c. One `load_all()` session with the working directory set to `tests/testthat` (what `test_local()` sets, and what `repo_root()`'s `test_path("..", "..")` requires) sourced the helper and the test file under `with_reporter("summary")`, then evaluated a `test_that()` block calling `merge_base_instructions("c3be8505")`. Reporter line `SSSS....S..`: the five branch-level skips, then the block's two `expect_setequal()` calls passing and no sixth skip — the helper did not skip against the pre-retype base, returned all four instruction objects, and reported `c("hitopsr_instructions", "hitopbr_instructions")` as moved.
+- 2026-09-04: `repo_root()` resolves correctly only when the working directory is `tests/testthat`: under a testthat reporter context `testthat::test_path()` drops its `tests/testthat` prefix, so the same call from the repo root points one level above the repo and every merge-base read skips with "could not read". A harness property, not a defect in the helper — `test_local()` and `R CMD check` both set that directory.
+
 ## Decisions
+- 2026-09-04: review opened PR #96 and recorded it in the header; `main` had not moved since the branch was cut (0 behind). AC1-AC4 executed with fresh evidence at 67bf3daf and their boxes ticked. Consistency gate: `cairn_validate` exit 0 (all checks passed; 24 pre-existing advisories, `release window` silent), `devtools::document()` no diff, `pkgdown::check_pkgdown()` no problems; no principle change, so `cairn_impact` skipped. `R CMD check` and the three-lens review fan-out still running at this checkpoint.
 
 ## Review
+
+- AC1 — met. Branch head 67bf3daf; merge base with `origin/main` is cb409078, and `git merge-base --is-ancestor c60f5f35 cb409078` exits 0, so the branch is cut at `c60f5f35` or later. `Rscript -e 'devtools::test()'`: `[ FAIL 0 | WARN 0 | SKIP 13 | PASS 17277 ]`.
+- AC2 — met. `testthat::test_local(filter = "item-number-merge-base", reporter = "summary")` at 67bf3daf: reporter line `SSSS....S`, 0 failures. Skip 5 reads `retyping the instruction option values moved nothing else ('test-item-number-merge-base.R:244:3') - Reason: the merge base already stores every instruction option value as integer` — the block named in the criterion, skipped, its reason naming the merge base already storing the instruction option values as integers.
+- AC3 — met on its operative assertion, with one correction to its parenthetical. One `load_all()` session with the working directory set to `tests/testthat` sourced `helper-merge-base.R` and `test-item-number-merge-base.R` under `with_reporter("summary")`, then evaluated a `test_that()` block calling `merge_base_instructions("c3be8505")`. Reporter line `SSSS....S..`: the file's five branch-level skips, then this block's two `expect_setequal()` calls passing and no sixth skip — the helper did not skip against `c3be8505`, returned all four instruction objects, and its moved set printed as `hitopbr_instructions, hitopsr_instructions`. Correction to the criterion's apposition: `c3be8505` is not the commit immediately preceding `da1d6f09` — `git log --first-parent` gives `da1d6f09` <- `b1b523d1` <- `c3be8505`, so it is two commits earlier. The rest of the apposition holds: reading `R/sysdata.rda` at each of the three commits shows `hitopsr_instructions`/`hitopbr_instructions` option values `double` at `c3be8505` and `b1b523d1` and `integer` at `da1d6f09`, so `da1d6f09` is the commit that made them integers and `c3be8505` does predate the retype. Raised as finding R1 below.
+- AC4 — met. `grep -n 'skip_if\|skip('` over `tests/testthat/test-item-number-merge-base.R` returns six lines: three comments (`:78`, `:152`, `:218`) and three `testthat::skip_if()` calls (`:92`, `:167`, `:235`), the last inside `merge_base_instructions()` after its `lapply()` read of all four objects and before the return. The block itself (`:242-260`) calls `skip_without_merge_base()` at `:243` and `merge_base_instructions()` at `:244`, both before the `for` loop at `:245-251`; the loop body (`:246-250`) holds only the conditional retype and one `expect_identical()`. No object can be abandoned mid-loop, and the AC2 run shows the block reported as one skip.
+
+### Consistency gate
+
+- Universal: `cairn_validate.py` exit 0 — every check PASS, plus 24 advisory warnings, all pre-existing (23 dangling
+  `D-001`..`D-012` tokens pointing into `cairn/legacy/`, and `references/schmukle2026.md` recording no extraction
+  status). The `release window` advisory did not fire. No `DESIGN.md` principle changed (`Principles touched: —`), so
+  `cairn_impact.py` was not run.
+- Toolchain (`r-package` profile's `consistency-gate` slot): `devtools::document()` left the tree clean apart from the
+  milestone file this review was writing — no `NAMESPACE`/`man/` diff. `pkgdown::check_pkgdown()`: "No problems found."
+  `Rscript -e 'devtools::check(document = FALSE)'`: `0 errors | 0 warnings | 0 notes`, tests running 199s inside it.
+  README.Rmd untouched, so no re-knit owed; the diff changes no user-visible behavior, so no NEWS.md entry is owed; no
+  new top-level file, so no `.Rbuildignore` entry is owed.
+
+### Findings
+
+Three fresh-context reviewers ran (executable surface touched, so the full fan-out): [O] diff-bug, [S] blame-history,
+[S] prior-PR-comments. Blame-history reported no finding — the change closes a gap M086's review left rather than
+undoing anything, and both the `expect_setequal()` vacuity guard and the skip-outside-the-loop rule survive.
+Prior-PR-comments found the GitHub inline-comment surface empty (`gh api .../pulls/comments` returned `[]`) and worked
+from the archived `## Review` sections. Ranked, most severe first; each disposition is recorded here.
+
+- R3: `test-item-number-merge-base.R:228` — `get(name, envir = env)` uses the default `inherits = TRUE`, and the
+  environment `merge_base_sysdata()` returns chains through to `package:hitop`, so an instruction object absent from the
+  merge base's `R/sysdata.rda` silently resolves to the live shipped object. Verified in-session: after
+  `rm("hitopsr_instructions", envir = env)`, `get()` returned the live object with `options$value` already integer,
+  while `get(..., inherits = FALSE)` errored. Consequence: such an object computes `moved = FALSE` and
+  `expect_identical()` compares the shipped object against itself; were it to happen to all four, the helper would skip
+  saying the merge base already stores every option value as integer, having compared nothing. Not reachable today —
+  all four objects exist at every relevant commit. Reported by [O].
+- R2: `:230-231` — `moved` is a field probe (`!is.null(old$options) && !is.integer(old$options$value)`) where both
+  siblings define it as "applying the retype changes the object" (`!identical(retype_item_numbers(old, ...), old)` at
+  `:88`, `!identical(retype_responses(old, ...), old)` at `:162`). The transformation is now written twice — the probe
+  in the helper, `as.integer()` inline in the block at `:248` — with nothing tying them together, so the vacuity guard
+  no longer certifies that the operation actually applied is the one that moved. M081's review moved this same file
+  off a field-probe guard onto a no-op check. Not a wrong result on today's data. Reported independently by [O] and
+  [S] prior-PR-comments.
+- R4: `:231` — `old$options` uses `$` partial matching on a list, twelve lines after `:214`'s comment explains that
+  "`$` partial-matches on a list, so the absence is asserted over the names" for exactly these objects. An added
+  element named e.g. `optionsNote` on `hitophsum_instructions` would partial-match, flip `moved` to TRUE, and the
+  block's `old$options$value <-` would then create a new exact-named element. `"options" %in% names(old)` and
+  `old[["options"]]` close it. Reported by [O].
+- R7: `:9-11` (header) — the added sentence singles out the instruction block as skipping "on the same terms, against
+  its own merge-base read", but the response-value blocks equally have their own helper and their own read, so naming
+  only the fourth implies the others differ; and "the instruction-object block at the foot of the file" also reads
+  onto `:208`, an instruction-object block that deliberately does not skip. Reported by [O].
+- R5: `:248` — `as.integer()` drops attributes where the sibling `retype_item_numbers()` preserves names
+  (`structure(as.integer(el), names = names(el))`). If `options$value` ever carried names, the comparison would fail
+  on the test's own retype rather than on a real move. Reported by [O].
+- R6: `:247` — the `if (bases[[name]]$moved)` guard around the retype is unnecessary (`as.integer()` on an integer
+  vector is identical) and is a third divergence from the siblings, which apply their retype unconditionally.
+  Reported by [O].
+- R8: `:218-224` — the seven-line skip-semantics comment is now the third near-verbatim copy in one file (`:78-82`,
+  `:152-157`). Reported by [O].
+- R1: `M088-merge-base-instruction-skip.md:40-41` — AC3's apposition calls `c3be8505` "the commit immediately
+  preceding `da1d6f09`"; `main`'s first-parent line is `da1d6f09` <- `b1b523d1` <- `c3be8505`, so it is two commits
+  earlier. Found while executing AC3 and recorded in that criterion's evidence line above; [O] reported it
+  independently. The criterion's operative assertion and the rest of its apposition verify true.
+
+### PR conversation
+
+- conversation: PR #96 — no reviews, no conversation comments, no unresolved review threads (read once immediately
+  before the merge gate; `reviewThreads` paged to `hasNextPage: false`). Nothing to triage, nothing blocking.
+
+### Triage and re-verification
+
+All seven findings were triaged **fix now** at the merge gate; the record correction (R1) was triaged **leave the
+criterion text, correction recorded** (the criterion's operative assertion verified true, and its evidence line above
+carries the correction). No finding demonstrated an acceptance criterion failing and none was a defect in a shipped
+deliverable, so the return floor was not reached.
+
+The fix rewrites the helper onto the shape its two siblings use. `retype_instructions()` now states the change once
+and both the helper's `moved` flag and the block's own retype go through it, so the vacuity guard again certifies the
+operation that moved (R2); `moved` is `!identical(retype_instructions(old), old)`, matching `:88` and `:162`. The
+lookup is `exists()`/`get()` with `inherits = FALSE` and skips naming the missing object, closing the fallback to the
+live copy (R3). `[[` replaces `$` throughout, with the reason stated in the comment (R4). The retype preserves names
+as `retype_item_numbers()` does (R5), the block applies it unconditionally as both siblings do (R6), the header
+sentence now says every merge-base block skips on those terms rather than singling out the fourth (R7), and the
+third copy of the skip-semantics comment is a cross-reference to the two above it (R8).
+
+Re-verification after the fix, at the same branch head:
+
+- `testthat::test_local(filter = "item-number-merge-base", reporter = "summary")`: `SSSS....S`, 0 failures; skip 5 is
+  the instruction block at `:263`, reason unchanged.
+- `Rscript -e 'devtools::test()'`: `[ FAIL 0 | WARN 0 | SKIP 13 | PASS 17277 ]` — AC1 unchanged.
+- AC3 re-proved under the new mechanism: `merge_base_instructions("c3be8505")` did not skip and its moved set printed
+  as `hitopbr_instructions, hitopsr_instructions`.
+- R3 closed, shown directly: after `rm("hitopsr_instructions", envir = env)`,
+  `exists(..., inherits = FALSE)` is `FALSE` where `exists(..., inherits = TRUE)` is `TRUE` — the guard is what
+  separates the two.
+- AC4 unchanged: the added `testthat::skip()` sits in the read `lapply()`, before the helper returns, never in the
+  block's per-object comparison loop.
+
+- 2026-09-04: step-7 approval: PR #96 approved for merge.
+- 2026-09-04: the CI watch on PR #96 hit the harness ceiling before the checks finished and was stopped. Fresh `gh pr checks 96` at that moment: `pkgdown` pass, `line endings` pass, and six pending (`macos-latest (release)`, `test-coverage`, `ubuntu-latest` devel/oldrel-1/release, `windows-latest (release)`); nothing red. The merge approval marker for PR #96 is written and unconsumed; re-entry re-derives the check and merge state.
