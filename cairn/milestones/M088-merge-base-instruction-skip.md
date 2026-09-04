@@ -54,7 +54,7 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
 
 ## Tasks
 
-- [ ] T1: RED evidence. Cut the milestone branch from `main`, run
+- [x] T1: RED evidence. Cut the milestone branch from `main`, run
       `testthat::test_local(filter = "item-number-merge-base", reporter = "summary")`, and record
       the failure at `test-item-number-merge-base.R:232` verbatim in the work log.
 - [ ] T2: Add `merge_base_instructions(sha)` to `tests/testthat/test-item-number-merge-base.R`,
@@ -80,6 +80,7 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
 - 2026-09-04: plan gate chose a precompute-then-skip helper matching the two siblings over deleting the file's four now-permanently-skipping blocks, because the file's own header states the skip contract ("never fail a later one") and deleting would end the merge-base proof for both M081's and M086's retypes; falsified by evidence that the shipped objects can be re-proved from a source other than the merge base.
 - 2026-09-04: plan gate chose a precompute-then-skip helper over deleting the `expect_setequal()` vacuity guard, because dropping it reinstates the exact defect M086's review fixed — the block would pass on a merge base already carrying the change while asserting nothing; falsified by evidence that some other test would fail if the instruction option values regressed to double.
 - 2026-09-04: plan gate chose no recurrence meta-check over adding one, because the sweep found every other merge-base block already guarded and M085's lesson makes a source-scanning guard skip silently under `R CMD check` — local-only, never in CI; falsified by a second unguarded merge-base block appearing in a later milestone.
+- 2026-09-04: T1 RED evidence on `m088-merge-base-instruction-skip` at ca70359c (merge base cb409078). `test_local(filter = "item-number-merge-base", reporter = "summary")`: 4 skips, 1 failure — `Failure ('test-item-number-merge-base.R:232:3'): retyping the instruction / Expected `moved` to have the same values as `c("hitopsr_instructions", "hitopbr_instructions")`. / Actual: / Expected: "hitopsr_instructions", "hitopbr_instructions" / Absent: "hitopsr_instructions", "hitopbr_instructions"` — i.e. `moved` is empty because the merge base already stores the option values as integer.
 - 2026-09-04: criteria audit ran in reduced mode ([O] fresh-context reader, internal tier). AC1 and AC2 clean on first pass. AC3 returned findings on all three questions and was rewritten twice — first wording unbounded over "any branch whose merge base predates the retype", second pinned the commit but proved it through a scratch clone with a manipulated `origin/HEAD` (disproportionate for internal tier). Third wording proves it by one in-process call and is clean on all three.
 
 ## Decisions
