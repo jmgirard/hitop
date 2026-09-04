@@ -62,6 +62,19 @@
 
 ## Breaking changes
 
+* **Every response value the package ships is an integer.** The 405 item columns
+  of `ku_hitopsr`, the 45 of `ku_hitopbr` and the 100 of `ku_pid5sf`, and
+  `hitophsum_choices$Value`, are stored as integers where they were doubles; the
+  five `sim_*` datasets already were. No value moved: only the type differs, so
+  subsetting, `==` and arithmetic behave as before, and every score, validity
+  scale, reliability coefficient, interval and normed score these datasets
+  produce is unchanged. No distributed Qualtrics or REDCap file changed a byte.
+  What changes is `identical()`, which distinguishes an integer from a double: a
+  test written as `identical(ku_pid5sf$pid5sf_001[[1]], 0)` now fails and wants
+  `0L` (or `expect_equal()`, which ignores the difference). `typeof()`,
+  `is.integer()` and `str()` also report the new type. No deprecation period
+  precedes this change.
+
 * **Every item number the package ships is an integer.** `pid_items`' `FULL`,
   `SF`, `BF`, `INC`, `INCS`, `ORS`, `ORSS`, `PRD`, `PRDS`, `SDTD` and `SDTDS`
   columns, `hitopsr_items$HSR`, `hitopbr_items$HBR` and `$HSR`,
@@ -216,6 +229,10 @@
   version installed cleanly and then failed at the call.
 
 ## Documentation and website
+
+* **`hitophsum_choices`'s help page reported the wrong number of rows.** Its
+  `@format` section said 42 rows; the dataset has 185. The other twenty shipped
+  datasets' row counts were checked against their objects and are correct.
 
 * **Three scoring vignettes gained sections for functions they never
   demonstrated.** *Scoring the PID-5* now ranks each participant's five

@@ -5,7 +5,7 @@
 \alias{hitophsum_choices}
 \title{HiTOP-HSUM Choice Sets}
 \format{
-A \link[tibble]{tibble} with 42 rows and 3 columns:
+A \link[tibble]{tibble} with 185 rows and 3 columns:
 \describe{
 \item{Choice_Set}{Name of the choice set}
 \item{Value}{Coded response value}
