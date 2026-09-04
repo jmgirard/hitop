@@ -1,13 +1,14 @@
 # Roadmap
 
 _Last hygiene check: 2026-09-03 (thirty-second pass, M087's post-merge): M087 archived and its row set done; its candidate row replaced by the follow-up row carrying the two findings review deferred (the start-up log line and README wording, and the `tilesExactly` name). No lesson captured — the transferable point is the rulebook's derived-claims rule. No decision entry. Bytes: `ROADMAP.md` 23,551 (budget 24,000); `LESSONS.md` 44 lines / 19,801. validate green._
-_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M088)._
+_Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M089)._
 _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R CMD check` 0/0/0, pkgdown and URLs clean. Tag and GitHub release pending the maintainer._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
+| M088 | The instruction-object merge-base block skips when its comparison is vacuous | planned | — | high | milestones/M088-merge-base-instruction-skip.md |
 | M087 | The builder's start-up probe comments state what the probe establishes | done | — | normal | milestones/archive/M087-builder-probe-comments.md |
 | M086 | Every response value the package ships is an integer | done | — | normal | milestones/archive/M086-response-value-integers.md |
 | M085 | The `rename_*`/`label_*` family's warning contract | done | — | normal | milestones/archive/M085-rename-label-warning-contract.md |
@@ -16,7 +17,6 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 ## Candidates
 
-- `test-item-number-merge-base.R:232` is red on `main`: its `expect_setequal(moved, …)` guard, added so the block could not pass on a merge base already carrying M086's retype, now fails because the merge base does carry it. The sibling guards `skip_if` on that condition (`:90`, `:165`); this one asserts with no such helper. `devtools::test()` is `[ FAIL 1 | SKIP 12 | PASS 17281 ]` at `8592e803` — observed 2026-09-03; no package behavior affected. Promote before the next release, or when that file is next edited — added 2026-09-03 — lineage: M081, M086
 - `data-raw/ku_data.R`'s reader has three robustness gaps M086's review found and deferred: its `^hitop` column selection is case-sensitive where the `dplyr::starts_with("hitop")` it mirrors is not; `col_integer()` turns an unparseable response into `NA` and records it in `problems()`, which the script never asserts empty; and `ku_pid5sf`'s 100 collectors are hardcoded as `pid5sf_%03d` where the HiTOP-SR read derives its set from the file header, and `readr` only warns on a collector matching no column. None affects the current run. Promote when the script is next re-run against a new export, or if a re-run produces a dataset that differs from what is committed — added 2026-09-03 — lineage: M086 (findings 5, 6, 7)
 - `write_module_file()` writes module JSON through `writeLines(json, con = file)` on a path (`R/module_file.R:173`), a text connection, so a Windows caller gets CRLF where every other platform gets LF. M086 fixed the same idiom in the Qualtrics and REDCap generators but left this one, being outside its scope and untested. Promote when `module_file.R` is next edited, or if a user reports a module file another tool reads differently across platforms — added 2026-09-03 — lineage: M086
 - Three reach gaps M085's review left open on the `rename_*`/`label_*` warning contract, none a wrong result today: a nothing-matched call under a helper's non-primary method raises only `hitop_unmatched_items` (the `n_matched > 0` guard suppressing `hitop_no_columns_matched`); the in-loop assertions at `test-label_pid5.R:229` and `test-label_scales.R:385` no longer name their iteration; and `caught$warnings[[1]]` at `test-rename_hitopsr_items.R:48` and `:102` is unguarded. Promote if a caller reports a nothing-matched call it cannot catch by class, or when these files are next edited — added 2026-09-02, compressed 2026-09-03 — lineage: M085 (findings 4, 8, 9)
