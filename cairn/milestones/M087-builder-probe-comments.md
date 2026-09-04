@@ -192,6 +192,16 @@ page → the standing candidate row on generalizing modularization.
   findings; the diff-bug lens and `devtools::test()` still running at this
   checkpoint.
 
+- 2026-09-03: review lenses returned six findings, all from the diff-bug lens
+  (blame-history and prior-review: none). Findings 1 and 2 fixed on the builder
+  branch at `cf096d9` — the gate comment's closing clause asserted the coverage
+  the block disclaims, and its FALSE-branch reasoning assumed the instrument's
+  own numbering is 1..N. No return: neither falsifies a criterion inside its
+  named procedure's domain nor is a defect in what the deliverables do. Findings
+  3 and 6 join the graduation row; 4 and 5 rejected with reasons. `devtools::test()`
+  `[ FAIL 1 | SKIP 12 | PASS 17281 ]`, the failure the pre-existing
+  `test-item-number-merge-base.R:232` red, identity re-confirmed on its own.
+
 ## Decisions
 
 ### M087-D1 (2026-09-03): The probe establishes coverage of 1..N, not the absence of overlap
@@ -400,3 +410,109 @@ that would merge.
   alone, 41 insertions and 13 deletions; no README, no test, no other file.
   Filtering the `-U0` diff's changed lines to those not opening with `//`, `/*`
   or `*` leaves none, so every changed line is a comment line.
+
+
+**Re-verified after the fix-now edit** (`hitop-builder` `cf096d9`, findings 1
+and 2). The block positions shift by the edit's two added lines: the three
+comment blocks are now `:765-773`, `:779-793` and `:1492-1517`, heading the
+`:774`, `:794` and `:1518` occurrences; the enumeration
+`grep -n 'tilesExactly\|wholeInstrument' index.html` returns `:774`, `:784`,
+`:794`, `:795`, `:1038`, `:1222`, `:1518`, `:1525`, the same eight, and the five
+without an adjacent block are unchanged in kind. AC1 holds on the rewritten
+block, which now says the gate "is not the coverage test it looks like" and
+names both directions it can be wrong in. AC2: `grep -in overlap index.html
+README.md` still returns `:205` (the CSS comment) and the probe block, now at
+`:1502`, with no README hit. AC3's block is untouched by the edit. AC4:
+`git diff main...HEAD --stat` is `index.html` alone, 43 insertions and 13
+deletions, and filtering the `-U0` changed lines to non-comment lines leaves
+none. `npm run smoke` passed at `cf096d9` (16.7s, one test).
+
+#### Gate checks (second pass)
+
+`cairn_validate.py` exit 0 — 16 PASS, three advisories (work-log wrapping,
+dangling pre-migration D-ids, one references page with no extraction status),
+none a gate failure; the `release window` advisory did not fire. No `DESIGN.md`
+principle changed, so no impact report. Toolchain checks from the `r-package`
+profile's `consistency-gate`: `devtools::document()` leaves the tree clean;
+`pkgdown::check_pkgdown()` reports "No problems found"; README.Rmd, README.md
+and NEWS.md are untouched and no user-visible package behavior changed, so
+neither is owed an update; no new top-level file, so no `.Rbuildignore` entry.
+The slot's full `R CMD check` ran on CI: all eight checks on PR #95 were green
+at `3a64d8eb` — four `R CMD check` platforms (ubuntu release/devel/oldrel-1,
+macOS, Windows), plus pkgdown, test-coverage and the line-endings guard.
+Builder PR #13 was green at `c472fbf` (smoke), and `npm run smoke` passed
+locally at `cf096d9` after the fix-now edit (16.7s, one test).
+
+`devtools::test()` is `[ FAIL 1 | WARN 0 | SKIP 12 | PASS 17281 ]`. The single
+failure is `test-item-number-merge-base.R:232`, re-run on its own to confirm the
+identity: `expect_setequal(moved, ...)` — "Expected `moved` to have the same
+values as c("hitopsr_instructions", "hitopbr_instructions") ... Absent: both".
+This is the pre-existing red recorded on `main` at `8592e803` and carried as a
+ROADMAP candidate row; this branch's `hitop` diff is markdown only, so it cannot
+have caused it, and CI is green on `main` because the block's
+`skip_without_merge_base()` skips where no merge base is fetched.
+
+#### Findings (second pass)
+
+Three fresh-context reviewers with distinct evidence bases. The blame-history
+lens and the prior-review lens each returned no findings; the diff-bug lens
+returned six, ranked, reproduced below with disposition.
+
+1. **Fixed now — `index.html:788-790`, the closing sentence of the
+   `wholeInstrument()` block, still asserts coverage.** "Scales sharing items
+   never puts the page in the module-keeping position: the union of every scale
+   is still the whole item set" — the justification clause states as fact
+   exactly what the sentence three lines above disclaims ("a gap-free run from 1
+   that stops short of the instrument's last item passes it"), so the block
+   contradicts itself and reintroduces the coverage claim the milestone exists
+   to remove. The point it is making is true and survives a fix; only the
+   phrasing overreaches. Diff-introduced (`main` read "on an instrument whose
+   scales overlap or leave gaps"), so a defect inside an intentional change.
+   Fixed at `cf096d9`: the clause now reads "the union is the same item set
+   however the scales share items". Not a return-floor finding — AC1's
+   prohibitions are on attributing overlap detection to the probe and on
+   claiming it can see items above the run, and this sentence is a claim about
+   the union rather than about the probe; the criterion's positive requirement
+   was met by the block before the fix as well.
+2. **Fixed now — `index.html:784-786`'s FALSE-branch reasoning rests on an
+   unstated assumption.** "Where the scales' items do not even run from 1
+   without a gap, 'every scale' is plainly a smaller item set than 'no module'"
+   holds only if the instrument's own item numbers are themselves 1..N; an
+   instrument numbered non-contiguously would have its scales' union equal the
+   whole instrument yet answer FALSE, making "plainly a smaller item set" false
+   there. The behavior stays safe (it errs toward keeping the module), but the
+   block flagged its one-sidedness only in the TRUE direction. Fixed at
+   `cf096d9` in the same rewrite, which now names both directions the gate can
+   be wrong in.
+3. **Follow-up — the log line at `index.html:1523` still reads "every scale
+   ticked covers items 1..N with no gaps"**, the same coverage imprecision the
+   block above now spends a paragraph disclaiming, and `README.md:179-181` and
+   `:283-285` repeat it ("cover its items with nothing left out"). Both are
+   declared out of scope in the milestone and routed to a follow-up candidate
+   row, so this is a scope observation rather than a defect. Same item as the
+   first pass's finding 6; the graduation row the hygiene pass writes carries it.
+4. **Rejected — `index.html:1509` calls the probe "a coverage check"**
+   ("turning a coverage check into a type check") after two paragraphs
+   establishing that it is not a coverage check, so the `as.integer()` rationale
+   reuses the vocabulary the rest of the block retires. Rejected: AC3 binds this
+   wording, so relabelling the phrase needs a criterion amendment, and the
+   sentence's assertion — that dropping the cast makes the comparison turn on
+   types rather than on item numbers — is true as written.
+5. **Rejected — `index.html:765` "That is the whole of what the probe asks" is
+   very slightly too absolute.** `as.integer()` truncates, so a hypothetical
+   non-integral item vector such as `c(1.4, 2.4)` would pass, and an `NA` would
+   fail on type rather than on coverage. Rejected as unreachable: `$items` comes
+   from the shipped keying tables through `sort(unique(unlist(...)))`, so no such
+   vector can arise, and the reviewer itself rated it worth a word only if the
+   sentence were being edited anyway.
+6. **Follow-up — `tilesExactly` still names a partition the probe does not
+   check.** "Tile" means cover once without overlap, and the identifier sits
+   directly above a comment saying overlap is not asked about and coverage is not
+   established. Renaming is a non-comment change AC4 bars. Same item as the first
+   pass's finding 3, already routed to a follow-up candidate row.
+
+**Disposition: no return.** Findings 1 and 2 are comment inaccuracies fixed on
+the branch; neither falsifies an acceptance criterion inside the domain of the
+procedure that criterion names, and neither is a defect in what the package or
+the page does for its users. Findings 3 and 6 go to the graduation row. Findings
+4 and 5 are rejected with the reasons above. Defect returns for M087 stay at 1.
