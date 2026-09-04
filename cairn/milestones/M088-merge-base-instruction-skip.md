@@ -1,6 +1,6 @@
 # M088: The instruction-object merge-base block skips when its comparison is vacuous
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -68,7 +68,7 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
       cover the fourth block.
 - [x] T3: GREEN evidence. On the branch, re-run the file (expect 5 skips, 0 failures) and then
       `Rscript -e 'devtools::test()'` for AC1. Record both.
-- [ ] T4: Discrimination evidence. In one `devtools::load_all()` session, evaluate a
+- [x] T4: Discrimination evidence. In one `devtools::load_all()` session, evaluate a
       `test_that()` block calling `merge_base_instructions("c3be8505")` and asserting AC3's
       outcome — it does not skip, and its moved set is the two instruction objects. Record the
       reporter output. No clone, no ref manipulation: `merge_base_sysdata()` takes the sha as an
@@ -86,6 +86,9 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
 - 2026-09-04: T2 added `merge_base_instructions(sha)` to `test-item-number-merge-base.R` — one `merge_base_sysdata()` read, per-object `list(old =, moved =)` over the four instruction objects, a single `testthat::skip_if()` after the loop, the named list returned; the block now consumes it and keeps `expect_setequal()` over `names(Filter(function(x) x$moved, bases))`. The file header extended to say the instruction block skips on the same terms. `devtools::test()`: 0 failures, 0 warnings, 13 skips, 17277 passes.
 
 - 2026-09-04: T3 GREEN evidence at be2bc415. `test_local(filter = "item-number-merge-base", reporter = "summary")`: 5 skips, 0 failures — skip 5 is `retyping the instruction option values moved nothing else ('test-item-number-merge-base.R:244:3') - Reason: the merge base already stores every instruction option value as integer`. `devtools::test()` at the same commit: `[ FAIL 0 | WARN 0 | SKIP 13 | PASS 17277 ]`.
+
+- 2026-09-04: T4 discrimination evidence at ce8a364c. One `load_all()` session with the working directory set to `tests/testthat` (what `test_local()` sets, and what `repo_root()`'s `test_path("..", "..")` requires) sourced the helper and the test file under `with_reporter("summary")`, then evaluated a `test_that()` block calling `merge_base_instructions("c3be8505")`. Reporter line `SSSS....S..`: the five branch-level skips, then the block's two `expect_setequal()` calls passing and no sixth skip — the helper did not skip against the pre-retype base, returned all four instruction objects, and reported `c("hitopsr_instructions", "hitopbr_instructions")` as moved.
+- 2026-09-04: `repo_root()` resolves correctly only when the working directory is `tests/testthat`: under a testthat reporter context `testthat::test_path()` drops its `tests/testthat` prefix, so the same call from the repo root points one level above the repo and every merge-base read skips with "could not read". A harness property, not a defect in the helper — `test_local()` and `R CMD check` both set that directory.
 
 ## Decisions
 
