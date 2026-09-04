@@ -202,6 +202,13 @@ page → the standing candidate row on generalizing modularization.
   `[ FAIL 1 | SKIP 12 | PASS 17281 ]`, the failure the pre-existing
   `test-item-number-merge-base.R:232` red, identity re-confirmed on its own.
 
+- 2026-09-03: PR-conversation read before the gate — PR #95 and builder PR #13
+  each returned no reviews, no conversation comments and no unresolved threads,
+  so nothing was triaged and the blocking rule did not fire.
+- 2026-09-03: step-7 approval: PR #95 approved for merge (builder PR #13
+  approved in the same chip; that repo is not cairn-tracked, so its merge is
+  gated by chat approval alone).
+
 ## Decisions
 
 ### M087-D1 (2026-09-03): The probe establishes coverage of 1..N, not the absence of overlap
