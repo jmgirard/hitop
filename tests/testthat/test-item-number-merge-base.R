@@ -6,9 +6,10 @@
 # nested frame, every attribute.
 #
 # Skips once the merge base already carries the change, so these run on the
-# branch that made it and never fail a later one. The instruction-object block
-# at the foot of the file skips on the same terms, against its own merge-base
-# read.
+# branch that made it and never fail a later one. Every block that compares
+# against the merge base skips on those terms, each through its own helper and
+# its own read -- the item-number blocks, the response-value blocks, and the
+# block at the foot of the file that compares the instruction option values.
 
 # The item-number columns of each shipped table, by the table they sit in. A
 # column named here is coerced wherever the walk below finds it: as a plain
@@ -215,20 +216,38 @@ test_that("the shipped instruction option values are integers", {
   expect_false("options" %in% names(hitophsum_instructions))
 })
 
-# `testthat::skip_if()` ends the whole `test_that()` block, not the loop
-# iteration it is called from, so a per-object skip inside a loop would abandon
-# every object after the first one that skipped -- silently, and reported as one
-# clean skip. All four objects are therefore read from the merge base first, and
-# the skip decided once over all of them: the loop below either runs whole or
-# does not run at all. The four live in one `R/sysdata.rda`, so the read is a
-# single `merge_base_sysdata()` call rather than one per object.
+# The change this branch makes to one instruction object, written once so the
+# helper's `moved` flag and the block's own retype below cannot drift apart.
+# `[[` throughout: `$` partial-matches on a list, and `hitophsum_instructions`
+# carries no `options` at all (see the block above), so `$options` would match
+# any element whose name merely starts with it. Names are preserved for the same
+# reason `retype_item_numbers()` preserves them -- dropping an attribute here
+# would fail the comparison on the test's own retype rather than on a real move.
+retype_instructions <- function(x) {
+  if ("options" %in% names(x) && "value" %in% names(x[["options"]])) {
+    value <- x[["options"]][["value"]]
+    x[["options"]][["value"]] <- structure(as.integer(value), names = names(value))
+  }
+  x
+}
+
+# Same skip-before-the-loop discipline as the two helpers above, and for the
+# same reason. Two differences: the four objects live in one `R/sysdata.rda`, so
+# the read is a single `merge_base_sysdata()` call rather than one per object;
+# and that call returns an environment whose parent chain reaches the loaded
+# package, so the lookup is `inherits = FALSE` -- without it an object the merge
+# base does not carry would resolve to the live one and be compared against
+# itself, reporting `moved = FALSE` and asserting nothing.
 merge_base_instructions <- function(sha) {
   env <- merge_base_sysdata(sha)
   bases <- lapply(instruction_objects, function(name) {
-    old <- get(name, envir = env)
+    if (!exists(name, envir = env, inherits = FALSE)) {
+      testthat::skip(paste0("R/sysdata.rda at ", sha, " has no ", name))
+    }
+    old <- get(name, envir = env, inherits = FALSE)
     list(
       old = old,
-      moved = !is.null(old$options) && !is.integer(old$options$value)
+      moved = !identical(retype_instructions(old), old)
     )
   })
   names(bases) <- instruction_objects
@@ -243,10 +262,7 @@ test_that("retyping the instruction option values moved nothing else", {
   base <- skip_without_merge_base()
   bases <- merge_base_instructions(base)
   for (name in instruction_objects) {
-    old <- bases[[name]]$old
-    if (bases[[name]]$moved) {
-      old$options$value <- as.integer(old$options$value)
-    }
+    old <- retype_instructions(bases[[name]]$old)
     expect_identical(get(name, envir = asNamespace("hitop")), old, info = name)
   }
   # Without this the block above passes on a merge base that already carries the

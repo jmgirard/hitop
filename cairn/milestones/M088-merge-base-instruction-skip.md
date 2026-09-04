@@ -161,3 +161,34 @@ from the archived `## Review` sections. Ranked, most severe first; each disposit
 
 - conversation: PR #96 — no reviews, no conversation comments, no unresolved review threads (read once immediately
   before the merge gate; `reviewThreads` paged to `hasNextPage: false`). Nothing to triage, nothing blocking.
+
+### Triage and re-verification
+
+All seven findings were triaged **fix now** at the merge gate; the record correction (R1) was triaged **leave the
+criterion text, correction recorded** (the criterion's operative assertion verified true, and its evidence line above
+carries the correction). No finding demonstrated an acceptance criterion failing and none was a defect in a shipped
+deliverable, so the return floor was not reached.
+
+The fix rewrites the helper onto the shape its two siblings use. `retype_instructions()` now states the change once
+and both the helper's `moved` flag and the block's own retype go through it, so the vacuity guard again certifies the
+operation that moved (R2); `moved` is `!identical(retype_instructions(old), old)`, matching `:88` and `:162`. The
+lookup is `exists()`/`get()` with `inherits = FALSE` and skips naming the missing object, closing the fallback to the
+live copy (R3). `[[` replaces `$` throughout, with the reason stated in the comment (R4). The retype preserves names
+as `retype_item_numbers()` does (R5), the block applies it unconditionally as both siblings do (R6), the header
+sentence now says every merge-base block skips on those terms rather than singling out the fourth (R7), and the
+third copy of the skip-semantics comment is a cross-reference to the two above it (R8).
+
+Re-verification after the fix, at the same branch head:
+
+- `testthat::test_local(filter = "item-number-merge-base", reporter = "summary")`: `SSSS....S`, 0 failures; skip 5 is
+  the instruction block at `:263`, reason unchanged.
+- `Rscript -e 'devtools::test()'`: `[ FAIL 0 | WARN 0 | SKIP 13 | PASS 17277 ]` — AC1 unchanged.
+- AC3 re-proved under the new mechanism: `merge_base_instructions("c3be8505")` did not skip and its moved set printed
+  as `hitopbr_instructions, hitopsr_instructions`.
+- R3 closed, shown directly: after `rm("hitopsr_instructions", envir = env)`,
+  `exists(..., inherits = FALSE)` is `FALSE` where `exists(..., inherits = TRUE)` is `TRUE` — the guard is what
+  separates the two.
+- AC4 unchanged: the added `testthat::skip()` sits in the read `lapply()`, before the helper returns, never in the
+  block's per-object comparison loop.
+
+- 2026-09-04: step-7 approval: PR #96 approved for merge.
