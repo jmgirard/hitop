@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** internal — source comments in the builder page's `index.html`; the visitor-facing README prose and log line M074 shipped are already accurate and are not touched
-- **Branch/PR:** `m087-builder-probe-comments` (hitop, tracking) · `m087-probe-comments` (jmgirard/hitop-builder, code) — builder PR https://github.com/jmgirard/hitop-builder/pull/13
+- **Branch/PR:** `m087-builder-probe-comments` (hitop, tracking) — https://github.com/jmgirard/hitop/pull/95 · `m087-probe-comments` (jmgirard/hitop-builder, code) — builder PR https://github.com/jmgirard/hitop-builder/pull/13
 
 ## Goal
 
@@ -34,19 +34,19 @@ page → the standing candidate row on generalizing modularization.
 
 ## Acceptance criteria
 
-- [ ] AC1: Every comment block adjacent to an occurrence of `tilesExactly` or
+- [x] AC1: Every comment block adjacent to an occurrence of `tilesExactly` or
       `wholeInstrument` in `index.html` — the occurrences enumerated by
       `grep -n 'tilesExactly\|wholeInstrument' index.html`, each read in full —
       describes the probe's promise as the union of every scale's items being
       exactly 1..N, and attributes no overlap detection to it.
-- [ ] AC2: A case-insensitive grep for `overlap` over the builder repo's
+- [x] AC2: A case-insensitive grep for `overlap` over the builder repo's
       `index.html` and `README.md` returns only lines that either state the
       probe's promise correctly or say nothing about the probe.
-- [ ] AC3: The comment retaining the `as.integer()` states the reason the cast
+- [x] AC3: The comment retaining the `as.integer()` states the reason the cast
       stays — that dropping it turns a coverage check into a type check, which
       the page's `MIN_HITOP` guard cannot back because every r-universe build of
       the package reports the same version.
-- [ ] AC4: `git diff` over the builder branch touches `index.html` comment lines
+- [x] AC4: `git diff` over the builder branch touches `index.html` comment lines
       only — no statement, no README line, no test.
 
 ## Coverage
@@ -127,6 +127,14 @@ page → the standing candidate row on generalizing modularization.
   the de-duplication site and the HiTOP-BR worked case were both read from the
   package at `8592e803`.
 
+- 2026-09-03: review step 3 — AC1-AC4 each executed against fresh evidence and
+  ticked; evidence in the Review section. Consistency gate: `cairn_validate`
+  exit 0 (16 PASS, advisories only), `document()` no diff,
+  `pkgdown::check_pkgdown()` clean, no principle changed so no impact report.
+  `devtools::test()` and the three review lenses still running at this
+  checkpoint; hitop tracking PR https://github.com/jmgirard/hitop/pull/95
+  opened draft.
+
 ## Decisions
 
 ### M087-D1 (2026-09-03): The probe establishes coverage of 1..N, not the absence of overlap
@@ -150,3 +158,41 @@ share items, and it is the item set, not the scale partition, that
 `wholeInstrument()` turns on.
 
 ## Review
+
+Evidence gathered 2026-09-03 against `jmgirard/hitop-builder` at `900feae`
+(branch `m087-probe-comments`, PR #13) and `hitop` at `ca0c4fae`.
+
+- AC1 — met. `grep -n 'tilesExactly\|wholeInstrument' index.html` returns eight
+  occurrences (`:771`, `:781`, `:785`, `:786`, `:1029`, `:1213`, `:1501`,
+  `:1508`); each was read with surrounding context. Three carry an adjacent
+  comment block: `:765-770` (above `let tilesExactly`), `:777-784` (above
+  `wholeInstrument()`, the `:781` occurrence being inside it) and `:1483-1501`
+  (above the R call). Each states the promise as the union of the ticked
+  scales' items being 1..N with no gaps, and none attributes overlap detection
+  to the probe — `:767` says whether scales share items "is not asked and does
+  not matter", `:783` says sharing items never puts the page in the ungated
+  position, `:1487` says overlap is deliberately not asked about. The remaining
+  five occurrences carry no adjacent comment: `:786` and `:1508` follow their
+  own code, `:1029` opens a branch inside `crosswalkSentence()`, `:1213` is
+  separated from the preceding paper-form comment by two statements, and `:771`
+  and `:1501` are the declarations the first and third blocks head.
+- AC2 — met. `grep -in overlap index.html README.md` returns two lines, both in
+  `index.html` and no README hit. `:205` is a CSS comment on the definition
+  popup overlapping the row below it, unrelated to the probe. `:1487` is the
+  rewritten block saying overlap is deliberately not asked about and why
+  (`hitop_module()` de-duplicates), which states the promise correctly.
+- AC3 — met. The block at `:1495-1501` gives the reason the cast stays:
+  without it the comparison is doubles against `seq_along()`'s integers and
+  FALSE on any build made before `hitop_module()` returned integer items,
+  "turning a coverage check into a type check", and `MIN_HITOP` cannot back a
+  type assumption "because those older builds report 0.2.0 too -- the same
+  version this page requires". No version number is claimed as the cutover.
+- AC4 — met. `git diff main...HEAD --stat` on the builder branch: `index.html`
+  only, 28 insertions and 15 deletions, no README and no test file. Filtering
+  the `-U0` diff's changed lines to those not opening with `//`, `/*` or `*`
+  leaves none, so every changed line is a comment line.
+
+M087-D1's basis re-checked at `hitop` `ca0c4fae`: the de-duplicating line is
+`R/module.R:102` (`items <- sort(unique(unlist(ref$itemNumbers[idx], ...)))`),
+and `unlist(hitopbr_scales$itemNumbers)` gives 67 slots over 45 distinct items
+with 18 items in more than one scale, its union exactly 1..45.
