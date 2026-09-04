@@ -177,6 +177,8 @@ under D-056.
 - 2026-09-03: review — merge gate: Jeff directed two further fixes beyond the five taken at triage — the same loop-abandoning-skip repair on the sibling M081 item-number block, and `hitophsum_choices`'s `@format` row count (42 stated, 185 actual). Both applied; suite, `document()` and `check()` re-run clean.
 - 2026-09-03: step-7 approval: PR #94 approved for merge.
 - 2026-09-03: CI wait hit the harness ceiling with 6 of 8 checks pending (line endings and pkgdown passed); watcher stopped, merge not attempted. Resume with /milestone-review M086.
+- 2026-09-03: resume — PR #94 read OPEN with every criterion ticked against recorded evidence and the step-7 approval on record, so review re-entered at route (c): step 1 re-run (`origin/main` at `b1b523d1`, branch 0 behind — no re-verification needed), branch pushed, PR conversation read empty (no reviews, no comments, no unresolved threads), step-7 chip re-posed.
+- 2026-09-03: step-7 approval: PR #94 approved for merge (re-posed at resume).
 
 ## Decisions
 
