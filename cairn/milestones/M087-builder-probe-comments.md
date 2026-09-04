@@ -1,6 +1,6 @@
 # M087: The builder's start-up probe comments state what the probe establishes
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -175,6 +175,13 @@ page → the standing candidate row on generalizing modularization.
   test). Finding 5 fixed in the same pass — the third block now says the union is
   all the *probe* looks at, where it had said the gate. Finding 2 answered by
   M087-D2 below, which supersedes M087-D1 rather than editing it.
+- 2026-09-03: verify slot re-run after T5 — `devtools::test()` is
+  `[ FAIL 1 | WARN 0 | SKIP 12 | PASS 17281 ]`, the one failure again
+  `test-item-number-merge-base.R:232` with the same `expect_setequal(moved, ...)`
+  message ("Absent: hitopsr_instructions, hitopbr_instructions"), the
+  pre-existing red on `main` already carried as a candidate row; this branch's
+  hitop diff is markdown only. Builder PR #13 green at `c472fbf` (smoke, 2m58s).
+  Status set to `review`.
 
 ## Decisions
 
