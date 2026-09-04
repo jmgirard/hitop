@@ -6,7 +6,7 @@
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
-- **Surface tier:** internal — source comments in the builder page's `index.html`; the visitor-facing README prose and log line M074 shipped are already accurate and are not touched
+- **Surface tier:** internal — source comments in the builder page's `index.html`. The visitor-facing README prose and the start-up log line M074 shipped carry the same trailing-gap imprecision the comments did; both are left to a follow-up candidate row rather than corrected here, so this milestone's diff stays comment-only
 - **Branch/PR:** `m087-builder-probe-comments` (hitop, tracking) — https://github.com/jmgirard/hitop/pull/95 · `m087-probe-comments` (jmgirard/hitop-builder, code) — builder PR https://github.com/jmgirard/hitop-builder/pull/13
 
 ## Goal
@@ -37,8 +37,11 @@ page → the standing candidate row on generalizing modularization.
 - [ ] AC1: Every comment block adjacent to an occurrence of `tilesExactly` or
       `wholeInstrument` in `index.html` — the occurrences enumerated by
       `grep -n 'tilesExactly\|wholeInstrument' index.html`, each read in full —
-      describes the probe's promise as the union of every scale's items being
-      exactly 1..N, and attributes no overlap detection to it.
+      states the probe's promise as what its expression establishes: the union
+      of every scale's items runs from 1 upward with no gaps, and its own
+      length is the only item count the probe reads. No block attributes
+      overlap detection to the probe, and no block claims the probe can tell
+      that the instrument has no further items above that run.
 - [x] AC2: A case-insensitive grep for `overlap` over the builder repo's
       `index.html` and `README.md` returns only lines that either state the
       probe's promise correctly or say nothing about the probe.
@@ -51,7 +54,7 @@ page → the standing candidate row on generalizing modularization.
 
 ## Coverage
 
-- AC1 → T1, T2
+- AC1 → T1, T2, T5
 - AC2 → T3
 - AC3 → T2
 - AC4 → T4
@@ -74,6 +77,10 @@ page → the standing candidate row on generalizing modularization.
       (`index.html:205` is a CSS popup comment).
 - [x] T4: Check the diff is comment-only, run the Playwright suite as a routine
       pre-PR check, and open the builder PR; record the PR URL here.
+- [x] T5: Rewrite the three blocks again so each says the probe establishes a
+      gap-free run from 1 and reads no separate item count, replacing the
+      sentences that claimed it catches uncovered items; re-run the
+      diff-is-comment-only check and the Playwright suite.
 
 ## Work log
 
@@ -146,6 +153,29 @@ page → the standing candidate row on generalizing modularization.
   as style. Consistency gate passed; `devtools::test()` red only on the
   pre-existing `test-item-number-merge-base.R:232`.
 
+- 2026-09-03: amendment gate on the return — AC1's wording amended (substantive),
+  the Surface tier line corrected, T5 added and Coverage's AC1 line extended to
+  it. AC1 now states the probe's promise as a gap-free run from 1 whose own
+  length is the only item count it reads, in place of "exactly 1..N", which the
+  review read as coverage of the instrument. The amendment narrows AC1; no
+  criterion was added, and none had its domain widened.
+- 2026-09-03: re-audit: AC1 (reduced) — nothing.
+- 2026-09-03: the same gate held the criteria set against the return's two
+  carried findings. Finding 3 (the `tilesExactly` identifier asserts a partition
+  the probe does not check) and finding 6 (the README at `:180` and `:283`, and
+  the start-up log line, repeat the trailing-gap imprecision) each go to a
+  follow-up candidate row rather than a scope widening, so the branch stays
+  comment-only. Both are the residue of this milestone's own held candidate row:
+  the post-merge hygiene pass graduates that row to them rather than retiring it
+  outright.
+- 2026-09-03: T5 — the three blocks rewritten in `jmgirard/hitop-builder`; each
+  now states the promise as a gap-free run from 1, and the first and third say in
+  so many words what the probe cannot see. `git diff -U0 index.html` leaves no
+  changed line that is not a comment line, and `npm run smoke` passed (17.5s, one
+  test). Finding 5 fixed in the same pass — the third block now says the union is
+  all the *probe* looks at, where it had said the gate. Finding 2 answered by
+  M087-D2 below, which supersedes M087-D1 rather than editing it.
+
 ## Decisions
 
 ### M087-D1 (2026-09-03): The probe establishes coverage of 1..N, not the absence of overlap
@@ -167,6 +197,30 @@ The corrected comments state this promise — the union is 1..N — and say why
 overlap needs no check: a union of 1..N is the same item set however the scales
 share items, and it is the item set, not the scale partition, that
 `wholeInstrument()` turns on.
+
+### M087-D2 (2026-09-03): The probe establishes a gap-free run from 1, not coverage of the instrument — supersedes M087-D1
+
+M087-D1 said the probe "returns TRUE exactly when the union of the ticked
+scales' items is 1..N with no gaps", and the corrected comments it authorized
+said the same. Read as a statement about the instrument — which is how it reads
+— that is wrong.
+`identical(as.integer(.all$items), seq_along(.all$items))` compares the union
+against its own length, so it is TRUE exactly when the union is 1..k for k the
+number of distinct items the union holds. Nothing in the expression, and nothing
+else at the call site, reads the instrument's own item count. Scales covering
+1..k of a longer instrument therefore answer TRUE, `wholeInstrument()` goes
+true, and the page drops `module` from a form that is not the whole instrument —
+the mislabelling M087-D1 claimed the probe prevents. Measured 2026-09-03:
+`identical(as.integer(1:20), seq_along(1:20))` is TRUE; `c(1:19, 30)`, a gap
+below the maximum, is FALSE.
+
+M087-D1's other half stands. `hitop_module()` de-duplicates at `R/module.R:102`,
+so overlap is invisible to the probe and needs no check, and the HiTOP-BR worked
+case there is unaffected. The corrected comments now state the promise as the
+gap-free run and name both things the probe does not establish — items above the
+run, and overlap. On the HiTOP-SR, the only instrument the page builds, the union
+of all 76 scales is 405 items against `nrow(hitopsr_items)` 405, so the tail the
+probe cannot see is not open there.
 
 ## Review
 
