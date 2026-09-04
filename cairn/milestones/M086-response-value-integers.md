@@ -176,6 +176,7 @@ under D-056.
 - 2026-09-03: review — three fresh-context reviewers; the two Sonnet lenses returned no findings, the [O] diff-bug lens returned eleven. Five fixed on the branch (all test-only, in the two files this milestone added or extended), one rejected as the accepted AC5 amendment, three sent to a follow-up candidate row, one half-correct and surfaced at the gate. None met the return floor.
 - 2026-09-03: review — merge gate: Jeff directed two further fixes beyond the five taken at triage — the same loop-abandoning-skip repair on the sibling M081 item-number block, and `hitophsum_choices`'s `@format` row count (42 stated, 185 actual). Both applied; suite, `document()` and `check()` re-run clean.
 - 2026-09-03: step-7 approval: PR #94 approved for merge.
+- 2026-09-03: CI wait hit the harness ceiling with 6 of 8 checks pending (line endings and pkgdown passed); watcher stopped, merge not attempted. Resume with /milestone-review M086.
 
 ## Decisions
 
