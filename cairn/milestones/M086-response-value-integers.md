@@ -1,6 +1,6 @@
 # M086: Every response value the package ships is an integer
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -129,7 +129,7 @@ under D-056.
       committed and merge-base copies of each `ku_*` dataset. The artifact test names
       `hitophsum_qualtrics.qsf` as its single exemption and fails if the exempt set
       grows.
-- [ ] T8: `NEWS.md` entry; `DECISIONS.md` entry recording the retype and the pre-1.0
+- [x] T8: `NEWS.md` entry; `DECISIONS.md` entry recording the retype and the pre-1.0
       waiver on the D-056 precedent; run the profile's verify and check slots.
 
 ## Work log
@@ -171,6 +171,7 @@ under D-056.
 - 2026-09-03: substantive amendment to AC5, accepted at the mini gate. As planned it required a fresh build of every `qualtrics`/`redcap` manifest row, but `hitophsum_qualtrics.qsf` has no builder in the package — it is the Qualtrics API export `data-raw/artifacts.R` deliberately does not rebuild. AC5 now promises the flat-text rebuild only over the rows `data-raw/artifacts.R` builds, states the md5 lock as what holds the rest, and records that the rebuild is a no-regression lock over content rather than a probe of the type axis; the exemption-set assertion moved to T7.
 - 2026-09-03: the amended AC5 wording went to a fresh-context [O] reader (full mode, user-facing tier) before it was written. Five findings: the headline quantified over all 24 artifacts where 11 are rebuild-checked; the exemption-registry clause bound the test harness rather than the package; "a `generate_*` function in the package builds" named no procedure deciding membership; "held by the md5 lock alone" overstated the lock. Four fixed in the wording above. The fifth asked for a planted-defect probe on the type axis; it cannot exist — a build with `hitopsr_instructions$options$value` coerced to double reproduces both `hitopsr_qualtrics.txt` and the `hitopsr_redcap.zip` dictionary byte for byte (run this session), because the generators render the value through `as.character()`. That fact is stated in AC5 and in the test file rather than probed.
 - 2026-09-03: T7 — `tests/testthat/test-response-value-no-move.R` added. Artifact half: the eleven `qualtrics`/`redcap` files `data-raw/artifacts.R` builds each rebuild to the committed flat text byte for byte (`.txt` whole, the zip's `instrument.csv` read out), with a test asserting `hitophsum_qualtrics.qsf` is the only manifest row without a builder here. Scoring half: one call per entry point each `ku_*` dataset admits, `append = FALSE` where the argument exists, each `identical()` between the committed dataset and the merge-base copy, guarded against a merge base that already stores integers, with the covered call set asserted rather than derived. Suite 0 failures / 17,402 passes.
+- 2026-09-03: T8 — NEWS.md gains a Breaking changes entry for the response-value retype; `DECISIONS.md` gains D-060. `devtools::document()` no diff, `devtools::test()` 0 failures, `devtools::check()` 0 errors / 0 warnings / 0 notes, line-ending check clean. Status to `review`.
 
 ## Decisions
 
