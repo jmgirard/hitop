@@ -1,6 +1,6 @@
 # M087: The builder's start-up probe comments state what the probe establishes
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -34,7 +34,7 @@ page → the standing candidate row on generalizing modularization.
 
 ## Acceptance criteria
 
-- [x] AC1: Every comment block adjacent to an occurrence of `tilesExactly` or
+- [ ] AC1: Every comment block adjacent to an occurrence of `tilesExactly` or
       `wholeInstrument` in `index.html` — the occurrences enumerated by
       `grep -n 'tilesExactly\|wholeInstrument' index.html`, each read in full —
       describes the probe's promise as the union of every scale's items being
@@ -135,6 +135,17 @@ page → the standing candidate row on generalizing modularization.
   checkpoint; hitop tracking PR https://github.com/jmgirard/hitop/pull/95
   opened draft.
 
+- 2026-09-03: review returned M087 to `in-progress` (defect return 1). What
+  failed: AC1. The probe's expression compares the scales' item union against
+  its own length, so an instrument whose scales leave a trailing tail of items
+  uncovered still makes it TRUE; the rewritten blocks at `index.html:765`,
+  `:781-783` and `:1492` claim it catches uncovered items, and `:781-783`'s
+  wording is this diff's own. Findings 3, 5 and 6 (the `tilesExactly`
+  identifier, `:1490`'s "this gate", the README's matching imprecision) carry
+  into the return; finding 4 was fixed in the Review text; finding 7 rejected
+  as style. Consistency gate passed; `devtools::test()` red only on the
+  pre-existing `test-item-number-merge-base.R:232`.
+
 ## Decisions
 
 ### M087-D1 (2026-09-03): The probe establishes coverage of 1..N, not the absence of overlap
@@ -162,7 +173,10 @@ share items, and it is the item set, not the scale partition, that
 Evidence gathered 2026-09-03 against `jmgirard/hitop-builder` at `900feae`
 (branch `m087-probe-comments`, PR #13) and `hitop` at `ca0c4fae`.
 
-- AC1 — met. `grep -n 'tilesExactly\|wholeInstrument' index.html` returns eight
+- AC1 — NOT met (see finding 1; the tick recorded earlier this pass was
+  withdrawn). The enumeration below was executed as written, but two of the
+  three blocks describe a promise the probe does not give.
+  `grep -n 'tilesExactly\|wholeInstrument' index.html` returns eight
   occurrences (`:771`, `:781`, `:785`, `:786`, `:1029`, `:1213`, `:1501`,
   `:1508`); each was read with surrounding context. Three carry an adjacent
   comment block: `:765-770` (above `let tilesExactly`), `:777-784` (above
@@ -170,8 +184,9 @@ Evidence gathered 2026-09-03 against `jmgirard/hitop-builder` at `900feae`
   (above the R call). Each states the promise as the union of the ticked
   scales' items being 1..N with no gaps, and none attributes overlap detection
   to the probe — `:767` says whether scales share items "is not asked and does
-  not matter", `:783` says sharing items never puts the page in the ungated
-  position, `:1487` says overlap is deliberately not asked about. The remaining
+  not matter", `:783` says sharing items never puts the page in
+  the module-keeping position, `:1487` says overlap is deliberately not asked
+  about. The remaining
   five occurrences carry no adjacent comment: `:786` and `:1508` follow their
   own code, `:1029` opens a branch inside `crosswalkSentence()`, `:1213` is
   separated from the preceding paper-form comment by two statements, and `:771`
@@ -196,3 +211,73 @@ M087-D1's basis re-checked at `hitop` `ca0c4fae`: the de-duplicating line is
 `R/module.R:102` (`items <- sort(unique(unlist(ref$itemNumbers[idx], ...)))`),
 and `unlist(hitopbr_scales$itemNumbers)` gives 67 slots over 45 distinct items
 with 18 items in more than one scale, its union exactly 1..45.
+
+### Gate checks
+
+`cairn_validate.py` exit 0 — all 16 PASS, three advisories (work-log line
+wrapping, dangling pre-migration D-ids, one references page with no extraction
+status), none a gate failure. No `DESIGN.md` principle changed, so no impact
+report. Toolchain checks from the `r-package` profile's `consistency-gate`:
+`devtools::document()` leaves no diff; `pkgdown::check_pkgdown()` reports no
+problems; README.Rmd and NEWS.md are untouched and no user-visible package
+behavior changed, so neither is owed an update; no new top-level file, so no
+`.Rbuildignore` entry. `devtools::test()` is
+`[ FAIL 1 | WARN 0 | SKIP 12 | PASS 17281 ]`; the single failure is
+`test-item-number-merge-base.R:232` (`expect_setequal(moved, ...)` — Expected
+"hitopsr_instructions", "hitopbr_instructions"; Absent both), the pre-existing
+red already recorded on `main` at `8592e803` and carried as a ROADMAP candidate
+row. This branch's diff against `main` is two markdown files, so it cannot have
+caused it; CI is green on `main` because the block's `skip_without_merge_base()`
+skips where no merge base is fetched.
+
+### Findings
+
+Three fresh-context reviewers, distinct evidence bases. The prior-review lens
+and the blame-history lens each returned no findings; the diff-bug lens
+returned seven, ranked, reproduced below with disposition.
+
+1. **Fix required — the rewritten comments still overclaim.**
+   `identical(as.integer(.all$items), seq_along(.all$items))` compares the
+   union against *its own length*, so it establishes only that the union is a
+   contiguous run starting at 1. The instrument's true item count is nowhere
+   read. An instrument of N items whose scales cover only 1..k (k < N) makes
+   the probe TRUE, `wholeInstrument()` true, and the page drop `module` — the
+   mislabelling the comment claims the check prevents. Three new sentences are
+   therefore false in that case: `:765` "cover its items exactly"; `:781-783`
+   "on an instrument whose scales leave items uncovered, 'every scale' is a
+   smaller item set than 'no module', and the page keeps passing the module";
+   and `:1492` "the check is here so a future instrument leaving items
+   uncovered trips it deliberately". Verified independently against the R
+   expression and `wholeInstrument()`'s call sites. This is the error class the
+   milestone exists to remove, and `:781-783`'s "leave items uncovered" is
+   wording this diff introduced (`main` read "overlap or leave gaps"), so it is
+   a defect inside an intentional change, not a pre-existing issue. It
+   falsifies AC1 inside AC1's own enumeration, so it takes the return floor.
+2. **Fix required — M087-D1 and the AC1 evidence repeat the imprecision.**
+   "returns TRUE exactly when the union of the ticked scales' items is 1..N
+   with no gaps" reads as coverage of the instrument. The decision record is
+   append-only history, so it is superseded rather than edited when the
+   comments are corrected.
+3. **Carried into the return — the identifier `tilesExactly` still asserts a
+   partition.** "Tile" means cover once without overlap, and it now sits above
+   a comment saying overlap is not asked about. Renaming is a non-comment
+   change that AC4 bars, so the return decides between a scope amendment and a
+   candidate row.
+4. **Fixed now — the AC1 evidence misparaphrased `:783`** as "the ungated
+   position" where the comment says the module-keeping position. Corrected in
+   the evidence text above.
+5. **Carried into the return — `:1490` "the item set is all this gate turns
+   on" is inexact.** `wholeInstrument()` also turns on the count of ticked
+   scales; the item set is all the *probe* turns on.
+6. **Carried into the return — the README repeats finding 1's imprecision**
+   (`README.md:180` and `:283`, "cover its items with nothing left out"). The
+   README is out of scope by declaration, but the Surface tier line's claim
+   that its prose is "already accurate" does not hold in the trailing-gap
+   sense, so that parenthetical is not a basis for leaving it alone.
+7. **Rejected — two cosmetic nits** (an early line wrap at `:768`, a
+   subject-agreement reading of "Scales sharing items"): pure style, the
+   out-of-scope taxonomy's nitpick member.
+
+**Disposition: defect return.** Finding 1 demonstrates AC1 failing inside the
+domain of the procedure AC1 names, so the return floor applies: status goes
+back to `in-progress` and review stops here. Defect returns for M087: 1.
