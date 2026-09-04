@@ -63,10 +63,12 @@ page → the standing candidate row on generalizing modularization.
       `hitopbr_scales` holds 67 item slots over 45 distinct items, 22 duplicated,
       whose union is exactly 1..45, so a probe of the shipped form returns TRUE
       on an overlapping instrument.
-- [ ] T2: Rewrite the three comment blocks (`index.html:765`, `:779`, `:1481`),
+- [x] T2: Rewrite the three comment blocks (`index.html:765`, `:779`, `:1481`),
       each stating what the probe establishes, why overlap is immaterial (a union
       of 1..N is the same item set however scales share items), and — at the R
-      call — why the `as.integer()` stays.
+      call — why the `as.integer()` stays. (The three blocks sit at `:764`,
+      `:774` and `:1483` on `main` at `016b2c8`, one line above the positions
+      the plan recorded.)
 - [ ] T3: Grep both builder files case-insensitively for `overlap`; read every
       hit and confirm each either states the probe correctly or is unrelated
       (`index.html:205` is a CSS popup comment).
@@ -99,6 +101,11 @@ page → the standing candidate row on generalizing modularization.
   binding the harness rather than the deliverable. AC3 was cut at the gate; the
   Playwright run stays a task-level check. AC1 was clean on all three questions.
 
+- 2026-09-03: T2 — the three comment blocks rewritten in
+  `jmgirard/hitop-builder` at `900feae` on `m087-probe-comments`; the diff
+  changes comment lines only, and the `as.integer()` note was corrected before
+  commit from "since hitop 0.2.0" to a version-free statement, since the older
+  double-item builds report `0.2.0` as well.
 - 2026-09-03: T1 — basis for the corrected wording recorded below as M087-D1;
   the de-duplication site and the HiTOP-BR worked case were both read from the
   package at `8592e803`.
