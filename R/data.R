@@ -348,7 +348,7 @@
 #' Response choice sets referenced by `hitophsum_items$Choice_Set`. Used by the
 #' HiTOP-HSUM instrument generators (e.g. `generate_redcap_hitophsum()`).
 #'
-#' @format A \link[tibble]{tibble} with 42 rows and 3 columns:
+#' @format A \link[tibble]{tibble} with 185 rows and 3 columns:
 #' \describe{
 #'   \item{Choice_Set}{Name of the choice set}
 #'   \item{Value}{Coded response value}

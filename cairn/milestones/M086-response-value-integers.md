@@ -174,6 +174,7 @@ under D-056.
 - 2026-09-03: T8 — NEWS.md gains a Breaking changes entry for the response-value retype; `DECISIONS.md` gains D-060. `devtools::document()` no diff, `devtools::test()` 0 failures, `devtools::check()` 0 errors / 0 warnings / 0 notes, line-ending check clean. Status to `review`.
 - 2026-09-03: review — PR #94 opened as a draft; all eight criteria executed with fresh evidence and ticked; `cairn_validate` exit 0 and the r-package consistency-gate clean.
 - 2026-09-03: review — three fresh-context reviewers; the two Sonnet lenses returned no findings, the [O] diff-bug lens returned eleven. Five fixed on the branch (all test-only, in the two files this milestone added or extended), one rejected as the accepted AC5 amendment, three sent to a follow-up candidate row, one half-correct and surfaced at the gate. None met the return floor.
+- 2026-09-03: review — merge gate: Jeff directed two further fixes beyond the five taken at triage — the same loop-abandoning-skip repair on the sibling M081 item-number block, and `hitophsum_choices`'s `@format` row count (42 stated, 185 actual). Both applied; suite, `document()` and `check()` re-run clean.
 
 ## Decisions
 
@@ -219,8 +220,9 @@ PR: https://github.com/jmgirard/hitop/pull/94.
   `hitophsum_choices$Value` reads back as `integer`.
 - AC8 — `devtools::test()` 0 failures / 0 errors / 9 skips / 17,403 passes over
   647 files; `devtools::document()` left the tree clean;
-  `devtools::check()` 0 errors / 0 warnings / 0 notes (re-run after the fix-now
-  test edits — the pre-fix tree also checked 0/0/0).
+  `devtools::check()` 0 errors / 0 warnings / 0 notes, re-run after the fix-now
+  test edits and again after the two gate-directed fixes below (all three runs
+  0/0/0).
 
 ### Consistency gate
 
@@ -298,11 +300,32 @@ Finding log (rank order, with disposition):
     **Fixed now** — the subsumed first assertion removed (a one-line tidy taken
     while the file was open).
 11. `hitophsum_choices`'s roxygen `@format` says "42 rows and 3 columns"; the
-    object has 185 rows (`R/data.R:350`). **Follow-up** — pre-existing (the
-    merge-base copy is also 185 rows), so out of this diff's scope, but a false
-    documented claim and worth its own row.
+    object has 185 rows (`R/data.R:350`). **Fixed at Jeff's direction** — see
+    below.
 
 Fix-now work is test-only, in the two files this milestone added or extended;
 no package code changed. Both files re-run clean (`test-item-number-merge-base.R`
 106 + 4 + 4 + 5 passes, 2 designed M081 skips; `test-response-value-no-move.R`
 1 + 24 + 4 + 11 passes, 0 skips).
+
+### Gate-directed fixes
+
+At the merge gate Jeff directed two further fixes beyond the five taken above.
+
+- The sibling M081 item-number block carried the same loop-abandoning
+  `skip_if()` shape (`test-item-number-merge-base.R:72-96`) and is repaired the
+  same way, so the file no longer holds two contradictory idioms. It still
+  reports one clean skip on this branch — all eight item-number objects are
+  already integer at the merge base — now for the aggregate reason rather than
+  by abandoning at the first object. Discrimination shown by planting M081's own
+  merge base (`5636f24e^`): all eight objects are reachable there and all eight
+  moved, so the repaired loop runs whole where the old shape would have stopped
+  at the first.
+- `hitophsum_choices`'s `@format` said 42 rows against an object of 185
+  (`R/data.R:351`); corrected, `document()` re-run, and a NEWS entry added under
+  Documentation and website. The other twenty shipped datasets' `@format` row
+  counts were read off their objects in the same pass and all match.
+
+After both: `devtools::test()` 0 failures / 0 errors / 9 skips / 17,403 passes,
+`devtools::document()` no diff, `devtools::check()` 0 errors / 0 warnings /
+0 notes.

@@ -230,6 +230,10 @@
 
 ## Documentation and website
 
+* **`hitophsum_choices`'s help page reported the wrong number of rows.** Its
+  `@format` section said 42 rows; the dataset has 185. The other twenty shipped
+  datasets' row counts were checked against their objects and are correct.
+
 * **Three scoring vignettes gained sections for functions they never
   demonstrated.** *Scoring the PID-5* now ranks each participant's five
   highest-scoring facets with `rank_scales()`, and the HiTOP-SR and HiTOP-BR

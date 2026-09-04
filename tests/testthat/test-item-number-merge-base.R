@@ -69,25 +69,37 @@ retype_spec <- function(x, columns) {
   x
 }
 
-skip_without_double_base <- function(name, sha) {
-  old <- merge_base_object(name, sha)
-  # The guard is the retype itself being a no-op, not a probe on one named
-  # column: four of these eight objects hold their item numbers only inside
-  # list-columns and nested frames, so a top-level probe reads NULL on them and
-  # never skips.
+# The guard is the retype itself being a no-op, not a probe on one named column:
+# four of these eight objects hold their item numbers only inside list-columns
+# and nested frames, so a top-level probe reads NULL on them and never skips.
+#
+# `testthat::skip_if()` ends the whole `test_that()` block rather than the loop
+# iteration it is called from, so the merge base is read for every object first
+# and the skip decided once over all of them: the loop below runs whole or does
+# not run at all. Called from inside the loop it would abandon every object
+# after the first one that skipped, silently, and report as one clean skip.
+merge_base_item_numbers <- function(sha) {
+  bases <- lapply(names(item_number_columns), function(name) {
+    old <- merge_base_object(name, sha)
+    list(
+      old = old,
+      moved = !identical(retype_item_numbers(old, item_number_columns[[name]]), old)
+    )
+  })
+  names(bases) <- names(item_number_columns)
   testthat::skip_if(
-    identical(retype_item_numbers(old, item_number_columns[[name]]), old),
-    paste0("the merge base already stores ", name, "'s item numbers as integer")
+    !any(vapply(bases, `[[`, logical(1), "moved")),
+    "the merge base already stores every item number as integer"
   )
-  old
+  bases
 }
 
 test_that("retyping the item numbers moved nothing else", {
   base <- skip_without_merge_base()
+  bases <- merge_base_item_numbers(base)
   for (name in names(item_number_columns)) {
     columns <- item_number_columns[[name]]
-    old <- skip_without_double_base(name, base)
-    old <- retype_item_numbers(old, columns)
+    old <- retype_item_numbers(bases[[name]]$old, columns)
     if (is.data.frame(old)) {
       old <- retype_spec(old, columns)
     } else {
@@ -95,6 +107,12 @@ test_that("retyping the item numbers moved nothing else", {
     }
     expect_identical(getExportedValue("hitop", name), old, info = name)
   }
+  # Each object is compared, and each one really moved -- so no comparison above
+  # passed by asserting that nothing changed.
+  expect_setequal(
+    names(Filter(function(x) x$moved, bases)),
+    names(item_number_columns)
+  )
 })
 
 test_that("the retyping applied above is the change, not an equality that hides it", {
@@ -102,7 +120,7 @@ test_that("the retyping applied above is the change, not an equality that hides 
   # `expect_equal()` passes over an integer/double difference. Pinned here so a
   # later relaxation of that assertion is a visible change, not a silent one.
   base <- skip_without_merge_base()
-  old <- skip_without_double_base("hitopsr_items", base)
+  old <- merge_base_item_numbers(base)$hitopsr_items$old
   expect_equal(old$HSR, hitopsr_items$HSR)
   expect_false(identical(old$HSR, hitopsr_items$HSR))
   expect_type(old$HSR, "double")
