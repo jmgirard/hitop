@@ -66,7 +66,7 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
       consume it — compare each object, then `expect_setequal()` over
       `names(Filter(function(x) x$moved, bases))`. Extend the file's header comment (`:1-9`) to
       cover the fourth block.
-- [ ] T3: GREEN evidence. On the branch, re-run the file (expect 5 skips, 0 failures) and then
+- [x] T3: GREEN evidence. On the branch, re-run the file (expect 5 skips, 0 failures) and then
       `Rscript -e 'devtools::test()'` for AC1. Record both.
 - [ ] T4: Discrimination evidence. In one `devtools::load_all()` session, evaluate a
       `test_that()` block calling `merge_base_instructions("c3be8505")` and asserting AC3's
@@ -84,6 +84,8 @@ declined at this gate. The three sibling merge-base files → untouched; swept a
 - 2026-09-04: criteria audit ran in reduced mode ([O] fresh-context reader, internal tier). AC1 and AC2 clean on first pass. AC3 returned findings on all three questions and was rewritten twice — first wording unbounded over "any branch whose merge base predates the retype", second pinned the commit but proved it through a scratch clone with a manipulated `origin/HEAD` (disproportionate for internal tier). Third wording proves it by one in-process call and is clean on all three.
 
 - 2026-09-04: T2 added `merge_base_instructions(sha)` to `test-item-number-merge-base.R` — one `merge_base_sysdata()` read, per-object `list(old =, moved =)` over the four instruction objects, a single `testthat::skip_if()` after the loop, the named list returned; the block now consumes it and keeps `expect_setequal()` over `names(Filter(function(x) x$moved, bases))`. The file header extended to say the instruction block skips on the same terms. `devtools::test()`: 0 failures, 0 warnings, 13 skips, 17277 passes.
+
+- 2026-09-04: T3 GREEN evidence at be2bc415. `test_local(filter = "item-number-merge-base", reporter = "summary")`: 5 skips, 0 failures — skip 5 is `retyping the instruction option values moved nothing else ('test-item-number-merge-base.R:244:3') - Reason: the merge base already stores every instruction option value as integer`. `devtools::test()` at the same commit: `[ FAIL 0 | WARN 0 | SKIP 13 | PASS 17277 ]`.
 
 ## Decisions
 
