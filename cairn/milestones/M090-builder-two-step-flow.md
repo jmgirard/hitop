@@ -99,4 +99,12 @@ Diff-bug lens (Opus), twelve findings, each confirmed or refuted against the cod
 - F11 `README.md:260`: "The page's on-screen notice says which of these applies" points at the crosswalk sentence now inside the closed disclosure. Confirmed, the same fold as F1.
 - F12 `index.html:857-859`: the "(default)" marker only appears after a box is emptied, since the defaults are written into the boxes. Confirmed, cosmetic.
 
-Triage at the gate (recorded once Jeff decides):
+Triage at the gate, 2026-09-11, Jeff deciding:
+
+- F1 and F11: fix now. Jeff asked whether the warning is still needed given the metadata file. It is: the `.json` records the printed order on `item_order`, but no scoring function reads that attribute, so the columns must be reordered by hand before scoring. Jeff wants the scoring functions able to consult it, which is package work and becomes a candidate row at hygiene. Meanwhile `#shuffleNote` moved out of the Word disclosure to sit below it inside the panel, shown whenever the box is ticked.
+- F4: fix now. A card press writes "Ready. <format label> chosen." to `#status` while the page is idle (status text starting "Ready."), so a build's progress or a failure message is never overwritten.
+- P1: rejected with reason. The mark now says which format the visible settings and download button belong to. The code comment records the reasoning.
+- F2, F3, F5: fixed now as README corrections (second step, settings lines, "shown" for "on the page"). The *What the page shows* walk gained two sentences on the warning and the status line.
+- F7: rejected, refuted. F6: rejected, a dead declaration a formatter would catch. F8: rejected, a state the page never produces. F9 and F12: rejected, cosmetic. F10: rejected, unmodified lines and the pattern M053 chose.
+
+Re-verification after the fix commit (builder commit bd0b5b5): AC1, AC2, AC4 and AC5 re-run in full by the trimmed sweep, same results (2 steps, 7 settings each closed after every press, 5 controls and 3 summaries crossed, 42 cells 0 clipped and no horizontal scroll). Two added reads: with shuffle ticked and the disclosure closed after two card presses, `#shuffleNote` is outside any `details`, not hidden, and has a rendered height. After the Word and REDCap presses `#status` reads "Ready. Word form chosen." and "Ready. REDCap dictionary chosen." AC3 stands from the first run: the fix touched markup placement, a status write and README prose, none on the build path. AC6 stands: the grep and the quoted passages are unchanged. Smoke and plants re-run: recorded below.
