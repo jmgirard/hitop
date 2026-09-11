@@ -1,19 +1,19 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-11 (thirty-sixth pass, M091's post-merge): M091 archived, row done. PR #99 squash-merged, 8/8 CI green. One candidate row added (four deferred findings on `layout_items()`); builder-README row marked promotable; M088's row pruned. One LESSONS line added, the M038 Suggests-floor line retired. Bytes: `ROADMAP.md` 59 lines / 23,960; `LESSONS.md` 44 lines / 19,982. validate green, release window quiet._
+_Last hygiene check: 2026-09-11 (thirty-seventh pass, M092's post-merge): M092 archived, row done; M089's row pruned (retention 3). PR #100 squash-merged, 8/8 CI green; builder PR #16 merged. One candidate row added (`tests/prose.mjs` guard reach). One LESSONS line added, none retired. Bytes: `ROADMAP.md` 59 lines / 24,227; `LESSONS.md` 45 lines / 20,125. validate green, release window quiet._
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M093). Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R CMD check` 0/0/0, pkgdown and URLs clean. Tag and GitHub release pending the maintainer._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M092 | The HiTOP-SR Module Builder's prose reads as plain human English | review | — | normal | milestones/M092-builder-plain-prose.md |
+| M092 | The HiTOP-SR Module Builder's prose reads as plain human English | done | — | normal | milestones/archive/M092-builder-plain-prose.md |
 | M091 | The HiTOP-SR scoring functions score printed-order columns through a module's recorded item order | done | — | normal | milestones/archive/M091-score-printed-layout.md |
 | M090 | A two-step builder flow with the format settings folded away | done | M089 | normal | milestones/archive/M090-builder-two-step-flow.md |
-| M089 | One download per builder build — a zip bundle holding the questionnaire, the scoring file and a README | done | — | normal | milestones/archive/M089-builder-one-file-bundle.md |
 
 ## Candidates
 
+- The builder's `tests/prose.mjs` ledger guard greps only `textContent`, `innerHTML` and `setAttribute` writers, so a writer added as `.innerText`, `.value =`, `.append()` or `insertAdjacentHTML()` trips nothing (the naming-defaults `el(spec.id).value = value` site is already unclassified), and the script runs by hand only: no `npm run prose`, no step in `smoke.yml`. M092's review deferred both (F2, F3). Promote if a builder milestone touches the page's writers — added 2026-09-11.
 - The hitop-builder README (§ Shuffling the Word form) and the bundle README.txt tell users to put shuffled-form columns back into instrument order by hand. M091 shipped `layout = "printed"` on 2026-09-11, so both now name that argument as the route. Promotable — added 2026-09-11 — lineage: M091 plan gate
 - Four loose ends M091's review deferred: `layout_items()` truncates a non-integer `item_order`; its permutation check duplicates `write_module_impl()`'s; `characterize_layout/compare.R` reads bare `.rds` paths from the working directory; no test covers `layout = "printed"` through the deprecated `subset`. Promote when `layout_items()` is next edited — added 2026-09-11 — lineage: M091 (findings 3, 4, 7, 9)
 - The builder's download button can re-enable mid-build: `refreshTally()` sets `.downloads button` from the selection alone, and step 1 is reachable while a build runs, so a second `download()` wipes the shared `/tmp/bundle` the first is still reading and can save one build's files under the other's stem; `#downloadHint`'s "switches off while a build is running" overstates. Pre-existing (the old `/tmp/module.*` had the same hole). Promote when `download()` is next edited (M090 re-cuts the step) or on a report of a bundle holding the wrong build — added 2026-09-11 — lineage: M089 (findings 1, 2)
