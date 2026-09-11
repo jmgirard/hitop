@@ -65,6 +65,7 @@ A visitor to the HiTOP-SR Module Builder clicks once per build and receives one 
 - 2026-09-11: claim audit: 38 claims read, 1 corrected — README.md (the Word/Qualtrics README-difference sentence now names the entry-name line as well as the paragraph; builder commit 61803b4). The reader re-ran `bundleReadme()` and found the quoted REDCap `README.txt` byte-identical.
 - 2026-09-11: all tasks checked; builder smoke and plant matrix green locally; no R code changed here, so the r-package `verify` slot has nothing to run. Status → review.
 - 2026-09-11: review step 3 checkpoint: AC1-AC5 and AC7 verified with fresh evidence on builder commit 61803b4 and ticked. AC6 waits on the plant matrix (running) and the PR smoke workflow (step 8). cairn_validate green, document() no diff, pkgdown clean, R CMD check running, three reviewers spawned.
+- 2026-09-11: step-7 approval: m089-one-file-bundle (hitop-builder) and m089-builder-one-file-bundle (this repo) approved for merge with the proposed triage. F3 and F12 fixed on the builder branch, F1/F2 and F4-F6 to candidate rows at hygiene, F7-F11 and F13 rejected.
 
 ## Decisions
 
@@ -85,10 +86,10 @@ Consistency gate 2026-09-11: `cairn_validate` exit 0 (24 advisory warnings, all 
 
 Independent review 2026-09-11, three fresh-context lenses. Blame-history lens ([S]): zero regressions, every removal traced to a commit that marked the code provisional or to a milestone task. Prior-review lens ([S]): zero findings, both PR-comment probes empty, the archived reviews of M045, M062, M063, M074 and M076 all still honored. Diff-bug lens ([O]) ranked thirteen findings, dispositions below.
 
-- F1 (index.html:1218): ticking a scale mid-build re-enables `#downloadBtn` through `refreshTally()`, and a second `download()` wipes the shared `/tmp/bundle` the first build reads from. Verified against the code. Pre-existing, the old code shared `/tmp/module.*` the same way. Disposition: follow-up candidate row (an in-flight guard, search-first found no row).
+- F1 (index.html:1218): ticking a scale mid-build re-enables `#downloadBtn` through `refreshTally()`, and a second `download()` wipes the shared `/tmp/bundle` the first build reads from. Verified against the code. Pre-existing, the old code shared `/tmp/module.*` the same way. Disposition: follow-up candidate row (an in-flight guard, search-first found no row). Accepted at the gate.
 - F2 (index.html:541): `#downloadHint` says the button switches off while a build runs, which F1's path falsifies. Same root cause, the old hint made the same claim. Disposition: folded into F1's candidate row.
-- F3 (README.md:180): "differ only in the questionnaire entry" understates, the stem line and the `.json` name line differ too. Verified by generating the three READMEs. Disposition: fix now.
-- F4 (smoke.spec.js:37): `zipEntries` guards only a missing end-of-central-directory record, a corrupt offset or deflate stream throws and lands in the plant matrix's red-but-silent bucket. Latent, plant (d)'s 12-byte blob short-circuits. Disposition: follow-up candidate row with F5 and F6 (test-reader hardening).
+- F3 (README.md:180): "differ only in the questionnaire entry" understates, the stem line and the `.json` name line differ too. Verified by generating the three READMEs. Disposition: fix now, done, the sentence now names the stem.
+- F4 (smoke.spec.js:37): `zipEntries` guards only a missing end-of-central-directory record, a corrupt offset or deflate stream throws and lands in the plant matrix's red-but-silent bucket. Latent, plant (d)'s 12-byte blob short-circuits. Disposition: follow-up candidate row with F5 and F6 (test-reader hardening). Accepted at the gate.
 - F5 (smoke.spec.js:64): a compression method other than 8 is returned as stored bytes. Latent, {zip} emits stored and deflate only. Disposition: with F4.
 - F6 (smoke.spec.js:166): A4 asserts entry order while its message says membership. Disposition: with F4.
 - F7 (index.html:1138): the status line still says "Building the DOCX file…" while the save is a `.zip`. Disposition: reject, the wording is the build's, and M090 re-cuts the download step's copy.
@@ -96,5 +97,5 @@ Independent review 2026-09-11, three fresh-context lenses. Blame-history lens ([
 - F9 (index.html:536): the REDCap sentence in `#descriptorNote` shows to every format. Disposition: reject, the notice is format-independent by design and M090 re-cuts it.
 - F10 (index.html:1076): `wrapIndented` mishandles double spaces and over-long words. Latent, no current input has either. Disposition: reject.
 - F11 (index.html:1245): the page relies on {zip} reaching webR as hitop's Import with no presence check. Disposition: reject, the coupling is the one D-035 and D-050 record and `MIN_HITOP` gates it.
-- F12 (README.md:205): AC7 asks the table to list "its three entry names" and the table carries two, `README.txt` sits in the sentence under it. Disposition: fix now, a fourth column, then AC7 re-read.
+- F12 (README.md:205): AC7 asks the table to list "its three entry names" and the table carries two, `README.txt` sits in the sentence under it. Disposition: fix now, done, the table carries a `README inside` column. AC7 re-read on the fixed table: each of the eight rows lists the bundle and all three entry names as captured.
 - F13 (index.html:1156): `/tmp/<stem>.zip` bundles are never unlinked. Disposition: reject, at most eight small files in an in-memory FS for the session.
