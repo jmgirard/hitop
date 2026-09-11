@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-11 (thirty-seventh pass, M092's post-merge): M092 archived, row done; M089's row pruned (retention 3). PR #100 squash-merged, 8/8 CI green; builder PR #16 merged. One candidate row added (`tests/prose.mjs` guard reach). One LESSONS line added, none retired. Bytes: `ROADMAP.md` 59 lines / 24,227; `LESSONS.md` 45 lines / 20,125. validate green, release window quiet._
+_Last hygiene check: 2026-09-11 (thirty-seventh pass, M092's post-merge): M092 archived, row done; M089's row pruned (retention 3). PR #100 squash-merged, 8/8 CI green; builder PR #16 merged. One candidate row added (`tests/prose.mjs` guard reach). One LESSONS line added, none retired. Bytes: `ROADMAP.md` 59 lines / 24,227; `LESSONS.md` 45 lines / 20,074. validate green, release window quiet._
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M093). Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R CMD check` 0/0/0, pkgdown and URLs clean. Tag and GitHub release pending the maintainer._
 
 ## Milestones
