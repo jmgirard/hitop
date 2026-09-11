@@ -1,13 +1,13 @@
 # M091: The HiTOP-SR scoring functions score printed-order columns through a module's recorded item order
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — two exported scoring functions gain an argument
-- **Branch/PR:** —
+- **Branch/PR:** `m091-score-printed-layout`
 
 ## Goal
 
@@ -22,7 +22,7 @@
 ## Acceptance criteria
 
 - [ ] AC1: `score_hitopsr()` and `reliability_hitopsr()` each take a `layout` argument that accepts `"instrument"` (the default) or `"printed"`. With `layout` omitted, a characterization script runs every `score_hitopsr()` and `reliability_hitopsr()` call in `tests/testthat/` at the merge base and on the branch. Grep enumerates the calls. Every returned value is `identical()` across the two runs (GP2).
-- [ ] AC2: Take a module whose `item_order` is a permutation that is not its own inverse. The test checks that as `!identical(order(item_order), match(module$items, item_order))`. Add one 3-cycle and one random shuffle. With `layout = "printed"`, `score_hitopsr()` given columns in printed order returns correct scale scores. One two-scale fixture includes Romantic Disinterest, the instrument's only reverse-keyed item (HSR 310). Its expected scores are means over hand-reverse-keyed responses written out in the test (IP2). A second two-scale fixture with no reverse item covers the unkeyed case. For a four-scale module and for the whole-instrument module drawn from `sim_hitopsr`, the scores equal `score_hitopsr(layout = "instrument")` on the same responses in instrument order. That comparison is a consistency check on top of the hand fixtures in `test-score_hitopsr.R`, which already pin the instrument branch.
+- [ ] AC2: Take a module whose `item_order` is a permutation that is not its own inverse. The test checks that as `!identical(match(item_order, module$items), match(module$items, item_order))`. Add one 3-cycle and one random shuffle. With `layout = "printed"`, `score_hitopsr()` given columns in printed order returns correct scale scores. One two-scale fixture includes Romantic Disinterest, the instrument's only reverse-keyed item (HSR 310). Its expected scores are means over hand-reverse-keyed responses written out in the test (IP2). A second two-scale fixture with no reverse item covers the unkeyed case. For a four-scale module and for the whole-instrument module drawn from `sim_hitopsr`, the scores equal `score_hitopsr(layout = "instrument")` on the same responses in instrument order. That comparison is a consistency check on top of the hand fixtures in `test-score_hitopsr.R`, which already pin the instrument branch.
 - [ ] AC3: With `layout = "printed"` and the four-scale module, `reliability_hitopsr(omega = FALSE)` on printed-order columns returns per-scale alphas equal to the `"instrument"` call on the same responses in instrument order. With `omega = TRUE`, a `calc_omega` mocked through `local_mocked_bindings()` records the item matrix it receives. Per-item-distinguishable responses make the column order identifiable. The recorded matrix equals the one the `"instrument"` call passes. This checks an internal contract, not returned output.
 - [ ] AC4: `layout = "printed"` aborts, blaming the exported wrapper, in three cases: `module = NULL`, a module with no `item_order` attribute, and an `item_order` that is not a permutation of `module$items`. Each message names the `layout` argument. It says how to get an order (a descriptor written with `randomize = TRUE`) or to use `"instrument"`. A `layout` value outside the two choices aborts naming the exported function and both permitted values. Each abort branch has a test that fires it and asserts on the argument name and the blamed call. The branches stay unclassed, so a caller cannot catch them by name.
 - [ ] AC5: Under `layout = "printed"`, the ascending-name heuristic `warn_item_order()` evaluates the `items` the caller supplied and never the permuted vector. Printed-order columns named `q_1` to `q_n` warn zero times. Printed-order columns with non-ascending names warn exactly once. Each case is asserted with a warning count.
@@ -41,7 +41,7 @@
 
 ## Tasks
 
-- [ ] T1: Tests first. In `tests/testthat/test-score_hitopsr.R` and a new `test-layout.R`, add the AC2 fixtures (Romantic Disinterest pair, unkeyed pair, four-scale, whole-instrument), the AC3 alpha and mocked-omega checks, the AC4 abort tests, and the AC5 warning counts. Run them red.
+- [x] T1: Tests first. In `tests/testthat/test-score_hitopsr.R` and a new `test-layout.R`, add the AC2 fixtures (Romantic Disinterest pair, unkeyed pair, four-scale, whole-instrument), the AC3 alpha and mocked-omega checks, the AC4 abort tests, and the AC5 warning counts. Run them red.
 - [ ] T2: Implement in `score_hitopsr()` (`R/score_hitopsr.R:72`). Add `layout = c("instrument", "printed")` after `module`, resolved with `match.arg()`. Add an internal helper in `R/module.R` beside `hitopsr_engine_inputs()`. The helper validates the three refusals and returns `items[match(module$items, item_order)]`. Run `warn_item_order()` on the caller's `items` before the permute. Skip it inside `prep_items()` (`R/util.R:485`) for the permuted vector, for example through a flag argument.
 - [ ] T3: The same argument and helper on `reliability_hitopsr()` (`R/reliability_hitopsr.R:54`). Then the AC1 characterization script in `data-raw/` or the scratchpad: grep the calls, run them at the merge base and on the branch, compare with `identical()`.
 - [ ] T4: Documentation. Replace the recipe passages at `R/generate_docx.R:120-131`, `vignettes/articles/modules-hitopsr.Rmd:126-134` and `:320-328`, and the `item_order` paragraphs of `read_module()` and `write_module()` (`R/module_file.R:47-62`, `:208-210`). Document `layout` in both roxygen blocks. Run `devtools::document()`. Add the NEWS entry.
@@ -55,6 +55,10 @@
 - 2026-09-11: plan gate chose the argument over a separate exported reorder helper because the helper adds an export and a two-step workflow for one call site; falsified by a second consumer of the reordered frame.
 - 2026-09-11: plan gate chose unclassed `cli_assert()` refusals over a classed condition with a D-entry because the refusals are argument misuse like the family's other validators; falsified by a caller who reports a need to catch one by name.
 - 2026-09-11: the argument is named `layout` because `order` makes `o` ambiguous with `omega` in `reliability_hitopsr()` and `printed` clashes with `prefix` (M043 lesson); no existing argument in either function starts with `l`.
+- 2026-09-11: /milestone-implement started on branch `m091-score-printed-layout`. Question gate skipped: the plan left nothing open for the user. Routine choices: the characterization script lives in the scratchpad, not `data-raw/` (it is a one-off, not a data generator). The prose tests in `test-module-doc-prose.R` that pin the reorder recipe move to `layout = "printed"` in T4 (discovered sub-task).
+- 2026-09-11: substantive amendment at a mini gate, user accepted. AC2's check clause read `!identical(order(item_order), match(module$items, item_order))`, which is FALSE for every distinct `item_order` because `order(x)` equals `match(sort(x), x)`. It now reads `!identical(match(item_order, module$items), match(module$items, item_order))`, TRUE for a 3-cycle and FALSE for a swap (verified in R).
+- 2026-09-11: re-audit: AC2 (full) — returned four findings, none against the corrected clause: the random shuffle names no seed, the prose is test-shaped, `reliability_hitopsr()` is absent from AC2, two fixtures use the instrument branch as oracle. Disposed without further wording change: the check clause binds every probe module and the test seeds the shuffle, AC3 covers reliability, AC2 already states the oracle justification.
+- 2026-09-11: T1 done. `tests/testthat/test-layout.R` holds the AC2 hand fixtures (keyed pair with HSR 310, unkeyed pair, four-scale, whole instrument), the AC3 alpha and mocked-omega checks, the AC4 abort tests, and the AC5 warning counts. Run red: every call fails with `unused argument (layout = ...)`.
 
 ## Decisions
 

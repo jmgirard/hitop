@@ -8,7 +8,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
 | M092 | The HiTOP-SR Module Builder's prose reads as plain human English | planned | — | normal | milestones/M092-builder-plain-prose.md |
-| M091 | The HiTOP-SR scoring functions score printed-order columns through a module's recorded item order | planned | — | normal | milestones/M091-score-printed-layout.md |
+| M091 | The HiTOP-SR scoring functions score printed-order columns through a module's recorded item order | in-progress | — | normal | milestones/M091-score-printed-layout.md |
 | M090 | A two-step builder flow with the format settings folded away | done | M089 | normal | milestones/archive/M090-builder-two-step-flow.md |
 | M089 | One download per builder build — a zip bundle holding the questionnaire, the scoring file and a README | done | — | normal | milestones/archive/M089-builder-one-file-bundle.md |
 | M088 | The instruction-object merge-base block skips when its comparison is vacuous | done | — | high | milestones/archive/M088-merge-base-instruction-skip.md |
