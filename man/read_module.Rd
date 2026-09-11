@@ -12,7 +12,9 @@ read_module(file)
 \value{
 A \code{hitop_module} object. If the file carries an \code{itemOrder}, it is
 returned on the object's \code{item_order} attribute --- the same attribute
-\code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns for a shuffled form.
+\code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns for a shuffled form. Pass the module to
+\code{\link[=score_hitopsr]{score_hitopsr()}} or \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} with \code{layout = "printed"} to
+score columns entered in that printed order.
 }
 \description{
 Reads a module descriptor written by \code{\link[=write_module]{write_module()}} (or
@@ -70,7 +72,10 @@ none. \code{\link[=read_module]{read_module()}} returns it on the module's \code
 attribute, the same attribute \code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns, and
 \code{\link[=write_module]{write_module()}} writes it back from that attribute, so a descriptor
 read and written again keeps the order it recorded. The generators'
-\code{descriptor} argument sets the attribute for you.}
+\code{descriptor} argument sets the attribute for you, and
+\code{\link[=score_hitopsr]{score_hitopsr()}} and \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} read it under
+\code{layout = "printed"} to score columns entered in the form's printed
+order.}
 }
 
 \code{format}, \code{instrument}, and \code{scales} are required. The fields and the

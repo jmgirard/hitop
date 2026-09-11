@@ -67,17 +67,17 @@ in both cases read the order from the \code{item_order} attribute described
 under Value. There is no \code{seed} argument: call \code{\link[=set.seed]{set.seed()}} before this
 function to make an order reproducible. (default = \code{FALSE})
 
-\strong{Scoring data collected on a shuffled form.} \code{\link[=score_hitopsr]{score_hitopsr()}} addresses
-a module's items by their position in \code{module$items}, which is ascending
-original order — not the order a shuffled form prints them in. Reorder the
-collected columns through \code{item_order} before scoring:
-\code{collected[order(attr(out, "item_order"))]}. Scoring printed-order columns
-directly returns wrong scale scores and raises no error --- or pass
-\code{descriptor} and let the saved file carry the order for you. The recipe
-assumes \code{collected} is in the order the form printed, its first column
-holding the answer to the paper's item 1; columns already in instrument
-order need no reordering, and applying it to them scrambles what was
-right.}
+\strong{Scoring data collected on a shuffled form.} By default \code{\link[=score_hitopsr]{score_hitopsr()}}
+and \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} expect a module's items in ascending original
+order — not the order a shuffled form prints them in. Data entered
+straight off the form has its columns in the order the form printed, its
+first column holding the answer to the paper's item 1. Score such columns
+with \code{layout = "printed"} and a module carrying the printed order on its
+\code{item_order} attribute: pass \code{descriptor} here and \code{\link[=read_module]{read_module()}} hands
+that module back. Scoring printed-order columns under the default layout
+returns wrong scale scores and raises no error; columns already in
+instrument order take the default, and \code{layout = "printed"} applied to
+them scrambles what was right.}
 
 \item{descriptor}{An optional path to write a module descriptor to, beside
 the Word file. The saved file records which scales the form covers and

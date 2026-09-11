@@ -51,7 +51,10 @@ module_format_first_version <- function() {
 #'       attribute, the same attribute [generate_docx_hitopsr()] returns, and
 #'       [write_module()] writes it back from that attribute, so a descriptor
 #'       read and written again keeps the order it recorded. The generators'
-#'       `descriptor` argument sets the attribute for you.}
+#'       `descriptor` argument sets the attribute for you, and
+#'       [score_hitopsr()] and [reliability_hitopsr()] read it under
+#'       `layout = "printed"` to score columns entered in the form's printed
+#'       order.}
 #'   }
 #'
 #'   `format`, `instrument`, and `scales` are required. The fields and the
@@ -207,7 +210,9 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
 #'
 #' @return A `hitop_module` object. If the file carries an `itemOrder`, it is
 #'   returned on the object's `item_order` attribute --- the same attribute
-#'   [generate_docx_hitopsr()] returns for a shuffled form.
+#'   [generate_docx_hitopsr()] returns for a shuffled form. Pass the module to
+#'   [score_hitopsr()] or [reliability_hitopsr()] with `layout = "printed"` to
+#'   score columns entered in that printed order.
 #'
 #' @section Errors:
 #'
