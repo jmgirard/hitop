@@ -1,6 +1,6 @@
 # M089: One download per builder build — a zip bundle holding the questionnaire, the scoring file and a README
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -62,6 +62,8 @@ A visitor to the HiTOP-SR Module Builder clicks once per build and receives one 
 - 2026-09-11: T5 README.md rewritten: intro, *How it works* (the zip step), *What the page shows* step 3 with the three button labels read from the DOM, *The scoring file* now quoting the captured REDCap-module `README.txt` verbatim (diffed against the bundle entry: identical), *What the downloads are named* with a four-column table (bundle, questionnaire, scoring file) verified against the captured entry lists, the shuffle section's second-button sentence, and the layout table's plant count (eight).
 - 2026-09-11: T4 `smoke.spec.js` enumerates A1-A7: A4 the bundle's entry names, A5/A6 the `.docx` entry's zip magic and length, A7 the button (was A6); a central-directory reader with `zlib.inflateRawSync` reads the bundle. `plants.mjs` gained (g) README dropped from the zip call and (h) the form stubbed to 12 bytes before zipping; plant (d) re-targeted at the bundle save. Local smoke run green (14 s); `node tests/plants.mjs` exit 0, every plant red on a named assertion, every assertion covered (a: A1; b: A7; c: A1; d: A4, A5, A6; g: A4; h: A5, A6; e: A2; f: A3).
 - 2026-09-11: T6 on the served branch (commit 87cb2e4's `index.html`) against the T1 baseline. AC1: eight bundles, each exactly the three expected entries. AC2 all OK: `.txt` sha bc73b984bccd and 13d122901fcd both sides; inner `instrument.csv` sha db794565f74b and 5a2e1c16ec8a both sides; `.json` equal on every field but the excluded ones; `.docx` header and item rows equal (405 and 5 rows), shuffled builds equal on item set and crosswalk presence (false, true). AC3: `without extracting` in the two REDCap READMEs only; `read_module()` and `the file to field` in all eight. AC4: `unzip` and `ditto -x -k` both leave `-upload.zip` on disk, entry list `instrument.csv`, sha 9ebf972768e1 and eb65798f2017 equal to the inner zips the page built. Bundle digests: word 6f3daabf66d3, word-shuffled 1c7b73d26a0e, word-module 6eea9b0c09b1, word-module-shuffled a02c7d35c120, qualtrics 21b495403576, qualtrics-module cd2c21e53cfe, redcap 54b26b22a363, redcap-module f9275075f985. Scripts `capture.mjs` and `compare.py` in the session scratchpad, not committed.
+- 2026-09-11: claim audit: 38 claims read, 1 corrected — README.md (the Word/Qualtrics README-difference sentence now names the entry-name line as well as the paragraph; builder commit 61803b4). The reader re-ran `bundleReadme()` and found the quoted REDCap `README.txt` byte-identical.
+- 2026-09-11: all tasks checked; builder smoke and plant matrix green locally; no R code changed here, so the r-package `verify` slot has nothing to run. Status → review.
 
 ## Decisions
 
