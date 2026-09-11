@@ -1,13 +1,13 @@
 # M090: A two-step builder flow with the format settings folded away
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M089
 - **Driving RR:** —
 - **Principles touched:** GP3 (page behavior under D-038; every setting keeps its gated default)
 - **Resolves:** —
 - **Surface tier:** user-facing — the public builder page's step flow and controls
-- **Branch/PR:** —
+- **Branch/PR:** `m090-builder-two-step-flow` (tracking, this repo); code on `m090-two-step-flow` in jmgirard/hitop-builder
 
 ## Goal
 
@@ -41,8 +41,8 @@ The HiTOP-SR Module Builder asks for scales, then for a format, and downloads fr
 
 ## Tasks
 
-- [ ] T1: Merge steps two and three (`index.html:426-597`, `STEP_IDS`, `showStep()`, `setFormat()`, `markFormatChoice()`): cards select in place, the step bar drops to two buttons, the *Choose a different format* control and step three's heading swap go.
-- [ ] T2: Wrap each `.fmtpanel`'s fieldsets in a `<details>` with a `<summary>` rendered from the current values; close it in `setFormat()`; refresh the summary on `input`/`change`; token-layer styles for the summary and its focus ring.
+- [x] T1: Merge steps two and three (`index.html:426-597`, `STEP_IDS`, `showStep()`, `setFormat()`, `markFormatChoice()`): cards select in place, the step bar drops to two buttons, the *Choose a different format* control and step three's heading swap go.
+- [x] T2: Wrap each `.fmtpanel`'s fieldsets in a `<details>` with a `<summary>` rendered from the current values; close it in `setFormat()`; refresh the summary on `input`/`change`; token-layer styles for the summary and its focus ring.
 - [ ] T3: Rename `tilesExactly` and rewrite the `index.html:1525` log line and the two README passages to state a gap-free run from 1.
 - [ ] T4: Update `tests/smoke.spec.js` (`#stepbar button[data-goto="1"]` then `[data-choose="docx"]`, `smoke.spec.js:117-124`) for the two-step flow and keep `tests/plants.mjs` green.
 - [ ] T5: Rewrite `README.md`'s *What the page shows* for two steps and the disclosure.
@@ -55,6 +55,8 @@ The HiTOP-SR Module Builder asks for scales, then for a format, and downloads fr
 - 2026-09-11: plan gate chose two steps with cards selecting in place over keeping three steps with folded options, or one unstepped page, because it removes a screen while keeping M053's one-format-on-screen promise; falsified by visitors reporting the download as hard to find on the second step.
 - 2026-09-11: plan gate chose folding all seven settings over keeping paper size and the required flag visible because every setting has a gated package default and the summary line shows the values; falsified by a visitor missing a non-default they needed (A4 the likeliest).
 - 2026-09-11: plan gate chose absorbing the log-line candidate row here over leaving it because this milestone edits the README sections its promotion condition names.
+- 2026-09-11: implement started; branches `m090-builder-two-step-flow` (here) and `m090-two-step-flow` (builder). Question gate: Jeff asked for light beautification alongside the redesign; taken as a minor amendment within T1/T2's styling — every new colour reads from the existing token layer, so the contrast promises stand, and AC5's six-cell sweep covers the new elements. No other choice was open.
+- 2026-09-11: T1+T2 landed in one builder commit (the merged markup and the disclosures are one region): `STEP_IDS` two entries, `setFormat()` closes every `details`, marks the card and relabels the button, card press no longer calls `showStep()`; `FORMATS[].heading` and `#step3h` gone; `refreshSummaries()`/`settingsSummary()` write each `[data-summary]` span from the controls on `input`/`change`. Styling: step-number discs, current-card check, disclosure chevron, larger download button. Screenshots at 360/768/1280 in both schemes read clean by eye.
 
 ## Decisions
 

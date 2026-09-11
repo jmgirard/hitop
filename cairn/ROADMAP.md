@@ -8,7 +8,7 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M090 | A two-step builder flow with the format settings folded away | planned | M089 | normal | milestones/M090-builder-two-step-flow.md |
+| M090 | A two-step builder flow with the format settings folded away | in-progress | M089 | normal | milestones/M090-builder-two-step-flow.md |
 | M089 | One download per builder build — a zip bundle holding the questionnaire, the scoring file and a README | done | — | normal | milestones/archive/M089-builder-one-file-bundle.md |
 | M088 | The instruction-object merge-base block skips when its comparison is vacuous | done | — | high | milestones/archive/M088-merge-base-instruction-skip.md |
 | M087 | The builder's start-up probe comments state what the probe establishes | done | — | normal | milestones/archive/M087-builder-probe-comments.md |
