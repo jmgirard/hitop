@@ -10,8 +10,10 @@
 #'   instrument order, or in the form's printed order under
 #'   `layout = "printed"`; a misordered mapping silently scores the wrong
 #'   items, so a warning is issued when the names share a common prefix and
-#'   trailing number but those numbers are not ascending. Duplicated entries
-#'   are an error.
+#'   trailing number but those numbers are not ascending. That warning reads
+#'   the names you supply, so under `layout = "printed"` it also fires for
+#'   original-number names in printed order; it can be ignored there, or
+#'   avoided by supplying positions. Duplicated entries are an error.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-SR items, used for reverse-coding. (default = `c(1,
 #'   4)`)
@@ -86,7 +88,7 @@
 #' # (here set by hand; a descriptor written with `randomize = TRUE` carries it).
 #' attr(m, "item_order") <- c(144L, 202L, 66L, 389L, 260L, 109L, 291L, 118L)
 #' printed <- collected[match(attr(m, "item_order"), m$items)]
-#' score_hitopsr(printed, items = names(printed), module = m,
+#' score_hitopsr(printed, items = seq_along(printed), module = m,
 #'               layout = "printed", append = FALSE)
 #'
 #' @export

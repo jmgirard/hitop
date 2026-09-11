@@ -11,7 +11,11 @@
 #'   corresponding to the HiTOP-SR items held in `data` — all 405, or, when
 #'   `module` is supplied, that module's items. Items must be supplied in
 #'   instrument order, or in the form's printed order under
-#'   `layout = "printed"`; duplicated entries are an error.
+#'   `layout = "printed"`; duplicated entries are an error. The
+#'   ascending-name warning [score_hitopsr()] describes reads the names you
+#'   supply, so under `layout = "printed"` it also fires for original-number
+#'   names in printed order; it can be ignored there, or avoided by supplying
+#'   positions.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-SR items, used for reverse-coding. (default = `c(1, 4)`)
 #' @param alpha Optional logical; if `TRUE`, include a column of Cronbach's alpha
@@ -68,7 +72,7 @@
 #' # carries it).
 #' attr(m, "item_order") <- c(144L, 202L, 66L, 389L, 260L, 109L, 291L, 118L)
 #' printed <- collected[match(attr(m, "item_order"), m$items)]
-#' reliability_hitopsr(printed, items = names(printed), module = m,
+#' reliability_hitopsr(printed, items = seq_along(printed), module = m,
 #'                     layout = "printed", omega = FALSE)
 #'
 #' @export

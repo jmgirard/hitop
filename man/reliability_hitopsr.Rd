@@ -23,7 +23,11 @@ all 405 of them, or, when \code{module} is supplied, that module's items.}
 corresponding to the HiTOP-SR items held in \code{data} — all 405, or, when
 \code{module} is supplied, that module's items. Items must be supplied in
 instrument order, or in the form's printed order under
-\code{layout = "printed"}; duplicated entries are an error.}
+\code{layout = "printed"}; duplicated entries are an error. The
+ascending-name warning \code{\link[=score_hitopsr]{score_hitopsr()}} describes reads the names you
+supply, so under \code{layout = "printed"} it also fires for original-number
+names in printed order; it can be ignored there, or avoided by supplying
+positions.}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the HiTOP-SR items, used for reverse-coding. (default = \code{c(1, 4)})}
@@ -94,7 +98,7 @@ reliability_hitopsr(collected, items = names(collected), module = m, omega = FAL
 # carries it).
 attr(m, "item_order") <- c(144L, 202L, 66L, 389L, 260L, 109L, 291L, 118L)
 printed <- collected[match(attr(m, "item_order"), m$items)]
-reliability_hitopsr(printed, items = names(printed), module = m,
+reliability_hitopsr(printed, items = seq_along(printed), module = m,
                     layout = "printed", omega = FALSE)
 
 }
