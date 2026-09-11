@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-11 (thirty-fourth pass, M089's post-merge): M089 archived and its row set done; builder PR #14 and tracking PR #97 squash-merged, smoke and 8/8 CI green. Two candidate rows added from deferred findings (mid-build rebuild race; smoke zip-reader reach). M086's row pruned at terminal-row retention. No LESSONS line (the cross-repo merge-guard cwd gotcha is plugin conduct, not a repo lesson), no decision entry, no Known issues entry. Bytes: `ROADMAP.md` 58 lines / 23,289 (budget 24,000); `LESSONS.md` 44 lines / 19,981. validate green, release window quiet._
+_Last hygiene check: 2026-09-11 (thirty-fifth pass, M090's post-merge): M090 archived and its row set done; builder PR #15 and tracking PR #98 squash-merged, smoke and 8/8 CI green. One candidate row added (scoring functions consulting `item_order`); M087's row pruned at terminal-row retention. No LESSONS line, no decision entry, no Known issues entry. Bytes: `ROADMAP.md` 58 lines / 23,591 (budget 24,000); `LESSONS.md` 44 lines / 19,981. validate green, release window quiet._
 _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there; IDs continue — next new milestone is M091)._
 _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R CMD check` 0/0/0, pkgdown and URLs clean. Tag and GitHub release pending the maintainer._
 
@@ -8,13 +8,13 @@ _Release 0.2.0 prepared 2026-08-29: NEWS consolidated, `document()` no diff, `R 
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M090 | A two-step builder flow with the format settings folded away | review | M089 | normal | milestones/M090-builder-two-step-flow.md |
+| M090 | A two-step builder flow with the format settings folded away | done | M089 | normal | milestones/archive/M090-builder-two-step-flow.md |
 | M089 | One download per builder build — a zip bundle holding the questionnaire, the scoring file and a README | done | — | normal | milestones/archive/M089-builder-one-file-bundle.md |
 | M088 | The instruction-object merge-base block skips when its comparison is vacuous | done | — | high | milestones/archive/M088-merge-base-instruction-skip.md |
-| M087 | The builder's start-up probe comments state what the probe establishes | done | — | normal | milestones/archive/M087-builder-probe-comments.md |
 
 ## Candidates
 
+- The scoring functions cannot consult a module's recorded printed order: `read_module()` returns it on the `item_order` attribute, but no `score_*` function reads it, so data collected on a shuffled Word form must be reordered by hand (`collected[order(attr(m, "item_order"))]`) and a scorer who skips that gets wrong scale scores with no warning. Jeff asked at M090's review gate for the scoring functions to have the ability to consult it — added 2026-09-11.
 - The builder's download button can re-enable mid-build: `refreshTally()` sets `.downloads button` from the selection alone, and step 1 is reachable while a build runs, so a second `download()` wipes the shared `/tmp/bundle` the first is still reading and can save one build's files under the other's stem; `#downloadHint`'s "switches off while a build is running" overstates. Pre-existing (the old `/tmp/module.*` had the same hole). Promote when `download()` is next edited (M090 re-cuts the step) or on a report of a bundle holding the wrong build — added 2026-09-11 — lineage: M089 (findings 1, 2)
 - The builder smoke test's zip reader (`zipEntries`, `tests/smoke.spec.js`) guards only a missing end-of-central-directory record: a corrupt offset or deflate stream throws into the plant matrix's red-but-silent bucket, a compression method other than 8 is returned as stored bytes, and A4 asserts entry order while its message says membership. Latent under {zip}'s output. Promote when the reader or the plant matrix is next edited, or if a plant fails the matrix for the wrong reason — added 2026-09-11 — lineage: M089 (findings 4, 5, 6)
 - `data-raw/ku_data.R`'s reader has three robustness gaps M086's review found and deferred: its `^hitop` column selection is case-sensitive where the `dplyr::starts_with("hitop")` it mirrors is not; `col_integer()` turns an unparseable response into `NA` and records it in `problems()`, which the script never asserts empty; and `ku_pid5sf`'s 100 collectors are hardcoded as `pid5sf_%03d` where the HiTOP-SR read derives its set from the file header, and `readr` only warns on a collector matching no column. None affects the current run. Promote when the script is next re-run against a new export, or if a re-run produces a dataset that differs from what is committed — added 2026-09-03 — lineage: M086 (findings 5, 6, 7)
