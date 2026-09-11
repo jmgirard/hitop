@@ -118,17 +118,17 @@ generate_docx_hitopbr <- function(
 #'   under Value. There is no `seed` argument: call [set.seed()] before this
 #'   function to make an order reproducible. (default = `FALSE`)
 #'
-#'   **Scoring data collected on a shuffled form.** [score_hitopsr()] addresses
-#'   a module's items by their position in `module$items`, which is ascending
-#'   original order — not the order a shuffled form prints them in. Reorder the
-#'   collected columns through `item_order` before scoring:
-#'   `collected[order(attr(out, "item_order"))]`. Scoring printed-order columns
-#'   directly returns wrong scale scores and raises no error --- or pass
-#'   `descriptor` and let the saved file carry the order for you. The recipe
-#'   assumes `collected` is in the order the form printed, its first column
-#'   holding the answer to the paper's item 1; columns already in instrument
-#'   order need no reordering, and applying it to them scrambles what was
-#'   right.
+#'   **Scoring data collected on a shuffled form.** By default [score_hitopsr()]
+#'   and [reliability_hitopsr()] expect a module's items in ascending original
+#'   order — not the order a shuffled form prints them in. Data entered
+#'   straight off the form has its columns in the order the form printed, its
+#'   first column holding the answer to the paper's item 1. Score such columns
+#'   with `layout = "printed"` and a module carrying the printed order on its
+#'   `item_order` attribute: pass `descriptor` here and [read_module()] hands
+#'   that module back. Scoring printed-order columns under the default layout
+#'   returns wrong scale scores and raises no error; columns already in
+#'   instrument order take the default, and `layout = "printed"` applied to
+#'   them scrambles what was right.
 #' @param descriptor An optional path to write a module descriptor to, beside
 #'   the Word file. The saved file records which scales the form covers and
 #'   which instrument items they draw on, so [read_module()] hands the module

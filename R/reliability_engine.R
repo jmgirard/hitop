@@ -27,6 +27,9 @@
 #'   the stem names without rebuilding it. Guarded like `scale_names`.
 #' @param alpha,omega Logical; whether to compute each coefficient. A coefficient
 #'   is included as an output column only when its flag is TRUE.
+#' @param check_order Logical; if FALSE, prep_items() skips the ascending-name
+#'   heuristic because the wrapper already ran it on the caller's own `items`
+#'   before permuting them (reliability_hitopsr()'s `layout = "printed"`).
 #' @param call The calling environment, forwarded to the validators so aborts are
 #'   attributed to the exported wrapper rather than to this internal engine.
 #' @noRd
@@ -41,6 +44,7 @@ reliability_engine <- function(
   srange,
   alpha = TRUE,
   omega = TRUE,
+  check_order = TRUE,
   call = rlang::caller_env()
 ) {
   validate_flag(alpha, arg = "alpha", call = call)
@@ -53,6 +57,7 @@ reliability_engine <- function(
     n_items = n_items,
     reverse_items = reverse_items,
     srange = srange,
+    check_order = check_order,
     call = call
   )
 

@@ -2,6 +2,20 @@
 
 ## New features
 
+* **`score_hitopsr()` and `reliability_hitopsr()` score data entered off a
+  shuffled form.** Both gain a `layout` argument. The default,
+  `"instrument"`, is the existing behavior: item columns in ascending
+  HiTOP-SR order. `layout = "printed"` takes columns in the order a shuffled
+  Word form printed its items, column k holding the answer to printed item k.
+  The function puts them back into instrument order through the module's
+  `item_order` attribute. A descriptor written by `generate_docx_hitopsr()`
+  with `randomize = TRUE` records that order, and `read_module()` returns it.
+  The hand reorder the help pages and the modules article used to recommend
+  is no longer needed. Under `layout = "printed"`, a call with no module, a
+  module with no `item_order`, or an `item_order` that is not a permutation
+  of the module's items is an error. The message names the argument and says
+  how to get an order.
+
 * **`label_pid5()` attaches PID-5 item text and scale names to columns.** Given
   a data frame and the form its columns belong to, `target = "items"` attaches
   each item's questionnaire prompt to that item's column as a `label`

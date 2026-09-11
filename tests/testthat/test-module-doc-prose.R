@@ -11,9 +11,10 @@
 #     `title <- if (is.null(module))` ...), which the article never said;
 #   * the crosswalk is printed only for a RENUMBERED module form, so
 #     `renumber = FALSE` gets none -- the article promised one unconditionally;
-#   * `collected[order(item_order)]` puts columns back in instrument order only
-#     when they are in the form's PRINTED order to begin with, which neither the
-#     article nor `?generate_docx_hitopsr` said;
+#   * columns in the form's PRINTED order are scored through
+#     `layout = "printed"`; the hand reorder `collected[order(item_order)]`
+#     that preceded the argument may not be presented as the route again, and
+#     the precondition (printed order, column 1 = item 1) stays stated;
 #   * all three generators announce the descriptor's path on the console, which
 #     no `descriptor` help text mentioned;
 #   * `include_subscales = TRUE` with `module` is an error, which the article
@@ -103,9 +104,14 @@ test_that("the article says a renumber = FALSE form prints no crosswalk", {
   )
 })
 
-# --- the reorder recipe's precondition ------------------------------------
+# --- scoring printed-order columns goes through layout = "printed" ---------
+#
+# The hand reorder `collected[order(item_order)]` was the documented route
+# until score_hitopsr() and reliability_hitopsr() gained `layout`; no passage
+# may present it again, and each passage that names the case names the
+# argument and its precondition (columns in the form's printed order).
 
-test_that("both article recipes state the collected columns are in printed order", {
+test_that("both article passages route printed-order columns through layout = 'printed'", {
   recipe_sections <- c("Generating the Instrument", "Saving the Module Beside the Form")
 
   for (heading in recipe_sections) {
@@ -114,22 +120,25 @@ test_that("both article recipes state the collected columns are in printed order
     # hide the other heading's result.
     if (is.na(section)) next
 
-    # The full recipe shape, not a bare `order(` -- the section also holds an
-    # unrelated `scale_menu[order(...)]` sort, which a looser anchor accepts.
-    expect_match(section, "collected[order(", fixed = TRUE, info = heading)
+    expect_match(section, "layout = \"printed\"", fixed = TRUE, info = heading)
     expect_match(section, "the order the form printed", fixed = TRUE, info = heading)
     expect_match(section, "item 1", fixed = TRUE, info = heading)
+    # The retired recipe, in the shape it had -- not a bare `order(`, since the
+    # first section also holds an unrelated `scale_menu[order(...)]` sort.
+    expect_false(grepl("collected[order(", section, fixed = TRUE), info = heading)
   }
 })
 
-test_that("the randomize help text states the recipe's precondition", {
+test_that("the randomize help text routes printed-order columns through layout = 'printed'", {
   param <- rd_item("generate_docx_hitopsr.Rd", "randomize")
   expect_false(is.na(param))
   if (is.na(param)) return(invisible(NULL))
 
+  expect_match(param, "layout = \"printed\"", fixed = TRUE)
   expect_match(param, "order the form printed", fixed = TRUE)
   expect_match(param, "item 1", fixed = TRUE)
   expect_match(param, "already in instrument order", fixed = TRUE)
+  expect_false(grepl("order(attr(", param, fixed = TRUE))
 })
 
 # --- the descriptor write is announced ------------------------------------
