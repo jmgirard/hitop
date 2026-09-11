@@ -1,6 +1,6 @@
 # M091: The HiTOP-SR scoring functions score printed-order columns through a module's recorded item order
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -45,7 +45,7 @@
 - [x] T2: Implement in `score_hitopsr()` (`R/score_hitopsr.R:72`). Add `layout = c("instrument", "printed")` after `module`, resolved with `match.arg()`. Add an internal helper in `R/module.R` beside `hitopsr_engine_inputs()`. The helper validates the three refusals and returns `items[match(module$items, item_order)]`. Run `warn_item_order()` on the caller's `items` before the permute. Skip it inside `prep_items()` (`R/util.R:485`) for the permuted vector, for example through a flag argument.
 - [x] T3: The same argument and helper on `reliability_hitopsr()` (`R/reliability_hitopsr.R:54`). Then the AC1 characterization script in `data-raw/` or the scratchpad: grep the calls, run them at the merge base and on the branch, compare with `identical()`.
 - [x] T4: Documentation. Replace the recipe passages at `R/generate_docx.R:120-131`, `vignettes/articles/modules-hitopsr.Rmd:126-134` and `:320-328`, and the `item_order` paragraphs of `read_module()` and `write_module()` (`R/module_file.R:47-62`, `:208-210`). Document `layout` in both roxygen blocks. Run `devtools::document()`. Add the NEWS entry.
-- [ ] T5: `devtools::check()` clean, then the candidate row for the builder-side text.
+- [x] T5: `devtools::check()` clean, then the candidate row for the builder-side text.
 
 ## Work log
 
@@ -64,6 +64,7 @@
 - 2026-09-11: T3 done. AC1 characterization: grep enumerates 93 call sites in 20 merge-base test files. `data-raw/characterize_layout/characterize.R` wraps both functions in the loaded namespace and runs the merge-base test files through `testthat::test_dir(load_package = "none")` at the merge base (c54ea081) and at the branch head. Each run recorded 251 calls (132 `score_hitopsr()`, 119 `reliability_hitopsr()`, 15 of them errors), and `compare.R` finds all 251 `identical()`. The scripts are committed under `data-raw/` rather than left in the scratchpad, so review can rerun them (revises the routine choice logged at session start). A first attempt through `devtools::test()` recorded zero calls because its `load_all()` replaced the wrapped bindings.
 - 2026-09-11: T4 done. Full suite green after the doc edits (17383 pass, 0 fail, 13 skip). `devtools::document()` regenerated four Rd files.
 - 2026-09-11: claim audit: 50 claims read, 0 corrected — NEWS.md, R/generate_docx.R, R/module.R, R/module_file.R, R/reliability_engine.R, R/reliability_hitopsr.R, R/score_engine.R, R/score_hitopsr.R, R/util.R, data-raw/characterize_layout/, tests/testthat/test-layout.R, tests/testthat/test-module-doc-prose.R, vignettes/articles/modules-hitopsr.Rmd. The reader noted that both new examples emitted the ascending-name warning (printed-order `hsr_` names) and that the `items` help did not say the warning fires by design under `layout = "printed"`. Fixed: examples pass positions, and both `items` entries say the warning reads the supplied names and can be ignored or avoided under `layout = "printed"`. The same reader re-read the four changed spots once: all hold, examples emit no warning.
+- 2026-09-11: T5 done. `devtools::check()` on the final tree: 0 errors, 0 warnings, 0 notes once a stray untracked `Rplots.pdf` from an example run was removed (the one note named only that file). `devtools::document()` produces no diff. No new candidate row: the builder-side row already exists. All tasks ticked; status set to review.
 
 ## Decisions
 
