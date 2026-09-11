@@ -148,13 +148,14 @@ test_that("layout = 'printed' scores an unkeyed pair from printed-order columns"
     as.data.frame(score_hitopsr(inst, items = names(inst), module = m, append = FALSE)),
     unkeyed_expected
   )
+  # Positions, so the name heuristic (AC5, below) stays out of this check.
   out <- score_hitopsr(
-    printed, items = names(printed), module = m,
+    printed, items = seq_len(m$nItems), module = m,
     layout = "printed", append = FALSE
   )
   expect_equal(as.data.frame(out), unkeyed_expected)
 
-  wrong <- score_hitopsr(printed, items = names(printed), module = m, append = FALSE)
+  wrong <- score_hitopsr(printed, items = seq_len(m$nItems), module = m, append = FALSE)
   expect_false(isTRUE(all.equal(as.data.frame(wrong), unkeyed_expected)))
 })
 
@@ -170,7 +171,7 @@ test_that("layout = 'printed' equals the instrument-order call for a four-scale 
       inst, items = names(inst), module = m, missing = mode, append = FALSE
     )
     out <- score_hitopsr(
-      printed, items = names(printed), module = m,
+      printed, items = seq_len(m$nItems), module = m,
       layout = "printed", missing = mode, append = FALSE
     )
     expect_equal(out, ref, info = mode)
@@ -193,7 +194,7 @@ test_that("layout = 'printed' equals the instrument-order call for the whole ins
 
   ref <- score_hitopsr(inst, items = names(inst), module = m, append = FALSE)
   out <- score_hitopsr(
-    printed, items = names(printed), module = m,
+    printed, items = seq_len(m$nItems), module = m,
     layout = "printed", append = FALSE
   )
   expect_equal(out, ref)
@@ -227,12 +228,12 @@ test_that("reliability_hitopsr(layout = 'printed') returns the instrument-order 
 
   ref <- reliability_hitopsr(inst, items = names(inst), module = m, omega = FALSE)
   out <- reliability_hitopsr(
-    printed, items = names(printed), module = m,
+    printed, items = seq_len(m$nItems), module = m,
     layout = "printed", omega = FALSE
   )
   expect_equal(out, ref)
 
-  wrong <- reliability_hitopsr(printed, items = names(printed), module = m, omega = FALSE)
+  wrong <- reliability_hitopsr(printed, items = seq_len(m$nItems), module = m, omega = FALSE)
   expect_false(isTRUE(all.equal(wrong$alpha, ref$alpha)))
 })
 
@@ -260,7 +261,7 @@ test_that("reliability_hitopsr(layout = 'printed') hands calc_omega the instrume
   ref <- seen
   seen <- list()
   reliability_hitopsr(
-    printed, items = names(printed), module = m, layout = "printed", alpha = FALSE
+    printed, items = seq_len(m$nItems), module = m, layout = "printed", alpha = FALSE
   )
   expect_length(ref, length(m$scales))
   expect_identical(seen, ref)
@@ -340,14 +341,22 @@ test_that("layout = 'printed' refuses an item_order that is not a permutation of
 test_that("a layout outside the two choices aborts naming the function and both values", {
   m <- four_scale()
   inst <- sim_inst(m)
-  for (fn in c("score_hitopsr", "reliability_hitopsr")) {
-    f <- get(fn)
-    err <- expect_layout_abort(
-      f(inst, items = names(inst), module = m, layout = "shuffled"),
-      fn, "`layout`"
+  # Called by name, not through a wrapper, so the blamed call is the exported
+  # function's own.
+  errs <- list(
+    score_hitopsr = expect_layout_abort(
+      score_hitopsr(inst, items = names(inst), module = m, layout = "shuffled"),
+      "score_hitopsr", "`layout`"
+    ),
+    reliability_hitopsr = expect_layout_abort(
+      reliability_hitopsr(inst, items = names(inst), module = m, layout = "shuffled"),
+      "reliability_hitopsr", "`layout`"
     )
-    expect_match(conditionMessage(err), "\"instrument\"", fixed = TRUE, info = fn)
-    expect_match(conditionMessage(err), "\"printed\"", fixed = TRUE, info = fn)
+  )
+  for (fn in names(errs)) {
+    msg <- conditionMessage(errs[[fn]])
+    expect_match(msg, "\"instrument\"", fixed = TRUE, info = fn)
+    expect_match(msg, "\"printed\"", fixed = TRUE, info = fn)
   }
 })
 

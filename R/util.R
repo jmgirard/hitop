@@ -470,19 +470,25 @@ apa_mean <- function(mat) {
 # numeric, and reverse-key the flagged positions. Returns a numeric matrix (rows
 # = respondents, columns = items). `call` is forwarded to the validators so
 # aborts are attributed to the exported wrapper, not this helper or the engine.
+# `check_order = FALSE` skips the ascending-name heuristic: a wrapper that has
+# already permuted `items` into instrument order (layout_items()) ran it on
+# the caller's own vector, and the permuted one is non-ascending by design.
 prep_items <- function(
   data,
   items,
   n_items,
   reverse_items,
   srange,
+  check_order = TRUE,
   call = rlang::caller_env()
 ) {
   validate_data(data, call = call)
   validate_items(items, n = n_items, call = call)
   validate_item_uniqueness(items, call = call)
   validate_items_present(data, items, call = call)
-  warn_item_order(items, call = call)
+  if (check_order) {
+    warn_item_order(items, call = call)
+  }
   validate_range(srange, call = call)
 
   ## Extract item columns and coerce values to numbers

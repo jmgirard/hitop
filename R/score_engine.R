@@ -31,6 +31,9 @@
 #'   dropped for >25% missing); score_hitopsr()/score_hitopbr() historically did
 #'   not, so they pass FALSE to preserve their exact output. (Unifying the two is
 #'   a deliberate scoring-output change left for a future milestone.)
+#' @param check_order Logical; if FALSE, prep_items() skips the ascending-name
+#'   heuristic because the wrapper already ran it on the caller's own `items`
+#'   before permuting them (score_hitopsr()'s `layout = "printed"`).
 #' @param call The calling environment, used so input-validation aborts are
 #'   attributed to the exported wrapper (score_pid5() etc.) rather than to this
 #'   internal engine. Defaults to the wrapper that called score_engine().
@@ -49,6 +52,7 @@ score_engine <- function(
   se_instead,
   domain_map = NULL,
   mask_se_na = FALSE,
+  check_order = TRUE,
   call = rlang::caller_env()
 ) {
   ## Scalar-argument assertions (item/data/srange checks run in prep_items, with
@@ -67,6 +71,7 @@ score_engine <- function(
     n_items = n_items,
     reverse_items = reverse_items,
     srange = srange,
+    check_order = check_order,
     call = call
   )
 

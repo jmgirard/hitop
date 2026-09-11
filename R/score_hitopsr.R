@@ -7,9 +7,11 @@
 #' @param items A vector of column names (as strings) or numbers (as integers)
 #'   corresponding to the HiTOP-SR items held in `data` — all 405, or, when
 #'   `module` is supplied, that module's items. Items must be supplied in
-#'   instrument order; a misordered mapping silently scores the wrong items, so a
-#'   warning is issued when the names share a common prefix and trailing number
-#'   but those numbers are not ascending. Duplicated entries are an error.
+#'   instrument order, or in the form's printed order under
+#'   `layout = "printed"`; a misordered mapping silently scores the wrong
+#'   items, so a warning is issued when the names share a common prefix and
+#'   trailing number but those numbers are not ascending. Duplicated entries
+#'   are an error.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-SR items, used for reverse-coding. (default = `c(1,
 #'   4)`)
@@ -41,6 +43,17 @@
 #'   instrument order, as the `generate_*_hitopsr()` forms lay them out — and
 #'   only that module's scales are scored. When `NULL`, all 405 items are
 #'   expected and all 76 scales are scored. (default = `NULL`)
+#' @param layout The order the item columns are in. `"instrument"` (the
+#'   default) is ascending HiTOP-SR order, as the `generate_*_hitopsr()` forms
+#'   lay the items out. `"printed"` is the order a shuffled Word form printed
+#'   them: column k holds the answer to the form's printed item k. It needs a
+#'   `module` carrying an `item_order` attribute, the record a module
+#'   descriptor written by [generate_docx_hitopsr()] with `randomize = TRUE`
+#'   keeps and [read_module()] returns; the columns are put back into
+#'   instrument order through that attribute before scoring. A call with
+#'   `layout = "printed"` and no module, a module with no `item_order`, or an
+#'   `item_order` that is not a permutation of the module's items is an error.
+#'   (default = `"instrument"`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -68,6 +81,14 @@
 #' collected <- sim_hitopsr[sprintf("hsr_%03d", m$items)]
 #' score_hitopsr(collected, items = names(collected), module = m, append = FALSE)
 #'
+#' # Score data entered off a shuffled form: the columns are in the order the
+#' # form printed its items, recorded on the module's `item_order` attribute
+#' # (here set by hand; a descriptor written with `randomize = TRUE` carries it).
+#' attr(m, "item_order") <- c(144L, 202L, 66L, 389L, 260L, 109L, 291L, 118L)
+#' printed <- collected[match(attr(m, "item_order"), m$items)]
+#' score_hitopsr(printed, items = names(printed), module = m,
+#'               layout = "printed", append = FALSE)
+#'
 #' @export
 score_hitopsr <- function(
   data,
@@ -78,15 +99,24 @@ score_hitopsr <- function(
   calc_se = FALSE,
   append = TRUE,
   module = NULL,
+  layout = c("instrument", "printed"),
   subset = NULL
 ) {
   missing <- match.arg(missing)
+  # rlang's matcher, not match.arg(): its refusal names `layout` and both
+  # permitted values and blames this call, where match.arg()'s blames itself.
+  layout <- rlang::arg_match(layout)
   module <- resolve_module_arg(module, subset)
   ## Resolve this instrument's data: which items reverse and the per-scale
   ## item-number lists. With a `module`, the same inputs are remapped to
   ## positions within the module's own columns; without one, item number and
   ## position coincide. Shared arg validation and the pipeline run in the engine.
   inputs <- hitopsr_engine_inputs(module)
+  ## Under layout = "printed", put the caller's printed-order `items` into
+  ## instrument order through the module's item_order (refusing when there is
+  ## none); the heuristic order warning has then already run on the caller's
+  ## own vector, so the engine skips it.
+  items <- layout_items(items, module, layout)
 
   score_engine(
     data = data,
@@ -99,6 +129,7 @@ score_hitopsr <- function(
     missing = missing,
     calc_se = calc_se,
     se_instead = "Use {.fn interval_hitopsr} for an interval around a true score.",
-    append = append
+    append = append,
+    check_order = identical(layout, "instrument")
   )
 }

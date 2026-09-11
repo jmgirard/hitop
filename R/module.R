@@ -287,6 +287,68 @@ hitopsr_engine_inputs <- function(module, call = rlang::caller_env()) {
   )
 }
 
+# Internal Helper: the caller's `items` put into instrument order for `layout`
+#
+# Under `layout = "printed"` the supplied columns are in the order a shuffled
+# form printed its items: column k holds the answer to printed item k, and
+# `items` names the columns in that order. `attr(module, "item_order")` records
+# the original HiTOP-SR item numbers in printed order, so instrument item
+# `module$items[j]` sits at printed position `match(module$items[j],
+# item_order)`. The return value is `items` reindexed so that position j names
+# the column holding instrument item j, which is the order the engines expect.
+# Under `layout = "instrument"` the vector is returned untouched.
+#
+# The caller's own vector is validated and passed through warn_item_order()
+# here, before the permute: the permuted vector is non-ascending by
+# construction, so the engine skips the heuristic on it (`check_order = FALSE`
+# in prep_items()). Every refusal blames the exported wrapper via `call`.
+layout_items <- function(items, module, layout, call = rlang::caller_env()) {
+  if (identical(layout, "instrument")) {
+    return(items)
+  }
+  hint <- c(
+    "i" = "A printed order comes from a module descriptor written by {.fn generate_docx_hitopsr} with {.code randomize = TRUE} and read back by {.fn read_module}.",
+    "i" = "For columns already in instrument order, use {.code layout = \"instrument\"}."
+  )
+  cli_assert(
+    condition = !is.null(module),
+    message = c(
+      "The {.arg layout} argument is {.val printed} but no {.arg module} was supplied.",
+      hint
+    ),
+    call = call
+  )
+  item_order <- attr(module, "item_order")
+  cli_assert(
+    condition = !is.null(item_order),
+    message = c(
+      "The {.arg layout} argument is {.val printed} but the {.arg module} has no {.field item_order} attribute.",
+      hint
+    ),
+    call = call
+  )
+  # The same test write_module() applies before it writes `itemOrder`: numeric,
+  # complete, one entry per item, and the same multiset as the items -- which a
+  # repeated number fails, since sorting then disagrees at some position.
+  is_permutation <- is.numeric(item_order) &&
+    !anyNA(item_order) &&
+    length(item_order) == length(module$items) &&
+    all(sort(as.integer(item_order)) == sort(module$items))
+  cli_assert(
+    condition = is_permutation,
+    message = c(
+      "The {.arg layout} argument is {.val printed} but the {.arg module}'s {.field item_order} is not a permutation of its items.",
+      hint
+    ),
+    call = call
+  )
+
+  validate_items(items, n = length(module$items), call = call)
+  validate_item_uniqueness(items, call = call)
+  warn_item_order(items, call = call)
+  items[match(module$items, as.integer(item_order))]
+}
+
 # Internal Helper: is this object a module descriptor?
 #
 # Accepts the deprecated `hitop_subset` class alongside `hitop_module`, so a
