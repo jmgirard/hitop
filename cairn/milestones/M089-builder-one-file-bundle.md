@@ -1,13 +1,13 @@
 # M089: One download per builder build — a zip bundle holding the questionnaire, the scoring file and a README
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3 (page behavior under D-038; no instrument content moves)
 - **Resolves:** —
 - **Surface tier:** user-facing — the public builder page at jmgirard.github.io/hitop-builder and the files it hands visitors
-- **Branch/PR:** —
+- **Branch/PR:** `m089-builder-one-file-bundle` (this repo, tracking); `m089-one-file-bundle` in jmgirard/hitop-builder (code)
 
 ## Goal
 
@@ -41,9 +41,9 @@ A visitor to the HiTOP-SR Module Builder clicks once per build and receives one 
 
 ## Tasks
 
-- [ ] T1: Capture the pre-milestone baseline first — the eight builds' questionnaire and `.json` from the deployed page, by the patched `URL.createObjectURL` method (LESSONS M045) — then in `download()` (`index.html:1181-1295`) write `README.txt` into webR's FS, call `zip::zip()` over the three paths with `mode = "cherry-pick"`, read the bundle back and save it once with `saveFile()`; `downloadStem()` unchanged, the REDCap questionnaire written to `<stem>-upload.zip` before zipping.
-- [ ] T2: Author the `README.txt` text per format as a JS template keyed on `FORMATS[format]`, with the REDCap paragraph only in that format's bundle.
-- [ ] T3: Delete the handover machinery and `#renameNote` (`index.html:552-593`, `1086-1165`) and the CSS they alone use; rewrite `#descriptorNote` and `#downloadHint` for one file.
+- [x] T1: Capture the pre-milestone baseline first — the eight builds' questionnaire and `.json` from the deployed page, by the patched `URL.createObjectURL` method (LESSONS M045) — then in `download()` (`index.html:1181-1295`) write `README.txt` into webR's FS, call `zip::zip()` over the three paths with `mode = "cherry-pick"`, read the bundle back and save it once with `saveFile()`; `downloadStem()` unchanged, the REDCap questionnaire written to `<stem>-upload.zip` before zipping.
+- [x] T2: Author the `README.txt` text per format as a JS template keyed on `FORMATS[format]`, with the REDCap paragraph only in that format's bundle.
+- [x] T3: Delete the handover machinery and `#renameNote` (`index.html:552-593`, `1086-1165`) and the CSS they alone use; rewrite `#descriptorNote` and `#downloadHint` for one file.
 - [ ] T4: Re-point `tests/smoke.spec.js` A4/A5 at the bundle's entries (read the zip in Node with `DecompressionStream` or `zlib`), add the entry-name assertion, and give `tests/plants.mjs` a plant for each new assertion.
 - [ ] T5: Rewrite `README.md`'s three sections and its naming table; drop the *two clicks* wording everywhere.
 - [ ] T6: Verify AC1–AC4 on the served branch against the T1 baseline; record the comparison digests in the work log.
@@ -57,6 +57,8 @@ A visitor to the HiTOP-SR Module Builder clicks once per build and receives one 
 - 2026-09-11: plan chose zipping page-side through the package's `{zip}` under webR over a JavaScript zip writer because it adds no dependency and reuses the call D-035 already proved under Emscripten; falsified by `{zip}` ceasing to build there.
 - 2026-09-11: plan chose an outer bundle over placing the `.json` inside the REDCap upload archive because that changes a package artifact under D-016's manifest lock and REDCap's tolerance of extra entries is undocumented; falsified by REDCap documenting that extra entries are ignored.
 - 2026-09-11: plan gate chose bundle first, flow second (M090 depends on M089) over the reverse or one combined milestone because the bundle deletes most of the download step's copy before the flow re-cuts it, and the combined form would carry ~13 criteria.
+- 2026-09-11: implement started; branches `m089-builder-one-file-bundle` (here) and `m089-one-file-bundle` (hitop-builder). Question gate skipped: the plan left no implementation choice open.
+- 2026-09-11: T1 baseline captured from the deployed page by a Playwright script (`capture.mjs`, scratch) rather than the browser pane, which blocks fetches to localhost: sixteen files, eight pairs. T1-T3 landed in one builder commit because the page cannot boot with T1's `download()` while T3's handover wiring still names deleted functions. `download()` writes the three files under their bundle names into `/tmp/bundle`, zips them with `zip::zip(mode = "cherry-pick")`, saves `<stem>.zip` once; `saveFile()` loses its `origin` argument; `FORMATS[].mime` goes (unused). Minor amendment: the three `#downloadBtn` labels now end `(.zip bundle)` since the saved file is a zip, and `crosswalkSentence()` no longer names a second button. First comparison of the eight bundles against the baseline: all OK on every AC2 term.
 
 ## Decisions
 
