@@ -65,6 +65,7 @@
 - 2026-09-11: T4 done. Full suite green after the doc edits (17383 pass, 0 fail, 13 skip). `devtools::document()` regenerated four Rd files.
 - 2026-09-11: claim audit: 50 claims read, 0 corrected — NEWS.md, R/generate_docx.R, R/module.R, R/module_file.R, R/reliability_engine.R, R/reliability_hitopsr.R, R/score_engine.R, R/score_hitopsr.R, R/util.R, data-raw/characterize_layout/, tests/testthat/test-layout.R, tests/testthat/test-module-doc-prose.R, vignettes/articles/modules-hitopsr.Rmd. The reader noted that both new examples emitted the ascending-name warning (printed-order `hsr_` names) and that the `items` help did not say the warning fires by design under `layout = "printed"`. Fixed: examples pass positions, and both `items` entries say the warning reads the supplied names and can be ignored or avoided under `layout = "printed"`. The same reader re-read the four changed spots once: all hold, examples emit no warning.
 - 2026-09-11: T5 done. `devtools::check()` on the final tree: 0 errors, 0 warnings, 0 notes once a stray untracked `Rplots.pdf` from an example run was removed (the one note named only that file). `devtools::document()` produces no diff. No new candidate row: the builder-side row already exists. All tasks ticked; status set to review.
+- 2026-09-11: review ran. Every criterion verified with fresh evidence, gate green, three reviewers reported no correctness bug. Finding 1 fixed on the branch. step-7 approval: m091-score-printed-layout approved for merge.
 
 ## Decisions
 
@@ -96,4 +97,8 @@ Independent review, three fresh-context lenses:
   8. The AC3 omega fixture uses responses outside `srange`. The identity check stays valid.
   9. No test covers `layout = "printed"` with the module passed through the deprecated `subset`.
 
-Triage (dispositions recorded at the gate):
+Triage, chosen by Jeff at the gate on 2026-09-11:
+- Finding 1: fix now. The article snippet at `modules-hitopsr.Rmd:331` now passes `items = seq_along(collected)`.
+- Findings 3, 4, 7, 9: follow-up. One candidate row at hygiene (search-first: no existing row covers them) for an integer-strict order validator shared with `write_module_impl()`, self-contained characterization scripts, and a test of `layout = "printed"` through the deprecated `subset`.
+- Findings 2, 5, 6, 8: rejected. A deprecated argument passed positionally is a caller error, and the rest are cosmetic or style.
+- Blame-history informational note: rejected. The `arg_match()` rationale is stated in the code comment at each site.

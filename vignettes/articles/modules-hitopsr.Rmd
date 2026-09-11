@@ -328,7 +328,7 @@ printed, the first column holding the paper's item 1. Score them with
 
 ```{r}
 #| eval: false
-score_hitopsr(collected, items = names(collected), module = shuffled,
+score_hitopsr(collected, items = seq_along(collected), module = shuffled,
               layout = "printed")
 ```
 
