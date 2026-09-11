@@ -35,7 +35,12 @@ read_module(file)
 A `hitop_module` object. If the file carries an `itemOrder`, it is
 returned on the object's `item_order` attribute — the same attribute
 [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
-returns for a shuffled form.
+returns for a shuffled form. Pass the module to
+[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+or
+[`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+with `layout = "printed"` to score columns entered in that printed
+order.
 
 ## Errors
 
@@ -96,7 +101,12 @@ The file is JSON, with these fields:
   [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
   writes it back from that attribute, so a descriptor read and written
   again keeps the order it recorded. The generators' `descriptor`
-  argument sets the attribute for you.
+  argument sets the attribute for you, and
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  read it under `layout = "printed"` to score columns entered in the
+  form's printed order.
 
 `format`, `instrument`, and `scales` are required. The fields and the
 version string are a public contract and change only deliberately.

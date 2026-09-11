@@ -80,7 +80,12 @@ The file is JSON, with these fields:
   [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
   returns, and `write_module()` writes it back from that attribute, so a
   descriptor read and written again keeps the order it recorded. The
-  generators' `descriptor` argument sets the attribute for you.
+  generators' `descriptor` argument sets the attribute for you, and
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  read it under `layout = "printed"` to score columns entered in the
+  form's printed order.
 
 `format`, `instrument`, and `scales` are required. The fields and the
 version string are a public contract and change only deliberately.

@@ -98,18 +98,21 @@ generate_docx_hitopsr(
   [`set.seed()`](https://rdrr.io/r/base/Random.html) before this
   function to make an order reproducible. (default = `FALSE`)
 
-  **Scoring data collected on a shuffled form.**
+  **Scoring data collected on a shuffled form.** By default
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-  addresses a module's items by their position in `module$items`, which
-  is ascending original order — not the order a shuffled form prints
-  them in. Reorder the collected columns through `item_order` before
-  scoring: `collected[order(attr(out, "item_order"))]`. Scoring
-  printed-order columns directly returns wrong scale scores and raises
-  no error — or pass `descriptor` and let the saved file carry the order
-  for you. The recipe assumes `collected` is in the order the form
-  printed, its first column holding the answer to the paper's item 1;
-  columns already in instrument order need no reordering, and applying
-  it to them scrambles what was right.
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  expect a module's items in ascending original order — not the order a
+  shuffled form prints them in. Data entered straight off the form has
+  its columns in the order the form printed, its first column holding
+  the answer to the paper's item 1. Score such columns with
+  `layout = "printed"` and a module carrying the printed order on its
+  `item_order` attribute: pass `descriptor` here and
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  hands that module back. Scoring printed-order columns under the
+  default layout returns wrong scale scores and raises no error; columns
+  already in instrument order take the default, and `layout = "printed"`
+  applied to them scrambles what was right.
 
 - descriptor:
 
@@ -158,14 +161,14 @@ for the descriptor file.
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/Rtmpc03HKP/file1a6a2feab1e7.docx
+#> ✔ Document successfully created at /tmp/Rtmp2EzW7w/file1a6557ea3045.docx
 
 # A module containing only two scales, printed as items 1 to 8
 generate_docx_hitopsr(
   file = tempfile(fileext = ".docx"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Document successfully created at /tmp/Rtmpc03HKP/file1a6a750ba67a.docx
+#> ✔ Document successfully created at /tmp/Rtmp2EzW7w/file1a65527f3db6.docx
 
 # The same module keeping the full instrument's own item numbers
 generate_docx_hitopsr(
@@ -173,7 +176,7 @@ generate_docx_hitopsr(
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
   renumber = FALSE
 )
-#> ✔ Document successfully created at /tmp/Rtmpc03HKP/file1a6a29955acb.docx
+#> ✔ Document successfully created at /tmp/Rtmp2EzW7w/file1a6514241d85.docx
 
 # A shuffled form; the scoring page carries the crosswalk back
 set.seed(1)
@@ -182,7 +185,7 @@ out <- generate_docx_hitopsr(
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
   randomize = TRUE
 )
-#> ✔ Document successfully created at /tmp/Rtmpc03HKP/file1a6a8b0a51a.docx
+#> ✔ Document successfully created at /tmp/Rtmp2EzW7w/file1a655faf6381.docx
 attr(out, "item_order")
 #> [1]  66 144 389 109 260 118 291 202
 
@@ -196,8 +199,8 @@ generate_docx_hitopsr(
   randomize = TRUE,
   descriptor = f
 )
-#> ✔ Document successfully created at /tmp/Rtmpc03HKP/file1a6a684fd4e2.docx
-#> ✔ Module descriptor successfully written to /tmp/Rtmpc03HKP/file1a6a554b21.json
+#> ✔ Document successfully created at /tmp/Rtmp2EzW7w/file1a65169951e9.docx
+#> ✔ Module descriptor successfully written to /tmp/Rtmp2EzW7w/file1a656ace0b2a.json
 attr(read_module(f), "item_order")
 #> [1] 109 118 291  66 202 144 389 260
 # }

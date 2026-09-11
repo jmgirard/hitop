@@ -17,6 +17,7 @@ reliability_hitopsr(
   alpha = TRUE,
   omega = TRUE,
   module = NULL,
+  layout = c("instrument", "printed"),
   subset = NULL
 )
 ```
@@ -33,7 +34,13 @@ reliability_hitopsr(
   A vector of column names (as strings) or numbers (as integers)
   corresponding to the HiTOP-SR items held in `data` — all 405, or, when
   `module` is supplied, that module's items. Items must be supplied in
-  instrument order; duplicated entries are an error.
+  instrument order, or in the form's printed order under
+  `layout = "printed"`; duplicated entries are an error. The
+  ascending-name warning
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  describes reads the names you supply, so under `layout = "printed"` it
+  also fires for original-number names in printed order; it can be
+  ignored there, or avoided by supplying positions.
 
 - srange:
 
@@ -60,6 +67,23 @@ reliability_hitopsr(
   order, as the `generate_*_hitopsr()` forms lay them out — and one row
   is returned per module scale. When `NULL`, all 405 items are expected
   and all 76 scales are estimated. (default = `NULL`)
+
+- layout:
+
+  The order the item columns are in. `"instrument"` (the default) is
+  ascending HiTOP-SR order, as the `generate_*_hitopsr()` forms lay the
+  items out. `"printed"` is the order a shuffled Word form printed them:
+  column k holds the answer to the form's printed item k. It needs a
+  `module` carrying an `item_order` attribute, the record a module
+  descriptor written by
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+  with `randomize = TRUE` keeps and
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  returns; the columns are put back into instrument order through that
+  attribute before the estimates run. A call with `layout = "printed"`
+  and no module, a module with no `item_order`, or an `item_order` that
+  is not a permutation of the module's items is an error. (default =
+  `"instrument"`)
 
 - subset:
 
@@ -111,6 +135,20 @@ reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
 m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
 collected <- sim_hitopsr[sprintf("hsr_%03d", m$items)]
 reliability_hitopsr(collected, items = names(collected), module = m, omega = FALSE)
+#> # A tibble: 2 × 4
+#>   Scale         camelCase    nItems    alpha
+#>   <chr>         <chr>         <int>    <dbl>
+#> 1 Agoraphobia   agoraphobia       5 -0.108  
+#> 2 Appetite Loss appetiteLoss      3  0.00603
+
+# The same for data entered off a shuffled form: the columns are in the
+# order the form printed its items, recorded on the module's `item_order`
+# attribute (here set by hand; a descriptor written with `randomize = TRUE`
+# carries it).
+attr(m, "item_order") <- c(144L, 202L, 66L, 389L, 260L, 109L, 291L, 118L)
+printed <- collected[match(attr(m, "item_order"), m$items)]
+reliability_hitopsr(printed, items = seq_along(printed), module = m,
+                    layout = "printed", omega = FALSE)
 #> # A tibble: 2 × 4
 #>   Scale         camelCase    nItems    alpha
 #>   <chr>         <chr>         <int>    <dbl>

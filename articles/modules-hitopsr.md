@@ -159,19 +159,19 @@ the returned path, or save it with `descriptor =` below. Call
 [`set.seed()`](https://rdrr.io/r/base/Random.html) beforehand to make an
 order reproducible.
 
-One thing to watch:
+One thing to watch: by default
 [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-addresses a module’s items by their position in `module$items`, which is
-ascending **original** order, not the order a shuffled form prints them
-in. Reorder the collected columns through `item_order` first —
-`collected[order(attr(out, "item_order"))]` — or the scale scores come
-back wrong with no error raised.
-
-That recipe assumes `collected` is in the order the form printed: its
-first column holds the answer to the paper’s item 1, its second the
-answer to item 2, and so on, which is what data entered straight off a
-shuffled form looks like. Columns already in instrument order need no
-reordering, and applying the recipe to them scrambles what was right.
+expects a module’s items in ascending **original** order, not the order
+a shuffled form prints them in. Data entered straight off a shuffled
+form has its columns in the order the form printed: the first column
+holds the answer to the paper’s item 1, the second the answer to item 2,
+and so on. Score such columns with `layout = "printed"` and a module
+that carries the printed order on its `item_order` attribute, which is
+what the descriptor saved with `descriptor =` below gives you. The
+function then puts the columns back into instrument order itself.
+Scoring printed-order columns under the default layout returns wrong
+scale scores with no error raised, and scoring columns already in
+instrument order under `layout = "printed"` scrambles what was right.
 
 Here we write all three formats into a temporary folder; in your own
 work you would give a real path or let the default filename land in your
@@ -415,16 +415,27 @@ generate_docx_hitopsr(
   descriptor = shuffled_descriptor
 )
 
-printed_order <- attr(read_module(shuffled_descriptor), "item_order")
-printed_order
+shuffled <- read_module(shuffled_descriptor)
+attr(shuffled, "item_order")
 #>  [1] 291 118  42 185 109  66 310 338 156 152 390 167 389 144 187 274 239  68 202
 #> [20] 260 268
 ```
 
 Those are the original HiTOP-SR item numbers in the order the page
-printed them, so responses entered off that form — columns in the order
-the form printed, the first column the paper’s item 1 — go back into
-instrument order with `collected[order(printed_order)]`.
+printed them. Responses entered off that form have their columns in the
+order the form printed, the first column holding the paper’s item 1.
+Score them with `layout = "printed"` and the module that carries the
+order:
+
+``` r
+
+score_hitopsr(collected, items = seq_along(collected), module = shuffled,
+              layout = "printed")
+```
+
+The scoring function puts the columns back into instrument order itself.
+Columns already in instrument order take the default,
+`layout = "instrument"`.
 
 The file is plain text, so you can read it, edit it, and send it to a
 collaborator.

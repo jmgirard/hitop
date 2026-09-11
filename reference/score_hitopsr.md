@@ -14,6 +14,7 @@ score_hitopsr(
   calc_se = FALSE,
   append = TRUE,
   module = NULL,
+  layout = c("instrument", "printed"),
   subset = NULL
 )
 ```
@@ -30,10 +31,14 @@ score_hitopsr(
   A vector of column names (as strings) or numbers (as integers)
   corresponding to the HiTOP-SR items held in `data` — all 405, or, when
   `module` is supplied, that module's items. Items must be supplied in
-  instrument order; a misordered mapping silently scores the wrong
+  instrument order, or in the form's printed order under
+  `layout = "printed"`; a misordered mapping silently scores the wrong
   items, so a warning is issued when the names share a common prefix and
-  trailing number but those numbers are not ascending. Duplicated
-  entries are an error.
+  trailing number but those numbers are not ascending. That warning
+  reads the names you supply, so under `layout = "printed"` it also
+  fires for original-number names in printed order; it can be ignored
+  there, or avoided by supplying positions. Duplicated entries are an
+  error.
 
 - srange:
 
@@ -86,6 +91,23 @@ score_hitopsr(
   order, as the `generate_*_hitopsr()` forms lay them out — and only
   that module's scales are scored. When `NULL`, all 405 items are
   expected and all 76 scales are scored. (default = `NULL`)
+
+- layout:
+
+  The order the item columns are in. `"instrument"` (the default) is
+  ascending HiTOP-SR order, as the `generate_*_hitopsr()` forms lay the
+  items out. `"printed"` is the order a shuffled Word form printed them:
+  column k holds the answer to the form's printed item k. It needs a
+  `module` carrying an `item_order` attribute, the record a module
+  descriptor written by
+  [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
+  with `randomize = TRUE` keeps and
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  returns; the columns are put back into instrument order through that
+  attribute before scoring. A call with `layout = "printed"` and no
+  module, a module with no `item_order`, or an `item_order` that is not
+  a permutation of the module's items is an error. (default =
+  `"instrument"`)
 
 - subset:
 
@@ -143,6 +165,28 @@ score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
 m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
 collected <- sim_hitopsr[sprintf("hsr_%03d", m$items)]
 score_hitopsr(collected, items = names(collected), module = m, append = FALSE)
+#> # A tibble: 100 × 2
+#>    hsr_agoraphobia hsr_appetiteLoss
+#>              <dbl>            <dbl>
+#>  1             2.8             2.67
+#>  2             2.6             3   
+#>  3             2.4             2.67
+#>  4             2.4             2   
+#>  5             2.6             2   
+#>  6             2.4             2.67
+#>  7             2.6             2.33
+#>  8             3               2.67
+#>  9             2.4             1.67
+#> 10             2.4             2.33
+#> # ℹ 90 more rows
+
+# Score data entered off a shuffled form: the columns are in the order the
+# form printed its items, recorded on the module's `item_order` attribute
+# (here set by hand; a descriptor written with `randomize = TRUE` carries it).
+attr(m, "item_order") <- c(144L, 202L, 66L, 389L, 260L, 109L, 291L, 118L)
+printed <- collected[match(attr(m, "item_order"), m$items)]
+score_hitopsr(printed, items = seq_along(printed), module = m,
+              layout = "printed", append = FALSE)
 #> # A tibble: 100 × 2
 #>    hsr_agoraphobia hsr_appetiteLoss
 #>              <dbl>            <dbl>

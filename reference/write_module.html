@@ -152,7 +152,10 @@ none. <code><a href="read_module.html">read_module()</a></code> returns it on th
 attribute, the same attribute <code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> returns, and
 <code>write_module()</code> writes it back from that attribute, so a descriptor
 read and written again keeps the order it recorded. The generators'
-<code>descriptor</code> argument sets the attribute for you.</p></dd>
+<code>descriptor</code> argument sets the attribute for you, and
+<code><a href="score_hitopsr.html">score_hitopsr()</a></code> and <code><a href="reliability_hitopsr.html">reliability_hitopsr()</a></code> read it under
+<code>layout = "printed"</code> to score columns entered in the form's printed
+order.</p></dd>
 
 
 </dl><p><code>format</code>, <code>instrument</code>, and <code>scales</code> are required. The fields and the
