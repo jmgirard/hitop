@@ -1,13 +1,13 @@
 # M092: The HiTOP-SR Module Builder's prose reads as plain human English
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the prose a builder user reads on the page, in the bundle README, and in the repo README
-- **Branch/PR:** —
+- **Branch/PR:** `m092-builder-plain-prose` (this repo, tracking), and `m092-plain-prose` in jmgirard/hitop-builder (code)
 
 ## Goal
 
@@ -33,9 +33,9 @@ Every sentence a user reads on the builder page, in the bundle's README.txt, and
 
 ## Tasks
 
-- [ ] T1: The extraction script (`tests/prose.mjs`): the four-part domain of AC1, the writer-count assertion, the per-passage fact multiset of AC2, and a `--baseline` mode that writes both to JSON. Run it on the merge base and commit nothing from that run.
-- [ ] T2: Rewrite the page (`index.html`): static text, runtime messages, and the bundle README template. Keep every id, `data-*` value, and pinned status string. Lint to zero.
-- [ ] T3: Rewrite `README.md`. Keep its tables and dated verification records. Lint to zero.
+- [x] T1: The extraction script (`tests/prose.mjs`): the four-part domain of AC1, the writer-count assertion, the per-passage fact multiset of AC2, and a `--baseline` mode that writes both to JSON. Run it on the merge base and commit nothing from that run.
+- [x] T2: Rewrite the page (`index.html`): static text, runtime messages, and the bundle README template. Keep every id, `data-*` value, and pinned status string. Lint to zero.
+- [x] T3: Rewrite `README.md`. Keep its tables and dated verification records. Lint to zero.
 - [ ] T4: Evidence. Smoke locally, the eight-build entry-wise comparison against the merge-base capture, the plant re-run for touched anchors, then the builder PR and this repo's tracking PR.
 
 ## Work log
@@ -43,6 +43,10 @@ Every sentence a user reads on the builder page, in the bundle's README.txt, and
 - 2026-09-11: created by /milestone-plan, from Jeff's remark at the M091 plan gate that the builder's visuals improved but the prose reads as AI-written. Not a hotfix: a rewrite is not a bug, and not a direct commit: the page is a runtime surface.
 - 2026-09-11: criteria audit ran in full mode (fresh Opus reader) and returned nine findings, all fixed. The linter clause named `--type descriptive` (the draft's carve-out was self-contradicting). The enumeration names every user-visible writer (the draft covered `status()` and `log()` only). Package-rendered scale text and the pinned `Ready.` strings are excluded. The bundle comparison is entry-wise against a same-session merge-base capture (no stored baseline exists, and zip bytes are not stable). The CI command is the smoke spec CI runs. The fact check is a per-passage multiset. The plant requirement narrows to touched anchors. The draft's fourth criterion, a human read, moved into the review gate.
 - 2026-09-11: plan gate chose a milestone over `/hotfix` because a prose rewrite is not a user-visible bug and needs judgment at review; falsified by nothing, the tier is a routing rule.
+- 2026-09-11: implement gate. The linter runs from the plugin path named in AC1 and is not copied into the builder (md5 `d20daa68bc83384d4652a53eb7a59b17` for `ste_lint.py`, `5811fd8013baf9423af23c3e245fc93b` for `slop.tsv`). Log lines that echo an R call (`> generate_…`, `> zip::zip(…)`, `> library(hitop)`, `> installPackages(…)`) stay verbatim and the extraction wraps each whole line in backticks, so the linter reads one code token.
+- 2026-09-11: T1 done, builder commit 5cd97b1. `tests/prose.mjs` takes `--ref` for a git ref, `--text` for the linted passages, `--json` for passages with facts, and `--compare` for the fact check (the plan's `--baseline` is these two flags). README.md passages are its sections, one per heading, because a paragraph-level rewrite reflows paragraphs. Facts compare as multisets, sorted on both sides. Merge-base run: 153 passages, 18 writer sites, the linter at 57 over parts (a) to (c) (the plan's 18 counted the static body text alone) and 122 over `README.md`.
+- 2026-09-11: T2 done, builder commit c11e95e. Page extraction lints 0 in every rule and every passage keeps its facts. The three `<strong>` lead-ins in the notices are removed (a house rule the linter cannot see, and no CSS targets them). Local smoke 1/1 and runtime probes 2/2 green on the rewritten page. No plant anchor is touched (the plants anchor code lines only).
+- 2026-09-11: T3 done, builder commit 80a650e. `README.md` lints 0 in every rule, longest sentence 25 words. Two deliberate fact changes: the quoted `README.txt` block follows the rewritten template (its last sentence), and the layout table gains the `tests/prose.mjs` row. Bold in the README became italic or plain.
 
 ## Decisions
 
