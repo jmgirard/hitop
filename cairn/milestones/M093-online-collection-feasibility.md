@@ -31,7 +31,7 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - [x] AC2: The note has a Sources table with one row per figure it uses, each row holding the vendor page URL and the date read (YYYY-MM-DD); every cost cell of the comparison table (twelve) and every vendor named in its HIPAA/GDPR column cites a Sources row by number, and every cited row exists with both fields. Statements of law carry no vendor citation.
 - [x] AC3: The note's build-breakdown section holds, for each of B, C and D, five rows (form rendering, submission transport, storage, researcher retrieval, scoring hand-off), and for A the two that apply (form rendering, scoring hand-off), each with an effort estimate in working sessions and a sentence naming where in the package or the builder page the component would live.
 - [x] AC4: The note's recommendation section names one architecture or "none", and for every architecture not recommended (all four when "none") states the condition under which it would become the better choice.
-- [ ] AC5: Jeff's disposition at the review gate is recorded in the ROADMAP: a candidate row for the chosen architecture's build, or a candidate row naming the condition for revisiting; a rejection of building any is a `DECISIONS.md` entry with its rationale.
+- [x] AC5: Jeff's disposition at the review gate is recorded in the ROADMAP: a candidate row for the chosen architecture's build, or a candidate row naming the condition for revisiting; a rejection of building any is a `DECISIONS.md` entry with its rationale.
 - [x] AC6: `cairn/references/INDEX.md` carries one line for the note.
 
 ## Coverage
@@ -68,6 +68,8 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - 2026-09-20: claim audit: not owed — internal tier.
 - 2026-09-20: verify slot: no R code, roxygen or data changed, so `devtools::test()` and `document()` were not run; the branch diff is three files under `cairn/`. Status set to review.
 - 2026-09-20: /milestone-review started; AC1–AC4 and AC6 verified by script and ticked, three AC3 cells expanded to name a location; `devtools::check()` and the [O] reviewer still running at this checkpoint, AC5 open for the gate.
+- 2026-09-20: gate held: disposition = candidate row for B's build; F13 rejected; 13 fix-now findings applied; `devtools::check()` 0/0/0.
+- 2026-09-20: step-7 approval: m093-online-collection-feasibility approved for merge
 
 ## Decisions
 
@@ -79,7 +81,8 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - AC3 evidence: script — build breakdown has 5 rows for B, C and D and 2 for A, each with an integer session count; three cells read only "As in A." / "As in C." and named no location, so review expanded each to name the package or the `hitop-server` repository (a fix-now on the branch, three cells, no figure changed); after the edit every row names where the component lives. Totals re-summed: A 6, B 11, C 14, D 12. Pass.
 - AC4 evidence: the recommendation names B; conditions stated for A, C, D and "none". Pass.
 - AC6 evidence: `grep -c online-collection.md cairn/references/INDEX.md` = 1. Pass.
-- AC5: pending the disposition at the step-7 gate.
+- AC5 evidence: at the 2026-09-20 gate Jeff chose the candidate row for B's two-step build; the row is in `ROADMAP.md` Candidates (first row, "Build architecture B …", Depends on M093). Pass.
+- Gate triage 2026-09-20: F1–F12 and F16 applied as fix-now in one commit on the branch (the note and INDEX; S17 dropped, so the Sources table is 20 rows, every row cited); F13 rejected — the AC3 clause "in the package or the builder page" reads as examples of a home, every row names one; F14 and F15 rejected with the reasons above. Criterion script re-run after the edits: AC1–AC4 and AC6 still pass.
 - Consistency gate: `cairn_validate` exit 0, 23 lines, 0 FAIL, 2 pre-existing WARN (references staleness on `schmukle2026.md`, 23 dangling id tokens); no principle changed, so `cairn_impact` skipped. `devtools::document()` no diff; `pkgdown::check_pkgdown()` no problems; README.Rmd and NEWS untouched (no user-visible change); `devtools::check()` result recorded below.
 - `devtools::check()`: 0 errors, 0 warnings, 0 notes (5m 39s). Toolchain gate passes.
 - Independent review: internal tier, docs-only diff, one fresh-context [O] reviewer; 16 findings ranked by the reviewer, listed below with the gate's disposition (`fix-now` edits land on the branch before the push).
