@@ -41,7 +41,7 @@ Publish `jmgirard/hitop-form`, a static page that renders a HiTOP instrument or 
 
 ## Tasks
 
-- [ ] T1: Create `jmgirard/hitop-form` with `gh repo create` (public, LICENSE as hitop-builder's), enable Pages, add `package.json` and `package-lock.json` with `@playwright/test` pinned as hitop-builder's, and mirror `pages.yml`, `smoke.yml` and `tests/serve.mjs` from `../hitop-builder`.
+- [x] T1: Create `jmgirard/hitop-form` with `gh repo create` (public, LICENSE as hitop-builder's), enable Pages, add `package.json` and `package-lock.json` with `@playwright/test` pinned as hitop-builder's, and mirror `pages.yml`, `smoke.yml` and `tests/serve.mjs` from `../hitop-builder`.
 - [ ] T2: `index.html` and `form.js`: fetch the export and refuse a `format` other than `"1.0"`.
 - [ ] T3: `form.js`: render instructions, items and options, paginate, require answers.
 - [ ] T4: The study link: decode `?c=`, read the descriptor's `items` and `itemOrder`, and `link.html` that encodes a link from a pasted descriptor and study fields.
@@ -59,6 +59,9 @@ Publish `jmgirard/hitop-form`, a static page that renders a HiTOP instrument or 
 - 2026-09-20: plan gate chose one encoded link parameter built by `link.html` over a descriptor fetched by URL because the link then needs no hosting and no second request; falsified by a mail client or LMS truncating links of about two kilobytes.
 - 2026-09-20: plan gate chose a Playwright harness with the session creating the repository over no harness because nothing else catches a package export change breaking the page; falsified by Playwright's install being what turns CI red (D-062).
 - 2026-09-20: plan chose fetching the export from the package's Pages site over vendoring a copy into hitop-form because one source carries the build date and checksum (D-016); falsified by a cross-origin refusal or a fetch slower than a participant waits.
+- 2026-09-20: /milestone-implement started; branch `m095-hitop-form-page`; the served export answers with `access-control-allow-origin: *`, so the cross-origin fetch needs no copy.
+- 2026-09-20: implement gate: the public repository is created at T1 rather than at review, so CI and the Pages deploy run during the work; a link carrying no `participant` makes the start screen ask for one (required) rather than leaving the column blank; items show their position on the form (1, 2, 3 in rendered order), as the printed Word form numbers a shuffled module, never the instrument number.
+- 2026-09-20: T1 done in `/Users/jmgirard/github/hitop-form` (commit 897e884, pushed at T2 so the first Pages deploy has pages to stage): `gh repo create jmgirard/hitop-form --public`, Pages enabled with `build_type=workflow`, `@playwright/test` 1.56.1 in `package.json` and a fresh lockfile, LICENSE.md and `tests/serve.mjs` copied from hitop-builder, `pages.yml` staging `index.html link.html form.js LICENSE.md README.md`, and `tests.yml` (from `smoke.yml`) running `playwright test` on push, pull request, a Monday schedule and dispatch, the last two against the deployed page.
 
 ## Decisions
 
