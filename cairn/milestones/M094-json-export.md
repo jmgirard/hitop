@@ -1,6 +1,6 @@
 # M094: The package ships a JSON export of the HiTOP-SR and HiTOP-BR items, response options and instructions as a checksum-locked artifact
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -63,6 +63,7 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
 - 2026-09-20: re-audit: AC5 (full) — once re-entry on the gate wording: four findings (level of detail unfixed, claim-presence over truth, a moving comparator, a route clause duplicating `test-artifacts.R`'s href lock); reader's tightened wording adopted by Jeff; AC5's re-entry is spent, no further reader.
 - 2026-09-20: T5 done: both JSON cards read "Use this machine-readable file to drive a web form outside the package with the instrument's items, response options and instructions as the package's tables hold them."; `json_export.R` loads the package before `json_specs` (script mode now writes files identical to the committed ones) and its header states the unconditional source; the two json manifest rows regenerated through `artifacts.R` after dropping them, same md5 and date, the note no longer naming the hitop-form page; `"json"` added to `hitop_artifacts`' roxygen (`document()` rewrote `man/hitop_artifacts.Rd`); staged-file count comment 24 → 26; DESIGN.md generator list and artifact-versioning paragraph name the JSON export; NEWS names the site download as the address. `check_line_endings.R` passes; `devtools::test()` 0 failures, 17,399 passes.
 - 2026-09-20: claim audit: not re-run — the milestone's one pass stands (stopping rule); the amendment's added prose (card, NEWS, script header) was read against the code by the two fresh AC5 readers and by running script mode on a scratch copy.
+- 2026-09-20: `devtools::check()` after T5: 0 errors, 0 warnings, 0 notes; all tasks done, status set to review.
 
 ## Decisions
 
