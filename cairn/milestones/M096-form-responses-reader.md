@@ -1,6 +1,6 @@
 # M096: The package reads hitop-form response files into one data frame and scores them through a module descriptor
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M095
 - **Driving RR:** —
@@ -38,7 +38,7 @@ Add an exported reader that turns hitop-form CSV files into one tibble the scori
 - [x] T1: `R/read_form_responses.R` with its two conditions raised by `cli::cli_abort()` under classes on the D-034(c) pattern, recorded in a D-entry at implementation. (RB tripwire: irreversible-api)
 - [x] T2: `tests/testthat/test-read_form_responses.R` for AC1 and AC2.
 - [x] T3: Copy the three fixtures and the descriptor from hitop-form's `tests/fixtures/`; the round-trip tests with hand-computed expected values.
-- [ ] T4: Article section, NEWS, `_pkgdown.yml`, `devtools::document()`, `devtools::check()`.
+- [x] T4: Article section, NEWS, `_pkgdown.yml`, `devtools::document()`, `devtools::check()`.
 
 ## Work log
 
@@ -51,6 +51,9 @@ Add an exported reader that turns hitop-form CSV files into one tibble the scori
 - 2026-09-20: T2 and T3 done in one file, `test-read_form_responses.R` (69 expectations): directory, vector of two, one file, C-locale order, first-file column order, blank item, LF and BOM inputs; the four AC2 cases by class with the differing files named; the plain refusals; the three fixtures scored against table-derived means (full forms) and hand-computed literals (module: Agoraphobia 3, Distress-Dysphoria 39/16), with a control showing the printed remap moves the result. Fixture provenance in `tests/testthat/fixtures/README.md` (hitop-form 21a1d1c).
 - 2026-09-20: found while writing AC3's module test: `score_hitopsr(layout = "printed")` runs the ascending-name heuristic on the caller's `items`, which warns whenever printed-order columns are named by item number, though that order is the case `layout = "printed"` exists for. Positions (`match(item_cols, names(data))`) avoid it, so the test and the article pass positions. Not in scope (a `score_hitopsr()` behavior change); a candidate row records it.
 - 2026-09-20: `devtools::test()` after T1–T3: one failure, `test-vignette-export-coverage.R` names `read_form_responses` as shown in no vignette; T4's article section clears it. Everything else green.
+- 2026-09-20: T4 done. `modules-hitopsr.Rmd` gains "Collecting Responses Online with hitop-form" (the link builder, the file's shape, `read_form_responses()` over the module fixture by a path relative to the article, scoring by position under `layout = "printed"`, the full-form case); the article renders and its chunk prints Agoraphobia 3 and Distress-Dysphoria 2.44. NEWS entry; `_pkgdown.yml` row landed with T1. `devtools::test()` green, `pkgdown::check_pkgdown()` clean, `devtools::check()` 0 errors / 0 warnings / 0 notes.
+- 2026-09-20: ROADMAP went to 24,592 bytes with the new candidate row; four of its widest rows compressed in place (online-form, verification-reach, builder smoke test, `pid_norms` schema; one M094 detail list now points at the archive summary) to 23,993.
+- 2026-09-20: claim audit: 60 claims read, 1 corrected — vignettes/articles/modules-hitopsr.Rmd ("sends nothing anywhere" replaced by "no answer is sent anywhere", since the page fetches the instrument export); the reader also flagged the NEWS sentence on `items` as unqualified for shuffled modules, reworded; both re-read once, both hold. Noted by the reader, unchanged: the checked-out fixture CSVs hold CRLF locally while the index holds LF, both of which the reader parses.
 
 ## Decisions
 
