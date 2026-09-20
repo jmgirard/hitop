@@ -81,3 +81,21 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - AC6 evidence: `grep -c online-collection.md cairn/references/INDEX.md` = 1. Pass.
 - AC5: pending the disposition at the step-7 gate.
 - Consistency gate: `cairn_validate` exit 0, 23 lines, 0 FAIL, 2 pre-existing WARN (references staleness on `schmukle2026.md`, 23 dangling id tokens); no principle changed, so `cairn_impact` skipped. `devtools::document()` no diff; `pkgdown::check_pkgdown()` no problems; README.Rmd and NEWS untouched (no user-visible change); `devtools::check()` result recorded below.
+- `devtools::check()`: 0 errors, 0 warnings, 0 notes (5m 39s). Toolchain gate passes.
+- Independent review: internal tier, docs-only diff, one fresh-context [O] reviewer; 16 findings ranked by the reviewer, listed below with the gate's disposition (`fix-now` edits land on the branch before the push).
+  - F1 (`online-collection.md:34,105`): the scoring call `score_hitopsr(data, items = read_module(f), layout = "printed")` is wrong — the module goes in `module =` and `items` takes columns; the article's real call is `score_hitopsr(x, items = seq_along(x), module = m, layout = "printed")`. Confirmed against `R/score_hitopsr.R:56`. Disposition: fix-now.
+  - F2 (`:42,59,70,85,165,176` against `:107,184`): B still lists institutional REDCap as a store in six places after the note's own finding that a static page cannot hold an API token. Disposition: fix-now, reconcile B's rows to the vendor stores and say REDCap stays the data-dictionary route.
+  - F3 (`:16`): `hitop_artifacts` is 39 rows over 24 files, not 20. Confirmed. Disposition: fix-now.
+  - F4 (`:165,176` against `:209`): $599 is the Supabase Team plan, the HIPAA add-on's price unshown. Disposition: fix-now, say so in the cells and add the unknown to Open questions.
+  - F5 (`:32`): the Qualtrics display-logic claim cites DESIGN Known issue #5; the source sentence is DESIGN's Generators family line. Confirmed. Disposition: fix-now.
+  - F6 (`:212,213,217,107`): S12, S13, S17 cited nowhere; the token claim at `:107` is S12's figure, uncited. Disposition: fix-now — cite S12 at `:107`, cite S13 and S14 as the baseline in "What the package offers today", drop S17.
+  - F7 (`INDEX.md:10`): line out of alphabetical order. Disposition: fix-now.
+  - F8 (`:1`, `INDEX.md:10`): milestone number in the H1 and INDEX description, unlike sibling pages. Disposition: fix-now.
+  - F9 (`:232` against `:7`): the Disposition section asserts status. Disposition: fix-now, point at ROADMAP and DECISIONS without stating a state.
+  - F10 (`:7` against `:182`): "no architecture is chosen here" beside a recommendation. Disposition: fix-now, "it recommends one and decides nothing".
+  - F11 (`:171`): 2 KB a row is low for a Firestore document (5–10 KB); the bound still holds. Disposition: fix-now, state both figures.
+  - F12 (`:142`): C's scoring hand-off row names no home. Disposition: fix-now.
+  - F13 (`:113–159`): AC3 says "where in the package or the builder page", and most components live in two proposed repositories. Disposition: decided at the gate — an amendment return on AC3's enumeration, or a rejection.
+  - F14 (`:164–167`): the comparison table's four cost cells are uncited; the twelve cited cells are the hosting-cost table's. Disposition: reject — AC2's "(twelve)" names the 4×3 hosting-cost table, and the comparison cell says it summarizes it.
+  - F15 (`:37,97`): the builder's twenty-second load cannot be checked from this repo. Disposition: reject — an external repository named in Provenance, its two M045 facts confirmed.
+  - F16 (`:176`): a yearly write count compared against a daily quota. Disposition: fix-now, compare a day's plausible burst.
