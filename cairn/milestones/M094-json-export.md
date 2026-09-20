@@ -98,3 +98,7 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
   - [O] F18 — NEWS names `inst/extdata/` as the address where D-033 made the site canonical. Fix-now candidate (wording).
   - [S-blame] no conflicts with past commits or D-entries; `rebuild_stems`/`rebuild_formats` left as the last build ran them matches every prior commit; the writer matches `write_module()` and the CRLF lesson.
   - [S-prior] probe `pulls/comments?per_page=1` returned `[]`; archived reviews of M020, M042, M047, M054 held up except the `R/data.R` format enumeration (F5 above).
+- 2026-09-20 (review, pass 2 after the AC5 amendment and T5): main still unmoved (merge-base equals `origin/main`), no PR; the branch is 9 commits ahead.
+- AC1 evidence (pass 2): `devtools::test()` 0 failures, 17,399 passes on the T5 head; `test-json-export.R` unchanged since pass 1 (parse with the criterion's `fromJSON` call, compare items/start/options against the tables and `hitop:::*_instructions`, six plants red by name).
+- AC3 evidence (pass 2): both files still read `format` `"1.0"`, `package` `"hitop"`, `packageVersion` `"0.2.0"` (DESCRIPTION 0.2.0), `buildDate` `"2026-09-20"` equal to the regenerated json rows' `build_date`, `stem` `hitopsr`/`hitopbr`, `maxItem` 405/45; the files are byte-unchanged since pass 1 (md5 `1e438cf9…`, `4768019b…`).
+- AC4 evidence (pass 2): 0 carriage-return bytes in all four committed JSON files; `check_line_endings.R` passes.
