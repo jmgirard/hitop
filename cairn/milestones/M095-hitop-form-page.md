@@ -85,3 +85,26 @@ Publish `jmgirard/hitop-form`, a static page that renders a HiTOP instrument or 
 - AC7: PASS. `index.html`, `link.html` and `README.md` answer 200 at https://jmgirard.github.io/hitop-form/ (Pages build type `workflow`). `tests.yml` runs on `pull_request` and on `push` to `main`, and on Mondays and on dispatch against the deployed page. `pages.yml` deploys on push to `main`. The runs at 5cd69ca, Tests and Deploy to Pages, both succeeded. The README carries Make a study link, What the participant sees, Where the file lands, and Scoring, which links the modules article.
 - Driving RR: none, so there is no projection to set beside a measurement.
 - Gate: `cairn_validate` exit 0 (24 advisories, the standing dangling-id and references-staleness warnings). No principle changed, so `cairn_impact` is skipped. `document()` produced no diff. `check_pkgdown()` found no problems. NEWS: the branch changes no package behavior, and M094's entry already names a web form reading the export, so no entry is owed. `devtools::check()` 0 errors, 0 warnings, 0 notes (4 m 18 s).
+- Fan-out (user-facing tier): [O] diff-bug 20 findings, [S] blame-history 0 (every divergence from the hitop-builder mirror is a commented adaptation, D-036/D-039/D-063/D-016/D-033 honored, the device-only save is architecture B's shared first phase per the ROADMAP row), [S] prior-review 3 (archived Review sections of M064, M089, M090, M092, M094 read; both PR-comment probes empty). Proposed dispositions below, decided at the gate.
+- O1 the page fields a descriptor's recorded `items` and never rebuilds them from `scales` as `read_module()` does (D-039c), so a stale or edited descriptor collects columns the reader later refuses: follow-up, a note on the online-form row for M096's plan (the reader is where the tables live).
+- O2 `checkModule` never checks the descriptor's own `format`: fix now, refuse a format other than "1.0".
+- O3 `aria-live="polite"` on the whole `<main>` has every page turn read aloud: fix now, drop it (the alerts keep `role="alert"`).
+- O4 focus is lost on every page turn and a refusal only scrolls: fix now, focus the page heading after a turn and the named item's first option after a refusal.
+- O5 "nothing is sent anywhere" overstates: the link's study, participant and module ride in the URL the page host logs: fix now, the page and README say no answer is sent and that the link's contents reach the host.
+- O6 a reload or back gesture loses every answer with no warning: fix now a `beforeunload` warning while answers are unsaved; persistence across reload is a follow-up on the online-form row.
+- O7 a link with an empty or blank `participant` string suppresses the prompt and writes a blank column: fix now, a blank string counts as absent.
+- O8 `stem`, `buildDate`, `packageVersion` and `package` are unguarded and can write the string `undefined` into the file: fix now, `checkExport` requires each as non-empty text.
+- O9 (also P3) the refusal names the index on the page while items are labelled by form position: fix now, the message names both ("item 16, item 1 on this page"), AC3's position on the page kept.
+- O10, O11 the CSV quoting path and the unicode link round trip are untested: fix now, a fourth save case with a study holding a comma, a quote and a non-ASCII character.
+- O12 the network record drops every query string and stops at the assertion: fix now for the query half (strip it only from the page's own address); a `pagehide` beacon stays outside the record, follow-up on the online-form row.
+- O13 `FORM_REQUIRE_TARGET` derives from the same expression as `FORM_TARGET`, so a renamed event empties both: fix now, require the target on every event that is not `push` or `pull_request`.
+- O14 the Back button has no test: follow-up on the online-form row.
+- O15 CSV formula injection through a study or participant string: reject, the file is read by R (M096), and a spreadsheet's cell execution is the spreadsheet's setting.
+- O16 no encoding hint for `read.csv()` in the README: fix now, `fileEncoding = "UTF-8"` in the interim instruction.
+- O17 the export's `stem` is never checked against the link's instrument: fix now, one comparison.
+- O18 the Pages staging list is hand-maintained: reject, the three-file site is the design and AC7 reads the deployed URLs.
+- O19 the link carries the whole descriptor: reject, `scales` is what O1 says the reader honors, 604 characters for the fixture.
+- O20 an identical refusal twice in a row may not re-announce: reject, low, and O4's focus move gives the second press a signal.
+- P1 pasting the instrument export into link.html's descriptor box gets a generic instrument-mismatch message (D-063's undiscriminated shape): fix now, link.html names a pasted export as the export.
+- P2 link.html checks less than `form.js`'s `checkModule`, so a malformed descriptor fails at the participant: fix now, link.html imports and runs `checkModule`.
+- P3 see O9.
