@@ -27,12 +27,12 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 
 ## Acceptance criteria
 
-- [ ] AC1: `cairn/references/online-collection.md` exists and its comparison table has one row per architecture named in Scope (A, B, C, D) and one column per dimension named in Scope (seven), with no empty cell; each cell of the HIPAA/GDPR, hosting-cost and operations columns states the solo-maintainer and the Society-operator cases separately.
-- [ ] AC2: The note has a Sources table with one row per figure it uses, each row holding the vendor page URL and the date read (YYYY-MM-DD); every cost cell of the comparison table (twelve) and every vendor named in its HIPAA/GDPR column cites a Sources row by number, and every cited row exists with both fields. Statements of law carry no vendor citation.
-- [ ] AC3: The note's build-breakdown section holds, for each of B, C and D, five rows (form rendering, submission transport, storage, researcher retrieval, scoring hand-off), and for A the two that apply (form rendering, scoring hand-off), each with an effort estimate in working sessions and a sentence naming where in the package or the builder page the component would live.
-- [ ] AC4: The note's recommendation section names one architecture or "none", and for every architecture not recommended (all four when "none") states the condition under which it would become the better choice.
+- [x] AC1: `cairn/references/online-collection.md` exists and its comparison table has one row per architecture named in Scope (A, B, C, D) and one column per dimension named in Scope (seven), with no empty cell; each cell of the HIPAA/GDPR, hosting-cost and operations columns states the solo-maintainer and the Society-operator cases separately.
+- [x] AC2: The note has a Sources table with one row per figure it uses, each row holding the vendor page URL and the date read (YYYY-MM-DD); every cost cell of the comparison table (twelve) and every vendor named in its HIPAA/GDPR column cites a Sources row by number, and every cited row exists with both fields. Statements of law carry no vendor citation.
+- [x] AC3: The note's build-breakdown section holds, for each of B, C and D, five rows (form rendering, submission transport, storage, researcher retrieval, scoring hand-off), and for A the two that apply (form rendering, scoring hand-off), each with an effort estimate in working sessions and a sentence naming where in the package or the builder page the component would live.
+- [x] AC4: The note's recommendation section names one architecture or "none", and for every architecture not recommended (all four when "none") states the condition under which it would become the better choice.
 - [ ] AC5: Jeff's disposition at the review gate is recorded in the ROADMAP: a candidate row for the chosen architecture's build, or a candidate row naming the condition for revisiting; a rejection of building any is a `DECISIONS.md` entry with its rationale.
-- [ ] AC6: `cairn/references/INDEX.md` carries one line for the note.
+- [x] AC6: `cairn/references/INDEX.md` carries one line for the note.
 
 ## Coverage
 
@@ -67,7 +67,17 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - 2026-09-20: T5 done — comparison table (4 rows × 7 columns, no empty cell, solo and institution stated in the HIPAA/GDPR, cost and operations columns) with a 12-cell hosting-cost table beneath it, each cell citing a Sources row; recommendation B in two steps (A's renderer first), with the condition under which A, C, D and "none" each become better; INDEX line. AC1–AC4 and AC6 checked by a script in the session (7 columns, 4 rows, 12 cited cost cells, 21 source rows each with URL and date, five and two build rows, four conditions, one INDEX line). `cairn_validate` passes with 24 pre-existing advisories. Checkpoint: T2–T5 land in one commit rather than four, the note being one file grown in place.
 - 2026-09-20: claim audit: not owed — internal tier.
 - 2026-09-20: verify slot: no R code, roxygen or data changed, so `devtools::test()` and `document()` were not run; the branch diff is three files under `cairn/`. Status set to review.
+- 2026-09-20: /milestone-review started; AC1–AC4 and AC6 verified by script and ticked, three AC3 cells expanded to name a location; `devtools::check()` and the [O] reviewer still running at this checkpoint, AC5 open for the gate.
 
 ## Decisions
 
 ## Review
+
+- 2026-09-20 sync: branch contains `origin/main` tip `6d2be446`; no PR exists; owner mode. Diff against main: four files under `cairn/`, no R code, so the profile's `verify` slot has nothing to re-run.
+- AC1 evidence: script over the comparison table — 7 dimension columns in Scope order, 4 rows (A–D), 0 empty cells; the HIPAA/GDPR, hosting-cost and operations cells of every row each state a solo case and an institution case. Pass.
+- AC2 evidence: script — Sources table 21 rows (S1–S17, L1–L4), every row with an `http` URL and a `YYYY-MM-DD` date; the 12 cells of the hosting-cost table each cite an S row; the HIPAA/GDPR column cites S9, S7, S16 (B) and S6, S7, S8 (C), A and D naming no vendor; every cited id exists; the statements of law cite L rows only. Three rows are cited nowhere (S12 REDCap API, S13 Qualtrics pricing, S17 Cloudflare Workers) — surplus, not a criterion failure; sent to triage. Pass.
+- AC3 evidence: script — build breakdown has 5 rows for B, C and D and 2 for A, each with an integer session count; three cells read only "As in A." / "As in C." and named no location, so review expanded each to name the package or the `hitop-server` repository (a fix-now on the branch, three cells, no figure changed); after the edit every row names where the component lives. Totals re-summed: A 6, B 11, C 14, D 12. Pass.
+- AC4 evidence: the recommendation names B; conditions stated for A, C, D and "none". Pass.
+- AC6 evidence: `grep -c online-collection.md cairn/references/INDEX.md` = 1. Pass.
+- AC5: pending the disposition at the step-7 gate.
+- Consistency gate: `cairn_validate` exit 0, 23 lines, 0 FAIL, 2 pre-existing WARN (references staleness on `schmukle2026.md`, 23 dangling id tokens); no principle changed, so `cairn_impact` skipped. `devtools::document()` no diff; `pkgdown::check_pkgdown()` no problems; README.Rmd and NEWS untouched (no user-visible change); `devtools::check()` result recorded below.

@@ -127,7 +127,7 @@ Total: 6 sessions.
 | Submission transport | 3 | In `hitop-form`: one adapter per store, each a small function posting one row. Supabase (insert under an anonymous key and a row-level policy), Firestore (insert under security rules), Apps Script (POST to a web-app URL). The study configuration names the store and its endpoint. One session each. |
 | Storage | 1 | Nothing built. One session of setup documentation per store, with the policy or rules text the researcher pastes in, lives in the `hitop-form` README. |
 | Researcher retrieval | 1 | Nothing built. The three stores each export CSV natively. One session documents the export click and the column names it yields, in the `hitop-form` README. |
-| Scoring hand-off | 1 | As in A. |
+| Scoring hand-off | 1 | As in A: in the package, the documented read, the article section and the round-trip test. |
 
 Total: 11 sessions.
 
@@ -148,10 +148,10 @@ Total: 14 sessions, before operations. Operations are costed in the comparison t
 | Component | Sessions | Where it lives |
 |---|---|---|
 | Form rendering | 5 | As in A, served by the kit. |
-| Submission transport | 2 | As in C. |
+| Submission transport | 2 | As in C: the same endpoint in `hitop-server`, packaged into the kit's image. |
 | Storage | 2 | As in C, single-tenant: one institution, one database, packaged as a container image with a compose file. Backups are the institution's. |
 | Researcher retrieval | 2 | As in C, without multi-tenancy: a shared institutional login or a single admin credential, and the CSV export. |
-| Scoring hand-off | 1 | As in A. |
+| Scoring hand-off | 1 | As in A: in the package, the documented read, the article section and the round-trip test. |
 
 Total: 12 sessions, plus one session per release to rebuild and publish the image with security patches.
 
