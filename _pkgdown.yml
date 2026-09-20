@@ -105,6 +105,7 @@ reference:
   - available_scales
   - write_module
   - read_module
+  - read_form_responses
   - generate_docx_hitopbr
   - generate_docx_hitopsr
   - generate_docx_hitophsum

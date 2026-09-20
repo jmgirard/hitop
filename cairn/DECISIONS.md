@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-064 (2026-09-20): `read_form_responses()`'s two condition classes are a public contract (applies D-034(c) to the hitop-form reader)
+
+**Context:** M096 adds `read_form_responses()`, which binds the CSV files the hitop-form page saves into one tibble. Two refusals are ones a caller may want to catch: files whose item columns disagree, and a directory with nothing to read. D-034(c) makes every condition this package raises for callers to catch a classed, named contract.
+
+**Decision:** `hitop_form_responses_mismatch` is raised when the files' item columns differ in name, count or order from the first file's, the message naming the files that differ; `hitop_form_responses_none` when a directory holds no `.csv` file. Both are renamed only through a further D-entry. Every other refusal the reader makes (a path that is not a file, a file whose lead columns or row count are not the page's, an item value that is not a whole number, a stamp that does not parse) is an unclassed `cli_abort()` naming the file, as the package's argument validators are. Chosen by Jeff at the 2026-09-20 implement gate over `hitop_form_file_*` (names the file rather than the function; reads less well beside it); the Fable escalation the plan offered for this naming was declined.
+
+**Consequences:** `tests/testthat/test-read_form_responses.R` asserts both classes. A caller can loop over study folders and catch `hitop_form_responses_mismatch` per folder. The evidence that would reopen this is a caller needing to catch one of the unclassed refusals by name, which takes a new class under a further entry.
+
 ### D-063 (2026-09-20): The instrument JSON export's format 1.0 fields are a public contract, changed only under a new format string with a D-entry (extends D-039(d)'s field governance to a second JSON format; applies IP1 and GP2)
 
 **Context:** M094 ships `inst/extdata/hitopsr.json` and `inst/extdata/hitopbr.json`, each carrying `format` `"1.0"`, for a page outside the package (M095's hitop-form) to read. D-039(d) placed the module descriptor's fields under D-entry governance. The export had no such record, and its top level is shaped like the descriptor, with the same version string and no field telling the two apart (review findings G1 and F17).

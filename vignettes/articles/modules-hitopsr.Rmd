@@ -359,3 +359,66 @@ identical(
   module_scores
 )
 ```
+
+## Collecting Responses Online with hitop-form
+
+The Word, Qualtrics and REDCap files above each need a platform of their own.
+[hitop-form](https://jmgirard.github.io/hitop-form/) is a third route that
+needs none: a web page that shows a HiTOP-SR module (or the full HiTOP-SR or
+HiTOP-BR) in the browser and saves each participant's answers to a file on
+their own device. No answer is sent anywhere: the page's only request after
+its own files is for the instrument's item text. Each participant hands you
+their file, and this package reads the files back into one data frame.
+
+The page reads the same descriptor `write_module()` writes. Open the page's
+[link builder](https://jmgirard.github.io/hitop-form/link.html), paste the
+descriptor in, name the study, and it gives you one link to send to
+participants. A descriptor from a shuffled Word form carries that form's order,
+and the page shows the items in it.
+
+When a participant finishes, the page saves one CSV file named for the study,
+the participant and the time. The file has five lead columns (`study`,
+`participant`, `instrument`, `form_build`, `submitted`) and then one column per
+item, named by the instrument's file stem and the item number and in the order
+the page showed them.
+
+`read_form_responses()` reads those files. Give it the folder the files are
+in, or a vector of their paths. The file below is one the page saved from a
+two-scale module with a shuffled order; it ships with the package's tests:
+
+```{r}
+fixtures <- file.path("..", "..", "tests", "testthat", "fixtures")
+responses <- read_form_responses(file.path(fixtures, "responses-module-shuffled.csv"))
+responses
+```
+
+One row per file, the lead columns typed (`form_build` is a date, `submitted` a
+UTC date-time), and every item column an integer. A folder of many files reads
+the same way, one row each, sorted by path. Every file must hold the same
+item columns in the same order; a folder mixing two forms stops with an error
+that names the files that differ, so read each form's files in a call of their
+own.
+
+Score the item columns through the module the page showed. The columns are in
+the order the page showed the items, so this is `layout = "printed"` with the
+descriptor that recorded that order, as in the shuffled Word form above. Name
+the item columns by position here rather than by name: under
+`layout = "printed"` the names carry item numbers out of instrument order, and
+naming them would trip the check that warns of a misordered mapping.
+
+```{r}
+form_module <- read_module(file.path(fixtures, "module-shuffled.json"))
+item_cols <- setdiff(names(responses), c("study", "participant", "instrument",
+                                         "form_build", "submitted"))
+score_hitopsr(
+  responses,
+  items = match(item_cols, names(responses)),
+  module = form_module,
+  layout = "printed",
+  append = FALSE
+)
+```
+
+A full HiTOP-SR or HiTOP-BR saved by the page reads the same way and scores
+with `score_hitopsr()` or `score_hitopbr()` alone, with `items` naming the
+item columns and no module at all.
