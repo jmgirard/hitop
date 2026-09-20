@@ -19,7 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
+          # macOS is pinned to R 4.5 because CRAN serves its R 4.6 macOS
+          # binaries as zstd archives (2026-09-20) and pak 0.11.1 cannot
+          # extract them, so setup-r-dependencies fails on flextable with
+          # "unknown archive type". Return to 'release' once pak extracts
+          # zstd or CRAN's R 4.6 macOS binaries are gzip again.
+          - {os: macos-latest,   r: '4.5'}
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}

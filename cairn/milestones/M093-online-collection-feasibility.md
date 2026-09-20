@@ -1,6 +1,6 @@
 # M093: A feasibility evaluation of an online response-collection form as an alternative to Qualtrics and REDCap
 
-- **Status:** blocked
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -76,6 +76,7 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - 2026-09-20: step-7 approval: m093-online-collection-feasibility approved for merge (re-posed on resume)
 - 2026-09-20: blocked: PR #101's macos-latest (release) check fails on re-run too — CRAN serves the R 4.6 macOS binary `flextable_0.10.1.tgz` as a zstd archive (magic bytes 28 b5 2f fd) and pak 0.11.1 / pkgdepends has no zstd extraction, so `setup-r-dependencies` aborts with "unknown archive type"; no upstream issue or fix found. Seven other checks green. Jeff chose to park rather than edit the workflow on this branch. Resume with `/milestone-review M093` once pak or CRAN fixes it; the approval and PR stand.
 - 2026-09-20 18:06Z: /milestone-review re-invoked on `blocked` (user override, logged). Re-check: main unmoved, PR #101 open, 7/8 checks green, macOS red; CRAN binary still zstd (28 b5 2f fd), pak latest still v0.11.1 (2026-07-22), no new pak issue. Blocker unchanged; still parked.
+- 2026-09-20: Jeff chose the CI workaround on this branch (supersedes the parking decision): `.github/workflows/R-CMD-check.yaml` pins the macOS matrix entry to R 4.5, whose CRAN macOS binaries are still gzip (probed `big-sur-arm64/contrib/4.5/flextable_0.10.1.tgz`, magic 1f 8b), with a comment naming the revert condition. No branch protection names the check, so the job's new name is safe. Status blocked → in-progress → review in this commit; the diff now touches executable surface, so the three-lens review fan-out runs before the re-posed gate.
 
 ## Decisions
 
