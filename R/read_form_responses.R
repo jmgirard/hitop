@@ -6,7 +6,7 @@
 #'
 #' @param path A directory that holds the response files, or a character
 #'   vector of paths to them. A directory is read as every file in it whose
-#'   name ends in `.csv`. The paths are sorted in the C locale before they are
+#'   name ends in `.csv` (in either case). The paths are sorted in the C locale before they are
 #'   read, so the rows come back in the same order however the paths were
 #'   supplied.
 #'
@@ -21,14 +21,15 @@
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
 #'   need separate calls. A file that does not look like one the page saved
-#'   (other lead columns, more than one response row, an item value that is
-#'   not a whole number, a date that does not parse) is an error naming the
-#'   file.
+#'   (other lead columns, a column that appears twice, more than one response
+#'   row, an item value that is not a whole number or is outside R's integer
+#'   range, a date that does not parse) is an error naming the file. A
+#'   `submitted` stamp may carry fractional seconds.
 #'
 #'   **Errors.** Files whose item columns differ from the first file's in
 #'   name, in count or in order stop the read under the condition class
-#'   `hitop_form_responses_mismatch`, and the message names the files that
-#'   differ. A directory holding no `.csv` file stops it under
+#'   `hitop_form_responses_mismatch`, and the message names each file that
+#'   differs and how. A directory holding no `.csv` file stops it under
 #'   `hitop_form_responses_none`. Both classes are a public contract a caller
 #'   can catch by name.
 #'
@@ -79,11 +80,17 @@ read_form_responses <- function(path) {
         "order"
       }
     }, character(1L))
+    # One line per differing file, each with its own reason.
+    lines <- vapply(seq_along(how), function(i) {
+      f <- files[differs][[i]]
+      h <- how[[i]]
+      cli::format_inline("{.file {f}} differs from it in {.field {h}}.")
+    }, character(1L))
     cli::cli_abort(
       c(
         "The response files do not all hold the same item columns.",
         "i" = "The first file is {.file {files[[1L]]}}.",
-        "x" = "{.file {files[differs]}} differ{?s/} from it in {.field {unique(how)}}.",
+        stats::setNames(lines, rep("x", length(lines))),
         "i" = "Read files from one form together, and other forms in a separate call."
       ),
       class = "hitop_form_responses_mismatch"
@@ -107,7 +114,9 @@ form_response_files <- function(path, call = rlang::caller_env()) {
     call = call
   )
   if (length(path) == 1L && dir.exists(path)) {
-    files <- list.files(path, pattern = "[.]csv$", full.names = TRUE)
+    files <- list.files(path, pattern = "[.]csv$", full.names = TRUE,
+                        ignore.case = TRUE)
+    files <- files[!dir.exists(files)]
     if (length(files) == 0L) {
       cli::cli_abort(
         c(
@@ -138,14 +147,34 @@ form_response_files <- function(path, call = rlang::caller_env()) {
 
 # Read one file the page saved into a one-row data frame with typed columns.
 read_form_response_file <- function(file, call = rlang::caller_env()) {
-  raw <- utils::read.csv(
-    file,
-    colClasses = "character",
-    check.names = FALSE,
-    na.strings = character(0),
-    fileEncoding = "UTF-8-BOM",
-    strip.white = FALSE
+  # A file the page saved ends in a row ending; one edited by hand may not,
+  # and that is not worth a warning.
+  raw <- withCallingHandlers(
+    utils::read.csv(
+      file,
+      colClasses = "character",
+      check.names = FALSE,
+      na.strings = character(0),
+      fileEncoding = "UTF-8-BOM",
+      strip.white = FALSE
+    ),
+    warning = function(w) {
+      if (grepl("incomplete final line", conditionMessage(w), fixed = TRUE)) {
+        invokeRestart("muffleWarning")
+      }
+    }
   )
+
+  dup <- unique(names(raw)[duplicated(names(raw))])
+  if (length(dup) > 0L) {
+    cli::cli_abort(
+      c(
+        "{.file {file}} is not a hitop-form response file.",
+        "x" = "Column{?s} {.field {dup}} appear{?s/} more than once."
+      ),
+      call = call
+    )
+  }
 
   lead <- names(raw)[seq_len(min(5L, ncol(raw)))]
   if (!identical(lead, form_lead_columns)) {
@@ -181,9 +210,30 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     )
   }
 
-  form_build <- as.Date(raw$form_build, format = "%Y-%m-%d")
-  submitted <- as.POSIXct(raw$submitted, format = "%Y-%m-%dT%H:%M:%SZ",
-                          tz = "UTC")
+  ints <- suppressWarnings(as.integer(values))
+  wide <- item_cols[!is.na(values) & is.na(ints)]
+  if (length(wide) > 0L) {
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds an item value outside the integer range.",
+        "x" = "Column{?s} {.field {wide}}."
+      ),
+      call = call
+    )
+  }
+
+  # The stamps are matched whole, so a trailing fragment cannot slip past
+  # the parser. `submitted` may carry fractional seconds, which
+  # `Date.toISOString()` writes and the page trims.
+  date_ok <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", raw$form_build)
+  time_ok <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?Z$",
+                   raw$submitted)
+  form_build <- if (date_ok) as.Date(raw$form_build, format = "%Y-%m-%d") else NA
+  submitted <- if (time_ok) {
+    as.POSIXct(raw$submitted, format = "%Y-%m-%dT%H:%M:%OSZ", tz = "UTC")
+  } else {
+    NA
+  }
   for (field in c("form_build", "submitted")) {
     parsed <- if (field == "form_build") form_build else submitted
     if (is.na(parsed)) {
@@ -206,7 +256,7 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     stringsAsFactors = FALSE
   )
   items <- as.data.frame(
-    as.list(stats::setNames(as.integer(values), item_cols)),
+    as.list(stats::setNames(ints, item_cols)),
     check.names = FALSE,
     stringsAsFactors = FALSE
   )

@@ -9,7 +9,7 @@ read_form_responses(path)
 \arguments{
 \item{path}{A directory that holds the response files, or a character
 vector of paths to them. A directory is read as every file in it whose
-name ends in \code{.csv}. The paths are sorted in the C locale before they are
+name ends in \code{.csv} (in either case). The paths are sorted in the C locale before they are
 read, so the rows come back in the same order however the paths were
 supplied.}
 }
@@ -37,14 +37,15 @@ Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
-(other lead columns, more than one response row, an item value that is
-not a whole number, a date that does not parse) is an error naming the
-file.
+(other lead columns, a column that appears twice, more than one response
+row, an item value that is not a whole number or is outside R's integer
+range, a date that does not parse) is an error naming the file. A
+\code{submitted} stamp may carry fractional seconds.
 
 \strong{Errors.} Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class
-\code{hitop_form_responses_mismatch}, and the message names the files that
-differ. A directory holding no \code{.csv} file stops it under
+\code{hitop_form_responses_mismatch}, and the message names each file that
+differs and how. A directory holding no \code{.csv} file stops it under
 \code{hitop_form_responses_none}. Both classes are a public contract a caller
 can catch by name.
 }

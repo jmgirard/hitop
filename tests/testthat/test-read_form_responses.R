@@ -182,6 +182,26 @@ test_that("the mismatch message names every differing file, not the first", {
   expect_false(grepl("p002.csv", msg, fixed = TRUE))
 })
 
+test_that("the mismatch message gives each differing file its own reason", {
+  dir <- withr::local_tempdir()
+  form_file(dir, "p001.csv", c(hitopbr_01 = 4L, hitopbr_02 = 1L))
+  form_file(dir, "p003.csv", c(hitopbr_01 = 4L))
+  form_file(dir, "p004.csv", c(hitopbr_02 = 1L, hitopbr_01 = 4L))
+
+  cnd <- rlang::catch_cnd(read_form_responses(dir),
+                          "hitop_form_responses_mismatch")
+  # `body` holds the bullets one per element, before line wrapping.
+  body <- cli::ansi_strip(cnd$body)
+  line3 <- body[grepl("p003.csv", body, fixed = TRUE)]
+  line4 <- body[grepl("p004.csv", body, fixed = TRUE)]
+  expect_length(line3, 1L)
+  expect_length(line4, 1L)
+  expect_match(line3, "count", fixed = TRUE)
+  expect_false(grepl("order", line3, fixed = TRUE))
+  expect_match(line4, "order", fixed = TRUE)
+  expect_false(grepl("count", line4, fixed = TRUE))
+})
+
 test_that("a directory holding no .csv aborts by class", {
   dir <- withr::local_tempdir()
   writeLines("x", file.path(dir, "notes.txt"))
@@ -191,6 +211,37 @@ test_that("a directory holding no .csv aborts by class", {
   empty <- withr::local_tempdir()
   expect_error(read_form_responses(empty),
                class = "hitop_form_responses_none")
+})
+
+test_that("a directory scan takes .CSV as well and skips a folder named .csv", {
+  dir <- withr::local_tempdir()
+  form_file(dir, "P001.CSV", two_items())
+  dir.create(file.path(dir, "old.csv"))
+
+  out <- read_form_responses(dir)
+  expect_equal(nrow(out), 1L)
+  expect_identical(out$participant, "p001")
+})
+
+test_that("a submitted stamp with fractional seconds reads, to the second", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(),
+                 submitted = "2026-09-20T21:20:36.123Z")
+
+  out <- read_form_responses(f)
+  expect_s3_class(out$submitted, "POSIXct")
+  expect_equal(as.numeric(out$submitted),
+               as.numeric(as.POSIXct("2026-09-20 21:20:36", tz = "UTC")) + 0.123)
+})
+
+test_that("a file with no final row ending reads without a warning", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items())
+  bytes <- readBin(f, "raw", file.size(f))
+  writeBin(bytes[seq_len(length(bytes) - 2L)], f)
+
+  expect_no_warning(out <- read_form_responses(f))
+  expect_identical(out$hitopbr_02, 1L)
 })
 
 # ---- Plain refusals: not a response file, bad argument ---------------------
@@ -248,6 +299,41 @@ test_that("an item value that is not a whole number is refused by column", {
   cnd <- rlang::catch_cnd(read_form_responses(f), "error")
   expect_match(conditionMessage(cnd), "hitopbr_02", fixed = TRUE)
   expect_match(conditionMessage(cnd), "whole number", fixed = TRUE)
+})
+
+test_that("a column that appears twice is refused by name", {
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "dup.csv")
+  writeLines(c(
+    paste(c(lead, "hitopbr_01", "hitopbr_01"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,3"
+  ), f)
+
+  cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+  expect_match(conditionMessage(cnd), "dup.csv", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "hitopbr_01", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "more than once", fixed = TRUE)
+})
+
+test_that("an item value outside the integer range is refused by column", {
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "wide.csv")
+  writeLines(c(
+    paste(c(lead, "hitopbr_01", "hitopbr_02"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,99999999999"
+  ), f)
+
+  expect_no_warning(cnd <- rlang::catch_cnd(read_form_responses(f), "error"))
+  expect_match(conditionMessage(cnd), "hitopbr_02", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "integer range", fixed = TRUE)
+})
+
+test_that("a date with a trailing fragment is refused, not truncated", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(), form_build = "2026-09-20T99")
+  cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+  expect_match(conditionMessage(cnd), "form_build", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "does not parse", fixed = TRUE)
 })
 
 test_that("a date or time stamp that does not parse is refused by field", {
