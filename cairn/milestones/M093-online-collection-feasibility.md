@@ -109,3 +109,12 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
   - F14 (`:164–167`): the comparison table's four cost cells are uncited; the twelve cited cells are the hosting-cost table's. Disposition: reject — AC2's "(twelve)" names the 4×3 hosting-cost table, and the comparison cell says it summarizes it.
   - F15 (`:37,97`): the builder's twenty-second load cannot be checked from this repo. Disposition: reject — an external repository named in Provenance, its two M045 facts confirmed.
   - F16 (`:176`): a yearly write count compared against a daily quota. Disposition: fix-now, compare a day's plausible burst.
+- Second review pass (2026-09-20), executable surface: the CI pin in `.github/workflows/R-CMD-check.yaml`, three fresh-context lenses.
+  - [O] C1 (`R-CMD-check.yaml:27,31`): the matrix loses release-on-macOS entirely and checks R 4.5.3 twice (oldrel-1 is 4.5.3 today); the comment and log do not say so. Disposition: fix-now — the comment states the lost coverage; a candidate row tracks the revert.
+  - [O] C2 (`:27`): a bare `'4.5'` pin has no expiry; CRAN freezes a minor's macOS binary tree once it is oldrel-2, so the job would go stale silently after R 4.7. Disposition: follow-up — the same candidate row, promotion condition stated.
+  - [O] C3 (`:25–26`): the revert condition pegs "R 4.6"; pkgcache's dev NEWS already moves R 4.7 macOS binaries to a new path, and no zstd work exists in pak, pkgdepends or pkgcache. Disposition: fix-now — the comment names "the R version `release` resolves to" instead of 4.6.
+  - [O] C4 (`:24`): "fails on flextable" reads as if flextable were the fault; it is the first zstd binary pak reaches. Disposition: fix-now, one clause.
+  - [O] C5 (informational): pak's own macOS-arm64 build for R 4.5 unproven until CI runs. Disposition: noted — the pending `macos-latest (4.5)` run is the proof.
+  - [O] alternative: `use-public-rspm: true` on the macOS entry (P3M serves gzip) untested; `pak-version: devel` would not help (no zstd support anywhere in the dev NEWS); `PKG_PLATFORMS=source` would force the ragg/systemfonts chain to compile without system headers. Disposition: noted in the candidate row as the untested alternative.
+  - [S] blame-history: no finding — `r: 'release'` came from the usethis boilerplate at M004 (`d6164cb9`), never revisited; no D-entry governs CI platform coverage; no prior pin/unpin on any workflow.
+  - [S] prior-review comments: "no prior-review evidence" — no archived Review finding touches CI config; the PR-comments probe returned an empty list.
