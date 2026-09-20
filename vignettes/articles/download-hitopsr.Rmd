@@ -41,7 +41,7 @@ download_cards("HiTOP-SR", list(
   ),
   dl_card(
     "🧩", "JSON Export",
-    "Use this machine-readable file to drive a web form outside the package with the instrument's items, response options and instructions as the package's tables hold them.",
+    "Use this machine-readable file, which a web form outside the package can read, to present the instrument's items, response options and instructions as the package's tables hold them.",
     dl_link("English (JSON File)", "../downloads/hitopsr.json")
   )
 ))

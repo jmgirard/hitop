@@ -53,7 +53,7 @@ json_specs <- list(
   )
 )
 
-write_instrument_json <- function(spec, file) {
+write_instrument_json <- function(spec, path) {
   number <- as.integer(spec$items[[spec$number_col]])
   max_n <- max(number)
   payload <- list(
@@ -80,10 +80,10 @@ write_instrument_json <- function(spec, file) {
     )
   )
   json <- jsonlite::toJSON(payload, auto_unbox = FALSE, pretty = TRUE)
-  con <- file(file, open = "wb")
+  con <- file(path, open = "wb")
   on.exit(close(con))
   writeLines(enc2utf8(as.character(json)), con, useBytes = TRUE)
-  invisible(file)
+  invisible(path)
 }
 
 if (sys.nframe() == 0L) {
