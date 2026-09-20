@@ -1,13 +1,13 @@
 # M093: A feasibility evaluation of an online response-collection form as an alternative to Qualtrics and REDCap
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, GP4
 - **Resolves:** —
 - **Surface tier:** internal — a synthesis note under `cairn/references/` and a ROADMAP or DECISIONS disposition; no exported surface changes
-- **Branch/PR:** —
+- **Branch/PR:** `m093-online-collection-feasibility`
 
 ## Goal
 
@@ -45,7 +45,7 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 
 ## Tasks
 
-- [ ] T1: Requirements section, from the package's own surfaces: a participant link and per-study configuration; response storage; export in the package's item-column names (D-052, D-055; the `rename_*` helpers); module support through descriptors (`read_module()`, the builder's bundle); instrument coverage including the HSUM's display logic (DESIGN Known issue #5 context); the builder's current no-backend posture (its README).
+- [x] T1: Requirements section, from the package's own surfaces: a participant link and per-study configuration; response storage; export in the package's item-column names (D-052, D-055; the `rename_*` helpers); module support through descriptors (`read_module()`, the builder's bundle); instrument coverage including the HSUM's display logic (DESIGN Known issue #5 context); the builder's current no-backend posture (its README).
 - [ ] T2: Sources table: read and record, with URL and date, GitHub Pages; Fly.io, Render, Railway, and one VPS tier; AWS, GCP and Azure BAA availability and HIPAA-eligible tiers; Supabase and Firebase free and paid tiers; one managed Postgres tier; REDCap API import prerequisites; Qualtrics and REDCap institutional pricing as the baseline where public.
 - [ ] T3: Compliance section per architecture and operator: data controller and processor roles; when HIPAA applies and a BAA is needed; GDPR (DPA, EU residency); the data-security questions IRBs ask; consent capture and participant identifiers.
 - [ ] T4: Build breakdown (AC3) and architecture fit: rendering from `*_items` and the `*_instructions` objects under IP1; the builder's webR stack against plain JavaScript over a JSON item export (M045 lessons: no shell-out under Wasm, Pages suffices); GP4 dependency posture; D-016 versioning of a served form; D-052/D-055 column names at retrieval; scoring hand-off via descriptors.
@@ -59,6 +59,8 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - 2026-09-20: plan gate chose comparing all four architectures over B and D only, and over B only, because no prior record rejects any and the note should record why the losers lose; falsified by the C and D sections adding nothing the recommendation reads.
 - 2026-09-20: plan gate chose costing each architecture under two operators over one, because C's viability turns on who holds the data; falsified by both operator cases agreeing in every cell.
 - 2026-09-20: plan gate chose `cairn/references/` over a public pkgdown article because the note informs a decision not yet made; falsified by a researcher asking why no online form exists.
+- 2026-09-20: /milestone-implement started; branch `m093-online-collection-feasibility` cut from pushed main at `6d2be446`. Question gate skipped: the plan fixed the architectures, dimensions, operators and the note's home, and the remaining tier picks are routine. The simple-english lint hook reports pre-existing violations in ROADMAP and this file on every edit; both are append-only history and are left as they are.
+- 2026-09-20: T1 done — note skeleton (Provenance, Scope, Evidence snapshot) and a Requirements section of eight rows (R1–R8), each naming the package surface it derives from: descriptor format and `itemOrder` (`R/module_file.R`), `item_names()` (`R/util.R:697`), the four `*_instructions` objects, the HSUM's 638 gated fields over nine choice sets, IP1/D-016 for a served form, GP4 for the dependency posture. Vendor-page reads (T2) delegated to one [S] subagent, running.
 
 ## Decisions
 
