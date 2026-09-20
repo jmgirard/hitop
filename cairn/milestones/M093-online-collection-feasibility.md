@@ -72,6 +72,8 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - 2026-09-20: step-7 approval: m093-online-collection-feasibility approved for merge
 - 2026-09-20: the AC5 row pushed ROADMAP to 60 lines / 24,774 bytes, over both caps; `cairn_validate` failed after the push that opened PR #101. Remedy on the branch: the superseded confidence-interval candidate row absorbed into the norms-schema row that superseded it, the new row compressed, the hygiene stamp shortened; ROADMAP now 59 lines and under 24,000 bytes, validate green.
 - 2026-09-20: PR #101 opened, marker written. CI wait timed out at the harness ceiling; fresh `gh pr checks`: line endings, pkgdown, test-coverage pass; macos-latest (release) failed in setup-r-dependencies (pak: flextable_0.10.1.tgz "unknown archive type", a corrupt runner download, not the package); the four remaining check jobs pending. Resume: rerun the failed macOS job once the run completes, wait for green, merge.
+- 2026-09-20 resume: PR #101 OPEN; main unmoved at `6d2be446`. conversation: PR #101 — empty read (no reviews, no comments, no unresolved threads). Fresh `gh pr checks`: six pass, macOS fail (runner download), Windows pending.
+- 2026-09-20: step-7 approval: m093-online-collection-feasibility approved for merge (re-posed on resume)
 
 ## Decisions
 
