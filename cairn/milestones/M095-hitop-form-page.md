@@ -42,10 +42,10 @@ Publish `jmgirard/hitop-form`, a static page that renders a HiTOP instrument or 
 ## Tasks
 
 - [x] T1: Create `jmgirard/hitop-form` with `gh repo create` (public, LICENSE as hitop-builder's), enable Pages, add `package.json` and `package-lock.json` with `@playwright/test` pinned as hitop-builder's, and mirror `pages.yml`, `smoke.yml` and `tests/serve.mjs` from `../hitop-builder`.
-- [ ] T2: `index.html` and `form.js`: fetch the export and refuse a `format` other than `"1.0"`.
-- [ ] T3: `form.js`: render instructions, items and options, paginate, require answers.
-- [ ] T4: The study link: decode `?c=`, read the descriptor's `items` and `itemOrder`, and `link.html` that encodes a link from a pasted descriptor and study fields.
-- [ ] T5: Save: assemble the CSV, download through a Blob and anchor click, show `buildDate` and `packageVersion`.
+- [x] T2: `index.html` and `form.js`: fetch the export and refuse a `format` other than `"1.0"`.
+- [x] T3: `form.js`: render instructions, items and options, paginate, require answers.
+- [x] T4: The study link: decode `?c=`, read the descriptor's `items` and `itemOrder`, and `link.html` that encodes a link from a pasted descriptor and study fields.
+- [x] T5: Save: assemble the CSV, download through a Blob and anchor click, show `buildDate` and `packageVersion`.
 - [ ] T6: Playwright tests for AC1 and AC2, with the two descriptors written by `write_module()`.
 - [ ] T7: Playwright tests for AC3 and AC4; commit the three captured CSVs under `tests/fixtures/`.
 - [ ] T8: Playwright tests for AC5 and AC6, serving altered copies of the export locally (LESSONS 2026-08-25 on probing a served copy).
@@ -62,6 +62,7 @@ Publish `jmgirard/hitop-form`, a static page that renders a HiTOP instrument or 
 - 2026-09-20: /milestone-implement started; branch `m095-hitop-form-page`; the served export answers with `access-control-allow-origin: *`, so the cross-origin fetch needs no copy.
 - 2026-09-20: implement gate: the public repository is created at T1 rather than at review, so CI and the Pages deploy run during the work; a link carrying no `participant` makes the start screen ask for one (required) rather than leaving the column blank; items show their position on the form (1, 2, 3 in rendered order), as the printed Word form numbers a shuffled module, never the instrument number.
 - 2026-09-20: T1 done in `/Users/jmgirard/github/hitop-form` (commit 897e884, pushed at T2 so the first Pages deploy has pages to stage): `gh repo create jmgirard/hitop-form --public`, Pages enabled with `build_type=workflow`, `@playwright/test` 1.56.1 in `package.json` and a fresh lockfile, LICENSE.md and `tests/serve.mjs` copied from hitop-builder, `pages.yml` staging `index.html link.html form.js LICENSE.md README.md`, and `tests.yml` (from `smoke.yml`) running `playwright test` on push, pull request, a Monday schedule and dispatch, the last two against the deployed page.
+- 2026-09-20: T2–T5 done in one hitop-form commit (208ef62; one module, `form.js`, carries all four): `parseLink()` decodes `?c=` and checks the descriptor (instrument match, integer items, `itemOrder` a permutation); `checkExport()` refuses a `format` other than the string `"1.0"` naming what it found ("no format field", "a format that is not text (1)", `format "2.0"`); `planItems()` renders the descriptor's items in `itemOrder` else `items` order; pages of 15 with "Please answer item N on this page before continuing."; `buildCsv()` writes the `study,participant,instrument,form_build,submitted,<names>` header and one RFC 4180 row, `submitted` to the second in UTC; `link.html` encodes the link and refuses a descriptor whose instrument differs from the selected one. Fixtures `tests/fixtures/module-{plain,shuffled}.json` written by `write_module()` from `make-descriptors.R` (Distress-Dysphoria + Agoraphobia, 21 items, seed 95). Checked in the browser pane against the live export: BR start screen, page 1 of 3 with 15 items and four labels, refusal on item 3, three pages to the done screen; the shuffled module's page 1 in `itemOrder`; the three format probes; the link builder's output and two refusals. Not pushed yet: `pages.yml` stages README.md, so the first push follows the README stub at T6.
 
 ## Decisions
 

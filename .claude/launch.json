@@ -12,6 +12,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8788", "-d", "../hitop-builder"],
       "port": 8788
+    },
+    {
+      "name": "hitop-form",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8789", "-d", "../hitop-form"],
+      "port": 8789
     }
   ]
 }
