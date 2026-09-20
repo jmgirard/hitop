@@ -70,6 +70,7 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - 2026-09-20: /milestone-review started; AC1–AC4 and AC6 verified by script and ticked, three AC3 cells expanded to name a location; `devtools::check()` and the [O] reviewer still running at this checkpoint, AC5 open for the gate.
 - 2026-09-20: gate held: disposition = candidate row for B's build; F13 rejected; 13 fix-now findings applied; `devtools::check()` 0/0/0.
 - 2026-09-20: step-7 approval: m093-online-collection-feasibility approved for merge
+- 2026-09-20: the AC5 row pushed ROADMAP to 60 lines / 24,774 bytes, over both caps; `cairn_validate` failed after the push that opened PR #101. Remedy on the branch: the superseded confidence-interval candidate row absorbed into the norms-schema row that superseded it, the new row compressed, the hygiene stamp shortened; ROADMAP now 59 lines and under 24,000 bytes, validate green.
 
 ## Decisions
 
