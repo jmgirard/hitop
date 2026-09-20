@@ -1,7 +1,7 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-20 (thirty-eighth pass, M093's post-merge): M093 archived, M090's row pruned. PR #101 merged, 8/8 CI green under the macOS R 4.5 pin. Candidate rows: two added, one absorbed. LESSONS: one added, one pruned. validate green, release window quiet._
-_Pre-migration history: `cairn/legacy/` and git log (M001–M017; next new milestone is M094). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
+_Last hygiene check: 2026-09-20 (38th pass, M093's post-merge): M093 archived, M090's row pruned. PR #101 merged, 8/8 CI green under the macOS R 4.5 pin. Candidate rows: two added, one absorbed. LESSONS: one added, one pruned. validate green, release window quiet._
+_Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M094). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
