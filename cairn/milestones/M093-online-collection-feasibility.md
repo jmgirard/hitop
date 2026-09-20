@@ -1,6 +1,6 @@
 # M093: A feasibility evaluation of an online response-collection form as an alternative to Qualtrics and REDCap
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -46,10 +46,10 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 ## Tasks
 
 - [x] T1: Requirements section, from the package's own surfaces: a participant link and per-study configuration; response storage; export in the package's item-column names (D-052, D-055; the `rename_*` helpers); module support through descriptors (`read_module()`, the builder's bundle); instrument coverage including the HSUM's display logic (DESIGN Known issue #5 context); the builder's current no-backend posture (its README).
-- [ ] T2: Sources table: read and record, with URL and date, GitHub Pages; Fly.io, Render, Railway, and one VPS tier; AWS, GCP and Azure BAA availability and HIPAA-eligible tiers; Supabase and Firebase free and paid tiers; one managed Postgres tier; REDCap API import prerequisites; Qualtrics and REDCap institutional pricing as the baseline where public.
-- [ ] T3: Compliance section per architecture and operator: data controller and processor roles; when HIPAA applies and a BAA is needed; GDPR (DPA, EU residency); the data-security questions IRBs ask; consent capture and participant identifiers.
-- [ ] T4: Build breakdown (AC3) and architecture fit: rendering from `*_items` and the `*_instructions` objects under IP1; the builder's webR stack against plain JavaScript over a JSON item export (M045 lessons: no shell-out under Wasm, Pages suffices); GP4 dependency posture; D-016 versioning of a served form; D-052/D-055 column names at retrieval; scoring hand-off via descriptors.
-- [ ] T5: Comparison table, recommendation with conditions, INDEX line; present the recommendation at the review gate and record the disposition (AC5).
+- [x] T2: Sources table: read and record, with URL and date, GitHub Pages; Fly.io, Render, Railway, and one VPS tier; AWS, GCP and Azure BAA availability and HIPAA-eligible tiers; Supabase and Firebase free and paid tiers; one managed Postgres tier; REDCap API import prerequisites; Qualtrics and REDCap institutional pricing as the baseline where public.
+- [x] T3: Compliance section per architecture and operator: data controller and processor roles; when HIPAA applies and a BAA is needed; GDPR (DPA, EU residency); the data-security questions IRBs ask; consent capture and participant identifiers.
+- [x] T4: Build breakdown (AC3) and architecture fit: rendering from `*_items` and the `*_instructions` objects under IP1; the builder's webR stack against plain JavaScript over a JSON item export (M045 lessons: no shell-out under Wasm, Pages suffices); GP4 dependency posture; D-016 versioning of a served form; D-052/D-055 column names at retrieval; scoring hand-off via descriptors.
+- [x] T5: Comparison table, recommendation with conditions, INDEX line; present the recommendation at the review gate and record the disposition (AC5). The gate half stays open for /milestone-review.
 
 ## Work log
 
@@ -61,6 +61,12 @@ Operators: Jeff as a solo maintainer; the HiTOP Society or a university unit.
 - 2026-09-20: plan gate chose `cairn/references/` over a public pkgdown article because the note informs a decision not yet made; falsified by a researcher asking why no online form exists.
 - 2026-09-20: /milestone-implement started; branch `m093-online-collection-feasibility` cut from pushed main at `6d2be446`. Question gate skipped: the plan fixed the architectures, dimensions, operators and the note's home, and the remaining tier picks are routine. The simple-english lint hook reports pre-existing violations in ROADMAP and this file on every edit; both are append-only history and are left as they are.
 - 2026-09-20: T1 done — note skeleton (Provenance, Scope, Evidence snapshot) and a Requirements section of eight rows (R1–R8), each naming the package surface it derives from: descriptor format and `itemOrder` (`R/module_file.R`), `item_names()` (`R/util.R:697`), the four `*_instructions` objects, the HSUM's 638 gated fields over nine choice sets, IP1/D-016 for a served form, GP4 for the dependency posture. Vendor-page reads (T2) delegated to one [S] subagent, running.
+- 2026-09-20: T2 done — the [S] subagent returned 21 records, 8 of them resting on secondary sources because the page rendered its figures by script or refused the fetch; those 8 were re-read in the built-in browser (Render, Google Cloud's covered-products list, Google Workspace HIPAA, both HHS pages, GDPR Art. 4 and 28, a university REDCap API page, Fly.io machines, Supabase regions). Hetzner's price list and Fly's managed-Postgres page did not load, so the VPS row is DigitalOcean and the managed-Postgres rows are Neon and Render, all read directly; the note's Sources section names the three pages tried and not read. The Sources table splits vendor rows (S1–S17) from regulator and legal-text rows (L1–L4) so that statements of law cite no vendor.
+- 2026-09-20: T3 done — compliance section with four tables: controller/processor per architecture, business associate per architecture and operator, the IRB story, and consent and identifiers. Written before T2 landed and re-cited after; one deviation logged: the section was appended through a shell heredoc rather than the Edit tool, and every later edit used Edit.
+- 2026-09-20: T4 done — architecture-fit section (IP1 rendering from the tables, the builder's webR stack rejected for a participant-facing page, GP4, D-016 build dates on a served form, D-052/D-055 names, descriptor hand-off) and a build breakdown of A 6, B 11, C 14, D 12 sessions plus one per release. One finding the plan did not anticipate: a static page cannot hold a REDCap API token, so the REDCap variant of B needs a relay, which is C or D.
+- 2026-09-20: T5 done — comparison table (4 rows × 7 columns, no empty cell, solo and institution stated in the HIPAA/GDPR, cost and operations columns) with a 12-cell hosting-cost table beneath it, each cell citing a Sources row; recommendation B in two steps (A's renderer first), with the condition under which A, C, D and "none" each become better; INDEX line. AC1–AC4 and AC6 checked by a script in the session (7 columns, 4 rows, 12 cited cost cells, 21 source rows each with URL and date, five and two build rows, four conditions, one INDEX line). `cairn_validate` passes with 24 pre-existing advisories. Checkpoint: T2–T5 land in one commit rather than four, the note being one file grown in place.
+- 2026-09-20: claim audit: not owed — internal tier.
+- 2026-09-20: verify slot: no R code, roxygen or data changed, so `devtools::test()` and `document()` were not run; the branch diff is three files under `cairn/`. Status set to review.
 
 ## Decisions
 
