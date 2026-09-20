@@ -49,7 +49,7 @@ Publish `jmgirard/hitop-form`, a static page that renders a HiTOP instrument or 
 - [x] T6: Playwright tests for AC1 and AC2, with the two descriptors written by `write_module()`.
 - [x] T7: Playwright tests for AC3 and AC4; commit the three captured CSVs under `tests/fixtures/`.
 - [x] T8: Playwright tests for AC5 and AC6, serving altered copies of the export locally (LESSONS 2026-08-25 on probing a served copy).
-- [ ] T9: README; confirm the Pages deploy serves both pages and the branch's CI run is green.
+- [x] T9: README; confirm the Pages deploy serves both pages and the branch's CI run is green.
 
 ## Work log
 
@@ -66,6 +66,8 @@ Publish `jmgirard/hitop-form`, a static page that renders a HiTOP instrument or 
 - 2026-09-20: T6 done (hitop-form 2nd commit after 208ef62): `tests/helpers.mjs` (target resolution with `FORM_TARGET`/`FORM_REQUIRE_TARGET`, link encoding, page reading and answering with a fixed answer pattern) and `tests/render.spec.js` with five named assertions R1–R5 over both instruments and both descriptors; 4 passed in 14 s locally against the live export; three plants each red by name (items reversed, `itemOrder` ignored, a label edited). README stub added and the branch pushed: first Pages deploy and Tests run started.
 - 2026-09-20: T7 done (hitop-form 708b543): `tests/walk.spec.js` W1–W3 (page sizes, three probes on a full page in turn and one on the last page, each refusal read and the page shown not to advance) over the HiTOP-BR and the shuffled module; `tests/save.spec.js` S1–S5 (header, lead fields, integer values against the fixed answer pattern, fixture equality outside `form_build`/`submitted`, file name) over the three forms, with `WRITE_FIXTURES=1` writing `responses-{hitopbr,hitopsr,module-shuffled}.csv`, provenance in `tests/fixtures/README.md`, CRLF locked by `.gitattributes`. 5 passed; five plants red (page size 14, advance despite a blank, wrong position named, label written instead of value, `form_build` dropped). First CI: Tests 1m4s and Deploy to Pages 20s both green.
 - 2026-09-20: T8 done (hitop-form 2520e23): `tests/guard.spec.js` G1–G4 (build date and package version on the start and done screens; `format` altered, absent and non-string each served in the live export's place through `page.route()` and each refusal read, plus the live copy accepted as the control) and `tests/network.spec.js` N1–N3 (every request recorded on the BR save, the module save and the refusal; the URL set equals the page, `form.js` and the export). 8 passed; three plants red (any string format accepted, a fetch to another host, build date dropped from the version line). Both pages gained `<link rel="icon" href="data:,">` so a real browser sends no favicon request either.
+- 2026-09-20: the T7 push's Tests run failed in CI: `page.waitForEvent('download')` took the 15 s action timeout, and the 405-item HiTOP-SR walk took 18 s on the runner (9 s locally), so the wait for the file timed out before Finish. Fixed in `awaitDownload()` (110 s, inside the 120 s test budget); the retry hid nothing because both attempts hit the same wall.
+- 2026-09-20: T9 done (hitop-form abfb0d9): README with the four sections AC7 names (making a link, what the participant sees, where the file lands, scoring handed to the modules article, plus development and license). Tests 1m11s and Deploy to Pages 18s green on that push; `index.html`, `link.html` and `README.md` answer 200 at the Pages URL. Full suite 17 passed locally.
 
 ## Decisions
 
