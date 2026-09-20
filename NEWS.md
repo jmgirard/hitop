@@ -2,6 +2,14 @@
 
 ## New features
 
+* **The HiTOP-SR and HiTOP-BR ship as JSON exports.** `hitopsr.json` and
+  `hitopbr.json`, downloadable from each instrument's page on the package
+  website, hold the form's items, response options and administration
+  instructions as the package's tables hold them, with the package version and
+  build date at the top. They carry no keying. Each has a row in
+  `hitop_artifacts`. A web form outside the package can read one to show the
+  questionnaire online.
+
 * **`score_hitopsr()` and `reliability_hitopsr()` score data entered off a
   shuffled form.** Both gain a `layout` argument. The default,
   `"instrument"`, is the existing behavior: item columns in ascending

@@ -31,7 +31,7 @@ extdata <- "inst/extdata"
 ## below still reads every file from disk, which is how a replaced HSUM QSF
 ## (built elsewhere, by devel/qualtrics_hitophsum.R) gains its row without
 ## churning the checksum of any artifact this script does rebuild.
-rebuild_stems <- "hitopbr"
+rebuild_stems <- c("hitopsr", "hitopbr")
 
 ## Restrict the rebuild to specific output formats, e.g. c("docx"); NULL rebuilds
 ## every format for the selected stems. Format matters independently of stem: a
@@ -40,7 +40,7 @@ rebuild_stems <- "hitopbr"
 ## exports emit), and because DOCX/zip rebuilds are not byte-deterministic, a
 ## needless rebuild churns a checksum and records a manifest revision that isn't
 ## one. Restrict to the format whose content actually changed.
-rebuild_formats <- "docx"
+rebuild_formats <- "json"
 
 ## Both filters are plain string matches, so a typo ("pid5_bf"), a case slip
 ## ("DOCX"), or the manifest's own format vocabulary ("docx_us") would match
@@ -71,11 +71,11 @@ keep_specs <- function(specs, format) {
 
 check_filters_matched <- function() {
   all_stems <- sort(unique(vapply(
-    c(docx_specs, qualtrics_specs, redcap_specs),
+    c(docx_specs, qualtrics_specs, redcap_specs, json_specs),
     function(s) s$stem,
     character(1)
   )))
-  all_formats <- c("docx", "qualtrics", "redcap")
+  all_formats <- c("docx", "qualtrics", "redcap", "json")
 
   bad <- function(what, unknown, known) {
     stop(
@@ -126,9 +126,9 @@ check_filters_matched <- function() {
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "One item's scale membership on the scoring page is corrected to the",
-  "development workbook's: item 36 moves from Detachment to Internalizing.",
-  "Item text, item numbers, response options, and scale names are unchanged."
+  "First build of the JSON export: the items, response options and",
+  "instructions as the keying tables hold them, for a web form outside the",
+  "package to read."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(
@@ -190,6 +190,14 @@ for (spec in keep_specs(redcap_specs, "redcap")) {
   spec$fn(file = file.path(extdata, paste0(spec$stem, "_redcap.zip")))
 }
 
+## The JSON exports a web form outside the package can render from.
+## `json_specs` and the writer live in data-raw/json_export.R, which
+## documents the format.
+source("data-raw/json_export.R", local = TRUE)
+for (spec in keep_specs(json_specs, "json")) {
+  write_instrument_json(spec, file.path(extdata, paste0(spec$stem, ".json")))
+}
+
 ## Every requested stem/format matched something above, or stop before the
 ## manifest section records a build that did not happen.
 check_filters_matched()
@@ -232,6 +240,10 @@ for (spec in qualtrics_specs) {
 for (spec in redcap_specs) {
   f <- paste0(spec$stem, "_redcap.zip")
   new_rows[[f]] <- add_row(f, spec$instrument, "redcap", today, build_notes)
+}
+for (spec in json_specs) {
+  f <- paste0(spec$stem, ".json")
+  new_rows[[f]] <- add_row(f, spec$instrument, "json", today, build_notes)
 }
 new_rows[["hitophsum_qualtrics.qsf"]] <- add_row(
   "hitophsum_qualtrics.qsf",

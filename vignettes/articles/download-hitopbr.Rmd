@@ -38,6 +38,11 @@ download_cards("HiTOP-BR", list(
     "Use this compressed archive file to import the instrument as a new instrument in your REDCap project.",
     dl_link("English (ZIP File)", "../downloads/hitopbr_redcap.zip"),
     ref_link("Import Instructions", "../articles/import-instructions.html#redcap-zip")
+  ),
+  dl_card(
+    "🧩", "JSON Export",
+    "Use this machine-readable file, which a web form outside the package can read, to present the instrument's items, response options and instructions as the package's tables hold them.",
+    dl_link("English (JSON File)", "../downloads/hitopbr.json")
   )
 ))
 ```

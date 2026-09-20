@@ -25,7 +25,8 @@ test_that("hitop_artifacts has the documented structure", {
   )
   expect_s3_class(hitop_artifacts$build_date, "Date")
   expect_true(all(
-    hitop_artifacts$format %in% c("docx_us", "docx_a4", "qualtrics", "redcap")
+    hitop_artifacts$format %in%
+      c("docx_us", "docx_a4", "qualtrics", "redcap", "json")
   ))
   expect_true(all(grepl("^[0-9a-f]{32}$", hitop_artifacts$md5)))
   expect_false(any(is.na(hitop_artifacts)))
@@ -33,7 +34,7 @@ test_that("hitop_artifacts has the documented structure", {
 
 test_that("every committed artifact has a current manifest row", {
   extdata <- system.file("extdata", package = "hitop")
-  files <- list.files(extdata, pattern = "\\.(docx|txt|qsf|zip)$")
+  files <- list.files(extdata, pattern = "\\.(docx|txt|qsf|zip|json)$")
   expect_setequal(files, latest_manifest()$file)
 })
 
@@ -199,7 +200,7 @@ test_that("a source checkout stages the pkgdown download copies", {
   # back to the two installed copies. They have to: under `R CMD check` the
   # suite runs from a built tarball where `.Rbuildignore` has removed
   # `pkgdown/` entirely. That tolerance also meant a renamed or deleted
-  # directory left both of them green in a checkout, where the 24 staged
+  # directory left both of them green in a checkout, where the 26 staged
   # files are tracked and are the copies the site serves (D-033). This is the
   # floor they lean on: in a checkout the directory is there, or the suite
   # fails.

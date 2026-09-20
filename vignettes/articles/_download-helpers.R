@@ -36,7 +36,8 @@
     docx_a4 = "DOCX (A4 paper)",
     docx_us = "DOCX (US paper)",
     qualtrics = "Qualtrics import",
-    redcap = "REDCap import"
+    redcap = "REDCap import",
+    json = "JSON export"
   )
   out <- unname(labels[x])
   out[is.na(out)] <- x[is.na(out)]
