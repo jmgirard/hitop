@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-062 (2026-09-20): The hitop-form repo takes the same Node development dependency on `@playwright/test` as the builder, pinned in a committed lockfile and installed only by CI (extends D-051 to a second downstream repo; applies GP4's dependency posture)
+
+**Context:** M095 creates `jmgirard/hitop-form`, a static page that renders a HiTOP instrument from the package's JSON export (M094) and saves responses to the participant's device. Its criteria promise rendering fidelity to the export (IP1) and that the page transmits nothing, and both need a real browser driven headlessly, as D-051 found for the builder's smoke test.
+
+**Decision:** The repo gains `package.json` and `package-lock.json` declaring `@playwright/test` as its only dependency, under `devDependencies`, pinned to the version the builder's lockfile holds at M095's start. Nothing the page serves reads them: the deployed site is the two HTML pages and their script, and a visitor's browser downloads no part of this. Chosen by Jeff at the 2026-09-20 plan gate over no browser harness, rejected because nothing else catches a package export change that breaks the page after it ships, and over hand verification in the browser pane at review, rejected because it certifies one session and guards no later change.
+
+**Consequences:** The hitop-form repo has a `node_modules` install step in CI and a lockfile to keep current, and its `.gitignore` covers `node_modules/` and Playwright's run output. This package's `DESCRIPTION` is untouched. The evidence that would reopen this is the evidence D-051 names: Playwright's install turning CI red, or a browser-driving option needing no dependency.
+
 ### D-061 (2026-09-03): Two `append = FALSE` empty-selection calls did lose their returned value at M060 — correcting D-045(d) and the matching sentence of its Context (supersedes those two statements; D-045(a)-(c) stand unchanged)
 
 **Context:** D-045 recorded M060's two new refusals and closed with clause (d),
