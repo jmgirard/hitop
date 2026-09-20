@@ -7,7 +7,7 @@
 - **Principles touched:** IP1, GP4
 - **Resolves:** —
 - **Surface tier:** internal — a synthesis note under `cairn/references/` and a ROADMAP or DECISIONS disposition; no exported surface changes
-- **Branch/PR:** `m093-online-collection-feasibility`
+- **Branch/PR:** `m093-online-collection-feasibility` — https://github.com/jmgirard/hitop/pull/101
 
 ## Goal
 
