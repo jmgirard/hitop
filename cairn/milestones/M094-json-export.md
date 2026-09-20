@@ -1,6 +1,6 @@
 # M094: The package ships a JSON export of the HiTOP-SR and HiTOP-BR items, response options and instructions as a checksum-locked artifact
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,6 +56,7 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
 - 2026-09-20: T4 done: a JSON card on both download pages, a `json` format label in `_download-helpers.R`, a NEWS entry; `check_line_endings.R` passes; `document()` no diff; `devtools::check()` 0 errors, 0 warnings, 0 notes in 4m 12s; `pkgdown::build_site(install = TRUE)` places both files at `docs/downloads/` byte-identical (with `install = FALSE` the page helpers read the installed package's older manifest and the render fails, which CI's install step avoids).
 - 2026-09-20: claim audit: 34 claims read, 2 corrected — data-raw/json_export.R (sourcing versus running as a script), data-raw/artifacts.R, NEWS.md, vignettes/articles/download-hitopsr.Rmd, download-hitopbr.Rmd (a hitop-form page named as an existing consumer, reworded to a capability); re-read once, 0 wrong.
 - 2026-09-20: all tasks done, status set to review.
+- 2026-09-20: amendment return: AC5 — "`vignettes/articles/download-hitopsr.Rmd` and `download-hitopbr.Rmd` each link the form's JSON file with card text saying what it holds and that a web form outside the package can read it to show the questionnaire; `NEWS.md` names the two artifacts; `devtools::test()` and `devtools::check()` are clean." — the shipped card is two sentences and names no hitop-form page because that page does not exist until M095 (the implement claim audit reworded it deliberately); the criterion as written demands a false claim, so the criterion is wrong, not the work. Re-audit and mini gate via /milestone-implement, then re-review.
 
 ## Decisions
 
@@ -67,3 +68,26 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
 - AC4 evidence: `grep -c $'\r'` returns 0 on all four committed JSON files; `Rscript data-raw/check_line_endings.R` passes.
 
 - AC2 evidence: `hitop_artifacts` json rows carry md5 `1e438cf9…` (hitopsr) and `4768019b…` (hitopbr), equal to `md5 -q` on the committed files; `cmp` finds `pkgdown/assets/downloads/<stem>.json` byte-identical to `inst/extdata/`; `pkgdown::build_site(install = TRUE)` exits 0 and places both at `docs/downloads/<stem>.json`, byte-identical, with each download page linking its file; deployed path per D-033 is `downloads/<stem>.json` under the site root.
+- AC5 evidence (partial, box left unticked): `NEWS.md` names `hitopsr.json` and `hitopbr.json`; `devtools::test()` 0 failures, 17,399 passes; `devtools::check()` 0 errors, 0 warnings, 0 notes; `devtools::document()` no diff; `pkgdown::check_pkgdown()` clean; README.Rmd and README.md last changed in the same commit. Fails as written: the card text is two sentences and says "A web form outside the package can read it", not that it is what the hitop-form page reads. Amendment return recorded in the work log.
+- Consistency gate: `cairn_validate.py` exit 0 (24 advisory warnings, all pre-existing dangling D-ids and one references-staleness line); no DESIGN principle changed, so `cairn_impact` skipped; toolchain slot: document no diff, check clean, check_pkgdown clean, NEWS entry present without milestone numbers, no new top-level files.
+- Independent review, three lenses, 2026-09-20. Dispositions pending triage at the re-review gate; the fix-now candidates are marked.
+  - [O] F1 `data-raw/json_export.R:32,82` — `json_specs` reads `hitopsr_items` at parse time, so `Rscript data-raw/json_export.R` halts with "object 'hitopsr_items' not found" before `load_all()` runs; the header's script-mode claim is false. Reproduced. Fix-now candidate.
+  - [O] F2 `data-raw/json_export.R:70` — `name` is `hitopsr_001`/`hitopbr_01` (the stem), while the package's item prefix is `hsr_`/`hbr_` everywhere else; a page writing columns under these names misses `score_hitopsr()`'s default prefix. Plan choice (AC1/Scope name the stem), not a slip; flag for M095/M096 planning.
+  - [O] F3 `test-json-export.R:53` — a DESCRIPTION version bump reds the suite until `artifacts.R` reruns; intended by AC3 but unrecorded in the release walk. Follow-up candidate.
+  - [O] F4 `data-raw/artifacts.R:128` — `build_notes` "read by the hitop-form page" ships in `hitop_artifacts$changes` and renders in the Versions history; the claim audit missed this copy. Confirmed. Fix-now candidate (needs a manifest regeneration).
+  - [O] F5 = [S-prior] F1 `R/data.R:379` — `hitop_artifacts$format` roxygen omits `"json"`. Confirmed. Fix-now candidate.
+  - [O] F6 `json_export.R:57` — `Sys.Date()` makes an otherwise byte-reproducible file churn on rerun. Design note; follow-up candidate.
+  - [O] F7 `test-json-export.R:47,80` — `vapply(..., integer(1))` errors on a double, so the `number.type` note can never be the reported result and no plant exercises it. Test-quality; follow-up candidate.
+  - [O] F8 `test-json-export.R:124` — six plants share one tempfile path. Follow-up candidate.
+  - [O] F9 — plants re-serialize with `auto_unbox = TRUE`, so the writer's length-one-array guarantee is untested. Follow-up candidate.
+  - [O] F10 — `manifest_build_date()` duplicates `latest_manifest()` rather than sharing a helper. Style; reject or follow-up.
+  - [O] F11 `json_export.R:10` — "sourced under its rebuild filters" is wrong: the source is unconditional, only the write loop is filtered. Fix-now candidate (comment).
+  - [O] F12 `cairn/DESIGN.md:46,84` — generator list and artifact-versioning paragraph omit the JSON format. Fix-now candidate (docs).
+  - [O] F13 — the card breaks the page's imperative voice and AC5's wording. The AC5 half is the amendment return above; the voice half is a wording choice for the mini gate.
+  - [O] F14 — four `col-md-4` cards wrap one onto a second row on these two pages. Cosmetic; reject or follow-up.
+  - [O] F15 `test-artifacts.R:203` — comment says 24 staged files, now 26. Confirmed. Fix-now candidate (comment).
+  - [O] F16 — no direct test of `write_instrument_json()`; two cross-artifact sweeps filter to qualtrics/redcap. Lost redundancy; follow-up candidate.
+  - [O] F17 — the export's top level is shaped like the D-039 module descriptor with the same `format` `"1.0"` and no discriminator. Flag for M096's reader; follow-up candidate.
+  - [O] F18 — NEWS names `inst/extdata/` as the address where D-033 made the site canonical. Fix-now candidate (wording).
+  - [S-blame] no conflicts with past commits or D-entries; `rebuild_stems`/`rebuild_formats` left as the last build ran them matches every prior commit; the writer matches `write_module()` and the CRLF lesson.
+  - [S-prior] probe `pulls/comments?per_page=1` returned `[]`; archived reviews of M020, M042, M047, M054 held up except the `R/data.R` format enumeration (F5 above).
