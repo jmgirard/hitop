@@ -1,6 +1,6 @@
 # M095: A static page renders a HiTOP-SR or HiTOP-BR form from the package's JSON export and saves each participant's responses to their device
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M094
 - **Driving RR:** —
@@ -68,6 +68,8 @@ Publish `jmgirard/hitop-form`, a static page that renders a HiTOP instrument or 
 - 2026-09-20: T8 done (hitop-form 2520e23): `tests/guard.spec.js` G1–G4 (build date and package version on the start and done screens; `format` altered, absent and non-string each served in the live export's place through `page.route()` and each refusal read, plus the live copy accepted as the control) and `tests/network.spec.js` N1–N3 (every request recorded on the BR save, the module save and the refusal; the URL set equals the page, `form.js` and the export). 8 passed; three plants red (any string format accepted, a fetch to another host, build date dropped from the version line). Both pages gained `<link rel="icon" href="data:,">` so a real browser sends no favicon request either.
 - 2026-09-20: the T7 push's Tests run failed in CI: `page.waitForEvent('download')` took the 15 s action timeout, and the 405-item HiTOP-SR walk took 18 s on the runner (9 s locally), so the wait for the file timed out before Finish. Fixed in `awaitDownload()` (110 s, inside the 120 s test budget); the retry hid nothing because both attempts hit the same wall.
 - 2026-09-20: T9 done (hitop-form abfb0d9): README with the four sections AC7 names (making a link, what the participant sees, where the file lands, scoring handed to the modules article, plus development and license). Tests 1m11s and Deploy to Pages 18s green on that push; `index.html`, `link.html` and `README.md` answer 200 at the Pages URL. Full suite 17 passed locally.
+- 2026-09-20: claim audit: 60 claims read, 3 corrected — hitop-form README.md (the package version is printed but not written to the file; the tests run on pull requests and pushes to `main`, not every push), tests/fixtures/README.md (no package reader exists yet); the reader ran over the hitop-form repository, since this branch adds no lines outside `cairn/`; link.html's order hint made conditional on the same pass; re-read confirmed all three (hitop-form 5cd69ca, CI green). Left as noted: the refusal names the item's index on the page (AC3's wording) while the item shows its position on the form, so page 2's "item 1 on this page" is the item labelled 16.
+- 2026-09-20: all tasks checked; status → review.
 
 ## Decisions
 
