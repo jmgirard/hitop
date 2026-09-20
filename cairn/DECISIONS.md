@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-063 (2026-09-20): The instrument JSON export's format 1.0 fields are a public contract, changed only under a new format string with a D-entry (extends D-039(d)'s field governance to a second JSON format; applies IP1 and GP2)
+
+**Context:** M094 ships `inst/extdata/hitopsr.json` and `inst/extdata/hitopbr.json`, each carrying `format` `"1.0"`, for a page outside the package (M095's hitop-form) to read. D-039(d) placed the module descriptor's fields under D-entry governance. The export had no such record, and its top level is shaped like the descriptor, with the same version string and no field telling the two apart (review findings G1 and F17).
+
+**Decision:** The fields the export writes at format `"1.0"` are a public contract: `format`, `package`, `packageVersion`, `buildDate`, `stem`, `maxItem`, `instructions` (`start`, and `options` as `{value, label}`) and `items` as `{number, name, text}` in table order, with item names carrying the file stem (`hitopsr_001`) rather than the scoring prefix. A field is removed, renamed or changed in meaning only under a new `format` string recorded in a D-entry, as D-039(d) holds for the descriptor. No field telling the export from the module descriptor is added here: M096's reader is the first consumer that must tell them apart, and the online-form candidate row carries that question to its planning. Chosen by Jeff at the 2026-09-20 review gate.
+
+**Consequences:** `tests/testthat/test-json-export.R` enforces the contract against the package's tables, so a field change reds it before it reaches a reader. No shipped byte moves. The evidence that would reopen this is a consumer needing a field the contract lacks, which takes a new format string.
+
 ### D-062 (2026-09-20): The hitop-form repo takes the same Node development dependency on `@playwright/test` as the builder, pinned in a committed lockfile and installed only by CI (extends D-051 to a second downstream repo; applies GP4's dependency posture)
 
 **Context:** M095 creates `jmgirard/hitop-form`, a static page that renders a HiTOP instrument from the package's JSON export (M094) and saves responses to the participant's device. Its criteria promise rendering fidelity to the export (IP1) and that the page transmits nothing, and both need a real browser driven headlessly, as D-051 found for the builder's smoke test.
