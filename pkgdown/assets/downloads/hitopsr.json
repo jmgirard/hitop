@@ -1,0 +1,2056 @@
+{
+  "format": "1.0",
+  "package": "hitop",
+  "packageVersion": "0.2.0",
+  "buildDate": "2026-09-20",
+  "stem": "hitopsr",
+  "maxItem": 405,
+  "instructions": {
+    "start": "Please consider whether there have been significant times during the last 12 months during which the following statements applied to you. Then please select the option that best describes how well each statement described you during that period.",
+    "options": [
+      {
+        "value": 1,
+        "label": "Not at all"
+      },
+      {
+        "value": 2,
+        "label": "A little"
+      },
+      {
+        "value": 3,
+        "label": "Moderately"
+      },
+      {
+        "value": 4,
+        "label": "A lot"
+      }
+    ]
+  },
+  "items": [
+    {
+      "number": 1,
+      "name": "hitopsr_001",
+      "text": "I preferred to stay home than to go to a party."
+    },
+    {
+      "number": 2,
+      "name": "hitopsr_002",
+      "text": "I felt that my work must be flawless."
+    },
+    {
+      "number": 3,
+      "name": "hitopsr_003",
+      "text": "I saw things that were not really there."
+    },
+    {
+      "number": 4,
+      "name": "hitopsr_004",
+      "text": "I was embarrassed because I pulled my hair."
+    },
+    {
+      "number": 5,
+      "name": "hitopsr_005",
+      "text": "I avoided foods because I did not like their appearance."
+    },
+    {
+      "number": 6,
+      "name": "hitopsr_006",
+      "text": "I felt dizzy or lightheaded."
+    },
+    {
+      "number": 7,
+      "name": "hitopsr_007",
+      "text": "I believed it was fine to tell a little lie in order to get out of trouble."
+    },
+    {
+      "number": 8,
+      "name": "hitopsr_008",
+      "text": "Most people were just out for themselves."
+    },
+    {
+      "number": 9,
+      "name": "hitopsr_009",
+      "text": "My home was so cluttered that it was difficult to get around."
+    },
+    {
+      "number": 10,
+      "name": "hitopsr_010",
+      "text": "I had pains in several parts of my body."
+    },
+    {
+      "number": 11,
+      "name": "hitopsr_011",
+      "text": "I felt down and discouraged."
+    },
+    {
+      "number": 12,
+      "name": "hitopsr_012",
+      "text": "I was uncomfortable meeting new people."
+    },
+    {
+      "number": 13,
+      "name": "hitopsr_013",
+      "text": "I was unable to resist the impulse to gamble."
+    },
+    {
+      "number": 14,
+      "name": "hitopsr_014",
+      "text": "I found it easy to manipulate others."
+    },
+    {
+      "number": 15,
+      "name": "hitopsr_015",
+      "text": "I made decisions quickly without thinking them through."
+    },
+    {
+      "number": 16,
+      "name": "hitopsr_016",
+      "text": "I spent a lot of time looking at myself."
+    },
+    {
+      "number": 17,
+      "name": "hitopsr_017",
+      "text": "It was difficult for me to touch something that was dirty."
+    },
+    {
+      "number": 18,
+      "name": "hitopsr_018",
+      "text": "I refused to budge as a matter of principle, even on small matters."
+    },
+    {
+      "number": 19,
+      "name": "hitopsr_019",
+      "text": "Life felt too short to follow other peoples' rules."
+    },
+    {
+      "number": 20,
+      "name": "hitopsr_020",
+      "text": "I blamed myself for things."
+    },
+    {
+      "number": 21,
+      "name": "hitopsr_021",
+      "text": "I was very suspicious of other people."
+    },
+    {
+      "number": 22,
+      "name": "hitopsr_022",
+      "text": "I was very cautious about taking risks."
+    },
+    {
+      "number": 23,
+      "name": "hitopsr_023",
+      "text": "I felt sexually inadequate."
+    },
+    {
+      "number": 24,
+      "name": "hitopsr_024",
+      "text": "I hardly showed any feelings."
+    },
+    {
+      "number": 25,
+      "name": "hitopsr_025",
+      "text": "Most people would have liked to be like me."
+    },
+    {
+      "number": 26,
+      "name": "hitopsr_026",
+      "text": "I got so angry that I yelled or screamed."
+    },
+    {
+      "number": 27,
+      "name": "hitopsr_027",
+      "text": "I felt little desire for sexual activity."
+    },
+    {
+      "number": 28,
+      "name": "hitopsr_028",
+      "text": "I avoided performing or giving a talk in front of others."
+    },
+    {
+      "number": 29,
+      "name": "hitopsr_029",
+      "text": "It was hard to stop gambling once I started."
+    },
+    {
+      "number": 30,
+      "name": "hitopsr_030",
+      "text": "I was bothered by stomach symptoms (diarrhea, nausea, stomach pain etc.)."
+    },
+    {
+      "number": 31,
+      "name": "hitopsr_031",
+      "text": "I taunted others."
+    },
+    {
+      "number": 32,
+      "name": "hitopsr_032",
+      "text": "I felt restless when I had to sit still for more than ten minutes."
+    },
+    {
+      "number": 33,
+      "name": "hitopsr_033",
+      "text": "I had trouble falling asleep."
+    },
+    {
+      "number": 34,
+      "name": "hitopsr_034",
+      "text": "Some people thought I was uncaring and unfeeling."
+    },
+    {
+      "number": 35,
+      "name": "hitopsr_035",
+      "text": "I was the dominant person in my relationships."
+    },
+    {
+      "number": 36,
+      "name": "hitopsr_036",
+      "text": "I bought much more than I needed."
+    },
+    {
+      "number": 37,
+      "name": "hitopsr_037",
+      "text": "I felt an urge to pull my hair."
+    },
+    {
+      "number": 38,
+      "name": "hitopsr_038",
+      "text": "I wished I lived in my fantasies instead of real life."
+    },
+    {
+      "number": 39,
+      "name": "hitopsr_039",
+      "text": "My sexual fantasies strained my relationships."
+    },
+    {
+      "number": 40,
+      "name": "hitopsr_040",
+      "text": "I did something spontaneous that I later regretted."
+    },
+    {
+      "number": 41,
+      "name": "hitopsr_041",
+      "text": "I worked on a plan to kill myself."
+    },
+    {
+      "number": 42,
+      "name": "hitopsr_042",
+      "text": "I felt that I did not want to be in a close relationship."
+    },
+    {
+      "number": 43,
+      "name": "hitopsr_043",
+      "text": "I wished I could change certain parts of my body."
+    },
+    {
+      "number": 44,
+      "name": "hitopsr_044",
+      "text": "I felt motivated."
+    },
+    {
+      "number": 45,
+      "name": "hitopsr_045",
+      "text": "When I had the chance, I chose to be alone rather than with other people."
+    },
+    {
+      "number": 46,
+      "name": "hitopsr_046",
+      "text": "I felt an urge to hurt myself (cut, burn, bite, etc.)."
+    },
+    {
+      "number": 47,
+      "name": "hitopsr_047",
+      "text": "I worried a lot about my health."
+    },
+    {
+      "number": 48,
+      "name": "hitopsr_048",
+      "text": "Others noticed that I was unusually excited or up."
+    },
+    {
+      "number": 49,
+      "name": "hitopsr_049",
+      "text": "People told me that I was being inappropriate."
+    },
+    {
+      "number": 50,
+      "name": "hitopsr_050",
+      "text": "I was unhappy about my sexual performance."
+    },
+    {
+      "number": 51,
+      "name": "hitopsr_051",
+      "text": "I experienced strange sights or sounds."
+    },
+    {
+      "number": 52,
+      "name": "hitopsr_052",
+      "text": "I liked having power."
+    },
+    {
+      "number": 53,
+      "name": "hitopsr_053",
+      "text": "I had trouble remembering things."
+    },
+    {
+      "number": 54,
+      "name": "hitopsr_054",
+      "text": "I used sex to relieve negative feelings (e.g., anxiety, sadness, anger)."
+    },
+    {
+      "number": 55,
+      "name": "hitopsr_055",
+      "text": "Interacting with others was not very important to me."
+    },
+    {
+      "number": 56,
+      "name": "hitopsr_056",
+      "text": "I quit tasks that became too challenging."
+    },
+    {
+      "number": 57,
+      "name": "hitopsr_057",
+      "text": "I allowed people to take advantage of me."
+    },
+    {
+      "number": 58,
+      "name": "hitopsr_058",
+      "text": "I was selfish."
+    },
+    {
+      "number": 59,
+      "name": "hitopsr_059",
+      "text": "I liked being the person who has the authority."
+    },
+    {
+      "number": 60,
+      "name": "hitopsr_060",
+      "text": "I needed to count to a certain number before starting an activity."
+    },
+    {
+      "number": 61,
+      "name": "hitopsr_061",
+      "text": "I was fearful of rats or mice."
+    },
+    {
+      "number": 62,
+      "name": "hitopsr_062",
+      "text": "I continued to do things the same way, even though my approach clearly wasn't working."
+    },
+    {
+      "number": 63,
+      "name": "hitopsr_063",
+      "text": "I expected to get treated better than others."
+    },
+    {
+      "number": 64,
+      "name": "hitopsr_064",
+      "text": "I didn't get excited about very much."
+    },
+    {
+      "number": 65,
+      "name": "hitopsr_065",
+      "text": "People told me that I was a very picky eater."
+    },
+    {
+      "number": 66,
+      "name": "hitopsr_066",
+      "text": "I was afraid that I would have a panic attack in a small, tight, or enclosed space."
+    },
+    {
+      "number": 67,
+      "name": "hitopsr_067",
+      "text": "I couldn't stop comparing my body to those of others."
+    },
+    {
+      "number": 68,
+      "name": "hitopsr_068",
+      "text": "I stole from someone I knew without their knowledge."
+    },
+    {
+      "number": 69,
+      "name": "hitopsr_069",
+      "text": "I had difficulty making eye contact with others."
+    },
+    {
+      "number": 70,
+      "name": "hitopsr_070",
+      "text": "I had to cancel plans in order to get my exercise in."
+    },
+    {
+      "number": 71,
+      "name": "hitopsr_071",
+      "text": "I had little or no interest in sexual activity."
+    },
+    {
+      "number": 72,
+      "name": "hitopsr_072",
+      "text": "It was very important for me to take the lead."
+    },
+    {
+      "number": 73,
+      "name": "hitopsr_073",
+      "text": "My skin picking created problems for me."
+    },
+    {
+      "number": 74,
+      "name": "hitopsr_074",
+      "text": "I was so focused on being productive that I had less time for friends and family."
+    },
+    {
+      "number": 75,
+      "name": "hitopsr_075",
+      "text": "I lied about myself to other people."
+    },
+    {
+      "number": 76,
+      "name": "hitopsr_076",
+      "text": "I had a dream so distressing that it continued to affect me after waking."
+    },
+    {
+      "number": 77,
+      "name": "hitopsr_077",
+      "text": "I was much more talkative than usual."
+    },
+    {
+      "number": 78,
+      "name": "hitopsr_078",
+      "text": "I used medicines or supplements to bulk up."
+    },
+    {
+      "number": 79,
+      "name": "hitopsr_079",
+      "text": "If I passed by a reflective surface (like a window), I checked how I looked."
+    },
+    {
+      "number": 80,
+      "name": "hitopsr_080",
+      "text": "My imagination held my attention for hours."
+    },
+    {
+      "number": 81,
+      "name": "hitopsr_081",
+      "text": "I was prone to daydreaming."
+    },
+    {
+      "number": 82,
+      "name": "hitopsr_082",
+      "text": "I was unable to reach orgasm."
+    },
+    {
+      "number": 83,
+      "name": "hitopsr_083",
+      "text": "I skipped two meals in a row."
+    },
+    {
+      "number": 84,
+      "name": "hitopsr_084",
+      "text": "My desire for things to be flawless kept me from getting everything done."
+    },
+    {
+      "number": 85,
+      "name": "hitopsr_085",
+      "text": "I was very confident in myself around other people."
+    },
+    {
+      "number": 86,
+      "name": "hitopsr_086",
+      "text": "I did not feel like spending time with people."
+    },
+    {
+      "number": 87,
+      "name": "hitopsr_087",
+      "text": "I was unable to control when I reached orgasm."
+    },
+    {
+      "number": 88,
+      "name": "hitopsr_088",
+      "text": "I became disinterested in tasks easily."
+    },
+    {
+      "number": 89,
+      "name": "hitopsr_089",
+      "text": "I felt cheerful."
+    },
+    {
+      "number": 90,
+      "name": "hitopsr_090",
+      "text": "I got anxious when others were watching me."
+    },
+    {
+      "number": 91,
+      "name": "hitopsr_091",
+      "text": "I thought I was the only one chosen by God for a special role."
+    },
+    {
+      "number": 92,
+      "name": "hitopsr_092",
+      "text": "I exercised when I was injured."
+    },
+    {
+      "number": 93,
+      "name": "hitopsr_093",
+      "text": "My heart was racing or pounding."
+    },
+    {
+      "number": 94,
+      "name": "hitopsr_094",
+      "text": "My mind was flooded with troubling images of a bad experience."
+    },
+    {
+      "number": 95,
+      "name": "hitopsr_095",
+      "text": "I deserved special treatment."
+    },
+    {
+      "number": 96,
+      "name": "hitopsr_096",
+      "text": "I missed appointments because I forgot about them."
+    },
+    {
+      "number": 97,
+      "name": "hitopsr_097",
+      "text": "People would describe me as a risk-taker."
+    },
+    {
+      "number": 98,
+      "name": "hitopsr_098",
+      "text": "I turned down social invitations so that I could spend more time gaming."
+    },
+    {
+      "number": 99,
+      "name": "hitopsr_099",
+      "text": "I was troubled by unexplained seizures or convulsions."
+    },
+    {
+      "number": 100,
+      "name": "hitopsr_100",
+      "text": "I felt hopeless about the future."
+    },
+    {
+      "number": 101,
+      "name": "hitopsr_101",
+      "text": "I tried to eat fewer snacks."
+    },
+    {
+      "number": 102,
+      "name": "hitopsr_102",
+      "text": "I was afraid of spiders."
+    },
+    {
+      "number": 103,
+      "name": "hitopsr_103",
+      "text": "Taking risks made me feel alive."
+    },
+    {
+      "number": 104,
+      "name": "hitopsr_104",
+      "text": "I enjoyed rebelling against authority figures (e.g., police, teachers, bosses)."
+    },
+    {
+      "number": 105,
+      "name": "hitopsr_105",
+      "text": "I found it difficult to throw things away."
+    },
+    {
+      "number": 106,
+      "name": "hitopsr_106",
+      "text": "Minor frustrations really upset me."
+    },
+    {
+      "number": 107,
+      "name": "hitopsr_107",
+      "text": "I said unusual things."
+    },
+    {
+      "number": 108,
+      "name": "hitopsr_108",
+      "text": "I tried to eat only healthy foods."
+    },
+    {
+      "number": 109,
+      "name": "hitopsr_109",
+      "text": "I was afraid of getting trapped in a crowd."
+    },
+    {
+      "number": 110,
+      "name": "hitopsr_110",
+      "text": "I had a nagging doubt that I'd failed to do something important."
+    },
+    {
+      "number": 111,
+      "name": "hitopsr_111",
+      "text": "I got angry about small things."
+    },
+    {
+      "number": 112,
+      "name": "hitopsr_112",
+      "text": "People told me that I work too much."
+    },
+    {
+      "number": 113,
+      "name": "hitopsr_113",
+      "text": "I had periods of unexplained deafness."
+    },
+    {
+      "number": 114,
+      "name": "hitopsr_114",
+      "text": "During sex, I consciously tried to delay orgasm so I could last longer."
+    },
+    {
+      "number": 115,
+      "name": "hitopsr_115",
+      "text": "I felt something was wrong with my body."
+    },
+    {
+      "number": 116,
+      "name": "hitopsr_116",
+      "text": "I could control things with my mind."
+    },
+    {
+      "number": 117,
+      "name": "hitopsr_117",
+      "text": "I was watchful for danger."
+    },
+    {
+      "number": 118,
+      "name": "hitopsr_118",
+      "text": "I felt like I would be unable to breathe in a small, tight, or enclosed space."
+    },
+    {
+      "number": 119,
+      "name": "hitopsr_119",
+      "text": "I didn't pay much attention to social standards of behavior."
+    },
+    {
+      "number": 120,
+      "name": "hitopsr_120",
+      "text": "I found sexual activity with someone unconscious (e.g., asleep or passed out from alcohol or a drug) sexually arousing."
+    },
+    {
+      "number": 121,
+      "name": "hitopsr_121",
+      "text": "I collected things I did not need."
+    },
+    {
+      "number": 122,
+      "name": "hitopsr_122",
+      "text": "I had a hard time asserting myself to others."
+    },
+    {
+      "number": 123,
+      "name": "hitopsr_123",
+      "text": "People told me that I do not show emotions."
+    },
+    {
+      "number": 124,
+      "name": "hitopsr_124",
+      "text": "I reached orgasm later than I wanted to."
+    },
+    {
+      "number": 125,
+      "name": "hitopsr_125",
+      "text": "My temper scared people."
+    },
+    {
+      "number": 126,
+      "name": "hitopsr_126",
+      "text": "Many people thought that my behavior was really strange."
+    },
+    {
+      "number": 127,
+      "name": "hitopsr_127",
+      "text": "I was easily startled."
+    },
+    {
+      "number": 128,
+      "name": "hitopsr_128",
+      "text": "My mood was negatively affected when I was unable to game as long as I wanted."
+    },
+    {
+      "number": 129,
+      "name": "hitopsr_129",
+      "text": "My compulsive buying caused me financial problems."
+    },
+    {
+      "number": 130,
+      "name": "hitopsr_130",
+      "text": "I thought it may be possible for other people to read my mind, or for me to read other's minds."
+    },
+    {
+      "number": 131,
+      "name": "hitopsr_131",
+      "text": "I used substances during sex to encourage my partner to use substances too."
+    },
+    {
+      "number": 132,
+      "name": "hitopsr_132",
+      "text": "I felt good about myself."
+    },
+    {
+      "number": 133,
+      "name": "hitopsr_133",
+      "text": "I experienced chest pain."
+    },
+    {
+      "number": 134,
+      "name": "hitopsr_134",
+      "text": "I kept items that I did not need."
+    },
+    {
+      "number": 135,
+      "name": "hitopsr_135",
+      "text": "I was easily annoyed."
+    },
+    {
+      "number": 136,
+      "name": "hitopsr_136",
+      "text": "I was so worked up I thought I might die."
+    },
+    {
+      "number": 137,
+      "name": "hitopsr_137",
+      "text": "I got angry when people did not take my health problems seriously."
+    },
+    {
+      "number": 138,
+      "name": "hitopsr_138",
+      "text": "I was concerned that other persons might bring me harm."
+    },
+    {
+      "number": 139,
+      "name": "hitopsr_139",
+      "text": "I had trouble sitting still."
+    },
+    {
+      "number": 140,
+      "name": "hitopsr_140",
+      "text": "Even on days off, I found myself thinking about work."
+    },
+    {
+      "number": 141,
+      "name": "hitopsr_141",
+      "text": "I avoided taking risks at all costs."
+    },
+    {
+      "number": 142,
+      "name": "hitopsr_142",
+      "text": "I avoided people who might bring back bad memories."
+    },
+    {
+      "number": 143,
+      "name": "hitopsr_143",
+      "text": "My work success was the most valuable aspect of my life."
+    },
+    {
+      "number": 144,
+      "name": "hitopsr_144",
+      "text": "My appetite was poor."
+    },
+    {
+      "number": 145,
+      "name": "hitopsr_145",
+      "text": "I felt optimistic."
+    },
+    {
+      "number": 146,
+      "name": "hitopsr_146",
+      "text": "I counted things over and over again."
+    },
+    {
+      "number": 147,
+      "name": "hitopsr_147",
+      "text": "I enjoyed looking in the mirror."
+    },
+    {
+      "number": 148,
+      "name": "hitopsr_148",
+      "text": "I mocked people."
+    },
+    {
+      "number": 149,
+      "name": "hitopsr_149",
+      "text": "I had a hard time staying in my seat when I was supposed to be seated."
+    },
+    {
+      "number": 150,
+      "name": "hitopsr_150",
+      "text": "I didn't care whether my behavior was considered proper or not."
+    },
+    {
+      "number": 151,
+      "name": "hitopsr_151",
+      "text": "I found it difficult to reach orgasm."
+    },
+    {
+      "number": 152,
+      "name": "hitopsr_152",
+      "text": "I had no interest in romantic relationships."
+    },
+    {
+      "number": 153,
+      "name": "hitopsr_153",
+      "text": "I used substances to reduce anxiety during sexual activity."
+    },
+    {
+      "number": 154,
+      "name": "hitopsr_154",
+      "text": "I lost myself in a fictional character."
+    },
+    {
+      "number": 155,
+      "name": "hitopsr_155",
+      "text": "I was obsessed with cleanliness."
+    },
+    {
+      "number": 156,
+      "name": "hitopsr_156",
+      "text": "I threatened someone with a weapon like a bat, brick, knife, or gun."
+    },
+    {
+      "number": 157,
+      "name": "hitopsr_157",
+      "text": "I tried to kill myself."
+    },
+    {
+      "number": 158,
+      "name": "hitopsr_158",
+      "text": "Major decisions took months of careful consideration to arrive at a choice."
+    },
+    {
+      "number": 159,
+      "name": "hitopsr_159",
+      "text": "I quit working (my job, homework, or housework) before I was finished."
+    },
+    {
+      "number": 160,
+      "name": "hitopsr_160",
+      "text": "I did things to get others to notice me."
+    },
+    {
+      "number": 161,
+      "name": "hitopsr_161",
+      "text": "I became very anxious during a storm."
+    },
+    {
+      "number": 162,
+      "name": "hitopsr_162",
+      "text": "I enjoyed being the center of attention."
+    },
+    {
+      "number": 163,
+      "name": "hitopsr_163",
+      "text": "I spent more money shopping than I could afford."
+    },
+    {
+      "number": 164,
+      "name": "hitopsr_164",
+      "text": "I had trouble standing up for myself."
+    },
+    {
+      "number": 165,
+      "name": "hitopsr_165",
+      "text": "Special messages were written in papers or announced on TV just for me."
+    },
+    {
+      "number": 166,
+      "name": "hitopsr_166",
+      "text": "Things went best when I told others what to do."
+    },
+    {
+      "number": 167,
+      "name": "hitopsr_167",
+      "text": "I forged checks or used other people's credit cards without permission."
+    },
+    {
+      "number": 168,
+      "name": "hitopsr_168",
+      "text": "I felt that things around me were not real."
+    },
+    {
+      "number": 169,
+      "name": "hitopsr_169",
+      "text": "I recognized that I had a lot of special qualities."
+    },
+    {
+      "number": 170,
+      "name": "hitopsr_170",
+      "text": "I felt worthless."
+    },
+    {
+      "number": 171,
+      "name": "hitopsr_171",
+      "text": "I noticed small changes to how my body feels."
+    },
+    {
+      "number": 172,
+      "name": "hitopsr_172",
+      "text": "I made decisions only after I had all the information I could get."
+    },
+    {
+      "number": 173,
+      "name": "hitopsr_173",
+      "text": "I was afraid of heights."
+    },
+    {
+      "number": 174,
+      "name": "hitopsr_174",
+      "text": "I spread rumors about other people."
+    },
+    {
+      "number": 175,
+      "name": "hitopsr_175",
+      "text": "I tried to con or cheat other people."
+    },
+    {
+      "number": 176,
+      "name": "hitopsr_176",
+      "text": "I had the experience that everything suddenly seemed unfamiliar and I forgot where I was."
+    },
+    {
+      "number": 177,
+      "name": "hitopsr_177",
+      "text": "I kept gaming, even though it caused problems at work or school."
+    },
+    {
+      "number": 178,
+      "name": "hitopsr_178",
+      "text": "I felt like I could go for days without sleeping."
+    },
+    {
+      "number": 179,
+      "name": "hitopsr_179",
+      "text": "I was something of a workaholic."
+    },
+    {
+      "number": 180,
+      "name": "hitopsr_180",
+      "text": "I engaged in sexual activities that I later regretted."
+    },
+    {
+      "number": 181,
+      "name": "hitopsr_181",
+      "text": "I believed that if you are not careful, other people will take advantage of you."
+    },
+    {
+      "number": 182,
+      "name": "hitopsr_182",
+      "text": "I enjoyed thinking about my future and the great things it would bring."
+    },
+    {
+      "number": 183,
+      "name": "hitopsr_183",
+      "text": "I found watching unsuspecting people who were naked, masturbating, or having sex sexually arousing."
+    },
+    {
+      "number": 184,
+      "name": "hitopsr_184",
+      "text": "I found it hard to resist the urge to shop."
+    },
+    {
+      "number": 185,
+      "name": "hitopsr_185",
+      "text": "I vandalized or defaced public property."
+    },
+    {
+      "number": 186,
+      "name": "hitopsr_186",
+      "text": "I was proud of myself."
+    },
+    {
+      "number": 187,
+      "name": "hitopsr_187",
+      "text": "I found romantic relationships to be tiresome."
+    },
+    {
+      "number": 188,
+      "name": "hitopsr_188",
+      "text": "I considered using syrup of ipecac, enemas, or suppositories to lose weight."
+    },
+    {
+      "number": 189,
+      "name": "hitopsr_189",
+      "text": "My needs and wants came first."
+    },
+    {
+      "number": 190,
+      "name": "hitopsr_190",
+      "text": "I went out of my way to avoid risks."
+    },
+    {
+      "number": 191,
+      "name": "hitopsr_191",
+      "text": "I paid close attention to how my body feels."
+    },
+    {
+      "number": 192,
+      "name": "hitopsr_192",
+      "text": "I pulled out hairs that were a different color or texture."
+    },
+    {
+      "number": 193,
+      "name": "hitopsr_193",
+      "text": "My mind wandered far away from the present."
+    },
+    {
+      "number": 194,
+      "name": "hitopsr_194",
+      "text": "I was overwhelmed by anxiety."
+    },
+    {
+      "number": 195,
+      "name": "hitopsr_195",
+      "text": "People told me that I was too perfectionistic."
+    },
+    {
+      "number": 196,
+      "name": "hitopsr_196",
+      "text": "I bet more money than I could really afford to lose."
+    },
+    {
+      "number": 197,
+      "name": "hitopsr_197",
+      "text": "I focused on eating more healthy foods."
+    },
+    {
+      "number": 198,
+      "name": "hitopsr_198",
+      "text": "I experienced sudden muscle weakness or paralysis."
+    },
+    {
+      "number": 199,
+      "name": "hitopsr_199",
+      "text": "I felt compelled to count things."
+    },
+    {
+      "number": 200,
+      "name": "hitopsr_200",
+      "text": "My mood changed suddenly for no good reason."
+    },
+    {
+      "number": 201,
+      "name": "hitopsr_201",
+      "text": "I paid a lot of attention to how I look."
+    },
+    {
+      "number": 202,
+      "name": "hitopsr_202",
+      "text": "I lost a significant amount of weight without even trying."
+    },
+    {
+      "number": 203,
+      "name": "hitopsr_203",
+      "text": "I experienced a sudden sensory loss (e.g., seeing or hearing problems) that doctors could not explain."
+    },
+    {
+      "number": 204,
+      "name": "hitopsr_204",
+      "text": "I quickly went from being sad to being happy."
+    },
+    {
+      "number": 205,
+      "name": "hitopsr_205",
+      "text": "I spent time planning how to reduce my food intake."
+    },
+    {
+      "number": 206,
+      "name": "hitopsr_206",
+      "text": "I was cautious."
+    },
+    {
+      "number": 207,
+      "name": "hitopsr_207",
+      "text": "I enjoyed activities that were a little bit dangerous."
+    },
+    {
+      "number": 208,
+      "name": "hitopsr_208",
+      "text": "I avoided places that reminded me of something bad that happened."
+    },
+    {
+      "number": 209,
+      "name": "hitopsr_209",
+      "text": "I felt that the world is a dangerous place."
+    },
+    {
+      "number": 210,
+      "name": "hitopsr_210",
+      "text": "I was sensitive to changes in my body."
+    },
+    {
+      "number": 211,
+      "name": "hitopsr_211",
+      "text": "I did not have much sympathy for others."
+    },
+    {
+      "number": 212,
+      "name": "hitopsr_212",
+      "text": "People told me that I did not eat enough."
+    },
+    {
+      "number": 213,
+      "name": "hitopsr_213",
+      "text": "I was a rule breaker."
+    },
+    {
+      "number": 214,
+      "name": "hitopsr_214",
+      "text": "I was grouchy."
+    },
+    {
+      "number": 215,
+      "name": "hitopsr_215",
+      "text": "I bit myself on purpose."
+    },
+    {
+      "number": 216,
+      "name": "hitopsr_216",
+      "text": "I strove for perfection, even when others said that I should move on."
+    },
+    {
+      "number": 217,
+      "name": "hitopsr_217",
+      "text": "I had an illness or disease that others dismissed."
+    },
+    {
+      "number": 218,
+      "name": "hitopsr_218",
+      "text": "When in public, I liked to stand out."
+    },
+    {
+      "number": 219,
+      "name": "hitopsr_219",
+      "text": "I failed to consider the consequences of an action."
+    },
+    {
+      "number": 220,
+      "name": "hitopsr_220",
+      "text": "My fantasies felt very real to me."
+    },
+    {
+      "number": 221,
+      "name": "hitopsr_221",
+      "text": "I saw a person but then realized it was just a shadow."
+    },
+    {
+      "number": 222,
+      "name": "hitopsr_222",
+      "text": "Seeing something gory made me woozy."
+    },
+    {
+      "number": 223,
+      "name": "hitopsr_223",
+      "text": "I believed other people could actually hear my thoughts."
+    },
+    {
+      "number": 224,
+      "name": "hitopsr_224",
+      "text": "I felt very stressed."
+    },
+    {
+      "number": 225,
+      "name": "hitopsr_225",
+      "text": "I was rigid and inflexible in my approach to doing things."
+    },
+    {
+      "number": 226,
+      "name": "hitopsr_226",
+      "text": "I said things that were not true."
+    },
+    {
+      "number": 227,
+      "name": "hitopsr_227",
+      "text": "I felt on guard and on edge."
+    },
+    {
+      "number": 228,
+      "name": "hitopsr_228",
+      "text": "I tried to break up someone else's friendship or romantic relationship."
+    },
+    {
+      "number": 229,
+      "name": "hitopsr_229",
+      "text": "I felt the need to stand up when I should have been sitting down."
+    },
+    {
+      "number": 230,
+      "name": "hitopsr_230",
+      "text": "I found exposing my genitals to a stranger sexually arousing."
+    },
+    {
+      "number": 231,
+      "name": "hitopsr_231",
+      "text": "My moods were intense and unpredictable."
+    },
+    {
+      "number": 232,
+      "name": "hitopsr_232",
+      "text": "I felt faint at the sight of blood."
+    },
+    {
+      "number": 233,
+      "name": "hitopsr_233",
+      "text": "I had very little energy."
+    },
+    {
+      "number": 234,
+      "name": "hitopsr_234",
+      "text": "My mind felt mixed up."
+    },
+    {
+      "number": 235,
+      "name": "hitopsr_235",
+      "text": "At times, I just wanted to feel pain."
+    },
+    {
+      "number": 236,
+      "name": "hitopsr_236",
+      "text": "People told me I was coldhearted."
+    },
+    {
+      "number": 237,
+      "name": "hitopsr_237",
+      "text": "I tried to conceal areas where I had picked at my skin."
+    },
+    {
+      "number": 238,
+      "name": "hitopsr_238",
+      "text": "I found sex physically uncomfortable."
+    },
+    {
+      "number": 239,
+      "name": "hitopsr_239",
+      "text": "I broke into houses, buildings, or cars."
+    },
+    {
+      "number": 240,
+      "name": "hitopsr_240",
+      "text": "Reading articles about disease made me worry about my health."
+    },
+    {
+      "number": 241,
+      "name": "hitopsr_241",
+      "text": "Some people were out to harm me."
+    },
+    {
+      "number": 242,
+      "name": "hitopsr_242",
+      "text": "I lost things that I needed."
+    },
+    {
+      "number": 243,
+      "name": "hitopsr_243",
+      "text": "I said things without thinking."
+    },
+    {
+      "number": 244,
+      "name": "hitopsr_244",
+      "text": "I wanted well-defined stomach muscles."
+    },
+    {
+      "number": 245,
+      "name": "hitopsr_245",
+      "text": "I did not experience enough sexual arousal (penile erection or vaginal lubrication) to enjoy sex."
+    },
+    {
+      "number": 246,
+      "name": "hitopsr_246",
+      "text": "I struggled to think clearly."
+    },
+    {
+      "number": 247,
+      "name": "hitopsr_247",
+      "text": "I could feel changes in my body."
+    },
+    {
+      "number": 248,
+      "name": "hitopsr_248",
+      "text": "I found touching or rubbing against a stranger sexually arousing."
+    },
+    {
+      "number": 249,
+      "name": "hitopsr_249",
+      "text": "I looked for ways to make time for gaming."
+    },
+    {
+      "number": 250,
+      "name": "hitopsr_250",
+      "text": "I was not all that concerned with other peoples' needs."
+    },
+    {
+      "number": 251,
+      "name": "hitopsr_251",
+      "text": "People talked behind my back."
+    },
+    {
+      "number": 252,
+      "name": "hitopsr_252",
+      "text": "I did not like taking chances."
+    },
+    {
+      "number": 253,
+      "name": "hitopsr_253",
+      "text": "I thought about things in unusual ways."
+    },
+    {
+      "number": 254,
+      "name": "hitopsr_254",
+      "text": "I was afraid of flying."
+    },
+    {
+      "number": 255,
+      "name": "hitopsr_255",
+      "text": "I did not like my weight (the number on the scale)."
+    },
+    {
+      "number": 256,
+      "name": "hitopsr_256",
+      "text": "People said I am strange."
+    },
+    {
+      "number": 257,
+      "name": "hitopsr_257",
+      "text": "I used certain medications (e.g. laxatives, diuretics) to lose weight."
+    },
+    {
+      "number": 258,
+      "name": "hitopsr_258",
+      "text": "I preferred to do things the safest way possible."
+    },
+    {
+      "number": 259,
+      "name": "hitopsr_259",
+      "text": "I heard things that no one else could hear."
+    },
+    {
+      "number": 260,
+      "name": "hitopsr_260",
+      "text": "I avoided small, tight, or enclosed spaces."
+    },
+    {
+      "number": 261,
+      "name": "hitopsr_261",
+      "text": "People were basically selfish with little concern for others."
+    },
+    {
+      "number": 262,
+      "name": "hitopsr_262",
+      "text": "People said I could be a bully."
+    },
+    {
+      "number": 263,
+      "name": "hitopsr_263",
+      "text": "I had angry outbursts."
+    },
+    {
+      "number": 264,
+      "name": "hitopsr_264",
+      "text": "I felt that other persons were acting against me."
+    },
+    {
+      "number": 265,
+      "name": "hitopsr_265",
+      "text": "I had blank spells or periods of missing time."
+    },
+    {
+      "number": 266,
+      "name": "hitopsr_266",
+      "text": "I exercised more than was good for me."
+    },
+    {
+      "number": 267,
+      "name": "hitopsr_267",
+      "text": "Nightmares caused me to wake up at night."
+    },
+    {
+      "number": 268,
+      "name": "hitopsr_268",
+      "text": "I forced someone to have sex with me."
+    },
+    {
+      "number": 269,
+      "name": "hitopsr_269",
+      "text": "I paid my bills late or missed other important deadlines."
+    },
+    {
+      "number": 270,
+      "name": "hitopsr_270",
+      "text": "I was very irritable."
+    },
+    {
+      "number": 271,
+      "name": "hitopsr_271",
+      "text": "I was dissatisfied with the shape of my body."
+    },
+    {
+      "number": 272,
+      "name": "hitopsr_272",
+      "text": "I was frustrated with having to convince others I had a real illness."
+    },
+    {
+      "number": 273,
+      "name": "hitopsr_273",
+      "text": "I could not return to a task after getting distracted."
+    },
+    {
+      "number": 274,
+      "name": "hitopsr_274",
+      "text": "I got in trouble with the law."
+    },
+    {
+      "number": 275,
+      "name": "hitopsr_275",
+      "text": "It was painful for me to have (or try to have) penetrative vaginal or anal intercourse."
+    },
+    {
+      "number": 276,
+      "name": "hitopsr_276",
+      "text": "I felt like I was outside of my body."
+    },
+    {
+      "number": 277,
+      "name": "hitopsr_277",
+      "text": "I was very set in my ways."
+    },
+    {
+      "number": 278,
+      "name": "hitopsr_278",
+      "text": "I was happiest when I was alone."
+    },
+    {
+      "number": 279,
+      "name": "hitopsr_279",
+      "text": "Bulking up muscle while staying lean was a main fitness goal for me."
+    },
+    {
+      "number": 280,
+      "name": "hitopsr_280",
+      "text": "I smelled things that were not actually there."
+    },
+    {
+      "number": 281,
+      "name": "hitopsr_281",
+      "text": "I was worried about my sex life."
+    },
+    {
+      "number": 282,
+      "name": "hitopsr_282",
+      "text": "I had a recurring bad dream."
+    },
+    {
+      "number": 283,
+      "name": "hitopsr_283",
+      "text": "I was acutely aware of what was going on with my body."
+    },
+    {
+      "number": 284,
+      "name": "hitopsr_284",
+      "text": "I felt uninterested during sexual activity."
+    },
+    {
+      "number": 285,
+      "name": "hitopsr_285",
+      "text": "I exercised until I felt sick."
+    },
+    {
+      "number": 286,
+      "name": "hitopsr_286",
+      "text": "During sex, I usually climaxed very quickly."
+    },
+    {
+      "number": 287,
+      "name": "hitopsr_287",
+      "text": "I hid my emotions."
+    },
+    {
+      "number": 288,
+      "name": "hitopsr_288",
+      "text": "I felt a lot more hyper or active than usual."
+    },
+    {
+      "number": 289,
+      "name": "hitopsr_289",
+      "text": "I put a lot of thought into ideas before I took any action."
+    },
+    {
+      "number": 290,
+      "name": "hitopsr_290",
+      "text": "I used substances to make my partner more appealing."
+    },
+    {
+      "number": 291,
+      "name": "hitopsr_291",
+      "text": "I avoided small public spaces (such as an office or restaurant)."
+    },
+    {
+      "number": 292,
+      "name": "hitopsr_292",
+      "text": "I engaged in risky sexual activity."
+    },
+    {
+      "number": 293,
+      "name": "hitopsr_293",
+      "text": "I vomited to control my weight."
+    },
+    {
+      "number": 294,
+      "name": "hitopsr_294",
+      "text": "I was a messy person."
+    },
+    {
+      "number": 295,
+      "name": "hitopsr_295",
+      "text": "Gambling caused me to go into debt."
+    },
+    {
+      "number": 296,
+      "name": "hitopsr_296",
+      "text": "I worried about getting germs through contact with animals."
+    },
+    {
+      "number": 297,
+      "name": "hitopsr_297",
+      "text": "It was difficult to find healthcare providers who recognized my illness."
+    },
+    {
+      "number": 298,
+      "name": "hitopsr_298",
+      "text": "I hurt myself on purpose."
+    },
+    {
+      "number": 299,
+      "name": "hitopsr_299",
+      "text": "I was unable to concentrate on a task when it was uninteresting to me."
+    },
+    {
+      "number": 300,
+      "name": "hitopsr_300",
+      "text": "Nothing seemed interesting to me."
+    },
+    {
+      "number": 301,
+      "name": "hitopsr_301",
+      "text": "I liked attracting the attention of others."
+    },
+    {
+      "number": 302,
+      "name": "hitopsr_302",
+      "text": "I found myself worrying whether I actually did something or only intended to do it."
+    },
+    {
+      "number": 303,
+      "name": "hitopsr_303",
+      "text": "I found it easy to deceive others."
+    },
+    {
+      "number": 304,
+      "name": "hitopsr_304",
+      "text": "I felt nervous and on edge."
+    },
+    {
+      "number": 305,
+      "name": "hitopsr_305",
+      "text": "I had trouble telling whether something really happened or I just imagined it."
+    },
+    {
+      "number": 306,
+      "name": "hitopsr_306",
+      "text": "I could not feel things I touched."
+    },
+    {
+      "number": 307,
+      "name": "hitopsr_307",
+      "text": "I insulted others."
+    },
+    {
+      "number": 308,
+      "name": "hitopsr_308",
+      "text": "I was afraid that I might be having a heart attack."
+    },
+    {
+      "number": 309,
+      "name": "hitopsr_309",
+      "text": "People told me I exercised too much."
+    },
+    {
+      "number": 310,
+      "name": "hitopsr_310",
+      "text": "I was happiest when I was in a romantic relationship."
+    },
+    {
+      "number": 311,
+      "name": "hitopsr_311",
+      "text": "I felt like I no longer existed."
+    },
+    {
+      "number": 312,
+      "name": "hitopsr_312",
+      "text": "I had to clean myself because I felt contaminated."
+    },
+    {
+      "number": 313,
+      "name": "hitopsr_313",
+      "text": "I carefully weighed out the pros and cons before I made any decision."
+    },
+    {
+      "number": 314,
+      "name": "hitopsr_314",
+      "text": "I experienced loss of consciousness or had fainting spells (in the absence of a diagnosed medical disorder)."
+    },
+    {
+      "number": 315,
+      "name": "hitopsr_315",
+      "text": "I refused to compromise because I knew I was right."
+    },
+    {
+      "number": 316,
+      "name": "hitopsr_316",
+      "text": "Sexual activity was even more enjoyable for me when I was intoxicated/high."
+    },
+    {
+      "number": 317,
+      "name": "hitopsr_317",
+      "text": "I felt the urge to check to make sure I really had done something."
+    },
+    {
+      "number": 318,
+      "name": "hitopsr_318",
+      "text": "I spent too much time thinking about illnesses I might have."
+    },
+    {
+      "number": 319,
+      "name": "hitopsr_319",
+      "text": "I had much more energy than usual."
+    },
+    {
+      "number": 320,
+      "name": "hitopsr_320",
+      "text": "I avoided foods because of their smell or texture."
+    },
+    {
+      "number": 321,
+      "name": "hitopsr_321",
+      "text": "I didn't respond to things that other people found emotional."
+    },
+    {
+      "number": 322,
+      "name": "hitopsr_322",
+      "text": "After I left my home, I worried that I failed to do something."
+    },
+    {
+      "number": 323,
+      "name": "hitopsr_323",
+      "text": "I was afraid of getting stung or bitten."
+    },
+    {
+      "number": 324,
+      "name": "hitopsr_324",
+      "text": "I was bothered by several bodily symptoms (e.g., headache, fatigue or stomach problems) for which there was no clear or sufficient medical explanation."
+    },
+    {
+      "number": 325,
+      "name": "hitopsr_325",
+      "text": "I thought about killing myself."
+    },
+    {
+      "number": 326,
+      "name": "hitopsr_326",
+      "text": "I had so much energy that others couldn't keep up with me."
+    },
+    {
+      "number": 327,
+      "name": "hitopsr_327",
+      "text": "I made people believe almost anything."
+    },
+    {
+      "number": 328,
+      "name": "hitopsr_328",
+      "text": "I dressed so as to call attention to myself."
+    },
+    {
+      "number": 329,
+      "name": "hitopsr_329",
+      "text": "I did not really care how others felt."
+    },
+    {
+      "number": 330,
+      "name": "hitopsr_330",
+      "text": "I suddenly felt as if a traumatic event were actually happening again."
+    },
+    {
+      "number": 331,
+      "name": "hitopsr_331",
+      "text": "The sight of a needle upset me."
+    },
+    {
+      "number": 332,
+      "name": "hitopsr_332",
+      "text": "I was afraid that I might suffer from a serious illness."
+    },
+    {
+      "number": 333,
+      "name": "hitopsr_333",
+      "text": "I slept very poorly."
+    },
+    {
+      "number": 334,
+      "name": "hitopsr_334",
+      "text": "I kept my shopping a secret."
+    },
+    {
+      "number": 335,
+      "name": "hitopsr_335",
+      "text": "I spent a lot of time grooming myself."
+    },
+    {
+      "number": 336,
+      "name": "hitopsr_336",
+      "text": "Some people thought I was self-centered."
+    },
+    {
+      "number": 337,
+      "name": "hitopsr_337",
+      "text": "I had trouble planning and keeping to schedules."
+    },
+    {
+      "number": 338,
+      "name": "hitopsr_338",
+      "text": "Romantic relationships seemed like a hassle to me."
+    },
+    {
+      "number": 339,
+      "name": "hitopsr_339",
+      "text": "I could have improved on my organizational skills."
+    },
+    {
+      "number": 340,
+      "name": "hitopsr_340",
+      "text": "I was a thrill-seeker."
+    },
+    {
+      "number": 341,
+      "name": "hitopsr_341",
+      "text": "Even when I was very careful, I worried whether I had done something correctly."
+    },
+    {
+      "number": 342,
+      "name": "hitopsr_342",
+      "text": "I kept gambling even though it caused problems in my relationships."
+    },
+    {
+      "number": 343,
+      "name": "hitopsr_343",
+      "text": "I was ashamed of myself."
+    },
+    {
+      "number": 344,
+      "name": "hitopsr_344",
+      "text": "I tensed up during sexual activity due to pain."
+    },
+    {
+      "number": 345,
+      "name": "hitopsr_345",
+      "text": "Others could easily take advantage of me because I was too passive."
+    },
+    {
+      "number": 346,
+      "name": "hitopsr_346",
+      "text": "I tried to limit the number of fatty foods I ate."
+    },
+    {
+      "number": 347,
+      "name": "hitopsr_347",
+      "text": "I was afraid of the dark."
+    },
+    {
+      "number": 348,
+      "name": "hitopsr_348",
+      "text": "I engaged in unprotected sex."
+    },
+    {
+      "number": 349,
+      "name": "hitopsr_349",
+      "text": "I thought that certain numbers were lucky for me."
+    },
+    {
+      "number": 350,
+      "name": "hitopsr_350",
+      "text": "I spent a lot of time getting ready before going out."
+    },
+    {
+      "number": 351,
+      "name": "hitopsr_351",
+      "text": "When in a group, I liked to be in control."
+    },
+    {
+      "number": 352,
+      "name": "hitopsr_352",
+      "text": "Others could not be trusted."
+    },
+    {
+      "number": 353,
+      "name": "hitopsr_353",
+      "text": "I avoided contact with people because I was worried about germs."
+    },
+    {
+      "number": 354,
+      "name": "hitopsr_354",
+      "text": "I examined every single option before making a selection."
+    },
+    {
+      "number": 355,
+      "name": "hitopsr_355",
+      "text": "I demanded perfection from myself."
+    },
+    {
+      "number": 356,
+      "name": "hitopsr_356",
+      "text": "People admired me."
+    },
+    {
+      "number": 357,
+      "name": "hitopsr_357",
+      "text": "I woke up early and could not get back to sleep."
+    },
+    {
+      "number": 358,
+      "name": "hitopsr_358",
+      "text": "I ate a very large amount of food in a short period of time (e.g., within 2 hours)."
+    },
+    {
+      "number": 359,
+      "name": "hitopsr_359",
+      "text": "I had trouble staying asleep."
+    },
+    {
+      "number": 360,
+      "name": "hitopsr_360",
+      "text": "I was never on time."
+    },
+    {
+      "number": 361,
+      "name": "hitopsr_361",
+      "text": "I went a long time without eating."
+    },
+    {
+      "number": 362,
+      "name": "hitopsr_362",
+      "text": "I made excuses to avoid eating."
+    },
+    {
+      "number": 363,
+      "name": "hitopsr_363",
+      "text": "I was easily distracted."
+    },
+    {
+      "number": 364,
+      "name": "hitopsr_364",
+      "text": "Many types of food disgusted me."
+    },
+    {
+      "number": 365,
+      "name": "hitopsr_365",
+      "text": "I felt depressed."
+    },
+    {
+      "number": 366,
+      "name": "hitopsr_366",
+      "text": "I picked at areas of my skin that I don't like."
+    },
+    {
+      "number": 367,
+      "name": "hitopsr_367",
+      "text": "Took a lot of effort to get going."
+    },
+    {
+      "number": 368,
+      "name": "hitopsr_368",
+      "text": "I reached orgasm sooner than I wanted to."
+    },
+    {
+      "number": 369,
+      "name": "hitopsr_369",
+      "text": "It was important to me to build muscle mass and eliminate body fat."
+    },
+    {
+      "number": 370,
+      "name": "hitopsr_370",
+      "text": "I felt shy around other people."
+    },
+    {
+      "number": 371,
+      "name": "hitopsr_371",
+      "text": "My muscles were weak."
+    },
+    {
+      "number": 372,
+      "name": "hitopsr_372",
+      "text": "Being muscular was very important to me."
+    },
+    {
+      "number": 373,
+      "name": "hitopsr_373",
+      "text": "I thought a lot about death."
+    },
+    {
+      "number": 374,
+      "name": "hitopsr_374",
+      "text": "I took time to consider all possible outcomes before making any decision."
+    },
+    {
+      "number": 375,
+      "name": "hitopsr_375",
+      "text": "It was difficult for me to stay sexually aroused once sexual activity had started."
+    },
+    {
+      "number": 376,
+      "name": "hitopsr_376",
+      "text": "I didn't express my emotions."
+    },
+    {
+      "number": 377,
+      "name": "hitopsr_377",
+      "text": "I was willing to tell a small lie to make things easier for myself."
+    },
+    {
+      "number": 378,
+      "name": "hitopsr_378",
+      "text": "My thoughts kept jumping from one thing to another."
+    },
+    {
+      "number": 379,
+      "name": "hitopsr_379",
+      "text": "I was jealous of what other people have."
+    },
+    {
+      "number": 380,
+      "name": "hitopsr_380",
+      "text": "I didn't experience the joy and pleasure that most other people do."
+    },
+    {
+      "number": 381,
+      "name": "hitopsr_381",
+      "text": "I could not resist buying something that I did not need."
+    },
+    {
+      "number": 382,
+      "name": "hitopsr_382",
+      "text": "I felt guilty about sexual difficulties."
+    },
+    {
+      "number": 383,
+      "name": "hitopsr_383",
+      "text": "I avoided numbers that could bring bad luck."
+    },
+    {
+      "number": 384,
+      "name": "hitopsr_384",
+      "text": "I avoided activities where I would need to sit down for long."
+    },
+    {
+      "number": 385,
+      "name": "hitopsr_385",
+      "text": "I had a sensation that something was crawling under my skin."
+    },
+    {
+      "number": 386,
+      "name": "hitopsr_386",
+      "text": "I felt worn out."
+    },
+    {
+      "number": 387,
+      "name": "hitopsr_387",
+      "text": "I cut myself on purpose."
+    },
+    {
+      "number": 388,
+      "name": "hitopsr_388",
+      "text": "It was difficult for me to get sexually aroused."
+    },
+    {
+      "number": 389,
+      "name": "hitopsr_389",
+      "text": "I did not feel much like eating."
+    },
+    {
+      "number": 390,
+      "name": "hitopsr_390",
+      "text": "I found it enjoyable to hurt animals."
+    },
+    {
+      "number": 391,
+      "name": "hitopsr_391",
+      "text": "I acted on impulse."
+    },
+    {
+      "number": 392,
+      "name": "hitopsr_392",
+      "text": "Once I started eating, I could not stop."
+    },
+    {
+      "number": 393,
+      "name": "hitopsr_393",
+      "text": "I felt the need to wash my hands again and again."
+    },
+    {
+      "number": 394,
+      "name": "hitopsr_394",
+      "text": "I was disgusted with myself."
+    },
+    {
+      "number": 395,
+      "name": "hitopsr_395",
+      "text": "I did not concern myself with helping people."
+    },
+    {
+      "number": 396,
+      "name": "hitopsr_396",
+      "text": "I felt like I could keep going and going without ever getting tired."
+    },
+    {
+      "number": 397,
+      "name": "hitopsr_397",
+      "text": "I was trembling or shaking."
+    },
+    {
+      "number": 398,
+      "name": "hitopsr_398",
+      "text": "I could not resist eating."
+    },
+    {
+      "number": 399,
+      "name": "hitopsr_399",
+      "text": "I did things on purpose that were against the rules."
+    },
+    {
+      "number": 400,
+      "name": "hitopsr_400",
+      "text": "I had periods of unexplained blindness."
+    },
+    {
+      "number": 401,
+      "name": "hitopsr_401",
+      "text": "The sight of an insect (e.g., a cockroach) upset me."
+    },
+    {
+      "number": 402,
+      "name": "hitopsr_402",
+      "text": "I felt like I was in danger."
+    },
+    {
+      "number": 403,
+      "name": "hitopsr_403",
+      "text": "I avoided areas where there might be snakes or lizards."
+    },
+    {
+      "number": 404,
+      "name": "hitopsr_404",
+      "text": "I intentionally scratched my skin so severely that it started bleeding."
+    },
+    {
+      "number": 405,
+      "name": "hitopsr_405",
+      "text": "I had repeated memories of a traumatic event."
+    }
+  ]
+}

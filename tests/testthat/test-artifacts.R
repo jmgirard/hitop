@@ -25,7 +25,8 @@ test_that("hitop_artifacts has the documented structure", {
   )
   expect_s3_class(hitop_artifacts$build_date, "Date")
   expect_true(all(
-    hitop_artifacts$format %in% c("docx_us", "docx_a4", "qualtrics", "redcap")
+    hitop_artifacts$format %in%
+      c("docx_us", "docx_a4", "qualtrics", "redcap", "json")
   ))
   expect_true(all(grepl("^[0-9a-f]{32}$", hitop_artifacts$md5)))
   expect_false(any(is.na(hitop_artifacts)))
@@ -33,7 +34,7 @@ test_that("hitop_artifacts has the documented structure", {
 
 test_that("every committed artifact has a current manifest row", {
   extdata <- system.file("extdata", package = "hitop")
-  files <- list.files(extdata, pattern = "\\.(docx|txt|qsf|zip)$")
+  files <- list.files(extdata, pattern = "\\.(docx|txt|qsf|zip|json)$")
   expect_setequal(files, latest_manifest()$file)
 })
 
