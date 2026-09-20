@@ -4,6 +4,14 @@
 
 ### New features
 
+- **The HiTOP-SR and HiTOP-BR ship as JSON exports.** `hitopsr.json` and
+  `hitopbr.json`, downloadable from each instrument’s page on the
+  package website, hold the form’s items, response options and
+  administration instructions as the package’s tables hold them, with
+  the package version and build date at the top. They carry no keying.
+  Each has a row in `hitop_artifacts`. A web form outside the package
+  can read one to show the questionnaire online.
+
 - **[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
   and
   [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)

@@ -1,0 +1,256 @@
+{
+  "format": "1.0",
+  "package": "hitop",
+  "packageVersion": "0.2.0",
+  "buildDate": "2026-09-20",
+  "stem": "hitopbr",
+  "maxItem": 45,
+  "instructions": {
+    "start": "Please consider whether there have been significant times during the last 12 months during which the following statements applied to you. Then please select the option that best describes how well each statement described you during that period.",
+    "options": [
+      {
+        "value": 1,
+        "label": "Not at all"
+      },
+      {
+        "value": 2,
+        "label": "A little"
+      },
+      {
+        "value": 3,
+        "label": "Moderately"
+      },
+      {
+        "value": 4,
+        "label": "A lot"
+      }
+    ]
+  },
+  "items": [
+    {
+      "number": 1,
+      "name": "hitopbr_01",
+      "text": "I found it easy to deceive others."
+    },
+    {
+      "number": 2,
+      "name": "hitopbr_02",
+      "text": "I deserved special treatment."
+    },
+    {
+      "number": 3,
+      "name": "hitopbr_03",
+      "text": "I saw things that were not really there."
+    },
+    {
+      "number": 4,
+      "name": "hitopbr_04",
+      "text": "My fantasies felt very real to me."
+    },
+    {
+      "number": 5,
+      "name": "hitopbr_05",
+      "text": "I liked having power."
+    },
+    {
+      "number": 6,
+      "name": "hitopbr_06",
+      "text": "I felt something was wrong with my body."
+    },
+    {
+      "number": 7,
+      "name": "hitopbr_07",
+      "text": "When I had the chance, I chose to be alone rather than with other people."
+    },
+    {
+      "number": 8,
+      "name": "hitopbr_08",
+      "text": "My moods were intense and unpredictable."
+    },
+    {
+      "number": 9,
+      "name": "hitopbr_09",
+      "text": "My mind was flooded with troubling images of a bad experience."
+    },
+    {
+      "number": 10,
+      "name": "hitopbr_10",
+      "text": "I had pains in several parts of my body."
+    },
+    {
+      "number": 11,
+      "name": "hitopbr_11",
+      "text": "I felt like I was outside of my body."
+    },
+    {
+      "number": 12,
+      "name": "hitopbr_12",
+      "text": "I was happiest when I was alone."
+    },
+    {
+      "number": 13,
+      "name": "hitopbr_13",
+      "text": "I found it easy to manipulate others."
+    },
+    {
+      "number": 14,
+      "name": "hitopbr_14",
+      "text": "I was bothered by several bodily symptoms (e.g., headache, fatigue or stomach problems) for which there was no clear or sufficient medical explanation."
+    },
+    {
+      "number": 15,
+      "name": "hitopbr_15",
+      "text": "I had trouble planning and keeping to schedules."
+    },
+    {
+      "number": 16,
+      "name": "hitopbr_16",
+      "text": "I lost things that I needed."
+    },
+    {
+      "number": 17,
+      "name": "hitopbr_17",
+      "text": "I was frustrated with having to convince others I had a real illness."
+    },
+    {
+      "number": 18,
+      "name": "hitopbr_18",
+      "text": "Even when I was very careful, I worried whether I had done something correctly."
+    },
+    {
+      "number": 19,
+      "name": "hitopbr_19",
+      "text": "Reading articles about disease made me worry about my health."
+    },
+    {
+      "number": 20,
+      "name": "hitopbr_20",
+      "text": "I paid my bills late or missed other important deadlines."
+    },
+    {
+      "number": 21,
+      "name": "hitopbr_21",
+      "text": "I could feel changes in my body."
+    },
+    {
+      "number": 22,
+      "name": "hitopbr_22",
+      "text": "I was disgusted with myself."
+    },
+    {
+      "number": 23,
+      "name": "hitopbr_23",
+      "text": "I felt on guard and on edge."
+    },
+    {
+      "number": 24,
+      "name": "hitopbr_24",
+      "text": "I was a messy person."
+    },
+    {
+      "number": 25,
+      "name": "hitopbr_25",
+      "text": "I did things to get others to notice me."
+    },
+    {
+      "number": 26,
+      "name": "hitopbr_26",
+      "text": "I noticed small changes to how my body feels."
+    },
+    {
+      "number": 27,
+      "name": "hitopbr_27",
+      "text": "Things went best when I told others what to do."
+    },
+    {
+      "number": 28,
+      "name": "hitopbr_28",
+      "text": "I heard things that no one else could hear."
+    },
+    {
+      "number": 29,
+      "name": "hitopbr_29",
+      "text": "I was never on time."
+    },
+    {
+      "number": 30,
+      "name": "hitopbr_30",
+      "text": "I had no interest in romantic relationships."
+    },
+    {
+      "number": 31,
+      "name": "hitopbr_31",
+      "text": "Romantic relationships seemed like a hassle to me."
+    },
+    {
+      "number": 32,
+      "name": "hitopbr_32",
+      "text": "I said things without thinking."
+    },
+    {
+      "number": 33,
+      "name": "hitopbr_33",
+      "text": "People told me I was coldhearted."
+    },
+    {
+      "number": 34,
+      "name": "hitopbr_34",
+      "text": "I made decisions quickly without thinking them through."
+    },
+    {
+      "number": 35,
+      "name": "hitopbr_35",
+      "text": "I quit tasks that became too challenging."
+    },
+    {
+      "number": 36,
+      "name": "hitopbr_36",
+      "text": "I had a hard time asserting myself to others."
+    },
+    {
+      "number": 37,
+      "name": "hitopbr_37",
+      "text": "I felt that I did not want to be in a close relationship."
+    },
+    {
+      "number": 38,
+      "name": "hitopbr_38",
+      "text": "I had trouble telling whether something really happened or I just imagined it."
+    },
+    {
+      "number": 39,
+      "name": "hitopbr_39",
+      "text": "I felt that things around me were not real."
+    },
+    {
+      "number": 40,
+      "name": "hitopbr_40",
+      "text": "I liked attracting the attention of others."
+    },
+    {
+      "number": 41,
+      "name": "hitopbr_41",
+      "text": "I was afraid that I might suffer from a serious illness."
+    },
+    {
+      "number": 42,
+      "name": "hitopbr_42",
+      "text": "I thought a lot about death."
+    },
+    {
+      "number": 43,
+      "name": "hitopbr_43",
+      "text": "I bought much more than I needed."
+    },
+    {
+      "number": 44,
+      "name": "hitopbr_44",
+      "text": "I was overwhelmed by anxiety."
+    },
+    {
+      "number": 45,
+      "name": "hitopbr_45",
+      "text": "I expected to get treated better than others."
+    }
+  ]
+}

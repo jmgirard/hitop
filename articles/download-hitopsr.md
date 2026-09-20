@@ -43,6 +43,15 @@ File)2026-07-16](https://jmgirard.github.io/hitop/downloads/hitopsr_redcap.zip)
 [Import
 Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html#redcap-zip)
 
+##### 🧩 JSON Export
+
+Use this machine-readable file, which a web form outside the package can
+read, to present the instrument's items, response options and
+instructions as the package's tables hold them.
+
+[English (JSON
+File)2026-09-20](https://jmgirard.github.io/hitop/downloads/hitopsr.json)
+
 ------------------------------------------------------------------------
 
 ### Explore the R Package Features
@@ -109,12 +118,20 @@ Current builds & version history
 | `hitopsr_qualtrics.txt` | Qualtrics import | 1.0                | 2026-07-16 |
 | `hitopsr_redcap.zip`    | REDCap import    | 1.0                | 2026-07-16 |
 | `hitopsr_US.docx`       | DOCX (US paper)  | 1.0                | 2026-08-27 |
+| `hitopsr.json`          | JSON export      | 1.0                | 2026-09-20 |
 
 If your downloaded file shows an older build date, simply re-download it
 to get the latest build. The full build manifest (including file
 checksums) ships in the package as `hitop_artifacts`.
 
 #### Version history
+
+2026-09-20
+
+First build of the JSON export: the items, response options and
+instructions as the keying tables hold them, for a web form outside the
+package to read.  
+`hitopsr.json`
 
 2026-08-27
 
