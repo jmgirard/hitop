@@ -25,7 +25,7 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
 - [x] AC2: Each of the two files has a `hitop_artifacts` row with `format` `"json"` whose `md5` equals the committed file's, and a byte-identical copy under `pkgdown/assets/downloads/`, which a local `pkgdown::build_site()` places at `docs/downloads/<stem>.json`, the path the deployed site serves at `https://jmgirard.github.io/hitop/downloads/<stem>.json` (D-033).
 - [x] AC3: Each file carries top-level `format` `"1.0"`, `package` `"hitop"`, `packageVersion` equal to the current `DESCRIPTION` Version (a mismatch is a rebuild trigger), `buildDate` equal to its current manifest row's `build_date`, `stem` equal to the file stem, and `maxItem` equal to the largest item number in its table; the AC1 test asserts these fields.
 - [x] AC4: Neither committed file holds a carriage-return byte, and `Rscript data-raw/check_line_endings.R` passes.
-- [ ] AC5: `vignettes/articles/download-hitopsr.Rmd` and `download-hitopbr.Rmd` each link the form's JSON file with one sentence saying what it holds and that it is what the hitop-form page reads; `NEWS.md` names the two artifacts; `devtools::test()` and `devtools::check()` are clean.
+- [ ] AC5: `vignettes/articles/download-hitopsr.Rmd` and `download-hitopbr.Rmd` each carry a JSON card linking the form's file at `../downloads/<stem>.json`, described in one sentence addressed to the researcher that opens with an imperative verb as the page's other download cards do, names the three things the file holds (its items, response options and instructions) and says that a web form outside the package can read it; `NEWS.md` names both files; `devtools::test()` and `devtools::check()` are clean.
 
 ## Coverage
 
@@ -33,7 +33,7 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
 - AC2 → T2, T4
 - AC3 → T1, T3
 - AC4 → T1, T4
-- AC5 → T4
+- AC5 → T4, T5
 
 ## Tasks
 
@@ -41,6 +41,7 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
 - [x] T2: Register both files in `data-raw/artifacts.R` (`add_row()` at :201, staging at :280) with `format = "json"`; run it; regenerate `hitop_artifacts`.
 - [x] T3: `tests/testthat/test-json-export.R`: the AC1 and AC3 assertions with the expected side from the tables; before trusting green, plant in a temporary copy, one at a time, a changed item text, a dropped item, two swapped items, a changed option label, a changed `instructions.start` and a changed `stem`, and see the test red on each.
 - [x] T4: Download articles and NEWS; run `data-raw/check_line_endings.R`; `devtools::document()`; `devtools::test()`; `devtools::check()`; `pkgdown::build_site()` and confirm `docs/downloads/<stem>.json` for both stems.
+- [x] T5: Execute the AC5 amendment (one-sentence imperative JSON card on both download pages) and the review's confirmed fix-now findings: script-mode load order and header claim in `data-raw/json_export.R`; the manifest `changes` note naming the hitop-form page (json rows regenerated through `artifacts.R`); `"json"` in `hitop_artifacts`' roxygen; the stale staged-file count comment; DESIGN.md's generator list and artifact-versioning paragraph; NEWS naming the site as the address.
 
 ## Work log
 
@@ -57,6 +58,11 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
 - 2026-09-20: claim audit: 34 claims read, 2 corrected — data-raw/json_export.R (sourcing versus running as a script), data-raw/artifacts.R, NEWS.md, vignettes/articles/download-hitopsr.Rmd, download-hitopbr.Rmd (a hitop-form page named as an existing consumer, reworded to a capability); re-read once, 0 wrong.
 - 2026-09-20: all tasks done, status set to review.
 - 2026-09-20: amendment return: AC5 — "`vignettes/articles/download-hitopsr.Rmd` and `download-hitopbr.Rmd` each link the form's JSON file with card text saying what it holds and that a web form outside the package can read it to show the questionnaire; `NEWS.md` names the two artifacts; `devtools::test()` and `devtools::check()` are clean." — the shipped card is two sentences and names no hitop-form page because that page does not exist until M095 (the implement claim audit reworded it deliberately); the criterion as written demands a false claim, so the criterion is wrong, not the work. Re-audit and mini gate via /milestone-implement, then re-review.
+- 2026-09-20: re-audit: AC5 (full) — four findings on the proposed wording: "card text" unbounded and fitted to the shipped card; the count drop also drops the page's imperative voice; the clause checks that the card says something, not that it is true; the link clause is route-agnostic where D-033 makes `../downloads/<stem>.json` canonical. Reader proposed a one-imperative-sentence wording pinning the route; posed at the mini gate.
+- 2026-09-20: mini gate (Jeff): the reader's one-sentence imperative wording adopted over the review's "card text" wording; the review's confirmed fix-now findings (F1, F4, F5, F11, F12, F15, F18) taken onto the branch now rather than at the re-review gate.
+- 2026-09-20: re-audit: AC5 (full) — once re-entry on the gate wording: four findings (level of detail unfixed, claim-presence over truth, a moving comparator, a route clause duplicating `test-artifacts.R`'s href lock); reader's tightened wording adopted by Jeff; AC5's re-entry is spent, no further reader.
+- 2026-09-20: T5 done: both JSON cards read "Use this machine-readable file to drive a web form outside the package with the instrument's items, response options and instructions as the package's tables hold them."; `json_export.R` loads the package before `json_specs` (script mode now writes files identical to the committed ones) and its header states the unconditional source; the two json manifest rows regenerated through `artifacts.R` after dropping them, same md5 and date, the note no longer naming the hitop-form page; `"json"` added to `hitop_artifacts`' roxygen (`document()` rewrote `man/hitop_artifacts.Rd`); staged-file count comment 24 → 26; DESIGN.md generator list and artifact-versioning paragraph name the JSON export; NEWS names the site download as the address. `check_line_endings.R` passes; `devtools::test()` 0 failures, 17,399 passes.
+- 2026-09-20: claim audit: not re-run — the milestone's one pass stands (stopping rule); the amendment's added prose (card, NEWS, script header) was read against the code by the two fresh AC5 readers and by running script mode on a scratch copy.
 
 ## Decisions
 

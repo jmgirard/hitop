@@ -41,7 +41,7 @@ download_cards("HiTOP-SR", list(
   ),
   dl_card(
     "🧩", "JSON Export",
-    "This file holds the items, response options and instructions as the package's tables hold them. A web form outside the package can read it to show the questionnaire online.",
+    "Use this machine-readable file to drive a web form outside the package with the instrument's items, response options and instructions as the package's tables hold them.",
     dl_link("English (JSON File)", "../downloads/hitopsr.json")
   )
 ))

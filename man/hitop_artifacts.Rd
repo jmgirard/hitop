@@ -12,7 +12,7 @@ columns:
 website's download pages}
 \item{instrument}{Instrument the artifact administers}
 \item{format}{Artifact format: \code{"docx_us"}, \code{"docx_a4"}, \code{"qualtrics"},
-or \code{"redcap"}}
+\code{"redcap"}, or \code{"json"}}
 \item{instrument_version}{Version of the instrument itself}
 \item{build_date}{Date this build of the artifact was generated}
 \item{md5}{MD5 checksum of the built file}

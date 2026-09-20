@@ -7,11 +7,12 @@
 ## exported: the page never scores, and the package rebuilds keying from its
 ## own tables when it reads a module descriptor (D-039).
 ##
-## Sourced by data-raw/artifacts.R under its rebuild filters, which also
-## record the manifest row and stage the site copy; `source()` defines
-## `json_specs` and the writer and writes nothing. Run as a script
-## (`Rscript data-raw/json_export.R`) it writes both files and nothing else;
-## run artifacts.R afterwards so the manifest and the staged copies follow.
+## Sourced unconditionally by data-raw/artifacts.R, whose rebuild filters
+## gate only the write loop there and which also records the manifest row
+## and stages the site copy; `source()` defines `json_specs` and the writer
+## and writes nothing. Run as a script (`Rscript data-raw/json_export.R`) it
+## loads the package, writes both files and nothing else; run artifacts.R
+## afterwards so the manifest and the staged copies follow.
 ##
 ## Format 1.0, top level:
 ##   format          "1.0"
@@ -28,6 +29,12 @@
 ## is written through a binary connection: a path passed to writeLines() is a
 ## text connection and emits CRLF on Windows (LESSONS 2026-07-16), which
 ## would break the md5 lock.
+
+## Script mode: `json_specs` below reads the package's tables, so the
+## package is loaded before they are built, not in the write block at the end.
+if (sys.nframe() == 0L) {
+  devtools::load_all()
+}
 
 json_specs <- list(
   list(
@@ -80,7 +87,6 @@ write_instrument_json <- function(spec, file) {
 }
 
 if (sys.nframe() == 0L) {
-  devtools::load_all()
   for (spec in json_specs) {
     write_instrument_json(spec, file.path("inst/extdata", paste0(spec$stem, ".json")))
   }

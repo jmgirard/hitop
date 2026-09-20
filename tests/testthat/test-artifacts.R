@@ -200,7 +200,7 @@ test_that("a source checkout stages the pkgdown download copies", {
   # back to the two installed copies. They have to: under `R CMD check` the
   # suite runs from a built tarball where `.Rbuildignore` has removed
   # `pkgdown/` entirely. That tolerance also meant a renamed or deleted
-  # directory left both of them green in a checkout, where the 24 staged
+  # directory left both of them green in a checkout, where the 26 staged
   # files are tracked and are the copies the site serves (D-033). This is the
   # floor they lean on: in a checkout the directory is there, or the suite
   # fails.

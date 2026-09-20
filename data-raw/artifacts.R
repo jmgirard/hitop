@@ -127,7 +127,8 @@ check_filters_matched <- function() {
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
   "First build of the JSON export: the items, response options and",
-  "instructions as the keying tables hold them, read by the hitop-form page."
+  "instructions as the keying tables hold them, for a web form outside the",
+  "package to read."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(
