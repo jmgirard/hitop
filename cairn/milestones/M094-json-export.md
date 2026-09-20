@@ -1,6 +1,6 @@
 # M094: The package ships a JSON export of the HiTOP-SR and HiTOP-BR items, response options and instructions as a checksum-locked artifact
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -40,7 +40,7 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
 - [x] T1: Write `data-raw/json_export.R`: build each payload from `hitopsr_items`/`hitopbr_items`, the matching `*_instructions` object (`data-raw/sysdata.R:24-41`) and `item_names()` (`R/util.R:697`); serialize with `jsonlite::toJSON(pretty = TRUE)` with scalars `unbox`ed as `R/module_file.R:130-140` does; write through `file(path, open = "wb")` with `useBytes = TRUE` (LESSONS 2026-07-16).
 - [x] T2: Register both files in `data-raw/artifacts.R` (`add_row()` at :201, staging at :280) with `format = "json"`; run it; regenerate `hitop_artifacts`.
 - [x] T3: `tests/testthat/test-json-export.R`: the AC1 and AC3 assertions with the expected side from the tables; before trusting green, plant in a temporary copy, one at a time, a changed item text, a dropped item, two swapped items, a changed option label, a changed `instructions.start` and a changed `stem`, and see the test red on each.
-- [ ] T4: Download articles and NEWS; run `data-raw/check_line_endings.R`; `devtools::document()`; `devtools::test()`; `devtools::check()`; `pkgdown::build_site()` and confirm `docs/downloads/<stem>.json` for both stems.
+- [x] T4: Download articles and NEWS; run `data-raw/check_line_endings.R`; `devtools::document()`; `devtools::test()`; `devtools::check()`; `pkgdown::build_site()` and confirm `docs/downloads/<stem>.json` for both stems.
 
 ## Work log
 
@@ -53,6 +53,9 @@ Ship one JSON file per HiTOP form holding its items, response options and admini
 - 2026-09-20: T1 done: `data-raw/json_export.R` writes both files through a binary connection; `hitopsr.json` 51,477 bytes, `hitopbr.json` 6,255 bytes.
 - 2026-09-20: T2 done: `artifacts.R` gains `json_specs`, a `json` format and the two manifest rows (41 rows, the prior 39 unchanged); `test-artifacts.R` admits `json` in its format vocabulary and file pattern.
 - 2026-09-20: T3 done: `test-json-export.R` reports every disagreement by field name; six plants (text, dropped item, swapped items, option label, instructions start, stem) each red under their own name; 222 passes across the export, artifact and staged-copy files.
+- 2026-09-20: T4 done: a JSON card on both download pages, a `json` format label in `_download-helpers.R`, a NEWS entry; `check_line_endings.R` passes; `document()` no diff; `devtools::check()` 0 errors, 0 warnings, 0 notes in 4m 12s; `pkgdown::build_site(install = TRUE)` places both files at `docs/downloads/` byte-identical (with `install = FALSE` the page helpers read the installed package's older manifest and the render fails, which CI's install step avoids).
+- 2026-09-20: claim audit: 34 claims read, 2 corrected — data-raw/json_export.R (sourcing versus running as a script), data-raw/artifacts.R, NEWS.md, vignettes/articles/download-hitopsr.Rmd, download-hitopbr.Rmd (a hitop-form page named as an existing consumer, reworded to a capability); re-read once, 0 wrong.
+- 2026-09-20: all tasks done, status set to review.
 
 ## Decisions
 

@@ -189,8 +189,9 @@ for (spec in keep_specs(redcap_specs, "redcap")) {
   spec$fn(file = file.path(extdata, paste0(spec$stem, "_redcap.zip")))
 }
 
-## The JSON exports read by the hitop-form page. `json_specs` and the writer
-## live in data-raw/json_export.R, which documents the format.
+## The JSON exports a web form outside the package can render from.
+## `json_specs` and the writer live in data-raw/json_export.R, which
+## documents the format.
 source("data-raw/json_export.R", local = TRUE)
 for (spec in keep_specs(json_specs, "json")) {
   write_instrument_json(spec, file.path(extdata, paste0(spec$stem, ".json")))

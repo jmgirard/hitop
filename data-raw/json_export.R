@@ -2,15 +2,16 @@
 ##
 ## One file per form, `inst/extdata/<stem>.json`, holding the items, the
 ## response options and the administration instructions exactly as the
-## package's tables hold them, so a page outside the package (hitop-form)
-## can render the instrument without a copy of its content. No keying is
+## package's tables hold them, so a web form outside the package can render
+## the instrument without a copy of its content. No keying is
 ## exported: the page never scores, and the package rebuilds keying from its
 ## own tables when it reads a module descriptor (D-039).
 ##
 ## Sourced by data-raw/artifacts.R under its rebuild filters, which also
-## record the manifest row and stage the site copy. Sourcing this file on
-## its own writes both files and nothing else; run artifacts.R afterwards so
-## the manifest and the staged copies follow.
+## record the manifest row and stage the site copy; `source()` defines
+## `json_specs` and the writer and writes nothing. Run as a script
+## (`Rscript data-raw/json_export.R`) it writes both files and nothing else;
+## run artifacts.R afterwards so the manifest and the staged copies follow.
 ##
 ## Format 1.0, top level:
 ##   format          "1.0"
