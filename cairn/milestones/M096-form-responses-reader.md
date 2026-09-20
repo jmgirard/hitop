@@ -1,13 +1,13 @@
 # M096: The package reads hitop-form response files into one data frame and scores them through a module descriptor
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M095
 - **Driving RR:** —
 - **Principles touched:** IP2, GP3, GP4
 - **Resolves:** —
 - **Surface tier:** user-facing — a new exported function and an article section
-- **Branch/PR:** —
+- **Branch/PR:** `m096-form-responses-reader`
 
 ## Goal
 
@@ -35,9 +35,9 @@ Add an exported reader that turns hitop-form CSV files into one tibble the scori
 
 ## Tasks
 
-- [ ] T1: `R/read_form_responses.R` with its two conditions raised by `cli::cli_abort()` under classes on the D-034(c) pattern, recorded in a D-entry at implementation. (RB tripwire: irreversible-api)
-- [ ] T2: `tests/testthat/test-read_form_responses.R` for AC1 and AC2.
-- [ ] T3: Copy the three fixtures and the descriptor from hitop-form's `tests/fixtures/`; the round-trip tests with hand-computed expected values.
+- [x] T1: `R/read_form_responses.R` with its two conditions raised by `cli::cli_abort()` under classes on the D-034(c) pattern, recorded in a D-entry at implementation. (RB tripwire: irreversible-api)
+- [x] T2: `tests/testthat/test-read_form_responses.R` for AC1 and AC2.
+- [x] T3: Copy the three fixtures and the descriptor from hitop-form's `tests/fixtures/`; the round-trip tests with hand-computed expected values.
 - [ ] T4: Article section, NEWS, `_pkgdown.yml`, `devtools::document()`, `devtools::check()`.
 
 ## Work log
@@ -46,6 +46,11 @@ Add an exported reader that turns hitop-form CSV files into one tibble the scori
 - 2026-09-20: criteria audit ran in full mode on a fresh [O] reader over the six-form draft (see M094's work log); this file carries its fixes: `data` in the scoring calls, three named ways columns differ, the literal-values clause dropped, AC3 mapped to T1 as well as T3.
 - 2026-09-20: the audit's second pass (see M094's work log) fixed here: AC1 defines the column order by sorted path, and AC3 takes hand-computed literals for the module and independent recomputation for the two full forms.
 - 2026-09-20: plan chose an exported `read_form_responses()` over an article recipe of `do.call(rbind, lapply(files, read.csv))` because the recipe leaves typing, ordering and disagreement checks to every researcher; falsified by the device-only route going unused.
+- 2026-09-20: implement gate (Jeff): classes `hitop_form_responses_mismatch` and `hitop_form_responses_none` (D-064; the Fable escalation offered for the naming declined); the CSV fixtures stored as LF under the line-ending policy, CRLF covered by a test-written file; the article reads the fixture by a path relative to `vignettes/articles/`.
+- 2026-09-20: T1 done. Two classed refusals; the other refusals (not a file, other lead columns, more than one row, a non-integer item value, a stamp that does not parse) are unclassed and name the file. Paths always sort in the C locale (`sort(method = "radix")`), a vector included, so AC1's "first path after sorting" holds either way. `_pkgdown.yml` row added with the export.
+- 2026-09-20: T2 and T3 done in one file, `test-read_form_responses.R` (69 expectations): directory, vector of two, one file, C-locale order, first-file column order, blank item, LF and BOM inputs; the four AC2 cases by class with the differing files named; the plain refusals; the three fixtures scored against table-derived means (full forms) and hand-computed literals (module: Agoraphobia 3, Distress-Dysphoria 39/16), with a control showing the printed remap moves the result. Fixture provenance in `tests/testthat/fixtures/README.md` (hitop-form 21a1d1c).
+- 2026-09-20: found while writing AC3's module test: `score_hitopsr(layout = "printed")` runs the ascending-name heuristic on the caller's `items`, which warns whenever printed-order columns are named by item number, though that order is the case `layout = "printed"` exists for. Positions (`match(item_cols, names(data))`) avoid it, so the test and the article pass positions. Not in scope (a `score_hitopsr()` behavior change); a candidate row records it.
+- 2026-09-20: `devtools::test()` after T1–T3: one failure, `test-vignette-export-coverage.R` names `read_form_responses` as shown in no vignette; T4's article section clears it. Everything else green.
 
 ## Decisions
 
