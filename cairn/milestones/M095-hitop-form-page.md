@@ -70,6 +70,7 @@ Publish `jmgirard/hitop-form`, a static page that renders a HiTOP instrument or 
 - 2026-09-20: T9 done (hitop-form abfb0d9): README with the four sections AC7 names (making a link, what the participant sees, where the file lands, scoring handed to the modules article, plus development and license). Tests 1m11s and Deploy to Pages 18s green on that push; `index.html`, `link.html` and `README.md` answer 200 at the Pages URL. Full suite 17 passed locally.
 - 2026-09-20: claim audit: 60 claims read, 3 corrected — hitop-form README.md (the package version is printed but not written to the file; the tests run on pull requests and pushes to `main`, not every push), tests/fixtures/README.md (no package reader exists yet); the reader ran over the hitop-form repository, since this branch adds no lines outside `cairn/`; link.html's order hint made conditional on the same pass; re-read confirmed all three (hitop-form 5cd69ca, CI green). Left as noted: the refusal names the item's index on the page (AC3's wording) while the item shows its position on the form, so page 2's "item 1 on this page" is the item labelled 16.
 - 2026-09-20: all tasks checked; status → review.
+- 2026-09-20: step-7 approval: m095-hitop-form-page approved for merge (after the accepted fix-now set landed in hitop-form 21a1d1c).
 
 ## Decisions
 
