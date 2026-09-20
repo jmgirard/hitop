@@ -7,7 +7,7 @@ _Pre-migration history: see `cairn/legacy/` and git log (M001–M017 done there;
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M093 | A feasibility evaluation of an online response-collection form as an alternative to Qualtrics and REDCap | review | — | normal | milestones/M093-online-collection-feasibility.md |
+| M093 | A feasibility evaluation of an online response-collection form as an alternative to Qualtrics and REDCap | blocked | — | normal | milestones/M093-online-collection-feasibility.md |
 | M092 | The HiTOP-SR Module Builder's prose reads as plain human English | done | — | normal | milestones/archive/M092-builder-plain-prose.md |
 | M091 | The HiTOP-SR scoring functions score printed-order columns through a module's recorded item order | done | — | normal | milestones/archive/M091-score-printed-layout.md |
 | M090 | A two-step builder flow with the format settings folded away | done | M089 | normal | milestones/archive/M090-builder-two-step-flow.md |
