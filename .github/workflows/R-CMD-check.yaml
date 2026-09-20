@@ -19,7 +19,15 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
+          # macOS is pinned to R 4.5 because CRAN serves the macOS binaries
+          # for the R version `release` resolves to (4.6 on 2026-09-20) as
+          # zstd archives and pak 0.11.1 cannot extract them, so
+          # setup-r-dependencies fails on the first binary it fetches
+          # (flextable) with "unknown archive type". While pinned, no job
+          # checks macOS on release, and oldrel-1 already covers R 4.5.
+          # Return to 'release' once pak extracts zstd or CRAN's binaries
+          # for release are gzip again; a ROADMAP candidate row tracks it.
+          - {os: macos-latest,   r: '4.5'}
           - {os: windows-latest, r: 'release'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
