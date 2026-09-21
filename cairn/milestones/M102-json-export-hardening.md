@@ -1,6 +1,6 @@
 # M102: The JSON export's writer and lock catch the ten gaps M094 and M097 left open
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -44,7 +44,7 @@ The JSON writer and `tests/testthat/test-json-export.R` catch the ten gaps that 
 - [x] T3: Do the test tidy-ups first, then the type and key checks. Move `latest_manifest()` from `test-artifacts.R:7` to a helper file, and use it in place of `manifest_build_date()` (F10). Give each plant its own `withr::local_tempfile()` (F8). Let a plant serialize with `auto_unbox = FALSE`, or edit raw text where the defect needs it (F9). The `7.0` plant needs a text edit. Parse with `simplifyVector = FALSE`, and check scalars and arrays by JSON type (F7, F9). Then compare key sets per level (G6). Add the AC1 and AC2 plants.
 - [x] T4: State the per-form counts in the test. Look up each item's text by its number in place of the sort in `spec_items()` (F5). Add the same-count substitution plant on the PID-5-SF (F6).
 - [x] T5: Add the direct writer tests, both through `withr::local_tempfile()`. One uses a synthetic out-of-order table with an `NA` row. The other rebuilds the five specs at each file's manifest date and compares bytes.
-- [ ] T6: Run `devtools::document()`, `devtools::test()` and `devtools::check()`. Make sure that the AC6 diff is empty. Add no NEWS entry, because nothing user-visible changes.
+- [x] T6: Run `devtools::document()`, `devtools::test()` and `devtools::check()`. Make sure that the AC6 diff is empty. Add no NEWS entry, because nothing user-visible changes.
 
 ## Work log
 
@@ -58,6 +58,9 @@ The JSON writer and `tests/testthat/test-json-export.R` catch the ten gaps that 
 - 2026-09-21: T3 done. `latest_manifest()` moved to `helper-manifest.R`. `export_report()` parses with `simplifyVector = FALSE`, checks each scalar by JSON type and compares key sets at four levels (`keys.top`, `keys.instructions`, `keys.options`, `keys.items`). Plants unbox scalars and write with `auto_unbox = FALSE` to their own `withr::local_tempfile()`. An unaltered copy of each of the five files reports nothing. The four key plants, the boxed `format` plant and the `7.0` text-edit plant each report their one name. The build date is now looked up by the spec's stem, because tempfile names are random. Suite 17562 pass, 0 fail.
 - 2026-09-21: T4 done. Each test spec states its count (220, 100, 25, 405, 45), and the expected numbers are `seq_len(count)`. `table_text()` looks up each item's text by that item's own number, replacing `spec_items()`. The two swapped-pair plants now report `number` and `name` only, because a whole swapped item keeps its text with its number. The PID-5-SF substitution plant reports `text` alone. Suite 17564 pass, 0 fail.
 - 2026-09-21: T5 done. Two direct writer tests with no `skip_*` call: a synthetic table (numbers 3, NA, 1, 2) comes out as items 1 to 3, and a write of each of the five specs at its manifest date is byte-identical to the committed file. A control a day later is not identical. Plants in memory: `pretty = FALSE` reds only the byte lock, and dropping the sort reds only the order test. Suite 17575 pass, 0 fail.
+- 2026-09-21: T6 done. `document()` made no change, `git diff --stat main` over the AC6 paths printed nothing, and `check()` gave 0 errors, 0 warnings and 0 notes. No NEWS entry, because nothing user-visible changed.
+- 2026-09-21: claim audit: not owed — internal tier
+- 2026-09-21: status set to review.
 
 ## Decisions
 
