@@ -473,3 +473,74 @@ test_that("the shuffled module file scored in instrument order would differ", {
   ))
   expect_false(isTRUE(all.equal(scored$hsr_distressDysphoria, 2.4375)))
 })
+
+# ---- The three PID-5 forms round-trip through score_pid5() ----------------
+#
+# Oracle note: as above, the expected means come from the fixture's responses
+# and the shipped tables. The PID-5 options run 0 to 3, so the reversal is
+# 3 - x. An item reverses where `pid_items$Reverse` is TRUE on the row whose
+# version column holds its number. No row with an SF or BF number is
+# reversed, so the reversal changes expected values on the full form only
+# (8 of its 25 facets with this fixture). FULL and SF domains are the mean of their
+# three primary facets (`pid_domains$facetStems`); the BF domains and total
+# are rows of `pid_scales$BF`, averaged from their items like any scale.
+
+pid5_expected <- function(responses, version) {
+  items <- pid_items[!is.na(pid_items[[version]]), ]
+  items$number <- items[[version]]
+  scales <- pid_scales[[version]]
+  expected <- table_means(responses, items, scales, srange = c(0, 3))
+  names(expected) <- scales$camelCase
+  if (version %in% c("FULL", "SF")) {
+    domains <- vapply(pid_domains$facetStems, function(f) {
+      mean(expected[f])
+    }, numeric(1))
+    expected <- c(expected, stats::setNames(domains, pid_domains$camelCase))
+  }
+  stats::setNames(expected, paste0("pid_", names(expected)))
+}
+
+# The file's own text for each item, read without the package's reader.
+raw_item_text <- function(path) {
+  lines <- readLines(path)
+  header <- strsplit(lines[1], ",", fixed = TRUE)[[1]]
+  values <- strsplit(lines[2], ",", fixed = TRUE)[[1]]
+  stats::setNames(values, header)[-seq_len(5L)]
+}
+
+pid5_cases <- list(
+  list(version = "FULL", file = "responses-pid5.csv",
+       names = sprintf("pid5_%03d", 1:220)),
+  list(version = "SF", file = "responses-pid5sf.csv",
+       names = sprintf("pid5sf_%03d", 1:100)),
+  list(version = "BF", file = "responses-pid5bf.csv",
+       names = sprintf("pid5bf_%02d", 1:25))
+)
+
+for (case in pid5_cases) {
+  test_that(paste("the PID-5", case$version, "file scores to the table-derived means"), {
+    path <- fixture(case$file)
+    data <- read_form_responses(path)
+    expect_identical(nrow(data), 1L)
+    item_cols <- names(data)[-seq_len(5L)]
+    expect_identical(item_cols, case$names)
+    expect_true(all(vapply(data[item_cols], is.integer, logical(1))))
+
+    # A 0 in the file is read as 0, not as missing.
+    raw <- raw_item_text(path)
+    expect_identical(names(raw), item_cols)
+    zeros <- names(raw)[raw == "0"]
+    expect_gt(length(zeros), 0L)
+    expect_identical(unname(unlist(data[1, zeros])), rep(0L, length(zeros)))
+
+    scored <- score_pid5(data, items = item_cols, version = case$version,
+                         append = FALSE)
+
+    n <- length(item_cols)
+    responses <- stats::setNames(as.numeric(data[1, item_cols]), seq_len(n))
+    expected <- pid5_expected(responses, case$version)
+
+    expect_identical(names(scored), names(expected))
+    expect_equal(unlist(scored[1, ]), expected)
+  })
+}
