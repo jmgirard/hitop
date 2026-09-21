@@ -14,8 +14,8 @@
 #'   row. The first five columns are `study`, `participant`, `instrument`,
 #'   `form_build` and `submitted`; the item columns follow, one per item, named
 #'   by the instrument's file stem and the item number (`hitopsr_001`,
-#'   `hitopbr_01`). A module form saves only the module's items, in the order
-#'   the form showed them.
+#'   `hitopbr_01`, `pid5_001`, `pid5sf_001`, `pid5bf_01`). A module form saves
+#'   only the module's items, in the order the form showed them.
 #'
 #'   Every file must carry the same item columns in the same order, because
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
@@ -39,8 +39,9 @@
 #'   columns follow as integers, in the column order of the first file after
 #'   sorting. An item the participant left blank is `NA`.
 #'
-#' @seealso [score_hitopsr()], [score_hitopbr()] and [read_module()], which
-#'   score the item columns; the modules article shows the whole hand-off.
+#' @seealso [score_hitopsr()], [score_hitopbr()], [score_pid5()] and
+#'   [read_module()], which score the item columns; the modules article and
+#'   `vignette("pid5_scoring")` show the whole hand-off.
 #'
 #' @examples
 #' # Two files as the page saves them, here written by hand.

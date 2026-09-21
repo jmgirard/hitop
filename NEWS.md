@@ -15,6 +15,9 @@
   class `hitop_form_responses_mismatch` naming the files; a directory holding
   no `.csv` file stops it with `hitop_form_responses_none`. The modules
   article shows the whole hand-off, from a study link to scored scales.
+  Files saved from the PID-5, PID-5-SF and PID-5-BF read the same way, with
+  the value 0 kept as 0: pass the item columns to `score_pid5()` by name with
+  the matching `version`. The "Scoring the PID-5" vignette shows this hand-off.
 
 * **The three PID-5 forms ship as JSON exports.** `pid5.json`, `pid5sf.json`
   and `pid5bf.json` are downloadable from each form's page on the package
