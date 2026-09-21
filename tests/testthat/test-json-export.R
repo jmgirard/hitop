@@ -207,6 +207,62 @@ for (stem in names(json_specs)) {
   })
 }
 
+read_bytes <- function(path) readBin(path, "raw", file.size(path))
+
+# The writer itself (R/json_export.R). A table whose number column is out of
+# row order and holds an NA must come out as its non-NA rows in ascending
+# number order (D-065), whatever the row order.
+test_that("write_instrument_json() writes non-NA rows in ascending number order", {
+  spec <- list(
+    stem = "demo",
+    items = data.frame(
+      Num = c(3L, NA, 1L, 2L),
+      Text = c("third", "omitted", "first", "second"),
+      stringsAsFactors = FALSE
+    ),
+    number_col = "Num",
+    instructions = hitop:::hitopbr_instructions
+  )
+  path <- withr::local_tempfile(fileext = ".json")
+  hitop:::write_instrument_json(spec, path, build_date = as.Date("2026-01-02"))
+
+  j <- jsonlite::fromJSON(path, simplifyVector = FALSE)
+  items <- j$items
+  expect_identical(vapply(items, function(r) r$number, integer(1)), 1:3)
+  expect_identical(
+    vapply(items, function(r) r$text, character(1)),
+    c("first", "second", "third")
+  )
+  expect_identical(
+    vapply(items, function(r) r$name, character(1)),
+    c("demo_1", "demo_2", "demo_3")
+  )
+  expect_identical(j$maxItem, 3L)
+  expect_identical(j$buildDate, "2026-01-02")
+})
+
+# A fresh write of each spec at its manifest row's date is the committed file
+# byte for byte, so a writer edit that was never rerun into inst/extdata/
+# reds here. The bytes carry `packageVersion`, so a version bump without a
+# rebuild reds here too. The control shows the comparison can fail: the same
+# write a day later differs in `buildDate` alone and is not identical.
+test_that("write_instrument_json() rebuilds each committed export byte for byte", {
+  for (stem in names(json_specs)) {
+    date <- manifest_build_date(paste0(stem, ".json"))
+    path <- withr::local_tempfile(fileext = ".json")
+    hitop:::write_instrument_json(json_specs[[stem]], path, build_date = date)
+    expect_identical(read_bytes(path), read_bytes(json_path(stem)), info = stem)
+  }
+
+  later <- withr::local_tempfile(fileext = ".json")
+  hitop:::write_instrument_json(
+    json_specs$hitopbr,
+    later,
+    build_date = manifest_build_date("hitopbr.json") + 1
+  )
+  expect_false(identical(read_bytes(later), read_bytes(json_path("hitopbr"))))
+})
+
 # The report can fail: each plant alters one field of a temporary copy and
 # must be reported under that field's name (check discrimination).
 #
