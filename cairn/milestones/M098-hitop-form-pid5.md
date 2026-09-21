@@ -43,7 +43,7 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 - [x] T2: Loop `render.spec.js:20` over the five stems `hitopsr`, `hitopbr`, `pid5`, `pid5sf` and `pid5bf`, asserting title, item count and option values.
 - [x] T3: Add three PID-5 cases to `save.spec.js:53-65`. Assert the header, one row, the stem, and that the answer pattern's value-0 pick (`helpers.mjs:112`, position 4) is written as `0`. Capture the three fixtures with `WRITE_FIXTURES=1 npx playwright test tests/save.spec.js` and record their provenance in `tests/fixtures/README.md`. Per LESSONS M095, create the download promise before the walk with its own timeout.
 - [x] T4: README: the instruments list, a PID-5 file example beside the HiTOP ones, and the `score_pid5()` sentence beside `score_hitopsr()`.
-- [ ] T5: Confirm the deployed site serves the three PID-5 files. Open the PR and get the `tests.yml` run green. Record the run in the work log. The merge and one dispatched run against the deployed page happen at review's merge step.
+- [x] T5: Confirm the deployed site serves the three PID-5 files. Open the PR and get the `tests.yml` run green. Record the run in the work log. The merge and one dispatched run against the deployed page happen at review's merge step.
 
 ## Work log
 
@@ -55,6 +55,7 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 - 2026-09-20: T2 done in hitop-form 2313fe7. The render spec loops over five forms and checks the heading, the item count and the option values against stated values and the export. 7 of 7 pass. A plant titling the BF form "PID-5 BF" turned it red.
 - 2026-09-20: T3 done in hitop-form 0cec049. Three PID-5 save cases, 7 of 7 pass. Fixtures captured with `-g pid5` so the three HiTOP fixtures kept their bytes. Plants: a 0 written as blank reds the integer check, a 0 written as `00` reds the new value-0 check. The fixture note's "reader still to be written" line now names `read_form_responses()`.
 - 2026-09-20: T4 done in hitop-form 1593f53. The README names the five forms, the PID-5 item names and value ranges, and `score_pid5()` with a `version` example. Its "reader under development" paragraph now names `read_form_responses()`, which read the pid5bf and pid5 fixtures and fed `score_pid5()` in this session.
+- 2026-09-20: T5 done. The deployed site serves `pid5.json` (220 items), `pid5sf.json` (100) and `pid5bf.json` (25). Local suite 35 passed. PR https://github.com/jmgirard/hitop-form/pull/1 opened; `tests.yml` run 35555027670 green at 1593f53, 35 passed. Merge and the deployed-page dispatch wait for review.
 
 ## Decisions
 
