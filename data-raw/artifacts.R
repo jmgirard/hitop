@@ -139,6 +139,10 @@ qsf_note <- paste(
 # ------------------------------------------------------------------------------
 ## Rebuild the artifacts
 
+## The build date the manifest rows below record. The JSON writer stamps the
+## same value into each file's `buildDate`, so a file and its row agree.
+today <- Sys.Date()
+
 docx_specs <- list(
   list(fn = generate_docx_pid5, stem = "pid5", instrument = "PID-5"),
   list(fn = generate_docx_pid5sf, stem = "pid5sf", instrument = "PID-5-SF"),
@@ -191,11 +195,16 @@ for (spec in keep_specs(redcap_specs, "redcap")) {
 }
 
 ## The JSON exports a web form outside the package can render from.
-## `json_specs` and the writer live in data-raw/json_export.R, which
-## documents the format.
+## `json_specs` lives in data-raw/json_export.R; the writer is the package's
+## unexported `write_instrument_json()` (R/json_export.R), which documents
+## the format.
 source("data-raw/json_export.R", local = TRUE)
 for (spec in keep_specs(json_specs, "json")) {
-  write_instrument_json(spec, file.path(extdata, paste0(spec$stem, ".json")))
+  write_instrument_json(
+    spec,
+    file.path(extdata, paste0(spec$stem, ".json")),
+    build_date = today
+  )
 }
 
 ## Every requested stem/format matched something above, or stop before the
@@ -220,7 +229,6 @@ add_row <- function(file, instrument, format, build_date, changes) {
   )
 }
 
-today <- Sys.Date()
 for (spec in docx_specs) {
   for (ps in c("US", "A4")) {
     f <- paste0(spec$stem, "_", ps, ".docx")
