@@ -1,13 +1,13 @@
 # M097: The package ships JSON exports of the three PID-5 forms as checksum-locked artifacts
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP2
 - **Resolves:** —
 - **Surface tier:** user-facing — shipped download files and site cards
-- **Branch/PR:** —
+- **Branch/PR:** `m097-pid5-json-export`
 
 ## Goal
 
@@ -37,7 +37,7 @@ Ship one format-1.0 JSON file per PID-5 form (FULL, SF, BF) holding its items, r
 
 ## Tasks
 
-- [ ] T1: Give `write_instrument_json()` version subsetting: keep the rows where the number column is not NA, ordered by that column (`data-raw/json_export.R:57-88`). Add three PID-5 specs to `json_specs` (`:41-55`) with `instrument` `PID-5`, `PID-5-SF`, `PID-5-BF` and `instructions = pid_instructions`. Run the script mode on a scratch copy first (LESSONS M094: load before reading package data).
+- [x] T1: Give `write_instrument_json()` version subsetting: keep the rows where the number column is not NA, ordered by that column (`data-raw/json_export.R:57-88`). Add three PID-5 specs to `json_specs` (`:41-55`) with `instrument` `PID-5`, `PID-5-SF`, `PID-5-BF` and `instructions = pid_instructions`. Run the script mode on a scratch copy first (LESSONS M094: load before reading package data).
 - [ ] T2: Extend the local `json_specs` in `tests/testthat/test-json-export.R:7-20` to the five stems, with the same NA subsetting as T1. `export_report()` reads the number column and `Text` unfiltered at `:47` and `:95`. Add the `pid5sf` and `pid5bf` plant tests of AC2. Show each plant red on the planted file and the loop green on the shipped files.
 - [ ] T3: Run `data-raw/artifacts.R` with `rebuild_stems` covering the three PID-5 stems and `rebuild_formats = "json"` (`:41`, `:52`). Commit the three files, the manifest rows and the staged copies together.
 - [ ] T4: Add the JSON `dl_link` to `download-pid5.Rmd`, `download-pid5sf.Rmd` and `download-pid5bf.Rmd` (the HiTOP-SR form is `download-hitopsr.Rmd:45`). Build the site clean with `pkgdown::build_site()` and read the three rendered pages.
@@ -49,6 +49,8 @@ Ship one format-1.0 JSON file per PID-5 form (FULL, SF, BF) holding its items, r
 - 2026-09-20: criteria audit ran in full mode by a fresh [O] reader; ten findings across the three milestones, all repaired before the gate: harness clauses moved from AC1 to T2, AC4 narrowed from a clean whole-site build to the three articles, AC2 gained the `maxItem` and `pid5bf` plants.
 - 2026-09-20: plan gate chose three milestones over one spanning both repositories because one milestone is one pull request; falsified by M098 or M099 proving too small to review on its own.
 - 2026-09-20: plan gate chose format 1.0 unchanged over a field telling the export from the module descriptor because no consumer needs it and hitop-form tells them apart by their required fields; falsified by a consumer that must read both files without knowing which it holds.
+
+- 2026-09-20: T1 done. The writer keeps the rows whose number column is not NA, ordered by that column, and three PID-5 specs read `pid_items` with `pid_instructions`. Script mode ran on a scratch copy of the tree. The two HiTOP files rebuild byte-identical, so the subsetting step changes nothing for a one-form table. Suite green, 0 failures.
 
 ## Decisions
 
