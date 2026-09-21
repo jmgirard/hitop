@@ -52,6 +52,7 @@ Prove that a PID-5 file saved by hitop-form round-trips through `read_form_respo
 - 2026-09-21: the claim reader noted that the `read_form_responses()` help page names only HiTOP column examples and omits `score_pid5()` from its see-also. Left unchanged because Scope Out excludes changes to that function. Raised for review.
 - 2026-09-21: status set to review.
 - 2026-09-21: step-7 approval: m099-form-responses-pid5 approved for merge
+- 2026-09-21: PR #108 opened. The CI watch reached its time limit with 3 checks passed and 5 R CMD check jobs pending. The watch was stopped, and the merge waits for a rerun of the review.
 
 ## Decisions
 
