@@ -75,6 +75,7 @@ The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed
 - 2026-09-21: AC4 amended to its final wording. The T6 evidence covers it: the four builds were read with the box ticked, and the four scoring passages name the right layout.
 - 2026-09-21: claim audit: 16 claims read, 2 corrected — hitop-builder index.html, README.md. The notice's "nothing warns you" was wrong (warn_item_order() fires on printed-order original-number names under the default layout) and now says "raises no error". README now says score_hitopsr() reads item_order when it gets that module and `layout = "printed"`. The same reader re-read both as accurate. Builder commit c64ade9, smoke 1/1 after the fix.
 - 2026-09-21: implement done. hitop verify: devtools::test() 0 failed, 0 errors, 13 skipped, 17564 passed (no R change on this branch). Status to review.
+- 2026-09-21: step-7 approval: m101-builder-layout-advice approved for merge (hitop-builder and hitop). Jeff chose F1, F2 and F5 as fix-now.
 
 ## Decisions
 
@@ -103,3 +104,13 @@ The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed
   - F7 (low): unshuffled READMEs mention "on a shuffled Word form" (pre-existing, no AC4 conflict).
 - Blame-history [S]: no finding. The change is M091's follow-through, and M092's prose rules and the writer ledger are intact.
 - Prior-review [S]: no reintroduced or contradicted finding. GitHub probe empty. It flagged `--compare` on the new passage for a look. Checked: it pairs, and the added paragraph carries no facts, so it reports no difference (by design).
+
+### Triage (step-7 gate, 2026-09-21)
+- F1: fix now. Builder ebefd10: README.md says that the warning "says how to score a shuffled form".
+- F2: fix now. Builder ebefd10: the `score_hitopsr()` sentence moved after "says it again", so "says the same" and "says it again" refer to `read_module()` only.
+- F5: fix now. Builder ebefd10: the notice opens with "If you enter the data in the order the form printed the items, the columns are in printed order". The notice still names both layouts (AC1 holds).
+- F3: process. AC6 is ticked only after builder CI is green.
+- F4: rejected. The `score_hitopsr()` help already says that positions avoid the name warning, and the notice already runs to four sentences.
+- F6: rejected. The sentence is accurate: without the `.json` there is no `item_order` to score through.
+- F7: rejected. Pre-existing text, outside AC4's scoring clause.
+- After the fixes: ste_lint 0 over all passages, smoke 1/1 (12.7s).
