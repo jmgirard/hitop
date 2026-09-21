@@ -60,6 +60,7 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 - 2026-09-20: verify: no R code changed, so `devtools::test()` was not re-run. `cairn_validate.py` passes. Status set to review.
 - 2026-09-20: step-7 approval: m098-hitop-form-pid5 approved for merge, together with hitop-form PR #1.
 - 2026-09-20: CI wait on hitop PR #107 hit the session limit. pkgdown and line endings passed, and six checks were still pending. hitop-form PR #1 is merged. Resume through `/milestone-review M098`.
+- 2026-09-20: resume: PR #107 open with 8 of 8 checks green. Chip re-posed. step-7 approval: m098-hitop-form-pid5 approved for merge (push the tracking commits, wait, merge).
 
 ## Decisions
 
@@ -90,3 +91,4 @@ Independent review of the hitop-form diff, three lenses. [S] blame-history: noth
 Gate triage (Jeff, 2026-09-20): F1 and F2 are decided by keeping `PID-5`, `PID-5-SF` and `PID-5-BF` as the headings. This choice is the IP1 sign-off for the three participant-facing headings, and the difference from the Word form's `PID-5 (Full)` stays. F6 is fixed in hitop-form e41a001. F3 goes to the online-form candidate row. F4, F5, F7, F8 and F9 are rejected for the reasons above.
 
 Merge: hitop-form PR #1 squash-merged as bfb1d9c after its CI passed at e41a001. The Pages deploy then served the PID-5 entries. The dispatched `tests.yml` run 35556329309 against the deployed page passed 35 of 35.
+- conversation: PR #107 — the read returned no reviews, no comments and no unresolved threads.
