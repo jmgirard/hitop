@@ -16,6 +16,16 @@
   no `.csv` file stops it with `hitop_form_responses_none`. The modules
   article shows the whole hand-off, from a study link to scored scales.
 
+* **The three PID-5 forms ship as JSON exports.** `pid5.json`, `pid5sf.json`
+  and `pid5bf.json` are downloadable from each form's page on the package
+  website. Each file holds the items of that form, the four response options
+  and the administration instructions as the package's tables hold them. The
+  package version and the build date are at the top. The item names are
+  `pid5_001` to `pid5_220`, `pid5sf_001` to `pid5sf_100` and `pid5bf_01` to
+  `pid5bf_25`. The files carry no keying. Each has a row in
+  `hitop_artifacts`. A web form outside the package can read one to show the
+  questionnaire online.
+
 * **The HiTOP-SR and HiTOP-BR ship as JSON exports.** `hitopsr.json` and
   `hitopbr.json`, downloadable from each instrument's page on the package
   website, hold the form's items, response options and administration
