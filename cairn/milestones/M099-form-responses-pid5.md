@@ -55,6 +55,8 @@ Prove that a PID-5 file saved by hitop-form round-trips through `read_form_respo
 - 2026-09-21: PR #108 opened. The CI watch reached its time limit with 3 checks passed and 5 R CMD check jobs pending. The watch was stopped, and the merge waits for a rerun of the review.
 - 2026-09-21: resume: PR #108 open, main unmoved. CI job `macos-latest (4.5)` failed because the `gdtools` binary cannot load `/opt/X11/lib/libXrender.1.dylib`. The same failure is on main's head `e8c5cf20` (run 35609153974). The main run at 03:50 the same day passed, so the cause is the runner or the binary and not this branch. Not merged.
 - 2026-09-21: Jeff chose to fix the macOS CI job in a hotfix to main first, then rerun this review.
+- 2026-09-21: resume: PR #109 (XQuartz on macOS) merged to main. Main merged into this branch, and the evidence was re-run.
+- 2026-09-21: step-7 approval: m099-form-responses-pid5 approved for merge
 
 ## Decisions
 
