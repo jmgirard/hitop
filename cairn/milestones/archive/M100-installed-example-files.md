@@ -1,0 +1,11 @@
+# M100: The shipped vignette and article read their example files from the installed package
+
+**Status:** done (2026-09-21, PR #110 https://github.com/jmgirard/hitop/pull/110).
+
+**Goal:** `vignette("pid5_scoring")` and the HiTOP-SR modules article read their example response files from `inst/examples/`, so their code runs on a user's machine.
+
+**Outcome:** Three example files moved byte-identical (`R100`) from `tests/testthat/fixtures/` to a new `inst/examples/`. They are `responses-pid5.csv`, `responses-module-shuffled.csv` and `module-shuffled.json`. Their provenance rows moved to `inst/examples/README.md`. `tests/testthat/fixtures/README.md` keeps the rows of the fixtures that stayed. `pid5_scoring.Rmd` and `modules-hitopsr.Rmd` read the files with `system.file("examples", <file>, package = "hitop")`. Tests read them through a new `example_file()` helper in `tests/testthat/helper-examples.R` (`mustWork = TRUE`). One new test reads each example through `system.file()`. NEWS has one entry under "Documentation and website". `inst/extdata/` is unchanged, because it holds only the D-016 checksum-locked downloads.
+
+**Decisions:** none cross-cutting. The plan gate chose `inst/examples/` over `inst/extdata/`, and moving the files over keeping a second copy in `tests/`.
+
+**Review:** one pass, three lenses, user-facing tier. The [S] blame-history and [S] prior-review lenses found nothing. The prior-review lens found that M100 resolves F2 deferred at M099. The [O] diff-bug lens ranked five minor findings. F2, an ambiguous NEWS clause, and F4, a missing LF note on the JSON provenance row, were fixed. Three were rejected with reasons. F1: a missing example file errors the whole test file. F3: the installed README mentions tests. F5: the new test reads source files under `devtools::test()`. Gate: `cairn_validate.py` exit 0, `document()` no diff, `check_pkgdown()` clean, `test()` 0 failed, `check()` 0/0/0. With the branch installed, the purled code of both pages exits 0 outside the repo. The first CI wait timed out with 6 of 8 checks pending, and the resumed session merged at 8/8 green. Post-merge: the M097 row was pruned. Nothing graduated or retired, and no LESSONS line was added.
