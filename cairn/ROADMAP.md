@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M105).
 | M101 | The builder tells users to score shuffled Word forms with `layout = "printed"` | done | — | normal | milestones/archive/M101-builder-layout-advice.md |
 | M102 | The JSON export's writer and lock catch the ten gaps M094 and M097 left open | done | — | normal | milestones/archive/M102-json-export-hardening.md |
 | M103 | One build at a time in the builder, with its settings fixed at the click | done | — | normal | milestones/archive/M103-builder-build-lock.md |
-| M104 | The builder's format cards are off during a build | planned | — | normal | milestones/M104-builder-format-cards-lock.md |
+| M104 | The builder's format cards are off during a build | in-progress | — | normal | milestones/M104-builder-format-cards-lock.md |
 
 ## Candidates
 

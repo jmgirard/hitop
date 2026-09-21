@@ -1,13 +1,13 @@
 # M104: The builder's format cards are off during a build
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the public builder page that researchers use to download forms
-- **Branch/PR:** —
+- **Branch/PR:** `m104-builder-format-cards-lock` in both hitop and jmgirard/hitop-builder
 
 ## Goal
 
@@ -44,7 +44,7 @@ The milestone also adds a smoke-test assertion that presses a card during a buil
 
 ## Tasks
 
-- [ ] T1: Cut `m104-builder-format-cards-lock` from the updated builder `main` and from hitop `main`.
+- [x] T1: Cut `m104-builder-format-cards-lock` from the updated builder `main` and from hitop `main`.
 - [ ] T2: Write the test first. Add assertion A9 to `tests/smoke.spec.js`, after A8 and during the same build. The test presses the Qualtrics card and asserts that `#downloadBtn` still names Word and the Word card still carries `aria-current`. Add A9 to the assertion list in the file header. Run the test on the unfixed page and see it fail.
 - [ ] T3: In `download()`, collect the `[data-choose]` buttons next to `buttons`. Disable them after `building = true`. Enable them in `finally`, after `building = false`.
 - [ ] T4: Add a plant to `tests/plants.mjs` that removes the cards' disable from `download()`. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that the new plant fails A9 alone.
@@ -57,6 +57,7 @@ The milestone also adds a smoke-test assertion that presses a card during a buil
 - 2026-09-21: created by /milestone-plan from the format-card candidate row (M103 review finding D2). The criteria audit ran in full mode with an [O] reader and returned 9 findings. Six were fixed before the gate. AC1 drops `currentFormat`, which is private to the module script. AC1 also presses all three cards and reads the open disclosure. AC2 names the forced failure and is bounded to a save or a failure. AC3 records each hit's selector. AC4 has a wider grep. One went to the gate (AC4 wording), and two needed no change (AC5, the plant in T4).
 - 2026-09-21: the plan gate chose to disable the cards during a build. It rejected a press applied after the build ends and a press ignored silently. A deferred press changes the page with no visible cause, and an ignored press looks like a broken page. A visitor report that the disabled cards are confusing falsifies this choice.
 - 2026-09-21: the plan gate chose to state in the step-two hint and README.md that the cards are off during a build. It rejected a page that relies on the greyed look alone. AC4 now requires both sentences. A re-audit of the changed AC1 to AC4 by the same [O] reader returned 3 findings, all fixed before the commit: the second AC1 run opens the Qualtrics disclosure, AC1 reads `disabled` before the presses, and AC4 covers the `let building` comment.
+- 2026-09-21: implement started. T1: both branches cut from `main` (hitop at a2b3b2ee, builder at 840dace), both already in sync with origin. No question gate, because the plan left nothing open. The `finally` sets the cards to `bootAbandoned`, as it does for the download button.
 
 ## Decisions
 
