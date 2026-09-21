@@ -31,7 +31,7 @@ extdata <- "inst/extdata"
 ## below still reads every file from disk, which is how a replaced HSUM QSF
 ## (built elsewhere, by devel/qualtrics_hitophsum.R) gains its row without
 ## churning the checksum of any artifact this script does rebuild.
-rebuild_stems <- c("hitopsr", "hitopbr")
+rebuild_stems <- c("pid5", "pid5sf", "pid5bf")
 
 ## Restrict the rebuild to specific output formats, e.g. c("docx"); NULL rebuilds
 ## every format for the selected stems. Format matters independently of stem: a
@@ -126,9 +126,9 @@ check_filters_matched <- function() {
 ## One note per build run, applied to every artifact rebuilt below. For the
 ## QSF (not rebuilt here), set qsf_* only when the committed file changes.
 build_notes <- paste(
-  "First build of the JSON export: the items, response options and",
-  "instructions as the keying tables hold them, for a web form outside the",
-  "package to read."
+  "First build of the PID-5 JSON exports, one file per form: the items of",
+  "that form, the response options and the instructions as the keying tables",
+  "hold them, for a web form outside the package to read."
 )
 qsf_build_date <- as.Date("2026-08-19")
 qsf_note <- paste(

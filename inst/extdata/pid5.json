@@ -1,0 +1,1131 @@
+{
+  "format": "1.0",
+  "package": "hitop",
+  "packageVersion": "0.2.0",
+  "buildDate": "2026-09-20",
+  "stem": "pid5",
+  "maxItem": 220,
+  "instructions": {
+    "start": "This is a list of things different people might say about themselves. We are interested in how you would describe yourself. There are no right or wrong answers. So you can describe yourself as honestly as possible, we will keep your responses confidential. We'd like you to take your time and read each statement carefully, selecting the response that best describes you.",
+    "options": [
+      {
+        "value": 0,
+        "label": "Very False or Often False"
+      },
+      {
+        "value": 1,
+        "label": "Sometimes or Somewhat False"
+      },
+      {
+        "value": 2,
+        "label": "Sometimes or Somewhat True"
+      },
+      {
+        "value": 3,
+        "label": "Very True or Often True"
+      }
+    ]
+  },
+  "items": [
+    {
+      "number": 1,
+      "name": "pid5_001",
+      "text": "I don't get as much pleasure out of things as others seem to"
+    },
+    {
+      "number": 2,
+      "name": "pid5_002",
+      "text": "Plenty of people are out to get me"
+    },
+    {
+      "number": 3,
+      "name": "pid5_003",
+      "text": "People would describe me as reckless"
+    },
+    {
+      "number": 4,
+      "name": "pid5_004",
+      "text": "I feel like I act totally on impulse"
+    },
+    {
+      "number": 5,
+      "name": "pid5_005",
+      "text": "I often have ideas that are too unusual to explain to anyone"
+    },
+    {
+      "number": 6,
+      "name": "pid5_006",
+      "text": "I lose track of conversations because other things catch my attention"
+    },
+    {
+      "number": 7,
+      "name": "pid5_007",
+      "text": "I avoid risky situations"
+    },
+    {
+      "number": 8,
+      "name": "pid5_008",
+      "text": "When it comes to my emotions, people tell me I'm a \"cold fish\""
+    },
+    {
+      "number": 9,
+      "name": "pid5_009",
+      "text": "I change what I do depending on what others want"
+    },
+    {
+      "number": 10,
+      "name": "pid5_010",
+      "text": "I prefer not to get too close to people"
+    },
+    {
+      "number": 11,
+      "name": "pid5_011",
+      "text": "I often get into physical fights"
+    },
+    {
+      "number": 12,
+      "name": "pid5_012",
+      "text": "I dread being without someone to love me"
+    },
+    {
+      "number": 13,
+      "name": "pid5_013",
+      "text": "Being rude and unfriendly is just a part of who I am"
+    },
+    {
+      "number": 14,
+      "name": "pid5_014",
+      "text": "I do things to make sure people notice me"
+    },
+    {
+      "number": 15,
+      "name": "pid5_015",
+      "text": "I usually do what others think I should do"
+    },
+    {
+      "number": 16,
+      "name": "pid5_016",
+      "text": "I usually do things on impulse without thinking about what might happen as a result"
+    },
+    {
+      "number": 17,
+      "name": "pid5_017",
+      "text": "Even though I know better, I can't stop making rash decisions"
+    },
+    {
+      "number": 18,
+      "name": "pid5_018",
+      "text": "My emotions sometimes change for no good reason"
+    },
+    {
+      "number": 19,
+      "name": "pid5_019",
+      "text": "I really don't care if I make other people suffer"
+    },
+    {
+      "number": 20,
+      "name": "pid5_020",
+      "text": "I keep to myself"
+    },
+    {
+      "number": 21,
+      "name": "pid5_021",
+      "text": "I often say things that others find odd or strange"
+    },
+    {
+      "number": 22,
+      "name": "pid5_022",
+      "text": "I always do things on the spur of the moment"
+    },
+    {
+      "number": 23,
+      "name": "pid5_023",
+      "text": "Nothing seems to interest me very much"
+    },
+    {
+      "number": 24,
+      "name": "pid5_024",
+      "text": "Other people seem to think my behavior is weird"
+    },
+    {
+      "number": 25,
+      "name": "pid5_025",
+      "text": "People have told me that I think about things in a really strange way"
+    },
+    {
+      "number": 26,
+      "name": "pid5_026",
+      "text": "I almost never enjoy life"
+    },
+    {
+      "number": 27,
+      "name": "pid5_027",
+      "text": "I often feel like nothing I do really matters"
+    },
+    {
+      "number": 28,
+      "name": "pid5_028",
+      "text": "I snap at people when they do little things that irritate me"
+    },
+    {
+      "number": 29,
+      "name": "pid5_029",
+      "text": "I can't concentrate on anything"
+    },
+    {
+      "number": 30,
+      "name": "pid5_030",
+      "text": "I'm an energetic person"
+    },
+    {
+      "number": 31,
+      "name": "pid5_031",
+      "text": "Others see me as irresponsible"
+    },
+    {
+      "number": 32,
+      "name": "pid5_032",
+      "text": "I can be mean when I need to be"
+    },
+    {
+      "number": 33,
+      "name": "pid5_033",
+      "text": "My thoughts often go off in odd or unusual directions"
+    },
+    {
+      "number": 34,
+      "name": "pid5_034",
+      "text": "I've been told that I spend too much time making sure things are exactly in place"
+    },
+    {
+      "number": 35,
+      "name": "pid5_035",
+      "text": "I avoid risky sports and activities"
+    },
+    {
+      "number": 36,
+      "name": "pid5_036",
+      "text": "I can have trouble telling the difference between dreams and waking life"
+    },
+    {
+      "number": 37,
+      "name": "pid5_037",
+      "text": "Sometimes I get this weird feeling that parts of my body feel like they're dead or not really me"
+    },
+    {
+      "number": 38,
+      "name": "pid5_038",
+      "text": "I am easily angered"
+    },
+    {
+      "number": 39,
+      "name": "pid5_039",
+      "text": "I have no limits when it comes to doing dangerous things"
+    },
+    {
+      "number": 40,
+      "name": "pid5_040",
+      "text": "To be honest, I'm just more important than other people"
+    },
+    {
+      "number": 41,
+      "name": "pid5_041",
+      "text": "I make up stories about things that happened that are totally untrue"
+    },
+    {
+      "number": 42,
+      "name": "pid5_042",
+      "text": "People often talk about me doing things I don't remember at all"
+    },
+    {
+      "number": 43,
+      "name": "pid5_043",
+      "text": "I do things so that people just have to admire me"
+    },
+    {
+      "number": 44,
+      "name": "pid5_044",
+      "text": "It's weird, but sometimes ordinary objects seem to be a different shape than usual"
+    },
+    {
+      "number": 45,
+      "name": "pid5_045",
+      "text": "I don't have very long-lasting emotional reactions to things"
+    },
+    {
+      "number": 46,
+      "name": "pid5_046",
+      "text": "It is hard for me to stop an activity, even when it's time to do so"
+    },
+    {
+      "number": 47,
+      "name": "pid5_047",
+      "text": "I'm not good at planning ahead"
+    },
+    {
+      "number": 48,
+      "name": "pid5_048",
+      "text": "I do a lot of things that others consider risky"
+    },
+    {
+      "number": 49,
+      "name": "pid5_049",
+      "text": "People tell me that I focus too much on minor details"
+    },
+    {
+      "number": 50,
+      "name": "pid5_050",
+      "text": "I worry a lot about being alone"
+    },
+    {
+      "number": 51,
+      "name": "pid5_051",
+      "text": "I've missed out on things because I was busy trying to get something I was doing exactly right"
+    },
+    {
+      "number": 52,
+      "name": "pid5_052",
+      "text": "My thoughts often don't make sense to others"
+    },
+    {
+      "number": 53,
+      "name": "pid5_053",
+      "text": "I often make up things about myself to help me get what I want"
+    },
+    {
+      "number": 54,
+      "name": "pid5_054",
+      "text": "It doesn't really bother me to see other people get hurt"
+    },
+    {
+      "number": 55,
+      "name": "pid5_055",
+      "text": "People often look at me as if I'd said something really weird"
+    },
+    {
+      "number": 56,
+      "name": "pid5_056",
+      "text": "People don't realize that I'm flattering them to get something"
+    },
+    {
+      "number": 57,
+      "name": "pid5_057",
+      "text": "I'd rather be in a bad relationship than be alone"
+    },
+    {
+      "number": 58,
+      "name": "pid5_058",
+      "text": "I usually think before I act"
+    },
+    {
+      "number": 59,
+      "name": "pid5_059",
+      "text": "I often see vivid dream-like images when I'm falling asleep or waking up"
+    },
+    {
+      "number": 60,
+      "name": "pid5_060",
+      "text": "I keep approaching things the same way, even when it isn't working"
+    },
+    {
+      "number": 61,
+      "name": "pid5_061",
+      "text": "I'm very dissatisfied with myself"
+    },
+    {
+      "number": 62,
+      "name": "pid5_062",
+      "text": "I have much stronger emotional reactions than almost everyone else"
+    },
+    {
+      "number": 63,
+      "name": "pid5_063",
+      "text": "I do what other people tell me to do"
+    },
+    {
+      "number": 64,
+      "name": "pid5_064",
+      "text": "I can't stand being left alone, even for a few hours"
+    },
+    {
+      "number": 65,
+      "name": "pid5_065",
+      "text": "I have outstanding qualities that few others possess"
+    },
+    {
+      "number": 66,
+      "name": "pid5_066",
+      "text": "The future looks really hopeless to me"
+    },
+    {
+      "number": 67,
+      "name": "pid5_067",
+      "text": "I like to take risks"
+    },
+    {
+      "number": 68,
+      "name": "pid5_068",
+      "text": "I can't achieve goals because other things capture my attention"
+    },
+    {
+      "number": 69,
+      "name": "pid5_069",
+      "text": "When I want to do something, I don't let the possibility that it might be risky stop me"
+    },
+    {
+      "number": 70,
+      "name": "pid5_070",
+      "text": "Others seem to think I'm quite odd or unusual"
+    },
+    {
+      "number": 71,
+      "name": "pid5_071",
+      "text": "My thoughts are strange and unpredictable"
+    },
+    {
+      "number": 72,
+      "name": "pid5_072",
+      "text": "I don't care about other people's feelings"
+    },
+    {
+      "number": 73,
+      "name": "pid5_073",
+      "text": "You need to step on some toes to get what you want in life"
+    },
+    {
+      "number": 74,
+      "name": "pid5_074",
+      "text": "I love getting the attention of other people"
+    },
+    {
+      "number": 75,
+      "name": "pid5_075",
+      "text": "I go out of my way to avoid any kind of group activity"
+    },
+    {
+      "number": 76,
+      "name": "pid5_076",
+      "text": "I can be sneaky if it means getting what I want"
+    },
+    {
+      "number": 77,
+      "name": "pid5_077",
+      "text": "Sometimes when I look at a familiar object, it's somehow like I'm seeing it for the first time"
+    },
+    {
+      "number": 78,
+      "name": "pid5_078",
+      "text": "It is hard for me to shift from one activity to another"
+    },
+    {
+      "number": 79,
+      "name": "pid5_079",
+      "text": "I worry a lot about terrible things that might happen"
+    },
+    {
+      "number": 80,
+      "name": "pid5_080",
+      "text": "I have trouble changing how I'm doing something even if what I'm doing isn't going well"
+    },
+    {
+      "number": 81,
+      "name": "pid5_081",
+      "text": "The world would be better off if I were dead"
+    },
+    {
+      "number": 82,
+      "name": "pid5_082",
+      "text": "I keep my distance from people"
+    },
+    {
+      "number": 83,
+      "name": "pid5_083",
+      "text": "I often can't control what I think about"
+    },
+    {
+      "number": 84,
+      "name": "pid5_084",
+      "text": "I don't get emotional"
+    },
+    {
+      "number": 85,
+      "name": "pid5_085",
+      "text": "I resent being told what to do, even by people in charge"
+    },
+    {
+      "number": 86,
+      "name": "pid5_086",
+      "text": "I'm so ashamed by how I've let people down in lots of little ways"
+    },
+    {
+      "number": 87,
+      "name": "pid5_087",
+      "text": "I avoid anything that might be even a little bit dangerous"
+    },
+    {
+      "number": 88,
+      "name": "pid5_088",
+      "text": "I have trouble pursuing specific goals even for short periods of time"
+    },
+    {
+      "number": 89,
+      "name": "pid5_089",
+      "text": "I prefer to keep romance out of my life"
+    },
+    {
+      "number": 90,
+      "name": "pid5_090",
+      "text": "I would never harm another person"
+    },
+    {
+      "number": 91,
+      "name": "pid5_091",
+      "text": "I don't show emotions strongly"
+    },
+    {
+      "number": 92,
+      "name": "pid5_092",
+      "text": "I have a very short temper"
+    },
+    {
+      "number": 93,
+      "name": "pid5_093",
+      "text": "I often worry that something bad will happen due to mistakes I made in the past"
+    },
+    {
+      "number": 94,
+      "name": "pid5_094",
+      "text": "I have some unusual abilities, like sometimes knowing exactly what someone is thinking"
+    },
+    {
+      "number": 95,
+      "name": "pid5_095",
+      "text": "I get very nervous when I think about the future"
+    },
+    {
+      "number": 96,
+      "name": "pid5_096",
+      "text": "I rarely worry about things"
+    },
+    {
+      "number": 97,
+      "name": "pid5_097",
+      "text": "I enjoy being in love"
+    },
+    {
+      "number": 98,
+      "name": "pid5_098",
+      "text": "I prefer to play it safe rather than take unnecessary chances"
+    },
+    {
+      "number": 99,
+      "name": "pid5_099",
+      "text": "I sometimes have heard things that others couldn't hear"
+    },
+    {
+      "number": 100,
+      "name": "pid5_100",
+      "text": "I get fixated on certain things and can't stop"
+    },
+    {
+      "number": 101,
+      "name": "pid5_101",
+      "text": "People tell me it's difficult to know what I'm feeling"
+    },
+    {
+      "number": 102,
+      "name": "pid5_102",
+      "text": "I am a highly emotional person"
+    },
+    {
+      "number": 103,
+      "name": "pid5_103",
+      "text": "Others would take advantage of me if they could"
+    },
+    {
+      "number": 104,
+      "name": "pid5_104",
+      "text": "I often feel like a failure"
+    },
+    {
+      "number": 105,
+      "name": "pid5_105",
+      "text": "If something I do isn't absolutely perfect, it's simply not acceptable"
+    },
+    {
+      "number": 106,
+      "name": "pid5_106",
+      "text": "I often have unusual experiences, such as sensing the presence of someone who isn't actually there"
+    },
+    {
+      "number": 107,
+      "name": "pid5_107",
+      "text": "I'm good at making people do what I want them to do"
+    },
+    {
+      "number": 108,
+      "name": "pid5_108",
+      "text": "I break off relationships if they start to get close"
+    },
+    {
+      "number": 109,
+      "name": "pid5_109",
+      "text": "I'm always worrying about something"
+    },
+    {
+      "number": 110,
+      "name": "pid5_110",
+      "text": "I worry about almost everything"
+    },
+    {
+      "number": 111,
+      "name": "pid5_111",
+      "text": "I like standing out in a crowd"
+    },
+    {
+      "number": 112,
+      "name": "pid5_112",
+      "text": "I don't mind a little risk now and then"
+    },
+    {
+      "number": 113,
+      "name": "pid5_113",
+      "text": "My behavior is often bold and grabs peoples' attention"
+    },
+    {
+      "number": 114,
+      "name": "pid5_114",
+      "text": "I'm better than almost everyone else"
+    },
+    {
+      "number": 115,
+      "name": "pid5_115",
+      "text": "People complain about my need to have everything all arranged"
+    },
+    {
+      "number": 116,
+      "name": "pid5_116",
+      "text": "I always make sure I get back at people who wrong me"
+    },
+    {
+      "number": 117,
+      "name": "pid5_117",
+      "text": "I'm always on my guard for someone trying to trick or harm me"
+    },
+    {
+      "number": 118,
+      "name": "pid5_118",
+      "text": "I have trouble keeping my mind focused on what needs to be done"
+    },
+    {
+      "number": 119,
+      "name": "pid5_119",
+      "text": "I talk about suicide a lot"
+    },
+    {
+      "number": 120,
+      "name": "pid5_120",
+      "text": "I'm just not very interested in having sexual relationships"
+    },
+    {
+      "number": 121,
+      "name": "pid5_121",
+      "text": "I get stuck on things a lot"
+    },
+    {
+      "number": 122,
+      "name": "pid5_122",
+      "text": "I get emotional easily, often for very little reason"
+    },
+    {
+      "number": 123,
+      "name": "pid5_123",
+      "text": "Even though it drives other people crazy, I insist on absolute perfection in everything I do"
+    },
+    {
+      "number": 124,
+      "name": "pid5_124",
+      "text": "I almost never feel happy about my day-to-day activities"
+    },
+    {
+      "number": 125,
+      "name": "pid5_125",
+      "text": "Sweet-talking others helps me get what I want"
+    },
+    {
+      "number": 126,
+      "name": "pid5_126",
+      "text": "Sometimes you need to exaggerate to get ahead"
+    },
+    {
+      "number": 127,
+      "name": "pid5_127",
+      "text": "I fear being alone in life more than anything else"
+    },
+    {
+      "number": 128,
+      "name": "pid5_128",
+      "text": "I get stuck on one way of doing things, even when it's clear it won't work"
+    },
+    {
+      "number": 129,
+      "name": "pid5_129",
+      "text": "I'm often pretty careless with my own and others' things"
+    },
+    {
+      "number": 130,
+      "name": "pid5_130",
+      "text": "I am a very anxious person"
+    },
+    {
+      "number": 131,
+      "name": "pid5_131",
+      "text": "People are basically trustworthy"
+    },
+    {
+      "number": 132,
+      "name": "pid5_132",
+      "text": "I am easily distracted"
+    },
+    {
+      "number": 133,
+      "name": "pid5_133",
+      "text": "It seems like I'm always getting a \"raw deal\" from others"
+    },
+    {
+      "number": 134,
+      "name": "pid5_134",
+      "text": "I don't hesitate to cheat if it gets me ahead"
+    },
+    {
+      "number": 135,
+      "name": "pid5_135",
+      "text": "I check things several times to make sure they are perfect"
+    },
+    {
+      "number": 136,
+      "name": "pid5_136",
+      "text": "I don't like spending time with others"
+    },
+    {
+      "number": 137,
+      "name": "pid5_137",
+      "text": "I feel compelled to go on with things even when it makes little sense to do so"
+    },
+    {
+      "number": 138,
+      "name": "pid5_138",
+      "text": "I never know where my emotions will go from moment to moment"
+    },
+    {
+      "number": 139,
+      "name": "pid5_139",
+      "text": "I have seen things that weren't really there"
+    },
+    {
+      "number": 140,
+      "name": "pid5_140",
+      "text": "It is important to me that things are done in a certain way"
+    },
+    {
+      "number": 141,
+      "name": "pid5_141",
+      "text": "I always expect the worst to happen"
+    },
+    {
+      "number": 142,
+      "name": "pid5_142",
+      "text": "I try to tell the truth even when it's hard"
+    },
+    {
+      "number": 143,
+      "name": "pid5_143",
+      "text": "I believe that some people can move things with their minds"
+    },
+    {
+      "number": 144,
+      "name": "pid5_144",
+      "text": "I can't focus on things for very long"
+    },
+    {
+      "number": 145,
+      "name": "pid5_145",
+      "text": "I steer clear of romantic relationships"
+    },
+    {
+      "number": 146,
+      "name": "pid5_146",
+      "text": "I'm not interested in making friends"
+    },
+    {
+      "number": 147,
+      "name": "pid5_147",
+      "text": "I say as little as possible when dealing with people"
+    },
+    {
+      "number": 148,
+      "name": "pid5_148",
+      "text": "I'm useless as a person"
+    },
+    {
+      "number": 149,
+      "name": "pid5_149",
+      "text": "I'll do just about anything to keep someone from abandoning me"
+    },
+    {
+      "number": 150,
+      "name": "pid5_150",
+      "text": "Sometimes I can influence other people just by sending my thoughts to them"
+    },
+    {
+      "number": 151,
+      "name": "pid5_151",
+      "text": "Life looks pretty bleak to me"
+    },
+    {
+      "number": 152,
+      "name": "pid5_152",
+      "text": "I think about things in odd ways that don't make sense to most people"
+    },
+    {
+      "number": 153,
+      "name": "pid5_153",
+      "text": "I don't care if my actions hurt others"
+    },
+    {
+      "number": 154,
+      "name": "pid5_154",
+      "text": "Sometimes I feel \"controlled\" by thoughts that belong to someone else"
+    },
+    {
+      "number": 155,
+      "name": "pid5_155",
+      "text": "I really live life to the fullest"
+    },
+    {
+      "number": 156,
+      "name": "pid5_156",
+      "text": "I make promises that I don't really intend to keep"
+    },
+    {
+      "number": 157,
+      "name": "pid5_157",
+      "text": "Nothing seems to make me feel good"
+    },
+    {
+      "number": 158,
+      "name": "pid5_158",
+      "text": "I get irritated easily by all sorts of things"
+    },
+    {
+      "number": 159,
+      "name": "pid5_159",
+      "text": "I do what I want regardless of how unsafe it might be"
+    },
+    {
+      "number": 160,
+      "name": "pid5_160",
+      "text": "I often forget to pay my bills"
+    },
+    {
+      "number": 161,
+      "name": "pid5_161",
+      "text": "I don't like to get too close to people"
+    },
+    {
+      "number": 162,
+      "name": "pid5_162",
+      "text": "I'm good at conning people"
+    },
+    {
+      "number": 163,
+      "name": "pid5_163",
+      "text": "Everything seems pointless to me"
+    },
+    {
+      "number": 164,
+      "name": "pid5_164",
+      "text": "I never take risks"
+    },
+    {
+      "number": 165,
+      "name": "pid5_165",
+      "text": "I get emotional over every little thing"
+    },
+    {
+      "number": 166,
+      "name": "pid5_166",
+      "text": "It's no big deal if I hurt other peoples' feelings"
+    },
+    {
+      "number": 167,
+      "name": "pid5_167",
+      "text": "I never show emotions to others"
+    },
+    {
+      "number": 168,
+      "name": "pid5_168",
+      "text": "I often feel just miserable"
+    },
+    {
+      "number": 169,
+      "name": "pid5_169",
+      "text": "I have no worth as a person"
+    },
+    {
+      "number": 170,
+      "name": "pid5_170",
+      "text": "I am usually pretty hostile"
+    },
+    {
+      "number": 171,
+      "name": "pid5_171",
+      "text": "I've skipped town to avoid responsibilities"
+    },
+    {
+      "number": 172,
+      "name": "pid5_172",
+      "text": "I've been told more than once that I have a number of odd quirks or habits"
+    },
+    {
+      "number": 173,
+      "name": "pid5_173",
+      "text": "I like being a person who gets noticed"
+    },
+    {
+      "number": 174,
+      "name": "pid5_174",
+      "text": "I'm always fearful or on edge about bad things that might happen"
+    },
+    {
+      "number": 175,
+      "name": "pid5_175",
+      "text": "I never want to be alone"
+    },
+    {
+      "number": 176,
+      "name": "pid5_176",
+      "text": "I keep trying to make things perfect, even when I've gotten them as good as they're likely to get"
+    },
+    {
+      "number": 177,
+      "name": "pid5_177",
+      "text": "I rarely feel that people I know are trying to take advantage of me"
+    },
+    {
+      "number": 178,
+      "name": "pid5_178",
+      "text": "I know I'll commit suicide sooner or later"
+    },
+    {
+      "number": 179,
+      "name": "pid5_179",
+      "text": "I've achieved far more than almost anyone I know"
+    },
+    {
+      "number": 180,
+      "name": "pid5_180",
+      "text": "I can certainly turn on the charm if I need to get my way"
+    },
+    {
+      "number": 181,
+      "name": "pid5_181",
+      "text": "My emotions are unpredictable"
+    },
+    {
+      "number": 182,
+      "name": "pid5_182",
+      "text": "I don't deal with people unless I have to"
+    },
+    {
+      "number": 183,
+      "name": "pid5_183",
+      "text": "I don't care about other peoples' problems"
+    },
+    {
+      "number": 184,
+      "name": "pid5_184",
+      "text": "I don't react much to things that seem to make others emotional"
+    },
+    {
+      "number": 185,
+      "name": "pid5_185",
+      "text": "I have several habits that others find eccentric or strange"
+    },
+    {
+      "number": 186,
+      "name": "pid5_186",
+      "text": "I avoid social events"
+    },
+    {
+      "number": 187,
+      "name": "pid5_187",
+      "text": "I deserve special treatment"
+    },
+    {
+      "number": 188,
+      "name": "pid5_188",
+      "text": "It makes me really angry when people insult me in even a minor way"
+    },
+    {
+      "number": 189,
+      "name": "pid5_189",
+      "text": "I rarely get enthusiastic about anything"
+    },
+    {
+      "number": 190,
+      "name": "pid5_190",
+      "text": "I suspect that even my so-called \"friends\" betray me a lot"
+    },
+    {
+      "number": 191,
+      "name": "pid5_191",
+      "text": "I crave attention"
+    },
+    {
+      "number": 192,
+      "name": "pid5_192",
+      "text": "Sometimes I think someone else is removing thoughts from my head"
+    },
+    {
+      "number": 193,
+      "name": "pid5_193",
+      "text": "I have periods in which I feel disconnected from the world or from myself"
+    },
+    {
+      "number": 194,
+      "name": "pid5_194",
+      "text": "I often see unusual connections between things that most people miss"
+    },
+    {
+      "number": 195,
+      "name": "pid5_195",
+      "text": "I don't think about getting hurt when I'm doing things that might be dangerous"
+    },
+    {
+      "number": 196,
+      "name": "pid5_196",
+      "text": "I simply won't put up with things being out of their proper places"
+    },
+    {
+      "number": 197,
+      "name": "pid5_197",
+      "text": "I often have to deal with people who are less important than me"
+    },
+    {
+      "number": 198,
+      "name": "pid5_198",
+      "text": "I sometimes hit people to remind them who's in charge"
+    },
+    {
+      "number": 199,
+      "name": "pid5_199",
+      "text": "I get pulled off-task by even minor distractions"
+    },
+    {
+      "number": 200,
+      "name": "pid5_200",
+      "text": "I enjoy making people in control look stupid"
+    },
+    {
+      "number": 201,
+      "name": "pid5_201",
+      "text": "I just skip appointments or meetings if I'm not in the mood"
+    },
+    {
+      "number": 202,
+      "name": "pid5_202",
+      "text": "I try to do what others want me to do"
+    },
+    {
+      "number": 203,
+      "name": "pid5_203",
+      "text": "I prefer being alone to having a close romantic partner"
+    },
+    {
+      "number": 204,
+      "name": "pid5_204",
+      "text": "I am very impulsive"
+    },
+    {
+      "number": 205,
+      "name": "pid5_205",
+      "text": "I often have thoughts that make sense to me but that other people say are strange"
+    },
+    {
+      "number": 206,
+      "name": "pid5_206",
+      "text": "I use people to get what I want"
+    },
+    {
+      "number": 207,
+      "name": "pid5_207",
+      "text": "I don't see the point in feeling guilty about things I've done that have hurt other people"
+    },
+    {
+      "number": 208,
+      "name": "pid5_208",
+      "text": "Most of the time I don't see the point in being friendly"
+    },
+    {
+      "number": 209,
+      "name": "pid5_209",
+      "text": "I've had some really weird experiences that are very difficult to explain"
+    },
+    {
+      "number": 210,
+      "name": "pid5_210",
+      "text": "I follow through on commitments"
+    },
+    {
+      "number": 211,
+      "name": "pid5_211",
+      "text": "I like to draw attention to myself"
+    },
+    {
+      "number": 212,
+      "name": "pid5_212",
+      "text": "I feel guilty much of the time"
+    },
+    {
+      "number": 213,
+      "name": "pid5_213",
+      "text": "I often \"zone out\" and then suddenly come to and realize that a lot of time has passed"
+    },
+    {
+      "number": 214,
+      "name": "pid5_214",
+      "text": "Lying comes easily to me"
+    },
+    {
+      "number": 215,
+      "name": "pid5_215",
+      "text": "I hate to take chances"
+    },
+    {
+      "number": 216,
+      "name": "pid5_216",
+      "text": "I'm nasty and short to anybody who deserves it"
+    },
+    {
+      "number": 217,
+      "name": "pid5_217",
+      "text": "Things around me often feel unreal, or more real than usual"
+    },
+    {
+      "number": 218,
+      "name": "pid5_218",
+      "text": "I'll stretch the truth if it's to my advantage"
+    },
+    {
+      "number": 219,
+      "name": "pid5_219",
+      "text": "It is easy for me to take advantage of others"
+    },
+    {
+      "number": 220,
+      "name": "pid5_220",
+      "text": "I have a strict way of doing things"
+    }
+  ]
+}
