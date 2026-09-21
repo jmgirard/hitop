@@ -78,3 +78,5 @@ Independent review: three fresh reviewers. The [S] blame-history and [S] prior-r
 - F7 (rejected): the vignette text about the hitop-form page (the JSON source and the link-builder steps) describes the other repository. Both links returned HTTP 200.
 
 After the fixes, `devtools::test(filter = "read_form_responses")` gave 116 expectations, 0 failed, with 9 on each PID-5 test. `devtools::check()` on `e35a0cd0` returned 0 errors, 0 warnings and 0 notes, with tests and the vignette rebuild OK.
+
+Resume after the CI hotfix (PR #109): main merged into the branch at `cae28716`. The merge changed only `.github/workflows/R-CMD-check.yaml`. `R/`, `man/`, `tests/`, `vignettes/` and `NEWS.md` are the same as at `e35a0cd0`, where the full check ran. `devtools::test(filter = "read_form_responses")` gave 116 expectations and 0 failed.
