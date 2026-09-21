@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M101).
 | M097 | The package ships JSON exports of the three PID-5 forms as checksum-locked artifacts | done | — | normal | milestones/archive/M097-pid5-json-export.md |
 | M098 | hitop-form renders the three PID-5 forms from the package's JSON exports | done | M097 | normal | milestones/archive/M098-hitop-form-pid5.md |
 | M099 | The package's reader scores the three PID-5 forms saved by hitop-form | done | M098 | normal | milestones/archive/M099-form-responses-pid5.md |
-| M100 | The shipped vignette and article read their example files from the installed package | planned | — | normal | milestones/M100-installed-example-files.md |
+| M100 | The shipped vignette and article read their example files from the installed package | review | — | normal | milestones/M100-installed-example-files.md |
 
 ## Candidates
 
