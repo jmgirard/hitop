@@ -21,9 +21,9 @@ Prove that a PID-5 file saved by hitop-form round-trips through `read_form_respo
 
 ## Acceptance criteria
 
-- [ ] AC1: For each of `FULL`, `SF` and `BF`, `read_form_responses()` on its fixture returns one row. The item columns are named `pid5_001` to `pid5_220`, `pid5sf_001` to `pid5sf_100` or `pid5bf_01` to `pid5bf_25`. They are of type integer. They hold the value 0 where the file holds `0`. `score_pid5(data, items = <those columns>, version = <v>, append = FALSE)` runs with its defaults `srange = c(0, 3)` and `missing = "apa"`. It returns every scale mean equal to a mean the test recomputes. The recomputation reverses a file value where `pid_items$Reverse` is true for the row whose version column holds that item's number. It averages by `pid_scales[[v]]$itemNumbers`. It uses `pid_domains` for the FULL and SF domain means. The BF total is a row of `pid_scales$BF`.
-- [ ] AC2: `vignettes/pid5_scoring.Rmd` gains a section on collecting PID-5 responses with hitop-form: the study link, the saved file, `read_form_responses()` and `score_pid5()`. The SF and BF vignettes each point to it in one sentence. The three vignettes render.
-- [ ] AC3: NEWS names the PID-5 support in the hitop-form hand-off. `devtools::check()` reports 0 errors, 0 warnings and 0 notes.
+- [x] AC1: For each of `FULL`, `SF` and `BF`, `read_form_responses()` on its fixture returns one row. The item columns are named `pid5_001` to `pid5_220`, `pid5sf_001` to `pid5sf_100` or `pid5bf_01` to `pid5bf_25`. They are of type integer. They hold the value 0 where the file holds `0`. `score_pid5(data, items = <those columns>, version = <v>, append = FALSE)` runs with its defaults `srange = c(0, 3)` and `missing = "apa"`. It returns every scale mean equal to a mean the test recomputes. The recomputation reverses a file value where `pid_items$Reverse` is true for the row whose version column holds that item's number. It averages by `pid_scales[[v]]$itemNumbers`. It uses `pid_domains` for the FULL and SF domain means. The BF total is a row of `pid_scales$BF`.
+- [x] AC2: `vignettes/pid5_scoring.Rmd` gains a section on collecting PID-5 responses with hitop-form: the study link, the saved file, `read_form_responses()` and `score_pid5()`. The SF and BF vignettes each point to it in one sentence. The three vignettes render.
+- [x] AC3: NEWS names the PID-5 support in the hitop-form hand-off. `devtools::check()` reports 0 errors, 0 warnings and 0 notes.
 
 ## Coverage
 
@@ -55,3 +55,10 @@ Prove that a PID-5 file saved by hitop-form round-trips through `read_form_respo
 ## Decisions
 
 ## Review
+
+Evidence, 2026-09-21, on `m099-form-responses-pid5` at `5ca1d2c2` (level with `origin/main`, no merge needed).
+
+- AC1: `devtools::test(filter = "read_form_responses")`: 113 expectations, 0 failed, 0 errors. The three PID-5 tests (FULL, SF, BF) pass 8 expectations each. They cover one row, the named integer item columns, every file `0` read as `0L`, and `score_pid5()` equal to the recomputed means. The recomputation includes the FULL and SF domains from `pid_domains` and the BF total from `pid_scales$BF`. A hand re-run showed that `pid_items` reverses 16 FULL items and no SF or BF item. Without the reversal, 8 of 25 FULL facet means differ from `score_pid5()`. The FULL file holds 55 zeros.
+- AC2: `vignettes/pid5_scoring.Rmd:196` opens "Collecting Responses Online with hitop-form". The section covers the study link from the link builder, the saved file and its columns, a `read_form_responses()` chunk and a `score_pid5()` chunk. `pid5sf_scoring.Rmd:30` and `pid5bf_scoring.Rmd:32` each point to that section in one sentence. All three are package vignettes. `devtools::check()` rebuilt the vignette outputs with status OK. Both hitop-form links returned HTTP 200.
+- AC3: `NEWS.md:18-20` extends the `read_form_responses()` entry. It names the PID-5, PID-5-SF and PID-5-BF files, the value 0 kept as 0, and `score_pid5()` with the matching `version`. It holds no milestone number. `devtools::check()` returned 0 errors, 0 warnings and 0 notes in 4m 7s, with tests OK.
+- Consistency gate: `cairn_validate.py` exited 0 with 24 advisories, all from before this branch. `devtools::document()` left no diff. `pkgdown::check_pkgdown()` found no problems. The branch does not touch `README.Rmd` or `README.md`. The branch adds no new top-level file and changes no DESIGN principle, so `cairn_impact` does not apply.
