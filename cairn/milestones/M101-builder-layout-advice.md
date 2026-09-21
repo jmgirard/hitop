@@ -48,8 +48,8 @@ The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed
 
 ## Tasks
 
-- [ ] T1: In hitop-builder, on branch `m101-builder-layout-advice`, rewrite the first paragraph of `#shuffleNote` (`index.html:540-543`) to give the two routes. Read the four `crosswalkSentence()` branches (`index.html:1088-1103`). If a branch contradicts the notice, change that branch.
-- [ ] T2: Give `bundleReadme()` a `shuffle` argument and add the sentence for a shuffled Word bundle. Pass the flag at `index.html:1349`. Extend `bundleReadmePassages()` in `tests/prose.mjs` to extract the shuffled Word README. If a ledger anchor moves, update the writer ledger.
+- [x] T1: In hitop-builder, on branch `m101-builder-layout-advice`, rewrite the first paragraph of `#shuffleNote` (`index.html:540-543`) to give the two routes. Read the four `crosswalkSentence()` branches (`index.html:1088-1103`). If a branch contradicts the notice, change that branch.
+- [x] T2: Give `bundleReadme()` a `shuffle` argument and add the sentence for a shuffled Word bundle. Pass the flag at `index.html:1349`. Extend `bundleReadmePassages()` in `tests/prose.mjs` to extract the shuffled Word README. If a ledger anchor moves, update the writer ledger.
 - [ ] T3: Edit README.md §The scoring file (near line 162) and §Shuffling the Word form (lines 343-369). Read the `randomize` paragraph in hitop `R/generate_docx.R` first and match it.
 - [ ] T4: Run `bundleReadme()` from the branch and from the merge base for the eight builds with version `0.2.0`, and diff the outputs. Record the result in the work log.
 - [ ] T5: Serve the page and download the three shuffled Word bundles. Read each printed order off the `.docx` (crosswalk, printed number, or item text against `hitopsr_items`). Build responses in HiTOP-SR order, derive the printed-order columns from the `.docx` order, and compare the two scorings in R against hitop main. Pass `items` as positions, because names trip the order warning under `"printed"`. Record the builder commit and the result.
@@ -64,6 +64,7 @@ The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed
 - 2026-09-21: plan gate chose three served bundles over M091's tests alone because no test scores a page-written descriptor; falsified by a run that finds nothing new.
 - 2026-09-21: plan gate kept the download-button race separate over folding it in because one argument is not a re-cut; falsified by a bundle holding the wrong build.
 - 2026-09-21: plan chose a two-route notice over a `"printed"`-only notice because `"printed"` scrambles HiTOP-SR-order columns; falsified by readers the two routes confuse.
+- 2026-09-21: T1, T2 done in builder commit fb99dcb. The notice gives both routes. The four crosswalkSentence() branches are three returns (original numbering covers both selections), and none contradicts the notice, so none changed. bundleReadme() takes `shuffle = false` and adds one paragraph for a shuffled Word form. prose.mjs lists `readme:docx-shuffled`, ledger unchanged at 18 writer sites. ste_lint on all 154 passages: 0.
 
 ## Decisions
 
