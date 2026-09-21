@@ -47,6 +47,14 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
 
+      # The macOS gdtools binary (0.5.1, 2026-09-21) links against XQuartz's
+      # /opt/X11/lib/libXrender, which the runner does not ship; without it
+      # gdtools fails to load, so the {flextable} Word examples error and the
+      # test run segfaults.
+      - name: Install XQuartz
+        if: runner.os == 'macOS'
+        run: brew install --cask xquartz
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
