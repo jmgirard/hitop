@@ -1,13 +1,13 @@
 # M101: The builder tells users to score shuffled Word forms with `layout = "printed"`
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — researchers read the builder page, the bundle README.txt and the builder README
-- **Branch/PR:** —
+- **Branch/PR:** m101-builder-layout-advice (hitop tracking; code in jmgirard/hitop-builder, same branch name)
 
 ## Goal
 

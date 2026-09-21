@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M102).
 | M098 | hitop-form renders the three PID-5 forms from the package's JSON exports | done | M097 | normal | milestones/archive/M098-hitop-form-pid5.md |
 | M099 | The package's reader scores the three PID-5 forms saved by hitop-form | done | M098 | normal | milestones/archive/M099-form-responses-pid5.md |
 | M100 | The shipped vignette and article read their example files from the installed package | done | — | normal | milestones/archive/M100-installed-example-files.md |
-| M101 | The builder tells users to score shuffled Word forms with `layout = "printed"` | planned | — | normal | milestones/M101-builder-layout-advice.md |
+| M101 | The builder tells users to score shuffled Word forms with `layout = "printed"` | in-progress | — | normal | milestones/M101-builder-layout-advice.md |
 
 ## Candidates
 
