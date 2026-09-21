@@ -87,3 +87,5 @@ Independent review of the hitop-form diff, three lenses. [S] blame-history: noth
 - F9: a weekly run that fires between the merge and the Pages deploy would go red. Proposed: reject. The window is minutes long, and the next run clears it.
 
 Gate triage (Jeff, 2026-09-20): F1 and F2 are decided by keeping `PID-5`, `PID-5-SF` and `PID-5-BF` as the headings. This choice is the IP1 sign-off for the three participant-facing headings, and the difference from the Word form's `PID-5 (Full)` stays. F6 is fixed in hitop-form e41a001. F3 goes to the online-form candidate row. F4, F5, F7, F8 and F9 are rejected for the reasons above.
+
+Merge: hitop-form PR #1 squash-merged as bfb1d9c after its CI passed at e41a001. The Pages deploy then served the PID-5 entries. The dispatched `tests.yml` run 35556329309 against the deployed page passed 35 of 35.
