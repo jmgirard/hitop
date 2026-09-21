@@ -1,13 +1,13 @@
 # M099: The package's reader scores the three PID-5 forms saved by hitop-form
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M098
 - **Driving RR:** —
 - **Principles touched:** IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — tested behavior of an exported function and a vignette section
-- **Branch/PR:** —
+- **Branch/PR:** `m099-form-responses-pid5`
 
 ## Goal
 
@@ -33,7 +33,7 @@ Prove that a PID-5 file saved by hitop-form round-trips through `read_form_respo
 
 ## Tasks
 
-- [ ] T1: Copy `responses-pid5.csv`, `responses-pid5sf.csv` and `responses-pid5bf.csv` from hitop-form at its M098 merge commit into `tests/testthat/fixtures/`. Record repository, commit and generator in `tests/testthat/fixtures/README.md` as the HiTOP rows do.
+- [x] T1: Copy `responses-pid5.csv`, `responses-pid5sf.csv` and `responses-pid5bf.csv` from hitop-form at its M098 merge commit into `tests/testthat/fixtures/`. Record repository, commit and generator in `tests/testthat/fixtures/README.md` as the HiTOP rows do.
 - [ ] T2: Add the three round-trip tests to `tests/testthat/test-read_form_responses.R` on the pattern at `:374-407`. Each carries the recomputed-mean oracle of AC1 and the 0-value assertion.
 - [ ] T3: Write the vignette section and the two pointer sentences. Render the three vignettes.
 - [ ] T4: NEWS entry. Run `devtools::check()`.
@@ -43,6 +43,8 @@ Prove that a PID-5 file saved by hitop-form round-trips through `read_form_respo
 - 2026-09-20: created by /milestone-plan; part one of the online-form candidate row (lineage M096).
 - 2026-09-20: criteria audit ran in full mode by a fresh [O] reader; findings on this file repaired before the gate: the fixture-provenance criterion demoted to T1, the oracle's join between `Reverse` and the version's number column and the scoring defaults named in AC1.
 - 2026-09-20: plan gate chose one section in the full-form vignette with pointers from the SF and BF vignettes over repeating it in all three or a new shared article because one copy stays in step; falsified by readers of the SF or BF vignette reporting the pointer as insufficient.
+- 2026-09-21: implement started on `m099-form-responses-pid5`. No question gate: the plan left nothing open.
+- 2026-09-21: T1 done. The three PID-5 fixtures copied from hitop-form `bfb1d9c` with CRLF converted to LF, and their row added to the fixtures README.
 
 ## Decisions
 
