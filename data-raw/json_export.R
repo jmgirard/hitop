@@ -7,24 +7,18 @@
 ## exported: the page never scores, and the package rebuilds keying from its
 ## own tables when it reads a module descriptor (D-039).
 ##
-## Sourced unconditionally by data-raw/artifacts.R, whose rebuild filters
-## gate only the write loop there and which also records the manifest row
-## and stages the site copy; `source()` defines `json_specs` and the writer
-## and writes nothing. Run as a script (`Rscript data-raw/json_export.R`) it
-## loads the package, writes one file per spec and nothing else; run artifacts.R
-## afterwards so the manifest and the staged copies follow.
+## This file defines `json_specs` and writes nothing. data-raw/artifacts.R
+## sources it and is the only way to rebuild the files. To rebuild one
+## form's file, set `rebuild_formats <- "json"` and `rebuild_stems` to that
+## form's stem (for example "pid5sf") in data-raw/artifacts.R, then source
+## that script from the package root. It also records the manifest row and
+## stages the site copy, so the file, its row and its copy stay in step.
 ##
 ## One instrument table can carry more than one form: `pid_items` numbers the
 ## FULL, SF and BF forms in three columns, each NA on the rows its form omits.
 ## A spec's `number_col` selects the form. The writer, its row selection and
 ## the format it writes are in `R/json_export.R` (`write_instrument_json()`,
 ## unexported).
-
-## Script mode: `json_specs` below reads the package's tables, so the
-## package is loaded before they are built, not in the write block at the end.
-if (sys.nframe() == 0L) {
-  devtools::load_all()
-}
 
 json_specs <- list(
   list(
@@ -63,9 +57,3 @@ json_specs <- list(
     instructions = hitopbr_instructions
   )
 )
-
-if (sys.nframe() == 0L) {
-  for (spec in json_specs) {
-    write_instrument_json(spec, file.path("inst/extdata", paste0(spec$stem, ".json")))
-  }
-}
