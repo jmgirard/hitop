@@ -1,9 +1,12 @@
 # read_form_responses() reads the CSV files the hitop-form page saves.
 #
-# The three committed fixtures under fixtures/ are files the page saved (see
-# fixtures/README.md). The synthetic files below are written by `form_file()`
-# in the shape the page writes: five lead columns, then item columns, one
-# response row, CRLF row endings unless the test says otherwise.
+# The page's own saved files are read from two places: the PID-5-SF, PID-5-BF,
+# HiTOP-SR and HiTOP-BR files from fixtures/ (see fixtures/README.md), and the
+# full PID-5 file and the shuffled module file from the package's installed
+# examples, through `example_file()` (see inst/examples/README.md). The
+# synthetic files below are written by `form_file()` in the shape the page
+# writes: five lead columns, then item columns, one response row, CRLF row
+# endings unless the test says otherwise.
 
 lead <- c("study", "participant", "instrument", "form_build", "submitted")
 
@@ -438,12 +441,12 @@ test_that("the full HiTOP-SR file scores to the table-derived means", {
 #     4 + 3 + 2 + 1 + 4 + 3 + 2 + 1 + 1 + 4 + 2 + 1 + 4 + 2 + 1 + 4 = 39;
 #     39 / 16 = 2.4375
 test_that("the shuffled module file scores through its descriptor", {
-  data <- read_form_responses(fixture("responses-module-shuffled.csv"))
+  data <- read_form_responses(example_file("responses-module-shuffled.csv"))
   item_cols <- names(data)[-seq_len(5L)]
   expect_length(item_cols, 21L)
   expect_identical(item_cols[1:3], c("hitopsr_233", "hitopsr_194", "hitopsr_170"))
 
-  module <- read_module(fixture("module-shuffled.json"))
+  module <- read_module(example_file("module-shuffled.json"))
   # Item columns by position: under `layout = "printed"` the names carry
   # numbers in printed order, and naming them would trip the ascending-order
   # heuristic that positions skip (see ?score_hitopsr).
@@ -464,9 +467,9 @@ test_that("the shuffled module file scored in instrument order would differ", {
   # The control for the test above: the same columns scored as if they were
   # in instrument order give a different Distress-Dysphoria mean, so the
   # `layout = "printed"` remap is doing the work the test credits it with.
-  data <- read_form_responses(fixture("responses-module-shuffled.csv"))
+  data <- read_form_responses(example_file("responses-module-shuffled.csv"))
   item_cols <- names(data)[-seq_len(5L)]
-  module <- read_module(fixture("module-shuffled.json"))
+  module <- read_module(example_file("module-shuffled.json"))
 
   scored <- suppressWarnings(score_hitopsr(
     data, items = item_cols, module = module, append = FALSE
@@ -508,18 +511,20 @@ raw_item_text <- function(path) {
   stats::setNames(values, header)[-seq_len(5L)]
 }
 
+# The full-form file is the installed example the PID-5 vignette reads; the
+# other two stay test fixtures.
 pid5_cases <- list(
-  list(version = "FULL", file = "responses-pid5.csv",
+  list(version = "FULL", path = example_file("responses-pid5.csv"),
        names = sprintf("pid5_%03d", 1:220)),
-  list(version = "SF", file = "responses-pid5sf.csv",
+  list(version = "SF", path = fixture("responses-pid5sf.csv"),
        names = sprintf("pid5sf_%03d", 1:100)),
-  list(version = "BF", file = "responses-pid5bf.csv",
+  list(version = "BF", path = fixture("responses-pid5bf.csv"),
        names = sprintf("pid5bf_%02d", 1:25))
 )
 
 for (case in pid5_cases) {
   test_that(paste("the PID-5", case$version, "file scores to the table-derived means"), {
-    path <- fixture(case$file)
+    path <- case$path
     data <- read_form_responses(path)
     expect_identical(nrow(data), 1L)
     item_cols <- names(data)[-seq_len(5L)]
@@ -547,3 +552,29 @@ for (case in pid5_cases) {
     expect_equal(unlist(scored[1, ]), expected)
   })
 }
+
+# ---- The installed examples the vignette and article read -----------------
+#
+# vignette("pid5_scoring") and the HiTOP-SR modules article read these through
+# system.file("examples", ...). Under devtools::test() that resolves to the
+# source inst/examples/, so this checks the files and their shape; whether they
+# reach an installed package is checked by running the vignette code against
+# one.
+
+test_that("the installed examples read through system.file()", {
+  pid5 <- system.file("examples", "responses-pid5.csv", package = "hitop")
+  expect_true(nzchar(pid5))
+  data <- read_form_responses(pid5)
+  expect_identical(nrow(data), 1L)
+  expect_identical(names(data)[-seq_len(5L)], sprintf("pid5_%03d", 1:220))
+
+  module <- system.file("examples", "responses-module-shuffled.csv",
+                        package = "hitop")
+  expect_true(nzchar(module))
+  expect_identical(ncol(read_form_responses(module)), 5L + 21L)
+
+  descriptor <- system.file("examples", "module-shuffled.json",
+                            package = "hitop")
+  expect_true(nzchar(descriptor))
+  expect_true(is_module(read_module(descriptor)))
+})
