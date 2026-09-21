@@ -139,7 +139,8 @@ validate_item_uniqueness <- function(
 # integers are not in ascending order. Integer positions are left alone (an
 # out-of-order position vector can be a legitimate remap); mixed prefixes and
 # names without trailing digits are ignored (no reliable order to expect).
-warn_item_order <- function(x, call = rlang::caller_env()) {
+warn_item_order <- function(x, call = rlang::caller_env(),
+                            layout = "instrument") {
   if (!is.character(x)) {
     return(invisible(NULL))
   }
@@ -152,9 +153,18 @@ warn_item_order <- function(x, call = rlang::caller_env()) {
     return(invisible(NULL))
   }
   if (is.unsorted(as.integer(trailing))) {
+    # Under layout = "printed" the caller's names are read as supplied, so
+    # instrument-number names in the form's printed order fire this too.
+    # Sorting them there undoes the printed order and scores the wrong
+    # items; the remedy is positions.
+    remedy <- if (identical(layout, "printed")) {
+      "Under {.code layout = \"printed\"} the columns must follow the form's printed order, which instrument-number names in that order already do. Do not sort them. Supply positions instead (e.g. {.code match(items, names(data))}) to silence this warning, or use {.code layout = \"instrument\"} for columns already in instrument order."
+    } else {
+      "Items must be supplied in instrument order; a misordered mapping scores the wrong items. Sort them (e.g. {.code items[order(as.integer(sub(\"\\\\D+\", \"\", items)))]}) if this is unintended."
+    }
     cli::cli_warn(c(
       "!" = "The `items` names are not in ascending numeric order.",
-      "i" = "Items must be supplied in instrument order; a misordered mapping scores the wrong items. Sort them (e.g. {.code items[order(as.integer(sub(\"\\\\D+\", \"\", items)))]}) if this is unintended."
+      "i" = remedy
     ), call = call)
   }
   invisible(NULL)

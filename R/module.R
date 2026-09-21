@@ -345,7 +345,7 @@ layout_items <- function(items, module, layout, call = rlang::caller_env()) {
 
   validate_items(items, n = length(module$items), call = call)
   validate_item_uniqueness(items, call = call)
-  warn_item_order(items, call = call)
+  warn_item_order(items, call = call, layout = "printed")
   items[match(module$items, as.integer(item_order))]
 }
 

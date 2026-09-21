@@ -411,3 +411,42 @@ test_that("layout = 'printed' runs warn_item_order() on the supplied items, not 
     expect_length(warnings, if (identical(names(frame), names(q))) 0L else 1L)
   }
 })
+
+# --- the warning's remedy under layout = "printed" ---------------------------
+#
+# Regression: the misordered-names warning used to tell every caller to sort
+# the names. Under layout = "printed" that advice undoes the printed order and
+# silently scores the wrong items (the hitop-form fixture scored 2.6 and
+# 2.5625 against the correct 3 and 2.4375). Under that layout the remedy is
+# positions, never a sort.
+
+test_that("under layout = 'printed' the misordered-names warning says positions, not sort", {
+  data <- read_form_responses(test_path("fixtures", "responses-module-shuffled.csv"))
+  m <- read_module(test_path("fixtures", "module-shuffled.json"))
+  item_cols <- names(data)[-seq_len(5L)]
+
+  cnd <- rlang::catch_cnd(
+    score_hitopsr(data, items = item_cols, module = m, layout = "printed",
+                  append = FALSE),
+    "warning"
+  )
+  expect_s3_class(cnd, "warning")
+  msg <- conditionMessage(cnd)
+  expect_match(msg, "ascending", fixed = TRUE)
+  expect_match(msg, "position", fixed = TRUE)
+  expect_match(msg, "printed", fixed = TRUE)
+  expect_false(grepl("Sort them", msg, fixed = TRUE))
+
+  # The instrument-layout wording is unchanged: sorting is still the remedy.
+  inst <- rlang::catch_cnd(
+    score_hitopsr(data, items = item_cols, module = m, append = FALSE),
+    "warning"
+  )
+  expect_match(conditionMessage(inst), "Sort them", fixed = TRUE)
+
+  # Following the printed-layout remedy gives the correct scores.
+  scored <- score_hitopsr(data, items = match(item_cols, names(data)),
+                          module = m, layout = "printed", append = FALSE)
+  expect_equal(scored$hsr_agoraphobia, 3)
+  expect_equal(scored$hsr_distressDysphoria, 2.4375)
+})
