@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-21 (46th pass, M101's post-merge): M101 archived, PR #111 merged at 8/8 CI green, hitop-builder PR #17 smoke green and awaiting its merge. M098 row pruned. No LESSONS change. validate green._
+_Last hygiene check: 2026-09-21 (47th pass, M102's post-merge): M102 archived, PR #112 merged at 8/8 CI green. M099 row pruned. No LESSONS change. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M103). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M099 | The package's reader scores the three PID-5 forms saved by hitop-form | done | M098 | normal | milestones/archive/M099-form-responses-pid5.md |
 | M100 | The shipped vignette and article read their example files from the installed package | done | — | normal | milestones/archive/M100-installed-example-files.md |
 | M101 | The builder tells users to score shuffled Word forms with `layout = "printed"` | done | — | normal | milestones/archive/M101-builder-layout-advice.md |
-| M102 | The JSON export's writer and lock catch the ten gaps M094 and M097 left open | review | — | normal | milestones/M102-json-export-hardening.md |
+| M102 | The JSON export's writer and lock catch the ten gaps M094 and M097 left open | done | — | normal | milestones/archive/M102-json-export-hardening.md |
 
 ## Candidates
 
