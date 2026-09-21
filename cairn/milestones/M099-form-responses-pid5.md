@@ -35,7 +35,7 @@ Prove that a PID-5 file saved by hitop-form round-trips through `read_form_respo
 
 - [x] T1: Copy `responses-pid5.csv`, `responses-pid5sf.csv` and `responses-pid5bf.csv` from hitop-form at its M098 merge commit into `tests/testthat/fixtures/`. Record repository, commit and generator in `tests/testthat/fixtures/README.md` as the HiTOP rows do.
 - [x] T2: Add the three round-trip tests to `tests/testthat/test-read_form_responses.R` on the pattern at `:374-407`. Each carries the recomputed-mean oracle of AC1 and the 0-value assertion.
-- [ ] T3: Write the vignette section and the two pointer sentences. Render the three vignettes.
+- [x] T3: Write the vignette section and the two pointer sentences. Render the three vignettes.
 - [ ] T4: NEWS entry. Run `devtools::check()`.
 
 ## Work log
@@ -45,7 +45,8 @@ Prove that a PID-5 file saved by hitop-form round-trips through `read_form_respo
 - 2026-09-20: plan gate chose one section in the full-form vignette with pointers from the SF and BF vignettes over repeating it in all three or a new shared article because one copy stays in step; falsified by readers of the SF or BF vignette reporting the pointer as insufficient.
 - 2026-09-21: implement started on `m099-form-responses-pid5`. No question gate: the plan left nothing open.
 - 2026-09-21: T1 done. The three PID-5 fixtures copied from hitop-form `bfb1d9c` with CRLF converted to LF, and their row added to the fixtures README.
-- 2026-09-21: T2 done. Three PID-5 round-trip tests added. A plant that drops the reversal changes 8 of 25 FULL facets, but no SF or BF item is reversed in `pid_items`, so the reversal is exercised on FULL only. Full suite: 0 fail, 17541 pass, 13 skip.
+- 2026-09-21: T2 done. Three PID-5 round-trip tests added. A plant that drops the reversal changes 8 of 25 FULL facets. No SF or BF item is reversed in `pid_items`, so the reversal is exercised on FULL only. Full suite: 0 fail, 17541 pass, 13 skip.
+- 2026-09-21: T3 done. `pid5_scoring.Rmd` gains "Collecting Responses Online with hitop-form", which reads and scores the full-form fixture. The SF and BF vignettes point to it in one sentence each. All three render with `rmarkdown::render()`.
 
 ## Decisions
 
