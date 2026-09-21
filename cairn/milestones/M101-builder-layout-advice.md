@@ -87,3 +87,19 @@ The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed
 - AC4: prose.mjs lists 154 passages, 17 mentioning a shuffled form or printed order, each read. The four that say how to score columns by order (body `#shuffleNote` p, readme:docx-shuffled, md:The scoring file, md:Shuffling the Word form) name `layout = "printed"` and the default layout for HiTOP-SR-order columns. The other 13 describe the controls, the scoring file, crosswalks or file names and give no scoring-by-order instruction. The unshuffled READMEs say only that `read_module()` reads the file back.
 - AC5: Fresh bundles from the served branch page. Printed order read from each .docx item table by item text against `hitopsr_items$Text`, never from the .json. Seed 101, 50 respondents, items as positions: module 1 to n (13 items, 2 scales), whole instrument (405, 76 scales) and module with original numbers (13, 2): `layout = "printed"` on printed columns all.equal to the default layout on instrument-order columns, same module, in all three. Control: the default layout on printed columns differs in all three.
 - AC6: `ste_lint.py --type descriptive` over all prose.mjs passages (page, four bundle READMEs, README.md): 0 findings. Smoke test 1/1 locally (9.2s). Builder PR CI pending: AC6 stays unticked until that run is green (step 8, before the tracking push).
+
+### Consistency gate (2026-09-21)
+- cairn_validate: all checks passed. Coverage complete. No principle changed, so cairn_impact skipped.
+- hitop: `document()` no diff. `pkgdown::check_pkgdown()` no problems. README.Rmd untouched. NEWS: no hitop change, and hitop-builder keeps no NEWS. R CMD check: see below.
+
+### Independent review (three lenses, fresh context)
+- Diff-bug [O]: no correctness bug in the advice or the plumbing. Findings ranked:
+  - F1 (medium): README.md:109-111 still says the warning reports "that a shuffled form is not scored as it stands", which contradicts the new notice and README.md:167.
+  - F2 (medium): README.md:167-170 says the page's `#descriptorNote` "says the same" and every bundle README "says it again" right after the new `score_hitopsr()`/`layout` sentence. Only the shuffled Word README carries that advice.
+  - F3 (process): AC6 needs the builder PR's CI, not yet run.
+  - F4 (low): the advice does not tip `items` as positions to avoid `warn_item_order()` under `"printed"`.
+  - F5 (low): on original numbering, the notice's "Data entered straight off the form has its columns in the order the form printed them" pulls against crosswalkSentence[0], "Enter each response under the number printed beside it".
+  - F6 (low): README.md:378-379 "cannot be put back into instrument order" frames recovery as reordering (accurate).
+  - F7 (low): unshuffled READMEs mention "on a shuffled Word form" (pre-existing, no AC4 conflict).
+- Blame-history [S]: no finding. The change is M091's follow-through, and M092's prose rules and the writer ledger are intact.
+- Prior-review [S]: no reintroduced or contradicted finding. GitHub probe empty. It flagged `--compare` on the new passage for a look. Checked: it pairs, and the added paragraph carries no facts, so it reports no difference (by design).
