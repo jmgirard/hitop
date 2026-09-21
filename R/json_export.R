@@ -14,7 +14,8 @@
 #   format          "1.0"
 #   package         "hitop"
 #   packageVersion  the DESCRIPTION Version the file was built under
-#   buildDate       `build_date` as YYYY-MM-DD
+#   buildDate       `build_date` as YYYY-MM-DD; a date-time gives its date
+#                   in its own time zone, not in UTC
 #   stem            the file stem; item columns are `<stem>_<number>`
 #   maxItem         the largest item number, which sets the zero-padding
 #   instructions    { start, options: [ { value, label } ] }
@@ -39,7 +40,13 @@ write_instrument_json <- function(spec, path, build_date = Sys.Date()) {
     package = jsonlite::unbox("hitop"),
     packageVersion =
       jsonlite::unbox(as.character(utils::packageVersion("hitop"))),
-    buildDate = jsonlite::unbox(format(as.Date(build_date))),
+    buildDate = jsonlite::unbox(
+      if (inherits(build_date, "POSIXt")) {
+        format(build_date, "%Y-%m-%d")
+      } else {
+        format(as.Date(build_date))
+      }
+    ),
     stem = jsonlite::unbox(spec$stem),
     maxItem = jsonlite::unbox(max_n),
     instructions = list(

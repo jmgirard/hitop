@@ -61,6 +61,8 @@ The JSON writer and `tests/testthat/test-json-export.R` catch the ten gaps that 
 - 2026-09-21: T6 done. `document()` made no change, `git diff --stat main` over the AC6 paths printed nothing, and `check()` gave 0 errors, 0 warnings and 0 notes. No NEWS entry, because nothing user-visible changed.
 - 2026-09-21: claim audit: not owed — internal tier
 - 2026-09-21: status set to review.
+- 2026-09-21: review gate fixes R1 to R4 and R8 committed on the branch, as the gate directed (see Review).
+- step-7 approval: m102-json-export-hardening approved for merge
 
 ## Decisions
 
@@ -87,3 +89,5 @@ Independent review (three fresh reviewers, 2026-09-21). The prior-review reviewe
 - R7: the test's `json_specs` duplicates the specs in `data-raw/json_export.R`. Proposed: reject, because the expected side is stated separately on purpose, and the byte lock reds once a changed spec is rerun.
 - R8: `as.Date()` converts a POSIXct `build_date` in UTC. Proposed: fix now, with a comment that the argument takes a Date.
 - R9: the `7.0` plant depends on jsonlite's layout, and `plant()` stops on a no-op edit. Proposed: noted.
+
+Gate triage (Jeff, 2026-09-21): the proposed dispositions were accepted as listed. R1 to R4 and R8 were fixed on the branch. R5 to R7 were rejected with the reasons above. R9 was noted. Fix evidence: `entries_keyed()` now requires an unnamed list (R1), and `buildDate` must match `^[0-9]{4}-[0-9]{2}-[0-9]{2}$` and parse with that format (R2). JSON fields are read with `[[` (R3), and the `number` check compares doubles, with the text lookup taking whole numbers only (R4). The writer formats a date-time in its own time zone (R8). New plants: object `options` and object `items` report their `keys.*` alone, `formatx` reports `keys.top` and `format`, three bad dates each report `buildDate` alone, and `7.5` reports `number`, `number.type` and `text`. The R8 test failed on the old writer (`"2026-01-03"`) and passes now. After the fixes, `devtools::test()` gave 17583 pass and 0 fail, `check()` gave 0 errors, 0 warnings and 0 notes, `document()` made no diff, and the AC6 diff was still empty.

@@ -108,39 +108,49 @@ export_report <- function(path, spec) {
   keys_are <- function(x, level) {
     is.list(x) && identical(sort(names(x)), sort(format_keys[[level]]))
   }
+  # A JSON array reads as an unnamed list; a JSON object in its place reads
+  # as a named one.
   entries_keyed <- function(rows, level) {
-    is.list(rows) && all(vapply(rows, keys_are, logical(1), level = level))
+    is.list(rows) && is.null(names(rows)) &&
+      all(vapply(rows, keys_are, logical(1), level = level))
   }
 
+  # Fields are read with `[[`, never `$`, which would match a renamed key
+  # (`formatx`) by partial name.
+  instr <- j[["instructions"]]
   note(keys_are(j, "top"), "keys.top")
-  note(keys_are(j$instructions, "instructions"), "keys.instructions")
-  note(entries_keyed(j$instructions$options, "options"), "keys.options")
-  note(entries_keyed(j$items, "items"), "keys.items")
+  note(keys_are(instr, "instructions"), "keys.instructions")
+  note(entries_keyed(instr[["options"]], "options"), "keys.options")
+  note(entries_keyed(j[["items"]], "items"), "keys.items")
 
-  note(is_string(j$format) && j$format == "1.0", "format")
-  note(is_string(j$package) && j$package == "hitop", "package")
+  note(is_string(j[["format"]]) && j[["format"]] == "1.0", "format")
+  note(is_string(j[["package"]]) && j[["package"]] == "hitop", "package")
   note(
-    is_string(j$packageVersion) &&
-      j$packageVersion == as.character(utils::packageVersion("hitop")),
+    is_string(j[["packageVersion"]]) &&
+      j[["packageVersion"]] == as.character(utils::packageVersion("hitop")),
     "packageVersion"
   )
+  # YYYY-MM-DD exactly, parsed with that format only, so a malformed date is
+  # reported rather than read loosely or thrown.
+  build_date <- j[["buildDate"]]
   note(
-    is_string(j$buildDate) &&
+    is_string(build_date) &&
+      grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", build_date) &&
       identical(
-        as.Date(j$buildDate),
+        as.Date(build_date, format = "%Y-%m-%d"),
         manifest_build_date(paste0(spec$stem, ".json"))
       ),
     "buildDate"
   )
-  note(is_string(j$stem) && j$stem == spec$stem, "stem")
-  note(is_int(j$maxItem) && j$maxItem == max_n, "maxItem")
+  note(is_string(j[["stem"]]) && j[["stem"]] == spec$stem, "stem")
+  note(is_int(j[["maxItem"]]) && j[["maxItem"]] == max_n, "maxItem")
   note(
-    is_string(j$instructions$start) &&
-      j$instructions$start == spec$instructions$start,
+    is_string(instr[["start"]]) &&
+      instr[["start"]] == spec$instructions$start,
     "start"
   )
 
-  opts <- j$instructions$options
+  opts <- instr[["options"]]
   note(
     field_is(
       opts, "value", is_int, as.integer(spec$instructions$options$value)
@@ -154,12 +164,14 @@ export_report <- function(path, spec) {
     "options.label"
   )
 
-  note(length(j$items) == length(number), "items.length")
-  if (length(j$items) == length(number)) {
-    item_number <- lapply(j$items, function(r) r$number)
+  items <- j[["items"]]
+  note(length(items) == length(number), "items.length")
+  if (length(items) == length(number)) {
+    item_number <- unname(lapply(items, function(r) r[["number"]]))
+    # Compared as doubles, so 7.5 fails here rather than truncating to 7.
     note(
       all(vapply(item_number, is_number, logical(1))) &&
-        identical(as.integer(unlist(item_number)), number),
+        identical(as.numeric(unlist(item_number)), as.numeric(number)),
       "number"
     )
     note(
@@ -170,21 +182,24 @@ export_report <- function(path, spec) {
     )
     note(
       field_is(
-        j$items, "name", is_string,
+        items, "name", is_string,
         hitop:::item_names(paste0(spec$stem, "_"), number, max_n)
       ),
       "name"
     )
     # Each item's text against the row its own number names, so a swapped
     # pair of whole items leaves `text` silent and a substituted text with
-    # the right number does not.
+    # the right number does not. A number that is not a whole number names
+    # no row.
     own_number <- vapply(
       item_number,
-      function(x) if (is_number(x)) as.integer(x) else NA_integer_,
+      function(x) {
+        if (is_number(x) && x == round(x)) as.integer(x) else NA_integer_
+      },
       integer(1)
     )
     note(
-      field_is(j$items, "text", is_string, table_text(spec, own_number)),
+      field_is(items, "text", is_string, table_text(spec, own_number)),
       "text"
     )
   }
@@ -239,6 +254,19 @@ test_that("write_instrument_json() writes non-NA rows in ascending number order"
   )
   expect_identical(j$maxItem, 3L)
   expect_identical(j$buildDate, "2026-01-02")
+
+  # 23:30 in New York is 04:30 the next day in UTC; the file takes the date
+  # the caller's clock shows.
+  late <- withr::local_tempfile(fileext = ".json")
+  hitop:::write_instrument_json(
+    spec,
+    late,
+    build_date = as.POSIXct("2026-01-02 23:30", tz = "America/New_York")
+  )
+  expect_identical(
+    jsonlite::fromJSON(late, simplifyVector = FALSE)$buildDate,
+    "2026-01-02"
+  )
 })
 
 # A fresh write of each spec at its manifest row's date is the committed file
@@ -345,6 +373,50 @@ test_that("the export report reads JSON types as written", {
     sub("\"number\": 7,", "\"number\": 7.0,", txt, fixed = TRUE)
   })
   expect_identical(export_report(double_number, spec), "number.type")
+
+  # 7.5 is no item number: the value check compares doubles and the text
+  # lookup takes whole numbers only, so neither truncates it to 7.
+  fractional_number <- plant("hitopbr", edit = function(txt) {
+    sub("\"number\": 7,", "\"number\": 7.5,", txt, fixed = TRUE)
+  })
+  expect_setequal(
+    export_report(fractional_number, spec),
+    c("number", "number.type", "text")
+  )
+
+  # An array written as an object, its entries unchanged.
+  object_options <- plant("hitopbr", function(j) {
+    names(j$instructions$options) <-
+      paste0("o", seq_along(j$instructions$options))
+    j
+  })
+  expect_identical(export_report(object_options, spec), "keys.options")
+
+  object_items <- plant("hitopbr", function(j) {
+    names(j$items) <- paste0("i", seq_along(j$items))
+    j
+  })
+  expect_identical(export_report(object_items, spec), "keys.items")
+
+  # A renamed key is not read by partial name as the key it replaced.
+  renamed_format <- plant("hitopbr", function(j) {
+    names(j)[names(j) == "format"] <- "formatx"
+    j
+  })
+  expect_setequal(
+    export_report(renamed_format, spec),
+    c("keys.top", "format")
+  )
+
+  # A date not written as YYYY-MM-DD is reported, and one that parses as no
+  # date at all is reported rather than thrown.
+  for (bad in c("2026-9-20", "2026/09/20", "garbage")) {
+    bad_date <- plant("hitopbr", function(j) {
+      j$buildDate <- bad
+      j
+    })
+    expect_identical(export_report(bad_date, spec), "buildDate", info = bad)
+  }
 })
 
 test_that("the export report discriminates each planted defect", {
