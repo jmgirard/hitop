@@ -377,7 +377,7 @@ cat(readLines(descriptor), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-09-20",
+#>   "buildDate": "2026-09-21",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],
 #>   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],
@@ -473,3 +473,90 @@ identical(
 )
 #> [1] TRUE
 ```
+
+## Collecting Responses Online with hitop-form
+
+The Word, Qualtrics and REDCap files above each need a platform of their
+own. [hitop-form](https://jmgirard.github.io/hitop-form/) is a third
+route that needs none: a web page that shows a HiTOP-SR module (or the
+full HiTOP-SR or HiTOP-BR) in the browser and saves each participant’s
+answers to a file on their own device. No answer is sent anywhere: the
+page’s only request after its own files is for the instrument’s item
+text. Each participant hands you their file, and this package reads the
+files back into one data frame.
+
+The page reads the same descriptor
+[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+writes. Open the page’s [link
+builder](https://jmgirard.github.io/hitop-form/link.html), paste the
+descriptor in, name the study, and it gives you one link to send to
+participants. A descriptor from a shuffled Word form carries that form’s
+order, and the page shows the items in it.
+
+When a participant finishes, the page saves one CSV file named for the
+study, the participant and the time. The file has five lead columns
+(`study`, `participant`, `instrument`, `form_build`, `submitted`) and
+then one column per item, named by the instrument’s file stem and the
+item number and in the order the page showed them.
+
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+reads those files. Give it the folder the files are in, or a vector of
+their paths. The file below is one the page saved from a two-scale
+module with a shuffled order; it ships with the package’s tests:
+
+``` r
+
+fixtures <- file.path("..", "..", "tests", "testthat", "fixtures")
+responses <- read_form_responses(file.path(fixtures, "responses-module-shuffled.csv"))
+responses
+#> # A tibble: 1 × 26
+#>   study   participant instrument form_build submitted           hitopsr_233
+#>   <chr>   <chr>       <chr>      <date>     <dttm>                    <int>
+#> 1 fixture p001        hitopsr    2026-09-20 2026-09-20 21:20:44           4
+#> # ℹ 20 more variables: hitopsr_194 <int>, hitopsr_170 <int>, hitopsr_064 <int>,
+#> #   hitopsr_365 <int>, hitopsr_011 <int>, hitopsr_020 <int>, hitopsr_300 <int>,
+#> #   hitopsr_109 <int>, hitopsr_118 <int>, hitopsr_260 <int>, hitopsr_394 <int>,
+#> #   hitopsr_224 <int>, hitopsr_291 <int>, hitopsr_304 <int>, hitopsr_367 <int>,
+#> #   hitopsr_343 <int>, hitopsr_066 <int>, hitopsr_100 <int>, hitopsr_386 <int>,
+#> #   hitopsr_380 <int>
+```
+
+One row per file, the lead columns typed (`form_build` is a date,
+`submitted` a UTC date-time), and every item column an integer. A folder
+of many files reads the same way, one row each, sorted by path. Every
+file must hold the same item columns in the same order; a folder mixing
+two forms stops with an error that names the files that differ, so read
+each form’s files in a call of their own.
+
+Score the item columns through the module the page showed. The columns
+are in the order the page showed the items, so this is
+`layout = "printed"` with the descriptor that recorded that order, as in
+the shuffled Word form above. Name the item columns by position here
+rather than by name: under `layout = "printed"` the names carry item
+numbers out of instrument order, and naming them would trip the check
+that warns of a misordered mapping.
+
+``` r
+
+form_module <- read_module(file.path(fixtures, "module-shuffled.json"))
+item_cols <- setdiff(names(responses), c("study", "participant", "instrument",
+                                         "form_build", "submitted"))
+score_hitopsr(
+  responses,
+  items = match(item_cols, names(responses)),
+  module = form_module,
+  layout = "printed",
+  append = FALSE
+)
+#> # A tibble: 1 × 2
+#>   hsr_agoraphobia hsr_distressDysphoria
+#>             <dbl>                 <dbl>
+#> 1               3                  2.44
+```
+
+A full HiTOP-SR or HiTOP-BR saved by the page reads the same way and
+scores with
+[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+or
+[`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
+alone, with `items` naming the item columns and no module at all.

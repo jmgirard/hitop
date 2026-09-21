@@ -418,7 +418,7 @@ file you can keep beside the forms you generated:</p>
 <span><span class="co">#&gt;   "format": "1.0",</span></span>
 <span><span class="co">#&gt;   "package": "hitop",</span></span>
 <span><span class="co">#&gt;   "packageVersion": "0.2.0",</span></span>
-<span><span class="co">#&gt;   "buildDate": "2026-09-20",</span></span>
+<span><span class="co">#&gt;   "buildDate": "2026-09-21",</span></span>
 <span><span class="co">#&gt;   "instrument": "hitopsr",</span></span>
 <span><span class="co">#&gt;   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],</span></span>
 <span><span class="co">#&gt;   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],</span></span>
@@ -490,6 +490,79 @@ you would the original:</p>
 <span>  <span class="va">module_scores</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="collecting-responses-online-with-hitop-form">Collecting Responses Online with hitop-form<a class="anchor" aria-label="anchor" href="#collecting-responses-online-with-hitop-form"></a>
+</h2>
+<p>The Word, Qualtrics and REDCap files above each need a platform of
+their own. <a href="https://jmgirard.github.io/hitop-form/">hitop-form</a> is a third
+route that needs none: a web page that shows a HiTOP-SR module (or the
+full HiTOP-SR or HiTOP-BR) in the browser and saves each participant’s
+answers to a file on their own device. No answer is sent anywhere: the
+page’s only request after its own files is for the instrument’s item
+text. Each participant hands you their file, and this package reads the
+files back into one data frame.</p>
+<p>The page reads the same descriptor <code><a href="../reference/write_module.html">write_module()</a></code>
+writes. Open the page’s <a href="https://jmgirard.github.io/hitop-form/link.html">link builder</a>,
+paste the descriptor in, name the study, and it gives you one link to
+send to participants. A descriptor from a shuffled Word form carries
+that form’s order, and the page shows the items in it.</p>
+<p>When a participant finishes, the page saves one CSV file named for
+the study, the participant and the time. The file has five lead columns
+(<code>study</code>, <code>participant</code>, <code>instrument</code>,
+<code>form_build</code>, <code>submitted</code>) and then one column per
+item, named by the instrument’s file stem and the item number and in the
+order the page showed them.</p>
+<p><code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads those files. Give it the
+folder the files are in, or a vector of their paths. The file below is
+one the page saved from a two-scale module with a shuffled order; it
+ships with the package’s tests:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fixtures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">".."</span>, <span class="st">".."</span>, <span class="st">"tests"</span>, <span class="st">"testthat"</span>, <span class="st">"fixtures"</span><span class="op">)</span></span>
+<span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fixtures</span>, <span class="st">"responses-module-shuffled.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">responses</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 26</span></span></span>
+<span><span class="co">#&gt;   study   participant instrument form_build submitted           hitopsr_233</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> fixture p001        hitopsr    2026-09-20 2026-09-20 <span style="color: #949494;">21:20:44</span>           4</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 20 more variables: hitopsr_194 &lt;int&gt;, hitopsr_170 &lt;int&gt;, hitopsr_064 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_365 &lt;int&gt;, hitopsr_011 &lt;int&gt;, hitopsr_020 &lt;int&gt;, hitopsr_300 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_109 &lt;int&gt;, hitopsr_118 &lt;int&gt;, hitopsr_260 &lt;int&gt;, hitopsr_394 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_224 &lt;int&gt;, hitopsr_291 &lt;int&gt;, hitopsr_304 &lt;int&gt;, hitopsr_367 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_343 &lt;int&gt;, hitopsr_066 &lt;int&gt;, hitopsr_100 &lt;int&gt;, hitopsr_386 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_380 &lt;int&gt;</span></span></span></code></pre></div>
+<p>One row per file, the lead columns typed (<code>form_build</code> is
+a date, <code>submitted</code> a UTC date-time), and every item column
+an integer. A folder of many files reads the same way, one row each,
+sorted by path. Every file must hold the same item columns in the same
+order; a folder mixing two forms stops with an error that names the
+files that differ, so read each form’s files in a call of their own.</p>
+<p>Score the item columns through the module the page showed. The
+columns are in the order the page showed the items, so this is
+<code>layout = "printed"</code> with the descriptor that recorded that
+order, as in the shuffled Word form above. Name the item columns by
+position here rather than by name: under <code>layout = "printed"</code>
+the names carry item numbers out of instrument order, and naming them
+would trip the check that warns of a misordered mapping.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">form_module</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_module.html">read_module</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fixtures</span>, <span class="st">"module-shuffled.json"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">item_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">responses</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"study"</span>, <span class="st">"participant"</span>, <span class="st">"instrument"</span>,</span>
+<span>                                         <span class="st">"form_build"</span>, <span class="st">"submitted"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
+<span>  <span class="va">responses</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/match.html" class="external-link">match</a></span><span class="op">(</span><span class="va">item_cols</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">responses</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  module <span class="op">=</span> <span class="va">form_module</span>,</span>
+<span>  layout <span class="op">=</span> <span class="st">"printed"</span>,</span>
+<span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 2</span></span></span>
+<span><span class="co">#&gt;   hsr_agoraphobia hsr_distressDysphoria</span></span>
+<span><span class="co">#&gt;             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>               3                  2.44</span></span></code></pre></div>
+<p>A full HiTOP-SR or HiTOP-BR saved by the page reads the same way and
+scores with <code><a href="../reference/score_hitopsr.html">score_hitopsr()</a></code> or <code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code>
+alone, with <code>items</code> naming the item columns and no module at
+all.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

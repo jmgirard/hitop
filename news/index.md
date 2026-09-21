@@ -4,6 +4,21 @@
 
 ### New features
 
+- **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+  reads the files the hitop-form web page saves.** Given a directory or
+  a vector of file paths, it reads each participant’s CSV file and binds
+  them into one tibble: `study`, `participant` and `instrument` as
+  character, `form_build` as a date, `submitted` as a UTC date-time,
+  then the item columns as integers, in the order the first file (after
+  sorting the paths) holds them. The scoring functions take the result
+  as it is, with the item columns passed through `items` by name for a
+  full form, or by position with `layout = "printed"` for a module the
+  page showed in a shuffled order. Files whose item columns differ in
+  name, count or order stop the read with an error of class
+  `hitop_form_responses_mismatch` naming the files; a directory holding
+  no `.csv` file stops it with `hitop_form_responses_none`. The modules
+  article shows the whole hand-off, from a study link to scored scales.
+
 - **The HiTOP-SR and HiTOP-BR ship as JSON exports.** `hitopsr.json` and
   `hitopbr.json`, downloadable from each instrument’s page on the
   package website, hold the form’s items, response options and
