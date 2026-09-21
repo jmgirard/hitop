@@ -58,6 +58,7 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 - 2026-09-20: T5 done. The deployed site serves `pid5.json` (220 items), `pid5sf.json` (100) and `pid5bf.json` (25). Local suite 35 passed. PR https://github.com/jmgirard/hitop-form/pull/1 opened. The `tests.yml` run 35555027670 green at 1593f53, 35 passed. Merge and the deployed-page dispatch wait for review.
 - 2026-09-20: claim audit: 24 claims read, 1 corrected — hitop-form README.md, form.js, link.html, tests/link.spec.js, tests/render.spec.js, tests/save.spec.js, tests/fixtures/README.md. Run on the hitop-form diff, because the hitop diff adds no lines outside `cairn/`. The fixture note claimed PID-5 reader tests that do not exist yet. Fixed in hitop-form f8edd9d, and the same reader re-read it as correct.
 - 2026-09-20: verify: no R code changed, so `devtools::test()` was not re-run. `cairn_validate.py` passes. Status set to review.
+- 2026-09-20: step-7 approval: m098-hitop-form-pid5 approved for merge, together with hitop-form PR #1.
 
 ## Decisions
 
@@ -84,3 +85,5 @@ Independent review of the hitop-form diff, three lenses. [S] blame-history: noth
 - F7: L2 depends on the start screen's single `p.muted` sentence. Proposed: reject. A second muted paragraph would fail loudly in strict mode and would not pass silently.
 - F8: `-g pid5` would also match a future case whose name contains `pid5`. Proposed: reject. The note calls it a pattern.
 - F9: a weekly run that fires between the merge and the Pages deploy would go red. Proposed: reject. The window is minutes long, and the next run clears it.
+
+Gate triage (Jeff, 2026-09-20): F1 and F2 are decided by keeping `PID-5`, `PID-5-SF` and `PID-5-BF` as the headings. This choice is the IP1 sign-off for the three participant-facing headings, and the difference from the Word form's `PID-5 (Full)` stays. F6 is fixed in hitop-form e41a001. F3 goes to the online-form candidate row. F4, F5, F7, F8 and F9 are rejected for the reasons above.
