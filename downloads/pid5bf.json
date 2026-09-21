@@ -1,0 +1,156 @@
+{
+  "format": "1.0",
+  "package": "hitop",
+  "packageVersion": "0.2.0",
+  "buildDate": "2026-09-20",
+  "stem": "pid5bf",
+  "maxItem": 25,
+  "instructions": {
+    "start": "This is a list of things different people might say about themselves. We are interested in how you would describe yourself. There are no right or wrong answers. So you can describe yourself as honestly as possible, we will keep your responses confidential. We'd like you to take your time and read each statement carefully, selecting the response that best describes you.",
+    "options": [
+      {
+        "value": 0,
+        "label": "Very False or Often False"
+      },
+      {
+        "value": 1,
+        "label": "Sometimes or Somewhat False"
+      },
+      {
+        "value": 2,
+        "label": "Sometimes or Somewhat True"
+      },
+      {
+        "value": 3,
+        "label": "Very True or Often True"
+      }
+    ]
+  },
+  "items": [
+    {
+      "number": 1,
+      "name": "pid5bf_01",
+      "text": "People would describe me as reckless"
+    },
+    {
+      "number": 2,
+      "name": "pid5bf_02",
+      "text": "I feel like I act totally on impulse"
+    },
+    {
+      "number": 3,
+      "name": "pid5bf_03",
+      "text": "Even though I know better, I can't stop making rash decisions"
+    },
+    {
+      "number": 4,
+      "name": "pid5bf_04",
+      "text": "I often feel like nothing I do really matters"
+    },
+    {
+      "number": 5,
+      "name": "pid5bf_05",
+      "text": "Others see me as irresponsible"
+    },
+    {
+      "number": 6,
+      "name": "pid5bf_06",
+      "text": "I'm not good at planning ahead"
+    },
+    {
+      "number": 7,
+      "name": "pid5bf_07",
+      "text": "My thoughts often don't make sense to others"
+    },
+    {
+      "number": 8,
+      "name": "pid5bf_08",
+      "text": "I worry about almost everything"
+    },
+    {
+      "number": 9,
+      "name": "pid5bf_09",
+      "text": "I get emotional easily, often for very little reason"
+    },
+    {
+      "number": 10,
+      "name": "pid5bf_10",
+      "text": "I fear being alone in life more than anything else"
+    },
+    {
+      "number": 11,
+      "name": "pid5bf_11",
+      "text": "I get stuck on one way of doing things, even when it's clear it won't work"
+    },
+    {
+      "number": 12,
+      "name": "pid5bf_12",
+      "text": "I have seen things that weren't really there"
+    },
+    {
+      "number": 13,
+      "name": "pid5bf_13",
+      "text": "I steer clear of romantic relationships"
+    },
+    {
+      "number": 14,
+      "name": "pid5bf_14",
+      "text": "I'm not interested in making friends"
+    },
+    {
+      "number": 15,
+      "name": "pid5bf_15",
+      "text": "I get irritated easily by all sorts of things"
+    },
+    {
+      "number": 16,
+      "name": "pid5bf_16",
+      "text": "I don't like to get too close to people"
+    },
+    {
+      "number": 17,
+      "name": "pid5bf_17",
+      "text": "It's no big deal if I hurt other peoples' feelings"
+    },
+    {
+      "number": 18,
+      "name": "pid5bf_18",
+      "text": "I rarely get enthusiastic about anything"
+    },
+    {
+      "number": 19,
+      "name": "pid5bf_19",
+      "text": "I crave attention"
+    },
+    {
+      "number": 20,
+      "name": "pid5bf_20",
+      "text": "I often have to deal with people who are less important than me"
+    },
+    {
+      "number": 21,
+      "name": "pid5bf_21",
+      "text": "I often have thoughts that make sense to me but that other people say are strange"
+    },
+    {
+      "number": 22,
+      "name": "pid5bf_22",
+      "text": "I use people to get what I want"
+    },
+    {
+      "number": 23,
+      "name": "pid5bf_23",
+      "text": "I often \"zone out\" and then suddenly come to and realize that a lot of time has passed"
+    },
+    {
+      "number": 24,
+      "name": "pid5bf_24",
+      "text": "Things around me often feel unreal, or more real than usual"
+    },
+    {
+      "number": 25,
+      "name": "pid5bf_25",
+      "text": "It is easy for me to take advantage of others"
+    }
+  ]
+}
