@@ -62,3 +62,15 @@ Evidence, 2026-09-21, on `m099-form-responses-pid5` at `5ca1d2c2` (level with `o
 - AC2: `vignettes/pid5_scoring.Rmd:196` opens "Collecting Responses Online with hitop-form". The section covers the study link from the link builder, the saved file and its columns, a `read_form_responses()` chunk and a `score_pid5()` chunk. `pid5sf_scoring.Rmd:30` and `pid5bf_scoring.Rmd:32` each point to that section in one sentence. All three are package vignettes. `devtools::check()` rebuilt the vignette outputs with status OK. Both hitop-form links returned HTTP 200.
 - AC3: `NEWS.md:18-20` extends the `read_form_responses()` entry. It names the PID-5, PID-5-SF and PID-5-BF files, the value 0 kept as 0, and `score_pid5()` with the matching `version`. It holds no milestone number. `devtools::check()` returned 0 errors, 0 warnings and 0 notes in 4m 7s, with tests OK.
 - Consistency gate: `cairn_validate.py` exited 0 with 24 advisories, all from before this branch. `devtools::document()` left no diff. `pkgdown::check_pkgdown()` found no problems. The branch does not touch `README.Rmd` or `README.md`. The branch adds no new top-level file and changes no DESIGN principle, so `cairn_impact` does not apply.
+
+Independent review: three fresh reviewers. The [S] blame-history and [S] prior-review lenses reported no findings. The prior-review lens found that M096's gate rejected the same fixture-path point for the site-only article. The PR-comment probe returned `[]`. The [O] diff-bug lens ranked seven findings, triaged by Jeff at the gate:
+
+- F1 (fix now): the oracle built its expected means from the reader's output, so a reader bug shifted both sides. The test now builds the means from the file's text and asserts that every item matches that text. A planted off-by-one in one item fails the new assertion.
+- F2 (follow-up): `vignettes/pid5_scoring.Rmd:207` reads the fixture from `../tests/testthat/fixtures`. That folder is not installed. If a user reruns the shipped `pid5_scoring.R`, it fails. Build, check and pkgdown pass. This was absorbed into the online-form candidate row in ROADMAP.
+- F3 (fix now): the `read_form_responses()` help page named only HiTOP columns and did not link `score_pid5()`. The roxygen text now adds the PID-5 column names, a `score_pid5()` see-also and `vignette("pid5_scoring")`. The function code is unchanged.
+- F4 (rejected): the oracle reads reverse-keying from the tables `score_pid5()` also uses. AC1 requires that design, and the test comment states that it does not check keying content.
+- F5 (rejected): no `cairn/ORACLES.md` row for these oracles. The HiTOP form-response oracles from M096 have none either, and this branch follows that precedent.
+- F6 (fix now): the BF pointer sat in the paragraph on `pid_total` and missing items. It now follows the column-naming text, as the SF pointer does.
+- F7 (rejected): the vignette text about the hitop-form page (the JSON source and the link-builder steps) describes the other repository. Both links returned HTTP 200.
+
+After the fixes, `devtools::test(filter = "read_form_responses")` gave 116 expectations, 0 failed, with 9 on each PID-5 test.

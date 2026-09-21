@@ -30,8 +30,8 @@ Each file the page saves holds one header row and one response
 row. The first five columns are \code{study}, \code{participant}, \code{instrument},
 \code{form_build} and \code{submitted}; the item columns follow, one per item, named
 by the instrument's file stem and the item number (\code{hitopsr_001},
-\code{hitopbr_01}). A module form saves only the module's items, in the order
-the form showed them.
+\code{hitopbr_01}, \code{pid5_001}, \code{pid5sf_001}, \code{pid5bf_01}). A module form saves
+only the module's items, in the order the form showed them.
 
 Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
@@ -71,6 +71,7 @@ unlink(dir, recursive = TRUE)
 
 }
 \seealso{
-\code{\link[=score_hitopsr]{score_hitopsr()}}, \code{\link[=score_hitopbr]{score_hitopbr()}} and \code{\link[=read_module]{read_module()}}, which
-score the item columns; the modules article shows the whole hand-off.
+\code{\link[=score_hitopsr]{score_hitopsr()}}, \code{\link[=score_hitopbr]{score_hitopbr()}}, \code{\link[=score_pid5]{score_pid5()}} and
+\code{\link[=read_module]{read_module()}}, which score the item columns; the modules article and
+\code{vignette("pid5_scoring")} show the whole hand-off.
 }

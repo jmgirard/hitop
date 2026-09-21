@@ -532,12 +532,15 @@ for (case in pid5_cases) {
     zeros <- names(raw)[raw == "0"]
     expect_gt(length(zeros), 0L)
     expect_identical(unname(unlist(data[1, zeros])), rep(0L, length(zeros)))
+    # Every item the reader returns matches the file's own text.
+    expect_identical(unname(unlist(data[1, item_cols])), as.integer(unname(raw)))
 
     scored <- score_pid5(data, items = item_cols, version = case$version,
                          append = FALSE)
 
+    # The expected means start from the file's text, not the reader's output.
     n <- length(item_cols)
-    responses <- stats::setNames(as.numeric(data[1, item_cols]), seq_len(n))
+    responses <- stats::setNames(as.numeric(raw), seq_len(n))
     expected <- pid5_expected(responses, case$version)
 
     expect_identical(names(scored), names(expected))
