@@ -30,7 +30,7 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 
 - [ ] AC1: While a build runs, no code path in `index.html` enables the download button. The domain is every write to a `disabled` state, found by `grep -n "disabled" index.html`. At the end of a build, with at least one scale ticked and boot not abandoned, the button is enabled again. A headless run does four actions during a build: it ticks a scale, unticks a scale, presses Select all, and presses Clear all. After each action, the button's `disabled` property reads `true`.
 - [ ] AC2: A call to `download()` during a build returns and starts no second build. A headless run starts a Word build, ticks the shuffle box, and calls `download()` again during the build. The run records one download event and one log line that starts with `> generate_`. The bundle name, the questionnaire entry name and the `.json` entry name carry the stem of the first call, which is not shuffled.
-- [ ] AC3: A build uses the settings that were current when it started. No read of a control value comes after the first `await` in `download()`. The domain is the `el(`, `document.querySelector`, `.checked` and `.value` reads in the body of `download()` and in each page function that its body calls. Headless runs change one setting during a build and find the starting value in the bundle, for three formats:
+- [ ] AC3: A build uses the settings that were current when it started. No read of a form control's `.value` or `.checked` state, however the control is found, comes after the first `await` in `download()`, except inside the `refreshTally()` call in its `finally` block, which redraws the page after the save and passes nothing to the build. The domain is the body of `download()` and each page function that it calls directly or transitively. Headless runs change one setting during a build and find the starting value in the bundle, for three formats:
   - Word: the paper size, in the `w:pgSz` element of the `.docx`.
   - Qualtrics: the block name, in the `[[Block:` line of the `.txt`.
   - REDCap: the required box, in the required column of the dictionary.
@@ -47,7 +47,7 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 
 ## Tasks
 
-- [ ] T1: Make sure that hitop-builder PR #17, which holds the M101 code, is merged. Jeff approved it at the M101 gate and again at this plan gate. If it is still open, merge it from a session whose working directory is inside hitop-builder. Then cut `m103-builder-build-lock` from the updated builder `main` and from hitop `main`.
+- [x] T1: Make sure that hitop-builder PR #17, which holds the M101 code, is merged. Jeff approved it at the M101 gate and again at this plan gate. If it is still open, merge it from a session whose working directory is inside hitop-builder. Then cut `m103-builder-build-lock` from the updated builder `main` and from hitop `main`.
 - [ ] T2: Write the test first. Add assertion A8 to `tests/smoke.spec.js`. After the Word build click, the test ticks one more scale and asserts that the download button is disabled. Add A8 to the assertion list in the file header. Run the test on the unfixed page and see it fail.
 - [ ] T3: Add the flag. Set it at the entry of `download()`, after the return for an empty selection. Clear it in `finally`, before the call to `refreshTally()`. Add it to the disabled expression in `refreshTally()`. While the flag is set, make `download()` return at once.
 - [ ] T4: Move each control read in `download()` and its callees above the first `await`. Today these are `papersize`, the three `namingValue()` calls and `el('required')`. In the work log, list each read with its line number and the line number of the first `await`.
@@ -62,6 +62,10 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 - 2026-09-21: the plan gate chose to run one build at a time with a page-level flag, not to give each build its own scratch directory. With separate directories, two saves can still interleave, and the promise about the button stays false. A case where a visitor needs two builds at once falsifies this choice.
 - 2026-09-21: the plan gate put the settings leak (reads after the first `await`) in this milestone, not in a new candidate row. It kept the zip-reader row separate.
 - 2026-09-21: the plan gate chose to merge hitop-builder PR #17 now. The merge guard refused the merge from the hitop session, because the guard finds the repo from the working directory of the session. The merge moved to T1.
+- 2026-09-21: T1 done. Jeff confirmed the merge again in this session, and the session moved into hitop-builder. PR #17 was squash-merged as `bd24032`, and `m103-builder-build-lock` was cut from it in both repos.
+- 2026-09-21: implement gate. AC3 amended (substantive, narrowing): `refreshTally()` in `finally` reads controls after the first `await` to redraw the page, so AC3 now excepts that one call. Its domain is now value/checked reads, found in direct and transitive callees. A second call to `download()` during a build returns silently.
+- re-audit: AC3 (full) — the first reader returned 3 wording faults, all fixed in the written text. `status()` calls `el(` after the await. The exception sat outside the no-read sentence. The callee domain read as direct calls only. It also noted that the probes skip idPrefix and formName, which is proportionate.
+- re-audit: AC3 (full) — the second reader returned nothing blocking. It noted that a Word probe can pass on the unfixed page, so T6 also runs each probe against `main`.
 
 ## Decisions
 
