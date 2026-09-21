@@ -1,0 +1,70 @@
+# M101: The builder tells users to score shuffled Word forms with `layout = "printed"`
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** —
+- **Resolves:** —
+- **Surface tier:** user-facing — researchers read the builder page, the bundle README.txt and the builder README
+- **Branch/PR:** —
+
+## Goal
+
+The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed-order columns with `read_module()` and `layout = "printed"`. It no longer says that they must reorder the columns by hand.
+
+## Scope
+
+**In:** All code changes are in jmgirard/hitop-builder. This repo gets tracking only.
+
+- The shuffle notice `#shuffleNote` (`index.html:540-543`) gives two routes. Columns in printed order take `read_module()` and `layout = "printed"`. Columns already in HiTOP-SR order take the default layout.
+- `bundleReadme()` (`index.html:1200`) takes a shuffle flag. A shuffled Word bundle's `README.txt` adds one sentence that names `read_module()` and `layout = "printed"`. The call at `index.html:1349` passes the flag.
+- `tests/prose.mjs` also extracts the shuffled Word README (`bundleReadmePassages()`, `tests/prose.mjs:364`).
+- README.md §The scoring file and §Shuffling the Word form name `layout = "printed"`. The sentence that says the help page "states the same reordering rule" (README.md:368-369) now matches the help page.
+
+**Out:**
+
+- The download-button race stays a candidate row. This milestone changes one argument in `download()`, which is not the re-cut that row waits for.
+- The `prose.mjs` writer-guard gaps (narrow grep, no npm script or CI step) stay a candidate row. This milestone adds no writer site.
+- The package side is unchanged. M091 shipped `layout` and its help text.
+
+## Acceptance criteria
+
+- [ ] AC1: With the shuffle box ticked, the page's shuffle notice names `read_module()` and `layout = "printed"` for columns in the order the form printed them. It says that columns already in HiTOP-SR order take the default layout. No sentence in the notice says that the columns must go back into instrument order before scoring. Evidence: a read of the notice in the served page on each of the four numbering and selection builds.
+- [ ] AC2: The `README.txt` in a shuffled Word bundle names `read_module()` and `layout = "printed"` for printed-order columns. The added sentence is the same for both numbering modes and both selections. Every unshuffled build's `README.txt` is byte-identical to the merge base's. Evidence: the page's own `bundleReadme()` run on the branch and on the merge base with one fixed version string, for eight builds, then a diff. The eight builds are three formats by two selections, plus the two shuffled Word selections.
+- [ ] AC3: In the builder README.md, §Shuffling the Word form and §The scoring file name `layout = "printed"`. The sentence about the help page's "same reordering rule" is replaced by one that matches the `randomize` paragraph of `generate_docx_hitopsr()` in hitop main.
+- [ ] AC4: The domain is the user-facing text of the builder: the served page with all four `crosswalkSentence()` branches, every bundle `README.txt`, and README.md. Each passage in it that says what to do with printed-order columns names `layout = "printed"`. A passage about columns in HiTOP-SR order names the default layout instead. Evidence: `tests/prose.mjs` lists the passages, and each one that mentions a shuffled form or a printed order is read.
+- [ ] AC5: The advice scores correctly on three shuffled Word bundles from the served page. They are a module numbered 1 to n, the whole instrument, and a module with the instrument's own numbers. For each, the printed order comes from the `.docx`, never from the `.json` under test. Printed-order columns scored with `module = read_module(<bundle .json>)` and `layout = "printed"` equal the same responses in HiTOP-SR order, scored with the same module and the default layout. Evidence: an R run against hitop main.
+- [ ] AC6: Every changed or added passage, bundle READMEs included, reports 0 findings under `ste_lint.py --type descriptive`. The builder smoke test passes locally and in the builder PR's CI.
+
+## Coverage
+
+- AC1 → T1, T6
+- AC2 → T2, T4
+- AC3 → T3
+- AC4 → T1, T2, T3, T6
+- AC5 → T5
+- AC6 → T6
+
+## Tasks
+
+- [ ] T1: In hitop-builder, on branch `m101-builder-layout-advice`, rewrite the first paragraph of `#shuffleNote` (`index.html:540-543`) to give the two routes. Read the four `crosswalkSentence()` branches (`index.html:1088-1103`). If a branch contradicts the notice, change that branch.
+- [ ] T2: Give `bundleReadme()` a `shuffle` argument and add the sentence for a shuffled Word bundle. Pass the flag at `index.html:1349`. Extend `bundleReadmePassages()` in `tests/prose.mjs` to extract the shuffled Word README. If a ledger anchor moves, update the writer ledger.
+- [ ] T3: Edit README.md §The scoring file (near line 162) and §Shuffling the Word form (lines 343-369). Read the `randomize` paragraph in hitop `R/generate_docx.R` first and match it.
+- [ ] T4: Run `bundleReadme()` from the branch and from the merge base for the eight builds with version `0.2.0`, and diff the outputs. Record the result in the work log.
+- [ ] T5: Serve the page and download the three shuffled Word bundles. Read each printed order off the `.docx` (crosswalk, printed number, or item text against `hitopsr_items`). Build responses in HiTOP-SR order, derive the printed-order columns from the `.docx` order, and compare the two scorings in R against hitop main. Pass `items` as positions, because names trip the order warning under `"printed"`. Record the builder commit and the result.
+- [ ] T6: Run `ste_lint.py --type descriptive` on the changed passages of the page, README.md and the bundle READMEs. Read the served notice on the four builds and every passage that AC4 names. Run the smoke test locally, open the builder PR, and open the tracking PR here.
+
+## Work log
+
+- 2026-09-21: created by /milestone-plan. Absorbs the candidate row on the builder README and bundle README.txt (lineage: M091 plan gate). That row said the bundle README.txt tells users to reorder by hand. Since M092 it does not mention reordering.
+- 2026-09-21: criteria audit (full mode, fresh [O] reader) returned six findings, all fixed before the gate. AC1 now names the default layout for columns in HiTOP-SR order. AC2 uses one fixed version string. AC4 names its domain, with `prose.mjs` as the lister. AC5 adds an original-numbering bundle and names the module on both calls. AC6 no longer binds `prose.mjs` itself.
+- 2026-09-21: AC5 reads the printed order off the `.docx`, per the M046 lesson that an oracle inverting the map under test asserts nothing.
+- 2026-09-21: plan gate chose a shuffled-bundle README sentence over leaving README.txt alone because a bundle reader never sees the page; falsified by a report that the sentence confuses readers.
+- 2026-09-21: plan gate chose three served bundles over M091's tests alone because no test scores a page-written descriptor; falsified by a run that finds nothing new.
+- 2026-09-21: plan gate kept the download-button race separate over folding it in because one argument is not a re-cut; falsified by a bundle holding the wrong build.
+- 2026-09-21: plan chose a two-route notice over a `"printed"`-only notice because `"printed"` scrambles HiTOP-SR-order columns; falsified by readers the two routes confuse.
+
+## Decisions
+
+## Review
