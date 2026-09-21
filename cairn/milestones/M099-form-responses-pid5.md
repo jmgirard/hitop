@@ -73,4 +73,4 @@ Independent review: three fresh reviewers. The [S] blame-history and [S] prior-r
 - F6 (fix now): the BF pointer sat in the paragraph on `pid_total` and missing items. It now follows the column-naming text, as the SF pointer does.
 - F7 (rejected): the vignette text about the hitop-form page (the JSON source and the link-builder steps) describes the other repository. Both links returned HTTP 200.
 
-After the fixes, `devtools::test(filter = "read_form_responses")` gave 116 expectations, 0 failed, with 9 on each PID-5 test.
+After the fixes, `devtools::test(filter = "read_form_responses")` gave 116 expectations, 0 failed, with 9 on each PID-5 test. `devtools::check()` on `e35a0cd0` returned 0 errors, 0 warnings and 0 notes, with tests and the vignette rebuild OK.
