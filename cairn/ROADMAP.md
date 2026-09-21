@@ -9,7 +9,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M100).
 |---|---|---|---|---|---|
 | M095 | A static page renders a HiTOP-SR or HiTOP-BR form from the package's JSON export and saves each participant's responses to their device | done | M094 | normal | milestones/archive/M095-hitop-form-page.md |
 | M096 | The package reads hitop-form response files into one data frame and scores them through a module descriptor | done | M095 | normal | milestones/archive/M096-form-responses-reader.md |
-| M097 | The package ships JSON exports of the three PID-5 forms as checksum-locked artifacts | in-progress | — | normal | milestones/M097-pid5-json-export.md |
+| M097 | The package ships JSON exports of the three PID-5 forms as checksum-locked artifacts | review | — | normal | milestones/M097-pid5-json-export.md |
 | M098 | hitop-form renders the three PID-5 forms from the package's JSON exports | planned | M097 | normal | milestones/M098-hitop-form-pid5.md |
 | M099 | The package's reader scores the three PID-5 forms saved by hitop-form | planned | M098 | normal | milestones/M099-form-responses-pid5.md |
 

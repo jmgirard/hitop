@@ -1,6 +1,6 @@
 # M097: The package ships JSON exports of the three PID-5 forms as checksum-locked artifacts
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,6 +56,8 @@ Ship one format-1.0 JSON file per PID-5 form (FULL, SF, BF) holding its items, r
 - 2026-09-20: T3 done. `artifacts.R` rebuilt the three PID-5 JSON files, appended one manifest row each and staged the site copies. The other 26 artifacts kept their checksums, the two HiTOP JSON rows included.
 - 2026-09-20: T4 done. Each PID-5 download page carries the JSON card. The three articles render after `devtools::install()`, because the page helper reads the installed manifest (LESSONS M094). Each rendered link points at a served file that parses as its own export.
 - 2026-09-20: T5 done. NEWS names the three files, their item names and the absence of keying. The DESIGN generator sentence names the PID-5 and states how one table yields three files. The `hitop_artifacts` roxygen enumerates formats, not instruments, so it needed no edit. `document()` produced no diff. `check()` reported 0 errors, 0 warnings and 0 notes.
+- 2026-09-20: claim audit: 25 claims read, 3 corrected — tests/testthat/test-json-export.R, data-raw/json_export.R.
+- 2026-09-20: status set to review. Suite 0 failures, 17517 passing. `check()` clean, 0 errors, 0 warnings, 0 notes.
 
 ## Decisions
 

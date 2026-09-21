@@ -11,7 +11,7 @@
 ## gate only the write loop there and which also records the manifest row
 ## and stages the site copy; `source()` defines `json_specs` and the writer
 ## and writes nothing. Run as a script (`Rscript data-raw/json_export.R`) it
-## loads the package, writes both files and nothing else; run artifacts.R
+## loads the package, writes one file per spec and nothing else; run artifacts.R
 ## afterwards so the manifest and the staged copies follow.
 ##
 ## One instrument table can carry more than one form: `pid_items` numbers the

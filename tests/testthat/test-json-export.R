@@ -206,11 +206,16 @@ test_that("the export report discriminates each planted defect", {
 })
 
 # The three PID-5 forms come out of one table through its three number
-# columns, so a form's export can disagree with the table in ways a one-form
-# export cannot: it can carry an item another form owns, lose one of its own,
-# or number its items to another form's width. The plants below are those
-# ways. The first two both report `items.length`, because a count that
-# disagrees leaves nothing to compare item by item.
+# columns, so a form's export can disagree with the table in two ways a
+# one-form export cannot: it can carry an item another form owns, and it can
+# number its items to another form's width. `leaked_item` is the first way.
+# `changed_max` and `repadded_name` are the second way at its two fields,
+# `maxItem` and the padding of a name. The remaining two plants repeat on a
+# multi-form export what the HiTOP-BR block above plants on a one-form one, a
+# dropped item and a swapped pair, because the expected side here is a subset
+# of its table rather than the whole of it. `leaked_item` and `dropped_item`
+# both report `items.length`, because a count that disagrees leaves nothing
+# to compare item by item.
 test_that("the export report discriminates a wrong-form defect on the PID-5 SF", {
   spec <- json_specs$pid5sf
 
