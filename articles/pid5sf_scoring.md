@@ -18,7 +18,12 @@ If your own PID-5-SF columns are named some other way,
 with `version = "SF"` will rename them to this pattern.
 [`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
 with `version = "SF"` then attaches the item prompts, or the scale
-display names under `target = "scales"`, as `label` attributes.
+display names under `target = "scales"`, as `label` attributes. To
+collect PID-5-SF responses online with hitop-form and read the saved
+files back with
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md),
+see the section “Collecting Responses Online with hitop-form” in
+[`vignette("pid5_scoring")`](https://jmgirard.github.io/hitop/articles/pid5_scoring.md).
 
 ``` r
 

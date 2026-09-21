@@ -109,8 +109,8 @@ sorting. An item the participant left blank is <code>NA</code>.</p>
 row. The first five columns are <code>study</code>, <code>participant</code>, <code>instrument</code>,
 <code>form_build</code> and <code>submitted</code>; the item columns follow, one per item, named
 by the instrument's file stem and the item number (<code>hitopsr_001</code>,
-<code>hitopbr_01</code>). A module form saves only the module's items, in the order
-the form showed them.</p>
+<code>hitopbr_01</code>, <code>pid5_001</code>, <code>pid5sf_001</code>, <code>pid5bf_01</code>). A module form saves
+only the module's items, in the order the form showed them.</p>
 <p>Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
@@ -128,8 +128,9 @@ can catch by name.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="score_hitopsr.html">score_hitopsr()</a></code>, <code><a href="score_hitopbr.html">score_hitopbr()</a></code> and <code><a href="read_module.html">read_module()</a></code>, which
-score the item columns; the modules article shows the whole hand-off.</p></div>
+    <div class="dont-index"><p><code><a href="score_hitopsr.html">score_hitopsr()</a></code>, <code><a href="score_hitopbr.html">score_hitopbr()</a></code>, <code><a href="score_pid5.html">score_pid5()</a></code> and
+<code><a href="read_module.html">read_module()</a></code>, which score the item columns; the modules article and
+<code><a href="../articles/pid5_scoring.html">vignette("pid5_scoring")</a></code> show the whole hand-off.</p></div>
     </div>
 
     <div class="section level2">

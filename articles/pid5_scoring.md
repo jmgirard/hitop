@@ -487,3 +487,69 @@ plot_pid5(normed[1, ], version = "FULL", metric = "percentile")
 The result is an ordinary ggplot object, so you can restyle it with any
 ggplot2 layer — `+ ggplot2::labs(title = ...)`, a different theme, and
 so on.
+
+## Collecting Responses Online with hitop-form
+
+[hitop-form](https://jmgirard.github.io/hitop-form/) is a web page that
+shows the PID-5, the PID-5-SF or the PID-5-BF in the browser. It saves
+each participant’s answers to a CSV file on the participant’s own
+device. It needs no survey platform. The item text, response options and
+instructions come from this package’s JSON export of the form.
+
+To make a study link, open the page’s [link
+builder](https://jmgirard.github.io/hitop-form/link.html). Choose the
+form, name the study and, if you want, give a participant identifier.
+Send the link to the participant. When the participant finishes, the
+page saves one file, and the participant sends you that file.
+
+The file has five lead columns (`study`, `participant`, `instrument`,
+`form_build`, `submitted`) and then one column per item. The item
+columns are named as this package names them: `pid5_001` to `pid5_220`,
+`pid5sf_001` to `pid5sf_100`, or `pid5bf_01` to `pid5bf_25`. Each holds
+the value of the chosen option, 0 to 3.
+
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+reads a folder of these files, or a vector of their paths, into one data
+frame with one row per file. Read the files of each form in a call of
+their own. The file below is one the page saved from the full form. It
+ships with the package’s tests.
+
+``` r
+
+fixtures <- file.path("..", "tests", "testthat", "fixtures")
+responses <- read_form_responses(file.path(fixtures, "responses-pid5.csv"))
+responses
+#> # A tibble: 1 × 225
+#>   study  participant instrument form_build submitted           pid5_001 pid5_002
+#>   <chr>  <chr>       <chr>      <date>     <dttm>                 <int>    <int>
+#> 1 fixtu… p001        pid5       2026-09-20 2026-09-21 02:39:01        3        2
+#> # ℹ 218 more variables: pid5_003 <int>, pid5_004 <int>, pid5_005 <int>,
+#> #   pid5_006 <int>, pid5_007 <int>, pid5_008 <int>, pid5_009 <int>,
+#> #   pid5_010 <int>, pid5_011 <int>, pid5_012 <int>, pid5_013 <int>,
+#> #   pid5_014 <int>, pid5_015 <int>, pid5_016 <int>, pid5_017 <int>,
+#> #   pid5_018 <int>, pid5_019 <int>, pid5_020 <int>, pid5_021 <int>,
+#> #   pid5_022 <int>, pid5_023 <int>, pid5_024 <int>, pid5_025 <int>,
+#> #   pid5_026 <int>, pid5_027 <int>, pid5_028 <int>, pid5_029 <int>, …
+```
+
+The item columns are integers and follow the form’s item order, so pass
+them to
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+by name with the matching `version` (`"FULL"`, `"SF"` or `"BF"`):
+
+``` r
+
+items <- grep("^pid5_", names(responses), value = TRUE)
+score_pid5(responses, items = items, version = "FULL", append = FALSE)
+#> # A tibble: 1 × 30
+#>   pid_anhedonia pid_suspiciousness pid_riskTaking pid_impulsivity
+#>           <dbl>              <dbl>          <dbl>           <dbl>
+#> 1          1.88               1.86           1.43               1
+#> # ℹ 26 more variables: pid_eccentricity <dbl>, pid_distractibility <dbl>,
+#> #   pid_restrictedAffectivity <dbl>, pid_submissiveness <dbl>,
+#> #   pid_withdrawal <dbl>, pid_callousness <dbl>,
+#> #   pid_separationInsecurity <dbl>, pid_attentionSeeking <dbl>,
+#> #   pid_emotionalLability <dbl>, pid_depressivity <dbl>, pid_hostility <dbl>,
+#> #   pid_irresponsibility <dbl>, pid_rigidPerfectionism <dbl>,
+#> #   pid_perceptualDysregulation <dbl>, pid_grandiosity <dbl>, …
+```

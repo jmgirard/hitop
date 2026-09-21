@@ -35,8 +35,8 @@ Each file the page saves holds one header row and one response row. The
 first five columns are `study`, `participant`, `instrument`,
 `form_build` and `submitted`; the item columns follow, one per item,
 named by the instrument's file stem and the item number (`hitopsr_001`,
-`hitopbr_01`). A module form saves only the module's items, in the order
-the form showed them.
+`hitopbr_01`, `pid5_001`, `pid5sf_001`, `pid5bf_01`). A module form
+saves only the module's items, in the order the form showed them.
 
 Every file must carry the same item columns in the same order, because a
 set of files that differ cannot be one data frame: a full HiTOP-SR
@@ -57,11 +57,13 @@ can catch by name.
 ## See also
 
 [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
-[`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md)
+[`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
 and
 [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md),
-which score the item columns; the modules article shows the whole
-hand-off.
+which score the item columns; the modules article and
+[`vignette("pid5_scoring")`](https://jmgirard.github.io/hitop/articles/pid5_scoring.md)
+show the whole hand-off.
 
 ## Examples
 

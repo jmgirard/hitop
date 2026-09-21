@@ -20,7 +20,12 @@ with `version = "BF"` will rename them to this pattern.
 [`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
 with `version = "BF"` then attaches the item prompts, or the domain and
 total display names under `target = "scales"`, as `label` attributes. To
-compute the 5 domain scores and the total, we use
+collect PID-5-BF responses online with hitop-form and read the saved
+files back with
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md),
+see the section “Collecting Responses Online with hitop-form” in
+[`vignette("pid5_scoring")`](https://jmgirard.github.io/hitop/articles/pid5_scoring.md).
+To compute the 5 domain scores and the total, we use
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
 with `version = "BF"`. As with the other forms, we can specify the items
 by column number (`items = 1:25`) and set `append = FALSE` to see just
