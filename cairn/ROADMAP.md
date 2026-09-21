@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-20 (40th pass, M095's post-merge): M095 archived, M092's row pruned. PR #103 merged, CI 8/8 green. Candidate rows: the online-form row extended (Jeff's choice), none added. LESSONS: one added, one pruned. validate green._
+_Last hygiene check: 2026-09-20 (41st pass, M096's post-merge): M096 archived, M093's row pruned. PR #104 merged, CI 8/8 green. Candidate rows: the printed-layout row extended at review, none added. LESSONS: one added, two pruned. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M097). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
@@ -9,8 +9,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M097).
 |---|---|---|---|---|---|
 | M094 | The package ships a JSON export of the HiTOP-SR and HiTOP-BR items, response options and instructions as a checksum-locked artifact | done | — | normal | milestones/archive/M094-json-export.md |
 | M095 | A static page renders a HiTOP-SR or HiTOP-BR form from the package's JSON export and saves each participant's responses to their device | done | M094 | normal | milestones/archive/M095-hitop-form-page.md |
-| M096 | The package reads hitop-form response files into one data frame and scores them through a module descriptor | review | M095 | normal | milestones/M096-form-responses-reader.md |
-| M093 | A feasibility evaluation of an online response-collection form as an alternative to Qualtrics and REDCap | done | — | normal | milestones/archive/M093-online-collection-feasibility.md |
+| M096 | The package reads hitop-form response files into one data frame and scores them through a module descriptor | done | M095 | normal | milestones/archive/M096-form-responses-reader.md |
 
 ## Candidates
 
