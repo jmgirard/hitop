@@ -1,13 +1,13 @@
 # M103: One build at a time in the builder, with its settings fixed at the click
 
-- **Status:** planned
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the public builder page that researchers use to download forms
-- **Branch/PR:** —
+- **Branch/PR:** `m103-builder-build-lock` (hitop and jmgirard/hitop-builder). Builder PR: https://github.com/jmgirard/hitop-builder/pull/18
 
 ## Goal
 
@@ -28,14 +28,14 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 
 ## Acceptance criteria
 
-- [ ] AC1: While a build runs, no code path in `index.html` enables the download button. The domain is every write to a `disabled` state, found by `grep -n "disabled" index.html`. At the end of a build, with at least one scale ticked and boot not abandoned, the button is enabled again. A headless run does four actions during a build: it ticks a scale, unticks a scale, presses Select all, and presses Clear all. After each action, the button's `disabled` property reads `true`.
-- [ ] AC2: A call to `download()` during a build returns and starts no second build. A headless run starts a Word build, ticks the shuffle box, and calls `download()` again during the build. The run records one download event and one log line that starts with `> generate_`. The bundle name, the questionnaire entry name and the `.json` entry name carry the stem of the first call, which is not shuffled.
-- [ ] AC3: A build uses the settings that were current when it started. No read of a control value comes after the first `await` in `download()`. The domain is the `el(`, `document.querySelector`, `.checked` and `.value` reads in the body of `download()` and in each page function that its body calls. Headless runs change one setting during a build and find the starting value in the bundle, for three formats:
+- [x] AC1: While a build runs, no code path in `index.html` enables the download button. The domain is every write to a `disabled` state, found by `grep -n "disabled" index.html`. At the end of a build, with at least one scale ticked and boot not abandoned, the button is enabled again. A headless run does four actions during a build: it ticks a scale, unticks a scale, presses Select all, and presses Clear all. After each action, the button's `disabled` property reads `true`.
+- [x] AC2: A call to `download()` during a build returns and starts no second build. A headless run starts a Word build, ticks the shuffle box, and calls `download()` again during the build. The run records one download event and one log line that starts with `> generate_`. The bundle name, the questionnaire entry name and the `.json` entry name carry the stem of the first call, which is not shuffled.
+- [x] AC3: A build uses the settings that were current when it started. No read of a form control's `.value` or `.checked` state, however the control is found, comes after the first `await` in `download()`, except inside the `refreshTally()` call in its `finally` block, which redraws the page after the save and passes nothing to the build. The domain is the body of `download()` and each page function that it calls directly or transitively. Headless runs change one setting during a build and find the starting value in the bundle, for three formats:
   - Word: the paper size, in the `w:pgSz` element of the `.docx`.
   - Qualtrics: the block name, in the `[[Block:` line of the `.txt`.
   - REDCap: the required box, in the required column of the dictionary.
-- [ ] AC4: Each sentence in `index.html` and README.md about when the download button is on or off agrees with the behavior that AC1 and AC2 verify. The domain is the paragraphs that `grep -n -i -E "button|turns? (on|off)|is off|off (until|while)" index.html README.md` matches, each read whole.
-- [ ] AC5: The builder's smoke suite (`npm run smoke`) passes locally and on the CI of the hitop-builder pull request.
+- [x] AC4: Each sentence in `index.html` and README.md about when the download button is on or off agrees with the behavior that AC1 and AC2 verify. The domain is the paragraphs that `grep -n -i -E "button|turns? (on|off)|is off|off (until|while)" index.html README.md` matches, each read whole.
+- [x] AC5: The builder's smoke suite (`npm run smoke`) passes locally and on the CI of the hitop-builder pull request.
 
 ## Coverage
 
@@ -47,14 +47,14 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 
 ## Tasks
 
-- [ ] T1: Make sure that hitop-builder PR #17, which holds the M101 code, is merged. Jeff approved it at the M101 gate and again at this plan gate. If it is still open, merge it from a session whose working directory is inside hitop-builder. Then cut `m103-builder-build-lock` from the updated builder `main` and from hitop `main`.
-- [ ] T2: Write the test first. Add assertion A8 to `tests/smoke.spec.js`. After the Word build click, the test ticks one more scale and asserts that the download button is disabled. Add A8 to the assertion list in the file header. Run the test on the unfixed page and see it fail.
-- [ ] T3: Add the flag. Set it at the entry of `download()`, after the return for an empty selection. Clear it in `finally`, before the call to `refreshTally()`. Add it to the disabled expression in `refreshTally()`. While the flag is set, make `download()` return at once.
-- [ ] T4: Move each control read in `download()` and its callees above the first `await`. Today these are `papersize`, the three `namingValue()` calls and `el('required')`. In the work log, list each read with its line number and the line number of the first `await`.
-- [ ] T5: Add a plant to `tests/plants.mjs` that removes the flag from `refreshTally()`. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that the new plant fails A8.
-- [ ] T6: Run headless probes on the served branch. For AC1, do the four selection actions. For AC2, make the double call with shuffle ticked between the calls. For AC3, do the three formats. Write one work-log line for each criterion.
-- [ ] T7: Run the AC4 grep and read each matched paragraph. Rewrite each sentence that the T6 runs contradict, for example `#downloadHint` at `index.html:612` and README.md §What the page shows. In the work log, record the matched paragraphs and a verdict for each.
-- [ ] T8: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
+- [x] T1: Make sure that hitop-builder PR #17, which holds the M101 code, is merged. Jeff approved it at the M101 gate and again at this plan gate. If it is still open, merge it from a session whose working directory is inside hitop-builder. Then cut `m103-builder-build-lock` from the updated builder `main` and from hitop `main`.
+- [x] T2: Write the test first. Add assertion A8 to `tests/smoke.spec.js`. After the Word build click, the test ticks one more scale and asserts that the download button is disabled. Add A8 to the assertion list in the file header. Run the test on the unfixed page and see it fail.
+- [x] T3: Add the flag. Set it at the entry of `download()`, after the return for an empty selection. Clear it in `finally`, before the call to `refreshTally()`. Add it to the disabled expression in `refreshTally()`. While the flag is set, make `download()` return at once.
+- [x] T4: Move each control read in `download()` and its callees above the first `await`. Today these are `papersize`, the three `namingValue()` calls and `el('required')`. In the work log, list each read with its line number and the line number of the first `await`.
+- [x] T5: Add a plant to `tests/plants.mjs` that removes the flag from `refreshTally()`. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that the new plant fails A8.
+- [x] T6: Run headless probes on the served branch. For AC1, do the four selection actions. For AC2, make the double call with shuffle ticked between the calls. For AC3, do the three formats. Write one work-log line for each criterion.
+- [x] T7: Run the AC4 grep and read each matched paragraph. Rewrite each sentence that the T6 runs contradict, for example `#downloadHint` at `index.html:612` and README.md §What the page shows. In the work log, record the matched paragraphs and a verdict for each.
+- [x] T8: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
 
 ## Work log
 
@@ -62,7 +62,44 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 - 2026-09-21: the plan gate chose to run one build at a time with a page-level flag, not to give each build its own scratch directory. With separate directories, two saves can still interleave, and the promise about the button stays false. A case where a visitor needs two builds at once falsifies this choice.
 - 2026-09-21: the plan gate put the settings leak (reads after the first `await`) in this milestone, not in a new candidate row. It kept the zip-reader row separate.
 - 2026-09-21: the plan gate chose to merge hitop-builder PR #17 now. The merge guard refused the merge from the hitop session, because the guard finds the repo from the working directory of the session. The merge moved to T1.
+- 2026-09-21: T1 done. Jeff confirmed the merge again in this session, and the session moved into hitop-builder. PR #17 was squash-merged as `bd24032`, and `m103-builder-build-lock` was cut from it in both repos.
+- 2026-09-21: implement gate. AC3 amended (substantive, narrowing): `refreshTally()` in `finally` reads controls after the first `await` to redraw the page, so AC3 now excepts that one call. Its domain is now value/checked reads, found in direct and transitive callees. A second call to `download()` during a build returns silently.
+- re-audit: AC3 (full) — the first reader returned 3 wording faults, all fixed in the written text. `status()` calls `el(` after the await. The exception sat outside the no-read sentence. The callee domain read as direct calls only. It also noted that the probes skip idPrefix and formName, which is proportionate.
+- re-audit: AC3 (full) — the second reader returned nothing blocking. It noted that a Word probe can pass on the unfixed page, so T6 also runs each probe against `main`.
+- 2026-09-21: T2 done. A8 in `tests/smoke.spec.js` goes back to step one after the Word click, ticks a second scale, and reads `isDisabled()` once. On the unfixed page it fails with `Received: false`, and A4 to A6 pass.
+- 2026-09-21: T3 done. `let building` sits beside `bootAbandoned`. `download()` returns at its first line while the flag is set, sets it after the empty-selection return, and clears it first in `finally`. `refreshTally()` ORs it into the disabled expression. `npm run smoke` passes (A8 now green), and `tests/prose.mjs` reports 18 of 18 writer sites in the ledger.
+- 2026-09-21: T4 done. `download()` spans `index.html:1258-1399`, and its first `await` is at 1308. The control reads, all above 1308, are `selected()` 1262 (827), `el('shuffle').checked` 1282, `numberingMode()` 1283 (805), `wholeInstrument()` 1284 (823, calls `selected()`), papersize 1301, `namingValue()` 1302, 1303 and 1304 (1146, reads `el(id).value`), and `el('required').checked` 1306. The one read after 1308 is `refreshTally()` at 1397, which AC3 excepts. Smoke passes.
+- 2026-09-21: T5 done. Plant (i) removes `building` from `refreshTally()`. `npm run plants` exits 0: the unplanted copy passes, (a) and (c) fail A1, (b) A7, (d) A4 to A6, (g) A4, (h) A5 and A6, (e) A2, (f) A3, and (i) fails A8 alone.
+- 2026-09-21: T6 AC1 probe (scratch spec, not committed, branch `index.html` at `21700de` against `main` at `bd24032`). On the branch, during "Building the DOCX file…", the button reads disabled after the tick, the untick, Select all, Clear all and a re-tick, and it is enabled at the end with one scale ticked. On `main` it reads enabled after the tick, the untick, Select all and the re-tick. Clear all reads disabled on both, because no scale is ticked.
+- 2026-09-21: T6 AC2 probe. The second call ticks shuffle, turns the disabled button back on and clicks it. On the branch this gives one download event and one `> generate_docx_hitopsr` line, and the bundle is `hitopsr-word-module.zip` with `hitopsr-word-module.docx` and `hitopsr-word-module.json`. On `main` it gives two generate lines and one download, `hitopsr-word-module-shuffled.zip`, so the first build's save was lost.
+- 2026-09-21: T6 AC3 probes. Each setting changes in the same task as the click. On the branch, Word has `w:pgSz w:w="12240" w:h="15840"` (US Letter), Qualtrics has `[[Block:StartBlock]]`, and the REDCap `Required Field?` column holds `y` and blank. On `main`, Word has `w:w="11909" w:h="16834"` (A4), Qualtrics has `[[Block:ChangedBlock]]`, and REDCap holds `n` and blank.
+- 2026-09-21: T7 done. The AC4 grep matches 77 lines. Selectors, markup, labels and format cards make no on/off claim. Rewritten: `#downloadHint` (`index.html:615`), from "turns on once you tick at least one scale" to "on while at least one scale is ticked and no build is running", and the `.downloadrow` CSS comment (241), which now adds "or a build is running". Agree as they stand: README.md:66-71 (off until a scale is selected), README.md:88-101 (off while a build is running), README.md:47 and `index.html:690-697` and 1486 (boot refusal), `index.html:700-705` (the flag comment) and 832-835 (step comment). Smoke and prose pass.
+- claim audit: 18 claims read, 3 corrected — hitop-builder `index.html`, `tests/smoke.spec.js`, `tests/plants.mjs` (the hitop diff adds nothing outside `cairn/`, so the reader audited the builder diff, where the milestone's lines are). The three corrected claims: the "read here" comment, "a tick is the one action", and plant (i)'s comment. The same reader reread them, and all hold.
+- 2026-09-21: T8 local part done. After the claim-audit fixes, `npm run smoke` passes and `tests/prose.mjs` reports 18 of 18. The hitop-builder PR and its CI smoke run are left to review. Status set to review.
+- 2026-09-21: review. AC1 to AC4 verified and ticked. At the triage gate, Jeff chose to fix D3 and D5 now (builder `948ef2f`, with plants and probes rerun), to reject D1 with its reason, and to file D2 as a candidate row.
+- step-7 approval: m103-builder-build-lock approved for merge (hitop-builder first, then hitop, each after green CI)
 
 ## Decisions
 
 ## Review
+
+Evidence gathered 2026-09-21 on hitop-builder `m103-builder-build-lock`, which contains `origin/main` `bd24032`. It was first gathered at `4fc0243`, then gathered again at `948ef2f` after the gate's two fixes. The line numbers and branch probe results below are from `948ef2f`. Probes ran from the scratch spec `probe-m103.spec.js`, once against the branch's `index.html` and once against `main`'s.
+
+- AC1: `grep -n "disabled" index.html` finds five writes to a `disabled` state. Line 622 is the markup default (on), 717 is `abandonBoot()` (true), and 1276 is the build start (true, just after `building = true` at 1275 inside the `try`). Line 934 is `refreshTally()`, which gives `bootAbandoned || building || selected().length === 0`. Line 1400 in `finally` runs after `building = false` at 1399, so the build is over by then. Line 1128 writes `#selectAll`, which is not the download button. So no write enables the download button while `building` is set. Branch probe during "Building the DOCX file…": the button reads disabled after the tick, the untick, Select all, Clear all and a re-tick. At the end, with one scale ticked, it is enabled. On `main`, the tick, the untick, Select all and the re-tick read enabled.
+- AC2: Branch probe: a Word build with shuffle unticked, then shuffle ticked, the disabled button turned back on, and a click. The run records 1 download event and 1 log line that starts with `> generate_` (`generate_docx_hitopsr(…, module = <1 scales>)`). The bundle is `hitopsr-word-module.zip`, and its entries are `hitopsr-word-module.docx`, `hitopsr-word-module.json` and `README.txt`, so it carries the first call's stem, which is not shuffled. On `main`, the same run records 2 `> generate_` lines, and its one download is `hitopsr-word-module-shuffled.zip`.
+- AC3: The body of `download()` is 1259-1403, and its first `await` is at 1312. The control reads come before it: `selected()` 1263, `el('shuffle').checked` 1285, `numberingMode()` 1286, `wholeInstrument()` 1287 (calls `selected()`), papersize 1305, `namingValue()` 1306 to 1308, and `el('required').checked` 1310. `downloadStem`, `questionnaireName`, `bundleReadme`, `wrapIndented`, `saveFile`, `log` and `status` contain no `.value`, `.checked` or `:checked` read. The only read after 1312 is the excepted `refreshTally()` at 1401. Branch probes, each changing the setting in the same task as the click: Word `w:pgSz w:w="12240" w:h="15840"` (US Letter, the starting value), Qualtrics `[[Block:StartBlock]]`, and the REDCap `Required Field?` column holding `y` and blank (starting box checked). On `main`: `w:w="11909" w:h="16834"` (A4), `[[Block:ChangedBlock]]`, and `n` and blank.
+- AC4: The grep matches 77 lines across `index.html` and README.md. The paragraphs with an on/off claim are `#downloadHint` (`index.html:616-619`, "on while at least one scale is ticked and no build is running") and the `.downloadrow` comment (241-243). The others are the `building` comment (700-705), the step comment (832-835), the boot-refusal comments (690-697 and 1486), README.md:66-71 ("off until you select one") and README.md:88-101 ("off while a build is running"). Each agrees with the AC1 and AC2 runs above. The other matches are selectors, markup and labels, and they make no on/off claim.
+- AC5 (local part): at `948ef2f`, `npm run smoke` passes (1 passed), and `npm run plants` exits OK with 10 runs: the unplanted copy passes, (a) and (c) fail A1, (b) A7, (d) A4 to A6, (g) A4, (h) A5 and A6, (e) A2, (f) A3, and (i) A8. The CI run on the hitop-builder PR comes at the merge step. This box is ticked only after that run.
+- AC5 (CI part): the `smoke` check on https://github.com/jmgirard/hitop-builder/pull/18 at head `948ef2f` passed in 49 s (`gh pr checks 18 --watch --fail-fast`).
+
+Consistency gate: `cairn_validate` passes, with 24 warnings that were there before this milestone (dangling legacy D-ids in DESIGN.md and SOURCES.md, and one references staleness warning). No DESIGN principle changed, so `cairn_impact` was not run. `devtools::document()` produces no diff, `pkgdown::check_pkgdown()` finds no problems, and `devtools::check()` gives 0 errors, 0 warnings and 0 notes. NEWS.md is not owed, because the R package does not change. The hitop diff is `cairn/` only.
+
+Independent review: three lenses. Blame-history found nothing. Prior-review found no prior-review evidence to contradict, and it confirmed that the diff fixes M089's F1/F2. Diff-bug ranked 7 findings:
+- D1 (medium), a hung build keeps the button off until a reload: rejected. webR runs R calls one at a time, so on `main` a retry queued behind the hung call too, and a reload was already the only way out.
+- D2 (low), a format-card press during a build relabels the button and swaps the panel: follow-up, new ROADMAP candidate row (lineage M090, M103).
+- D3 (low), a tick that never reached `refreshTally()` also passed A8: fixed now in `948ef2f`. A8 also reads the tally. A scratch plant that skips `refreshTally()` during a build fails A8 with `tallyCountsTwo: false`.
+- D4 (low), A8 covers only the tick: noted. AC1 names the headless probe as its procedure, and the probe covers all four actions.
+- D5 (very low), a throw between the flag set and the `try` left the flag stuck: fixed now in `948ef2f`. `building = true`, the disabling and the status line now sit inside the `try`.
+- D6 (very low), an emptied naming box's log line prints one line earlier: noted. The build is the same.
+- D7 (tracking): AC5 waits on CI at the merge step. The T4 work-log line gives the first `await` as 1308, and it is 1310 at `21700de`. The work log is append-only, so this section carries the current numbers.
+
