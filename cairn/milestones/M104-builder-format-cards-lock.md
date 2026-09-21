@@ -46,7 +46,7 @@ The milestone also adds a smoke-test assertion that presses a card during a buil
 
 - [x] T1: Cut `m104-builder-format-cards-lock` from the updated builder `main` and from hitop `main`.
 - [x] T2: Write the test first. Add assertion A9 to `tests/smoke.spec.js`, after A8 and during the same build. The test presses the Qualtrics card and asserts that `#downloadBtn` still names Word and the Word card still carries `aria-current`. Add A9 to the assertion list in the file header. Run the test on the unfixed page and see it fail.
-- [ ] T3: In `download()`, collect the `[data-choose]` buttons next to `buttons`. Disable them after `building = true`. Enable them in `finally`, after `building = false`.
+- [x] T3: In `download()`, collect the `[data-choose]` buttons next to `buttons`. Disable them after `building = true`. Enable them in `finally`, after `building = false`.
 - [ ] T4: Add a plant to `tests/plants.mjs` that removes the cards' disable from `download()`. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that the new plant fails A9 alone.
 - [ ] T5: Run headless probes on the served branch. Do the AC1 presses, the AC2 reads after a saved and a failed build, and the AC3 grep. Write one work-log line for each criterion.
 - [ ] T6: Add the clause to the step-two hint (`index.html:486`), to the comment at `let building` (`index.html:701`), and to README.md §What the page shows (line 84). Run the AC4 grep and read each matched paragraph. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched paragraphs and a verdict for each.
@@ -59,6 +59,7 @@ The milestone also adds a smoke-test assertion that presses a card during a buil
 - 2026-09-21: the plan gate chose to state in the step-two hint and README.md that the cards are off during a build. It rejected a page that relies on the greyed look alone. AC4 now requires both sentences. A re-audit of the changed AC1 to AC4 by the same [O] reader returned 3 findings, all fixed before the commit: the second AC1 run opens the Qualtrics disclosure, AC1 reads `disabled` before the presses, and AC4 covers the `let building` comment.
 - 2026-09-21: implement started. T1: both branches cut from `main` (hitop at a2b3b2ee, builder at 840dace), both already in sync with origin. No question gate, because the plan left nothing open. The `finally` sets the cards to `bootAbandoned`, as it does for the download button.
 - 2026-09-21: T2: A9 added to `tests/smoke.spec.js` (forced press on the Qualtrics card after A8, read once against the button text read before the build). On the unfixed page the smoke run failed on A9 alone: the button read "Download the Qualtrics file (.zip bundle)" and the Word card had no `aria-current`. A8 passed in the same run, so the press landed during the build.
+- 2026-09-21: T3: `download()` collects `[data-choose]` as `cards`, disables them after `building = true`, and sets them to `bootAbandoned` in `finally`. `refreshTally()` writes `.downloads button` only, so it cannot turn a card on. Smoke run on the fixed page: 1 passed.
 
 ## Decisions
 
