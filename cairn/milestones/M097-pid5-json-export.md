@@ -41,7 +41,7 @@ Ship one format-1.0 JSON file per PID-5 form (FULL, SF, BF) holding its items, r
 - [x] T2: Extend the local `json_specs` in `tests/testthat/test-json-export.R:7-20` to the five stems, with the same NA subsetting as T1. `export_report()` reads the number column and `Text` unfiltered at `:47` and `:95`. Add the `pid5sf` and `pid5bf` plant tests of AC2. Show each plant red on the planted file and the loop green on the shipped files.
 - [x] T3: Run `data-raw/artifacts.R` with `rebuild_stems` covering the three PID-5 stems and `rebuild_formats = "json"` (`:41`, `:52`). Commit the three files, the manifest rows and the staged copies together.
 - [x] T4: Add the JSON `dl_link` to `download-pid5.Rmd`, `download-pid5sf.Rmd` and `download-pid5bf.Rmd` (the HiTOP-SR form is `download-hitopsr.Rmd:45`). Build the site clean with `pkgdown::build_site()` and read the three rendered pages.
-- [ ] T5: NEWS entry and the DESIGN.md generator sentence (`cairn/DESIGN.md:46`). If the `hitop_artifacts` roxygen enumerates instruments, update it. Run `devtools::document()` and `devtools::check()`.
+- [x] T5: NEWS entry and the DESIGN.md generator sentence (`cairn/DESIGN.md:46`). If the `hitop_artifacts` roxygen enumerates instruments, update it. Run `devtools::document()` and `devtools::check()`.
 
 ## Work log
 
@@ -55,6 +55,7 @@ Ship one format-1.0 JSON file per PID-5 form (FULL, SF, BF) holding its items, r
 - 2026-09-20: T2 done. The test reads five stems and subsets the expected items by the spec's number column. Before the files existed the three PID-5 stems failed on an absent path. Three checks of the comparison itself: the `pid5` file read against the SF spec reports `stem`, `maxItem` and `items.length`, the `pid5bf` file against its own spec reports nothing, and removing the subsetting from the expected side turns the SF stem red on `maxItem` and `items.length`. Five plants are each reported by field name.
 - 2026-09-20: T3 done. `artifacts.R` rebuilt the three PID-5 JSON files, appended one manifest row each and staged the site copies. The other 26 artifacts kept their checksums, the two HiTOP JSON rows included.
 - 2026-09-20: T4 done. Each PID-5 download page carries the JSON card. The three articles render after `devtools::install()`, because the page helper reads the installed manifest (LESSONS M094). Each rendered link points at a served file that parses as its own export.
+- 2026-09-20: T5 done. NEWS names the three files, their item names and the absence of keying. The DESIGN generator sentence names the PID-5 and states how one table yields three files. The `hitop_artifacts` roxygen enumerates formats, not instruments, so it needed no edit. `document()` produced no diff. `check()` reported 0 errors, 0 warnings and 0 notes.
 
 ## Decisions
 
