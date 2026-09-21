@@ -49,7 +49,7 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 
 - [x] T1: Make sure that hitop-builder PR #17, which holds the M101 code, is merged. Jeff approved it at the M101 gate and again at this plan gate. If it is still open, merge it from a session whose working directory is inside hitop-builder. Then cut `m103-builder-build-lock` from the updated builder `main` and from hitop `main`.
 - [x] T2: Write the test first. Add assertion A8 to `tests/smoke.spec.js`. After the Word build click, the test ticks one more scale and asserts that the download button is disabled. Add A8 to the assertion list in the file header. Run the test on the unfixed page and see it fail.
-- [ ] T3: Add the flag. Set it at the entry of `download()`, after the return for an empty selection. Clear it in `finally`, before the call to `refreshTally()`. Add it to the disabled expression in `refreshTally()`. While the flag is set, make `download()` return at once.
+- [x] T3: Add the flag. Set it at the entry of `download()`, after the return for an empty selection. Clear it in `finally`, before the call to `refreshTally()`. Add it to the disabled expression in `refreshTally()`. While the flag is set, make `download()` return at once.
 - [ ] T4: Move each control read in `download()` and its callees above the first `await`. Today these are `papersize`, the three `namingValue()` calls and `el('required')`. In the work log, list each read with its line number and the line number of the first `await`.
 - [ ] T5: Add a plant to `tests/plants.mjs` that removes the flag from `refreshTally()`. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that the new plant fails A8.
 - [ ] T6: Run headless probes on the served branch. For AC1, do the four selection actions. For AC2, make the double call with shuffle ticked between the calls. For AC3, do the three formats. Write one work-log line for each criterion.
@@ -67,6 +67,7 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 - re-audit: AC3 (full) — the first reader returned 3 wording faults, all fixed in the written text. `status()` calls `el(` after the await. The exception sat outside the no-read sentence. The callee domain read as direct calls only. It also noted that the probes skip idPrefix and formName, which is proportionate.
 - re-audit: AC3 (full) — the second reader returned nothing blocking. It noted that a Word probe can pass on the unfixed page, so T6 also runs each probe against `main`.
 - 2026-09-21: T2 done. A8 in `tests/smoke.spec.js` goes back to step one after the Word click, ticks a second scale, and reads `isDisabled()` once. On the unfixed page it fails with `Received: false`, and A4 to A6 pass.
+- 2026-09-21: T3 done. `let building` sits beside `bootAbandoned`. `download()` returns at its first line while the flag is set, sets it after the empty-selection return, and clears it first in `finally`. `refreshTally()` ORs it into the disabled expression. `npm run smoke` passes (A8 now green), and `tests/prose.mjs` reports 18 of 18 writer sites in the ledger.
 
 ## Decisions
 
