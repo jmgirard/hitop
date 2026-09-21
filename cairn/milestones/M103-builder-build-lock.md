@@ -1,13 +1,13 @@
 # M103: One build at a time in the builder, with its settings fixed at the click
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the public builder page that researchers use to download forms
-- **Branch/PR:** —
+- **Branch/PR:** `m103-builder-build-lock` (hitop and jmgirard/hitop-builder)
 
 ## Goal
 
