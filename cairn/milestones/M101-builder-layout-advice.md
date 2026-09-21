@@ -90,7 +90,7 @@ The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed
 
 ### Consistency gate (2026-09-21)
 - cairn_validate: all checks passed. Coverage complete. No principle changed, so cairn_impact skipped.
-- hitop: `document()` no diff. `pkgdown::check_pkgdown()` no problems. README.Rmd untouched. NEWS: no hitop change, and hitop-builder keeps no NEWS. R CMD check: see below.
+- hitop: `document()` no diff. `pkgdown::check_pkgdown()` no problems. README.Rmd untouched. NEWS: no hitop change, and hitop-builder keeps no NEWS. `devtools::check()` 0 errors, 0 warnings, 0 notes (4m 10s).
 
 ### Independent review (three lenses, fresh context)
 - Diff-bug [O]: no correctness bug in the advice or the plumbing. Findings ranked:
