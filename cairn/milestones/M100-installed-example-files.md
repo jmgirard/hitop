@@ -27,11 +27,11 @@
 
 ## Acceptance criteria
 
-- [ ] AC1: `vignettes/pid5_scoring.Rmd` and `vignettes/articles/modules-hitopsr.Rmd` read their example files with `system.file("examples", <file>, package = "hitop")`, and `grep -rnE '"tests"|tests/testthat|package.s tests' vignettes/` returns no hit.
-- [ ] AC2: With the package reinstalled from the branch (`devtools::install()`) and its Suggests present, the R code that `knitr::purl()` extracts from each of the two files runs to completion under `Rscript` from a temporary working directory outside the repo.
-- [ ] AC3: Each of the three files in `inst/examples/` is byte-identical to its `e5c72925:tests/testthat/fixtures/` original (`git diff --name-status -M100% e5c72925 HEAD` lists each as `R100`), and a provenance note in `inst/examples/` names each file's hitop-form source and generator.
-- [ ] AC4: NEWS.md under the development version says that the PID-5 scoring vignette and the modules article now read their example files from the installed package.
-- [ ] AC5: `devtools::test()` and `devtools::check()` are clean (0 errors and 0 warnings, with each NOTE justified).
+- [x] AC1: `vignettes/pid5_scoring.Rmd` and `vignettes/articles/modules-hitopsr.Rmd` read their example files with `system.file("examples", <file>, package = "hitop")`, and `grep -rnE '"tests"|tests/testthat|package.s tests' vignettes/` returns no hit.
+- [x] AC2: With the package reinstalled from the branch (`devtools::install()`) and its Suggests present, the R code that `knitr::purl()` extracts from each of the two files runs to completion under `Rscript` from a temporary working directory outside the repo.
+- [x] AC3: Each of the three files in `inst/examples/` is byte-identical to its `e5c72925:tests/testthat/fixtures/` original (`git diff --name-status -M100% e5c72925 HEAD` lists each as `R100`), and a provenance note in `inst/examples/` names each file's hitop-form source and generator.
+- [x] AC4: NEWS.md under the development version says that the PID-5 scoring vignette and the modules article now read their example files from the installed package.
+- [x] AC5: `devtools::test()` and `devtools::check()` are clean (0 errors and 0 warnings, with each NOTE justified).
 
 ## Coverage
 
@@ -61,3 +61,23 @@
 - 2026-09-21: T3 done. NEWS.md entry added under "Documentation and website".
 - 2026-09-21: T4 done. With the branch installed, the purled code of `pid5_scoring.Rmd` and `modules-hitopsr.Rmd` exits 0 under `Rscript` from a scratchpad directory, and the ggplot2 chunks ran. Against the old installed package both exited 1 at `read_form_responses()`. Full `devtools::test()`: 0 failed, 0 errors, 13 skipped. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
 - 2026-09-21: claim audit: 30 claims read, 0 corrected — NEWS.md, tests/testthat/test-read_form_responses.R, tests/testthat/helper-examples.R, inst/examples/README.md, tests/testthat/fixtures/README.md, vignettes/pid5_scoring.Rmd, vignettes/articles/modules-hitopsr.Rmd. Two loose wordings reworded (a NEWS sentence, and a test title that said "installed").
+
+## Review
+
+Evidence gathered 2026-09-21 on branch head `bbe0394a`, which contains `origin/main`.
+
+- AC1: `system.file("examples", <file>, package = "hitop")` appears at `pid5_scoring.Rmd:207` and `modules-hitopsr.Rmd:391,412`. The grep `'"tests"|tests/testthat|package.s tests'` over `vignettes/` returns no hit (exit 1).
+- AC2: `devtools::install(upgrade = FALSE)` reinstalled the branch at 11:22:27. The installed `examples/` folder holds the three files and `README.md`, and ggplot2 is present. The code `knitr::purl()` extracts from each file exits 0 under `Rscript` in a scratchpad directory outside the repo, and the ggplot2 chunks wrote `Rplots.pdf`. A first install call failed on an invalid `upgrade = "never"` argument. The run above used the reinstalled package.
+- AC3: `git diff --name-status -M100% e5c72925 HEAD` lists `module-shuffled.json`, `responses-module-shuffled.csv` and `responses-pid5.csv` as `R100` into `inst/examples/`. `inst/examples/README.md` names each file's hitop-form commit and generator command.
+- AC4: `NEWS.md:314-319`, under `# hitop (development version)`, says that the PID-5 scoring vignette and the HiTOP-SR modules article now read their example files from the installed package.
+- AC5: `devtools::test()`: 17551 passed, 0 failed, 0 errors, 13 skipped. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
+
+Consistency gate: `cairn_validate.py` exits 0 (24 advisory warnings, none from this milestone). `devtools::document()` leaves no diff. `pkgdown::check_pkgdown()` finds no problems. The branch touches no `R/` file and no `README.Rmd`, and the NEWS entry names no milestone. `check()` reports no NOTE for the new `inst/examples/` folder. No principle changed, so `cairn_impact.py` was skipped.
+
+Independent review: three fresh-context reviewers ran. The blame-history lens and the prior-review lens reported no findings. The prior-review lens found that this milestone resolves finding F2 deferred at M099 review, and the GitHub probe found no review threads. The diff-bug lens reported five minor findings, ranked:
+
+- F1: `test-read_form_responses.R:517` calls `example_file()` (which has `mustWork = TRUE`) at file top level, so a missing example file errors the whole test file, not one test.
+- F2: `NEWS.md:315-316` "Both read a file saved by hitop-form from the package's `tests/` folder" can be read as hitop-form saving from `tests/`.
+- F3: `inst/examples/README.md:4-6` installs with the package but mentions the tests and the article, which a user does not have.
+- F4: `inst/examples/README.md:11` does not say the JSON is stored as LF, as the two CSV rows do.
+- F5: `test-read_form_responses.R:564-580` reads the source files under `devtools::test()` and the installed copy only under `R CMD check`, as its comment states.
