@@ -59,79 +59,119 @@ json_path <- function(stem) {
 }
 
 manifest_build_date <- function(file) {
-  m <- hitop_artifacts[order(hitop_artifacts$file, hitop_artifacts$build_date), ]
-  m <- m[!duplicated(m$file, fromLast = TRUE), ]
+  m <- latest_manifest()
   m$build_date[m$file == file]
 }
 
+# D-063's field list, one key set per object level of format 1.0.
+format_keys <- list(
+  top = c(
+    "format", "package", "packageVersion", "buildDate", "stem", "maxItem",
+    "instructions", "items"
+  ),
+  instructions = c("start", "options"),
+  options = c("value", "label"),
+  items = c("number", "name", "text")
+)
+
+# A JSON scalar as `fromJSON(simplifyVector = FALSE)` reads it: an atomic
+# length-one value. A JSON array reads as a list, so a boxed scalar fails
+# here. `is_number()` takes 7 and 7.0 alike; the item `number` check below
+# separates them by R type (7 reads as integer, 7.0 as double).
+is_string <- function(x) is.character(x) && length(x) == 1L && !is.na(x)
+is_number <- function(x) is.numeric(x) && length(x) == 1L && !is.na(x)
+is_int <- function(x) is.integer(x) && length(x) == 1L && !is.na(x)
+
 # Every way a file can disagree with its tables, each named so a failing
 # plant below identifies which field it broke and the shipped file reports
-# every disagreement at once rather than the first.
+# every disagreement at once rather than the first. The file is read with
+# no simplification, so each check sees the JSON type as written.
 export_report <- function(path, spec) {
-  j <- jsonlite::fromJSON(
-    path,
-    simplifyVector = TRUE,
-    simplifyDataFrame = FALSE,
-    simplifyMatrix = FALSE
-  )
+  j <- jsonlite::fromJSON(path, simplifyVector = FALSE)
   out <- character(0)
   note <- function(ok, what) if (!isTRUE(ok)) out <<- c(out, what)
 
   expected <- spec_items(spec)
   number <- expected$number
   max_n <- max(number)
-  pull <- function(rows, field, type) {
-    vapply(rows, function(r) r[[field]], type)
+  # One field of every entry: each must pass `ok`, and the values must equal
+  # `want`. An entry failing `ok` fails the field without reaching `want`.
+  field_is <- function(rows, field, ok, want) {
+    vals <- lapply(rows, function(r) r[[field]])
+    all(vapply(vals, ok, logical(1))) &&
+      identical(unlist(vals, use.names = FALSE), want)
+  }
+  keys_are <- function(x, level) {
+    is.list(x) && identical(sort(names(x)), sort(format_keys[[level]]))
+  }
+  entries_keyed <- function(rows, level) {
+    is.list(rows) && all(vapply(rows, keys_are, logical(1), level = level))
   }
 
-  note(identical(j$format, "1.0"), "format")
-  note(identical(j$package, "hitop"), "package")
+  note(keys_are(j, "top"), "keys.top")
+  note(keys_are(j$instructions, "instructions"), "keys.instructions")
+  note(entries_keyed(j$instructions$options, "options"), "keys.options")
+  note(entries_keyed(j$items, "items"), "keys.items")
+
+  note(is_string(j$format) && j$format == "1.0", "format")
+  note(is_string(j$package) && j$package == "hitop", "package")
   note(
-    identical(j$packageVersion, as.character(utils::packageVersion("hitop"))),
+    is_string(j$packageVersion) &&
+      j$packageVersion == as.character(utils::packageVersion("hitop")),
     "packageVersion"
   )
   note(
-    identical(as.Date(j$buildDate), manifest_build_date(basename(path))),
+    is_string(j$buildDate) &&
+      identical(
+        as.Date(j$buildDate),
+        manifest_build_date(paste0(spec$stem, ".json"))
+      ),
     "buildDate"
   )
-  note(identical(j$stem, spec$stem), "stem")
-  note(identical(as.integer(j$maxItem), max_n), "maxItem")
-  note(identical(j$instructions$start, spec$instructions$start), "start")
+  note(is_string(j$stem) && j$stem == spec$stem, "stem")
+  note(is_int(j$maxItem) && j$maxItem == max_n, "maxItem")
+  note(
+    is_string(j$instructions$start) &&
+      j$instructions$start == spec$instructions$start,
+    "start"
+  )
 
   opts <- j$instructions$options
   note(
-    identical(
-      pull(opts, "value", integer(1)),
-      as.integer(spec$instructions$options$value)
+    field_is(
+      opts, "value", is_int, as.integer(spec$instructions$options$value)
     ),
     "options.value"
   )
   note(
-    identical(
-      pull(opts, "label", character(1)),
-      as.character(spec$instructions$options$label)
+    field_is(
+      opts, "label", is_string, as.character(spec$instructions$options$label)
     ),
     "options.label"
   )
 
   note(length(j$items) == length(number), "items.length")
   if (length(j$items) == length(number)) {
+    item_number <- lapply(j$items, function(r) r$number)
     note(
-      all(vapply(j$items, function(r) is.integer(r$number), logical(1))),
+      all(vapply(item_number, is_number, logical(1))) &&
+        identical(as.integer(unlist(item_number)), number),
+      "number"
+    )
+    note(
+      all(vapply(
+        Filter(is_number, item_number), is.integer, logical(1)
+      )),
       "number.type"
     )
-    note(identical(pull(j$items, "number", integer(1)), number), "number")
     note(
-      identical(
-        pull(j$items, "name", character(1)),
+      field_is(
+        j$items, "name", is_string,
         hitop:::item_names(paste0(spec$stem, "_"), number, max_n)
       ),
       "name"
     )
-    note(
-      identical(pull(j$items, "text", character(1)), expected$text),
-      "text"
-    )
+    note(field_is(j$items, "text", is_string, expected$text), "text")
   }
   out
 }
@@ -154,16 +194,87 @@ for (stem in names(json_specs)) {
 
 # The report can fail: each plant alters one field of a temporary copy and
 # must be reported under that field's name (check discrimination).
-plant <- function(stem, mutate) {
-  j <- jsonlite::fromJSON(json_path(stem), simplifyVector = FALSE)
-  j <- mutate(j)
-  tmp <- file.path(tempdir(), paste0(stem, ".json"))
-  writeLines(
-    as.character(jsonlite::toJSON(j, auto_unbox = TRUE, pretty = TRUE)),
-    tmp
+#
+# The copy is parsed with no simplification and written back with every
+# atomic value unboxed and `auto_unbox = FALSE`, so each JSON type survives
+# the round trip as parsed: a scalar stays a scalar, an array stays an array
+# even at length one. `mutate` edits the parsed list. `edit` edits the
+# written text, for a defect the list cannot carry (a number written as
+# `7.0`), and must change it. Each plant writes to its own tempfile, removed
+# when the calling test ends.
+unbox_scalars <- function(x) {
+  if (is.list(x)) lapply(x, unbox_scalars) else jsonlite::unbox(x)
+}
+
+plant <- function(stem, mutate = identity, edit = identity) {
+  j <- mutate(jsonlite::fromJSON(json_path(stem), simplifyVector = FALSE))
+  txt <- as.character(
+    jsonlite::toJSON(unbox_scalars(j), auto_unbox = FALSE, pretty = TRUE)
   )
+  edited <- edit(txt)
+  if (!identical(edit, identity) && identical(edited, txt)) {
+    stop("the plant's text edit changed nothing", call. = FALSE)
+  }
+  tmp <- withr::local_tempfile(fileext = ".json", .local_envir = parent.frame())
+  writeLines(edited, tmp)
   tmp
 }
+
+test_that("an unaltered plant copy reports nothing", {
+  for (stem in names(json_specs)) {
+    expect_identical(
+      export_report(plant(stem), json_specs[[stem]]),
+      character(0),
+      info = stem
+    )
+  }
+})
+
+test_that("the export report names the level of an extra key", {
+  spec <- json_specs$hitopbr
+
+  extra_top <- plant("hitopbr", function(j) {
+    j$extra <- "x"
+    j
+  })
+  expect_identical(export_report(extra_top, spec), "keys.top")
+
+  extra_instructions <- plant("hitopbr", function(j) {
+    j$instructions$extra <- "x"
+    j
+  })
+  expect_identical(
+    export_report(extra_instructions, spec),
+    "keys.instructions"
+  )
+
+  extra_option <- plant("hitopbr", function(j) {
+    j$instructions$options[[2]]$extra <- "x"
+    j
+  })
+  expect_identical(export_report(extra_option, spec), "keys.options")
+
+  extra_item <- plant("hitopbr", function(j) {
+    j$items[[7]]$extra <- "x"
+    j
+  })
+  expect_identical(export_report(extra_item, spec), "keys.items")
+})
+
+test_that("the export report reads JSON types as written", {
+  spec <- json_specs$hitopbr
+
+  boxed_format <- plant("hitopbr", function(j) {
+    j$format <- list(j$format)
+    j
+  })
+  expect_identical(export_report(boxed_format, spec), "format")
+
+  double_number <- plant("hitopbr", edit = function(txt) {
+    sub("\"number\": 7,", "\"number\": 7.0,", txt, fixed = TRUE)
+  })
+  expect_identical(export_report(double_number, spec), "number.type")
+})
 
 test_that("the export report discriminates each planted defect", {
   spec <- json_specs$hitopbr

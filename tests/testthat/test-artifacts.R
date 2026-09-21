@@ -1,13 +1,8 @@
 # Locks the committed inst/extdata/ artifacts to the hitop_artifacts
 # manifest (D-016): no distributed artifact may change without a new
 # manifest row (a build-date version bump). Regenerate via
-# data-raw/artifacts.R, which appends the new rows.
-
-# The latest manifest row per file describes the currently distributed file.
-latest_manifest <- function() {
-  m <- hitop_artifacts[order(hitop_artifacts$file, hitop_artifacts$build_date), ]
-  m[!duplicated(m$file, fromLast = TRUE), ]
-}
+# data-raw/artifacts.R, which appends the new rows. `latest_manifest()` is in
+# helper-manifest.R.
 
 test_that("hitop_artifacts has the documented structure", {
   expect_s3_class(hitop_artifacts, "tbl_df")
