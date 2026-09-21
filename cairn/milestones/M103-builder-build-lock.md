@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the public builder page that researchers use to download forms
-- **Branch/PR:** `m103-builder-build-lock` (hitop and jmgirard/hitop-builder)
+- **Branch/PR:** `m103-builder-build-lock` (hitop and jmgirard/hitop-builder). Builder PR: https://github.com/jmgirard/hitop-builder/pull/18
 
 ## Goal
 
@@ -35,7 +35,7 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
   - Qualtrics: the block name, in the `[[Block:` line of the `.txt`.
   - REDCap: the required box, in the required column of the dictionary.
 - [x] AC4: Each sentence in `index.html` and README.md about when the download button is on or off agrees with the behavior that AC1 and AC2 verify. The domain is the paragraphs that `grep -n -i -E "button|turns? (on|off)|is off|off (until|while)" index.html README.md` matches, each read whole.
-- [ ] AC5: The builder's smoke suite (`npm run smoke`) passes locally and on the CI of the hitop-builder pull request.
+- [x] AC5: The builder's smoke suite (`npm run smoke`) passes locally and on the CI of the hitop-builder pull request.
 
 ## Coverage
 
@@ -90,6 +90,7 @@ Evidence gathered 2026-09-21 on hitop-builder `m103-builder-build-lock`, which c
 - AC3: The body of `download()` is 1259-1403, and its first `await` is at 1312. The control reads come before it: `selected()` 1263, `el('shuffle').checked` 1285, `numberingMode()` 1286, `wholeInstrument()` 1287 (calls `selected()`), papersize 1305, `namingValue()` 1306 to 1308, and `el('required').checked` 1310. `downloadStem`, `questionnaireName`, `bundleReadme`, `wrapIndented`, `saveFile`, `log` and `status` contain no `.value`, `.checked` or `:checked` read. The only read after 1312 is the excepted `refreshTally()` at 1401. Branch probes, each changing the setting in the same task as the click: Word `w:pgSz w:w="12240" w:h="15840"` (US Letter, the starting value), Qualtrics `[[Block:StartBlock]]`, and the REDCap `Required Field?` column holding `y` and blank (starting box checked). On `main`: `w:w="11909" w:h="16834"` (A4), `[[Block:ChangedBlock]]`, and `n` and blank.
 - AC4: The grep matches 77 lines across `index.html` and README.md. The paragraphs with an on/off claim are `#downloadHint` (`index.html:616-619`, "on while at least one scale is ticked and no build is running") and the `.downloadrow` comment (241-243). The others are the `building` comment (700-705), the step comment (832-835), the boot-refusal comments (690-697 and 1486), README.md:66-71 ("off until you select one") and README.md:88-101 ("off while a build is running"). Each agrees with the AC1 and AC2 runs above. The other matches are selectors, markup and labels, and they make no on/off claim.
 - AC5 (local part): at `948ef2f`, `npm run smoke` passes (1 passed), and `npm run plants` exits OK with 10 runs: the unplanted copy passes, (a) and (c) fail A1, (b) A7, (d) A4 to A6, (g) A4, (h) A5 and A6, (e) A2, (f) A3, and (i) A8. The CI run on the hitop-builder PR comes at the merge step. This box is ticked only after that run.
+- AC5 (CI part): the `smoke` check on https://github.com/jmgirard/hitop-builder/pull/18 at head `948ef2f` passed in 49 s (`gh pr checks 18 --watch --fail-fast`).
 
 Consistency gate: `cairn_validate` passes, with 24 warnings that were there before this milestone (dangling legacy D-ids in DESIGN.md and SOURCES.md, and one references staleness warning). No DESIGN principle changed, so `cairn_impact` was not run. `devtools::document()` produces no diff, `pkgdown::check_pkgdown()` finds no problems, and `devtools::check()` gives 0 errors, 0 warnings and 0 notes. NEWS.md is not owed, because the R package does not change. The hitop diff is `cairn/` only.
 
