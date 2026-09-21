@@ -21,12 +21,12 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 
 ## Acceptance criteria
 
-- [ ] AC1: A study link whose `instrument` is `pid5`, `pid5sf` or `pid5bf` renders that export. The screen title names the form (`PID-5`, `PID-5-SF` or `PID-5-BF`). The items number 220, 100 or 25. Each item offers the export's four options in export order with values 0 to 3.
-- [ ] AC2: A file saved for each PID-5 version has the header `study,participant,instrument,form_build,submitted` followed by the export's item names in export order. It has one data row. Its `instrument` equals the stem. Every answer is written as the option's `value`, and a chosen 0 is written as `0`.
-- [ ] AC3: The instrument selector in `link.html` offers the three PID-5 versions with their item counts. A link it builds for each opens the matching form. Modules stay restricted to the HiTOP-SR in the builder's wording.
-- [ ] AC4: `tests/fixtures/responses-pid5.csv`, `responses-pid5sf.csv` and `responses-pid5bf.csv` each equal a fresh capture by the page in every column but `form_build` and `submitted`.
-- [ ] AC5: The README names the five instruments the page renders, and names `score_pid5()` as the scoring function for a PID-5 file.
-- [ ] AC6: Every Playwright spec passes against the deployed export once M097's site deploy carries the three PID-5 files.
+- [x] AC1: A study link whose `instrument` is `pid5`, `pid5sf` or `pid5bf` renders that export. The screen title names the form (`PID-5`, `PID-5-SF` or `PID-5-BF`). The items number 220, 100 or 25. Each item offers the export's four options in export order with values 0 to 3.
+- [x] AC2: A file saved for each PID-5 version has the header `study,participant,instrument,form_build,submitted` followed by the export's item names in export order. It has one data row. Its `instrument` equals the stem. Every answer is written as the option's `value`, and a chosen 0 is written as `0`.
+- [x] AC3: The instrument selector in `link.html` offers the three PID-5 versions with their item counts. A link it builds for each opens the matching form. Modules stay restricted to the HiTOP-SR in the builder's wording.
+- [x] AC4: `tests/fixtures/responses-pid5.csv`, `responses-pid5sf.csv` and `responses-pid5bf.csv` each equal a fresh capture by the page in every column but `form_build` and `submitted`.
+- [x] AC5: The README names the five instruments the page renders, and names `score_pid5()` as the scoring function for a PID-5 file.
+- [x] AC6: Every Playwright spec passes against the deployed export once M097's site deploy carries the three PID-5 files.
 
 ## Coverage
 
@@ -62,3 +62,25 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 ## Decisions
 
 ## Review
+
+Fresh run 2026-09-20 on hitop-form f8edd9d: `npx playwright test`, 35 passed.
+
+- AC1: `render.spec.js` pid5, pid5sf and pid5bf pass. Each checks the heading (`PID-5`, `PID-5-SF`, `PID-5-BF`) before and after Begin, the item count against a stated 220, 100 or 25 and the export, and every item's four labels and values against the export and a stated `[0, 1, 2, 3]`.
+- AC2: `save.spec.js` pid5, pid5sf and pid5bf pass: two rows, header equal to the five lead columns plus the export's item names in export order, `instrument` equal to the stem, every value an integer equal to the chosen option's value, and position 4 written as the text `0` (S7). A separate Python read of the three fixtures against the deployed exports agrees on all five points.
+- AC3: `link.spec.js` passes 7 of 7. The selector lists exactly `PID-5 (220 items)`, `PID-5-SF (100 items)` and `PID-5-BF (25 items)` after the two HiTOP options. A link built for each opens a form headed by its name and counting its items. The module hint reads "Optional, HiTOP-SR only." (`link.html:84`).
+- AC4: the three fixtures exist at f8edd9d. The save spec's S4 step compares each fresh capture with its fixture in every column but `form_build` and `submitted`, and passes for all three. The run left the tree clean.
+- AC5: README at f8edd9d, lines 3-5, names the HiTOP-SR, the HiTOP-BR, and the PID-5, PID-5-SF and PID-5-BF. Lines 89-97 name `score_pid5()` for a PID-5 file, with a `version = "BF"` example.
+- AC6: every spec passes against the deployed exports, which serve 220, 100 and 25 PID-5 items: 35 of 35 locally at f8edd9d, and `tests.yml` run 35555253331 on hitop-form PR #1 green at f8edd9d. The post-merge run against the deployed page is step 8's.
+
+Gate: `cairn_validate.py` exit 0, `document()` no diff, `check_pkgdown()` clean, `check()` 0 errors, 0 warnings, 0 notes. The hitop diff touches only `cairn/`.
+
+Independent review of the hitop-form diff, three lenses. [S] blame-history: nothing. [S] prior-review: nothing in the M095, M096 and M097 archived Reviews, and both PR-comment probes returned empty. [O] diff-bug, ranked, with the proposed triage:
+- F1: the three headings are participant-facing text that the page writes, and D-038 covers only researcher-facing copy. No IP1 sign-off is recorded for them. Proposed: record Jeff's decision at this gate as the sign-off.
+- F2: the full-form heading `PID-5` differs from the Word form's title `PID-5 (Full)` (`R/generate_docx.R:1226`). SF and BF match. Proposed: Jeff decides at the gate. Keeping `PID-5` holds AC1 as written. Changing it needs an amendment return on AC1.
+- F3: "HiTOP-SR only" for modules is a hint, and `checkModule` accepts a hand-edited descriptor naming `pid5`. Proposed: follow-up on the online-form candidate row, because Scope leaves the module check untouched.
+- F4: S7 repeats the integer check. Proposed: reject. The T3 plant writing 0 as `00` passed the integer check and turned only S7 red.
+- F5: the README points PID-5 users to `read_form_responses()` before the package tests it on PID-5 files. Proposed: reject. The reader does not depend on the instrument, and this review and the claim audit both ran it on PID-5 fixtures. The package tests are M099's.
+- F6: the README spec table's save row does not mention the value-0 check, and the walk and network rows do not say they cover only the HiTOP forms. Proposed: fix now.
+- F7: L2 depends on the start screen's single `p.muted` sentence. Proposed: reject. A second muted paragraph would fail loudly in strict mode and would not pass silently.
+- F8: `-g pid5` would also match a future case whose name contains `pid5`. Proposed: reject. The note calls it a pattern.
+- F9: a weekly run that fires between the merge and the Pages deploy would go red. Proposed: reject. The window is minutes long, and the next run clears it.
