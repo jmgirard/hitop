@@ -75,3 +75,15 @@ Evidence gathered 2026-09-21 on branch head 2c12119d. Main had not moved since t
 - AC5: `grep -c 'sys.nframe' data-raw/json_export.R` printed 0. Header lines 10 to 15 name `data-raw/artifacts.R` with `rebuild_formats` and `rebuild_stems` as the way to rebuild one form's file.
 - AC6: `git diff --stat main -- inst/extdata pkgdown/assets/downloads data R/sysdata.rda` printed nothing. `devtools::test()` gave 17575 pass, 0 fail, 13 skip (none in `test-json-export.R`). `devtools::check()` gave 0 errors, 0 warnings, 0 notes.
 - Consistency gate: `cairn_validate` passed all checks. `document()` made no diff. `pkgdown::check_pkgdown()` found no problems. No NEWS entry is owed (no user-visible change), and README and `.Rbuildignore` were not touched.
+
+Independent review (three fresh reviewers, 2026-09-21). The prior-review reviewer found no regression: the `pulls/comments` probe returned `[]`, and all ten targeted findings are addressed. The history reviewer found no regression and noted the narrowed swapped-pair assertions as deliberate (T4, AC3). The diff-bug reviewer ranked nine findings, and none shows a criterion failing. Proposed dispositions, pending the gate:
+
+- R1: `export_report()` never checks that `options` and `items` are arrays, so `options` written as an object reports nothing (verified). Proposed: fix now.
+- R2: `buildDate` passes any string `as.Date()` accepts (`"2026-9-20"`), and `"garbage"` throws in place of reporting. Proposed: fix now.
+- R3: `$` matches names partially, so an item key renamed `numberx` still satisfies the `number` check (only `keys.items` fires). Proposed: fix now.
+- R4: the `number` check truncates with `as.integer()`, so `7.5` passes `number` (only `number.type` fires). Proposed: fix now.
+- R5: D-063 does not say that adding a field is forbidden, but AC1 treats any extra key as a defect. Proposed: reject, because the plan gate chose a closed key set for G6 and a new field goes through a new format string.
+- R6: the byte lock depends on jsonlite's exact pretty-print output. Proposed: reject, because this is the falsifier the plan gate recorded.
+- R7: the test's `json_specs` duplicates the specs in `data-raw/json_export.R`. Proposed: reject, because the expected side is stated separately on purpose, and the byte lock reds once a changed spec is rerun.
+- R8: `as.Date()` converts a POSIXct `build_date` in UTC. Proposed: fix now, with a comment that the argument takes a Date.
+- R9: the `7.0` plant depends on jsonlite's layout, and `plant()` stops on a no-op edit. Proposed: noted.
