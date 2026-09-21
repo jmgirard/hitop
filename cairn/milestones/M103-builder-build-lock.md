@@ -51,7 +51,7 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 - [x] T2: Write the test first. Add assertion A8 to `tests/smoke.spec.js`. After the Word build click, the test ticks one more scale and asserts that the download button is disabled. Add A8 to the assertion list in the file header. Run the test on the unfixed page and see it fail.
 - [x] T3: Add the flag. Set it at the entry of `download()`, after the return for an empty selection. Clear it in `finally`, before the call to `refreshTally()`. Add it to the disabled expression in `refreshTally()`. While the flag is set, make `download()` return at once.
 - [x] T4: Move each control read in `download()` and its callees above the first `await`. Today these are `papersize`, the three `namingValue()` calls and `el('required')`. In the work log, list each read with its line number and the line number of the first `await`.
-- [ ] T5: Add a plant to `tests/plants.mjs` that removes the flag from `refreshTally()`. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that the new plant fails A8.
+- [x] T5: Add a plant to `tests/plants.mjs` that removes the flag from `refreshTally()`. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that the new plant fails A8.
 - [ ] T6: Run headless probes on the served branch. For AC1, do the four selection actions. For AC2, make the double call with shuffle ticked between the calls. For AC3, do the three formats. Write one work-log line for each criterion.
 - [ ] T7: Run the AC4 grep and read each matched paragraph. Rewrite each sentence that the T6 runs contradict, for example `#downloadHint` at `index.html:612` and README.md §What the page shows. In the work log, record the matched paragraphs and a verdict for each.
 - [ ] T8: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
@@ -69,6 +69,7 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 - 2026-09-21: T2 done. A8 in `tests/smoke.spec.js` goes back to step one after the Word click, ticks a second scale, and reads `isDisabled()` once. On the unfixed page it fails with `Received: false`, and A4 to A6 pass.
 - 2026-09-21: T3 done. `let building` sits beside `bootAbandoned`. `download()` returns at its first line while the flag is set, sets it after the empty-selection return, and clears it first in `finally`. `refreshTally()` ORs it into the disabled expression. `npm run smoke` passes (A8 now green), and `tests/prose.mjs` reports 18 of 18 writer sites in the ledger.
 - 2026-09-21: T4 done. `download()` spans `index.html:1258-1399`, and its first `await` is at 1308. The control reads, all above 1308, are `selected()` 1262 (827), `el('shuffle').checked` 1282, `numberingMode()` 1283 (805), `wholeInstrument()` 1284 (823, calls `selected()`), papersize 1301, `namingValue()` 1302, 1303 and 1304 (1146, reads `el(id).value`), and `el('required').checked` 1306. The one read after 1308 is `refreshTally()` at 1397, which AC3 excepts. Smoke passes.
+- 2026-09-21: T5 done. Plant (i) removes `building` from `refreshTally()`. `npm run plants` exits 0: the unplanted copy passes, (a) and (c) fail A1, (b) A7, (d) A4 to A6, (g) A4, (h) A5 and A6, (e) A2, (f) A3, and (i) fails A8 alone.
 
 ## Decisions
 
