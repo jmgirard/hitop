@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-21 (43rd pass, M098's post-merge): M098 archived, PR #107 and hitop-form PR #1 merged, CI green. M095 row pruned. F3 routed to DESIGN Known issues #11. No LESSONS change. validate green._
+_Last hygiene check: 2026-09-21 (44th pass, M099's post-merge): M099 archived, PR #108 merged after CI hotfix PR #109, CI green. M096 row pruned. No LESSONS change. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M100). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M096 | The package reads hitop-form response files into one data frame and scores them through a module descriptor | done | M095 | normal | milestones/archive/M096-form-responses-reader.md |
 | M097 | The package ships JSON exports of the three PID-5 forms as checksum-locked artifacts | done | — | normal | milestones/archive/M097-pid5-json-export.md |
 | M098 | hitop-form renders the three PID-5 forms from the package's JSON exports | done | M097 | normal | milestones/archive/M098-hitop-form-pid5.md |
-| M099 | The package's reader scores the three PID-5 forms saved by hitop-form | review | M098 | normal | milestones/M099-form-responses-pid5.md |
+| M099 | The package's reader scores the three PID-5 forms saved by hitop-form | done | M098 | normal | milestones/archive/M099-form-responses-pid5.md |
 
 ## Candidates
 
