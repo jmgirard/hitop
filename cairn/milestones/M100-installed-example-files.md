@@ -61,6 +61,7 @@
 - 2026-09-21: T3 done. NEWS.md entry added under "Documentation and website".
 - 2026-09-21: T4 done. With the branch installed, the purled code of `pid5_scoring.Rmd` and `modules-hitopsr.Rmd` exits 0 under `Rscript` from a scratchpad directory, and the ggplot2 chunks ran. Against the old installed package both exited 1 at `read_form_responses()`. Full `devtools::test()`: 0 failed, 0 errors, 13 skipped. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
 - 2026-09-21: claim audit: 30 claims read, 0 corrected — NEWS.md, tests/testthat/test-read_form_responses.R, tests/testthat/helper-examples.R, inst/examples/README.md, tests/testthat/fixtures/README.md, vignettes/pid5_scoring.Rmd, vignettes/articles/modules-hitopsr.Rmd. Two loose wordings reworded (a NEWS sentence, and a test title that said "installed").
+- 2026-09-21: step-7 approval: m100-installed-example-files approved for merge. Findings F2 and F4 fixed on the branch, and F1, F3 and F5 rejected.
 
 ## Review
 
@@ -81,3 +82,11 @@ Independent review: three fresh-context reviewers ran. The blame-history lens an
 - F3: `inst/examples/README.md:4-6` installs with the package but mentions the tests and the article, which a user does not have.
 - F4: `inst/examples/README.md:11` does not say the JSON is stored as LF, as the two CSV rows do.
 - F5: `test-read_form_responses.R:564-580` reads the source files under `devtools::test()` and the installed copy only under `R CMD check`, as its comment states.
+
+Triage at the merge gate (2026-09-21, Jeff):
+
+- F1 rejected. A file-level error still fails the suite with the missing path named, and a renamed example file must fail loudly.
+- F2 fixed now. The NEWS clause reads "Both read a file from the package's `tests/` folder, which is not installed".
+- F3 rejected. The README records where the files came from, and the sentences about tests and articles are true of the source tree.
+- F4 fixed now. The JSON row ends "Stored as LF." A grep finds 0 CR bytes in the file.
+- F5 rejected. The test comment states the limit, and `devtools::check()` runs the test against the installed copy.
