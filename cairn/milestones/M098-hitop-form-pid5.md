@@ -1,6 +1,6 @@
 # M098: hitop-form renders the three PID-5 forms from the package's JSON exports
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M097
 - **Driving RR:** —
@@ -55,7 +55,9 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 - 2026-09-20: T2 done in hitop-form 2313fe7. The render spec loops over five forms and checks the heading, the item count and the option values against stated values and the export. 7 of 7 pass. A plant titling the BF form "PID-5 BF" turned it red.
 - 2026-09-20: T3 done in hitop-form 0cec049. Three PID-5 save cases, 7 of 7 pass. Fixtures captured with `-g pid5` so the three HiTOP fixtures kept their bytes. Plants: a 0 written as blank reds the integer check, a 0 written as `00` reds the new value-0 check. The fixture note's "reader still to be written" line now names `read_form_responses()`.
 - 2026-09-20: T4 done in hitop-form 1593f53. The README names the five forms, the PID-5 item names and value ranges, and `score_pid5()` with a `version` example. Its "reader under development" paragraph now names `read_form_responses()`, which read the pid5bf and pid5 fixtures and fed `score_pid5()` in this session.
-- 2026-09-20: T5 done. The deployed site serves `pid5.json` (220 items), `pid5sf.json` (100) and `pid5bf.json` (25). Local suite 35 passed. PR https://github.com/jmgirard/hitop-form/pull/1 opened; `tests.yml` run 35555027670 green at 1593f53, 35 passed. Merge and the deployed-page dispatch wait for review.
+- 2026-09-20: T5 done. The deployed site serves `pid5.json` (220 items), `pid5sf.json` (100) and `pid5bf.json` (25). Local suite 35 passed. PR https://github.com/jmgirard/hitop-form/pull/1 opened. The `tests.yml` run 35555027670 green at 1593f53, 35 passed. Merge and the deployed-page dispatch wait for review.
+- 2026-09-20: claim audit: 24 claims read, 1 corrected — hitop-form README.md, form.js, link.html, tests/link.spec.js, tests/render.spec.js, tests/save.spec.js, tests/fixtures/README.md. Run on the hitop-form diff, because the hitop diff adds no lines outside `cairn/`. The fixture note claimed PID-5 reader tests that do not exist yet. Fixed in hitop-form f8edd9d, and the same reader re-read it as correct.
+- 2026-09-20: verify: no R code changed, so `devtools::test()` was not re-run. `cairn_validate.py` passes. Status set to review.
 
 ## Decisions
 
