@@ -41,7 +41,7 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 
 - [x] T1: Add the three PID-5 entries to `INSTRUMENTS` (`form.js:14`) and the three `<option>`s to the selector (`link.html:67-70`). If the module hint (`link.html:81`) reads wrong with five instruments, reword it without widening what a module applies to. Add `tests/link.spec.js` for the selector, a built link per instrument, and the module hint.
 - [x] T2: Loop `render.spec.js:20` over the five stems `hitopsr`, `hitopbr`, `pid5`, `pid5sf` and `pid5bf`, asserting title, item count and option values.
-- [ ] T3: Add three PID-5 cases to `save.spec.js:53-65`. Assert the header, one row, the stem, and that the answer pattern's value-0 pick (`helpers.mjs:112`, position 4) is written as `0`. Capture the three fixtures with `WRITE_FIXTURES=1 npx playwright test tests/save.spec.js` and record their provenance in `tests/fixtures/README.md`. Per LESSONS M095, create the download promise before the walk with its own timeout.
+- [x] T3: Add three PID-5 cases to `save.spec.js:53-65`. Assert the header, one row, the stem, and that the answer pattern's value-0 pick (`helpers.mjs:112`, position 4) is written as `0`. Capture the three fixtures with `WRITE_FIXTURES=1 npx playwright test tests/save.spec.js` and record their provenance in `tests/fixtures/README.md`. Per LESSONS M095, create the download promise before the walk with its own timeout.
 - [ ] T4: README: the instruments list, a PID-5 file example beside the HiTOP ones, and the `score_pid5()` sentence beside `score_hitopsr()`.
 - [ ] T5: Confirm the deployed site serves the three PID-5 files. Open the PR and get the `tests.yml` run green. Record the run in the work log. The merge and one dispatched run against the deployed page happen at review's merge step.
 
@@ -53,6 +53,7 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 - 2026-09-20: implement gate: the hitop-form PR opens and goes green at implement, and it merges at review after Jeff approves, because the merge publishes the live participant page. T5 reworded to match (minor amendment).
 - 2026-09-20: T1 done in hitop-form e88f462. The module hint already reads "Optional, HiTOP-SR only", so it is unchanged. No test covered `link.html`, so T1 gained `tests/link.spec.js` (7 tests, minor amendment). A plant that dropped `pid5sf` from `INSTRUMENTS` turned its test red.
 - 2026-09-20: T2 done in hitop-form 2313fe7. The render spec loops over five forms and checks the heading, the item count and the option values against stated values and the export. 7 of 7 pass. A plant titling the BF form "PID-5 BF" turned it red.
+- 2026-09-20: T3 done in hitop-form 0cec049. Three PID-5 save cases, 7 of 7 pass. Fixtures captured with `-g pid5` so the three HiTOP fixtures kept their bytes. Plants: a 0 written as blank reds the integer check, a 0 written as `00` reds the new value-0 check. The fixture note's "reader still to be written" line now names `read_form_responses()`.
 
 ## Decisions
 
