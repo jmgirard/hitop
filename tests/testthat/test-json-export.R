@@ -4,54 +4,59 @@
 # read from the tables and R/sysdata.rda, never from the file. Regenerate via
 # data-raw/artifacts.R (rebuild_formats = "json").
 #
-# `pid_items` numbers three forms in three columns, each NA on the rows its
-# form omits, so the expected side here subsets and orders by the spec's
-# number column exactly as data-raw/json_export.R's writer does. The two
-# HiTOP tables carry one form each and no NA, so that step leaves them whole.
+# Each spec states its form's item count. Every form numbers its items 1 to
+# `count`, so the expected numbers are `seq_len(count)`, in ascending order
+# (D-065). `pid_items` numbers three forms in three columns, each NA on the
+# rows its form omits. Each item's expected text is the text of the table row
+# its form numbers with that item's number, looked up by number rather than
+# rebuilt by the writer's own subset and sort.
 
 json_specs <- list(
   pid5 = list(
     stem = "pid5",
+    count = 220L,
     items = pid_items,
     number_col = "FULL",
     instructions = hitop:::pid_instructions
   ),
   pid5sf = list(
     stem = "pid5sf",
+    count = 100L,
     items = pid_items,
     number_col = "SF",
     instructions = hitop:::pid_instructions
   ),
   pid5bf = list(
     stem = "pid5bf",
+    count = 25L,
     items = pid_items,
     number_col = "BF",
     instructions = hitop:::pid_instructions
   ),
   hitopsr = list(
     stem = "hitopsr",
+    count = 405L,
     items = hitopsr_items,
     number_col = "HSR",
     instructions = hitop:::hitopsr_instructions
   ),
   hitopbr = list(
     stem = "hitopbr",
+    count = 45L,
     items = hitopbr_items,
     number_col = "HBR",
     instructions = hitop:::hitopbr_instructions
   )
 )
 
-# The rows of a spec's table that belong to its form, in its own item-number
-# order: the expected items, read from the table and never from the file.
-spec_items <- function(spec) {
-  number <- as.integer(spec$items[[spec$number_col]])
-  keep <- !is.na(number)
-  ord <- order(number[keep])
-  list(
-    number = number[keep][ord],
-    text = as.character(spec$items$Text[keep][ord])
-  )
+# The text of the table row that the spec's form numbers `n`, one per element
+# of `n`; NA where no single row carries that number.
+table_text <- function(spec, n) {
+  col <- as.integer(spec$items[[spec$number_col]])
+  vapply(n, function(k) {
+    row <- which(col == k)
+    if (length(row) == 1L) as.character(spec$items$Text[row]) else NA_character_
+  }, character(1))
 }
 
 json_path <- function(stem) {
@@ -91,9 +96,8 @@ export_report <- function(path, spec) {
   out <- character(0)
   note <- function(ok, what) if (!isTRUE(ok)) out <<- c(out, what)
 
-  expected <- spec_items(spec)
-  number <- expected$number
-  max_n <- max(number)
+  number <- seq_len(spec$count)
+  max_n <- spec$count
   # One field of every entry: each must pass `ok`, and the values must equal
   # `want`. An entry failing `ok` fails the field without reaching `want`.
   field_is <- function(rows, field, ok, want) {
@@ -171,7 +175,18 @@ export_report <- function(path, spec) {
       ),
       "name"
     )
-    note(field_is(j$items, "text", is_string, expected$text), "text")
+    # Each item's text against the row its own number names, so a swapped
+    # pair of whole items leaves `text` silent and a substituted text with
+    # the right number does not.
+    own_number <- vapply(
+      item_number,
+      function(x) if (is_number(x)) as.integer(x) else NA_integer_,
+      integer(1)
+    )
+    note(
+      field_is(j$items, "text", is_string, table_text(spec, own_number)),
+      "text"
+    )
   }
   out
 }
@@ -291,11 +306,13 @@ test_that("the export report discriminates each planted defect", {
   })
   expect_identical(export_report(dropped_item, spec), "items.length")
 
+  # A swapped pair of whole items keeps each text with its own number, so
+  # the order checks report it and the text lookup stays silent.
   swapped_items <- plant("hitopbr", function(j) {
     j$items[c(7, 8)] <- j$items[c(8, 7)]
     j
   })
-  expect_setequal(export_report(swapped_items, spec), c("number", "name", "text"))
+  expect_setequal(export_report(swapped_items, spec), c("number", "name"))
 
   changed_label <- plant("hitopbr", function(j) {
     j$instructions$options[[2]]$label <- "Slightly"
@@ -319,19 +336,27 @@ test_that("the export report discriminates each planted defect", {
 # The three PID-5 forms come out of one table through its three number
 # columns, so a form's export can disagree with the table in two ways a
 # one-form export cannot: it can carry an item another form owns, and it can
-# number its items to another form's width. `leaked_item` is the first way.
-# `changed_max` and `repadded_name` are the second way at its two fields,
-# `maxItem` and the padding of a name. The remaining two plants repeat on a
-# multi-form export what the HiTOP-BR block above plants on a one-form one, a
-# dropped item and a swapped pair, because the expected side here is a subset
-# of its table rather than the whole of it. `leaked_item` and `dropped_item`
-# both report `items.length`, because a count that disagrees leaves nothing
-# to compare item by item.
+# number its items to another form's width. `leaked_item` and
+# `substituted_text` are the first way: an added item changes the count, and
+# a substituted text keeps it. `changed_max` and `repadded_name` are the
+# second way at its two fields, `maxItem` and the padding of a name. The
+# remaining two plants repeat on a multi-form export what the HiTOP-BR block
+# above plants on a one-form one, a dropped item and a swapped pair, because
+# the expected side here is a subset of its table rather than the whole of
+# it. `leaked_item` and `dropped_item` both report `items.length`, because a
+# count that disagrees leaves nothing to compare item by item.
 test_that("the export report discriminates a wrong-form defect on the PID-5 SF", {
   spec <- json_specs$pid5sf
 
   full_only_text <- as.character(pid_items$Text[is.na(pid_items$SF)])[1]
   expect_true(nzchar(full_only_text))
+  expect_false(full_only_text %in% pid_items$Text[!is.na(pid_items$SF)])
+
+  substituted_text <- plant("pid5sf", function(j) {
+    j$items[[42]]$text <- full_only_text
+    j
+  })
+  expect_identical(export_report(substituted_text, spec), "text")
 
   leaked_item <- plant("pid5sf", function(j) {
     j$items[[length(j$items) + 1L]] <- list(
@@ -353,10 +378,7 @@ test_that("the export report discriminates a wrong-form defect on the PID-5 SF",
     j$items[c(42, 43)] <- j$items[c(43, 42)]
     j
   })
-  expect_setequal(
-    export_report(swapped_items, spec),
-    c("number", "name", "text")
-  )
+  expect_setequal(export_report(swapped_items, spec), c("number", "name"))
 
   changed_max <- plant("pid5sf", function(j) {
     j$maxItem <- 220L
