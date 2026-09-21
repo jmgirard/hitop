@@ -59,6 +59,7 @@ Extend `jmgirard/hitop-form` so a study link naming `pid5`, `pid5sf` or `pid5bf`
 - 2026-09-20: claim audit: 24 claims read, 1 corrected — hitop-form README.md, form.js, link.html, tests/link.spec.js, tests/render.spec.js, tests/save.spec.js, tests/fixtures/README.md. Run on the hitop-form diff, because the hitop diff adds no lines outside `cairn/`. The fixture note claimed PID-5 reader tests that do not exist yet. Fixed in hitop-form f8edd9d, and the same reader re-read it as correct.
 - 2026-09-20: verify: no R code changed, so `devtools::test()` was not re-run. `cairn_validate.py` passes. Status set to review.
 - 2026-09-20: step-7 approval: m098-hitop-form-pid5 approved for merge, together with hitop-form PR #1.
+- 2026-09-20: CI wait on hitop PR #107 hit the session limit. pkgdown and line endings passed, and six checks were still pending. hitop-form PR #1 is merged. Resume through `/milestone-review M098`.
 
 ## Decisions
 
