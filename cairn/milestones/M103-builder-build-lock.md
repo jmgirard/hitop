@@ -77,6 +77,7 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 - claim audit: 18 claims read, 3 corrected — hitop-builder `index.html`, `tests/smoke.spec.js`, `tests/plants.mjs` (the hitop diff adds nothing outside `cairn/`, so the reader audited the builder diff, where the milestone's lines are). The three corrected claims: the "read here" comment, "a tick is the one action", and plant (i)'s comment. The same reader reread them, and all hold.
 - 2026-09-21: T8 local part done. After the claim-audit fixes, `npm run smoke` passes and `tests/prose.mjs` reports 18 of 18. The hitop-builder PR and its CI smoke run are left to review. Status set to review.
 - 2026-09-21: review. AC1 to AC4 verified and ticked. At the triage gate, Jeff chose to fix D3 and D5 now (builder `948ef2f`, with plants and probes rerun), to reject D1 with its reason, and to file D2 as a candidate row.
+- step-7 approval: m103-builder-build-lock approved for merge (hitop-builder first, then hitop, each after green CI)
 
 ## Decisions
 
