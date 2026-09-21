@@ -203,6 +203,15 @@
 
 ## Improvements and fixes
 
+* **The misordered-items warning gives the right remedy under `layout = "printed"`.**
+  hitop-form saves item columns named by instrument number in the form's
+  printed order. Under `layout = "printed"`, `score_hitopsr()` and
+  `reliability_hitopsr()` still warn that those names are not ascending.
+  The warning no longer tells you to sort them, because sorting undid the
+  printed order and silently scored the wrong items. It now says to supply
+  positions, or `layout = "instrument"` for columns already in instrument
+  order. Under the default layout the wording is unchanged.
+
 * **`ku_hitopsr`'s item columns held the wrong items and have been rebuilt.**
   The dataset was assembled as though the questionnaire that collected it
   numbered its questions the way this package numbers HiTOP-SR items. It does
