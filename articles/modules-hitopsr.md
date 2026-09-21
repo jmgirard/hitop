@@ -502,12 +502,14 @@ item number and in the order the page showed them.
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 reads those files. Give it the folder the files are in, or a vector of
 their paths. The file below is one the page saved from a two-scale
-module with a shuffled order; it ships with the package’s tests:
+module with a shuffled order. The package installs it as an example, and
+[`system.file()`](https://rdrr.io/r/base/system.file.html) gives its
+path:
 
 ``` r
 
-fixtures <- file.path("..", "..", "tests", "testthat", "fixtures")
-responses <- read_form_responses(file.path(fixtures, "responses-module-shuffled.csv"))
+path <- system.file("examples", "responses-module-shuffled.csv", package = "hitop")
+responses <- read_form_responses(path)
 responses
 #> # A tibble: 1 × 26
 #>   study   participant instrument form_build submitted           hitopsr_233
@@ -538,7 +540,9 @@ that warns of a misordered mapping.
 
 ``` r
 
-form_module <- read_module(file.path(fixtures, "module-shuffled.json"))
+form_module <- read_module(
+  system.file("examples", "module-shuffled.json", package = "hitop")
+)
 item_cols <- setdiff(names(responses), c("study", "participant", "instrument",
                                          "form_build", "submitted"))
 score_hitopsr(

@@ -511,13 +511,15 @@ the value of the chosen option, 0 to 3.
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 reads a folder of these files, or a vector of their paths, into one data
 frame with one row per file. Read the files of each form in a call of
-their own. The file below is one the page saved from the full form. It
-ships with the package’s tests.
+their own. The file below is one the page saved from the full form. The
+package installs it as an example, and
+[`system.file()`](https://rdrr.io/r/base/system.file.html) gives its
+path.
 
 ``` r
 
-fixtures <- file.path("..", "tests", "testthat", "fixtures")
-responses <- read_form_responses(file.path(fixtures, "responses-pid5.csv"))
+path <- system.file("examples", "responses-pid5.csv", package = "hitop")
+responses <- read_form_responses(path)
 responses
 #> # A tibble: 1 × 225
 #>   study  participant instrument form_build submitted           pid5_001 pid5_002

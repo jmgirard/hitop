@@ -544,10 +544,11 @@ to <code>pid5sf_100</code>, or <code>pid5bf_01</code> to
 <p><code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads a folder of these files, or
 a vector of their paths, into one data frame with one row per file. Read
 the files of each form in a call of their own. The file below is one the
-page saved from the full form. It ships with the package’s tests.</p>
+page saved from the full form. The package installs it as an example,
+and <code><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file()</a></code> gives its path.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fixtures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">".."</span>, <span class="st">"tests"</span>, <span class="st">"testthat"</span>, <span class="st">"fixtures"</span><span class="op">)</span></span>
-<span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fixtures</span>, <span class="st">"responses-pid5.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-pid5.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
+<span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="va">responses</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 225</span></span></span>
 <span><span class="co">#&gt;   study  participant instrument form_build submitted           pid5_001 pid5_002</span></span>

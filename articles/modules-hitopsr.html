@@ -515,11 +515,12 @@ item, named by the instrument’s file stem and the item number and in the
 order the page showed them.</p>
 <p><code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads those files. Give it the
 folder the files are in, or a vector of their paths. The file below is
-one the page saved from a two-scale module with a shuffled order; it
-ships with the package’s tests:</p>
+one the page saved from a two-scale module with a shuffled order. The
+package installs it as an example, and <code><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file()</a></code> gives
+its path:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fixtures</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="st">".."</span>, <span class="st">".."</span>, <span class="st">"tests"</span>, <span class="st">"testthat"</span>, <span class="st">"fixtures"</span><span class="op">)</span></span>
-<span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fixtures</span>, <span class="st">"responses-module-shuffled.csv"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-module-shuffled.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
+<span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="va">responses</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 26</span></span></span>
 <span><span class="co">#&gt;   study   participant instrument form_build submitted           hitopsr_233</span></span>
@@ -545,7 +546,9 @@ position here rather than by name: under <code>layout = "printed"</code>
 the names carry item numbers out of instrument order, and naming them
 would trip the check that warns of a misordered mapping.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">form_module</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_module.html">read_module</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">fixtures</span>, <span class="st">"module-shuffled.json"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">form_module</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_module.html">read_module</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"module-shuffled.json"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="va">item_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">responses</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"study"</span>, <span class="st">"participant"</span>, <span class="st">"instrument"</span>,</span>
 <span>                                         <span class="st">"form_build"</span>, <span class="st">"submitted"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
