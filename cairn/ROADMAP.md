@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-21 (47th pass, M102's post-merge): M102 archived, PR #112 merged at 8/8 CI green. M099 row pruned. No LESSONS change. validate green._
+_Last hygiene check: 2026-09-21 (48th pass, M103's post-merge): M103 archived, PR #113 merged at 8/8 CI green, builder PR #18 merged at smoke green. M100 row pruned. Format-card candidate row added. No LESSONS change. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M104). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M100 | The shipped vignette and article read their example files from the installed package | done | — | normal | milestones/archive/M100-installed-example-files.md |
 | M101 | The builder tells users to score shuffled Word forms with `layout = "printed"` | done | — | normal | milestones/archive/M101-builder-layout-advice.md |
 | M102 | The JSON export's writer and lock catch the ten gaps M094 and M097 left open | done | — | normal | milestones/archive/M102-json-export-hardening.md |
-| M103 | One build at a time in the builder, with its settings fixed at the click | review | — | normal | milestones/M103-builder-build-lock.md |
+| M103 | One build at a time in the builder, with its settings fixed at the click | done | — | normal | milestones/archive/M103-builder-build-lock.md |
 
 ## Candidates
 
