@@ -1,6 +1,6 @@
 # M099: The package's reader scores the three PID-5 forms saved by hitop-form
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M098
 - **Driving RR:** —
@@ -48,6 +48,9 @@ Prove that a PID-5 file saved by hitop-form round-trips through `read_form_respo
 - 2026-09-21: T2 done. Three PID-5 round-trip tests added. A plant that drops the reversal changes 8 of 25 FULL facets. No SF or BF item is reversed in `pid_items`, so the reversal is exercised on FULL only. Full suite: 0 fail, 17541 pass, 13 skip.
 - 2026-09-21: T3 done. `pid5_scoring.Rmd` gains "Collecting Responses Online with hitop-form", which reads and scores the full-form fixture. The SF and BF vignettes point to it in one sentence each. All three render with `rmarkdown::render()`.
 - 2026-09-21: T4 done. NEWS extends the `read_form_responses()` entry with the PID-5 hand-off. `devtools::check()`: 0 errors, 0 warnings, 0 notes, vignettes rebuilt.
+- 2026-09-21: claim audit: 26 claims read, 0 corrected — NEWS.md, tests/testthat/fixtures/README.md, tests/testthat/test-read_form_responses.R, vignettes/pid5_scoring.Rmd, vignettes/pid5sf_scoring.Rmd, vignettes/pid5bf_scoring.Rmd
+- 2026-09-21: the claim reader noted that the `read_form_responses()` help page names only HiTOP column examples and omits `score_pid5()` from its see-also. Left unchanged because Scope Out excludes changes to that function. Raised for review.
+- 2026-09-21: status set to review.
 
 ## Decisions
 
