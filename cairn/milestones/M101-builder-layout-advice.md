@@ -1,6 +1,6 @@
 # M101: The builder tells users to score shuffled Word forms with `layout = "printed"`
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -74,6 +74,7 @@ The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed
 - 2026-09-21: re-audit: AC4 (full) — two findings: bundleReadme() also takes the version, and prose.mjs splits the notice into several passages. Stop reached, fixes put to Jeff, who chose the final wording.
 - 2026-09-21: AC4 amended to its final wording. The T6 evidence covers it: the four builds were read with the box ticked, and the four scoring passages name the right layout.
 - 2026-09-21: claim audit: 16 claims read, 2 corrected — hitop-builder index.html, README.md. The notice's "nothing warns you" was wrong (warn_item_order() fires on printed-order original-number names under the default layout) and now says "raises no error". README now says score_hitopsr() reads item_order when it gets that module and `layout = "printed"`. The same reader re-read both as accurate. Builder commit c64ade9, smoke 1/1 after the fix.
+- 2026-09-21: implement done. hitop verify: devtools::test() 0 failed, 0 errors, 13 skipped, 17564 passed (no R change on this branch). Status to review.
 
 ## Decisions
 
