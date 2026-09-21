@@ -1,6 +1,6 @@
 # M100: The shipped vignette and article read their example files from the installed package
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -46,7 +46,7 @@
 - [x] T1: `git mv` the three files to `inst/examples/`. Move their provenance rows from `tests/testthat/fixtures/README.md` into `inst/examples/README.md`. Split the two shared rows, so the PID-5-SF, PID-5-BF, HiTOP-SR and HiTOP-BR files keep theirs. Point these sites at `system.file("examples", ...)`: in `tests/testthat/test-read_form_responses.R`, the calls at :441, :446, :467 and :469 (through the `fixture()` helper at :358), the `pid5_cases` loop at :512-522 (the FULL case alone) and the header comment at :3-4, and `tests/testthat/test-layout.R:424-425`. Add one test that reads `system.file("examples", "responses-pid5.csv", package = "hitop")` to one row with 220 item columns. Run `devtools::test()`.
 - [x] T2: Rewrite `vignettes/pid5_scoring.Rmd:204-208` and `vignettes/articles/modules-hitopsr.Rmd:385-391,410` to read through `system.file()`, dropping the tests sentences. Run the AC1 grep.
 - [x] T3: Add the NEWS.md entry (no milestone numbers).
-- [ ] T4: `devtools::install()`, then purl each file and run it with `Rscript` from `tempdir()`. Make sure that the ggplot2-gated chunks at `pid5_scoring.Rmd:166,179,190` run with ggplot2 present. Run `devtools::check()`.
+- [x] T4: `devtools::install()`, then purl each file and run it with `Rscript` from `tempdir()`. Make sure that the ggplot2-gated chunks at `pid5_scoring.Rmd:166,179,190` run with ggplot2 present. Run `devtools::check()`.
 
 ## Work log
 
@@ -59,3 +59,5 @@
 - 2026-09-21: T1 done. The three files moved to `inst/examples/` with provenance in `inst/examples/README.md`. Tests read them through a new `example_file()` helper (`tests/testthat/helper-examples.R`). One new test reads each example through `system.file()`. `read_form_responses` and `layout` tests pass.
 - 2026-09-21: T2 done. Both files call `system.file("examples", <file>, package = "hitop")` once per file, and the tests sentences are gone. The AC1 grep returns no hit (exit 1).
 - 2026-09-21: T3 done. NEWS.md entry added under "Documentation and website".
+- 2026-09-21: T4 done. With the branch installed, the purled code of `pid5_scoring.Rmd` and `modules-hitopsr.Rmd` exits 0 under `Rscript` from a scratchpad directory, and the ggplot2 chunks ran. Against the old installed package both exited 1 at `read_form_responses()`. Full `devtools::test()`: 0 failed, 0 errors, 13 skipped. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
+- 2026-09-21: claim audit: 30 claims read, 0 corrected — NEWS.md, tests/testthat/test-read_form_responses.R, tests/testthat/helper-examples.R, inst/examples/README.md, tests/testthat/fixtures/README.md, vignettes/pid5_scoring.Rmd, vignettes/articles/modules-hitopsr.Rmd. Two loose wordings reworded (a NEWS sentence, and a test title that said "installed").

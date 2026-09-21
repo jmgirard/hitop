@@ -312,9 +312,9 @@
   chunk does not count.
 
 * **The PID-5 scoring vignette and the HiTOP-SR modules article now read their
-  example files from the installed package.** Both read a file that hitop-form
-  saved from the package's `tests/` folder, which is not installed, so their
-  code failed when a user reran it. The files now install under
+  example files from the installed package.** Both read a file saved by
+  hitop-form from the package's `tests/` folder, which is not installed, so
+  their code failed when a user reran it. The files now install under
   `inst/examples/`, and both pages read them with
   `system.file("examples", <file>, package = "hitop")`.
 

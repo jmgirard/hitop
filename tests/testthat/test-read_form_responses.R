@@ -561,7 +561,7 @@ for (case in pid5_cases) {
 # reach an installed package is checked by running the vignette code against
 # one.
 
-test_that("the installed examples read through system.file()", {
+test_that("the example files read through system.file()", {
   pid5 <- system.file("examples", "responses-pid5.csv", package = "hitop")
   expect_true(nzchar(pid5))
   data <- read_form_responses(pid5)
