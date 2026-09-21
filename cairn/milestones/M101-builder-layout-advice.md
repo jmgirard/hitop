@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — researchers read the builder page, the bundle README.txt and the builder README
-- **Branch/PR:** m101-builder-layout-advice (hitop tracking; code in jmgirard/hitop-builder, same branch name)
+- **Branch/PR:** m101-builder-layout-advice; code https://github.com/jmgirard/hitop-builder/pull/17 (tracking PR in this repo)
 
 ## Goal
 
@@ -35,7 +35,7 @@ The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed
 - [x] AC3: In the builder README.md, §Shuffling the Word form and §The scoring file name `layout = "printed"`. The sentence about the help page's "same reordering rule" is replaced by one that matches the `randomize` paragraph of `generate_docx_hitopsr()` in hitop main.
 - [x] AC4: The domain is the user-facing text of the builder, in three parts. The first is the served page on the four numbering and selection builds with the shuffle box ticked, which render the three `crosswalkSentence()` branches. The second is every bundle `README.txt`. The four that `tests/prose.mjs` lists, one per format and the shuffled Word one, stand for the rest. The rest differ from them only in the file stem and the hitop version, which appear only in file names and the header line. The third is README.md. Each passage in the domain that says how to score printed-order columns names `layout = "printed"`. Each one that says how to score columns in HiTOP-SR order names the default layout. Evidence: `tests/prose.mjs` lists the passages, and each one that mentions a shuffled form or a printed order is read.
 - [x] AC5: The advice scores correctly on three shuffled Word bundles from the served page. They are a module numbered 1 to n, the whole instrument, and a module with the instrument's own numbers. For each, the printed order comes from the `.docx`, never from the `.json` under test. Printed-order columns scored with `module = read_module(<bundle .json>)` and `layout = "printed"` equal the same responses in HiTOP-SR order, scored with the same module and the default layout. Evidence: an R run against hitop main.
-- [ ] AC6: Every changed or added passage, bundle READMEs included, reports 0 findings under `ste_lint.py --type descriptive`. The builder smoke test passes locally and in the builder PR's CI.
+- [x] AC6: Every changed or added passage, bundle READMEs included, reports 0 findings under `ste_lint.py --type descriptive`. The builder smoke test passes locally and in the builder PR's CI.
 
 ## Coverage
 
@@ -87,7 +87,7 @@ The HiTOP-SR Module Builder tells users of a shuffled Word form to score printed
 - AC3: README.md §The scoring file names `score_hitopsr()` and `layout = "printed"` (and the shuffled Word README paragraph). §Shuffling the Word form names it in its scoring paragraph and the itemOrder sentence. The help-page sentence now reads that `generate_docx_hitopsr()` "gives the same scoring rule under its `randomize` argument", matching hitop `R/generate_docx.R:121-131` read this session.
 - AC4: prose.mjs lists 154 passages, 17 mentioning a shuffled form or printed order, each read. The four that say how to score columns by order (body `#shuffleNote` p, readme:docx-shuffled, md:The scoring file, md:Shuffling the Word form) name `layout = "printed"` and the default layout for HiTOP-SR-order columns. The other 13 describe the controls, the scoring file, crosswalks or file names and give no scoring-by-order instruction. The unshuffled READMEs say only that `read_module()` reads the file back.
 - AC5: Fresh bundles from the served branch page. Printed order read from each .docx item table by item text against `hitopsr_items$Text`, never from the .json. Seed 101, 50 respondents, items as positions: module 1 to n (13 items, 2 scales), whole instrument (405, 76 scales) and module with original numbers (13, 2): `layout = "printed"` on printed columns all.equal to the default layout on instrument-order columns, same module, in all three. Control: the default layout on printed columns differs in all three.
-- AC6: `ste_lint.py --type descriptive` over all prose.mjs passages (page, four bundle READMEs, README.md): 0 findings. Smoke test 1/1 locally (9.2s). Builder PR CI pending: AC6 stays unticked until that run is green (step 8, before the tracking push).
+- AC6: `ste_lint.py --type descriptive` over all prose.mjs passages (page, four bundle READMEs, README.md): 0 findings. Smoke test 1/1 locally (9.2s). Builder PR https://github.com/jmgirard/hitop-builder/pull/17: CI `smoke` pass (57s, run 35638801679), at head including the fix-now commit. Re-lint after the fixes: 0.
 
 ### Consistency gate (2026-09-21)
 - cairn_validate: all checks passed. Coverage complete. No principle changed, so cairn_impact skipped.
