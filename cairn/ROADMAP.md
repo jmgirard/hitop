@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M104).
 | M100 | The shipped vignette and article read their example files from the installed package | done | — | normal | milestones/archive/M100-installed-example-files.md |
 | M101 | The builder tells users to score shuffled Word forms with `layout = "printed"` | done | — | normal | milestones/archive/M101-builder-layout-advice.md |
 | M102 | The JSON export's writer and lock catch the ten gaps M094 and M097 left open | done | — | normal | milestones/archive/M102-json-export-hardening.md |
-| M103 | One build at a time in the builder, with its settings fixed at the click | in-progress | — | normal | milestones/M103-builder-build-lock.md |
+| M103 | One build at a time in the builder, with its settings fixed at the click | review | — | normal | milestones/M103-builder-build-lock.md |
 
 ## Candidates
 

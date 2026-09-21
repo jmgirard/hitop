@@ -1,6 +1,6 @@
 # M103: One build at a time in the builder, with its settings fixed at the click
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -54,7 +54,7 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 - [x] T5: Add a plant to `tests/plants.mjs` that removes the flag from `refreshTally()`. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that the new plant fails A8.
 - [x] T6: Run headless probes on the served branch. For AC1, do the four selection actions. For AC2, make the double call with shuffle ticked between the calls. For AC3, do the three formats. Write one work-log line for each criterion.
 - [x] T7: Run the AC4 grep and read each matched paragraph. Rewrite each sentence that the T6 runs contradict, for example `#downloadHint` at `index.html:612` and README.md §What the page shows. In the work log, record the matched paragraphs and a verdict for each.
-- [ ] T8: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
+- [x] T8: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
 
 ## Work log
 
@@ -74,6 +74,8 @@ The milestone also adds a smoke-test assertion for a tick during a build, and a 
 - 2026-09-21: T6 AC2 probe. The second call ticks shuffle, turns the disabled button back on and clicks it. On the branch this gives one download event and one `> generate_docx_hitopsr` line, and the bundle is `hitopsr-word-module.zip` with `hitopsr-word-module.docx` and `hitopsr-word-module.json`. On `main` it gives two generate lines and one download, `hitopsr-word-module-shuffled.zip`, so the first build's save was lost.
 - 2026-09-21: T6 AC3 probes. Each setting changes in the same task as the click. On the branch, Word has `w:pgSz w:w="12240" w:h="15840"` (US Letter), Qualtrics has `[[Block:StartBlock]]`, and the REDCap `Required Field?` column holds `y` and blank. On `main`, Word has `w:w="11909" w:h="16834"` (A4), Qualtrics has `[[Block:ChangedBlock]]`, and REDCap holds `n` and blank.
 - 2026-09-21: T7 done. The AC4 grep matches 77 lines. Selectors, markup, labels and format cards make no on/off claim. Rewritten: `#downloadHint` (`index.html:615`), from "turns on once you tick at least one scale" to "on while at least one scale is ticked and no build is running", and the `.downloadrow` CSS comment (241), which now adds "or a build is running". Agree as they stand: README.md:66-71 (off until a scale is selected), README.md:88-101 (off while a build is running), README.md:47 and `index.html:690-697` and 1486 (boot refusal), `index.html:700-705` (the flag comment) and 832-835 (step comment). Smoke and prose pass.
+- claim audit: 18 claims read, 3 corrected — hitop-builder `index.html`, `tests/smoke.spec.js`, `tests/plants.mjs` (the hitop diff adds nothing outside `cairn/`, so the reader audited the builder diff, where the milestone's lines are). The three corrected claims: the "read here" comment, "a tick is the one action", and plant (i)'s comment. The same reader reread them, and all hold.
+- 2026-09-21: T8 local part done. After the claim-audit fixes, `npm run smoke` passes and `tests/prose.mjs` reports 18 of 18. The hitop-builder PR and its CI smoke run are left to review. Status set to review.
 
 ## Decisions
 
