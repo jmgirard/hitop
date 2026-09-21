@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-20 (42nd pass, M097's post-merge): M097 archived, PR #106 merged, CI 8/8 green. JSON-export row added with M094's six gaps and M097's four; the two `calc_se` rows merged. No LESSONS change. validate green._
+_Last hygiene check: 2026-09-21 (43rd pass, M098's post-merge): M098 archived, PR #107 and hitop-form PR #1 merged, CI green. M095 row pruned. F3 routed to DESIGN Known issues #11. No LESSONS change. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M100). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M095 | A static page renders a HiTOP-SR or HiTOP-BR form from the package's JSON export and saves each participant's responses to their device | done | M094 | normal | milestones/archive/M095-hitop-form-page.md |
 | M096 | The package reads hitop-form response files into one data frame and scores them through a module descriptor | done | M095 | normal | milestones/archive/M096-form-responses-reader.md |
 | M097 | The package ships JSON exports of the three PID-5 forms as checksum-locked artifacts | done | — | normal | milestones/archive/M097-pid5-json-export.md |
-| M098 | hitop-form renders the three PID-5 forms from the package's JSON exports | review | M097 | normal | milestones/M098-hitop-form-pid5.md |
+| M098 | hitop-form renders the three PID-5 forms from the package's JSON exports | done | M097 | normal | milestones/archive/M098-hitop-form-pid5.md |
 | M099 | The package's reader scores the three PID-5 forms saved by hitop-form | planned | M098 | normal | milestones/M099-form-responses-pid5.md |
 
 ## Candidates
