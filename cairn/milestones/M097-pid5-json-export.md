@@ -59,6 +59,8 @@ Ship one format-1.0 JSON file per PID-5 form (FULL, SF, BF) holding its items, r
 - 2026-09-20: claim audit: 25 claims read, 3 corrected — tests/testthat/test-json-export.R, data-raw/json_export.R.
 - 2026-09-20: status set to review. Suite 0 failures, 17517 passing. `check()` clean, 0 errors, 0 warnings, 0 notes.
 - 2026-09-20: review checkpoint, work not finished. AC1 to AC4 verified against fresh evidence and ticked. AC5 waits on a `devtools::check()` run that is still going. Two of the three fresh-context reviewers reported no findings, and the third is still reading.
+- 2026-09-20: AC5 met and ticked. `check()` clean, 0 errors, 0 warnings, 0 notes. Consistency gate passed. The third reviewer found no correctness bug and six minor findings.
+- 2026-09-20: step-7 approval: m097-pid5-json-export approved for merge. Jeff chose to fix two stale comments first and to send the other four review findings to the backlog.
 
 ## Decisions
 
@@ -83,4 +85,14 @@ Independent review. Three fresh-context reviewers read the branch, none having s
 - F5. `spec_items()` at `tests/testthat/test-json-export.R:46-54` reproduces the writer's filter-and-sort expression. Every number column is already ascending, so no fixture or plant tells a sorted export from an unsorted one. The ordering half of the new logic is therefore locked only against itself. The subsetting half is exercised.
 - F6. The leaked-item and dropped-item plants both resolve to `items.length`, so the wrong-form plant shows count detection rather than membership detection. A same-count substitution is not planted. AC2 is met as written, because it asks for four plants each reported by field name.
 
-Return floor. No finding demonstrates an acceptance criterion failing, and none is a load-bearing defect in what the package does for its users. F1 is a maintainer footgun in a `data-raw/` script that no user path reaches. F2 is a record that agrees with every shipped byte. F3 and F4 are stale comments. F5 and F6 are verification reach. None returns the milestone.
+Return floor. No finding demonstrates an acceptance criterion failing, and none is a defect that changes what the package does for its users. F1 is a maintainer footgun in a `data-raw/` script that no user path reaches. F2 is a record that agrees with every shipped byte. F3 and F4 are stale comments. F5 and F6 are verification reach. None returns the milestone.
+
+Triage at the gate, 2026-09-20. Jeff chose to fix the two stale comments before the merge and to send the rest to the backlog.
+
+- F3 fixed now. `data-raw/json_export.R:32` now reads "in ascending number order".
+- F4 fixed now. `tests/testthat/test-artifacts.R:203` now reads 29.
+- F1 follow-up. A candidate row records the unfiltered script mode.
+- F2 follow-up. The same row records that D-063's "in table order" wording needs a superseding entry before any keying table arrives whose number column is not ascending.
+- F5 and F6 follow-up. Both extend the verification-reach candidate row.
+
+Both fixes touch comments alone and change no runtime behavior. `test-artifacts.R` and `test-json-export.R` were re-run after them and passed, 155 checks and 0 failures.

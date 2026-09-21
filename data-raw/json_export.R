@@ -29,7 +29,7 @@
 ##   stem            the file stem; item columns are `<stem>_<number>`
 ##   maxItem         the largest item number, which sets the zero-padding
 ##   instructions    { start, options: [ { value, label } ] }
-##   items           [ { number, name, text } ] in table order
+##   items           [ { number, name, text } ] in ascending number order
 ##
 ## Every scalar is `unbox()`ed with `auto_unbox = FALSE`, as write_module()
 ## does, so `options` and `items` stay arrays whatever their length. The file
