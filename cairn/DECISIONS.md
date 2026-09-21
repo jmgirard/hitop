@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-065 (2026-09-21): The JSON export lists `items` in ascending item-number order, not table order (supersedes D-063's "in table order" wording and leaves the rest of D-063 standing)
+
+**Context:** D-063 lists format 1.0's `items` field as `{number, name, text}` "in table order". Since M097, the writer keeps the rows where the form's number column is not `NA` and sorts them by that column, as `cairn/DESIGN.md` states. Every shipped number column is already ascending in row order, so the two readings agree on every shipped byte today (M097 review finding F2).
+
+**Decision:** Under format `"1.0"`, `items` lists the form's items in ascending order of their item number. Row order in the source table has no part in the contract. Every other clause of D-063 stands unchanged. This is a wording correction and no format change, so the format string stays `"1.0"`.
+
+**Consequences:** A keying table whose number column is not in ascending row order can be added without a new format string. M102 tests the ordering on an out-of-order synthetic table. The evidence that would reopen this is a consumer that relies on table row order.
+
 ### D-064 (2026-09-20): `read_form_responses()`'s two condition classes are a public contract (applies D-034(c) to the hitop-form reader)
 
 **Context:** M096 adds `read_form_responses()`, which binds the CSV files the hitop-form page saves into one tibble. Two refusals are ones a caller may want to catch: files whose item columns disagree, and a directory with nothing to read. D-034(c) makes every condition this package raises for callers to catch a classed, named contract.
