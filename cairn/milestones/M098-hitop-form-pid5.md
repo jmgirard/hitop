@@ -7,7 +7,7 @@
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — a public page participants fill in
-- **Branch/PR:** `m098-hitop-form-pid5` (hitop, tracking), `m098-pid5` (jmgirard/hitop-form, code)
+- **Branch/PR:** `m098-hitop-form-pid5` (hitop, tracking) https://github.com/jmgirard/hitop/pull/107, `m098-pid5` (jmgirard/hitop-form, code) https://github.com/jmgirard/hitop-form/pull/1
 
 ## Goal
 
