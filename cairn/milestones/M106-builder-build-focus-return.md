@@ -81,6 +81,7 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-22: resume after review return 1. Both repos level with `origin/main`. Minor amendment: T8 added for the AC6 fix, Coverage AC6 → T6, T8.
 - 2026-09-22: T8 done (builder `f31dd36`). README.md 102-105 now says that focus on another part of the page when the build ends stays there, for example a control moved to during the build. The `download()` comment at index.html 1435-1437 says the same. The AC6 grep matched README.md 76, 99, 102 and 104. The step-2 paragraph (97-107), read whole, now agrees with AC1 to AC5. `npm run smoke` passed.
 - 2026-09-22: claim audit: 6 claims read, 1 corrected — hitop-builder README.md. The [O] reader found that "another part of the page" covers a click on the log, after which focus comes back. README.md now says that another element with focus keeps it, and that a click on plain text or the log takes no focus. The reader's other five claims were true. `npm run smoke` passed on `2f4d5a3`.
+- 2026-09-22: claim audit re-read of the corrected claim: the log and plain text take no focus, but a click on a step heading (`tabindex="-1"`, index.html 477 and 498) focuses it. README.md now says "the log or text other than a step heading" (builder `f8ee9ed`), and `npm run smoke` passed. No second pass, per the stopping rule.
 - 2026-09-22: status set to review.
 
 ## Decisions
