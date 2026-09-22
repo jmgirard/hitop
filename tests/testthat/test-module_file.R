@@ -416,6 +416,122 @@ test_that("read_module() rejects a number field that is not an array of numbers"
   expect_true(grepl("itemOrder", conditionMessage(e2), fixed = TRUE))
 })
 
+# The number fields are type-checked value by value. The probes use Social
+# Aloofness because it covers item 1, so a JSON `true` in place of that item
+# coerces to the right number and a check after coercion cannot see it.
+aloof_items <- function() {
+  expected_items("Social Aloofness")
+}
+
+# A descriptor for Social Aloofness with the three number fields given as raw
+# JSON text. A NULL field is left out of the file.
+aloof_descriptor <- function(items = NULL, nItems = NULL, itemOrder = NULL,
+                             envir = parent.frame()) {
+  fields <- c(
+    '"format":"1.0"',
+    '"instrument":"hitopsr"',
+    '"scales":["Social Aloofness"]',
+    if (!is.null(items)) paste0('"items":', items),
+    if (!is.null(nItems)) paste0('"nItems":', nItems),
+    if (!is.null(itemOrder)) paste0('"itemOrder":', itemOrder)
+  )
+  f <- withr::local_tempfile(fileext = ".json", .local_envir = envir)
+  writeLines(paste0("{", paste(fields, collapse = ","), "}"), f)
+  f
+}
+
+# The module's items as a JSON array, with element `i` replaced by `value`.
+aloof_array <- function(i = NULL, value = NULL, x = aloof_items()) {
+  x <- as.character(x)
+  if (!is.null(i)) x[[i]] <- value
+  paste0("[", paste(x, collapse = ","), "]")
+}
+
+expect_unreadable <- function(f, field, class) {
+  e <- expect_error(read_module(f), class = class)
+  expect_true(grepl(f, conditionMessage(e), fixed = TRUE))
+  expect_true(grepl(
+    paste0("unreadable ", field), conditionMessage(e), fixed = TRUE
+  ))
+}
+
+test_that("read_module() refuses a string, boolean or fraction as a whole number field", {
+  withr::local_options(cli.width = 10000)
+  n <- length(aloof_items())
+
+  # A string holding the right count and a fraction that truncates to it both
+  # read as valid before the fields were type-checked.
+  whole <- list(
+    items = c('"1"', "true", "1.5"),
+    nItems = c(sprintf('"%d"', n), "true", sprintf("%d.4", n)),
+    itemOrder = c('"1"', "true", "1.5")
+  )
+  mismatch <- "hitop_module_file_items_mismatch"
+  classes <- list(
+    items = mismatch, nItems = mismatch,
+    itemOrder = "hitop_module_file_bad_item_order"
+  )
+  for (field in names(whole)) {
+    for (value in whole[[field]]) {
+      args <- list(items = aloof_array())
+      args[[field]] <- value
+      f <- do.call(aloof_descriptor, args)
+      expect_unreadable(f, field, classes[[field]])
+    }
+  }
+})
+
+test_that("read_module() refuses a string, boolean, null or fraction inside a number array", {
+  withr::local_options(cli.width = 10000)
+  x <- aloof_items()
+
+  # Each probe names the right items: the number as a string, `true` for
+  # item 1, and the number plus 0.4. All three read as valid before the fields
+  # were type-checked. A `null` element was already refused.
+  element <- list(
+    list(i = 2L, value = sprintf('"%d"', x[[2L]])),
+    list(i = 1L, value = "true"),
+    list(i = 2L, value = "null"),
+    list(i = 2L, value = sprintf("%d.4", x[[2L]]))
+  )
+  for (probe in element) {
+    bad <- aloof_array(probe$i, probe$value)
+    expect_unreadable(
+      aloof_descriptor(items = bad), "items",
+      "hitop_module_file_items_mismatch"
+    )
+    expect_unreadable(
+      aloof_descriptor(items = aloof_array(), itemOrder = bad), "itemOrder",
+      "hitop_module_file_bad_item_order"
+    )
+  }
+})
+
+test_that("read_module() reads a JSON null number field as absent", {
+  f <- aloof_descriptor(items = "null", nItems = "null", itemOrder = "null")
+  m <- read_module(f)
+  expect_identical(m, hitop_module("hitopsr", scales = "Social Aloofness"))
+  expect_null(attr(m, "item_order"))
+})
+
+test_that("read_module() accepts whole numbers written as 2.0 or 3e0", {
+  x <- aloof_items()
+  n <- length(x)
+  built <- hitop_module("hitopsr", scales = "Social Aloofness")
+
+  for (form in c("%d.0", "%de0")) {
+    written <- paste0("[", paste(sprintf(form, x), collapse = ","), "]")
+    reversed <- paste0("[", paste(sprintf(form, rev(x)), collapse = ","), "]")
+    f <- aloof_descriptor(
+      items = written, nItems = sprintf(form, n), itemOrder = reversed
+    )
+    m <- read_module(f)
+    expect_identical(attr(m, "item_order"), rev(x))
+    attr(m, "item_order") <- NULL
+    expect_identical(m, built)
+  }
+})
+
 test_that("read_module() aborts on a path with no file, naming it", {
   withr::local_options(cli.width = 10000)
 

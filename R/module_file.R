@@ -233,6 +233,15 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
 #'   refused as `hitop_module_file_invalid_json` or as the mismatch condition
 #'   for the field it spoils, never as a bare R coercion error.
 #'
+#'   In `items`, `nItems`, and `itemOrder`, every value must be a JSON number
+#'   with a whole value. A JSON string, a JSON boolean, a JSON `null` inside an
+#'   array, or a number such as `12.4` is refused, even where it would convert
+#'   to the right item number: `items` and `nItems` raise
+#'   `hitop_module_file_items_mismatch`, and `itemOrder` raises
+#'   `hitop_module_file_bad_item_order`. A whole number written as `2.0` or
+#'   `3e0` is accepted. A field whose whole value is JSON `null` reads as
+#'   absent.
+#'
 #' @seealso [write_module()] to write the file; [hitop_module()] to build a
 #'   module without one.
 #'
@@ -313,6 +322,12 @@ read_module <- function(file) {
 
   read_module_check_format(parsed$format, file = file)
 
+  # The number fields are read from a second parse that keeps every JSON value
+  # its own type. The simplified parse above coerces `[true, 2]` to integers
+  # and `["12", 34]` to strings before any check here could see what the file
+  # held. The file already parsed once, so this parse cannot fail.
+  numbers <- jsonlite::fromJSON(file, simplifyVector = FALSE)
+
   module <- rlang::try_fetch(
     hitop_module(
       instrument = parsed$instrument,
@@ -332,9 +347,9 @@ read_module <- function(file) {
 
   # The rebuild above is the only source of keying (D-039). What the file
   # recorded is compared against it, never substituted for it.
-  if (!is.null(parsed$items)) {
+  if (!is.null(numbers[["items"]])) {
     recorded <- read_module_numbers(
-      parsed$items,
+      numbers[["items"]],
       field = "items",
       file = file,
       class = "hitop_module_file_items_mismatch"
@@ -374,13 +389,13 @@ read_module <- function(file) {
     }
   }
 
-  if (!is.null(parsed$nItems)) {
+  if (!is.null(numbers[["nItems"]])) {
     # Checked against the rebuild, never against `parsed$items`: where `items`
     # is present the block above has already proven the two cover the same set,
     # so comparing to it would be a check that cannot fail, reported against a
     # field the file may not even carry.
     recorded_n <- read_module_numbers(
-      parsed$nItems,
+      numbers[["nItems"]],
       field = "nItems",
       file = file,
       class = "hitop_module_file_items_mismatch"
@@ -390,7 +405,7 @@ read_module <- function(file) {
       cli::cli_abort(
         c(
           "The module descriptor {.file {file}} disagrees with this package.",
-          x = "Its {.field nItems} field says {.val {parsed$nItems}} but its \\
+          x = "Its {.field nItems} field says {.val {recorded_n}} but its \\
                {.field scales} cover {module$nItems} item{?s}."
         ),
         class = "hitop_module_file_items_mismatch"
@@ -398,9 +413,9 @@ read_module <- function(file) {
     }
   }
 
-  if (!is.null(parsed$itemOrder)) {
+  if (!is.null(numbers[["itemOrder"]])) {
     order <- read_module_numbers(
-      parsed$itemOrder,
+      numbers[["itemOrder"]],
       field = "itemOrder",
       file = file,
       class = "hitop_module_file_bad_item_order"
@@ -426,17 +441,24 @@ read_module <- function(file) {
 
 # Internal Helper: read one of the format's number fields.
 #
-# JSON permits shapes R's `as.integer()` either refuses outright -- a ragged
-# array parses to a list, and coercing one throws a bare `simpleError` naming
-# neither the field nor the file -- or accepts while quietly producing `NA`.
-# Both are descriptor problems, so both are raised here as the classed,
-# file-naming condition the caller would have raised for a wrong value.
+# `x` comes from a parse with `simplifyVector = FALSE`: a JSON array is an
+# unnamed list and each value keeps its JSON type. Every value must be a JSON
+# number whose parsed value is whole. A string, a boolean, a `null` element, a
+# fraction, a nested array or an object is refused here as the classed,
+# file-naming condition the caller would have raised for a wrong value, never
+# coerced to a number that might happen to match. `2.0` and `3e0` parse to
+# whole doubles and pass.
 read_module_numbers <- function(x, field, file, class,
                                 call = rlang::caller_env()) {
-  unusable <- !is.atomic(x) || is.character(x) && anyNA(suppressWarnings(as.integer(x)))
+  values <- if (is.list(x) && is.null(names(x))) x else list(x)
+  is_item_number <- function(v) {
+    is.numeric(v) && length(v) == 1L && is.finite(v) && v == round(v) &&
+      abs(v) <= .Machine$integer.max
+  }
+  unusable <- length(values) == 0L ||
+    !all(vapply(values, is_item_number, logical(1L)))
   if (!unusable) {
-    x <- suppressWarnings(as.integer(x))
-    unusable <- length(x) == 0L || anyNA(x)
+    x <- as.integer(unlist(values, use.names = FALSE))
   }
   if (unusable) {
     cli::cli_abort(
