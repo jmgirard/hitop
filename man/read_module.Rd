@@ -10,7 +10,9 @@ read_module(file)
 \item{file}{A string giving the path to read from.}
 }
 \value{
-A \code{hitop_module} object. If the file carries an \code{itemOrder}, it is
+A \code{hitop_module} object with integer items. This is also true for a
+file written from the deprecated \code{hitop_subset} class, or from a module
+whose items are doubles. If the file carries an \code{itemOrder}, it is
 returned on the object's \code{item_order} attribute --- the same attribute
 \code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns for a shuffled form. Pass the module to
 \code{\link[=score_hitopsr]{score_hitopsr()}} or \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} with \code{layout = "printed"} to

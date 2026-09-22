@@ -690,6 +690,36 @@ test_that("write_module() writes a module whose items are doubles equal to the r
   )
 })
 
+test_that("a file written from hitop_subset() reads back as the hitop_module() build", {
+  display <- c("Agoraphobia", "Appetite Loss")
+  withCallingHandlers(
+    old <- hitop_subset("hitopsr", scales = display),
+    hitop_deprecated_subset = function(cnd) {
+      rlang::cnd_muffle(cnd)
+    }
+  )
+  expect_s3_class(old, "hitop_subset")
+  f <- withr::local_tempfile(fileext = ".json")
+  write_module(old, f)
+
+  back <- read_module(f)
+  expect_identical(back, hitop_module("hitopsr", scales = display))
+  expect_identical(class(back), "hitop_module")
+  expect_type(back$items, "integer")
+})
+
+test_that("a file written from a module with double items reads back as the hitop_module() build", {
+  display <- c("Agoraphobia", "Appetite Loss")
+  m <- hitop_module("hitopsr", scales = display)
+  m$items <- as.double(m$items)
+  f <- withr::local_tempfile(fileext = ".json")
+  write_module(m, f)
+
+  back <- read_module(f)
+  expect_identical(back, hitop_module("hitopsr", scales = display))
+  expect_type(back$items, "integer")
+})
+
 test_that("write_module() ends every line with LF and writes no CR byte", {
   # A text-mode connection writes CRLF on Windows. Off Windows this test cannot
   # go red, so the windows-latest CI job is its proof.

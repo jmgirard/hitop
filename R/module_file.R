@@ -27,6 +27,14 @@ module_format_first_version <- function() {
 #'   and a file that disagrees with what the package derives is an error rather
 #'   than a silent preference for either side.
 #'
+#'   Before it writes, `write_module()` rebuilds the module with
+#'   [hitop_module()] from its `instrument` and `scales`. A module whose
+#'   `items` or `nItems` differ from that rebuild is refused, and nothing is
+#'   written. The file holds the rebuild's fields, so [read_module()] returns
+#'   a `hitop_module` with integer items. This is also true for a file written
+#'   from the deprecated `hitop_subset` class, or from a module whose items
+#'   are doubles.
+#'
 #' @section The descriptor format:
 #'
 #'   The file is JSON, with these fields:
@@ -265,7 +273,9 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
 #'
 #' @param file A string giving the path to read from.
 #'
-#' @return A `hitop_module` object. If the file carries an `itemOrder`, it is
+#' @return A `hitop_module` object with integer items. This is also true for a
+#'   file written from the deprecated `hitop_subset` class, or from a module
+#'   whose items are doubles. If the file carries an `itemOrder`, it is
 #'   returned on the object's `item_order` attribute --- the same attribute
 #'   [generate_docx_hitopsr()] returns for a shuffled form. Pass the module to
 #'   [score_hitopsr()] or [reliability_hitopsr()] with `layout = "printed"` to
