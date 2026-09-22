@@ -51,7 +51,7 @@ In this repo, the milestone changes tracking files only.
 - [x] T3: Add the `.formats button:disabled` rule after the `aria-current` rules in `index.html`. It sets the background, the border colour and style, the inset shadow, and the colour of `.fmtname` and `.fmtwhat`. It leaves the `::after` and `::before` check on the current card.
 - [x] T4: Add plant (k) to `tests/plants.mjs`, which removes the new rule. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that plant (k) fails A10 alone.
 - [x] T5: Run headless probes on the served branch for AC1 to AC4, in both schemes. Write one work-log line for each criterion.
-- [ ] T6: Write the comment above the new rule and the README.md sentence. Run the AC5 grep and read each matched block. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched blocks and a verdict for each.
+- [x] T6: Write the comment above the new rule and the README.md sentence. Run the AC5 grep and read each matched block. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched blocks and a verdict for each.
 - [ ] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
 
 ## Work log
@@ -68,6 +68,9 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: T5 AC2: in both runs, only the current card's `::after` matched the `--accent` probe and had `::before` content. The other two matched the `--bg` probe with `::before` content `none`.
 - 2026-09-21: T5 AC3: all 12 cells cleared 4.5:1. Light reads 4.93:1 for every cell, and dark reads 5.42:1.
 - 2026-09-21: T5 AC4: both bundles saved (Word 17014 bytes, Qualtrics 1370 bytes). After each build, all six values on all three cards equalled the pre-click read. AC2 to AC4 also pass on the unfixed page, which keeps the check and restores the look already.
+- 2026-09-21: T6 wrote the comment above the new rule and a README.md step-2 sentence ("all three cards look grey with a dashed border, and the current card keeps the check in its corner"). The AC5 grep matched 100 lines.
+- 2026-09-21: T6 verdicts, blocks with a card-look sentence. index.html tokens comment (4.5:1 for disabled pairs): agrees. `button:disabled` comment: agrees. Current-card comment ("is filled"): contradicted during a build, so it now says the disabled rule greys the fill and leaves the check. New rule comment: agrees. Hint text and `markFormatChoice` comment: agree. README step 2: agrees.
+- 2026-09-21: T6 verdicts, other matched blocks. They describe behavior, focus, checkboxes or the boot-abandon form, with no card-look sentence. The README file table said "eight planted defects", stale at 10 before M105. It now names the `PLANTS` list and gives no count.
 
 ## Decisions
 
