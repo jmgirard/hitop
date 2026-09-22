@@ -1,0 +1,61 @@
+<!-- Section ownership + write-modes: see tracking-rules.md "Milestone-file
+     section ownership". A phase skill never rewrites another phase's section. -->
+# M107: A module descriptor reads back as the format documents it
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** —
+- **Driving RR:** —
+- **Principles touched:** IP1, IP2, GP3
+- **Resolves:** —
+- **Surface tier:** user-facing — `write_module()` and `read_module()` are exported functions
+- **Branch/PR:** —
+
+## Goal
+
+A module descriptor that `write_module()` writes reads back through `read_module()` as the format documents it, on every platform.
+
+## Scope
+
+**In:** four gaps in `R/module_file.R`. The writer uses a text connection, so Windows writes CRLF (`R/module_file.R:176`). The reader accepts JSON strings, booleans and fractions where the format documents item numbers (`read_module_numbers()`, `R/module_file.R:430`). The writer checks the class but not that `items` and `nItems` agree with the module's `scales`. The help pages do not say that a `hitop_subset` or a module with double items reads back as a `hitop_module` with integer items. D-066 records the gate's choices.
+
+**Out:** recording the export's column names in the descriptor, so that `score_hitopsr()` needs no `items` typed out. That adds a field under D-039(d) and stays a candidate row. The permutation check that `layout_items()` duplicates stays in the M091 loose-ends candidate row.
+
+## Acceptance criteria
+
+- [ ] AC1: On every platform, a descriptor that `write_module()` writes ends each line with LF (0x0A) and holds no CR (0x0D) byte.
+- [ ] AC2: `read_module()` refuses an `items`, `nItems` or `itemOrder` field when any value in it is a JSON string, a JSON boolean, a JSON `null` inside an array, or a JSON number whose parsed value is not whole. It raises `hitop_module_file_items_mismatch` for `items` and `nItems`, and `hitop_module_file_bad_item_order` for `itemOrder`. A field whose whole value is JSON `null` still reads as absent. Whole numbers written as `2.0` or `3e0` are still accepted. Each value kind is tested in each field as the whole field. For the two array fields, each kind is also tested as one element of an otherwise valid array. Both accepted forms are tested.
+- [ ] AC3: `write_module()` rebuilds the module with `hitop_module()` from its `instrument` and `scales`. It aborts before writing when the module's `items` are not numeric or differ from the rebuild in value or order, or when its `nItems` differs in value. Each such abort is a {cli} error that names the field that differs, never a bare R error. When the rebuild itself fails, it aborts with the rebuild's error as the parent. Either abort leaves the path as it was: no file is created, and an existing file is unchanged. A module whose `items` are doubles equal in value to the rebuild's is still written. Each of these is tested.
+- [ ] AC4: `?write_module` and `?read_module` state that `read_module()` returns a `hitop_module` with integer items, also for a file written from the deprecated `hitop_subset` class or from a module whose items are doubles. A test asserts that a file written from the result of `hitop_subset()` reads back identical to the build that `hitop_module()` makes of the same instrument and scales. A second test asserts the same for a module whose `items` are doubles.
+- [ ] AC5: `NEWS.md` has an entry under its development heading for each behavior change in AC1 to AC3.
+- [ ] AC6: `devtools::document()` leaves no diff. `devtools::test()` reports 0 failures and `devtools::check()` reports 0 errors and 0 warnings. Each runs locally or, where the local toolchain cannot run it, in the `R-CMD-check.yaml` jobs at the PR head.
+
+## Coverage
+
+- AC1 → T1
+- AC2 → T2
+- AC3 → T3
+- AC4 → T4
+- AC5 → T5
+- AC6 → T5
+
+## Tasks
+
+- [ ] T1: Line endings. Write the byte test first in `tests/testthat/test-module_file.R`. It asserts at least one 0x0A and no 0x0D. It cannot go red off Windows (LESSONS, M020 and M086), so the `windows-latest` job of `.github/workflows/R-CMD-check.yaml` at the PR head is its proof. Then write through `base::file(file, open = "wb")` with `enc2utf8()` and `useBytes = TRUE`, as `R/json_export.R:68` does. Open the connection inside the existing `rlang::try_fetch()`, so that the unwritable-path test keeps its message.
+- [ ] T2: Reader number fields. Write the tests first. For each kind that today's reader accepts, choose a probe it accepts and see it red before the fix: the right item numbers written as strings, fractions such as `12.4` that truncate to the right items, `true` inside an array, and `nItems` as `"3"` for a 3-item module. The other whole-field probes lock a refusal that already holds. Then keep the current parse for `format`, `instrument` and `scales`, and type-check the three number fields on a second parse with `simplifyVector = FALSE`, because the simplified parse turns `[true, 2]` into integers before any check can see it (LESSONS, M054). Update the Errors section of `?read_module`.
+- [ ] T3: Writer check. Write the tests first. Plant defects in location (an item dropped, added, swapped, substituted, or repeated) and in form (`NA` in `items`, `items` removed, `items` as a list, character `items`, `nItems` removed, `NA`, a fraction or of length 2, an unknown scale name). Assert the classed {cli} abort for each, both with no file at the path and with an existing file that must stay byte-identical. Add the double-items control. Then add the rebuild check to `write_module_impl()` before the write.
+- [ ] T4: Help pages and lock. Add the AC4 sentence to `?write_module` and `?read_module`. Add the `hitop_subset()` round-trip test, catching `hitop_deprecated_subset` by class, and the double-items round-trip test. Run `devtools::document()`.
+- [ ] T5: Add the NEWS entries. Run `devtools::test()` and `devtools::check()`.
+
+## Work log
+
+- 2026-09-22: created by /milestone-plan. Absorbs two candidate rows: the `write_module_file()` CRLF row (M086) and the three M054 descriptor gaps. The M054 row's column-names remainder stays a candidate.
+- 2026-09-22: criteria audit, full mode, by a fresh [O] reader. It returned 12 findings. 10 were fixed in the draft: instrument wording in AC1 and AC6, the parse-time boolean coercion, probes that pass before the fix, `null` and exponent forms, form-axis plants for AC3, an existing file at the path, the double-items identity exception, and AC4 being a lock. 2 were posed at the gate (write-check strength, old classes).
+- 2026-09-22: criteria re-audit after the gate, full mode, by a second fresh [O] reader. It returned 8 findings, all fixed: evidence wording moved from AC1 to T1, AC3 requires a {cli} error and refuses non-numeric `items`, AC4 tests the double-items round trip, AC6's local-or-CI clause covers `test()` too, and T2 and T3 name the probe and parse details.
+- 2026-09-22: plan gate chose a full rebuild check in `write_module()` over a count-only check because with that check a wrong or reordered item list still writes a file the reader refuses; falsified by a caller who needs to write a module that does not match its scales.
+- 2026-09-22: plan gate chose to document that `hitop_subset` and double-item modules read back as `hitop_module` over refusing `hitop_subset` in `write_module()` because refusing breaks the shim's promise that every module function accepts it; falsified by a caller that relies on the class of the object read back.
+- 2026-09-22: plan gate chose to refuse non-number item values at once (pre-1.0 waiver) over a warn-first release because the format never allowed them and files the package wrote never hold them; falsified by a report of a hand-written descriptor with string numbers that worked before.
+
+## Decisions
+
+## Review
