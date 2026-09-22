@@ -64,6 +64,7 @@ A module descriptor that `write_module()` writes reads back through `read_module
 - 2026-09-22: claim audit: 41 claims read, 4 corrected — NEWS.md, R/module_file.R, man/read_module.Rd, man/write_module.Rd
 - 2026-09-22: the claim audit's re-read held 3 of the 4 corrections. The fourth, the NEWS "Before" sentence of the writer entry, took the reader's wording. A run of `main`'s writer and reader showed that string and swapped items both wrote a file that read back.
 - 2026-09-22: implement complete, status set to review. After the audit corrections, `devtools::test()`: 0 failed, 13 skipped, 722 tests. The AC1 Windows proof waits for the `windows-latest` job at the PR head.
+- 2026-09-22: step-7 approval: m107-module-descriptor-roundtrip approved for merge. F1 and F2 fixed on the branch at the gate.
 
 ## Decisions
 
@@ -89,3 +90,5 @@ Independent review, 2026-09-22 (user-facing tier, three lenses). The prior-revie
 - F6: the LF test cannot fail off Windows. Proposed: no change, because the `windows-latest` job at step 8 is AC1's proof.
 - F7: D-039 carries no pointer to D-066. Proposed: reject, because D-066's heading names the narrowing and decisions are append-only.
 - F8: a disk-full error can leave a truncated file. Proposed: reject, because the old writer did the same and every refusal runs before the open.
+
+Gate dispositions (2026-09-22): the maintainer chose fix now for F1 and F2 and accepted the proposed dispositions for F3 to F8. F1 fix: `read_module_numbers()` asks for "a JSON number with a whole value" for `nItems` and "a JSON array of whole item numbers" for the other two fields. `expect_unreadable()` asserts the shape. With the old message restored, 3 `nItems` probes fail. F2 fix: `expect_write_refused()` takes a `parent` text and asserts it in the parent's message, "Unknown scale name" and "not yet supported". After both fixes, `devtools::document()` left no diff and `devtools::test()` reported 0 failed, 13 skipped.

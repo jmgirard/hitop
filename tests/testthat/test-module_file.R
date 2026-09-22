@@ -453,6 +453,12 @@ expect_unreadable <- function(f, field, class) {
   expect_true(grepl(
     paste0("unreadable ", field), conditionMessage(e), fixed = TRUE
   ))
+  # The message asks for the shape the format documents: one number for
+  # `nItems`, an array for the other two fields.
+  shape <- if (field == "nItems") "a JSON number" else "a JSON array"
+  expect_true(grepl(
+    paste("It must be", shape), conditionMessage(e), fixed = TRUE
+  ))
 }
 
 test_that("read_module() refuses a string, boolean or fraction as a whole number field", {
@@ -606,8 +612,9 @@ test_that("write_module() names the file when it cannot be written", {
 # Plant `mangle` in a two-scale module and assert that write_module() refuses
 # it with a {cli} error before touching the path: first with nothing at the
 # path, then over an existing file that must keep every byte. `field` is the
-# field the refusal must name, or NULL for a module that cannot be rebuilt.
-expect_write_refused <- function(mangle, field) {
+# field the refusal must name, or NULL for a module that cannot be rebuilt;
+# then `parent` is text the rebuild's own error, the refusal's parent, holds.
+expect_write_refused <- function(mangle, field, parent = NULL) {
   m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
   bad <- mangle(m)
 
@@ -617,6 +624,7 @@ expect_write_refused <- function(mangle, field) {
   if (is.null(field)) {
     expect_true(grepl("Cannot rebuild", conditionMessage(e), fixed = TRUE))
     expect_s3_class(e$parent, "rlang_error")
+    expect_true(grepl(parent, conditionMessage(e$parent), fixed = TRUE))
   } else {
     expect_true(grepl(
       paste0("Its ", field, " field"), conditionMessage(e), fixed = TRUE
@@ -671,8 +679,14 @@ test_that("write_module() refuses a module whose nItems is not the count its sca
 test_that("write_module() refuses a module its scales cannot rebuild, with the rebuild's error as parent", {
   withr::local_options(cli.width = 10000)
 
-  expect_write_refused(function(m) { m$scales <- "Not A Scale"; m }, NULL)
-  expect_write_refused(function(m) { m$instrument <- "pid5"; m }, NULL)
+  expect_write_refused(
+    function(m) { m$scales <- "Not A Scale"; m }, NULL,
+    parent = "Unknown scale name"
+  )
+  expect_write_refused(
+    function(m) { m$instrument <- "pid5"; m }, NULL,
+    parent = "not yet supported"
+  )
 })
 
 test_that("write_module() writes a module whose items are doubles equal to the rebuild's", {

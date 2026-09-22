@@ -526,11 +526,18 @@ read_module_numbers <- function(x, field, file, class,
     x <- as.integer(unlist(values, use.names = FALSE))
   }
   if (unusable) {
+    # `nItems` is one count, the other two fields are arrays: the message names
+    # the shape the format documents for the field it reports.
+    shape <- if (identical(field, "nItems")) {
+      "a JSON number with a whole value"
+    } else {
+      "a JSON array of whole item numbers"
+    }
     cli::cli_abort(
       c(
         "The module descriptor {.file {file}} has an unreadable \\
          {.field {field}}.",
-        x = "It must be a JSON array of item numbers."
+        x = "It must be {shape}."
       ),
       class = class,
       call = call
