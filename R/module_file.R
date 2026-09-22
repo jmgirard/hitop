@@ -529,7 +529,60 @@ read_module <- function(file) {
     attr(module, "item_order") <- order
   }
 
+  if (!is.null(numbers[["columns"]])) {
+    attr(module, "columns") <- read_module_columns(
+      numbers[["columns"]],
+      n_items = module$nItems,
+      file = file
+    )
+  }
+
   module
+}
+
+# Internal Helper: read the format's `columns` field.
+#
+# `x` comes from the parse with `simplifyVector = FALSE`, so a JSON array is an
+# unnamed list whose elements keep their JSON types, and a bare string is a
+# length-one character vector. Every element must be a non-empty string, one
+# per module item, with no name repeated.
+read_module_columns <- function(x, n_items, file, call = rlang::caller_env()) {
+  refuse <- function(problem) {
+    cli::cli_abort(
+      c(
+        "The module descriptor {.file {file}} has an unusable \\
+         {.field columns}.",
+        x = problem
+      ),
+      class = "hitop_module_file_bad_columns",
+      call = call,
+      .envir = rlang::current_env()
+    )
+  }
+  values <- if (is.character(x)) {
+    as.list(x)
+  } else if (is.list(x) && is.null(names(x))) {
+    x
+  } else {
+    refuse("It must be a JSON array of strings.")
+  }
+  is_name <- function(v) {
+    is.character(v) && length(v) == 1L && !is.na(v) && nzchar(v)
+  }
+  if (!all(vapply(values, is_name, logical(1L)))) {
+    refuse("Every element must be a non-empty JSON string.")
+  }
+  columns <- unlist(values, use.names = FALSE)
+  if (length(columns) != n_items) {
+    refuse(
+      "It must hold one name for each of the {n_items} item{?s} the module \\
+       covers, not {length(columns)}."
+    )
+  }
+  if (anyDuplicated(columns) > 0L) {
+    refuse("It must not repeat a name.")
+  }
+  columns
 }
 
 # Internal Helper: read one of the format's number fields.

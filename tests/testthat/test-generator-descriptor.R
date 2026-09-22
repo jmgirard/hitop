@@ -95,7 +95,17 @@ test_that("generate_docx_hitopsr(), generate_qualtrics_hitopsr(), and generate_r
     expect_identical(as.integer(parsed$items), items, info = fn)
     expect_identical(as.integer(parsed$nItems), length(items), info = fn)
 
-    expect_identical(read_module(descriptor), module, info = fn)
+    # The REDCap descriptor also names its export's columns, which the tests
+    # at the end of this file check. Apart from that attribute, every
+    # generator's descriptor reads back as the module passed in.
+    read_back <- read_module(descriptor)
+    expect_identical(
+      !is.null(attr(read_back, "columns")),
+      fn == "generate_redcap_hitopsr",
+      info = fn
+    )
+    attr(read_back, "columns") <- NULL
+    expect_identical(read_back, module, info = fn)
   }
 })
 
