@@ -416,6 +416,128 @@ test_that("read_module() rejects a number field that is not an array of numbers"
   expect_true(grepl("itemOrder", conditionMessage(e2), fixed = TRUE))
 })
 
+# The number fields are type-checked value by value. The probes use Social
+# Aloofness because it covers item 1, so a JSON `true` in place of that item
+# coerces to the right number and a check after coercion cannot see it.
+aloof_items <- function() {
+  expected_items("Social Aloofness")
+}
+
+# A descriptor for Social Aloofness with the three number fields given as raw
+# JSON text. A NULL field is left out of the file.
+aloof_descriptor <- function(items = NULL, nItems = NULL, itemOrder = NULL,
+                             envir = parent.frame()) {
+  fields <- c(
+    '"format":"1.0"',
+    '"instrument":"hitopsr"',
+    '"scales":["Social Aloofness"]',
+    if (!is.null(items)) paste0('"items":', items),
+    if (!is.null(nItems)) paste0('"nItems":', nItems),
+    if (!is.null(itemOrder)) paste0('"itemOrder":', itemOrder)
+  )
+  f <- withr::local_tempfile(fileext = ".json", .local_envir = envir)
+  writeLines(paste0("{", paste(fields, collapse = ","), "}"), f)
+  f
+}
+
+# The module's items as a JSON array, with element `i` replaced by `value`.
+aloof_array <- function(i = NULL, value = NULL, x = aloof_items()) {
+  x <- as.character(x)
+  if (!is.null(i)) x[[i]] <- value
+  paste0("[", paste(x, collapse = ","), "]")
+}
+
+expect_unreadable <- function(f, field, class) {
+  e <- expect_error(read_module(f), class = class)
+  expect_true(grepl(f, conditionMessage(e), fixed = TRUE))
+  expect_true(grepl(
+    paste0("unreadable ", field), conditionMessage(e), fixed = TRUE
+  ))
+  # The message asks for the shape the format documents: one number for
+  # `nItems`, an array for the other two fields.
+  shape <- if (field == "nItems") "a JSON number" else "a JSON array"
+  expect_true(grepl(
+    paste("It must be", shape), conditionMessage(e), fixed = TRUE
+  ))
+}
+
+test_that("read_module() refuses a string, boolean or fraction as a whole number field", {
+  withr::local_options(cli.width = 10000)
+  n <- length(aloof_items())
+
+  # A string holding the right count and a fraction that truncates to it both
+  # read as valid before the fields were type-checked.
+  whole <- list(
+    items = c('"1"', "true", "1.5"),
+    nItems = c(sprintf('"%d"', n), "true", sprintf("%d.4", n)),
+    itemOrder = c('"1"', "true", "1.5")
+  )
+  mismatch <- "hitop_module_file_items_mismatch"
+  classes <- list(
+    items = mismatch, nItems = mismatch,
+    itemOrder = "hitop_module_file_bad_item_order"
+  )
+  for (field in names(whole)) {
+    for (value in whole[[field]]) {
+      args <- list(items = aloof_array())
+      args[[field]] <- value
+      f <- do.call(aloof_descriptor, args)
+      expect_unreadable(f, field, classes[[field]])
+    }
+  }
+})
+
+test_that("read_module() refuses a string, boolean, null or fraction inside a number array", {
+  withr::local_options(cli.width = 10000)
+  x <- aloof_items()
+
+  # Each probe names the right items: the number as a string, `true` for
+  # item 1, and the number plus 0.4. All three read as valid before the fields
+  # were type-checked. A `null` element was already refused.
+  element <- list(
+    list(i = 2L, value = sprintf('"%d"', x[[2L]])),
+    list(i = 1L, value = "true"),
+    list(i = 2L, value = "null"),
+    list(i = 2L, value = sprintf("%d.4", x[[2L]]))
+  )
+  for (probe in element) {
+    bad <- aloof_array(probe$i, probe$value)
+    expect_unreadable(
+      aloof_descriptor(items = bad), "items",
+      "hitop_module_file_items_mismatch"
+    )
+    expect_unreadable(
+      aloof_descriptor(items = aloof_array(), itemOrder = bad), "itemOrder",
+      "hitop_module_file_bad_item_order"
+    )
+  }
+})
+
+test_that("read_module() reads a JSON null number field as absent", {
+  f <- aloof_descriptor(items = "null", nItems = "null", itemOrder = "null")
+  m <- read_module(f)
+  expect_identical(m, hitop_module("hitopsr", scales = "Social Aloofness"))
+  expect_null(attr(m, "item_order"))
+})
+
+test_that("read_module() accepts whole numbers written as 2.0 or 3e0", {
+  x <- aloof_items()
+  n <- length(x)
+  built <- hitop_module("hitopsr", scales = "Social Aloofness")
+
+  for (form in c("%d.0", "%de0")) {
+    written <- paste0("[", paste(sprintf(form, x), collapse = ","), "]")
+    reversed <- paste0("[", paste(sprintf(form, rev(x)), collapse = ","), "]")
+    f <- aloof_descriptor(
+      items = written, nItems = sprintf(form, n), itemOrder = reversed
+    )
+    m <- read_module(f)
+    expect_identical(attr(m, "item_order"), rev(x))
+    attr(m, "item_order") <- NULL
+    expect_identical(m, built)
+  }
+})
+
 test_that("read_module() aborts on a path with no file, naming it", {
   withr::local_options(cli.width = 10000)
 
@@ -485,6 +607,143 @@ test_that("write_module() names the file when it cannot be written", {
   # The passing control: the same module to a writable path returns the path.
   good <- withr::local_tempfile(fileext = ".json")
   expect_identical(write_module(m, good), good)
+})
+
+# Plant `mangle` in a two-scale module and assert that write_module() refuses
+# it with a {cli} error before touching the path: first with nothing at the
+# path, then over an existing file that must keep every byte. `field` is the
+# field the refusal must name, or NULL for a module that cannot be rebuilt;
+# then `parent` is text the rebuild's own error, the refusal's parent, holds.
+expect_write_refused <- function(mangle, field, parent = NULL) {
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+  bad <- mangle(m)
+
+  absent <- withr::local_tempfile(fileext = ".json")
+  e <- expect_error(write_module(bad, absent), class = "rlang_error")
+  expect_false(file.exists(absent))
+  if (is.null(field)) {
+    expect_true(grepl("Cannot rebuild", conditionMessage(e), fixed = TRUE))
+    expect_s3_class(e$parent, "rlang_error")
+    expect_true(grepl(parent, conditionMessage(e$parent), fixed = TRUE))
+  } else {
+    expect_true(grepl(
+      paste0("Its ", field, " field"), conditionMessage(e), fixed = TRUE
+    ))
+  }
+
+  existing <- withr::local_tempfile(fileext = ".json")
+  write_module(m, existing)
+  before <- readBin(existing, what = "raw", n = file.size(existing))
+  expect_error(write_module(bad, existing), class = "rlang_error")
+  expect_identical(
+    readBin(existing, what = "raw", n = file.size(existing)), before
+  )
+}
+
+test_that("write_module() refuses a module whose items are not the ones its scales cover", {
+  withr::local_options(cli.width = 10000)
+
+  location <- list(
+    dropped = function(m) { m$items <- m$items[-1L]; m },
+    added = function(m) { m$items <- c(m$items, 999L); m },
+    swapped = function(m) { m$items[1:2] <- m$items[2:1]; m },
+    substituted = function(m) { m$items[[1L]] <- 999L; m },
+    repeated = function(m) { m$items[[2L]] <- m$items[[1L]]; m }
+  )
+  form <- list(
+    na = function(m) { m$items[[1L]] <- NA_integer_; m },
+    removed = function(m) { m$items <- NULL; m },
+    list = function(m) { m$items <- as.list(m$items); m },
+    character = function(m) { m$items <- as.character(m$items); m }
+  )
+  for (mangle in c(location, form)) {
+    expect_write_refused(mangle, "items")
+  }
+})
+
+test_that("write_module() refuses a module whose nItems is not the count its scales cover", {
+  withr::local_options(cli.width = 10000)
+
+  form <- list(
+    removed = function(m) { m$nItems <- NULL; m },
+    na = function(m) { m$nItems <- NA_integer_; m },
+    fraction = function(m) { m$nItems <- m$nItems + 0.5; m },
+    length_two = function(m) { m$nItems <- c(m$nItems, m$nItems); m },
+    wrong = function(m) { m$nItems <- m$nItems + 1L; m }
+  )
+  for (mangle in form) {
+    expect_write_refused(mangle, "nItems")
+  }
+})
+
+test_that("write_module() refuses a module its scales cannot rebuild, with the rebuild's error as parent", {
+  withr::local_options(cli.width = 10000)
+
+  expect_write_refused(
+    function(m) { m$scales <- "Not A Scale"; m }, NULL,
+    parent = "Unknown scale name"
+  )
+  expect_write_refused(
+    function(m) { m$instrument <- "pid5"; m }, NULL,
+    parent = "not yet supported"
+  )
+})
+
+test_that("write_module() writes a module whose items are doubles equal to the rebuild's", {
+  # The passing control for the refusals above: a module saved before item
+  # numbers became integers differs from the rebuild in storage type only.
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+  m$items <- as.double(m$items)
+  m$nItems <- as.double(m$nItems)
+  f <- withr::local_tempfile(fileext = ".json")
+
+  expect_no_error(write_module(m, f))
+  expect_identical(
+    jsonlite::fromJSON(f, simplifyVector = TRUE)$items,
+    expected_items(c("Agoraphobia", "Appetite Loss"))
+  )
+})
+
+test_that("a file written from hitop_subset() reads back as the hitop_module() build", {
+  display <- c("Agoraphobia", "Appetite Loss")
+  withCallingHandlers(
+    old <- hitop_subset("hitopsr", scales = display),
+    hitop_deprecated_subset = function(cnd) {
+      rlang::cnd_muffle(cnd)
+    }
+  )
+  expect_s3_class(old, "hitop_subset")
+  f <- withr::local_tempfile(fileext = ".json")
+  write_module(old, f)
+
+  back <- read_module(f)
+  expect_identical(back, hitop_module("hitopsr", scales = display))
+  expect_identical(class(back), "hitop_module")
+  expect_type(back$items, "integer")
+})
+
+test_that("a file written from a module with double items reads back as the hitop_module() build", {
+  display <- c("Agoraphobia", "Appetite Loss")
+  m <- hitop_module("hitopsr", scales = display)
+  m$items <- as.double(m$items)
+  f <- withr::local_tempfile(fileext = ".json")
+  write_module(m, f)
+
+  back <- read_module(f)
+  expect_identical(back, hitop_module("hitopsr", scales = display))
+  expect_type(back$items, "integer")
+})
+
+test_that("write_module() ends every line with LF and writes no CR byte", {
+  # A text-mode connection writes CRLF on Windows. Off Windows this test cannot
+  # go red, so the windows-latest CI job is its proof.
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+  f <- withr::local_tempfile(fileext = ".json")
+  write_module(m, f)
+
+  bytes <- readBin(f, what = "raw", n = file.size(f))
+  expect_gt(sum(bytes == as.raw(0x0A)), 0L)
+  expect_identical(sum(bytes == as.raw(0x0D)), 0L)
 })
 
 test_that("write_module() refuses an empty path rather than discarding the file", {

@@ -10,7 +10,9 @@ read_module(file)
 \item{file}{A string giving the path to read from.}
 }
 \value{
-A \code{hitop_module} object. If the file carries an \code{itemOrder}, it is
+A \code{hitop_module} object with integer items. This is also true for a
+file written from the deprecated \code{hitop_subset} class, or from a module
+whose items are doubles. If the file carries an \code{itemOrder}, it is
 returned on the object's \code{item_order} attribute --- the same attribute
 \code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns for a shuffled form. Pass the module to
 \code{\link[=score_hitopsr]{score_hitopsr()}} or \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} with \code{layout = "printed"} to
@@ -45,6 +47,15 @@ than merely wrong --- a top level that is a JSON array instead of an
 object, or a number field that is not a flat array of numbers --- is
 refused as \code{hitop_module_file_invalid_json} or as the mismatch condition
 for the field it spoils, never as a bare R coercion error.
+
+In \code{items}, \code{nItems}, and \code{itemOrder}, every value must be a JSON number
+with a whole value. A JSON string, a JSON boolean, or a number such as
+\code{12.4} is refused, even where it would convert to the right item number.
+A JSON \code{null} inside an array is also refused. \code{items} and \code{nItems} raise
+\code{hitop_module_file_items_mismatch}, and \code{itemOrder} raises
+\code{hitop_module_file_bad_item_order}. A whole number written as \code{2.0} or
+\code{3e0} is accepted. A field whose whole value is JSON \code{null} reads as
+absent.
 }
 
 \section{The descriptor format}{

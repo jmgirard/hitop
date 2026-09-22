@@ -27,6 +27,15 @@ module_format_first_version <- function() {
 #'   and a file that disagrees with what the package derives is an error rather
 #'   than a silent preference for either side.
 #'
+#'   Before it writes, `write_module()` rebuilds the module with
+#'   [hitop_module()] from its `instrument` and `scales`. A module whose
+#'   `items` or `nItems` differ from that rebuild is refused, and nothing is
+#'   written. The file holds the rebuild's fields. [read_module()] rebuilds
+#'   the module from the file's `scales`, so it returns a `hitop_module` with
+#'   integer items. This is also true for a file written
+#'   from the deprecated `hitop_subset` class, or from a module whose items
+#'   are doubles.
+#'
 #' @section The descriptor format:
 #'
 #'   The file is JSON, with these fields:
@@ -123,6 +132,60 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
     call = call
   )
 
+  # The module is rebuilt from its `instrument` and `scales`, the two fields
+  # read_module() rebuilds from, and its `items` and `nItems` must match the
+  # rebuild. A module changed by hand would otherwise write a file that
+  # read_module() refuses, or one whose recorded items are not the rebuild's.
+  # Everything here runs before the path is opened, so
+  # a refusal leaves the path as it was.
+  rebuilt <- rlang::try_fetch(
+    hitop_module(instrument = module$instrument, scales = module$scales),
+    error = function(cnd) {
+      cli::cli_abort(
+        c(
+          "Cannot rebuild the {.arg module} argument from its \\
+           {.field instrument} and {.field scales}.",
+          i = "Build the module with {.code hitop_module()}."
+        ),
+        parent = cnd,
+        call = call
+      )
+    }
+  )
+  # Compared by value, so a module whose `items` are doubles equal to the
+  # rebuild's, as one saved before item numbers were integers carries, is
+  # still written. Order counts: the rebuild's order is the one written.
+  items <- module$items
+  items_ok <- is.numeric(items) &&
+    length(items) == length(rebuilt$items) &&
+    !anyNA(items) &&
+    all(items == rebuilt$items)
+  cli_assert(
+    condition = items_ok,
+    message = c(
+      "The {.arg module} argument does not match its {.field scales}.",
+      x = "Its items field is not the {rebuilt$nItems} item number{?s} \\
+           its scales cover, in ascending order.",
+      i = "Build the module with {.code hitop_module()}."
+    ),
+    call = call
+  )
+  n_items <- module$nItems
+  n_ok <- is.numeric(n_items) &&
+    length(n_items) == 1L &&
+    !is.na(n_items) &&
+    n_items == rebuilt$nItems
+  cli_assert(
+    condition = n_ok,
+    message = c(
+      "The {.arg module} argument does not match its {.field scales}.",
+      x = "Its nItems field is not {rebuilt$nItems}, the number of items \\
+           its scales cover.",
+      i = "Build the module with {.code hitop_module()}."
+    ),
+    call = call
+  )
+
   # `unbox()` on every scalar, with `auto_unbox = FALSE`, so that `scales` and
   # `items` stay JSON arrays even for a module holding one of either. Under
   # `auto_unbox = TRUE` a length-one vector would collapse to a bare value and
@@ -133,10 +196,10 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
     packageVersion =
       jsonlite::unbox(as.character(utils::packageVersion("hitop"))),
     buildDate = jsonlite::unbox(format(Sys.Date())),
-    instrument = jsonlite::unbox(module$instrument),
-    scales = as.character(module$scales),
-    items = module$items,
-    nItems = jsonlite::unbox(module$nItems)
+    instrument = jsonlite::unbox(rebuilt$instrument),
+    scales = rebuilt$scales,
+    items = rebuilt$items,
+    nItems = jsonlite::unbox(rebuilt$nItems)
   )
 
   # A module carrying an `item_order` attribute records the order a shuffled
@@ -171,9 +234,11 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
   json <- jsonlite::toJSON(payload, auto_unbox = FALSE, pretty = TRUE)
   # An unwritable path is reported the way every other failure in this file is
   # -- naming the file -- rather than as the bare "cannot open the connection"
-  # that `writeLines()` raises on its own.
-  rlang::try_fetch(
-    suppressWarnings(writeLines(as.character(json), con = file)),
+  # that `file()` raises on its own. A binary connection, as in
+  # write_json_export(), so every platform writes LF: a text connection writes
+  # CRLF on Windows.
+  con <- rlang::try_fetch(
+    suppressWarnings(file(file, open = "wb")),
     error = function(cnd) {
       cli::cli_abort(
         c(
@@ -185,6 +250,8 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
       )
     }
   )
+  on.exit(close(con), add = TRUE)
+  writeLines(enc2utf8(as.character(json)), con, useBytes = TRUE)
 
   invisible(file)
 }
@@ -208,7 +275,9 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
 #'
 #' @param file A string giving the path to read from.
 #'
-#' @return A `hitop_module` object. If the file carries an `itemOrder`, it is
+#' @return A `hitop_module` object with integer items. This is also true for a
+#'   file written from the deprecated `hitop_subset` class, or from a module
+#'   whose items are doubles. If the file carries an `itemOrder`, it is
 #'   returned on the object's `item_order` attribute --- the same attribute
 #'   [generate_docx_hitopsr()] returns for a shuffled form. Pass the module to
 #'   [score_hitopsr()] or [reliability_hitopsr()] with `layout = "printed"` to
@@ -228,6 +297,15 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
 #'   object, or a number field that is not a flat array of numbers --- is
 #'   refused as `hitop_module_file_invalid_json` or as the mismatch condition
 #'   for the field it spoils, never as a bare R coercion error.
+#'
+#'   In `items`, `nItems`, and `itemOrder`, every value must be a JSON number
+#'   with a whole value. A JSON string, a JSON boolean, or a number such as
+#'   `12.4` is refused, even where it would convert to the right item number.
+#'   A JSON `null` inside an array is also refused. `items` and `nItems` raise
+#'   `hitop_module_file_items_mismatch`, and `itemOrder` raises
+#'   `hitop_module_file_bad_item_order`. A whole number written as `2.0` or
+#'   `3e0` is accepted. A field whose whole value is JSON `null` reads as
+#'   absent.
 #'
 #' @seealso [write_module()] to write the file; [hitop_module()] to build a
 #'   module without one.
@@ -309,6 +387,12 @@ read_module <- function(file) {
 
   read_module_check_format(parsed$format, file = file)
 
+  # The number fields are read from a second parse that keeps every JSON value
+  # its own type. The simplified parse above coerces `[true, 2]` to integers
+  # and `["12", 34]` to strings before any check here could see what the file
+  # held. The file already parsed once, so this parse cannot fail.
+  numbers <- jsonlite::fromJSON(file, simplifyVector = FALSE)
+
   module <- rlang::try_fetch(
     hitop_module(
       instrument = parsed$instrument,
@@ -328,9 +412,9 @@ read_module <- function(file) {
 
   # The rebuild above is the only source of keying (D-039). What the file
   # recorded is compared against it, never substituted for it.
-  if (!is.null(parsed$items)) {
+  if (!is.null(numbers[["items"]])) {
     recorded <- read_module_numbers(
-      parsed$items,
+      numbers[["items"]],
       field = "items",
       file = file,
       class = "hitop_module_file_items_mismatch"
@@ -370,13 +454,13 @@ read_module <- function(file) {
     }
   }
 
-  if (!is.null(parsed$nItems)) {
+  if (!is.null(numbers[["nItems"]])) {
     # Checked against the rebuild, never against `parsed$items`: where `items`
     # is present the block above has already proven the two cover the same set,
     # so comparing to it would be a check that cannot fail, reported against a
     # field the file may not even carry.
     recorded_n <- read_module_numbers(
-      parsed$nItems,
+      numbers[["nItems"]],
       field = "nItems",
       file = file,
       class = "hitop_module_file_items_mismatch"
@@ -386,7 +470,7 @@ read_module <- function(file) {
       cli::cli_abort(
         c(
           "The module descriptor {.file {file}} disagrees with this package.",
-          x = "Its {.field nItems} field says {.val {parsed$nItems}} but its \\
+          x = "Its {.field nItems} field says {.val {recorded_n}} but its \\
                {.field scales} cover {module$nItems} item{?s}."
         ),
         class = "hitop_module_file_items_mismatch"
@@ -394,9 +478,9 @@ read_module <- function(file) {
     }
   }
 
-  if (!is.null(parsed$itemOrder)) {
+  if (!is.null(numbers[["itemOrder"]])) {
     order <- read_module_numbers(
-      parsed$itemOrder,
+      numbers[["itemOrder"]],
       field = "itemOrder",
       file = file,
       class = "hitop_module_file_bad_item_order"
@@ -422,24 +506,38 @@ read_module <- function(file) {
 
 # Internal Helper: read one of the format's number fields.
 #
-# JSON permits shapes R's `as.integer()` either refuses outright -- a ragged
-# array parses to a list, and coercing one throws a bare `simpleError` naming
-# neither the field nor the file -- or accepts while quietly producing `NA`.
-# Both are descriptor problems, so both are raised here as the classed,
-# file-naming condition the caller would have raised for a wrong value.
+# `x` comes from a parse with `simplifyVector = FALSE`: a JSON array is an
+# unnamed list and each value keeps its JSON type. Every value must be a JSON
+# number whose parsed value is whole. A string, a boolean, a `null` element, a
+# fraction, a nested array or an object is refused here as the classed,
+# file-naming condition the caller would have raised for a wrong value, never
+# coerced to a number that might happen to match. `2.0` and `3e0` parse to
+# whole doubles and pass.
 read_module_numbers <- function(x, field, file, class,
                                 call = rlang::caller_env()) {
-  unusable <- !is.atomic(x) || is.character(x) && anyNA(suppressWarnings(as.integer(x)))
+  values <- if (is.list(x) && is.null(names(x))) x else list(x)
+  is_item_number <- function(v) {
+    is.numeric(v) && length(v) == 1L && is.finite(v) && v == round(v) &&
+      abs(v) <= .Machine$integer.max
+  }
+  unusable <- length(values) == 0L ||
+    !all(vapply(values, is_item_number, logical(1L)))
   if (!unusable) {
-    x <- suppressWarnings(as.integer(x))
-    unusable <- length(x) == 0L || anyNA(x)
+    x <- as.integer(unlist(values, use.names = FALSE))
   }
   if (unusable) {
+    # `nItems` is one count, the other two fields are arrays: the message names
+    # the shape the format documents for the field it reports.
+    shape <- if (identical(field, "nItems")) {
+      "a JSON number with a whole value"
+    } else {
+      "a JSON array of whole item numbers"
+    }
     cli::cli_abort(
       c(
         "The module descriptor {.file {file}} has an unreadable \\
          {.field {field}}.",
-        x = "It must be a JSON array of item numbers."
+        x = "It must be {shape}."
       ),
       class = class,
       call = call
