@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-22 (51st pass, M106's post-merge): M106 archived, PR #116 merged at 8/8 CI green, builder PR #21 merged at smoke green. M103 row pruned. Focus-return coverage row added. validate green._
+_Last hygiene check: 2026-09-22 (52nd pass, M107's post-merge): M107 archived, PR #117 merged at 8/8 CI green. M104 row pruned. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M108). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M104 | The builder's format cards are off during a build | done | — | normal | milestones/archive/M104-builder-format-cards-lock.md |
 | M105 | The builder's format cards look off while a build runs | done | — | normal | milestones/archive/M105-builder-disabled-cards-look.md |
 | M106 | Keyboard focus comes back when a builder build ends | done | — | normal | milestones/archive/M106-builder-build-focus-return.md |
-| M107 | A module descriptor reads back as the format documents it | review | — | normal | milestones/M107-module-descriptor-roundtrip.md |
+| M107 | A module descriptor reads back as the format documents it | done | — | normal | milestones/archive/M107-module-descriptor-roundtrip.md |
 
 ## Candidates
 
