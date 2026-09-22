@@ -73,6 +73,7 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: T5 AC4. The `#shuffle` run and the step-one heading run each read that element for 5 s after the build.
 - 2026-09-21: T5 AC5. In both AC1 runs at 1280 by 400, the control was outside the viewport at `scrollY` 1248. After focus returned, `scrollY` was 1248. A copy with a plain `focus()` read 899.
 - 2026-09-21: T6 done. README.md step 2 gained four sentences on focus after a build. The AC6 grep matched README.md 76 (Tab popup). In index.html it matched 25/56 (tokens), 96-101 (ring), 377-380 (heading ring), and 917-927 (step heading). It also matched 1019 and 1062 (popup), 1289-1293 and 1431-1447 (build focus), 1699 (card press), and 1727 (first paint). Verdict: the two build-focus blocks and the new README sentences agree with T5. The other blocks say nothing about focus during or after a build. Nothing was rewritten.
+- 2026-09-21: T7 local half done. `npm run smoke` passed on the builder branch head. The PR and its smoke run belong to `/milestone-review`.
 
 ## Decisions
 
