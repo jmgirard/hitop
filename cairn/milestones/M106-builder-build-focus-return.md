@@ -1,6 +1,6 @@
 # M106: Keyboard focus comes back when a builder build ends
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -76,6 +76,7 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: T7 local half done. `npm run smoke` passed on the builder branch head. The PR and its smoke run belong to `/milestone-review`.
 - 2026-09-21: claim audit: 22 claims read, 3 corrected — hitop-builder index.html, tests/smoke.spec.js. The [O] reader ran on the builder branch diff, because this repo's diff adds no lines outside cairn/. It flagged a Chromium-only focus drop, an unobserved Safari card case, and an unobserved heading focus. The same reader re-read all three as true. It also flagged README claim 18, which stays as written because the next README sentence covers moved focus. Smoke passed after the edits.
 - 2026-09-21: implement done, status set to review.
+- 2026-09-22: review return 1 (defect): AC6 fails. README.md:102 in hitop-builder says "If you moved focus during the build, it stays where you put it." A visitor who moves focus to a step-bar button and then clicks a spot in the log that takes no focus drops focus to the body, and `download()` returns it to the control from the click. The fix rewrites that sentence so that it agrees with AC1 and AC4, then re-runs the AC6 read. The other nine [O] findings in the Review section wait for triage at the next review gate. Status set to in-progress.
 
 ## Decisions
 
