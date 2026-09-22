@@ -48,7 +48,7 @@ In this repo, the milestone changes tracking files only.
 
 - [x] T1: Cut `m105-builder-disabled-cards-look` from the updated builder `main` and from hitop `main`.
 - [x] T2: Write the test first. Add assertion A10 to `tests/smoke.spec.js`, in the in-build read that A9 takes. A10 asserts that each card's computed `border-top-style` is `dashed` and that its `background-color` equals `#downloadBtn`'s. Wait for the card transitions to end before the read. Add A10 to the assertion list in the file header. Run the test on the unfixed page and see it fail on A10.
-- [ ] T3: Add the `.formats button:disabled` rule after the `aria-current` rules in `index.html`. It sets the background, the border colour and style, the inset shadow, and the colour of `.fmtname` and `.fmtwhat`. It leaves the `::after` and `::before` check on the current card.
+- [x] T3: Add the `.formats button:disabled` rule after the `aria-current` rules in `index.html`. It sets the background, the border colour and style, the inset shadow, and the colour of `.fmtname` and `.fmtwhat`. It leaves the `::after` and `::before` check on the current card.
 - [ ] T4: Add plant (k) to `tests/plants.mjs`, which removes the new rule. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that plant (k) fails A10 alone.
 - [ ] T5: Run headless probes on the served branch for AC1 to AC4, in both schemes. Write one work-log line for each criterion.
 - [ ] T6: Write the comment above the new rule and the README.md sentence. Run the AC5 grep and read each matched block. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched blocks and a verdict for each.
@@ -62,6 +62,7 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: a re-audit of the gate-changed criteria by the same [O] reader (full mode) returned 4 findings, 1 on M105, fixed after the plan commit. AC1 now also reads the border colour and a `box-shadow` of `none`, and AC4 compares `box-shadow` too.
 - 2026-09-21: /milestone-implement started. T1 cut both branches from main at c7fbbb47 (hitop) and c56a9fb (builder). The question gate was skipped because the plan leaves no choice open.
 - 2026-09-21: T2 added A10 to `tests/smoke.spec.js` (mouse parked at 0,0, a poll named A10 waits for `getAnimations({ subtree: true })` to empty, then reads each card's `border-top-style` and whether its background equals `#downloadBtn`'s). On the unfixed page the run failed on A10 alone: the Word card read solid, and no card's background matched the button.
+- 2026-09-21: T3 added the `.formats button:disabled` rule and its `.fmtname`/`.fmtwhat` colour rule after the `aria-current` rules. The pseudo-element rules are untouched. `npm run smoke` passed. The comment waits for T6.
 
 ## Decisions
 
