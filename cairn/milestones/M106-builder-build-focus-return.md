@@ -1,6 +1,6 @@
 # M106: Keyboard focus comes back when a builder build ends
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -43,7 +43,7 @@ In this repo, the milestone changes tracking files only.
 - AC3 → T3, T5
 - AC4 → T3, T5
 - AC5 → T3, T5
-- AC6 → T6
+- AC6 → T6, T8
 - AC7 → T2, T4, T7
 
 ## Tasks
@@ -55,6 +55,7 @@ In this repo, the milestone changes tracking files only.
 - [x] T5: Run headless probes on the served branch for AC1 to AC5, with the forced-failure copy for AC2. Write one work-log line for each criterion.
 - [x] T6: Write the README.md sentence. Run the AC6 grep and read each matched block. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched blocks and a verdict for each.
 - [x] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
+- [x] T8: Rewrite README.md:102 and the matching clause in the `download()` comment so that they say that focus on another element at the build's end stays there. Run the AC6 grep again and read each matched block.
 
 ## Work log
 
@@ -77,6 +78,9 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: claim audit: 22 claims read, 3 corrected — hitop-builder index.html, tests/smoke.spec.js. The [O] reader ran on the builder branch diff, because this repo's diff adds no lines outside cairn/. It flagged a Chromium-only focus drop, an unobserved Safari card case, and an unobserved heading focus. The same reader re-read all three as true. It also flagged README claim 18, which stays as written because the next README sentence covers moved focus. Smoke passed after the edits.
 - 2026-09-21: implement done, status set to review.
 - 2026-09-22: review return 1 (defect): AC6 fails. README.md:102 in hitop-builder says "If you moved focus during the build, it stays where you put it." A visitor who moves focus to a step-bar button and then clicks a spot in the log that takes no focus drops focus to the body, and `download()` returns it to the control from the click. The fix rewrites that sentence so that it agrees with AC1 and AC4, then re-runs the AC6 read. The other nine [O] findings in the Review section wait for triage at the next review gate. Status set to in-progress.
+- 2026-09-22: resume after review return 1. Both repos level with `origin/main`. Minor amendment: T8 added for the AC6 fix, Coverage AC6 → T6, T8.
+- 2026-09-22: T8 done (builder `f31dd36`). README.md 102-105 now says that focus on another part of the page when the build ends stays there, for example a control moved to during the build. The `download()` comment at index.html 1435-1437 says the same. The AC6 grep matched README.md 76, 99, 102 and 104. The step-2 paragraph (97-107), read whole, now agrees with AC1 to AC5. `npm run smoke` passed.
+- 2026-09-22: status set to review.
 
 ## Decisions
 
