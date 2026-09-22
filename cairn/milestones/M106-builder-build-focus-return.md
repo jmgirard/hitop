@@ -33,7 +33,7 @@ In this repo, the milestone changes tracking files only.
 - [x] AC3: If the control that had focus at the click is disabled or hidden when the build ends, focus stays on the body. There are two runs, each starting a Word build with the Playwright `click()` on `#downloadBtn`. In the first run, the probe unticks every ticked scale with `dispatchEvent('click')` during the build. Step one and its checkboxes are hidden at that time. So `#downloadBtn` is disabled at the end. In the second run, the probe presses the step bar's first-step button, which hides step two, and then calls `blur()` on the focused heading. After the build ends, each run polls for 5 seconds and reads `document.activeElement` as the body throughout.
 - [x] AC4: If focus is on an element other than the body when a build ends, focus stays there. There are two runs. In the first run, the probe opens the Word settings disclosure during the build and focuses `#shuffle`. In the second run, the probe presses the step bar's first-step button during the build, which focuses that step's heading. After the build ends, each run polls for 5 seconds and reads `document.activeElement` as `#shuffle` or as that heading throughout.
 - [x] AC5: The return of focus does not scroll the page. In both AC1 runs, the viewport is set to 1280 by 400, and the probe calls `scrollIntoView()` on `#logSection` during the build. It then confirms that the control that had focus at the click lies outside the viewport, and it reads `window.scrollY`. After focus returns, `window.scrollY` equals that value.
-- [ ] AC6: The comment in `download()` and README.md §What the page shows say that focus comes back to the control that had it when a build ends. The domain is the comment blocks in `index.html` and the paragraphs in README.md that `grep -n -i -E "focus|keyboard|tab key" index.html README.md` matches, each read whole. Each sentence about focus during or after a build agrees with what AC1 to AC5 verify.
+- [x] AC6: The comment in `download()` and README.md §What the page shows say that focus comes back to the control that had it when a build ends. The domain is the comment blocks in `index.html` and the paragraphs in README.md that `grep -n -i -E "focus|keyboard|tab key" index.html README.md` matches, each read whole. Each sentence about focus during or after a build agrees with what AC1 to AC5 verify.
 - [ ] AC7: The builder's smoke suite (`npm run smoke`) passes locally and on the CI of the hitop-builder pull request.
 
 ## Coverage
@@ -153,3 +153,35 @@ Independent review, three fresh reviewers on the builder diff, findings ranked b
 - [S-prior]1: programmatic `focus()` may not show the focus ring (M052's `:focus-visible` lesson). In Chromium a probe read `:focus-visible` true and a solid outline after a keyboard Enter build, and false after a mouse click. Safari and Firefox are not checked.
 
 Dispositions are set at the next gate.
+
+### Pass 3 (2026-09-22, builder head `66ae1b3`)
+
+Both repos were level with `origin/main`. The probes ran on fresh copies built from `66ae1b3`.
+
+- AC1: the `click()` run read the body during the build and `#downloadBtn` after the save. The card run read the Qualtrics card before the dispatch, the body after it, and the Qualtrics card after the save. Main's page read the body after the save.
+- AC2: on the `stop()` copy, both runs reached "The DOCX build failed. The log below says why." and read the body during the build. After the failure they read `#downloadBtn` and the Qualtrics card.
+- AC3: the untick run unticked 1 hidden checkbox, left 0 ticked, and read the body for 5 s with `#downloadBtn` disabled. The step run read the step-one heading, the body after `blur()`, and the body for 5 s after the save.
+- AC4: the `#shuffle` run and the step-one heading run each read that element for 5 s after the save.
+- AC5: both AC1 runs at 1280 by 400 had the control outside the viewport at `scrollY` 1248 and read 1248 after focus returned. The plain `focus()` copy read 899.
+- AC6: the grep matched README.md 76 and 99-104, and index.html 25, 56, 96-101, 377-380, 917-927, 1019, 1062-1064, 1289-1295, 1433-1450, 1702 and 1730. Each block was read whole. README.md 99-104 says focus comes back if no other element has focus, after a save and after a failure, with no scroll, and not to a control that is off or hidden. That agrees with AC1 to AC5. The two `download()` blocks say the same. The other blocks say nothing about focus during or after a build.
+- AC7 (local half): `npm run smoke` passed on `66ae1b3`. `npm run plants` passed: the unplanted copy passed, all 12 plants were red, and plant (l) failed A11 alone. The CI half waits for the builder PR.
+
+Consistency gate: `cairn_validate.py` exit 0 with 24 advisory warnings that predate M106. `devtools::document()` left no diff, `pkgdown::check_pkgdown()` found no problems, and `devtools::check()` gave 0 errors, 0 warnings and 0 notes. NEWS.md needs no entry, because this repo's diff touches `cairn/` only.
+
+Independent review, three fresh reviewers. No reviewer found a bug in the behavior. Ranked findings:
+
+- [O]1, [O]2: A11 guards only the basic return, and plant (l) removes only the `focus()` call. The card, failure, guard and no-scroll cases rest on one-off probes.
+- [O]3: README.md 99-100 names the button or card, but the code returns focus to any element that had it at the press. For example, a Safari step heading after a click on text. No AC run covers it.
+- [O]4, [S-hist]1: the comment at index.html 1289-1294 names the download button or a card as the kept element, and Safari only, where the Scope names Safari and Firefox.
+- [O]5: "while focus is still on the body" at index.html 1434 suggests that focus stayed on the body. The code checks only at the end.
+- [O]6: "the control from your press" at README.md 103 can read as the download button.
+- [O]7: the drop to the body is seen in headless Chromium only.
+- [O]8: A11 can go red on a correct page if the build ends before the `blur()`, and its comment does not say so.
+- [O]9: the smoke comment at tests/smoke.spec.js 289-291 says "press" where two step-bar presses happen.
+- [O]10: the focus move runs right after the `#status` live-region write, and a screen reader can speak the button over the message.
+- [O]11: `getClientRects()` does not catch `visibility: hidden`. No control is in that state.
+- [O]12: index.html 1702 "Focus stays on the card" is not true in Safari or Firefox. Outside the diff.
+- [S-prior]1: no earlier review point is reversed. [S-prior]2: README gives no browser caveat.
+- [S-hist]2: the README sentence was rewritten twice after returns 1 and 2.
+
+Dispositions are set at the gate below.
