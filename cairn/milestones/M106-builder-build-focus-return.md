@@ -1,6 +1,6 @@
 # M106: Keyboard focus comes back when a builder build ends
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -83,6 +83,7 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-22: claim audit: 6 claims read, 1 corrected — hitop-builder README.md. The [O] reader found that "another part of the page" covers a click on the log, after which focus comes back. README.md now says that another element with focus keeps it, and that a click on plain text or the log takes no focus. The reader's other five claims were true. `npm run smoke` passed on `2f4d5a3`.
 - 2026-09-22: claim audit re-read of the corrected claim: the log and plain text take no focus, but a click on a step heading (`tabindex="-1"`, index.html 477 and 498) focuses it. README.md now says "the log or text other than a step heading" (builder `f8ee9ed`), and `npm run smoke` passed. No second pass, per the stopping rule.
 - 2026-09-22: status set to review.
+- 2026-09-22: review return 2 (defect): AC6 fails again. README.md:103-104 says that a click on text other than a step heading takes no focus, but a click on the "Word settings" summary text focuses that `<summary>`. Same shape as return 1: a README sentence that lists click cases by recall. Thrash trigger (b) fires on AC6. The rewraps at README.md:105-106 and index.html:1436 also go with the fix. Status set to in-progress.
 
 ## Decisions
 
@@ -115,3 +116,34 @@ Independent review, three fresh reviewers on the builder diff. The [S] history r
 10. An older bug outside M106: an `abandonBoot()` during a build is overwritten by the build-failed status. The focus code handles that path.
 
 Dispositions are set at the gate.
+
+### Pass 2 (2026-09-22, builder head `f8ee9ed`)
+
+Both repos were level with `origin/main`. The probes ran on fresh copies of the page built from `f8ee9ed`: the branch page, a `stop()` copy, main's page and a plain `focus()` copy.
+
+- AC1: the `click()` run read the body during the build and `#downloadBtn` after the save. The card run read the Qualtrics card before the dispatch, the body after it, and the Qualtrics card after the save. Main's page read the body after the save.
+- AC2: on the `stop()` copy, both runs reached "The DOCX build failed. The log below says why." and read the body during the build. After the failure they read `#downloadBtn` and the Qualtrics card.
+- AC3: the untick run unticked 1 hidden checkbox, left 0 ticked, and read the body for 5 s with `#downloadBtn` disabled. The step run read the step-one heading, the body after `blur()`, and the body for 5 s after the save.
+- AC4: the `#shuffle` run and the step-one heading run each read that element for 5 s after the save.
+- AC5: both AC1 runs at 1280 by 400 had the control outside the viewport at `scrollY` 1248, and read 1248 after focus returned. The plain `focus()` copy read 899.
+- AC6: fails. README.md:103-104 says "A click on the log or on text other than a step heading takes no focus". A probe clicked the "Word settings" summary text and read focus on that `SUMMARY`. A click there during a build leaves focus off the body, so focus does not come back, and the sentence disagrees with the code. AC6 stays unticked.
+- AC7 (local half): `npm run smoke` passed on `f8ee9ed`. `npm run plants` passed: the unplanted copy passed, all 12 plants were red, and plant (l) failed A11 alone.
+
+Consistency gate: `cairn_validate.py` exit 0 with 24 advisory warnings that predate M106. `devtools::document()` left no diff, `pkgdown::check_pkgdown()` found no problems, and `devtools::check()` gave 0 errors, 0 warnings and 0 notes. NEWS.md needs no entry, because this repo's diff touches `cairn/` only.
+
+Independent review, three fresh reviewers on the builder diff, findings ranked by each reviewer:
+
+- [O]1: README.md:103-105 overstates which clicks take no focus (labels, `<summary>` text). The summary part is confirmed by the probe above. A click on the "Shuffle the printed item order" label text read the body, so the label part is not confirmed.
+- [O]2: a click on `#log` may focus the scroll box in newer Chromium. A probe click on the log read the body.
+- [O]3: tests/smoke.spec.js:294 can go red on a correct page if the build ends between the A10 read and the `blur()`.
+- [O]4: A11 tests focus that the test put on the body, not the drop from the disabled button.
+- [O]5: no plant removes the body guard, the `disabled` or `getClientRects()` checks, or `preventScroll`.
+- [O]6: no smoke assertion covers the return after a failed build.
+- [O]7, [S-hist]3, [S-prior]2: the comment at index.html:1289-1294 names Safari only, where the Scope and M104's review name Safari and Firefox.
+- [O]8: README.md:99-100 does not say that the card case depends on the browser.
+- [O]9, [S-hist]1, [S-prior]3: README.md:105-106 run to 89 characters, not rewrapped after T8.
+- [O]10, [S-hist]2: index.html:1436 runs to 122 characters, not rewrapped after T8.
+- [O]11: the "Two scales are ticked" comment at tests/smoke.spec.js:323-325 depends on A8's tick.
+- [S-prior]1: programmatic `focus()` may not show the focus ring (M052's `:focus-visible` lesson). In Chromium a probe read `:focus-visible` true and a solid outline after a keyboard Enter build, and false after a mouse click. Safari and Firefox are not checked.
+
+Dispositions are set at the next gate.
