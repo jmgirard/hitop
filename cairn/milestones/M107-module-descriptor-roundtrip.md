@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M107: A module descriptor reads back as the format documents it
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -63,6 +63,7 @@ A module descriptor that `write_module()` writes reads back through `read_module
 - 2026-09-22: T5 done. NEWS has two Breaking changes entries (reader refusal, writer check) and one Improvements entry (LF). `devtools::document()` leaves no diff. `devtools::check()`: 0 errors, 0 warnings, 0 notes on macOS.
 - 2026-09-22: claim audit: 41 claims read, 4 corrected — NEWS.md, R/module_file.R, man/read_module.Rd, man/write_module.Rd
 - 2026-09-22: the claim audit's re-read held 3 of the 4 corrections. The fourth, the NEWS "Before" sentence of the writer entry, took the reader's wording. A run of `main`'s writer and reader showed that string and swapped items both wrote a file that read back.
+- 2026-09-22: implement complete, status set to review. After the audit corrections, `devtools::test()`: 0 failed, 13 skipped, 722 tests. The AC1 Windows proof waits for the `windows-latest` job at the PR head.
 
 ## Decisions
 

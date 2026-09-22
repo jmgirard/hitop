@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M108).
 | M104 | The builder's format cards are off during a build | done | — | normal | milestones/archive/M104-builder-format-cards-lock.md |
 | M105 | The builder's format cards look off while a build runs | done | — | normal | milestones/archive/M105-builder-disabled-cards-look.md |
 | M106 | Keyboard focus comes back when a builder build ends | done | — | normal | milestones/archive/M106-builder-build-focus-return.md |
-| M107 | A module descriptor reads back as the format documents it | in-progress | — | normal | milestones/M107-module-descriptor-roundtrip.md |
+| M107 | A module descriptor reads back as the format documents it | review | — | normal | milestones/M107-module-descriptor-roundtrip.md |
 
 ## Candidates
 
