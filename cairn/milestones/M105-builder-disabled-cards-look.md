@@ -87,3 +87,20 @@ Fresh probes, 2026-09-21: a scratch Playwright spec (full Chromium, headless) se
 - AC3: all 12 cells cleared 4.5:1. Every light cell read 4.93:1 and every dark cell read 5.42:1. The probe used the WCAG 2 formula on the in-build computed colours.
 - AC4: both bundles saved (Word 48701 bytes, Qualtrics 12035 bytes, all scales). After each build, all 6 values on all 3 cards equalled the read before the build click. The mouse was parked and no animation ran.
 - AC5: the grep matched 100 lines at b2b4f54. I read whole the blocks with a sentence about a card's look: the `button:disabled` comment, the current-card comment, the new rule's comment, and README.md step 2. Each agrees with AC1 and AC2: grey fill, dashed border, the check kept on the current card. The dark disabled fill reads rgb(38, 46, 55), a dark grey, so "grey" holds in both schemes. The other matched blocks describe behavior, focus or checkboxes, with no card-look sentence.
+- AC6 (local half): `npm run smoke` passed at b2b4f54 (1 of 1). The PR's CI run comes at step 8, so this box stays open until then.
+
+Gate checks: `cairn_validate` exit 0 (24 advisory warnings, all older legacy ids and one references page). The hitop diff touches only `cairn/`. `devtools::document()` made no diff, `pkgdown::check_pkgdown()` found no problems, and `devtools::check()` gave 0 errors, 0 warnings, 0 notes. `npm run plants`: the unplanted copy passed and all 11 plants went red. Plant (k) failed A10 alone.
+
+Reviewers: three-lens fan-out. The blame-history lens found no finding. The prior-review lens found no finding and read the diff as the fix for M104's follow-up. The diff-bug lens found no defect and ranked 14 notes. The proposed triage follows.
+
+- F1 (A10 reads only the border style and background, so a lost `border-color`, `box-shadow: none` or text colour stays green): fix now. A10 also reads those.
+- F2 (no plant covers the text colour rule): fix now. Plant (k) removes both rules.
+- F3 (A10 takes no "still building" status, so a build that ends first reads as a look defect): fix now. A10 adds the status.
+- F4 (the animation poll cannot fail in practice): reject, harmless. The read after it still fails a wrong look.
+- F5 (CI reads light only, dark has no standing guard): follow-up, one candidate row.
+- F6 (cascade correct in both schemes): noted.
+- F7 (the `.fmtname` half of the colour rule has no effect): reject. It states the pair in one place.
+- F8 (comment says "these two rules" then "Without it", and does not give the second rule's reason): fix now.
+- F9, F10 (line 272 and README step 2 not rewrapped): fix now.
+- F11, F12, F14 (build-only claim holds, plant (k) string matches, no decision conflict): noted.
+- F13 (AC6 open until PR CI): noted, step 8.
