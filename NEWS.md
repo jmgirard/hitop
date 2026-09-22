@@ -241,6 +241,15 @@
 
 ## Improvements and fixes
 
+* **Functions called as `hitop::f()` work without `library(hitop)`.** The
+  package's functions read its datasets, such as `hitopsr_scales` and
+  `pid_items`, by name. R shows an installed package's datasets only when the
+  package is attached. So a call such as `hitop::hitop_module()`,
+  `hitop::score_hitopsr()` or `hitop::score_pid5()` in a session that never ran
+  `library(hitop)` stopped with "object 'hitopsr_scales' not found". The
+  package now binds its datasets when it loads. A dataset is still read only
+  when a function first uses it.
+
 * **`write_module()` writes LF line endings on every platform.** On Windows it
   wrote CRLF line endings. It now writes every descriptor, including the one
   the generators' `descriptor` argument writes, as UTF-8 with LF line endings
