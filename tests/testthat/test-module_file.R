@@ -807,10 +807,12 @@ test_that("a bare-string `columns` reads as a vector of length one", {
   withr::local_options(cli.width = 10000)
   # No HiTOP-SR scale has one item, so a bare string is refused here for its
   # length. The message's count shows it was read as one name, not refused
-  # for its shape.
+  # for its shape. If a one-item scale ever ships, this premise fails, and the
+  # case needs a module that can accept a bare string.
+  expect_gt(min(lengths(hitopsr_scales$itemNumbers)), 1L)
   f <- columns_descriptor('"hsr_066"')
   e <- expect_error(read_module(f), class = "hitop_module_file_bad_columns")
-  expect_match(conditionMessage(e), "not 1", fixed = TRUE)
+  expect_match(conditionMessage(e), "not 1.", fixed = TRUE)
 })
 
 test_that("read_module() refuses a bad `columns` field, naming the file", {
