@@ -603,6 +603,93 @@ test_that("write_module() names the file when it cannot be written", {
   expect_identical(write_module(m, good), good)
 })
 
+# Plant `mangle` in a two-scale module and assert that write_module() refuses
+# it with a {cli} error before touching the path: first with nothing at the
+# path, then over an existing file that must keep every byte. `field` is the
+# field the refusal must name, or NULL for a module that cannot be rebuilt.
+expect_write_refused <- function(mangle, field) {
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+  bad <- mangle(m)
+
+  absent <- withr::local_tempfile(fileext = ".json")
+  e <- expect_error(write_module(bad, absent), class = "rlang_error")
+  expect_false(file.exists(absent))
+  if (is.null(field)) {
+    expect_true(grepl("Cannot rebuild", conditionMessage(e), fixed = TRUE))
+    expect_s3_class(e$parent, "rlang_error")
+  } else {
+    expect_true(grepl(
+      paste0("Its ", field, " field"), conditionMessage(e), fixed = TRUE
+    ))
+  }
+
+  existing <- withr::local_tempfile(fileext = ".json")
+  write_module(m, existing)
+  before <- readBin(existing, what = "raw", n = file.size(existing))
+  expect_error(write_module(bad, existing), class = "rlang_error")
+  expect_identical(
+    readBin(existing, what = "raw", n = file.size(existing)), before
+  )
+}
+
+test_that("write_module() refuses a module whose items are not the ones its scales cover", {
+  withr::local_options(cli.width = 10000)
+
+  location <- list(
+    dropped = function(m) { m$items <- m$items[-1L]; m },
+    added = function(m) { m$items <- c(m$items, 999L); m },
+    swapped = function(m) { m$items[1:2] <- m$items[2:1]; m },
+    substituted = function(m) { m$items[[1L]] <- 999L; m },
+    repeated = function(m) { m$items[[2L]] <- m$items[[1L]]; m }
+  )
+  form <- list(
+    na = function(m) { m$items[[1L]] <- NA_integer_; m },
+    removed = function(m) { m$items <- NULL; m },
+    list = function(m) { m$items <- as.list(m$items); m },
+    character = function(m) { m$items <- as.character(m$items); m }
+  )
+  for (mangle in c(location, form)) {
+    expect_write_refused(mangle, "items")
+  }
+})
+
+test_that("write_module() refuses a module whose nItems is not the count its scales cover", {
+  withr::local_options(cli.width = 10000)
+
+  form <- list(
+    removed = function(m) { m$nItems <- NULL; m },
+    na = function(m) { m$nItems <- NA_integer_; m },
+    fraction = function(m) { m$nItems <- m$nItems + 0.5; m },
+    length_two = function(m) { m$nItems <- c(m$nItems, m$nItems); m },
+    wrong = function(m) { m$nItems <- m$nItems + 1L; m }
+  )
+  for (mangle in form) {
+    expect_write_refused(mangle, "nItems")
+  }
+})
+
+test_that("write_module() refuses a module its scales cannot rebuild, with the rebuild's error as parent", {
+  withr::local_options(cli.width = 10000)
+
+  expect_write_refused(function(m) { m$scales <- "Not A Scale"; m }, NULL)
+  expect_write_refused(function(m) { m$instrument <- "pid5"; m }, NULL)
+})
+
+test_that("write_module() writes a module whose items are doubles equal to the rebuild's", {
+  # The passing control for the refusals above: a module saved before item
+  # numbers became integers differs from the rebuild in storage type only.
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+  m$items <- as.double(m$items)
+  m$nItems <- as.double(m$nItems)
+  f <- withr::local_tempfile(fileext = ".json")
+
+  expect_no_error(write_module(m, f))
+  expect_identical(
+    jsonlite::fromJSON(f, simplifyVector = TRUE)$items,
+    expected_items(c("Agoraphobia", "Appetite Loss"))
+  )
+})
+
 test_that("write_module() ends every line with LF and writes no CR byte", {
   # A text-mode connection writes CRLF on Windows. Off Windows this test cannot
   # go red, so the windows-latest CI job is its proof.

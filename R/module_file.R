@@ -123,6 +123,59 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
     call = call
   )
 
+  # The module is rebuilt from its `instrument` and `scales`, the two fields
+  # read_module() rebuilds from, and its `items` and `nItems` must match the
+  # rebuild. A module changed by hand would otherwise write a file that
+  # read_module() refuses. Everything here runs before the path is opened, so
+  # a refusal leaves the path as it was.
+  rebuilt <- rlang::try_fetch(
+    hitop_module(instrument = module$instrument, scales = module$scales),
+    error = function(cnd) {
+      cli::cli_abort(
+        c(
+          "Cannot rebuild the {.arg module} argument from its \\
+           {.field instrument} and {.field scales}.",
+          i = "Build the module with {.code hitop_module()}."
+        ),
+        parent = cnd,
+        call = call
+      )
+    }
+  )
+  # Compared by value, so a module whose `items` are doubles equal to the
+  # rebuild's, as one saved before item numbers were integers carries, is
+  # still written. Order counts: the rebuild's order is the one written.
+  items <- module$items
+  items_ok <- is.numeric(items) &&
+    length(items) == length(rebuilt$items) &&
+    !anyNA(items) &&
+    all(items == rebuilt$items)
+  cli_assert(
+    condition = items_ok,
+    message = c(
+      "The {.arg module} argument does not match its {.field scales}.",
+      x = "Its items field is not the {rebuilt$nItems} item number{?s} \\
+           its scales cover, in ascending order.",
+      i = "Build the module with {.code hitop_module()}."
+    ),
+    call = call
+  )
+  n_items <- module$nItems
+  n_ok <- is.numeric(n_items) &&
+    length(n_items) == 1L &&
+    !is.na(n_items) &&
+    n_items == rebuilt$nItems
+  cli_assert(
+    condition = n_ok,
+    message = c(
+      "The {.arg module} argument does not match its {.field scales}.",
+      x = "Its nItems field is not {rebuilt$nItems}, the number of items \\
+           its scales cover.",
+      i = "Build the module with {.code hitop_module()}."
+    ),
+    call = call
+  )
+
   # `unbox()` on every scalar, with `auto_unbox = FALSE`, so that `scales` and
   # `items` stay JSON arrays even for a module holding one of either. Under
   # `auto_unbox = TRUE` a length-one vector would collapse to a bare value and
@@ -133,10 +186,10 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
     packageVersion =
       jsonlite::unbox(as.character(utils::packageVersion("hitop"))),
     buildDate = jsonlite::unbox(format(Sys.Date())),
-    instrument = jsonlite::unbox(module$instrument),
-    scales = as.character(module$scales),
-    items = module$items,
-    nItems = jsonlite::unbox(module$nItems)
+    instrument = jsonlite::unbox(rebuilt$instrument),
+    scales = rebuilt$scales,
+    items = rebuilt$items,
+    nItems = jsonlite::unbox(rebuilt$nItems)
   )
 
   # A module carrying an `item_order` attribute records the order a shuffled
