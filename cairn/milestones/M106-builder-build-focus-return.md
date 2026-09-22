@@ -84,6 +84,7 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-22: claim audit re-read of the corrected claim: the log and plain text take no focus, but a click on a step heading (`tabindex="-1"`, index.html 477 and 498) focuses it. README.md now says "the log or text other than a step heading" (builder `f8ee9ed`), and `npm run smoke` passed. No second pass, per the stopping rule.
 - 2026-09-22: status set to review.
 - 2026-09-22: review return 2 (defect): AC6 fails again. README.md:103-104 says that a click on text other than a step heading takes no focus, but a click on the "Word settings" summary text focuses that `<summary>`. Same shape as return 1: a README sentence that lists click cases by recall. Thrash trigger (b) fires on AC6. The rewraps at README.md:105-106 and index.html:1436 also go with the fix. Status set to in-progress.
+- 2026-09-22: thrash (b) disposition, chosen by Jeff: state the rule only. The next implement pass deletes the README sentences that list which clicks take focus, keeps the rule (focus comes back only when nothing has focus at the build's end, and not to a control that is off or hidden), and rewraps README.md:105-106 and index.html:1436. `/milestone-brief` escalation and parking were offered and not taken.
 
 ## Decisions
 
