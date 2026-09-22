@@ -14,6 +14,17 @@ own tables. The recorded `items` are there for a human reader and as a
 cross-check, and a file that disagrees with what the package derives is
 an error rather than a silent preference for either side.
 
+Before it writes, `write_module()` rebuilds the module with
+[`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+from its `instrument` and `scales`. A module whose `items` or `nItems`
+differ from that rebuild is refused, and nothing is written. The file
+holds the rebuild's fields.
+[`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+rebuilds the module from the file's `scales`, so it returns a
+`hitop_module` with integer items. This is also true for a file written
+from the deprecated `hitop_subset` class, or from a module whose items
+are doubles.
+
 ## Usage
 
 ``` r

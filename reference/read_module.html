@@ -117,7 +117,9 @@ quietly.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>hitop_module</code> object. If the file carries an <code>itemOrder</code>, it is
+    <p>A <code>hitop_module</code> object with integer items. This is also true for a
+file written from the deprecated <code>hitop_subset</code> class, or from a module
+whose items are doubles. If the file carries an <code>itemOrder</code>, it is
 returned on the object's <code>item_order</code> attribute — the same attribute
 <code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> returns for a shuffled form. Pass the module to
 <code><a href="score_hitopsr.html">score_hitopsr()</a></code> or <code><a href="reliability_hitopsr.html">reliability_hitopsr()</a></code> with <code>layout = "printed"</code> to
@@ -139,6 +141,14 @@ than merely wrong — a top level that is a JSON array instead of an
 object, or a number field that is not a flat array of numbers — is
 refused as <code>hitop_module_file_invalid_json</code> or as the mismatch condition
 for the field it spoils, never as a bare R coercion error.</p>
+<p>In <code>items</code>, <code>nItems</code>, and <code>itemOrder</code>, every value must be a JSON number
+with a whole value. A JSON string, a JSON boolean, or a number such as
+<code>12.4</code> is refused, even where it would convert to the right item number.
+A JSON <code>null</code> inside an array is also refused. <code>items</code> and <code>nItems</code> raise
+<code>hitop_module_file_items_mismatch</code>, and <code>itemOrder</code> raises
+<code>hitop_module_file_bad_item_order</code>. A whole number written as <code>2.0</code> or
+<code>3e0</code> is accepted. A field whose whole value is JSON <code>null</code> reads as
+absent.</p>
     </div>
     <div class="section level2">
     <h2 id="the-descriptor-format">The descriptor format<a class="anchor" aria-label="anchor" href="#the-descriptor-format"></a></h2>

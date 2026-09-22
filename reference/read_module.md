@@ -32,8 +32,10 @@ read_module(file)
 
 ## Value
 
-A `hitop_module` object. If the file carries an `itemOrder`, it is
-returned on the object's `item_order` attribute — the same attribute
+A `hitop_module` object with integer items. This is also true for a file
+written from the deprecated `hitop_subset` class, or from a module whose
+items are doubles. If the file carries an `itemOrder`, it is returned on
+the object's `item_order` attribute — the same attribute
 [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
 returns for a shuffled form. Pass the module to
 [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
@@ -58,6 +60,15 @@ than merely wrong — a top level that is a JSON array instead of an
 object, or a number field that is not a flat array of numbers — is
 refused as `hitop_module_file_invalid_json` or as the mismatch condition
 for the field it spoils, never as a bare R coercion error.
+
+In `items`, `nItems`, and `itemOrder`, every value must be a JSON number
+with a whole value. A JSON string, a JSON boolean, or a number such as
+`12.4` is refused, even where it would convert to the right item number.
+A JSON `null` inside an array is also refused. `items` and `nItems`
+raise `hitop_module_file_items_mismatch`, and `itemOrder` raises
+`hitop_module_file_bad_item_order`. A whole number written as `2.0` or
+`3e0` is accepted. A field whose whole value is JSON `null` reads as
+absent.
 
 ## The descriptor format
 
