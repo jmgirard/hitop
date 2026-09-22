@@ -45,7 +45,7 @@ A module descriptor that `write_module()` writes reads back through `read_module
 - [x] T2: Reader number fields. Write the tests first. For each kind that today's reader accepts, choose a probe it accepts and see it red before the fix: the right item numbers written as strings, fractions such as `12.4` that truncate to the right items, `true` inside an array, and `nItems` as `"3"` for a 3-item module. The other whole-field probes lock a refusal that already holds. Then keep the current parse for `format`, `instrument` and `scales`, and type-check the three number fields on a second parse with `simplifyVector = FALSE`, because the simplified parse turns `[true, 2]` into integers before any check can see it (LESSONS, M054). Update the Errors section of `?read_module`.
 - [x] T3: Writer check. Write the tests first. Plant defects in location (an item dropped, added, swapped, substituted, or repeated) and in form (`NA` in `items`, `items` removed, `items` as a list, character `items`, `nItems` removed, `NA`, a fraction or of length 2, an unknown scale name). Assert the {cli} abort and the field it names for each, both with no file at the path and with an existing file that must stay byte-identical. Add the double-items control. Then add the rebuild check to `write_module_impl()` before the write.
 - [x] T4: Help pages and lock. Add the AC4 sentence to `?write_module` and `?read_module`. Add the `hitop_subset()` round-trip test, catching `hitop_deprecated_subset` by class, and the double-items round-trip test. Run `devtools::document()`.
-- [ ] T5: Add the NEWS entries. Run `devtools::test()` and `devtools::check()`.
+- [x] T5: Add the NEWS entries. Run `devtools::test()` and `devtools::check()`.
 
 ## Work log
 
@@ -60,6 +60,7 @@ A module descriptor that `write_module()` writes reads back through `read_module
 - 2026-09-22: T2 done. The three number fields come from a second `simplifyVector = FALSE` parse, and `read_module_numbers()` accepts only whole finite JSON numbers. Before the fix, the old reader accepted 8 of 17 probes: `nItems` as a string or fraction, and a string, `true` or fraction element in `items` and `itemOrder`. After the fix it refuses all 17 with the field's class. `devtools::test()`: 0 failed, 13 skipped, 716 tests.
 - 2026-09-22: T3 done. `write_module_impl()` rebuilds the module with `hitop_module()` before it opens the path. It refuses `items` or `nItems` that differ from the rebuild, and it writes the rebuild's fields. The tests plant 9 defects in `items` and 5 in `nItems`. Two more plants make the rebuild fail: an unknown scale and the instrument `"pid5"`. All 3 refusal tests were red before the fix, and the double-items control passed. `devtools::test()`: 0 failed, 13 skipped, 720 tests.
 - 2026-09-22: T4 done. `?write_module` states the rebuild check and the integer-items read back, and `?read_module`'s Value says the same. Two lock tests pass: the `hitop_subset()` round trip, with `hitop_deprecated_subset` muffled by class, and the double-items round trip. `devtools::document()` rewrote both Rd files.
+- 2026-09-22: T5 done. NEWS has two Breaking changes entries (reader refusal, writer check) and one Improvements entry (LF). `devtools::document()` leaves no diff. `devtools::check()`: 0 errors, 0 warnings, 0 notes on macOS.
 
 ## Decisions
 

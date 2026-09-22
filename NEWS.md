@@ -111,6 +111,28 @@
 
 ## Breaking changes
 
+* **`read_module()` refuses item numbers that are not JSON numbers.** In a
+  module descriptor's `items`, `nItems` and `itemOrder` fields, every value
+  must now be a JSON number with a whole value. A JSON string such as `"12"`,
+  a JSON boolean, a JSON `null` inside an array, or a fraction such as `12.4`
+  stops the read. Before, such values were converted, and one that converted
+  to the right item number read as valid. `items` and `nItems` raise
+  `hitop_module_file_items_mismatch`, and `itemOrder` raises
+  `hitop_module_file_bad_item_order`. Whole numbers written as `2.0` or `3e0`
+  still read. A file that `write_module()` wrote never holds the refused
+  values, but a hand-written descriptor can. Write its item numbers as
+  numbers.
+
+* **`write_module()` refuses a module whose items do not match its scales.**
+  It now rebuilds the module with `hitop_module()` from its `instrument` and
+  `scales`. If the module's `items` differ from the rebuild in value or
+  order, or its `nItems` differs in value, it stops with an error that names
+  the field. If the rebuild fails, for example on an unknown scale name, it
+  stops with the rebuild's error as the cause. In both cases no file is
+  written, and an existing file at the path is left unchanged. Before, such a
+  module wrote a file that `read_module()` then refused. A module whose items
+  are doubles equal to the rebuild's is still written.
+
 * **Every response value the package ships is an integer.** The 405 item columns
   of `ku_hitopsr`, the 45 of `ku_hitopbr` and the 100 of `ku_pid5sf`, and
   `hitophsum_choices$Value`, are stored as integers where they were doubles; the
@@ -215,6 +237,11 @@
   has been rebuilt with the corrected item lists.
 
 ## Improvements and fixes
+
+* **`write_module()` writes LF line endings on every platform.** On Windows it
+  wrote CRLF line endings. It now writes every descriptor, including the one
+  the generators' `descriptor` argument writes, as UTF-8 with LF line endings
+  and no CR byte.
 
 * **The misordered-items warning gives the right remedy under `layout = "printed"`.**
   hitop-form saves item columns named by instrument number in the form's
