@@ -1,19 +1,19 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-21 (50th pass, M105's post-merge): M105 archived, PR #115 merged at 8/8 CI green, builder PR #20 merged at smoke green. M102 row pruned. Smoke-test row extended with light-only CI. M045 webR lesson extended. validate green._
+_Last hygiene check: 2026-09-22 (51st pass, M106's post-merge): M106 archived, PR #116 merged at 8/8 CI green, builder PR #21 merged at smoke green. M103 row pruned. Focus-return coverage row added. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M107). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M103 | One build at a time in the builder, with its settings fixed at the click | done | — | normal | milestones/archive/M103-builder-build-lock.md |
 | M104 | The builder's format cards are off during a build | done | — | normal | milestones/archive/M104-builder-format-cards-lock.md |
 | M105 | The builder's format cards look off while a build runs | done | — | normal | milestones/archive/M105-builder-disabled-cards-look.md |
-| M106 | Keyboard focus comes back when a builder build ends | review | — | normal | milestones/M106-builder-build-focus-return.md |
+| M106 | Keyboard focus comes back when a builder build ends | done | — | normal | milestones/archive/M106-builder-build-focus-return.md |
 
 ## Candidates
 
+- Builder focus-return coverage (M106 review): smoke A11 and plant (l) cover only the return to `#downloadBtn` after a save. The card, failure, body-guard, off-or-hidden and `preventScroll` cases rest on one-off probes, and A11 can go red on a correct page if a build ends before its `blur()`. The focus move runs right after the `#status` live-region write, so a screen reader may speak the button over the message. Focus was checked in headless Chromium only; Safari, Firefox and a README browser caveat are open. Promote if a visitor reports focus lost after a build, or with the next builder test milestone.
 - Extend the online form (architecture B, `cairn/references/online-collection.md`; M094–M099 cover the HiTOP-SR/BR and PID-5) in two remaining parts: the HSUM export and its gated rendering (638 of 650 fields gated, D-014's other-drug rule included; `generate_redcap_hitophsum()` is the reference); and the Firestore, Apps Script and Supabase adapters with setup and retrieval pages and consent text. Open points: the export and the D-039 descriptor share `format` `"1.0"` with no field telling them apart (D-063, kept at M097's plan gate until a consumer must read both blind); the page fields items from a descriptor's `items`, never rebuilt from `scales` as `read_module()` does; answers only in memory, so a reload restarts the form; a `pagehide` beacon escapes the network test; Back untested (the last three declined again at M098's gate). The vignette example-file bug was fixed by M100 (2026-09-21). Promote a part when a researcher asks — added 2026-09-20, PID-5 part graduated to M097–M099 — lineage: M093, M094, M095, M097, M099
 - Under `layout = "printed"`, `layout_items()` runs `warn_item_order()` on the caller's `items` before the remap, so printed-order columns named by item number warn as not ascending; positions avoid it. Its sort advice used to score the wrong items silently there (M096 review: 2.6 and 2.5625 against 3 and 2.4375); PR #105 made the remedy layout-aware, so what remains is whether the heuristic should run on the caller's names under that layout at all (M091 AC5 pins that it does). Promote on a report, or when `layout_items()` is next edited — added and extended 2026-09-20, corrected after PR #105 — lineage: M096
 - The builder's `tests/prose.mjs` ledger guard greps only `textContent`, `innerHTML` and `setAttribute` writers, so a writer added as `.innerText`, `.value =`, `.append()` or `insertAdjacentHTML()` trips nothing (one `.value =` site is already unclassified), and the script runs by hand only, with no `npm run prose` and no step in `smoke.yml`. M092's review deferred both. Promote if a builder milestone touches the page's writers — added 2026-09-11.
