@@ -1,6 +1,6 @@
 # M106: Keyboard focus comes back when a builder build ends
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -54,7 +54,7 @@ In this repo, the milestone changes tracking files only.
 - [x] T4: Add plant (l) to `tests/plants.mjs`, which removes the focus return. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that plant (l) fails A11 alone.
 - [x] T5: Run headless probes on the served branch for AC1 to AC5, with the forced-failure copy for AC2. Write one work-log line for each criterion.
 - [x] T6: Write the README.md sentence. Run the AC6 grep and read each matched block. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched blocks and a verdict for each.
-- [ ] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
+- [x] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
 
 ## Work log
 
@@ -74,6 +74,8 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: T5 AC5. In both AC1 runs at 1280 by 400, the control was outside the viewport at `scrollY` 1248. After focus returned, `scrollY` was 1248. A copy with a plain `focus()` read 899.
 - 2026-09-21: T6 done. README.md step 2 gained four sentences on focus after a build. The AC6 grep matched README.md 76 (Tab popup). In index.html it matched 25/56 (tokens), 96-101 (ring), 377-380 (heading ring), and 917-927 (step heading). It also matched 1019 and 1062 (popup), 1289-1293 and 1431-1447 (build focus), 1699 (card press), and 1727 (first paint). Verdict: the two build-focus blocks and the new README sentences agree with T5. The other blocks say nothing about focus during or after a build. Nothing was rewritten.
 - 2026-09-21: T7 local half done. `npm run smoke` passed on the builder branch head. The PR and its smoke run belong to `/milestone-review`.
+- 2026-09-21: claim audit: 22 claims read, 3 corrected — hitop-builder index.html, tests/smoke.spec.js. The [O] reader ran on the builder branch diff, because this repo's diff adds no lines outside cairn/. It flagged a Chromium-only focus drop, an unobserved Safari card case, and an unobserved heading focus. The same reader re-read all three as true. It also flagged README claim 18, which stays as written because the next README sentence covers moved focus. Smoke passed after the edits.
+- 2026-09-21: implement done, status set to review.
 
 ## Decisions
 
