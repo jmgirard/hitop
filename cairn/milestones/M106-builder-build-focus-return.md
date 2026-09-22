@@ -1,13 +1,13 @@
 # M106: Keyboard focus comes back when a builder build ends
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the public builder page that researchers use to download forms
-- **Branch/PR:** —
+- **Branch/PR:** `m106-builder-build-focus-return` in both repos
 
 ## Goal
 
@@ -48,8 +48,8 @@ In this repo, the milestone changes tracking files only.
 
 ## Tasks
 
-- [ ] T1: Cut `m106-builder-build-focus-return` from the updated builder `main` and from hitop `main`.
-- [ ] T2: Write the test first. On the unfixed page, confirm in a probe that focus is on the body during a build after the Playwright `click()`. If it is not, stop and raise it at an amendment gate, because the assertion below cannot then fail. The smoke build presses the step bar, which leaves focus on a step heading (`index.html:912`). So after the A9 and A10 reads and before the download wait, the test calls `blur()` on the focused element, and a comment says that this stands in for a focus lost to the disabled button. Add assertion A11 to `tests/smoke.spec.js` after the save. A11 polls `document.activeElement` and asserts that it is `#downloadBtn`. Add A11 to the assertion list in the file header. Run the test on the unfixed page and see it fail on A11.
+- [x] T1: Cut `m106-builder-build-focus-return` from the updated builder `main` and from hitop `main`.
+- [x] T2: Write the test first. On the unfixed page, confirm in a probe that focus is on the body during a build after the Playwright `click()`. If it is not, stop and raise it at an amendment gate, because the assertion below cannot then fail. The smoke build presses the step bar, which leaves focus on a step heading (`index.html:912`). So after the A9 and A10 reads and before the download wait, the test calls `blur()` on the focused element, and a comment says that this stands in for a focus lost to the disabled button. Add assertion A11 to `tests/smoke.spec.js` after the save. A11 polls `document.activeElement` and asserts that it is `#downloadBtn`. Add A11 to the assertion list in the file header. Run the test on the unfixed page and see it fail on A11.
 - [ ] T3: In `download()`, record `document.activeElement` before the controls go off. After `finally` turns them back on and `refreshTally()` runs, return focus as the Scope says. Write the comment that says why.
 - [ ] T4: Add plant (l) to `tests/plants.mjs`, which removes the focus return. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that plant (l) fails A11 alone.
 - [ ] T5: Run headless probes on the served branch for AC1 to AC5, with the forced-failure copy for AC2. Write one work-log line for each criterion.
@@ -63,6 +63,8 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: the plan gate chose a focus return with no scroll. It rejected a plain `focus()`, which moves the page away from the log that a visitor is reading. A keyboard visitor report that focus is lost from view after a build falsifies this choice.
 - 2026-09-21: the plan gate chose a smoke assertion plus a plant over one-off probes only, for the reason in M105's work log.
 - 2026-09-21: a re-audit of the gate-changed criteria by the same [O] reader (full mode) returned 4 findings, 3 on M106, all fixed after the plan commit. A11 was unable to pass, because the smoke build's step-bar presses leave focus on a heading, so T2 now blurs it first. AC5 now sets a 400 px viewport. AC3 now says that the unticked checkboxes are hidden.
+- 2026-09-21: implement started. Both branches cut from their updated `main` (builder at `6ac767e`). The question gate was skipped: the one open choice, how to test that a control is shown, uses `getClientRects().length > 0`.
+- 2026-09-21: T2 done. A probe on the unfixed page read focus on the body during a build after the Playwright `click()` and after it ended. A11 and the blur are in `tests/smoke.spec.js`, and `npm run smoke` on the unfixed page failed on A11 alone.
 
 ## Decisions
 
