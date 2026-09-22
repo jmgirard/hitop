@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M107).
 | M102 | The JSON export's writer and lock catch the ten gaps M094 and M097 left open | done | — | normal | milestones/archive/M102-json-export-hardening.md |
 | M103 | One build at a time in the builder, with its settings fixed at the click | done | — | normal | milestones/archive/M103-builder-build-lock.md |
 | M104 | The builder's format cards are off during a build | done | — | normal | milestones/archive/M104-builder-format-cards-lock.md |
-| M105 | The builder's format cards look off while a build runs | planned | — | normal | milestones/M105-builder-disabled-cards-look.md |
+| M105 | The builder's format cards look off while a build runs | in-progress | — | normal | milestones/M105-builder-disabled-cards-look.md |
 | M106 | Keyboard focus comes back when a builder build ends | planned | — | normal | milestones/M106-builder-build-focus-return.md |
 
 ## Candidates

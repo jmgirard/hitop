@@ -1,13 +1,13 @@
 # M105: The builder's format cards look off while a build runs
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the public builder page that researchers use to download forms
-- **Branch/PR:** —
+- **Branch/PR:** `m105-builder-disabled-cards-look` in both hitop and jmgirard/hitop-builder
 
 ## Goal
 
@@ -46,7 +46,7 @@ In this repo, the milestone changes tracking files only.
 
 ## Tasks
 
-- [ ] T1: Cut `m105-builder-disabled-cards-look` from the updated builder `main` and from hitop `main`.
+- [x] T1: Cut `m105-builder-disabled-cards-look` from the updated builder `main` and from hitop `main`.
 - [ ] T2: Write the test first. Add assertion A10 to `tests/smoke.spec.js`, in the in-build read that A9 takes. A10 asserts that each card's computed `border-top-style` is `dashed` and that its `background-color` equals `#downloadBtn`'s. Wait for the card transitions to end before the read. Add A10 to the assertion list in the file header. Run the test on the unfixed page and see it fail on A10.
 - [ ] T3: Add the `.formats button:disabled` rule after the `aria-current` rules in `index.html`. It sets the background, the border colour and style, the inset shadow, and the colour of `.fmtname` and `.fmtwhat`. It leaves the `::after` and `::before` check on the current card.
 - [ ] T4: Add plant (k) to `tests/plants.mjs`, which removes the new rule. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that plant (k) fails A10 alone.
@@ -60,6 +60,7 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: the plan gate chose to grey all three cards and keep the filled check on the current card. It rejected keeping the current card blue, which looks pressable, and greying the check too, which leaves only the button text naming the format. A visitor report that the build's format is unclear during a build falsifies this choice.
 - 2026-09-21: the plan gate chose a smoke assertion plus a plant over one-off probes only, because probes alone leave nothing red in CI when the look breaks. A10 rides the existing build, so it adds no webR boot. A smoke run that exceeds smoke.yml's budget falsifies this choice.
 - 2026-09-21: a re-audit of the gate-changed criteria by the same [O] reader (full mode) returned 4 findings, 1 on M105, fixed after the plan commit. AC1 now also reads the border colour and a `box-shadow` of `none`, and AC4 compares `box-shadow` too.
+- 2026-09-21: /milestone-implement started. T1 cut both branches from main at c7fbbb47 (hitop) and c56a9fb (builder). The question gate was skipped because the plan leaves no choice open.
 
 ## Decisions
 
