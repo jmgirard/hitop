@@ -95,13 +95,13 @@ test_that("generate_docx_hitopsr(), generate_qualtrics_hitopsr(), and generate_r
     expect_identical(as.integer(parsed$items), items, info = fn)
     expect_identical(as.integer(parsed$nItems), length(items), info = fn)
 
-    # The REDCap descriptor also names its export's columns, which the tests
-    # at the end of this file check. Apart from that attribute, every
+    # The two online descriptors also name their export's columns, which the
+    # tests at the end of this file check. Apart from that attribute, every
     # generator's descriptor reads back as the module passed in.
     read_back <- read_module(descriptor)
     expect_identical(
       !is.null(attr(read_back, "columns")),
-      fn == "generate_redcap_hitopsr",
+      fn != "generate_docx_hitopsr",
       info = fn
     )
     attr(read_back, "columns") <- NULL
@@ -768,6 +768,69 @@ test_that("generate_redcap_hitopsr() writes the dictionary's item field names as
     expect_identical(columns, sprintf_names(case$items), info = label)
     expect_identical(parse_descriptor(descriptor)$format, "1.0", info = label)
   }
+})
+
+test_that("generate_qualtrics_hitopsr() writes the file's question IDs as `columns`", {
+  cases <- list(
+    full = list(module = NULL, items = sort(as.integer(hitopsr_items$HSR))),
+    two_scales = list(
+      module = hitop_module("hitopsr", scales = TWO_SCALES),
+      items = sort(unique(items_of(TWO_SCALES)))
+    )
+  )
+  for (label in names(cases)) {
+    for (prefix in c("HSR", "study2")) {
+      case <- cases[[label]]
+      info <- paste(label, prefix)
+      expect_true(length(case$items) > 0L, info = info)
+      txt <- withr::local_tempfile(fileext = ".txt")
+      descriptor <- withr::local_tempfile(fileext = ".json")
+      args <- list(file = txt, module = case$module, descriptor = descriptor)
+      # The default prefix is left to the default, so the case covers it.
+      if (prefix != "HSR") args$id_prefix <- prefix
+      do.call(generate_qualtrics_hitopsr, args)
+
+      # Item questions only: the instructions block is a descriptive
+      # question, not a multiple-choice one, so read_qualtrics() skips it.
+      ids <- read_qualtrics(txt)$questions$id
+      expect_false(any(ids == "start_instructions"), info = info)
+      columns <- parse_descriptor(descriptor)$columns
+
+      expect_type(columns, "character")
+      expect_identical(columns, ids, info = info)
+      expect_identical(
+        columns,
+        sprintf("%s_%03d", prefix, case$items),
+        info = info
+      )
+      expect_identical(parse_descriptor(descriptor)$format, "1.0", info = info)
+    }
+  }
+})
+
+test_that("a Qualtrics descriptor replaces a carried `columns` with its own file's IDs", {
+  skip_if_not_installed("zip")
+  module <- hitop_module("hitopsr", scales = TWO_SCALES)
+  redcap_descriptor <- withr::local_tempfile(fileext = ".json")
+  generate_redcap_hitopsr(
+    file = withr::local_tempfile(fileext = ".zip"),
+    module = module,
+    descriptor = redcap_descriptor
+  )
+  carried <- read_module(redcap_descriptor)
+  items <- sort(unique(items_of(TWO_SCALES)))
+  expect_identical(attr(carried, "columns"), sprintf_names(items))
+
+  descriptor <- withr::local_tempfile(fileext = ".json")
+  generate_qualtrics_hitopsr(
+    file = withr::local_tempfile(fileext = ".txt"),
+    module = carried,
+    id_prefix = "study2",
+    descriptor = descriptor
+  )
+  written <- parse_descriptor(descriptor)
+  expect_identical(written$columns, sprintf("study2_%03d", items))
+  expect_identical(written$format, "1.0")
 })
 
 test_that("a Word descriptor carries no `columns`, even from a module that had them", {

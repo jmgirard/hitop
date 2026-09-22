@@ -119,7 +119,21 @@ generate_qualtrics_hitopsr <- function(
   # order to record.
   built <- FALSE
   if (!is.null(descriptor)) {
-    write_descriptor_sidecar(descriptor, module, "hitopsr")
+    # The item questions' `[[ID:]]` values, which Qualtrics uses as the data
+    # export's column names. build_qualtrics_txt() writes the same IDs below.
+    # `id_prefix` is used here before the builder checks it, so it is checked
+    # here first, with the same check the builder makes.
+    validate_string(id_prefix, arg = "id_prefix")
+    write_descriptor_sidecar(
+      descriptor,
+      module,
+      "hitopsr",
+      columns = qualtrics_item_ids(
+        id_prefix,
+        reduced$items[[1]],
+        max(hitopsr_items$HSR)
+      )
+    )
     # A descriptor with no form beside it describes a form that was never
     # written, so it goes again if the build below fails.
     # file.remove() on the literal path, never unlink(), which would treat a
@@ -255,6 +269,15 @@ generate_qualtrics_pid5bf <- function(
   )
 }
 
+# Internal Helper: the item questions' `[[ID:]]` values
+#
+# One place for the IDs build_qualtrics_txt() writes, so the HiTOP-SR
+# generator can record the same names in its descriptor's `columns` before the
+# text file is built.
+qualtrics_item_ids <- function(id_prefix, n, max_n) {
+  item_names(paste0(id_prefix, "_"), n, max_n = max_n)
+}
+
 # Internal Helper: Build the Qualtrics text file
 build_qualtrics_txt <- function(
   items,
@@ -299,7 +322,7 @@ build_qualtrics_txt <- function(
   # numbering, so padding to the exported items would write item 7 as `_07`
   # where the full instrument writes `_007`. For a full-instrument export the
   # two agree, so existing output is unchanged.
-  question_ids <- item_names(paste0(id_prefix, "_"), items[[1]], max_n = max_n)
+  question_ids <- qualtrics_item_ids(id_prefix, items[[1]], max_n)
 
   # 3. Add the starting instructions as a Descriptive Block (DB)
   if (include_instructions) {
