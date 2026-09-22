@@ -2,14 +2,14 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M107: A module descriptor reads back as the format documents it
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — `write_module()` and `read_module()` are exported functions
-- **Branch/PR:** —
+- **Branch/PR:** `m107-module-descriptor-roundtrip`
 
 ## Goal
 
@@ -41,7 +41,7 @@ A module descriptor that `write_module()` writes reads back through `read_module
 
 ## Tasks
 
-- [ ] T1: Line endings. Write the byte test first in `tests/testthat/test-module_file.R`. It asserts at least one 0x0A and no 0x0D. It cannot go red off Windows (LESSONS, M020 and M086), so the `windows-latest` job of `.github/workflows/R-CMD-check.yaml` at the PR head is its proof. Then write through `base::file(file, open = "wb")` with `enc2utf8()` and `useBytes = TRUE`, as `R/json_export.R:68` does. Open the connection inside the existing `rlang::try_fetch()`, so that the unwritable-path test keeps its message.
+- [x] T1: Line endings. Write the byte test first in `tests/testthat/test-module_file.R`. It asserts at least one 0x0A and no 0x0D. It cannot go red off Windows (LESSONS, M020 and M086), so the `windows-latest` job of `.github/workflows/R-CMD-check.yaml` at the PR head is its proof. Then write through `base::file(file, open = "wb")` with `enc2utf8()` and `useBytes = TRUE`, as `R/json_export.R:68` does. Open the connection inside the existing `rlang::try_fetch()`, so that the unwritable-path test keeps its message.
 - [ ] T2: Reader number fields. Write the tests first. For each kind that today's reader accepts, choose a probe it accepts and see it red before the fix: the right item numbers written as strings, fractions such as `12.4` that truncate to the right items, `true` inside an array, and `nItems` as `"3"` for a 3-item module. The other whole-field probes lock a refusal that already holds. Then keep the current parse for `format`, `instrument` and `scales`, and type-check the three number fields on a second parse with `simplifyVector = FALSE`, because the simplified parse turns `[true, 2]` into integers before any check can see it (LESSONS, M054). Update the Errors section of `?read_module`.
 - [ ] T3: Writer check. Write the tests first. Plant defects in location (an item dropped, added, swapped, substituted, or repeated) and in form (`NA` in `items`, `items` removed, `items` as a list, character `items`, `nItems` removed, `NA`, a fraction or of length 2, an unknown scale name). Assert the {cli} abort and the field it names for each, both with no file at the path and with an existing file that must stay byte-identical. Add the double-items control. Then add the rebuild check to `write_module_impl()` before the write.
 - [ ] T4: Help pages and lock. Add the AC4 sentence to `?write_module` and `?read_module`. Add the `hitop_subset()` round-trip test, catching `hitop_deprecated_subset` by class, and the double-items round-trip test. Run `devtools::document()`.
@@ -55,6 +55,8 @@ A module descriptor that `write_module()` writes reads back through `read_module
 - 2026-09-22: plan gate chose a full rebuild check in `write_module()` over a count-only check because with that check a wrong or reordered item list still writes a file the reader refuses; falsified by a caller who needs to write a module that does not match its scales.
 - 2026-09-22: plan gate chose to document that `hitop_subset` and double-item modules read back as `hitop_module` over refusing `hitop_subset` in `write_module()` because refusing breaks the shim's promise that every module function accepts it; falsified by a caller that relies on the class of the object read back.
 - 2026-09-22: plan gate chose to refuse non-number item values at once (pre-1.0 waiver) over a warn-first release because the format never allowed them and files the package wrote never hold them; falsified by a report of a hand-written descriptor with string numbers that worked before.
+- 2026-09-22: implement started on branch `m107-module-descriptor-roundtrip`. No question gate: the plan left nothing open.
+- 2026-09-22: T1 done. `write_module_impl()` opens `file(open = "wb")` inside `try_fetch()` and writes with `enc2utf8()` and `useBytes = TRUE`. The new byte test passes on macOS, and a planted CRLF file turns its assertion red. Its Windows proof is the `windows-latest` CI job at the PR head.
 
 ## Decisions
 

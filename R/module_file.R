@@ -171,9 +171,11 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
   json <- jsonlite::toJSON(payload, auto_unbox = FALSE, pretty = TRUE)
   # An unwritable path is reported the way every other failure in this file is
   # -- naming the file -- rather than as the bare "cannot open the connection"
-  # that `writeLines()` raises on its own.
-  rlang::try_fetch(
-    suppressWarnings(writeLines(as.character(json), con = file)),
+  # that `file()` raises on its own. A binary connection, as in
+  # write_json_export(), so every platform writes LF: a text connection writes
+  # CRLF on Windows.
+  con <- rlang::try_fetch(
+    suppressWarnings(file(file, open = "wb")),
     error = function(cnd) {
       cli::cli_abort(
         c(
@@ -185,6 +187,8 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
       )
     }
   )
+  on.exit(close(con), add = TRUE)
+  writeLines(enc2utf8(as.character(json)), con, useBytes = TRUE)
 
   invisible(file)
 }

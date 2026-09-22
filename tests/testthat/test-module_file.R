@@ -487,6 +487,18 @@ test_that("write_module() names the file when it cannot be written", {
   expect_identical(write_module(m, good), good)
 })
 
+test_that("write_module() ends every line with LF and writes no CR byte", {
+  # A text-mode connection writes CRLF on Windows. Off Windows this test cannot
+  # go red, so the windows-latest CI job is its proof.
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+  f <- withr::local_tempfile(fileext = ".json")
+  write_module(m, f)
+
+  bytes <- readBin(f, what = "raw", n = file.size(f))
+  expect_gt(sum(bytes == as.raw(0x0A)), 0L)
+  expect_identical(sum(bytes == as.raw(0x0D)), 0L)
+})
+
 test_that("write_module() refuses an empty path rather than discarding the file", {
   # `writeLines(json, con = "")` opens an anonymous connection and throws the
   # contents away, so an empty path used to return quietly having written
