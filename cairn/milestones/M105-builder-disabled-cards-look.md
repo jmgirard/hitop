@@ -33,7 +33,7 @@ In this repo, the milestone changes tracking files only.
 - [x] AC3: Each text colour on a disabled card clears 4.5:1 against the computed background of that card. The two AC1 runs compute the WCAG 2 contrast ratio from computed colours for the `.fmtname` and the `.fmtwhat` of each card. That gives 12 cells: 3 cards by 2 texts by 2 schemes.
 - [x] AC4: After a build ends with a saved bundle, each card looks as it did before the build click. In the two AC1 runs, with the mouse parked and `getAnimations()` empty, the run reads each card's computed `background-color`, `border-top-style`, `border-top-color` and `box-shadow`, and the `color` of its `.fmtname` and its `.fmtwhat`. Each value equals the value read on that card before the build click.
 - [x] AC5: The comment above each card rule that the milestone adds or edits says what the rule is for. README.md §What the page shows says that the cards look grey while a build runs. The domain is the comment blocks in `index.html` and the paragraphs in README.md that `grep -n -i -E "disabled|gr[ae]y|dashed|check|card" index.html README.md` matches, each read whole. Each sentence about the look of a card agrees with what AC1 and AC2 verify.
-- [ ] AC6: The builder's smoke suite (`npm run smoke`) passes locally and on the CI of the hitop-builder pull request.
+- [x] AC6: The builder's smoke suite (`npm run smoke`) passes locally and on the CI of the hitop-builder pull request.
 
 ## Coverage
 
@@ -107,3 +107,5 @@ Reviewers: three-lens fan-out. The blame-history lens found no finding. The prio
 - F13 (AC6 open until PR CI): noted, step 8.
 
 Gate outcome: the user chose "fix, then merge" and accepted the triage above. Builder aace8b4 carries F1, F2, F3, F8, F9 and F10. A10 now reads background, border colour, border style, shadow and both text colours against `#downloadBtn`, and the status line. Plant (k) removes both card rules. After aace8b4, `npm run smoke` passed (1 of 1). `npm run plants` passed its matrix: all 11 plants went red, and plant (k) failed A10 alone. F5 goes into the builder smoke-test candidate row at hygiene.
+
+- AC6 (CI half): hitop-builder PR #20 (https://github.com/jmgirard/hitop-builder/pull/20) at aace8b4 passed its `smoke` check in 53s. With the local run above, AC6 passes.
