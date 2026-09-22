@@ -2,14 +2,14 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M108: A module descriptor names its export's item columns
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — adds a field to a public file format and changes what two exported scoring functions accept
-- **Branch/PR:** —
+- **Branch/PR:** `m108-descriptor-columns`
 
 ## Goal
 
@@ -55,6 +55,8 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - 2026-09-22: plan gate chose to keep format `"1.0"` with an optional field over a bump to `"1.1"` because a bump makes older hitop and the hitop-form page refuse every new descriptor; falsified by a 1.0 reader that fails on a field it does not know.
 - 2026-09-22: plan gate chose an optional `items` in the two scoring functions over a `module_columns()` helper export because the goal is scoring from the descriptor alone; falsified by a caller scoring the wrong columns because `items` was left out by mistake.
 - 2026-09-22: plan gate chose to cover Qualtrics when a vendor page confirms it over REDCap alone because both generators write descriptors; falsified by Qualtrics help that names another source for export column headers.
+- 2026-09-22: implement started on `m108-descriptor-columns`. Question gate skipped: the plan gate and D-067 settled the API choices.
+- 2026-09-22: T1 (partial): REDCap sourced in `cairn/references/vanderbilt2015redcapdd.md`. Qualtrics help does not tie `[[ID:]]` to export column names (import page: "Specifies the question ID"; dataset page: columns carry question numbers); only secondary university pages do. At the amendment gate Jeff chose to run his own Qualtrics import and export and supply the header row as a first-hand source. Criteria unchanged; the Qualtrics writer waits for that file.
 
 ## Decisions
 
