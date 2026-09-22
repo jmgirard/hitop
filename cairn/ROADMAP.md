@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M107).
 | M103 | One build at a time in the builder, with its settings fixed at the click | done | — | normal | milestones/archive/M103-builder-build-lock.md |
 | M104 | The builder's format cards are off during a build | done | — | normal | milestones/archive/M104-builder-format-cards-lock.md |
 | M105 | The builder's format cards look off while a build runs | done | — | normal | milestones/archive/M105-builder-disabled-cards-look.md |
-| M106 | Keyboard focus comes back when a builder build ends | in-progress | — | normal | milestones/M106-builder-build-focus-return.md |
+| M106 | Keyboard focus comes back when a builder build ends | review | — | normal | milestones/M106-builder-build-focus-return.md |
 
 ## Candidates
 

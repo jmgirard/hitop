@@ -1,6 +1,6 @@
 # M106: Keyboard focus comes back when a builder build ends
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -43,7 +43,7 @@ In this repo, the milestone changes tracking files only.
 - AC3 → T3, T5
 - AC4 → T3, T5
 - AC5 → T3, T5
-- AC6 → T6, T8
+- AC6 → T6, T8, T9
 - AC7 → T2, T4, T7
 
 ## Tasks
@@ -56,6 +56,7 @@ In this repo, the milestone changes tracking files only.
 - [x] T6: Write the README.md sentence. Run the AC6 grep and read each matched block. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched blocks and a verdict for each.
 - [x] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
 - [x] T8: Rewrite README.md:102 and the matching clause in the `download()` comment so that they say that focus on another element at the build's end stays there. Run the AC6 grep again and read each matched block.
+- [x] T9: Delete the README.md sentences that list which clicks take focus, and state the rule only. Rewrap README.md step 2 and the comment at index.html:1436. Run the AC6 grep again and read each matched block.
 
 ## Work log
 
@@ -85,6 +86,10 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-22: status set to review.
 - 2026-09-22: review return 2 (defect): AC6 fails again. README.md:103-104 says that a click on text other than a step heading takes no focus, but a click on the "Word settings" summary text focuses that `<summary>`. Same shape as return 1: a README sentence that lists click cases by recall. Thrash trigger (b) fires on AC6. The rewraps at README.md:105-106 and index.html:1436 also go with the fix. Status set to in-progress.
 - 2026-09-22: thrash (b) disposition, chosen by Jeff: state the rule only. The next implement pass deletes the README sentences that list which clicks take focus, keeps the rule (focus comes back only when nothing has focus at the build's end, and not to a control that is off or hidden), and rewraps README.md:105-106 and index.html:1436. `/milestone-brief` escalation and parking were offered and not taken.
+- 2026-09-22: resume after review return 2. Both repos level with `origin/main`. Minor amendment: T9 added for the chosen AC6 fix, Coverage AC6 → T6, T8, T9.
+- 2026-09-22: T9 done (builder `66ae1b3`). README.md step 2 now says that focus comes back if no other element has focus at the build's end, that another element keeps focus, and that an off or hidden control gets no focus back. The click sentences are gone. The paragraph (99-107) and the comment at index.html 1433-1443 are rewrapped. The AC6 grep matched README.md 76 and 99-104. The step-2 paragraph, read whole, agrees with AC1 to AC5. `npm run smoke` passed.
+- 2026-09-22: claim audit: 11 claims read, 0 corrected — hitop-builder README.md, index.html.
+- 2026-09-22: status set to review (after return 2).
 
 ## Decisions
 
