@@ -50,7 +50,7 @@ In this repo, the milestone changes tracking files only.
 - [x] T2: Write the test first. Add assertion A10 to `tests/smoke.spec.js`, in the in-build read that A9 takes. A10 asserts that each card's computed `border-top-style` is `dashed` and that its `background-color` equals `#downloadBtn`'s. Wait for the card transitions to end before the read. Add A10 to the assertion list in the file header. Run the test on the unfixed page and see it fail on A10.
 - [x] T3: Add the `.formats button:disabled` rule after the `aria-current` rules in `index.html`. It sets the background, the border colour and style, the inset shadow, and the colour of `.fmtname` and `.fmtwhat`. It leaves the `::after` and `::before` check on the current card.
 - [x] T4: Add plant (k) to `tests/plants.mjs`, which removes the new rule. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that plant (k) fails A10 alone.
-- [ ] T5: Run headless probes on the served branch for AC1 to AC4, in both schemes. Write one work-log line for each criterion.
+- [x] T5: Run headless probes on the served branch for AC1 to AC4, in both schemes. Write one work-log line for each criterion.
 - [ ] T6: Write the comment above the new rule and the README.md sentence. Run the AC5 grep and read each matched block. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched blocks and a verdict for each.
 - [ ] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
 
@@ -64,6 +64,10 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: T2 added A10 to `tests/smoke.spec.js` (mouse parked at 0,0, a poll named A10 waits for `getAnimations({ subtree: true })` to empty, then reads each card's `border-top-style` and whether its background equals `#downloadBtn`'s). On the unfixed page the run failed on A10 alone: the Word card read solid, and no card's background matched the button.
 - 2026-09-21: T3 added the `.formats button:disabled` rule and its `.fmtname`/`.fmtwhat` colour rule after the `aria-current` rules. The pseudo-element rules are untouched. `npm run smoke` passed. The comment waits for T6.
 - 2026-09-21: T4 added plant (k), which removes the card rule. `npm run plants` exited 0. The unplanted copy passed and plant (k) failed on A10 alone. Plants (i) and (j) also failed A10 beside A8 and A9. Plant (i) fails A10 because it turns the download button on, and A10 uses that button as its reference. A10's comment now says so.
+- 2026-09-21: T5 AC1: a headless probe (full Chromium, served branch) read all 3 cards during a Word build in light and a Qualtrics build in dark. Every card matched the disabled button's background and border colour, read dashed with no shadow, and both texts matched the `--disabled-fg` probe. On the unfixed page (c56a9fb) the same probe failed all 6 card reads.
+- 2026-09-21: T5 AC2: in both runs, only the current card's `::after` matched the `--accent` probe and had `::before` content. The other two matched the `--bg` probe with `::before` content `none`.
+- 2026-09-21: T5 AC3: all 12 cells cleared 4.5:1. Light reads 4.93:1 for every cell, and dark reads 5.42:1.
+- 2026-09-21: T5 AC4: both bundles saved (Word 17014 bytes, Qualtrics 1370 bytes). After each build, all six values on all three cards equalled the pre-click read. AC2 to AC4 also pass on the unfixed page, which keeps the check and restores the look already.
 
 ## Decisions
 
