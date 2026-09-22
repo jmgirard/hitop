@@ -1,6 +1,6 @@
 # M105: The builder's format cards look off while a build runs
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -52,7 +52,7 @@ In this repo, the milestone changes tracking files only.
 - [x] T4: Add plant (k) to `tests/plants.mjs`, which removes the new rule. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that plant (k) fails A10 alone.
 - [x] T5: Run headless probes on the served branch for AC1 to AC4, in both schemes. Write one work-log line for each criterion.
 - [x] T6: Write the comment above the new rule and the README.md sentence. Run the AC5 grep and read each matched block. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched blocks and a verdict for each.
-- [ ] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
+- [x] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
 
 ## Work log
 
@@ -71,6 +71,9 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: T6 wrote the comment above the new rule and a README.md step-2 sentence ("all three cards look grey with a dashed border, and the current card keeps the check in its corner"). The AC5 grep matched 100 lines.
 - 2026-09-21: T6 verdicts, blocks with a card-look sentence. index.html tokens comment (4.5:1 for disabled pairs): agrees. `button:disabled` comment: agrees. Current-card comment ("is filled"): contradicted during a build, so it now says the disabled rule greys the fill and leaves the check. New rule comment: agrees. Hint text and `markFormatChoice` comment: agree. README step 2: agrees.
 - 2026-09-21: T6 verdicts, other matched blocks. They describe behavior, focus, checkboxes or the boot-abandon form, with no card-look sentence. The README file table said "eight planted defects", stale at 10 before M105. It now names the `PLANTS` list and gives no count.
+- 2026-09-21: T7 local part: `npm run smoke` passed at builder b2b4f54. The PR and its CI smoke run are review's step.
+- claim audit: 16 claims read, 0 corrected — index.html, README.md, tests/smoke.spec.js, tests/plants.mjs, all in the builder diff. The hitop diff adds nothing outside cairn/. The [O] reader noted that the new comment said "this rule" for two rules, and b2b4f54 changed it to "these two rules".
+- 2026-09-21: implement done, status set to review.
 
 ## Decisions
 
