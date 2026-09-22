@@ -49,7 +49,14 @@ already at that path included.
 It must name a path of its own: an empty string, or the same path as
 \code{file}, is refused rather than leaving you with no descriptor and no
 error. Once both files are on disk the descriptor's path is announced on
-the console, after the message naming the instrument ZIP. (default = \code{NULL})}
+the console, after the message naming the instrument ZIP.
+The descriptor's \code{columns} field holds the names that the generated file
+assigns to the items: the dictionary's field names, such as \code{hsr_066}.
+REDCap uses a field name as the column name in a data export, so
+\code{\link[=score_hitopsr]{score_hitopsr()}} and \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} can score that export from
+the module \code{\link[=read_module]{read_module()}} returns, with \code{items} omitted. A field
+renamed in REDCap after import breaks that link: pass \code{items} for such
+data. (default = \code{NULL})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}

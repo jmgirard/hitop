@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M108: A module descriptor names its export's item columns
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -61,6 +61,8 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - 2026-09-22: T3 (partial): the sidecar sets `columns` every time (NULL clears it), `redcap_item_names()` feeds the REDCap dictionary and its descriptor from one place, and `write_module_impl()` checks and writes the attribute after `itemOrder`. The Qualtrics sidecar passes no names for now, so it clears a carried attribute. 1 test stays red until T4's reader.
 - 2026-09-22: T4: `read_module_columns()` reads `columns` from the type-keeping parse and refuses 11 bad shapes under `hitop_module_file_bad_columns`. Writer refusals tested for 5 shapes, each leaving no file. Plant: with the sidecar's clear removed, the Word test went red at 2 assertions. Deviation for a gate: no HiTOP-SR scale has fewer than 3 items, so AC3's one-item module cannot be built. The test shows a bare string reads as length one through the refusal's "not 1". `devtools::test()`: 0 failures, 17822 passes.
 - 2026-09-22: T5: `module_column_items()` in `R/module.R` gives both scoring functions the module's columns when `items` is missing or `NULL`, and aborts in the three AC5 cases. No new argument. New `test-module-columns-scoring.R` saw 3 red before the change, including the REDCap end-to-end test. `devtools::test()`: 0 failures, 17850 passes.
+- 2026-09-22: T6 (partial): roxygen for `?write_module`, `?read_module` (Errors list names the new class), REDCap `descriptor`, `?score_hitopsr`, `?reliability_hitopsr`, a modules-vignette subsection (rendered, prints `TRUE`), and a NEWS entry, all REDCap-only. `document()` run. The Qualtrics wording and `devtools::check()` wait for the Qualtrics outcome.
+- 2026-09-22: blocked on Jeff's Qualtrics import and export header row (T1). REDCap work is complete and the suite passes.
 
 ## Decisions
 

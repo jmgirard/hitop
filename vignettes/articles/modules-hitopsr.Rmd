@@ -360,6 +360,41 @@ identical(
 )
 ```
 
+### Scoring a REDCap export without naming the columns
+
+A descriptor written by `generate_redcap_hitopsr()` also records the names that
+the generated file assigns to the items. These are the data dictionary's field
+names, and REDCap uses a field name as the column name in a data export.
+`read_module()` returns them on the module's `columns` attribute:
+
+```{r}
+#| message: false
+redcap_descriptor <- file.path(outdir, "hitopsr_redcap.json")
+generate_redcap_hitopsr(
+  file = file.path(outdir, "hitopsr_module.zip"),
+  module = four_scale,
+  descriptor = redcap_descriptor
+)
+
+from_redcap <- read_module(redcap_descriptor)
+head(attr(from_redcap, "columns"))
+```
+
+With that module, leave out `items`. The scoring functions take the names from
+the module:
+
+```{r}
+identical(
+  score_hitopsr(collected, module = from_redcap, append = FALSE),
+  module_scores
+)
+```
+
+`reliability_hitopsr()` does the same. If a field was renamed in REDCap after
+import, the export no longer uses the recorded name. Pass `items` for that data.
+A supplied `items` is always used. A module with no `columns`, such as one read
+from a Word form's descriptor, still needs `items`.
+
 ## Collecting Responses Online with hitop-form
 
 The Word, Qualtrics and REDCap files above each need a platform of their own.

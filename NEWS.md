@@ -2,6 +2,20 @@
 
 ## New features
 
+* **A REDCap module export scores from its descriptor alone.** The descriptor
+  that `generate_redcap_hitopsr(descriptor = )` writes now has a `columns`
+  field: the dictionary's item field names, one per module item, in ascending
+  item-number order. REDCap uses these names as the export's column names.
+  `read_module()` returns the field on the module's `columns` attribute, and
+  `write_module()` writes that attribute back. `score_hitopsr()` and
+  `reliability_hitopsr()` now use those names when `items` is omitted or
+  `NULL`. A supplied `items` is always used. Omitting `items` is an error
+  with no `module`, with a module that has no `columns`, or under
+  `layout = "printed"`. The Word descriptor has no `columns` field. The
+  format stays `"1.0"`: a `"1.0"` reader ignores fields it does not know, so
+  older releases still read the new files. A bad `columns` field stops
+  `read_module()` with an error of class `hitop_module_file_bad_columns`.
+
 * **`read_form_responses()` reads the files the hitop-form web page saves.**
   Given a directory or a vector of file paths, it reads each participant's CSV
   file and binds them into one tibble: `study`, `participant` and

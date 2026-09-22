@@ -80,7 +80,14 @@ generate_redcap_hitopbr <- function(
 #'   It must name a path of its own: an empty string, or the same path as
 #'   `file`, is refused rather than leaving you with no descriptor and no
 #'   error. Once both files are on disk the descriptor's path is announced on
-#'   the console, after the message naming the instrument ZIP. (default = `NULL`)
+#'   the console, after the message naming the instrument ZIP.
+#'   The descriptor's `columns` field holds the names that the generated file
+#'   assigns to the items: the dictionary's field names, such as `hsr_066`.
+#'   REDCap uses a field name as the column name in a data export, so
+#'   [score_hitopsr()] and [reliability_hitopsr()] can score that export from
+#'   the module [read_module()] returns, with `items` omitted. A field
+#'   renamed in REDCap after import breaks that link: pass `items` for such
+#'   data. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'

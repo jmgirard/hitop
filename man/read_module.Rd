@@ -16,7 +16,12 @@ whose items are doubles. If the file carries an \code{itemOrder}, it is
 returned on the object's \code{item_order} attribute --- the same attribute
 \code{\link[=generate_docx_hitopsr]{generate_docx_hitopsr()}} returns for a shuffled form. Pass the module to
 \code{\link[=score_hitopsr]{score_hitopsr()}} or \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} with \code{layout = "printed"} to
-score columns entered in that printed order.
+score columns entered in that printed order. If the file carries
+\code{columns}, the names are returned as a character vector on the object's
+\code{columns} attribute. A bare JSON string reads as one name. Pass the module
+to \code{\link[=score_hitopsr]{score_hitopsr()}} or \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} with \code{items} omitted to
+score the columns it names. A file with no \code{columns}, or with
+\code{"columns": null}, gives a module with no such attribute.
 }
 \description{
 Reads a module descriptor written by \code{\link[=write_module]{write_module()}} (or
@@ -40,7 +45,8 @@ may catch a particular one by class: \code{hitop_module_file_missing},
 \code{hitop_module_file_invalid_json}, \code{hitop_module_file_missing_field},
 \code{hitop_module_file_unsupported_format}, \code{hitop_module_file_unknown_scales}
 (which carries \code{\link[=hitop_module]{hitop_module()}}'s own refusal as its parent),
-\code{hitop_module_file_items_mismatch}, and \code{hitop_module_file_bad_item_order}.
+\code{hitop_module_file_items_mismatch}, \code{hitop_module_file_bad_item_order},
+and \code{hitop_module_file_bad_columns}.
 
 The list is exhaustive by design: a descriptor that is malformed rather
 than merely wrong --- a top level that is a JSON array instead of an
@@ -56,6 +62,11 @@ A JSON \code{null} inside an array is also refused. \code{items} and \code{nItem
 \code{hitop_module_file_bad_item_order}. A whole number written as \code{2.0} or
 \code{3e0} is accepted. A field whose whole value is JSON \code{null} reads as
 absent.
+
+\code{columns} raises \code{hitop_module_file_bad_columns} when it is an object or
+a number, when an element is not a non-empty JSON string, when it holds
+a different number of names than the module has items, or when it
+repeats a name.
 }
 
 \section{The descriptor format}{
@@ -87,9 +98,20 @@ read and written again keeps the order it recorded. The generators'
 \code{\link[=score_hitopsr]{score_hitopsr()}} and \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} read it under
 \code{layout = "printed"} to score columns entered in the form's printed
 order.}
+\item{\code{columns}}{The names that an online export gives the module's
+items: one string per item, in ascending item-number order.
+Optional. \code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}}'s \code{descriptor} writes the
+dictionary's item field names here. A Word form has no columns, so
+its descriptor has no field. \code{\link[=read_module]{read_module()}} returns the field on the
+module's \code{columns} attribute, and \code{\link[=write_module]{write_module()}} writes it back
+from that attribute as a JSON array. \code{\link[=score_hitopsr]{score_hitopsr()}} and
+\code{\link[=reliability_hitopsr]{reliability_hitopsr()}} use the attribute as \code{items} when \code{items} is
+omitted.}
 }
 
-\code{format}, \code{instrument}, and \code{scales} are required. The fields and the
+\code{format}, \code{instrument}, and \code{scales} are required. A reader of format
+\code{"1.0"} ignores a field it does not know, so an older release of this
+package reads a file with \code{columns} and ignores the field. The fields and the
 version string are a public contract and change only deliberately.
 }
 

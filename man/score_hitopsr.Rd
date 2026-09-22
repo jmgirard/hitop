@@ -30,7 +30,13 @@ items, so a warning is issued when the names share a common prefix and
 trailing number but those numbers are not ascending. That warning reads
 the names you supply, so under \code{layout = "printed"} it also fires for
 original-number names in printed order; it can be ignored there, or
-avoided by supplying positions. Duplicated entries are an error.}
+avoided by supplying positions. Duplicated entries are an error.
+When \code{items} is omitted or \code{NULL}, the names on the \code{module}'s \code{columns}
+attribute are used, which \code{\link[=read_module]{read_module()}} returns from a descriptor that
+\code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}} wrote. A call with \code{items} omitted is an
+error if no \code{module} is supplied, if the module has no \code{columns}
+attribute, or under \code{layout = "printed"}. A supplied \code{items} is always
+used, whether or not the module has the attribute.}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the HiTOP-SR items, used for reverse-coding. (default = \code{c(1, 4)})}
