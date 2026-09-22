@@ -69,6 +69,8 @@ The milestone also adds a smoke-test assertion that presses a card during a buil
 - 2026-09-21: T7: `npm run smoke` 1 passed locally on builder d676de1. The PR and its CI smoke run are left to review.
 - 2026-09-21: claim audit: 20 claims read, 2 corrected — hitop-builder index.html, README.md, tests/smoke.spec.js, tests/plants.mjs. The audit read the builder branch diff, because hitop's diff outside `cairn/` adds no lines. The [O] reader corrected the card-handler comment ("reads" became "begins with", to match `startsWith('Ready.')`) and the forced-click comment (without `force`, Playwright waits up to the 30-second action timeout, and a build that ends inside it gives a false red on A9). The same reader re-read both as true. Builder d676de1, smoke 1 passed.
 - 2026-09-21: implement complete, status set to review.
+- 2026-09-21: review fix-now: builder commit 7df52a9 carries D1, D2, D4, D5 and B1. Smoke, plants and the prose guard are green.
+- 2026-09-21: step-7 approval: m104-builder-format-cards-lock approved for merge (hitop and hitop-builder).
 
 ## Decisions
 
@@ -95,3 +97,7 @@ Independent review: three-lens fan-out (user-facing tier). Blame-history lens: n
 - D6: in Safari and Firefox on macOS a mouse click does not focus a button, so a keyboard-focused card that goes disabled drops focus to the body. `#downloadBtn` has the same loss since M103 (index.html:1283).
 - D7: a hung build now also keeps the cards off until a reload, which widens M103's rejected D1 (index.html:1405 to 1408).
 - B1 (all three lenses): README.md:97 was not rewrapped. It is 93 characters against 65 to 77 around it.
+
+Triage (step-7 gate, 2026-09-21, the maintainer took the recommended option). Fixed now on the builder branch: D1 and D2 (A9 also reads the three cards' `disabled` state and whether the status begins with "Building"), D4 and D5 (both comments rewritten), B1 (paragraph rewrapped). Follow-up: D3 and D6 go to one new candidate row on how the builder's controls look and hold focus while disabled during a build. Rejected: D7, because a hung build needs a reload, the same call as M103's D1. No finding met the return floor, since each leaves every criterion passing.
+
+Fix-now evidence: prose guard exit 0 (18 writer sites in the source and the ledger). `npm run smoke` 1 passed. A scratch copy that leaves the cards on and returns from the card handler while `building` is set failed A9 alone, on `cardsDisabled` only. Its button text and Word mark matched, which are the two fields the A9 before the fix read. `npm run plants`: the unplanted copy passed, and plants a to j each failed their named assertions (j on A9 alone).
