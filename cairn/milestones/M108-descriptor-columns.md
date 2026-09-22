@@ -58,6 +58,7 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - 2026-09-22: implement started on `m108-descriptor-columns`. Question gate skipped: the plan gate and D-067 settled the API choices.
 - 2026-09-22: T1 (partial): REDCap sourced in `cairn/references/vanderbilt2015redcapdd.md`. Qualtrics help does not tie `[[ID:]]` to export column names (import page: "Specifies the question ID"; dataset page: columns carry question numbers); only secondary university pages do. At the amendment gate Jeff chose to run his own Qualtrics import and export and supply the header row as a first-hand source. Criteria unchanged; the Qualtrics writer waits for that file.
 - 2026-09-22: T2 (partial): REDCap, Word and `write_module()` column tests added. 8 failures, each a `NULL` `columns` where names are expected. The Qualtrics tests wait for Jeff's export header.
+- 2026-09-22: T3 (partial): the sidecar sets `columns` every time (NULL clears it), `redcap_item_names()` feeds the REDCap dictionary and its descriptor from one place, and `write_module_impl()` checks and writes the attribute after `itemOrder`. The Qualtrics sidecar passes no names for now, so it clears a carried attribute. 1 test stays red until T4's reader.
 
 ## Decisions
 

@@ -119,7 +119,18 @@ generate_redcap_hitopsr <- function(
   # order to record.
   built <- FALSE
   if (!is.null(descriptor)) {
-    write_descriptor_sidecar(descriptor, module, "hitopsr")
+    # The dictionary's item field names, which REDCap uses as the data
+    # export's column names. build_redcap_zip() writes the same names below.
+    write_descriptor_sidecar(
+      descriptor,
+      module,
+      "hitopsr",
+      columns = redcap_item_names(
+        reduced$items[[1]],
+        "HSR",
+        max(hitopsr_items$HSR)
+      )
+    )
     # A descriptor with no form beside it describes a form that was never
     # written, so it goes again if the build below fails.
     # file.remove() on the literal path, never unlink(), which would treat a
@@ -263,6 +274,19 @@ generate_redcap_pid5bf <- function(
   )
 }
 
+# Internal Helper: the dictionary's item field names
+#
+# One place for the names build_redcap_zip() writes, so the HiTOP-SR generator
+# can record the same names in its descriptor's `columns` before the ZIP is
+# built.
+redcap_item_names <- function(n, instrument, max_n) {
+  item_names(
+    prefix = paste0(tolower(instrument), "_"),
+    n = n,
+    max_n = max_n
+  )
+}
+
 # Internal Helper: Build the REDCap ZIP file
 build_redcap_zip <- function(
   items,
@@ -303,11 +327,7 @@ build_redcap_zip <- function(
   #    (`max_n`), not of the items this call exports -- a module export keeps
   #    the full instrument's width, so item 7 of the HiTOP-SR is `hsr_007`
   #    whether or not items above 99 are in the module.
-  variable_names <- item_names(
-    prefix = paste0(tolower(instrument), "_"),
-    n = items[[1]],
-    max_n = max_n
-  )
+  variable_names <- redcap_item_names(items[[1]], instrument, max_n)
 
   # 3. Build the complete Data Dictionary data frame for items
   item_rows <- data.frame(

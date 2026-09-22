@@ -231,6 +231,34 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
     payload$itemOrder <- as.integer(item_order)
   }
 
+  # A module carrying a `columns` attribute records the names an online
+  # export gives its items; read_module() returns exactly this attribute.
+  # Checked here for the reason `item_order` is: the attribute can be set by
+  # hand, and a bad one would write a file read_module() then refuses.
+  columns <- attr(module, "columns")
+  if (!is.null(columns)) {
+    problem <- if (!is.character(columns)) {
+      "It must be a character vector."
+    } else if (anyNA(columns) || any(columns == "")) {
+      "It must not hold {.code NA} or an empty string."
+    } else if (length(columns) != length(rebuilt$items)) {
+      "It must hold one name for each of the {rebuilt$nItems} item{?s} the \\
+       module covers, not {length(columns)}."
+    } else if (anyDuplicated(columns) > 0L) {
+      "It must not repeat a name."
+    }
+    cli_assert(
+      condition = is.null(problem),
+      message = c(
+        "The {.arg module} argument has an unusable {.field columns} \\
+         attribute.",
+        x = problem
+      ),
+      call = call
+    )
+    payload$columns <- columns
+  }
+
   json <- jsonlite::toJSON(payload, auto_unbox = FALSE, pretty = TRUE)
   # An unwritable path is reported the way every other failure in this file is
   # -- naming the file -- rather than as the bare "cannot open the connection"
@@ -609,12 +637,15 @@ read_module_check_format <- function(format, file, call = rlang::caller_env()) {
 # instrument offers, so a full administration gets a descriptor too rather than
 # the argument quietly doing nothing. `item_order` is the original item numbers
 # in the order a form printed them; NULL leaves the field out, which is what a
-# form printed in instrument order deserves.
+# form printed in instrument order deserves. `columns` is the names the
+# instrument file gives the module's items, in ascending item-number order;
+# NULL leaves the field out, which is what a paper form deserves.
 write_descriptor_sidecar <- function(
   descriptor,
   module,
   instrument,
   item_order = NULL,
+  columns = NULL,
   call = rlang::caller_env()
 ) {
   validate_string(descriptor, "descriptor", call = call)
@@ -641,6 +672,10 @@ write_descriptor_sidecar <- function(
   # shuffled would inherit that form's printed order.
   attr(module, "item_order") <-
     if (is.null(item_order)) NULL else as.integer(item_order)
+  # Set unconditionally for the same reason: a module read back from a REDCap
+  # descriptor carries that export's names, and a Word form built from it has
+  # no columns at all.
+  attr(module, "columns") <- columns
   # The writer's own abort is left to speak: it names the path, which is the
   # fact the caller needs, and re-wrapping it here would re-interpolate a
   # message that has already been formatted. `call` is passed through so the
