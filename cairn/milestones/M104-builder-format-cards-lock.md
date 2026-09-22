@@ -1,6 +1,6 @@
 # M104: The builder's format cards are off during a build
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -50,7 +50,7 @@ The milestone also adds a smoke-test assertion that presses a card during a buil
 - [x] T4: Add a plant to `tests/plants.mjs` that removes the cards' disable from `download()`. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that the new plant fails A9 alone.
 - [x] T5: Run headless probes on the served branch. Do the AC1 presses, the AC2 reads after a saved and a failed build, and the AC3 grep. Write one work-log line for each criterion.
 - [x] T6: Add the clause to the step-two hint (`index.html:486`), to the comment at `let building` (`index.html:701`), and to README.md §What the page shows (line 84). Run the AC4 grep and read each matched paragraph. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched paragraphs and a verdict for each.
-- [ ] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
+- [x] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
 
 ## Work log
 
@@ -65,7 +65,10 @@ The milestone also adds a smoke-test assertion that presses a card during a buil
 - 2026-09-21: T5 AC2: the failed run served a copy whose generator line is `stop("M104 planted generator failure")`. Its log read "FAILED: Error in `eval(expr, env)`: M104 planted generator failure". After that failure, and after a saved Word build, all three cards read `disabled` false. A Qualtrics card press then set `#downloadBtn` to "Download the Qualtrics file (.zip bundle)" in both runs. 2 passed.
 - 2026-09-21: T5 AC3: `grep -n "disabled" index.html` lists 22 lines. `.formats` at 490 closes before `.downloads` at 621, so `.downloads button` never matches a card. Writes to a `disabled` state: 717 and 934 (`.downloads button`, not a card), 1128 (`#selectAll`, not a card), 1280 and 1405 (`buttons` = `.downloads button`, not a card), 1281 and 1406 (`cards` = `[data-choose]`, inside `download()`, which spans 1259 to 1409). Line 622 is the `disabled` attribute on `#downloadBtn` in the markup, not a card. The other 14 lines are CSS (146, 147, 150, 151, 158, 159, 160, 267, 415, and the variables at 19 and 50) or comments (12, 709, 836, 1494). Line 267 names the cards but only reads `:disabled` for a hover style. No card write exists outside `download()`.
 - 2026-09-21: T6: clause added to the step-two hint (index.html:489), the `let building` comment (704 to 706), and README.md §What the page shows (96 to 97: "The button and the three cards are off while a build is running."). Two sentences rewritten. The `main()` card-handler comment (1659 to 1666) said the status write waits for an idle page so that a build's progress is not written over. It now says the write waits for "Ready." and that no press lands during a build. README.md:112 to 114 said a press "while the page is idle" names the format. After a failed build the page is idle and the press left "The DOCX build failed. The log below says why." in place, so the sentence now says that. Both rewrites rest on a re-run of the T5 probes on the edited page (4 passed, status read after each press). Smoke: 1 passed.
-- 2026-09-21: T6 AC4 ledger, after the edits. Agree, no change: index.html 252 to 253 (CSS, a card selects its format in place), 270 (CSS, the current card's mark), 476 (step comment), 505 and 537 (disclosure closes on a card press), 779 (`currentFormat` changes on a card press), 841 to 845 (`setFormat`), 857 to 863 (`markFormatChoice`), 1269 to 1283 and 1408 (the T3 lines). README.md 82 to 90 (the cards, a press switches the format, the disclosure closes on a press). Changed: index.html 487 to 489 (hint), 704 to 706 (`let building`), 1659 to 1671 (card handler); README.md 96 to 97 and 112 to 114. Not about a card press: README.md 4, 68, 73, 130 and 251, and index.html 428, 456, 457, 462, 483 and 491 to 499 (the words "choose" or "chooses", headings, and the card markup).
+- 2026-09-21: T6 AC4 ledger, after the edits. Agree, no change: index.html 252 to 253 (CSS, a card selects its format in place), 270 (CSS, the current card's mark), 476 (step comment), 505 and 537 (disclosure closes on a card press), 779 (`currentFormat` changes on a card press), 841 to 845 (`setFormat`), 857 to 863 (`markFormatChoice`), 1269 to 1283 and 1408 (the T3 lines). README.md 82 to 90 (the cards, a press switches the format, the disclosure closes on a press). Changed: index.html 487 to 489 (hint), 704 to 706 (`let building`), 1659 to 1671 (card handler), and README.md 96 to 97 and 112 to 114. Not about a card press: README.md 4, 68, 73, 130 and 251, and index.html 428, 456, 457, 462, 483 and 491 to 499 (the words "choose" or "chooses", headings, and the card markup).
+- 2026-09-21: T7: `npm run smoke` 1 passed locally on builder d676de1. The PR and its CI smoke run are left to review.
+- 2026-09-21: claim audit: 20 claims read, 2 corrected — hitop-builder index.html, README.md, tests/smoke.spec.js, tests/plants.mjs. The audit read the builder branch diff, because hitop's diff outside `cairn/` adds no lines. The [O] reader corrected the card-handler comment ("reads" became "begins with", to match `startsWith('Ready.')`) and the forced-click comment (without `force`, Playwright waits up to the 30-second action timeout, and a build that ends inside it gives a false red on A9). The same reader re-read both as true. Builder d676de1, smoke 1 passed.
+- 2026-09-21: implement complete, status set to review.
 
 ## Decisions
 
