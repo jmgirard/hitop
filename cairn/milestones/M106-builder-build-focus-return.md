@@ -90,6 +90,7 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-22: T9 done (builder `66ae1b3`). README.md step 2 now says that focus comes back if no other element has focus at the build's end, that another element keeps focus, and that an off or hidden control gets no focus back. The click sentences are gone. The paragraph (99-107) and the comment at index.html 1433-1443 are rewrapped. The AC6 grep matched README.md 76 and 99-104. The step-2 paragraph, read whole, agrees with AC1 to AC5. `npm run smoke` passed.
 - 2026-09-22: claim audit: 11 claims read, 0 corrected — hitop-builder README.md, index.html.
 - 2026-09-22: status set to review (after return 2).
+- 2026-09-22: step-7 approval: m106-builder-build-focus-return approved for merge (both repos).
 
 ## Decisions
 
@@ -184,4 +185,10 @@ Independent review, three fresh reviewers. No reviewer found a bug in the behavi
 - [S-prior]1: no earlier review point is reversed. [S-prior]2: README gives no browser caveat.
 - [S-hist]2: the README sentence was rewritten twice after returns 1 and 2.
 
-Dispositions are set at the gate below.
+Gate dispositions (Jeff, 2026-09-22):
+
+- Fix now, applied on builder `4cb601e`, smoke passed: [O]4 and [S-hist]1 (the comment names the kept element and Safari and Firefox), [O]5 ("still" removed), [O]6 (README says "that button or card"), [O]9 ("presses").
+- Follow-up, one candidate row "Builder focus-return coverage": [O]1, [O]2, [O]8, [O]10, [O]3, [O]7, [S-prior]2.
+- Rejected: [O]11, because no builder control is in that state. [O]12, because the line is outside the diff and not about a build.
+- Noted, nothing asked: [S-hist]2, [S-prior]1.
+- Pass 2 findings not listed above are covered by these dispositions: the rewraps landed in T9, and the focus-ring finding was checked (`:focus-visible` true after a keyboard build in Chromium).
