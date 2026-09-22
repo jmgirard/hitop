@@ -93,6 +93,10 @@ reliability_hitopsr <- function(
   ## Same three instrument-resolved inputs score_hitopsr() uses, remapped to
   ## module-column positions when a `module` is supplied.
   inputs <- hitopsr_engine_inputs(module)
+  ## A missing or NULL `items` takes the module's `columns` attribute, or
+  ## aborts saying to pass `items`.
+  items <- module_column_items(missing(items), if (!missing(items)) items,
+                               module, layout)
   ## Under layout = "printed", put the caller's printed-order `items` into
   ## instrument order through the module's item_order (refusing when there is
   ## none); the heuristic order warning has then already run on the caller's
