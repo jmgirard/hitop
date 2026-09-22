@@ -75,6 +75,7 @@ In this repo, the milestone changes tracking files only.
 - claim audit: 16 claims read, 0 corrected — index.html, README.md, tests/smoke.spec.js, tests/plants.mjs, all in the builder diff. The hitop diff adds nothing outside cairn/. The [O] reader noted that the new comment said "this rule" for two rules, and b2b4f54 changed it to "these two rules".
 - 2026-09-21: implement done, status set to review.
 - 2026-09-21: /milestone-review started. Both repos were even with main, and no PR existed. In one batch the AC3 and AC4 ticks landed before their evidence lines, because the evidence edits missed their anchor. The evidence lines were written in the next call, and the section was re-read.
+- 2026-09-21: step-7 approval: m105-builder-disabled-cards-look approved for merge (hitop-builder and hitop), with the fix-now items applied first.
 
 ## Decisions
 
@@ -104,3 +105,5 @@ Reviewers: three-lens fan-out. The blame-history lens found no finding. The prio
 - F9, F10 (line 272 and README step 2 not rewrapped): fix now.
 - F11, F12, F14 (build-only claim holds, plant (k) string matches, no decision conflict): noted.
 - F13 (AC6 open until PR CI): noted, step 8.
+
+Gate outcome: the user chose "fix, then merge" and accepted the triage above. Builder aace8b4 carries F1, F2, F3, F8, F9 and F10. A10 now reads background, border colour, border style, shadow and both text colours against `#downloadBtn`, and the status line. Plant (k) removes both card rules. After aace8b4, `npm run smoke` passed (1 of 1). `npm run plants` passed its matrix: all 11 plants went red, and plant (k) failed A10 alone. F5 goes into the builder smoke-test candidate row at hygiene.
