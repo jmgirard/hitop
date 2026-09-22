@@ -1,0 +1,11 @@
+# M104: The builder's format cards are off during a build
+
+**Status:** done (2026-09-21, PR #114 https://github.com/jmgirard/hitop/pull/114; code in jmgirard/hitop-builder PR #19 https://github.com/jmgirard/hitop-builder/pull/19, merged as `c56a9fb`)
+
+**Goal:** While a builder build runs, the page keeps naming the format it is building.
+
+**Outcome:** In hitop-builder `index.html`, `download()` collects the three `[data-choose]` cards as `cards`. It disables them after `building = true` and sets them to `bootAbandoned` in `finally`, as it does for `.downloads button`. The step-two hint, the `let building` comment and README.md §What the page shows say that the cards are off while a build runs. The card-handler comment now says that the status write waits for a status that begins with "Ready.". README.md says that a press after a failed build leaves the failure message. `tests/smoke.spec.js` adds A9, which presses the Qualtrics card during the Word build with a forced click. It asserts the button text, the Word card's `aria-current`, the three cards' `disabled` state, and a status that begins with "Building". `tests/plants.mjs` adds plant (j), which leaves the cards on and fails A9 alone. This repo: tracking only, plus one candidate row.
+
+**Decisions:** none cross-cutting. Plan gate: disable the cards, not defer or ignore the press, and say so in the hint and README.md.
+
+**Review:** three-lens fan-out. AC1 and AC2 by 4 headless probes on the branch, including a failed build with a planted R `stop()`. AC3 by a read of all 22 `disabled` lines, and AC4 by a read of the 50 lines its grep matched. AC5 by local smoke and plants (10 of 10 red on named assertions) and PR #19 smoke green. `check()` 0/0/0, PR #114 8/8 green. Blame-history and prior-review lenses: no finding beyond an unwrapped README line. Diff-bug lens, no correctness bug, seven findings. Fixed now: A9 did not tell a disabled card from an ignored press, and it did not record that the build was still running. Two comments gave incomplete reasons, and the README line is rewrapped. Follow-up row: the current card still looks active when disabled, and focus can drop to the body in Safari and Firefox. Rejected: a hung build keeps the cards off until a reload (M103's call). Nothing graduated or retired.
