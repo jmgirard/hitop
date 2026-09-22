@@ -30,8 +30,9 @@ module_format_first_version <- function() {
 #'   Before it writes, `write_module()` rebuilds the module with
 #'   [hitop_module()] from its `instrument` and `scales`. A module whose
 #'   `items` or `nItems` differ from that rebuild is refused, and nothing is
-#'   written. The file holds the rebuild's fields, so [read_module()] returns
-#'   a `hitop_module` with integer items. This is also true for a file written
+#'   written. The file holds the rebuild's fields. [read_module()] rebuilds
+#'   the module from the file's `scales`, so it returns a `hitop_module` with
+#'   integer items. This is also true for a file written
 #'   from the deprecated `hitop_subset` class, or from a module whose items
 #'   are doubles.
 #'
@@ -134,7 +135,8 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
   # The module is rebuilt from its `instrument` and `scales`, the two fields
   # read_module() rebuilds from, and its `items` and `nItems` must match the
   # rebuild. A module changed by hand would otherwise write a file that
-  # read_module() refuses. Everything here runs before the path is opened, so
+  # read_module() refuses, or one whose recorded items are not the rebuild's.
+  # Everything here runs before the path is opened, so
   # a refusal leaves the path as it was.
   rebuilt <- rlang::try_fetch(
     hitop_module(instrument = module$instrument, scales = module$scales),
@@ -297,9 +299,9 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
 #'   for the field it spoils, never as a bare R coercion error.
 #'
 #'   In `items`, `nItems`, and `itemOrder`, every value must be a JSON number
-#'   with a whole value. A JSON string, a JSON boolean, a JSON `null` inside an
-#'   array, or a number such as `12.4` is refused, even where it would convert
-#'   to the right item number: `items` and `nItems` raise
+#'   with a whole value. A JSON string, a JSON boolean, or a number such as
+#'   `12.4` is refused, even where it would convert to the right item number.
+#'   A JSON `null` inside an array is also refused. `items` and `nItems` raise
 #'   `hitop_module_file_items_mismatch`, and `itemOrder` raises
 #'   `hitop_module_file_bad_item_order`. A whole number written as `2.0` or
 #'   `3e0` is accepted. A field whose whole value is JSON `null` reads as

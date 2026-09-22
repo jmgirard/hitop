@@ -49,9 +49,9 @@ refused as \code{hitop_module_file_invalid_json} or as the mismatch condition
 for the field it spoils, never as a bare R coercion error.
 
 In \code{items}, \code{nItems}, and \code{itemOrder}, every value must be a JSON number
-with a whole value. A JSON string, a JSON boolean, a JSON \code{null} inside an
-array, or a number such as \code{12.4} is refused, even where it would convert
-to the right item number: \code{items} and \code{nItems} raise
+with a whole value. A JSON string, a JSON boolean, or a number such as
+\code{12.4} is refused, even where it would convert to the right item number.
+A JSON \code{null} inside an array is also refused. \code{items} and \code{nItems} raise
 \code{hitop_module_file_items_mismatch}, and \code{itemOrder} raises
 \code{hitop_module_file_bad_item_order}. A whole number written as \code{2.0} or
 \code{3e0} is accepted. A field whose whole value is JSON \code{null} reads as

@@ -61,6 +61,8 @@ A module descriptor that `write_module()` writes reads back through `read_module
 - 2026-09-22: T3 done. `write_module_impl()` rebuilds the module with `hitop_module()` before it opens the path. It refuses `items` or `nItems` that differ from the rebuild, and it writes the rebuild's fields. The tests plant 9 defects in `items` and 5 in `nItems`. Two more plants make the rebuild fail: an unknown scale and the instrument `"pid5"`. All 3 refusal tests were red before the fix, and the double-items control passed. `devtools::test()`: 0 failed, 13 skipped, 720 tests.
 - 2026-09-22: T4 done. `?write_module` states the rebuild check and the integer-items read back, and `?read_module`'s Value says the same. Two lock tests pass: the `hitop_subset()` round trip, with `hitop_deprecated_subset` muffled by class, and the double-items round trip. `devtools::document()` rewrote both Rd files.
 - 2026-09-22: T5 done. NEWS has two Breaking changes entries (reader refusal, writer check) and one Improvements entry (LF). `devtools::document()` leaves no diff. `devtools::check()`: 0 errors, 0 warnings, 0 notes on macOS.
+- 2026-09-22: claim audit: 41 claims read, 4 corrected — NEWS.md, R/module_file.R, man/read_module.Rd, man/write_module.Rd
+- 2026-09-22: the claim audit's re-read held 3 of the 4 corrections. The fourth, the NEWS "Before" sentence of the writer entry, took the reader's wording. A run of `main`'s writer and reader showed that string and swapped items both wrote a file that read back.
 
 ## Decisions
 

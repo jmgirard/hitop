@@ -30,8 +30,9 @@ than a silent preference for either side.
 Before it writes, \code{write_module()} rebuilds the module with
 \code{\link[=hitop_module]{hitop_module()}} from its \code{instrument} and \code{scales}. A module whose
 \code{items} or \code{nItems} differ from that rebuild is refused, and nothing is
-written. The file holds the rebuild's fields, so \code{\link[=read_module]{read_module()}} returns
-a \code{hitop_module} with integer items. This is also true for a file written
+written. The file holds the rebuild's fields. \code{\link[=read_module]{read_module()}} rebuilds
+the module from the file's \code{scales}, so it returns a \code{hitop_module} with
+integer items. This is also true for a file written
 from the deprecated \code{hitop_subset} class, or from a module whose items
 are doubles.
 }

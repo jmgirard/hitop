@@ -114,9 +114,10 @@
 * **`read_module()` refuses item numbers that are not JSON numbers.** In a
   module descriptor's `items`, `nItems` and `itemOrder` fields, every value
   must now be a JSON number with a whole value. A JSON string such as `"12"`,
-  a JSON boolean, a JSON `null` inside an array, or a fraction such as `12.4`
-  stops the read. Before, such values were converted, and one that converted
-  to the right item number read as valid. `items` and `nItems` raise
+  a JSON boolean, or a fraction such as `12.4` stops the read. Before, such
+  values were converted, and one that converted to the right item number read
+  as valid. A JSON `null` inside an array is refused as before. `items` and
+  `nItems` raise
   `hitop_module_file_items_mismatch`, and `itemOrder` raises
   `hitop_module_file_bad_item_order`. Whole numbers written as `2.0` or `3e0`
   still read. A file that `write_module()` wrote never holds the refused
@@ -129,8 +130,10 @@
   order, or its `nItems` differs in value, it stops with an error that names
   the field. If the rebuild fails, for example on an unknown scale name, it
   stops with the rebuild's error as the cause. In both cases no file is
-  written, and an existing file at the path is left unchanged. Before, such a
-  module wrote a file that `read_module()` then refused. A module whose items
+  written, and an existing file at the path is left unchanged. Before, some
+  such modules wrote a file that `read_module()` then refused. Others wrote a
+  file that read back, but recorded the items in an order other than the
+  rebuild's, or as strings. A module whose items
   are doubles equal to the rebuild's is still written.
 
 * **Every response value the package ships is an integer.** The 405 item columns
