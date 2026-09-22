@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M108: A module descriptor names its export's item columns
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -41,7 +41,7 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 
 ## Tasks
 
-- [ ] T1: Sources. Read the REDCap help on the data dictionary and data export. Read the Qualtrics help on the Advanced Format `[[ID:]]` tag and on export column headers. Write a source note under `cairn/references/` for each page the plan relies on, with its `INDEX.md` line. If a Qualtrics page does not confirm the claim, stop at an amendment gate that moves Qualtrics to a candidate row.
+- [x] T1: Sources. Read the REDCap help on the data dictionary and data export. Read the Qualtrics help on the Advanced Format `[[ID:]]` tag and on export column headers. Write a source note under `cairn/references/` for each page the plan relies on, with its `INDEX.md` line. If a Qualtrics page does not confirm the claim, stop at an amendment gate that moves Qualtrics to a candidate row.
 - [ ] T2: Writer tests first, in `tests/testthat/test-generator-descriptor.R`. Parse the REDCap dictionary and the Qualtrics text file, and keep only item rows. Build the expected names with `sprintf()` from the module's item numbers. Add the carried-attribute probes from AC2. See each test red before T3.
 - [ ] T3: Writer. `write_descriptor_sidecar()` (`R/module_file.R:613`) takes the export's names and sets `columns` every time, clearing it when there are none, as it does `item_order`. The two generators pass the names they build (`R/generate_redcap.R:306`, `R/generate_qualtrics.R:302`). `write_module_impl()` checks the attribute and writes it after `itemOrder`.
 - [x] T4: Reader. Read `columns` from the second parse with `simplifyVector = FALSE` (LESSONS, M054). Add the refusals and the new class. Tests first for AC3 and AC4.
@@ -63,6 +63,8 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - 2026-09-22: T5: `module_column_items()` in `R/module.R` gives both scoring functions the module's columns when `items` is missing or `NULL`, and aborts in the three AC5 cases. No new argument. New `test-module-columns-scoring.R` saw 3 red before the change, including the REDCap end-to-end test. `devtools::test()`: 0 failures, 17850 passes.
 - 2026-09-22: T6 (partial): roxygen for `?write_module`, `?read_module` (Errors list names the new class), REDCap `descriptor`, `?score_hitopsr`, `?reliability_hitopsr`, a modules-vignette subsection (rendered, prints `TRUE`), and a NEWS entry, all REDCap-only. `document()` run. The Qualtrics wording and `devtools::check()` wait for the Qualtrics outcome.
 - 2026-09-22: blocked on Jeff's Qualtrics import and export header row (T1). REDCap work is complete and the suite passes.
+- 2026-09-22: unblocked. T1: Jeff's first-hand Qualtrics export (header rows on the shelf) names the item columns `HSR_066`..`HSR_389`, equal to the `[[ID:]]` tokens, with internal IDs `QID3`..`QID10` apart. Source note `cairn/references/qualtrics2026exportheader.md`. It is first-hand, not a help page, as AC1 words it: raised for the amendment gate with AC3's one-item case.
+- 2026-09-22: outside the milestone, hotfix PR #118 (datasets bound into the namespace so `hitop::` calls work unattached) opened with merge approved, CI pending. Found when `hitop::hitop_module()` failed in Jeff's test command.
 
 ## Decisions
 
