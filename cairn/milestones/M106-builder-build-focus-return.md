@@ -52,7 +52,7 @@ In this repo, the milestone changes tracking files only.
 - [x] T2: Write the test first. On the unfixed page, confirm in a probe that focus is on the body during a build after the Playwright `click()`. If it is not, stop and raise it at an amendment gate, because the assertion below cannot then fail. The smoke build presses the step bar, which leaves focus on a step heading (`index.html:912`). So after the A9 and A10 reads and before the download wait, the test calls `blur()` on the focused element, and a comment says that this stands in for a focus lost to the disabled button. Add assertion A11 to `tests/smoke.spec.js` after the save. A11 polls `document.activeElement` and asserts that it is `#downloadBtn`. Add A11 to the assertion list in the file header. Run the test on the unfixed page and see it fail on A11.
 - [x] T3: In `download()`, record `document.activeElement` before the controls go off. After `finally` turns them back on and `refreshTally()` runs, return focus as the Scope says. Write the comment that says why.
 - [x] T4: Add plant (l) to `tests/plants.mjs`, which removes the focus return. Run `npm run plants`. Make sure that each plant is red on its named assertion, and that plant (l) fails A11 alone.
-- [ ] T5: Run headless probes on the served branch for AC1 to AC5, with the forced-failure copy for AC2. Write one work-log line for each criterion.
+- [x] T5: Run headless probes on the served branch for AC1 to AC5, with the forced-failure copy for AC2. Write one work-log line for each criterion.
 - [ ] T6: Write the README.md sentence. Run the AC6 grep and read each matched block. Rewrite each sentence that the T5 runs contradict. In the work log, record the matched blocks and a verdict for each.
 - [ ] T7: Run `npm run smoke` locally. At review, open the hitop-builder PR and wait for its smoke run.
 
@@ -67,6 +67,11 @@ In this repo, the milestone changes tracking files only.
 - 2026-09-21: T2 done. A probe on the unfixed page read focus on the body during a build after the Playwright `click()` and after it ended. A11 and the blur are in `tests/smoke.spec.js`, and `npm run smoke` on the unfixed page failed on A11 alone.
 - 2026-09-21: T3 done. `download()` keeps `document.activeElement` before the controls go off. After `refreshTally()` in the `finally`, it checks the focus. If focus is on the body and the kept control is connected, on, and has client rects, it focuses that control with `preventScroll`. `npm run smoke` passed.
 - 2026-09-21: T4 done. Plant (l) removes the `focus()` call. `npm run plants` passed: the unplanted copy passed, all 12 plants were red, and plant (l) failed A11 alone.
+- 2026-09-21: T5 AC1. Scratch probes on the served branch held webR's worker messages during the build. The `click()` run read the body during the build and `#downloadBtn` after the save. The card run read the Qualtrics card before the dispatch and the body during the build. After the save it read the card. On main's page the card run read the body after the save.
+- 2026-09-21: T5 AC2. The same two runs on a copy with `stop()` in place of the generator call reached the status "The DOCX build failed". They read the body during the build and `#downloadBtn` or the Qualtrics card after the failure.
+- 2026-09-21: T5 AC3. The untick run unticked 1 hidden checkbox, left 0 ticked, and read the body for 5 s with `#downloadBtn` disabled. The step run read the step-one heading, then the body after `blur()`. It read the body for 5 s after the build.
+- 2026-09-21: T5 AC4. The `#shuffle` run and the step-one heading run each read that element for 5 s after the build.
+- 2026-09-21: T5 AC5. In both AC1 runs at 1280 by 400, the control was outside the viewport at `scrollY` 1248. After focus returned, `scrollY` was 1248. A copy with a plain `focus()` read 899.
 
 ## Decisions
 
