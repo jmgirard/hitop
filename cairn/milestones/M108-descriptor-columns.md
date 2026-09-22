@@ -57,6 +57,7 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - 2026-09-22: plan gate chose to cover Qualtrics when a vendor page confirms it over REDCap alone because both generators write descriptors; falsified by Qualtrics help that names another source for export column headers.
 - 2026-09-22: implement started on `m108-descriptor-columns`. Question gate skipped: the plan gate and D-067 settled the API choices.
 - 2026-09-22: T1 (partial): REDCap sourced in `cairn/references/vanderbilt2015redcapdd.md`. Qualtrics help does not tie `[[ID:]]` to export column names (import page: "Specifies the question ID"; dataset page: columns carry question numbers); only secondary university pages do. At the amendment gate Jeff chose to run his own Qualtrics import and export and supply the header row as a first-hand source. Criteria unchanged; the Qualtrics writer waits for that file.
+- 2026-09-22: T2 (partial): REDCap, Word and `write_module()` column tests added. 8 failures, each a `NULL` `columns` where names are expected. The Qualtrics tests wait for Jeff's export header.
 
 ## Decisions
 
