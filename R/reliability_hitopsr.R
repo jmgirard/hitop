@@ -21,6 +21,10 @@
 #'   module has no `columns` attribute, or under `layout = "printed"`. A
 #'   supplied `items` is always used, whether or not the module has the
 #'   attribute.
+#'   Each column must be numeric or logical, or character holding only
+#'   numbers (blank cells and `NA` count as missing). Any other column, such
+#'   as the choice text of an online export or a factor, is an error of class
+#'   `hitop_nonnumeric_items`.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-SR items, used for reverse-coding. (default = `c(1, 4)`)
 #' @param alpha Optional logical; if `TRUE`, include a column of Cronbach's alpha

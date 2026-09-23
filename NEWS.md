@@ -129,6 +129,19 @@
 
 ## Breaking changes
 
+* **Scoring refuses an item column it cannot read as numbers.**
+  `score_pid5()`, `score_hitopsr()`, `score_hitopbr()`, `reliability_pid5()`,
+  `reliability_hitopsr()`, `reliability_hitopbr()` and `validity_pid5()` now
+  stop with an error of class `hitop_nonnumeric_items` when an item column is
+  a factor, a date, a list, or character text that is not a number. Before, a
+  column of choice text such as `"Not at all"` scored as all `NA` with only a
+  base R coercion warning, and a factor scored as its level codes with no
+  warning. The error names the first five refused columns, shows a value that
+  does not parse, and counts the rest. Numeric and logical columns score as
+  before. A character column of digits, such as a Qualtrics CSV export read
+  after its extra header rows are removed, also scores as before, with blank
+  cells counted as missing.
+
 * **`read_module()` refuses item numbers that are not JSON numbers.** In a
   module descriptor's `items`, `nItems` and `itemOrder` fields, every value
   must now be a JSON number with a whole value. A JSON string such as `"12"`,

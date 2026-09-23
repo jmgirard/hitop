@@ -32,7 +32,11 @@ positions. When \code{items} is omitted or \code{NULL}, the names on the
 with \code{items} omitted is an error if no \code{module} is supplied, if the
 module has no \code{columns} attribute, or under \code{layout = "printed"}. A
 supplied \code{items} is always used, whether or not the module has the
-attribute.}
+attribute.
+Each column must be numeric or logical, or character holding only
+numbers (blank cells and \code{NA} count as missing). Any other column, such
+as the choice text of an online export or a factor, is an error of class
+\code{hitop_nonnumeric_items}.}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the HiTOP-SR items, used for reverse-coding. (default = \code{c(1, 4)})}

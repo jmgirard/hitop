@@ -9,6 +9,10 @@
 #' @param items A vector of column names (as strings) or numbers (as integers)
 #'   corresponding to the 45 HiTOP-BR items in order. Items must be supplied in
 #'   instrument order; duplicated entries are an error.
+#'   Each column must be numeric or logical, or character holding only
+#'   numbers (blank cells and `NA` count as missing). Any other column, such
+#'   as the choice text of an online export or a factor, is an error of class
+#'   `hitop_nonnumeric_items`.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-BR items, used for reverse-coding. (default = `c(1, 4)`)
 #' @param alpha Optional logical; if `TRUE`, include a column of Cronbach's alpha

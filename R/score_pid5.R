@@ -11,6 +11,10 @@
 #'   instrument order; a misordered mapping silently scores the wrong items, so a
 #'   warning is issued when the names share a common prefix and trailing number
 #'   but those numbers are not ascending. Duplicated entries are an error.
+#'   Each column must be numeric or logical, or character holding only
+#'   numbers (blank cells and `NA` count as missing). Any other column, such
+#'   as the choice text of an online export or a factor, is an error of class
+#'   `hitop_nonnumeric_items`.
 #' @param version A string indicating the version of the PID to score: "FULL",
 #'   "SF", or "BF". Will be automatically capitalized. (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
