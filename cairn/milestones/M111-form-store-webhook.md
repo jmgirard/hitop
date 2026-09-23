@@ -88,3 +88,34 @@ Review pass 1, 2026-09-23, hitop-form `store-webhook` at 7e9036a, hitop `m111-fo
 - AC5: the same run. `tests/link.spec.js` L5 builds a link with the field set and asserts the POST at Finish; `tests/render.spec.js` R6 asserts both start-screen wordings in full. Sweep by `grep` over `index.html`, `link.html` and `form.js` with comments stripped: `device` hits only the two viewport meta attributes (not shown text) and the no-store branch of `finish()`; `No answer` and `sent from this page` hit only the no-store start screen and the no-store saved screen; `sent anywhere` only the no-store start screen; `stored or sent` and `leaves the page` nowhere. The lowercase `no answer within N seconds` at form.js:322 is the timeout reason and says nothing was received, not that nothing was sent. README hits (lines 9-10, 56, 65, 88) all sit in sentences that say "when the link names no address" or "without one". Pass.
 - AC6: README "Send responses to a Google Sheet" carries the `doPost` code with `setNumberFormat('@')` on the header and each row and `{"ok":true}` as `MimeType.JSON`, the deployment steps and the CSV download step. Hand run at implement (work log, two entries): the first deployment evaluated `=1+1`, the code gained the apostrophe, and the second run's download equals the two posted bodies in 100 of 100 fields. Fresh read of `tests/fixtures/sheet-hitopbr.csv`: three lines, participants `=1+1` and `007`, `submitted` stamps 18:54:08Z and 18:54:13Z; provenance row present in `tests/fixtures/README.md`. Pass.
 - AC7 (in part, pre-merge): 68 passed against the checkout; `useStore()` is unconditional in send.spec and network.spec; PR #2's Tests workflow passed on 7e9036a in 2m12s; the hitop branch diff against main names no file outside `cairn/`. The dispatched run against the deployed page waits on the hitop-form merge.
+
+Consistency gate: `cairn_validate.py` exit 0 (advisories only); no DESIGN principle changed, so `cairn_impact` was skipped; `devtools::document()` no diff; `pkgdown::check_pkgdown()` no problems; `devtools::check()` result recorded below; no NEWS entry owed (the hitop diff is `cairn/` only, so no user-visible package change); README.Rmd untouched.
+
+Independent review, three lenses on the hitop-form diff `main..HEAD`, user-facing tier. [S] prior-review: probes on both repos' PR comments returned empty; the archive's M093–M099 Review sections were read; 0 regressions. It noted that M095 rejected a formula-injection finding for the saved CSV and that this diff's Apps Script code now addresses it for the sheet. [S] blame-history: 0 conflicts with prior intent; the "No answer is sent anywhere" guarantee is kept for the no-store path and N1–N3 are untouched. It noted the README does not say whether the sheet download goes through `read_form_responses()`, which is M113's scope. [O] diff-bug: 24 findings, ranked by the reviewer, listed here with the disposition proposed at the gate:
+
+- F1 header keys bypass `asText` (README doPost): a POST with a key starting with `=` puts a formula in the header row, which the hand run showed the text format does not stop. Proposed: fix now (every cell written behind an apostrophe, keys checked against `^[a-z0-9_]+$`).
+- F2 unbounded header growth: a hostile POST adds columns without limit. Proposed: fix now (a cap of 1000 keys, refusal answered with `ok:false`).
+- F3 `asText` catches only a leading `=`; a leading `+`, `-`, `@` may also be read as a formula and a leading `'` is eaten. Proposed: fix now (the unconditional apostrophe of F1 covers every case).
+- F4 the fallback CSV reads the live `answers` Map, so an answer changed during the 30-second send makes the saved file differ from the posted row. Proposed: fix now (snapshot the Map in the record).
+- F5 the fallback download starts after a long await, outside the click's user activation; some browsers may block it while the screen says the file was saved (unverified). Proposed: follow-up candidate row (a "Save the file" button on the unconfirmed screen).
+- F6 `waitLock(30000)` equals the page's limit, so a lock wait can store the row after the page gave up, giving both a sheet row and a CSV. Proposed: fix now (`waitLock(10000)` and a README sentence that an unconfirmed send may still have been stored).
+- F7 the `http:` loopback exception ships in production. Proposed: reject (the plan gate chose it, AC4 requires it, and the dispatched run needs it).
+- F8 the endpoint's CORS requirement is undocumented. Proposed: fix now (one README sentence).
+- F9 the security note does not say the URL sits in every participant's link and rows can be forged. Proposed: fix now (two README sentences, with a `study` check suggested).
+- F10 the sent screen says "the study team" though the page cannot know who owns the host. Proposed: reject (AC2 fixes that wording).
+- F11 a 307/308 redirect re-posts the body to a host the start screen never named. Proposed: reject (the redirect is the address owner's choice; Apps Script answers 302).
+- F12 `checkStore` returns `{ ...store, url }`, passing unchecked fields through. Proposed: fix now (return `{ kind, url }`).
+- F13 a URL with a user and password passes the guard but `fetch` throws on it, so every send is unconfirmed. Proposed: fix now (refuse it by name, one guard probe).
+- F14 a timeout during the body read reports "did not answer with JSON". Proposed: fix now (check `signal.aborted` in that catch).
+- F15 no try/catch around the send in `finish()`. Proposed: reject (`sendResponses` catches every fetch and parse error itself; only `buildRow` remains and it cannot throw on the record it is given).
+- F16 `credentials` and `referrerPolicy` left at defaults. Proposed: fix now (`credentials: 'omit'`, `referrerPolicy: 'no-referrer'`).
+- F17 the hang test's `t0` is taken before the walk. Proposed: reject (the `why` text asserts the 30-second reason).
+- F18 the double-press test cannot separate the two guards. Proposed: reject (AC1's contract is what the test asserts).
+- F19 `BROWSER_SET` is an unanchored prefix regex. Proposed: reject (the no-OPTIONS assertion catches any non-safelisted page header).
+- F20 T7 checks Finish but not Back during the send. Proposed: fix now (assert every nav button disabled).
+- F21 the accepted-form guard tests assert only that Begin is visible. Proposed: reject (R6 asserts the host wording).
+- F22 no test reads `sheet-hitopbr.csv`. Proposed: fix now (a test comparing its lead and item columns with `responses-hitopbr.csv` and the two participant codes).
+- F23 the README's skip claim is unsettled if the permission grant succeeds but Chromium still blocks. Proposed: noted (AC7 says the first dispatched run settles it).
+- F24 an over-long README line and a comment broken mid-sentence at form.js:11. Proposed: fix now.
+
+F1, F2, F3 and F6 change the `doPost` code, so AC6's hand run is repeated against a third deployment and the fixture recommitted.
