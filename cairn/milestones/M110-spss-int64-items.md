@@ -1,6 +1,6 @@
 # M110: Scoring refuses SPSS missing codes and 64-bit integers it misreads
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -53,7 +53,7 @@ The milestone also closes two M109 review gaps. A refused value with no `[[:grap
 - [x] T4: Convert a `haven_labelled` character column through `unclass()` before `as.numeric()` in `prep_items()` and in `validity_pid5()` (`R/validity_pid5.R:141`). Run the parse rule on its unclassed values.
 - [x] T5: Write the AC5 test first. Then show a refused value made only of `\p{Z}`, `\p{Cc}` and `\p{Cf}` characters by its code points.
 - [x] T6: Add the AC6 cases to the test "argument checks run before the refusal" (`test-nonnumeric-items.R:325`). The checks already run first (`R/score_engine.R:68`, `R/reliability_engine.R:55`), so this task adds tests only, unless one fails.
-- [ ] T7: Append the D-entry that narrows D-068(a). It cites the new evidence: numeric-typed columns that score wrong. Update the `items` docs and the Errors sections, run `devtools::document()`, and extend the M109 NEWS entry. NEWS states that calls which returned wrong numbers now stop. Run `devtools::test()` and `devtools::check()`.
+- [x] T7: Append the D-entry that narrows D-068(a). It cites the new evidence: numeric-typed columns that score wrong. Update the `items` docs and the Errors sections, run `devtools::document()`, and extend the M109 NEWS entry. NEWS states that calls which returned wrong numbers now stop. Run `devtools::test()` and `devtools::check()`.
 
 ## Work log
 
@@ -71,3 +71,4 @@ The milestone also closes two M109 review gaps. A refused value with no `[[:grap
 - 2026-09-22: T5 done. The AC5 test was red at 130 of 312 and is green after the fix. `is_invisible()` and `code_points()` were added to `R/util.R`. A first build rendered "character U+00A0 and U+2009" in the singular (the M030 cli quantity lesson), so `cli::qty()` now sits just before the plural marker.
 - 2026-09-22: T6 done (tests only). The argument-order test grew from 94 to 140 expectations and passes. Removing `validate_flag(omega)` from `R/reliability_engine.R` as a plant turned it red (10 failures), and the file was restored.
 - claim audit: 33 claims read, 3 corrected — R/util.R (two comments: the value is shown after `trimws()`, and a `\v` prints as an escape, not blank), tests/testthat/test-nonnumeric-items.R (the `integer64` stand-in holds real bit patterns only at -0).
+- 2026-09-22: T7 done. The `items` text changed in the six R/ sources (`validity_pid5()` inherits it), and the Errors sections point to `items`, so they needed no edit. NEWS extended, D-069 appended. `devtools::test()` 0 failures. `devtools::check()` 0 errors, 0 warnings, 1 note (the untracked `qtest.txt`). The test file was rerun after the comment-only audit fixes: 0 failures. Status set to review.
