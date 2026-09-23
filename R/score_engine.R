@@ -34,6 +34,9 @@
 #' @param check_order Logical; if FALSE, prep_items() skips the ascending-name
 #'   heuristic because the wrapper already ran it on the caller's own `items`
 #'   before permuting them (score_hitopsr()'s `layout = "printed"`).
+#' @param caller_items The `items` vector as the caller wrote it, before any
+#'   `layout = "printed"` permutation; it orders the report of refused columns
+#'   (validate_item_columns()). Defaults to `items`.
 #' @param call The calling environment, used so input-validation aborts are
 #'   attributed to the exported wrapper (score_pid5() etc.) rather than to this
 #'   internal engine. Defaults to the wrapper that called score_engine().
@@ -53,6 +56,7 @@ score_engine <- function(
   domain_map = NULL,
   mask_se_na = FALSE,
   check_order = TRUE,
+  caller_items = items,
   call = rlang::caller_env()
 ) {
   ## Scalar-argument assertions (item/data/srange checks run in prep_items, with
@@ -72,6 +76,7 @@ score_engine <- function(
     reverse_items = reverse_items,
     srange = srange,
     check_order = check_order,
+    caller_items = caller_items,
     call = call
   )
 

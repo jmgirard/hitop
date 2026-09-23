@@ -105,7 +105,9 @@ reliability_hitopsr <- function(
   ## Under layout = "printed", put the caller's printed-order `items` into
   ## instrument order through the module's item_order (refusing when there is
   ## none); the heuristic order warning has then already run on the caller's
-  ## own vector, so the engine skips it.
+  ## own vector, so the engine skips it. The caller's vector is kept to order
+  ## any report of refused columns.
+  caller_items <- items
   items <- layout_items(items, module, layout)
 
   reliability_engine(
@@ -119,6 +121,7 @@ reliability_hitopsr <- function(
     srange = srange,
     alpha = alpha,
     omega = omega,
-    check_order = identical(layout, "instrument")
+    check_order = identical(layout, "instrument"),
+    caller_items = caller_items
   )
 }

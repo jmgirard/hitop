@@ -30,6 +30,9 @@
 #' @param check_order Logical; if FALSE, prep_items() skips the ascending-name
 #'   heuristic because the wrapper already ran it on the caller's own `items`
 #'   before permuting them (reliability_hitopsr()'s `layout = "printed"`).
+#' @param caller_items The `items` vector as the caller wrote it, before any
+#'   `layout = "printed"` permutation; it orders the report of refused columns
+#'   (validate_item_columns()). Defaults to `items`.
 #' @param call The calling environment, forwarded to the validators so aborts are
 #'   attributed to the exported wrapper rather than to this internal engine.
 #' @noRd
@@ -45,6 +48,7 @@ reliability_engine <- function(
   alpha = TRUE,
   omega = TRUE,
   check_order = TRUE,
+  caller_items = items,
   call = rlang::caller_env()
 ) {
   validate_flag(alpha, arg = "alpha", call = call)
@@ -58,6 +62,7 @@ reliability_engine <- function(
     reverse_items = reverse_items,
     srange = srange,
     check_order = check_order,
+    caller_items = caller_items,
     call = call
   )
 
