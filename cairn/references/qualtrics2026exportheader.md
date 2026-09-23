@@ -22,7 +22,8 @@ is that question's column name in a Qualtrics CSV export. Qualtrics' own help do
 state this. Its import page says only that the tag "Specifies the question ID"
 (https://www.qualtrics.com/support/survey-platform/survey-module/survey-tools/import-and-export-surveys/,
 read 2026-09-22). M108 relies on this page for the descriptor's `columns` field from
-`generate_qualtrics_hitopsr()`.
+`generate_qualtrics_hitopsr()`. Scope: the observation covers one generated two-scale
+module with the default `id_prefix`, exported with the default header.
 
 ## Extracted values
 

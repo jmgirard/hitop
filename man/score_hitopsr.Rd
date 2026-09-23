@@ -33,7 +33,7 @@ original-number names in printed order; it can be ignored there, or
 avoided by supplying positions. Duplicated entries are an error.
 When \code{items} is omitted or \code{NULL}, the names on the \code{module}'s \code{columns}
 attribute are used, which \code{\link[=read_module]{read_module()}} returns from a descriptor that
-\code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}} wrote. A call with \code{items} omitted is an
+\code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}} or \code{\link[=generate_qualtrics_hitopsr]{generate_qualtrics_hitopsr()}} wrote. A call with \code{items} omitted is an
 error if no \code{module} is supplied, if the module has no \code{columns}
 attribute, or under \code{layout = "printed"}. A supplied \code{items} is always
 used, whether or not the module has the attribute.}

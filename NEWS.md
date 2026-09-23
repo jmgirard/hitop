@@ -2,11 +2,14 @@
 
 ## New features
 
-* **A REDCap module export scores from its descriptor alone.** The descriptor
-  that `generate_redcap_hitopsr(descriptor = )` writes now has a `columns`
-  field: the dictionary's item field names, one per module item, in ascending
-  item-number order. REDCap uses these names as the export's column names.
-  `read_module()` returns the field on the module's `columns` attribute, and
+* **A REDCap or Qualtrics module export scores from its descriptor alone.**
+  The descriptor that `generate_redcap_hitopsr(descriptor = )` or
+  `generate_qualtrics_hitopsr(descriptor = )` writes now has a `columns`
+  field: the names the generated file gives the items, one per module item,
+  in ascending item-number order. These are the REDCap dictionary's field
+  names, or the Qualtrics questions' `[[ID:]]` values. A data export with the
+  item variable names as column headers uses these names. `read_module()`
+  returns the field on the module's `columns` attribute, and
   `write_module()` writes that attribute back. `score_hitopsr()` and
   `reliability_hitopsr()` now use those names when `items` is omitted or
   `NULL`. A supplied `items` is always used. Omitting `items` is an error

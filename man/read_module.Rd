@@ -101,7 +101,9 @@ order.}
 \item{\code{columns}}{The names that an online export gives the module's
 items: one string per item, in ascending item-number order.
 Optional. \code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}}'s \code{descriptor} writes the
-dictionary's item field names here. A Word form has no columns, so
+dictionary's item field names here, and
+\code{\link[=generate_qualtrics_hitopsr]{generate_qualtrics_hitopsr()}}'s writes the questions' \verb{[[ID:]]}
+values. A Word form has no columns, so
 its descriptor has no field. \code{\link[=read_module]{read_module()}} returns the field on the
 module's \code{columns} attribute, and \code{\link[=write_module]{write_module()}} writes it back
 from that attribute as a JSON array. \code{\link[=score_hitopsr]{score_hitopsr()}} and

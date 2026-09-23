@@ -79,7 +79,15 @@ generate_qualtrics_hitopbr <- function(
 #'   It must name a path of its own: an empty string, or the same path as
 #'   `file`, is refused rather than leaving you with no descriptor and no
 #'   error. Once both files are on disk the descriptor's path is announced on
-#'   the console, after the message naming the import file. (default = `NULL`)
+#'   the console, after the message naming the import file.
+#'   The descriptor's `columns` field holds the names that the generated file
+#'   assigns to the items: the questions' `[[ID:]]` values, such as `HSR_066`
+#'   (built from `id_prefix`). A Qualtrics data export with the item variable
+#'   names as column headers uses these names, so [score_hitopsr()] and
+#'   [reliability_hitopsr()] can score it from the module [read_module()]
+#'   returns, with `items` omitted. Pass `items` for data whose columns carry
+#'   other names, such as an export made with "Use internal IDs in header" or
+#'   a question renamed after import. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -98,6 +106,9 @@ generate_qualtrics_hitopbr <- function(
 #' )
 #'
 #' @export
+# Source for the `descriptor` help's column-name claim: a first-hand Qualtrics
+# export of one generated two-scale module with the default `id_prefix`,
+# `cairn/references/qualtrics2026exportheader.md`.
 generate_qualtrics_hitopsr <- function(
   file = "hitopsr_qualtrics.txt",
   block_name = "HiTOP-SR",

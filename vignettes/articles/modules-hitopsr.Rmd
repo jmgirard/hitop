@@ -360,12 +360,15 @@ identical(
 )
 ```
 
-### Scoring a REDCap export without naming the columns
+### Scoring a REDCap or Qualtrics export without naming the columns
 
-A descriptor written by `generate_redcap_hitopsr()` also records the names that
-the generated file assigns to the items. These are the data dictionary's field
-names, and REDCap uses a field name as the column name in a data export.
-`read_module()` returns them on the module's `columns` attribute:
+A descriptor written by `generate_redcap_hitopsr()` or
+`generate_qualtrics_hitopsr()` also records the names that the generated file
+assigns to the items. For REDCap these are the data dictionary's field names.
+For Qualtrics they are the questions' `[[ID:]]` values, such as `HSR_066`. A
+data export with the item variable names as column headers uses these names.
+`read_module()` returns them on the module's `columns` attribute. The REDCap
+case looks like this:
 
 ```{r}
 #| message: false
@@ -390,9 +393,9 @@ identical(
 )
 ```
 
-`reliability_hitopsr()` does the same. If a field was renamed in REDCap after
-import, the export no longer uses the recorded name. Pass `items` for that data.
-A supplied `items` is always used. A module with no `columns`, such as one read
+`reliability_hitopsr()` does the same. Pass `items` for data whose columns carry
+other names, such as a Qualtrics export made with "Use internal IDs in header",
+or a question renamed after import. A supplied `items` is always used. A module with no `columns`, such as one read
 from a Word form's descriptor, still needs `items`.
 
 ## Collecting Responses Online with hitop-form

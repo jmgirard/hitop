@@ -16,7 +16,7 @@
 #'   avoided by supplying positions. Duplicated entries are an error.
 #'   When `items` is omitted or `NULL`, the names on the `module`'s `columns`
 #'   attribute are used, which [read_module()] returns from a descriptor that
-#'   [generate_redcap_hitopsr()] wrote. A call with `items` omitted is an
+#'   [generate_redcap_hitopsr()] or [generate_qualtrics_hitopsr()] wrote. A call with `items` omitted is an
 #'   error if no `module` is supplied, if the module has no `columns`
 #'   attribute, or under `layout = "printed"`. A supplied `items` is always
 #'   used, whether or not the module has the attribute.

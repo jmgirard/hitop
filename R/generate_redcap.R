@@ -83,11 +83,12 @@ generate_redcap_hitopbr <- function(
 #'   the console, after the message naming the instrument ZIP.
 #'   The descriptor's `columns` field holds the names that the generated file
 #'   assigns to the items: the dictionary's field names, such as `hsr_066`.
-#'   REDCap uses a field name as the column name in a data export, so
-#'   [score_hitopsr()] and [reliability_hitopsr()] can score that export from
-#'   the module [read_module()] returns, with `items` omitted. A field
-#'   renamed in REDCap after import breaks that link: pass `items` for such
-#'   data. (default = `NULL`)
+#'   A REDCap data export with the item variable names as column headers uses
+#'   these names, so [score_hitopsr()] and [reliability_hitopsr()] can score
+#'   it from the module [read_module()] returns, with `items` omitted. Pass
+#'   `items` for data whose columns carry other names, such as an export with
+#'   another header setting or a field renamed after import.
+#'   (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -106,6 +107,8 @@ generate_redcap_hitopbr <- function(
 #' )
 #'
 #' @export
+# Source for the `descriptor` help's column-name claim: a Vanderbilt guide to
+# the REDCap data dictionary, `cairn/references/vanderbilt2015redcapdd.md`.
 generate_redcap_hitopsr <- function(
   file = "hitopsr_redcap.zip",
   form_name = "hitopsr_questionnaire",

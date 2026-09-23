@@ -46,7 +46,7 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - [x] T3: Writer. `write_descriptor_sidecar()` (`R/module_file.R:613`) takes the export's names and sets `columns` every time, clearing it when there are none, as it does `item_order`. The two generators pass the names they build (`R/generate_redcap.R:306`, `R/generate_qualtrics.R:302`). `write_module_impl()` checks the attribute and writes it after `itemOrder`.
 - [x] T4: Reader. Read `columns` from the second parse with `simplifyVector = FALSE` (LESSONS, M054). Add the refusals and the new class. Tests first for AC3 and AC4.
 - [x] T5: Scoring. Tests first for AC5. In both functions, when `items` is missing or `NULL`, take `attr(module, "columns")` before `layout_items()`, or abort. Add no new argument, so no partial match can change (LESSONS, M043).
-- [ ] T6: Records and docs. Roxygen for the six help pages, the modules vignette section on scoring, NEWS entries, and `_pkgdown.yml` if an index entry moves. Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
+- [x] T6: Records and docs. Roxygen for the six help pages, the modules vignette section on scoring, NEWS entries, and `_pkgdown.yml` if an index entry moves. Run `devtools::document()`, `devtools::test()` and `devtools::check()`.
 
 ## Work log
 
@@ -72,6 +72,7 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - re-audit: AC1 (full) — help cannot cite `cairn/`, which does not ship; the claim holds only for the default header; the Qualtrics source is one module with one prefix. Fixed; second line for AC1, so further churn goes to Jeff.
 - re-audit: AC3 (full) — the one-name case shows only through its refusal; the 3-item premise is unchecked. Fixed; second line for AC3.
 - 2026-09-22: the re-audit bound is reached for AC1 and AC3. Jeff chose the wording after the second re-audit, which had no third reader.
+- 2026-09-22: T6 done. Both generators' `descriptor` help names the header condition and says when to pass `items`. A comment above each generator function cites its source note. `?write_module`, `?score_hitopsr`, NEWS and the modules article now name Qualtrics too (article re-rendered, prints `TRUE`). `document()` leaves no diff after its run. `devtools::test()`: 0 failures, 17878 passes. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
 
 ## Decisions
 

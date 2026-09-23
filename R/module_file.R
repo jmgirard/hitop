@@ -67,7 +67,9 @@ module_format_first_version <- function() {
 #'     \item{`columns`}{The names that an online export gives the module's
 #'       items: one string per item, in ascending item-number order.
 #'       Optional. [generate_redcap_hitopsr()]'s `descriptor` writes the
-#'       dictionary's item field names here. A Word form has no columns, so
+#'       dictionary's item field names here, and
+#'       [generate_qualtrics_hitopsr()]'s writes the questions' `[[ID:]]`
+#'       values. A Word form has no columns, so
 #'       its descriptor has no field. [read_module()] returns the field on the
 #'       module's `columns` attribute, and [write_module()] writes it back
 #'       from that attribute as a JSON array. [score_hitopsr()] and
