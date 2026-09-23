@@ -187,20 +187,28 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
       call = call
     )
   }
-  if (nrow(raw) != 1L) {
+  if (nrow(raw) == 0L) {
     cli::cli_abort(
       c(
         "{.file {file}} is not a hitop-form response file.",
-        "x" = "It holds {nrow(raw)} response row{?s}; the page saves exactly one."
+        "x" = "It holds a header and no response row."
       ),
       call = call
     )
   }
 
+  # Each item column as character with blanks as NA, then as integer. A file
+  # the page saved holds one response row; a store's export holds one per
+  # participant, so every check below runs down the column.
   item_cols <- names(raw)[-seq_len(5L)]
-  values <- unlist(raw[item_cols], use.names = FALSE)
-  values[!nzchar(values)] <- NA_character_
-  bad <- item_cols[!is.na(values) & !grepl("^-?[0-9]+$", values)]
+  values <- lapply(raw[item_cols], function(v) {
+    v[!nzchar(v)] <- NA_character_
+    v
+  })
+  whole <- vapply(values, function(v) {
+    all(is.na(v) | grepl("^-?[0-9]+$", v))
+  }, logical(1L))
+  bad <- item_cols[!whole]
   if (length(bad) > 0L) {
     cli::cli_abort(
       c(
@@ -211,8 +219,11 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     )
   }
 
-  ints <- suppressWarnings(as.integer(values))
-  wide <- item_cols[!is.na(values) & is.na(ints)]
+  ints <- lapply(values, function(v) suppressWarnings(as.integer(v)))
+  fits <- vapply(seq_along(item_cols), function(i) {
+    !any(!is.na(values[[i]]) & is.na(ints[[i]]))
+  }, logical(1L))
+  wide <- item_cols[!fits]
   if (length(wide) > 0L) {
     cli::cli_abort(
       c(
@@ -229,19 +240,18 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   date_ok <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", raw$form_build)
   time_ok <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?Z$",
                    raw$submitted)
-  form_build <- if (date_ok) as.Date(raw$form_build, format = "%Y-%m-%d") else NA
-  submitted <- if (time_ok) {
-    as.POSIXct(raw$submitted, format = "%Y-%m-%dT%H:%M:%OSZ", tz = "UTC")
-  } else {
-    NA
-  }
+  form_build <- as.Date(ifelse(date_ok, raw$form_build, NA_character_),
+                        format = "%Y-%m-%d")
+  submitted <- as.POSIXct(ifelse(time_ok, raw$submitted, NA_character_),
+                          format = "%Y-%m-%dT%H:%M:%OSZ", tz = "UTC")
   for (field in c("form_build", "submitted")) {
     parsed <- if (field == "form_build") form_build else submitted
-    if (is.na(parsed)) {
+    if (anyNA(parsed)) {
+      got <- raw[[field]][is.na(parsed)]
       cli::cli_abort(
         c(
           "{.file {file}} holds a {.field {field}} value that does not parse.",
-          "x" = "Got {.val {raw[[field]]}}."
+          "x" = "Got {.val {got}}."
         ),
         call = call
       )
@@ -256,12 +266,8 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     submitted = submitted,
     stringsAsFactors = FALSE
   )
-  items <- as.data.frame(
-    as.list(stats::setNames(ints, item_cols)),
-    check.names = FALSE,
-    stringsAsFactors = FALSE
-  )
   if (length(item_cols) > 0L) {
+    items <- as.data.frame(ints, check.names = FALSE, stringsAsFactors = FALSE)
     out <- cbind(out, items)
   }
   out

@@ -1,13 +1,13 @@
 # M113: The package reads a store's CSV export and an article walks the Google Sheet route end to end
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M111, M112
 - **Driving RR:** —
 - **Principles touched:** GP3, IP4
 - **Resolves:** —
 - **Surface tier:** user-facing — an exported reader's behavior and a published article
-- **Branch/PR:** —
+- **Branch/PR:** `m113-store-export-reader`
 
 ## Goal
 
@@ -35,7 +35,7 @@ Make `read_form_responses()` read a file holding many participants' rows, and pu
 
 ## Tasks
 
-- [ ] T1: Replace the one-row check at `R/read_form_responses.R:190` with multi-row binding and the header-only refusal; the four tests of AC1.
+- [x] T1: Replace the one-row check at `R/read_form_responses.R:190` with multi-row binding and the header-only refusal; the four tests of AC1.
 - [ ] T2: Copy the two store exports (LF), add the provenance rows, and write the two reading and scoring tests of AC2.
 - [ ] T3: Write the article, add its `_pkgdown.yml` row, rewrite the two existing sections and their pointers.
 - [ ] T4: Roxygen for `?read_form_responses`, the NEWS entry, `document()`, `test()`, `check_pkgdown()`, `check()`.
@@ -47,6 +47,7 @@ Make `read_form_responses()` read a file holding many participants' rows, and pu
 - 2026-09-23: plan gate chose a new site article over an installed vignette or extending the two existing sections because the route spans three tools and both existing sections are instrument-specific; falsified by readers asking where the walkthrough is from the installed vignettes.
 - 2026-09-23: plan chose multi-row reading inside `read_form_responses()` over a second reader because a store export has the page's columns and differs only in row count; falsified by an export whose columns differ from the page's.
 - 2026-09-23: re-audit by the same fresh [O] reader: findings on this file were line-numbered sentence ranges that miss three further sentences and drift, and two false statements in the data-holding section (the host receives the link contents; a participant-typed code is not a pseudonym). Both fixed in the wording after the plan commit.
+- 2026-09-23: /milestone-implement started; branch `m113-store-export-reader` cut from `main` at `3d7a0fd7`; question gate skipped, no plan choice open. T1 done: `read_form_response_file()` refuses a header-only file and reads N rows, checks run down each column; the old two-row refusal test replaced by the four AC1 tests plus a bad-value-on-row-2 test; suite 19759 passing.
 
 ## Decisions
 
