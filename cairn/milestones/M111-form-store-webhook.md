@@ -42,7 +42,7 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 ## Tasks
 
 - [x] T1: `checkStore()` in form.js, called by `parseLink()` (form.js:54) and by link.html's builder. Guard tests per AC4's listed forms, builder tests per builder fault.
-- [ ] T2: The recording endpoint in `tests/serve.mjs` on a second port: record, `/redirect`, an HTML-200 path, a status path, OPTIONS with CORS headers, a request log the tests read. A helper in `tests/helpers.mjs` starts it whatever the target (AC7).
+- [x] T2: The recording endpoint in `tests/serve.mjs` on a second port: record, `/redirect`, an HTML-200 path, a status path, OPTIONS with CORS headers, a request log the tests read. A helper in `tests/helpers.mjs` starts it whatever the target (AC7).
 - [ ] T3: `sendResponses()` in form.js: `fetch` POST with `text/plain`, `redirect: 'follow'`, an `AbortController` at 30 seconds, the confirmation rule, Finish disabled, the two outcome screens, the device fallback through `saveFile()` (form.js:235). `tests/send.spec.js` covers AC1 and AC2. The download promise is created before the walk with its own timeout (LESSONS, M095).
 - [ ] T4: `tests/network.spec.js` gains the with-store walks of AC3.
 - [ ] T5: The link.html field, the start-screen wordings, the text sweep of AC5, and the render and link tests.
@@ -62,6 +62,7 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 - 2026-09-23: implement started by /milestone-implement. Branches cut from the pushed default branches: `m111-form-store-webhook` in hitop, `store-webhook` in hitop-form. Jeff had the stray untracked `qtest.txt` in the hitop tree deleted before branching.
 - 2026-09-23: implement gate. Jeff deploys the Apps Script web app from the README code and downloads the sheet's CSV himself, because the session holds no Google account. The session runs the two walks against his `/exec` URL. Under `FORM_TARGET`, the send tests first ask Playwright to grant the local-network permission. If that call is refused, they skip with the reason printed (AC7).
 - 2026-09-23: T1 done (hitop-form `store-webhook`). `checkStore()` and `checkStoreUrl()` in form.js, called by `parseLink()` and by link.html's new "Send responses to" field. 15 guard tests (12 refused forms, 3 accepted) and 4 builder tests. A plant that accepted every url turned 7 of them red. The link.html hint avoids the word "device" because AC5's sweep bars it from text shown with a store.
+- 2026-09-23: T2 done. `serveStore()` in tests/serve.mjs starts the endpoint and a third-origin twin. It records every request and answers `/record`, `/redirect`, `/html`, `/status/<n>`, `/hang/` and OPTIONS. `useStore()`, `allowLocalStore()` and `webhook()` in tests/helpers.mjs. Exercised from Node: the 302 lands on the twin as a GET, and the body is recorded at `/redirect`. Playwright 1.56 maps `local-network-access` to Chromium's permission, so the AC7 grant is a known name.
 
 ## Decisions
 
