@@ -1,6 +1,6 @@
 # M111: hitop-form sends each participant's responses to an endpoint named in the study link
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -69,6 +69,7 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 - 2026-09-23: T6 in part. The README gained "Send responses to a Google Sheet" with the `doPost` code (a script lock, the header from the first row's keys, every cell formatted as text before it is written, `{"ok":true}` as JSON), the deployment steps and the CSV download step. The README's AC5 hits now sit in prose that says it applies without an address. The deployment, the two walks and the fixture wait on Jeff.
 - 2026-09-23: T7 in part. hitop-form PR #2 opened from `store-webhook`; its Tests workflow passed in 2m13s. The local suite is 68 tests, all passing. The PR body first said 70 and was corrected to 68.
 - 2026-09-23: blocked on the Apps Script deployment: Jeff pastes the README's code into a new Apps Script project bound to a new sheet, deploys it as a web app (execute as Me, access Anyone) and hands the session the `/exec` URL. The session then runs the two HiTOP-BR walks (participants `=1+1` and `007`), and Jeff downloads the sheet as CSV for the fixture.
+- 2026-09-23: unblocked; Jeff deployed the web app and gave the `/exec` URL. First hand run (deployment version 1): both walks posted one body of 50 keys and got the sent screen; the sheet's CSV kept `007` but held `2` for `=1+1`, so `setNumberFormat('@')` alone does not stop a formula. README `doPost` now writes a value starting with `=` behind a leading apostrophe (hitop-form 9ac50ec). Redeploy and second run pending.
 
 ## Decisions
 

@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M114).
 | M108 | A module descriptor names its export's item columns | done | — | normal | milestones/archive/M108-descriptor-columns.md |
 | M109 | Scoring refuses an item column it cannot read as numbers | done | — | normal | milestones/archive/M109-nonnumeric-items.md |
 | M110 | Scoring refuses SPSS missing codes and 64-bit integers it misreads | done | — | normal | milestones/archive/M110-spss-int64-items.md |
-| M111 | hitop-form sends each participant's responses to an endpoint named in the study link | blocked | — | normal | milestones/M111-form-store-webhook.md |
+| M111 | hitop-form sends each participant's responses to an endpoint named in the study link | in-progress | — | normal | milestones/M111-form-store-webhook.md |
 | M112 | hitop-form inserts each participant's responses into a Supabase table named in the study link | planned | M111 | normal | milestones/M112-form-store-supabase.md |
 | M113 | The package reads a store's CSV export and an article walks the Google Sheet route end to end | planned | M111, M112 | normal | milestones/M113-store-export-reader.md |
 
