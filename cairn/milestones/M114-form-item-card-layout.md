@@ -1,13 +1,13 @@
 # M114: hitop-form draws a wrapped item's text inside its card
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the participant-facing form page
-- **Branch/PR:** —
+- **Branch/PR:** `m114-form-item-card-layout` (hitop, tracking) and `m114-form-item-card-layout` (hitop-form, code)
 
 ## Goal
 
@@ -33,8 +33,8 @@ Change the item card's layout in `jmgirard/hitop-form` so that an item's text re
 
 ## Tasks
 
-- [ ] T1: The CSS change in `index.html` (`fieldset.item legend`, lines 85–89), the space in `itemNode()` (`form.js`, the legend at line 552), and `tests/layout.spec.js` with the three-width walks of AC1.
-- [ ] T2: The accessible-name test over the five forms and the refusal-border test of AC2.
+- [x] T1: The CSS change in `index.html` (`fieldset.item legend`, lines 85–89), the space in `itemNode()` (`form.js`, the legend at line 552), and `tests/layout.spec.js` with the three-width walks of AC1.
+- [x] T2: The accessible-name test over the five forms and the refusal-border test of AC2.
 - [ ] T3: The README test table row, the hitop-form PR, its CI, and the dispatched deployed-page run after the merge. The hitop PR carries tracking only.
 
 ## Work log
@@ -43,6 +43,8 @@ Change the item card's layout in `jmgirard/hitop-form` so that an item's text re
 - 2026-09-23: criteria audit ran in full mode on a fresh [O] reader (shared with M115 and M116): seven findings on this file, all fixed in the wording. The card test measures four sides against the padding box and the text's overflow at three widths. The accessible name gets a real space and an exact match. The refusal border is checked together with the legend's placement. The "111 tests pass unchanged" promise became "every test on main before the milestone passes without an edit". The PID-5 form is named.
 - 2026-09-23: plan gate chose keeping the bordered card with the text inside over dropping the border, because the refused-item highlight and the tests rest on the card's box; falsified by a participant report that the cards make the page hard to read.
 - 2026-09-23: IP1 read at planning: no participant-facing text changes, so no sign-off is needed.
+- 2026-09-23: /milestone-implement started; branches cut from `main` at hitop `f96014c2` and hitop-form `c15e149`. Question gate skipped: the one open choice, how the legend leaves the notch, takes the standard `float: left; width: 100%` form, chosen over a `div[role=group]` rewrite because it keeps the fieldset semantics and the tests' selectors.
+- 2026-09-23: T1 and T2 done in one spec, `tests/layout.spec.js` (Y1 six walks, Y2 five forms, Y3 the refusal): the legend floats at full width with the options cleared below it, and a space text node separates the number from the text. Plants: the old CSS reds Y1 and Y3 on the legend-top check, the missing space reds Y2 on the exact name. Suite 111 → 123, all passing.
 
 ## Decisions
 
