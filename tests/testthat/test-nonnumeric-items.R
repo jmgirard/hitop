@@ -457,3 +457,140 @@ test_that("the text \"NaN\" parses and the text \"NA\" is refused", {
   expect_s3_class(e, "hitop_nonnumeric_items")
   expect_match(cli::ansi_strip(conditionMessage(e)), "\"NA\"", fixed = TRUE)
 })
+
+# ---- SPSS user-missing codes, 64-bit integers, labelled digit text -----------
+
+# An SPSS column declares some codes missing. haven keeps them as values, so
+# as.numeric() would score a 99 as an answer. Each variant returns the column
+# and the declared-missing value the message must show, which is the first one
+# in row order. Rows 2 and 4 hold codes; row 2 comes first.
+spss_variants <- list(
+  `double, na_values outside srange` = function(x) {
+    x[c(2, 4)] <- c(99, 98)
+    list(column = haven::labelled_spss(x, na_values = c(98, 99)),
+         shown = "holds 99,")
+  },
+  `double, na_values inside srange` = function(x) {
+    x[] <- 1
+    x[c(2, 4)] <- 3
+    list(column = haven::labelled_spss(x, na_values = 3), shown = "holds 3,")
+  },
+  `double, na_range with an infinite bound` = function(x) {
+    x[c(2, 4)] <- c(99, 98)
+    list(column = haven::labelled_spss(x, na_range = c(90, Inf)),
+         shown = "holds 99,")
+  },
+  `character, na_values` = function(x) {
+    x <- as.character(x)
+    x[c(2, 4)] <- c("99", "98")
+    list(column = haven::labelled_spss(x, na_values = c("98", "99")),
+         shown = "holds \"99\",")
+  }
+)
+
+test_that("an SPSS column holding a declared-missing code is refused", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    positions <- c(first = 1L)
+    if (length(case$reverse) > 0) {
+      positions <- c(positions, reverse = case$reverse[[1]])
+    }
+    for (where in names(positions)) {
+      col <- names(base)[[positions[[where]]]]
+      for (variant in names(spss_variants)) {
+        info <- paste(case_label(case), "/", where, "/", variant)
+        built <- spss_variants[[variant]](base[[col]])
+        data <- base
+        data[[col]] <- built$column
+        e <- catch_error(run_case(case, data))
+        expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+        if (!inherits(e, "hitop_nonnumeric_items")) next
+        msg <- cli::ansi_strip(conditionMessage(e))
+        expect_true(grepl(col, msg, fixed = TRUE), info = info)
+        expect_true(grepl(built$shown, msg, fixed = TRUE), info = info)
+        expect_true(grepl("haven::zap_missing()", msg, fixed = TRUE),
+                    info = info)
+      }
+    }
+  }
+})
+
+test_that("an SPSS column declaring codes it does not hold scores as its double does", {
+  # A regression guard: this passes before M110 and must keep passing.
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    declared <- list(
+      na_values = haven::labelled_spss(base[[col]], na_values = 99),
+      na_range = haven::labelled_spss(base[[col]], na_range = c(90, Inf))
+    )
+    for (how in names(declared)) {
+      data <- base
+      data[[col]] <- declared[[how]]
+      expect_identical(run_case(case, data), run_case(case, base),
+                       info = paste(case_label(case), "/", how))
+    }
+  }
+})
+
+# A 64-bit integer column as readRDS() returns it in a session without bit64
+# loaded: a double vector classed "integer64" whose bits are the integers', so
+# as.numeric() reads bit patterns. -0 is bit64's NA pattern. The refusal reads
+# only the class, so bit64 itself is not needed.
+integer64_column <- function(n) {
+  structure(c(-0, as.double(seq_len(n - 1L))), class = "integer64")
+}
+
+test_that("an integer64 column is refused", {
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- integer64_column(nrow(data))
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    msg <- cli::ansi_strip(conditionMessage(e))
+    expect_true(grepl(col, msg, fixed = TRUE), info = info)
+    expect_true(grepl("integer64", msg, fixed = TRUE), info = info)
+  }
+})
+
+test_that("a haven::labelled() digit-text column scores as its plain text does", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    text <- base
+    text[[col]] <- as.character(base[[col]])
+    labelled <- text
+    labelled[[col]] <- haven::labelled(text[[col]], c(Low = "0"))
+    expect_identical(run_case(case, labelled), run_case(case, text),
+                     info = info)
+  }
+})
+
+test_that("a haven::labelled() choice-text column is refused and shows the value", {
+  # With haven loaded, as.numeric() on the labelled values aborts inside
+  # haven's cast, so the parse test reads the unclassed values.
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- haven::labelled(
+      c("2", "Moderately", rep("1", nrow(data) - 2L)),
+      c(Some = "Moderately")
+    )
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    expect_true(
+      grepl("\"Moderately\"", cli::ansi_strip(conditionMessage(e)), fixed = TRUE),
+      info = info
+    )
+  }
+})

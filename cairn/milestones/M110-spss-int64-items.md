@@ -1,13 +1,13 @@
 # M110: Scoring refuses SPSS missing codes and 64-bit integers it misreads
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — it changes which item columns seven exported functions accept, and their error message
-- **Branch/PR:** —
+- **Branch/PR:** m110-spss-int64-items
 
 ## Goal
 
@@ -47,7 +47,7 @@ The milestone also closes two M109 review gaps. A refused value with no `[[:grap
 
 ## Tasks
 
-- [ ] T1: Write the tests for AC1 to AC4 in `tests/testthat/test-nonnumeric-items.R` with its seven-function case list. Build the `integer64` column by hand as `structure(<double>, class = "integer64")`. This is the shape `readRDS()` returns when bit64 is not loaded, so bit64 stays out of Suggests. Make sure that each new-behavior test fails for the reason its criterion names. AC2 and the refusal half of AC4 pass today, so they are regression guards.
+- [x] T1: Write the tests for AC1 to AC4 in `tests/testthat/test-nonnumeric-items.R` with its seven-function case list. Build the `integer64` column by hand as `structure(<double>, class = "integer64")`. This is the shape `readRDS()` returns when bit64 is not loaded, so bit64 stays out of Suggests. Make sure that each new-behavior test fails for the reason its criterion names. AC2 passes today, so it is a regression guard.
 - [ ] T2: In `unparsed_value()`, refuse a `haven_labelled_spss` column that holds a declared-missing value. Read the codes from the `na_values` and `na_range` attributes and call no haven function. Return the first such value. In `validate_item_columns()`, print that value with `{.val}` for any type, because the detail branch now prints only a character value. Add the `haven::zap_missing()` tip when such a column is refused.
 - [ ] T3: Refuse an `integer64` column in `unparsed_value()` before the `is.numeric()` acceptance.
 - [ ] T4: Convert a `haven_labelled` character column through `unclass()` before `as.numeric()` in `prep_items()` and in `validity_pid5()` (`R/validity_pid5.R:141`). Run the parse rule on its unclassed values.
@@ -63,3 +63,5 @@ The milestone also closes two M109 review gaps. A refused value with no `[[:grap
 - 2026-09-22: plan gate chose to score a labelled digit-text column over refusing it, because plain digit text scores today; falsified by a labelled character column whose labels change what its digits mean.
 - 2026-09-22: plan gate chose to show a whitespace-only value by code points over treating it as blank, because treating it as blank needs a second strip in the conversion step; falsified by a user export where such cells are routine.
 - 2026-09-22: plan chose a hand-built `integer64` test column over adding bit64 to Suggests, because the refusal reads only the class; falsified by a refusal rule that needs bit64 values.
+- 2026-09-22: T1 minor edit: the refusal half of AC4 does not pass today. `unparsed_value()` aborts with haven's `vctrs_error_cast` when it calls `as.numeric()` on labelled values, so the test is red and T4 fixes it. T1's regression-guard sentence now names AC2 only.
+- 2026-09-22: T1 done. Five test blocks added. Red before the fix: SPSS refusal 72 of 72 (a 99 code scored `pid_disinhibition` 21.6), `integer64` 13 of 13, labelled choice text 13 of 13 (haven cast error), labelled digit text errors (haven cast error). The AC2 guard passes (26 of 26).

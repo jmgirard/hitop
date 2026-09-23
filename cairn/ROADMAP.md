@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M111).
 | M107 | A module descriptor reads back as the format documents it | done | — | normal | milestones/archive/M107-module-descriptor-roundtrip.md |
 | M108 | A module descriptor names its export's item columns | done | — | normal | milestones/archive/M108-descriptor-columns.md |
 | M109 | Scoring refuses an item column it cannot read as numbers | done | — | normal | milestones/archive/M109-nonnumeric-items.md |
-| M110 | Scoring refuses SPSS missing codes and 64-bit integers it misreads | planned | — | normal | milestones/M110-spss-int64-items.md |
+| M110 | Scoring refuses SPSS missing codes and 64-bit integers it misreads | in-progress | — | normal | milestones/M110-spss-int64-items.md |
 
 ## Candidates
 
