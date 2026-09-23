@@ -91,3 +91,15 @@ Sync: branch contains `origin/main` (e7c00c2e); no merge needed. Suite run 2026-
 - AC6: D-067 (on main since the plan commit) records the field, the class, and that 1.0 readers ignore unknown fields. `man/read_module.Rd:49` lists `hitop_module_file_bad_columns` in its Errors text. `columns` appears in `?read_module`, `?write_module` (7 hits), both generators' `descriptor` help, `?score_hitopsr` (12), `?reliability_hitopsr` (8), the modules article (31) and NEWS. `devtools::document()` left no diff. `devtools::test()`: 0 failures. `devtools::check()` run locally: 0 errors, 0 warnings, 1 note. The note names `qtest.txt`, an untracked scratch file outside the branch.
 
 Consistency gate: `cairn_validate.py` exit 0 (24 advisory warnings, none on this milestone). No DESIGN principle changed, so `cairn_impact` was skipped. `document()` no diff. README untouched. `pkgdown::check_pkgdown()` found no problems. NEWS carries the entry with no milestone number. No new top-level file on the branch.
+
+Independent review (2026-09-22). The prior-review lens [S] found no findings. It checked the diff against M043, M054, M055, M077 and M107, and the PR comment probe returned nothing. The blame-history lens [S] found no findings. The diff-bug lens [O] found no correctness bug and ranked 10 findings, listed below with their triage, which is pending at the gate.
+- F1: With `items` omitted, if the data lack the module's `columns`, the error says the `items` names are not in `data`. It does not name the module's `columns` or say to pass `items` (`R/module.R:360`).
+- F2: An explicit `items = NULL` with no columns to take is reported as "The `items` argument is missing" (`R/module.R:376`).
+- F3: A Qualtrics export of choice text gives all-NA scores with only a coercion warning. This predates the milestone, but omitting `items` makes such an export look ready to score (`R/score_hitopsr.R:123`).
+- F4: The new "items is missing" abort has no condition class.
+- F5: `write_module()` drops the names of a named `columns` vector, so the read-back module is not identical to the one written (`R/module_file.R:275`).
+- F6: Whitespace-only names such as `" "` pass the `columns` checks (`R/module_file.R:599`, `:257`).
+- F7: The refusal renders as "has an unusable columns" (`R/module_file.R:583`).
+- F8: When both `itemOrder` and `columns` are bad, the `itemOrder` class wins, and no document states this order.
+- F9: The Qualtrics generator now checks `id_prefix` before the descriptor path.
+- F10: One roxygen line in `R/score_hitopsr.R:19` exceeds 80 characters.
