@@ -112,8 +112,9 @@ omitted.}
 }
 
 \code{format}, \code{instrument}, and \code{scales} are required. A reader of format
-\code{"1.0"} ignores a field it does not know, so an older release of this
-package reads a file with \code{columns} and ignores the field. The fields and the
+\code{"1.0"} ignores a field it does not know, so release 0.2.0, the first
+with \code{\link[=read_module]{read_module()}}, and later releases read a file with \code{columns} and
+ignore the field. The fields and the
 version string are a public contract and change only deliberately.
 }
 

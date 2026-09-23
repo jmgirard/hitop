@@ -78,8 +78,9 @@ module_format_first_version <- function() {
 #'   }
 #'
 #'   `format`, `instrument`, and `scales` are required. A reader of format
-#'   `"1.0"` ignores a field it does not know, so an older release of this
-#'   package reads a file with `columns` and ignores the field. The fields and the
+#'   `"1.0"` ignores a field it does not know, so release 0.2.0, the first
+#'   with [read_module()], and later releases read a file with `columns` and
+#'   ignore the field. The fields and the
 #'   version string are a public contract and change only deliberately.
 #'
 #' @param module A `hitop_module` object, as returned by [hitop_module()]. An

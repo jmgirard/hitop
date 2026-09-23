@@ -393,7 +393,8 @@ identical(
 )
 ```
 
-`reliability_hitopsr()` does the same. Pass `items` for data whose columns carry
+`reliability_hitopsr()` does the same. Export Qualtrics data as numeric values,
+not choice text, so there are numbers to score. Pass `items` for data whose columns carry
 other names, such as a Qualtrics export made with "Use internal IDs in header",
 or a question renamed after import. A supplied `items` is always used. A module with no `columns`, such as one read
 from a Word form's descriptor, still needs `items`.

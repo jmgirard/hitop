@@ -57,9 +57,10 @@ the console, after the message naming the import file.
 The descriptor's \code{columns} field holds the names that the generated file
 assigns to the items: the questions' \verb{[[ID:]]} values, such as \code{HSR_066}
 (built from \code{id_prefix}). A Qualtrics data export with the item variable
-names as column headers uses these names, so \code{\link[=score_hitopsr]{score_hitopsr()}} and
-\code{\link[=reliability_hitopsr]{reliability_hitopsr()}} can score it from the module \code{\link[=read_module]{read_module()}}
-returns, with \code{items} omitted. Pass \code{items} for data whose columns carry
+names as column headers uses these names. Exported as numeric values
+rather than choice text, it can be scored by \code{\link[=score_hitopsr]{score_hitopsr()}} and
+\code{\link[=reliability_hitopsr]{reliability_hitopsr()}} from the module \code{\link[=read_module]{read_module()}} returns, with
+\code{items} omitted. Pass \code{items} for data whose columns carry
 other names, such as an export made with "Use internal IDs in header" or
 a question renamed after import. (default = \code{NULL})}
 

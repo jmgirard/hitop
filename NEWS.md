@@ -8,7 +8,8 @@
   field: the names the generated file gives the items, one per module item,
   in ascending item-number order. These are the REDCap dictionary's field
   names, or the Qualtrics questions' `[[ID:]]` values. A data export with the
-  item variable names as column headers uses these names. `read_module()`
+  item variable names as column headers uses these names. Export Qualtrics
+  data as numeric values, not choice text, to score it. `read_module()`
   returns the field on the module's `columns` attribute, and
   `write_module()` writes that attribute back. `score_hitopsr()` and
   `reliability_hitopsr()` now use those names when `items` is omitted or
@@ -16,7 +17,7 @@
   with no `module`, with a module that has no `columns`, or under
   `layout = "printed"`. The Word descriptor has no `columns` field. The
   format stays `"1.0"`: a `"1.0"` reader ignores fields it does not know, so
-  older releases still read the new files. A bad `columns` field stops
+  releases from 0.2.0 on still read the new files. A bad `columns` field stops
   `read_module()` with an error of class `hitop_module_file_bad_columns`.
 
 * **`read_form_responses()` reads the files the hitop-form web page saves.**

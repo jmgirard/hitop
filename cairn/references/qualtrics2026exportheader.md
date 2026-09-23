@@ -36,6 +36,13 @@ module with the default `id_prefix`, exported with the default header.
   eight items. So the `[[ID:]]` tag set the column name, and Qualtrics assigned its own
   internal question IDs apart from it.
 - The `start_instructions` descriptive block has no column in the export.
+- Another header setting: Qualtrics' dataset help says "You can also find QIDs in the
+  question's column header in your exported data, if you exported with Use internal IDs
+  in header"
+  (https://www.qualtrics.com/support/survey-platform/data-and-analysis-module/data/download-data/understanding-your-dataset/,
+  read 2026-09-22). With that setting, the columns carry `QID` names, such as the
+  `QID3` to `QID10` in row 3, not the `[[ID:]]` values. This is the vendor's statement,
+  not observed here.
 
 ## Traces to
 

@@ -73,6 +73,7 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - re-audit: AC3 (full) — the one-name case shows only through its refusal; the 3-item premise is unchecked. Fixed; second line for AC3.
 - 2026-09-22: the re-audit bound is reached for AC1 and AC3. Jeff chose the wording after the second re-audit, which had no third reader.
 - 2026-09-22: T6 done. Both generators' `descriptor` help names the header condition and says when to pass `items`. A comment above each generator function cites its source note. `?write_module`, `?score_hitopsr`, NEWS and the modules article now name Qualtrics too (article re-rendered, prints `TRUE`). `document()` leaves no diff after its run. `devtools::test()`: 0 failures, 17878 passes. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
+- 2026-09-22: claim audit pass by a fresh [O] reader: 46 claims, 5 flagged. 4 corrected (0.2.0 as the first release with `read_module()`; Qualtrics data must be exported as numeric values; REDCap "another header setting" example removed; "Use internal IDs in header" now sourced to Qualtrics' dataset help in the note), 1 kept (the `id_prefix` holds by construction). The same reader's re-read is pending (checkpoint).
 
 ## Decisions
 

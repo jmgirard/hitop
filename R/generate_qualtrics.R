@@ -83,9 +83,10 @@ generate_qualtrics_hitopbr <- function(
 #'   The descriptor's `columns` field holds the names that the generated file
 #'   assigns to the items: the questions' `[[ID:]]` values, such as `HSR_066`
 #'   (built from `id_prefix`). A Qualtrics data export with the item variable
-#'   names as column headers uses these names, so [score_hitopsr()] and
-#'   [reliability_hitopsr()] can score it from the module [read_module()]
-#'   returns, with `items` omitted. Pass `items` for data whose columns carry
+#'   names as column headers uses these names. Exported as numeric values
+#'   rather than choice text, it can be scored by [score_hitopsr()] and
+#'   [reliability_hitopsr()] from the module [read_module()] returns, with
+#'   `items` omitted. Pass `items` for data whose columns carry
 #'   other names, such as an export made with "Use internal IDs in header" or
 #'   a question renamed after import. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.

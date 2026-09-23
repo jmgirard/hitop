@@ -86,8 +86,8 @@ generate_redcap_hitopbr <- function(
 #'   A REDCap data export with the item variable names as column headers uses
 #'   these names, so [score_hitopsr()] and [reliability_hitopsr()] can score
 #'   it from the module [read_module()] returns, with `items` omitted. Pass
-#'   `items` for data whose columns carry other names, such as an export with
-#'   another header setting or a field renamed after import.
+#'   `items` for data whose columns carry other names, such as a field
+#'   renamed after import.
 #'   (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
