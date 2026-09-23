@@ -61,8 +61,8 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - 2026-09-22: claim audit: 30 claims read, 2 corrected — NEWS.md, R/util.R, the six `@param items` roxygen blocks and their man pages. The NEWS error sentence now says only a character column shows a value, and the docs now say the text `"NA"` is refused. The reader's probe also found the text `"NaN"` refused, against AC1's "parses", so `unparsed_value()` now accepts it, with a new test. The same reader re-read the corrections once and all held.
 - 2026-09-22: T5 done. `devtools::test()`: 18632 passes, 0 failures, 15 skips. `devtools::check()` after the last code change: 0 errors, 0 warnings, 1 note for the untracked `qtest.txt`. Status set to review.
 - 2026-09-22: review return 1 (defect): F1 fails AC1 and F2 fails AC4, both reproduced. The user chose at the gate to send the milestone back with F6, F7 and F8 fixed too. T6 to T8 added. Status set to in-progress.
-
 - 2026-09-22: T6 done. `validate_item_columns()` reads columns by position and labels an empty or `NA` name as "Column <n>". Two new tests failed first (26 failures on duplicate names, and the `[.data.frame` error on an empty name) and now pass. `devtools::test()`: 18747 passes, 0 failures, 15 skips.
+
 ## Decisions
 
 ## Review
