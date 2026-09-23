@@ -411,8 +411,8 @@ validate_item_columns <- function(data, items, caller_items = items,
 }
 
 # The reason an item column is refused, or NULL when it is accepted. A reason
-# is a list: `kind` "text" with the first value of a character column that does
-# not parse, "missing" with the first value an SPSS column declares missing,
+# is a list: `kind` "text" with the first value, after trimws(), of a character
+# column that does not parse, "missing" with the first value an SPSS column declares missing,
 # or "type" for a column of any other refused type. The parse test muffles
 # as.numeric()'s own coercion warning, which is the message this refusal
 # replaces.
@@ -454,7 +454,8 @@ unparsed_value <- function(x) {
 
 # TRUE for a string made only of Unicode separators (a non-breaking or thin
 # space), controls (a vertical tab) and format marks (a byte order mark). Such
-# a value prints as blank, so the refusal shows its code points instead. The
+# a value prints as blank or as an escape that hides what it is, so the
+# refusal shows its code points instead. The
 # test uses Unicode categories rather than [[:graph:]], whose members differ
 # between R's regex engines and locales.
 is_invisible <- function(x) {

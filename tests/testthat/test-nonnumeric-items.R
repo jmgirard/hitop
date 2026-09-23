@@ -552,10 +552,10 @@ test_that("an SPSS column declaring codes it does not hold scores as its double 
   }
 })
 
-# A 64-bit integer column as readRDS() returns it in a session without bit64
-# loaded: a double vector classed "integer64" whose bits are the integers', so
-# as.numeric() reads bit patterns. -0 is bit64's NA pattern. The refusal reads
-# only the class, so bit64 itself is not needed.
+# A stand-in for a 64-bit integer column read without bit64 loaded: a double
+# vector classed "integer64". Apart from -0 (bit64's NA pattern), its values
+# are not real integer64 bit patterns. The refusal reads only the class, so it
+# needs neither real bit patterns nor bit64.
 integer64_column <- function(n) {
   structure(c(-0, as.double(seq_len(n - 1L))), class = "integer64")
 }
