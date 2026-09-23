@@ -27,13 +27,13 @@ The milestone also closes two M109 review gaps. A refused value with no `[[:grap
 
 ## Acceptance criteria
 
-- [ ] AC1: For each of the seven functions, a `haven::labelled_spss()` item column that holds a declared-missing value is refused with class `hitop_nonnumeric_items`. The message names the column, shows the first declared-missing value in row order, and names `haven::zap_missing()`. The test covers a double column and a character column, a code outside `srange` and a code inside it, a code declared through `na_values` and one through a `na_range` with an infinite bound. It puts the column once first and once on a reverse-keyed item.
-- [ ] AC2: For each of the seven functions, a `haven::labelled_spss()` item column that declares missing codes but holds none of them scores as its plain double copy does. The test calls with `append = FALSE` (and `omega = FALSE` for `reliability_*()`) and compares the two results with `expect_identical()`.
-- [ ] AC3: For each of the seven functions, an item column of class `integer64` is refused with class `hitop_nonnumeric_items`, including a column that holds an `NA`. The message names the column and its class.
-- [ ] AC4: For each of the seven functions, a `haven::labelled()` character item column whose values all parse scores as its plain character copy does. The test calls with `append = FALSE` (and `omega = FALSE` for `reliability_*()`) and compares with `expect_identical()`. A column that holds a value that does not parse is refused with class `hitop_nonnumeric_items`, and the message shows that value.
-- [ ] AC5: The message shows a refused character value made only of Unicode separator (`\p{Z}`), control (`\p{Cc}`) and format (`\p{Cf}`) characters by its Unicode code points. The test covers `\v`, `U+00A0`, `U+2009`, `U+3000`, `U+FEFF`, `U+200B`, a mix of `U+00A0` and `U+2009`, and a mix of `U+00A0` and `\v`, and asserts that each code point is in the message. It also asserts that the refused values `U+00A0` followed by `x` and `1` followed by `U+00A0` are shown as text and not as code points.
-- [ ] AC6: A bad `omega` in the three `reliability_*()` functions and a bad `calc_se` in the three `score_*()` functions each abort with their own argument error and not `hitop_nonnumeric_items`, although an item column also fails the value rule. A `data` that is not a data frame aborts with its own argument error in all seven functions.
-- [ ] AC7: `Rscript -e 'devtools::test()'` reports 0 failures. `Rscript -e 'devtools::check()'` reports 0 errors and 0 warnings.
+- [x] AC1: For each of the seven functions, a `haven::labelled_spss()` item column that holds a declared-missing value is refused with class `hitop_nonnumeric_items`. The message names the column, shows the first declared-missing value in row order, and names `haven::zap_missing()`. The test covers a double column and a character column, a code outside `srange` and a code inside it, a code declared through `na_values` and one through a `na_range` with an infinite bound. It puts the column once first and once on a reverse-keyed item.
+- [x] AC2: For each of the seven functions, a `haven::labelled_spss()` item column that declares missing codes but holds none of them scores as its plain double copy does. The test calls with `append = FALSE` (and `omega = FALSE` for `reliability_*()`) and compares the two results with `expect_identical()`.
+- [x] AC3: For each of the seven functions, an item column of class `integer64` is refused with class `hitop_nonnumeric_items`, including a column that holds an `NA`. The message names the column and its class.
+- [x] AC4: For each of the seven functions, a `haven::labelled()` character item column whose values all parse scores as its plain character copy does. The test calls with `append = FALSE` (and `omega = FALSE` for `reliability_*()`) and compares with `expect_identical()`. A column that holds a value that does not parse is refused with class `hitop_nonnumeric_items`, and the message shows that value.
+- [x] AC5: The message shows a refused character value made only of Unicode separator (`\p{Z}`), control (`\p{Cc}`) and format (`\p{Cf}`) characters by its Unicode code points. The test covers `\v`, `U+00A0`, `U+2009`, `U+3000`, `U+FEFF`, `U+200B`, a mix of `U+00A0` and `U+2009`, and a mix of `U+00A0` and `\v`, and asserts that each code point is in the message. It also asserts that the refused values `U+00A0` followed by `x` and `1` followed by `U+00A0` are shown as text and not as code points.
+- [x] AC6: A bad `omega` in the three `reliability_*()` functions and a bad `calc_se` in the three `score_*()` functions each abort with their own argument error and not `hitop_nonnumeric_items`, although an item column also fails the value rule. A `data` that is not a data frame aborts with its own argument error in all seven functions.
+- [x] AC7: `Rscript -e 'devtools::test()'` reports 0 failures. `Rscript -e 'devtools::check()'` reports 0 errors and 0 warnings.
 
 ## Coverage
 
@@ -72,3 +72,29 @@ The milestone also closes two M109 review gaps. A refused value with no `[[:grap
 - 2026-09-22: T6 done (tests only). The argument-order test grew from 94 to 140 expectations and passes. Removing `validate_flag(omega)` from `R/reliability_engine.R` as a plant turned it red (10 failures), and the file was restored.
 - claim audit: 33 claims read, 3 corrected — R/util.R (two comments: the value is shown after `trimws()`, and a `\v` prints as an escape, not blank), tests/testthat/test-nonnumeric-items.R (the `integer64` stand-in holds real bit patterns only at -0).
 - 2026-09-22: T7 done. The `items` text changed in the six R/ sources (`validity_pid5()` inherits it), and the Errors sections point to `items`, so they needed no edit. NEWS extended, D-069 appended. `devtools::test()` 0 failures. `devtools::check()` 0 errors, 0 warnings, 1 note (the untracked `qtest.txt`). The test file was rerun after the comment-only audit fixes: 0 failures. Status set to review.
+
+## Review
+
+Sync: on 2026-09-22 the branch contained `origin/main` (ffba8a24). No merge was needed. No PR exists yet.
+
+Evidence: on 2026-09-22, `testthat::test_file("tests/testthat/test-nonnumeric-items.R")` ran 24 blocks with 0 failures.
+
+- AC1: "an SPSS column holding a declared-missing code is refused" passes with 288 expectations. It loops the seven functions, with the PID-5 at three versions. It covers four variants: double `na_values` outside `srange`, double `na_values` inside it, double `na_range = c(90, Inf)`, and character `na_values`. It puts the column first and on the first reverse-keyed item where one exists. It asserts the class, the column name, `holds 99,` and `haven::zap_missing()`. Row 2 holds 99 and row 4 holds 98, so a message that showed the lowest code fails.
+- AC2: "an SPSS column declaring codes it does not hold scores as its double does" passes with 26 expectations. It compares `na_values` and `na_range` columns with the double copy through `expect_identical()`. `run_case()` sets `append = FALSE` and `omega = FALSE`.
+- AC3: "an integer64 column is refused" passes with 39 expectations. The column starts with -0, the bit64 `NA` pattern. The test asserts the class, the column name and `integer64`.
+- AC4: "a haven::labelled() digit-text column scores as its plain text does" passes with 13 `expect_identical()` expectations. "a haven::labelled() choice-text column is refused and shows the value" passes with 26 expectations on the class and `"Moderately"`.
+- AC5: "a refused value made only of invisible characters is shown by its code points" passes with 312 expectations. It covers the eight listed values and asserts each code point. The values `U+00A0` + `x` and `1` + `U+00A0` show as text (`x"`, `"1`) with no `U+00A0`.
+- AC6: "argument checks run before the refusal" passes with 140 expectations. An item column holds choice text in each call. A bad `omega` (three `reliability_*()`), a bad `calc_se` (three `score_*()`) and a list `data` (all seven) each raise their own message. None raises `hitop_nonnumeric_items`.
+- AC7: `devtools::test()` ran 19,529 expectations with 0 failures, 0 errors and 15 skips. `devtools::check()` reported 0 errors, 0 warnings and 1 note. The note names the untracked `qtest.txt`, which is not part of the branch.
+
+Consistency gate: `cairn_validate.py` passed with exit 0. Its 24 advisory warnings were there before this branch. `devtools::document()` made no diff. `pkgdown::check_pkgdown()` found no problems. The branch does not touch `README.Rmd` or `README.md`. NEWS.md extends the M109 entry and names no milestone. No DESIGN.md principle changed, so `cairn_impact.py` was not run.
+
+Independent review: three fresh reviewers read the diff. The history reviewer and the prior-review reviewer found nothing. The prior-review probe found no PR review comments. The diff reviewer found seven items, ranked below. Dispositions are set at the merge gate.
+
+- F1: A declared-missing code made only of invisible characters prints as blank, for example `holds " "`. The code-point display covers only the text kind.
+- F2: A character SPSS column that declares `""` missing is refused, although blank cells already score as `NA`.
+- F3: An `integer64` or SPSS refusal also gets the choice-text hint. An `integer64` refusal gets no tip on how to convert it.
+- F4: Columns saved under haven before 2.0 carry the class `labelled_spss`, which the check does not catch. Their codes score as answers.
+- F5: A hand-set `na_values` attribute of the wrong type can differ from haven's own `is.na()`. haven's constructors prevent this input.
+- F6: A character column with invalid UTF-8, such as a latin1 `"\xa0"`, stops with a base R error instead of the refusal. This code came from M109.
+- F7: The SPSS tip is chosen over all refused columns, so it can show when none of the five named columns holds a code.
