@@ -373,7 +373,12 @@ validate_item_columns <- function(data, items, caller_items = items,
       } else {
         cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not a number.")
       },
-      missing = cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which it declares missing."),
+      missing = if (is.character(value) && nzchar(value) && is_invisible(value)) {
+        points <- code_points(value)
+        cli::format_inline("{label} is {.cls {cls}} and holds a value made only of the invisible {cli::qty(length(points))}character{?s} {points}, which it declares missing.")
+      } else {
+        cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which it declares missing.")
+      },
       cli::format_inline("{label} is {.cls {cls}}.")
     )
     escape_braces(text)
@@ -384,19 +389,25 @@ validate_item_columns <- function(data, items, caller_items = items,
   if (more > 0) {
     detail <- c(detail, "x" = "{more} more column{?s} {?is/are} refused.")
   }
-  ## The factor tip applies only when a refused column is a factor.
-  any_factor <- any(vapply(scored[bad], function(i) is.factor(data[[i]]),
-                           logical(1)))
-  hint <- if (any_factor) {
-    "Export numeric values rather than choice text, or convert each column to numbers before scoring (a factor of digits with {.code as.numeric(as.character(x))})."
-  } else {
-    "Export numeric values rather than choice text, or convert each column to numbers before scoring."
+  ## Each tip applies only to the refused columns of its kind: the choice-text
+  ## tip to text and other refused types, the bit64 tip to integer64, and the
+  ## SPSS tip to declared codes.
+  kinds <- vapply(first_bad[bad], function(r) r$kind, character(1))
+  hint <- c()
+  if (any(kinds %in% c("text", "type"))) {
+    ## The factor tip applies only when a refused column is a factor.
+    any_factor <- any(vapply(scored[bad], function(i) is.factor(data[[i]]),
+                             logical(1)))
+    hint <- c(hint, "i" = if (any_factor) {
+      "Export numeric values rather than choice text, or convert each column to numbers before scoring (a factor of digits with {.code as.numeric(as.character(x))})."
+    } else {
+      "Export numeric values rather than choice text, or convert each column to numbers before scoring."
+    })
   }
-  ## The SPSS tip applies only when a refused column holds a declared code.
-  any_missing <- any(vapply(first_bad[bad], function(r) r$kind == "missing",
-                            logical(1)))
-  hint <- c("i" = hint)
-  if (any_missing) {
+  if (any(kinds == "integer64")) {
+    hint <- c(hint, "i" = "Convert an {.cls integer64} column with {.code as.numeric()} after {.code library(bit64)}.")
+  }
+  if (any(kinds == "missing")) {
     hint <- c(hint, "i" = "Turn codes an SPSS file declares missing into {.code NA} with {.code haven::zap_missing()} before scoring.")
   }
   cli::cli_abort(
@@ -413,7 +424,8 @@ validate_item_columns <- function(data, items, caller_items = items,
 # The reason an item column is refused, or NULL when it is accepted. A reason
 # is a list: `kind` "text" with the first value, after trimws(), of a character
 # column that does not parse, "missing" with the first value an SPSS column declares missing,
-# or "type" for a column of any other refused type. The parse test muffles
+# "integer64" for an integer64 column, or "type" for a column of any other
+# refused type. The parse test muffles
 # as.numeric()'s own coercion warning, which is the message this refusal
 # replaces.
 #
@@ -425,7 +437,7 @@ validate_item_columns <- function(data, items, caller_items = items,
 # through haven, so the check holds whether or not haven is loaded.
 unparsed_value <- function(x) {
   if (inherits(x, "integer64")) {
-    return(list(kind = "type"))
+    return(list(kind = "integer64"))
   }
   if (inherits(x, "haven_labelled_spss")) {
     code <- declared_missing(x)

@@ -575,6 +575,71 @@ test_that("an integer64 column is refused", {
   }
 })
 
+test_that("each refusal gets only the tips that fit its columns", {
+  skip_if_not_installed("haven")
+  choice_tip <- "Export numeric values rather than choice text"
+  bit64_tip <- "library(bit64)"
+  spss_tip <- "haven::zap_missing()"
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    other <- names(base)[[2]]
+    spss <- base[[col]]
+    spss[[2]] <- 99
+    columns <- list(
+      text = choice_text(base[[col]]),
+      integer64 = integer64_column(nrow(base)),
+      spss = haven::labelled_spss(spss, na_values = 99)
+    )
+    # Each refusal alone, then all three together in two columns.
+    expected <- list(
+      text = c(choice_tip),
+      integer64 = c(bit64_tip),
+      spss = c(spss_tip)
+    )
+    for (kind in names(columns)) {
+      info <- paste(case_label(case), "/", kind)
+      data <- base
+      data[[col]] <- columns[[kind]]
+      e <- catch_error(run_case(case, data))
+      expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+      if (!inherits(e, "hitop_nonnumeric_items")) next
+      msg <- cli::ansi_strip(conditionMessage(e))
+      for (tip in c(choice_tip, bit64_tip, spss_tip)) {
+        expect_identical(grepl(tip, msg, fixed = TRUE),
+                         tip %in% expected[[kind]],
+                         info = paste(info, "/", tip))
+      }
+    }
+    info <- paste(case_label(case), "/ integer64 and spss")
+    data <- base
+    data[[col]] <- columns$integer64
+    data[[other]] <- columns$spss
+    msg <- cli::ansi_strip(conditionMessage(catch_error(run_case(case, data))))
+    expect_true(grepl(bit64_tip, msg, fixed = TRUE), info = info)
+    expect_true(grepl(spss_tip, msg, fixed = TRUE), info = info)
+    expect_false(grepl(choice_tip, msg, fixed = TRUE), info = info)
+  }
+})
+
+test_that("an invisible declared-missing code is shown by its code points", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    col <- names(case$data)[[1]]
+    data <- case$data
+    values <- rep("1", nrow(data))
+    values[[2]] <- " "
+    data[[col]] <- haven::labelled_spss(values, na_values = " ")
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    msg <- cli::ansi_strip(conditionMessage(e))
+    expect_true(grepl("U+00A0, which it declares missing", msg, fixed = TRUE),
+                info = info)
+  }
+})
+
 test_that("a haven::labelled() digit-text column scores as its plain text does", {
   skip_if_not_installed("haven")
   for (case in nonnumeric_cases) {

@@ -98,3 +98,13 @@ Independent review: three fresh reviewers read the diff. The history reviewer an
 - F5: A hand-set `na_values` attribute of the wrong type can differ from haven's own `is.na()`. haven's constructors prevent this input.
 - F6: A character column with invalid UTF-8, such as a latin1 `"\xa0"`, stops with a base R error instead of the refusal. This code came from M109.
 - F7: The SPSS tip is chosen over all refused columns. If none of the five named columns holds a code, the tip can still show.
+
+Triage at the gate (2026-09-23, Jeff):
+
+- F1: fixed now. A declared-missing code made only of invisible characters is shown by its code points. The test "an invisible declared-missing code is shown by its code points" failed 13 of 26 before the fix and passes after it.
+- F3: fixed now. `unparsed_value()` returns the kind `integer64`. The choice-text tip shows only for text and other refused types. A new tip names `as.numeric()` after `library(bit64)`. A saved `integer64` read back without bit64 converted to about 4.9e-324 and, after `library(bit64)`, to 1, 4, NA. The test "each refusal gets only the tips that fit its columns" failed 65 of 195 before the fix and passes after it.
+- F2, F4, F6: follow-up. One candidate row on the roadmap holds all three.
+- F5: rejected, because haven's constructors cannot make a missing-code attribute of the wrong type.
+- F7: rejected, because the tip is still true of the refused set.
+
+After the fixes, the test file ran 26 blocks and 1,826 expectations with 0 failures. `devtools::test()` ran 19,750 expectations with 0 failures, 0 errors and 15 skips. `devtools::document()` made no diff.
