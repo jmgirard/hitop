@@ -101,7 +101,7 @@ reliability_hitopsr <- function(
   ## A missing or NULL `items` takes the module's `columns` attribute, or
   ## aborts saying to pass `items`.
   items <- module_column_items(missing(items), if (!missing(items)) items,
-                               module, layout)
+                               module, layout, data)
   ## Under layout = "printed", put the caller's printed-order `items` into
   ## instrument order through the module's item_order (refusing when there is
   ## none); the heuristic order warning has then already run on the caller's

@@ -843,6 +843,8 @@ test_that("read_module() refuses a bad `columns` field, naming the file", {
       info = label
     )
     expect_true(grepl(f, conditionMessage(e), fixed = TRUE), info = label)
+    expect_match(conditionMessage(e), "unusable columns field", fixed = TRUE,
+                 info = label)
   }
   # The passing control: the same builder with the good names reads.
   expect_identical(

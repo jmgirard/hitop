@@ -85,6 +85,48 @@ test_that("omitting `items` without columns to take is an error saying to pass `
   }
 })
 
+test_that("an explicit `items = NULL` is named as NULL, not as missing", {
+  withr::local_options(cli.width = 10000)
+  m <- two_scale_module()
+  data <- module_data(m)
+  fns <- list(
+    score_hitopsr = function(...) score_hitopsr(..., append = FALSE),
+    reliability_hitopsr = function(...) reliability_hitopsr(..., omega = FALSE)
+  )
+  for (fn in names(fns)) {
+    e <- expect_error(fns[[fn]](data, items = NULL, module = m),
+                      class = "rlang_error", info = fn)
+    expect_match(conditionMessage(e), "is `NULL`", fixed = TRUE, info = fn)
+    expect_no_match(conditionMessage(e), "is missing", fixed = TRUE, info = fn)
+    # The control: an omitted `items` is still called missing.
+    e <- expect_error(fns[[fn]](data, module = m),
+                      class = "rlang_error", info = fn)
+    expect_match(conditionMessage(e), "is missing", fixed = TRUE, info = fn)
+  }
+})
+
+test_that("module columns absent from `data` are blamed on the module, with a pointer to `items`", {
+  withr::local_options(cli.width = 10000)
+  m <- two_scale_module()
+  data <- module_data(m)
+  # Names from another export: a Qualtrics prefix on REDCap-named data.
+  attr(m, "columns") <- sprintf("HSR_%03d", m$items)
+  fns <- list(
+    score_hitopsr = function(...) score_hitopsr(..., append = FALSE),
+    reliability_hitopsr = function(...) reliability_hitopsr(..., omega = FALSE)
+  )
+  for (fn in names(fns)) {
+    e <- expect_error(fns[[fn]](data, module = m), class = "rlang_error",
+                      info = fn)
+    msg <- conditionMessage(e)
+    expect_match(msg, "columns", fixed = TRUE, info = fn)
+    expect_match(msg, "Pass", fixed = TRUE, info = fn)
+    expect_match(msg, sprintf("HSR_%03d", m$items[[1]]), fixed = TRUE,
+                 info = fn)
+    expect_no_match(msg, "names must all be columns", fixed = TRUE, info = fn)
+  }
+})
+
 test_that("a REDCap module export scores from its descriptor alone", {
   skip_if_not_installed("zip")
   m <- two_scale_module()

@@ -579,7 +579,7 @@ read_module_columns <- function(x, n_items, file, call = rlang::caller_env()) {
     cli::cli_abort(
       c(
         "The module descriptor {.file {file}} has an unusable \\
-         {.field columns}.",
+         {.field columns} field.",
         x = problem
       ),
       class = "hitop_module_file_bad_columns",

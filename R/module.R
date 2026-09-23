@@ -356,11 +356,18 @@ layout_items <- function(items, module, layout, call = rlang::caller_env()) {
 # order. A missing or
 # NULL `items` takes those names. A supplied `items` is returned untouched, so
 # it always wins. The names are in instrument order, so a call under
-# `layout = "printed"` still needs its own `items`.
-module_column_items <- function(items_missing, items, module, layout,
+# `layout = "printed"` still needs its own `items`. Names taken from the module
+# that are not columns of `data` are refused here, so the error blames the
+# module's `columns` rather than an `items` the caller never passed.
+module_column_items <- function(items_missing, items, module, layout, data,
                                 call = rlang::caller_env()) {
   if (!items_missing && !is.null(items)) {
     return(items)
+  }
+  headline <- if (items_missing) {
+    "The {.arg items} argument is missing."
+  } else {
+    "The {.arg items} argument is {.code NULL}."
   }
   columns <- if (is.null(module)) NULL else attr(module, "columns")
   why <- if (is.null(module)) {
@@ -375,9 +382,22 @@ module_column_items <- function(items_missing, items, module, layout,
   cli_assert(
     condition = is.null(why),
     message = c(
-      "The {.arg items} argument is missing.",
+      headline,
       x = why,
       i = "Pass {.arg items}: the names or positions of the item columns."
+    ),
+    call = call
+  )
+  # Data that is not a data frame is left to the engine's own refusal.
+  absent <- if (is.data.frame(data)) setdiff(columns, names(data))
+  cli_assert(
+    condition = length(absent) == 0L,
+    message = c(
+      "The {.arg module}'s {.field columns} are not all columns in \\
+       {.arg data}.",
+      x = "Not found in {.arg data}: {.val {absent}}.",
+      i = "The descriptor may come from another export. Pass {.arg items}: \\
+           the names or positions of the item columns."
     ),
     call = call
   )

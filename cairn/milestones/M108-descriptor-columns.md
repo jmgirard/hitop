@@ -76,6 +76,8 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - 2026-09-22: claim audit pass by a fresh [O] reader: 46 claims, 5 flagged. 4 corrected (0.2.0 as the first release with `read_module()`; Qualtrics data must be exported as numeric values; REDCap "another header setting" example removed; "Use internal IDs in header" now sourced to Qualtrics' dataset help in the note), 1 kept (the `id_prefix` holds by construction). The same reader's re-read is pending (checkpoint).
 - claim audit: 46 claims read, 4 corrected — R/module_file.R, R/generate_qualtrics.R, R/generate_redcap.R, NEWS.md, vignettes/articles/modules-hitopsr.Rmd (re-read by the same reader: all five hold).
 - 2026-09-22: status review. `document()` no diff, `devtools::test()` 0 failures, 17878 passes. `devtools::check()` last ran at T6 (0/0/0); since then only roxygen and prose changed.
+- 2026-09-22: review. All six criteria were verified with fresh evidence, and the gate passed. The three reviewers found no bug. Three message fixes and one candidate row were made at the gate.
+- step-7 approval: m108-descriptor-columns approved for merge
 
 ## Decisions
 
@@ -103,3 +105,17 @@ Independent review (2026-09-22). The prior-review lens [S] found no findings. It
 - F8: When both `itemOrder` and `columns` are bad, the `itemOrder` class wins, and no document states this order.
 - F9: The Qualtrics generator now checks `id_prefix` before the descriptor path.
 - F10: One roxygen line in `R/score_hitopsr.R:19` exceeds 80 characters.
+
+Triage at the gate (Jeff, 2026-09-22):
+- F1 fixed now. `module_column_items()` takes `data`. Module columns missing from a data frame abort with a message that names the module's `columns`, lists the absent names, and says to pass `items`. A new test in both functions saw 4 failures first.
+- F2 fixed now. An explicit `items = NULL` reads "is `NULL`". An omitted `items` still reads "is missing". A new test with that control saw 4 failures first.
+- F7 fixed now. The refusal reads "has an unusable columns field". The 11 `read_module()` refusal cases assert it and saw 11 failures first.
+- F3 follow-up. A candidate row in ROADMAP covers choice-text exports that score as all `NA`.
+- F4 rejected. Other argument refusals carry no class, and D-034(c) asks for one only for a condition meant to be caught.
+- F5 rejected. The names on a hand-set attribute are outside the D-066 round trip, which covers `hitop_module()` builds.
+- F6 rejected. AC4 names `""`, and a space-only name is a real if odd column name.
+- F8 rejected. One class per refusal. The order of the checks is not a contract.
+- F9 rejected. The call is refused either way, before any file is written.
+- F10 rejected. Style only.
+
+After the fixes, `devtools::test()` gave 0 failures and 17909 passes, and `document()` left no diff.
