@@ -365,12 +365,12 @@ validate_item_columns <- function(data, items, caller_items = items,
       cli::format_inline("{.val {nm}}")
     }
     cls <- class(data[[i]])
-    value <- first_bad[[k]]
-    text <- if (is.character(value)) {
-      cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not a number.")
-    } else {
+    value <- first_bad[[k]]$value
+    text <- switch(first_bad[[k]]$kind,
+      text = cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not a number."),
+      missing = cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which it declares missing."),
       cli::format_inline("{label} is {.cls {cls}}.")
-    }
+    )
     escape_braces(text)
   }, character(1))
   names(detail) <- rep("x", length(detail))
@@ -387,27 +387,53 @@ validate_item_columns <- function(data, items, caller_items = items,
   } else {
     "Export numeric values rather than choice text, or convert each column to numbers before scoring."
   }
+  ## The SPSS tip applies only when a refused column holds a declared code.
+  any_missing <- any(vapply(first_bad[bad], function(r) r$kind == "missing",
+                            logical(1)))
+  hint <- c("i" = hint)
+  if (any_missing) {
+    hint <- c(hint, "i" = "Turn codes an SPSS file declares missing into {.code NA} with {.code haven::zap_missing()} before scoring.")
+  }
   cli::cli_abort(
     c(
       "{n} item column{?s} cannot be read as numbers.",
       detail,
-      "i" = hint
+      hint
     ),
     class = "hitop_nonnumeric_items",
     call = call
   )
 }
 
-# The reason an item column is refused, or NULL when it is accepted: the first
-# value of a character column that does not parse, or TRUE for a column of any
-# other refused type. The parse test muffles as.numeric()'s own coercion
-# warning, which is the message this refusal replaces.
+# The reason an item column is refused, or NULL when it is accepted. A reason
+# is a list: `kind` "text" with the first value of a character column that does
+# not parse, "missing" with the first value an SPSS column declares missing,
+# or "type" for a column of any other refused type. The parse test muffles
+# as.numeric()'s own coercion warning, which is the message this refusal
+# replaces.
+#
+# Two numeric classes are refused before the numeric acceptance. An
+# "integer64" column is a double vector holding an integer's bits, so
+# as.numeric() reads bit patterns unless bit64 is loaded. A
+# "haven_labelled_spss" column keeps its user-missing codes as values, so a 99
+# would score as an answer. Its codes are read from the attributes, never
+# through haven, so the check holds whether or not haven is loaded.
 unparsed_value <- function(x) {
+  if (inherits(x, "integer64")) {
+    return(list(kind = "type"))
+  }
+  if (inherits(x, "haven_labelled_spss")) {
+    code <- declared_missing(x)
+    if (!is.null(code)) {
+      return(list(kind = "missing", value = code))
+    }
+  }
+  x <- item_values(x)
   if (is.numeric(x) || is.logical(x)) {
     return(NULL)
   }
   if (!is.character(x)) {
-    return(TRUE)
+    return(list(kind = "type"))
   }
   values <- trimws(x)
   values <- values[!is.na(values) & nzchar(values)]
@@ -418,7 +444,39 @@ unparsed_value <- function(x) {
   if (!any(unread)) {
     return(NULL)
   }
-  values[unread][[1]]
+  list(kind = "text", value = values[unread][[1]])
+}
+
+# The first value, in row order, that an SPSS column's `na_values` or
+# `na_range` attribute declares missing, or NULL when it holds none.
+declared_missing <- function(x) {
+  values <- item_values(x)
+  codes <- attr(x, "na_values", exact = TRUE)
+  range <- attr(x, "na_range", exact = TRUE)
+  hit <- !is.na(values) & values %in% codes
+  if (length(range) == 2L) {
+    hit <- hit | (!is.na(values) & values >= range[[1]] & values <= range[[2]])
+  }
+  if (!any(hit)) {
+    return(NULL)
+  }
+  values[hit][[1]]
+}
+
+# An item column's values with a haven label class stripped, so as.numeric()
+# converts them as plain doubles or plain text. With haven loaded,
+# as.numeric() on a labelled character column aborts inside haven's cast.
+item_values <- function(x) {
+  if (inherits(x, "haven_labelled")) {
+    x <- as.vector(unclass(x))
+  }
+  x
+}
+
+# An item column as numbers, for scoring. Called only on a column
+# validate_item_columns() accepted.
+item_numbers <- function(x) {
+  as.numeric(item_values(x))
 }
 
 # A confidence level is a single probability strictly inside (0, 1). Both ends
@@ -611,7 +669,7 @@ prep_items <- function(
   validate_item_columns(data, items, caller_items, call = call)
 
   ## Extract item columns and coerce values to numbers
-  data_items <- lapply(data[items], as.numeric)
+  data_items <- lapply(data[items], item_numbers)
 
   ## Reverse score the necessary items
   if (length(reverse_items) > 0) {

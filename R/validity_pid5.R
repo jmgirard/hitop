@@ -138,7 +138,7 @@ validity_pid5 <- function(
   data_items <- data[items]
 
   ## Coerce values to numbers
-  data_items <- lapply(data_items, as.numeric)
+  data_items <- lapply(data_items, item_numbers)
   data_items <- bind_columns(data_items)
 
   ## For all versions
