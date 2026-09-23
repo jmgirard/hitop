@@ -49,6 +49,9 @@
 #'   columns from `data` first. The condition is classed
 #'   `hitop_append_collision`, so a caller can catch this refusal by name.
 #'
+#'   An item column that cannot be read as numbers (see `items`) is an error
+#'   of class `hitop_nonnumeric_items`, raised before the collision check.
+#'
 #' @return A \link[tibble]{tibble} containing all scale scores and standard
 #'   errors (if requested) and all original `data` columns (if requested).
 #'

@@ -248,6 +248,21 @@ test_that("positional items score data with an empty or NA column name", {
   }
 })
 
+test_that("the factor tip shows only when a refused column is a factor", {
+  case <- nonnumeric_cases[[3]] # score_pid5 BF
+  tip <- "as.numeric(as.character(x))"
+  text_only <- case$data
+  text_only[[1]] <- choice_text(text_only[[1]])
+  e <- catch_error(run_case(case, text_only))
+  expect_s3_class(e, "hitop_nonnumeric_items")
+  expect_false(grepl(tip, cli::ansi_strip(conditionMessage(e)), fixed = TRUE))
+  with_factor <- text_only
+  with_factor[[2]] <- factor(with_factor[[2]])
+  e <- catch_error(run_case(case, with_factor))
+  expect_s3_class(e, "hitop_nonnumeric_items")
+  expect_match(cli::ansi_strip(conditionMessage(e)), tip, fixed = TRUE)
+})
+
 # ---- AC1/AC2: the module-columns and printed-layout paths -------------------
 
 test_that("a module's `columns` are checked when `items` is omitted", {

@@ -111,6 +111,9 @@ column: the message names every colliding column. Re-run with
 \code{append = FALSE} to return only the new columns, or drop the colliding
 columns from \code{data} first. The condition is classed
 \code{hitop_append_collision}, so a caller can catch this refusal by name.
+
+An item column that cannot be read as numbers (see \code{items}) is an error
+of class \code{hitop_nonnumeric_items}, raised before the collision check.
 }
 \examples{
 # Score all HiTOP-SR scales from the simulated data

@@ -379,11 +379,19 @@ validate_item_columns <- function(data, items, caller_items = items,
   if (more > 0) {
     detail <- c(detail, "x" = "{more} more column{?s} {?is/are} refused.")
   }
+  ## The factor tip applies only when a refused column is a factor.
+  any_factor <- any(vapply(scored[bad], function(i) is.factor(data[[i]]),
+                           logical(1)))
+  hint <- if (any_factor) {
+    "Export numeric values rather than choice text, or convert each column to numbers before scoring (a factor of digits with {.code as.numeric(as.character(x))})."
+  } else {
+    "Export numeric values rather than choice text, or convert each column to numbers before scoring."
+  }
   cli::cli_abort(
     c(
       "{n} item column{?s} cannot be read as numbers.",
       detail,
-      "i" = "Export numeric values rather than choice text, or convert each column to numbers before scoring (a factor of digits with {.code as.numeric(as.character(x))})."
+      "i" = hint
     ),
     class = "hitop_nonnumeric_items",
     call = call

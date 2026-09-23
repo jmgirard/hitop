@@ -43,7 +43,7 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - [x] T4: Update the `items` roxygen of the seven functions, run `devtools::document()`, and add the NEWS entry. Add haven to Suggests in `DESCRIPTION`. Append a D-entry that records `hitop_nonnumeric_items` as public on the terms of D-034(c), the value rule, and the check order. The same entry records haven in Suggests for tests only, with no use in `R/` (GP4).
 - [x] T5: Run `devtools::test()` and `devtools::check()` clean.
 - [x] T6: Fix review F1 and F2: `validate_item_columns()` reads each scored column by position, as `prep_items()` does, and uses names only in the message. Add regression tests that fail first: duplicated names with positional `items` and a choice-text duplicate, and an empty or `NA` column name with positional `items`.
-- [ ] T7: Fix review F6 and F7: list `hitop_nonnumeric_items` in the Errors sections of the seven functions, and show the factor hint only when a refused column is a factor.
+- [x] T7: Fix review F6 and F7: list `hitop_nonnumeric_items` in the Errors sections of the seven functions, and show the factor hint only when a refused column is a factor.
 - [ ] T8: Fix review F8: test that `"Inf"` and `"0x1A"` score as `Inf` and `26`, and make the argument-order test assert which error each bad argument raises. Then run `devtools::test()` and `devtools::check()` clean.
 
 ## Work log
@@ -62,6 +62,7 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - 2026-09-22: T5 done. `devtools::test()`: 18632 passes, 0 failures, 15 skips. `devtools::check()` after the last code change: 0 errors, 0 warnings, 1 note for the untracked `qtest.txt`. Status set to review.
 - 2026-09-22: review return 1 (defect): F1 fails AC1 and F2 fails AC4, both reproduced. The user chose at the gate to send the milestone back with F6, F7 and F8 fixed too. T6 to T8 added. Status set to in-progress.
 - 2026-09-22: T6 done. `validate_item_columns()` reads columns by position and labels an empty or `NA` name as "Column <n>". Two new tests failed first (26 failures on duplicate names, and the `[.data.frame` error on an empty name) and now pass. `devtools::test()`: 18747 passes, 0 failures, 15 skips.
+- 2026-09-22: T7 done. The Errors sections of `score_pid5()`, `score_hitopsr()`, `score_hitopbr()` and `validity_pid5()` name `hitop_nonnumeric_items`. The three reliability functions have no Errors section, so their `items` text stays the only mention. The factor tip shows only when a refused column is a factor, and a new test failed first. `devtools::test()`: 18751 passes, 0 failures, 15 skips.
 
 ## Decisions
 

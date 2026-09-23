@@ -36,6 +36,10 @@
 #'   columns from `data` first. The condition is classed
 #'   `hitop_append_collision`, so a caller can catch this refusal by name.
 #'
+#'   An item column that cannot be read as numbers (see `items`) is an error
+#'   of class `hitop_nonnumeric_items`, raised before the collision check and
+#'   the `srange` warning.
+#'
 #' @references Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
 #'   E. H. (2016). Development of a Response Inconsistency Scale for the
 #'   Personality Inventory for DSM-5. *Journal of Personality Assessment,
