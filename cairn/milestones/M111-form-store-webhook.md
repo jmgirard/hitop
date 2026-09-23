@@ -1,13 +1,13 @@
 # M111: hitop-form sends each participant's responses to an endpoint named in the study link
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — a deployed page participants fill in and researchers configure
-- **Branch/PR:** —
+- **Branch/PR:** `m111-form-store-webhook` (hitop, `cairn/` only); `store-webhook` in jmgirard/hitop-form
 
 ## Goal
 
@@ -59,6 +59,8 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 - 2026-09-23: plan chose an `http:` loopback exception in the URL guard over an `https:`-only guard because the recording endpoint is a local server; falsified by a Playwright route shown to intercept a cross-origin `https:` POST and its preflight.
 - 2026-09-23: plan chose the store inside the encoded link over a store fetched from a descriptor URL because M095 settled one encoded link parameter; falsified by links a mail client truncates in the field.
 - 2026-09-23: re-audit of the reworded criteria by the same fresh [O] reader: eleven findings across M111–M113, six on this file (a third-origin redirect target, the double press as one gesture, the request set under a redirect, near-miss loopback hosts and unlisted schemes, two missed device-save sentences and code comments in the sweep, Chromium's local-network rule for the dispatched run). All fixed in the wording after the plan commit; none reopened a gate choice.
+- 2026-09-23: implement started by /milestone-implement. Branches cut from the pushed default branches: `m111-form-store-webhook` in hitop, `store-webhook` in hitop-form. Jeff had the stray untracked `qtest.txt` in the hitop tree deleted before branching.
+- 2026-09-23: implement gate. Jeff deploys the Apps Script web app from the README code and downloads the sheet's CSV himself, because the session holds no Google account. The session runs the two walks against his `/exec` URL. Under `FORM_TARGET`, the send tests first ask Playwright to grant the local-network permission. If that call is refused, they skip with the reason printed (AC7).
 
 ## Decisions
 
