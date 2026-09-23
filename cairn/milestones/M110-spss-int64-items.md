@@ -107,4 +107,4 @@ Triage at the gate (2026-09-23, Jeff):
 - F5: rejected, because haven's constructors cannot make a missing-code attribute of the wrong type.
 - F7: rejected, because the tip is still true of the refused set.
 
-After the fixes, the test file ran 26 blocks and 1,826 expectations with 0 failures. `devtools::test()` ran 19,750 expectations with 0 failures, 0 errors and 15 skips. `devtools::document()` made no diff.
+After the fixes, the test file ran 26 blocks and 1,826 expectations with 0 failures. `devtools::test()` ran 19,750 expectations with 0 failures, 0 errors and 15 skips. `devtools::document()` made no diff. `devtools::check()` on the fixed code reported 0 errors, 0 warnings and 1 note, which names the untracked `qtest.txt`.
