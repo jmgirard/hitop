@@ -83,6 +83,11 @@ record <- function(expr) {
   list(error = error, warnings = warnings)
 }
 
+as_double_frame <- function(data) {
+  data[] <- lapply(data, as.double)
+  data
+}
+
 choice_text <- function(x) {
   rep_len(c("Not at all", "A little", "Moderately", "A lot"), length(x))
 }
@@ -206,6 +211,43 @@ test_that("item positions name the refused column by its name in `data`", {
                fixed = TRUE)
 })
 
+test_that("positional items check the column at each position when names repeat", {
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    data <- case$data
+    n <- ncol(data)
+    # A copy of the first column goes first, under the same name, and the
+    # original first column (now at position 2) becomes choice text. Scoring
+    # positions 2 to n + 1 reads the choice text, not the numeric copy.
+    data <- cbind(data[1], data)
+    data[[2]] <- choice_text(data[[2]])
+    got <- record(run_case(case, data, items = 2:(n + 1)))
+    expect_true(inherits(got$error, "hitop_nonnumeric_items"), info = info)
+    expect_equal(length(got$warnings), 0L, info = info)
+  }
+})
+
+test_that("positional items score data with an empty or NA column name", {
+  for (case in nonnumeric_cases) {
+    for (blank in list("", NA_character_)) {
+      info <- paste(case_label(case), "/", deparse(blank))
+      data <- as_double_frame(case$data)
+      named <- run_case(case, data, items = seq_along(data))
+      names(data)[[2]] <- blank
+      expect_identical(run_case(case, data, items = seq_along(data)), named,
+                       info = info)
+      # A refused column with such a name is named by its position.
+      data[[2]] <- choice_text(data[[2]])
+      e <- catch_error(run_case(case, data, items = seq_along(data)))
+      expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+      if (!inherits(e, "hitop_nonnumeric_items")) next
+      expect_match(cli::ansi_strip(conditionMessage(e)), "Column 2",
+                   fixed = TRUE, info = info)
+      expect_identical(rlang::call_name(conditionCall(e)), case$fn, info = info)
+    }
+  }
+})
+
 # ---- AC1/AC2: the module-columns and printed-layout paths -------------------
 
 test_that("a module's `columns` are checked when `items` is omitted", {
@@ -313,11 +355,6 @@ test_that("the refusal comes before the collision check and the srange warning",
 })
 
 # ---- AC4: accepted columns score as before ----------------------------------
-
-as_double_frame <- function(data) {
-  data[] <- lapply(data, as.double)
-  data
-}
 
 test_that("integer, logical and digit-text columns score as their doubles do", {
   for (case in nonnumeric_cases) {

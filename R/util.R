@@ -331,18 +331,24 @@ validate_numeric_columns <- function(columns, headline, info,
 # wrote (before a `layout = "printed"` permutation), which sets the report
 # order. A choice-text export refuses every column, so the report names the
 # first five and counts the rest.
+#
+# Columns are read by position, as data[items] reads them in prep_items(): a
+# name in `items` resolves to its first match, and a position is used as is.
+# Reading a position through its name would check the wrong column when names
+# repeat, and fail on an empty or NA name.
 validate_item_columns <- function(data, items, caller_items = items,
                                   call = rlang::caller_env()) {
-  item_names <- function(x) if (is.character(x)) x else names(data)[x]
-  names_scored <- item_names(items)
-  first_bad <- lapply(data[names_scored], unparsed_value)
+  positions <- function(x) {
+    if (is.character(x)) match(x, names(data)) else as.integer(x)
+  }
+  scored <- positions(items)
+  first_bad <- lapply(scored, function(i) unparsed_value(data[[i]]))
   refused <- !vapply(first_bad, is.null, logical(1))
   if (!any(refused)) {
     return(invisible(NULL))
   }
-  bad <- names_scored[refused]
-  caller_names <- item_names(caller_items)
-  bad <- bad[order(match(bad, caller_names))]
+  bad <- which(refused)
+  bad <- bad[order(match(scored[bad], positions(caller_items)))]
 
   ## Escaped because these strings are already formatted, and cli_abort() would
   ## interpolate a brace in a column name or a value a second time.
@@ -350,13 +356,20 @@ validate_item_columns <- function(data, items, caller_items = items,
     gsub("}", "}}", gsub("{", "{{", x, fixed = TRUE), fixed = TRUE)
   }
   shown <- utils::head(bad, 5)
-  detail <- vapply(shown, function(nm) {
-    cls <- class(data[[nm]])
-    value <- first_bad[[nm]]
-    text <- if (is.character(value)) {
-      cli::format_inline("{.val {nm}} is {.cls {cls}} and holds {.val {value}}, which is not a number.")
+  detail <- vapply(shown, function(k) {
+    i <- scored[[k]]
+    nm <- names(data)[[i]]
+    label <- if (is.na(nm) || !nzchar(nm)) {
+      cli::format_inline("Column {i}")
     } else {
-      cli::format_inline("{.val {nm}} is {.cls {cls}}.")
+      cli::format_inline("{.val {nm}}")
+    }
+    cls <- class(data[[i]])
+    value <- first_bad[[k]]
+    text <- if (is.character(value)) {
+      cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not a number.")
+    } else {
+      cli::format_inline("{label} is {.cls {cls}}.")
     }
     escape_braces(text)
   }, character(1))

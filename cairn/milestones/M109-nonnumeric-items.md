@@ -42,7 +42,7 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - [x] T3: Write the tests first. Probe axes: offender type (AC1 list), position (first item, last item, and a reverse-keyed item where the version has one), offender count (1, 2, 21), all three PID-5 versions, `items` omitted with module `columns`, and `layout = "printed"`. Add one probe per function that combines a refused column with an output collision and a non-default `srange`, to test the AC3 order. Capture warnings with `withCallingHandlers()` (LESSONS M032). Add the AC4 comparisons, with the haven case under `skip_if_not_installed("haven")`. The review evidence for AC4 must show that the haven case ran and did not skip.
 - [x] T4: Update the `items` roxygen of the seven functions, run `devtools::document()`, and add the NEWS entry. Add haven to Suggests in `DESCRIPTION`. Append a D-entry that records `hitop_nonnumeric_items` as public on the terms of D-034(c), the value rule, and the check order. The same entry records haven in Suggests for tests only, with no use in `R/` (GP4).
 - [x] T5: Run `devtools::test()` and `devtools::check()` clean.
-- [ ] T6: Fix review F1 and F2: `validate_item_columns()` reads each scored column by position, as `prep_items()` does, and uses names only in the message. Add regression tests that fail first: duplicated names with positional `items` and a choice-text duplicate, and an empty or `NA` column name with positional `items`.
+- [x] T6: Fix review F1 and F2: `validate_item_columns()` reads each scored column by position, as `prep_items()` does, and uses names only in the message. Add regression tests that fail first: duplicated names with positional `items` and a choice-text duplicate, and an empty or `NA` column name with positional `items`.
 - [ ] T7: Fix review F6 and F7: list `hitop_nonnumeric_items` in the Errors sections of the seven functions, and show the factor hint only when a refused column is a factor.
 - [ ] T8: Fix review F8: test that `"Inf"` and `"0x1A"` score as `Inf` and `26`, and make the argument-order test assert which error each bad argument raises. Then run `devtools::test()` and `devtools::check()` clean.
 
@@ -62,6 +62,7 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - 2026-09-22: T5 done. `devtools::test()`: 18632 passes, 0 failures, 15 skips. `devtools::check()` after the last code change: 0 errors, 0 warnings, 1 note for the untracked `qtest.txt`. Status set to review.
 - 2026-09-22: review return 1 (defect): F1 fails AC1 and F2 fails AC4, both reproduced. The user chose at the gate to send the milestone back with F6, F7 and F8 fixed too. T6 to T8 added. Status set to in-progress.
 
+- 2026-09-22: T6 done. `validate_item_columns()` reads columns by position and labels an empty or `NA` name as "Column <n>". Two new tests failed first (26 failures on duplicate names, and the `[.data.frame` error on an empty name) and now pass. `devtools::test()`: 18747 passes, 0 failures, 15 skips.
 ## Decisions
 
 ## Review
