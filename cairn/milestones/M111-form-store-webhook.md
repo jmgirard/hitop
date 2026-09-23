@@ -41,7 +41,7 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 
 ## Tasks
 
-- [ ] T1: `checkStore()` in form.js, called by `parseLink()` (form.js:54) and by link.html's builder. Guard tests per AC4's listed forms, builder tests per builder fault.
+- [x] T1: `checkStore()` in form.js, called by `parseLink()` (form.js:54) and by link.html's builder. Guard tests per AC4's listed forms, builder tests per builder fault.
 - [ ] T2: The recording endpoint in `tests/serve.mjs` on a second port: record, `/redirect`, an HTML-200 path, a status path, OPTIONS with CORS headers, a request log the tests read. A helper in `tests/helpers.mjs` starts it whatever the target (AC7).
 - [ ] T3: `sendResponses()` in form.js: `fetch` POST with `text/plain`, `redirect: 'follow'`, an `AbortController` at 30 seconds, the confirmation rule, Finish disabled, the two outcome screens, the device fallback through `saveFile()` (form.js:235). `tests/send.spec.js` covers AC1 and AC2. The download promise is created before the walk with its own timeout (LESSONS, M095).
 - [ ] T4: `tests/network.spec.js` gains the with-store walks of AC3.
@@ -61,6 +61,7 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 - 2026-09-23: re-audit of the reworded criteria by the same fresh [O] reader: eleven findings across M111–M113, six on this file (a third-origin redirect target, the double press as one gesture, the request set under a redirect, near-miss loopback hosts and unlisted schemes, two missed device-save sentences and code comments in the sweep, Chromium's local-network rule for the dispatched run). All fixed in the wording after the plan commit; none reopened a gate choice.
 - 2026-09-23: implement started by /milestone-implement. Branches cut from the pushed default branches: `m111-form-store-webhook` in hitop, `store-webhook` in hitop-form. Jeff had the stray untracked `qtest.txt` in the hitop tree deleted before branching.
 - 2026-09-23: implement gate. Jeff deploys the Apps Script web app from the README code and downloads the sheet's CSV himself, because the session holds no Google account. The session runs the two walks against his `/exec` URL. Under `FORM_TARGET`, the send tests first ask Playwright to grant the local-network permission. If that call is refused, they skip with the reason printed (AC7).
+- 2026-09-23: T1 done (hitop-form `store-webhook`). `checkStore()` and `checkStoreUrl()` in form.js, called by `parseLink()` and by link.html's new "Send responses to" field. 15 guard tests (12 refused forms, 3 accepted) and 4 builder tests. A plant that accepted every url turned 7 of them red. The link.html hint avoids the word "device" because AC5's sweep bars it from text shown with a store.
 
 ## Decisions
 
