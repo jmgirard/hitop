@@ -97,4 +97,4 @@ Independent review: three fresh reviewers read the diff. The history reviewer an
 - F4: Columns saved under haven before 2.0 carry the class `labelled_spss`, which the check does not catch. Their codes score as answers.
 - F5: A hand-set `na_values` attribute of the wrong type can differ from haven's own `is.na()`. haven's constructors prevent this input.
 - F6: A character column with invalid UTF-8, such as a latin1 `"\xa0"`, stops with a base R error instead of the refusal. This code came from M109.
-- F7: The SPSS tip is chosen over all refused columns, so it can show when none of the five named columns holds a code.
+- F7: The SPSS tip is chosen over all refused columns. If none of the five named columns holds a code, the tip can still show.
