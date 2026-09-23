@@ -520,6 +520,68 @@ test_that("the full HiTOP-SR file scores to the table-derived means", {
   expect_equal(unlist(scored[1, ]), expected)
 })
 
+# ---- Store exports: a Google Sheet download and a Supabase export ---------
+#
+# Each file holds every participant's row (see inst/examples/README.md and
+# fixtures/README.md). The expected means are recomputed per row from the
+# file's own text and the shipped tables, as above.
+
+# Every data row of a file as a named character vector, keyed by the header.
+store_rows <- function(path) {
+  lines <- readLines(path, warn = FALSE)
+  header <- strsplit(lines[1], ",", fixed = TRUE)[[1]]
+  lapply(lines[-1], function(l) {
+    stats::setNames(strsplit(l, ",", fixed = TRUE)[[1]], header)
+  })
+}
+
+expect_hitopbr_export <- function(path, participants) {
+  data <- read_form_responses(path)
+  item_cols <- names(data)[-seq_len(5L)]
+
+  expect_equal(nrow(data), length(participants))
+  expect_type(data$participant, "character")
+  expect_identical(data$participant, participants)
+  expect_identical(data$instrument, rep("hitopbr", length(participants)))
+  expect_s3_class(data$submitted, "POSIXct")
+  expect_identical(attr(data$submitted, "tzone"), "UTC")
+  expect_false(anyNA(data$submitted))
+  expect_identical(item_cols, sprintf("hitopbr_%02d", 1:45))
+  expect_true(all(vapply(data[item_cols], is.integer, logical(1L))))
+
+  scored <- score_hitopbr(data, items = item_cols, append = FALSE)
+
+  rows <- store_rows(path)
+  items <- hitopbr_items
+  items$number <- items$HBR
+  for (i in seq_along(rows)) {
+    responses <- stats::setNames(as.numeric(rows[[i]][item_cols]), 1:45)
+    expected <- table_means(responses, items, hitopbr_scales)
+    names(expected) <- paste0("hbr_", hitopbr_scales$camelCase)
+    expect_identical(names(scored), names(expected))
+    expect_equal(unlist(scored[i, ]), expected, info = paste("row", i))
+  }
+  invisible(data)
+}
+
+test_that("the Google Sheet download reads two rows and scores to the table-derived means", {
+  data <- expect_hitopbr_export(example_file("responses-sheet-hitopbr.csv"),
+                                c("=1+1", "007"))
+  expect_identical(
+    data$submitted,
+    as.POSIXct(c("2026-09-23 19:33:25", "2026-09-23 19:33:30"), tz = "UTC")
+  )
+})
+
+test_that("the Supabase export reads two rows and scores to the table-derived means", {
+  data <- expect_hitopbr_export(fixture("supabase-hitopbr.csv"),
+                                c("p001", "p002"))
+  expect_identical(
+    data$submitted,
+    as.POSIXct(c("2026-09-23 21:01:51", "2026-09-23 21:03:49"), tz = "UTC")
+  )
+})
+
 # The shuffled module fixture: Agoraphobia and Distress-Dysphoria, 21 items,
 # saved in the descriptor's itemOrder with the page's fixed answer pattern
 # 4, 3, 2, 1 repeating down the columns. Neither scale has a reverse item.
