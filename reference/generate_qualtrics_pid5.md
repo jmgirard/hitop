@@ -41,5 +41,5 @@ generate_qualtrics_pid5(
 ``` r
 # Write a PID-5 (full) Qualtrics import file to a temporary location
 generate_qualtrics_pid5(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmpK9RJX0/file1e001161b133.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmp58F93N/file1a10af055e5.txt
 ```
