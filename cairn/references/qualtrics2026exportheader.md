@@ -59,7 +59,8 @@ module with the default `id_prefix`, exported with the default header.
   after import. Nobody tested a rename, and the tag's rename behavior rests on the
   editor showing the same value as the question number — observed 2026-09-22.
 - The export held choice text ("Not at all") rather than numeric values, so the export
-  was made with "Use choice text". Scoring needs numeric values. Whether the modules
-  vignette or the import instructions say so was not checked in M108 — observed 2026-09-22.
+  was made with "Use choice text". Scoring needs numeric values. M108 added this to the
+  modules article, the `generate_qualtrics_hitopsr()` help and NEWS. The import
+  instructions article was not checked — observed 2026-09-22.
 - This is one observation, from one account, on one date. Nobody checked whether
   another Qualtrics release names columns the same way — observed 2026-09-22.

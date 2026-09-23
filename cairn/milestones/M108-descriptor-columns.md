@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M108: A module descriptor names its export's item columns
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -74,6 +74,8 @@ A researcher scores data from a Qualtrics or REDCap HiTOP-SR export by passing t
 - 2026-09-22: the re-audit bound is reached for AC1 and AC3. Jeff chose the wording after the second re-audit, which had no third reader.
 - 2026-09-22: T6 done. Both generators' `descriptor` help names the header condition and says when to pass `items`. A comment above each generator function cites its source note. `?write_module`, `?score_hitopsr`, NEWS and the modules article now name Qualtrics too (article re-rendered, prints `TRUE`). `document()` leaves no diff after its run. `devtools::test()`: 0 failures, 17878 passes. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
 - 2026-09-22: claim audit pass by a fresh [O] reader: 46 claims, 5 flagged. 4 corrected (0.2.0 as the first release with `read_module()`; Qualtrics data must be exported as numeric values; REDCap "another header setting" example removed; "Use internal IDs in header" now sourced to Qualtrics' dataset help in the note), 1 kept (the `id_prefix` holds by construction). The same reader's re-read is pending (checkpoint).
+- claim audit: 46 claims read, 4 corrected — R/module_file.R, R/generate_qualtrics.R, R/generate_redcap.R, NEWS.md, vignettes/articles/modules-hitopsr.Rmd (re-read by the same reader: all five hold).
+- 2026-09-22: status review. `document()` no diff, `devtools::test()` 0 failures, 17878 passes. `devtools::check()` last ran at T6 (0/0/0); since then only roxygen and prose changed.
 
 ## Decisions
 
