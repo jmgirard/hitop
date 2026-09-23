@@ -163,6 +163,28 @@
 
 ### Breaking changes
 
+- **Scoring refuses an item column it cannot read as numbers.**
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md),
+  [`score_hitopbr()`](https://jmgirard.github.io/hitop/reference/score_hitopbr.md),
+  [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md),
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md),
+  [`reliability_hitopbr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopbr.md)
+  and
+  [`validity_pid5()`](https://jmgirard.github.io/hitop/reference/validity_pid5.md)
+  now stop with an error of class `hitop_nonnumeric_items` when an item
+  column is not numeric, logical, or character text of numbers. Refused
+  columns include factors, dates, lists and choice text. Before, a
+  column of choice text such as `"Not at all"` scored as all `NA` with
+  only a base R coercion warning, and a factor scored as its level codes
+  with no warning. The error names the first five refused columns with
+  each one’s class, shows the first value that does not parse in a
+  character column, and counts the rest. Numeric and logical columns
+  score as before. A character column of digits, such as a Qualtrics CSV
+  export read after its extra header rows are removed, also scores as
+  before, with blank cells counted as missing. The text `"NA"` in such a
+  column is refused.
+
 - **[`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
   refuses item numbers that are not JSON numbers.** In a module
   descriptor’s `items`, `nItems` and `itemOrder` fields, every value

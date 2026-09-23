@@ -23,7 +23,11 @@ reliability_hitopbr(data, items, srange = c(1, 4), alpha = TRUE, omega = TRUE)
 
   A vector of column names (as strings) or numbers (as integers)
   corresponding to the 45 HiTOP-BR items in order. Items must be
-  supplied in instrument order; duplicated entries are an error.
+  supplied in instrument order; duplicated entries are an error. Each
+  column must be numeric or logical, or character holding only numbers
+  (blank cells and `NA` values count as missing, but the text `"NA"` is
+  refused). Any other column, such as the choice text of an online
+  export or a factor, is an error of class `hitop_nonnumeric_items`.
 
 - srange:
 

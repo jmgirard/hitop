@@ -47,7 +47,11 @@ reliability_hitopsr(
   A call with `items` omitted is an error if no `module` is supplied, if
   the module has no `columns` attribute, or under `layout = "printed"`.
   A supplied `items` is always used, whether or not the module has the
-  attribute.
+  attribute. Each column must be numeric or logical, or character
+  holding only numbers (blank cells and `NA` values count as missing,
+  but the text `"NA"` is refused). Any other column, such as the choice
+  text of an online export or a factor, is an error of class
+  `hitop_nonnumeric_items`.
 
 - srange:
 

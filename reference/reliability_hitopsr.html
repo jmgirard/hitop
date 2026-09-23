@@ -118,7 +118,12 @@ positions. When <code>items</code> is omitted or <code>NULL</code>, the names on
 with <code>items</code> omitted is an error if no <code>module</code> is supplied, if the
 module has no <code>columns</code> attribute, or under <code>layout = "printed"</code>. A
 supplied <code>items</code> is always used, whether or not the module has the
-attribute.</p></dd>
+attribute.
+Each column must be numeric or logical, or character holding only
+numbers (blank cells and <code>NA</code> values count as missing, but the text
+<code>"NA"</code> is refused). Any other column, such
+as the choice text of an online export or a factor, is an error of class
+<code>hitop_nonnumeric_items</code>.</p></dd>
 
 
 <dt id="arg-srange">srange<a class="anchor" aria-label="anchor" href="#arg-srange"></a></dt>

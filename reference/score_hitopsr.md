@@ -48,7 +48,11 @@ score_hitopsr(
   wrote. A call with `items` omitted is an error if no `module` is
   supplied, if the module has no `columns` attribute, or under
   `layout = "printed"`. A supplied `items` is always used, whether or
-  not the module has the attribute.
+  not the module has the attribute. Each column must be numeric or
+  logical, or character holding only numbers (blank cells and `NA`
+  values count as missing, but the text `"NA"` is refused). Any other
+  column, such as the choice text of an online export or a factor, is an
+  error of class `hitop_nonnumeric_items`.
 
 - srange:
 
@@ -142,6 +146,9 @@ duplicated column: the message names every colliding column. Re-run with
 `append = FALSE` to return only the new columns, or drop the colliding
 columns from `data` first. The condition is classed
 `hitop_append_collision`, so a caller can catch this refusal by name.
+
+An item column that cannot be read as numbers (see `items`) is an error
+of class `hitop_nonnumeric_items`, raised before the collision check.
 
 ## Examples
 

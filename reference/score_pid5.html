@@ -106,7 +106,12 @@ scored and in order).</p></dd>
 corresponding to the PID items in order. Items must be supplied in
 instrument order; a misordered mapping silently scores the wrong items, so a
 warning is issued when the names share a common prefix and trailing number
-but those numbers are not ascending. Duplicated entries are an error.</p></dd>
+but those numbers are not ascending. Duplicated entries are an error.
+Each column must be numeric or logical, or character holding only
+numbers (blank cells and <code>NA</code> values count as missing, but the text
+<code>"NA"</code> is refused). Any other column, such
+as the choice text of an online export or a factor, is an error of class
+<code>hitop_nonnumeric_items</code>.</p></dd>
 
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
@@ -206,6 +211,8 @@ column: the message names every colliding column. Re-run with
 <code>append = FALSE</code> to return only the new columns, or drop the colliding
 columns from <code>data</code> first. The condition is classed
 <code>hitop_append_collision</code>, so a caller can catch this refusal by name.</p>
+<p>An item column that cannot be read as numbers (see <code>items</code>) is an error
+of class <code>hitop_nonnumeric_items</code>, raised before the collision check.</p>
 </div>
 
     </div>
