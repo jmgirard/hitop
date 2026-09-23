@@ -320,6 +320,7 @@ validate_numeric_columns <- function(columns, headline, info,
 # and validity_pid5(), the two places item columns are converted for scoring.
 # An accepted column is numeric or logical, or character whose every value
 # that is not blank and not NA parses with as.numeric() after trimws(). The
+# text "NA" does not parse and is refused; the text "NaN" parses to NaN. The
 # character case keeps digit text scoring (a Qualtrics CSV read after its
 # header rows are dropped), while choice text, which as.numeric() would turn
 # into NA with only a base-R warning, is refused. Every other type is refused:
@@ -390,10 +391,13 @@ unparsed_value <- function(x) {
   values <- trimws(x)
   values <- values[!is.na(values) & nzchar(values)]
   parsed <- suppressWarnings(as.numeric(values))
-  if (!anyNA(parsed)) {
+  ## "NaN" parses to NaN, which a numeric column scores as missing, so only a
+  ## plain NA marks a value as.numeric() could not read. The text "NA" is one.
+  unread <- is.na(parsed) & !is.nan(parsed)
+  if (!any(unread)) {
     return(NULL)
   }
-  values[is.na(parsed)][[1]]
+  values[unread][[1]]
 }
 
 # A confidence level is a single probability strictly inside (0, 1). Both ends

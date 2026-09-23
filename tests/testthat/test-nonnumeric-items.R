@@ -362,3 +362,22 @@ test_that("a haven::labelled() double on a reverse-keyed item scores as its doub
                      info = case_label(case))
   }
 })
+
+test_that("the text \"NaN\" parses and the text \"NA\" is refused", {
+  case <- nonnumeric_cases[[3]] # score_pid5 BF
+  base <- as_double_frame(case$data)
+  col <- names(base)[[1]]
+
+  nan_base <- base
+  nan_base[[col]][[1]] <- NaN
+  nan_text <- base
+  nan_text[[col]] <- as.character(base[[col]])
+  nan_text[[col]][[1]] <- "NaN"
+  expect_identical(run_case(case, nan_text), run_case(case, nan_base))
+
+  na_text <- nan_text
+  na_text[[col]][[1]] <- "NA"
+  e <- catch_error(run_case(case, na_text))
+  expect_s3_class(e, "hitop_nonnumeric_items")
+  expect_match(cli::ansi_strip(conditionMessage(e)), "\"NA\"", fixed = TRUE)
+})

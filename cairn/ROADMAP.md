@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M110).
 | M106 | Keyboard focus comes back when a builder build ends | done | — | normal | milestones/archive/M106-builder-build-focus-return.md |
 | M107 | A module descriptor reads back as the format documents it | done | — | normal | milestones/archive/M107-module-descriptor-roundtrip.md |
 | M108 | A module descriptor names its export's item columns | done | — | normal | milestones/archive/M108-descriptor-columns.md |
-| M109 | Scoring refuses an item column it cannot read as numbers | in-progress | — | normal | milestones/M109-nonnumeric-items.md |
+| M109 | Scoring refuses an item column it cannot read as numbers | review | — | normal | milestones/M109-nonnumeric-items.md |
 
 ## Candidates
 

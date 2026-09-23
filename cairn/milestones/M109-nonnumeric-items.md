@@ -1,6 +1,6 @@
 # M109: Scoring refuses an item column it cannot read as numbers
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -41,7 +41,7 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - [x] T2: Call the helper in `prep_items()` after `validate_range()` and before the `as.numeric()` at `R/util.R:505`. In `validity_pid5()`, call it after the checks at lines 77-93 and before the collision check at line 111. Pass `call` so the abort blames the exported function.
 - [x] T3: Write the tests first. Probe axes: offender type (AC1 list), position (first item, last item, and a reverse-keyed item where the version has one), offender count (1, 2, 21), all three PID-5 versions, `items` omitted with module `columns`, and `layout = "printed"`. Add one probe per function that combines a refused column with an output collision and a non-default `srange`, to test the AC3 order. Capture warnings with `withCallingHandlers()` (LESSONS M032). Add the AC4 comparisons, with the haven case under `skip_if_not_installed("haven")`. The review evidence for AC4 must show that the haven case ran and did not skip.
 - [x] T4: Update the `items` roxygen of the seven functions, run `devtools::document()`, and add the NEWS entry. Add haven to Suggests in `DESCRIPTION`. Append a D-entry that records `hitop_nonnumeric_items` as public on the terms of D-034(c), the value rule, and the check order. The same entry records haven in Suggests for tests only, with no use in `R/` (GP4).
-- [ ] T5: Run `devtools::test()` and `devtools::check()` clean.
+- [x] T5: Run `devtools::test()` and `devtools::check()` clean.
 
 ## Work log
 
@@ -55,6 +55,8 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - 2026-09-22: re-audit: AC4 (full) — 2 findings: SF, BF and HiTOP-BR have no reverse-keyed item, and reliability results have no cells. Both applied, and the user approved the final text (second line, so further AC4 churn goes to the user).
 - 2026-09-22: question gate skipped, nothing open. T3 tests written first: 13 blocks red on the refusal, AC4 blocks green on the old code. T1 `validate_item_columns()` and `unparsed_value()` in `R/util.R`. T2 wired into `prep_items()` and `validity_pid5()`, and a `caller_items` argument threads the caller's vector through both engines and the two HiTOP-SR wrappers so the report follows the caller's order under `layout = "printed"`. A plant passing the permuted vector turned the printed-order test red (3 failures). haven added to Suggests. `devtools::test()`: 18629 passes, 0 failures, 15 skips.
 - 2026-09-22: T4 done: `items` docs of the six scoring and reliability functions state the accepted-column rule (`validity_pid5()` inherits it), NEWS entry under Breaking changes, D-068 appended, `devtools::document()` run.
+- 2026-09-22: claim audit: 30 claims read, 2 corrected — NEWS.md, R/util.R, the six `@param items` roxygen blocks and their man pages. The NEWS error sentence now says only a character column shows a value, and the docs now say the text `"NA"` is refused. The reader's probe also found the text `"NaN"` refused, against AC1's "parses", so `unparsed_value()` now accepts it, with a new test. The same reader re-read the corrections once and all held.
+- 2026-09-22: T5 done. `devtools::test()`: 18632 passes, 0 failures, 15 skips. `devtools::check()` after the last code change: 0 errors, 0 warnings, 1 note for the untracked `qtest.txt`. Status set to review.
 
 ## Decisions
 

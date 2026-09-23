@@ -136,11 +136,12 @@
   a factor, a date, a list, or character text that is not a number. Before, a
   column of choice text such as `"Not at all"` scored as all `NA` with only a
   base R coercion warning, and a factor scored as its level codes with no
-  warning. The error names the first five refused columns, shows a value that
-  does not parse, and counts the rest. Numeric and logical columns score as
+  warning. The error names the first five refused columns with each one's
+  class, shows the first value that does not parse in a character column, and
+  counts the rest. Numeric and logical columns score as
   before. A character column of digits, such as a Qualtrics CSV export read
   after its extra header rows are removed, also scores as before, with blank
-  cells counted as missing.
+  cells counted as missing. The text `"NA"` in such a column is refused.
 
 * **`read_module()` refuses item numbers that are not JSON numbers.** In a
   module descriptor's `items`, `nItems` and `itemOrder` fields, every value
