@@ -594,3 +594,40 @@ test_that("a haven::labelled() choice-text column is refused and shows the value
     )
   }
 })
+
+test_that("a refused value made only of invisible characters is shown by its code points", {
+  # trimws() strips only [ \t\r\n], so these cells are not blank and are
+  # refused. Separators, a control and format marks, alone and mixed.
+  invisible <- list(
+    "\v" = "U+000B",
+    " " = "U+00A0",
+    " " = "U+2009",
+    "　" = "U+3000",
+    "﻿" = "U+FEFF",
+    "​" = "U+200B",
+    "  " = c("U+00A0", "U+2009"),
+    " \v" = c("U+00A0", "U+000B")
+  )
+  # One visible character, before or after the invisible one: shown as text.
+  visible <- list(" x" = "x\"", "1 " = "\"1")
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    for (value in c(names(invisible), names(visible))) {
+      info <- paste(case_label(case), "/", utf8ToInt(value))
+      data <- case$data
+      data[[col]] <- c(value, rep("1", nrow(data) - 1L))
+      e <- catch_error(run_case(case, data))
+      expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+      if (!inherits(e, "hitop_nonnumeric_items")) next
+      msg <- cli::ansi_strip(conditionMessage(e))
+      if (value %in% names(invisible)) {
+        for (point in invisible[[value]]) {
+          expect_true(grepl(point, msg, fixed = TRUE), info = info)
+        }
+      } else {
+        expect_false(grepl("U+00A0", msg, fixed = TRUE), info = info)
+        expect_true(grepl(visible[[value]], msg, fixed = TRUE), info = info)
+      }
+    }
+  }
+})

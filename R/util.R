@@ -367,7 +367,12 @@ validate_item_columns <- function(data, items, caller_items = items,
     cls <- class(data[[i]])
     value <- first_bad[[k]]$value
     text <- switch(first_bad[[k]]$kind,
-      text = cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not a number."),
+      text = if (is_invisible(value)) {
+        points <- code_points(value)
+        cli::format_inline("{label} is {.cls {cls}} and holds a value made only of the invisible {cli::qty(length(points))}character{?s} {points}, which is not a number.")
+      } else {
+        cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not a number.")
+      },
       missing = cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which it declares missing."),
       cli::format_inline("{label} is {.cls {cls}}.")
     )
@@ -445,6 +450,20 @@ unparsed_value <- function(x) {
     return(NULL)
   }
   list(kind = "text", value = values[unread][[1]])
+}
+
+# TRUE for a string made only of Unicode separators (a non-breaking or thin
+# space), controls (a vertical tab) and format marks (a byte order mark). Such
+# a value prints as blank, so the refusal shows its code points instead. The
+# test uses Unicode categories rather than [[:graph:]], whose members differ
+# between R's regex engines and locales.
+is_invisible <- function(x) {
+  !grepl("[^\\p{Z}\\p{Cc}\\p{Cf}]", enc2utf8(x), perl = TRUE)
+}
+
+# A string's characters as Unicode code points: "U+00A0".
+code_points <- function(x) {
+  sprintf("U+%04X", utf8ToInt(enc2utf8(x)))
 }
 
 # The first value, in row order, that an SPSS column's `na_values` or
