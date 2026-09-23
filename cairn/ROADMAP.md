@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-22 (53rd pass, M108's post-merge): M108 archived, PR #119 merged at 8/8 CI green. M105 row pruned. validate green._
+_Last hygiene check: 2026-09-22 (54th pass, M109's post-merge): M109 archived, PR #120 merged at 8/8 CI green. M106 row pruned. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M110). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M106 | Keyboard focus comes back when a builder build ends | done | — | normal | milestones/archive/M106-builder-build-focus-return.md |
 | M107 | A module descriptor reads back as the format documents it | done | — | normal | milestones/archive/M107-module-descriptor-roundtrip.md |
 | M108 | A module descriptor names its export's item columns | done | — | normal | milestones/archive/M108-descriptor-columns.md |
-| M109 | Scoring refuses an item column it cannot read as numbers | review | — | normal | milestones/M109-nonnumeric-items.md |
+| M109 | Scoring refuses an item column it cannot read as numbers | done | — | normal | milestones/archive/M109-nonnumeric-items.md |
 
 ## Candidates
 
