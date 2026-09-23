@@ -1,13 +1,13 @@
 # M112: hitop-form inserts each participant's responses into a Supabase table named in the study link
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** M111
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — a store kind researchers configure on the deployed page
-- **Branch/PR:** hitop `m112-form-store-supabase` (cairn/ only); hitop-form `store-supabase`
+- **Branch/PR:** hitop `m112-form-store-supabase` (cairn/ only); hitop-form `store-supabase`, PR #3 https://github.com/jmgirard/hitop-form/pull/3
 
 ## Goal
 
@@ -41,8 +41,8 @@ Add a second store kind to `jmgirard/hitop-form`, `supabase`, that inserts the f
 
 - [x] T1: Extend `checkStore()` with the `supabase` fields; guard and builder tests per AC3.
 - [x] T2: `storeSql()` in link.html for the chosen instrument or module, the hand-written SQL fixtures with their provenance row, and the comparison test.
-- [ ] T3: The `supabase` branch of `sendResponses()`: URL, headers, the JWT test for `Authorization`, confirmation on status. The recorder answers OPTIONS with `Access-Control-Max-Age: 0` so no preflight is cached across walks. Send tests with both key shapes, the OPTIONS assertion, and the with-store network walk.
-- [ ] T4: The 401 and refused-connection tests.
+- [x] T3: The `supabase` branch of `sendResponses()`: URL, headers, the JWT test for `Authorization`, confirmation on status. The recorder answers OPTIONS with `Access-Control-Max-Age: 0` so no preflight is cached across walks. Send tests with both key shapes, the OPTIONS assertion, and the with-store network walk.
+- [x] T4: The 401 and refused-connection tests.
 - [ ] T5: The README section. Create the project, run the walk, compare the export with the posted body, run the select, update and delete probes, commit the fixture and its provenance row. Work-log line: the date, the project region, and the probe results.
 - [ ] T6: Open the hitop-form pull request at implement and merge it at review. Dispatch a run against the deployed page after the merge. In hitop, commit `cairn/` only.
 
@@ -55,6 +55,9 @@ Add a second store kind to `jmgirard/hitop-form`, `supabase`, that inserts the f
 - 2026-09-23: re-audit by the same fresh [O] reader: findings on this file were the hand run's key type, a trailing slash in the project URL, a cached preflight, one exemplar per table-name fault, and AC4 claiming all six of M111's outcomes on two probes. All fixed in the wording after the plan commit.
 - 2026-09-23: implement gate. Jeff chose a "Send responses to" kind selector in the builder (file, web address, Supabase table), the builder fetching the export for the SQL's item names, the SQL shown under the built link after "Make the link", and a split hand run: Jeff creates the project and runs the SQL, the session runs the walk and the REST probes, Jeff exports the CSV.
 - 2026-09-23: T1 and T2 done in hitop-form (branch `store-supabase`). `checkStore()` takes the `supabase` kind with `key` and `table` (`TABLE_NAME` regex); G8 in guard.spec (10 refused forms, 4 accepted); link.html gained a "Send responses to" kind selector, the three Supabase fields and the SQL block; L6 (three builder faults) and L7 (SQL against the two fixtures) in link.spec. `storeSql()` lives in form.js rather than link.html so the test-facing logic stays in the one module (minor task-wording change). The old "empty address builds a link with no store" test became a refusal under the selector. A planted `with check (false)` turned L7 red on both fixtures. 57 of 57 in the two specs.
+- 2026-09-23: T3 and T4 done (hitop-form 6f98e19). `sendRequest()` builds the insert URL (trailing slashes stripped) and headers, `isJwtShaped()` gates `Authorization`; a supabase send is confirmed on `res.ok` alone. The recorder lists the four headers in `Access-Control-Allow-Headers` (a wildcard does not cover `Authorization`), sends `Access-Control-Max-Age: 0`, and answers `…/rest/v1/<table>` with 201 and no body, or the status a `status_<nnn>` table names. T9 (three walks: JWT-shaped key, publishable key, URL ending in a slash; one OPTIONS each), T10 (401, refused connection) in send.spec; N6 in network.spec (the preflight and the POST share the one address, so the URL set is unchanged). Plants: an always-sent `Authorization` and an unstripped slash each turned their walk red. Full suite 96 of 96 (was 70).
+- 2026-09-23: T5's README section written (hitop-form 598fc62): project, the three fields and where the dashboard shows them, the SQL and what it grants, the one-week pause, the Table Editor export, the open-insert risk. The hand run waits on Jeff's project URL and key.
+- 2026-09-23: hitop-form PR #3 opened from `store-supabase` (T6's first half). Status set to blocked: the AC5 hand run needs a Supabase project Jeff creates, its table made from the builder's SQL, and its project URL and publishable key given in chat; then the CSV export from the Table Editor. Left for the resume: the walk and the REST probes, the fixture and its provenance row, the claim audit over the hitop-form diff, and the T5 work-log line.
 
 ## Decisions
 
