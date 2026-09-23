@@ -1,13 +1,13 @@
 # M111: hitop-form sends each participant's responses to an endpoint named in the study link
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — a deployed page participants fill in and researchers configure
-- **Branch/PR:** `m111-form-store-webhook` (hitop, `cairn/` only); `store-webhook` in jmgirard/hitop-form
+- **Branch/PR:** `m111-form-store-webhook` (hitop, `cairn/` only); `store-webhook` in jmgirard/hitop-form, PR https://github.com/jmgirard/hitop-form/pull/2
 
 ## Goal
 
@@ -66,6 +66,9 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 - 2026-09-23: T3 done. `buildRow()` and `sendResponses()` in form.js, the sent and unconfirmed screens, the with-store start-screen wording, and `tests/send.spec.js` (9 tests: four fixture walks through `/record` and `/redirect`, five unconfirmed outcomes). `parseCsv()` moved from save.spec.js to helpers.mjs. Three plants went red: no double-press guard (two POSTs), a 2xx alone confirming (no download on the HTML body), and an `application/json` content type. Full suite 63 passed.
 - 2026-09-23: T4 done. N4 and N5 in tests/network.spec.js record the request set at the last page before Finish and again after. Playwright records the 302 hop, so N5's set holds the redirect target. A plant that posted at Begin turned N4 red on the before-Finish set.
 - 2026-09-23: T5 done. The builder field landed in T1. This task rewrote link.html's intro and added R6 (the two start-screen wordings, stated in full) and L5 (a built link with the address set posts at Finish). The AC5 sweep of index.html, link.html and form.js found hits outside no-store text in two places only: `device` in the two `<meta name="viewport">` attributes, which is not shown text, and code comments. The README's hits are rewritten in T6. Checked in the browser pane: the field renders and the start screen names `script.google.com`.
+- 2026-09-23: T6 in part. The README gained "Send responses to a Google Sheet" with the `doPost` code (a script lock, the header from the first row's keys, every cell formatted as text before it is written, `{"ok":true}` as JSON), the deployment steps and the CSV download step. The README's AC5 hits now sit in prose that says it applies without an address. The deployment, the two walks and the fixture wait on Jeff.
+- 2026-09-23: T7 in part. hitop-form PR #2 opened from `store-webhook`; its Tests workflow passed in 2m13s. The local suite is 68 tests, all passing. The PR body first said 70 and was corrected to 68.
+- 2026-09-23: blocked on the Apps Script deployment: Jeff pastes the README's code into a new Apps Script project bound to a new sheet, deploys it as a web app (execute as Me, access Anyone) and hands the session the `/exec` URL. The session then runs the two HiTOP-BR walks (participants `=1+1` and `007`), and Jeff downloads the sheet as CSV for the fixture.
 
 ## Decisions
 
