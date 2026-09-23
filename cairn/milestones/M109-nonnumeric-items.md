@@ -1,6 +1,6 @@
 # M109: Scoring refuses an item column it cannot read as numbers
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -64,6 +64,7 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - 2026-09-22: T6 done. `validate_item_columns()` reads columns by position and labels an empty or `NA` name as "Column <n>". Two new tests failed first (26 failures on duplicate names, and the `[.data.frame` error on an empty name) and now pass. `devtools::test()`: 18747 passes, 0 failures, 15 skips.
 - 2026-09-22: T7 done. The Errors sections of `score_pid5()`, `score_hitopsr()`, `score_hitopbr()` and `validity_pid5()` name `hitop_nonnumeric_items`. The three reliability functions have no Errors section, so their `items` text stays the only mention. The factor tip shows only when a refused column is a factor, and a new test failed first. `devtools::test()`: 18751 passes, 0 failures, 15 skips.
 - 2026-09-22: T8 done. New test: `"Inf"` and `"0x1A"` score as `Inf` and `26` in all 13 cases. The argument-order test now asserts the message of each bad argument. A plant that moved the refusal before the `srange` check turned it red (20 failures). `devtools::test()`: 18764 passes, 0 failures, 15 skips. `devtools::check()`: 0 errors, 0 warnings, 1 note for the untracked `qtest.txt`.
+- 2026-09-22: claim audit: 19 claims read, 1 corrected — R/util.R (the comment above `validate_item_columns()` now names `validity_pid5()` as the second caller). This audit covered only lines added after c3da774e, because the first audit covered the rest. The same reader re-read the correction once, and it held. The change touches only the comment, so the T8 test and check results still apply. Status set to review.
 
 ## Decisions
 

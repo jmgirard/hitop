@@ -332,10 +332,10 @@ validate_numeric_columns <- function(columns, headline, info,
 # order. A choice-text export refuses every column, so the report names the
 # first five and counts the rest.
 #
-# Columns are read by position, as data[items] reads them in prep_items(): a
-# name in `items` resolves to its first match, and a position is used as is.
-# Reading a position through its name would check the wrong column when names
-# repeat, and fail on an empty or NA name.
+# Columns are read by position, as data[items] reads them in prep_items() and
+# validity_pid5(): a name in `items` resolves to its first match, and a
+# position is used as is. Reading a position through its name would check the
+# wrong column when names repeat, and fail on an empty or NA name.
 validate_item_columns <- function(data, items, caller_items = items,
                                   call = rlang::caller_env()) {
   positions <- function(x) {
