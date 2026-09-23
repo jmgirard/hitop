@@ -1,6 +1,6 @@
 # M113: The package reads a store's CSV export and an article walks the Google Sheet route end to end
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M111, M112
 - **Driving RR:** —
@@ -38,7 +38,7 @@ Make `read_form_responses()` read a file holding many participants' rows, and pu
 - [x] T1: Replace the one-row check at `R/read_form_responses.R:190` with multi-row binding and the header-only refusal; the four tests of AC1.
 - [x] T2: Copy the two store exports (LF), add the provenance rows, and write the two reading and scoring tests of AC2.
 - [x] T3: Write the article, add its `_pkgdown.yml` row, rewrite the two existing sections and their pointers.
-- [ ] T4: Roxygen for `?read_form_responses`, the NEWS entry, `document()`, `test()`, `check_pkgdown()`, `check()`.
+- [x] T4: Roxygen for `?read_form_responses`, the NEWS entry, `document()`, `test()`, `check_pkgdown()`, `check()`.
 
 ## Work log
 
@@ -55,6 +55,10 @@ Make `read_form_responses()` read a file holding many participants' rows, and pu
 
 - 2026-09-23: T2 done: both exports copied from hitop-form `c15e149` with CR bytes removed and nothing else changed, provenance rows in both READMEs, one test per file through a shared `expect_hitopbr_export()` helper recomputing means per row; reader tests 175 passing, line-ending check clean.
 - 2026-09-23: T3 done: `vignettes/articles/online-collection.Rmd` written in the researcher's step order with the Supabase and data-holding sections, listed under Tutorials after the import article; both existing sections rewritten and pointed at it; the installed vignette links by the site's absolute URL as `hitopsr_scoring.Rmd` does. `check_pkgdown()` clean; the three pages render on the installed package.
+
+- 2026-09-23: T4 done: roxygen and a stale comment updated for multi-row files, NEWS bullet under "New features"; `document()` no diff, `test()` 19787 passing, `check_pkgdown()` clean, `check()` 0 errors 0 warnings 0 notes (4m 9s).
+- 2026-09-23: claim audit: 46 claims read, 4 corrected — R/read_form_responses.R, NEWS.md, vignettes/articles/online-collection.Rmd, vignettes/articles/modules-hitopsr.Rmd, vignettes/pid5_scoring.Rmd, inst/examples/README.md, tests/testthat/fixtures/README.md. Corrections: the Apps Script's key cap and formula reason, the descriptor as an addition to the instrument choice, "one or more" rows in NEWS, the Supabase table's SQL pinned to hitop-form `1e472ba`. Two gaps the reader noted and left were closed by the author: the fallback file and the link's instrument and module in the data-holding section.
+- 2026-09-23: all tasks checked; status set to review. The T3 tick landed in the T2 checkpoint commit by the author's oversight; the code for T3 is in its own commit.
 
 ## Decisions
 

@@ -46,14 +46,15 @@ The script appends one row per request to a tab named `Responses`, taking the
 first row's keys as the header. It writes every cell as text, so a participant
 code such as `007` keeps its zeros and a value such as `=1+1` stays those four
 characters rather than becoming a formula. It refuses a request whose body is
-not one object, or whose keys are not plain column names, so no one can grow
-the header without limit.
+not one object, holds more than 1000 keys, or has a key outside lower-case
+letters, digits and underscores, so no one can grow the header without limit
+or put a formula in it.
 
 ## 2. Make the study link
 
 Open the page's [link builder](https://jmgirard.github.io/hitop-form/link.html).
-Choose the instrument, or paste a HiTOP-SR module descriptor written by
-`write_module()`, and name the study. Give a participant identifier if the
+Choose the instrument (and, for a HiTOP-SR module, paste the descriptor
+written by `write_module()`), and name the study. Give a participant identifier if the
 link is for one person; leave it empty for a link shared with many, and the
 page asks each participant for one before the form starts. Under "Send
 responses to", choose "A web address" and paste the `/exec` URL from step 1.
@@ -129,11 +130,13 @@ reads with `read_form_responses()` exactly as the sheet's download does.
 
 ## Who holds the data
 
-The answers go to the store the link names and nowhere else. With a Google
-Sheet, Google holds the rows; with a Supabase table, Supabase holds them. The
-page's host, GitHub Pages, receives the study link with each page load, and
-the link carries the study name, the participant code, the store's address and,
-for Supabase, its key. It receives no answers.
+The answers go to the store the link names, or to a file on the
+participant's device when the send is not confirmed, and nowhere else. With a
+Google Sheet, Google holds the rows; with a Supabase table, Supabase holds
+them. The page's host, GitHub Pages, receives the study link with each page
+load, and the link carries the instrument and any module, the study name, the
+participant code, the store's address and, for Supabase, its key. It receives
+no answers.
 
 A participant code is whatever the link or the participant supplies. A code
 you put in the link reaches the page's host with the link, and a code the
