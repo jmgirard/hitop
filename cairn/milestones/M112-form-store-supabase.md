@@ -65,6 +65,8 @@ Add a second store kind to `jmgirard/hitop-form`, `supabase`, that inserts the f
 
 ## Decisions
 
+- 2026-09-23 (review, F4): `checkStore()` normalizes a supabase store's `url` to the project origin, dropping a pasted `/rest/v1` suffix and trailing slashes and refusing any other path, query or fragment. AC1's `<url>` is that checked url; the send appends `/rest/v1/<table>` to it. Chosen because the dashboard shows the REST URL with the suffix and Jeff's first paste carried it.
+
 ## Review
 
 Fresh run 2026-09-23 on hitop-form `store-supabase` at f06e1d6, hitop `m112-form-store-supabase` (cairn/ only). `npx playwright test`: 100 of 100 passed (49.7 s).
@@ -75,3 +77,26 @@ Fresh run 2026-09-23 on hitop-form `store-supabase` at f06e1d6, hitop `m112-form
 - AC4: the four T9 walks each assert no download event and the sent screen. send.spec T10: a table answering 401 and a refused connection each save the CSV (download event awaited, its header and lead fields read back) and show the failure screen naming the reason.
 - AC5: README.md has "Send responses to Supabase" (line 216) covering the project, the SQL Editor paste, the key, the one-week pause and the Table Editor export. Hand run (work log, 2026-09-23): two HiTOP-BR walks into a table made from the builder's SQL, one with the `sb_publishable_` key and one with the legacy anon JWT, each answered 201; the export equals the posted bodies in 100 of 100 fields; with each key a select counted 0 rows and an update and a delete changed none. Committed as `tests/fixtures/supabase-hitopbr.csv` with its provenance row; send.spec T11 reads it.
 - AC6 (first half): the checkout suite above; PR #3's Tests workflow on f06e1d6 passed (2 min 21 s); `git diff --stat main...HEAD -- . ':!cairn/'` in hitop is empty. The dispatched deployed-page run is recorded after the merge.
+
+Consistency gate 2026-09-23: `cairn_validate` exit 0 (advisories only); `devtools::document()` no diff; README.md newer than README.Rmd; `pkgdown::check_pkgdown()` no problems; NEWS.md needs no entry (the package changed nothing); `devtools::check()` 0 errors, 0 warnings, 0 notes (4 min 31 s). No principle changed, so no impact report.
+
+Independent review, three lenses over hitop-form `main..HEAD` at f06e1d6. [S] blame-history: no findings (the webhook path's simple-request design, the nav-button disabling, the answers snapshot and the M111 tests are untouched). [S] prior-review record: one finding (F18). [O] diff-bug: 17 findings, none showing AC1–AC5 failing as written. Triage at the gate; Jeff chose to fix F7 too. Fix-now work landed in hitop-form commit after f06e1d6 (suite 111 of 111, was 100):
+- F1 (fixed): a secret (`sb_secret_`) or a JWT-shaped key whose `role` is not `anon` was accepted; now refused by name in `checkStore()` (`jwtRole()`), with guard and builder tests.
+- F2 (fixed): a redirect was followed and its 200 confirmed a Supabase send that stored nothing; now `redirect: 'manual'` on the supabase kind, an opaque redirect unconfirmed as "the endpoint redirected the send"; T10 gains a 302 case and asserts the twin saw nothing.
+- F3 (fixed): a project URL with a path, query or fragment was accepted; now only the origin (after dropping `/rest/v1`) passes, four guard probes.
+- F4 (noted): AC1 reads `<url>/rest/v1/<table>` with trailing slashes removed; the guard first drops a pasted `/rest/v1` suffix. The three walks AC1 names behave as written; the drop is a guard normalization outside AC1's domain, recorded under Decisions.
+- F5 (fixed): the builder's button stayed enabled during the export fetch; now disabled until the build settles.
+- F6 (fixed): T9 checked the four headers one by one; now also asserts the page's own header set equals exactly those names.
+- F7 (fixed at Jeff's choice): the SQL now revokes the default grants from `anon` and `authenticated` before granting insert; fixtures and README updated; the provenance row says the hand-run table predates the line.
+- F8 (fixed): the provenance row now cites the Postgres GRANT and REVOKE references for those lines.
+- F9 (fixed): a key with a space or a non-ASCII character is refused by name.
+- F10 (fixed): the recorder's insert route is anchored at `^/rest/v1/` and answers 405 to any method but POST.
+- F11 (fixed): T11 compares the build date with the literal `2026-09-20`.
+- F12 (fixed): L8 builds, then refuses on the same page, and asserts the link and SQL are cleared.
+- F13 (fixed): form.js's header comment names the preflight.
+- F14 (fixed): the link carries the project origin whatever suffix was pasted.
+- F15 (fixed): the hint says "the last two".
+- F16 (noted): AC5 names the network panel; the comparison used the body Playwright recorded leaving the browser, the same Chrome network data.
+- F17 (rejected): item names over 63 bytes would break inserts; the package's names are 10 to 11 characters and no export can lengthen them without a package change.
+- conversation: PR #3 — empty (no reviews, no comments, no unresolved threads at the gate).
+- F18 (fixed, prior-review lens): the Supabase export opened in a spreadsheet could read `=1+1` as a formula, the gap M111's F2 closed for the sheet; the README now says the table stores text and points to the text-only R read.
