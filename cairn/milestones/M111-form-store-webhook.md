@@ -119,3 +119,11 @@ Independent review, three lenses on the hitop-form diff `main..HEAD`, user-facin
 - F24 an over-long README line and a comment broken mid-sentence at form.js:11. Proposed: fix now.
 
 F1, F2, F3 and F6 change the `doPost` code, so AC6's hand run is repeated against a third deployment and the fixture recommitted.
+
+`devtools::check()`: 0 errors, 0 warnings, 0 notes (6m41s).
+
+Triage at the gate, 2026-09-23: Jeff chose the proposed triage. Fixed now on `store-webhook` (hitop-form b4f5253, ea95434): F1, F2, F3 and F6 in the README `doPost` (every cell behind an apostrophe, keys checked against `^[a-z0-9_]+$`, a cap of 1000 keys, `waitLock(10000)`, `{"ok":false}` with the reason on a refusal); F4 (the record holds a copy of the answers Map); F8, F9 and the F6 sentence in the README prose; F12 (`checkStore` returns `{ kind, url }`); F13 (a URL with a user name or password is refused, one guard probe added); F14 (`signal.aborted` checked in the body-read catch); F16 (`credentials: 'omit'`, `referrerPolicy: 'no-referrer'`); F20 (T7 asserts every nav button disabled); F22 (T8 reads `sheet-hitopbr.csv` against the HiTOP-BR fixture and the two participant codes; shown to fail on the first run's download, where the code was `2`); F24. Follow-up: F5, a candidate row at hygiene. Rejected with the reasons recorded above: F7, F10, F11, F15, F17, F18, F19, F21. Noted: F23. The suite is 70 tests, all passing.
+
+AC6 re-run after the `doPost` change: the second deployment answered `{"ok":true}` to a bare-array body, so it ran stale code (unsaved editor); after a save and a new version the array probe got `{"ok":false,"why":"the body is not an object"}`. The probes had added a column named `0` to the sheet's header, so the tab was deleted and the two walks run again. Both confirmed; the download equals the two posted bodies in 100 of 100 fields, participants `=1+1` and `007` as text. Committed as the fixture with its provenance row updated (ea95434, pushed). AC6 stays ticked on this evidence.
+
+PR-conversation read of hitop-form PR #2 before the gate: no reviews, no comments, no review threads.
