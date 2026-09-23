@@ -52,7 +52,7 @@ The milestone also closes two M109 review gaps. A refused value with no `[[:grap
 - [x] T3: Refuse an `integer64` column in `unparsed_value()` before the `is.numeric()` acceptance.
 - [x] T4: Convert a `haven_labelled` character column through `unclass()` before `as.numeric()` in `prep_items()` and in `validity_pid5()` (`R/validity_pid5.R:141`). Run the parse rule on its unclassed values.
 - [x] T5: Write the AC5 test first. Then show a refused value made only of `\p{Z}`, `\p{Cc}` and `\p{Cf}` characters by its code points.
-- [ ] T6: Add the AC6 cases to the test "argument checks run before the refusal" (`test-nonnumeric-items.R:325`). The checks already run first (`R/score_engine.R:68`, `R/reliability_engine.R:55`), so this task adds tests only, unless one fails.
+- [x] T6: Add the AC6 cases to the test "argument checks run before the refusal" (`test-nonnumeric-items.R:325`). The checks already run first (`R/score_engine.R:68`, `R/reliability_engine.R:55`), so this task adds tests only, unless one fails.
 - [ ] T7: Append the D-entry that narrows D-068(a). It cites the new evidence: numeric-typed columns that score wrong. Update the `items` docs and the Errors sections, run `devtools::document()`, and extend the M109 NEWS entry. NEWS states that calls which returned wrong numbers now stop. Run `devtools::test()` and `devtools::check()`.
 
 ## Work log
@@ -69,3 +69,4 @@ The milestone also closes two M109 review gaps. A refused value with no `[[:grap
 - 2026-09-22: amendment gate: AC5's `[[:graph:]]` predicate depends on the regex engine (TRE counts U+00A0 and U+FEFF as graph, PCRE UCP counts U+FEFF and U+200B), so the criterion contradicted its own U+FEFF probe. Jeff adopted the Unicode-category wording (`\p{Z}`, `\p{Cc}`, `\p{Cf}`) over also marking invisible characters inside a visible value. That wider option went to a candidate row. T5's wording follows.
 - re-audit: AC5 (full) — two probe gaps (no mix across categories, no trailing invisible character after a visible one). Both were folded into the adopted text.
 - 2026-09-22: T5 done. The AC5 test was red at 130 of 312 and is green after the fix. `is_invisible()` and `code_points()` were added to `R/util.R`. A first build rendered "character U+00A0 and U+2009" in the singular (the M030 cli quantity lesson), so `cli::qty()` now sits just before the plural marker.
+- 2026-09-22: T6 done (tests only). The argument-order test grew from 94 to 140 expectations and passes. Removing `validate_flag(omega)` from `R/reliability_engine.R` as a plant turned it red (10 failures), and the file was restored.

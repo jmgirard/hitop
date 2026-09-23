@@ -338,7 +338,13 @@ test_that("argument checks run before the refusal", {
     if (startsWith(case$fn, "reliability_")) {
       bad_args$flag <- list(args = list(alpha = "yes"),
                             msg = "The `alpha` argument must be")
+      bad_args$omega <- list(args = list(omega = "yes"),
+                             msg = "The `omega` argument must be")
     } else {
+      if (startsWith(case$fn, "score_")) {
+        bad_args$calc_se <- list(args = list(calc_se = "yes"),
+                                 msg = "The `calc_se` argument must be")
+      }
       bad_args$prefix <- list(args = list(prefix = 1),
                               msg = "The `prefix` argument must be")
       bad_args$flag <- list(args = list(append = "yes"),
@@ -357,6 +363,17 @@ test_that("argument checks run before the refusal", {
         info = paste(info, "/", what)
       )
     }
+    # A `data` that is not a data frame has no columns to refuse, so its own
+    # check must answer.
+    e <- catch_error(run_case(case, as.list(data), names(data)))
+    expect_false(inherits(e, "hitop_nonnumeric_items"),
+                 info = paste(info, "/ data"))
+    expect_true(
+      inherits(e, "rlang_error") &&
+        startsWith(cli::ansi_strip(conditionMessage(e)),
+                   "The `data` argument must be a data frame."),
+      info = paste(info, "/ data")
+    )
   }
 })
 
