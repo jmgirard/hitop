@@ -7,7 +7,7 @@
 - **Principles touched:** IP1, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — a store kind researchers configure on the deployed page
-- **Branch/PR:** hitop `m112-form-store-supabase` (cairn/ only); hitop-form `store-supabase`, PR #3 https://github.com/jmgirard/hitop-form/pull/3
+- **Branch/PR:** hitop `m112-form-store-supabase` (cairn/ only), PR #123 https://github.com/jmgirard/hitop/pull/123; hitop-form `store-supabase`, PR #3 https://github.com/jmgirard/hitop-form/pull/3
 
 ## Goal
 
@@ -26,7 +26,7 @@ Add a second store kind to `jmgirard/hitop-form`, `supabase`, that inserts the f
 - [x] AC3: `parseLink()` refuses a `supabase` store whose `url` fails M111's AC4 rule, whose `key` is missing, empty or not a string, or whose `table` does not match `^[a-z_][a-z0-9_]{0,62}$`. Each refusal names the fault. link.html refuses the same three faults before building a link. Table forms probed: `Responses`, `1abc`, `a-b`, the empty string and a 64-character name. One guard test per listed form and one builder test per fault.
 - [x] AC4: The confirmed walks of AC1 fire no download event and show the sent screen. A walk against an endpoint answering 401 and a walk against a refused connection each save the CSV to the device and show the failure screen (two tests).
 - [x] AC5: The README gains a "Send responses to Supabase" section: creating a project, pasting the builder's SQL into the SQL editor, finding the key, the free project's pause after one idle week, and the Table Editor's CSV export. One hand run against a project whose table came from that SQL: one HiTOP-BR walk with the project's `sb_publishable_` key inserts one row, and the CSV export equals, field for field, the body the browser's network panel shows was posted. If the project still issues a legacy anon JWT, a second walk with it inserts a second row. With the same key, a REST select returns no rows, and an update and a delete change no rows. The export is committed as `tests/fixtures/supabase-hitopbr.csv` with a provenance row.
-- [ ] AC6: `npx playwright test` passes against the checkout. The hitop-form pull request's Tests workflow is green, and a dispatched run against the deployed page passes after the merge under M111's AC7 local-network rule. The hitop repository's change is under `cairn/` only.
+- [x] AC6: `npx playwright test` passes against the checkout. The hitop-form pull request's Tests workflow is green, and a dispatched run against the deployed page passes after the merge under M111's AC7 local-network rule. The hitop repository's change is under `cairn/` only.
 
 ## Coverage
 
@@ -62,6 +62,8 @@ Add a second store kind to `jmgirard/hitop-form`, `supabase`, that inserts the f
 - 2026-09-23: T5 done. Hand run, part two: the project had a legacy anon JWT; a second walk with it (participant `p002`, `submitted` 2026-09-23T21:03:49Z) sent `apikey` and `Authorization: Bearer` and was answered 201; select, update and delete with that key touched 0 rows. Jeff confirmed two rows in the Table Editor and exported the CSV; it equals the two posted bodies in 100 of 100 fields. Committed as `tests/fixtures/supabase-hitopbr.csv` with its provenance row and T11 (hitop-form 2 commits after 6eee5e1). The export warns that the table has no primary key; the README says the SQL adds none on purpose. Project region: not recorded by the session (the dashboard shows it to Jeff only). Suite 100 of 100.
 - 2026-09-23: claim audit: 88 claims read, 12 corrected — form.js, link.html, README.md, tests/send.spec.js, tests/link.spec.js, tests/guard.spec.js, tests/serve.mjs (hitop-form f06e1d6; the reader's one re-read found all twelve correct). A live probe backed the README's unknown-key claim: a POST with a key the table lacks answered 400 PGRST204.
 - 2026-09-23: step-7 approval: m112-form-store-supabase approved for merge (with hitop-form store-supabase, PR #3), after the 16 review fixes.
+- 2026-09-23: review step 8, first pass: PR #3 green on 034bd84 but its merge needed the session's working directory inside hitop-form (the merge guard reads the approval from the session cwd's repo); hitop PR #123 opened and its watch hit the harness ceiling with 4 of 8 checks pending; watcher stopped. Two docs-only commits on the branch (the PR record, this checkpoint) were left unpushed and went with the squash; their content is restated here.
+- 2026-09-23: resume: PR #123 merged 2026-09-23 (fa809196) after 8 of 8 green, marker written; session moved into hitop-form; PR #3 merged (c15e149); deployed-page run dispatched and green; re-entering at step 9.
 - 2026-09-23: T6's implement half done (PR #3 open, head f06e1d6, its Tests run pending at this write); the merge and the dispatched run are review's by the task's own text. Status set to review.
 
 ## Decisions
@@ -78,6 +80,7 @@ Fresh run 2026-09-23 on hitop-form `store-supabase` at f06e1d6, hitop `m112-form
 - AC4: the four T9 walks each assert no download event and the sent screen. send.spec T10: a table answering 401 and a refused connection each save the CSV (download event awaited, its header and lead fields read back) and show the failure screen naming the reason.
 - AC5: README.md has "Send responses to Supabase" (line 216) covering the project, the SQL Editor paste, the key, the one-week pause and the Table Editor export. Hand run (work log, 2026-09-23): two HiTOP-BR walks into a table made from the builder's SQL, one with the `sb_publishable_` key and one with the legacy anon JWT, each answered 201; the export equals the posted bodies in 100 of 100 fields; with each key a select counted 0 rows and an update and a delete changed none. Committed as `tests/fixtures/supabase-hitopbr.csv` with its provenance row; send.spec T11 reads it.
 - AC6 (first half): the checkout suite above; PR #3's Tests workflow on f06e1d6 passed (2 min 21 s); `git diff --stat main...HEAD -- . ':!cairn/'` in hitop is empty. The dispatched deployed-page run is recorded after the merge.
+- AC6 (second half, 2026-09-23): PR #3's Tests run on the fixed head 034bd84 passed (2 min 38 s); PR #3 squash-merged as hitop-form c15e149; the push-triggered Tests run on c15e149 passed; the Pages deploy of c15e149 succeeded and the deployed link.html and form.js carry the new code; the dispatched run against the deployed page (run 35924564950) passed 111 of 111 with no skips, the local-network permission granted. hitop PR #123 merged as fa809196 with 8 of 8 checks green, cairn/ only.
 
 Consistency gate 2026-09-23: `cairn_validate` exit 0 (advisories only); `devtools::document()` no diff; README.md newer than README.Rmd; `pkgdown::check_pkgdown()` no problems; NEWS.md needs no entry (the package changed nothing); `devtools::check()` 0 errors, 0 warnings, 0 notes (4 min 31 s). No principle changed, so no impact report.
 
