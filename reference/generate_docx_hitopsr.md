@@ -161,14 +161,14 @@ for the descriptor file.
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpnLFynW/file1a7c166f8380.docx
+#> ✔ Document successfully created at /tmp/RtmpW0s8W1/file19ca26c0d3f4.docx
 
 # A module containing only two scales, printed as items 1 to 8
 generate_docx_hitopsr(
   file = tempfile(fileext = ".docx"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Document successfully created at /tmp/RtmpnLFynW/file1a7c592a40b6.docx
+#> ✔ Document successfully created at /tmp/RtmpW0s8W1/file19cad2ddbb2.docx
 
 # The same module keeping the full instrument's own item numbers
 generate_docx_hitopsr(
@@ -176,7 +176,7 @@ generate_docx_hitopsr(
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
   renumber = FALSE
 )
-#> ✔ Document successfully created at /tmp/RtmpnLFynW/file1a7c2207294d.docx
+#> ✔ Document successfully created at /tmp/RtmpW0s8W1/file19ca58c3f0a.docx
 
 # A shuffled form; the scoring page carries the crosswalk back
 set.seed(1)
@@ -185,7 +185,7 @@ out <- generate_docx_hitopsr(
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
   randomize = TRUE
 )
-#> ✔ Document successfully created at /tmp/RtmpnLFynW/file1a7c364417a9.docx
+#> ✔ Document successfully created at /tmp/RtmpW0s8W1/file19ca7eb0e825.docx
 attr(out, "item_order")
 #> [1]  66 144 389 109 260 118 291 202
 
@@ -199,8 +199,8 @@ generate_docx_hitopsr(
   randomize = TRUE,
   descriptor = f
 )
-#> ✔ Document successfully created at /tmp/RtmpnLFynW/file1a7c7d77e52b.docx
-#> ✔ Module descriptor successfully written to /tmp/RtmpnLFynW/file1a7c282255f6.json
+#> ✔ Document successfully created at /tmp/RtmpW0s8W1/file19ca249a0b19.docx
+#> ✔ Module descriptor successfully written to /tmp/RtmpW0s8W1/file19cab9af1be.json
 attr(read_module(f), "item_order")
 #> [1] 109 118 291  66 202 144 389 260
 # }
