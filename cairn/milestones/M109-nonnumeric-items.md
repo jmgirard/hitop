@@ -1,6 +1,6 @@
 # M109: Scoring refuses an item column it cannot read as numbers
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -42,6 +42,9 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - [x] T3: Write the tests first. Probe axes: offender type (AC1 list), position (first item, last item, and a reverse-keyed item where the version has one), offender count (1, 2, 21), all three PID-5 versions, `items` omitted with module `columns`, and `layout = "printed"`. Add one probe per function that combines a refused column with an output collision and a non-default `srange`, to test the AC3 order. Capture warnings with `withCallingHandlers()` (LESSONS M032). Add the AC4 comparisons, with the haven case under `skip_if_not_installed("haven")`. The review evidence for AC4 must show that the haven case ran and did not skip.
 - [x] T4: Update the `items` roxygen of the seven functions, run `devtools::document()`, and add the NEWS entry. Add haven to Suggests in `DESCRIPTION`. Append a D-entry that records `hitop_nonnumeric_items` as public on the terms of D-034(c), the value rule, and the check order. The same entry records haven in Suggests for tests only, with no use in `R/` (GP4).
 - [x] T5: Run `devtools::test()` and `devtools::check()` clean.
+- [ ] T6: Fix review F1 and F2: `validate_item_columns()` reads each scored column by position, as `prep_items()` does, and uses names only in the message. Add regression tests that fail first: duplicated names with positional `items` and a choice-text duplicate, and an empty or `NA` column name with positional `items`.
+- [ ] T7: Fix review F6 and F7: list `hitop_nonnumeric_items` in the Errors sections of the seven functions, and show the factor hint only when a refused column is a factor.
+- [ ] T8: Fix review F8: test that `"Inf"` and `"0x1A"` score as `Inf` and `26`, and make the argument-order test assert which error each bad argument raises. Then run `devtools::test()` and `devtools::check()` clean.
 
 ## Work log
 
@@ -57,6 +60,7 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - 2026-09-22: T4 done: `items` docs of the six scoring and reliability functions state the accepted-column rule (`validity_pid5()` inherits it), NEWS entry under Breaking changes, D-068 appended, `devtools::document()` run.
 - 2026-09-22: claim audit: 30 claims read, 2 corrected — NEWS.md, R/util.R, the six `@param items` roxygen blocks and their man pages. The NEWS error sentence now says only a character column shows a value, and the docs now say the text `"NA"` is refused. The reader's probe also found the text `"NaN"` refused, against AC1's "parses", so `unparsed_value()` now accepts it, with a new test. The same reader re-read the corrections once and all held.
 - 2026-09-22: T5 done. `devtools::test()`: 18632 passes, 0 failures, 15 skips. `devtools::check()` after the last code change: 0 errors, 0 warnings, 1 note for the untracked `qtest.txt`. Status set to review.
+- 2026-09-22: review return 1 (defect): F1 fails AC1 and F2 fails AC4, both reproduced. The user chose at the gate to send the milestone back with F6, F7 and F8 fixed too. T6 to T8 added. Status set to in-progress.
 
 ## Decisions
 
@@ -82,3 +86,5 @@ Independent review ran three lenses. The blame-history lens found nothing. The p
 - F6: the Errors sections of the seven functions do not list the new class, but they list the other public classes.
 - F7: the `i` hint always names a factor of digits, even when no refused column is a factor.
 - F8: no test compares `"Inf"` or `"0x1A"` scores. The argument-order test asserts only that the error is not this class. No test uses positional `items` with duplicated or empty names.
+
+Triage at the gate (user-chosen, 2026-09-22): F1 and F2 fix now (T6), and they return the milestone to in-progress. F6 and F7 fix now (T7). F8 fix now (T8). F3 follow-up, added to the existing candidate row on numeric types that pass the rule. F4 rejected, because the accepted spellings are what AC1 states. F5 rejected, because AC3 forbids only the coercion warning. The `validity_pid5()` comment stays true for that function, which has no `calc_se`.
