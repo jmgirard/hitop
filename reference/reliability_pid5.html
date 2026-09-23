@@ -123,9 +123,12 @@ corresponding to the PID items in order. Items must be supplied in
 instrument order; duplicated entries are an error.
 Each column must be numeric or logical, or character holding only
 numbers (blank cells and <code>NA</code> values count as missing, but the text
-<code>"NA"</code> is refused). Any other column, such
-as the choice text of an online export or a factor, is an error of class
-<code>hitop_nonnumeric_items</code>.</p></dd>
+<code>"NA"</code> is refused). A haven labelled column is read as its plain values.
+Any other column, such as the choice text of an online export or a
+factor, is an error of class <code>hitop_nonnumeric_items</code>. So is a 64-bit
+integer (<code>integer64</code>) column, and an SPSS column (<code>haven_labelled_spss</code>)
+that holds a value it declares missing; turn those codes into <code>NA</code> with
+<code><a href="https://haven.tidyverse.org/reference/zap_missing.html" class="external-link">haven::zap_missing()</a></code> first.</p></dd>
 
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>

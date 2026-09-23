@@ -26,8 +26,13 @@ reliability_hitopbr(data, items, srange = c(1, 4), alpha = TRUE, omega = TRUE)
   supplied in instrument order; duplicated entries are an error. Each
   column must be numeric or logical, or character holding only numbers
   (blank cells and `NA` values count as missing, but the text `"NA"` is
-  refused). Any other column, such as the choice text of an online
-  export or a factor, is an error of class `hitop_nonnumeric_items`.
+  refused). A haven labelled column is read as its plain values. Any
+  other column, such as the choice text of an online export or a factor,
+  is an error of class `hitop_nonnumeric_items`. So is a 64-bit integer
+  (`integer64`) column, and an SPSS column (`haven_labelled_spss`) that
+  holds a value it declares missing; turn those codes into `NA` with
+  [`haven::zap_missing()`](https://haven.tidyverse.org/reference/zap_missing.html)
+  first.
 
 - srange:
 

@@ -183,7 +183,18 @@
   score as before. A character column of digits, such as a Qualtrics CSV
   export read after its extra header rows are removed, also scores as
   before, with blank cells counted as missing. The text `"NA"` in such a
-  column is refused.
+  column is refused. Two numeric column types that used to return wrong
+  scores without a warning now stop with the same error. An SPSS column
+  (`haven_labelled_spss`) that holds a value it declares missing, such
+  as 99, used to score that code as an answer. Turn such codes into `NA`
+  with
+  [`haven::zap_missing()`](https://haven.tidyverse.org/reference/zap_missing.html)
+  before scoring. A 64-bit integer column (`integer64`) read without
+  bit64 loaded used to score as tiny numbers near zero. A haven labelled
+  column of digit text, which used to stop with an error from haven, now
+  scores as its plain text does. A refused value made only of invisible
+  characters, such as a non-breaking space, is shown by its code points
+  (`U+00A0`).
 
 - **[`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
   refuses item numbers that are not JSON numbers.** In a module
