@@ -61,3 +61,24 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 ## Decisions
 
 ## Review
+
+The branch is up to date with `origin/main` (9b8d995c), so no merge was needed. `devtools::test()` gives 18617 passes, 0 failures, 0 errors and 15 skips. All 14 blocks of `test-nonnumeric-items.R` pass with 0 skips. The haven block ran 13 expectations. `devtools::check()` gives 0 errors, 0 warnings and 1 note for the untracked `qtest.txt`, which is not in the diff.
+
+- AC1 (not ticked): the tests cover the five refused types in all seven functions, the three PID-5 versions, module `columns` and `layout = "printed"`. A probe showed `"Inf"` and `"0x1A"` score as `Inf` and `26` in `score_pid5()`, `validity_pid5()` and `score_hitopbr()`. Finding F1 fails it: with duplicated names and positional `items`, a refused column is scored.
+- AC2: the message names the first five refused columns in `items` order with their classes. It shows the first bad value of a character column, counts the rest and carries the `i` line. `conditionCall()` names the exported function (blocks 1, 2, 5, 6 and 8, and a probe of seven refused columns).
+- AC3: the refusal comes after the `data`, `items`, `srange`, `prefix` and flag checks. It comes before the collision check, the `srange` warning of `validity_pid5()` and conversion, with no coercion warning (blocks 9 to 11).
+- AC4 (not ticked): the double, integer, logical, labelled and digit-text cases equal their all-double results in every function (blocks 12 and 13). No existing expectation was edited. Finding F2 fails it: a double column in data with an empty column name, scored by position, now stops with an unclassed error.
+- AC5: the `items` docs of the seven functions state the rule and the choice-text refusal. `validity_pid5()` inherits the text. NEWS.md has one entry under Breaking changes that names the refusal, the seven functions and the class.
+
+Consistency gate: `cairn_validate.py` exits 0 with 24 old advisory warnings. `devtools::document()` gives no diff. `pkgdown::check_pkgdown()` finds no problems. The README is untouched. No principle text changed, so no impact report runs.
+
+Independent review ran three lenses. The blame-history lens found nothing. The prior-review lens found nothing, and no inline PR comments exist. The diff-bug lens reported these, most severe first:
+
+- F1: the check turns positions into names. With duplicated names it reads the first column of that name, but `prep_items()` converts the column at the position. Choice text then scores with a coercion warning. Reproduced, and it fails AC1.
+- F2: `data[names_scored]` fails on an empty or `NA` column name when `items` are positions. The error is unclassed and blames `[.data.frame`. The same call scored before this branch. Reproduced, and it fails AC4.
+- F3: a `haven::labelled()` character column passes the check and then stops inside the cast of haven. It also failed before this branch.
+- F4: the accepted spellings (`"inf"`, `"+Inf"`, `"-NaN"`, `"1."`) are wider than the docs say. The text `"TRUE"` is refused, but a logical column is accepted. This matches the AC1 wording.
+- F5: the `calc_se = TRUE` deprecation warning still comes before a refusal. That conflicts with a comment in `validity_pid5()`, but it conforms to AC3.
+- F6: the Errors sections of the seven functions do not list the new class, but they list the other public classes.
+- F7: the `i` hint always names a factor of digits, even when no refused column is a factor.
+- F8: no test compares `"Inf"` or `"0x1A"` scores. The argument-order test asserts only that the error is not this class. No test uses positional `items` with duplicated or empty names.
