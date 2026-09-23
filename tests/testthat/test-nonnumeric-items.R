@@ -328,24 +328,34 @@ test_that("argument checks run before the refusal", {
     col <- names(case$data)[[1]]
     data <- case$data
     data[[col]] <- choice_text(data[[col]])
+    # Each bad argument, and the start of the message its own check raises.
     bad_args <- list(
-      srange = list(srange = c(3, 0)),
-      items = list(items = rep(names(data)[[2]], ncol(data)))
+      srange = list(args = list(srange = c(3, 0)),
+                    msg = "The second `srange` value must be greater"),
+      items = list(args = list(items = rep(names(data)[[2]], ncol(data))),
+                   msg = "The `items` argument must map each item")
     )
     if (startsWith(case$fn, "reliability_")) {
-      bad_args$flag <- list(alpha = "yes")
+      bad_args$flag <- list(args = list(alpha = "yes"),
+                            msg = "The `alpha` argument must be")
     } else {
-      bad_args$prefix <- list(prefix = 1)
-      bad_args$flag <- list(append = "yes")
+      bad_args$prefix <- list(args = list(prefix = 1),
+                              msg = "The `prefix` argument must be")
+      bad_args$flag <- list(args = list(append = "yes"),
+                            msg = "The `append` argument must be")
     }
     for (what in names(bad_args)) {
-      args <- bad_args[[what]]
+      args <- bad_args[[what]]$args
       items <- if (is.null(args$items)) names(data) else args$items
       args$items <- NULL
       e <- catch_error(do.call(run_case, c(list(case, data, items), args)))
-      expect_true(inherits(e, "error"), info = paste(info, "/", what))
       expect_false(inherits(e, "hitop_nonnumeric_items"),
                    info = paste(info, "/", what))
+      expect_true(
+        inherits(e, "rlang_error") &&
+          startsWith(cli::ansi_strip(conditionMessage(e)), bad_args[[what]]$msg),
+        info = paste(info, "/", what)
+      )
     }
   }
 })
@@ -411,6 +421,20 @@ test_that("a haven::labelled() double on a reverse-keyed item scores as its doub
     labelled <- base
     labelled[[col]] <- haven::labelled(base[[col]], c(Low = min(base[[col]], na.rm = TRUE)))
     expect_identical(run_case(case, labelled), run_case(case, base),
+                     info = case_label(case))
+  }
+})
+
+test_that("the text \"Inf\" and \"0x1A\" score as Inf and 26 do", {
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    num <- base
+    num[[col]][1:2] <- c(Inf, 26)
+    text <- base
+    text[[col]] <- as.character(base[[col]])
+    text[[col]][1:2] <- c("Inf", "0x1A")
+    expect_identical(run_case(case, text), run_case(case, num),
                      info = case_label(case))
   }
 })
