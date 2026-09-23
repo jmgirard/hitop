@@ -140,7 +140,15 @@ already at that path included.
 It must name a path of its own: an empty string, or the same path as
 <code>file</code>, is refused rather than leaving you with no descriptor and no
 error. Once both files are on disk the descriptor's path is announced on
-the console, after the message naming the instrument ZIP. (default = <code>NULL</code>)</p></dd>
+the console, after the message naming the instrument ZIP.
+The descriptor's <code>columns</code> field holds the names that the generated file
+assigns to the items: the dictionary's field names, such as <code>hsr_066</code>.
+A REDCap data export with the item variable names as column headers uses
+these names, so <code><a href="score_hitopsr.html">score_hitopsr()</a></code> and <code><a href="reliability_hitopsr.html">reliability_hitopsr()</a></code> can score
+it from the module <code><a href="read_module.html">read_module()</a></code> returns, with <code>items</code> omitted. Pass
+<code>items</code> for data whose columns carry other names, such as a field
+renamed after import.
+(default = <code>NULL</code>)</p></dd>
 
 
 <dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
@@ -163,14 +171,14 @@ Supplying both <code>module</code> and <code>subset</code> is an error. (default
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Write a HiTOP-SR REDCap instrument ZIP to a temporary location</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitopsr</span><span class="op">(</span>file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmppPH2kf/file1a8f25f9e315.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/Rtmph4WmNR/file1a295be2e561.zip</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># A two-scale module, original numbering preserved (unlike the Word form)</span></span></span>
 <span class="r-in"><span><span class="fu">generate_redcap_hitopsr</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".zip"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  module <span class="op">=</span> <span class="fu"><a href="hitop_module.html">hitop_module</a></span><span class="op">(</span><span class="st">"hitopsr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Agoraphobia"</span>, <span class="st">"Appetite Loss"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/RtmppPH2kf/file1a8f1f9cd352.zip</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Instrument successfully zipped to <span style="color: #0000BB;">/tmp/Rtmph4WmNR/file1a29587d272e.zip</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -72,7 +72,18 @@ generate_redcap_hitopsr(
   path as `file`, is refused rather than leaving you with no descriptor
   and no error. Once both files are on disk the descriptor's path is
   announced on the console, after the message naming the instrument ZIP.
-  (default = `NULL`)
+  The descriptor's `columns` field holds the names that the generated
+  file assigns to the items: the dictionary's field names, such as
+  `hsr_066`. A REDCap data export with the item variable names as column
+  headers uses these names, so
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  can score it from the module
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  returns, with `items` omitted. Pass `items` for data whose columns
+  carry other names, such as a field renamed after import. (default =
+  `NULL`)
 
 - subset:
 
@@ -98,12 +109,12 @@ for the descriptor file.
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmppPH2kf/file1a8f25f9e315.zip
+#> ✔ Instrument successfully zipped to /tmp/Rtmph4WmNR/file1a295be2e561.zip
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Instrument successfully zipped to /tmp/RtmppPH2kf/file1a8f1f9cd352.zip
+#> ✔ Instrument successfully zipped to /tmp/Rtmph4WmNR/file1a29587d272e.zip
 ```

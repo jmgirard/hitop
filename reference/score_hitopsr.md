@@ -38,7 +38,17 @@ score_hitopsr(
   reads the names you supply, so under `layout = "printed"` it also
   fires for original-number names in printed order; it can be ignored
   there, or avoided by supplying positions. Duplicated entries are an
-  error.
+  error. When `items` is omitted or `NULL`, the names on the `module`'s
+  `columns` attribute are used, which
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  returns from a descriptor that
+  [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
+  or
+  [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
+  wrote. A call with `items` omitted is an error if no `module` is
+  supplied, if the module has no `columns` attribute, or under
+  `layout = "printed"`. A supplied `items` is always used, whether or
+  not the module has the attribute.
 
 - srange:
 

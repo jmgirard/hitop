@@ -42,7 +42,15 @@ returns for a shuffled form. Pass the module to
 or
 [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
 with `layout = "printed"` to score columns entered in that printed
-order.
+order. If the file carries `columns`, the names are returned as a
+character vector on the object's `columns` attribute. A bare JSON string
+reads as one name. Pass the module to
+[`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+or
+[`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+with `items` omitted to score the columns it names. A file with no
+`columns`, or with `"columns": null`, gives a module with no such
+attribute.
 
 ## Errors
 
@@ -52,8 +60,8 @@ may catch a particular one by class: `hitop_module_file_missing`,
 `hitop_module_file_unsupported_format`,
 `hitop_module_file_unknown_scales` (which carries
 [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)'s
-own refusal as its parent), `hitop_module_file_items_mismatch`, and
-`hitop_module_file_bad_item_order`.
+own refusal as its parent), `hitop_module_file_items_mismatch`,
+`hitop_module_file_bad_item_order`, and `hitop_module_file_bad_columns`.
 
 The list is exhaustive by design: a descriptor that is malformed rather
 than merely wrong — a top level that is a JSON array instead of an
@@ -69,6 +77,11 @@ raise `hitop_module_file_items_mismatch`, and `itemOrder` raises
 `hitop_module_file_bad_item_order`. A whole number written as `2.0` or
 `3e0` is accepted. A field whose whole value is JSON `null` reads as
 absent.
+
+`columns` raises `hitop_module_file_bad_columns` when it is an object or
+a number, when an element is not a non-empty JSON string, when it holds
+a different number of names than the module has items, or when it
+repeats a name.
 
 ## The descriptor format
 
@@ -119,8 +132,28 @@ The file is JSON, with these fields:
   read it under `layout = "printed"` to score columns entered in the
   form's printed order.
 
-`format`, `instrument`, and `scales` are required. The fields and the
-version string are a public contract and change only deliberately.
+- `columns`:
+
+  The names that an online export gives the module's items: one string
+  per item, in ascending item-number order. Optional.
+  [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)'s
+  `descriptor` writes the dictionary's item field names here, and
+  [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)'s
+  writes the questions' `[[ID:]]` values. A Word form has no columns, so
+  its descriptor has no field. `read_module()` returns the field on the
+  module's `columns` attribute, and
+  [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+  writes it back from that attribute as a JSON array.
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  use the attribute as `items` when `items` is omitted.
+
+`format`, `instrument`, and `scales` are required. A reader of format
+`"1.0"` ignores a field it does not know, so release 0.2.0, the first
+with `read_module()`, and later releases read a file with `columns` and
+ignore the field. The fields and the version string are a public
+contract and change only deliberately.
 
 ## See also
 

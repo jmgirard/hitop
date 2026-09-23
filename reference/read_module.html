@@ -123,7 +123,12 @@ whose items are doubles. If the file carries an <code>itemOrder</code>, it is
 returned on the object's <code>item_order</code> attribute — the same attribute
 <code><a href="generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> returns for a shuffled form. Pass the module to
 <code><a href="score_hitopsr.html">score_hitopsr()</a></code> or <code><a href="reliability_hitopsr.html">reliability_hitopsr()</a></code> with <code>layout = "printed"</code> to
-score columns entered in that printed order.</p>
+score columns entered in that printed order. If the file carries
+<code>columns</code>, the names are returned as a character vector on the object's
+<code>columns</code> attribute. A bare JSON string reads as one name. Pass the module
+to <code><a href="score_hitopsr.html">score_hitopsr()</a></code> or <code><a href="reliability_hitopsr.html">reliability_hitopsr()</a></code> with <code>items</code> omitted to
+score the columns it names. A file with no <code>columns</code>, or with
+<code>"columns": null</code>, gives a module with no such attribute.</p>
     </div>
     <div class="section level2">
     <h2 id="errors">Errors<a class="anchor" aria-label="anchor" href="#errors"></a></h2>
@@ -135,7 +140,8 @@ may catch a particular one by class: <code>hitop_module_file_missing</code>,
 <code>hitop_module_file_invalid_json</code>, <code>hitop_module_file_missing_field</code>,
 <code>hitop_module_file_unsupported_format</code>, <code>hitop_module_file_unknown_scales</code>
 (which carries <code><a href="hitop_module.html">hitop_module()</a></code>'s own refusal as its parent),
-<code>hitop_module_file_items_mismatch</code>, and <code>hitop_module_file_bad_item_order</code>.</p>
+<code>hitop_module_file_items_mismatch</code>, <code>hitop_module_file_bad_item_order</code>,
+and <code>hitop_module_file_bad_columns</code>.</p>
 <p>The list is exhaustive by design: a descriptor that is malformed rather
 than merely wrong — a top level that is a JSON array instead of an
 object, or a number field that is not a flat array of numbers — is
@@ -149,6 +155,10 @@ A JSON <code>null</code> inside an array is also refused. <code>items</code> and
 <code>hitop_module_file_bad_item_order</code>. A whole number written as <code>2.0</code> or
 <code>3e0</code> is accepted. A field whose whole value is JSON <code>null</code> reads as
 absent.</p>
+<p><code>columns</code> raises <code>hitop_module_file_bad_columns</code> when it is an object or
+a number, when an element is not a non-empty JSON string, when it holds
+a different number of names than the module has items, or when it
+repeats a name.</p>
     </div>
     <div class="section level2">
     <h2 id="the-descriptor-format">The descriptor format<a class="anchor" aria-label="anchor" href="#the-descriptor-format"></a></h2>
@@ -191,8 +201,24 @@ read and written again keeps the order it recorded. The generators'
 <code>layout = "printed"</code> to score columns entered in the form's printed
 order.</p></dd>
 
+<dt><code>columns</code></dt>
+<dd><p>The names that an online export gives the module's
+items: one string per item, in ascending item-number order.
+Optional. <code><a href="generate_redcap_hitopsr.html">generate_redcap_hitopsr()</a></code>'s <code>descriptor</code> writes the
+dictionary's item field names here, and
+<code><a href="generate_qualtrics_hitopsr.html">generate_qualtrics_hitopsr()</a></code>'s writes the questions' <code>[[ID:]]</code>
+values. A Word form has no columns, so
+its descriptor has no field. <code>read_module()</code> returns the field on the
+module's <code>columns</code> attribute, and <code><a href="write_module.html">write_module()</a></code> writes it back
+from that attribute as a JSON array. <code><a href="score_hitopsr.html">score_hitopsr()</a></code> and
+<code><a href="reliability_hitopsr.html">reliability_hitopsr()</a></code> use the attribute as <code>items</code> when <code>items</code> is
+omitted.</p></dd>
 
-</dl><p><code>format</code>, <code>instrument</code>, and <code>scales</code> are required. The fields and the
+
+</dl><p><code>format</code>, <code>instrument</code>, and <code>scales</code> are required. A reader of format
+<code>"1.0"</code> ignores a field it does not know, so release 0.2.0, the first
+with <code>read_module()</code>, and later releases read a file with <code>columns</code> and
+ignore the field. The fields and the
 version string are a public contract and change only deliberately.</p>
     </div>
     <div class="section level2">

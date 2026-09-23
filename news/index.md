@@ -4,6 +4,31 @@
 
 ### New features
 
+- **A REDCap or Qualtrics module export scores from its descriptor
+  alone.** The descriptor that `generate_redcap_hitopsr(descriptor = )`
+  or `generate_qualtrics_hitopsr(descriptor = )` writes now has a
+  `columns` field: the names the generated file gives the items, one per
+  module item, in ascending item-number order. These are the REDCap
+  dictionary’s field names, or the Qualtrics questions’ `[[ID:]]`
+  values. A data export with the item variable names as column headers
+  uses these names. Export Qualtrics data as numeric values, not choice
+  text, to score it.
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  returns the field on the module’s `columns` attribute, and
+  [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+  writes that attribute back.
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  now use those names when `items` is omitted or `NULL`. A supplied
+  `items` is always used. Omitting `items` is an error with no `module`,
+  with a module that has no `columns`, or under `layout = "printed"`.
+  The Word descriptor has no `columns` field. The format stays `"1.0"`:
+  a `"1.0"` reader ignores fields it does not know, so releases from
+  0.2.0 on still read the new files. A bad `columns` field stops
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  with an error of class `hitop_module_file_bad_columns`.
+
 - **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
   reads the files the hitop-form web page saves.** Given a directory or
   a vector of file paths, it reads each participant’s CSV file and binds

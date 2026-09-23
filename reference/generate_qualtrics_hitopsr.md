@@ -77,7 +77,19 @@ generate_qualtrics_hitopsr(
   path as `file`, is refused rather than leaving you with no descriptor
   and no error. Once both files are on disk the descriptor's path is
   announced on the console, after the message naming the import file.
-  (default = `NULL`)
+  The descriptor's `columns` field holds the names that the generated
+  file assigns to the items: the questions' `[[ID:]]` values, such as
+  `HSR_066` (built from `id_prefix`). A Qualtrics data export with the
+  item variable names as column headers uses these names. Exported as
+  numeric values rather than choice text, it can be scored by
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  from the module
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  returns, with `items` omitted. Pass `items` for data whose columns
+  carry other names, such as an export made with "Use internal IDs in
+  header" or a question renamed after import. (default = `NULL`)
 
 - subset:
 
@@ -100,12 +112,12 @@ for the descriptor file.
 ``` r
 # Write a HiTOP-SR Qualtrics import file to a temporary location
 generate_qualtrics_hitopsr(file = tempfile(fileext = ".txt"))
-#> ✔ Qualtrics import file successfully created at /tmp/RtmppPH2kf/file1a8f5b03b0ea.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmph4WmNR/file1a297b3d49e5.txt
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_qualtrics_hitopsr(
   file = tempfile(fileext = ".txt"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Qualtrics import file successfully created at /tmp/RtmppPH2kf/file1a8f61d714b1.txt
+#> ✔ Qualtrics import file successfully created at /tmp/Rtmph4WmNR/file1a29238642cb.txt
 ```

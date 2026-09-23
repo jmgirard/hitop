@@ -38,7 +38,11 @@ write_module(module, file)
   A `hitop_module` object, as returned by
   [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md).
   An `item_order` attribute, where present, is written as the file's
-  `itemOrder` and must be a permutation of the module's items.
+  `itemOrder` and must be a permutation of the module's items. A
+  `columns` attribute, where present, is written as the file's
+  `columns`. It must be a character vector with one distinct, non-empty
+  name per module item. A bad attribute is refused before the file is
+  opened.
 
 - file:
 
@@ -98,8 +102,30 @@ The file is JSON, with these fields:
   read it under `layout = "printed"` to score columns entered in the
   form's printed order.
 
-`format`, `instrument`, and `scales` are required. The fields and the
-version string are a public contract and change only deliberately.
+- `columns`:
+
+  The names that an online export gives the module's items: one string
+  per item, in ascending item-number order. Optional.
+  [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)'s
+  `descriptor` writes the dictionary's item field names here, and
+  [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)'s
+  writes the questions' `[[ID:]]` values. A Word form has no columns, so
+  its descriptor has no field.
+  [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+  returns the field on the module's `columns` attribute, and
+  `write_module()` writes it back from that attribute as a JSON array.
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  use the attribute as `items` when `items` is omitted.
+
+`format`, `instrument`, and `scales` are required. A reader of format
+`"1.0"` ignores a field it does not know, so release 0.2.0, the first
+with
+[`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md),
+and later releases read a file with `columns` and ignore the field. The
+fields and the version string are a public contract and change only
+deliberately.
 
 ## See also
 
@@ -125,7 +151,7 @@ cat(readLines(f), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-09-22",
+#>   "buildDate": "2026-09-23",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Appetite Loss"],
 #>   "items": [66, 109, 118, 144, 202, 260, 291, 389],

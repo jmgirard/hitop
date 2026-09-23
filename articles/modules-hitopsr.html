@@ -418,7 +418,7 @@ file you can keep beside the forms you generated:</p>
 <span><span class="co">#&gt;   "format": "1.0",</span></span>
 <span><span class="co">#&gt;   "package": "hitop",</span></span>
 <span><span class="co">#&gt;   "packageVersion": "0.2.0",</span></span>
-<span><span class="co">#&gt;   "buildDate": "2026-09-22",</span></span>
+<span><span class="co">#&gt;   "buildDate": "2026-09-23",</span></span>
 <span><span class="co">#&gt;   "instrument": "hitopsr",</span></span>
 <span><span class="co">#&gt;   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],</span></span>
 <span><span class="co">#&gt;   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],</span></span>
@@ -490,6 +490,44 @@ you would the original:</p>
 <span>  <span class="va">module_scores</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="scoring-a-redcap-or-qualtrics-export-without-naming-the-columns">Scoring a REDCap or Qualtrics export without naming the columns<a class="anchor" aria-label="anchor" href="#scoring-a-redcap-or-qualtrics-export-without-naming-the-columns"></a>
+</h3>
+<p>A descriptor written by <code><a href="../reference/generate_redcap_hitopsr.html">generate_redcap_hitopsr()</a></code> or
+<code><a href="../reference/generate_qualtrics_hitopsr.html">generate_qualtrics_hitopsr()</a></code> also records the names that
+the generated file assigns to the items. For REDCap these are the data
+dictionary’s field names. For Qualtrics they are the questions’
+<code>[[ID:]]</code> values, such as <code>HSR_066</code>. A data export
+with the item variable names as column headers uses these names.
+<code><a href="../reference/read_module.html">read_module()</a></code> returns them on the module’s
+<code>columns</code> attribute. The REDCap case looks like this:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">redcap_descriptor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"hitopsr_redcap.json"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/generate_redcap_hitopsr.html">generate_redcap_hitopsr</a></span><span class="op">(</span></span>
+<span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">outdir</span>, <span class="st">"hitopsr_module.zip"</span><span class="op">)</span>,</span>
+<span>  module <span class="op">=</span> <span class="va">four_scale</span>,</span>
+<span>  descriptor <span class="op">=</span> <span class="va">redcap_descriptor</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">from_redcap</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_module.html">read_module</a></span><span class="op">(</span><span class="va">redcap_descriptor</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">from_redcap</span>, <span class="st">"columns"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "hsr_042" "hsr_066" "hsr_068" "hsr_109" "hsr_118" "hsr_144"</span></span></code></pre></div>
+<p>With that module, leave out <code>items</code>. The scoring functions
+take the names from the module:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span><span class="va">collected</span>, module <span class="op">=</span> <span class="va">from_redcap</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>,</span>
+<span>  <span class="va">module_scores</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<p><code><a href="../reference/reliability_hitopsr.html">reliability_hitopsr()</a></code> does the same. Export Qualtrics
+data as numeric values, not choice text, so there are numbers to score.
+Pass <code>items</code> for data whose columns carry other names, such
+as a Qualtrics export made with “Use internal IDs in header”, or a
+question renamed after import. A supplied <code>items</code> is always
+used. A module with no <code>columns</code>, such as one read from a
+Word form’s descriptor, still needs <code>items</code>.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="collecting-responses-online-with-hitop-form">Collecting Responses Online with hitop-form<a class="anchor" aria-label="anchor" href="#collecting-responses-online-with-hitop-form"></a>
@@ -518,7 +556,7 @@ folder the files are in, or a vector of their paths. The file below is
 one the page saved from a two-scale module with a shuffled order. The
 package installs it as an example, and <code><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file()</a></code> gives
 its path:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-module-shuffled.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
 <span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="va">responses</span></span>
@@ -545,7 +583,7 @@ order, as in the shuffled Word form above. Name the item columns by
 position here rather than by name: under <code>layout = "printed"</code>
 the names carry item numbers out of instrument order, and naming them
 would trip the check that warns of a misordered mapping.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">form_module</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_module.html">read_module</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"module-shuffled.json"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>

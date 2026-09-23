@@ -377,7 +377,7 @@ cat(readLines(descriptor), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-09-22",
+#>   "buildDate": "2026-09-23",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],
 #>   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],
@@ -473,6 +473,54 @@ identical(
 )
 #> [1] TRUE
 ```
+
+### Scoring a REDCap or Qualtrics export without naming the columns
+
+A descriptor written by
+[`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
+or
+[`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
+also records the names that the generated file assigns to the items. For
+REDCap these are the data dictionary’s field names. For Qualtrics they
+are the questions’ `[[ID:]]` values, such as `HSR_066`. A data export
+with the item variable names as column headers uses these names.
+[`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
+returns them on the module’s `columns` attribute. The REDCap case looks
+like this:
+
+``` r
+
+redcap_descriptor <- file.path(outdir, "hitopsr_redcap.json")
+generate_redcap_hitopsr(
+  file = file.path(outdir, "hitopsr_module.zip"),
+  module = four_scale,
+  descriptor = redcap_descriptor
+)
+
+from_redcap <- read_module(redcap_descriptor)
+head(attr(from_redcap, "columns"))
+#> [1] "hsr_042" "hsr_066" "hsr_068" "hsr_109" "hsr_118" "hsr_144"
+```
+
+With that module, leave out `items`. The scoring functions take the
+names from the module:
+
+``` r
+
+identical(
+  score_hitopsr(collected, module = from_redcap, append = FALSE),
+  module_scores
+)
+#> [1] TRUE
+```
+
+[`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+does the same. Export Qualtrics data as numeric values, not choice text,
+so there are numbers to score. Pass `items` for data whose columns carry
+other names, such as a Qualtrics export made with “Use internal IDs in
+header”, or a question renamed after import. A supplied `items` is
+always used. A module with no `columns`, such as one read from a Word
+form’s descriptor, still needs `items`.
 
 ## Collecting Responses Online with hitop-form
 
