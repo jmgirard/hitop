@@ -11,7 +11,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M111 | hitop-form sends each participant's responses to an endpoint named in the study link | done | — | normal | milestones/archive/M111-form-store-webhook.md |
 | M112 | hitop-form inserts each participant's responses into a Supabase table named in the study link | done | M111 | normal | milestones/archive/M112-form-store-supabase.md |
 | M113 | The package reads a store's CSV export and an article walks the Google Sheet route end to end | planned | M111, M112 | normal | milestones/M113-store-export-reader.md |
-| M114 | hitop-form draws a wrapped item's text inside its card | in-progress | — | normal | milestones/M114-form-item-card-layout.md |
+| M114 | hitop-form draws a wrapped item's text inside its card | review | — | normal | milestones/M114-form-item-card-layout.md |
 | M115 | `read_form_responses()` accepts an `item_order` column recording the order a participant saw | planned | M113 | normal | milestones/M115-reader-item-order.md |
 | M116 | A study link can ask hitop-form to show each participant the items in a fresh random order | planned | M114, M115 | normal | milestones/M116-form-random-order.md |
 

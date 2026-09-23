@@ -1,6 +1,6 @@
 # M114: hitop-form draws a wrapped item's text inside its card
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -35,7 +35,7 @@ Change the item card's layout in `jmgirard/hitop-form` so that an item's text re
 
 - [x] T1: The CSS change in `index.html` (`fieldset.item legend`, lines 85–89), the space in `itemNode()` (`form.js`, the legend at line 552), and `tests/layout.spec.js` with the three-width walks of AC1.
 - [x] T2: The accessible-name test over the five forms and the refusal-border test of AC2.
-- [ ] T3: The README test table row, the hitop-form PR, its CI, and the dispatched deployed-page run after the merge. The hitop PR carries tracking only.
+- [x] T3: The README test table row, the hitop-form PR, its CI, and the dispatched deployed-page run after the merge. The hitop PR carries tracking only.
 
 ## Work log
 
@@ -45,6 +45,9 @@ Change the item card's layout in `jmgirard/hitop-form` so that an item's text re
 - 2026-09-23: IP1 read at planning: no participant-facing text changes, so no sign-off is needed.
 - 2026-09-23: /milestone-implement started; branches cut from `main` at hitop `f96014c2` and hitop-form `c15e149`. Question gate skipped: the one open choice, how the legend leaves the notch, takes the standard `float: left; width: 100%` form, chosen over a `div[role=group]` rewrite because it keeps the fieldset semantics and the tests' selectors.
 - 2026-09-23: T1 and T2 done in one spec, `tests/layout.spec.js` (Y1 six walks, Y2 five forms, Y3 the refusal): the legend floats at full width with the options cleared below it, and a space text node separates the number from the text. Plants: the old CSS reds Y1 and Y3 on the legend-top check, the missing space reds Y2 on the exact name. Suite 111 → 123, all passing.
+- 2026-09-23: T3: the README test-table row landed. The PR, its CI and the deployed-page run are review's, opened after the merge approval (D-138).
+- 2026-09-23: claim audit: 27 claims read, 1 corrected — tests/layout.spec.js, index.html. The reader served a copy of `main` and measured: a wrapped legend's upper half sat above the card's top border, and its right edge was 17 px inside the card, so the two comments saying the text spilled past the right edge were corrected to the top edge.
+- 2026-09-23: all tasks checked; status set to review. hitop-form branch `m114-form-item-card-layout` at four commits over `c15e149`, suite 123 passing; the hitop branch carries tracking only.
 
 ## Decisions
 
