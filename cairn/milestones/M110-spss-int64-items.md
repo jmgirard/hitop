@@ -72,6 +72,8 @@ The milestone also closes two M109 review gaps. A refused value with no `[[:grap
 - 2026-09-22: T6 done (tests only). The argument-order test grew from 94 to 140 expectations and passes. Removing `validate_flag(omega)` from `R/reliability_engine.R` as a plant turned it red (10 failures), and the file was restored.
 - claim audit: 33 claims read, 3 corrected — R/util.R (two comments: the value is shown after `trimws()`, and a `\v` prints as an escape, not blank), tests/testthat/test-nonnumeric-items.R (the `integer64` stand-in holds real bit patterns only at -0).
 - 2026-09-22: T7 done. The `items` text changed in the six R/ sources (`validity_pid5()` inherits it), and the Errors sections point to `items`, so they needed no edit. NEWS extended, D-069 appended. `devtools::test()` 0 failures. `devtools::check()` 0 errors, 0 warnings, 1 note (the untracked `qtest.txt`). The test file was rerun after the comment-only audit fixes: 0 failures. Status set to review.
+- 2026-09-23: review fixed F1 and F3 at the gate (details in the Review section).
+- 2026-09-23: step-7 approval: m110-spss-int64-items approved for merge
 
 ## Review
 
