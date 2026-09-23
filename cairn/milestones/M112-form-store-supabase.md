@@ -1,6 +1,6 @@
 # M112: hitop-form inserts each participant's responses into a Supabase table named in the study link
 
-- **Status:** blocked
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M111
 - **Driving RR:** —
@@ -44,7 +44,7 @@ Add a second store kind to `jmgirard/hitop-form`, `supabase`, that inserts the f
 - [x] T3: The `supabase` branch of `sendResponses()`: URL, headers, the JWT test for `Authorization`, confirmation on status. The recorder answers OPTIONS with `Access-Control-Max-Age: 0` so no preflight is cached across walks. Send tests with both key shapes, the OPTIONS assertion, and the with-store network walk.
 - [x] T4: The 401 and refused-connection tests.
 - [x] T5: The README section. Create the project, run the walk, compare the export with the posted body, run the select, update and delete probes, commit the fixture and its provenance row. Work-log line: the date, the project region, and the probe results.
-- [ ] T6: Open the hitop-form pull request at implement and merge it at review. Dispatch a run against the deployed page after the merge. In hitop, commit `cairn/` only.
+- [x] T6: Open the hitop-form pull request at implement and merge it at review. Dispatch a run against the deployed page after the merge. In hitop, commit `cairn/` only.
 
 ## Work log
 
@@ -60,6 +60,8 @@ Add a second store kind to `jmgirard/hitop-form`, `supabase`, that inserts the f
 - 2026-09-23: hitop-form PR #3 opened from `store-supabase` (T6's first half). Status set to blocked: the AC5 hand run needs a Supabase project Jeff creates, its table made from the builder's SQL, and its project URL and publishable key given in chat; then the CSV export from the Table Editor. Left for the resume: the walk and the REST probes, the fixture and its provenance row, the claim audit over the hitop-form diff, and the T5 work-log line.
 - 2026-09-23: hand run, part one. Jeff's project (URL `https://etjfuxonozeulotfbkrp.supabase.co`, table `hitopbr_test` made from the builder's SQL, publishable key). A column probe found all 50 columns and no `id`. One HiTOP-BR walk from the checkout (participant `p001`, `submitted` 2026-09-23T21:01:51Z) posted to `/rest/v1/hitopbr_test` with the four headers and was answered 201. With the same key: select counted 0 rows (`content-range: */0`), an update and a delete each returned no affected rows, and the count stayed 0. The posted body is kept in the scratchpad for the export comparison. Jeff's first pasted URL ended in `/rest/v1/`, which the guard accepted and the send would have doubled; `checkStore()` now drops that suffix (hitop-form, one guard, one builder and one send test added). Waiting on: the row count in the Table Editor, whether a legacy anon key exists, and the CSV export.
 - 2026-09-23: T5 done. Hand run, part two: the project had a legacy anon JWT; a second walk with it (participant `p002`, `submitted` 2026-09-23T21:03:49Z) sent `apikey` and `Authorization: Bearer` and was answered 201; select, update and delete with that key touched 0 rows. Jeff confirmed two rows in the Table Editor and exported the CSV; it equals the two posted bodies in 100 of 100 fields. Committed as `tests/fixtures/supabase-hitopbr.csv` with its provenance row and T11 (hitop-form 2 commits after 6eee5e1). The export warns that the table has no primary key; the README says the SQL adds none on purpose. Project region: not recorded by the session (the dashboard shows it to Jeff only). Suite 100 of 100.
+- 2026-09-23: claim audit: 88 claims read, 12 corrected — form.js, link.html, README.md, tests/send.spec.js, tests/link.spec.js, tests/guard.spec.js, tests/serve.mjs (hitop-form f06e1d6; the reader's one re-read found all twelve correct). A live probe backed the README's unknown-key claim: a POST with a key the table lacks answered 400 PGRST204.
+- 2026-09-23: T6's implement half done (PR #3 open, head f06e1d6, its Tests run pending at this write); the merge and the dispatched run are review's by the task's own text. Status set to review.
 
 ## Decisions
 
