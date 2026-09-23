@@ -31,6 +31,7 @@ Imports:
 Suggests:
     covr,
     ggplot2 (>= 3.4.0),
+    haven,
     knitr,
     lavaan,
     rmarkdown,

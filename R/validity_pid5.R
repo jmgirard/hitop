@@ -36,6 +36,10 @@
 #'   columns from `data` first. The condition is classed
 #'   `hitop_append_collision`, so a caller can catch this refusal by name.
 #'
+#'   An item column that cannot be read as numbers (see `items`) is an error
+#'   of class `hitop_nonnumeric_items`, raised before the collision check and
+#'   the `srange` warning.
+#'
 #' @references Keeley, J. W., Webb, C., Peterson, D., Roussin, L., & Flanagan,
 #'   E. H. (2016). Development of a Response Inconsistency Scale for the
 #'   Personality Inventory for DSM-5. *Journal of Personality Assessment,
@@ -91,6 +95,10 @@ validity_pid5 <- function(
   validate_range(srange)
   validate_string(prefix, arg = "prefix")
   validate_flag(append, arg = "append")
+  ## Refuse an item column that cannot be read as numbers, after the argument
+  ## checks and before the collision check and the `srange` warning below. A
+  ## refused call can still get the item-order warning from above.
+  validate_item_columns(data, items)
 
   ## Refuse an append that would collide with a column `data` already holds
   ## (D-045(a)). The output is the prefix plus PNA and, for FULL/SF, the four

@@ -23,7 +23,12 @@ scored and in order).}
 corresponding to the PID items in order. Items must be supplied in
 instrument order; a misordered mapping silently scores the wrong items, so a
 warning is issued when the names share a common prefix and trailing number
-but those numbers are not ascending. Duplicated entries are an error.}
+but those numbers are not ascending. Duplicated entries are an error.
+Each column must be numeric or logical, or character holding only
+numbers (blank cells and \code{NA} values count as missing, but the text
+\code{"NA"} is refused). Any other column, such
+as the choice text of an online export or a factor, is an error of class
+\code{hitop_nonnumeric_items}.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
 "SF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}
@@ -115,6 +120,9 @@ column: the message names every colliding column. Re-run with
 \code{append = FALSE} to return only the new columns, or drop the colliding
 columns from \code{data} first. The condition is classed
 \code{hitop_append_collision}, so a caller can catch this refusal by name.
+
+An item column that cannot be read as numbers (see \code{items}) is an error
+of class \code{hitop_nonnumeric_items}, raised before the collision check.
 }
 }
 \examples{

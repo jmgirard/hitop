@@ -36,7 +36,12 @@ attribute are used, which \code{\link[=read_module]{read_module()}} returns from
 \code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}} or \code{\link[=generate_qualtrics_hitopsr]{generate_qualtrics_hitopsr()}} wrote. A call with \code{items} omitted is an
 error if no \code{module} is supplied, if the module has no \code{columns}
 attribute, or under \code{layout = "printed"}. A supplied \code{items} is always
-used, whether or not the module has the attribute.}
+used, whether or not the module has the attribute.
+Each column must be numeric or logical, or character holding only
+numbers (blank cells and \code{NA} values count as missing, but the text
+\code{"NA"} is refused). Any other column, such
+as the choice text of an online export or a factor, is an error of class
+\code{hitop_nonnumeric_items}.}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the HiTOP-SR items, used for reverse-coding. (default = \code{c(1, 4)})}
@@ -106,6 +111,9 @@ column: the message names every colliding column. Re-run with
 \code{append = FALSE} to return only the new columns, or drop the colliding
 columns from \code{data} first. The condition is classed
 \code{hitop_append_collision}, so a caller can catch this refusal by name.
+
+An item column that cannot be read as numbers (see \code{items}) is an error
+of class \code{hitop_nonnumeric_items}, raised before the collision check.
 }
 \examples{
 # Score all HiTOP-SR scales from the simulated data

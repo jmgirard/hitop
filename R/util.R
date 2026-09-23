@@ -316,6 +316,111 @@ validate_numeric_columns <- function(columns, headline, info,
   )
 }
 
+# Refuse any item column that cannot be read as numbers. Shared by prep_items()
+# and validity_pid5(), the two places item columns are converted for scoring.
+# An accepted column is numeric or logical, or character whose every value
+# that is not blank and not NA parses with as.numeric() after trimws(). The
+# text "NA" does not parse and is refused; the text "NaN" parses to NaN. The
+# character case keeps digit text scoring (a Qualtrics CSV read after its
+# header rows are dropped), while choice text, which as.numeric() would turn
+# into NA with only a base-R warning, is refused. Every other type is refused:
+# as.numeric() turns a factor into its level codes and a Date into a day count
+# with no warning at all.
+#
+# `items` is what the engine scores; `caller_items` is the vector the caller
+# wrote (before a `layout = "printed"` permutation), which sets the report
+# order. A choice-text export refuses every column, so the report names the
+# first five and counts the rest.
+#
+# Columns are read by position, as data[items] reads them in prep_items() and
+# validity_pid5(): a name in `items` resolves to its first match, and a
+# position is used as is. Reading a position through its name would check the
+# wrong column when names repeat, and fail on an empty or NA name.
+validate_item_columns <- function(data, items, caller_items = items,
+                                  call = rlang::caller_env()) {
+  positions <- function(x) {
+    if (is.character(x)) match(x, names(data)) else as.integer(x)
+  }
+  scored <- positions(items)
+  first_bad <- lapply(scored, function(i) unparsed_value(data[[i]]))
+  refused <- !vapply(first_bad, is.null, logical(1))
+  if (!any(refused)) {
+    return(invisible(NULL))
+  }
+  bad <- which(refused)
+  bad <- bad[order(match(scored[bad], positions(caller_items)))]
+
+  ## Escaped because these strings are already formatted, and cli_abort() would
+  ## interpolate a brace in a column name or a value a second time.
+  escape_braces <- function(x) {
+    gsub("}", "}}", gsub("{", "{{", x, fixed = TRUE), fixed = TRUE)
+  }
+  shown <- utils::head(bad, 5)
+  detail <- vapply(shown, function(k) {
+    i <- scored[[k]]
+    nm <- names(data)[[i]]
+    label <- if (is.na(nm) || !nzchar(nm)) {
+      cli::format_inline("Column {i}")
+    } else {
+      cli::format_inline("{.val {nm}}")
+    }
+    cls <- class(data[[i]])
+    value <- first_bad[[k]]
+    text <- if (is.character(value)) {
+      cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not a number.")
+    } else {
+      cli::format_inline("{label} is {.cls {cls}}.")
+    }
+    escape_braces(text)
+  }, character(1))
+  names(detail) <- rep("x", length(detail))
+  n <- length(bad)
+  more <- n - length(shown)
+  if (more > 0) {
+    detail <- c(detail, "x" = "{more} more column{?s} {?is/are} refused.")
+  }
+  ## The factor tip applies only when a refused column is a factor.
+  any_factor <- any(vapply(scored[bad], function(i) is.factor(data[[i]]),
+                           logical(1)))
+  hint <- if (any_factor) {
+    "Export numeric values rather than choice text, or convert each column to numbers before scoring (a factor of digits with {.code as.numeric(as.character(x))})."
+  } else {
+    "Export numeric values rather than choice text, or convert each column to numbers before scoring."
+  }
+  cli::cli_abort(
+    c(
+      "{n} item column{?s} cannot be read as numbers.",
+      detail,
+      "i" = hint
+    ),
+    class = "hitop_nonnumeric_items",
+    call = call
+  )
+}
+
+# The reason an item column is refused, or NULL when it is accepted: the first
+# value of a character column that does not parse, or TRUE for a column of any
+# other refused type. The parse test muffles as.numeric()'s own coercion
+# warning, which is the message this refusal replaces.
+unparsed_value <- function(x) {
+  if (is.numeric(x) || is.logical(x)) {
+    return(NULL)
+  }
+  if (!is.character(x)) {
+    return(TRUE)
+  }
+  values <- trimws(x)
+  values <- values[!is.na(values) & nzchar(values)]
+  parsed <- suppressWarnings(as.numeric(values))
+  ## "NaN" parses to NaN, which a numeric column scores as missing, so only a
+  ## plain NA marks a value as.numeric() could not read. The text "NA" is one.
+  unread <- is.na(parsed) & !is.nan(parsed)
+  if (!any(unread)) {
+    return(NULL)
+  }
+  values[unread][[1]]
+}
+
 # A confidence level is a single probability strictly inside (0, 1). Both ends
 # are excluded rather than clamped: a level of 1 asks for an infinitely wide
 # interval and a level of 0 for a point, and neither is a request the caller
@@ -483,6 +588,8 @@ apa_mean <- function(mat) {
 # `check_order = FALSE` skips the ascending-name heuristic: a wrapper that has
 # already permuted `items` into instrument order (layout_items()) ran it on
 # the caller's own vector, and the permuted one is non-ascending by design.
+# `caller_items` is that caller's own vector, which orders the report of refused
+# columns (validate_item_columns()).
 prep_items <- function(
   data,
   items,
@@ -490,6 +597,7 @@ prep_items <- function(
   reverse_items,
   srange,
   check_order = TRUE,
+  caller_items = items,
   call = rlang::caller_env()
 ) {
   validate_data(data, call = call)
@@ -500,6 +608,7 @@ prep_items <- function(
     warn_item_order(items, call = call)
   }
   validate_range(srange, call = call)
+  validate_item_columns(data, items, caller_items, call = call)
 
   ## Extract item columns and coerce values to numbers
   data_items <- lapply(data[items], as.numeric)

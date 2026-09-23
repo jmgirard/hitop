@@ -8,6 +8,11 @@
 #'   instrument order; a misordered mapping silently scores the wrong items, so a
 #'   warning is issued when the names share a common prefix and trailing number
 #'   but those numbers are not ascending. Duplicated entries are an error.
+#'   Each column must be numeric or logical, or character holding only
+#'   numbers (blank cells and `NA` values count as missing, but the text
+#'   `"NA"` is refused). Any other column, such
+#'   as the choice text of an online export or a factor, is an error of class
+#'   `hitop_nonnumeric_items`.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-BR items, used for reverse-coding. (default = `c(1,
 #'   4)`)
@@ -43,6 +48,9 @@
 #'   `append = FALSE` to return only the new columns, or drop the colliding
 #'   columns from `data` first. The condition is classed
 #'   `hitop_append_collision`, so a caller can catch this refusal by name.
+#'
+#'   An item column that cannot be read as numbers (see `items`) is an error
+#'   of class `hitop_nonnumeric_items`, raised before the collision check.
 #'
 #' @return A \link[tibble]{tibble} containing all scale scores and standard
 #'   errors (if requested) and all original `data` columns (if requested).
