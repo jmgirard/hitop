@@ -195,13 +195,13 @@ The result is an ordinary ggplot object, so you can restyle it with any ggplot2 
 
 ## Collecting Responses Online with hitop-form
 
-[hitop-form](https://jmgirard.github.io/hitop-form/) is a web page that shows the PID-5, the PID-5-SF or the PID-5-BF in the browser. It saves each participant's answers to a CSV file on the participant's own device. It needs no survey platform. The item text, response options and instructions come from this package's JSON export of the form.
+[hitop-form](https://jmgirard.github.io/hitop-form/) is a web page that shows the PID-5, the PID-5-SF or the PID-5-BF in the browser. It needs no survey platform. The item text, response options and instructions come from this package's JSON export of the form. A study link tells the page where each participant's answers go: a file saved on the participant's own device, which they send to you, or a store you name in the link, such as a Google Sheet or a Supabase table, which you download as one CSV file. The [Collecting Responses Online](https://jmgirard.github.io/hitop/articles/online-collection.html) article walks the Google Sheet route end to end.
 
-To make a study link, open the page's [link builder](https://jmgirard.github.io/hitop-form/link.html). Choose the form, name the study and, if you want, give a participant identifier. Send the link to the participant. When the participant finishes, the page saves one file, and the participant sends you that file.
+To make a study link, open the page's [link builder](https://jmgirard.github.io/hitop-form/link.html). Choose the form, name the study, choose where the responses go and, if you want, give a participant identifier. Send the link to the participant.
 
-The file has five lead columns (`study`, `participant`, `instrument`, `form_build`, `submitted`) and then one column per item. The item columns are named as this package names them: `pid5_001` to `pid5_220`, `pid5sf_001` to `pid5sf_100`, or `pid5bf_01` to `pid5bf_25`. Each holds the value of the chosen option, 0 to 3.
+Whichever route the answers take, the CSV file has five lead columns (`study`, `participant`, `instrument`, `form_build`, `submitted`) and then one column per item. The item columns are named as this package names them: `pid5_001` to `pid5_220`, `pid5sf_001` to `pid5sf_100`, or `pid5bf_01` to `pid5bf_25`. Each holds the value of the chosen option, 0 to 3. A file the page saved holds one participant's row; a store's download holds one row per participant.
 
-`read_form_responses()` reads a folder of these files, or a vector of their paths, into one data frame with one row per file. Read the files of each form in a call of their own. The file below is one the page saved from the full form. The package installs it as an example, and `system.file()` gives its path.
+`read_form_responses()` reads a folder of these files, or a vector of their paths, into one data frame with one row per participant row. Read the files of each form in a call of their own. The file below is one the page saved from the full form. The package installs it as an example, and `system.file()` gives its path.
 
 ```{r}
 path <- system.file("examples", "responses-pid5.csv", package = "hitop")
