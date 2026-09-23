@@ -46,8 +46,8 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 - [x] T3: `sendResponses()` in form.js: `fetch` POST with `text/plain`, `redirect: 'follow'`, an `AbortController` at 30 seconds, the confirmation rule, Finish disabled, the two outcome screens, the device fallback through `saveFile()` (form.js:235). `tests/send.spec.js` covers AC1 and AC2. The download promise is created before the walk with its own timeout (LESSONS, M095).
 - [x] T4: `tests/network.spec.js` gains the with-store walks of AC3.
 - [x] T5: The link.html field, the start-screen wordings, the text sweep of AC5, and the render and link tests.
-- [ ] T6: The README section and its `doPost` code. Deploy it, run the two walks, compare the download with the posted bodies, commit the fixture and its provenance row. Work-log line: the date, the deployment version, and the comparison result.
-- [ ] T7: Open the hitop-form pull request at implement and merge it at review (the merge publishes the page, as M098 did). Dispatch a run against the deployed page after the merge. In hitop, commit `cairn/` only.
+- [x] T6: The README section and its `doPost` code. Deploy it, run the two walks, compare the download with the posted bodies, commit the fixture and its provenance row. Work-log line: the date, the deployment version, and the comparison result.
+- [x] T7: Open the hitop-form pull request at implement and merge it at review (the merge publishes the page, as M098 did). Dispatch a run against the deployed page after the merge. In hitop, commit `cairn/` only.
 
 ## Work log
 
@@ -70,6 +70,8 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 - 2026-09-23: T7 in part. hitop-form PR #2 opened from `store-webhook`; its Tests workflow passed in 2m13s. The local suite is 68 tests, all passing. The PR body first said 70 and was corrected to 68.
 - 2026-09-23: blocked on the Apps Script deployment: Jeff pastes the README's code into a new Apps Script project bound to a new sheet, deploys it as a web app (execute as Me, access Anyone) and hands the session the `/exec` URL. The session then runs the two HiTOP-BR walks (participants `=1+1` and `007`), and Jeff downloads the sheet as CSV for the fixture.
 - 2026-09-23: unblocked; Jeff deployed the web app and gave the `/exec` URL. First hand run (deployment version 1): both walks posted one body of 50 keys and got the sent screen; the sheet's CSV kept `007` but held `2` for `=1+1`, so `setNumberFormat('@')` alone does not stop a formula. README `doPost` now writes a value starting with `=` behind a leading apostrophe (hitop-form 9ac50ec). Redeploy and second run pending.
+- 2026-09-23: T6 done. Second hand run against deployment version 2: both walks posted one body of 50 keys and got the sent screen. The `Responses` tab's CSV download equals the two posted bodies in every field, `submitted`, `=1+1` and `007` included (0 differences over 100 fields). Committed as `tests/fixtures/sheet-hitopbr.csv` with its provenance row (hitop-form 9cce871), branch pushed to PR #2.
+- 2026-09-23: T7 done for implement's part: PR #2 open and updated. Its merge and the dispatched run against the deployed page are review's steps, as the task text says. The hitop branch holds `cairn/` only.
 
 ## Decisions
 
