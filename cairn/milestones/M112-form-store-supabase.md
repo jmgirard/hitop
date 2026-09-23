@@ -1,13 +1,13 @@
 # M112: hitop-form inserts each participant's responses into a Supabase table named in the study link
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M111
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — a store kind researchers configure on the deployed page
-- **Branch/PR:** —
+- **Branch/PR:** hitop `m112-form-store-supabase` (cairn/ only); hitop-form `store-supabase`
 
 ## Goal
 
@@ -39,8 +39,8 @@ Add a second store kind to `jmgirard/hitop-form`, `supabase`, that inserts the f
 
 ## Tasks
 
-- [ ] T1: Extend `checkStore()` with the `supabase` fields; guard and builder tests per AC3.
-- [ ] T2: `storeSql()` in link.html for the chosen instrument or module, the hand-written SQL fixtures with their provenance row, and the comparison test.
+- [x] T1: Extend `checkStore()` with the `supabase` fields; guard and builder tests per AC3.
+- [x] T2: `storeSql()` in link.html for the chosen instrument or module, the hand-written SQL fixtures with their provenance row, and the comparison test.
 - [ ] T3: The `supabase` branch of `sendResponses()`: URL, headers, the JWT test for `Authorization`, confirmation on status. The recorder answers OPTIONS with `Access-Control-Max-Age: 0` so no preflight is cached across walks. Send tests with both key shapes, the OPTIONS assertion, and the with-store network walk.
 - [ ] T4: The 401 and refused-connection tests.
 - [ ] T5: The README section. Create the project, run the walk, compare the export with the posted body, run the select, update and delete probes, commit the fixture and its provenance row. Work-log line: the date, the project region, and the probe results.
@@ -53,6 +53,8 @@ Add a second store kind to `jmgirard/hitop-form`, `supabase`, that inserts the f
 - 2026-09-23: plan chose one `integer` column per item over a single `jsonb` column because the Table Editor's CSV export is then one tidy row per participant; falsified by a form whose column count exceeds Postgres's limit of 1,600.
 - 2026-09-23: plan chose builder-generated SQL over a README template because a HiTOP-SR table has 410 columns nobody should type; falsified by a researcher needing a table shape the builder cannot express.
 - 2026-09-23: re-audit by the same fresh [O] reader: findings on this file were the hand run's key type, a trailing slash in the project URL, a cached preflight, one exemplar per table-name fault, and AC4 claiming all six of M111's outcomes on two probes. All fixed in the wording after the plan commit.
+- 2026-09-23: implement gate. Jeff chose a "Send responses to" kind selector in the builder (file, web address, Supabase table), the builder fetching the export for the SQL's item names, the SQL shown under the built link after "Make the link", and a split hand run: Jeff creates the project and runs the SQL, the session runs the walk and the REST probes, Jeff exports the CSV.
+- 2026-09-23: T1 and T2 done in hitop-form (branch `store-supabase`). `checkStore()` takes the `supabase` kind with `key` and `table` (`TABLE_NAME` regex); G8 in guard.spec (10 refused forms, 4 accepted); link.html gained a "Send responses to" kind selector, the three Supabase fields and the SQL block; L6 (three builder faults) and L7 (SQL against the two fixtures) in link.spec. `storeSql()` lives in form.js rather than link.html so the test-facing logic stays in the one module (minor task-wording change). The old "empty address builds a link with no store" test became a refusal under the selector. A planted `with check (false)` turned L7 red on both fixtures. 57 of 57 in the two specs.
 
 ## Decisions
 
