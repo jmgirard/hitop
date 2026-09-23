@@ -133,7 +133,8 @@
   `score_pid5()`, `score_hitopsr()`, `score_hitopbr()`, `reliability_pid5()`,
   `reliability_hitopsr()`, `reliability_hitopbr()` and `validity_pid5()` now
   stop with an error of class `hitop_nonnumeric_items` when an item column is
-  a factor, a date, a list, or character text that is not a number. Before, a
+  not numeric, logical, or character text of numbers. Refused columns include
+  factors, dates, lists and choice text. Before, a
   column of choice text such as `"Not at all"` scored as all `NA` with only a
   base R coercion warning, and a factor scored as its level codes with no
   warning. The error names the first five refused columns with each one's

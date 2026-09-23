@@ -96,8 +96,8 @@ validity_pid5 <- function(
   validate_string(prefix, arg = "prefix")
   validate_flag(append, arg = "append")
   ## Refuse an item column that cannot be read as numbers, after the argument
-  ## checks and before the collision check and the `srange` warning below: a
-  ## refused call returns nothing, so it hears about its columns alone.
+  ## checks and before the collision check and the `srange` warning below. A
+  ## refused call can still get the item-order warning from above.
   validate_item_columns(data, items)
 
   ## Refuse an append that would collide with a column `data` already holds

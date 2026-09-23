@@ -65,6 +65,8 @@ If a researcher scores an export of choice text or factor codes, the call aborts
 - 2026-09-22: T7 done. The Errors sections of `score_pid5()`, `score_hitopsr()`, `score_hitopbr()` and `validity_pid5()` name `hitop_nonnumeric_items`. The three reliability functions have no Errors section, so their `items` text stays the only mention. The factor tip shows only when a refused column is a factor, and a new test failed first. `devtools::test()`: 18751 passes, 0 failures, 15 skips.
 - 2026-09-22: T8 done. New test: `"Inf"` and `"0x1A"` score as `Inf` and `26` in all 13 cases. The argument-order test now asserts the message of each bad argument. A plant that moved the refusal before the `srange` check turned it red (20 failures). `devtools::test()`: 18764 passes, 0 failures, 15 skips. `devtools::check()`: 0 errors, 0 warnings, 1 note for the untracked `qtest.txt`.
 - 2026-09-22: claim audit: 19 claims read, 1 corrected — R/util.R (the comment above `validate_item_columns()` now names `validity_pid5()` as the second caller). This audit covered only lines added after c3da774e, because the first audit covered the rest. The same reader re-read the correction once, and it held. The change touches only the comment, so the T8 test and check results still apply. Status set to review.
+- 2026-09-22: review pass 2: AC1 to AC5 verified and ticked. G1 (comment) and G3 (NEWS) were fixed at the gate, both text only. G4 and G5 went to a new candidate row.
+- 2026-09-22: step-7 approval: m109-nonnumeric-items approved for merge
 
 ## Decisions
 
@@ -112,3 +114,5 @@ Independent review ran three new lenses. The blame-history lens found nothing, a
 - G3: NEWS names "a factor, a date, a list, or character text", but the code also refuses complex, difftime, POSIXct and raw columns. Reproduced for complex. A complex column with a zero imaginary part and a difftime column scored as numbers before. The `items` docs say "Any other column", which is correct.
 - G4: the argument-order test checks one flag per function. It does not check `omega`, `calc_se` or a bad `data`. The order is correct today.
 - G5: `trimws()` does not strip a non-breaking space, so a cell that looks blank is refused. The message then shows a value that prints as blank. Not reproduced for a non-breaking space. The rule refuses such a cell as AC1 states, so only the message is unclear.
+
+Triage at the gate (user-chosen, 2026-09-22): G1 fix now, with the comment reworded to say a refused call can still get the item-order warning. G2 needs no code change, and the note above corrects pass 1's F5. G3 fix now, with NEWS saying a column is refused unless it is numeric, logical, or character text of numbers. G4 and G5 follow-up, in a new candidate row. No finding returns the milestone.
