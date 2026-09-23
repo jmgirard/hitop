@@ -329,6 +329,21 @@
 
 ### Improvements and fixes
 
+- **Functions called as `hitop::f()` work without
+  [`library(hitop)`](https://github.com/jmgirard/hitop).** The package’s
+  functions read its datasets, such as `hitopsr_scales` and `pid_items`,
+  by name. R shows an installed package’s datasets only when the package
+  is attached. So a call such as
+  [`hitop::hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md),
+  [`hitop::score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  or
+  [`hitop::score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+  in a session that never ran
+  [`library(hitop)`](https://github.com/jmgirard/hitop) stopped with
+  “object ‘hitopsr_scales’ not found”. The package now binds its
+  datasets when it loads. A dataset is still read only when a function
+  first uses it.
+
 - **[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
   writes LF line endings on every platform.** On Windows it wrote CRLF
   line endings. It now writes every descriptor, including the one the
