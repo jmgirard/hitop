@@ -1,6 +1,6 @@
 # M111: hitop-form sends each participant's responses to an endpoint named in the study link
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -72,6 +72,8 @@ Extend `jmgirard/hitop-form` so a study link can name a store, and the page then
 - 2026-09-23: unblocked; Jeff deployed the web app and gave the `/exec` URL. First hand run (deployment version 1): both walks posted one body of 50 keys and got the sent screen; the sheet's CSV kept `007` but held `2` for `=1+1`, so `setNumberFormat('@')` alone does not stop a formula. README `doPost` now writes a value starting with `=` behind a leading apostrophe (hitop-form 9ac50ec). Redeploy and second run pending.
 - 2026-09-23: T6 done. Second hand run against deployment version 2: both walks posted one body of 50 keys and got the sent screen. The `Responses` tab's CSV download equals the two posted bodies in every field, `submitted`, `=1+1` and `007` included (0 differences over 100 fields). Committed as `tests/fixtures/sheet-hitopbr.csv` with its provenance row (hitop-form 9cce871), branch pushed to PR #2.
 - 2026-09-23: T7 done for implement's part: PR #2 open and updated. Its merge and the dispatched run against the deployed page are review's steps, as the task text says. The hitop branch holds `cairn/` only.
+- 2026-09-23: claim audit: 94 claims read, 6 corrected — README.md, form.js, tests/network.spec.js, tests/send.spec.js (hitop-form). By the letter the audit is not owed in hitop (no added lines outside `cairn/`), so it ran over the hitop-form `main...HEAD` diff, where the user-facing prose is. Corrections: the builder-refusal wording now names the loopback exception; the readr call passes `col_types` so `007` stays text; three comments named one request after Finish and now name the redirect request too; the T6 header claims only the final screen. Re-read once by the same reader: all six correct. Suite 68 passed after the edits (hitop-form 7e9036a, pushed).
+- 2026-09-23: implement complete, status set to review. The hitop-form PR #2 stays open for review's merge; no hitop PR exists.
 
 ## Decisions
 
