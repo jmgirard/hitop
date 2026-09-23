@@ -35,9 +35,12 @@ supplied \code{items} is always used, whether or not the module has the
 attribute.
 Each column must be numeric or logical, or character holding only
 numbers (blank cells and \code{NA} values count as missing, but the text
-\code{"NA"} is refused). Any other column, such
-as the choice text of an online export or a factor, is an error of class
-\code{hitop_nonnumeric_items}.}
+\code{"NA"} is refused). A haven labelled column is read as its plain values.
+Any other column, such as the choice text of an online export or a
+factor, is an error of class \code{hitop_nonnumeric_items}. So is a 64-bit
+integer (\code{integer64}) column, and an SPSS column (\code{haven_labelled_spss})
+that holds a value it declares missing; turn those codes into \code{NA} with
+\code{haven::zap_missing()} first.}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the HiTOP-SR items, used for reverse-coding. (default = \code{c(1, 4)})}

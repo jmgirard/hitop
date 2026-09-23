@@ -338,7 +338,13 @@ test_that("argument checks run before the refusal", {
     if (startsWith(case$fn, "reliability_")) {
       bad_args$flag <- list(args = list(alpha = "yes"),
                             msg = "The `alpha` argument must be")
+      bad_args$omega <- list(args = list(omega = "yes"),
+                             msg = "The `omega` argument must be")
     } else {
+      if (startsWith(case$fn, "score_")) {
+        bad_args$calc_se <- list(args = list(calc_se = "yes"),
+                                 msg = "The `calc_se` argument must be")
+      }
       bad_args$prefix <- list(args = list(prefix = 1),
                               msg = "The `prefix` argument must be")
       bad_args$flag <- list(args = list(append = "yes"),
@@ -357,6 +363,17 @@ test_that("argument checks run before the refusal", {
         info = paste(info, "/", what)
       )
     }
+    # A `data` that is not a data frame has no columns to refuse, so its own
+    # check must answer.
+    e <- catch_error(run_case(case, as.list(data), names(data)))
+    expect_false(inherits(e, "hitop_nonnumeric_items"),
+                 info = paste(info, "/ data"))
+    expect_true(
+      inherits(e, "rlang_error") &&
+        startsWith(cli::ansi_strip(conditionMessage(e)),
+                   "The `data` argument must be a data frame."),
+      info = paste(info, "/ data")
+    )
   }
 })
 
@@ -456,4 +473,243 @@ test_that("the text \"NaN\" parses and the text \"NA\" is refused", {
   e <- catch_error(run_case(case, na_text))
   expect_s3_class(e, "hitop_nonnumeric_items")
   expect_match(cli::ansi_strip(conditionMessage(e)), "\"NA\"", fixed = TRUE)
+})
+
+# ---- SPSS user-missing codes, 64-bit integers, labelled digit text -----------
+
+# An SPSS column declares some codes missing. haven keeps them as values, so
+# as.numeric() would score a 99 as an answer. Each variant returns the column
+# and the declared-missing value the message must show, which is the first one
+# in row order. Rows 2 and 4 hold codes; row 2 comes first.
+spss_variants <- list(
+  `double, na_values outside srange` = function(x) {
+    x[c(2, 4)] <- c(99, 98)
+    list(column = haven::labelled_spss(x, na_values = c(98, 99)),
+         shown = "holds 99,")
+  },
+  `double, na_values inside srange` = function(x) {
+    x[] <- 1
+    x[c(2, 4)] <- 3
+    list(column = haven::labelled_spss(x, na_values = 3), shown = "holds 3,")
+  },
+  `double, na_range with an infinite bound` = function(x) {
+    x[c(2, 4)] <- c(99, 98)
+    list(column = haven::labelled_spss(x, na_range = c(90, Inf)),
+         shown = "holds 99,")
+  },
+  `character, na_values` = function(x) {
+    x <- as.character(x)
+    x[c(2, 4)] <- c("99", "98")
+    list(column = haven::labelled_spss(x, na_values = c("98", "99")),
+         shown = "holds \"99\",")
+  }
+)
+
+test_that("an SPSS column holding a declared-missing code is refused", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    positions <- c(first = 1L)
+    if (length(case$reverse) > 0) {
+      positions <- c(positions, reverse = case$reverse[[1]])
+    }
+    for (where in names(positions)) {
+      col <- names(base)[[positions[[where]]]]
+      for (variant in names(spss_variants)) {
+        info <- paste(case_label(case), "/", where, "/", variant)
+        built <- spss_variants[[variant]](base[[col]])
+        data <- base
+        data[[col]] <- built$column
+        e <- catch_error(run_case(case, data))
+        expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+        if (!inherits(e, "hitop_nonnumeric_items")) next
+        msg <- cli::ansi_strip(conditionMessage(e))
+        expect_true(grepl(col, msg, fixed = TRUE), info = info)
+        expect_true(grepl(built$shown, msg, fixed = TRUE), info = info)
+        expect_true(grepl("haven::zap_missing()", msg, fixed = TRUE),
+                    info = info)
+      }
+    }
+  }
+})
+
+test_that("an SPSS column declaring codes it does not hold scores as its double does", {
+  # A regression guard: this passes before M110 and must keep passing.
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    declared <- list(
+      na_values = haven::labelled_spss(base[[col]], na_values = 99),
+      na_range = haven::labelled_spss(base[[col]], na_range = c(90, Inf))
+    )
+    for (how in names(declared)) {
+      data <- base
+      data[[col]] <- declared[[how]]
+      expect_identical(run_case(case, data), run_case(case, base),
+                       info = paste(case_label(case), "/", how))
+    }
+  }
+})
+
+# A stand-in for a 64-bit integer column read without bit64 loaded: a double
+# vector classed "integer64". Apart from -0 (bit64's NA pattern), its values
+# are not real integer64 bit patterns. The refusal reads only the class, so it
+# needs neither real bit patterns nor bit64.
+integer64_column <- function(n) {
+  structure(c(-0, as.double(seq_len(n - 1L))), class = "integer64")
+}
+
+test_that("an integer64 column is refused", {
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- integer64_column(nrow(data))
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    msg <- cli::ansi_strip(conditionMessage(e))
+    expect_true(grepl(col, msg, fixed = TRUE), info = info)
+    expect_true(grepl("integer64", msg, fixed = TRUE), info = info)
+  }
+})
+
+test_that("each refusal gets only the tips that fit its columns", {
+  skip_if_not_installed("haven")
+  choice_tip <- "Export numeric values rather than choice text"
+  bit64_tip <- "library(bit64)"
+  spss_tip <- "haven::zap_missing()"
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    other <- names(base)[[2]]
+    spss <- base[[col]]
+    spss[[2]] <- 99
+    columns <- list(
+      text = choice_text(base[[col]]),
+      integer64 = integer64_column(nrow(base)),
+      spss = haven::labelled_spss(spss, na_values = 99)
+    )
+    # Each refusal alone, then all three together in two columns.
+    expected <- list(
+      text = c(choice_tip),
+      integer64 = c(bit64_tip),
+      spss = c(spss_tip)
+    )
+    for (kind in names(columns)) {
+      info <- paste(case_label(case), "/", kind)
+      data <- base
+      data[[col]] <- columns[[kind]]
+      e <- catch_error(run_case(case, data))
+      expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+      if (!inherits(e, "hitop_nonnumeric_items")) next
+      msg <- cli::ansi_strip(conditionMessage(e))
+      for (tip in c(choice_tip, bit64_tip, spss_tip)) {
+        expect_identical(grepl(tip, msg, fixed = TRUE),
+                         tip %in% expected[[kind]],
+                         info = paste(info, "/", tip))
+      }
+    }
+    info <- paste(case_label(case), "/ integer64 and spss")
+    data <- base
+    data[[col]] <- columns$integer64
+    data[[other]] <- columns$spss
+    msg <- cli::ansi_strip(conditionMessage(catch_error(run_case(case, data))))
+    expect_true(grepl(bit64_tip, msg, fixed = TRUE), info = info)
+    expect_true(grepl(spss_tip, msg, fixed = TRUE), info = info)
+    expect_false(grepl(choice_tip, msg, fixed = TRUE), info = info)
+  }
+})
+
+test_that("an invisible declared-missing code is shown by its code points", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    col <- names(case$data)[[1]]
+    data <- case$data
+    values <- rep("1", nrow(data))
+    values[[2]] <- " "
+    data[[col]] <- haven::labelled_spss(values, na_values = " ")
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    msg <- cli::ansi_strip(conditionMessage(e))
+    expect_true(grepl("U+00A0, which it declares missing", msg, fixed = TRUE),
+                info = info)
+  }
+})
+
+test_that("a haven::labelled() digit-text column scores as its plain text does", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    text <- base
+    text[[col]] <- as.character(base[[col]])
+    labelled <- text
+    labelled[[col]] <- haven::labelled(text[[col]], c(Low = "0"))
+    expect_identical(run_case(case, labelled), run_case(case, text),
+                     info = info)
+  }
+})
+
+test_that("a haven::labelled() choice-text column is refused and shows the value", {
+  # With haven loaded, as.numeric() on the labelled values aborts inside
+  # haven's cast, so the parse test reads the unclassed values.
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- haven::labelled(
+      c("2", "Moderately", rep("1", nrow(data) - 2L)),
+      c(Some = "Moderately")
+    )
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    expect_true(
+      grepl("\"Moderately\"", cli::ansi_strip(conditionMessage(e)), fixed = TRUE),
+      info = info
+    )
+  }
+})
+
+test_that("a refused value made only of invisible characters is shown by its code points", {
+  # trimws() strips only [ \t\r\n], so these cells are not blank and are
+  # refused. Separators, a control and format marks, alone and mixed.
+  invisible <- list(
+    "\v" = "U+000B",
+    " " = "U+00A0",
+    " " = "U+2009",
+    "　" = "U+3000",
+    "﻿" = "U+FEFF",
+    "​" = "U+200B",
+    "  " = c("U+00A0", "U+2009"),
+    " \v" = c("U+00A0", "U+000B")
+  )
+  # One visible character, before or after the invisible one: shown as text.
+  visible <- list(" x" = "x\"", "1 " = "\"1")
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    for (value in c(names(invisible), names(visible))) {
+      info <- paste(case_label(case), "/", utf8ToInt(value))
+      data <- case$data
+      data[[col]] <- c(value, rep("1", nrow(data) - 1L))
+      e <- catch_error(run_case(case, data))
+      expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+      if (!inherits(e, "hitop_nonnumeric_items")) next
+      msg <- cli::ansi_strip(conditionMessage(e))
+      if (value %in% names(invisible)) {
+        for (point in invisible[[value]]) {
+          expect_true(grepl(point, msg, fixed = TRUE), info = info)
+        }
+      } else {
+        expect_false(grepl("U+00A0", msg, fixed = TRUE), info = info)
+        expect_true(grepl(visible[[value]], msg, fixed = TRUE), info = info)
+      }
+    }
+  }
 })

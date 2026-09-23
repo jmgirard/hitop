@@ -22,9 +22,12 @@
 #'   used, whether or not the module has the attribute.
 #'   Each column must be numeric or logical, or character holding only
 #'   numbers (blank cells and `NA` values count as missing, but the text
-#'   `"NA"` is refused). Any other column, such
-#'   as the choice text of an online export or a factor, is an error of class
-#'   `hitop_nonnumeric_items`.
+#'   `"NA"` is refused). A haven labelled column is read as its plain values.
+#'   Any other column, such as the choice text of an online export or a
+#'   factor, is an error of class `hitop_nonnumeric_items`. So is a 64-bit
+#'   integer (`integer64`) column, and an SPSS column (`haven_labelled_spss`)
+#'   that holds a value it declares missing; turn those codes into `NA` with
+#'   `haven::zap_missing()` first.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-SR items, used for reverse-coding. (default = `c(1,
 #'   4)`)
