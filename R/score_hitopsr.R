@@ -14,6 +14,12 @@
 #'   the names you supply, so under `layout = "printed"` it also fires for
 #'   original-number names in printed order; it can be ignored there, or
 #'   avoided by supplying positions. Duplicated entries are an error.
+#'   When `items` is omitted or `NULL`, the names on the `module`'s `columns`
+#'   attribute are used, which [read_module()] returns from a descriptor that
+#'   [generate_redcap_hitopsr()] or [generate_qualtrics_hitopsr()] wrote. A call with `items` omitted is an
+#'   error if no `module` is supplied, if the module has no `columns`
+#'   attribute, or under `layout = "printed"`. A supplied `items` is always
+#'   used, whether or not the module has the attribute.
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the HiTOP-SR items, used for reverse-coding. (default = `c(1,
 #'   4)`)
@@ -114,6 +120,10 @@ score_hitopsr <- function(
   ## positions within the module's own columns; without one, item number and
   ## position coincide. Shared arg validation and the pipeline run in the engine.
   inputs <- hitopsr_engine_inputs(module)
+  ## A missing or NULL `items` takes the module's `columns` attribute, or
+  ## aborts saying to pass `items`.
+  items <- module_column_items(missing(items), if (!missing(items)) items,
+                               module, layout, data)
   ## Under layout = "printed", put the caller's printed-order `items` into
   ## instrument order through the module's item_order (refusing when there is
   ## none); the heuristic order warning has then already run on the caller's

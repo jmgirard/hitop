@@ -27,7 +27,12 @@ instrument order, or in the form's printed order under
 ascending-name warning \code{\link[=score_hitopsr]{score_hitopsr()}} describes reads the names you
 supply, so under \code{layout = "printed"} it also fires for original-number
 names in printed order; it can be ignored there, or avoided by supplying
-positions.}
+positions. When \code{items} is omitted or \code{NULL}, the names on the
+\code{module}'s \code{columns} attribute are used, as in \code{\link[=score_hitopsr]{score_hitopsr()}}. A call
+with \code{items} omitted is an error if no \code{module} is supplied, if the
+module has no \code{columns} attribute, or under \code{layout = "printed"}. A
+supplied \code{items} is always used, whether or not the module has the
+attribute.}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the HiTOP-SR items, used for reverse-coding. (default = \code{c(1, 4)})}

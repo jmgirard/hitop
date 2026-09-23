@@ -79,7 +79,16 @@ generate_qualtrics_hitopbr <- function(
 #'   It must name a path of its own: an empty string, or the same path as
 #'   `file`, is refused rather than leaving you with no descriptor and no
 #'   error. Once both files are on disk the descriptor's path is announced on
-#'   the console, after the message naming the import file. (default = `NULL`)
+#'   the console, after the message naming the import file.
+#'   The descriptor's `columns` field holds the names that the generated file
+#'   assigns to the items: the questions' `[[ID:]]` values, such as `HSR_066`
+#'   (built from `id_prefix`). A Qualtrics data export with the item variable
+#'   names as column headers uses these names. Exported as numeric values
+#'   rather than choice text, it can be scored by [score_hitopsr()] and
+#'   [reliability_hitopsr()] from the module [read_module()] returns, with
+#'   `items` omitted. Pass `items` for data whose columns carry
+#'   other names, such as an export made with "Use internal IDs in header" or
+#'   a question renamed after import. (default = `NULL`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -98,6 +107,9 @@ generate_qualtrics_hitopbr <- function(
 #' )
 #'
 #' @export
+# Source for the `descriptor` help's column-name claim: a first-hand Qualtrics
+# export of one generated two-scale module with the default `id_prefix`,
+# `cairn/references/qualtrics2026exportheader.md`.
 generate_qualtrics_hitopsr <- function(
   file = "hitopsr_qualtrics.txt",
   block_name = "HiTOP-SR",
@@ -119,7 +131,21 @@ generate_qualtrics_hitopsr <- function(
   # order to record.
   built <- FALSE
   if (!is.null(descriptor)) {
-    write_descriptor_sidecar(descriptor, module, "hitopsr")
+    # The item questions' `[[ID:]]` values, which Qualtrics uses as the data
+    # export's column names. build_qualtrics_txt() writes the same IDs below.
+    # `id_prefix` is used here before the builder checks it, so it is checked
+    # here first, with the same check the builder makes.
+    validate_string(id_prefix, arg = "id_prefix")
+    write_descriptor_sidecar(
+      descriptor,
+      module,
+      "hitopsr",
+      columns = qualtrics_item_ids(
+        id_prefix,
+        reduced$items[[1]],
+        max(hitopsr_items$HSR)
+      )
+    )
     # A descriptor with no form beside it describes a form that was never
     # written, so it goes again if the build below fails.
     # file.remove() on the literal path, never unlink(), which would treat a
@@ -255,6 +281,15 @@ generate_qualtrics_pid5bf <- function(
   )
 }
 
+# Internal Helper: the item questions' `[[ID:]]` values
+#
+# One place for the IDs build_qualtrics_txt() writes, so the HiTOP-SR
+# generator can record the same names in its descriptor's `columns` before the
+# text file is built.
+qualtrics_item_ids <- function(id_prefix, n, max_n) {
+  item_names(paste0(id_prefix, "_"), n, max_n = max_n)
+}
+
 # Internal Helper: Build the Qualtrics text file
 build_qualtrics_txt <- function(
   items,
@@ -299,7 +334,7 @@ build_qualtrics_txt <- function(
   # numbering, so padding to the exported items would write item 7 as `_07`
   # where the full instrument writes `_007`. For a full-instrument export the
   # two agree, so existing output is unchanged.
-  question_ids <- item_names(paste0(id_prefix, "_"), items[[1]], max_n = max_n)
+  question_ids <- qualtrics_item_ids(id_prefix, items[[1]], max_n)
 
   # 3. Add the starting instructions as a Descriptive Block (DB)
   if (include_instructions) {

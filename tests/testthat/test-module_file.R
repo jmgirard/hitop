@@ -759,3 +759,122 @@ test_that("write_module() refuses an empty path rather than discarding the file"
     fixed = TRUE
   )
 })
+
+
+# The `columns` field ----------------------------------------------------------
+#
+# Expected names are built with sprintf() from the item numbers the ITEM-level
+# table gives, never from the package's item_names().
+
+two_scale_columns <- function() {
+  sprintf("hsr_%03d", expected_items(c("Agoraphobia", "Appetite Loss")))
+}
+
+# The well-formed two-scale descriptor as raw JSON, with `columns` set to the
+# raw JSON text `value`.
+columns_descriptor <- function(value, envir = parent.frame()) {
+  raw_descriptor(
+    paste0(raw_head(), ',"columns":', value, "}"),
+    envir = envir
+  )
+}
+
+test_that("read_module() returns a file's `columns` on the columns attribute, and write_module() writes it back", {
+  columns <- two_scale_columns()
+  f <- columns_descriptor(jsonlite::toJSON(columns))
+  m <- read_module(f)
+  expect_identical(attr(m, "columns"), columns)
+
+  # Written back as a JSON array with the same value.
+  g <- withr::local_tempfile(fileext = ".json")
+  write_module(m, g)
+  expect_identical(jsonlite::fromJSON(g)$columns, columns)
+  expect_match(paste(readLines(g), collapse = ""), '"columns": \\[')
+  expect_identical(attr(read_module(g), "columns"), columns)
+})
+
+test_that("a file with no `columns`, or `columns: null`, reads back with no attribute", {
+  absent <- raw_descriptor(paste0(raw_head(), "}"))
+  expect_null(attr(read_module(absent), "columns"))
+  null <- columns_descriptor("null")
+  m <- read_module(null)
+  expect_null(attr(m, "columns"))
+  # The control: the same module is otherwise read in full.
+  expect_identical(m$items, expected_items(c("Agoraphobia", "Appetite Loss")))
+})
+
+test_that("a bare-string `columns` reads as a vector of length one", {
+  withr::local_options(cli.width = 10000)
+  # No HiTOP-SR scale has one item, so a bare string is refused here for its
+  # length. The message's count shows it was read as one name, not refused
+  # for its shape. If a one-item scale ever ships, this premise fails, and the
+  # case needs a module that can accept a bare string.
+  expect_gt(min(lengths(hitopsr_scales$itemNumbers)), 1L)
+  f <- columns_descriptor('"hsr_066"')
+  e <- expect_error(read_module(f), class = "hitop_module_file_bad_columns")
+  expect_match(conditionMessage(e), "not 1.", fixed = TRUE)
+})
+
+test_that("read_module() refuses a bad `columns` field, naming the file", {
+  withr::local_options(cli.width = 10000)
+  good <- two_scale_columns()
+  as_json <- function(x) as.character(jsonlite::toJSON(x, auto_unbox = FALSE))
+  replace_first <- function(value) {
+    paste0("[", value, ",", paste0('"', good[-1L], '"', collapse = ","), "]")
+  }
+  cases <- list(
+    object = '{"a":"hsr_066"}',
+    number = "66",
+    element_number = replace_first("66"),
+    element_boolean = replace_first("true"),
+    element_null = replace_first("null"),
+    element_empty = replace_first('""'),
+    element_array = replace_first('["hsr_066"]'),
+    element_object = replace_first('{"a":"hsr_066"}'),
+    too_short = as_json(good[-1L]),
+    too_long = as_json(c(good, "hsr_999")),
+    repeated = as_json(c(good[1L], good[-length(good)]))
+  )
+  for (label in names(cases)) {
+    f <- columns_descriptor(cases[[label]])
+    e <- expect_error(
+      read_module(f),
+      class = "hitop_module_file_bad_columns",
+      info = label
+    )
+    expect_true(grepl(f, conditionMessage(e), fixed = TRUE), info = label)
+    expect_match(conditionMessage(e), "unusable columns field", fixed = TRUE,
+                 info = label)
+  }
+  # The passing control: the same builder with the good names reads.
+  expect_identical(
+    attr(read_module(columns_descriptor(as_json(good))), "columns"),
+    good
+  )
+})
+
+test_that("write_module() refuses a bad `columns` attribute before it opens the path", {
+  withr::local_options(cli.width = 10000)
+  good <- two_scale_columns()
+  cases <- list(
+    not_character = seq_along(good),
+    na = replace(good, 1L, NA_character_),
+    empty = replace(good, 1L, ""),
+    wrong_length = good[-1L],
+    repeated = replace(good, 2L, good[[1L]])
+  )
+  for (label in names(cases)) {
+    m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+    attr(m, "columns") <- cases[[label]]
+    f <- withr::local_tempfile(fileext = ".json")
+    e <- expect_error(write_module(m, f), class = "rlang_error", info = label)
+    expect_match(conditionMessage(e), "columns", fixed = TRUE, info = label)
+    expect_false(file.exists(f), info = label)
+  }
+  # The passing control.
+  m <- hitop_module("hitopsr", scales = c("Agoraphobia", "Appetite Loss"))
+  attr(m, "columns") <- good
+  f <- withr::local_tempfile(fileext = ".json")
+  write_module(m, f)
+  expect_true(file.exists(f))
+})

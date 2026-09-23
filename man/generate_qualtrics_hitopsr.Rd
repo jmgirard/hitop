@@ -53,7 +53,16 @@ already at that path included.
 It must name a path of its own: an empty string, or the same path as
 \code{file}, is refused rather than leaving you with no descriptor and no
 error. Once both files are on disk the descriptor's path is announced on
-the console, after the message naming the import file. (default = \code{NULL})}
+the console, after the message naming the import file.
+The descriptor's \code{columns} field holds the names that the generated file
+assigns to the items: the questions' \verb{[[ID:]]} values, such as \code{HSR_066}
+(built from \code{id_prefix}). A Qualtrics data export with the item variable
+names as column headers uses these names. Exported as numeric values
+rather than choice text, it can be scored by \code{\link[=score_hitopsr]{score_hitopsr()}} and
+\code{\link[=reliability_hitopsr]{reliability_hitopsr()}} from the module \code{\link[=read_module]{read_module()}} returns, with
+\code{items} omitted. Pass \code{items} for data whose columns carry
+other names, such as an export made with "Use internal IDs in header" or
+a question renamed after import. (default = \code{NULL})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}

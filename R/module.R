@@ -349,6 +349,61 @@ layout_items <- function(items, module, layout, call = rlang::caller_env()) {
   items[match(module$items, as.integer(item_order))]
 }
 
+# Internal Helper: the item columns to score when `items` is missing or NULL
+#
+# A module read from a descriptor with a `columns` field carries a `columns`
+# attribute: the names the export gives the module's items, in instrument
+# order. A missing or
+# NULL `items` takes those names. A supplied `items` is returned untouched, so
+# it always wins. The names are in instrument order, so a call under
+# `layout = "printed"` still needs its own `items`. Names taken from the module
+# that are not columns of `data` are refused here, so the error blames the
+# module's `columns` rather than an `items` the caller never passed.
+module_column_items <- function(items_missing, items, module, layout, data,
+                                call = rlang::caller_env()) {
+  if (!items_missing && !is.null(items)) {
+    return(items)
+  }
+  headline <- if (items_missing) {
+    "The {.arg items} argument is missing."
+  } else {
+    "The {.arg items} argument is {.code NULL}."
+  }
+  columns <- if (is.null(module)) NULL else attr(module, "columns")
+  why <- if (is.null(module)) {
+    "No {.arg module} was supplied, so there are no column names to take."
+  } else if (is.null(columns)) {
+    "The {.arg module} has no {.field columns} attribute to take the names \\
+     from."
+  } else if (identical(layout, "printed")) {
+    "The {.arg module}'s {.field columns} are in instrument order, and \\
+     {.code layout = \"printed\"} needs the columns in printed order."
+  }
+  cli_assert(
+    condition = is.null(why),
+    message = c(
+      headline,
+      x = why,
+      i = "Pass {.arg items}: the names or positions of the item columns."
+    ),
+    call = call
+  )
+  # Data that is not a data frame is left to the engine's own refusal.
+  absent <- if (is.data.frame(data)) setdiff(columns, names(data))
+  cli_assert(
+    condition = length(absent) == 0L,
+    message = c(
+      "The {.arg module}'s {.field columns} are not all columns in \\
+       {.arg data}.",
+      x = "Not found in {.arg data}: {.val {absent}}.",
+      i = "The descriptor may come from another export. Pass {.arg items}: \\
+           the names or positions of the item columns."
+    ),
+    call = call
+  )
+  columns
+}
+
 # Internal Helper: is this object a module descriptor?
 #
 # Accepts the deprecated `hitop_subset` class alongside `hitop_module`, so a

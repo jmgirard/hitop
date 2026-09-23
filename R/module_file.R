@@ -64,14 +64,31 @@ module_format_first_version <- function() {
 #'       [score_hitopsr()] and [reliability_hitopsr()] read it under
 #'       `layout = "printed"` to score columns entered in the form's printed
 #'       order.}
+#'     \item{`columns`}{The names that an online export gives the module's
+#'       items: one string per item, in ascending item-number order.
+#'       Optional. [generate_redcap_hitopsr()]'s `descriptor` writes the
+#'       dictionary's item field names here, and
+#'       [generate_qualtrics_hitopsr()]'s writes the questions' `[[ID:]]`
+#'       values. A Word form has no columns, so
+#'       its descriptor has no field. [read_module()] returns the field on the
+#'       module's `columns` attribute, and [write_module()] writes it back
+#'       from that attribute as a JSON array. [score_hitopsr()] and
+#'       [reliability_hitopsr()] use the attribute as `items` when `items` is
+#'       omitted.}
 #'   }
 #'
-#'   `format`, `instrument`, and `scales` are required. The fields and the
+#'   `format`, `instrument`, and `scales` are required. A reader of format
+#'   `"1.0"` ignores a field it does not know, so release 0.2.0, the first
+#'   with [read_module()], and later releases read a file with `columns` and
+#'   ignore the field. The fields and the
 #'   version string are a public contract and change only deliberately.
 #'
 #' @param module A `hitop_module` object, as returned by [hitop_module()]. An
 #'   `item_order` attribute, where present, is written as the file's
-#'   `itemOrder` and must be a permutation of the module's items.
+#'   `itemOrder` and must be a permutation of the module's items. A `columns`
+#'   attribute, where present, is written as the file's `columns`. It must be
+#'   a character vector with one distinct, non-empty name per module item.
+#'   A bad attribute is refused before the file is opened.
 #' @param file A string giving the path to write to.
 #'
 #' @return The `file` path, invisibly.
@@ -231,6 +248,34 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
     payload$itemOrder <- as.integer(item_order)
   }
 
+  # A module carrying a `columns` attribute records the names an online
+  # export gives its items; read_module() returns exactly this attribute.
+  # Checked here for the reason `item_order` is: the attribute can be set by
+  # hand, and a bad one would write a file read_module() then refuses.
+  columns <- attr(module, "columns")
+  if (!is.null(columns)) {
+    problem <- if (!is.character(columns)) {
+      "It must be a character vector."
+    } else if (anyNA(columns) || any(columns == "")) {
+      "It must not hold {.code NA} or an empty string."
+    } else if (length(columns) != length(rebuilt$items)) {
+      "It must hold one name for each of the {rebuilt$nItems} item{?s} the \\
+       module covers, not {length(columns)}."
+    } else if (anyDuplicated(columns) > 0L) {
+      "It must not repeat a name."
+    }
+    cli_assert(
+      condition = is.null(problem),
+      message = c(
+        "The {.arg module} argument has an unusable {.field columns} \\
+         attribute.",
+        x = problem
+      ),
+      call = call
+    )
+    payload$columns <- columns
+  }
+
   json <- jsonlite::toJSON(payload, auto_unbox = FALSE, pretty = TRUE)
   # An unwritable path is reported the way every other failure in this file is
   # -- naming the file -- rather than as the bare "cannot open the connection"
@@ -281,7 +326,12 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
 #'   returned on the object's `item_order` attribute --- the same attribute
 #'   [generate_docx_hitopsr()] returns for a shuffled form. Pass the module to
 #'   [score_hitopsr()] or [reliability_hitopsr()] with `layout = "printed"` to
-#'   score columns entered in that printed order.
+#'   score columns entered in that printed order. If the file carries
+#'   `columns`, the names are returned as a character vector on the object's
+#'   `columns` attribute. A bare JSON string reads as one name. Pass the module
+#'   to [score_hitopsr()] or [reliability_hitopsr()] with `items` omitted to
+#'   score the columns it names. A file with no `columns`, or with
+#'   `"columns": null`, gives a module with no such attribute.
 #'
 #' @section Errors:
 #'
@@ -290,7 +340,8 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
 #'   `hitop_module_file_invalid_json`, `hitop_module_file_missing_field`,
 #'   `hitop_module_file_unsupported_format`, `hitop_module_file_unknown_scales`
 #'   (which carries [hitop_module()]'s own refusal as its parent),
-#'   `hitop_module_file_items_mismatch`, and `hitop_module_file_bad_item_order`.
+#'   `hitop_module_file_items_mismatch`, `hitop_module_file_bad_item_order`,
+#'   and `hitop_module_file_bad_columns`.
 #'
 #'   The list is exhaustive by design: a descriptor that is malformed rather
 #'   than merely wrong --- a top level that is a JSON array instead of an
@@ -306,6 +357,11 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
 #'   `hitop_module_file_bad_item_order`. A whole number written as `2.0` or
 #'   `3e0` is accepted. A field whose whole value is JSON `null` reads as
 #'   absent.
+#'
+#'   `columns` raises `hitop_module_file_bad_columns` when it is an object or
+#'   a number, when an element is not a non-empty JSON string, when it holds
+#'   a different number of names than the module has items, or when it
+#'   repeats a name.
 #'
 #' @seealso [write_module()] to write the file; [hitop_module()] to build a
 #'   module without one.
@@ -501,7 +557,60 @@ read_module <- function(file) {
     attr(module, "item_order") <- order
   }
 
+  if (!is.null(numbers[["columns"]])) {
+    attr(module, "columns") <- read_module_columns(
+      numbers[["columns"]],
+      n_items = module$nItems,
+      file = file
+    )
+  }
+
   module
+}
+
+# Internal Helper: read the format's `columns` field.
+#
+# `x` comes from the parse with `simplifyVector = FALSE`, so a JSON array is an
+# unnamed list whose elements keep their JSON types, and a bare string is a
+# length-one character vector. Every element must be a non-empty string, one
+# per module item, with no name repeated.
+read_module_columns <- function(x, n_items, file, call = rlang::caller_env()) {
+  refuse <- function(problem) {
+    cli::cli_abort(
+      c(
+        "The module descriptor {.file {file}} has an unusable \\
+         {.field columns} field.",
+        x = problem
+      ),
+      class = "hitop_module_file_bad_columns",
+      call = call,
+      .envir = rlang::current_env()
+    )
+  }
+  values <- if (is.character(x)) {
+    as.list(x)
+  } else if (is.list(x) && is.null(names(x))) {
+    x
+  } else {
+    refuse("It must be a JSON array of strings.")
+  }
+  is_name <- function(v) {
+    is.character(v) && length(v) == 1L && !is.na(v) && nzchar(v)
+  }
+  if (!all(vapply(values, is_name, logical(1L)))) {
+    refuse("Every element must be a non-empty JSON string.")
+  }
+  columns <- unlist(values, use.names = FALSE)
+  if (length(columns) != n_items) {
+    refuse(
+      "It must hold one name for each of the {n_items} item{?s} the module \\
+       covers, not {length(columns)}."
+    )
+  }
+  if (anyDuplicated(columns) > 0L) {
+    refuse("It must not repeat a name.")
+  }
+  columns
 }
 
 # Internal Helper: read one of the format's number fields.
@@ -609,12 +718,15 @@ read_module_check_format <- function(format, file, call = rlang::caller_env()) {
 # instrument offers, so a full administration gets a descriptor too rather than
 # the argument quietly doing nothing. `item_order` is the original item numbers
 # in the order a form printed them; NULL leaves the field out, which is what a
-# form printed in instrument order deserves.
+# form printed in instrument order deserves. `columns` is the names the
+# instrument file gives the module's items, in ascending item-number order;
+# NULL leaves the field out, which is what a paper form deserves.
 write_descriptor_sidecar <- function(
   descriptor,
   module,
   instrument,
   item_order = NULL,
+  columns = NULL,
   call = rlang::caller_env()
 ) {
   validate_string(descriptor, "descriptor", call = call)
@@ -641,6 +753,10 @@ write_descriptor_sidecar <- function(
   # shuffled would inherit that form's printed order.
   attr(module, "item_order") <-
     if (is.null(item_order)) NULL else as.integer(item_order)
+  # Set unconditionally for the same reason: a module read back from a REDCap
+  # descriptor carries that export's names, and a Word form built from it has
+  # no columns at all.
+  attr(module, "columns") <- columns
   # The writer's own abort is left to speak: it names the path, which is the
   # fact the caller needs, and re-wrapping it here would re-interpolate a
   # message that has already been formatted. `call` is passed through so the

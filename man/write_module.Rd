@@ -9,7 +9,10 @@ write_module(module, file)
 \arguments{
 \item{module}{A \code{hitop_module} object, as returned by \code{\link[=hitop_module]{hitop_module()}}. An
 \code{item_order} attribute, where present, is written as the file's
-\code{itemOrder} and must be a permutation of the module's items.}
+\code{itemOrder} and must be a permutation of the module's items. A \code{columns}
+attribute, where present, is written as the file's \code{columns}. It must be
+a character vector with one distinct, non-empty name per module item.
+A bad attribute is refused before the file is opened.}
 
 \item{file}{A string giving the path to write to.}
 }
@@ -65,9 +68,23 @@ read and written again keeps the order it recorded. The generators'
 \code{\link[=score_hitopsr]{score_hitopsr()}} and \code{\link[=reliability_hitopsr]{reliability_hitopsr()}} read it under
 \code{layout = "printed"} to score columns entered in the form's printed
 order.}
+\item{\code{columns}}{The names that an online export gives the module's
+items: one string per item, in ascending item-number order.
+Optional. \code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}}'s \code{descriptor} writes the
+dictionary's item field names here, and
+\code{\link[=generate_qualtrics_hitopsr]{generate_qualtrics_hitopsr()}}'s writes the questions' \verb{[[ID:]]}
+values. A Word form has no columns, so
+its descriptor has no field. \code{\link[=read_module]{read_module()}} returns the field on the
+module's \code{columns} attribute, and \code{\link[=write_module]{write_module()}} writes it back
+from that attribute as a JSON array. \code{\link[=score_hitopsr]{score_hitopsr()}} and
+\code{\link[=reliability_hitopsr]{reliability_hitopsr()}} use the attribute as \code{items} when \code{items} is
+omitted.}
 }
 
-\code{format}, \code{instrument}, and \code{scales} are required. The fields and the
+\code{format}, \code{instrument}, and \code{scales} are required. A reader of format
+\code{"1.0"} ignores a field it does not know, so release 0.2.0, the first
+with \code{\link[=read_module]{read_module()}}, and later releases read a file with \code{columns} and
+ignore the field. The fields and the
 version string are a public contract and change only deliberately.
 }
 
