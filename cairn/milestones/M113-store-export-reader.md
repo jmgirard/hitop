@@ -59,6 +59,7 @@ Make `read_form_responses()` read a file holding many participants' rows, and pu
 - 2026-09-23: T4 done: roxygen and a stale comment updated for multi-row files, NEWS bullet under "New features"; `document()` no diff, `test()` 19787 passing, `check_pkgdown()` clean, `check()` 0 errors 0 warnings 0 notes (4m 9s).
 - 2026-09-23: claim audit: 46 claims read, 4 corrected — R/read_form_responses.R, NEWS.md, vignettes/articles/online-collection.Rmd, vignettes/articles/modules-hitopsr.Rmd, vignettes/pid5_scoring.Rmd, inst/examples/README.md, tests/testthat/fixtures/README.md. Corrections: the Apps Script's key cap and formula reason, the descriptor as an addition to the instrument choice, "one or more" rows in NEWS, the Supabase table's SQL pinned to hitop-form `1e472ba`. Two gaps the reader noted and left were closed by the author: the fallback file and the link's instrument and module in the data-holding section.
 - 2026-09-23: all tasks checked; status set to review. The T3 tick landed in the T2 checkpoint commit by the author's oversight; the code for T3 is in its own commit.
+- 2026-09-23: resume by /milestone-implement: `main` had moved (M114 merged), so it was merged into the branch at `36fce0a9`, the ROADMAP conflict resolved to M113 review and M114 done. Re-verify on the merged tree: `document()` no diff, line-ending check clean, `test()` 0 failures. Status stays review.
 
 ## Decisions
 
