@@ -80,11 +80,13 @@ The file is JSON, with these fields:
 - `items`, `nItems`:
 
   The original instrument item numbers the module covers, and how many
-  there are. Cross-checked on read: the order they are written in
-  carries no meaning —
+  there are. `write_module()` writes them in ascending order, and the
+  hitop-form web page requires that order, refusing a descriptor whose
+  `items` are not ascending. Cross-checked on read:
   [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
-  compares them as a set — but a repeated number is an error, and the
-  printed order of a shuffled form belongs in `itemOrder` instead.
+  compares them as a set, so their order carries no meaning to it, but a
+  repeated number is an error, and the printed order of a shuffled form
+  belongs in `itemOrder` instead.
 
 - `itemOrder`:
 

@@ -185,10 +185,12 @@ instrument. <strong>Required</strong>: these are what the module is rebuilt from
 
 <dt><code>items</code>, <code>nItems</code></dt>
 <dd><p>The original instrument item numbers the module
-covers, and how many there are. Cross-checked on read: the order they
-are written in carries no meaning — <code>read_module()</code> compares them as
-a set — but a repeated number is an error, and the printed order of
-a shuffled form belongs in <code>itemOrder</code> instead.</p></dd>
+covers, and how many there are. <code><a href="write_module.html">write_module()</a></code> writes them in
+ascending order, and the hitop-form web page requires that order,
+refusing a descriptor whose <code>items</code> are not ascending. Cross-checked
+on read: <code>read_module()</code> compares them as a set, so their order
+carries no meaning to it, but a repeated number is an error, and the
+printed order of a shuffled form belongs in <code>itemOrder</code> instead.</p></dd>
 
 <dt><code>itemOrder</code></dt>
 <dd><p>The printed order of a shuffled form: a permutation

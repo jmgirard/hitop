@@ -51,7 +51,8 @@ new order for each participant, keeps the item columns in the
 instrument's order (a module's items in the order its descriptor lists
 them, which
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
-writes ascending), and writes `item_order`.
+writes ascending and the page requires ascending), and writes
+`item_order`.
 
 `item_order` is the order the participant saw the items, as item numbers
 with no leading zero, joined by single spaces with none at either end
@@ -81,11 +82,19 @@ Every file must carry the same item columns in the same order, because a
 set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
-(first columns other than the five the page writes first, a column that
-appears twice, a header with no response row, an item value that is not
-a whole number or is outside R's integer range, a date that does not
-parse) is an error naming the file. A `submitted` stamp may carry
-fractional seconds.
+is an error naming the file: no header row (a zero-byte file, blank
+lines only, a byte-order mark only), first columns other than the five
+the page writes first, a column that appears twice, a header with no
+response row, a response row holding fewer or more fields than the
+header, an item column whose name is not a stem of lower-case letters
+and digits, an underscore and the item number (`hitopbr_01`, not `foo`
+or `Hitopbr_01`), item columns of more than one stem (`hitopbr_01`
+beside `pid5bf_01`), an item value that is not a whole number or is
+outside R's integer range, or a date that does not parse. An error on a
+row or a value names the response rows at fault, counted from the first
+row after the header. The field count of a row reads `#` as data and a
+quoted cell holding a line break as one cell, as the read does. A
+`submitted` stamp may carry fractional seconds.
 
 **Errors.** Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class

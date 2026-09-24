@@ -39,10 +39,17 @@ keys, or has a key outside lower-case letters, digits and underscores,
 so no one can grow the header without limit or put a formula in it.
 
 Deploy one sheet and script per form. A key the header lacks is added to
-it, so a sheet that receives two forms’ rows, or a module’s beside the
-full instrument’s, holds the union of their columns, and its download
-reads as one data frame with the other form’s items blank on every row.
-Nothing in the download or in
+it, so a sheet that receives two forms’ rows holds the union of their
+columns. When the two forms are two instruments,
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+refuses the download, because its item columns carry two stems
+(`hitopbr_01` beside `pid5bf_01`). When they are a HiTOP-SR module and
+the full HiTOP-SR, the columns share one stem, so the download reads as
+one data frame with the module’s rows blank on the items outside it,
+unless the module’s link asked for a random order: its rows’
+`item_order` then lists only the module’s items, and
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+refuses the download. Nothing else in the download or in
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 tells the two apart.
 

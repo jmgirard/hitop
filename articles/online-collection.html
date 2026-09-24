@@ -143,11 +143,18 @@ request whose body is not one object, holds more than 1000 keys, or has
 a key outside lower-case letters, digits and underscores, so no one can
 grow the header without limit or put a formula in it.</p>
 <p>Deploy one sheet and script per form. A key the header lacks is added
-to it, so a sheet that receives two forms’ rows, or a module’s beside
-the full instrument’s, holds the union of their columns, and its
-download reads as one data frame with the other form’s items blank on
-every row. Nothing in the download or in
-<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> tells the two apart.</p>
+to it, so a sheet that receives two forms’ rows holds the union of their
+columns. When the two forms are two instruments,
+<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> refuses the download, because its
+item columns carry two stems (<code>hitopbr_01</code> beside
+<code>pid5bf_01</code>). When they are a HiTOP-SR module and the full
+HiTOP-SR, the columns share one stem, so the download reads as one data
+frame with the module’s rows blank on the items outside it, unless the
+module’s link asked for a random order: its rows’
+<code>item_order</code> then lists only the module’s items, and
+<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> refuses the download. Nothing else in
+the download or in <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> tells the two
+apart.</p>
 </div>
 <div class="section level2">
 <h2 id="make-the-study-link">2. Make the study link<a class="anchor" aria-label="anchor" href="#make-the-study-link"></a>
