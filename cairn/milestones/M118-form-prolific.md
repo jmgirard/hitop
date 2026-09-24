@@ -1,6 +1,6 @@
 # M118: A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M117
 - **Driving RR:** —
@@ -67,6 +67,7 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 - 2026-09-24: T6 done. The tests were written with each task (G10, G11; S11 to S16; T13 to T16; L10 to L13; N7), the download promise created before each walk through `awaitDownload()`. Twelve plants, each a one-line reversal applied by `sed` and restored by `git checkout`, each went red on the tests that cover it: the `prolific` type check (3 failed), the participant conflict (1), the `https:` bar on `complete` (3), the two columns (14), the identifier from the address (3), the placeholder read (2), the printed suffix (3), the SQL columns (2), the builder's participant refusal (1), the builder's completion check (1), a sent screen drawn before the navigation (2), and the saved-screen link (2).
 - 2026-09-24: T7's local half done: `npx playwright test` 177 passed on the checkout; `devtools::test()` FAIL 0, WARN 0, SKIP 15 (pre-existing merge-base skips), PASS 20006; `pkgdown::check_pkgdown()` clean. The hitop-form merge from Jeff's terminal and the deployed-page dispatch belong to review.
 - 2026-09-24: claim audit: 150 claims read, 2 corrected — hitop-form/tests/guard.spec.js (a number is refused as not text, no value shown), hitop/vignettes/articles/online-collection.Rmd (the two columns sit after `submitted` or `item_order`, not after the item columns). One risk fixed: `WRITE_FIXTURES` would have overwritten the by-rule prolific CSV with a capture; its case is now `byRule` and the write skips it. The reader's one re-read of the three sites is pending; checkpoint committed before it returns.
+- 2026-09-24: the reader's re-read found all three corrected sites correct. All tasks checked, local checks clean; status review. Two branches await review: hitop `m118-form-prolific` (docs, fixture, test, NEWS) and hitop-form `m118-form-prolific` (the page, the builder, tests, fixtures, README).
 
 ## Decisions
 
