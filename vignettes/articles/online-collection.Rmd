@@ -179,7 +179,9 @@ placeholders still in it, as the builder's "Open the link" does, asks for the
 identifier instead.
 
 Give the completion URL from the study's page on Prolific, of the form
-`https://app.prolific.com/submissions/complete?cc=…`, in the builder's
+`https://app.prolific.com/submissions/complete?cc=…`
+([the compatibility article](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific),
+under "Returning Participants to Prolific"), in the builder's
 "Completion URL" field. After a confirmed send the page sends the
 participant there, which is the return Prolific recommends
 ([Data collection](https://researcher-help.prolific.com/en/articles/445127-data-collection)).

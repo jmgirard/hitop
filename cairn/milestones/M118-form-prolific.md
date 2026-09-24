@@ -48,6 +48,7 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 - [x] T5: README sections and the fixtures README in hitop-form. In hitop: the walk-saved fixture and its test, the `online-collection.Rmd` Prolific section and "Who holds the data", and `NEWS.md`. Purl and run the article.
 - [x] T6: Tests: guard (AC1), save and send (AC2), link (AC3), send and network (AC4). Plant-check each by reverting the feature it covers once. Create the download promise before the walk with its own timeout.
 - [x] T7: `npx playwright test` on the checkout, and `devtools::test()` and `pkgdown::check_pkgdown()` in hitop. Jeff merges the hitop-form PR from his terminal, because the merge guard reads the session's repo. Dispatch the deployed-page run after the merge.
+- [ ] T8: The review-return fixes. F1: `checkCompleteUrl()` refuses a non-text value with the value shown, and G11 asserts it. F2: the article's completion-URL sentence cites article 445178. F4: L12 probes with `http://localhost`. F3: the no-store save and the unconfirmed sends assert no `p.complete` element. F11: the form.js header comment names what link.html imports. F13: `buildCsv()` drops the redundant copy.
 
 ## Work log
 
@@ -69,6 +70,7 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 - 2026-09-24: claim audit: 150 claims read, 2 corrected — hitop-form/tests/guard.spec.js (a number is refused as not text, no value shown), hitop/vignettes/articles/online-collection.Rmd (the two columns sit after `submitted` or `item_order`, not after the item columns). One risk fixed: `WRITE_FIXTURES` would have overwritten the by-rule prolific CSV with a capture; its case is now `byRule` and the write skips it. The reader's one re-read of the three sites is pending; checkpoint committed before it returns.
 - 2026-09-24: the reader's re-read found all three corrected sites correct. All tasks checked, local checks clean; status review. Two branches await review: hitop `m118-form-prolific` (docs, fixture, test, NEWS) and hitop-form `m118-form-prolific` (the page, the builder, tests, fixtures, README).
 - 2026-09-24: /milestone-review returned the milestone to in-progress. AC1 fails on F1 (a `complete` number is refused with no value shown), AC3 on F4 (L12 probes a form AC1 does not list), AC5 on F2 (the article's completion-URL sentence carries no citation). AC2, AC4 and AC6 verified. The other lenses found nothing. Defect return 1. The fixes and the fix-now findings F3, F11 and F13 go to /milestone-implement, the rest to the re-review gate.
+- 2026-09-24: /milestone-implement resumed on the return. T8 added as a minor amendment carrying the six fixes. All six edited in both repos. Each fix was planted once by reversing it and its test went red: F1 on G11's number probe, F3 on the no-store save and the HTML-body unconfirmed send, F4 on L12 with the builder's check bypassed. The article renders with the new citation. The full hitop-form suite and the claim-audit reader are running at this checkpoint. hitop-form's changes are staged, to be committed on green.
 
 ## Decisions
 
