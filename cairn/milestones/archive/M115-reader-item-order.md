@@ -1,0 +1,11 @@
+# M115: `read_form_responses()` accepts an `item_order` column recording the order a participant saw
+
+**Status:** done (2026-09-24, PR #126 https://github.com/jmgirard/hitop/pull/126)
+
+**Goal:** Let the reader accept an optional lead column, `item_order`, that the page will write under a random display order (M116), so that such a file reads and scores as one without it does.
+
+**Outcome:** `read_form_response_file()` takes a column named `item_order` from anywhere after `submitted`. It checks each non-blank cell against `^[1-9][0-9]*( [1-9][0-9]*)*$` and against the item numbers parsed from the item column names, the digits after the last underscore. It writes the column sixth as character, with `NA` on rows from files without it. A bad cell is an unclassed `cli_abort()` that names the file and the response rows. The mismatch comparison reads columns seven onward, so D-064's two classes keep their triggers (D-070(c)). The help page, the online-collection article and NEWS describe the column. The modules article selects item columns by the `^hitopsr_` prefix. Tests cover both column positions, the absent column, a mixed directory, a multi-row file, eight bad cells, the blank cell and the row numbering. One position read in `test-layout.R` moved from five to six columns.
+
+**Decisions:** none. D-070 governs.
+
+**Review:** three-lens fan-out. The diff-bug lens gave eight findings. Three were fixed on the branch: the modules article's item selection, which `check()` cannot see because articles are not built there. The refusal's plural, where a first `cli::qty(rows)` failed on a vector and the new two-row test caught it. One help-page phrase. Two went to the malformed-download candidate row: a column name with no numeric suffix makes every non-blank cell refused with the cell blamed, and item numbers are parsed without the stem, so a file mixing instruments accepts `1 1`. One went to M116: two vignettes still say five lead columns. Two were rejected: the row count differs from the physical line only when a file holds blank lines, and the mismatch test cannot see the comparison including `item_order`, a state with no visible effect. The blame-history and prior-review lenses found nothing. The claim audit before review read 22 claims and corrected none. Nothing graduated or retired.
