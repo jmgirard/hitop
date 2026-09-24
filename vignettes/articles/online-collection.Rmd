@@ -176,18 +176,37 @@ placeholder
 ([Previewing your study](https://researcher-help.prolific.com/en/articles/445131-previewing-your-study)),
 so the preview walks the form as a participant would; a link opened with the
 placeholders still in it, as the builder's "Open the link" does, asks for the
-identifier instead.
+identifier instead. Prolific's own "I'll use URL parameters" option, in the
+Data collection section of the study's setup, appends the three parameters
+to the study URL itself
+([the compatibility article](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific),
+under "Recording participants' Prolific IDs"). A pasted link with the
+builder's placeholders therefore carries each parameter once unless that
+option adds it again; then the address holds the parameter twice, and the
+page reads the first value that is neither blank nor a placeholder.
 
 Give the completion URL from the study's page on Prolific, of the form
 `https://app.prolific.com/submissions/complete?cc=…`
 ([the compatibility article](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific),
 under "Returning Participants to Prolific"), in the builder's
-"Completion URL" field. After a confirmed send the page sends the
-participant there, which is the return Prolific recommends
+"Completion URL" field. After a confirmed send the page shows the sent
+screen, with a link to that address in place of "You can close this
+page.", and then sends the participant there, which is the return Prolific
+recommends
 ([Data collection](https://researcher-help.prolific.com/en/articles/445127-data-collection)).
 After a saved file, because the link names no store or the send was not
 confirmed, the page shows the file name first and then a link to that
 address, so the participant sees the file's name before leaving.
+
+A study can hold more than one completion code, each for its own outcome
+([Custom completion codes](https://researcher-help.prolific.com/en/articles/445170-custom-completion-codes)),
+and each code has its own `?cc=` address, as
+[the API reference](https://docs.prolific.com/api-reference/studies/the-study-object)
+states under `completion_codes`. To give a saved file its own code, put
+that code's address in the builder's "Completion URL after a saved file"
+field, beside the completion URL. The saved-file screens then link to it
+in place of the completion URL, and a confirmed send still goes to the
+completion URL.
 
 The download then reads as above, with `prolific_study` and
 `prolific_session` filled. The file below is one the page saved under such
