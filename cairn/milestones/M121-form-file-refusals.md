@@ -62,6 +62,7 @@ A malformed hitop-form file stops at `read_form_responses()` or at the hitop-for
 - 2026-09-24: claim audit: 42 claims read, 7 corrected — NEWS.md, R/read_form_responses.R (a comment), tests/testthat/test-read_form_responses.R (a comment), vignettes/articles/online-collection.Rmd, hitop-form README.md, form.js (a comment), tests/guard.spec.js (a comment). The re-read cleared six; the NEWS "before" sentence was then narrowed to the two faults the reader observed on the old reader, without a further pass. The article's two-forms paragraph now carries the random-order exception (a module row's `item_order` lists only the module's items, so the reader refuses the mixed download).
 - 2026-09-24: status → review; `document()` no diff, suite 817 green, Playwright 201 passed.
 - 2026-09-24: review pass 1: every criterion verified with fresh evidence, gate clean, three lenses run; one test assertion, one comment and one hitop-form README sentence fixed at the gate (Review F2, F5, F10); no return.
+- 2026-09-24: step-7 approval: m121-form-file-refusals approved for merge (hitop and hitop-form).
 
 ## Decisions
 
