@@ -362,10 +362,11 @@
 * **`read_form_responses()` refuses a malformed file by name, and the
   hitop-form page refuses a descriptor whose items are not ascending.** A
   response row holding fewer or more fields than the header stops the read
-  with a message naming the file and each such row. Before, a file whose
-  first row held one field too many stopped with base R's "duplicate
-  'row.names'", and a short row read as a row with blank items. A file with
-  no header row
+  with a message naming the file and each such row. Before, a row holding
+  one field too many was misread, and the read stopped on a fault the file
+  did not have, such as a `form_build` value that does not parse or base
+  R's "duplicate 'row.names'", and a short row read as a row with blank
+  items. A file with no header row
   (zero bytes, blank lines only, a byte-order mark only) is refused with the
   reader's own message naming the file, not base R's "no lines available in
   input". An item column whose name is not a stem, an underscore and the

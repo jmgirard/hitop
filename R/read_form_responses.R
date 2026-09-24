@@ -233,7 +233,8 @@ count_form_fields <- function(file) {
 # row: one for a file the page saved, one per participant for a store's export.
 read_form_response_file <- function(file, call = rlang::caller_env()) {
   # The field count of each record, taken before `read.csv()` pads a short
-  # row or stops on a long one. `#` is data and a quoted line break is one
+  # row or reads a long one wrongly (its first cell as a row name, or its
+  # extra field wrapped onto a new row). `#` is data and a quoted line break is one
   # record, as `read.csv()` reads them: `count.fields()` gives NA on the line
   # a quoted record starts on and the record's count on its last line, so
   # the NA entries fold away. The connection strips a byte-order mark as

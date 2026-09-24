@@ -56,8 +56,10 @@ When the two forms are two instruments, `read_form_responses()` refuses the
 download, because its item columns carry two stems (`hitopbr_01` beside
 `pid5bf_01`). When they are a HiTOP-SR module and the full HiTOP-SR, the
 columns share one stem, so the download reads as one data frame with the
-module's rows blank on the items outside it, and nothing in the download or
-in `read_form_responses()` tells the two apart.
+module's rows blank on the items outside it, unless the module's link asked
+for a random order: its rows' `item_order` then lists only the module's
+items, and `read_form_responses()` refuses the download. Nothing else in the
+download or in `read_form_responses()` tells the two apart.
 
 ## 2. Make the study link
 

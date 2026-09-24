@@ -1238,9 +1238,10 @@ test_that("the example files read through system.file()", {
 
 # ---- Malformed files are refused by name ------------------------------------
 #
-# Each file below is written by `write_rows()` from a two-item header and a
-# good row, with one or two rows altered. The response row is counted from
-# the first row after the header, as the `item_order` refusal counts it.
+# Most files below are written by `write_rows()` from a two-item header and a
+# good row, with one or two rows altered; the others say how they are made.
+# The response row is counted from the first row after the header, as the
+# `item_order` refusal counts it.
 
 two_header <- paste(c(lead, "hitopbr_01", "hitopbr_02"), collapse = ",")
 good_row <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
