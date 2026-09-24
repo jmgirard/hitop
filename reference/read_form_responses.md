@@ -43,17 +43,24 @@ are `study`, `participant`, `instrument`, `form_build`, `submitted` and
 `item_order`; the item columns follow, one per item, named by the
 instrument's file stem and the item number (`hitopsr_001`, `hitopbr_01`,
 `pid5_001`, `pid5sf_001`, `pid5bf_01`). A module form saves only the
-module's items, in the order the form showed them.
+module's items. The page keeps the item columns in the order it showed
+the items, except under a study link that asks for a random order: the
+page then draws a new order for each participant, keeps the item columns
+in the instrument's order (a module's items in the order its descriptor
+lists them, which
+[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+writes ascending), and writes `item_order`.
 
 `item_order` is the order the participant saw the items, as item numbers
 with no leading zero, joined by single spaces with none at either end
-(`hitopbr_01` is 1). A file may hold the column anywhere after
-`submitted`, as a store's download may append it after the item columns,
-and the result places it sixth. A file may also lack it: its rows then
-hold `NA` there. Scoring does not read the column, and it is not an item
-column, so it does not enter the check that every file holds the same
-item columns. A cell that is not blank and does not list the file's item
-numbers, each once, is an error naming the file and the response row.
+(`hitopbr_01` is 1). The page writes it under a random order and not
+otherwise. A file may hold the column anywhere after `submitted`, as a
+store's download may append it after the item columns, and the result
+places it sixth. A file may also lack it: its rows then hold `NA` there.
+Scoring does not read the column, and it is not an item column, so it
+does not enter the check that every file holds the same item columns. A
+cell that is not blank and does not list the file's item numbers, each
+once, is an error naming the file and the response row.
 
 Every file must carry the same item columns in the same order, because a
 set of files that differ cannot be one data frame: a full HiTOP-SR

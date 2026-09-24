@@ -507,9 +507,10 @@ form, name the study, choose where the responses go and, if you want,
 give a participant identifier. Send the link to the participant.
 
 Whichever route the answers take, the CSV file has five lead columns
-(`study`, `participant`, `instrument`, `form_build`, `submitted`) and
-then one column per item. The item columns are named as this package
-names them: `pid5_001` to `pid5_220`, `pid5sf_001` to `pid5sf_100`, or
+(`study`, `participant`, `instrument`, `form_build`, `submitted`), a
+sixth, `item_order`, when the link asked for a random order, and then
+one column per item. The item columns are named as this package names
+them: `pid5_001` to `pid5_220`, `pid5sf_001` to `pid5sf_100`, or
 `pid5bf_01` to `pid5bf_25`. Each holds the value of the chosen option, 0
 to 3. A file the page saved holds one participant’s row; a store’s
 download holds one row per participant.

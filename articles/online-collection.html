@@ -178,7 +178,14 @@ choose File, then Download, then Comma Separated Values (.csv). The file
 has one header row and one row per participant, in the page’s column
 order: <code>study</code>, <code>participant</code>,
 <code>instrument</code>, <code>form_build</code>,
-<code>submitted</code>, then one column per item.</p>
+<code>submitted</code>, then one column per item. A link that asks for a
+random order adds <code>item_order</code> after <code>submitted</code>,
+and its item columns are in the instrument’s order rather than the order
+shown. The script builds the header from the first row it receives and
+appends a key it has not seen, so a sheet that already holds rows
+without <code>item_order</code> puts that column after the item columns.
+<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads it there. Start a new sheet for
+such a link if you want the column sixth.</p>
 <p>Anyone who has the link can post a row to the sheet, because the
 script’s URL is inside the link. Look over the sheet before scoring
 it.</p>
@@ -214,7 +221,9 @@ them; <code>form_build</code> is a date; <code>submitted</code> is a UTC
 date-time. Every item column is an integer. The sixth column,
 <code>item_order</code>, is the order the participant saw the items, as
 item numbers, when the file records one and <code>NA</code> when it does
-not, and scoring does not read it.</p>
+not, and scoring does not read it. The page records it when the study
+link asks for a random order, which the link builder’s “Show the items
+in a random order” box sets.</p>
 <p>A folder can hold the download beside any files participants sent by
 hand: <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads every <code>.csv</code>
 file in it, file by file in path order, and each file’s rows in its own

@@ -4,6 +4,17 @@
 
 ### New features
 
+- **The hitop-form page can show each participant the items in a random
+  order.** The link builder’s “Show the items in a random order” box
+  asks for it. The file and the row then keep the item columns in the
+  instrument’s order under the official item names and record the order
+  shown in `item_order`, which
+  [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+  reads. The help page, the online-collection article, the modules
+  article and
+  [`vignette("pid5_scoring")`](https://jmgirard.github.io/hitop/articles/pid5_scoring.md)
+  describe the column, and the reader’s tests read one such file.
+
 - **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
   accepts an `item_order` column.** A response file may hold a column
   named `item_order` anywhere after `submitted`. It records the order
