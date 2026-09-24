@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-23 (62nd pass, at the M117/M118 plan): M114 row pruned and the reader-gaps row compressed to hold the line and byte caps after two planned rows joined. validate green._
+_Last hygiene check: 2026-09-24 (63rd pass, M117 done): row archived, three terminal rows kept, no lesson added with LESSONS at its byte cap. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
@@ -9,7 +9,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 |---|---|---|---|---|---|
 | M115 | `read_form_responses()` accepts an `item_order` column recording the order a participant saw | done | M113 | normal | milestones/archive/M115-reader-item-order.md |
 | M116 | A study link can ask hitop-form to show each participant the items in a fresh random order | done | M114, M115 | normal | milestones/archive/M116-form-random-order.md |
-| M117 | `read_form_responses()` accepts the two Prolific columns a study link can ask hitop-form to write | review | — | normal | milestones/M117-reader-prolific-columns.md |
+| M117 | `read_form_responses()` accepts the two Prolific columns a study link can ask hitop-form to write | done | — | normal | milestones/archive/M117-reader-prolific-columns.md |
 | M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | planned | M117 | normal | milestones/M118-form-prolific.md |
 
 ## Candidates
