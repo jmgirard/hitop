@@ -21,12 +21,12 @@ Both saved-file screens of hitop-form gain a "Save the file" button that saves t
 
 ## Acceptance criteria
 
-- [ ] AC1: On the unconfirmed screen, after a send the store did not confirm, a button labelled "Save the file" follows the trail paragraph, and a first and a second click on it each start a download whose suggested file name equals the text of `code.filename` and whose bytes equal the file the page saved at Finish. Tested in `tests/send.spec.js` inside the five-outcome loop (an HTML body, a 404, a 500, a refused connection, the hang), so the motivating hang case is among the walks.
-- [ ] AC2: On the saved screen, with no store in the link, the same button follows the trail paragraph, and a first and a second click on it each start a download whose suggested file name equals the text of `code.filename` and whose bytes equal the file saved at Finish. Tested in `tests/save.spec.js` on the HiTOP-BR walk.
-- [ ] AC3: On the sent screen, after a confirmed send, no "Save the file" button is in the document and no download starts. Asserted in the confirmed-send loop of `tests/send.spec.js` (no completion address) beside its no-download assertion, and in the completion-address test from the observer's report at the held navigation request.
-- [ ] AC4: On both saved-file screens the trail paragraph keeps its sentences and ends with "If the file did not appear, press Save the file." The screen's order is the heading, the lead paragraph, the file name, the trail paragraph, the button, the completion link when the link carries one, then the version line. Tested in `tests/save.spec.js` without a completion URL and with one, and in `tests/send.spec.js` on the unconfirmed screen with a completion URL.
-- [ ] AC5: The hitop-form README's "What the participant sees" section and its test table, the hitop online-collection article's saved-file sentences, and hitop's NEWS.md say that each saved-file screen has a "Save the file" button that saves the same file again, and that the participant presses it if the file did not appear. Each such claim is one AC1 to AC4 asserts.
-- [ ] AC6: `npx playwright test` is green on the hitop-form checkout. In hitop, `devtools::test()` is clean and `pkgdown::check_pkgdown()` passes.
+- [x] AC1: On the unconfirmed screen, after a send the store did not confirm, a button labelled "Save the file" follows the trail paragraph, and a first and a second click on it each start a download whose suggested file name equals the text of `code.filename` and whose bytes equal the file the page saved at Finish. Tested in `tests/send.spec.js` inside the five-outcome loop (an HTML body, a 404, a 500, a refused connection, the hang), so the motivating hang case is among the walks.
+- [x] AC2: On the saved screen, with no store in the link, the same button follows the trail paragraph, and a first and a second click on it each start a download whose suggested file name equals the text of `code.filename` and whose bytes equal the file saved at Finish. Tested in `tests/save.spec.js` on the HiTOP-BR walk.
+- [x] AC3: On the sent screen, after a confirmed send, no "Save the file" button is in the document and no download starts. Asserted in the confirmed-send loop of `tests/send.spec.js` (no completion address) beside its no-download assertion, and in the completion-address test from the observer's report at the held navigation request.
+- [x] AC4: On both saved-file screens the trail paragraph keeps its sentences and ends with "If the file did not appear, press Save the file." The screen's order is the heading, the lead paragraph, the file name, the trail paragraph, the button, the completion link when the link carries one, then the version line. Tested in `tests/save.spec.js` without a completion URL and with one, and in `tests/send.spec.js` on the unconfirmed screen with a completion URL.
+- [x] AC5: The hitop-form README's "What the participant sees" section and its test table, the hitop online-collection article's saved-file sentences, and hitop's NEWS.md say that each saved-file screen has a "Save the file" button that saves the same file again, and that the participant presses it if the file did not appear. Each such claim is one AC1 to AC4 asserts.
+- [x] AC6: `npx playwright test` is green on the hitop-form checkout. In hitop, `devtools::test()` is clean and `pkgdown::check_pkgdown()` passes.
 
 ## Coverage
 
@@ -64,3 +64,26 @@ Both saved-file screens of hitop-form gain a "Save the file" button that saves t
 ## Decisions
 
 ## Review
+
+Reviewed 2026-09-24 on `m120-form-save-button` in both repos. `origin/main` was unmoved in each since the branches were cut, so no merge was needed. Playwright 197 of 197 on the hitop-form branch (1.3 min); `devtools::test()` 0 failures, 0 warnings, 15 skips (merge-base and pkgload reasons); `devtools::document()` no diff; `pkgdown::check_pkgdown()` no problems; README.md in step with README.Rmd; `cairn_validate` exit 0, 24 advisories.
+
+- AC1: verified. `showSaved()` renders the button after the trail paragraph with `onclick: () => saveFile(name, text)` over the name and text `saveCsv()` returned at Finish (`form.js:931-958`). T19 runs inside the five-outcome loop (an HTML body, a 404, a 500, a refused connection, the hang): `expectSaveAgain()` asserts one button, then a first and a second click each yield a download whose `suggestedFilename()` equals the Finish download's, whose name the loop already asserts equals `code.filename`, and whose bytes equal the Finish file. All five passed in the review run.
+- AC2: verified. S21 on the HiTOP-BR case asserts the same through `expectSaveAgain()`; the review run passed it. The case compares the suggested name with the Finish download's and not with `code.filename` (finding 3 below).
+- AC3: verified. T20: the T5 loop (four walks) and the four supabase walks assert `getByRole('button', { name: 'Save the file' })` count 0 beside their no-download assertion; T15's snapshot at the held request carries `saveButtons: 0` for both stores. All passed.
+- AC4: verified. The trail paragraph is `${trail} If the file did not appear, press Save the file.` (`form.js:957`); T19 and S21 assert the full paragraph text at `main > p` position 3 for both screens' trails; `screenOrder()` over `main > *` equals `['H1','P.done','P','P','BUTTON','P.version']` in T19 and S21 and the same with `'P.complete'` before the version line in S16 and T16. All passed.
+- AC5: verified. hitop-form README lines 154-161 and 167-168 and the save and send rows (422-423); the article at lines 75-78 and 201-203; NEWS lines 5-14. Each claim was read against the page by the claim audit (27 claims, 6 corrected, re-read 6 of 6); the "a browser can block a download that late" sentence is one no test asserts (finding 2).
+- AC6: verified. The figures in the first paragraph.
+
+Independent review, three lenses, user-facing tier. History lens ([S]): 0 findings; the answers snapshot, the `finished` flag, the sent-screen order and D-071/D-072 all preserved. Prior-review lens ([S]): 0 findings; both PR comment probes empty; the diff is M111's deferred F5 and follows the M095 and M119 lessons. Diff-bug lens ([O]): 11 findings, ranked:
+
+- F1 `expectSaveAgain()` waits 110 s per click, so a click that saves nothing fails as a whole-test timeout after the hang walk's 30 s. Proposed: fix now, a 15 s wait for the save-again clicks.
+- F2 README, NEWS and the article say "a browser can block a download that late", a claim no test asserts and the Out section calls unverified. Proposed: fix now, drop the reason sentence and keep the timing claim T6 asserts.
+- F3 S21 compares the clicks' name with the Finish download's and never with `code.filename`, which AC2 names. Proposed: fix now, assert `code.filename` equals the suggested name in the HiTOP-BR case.
+- F4 `savedScreenOrder()` reads the file-name and trail paragraphs both as `P`, so a swap passes in S16 and T16. Proposed: fix now, the token names a `code.filename` child.
+- F5 With a completion URL, S16 and T16 assert the order and not the trail sentence. Proposed: fix now, assert `SAVE_AGAIN` there too.
+- F6 `saveButtons` counts `textContent === 'Save the file'` exactly, so a differently spaced button on the sent screen passes; never planted. Proposed: fix now, trim and include, and plant once against T15.
+- F7 The hang walk's two clicks come after the 30 s wait and cannot disturb its timing assertion. Proposed: noted, nothing to change.
+- F8 A press gives no on-page confirmation, so a screen-reader user hears nothing if the browser shows no download notice. Proposed: candidate row.
+- F9 `saveFile()` revokes the blob URL 10 s after the click (pre-existing); a save dialog held longer than that can fail. Proposed: fix now, 60 s.
+- F10 The article's Prolific sentence skips the instructions paragraph between the file name and the button. Proposed: fix now.
+- F11 "press Save the file." names the button unquoted, so the sentence can read as a general instruction. Proposed: reject; the wording was chosen at the plan gate.
