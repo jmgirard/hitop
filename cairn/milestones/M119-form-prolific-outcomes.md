@@ -1,6 +1,6 @@
 # M119: The Prolific route of hitop-form gives each outcome its own end: a second completion address for a saved file, a sent screen before the redirect, and a doubled parameter read as its filled value
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -58,6 +58,8 @@ Three follow-ons close the Prolific route M118 opened: a link's `completeSaved` 
 - 2026-09-24: T4 plants, each feature reverted once against the committed fix and restored: completeSaved unparsed, 6 of 7 G12 red; readProlific() on the first value, 5 of 7 S18/S19 red; redirect before the sent screen, T15 both and N7 red; saved screens ignoring completeSaved, S20 and T18 red; confirmed send to completeSaved, T17 red; builder ignoring the field, L14 red.
 - 2026-09-24: T5. Both articles fetched and read that day: 445170's "What are custom completion codes?" sentences and 445178's "Prolific will automatically append URL parameters to your study URL." (under "Recording participants' Prolific IDs", whose capitalisation the source note now records) went into the source note; hitop-form README (f0cbd05), the article's Prolific route and NEWS carry the two facts with the citations. The article purled and ran against the installed package.
 - 2026-09-24: T6 checks: Playwright 197 passed on the hitop-form branch; `devtools::test()` clean (15 skips, merge-base and pkgload reasons); `pkgdown::check_pkgdown()` no problems. T6's merge of the hitop-form PR and the deployed-page dispatch wait for the review gate.
+- 2026-09-24: claim audit: 80 claims read, 7 corrected — hitop-form form.js, README.md, tests/guard.spec.js, tests/helpers.mjs (b006ac9); hitop vignettes/articles/online-collection.Rmd (c8710a1d). Corrections: the doubled parameter reads as the first filled value rather than a placeholder-plus-filled pair; the sent screen's link is not its last line; the form.js comment no longer claims what Back or a failed navigation shows; the G12 header counts five of the G11 probes; the save row names what S18 and S19 test; "data collection page" became the source's "Data collection section"; the helpers comment no longer calls the second address the same shape. Kept: "the three parameters", AC5's wording, with the inference from "URL parameters" recorded in the source note. Re-read by the same reader ([O] agent a87d6c8b): all seven match the code.
+- 2026-09-24: status → review. Nothing pushed; review opens the two PRs.
 
 ## Decisions
 

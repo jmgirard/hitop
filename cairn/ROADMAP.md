@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M116 | A study link can ask hitop-form to show each participant the items in a fresh random order | done | M114, M115 | normal | milestones/archive/M116-form-random-order.md |
 | M117 | `read_form_responses()` accepts the two Prolific columns a study link can ask hitop-form to write | done | — | normal | milestones/archive/M117-reader-prolific-columns.md |
 | M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | done | M117 | normal | milestones/archive/M118-form-prolific.md |
-| M119 | The Prolific route of hitop-form gives each outcome its own end: a second completion address for a saved file, a sent screen before the redirect, and a doubled parameter read as its filled value | in-progress | — | normal | milestones/M119-form-prolific-outcomes.md |
+| M119 | The Prolific route of hitop-form gives each outcome its own end: a second completion address for a saved file, a sent screen before the redirect, and a doubled parameter read as its filled value | review | — | normal | milestones/M119-form-prolific-outcomes.md |
 
 ## Candidates
 
