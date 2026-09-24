@@ -1,13 +1,13 @@
 # M121: `read_form_responses()` and hitop-form refuse a malformed file by name: a short or long row, an empty file, a value refusal naming no row, an unnumbered or second-stem item column, and a descriptor whose items are not ascending
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — an exported reader's refusals and the public page's descriptor check
-- **Branch/PR:** —
+- **Branch/PR:** `m121-form-file-refusals` (hitop and hitop-form)
 
 ## Goal
 
@@ -41,7 +41,7 @@ A malformed hitop-form file stops at `read_form_responses()` or at the hitop-for
 
 ## Tasks
 
-- [ ] T1: In `tests/testthat/test-read_form_responses.R`, add the tests AC1 to AC4 name, each writing its file in a temp directory as the file's other tests do; run them red against the reader as it stands (the two valid-file tests of AC1 are green already and stay).
+- [x] T1: In `tests/testthat/test-read_form_responses.R`, add the tests AC1 to AC4 name, each writing its file in a temp directory as the file's other tests do; run them red against the reader as it stands (the two valid-file tests of AC1 are green already and stay).
 - [ ] T2: In `read_form_response_file()`: wrap `read.csv()` in `rlang::try_fetch()` and refuse its empty-input error naming the file; count each line's fields with `utils::count.fields(file, sep = ",", quote = "\"", comment.char = "")`, fold an `NA` count (a quoted line break's continuation) into its record, and refuse a record whose count differs from the header's, naming the rows; right after `item_cols` is computed (`R/read_form_responses.R:266`), refuse a name outside `^[a-z0-9]+_[0-9]+$` and a second stem; carry `which()` rows into the four value refusals as the `item_order` refusal does (`R/read_form_responses.R:321`). Tests green.
 - [ ] T3: Roxygen for `?read_form_responses` (Details, `R/read_form_responses.R:14-70`) and `?write_module` (`R/module_file.R:52-56`), `devtools::document()`, the online-collection article paragraph (`vignettes/articles/online-collection.Rmd:53-57`), a NEWS entry, and a purl-and-run of the article (LESSONS M115).
 - [ ] T4: In hitop-form `tests/guard.spec.js` (after G6, `form.js` descriptor guards) and `tests/link.spec.js`, add the AC5 tests over the two descriptors; run red.
@@ -53,6 +53,8 @@ A malformed hitop-form file stops at `read_form_responses()` or at the hitop-for
 - 2026-09-24: criteria audit ran in full mode ([O] fresh reader, M121 and M122 together): 13 findings; 8 on this file fixed in the draft (the field count reads `#` and quoted line breaks, bad rows first with a two-row probe, a BOM-only file, the stem regex written into AC4 and the check moved before the value checks, the article paragraph and `?write_module` in AC6, an adjacent-swap probe); 1 posed at the gate (the D-039 annotation, now D-073).
 - 2026-09-24: plan gate chose refusing an item column whose name is outside `^[a-z0-9]+_[0-9]+$` over ignoring such columns because the reader already refuses a file that does not look like the page's and a dropped column would lose a mistyped item silently; falsified by a store export whose own columns cannot be dropped before the read.
 - 2026-09-24: plan gate chose the page refusing non-ascending `items` (D-073) over sorting them in the page and over refusing them in `read_module()` because the page's descriptor check refuses by name and `read_module()` already returns ascending items from its rebuild; falsified by a descriptor writer other than `write_module()` and the Module Builder that lists items in another order on purpose.
+- 2026-09-24: implement started; branch `m121-form-file-refusals` cut from pushed main in hitop and from `origin/main` in hitop-form. No question gate: the plan fixed the checks, their order and their wording sites. The lint hook's hits on the tracking files are cairn's record grammar, left as at M120.
+- 2026-09-24: T1 done: 21 refusal tests red (a short row and the four bad column names read silently today; a long row stops with base R's "duplicate 'row.names'"; an empty file with "no lines available in input"; the value refusals name columns, not rows); the `#` cell and the quoted line break tests green as they stand.
 
 ## Decisions
 

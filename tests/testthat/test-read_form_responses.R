@@ -1235,3 +1235,178 @@ test_that("the example files read through system.file()", {
   expect_true(nzchar(descriptor))
   expect_true(is_module(read_module(descriptor)))
 })
+
+# ---- Malformed files are refused by name ------------------------------------
+#
+# Each file below is written by `write_rows()` from a two-item header and a
+# good row, with one or two rows altered. The response row is counted from
+# the first row after the header, as the `item_order` refusal counts it.
+
+two_header <- paste(c(lead, "hitopbr_01", "hitopbr_02"), collapse = ",")
+good_row <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+
+# A file of `rows` after `two_header`, refused; returns the message.
+refusal <- function(dir, name, rows, header = two_header) {
+  f <- write_rows(file.path(dir, name), c(header, rows))
+  cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+  expect_s3_class(cnd, "error")
+  msg <- conditionMessage(cnd)
+  expect_match(msg, name, fixed = TRUE)
+  msg
+}
+
+# AC1: a row whose field count differs from the header's.
+
+test_that("a row with fewer fields than the header is refused by row", {
+  dir <- withr::local_tempdir()
+  short <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4"
+  msg <- refusal(dir, "short.csv", c(short, good_row, good_row))
+  expect_match(msg, "Response row 1 holds 6 fields", fixed = TRUE)
+  expect_match(msg, "header holds 7", fixed = TRUE)
+})
+
+test_that("a row with more fields than the header is refused by row", {
+  dir <- withr::local_tempdir()
+  long <- paste0(good_row, ",2")
+  msg <- refusal(dir, "long.csv", c(long, good_row, good_row))
+  expect_match(msg, "Response row 1 holds 8 fields", fixed = TRUE)
+  expect_match(msg, "header holds 7", fixed = TRUE)
+})
+
+test_that("two rows of the wrong field count are both named", {
+  dir <- withr::local_tempdir()
+  short <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4"
+  long <- paste0(good_row, ",2")
+  msg <- refusal(dir, "both.csv", c(short, good_row, long))
+  expect_match(msg, "Response row 1 holds 6 fields", fixed = TRUE)
+  expect_match(msg, "Response row 3 holds 8 fields", fixed = TRUE)
+  expect_no_match(msg, "Response row 2 ", fixed = TRUE)
+})
+
+test_that("a # in a participant cell reads as data", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "hash.csv", two_items(), participant = "#")
+  out <- read_form_responses(f)
+  expect_identical(out$participant, "#")
+  expect_identical(out$hitopbr_01, 4L)
+})
+
+test_that("a quoted study cell holding a line break reads as one row", {
+  dir <- withr::local_tempdir()
+  broken <- "\"st\nudy\",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+  f <- write_rows(file.path(dir, "quoted.csv"), c(two_header, broken, good_row))
+  out <- read_form_responses(f)
+  expect_equal(nrow(out), 2L)
+  expect_identical(out$study, c("st\nudy", "s"))
+  expect_identical(out$hitopbr_02, c(1L, 1L))
+})
+
+# AC2: a file with no header.
+
+test_that("a zero-byte file is refused as holding no header", {
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "empty.csv")
+  file.create(f)
+  cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+  msg <- conditionMessage(cnd)
+  expect_match(msg, "empty.csv", fixed = TRUE)
+  expect_match(msg, "no header row", fixed = TRUE)
+  expect_no_match(msg, "no lines available in input", fixed = TRUE)
+})
+
+test_that("a file of blank lines only is refused as holding no header", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "blank.csv"), c("", "", ""))
+  cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+  msg <- conditionMessage(cnd)
+  expect_match(msg, "blank.csv", fixed = TRUE)
+  expect_match(msg, "no header row", fixed = TRUE)
+  expect_no_match(msg, "no lines available in input", fixed = TRUE)
+})
+
+test_that("a file holding only a byte-order mark is refused as holding no header", {
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "bom.csv")
+  con <- file(f, open = "wb")
+  writeBin(as.raw(c(0xEF, 0xBB, 0xBF)), con)
+  close(con)
+  cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+  msg <- conditionMessage(cnd)
+  expect_match(msg, "bom.csv", fixed = TRUE)
+  expect_match(msg, "no header row", fixed = TRUE)
+  expect_no_match(msg, "no lines available in input", fixed = TRUE)
+})
+
+# AC3: the four value refusals name the response rows at fault. Each case
+# turns the good row into a bad one and names the phrase its refusal carries.
+
+value_cases <- list(
+  list(name = "an item value that is not a whole number",
+       phrase = "whole number",
+       bad = function(r) sub(",4,1$", ",yes,1", r)),
+  list(name = "an item value outside the integer range",
+       phrase = "integer range",
+       bad = function(r) sub(",4,1$", ",99999999999,1", r)),
+  list(name = "a form_build that does not parse",
+       phrase = "form_build",
+       bad = function(r) sub("2026-09-20,", "20/09/2026,", r, fixed = TRUE)),
+  list(name = "a submitted that does not parse",
+       phrase = "submitted",
+       bad = function(r) sub("2026-09-20T21:20:36Z", "2026-09-20 21:20:36", r, fixed = TRUE))
+)
+
+for (case in value_cases) {
+  test_that(paste(case$name, "on row 1 is refused naming row 1"), {
+    dir <- withr::local_tempdir()
+    msg <- refusal(dir, "row1.csv", c(case$bad(good_row), good_row, good_row))
+    expect_match(msg, case$phrase, fixed = TRUE)
+    expect_match(msg, "Response row 1", fixed = TRUE)
+    expect_no_match(msg, "rows", fixed = TRUE)
+  })
+
+  test_that(paste(case$name, "on rows 1 and 3 is refused naming both"), {
+    dir <- withr::local_tempdir()
+    msg <- refusal(dir, "rows13.csv", c(case$bad(good_row), good_row, case$bad(good_row)))
+    expect_match(msg, case$phrase, fixed = TRUE)
+    expect_match(msg, "Response rows 1 and 3", fixed = TRUE)
+  })
+}
+
+# AC4: an item column's name.
+
+for (name in c("foo", "hitopbr_", "_01", "Hitopbr_01")) {
+  test_that(paste("an item column named", name, "is refused by name"), {
+    dir <- withr::local_tempdir()
+    header <- paste(c(lead, "hitopbr_01", name), collapse = ",")
+    msg <- refusal(dir, "name.csv", good_row, header = header)
+    expect_match(msg, name, fixed = TRUE)
+    expect_match(msg, "not named as an item column", fixed = TRUE)
+  })
+}
+
+test_that("a foo column holding text is refused for its name, not its value", {
+  dir <- withr::local_tempdir()
+  header <- paste(c(lead, "hitopbr_01", "foo"), collapse = ",")
+  msg <- refusal(dir, "footext.csv", sub(",1$", ",yes", good_row), header = header)
+  expect_match(msg, "foo", fixed = TRUE)
+  expect_match(msg, "not named as an item column", fixed = TRUE)
+  expect_no_match(msg, "whole number", fixed = TRUE)
+})
+
+test_that("item columns of two stems are refused naming the stems", {
+  dir <- withr::local_tempdir()
+  header <- paste(c(lead, "hitopbr_01", "pid5bf_01"), collapse = ",")
+  msg <- refusal(dir, "stems.csv", good_row, header = header)
+  expect_match(msg, "more than one stem", fixed = TRUE)
+  expect_match(msg, "hitopbr", fixed = TRUE)
+  expect_match(msg, "pid5bf", fixed = TRUE)
+})
+
+test_that("a two-stem file with an item_order of 1 1 is refused for the stems, not the cell", {
+  dir <- withr::local_tempdir()
+  header <- paste(c(lead, "item_order", "hitopbr_01", "pid5bf_01"), collapse = ",")
+  row <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,1 1,4,1"
+  msg <- refusal(dir, "stemorder.csv", row, header = header)
+  expect_match(msg, "more than one stem", fixed = TRUE)
+  expect_no_match(msg, "item_order", fixed = TRUE)
+})
