@@ -1,6 +1,6 @@
 # M116: A study link can ask hitop-form to show each participant the items in a fresh random order
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M114, M115
 - **Driving RR:** —
@@ -60,6 +60,7 @@ A link field `shuffle: true` makes `jmgirard/hitop-form` draw a new random order
 - 2026-09-24: minor amendment: T5 reworded to say review's merge step opens the PRs, waits on CI and dispatches the deployed-page run, after the user's approval (D-138). It stays unchecked at the implement close; both branches are ready on disk.
 - 2026-09-23: the work-log lines above dated 2026-09-24 were written this session, on 2026-09-23 local time (2026-09-24 UTC); the local date is used from here on.
 - 2026-09-23: claim audit: 74 claims read, 4 corrected — hitop-form README.md (a table made with the box accepts a row without `item_order`, so only the reverse needs a new table; the module gloss), form.js (the rejection bound is "at or above"), tests/fixtures/README.md (dates); hitop R/read_form_responses.R and man/, vignettes/articles/modules-hitopsr.Rmd (the module gloss: the descriptor's `items` order, which `write_module()` writes ascending, not "ascending" as such), tests/testthat/fixtures/README.md (date).
+- 2026-09-23: the reader re-read the four corrected passages once: all hold. Final heads: hitop-form 7546e56 (suite 138 green), hitop 04e1df48 (`devtools::test()` 0 failures). Status set to review; T5 runs at review's merge step.
 
 ## Decisions
 
