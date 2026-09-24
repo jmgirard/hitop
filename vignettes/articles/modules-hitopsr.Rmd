@@ -452,8 +452,7 @@ naming them would trip the check that warns of a misordered mapping.
 form_module <- read_module(
   system.file("examples", "module-shuffled.json", package = "hitop")
 )
-item_cols <- setdiff(names(responses), c("study", "participant", "instrument",
-                                         "form_build", "submitted"))
+item_cols <- grep("^hitopsr_", names(responses), value = TRUE)
 score_hitopsr(
   responses,
   items = match(item_cols, names(responses)),

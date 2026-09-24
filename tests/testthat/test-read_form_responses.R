@@ -409,6 +409,17 @@ test_that("a blank item_order cell reads as NA, and a bad cell names its row", {
   expect_false(grepl("row 1", msg, fixed = TRUE))
   expect_false(grepl("row 2", msg, fixed = TRUE))
 
+  # Two bad rows name both, in the plural.
+  h <- file.path(dir, "rows2.csv")
+  writeLines(c(
+    paste(c(lead, "item_order", "hitopbr_01", "hitopbr_02"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,2 1,4,1",
+    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,2 2,4,1",
+    "s,p3,hitopbr,2026-09-20,2026-09-20T21:20:36Z,1,4,1"
+  ), h)
+  cnd <- rlang::catch_cnd(read_form_responses(h), "error")
+  expect_match(conditionMessage(cnd), "rows 2 and 3", fixed = TRUE)
+
   g <- file.path(dir, "blank.csv")
   writeLines(c(
     paste(c(lead, "item_order", "hitopbr_01", "hitopbr_02"), collapse = ","),

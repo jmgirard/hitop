@@ -15,12 +15,12 @@
 #'   A store's download, such as a Google Sheet's CSV export or a Supabase
 #'   table's, holds one header row and one row per participant. Every response
 #'   row of every file is a row of the result, the files in path order and the
-#'   rows in file order. The first six columns are `study`, `participant`,
-#'   `instrument`, `form_build`, `submitted` and `item_order`; the item columns
-#'   follow, one per item, named by the instrument's file stem and the item
-#'   number (`hitopsr_001`, `hitopbr_01`, `pid5_001`, `pid5sf_001`,
-#'   `pid5bf_01`). A module form saves only the module's items, in the order
-#'   the form showed them.
+#'   rows in file order. The first six columns of the result are `study`,
+#'   `participant`, `instrument`, `form_build`, `submitted` and `item_order`;
+#'   the item columns follow, one per item, named by the instrument's file
+#'   stem and the item number (`hitopsr_001`, `hitopbr_01`, `pid5_001`,
+#'   `pid5sf_001`, `pid5bf_01`). A module form saves only the module's items,
+#'   in the order the form showed them.
 #'
 #'   `item_order` is the order the participant saw the items, as item numbers
 #'   with no leading zero, joined by single spaces with none at either end
@@ -286,7 +286,7 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
       cli::cli_abort(
         c(
           "{.file {file}} holds an {.field item_order} value that is not the file's item numbers, each once.",
-          "x" = "Response row {rows}: {.val {item_order[rows]}}.",
+          "x" = "Response {cli::qty(length(rows))}row{?s} {rows}: {.val {item_order[rows]}}.",
           "i" = "The row is counted from the first row after the header."
         ),
         call = call
