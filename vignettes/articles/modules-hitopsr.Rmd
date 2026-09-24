@@ -415,13 +415,19 @@ The page reads the same descriptor `write_module()` writes. Open the page's
 [link builder](https://jmgirard.github.io/hitop-form/link.html), paste the
 descriptor in, name the study, choose where the responses go, and it gives
 you one link to send to participants. A descriptor from a shuffled Word form
-carries that form's order, and the page shows the items in it.
+carries that form's order, and the page shows the items in it. The builder's
+"Show the items in a random order" box asks for a new order per participant
+instead; the descriptor's order is then not followed.
 
 Whichever route the answers take, the CSV file has five lead columns
 (`study`, `participant`, `instrument`, `form_build`, `submitted`) and then one
 column per item, named by the instrument's file stem and the item number and
-in the order the page showed them. A file the page saved holds one
-participant's row; a store's download holds one row per participant.
+in the order the page showed them. Under the random order, a sixth lead
+column, `item_order`, records the order shown, and the item columns are in
+the order the descriptor's `items` field lists them, which `write_module()`
+writes ascending. A file the page
+saved holds one participant's row; a store's download holds one row per
+participant.
 
 `read_form_responses()` reads those files. Give it the folder the files are
 in, or a vector of their paths. The file below is one the page saved from a
@@ -441,9 +447,12 @@ order. Every file must hold the same item columns in the same order; a
 folder mixing two forms stops with an error that names the files that
 differ, so read each form's files in a call of their own.
 
-Score the item columns through the module the page showed. The columns are in
+Score the item columns through the module the page showed. Without the
+random order, the columns are in
 the order the page showed the items, so this is `layout = "printed"` with the
-descriptor that recorded that order, as in the shuffled Word form above. Name
+descriptor that recorded that order, as in the shuffled Word form above. (A
+file saved under the random order has its columns in instrument order, so it
+takes the default layout, as the first scoring call in this article does.) Name
 the item columns by position here rather than by name: under
 `layout = "printed"` the names carry item numbers out of instrument order, and
 naming them would trip the check that warns of a misordered mapping.
