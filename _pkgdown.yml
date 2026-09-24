@@ -43,6 +43,8 @@ navbar:
       menu:
       - text: "Importing into Qualtrics & REDCap"
         href: articles/import-instructions.html
+      - text: "Collecting Responses Online"
+        href: articles/online-collection.html
       - text: "---"
       - text: "Scoring HiTOP-SR"
         href: articles/hitopsr_scoring.html

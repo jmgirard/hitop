@@ -404,22 +404,24 @@ from a Word form's descriptor, still needs `items`.
 The Word, Qualtrics and REDCap files above each need a platform of their own.
 [hitop-form](https://jmgirard.github.io/hitop-form/) is a third route that
 needs none: a web page that shows a HiTOP-SR module (or the full HiTOP-SR or
-HiTOP-BR) in the browser and saves each participant's answers to a file on
-their own device. No answer is sent anywhere: the page's only request after
-its own files is for the instrument's item text. Each participant hands you
-their file, and this package reads the files back into one data frame.
+HiTOP-BR) in the browser. A study link tells it where each participant's
+answers go: a file saved on the participant's own device, which they send to
+you, or a store you name in the link, such as a Google Sheet or a Supabase
+table, which you download as one CSV file. The
+[Collecting Responses Online](online-collection.html) article walks the
+Google Sheet route end to end, from deploying the sheet's script to scoring.
 
 The page reads the same descriptor `write_module()` writes. Open the page's
 [link builder](https://jmgirard.github.io/hitop-form/link.html), paste the
-descriptor in, name the study, and it gives you one link to send to
-participants. A descriptor from a shuffled Word form carries that form's order,
-and the page shows the items in it.
+descriptor in, name the study, choose where the responses go, and it gives
+you one link to send to participants. A descriptor from a shuffled Word form
+carries that form's order, and the page shows the items in it.
 
-When a participant finishes, the page saves one CSV file named for the study,
-the participant and the time. The file has five lead columns (`study`,
-`participant`, `instrument`, `form_build`, `submitted`) and then one column per
-item, named by the instrument's file stem and the item number and in the order
-the page showed them.
+Whichever route the answers take, the CSV file has five lead columns
+(`study`, `participant`, `instrument`, `form_build`, `submitted`) and then one
+column per item, named by the instrument's file stem and the item number and
+in the order the page showed them. A file the page saved holds one
+participant's row; a store's download holds one row per participant.
 
 `read_form_responses()` reads those files. Give it the folder the files are
 in, or a vector of their paths. The file below is one the page saved from a
@@ -432,12 +434,12 @@ responses <- read_form_responses(path)
 responses
 ```
 
-One row per file, the lead columns typed (`form_build` is a date, `submitted` a
-UTC date-time), and every item column an integer. A folder of many files reads
-the same way, one row each, sorted by path. Every file must hold the same
-item columns in the same order; a folder mixing two forms stops with an error
-that names the files that differ, so read each form's files in a call of their
-own.
+Each row of each file is a row of the result, the lead columns typed
+(`form_build` is a date, `submitted` a UTC date-time), and every item column
+an integer. A folder of many files reads the same way, file by file in path
+order. Every file must hold the same item columns in the same order; a
+folder mixing two forms stops with an error that names the files that
+differ, so read each form's files in a call of their own.
 
 Score the item columns through the module the page showed. The columns are in
 the order the page showed the items, so this is `layout = "printed"` with the

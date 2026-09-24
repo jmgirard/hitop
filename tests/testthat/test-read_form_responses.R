@@ -30,6 +30,8 @@ form_file <- function(dir, name, items, participant = "p001",
 
 two_items <- function(a = 4L, b = 1L) c(hitopbr_01 = a, hitopbr_02 = b)
 
+fixture <- function(...) test_path("fixtures", ...)
+
 # ---- AC1: shape, types and order ------------------------------------------
 
 test_that("a directory reads every .csv, sorted, one row per file", {
@@ -278,17 +280,152 @@ test_that("a CSV with other lead columns is refused by name", {
                fixed = TRUE)
 })
 
-test_that("a file with two response rows is refused by name", {
+test_that("a header-only file is refused by name", {
   dir <- withr::local_tempdir()
-  f <- file.path(dir, "two.csv")
+  f <- file.path(dir, "empty.csv")
+  writeLines(paste(c(lead, "hitopbr_01"), collapse = ","), f)
+
+  cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  expect_match(conditionMessage(cnd), "empty.csv", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "no response row", fixed = TRUE)
+})
+
+test_that("a bad item value on a later row is refused by column", {
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "bad2.csv")
   writeLines(c(
-    paste(c(lead, "hitopbr_01"), collapse = ","),
-    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4",
-    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,3"
+    paste(c(lead, "hitopbr_01", "hitopbr_02"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1",
+    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,yes"
   ), f)
 
   cnd <- rlang::catch_cnd(read_form_responses(f), "error")
-  expect_match(conditionMessage(cnd), "2 response rows", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "bad2.csv", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "hitopbr_02", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "whole number", fixed = TRUE)
+
+  g <- file.path(dir, "stamp2.csv")
+  writeLines(c(
+    paste(c(lead, "hitopbr_01"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4",
+    "s,p2,hitopbr,2026-09-20,20/09/2026,3"
+  ), g)
+  cnd <- rlang::catch_cnd(read_form_responses(g), "error")
+  expect_match(conditionMessage(cnd), "stamp2.csv", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "submitted", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "20/09/2026", fixed = TRUE)
+
+  h <- file.path(dir, "date2.csv")
+  writeLines(c(
+    paste(c(lead, "hitopbr_01"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4",
+    "s,p2,hitopbr,20/09/2026,2026-09-20T21:20:36Z,3"
+  ), h)
+  cnd <- rlang::catch_cnd(read_form_responses(h), "error")
+  expect_match(conditionMessage(cnd), "date2.csv", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "form_build", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "20/09/2026", fixed = TRUE)
+
+  w <- file.path(dir, "wide2.csv")
+  writeLines(c(
+    paste(c(lead, "hitopbr_01"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4",
+    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,99999999999"
+  ), w)
+  expect_no_warning(cnd <- rlang::catch_cnd(read_form_responses(w), "error"))
+  expect_match(conditionMessage(cnd), "wide2.csv", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "hitopbr_01", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "integer range", fixed = TRUE)
+})
+
+# ---- Multi-row files: a store's export -------------------------------------
+#
+# A Google Sheet or a Supabase table exports one file holding every
+# participant's row. The files below are written from the HiTOP-BR fixture's
+# one row, repeated with `participant` changed, so the expected values are the
+# fixture's own.
+
+# The fixture's header and data row, as text.
+hitopbr_lines <- function() readLines(fixture("responses-hitopbr.csv"))
+
+# The fixture's data row with `participant` (the second field) replaced.
+with_participant <- function(row, participant) {
+  fields <- strsplit(row, ",", fixed = TRUE)[[1]]
+  fields[2] <- participant
+  paste(fields, collapse = ",")
+}
+
+# Write `lines` to `path` with the given row ending, with or without one
+# after the last line.
+write_rows <- function(path, lines, eol = "\r\n", final = TRUE) {
+  text <- paste(lines, collapse = eol)
+  if (final) text <- paste0(text, eol)
+  con <- file(path, open = "wb")
+  on.exit(close(con))
+  writeBin(charToRaw(text), con)
+  path
+}
+
+test_that("a file holding two response rows reads as two rows, in file order", {
+  dir <- withr::local_tempdir()
+  src <- hitopbr_lines()
+  f <- write_rows(file.path(dir, "sheet.csv"), c(
+    src[1],
+    with_participant(src[2], "p002"),
+    with_participant(src[2], "p001")
+  ))
+
+  out <- read_form_responses(f)
+
+  expect_s3_class(out, "tbl_df")
+  expect_equal(nrow(out), 2L)
+  expect_identical(out$participant, c("p002", "p001"))
+  expect_identical(names(out)[-seq_len(5L)], sprintf("hitopbr_%02d", 1:45))
+  expect_s3_class(out$form_build, "Date")
+  expect_s3_class(out$submitted, "POSIXct")
+  expect_identical(attr(out$submitted, "tzone"), "UTC")
+  expect_true(all(vapply(out[-seq_len(5L)], is.integer, logical(1L))))
+  expect_identical(out$hitopbr_01, c(4L, 4L))
+  expect_identical(out$hitopbr_02, c(3L, 3L))
+})
+
+test_that("a two-row file with LF endings and no final newline reads the same", {
+  dir <- withr::local_tempdir()
+  src <- hitopbr_lines()
+  f <- write_rows(file.path(dir, "sheet.csv"), c(
+    src[1],
+    with_participant(src[2], "p002"),
+    with_participant(src[2], "p001")
+  ), eol = "\n", final = FALSE)
+
+  expect_no_warning(out <- read_form_responses(f))
+  expect_equal(nrow(out), 2L)
+  expect_identical(out$participant, c("p002", "p001"))
+  expect_identical(out$hitopbr_45, c(4L, 4L))
+})
+
+test_that("a directory of a one-row and a two-row file yields three rows in path then file order", {
+  dir <- withr::local_tempdir()
+  src <- hitopbr_lines()
+  # The two-row file sorts first by path, so its rows come first, in its
+  # own order; the one-row file's row follows.
+  write_rows(file.path(dir, "a_sheet.csv"), c(
+    src[1],
+    with_participant(src[2], "p003"),
+    with_participant(src[2], "p001")
+  ))
+  write_rows(file.path(dir, "b_single.csv"), c(
+    src[1],
+    with_participant(src[2], "p002")
+  ))
+
+  out <- read_form_responses(dir)
+
+  expect_equal(nrow(out), 3L)
+  expect_identical(out$participant, c("p003", "p001", "p002"))
+  expect_identical(out$hitopbr_01, c(4L, 4L, 4L))
 })
 
 test_that("an item value that is not a whole number is refused by column", {
@@ -358,8 +495,6 @@ test_that("a date or time stamp that does not parse is refused by field", {
 # they are hand-computed literals (worked below); for the two full forms they
 # are recomputed here from `*_items$Reverse` and `*_scales$itemNumbers`.
 
-fixture <- function(...) test_path("fixtures", ...)
-
 # Mean of the reverse-keyed responses of each scale, from the tables alone.
 # `responses` is one row of item responses named by instrument number
 # (`1`, `2`, ...); `items` the instrument's `*_items` table with its number
@@ -407,6 +542,68 @@ test_that("the full HiTOP-SR file scores to the table-derived means", {
 
   expect_identical(names(scored), names(expected))
   expect_equal(unlist(scored[1, ]), expected)
+})
+
+# ---- Store exports: a Google Sheet download and a Supabase export ---------
+#
+# Each file holds every participant's row (see inst/examples/README.md and
+# fixtures/README.md). The expected means are recomputed per row from the
+# file's own text and the shipped tables, as above.
+
+# Every data row of a file as a named character vector, keyed by the header.
+store_rows <- function(path) {
+  lines <- readLines(path, warn = FALSE)
+  header <- strsplit(lines[1], ",", fixed = TRUE)[[1]]
+  lapply(lines[-1], function(l) {
+    stats::setNames(strsplit(l, ",", fixed = TRUE)[[1]], header)
+  })
+}
+
+expect_hitopbr_export <- function(path, participants) {
+  data <- read_form_responses(path)
+  item_cols <- names(data)[-seq_len(5L)]
+
+  expect_equal(nrow(data), length(participants))
+  expect_type(data$participant, "character")
+  expect_identical(data$participant, participants)
+  expect_identical(data$instrument, rep("hitopbr", length(participants)))
+  expect_s3_class(data$submitted, "POSIXct")
+  expect_identical(attr(data$submitted, "tzone"), "UTC")
+  expect_false(anyNA(data$submitted))
+  expect_identical(item_cols, sprintf("hitopbr_%02d", 1:45))
+  expect_true(all(vapply(data[item_cols], is.integer, logical(1L))))
+
+  scored <- score_hitopbr(data, items = item_cols, append = FALSE)
+
+  rows <- store_rows(path)
+  items <- hitopbr_items
+  items$number <- items$HBR
+  for (i in seq_along(rows)) {
+    responses <- stats::setNames(as.numeric(rows[[i]][item_cols]), 1:45)
+    expected <- table_means(responses, items, hitopbr_scales)
+    names(expected) <- paste0("hbr_", hitopbr_scales$camelCase)
+    expect_identical(names(scored), names(expected))
+    expect_equal(unlist(scored[i, ]), expected, info = paste("row", i))
+  }
+  invisible(data)
+}
+
+test_that("the Google Sheet download reads two rows and scores to the table-derived means", {
+  data <- expect_hitopbr_export(example_file("responses-sheet-hitopbr.csv"),
+                                c("=1+1", "007"))
+  expect_identical(
+    data$submitted,
+    as.POSIXct(c("2026-09-23 19:33:25", "2026-09-23 19:33:30"), tz = "UTC")
+  )
+})
+
+test_that("the Supabase export reads two rows and scores to the table-derived means", {
+  data <- expect_hitopbr_export(fixture("supabase-hitopbr.csv"),
+                                c("p001", "p002"))
+  expect_identical(
+    data$submitted,
+    as.POSIXct(c("2026-09-23 21:01:51", "2026-09-23 21:03:49"), tz = "UTC")
+  )
 })
 
 # The shuffled module fixture: Agoraphobia and Distress-Dysphoria, 21 items,

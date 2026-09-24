@@ -1,6 +1,7 @@
 #' Read hitop-form response files into one data frame
 #'
 #' Reads the CSV files that the hitop-form web page saves, one file per
+#' participant, or the CSV download of a store the page sends to, one row per
 #' participant, and binds them into one tibble that the scoring functions take
 #' as it is. The page is at <https://jmgirard.github.io/hitop-form/>.
 #'
@@ -10,21 +11,25 @@
 #'   read, so the rows come back in the same order however the paths were
 #'   supplied.
 #'
-#' @details Each file the page saves holds one header row and one response
-#'   row. The first five columns are `study`, `participant`, `instrument`,
-#'   `form_build` and `submitted`; the item columns follow, one per item, named
-#'   by the instrument's file stem and the item number (`hitopsr_001`,
-#'   `hitopbr_01`, `pid5_001`, `pid5sf_001`, `pid5bf_01`). A module form saves
-#'   only the module's items, in the order the form showed them.
+#' @details A file the page saves holds one header row and one response row.
+#'   A store's download, such as a Google Sheet's CSV export or a Supabase
+#'   table's, holds one header row and one row per participant. Every response
+#'   row of every file is a row of the result, the files in path order and the
+#'   rows in file order. The first five columns are `study`, `participant`,
+#'   `instrument`, `form_build` and `submitted`; the item columns follow, one
+#'   per item, named by the instrument's file stem and the item number
+#'   (`hitopsr_001`, `hitopbr_01`, `pid5_001`, `pid5sf_001`, `pid5bf_01`). A
+#'   module form saves only the module's items, in the order the form showed
+#'   them.
 #'
 #'   Every file must carry the same item columns in the same order, because
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
 #'   need separate calls. A file that does not look like one the page saved
-#'   (other lead columns, a column that appears twice, more than one response
-#'   row, an item value that is not a whole number or is outside R's integer
-#'   range, a date that does not parse) is an error naming the file. A
-#'   `submitted` stamp may carry fractional seconds.
+#'   (other lead columns, a column that appears twice, a header with no
+#'   response row, an item value that is not a whole number or is outside R's
+#'   integer range, a date that does not parse) is an error naming the file.
+#'   A `submitted` stamp may carry fractional seconds.
 #'
 #'   **Errors.** Files whose item columns differ from the first file's in
 #'   name, in count or in order stop the read under the condition class
@@ -33,15 +38,17 @@
 #'   `hitop_form_responses_none`. Both classes are a public contract a caller
 #'   can catch by name.
 #'
-#' @return A \link[tibble]{tibble} with one row per file. The first five
+#' @return A \link[tibble]{tibble} with one row per response row. The first five
 #'   columns are `study`, `participant` and `instrument` as character,
 #'   `form_build` as `Date` and `submitted` as `POSIXct` in UTC. The item
 #'   columns follow as integers, in the column order of the first file after
 #'   sorting. An item the participant left blank is `NA`.
 #'
 #' @seealso [score_hitopsr()], [score_hitopbr()], [score_pid5()] and
-#'   [read_module()], which score the item columns; the modules article and
-#'   `vignette("pid5_scoring")` show the whole hand-off.
+#'   [read_module()], which score the item columns; the Collecting Responses
+#'   Online article walks the Google Sheet route from the study link to the
+#'   scores, and the modules article and `vignette("pid5_scoring")` show the
+#'   hand-off for a module and for the PID-5.
 #'
 #' @examples
 #' # Two files as the page saves them, here written by hand.
@@ -146,7 +153,8 @@ form_response_files <- function(path, call = rlang::caller_env()) {
   sort(files, method = "radix")
 }
 
-# Read one file the page saved into a one-row data frame with typed columns.
+# Read one file into a data frame with typed columns, one row per response
+# row: one for a file the page saved, one per participant for a store's export.
 read_form_response_file <- function(file, call = rlang::caller_env()) {
   # A file the page saved ends in a row ending; one edited by hand may not,
   # and that is not worth a warning.
@@ -187,20 +195,28 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
       call = call
     )
   }
-  if (nrow(raw) != 1L) {
+  if (nrow(raw) == 0L) {
     cli::cli_abort(
       c(
         "{.file {file}} is not a hitop-form response file.",
-        "x" = "It holds {nrow(raw)} response row{?s}; the page saves exactly one."
+        "x" = "It holds a header and no response row."
       ),
       call = call
     )
   }
 
+  # Each item column as character with blanks as NA, then as integer. A file
+  # the page saved holds one response row; a store's export holds one per
+  # participant, so every check below runs down the column.
   item_cols <- names(raw)[-seq_len(5L)]
-  values <- unlist(raw[item_cols], use.names = FALSE)
-  values[!nzchar(values)] <- NA_character_
-  bad <- item_cols[!is.na(values) & !grepl("^-?[0-9]+$", values)]
+  values <- lapply(raw[item_cols], function(v) {
+    v[!nzchar(v)] <- NA_character_
+    v
+  })
+  whole <- vapply(values, function(v) {
+    all(is.na(v) | grepl("^-?[0-9]+$", v))
+  }, logical(1L))
+  bad <- item_cols[!whole]
   if (length(bad) > 0L) {
     cli::cli_abort(
       c(
@@ -211,8 +227,11 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     )
   }
 
-  ints <- suppressWarnings(as.integer(values))
-  wide <- item_cols[!is.na(values) & is.na(ints)]
+  ints <- lapply(values, function(v) suppressWarnings(as.integer(v)))
+  fits <- vapply(seq_along(item_cols), function(i) {
+    !any(!is.na(values[[i]]) & is.na(ints[[i]]))
+  }, logical(1L))
+  wide <- item_cols[!fits]
   if (length(wide) > 0L) {
     cli::cli_abort(
       c(
@@ -229,19 +248,18 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   date_ok <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", raw$form_build)
   time_ok <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?Z$",
                    raw$submitted)
-  form_build <- if (date_ok) as.Date(raw$form_build, format = "%Y-%m-%d") else NA
-  submitted <- if (time_ok) {
-    as.POSIXct(raw$submitted, format = "%Y-%m-%dT%H:%M:%OSZ", tz = "UTC")
-  } else {
-    NA
-  }
+  form_build <- as.Date(ifelse(date_ok, raw$form_build, NA_character_),
+                        format = "%Y-%m-%d")
+  submitted <- as.POSIXct(ifelse(time_ok, raw$submitted, NA_character_),
+                          format = "%Y-%m-%dT%H:%M:%OSZ", tz = "UTC")
   for (field in c("form_build", "submitted")) {
     parsed <- if (field == "form_build") form_build else submitted
-    if (is.na(parsed)) {
+    if (anyNA(parsed)) {
+      got <- raw[[field]][is.na(parsed)]
       cli::cli_abort(
         c(
           "{.file {file}} holds a {.field {field}} value that does not parse.",
-          "x" = "Got {.val {raw[[field]]}}."
+          "x" = "Got {.val {got}}."
         ),
         call = call
       )
@@ -256,12 +274,8 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     submitted = submitted,
     stringsAsFactors = FALSE
   )
-  items <- as.data.frame(
-    as.list(stats::setNames(ints, item_cols)),
-    check.names = FALSE,
-    stringsAsFactors = FALSE
-  )
   if (length(item_cols) > 0L) {
+    items <- as.data.frame(ints, check.names = FALSE, stringsAsFactors = FALSE)
     out <- cbind(out, items)
   }
   out

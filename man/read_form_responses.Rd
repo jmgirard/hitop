@@ -14,7 +14,7 @@ read, so the rows come back in the same order however the paths were
 supplied.}
 }
 \value{
-A \link[tibble]{tibble} with one row per file. The first five
+A \link[tibble]{tibble} with one row per response row. The first five
 columns are \code{study}, \code{participant} and \code{instrument} as character,
 \code{form_build} as \code{Date} and \code{submitted} as \code{POSIXct} in UTC. The item
 columns follow as integers, in the column order of the first file after
@@ -22,25 +22,30 @@ sorting. An item the participant left blank is \code{NA}.
 }
 \description{
 Reads the CSV files that the hitop-form web page saves, one file per
+participant, or the CSV download of a store the page sends to, one row per
 participant, and binds them into one tibble that the scoring functions take
 as it is. The page is at \url{https://jmgirard.github.io/hitop-form/}.
 }
 \details{
-Each file the page saves holds one header row and one response
-row. The first five columns are \code{study}, \code{participant}, \code{instrument},
-\code{form_build} and \code{submitted}; the item columns follow, one per item, named
-by the instrument's file stem and the item number (\code{hitopsr_001},
-\code{hitopbr_01}, \code{pid5_001}, \code{pid5sf_001}, \code{pid5bf_01}). A module form saves
-only the module's items, in the order the form showed them.
+A file the page saves holds one header row and one response row.
+A store's download, such as a Google Sheet's CSV export or a Supabase
+table's, holds one header row and one row per participant. Every response
+row of every file is a row of the result, the files in path order and the
+rows in file order. The first five columns are \code{study}, \code{participant},
+\code{instrument}, \code{form_build} and \code{submitted}; the item columns follow, one
+per item, named by the instrument's file stem and the item number
+(\code{hitopsr_001}, \code{hitopbr_01}, \code{pid5_001}, \code{pid5sf_001}, \code{pid5bf_01}). A
+module form saves only the module's items, in the order the form showed
+them.
 
 Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
-(other lead columns, a column that appears twice, more than one response
-row, an item value that is not a whole number or is outside R's integer
-range, a date that does not parse) is an error naming the file. A
-\code{submitted} stamp may carry fractional seconds.
+(other lead columns, a column that appears twice, a header with no
+response row, an item value that is not a whole number or is outside R's
+integer range, a date that does not parse) is an error naming the file.
+A \code{submitted} stamp may carry fractional seconds.
 
 \strong{Errors.} Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class
@@ -72,6 +77,8 @@ unlink(dir, recursive = TRUE)
 }
 \seealso{
 \code{\link[=score_hitopsr]{score_hitopsr()}}, \code{\link[=score_hitopbr]{score_hitopbr()}}, \code{\link[=score_pid5]{score_pid5()}} and
-\code{\link[=read_module]{read_module()}}, which score the item columns; the modules article and
-\code{vignette("pid5_scoring")} show the whole hand-off.
+\code{\link[=read_module]{read_module()}}, which score the item columns; the Collecting Responses
+Online article walks the Google Sheet route from the study link to the
+scores, and the modules article and \code{vignette("pid5_scoring")} show the
+hand-off for a module and for the PID-5.
 }
