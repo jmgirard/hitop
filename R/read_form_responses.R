@@ -15,9 +15,10 @@
 #'   A store's download, such as a Google Sheet's CSV export or a Supabase
 #'   table's, holds one header row and one row per participant. Every response
 #'   row of every file is a row of the result, the files in path order and the
-#'   rows in file order. The first six columns of the result are `study`,
-#'   `participant`, `instrument`, `form_build`, `submitted` and `item_order`;
-#'   the item columns follow, one per item, named by the instrument's file
+#'   rows in file order. The first eight columns of the result are `study`,
+#'   `participant`, `instrument`, `form_build`, `submitted`, `item_order`,
+#'   `prolific_study` and `prolific_session`. The item columns follow from the
+#'   ninth, one per item, named by the instrument's file
 #'   stem and the item number (`hitopsr_001`, `hitopbr_01`, `pid5_001`,
 #'   `pid5sf_001`, `pid5bf_01`). A module form saves only the module's items.
 #'   The page keeps the item columns in the order it showed the items, except
@@ -38,6 +39,16 @@
 #'   file's item numbers, each once, is an error naming the file and the
 #'   response row.
 #'
+#'   `prolific_study` and `prolific_session` hold the study and session
+#'   identifiers that Prolific adds to a study link. The page writes them for
+#'   a study recruited through Prolific and not otherwise. A file may hold
+#'   either or both anywhere after `submitted`, and the result places
+#'   `prolific_study` seventh and `prolific_session` eighth. A row from a file
+#'   without a column holds `NA` in it, and so does a blank cell. Scoring does
+#'   not read them, and they are not item columns, so neither enters the
+#'   check that every file holds the same item columns. The cells are read as
+#'   written, with no check on their content.
+#'
 #'   Every file must carry the same item columns in the same order, because
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
@@ -54,12 +65,13 @@
 #'   `hitop_form_responses_none`. Both classes are a public contract a caller
 #'   can catch by name.
 #'
-#' @return A \link[tibble]{tibble} with one row per response row. The first six
-#'   columns are `study`, `participant` and `instrument` as character,
-#'   `form_build` as `Date`, `submitted` as `POSIXct` in UTC, and `item_order`
-#'   as character, `NA` on a row from a file without that column. The item
-#'   columns follow as integers, in the column order of the first file after
-#'   sorting. An item the participant left blank is `NA`.
+#' @return A \link[tibble]{tibble} with one row per response row. The first
+#'   eight columns are `study`, `participant` and `instrument` as character,
+#'   `form_build` as `Date`, `submitted` as `POSIXct` in UTC, and `item_order`,
+#'   `prolific_study` and `prolific_session` as character, each `NA` on a row
+#'   from a file without that column and on a blank cell. The item columns
+#'   follow as integers, in the column order of the first file after sorting.
+#'   An item the participant left blank is `NA`.
 #'
 #' @seealso [score_hitopsr()], [score_hitopbr()], [score_pid5()] and
 #'   [read_module()], which score the item columns; the Collecting Responses

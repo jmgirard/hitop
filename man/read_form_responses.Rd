@@ -14,12 +14,13 @@ read, so the rows come back in the same order however the paths were
 supplied.}
 }
 \value{
-A \link[tibble]{tibble} with one row per response row. The first six
-columns are \code{study}, \code{participant} and \code{instrument} as character,
-\code{form_build} as \code{Date}, \code{submitted} as \code{POSIXct} in UTC, and \code{item_order}
-as character, \code{NA} on a row from a file without that column. The item
-columns follow as integers, in the column order of the first file after
-sorting. An item the participant left blank is \code{NA}.
+A \link[tibble]{tibble} with one row per response row. The first
+eight columns are \code{study}, \code{participant} and \code{instrument} as character,
+\code{form_build} as \code{Date}, \code{submitted} as \code{POSIXct} in UTC, and \code{item_order},
+\code{prolific_study} and \code{prolific_session} as character, each \code{NA} on a row
+from a file without that column and on a blank cell. The item columns
+follow as integers, in the column order of the first file after sorting.
+An item the participant left blank is \code{NA}.
 }
 \description{
 Reads the CSV files that the hitop-form web page saves, one file per
@@ -32,9 +33,10 @@ A file the page saves holds one header row and one response row.
 A store's download, such as a Google Sheet's CSV export or a Supabase
 table's, holds one header row and one row per participant. Every response
 row of every file is a row of the result, the files in path order and the
-rows in file order. The first six columns of the result are \code{study},
-\code{participant}, \code{instrument}, \code{form_build}, \code{submitted} and \code{item_order};
-the item columns follow, one per item, named by the instrument's file
+rows in file order. The first eight columns of the result are \code{study},
+\code{participant}, \code{instrument}, \code{form_build}, \code{submitted}, \code{item_order},
+\code{prolific_study} and \code{prolific_session}. The item columns follow from the
+ninth, one per item, named by the instrument's file
 stem and the item number (\code{hitopsr_001}, \code{hitopbr_01}, \code{pid5_001},
 \code{pid5sf_001}, \code{pid5bf_01}). A module form saves only the module's items.
 The page keeps the item columns in the order it showed the items, except
@@ -54,6 +56,16 @@ not an item column, so it does not enter the check that every file holds
 the same item columns. A cell that is not blank and does not list the
 file's item numbers, each once, is an error naming the file and the
 response row.
+
+\code{prolific_study} and \code{prolific_session} hold the study and session
+identifiers that Prolific adds to a study link. The page writes them for
+a study recruited through Prolific and not otherwise. A file may hold
+either or both anywhere after \code{submitted}, and the result places
+\code{prolific_study} seventh and \code{prolific_session} eighth. A row from a file
+without a column holds \code{NA} in it, and so does a blank cell. Scoring does
+not read them, and they are not item columns, so neither enters the
+check that every file holds the same item columns. The cells are read as
+written, with no check on their content.
 
 Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR

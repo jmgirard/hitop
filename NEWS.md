@@ -2,6 +2,18 @@
 
 ## New features
 
+* **`read_form_responses()` accepts two Prolific columns.** A response file
+  may hold `prolific_study` and `prolific_session`, either or both, anywhere
+  after `submitted`. They hold the study and session identifiers that
+  Prolific adds to a study link, which the hitop-form page writes for a study
+  recruited through Prolific. The result places `prolific_study` seventh and
+  `prolific_session` eighth, as character, and a row from a file without a
+  column holds `NA` in it, as does a blank cell. Neither is an item column,
+  so neither enters the check that every file holds the same item columns,
+  and the scoring functions do not read them. Every result now has eight
+  lead columns, and the item columns start ninth. Select the item columns by
+  name, as the help page and the articles do, and no code changes.
+
 * **The hitop-form page can show each participant the items in a random
   order.** The link builder's "Show the items in a random order" box asks
   for it. The file and the row then keep the item columns in the
