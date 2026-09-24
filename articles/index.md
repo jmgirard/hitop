@@ -22,6 +22,8 @@
   REDCap](https://jmgirard.github.io/hitop/articles/import-instructions.md):
 - [Building HiTOP-SR
   Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.md):
+- [Collecting Responses Online with
+  hitop-form](https://jmgirard.github.io/hitop/articles/online-collection.md):
 - [HiTOP
   Instruments](https://jmgirard.github.io/hitop/articles/overview.md):
 - [Scoring the

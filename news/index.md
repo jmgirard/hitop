@@ -30,6 +30,17 @@
   with an error of class `hitop_module_file_bad_columns`.
 
 - **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+  reads a store’s download too.** A file it reads may hold one or more
+  response rows, as the CSV download of a Google Sheet or a Supabase
+  table that the hitop-form page sends to does, one row per participant.
+  Every row of every file is a row of the result, the files in path
+  order and the rows in file order. A file with a header and no response
+  row is an error naming the file. The new article “Collecting Responses
+  Online with hitop-form” walks the Google Sheet route from the study
+  link to the scores, and the installed example
+  `responses-sheet-hitopbr.csv` is one such download.
+
+- **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
   reads the files the hitop-form web page saves.** Given a directory or
   a vector of file paths, it reads each participant’s CSV file and binds
   them into one tibble: `study`, `participant` and `instrument` as

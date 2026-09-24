@@ -6,8 +6,10 @@
     }
   };
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Read hitop-form response files into one data frame — read_form_responses"><meta name="description" content="Reads the CSV files that the hitop-form web page saves, one file per
+participant, or the CSV download of a store the page sends to, one row per
 participant, and binds them into one tibble that the scoring functions take
 as it is. The page is at https://jmgirard.github.io/hitop-form/."><meta property="og:description" content="Reads the CSV files that the hitop-form web page saves, one file per
+participant, or the CSV download of a store the page sends to, one row per
 participant, and binds them into one tibble that the scoring functions take
 as it is. The page is at https://jmgirard.github.io/hitop-form/."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -41,6 +43,7 @@ as it is. The page is at https://jmgirard.github.io/hitop-form/."><meta property
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tutorials</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-tutorials"><li><a class="dropdown-item" href="../articles/import-instructions.html">Importing into Qualtrics &amp; REDCap</a></li>
+    <li><a class="dropdown-item" href="../articles/online-collection.html">Collecting Responses Online</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/hitopsr_scoring.html">Scoring HiTOP-SR</a></li>
     <li><a class="dropdown-item" href="../articles/modules-hitopsr.html">Building HiTOP-SR Modules</a></li>
@@ -74,6 +77,7 @@ as it is. The page is at https://jmgirard.github.io/hitop-form/."><meta property
 
     <div class="ref-description section level2">
     <p>Reads the CSV files that the hitop-form web page saves, one file per
+participant, or the CSV download of a store the page sends to, one row per
 participant, and binds them into one tibble that the scoring functions take
 as it is. The page is at <a href="https://jmgirard.github.io/hitop-form/">https://jmgirard.github.io/hitop-form/</a>.</p>
     </div>
@@ -97,7 +101,7 @@ supplied.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with one row per file. The first five
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with one row per response row. The first five
 columns are <code>study</code>, <code>participant</code> and <code>instrument</code> as character,
 <code>form_build</code> as <code>Date</code> and <code>submitted</code> as <code>POSIXct</code> in UTC. The item
 columns follow as integers, in the column order of the first file after
@@ -105,20 +109,24 @@ sorting. An item the participant left blank is <code>NA</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Each file the page saves holds one header row and one response
-row. The first five columns are <code>study</code>, <code>participant</code>, <code>instrument</code>,
-<code>form_build</code> and <code>submitted</code>; the item columns follow, one per item, named
-by the instrument's file stem and the item number (<code>hitopsr_001</code>,
-<code>hitopbr_01</code>, <code>pid5_001</code>, <code>pid5sf_001</code>, <code>pid5bf_01</code>). A module form saves
-only the module's items, in the order the form showed them.</p>
+    <p>A file the page saves holds one header row and one response row.
+A store's download, such as a Google Sheet's CSV export or a Supabase
+table's, holds one header row and one row per participant. Every response
+row of every file is a row of the result, the files in path order and the
+rows in file order. The first five columns are <code>study</code>, <code>participant</code>,
+<code>instrument</code>, <code>form_build</code> and <code>submitted</code>; the item columns follow, one
+per item, named by the instrument's file stem and the item number
+(<code>hitopsr_001</code>, <code>hitopbr_01</code>, <code>pid5_001</code>, <code>pid5sf_001</code>, <code>pid5bf_01</code>). A
+module form saves only the module's items, in the order the form showed
+them.</p>
 <p>Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
-(other lead columns, a column that appears twice, more than one response
-row, an item value that is not a whole number or is outside R's integer
-range, a date that does not parse) is an error naming the file. A
-<code>submitted</code> stamp may carry fractional seconds.</p>
+(other lead columns, a column that appears twice, a header with no
+response row, an item value that is not a whole number or is outside R's
+integer range, a date that does not parse) is an error naming the file.
+A <code>submitted</code> stamp may carry fractional seconds.</p>
 <p><strong>Errors.</strong> Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class
 <code>hitop_form_responses_mismatch</code>, and the message names each file that
@@ -129,8 +137,10 @@ can catch by name.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="score_hitopsr.html">score_hitopsr()</a></code>, <code><a href="score_hitopbr.html">score_hitopbr()</a></code>, <code><a href="score_pid5.html">score_pid5()</a></code> and
-<code><a href="read_module.html">read_module()</a></code>, which score the item columns; the modules article and
-<code><a href="../articles/pid5_scoring.html">vignette("pid5_scoring")</a></code> show the whole hand-off.</p></div>
+<code><a href="read_module.html">read_module()</a></code>, which score the item columns; the Collecting Responses
+Online article walks the Google Sheet route from the study link to the
+scores, and the modules article and <code><a href="../articles/pid5_scoring.html">vignette("pid5_scoring")</a></code> show the
+hand-off for a module and for the PID-5.</p></div>
     </div>
 
     <div class="section level2">
