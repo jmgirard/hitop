@@ -37,7 +37,7 @@ A press of the "Save the file" button on either saved-file screen writes a short
 
 ## Tasks
 
-- [ ] T1: In `tests/helpers.mjs`, add the `P.saved-again` token to `savedScreenOrder()` (`helpers.mjs:291`), assert the role and empty text where the order is asserted, and extend `expectSaveAgain()` (`helpers.mjs:273`) with the keyboard press, the text, the mutation and the focus assertions AC2 and AC3 name; add one call on a with-link screen (`save.spec.js:299`); run `save.spec.js` and `send.spec.js`: AC1 and AC2 red, AC3 green.
+- [x] T1: In `tests/helpers.mjs`, add the `P.saved-again` token to `savedScreenOrder()` (`helpers.mjs:291`), assert the role and empty text where the order is asserted, and extend `expectSaveAgain()` (`helpers.mjs:273`) with the keyboard press, the text, the mutation and the focus assertions AC2 and AC3 name; add one call on a with-link screen (`save.spec.js:299`); run `save.spec.js` and `send.spec.js`: AC1 and AC2 red, AC3 green.
 - [ ] T2: In `form.js` `showSaved()`, render the empty status element and give the button's `onclick` the rewrite after `saveFile()`; `npx playwright test` green.
 - [ ] T3: README: the participant section's save-again paragraph (`README.md:155-161`) and the `save.spec.js` row of the tests table.
 - [ ] T4: In hitop, a NEWS entry under the development heading.
@@ -50,6 +50,7 @@ A press of the "Save the file" button on either saved-file screen writes a short
 - 2026-09-24: planning chose leaving focus on the button over moving it to the region because a polite status region is announced without focus and a moved focus loses the button for a second press; falsified by a screen-reader user reporting the message unspoken.
 - 2026-09-24: implement started; hitop branch `m122-form-save-status` cut from main (equal to origin/main at ab7a28c6). Question gate: hitop-form PR #9 (M121) is still open and touched the helpers and README this milestone edits; Jeff chose to merge #9 first over cutting from the M121 branch. Blocked until #9 is merged; the hitop-form branch is then cut from the updated main.
 - 2026-09-24: Jeff merged hitop-form #9 (main a523fff); block cleared, hitop-form branch `m122-form-save-status` cut from that main.
+- 2026-09-24: T1 (hitop-form c682125): `SAVED_AGAIN`, `expectStatusEmpty()`, the `P.saved-again` order token, and `expectSaveAgain()` rewritten (first press by focus + Enter with the focus assertion, second press by click under a mutation observer, the text asserted after each); `expectStatusEmpty()` at the four order sites and `expectSaveAgain()` added to S16. Run before the page change: save + send specs 8 failed (the eight saved screens, each at the order token) 53 passed; AC3's focus assertion shown green by a one-off probe spec on the unchanged page (deleted, not committed), since the order failure precedes it in the eight tests.
 
 ## Decisions
 
