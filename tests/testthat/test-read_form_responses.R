@@ -1380,7 +1380,9 @@ for (name in c("foo", "hitopbr_", "_01", "Hitopbr_01")) {
     dir <- withr::local_tempdir()
     header <- paste(c(lead, "hitopbr_01", name), collapse = ",")
     msg <- refusal(dir, "name.csv", good_row, header = header)
-    expect_match(msg, name, fixed = TRUE)
+    # The column line, not the hint's `hitopbr_01`, which holds `hitopbr_`
+    # and `_01` as substrings.
+    expect_match(msg, paste0("Column ", name, "."), fixed = TRUE)
     expect_match(msg, "not named as an item column", fixed = TRUE)
   })
 }

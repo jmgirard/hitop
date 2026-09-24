@@ -323,7 +323,7 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
 
   # An item column is named by the instrument's stem, an underscore and the
   # item number, and one file holds one instrument's columns, so the
-  # `item_order` check below reads unambiguous numbers.
+  # `item_order` check below reads item numbers of one stem.
   named <- grepl(item_column_pattern, item_cols)
   if (!all(named)) {
     cli::cli_abort(
