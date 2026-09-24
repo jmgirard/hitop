@@ -4,6 +4,19 @@
 
 ### New features
 
+- **The hitop-form page gives each Prolific outcome its own end.** The
+  link builder’s “Completion URL after a saved file” field, allowed only
+  beside a completion URL, names a second `https://` address that the
+  saved-file screens link to in place of the completion URL, so a study
+  can give a saved file its own Prolific completion code. A confirmed
+  send now shows the sent screen, with a link to the completion URL in
+  place of “You can close this page.”, before it sends the participant
+  there. A Prolific parameter the address carries twice, as when
+  Prolific’s “I’ll use URL parameters” option appends the three to a
+  link that already ends in the builder’s placeholders, reads as its
+  first value that is neither blank nor a placeholder. The
+  online-collection article’s Prolific section describes all three.
+
 - **The hitop-form page fits a Prolific study.** The link builder’s
   “Recruit through Prolific” box makes the page take each participant’s
   identifier from the Prolific ID in the page’s address and write the

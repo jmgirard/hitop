@@ -298,16 +298,34 @@ When you preview the study on Prolific, the preview passes a
 24-character ID in place of the placeholder (<a href="https://researcher-help.prolific.com/en/articles/445131-previewing-your-study" class="external-link">Previewing
 your study</a>), so the preview walks the form as a participant would; a
 link opened with the placeholders still in it, as the builder’s “Open
-the link” does, asks for the identifier instead.</p>
+the link” does, asks for the identifier instead. Prolific’s own “I’ll
+use URL parameters” option, in the Data collection section of the
+study’s setup, appends the three parameters to the study URL itself (<a href="https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific" class="external-link">the
+compatibility article</a>, under “Recording participants’ Prolific
+IDs”). A pasted link with the builder’s placeholders therefore carries
+each parameter once unless that option adds it again; then the address
+holds the parameter twice, and the page reads the first value that is
+neither blank nor a placeholder.</p>
 <p>Give the completion URL from the study’s page on Prolific, of the
 form <code>https://app.prolific.com/submissions/complete?cc=…</code> (<a href="https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific" class="external-link">the
 compatibility article</a>, under “Returning Participants to Prolific”),
 in the builder’s “Completion URL” field. After a confirmed send the page
-sends the participant there, which is the return Prolific recommends (<a href="https://researcher-help.prolific.com/en/articles/445127-data-collection" class="external-link">Data
+shows the sent screen, with a link to that address in place of “You can
+close this page.”, and then sends the participant there, which is the
+return Prolific recommends (<a href="https://researcher-help.prolific.com/en/articles/445127-data-collection" class="external-link">Data
 collection</a>). After a saved file, because the link names no store or
 the send was not confirmed, the page shows the file name first and then
 a link to that address, so the participant sees the file’s name before
 leaving.</p>
+<p>A study can hold more than one completion code, each for its own
+outcome (<a href="https://researcher-help.prolific.com/en/articles/445170-custom-completion-codes" class="external-link">Custom
+completion codes</a>), and each code has its own <code>?cc=</code>
+address, as <a href="https://docs.prolific.com/api-reference/studies/the-study-object" class="external-link">the
+API reference</a> states under <code>completion_codes</code>. To give a
+saved file its own code, put that code’s address in the builder’s
+“Completion URL after a saved file” field, beside the completion URL.
+The saved-file screens then link to it in place of the completion URL,
+and a confirmed send still goes to the completion URL.</p>
 <p>The download then reads as above, with <code>prolific_study</code>
 and <code>prolific_session</code> filled. The file below is one the page
 saved under such a link, with the Prolific ID as the participant:</p>
