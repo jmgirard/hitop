@@ -6,19 +6,34 @@
 # examples, through `example_file()` (see inst/examples/README.md). The
 # synthetic files below are written by `form_file()` in the shape the page
 # writes: five lead columns, then item columns, one response row, CRLF row
-# endings unless the test says otherwise.
+# endings unless the test says otherwise. The result always carries a sixth
+# lead column, `item_order`, so the item columns of a result start at the
+# seventh; a file may hold that column sixth or last, or not at all.
 
 lead <- c("study", "participant", "instrument", "form_build", "submitted")
+result_lead <- c(lead, "item_order")
 
 # Write one response file as the page does. `items` is a named vector of
 # responses (a name is the column, a value the response; NA writes an empty
-# field). Returns the path.
+# field). `item_order` is the text of an `item_order` cell, written sixth, or
+# last when `order_last` is TRUE; NULL writes no such column. Returns the path.
 form_file <- function(dir, name, items, participant = "p001",
                       instrument = "hitopbr", eol = "\r\n",
                       study = "study", form_build = "2026-09-20",
-                      submitted = "2026-09-20T21:20:36Z") {
+                      submitted = "2026-09-20T21:20:36Z",
+                      item_order = NULL, order_last = FALSE) {
   vals <- ifelse(is.na(items), "", as.character(items))
-  header <- paste(c(lead, names(items)), collapse = ",")
+  cols <- names(items)
+  if (!is.null(item_order)) {
+    if (order_last) {
+      cols <- c(cols, "item_order")
+      vals <- c(vals, item_order)
+    } else {
+      cols <- c("item_order", cols)
+      vals <- c(item_order, vals)
+    }
+  }
+  header <- paste(c(lead, cols), collapse = ",")
   row <- paste(c(study, participant, instrument, form_build, submitted, vals),
                collapse = ",")
   path <- file.path(dir, name)
@@ -47,8 +62,9 @@ test_that("a directory reads every .csv, sorted, one row per file", {
 
   expect_s3_class(out, "tbl_df")
   expect_equal(nrow(out), 2L)
-  expect_identical(names(out), c(lead, "hitopbr_01", "hitopbr_02"))
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
   expect_identical(out$participant, c("p001", "p002"))
+  expect_identical(out$item_order, c(NA_character_, NA_character_))
   expect_type(out$study, "character")
   expect_type(out$participant, "character")
   expect_type(out$instrument, "character")
@@ -74,7 +90,7 @@ test_that("a vector of two files reads both, in sorted order", {
 
   expect_equal(nrow(out), 2L)
   expect_identical(out$participant, c("p001", "p002"))
-  expect_identical(names(out), c(lead, "hitopbr_01", "hitopbr_02"))
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
 })
 
 test_that("one file reads to one row", {
@@ -105,7 +121,7 @@ test_that("item columns keep the first file's order", {
   form_file(dir, "p002.csv", c(hitopsr_233 = 1L, hitopsr_194 = 2L))
 
   out <- read_form_responses(dir)
-  expect_identical(names(out)[-seq_len(5L)], c("hitopsr_233", "hitopsr_194"))
+  expect_identical(names(out)[-seq_len(6L)], c("hitopsr_233", "hitopsr_194"))
   expect_identical(out$hitopsr_233, c(4L, 1L))
 })
 
@@ -249,6 +265,171 @@ test_that("a file with no final row ending reads without a warning", {
   expect_identical(out$hitopbr_02, 1L)
 })
 
+# ---- The optional `item_order` column --------------------------------------
+#
+# A page showing items in a random order writes a sixth lead column,
+# `item_order`, holding the item numbers in the order shown, joined by single
+# spaces. A store may append it after the item columns instead. The reader
+# places it sixth either way, gives NA to rows from files without it, and
+# leaves it out of the item-column comparison.
+
+test_that("a file with item_order sixth reads it as a character sixth column", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L), item_order = "2 1")
+
+  out <- read_form_responses(f)
+
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
+  expect_type(out$item_order, "character")
+  expect_identical(out$item_order, "2 1")
+  expect_identical(out$hitopbr_01, 4L)
+  expect_identical(out$hitopbr_02, 1L)
+})
+
+test_that("a file with item_order last, as a sheet appends it, reads the same", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L), item_order = "2 1",
+                 order_last = TRUE)
+
+  out <- read_form_responses(f)
+
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
+  expect_identical(out$item_order, "2 1")
+  expect_identical(out$hitopbr_01, 4L)
+  expect_identical(out$hitopbr_02, 1L)
+})
+
+test_that("a file without item_order reads it as NA", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L))
+
+  out <- read_form_responses(f)
+
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
+  expect_identical(out$item_order, NA_character_)
+})
+
+test_that("a directory mixing files with and without item_order reads as one", {
+  dir <- withr::local_tempdir()
+  form_file(dir, "p001.csv", two_items(4L, 1L), participant = "p001")
+  form_file(dir, "p002.csv", two_items(2L, 3L), participant = "p002",
+            item_order = "2 1")
+  form_file(dir, "p003.csv", two_items(3L, 3L), participant = "p003",
+            item_order = "1 2", order_last = TRUE)
+
+  expect_no_error(out <- read_form_responses(dir))
+
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
+  expect_identical(out$participant, c("p001", "p002", "p003"))
+  expect_identical(out$item_order, c(NA_character_, "2 1", "1 2"))
+  expect_identical(out$hitopbr_01, c(4L, 2L, 3L))
+  expect_identical(out$hitopbr_02, c(1L, 3L, 3L))
+})
+
+test_that("item_order does not enter the mismatch comparison, and both classes keep their triggers", {
+  dir <- withr::local_tempdir()
+  form_file(dir, "p001.csv", two_items(), item_order = "2 1")
+  f2 <- form_file(dir, "p002.csv", c(hitopbr_01 = 4L, hitopbr_03 = 1L),
+                  item_order = "3 1")
+
+  cnd <- rlang::catch_cnd(read_form_responses(dir),
+                          "hitop_form_responses_mismatch")
+  expect_s3_class(cnd, "hitop_form_responses_mismatch")
+  expect_match(conditionMessage(cnd), basename(f2), fixed = TRUE)
+  expect_match(conditionMessage(cnd), "names", fixed = TRUE)
+
+  empty <- withr::local_tempdir()
+  expect_error(read_form_responses(empty),
+               class = "hitop_form_responses_none")
+})
+
+test_that("a multi-row file reads each row's item_order, a blank cell as NA", {
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "sheet.csv")
+  writeLines(c(
+    paste(c(lead, "hitopsr_233", "hitopsr_194", "item_order"), collapse = ","),
+    "s,p1,hitopsr,2026-09-20,2026-09-20T21:20:36Z,4,1,194 233",
+    "s,p2,hitopsr,2026-09-20,2026-09-20T21:20:36Z,2,3,",
+    "s,p3,hitopsr,2026-09-20,2026-09-20T21:20:36Z,1,1,233 194"
+  ), f)
+
+  out <- read_form_responses(f)
+
+  expect_identical(names(out), c(result_lead, "hitopsr_233", "hitopsr_194"))
+  expect_identical(out$item_order, c("194 233", NA_character_, "233 194"))
+  expect_identical(out$hitopsr_233, c(4L, 2L, 1L))
+})
+
+# A bad cell is an unclassed refusal naming the file and the response row.
+expect_item_order_refused <- function(path, row = 1L) {
+  cnd <- rlang::catch_cnd(read_form_responses(path), "error")
+  expect_s3_class(cnd, "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, "item_order", fixed = TRUE)
+  expect_match(msg, paste("row", row), fixed = TRUE)
+  invisible(msg)
+}
+
+test_that("an item_order cell that is not the file's item numbers, each once, is refused", {
+  dir <- withr::local_tempdir()
+  cells <- c(
+    missing = "1",
+    repeated = "1 1",
+    outside = "1 3",
+    letter = "1 a",
+    leading_zero = "01 2",
+    double_space = "1  2",
+    leading_space = " 1 2",
+    trailing_space = "1 2 "
+  )
+  for (case in names(cells)) {
+    f <- form_file(dir, paste0(case, ".csv"), two_items(),
+                   item_order = cells[[case]])
+    expect_item_order_refused(f)
+  }
+  # The control: the same items under a cell that lists them each once read.
+  g <- form_file(dir, "good.csv", two_items(), item_order = "2 1")
+  expect_identical(read_form_responses(g)$item_order, "2 1")
+})
+
+test_that("a blank item_order cell reads as NA, and a bad cell names its row", {
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "rows.csv")
+  writeLines(c(
+    paste(c(lead, "item_order", "hitopbr_01", "hitopbr_02"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,,4,1",
+    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,2 1,4,1",
+    "s,p3,hitopbr,2026-09-20,2026-09-20T21:20:36Z,2 2,4,1"
+  ), f)
+
+  msg <- expect_item_order_refused(f, row = 3L)
+  expect_false(grepl("row 1", msg, fixed = TRUE))
+  expect_false(grepl("row 2", msg, fixed = TRUE))
+
+  # Two bad rows name both, in the plural.
+  h <- file.path(dir, "rows2.csv")
+  writeLines(c(
+    paste(c(lead, "item_order", "hitopbr_01", "hitopbr_02"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,2 1,4,1",
+    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,2 2,4,1",
+    "s,p3,hitopbr,2026-09-20,2026-09-20T21:20:36Z,1,4,1"
+  ), h)
+  cnd <- rlang::catch_cnd(read_form_responses(h), "error")
+  expect_match(conditionMessage(cnd), "rows 2 and 3", fixed = TRUE)
+
+  g <- file.path(dir, "blank.csv")
+  writeLines(c(
+    paste(c(lead, "item_order", "hitopbr_01", "hitopbr_02"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,,4,1"
+  ), g)
+  out <- read_form_responses(g)
+  expect_identical(out$item_order, NA_character_)
+  expect_identical(out$hitopbr_01, 4L)
+})
+
 # ---- Plain refusals: not a response file, bad argument ---------------------
 
 test_that("a missing path is an error naming it", {
@@ -382,11 +563,11 @@ test_that("a file holding two response rows reads as two rows, in file order", {
   expect_s3_class(out, "tbl_df")
   expect_equal(nrow(out), 2L)
   expect_identical(out$participant, c("p002", "p001"))
-  expect_identical(names(out)[-seq_len(5L)], sprintf("hitopbr_%02d", 1:45))
+  expect_identical(names(out)[-seq_len(6L)], sprintf("hitopbr_%02d", 1:45))
   expect_s3_class(out$form_build, "Date")
   expect_s3_class(out$submitted, "POSIXct")
   expect_identical(attr(out$submitted, "tzone"), "UTC")
-  expect_true(all(vapply(out[-seq_len(5L)], is.integer, logical(1L))))
+  expect_true(all(vapply(out[-seq_len(6L)], is.integer, logical(1L))))
   expect_identical(out$hitopbr_01, c(4L, 4L))
   expect_identical(out$hitopbr_02, c(3L, 3L))
 })
@@ -510,7 +691,7 @@ table_means <- function(responses, items, scales, srange = c(1, 4)) {
 
 test_that("the full HiTOP-BR file scores to the table-derived means", {
   data <- read_form_responses(fixture("responses-hitopbr.csv"))
-  item_cols <- names(data)[-seq_len(5L)]
+  item_cols <- names(data)[-seq_len(6L)]
   expect_identical(item_cols, sprintf("hitopbr_%02d", 1:45))
   expect_identical(data$instrument, "hitopbr")
 
@@ -528,7 +709,7 @@ test_that("the full HiTOP-BR file scores to the table-derived means", {
 
 test_that("the full HiTOP-SR file scores to the table-derived means", {
   data <- read_form_responses(fixture("responses-hitopsr.csv"))
-  item_cols <- names(data)[-seq_len(5L)]
+  item_cols <- names(data)[-seq_len(6L)]
   expect_identical(item_cols, sprintf("hitopsr_%03d", 1:405))
   expect_identical(data$instrument, "hitopsr")
 
@@ -561,7 +742,7 @@ store_rows <- function(path) {
 
 expect_hitopbr_export <- function(path, participants) {
   data <- read_form_responses(path)
-  item_cols <- names(data)[-seq_len(5L)]
+  item_cols <- names(data)[-seq_len(6L)]
 
   expect_equal(nrow(data), length(participants))
   expect_type(data$participant, "character")
@@ -639,7 +820,7 @@ test_that("the Supabase export reads two rows and scores to the table-derived me
 #     39 / 16 = 2.4375
 test_that("the shuffled module file scores through its descriptor", {
   data <- read_form_responses(example_file("responses-module-shuffled.csv"))
-  item_cols <- names(data)[-seq_len(5L)]
+  item_cols <- names(data)[-seq_len(6L)]
   expect_length(item_cols, 21L)
   expect_identical(item_cols[1:3], c("hitopsr_233", "hitopsr_194", "hitopsr_170"))
 
@@ -665,7 +846,7 @@ test_that("the shuffled module file scored in instrument order would differ", {
   # in instrument order give a different Distress-Dysphoria mean, so the
   # `layout = "printed"` remap is doing the work the test credits it with.
   data <- read_form_responses(example_file("responses-module-shuffled.csv"))
-  item_cols <- names(data)[-seq_len(5L)]
+  item_cols <- names(data)[-seq_len(6L)]
   module <- read_module(example_file("module-shuffled.json"))
 
   scored <- suppressWarnings(score_hitopsr(
@@ -724,7 +905,7 @@ for (case in pid5_cases) {
     path <- case$path
     data <- read_form_responses(path)
     expect_identical(nrow(data), 1L)
-    item_cols <- names(data)[-seq_len(5L)]
+    item_cols <- names(data)[-seq_len(6L)]
     expect_identical(item_cols, case$names)
     expect_true(all(vapply(data[item_cols], is.integer, logical(1))))
 
@@ -763,12 +944,12 @@ test_that("the example files read through system.file()", {
   expect_true(nzchar(pid5))
   data <- read_form_responses(pid5)
   expect_identical(nrow(data), 1L)
-  expect_identical(names(data)[-seq_len(5L)], sprintf("pid5_%03d", 1:220))
+  expect_identical(names(data)[-seq_len(6L)], sprintf("pid5_%03d", 1:220))
 
   module <- system.file("examples", "responses-module-shuffled.csv",
                         package = "hitop")
   expect_true(nzchar(module))
-  expect_identical(ncol(read_form_responses(module)), 5L + 21L)
+  expect_identical(ncol(read_form_responses(module)), 6L + 21L)
 
   descriptor <- system.file("examples", "module-shuffled.json",
                             package = "hitop")

@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M112 | hitop-form inserts each participant's responses into a Supabase table named in the study link | done | M111 | normal | milestones/archive/M112-form-store-supabase.md |
 | M113 | The package reads a store's CSV export and an article walks the Google Sheet route end to end | done | M111, M112 | normal | milestones/archive/M113-store-export-reader.md |
 | M114 | hitop-form draws a wrapped item's text inside its card | done | — | normal | milestones/archive/M114-form-item-card-layout.md |
-| M115 | `read_form_responses()` accepts an `item_order` column recording the order a participant saw | planned | M113 | normal | milestones/M115-reader-item-order.md |
+| M115 | `read_form_responses()` accepts an `item_order` column recording the order a participant saw | review | M113 | normal | milestones/M115-reader-item-order.md |
 | M116 | A study link can ask hitop-form to show each participant the items in a fresh random order | planned | M114, M115 | normal | milestones/M116-form-random-order.md |
 
 ## Candidates

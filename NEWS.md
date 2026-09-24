@@ -2,6 +2,16 @@
 
 ## New features
 
+* **`read_form_responses()` accepts an `item_order` column.** A response
+  file may hold a column named `item_order` anywhere after `submitted`. It
+  records the order the participant saw the items, as item numbers joined by
+  single spaces. The result places it sixth, after `submitted` and before the
+  item columns, as character, and a row from a file without the column holds
+  `NA` there. It is not an item column, so it does not enter the check that
+  every file holds the same item columns, and the scoring functions do not
+  read it. A cell that is not blank and does not list the file's item
+  numbers, each once, is an error naming the file and the response row.
+
 * **A REDCap or Qualtrics module export scores from its descriptor alone.**
   The descriptor that `generate_redcap_hitopsr(descriptor = )` or
   `generate_qualtrics_hitopsr(descriptor = )` writes now has a `columns`
