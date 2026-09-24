@@ -1,20 +1,20 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-24 (66th pass, M120 done): row archived, M117 pruned, one candidate row added (the M120 review's F8). validate green._
+_Last hygiene check: 2026-09-24 (67th pass, M121 done): row archived, M118 pruned, one candidate row added (the M121 review's six deferred findings). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | done | M117 | normal | milestones/archive/M118-form-prolific.md |
 | M119 | The Prolific route of hitop-form gives each outcome its own end: a second completion address for a saved file, a sent screen before the redirect, and a doubled parameter read as its filled value | done | — | normal | milestones/archive/M119-form-prolific-outcomes.md |
 | M120 | hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click | done | — | normal | milestones/archive/M120-form-save-button.md |
-| M121 | `read_form_responses()` and hitop-form refuse a malformed file by name: a short or long row, an empty file, a value refusal naming no row, an unnumbered or second-stem item column, and a descriptor whose items are not ascending | review | — | normal | milestones/M121-form-file-refusals.md |
+| M121 | `read_form_responses()` and hitop-form refuse a malformed file by name: a short or long row, an empty file, a value refusal naming no row, an unnumbered or second-stem item column, and a descriptor whose items are not ascending | done | — | normal | milestones/archive/M121-form-file-refusals.md |
 | M122 | hitop-form's "Save the file" button confirms each press in a status message a screen reader announces | planned | — | normal | milestones/M122-form-save-status.md |
 
 ## Candidates
 
+- Six reader refusal gaps M121 deferred. A line of spaces or a tab, or a BOM plus whitespace lines, stops with base R's "first five rows are empty" or "duplicate 'row.names'", not naming the file; a multi-line whitespace-only file is refused with an empty first-columns list; leading whitespace lines are taken as the header, so the field-count refusal's row numbers point past the real header. A non-UTF-8 byte stops `count.fields()` early, so the refusal names a wrong count with an uncaught warning (the M110 row's invalid UTF-8 item is the value-level case). The whole-number and integer-range refusals list columns and rows on separate lines, not the cell. The item-column stem is not checked against the `instrument` cell. Promote on a user report of any one — added 2026-09-24 — lineage: M121 (review F1, F4, F6, F7, F9, F12)
 - hitop-form under another recruiter's own parameters (SONA, CloudResearch), whose return URL M118's `complete` field already takes. Promote when a study recruits through such a panel — added 2026-09-23, narrowed 2026-09-24 (the completion code per outcome and the two M118 review findings graduated to M119) — lineage: M118 (plan gate)
 - In-browser encryption of each posted row to a public key carried in the study link, so a store vendor holds ciphertext only and any store becomes usable for identifiable data regardless of vendor agreements. Needs WebCrypto in hitop-form, a decryption helper in the package (a Suggests decision, {openssl} or {sodium}, at its own gate), and key handling the researcher must get right. Promote when a study needs identifiable data in a vendor store — added 2026-09-23 — lineage: M111 (plan gate)
 - Four item-column refusal gaps M110 deferred. A value mixing visible and invisible characters (`"1"` plus a non-breaking space) shows as `"1 "` and looks valid, because code points show only for all-invisible values (out of scope at the AC5 amendment gate). An SPSS character column declaring `""` missing is refused although blanks score as `NA`. A pre-2.0 haven `labelled_spss` column passes the check, so its codes score as answers. Invalid UTF-8 (`"\xa0"`) stops with a base R error, not `hitop_nonnumeric_items`. Promote on a user report of any one — added 2026-09-22 and 2026-09-23, merged 2026-09-23 — lineage: M110 (AC5 re-audit; review F2, F4, F6)
