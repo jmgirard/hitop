@@ -60,6 +60,8 @@ Both saved-file screens of hitop-form gain a "Save the file" button that saves t
 - 2026-09-24: claim audit: 27 claims read, 6 corrected — hitop-form form.js, tests/helpers.mjs, tests/save.spec.js, tests/send.spec.js, README.md (6171afc); hitop NEWS.md. Corrections: the send's wait "can outlast" the user activation (a refused connection can fail inside it); "the Finish download's suggested file name" rather than its name on disk, with the README and NEWS saying the browser can add a number; the README's completion paragraph puts the button before the link; the send row names the five outcomes with a send address (the Supabase unconfirmed walks have no save-again check); NEWS points at the article's "Make the study link" step and Prolific route. Re-read once by the same reader ([O] agent a0bc8f054fdb24337): 6 of 6 match.
 - 2026-09-24: T5 checks: Playwright 197 of 197 on the hitop-form branch (b9c8ec7; the four touched tests re-run green after 6171afc's comment edits); `devtools::test()` 0 failures, 15 skips (merge-base and pkgload reasons); `pkgdown::check_pkgdown()` no problems. T5's merge of the hitop-form PR and the deployed-page dispatch wait for the review gate.
 - 2026-09-24: status → review. Nothing pushed; review opens the two PRs.
+- 2026-09-24: review gate. Eleven findings triaged as the Review section records; eight fixed on the branches, two plants red.
+- 2026-09-24: step-7 approval: m120-form-save-button approved for merge
 
 ## Decisions
 
@@ -87,3 +89,5 @@ Independent review, three lenses, user-facing tier. History lens ([S]): 0 findin
 - F9 `saveFile()` revokes the blob URL 10 s after the click (pre-existing); a save dialog held longer than that can fail. Proposed: fix now, 60 s.
 - F10 The article's Prolific sentence skips the instructions paragraph between the file name and the button. Proposed: fix now.
 - F11 "press Save the file." names the button unquoted, so the sentence can read as a general instruction. Proposed: reject; the wording was chosen at the plan gate.
+
+Triage at the gate, 2026-09-24: Jeff chose the proposed triage. Fixed now on the branches (hitop-form a341cc2; hitop's NEWS and article in the approval commit): F1 (15 s save-again waits), F2 (the blocking sentence dropped from README, NEWS and the article), F3, F4 (the token reads `P>CODE.filename`), F5, F6 (trim and include), F9 (60 s), F10. Plants against the committed fixes, each restored: a ` Save the file ` button on the sent screen, T15's webhook walk red on `saveButtons: 1`; the file-name and trail paragraphs swapped, S16 red. The thirteen touched tests passed after the fixes (48.6 s). Noted: F7. Candidate row at hygiene: F8. Rejected: F11, the wording chosen at the plan gate.

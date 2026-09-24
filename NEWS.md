@@ -10,8 +10,7 @@
   again, with the same content, offered under the same file name (the
   browser can add a number to keep both copies). The download after an
   unconfirmed send starts only when the wait ends, up to 30 seconds after
-  Finish, and a browser can block a download that late. The
-  online-collection article mentions the button in its "Make the study
+  Finish. The online-collection article mentions the button in its "Make the study
   link" step and in its Prolific route.
 
 * **The hitop-form page gives each Prolific outcome its own end.** The

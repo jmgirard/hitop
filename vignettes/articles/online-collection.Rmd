@@ -74,8 +74,7 @@ answer within the page's limit, the page saves a CSV file on the
 participant's device and names it, so the participant can send it to you by
 hand. That screen also has a "Save the file" button, which saves the same
 file again; its instructions tell the participant to press it if the file
-did not appear, as when the browser blocks a download that starts only when
-the wait ends. A row that reached the sheet after the limit is stored there
+did not appear. A row that reached the sheet after the limit is stored there
 as well; the `submitted` column identifies such a pair.
 
 ## 3. Download the sheet as CSV
@@ -198,9 +197,9 @@ page.", and then sends the participant there, which is the return Prolific
 recommends
 ([Data collection](https://researcher-help.prolific.com/en/articles/445127-data-collection)).
 After a saved file, because the link names no store or the send was not
-confirmed, the page shows the file name first, then its "Save the file"
-button, and then a link to that address, so the participant sees the file's
-name and can save it again before leaving.
+confirmed, the page shows the file name first, then the instructions and
+the "Save the file" button, and then a link to that address, so the
+participant sees the file's name and can save it again before leaving.
 
 A study can hold more than one completion code, each for its own outcome
 ([Custom completion codes](https://researcher-help.prolific.com/en/articles/445170-custom-completion-codes)),
