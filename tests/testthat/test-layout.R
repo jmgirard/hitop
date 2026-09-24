@@ -423,7 +423,7 @@ test_that("layout = 'printed' runs warn_item_order() on the supplied items, not 
 test_that("under layout = 'printed' the misordered-names warning says positions, not sort", {
   data <- read_form_responses(example_file("responses-module-shuffled.csv"))
   m <- read_module(example_file("module-shuffled.json"))
-  item_cols <- names(data)[-seq_len(6L)]
+  item_cols <- names(data)[-seq_len(8L)]
 
   cnd <- rlang::catch_cnd(
     score_hitopsr(data, items = item_cols, module = m, layout = "printed",

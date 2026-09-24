@@ -15,9 +15,10 @@
 #'   A store's download, such as a Google Sheet's CSV export or a Supabase
 #'   table's, holds one header row and one row per participant. Every response
 #'   row of every file is a row of the result, the files in path order and the
-#'   rows in file order. The first six columns of the result are `study`,
-#'   `participant`, `instrument`, `form_build`, `submitted` and `item_order`;
-#'   the item columns follow, one per item, named by the instrument's file
+#'   rows in file order. The first eight columns of the result are `study`,
+#'   `participant`, `instrument`, `form_build`, `submitted`, `item_order`,
+#'   `prolific_study` and `prolific_session`. The item columns follow from the
+#'   ninth, one per item, named by the instrument's file
 #'   stem and the item number (`hitopsr_001`, `hitopbr_01`, `pid5_001`,
 #'   `pid5sf_001`, `pid5bf_01`). A module form saves only the module's items.
 #'   The page keeps the item columns in the order it showed the items, except
@@ -38,11 +39,22 @@
 #'   file's item numbers, each once, is an error naming the file and the
 #'   response row.
 #'
+#'   `prolific_study` and `prolific_session` hold the study and session
+#'   identifiers that Prolific adds to a study link, when the file records
+#'   them for a study recruited through Prolific. A file may hold
+#'   either or both anywhere after `submitted`, and the result places
+#'   `prolific_study` seventh and `prolific_session` eighth. A row from a file
+#'   without a column holds `NA` in it, and so does a blank cell. Scoring does
+#'   not read them, and they are not item columns, so neither enters the
+#'   check that every file holds the same item columns. The cells are read as
+#'   written, with no check on their content.
+#'
 #'   Every file must carry the same item columns in the same order, because
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
 #'   need separate calls. A file that does not look like one the page saved
-#'   (other lead columns, a column that appears twice, a header with no
+#'   (first columns other than the five the page writes first, a column that
+#'   appears twice, a header with no
 #'   response row, an item value that is not a whole number or is outside R's
 #'   integer range, a date that does not parse) is an error naming the file.
 #'   A `submitted` stamp may carry fractional seconds.
@@ -54,12 +66,13 @@
 #'   `hitop_form_responses_none`. Both classes are a public contract a caller
 #'   can catch by name.
 #'
-#' @return A \link[tibble]{tibble} with one row per response row. The first six
-#'   columns are `study`, `participant` and `instrument` as character,
-#'   `form_build` as `Date`, `submitted` as `POSIXct` in UTC, and `item_order`
-#'   as character, `NA` on a row from a file without that column. The item
-#'   columns follow as integers, in the column order of the first file after
-#'   sorting. An item the participant left blank is `NA`.
+#' @return A \link[tibble]{tibble} with one row per response row. The first
+#'   eight columns are `study`, `participant` and `instrument` as character,
+#'   `form_build` as `Date`, `submitted` as `POSIXct` in UTC, and `item_order`,
+#'   `prolific_study` and `prolific_session` as character, each `NA` on a row
+#'   from a file without that column and on a blank cell. The item columns
+#'   follow as integers, in the column order of the first file after sorting.
+#'   An item the participant left blank is `NA`.
 #'
 #' @seealso [score_hitopsr()], [score_hitopbr()], [score_pid5()] and
 #'   [read_module()], which score the item columns; the Collecting Responses
@@ -92,9 +105,10 @@ read_form_responses <- function(path) {
   files <- form_response_files(path)
   parts <- lapply(files, read_form_response_file)
 
-  # The item columns follow the six lead columns of the typed part, so
-  # `item_order` never enters the comparison.
-  item_names <- lapply(parts, function(p) names(p)[-seq_len(6L)])
+  # The item columns follow the eight lead columns of the typed part, so no
+  # optional lead column enters the comparison.
+  n_lead <- length(form_result_columns)
+  item_names <- lapply(parts, function(p) names(p)[-seq_len(n_lead)])
   reference <- item_names[[1L]]
   differs <- !vapply(item_names, identical, logical(1L), reference)
   if (any(differs)) {
@@ -130,9 +144,23 @@ read_form_responses <- function(path) {
 }
 
 # The five lead columns every hitop-form file starts with, in the page's order.
-# A sixth, `item_order`, is optional and may sit anywhere after them.
 form_lead_columns <- c("study", "participant", "instrument", "form_build",
                        "submitted")
+
+# The optional lead columns. A file may hold any of them anywhere after
+# `submitted`, or lack them. The result carries all of them, in this order,
+# after the five above, as character with NA where the file has no column or
+# a blank cell.
+form_optional_columns <- c("item_order", "prolific_study", "prolific_session")
+
+# The lead columns of every result, in order. The item columns follow.
+form_result_columns <- c(form_lead_columns, form_optional_columns)
+
+# Blank cells as NA, for a character column read with `na.strings` empty.
+blank_to_na <- function(v) {
+  v[!nzchar(v)] <- NA_character_
+  v
+}
 
 # The grammar of a non-blank `item_order` cell: item numbers with no leading
 # zero, joined by single spaces, with no space at either end.
@@ -232,11 +260,8 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   # Each item column as character with blanks as NA, then as integer. A file
   # the page saved holds one response row; a store's export holds one per
   # participant, so every check below runs down the column.
-  item_cols <- setdiff(names(raw)[-seq_len(5L)], "item_order")
-  values <- lapply(raw[item_cols], function(v) {
-    v[!nzchar(v)] <- NA_character_
-    v
-  })
+  item_cols <- setdiff(names(raw)[-seq_len(5L)], form_optional_columns)
+  values <- lapply(raw[item_cols], blank_to_na)
   whole <- vapply(values, function(v) {
     all(is.na(v) | grepl("^-?[0-9]+$", v))
   }, logical(1L))
@@ -266,39 +291,40 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     )
   }
 
+  # Each optional lead column as character, blanks as NA, and a column of NA
+  # for a file without it.
+  optional <- lapply(form_optional_columns, function(col) {
+    if (col %in% names(raw)) blank_to_na(raw[[col]]) else rep(NA_character_, nrow(raw))
+  })
+  names(optional) <- form_optional_columns
+
   # An `item_order` cell is blank, or the file's item numbers each once in
   # the order shown. The item number of a column is the digits after its last
-  # underscore (`hitopbr_01` is 1). A row from a file without the column
-  # reads as NA.
-  if ("item_order" %in% names(raw)) {
-    item_order <- raw[["item_order"]]
-    item_order[!nzchar(item_order)] <- NA_character_
-    numbers <- suppressWarnings(as.integer(sub(".*_", "", item_cols)))
-    order_ok <- vapply(item_order, function(cell) {
-      if (is.na(cell)) {
-        return(TRUE)
-      }
-      if (!grepl(item_order_pattern, cell)) {
-        return(FALSE)
-      }
-      parts <- strsplit(cell, " ", fixed = TRUE)[[1L]]
-      parts <- suppressWarnings(as.integer(parts))
-      !anyNA(parts) && !anyNA(numbers) &&
-        identical(sort(parts), sort(numbers))
-    }, logical(1L), USE.NAMES = FALSE)
-    if (!all(order_ok)) {
-      rows <- which(!order_ok)
-      cli::cli_abort(
-        c(
-          "{.file {file}} holds an {.field item_order} value that is not the file's item numbers, each once.",
-          "x" = "Response {cli::qty(length(rows))}row{?s} {rows}: {.val {item_order[rows]}}.",
-          "i" = "The row is counted from the first row after the header."
-        ),
-        call = call
-      )
+  # underscore (`hitopbr_01` is 1).
+  item_order <- optional$item_order
+  numbers <- suppressWarnings(as.integer(sub(".*_", "", item_cols)))
+  order_ok <- vapply(item_order, function(cell) {
+    if (is.na(cell)) {
+      return(TRUE)
     }
-  } else {
-    item_order <- rep(NA_character_, nrow(raw))
+    if (!grepl(item_order_pattern, cell)) {
+      return(FALSE)
+    }
+    parts <- strsplit(cell, " ", fixed = TRUE)[[1L]]
+    parts <- suppressWarnings(as.integer(parts))
+    !anyNA(parts) && !anyNA(numbers) &&
+      identical(sort(parts), sort(numbers))
+  }, logical(1L), USE.NAMES = FALSE)
+  if (!all(order_ok)) {
+    rows <- which(!order_ok)
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds an {.field item_order} value that is not the file's item numbers, each once.",
+        "x" = "Response {cli::qty(length(rows))}row{?s} {rows}: {.val {item_order[rows]}}.",
+        "i" = "The row is counted from the first row after the header."
+      ),
+      call = call
+    )
   }
 
   # The stamps are matched whole, so a trailing fragment cannot slip past
@@ -331,9 +357,9 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     instrument = raw$instrument,
     form_build = form_build,
     submitted = submitted,
-    item_order = item_order,
     stringsAsFactors = FALSE
   )
+  out <- cbind(out, as.data.frame(optional, stringsAsFactors = FALSE))
   if (length(item_cols) > 0L) {
     items <- as.data.frame(ints, check.names = FALSE, stringsAsFactors = FALSE)
     out <- cbind(out, items)

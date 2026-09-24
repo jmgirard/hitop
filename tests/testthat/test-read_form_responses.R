@@ -6,24 +6,41 @@
 # examples, through `example_file()` (see inst/examples/README.md). The
 # synthetic files below are written by `form_file()` in the shape the page
 # writes: five lead columns, then item columns, one response row, CRLF row
-# endings unless the test says otherwise. The result always carries a sixth
-# lead column, `item_order`, so the item columns of a result start at the
-# seventh; a file may hold that column sixth or last, or not at all.
+# endings unless the test says otherwise. The result always carries three
+# optional lead columns after `submitted`: `item_order` sixth,
+# `prolific_study` seventh and `prolific_session` eighth, so the item columns
+# of a result start at the ninth. A file may hold each of them anywhere after
+# `submitted`, or not at all.
 
 lead <- c("study", "participant", "instrument", "form_build", "submitted")
-result_lead <- c(lead, "item_order")
+result_lead <- c(lead, "item_order", "prolific_study", "prolific_session")
 
 # Write one response file as the page does. `items` is a named vector of
 # responses (a name is the column, a value the response; NA writes an empty
 # field). `item_order` is the text of an `item_order` cell, written sixth, or
-# last when `order_last` is TRUE; NULL writes no such column. Returns the path.
+# last when `order_last` is TRUE; NULL writes no such column. `prolific` is a
+# named character vector of Prolific cells (`prolific_study`,
+# `prolific_session`, either or both, in the order given), written directly
+# after `item_order` when that is written sixth and after `submitted`
+# otherwise, or after the item columns when `prolific_last` is TRUE; NULL
+# writes no such column. Returns the path.
 form_file <- function(dir, name, items, participant = "p001",
                       instrument = "hitopbr", eol = "\r\n",
                       study = "study", form_build = "2026-09-20",
                       submitted = "2026-09-20T21:20:36Z",
-                      item_order = NULL, order_last = FALSE) {
+                      item_order = NULL, order_last = FALSE,
+                      prolific = NULL, prolific_last = FALSE) {
   vals <- ifelse(is.na(items), "", as.character(items))
   cols <- names(items)
+  if (!is.null(prolific)) {
+    if (prolific_last) {
+      cols <- c(cols, names(prolific))
+      vals <- c(vals, unname(prolific))
+    } else {
+      cols <- c(names(prolific), cols)
+      vals <- c(unname(prolific), vals)
+    }
+  }
   if (!is.null(item_order)) {
     if (order_last) {
       cols <- c(cols, "item_order")
@@ -121,7 +138,7 @@ test_that("item columns keep the first file's order", {
   form_file(dir, "p002.csv", c(hitopsr_233 = 1L, hitopsr_194 = 2L))
 
   out <- read_form_responses(dir)
-  expect_identical(names(out)[-seq_len(6L)], c("hitopsr_233", "hitopsr_194"))
+  expect_identical(names(out)[-seq_len(8L)], c("hitopsr_233", "hitopsr_194"))
   expect_identical(out$hitopsr_233, c(4L, 1L))
 })
 
@@ -430,6 +447,194 @@ test_that("a blank item_order cell reads as NA, and a bad cell names its row", {
   expect_identical(out$hitopbr_01, 4L)
 })
 
+# ---- The optional Prolific columns -----------------------------------------
+#
+# A page run for a study recruited through Prolific writes two lead columns,
+# `prolific_study` and `prolific_session`, after `submitted` and after
+# `item_order` when that column is present. A store may append them after the
+# item columns instead. The reader places `prolific_study` seventh and
+# `prolific_session` eighth either way, as character, with NA on a row from a
+# file without the column and on a blank cell, and leaves both out of the
+# item-column comparison.
+
+prolific_pair <- c(prolific_study = "st01", prolific_session = "se01")
+
+# The two files of every Prolific shape read to the same eight lead columns
+# and the same items; only the two cells differ by shape.
+expect_prolific <- function(out, study, session) {
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
+  expect_type(out$prolific_study, "character")
+  expect_type(out$prolific_session, "character")
+  expect_identical(out$prolific_study, study)
+  expect_identical(out$prolific_session, session)
+  expect_identical(out$hitopbr_01, 4L)
+  expect_identical(out$hitopbr_02, 1L)
+}
+
+test_that("a file with prolific_study alone after submitted reads it seventh, prolific_session NA", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L),
+                 prolific = prolific_pair["prolific_study"])
+  # The column sits directly after `submitted` in the file.
+  expect_identical(names(utils::read.csv(f))[6L], "prolific_study")
+
+  out <- read_form_responses(f)
+  expect_prolific(out, "st01", NA_character_)
+  expect_identical(out$item_order, NA_character_)
+})
+
+test_that("a file with prolific_session alone after submitted reads it eighth, prolific_study NA", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L),
+                 prolific = prolific_pair["prolific_session"])
+  expect_identical(names(utils::read.csv(f))[6L], "prolific_session")
+
+  out <- read_form_responses(f)
+  expect_prolific(out, NA_character_, "se01")
+  expect_identical(out$item_order, NA_character_)
+})
+
+test_that("the pair directly after submitted, with no item_order, reads seventh and eighth", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L), prolific = prolific_pair)
+  expect_identical(names(utils::read.csv(f))[6:7],
+                   c("prolific_study", "prolific_session"))
+
+  out <- read_form_responses(f)
+  expect_prolific(out, "st01", "se01")
+  expect_identical(out$item_order, NA_character_)
+})
+
+test_that("the pair after item_order, as the page writes it under a random order, reads the same", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L), item_order = "2 1",
+                 prolific = prolific_pair)
+  expect_identical(names(utils::read.csv(f))[6:8],
+                   c("item_order", "prolific_study", "prolific_session"))
+
+  out <- read_form_responses(f)
+  expect_prolific(out, "st01", "se01")
+  expect_identical(out$item_order, "2 1")
+})
+
+test_that("the pair in reverse order in the file still reads study seventh and session eighth", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L),
+                 prolific = rev(prolific_pair))
+  expect_identical(names(utils::read.csv(f))[6:7],
+                   c("prolific_session", "prolific_study"))
+
+  out <- read_form_responses(f)
+  expect_prolific(out, "st01", "se01")
+})
+
+test_that("the pair appended after the item columns, as a sheet does, reads the same", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L), prolific = prolific_pair,
+                 prolific_last = TRUE)
+  expect_identical(names(utils::read.csv(f))[8:9],
+                   c("prolific_study", "prolific_session"))
+
+  out <- read_form_responses(f)
+  expect_prolific(out, "st01", "se01")
+})
+
+test_that("a file with neither Prolific column reads both as NA", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "p001.csv", two_items(4L, 1L))
+  expect_false(any(c("prolific_study", "prolific_session") %in%
+                     names(utils::read.csv(f))))
+
+  out <- read_form_responses(f)
+  expect_prolific(out, NA_character_, NA_character_)
+})
+
+test_that("a two-row store download reads each row's cells, a blank cell as NA", {
+  dir <- withr::local_tempdir()
+  f <- file.path(dir, "sheet.csv")
+  writeLines(c(
+    paste(c(lead, "prolific_study", "prolific_session", "hitopbr_01", "hitopbr_02"),
+          collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,st01,se01,4,1",
+    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,st01,,2,3"
+  ), f)
+
+  out <- read_form_responses(f)
+
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
+  expect_identical(out$prolific_study, c("st01", "st01"))
+  expect_identical(out$prolific_session, c("se01", NA_character_))
+  expect_identical(out$hitopbr_01, c(4L, 2L))
+
+  # Three rows with `prolific_study` alone, one cell blank: the absent
+  # column fills NA down every row, and the blank cell is NA in the other.
+  g <- file.path(dir, "sheet2.csv")
+  writeLines(c(
+    paste(c(lead, "prolific_study", "hitopbr_01", "hitopbr_02"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,st01,4,1",
+    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,,2,3",
+    "s,p3,hitopbr,2026-09-20,2026-09-20T21:20:36Z,st03,1,1"
+  ), g)
+  out <- read_form_responses(g)
+  expect_identical(out$prolific_study, c("st01", NA_character_, "st03"))
+  expect_identical(out$prolific_session, rep(NA_character_, 3L))
+  expect_identical(out$hitopbr_02, c(1L, 3L, 1L))
+})
+
+test_that("a directory mixing a file with the pair and a file without reads as one, with no condition", {
+  dir <- withr::local_tempdir()
+  form_file(dir, "p001.csv", two_items(4L, 1L), participant = "p001")
+  form_file(dir, "p002.csv", two_items(2L, 3L), participant = "p002",
+            prolific = prolific_pair)
+
+  expect_no_condition(out <- read_form_responses(dir))
+
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
+  expect_identical(out$participant, c("p001", "p002"))
+  expect_identical(out$prolific_study, c(NA_character_, "st01"))
+  expect_identical(out$prolific_session, c(NA_character_, "se01"))
+  expect_identical(out$hitopbr_01, c(4L, 2L))
+})
+
+test_that("a directory mixing the pair after item_order and the pair after the items reads as one, with no condition", {
+  dir <- withr::local_tempdir()
+  form_file(dir, "p001.csv", two_items(4L, 1L), participant = "p001",
+            item_order = "2 1", prolific = prolific_pair)
+  form_file(dir, "p002.csv", two_items(2L, 3L), participant = "p002",
+            item_order = "1 2", order_last = TRUE,
+            prolific = c(prolific_study = "st02", prolific_session = "se02"),
+            prolific_last = TRUE)
+
+  expect_no_condition(out <- read_form_responses(dir))
+
+  expect_identical(names(out), c(result_lead, "hitopbr_01", "hitopbr_02"))
+  expect_identical(out$item_order, c("2 1", "1 2"))
+  expect_identical(out$prolific_study, c("st01", "st02"))
+  expect_identical(out$prolific_session, c("se01", "se02"))
+  expect_identical(out$hitopbr_02, c(1L, 3L))
+})
+
+test_that("files carrying the pair still refuse differing items by class, and the none class keeps its trigger", {
+  dir <- withr::local_tempdir()
+  form_file(dir, "p001.csv", two_items(), prolific = prolific_pair)
+  f2 <- form_file(dir, "p002.csv", c(hitopbr_01 = 4L, hitopbr_03 = 1L),
+                  prolific = prolific_pair)
+
+  # The same Prolific cells on both files: the refusal is about the items.
+  # That the pair itself never enters the comparison is shown by the two
+  # mixed-directory tests above.
+  cnd <- rlang::catch_cnd(read_form_responses(dir),
+                          "hitop_form_responses_mismatch")
+  expect_s3_class(cnd, "hitop_form_responses_mismatch")
+  expect_match(conditionMessage(cnd), basename(f2), fixed = TRUE)
+  expect_match(conditionMessage(cnd), "names", fixed = TRUE)
+  expect_false(grepl("prolific", conditionMessage(cnd), fixed = TRUE))
+
+  empty <- withr::local_tempdir()
+  expect_error(read_form_responses(empty),
+               class = "hitop_form_responses_none")
+})
+
 # ---- Plain refusals: not a response file, bad argument ---------------------
 
 test_that("a missing path is an error naming it", {
@@ -563,11 +768,11 @@ test_that("a file holding two response rows reads as two rows, in file order", {
   expect_s3_class(out, "tbl_df")
   expect_equal(nrow(out), 2L)
   expect_identical(out$participant, c("p002", "p001"))
-  expect_identical(names(out)[-seq_len(6L)], sprintf("hitopbr_%02d", 1:45))
+  expect_identical(names(out)[-seq_len(8L)], sprintf("hitopbr_%02d", 1:45))
   expect_s3_class(out$form_build, "Date")
   expect_s3_class(out$submitted, "POSIXct")
   expect_identical(attr(out$submitted, "tzone"), "UTC")
-  expect_true(all(vapply(out[-seq_len(6L)], is.integer, logical(1L))))
+  expect_true(all(vapply(out[-seq_len(8L)], is.integer, logical(1L))))
   expect_identical(out$hitopbr_01, c(4L, 4L))
   expect_identical(out$hitopbr_02, c(3L, 3L))
 })
@@ -691,7 +896,7 @@ table_means <- function(responses, items, scales, srange = c(1, 4)) {
 
 test_that("the full HiTOP-BR file scores to the table-derived means", {
   data <- read_form_responses(fixture("responses-hitopbr.csv"))
-  item_cols <- names(data)[-seq_len(6L)]
+  item_cols <- names(data)[-seq_len(8L)]
   expect_identical(item_cols, sprintf("hitopbr_%02d", 1:45))
   expect_identical(data$instrument, "hitopbr")
 
@@ -709,7 +914,7 @@ test_that("the full HiTOP-BR file scores to the table-derived means", {
 
 test_that("the full HiTOP-SR file scores to the table-derived means", {
   data <- read_form_responses(fixture("responses-hitopsr.csv"))
-  item_cols <- names(data)[-seq_len(6L)]
+  item_cols <- names(data)[-seq_len(8L)]
   expect_identical(item_cols, sprintf("hitopsr_%03d", 1:405))
   expect_identical(data$instrument, "hitopsr")
 
@@ -742,7 +947,7 @@ store_rows <- function(path) {
 
 expect_hitopbr_export <- function(path, participants) {
   data <- read_form_responses(path)
-  item_cols <- names(data)[-seq_len(6L)]
+  item_cols <- names(data)[-seq_len(8L)]
 
   expect_equal(nrow(data), length(participants))
   expect_type(data$participant, "character")
@@ -852,7 +1057,7 @@ test_that("the shuffled HiTOP-BR file reads item_order as written and scores to 
 #     39 / 16 = 2.4375
 test_that("the shuffled module file scores through its descriptor", {
   data <- read_form_responses(example_file("responses-module-shuffled.csv"))
-  item_cols <- names(data)[-seq_len(6L)]
+  item_cols <- names(data)[-seq_len(8L)]
   expect_length(item_cols, 21L)
   expect_identical(item_cols[1:3], c("hitopsr_233", "hitopsr_194", "hitopsr_170"))
 
@@ -878,7 +1083,7 @@ test_that("the shuffled module file scored in instrument order would differ", {
   # in instrument order give a different Distress-Dysphoria mean, so the
   # `layout = "printed"` remap is doing the work the test credits it with.
   data <- read_form_responses(example_file("responses-module-shuffled.csv"))
-  item_cols <- names(data)[-seq_len(6L)]
+  item_cols <- names(data)[-seq_len(8L)]
   module <- read_module(example_file("module-shuffled.json"))
 
   scored <- suppressWarnings(score_hitopsr(
@@ -937,7 +1142,7 @@ for (case in pid5_cases) {
     path <- case$path
     data <- read_form_responses(path)
     expect_identical(nrow(data), 1L)
-    item_cols <- names(data)[-seq_len(6L)]
+    item_cols <- names(data)[-seq_len(8L)]
     expect_identical(item_cols, case$names)
     expect_true(all(vapply(data[item_cols], is.integer, logical(1))))
 
@@ -976,12 +1181,12 @@ test_that("the example files read through system.file()", {
   expect_true(nzchar(pid5))
   data <- read_form_responses(pid5)
   expect_identical(nrow(data), 1L)
-  expect_identical(names(data)[-seq_len(6L)], sprintf("pid5_%03d", 1:220))
+  expect_identical(names(data)[-seq_len(8L)], sprintf("pid5_%03d", 1:220))
 
   module <- system.file("examples", "responses-module-shuffled.csv",
                         package = "hitop")
   expect_true(nzchar(module))
-  expect_identical(ncol(read_form_responses(module)), 6L + 21L)
+  expect_identical(ncol(read_form_responses(module)), 8L + 21L)
 
   descriptor <- system.file("examples", "module-shuffled.json",
                             package = "hitop")
