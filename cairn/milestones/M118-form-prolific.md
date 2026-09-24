@@ -1,13 +1,13 @@
 # M118: A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M117
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page, its link builder and the package's article
-- **Branch/PR:** —
+- **Branch/PR:** `m118-form-prolific` in hitop and in hitop-form
 
 ## Goal
 
@@ -41,7 +41,7 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 
 ## Tasks
 
-- [ ] T1: In `form.js`, `parseLink()` reads `prolific` and `complete` and refuses the participant conflict. A `checkCompleteUrl()` reuses `checkStoreUrl()`'s parse with `https:` only. `boot()` reads `PROLIFIC_PID`, `STUDY_ID` and `SESSION_ID` from the address under `prolific: true`, and treats a `{{%…%}}` value as absent. The page's header comment names the two fields.
+- [x] T1: In `form.js`, `parseLink()` reads `prolific` and `complete` and refuses the participant conflict. A `checkCompleteUrl()` reuses `checkStoreUrl()`'s parse with `https:` only. `boot()` reads `PROLIFIC_PID`, `STUDY_ID` and `SESSION_ID` from the address under `prolific: true`, and treats a `{{%…%}}` value as absent. The page's header comment names the two fields.
 - [ ] T2: `runForm()` takes the identifier from the address. `buildCsv()`, `buildRow()` and `storeSql()` write `prolific_study` and `prolific_session` after `submitted` and `item_order`. `fileName()` is unchanged.
 - [ ] T3: `finish()` and `showSaved()` act on `complete`: `location.assign()` on a confirmed send, and a labelled link on the saved screens.
 - [ ] T4: `link.html` gains the "Recruit through Prolific" box, its hint, the completion field and the placeholder suffix. The participant-field conflict and the completion refusal show in the alert. Add the `storeSql()` fixtures `supabase-hitopbr-prolific.sql` and `supabase-hitopbr-prolific-shuffle.sql`, and the CSV fixture `responses-hitopbr-prolific.csv` written by rule, each with its fixtures-README row.
@@ -58,6 +58,8 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 - 2026-09-23: plan gate chose any `https://` completion address over Prolific's host alone because other recruiters use the same return-URL pattern and the check is the store address's; falsified by a study whose wrong host went unrefused at the builder.
 
 - 2026-09-24: from M117's review (F3): the online-collection article's printed tibble now shows `prolific_study` and `prolific_session` as `NA` with no sentence about them, and the modules article and the PID-5 vignette still say "five lead columns ... a sixth, `item_order`". The article route here describes the two columns in all three.
+
+- 2026-09-24: /milestone-implement started; status in-progress; branch `m118-form-prolific` in both repos. No question gate: the plan fixed every choice that matters. T1 done in hitop-form: `parseLink()` reads `prolific` and `complete`, refuses the participant conflict, `checkCompleteUrl()` shares a `parseAddress()` with `checkStoreUrl()`, `readProlific()` reads the three parameters with a `{{%…%}}` value as absent, and `runForm()` takes the identifier from the address. Guard tests G10 and G11 green (64 passed).
 
 ## Decisions
 
