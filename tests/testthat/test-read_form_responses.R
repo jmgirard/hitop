@@ -787,6 +787,38 @@ test_that("the Supabase export reads two rows and scores to the table-derived me
   )
 })
 
+# ---- A file saved under the page's random order ----------------------------
+#
+# The page keeps the item columns in the instrument's order and writes the
+# order shown in `item_order` (see fixtures/README.md). The file reads and
+# scores as one without the column does; `item_order` comes back as the
+# file's own text.
+
+test_that("the shuffled HiTOP-BR file reads item_order as written and scores to the table-derived means", {
+  path <- fixture("responses-hitopbr-shuffled.csv")
+  data <- expect_hitopbr_export(path, "p001")
+
+  cell <- store_rows(path)[[1]][["item_order"]]
+  expect_identical(data$item_order, cell)
+  expect_match(cell, "^[1-9][0-9]*( [1-9][0-9]*)*$")
+  shown <- as.integer(strsplit(cell, " ", fixed = TRUE)[[1]])
+  expect_setequal(shown, 1:45)
+  expect_length(shown, 45L)
+  # The capture was a rearrangement, not the instrument order.
+  expect_false(identical(shown, 1:45))
+
+  # The page answered by its fixed pattern at each shown position: the
+  # option at index (position * 7) mod 4 of the four options worth 1 to 4,
+  # so 4, 3, 2, 1 repeating down the shown order. The value of item n is
+  # therefore the pattern at n's position in `item_order`, stated here from
+  # the pattern and independently of the reader.
+  position <- match(1:45, shown)
+  expect_identical(
+    unname(unlist(data[1, sprintf("hitopbr_%02d", 1:45)])),
+    (position * 7L) %% 4L + 1L
+  )
+})
+
 # The shuffled module fixture: Agoraphobia and Distress-Dysphoria, 21 items,
 # saved in the descriptor's itemOrder with the page's fixed answer pattern
 # 4, 3, 2, 1 repeating down the columns. Neither scale has a reverse item.

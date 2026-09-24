@@ -2,6 +2,15 @@
 
 ## New features
 
+* **The hitop-form page can show each participant the items in a random
+  order.** The link builder's "Show the items in a random order" box asks
+  for it. The file and the row then keep the item columns in the
+  instrument's order under the official item names and record the order
+  shown in `item_order`, which `read_form_responses()` reads. The help page,
+  the online-collection article, the modules article and
+  `vignette("pid5_scoring")` describe the column, and the reader's tests
+  read one such file.
+
 * **`read_form_responses()` accepts an `item_order` column.** A response
   file may hold a column named `item_order` anywhere after `submitted`. It
   records the order the participant saw the items, as item numbers joined by

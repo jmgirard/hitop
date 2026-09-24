@@ -80,7 +80,11 @@ the `submitted` column identifies such a pair.
 When collection ends, open the sheet's `Responses` tab and choose File, then
 Download, then Comma Separated Values (.csv). The file has one header row and
 one row per participant, in the page's column order: `study`, `participant`,
-`instrument`, `form_build`, `submitted`, then one column per item.
+`instrument`, `form_build`, `submitted`, then one column per item. A link
+that asks for a random order adds `item_order` after `submitted`, and its
+item columns are in the instrument's order rather than the order shown.
+Start a new sheet for such a link: the script builds the header from the
+first row it receives.
 
 Anyone who has the link can post a row to the sheet, because the script's URL
 is inside the link. Look over the sheet before scoring it.
@@ -103,7 +107,9 @@ Each row of the file is a row of the result. The lead columns are typed:
 sheet stored them; `form_build` is a date; `submitted` is a UTC date-time.
 Every item column is an integer. The sixth column, `item_order`, is the order
 the participant saw the items, as item numbers, when the file records one and
-`NA` when it does not, and scoring does not read it.
+`NA` when it does not, and scoring does not read it. The page records it
+when the study link asks for a random order, which the link builder's
+"Show the items in a random order" box sets.
 
 A folder can hold the download beside any files participants sent by hand:
 `read_form_responses()` reads every `.csv` file in it, file by file in path

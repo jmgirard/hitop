@@ -19,12 +19,17 @@
 #'   `participant`, `instrument`, `form_build`, `submitted` and `item_order`;
 #'   the item columns follow, one per item, named by the instrument's file
 #'   stem and the item number (`hitopsr_001`, `hitopbr_01`, `pid5_001`,
-#'   `pid5sf_001`, `pid5bf_01`). A module form saves only the module's items,
-#'   in the order the form showed them.
+#'   `pid5sf_001`, `pid5bf_01`). A module form saves only the module's items.
+#'   The page keeps the item columns in the order it showed the items, except
+#'   under a study link that asks for a random order: the page then draws a
+#'   new order for each participant, keeps the item columns in the
+#'   instrument's order (a module's item numbers ascending), and writes
+#'   `item_order`.
 #'
 #'   `item_order` is the order the participant saw the items, as item numbers
 #'   with no leading zero, joined by single spaces with none at either end
-#'   (`hitopbr_01` is 1). A file may hold the column
+#'   (`hitopbr_01` is 1). The page writes it under a random order and not
+#'   otherwise. A file may hold the column
 #'   anywhere after `submitted`, as a store's download may append it after the
 #'   item columns, and the result places it sixth. A file may also lack it:
 #'   its rows then hold `NA` there. Scoring does not read the column, and it is
