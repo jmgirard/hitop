@@ -39,8 +39,8 @@ A press of the "Save the file" button on either saved-file screen writes a short
 
 - [x] T1: In `tests/helpers.mjs`, add the `P.saved-again` token to `savedScreenOrder()` (`helpers.mjs:291`), assert the role and empty text where the order is asserted, and extend `expectSaveAgain()` (`helpers.mjs:273`) with the keyboard press, the text, the mutation and the focus assertions AC2 and AC3 name; add one call on a with-link screen (`save.spec.js:299`); run `save.spec.js` and `send.spec.js`: AC1 and AC2 red, AC3 green.
 - [x] T2: In `form.js` `showSaved()`, render the empty status element and give the button's `onclick` the rewrite after `saveFile()`; `npx playwright test` green.
-- [ ] T3: README: the participant section's save-again paragraph (`README.md:155-161`) and the `save.spec.js` row of the tests table.
-- [ ] T4: In hitop, a NEWS entry under the development heading.
+- [x] T3: README: the participant section's save-again paragraph (`README.md:155-161`) and the `save.spec.js` row of the tests table.
+- [x] T4: In hitop, a NEWS entry under the development heading.
 
 ## Work log
 
@@ -52,6 +52,7 @@ A press of the "Save the file" button on either saved-file screen writes a short
 - 2026-09-24: Jeff merged hitop-form #9 (main a523fff); block cleared, hitop-form branch `m122-form-save-status` cut from that main.
 - 2026-09-24: T1 (hitop-form c682125): `SAVED_AGAIN`, `expectStatusEmpty()`, the `P.saved-again` order token, and `expectSaveAgain()` rewritten (first press by focus + Enter with the focus assertion, second press by click under a mutation observer, the text asserted after each); `expectStatusEmpty()` at the four order sites and `expectSaveAgain()` added to S16. Run before the page change: save + send specs 8 failed (the eight saved screens, each at the order token) 53 passed; AC3's focus assertion shown green by a one-off probe spec on the unchanged page (deleted, not committed), since the order failure precedes it in the eight tests.
 - 2026-09-24: T2 (hitop-form b6374fc): `showSaved()` builds `p.saved-again[role=status]` empty, places it after the button, and the button's handler calls `saveFile()` then sets the region's text. Full suite 201 passed. Two plants on S21, each red then reverted: a wrong sentence failed "the status after the first press"; a write on the first press only failed "the second press rewrote the region" (0 observer records).
+- 2026-09-24: T3 (hitop-form 7a7cde8): the participant paragraph names the sentence, the `role="status"` region and the focus; the save and send test rows name the empty start, the keyboard and click presses, the sentence, the fresh write and the focus. T4: NEWS entry under the development heading, written against the T2 run and the code.
 
 ## Decisions
 
