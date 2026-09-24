@@ -1,15 +1,14 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-23 (58th pass, M114's post-merge): M114 archived, PR #124 merged at 8/8 CI green, hitop-form PR #4 merged and the deployed-page run 123/123. M110 row pruned. LESSONS: M095 line extended, M056 line trimmed. validate green._
+_Last hygiene check: 2026-09-24 (59th pass, M113's post-merge): M113 archived, PR #125 merged at 8/8 CI green. M111 row pruned. One candidate row added for four reader gaps. No LESSONS change. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M111 | hitop-form sends each participant's responses to an endpoint named in the study link | done | — | normal | milestones/archive/M111-form-store-webhook.md |
 | M112 | hitop-form inserts each participant's responses into a Supabase table named in the study link | done | M111 | normal | milestones/archive/M112-form-store-supabase.md |
-| M113 | The package reads a store's CSV export and an article walks the Google Sheet route end to end | review | M111, M112 | normal | milestones/M113-store-export-reader.md |
+| M113 | The package reads a store's CSV export and an article walks the Google Sheet route end to end | done | M111, M112 | normal | milestones/archive/M113-store-export-reader.md |
 | M114 | hitop-form draws a wrapped item's text inside its card | done | — | normal | milestones/archive/M114-form-item-card-layout.md |
 | M115 | `read_form_responses()` accepts an `item_order` column recording the order a participant saw | planned | M113 | normal | milestones/M115-reader-item-order.md |
 | M116 | A study link can ask hitop-form to show each participant the items in a fresh random order | planned | M114, M115 | normal | milestones/M116-form-random-order.md |
