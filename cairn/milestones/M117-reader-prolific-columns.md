@@ -1,13 +1,13 @@
 # M117: `read_form_responses()` accepts the two Prolific columns a study link can ask hitop-form to write
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — a change to an exported reader's accepted files and result columns
-- **Branch/PR:** —
+- **Branch/PR:** `m117-reader-prolific-columns`
 
 ## Goal
 
@@ -35,8 +35,8 @@ Let the reader accept two optional lead columns, `prolific_study` and `prolific_
 
 ## Tasks
 
-- [ ] T1: In `R/read_form_responses.R`, generalize the `item_order` lead-column handling to a named set of optional lead columns (the `item_cols <- setdiff(...)` split, the blank-to-`NA` step and the result assembly). Add `prolific_study` seventh and `prolific_session` eighth as character, `NA` when absent. Keep the mismatch comparison on the item columns only.
-- [ ] T2: Tests in `tests/testthat/test-read_form_responses.R` for AC1's eight shapes and AC2's two directories, each fixture written in the test as the `item_order` tests are. Assert the column position, type and `NA` fill. Move the existing positional reads (`result_lead`, `names(out)[-seq_len(6L)]` and the like) from six to eight lead columns. Run `devtools::test()`.
+- [x] T1: In `R/read_form_responses.R`, generalize the `item_order` lead-column handling to a named set of optional lead columns (the `item_cols <- setdiff(...)` split, the blank-to-`NA` step and the result assembly). Add `prolific_study` seventh and `prolific_session` eighth as character, `NA` when absent. Keep the mismatch comparison on the item columns only.
+- [x] T2: Tests in `tests/testthat/test-read_form_responses.R` for AC1's eight shapes and AC2's two directories, each fixture written in the test as the `item_order` tests are. Assert the column position, type and `NA` fill. Move the existing positional reads (`result_lead`, `names(out)[-seq_len(6L)]` and the like) from six to eight lead columns. Run `devtools::test()`.
 - [ ] T3: Update the roxygen of `read_form_responses()` and `NEWS.md`. Purl and run the online-collection article's chunks against `load_all()`, because its read section shows the result's columns.
 - [ ] T4: `devtools::document()`, `pkgdown::check_pkgdown()`, `devtools::check()`.
 
@@ -46,6 +46,9 @@ Let the reader accept two optional lead columns, `prolific_study` and `prolific_
 - 2026-09-23: criteria audit ran in full mode ([O] fresh reader, agent af61f6ee): 9 findings on this file, all fixed before the gate. Blank cells read as `NA`; the seven file shapes and the two mixed directories replaced one exemplar each; AC2 reworded from a test-file property to the reader's; the positional test updates moved into T2; NEWS states the item columns start ninth; the page-behavior and "Who holds the data" sentences and the source note moved to M118 and the plan commit. The second read returned 1 finding, fixed: the shapes now include the pair directly after `submitted` with no `item_order`, and the single-column shapes are pinned there.
 - 2026-09-23: plan gate chose lead columns seventh and eighth over trailing columns after the items because the page and the stores write them as lead columns and `item_order` set the pattern; falsified by a caller broken by the item columns moving to ninth.
 - 2026-09-23: plan gate chose two milestones (this reader first, then M118) over one across both repos because the reader must accept the file before any page writes it, as M115 preceded M116; falsified by a reader change that cannot be tested without the page's file.
+- 2026-09-23: implement started on `m117-reader-prolific-columns`. Question gate skipped: the plan and D-071 fix the names, positions, type, blank handling and the test shapes, so nothing is open.
+- 2026-09-23: T1 done. The reader holds the optional lead columns in one named set (`form_optional_columns`), reads each as character with blanks as `NA` or a column of `NA` when absent, and binds them after `submitted`. The `item_order` cell check runs on the set's first member unchanged.
+- 2026-09-23: T2 done. Ten new tests cover AC1's eight shapes and AC2's two directories, and one asserts that files carrying the pair still refuse by class on differing items. Every positional read in `test-read_form_responses.R` and one in `test-layout.R` moved from six to eight lead columns. A planted swap of the pair in the result turned the new tests red. Full suite clean.
 
 ## Decisions
 
