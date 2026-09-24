@@ -11,8 +11,8 @@
   column holds `NA` in it, as does a blank cell. Neither is an item column,
   so neither enters the check that every file holds the same item columns,
   and the scoring functions do not read them. Every result now has eight
-  lead columns, and the item columns start ninth. Select the item columns by
-  name, as the help page and the articles do, and no code changes.
+  lead columns, and the item columns start ninth. Code that selects the item
+  columns by name, as the articles and the vignettes do, needs no change.
 
 * **The hitop-form page can show each participant the items in a random
   order.** The link builder's "Show the items in a random order" box asks
