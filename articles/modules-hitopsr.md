@@ -570,16 +570,17 @@ path:
 path <- system.file("examples", "responses-module-shuffled.csv", package = "hitop")
 responses <- read_form_responses(path)
 responses
-#> # A tibble: 1 × 27
+#> # A tibble: 1 × 29
 #>   study   participant instrument form_build submitted           item_order
 #>   <chr>   <chr>       <chr>      <date>     <dttm>              <chr>     
 #> 1 fixture p001        hitopsr    2026-09-20 2026-09-20 21:20:44 NA        
-#> # ℹ 21 more variables: hitopsr_233 <int>, hitopsr_194 <int>, hitopsr_170 <int>,
-#> #   hitopsr_064 <int>, hitopsr_365 <int>, hitopsr_011 <int>, hitopsr_020 <int>,
-#> #   hitopsr_300 <int>, hitopsr_109 <int>, hitopsr_118 <int>, hitopsr_260 <int>,
-#> #   hitopsr_394 <int>, hitopsr_224 <int>, hitopsr_291 <int>, hitopsr_304 <int>,
-#> #   hitopsr_367 <int>, hitopsr_343 <int>, hitopsr_066 <int>, hitopsr_100 <int>,
-#> #   hitopsr_386 <int>, hitopsr_380 <int>
+#> # ℹ 23 more variables: prolific_study <chr>, prolific_session <chr>,
+#> #   hitopsr_233 <int>, hitopsr_194 <int>, hitopsr_170 <int>, hitopsr_064 <int>,
+#> #   hitopsr_365 <int>, hitopsr_011 <int>, hitopsr_020 <int>, hitopsr_300 <int>,
+#> #   hitopsr_109 <int>, hitopsr_118 <int>, hitopsr_260 <int>, hitopsr_394 <int>,
+#> #   hitopsr_224 <int>, hitopsr_291 <int>, hitopsr_304 <int>, hitopsr_367 <int>,
+#> #   hitopsr_343 <int>, hitopsr_066 <int>, hitopsr_100 <int>, hitopsr_386 <int>,
+#> #   hitopsr_380 <int>
 ```
 
 Each row of each file is a row of the result, the lead columns typed

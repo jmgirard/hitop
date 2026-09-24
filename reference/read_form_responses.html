@@ -101,12 +101,13 @@ supplied.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with one row per response row. The first six
-columns are <code>study</code>, <code>participant</code> and <code>instrument</code> as character,
-<code>form_build</code> as <code>Date</code>, <code>submitted</code> as <code>POSIXct</code> in UTC, and <code>item_order</code>
-as character, <code>NA</code> on a row from a file without that column. The item
-columns follow as integers, in the column order of the first file after
-sorting. An item the participant left blank is <code>NA</code>.</p>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with one row per response row. The first
+eight columns are <code>study</code>, <code>participant</code> and <code>instrument</code> as character,
+<code>form_build</code> as <code>Date</code>, <code>submitted</code> as <code>POSIXct</code> in UTC, and <code>item_order</code>,
+<code>prolific_study</code> and <code>prolific_session</code> as character, each <code>NA</code> on a row
+from a file without that column and on a blank cell. The item columns
+follow as integers, in the column order of the first file after sorting.
+An item the participant left blank is <code>NA</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -114,9 +115,10 @@ sorting. An item the participant left blank is <code>NA</code>.</p>
 A store's download, such as a Google Sheet's CSV export or a Supabase
 table's, holds one header row and one row per participant. Every response
 row of every file is a row of the result, the files in path order and the
-rows in file order. The first six columns of the result are <code>study</code>,
-<code>participant</code>, <code>instrument</code>, <code>form_build</code>, <code>submitted</code> and <code>item_order</code>;
-the item columns follow, one per item, named by the instrument's file
+rows in file order. The first eight columns of the result are <code>study</code>,
+<code>participant</code>, <code>instrument</code>, <code>form_build</code>, <code>submitted</code>, <code>item_order</code>,
+<code>prolific_study</code> and <code>prolific_session</code>. The item columns follow from the
+ninth, one per item, named by the instrument's file
 stem and the item number (<code>hitopsr_001</code>, <code>hitopbr_01</code>, <code>pid5_001</code>,
 <code>pid5sf_001</code>, <code>pid5bf_01</code>). A module form saves only the module's items.
 The page keeps the item columns in the order it showed the items, except
@@ -135,11 +137,21 @@ not an item column, so it does not enter the check that every file holds
 the same item columns. A cell that is not blank and does not list the
 file's item numbers, each once, is an error naming the file and the
 response row.</p>
+<p><code>prolific_study</code> and <code>prolific_session</code> hold the study and session
+identifiers that Prolific adds to a study link, when the file records
+them for a study recruited through Prolific. A file may hold
+either or both anywhere after <code>submitted</code>, and the result places
+<code>prolific_study</code> seventh and <code>prolific_session</code> eighth. A row from a file
+without a column holds <code>NA</code> in it, and so does a blank cell. Scoring does
+not read them, and they are not item columns, so neither enters the
+check that every file holds the same item columns. The cells are read as
+written, with no check on their content.</p>
 <p>Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
-(other lead columns, a column that appears twice, a header with no
+(first columns other than the five the page writes first, a column that
+appears twice, a header with no
 response row, an item value that is not a whole number or is outside R's
 integer range, a date that does not parse) is an error naming the file.
 A <code>submitted</code> stamp may carry fractional seconds.</p>
@@ -177,12 +189,13 @@ hand-off for a module and for the PID-5.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu">read_form_responses</span><span class="op">(</span><span class="va">dir</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">responses</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 10</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   study participant instrument form_build submitted           item_order</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> demo  p001        hitopbr    2026-09-20 2026-09-20 <span style="color: #949494;">21:20:36</span> <span style="color: #BB0000;">NA</span>        </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> demo  p002        hitopbr    2026-09-20 2026-09-21 <span style="color: #949494;">09:02:11</span> <span style="color: #BB0000;">NA</span>        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: hitopbr_01 &lt;int&gt;, hitopbr_02 &lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: prolific_study &lt;chr&gt;, prolific_session &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hitopbr_01 &lt;int&gt;, hitopbr_02 &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

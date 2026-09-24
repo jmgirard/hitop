@@ -202,18 +202,18 @@ the page. The package installs it as an example, and
 <span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-sheet-hitopbr.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
 <span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="va">responses</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 51</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 53</span></span></span>
 <span><span class="co">#&gt;   study   participant instrument form_build submitted           item_order</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> fixture =1+1        hitopbr    2026-09-20 2026-09-23 <span style="color: #949494;">19:33:25</span> <span style="color: #BB0000;">NA</span>        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fixture 007         hitopbr    2026-09-20 2026-09-23 <span style="color: #949494;">19:33:30</span> <span style="color: #BB0000;">NA</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 45 more variables: hitopbr_01 &lt;int&gt;, hitopbr_02 &lt;int&gt;, hitopbr_03 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_04 &lt;int&gt;, hitopbr_05 &lt;int&gt;, hitopbr_06 &lt;int&gt;, hitopbr_07 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_08 &lt;int&gt;, hitopbr_09 &lt;int&gt;, hitopbr_10 &lt;int&gt;, hitopbr_11 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_12 &lt;int&gt;, hitopbr_13 &lt;int&gt;, hitopbr_14 &lt;int&gt;, hitopbr_15 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_16 &lt;int&gt;, hitopbr_17 &lt;int&gt;, hitopbr_18 &lt;int&gt;, hitopbr_19 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_20 &lt;int&gt;, hitopbr_21 &lt;int&gt;, hitopbr_22 &lt;int&gt;, hitopbr_23 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_24 &lt;int&gt;, hitopbr_25 &lt;int&gt;, hitopbr_26 &lt;int&gt;, hitopbr_27 &lt;int&gt;, …</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 47 more variables: prolific_study &lt;chr&gt;, prolific_session &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_01 &lt;int&gt;, hitopbr_02 &lt;int&gt;, hitopbr_03 &lt;int&gt;, hitopbr_04 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_05 &lt;int&gt;, hitopbr_06 &lt;int&gt;, hitopbr_07 &lt;int&gt;, hitopbr_08 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_09 &lt;int&gt;, hitopbr_10 &lt;int&gt;, hitopbr_11 &lt;int&gt;, hitopbr_12 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_13 &lt;int&gt;, hitopbr_14 &lt;int&gt;, hitopbr_15 &lt;int&gt;, hitopbr_16 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_17 &lt;int&gt;, hitopbr_18 &lt;int&gt;, hitopbr_19 &lt;int&gt;, hitopbr_20 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopbr_21 &lt;int&gt;, hitopbr_22 &lt;int&gt;, hitopbr_23 &lt;int&gt;, hitopbr_24 &lt;int&gt;, …</span></span></span></code></pre></div>
 <p>Each row of the file is a row of the result. The lead columns are
 typed: <code>participant</code> is character, so the codes
 <code>=1+1</code> and <code>007</code> come back as the sheet stored

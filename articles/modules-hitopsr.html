@@ -570,16 +570,17 @@ its path:</p>
 <code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-module-shuffled.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
 <span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="va">responses</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 27</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 29</span></span></span>
 <span><span class="co">#&gt;   study   participant instrument form_build submitted           item_order</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> fixture p001        hitopsr    2026-09-20 2026-09-20 <span style="color: #949494;">21:20:44</span> <span style="color: #BB0000;">NA</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 21 more variables: hitopsr_233 &lt;int&gt;, hitopsr_194 &lt;int&gt;, hitopsr_170 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_064 &lt;int&gt;, hitopsr_365 &lt;int&gt;, hitopsr_011 &lt;int&gt;, hitopsr_020 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_300 &lt;int&gt;, hitopsr_109 &lt;int&gt;, hitopsr_118 &lt;int&gt;, hitopsr_260 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_394 &lt;int&gt;, hitopsr_224 &lt;int&gt;, hitopsr_291 &lt;int&gt;, hitopsr_304 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_367 &lt;int&gt;, hitopsr_343 &lt;int&gt;, hitopsr_066 &lt;int&gt;, hitopsr_100 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_386 &lt;int&gt;, hitopsr_380 &lt;int&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 23 more variables: prolific_study &lt;chr&gt;, prolific_session &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_233 &lt;int&gt;, hitopsr_194 &lt;int&gt;, hitopsr_170 &lt;int&gt;, hitopsr_064 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_365 &lt;int&gt;, hitopsr_011 &lt;int&gt;, hitopsr_020 &lt;int&gt;, hitopsr_300 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_109 &lt;int&gt;, hitopsr_118 &lt;int&gt;, hitopsr_260 &lt;int&gt;, hitopsr_394 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_224 &lt;int&gt;, hitopsr_291 &lt;int&gt;, hitopsr_304 &lt;int&gt;, hitopsr_367 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_343 &lt;int&gt;, hitopsr_066 &lt;int&gt;, hitopsr_100 &lt;int&gt;, hitopsr_386 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_380 &lt;int&gt;</span></span></span></code></pre></div>
 <p>Each row of each file is a row of the result, the lead columns typed
 (<code>form_build</code> is a date, <code>submitted</code> a UTC
 date-time), and every item column an integer. A folder of many files
