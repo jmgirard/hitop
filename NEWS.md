@@ -2,6 +2,14 @@
 
 ## New features
 
+* **The hitop-form page confirms each press of "Save the file".** A press
+  of the button on a saved-file screen shows "The file was saved again."
+  under the button, in a `role="status"` region, which screen readers are
+  meant to announce. The page does not move focus, so after a keyboard
+  press focus stays on the button. The region is on the page,
+  empty, before the first press. A second press saves the file again and
+  writes the sentence afresh.
+
 * **The hitop-form page lets a participant save the file again.** Each
   screen that names a saved file now shows a "Save the file" button under
   its instructions. Those screens follow a Finish with no store in the link
