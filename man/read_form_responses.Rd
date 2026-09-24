@@ -31,20 +31,21 @@ A file the page saves holds one header row and one response row.
 A store's download, such as a Google Sheet's CSV export or a Supabase
 table's, holds one header row and one row per participant. Every response
 row of every file is a row of the result, the files in path order and the
-rows in file order. The first five columns are \code{study}, \code{participant}, \code{instrument},
-\code{form_build} and \code{submitted}; the item columns follow, one per item, named
-by the instrument's file stem and the item number (\code{hitopsr_001},
-\code{hitopbr_01}, \code{pid5_001}, \code{pid5sf_001}, \code{pid5bf_01}). A module form saves
-only the module's items, in the order the form showed them.
+rows in file order. The first five columns are \code{study}, \code{participant},
+\code{instrument}, \code{form_build} and \code{submitted}; the item columns follow, one
+per item, named by the instrument's file stem and the item number
+(\code{hitopsr_001}, \code{hitopbr_01}, \code{pid5_001}, \code{pid5sf_001}, \code{pid5bf_01}). A
+module form saves only the module's items, in the order the form showed
+them.
 
 Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
 (other lead columns, a column that appears twice, a header with no
-response row, an item value that is not a whole number or is outside R's integer
-range, a date that does not parse) is an error naming the file. A
-\code{submitted} stamp may carry fractional seconds.
+response row, an item value that is not a whole number or is outside R's
+integer range, a date that does not parse) is an error naming the file.
+A \code{submitted} stamp may carry fractional seconds.
 
 \strong{Errors.} Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class

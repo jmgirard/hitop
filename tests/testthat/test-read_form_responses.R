@@ -302,6 +302,7 @@ test_that("a bad item value on a later row is refused by column", {
   ), f)
 
   cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+  expect_match(conditionMessage(cnd), "bad2.csv", fixed = TRUE)
   expect_match(conditionMessage(cnd), "hitopbr_02", fixed = TRUE)
   expect_match(conditionMessage(cnd), "whole number", fixed = TRUE)
 
@@ -312,8 +313,31 @@ test_that("a bad item value on a later row is refused by column", {
     "s,p2,hitopbr,2026-09-20,20/09/2026,3"
   ), g)
   cnd <- rlang::catch_cnd(read_form_responses(g), "error")
+  expect_match(conditionMessage(cnd), "stamp2.csv", fixed = TRUE)
   expect_match(conditionMessage(cnd), "submitted", fixed = TRUE)
   expect_match(conditionMessage(cnd), "20/09/2026", fixed = TRUE)
+
+  h <- file.path(dir, "date2.csv")
+  writeLines(c(
+    paste(c(lead, "hitopbr_01"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4",
+    "s,p2,hitopbr,20/09/2026,2026-09-20T21:20:36Z,3"
+  ), h)
+  cnd <- rlang::catch_cnd(read_form_responses(h), "error")
+  expect_match(conditionMessage(cnd), "date2.csv", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "form_build", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "20/09/2026", fixed = TRUE)
+
+  w <- file.path(dir, "wide2.csv")
+  writeLines(c(
+    paste(c(lead, "hitopbr_01"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4",
+    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,99999999999"
+  ), w)
+  expect_no_warning(cnd <- rlang::catch_cnd(read_form_responses(w), "error"))
+  expect_match(conditionMessage(cnd), "wide2.csv", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "hitopbr_01", fixed = TRUE)
+  expect_match(conditionMessage(cnd), "integer range", fixed = TRUE)
 })
 
 # ---- Multi-row files: a store's export -------------------------------------

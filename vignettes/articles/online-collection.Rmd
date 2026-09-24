@@ -50,6 +50,12 @@ not one object, holds more than 1000 keys, or has a key outside lower-case
 letters, digits and underscores, so no one can grow the header without limit
 or put a formula in it.
 
+Deploy one sheet and script per form. A key the header lacks is added to it,
+so a sheet that receives two forms' rows, or a module's beside the full
+instrument's, holds the union of their columns, and its download reads as one
+data frame with the other form's items blank on every row. Nothing in the
+download or in `read_form_responses()` tells the two apart.
+
 ## 2. Make the study link
 
 Open the page's [link builder](https://jmgirard.github.io/hitop-form/link.html).
@@ -130,10 +136,10 @@ reads with `read_form_responses()` exactly as the sheet's download does.
 
 ## Who holds the data
 
-The answers go to the store the link names, or to a file on the
-participant's device when the send is not confirmed, and nowhere else. With a
-Google Sheet, Google holds the rows; with a Supabase table, Supabase holds
-them. The page's host, GitHub Pages, receives the study link with each page
+The answers go to the store the link names, and to a file on the
+participant's device when the link names no store or the send is not
+confirmed. They go nowhere else. With a Google Sheet, Google holds the rows;
+with a Supabase table, Supabase holds them. The page's host, GitHub Pages, receives the study link with each page
 load, and the link carries the instrument and any module, the study name, the
 participant code, the store's address and, for Supabase, its key. It receives
 no answers.

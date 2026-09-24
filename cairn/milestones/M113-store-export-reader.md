@@ -60,6 +60,8 @@ Make `read_form_responses()` read a file holding many participants' rows, and pu
 - 2026-09-23: claim audit: 46 claims read, 4 corrected — R/read_form_responses.R, NEWS.md, vignettes/articles/online-collection.Rmd, vignettes/articles/modules-hitopsr.Rmd, vignettes/pid5_scoring.Rmd, inst/examples/README.md, tests/testthat/fixtures/README.md. Corrections: the Apps Script's key cap and formula reason, the descriptor as an addition to the instrument choice, "one or more" rows in NEWS, the Supabase table's SQL pinned to hitop-form `1e472ba`. Two gaps the reader noted and left were closed by the author: the fallback file and the link's instrument and module in the data-holding section.
 - 2026-09-23: all tasks checked; status set to review. The T3 tick landed in the T2 checkpoint commit by the author's oversight; the code for T3 is in its own commit.
 - 2026-09-23: resume by /milestone-implement: `main` had moved (M114 merged), so it was merged into the branch at `36fce0a9`, the ROADMAP conflict resolved to M113 review and M114 done. Re-verify on the merged tree: `document()` no diff, line-ending check clean, `test()` 0 failures. Status stays review.
+- 2026-09-23: /milestone-review: four criteria ticked on fresh evidence, gate clean, three reviewers' twelve findings triaged at the gate (five fixed on the branch, four to one candidate row, one rejected).
+- 2026-09-23: step-7 approval: m113-store-export-reader approved for merge
 
 ## Decisions
 
@@ -87,3 +89,5 @@ Evidence gathered 2026-09-23 on branch head `f3f3416c` (main `f12b54cd` merged i
 - [O]9 pid5_scoring.Rmd:204 — "one row per participant row" is awkward. Proposed: fix now.
 - [O]10 and [S-blame]1 R/read_form_responses.R:18, 29 — two roxygen lines run past the block's wrap width. Cosmetic. Proposed: fix now.
 - [S-prior]: no regression of a prior finding (archives M096, M099, M111, M112 read; the PR-comment probe returned an empty array).
+
+**Triage at the gate (2026-09-23, Jeff chose the recommended option).** Fixed now on the branch: [O]1 (one sheet and script per form, a paragraph in the article's step 1), [O]5 (the data-holding section names the no-store file route and drops "nowhere else" as an exclusive "or"), [O]7 (the later-row test asserts the file name and adds a bad `form_build` and an out-of-range value on row 2), [O]9 ("one row per response row of each file"), [O]10 and [S-blame]1 (roxygen rewrapped). After the fixes: `document()` run, reader tests 0 failures, line-ending check clean. Follow-up: [O]2, [O]3, [O]4, [O]6 as one ROADMAP candidate row. Rejected: [O]8, the construction AC1 mandates.
