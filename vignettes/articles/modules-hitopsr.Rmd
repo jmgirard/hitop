@@ -425,7 +425,8 @@ column per item, named by the instrument's file stem and the item number and
 in the order the page showed them. Under the random order, a sixth lead
 column, `item_order`, records the order shown, and the item columns are in
 the order the descriptor's `items` field lists them, which `write_module()`
-writes ascending. A file the page
+writes ascending. A link that recruits through Prolific adds two more lead
+columns, `prolific_study` and `prolific_session`. A file the page
 saved holds one participant's row; a store's download holds one row per
 participant.
 
