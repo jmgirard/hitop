@@ -38,7 +38,7 @@ A link field `shuffle: true` makes `jmgirard/hitop-form` draw a new random order
 ## Tasks
 
 - [x] T1: `parseLink()` (`form.js:60`) reads `shuffle`; `planItems()` (`form.js:344`) returns the canonical list and a shown permutation; the render and the shuffle; the render tests of AC1.
-- [ ] T2: `buildCsv()` and `buildRow()` (`form.js:360`, `form.js:389`) write `item_order` and the canonical columns; the save and send tests of AC2.
+- [x] T2: `buildCsv()` and `buildRow()` (`form.js:360`, `form.js:389`) write `item_order` and the canonical columns; the save and send tests of AC2.
 - [ ] T3: The `link.html` checkbox and hint, `storeSql()` (`form.js:304`), the two SQL fixtures, the link and SQL tests of AC3 and AC4.
 - [ ] T4: The grep sweep of AC5 across both repos, the README sections, the fixtures README, the captured fixture and its test in hitop on this milestone's branch.
 - [ ] T5: The hitop-form PR, its CI and the dispatched deployed-page run after the merge; the hitop PR with the fixture, the test and tracking.
@@ -54,6 +54,7 @@ A link field `shuffle: true` makes `jmgirard/hitop-form` draw a new random order
 - 2026-09-23: IP1 sign-off: Jeff signed off at the plan gate on shuffling the display order, with the stored columns labelled by the official item number and the participant's display number saved in `item_order` (D-070). The escalation to a review brief offered at the gate was not taken.
 - 2026-09-24: implement started. Branches `m116-form-random-order` in both repos. Question gate skipped: the field name, the column shape, the module rule and the fixture route are fixed by the criteria and D-070.
 - 2026-09-24: T1 done in hitop-form. `parseLink()` refuses a `shuffle` outside the two booleans by name. `planItems(exp, module, shuffle)` returns `{ items, shown }`; `shuffleItems()` is a Fisher–Yates over `crypto.getRandomValues` with rejection above the largest multiple of the range. Four render tests (R7 to R9) and three refusal tests (G9). Plants: a no-op shuffle reds R7 and R8; an accept-anything field reds the three G9 tests. Suite 123 to 130, all green.
+- 2026-09-24: T2 done in hitop-form. The record carries `items: plan.items` and, under shuffle, `itemOrder` from `plan.shown`; `buildCsv()` and `buildRow()` write `item_order` sixth when the record has one. `expectShuffled()` in helpers.mjs checks a header and a row by item number against the pattern at the shown position. Tests: S8 (HiTOP-BR and module saves), S9 (the committed capture `responses-hitopbr-shuffled.csv` agrees with its own `item_order`), T12 (webhook and Supabase posts). Plants: columns in shown order reds S8 and T12 (4 tests); a dropped `item_order` key reds both T12 tests. Suite 135 green.
 
 ## Decisions
 
