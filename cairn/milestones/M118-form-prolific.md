@@ -1,0 +1,62 @@
+# M118: A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** M117
+- **Driving RR:** —
+- **Principles touched:** GP3
+- **Resolves:** —
+- **Surface tier:** user-facing — the deployed form page, its link builder and the package's article
+- **Branch/PR:** —
+
+## Goal
+
+Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PROLIFIC_PID` from the page's address as the participant identifier and writes `STUDY_ID` and `SESSION_ID` into the row and the file, and `complete` names an `https://` address the participant is sent to after a confirmed send and offered after a saved file.
+
+## Scope
+
+**In:** In hitop-form: `parseLink()` reads the two fields. The start screen skips the identifier field when the address carries a Prolific ID. `buildCsv()`, `buildRow()` and `storeSql()` carry `prolific_study` and `prolific_session`. The outcome screens act on `complete`. The builder gains a "Recruit through Prolific" box and a completion field, and prints the link with Prolific's three placeholders. README and tests. In hitop: the online-collection article's Prolific route, NEWS, and a page-written fixture with its reader test.
+
+**Out:** The reader's acceptance of the two columns → M117. A completion URL other than `https://` → nowhere, because the store address has the same bar. Custom completion codes per outcome, which Prolific offers per study → a candidate row, promoted when a study needs a code for the unconfirmed-send outcome. Another recruiter's parameters (SONA, CloudResearch) → a candidate row. `complete` already takes any `https://` address.
+
+## Acceptance criteria
+
+- [ ] AC1: `parseLink()` accepts `prolific` only as `true` or `false`, refuses `prolific: true` beside a `participant`, and accepts `complete` only as an `https://` address with no user name and no password, through a `checkCompleteUrl()` that `link.html` shares. It refuses any other value by name with the value shown, as it refuses `shuffle`. Tests fire the refusal for `prolific` as a string, a number and `null`, for the participant conflict, and for `complete` as `http://127.0.0.1`, `http://localhost`, a `javascript:` address, a string that is no URL, an address with a user name only, an address with a password, and a number.
+- [ ] AC2: Under `prolific: true`, the row and the file always carry `prolific_study` and `prolific_session` after `submitted` and after `item_order` when that column is present, holding `STUDY_ID` and `SESSION_ID` from the page's address, or the empty string when the address lacks one or still holds a `{{%…%}}` placeholder. When the address carries a `PROLIFIC_PID` that is not blank and not a placeholder, it is the participant identifier and the start screen shows no identifier field. When it is absent, blank or a placeholder, the start screen asks as today. Without `prolific: true`, the three parameters are ignored. Tests: a save against the fixture file `tests/fixtures/responses-hitopbr-prolific.csv`, a send to a web address and one to a Supabase table, each of the three with and without `shuffle` and asserting the header or key order; a walk whose address has a real `PROLIFIC_PID`, `STUDY_ID={{%STUDY_ID%}}` and no `SESSION_ID`, asserting both cells are `""`; the absent, blank and placeholder `PROLIFIC_PID` cases each showing the field; and a walk without the field whose address carries all three parameters and whose file and posted row are as before, with and without `shuffle`.
+- [ ] AC3: The builder's "Recruit through Prolific" box puts `prolific: true` in the link, and its "Completion URL" field puts `complete` in it. The builder refuses the completion address through `checkCompleteUrl()`, probed with one refused form of AC1, and refuses the box beside a filled participant field, each by name. With the box checked, the printed link ends in `&PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}`, and the Supabase SQL gains `"prolific_study" text` and `"prolific_session" text` after `"submitted"` and after `"item_order"` when present, equal to two new fixture files written by rule and never captured from the builder, one with the random-order box and one without. Unchecked, the SQL equals the existing fixtures byte for byte.
+- [ ] AC4: With `complete` in the link, a confirmed send issues one navigation request to the completion address, and the sent screen's heading is not rendered before that request. The two saved screens (no store, unconfirmed send) show a link to the address after the file name, labelled by its host, and issue no request to the address within five seconds of the screen. Without `complete`, the existing outcome-screen assertions (the sent text in network N4, the saved-screen tests in save.spec.js and send.spec.js) pass unmodified. Tests fulfil the completion address through `page.route()`, count its requests, assert the link's `href` on both saved screens, and assert the network set on the confirmed walk equals the page's files, the export, the store and the completion address.
+- [ ] AC5: The hitop-form README's "Make a study link" and "What the participant sees" sections, its file and row descriptions and test table, and hitop's online-collection article describe the Prolific route: the box, the placeholders pasted into Prolific's study URL, the completion URL from the study's page, the two columns, and that a preview passes a 24-character ID, each cited to the Prolific page it comes from (the URLs in the source note's Provenance block). The article's "Who holds the data" section says that a Prolific ID identifies the participant to Prolific, and that the page's host receives the three Prolific parameters with each page load. hitop's NEWS carries the entry.
+- [ ] AC6: hitop ships `tests/testthat/fixtures/responses-hitopbr-prolific.csv`, a file the page saved on a walk with `prolific: true` and `shuffle: true`, with a provenance row in the fixtures README. A test reads it through `read_form_responses()`, asserts the two columns and `item_order`, and scores it through `score_hitopbr()` against means recomputed from the package tables.
+- [ ] AC7: `npx playwright test` is green on the checkout with every new test present. In hitop, `devtools::test()` is clean, `pkgdown::check_pkgdown()` passes and the article renders against the installed package.
+
+## Coverage
+
+- AC1 → T1, T6
+- AC2 → T1, T2, T6
+- AC3 → T2, T4, T6
+- AC4 → T3, T6
+- AC5 → T5
+- AC6 → T5
+- AC7 → T6, T7
+
+## Tasks
+
+- [ ] T1: In `form.js`, `parseLink()` reads `prolific` and `complete` and refuses the participant conflict. A `checkCompleteUrl()` reuses `checkStoreUrl()`'s parse with `https:` only. `boot()` reads `PROLIFIC_PID`, `STUDY_ID` and `SESSION_ID` from the address under `prolific: true`, and treats a `{{%…%}}` value as absent. The page's header comment names the two fields.
+- [ ] T2: `runForm()` takes the identifier from the address. `buildCsv()`, `buildRow()` and `storeSql()` write `prolific_study` and `prolific_session` after `submitted` and `item_order`. `fileName()` is unchanged.
+- [ ] T3: `finish()` and `showSaved()` act on `complete`: `location.assign()` on a confirmed send, and a labelled link on the saved screens.
+- [ ] T4: `link.html` gains the "Recruit through Prolific" box, its hint, the completion field and the placeholder suffix. The participant-field conflict and the completion refusal show in the alert. Add the `storeSql()` fixtures `supabase-hitopbr-prolific.sql` and `supabase-hitopbr-prolific-shuffle.sql`, and the CSV fixture `responses-hitopbr-prolific.csv` written by rule, each with its fixtures-README row.
+- [ ] T5: README sections and the fixtures README in hitop-form. In hitop: the walk-saved fixture and its test, the `online-collection.Rmd` Prolific section and "Who holds the data", and `NEWS.md`. Purl and run the article.
+- [ ] T6: Tests: guard (AC1), save and send (AC2), link (AC3), send and network (AC4). Plant-check each by reverting the feature it covers once. Create the download promise before the walk with its own timeout.
+- [ ] T7: `npx playwright test` on the checkout, and `devtools::test()` and `pkgdown::check_pkgdown()` in hitop. Jeff merges the hitop-form PR from his terminal, because the merge guard reads the session's repo. Dispatch the deployed-page run after the merge.
+
+## Work log
+
+- 2026-09-23: created by /milestone-plan, from the ROADMAP's Prolific candidate row (lineage M111–M113). D-071 records the link fields and the columns. The Prolific facts are in `cairn/references/prolific2026help.md`, written at the plan commit.
+- 2026-09-23: criteria audit ran in full mode ([O] fresh reader, agent af61f6ee): 13 findings on this file, all fixed before the gate. The pair sits after `item_order` so D-070(b)'s sixth column stands; the columns are always written under `prolific: true` and a placeholder writes the empty string; `parseLink()` refuses the participant conflict; the "without" walk carries all three parameters; more refused forms for `complete` and `prolific`; the SQL change is conditional and the fixtures written by rule; the builder's refusal goes through the shared check; the "unchanged" and timing claims bound to named assertions; the README sentence-to-test claim dropped; AC6 adds the page-written fixture and its reader test; Coverage gained T1 and T2. The second read returned 6 findings, fixed: the password probe restored; the save and send tests run with and without `shuffle` and assert the order; an absent and a placeholder `STUDY_ID`/`SESSION_ID` walk asserts `""`; the docs cite Prolific's pages, not the source note; "Who holds the data" names the three parameters the host receives; T4 names the CSV fixture.
+- 2026-09-23: step 2 chose recording all three parameters over `PROLIFIC_PID` alone because Prolific asks that all three be saved and `SESSION_ID` tells a returned submission from a first; falsified by a store whose export cannot take two more columns.
+- 2026-09-23: plan gate chose a redirect on a confirmed send and a link on the saved screens over a link everywhere and over a redirect on every outcome, because Prolific recommends the redirect and a participant with a saved file must see its name first; falsified by a report of participants leaving the saved screen without the file.
+- 2026-09-23: plan gate chose any `https://` completion address over Prolific's host alone because other recruiters use the same return-URL pattern and the check is the store address's; falsified by a study whose wrong host went unrefused at the builder.
+
+## Decisions
+
+## Review

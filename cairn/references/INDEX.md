@@ -11,3 +11,4 @@
 - [schmukle2026.md](schmukle2026.md) — Schmukle (2026), *Assessment* 33(5), 817-825: the regression-based true score with scale correction, Equations (10)-(12), and what its coverage result covers.
 - [vanderbilt2015redcapdd.md](vanderbilt2015redcapdd.md) — Vanderbilt University (2015), *Creating a Data Dictionary in REDCap*: a dictionary's field names are the data export's column names, and renaming a field breaks that link.
 - [simms2026.md](simms2026.md) — Simms et al., the HiTOP-SR/HiTOP-BR introduction manuscript: Table 1's Development Sample 2 statistics behind `hitopsr_devstats` and `hitopbr_devstats`, and the sample they describe.
+- [prolific2026help.md](prolific2026help.md) — Prolific's help center and API reference (read 2026-09-23): the `PROLIFIC_PID`, `STUDY_ID` and `SESSION_ID` parameters, the `{{%…%}}` placeholders, the completion URL shape and the preview's 24-character ID behind the hitop-form Prolific fields.
