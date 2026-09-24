@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M117 | `read_form_responses()` accepts the two Prolific columns a study link can ask hitop-form to write | done | — | normal | milestones/archive/M117-reader-prolific-columns.md |
 | M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | done | M117 | normal | milestones/archive/M118-form-prolific.md |
 | M119 | The Prolific route of hitop-form gives each outcome its own end: a second completion address for a saved file, a sent screen before the redirect, and a doubled parameter read as its filled value | done | — | normal | milestones/archive/M119-form-prolific-outcomes.md |
-| M120 | hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click | planned | — | normal | milestones/M120-form-save-button.md |
+| M120 | hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click | review | — | normal | milestones/M120-form-save-button.md |
 
 ## Candidates
 
