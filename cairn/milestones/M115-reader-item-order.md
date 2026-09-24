@@ -46,6 +46,7 @@ Let the reader accept an optional lead column, `item_order`, that the page will 
 - 2026-09-24: claim audit: 22 claims read, 0 corrected — R/read_form_responses.R, NEWS.md, vignettes/articles/online-collection.Rmd, tests/testthat/test-read_form_responses.R. The reader noted that the help page did not say a leading zero or a stray space is refused, and one phrase was added after the audit.
 - 2026-09-24: status set to review.
 - 2026-09-24: review ran. Three criteria verified with fresh evidence. Eight findings from the diff-bug lens: three fixed on the branch (the modules article's item selection, the refusal's plural, one help-page phrase), three deferred (two to the malformed-download candidate row, one to M116), two rejected with reasons. That candidate row's promotion condition, "when the reader is next edited", has now fired.
+- 2026-09-24: step-7 approval: m115-reader-item-order approved for merge.
 
 ## Decisions
 
