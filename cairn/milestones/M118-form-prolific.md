@@ -42,7 +42,7 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 ## Tasks
 
 - [x] T1: In `form.js`, `parseLink()` reads `prolific` and `complete` and refuses the participant conflict. A `checkCompleteUrl()` reuses `checkStoreUrl()`'s parse with `https:` only. `boot()` reads `PROLIFIC_PID`, `STUDY_ID` and `SESSION_ID` from the address under `prolific: true`, and treats a `{{%…%}}` value as absent. The page's header comment names the two fields.
-- [ ] T2: `runForm()` takes the identifier from the address. `buildCsv()`, `buildRow()` and `storeSql()` write `prolific_study` and `prolific_session` after `submitted` and `item_order`. `fileName()` is unchanged.
+- [x] T2: `runForm()` takes the identifier from the address. `buildCsv()`, `buildRow()` and `storeSql()` write `prolific_study` and `prolific_session` after `submitted` and `item_order`. `fileName()` is unchanged.
 - [ ] T3: `finish()` and `showSaved()` act on `complete`: `location.assign()` on a confirmed send, and a labelled link on the saved screens.
 - [ ] T4: `link.html` gains the "Recruit through Prolific" box, its hint, the completion field and the placeholder suffix. The participant-field conflict and the completion refusal show in the alert. Add the `storeSql()` fixtures `supabase-hitopbr-prolific.sql` and `supabase-hitopbr-prolific-shuffle.sql`, and the CSV fixture `responses-hitopbr-prolific.csv` written by rule, each with its fixtures-README row.
 - [ ] T5: README sections and the fixtures README in hitop-form. In hitop: the walk-saved fixture and its test, the `online-collection.Rmd` Prolific section and "Who holds the data", and `NEWS.md`. Purl and run the article.
@@ -60,6 +60,7 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 - 2026-09-24: from M117's review (F3): the online-collection article's printed tibble now shows `prolific_study` and `prolific_session` as `NA` with no sentence about them, and the modules article and the PID-5 vignette still say "five lead columns ... a sixth, `item_order`". The article route here describes the two columns in all three.
 
 - 2026-09-24: /milestone-implement started; status in-progress; branch `m118-form-prolific` in both repos. No question gate: the plan fixed every choice that matters. T1 done in hitop-form: `parseLink()` reads `prolific` and `complete`, refuses the participant conflict, `checkCompleteUrl()` shares a `parseAddress()` with `checkStoreUrl()`, `readProlific()` reads the three parameters with a `{{%…%}}` value as absent, and `runForm()` takes the identifier from the address. Guard tests G10 and G11 green (64 passed).
+- 2026-09-24: T2 done in hitop-form: `leadColumns()` and `leadValues()` give `buildCsv()`, `buildRow()` and `storeSql()` one lead order, the two columns after `submitted` and `item_order`. Save tests S11 to S15 and send tests T13 and T14. Minor amendment: the three fixtures T4 names were written in T2 because the send tests read them, and a fourth was added, `responses-hitopbr-prolific-shuffled.csv`, the page's capture under `prolific: true` and `shuffle: true`, which AC6 copies into hitop as `responses-hitopbr-prolific.csv` (the by-rule file of that name in hitop-form is the no-shuffle comparison fixture). Save, send, link and network specs green (76 passed).
 
 ## Decisions
 
