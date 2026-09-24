@@ -1,20 +1,19 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-24 (63rd pass, M117 done): row archived, three terminal rows kept, no lesson added with LESSONS at its byte cap. validate green._
+_Last hygiene check: 2026-09-24 (64th pass, M118 done): row archived, M115 pruned, two findings absorbed into the Prolific row, one lesson swapped in at the cap. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M115 | `read_form_responses()` accepts an `item_order` column recording the order a participant saw | done | M113 | normal | milestones/archive/M115-reader-item-order.md |
 | M116 | A study link can ask hitop-form to show each participant the items in a fresh random order | done | M114, M115 | normal | milestones/archive/M116-form-random-order.md |
 | M117 | `read_form_responses()` accepts the two Prolific columns a study link can ask hitop-form to write | done | — | normal | milestones/archive/M117-reader-prolific-columns.md |
-| M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | review | M117 | normal | milestones/M118-form-prolific.md |
+| M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | done | M117 | normal | milestones/archive/M118-form-prolific.md |
 
 ## Candidates
 
-- hitop-form beyond M118's Prolific route: a completion code per outcome (Prolific issues several per study, and M118 sends every outcome to one address), and another recruiter's own parameters (SONA, CloudResearch), whose return URL M118's `complete` field already takes. Promote the first when a study needs a distinct code for an unconfirmed send, the second when a study recruits through such a panel — added 2026-09-23 — lineage: M118 (plan gate)
+- hitop-form beyond M118's Prolific route: a completion code per outcome (Prolific issues several per study, and M118 sends every outcome to one address), and another recruiter's own parameters (SONA, CloudResearch), whose return URL M118's `complete` field already takes. Promote the first when a study needs a distinct code for an unconfirmed send, the second when a study recruits through such a panel. Two M118 review findings ride here: after the redirect the form page stays disabled, so Back from Prolific shows no sent screen; and no doc warns against also turning on Prolific's own URL-parameter option, which would double the query — added 2026-09-23, extended 2026-09-24 — lineage: M118 (plan gate, review F6 and F9)
 - hitop-form: a "Save the file" button on the unconfirmed screen, because the fallback download starts up to 30 s after the click and a browser may block it while the screen says the file was saved. Promote on a report of that screen with no file — added 2026-09-23 — M111 F5
 - A module descriptor whose `items` are not ascending: hitop-form's `checkModule()` accepts it, and under the random order the file's columns follow that `items` order, while the modules article calls a shuffled module file's columns "instrument order" and the default layout scores by position. `write_module()` and the Module Builder write `items` ascending, so only a hand-edited descriptor reaches it. Fix: the page and `read_module()` refuse or sort non-ascending `items`. Promote on a descriptor that reaches a scoring call out of order — added 2026-09-23 — lineage: M116 (F1)
 - `read_form_responses()` gaps on a malformed store download: a short row is padded to `NA` items silently (`read.csv`'s `fill = TRUE`); an extra field wraps to a new row and the refusal blames `form_build`; item and stamp refusals name no row; a zero-byte file gives base R's error without the file name; a column name with no numeric suffix refuses every non-blank `item_order` cell, and numbers parse without the stem, so mixed stems accept `1 1`. Promote on a user report of any one — added 2026-09-23, extended 2026-09-24 — lineage: M113 (findings 2, 3, 4, 6), M115 (F3, F4)
