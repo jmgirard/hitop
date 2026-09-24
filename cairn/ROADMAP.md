@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M119 | The Prolific route of hitop-form gives each outcome its own end: a second completion address for a saved file, a sent screen before the redirect, and a doubled parameter read as its filled value | done | — | normal | milestones/archive/M119-form-prolific-outcomes.md |
 | M120 | hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click | done | — | normal | milestones/archive/M120-form-save-button.md |
 | M121 | `read_form_responses()` and hitop-form refuse a malformed file by name: a short or long row, an empty file, a value refusal naming no row, an unnumbered or second-stem item column, and a descriptor whose items are not ascending | done | — | normal | milestones/archive/M121-form-file-refusals.md |
-| M122 | hitop-form's "Save the file" button confirms each press in a status message a screen reader announces | planned | — | normal | milestones/M122-form-save-status.md |
+| M122 | hitop-form's "Save the file" button confirms each press in a status message a screen reader announces | in-progress | — | normal | milestones/M122-form-save-status.md |
 
 ## Candidates
 
