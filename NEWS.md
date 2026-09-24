@@ -7,11 +7,12 @@
   its instructions. Those screens follow a Finish with no store in the link
   or a send the store did not confirm. The instructions end with "If the
   file did not appear, press Save the file." A press saves the same file
-  again, under the same name and with the same content. The download after
-  an unconfirmed send starts only when the wait ends, up to 30 seconds after
+  again, with the same content, offered under the same file name (the
+  browser can add a number to keep both copies). The download after an
+  unconfirmed send starts only when the wait ends, up to 30 seconds after
   Finish, and a browser can block a download that late. The
-  online-collection article's Google Sheet and Prolific sections mention
-  the button.
+  online-collection article mentions the button in its "Make the study
+  link" step and in its Prolific route.
 
 * **The hitop-form page gives each Prolific outcome its own end.** The
   link builder's "Completion URL after a saved file" field, allowed only
