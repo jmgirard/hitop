@@ -4,6 +4,19 @@
 
 ### New features
 
+- **The hitop-form page fits a Prolific study.** The link builder’s
+  “Recruit through Prolific” box makes the page take each participant’s
+  identifier from the Prolific ID in the page’s address and write the
+  study and session identifiers into `prolific_study` and
+  `prolific_session`, which
+  [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+  reads. The builder prints the link with Prolific’s three placeholders,
+  to paste as the study URL. A “Completion URL” field names an
+  `https://` address the page sends the participant to after a confirmed
+  send, and links to after a saved file. The online-collection article’s
+  Prolific section walks the route, and the reader’s tests read one such
+  file.
+
 - **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
   accepts two Prolific columns.** A response file may hold
   `prolific_study` and `prolific_session`, either or both, anywhere

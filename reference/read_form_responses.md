@@ -66,13 +66,16 @@ once, is an error naming the file and the response row.
 
 `prolific_study` and `prolific_session` hold the study and session
 identifiers that Prolific adds to a study link, when the file records
-them for a study recruited through Prolific. A file may hold either or
-both anywhere after `submitted`, and the result places `prolific_study`
-seventh and `prolific_session` eighth. A row from a file without a
-column holds `NA` in it, and so does a blank cell. Scoring does not read
-them, and they are not item columns, so neither enters the check that
-every file holds the same item columns. The cells are read as written,
-with no check on their content.
+them for a study recruited through Prolific. The hitop-form page writes
+them when the link builder's "Recruit through Prolific" box is checked,
+and then takes the participant identifier from the Prolific ID in the
+page's address. A file may hold either or both anywhere after
+`submitted`, and the result places `prolific_study` seventh and
+`prolific_session` eighth. A row from a file without a column holds `NA`
+in it, and so does a blank cell. Scoring does not read them, and they
+are not item columns, so neither enters the check that every file holds
+the same item columns. The cells are read as written, with no check on
+their content.
 
 Every file must carry the same item columns in the same order, because a
 set of files that differ cannot be one data frame: a full HiTOP-SR

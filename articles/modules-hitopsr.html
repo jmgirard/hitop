@@ -558,9 +558,10 @@ item, named by the instrument’s file stem and the item number and in the
 order the page showed them. Under the random order, a sixth lead column,
 <code>item_order</code>, records the order shown, and the item columns
 are in the order the descriptor’s <code>items</code> field lists them,
-which <code><a href="../reference/write_module.html">write_module()</a></code> writes ascending. A file the page
-saved holds one participant’s row; a store’s download holds one row per
-participant.</p>
+which <code><a href="../reference/write_module.html">write_module()</a></code> writes ascending. A link that recruits
+through Prolific adds two more lead columns, <code>prolific_study</code>
+and <code>prolific_session</code>. A file the page saved holds one
+participant’s row; a store’s download holds one row per participant.</p>
 <p><code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads those files. Give it the
 folder the files are in, or a vector of their paths. The file below is
 one the page saved from a two-scale module with a shuffled order. The

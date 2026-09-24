@@ -540,13 +540,15 @@ participant.</p>
 <p>Whichever route the answers take, the CSV file has five lead columns
 (<code>study</code>, <code>participant</code>, <code>instrument</code>,
 <code>form_build</code>, <code>submitted</code>), a sixth,
-<code>item_order</code>, when the link asked for a random order, and
-then one column per item. The item columns are named as this package
-names them: <code>pid5_001</code> to <code>pid5_220</code>,
-<code>pid5sf_001</code> to <code>pid5sf_100</code>, or
-<code>pid5bf_01</code> to <code>pid5bf_25</code>. Each holds the value
-of the chosen option, 0 to 3. A file the page saved holds one
-participant’s row; a store’s download holds one row per participant.</p>
+<code>item_order</code>, when the link asked for a random order, two
+more, <code>prolific_study</code> and <code>prolific_session</code>,
+when the link recruits through Prolific, and then one column per item.
+The item columns are named as this package names them:
+<code>pid5_001</code> to <code>pid5_220</code>, <code>pid5sf_001</code>
+to <code>pid5sf_100</code>, or <code>pid5bf_01</code> to
+<code>pid5bf_25</code>. Each holds the value of the chosen option, 0 to
+3. A file the page saved holds one participant’s row; a store’s download
+holds one row per participant.</p>
 <p><code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads a folder of these files, or
 a vector of their paths, into one data frame with one row per response
 row of each file. Read the files of each form in a call of their own.

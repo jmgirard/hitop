@@ -555,8 +555,10 @@ order, a sixth lead column, `item_order`, records the order shown, and
 the item columns are in the order the descriptor’s `items` field lists
 them, which
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
-writes ascending. A file the page saved holds one participant’s row; a
-store’s download holds one row per participant.
+writes ascending. A link that recruits through Prolific adds two more
+lead columns, `prolific_study` and `prolific_session`. A file the page
+saved holds one participant’s row; a store’s download holds one row per
+participant.
 
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 reads those files. Give it the folder the files are in, or a vector of

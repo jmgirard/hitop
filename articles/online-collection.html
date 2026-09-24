@@ -181,11 +181,15 @@ order: <code>study</code>, <code>participant</code>,
 <code>submitted</code>, then one column per item. A link that asks for a
 random order adds <code>item_order</code> after <code>submitted</code>,
 and its item columns are in the instrument’s order rather than the order
-shown. The script builds the header from the first row it receives and
-appends a key it has not seen, so a sheet that already holds rows
-without <code>item_order</code> puts that column after the item columns.
-<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads it there. Start a new sheet for
-such a link if you want the column sixth.</p>
+shown. A link that recruits through Prolific adds
+<code>prolific_study</code> and <code>prolific_session</code> after
+<code>submitted</code>, or after <code>item_order</code> when the file
+has it, before the item columns. The script builds the header from the
+first row it receives and appends a key it has not seen, so a sheet that
+already holds rows without <code>item_order</code> puts that column
+after the item columns. <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads it
+there. Start a new sheet for such a link if you want the column
+sixth.</p>
 <p>Anyone who has the link can post a row to the sheet, because the
 script’s URL is inside the link. Look over the sheet before scoring
 it.</p>
@@ -223,7 +227,12 @@ date-time. Every item column is an integer. The sixth column,
 item numbers, when the file records one and <code>NA</code> when it does
 not, and scoring does not read it. The page records it when the study
 link asks for a random order, which the link builder’s “Show the items
-in a random order” box sets.</p>
+in a random order” box sets. The seventh and eighth columns,
+<code>prolific_study</code> and <code>prolific_session</code>, are the
+study and session identifiers Prolific passed to the page when the link
+recruits through Prolific, as <a href="#the-prolific-route">the Prolific
+route</a> below describes, and <code>NA</code> when it does not, as
+here. Scoring does not read them either.</p>
 <p>A folder can hold the download beside any files participants sent by
 hand: <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads every <code>.csv</code>
 file in it, file by file in path order, and each file’s rows in its own
@@ -264,6 +273,54 @@ the dashboard’s Table Editor reads with
 does.</p>
 </div>
 <div class="section level2">
+<h2 id="the-prolific-route">The Prolific route<a class="anchor" aria-label="anchor" href="#the-prolific-route"></a>
+</h2>
+<p>A study recruited through <a href="https://www.prolific.com/" class="external-link">Prolific</a> gives each participant a
+study URL. Prolific fills the participant’s ID, the study’s ID and the
+submission’s ID into that URL through three placeholders,
+<code>{{%PROLIFIC_PID%}}</code>, <code>{{%STUDY_ID%}}</code> and
+<code>{{%SESSION_ID%}}</code>, as <a href="https://docs.prolific.com/api-reference/studies/the-study-object" class="external-link">Prolific’s
+API reference</a> states under the study’s
+<code>external_study_url</code> field, and it asks that all three be
+saved with the data (<a href="https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific" class="external-link">What
+survey / experimental software is compatible with Prolific?</a>). The
+page fits that in two steps at the link builder.</p>
+<p>Check “Recruit through Prolific” and leave the participant field
+empty. The builder then prints the link with the three placeholders on
+its end. Paste that link as the study URL on Prolific’s study page. When
+a participant opens it, the page takes their Prolific ID as the
+participant identifier and asks for none, and it writes the study and
+submission IDs into <code>prolific_study</code> and
+<code>prolific_session</code>, after <code>submitted</code> (and after
+<code>item_order</code> under the random order). A Supabase table for
+such a link takes the two columns too, and the builder’s SQL adds them.
+When you preview the study on Prolific, the preview passes a
+24-character ID in place of the placeholder (<a href="https://researcher-help.prolific.com/en/articles/445131-previewing-your-study" class="external-link">Previewing
+your study</a>), so the preview walks the form as a participant would; a
+link opened with the placeholders still in it, as the builder’s “Open
+the link” does, asks for the identifier instead.</p>
+<p>Give the completion URL from the study’s page on Prolific, of the
+form <code>https://app.prolific.com/submissions/complete?cc=…</code> (<a href="https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific" class="external-link">the
+compatibility article</a>, under “Returning Participants to Prolific”),
+in the builder’s “Completion URL” field. After a confirmed send the page
+sends the participant there, which is the return Prolific recommends (<a href="https://researcher-help.prolific.com/en/articles/445127-data-collection" class="external-link">Data
+collection</a>). After a saved file, because the link names no store or
+the send was not confirmed, the page shows the file name first and then
+a link to that address, so the participant sees the file’s name before
+leaving.</p>
+<p>The download then reads as above, with <code>prolific_study</code>
+and <code>prolific_session</code> filled. The file below is one the page
+saved under such a link, with the Prolific ID as the participant:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-hitopbr-prolific.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
+<span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+<span><span class="va">responses</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant"</span>, <span class="st">"prolific_study"</span>, <span class="st">"prolific_session"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 3</span></span></span>
+<span><span class="co">#&gt;   participant              prolific_study           prolific_session        </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 5a9d64f5f6dfdd0001eaa73d 66f3a1b2c3d4e5f60718293a 66f3a1b2c3d4e5f60718294b</span></span></code></pre></div>
+</div>
+<div class="section level2">
 <h2 id="who-holds-the-data">Who holds the data<a class="anchor" aria-label="anchor" href="#who-holds-the-data"></a>
 </h2>
 <p>The answers go to the store the link names, and to a file on the
@@ -278,7 +335,10 @@ answers.</p>
 A code you put in the link reaches the page’s host with the link, and a
 code the participant types is whatever they choose to type. If codes
 must not identify anyone, issue pseudonymous codes in the links you send
-and keep the key to them yourself.</p>
+and keep the key to them yourself. Under the Prolific route the code is
+the participant’s Prolific ID, which identifies them to Prolific, and
+the page’s host receives the three Prolific parameters, the ID among
+them, with each page load, as it receives the rest of the address.</p>
 <p>Whether a store may hold your study’s data is a question for your
 institution, and any agreement it needs with the store’s vendor, such as
 a business associate agreement or a data processing agreement, is the
