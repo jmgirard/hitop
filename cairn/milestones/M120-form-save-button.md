@@ -1,13 +1,13 @@
 # M120: hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page's outcome screens and the package's article
-- **Branch/PR:** —
+- **Branch/PR:** `m120-form-save-button` in hitop and in hitop-form
 
 ## Goal
 
@@ -39,7 +39,7 @@ Both saved-file screens of hitop-form gain a "Save the file" button that saves t
 
 ## Tasks
 
-- [ ] T1: Precondition: Jeff merges hitop-form PR #7 (M119) from his terminal. Cut `m120-form-save-button` from that main in hitop-form and from main in hitop.
+- [x] T1: Precondition: Jeff merges hitop-form PR #7 (M119) from his terminal. Cut `m120-form-save-button` from that main in hitop-form and from main in hitop.
 - [ ] T2: Tests first, shown red before T3. In `tests/send.spec.js`, the five-outcome loop clicks the button twice. Each download promise is created before its click with its own timeout, and the name and bytes are compared with the Finish download. The confirmed-send loop and the completion-address test (its observer report at the held request) assert no button labelled "Save the file". The unconfirmed-with-`complete` test asserts the AC4 order. In `tests/save.spec.js`, the HiTOP-BR case clicks twice, the no-store test with `complete` asserts the order, and one test without `complete` asserts the trail sentence. `git add` the fix before any plant.
 - [ ] T3: In `form.js`, `saveCsv()` returns the name and the text. `showSaved()` takes both, appends the sentence to the trail paragraph, and renders a `button` "Save the file" whose click calls `saveFile(name, text)`. The button sits between the trail paragraph and the completion link (`form.js:934-952`). The `finish()` comment names the button. Green.
 - [ ] T4: Docs, derived from the page and T2's tests. In hitop-form, the README's "What the participant sees" and its save and send rows in the test table. In hitop, the saved-file sentences of `vignettes/articles/online-collection.Rmd` in the Google Sheet section and the Prolific route, and `NEWS.md`.
@@ -54,6 +54,7 @@ Both saved-file screens of hitop-form gain a "Save the file" button that saves t
 - 2026-09-24: plan gate chose asserting the button inside the five-outcome loop over one new fast test because the loop already walks the hang at no added run time; falsified by the loop's run time crossing the CI budget.
 - 2026-09-24: plan gate chose merging hitop-form #7 first over stacking on the m119 branch because a stacked PR retargets and re-reviews; falsified by #7 staying open past the next session.
 - 2026-09-24: chose keeping the automatic download beside the button over the button alone because the automatic save still lands when the participant closes the page without pressing anything; falsified by reports of duplicate files read as an error.
+- 2026-09-24: implement started. T1: Jeff merged hitop-form #7 from his terminal (squash fa8ed78) after a first re-check found it open; `m120-form-save-button` cut from that main in hitop-form and from main in hitop. No implementation choice was open, so no question gate.
 
 ## Decisions
 
