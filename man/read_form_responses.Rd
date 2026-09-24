@@ -59,7 +59,10 @@ response row.
 
 \code{prolific_study} and \code{prolific_session} hold the study and session
 identifiers that Prolific adds to a study link, when the file records
-them for a study recruited through Prolific. A file may hold
+them for a study recruited through Prolific. The hitop-form page writes
+them when the link builder's "Recruit through Prolific" box is checked,
+and then takes the participant identifier from the Prolific ID in the
+page's address. A file may hold
 either or both anywhere after \code{submitted}, and the result places
 \code{prolific_study} seventh and \code{prolific_session} eighth. A row from a file
 without a column holds \code{NA} in it, and so does a blank cell. Scoring does

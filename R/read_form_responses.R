@@ -41,7 +41,10 @@
 #'
 #'   `prolific_study` and `prolific_session` hold the study and session
 #'   identifiers that Prolific adds to a study link, when the file records
-#'   them for a study recruited through Prolific. A file may hold
+#'   them for a study recruited through Prolific. The hitop-form page writes
+#'   them when the link builder's "Recruit through Prolific" box is checked,
+#'   and then takes the participant identifier from the Prolific ID in the
+#'   page's address. A file may hold
 #'   either or both anywhere after `submitted`, and the result places
 #'   `prolific_study` seventh and `prolific_session` eighth. A row from a file
 #'   without a column holds `NA` in it, and so does a blank cell. Scoring does

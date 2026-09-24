@@ -1024,6 +1024,48 @@ test_that("the shuffled HiTOP-BR file reads item_order as written and scores to 
   )
 })
 
+# ---- A file saved under the page's Prolific route ---------------------------
+#
+# The page took the participant identifier from the address's PROLIFIC_PID
+# and wrote STUDY_ID and SESSION_ID after item_order (see
+# fixtures/README.md). The file reads and scores as one without the two
+# columns does; each comes back as the file's own text, in the same
+# position as a file without them gives NA.
+
+test_that("the Prolific HiTOP-BR file reads the two columns and item_order as written and scores to the table-derived means", {
+  path <- fixture("responses-hitopbr-prolific.csv")
+  data <- expect_hitopbr_export(path, "5a9d64f5f6dfdd0001eaa73d")
+
+  row <- store_rows(path)[[1]]
+  # The file's header carries the pair after item_order; the result places
+  # them seventh and eighth, after item_order sixth.
+  expect_identical(
+    names(store_rows(path)[[1]])[1:8],
+    c(lead, "item_order", "prolific_study", "prolific_session")
+  )
+  expect_identical(names(data)[1:8], result_lead)
+  expect_identical(data$prolific_study, row[["prolific_study"]])
+  expect_identical(data$prolific_session, row[["prolific_session"]])
+  expect_match(row[["prolific_study"]], "^[0-9a-f]{24}$")
+  expect_match(row[["prolific_session"]], "^[0-9a-f]{24}$")
+  expect_false(identical(row[["prolific_study"]], row[["prolific_session"]]))
+  expect_identical(data$participant, "5a9d64f5f6dfdd0001eaa73d")
+
+  cell <- row[["item_order"]]
+  expect_identical(data$item_order, cell)
+  shown <- as.integer(strsplit(cell, " ", fixed = TRUE)[[1]])
+  expect_setequal(shown, 1:45)
+  expect_length(shown, 45L)
+  expect_false(identical(shown, 1:45))
+  # As for the shuffled file: the value of item n is the page's pattern at
+  # n's position in item_order, stated from the pattern.
+  position <- match(1:45, shown)
+  expect_identical(
+    unname(unlist(data[1, sprintf("hitopbr_%02d", 1:45)])),
+    (position * 7L) %% 4L + 1L
+  )
+})
+
 # The shuffled module fixture: Agoraphobia and Distress-Dysphoria, 21 items,
 # saved in the descriptor's itemOrder with the page's fixed answer pattern
 # 4, 3, 2, 1 repeating down the columns. Neither scale has a reverse item.

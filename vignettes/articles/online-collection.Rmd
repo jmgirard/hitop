@@ -82,7 +82,10 @@ Download, then Comma Separated Values (.csv). The file has one header row and
 one row per participant, in the page's column order: `study`, `participant`,
 `instrument`, `form_build`, `submitted`, then one column per item. A link
 that asks for a random order adds `item_order` after `submitted`, and its
-item columns are in the instrument's order rather than the order shown.
+item columns are in the instrument's order rather than the order shown. A
+link that recruits through Prolific adds `prolific_study` and
+`prolific_session` after `submitted`, or after `item_order` when the file
+has it, before the item columns.
 The script builds the header from the first row it receives and appends a
 key it has not seen, so a sheet that already holds rows without `item_order`
 puts that column after the item columns. `read_form_responses()` reads it
@@ -111,7 +114,11 @@ Every item column is an integer. The sixth column, `item_order`, is the order
 the participant saw the items, as item numbers, when the file records one and
 `NA` when it does not, and scoring does not read it. The page records it
 when the study link asks for a random order, which the link builder's
-"Show the items in a random order" box sets.
+"Show the items in a random order" box sets. The seventh and eighth
+columns, `prolific_study` and `prolific_session`, are the study and session
+identifiers Prolific passed to the page when the link recruits through
+Prolific, as [the Prolific route](#the-prolific-route) below describes,
+and `NA` when it does not, as here. Scoring does not read them either.
 
 A folder can hold the download beside any files participants sent by hand:
 `read_form_responses()` reads every `.csv` file in it, file by file in path
@@ -144,6 +151,54 @@ under
 walks the setup. The table's CSV export from the dashboard's Table Editor
 reads with `read_form_responses()` exactly as the sheet's download does.
 
+## The Prolific route
+
+A study recruited through [Prolific](https://www.prolific.com/) gives each
+participant a study URL. Prolific fills the participant's ID, the study's ID
+and the submission's ID into that URL through three placeholders,
+`{{%PROLIFIC_PID%}}`, `{{%STUDY_ID%}}` and `{{%SESSION_ID%}}`, as
+[Prolific's API reference](https://docs.prolific.com/api-reference/studies/the-study-object)
+states under the study's `external_study_url` field, and it asks that all
+three be saved with the data
+([What survey / experimental software is compatible with Prolific?](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific)).
+The page fits that in two steps at the link builder.
+
+Check "Recruit through Prolific" and leave the participant field empty.
+The builder then prints the link with the three placeholders on its end.
+Paste that link as the study URL on Prolific's study page. When a
+participant opens it, the page takes their Prolific ID as the participant
+identifier and asks for none, and it writes the study and submission IDs
+into `prolific_study` and `prolific_session`, after `submitted` (and after
+`item_order` under the random order). A Supabase table for such a link
+takes the two columns too, and the builder's SQL adds them. When you preview
+the study on Prolific, the preview passes a 24-character ID in place of the
+placeholder
+([Previewing your study](https://researcher-help.prolific.com/en/articles/445131-previewing-your-study)),
+so the preview walks the form as a participant would; a link opened with the
+placeholders still in it, as the builder's "Open the link" does, asks for the
+identifier instead.
+
+Give the completion URL from the study's page on Prolific, of the form
+`https://app.prolific.com/submissions/complete?cc=…`
+([the compatibility article](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific),
+under "Returning Participants to Prolific"), in the builder's
+"Completion URL" field. After a confirmed send the page sends the
+participant there, which is the return Prolific recommends
+([Data collection](https://researcher-help.prolific.com/en/articles/445127-data-collection)).
+After a saved file, because the link names no store or the send was not
+confirmed, the page shows the file name first and then a link to that
+address, so the participant sees the file's name before leaving.
+
+The download then reads as above, with `prolific_study` and
+`prolific_session` filled. The file below is one the page saved under such
+a link, with the Prolific ID as the participant:
+
+```{r}
+path <- system.file("examples", "responses-hitopbr-prolific.csv", package = "hitop")
+responses <- read_form_responses(path)
+responses[, c("participant", "prolific_study", "prolific_session")]
+```
+
 ## Who holds the data
 
 The answers go to the store the link names, and to a file on the
@@ -158,7 +213,10 @@ A participant code is whatever the link or the participant supplies. A code
 you put in the link reaches the page's host with the link, and a code the
 participant types is whatever they choose to type. If codes must not identify
 anyone, issue pseudonymous codes in the links you send and keep the key to
-them yourself.
+them yourself. Under the Prolific route the code is the participant's
+Prolific ID, which identifies them to Prolific, and the page's host receives
+the three Prolific parameters, the ID among them, with each page load, as it
+receives the rest of the address.
 
 Whether a store may hold your study's data is a question for your
 institution, and any agreement it needs with the store's vendor, such as a
