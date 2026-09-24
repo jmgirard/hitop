@@ -83,8 +83,10 @@ one row per participant, in the page's column order: `study`, `participant`,
 `instrument`, `form_build`, `submitted`, then one column per item. A link
 that asks for a random order adds `item_order` after `submitted`, and its
 item columns are in the instrument's order rather than the order shown.
-Start a new sheet for such a link: the script builds the header from the
-first row it receives.
+The script builds the header from the first row it receives and appends a
+key it has not seen, so a sheet that already holds rows without `item_order`
+puts that column after the item columns. `read_form_responses()` reads it
+there. Start a new sheet for such a link if you want the column sixth.
 
 Anyone who has the link can post a row to the sheet, because the script's URL
 is inside the link. Look over the sheet before scoring it.
