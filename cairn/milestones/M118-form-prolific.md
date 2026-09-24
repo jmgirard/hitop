@@ -74,6 +74,8 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 - 2026-09-24: the full hitop-form suite passed, 177 of 177, and the six fixes are committed at hitop-form b781ea7. T8 done.
 - 2026-09-24: claim audit: 154 claims read, 1 corrected — hitop-form/form.js (the header comment now names `PROLIFIC_PARAMS` among link.html's imports, hitop-form 2nd commit after b781ea7). The reader also flagged "asks that all three be saved" in the README and the article, then withdrew it on a verbatim fetch: article 445178 says to configure the software to save the parameters, as the source note's line 14 quotes. Both sentences stand as written. The reader's one re-read confirmed the header comment.
 - 2026-09-24: all tasks checked, local checks clean; status review. The re-review's fresh runs are its own.
+- 2026-09-24: second review pass: all seven criteria re-verified with fresh evidence, gate clean, three lenses with no criterion failing. Gate triage in the Review section. hitop-form fix-now work at 3f17ae8.
+- step-7 approval: m118-form-prolific approved for merge
 
 ## Decisions
 
@@ -123,3 +125,4 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
   - P2-F11 (doc): the form.js header says the navigation is "the one further request" though a saved-screen link makes one when followed, and README step 6 omits the blank-ID case. Proposed fix now, two comment and prose edits.
   - P2-F12 (info): an older cached page ignores the two fields; `readProlific()` takes the first of repeated parameters. Noted.
   - P2-F13 (trivial): the "not text" branch in `parseAddress()` cannot fire for the completion check. Proposed reject: it still serves the store check.
+- 2026-09-24 gate triage (Jeff): F5, F8 and P2-F11 fixed now. `parseAddress()` parses alone and each check runs `refuseCredentials()` after its scheme test, with a guard probe for `http://user@example.com/hook` refused for its scheme. S17 opens a link with no participant and no `prolific` field under a real `PROLIFIC_PID` and sees the identifier field shown and empty. The header comment and README step 6 reworded. Each plant went red once (the credentials check moved back before the scheme; the address read without the field). Full suite 179 passed. F6 and F9: candidate rows at hygiene. Rejected: F7 (the recorded plan-gate choice), F10 (a typed identifier has the same exposure), F12 (the password is already in the link), F14 (the origin alone by default), P2-F8 (withdrawn on a verbatim read, the source note's line 14), P2-F9 (both links legal), P2-F13 (the branch serves the store check). P2-F4, P2-F6, P2-F7 and P2-F12 noted, no action.
