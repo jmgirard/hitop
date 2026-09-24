@@ -40,8 +40,8 @@ stem and the item number (\code{hitopsr_001}, \code{hitopbr_01}, \code{pid5_001}
 The page keeps the item columns in the order it showed the items, except
 under a study link that asks for a random order: the page then draws a
 new order for each participant, keeps the item columns in the
-instrument's order (a module's item numbers ascending), and writes
-\code{item_order}.
+instrument's order (a module's items in the order its descriptor lists
+them, which \code{write_module()} writes ascending), and writes \code{item_order}.
 
 \code{item_order} is the order the participant saw the items, as item numbers
 with no leading zero, joined by single spaces with none at either end
