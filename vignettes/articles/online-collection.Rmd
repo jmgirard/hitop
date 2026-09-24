@@ -84,7 +84,8 @@ one row per participant, in the page's column order: `study`, `participant`,
 that asks for a random order adds `item_order` after `submitted`, and its
 item columns are in the instrument's order rather than the order shown. A
 link that recruits through Prolific adds `prolific_study` and
-`prolific_session` after those.
+`prolific_session` after `submitted`, or after `item_order` when the file
+has it, before the item columns.
 The script builds the header from the first row it receives and appends a
 key it has not seen, so a sheet that already holds rows without `item_order`
 puts that column after the item columns. `read_form_responses()` reads it
