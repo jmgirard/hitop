@@ -43,7 +43,8 @@ The page keeps the item columns in the order it showed the items, except
 under a study link that asks for a random order: the page then draws a
 new order for each participant, keeps the item columns in the
 instrument's order (a module's items in the order its descriptor lists
-them, which \code{write_module()} writes ascending), and writes \code{item_order}.
+them, which \code{write_module()} writes ascending and the page requires
+ascending), and writes \code{item_order}.
 
 \code{item_order} is the order the participant saw the items, as item numbers
 with no leading zero, joined by single spaces with none at either end
@@ -74,11 +75,19 @@ Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
-(first columns other than the five the page writes first, a column that
-appears twice, a header with no
-response row, an item value that is not a whole number or is outside R's
-integer range, a date that does not parse) is an error naming the file.
-A \code{submitted} stamp may carry fractional seconds.
+is an error naming the file: no header row (a zero-byte file, blank
+lines only, a byte-order mark only), first columns other than the five
+the page writes first, a column that appears twice, a header with no
+response row, a response row holding fewer or more fields than the
+header, an item column whose name is not a stem of lower-case letters
+and digits, an underscore and the item number (\code{hitopbr_01}, not \code{foo}
+or \code{Hitopbr_01}), item columns of more than one stem (\code{hitopbr_01}
+beside \code{pid5bf_01}), an item value that is not a whole number or is
+outside R's integer range, or a date that does not parse. An error on a
+row or a value names the response rows at fault, counted from the first
+row after the header. The field count of a row reads \verb{#} as data and a
+quoted cell holding a line break as one cell, as the read does. A
+\code{submitted} stamp may carry fractional seconds.
 
 \strong{Errors.} Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class

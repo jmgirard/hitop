@@ -84,10 +84,12 @@ reader; \code{\link[=read_module]{read_module()}} ignores all three.}
 \item{\code{scales}}{The module's scales, as they are printed on the
 instrument. \strong{Required}: these are what the module is rebuilt from.}
 \item{\code{items}, \code{nItems}}{The original instrument item numbers the module
-covers, and how many there are. Cross-checked on read: the order they
-are written in carries no meaning --- \code{\link[=read_module]{read_module()}} compares them as
-a set --- but a repeated number is an error, and the printed order of
-a shuffled form belongs in \code{itemOrder} instead.}
+covers, and how many there are. \code{\link[=write_module]{write_module()}} writes them in
+ascending order, and the hitop-form web page requires that order,
+refusing a descriptor whose \code{items} are not ascending. Cross-checked
+on read: \code{\link[=read_module]{read_module()}} compares them as a set, so their order
+carries no meaning to it, but a repeated number is an error, and the
+printed order of a shuffled form belongs in \code{itemOrder} instead.}
 \item{\code{itemOrder}}{The printed order of a shuffled form: a permutation
 of \code{items}. Optional --- a form printed in instrument order carries
 none. \code{\link[=read_module]{read_module()}} returns it on the module's \code{item_order}
