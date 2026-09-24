@@ -176,22 +176,23 @@ placeholder
 ([Previewing your study](https://researcher-help.prolific.com/en/articles/445131-previewing-your-study)),
 so the preview walks the form as a participant would; a link opened with the
 placeholders still in it, as the builder's "Open the link" does, asks for the
-identifier instead. Prolific's own "I'll use URL parameters" option, on the
-study's data collection page, appends the three parameters to the study URL
-itself
+identifier instead. Prolific's own "I'll use URL parameters" option, in the
+Data collection section of the study's setup, appends the three parameters
+to the study URL itself
 ([the compatibility article](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific),
 under "Recording participants' Prolific IDs"). A pasted link with the
 builder's placeholders therefore carries each parameter once unless that
-option adds it again; then the address holds the parameter twice, once as
-the placeholder and once filled, and the page reads the filled value.
+option adds it again; then the address holds the parameter twice, and the
+page reads the first value that is neither blank nor a placeholder.
 
 Give the completion URL from the study's page on Prolific, of the form
 `https://app.prolific.com/submissions/complete?cc=…`
 ([the compatibility article](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific),
 under "Returning Participants to Prolific"), in the builder's
 "Completion URL" field. After a confirmed send the page shows the sent
-screen, whose last line links to that address, and then sends the
-participant there, which is the return Prolific recommends
+screen, with a link to that address in place of "You can close this
+page.", and then sends the participant there, which is the return Prolific
+recommends
 ([Data collection](https://researcher-help.prolific.com/en/articles/445127-data-collection)).
 After a saved file, because the link names no store or the send was not
 confirmed, the page shows the file name first and then a link to that
