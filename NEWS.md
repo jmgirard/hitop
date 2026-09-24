@@ -359,6 +359,27 @@
 
 ## Improvements and fixes
 
+* **`read_form_responses()` refuses a malformed file by name, and the
+  hitop-form page refuses a descriptor whose items are not ascending.** A
+  response row holding fewer or more fields than the header stops the read
+  with a message naming the file and each such row. Before, a file whose
+  first row held one field too many stopped with base R's "duplicate
+  'row.names'", and a short row read as a row with blank items. A file with
+  no header row
+  (zero bytes, blank lines only, a byte-order mark only) is refused with the
+  reader's own message naming the file, not base R's "no lines available in
+  input". An item column whose name is not a stem, an underscore and the
+  item number (`foo`, `Hitopbr_01`) is refused naming the column, and item
+  columns of more than one stem (`hitopbr_01` beside `pid5bf_01`) are
+  refused naming the stems, before any value is checked. The four value
+  refusals (an item value that is not a whole number, one outside the
+  integer range, a `form_build` or a `submitted` that does not parse) now
+  name the response rows at fault, counted from the first row after the
+  header. The hitop-form page and its link builder refuse a module
+  descriptor whose `items` are not in ascending order, naming the fault.
+  `?read_form_responses`, `?write_module` and the online-collection article
+  describe the refusals.
+
 * **Functions called as `hitop::f()` work without `library(hitop)`.** The
   package's functions read its datasets, such as `hitopsr_scales` and
   `pid_items`, by name. R shows an installed package's datasets only when the
