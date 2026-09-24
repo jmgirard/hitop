@@ -1,19 +1,19 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-24 (65th pass, M119 done): row archived, M116 pruned, the M078 lesson swapped for M119's at the byte cap. validate green._
+_Last hygiene check: 2026-09-24 (66th pass, M120 done): row archived, M117 pruned, one candidate row added (the M120 review's F8). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M117 | `read_form_responses()` accepts the two Prolific columns a study link can ask hitop-form to write | done | — | normal | milestones/archive/M117-reader-prolific-columns.md |
 | M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | done | M117 | normal | milestones/archive/M118-form-prolific.md |
 | M119 | The Prolific route of hitop-form gives each outcome its own end: a second completion address for a saved file, a sent screen before the redirect, and a doubled parameter read as its filled value | done | — | normal | milestones/archive/M119-form-prolific-outcomes.md |
-| M120 | hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click | review | — | normal | milestones/M120-form-save-button.md |
+| M120 | hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click | done | — | normal | milestones/archive/M120-form-save-button.md |
 
 ## Candidates
 
+- hitop-form: a press of the "Save the file" button gives no on-page confirmation and leaves focus on the button, so a screen-reader user hears nothing unless the browser announces the download. Fix: a short polite status message in a live region, page copy under D-072(c). Promote on a report from a screen-reader user — added 2026-09-24 — lineage: M120 (review F8)
 - hitop-form under another recruiter's own parameters (SONA, CloudResearch), whose return URL M118's `complete` field already takes. Promote when a study recruits through such a panel — added 2026-09-23, narrowed 2026-09-24 (the completion code per outcome and the two M118 review findings graduated to M119) — lineage: M118 (plan gate)
 - A module descriptor whose `items` are not ascending: hitop-form's `checkModule()` accepts it, and under the random order the file's columns follow that `items` order, while the modules article calls a shuffled module file's columns "instrument order" and the default layout scores by position. `write_module()` and the Module Builder write `items` ascending, so only a hand-edited descriptor reaches it. Fix: the page and `read_module()` refuse or sort non-ascending `items`. Promote on a descriptor that reaches a scoring call out of order — added 2026-09-23 — lineage: M116 (F1)
 - `read_form_responses()` gaps on a malformed store download: a short row is padded to `NA` items silently (`read.csv`'s `fill = TRUE`); an extra field wraps to a new row and the refusal blames `form_build`; item and stamp refusals name no row; a zero-byte file gives base R's error without the file name; a column name with no numeric suffix refuses every non-blank `item_order` cell, and numbers parse without the stem, so mixed stems accept `1 1`. Promote on a user report of any one — added 2026-09-23, extended 2026-09-24 — lineage: M113 (findings 2, 3, 4, 6), M115 (F3, F4)
