@@ -60,6 +60,8 @@ Three follow-ons close the Prolific route M118 opened: a link's `completeSaved` 
 - 2026-09-24: T6 checks: Playwright 197 passed on the hitop-form branch; `devtools::test()` clean (15 skips, merge-base and pkgload reasons); `pkgdown::check_pkgdown()` no problems. T6's merge of the hitop-form PR and the deployed-page dispatch wait for the review gate.
 - 2026-09-24: claim audit: 80 claims read, 7 corrected — hitop-form form.js, README.md, tests/guard.spec.js, tests/helpers.mjs (b006ac9); hitop vignettes/articles/online-collection.Rmd (c8710a1d). Corrections: the doubled parameter reads as the first filled value rather than a placeholder-plus-filled pair; the sent screen's link is not its last line; the form.js comment no longer claims what Back or a failed navigation shows; the G12 header counts five of the G11 probes; the save row names what S18 and S19 test; "data collection page" became the source's "Data collection section"; the helpers comment no longer calls the second address the same shape. Kept: "the three parameters", AC5's wording, with the inference from "URL parameters" recorded in the source note. Re-read by the same reader ([O] agent a87d6c8b): all seven match the code.
 - 2026-09-24: status → review. Nothing pushed; review opens the two PRs.
+- 2026-09-24: review gate. F5 disposition: Jeff accepted the split, the URL-parameters sentence in the Prolific box's hint and the completion-code sentence in the new field's hint, as AC5's reading. F1 and F8 fixed in hitop-form dfdabb7.
+- 2026-09-24: step-7 approval: m119-form-prolific-outcomes approved for merge
 
 ## Decisions
 
