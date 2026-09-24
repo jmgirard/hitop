@@ -1,6 +1,6 @@
 # M122: hitop-form's "Save the file" button confirms each press in a status message a screen reader announces
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -53,6 +53,8 @@ A press of the "Save the file" button on either saved-file screen writes a short
 - 2026-09-24: T1 (hitop-form c682125): `SAVED_AGAIN`, `expectStatusEmpty()`, the `P.saved-again` order token, and `expectSaveAgain()` rewritten (first press by focus + Enter with the focus assertion, second press by click under a mutation observer, the text asserted after each); `expectStatusEmpty()` at the four order sites and `expectSaveAgain()` added to S16. Run before the page change: save + send specs 8 failed (the eight saved screens, each at the order token) 53 passed; AC3's focus assertion shown green by a one-off probe spec on the unchanged page (deleted, not committed), since the order failure precedes it in the eight tests.
 - 2026-09-24: T2 (hitop-form b6374fc): `showSaved()` builds `p.saved-again[role=status]` empty, places it after the button, and the button's handler calls `saveFile()` then sets the region's text. Full suite 201 passed. Two plants on S21, each red then reverted: a wrong sentence failed "the status after the first press"; a write on the first press only failed "the second press rewrote the region" (0 observer records).
 - 2026-09-24: T3 (hitop-form 7a7cde8): the participant paragraph names the sentence, the `role="status"` region and the focus; the save and send test rows name the empty start, the keyboard and click presses, the sentence, the fresh write and the focus. T4: NEWS entry under the development heading, written against the T2 run and the code.
+- 2026-09-24: claim audit: 34 claims read, 6 corrected — NEWS.md (hitop), README.md and form.js (hitop-form 2d197d0). The six: "a screen reader announces" stated as observed at three sites, now a property of `role="status"` ("which screen readers are meant to announce"); "focus stays on the button" at three sites, now qualified to the keyboard press the tests check. Re-read once by the same reader: 6 correct. The reader also noted that "The file was saved again." claims more than the page knows (no download outcome reaches it); that is the plan gate's chosen sentence, its falsifier already recorded above.
+- 2026-09-24: completion: hitop `devtools::test()` FAIL 0 WARN 0 SKIP 15 PASS 20099; hitop-form `npx playwright test` 201 passed (T2 run; the later hitop-form commits touch a comment and the README, `node --check form.js` clean). Status → review. hitop-form branch head 2d197d0, unpushed.
 
 ## Decisions
 

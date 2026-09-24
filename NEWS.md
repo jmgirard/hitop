@@ -4,8 +4,9 @@
 
 * **The hitop-form page confirms each press of "Save the file".** A press
   of the button on a saved-file screen shows "The file was saved again."
-  under the button, in a `role="status"` region that a screen reader
-  announces, and focus stays on the button. The region is on the page,
+  under the button, in a `role="status"` region, which screen readers are
+  meant to announce. The page does not move focus, so after a keyboard
+  press focus stays on the button. The region is on the page,
   empty, before the first press. A second press saves the file again and
   writes the sentence afresh.
 
