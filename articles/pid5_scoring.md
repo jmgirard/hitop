@@ -527,17 +527,17 @@ path.
 path <- system.file("examples", "responses-pid5.csv", package = "hitop")
 responses <- read_form_responses(path)
 responses
-#> # A tibble: 1 × 225
-#>   study  participant instrument form_build submitted           pid5_001 pid5_002
-#>   <chr>  <chr>       <chr>      <date>     <dttm>                 <int>    <int>
-#> 1 fixtu… p001        pid5       2026-09-20 2026-09-21 02:39:01        3        2
-#> # ℹ 218 more variables: pid5_003 <int>, pid5_004 <int>, pid5_005 <int>,
-#> #   pid5_006 <int>, pid5_007 <int>, pid5_008 <int>, pid5_009 <int>,
-#> #   pid5_010 <int>, pid5_011 <int>, pid5_012 <int>, pid5_013 <int>,
-#> #   pid5_014 <int>, pid5_015 <int>, pid5_016 <int>, pid5_017 <int>,
-#> #   pid5_018 <int>, pid5_019 <int>, pid5_020 <int>, pid5_021 <int>,
-#> #   pid5_022 <int>, pid5_023 <int>, pid5_024 <int>, pid5_025 <int>,
-#> #   pid5_026 <int>, pid5_027 <int>, pid5_028 <int>, pid5_029 <int>, …
+#> # A tibble: 1 × 226
+#>   study   participant instrument form_build submitted           item_order
+#>   <chr>   <chr>       <chr>      <date>     <dttm>              <chr>     
+#> 1 fixture p001        pid5       2026-09-20 2026-09-21 02:39:01 NA        
+#> # ℹ 220 more variables: pid5_001 <int>, pid5_002 <int>, pid5_003 <int>,
+#> #   pid5_004 <int>, pid5_005 <int>, pid5_006 <int>, pid5_007 <int>,
+#> #   pid5_008 <int>, pid5_009 <int>, pid5_010 <int>, pid5_011 <int>,
+#> #   pid5_012 <int>, pid5_013 <int>, pid5_014 <int>, pid5_015 <int>,
+#> #   pid5_016 <int>, pid5_017 <int>, pid5_018 <int>, pid5_019 <int>,
+#> #   pid5_020 <int>, pid5_021 <int>, pid5_022 <int>, pid5_023 <int>,
+#> #   pid5_024 <int>, pid5_025 <int>, pid5_026 <int>, pid5_027 <int>, …
 ```
 
 The item columns are integers and follow the form’s item order, so pass

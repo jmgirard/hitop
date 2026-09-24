@@ -556,17 +556,17 @@ path.</p>
 <code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-pid5.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
 <span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="va">responses</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 225</span></span></span>
-<span><span class="co">#&gt;   study  participant instrument form_build submitted           pid5_001 pid5_002</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> fixtu… p001        pid5       2026-09-20 2026-09-21 <span style="color: #949494;">02:39:01</span>        3        2</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 218 more variables: pid5_003 &lt;int&gt;, pid5_004 &lt;int&gt;, pid5_005 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_006 &lt;int&gt;, pid5_007 &lt;int&gt;, pid5_008 &lt;int&gt;, pid5_009 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_010 &lt;int&gt;, pid5_011 &lt;int&gt;, pid5_012 &lt;int&gt;, pid5_013 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_014 &lt;int&gt;, pid5_015 &lt;int&gt;, pid5_016 &lt;int&gt;, pid5_017 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_018 &lt;int&gt;, pid5_019 &lt;int&gt;, pid5_020 &lt;int&gt;, pid5_021 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_022 &lt;int&gt;, pid5_023 &lt;int&gt;, pid5_024 &lt;int&gt;, pid5_025 &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_026 &lt;int&gt;, pid5_027 &lt;int&gt;, pid5_028 &lt;int&gt;, pid5_029 &lt;int&gt;, …</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 226</span></span></span>
+<span><span class="co">#&gt;   study   participant instrument form_build submitted           item_order</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> fixture p001        pid5       2026-09-20 2026-09-21 <span style="color: #949494;">02:39:01</span> <span style="color: #BB0000;">NA</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 220 more variables: pid5_001 &lt;int&gt;, pid5_002 &lt;int&gt;, pid5_003 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_004 &lt;int&gt;, pid5_005 &lt;int&gt;, pid5_006 &lt;int&gt;, pid5_007 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_008 &lt;int&gt;, pid5_009 &lt;int&gt;, pid5_010 &lt;int&gt;, pid5_011 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_012 &lt;int&gt;, pid5_013 &lt;int&gt;, pid5_014 &lt;int&gt;, pid5_015 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_016 &lt;int&gt;, pid5_017 &lt;int&gt;, pid5_018 &lt;int&gt;, pid5_019 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_020 &lt;int&gt;, pid5_021 &lt;int&gt;, pid5_022 &lt;int&gt;, pid5_023 &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   pid5_024 &lt;int&gt;, pid5_025 &lt;int&gt;, pid5_026 &lt;int&gt;, pid5_027 &lt;int&gt;, …</span></span></span></code></pre></div>
 <p>The item columns are integers and follow the form’s item order, so
 pass them to <code><a href="../reference/score_pid5.html">score_pid5()</a></code> by name with the matching
 <code>version</code> (<code>"FULL"</code>, <code>"SF"</code> or

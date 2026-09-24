@@ -101,9 +101,10 @@ supplied.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with one row per response row. The first five
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> with one row per response row. The first six
 columns are <code>study</code>, <code>participant</code> and <code>instrument</code> as character,
-<code>form_build</code> as <code>Date</code> and <code>submitted</code> as <code>POSIXct</code> in UTC. The item
+<code>form_build</code> as <code>Date</code>, <code>submitted</code> as <code>POSIXct</code> in UTC, and <code>item_order</code>
+as character, <code>NA</code> on a row from a file without that column. The item
 columns follow as integers, in the column order of the first file after
 sorting. An item the participant left blank is <code>NA</code>.</p>
     </div>
@@ -113,12 +114,22 @@ sorting. An item the participant left blank is <code>NA</code>.</p>
 A store's download, such as a Google Sheet's CSV export or a Supabase
 table's, holds one header row and one row per participant. Every response
 row of every file is a row of the result, the files in path order and the
-rows in file order. The first five columns are <code>study</code>, <code>participant</code>,
-<code>instrument</code>, <code>form_build</code> and <code>submitted</code>; the item columns follow, one
-per item, named by the instrument's file stem and the item number
-(<code>hitopsr_001</code>, <code>hitopbr_01</code>, <code>pid5_001</code>, <code>pid5sf_001</code>, <code>pid5bf_01</code>). A
-module form saves only the module's items, in the order the form showed
-them.</p>
+rows in file order. The first six columns of the result are <code>study</code>,
+<code>participant</code>, <code>instrument</code>, <code>form_build</code>, <code>submitted</code> and <code>item_order</code>;
+the item columns follow, one per item, named by the instrument's file
+stem and the item number (<code>hitopsr_001</code>, <code>hitopbr_01</code>, <code>pid5_001</code>,
+<code>pid5sf_001</code>, <code>pid5bf_01</code>). A module form saves only the module's items,
+in the order the form showed them.</p>
+<p><code>item_order</code> is the order the participant saw the items, as item numbers
+with no leading zero, joined by single spaces with none at either end
+(<code>hitopbr_01</code> is 1). A file may hold the column
+anywhere after <code>submitted</code>, as a store's download may append it after the
+item columns, and the result places it sixth. A file may also lack it:
+its rows then hold <code>NA</code> there. Scoring does not read the column, and it is
+not an item column, so it does not enter the check that every file holds
+the same item columns. A cell that is not blank and does not list the
+file's item numbers, each once, is an error naming the file and the
+response row.</p>
 <p>Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
@@ -161,12 +172,12 @@ hand-off for a module and for the PID-5.</p></div>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu">read_form_responses</span><span class="op">(</span><span class="va">dir</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">responses</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 7</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   study participant instrument form_build submitted           hitopbr_01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> demo  p001        hitopbr    2026-09-20 2026-09-20 <span style="color: #949494;">21:20:36</span>          4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> demo  p002        hitopbr    2026-09-20 2026-09-21 <span style="color: #949494;">09:02:11</span>          2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: hitopbr_02 &lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   study participant instrument form_build submitted           item_order</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> demo  p001        hitopbr    2026-09-20 2026-09-20 <span style="color: #949494;">21:20:36</span> <span style="color: #BB0000;">NA</span>        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> demo  p002        hitopbr    2026-09-20 2026-09-21 <span style="color: #949494;">09:02:11</span> <span style="color: #BB0000;">NA</span>        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2 more variables: hitopbr_01 &lt;int&gt;, hitopbr_02 &lt;int&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlink.html" class="external-link">unlink</a></span><span class="op">(</span><span class="va">dir</span>, recursive <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

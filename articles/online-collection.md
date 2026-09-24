@@ -93,24 +93,27 @@ library(hitop)
 path <- system.file("examples", "responses-sheet-hitopbr.csv", package = "hitop")
 responses <- read_form_responses(path)
 responses
-#> # A tibble: 2 × 50
-#>   study   participant instrument form_build submitted           hitopbr_01
-#>   <chr>   <chr>       <chr>      <date>     <dttm>                   <int>
-#> 1 fixture =1+1        hitopbr    2026-09-20 2026-09-23 19:33:25          4
-#> 2 fixture 007         hitopbr    2026-09-20 2026-09-23 19:33:30          4
-#> # ℹ 44 more variables: hitopbr_02 <int>, hitopbr_03 <int>, hitopbr_04 <int>,
-#> #   hitopbr_05 <int>, hitopbr_06 <int>, hitopbr_07 <int>, hitopbr_08 <int>,
-#> #   hitopbr_09 <int>, hitopbr_10 <int>, hitopbr_11 <int>, hitopbr_12 <int>,
-#> #   hitopbr_13 <int>, hitopbr_14 <int>, hitopbr_15 <int>, hitopbr_16 <int>,
-#> #   hitopbr_17 <int>, hitopbr_18 <int>, hitopbr_19 <int>, hitopbr_20 <int>,
-#> #   hitopbr_21 <int>, hitopbr_22 <int>, hitopbr_23 <int>, hitopbr_24 <int>,
-#> #   hitopbr_25 <int>, hitopbr_26 <int>, hitopbr_27 <int>, hitopbr_28 <int>, …
+#> # A tibble: 2 × 51
+#>   study   participant instrument form_build submitted           item_order
+#>   <chr>   <chr>       <chr>      <date>     <dttm>              <chr>     
+#> 1 fixture =1+1        hitopbr    2026-09-20 2026-09-23 19:33:25 NA        
+#> 2 fixture 007         hitopbr    2026-09-20 2026-09-23 19:33:30 NA        
+#> # ℹ 45 more variables: hitopbr_01 <int>, hitopbr_02 <int>, hitopbr_03 <int>,
+#> #   hitopbr_04 <int>, hitopbr_05 <int>, hitopbr_06 <int>, hitopbr_07 <int>,
+#> #   hitopbr_08 <int>, hitopbr_09 <int>, hitopbr_10 <int>, hitopbr_11 <int>,
+#> #   hitopbr_12 <int>, hitopbr_13 <int>, hitopbr_14 <int>, hitopbr_15 <int>,
+#> #   hitopbr_16 <int>, hitopbr_17 <int>, hitopbr_18 <int>, hitopbr_19 <int>,
+#> #   hitopbr_20 <int>, hitopbr_21 <int>, hitopbr_22 <int>, hitopbr_23 <int>,
+#> #   hitopbr_24 <int>, hitopbr_25 <int>, hitopbr_26 <int>, hitopbr_27 <int>, …
 ```
 
 Each row of the file is a row of the result. The lead columns are typed:
 `participant` is character, so the codes `=1+1` and `007` come back as
 the sheet stored them; `form_build` is a date; `submitted` is a UTC
-date-time. Every item column is an integer.
+date-time. Every item column is an integer. The sixth column,
+`item_order`, is the order the participant saw the items, as item
+numbers, when the file records one and `NA` when it does not, and
+scoring does not read it.
 
 A folder can hold the download beside any files participants sent by
 hand:

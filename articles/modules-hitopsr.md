@@ -563,16 +563,16 @@ path:
 path <- system.file("examples", "responses-module-shuffled.csv", package = "hitop")
 responses <- read_form_responses(path)
 responses
-#> # A tibble: 1 × 26
-#>   study   participant instrument form_build submitted           hitopsr_233
-#>   <chr>   <chr>       <chr>      <date>     <dttm>                    <int>
-#> 1 fixture p001        hitopsr    2026-09-20 2026-09-20 21:20:44           4
-#> # ℹ 20 more variables: hitopsr_194 <int>, hitopsr_170 <int>, hitopsr_064 <int>,
-#> #   hitopsr_365 <int>, hitopsr_011 <int>, hitopsr_020 <int>, hitopsr_300 <int>,
-#> #   hitopsr_109 <int>, hitopsr_118 <int>, hitopsr_260 <int>, hitopsr_394 <int>,
-#> #   hitopsr_224 <int>, hitopsr_291 <int>, hitopsr_304 <int>, hitopsr_367 <int>,
-#> #   hitopsr_343 <int>, hitopsr_066 <int>, hitopsr_100 <int>, hitopsr_386 <int>,
-#> #   hitopsr_380 <int>
+#> # A tibble: 1 × 27
+#>   study   participant instrument form_build submitted           item_order
+#>   <chr>   <chr>       <chr>      <date>     <dttm>              <chr>     
+#> 1 fixture p001        hitopsr    2026-09-20 2026-09-20 21:20:44 NA        
+#> # ℹ 21 more variables: hitopsr_233 <int>, hitopsr_194 <int>, hitopsr_170 <int>,
+#> #   hitopsr_064 <int>, hitopsr_365 <int>, hitopsr_011 <int>, hitopsr_020 <int>,
+#> #   hitopsr_300 <int>, hitopsr_109 <int>, hitopsr_118 <int>, hitopsr_260 <int>,
+#> #   hitopsr_394 <int>, hitopsr_224 <int>, hitopsr_291 <int>, hitopsr_304 <int>,
+#> #   hitopsr_367 <int>, hitopsr_343 <int>, hitopsr_066 <int>, hitopsr_100 <int>,
+#> #   hitopsr_386 <int>, hitopsr_380 <int>
 ```
 
 Each row of each file is a row of the result, the lead columns typed
@@ -595,8 +595,7 @@ that warns of a misordered mapping.
 form_module <- read_module(
   system.file("examples", "module-shuffled.json", package = "hitop")
 )
-item_cols <- setdiff(names(responses), c("study", "participant", "instrument",
-                                         "form_build", "submitted"))
+item_cols <- grep("^hitopsr_", names(responses), value = TRUE)
 score_hitopsr(
   responses,
   items = match(item_cols, names(responses)),
