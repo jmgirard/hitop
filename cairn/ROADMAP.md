@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M115 | `read_form_responses()` accepts an `item_order` column recording the order a participant saw | done | M113 | normal | milestones/archive/M115-reader-item-order.md |
 | M116 | A study link can ask hitop-form to show each participant the items in a fresh random order | done | M114, M115 | normal | milestones/archive/M116-form-random-order.md |
 | M117 | `read_form_responses()` accepts the two Prolific columns a study link can ask hitop-form to write | done | — | normal | milestones/archive/M117-reader-prolific-columns.md |
-| M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | in-progress | M117 | normal | milestones/M118-form-prolific.md |
+| M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | review | M117 | normal | milestones/M118-form-prolific.md |
 
 ## Candidates
 

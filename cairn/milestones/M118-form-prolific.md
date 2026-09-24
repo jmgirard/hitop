@@ -1,6 +1,6 @@
 # M118: A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M117
 - **Driving RR:** —
@@ -48,7 +48,7 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 - [x] T5: README sections and the fixtures README in hitop-form. In hitop: the walk-saved fixture and its test, the `online-collection.Rmd` Prolific section and "Who holds the data", and `NEWS.md`. Purl and run the article.
 - [x] T6: Tests: guard (AC1), save and send (AC2), link (AC3), send and network (AC4). Plant-check each by reverting the feature it covers once. Create the download promise before the walk with its own timeout.
 - [x] T7: `npx playwright test` on the checkout, and `devtools::test()` and `pkgdown::check_pkgdown()` in hitop. Jeff merges the hitop-form PR from his terminal, because the merge guard reads the session's repo. Dispatch the deployed-page run after the merge.
-- [ ] T8: The review-return fixes. F1: `checkCompleteUrl()` refuses a non-text value with the value shown, and G11 asserts it. F2: the article's completion-URL sentence cites article 445178. F4: L12 probes with `http://localhost`. F3: the no-store save and the unconfirmed sends assert no `p.complete` element. F11: the form.js header comment names what link.html imports. F13: `buildCsv()` drops the redundant copy.
+- [x] T8: The review-return fixes. F1: `checkCompleteUrl()` refuses a non-text value with the value shown, and G11 asserts it. F2: the article's completion-URL sentence cites article 445178. F4: L12 probes with `http://localhost`. F3: the no-store save and the unconfirmed sends assert no `p.complete` element. F11: the form.js header comment names what link.html imports. F13: `buildCsv()` drops the redundant copy.
 
 ## Work log
 
@@ -71,6 +71,9 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 - 2026-09-24: the reader's re-read found all three corrected sites correct. All tasks checked, local checks clean; status review. Two branches await review: hitop `m118-form-prolific` (docs, fixture, test, NEWS) and hitop-form `m118-form-prolific` (the page, the builder, tests, fixtures, README).
 - 2026-09-24: /milestone-review returned the milestone to in-progress. AC1 fails on F1 (a `complete` number is refused with no value shown), AC3 on F4 (L12 probes a form AC1 does not list), AC5 on F2 (the article's completion-URL sentence carries no citation). AC2, AC4 and AC6 verified. The other lenses found nothing. Defect return 1. The fixes and the fix-now findings F3, F11 and F13 go to /milestone-implement, the rest to the re-review gate.
 - 2026-09-24: /milestone-implement resumed on the return. T8 added as a minor amendment carrying the six fixes. All six edited in both repos. Each fix was planted once by reversing it and its test went red: F1 on G11's number probe, F3 on the no-store save and the HTML-body unconfirmed send, F4 on L12 with the builder's check bypassed. The article renders with the new citation. The full hitop-form suite and the claim-audit reader are running at this checkpoint. hitop-form's changes are staged, to be committed on green.
+- 2026-09-24: the full hitop-form suite passed, 177 of 177, and the six fixes are committed at hitop-form b781ea7. T8 done.
+- 2026-09-24: claim audit: 154 claims read, 1 corrected — hitop-form/form.js (the header comment now names `PROLIFIC_PARAMS` among link.html's imports, hitop-form 2nd commit after b781ea7). The reader also flagged "asks that all three be saved" in the README and the article, then withdrew it on a verbatim fetch: article 445178 says to configure the software to save the parameters, as the source note's line 14 quotes. Both sentences stand as written. The reader's one re-read confirmed the header comment.
+- 2026-09-24: all tasks checked, local checks clean; status review. The re-review's fresh runs are its own.
 
 ## Decisions
 
