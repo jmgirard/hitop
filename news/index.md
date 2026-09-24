@@ -4,6 +4,17 @@
 
 ### New features
 
+- **The hitop-form page lets a participant save the file again.** Each
+  screen that names a saved file now shows a “Save the file” button
+  under its instructions. Those screens follow a Finish with no store in
+  the link or a send the store did not confirm. The instructions end
+  with “If the file did not appear, press Save the file.” A press saves
+  the same file again, with the same content, offered under the same
+  file name (the browser can add a number to keep both copies). The
+  download after an unconfirmed send starts only when the wait ends, up
+  to 30 seconds after Finish. The online-collection article mentions the
+  button in its “Make the study link” step and in its Prolific route.
+
 - **The hitop-form page gives each Prolific outcome its own end.** The
   link builder’s “Completion URL after a saved file” field, allowed only
   beside a completion URL, names a second `https://` address that the
