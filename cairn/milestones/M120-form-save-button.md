@@ -1,6 +1,6 @@
 # M120: hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -43,7 +43,7 @@ Both saved-file screens of hitop-form gain a "Save the file" button that saves t
 - [x] T2: Tests first, shown red before T3. In `tests/send.spec.js`, the five-outcome loop clicks the button twice. Each download promise is created before its click with its own timeout, and the name and bytes are compared with the Finish download. The confirmed-send loop and the completion-address test (its observer report at the held request) assert no button labelled "Save the file". The unconfirmed-with-`complete` test asserts the AC4 order. In `tests/save.spec.js`, the HiTOP-BR case clicks twice, the no-store test with `complete` asserts the order, and one test without `complete` asserts the trail sentence. `git add` the fix before any plant.
 - [x] T3: In `form.js`, `saveCsv()` returns the name and the text. `showSaved()` takes both, appends the sentence to the trail paragraph, and renders a `button` "Save the file" whose click calls `saveFile(name, text)`. The button sits between the trail paragraph and the completion link (`form.js:934-952`). The `finish()` comment names the button. Green.
 - [x] T4: Docs, derived from the page and T2's tests. In hitop-form, the README's "What the participant sees" and its save and send rows in the test table. In hitop, the saved-file sentences of `vignettes/articles/online-collection.Rmd` in the Google Sheet section and the Prolific route, and `NEWS.md`.
-- [ ] T5: `npx playwright test`, `devtools::test()`, `pkgdown::check_pkgdown()`. Jeff merges the hitop-form PR from his terminal, because the merge guard reads the session's repo. Dispatch the deployed-page run after the merge.
+- [x] T5: `npx playwright test`, `devtools::test()`, `pkgdown::check_pkgdown()`. Jeff merges the hitop-form PR from his terminal, because the merge guard reads the session's repo. Dispatch the deployed-page run after the merge.
 
 ## Work log
 
@@ -58,6 +58,8 @@ Both saved-file screens of hitop-form gain a "Save the file" button that saves t
 - 2026-09-24: T2 and T3 in hitop-form b9c8ec7. Helpers `SAVE_AGAIN`, `expectSaveAgain()` (one button, two clicks, each download's name and bytes against the Finish download), `savedScreenOrder()`/`screenOrder()` (the `main > *` tags and classes). T19 inside the five-outcome loop and the T16 order; T20 in the T5 loop, the supabase loop and T15's snapshot (`saveButtons`); S21 on the HiTOP-BR case and the S16 order. Red before T3 on the three saved-screen tests, the sent-screen test green. `showSaved()` takes `{ name, text }` from `saveCsv()`, appends the sentence and renders the button. Plants against the committed fix, each restored: no button, 3 of 4 red; a click saving `text + 'x'`, 2 of 4 red (both click tests); no sentence, 2 of 4 red; a button on the sent screen, 1 of 4 red (T5's HiTOP-BR walk; T15's snapshot check not planted).
 - 2026-09-24: T4: hitop-form README's participant section and the save and send rows; hitop's article (the Google Sheet section's unconfirmed paragraph, the Prolific route's saved-file sentence) and NEWS. The plain-English lint hook reports hits on these files and on the tracking files; the new sentences were shortened, the pre-existing hits and cairn's record grammar left.
 - 2026-09-24: claim audit: 27 claims read, 6 corrected — hitop-form form.js, tests/helpers.mjs, tests/save.spec.js, tests/send.spec.js, README.md (6171afc); hitop NEWS.md. Corrections: the send's wait "can outlast" the user activation (a refused connection can fail inside it); "the Finish download's suggested file name" rather than its name on disk, with the README and NEWS saying the browser can add a number; the README's completion paragraph puts the button before the link; the send row names the five outcomes with a send address (the Supabase unconfirmed walks have no save-again check); NEWS points at the article's "Make the study link" step and Prolific route. Re-read once by the same reader ([O] agent a0bc8f054fdb24337): 6 of 6 match.
+- 2026-09-24: T5 checks: Playwright 197 of 197 on the hitop-form branch (b9c8ec7; the four touched tests re-run green after 6171afc's comment edits); `devtools::test()` 0 failures, 15 skips (merge-base and pkgload reasons); `pkgdown::check_pkgdown()` no problems. T5's merge of the hitop-form PR and the deployed-page dispatch wait for the review gate.
+- 2026-09-24: status → review. Nothing pushed; review opens the two PRs.
 
 ## Decisions
 
