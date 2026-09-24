@@ -1,6 +1,6 @@
 # M121: `read_form_responses()` and hitop-form refuse a malformed file by name: a short or long row, an empty file, a value refusal naming no row, an unnumbered or second-stem item column, and a descriptor whose items are not ascending
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -59,6 +59,8 @@ A malformed hitop-form file stops at `read_form_responses()` or at the hitop-for
 - 2026-09-24: T3 done: `?read_form_responses` Details lists the refusals and names the rows; `?write_module` `items` text; the article's two-forms paragraph; NEWS under "Improvements and fixes"; `document()` stable; the online-collection and modules articles purled and run clean; suite 817 green.
 - 2026-09-24: T4 done (hitop-form commit on `m121-form-file-refusals`): `NOT_ASCENDING`, `NOT_ASCENDING_MESSAGE` and `notAscendingDescriptor()` in `helpers.mjs`; G13 in `guard.spec.js` and L15 in `link.spec.js`, two tests each; all four red, the page starting the form and the builder printing a link.
 - 2026-09-24: T5 done (hitop-form): `checkModule()` refuses `items` with any entry below the one before it, after the repeat check; README's descriptor step and the link and guard rows of its tests table; `npx playwright test` 201 passed, the ascending-items and `itemOrder` descriptor tests among them.
+- 2026-09-24: claim audit: 42 claims read, 7 corrected — NEWS.md, R/read_form_responses.R (a comment), tests/testthat/test-read_form_responses.R (a comment), vignettes/articles/online-collection.Rmd, hitop-form README.md, form.js (a comment), tests/guard.spec.js (a comment). The re-read cleared six; the NEWS "before" sentence was then narrowed to the two faults the reader observed on the old reader, without a further pass. The article's two-forms paragraph now carries the random-order exception (a module row's `item_order` lists only the module's items, so the reader refuses the mixed download).
+- 2026-09-24: status → review; `document()` no diff, suite 817 green, Playwright 201 passed.
 
 ## Decisions
 
