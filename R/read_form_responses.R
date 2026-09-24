@@ -75,7 +75,9 @@ read_form_responses <- function(path) {
   files <- form_response_files(path)
   parts <- lapply(files, read_form_response_file)
 
-  item_names <- lapply(parts, function(p) names(p)[-seq_len(5L)])
+  # The item columns follow the six lead columns of the typed part, so
+  # `item_order` never enters the comparison.
+  item_names <- lapply(parts, function(p) names(p)[-seq_len(6L)])
   reference <- item_names[[1L]]
   differs <- !vapply(item_names, identical, logical(1L), reference)
   if (any(differs)) {
@@ -111,8 +113,13 @@ read_form_responses <- function(path) {
 }
 
 # The five lead columns every hitop-form file starts with, in the page's order.
+# A sixth, `item_order`, is optional and may sit anywhere after them.
 form_lead_columns <- c("study", "participant", "instrument", "form_build",
                        "submitted")
+
+# The grammar of a non-blank `item_order` cell: item numbers with no leading
+# zero, joined by single spaces, with no space at either end.
+item_order_pattern <- "^[1-9][0-9]*( [1-9][0-9]*)*$"
 
 # Resolve `path` to the sorted vector of files to read.
 form_response_files <- function(path, call = rlang::caller_env()) {
@@ -208,7 +215,7 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   # Each item column as character with blanks as NA, then as integer. A file
   # the page saved holds one response row; a store's export holds one per
   # participant, so every check below runs down the column.
-  item_cols <- names(raw)[-seq_len(5L)]
+  item_cols <- setdiff(names(raw)[-seq_len(5L)], "item_order")
   values <- lapply(raw[item_cols], function(v) {
     v[!nzchar(v)] <- NA_character_
     v
@@ -242,6 +249,41 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     )
   }
 
+  # An `item_order` cell is blank, or the file's item numbers each once in
+  # the order shown. The item number of a column is the digits after its last
+  # underscore (`hitopbr_01` is 1). A row from a file without the column
+  # reads as NA.
+  if ("item_order" %in% names(raw)) {
+    item_order <- raw[["item_order"]]
+    item_order[!nzchar(item_order)] <- NA_character_
+    numbers <- suppressWarnings(as.integer(sub(".*_", "", item_cols)))
+    order_ok <- vapply(item_order, function(cell) {
+      if (is.na(cell)) {
+        return(TRUE)
+      }
+      if (!grepl(item_order_pattern, cell)) {
+        return(FALSE)
+      }
+      parts <- strsplit(cell, " ", fixed = TRUE)[[1L]]
+      parts <- suppressWarnings(as.integer(parts))
+      !anyNA(parts) && !anyNA(numbers) &&
+        identical(sort(parts), sort(numbers))
+    }, logical(1L), USE.NAMES = FALSE)
+    if (!all(order_ok)) {
+      rows <- which(!order_ok)
+      cli::cli_abort(
+        c(
+          "{.file {file}} holds an {.field item_order} value that is not the file's item numbers, each once.",
+          "x" = "Response row {rows}: {.val {item_order[rows]}}.",
+          "i" = "The row is counted from the first row after the header."
+        ),
+        call = call
+      )
+    }
+  } else {
+    item_order <- rep(NA_character_, nrow(raw))
+  }
+
   # The stamps are matched whole, so a trailing fragment cannot slip past
   # the parser. `submitted` may carry fractional seconds, which
   # `Date.toISOString()` writes and the page trims.
@@ -272,6 +314,7 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     instrument = raw$instrument,
     form_build = form_build,
     submitted = submitted,
+    item_order = item_order,
     stringsAsFactors = FALSE
   )
   if (length(item_cols) > 0L) {
