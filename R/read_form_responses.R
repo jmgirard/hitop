@@ -169,6 +169,10 @@ blank_to_na <- function(v) {
 # zero, joined by single spaces, with no space at either end.
 item_order_pattern <- "^[1-9][0-9]*( [1-9][0-9]*)*$"
 
+# The grammar of an item column's name: the instrument's file stem, an
+# underscore and the item number (`hitopbr_01`, `pid5_001`).
+item_column_pattern <- "^[a-z0-9]+_[0-9]+$"
+
 # Resolve `path` to the sorted vector of files to read.
 form_response_files <- function(path, call = rlang::caller_env()) {
   cli_assert(
@@ -208,9 +212,51 @@ form_response_files <- function(path, call = rlang::caller_env()) {
   sort(files, method = "radix")
 }
 
+# The field count of each line of `file`, as `count.fields()` gives it, over
+# a connection that strips a byte-order mark. NULL for a file with no line.
+count_form_fields <- function(file) {
+  con <- file(file, encoding = "UTF-8-BOM")
+  on.exit(close(con))
+  utils::count.fields(con, sep = ",", quote = "\"", comment.char = "")
+}
+
 # Read one file into a data frame with typed columns, one row per response
 # row: one for a file the page saved, one per participant for a store's export.
 read_form_response_file <- function(file, call = rlang::caller_env()) {
+  # The field count of each record, taken before `read.csv()` pads a short
+  # row or stops on a long one. `#` is data and a quoted line break is one
+  # record, as `read.csv()` reads them: `count.fields()` gives NA on the line
+  # a quoted record starts on and the record's count on its last line, so
+  # the NA entries fold away. The connection strips a byte-order mark as
+  # `read.csv()` does below. A file with nothing to count has no header.
+  counts <- count_form_fields(file)
+  records <- counts[!is.na(counts)]
+  if (length(records) == 0L) {
+    cli::cli_abort(
+      c(
+        "{.file {file}} is not a hitop-form response file.",
+        "x" = "It holds no header row."
+      ),
+      call = call
+    )
+  }
+  n_header <- records[[1L]]
+  rows <- which(records[-1L] != n_header)
+  if (length(rows) > 0L) {
+    lines <- vapply(rows, function(r) {
+      n <- records[[r + 1L]]
+      cli::format_inline("Response row {r} holds {n} field{?s}, and the header holds {n_header}.")
+    }, character(1L))
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds a response row whose field count differs from the header's.",
+        stats::setNames(lines, rep("x", length(lines))),
+        "i" = "The row is counted from the first row after the header."
+      ),
+      call = call
+    )
+  }
+
   # A file the page saved ends in a row ending; one edited by hand may not,
   # and that is not worth a warning.
   raw <- withCallingHandlers(
@@ -264,31 +310,62 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   # the page saved holds one response row; a store's export holds one per
   # participant, so every check below runs down the column.
   item_cols <- setdiff(names(raw)[-seq_len(5L)], form_optional_columns)
+
+  # An item column is named by the instrument's stem, an underscore and the
+  # item number, and one file holds one instrument's columns, so the
+  # `item_order` check below reads unambiguous numbers.
+  named <- grepl(item_column_pattern, item_cols)
+  if (!all(named)) {
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds a column that is not named as an item column.",
+        "x" = "Column{?s} {.field {item_cols[!named]}}.",
+        "i" = "An item column is named by the instrument's file stem, an underscore and the item number, as {.code hitopbr_01}."
+      ),
+      call = call
+    )
+  }
+  stems <- unique(sub("_[0-9]+$", "", item_cols))
+  if (length(stems) > 1L) {
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds item columns of more than one stem.",
+        "x" = "Stems {.val {stems}}.",
+        "i" = "A file holds one instrument's items. Read files from one form together, and other forms in a separate call."
+      ),
+      call = call
+    )
+  }
+
   values <- lapply(raw[item_cols], blank_to_na)
-  whole <- vapply(values, function(v) {
-    all(is.na(v) | grepl("^-?[0-9]+$", v))
-  }, logical(1L))
-  bad <- item_cols[!whole]
+  whole <- lapply(values, function(v) is.na(v) | grepl("^-?[0-9]+$", v))
+  bad <- item_cols[!vapply(whole, all, logical(1L))]
   if (length(bad) > 0L) {
+    rows <- which(!Reduce(`&`, whole, init = rep(TRUE, nrow(raw))))
     cli::cli_abort(
       c(
         "{.file {file}} holds an item value that is not a whole number.",
-        "x" = "Column{?s} {.field {bad}}."
+        "x" = "Column{?s} {.field {bad}}.",
+        "x" = "Response {cli::qty(length(rows))}row{?s} {rows}.",
+        "i" = "The row is counted from the first row after the header."
       ),
       call = call
     )
   }
 
   ints <- lapply(values, function(v) suppressWarnings(as.integer(v)))
-  fits <- vapply(seq_along(item_cols), function(i) {
-    !any(!is.na(values[[i]]) & is.na(ints[[i]]))
-  }, logical(1L))
-  wide <- item_cols[!fits]
+  fits <- lapply(seq_along(item_cols), function(i) {
+    is.na(values[[i]]) | !is.na(ints[[i]])
+  })
+  wide <- item_cols[!vapply(fits, all, logical(1L))]
   if (length(wide) > 0L) {
+    rows <- which(!Reduce(`&`, fits, init = rep(TRUE, nrow(raw))))
     cli::cli_abort(
       c(
         "{.file {file}} holds an item value outside the integer range.",
-        "x" = "Column{?s} {.field {wide}}."
+        "x" = "Column{?s} {.field {wide}}.",
+        "x" = "Response {cli::qty(length(rows))}row{?s} {rows}.",
+        "i" = "The row is counted from the first row after the header."
       ),
       call = call
     )
@@ -343,11 +420,13 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   for (field in c("form_build", "submitted")) {
     parsed <- if (field == "form_build") form_build else submitted
     if (anyNA(parsed)) {
-      got <- raw[[field]][is.na(parsed)]
+      rows <- which(is.na(parsed))
+      got <- raw[[field]][rows]
       cli::cli_abort(
         c(
           "{.file {file}} holds a {.field {field}} value that does not parse.",
-          "x" = "Got {.val {got}}."
+          "x" = "Response {cli::qty(length(rows))}row{?s} {rows}: {.val {got}}.",
+          "i" = "The row is counted from the first row after the header."
         ),
         call = call
       )
