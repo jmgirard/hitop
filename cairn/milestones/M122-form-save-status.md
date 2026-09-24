@@ -1,6 +1,6 @@
 # M122: hitop-form's "Save the file" button confirms each press in a status message a screen reader announces
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -48,6 +48,7 @@ A press of the "Save the file" button on either saved-file screen writes a short
 - 2026-09-24: criteria audit ran in full mode ([O] fresh reader, M121 and M122 together): 13 findings; 5 on this file, 4 fixed in the draft (the role and empty text asserted explicitly, a press on a with-link screen, the second-press rewrite stated as a page property with the observer as method, a keyboard press with AC3 named as a guard on existing behavior) and 1 settled by wording (the copy rests on M120's reading of D-072(c)).
 - 2026-09-24: plan gate chose "The file was saved again." over "Saved again: <file name>." and "The file was offered again." because it matches the README's wording for the button and stays short across presses; falsified by a participant report that the sentence misled them when the browser blocked the download.
 - 2026-09-24: planning chose leaving focus on the button over moving it to the region because a polite status region is announced without focus and a moved focus loses the button for a second press; falsified by a screen-reader user reporting the message unspoken.
+- 2026-09-24: implement started; hitop branch `m122-form-save-status` cut from main (equal to origin/main at ab7a28c6). Question gate: hitop-form PR #9 (M121) is still open and touched the helpers and README this milestone edits; Jeff chose to merge #9 first over cutting from the M121 branch. Blocked until #9 is merged; the hitop-form branch is then cut from the updated main.
 
 ## Decisions
 
