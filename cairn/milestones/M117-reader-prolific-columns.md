@@ -63,3 +63,16 @@ Let the reader accept two optional lead columns, `prolific_study` and `prolific_
 - 2026-09-24 AC3: `man/read_form_responses.Rd` names both columns, "seventh" and "eighth", and the `NA` on a row without the column and on a blank cell (lines 18–20, 36–39, 60–64). NEWS lines 13–14 state eight lead columns and the item columns starting ninth. Pass.
 - 2026-09-24 AC4: at faf0ebd0, `devtools::test()` clean with no failure, `devtools::document()` left no diff, `pkgdown::check_pkgdown()` reported no problems, `devtools::check()` 0 errors, 0 warnings, 0 notes. Pass.
 - 2026-09-24 consistency gate: `cairn_validate.py` exit 0 (24 advisory warnings, none on this milestone); README.Rmd and README.md share their last commit; NEWS carries the entry; no new top-level file; no principle changed, so `cairn_impact` skipped.
+- 2026-09-24 independent review: three lenses. [S] blame-history (agent a7ff7048): no findings; the unconditional `item_order` check, the `blank_to_na()` helper and the `cbind` assembly each keep the prior behavior. [S] prior-review (agent a5272acd): no prior-review evidence of a regression; the M115 lesson on positional lead-column reads was followed. [O] diff-bug (agent a64976bb): no correctness bug; 12 documentation and test findings, triaged below.
+- 2026-09-24 F1 fix now: help page and NEWS said the page writes the pair, which M118 has not shipped; reworded to "when the file records them for a study recruited through Prolific".
+- 2026-09-24 F2 fix now: the mismatch test's name claimed the pair does not enter the comparison while both files carried the same pair; renamed to what it shows, with a comment pointing at the mixed-directory tests that show the exclusion.
+- 2026-09-24 F3 follow-up (M118): the online-collection article's printed tibble shows the two columns as `NA` with no sentence about them, and the modules article and PID-5 vignette still say "five lead columns ... a sixth"; M118's article route describes them. One line appended to M118's work log.
+- 2026-09-24 F4 reject: a column named with different case (`Prolific_Study`) reads as an item column; pre-existing for `item_order` and for any misspelled item column, refused on D-064's terms as a file that is not the page's.
+- 2026-09-24 F5 reject: a whitespace-only cell is not blank; Scope says the cells are read as written with no check.
+- 2026-09-24 F6 reject: a literal `NA` string stays text; pre-existing and the same as `participant`.
+- 2026-09-24 F7 and F8 fix now: a three-row file with `prolific_study` alone and one blank cell added to the store-download test, covering the absent column on many rows and a blank `prolific_study`.
+- 2026-09-24 F9 fix now: the session-alone test now asserts `item_order` is `NA`, as the study-alone test does.
+- 2026-09-24 F10 fix now: the help page's "other lead columns" reworded to "first columns other than the five the page writes first".
+- 2026-09-24 F11 reject: comment wording; the comment describes the typed part, which is what the comparison reads.
+- 2026-09-24 F12 reject: a zero-item file with a non-blank `item_order` is refused; pre-existing and unchanged.
+- 2026-09-24 after the fixes: `document()` no diff, reader tests clean. None of the findings shows a criterion failing, so no return.

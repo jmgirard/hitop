@@ -57,6 +57,8 @@ Two link fields make hitop-form fit a Prolific study: `prolific: true` takes `PR
 - 2026-09-23: plan gate chose a redirect on a confirmed send and a link on the saved screens over a link everywhere and over a redirect on every outcome, because Prolific recommends the redirect and a participant with a saved file must see its name first; falsified by a report of participants leaving the saved screen without the file.
 - 2026-09-23: plan gate chose any `https://` completion address over Prolific's host alone because other recruiters use the same return-URL pattern and the check is the store address's; falsified by a study whose wrong host went unrefused at the builder.
 
+- 2026-09-24: from M117's review (F3): the online-collection article's printed tibble now shows `prolific_study` and `prolific_session` as `NA` with no sentence about them, and the modules article and the PID-5 vignette still say "five lead columns ... a sixth, `item_order`". The article route here describes the two columns in all three.
+
 ## Decisions
 
 ## Review

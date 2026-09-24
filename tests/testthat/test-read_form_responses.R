@@ -491,6 +491,7 @@ test_that("a file with prolific_session alone after submitted reads it eighth, p
 
   out <- read_form_responses(f)
   expect_prolific(out, NA_character_, "se01")
+  expect_identical(out$item_order, NA_character_)
 })
 
 test_that("the pair directly after submitted, with no item_order, reads seventh and eighth", {
@@ -564,6 +565,20 @@ test_that("a two-row store download reads each row's cells, a blank cell as NA",
   expect_identical(out$prolific_study, c("st01", "st01"))
   expect_identical(out$prolific_session, c("se01", NA_character_))
   expect_identical(out$hitopbr_01, c(4L, 2L))
+
+  # Three rows with `prolific_study` alone, one cell blank: the absent
+  # column fills NA down every row, and the blank cell is NA in the other.
+  g <- file.path(dir, "sheet2.csv")
+  writeLines(c(
+    paste(c(lead, "prolific_study", "hitopbr_01", "hitopbr_02"), collapse = ","),
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,st01,4,1",
+    "s,p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,,2,3",
+    "s,p3,hitopbr,2026-09-20,2026-09-20T21:20:36Z,st03,1,1"
+  ), g)
+  out <- read_form_responses(g)
+  expect_identical(out$prolific_study, c("st01", NA_character_, "st03"))
+  expect_identical(out$prolific_session, rep(NA_character_, 3L))
+  expect_identical(out$hitopbr_02, c(1L, 3L, 1L))
 })
 
 test_that("a directory mixing a file with the pair and a file without reads as one, with no condition", {
@@ -599,13 +614,15 @@ test_that("a directory mixing the pair after item_order and the pair after the i
   expect_identical(out$hitopbr_02, c(1L, 3L))
 })
 
-test_that("the Prolific columns do not enter the mismatch comparison, and both classes keep their triggers", {
+test_that("files carrying the pair still refuse differing items by class, and the none class keeps its trigger", {
   dir <- withr::local_tempdir()
   form_file(dir, "p001.csv", two_items(), prolific = prolific_pair)
   f2 <- form_file(dir, "p002.csv", c(hitopbr_01 = 4L, hitopbr_03 = 1L),
                   prolific = prolific_pair)
 
   # The same Prolific cells on both files: the refusal is about the items.
+  # That the pair itself never enters the comparison is shown by the two
+  # mixed-directory tests above.
   cnd <- rlang::catch_cnd(read_form_responses(dir),
                           "hitop_form_responses_mismatch")
   expect_s3_class(cnd, "hitop_form_responses_mismatch")

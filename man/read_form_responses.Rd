@@ -58,8 +58,8 @@ file's item numbers, each once, is an error naming the file and the
 response row.
 
 \code{prolific_study} and \code{prolific_session} hold the study and session
-identifiers that Prolific adds to a study link. The page writes them for
-a study recruited through Prolific and not otherwise. A file may hold
+identifiers that Prolific adds to a study link, when the file records
+them for a study recruited through Prolific. A file may hold
 either or both anywhere after \code{submitted}, and the result places
 \code{prolific_study} seventh and \code{prolific_session} eighth. A row from a file
 without a column holds \code{NA} in it, and so does a blank cell. Scoring does
@@ -71,7 +71,8 @@ Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
-(other lead columns, a column that appears twice, a header with no
+(first columns other than the five the page writes first, a column that
+appears twice, a header with no
 response row, an item value that is not a whole number or is outside R's
 integer range, a date that does not parse) is an error naming the file.
 A \code{submitted} stamp may carry fractional seconds.

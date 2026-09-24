@@ -5,8 +5,8 @@
 * **`read_form_responses()` accepts two Prolific columns.** A response file
   may hold `prolific_study` and `prolific_session`, either or both, anywhere
   after `submitted`. They hold the study and session identifiers that
-  Prolific adds to a study link, which the hitop-form page writes for a study
-  recruited through Prolific. The result places `prolific_study` seventh and
+  Prolific adds to a study link, recorded for a study recruited through
+  Prolific. The result places `prolific_study` seventh and
   `prolific_session` eighth, as character, and a row from a file without a
   column holds `NA` in it, as does a blank cell. Neither is an item column,
   so neither enters the check that every file holds the same item columns,
