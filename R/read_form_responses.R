@@ -15,12 +15,23 @@
 #'   A store's download, such as a Google Sheet's CSV export or a Supabase
 #'   table's, holds one header row and one row per participant. Every response
 #'   row of every file is a row of the result, the files in path order and the
-#'   rows in file order. The first five columns are `study`, `participant`,
-#'   `instrument`, `form_build` and `submitted`; the item columns follow, one
-#'   per item, named by the instrument's file stem and the item number
-#'   (`hitopsr_001`, `hitopbr_01`, `pid5_001`, `pid5sf_001`, `pid5bf_01`). A
-#'   module form saves only the module's items, in the order the form showed
-#'   them.
+#'   rows in file order. The first six columns are `study`, `participant`,
+#'   `instrument`, `form_build`, `submitted` and `item_order`; the item columns
+#'   follow, one per item, named by the instrument's file stem and the item
+#'   number (`hitopsr_001`, `hitopbr_01`, `pid5_001`, `pid5sf_001`,
+#'   `pid5bf_01`). A module form saves only the module's items, in the order
+#'   the form showed them.
+#'
+#'   `item_order` is the order the participant saw the items, as item numbers
+#'   with no leading zero, joined by single spaces with none at either end
+#'   (`hitopbr_01` is 1). A file may hold the column
+#'   anywhere after `submitted`, as a store's download may append it after the
+#'   item columns, and the result places it sixth. A file may also lack it:
+#'   its rows then hold `NA` there. Scoring does not read the column, and it is
+#'   not an item column, so it does not enter the check that every file holds
+#'   the same item columns. A cell that is not blank and does not list the
+#'   file's item numbers, each once, is an error naming the file and the
+#'   response row.
 #'
 #'   Every file must carry the same item columns in the same order, because
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
@@ -38,9 +49,10 @@
 #'   `hitop_form_responses_none`. Both classes are a public contract a caller
 #'   can catch by name.
 #'
-#' @return A \link[tibble]{tibble} with one row per response row. The first five
+#' @return A \link[tibble]{tibble} with one row per response row. The first six
 #'   columns are `study`, `participant` and `instrument` as character,
-#'   `form_build` as `Date` and `submitted` as `POSIXct` in UTC. The item
+#'   `form_build` as `Date`, `submitted` as `POSIXct` in UTC, and `item_order`
+#'   as character, `NA` on a row from a file without that column. The item
 #'   columns follow as integers, in the column order of the first file after
 #'   sorting. An item the participant left blank is `NA`.
 #'

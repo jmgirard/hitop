@@ -101,7 +101,9 @@ responses
 Each row of the file is a row of the result. The lead columns are typed:
 `participant` is character, so the codes `=1+1` and `007` come back as the
 sheet stored them; `form_build` is a date; `submitted` is a UTC date-time.
-Every item column is an integer.
+Every item column is an integer. The sixth column, `item_order`, is the order
+the participant saw the items, as item numbers, when the file records one and
+`NA` when it does not, and scoring does not read it.
 
 A folder can hold the download beside any files participants sent by hand:
 `read_form_responses()` reads every `.csv` file in it, file by file in path

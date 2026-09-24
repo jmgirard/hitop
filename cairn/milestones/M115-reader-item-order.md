@@ -1,6 +1,6 @@
 # M115: `read_form_responses()` accepts an `item_order` column recording the order a participant saw
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M113
 - **Driving RR:** —
@@ -34,7 +34,7 @@ Let the reader accept an optional lead column, `item_order`, that the page will 
 ## Tasks
 
 - [x] T1: The lead-column check at `R/read_form_responses.R:187` learns the optional column, the cell check of AC2 runs beside the item-value checks, and the AC1 and AC2 tests land in `test-read_form_responses.R`.
-- [ ] T2: Roxygen (the `@details` paragraph at `R/read_form_responses.R:14`), the article sentence, the NEWS entry, `document()`, `test()`, `check_pkgdown()`, `check()`.
+- [x] T2: Roxygen (the `@details` paragraph at `R/read_form_responses.R:14`), the article sentence, the NEWS entry, `document()`, `test()`, `check_pkgdown()`, `check()`.
 
 ## Work log
 
@@ -42,6 +42,9 @@ Let the reader accept an optional lead column, `item_order`, that the page will 
 - 2026-09-23: criteria audit ran in full mode on a fresh [O] reader (shared with M114 and M116): six findings on this file, all fixed in the wording. The column is read wherever it sits after `submitted`. The cell grammar is stated and probed on each format axis. The refusal is unclassed and names the data row. The mismatch check leaves `item_order` out. The test command names the Imports.
 - 2026-09-23: plan gate chose recording the shown order in a column, reader first, over recording nothing, because order-effect analyses need it and a file the reader refuses is worse than none; falsified by no researcher ever reading the column.
 - 2026-09-24: T1 done. The question gate was skipped because the plan fixes the column position, the cell grammar and the refusal shape. `read_form_response_file()` takes `item_order` out of the item columns and checks each cell against the grammar and the file's item numbers. If the column is absent, the sixth column is NA. Nine tests cover the two positions, the absent column, the mixed directory, the multi-row file, the eight bad cells, the blank cell and the row number. One position read in `test-layout.R` moved from 5 to 6 columns.
+- 2026-09-24: T2 done. The help page's details and return sections, one sentence in the online-collection article, and a NEWS entry under "New features" describe the column. `document()` makes no diff, `check_pkgdown()` is clean, `test()` is clean, and `check()` gives 0 errors, 0 warnings and 0 notes. The two scoring vignettes still say a file has five lead columns, which stays true until the page writes the sixth in M116.
+- 2026-09-24: claim audit: 22 claims read, 0 corrected — R/read_form_responses.R, NEWS.md, vignettes/articles/online-collection.Rmd, tests/testthat/test-read_form_responses.R. The reader noted that the help page did not say a leading zero or a stray space is refused, and one phrase was added after the audit.
+- 2026-09-24: status set to review.
 
 ## Decisions
 
