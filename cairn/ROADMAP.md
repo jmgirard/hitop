@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-24 (64th pass, M118 done): row archived, M115 pruned, two findings absorbed into the Prolific row, one lesson swapped in at the cap. validate green._
+_Last hygiene check: 2026-09-24 (65th pass, M119 done): row archived, M116 pruned, the M078 lesson swapped for M119's at the byte cap. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M116 | A study link can ask hitop-form to show each participant the items in a fresh random order | done | M114, M115 | normal | milestones/archive/M116-form-random-order.md |
 | M117 | `read_form_responses()` accepts the two Prolific columns a study link can ask hitop-form to write | done | — | normal | milestones/archive/M117-reader-prolific-columns.md |
 | M118 | A study link can ask hitop-form to take the participant's Prolific ID and send them to a completion URL | done | M117 | normal | milestones/archive/M118-form-prolific.md |
-| M119 | The Prolific route of hitop-form gives each outcome its own end: a second completion address for a saved file, a sent screen before the redirect, and a doubled parameter read as its filled value | review | — | normal | milestones/M119-form-prolific-outcomes.md |
+| M119 | The Prolific route of hitop-form gives each outcome its own end: a second completion address for a saved file, a sent screen before the redirect, and a doubled parameter read as its filled value | done | — | normal | milestones/archive/M119-form-prolific-outcomes.md |
 
 ## Candidates
 
