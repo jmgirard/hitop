@@ -1,13 +1,13 @@
 # M116: A study link can ask hitop-form to show each participant the items in a fresh random order
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M114, M115
 - **Driving RR:** —
 - **Principles touched:** IP1, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the participant-facing form page and its link builder
-- **Branch/PR:** —
+- **Branch/PR:** `m116-form-random-order` (hitop); `m116-form-random-order` in jmgirard/hitop-form
 
 ## Goal
 
@@ -37,7 +37,7 @@ A link field `shuffle: true` makes `jmgirard/hitop-form` draw a new random order
 
 ## Tasks
 
-- [ ] T1: `parseLink()` (`form.js:60`) reads `shuffle`; `planItems()` (`form.js:344`) returns the canonical list and a shown permutation; the render and the shuffle; the render tests of AC1.
+- [x] T1: `parseLink()` (`form.js:60`) reads `shuffle`; `planItems()` (`form.js:344`) returns the canonical list and a shown permutation; the render and the shuffle; the render tests of AC1.
 - [ ] T2: `buildCsv()` and `buildRow()` (`form.js:360`, `form.js:389`) write `item_order` and the canonical columns; the save and send tests of AC2.
 - [ ] T3: The `link.html` checkbox and hint, `storeSql()` (`form.js:304`), the two SQL fixtures, the link and SQL tests of AC3 and AC4.
 - [ ] T4: The grep sweep of AC5 across both repos, the README sections, the fixtures README, the captured fixture and its test in hitop on this milestone's branch.
@@ -52,6 +52,8 @@ A link field `shuffle: true` makes `jmgirard/hitop-form` draw a new random order
 - 2026-09-23: plan chose ignoring a module's `itemOrder` under `shuffle` over refusing the combination, because every builder-saved descriptor of a shuffled Word form carries one; falsified by a researcher surprised that the printed order was not followed.
 - 2026-09-23: plan dropped the drafted start-screen sentence about random order, so no participant-facing text changes and IP1's text clause is not touched.
 - 2026-09-23: IP1 sign-off: Jeff signed off at the plan gate on shuffling the display order, with the stored columns labelled by the official item number and the participant's display number saved in `item_order` (D-070). The escalation to a review brief offered at the gate was not taken.
+- 2026-09-24: implement started. Branches `m116-form-random-order` in both repos. Question gate skipped: the field name, the column shape, the module rule and the fixture route are fixed by the criteria and D-070.
+- 2026-09-24: T1 done in hitop-form. `parseLink()` refuses a `shuffle` outside the two booleans by name. `planItems(exp, module, shuffle)` returns `{ items, shown }`; `shuffleItems()` is a Fisher–Yates over `crypto.getRandomValues` with rejection above the largest multiple of the range. Four render tests (R7 to R9) and three refusal tests (G9). Plants: a no-op shuffle reds R7 and R8; an accept-anything field reds the three G9 tests. Suite 123 to 130, all green.
 
 ## Decisions
 
