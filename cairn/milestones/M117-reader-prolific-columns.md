@@ -53,6 +53,7 @@ Let the reader accept two optional lead columns, `prolific_study` and `prolific_
 - 2026-09-23: T4 done. `document()` no diff, `check_pkgdown()` no problems, `check()` 0 errors, 0 warnings, 0 notes.
 - 2026-09-23: claim audit: 22 claims read, 1 corrected — NEWS.md, R/read_form_responses.R, man/read_form_responses.Rd, tests/testthat/test-read_form_responses.R ([O] fresh reader, agent af9d6196). The NEWS sentence credited the help page with selecting item columns by name; its example only reads and prints. Reworded to name the articles and the vignettes; the re-read returned HOLDS.
 - 2026-09-23: all tasks done, status set to review.
+- 2026-09-24: step-7 approval: m117-reader-prolific-columns approved for merge.
 
 ## Decisions
 
