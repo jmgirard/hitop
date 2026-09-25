@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M127 | The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer | planned | — | normal | milestones/M127-builder-online-card-loose-ends.md |
+| M127 | The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer | review | — | normal | milestones/M127-builder-online-card-loose-ends.md |
 | M125 | hitop-form's `link.html` fills its fields from a study link's `c` parameter, refuses one it cannot read by name, and links the module builder and the tutorial from a three-step list | done | — | normal | milestones/archive/M125-link-builder-prefill.md |
 | M126 | The module builder's format step gains an "Online form" card that saves the `write_module()` scoring file and links to the link builder with the module filled in | done | M125 | normal | milestones/archive/M126-builder-online-card.md |
 | M124 | The instrument download pages keep three cards per row and gain an online-form strip holding the JSON export, the Instruments menu reaches the link builder, and the overview page lists the steps from instrument to scores | done | M125 | normal | milestones/archive/M124-site-online-strip.md |
