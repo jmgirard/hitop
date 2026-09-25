@@ -153,21 +153,34 @@ download_cards <- function(instrument, cards) {
   )
 }
 
-# Render the online-form strip under the card row: a title, two sentences, a
-# button to the link builder with the instrument filled in, the JSON export
-# (a manifest-backed download button, badge included) and a quiet link to
-# the online-collection article. `stem` is the page's file stem
-# (`hitopsr`, `pid5sf`, ...) and `json_link` a dl_link() written literally
-# in the page so the href lock in tests/testthat/test-artifacts.R sees it.
+# Render the online-form strip under the card row: a labelled section with
+# a title, a short paragraph, a button to the link builder with the
+# instrument filled in, the JSON export (a manifest-backed download button,
+# badge included) and a quiet link to the online-collection article.
+# `stem` is the page's file stem (`hitopsr`, `pid5sf`, ...) and `json_link`
+# a dl_link() written literally in the page so the href lock in
+# tests/testthat/test-artifacts.R sees it; the two must name the same
+# instrument, or the page would pair one instrument's builder link with
+# another's export.
 online_strip <- function(instrument, stem, json_link) {
+  json_file <- basename(json_link$href)
+  if (!identical(json_file, paste0(stem, ".json"))) {
+    stop(
+      "online_strip(): stem '", stem, "' does not match the JSON link '",
+      json_file, "'"
+    )
+  }
   render_button <- .button_renderer(instrument)
   .emit_html(
-    '<div class="hitop-online">\n',
-    '<h5 class="hitop-online-title">\U1F310 Online Form</h5>\n',
-    '<p class="text-muted">Collect responses in a browser: make a study ',
-    "link, send it to participants, and read the file or table they fill ",
-    "with <code>read_form_responses()</code>. The JSON export is the file ",
-    "that page reads.</p>\n",
+    '<section class="hitop-online" aria-labelledby="hitop-online-title">\n',
+    '<h4 class="h5 hitop-online-title" id="hitop-online-title">',
+    '<span aria-hidden="true">🌐</span> Online Form</h4>\n',
+    '<p class="text-muted">Collect responses in a browser with the ',
+    "hitop-form page. Make a study link, send it to participants, and read ",
+    "their responses into R with <code>read_form_responses()</code>. The ",
+    "JSON export holds this instrument's items, response options and ",
+    "instructions. The form page reads it, and so can a web form of your ",
+    "own.</p>\n",
     '<div class="hitop-online-actions">\n',
     sprintf(
       '<a href="%s" class="btn btn-primary">Make a study link</a>\n',
@@ -176,7 +189,7 @@ online_strip <- function(instrument, stem, json_link) {
     render_button(json_link), "\n",
     '<a href="../articles/online-collection.html" class="hitop-ref-link small">',
     "How online collection works</a>\n",
-    "</div>\n</div>"
+    "</div>\n</section>"
   )
 }
 

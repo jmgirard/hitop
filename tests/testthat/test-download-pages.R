@@ -71,11 +71,10 @@ test_that("each download page renders exactly three cards in its row", {
 test_that("the five form-backed pages render one online strip and the HSUM page none", {
   skip_if(!dir.exists(articles_dir()), "vignettes/articles not available")
   skip_if_not_installed("knitr")
-  skip_if_not_installed("jsonlite")
   for (page in download_pages()) {
     stem <- page_stem(page)
     fences <- render_downloads_chunk(page)
-    is_strip <- startsWith(fences, '<div class="hitop-online">')
+    is_strip <- startsWith(fences, '<section class="hitop-online"')
     if (stem == "hitophsum") {
       expect_equal(sum(is_strip), 0, info = basename(page))
       expect_no_match(paste(fences, collapse = "\n"), "hitop-online", fixed = TRUE)
@@ -117,6 +116,23 @@ test_that("the five form-backed pages render one online strip and the HSUM page 
     expect_match(json, sprintf('download="%s.json"', stem), fixed = TRUE)
     expect_match(json, 'class="hitop-build-badge"', fixed = TRUE)
   }
+})
+
+test_that("online_strip() refuses a stem that does not match its JSON link", {
+  skip_if(!dir.exists(articles_dir()), "vignettes/articles not available")
+  env <- new.env()
+  sys.source(file.path(articles_dir(), "_download-helpers.R"), envir = env)
+  expect_error(
+    utils::capture.output(env$online_strip(
+      "PID-5-SF", "pid5", env$dl_link("Label", "../downloads/pid5sf.json")
+    )),
+    "does not match the JSON link"
+  )
+  expect_no_error(
+    utils::capture.output(env$online_strip(
+      "PID-5-SF", "pid5sf", env$dl_link("Label", "../downloads/pid5sf.json")
+    ))
+  )
 })
 
 test_that("each page's rendered chunk links every file in its manifest rows and no other", {
@@ -181,8 +197,20 @@ test_that("the overview page lists the four steps from instrument to scores with
   hrefs <- hrefs[!grepl("^https?://", hrefs)]
   expect_gt(length(hrefs), 0)
   root <- testthat::test_path("..", "..")
+  # pandoc's auto identifier for a heading: keep letters, digits, spaces,
+  # underscores, hyphens and periods; spaces to hyphens; lowercase; drop
+  # everything before the first letter ("2. Make the study link" gives
+  # "make-the-study-link").
+  heading_ids <- function(rmd) {
+    lines <- readLines(rmd, warn = FALSE)
+    h <- sub("^#+\\s+", "", grep("^#+\\s", lines, value = TRUE))
+    h <- sub("\\s*\\{[^}]*\\}\\s*$", "", h)
+    id <- tolower(gsub("[^[:alnum:] _.-]", "", h))
+    sub("^[^[:alpha:]]+", "", gsub(" ", "-", id))
+  }
   for (href in hrefs) {
     path <- sub("#.*$", "", href)
+    fragment <- if (grepl("#", href, fixed = TRUE)) sub("^[^#]*#", "", href) else ""
     name <- sub("\\.html$", "", basename(path))
     candidates <- if (grepl("^\\.\\./reference/", path)) {
       file.path(root, "man", paste0(name, ".Rd"))
@@ -194,6 +222,12 @@ test_that("the overview page lists the four steps from instrument to scores with
     } else {
       character(0)
     }
-    expect_true(any(file.exists(candidates)), info = href)
+    found <- candidates[file.exists(candidates)]
+    expect_true(length(found) > 0, info = href)
+    # A fragment must name a heading of the target article, so a renamed
+    # heading breaks this test rather than the link alone.
+    if (nzchar(fragment) && length(found) > 0 && grepl("\\.Rmd$", found[1])) {
+      expect_true(fragment %in% heading_ids(found[1]), info = href)
+    }
   }
 })
