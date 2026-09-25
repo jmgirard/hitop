@@ -133,13 +133,25 @@ test_that("every rendered download button carries a download attribute", {
     )
     # One regex over the whole tag: two independent substring matches would
     # pass even if the attribute landed on a different element.
-    expect_match(
-      html,
-      paste0(
-        '<a href="', href, '"[^>]*download="', m$file[i], '"[^>]*>'
-      ),
-      info = m$file[i]
+    tag <- paste0(
+      '<a href="', href, '"[^>]*download="', m$file[i], '"[^>]*>'
     )
+    expect_match(html, tag, info = m$file[i])
+    # The JSON export moved out of the card row into the online-form strip,
+    # which renders its download button through the same path.
+    if (m$format[i] == "json") {
+      strip <- paste(
+        utils::capture.output(
+          helpers$online_strip(
+            m$instrument[i],
+            sub("\\.json$", "", m$file[i]),
+            helpers$dl_link("Label", href)
+          )
+        ),
+        collapse = "\n"
+      )
+      expect_match(strip, tag, info = m$file[i])
+    }
   }
 })
 
