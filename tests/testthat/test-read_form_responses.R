@@ -134,8 +134,10 @@ test_that("paths sort in the C locale, so a capital letter sorts first", {
 
 test_that("item columns keep the first file's order", {
   dir <- withr::local_tempdir()
-  form_file(dir, "p001.csv", c(hitopsr_233 = 4L, hitopsr_194 = 3L))
-  form_file(dir, "p002.csv", c(hitopsr_233 = 1L, hitopsr_194 = 2L))
+  form_file(dir, "p001.csv", c(hitopsr_233 = 4L, hitopsr_194 = 3L),
+            instrument = "hitopsr")
+  form_file(dir, "p002.csv", c(hitopsr_233 = 1L, hitopsr_194 = 2L),
+            instrument = "hitopsr")
 
   out <- read_form_responses(dir)
   expect_identical(names(out)[-seq_len(8L)], c("hitopsr_233", "hitopsr_194"))
@@ -1531,6 +1533,101 @@ test_that("a two-stem file with an item_order of 1 1 is refused for the stems, n
   msg <- refusal(dir, "stemorder.csv", row, header = header)
   expect_match(msg, "more than one stem", fixed = TRUE)
   expect_no_match(msg, "item_order", fixed = TRUE)
+})
+
+# ---- The instrument cell against the item columns' stem ---------------------
+#
+# A file with item columns names one instrument in its `instrument` cells and
+# another in its item columns' stem only by a hand edit. Any response row
+# whose cell differs from the stem is refused naming the row, the cell and the
+# stem, after the stem check and before the value checks.
+
+# Read `path`, expecting the instrument refusal naming the file; returns the
+# message's bullets.
+instrument_refusal <- function(path) {
+  cnd <- rlang::catch_cnd(read_form_responses(path), "error")
+  expect_s3_class(cnd, "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, "instrument", fixed = TRUE)
+  expect_match(msg, "counted from the first row after the header", fixed = TRUE)
+  cli::ansi_strip(cnd$body)
+}
+
+# The good row with its `instrument` cell (the third field) replaced.
+with_instrument <- function(row, instrument) {
+  fields <- strsplit(row, ",", fixed = TRUE)[[1L]]
+  fields[3L] <- instrument
+  paste(fields, collapse = ",")
+}
+
+test_that("an instrument cell that differs from the stem is refused naming the row, the cell and the stem", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "other.csv"),
+                  c(two_header, with_instrument(good_row, "pid5bf")))
+  body <- instrument_refusal(f)
+  rows <- body[grepl("^Response row", body)]
+  expect_identical(rows, "Response row 1: instrument \"pid5bf\", item columns \"hitopbr\".")
+})
+
+test_that("one differing row of three is refused naming that row only", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "second.csv"), c(
+    two_header, good_row, with_instrument(good_row, "hitopsr"), good_row
+  ))
+  body <- instrument_refusal(f)
+  rows <- body[grepl("^Response row", body)]
+  expect_identical(rows, "Response row 2: instrument \"hitopsr\", item columns \"hitopbr\".")
+})
+
+test_that("a blank instrument cell differs from the stem", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "blank.csv"),
+                  c(two_header, with_instrument(good_row, "")))
+  body <- instrument_refusal(f)
+  rows <- body[grepl("^Response row", body)]
+  expect_identical(rows, "Response row 1: instrument \"\", item columns \"hitopbr\".")
+})
+
+test_that("an instrument cell with surrounding spaces differs from the stem", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "padded.csv"),
+                  c(two_header, with_instrument(good_row, " hitopbr ")))
+  body <- instrument_refusal(f)
+  rows <- body[grepl("^Response row", body)]
+  expect_identical(rows, "Response row 1: instrument \" hitopbr \", item columns \"hitopbr\".")
+})
+
+test_that("a differing instrument cell beside a non-whole item value is refused for the cell, not the value", {
+  dir <- withr::local_tempdir()
+  row <- with_instrument(sub(",1$", ",yes", good_row), "pid5bf")
+  f <- write_rows(file.path(dir, "both.csv"), c(two_header, row))
+  body <- instrument_refusal(f)
+  expect_no_match(paste(body, collapse = "\n"), "whole number", fixed = TRUE)
+  expect_no_match(paste(body, collapse = "\n"), "yes", fixed = TRUE)
+})
+
+test_that("a file with no item columns reads whatever its instrument cell holds", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "noitems.csv"), c(
+    paste(lead, collapse = ","),
+    "s,p1,anything,2026-09-20,2026-09-20T21:20:36Z"
+  ))
+  expect_no_condition(out <- read_form_responses(f))
+  expect_identical(out$instrument, "anything")
+  expect_identical(ncol(out), 8L)
+})
+
+test_that("every fixture file reads with no condition, the module and full PID-5 files among them", {
+  files <- list.files(fixture(), pattern = "[.]csv$", full.names = TRUE)
+  expect_true("responses-module-shuffled.csv" %in% basename(files))
+  expect_true("responses-pid5.csv" %in% basename(files))
+  for (f in files) {
+    expect_no_condition(out <- read_form_responses(f))
+    expect_gte(nrow(out), 1L)
+  }
 })
 
 # ---- Lines the file cannot hold: a byte that is not UTF-8 ------------------

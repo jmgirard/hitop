@@ -447,6 +447,27 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     )
   }
 
+  # The page writes the stem into every `instrument` cell, so a cell that
+  # differs from it, blank or padded included, is a hand edit that would
+  # leave the column disagreeing with the items beside it.
+  if (length(stems) == 1L) {
+    differs <- raw$instrument != stems
+    if (any(differs)) {
+      found <- vapply(which(differs), function(r) {
+        cell <- raw$instrument[[r]]
+        cli::format_inline("Response row {r}: instrument {.val {cell}}, item columns {.val {stems}}.")
+      }, character(1L))
+      cli::cli_abort(
+        c(
+          "{.file {file}} holds an {.field instrument} cell that differs from the item columns' stem.",
+          form_bullets(found),
+          "i" = "The row is counted from the first row after the header."
+        ),
+        call = call
+      )
+    }
+  }
+
   values <- lapply(raw[item_cols], blank_to_na)
   whole <- lapply(values, function(v) is.na(v) | grepl("^-?[0-9]+$", v))
   if (!all(unlist(whole))) {
