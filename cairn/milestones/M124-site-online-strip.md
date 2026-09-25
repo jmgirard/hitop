@@ -37,8 +37,8 @@ Return each download page's card row to three cards, give the online route a str
 
 ## Tasks
 
-- [ ] T1: In `_download-helpers.R` add `online_strip(instrument, stem, json_link)` rendering the `.hitop-online` element with the three anchors (the JSON one through the existing `render_button` path, `_download-helpers.R:64-79`), a base64url encoder over `jsonlite::base64_enc()`, and the strip's CSS in `pkgdown/extra.css`.
-- [ ] T2: Edit the five pages (drop the JSON `dl_card()`, call the strip with a literal `dl_link()`), the `_pkgdown.yml` entry after `_pkgdown.yml:38`, the `overview.Rmd` step list with its links, and the `online-collection.Rmd` sentence.
+- [x] T1: In `_download-helpers.R` add `online_strip(instrument, stem, json_link)` rendering the `.hitop-online` element with the three anchors (the JSON one through the existing `render_button` path, `_download-helpers.R:64-79`), a base64url encoder over `jsonlite::base64_enc()`, and the strip's CSS in `pkgdown/extra.css`.
+- [x] T2: Edit the five pages (drop the JSON `dl_card()`, call the strip with a literal `dl_link()`), the `_pkgdown.yml` entry after `_pkgdown.yml:38`, the `overview.Rmd` step list with its links, and the `online-collection.Rmd` sentence.
 - [ ] T3: Tests for AC1 to AC4 in a new `tests/testthat/test-download-pages.R`, and extend the download-attribute test in `test-artifacts.R` to the strip renderer.
 - [ ] T4: NEWS entry; `build_site()`, `check_pkgdown()`, `check()`; open the PR and read its CI.
 
@@ -52,6 +52,8 @@ Return each download page's card row to three cards, give the online route a str
 - 2026-09-25: /milestone-implement started; branch `m124-site-online-strip` cut from pushed main. hitop-form PR #11 (the `c` reader the strip's link relies on) merged 2026-09-25.
 - 2026-09-25: question gate: the strip carries a title, one sentence and three links (over title and links alone); the AC4 test reads `_pkgdown.yml` with {yaml}, added to Suggests (over a line-based parse; D-074); the overview step list sits below the cards under a heading (over above them). Step 1 links nothing, step 2 the two route tutorials, step 3 the online-collection sending section, step 4 `read_form_responses()` and the scoring tutorials.
 - 2026-09-25: T1 code in place, checkpointed while the full suite still ran (the tick follows its result). `.button_renderer(instrument)` hoisted out of `download_cards()` so `online_strip()` renders the JSON button on the same path; `.base64url()` over `jsonlite::base64_enc()` (newlines stripped, `+/` to `-_`, padding dropped) checked equal to `encodeConfig()` in node for all five stems; `.hitop-online` CSS.
+- 2026-09-25: T1 ticked on the full suite's clean run (FAIL 0, 15 pre-existing merge-base skips).
+- 2026-09-25: T2 done. Five pages call `online_strip()` after `download_cards()` in the same `downloads` chunk with a literal `dl_link()`; menu entry; overview `<ol class="hitop-steps">` under a "From instrument to scores" heading, step 3 targeting the tutorial's `make-the-study-link` id read from the built site; the tutorial sentence names the download-page button and a `c` carrying a module rather than the builder card, which M126 has not built yet. A first plant run restored files with `git checkout` and wiped four uncommitted T2 edits, which were re-applied; plants were re-run with copy-based restores.
 
 ## Decisions
 

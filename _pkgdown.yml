@@ -38,6 +38,8 @@ navbar:
       - text: "---"
       - text: "Build a HiTOP-SR Module"
         href: https://jmgirard.github.io/hitop-builder/
+      - text: "Make a study link"
+        href: https://jmgirard.github.io/hitop-form/link.html
     articles:
       text: "Tutorials"
       menu:
