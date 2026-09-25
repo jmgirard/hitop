@@ -1,13 +1,13 @@
 # M125: hitop-form's `link.html` fills its fields from a study link's `c` parameter, so a link can be edited and another page can hand a module over
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — a researcher-facing page on the deployed hitop-form site
-- **Branch/PR:** —
+- **Branch/PR:** `m125-link-builder-prefill` (hitop, tracking and NEWS; hitop-form, the code)
 
 ## Goal
 
@@ -50,6 +50,7 @@ Make hitop-form's link builder read the `?c=` parameter the form page already re
 - 2026-09-24: criteria audit ran in full mode (fresh [O] reader, user-facing tier) over the three drafts; 36 findings, 31 repaired before writing (store kinds, participant beside Prolific, pre-normalised values, hidden kind groups, checkbox state, unknown instrument, seven malformed loads, exact list phrases, the network window, the README's tense), five accepted as test-run gates.
 - 2026-09-24: plan gate chose prefilled hand-off links over merging the link builder into the module builder because every link build would then wait on the builder's webR boot and the five-instrument page would collapse to the HiTOP-SR; falsified by a researcher report that two pages with hand-offs still read as disjointed.
 - 2026-09-24: plan gate chose prefill over cross-links with no parameter reading because the pasted descriptor is the step researchers lose; falsified by a report that the prefilled link fails where the paste worked.
+- 2026-09-24: implement started; hitop branch `m125-link-builder-prefill` cut from main (equal to origin/main at f42a8ca4), hitop-form branch of the same name cut from its main (equal to origin/main at e97aa35, hitop-form #10 merged).
 
 ## Decisions
 
