@@ -39,10 +39,10 @@ Make hitop-form's link builder read the `?c=` parameter the form page already re
 
 ## Tasks
 
-- [ ] T1: In `link.html` (`link.html:151-160`, the module script) read `c` from `location.search` on load, decode it with `decodeConfig()` (`form.js:62`), fill each control, call the kind-group toggle (`link.html:170-175`) after setting the store kind, and write the AC3 refusals into `#err`. The instrument check reads the select's own options.
+- [x] T1: In `link.html` (`link.html:151-160`, the module script) read `c` from `location.search` on load, decode it with `decodeConfig()` (`form.js:62`), fill each control, call the kind-group toggle (`link.html:170-175`) after setting the store kind, and write the AC3 refusals into `#err`. The instrument check reads the select's own options.
 - [ ] T2: Add the three-step list above the form, the builder link in the module hint (`link.html:84-87`), the tutorial link, and an up-nav link to the package site in the builder's shape (`hitop-builder/index.html:437-440`).
-- [ ] T3: Tests: the AC1 round trips, the AC2 comparisons against a no-`c` load, the seven AC3 loads, the AC4 hrefs and order in `tests/link.spec.js`, and the AC5 request window in `tests/network.spec.js`.
-- [ ] T4: The README paragraph; run the suite; open the PR and read its CI.
+- [ ] T3: Tests: the AC1 round trips, the AC2 comparisons against a no-`c` load, the seven AC3 loads, the AC4 hrefs and order in `tests/link.spec.js`, and the AC5 request window in `tests/network.spec.js`. Written red before T1 and T2 land; this task plants a defect against each new assertion class and runs the full suite.
+- [ ] T4: The README paragraph; run the suite; push the hitop-form branch and read its push-triggered test run (the PR opens at review).
 
 ## Work log
 
@@ -51,6 +51,8 @@ Make hitop-form's link builder read the `?c=` parameter the form page already re
 - 2026-09-24: plan gate chose prefilled hand-off links over merging the link builder into the module builder because every link build would then wait on the builder's webR boot and the five-instrument page would collapse to the HiTOP-SR; falsified by a researcher report that two pages with hand-offs still read as disjointed.
 - 2026-09-24: plan gate chose prefill over cross-links with no parameter reading because the pasted descriptor is the step researchers lose; falsified by a report that the prefilled link fails where the paste worked.
 - 2026-09-24: implement started; hitop branch `m125-link-builder-prefill` cut from main (equal to origin/main at f42a8ca4), hitop-form branch of the same name cut from its main (equal to origin/main at e97aa35, hitop-form #10 merged).
+- 2026-09-24: question gate: a readable `c` whose other field has the wrong type skips that field and fills the rest (over refusing the whole `c` through `parseLink()`, which would add a fourth refusal); the three messages "The link's c parameter could not be read." / "does not hold a form." / "names an instrument this page does not offer: <value>.", each followed by "Fill in the form below to make a new link."; T4 pushes the hitop-form branch and reads its push-triggered run, the PR opening at review (minor amendment to T4's text). Minor amendment: the tests are written red before T1 and T2, T3 holds the plants and the full run.
+- 2026-09-24: T1 (hitop-form fe1d39d): `prefill()` in the module script, run before `showKind()`. Tests L16–L18 and N8 red on the unchanged page (11 failed, the no-`c` load's empty `#err` passing), 13 passed after; the three messages read off the page match the gate's wording. L19 stays red until T2.
 
 ## Decisions
 
