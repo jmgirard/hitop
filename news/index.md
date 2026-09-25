@@ -4,6 +4,17 @@
 
 ### New features
 
+- **The hitop-form link builder fills its fields from a study link.**
+  Opening `link.html` with a study link’s `c` parameter fills the
+  builder’s fields from the link, so a link can be edited and made
+  again, and a page can hand a module over the same way with a `c` that
+  carries only the instrument and the module. A `c` the page cannot
+  read, one that does not hold a form, or one naming an instrument the
+  builder does not offer is refused in a message naming the `c`
+  parameter, and no field is filled from it. Above the form, three steps
+  name the route from instrument to link, with links to the Module
+  Builder and the online-collection article.
+
 - **The hitop-form page confirms each press of “Save the file”.** A
   press of the button on a saved-file screen shows “The file was saved
   again.” under the button, in a `role="status"` region, which screen
