@@ -57,19 +57,26 @@
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
 #'   need separate calls. A file that does not look like one the page saved
-#'   is an error naming the file: no header row (a zero-byte file, blank
+#'   is an error naming the file: a line holding a NUL byte or a byte
+#'   sequence that is not UTF-8, a line outside a quoted cell made only of
+#'   spaces and tabs, no header row (a zero-byte file, blank
 #'   lines only, a byte-order mark only), first columns other than the five
 #'   the page writes first, a column that appears twice, a header with no
 #'   response row, a response row holding fewer or more fields than the
 #'   header, an item column whose name is not a stem of lower-case letters
 #'   and digits, an underscore and the item number (`hitopbr_01`, not `foo`
 #'   or `Hitopbr_01`), item columns of more than one stem (`hitopbr_01`
-#'   beside `pid5bf_01`), an item value that is not a whole number or is
-#'   outside R's integer range, or a date that does not parse. An error on a
-#'   row or a value names the response rows at fault, counted from the first
-#'   row after the header. The field count of a row reads `#` as data and a
-#'   quoted cell holding a line break as one cell, as the read does. A
-#'   `submitted` stamp may carry fractional seconds.
+#'   beside `pid5bf_01`), an `instrument` cell that differs from the item
+#'   columns' stem (`pid5bf` beside `hitopbr_01`), an item value that is not
+#'   a whole number or is outside R's integer range, or a date that does not
+#'   parse. An error on a line names the lines at fault, counted from the
+#'   file's first line. An error on a row names the response rows at fault,
+#'   counted from the first row after the header. An error on an item value
+#'   names each cell at fault as its response row, its column and the value
+#'   as written, the first five cells and a count of the rest. The field
+#'   count of a row reads `#` as data and a quoted cell holding a line break
+#'   as one cell, as the read does. A `submitted` stamp may carry fractional
+#'   seconds.
 #'
 #'   **Errors.** Files whose item columns differ from the first file's in
 #'   name, in count or in order stop the read under the condition class
