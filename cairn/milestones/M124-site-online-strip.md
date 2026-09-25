@@ -59,6 +59,8 @@ Return each download page's card row to three cards, give the online route a str
 - 2026-09-25: T3 ticked on the full suite's clean run (FAIL 0, the same 15 merge-base skips). T4 done: NEWS entry under New features; `check_pkgdown()` no problems; `build_site()` finished, the six download pages and the overview rendered (built pages hold 3 cards each, one strip on five and none on HSUM, the overview `<ol>` with 4 items, the tutorial's `make-the-study-link` id present); `check()` 0 errors, 0 warnings, 0 notes. Browser pane on the built PID-5-SF page at 1280 px in both themes: three cards in one row, the bordered strip under it with the primary button, the badged JSON button and the quiet link; at 375 px the strip measures 351 px wide. A stale cached `extra.css` in the pane first hid the strip's border; a cache-bypassed load showed it.
 - 2026-09-25: claim audit: 50 claims read, 2 corrected — vignettes/articles/_download-helpers.R (the strip comment said one sentence; the paragraph has two), vignettes/articles/overview.Rmd (step 2 offered the online form on every page; the HSUM page has none). Fresh [O] reader; each correction re-read once by the same reader.
 - 2026-09-25: after the two corrections, `test-download-pages.R` (89), `test-artifacts.R` (137) and `test-overview.R` (9) pass and the overview article rebuilds with the corrected step. Status set to review; no PR yet.
+- 2026-09-25: /milestone-review: AC1 to AC5 verified with fresh evidence, three-lens review (0, 0, 15 findings), ten fixed at the gate and five rejected, re-verified clean.
+- 2026-09-25: step-7 approval: m124-site-online-strip approved for merge
 
 ## Decisions
 
