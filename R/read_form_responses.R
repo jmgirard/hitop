@@ -291,6 +291,24 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   # header.
   lines <- form_file_lines(file, call = call)
   counts <- count_form_fields(lines)
+
+  # A line of spaces and tabs alone, outside a quoted cell, is a hand edit
+  # the page never writes, and `read.csv()` would read it as a row of one
+  # blank field. A line inside a quoted cell counts NA, so it is left alone.
+  blank <- grepl("^[ \t]+$", lines) & !is.na(counts)
+  if (any(blank)) {
+    found <- vapply(which(blank), function(n) {
+      cli::format_inline("Line {n}.")
+    }, character(1L))
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds a line made only of spaces and tabs.",
+        stats::setNames(found, rep("x", length(found))),
+        "i" = "The line is counted from the file's first line."
+      ),
+      call = call
+    )
+  }
   records <- counts[!is.na(counts) & counts != 0L]
   if (length(records) == 0L) {
     cli::cli_abort(

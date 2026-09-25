@@ -1541,6 +1541,110 @@ test_that("a UTF-16LE file is refused, naming its first line", {
   expect_true(1L %in% named_lines(body))
 })
 
+# ---- Lines the file cannot hold: only spaces and tabs ----------------------
+#
+# A line outside a quoted cell made only of spaces and tabs is refused naming
+# each such line, counted from the file's first line, after the byte check
+# and before the field count. The files below are written by `write_rows()`
+# with CRLF row endings unless the test says otherwise.
+
+# Read `path`, expecting the whitespace refusal naming the file; returns the
+# message's bullets.
+whitespace_refusal <- function(path) {
+  cnd <- rlang::catch_cnd(read_form_responses(path), "error")
+  expect_s3_class(cnd, "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, "only of spaces and tabs", fixed = TRUE)
+  expect_match(msg, "counted from the file's first line", fixed = TRUE)
+  cli::ansi_strip(cnd$body)
+}
+
+whitespace_lines <- list(
+  spaces = "   ",
+  tab = "\t",
+  mixed = " \t \t"
+)
+
+for (kind in names(whitespace_lines)) {
+  test_that(paste("a file of one", kind, "line is refused naming line 1"), {
+    dir <- withr::local_tempdir()
+    f <- write_rows(file.path(dir, "one.csv"), whitespace_lines[[kind]])
+    body <- whitespace_refusal(f)
+    expect_identical(named_lines(body), 1L)
+  })
+}
+
+test_that("a file of three whitespace-only lines names all three", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "three.csv"), c("  ", "\t", " \t"))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 1:3)
+})
+
+test_that("a CRLF file whose line is spaces then the row ending is refused", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "crlf.csv"), c(two_header, good_row, "  "),
+                  eol = "\r\n")
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 3L)
+})
+
+test_that("a byte-order mark followed by whitespace-only lines is refused naming them", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "bom.csv", bytes_of(
+    as.raw(c(0xEF, 0xBB, 0xBF)), "   ", crlf, "\t", crlf
+  ))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 1:2)
+})
+
+test_that("two whitespace-only lines before a valid file name lines 1 and 2, not a field count", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "before.csv"),
+                  c("   ", "\t", two_header, good_row))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 1:2)
+  expect_no_match(paste(body, collapse = "\n"), "field", fixed = TRUE)
+})
+
+test_that("a whitespace-only line after the last response row is refused naming it", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "after.csv"),
+                  c(two_header, good_row, good_row, "  "))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 4L)
+})
+
+test_that("whitespace-only lines before a header and a short row are refused as lines, not for the field count", {
+  dir <- withr::local_tempdir()
+  short <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4"
+  f <- write_rows(file.path(dir, "short.csv"), c(" ", two_header, short))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 1L)
+  expect_no_match(paste(body, collapse = "\n"), "field", fixed = TRUE)
+})
+
+test_that("a quoted study cell holding a line break, a spaces-only line and a further line break reads as one row", {
+  dir <- withr::local_tempdir()
+  broken <- "\"st\n   \nudy\",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+  f <- write_rows(file.path(dir, "quoted.csv"), c(two_header, broken))
+  expect_no_condition(out <- read_form_responses(f))
+  expect_equal(nrow(out), 1L)
+  expect_identical(out$study, "st\n   \nudy")
+  expect_identical(out$hitopbr_01, 4L)
+})
+
+test_that("an empty line before the header still reads as one row", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "empty-first.csv"), c("", two_header, good_row))
+  expect_no_condition(out <- read_form_responses(f))
+  expect_equal(nrow(out), 1L)
+  expect_identical(out$participant, "p1")
+})
+
 test_that("a participant cell holding a multibyte UTF-8 character reads intact", {
   dir <- withr::local_tempdir()
   f <- form_file(dir, "utf8.csv", two_items(), participant = "Zoë")
