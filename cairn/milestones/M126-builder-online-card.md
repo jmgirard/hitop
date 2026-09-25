@@ -1,13 +1,13 @@
 # M126: The module builder's format step gains an "Online form" card that saves the `write_module()` scoring file and links to hitop-form's link builder with the module filled in
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M125
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — a researcher-facing control on the deployed builder page
-- **Branch/PR:** —
+- **Branch/PR:** `m126-builder-online-card` in this repo (tracking) and in jmgirard/hitop-builder (code)
 
 ## Goal
 
@@ -37,8 +37,8 @@ Offer the online form beside Word, Qualtrics and REDCap in the builder's format 
 
 ## Tasks
 
-- [ ] T1: The card in the `.formats` group (`index.html:505-518`), an `online` branch in `download()` (`index.html:1276-1454`) that calls `write_module(hitop_module("hitopsr", scales = ...), path)` in webR, saves the file through `saveFile()` (`index.html:1176-1186`), and builds the anchor with a base64url encoder of `JSON.stringify({ instrument, module })`.
-- [ ] T2: The notice (`index.html:614-630`) and hint (`index.html:631-639`) copy for the online card; the anchor's lifecycle: removed on any tick change, replaced by a later save.
+- [x] T1: The card in the `.formats` group (`index.html:505-518`), an `online` branch in `download()` (`index.html:1276-1454`) that calls `write_module(hitop_module("hitopsr", scales = ...), path)` in webR, saves the file through `saveFile()` (`index.html:1176-1186`), and builds the anchor with a base64url encoder of `JSON.stringify({ instrument, module })`.
+- [x] T2: The notice (`index.html:614-630`) and hint (`index.html:631-639`) copy for the online card; the anchor's lifecycle: removed on any tick change, replaced by a later save.
 - [ ] T3: Smoke assertions for AC1 to AC3, the five plants, the ledger entries, `npm run prose`, and the `smoke.yml` step after `npm ci` (`smoke.yml:45`).
 - [ ] T4: The README sections and table; run the suite and the prose step; open the PR and read its CI.
 
@@ -49,6 +49,8 @@ Offer the online form beside Word, Qualtrics and REDCap in the builder's format 
 - 2026-09-24: AC4 re-audited after the gate's CI-step change; four repairs applied before implement (the step runs on `smoke.yml`'s existing triggers, not "every push"; the string promise is bounded to static markup and the ledger's listed writer sites; nine plants replace five, one per attribute and per file check; the local `npm run plants` run is named as the evidence).
 - 2026-09-24: plan gate chose adding the prose ledger's CI step here over promoting the whole candidate row, because widening the grep is harness work with no visitor-facing change; falsified by a new writer form on this page escaping the ledger in review.
 - 2026-09-24: plan gate chose a saved `.json` plus an anchor over opening the link builder in the click handler, because the save is asynchronous under webR and a tab opened after it is blocked as a popup; falsified by a visitor report that the anchor is missed after the save.
+- 2026-09-25: implement started; branch `m126-builder-online-card` in both repos. hitop-form PR #11 (the `c` prefill) is merged and deployed, so the anchor has a live target. Question gate: card line "A scoring file for the online form, to paste into the study link builder.", button "Download the scoring file (.json)", and the anchor inside "The scoring file is saved. [Continue to the link builder] to make the study link. It opens in a new tab with your module filled in."
+- 2026-09-25: T1 and T2 in one builder commit: `FORMATS.online`, an `online` branch in `download()` that binds the ticked scales and runs `write_module(hitop_module(...), file)` in webR, saves the bytes as `<stem>.json`, and calls `showLinkBuilder()` on the file's parsed text; the anchor is cloned from a `<template>` in the markup (static text, `target` and `rel`), so no new writer site reaches the prose ledger (18 of 18). `removeLinkBuilder()` runs from `selectionChanged()` (the checkbox listener, Select all, Clear all) and at the start of every build. `setFormat()` swaps the notice and hint pair for the online card. Checked in the browser pane against the local page: two scales save `hitopsr-online-module.json` with the same text `write_module()` writes, one save per press, the anchor's `c` decodes to `{instrument, module}` equal to the file, a tick removes it, a second save replaces it with a new href, a Word build leaves none, and the deployed `link.html` fills its instrument and module from the href. `tests/prose.mjs` skips the readme pass for a format with no `BUNDLE_WHAT` entry, which the online card is.
 
 ## Decisions
 
