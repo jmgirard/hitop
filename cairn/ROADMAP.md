@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-25 (72nd pass, M126 done): row archived, M123 pruned, one candidate row (six online-card loose ends), four rows compressed, PROFILE lists `write_module()`, no lesson (LESSONS at its byte budget). validate green._
+_Last hygiene check: 2026-09-25 (73rd pass, M127 done): row archived, M124 pruned, no candidate row, one lesson added and the M029 line pruned (LESSONS at its byte budget). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M127 | The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer | review | — | normal | milestones/M127-builder-online-card-loose-ends.md |
+| M127 | The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer | done | — | normal | milestones/archive/M127-builder-online-card-loose-ends.md |
 | M125 | hitop-form's `link.html` fills its fields from a study link's `c` parameter, refuses one it cannot read by name, and links the module builder and the tutorial from a three-step list | done | — | normal | milestones/archive/M125-link-builder-prefill.md |
 | M126 | The module builder's format step gains an "Online form" card that saves the `write_module()` scoring file and links to the link builder with the module filled in | done | M125 | normal | milestones/archive/M126-builder-online-card.md |
-| M124 | The instrument download pages keep three cards per row and gain an online-form strip holding the JSON export, the Instruments menu reaches the link builder, and the overview page lists the steps from instrument to scores | done | M125 | normal | milestones/archive/M124-site-online-strip.md |
 
 ## Candidates
 
