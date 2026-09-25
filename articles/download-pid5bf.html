@@ -54,6 +54,7 @@
     <li><a class="dropdown-item" href="../articles/download-pid5bf.html">PID-5 Brief Form (BF)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="https://jmgirard.github.io/hitop-builder/">Build a HiTOP-SR Module</a></li>
+    <li><a class="dropdown-item" href="https://jmgirard.github.io/hitop-form/link.html">Make a study link</a></li>
   </ul>
 </li>
 <li class="nav-item dropdown">
@@ -153,19 +154,16 @@ data.</p>
 </div>
 </div>
 </div>
-<div class="col-md-4 mb-4">
-<div class="card h-100 shadow-sm">
-<div class="card-body">
-<h5 class="card-title">🧩 JSON Export</h5>
-<p class="card-text text-muted">Use this machine-readable file, which a web form outside the package can read, to present the instrument's items, response options and instructions as the package's tables hold them.</p>
-<div class="d-grid gap-2">
+</div>
+<section class="hitop-online" aria-labelledby="hitop-online-title"><h4 class="h5 hitop-online-title" id="hitop-online-title">
+<span aria-hidden="true">🌐</span> Online Form</h4>
+<p class="text-muted">Collect responses in a browser with the hitop-form page. Make a study link, send it to participants, and read their responses into R with <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code>. The JSON export holds this instrument's items, response options and instructions. The form page reads it, and so can a web form of your own.</p>
+<div class="hitop-online-actions">
+<a href="https://jmgirard.github.io/hitop-form/link.html?c=eyJpbnN0cnVtZW50IjoicGlkNWJmIn0" class="btn btn-primary">Make a study link</a>
 <a href="../downloads/pid5bf.json" class="btn btn-outline-primary hitop-dl-btn" download="pid5bf.json"><span>English (JSON File)</span><span class="hitop-build-badge" title="Build date">2026-09-20</span></a>
+<a href="../articles/online-collection.html" class="hitop-ref-link small">How online collection works</a>
 </div>
-</div>
-</div>
-</div>
-</div>
-<hr class="mt-5 mb-4">
+</section><hr class="mt-5 mb-4">
 <h3 class="mb-3">Explore the R Package Features</h3>
 <p class="text-muted">The <code>hitop</code> package provides a complete toolkit for working with the PID-5-BF. If you are comfortable using R, you can leverage these functions to streamline your workflow.</p>
 

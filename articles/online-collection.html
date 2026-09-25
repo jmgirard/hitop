@@ -54,6 +54,7 @@
     <li><a class="dropdown-item" href="../articles/download-pid5bf.html">PID-5 Brief Form (BF)</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="https://jmgirard.github.io/hitop-builder/">Build a HiTOP-SR Module</a></li>
+    <li><a class="dropdown-item" href="https://jmgirard.github.io/hitop-form/link.html">Make a study link</a></li>
   </ul>
 </li>
 <li class="active nav-item dropdown">
@@ -161,12 +162,16 @@ apart.</p>
 </h2>
 <p>Open the page’s <a href="https://jmgirard.github.io/hitop-form/link.html">link builder</a>.
 Choose the instrument (and, for a HiTOP-SR module, paste the descriptor
-written by <code><a href="../reference/write_module.html">write_module()</a></code>), and name the study. Give a
-participant identifier if the link is for one person; leave it empty for
-a link shared with many, and the page asks each participant for one
-before the form starts. Under “Send responses to”, choose “A web
-address” and paste the <code>/exec</code> URL from step 1. Press “Make
-the link” and send the link to the participants.</p>
+written by <code><a href="../reference/write_module.html">write_module()</a></code>), and name the study. A link
+builder opened from a “Make a study link” button on an instrument’s
+download page arrives with that instrument chosen, and one opened with a
+<code>c</code> parameter that carries a module arrives with the
+descriptor pasted in as well. Give a participant identifier if the link
+is for one person; leave it empty for a link shared with many, and the
+page asks each participant for one before the form starts. Under “Send
+responses to”, choose “A web address” and paste the <code>/exec</code>
+URL from step 1. Press “Make the link” and send the link to the
+participants.</p>
 <p>When a participant presses Finish, the page posts their answers to
 the address as one row and waits for the script to confirm. On a
 confirmed send the page says the responses were sent to the study team,

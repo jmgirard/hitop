@@ -44,14 +44,20 @@ File)2026-07-16](https://jmgirard.github.io/hitop/downloads/pid5sf_redcap.zip)
 [Import
 Instructions](https://jmgirard.github.io/hitop/articles/import-instructions.html#redcap-zip)
 
-##### 🧩 JSON Export
+#### 🌐 Online Form
 
-Use this machine-readable file, which a web form outside the package can
-read, to present the instrument's items, response options and
-instructions as the package's tables hold them.
+Collect responses in a browser with the hitop-form page. Make a study
+link, send it to participants, and read their responses into R with
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md).
+The JSON export holds this instrument's items, response options and
+instructions. The form page reads it, and so can a web form of your own.
 
+[Make a study
+link](https://jmgirard.github.io/hitop-form/link.html?c=eyJpbnN0cnVtZW50IjoicGlkNXNmIn0)
 [English (JSON
 File)2026-09-20](https://jmgirard.github.io/hitop/downloads/pid5sf.json)
+[How online collection
+works](https://jmgirard.github.io/hitop/articles/online-collection.md)
 
 ------------------------------------------------------------------------
 

@@ -36,3 +36,26 @@ respondents answer only a small subset of items.
 
 [View & download
 →](https://jmgirard.github.io/hitop/articles/download-hitophsum.md)
+
+### From instrument to scores
+
+1.  **Choose an instrument** from the cards above. Each instrument's
+    page holds its downloads and links to the package's tools for it.
+2.  **Choose a route** on that page: a printable Word form, a [Qualtrics
+    or REDCap
+    import](https://jmgirard.github.io/hitop/articles/import-instructions.md),
+    or, on every page but the HiTOP-HSUM's, an [online
+    form](https://jmgirard.github.io/hitop/articles/online-collection.md)
+    opened from a study link.
+3.  **Collect responses**. Paper and survey-platform responses arrive as
+    your own data; an online form [sends each participant's
+    responses](https://jmgirard.github.io/hitop/articles/online-collection.html#make-the-study-link)
+    to the store named in the study link, or saves them as a file.
+4.  **Read and score** the data in R:
+    [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+    reads an online form's file or table, and the
+    [HiTOP-SR](https://jmgirard.github.io/hitop/articles/hitopsr_scoring.md),
+    [HiTOP-BR](https://jmgirard.github.io/hitop/articles/hitopbr_scoring.md)
+    and
+    [PID-5](https://jmgirard.github.io/hitop/articles/pid5_scoring.md)
+    tutorials show the scoring functions.

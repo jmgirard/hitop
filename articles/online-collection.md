@@ -59,11 +59,15 @@ Open the page’s [link
 builder](https://jmgirard.github.io/hitop-form/link.html). Choose the
 instrument (and, for a HiTOP-SR module, paste the descriptor written by
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)),
-and name the study. Give a participant identifier if the link is for one
-person; leave it empty for a link shared with many, and the page asks
-each participant for one before the form starts. Under “Send responses
-to”, choose “A web address” and paste the `/exec` URL from step 1. Press
-“Make the link” and send the link to the participants.
+and name the study. A link builder opened from a “Make a study link”
+button on an instrument’s download page arrives with that instrument
+chosen, and one opened with a `c` parameter that carries a module
+arrives with the descriptor pasted in as well. Give a participant
+identifier if the link is for one person; leave it empty for a link
+shared with many, and the page asks each participant for one before the
+form starts. Under “Send responses to”, choose “A web address” and paste
+the `/exec` URL from step 1. Press “Make the link” and send the link to
+the participants.
 
 When a participant presses Finish, the page posts their answers to the
 address as one row and waits for the script to confirm. On a confirmed

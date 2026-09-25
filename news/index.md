@@ -4,6 +4,18 @@
 
 ### New features
 
+- **The instrument download pages gain an online-form strip and keep
+  three cards per row.** The five download pages with a JSON export
+  (HiTOP-SR, HiTOP-BR, PID-5, PID-5-SF and PID-5-BF) show their Word,
+  Qualtrics and REDCap cards in one row of three. Under the row, a strip
+  titled “Online Form” holds three links. A “Make a study link” button
+  opens the hitop-form link builder with that instrument chosen. The
+  JSON export is a download button with its build badge. A text link
+  opens the online-collection article. The HiTOP-HSUM page has no JSON
+  export and no strip. The Instruments menu gains “Make a study link”
+  after “Build a HiTOP-SR Module”. The overview page lists the four
+  steps from instrument to scores under its instrument cards.
+
 - **The hitop-form link builder fills its fields from a study link.**
   Opening `link.html` with a study link’s `c` parameter fills the
   builder’s fields from the link, so a link can be edited and made
