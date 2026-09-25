@@ -59,6 +59,31 @@ body:has(.hitop-downloads) aside.col-md-3 {
   opacity: 0.85;
 }
 
+/* --- Online-form strip under the card row -------------------------------- */
+
+.hitop-online {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  background-color: var(--bs-body-bg);
+  padding: 1rem 1.25rem;
+  margin: 0 0 2rem;
+}
+
+.hitop-online-title {
+  margin-bottom: 0.5rem;
+}
+
+.hitop-online-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.hitop-online-actions > .hitop-dl-btn {
+  display: inline-flex;
+}
+
 /* --- Collapsible versions section --------------------------------------- */
 
 details.hitop-versions {

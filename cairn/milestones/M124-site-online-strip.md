@@ -49,6 +49,9 @@ Return each download page's card row to three cards, give the online route a str
 - 2026-09-24: plan gate chose an online-form strip under the cards over a quiet JSON line alone, because the online route is a fielding route like the other three and needs a home on the page; falsified by a visitor report that the strip reads as a fourth card.
 - 2026-09-24: plan gate chose the strip over four narrower cards because the three-card row is the intended design (M094's review had rejected the wrap as cosmetic); falsified by nothing short of a design change.
 - 2026-09-24: plan gate chose the overview step list plus the menu entry over the menu entry alone, because the tutorial was the only written sequence; falsified by the overview page growing past one screen.
+- 2026-09-25: /milestone-implement started; branch `m124-site-online-strip` cut from pushed main. hitop-form PR #11 (the `c` reader the strip's link relies on) merged 2026-09-25.
+- 2026-09-25: question gate: the strip carries a title, one sentence and three links (over title and links alone); the AC4 test reads `_pkgdown.yml` with {yaml}, added to Suggests (over a line-based parse; D-074); the overview step list sits below the cards under a heading (over above them). Step 1 links nothing, step 2 the two route tutorials, step 3 the online-collection sending section, step 4 `read_form_responses()` and the scoring tutorials.
+- 2026-09-25: T1 code in place, checkpointed while the full suite still ran (the tick follows its result). `.button_renderer(instrument)` hoisted out of `download_cards()` so `online_strip()` renders the JSON button on the same path; `.base64url()` over `jsonlite::base64_enc()` (newlines stripped, `+/` to `-_`, padding dropped) checked equal to `encodeConfig()` in node for all five stems; `.hitop-online` CSS.
 
 ## Decisions
 

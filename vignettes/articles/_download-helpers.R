@@ -66,14 +66,14 @@ dl_card <- function(icon, title, desc, ...) {
   list(icon = icon, title = title, desc = desc, links = list(...))
 }
 
-# Render the "Ready-to-Use Downloads" card row. Build-date badges are looked
-# up in the manifest by the basename of each dl_link() href; a dl_link whose
-# file is missing from the manifest is an error (stale page or manifest).
-download_cards <- function(instrument, cards) {
+# A download button for one dl_link(), backed by `instrument`'s manifest rows.
+# The build-date badge is looked up by the basename of the href; a dl_link
+# whose file is missing from the manifest is an error (stale page or
+# manifest). Shared by download_cards() and online_strip().
+.button_renderer <- function(instrument) {
   current <- .current_builds(instrument)
   dates <- stats::setNames(current$build_date, current$file)
-
-  render_button <- function(link) {
+  function(link) {
     file <- basename(link$href)
     if (is.na(dates[file])) {
       stop("No hitop_artifacts row for '", file, "' (", instrument, ")")
@@ -90,6 +90,11 @@ download_cards <- function(instrument, cards) {
       .esc(link$href), .esc(file), .esc(link$label), .badge(dates[[file]])
     )
   }
+}
+
+# Render the "Ready-to-Use Downloads" card row.
+download_cards <- function(instrument, cards) {
+  render_button <- .button_renderer(instrument)
 
   # ref_link()s render as quiet text links under the download buttons,
   # not as peer buttons (they are supporting material, not downloads).
@@ -124,6 +129,54 @@ download_cards <- function(instrument, cards) {
     '<div class="row mt-4 hitop-downloads">\n',
     paste(vapply(cards, render_card, character(1)), collapse = "\n"),
     "\n</div>"
+  )
+}
+
+# Unpadded base64url of a UTF-8 string, the encoding hitop-form's
+# encodeConfig() writes into a study link's `c` parameter (form.js:
+# utf8ToBase64url). jsonlite::base64_enc() wraps long input with newlines,
+# which are removed before the alphabet swap.
+.base64url <- function(x) {
+  b <- jsonlite::base64_enc(charToRaw(enc2utf8(x)))
+  b <- gsub("\n", "", b, fixed = TRUE)
+  sub("=+$", "", chartr("+/", "-_", b))
+}
+
+# The link builder's address with the instrument filled in: a `c` holding
+# `{"instrument":"<stem>"}`, which hitop-form's link.html reads into its
+# instrument select.
+.link_builder_href <- function(stem) {
+  config <- jsonlite::toJSON(list(instrument = stem), auto_unbox = TRUE)
+  paste0(
+    "https://jmgirard.github.io/hitop-form/link.html?c=",
+    .base64url(as.character(config))
+  )
+}
+
+# Render the online-form strip under the card row: a title, one sentence, a
+# button to the link builder with the instrument filled in, the JSON export
+# (a manifest-backed download button, badge included) and a quiet link to
+# the online-collection article. `stem` is the page's file stem
+# (`hitopsr`, `pid5sf`, ...) and `json_link` a dl_link() written literally
+# in the page so the href lock in tests/testthat/test-artifacts.R sees it.
+online_strip <- function(instrument, stem, json_link) {
+  render_button <- .button_renderer(instrument)
+  .emit_html(
+    '<div class="hitop-online">\n',
+    '<h5 class="hitop-online-title">\U1F310 Online Form</h5>\n',
+    '<p class="text-muted">Collect responses in a browser: make a study ',
+    "link, send it to participants, and read the file or table they fill ",
+    "with <code>read_form_responses()</code>. The JSON export is the file ",
+    "that page reads.</p>\n",
+    '<div class="hitop-online-actions">\n',
+    sprintf(
+      '<a href="%s" class="btn btn-primary">Make a study link</a>\n',
+      .esc(.link_builder_href(stem))
+    ),
+    render_button(json_link), "\n",
+    '<a href="../articles/online-collection.html" class="hitop-ref-link small">',
+    "How online collection works</a>\n",
+    "</div>\n</div>"
   )
 }
 
