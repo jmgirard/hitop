@@ -262,10 +262,10 @@ form_response_files <- function(path, call = rlang::caller_env()) {
 # The lines of `file`, split on the line feed, a leading byte-order mark and
 # each line's trailing carriage return dropped, so a line's index is its
 # number counted from the file's first line. A file holding a NUL byte or a
-# byte sequence that is not UTF-8 is refused naming each such line. The NUL
-# bytes are found among the raw bytes, because no string can hold one; the
-# other bytes are checked line by line once the text is split, on bytes, so
-# no warning is raised on the way.
+# byte sequence that is not UTF-8 is refused naming each such line by its
+# kind. The NUL bytes are found among the raw bytes, because no string can
+# hold one; the other bytes are checked line by line once the text is split,
+# on bytes, so no warning is raised on the way.
 form_file_lines <- function(file, call = rlang::caller_env()) {
   bytes <- readBin(file, "raw", file.size(file))
   # The line of a byte is one more than the count of line feeds before it.
@@ -275,24 +275,24 @@ form_file_lines <- function(file, call = rlang::caller_env()) {
   if (length(bytes) >= 3L && identical(bytes[1:3], bom)) {
     bytes <- bytes[-(1:3)]
   }
+  # Each NUL byte, its line known, stands in as a space for the split and
+  # the UTF-8 check, so a line that is not UTF-8 is named beside a NUL line.
+  bytes[bytes == as.raw(0x00)] <- as.raw(0x20)
   lines <- character(0)
-  bad <- nul
-  if (length(nul) == 0L) {
-    text <- rawToChar(bytes)
-    if (nzchar(text)) {
-      lines <- strsplit(text, "\n", fixed = TRUE, useBytes = TRUE)[[1L]]
-      lines <- sub("\r$", "", lines, useBytes = TRUE)
-    }
-    bad <- which(!validUTF8(lines))
+  text <- rawToChar(bytes)
+  if (nzchar(text)) {
+    lines <- strsplit(text, "\n", fixed = TRUE, useBytes = TRUE)[[1L]]
+    lines <- sub("\r$", "", lines, useBytes = TRUE)
   }
+  bad <- sort(unique(c(nul, which(!validUTF8(lines)))))
   if (length(bad) > 0L) {
-    kind <- if (length(nul) > 0L) "a NUL byte" else "a byte sequence that is not UTF-8"
-    found <- vapply(sort(bad), function(n) {
+    found <- vapply(bad, function(n) {
+      kind <- if (n %in% nul) "a NUL byte" else "a byte sequence that is not UTF-8"
       cli::format_inline("Line {n} holds {kind}.")
     }, character(1L))
     cli::cli_abort(
       c(
-        "{.file {file}} holds a line that is not UTF-8.",
+        "{.file {file}} holds a NUL byte or a line that is not UTF-8.",
         stats::setNames(found, rep("x", length(found))),
         "i" = "The line is counted from the file's first line."
       ),

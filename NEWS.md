@@ -375,9 +375,10 @@
   "invalid input found on input connection" warning, and the read then
   stopped on a field count the file did not have. A line outside a quoted
   cell made only of spaces and tabs is refused the same way. Before, such a
-  line counted as a row of one field, so the read stopped on a field count
-  the file did not have, or with base R's "first five rows are empty" when
-  the file held nothing else. An `instrument` cell that differs from the
+  line was read as a line of one field, so the read stopped on a field
+  count the file did not have, on the file's first columns, or with base
+  R's "first five rows are empty" when the file was that one line. An
+  `instrument` cell that differs from the
   item columns' stem (`pid5bf` beside `hitopbr_01`, a blank cell, a padded
   one) is refused before any value is checked. The message names each such
   response row, the cell and the stem. Before, the file read with the cell

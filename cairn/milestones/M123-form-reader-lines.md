@@ -1,6 +1,6 @@
 # M123: `read_form_responses()` refuses a whitespace-only line, a byte that is not UTF-8, and an `instrument` cell that differs from the item stem, and names each cell in its value refusals
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -60,6 +60,8 @@ A hand-edited or mis-encoded hitop-form file stops at `read_form_responses()` wi
 - 2026-09-24: T4 done: the two fixtures copied as LF from hitop-form `0fa05ac` (byte-identical to the `inst/examples/` copies, README row says so); seven AC4 tests red before the check, green after it. The check caught one existing test writing `hitopsr` columns under the helper's default `hitopbr` cell; that test now passes `instrument = "hitopsr"`.
 - 2026-09-24: T5 done: Details sentence of faults extended, the three counting sentences written, NEWS entry under "Improvements and fixes". The entry's "before" sentences were derived from main's reader run in a throwaway worktree (one base R warning then a field-count refusal for a Latin-1 byte; a field-count refusal or "first five rows are empty" for a whitespace line; a silent read for a differing instrument cell), not from the installed package, which predates M121. `document()` rewrote only `man/read_form_responses.Rd`; full `devtools::test()` clean.
 - 2026-09-24: T6 done: `devtools::check()` 0 errors, 0 warnings, 0 notes (6m 3s); `devtools::document()` no diff; `test-read_form_responses.R` alone 742 pass, 0 fail.
+- 2026-09-24: claim audit: 30 claims read, 3 corrected — NEWS.md, R/read_form_responses.R. Claim 3 was a code gap: a file holding a NUL line and a separate non-UTF-8 line named only the NUL line, so each NUL byte now stands in as a space for the split and the `validUTF8()` check and both lines are named by kind (new test, red before the fix). Claim 20: the byte refusal's heading now reads "holds a NUL byte or a line that is not UTF-8" (a NUL byte is valid UTF-8). Claim 8: the NEWS "before" sentence on whitespace lines now names the three outcomes main gave (a field count, the first-columns refusal, "first five rows are empty"). All three hold on the reader's re-read. Full suite after the fixes: 20364 pass, 0 fail, 15 skipped; `document()` no diff.
+- 2026-09-24: status review; every task checked, verify slot clean.
 
 ## Decisions
 

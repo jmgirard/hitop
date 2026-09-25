@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M120 | hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click | done | — | normal | milestones/archive/M120-form-save-button.md |
 | M121 | `read_form_responses()` and hitop-form refuse a malformed file by name: a short or long row, an empty file, a value refusal naming no row, an unnumbered or second-stem item column, and a descriptor whose items are not ascending | done | — | normal | milestones/archive/M121-form-file-refusals.md |
 | M122 | hitop-form's "Save the file" button confirms each press in a status message a screen reader announces | done | — | normal | milestones/archive/M122-form-save-status.md |
-| M123 | `read_form_responses()` refuses a whitespace-only line, a byte that is not UTF-8, and an `instrument` cell that differs from the item stem, and names each cell in its value refusals | in-progress | — | normal | milestones/M123-form-reader-lines.md |
+| M123 | `read_form_responses()` refuses a whitespace-only line, a byte that is not UTF-8, and an `instrument` cell that differs from the item stem, and names each cell in its value refusals | review | — | normal | milestones/M123-form-reader-lines.md |
 
 ## Candidates
 

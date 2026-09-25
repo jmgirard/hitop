@@ -1748,6 +1748,19 @@ test_that("a multibyte sequence cut off at the end of the file is refused", {
   expect_identical(named_lines(body), 2L)
 })
 
+test_that("a NUL byte on line 2 and a Latin-1 byte on line 3 are both named, each by its kind", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "both.csv", bytes_of(
+    two_header, crlf,
+    "s", as.raw(0x00), ",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf,
+    "caf", latin1_e, ",p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2:3)
+  expect_match(body[grepl("^Line 2", body)], "NUL byte", fixed = TRUE)
+  expect_match(body[grepl("^Line 3", body)], "not UTF-8", fixed = TRUE)
+})
+
 test_that("a UTF-16LE file is refused, naming its first line", {
   dir <- withr::local_tempdir()
   text <- paste0(two_header, crlf, good_row, crlf)
