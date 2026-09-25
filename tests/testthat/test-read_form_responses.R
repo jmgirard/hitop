@@ -1343,25 +1343,31 @@ test_that("a file holding only a byte-order mark is refused as holding no header
 
 value_cases <- list(
   list(name = "an item value that is not a whole number",
-       phrase = "whole number",
+       phrase = "whole number", cell = TRUE,
        bad = function(r) sub(",4,1$", ",yes,1", r)),
   list(name = "an item value outside the integer range",
-       phrase = "integer range",
+       phrase = "integer range", cell = TRUE,
        bad = function(r) sub(",4,1$", ",99999999999,1", r)),
   list(name = "a form_build that does not parse",
-       phrase = "form_build",
+       phrase = "form_build", cell = FALSE,
        bad = function(r) sub("2026-09-20,", "20/09/2026,", r, fixed = TRUE)),
   list(name = "a submitted that does not parse",
-       phrase = "submitted",
+       phrase = "submitted", cell = FALSE,
        bad = function(r) sub("2026-09-20T21:20:36Z", "2026-09-20 21:20:36", r, fixed = TRUE))
 )
 
+# An item-value refusal names each cell on its own line; a stamp refusal
+# names the rows in one line.
 for (case in value_cases) {
   test_that(paste(case$name, "on row 1 is refused naming row 1"), {
     dir <- withr::local_tempdir()
     msg <- refusal(dir, "row1.csv", c(case$bad(good_row), good_row, good_row))
     expect_match(msg, case$phrase, fixed = TRUE)
-    expect_match(msg, "Response row 1", fixed = TRUE)
+    if (case$cell) {
+      expect_match(msg, "Response row 1, column hitopbr_01", fixed = TRUE)
+    } else {
+      expect_match(msg, "Response row 1", fixed = TRUE)
+    }
     expect_no_match(msg, "rows", fixed = TRUE)
   })
 
@@ -1369,9 +1375,122 @@ for (case in value_cases) {
     dir <- withr::local_tempdir()
     msg <- refusal(dir, "rows13.csv", c(case$bad(good_row), good_row, case$bad(good_row)))
     expect_match(msg, case$phrase, fixed = TRUE)
-    expect_match(msg, "Response rows 1 and 3", fixed = TRUE)
+    if (case$cell) {
+      expect_match(msg, "Response row 1, column hitopbr_01", fixed = TRUE)
+      expect_match(msg, "Response row 3, column hitopbr_01", fixed = TRUE)
+      expect_no_match(msg, "Response row 2", fixed = TRUE)
+    } else {
+      expect_match(msg, "Response rows 1 and 3", fixed = TRUE)
+    }
   })
 }
+
+# ---- The two item-value refusals name each cell -----------------------------
+#
+# A cell is named on its own line as the response row, the column and the
+# value as written, in the file's row then column order, the first five, and
+# one line counting the rest when there are more. The files below hold three
+# response rows of four HiTOP-BR items, every value 4, with `bad` written at
+# the given cells.
+
+four_header <- paste(c(lead, sprintf("hitopbr_%02d", 1:4)), collapse = ",")
+
+# Write a three-row, four-item file with `bad` at each (row, column) pair of
+# `at`, a two-column matrix. Returns the path.
+cells_file <- function(dir, name, bad, at) {
+  grid <- matrix("4", nrow = 3L, ncol = 4L)
+  grid[at] <- bad
+  rows <- vapply(seq_len(3L), function(r) {
+    paste(c("s", paste0("p", r), "hitopbr", "2026-09-20",
+            "2026-09-20T21:20:36Z", grid[r, ]), collapse = ",")
+  }, character(1L))
+  write_rows(file.path(dir, name), c(four_header, rows))
+}
+
+# The (row, column) pairs of `pairs`, given as c(row, col, row, col, ...).
+at <- function(...) matrix(c(...), ncol = 2L, byrow = TRUE)
+
+# Read `path`, expecting the refusal whose message holds `phrase`; returns
+# the cell lines and the count line of its body, in order.
+cell_refusal <- function(path, phrase) {
+  cnd <- rlang::catch_cnd(read_form_responses(path), "error")
+  expect_s3_class(cnd, "error")
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, phrase, fixed = TRUE)
+  expect_match(msg, "counted from the first row after the header", fixed = TRUE)
+  body <- cli::ansi_strip(cnd$body)
+  body[grepl("^Response row |^[.]{3} and ", body)]
+}
+
+# The line naming cell (r, c) holding `value`.
+cell_line <- function(r, c, value) {
+  sprintf("Response row %d, column hitopbr_%02d: \"%s\".", r, c, value)
+}
+
+cell_cases <- list(
+  list(phrase = "whole number", bad = "yes"),
+  list(phrase = "integer range", bad = "99999999999")
+)
+
+for (case in cell_cases) {
+  bad <- case$bad
+  phrase <- case$phrase
+
+  test_that(paste("the", phrase, "refusal names one cell as row, column and value"), {
+    dir <- withr::local_tempdir()
+    f <- cells_file(dir, "one.csv", bad, at(2, 3))
+    expect_identical(cell_refusal(f, phrase), cell_line(2, 3, bad))
+  })
+
+  test_that(paste("the", phrase, "refusal names two cells on different rows and columns in row order"), {
+    dir <- withr::local_tempdir()
+    # Written column-first on purpose: the lines must follow the rows.
+    f <- cells_file(dir, "two.csv", bad, at(3, 1, 1, 4))
+    expect_identical(cell_refusal(f, phrase),
+                     c(cell_line(1, 4, bad), cell_line(3, 1, bad)))
+  })
+
+  test_that(paste("the", phrase, "refusal names five cells with no count line"), {
+    dir <- withr::local_tempdir()
+    f <- cells_file(dir, "five.csv", bad, at(1, 1, 1, 3, 2, 2, 3, 1, 3, 4))
+    expect_identical(cell_refusal(f, phrase), c(
+      cell_line(1, 1, bad), cell_line(1, 3, bad), cell_line(2, 2, bad),
+      cell_line(3, 1, bad), cell_line(3, 4, bad)
+    ))
+  })
+
+  test_that(paste("the", phrase, "refusal names five of six cells and counts 1 more"), {
+    dir <- withr::local_tempdir()
+    f <- cells_file(dir, "six.csv", bad, at(1, 1, 1, 3, 2, 2, 3, 1, 3, 4, 3, 2))
+    expect_identical(cell_refusal(f, phrase), c(
+      cell_line(1, 1, bad), cell_line(1, 3, bad), cell_line(2, 2, bad),
+      cell_line(3, 1, bad), cell_line(3, 2, bad), "... and 1 more cell."
+    ))
+  })
+
+  test_that(paste("the", phrase, "refusal names five of seven cells and counts 2 more"), {
+    dir <- withr::local_tempdir()
+    f <- cells_file(dir, "seven.csv", bad,
+                    at(1, 1, 1, 3, 2, 2, 3, 1, 3, 4, 3, 2, 2, 4))
+    expect_identical(cell_refusal(f, phrase), c(
+      cell_line(1, 1, bad), cell_line(1, 3, bad), cell_line(2, 2, bad),
+      cell_line(2, 4, bad), cell_line(3, 1, bad), "... and 2 more cells."
+    ))
+  })
+}
+
+test_that("the whole-number refusal shows a value holding braces as written", {
+  dir <- withr::local_tempdir()
+  f <- cells_file(dir, "braces.csv", "{4}", at(1, 2))
+  expect_identical(cell_refusal(f, "whole number"), cell_line(1, 2, "{4}"))
+})
+
+test_that("the whole-number refusal shows a value of spaces only as written", {
+  dir <- withr::local_tempdir()
+  f <- cells_file(dir, "spaces.csv", "  ", at(2, 1))
+  expect_identical(cell_refusal(f, "whole number"), cell_line(2, 1, "  "))
+})
 
 # AC4: an item column's name.
 

@@ -182,6 +182,37 @@ item_order_pattern <- "^[1-9][0-9]*( [1-9][0-9]*)*$"
 # underscore and the item number (`hitopbr_01`, `pid5_001`).
 item_column_pattern <- "^[a-z0-9]+_[0-9]+$"
 
+# The bullets naming the cells of `values` (a named list of the item
+# columns' character cells) that fail `ok` (a list of logical vectors in the
+# same shape): one "x" line per cell as the response row, the column and the
+# value as written, in row then column order, the first five, and one line
+# counting the rest when there are more.
+form_cell_lines <- function(values, ok) {
+  bad <- which(!do.call(cbind, ok), arr.ind = TRUE)
+  bad <- bad[order(bad[, "row"], bad[, "col"]), , drop = FALSE]
+  shown <- seq_len(min(nrow(bad), 5L))
+  lines <- vapply(shown, function(i) {
+    r <- bad[i, "row"]
+    col <- names(values)[[bad[i, "col"]]]
+    value <- values[[col]][[r]]
+    cli::format_inline("Response row {r}, column {.field {col}}: {.val {value}}.")
+  }, character(1L))
+  more <- nrow(bad) - length(shown)
+  if (more > 0L) {
+    lines <- c(lines, cli::format_inline("... and {more} more cell{?s}."))
+  }
+  form_bullets(lines)
+}
+
+# `lines`, already formatted, as "x" bullets `cli_abort()` shows as they
+# are: it interpolates each message again, so a brace a cell value holds is
+# doubled to stand for itself.
+form_bullets <- function(lines) {
+  lines <- gsub("{", "{{", lines, fixed = TRUE)
+  lines <- gsub("}", "}}", lines, fixed = TRUE)
+  stats::setNames(lines, rep("x", length(lines)))
+}
+
 # Resolve `path` to the sorted vector of files to read.
 form_response_files <- function(path, call = rlang::caller_env()) {
   cli_assert(
@@ -418,14 +449,11 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
 
   values <- lapply(raw[item_cols], blank_to_na)
   whole <- lapply(values, function(v) is.na(v) | grepl("^-?[0-9]+$", v))
-  bad <- item_cols[!vapply(whole, all, logical(1L))]
-  if (length(bad) > 0L) {
-    rows <- which(!Reduce(`&`, whole, init = rep(TRUE, nrow(raw))))
+  if (!all(unlist(whole))) {
     cli::cli_abort(
       c(
         "{.file {file}} holds an item value that is not a whole number.",
-        "x" = "Column{?s} {.field {bad}}.",
-        "x" = "Response {cli::qty(length(rows))}row{?s} {rows}.",
+        form_cell_lines(values, whole),
         "i" = "The row is counted from the first row after the header."
       ),
       call = call
@@ -436,14 +464,11 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   fits <- lapply(seq_along(item_cols), function(i) {
     is.na(values[[i]]) | !is.na(ints[[i]])
   })
-  wide <- item_cols[!vapply(fits, all, logical(1L))]
-  if (length(wide) > 0L) {
-    rows <- which(!Reduce(`&`, fits, init = rep(TRUE, nrow(raw))))
+  if (!all(unlist(fits))) {
     cli::cli_abort(
       c(
         "{.file {file}} holds an item value outside the integer range.",
-        "x" = "Column{?s} {.field {wide}}.",
-        "x" = "Response {cli::qty(length(rows))}row{?s} {rows}.",
+        form_cell_lines(values, fits),
         "i" = "The row is counted from the first row after the header."
       ),
       call = call
