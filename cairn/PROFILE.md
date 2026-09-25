@@ -82,8 +82,8 @@ Followed by `/cairn-release` — a CRAN release walk (never self-submits):
   installs this package from r-universe at page load and declares the oldest
   version it will build against as `MIN_HITOP` in its `index.html`. If the
   release changes any surface that page calls — `available_scales()`,
-  `hitop_module()`, `scale_definitions()`, or the three `generate_*_hitopsr()`
-  functions including their `descriptor` argument — raise `MIN_HITOP` to this
+  `hitop_module()`, `write_module()`, `scale_definitions()`, or the three
+  `generate_*_hitopsr()` functions with `descriptor` — raise `MIN_HITOP` to this
   version and update the minimum stated in that repo's `README.md`, in a pull
   request of its own. A release touching none of those surfaces leaves both
   alone.
