@@ -1,13 +1,13 @@
 # M127: The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the builder page at jmgirard.github.io/hitop-builder is a public site, and two items change what a visitor sees or hears
-- **Branch/PR:** m127-online-card-loose-ends (this repo, tracking); jmgirard/hitop-builder branch m127-online-card-loose-ends (code)
+- **Branch/PR:** m127-online-card-loose-ends (this repo, tracking); jmgirard/hitop-builder branch m127-online-card-loose-ends, PR #23 https://github.com/jmgirard/hitop-builder/pull/23 (code)
 
 ## Goal
 
@@ -41,9 +41,9 @@ Close the six loose ends M126's review deferred on the builder's Online form car
 
 - [x] T1: `index.html`: `setFormat()` (`:948`) calls `removeLinkBuilder()` only when `format !== currentFormat`, before it stores the new format; the online branch (`:1458-1461`) writes the saved-file status inside the `selected().join() === chosen.join()` guard and "Ready." otherwise; `removeLinkBuilder()` (`:853`) resets `#status` to "Ready." only when it removed an anchor and the status holds the saved-file text (a reset on every tick would overwrite "Building the DOCX file…" at the A8 tick and fail A9); the comments at `:668-674` and `:849-852` name the card press among the removal triggers. Write the baseline first: `node tests/prose.mjs --json <scratch>/baseline.json` on main.
 - [x] T2: `tests/smoke.spec.js`: `saveOnline()` (`:161`) waits for `/^Ready\./` and returns the status text; A19 reads the saved-file text after the first save; A16 (`:381`, `:511`) moves to a second online save pressed right after the first with the link present, reading the count and the button's disabled state in one `evaluate` right after the click (as A17 does at `:307-313`), then waiting for the saved-file text; the A17 wait (`:319`) stays "Ready."; A15's `afterTick` read (`:296`) adds the status text; A18 presses the Word card on step 2 after a save, reads the count, `#onlineNext`'s `hidden` attribute and the status, saves again, presses Online and reads a count of one; the header enumeration (`:17-26`) lists A18 and A19 and restates A16. Per LESSONS M119, show each absence selector matches somewhere first.
-- [ ] T3: `tests/plants.mjs`: (x) drops the format-change removal (fails A18's Word read); (x2) drops the `format !== currentFormat` guard so every press removes the link (fails A18's Online read); (y) replaces the saved-file status with "Ready." (fails A19); (z) drops the reset in `removeLinkBuilder()` (fails A15); (o) (`:156-163`) parses the JSON, reverses `items`, serialises; (u) (`:198-205`) keeps failing A16 at its new site. Per LESSONS M118, `git add` the fix before planting.
+- [x] T3: `tests/plants.mjs`: (x) drops the format-change removal (fails A18's Word read); (x2) drops the `format !== currentFormat` guard so every press removes the link (fails A18's Online read); (y) replaces the saved-file status with "Ready." (fails A19); (z) drops the reset in `removeLinkBuilder()` (fails A15); (o) (`:156-163`) parses the JSON, reverses `items`, serialises; (u) (`:198-205`) keeps failing A16 at its new site. Per LESSONS M118, `git add` the fix before planting.
 - [x] T4: `README.md` "The online form" (`:223-258`): the pointer to "Ticking every scale", the card press in the removal sentence, the status text; `node tests/prose.mjs --compare <scratch>/baseline.json` names only the changed passages.
-- [ ] T5: `npm run smoke`, `npm run plants`, `npm run prose`; the builder PR on a `m127-online-card-loose-ends` branch, CI green; Jeff merges it from his terminal (LESSONS M116); this repo's PR carries the tracking.
+- [x] T5: `npm run smoke`, `npm run plants`, `npm run prose`; the builder PR on a `m127-online-card-loose-ends` branch, CI green; Jeff merges it from his terminal (LESSONS M116); this repo's PR carries the tracking.
 
 ## Work log
 
@@ -59,6 +59,8 @@ Close the six loose ends M126's review deferred on the builder's Online form car
 - 2026-09-25: T2 done, hitop-builder commit 85c0f74. `npm run smoke` green locally in 11 s (webR cached), 19 assertions enumerated. `readLinkState()` reads the anchor count, the paragraph's hidden attribute and the status in one call; A16 and A18 read it before the press too, which shows the count finds the anchor (LESSONS M119). A16's wait takes any "Ready." so plant (y) reaches A19 rather than stopping at A16.
 - 2026-09-25: T4 done, hitop-builder commit 2b94440. `--compare` against the baseline names status#2, status#3, status#6 and `md:The online form#1` (gained `id=ticking-every-scale`), nothing else. The reworded sentences read in the README and in the `--text` output. The simple-english lint counts on README.md are the same before and after the edit (five long sentences, one trailing condition, all pre-existing).
 - 2026-09-25: claim audit: 45 claims read, 7 corrected — hitop-builder README.md, index.html, tests/smoke.spec.js, tests/plants.mjs (a fresh-context [O] reader over `git diff main` in that repo; this repo's diff outside `cairn/` adds no lines, the prose all lives there). Corrected: the README's status-after-removal sentence (a card press names the chosen format, a tick returns "Ready."), the `removeLinkBuilder()` comment's caller list (showLinkBuilder() added), the `saveOnline()` comment on which read catches a wrong status, the `readLinkState()` comment on how the two anchor reads match, two smoke comments naming "the second save" where a later save is meant, and plant (w)'s comment naming the first save's link where the A16 save's is there. The re-read found one clause over-reaching ("as every card press does", false after a failed build) and it was trimmed. One stale comment outside the added lines (the mid-tick save's link "the one the Word build starts with") was corrected in the same commit. hitop-builder commit b24118f (plant (w)'s comment goes with T3's commit).
+- 2026-09-25: T3 done, hitop-builder commit 9dbdd99. Plant matrix: the unplanted copy passed, 27 of 27 plants red, every one of the 19 assertions failed by at least one plant. Per plant as planned: (o) A13, A15; (u) A16; (v) A17; (w) A15, A19; (x) A18; (x2) A18; (y) A18, A19; (z) A19. The matrix ran on scratch copies, so no restore was needed (LESSONS M118 checked). The run was started by an import in a check script rather than `npm run plants`, on the same files; nothing else differs.
+- 2026-09-25: T5 done: branch pushed, hitop-builder PR #23 opened, its smoke job green in 57 s. `npm run prose` runs (18 writer sites, 166 passages). This repo changes tracking only, so the r-package verify slot has no code to run against. Status set to review.
 
 ## Decisions
 
