@@ -304,12 +304,15 @@ form_file_lines <- function(file, call = rlang::caller_env()) {
 
 # The field count of each of `lines`, as `count.fields()` gives it with no
 # line skipped, so the counts align with the lines: an empty line counts 0, a
-# line inside a quoted cell NA. NULL for a file with no line.
+# line inside a quoted cell NA. A carriage return inside a line, which the
+# connection would read as a line end, stands in as a space, so no line is
+# counted twice. A quote left open to the end of the file adds one count
+# past the last line, the incomplete record's. NULL for a file with no line.
 count_form_fields <- function(lines) {
   if (length(lines) == 0L) {
     return(NULL)
   }
-  con <- textConnection(lines)
+  con <- textConnection(gsub("\r", " ", lines, fixed = TRUE))
   on.exit(close(con))
   utils::count.fields(con, sep = ",", quote = "\"", comment.char = "",
                       blank.lines.skip = FALSE)
@@ -332,8 +335,9 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
 
   # A line of spaces and tabs alone, outside a quoted cell, is a hand edit
   # the page never writes, and `read.csv()` would read it as a row of one
-  # blank field. A line inside a quoted cell counts NA, so it is left alone.
-  blank <- grepl("^[ \t]+$", lines) & !is.na(counts)
+  # blank field. A line inside a quoted cell counts NA, so it is left alone;
+  # the counts are read by line, a count past the last line dropped.
+  blank <- grepl("^[ \t]+$", lines) & !is.na(counts[seq_along(lines)])
   if (any(blank)) {
     found <- vapply(which(blank), function(n) {
       cli::format_inline("Line {n}.")

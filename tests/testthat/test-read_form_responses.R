@@ -1874,6 +1874,57 @@ test_that("an empty line before the header still reads as one row", {
   expect_identical(out$participant, "p1")
 })
 
+# A carriage return inside a quoted cell, or a stray quote that runs to the
+# end of the file, must not put the lines and the field counts out of step:
+# the read gives what it gave before the line checks, and no base R warning.
+
+cr_row <- "\"a\rb\",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+
+# Read `path`, recording every warning raised on the way; returns the
+# result or the error condition beside the warnings.
+read_recording <- function(path) {
+  warnings <- list()
+  out <- withCallingHandlers(
+    tryCatch(read_form_responses(path), error = function(e) e),
+    warning = function(w) {
+      warnings <<- c(warnings, list(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  list(out = out, warnings = warnings)
+}
+
+test_that("a quoted study cell holding a bare carriage return reads as one row with no warning", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "cr.csv"), c(two_header, cr_row), eol = "\n")
+  got <- read_recording(f)
+  expect_identical(length(got$warnings), 0L)
+  expect_s3_class(got$out, "data.frame")
+  expect_equal(nrow(got$out), 1L)
+  # `read.csv()` reads the carriage return as a line break inside the cell.
+  expect_match(got$out$study, "^a[\r\n]b$")
+})
+
+test_that("a whitespace-only line before a quoted bare carriage return names that line only", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "ws-cr.csv"), c("   ", two_header, cr_row), eol = "\n")
+  got <- read_recording(f)
+  expect_identical(length(got$warnings), 0L)
+  expect_s3_class(got$out, "error")
+  expect_match(conditionMessage(got$out), "only of spaces and tabs", fixed = TRUE)
+  expect_identical(named_lines(cli::ansi_strip(got$out$body)), 1L)
+})
+
+test_that("a stray quote that runs to the end of the file is refused for the field count with no warning", {
+  dir <- withr::local_tempdir()
+  stray <- "s,p\"1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+  f <- write_rows(file.path(dir, "stray.csv"), c(two_header, stray))
+  got <- read_recording(f)
+  expect_identical(length(got$warnings), 0L)
+  expect_s3_class(got$out, "error")
+  expect_match(conditionMessage(got$out), "field count differs", fixed = TRUE)
+})
+
 test_that("a participant cell holding a multibyte UTF-8 character reads intact", {
   dir <- withr::local_tempdir()
   f <- form_file(dir, "utf8.csv", two_items(), participant = "Zoë")
