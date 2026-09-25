@@ -62,6 +62,8 @@ A hand-edited or mis-encoded hitop-form file stops at `read_form_responses()` wi
 - 2026-09-24: T6 done: `devtools::check()` 0 errors, 0 warnings, 0 notes (6m 3s); `devtools::document()` no diff; `test-read_form_responses.R` alone 742 pass, 0 fail.
 - 2026-09-24: claim audit: 30 claims read, 3 corrected — NEWS.md, R/read_form_responses.R. Claim 3 was a code gap: a file holding a NUL line and a separate non-UTF-8 line named only the NUL line, so each NUL byte now stands in as a space for the split and the `validUTF8()` check and both lines are named by kind (new test, red before the fix). Claim 20: the byte refusal's heading now reads "holds a NUL byte or a line that is not UTF-8" (a NUL byte is valid UTF-8). Claim 8: the NEWS "before" sentence on whitespace lines now names the three outcomes main gave (a field count, the first-columns refusal, "first five rows are empty"). All three hold on the reader's re-read. Full suite after the fixes: 20364 pass, 0 fail, 15 skipped; `document()` no diff.
 - 2026-09-24: status review; every task checked, verify slot clean.
+- 2026-09-24: review: F1 fixed on the branch, F2 and F4 to one candidate row at hygiene, F3, F5, F6, F7 rejected as logged.
+- 2026-09-24: step-7 approval: m123-form-reader-lines approved for merge
 
 ## Decisions
 
