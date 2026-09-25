@@ -1,21 +1,21 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-24 (69th pass, M123 done): row archived, M120 pruned, one candidate row (three reader loose ends), two lessons written and two merged to hold the LESSONS byte budget. validate green._
+_Last hygiene check: 2026-09-25 (70th pass, M125 done): row archived, M121 pruned, one candidate row (three link-builder loose ends), one lesson written and one trimmed to hold the LESSONS byte budget. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M121 | `read_form_responses()` and hitop-form refuse a malformed file by name: a short or long row, an empty file, a value refusal naming no row, an unnumbered or second-stem item column, and a descriptor whose items are not ascending | done | — | normal | milestones/archive/M121-form-file-refusals.md |
 | M122 | hitop-form's "Save the file" button confirms each press in a status message a screen reader announces | done | — | normal | milestones/archive/M122-form-save-status.md |
 | M123 | `read_form_responses()` refuses a whitespace-only line, a byte that is not UTF-8, and an `instrument` cell that differs from the item stem, and names each cell in its value refusals | done | — | normal | milestones/archive/M123-form-reader-lines.md |
-| M125 | hitop-form's `link.html` fills its fields from a study link's `c` parameter, refuses one it cannot read by name, and links the module builder and the tutorial from a three-step list | review | — | normal | milestones/M125-link-builder-prefill.md |
+| M125 | hitop-form's `link.html` fills its fields from a study link's `c` parameter, refuses one it cannot read by name, and links the module builder and the tutorial from a three-step list | done | — | normal | milestones/archive/M125-link-builder-prefill.md |
 | M126 | The module builder's format step gains an "Online form" card that saves the `write_module()` scoring file and links to the link builder with the module filled in | planned | M125 | normal | milestones/M126-builder-online-card.md |
 | M124 | The instrument download pages keep three cards per row and gain an online-form strip holding the JSON export, the Instruments menu reaches the link builder, and the overview page lists the steps from instrument to scores | planned | M125 | normal | milestones/M124-site-online-strip.md |
 
 ## Candidates
 
+- Three link-builder loose ends M125's review deferred: a crafted `link.html?c=` presets the store and completion addresses, not only the module; the README privacy paragraph omits that opening `link.html?c=` sends the config, Supabase key included, to the host's logs again; `#err` filled before load may go unannounced by a screen reader. Promote on a user report, or when `link.html`'s refusals are next edited — added 2026-09-25 — lineage: M125 (review F3, F10, F6)
 - Three `read_form_responses()` loose ends M123's review deferred. The byte, whitespace-line and instrument refusals print one bullet per line or row with no cap, where the value refusals show five and a count (a Latin-1 or UTF-16 export names every line). A UTF-16LE file names one line past its last, the NUL after each line feed landing on the next line. The mismatch bullets (`R/read_form_responses.R`, the `hitop_form_responses_mismatch` message) are interpolated twice and break on a path holding a brace. Promote on a user report, or when the reader's refusals are next edited — added 2026-09-24 — lineage: M123 (review F2, F4, F6)
 - hitop-form under another recruiter's own parameters (SONA, CloudResearch), whose return URL M118's `complete` field already takes. Promote when a study recruits through such a panel — added 2026-09-23, narrowed 2026-09-24 (the completion code per outcome and the two M118 review findings graduated to M119) — lineage: M118 (plan gate)
 - In-browser encryption of each posted row to a public key carried in the study link, so a store vendor holds ciphertext only and any store becomes usable for identifiable data regardless of vendor agreements. Needs WebCrypto in hitop-form, a decryption helper in the package (a Suggests decision, {openssl} or {sodium}, at its own gate), and key handling the researcher must get right. Promote when a study needs identifiable data in a vendor store — added 2026-09-23 — lineage: M111 (plan gate)
