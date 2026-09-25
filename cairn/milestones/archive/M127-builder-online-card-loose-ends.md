@@ -1,6 +1,6 @@
 # M127: The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer
 
-**Status:** done (2026-09-25, PR #138 https://github.com/jmgirard/hitop/pull/138; code in jmgirard/hitop-builder PR #23 https://github.com/jmgirard/hitop-builder/pull/23, CI green on 6867beb, Jeff merges it from his terminal)
+**Status:** done (2026-09-25, PR #138 https://github.com/jmgirard/hitop/pull/138; code in jmgirard/hitop-builder PR #23 https://github.com/jmgirard/hitop-builder/pull/23, merged 2026-09-25T22:29:58Z)
 
 **Goal:** Close the six loose ends M126's review deferred on the builder's Online form card: two page fixes a visitor meets, three checker repairs and one README pointer.
 
