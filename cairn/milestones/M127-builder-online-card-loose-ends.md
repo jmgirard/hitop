@@ -95,4 +95,4 @@ Independent review, three lenses over the hitop-builder diff. Prior-review lens:
 - F12 (blame, first): the read that no anchor remains after a completed Word build was deleted with nothing replacing it. Rejected: the plan gate chose re-aiming A16 over that read; `showLinkBuilder()` runs only in the online branch and A18 shows the card press removes the link.
 - F13 (blame): the comment before the build-start `removeLinkBuilder()` did not say the card-press removal now does the work for every format but online. Fix now: a clause added.
 
-Re-verification after the fixes: recorded below.
+Re-verification after the fixes, hitop-builder commit 6867beb: smoke green (9.9 s); matrix OK, unplanted passed, 27 of 27 plants red, every assertion covered, (v) now failing A17 and A19 with no timeout; prose compare against the main baseline names the same four passages as before; PR #23's smoke check passed (1m 5s) on head 6867beb.
