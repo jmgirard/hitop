@@ -1,13 +1,13 @@
 # M127: The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — the builder page at jmgirard.github.io/hitop-builder is a public site, and two items change what a visitor sees or hears
-- **Branch/PR:** —
+- **Branch/PR:** m127-online-card-loose-ends (this repo, tracking); jmgirard/hitop-builder branch m127-online-card-loose-ends (code)
 
 ## Goal
 
@@ -39,10 +39,10 @@ Close the six loose ends M126's review deferred on the builder's Online form car
 
 ## Tasks
 
-- [ ] T1: `index.html`: `setFormat()` (`:948`) calls `removeLinkBuilder()` only when `format !== currentFormat`, before it stores the new format; the online branch (`:1458-1461`) writes the saved-file status inside the `selected().join() === chosen.join()` guard and "Ready." otherwise; `removeLinkBuilder()` (`:853`) resets `#status` to "Ready." only when it removed an anchor and the status holds the saved-file text (a reset on every tick would overwrite "Building the DOCX file…" at the A8 tick and fail A9); the comments at `:668-674` and `:849-852` name the card press among the removal triggers. Write the baseline first: `node tests/prose.mjs --json <scratch>/baseline.json` on main.
-- [ ] T2: `tests/smoke.spec.js`: `saveOnline()` (`:161`) waits for `/^Ready\./` and returns the status text; A19 reads the saved-file text after the first save; A16 (`:381`, `:511`) moves to a second online save pressed right after the first with the link present, reading the count and the button's disabled state in one `evaluate` right after the click (as A17 does at `:307-313`), then waiting for the saved-file text; the A17 wait (`:319`) stays "Ready."; A15's `afterTick` read (`:296`) adds the status text; A18 presses the Word card on step 2 after a save, reads the count, `#onlineNext`'s `hidden` attribute and the status, saves again, presses Online and reads a count of one; the header enumeration (`:17-26`) lists A18 and A19 and restates A16. Per LESSONS M119, show each absence selector matches somewhere first.
+- [x] T1: `index.html`: `setFormat()` (`:948`) calls `removeLinkBuilder()` only when `format !== currentFormat`, before it stores the new format; the online branch (`:1458-1461`) writes the saved-file status inside the `selected().join() === chosen.join()` guard and "Ready." otherwise; `removeLinkBuilder()` (`:853`) resets `#status` to "Ready." only when it removed an anchor and the status holds the saved-file text (a reset on every tick would overwrite "Building the DOCX file…" at the A8 tick and fail A9); the comments at `:668-674` and `:849-852` name the card press among the removal triggers. Write the baseline first: `node tests/prose.mjs --json <scratch>/baseline.json` on main.
+- [x] T2: `tests/smoke.spec.js`: `saveOnline()` (`:161`) waits for `/^Ready\./` and returns the status text; A19 reads the saved-file text after the first save; A16 (`:381`, `:511`) moves to a second online save pressed right after the first with the link present, reading the count and the button's disabled state in one `evaluate` right after the click (as A17 does at `:307-313`), then waiting for the saved-file text; the A17 wait (`:319`) stays "Ready."; A15's `afterTick` read (`:296`) adds the status text; A18 presses the Word card on step 2 after a save, reads the count, `#onlineNext`'s `hidden` attribute and the status, saves again, presses Online and reads a count of one; the header enumeration (`:17-26`) lists A18 and A19 and restates A16. Per LESSONS M119, show each absence selector matches somewhere first.
 - [ ] T3: `tests/plants.mjs`: (x) drops the format-change removal (fails A18's Word read); (x2) drops the `format !== currentFormat` guard so every press removes the link (fails A18's Online read); (y) replaces the saved-file status with "Ready." (fails A19); (z) drops the reset in `removeLinkBuilder()` (fails A15); (o) (`:156-163`) parses the JSON, reverses `items`, serialises; (u) (`:198-205`) keeps failing A16 at its new site. Per LESSONS M118, `git add` the fix before planting.
-- [ ] T4: `README.md` "The online form" (`:223-258`): the pointer to "Ticking every scale", the card press in the removal sentence, the status text; `node tests/prose.mjs --compare <scratch>/baseline.json` names only the changed passages.
+- [x] T4: `README.md` "The online form" (`:223-258`): the pointer to "Ticking every scale", the card press in the removal sentence, the status text; `node tests/prose.mjs --compare <scratch>/baseline.json` names only the changed passages.
 - [ ] T5: `npm run smoke`, `npm run plants`, `npm run prose`; the builder PR on a `m127-online-card-loose-ends` branch, CI green; Jeff merges it from his terminal (LESSONS M116); this repo's PR carries the tracking.
 
 ## Work log
@@ -54,6 +54,10 @@ Close the six loose ends M126's review deferred on the builder's Online form car
 - 2026-09-25: plan gate chose re-aiming A16 at a second online save over deleting A16 and plant (u) because the build-start removal would otherwise go untested; falsified by the re-aimed read passing on a page with that removal dropped.
 - 2026-09-25: plan gate chose assertions only for the two fixes over full visibility coverage because the fixes' reads close the loose end at less matrix time; falsified by a hidden-attribute regression after the save or the tick that A18 does not see.
 - 2026-09-25: plan chose one card pressed in A18 for three because all three share `setFormat()`; falsified by a per-card handler diverging from `setFormat()`.
+- 2026-09-25: implement started by /milestone-implement. No question gate: the plan left nothing open. Branches cut from the pushed default branch in both repos. Prose baseline written from main before any edit.
+- 2026-09-25: T1 done, hitop-builder commit 1541425. Minor amendment to T1's reset condition: `removeLinkBuilder()` resets the status whenever it removed an anchor, with no read of the status text, because the ticks made during a build (A8, A17) find no anchor and so leave "Building…" alone, and a link is present only under a status that begins with "Ready.". The prose compare after the page edit names status#2 and status#3 (the inserted saved-file string shifts the group) and status#6 (new); the reset's "Ready." is a pinned string and adds no passage.
+- 2026-09-25: T2 done, hitop-builder commit 85c0f74. `npm run smoke` green locally in 11 s (webR cached), 19 assertions enumerated. `readLinkState()` reads the anchor count, the paragraph's hidden attribute and the status in one call; A16 and A18 read it before the press too, which shows the count finds the anchor (LESSONS M119). A16's wait takes any "Ready." so plant (y) reaches A19 rather than stopping at A16.
+- 2026-09-25: T4 done, hitop-builder commit 2b94440. `--compare` against the baseline names status#2, status#3, status#6 and `md:The online form#1` (gained `id=ticking-every-scale`), nothing else. The reworded sentences read in the README and in the `--text` output. The simple-english lint counts on README.md are the same before and after the edit (five long sentences, one trailing condition, all pre-existing).
 
 ## Decisions
 
