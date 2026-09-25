@@ -367,6 +367,28 @@
 
 ## Improvements and fixes
 
+* **`read_form_responses()` refuses three more hand-edit faults by name, and
+  its value refusals name each cell.** A line holding a NUL byte or a byte
+  sequence that is not UTF-8 stops the read before any other check. The
+  message names the file and each such line, counted from the file's first
+  line, and no warning is raised. Before, a Latin-1 byte raised base R's
+  "invalid input found on input connection" warning, and the read then
+  stopped on a field count the file did not have. A line outside a quoted
+  cell made only of spaces and tabs is refused the same way. Before, such a
+  line was read as a line of one field, so the read stopped on a field
+  count the file did not have, on the file's first columns, or with base
+  R's "first five rows are empty" when the file was that one line. An
+  `instrument` cell that differs from the
+  item columns' stem (`pid5bf` beside `hitopbr_01`, a blank cell, a padded
+  one) is refused before any value is checked. The message names each such
+  response row, the cell and the stem. Before, the file read with the cell
+  as written. The whole-number and integer-range refusals now name each
+  cell at fault on its own line, as the response row, the column and the
+  value as written. The lines follow the file's row then column order, the
+  first five cells, then a count of the rest. Before, the two refusals
+  named the columns in one line and the rows in another.
+  `?read_form_responses` describes the refusals.
+
 * **`read_form_responses()` refuses a malformed file by name, and the
   hitop-form page refuses a descriptor whose items are not ascending.** A
   response row holding fewer or more fields than the header stops the read

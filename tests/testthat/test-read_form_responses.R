@@ -134,8 +134,10 @@ test_that("paths sort in the C locale, so a capital letter sorts first", {
 
 test_that("item columns keep the first file's order", {
   dir <- withr::local_tempdir()
-  form_file(dir, "p001.csv", c(hitopsr_233 = 4L, hitopsr_194 = 3L))
-  form_file(dir, "p002.csv", c(hitopsr_233 = 1L, hitopsr_194 = 2L))
+  form_file(dir, "p001.csv", c(hitopsr_233 = 4L, hitopsr_194 = 3L),
+            instrument = "hitopsr")
+  form_file(dir, "p002.csv", c(hitopsr_233 = 1L, hitopsr_194 = 2L),
+            instrument = "hitopsr")
 
   out <- read_form_responses(dir)
   expect_identical(names(out)[-seq_len(8L)], c("hitopsr_233", "hitopsr_194"))
@@ -1343,25 +1345,31 @@ test_that("a file holding only a byte-order mark is refused as holding no header
 
 value_cases <- list(
   list(name = "an item value that is not a whole number",
-       phrase = "whole number",
+       phrase = "whole number", cell = TRUE,
        bad = function(r) sub(",4,1$", ",yes,1", r)),
   list(name = "an item value outside the integer range",
-       phrase = "integer range",
+       phrase = "integer range", cell = TRUE,
        bad = function(r) sub(",4,1$", ",99999999999,1", r)),
   list(name = "a form_build that does not parse",
-       phrase = "form_build",
+       phrase = "form_build", cell = FALSE,
        bad = function(r) sub("2026-09-20,", "20/09/2026,", r, fixed = TRUE)),
   list(name = "a submitted that does not parse",
-       phrase = "submitted",
+       phrase = "submitted", cell = FALSE,
        bad = function(r) sub("2026-09-20T21:20:36Z", "2026-09-20 21:20:36", r, fixed = TRUE))
 )
 
+# An item-value refusal names each cell on its own line; a stamp refusal
+# names the rows in one line.
 for (case in value_cases) {
   test_that(paste(case$name, "on row 1 is refused naming row 1"), {
     dir <- withr::local_tempdir()
     msg <- refusal(dir, "row1.csv", c(case$bad(good_row), good_row, good_row))
     expect_match(msg, case$phrase, fixed = TRUE)
-    expect_match(msg, "Response row 1", fixed = TRUE)
+    if (case$cell) {
+      expect_match(msg, "Response row 1, column hitopbr_01", fixed = TRUE)
+    } else {
+      expect_match(msg, "Response row 1", fixed = TRUE)
+    }
     expect_no_match(msg, "rows", fixed = TRUE)
   })
 
@@ -1369,9 +1377,122 @@ for (case in value_cases) {
     dir <- withr::local_tempdir()
     msg <- refusal(dir, "rows13.csv", c(case$bad(good_row), good_row, case$bad(good_row)))
     expect_match(msg, case$phrase, fixed = TRUE)
-    expect_match(msg, "Response rows 1 and 3", fixed = TRUE)
+    if (case$cell) {
+      expect_match(msg, "Response row 1, column hitopbr_01", fixed = TRUE)
+      expect_match(msg, "Response row 3, column hitopbr_01", fixed = TRUE)
+      expect_no_match(msg, "Response row 2", fixed = TRUE)
+    } else {
+      expect_match(msg, "Response rows 1 and 3", fixed = TRUE)
+    }
   })
 }
+
+# ---- The two item-value refusals name each cell -----------------------------
+#
+# A cell is named on its own line as the response row, the column and the
+# value as written, in the file's row then column order, the first five, and
+# one line counting the rest when there are more. The files below hold three
+# response rows of four HiTOP-BR items, every value 4, with `bad` written at
+# the given cells.
+
+four_header <- paste(c(lead, sprintf("hitopbr_%02d", 1:4)), collapse = ",")
+
+# Write a three-row, four-item file with `bad` at each (row, column) pair of
+# `at`, a two-column matrix. Returns the path.
+cells_file <- function(dir, name, bad, at) {
+  grid <- matrix("4", nrow = 3L, ncol = 4L)
+  grid[at] <- bad
+  rows <- vapply(seq_len(3L), function(r) {
+    paste(c("s", paste0("p", r), "hitopbr", "2026-09-20",
+            "2026-09-20T21:20:36Z", grid[r, ]), collapse = ",")
+  }, character(1L))
+  write_rows(file.path(dir, name), c(four_header, rows))
+}
+
+# The (row, column) pairs of `pairs`, given as c(row, col, row, col, ...).
+at <- function(...) matrix(c(...), ncol = 2L, byrow = TRUE)
+
+# Read `path`, expecting the refusal whose message holds `phrase`; returns
+# the cell lines and the count line of its body, in order.
+cell_refusal <- function(path, phrase) {
+  cnd <- rlang::catch_cnd(read_form_responses(path), "error")
+  expect_s3_class(cnd, "error")
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, phrase, fixed = TRUE)
+  expect_match(msg, "counted from the first row after the header", fixed = TRUE)
+  body <- cli::ansi_strip(cnd$body)
+  body[grepl("^Response row |^[.]{3} and ", body)]
+}
+
+# The line naming cell (r, c) holding `value`.
+cell_line <- function(r, c, value) {
+  sprintf("Response row %d, column hitopbr_%02d: \"%s\".", r, c, value)
+}
+
+cell_cases <- list(
+  list(phrase = "whole number", bad = "yes"),
+  list(phrase = "integer range", bad = "99999999999")
+)
+
+for (case in cell_cases) {
+  bad <- case$bad
+  phrase <- case$phrase
+
+  test_that(paste("the", phrase, "refusal names one cell as row, column and value"), {
+    dir <- withr::local_tempdir()
+    f <- cells_file(dir, "one.csv", bad, at(2, 3))
+    expect_identical(cell_refusal(f, phrase), cell_line(2, 3, bad))
+  })
+
+  test_that(paste("the", phrase, "refusal names two cells on different rows and columns in row order"), {
+    dir <- withr::local_tempdir()
+    # Written column-first on purpose: the lines must follow the rows.
+    f <- cells_file(dir, "two.csv", bad, at(3, 1, 1, 4))
+    expect_identical(cell_refusal(f, phrase),
+                     c(cell_line(1, 4, bad), cell_line(3, 1, bad)))
+  })
+
+  test_that(paste("the", phrase, "refusal names five cells with no count line"), {
+    dir <- withr::local_tempdir()
+    f <- cells_file(dir, "five.csv", bad, at(1, 1, 1, 3, 2, 2, 3, 1, 3, 4))
+    expect_identical(cell_refusal(f, phrase), c(
+      cell_line(1, 1, bad), cell_line(1, 3, bad), cell_line(2, 2, bad),
+      cell_line(3, 1, bad), cell_line(3, 4, bad)
+    ))
+  })
+
+  test_that(paste("the", phrase, "refusal names five of six cells and counts 1 more"), {
+    dir <- withr::local_tempdir()
+    f <- cells_file(dir, "six.csv", bad, at(1, 1, 1, 3, 2, 2, 3, 1, 3, 4, 3, 2))
+    expect_identical(cell_refusal(f, phrase), c(
+      cell_line(1, 1, bad), cell_line(1, 3, bad), cell_line(2, 2, bad),
+      cell_line(3, 1, bad), cell_line(3, 2, bad), "... and 1 more cell."
+    ))
+  })
+
+  test_that(paste("the", phrase, "refusal names five of seven cells and counts 2 more"), {
+    dir <- withr::local_tempdir()
+    f <- cells_file(dir, "seven.csv", bad,
+                    at(1, 1, 1, 3, 2, 2, 3, 1, 3, 4, 3, 2, 2, 4))
+    expect_identical(cell_refusal(f, phrase), c(
+      cell_line(1, 1, bad), cell_line(1, 3, bad), cell_line(2, 2, bad),
+      cell_line(2, 4, bad), cell_line(3, 1, bad), "... and 2 more cells."
+    ))
+  })
+}
+
+test_that("the whole-number refusal shows a value holding braces as written", {
+  dir <- withr::local_tempdir()
+  f <- cells_file(dir, "braces.csv", "{4}", at(1, 2))
+  expect_identical(cell_refusal(f, "whole number"), cell_line(1, 2, "{4}"))
+})
+
+test_that("the whole-number refusal shows a value of spaces only as written", {
+  dir <- withr::local_tempdir()
+  f <- cells_file(dir, "spaces.csv", "  ", at(2, 1))
+  expect_identical(cell_refusal(f, "whole number"), cell_line(2, 1, "  "))
+})
 
 # AC4: an item column's name.
 
@@ -1412,4 +1533,402 @@ test_that("a two-stem file with an item_order of 1 1 is refused for the stems, n
   msg <- refusal(dir, "stemorder.csv", row, header = header)
   expect_match(msg, "more than one stem", fixed = TRUE)
   expect_no_match(msg, "item_order", fixed = TRUE)
+})
+
+# ---- The instrument cell against the item columns' stem ---------------------
+#
+# A file with item columns names one instrument in its `instrument` cells and
+# another in its item columns' stem only by a hand edit. Any response row
+# whose cell differs from the stem is refused naming the row, the cell and the
+# stem, after the stem check and before the value checks.
+
+# Read `path`, expecting the instrument refusal naming the file; returns the
+# message's bullets.
+instrument_refusal <- function(path) {
+  cnd <- rlang::catch_cnd(read_form_responses(path), "error")
+  expect_s3_class(cnd, "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, "instrument", fixed = TRUE)
+  expect_match(msg, "counted from the first row after the header", fixed = TRUE)
+  cli::ansi_strip(cnd$body)
+}
+
+# The good row with its `instrument` cell (the third field) replaced.
+with_instrument <- function(row, instrument) {
+  fields <- strsplit(row, ",", fixed = TRUE)[[1L]]
+  fields[3L] <- instrument
+  paste(fields, collapse = ",")
+}
+
+test_that("an instrument cell that differs from the stem is refused naming the row, the cell and the stem", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "other.csv"),
+                  c(two_header, with_instrument(good_row, "pid5bf")))
+  body <- instrument_refusal(f)
+  rows <- body[grepl("^Response row", body)]
+  expect_identical(rows, "Response row 1: instrument \"pid5bf\", item columns \"hitopbr\".")
+})
+
+test_that("one differing row of three is refused naming that row only", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "second.csv"), c(
+    two_header, good_row, with_instrument(good_row, "hitopsr"), good_row
+  ))
+  body <- instrument_refusal(f)
+  rows <- body[grepl("^Response row", body)]
+  expect_identical(rows, "Response row 2: instrument \"hitopsr\", item columns \"hitopbr\".")
+})
+
+test_that("a blank instrument cell differs from the stem", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "blank.csv"),
+                  c(two_header, with_instrument(good_row, "")))
+  body <- instrument_refusal(f)
+  rows <- body[grepl("^Response row", body)]
+  expect_identical(rows, "Response row 1: instrument \"\", item columns \"hitopbr\".")
+})
+
+test_that("an instrument cell with surrounding spaces differs from the stem", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "padded.csv"),
+                  c(two_header, with_instrument(good_row, " hitopbr ")))
+  body <- instrument_refusal(f)
+  rows <- body[grepl("^Response row", body)]
+  expect_identical(rows, "Response row 1: instrument \" hitopbr \", item columns \"hitopbr\".")
+})
+
+test_that("a differing instrument cell beside a non-whole item value is refused for the cell, not the value", {
+  dir <- withr::local_tempdir()
+  row <- with_instrument(sub(",1$", ",yes", good_row), "pid5bf")
+  f <- write_rows(file.path(dir, "both.csv"), c(two_header, row))
+  body <- instrument_refusal(f)
+  expect_no_match(paste(body, collapse = "\n"), "whole number", fixed = TRUE)
+  expect_no_match(paste(body, collapse = "\n"), "yes", fixed = TRUE)
+})
+
+test_that("a file with no item columns reads whatever its instrument cell holds", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "noitems.csv"), c(
+    paste(lead, collapse = ","),
+    "s,p1,anything,2026-09-20,2026-09-20T21:20:36Z"
+  ))
+  expect_no_condition(out <- read_form_responses(f))
+  expect_identical(out$instrument, "anything")
+  expect_identical(ncol(out), 8L)
+})
+
+test_that("every fixture file reads with no condition, the module and full PID-5 files among them", {
+  files <- list.files(fixture(), pattern = "[.]csv$", full.names = TRUE)
+  expect_true("responses-module-shuffled.csv" %in% basename(files))
+  expect_true("responses-pid5.csv" %in% basename(files))
+  for (f in files) {
+    expect_no_condition(out <- read_form_responses(f))
+    expect_gte(nrow(out), 1L)
+  }
+})
+
+# ---- Lines the file cannot hold: a byte that is not UTF-8 ------------------
+#
+# The file's bytes are checked before anything else reads them. A NUL byte or
+# a byte sequence that is not UTF-8 is refused naming each line, counted from
+# the file's first line, and no warning is raised on the way. The files below
+# are written byte by byte from the two-item header and the good row.
+
+# Write `bytes` to `name` under `dir` as they are. Returns the path.
+raw_file <- function(dir, name, bytes) {
+  path <- file.path(dir, name)
+  con <- file(path, open = "wb")
+  on.exit(close(con))
+  writeBin(bytes, con)
+  path
+}
+
+# The bytes of the pieces in order: a character piece as its UTF-8 bytes, a
+# raw piece as it is.
+bytes_of <- function(...) {
+  pieces <- list(...)
+  do.call(c, lapply(pieces, function(p) if (is.raw(p)) p else charToRaw(p)))
+}
+
+crlf <- "\r\n"
+latin1_e <- as.raw(0xE9)
+
+# Read `path`, expecting an unclassed refusal naming the file, and record
+# every warning raised on the way; a byte refusal raises none.
+byte_refusal <- function(path) {
+  warnings <- list()
+  cnd <- withCallingHandlers(
+    rlang::catch_cnd(read_form_responses(path), "error"),
+    warning = function(w) {
+      warnings <<- c(warnings, list(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  expect_s3_class(cnd, "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  expect_identical(length(warnings), 0L)
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, "not UTF-8", fixed = TRUE)
+  expect_match(msg, "counted from the file's first line", fixed = TRUE)
+  cli::ansi_strip(cnd$body)
+}
+
+# The line numbers the refusal's body names, in order.
+named_lines <- function(body) {
+  hits <- regmatches(body, regexpr("^Line [0-9]+", body))
+  as.integer(sub("Line ", "", hits, fixed = TRUE))
+}
+
+test_that("a Latin-1 byte in a lead cell is refused naming line 2, before the field count", {
+  dir <- withr::local_tempdir()
+  # The row is also short by one field: the byte refusal comes first.
+  f <- raw_file(dir, "lead.csv", bytes_of(
+    two_header, crlf,
+    "caf", latin1_e, ",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4", crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2L)
+  expect_no_match(paste(body, collapse = "\n"), "field", fixed = TRUE)
+})
+
+test_that("a Latin-1 byte in an item cell is refused naming line 2", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "item.csv", bytes_of(
+    two_header, crlf,
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,", latin1_e, crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2L)
+})
+
+test_that("a Latin-1 byte in the header line is refused naming line 1", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "header.csv", bytes_of(
+    sub("hitopbr_02", "hitopbr_0", two_header, fixed = TRUE), latin1_e, crlf,
+    good_row, crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 1L)
+})
+
+test_that("a Latin-1 byte on the second of two response rows names line 3 only", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "row2.csv", bytes_of(
+    two_header, crlf,
+    good_row, crlf,
+    "caf", latin1_e, ",p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 3L)
+})
+
+test_that("a lone continuation byte is refused", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "cont.csv", bytes_of(
+    two_header, crlf,
+    "s", as.raw(0x80), ",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2L)
+})
+
+test_that("a multibyte sequence cut off at the end of the file is refused", {
+  dir <- withr::local_tempdir()
+  # The first byte of a two-byte sequence, with nothing after it.
+  f <- raw_file(dir, "cut.csv", bytes_of(
+    two_header, crlf,
+    good_row, ",", as.raw(0xC3)
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2L)
+})
+
+test_that("a NUL byte on line 2 and a Latin-1 byte on line 3 are both named, each by its kind", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "both.csv", bytes_of(
+    two_header, crlf,
+    "s", as.raw(0x00), ",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf,
+    "caf", latin1_e, ",p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2:3)
+  expect_match(body[grepl("^Line 2", body)], "NUL byte", fixed = TRUE)
+  expect_match(body[grepl("^Line 3", body)], "not UTF-8", fixed = TRUE)
+})
+
+test_that("a UTF-16LE file is refused, naming its first line", {
+  dir <- withr::local_tempdir()
+  text <- paste0(two_header, crlf, good_row, crlf)
+  utf16 <- iconv(text, from = "UTF-8", to = "UTF-16LE", toRaw = TRUE)[[1L]]
+  f <- raw_file(dir, "utf16.csv", utf16)
+  body <- byte_refusal(f)
+  expect_true(1L %in% named_lines(body))
+})
+
+# ---- Lines the file cannot hold: only spaces and tabs ----------------------
+#
+# A line outside a quoted cell made only of spaces and tabs is refused naming
+# each such line, counted from the file's first line, after the byte check
+# and before the field count. The files below are written by `write_rows()`
+# with CRLF row endings unless the test says otherwise.
+
+# Read `path`, expecting the whitespace refusal naming the file; returns the
+# message's bullets.
+whitespace_refusal <- function(path) {
+  cnd <- rlang::catch_cnd(read_form_responses(path), "error")
+  expect_s3_class(cnd, "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, "only of spaces and tabs", fixed = TRUE)
+  expect_match(msg, "counted from the file's first line", fixed = TRUE)
+  cli::ansi_strip(cnd$body)
+}
+
+whitespace_lines <- list(
+  spaces = "   ",
+  tab = "\t",
+  mixed = " \t \t"
+)
+
+for (kind in names(whitespace_lines)) {
+  test_that(paste("a file of one", kind, "line is refused naming line 1"), {
+    dir <- withr::local_tempdir()
+    f <- write_rows(file.path(dir, "one.csv"), whitespace_lines[[kind]])
+    body <- whitespace_refusal(f)
+    expect_identical(named_lines(body), 1L)
+  })
+}
+
+test_that("a file of three whitespace-only lines names all three", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "three.csv"), c("  ", "\t", " \t"))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 1:3)
+})
+
+test_that("a CRLF file whose line is spaces then the row ending is refused", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "crlf.csv"), c(two_header, good_row, "  "),
+                  eol = "\r\n")
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 3L)
+})
+
+test_that("a byte-order mark followed by whitespace-only lines is refused naming them", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "bom.csv", bytes_of(
+    as.raw(c(0xEF, 0xBB, 0xBF)), "   ", crlf, "\t", crlf
+  ))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 1:2)
+})
+
+test_that("two whitespace-only lines before a valid file name lines 1 and 2, not a field count", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "before.csv"),
+                  c("   ", "\t", two_header, good_row))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 1:2)
+  expect_no_match(paste(body, collapse = "\n"), "field", fixed = TRUE)
+})
+
+test_that("a whitespace-only line after the last response row is refused naming it", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "after.csv"),
+                  c(two_header, good_row, good_row, "  "))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 4L)
+})
+
+test_that("whitespace-only lines before a header and a short row are refused as lines, not for the field count", {
+  dir <- withr::local_tempdir()
+  short <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4"
+  f <- write_rows(file.path(dir, "short.csv"), c(" ", two_header, short))
+  body <- whitespace_refusal(f)
+  expect_identical(named_lines(body), 1L)
+  expect_no_match(paste(body, collapse = "\n"), "field", fixed = TRUE)
+})
+
+test_that("a quoted study cell holding a line break, a spaces-only line and a further line break reads as one row", {
+  dir <- withr::local_tempdir()
+  broken <- "\"st\n   \nudy\",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+  f <- write_rows(file.path(dir, "quoted.csv"), c(two_header, broken))
+  expect_no_condition(out <- read_form_responses(f))
+  expect_equal(nrow(out), 1L)
+  expect_identical(out$study, "st\n   \nudy")
+  expect_identical(out$hitopbr_01, 4L)
+})
+
+test_that("an empty line before the header still reads as one row", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "empty-first.csv"), c("", two_header, good_row))
+  expect_no_condition(out <- read_form_responses(f))
+  expect_equal(nrow(out), 1L)
+  expect_identical(out$participant, "p1")
+})
+
+# A carriage return inside a quoted cell, or a stray quote that runs to the
+# end of the file, must not put the lines and the field counts out of step:
+# the read gives what it gave before the line checks, and no base R warning.
+
+cr_row <- "\"a\rb\",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+
+# Read `path`, recording every warning raised on the way; returns the
+# result or the error condition beside the warnings.
+read_recording <- function(path) {
+  warnings <- list()
+  out <- withCallingHandlers(
+    tryCatch(read_form_responses(path), error = function(e) e),
+    warning = function(w) {
+      warnings <<- c(warnings, list(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  list(out = out, warnings = warnings)
+}
+
+test_that("a quoted study cell holding a bare carriage return reads as one row with no warning", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "cr.csv"), c(two_header, cr_row), eol = "\n")
+  got <- read_recording(f)
+  expect_identical(length(got$warnings), 0L)
+  expect_s3_class(got$out, "data.frame")
+  expect_equal(nrow(got$out), 1L)
+  # `read.csv()` reads the carriage return as a line break inside the cell.
+  expect_match(got$out$study, "^a[\r\n]b$")
+})
+
+test_that("a whitespace-only line before a quoted bare carriage return names that line only", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "ws-cr.csv"), c("   ", two_header, cr_row), eol = "\n")
+  got <- read_recording(f)
+  expect_identical(length(got$warnings), 0L)
+  expect_s3_class(got$out, "error")
+  expect_match(conditionMessage(got$out), "only of spaces and tabs", fixed = TRUE)
+  expect_identical(named_lines(cli::ansi_strip(got$out$body)), 1L)
+})
+
+test_that("a stray quote that runs to the end of the file is refused for the field count with no warning", {
+  dir <- withr::local_tempdir()
+  stray <- "s,p\"1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+  f <- write_rows(file.path(dir, "stray.csv"), c(two_header, stray))
+  got <- read_recording(f)
+  expect_identical(length(got$warnings), 0L)
+  expect_s3_class(got$out, "error")
+  expect_match(conditionMessage(got$out), "field count differs", fixed = TRUE)
+})
+
+test_that("a participant cell holding a multibyte UTF-8 character reads intact", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "utf8.csv", two_items(), participant = "Zoë")
+  expect_no_condition(out <- read_form_responses(f))
+  expect_identical(out$participant, "Zoë")
+  expect_identical(out$hitopbr_01, 4L)
 })

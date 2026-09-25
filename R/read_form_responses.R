@@ -57,19 +57,26 @@
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
 #'   need separate calls. A file that does not look like one the page saved
-#'   is an error naming the file: no header row (a zero-byte file, blank
+#'   is an error naming the file: a line holding a NUL byte or a byte
+#'   sequence that is not UTF-8, a line outside a quoted cell made only of
+#'   spaces and tabs, no header row (a zero-byte file, blank
 #'   lines only, a byte-order mark only), first columns other than the five
 #'   the page writes first, a column that appears twice, a header with no
 #'   response row, a response row holding fewer or more fields than the
 #'   header, an item column whose name is not a stem of lower-case letters
 #'   and digits, an underscore and the item number (`hitopbr_01`, not `foo`
 #'   or `Hitopbr_01`), item columns of more than one stem (`hitopbr_01`
-#'   beside `pid5bf_01`), an item value that is not a whole number or is
-#'   outside R's integer range, or a date that does not parse. An error on a
-#'   row or a value names the response rows at fault, counted from the first
-#'   row after the header. The field count of a row reads `#` as data and a
-#'   quoted cell holding a line break as one cell, as the read does. A
-#'   `submitted` stamp may carry fractional seconds.
+#'   beside `pid5bf_01`), an `instrument` cell that differs from the item
+#'   columns' stem (`pid5bf` beside `hitopbr_01`), an item value that is not
+#'   a whole number or is outside R's integer range, or a date that does not
+#'   parse. An error on a line names the lines at fault, counted from the
+#'   file's first line. An error on a row names the response rows at fault,
+#'   counted from the first row after the header. An error on an item value
+#'   names each cell at fault as its response row, its column and the value
+#'   as written, the first five cells and a count of the rest. The field
+#'   count of a row reads `#` as data and a quoted cell holding a line break
+#'   as one cell, as the read does. A `submitted` stamp may carry fractional
+#'   seconds.
 #'
 #'   **Errors.** Files whose item columns differ from the first file's in
 #'   name, in count or in order stop the read under the condition class
@@ -182,6 +189,37 @@ item_order_pattern <- "^[1-9][0-9]*( [1-9][0-9]*)*$"
 # underscore and the item number (`hitopbr_01`, `pid5_001`).
 item_column_pattern <- "^[a-z0-9]+_[0-9]+$"
 
+# The bullets naming the cells of `values` (a named list of the item
+# columns' character cells) that fail `ok` (a list of logical vectors in the
+# same shape): one "x" line per cell as the response row, the column and the
+# value as written, in row then column order, the first five, and one line
+# counting the rest when there are more.
+form_cell_lines <- function(values, ok) {
+  bad <- which(!do.call(cbind, ok), arr.ind = TRUE)
+  bad <- bad[order(bad[, "row"], bad[, "col"]), , drop = FALSE]
+  shown <- seq_len(min(nrow(bad), 5L))
+  lines <- vapply(shown, function(i) {
+    r <- bad[i, "row"]
+    col <- names(values)[[bad[i, "col"]]]
+    value <- values[[col]][[r]]
+    cli::format_inline("Response row {r}, column {.field {col}}: {.val {value}}.")
+  }, character(1L))
+  more <- nrow(bad) - length(shown)
+  if (more > 0L) {
+    lines <- c(lines, cli::format_inline("... and {more} more cell{?s}."))
+  }
+  form_bullets(lines)
+}
+
+# `lines`, already formatted, as "x" bullets `cli_abort()` shows as they
+# are: it interpolates each message again, so a brace a cell value holds is
+# doubled to stand for itself.
+form_bullets <- function(lines) {
+  lines <- gsub("{", "{{", lines, fixed = TRUE)
+  lines <- gsub("}", "}}", lines, fixed = TRUE)
+  stats::setNames(lines, rep("x", length(lines)))
+}
+
 # Resolve `path` to the sorted vector of files to read.
 form_response_files <- function(path, call = rlang::caller_env()) {
   cli_assert(
@@ -221,12 +259,63 @@ form_response_files <- function(path, call = rlang::caller_env()) {
   sort(files, method = "radix")
 }
 
-# The field count of each line of `file`, as `count.fields()` gives it, over
-# a connection that strips a byte-order mark. NULL for a file with no line.
-count_form_fields <- function(file) {
-  con <- file(file, encoding = "UTF-8-BOM")
+# The lines of `file`, split on the line feed, a leading byte-order mark and
+# each line's trailing carriage return dropped, so a line's index is its
+# number counted from the file's first line. A file holding a NUL byte or a
+# byte sequence that is not UTF-8 is refused naming each such line by its
+# kind. The NUL bytes are found among the raw bytes, because no string can
+# hold one; the other bytes are checked line by line once the text is split,
+# on bytes, so no warning is raised on the way.
+form_file_lines <- function(file, call = rlang::caller_env()) {
+  bytes <- readBin(file, "raw", file.size(file))
+  # The line of a byte is one more than the count of line feeds before it.
+  newlines <- cumsum(bytes == as.raw(0x0A))
+  nul <- unique(newlines[bytes == as.raw(0x00)] + 1L)
+  bom <- as.raw(c(0xEF, 0xBB, 0xBF))
+  if (length(bytes) >= 3L && identical(bytes[1:3], bom)) {
+    bytes <- bytes[-(1:3)]
+  }
+  # Each NUL byte, its line known, stands in as a space for the split and
+  # the UTF-8 check, so a line that is not UTF-8 is named beside a NUL line.
+  bytes[bytes == as.raw(0x00)] <- as.raw(0x20)
+  lines <- character(0)
+  text <- rawToChar(bytes)
+  if (nzchar(text)) {
+    lines <- strsplit(text, "\n", fixed = TRUE, useBytes = TRUE)[[1L]]
+    lines <- sub("\r$", "", lines, useBytes = TRUE)
+  }
+  bad <- sort(unique(c(nul, which(!validUTF8(lines)))))
+  if (length(bad) > 0L) {
+    found <- vapply(bad, function(n) {
+      kind <- if (n %in% nul) "a NUL byte" else "a byte sequence that is not UTF-8"
+      cli::format_inline("Line {n} holds {kind}.")
+    }, character(1L))
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds a NUL byte or a line that is not UTF-8.",
+        stats::setNames(found, rep("x", length(found))),
+        "i" = "The line is counted from the file's first line."
+      ),
+      call = call
+    )
+  }
+  lines
+}
+
+# The field count of each of `lines`, as `count.fields()` gives it with no
+# line skipped, so the counts align with the lines: an empty line counts 0, a
+# line inside a quoted cell NA. A carriage return inside a line, which the
+# connection would read as a line end, stands in as a space, so no line is
+# counted twice. A quote left open to the end of the file adds one count
+# past the last line, the incomplete record's. NULL for a file with no line.
+count_form_fields <- function(lines) {
+  if (length(lines) == 0L) {
+    return(NULL)
+  }
+  con <- textConnection(gsub("\r", " ", lines, fixed = TRUE))
   on.exit(close(con))
-  utils::count.fields(con, sep = ",", quote = "\"", comment.char = "")
+  utils::count.fields(con, sep = ",", quote = "\"", comment.char = "",
+                      blank.lines.skip = FALSE)
 }
 
 # Read one file into a data frame with typed columns, one row per response
@@ -237,10 +326,32 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   # extra field wrapped onto a new row). `#` is data and a quoted line break is one
   # record, as `read.csv()` reads them: `count.fields()` gives NA on the line
   # a quoted record starts on and the record's count on its last line, so
-  # the NA entries fold away. The connection strips a byte-order mark as
-  # `read.csv()` does below. A file with nothing to count has no header.
-  counts <- count_form_fields(file)
-  records <- counts[!is.na(counts)]
+  # the NA entries fold away, and an empty line counts 0 and folds away as
+  # `read.csv()` skips it. The lines come with the byte-order mark stripped,
+  # as `read.csv()` strips it below. A file with nothing to count has no
+  # header.
+  lines <- form_file_lines(file, call = call)
+  counts <- count_form_fields(lines)
+
+  # A line of spaces and tabs alone, outside a quoted cell, is a hand edit
+  # the page never writes, and `read.csv()` would read it as a row of one
+  # blank field. A line inside a quoted cell counts NA, so it is left alone;
+  # the counts are read by line, a count past the last line dropped.
+  blank <- grepl("^[ \t]+$", lines) & !is.na(counts[seq_along(lines)])
+  if (any(blank)) {
+    found <- vapply(which(blank), function(n) {
+      cli::format_inline("Line {n}.")
+    }, character(1L))
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds a line made only of spaces and tabs.",
+        stats::setNames(found, rep("x", length(found))),
+        "i" = "The line is counted from the file's first line."
+      ),
+      call = call
+    )
+  }
+  records <- counts[!is.na(counts) & counts != 0L]
   if (length(records) == 0L) {
     cli::cli_abort(
       c(
@@ -347,16 +458,34 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     )
   }
 
+  # The page writes the stem into every `instrument` cell, so a cell that
+  # differs from it, blank or padded included, is a hand edit that would
+  # leave the column disagreeing with the items beside it.
+  if (length(stems) == 1L) {
+    differs <- raw$instrument != stems
+    if (any(differs)) {
+      found <- vapply(which(differs), function(r) {
+        cell <- raw$instrument[[r]]
+        cli::format_inline("Response row {r}: instrument {.val {cell}}, item columns {.val {stems}}.")
+      }, character(1L))
+      cli::cli_abort(
+        c(
+          "{.file {file}} holds an {.field instrument} cell that differs from the item columns' stem.",
+          form_bullets(found),
+          "i" = "The row is counted from the first row after the header."
+        ),
+        call = call
+      )
+    }
+  }
+
   values <- lapply(raw[item_cols], blank_to_na)
   whole <- lapply(values, function(v) is.na(v) | grepl("^-?[0-9]+$", v))
-  bad <- item_cols[!vapply(whole, all, logical(1L))]
-  if (length(bad) > 0L) {
-    rows <- which(!Reduce(`&`, whole, init = rep(TRUE, nrow(raw))))
+  if (!all(unlist(whole))) {
     cli::cli_abort(
       c(
         "{.file {file}} holds an item value that is not a whole number.",
-        "x" = "Column{?s} {.field {bad}}.",
-        "x" = "Response {cli::qty(length(rows))}row{?s} {rows}.",
+        form_cell_lines(values, whole),
         "i" = "The row is counted from the first row after the header."
       ),
       call = call
@@ -367,14 +496,11 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   fits <- lapply(seq_along(item_cols), function(i) {
     is.na(values[[i]]) | !is.na(ints[[i]])
   })
-  wide <- item_cols[!vapply(fits, all, logical(1L))]
-  if (length(wide) > 0L) {
-    rows <- which(!Reduce(`&`, fits, init = rep(TRUE, nrow(raw))))
+  if (!all(unlist(fits))) {
     cli::cli_abort(
       c(
         "{.file {file}} holds an item value outside the integer range.",
-        "x" = "Column{?s} {.field {wide}}.",
-        "x" = "Response {cli::qty(length(rows))}row{?s} {rows}.",
+        form_cell_lines(values, fits),
         "i" = "The row is counted from the first row after the header."
       ),
       call = call
