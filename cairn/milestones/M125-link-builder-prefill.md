@@ -1,6 +1,6 @@
 # M125: hitop-form's `link.html` fills its fields from a study link's `c` parameter, so a link can be edited and another page can hand a module over
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -42,7 +42,7 @@ Make hitop-form's link builder read the `?c=` parameter the form page already re
 - [x] T1: In `link.html` (`link.html:151-160`, the module script) read `c` from `location.search` on load, decode it with `decodeConfig()` (`form.js:62`), fill each control, call the kind-group toggle (`link.html:170-175`) after setting the store kind, and write the AC3 refusals into `#err`. The instrument check reads the select's own options.
 - [x] T2: Add the three-step list above the form, the builder link in the module hint (`link.html:84-87`), the tutorial link, and an up-nav link to the package site in the builder's shape (`hitop-builder/index.html:437-440`).
 - [x] T3: Tests: the AC1 round trips, the AC2 comparisons against a no-`c` load, the seven AC3 loads, the AC4 hrefs and order in `tests/link.spec.js`, and the AC5 request window in `tests/network.spec.js`. Written red before T1 and T2 land; this task plants a defect against each new assertion class and runs the full suite.
-- [ ] T4: The README paragraph; run the suite; push the hitop-form branch and read its push-triggered test run (the PR opens at review).
+- [x] T4: The README paragraph; run the suite; push the hitop-form branch and read its push-triggered test run (the PR opens at review).
 
 ## Work log
 
@@ -57,6 +57,8 @@ Make hitop-form's link builder read the `?c=` parameter the form page already re
 - 2026-09-24: T3: nine plants on `link.html`, each red on its own assertion then reverted, nothing committed: the study written into the participant field (L16 value); `prefill()` run after `showKind()` (L16 Supabase group hidden); the message without "c parameter" (L18); the plain-object check removed (L18 `null`, `#err` empty); the shuffle box checked unless `false` (L17 deep-equal); an export fetch on prefill (N8, one extra URL); the tutorial href replaced (L19 count 0); steps two and three swapped (L19 item text); the list moved below the form (L19 bounding box). A sed plant that reworded step 2 without moving "where the responses go" stayed green, as it should. Full suite started after the plants.
 - 2026-09-24: T4: README paragraph under "Make a study link" and the link and network test rows (hitop-form 2ce1a33); NEWS entry in hitop. hitop-form `npx playwright test` 215 passed (1.3 min) on the code head 9daa8cf.
 - 2026-09-24: claim audit: 60 claims read, 10 corrected — NEWS.md (hitop), README.md, link.html, tests/link.spec.js, tests/network.spec.js (hitop-form). The ten: "every field left empty" on a refused `c` at two sites (the instrument select keeps its first option; now "no field is filled from it"); "read as the form page reads it" (only the decoding is shared); the L16 header's field-group and participant counts; "seven loads" at two sites (six bad values of `c` plus the no-`c` load); N8's comment naming L16's config and a build the test never runs. Re-read once: all hold. Left: "up to the first network idle" (the set is read just after it), "for each store kind" (the file choice is a kind in the builder's words), the up-nav link unmentioned in NEWS and README.
+- 2026-09-24: correction to the gate's third premise: hitop-form's `tests.yml` runs on `push` only for `branches: [main]` (its header comment says "a push to main"), so the branch push (hitop-form 2245410, on origin) started no run, and `gh run list --branch` is empty. AC6's CI evidence is the pull request's run, read at review as the gate's second option described. T4 done otherwise.
+- 2026-09-24: completion: hitop-form `npx playwright test` 215 passed on 9daa8cf, the later commits touching README and comments only (`node --check form.js` clean); hitop `devtools::test()` FAIL 0 WARN 0 SKIP 15 PASS 20375 on the NEWS change. Status → review. hitop-form head 2245410, pushed, no PR.
 
 ## Decisions
 
