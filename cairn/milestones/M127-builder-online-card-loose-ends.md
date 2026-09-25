@@ -61,6 +61,8 @@ Close the six loose ends M126's review deferred on the builder's Online form car
 - 2026-09-25: claim audit: 45 claims read, 7 corrected — hitop-builder README.md, index.html, tests/smoke.spec.js, tests/plants.mjs (a fresh-context [O] reader over `git diff main` in that repo; this repo's diff outside `cairn/` adds no lines, the prose all lives there). Corrected: the README's status-after-removal sentence (a card press names the chosen format, a tick returns "Ready."), the `removeLinkBuilder()` comment's caller list (showLinkBuilder() added), the `saveOnline()` comment on which read catches a wrong status, the `readLinkState()` comment on how the two anchor reads match, two smoke comments naming "the second save" where a later save is meant, and plant (w)'s comment naming the first save's link where the A16 save's is there. The re-read found one clause over-reaching ("as every card press does", false after a failed build) and it was trimmed. One stale comment outside the added lines (the mid-tick save's link "the one the Word build starts with") was corrected in the same commit. hitop-builder commit b24118f (plant (w)'s comment goes with T3's commit).
 - 2026-09-25: T3 done, hitop-builder commit 9dbdd99. Plant matrix: the unplanted copy passed, 27 of 27 plants red, every one of the 19 assertions failed by at least one plant. Per plant as planned: (o) A13, A15; (u) A16; (v) A17; (w) A15, A19; (x) A18; (x2) A18; (y) A18, A19; (z) A19. The matrix ran on scratch copies, so no restore was needed (LESSONS M118 checked). The run was started by an import in a check script rather than `npm run plants`, on the same files; nothing else differs.
 - 2026-09-25: T5 done: branch pushed, hitop-builder PR #23 opened, its smoke job green in 57 s. `npm run prose` runs (18 writer sites, 166 passages). This repo changes tracking only, so the r-package verify slot has no code to run against. Status set to review.
+- 2026-09-25: review: every criterion evidenced fresh and ticked; gate green; three lenses returned 13 findings, 11 fixed now in hitop-builder, one noted, one rejected (Review section). Correction to T3's text: plant (z) fails A19, not A15, as the matrix shows and the plant's comment says.
+- 2026-09-25: step-7 approval: m127-online-card-loose-ends approved for merge
 
 ## Decisions
 
@@ -77,4 +79,20 @@ Evidence gathered 2026-09-25 by /milestone-review on hitop-builder commit 9dbdd9
 
 Consistency gate: `cairn_validate.py` all checks passed, 24 advisory warnings, none new. No principle changed, so no impact report. r-package slot: `devtools::document()` no diff; README.Rmd untouched; `pkgdown::check_pkgdown()` not applicable, no export changed; NEWS.md: no entry, this repo ships no user-visible change (the builder is a separate site with its own README); `devtools::check()` 0 errors, 0 warnings, 0 notes in 4m 7s.
 
-Independent review, three lenses over the hitop-builder diff. Prior-review lens: no prior-review evidence regressed, the PR-comment probe returned an empty list, 0 findings. Blame lens: 2 findings. Diff-bug lens: 11 findings. Findings and triage are listed below after the gate.
+Independent review, three lenses over the hitop-builder diff. Prior-review lens: no prior-review evidence regressed, the PR-comment probe returned an empty list, 0 findings. Blame lens: 2 findings. Diff-bug lens: 11 findings. Triage at the 2026-09-25 gate, the recommended triage accepted:
+
+- F1 (diff-bug, first): the A17 wait on the exact "Ready." made A19's mid-tick read unfalsifiable and plant (v) fail only by a 240 s timeout. Fix now: the wait takes `/^Ready\./`, (v) then fails A17's anchor read and A19.
+- F2: with a prefix wait, the status before the click already matches, so `saveOnline()` leaned on download() writing "Building…" synchronously. Fix now: the save's download event is awaited before the status wait, in `saveOnline()` and the A16 save.
+- F3: the "Ticking every scale" section, now pointed at, counted "the other two formats" and never named the online file. Fix now in part: "the other formats". The file-name half rejected: a code token there would add the passage to the compare list AC5 pins, and the online form section already names the file.
+- F4: A18's before-press reads assert `hidden: false`, a visibility read after a save, which Scope "Out" declined. Noted, kept: AC1 requires the attribute read after the press, and the before-read shows the selector finds the paragraph (LESSONS M119).
+- F5: T3's text says plant (z) fails A15; the matrix shows A19. Fix now as a work-log correction; the task line stands as written at planning.
+- F6: A16's comment said download() takes the link out "before anything else". Fix now: "synchronously, before its first await, right after it turns the controls off".
+- F7: the README omitted that an Online re-press writes "Ready. Online form chosen." over the saved-file status. Fix now.
+- F8: the README's "Verified 2026-09-25" sentence followed the new sentences and read as covering them. Fix now: moved up beside the link-builder sentences; the new paragraph says the smoke test checks it.
+- F9: A16's inline evaluate duplicated `readLinkState()`'s anchor filter. Fix now: `readLinkState()` returns the button state too and serves both A16 reads; A18's expectations carry `building: false`.
+- F10: plant (o)'s comment said "on every save". Fix now: "on every online save".
+- F11: the spec header said the test reads no page internals. Fix now: "reads only the page's document, no script state".
+- F12 (blame, first): the read that no anchor remains after a completed Word build was deleted with nothing replacing it. Rejected: the plan gate chose re-aiming A16 over that read; `showLinkBuilder()` runs only in the online branch and A18 shows the card press removes the link.
+- F13 (blame): the comment before the build-start `removeLinkBuilder()` did not say the card-press removal now does the work for every format but online. Fix now: a clause added.
+
+Re-verification after the fixes: recorded below.
