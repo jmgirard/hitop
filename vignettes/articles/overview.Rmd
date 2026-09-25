@@ -65,7 +65,7 @@ below, then head to its page to download ready-to-use files or explore the
 <h3 class="mt-4 mb-3">From instrument to scores</h3>
 <ol class="hitop-steps">
   <li><strong>Choose an instrument</strong> from the cards above. Each instrument's page holds its downloads and links to the package's tools for it.</li>
-  <li><strong>Choose a route</strong> on that page: a printable Word form, a <a href="../articles/import-instructions.html">Qualtrics or REDCap import</a>, or an <a href="../articles/online-collection.html">online form</a> opened from a study link.</li>
+  <li><strong>Choose a route</strong> on that page: a printable Word form, a <a href="../articles/import-instructions.html">Qualtrics or REDCap import</a>, or, on every page but the HiTOP-HSUM's, an <a href="../articles/online-collection.html">online form</a> opened from a study link.</li>
   <li><strong>Collect responses</strong>. Paper and survey-platform responses arrive as your own data; an online form <a href="../articles/online-collection.html#make-the-study-link">sends each participant's responses</a> to the store named in the study link, or saves them as a file.</li>
   <li><strong>Read and score</strong> the data in R: <a href="../reference/read_form_responses.html"><code>read_form_responses()</code></a> reads an online form's file or table, and the <a href="../articles/hitopsr_scoring.html">HiTOP-SR</a>, <a href="../articles/hitopbr_scoring.html">HiTOP-BR</a> and <a href="../articles/pid5_scoring.html">PID-5</a> tutorials show the scoring functions.</li>
 </ol>

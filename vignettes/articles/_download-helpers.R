@@ -153,7 +153,7 @@ download_cards <- function(instrument, cards) {
   )
 }
 
-# Render the online-form strip under the card row: a title, one sentence, a
+# Render the online-form strip under the card row: a title, two sentences, a
 # button to the link builder with the instrument filled in, the JSON export
 # (a manifest-backed download button, badge included) and a quiet link to
 # the online-collection article. `stem` is the page's file stem

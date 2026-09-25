@@ -1,6 +1,6 @@
 # M124: The instrument download pages keep three cards per row and gain an online-form strip, and the site lists the steps from instrument to scores
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M125
 - **Driving RR:** —
@@ -57,6 +57,8 @@ Return each download page's card row to three cards, give the online route a str
 - 2026-09-25: T3 done. `test-download-pages.R`: five tests, 89 expectations, each page's `downloads` chunk purled and evaluated against the sourced helpers, `c` decoded back to the exact `{"instrument":"<stem>"}` text; the AC3 test also refuses a `../downloads/` href outside the page's manifest rows. `test-artifacts.R`'s download-attribute test renders the strip for each JSON row. Nine plants red, one each: wrong stem in the strip call, the pid5 page as on main, the menu entry above the module builder (first caught as an error, the test then reworked to fail on it), the menu href on the form page, a dead step link, steps swapped, a plain JSON anchor (both test files), the strip before the row, a strip on the HSUM page. Clean run 89 pass. Checkpointed while the full suite, `build_site()` and `check()` ran in the background; their results follow.
 - 2026-09-25: minor amendment: T4's "open the PR and read its CI" clause is review-owned (the PR is opened at `/milestone-review` step 8 after the user's approval, D-138), so T4 ends at the NEWS entry and the three checks.
 - 2026-09-25: T3 ticked on the full suite's clean run (FAIL 0, the same 15 merge-base skips). T4 done: NEWS entry under New features; `check_pkgdown()` no problems; `build_site()` finished, the six download pages and the overview rendered (built pages hold 3 cards each, one strip on five and none on HSUM, the overview `<ol>` with 4 items, the tutorial's `make-the-study-link` id present); `check()` 0 errors, 0 warnings, 0 notes. Browser pane on the built PID-5-SF page at 1280 px in both themes: three cards in one row, the bordered strip under it with the primary button, the badged JSON button and the quiet link; at 375 px the strip measures 351 px wide. A stale cached `extra.css` in the pane first hid the strip's border; a cache-bypassed load showed it.
+- 2026-09-25: claim audit: 50 claims read, 2 corrected — vignettes/articles/_download-helpers.R (the strip comment said one sentence; the paragraph has two), vignettes/articles/overview.Rmd (step 2 offered the online form on every page; the HSUM page has none). Fresh [O] reader; each correction re-read once by the same reader.
+- 2026-09-25: after the two corrections, `test-download-pages.R` (89), `test-artifacts.R` (137) and `test-overview.R` (9) pass and the overview article rebuilds with the corrected step. Status set to review; no PR yet.
 
 ## Decisions
 
