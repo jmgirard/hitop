@@ -1,17 +1,16 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-25 (70th pass, M125 done): row archived, M121 pruned, one candidate row (three link-builder loose ends), one lesson written and one trimmed to hold the LESSONS byte budget. validate green._
+_Last hygiene check: 2026-09-25 (71st pass, M124 done): row archived, M122 pruned, no candidate row, no lesson (LESSONS at its byte budget; the check-skip fact lives in D-074). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M122 | hitop-form's "Save the file" button confirms each press in a status message a screen reader announces | done | — | normal | milestones/archive/M122-form-save-status.md |
 | M123 | `read_form_responses()` refuses a whitespace-only line, a byte that is not UTF-8, and an `instrument` cell that differs from the item stem, and names each cell in its value refusals | done | — | normal | milestones/archive/M123-form-reader-lines.md |
 | M125 | hitop-form's `link.html` fills its fields from a study link's `c` parameter, refuses one it cannot read by name, and links the module builder and the tutorial from a three-step list | done | — | normal | milestones/archive/M125-link-builder-prefill.md |
 | M126 | The module builder's format step gains an "Online form" card that saves the `write_module()` scoring file and links to the link builder with the module filled in | planned | M125 | normal | milestones/M126-builder-online-card.md |
-| M124 | The instrument download pages keep three cards per row and gain an online-form strip holding the JSON export, the Instruments menu reaches the link builder, and the overview page lists the steps from instrument to scores | review | M125 | normal | milestones/M124-site-online-strip.md |
+| M124 | The instrument download pages keep three cards per row and gain an online-form strip holding the JSON export, the Instruments menu reaches the link builder, and the overview page lists the steps from instrument to scores | done | M125 | normal | milestones/archive/M124-site-online-strip.md |
 
 ## Candidates
 
