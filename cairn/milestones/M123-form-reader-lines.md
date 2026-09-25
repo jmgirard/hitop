@@ -1,13 +1,13 @@
 # M123: `read_form_responses()` refuses a whitespace-only line, a byte that is not UTF-8, and an `instrument` cell that differs from the item stem, and names each cell in its value refusals
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the deliverable is an exported function's refusals and their documentation
-- **Branch/PR:** —
+- **Branch/PR:** `m123-form-reader-lines`
 
 ## Goal
 
@@ -39,7 +39,7 @@ A hand-edited or mis-encoded hitop-form file stops at `read_form_responses()` wi
 
 ## Tasks
 
-- [ ] T1: Tests first for AC2, then a helper `form_file_lines()` that reads the file's bytes with `readBin()`, refuses any NUL byte by line, converts with `rawToChar()`, splits on `\n`, drops a leading byte-order mark and a trailing `\r`, and refuses the lines `validUTF8()` rejects. `read_form_response_file()` calls it before `count_form_fields()` (`R/read_form_responses.R:242`). Message: "{file} holds a line that is not UTF-8.", one "x" line per line number, and "i" "The line is counted from the file's first line." Assert no warning through a `withCallingHandlers()` recorder, not `expect_no_warning()` (LESSONS M032).
+- [x] T1: Tests first for AC2, then a helper `form_file_lines()` that reads the file's bytes with `readBin()`, refuses any NUL byte by line, converts with `rawToChar()`, splits on `\n`, drops a leading byte-order mark and a trailing `\r`, and refuses the lines `validUTF8()` rejects. `read_form_response_file()` calls it before `count_form_fields()` (`R/read_form_responses.R:242`). Message: "{file} holds a line that is not UTF-8.", one "x" line per line number, and "i" "The line is counted from the file's first line." Assert no warning through a `withCallingHandlers()` recorder, not `expect_no_warning()` (LESSONS M032).
 - [ ] T2: Tests first for AC1, then the whitespace refusal over T1's lines: a line matching `^[ \t]+$` whose count from `count.fields(..., blank.lines.skip = FALSE)` is not `NA` (a line inside a quoted cell is `NA`, an empty line 0, so counts align with lines). Refused after T1's check and before the field-count check, same message shape and line convention.
 - [ ] T3: Tests first for AC3, then rewrite the two refusals at `R/read_form_responses.R:353-382`: one "x" line per cell, "Response row {r}, column {col}: {.val {value}}", ordered by row then column, `head(, 5L)`, then "... and {n} more cell{?s}." when more than five. Read the lines through `cnd$body` (LESSONS M096).
 - [ ] T4: Copy `responses-module-shuffled.csv` and `responses-pid5.csv` from `hitop-form/tests/fixtures/` into `tests/testthat/fixtures/` and list them in the fixtures README. Tests first for AC4, then the instrument check after the stem check (`R/read_form_responses.R:348`), guarded on `length(stems) == 1L`: rows where `raw$instrument != stems` (a blank or padded cell differs), one "x" line per row "Response row {r}: instrument {.val {value}}, item columns {.val {stem}}.", and the row-counting note.
@@ -54,6 +54,7 @@ A hand-edited or mis-encoded hitop-form file stops at `read_form_responses()` wi
 - 2026-09-24: plan gate chose five named cells plus a count over every cell uncapped and over the two lists plus one cell because it matches D-068's naming and keeps a large export readable, and M121's review rejected the uncapped form; falsified by a user needing the sixth cell and beyond named.
 - 2026-09-24: plan gate chose refusing an instrument cell that differs from the stem over a warning and over leaving it unchecked because the column would otherwise disagree with the items beside it; falsified by a page or store writing a cell other than the stem in normal use.
 - 2026-09-24: plan gate chose file line numbers from line 1 for the two line-level refusals over response-row numbers because those refusals can fire before a header is found; falsified by a reader confusing the two counts in a report.
+- 2026-09-24: /milestone-implement started on `m123-form-reader-lines`; no open question at the gate. T1 done: eight AC2 tests red on the old reader (two of them recorded the two base R warnings the old path raised), green after `form_file_lines()`; `count_form_fields()` now counts the lines with `blank.lines.skip = FALSE` and the record logic drops the 0 counts.
 
 ## Decisions
 

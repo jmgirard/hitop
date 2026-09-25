@@ -1413,3 +1413,138 @@ test_that("a two-stem file with an item_order of 1 1 is refused for the stems, n
   expect_match(msg, "more than one stem", fixed = TRUE)
   expect_no_match(msg, "item_order", fixed = TRUE)
 })
+
+# ---- Lines the file cannot hold: a byte that is not UTF-8 ------------------
+#
+# The file's bytes are checked before anything else reads them. A NUL byte or
+# a byte sequence that is not UTF-8 is refused naming each line, counted from
+# the file's first line, and no warning is raised on the way. The files below
+# are written byte by byte from the two-item header and the good row.
+
+# Write `bytes` to `name` under `dir` as they are. Returns the path.
+raw_file <- function(dir, name, bytes) {
+  path <- file.path(dir, name)
+  con <- file(path, open = "wb")
+  on.exit(close(con))
+  writeBin(bytes, con)
+  path
+}
+
+# The bytes of the pieces in order: a character piece as its UTF-8 bytes, a
+# raw piece as it is.
+bytes_of <- function(...) {
+  pieces <- list(...)
+  do.call(c, lapply(pieces, function(p) if (is.raw(p)) p else charToRaw(p)))
+}
+
+crlf <- "\r\n"
+latin1_e <- as.raw(0xE9)
+
+# Read `path`, expecting an unclassed refusal naming the file, and record
+# every warning raised on the way; a byte refusal raises none.
+byte_refusal <- function(path) {
+  warnings <- list()
+  cnd <- withCallingHandlers(
+    rlang::catch_cnd(read_form_responses(path), "error"),
+    warning = function(w) {
+      warnings <<- c(warnings, list(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  expect_s3_class(cnd, "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  expect_identical(length(warnings), 0L)
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, "not UTF-8", fixed = TRUE)
+  expect_match(msg, "counted from the file's first line", fixed = TRUE)
+  cli::ansi_strip(cnd$body)
+}
+
+# The line numbers the refusal's body names, in order.
+named_lines <- function(body) {
+  hits <- regmatches(body, regexpr("^Line [0-9]+", body))
+  as.integer(sub("Line ", "", hits, fixed = TRUE))
+}
+
+test_that("a Latin-1 byte in a lead cell is refused naming line 2, before the field count", {
+  dir <- withr::local_tempdir()
+  # The row is also short by one field: the byte refusal comes first.
+  f <- raw_file(dir, "lead.csv", bytes_of(
+    two_header, crlf,
+    "caf", latin1_e, ",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4", crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2L)
+  expect_no_match(paste(body, collapse = "\n"), "field", fixed = TRUE)
+})
+
+test_that("a Latin-1 byte in an item cell is refused naming line 2", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "item.csv", bytes_of(
+    two_header, crlf,
+    "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,", latin1_e, crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2L)
+})
+
+test_that("a Latin-1 byte in the header line is refused naming line 1", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "header.csv", bytes_of(
+    sub("hitopbr_02", "hitopbr_0", two_header, fixed = TRUE), latin1_e, crlf,
+    good_row, crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 1L)
+})
+
+test_that("a Latin-1 byte on the second of two response rows names line 3 only", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "row2.csv", bytes_of(
+    two_header, crlf,
+    good_row, crlf,
+    "caf", latin1_e, ",p2,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 3L)
+})
+
+test_that("a lone continuation byte is refused", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "cont.csv", bytes_of(
+    two_header, crlf,
+    "s", as.raw(0x80), ",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2L)
+})
+
+test_that("a multibyte sequence cut off at the end of the file is refused", {
+  dir <- withr::local_tempdir()
+  # The first byte of a two-byte sequence, with nothing after it.
+  f <- raw_file(dir, "cut.csv", bytes_of(
+    two_header, crlf,
+    good_row, ",", as.raw(0xC3)
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2L)
+})
+
+test_that("a UTF-16LE file is refused, naming its first line", {
+  dir <- withr::local_tempdir()
+  text <- paste0(two_header, crlf, good_row, crlf)
+  utf16 <- iconv(text, from = "UTF-8", to = "UTF-16LE", toRaw = TRUE)[[1L]]
+  f <- raw_file(dir, "utf16.csv", utf16)
+  body <- byte_refusal(f)
+  expect_true(1L %in% named_lines(body))
+})
+
+test_that("a participant cell holding a multibyte UTF-8 character reads intact", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "utf8.csv", two_items(), participant = "Zoë")
+  expect_no_condition(out <- read_form_responses(f))
+  expect_identical(out$participant, "Zoë")
+  expect_identical(out$hitopbr_01, 4L)
+})

@@ -221,12 +221,60 @@ form_response_files <- function(path, call = rlang::caller_env()) {
   sort(files, method = "radix")
 }
 
-# The field count of each line of `file`, as `count.fields()` gives it, over
-# a connection that strips a byte-order mark. NULL for a file with no line.
-count_form_fields <- function(file) {
-  con <- file(file, encoding = "UTF-8-BOM")
+# The lines of `file`, split on the line feed, a leading byte-order mark and
+# each line's trailing carriage return dropped, so a line's index is its
+# number counted from the file's first line. A file holding a NUL byte or a
+# byte sequence that is not UTF-8 is refused naming each such line. The NUL
+# bytes are found among the raw bytes, because no string can hold one; the
+# other bytes are checked line by line once the text is split, on bytes, so
+# no warning is raised on the way.
+form_file_lines <- function(file, call = rlang::caller_env()) {
+  bytes <- readBin(file, "raw", file.size(file))
+  # The line of a byte is one more than the count of line feeds before it.
+  newlines <- cumsum(bytes == as.raw(0x0A))
+  nul <- unique(newlines[bytes == as.raw(0x00)] + 1L)
+  bom <- as.raw(c(0xEF, 0xBB, 0xBF))
+  if (length(bytes) >= 3L && identical(bytes[1:3], bom)) {
+    bytes <- bytes[-(1:3)]
+  }
+  lines <- character(0)
+  bad <- nul
+  if (length(nul) == 0L) {
+    text <- rawToChar(bytes)
+    if (nzchar(text)) {
+      lines <- strsplit(text, "\n", fixed = TRUE, useBytes = TRUE)[[1L]]
+      lines <- sub("\r$", "", lines, useBytes = TRUE)
+    }
+    bad <- which(!validUTF8(lines))
+  }
+  if (length(bad) > 0L) {
+    kind <- if (length(nul) > 0L) "a NUL byte" else "a byte sequence that is not UTF-8"
+    found <- vapply(sort(bad), function(n) {
+      cli::format_inline("Line {n} holds {kind}.")
+    }, character(1L))
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds a line that is not UTF-8.",
+        stats::setNames(found, rep("x", length(found))),
+        "i" = "The line is counted from the file's first line."
+      ),
+      call = call
+    )
+  }
+  lines
+}
+
+# The field count of each of `lines`, as `count.fields()` gives it with no
+# line skipped, so the counts align with the lines: an empty line counts 0, a
+# line inside a quoted cell NA. NULL for a file with no line.
+count_form_fields <- function(lines) {
+  if (length(lines) == 0L) {
+    return(NULL)
+  }
+  con <- textConnection(lines)
   on.exit(close(con))
-  utils::count.fields(con, sep = ",", quote = "\"", comment.char = "")
+  utils::count.fields(con, sep = ",", quote = "\"", comment.char = "",
+                      blank.lines.skip = FALSE)
 }
 
 # Read one file into a data frame with typed columns, one row per response
@@ -237,10 +285,13 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   # extra field wrapped onto a new row). `#` is data and a quoted line break is one
   # record, as `read.csv()` reads them: `count.fields()` gives NA on the line
   # a quoted record starts on and the record's count on its last line, so
-  # the NA entries fold away. The connection strips a byte-order mark as
-  # `read.csv()` does below. A file with nothing to count has no header.
-  counts <- count_form_fields(file)
-  records <- counts[!is.na(counts)]
+  # the NA entries fold away, and an empty line counts 0 and folds away as
+  # `read.csv()` skips it. The lines come with the byte-order mark stripped,
+  # as `read.csv()` strips it below. A file with nothing to count has no
+  # header.
+  lines <- form_file_lines(file, call = call)
+  counts <- count_form_fields(lines)
+  records <- counts[!is.na(counts) & counts != 0L]
   if (length(records) == 0L) {
     cli::cli_abort(
       c(
