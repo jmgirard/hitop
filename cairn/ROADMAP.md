@@ -1,19 +1,19 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-24 (68th pass, M122 done): row archived, M119 pruned, no candidate row or lesson (LESSONS at 19,980 bytes; the empty-live-region CSS trap is a comment beside the rule). validate green._
+_Last hygiene check: 2026-09-24 (69th pass, M123 done): row archived, M120 pruned, one candidate row (three reader loose ends), two lessons written and two merged to hold the LESSONS byte budget. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M120 | hitop-form's saved-file screens carry a "Save the file" button that saves the same file again from the participant's own click | done | — | normal | milestones/archive/M120-form-save-button.md |
 | M121 | `read_form_responses()` and hitop-form refuse a malformed file by name: a short or long row, an empty file, a value refusal naming no row, an unnumbered or second-stem item column, and a descriptor whose items are not ascending | done | — | normal | milestones/archive/M121-form-file-refusals.md |
 | M122 | hitop-form's "Save the file" button confirms each press in a status message a screen reader announces | done | — | normal | milestones/archive/M122-form-save-status.md |
-| M123 | `read_form_responses()` refuses a whitespace-only line, a byte that is not UTF-8, and an `instrument` cell that differs from the item stem, and names each cell in its value refusals | review | — | normal | milestones/M123-form-reader-lines.md |
+| M123 | `read_form_responses()` refuses a whitespace-only line, a byte that is not UTF-8, and an `instrument` cell that differs from the item stem, and names each cell in its value refusals | done | — | normal | milestones/archive/M123-form-reader-lines.md |
 
 ## Candidates
 
+- Three `read_form_responses()` loose ends M123's review deferred. The byte, whitespace-line and instrument refusals print one bullet per line or row with no cap, where the value refusals show five and a count (a Latin-1 or UTF-16 export names every line). A UTF-16LE file names one line past its last, the NUL after each line feed landing on the next line. The mismatch bullets (`R/read_form_responses.R`, the `hitop_form_responses_mismatch` message) are interpolated twice and break on a path holding a brace. Promote on a user report, or when the reader's refusals are next edited — added 2026-09-24 — lineage: M123 (review F2, F4, F6)
 - hitop-form under another recruiter's own parameters (SONA, CloudResearch), whose return URL M118's `complete` field already takes. Promote when a study recruits through such a panel — added 2026-09-23, narrowed 2026-09-24 (the completion code per outcome and the two M118 review findings graduated to M119) — lineage: M118 (plan gate)
 - In-browser encryption of each posted row to a public key carried in the study link, so a store vendor holds ciphertext only and any store becomes usable for identifiable data regardless of vendor agreements. Needs WebCrypto in hitop-form, a decryption helper in the package (a Suggests decision, {openssl} or {sodium}, at its own gate), and key handling the researcher must get right. Promote when a study needs identifiable data in a vendor store — added 2026-09-23 — lineage: M111 (plan gate)
 - Four item-column refusal gaps M110 deferred. A value mixing visible and invisible characters (`"1"` plus a non-breaking space) shows as `"1 "` and looks valid, because code points show only for all-invisible values (out of scope at the AC5 amendment gate). An SPSS character column declaring `""` missing is refused although blanks score as `NA`. A pre-2.0 haven `labelled_spss` column passes the check, so its codes score as answers. Invalid UTF-8 (`"\xa0"`) stops with a base R error, not `hitop_nonnumeric_items`. Promote on a user report of any one — added 2026-09-22 and 2026-09-23, merged 2026-09-23 — lineage: M110 (AC5 re-audit; review F2, F4, F6)
