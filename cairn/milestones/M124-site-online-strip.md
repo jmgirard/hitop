@@ -1,13 +1,13 @@
 # M124: The instrument download pages keep three cards per row and gain an online-form strip, and the site lists the steps from instrument to scores
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M125
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the pkgdown site's download pages, navbar and overview page
-- **Branch/PR:** —
+- **Branch/PR:** `m124-site-online-strip`
 
 ## Goal
 
