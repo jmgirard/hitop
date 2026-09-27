@@ -1,6 +1,6 @@
 # M128: hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=`
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -56,6 +56,8 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 - 2026-09-27: T1 done. `link.html` gains `#prefilled` (a status notice between the steps and the form); `prefill()` returns the filled addresses and the notice is written only after it returns; `build()` empties and hides it. Tests: an eighth L18 load (throw after a completion URL), L20 (six shown, six silent), L21 (markup per store kind), L22 (build, empty-study refusal). `tests/link.spec.js` 63 passed.
 - 2026-09-27: T2 done. `#err` takes `tabindex="-1"`; after `showKind()` focus goes to `#err` when it holds text, else to the notice when shown. L23 assertions (`document.activeElement`) added to the eight L18 loads and the twelve L20 loads. `tests/link.spec.js` 63 passed.
 - 2026-09-27: T3 done. README: a notice-and-focus paragraph after the prefill paragraph, a privacy sentence on `link.html?c=`, the `tests/link.spec.js` row extended. `link.html` intro gains one sentence on the host seeing a `c`. Notice checked by eye in the browser pane. Five plants, fixes staged first and restored with `git checkout`: innerHTML (both L21 runs red), notice written as fields fill (the eighth L18 load red), Project URL keyed on the store (the no-url Supabase load red), no clear in `build()` (both L22 red), focus only on normal return (both throwing L18 loads red). One extra red under the innerHTML plant, the `/rest/v1/` suffix test, fetches the export and passed in the full run: a network failure, not the plant. hitop-form full suite 233 passed; hitop `devtools::test()` FAIL 0, PASS 20487, SKIP 15.
+- 2026-09-27: claim audit: 47 claims read, 7 corrected — hitop-form link.html, README.md, tests/link.spec.js (the hitop diff adds nothing outside cairn/, so the audit read the hitop-form branch). Corrected: the intro line (the browser sends the address), the privacy sentence (same `c`, not "again"), "when the page opens" and "can read it out", the non-empty qualifier, the focus comment, "sent or pointed", the test row's last clause. One re-read by the same reader: all seven match; the qualifier's placement and one comment wrap fixed (hitop-form c523c6e). `tests/link.spec.js` 63 passed after.
+- 2026-09-27: implement done; status review.
 
 ## Decisions
 
