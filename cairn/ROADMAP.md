@@ -1,15 +1,14 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-25 (73rd pass, M127 done): row archived, M124 pruned, no candidate row, one lesson added and the M029 line pruned (LESSONS at its byte budget). validate green._
+_Last hygiene check: 2026-09-27 (74th pass, M128 done): row archived, M125 pruned, no candidate row, one lesson added and the M033 line pruned (LESSONS byte budget). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M128 | hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=` | review | — | normal | milestones/M128-link-builder-prefill-loose-ends.md |
+| M128 | hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=` | done | — | normal | milestones/archive/M128-link-builder-prefill-loose-ends.md |
 | M127 | The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer | done | — | normal | milestones/archive/M127-builder-online-card-loose-ends.md |
-| M125 | hitop-form's `link.html` fills its fields from a study link's `c` parameter, refuses one it cannot read by name, and links the module builder and the tutorial from a three-step list | done | — | normal | milestones/archive/M125-link-builder-prefill.md |
 | M126 | The module builder's format step gains an "Online form" card that saves the `write_module()` scoring file and links to the link builder with the module filled in | done | M125 | normal | milestones/archive/M126-builder-online-card.md |
 
 ## Candidates
