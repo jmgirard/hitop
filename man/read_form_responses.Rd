@@ -79,7 +79,7 @@ is an error naming the file: a UTF-16 or UTF-32 file (described below), a
 line holding a NUL byte or a byte
 sequence that is not UTF-8, a line outside a quoted cell made only of
 spaces and tabs, no header row (a zero-byte file, blank
-lines only, a byte-order mark only), first columns other than the five
+lines only, a UTF-8 byte-order mark only), first columns other than the five
 the page writes first, a column that appears twice, a header with no
 response row, a response row holding fewer or more fields than the
 header, an item column whose name is not a stem of lower-case letters

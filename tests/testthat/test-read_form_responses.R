@@ -1803,9 +1803,9 @@ test_that("a NUL byte on line 2 and a Latin-1 byte on line 3 are both named, eac
 
 # ---- A UTF-16 file is refused once, naming no line -------------------------
 #
-# A file that begins with a UTF-16 byte-order mark, or whose first line holds
-# a NUL byte at every even or every odd offset, is refused as UTF-16 before
-# the byte check, naming no line. The files below are the header and one or
+# A file that begins with a UTF-16 byte-order mark, or whose first line that
+# is not blank, read as UTF-16 code units, holds only printable ASCII and tab,
+# is refused as UTF-16 before the byte check, naming no line. The files below are the header and one or
 # more response rows, encoded by `iconv()`.
 
 # `text` as UTF-16 bytes in the byte order `to` names, after `mark` bytes.
@@ -1897,8 +1897,8 @@ test_that("a UTF-16LE file holding a byte sequence that is not UTF-8 is refused 
   utf16_refusal(raw_file(dir, "latin.csv", bytes))
 })
 
-# Controls: a UTF-8 file with a NUL byte whose first line is not UTF-16 keeps
-# the refusal naming the line.
+# Controls: a UTF-8 file with a NUL byte that is not taken as UTF-16 or UTF-32
+# keeps the refusal naming the line.
 
 test_that("a UTF-8 file holding a NUL as the first byte of line 3 names line 3", {
   dir <- withr::local_tempdir()
@@ -2054,14 +2054,18 @@ for (eol in names(eols)) {
       f <- raw_file(dir, "anulb.csv", bytes_of(
         "a", as.raw(0x00), "b", e, two_header, e
       ))
-      expect_identical(named_lines(byte_refusal(f)), 1L)
+      body <- byte_refusal(f)
+      expect_identical(named_lines(body), 1L)
+      expect_match(body[grepl("^Line ", body)], "NUL byte", fixed = TRUE)
     })
     test_that(paste("a UTF-8 file with a blank first line and a NUL on line 3 names line 3,", eol), {
       dir <- withr::local_tempdir()
       f <- raw_file(dir, "blank-nul.csv", bytes_of(
         e, two_header, e, as.raw(0x00), good_row, e
       ))
-      expect_identical(named_lines(byte_refusal(f)), 3L)
+      body <- byte_refusal(f)
+      expect_identical(named_lines(body), 3L)
+      expect_match(body[grepl("^Line ", body)], "NUL byte", fixed = TRUE)
     })
   })
 }
@@ -2069,7 +2073,9 @@ for (eol in names(eols)) {
 test_that("a UTF-16LE file of one CR and nothing else names line 1", {
   dir <- withr::local_tempdir()
   f <- raw_file(dir, "cr.csv", as.raw(c(0x0D, 0x00)))
-  expect_identical(named_lines(byte_refusal(f)), 1L)
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 1L)
+  expect_match(body[grepl("^Line ", body)], "NUL byte", fixed = TRUE)
 })
 
 test_that("an empty file and a UTF-8 mark alone are refused as holding no header", {

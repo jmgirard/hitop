@@ -61,7 +61,7 @@
 #'   line holding a NUL byte or a byte
 #'   sequence that is not UTF-8, a line outside a quoted cell made only of
 #'   spaces and tabs, no header row (a zero-byte file, blank
-#'   lines only, a byte-order mark only), first columns other than the five
+#'   lines only, a UTF-8 byte-order mark only), first columns other than the five
 #'   the page writes first, a column that appears twice, a header with no
 #'   response row, a response row holding fewer or more fields than the
 #'   header, an item column whose name is not a stem of lower-case letters
@@ -362,6 +362,10 @@ form_wide_encoding <- function(bytes) {
   if (starts_with(as.raw(c(0xFF, 0xFE))) ||
       starts_with(as.raw(c(0xFE, 0xFF)))) {
     return("UTF-16")
+  }
+  # With no NUL byte every unit is 257 or more, so no try can match.
+  if (!any(bytes == as.raw(0x00))) {
+    return(NA_character_)
   }
   tries <- list(
     list(size = 4L, little = TRUE, name = "UTF-32"),

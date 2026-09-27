@@ -99,6 +99,8 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
 - 2026-09-27: T3 done. Details and the NEWS bullet state the AC6 facts, written against T2's code; the `every other byte` grep returns nothing; a second `document()` leaves no diff; `check()` 0 errors, 0 warnings, 0 notes.
 - claim audit: 59 claims read, 3 corrected — NEWS.md, R/read_form_responses.R, man/read_form_responses.Rd ("such a file" made explicit; NEWS and Details say a UTF-16/32 file the rule does not take still meets the byte error when it holds a NUL; `form_file_lines()` comment limited to files the rule takes). The one re-read cleared two and sharpened two wordings, applied.
 - 2026-09-27: implement complete. Reader tests 213, 0 failing; `check()` 0/0/0 after the corrections; status set to review.
+- 2026-09-27: review gate: R1, R4, R5 and R7 fixed on the branch, R2, R3 and R6 rejected, `check()` 0/0/0 after the fixes.
+- 2026-09-27: step-7 approval: m130-reader-wide-encoding-edges approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -130,3 +132,15 @@ Independent review, 2026-09-27, three lenses. The blame-history lens and the pri
 - R7: the Details parenthetical "a byte-order mark only" at `R/read_form_responses.R:64` can read as covering FF FE alone, which gets the UTF-16 error. This predates M130.
 
 No finding shows an acceptance criterion failing, so none returns the milestone.
+
+Triage at the gate, 2026-09-27:
+
+- R1 fix now: if the file holds no NUL byte, `form_wide_encoding()` returns NA after the mark checks. On a 49 MB UTF-8 file the check took 0.17 s, against 2.21 s for the same bytes plus one NUL.
+- R2 rejected: a file of blank wide lines only is not a file the page saves, and the cost needs a 10 MB file.
+- R3 rejected: Scope sets the mark order, and no page-saved file starts with U+0000.
+- R4 fix now: the two test comments describe the unit rule.
+- R5 fix now: the five AC4 NUL tests also assert "NUL byte" on the named line. A not-UTF-8 error body fails that assertion.
+- R6 rejected: AC6 requires the fact, and the sentence states current behavior.
+- R7 fix now: Details reads "a UTF-8 byte-order mark only".
+
+After the fixes, the probe passed 60/60 again, `document()` rewrote only `man/read_form_responses.Rd` for R7, and `devtools::check()` gave 0 errors, 0 warnings, 0 notes.
