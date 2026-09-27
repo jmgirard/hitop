@@ -1,0 +1,11 @@
+# M130: `read_form_responses()` refuses a UTF-16 file after blank lines, names a UTF-32 file as UTF-32, and stops calling `a`,NUL,`b` UTF-16
+
+**Status:** done (2026-09-27, PR #141 https://github.com/jmgirard/hitop/pull/141, merged 2026-09-27T22:39:41Z)
+
+**Goal:** A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with one error that names its encoding and no line, and a UTF-8 file without a NUL byte is never called UTF-16 or UTF-32.
+
+**Outcome:** Closes M129 review R2, R3 and R6. `form_wide_encoding()` replaces `form_is_utf16()` and returns "UTF-32", "UTF-16" or NA. A file that starts with FF FE 00 00 or 00 00 FE FF is UTF-32, and one that starts with FF FE or FE FF is UTF-16. A file with no NUL byte returns NA at once. Otherwise `form_wide_match()` reads whole code units as UTF-32LE, UTF-32BE, UTF-16LE and UTF-16BE, in that order. It splits them on the line feed unit and drops one trailing CR unit per line. The first line that is not blank must hold only printable ASCII and tab. A file of blank lines only needs a line feed unit to match. `form_file_lines()` refuses a match once, as "{file} is a UTF-32 file, not UTF-8." or the UTF-16 form, and the error stays unclassed (D-064). Details and the dev NEWS bullet state the rule. Tests: 51 new ones (16 UTF-16 after blank lines, 16 UTF-32, 10 blank-only, 9 edge files), with the M129 tests unedited.
+
+**Decisions:** none cross-cutting. The plan gate gave UTF-32 its own refusal so the error names the encoding to convert from. It refused a blank-only wide file by its encoding, not by the NUL-byte error. It chose reading whole code units over the NUL-every-other-byte rule.
+
+**Review:** one pass. All six criteria pass, and a hand-built probe passed 60/60. Check 0/0/0 and PR CI 8 of 8. Three-lens fan-out: the history and prior-review lenses found nothing, and the diff lens reported 7 findings. R1: the unit check ran on every UTF-8 file, 2.21 s on 49 MB. The no-NUL early return fixed it, at 0.17 s. R4 (stale test comments), R5 (AC4 tests did not assert "NUL byte") and R7 ("a byte-order mark only" in Details) were fixed at the gate. R2 (slow blank-only wide files), R3 (a marked UTF-16 file starting with U+0000 called UTF-32) and R6 (NEWS contrast with unreleased M129 state) were rejected. No lesson added, nothing retired.

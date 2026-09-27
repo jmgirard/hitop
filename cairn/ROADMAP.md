@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-27 (75th pass, M129 done): row archived, M126 pruned, one low candidate row (UTF-16 check edges), no lesson (LESSONS at its byte budget). validate green._
+_Last hygiene check: 2026-09-27 (76th pass, M130 done): row archived, M127 pruned, no lesson (LESSONS at its byte budget). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M130 | `read_form_responses()` refuses a UTF-16 file after blank lines, names a UTF-32 file as UTF-32, and stops calling `a`,NUL,`b` UTF-16 | review | — | normal | milestones/M130-reader-wide-encoding-edges.md |
+| M130 | `read_form_responses()` refuses a UTF-16 file after blank lines, names a UTF-32 file as UTF-32, and stops calling `a`,NUL,`b` UTF-16 | done | — | normal | milestones/archive/M130-reader-wide-encoding-edges.md |
 | M129 | `read_form_responses()` caps its line and row refusals at five, refuses a UTF-16 file once, and keeps the mismatch class when a path holds a brace | done | — | normal | milestones/archive/M129-reader-refusal-loose-ends.md |
 | M128 | hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=` | done | — | normal | milestones/archive/M128-link-builder-prefill-loose-ends.md |
-| M127 | The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer | done | — | normal | milestones/archive/M127-builder-online-card-loose-ends.md |
 
 ## Candidates
 
