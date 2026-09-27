@@ -71,6 +71,7 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 - 2026-09-27: T4 done (hitop-form 4eb66c1). `address()` lists `f.elements[name].value` when non-empty. Tests: a two-line `complete` shown as the joined field value (the field checked too), and silent loads for `complete: "\n"` and a web `url: "\r\n"`. The three were red before the fix, each on the notice-lines assertion. Plant (config string listed again, fix staged first): the same three red, restored. Focus comment states focus only. README row: seven notice loads, eight silent loads, counted from `--list`. `tests/link.spec.js` 66 passed, full suite 236 passed.
 - 2026-09-27: claim audit: 41 claims read, 1 corrected — hitop-form README.md, link.html, tests/link.spec.js (lines added by 00aed9e and 4eb66c1). Corrected: the L20 header's "with a non-empty string" (a line break is non-empty yet lists nothing). Also taken: the README focus sentence sharpened (S4's ambiguity) and the `NOTICE_SHOWN` comment naming the two-line case. The same reader re-read all three: they hold. hitop-form 8f3aeea, `tests/link.spec.js` 66 passed.
 - 2026-09-27: implement done. 8f3aeea changes comments and README text only, after the full suite passed 236 at 4eb66c1. hitop R code unchanged. Status review.
+- 2026-09-27: step-7 approval: m128-link-builder-prefill-loose-ends approved for merge (hitop and hitop-form).
 
 ## Decisions
 
@@ -136,3 +137,5 @@ Third-pass lenses. Prior-review: no finding. R4, R7, R8, S1, S3 and S4 landed, a
 - T3: if the store kind changes or a listed field is edited before "Make the link", the notice goes stale (reproduced). Proposed: reject. The lead sentence records what the opened link filled.
 - T4: no test pins the space-only case either way. Proposed: reject with T1, as AC1 sets no rule beyond non-empty.
 - T5: AC7's CI half is unread (as R1 and S2). Proposed: noted, read at step 8.
+
+Gate 2026-09-27 (third pass): Jeff accepted every proposed disposition. T1 to T4 are rejected and T5 is noted.
