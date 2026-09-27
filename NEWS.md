@@ -254,11 +254,23 @@
   warning now stop with the same error. An SPSS column (`haven_labelled_spss`)
   that holds a value it declares missing, such as 99, used to score that code
   as an answer. Turn such codes into `NA` with `haven::zap_missing()` before
-  scoring. A 64-bit integer column (`integer64`) read without bit64 loaded
-  used to score as tiny numbers near zero. A haven labelled column of digit
+  scoring. A declared value that is blank is not refused, since blank cells
+  count as missing. The SPSS class of haven before 2.0 (`labelled_spss`),
+  whose declared codes also used to score as answers, is refused the same
+  way. `haven::zap_missing()` leaves that class unchanged, so the error says
+  to set the values its `na_values` or `na_range` attribute declares to `NA`.
+  A 64-bit integer column (`integer64`) read without bit64 loaded
+  used to score as tiny numbers near zero. Text that is not valid UTF-8, such
+  as a Latin-1 file read without its encoding, used to stop with a base R
+  error. It is now refused with the same error, which shows each invalid
+  byte (`"1<a0>"`) and names `iconv()`. Text marked Latin-1 is read as its
+  text.
+  A haven labelled column of digit
   text, which used to stop with an error from haven, now scores as its plain
   text does. A refused value made only of invisible characters, such as a
-  non-breaking space, is shown by its code points (`U+00A0`).
+  non-breaking space, is shown by its code points (`U+00A0`). An invisible
+  character inside a value with visible ones is shown the same way, so
+  `"1"` followed by a non-breaking space shows as `"1<U+00A0>"`.
 
 * **`read_module()` refuses item numbers that are not JSON numbers.** In a
   module descriptor's `items`, `nItems` and `itemOrder` fields, every value

@@ -17,9 +17,15 @@ numbers (blank cells and \code{NA} values count as missing, but the text
 \code{"NA"} is refused). A haven labelled column is read as its plain values.
 Any other column, such as the choice text of an online export or a
 factor, is an error of class \code{hitop_nonnumeric_items}. So is a 64-bit
-integer (\code{integer64}) column, and an SPSS column (\code{haven_labelled_spss})
-that holds a value it declares missing; turn those codes into \code{NA} with
-\code{haven::zap_missing()} first.}
+integer (\code{integer64}) column, and a column holding text that is not valid
+UTF-8 (text marked Latin-1 is read as its text); convert such text with
+\code{iconv()}. So is an SPSS column (\code{haven_labelled_spss}) that holds a
+value it declares missing; turn those codes into \code{NA} with
+\code{haven::zap_missing()} first. A declared value that is blank is not
+refused, since blank cells count as missing. The SPSS class of haven
+before 2.0 (\code{labelled_spss}) is refused the same way, but
+\code{haven::zap_missing()} leaves it unchanged, so set the values its
+\code{na_values} or \code{na_range} attribute declares to \code{NA} first.}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the HiTOP-BR items, used for reverse-coding. (default = \code{c(1, 4)})}
