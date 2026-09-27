@@ -82,15 +82,13 @@ Every file must carry the same item columns in the same order, because a
 set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
-is an error naming the file: a UTF-16 file (one that starts with a
-UTF-16 byte-order mark, or whose first line is at least two bytes long
-and has a NUL byte in every other byte, as ASCII text in UTF-16 does), a
-line holding a NUL byte or a byte sequence that is not UTF-8, a line
+is an error naming the file: a UTF-16 or UTF-32 file (described below),
+a line holding a NUL byte or a byte sequence that is not UTF-8, a line
 outside a quoted cell made only of spaces and tabs, no header row (a
-zero-byte file, blank lines only, a byte-order mark only), first columns
-other than the five the page writes first, a column that appears twice,
-a header with no response row, a response row holding fewer or more
-fields than the header, an item column whose name is not a stem of
+zero-byte file, blank lines only, a UTF-8 byte-order mark only), first
+columns other than the five the page writes first, a column that appears
+twice, a header with no response row, a response row holding fewer or
+more fields than the header, an item column whose name is not a stem of
 lower-case letters and digits, an underscore and the item number
 (`hitopbr_01`, not `foo` or `Hitopbr_01`), item columns of more than one
 stem (`hitopbr_01` beside `pid5bf_01`), an `instrument` cell that
@@ -104,10 +102,22 @@ column and the value as written, the first five cells and a count of the
 rest. The errors on a NUL byte or a byte sequence that is not UTF-8, on
 a line of spaces and tabs, on a row's field count and on an `instrument`
 cell likewise name the first five lines or rows at fault and a count of
-the rest. The error on a UTF-16 file names no line and asks that the
-file be saved as UTF-8. The field count of a row reads `#` as data and a
-quoted cell holding a line break as one cell, as the read does. A
-`submitted` stamp may carry fractional seconds.
+the rest. The error on a UTF-16 or UTF-32 file names the encoding and no
+line, and asks that the file be saved as UTF-8. A file that starts with
+the byte-order mark FF FE 00 00 or 00 00 FE FF is taken as UTF-32, and
+one that starts with FF FE or FE FF as UTF-16. A file with no mark is
+read as UTF-32 and then as UTF-16, each little-endian and then
+big-endian. In each encoding the lines are split on that encoding's line
+feed. Empty lines and lines of a lone carriage return at the top are
+skipped. The first line that is not blank then has its trailing carriage
+return dropped. If it holds only printable ASCII characters and tabs,
+the file is taken as that encoding. A file of blank lines only in one of
+these encodings is also taken as that encoding when it holds at least
+one line feed. A file taken as UTF-32 is refused as UTF-32, not as
+UTF-16. A UTF-16 or UTF-32 file the rule does not take is read as UTF-8,
+and a NUL byte in it meets the byte error. The field count of a row
+reads `#` as data and a quoted cell holding a line break as one cell, as
+the read does. A `submitted` stamp may carry fractional seconds.
 
 **Errors.** Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class
