@@ -58,7 +58,8 @@
 #'   beside a module, or two modules that shuffled their items differently,
 #'   need separate calls. A file that does not look like one the page saved
 #'   is an error naming the file: a UTF-16 file (one that starts with a
-#'   UTF-16 byte-order mark, or whose first line is ASCII text in UTF-16), a
+#'   UTF-16 byte-order mark, or whose first line is at least two bytes long
+#'   and has a NUL byte in every other byte, as ASCII text in UTF-16 does), a
 #'   line holding a NUL byte or a byte
 #'   sequence that is not UTF-8, a line outside a quoted cell made only of
 #'   spaces and tabs, no header row (a zero-byte file, blank

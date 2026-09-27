@@ -74,6 +74,9 @@ A malformed or mis-encoded hitop-form file stops `read_form_responses()` with a 
 - 2026-09-27: amendment return: AC4 — "`?read_form_responses` Details keeps its sentences on line errors and row errors and adds one saying that the errors on a NUL byte or a byte sequence that is not UTF-8, on a line of spaces and tabs, on a row's field count and on an `instrument` cell name the first five lines or rows at fault and count the rest, as the item-value errors do; Details also names the UTF-16 refusal and says that it names no line and asks that the file be saved as UTF-8"
 - 2026-09-27: amendment gate: Jeff accepted the AC4 wording and chose to triage at review the NEWS headline "keeps its line and row errors short", which overclaims because the date and `item_order` row errors list every row.
 - 2026-09-27: status set to review.
+- 2026-09-27: review pass 2: all five criteria pass on fresh evidence, gate green, three reviewers reported R1 to R7.
+- 2026-09-27: gate fix: NEWS headline and the UTF-16 rule wording in Details and NEWS (R1, R4).
+- 2026-09-27: step-7 approval: m129-reader-refusal-loose-ends approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -106,3 +109,4 @@ Review pass 2, 2026-09-27, at 8f3025e0 after the AC4 amendment. The branch conta
   - R5 (diff-bug, AC4 re-audits): the kept sentence "An error on a line names the lines at fault" reads as all lines on its own.
   - R6 (diff-bug): no test covers the edges of `form_is_utf16()`: an empty file, a one-byte file, a 2-byte first line, or a file of only FF FE. Probes show each behaves as AC2 states.
   - R7 (blame-history, prior-review): capping the field-count refusal reverses M121's review F3. The plan gate chose this, and the work log records it with its falsifier, not the Decisions section.
+- Dispositions at the merge gate (Jeff): R1 and R4 fixed now. The NEWS headline reads "caps four of its line and row errors at five". Details and NEWS describe the UTF-16 rule as a first line of at least two bytes with a NUL byte in every other byte. After the fix, `document()` rebuilt only the Rd and the reader tests gave 0 failed, 1046 passed. R2, R3 and R6 become one low-priority candidate row in the post-merge pass. R5 is rejected, because the amended AC4 keeps that sentence and the next one qualifies it. R7 is rejected, because the plan gate chose the cap. The work log records it, and plan step 4 names the work log as its home.
