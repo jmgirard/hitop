@@ -53,6 +53,6 @@ Invisibly returns the path to the created file (`file`).
 # \donttest{
 # Write a HiTOP-HSUM paper form to a temporary Word document
 generate_docx_hitophsum(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpSAcCbU/file19dc20b2e048.docx
+#> ✔ Document successfully created at /tmp/Rtmp0Qvh6t/file19c868b315f9.docx
 # }
 ```
