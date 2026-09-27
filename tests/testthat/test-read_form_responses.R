@@ -1761,13 +1761,137 @@ test_that("a NUL byte on line 2 and a Latin-1 byte on line 3 are both named, eac
   expect_match(body[grepl("^Line 3", body)], "not UTF-8", fixed = TRUE)
 })
 
-test_that("a UTF-16LE file is refused, naming its first line", {
+# ---- A UTF-16 file is refused once, naming no line -------------------------
+#
+# A file that begins with a UTF-16 byte-order mark, or whose first line holds
+# a NUL byte at every even or every odd offset, is refused as UTF-16 before
+# the byte check, naming no line. The files below are the header and the good
+# row, or more rows, encoded by `iconv()`.
+
+# `text` as UTF-16 bytes in the byte order `to` names, after `mark` bytes.
+utf16_bytes <- function(text, to = "UTF-16LE", mark = raw(0)) {
+  c(mark, iconv(text, from = "UTF-8", to = to, toRaw = TRUE)[[1L]])
+}
+
+le_mark <- as.raw(c(0xFF, 0xFE))
+be_mark <- as.raw(c(0xFE, 0xFF))
+
+# Read `path`, expecting the UTF-16 refusal naming the file and no line, and
+# record every warning raised on the way; the refusal raises none.
+utf16_refusal <- function(path) {
+  warnings <- list()
+  cnd <- withCallingHandlers(
+    rlang::catch_cnd(read_form_responses(path), "error"),
+    warning = function(w) {
+      warnings <<- c(warnings, list(w))
+      invokeRestart("muffleWarning")
+    }
+  )
+  expect_s3_class(cnd, "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  expect_identical(length(warnings), 0L)
+  msg <- cli::ansi_strip(conditionMessage(cnd))
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, "is a UTF-16 file", fixed = TRUE)
+  expect_match(msg, "Save the file as UTF-8", fixed = TRUE)
+  expect_no_match(msg, "Line [0-9]")
+  expect_no_match(msg, "counted from", fixed = TRUE)
+  invisible(cnd)
+}
+
+two_lines <- function(eol) paste0(two_header, eol, good_row, eol)
+
+utf16_cases <- list(
+  "LE, CRLF, no mark" = list(to = "UTF-16LE", eol = crlf, mark = raw(0)),
+  "LE, LF, no mark" = list(to = "UTF-16LE", eol = "\n", mark = raw(0)),
+  "LE, CRLF, mark" = list(to = "UTF-16LE", eol = crlf, mark = le_mark),
+  "LE, LF, mark" = list(to = "UTF-16LE", eol = "\n", mark = le_mark),
+  "BE, CRLF, no mark" = list(to = "UTF-16BE", eol = crlf, mark = raw(0)),
+  "BE, LF, no mark" = list(to = "UTF-16BE", eol = "\n", mark = raw(0)),
+  "BE, CRLF, mark" = list(to = "UTF-16BE", eol = crlf, mark = be_mark),
+  "BE, LF, mark" = list(to = "UTF-16BE", eol = "\n", mark = be_mark)
+)
+
+for (case_name in names(utf16_cases)) {
+  local({
+    case <- utf16_cases[[case_name]]
+    test_that(paste("a two-line ASCII UTF-16 file,", case_name, "is refused as UTF-16"), {
+      dir <- withr::local_tempdir()
+      f <- raw_file(dir, "utf16.csv",
+                    utf16_bytes(two_lines(case$eol), case$to, case$mark))
+      utf16_refusal(f)
+    })
+  })
+}
+
+test_that("a two-line UTF-16LE file with no line feed after its last line is refused as UTF-16", {
   dir <- withr::local_tempdir()
-  text <- paste0(two_header, crlf, good_row, crlf)
-  utf16 <- iconv(text, from = "UTF-8", to = "UTF-16LE", toRaw = TRUE)[[1L]]
-  f <- raw_file(dir, "utf16.csv", utf16)
+  f <- raw_file(dir, "open.csv",
+                utf16_bytes(paste0(two_header, crlf, good_row)))
+  utf16_refusal(f)
+})
+
+test_that("a seven-line ASCII UTF-16LE file is refused as UTF-16", {
+  dir <- withr::local_tempdir()
+  text <- paste0(paste(c(two_header, rep(good_row, 6L)), collapse = crlf), crlf)
+  f <- raw_file(dir, "seven.csv", utf16_bytes(text))
+  utf16_refusal(f)
+})
+
+test_that("a UTF-16LE file whose line 2 holds U+010A is refused as UTF-16, with and without a mark", {
+  dir <- withr::local_tempdir()
+  # U+010A is the bytes 0A 01 in UTF-16LE: a line feed byte inside a character.
+  row <- "sĊ,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+  text <- paste0(two_header, crlf, row, crlf)
+  utf16_refusal(raw_file(dir, "plain.csv", utf16_bytes(text)))
+  utf16_refusal(raw_file(dir, "marked.csv", utf16_bytes(text, mark = le_mark)))
+})
+
+test_that("a UTF-16LE file holding a byte sequence that is not UTF-8 is refused as UTF-16", {
+  dir <- withr::local_tempdir()
+  # U+00E9 is the bytes E9 00 in UTF-16LE, and E9 00 is not UTF-8.
+  row <- "café,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1"
+  bytes <- utf16_bytes(paste0(two_header, crlf, row, crlf))
+  expect_false(validUTF8(rawToChar(bytes[bytes != as.raw(0x00)])))
+  utf16_refusal(raw_file(dir, "latin.csv", bytes))
+})
+
+# Controls: a UTF-8 file with a NUL byte whose first line is not UTF-16 keeps
+# the refusal naming the line.
+
+test_that("a UTF-8 file holding a NUL as the first byte of line 3 names line 3", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "nul3.csv", bytes_of(
+    two_header, crlf, good_row, crlf, as.raw(0x00), good_row, crlf
+  ))
   body <- byte_refusal(f)
-  expect_true(1L %in% named_lines(body))
+  expect_identical(named_lines(body), 3L)
+})
+
+test_that("a UTF-8 file whose last byte is a NUL after a final line feed names line 3", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "tail.csv", bytes_of(
+    two_header, crlf, good_row, crlf, as.raw(0x00)
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 3L)
+})
+
+test_that("a UTF-8 file of a header and a line holding one NUL byte names line 2", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "lone.csv", bytes_of(two_header, crlf, as.raw(0x00)))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 2L)
+})
+
+test_that("a UTF-8 file whose header ends in a NUL before its line feed names line 1", {
+  dir <- withr::local_tempdir()
+  f <- raw_file(dir, "header-nul.csv", bytes_of(
+    two_header, as.raw(0x00), crlf, good_row, crlf
+  ))
+  body <- byte_refusal(f)
+  expect_identical(named_lines(body), 1L)
 })
 
 # ---- Lines the file cannot hold: only spaces and tabs ----------------------

@@ -278,6 +278,17 @@ form_response_files <- function(path, call = rlang::caller_env()) {
 # on bytes, so no warning is raised on the way.
 form_file_lines <- function(file, call = rlang::caller_env()) {
   bytes <- readBin(file, "raw", file.size(file))
+  # A UTF-16 file holds a NUL byte in nearly every character, so the scan
+  # below would name lines the file does not hold. It is refused once, first.
+  if (form_is_utf16(bytes)) {
+    cli::cli_abort(
+      c(
+        "{.file {file}} is a UTF-16 file, not UTF-8.",
+        "i" = "Save the file as UTF-8 and read it again."
+      ),
+      call = call
+    )
+  }
   # The line of a byte is one more than the count of line feeds before it.
   newlines <- cumsum(bytes == as.raw(0x0A))
   nul <- unique(newlines[bytes == as.raw(0x00)] + 1L)
@@ -310,6 +321,29 @@ form_file_lines <- function(file, call = rlang::caller_env()) {
     )
   }
   lines
+}
+
+# Whether `bytes`, a file's raw bytes, are UTF-16: they begin with the
+# byte-order mark FF FE or FE FF, or the first line (the bytes before the
+# first line feed byte, or all of them when there is none) is at least two
+# bytes long with a NUL byte at every even or at every odd offset, counted
+# from 0, as ASCII text in UTF-16 is.
+form_is_utf16 <- function(bytes) {
+  if (length(bytes) >= 2L) {
+    head2 <- bytes[1:2]
+    if (identical(head2, as.raw(c(0xFF, 0xFE))) ||
+        identical(head2, as.raw(c(0xFE, 0xFF)))) {
+      return(TRUE)
+    }
+  }
+  lf <- match(as.raw(0x0A), bytes)
+  first <- if (is.na(lf)) bytes else bytes[seq_len(lf - 1L)]
+  n <- length(first)
+  if (n < 2L) {
+    return(FALSE)
+  }
+  nul <- first == as.raw(0x00)
+  all(nul[seq(1L, n, by = 2L)]) || all(nul[seq(2L, n, by = 2L)])
 }
 
 # The field count of each of `lines`, as `count.fields()` gives it with no
