@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M130: `read_form_responses()` refuses a UTF-16 file after blank lines, names a UTF-32 file as UTF-32, and stops calling `a`,NUL,`b` UTF-16
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the error messages and Details of the exported reader `read_form_responses()`   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m130-reader-wide-encoding-edges   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -77,7 +77,7 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first, in `tests/testthat/test-read_form_responses.R` after the UTF-16 block (`:1804`). Build the AC1, AC2 and AC3 matrices from raw bytes, because `iconv()` writes no mark for the LE and BE targets and `Rscript -e` strips `\r`. Add a UTF-32 refusal helper beside `utf16_refusal()` that asserts neither class and records warnings with `withCallingHandlers`. Add the AC4 files. Run the new tests against the current code: the LF blank-line, UTF-32, blank-only and `a`,NUL,`b` cases must fail, each for its stated reason.
+- [x] T1: Tests first, in `tests/testthat/test-read_form_responses.R` after the UTF-16 block (`:1804`). Build the AC1, AC2 and AC3 matrices from raw bytes, because `iconv()` writes no mark for the LE and BE targets and `Rscript -e` strips `\r`. Add a UTF-32 refusal helper beside `utf16_refusal()` that asserts neither class and records warnings with `withCallingHandlers`. Add the AC4 files. Run the new tests against the current code: the LF blank-line, UTF-32, blank-only and `a`,NUL,`b` cases must fail, each for its stated reason.
 - [ ] T2: Replace `form_is_utf16()` as Scope states, and name the encoding in the `form_file_lines()` error. The full suite passes with the M129 UTF-16 tests and controls unedited. Plant a byte split in place of the unit split, see AC1 go red, and restore it; stage the fix with `git add` first (LESSONS M118).
 - [ ] T3: Rewrite the Details UTF-16 sentences (`R/read_form_responses.R:60-62`, `:83`) and the UTF-16 sentences of the NEWS bullet (`NEWS.md` "caps four of its line and row errors") to the AC6 facts, written from the shipped code. Run `devtools::document()` and `devtools::check()`.
 
@@ -92,6 +92,8 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
 - 2026-09-27: plan gate chose a UTF-32 refusal of its own over one message naming "UTF-16 or UTF-32" because the error then says which encoding to convert from; falsified by a UTF-8 file the UTF-32 rule matches.
 - 2026-09-27: plan gate chose to refuse a blank-only UTF-16 or UTF-32 file by its encoding over keeping the NUL-byte error because that error names lines the file does not hold; falsified by a UTF-8 file of blank lines refused as UTF-16 or UTF-32.
 - 2026-09-27: plan chose reading whole code units of each encoding over keeping the NUL-every-other-byte rule with blank lines skipped because the byte rule still calls `a`,NUL,`b` and UTF-32 text UTF-16; falsified by a UTF-8 page-saved file the unit rule matches.
+- 2026-09-27: implement started on branch `m130-reader-wide-encoding-edges`; question gate skipped, nothing open (the helper is internal and Scope fixes the message).
+- 2026-09-27: T1 done. 60 new tests after the UTF-8 controls; 32 fail on the current code, each for its stated reason (LF blank-line UTF-16 gets the NUL error naming lines 2-3, UTF-32 is called UTF-16, blank-only files name NUL lines, `a`,NUL,`b` LF and 0D 00 are called UTF-16, 0A 00 gets the NUL error). The CRLF `a`,NUL,`b` file and CRLF blank-line UTF-16 files already pass today.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
