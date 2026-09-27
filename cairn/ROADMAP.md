@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M129 | `read_form_responses()` caps its line and row refusals at five, refuses a UTF-16 file once, and keeps the mismatch class when a path holds a brace | review | — | normal | milestones/M129-reader-refusal-loose-ends.md |
+| M129 | `read_form_responses()` caps its line and row refusals at five, refuses a UTF-16 file once, and keeps the mismatch class when a path holds a brace | in-progress | — | normal | milestones/M129-reader-refusal-loose-ends.md |
 | M128 | hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=` | done | — | normal | milestones/archive/M128-link-builder-prefill-loose-ends.md |
 | M127 | The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer | done | — | normal | milestones/archive/M127-builder-online-card-loose-ends.md |
 | M126 | The module builder's format step gains an "Online form" card that saves the `write_module()` scoring file and links to the link builder with the module filled in | done | M125 | normal | milestones/archive/M126-builder-online-card.md |
