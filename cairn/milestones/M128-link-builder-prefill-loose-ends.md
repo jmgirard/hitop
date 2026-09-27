@@ -1,6 +1,6 @@
 # M128: hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=`
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -15,7 +15,7 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 
 ## Scope
 
-**In:** hitop-form `link.html`: a notice between the steps list and the form, filled by `prefill()`, emptied and hidden by `build()`. After load, focus goes to `#err` or the notice when one holds text. `tests/link.spec.js` tests. README: privacy paragraph, prefill paragraph, `tests/link.spec.js` row. The page's intro line gains one sentence on what the host sees for a `c`. hitop: tracking only (no NEWS entry, plan gate).
+**In:** hitop-form `link.html`: a notice between the steps list and the form, filled by `prefill()`, emptied and hidden by `build()`. After load, focus goes to `#err` or the notice when one holds text. `tests/link.spec.js` tests. README: privacy paragraph, a notice-and-focus paragraph right after the prefill paragraph, `tests/link.spec.js` row. The page's intro line gains one sentence on what the host sees for a `c`. hitop: tracking only (no NEWS entry, plan gate).
 
 **Out:** the form page's (`index.html`) own handling of a crafted link; M125's rejected findings F5, F7 to F9, F11 to F16, which stay rejected in M125's archive. Screen-reader speech checked in a real screen reader, beyond focus in Chromium: no row, as focus is the property the tests can show. The other link-builder and online-form rows keep their candidate rows.
 
@@ -26,7 +26,7 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 - [x] AC3: The notice writes each address as text. A `c` holding markup (`"><img src=x>`) and an entity (`&amp;`) in the completion URL, the completion URL after a saved file, and the store address (one run per store kind) shows each string verbatim in the notice, whose element structure matches that of a plain address and contains no `img`, asserted in `tests/link.spec.js`.
 - [x] AC4: Pressing "Make the link" empties and hides the notice, asserted in `tests/link.spec.js` for a successful build and for the first refusal (the study left empty).
 - [x] AC5: After a load, focus is on `#err` for each refused load of L18 (AC2's included), on the notice for each AC1 load that shows it, and on `document.body` for a load with no `c` and for each AC1 silent load that `prefill()` accepts, asserted in `tests/link.spec.js` through `document.activeElement` in Playwright's Chromium.
-- [ ] AC6: The hitop-form README's privacy paragraph states that opening `link.html?c=…` sends the config, a Supabase key included, to the host's request logs, as opening the study link does. Its prefill paragraph describes the notice and the focus move. Its `tests/link.spec.js` row names what the new tests assert. `link.html`'s intro line states that opening the builder with a `c` sends that `c` to the host.
+- [ ] AC6: The hitop-form README's privacy paragraph states that opening `link.html?c=…` sends the config, a Supabase key included, to the host's request logs, as opening the study link does. The paragraph right after its prefill paragraph (the one opening "A study link's own `c` parameter") describes the notice and the focus move. Its `tests/link.spec.js` row names what the new tests assert. `link.html`'s intro line states that opening the builder with a `c` sends that `c` to the host.
 - [ ] AC7: The hitop-form Playwright suite (`npx playwright test`) passes locally and on the hitop-form PR's CI, and hitop's `devtools::test()` is clean with Imports installed, or on the hitop PR's R-CMD-check CI.
 
 ## Coverage
@@ -43,7 +43,7 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 
 - [x] T1: In `link.html`, add `<div id="prefilled" role="status" tabindex="-1" hidden>` between `ol.steps` and `#f`. `prefill()` collects the filled addresses and writes the notice only on its normal return, as text nodes, so the catch path at link.html:245 leaves none. `build()` empties and hides it first. Tests for AC1 to AC4 in `tests/link.spec.js`, beside L16 to L19, with the throwing load built by `page.addInitScript` as L18's seventh load is (M125 lesson: 16 KB address cap).
 - [x] T2: `#err` takes `tabindex="-1"`. After the prefill block, focus `#err` when it holds text, else the notice when shown, else nothing. Extend the L18 loop and the AC1 loads with `document.activeElement` assertions (AC2, AC5).
-- [x] T3: README (privacy paragraph, prefill paragraph, `tests/link.spec.js` row) and the intro line at link.html:72, written against the page's observed behavior. Plants, each seen red then restored after the fix is staged (M118 lesson): the notice written through `innerHTML` (AC3), written from inside `text()` (AC2), keyed on `config.store` rather than a filled address (AC1), `build()` not clearing it (AC4), focus called only on `prefill()`'s normal return (AC5, AC2's load goes red). Full hitop-form suite; hitop `devtools::test()`. Jeff merges the hitop-form PR from his terminal (M116 lesson).
+- [x] T3: README (privacy paragraph, a notice-and-focus paragraph right after the prefill paragraph, `tests/link.spec.js` row) and the intro line at link.html:72, written against the page's observed behavior. Plants, each seen red then restored after the fix is staged (M118 lesson): the notice written through `innerHTML` (AC3), written from inside `text()` (AC2), keyed on `config.store` rather than a filled address (AC1), `build()` not clearing it (AC4), focus called only on `prefill()`'s normal return (AC5, AC2's load goes red). Full hitop-form suite; hitop `devtools::test()`. Jeff merges the hitop-form PR from his terminal (M116 lesson).
 
 ## Work log
 
@@ -61,6 +61,11 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 - 2026-09-27: review: AC1 to AC5 pass, AC7 local half passes, AC6 fails as written (the notice and focus text is a paragraph after the prefill paragraph, not in it). Jeff chose to amend the criterion. Accepted fix-now wording (R4, R7, R8) landed in hitop-form 00aed9e.
 - 2026-09-27: amendment return: AC6 — "A paragraph after its prefill paragraph describes the notice and the focus move."
 - 2026-09-27: status in-progress for the AC6 amendment alone. Re-review follows it.
+- 2026-09-27: implement resumed for the AC6 amendment. Both branches level with `origin/main`. No question gate: nothing open.
+- 2026-09-27: re-audit: AC6 (full) — the branch meets it. "A paragraph after" matched any later paragraph, and "its prefill paragraph" had no anchor. Scope In still named the prefill paragraph. Optional: a content list, bounding the test-row clause.
+- 2026-09-27: mini gate: Jeff chose the anchored sentence and the Scope change, and declined the content list and the test-row bound, both of which widen past the return. AC6's second sentence now reads "The paragraph right after its prefill paragraph (the one opening "A study link's own `c` parameter") describes the notice and the focus move." This wording replaces the clause the amendment-return line above recorded. Scope In and T3's wording changed to match (no work changed). The separate paragraph was kept because it reads as one topic.
+- 2026-09-27: re-audit: AC6 (full) — nothing blocking. The branch meets the final text. The privacy paragraph and intro line have no locator but one reading each. The two declined bounds were noted again.
+- 2026-09-27: hitop-form full suite at 00aed9e: 233 passed. hitop code unchanged since review's `devtools::test()` and `check()`. The claim audit above stands. 00aed9e only narrows three audited claims, and re-review reads it. Implement done. Status review.
 
 ## Decisions
 
