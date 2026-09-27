@@ -1,6 +1,6 @@
 # M128: hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=`
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -69,6 +69,8 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 - 2026-09-27: hitop-form full suite at 00aed9e: 233 passed. hitop code unchanged since review's `devtools::test()` and `check()`. The claim audit above stands. 00aed9e only narrows three audited claims, and re-review reads it. Implement done. Status review.
 - 2026-09-27: re-review: AC6 passes as amended. AC1 and AC5 fail: `address()` lists the config string, so a `c` whose completion URL is `"\n"` or whose web url is `"\r\n"` leaves the field empty yet shows the notice and focuses it. Defect return 1 (amendment returns: 1, on AC6). Jeff chose to fix the page. T4 added for S1, S3 and S4. Status in-progress.
 - 2026-09-27: T4 done (hitop-form 4eb66c1). `address()` lists `f.elements[name].value` when non-empty. Tests: a two-line `complete` shown as the joined field value (the field checked too), and silent loads for `complete: "\n"` and a web `url: "\r\n"`. The three were red before the fix, each on the notice-lines assertion. Plant (config string listed again, fix staged first): the same three red, restored. Focus comment states focus only. README row: seven notice loads, eight silent loads, counted from `--list`. `tests/link.spec.js` 66 passed, full suite 236 passed.
+- 2026-09-27: claim audit: 41 claims read, 1 corrected — hitop-form README.md, link.html, tests/link.spec.js (lines added by 00aed9e and 4eb66c1). Corrected: the L20 header's "with a non-empty string" (a line break is non-empty yet lists nothing). Also taken: the README focus sentence sharpened (S4's ambiguity) and the `NOTICE_SHOWN` comment naming the two-line case. The same reader re-read all three: they hold. hitop-form 8f3aeea, `tests/link.spec.js` 66 passed.
+- 2026-09-27: implement done. 8f3aeea changes comments and README text only, after the full suite passed 236 at 4eb66c1. hitop R code unchanged. Status review.
 
 ## Decisions
 
