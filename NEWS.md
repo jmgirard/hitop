@@ -390,6 +390,27 @@
 
 ## Improvements and fixes
 
+* **`read_form_responses()` caps four of its line and row errors at five,
+  refuses a UTF-16 file once, and keeps the mismatch class when a path
+  holds a brace.** Four errors now name the first five lines or rows at fault. When
+  more are at fault, one line such as "... and 2 more rows." follows. They
+  are the errors on a NUL
+  byte or a byte sequence that is not UTF-8, on a line of spaces and tabs,
+  on a row's field count, and on an `instrument` cell. The errors on an item
+  value already named five cells this way. Before, the four named every line
+  or row at fault. A file that starts with a UTF-16 byte-order mark is
+  taken as UTF-16. So is a file whose first line is at least two bytes long
+  with a NUL byte in every other byte. ASCII text in UTF-16 has this
+  pattern. Such a file is refused in one
+  error that names the file and no line, and asks that the file be saved as
+  UTF-8. Before, the byte error said that each line held a NUL byte. For a
+  UTF-16LE file it also named a line past the file's last. A file whose path
+  holds a brace, such as `b{x}.csv`, can differ from the first file in its
+  item columns. It now raises `hitop_form_responses_mismatch`, with the path
+  shown as written. Before, cli read the brace as markup. `b{x}.csv` and
+  `b{.csv` raised another error in place of the class, and `b{.val x}.csv`
+  was shown as `b"x".csv`.
+
 * **`read_form_responses()` refuses three more hand-edit faults by name, and
   its value refusals name each cell.** A line holding a NUL byte or a byte
   sequence that is not UTF-8 stops the read before any other check. The

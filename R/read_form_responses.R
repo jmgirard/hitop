@@ -57,7 +57,10 @@
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
 #'   need separate calls. A file that does not look like one the page saved
-#'   is an error naming the file: a line holding a NUL byte or a byte
+#'   is an error naming the file: a UTF-16 file (one that starts with a
+#'   UTF-16 byte-order mark, or whose first line is at least two bytes long
+#'   and has a NUL byte in every other byte, as ASCII text in UTF-16 does), a
+#'   line holding a NUL byte or a byte
 #'   sequence that is not UTF-8, a line outside a quoted cell made only of
 #'   spaces and tabs, no header row (a zero-byte file, blank
 #'   lines only, a byte-order mark only), first columns other than the five
@@ -73,7 +76,12 @@
 #'   file's first line. An error on a row names the response rows at fault,
 #'   counted from the first row after the header. An error on an item value
 #'   names each cell at fault as its response row, its column and the value
-#'   as written, the first five cells and a count of the rest. The field
+#'   as written, the first five cells and a count of the rest. The errors on
+#'   a NUL byte or a byte sequence that is not UTF-8, on a line of spaces and
+#'   tabs, on a row's field count and on an `instrument` cell likewise name
+#'   the first five lines or rows at fault and a count of the rest. The error
+#'   on a UTF-16 file names no line and asks that the file be saved as UTF-8.
+#'   The field
 #'   count of a row reads `#` as data and a quoted cell holding a line break
 #'   as one cell, as the read does. A `submitted` stamp may carry fractional
 #'   seconds.
@@ -140,7 +148,8 @@ read_form_responses <- function(path) {
         "order"
       }
     }, character(1L))
-    # One line per differing file, each with its own reason.
+    # One line per differing file, each with its own reason, and a brace a
+    # path holds shown as written.
     lines <- vapply(seq_along(how), function(i) {
       f <- files[differs][[i]]
       h <- how[[i]]
@@ -150,7 +159,7 @@ read_form_responses <- function(path) {
       c(
         "The response files do not all hold the same item columns.",
         "i" = "The first file is {.file {files[[1L]]}}.",
-        stats::setNames(lines, rep("x", length(lines))),
+        form_bullets(lines),
         "i" = "Read files from one form together, and other forms in a separate call."
       ),
       class = "hitop_form_responses_mismatch"
@@ -204,9 +213,19 @@ form_cell_lines <- function(values, ok) {
     value <- values[[col]][[r]]
     cli::format_inline("Response row {r}, column {.field {col}}: {.val {value}}.")
   }, character(1L))
-  more <- nrow(bad) - length(shown)
+  form_first_five(lines, "cell", total = nrow(bad))
+}
+
+# The first five of `lines`, already formatted, as "x" bullets, and one line
+# counting the rest when `total` (the number at fault) is more than five.
+# `noun` names what one line stands for: "line", "row" or "cell". A caller
+# with many faults may format only the first five and pass `total`.
+form_first_five <- function(lines, noun, total = length(lines)) {
+  lines <- lines[seq_len(min(length(lines), 5L))]
+  more <- total - length(lines)
   if (more > 0L) {
-    lines <- c(lines, cli::format_inline("... and {more} more cell{?s}."))
+    lines <- c(lines, sprintf("... and %d more %s%s.", more, noun,
+                              if (more == 1L) "" else "s"))
   }
   form_bullets(lines)
 }
@@ -268,6 +287,17 @@ form_response_files <- function(path, call = rlang::caller_env()) {
 # on bytes, so no warning is raised on the way.
 form_file_lines <- function(file, call = rlang::caller_env()) {
   bytes <- readBin(file, "raw", file.size(file))
+  # A UTF-16 file holds a NUL byte in nearly every character, so the scan
+  # below would name lines the file does not hold. It is refused once, first.
+  if (form_is_utf16(bytes)) {
+    cli::cli_abort(
+      c(
+        "{.file {file}} is a UTF-16 file, not UTF-8.",
+        "i" = "Save the file as UTF-8 and read it again."
+      ),
+      call = call
+    )
+  }
   # The line of a byte is one more than the count of line feeds before it.
   newlines <- cumsum(bytes == as.raw(0x0A))
   nul <- unique(newlines[bytes == as.raw(0x00)] + 1L)
@@ -286,20 +316,43 @@ form_file_lines <- function(file, call = rlang::caller_env()) {
   }
   bad <- sort(unique(c(nul, which(!validUTF8(lines)))))
   if (length(bad) > 0L) {
-    found <- vapply(bad, function(n) {
+    found <- vapply(utils::head(bad, 5L), function(n) {
       kind <- if (n %in% nul) "a NUL byte" else "a byte sequence that is not UTF-8"
       cli::format_inline("Line {n} holds {kind}.")
     }, character(1L))
     cli::cli_abort(
       c(
         "{.file {file}} holds a NUL byte or a line that is not UTF-8.",
-        stats::setNames(found, rep("x", length(found))),
+        form_first_five(found, "line", total = length(bad)),
         "i" = "The line is counted from the file's first line."
       ),
       call = call
     )
   }
   lines
+}
+
+# Whether `bytes`, a file's raw bytes, are UTF-16: they begin with the
+# byte-order mark FF FE or FE FF, or the first line (the bytes before the
+# first line feed byte, or all of them when there is none) is at least two
+# bytes long with a NUL byte at every even or at every odd offset, counted
+# from 0, as ASCII text in UTF-16 is.
+form_is_utf16 <- function(bytes) {
+  if (length(bytes) >= 2L) {
+    head2 <- bytes[1:2]
+    if (identical(head2, as.raw(c(0xFF, 0xFE))) ||
+        identical(head2, as.raw(c(0xFE, 0xFF)))) {
+      return(TRUE)
+    }
+  }
+  lf <- match(as.raw(0x0A), bytes)
+  first <- if (is.na(lf)) bytes else bytes[seq_len(lf - 1L)]
+  n <- length(first)
+  if (n < 2L) {
+    return(FALSE)
+  }
+  nul <- first == as.raw(0x00)
+  all(nul[seq(1L, n, by = 2L)]) || all(nul[seq(2L, n, by = 2L)])
 }
 
 # The field count of each of `lines`, as `count.fields()` gives it with no
@@ -339,13 +392,13 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   # the counts are read by line, a count past the last line dropped.
   blank <- grepl("^[ \t]+$", lines) & !is.na(counts[seq_along(lines)])
   if (any(blank)) {
-    found <- vapply(which(blank), function(n) {
+    found <- vapply(utils::head(which(blank), 5L), function(n) {
       cli::format_inline("Line {n}.")
     }, character(1L))
     cli::cli_abort(
       c(
         "{.file {file}} holds a line made only of spaces and tabs.",
-        stats::setNames(found, rep("x", length(found))),
+        form_first_five(found, "line", total = sum(blank)),
         "i" = "The line is counted from the file's first line."
       ),
       call = call
@@ -364,14 +417,14 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   n_header <- records[[1L]]
   rows <- which(records[-1L] != n_header)
   if (length(rows) > 0L) {
-    lines <- vapply(rows, function(r) {
+    lines <- vapply(utils::head(rows, 5L), function(r) {
       n <- records[[r + 1L]]
       cli::format_inline("Response row {r} holds {n} field{?s}, and the header holds {n_header}.")
     }, character(1L))
     cli::cli_abort(
       c(
         "{.file {file}} holds a response row whose field count differs from the header's.",
-        stats::setNames(lines, rep("x", length(lines))),
+        form_first_five(lines, "row", total = length(rows)),
         "i" = "The row is counted from the first row after the header."
       ),
       call = call
@@ -464,14 +517,14 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   if (length(stems) == 1L) {
     differs <- raw$instrument != stems
     if (any(differs)) {
-      found <- vapply(which(differs), function(r) {
+      found <- vapply(utils::head(which(differs), 5L), function(r) {
         cell <- raw$instrument[[r]]
         cli::format_inline("Response row {r}: instrument {.val {cell}}, item columns {.val {stems}}.")
       }, character(1L))
       cli::cli_abort(
         c(
           "{.file {file}} holds an {.field instrument} cell that differs from the item columns' stem.",
-          form_bullets(found),
+          form_first_five(found, "row", total = sum(differs)),
           "i" = "The row is counted from the first row after the header."
         ),
         call = call
