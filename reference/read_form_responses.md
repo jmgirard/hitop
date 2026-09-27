@@ -82,26 +82,32 @@ Every file must carry the same item columns in the same order, because a
 set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
 need separate calls. A file that does not look like one the page saved
-is an error naming the file: a line holding a NUL byte or a byte
-sequence that is not UTF-8, a line outside a quoted cell made only of
-spaces and tabs, no header row (a zero-byte file, blank lines only, a
-byte-order mark only), first columns other than the five the page writes
-first, a column that appears twice, a header with no response row, a
-response row holding fewer or more fields than the header, an item
-column whose name is not a stem of lower-case letters and digits, an
-underscore and the item number (`hitopbr_01`, not `foo` or
-`Hitopbr_01`), item columns of more than one stem (`hitopbr_01` beside
-`pid5bf_01`), an `instrument` cell that differs from the item columns'
-stem (`pid5bf` beside `hitopbr_01`), an item value that is not a whole
-number or is outside R's integer range, or a date that does not parse.
-An error on a line names the lines at fault, counted from the file's
-first line. An error on a row names the response rows at fault, counted
-from the first row after the header. An error on an item value names
-each cell at fault as its response row, its column and the value as
-written, the first five cells and a count of the rest. The field count
-of a row reads `#` as data and a quoted cell holding a line break as one
-cell, as the read does. A `submitted` stamp may carry fractional
-seconds.
+is an error naming the file: a UTF-16 file (one that starts with a
+UTF-16 byte-order mark, or whose first line is at least two bytes long
+and has a NUL byte in every other byte, as ASCII text in UTF-16 does), a
+line holding a NUL byte or a byte sequence that is not UTF-8, a line
+outside a quoted cell made only of spaces and tabs, no header row (a
+zero-byte file, blank lines only, a byte-order mark only), first columns
+other than the five the page writes first, a column that appears twice,
+a header with no response row, a response row holding fewer or more
+fields than the header, an item column whose name is not a stem of
+lower-case letters and digits, an underscore and the item number
+(`hitopbr_01`, not `foo` or `Hitopbr_01`), item columns of more than one
+stem (`hitopbr_01` beside `pid5bf_01`), an `instrument` cell that
+differs from the item columns' stem (`pid5bf` beside `hitopbr_01`), an
+item value that is not a whole number or is outside R's integer range,
+or a date that does not parse. An error on a line names the lines at
+fault, counted from the file's first line. An error on a row names the
+response rows at fault, counted from the first row after the header. An
+error on an item value names each cell at fault as its response row, its
+column and the value as written, the first five cells and a count of the
+rest. The errors on a NUL byte or a byte sequence that is not UTF-8, on
+a line of spaces and tabs, on a row's field count and on an `instrument`
+cell likewise name the first five lines or rows at fault and a count of
+the rest. The error on a UTF-16 file names no line and asks that the
+file be saved as UTF-8. The field count of a row reads `#` as data and a
+quoted cell holding a line break as one cell, as the read does. A
+`submitted` stamp may carry fractional seconds.
 
 **Errors.** Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class
