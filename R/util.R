@@ -409,8 +409,12 @@ validate_item_columns <- function(data, items, caller_items = items,
   if (any(kinds == "integer64")) {
     hint <- c(hint, "i" = "Convert an {.cls integer64} column with {.code as.numeric()} after {.code library(bit64)}.")
   }
-  if (any(kinds == "missing")) {
+  old <- vapply(first_bad[bad], function(r) isTRUE(r$old), logical(1))
+  if (any(kinds == "missing" & !old)) {
     hint <- c(hint, "i" = "Turn codes an SPSS file declares missing into {.code NA} with {.code haven::zap_missing()} before scoring.")
+  }
+  if (any(kinds == "missing" & old)) {
+    hint <- c(hint, "i" = "For a column of the old haven class {.cls labelled_spss}, set the values its {.code na_values} or {.code na_range} attribute declares to {.code NA} before scoring.")
   }
   cli::cli_abort(
     c(
@@ -441,10 +445,14 @@ unparsed_value <- function(x) {
   if (inherits(x, "integer64")) {
     return(list(kind = "integer64"))
   }
-  if (inherits(x, "haven_labelled_spss")) {
+  if (inherits(x, c("haven_labelled_spss", "labelled_spss"))) {
     code <- declared_missing(x)
     if (!is.null(code)) {
-      return(list(kind = "missing", value = code))
+      ## haven before 2.0 gave SPSS columns the class c("labelled_spss",
+      ## "labelled"), which haven::zap_missing() leaves unchanged, so that
+      ## class gets its own tip.
+      return(list(kind = "missing", value = code,
+                  old = !inherits(x, "haven_labelled_spss")))
     }
   }
   x <- item_values(x)

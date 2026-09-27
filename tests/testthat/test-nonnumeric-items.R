@@ -832,3 +832,125 @@ test_that("an SPSS column holding a blank and a non-blank declared code names th
                 info = info)
   }
 })
+
+# ---- M131: the SPSS class haven gave before version 2.0 ---------------------
+
+# haven before 2.0 built an SPSS column as structure(labelled(x, labels),
+# na_values = , na_range = , class = c("labelled_spss", "labelled")), with no
+# vctrs class (haven 1.1.2, R/labelled_spss.R,
+# https://github.com/tidyverse/haven/blob/v1.1.2/R/labelled_spss.R). Current
+# haven cannot build one, so these columns are built by hand in that shape.
+old_spss <- function(x, na_values = NULL, na_range = NULL) {
+  structure(x, labels = NULL, na_values = na_values, na_range = na_range,
+            class = c("labelled_spss", "labelled"))
+}
+
+old_spss_variants <- list(
+  `double, na_values` = function(x) {
+    x[c(2, 4)] <- c(99, 98)
+    list(column = old_spss(x, na_values = c(98, 99)), shown = "holds 99,")
+  },
+  `double, na_range` = function(x) {
+    x[c(2, 4)] <- c(99, 98)
+    list(column = old_spss(x, na_range = c(90, Inf)), shown = "holds 99,")
+  },
+  `character, na_values` = function(x) {
+    x <- as.character(x)
+    x[c(2, 4)] <- c("99", "98")
+    list(column = old_spss(x, na_values = c("98", "99")), shown = "holds \"99\",")
+  }
+)
+
+zap_tip <- "haven::zap_missing()"
+old_tip <- "old haven class"
+
+test_that("an old-class SPSS column holding a declared-missing code is refused with its own tip", {
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    for (variant in names(old_spss_variants)) {
+      info <- paste(case_label(case), "/", variant)
+      built <- old_spss_variants[[variant]](base[[col]])
+      data <- base
+      data[[col]] <- built$column
+      e <- catch_error(run_case(case, data))
+      expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+      if (!inherits(e, "hitop_nonnumeric_items")) next
+      msg <- cli::ansi_strip(conditionMessage(e))
+      expect_true(grepl(col, msg, fixed = TRUE), info = info)
+      expect_true(grepl(paste(built$shown, "which it declares missing"), msg,
+                        fixed = TRUE), info = info)
+      expect_true(grepl(old_tip, msg, fixed = TRUE), info = info)
+      expect_false(grepl(zap_tip, msg, fixed = TRUE), info = info)
+    }
+  }
+})
+
+test_that("the old-class and current-class SPSS tips each show only for their own class", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    other <- names(base)[[2]]
+    codes <- base[[col]]
+    codes[[2]] <- 99
+    columns <- list(
+      old = old_spss(codes, na_values = 99),
+      current = haven::labelled_spss(codes, na_values = 99)
+    )
+    for (kind in names(columns)) {
+      info <- paste(case_label(case), "/", kind)
+      data <- base
+      data[[col]] <- columns[[kind]]
+      msg <- cli::ansi_strip(conditionMessage(catch_error(run_case(case, data))))
+      expect_identical(grepl(old_tip, msg, fixed = TRUE), kind == "old", info = info)
+      expect_identical(grepl(zap_tip, msg, fixed = TRUE), kind == "current",
+                       info = info)
+    }
+    info <- paste(case_label(case), "/ both")
+    data <- base
+    data[[col]] <- columns$old
+    data[[other]] <- columns$current
+    msg <- cli::ansi_strip(conditionMessage(catch_error(run_case(case, data))))
+    expect_true(grepl(old_tip, msg, fixed = TRUE), info = info)
+    expect_true(grepl(zap_tip, msg, fixed = TRUE), info = info)
+  }
+})
+
+test_that("an old-class SPSS column with no declared code scores as its plain values do", {
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    text <- base
+    text[[col]] <- as.character(base[[col]])
+    declared <- list(
+      `double, na_values` = list(old_spss(base[[col]], na_values = 99), base),
+      `double, na_range` = list(old_spss(base[[col]], na_range = c(90, Inf)), base),
+      `character, na_values` = list(old_spss(text[[col]], na_values = "99"), text)
+    )
+    for (how in names(declared)) {
+      data <- base
+      data[[col]] <- declared[[how]][[1]]
+      expect_identical(run_case(case, data), run_case(case, declared[[how]][[2]]),
+                       info = paste(case_label(case), "/", how))
+    }
+  }
+})
+
+test_that("an old-class SPSS column declaring a blank value missing scores as the undeclared column does", {
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    for (blank in names(blank_codes)) {
+      info <- paste(case_label(case), "/", blank)
+      values <- as.character(base[[col]])
+      values[c(2, 4)] <- blank_codes[[blank]]
+      declared <- base
+      declared[[col]] <- old_spss(values, na_values = blank_codes[[blank]])
+      undeclared <- base
+      undeclared[[col]] <- old_spss(values)
+      expect_identical(catch_error(run_case(case, declared)),
+                       catch_error(run_case(case, undeclared)), info = info)
+    }
+  }
+})
