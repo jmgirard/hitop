@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M128 | hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=` | planned | — | normal | milestones/M128-link-builder-prefill-loose-ends.md |
+| M128 | hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=` | review | — | normal | milestones/M128-link-builder-prefill-loose-ends.md |
 | M127 | The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer | done | — | normal | milestones/archive/M127-builder-online-card-loose-ends.md |
 | M125 | hitop-form's `link.html` fills its fields from a study link's `c` parameter, refuses one it cannot read by name, and links the module builder and the tutorial from a three-step list | done | — | normal | milestones/archive/M125-link-builder-prefill.md |
 | M126 | The module builder's format step gains an "Online form" card that saves the `write_module()` scoring file and links to the link builder with the module filled in | done | M125 | normal | milestones/archive/M126-builder-online-card.md |
