@@ -43,6 +43,15 @@ nonnumeric_cases <- c(
   })
 )
 
+test_that("the cases every refusal test loops over cover the seven functions", {
+  # Stated apart from `nonnumeric_cases`, so a function dropped from the list
+  # fails here rather than leaving every loop below silently narrower.
+  seven <- c("score_pid5", "score_hitopsr", "score_hitopbr", "reliability_pid5",
+             "reliability_hitopsr", "reliability_hitopbr", "validity_pid5")
+  covered <- unique(vapply(nonnumeric_cases, function(case) case$fn, character(1)))
+  expect_identical(sort(covered), sort(seven))
+})
+
 case_label <- function(case) {
   paste(c(case$fn, case$version), collapse = " ")
 }
