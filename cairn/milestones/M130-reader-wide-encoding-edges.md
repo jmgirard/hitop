@@ -79,7 +79,7 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
 
 - [x] T1: Tests first, in `tests/testthat/test-read_form_responses.R` after the UTF-16 block (`:1804`). Build the AC1, AC2 and AC3 matrices from raw bytes, because `iconv()` writes no mark for the LE and BE targets and `Rscript -e` strips `\r`. Add a UTF-32 refusal helper beside `utf16_refusal()` that asserts neither class and records warnings with `withCallingHandlers`. Add the AC4 files. Run the new tests against the current code: the LF blank-line, UTF-32, blank-only and `a`,NUL,`b` cases must fail, each for its stated reason.
 - [x] T2: Replace `form_is_utf16()` as Scope states, and name the encoding in the `form_file_lines()` error. The full suite passes with the M129 UTF-16 tests and controls unedited. Plant a byte split in place of the unit split, see AC1 go red, and restore it; stage the fix with `git add` first (LESSONS M118).
-- [ ] T3: Rewrite the Details UTF-16 sentences (`R/read_form_responses.R:60-62`, `:83`) and the UTF-16 sentences of the NEWS bullet (`NEWS.md` "caps four of its line and row errors") to the AC6 facts, written from the shipped code. Run `devtools::document()` and `devtools::check()`.
+- [x] T3: Rewrite the Details UTF-16 sentences (`R/read_form_responses.R:60-62`, `:83`) and the UTF-16 sentences of the NEWS bullet (`NEWS.md` "caps four of its line and row errors") to the AC6 facts, written from the shipped code. Run `devtools::document()` and `devtools::check()`.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -96,6 +96,7 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
 - 2026-09-27: T1 done. 60 new tests after the UTF-8 controls; 32 fail on the current code, each for its stated reason (LF blank-line UTF-16 gets the NUL error naming lines 2-3, UTF-32 is called UTF-16, blank-only files name NUL lines, `a`,NUL,`b` LF and 0D 00 are called UTF-16, 0A 00 gets the NUL error). The CRLF `a`,NUL,`b` file and CRLF blank-line UTF-16 files already pass today.
 - 2026-09-27: correction to the T1 line: T1 added 51 tests, not 60 (16 + 16 + 10 + 9).
 - 2026-09-27: T2 done. `form_is_utf16()` replaced by `form_wide_encoding()` and `form_wide_match()`; the refusal names the encoding. Reader file 213 tests, 0 failing, M129's UTF-16 tests and controls unedited. Plant (lines split on the LF byte, then read as units) turned all 8 no-mark AC1 files red, restored from the staged fix. Full suite 0 failed, 15 skipped, 21263 expectations.
+- 2026-09-27: T3 done. Details and the NEWS bullet state the AC6 facts, written against T2's code; the `every other byte` grep returns nothing; a second `document()` leaves no diff; `check()` 0 errors, 0 warnings, 0 notes.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

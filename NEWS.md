@@ -391,19 +391,26 @@
 ## Improvements and fixes
 
 * **`read_form_responses()` caps four of its line and row errors at five,
-  refuses a UTF-16 file once, and keeps the mismatch class when a path
-  holds a brace.** Four errors now name the first five lines or rows at fault. When
+  refuses a UTF-16 or UTF-32 file once, and keeps the mismatch class when a
+  path holds a brace.** Four errors now name the first five lines or rows at fault. When
   more are at fault, one line such as "... and 2 more rows." follows. They
   are the errors on a NUL
   byte or a byte sequence that is not UTF-8, on a line of spaces and tabs,
   on a row's field count, and on an `instrument` cell. The errors on an item
   value already named five cells this way. Before, the four named every line
-  or row at fault. A file that starts with a UTF-16 byte-order mark is
-  taken as UTF-16. So is a file whose first line is at least two bytes long
-  with a NUL byte in every other byte. ASCII text in UTF-16 has this
-  pattern. Such a file is refused in one
-  error that names the file and no line, and asks that the file be saved as
-  UTF-8. Before, the byte error said that each line held a NUL byte. For a
+  or row at fault. A file that starts with the byte-order mark FF FE 00 00
+  or 00 00 FE FF is taken as UTF-32, and one that starts with FF FE or
+  FE FF as UTF-16. A file with no mark is read as UTF-32 and then as
+  UTF-16, each little-endian and then big-endian. In each encoding the lines
+  are split on that encoding's line feed. Empty lines and lines of a lone
+  carriage return at the top are skipped. The first line that is not blank
+  then has its trailing carriage return dropped. If it holds only printable
+  ASCII characters and tabs, the file is taken as that encoding. A file of
+  blank lines only in one of these encodings is also taken as that encoding
+  when it holds at least one line feed. Such a file is refused in one error.
+  The error names the file, its encoding and no line, and asks that the file
+  be saved as UTF-8. A file taken as UTF-32 is refused as UTF-32, not as
+  UTF-16. Before, the byte error said that each line held a NUL byte. For a
   UTF-16LE file it also named a line past the file's last. A file whose path
   holds a brace, such as `b{x}.csv`, can differ from the first file in its
   item columns. It now raises `hitop_form_responses_mismatch`, with the path
