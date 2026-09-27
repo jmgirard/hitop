@@ -1,6 +1,6 @@
 # M128: hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=`
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -31,11 +31,11 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 
 ## Coverage
 
-- AC1 → T1
+- AC1 → T1, T4
 - AC2 → T1, T2
 - AC3 → T1
 - AC4 → T1
-- AC5 → T2
+- AC5 → T2, T4
 - AC6 → T3
 - AC7 → T3
 
@@ -44,6 +44,7 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 - [x] T1: In `link.html`, add `<div id="prefilled" role="status" tabindex="-1" hidden>` between `ol.steps` and `#f`. `prefill()` collects the filled addresses and writes the notice only on its normal return, as text nodes, so the catch path at link.html:245 leaves none. `build()` empties and hides it first. Tests for AC1 to AC4 in `tests/link.spec.js`, beside L16 to L19, with the throwing load built by `page.addInitScript` as L18's seventh load is (M125 lesson: 16 KB address cap).
 - [x] T2: `#err` takes `tabindex="-1"`. After the prefill block, focus `#err` when it holds text, else the notice when shown, else nothing. Extend the L18 loop and the AC1 loads with `document.activeElement` assertions (AC2, AC5).
 - [x] T3: README (privacy paragraph, a notice-and-focus paragraph right after the prefill paragraph, `tests/link.spec.js` row) and the intro line at link.html:72, written against the page's observed behavior. Plants, each seen red then restored after the fix is staged (M118 lesson): the notice written through `innerHTML` (AC3), written from inside `text()` (AC2), keyed on `config.store` rather than a filled address (AC1), `build()` not clearing it (AC4), focus called only on `prefill()`'s normal return (AC5, AC2's load goes red). Full hitop-form suite; hitop `devtools::test()`. Jeff merges the hitop-form PR from his terminal (M116 lesson).
+- [ ] T4 (re-review S1, S3, S4): `address()` writes the field, then lists `f.elements[name].value` when it is non-empty, so the notice shows what each field holds. Tests: silent loads for `complete: "\n"` and a web `url: "\r\n"` (no notice, focus on `body`), and a shown load for a two-line `complete` whose line equals the joined field value. Plant: the notice listing the config string again, seen red. The `link.html` focus comment states focus only. The README test row names which six loads show the notice with focus asserted.
 
 ## Work log
 
@@ -66,6 +67,7 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 - 2026-09-27: mini gate: Jeff chose the anchored sentence and the Scope change, and declined the content list and the test-row bound, both of which widen past the return. AC6's second sentence now reads "The paragraph right after its prefill paragraph (the one opening "A study link's own `c` parameter") describes the notice and the focus move." This wording replaces the clause the amendment-return line above recorded. Scope In and T3's wording changed to match (no work changed). The separate paragraph was kept because it reads as one topic.
 - 2026-09-27: re-audit: AC6 (full) — nothing blocking. The branch meets the final text. The privacy paragraph and intro line have no locator but one reading each. The two declined bounds were noted again.
 - 2026-09-27: hitop-form full suite at 00aed9e: 233 passed. hitop code unchanged since review's `devtools::test()` and `check()`. The claim audit above stands. 00aed9e only narrows three audited claims, and re-review reads it. Implement done. Status review.
+- 2026-09-27: re-review: AC6 passes as amended. AC1 and AC5 fail: `address()` lists the config string, so a `c` whose completion URL is `"\n"` or whose web url is `"\r\n"` leaves the field empty yet shows the notice and focuses it. Defect return 1 (amendment returns: 1, on AC6). Jeff chose to fix the page. T4 added for S1, S3 and S4. Status in-progress.
 
 ## Decisions
 
