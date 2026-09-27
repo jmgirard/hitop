@@ -64,7 +64,7 @@ The four item-column inputs M110 left open get the refusal or score D-068 and D-
      Coverage lines together. -->
 
 - [x] T1: Write the AC1 tests in `tests/testthat/test-nonnumeric-items.R` and see them fail on the current `"1 "` display. Build the characters with `intToUtf8()`. Then add a helper beside `code_points()` that writes each Z, Cc and Cf character other than U+0020 as `<U+XXXX>`. Use it in both message branches of `validate_item_columns()` (`R/util.R:369`).
-- [ ] T2: Write the AC2 tests and see them fail. Then make `declared_missing()` (`R/util.R:484`) skip a character value that is blank after `trimws()`. Compare each function's result against the same column built with no declaration.
+- [x] T2: Write the AC2 tests and see them fail. Then make `declared_missing()` (`R/util.R:484`) skip a character value that is blank after `trimws()`. Compare each function's result against the same column built with no declaration.
 - [ ] T3: Write the AC3 tests with hand-built columns of class `c("labelled_spss", "labelled")` and see them fail. Cite haven 1.1.2 `R/labelled_spss.R` in a test comment. Then extend the SPSS check in `unparsed_value()` (`R/util.R:442`) to that class. Give the class its own kind or tip, so the `zap_missing()` tip shows only for `haven_labelled_spss`.
 - [ ] T4: Write the AC4 tests and see them fail with base R's error. Build bytes with `rawToChar(as.raw(...))`, because a raw byte in `Rscript -e` fails in the parser. Then convert character values with `enc2utf8()` at the top of the character path in `unparsed_value()`. Refuse a value that `validUTF8()` rejects, before the SPSS check. Show the value with `iconv(sub = "byte")`, and add the `iconv()` tip. Make sure that `is_invisible()` and `trimws()` never see an invalid value.
 - [ ] T5: Write the AC5 test. It loops one probe per criterion over the seven functions, as the existing loop at `test-nonnumeric-items.R:105` does.
@@ -81,6 +81,7 @@ The four item-column inputs M110 left open get the refusal or score D-068 and D-
 - 2026-09-27: plan gate chose one milestone over splitting the encoding work into M132. All five changes touch the same two helpers and one test file. Falsified by a review that has to return one gap while the others are ready.
 - 2026-09-27: implement started on branch m131-item-column-refusal-gaps. No question gate, because the plan fixed the display form, the class and the tips.
 - 2026-09-27: T1 done. `mark_invisible()` in `R/util.R` writes each Z, Cc and Cf character other than U+0020 as `<U+XXXX>` in both message branches. The two new tests failed first on the old display. The M110 test at `test-nonnumeric-items.R:693` pinned the old `"1 "` display, so its two expectations now name the code point. Full suite: 22022 expectations, 0 failed.
+- 2026-09-27: T2 done. `declared_missing()` skips a character value that is blank after `trimws()`. The two new tests failed first: the declared column was refused, and the mixed column named `""` rather than `"99"`. Full suite: 22087 expectations, 0 failed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

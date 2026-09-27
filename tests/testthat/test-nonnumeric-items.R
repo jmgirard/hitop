@@ -787,3 +787,48 @@ test_that("an interior plain space in a refused value shows unchanged", {
     }
   }
 })
+
+# ---- M131: a blank value an SPSS column declares missing -------------------
+
+# A blank cell in a character column scores as NA whether or not it is
+# declared missing, so declaring it changes nothing and is not refused.
+blank_codes <- c(empty = "", space = " ", tab = "\t")
+
+test_that("an SPSS column declaring a blank value missing scores as the undeclared column does", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    for (blank in names(blank_codes)) {
+      info <- paste(case_label(case), "/", blank)
+      values <- as.character(base[[col]])
+      values[c(2, 4)] <- blank_codes[[blank]]
+      declared <- base
+      declared[[col]] <- haven::labelled_spss(values, na_values = blank_codes[[blank]])
+      undeclared <- base
+      undeclared[[col]] <- haven::labelled_spss(values)
+      expect_identical(catch_error(run_case(case, declared)),
+                       catch_error(run_case(case, undeclared)), info = info)
+    }
+  }
+})
+
+test_that("an SPSS column holding a blank and a non-blank declared code names the non-blank one", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    values <- as.character(base[[col]])
+    values[[2]] <- ""
+    values[[4]] <- "99"
+    data <- base
+    data[[col]] <- haven::labelled_spss(values, na_values = c("", "99"))
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    msg <- cli::ansi_strip(conditionMessage(e))
+    expect_true(grepl("holds \"99\", which it declares missing", msg, fixed = TRUE),
+                info = info)
+  }
+})

@@ -493,7 +493,9 @@ mark_invisible <- function(x) {
 }
 
 # The first value, in row order, that an SPSS column's `na_values` or
-# `na_range` attribute declares missing, or NULL when it holds none.
+# `na_range` attribute declares missing, or NULL when it holds none. A
+# character value that is blank after trimws() is skipped: it scores as NA
+# whether or not it is declared, so declaring it changes nothing.
 declared_missing <- function(x) {
   values <- item_values(x)
   codes <- attr(x, "na_values", exact = TRUE)
@@ -501,6 +503,9 @@ declared_missing <- function(x) {
   hit <- !is.na(values) & values %in% codes
   if (length(range) == 2L) {
     hit <- hit | (!is.na(values) & values >= range[[1]] & values <= range[[2]])
+  }
+  if (is.character(values)) {
+    hit <- hit & nzchar(trimws(values))
   }
   if (!any(hit)) {
     return(NULL)
