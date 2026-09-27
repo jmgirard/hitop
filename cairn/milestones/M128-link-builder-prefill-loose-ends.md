@@ -1,6 +1,6 @@
 # M128: hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=`
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -58,6 +58,9 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 - 2026-09-27: T3 done. README: a notice-and-focus paragraph after the prefill paragraph, a privacy sentence on `link.html?c=`, the `tests/link.spec.js` row extended. `link.html` intro gains one sentence on the host seeing a `c`. Notice checked by eye in the browser pane. Five plants, fixes staged first and restored with `git checkout`: innerHTML (both L21 runs red), notice written as fields fill (the eighth L18 load red), Project URL keyed on the store (the no-url Supabase load red), no clear in `build()` (both L22 red), focus only on normal return (both throwing L18 loads red). One extra red under the innerHTML plant, the `/rest/v1/` suffix test, fetches the export and passed in the full run: a network failure, not the plant. hitop-form full suite 233 passed; hitop `devtools::test()` FAIL 0, PASS 20487, SKIP 15.
 - 2026-09-27: claim audit: 47 claims read, 7 corrected — hitop-form link.html, README.md, tests/link.spec.js (the hitop diff adds nothing outside cairn/, so the audit read the hitop-form branch). Corrected: the intro line (the browser sends the address), the privacy sentence (same `c`, not "again"), "when the page opens" and "can read it out", the non-empty qualifier, the focus comment, "sent or pointed", the test row's last clause. One re-read by the same reader: all seven match; the qualifier's placement and one comment wrap fixed (hitop-form c523c6e). `tests/link.spec.js` 63 passed after.
 - 2026-09-27: implement done; status review.
+- 2026-09-27: review: AC1 to AC5 pass, AC7 local half passes, AC6 fails as written (the notice and focus text is a paragraph after the prefill paragraph, not in it). Jeff chose to amend the criterion. Accepted fix-now wording (R4, R7, R8) landed in hitop-form 00aed9e.
+- 2026-09-27: amendment return: AC6 — "A paragraph after its prefill paragraph describes the notice and the focus move."
+- 2026-09-27: status in-progress for the AC6 amendment alone. Re-review follows it.
 
 ## Decisions
 
@@ -87,3 +90,5 @@ Independent review, three lenses (user-facing tier). Prior-review lens: no regre
 - R9: the load-time focus draws the focus outline. Proposed: noted. The outline shows keyboard users where focus is.
 - R10: L21 compares tag names in order, not nesting or attributes. Proposed: reject. It goes red on the `innerHTML` plant.
 - R11: the body-focus checks cannot tell guarded focus calls from unguarded ones, as hidden elements refuse focus. Proposed: reject. Both pages behave the same.
+
+Gate 2026-09-27: every proposed disposition accepted. R4's README rewording, R7 and R8 are fixed in hitop-form 00aed9e, and `tests/link.spec.js` passes 63 of 63 after it. R2 routed to an amendment of AC6's wording, not to a README change. The step-7 merge chip was not posed, as AC6 fails.
