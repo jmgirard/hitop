@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-27 (74th pass, M128 done): row archived, M125 pruned, no candidate row, one lesson added and the M033 line pruned (LESSONS byte budget). validate green._
+_Last hygiene check: 2026-09-27 (75th pass, M129 done): row archived, M126 pruned, one low candidate row (UTF-16 check edges), no lesson (LESSONS at its byte budget). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M129 | `read_form_responses()` caps its line and row refusals at five, refuses a UTF-16 file once, and keeps the mismatch class when a path holds a brace | review | — | normal | milestones/M129-reader-refusal-loose-ends.md |
+| M129 | `read_form_responses()` caps its line and row refusals at five, refuses a UTF-16 file once, and keeps the mismatch class when a path holds a brace | done | — | normal | milestones/archive/M129-reader-refusal-loose-ends.md |
 | M128 | hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=` | done | — | normal | milestones/archive/M128-link-builder-prefill-loose-ends.md |
 | M127 | The module builder removes the link-builder link on a format change, announces the saved file through the status line, and repairs A16, plant (o) and the README pointer | done | — | normal | milestones/archive/M127-builder-online-card-loose-ends.md |
-| M126 | The module builder's format step gains an "Online form" card that saves the `write_module()` scoring file and links to the link builder with the module filled in | done | M125 | normal | milestones/archive/M126-builder-online-card.md |
 
 ## Candidates
 
@@ -54,3 +53,4 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 - Score subset-collected HiTOP-SR data with no descriptor in hand, by working out from the column names which scales are fully present — needs its own decisions about partial coverage and name matching; useful for data that arrived from elsewhere. Promote if a researcher is blocked scoring a short form they did not generate — added 2026-08-01 — lineage: M037
 - "Module" now names two things: a chosen set of scales (`hitop_module()`, M043) and the HiTOP-HSUM, whose Society name is the Harmful Substance Use *Module*. No user-facing text conflates them today, but the collision bites when modularization reaches other instruments, since "an HSUM module" would be ambiguous. IP1 bars renaming the Society's instrument, so any fix is on this package's side. Promote when modularization extends beyond the HiTOP-SR, or if a user reports the ambiguity — added 2026-08-21 — lineage: M043
 - Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M024 — annotated 2026-08-21: M043 renames this family to "modules" and deliberately precedes this row so the generalization inherits one vocabulary — annotated 2026-08-26 (M057 review): two latent traps to clear when a second instrument arrives, in `validate_module_instrument()`'s supported-set derivation and `scale_definitions()`'s `ref$Subscale` read; neither is reachable while both maps hold exactly `hitopsr`
+- [low] Three edges of `read_form_responses()`'s UTF-16 check (`form_is_utf16()`) M129's review deferred. A UTF-16 file with no byte-order mark and a blank first line escapes it. The byte refusal then names lines, one past the file's last for UTF-16LE. UTF-32 files and a UTF-8 first line like `a\0b` are refused as "a UTF-16 file". No test covers an empty file, a 1-byte file, a 2-byte first line or a file of only FF FE. The page writes UTF-8 only. Promote on a user report of a UTF-16 or UTF-32 file, or when the check is next edited — added 2026-09-27 — lineage: M129 (review R2, R3, R6)
