@@ -287,12 +287,14 @@ form_response_files <- function(path, call = rlang::caller_env()) {
 # on bytes, so no warning is raised on the way.
 form_file_lines <- function(file, call = rlang::caller_env()) {
   bytes <- readBin(file, "raw", file.size(file))
-  # A UTF-16 file holds a NUL byte in nearly every character, so the scan
-  # below would name lines the file does not hold. It is refused once, first.
-  if (form_is_utf16(bytes)) {
+  # A UTF-16 or UTF-32 file holds a NUL byte in nearly every character, so
+  # the scan below would name lines the file does not hold. It is refused
+  # once, first.
+  encoding <- form_wide_encoding(bytes)
+  if (!is.na(encoding)) {
     cli::cli_abort(
       c(
-        "{.file {file}} is a UTF-16 file, not UTF-8.",
+        "{.file {file}} is a {encoding} file, not UTF-8.",
         "i" = "Save the file as UTF-8 and read it again."
       ),
       call = call
@@ -332,27 +334,68 @@ form_file_lines <- function(file, call = rlang::caller_env()) {
   lines
 }
 
-# Whether `bytes`, a file's raw bytes, are UTF-16: they begin with the
-# byte-order mark FF FE or FE FF, or the first line (the bytes before the
-# first line feed byte, or all of them when there is none) is at least two
-# bytes long with a NUL byte at every even or at every odd offset, counted
-# from 0, as ASCII text in UTF-16 is.
-form_is_utf16 <- function(bytes) {
-  if (length(bytes) >= 2L) {
-    head2 <- bytes[1:2]
-    if (identical(head2, as.raw(c(0xFF, 0xFE))) ||
-        identical(head2, as.raw(c(0xFE, 0xFF)))) {
-      return(TRUE)
+# The wide encoding of `bytes`, a file's raw bytes: "UTF-32", "UTF-16" or NA
+# for neither. A file that starts with the byte-order mark FF FE 00 00 or
+# 00 00 FE FF is UTF-32, and one that starts with FF FE or FE FF is UTF-16.
+# Otherwise UTF-32LE, UTF-32BE, UTF-16LE and UTF-16BE are tried in that order,
+# and the first that matches is returned (see `form_wide_match()`).
+form_wide_encoding <- function(bytes) {
+  starts_with <- function(mark) {
+    length(bytes) >= length(mark) && identical(bytes[seq_along(mark)], mark)
+  }
+  if (starts_with(as.raw(c(0xFF, 0xFE, 0x00, 0x00))) ||
+      starts_with(as.raw(c(0x00, 0x00, 0xFE, 0xFF)))) {
+    return("UTF-32")
+  }
+  if (starts_with(as.raw(c(0xFF, 0xFE))) ||
+      starts_with(as.raw(c(0xFE, 0xFF)))) {
+    return("UTF-16")
+  }
+  tries <- list(
+    list(size = 4L, little = TRUE, name = "UTF-32"),
+    list(size = 4L, little = FALSE, name = "UTF-32"),
+    list(size = 2L, little = TRUE, name = "UTF-16"),
+    list(size = 2L, little = FALSE, name = "UTF-16")
+  )
+  for (try in tries) {
+    if (form_wide_match(bytes, try$size, try$little)) {
+      return(try$name)
     }
   }
-  lf <- match(as.raw(0x0A), bytes)
-  first <- if (is.na(lf)) bytes else bytes[seq_len(lf - 1L)]
-  n <- length(first)
-  if (n < 2L) {
+  NA_character_
+}
+
+# Whether `bytes` read as code units of `size` bytes, little-endian when
+# `little`, look like text the page's header could be. The bytes are read as
+# whole units, a trailing partial unit ignored, and split into lines on the
+# line feed unit, each line's one trailing carriage return unit dropped. A
+# line is blank when nothing is left. They match when the first line that is
+# not blank holds only printable ASCII (U+0020 to U+007E) and tab, or when
+# every line is blank and they hold at least one line feed unit.
+form_wide_match <- function(bytes, size, little) {
+  n <- length(bytes) %/% size
+  if (n == 0L) {
     return(FALSE)
   }
-  nul <- first == as.raw(0x00)
-  all(nul[seq(1L, n, by = 2L)]) || all(nul[seq(2L, n, by = 2L)])
+  weights <- 256^(seq_len(size) - 1L)
+  if (!little) {
+    weights <- rev(weights)
+  }
+  units <- colSums(matrix(as.integer(bytes[seq_len(n * size)]), nrow = size) *
+                     weights)
+  lf <- which(units == 10)
+  first <- c(1L, lf + 1L)
+  last <- c(lf - 1L, n)
+  for (k in seq_along(first)) {
+    line <- units[seq.int(first[[k]], length.out = max(0L, last[[k]] - first[[k]] + 1L))]
+    if (length(line) > 0L && line[[length(line)]] == 13) {
+      line <- line[-length(line)]
+    }
+    if (length(line) > 0L) {
+      return(all(line == 9 | (line >= 32 & line <= 126)))
+    }
+  }
+  length(lf) > 0L
 }
 
 # The field count of each of `lines`, as `count.fields()` gives it with no
