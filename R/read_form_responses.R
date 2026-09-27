@@ -57,7 +57,9 @@
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
 #'   need separate calls. A file that does not look like one the page saved
-#'   is an error naming the file: a line holding a NUL byte or a byte
+#'   is an error naming the file: a UTF-16 file (one that starts with a
+#'   UTF-16 byte-order mark, or whose first line is ASCII text in UTF-16), a
+#'   line holding a NUL byte or a byte
 #'   sequence that is not UTF-8, a line outside a quoted cell made only of
 #'   spaces and tabs, no header row (a zero-byte file, blank
 #'   lines only, a byte-order mark only), first columns other than the five
@@ -73,7 +75,12 @@
 #'   file's first line. An error on a row names the response rows at fault,
 #'   counted from the first row after the header. An error on an item value
 #'   names each cell at fault as its response row, its column and the value
-#'   as written, the first five cells and a count of the rest. The field
+#'   as written, the first five cells and a count of the rest. The errors on
+#'   a NUL byte or a byte sequence that is not UTF-8, on a line of spaces and
+#'   tabs, on a row's field count and on an `instrument` cell likewise name
+#'   the first five lines or rows at fault and a count of the rest. The error
+#'   on a UTF-16 file names no line and asks that the file be saved as UTF-8.
+#'   The field
 #'   count of a row reads `#` as data and a quoted cell holding a line break
 #'   as one cell, as the read does. A `submitted` stamp may carry fractional
 #'   seconds.
