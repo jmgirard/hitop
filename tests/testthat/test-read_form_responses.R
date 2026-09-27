@@ -1805,8 +1805,8 @@ test_that("a NUL byte on line 2 and a Latin-1 byte on line 3 are both named, eac
 #
 # A file that begins with a UTF-16 byte-order mark, or whose first line holds
 # a NUL byte at every even or every odd offset, is refused as UTF-16 before
-# the byte check, naming no line. The files below are the header and the good
-# row, or more rows, encoded by `iconv()`.
+# the byte check, naming no line. The files below are the header and one or
+# more response rows, encoded by `iconv()`.
 
 # `text` as UTF-16 bytes in the byte order `to` names, after `mark` bytes.
 utf16_bytes <- function(text, to = "UTF-16LE", mark = raw(0)) {

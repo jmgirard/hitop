@@ -392,8 +392,9 @@
 
 * **`read_form_responses()` keeps its line and row errors short, refuses a
   UTF-16 file once, and keeps the mismatch class when a path holds a
-  brace.** Four errors now name the first five lines or rows at fault and
-  then one line such as "... and 2 more rows.". They are the errors on a NUL
+  brace.** Four errors now name the first five lines or rows at fault. When
+  more are at fault, one line such as "... and 2 more rows." follows. They
+  are the errors on a NUL
   byte or a byte sequence that is not UTF-8, on a line of spaces and tabs,
   on a row's field count, and on an `instrument` cell. The errors on an item
   value already named five cells this way. Before, the four named every line
