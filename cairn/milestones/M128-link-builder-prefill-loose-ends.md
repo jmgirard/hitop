@@ -1,13 +1,13 @@
 # M128: hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=`
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — a public web page researchers open, and its README
-- **Branch/PR:** —
+- **Branch/PR:** `m128-link-builder-prefill-loose-ends` (hitop and hitop-form)
 
 ## Goal
 
@@ -41,7 +41,7 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 
 ## Tasks
 
-- [ ] T1: In `link.html`, add `<div id="prefilled" role="status" tabindex="-1" hidden>` between `ol.steps` and `#f`. `prefill()` collects the filled addresses and writes the notice only on its normal return, as text nodes, so the catch path at link.html:245 leaves none. `build()` empties and hides it first. Tests for AC1 to AC4 in `tests/link.spec.js`, beside L16 to L19, with the throwing load built by `page.addInitScript` as L18's seventh load is (M125 lesson: 16 KB address cap).
+- [x] T1: In `link.html`, add `<div id="prefilled" role="status" tabindex="-1" hidden>` between `ol.steps` and `#f`. `prefill()` collects the filled addresses and writes the notice only on its normal return, as text nodes, so the catch path at link.html:245 leaves none. `build()` empties and hides it first. Tests for AC1 to AC4 in `tests/link.spec.js`, beside L16 to L19, with the throwing load built by `page.addInitScript` as L18's seventh load is (M125 lesson: 16 KB address cap).
 - [ ] T2: `#err` takes `tabindex="-1"`. After the prefill block, focus `#err` when it holds text, else the notice when shown, else nothing. Extend the L18 loop and the AC1 loads with `document.activeElement` assertions (AC2, AC5).
 - [ ] T3: README (privacy paragraph, prefill paragraph, `tests/link.spec.js` row) and the intro line at link.html:72, written against the page's observed behavior. Plants, each seen red then restored after the fix is staged (M118 lesson): the notice written through `innerHTML` (AC3), written from inside `text()` (AC2), keyed on `config.store` rather than a filled address (AC1), `build()` not clearing it (AC4), focus called only on `prefill()`'s normal return (AC5, AC2's load goes red). Full hitop-form suite; hitop `devtools::test()`. Jeff merges the hitop-form PR from his terminal (M116 lesson).
 
@@ -52,6 +52,8 @@ Close the three link-builder loose ends M125's review deferred (F3, F6, F10): a 
 - 2026-09-27: plan gate chose a notice listing the filled addresses over leaving the store and completion fields unfilled on prefill, because unfilled fields break editing an existing link (M125's round trip); falsified by a report of a researcher building a link from a crafted `c` with the notice shown.
 - 2026-09-27: plan gate chose moving focus to the load-time message over writing it after a delay, because focus is testable and a delayed write is not; falsified by a screen reader that skips a focused `role="alert"` or `role="status"` element at load.
 - 2026-09-27: plan gate declined a hitop NEWS entry; the change is recorded in hitop-form's history only.
+- 2026-09-27: implement started; branch `m128-link-builder-prefill-loose-ends` cut in hitop and hitop-form from pushed main. No implement question gate: nothing left open.
+- 2026-09-27: T1 done. `link.html` gains `#prefilled` (a status notice between the steps and the form); `prefill()` returns the filled addresses and the notice is written only after it returns; `build()` empties and hides it. Tests: an eighth L18 load (throw after a completion URL), L20 (six shown, six silent), L21 (markup per store kind), L22 (build, empty-study refusal). `tests/link.spec.js` 63 passed.
 
 ## Decisions
 
