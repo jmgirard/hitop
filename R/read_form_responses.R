@@ -204,9 +204,19 @@ form_cell_lines <- function(values, ok) {
     value <- values[[col]][[r]]
     cli::format_inline("Response row {r}, column {.field {col}}: {.val {value}}.")
   }, character(1L))
-  more <- nrow(bad) - length(shown)
+  form_first_five(lines, "cell", total = nrow(bad))
+}
+
+# The first five of `lines`, already formatted, as "x" bullets, and one line
+# counting the rest when `total` (the number at fault) is more than five.
+# `noun` names what one line stands for: "line", "row" or "cell". A caller
+# with many faults may format only the first five and pass `total`.
+form_first_five <- function(lines, noun, total = length(lines)) {
+  lines <- lines[seq_len(min(length(lines), 5L))]
+  more <- total - length(lines)
   if (more > 0L) {
-    lines <- c(lines, cli::format_inline("... and {more} more cell{?s}."))
+    lines <- c(lines, sprintf("... and %d more %s%s.", more, noun,
+                              if (more == 1L) "" else "s"))
   }
   form_bullets(lines)
 }
@@ -286,14 +296,14 @@ form_file_lines <- function(file, call = rlang::caller_env()) {
   }
   bad <- sort(unique(c(nul, which(!validUTF8(lines)))))
   if (length(bad) > 0L) {
-    found <- vapply(bad, function(n) {
+    found <- vapply(utils::head(bad, 5L), function(n) {
       kind <- if (n %in% nul) "a NUL byte" else "a byte sequence that is not UTF-8"
       cli::format_inline("Line {n} holds {kind}.")
     }, character(1L))
     cli::cli_abort(
       c(
         "{.file {file}} holds a NUL byte or a line that is not UTF-8.",
-        stats::setNames(found, rep("x", length(found))),
+        form_first_five(found, "line", total = length(bad)),
         "i" = "The line is counted from the file's first line."
       ),
       call = call
@@ -339,13 +349,13 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   # the counts are read by line, a count past the last line dropped.
   blank <- grepl("^[ \t]+$", lines) & !is.na(counts[seq_along(lines)])
   if (any(blank)) {
-    found <- vapply(which(blank), function(n) {
+    found <- vapply(utils::head(which(blank), 5L), function(n) {
       cli::format_inline("Line {n}.")
     }, character(1L))
     cli::cli_abort(
       c(
         "{.file {file}} holds a line made only of spaces and tabs.",
-        stats::setNames(found, rep("x", length(found))),
+        form_first_five(found, "line", total = sum(blank)),
         "i" = "The line is counted from the file's first line."
       ),
       call = call
@@ -364,14 +374,14 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   n_header <- records[[1L]]
   rows <- which(records[-1L] != n_header)
   if (length(rows) > 0L) {
-    lines <- vapply(rows, function(r) {
+    lines <- vapply(utils::head(rows, 5L), function(r) {
       n <- records[[r + 1L]]
       cli::format_inline("Response row {r} holds {n} field{?s}, and the header holds {n_header}.")
     }, character(1L))
     cli::cli_abort(
       c(
         "{.file {file}} holds a response row whose field count differs from the header's.",
-        stats::setNames(lines, rep("x", length(lines))),
+        form_first_five(lines, "row", total = length(rows)),
         "i" = "The row is counted from the first row after the header."
       ),
       call = call
@@ -464,14 +474,14 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   if (length(stems) == 1L) {
     differs <- raw$instrument != stems
     if (any(differs)) {
-      found <- vapply(which(differs), function(r) {
+      found <- vapply(utils::head(which(differs), 5L), function(r) {
         cell <- raw$instrument[[r]]
         cli::format_inline("Response row {r}: instrument {.val {cell}}, item columns {.val {stems}}.")
       }, character(1L))
       cli::cli_abort(
         c(
           "{.file {file}} holds an {.field instrument} cell that differs from the item columns' stem.",
-          form_bullets(found),
+          form_first_five(found, "row", total = sum(differs)),
           "i" = "The row is counted from the first row after the header."
         ),
         call = call

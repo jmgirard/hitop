@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M129: `read_form_responses()` caps its line and row refusals at five, refuses a UTF-16 file once, and keeps the mismatch class when a path holds a brace
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the error messages of the exported reader `read_form_responses()`   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m129-reader-refusal-loose-ends   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -46,7 +46,7 @@ A malformed or mis-encoded hitop-form file stops `read_form_responses()` with a 
 ## Tasks
 <!-- owner: plan (create) / implement (check-off, minor edits); substantive change is amend-via-gate. -->
 
-- [ ] T1: Tests first (red), then one helper giving the first five of a list of pre-formatted lines plus the count bullet, its noun ("line", "row", "cell") passed in, returned through `form_bullets()`. `form_cell_lines()` uses it. The byte (L288-300), whitespace (L341-353), field-count (L366-379) and instrument (L464-479) refusals use it. Read bullets from `cnd$body` (M096 lesson); build fault files with the existing `raw_file()`/`bytes_of()` helpers.
+- [x] T1: Tests first (red), then one helper giving the first five of a list of pre-formatted lines plus the count bullet, its noun ("line", "row", "cell") passed in, returned through `form_bullets()`. `form_cell_lines()` uses it. The byte (L288-300), whitespace (L341-353), field-count (L366-379) and instrument (L464-479) refusals use it. Read bullets from `cnd$body` (M096 lesson); build fault files with the existing `raw_file()`/`bytes_of()` helpers.
 - [ ] T2: Tests first (red), then the UTF-16 check at the head of `form_file_lines()`, on the raw bytes before the NUL scan and the byte-order-mark strip. Rewrite the UTF-16LE test (`tests/testthat/test-read_form_responses.R:1764`) to the new refusal. Build files with `iconv(..., toRaw = TRUE)` and a prepended mark where the case asks.
 - [ ] T3: Tests first (red), then the mismatch `lines` (L144-148) through `form_bullets()`. Write the brace-named files in a `withr::local_tempdir()`.
 - [ ] T4: Revise the Details sentence at `R/read_form_responses.R:72-76` against observed messages (derived-claims rule), add the NEWS entry under "Improvements and fixes", run `devtools::document()`.
@@ -59,6 +59,8 @@ A malformed or mis-encoded hitop-form file stops `read_form_responses()` with a 
 - 2026-09-27: criteria audit ran in full mode (fresh Opus reader), twice. Fixed before and after the gate: an alternating NUL/non-UTF-8 byte case, a lone `{` and a cli-markup path in AC3, a test-reading phrase dropped from AC1; on the gate-changed AC2, a one-line-feed UTF-8 false positive (rule moved to a first-line NUL pattern), BE line endings and a markless U+010A case added, a code-order clause restated as behavior.
 - 2026-09-27: plan gate chose to cap the field-count refusal with the other three over leaving it uncapped as M121's review (F3) chose, because the cap keeps each shown row's own line and count; falsified by a user needing the sixth ragged row and beyond named.
 - 2026-09-27: plan gate chose one whole-file UTF-16 refusal over correcting UTF-16LE line numbers, and over ignoring NUL bytes after the final line feed (which mislabels a UTF-8 file ending in a stray NUL), because it tells the researcher to save as UTF-8; falsified by a UTF-8 file the page or a store writes being refused as UTF-16.
+- 2026-09-27: implement started on branch m129-reader-refusal-loose-ends; question gate skipped (nothing open: the UTF-16 message wording is bound by AC2).
+- 2026-09-27: T1 done: `form_first_five(lines, noun, total)` caps the byte, whitespace, field-count, instrument and cell refusals; 17 new tests, 9 red before the helper (the 6- and 7-fault cases and the alternating file); suite 0 failed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

@@ -1932,3 +1932,109 @@ test_that("a participant cell holding a multibyte UTF-8 character reads intact",
   expect_identical(out$participant, "Zoë")
   expect_identical(out$hitopbr_01, 4L)
 })
+
+# ---- Line and row refusals name five and count the rest --------------------
+#
+# The byte, whitespace-line, field-count and `instrument`-cell refusals name
+# the first five lines or rows at fault, in file order, and then one line
+# counting the rest, as the item-value refusals name the first five cells.
+
+# The bullets of `body` naming a line or a row at fault, and the count line.
+fault_lines <- function(body) {
+  body[grepl("^Line |^Response row |^[.]{3} and ", body)]
+}
+
+# Read `path`, expecting the field-count refusal naming the file; returns the
+# message's bullets.
+field_refusal <- function(path) {
+  cnd <- rlang::catch_cnd(read_form_responses(path), "error")
+  expect_s3_class(cnd, "error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  msg <- conditionMessage(cnd)
+  expect_match(msg, basename(path), fixed = TRUE)
+  expect_match(msg, "field count differs", fixed = TRUE)
+  expect_match(msg, "counted from the first row after the header", fixed = TRUE)
+  cli::ansi_strip(cnd$body)
+}
+
+short_row <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4"
+
+# Each refusal: a file of `k` faults, the reader of its bullets, and the
+# bullet naming fault `i`.
+five_cases <- list(
+  bytes = list(
+    file = function(dir, k) {
+      rows <- rep(list(bytes_of("caf", latin1_e,
+                                ",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1",
+                                crlf)), k)
+      raw_file(dir, "bytes.csv", do.call(c, c(list(bytes_of(two_header, crlf)), rows)))
+    },
+    read = function(path) byte_refusal(path),
+    line = function(i) sprintf("Line %d holds a byte sequence that is not UTF-8.", i + 1L)
+  ),
+  whitespace = list(
+    file = function(dir, k) write_rows(file.path(dir, "ws.csv"), rep("  ", k)),
+    read = function(path) whitespace_refusal(path),
+    line = function(i) sprintf("Line %d.", i)
+  ),
+  fields = list(
+    file = function(dir, k) {
+      write_rows(file.path(dir, "fields.csv"), c(two_header, rep(short_row, k)))
+    },
+    read = function(path) field_refusal(path),
+    line = function(i) sprintf("Response row %d holds 6 fields, and the header holds 7.", i)
+  ),
+  instrument = list(
+    file = function(dir, k) {
+      write_rows(file.path(dir, "instrument.csv"),
+                 c(two_header, rep(with_instrument(good_row, "pid5bf"), k)))
+    },
+    read = function(path) instrument_refusal(path),
+    line = function(i) sprintf("Response row %d: instrument \"pid5bf\", item columns \"hitopbr\".", i)
+  )
+)
+
+# The count line each fault count ends with, written out.
+count_lines <- list(
+  bytes = c(`1` = NA, `5` = NA, `6` = "... and 1 more line.", `7` = "... and 2 more lines."),
+  whitespace = c(`1` = NA, `5` = NA, `6` = "... and 1 more line.", `7` = "... and 2 more lines."),
+  fields = c(`1` = NA, `5` = NA, `6` = "... and 1 more row.", `7` = "... and 2 more rows."),
+  instrument = c(`1` = NA, `5` = NA, `6` = "... and 1 more row.", `7` = "... and 2 more rows.")
+)
+
+for (refusal_kind in names(five_cases)) {
+  for (k in c(1L, 5L, 6L, 7L)) {
+    local({
+      case <- five_cases[[refusal_kind]]
+      count <- count_lines[[refusal_kind]][[as.character(k)]]
+      k <- k
+      test_that(paste("the", refusal_kind, "refusal of a file with", k,
+                      "faults names the first five and counts the rest"), {
+        dir <- withr::local_tempdir()
+        body <- case$read(case$file(dir, k))
+        expected <- vapply(seq_len(min(k, 5L)), case$line, character(1L))
+        if (!is.na(count)) expected <- c(expected, count)
+        expect_identical(fault_lines(body), expected)
+      })
+    })
+  }
+}
+
+test_that("a seven-fault file of alternating NUL and non-UTF-8 lines names the first five, each by its kind", {
+  dir <- withr::local_tempdir()
+  nul_row <- bytes_of("s", as.raw(0x00),
+                      ",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf)
+  latin_row <- bytes_of("caf", latin1_e,
+                        ",p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,4,1", crlf)
+  rows <- rep(list(nul_row, latin_row), length.out = 7L)
+  f <- raw_file(dir, "mixed.csv", do.call(c, c(list(bytes_of(two_header, crlf)), rows)))
+  body <- byte_refusal(f)
+  expect_identical(fault_lines(body), c(
+    "Line 2 holds a NUL byte.",
+    "Line 3 holds a byte sequence that is not UTF-8.",
+    "Line 4 holds a NUL byte.",
+    "Line 5 holds a byte sequence that is not UTF-8.",
+    "Line 6 holds a NUL byte.",
+    "... and 2 more lines."
+  ))
+})
