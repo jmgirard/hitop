@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M129: `read_form_responses()` caps its line and row refusals at five, refuses a UTF-16 file once, and keeps the mismatch class when a path holds a brace
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -50,7 +50,7 @@ A malformed or mis-encoded hitop-form file stops `read_form_responses()` with a 
 - [x] T2: Tests first (red), then the UTF-16 check at the head of `form_file_lines()`, on the raw bytes before the NUL scan and the byte-order-mark strip. Rewrite the UTF-16LE test (`tests/testthat/test-read_form_responses.R:1764`) to the new refusal. Build files with `iconv(..., toRaw = TRUE)` and a prepended mark where the case asks.
 - [x] T3: Tests first (red), then the mismatch `lines` (L144-148) through `form_bullets()`. Write the brace-named files in a `withr::local_tempdir()`.
 - [x] T4: Revise the Details sentence at `R/read_form_responses.R:72-76` against observed messages (derived-claims rule), add the NEWS entry under "Improvements and fixes", run `devtools::document()`.
-- [ ] T5: `devtools::test()` and `devtools::check()` clean.
+- [x] T5: `devtools::test()` and `devtools::check()` clean.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates. -->
@@ -64,6 +64,10 @@ A malformed or mis-encoded hitop-form file stops `read_form_responses()` with a 
 - 2026-09-27: T2 done: `form_is_utf16()` runs at the head of `form_file_lines()` and refuses the file once, naming no line. The old UTF-16LE test became 12 refusal tests (all red before the check) and 4 UTF-8 controls (green before and after). Suite 0 failed.
 - 2026-09-27: T3 done: the mismatch bullets pass through `form_bullets()`. Of 5 new tests, `b{x}.csv`, `b{.csv` and `b{.val x}.csv` were red before the fix. The `c}.csv` and first-file `a{x}.csv` cases passed before and after. Suite 0 failed.
 - 2026-09-27: T4 done: Details adds UTF-16 to the list of refused files and a sentence naming the four capped errors by name, because the date and `item_order` errors list rows inline (cli cuts them at 20, observed). NEWS "Before" claims were read against `main` in a scratch copy. `devtools::document()` rebuilt only `man/read_form_responses.Rd`.
+- 2026-09-27: T5 done: `devtools::test()` 0 failed, 20755 passed. `devtools::check()` 0 errors, 0 warnings, 0 notes.
+- 2026-09-27: claim audit: 31 claims read, 2 corrected — NEWS.md, tests/testthat/test-read_form_responses.R
+- 2026-09-27: delegation: one fresh [O] reader ran the claim audit against HEAD and a scratch copy of `main`. It found no wrong behavior claim and 2 wording fixes (applied in cb6ce73b), and its re-read found both hold.
+- 2026-09-27: status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
