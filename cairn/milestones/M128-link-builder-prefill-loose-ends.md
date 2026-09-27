@@ -102,3 +102,16 @@ Re-review 2026-09-27, after the AC6 amendment. Both `origin/main` heads are unmo
 
 - AC6: pass against the amended text. The README paragraph opening "A study link's own `c` parameter" (lines 113 to 122) is followed, after one blank line, by the paragraph at lines 124 to 130. That paragraph names the four address fields, the notice between the steps and the form, "Check them", its removal on "Make the link", and focus moving to the refusal or the notice. The privacy paragraph (lines 132 to 143) and the `link.html` intro pass as recorded above. The test row now reads "on the notice in the six loads that show it, and on no element in the six loads that show neither".
 - AC1 to AC5 at 00aed9e: the full suite `npx playwright test` passes 233 of 233 (1.3 m), all the tests named in the AC1 to AC5 lines above among them. 00aed9e changed only README text and one intro word, so those evidence lines stand at this head.
+- AC1 and AC5: fail (found by the re-review diff-bug lens, reproduced by a scratch Playwright probe of the branch). `address()` (`link.html` line 245) lists the config string, not the value the field holds. A text input drops line breaks, so `complete: "\n"` or a web store `url: "\r\n"` leaves the field empty. The notice still shows "Completion URL: " or "Address: " and focus goes to `prefilled`. AC1 says a `c` filling none of the four shows no notice, and AC5 says such a load leaves focus on `body`. A two-line `complete` fills the field as one joined string while the notice shows the raw two lines. AC1 and AC5 were ticked at the first pass on the tests' loads, which have no such address. They stay ticked here only as a record of that pass. This finding overrides them.
+
+Re-review consistency: `cairn_validate` exit 0. hitop R code unchanged, so `document()`, `check_pkgdown()` and `check()` above stand.
+
+Re-review lenses. Prior-review: no finding, and R4, R7 and R8 landed. Blame-history: no finding, and 00aed9e's three edits trace to R4, R7 and R8. Diff-bug, ranked, with proposed dispositions:
+- S1: the line-break address above. Proposed: return to in-progress. Write the field first, then list `f.elements[name].value` when non-empty. Add silent loads for `"\n"` and `"\r\n"` and a shown load whose line equals the joined field value.
+- S2: AC7's CI half is still unread (as R1). Proposed: noted, read at step 8.
+- S3: the `link.html` comment at line 283, "Focus is read out", keeps the screen-reader claim R4 removed from the README. Proposed: fix in the return pass.
+- S4: the test row's "on the notice in the six loads that show it" can read as a count of every notice load, but L16, L21 and L22 also show it. Proposed: fix in the return pass by naming which six.
+- S5: bidirectional control characters in an address show reordered in the notice, as in the field. Proposed: reject. The field shows the same, the host before the override stays readable, and no criterion covers display order.
+- S6: R3 re-confirmed (a refused load scrolls to the refusal). Proposed: noted, R3's rejection stands.
+- S7: R11 holds in Chromium only. An empty `p[tabindex=-1]` refuses focus there, so the `err.textContent` guard is untested in other engines. Proposed: noted. The plan tests focus in Chromium.
+- S8: R4 unchanged (no accessible name). Proposed: noted, the Scope Out line stands.
