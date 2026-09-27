@@ -690,8 +690,9 @@ test_that("a refused value made only of invisible characters is shown by its cod
     "  " = c("U+00A0", "U+2009"),
     " \v" = c("U+00A0", "U+000B")
   )
-  # One visible character, before or after the invisible one: shown as text.
-  visible <- list(" x" = "x\"", "1 " = "\"1")
+  # One visible character, before or after the invisible one: shown as text,
+  # with the invisible one written as its code point (M131).
+  visible <- list(" x" = "\"<U+00A0>x\"", "1 " = "\"1<U+00A0>\"")
   for (case in nonnumeric_cases) {
     col <- names(case$data)[[1]]
     for (value in c(names(invisible), names(visible))) {
@@ -707,9 +708,82 @@ test_that("a refused value made only of invisible characters is shown by its cod
           expect_true(grepl(point, msg, fixed = TRUE), info = info)
         }
       } else {
-        expect_false(grepl("U+00A0", msg, fixed = TRUE), info = info)
         expect_true(grepl(visible[[value]], msg, fixed = TRUE), info = info)
       }
+    }
+  }
+})
+
+# ---- M131: invisible characters inside a visible value ----------------------
+
+# One character from each category is_invisible() reads: a separator, a
+# control and a format mark. as.numeric() refuses each one in every position
+# (it accepts a vertical tab at the ends, so U+000B is not used here).
+hidden_characters <- c(Z = 0xA0, Cc = 0x85, Cf = 0x200B)
+
+# The value with the character at the start, middle and end, and how the
+# message must show it.
+hidden_forms <- function(point) {
+  ch <- intToUtf8(point)
+  mark <- sprintf("<U+%04X>", point)
+  list(
+    start = c(value = paste0(ch, "1"), shown = paste0(mark, "1")),
+    middle = c(value = paste0("1", ch, "2"), shown = paste0("1", mark, "2")),
+    end = c(value = paste0("1", ch), shown = paste0("1", mark))
+  )
+}
+
+test_that("a refused value mixing visible and invisible characters shows each invisible one by its code point", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    for (category in names(hidden_characters)) {
+      forms <- hidden_forms(hidden_characters[[category]])
+      for (where in names(forms)) {
+        for (kind in c("text", "declared missing")) {
+          info <- paste(case_label(case), "/", category, where, kind)
+          value <- forms[[where]][["value"]]
+          values <- rep("1", nrow(case$data))
+          values[[2]] <- value
+          data <- case$data
+          data[[col]] <- if (kind == "text") {
+            values
+          } else {
+            haven::labelled_spss(values, na_values = value)
+          }
+          e <- catch_error(run_case(case, data))
+          expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+          if (!inherits(e, "hitop_nonnumeric_items")) next
+          msg <- cli::ansi_strip(conditionMessage(e))
+          shown <- paste0("\"", forms[[where]][["shown"]], "\"")
+          expect_true(grepl(shown, msg, fixed = TRUE), info = info)
+          expect_false(grepl(value, msg, fixed = TRUE), info = info)
+        }
+      }
+    }
+  }
+})
+
+test_that("an interior plain space in a refused value shows unchanged", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    for (kind in c("text", "declared missing")) {
+      info <- paste(case_label(case), "/", kind)
+      values <- rep("1", nrow(case$data))
+      values[[2]] <- "1 2"
+      data <- case$data
+      data[[col]] <- if (kind == "text") {
+        values
+      } else {
+        haven::labelled_spss(values, na_values = "1 2")
+      }
+      e <- catch_error(run_case(case, data))
+      expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+      if (!inherits(e, "hitop_nonnumeric_items")) next
+      msg <- cli::ansi_strip(conditionMessage(e))
+      expect_true(grepl("\"1 2\"", msg, fixed = TRUE), info = info)
+      expect_false(grepl("U+0020", msg, fixed = TRUE), info = info)
     }
   }
 })

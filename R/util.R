@@ -371,12 +371,14 @@ validate_item_columns <- function(data, items, caller_items = items,
         points <- code_points(value)
         cli::format_inline("{label} is {.cls {cls}} and holds a value made only of the invisible {cli::qty(length(points))}character{?s} {points}, which is not a number.")
       } else {
+        value <- mark_invisible(value)
         cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not a number.")
       },
       missing = if (is.character(value) && nzchar(value) && is_invisible(value)) {
         points <- code_points(value)
         cli::format_inline("{label} is {.cls {cls}} and holds a value made only of the invisible {cli::qty(length(points))}character{?s} {points}, which it declares missing.")
       } else {
+        if (is.character(value)) value <- mark_invisible(value)
         cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which it declares missing.")
       },
       cli::format_inline("{label} is {.cls {cls}}.")
@@ -477,6 +479,17 @@ is_invisible <- function(x) {
 # A string's characters as Unicode code points: "U+00A0".
 code_points <- function(x) {
   sprintf("U+%04X", utf8ToInt(enc2utf8(x)))
+}
+
+# A string that also holds a visible character, with each character of the
+# categories is_invisible() reads written as its code point in angle brackets,
+# so "1" and a non-breaking space shows as "1<U+00A0>", not as "1 ". A plain
+# space (U+0020) is left as it is.
+mark_invisible <- function(x) {
+  chars <- strsplit(enc2utf8(x), "", fixed = TRUE)[[1]]
+  hidden <- grepl("^[\\p{Z}\\p{Cc}\\p{Cf}]$", chars, perl = TRUE) & chars != " "
+  chars[hidden] <- sprintf("<U+%04X>", vapply(chars[hidden], utf8ToInt, integer(1)))
+  paste(chars, collapse = "")
 }
 
 # The first value, in row order, that an SPSS column's `na_values` or
