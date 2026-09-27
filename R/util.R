@@ -381,6 +381,11 @@ validate_item_columns <- function(data, items, caller_items = items,
         if (is.character(value)) value <- mark_invisible(value)
         cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which it declares missing.")
       },
+      encoding = {
+        ## Each invalid byte shown as "<a0>", so the value prints at all.
+        value <- iconv(value, "UTF-8", "UTF-8", sub = "byte")
+        cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not valid UTF-8 text.")
+      },
       cli::format_inline("{label} is {.cls {cls}}.")
     )
     escape_braces(text)
@@ -406,6 +411,9 @@ validate_item_columns <- function(data, items, caller_items = items,
       "Export numeric values rather than choice text, or convert each column to numbers before scoring."
     })
   }
+  if (any(kinds == "encoding")) {
+    hint <- c(hint, "i" = "Read the file again with its encoding, or convert a column with {.code iconv()}, for example {.code iconv(x, from = \"latin1\", to = \"UTF-8\")}.")
+  }
   if (any(kinds == "integer64")) {
     hint <- c(hint, "i" = "Convert an {.cls integer64} column with {.code as.numeric()} after {.code library(bit64)}.")
   }
@@ -430,6 +438,7 @@ validate_item_columns <- function(data, items, caller_items = items,
 # The reason an item column is refused, or NULL when it is accepted. A reason
 # is a list: `kind` "text" with the first value, after trimws(), of a character
 # column that does not parse, "missing" with the first value an SPSS column declares missing,
+# "encoding" with the first character value that is not valid UTF-8,
 # "integer64" for an integer64 column, or "type" for a column of any other
 # refused type. The parse test muffles
 # as.numeric()'s own coercion warning, which is the message this refusal
@@ -444,6 +453,18 @@ validate_item_columns <- function(data, items, caller_items = items,
 unparsed_value <- function(x) {
   if (inherits(x, "integer64")) {
     return(list(kind = "integer64"))
+  }
+  ## Text is read as UTF-8, converted from the encoding its Encoding() mark
+  ## declares, so a Latin-1 value is read as its text. A value that is still
+  ## not valid UTF-8 (bytes read without their encoding) is refused before any
+  ## other check, because trimws(), as.numeric() and the regexes below stop
+  ## on it with a base R error.
+  if (is.character(item_values(x))) {
+    utf8 <- enc2utf8(item_values(x))
+    invalid <- !is.na(utf8) & !validUTF8(utf8)
+    if (any(invalid)) {
+      return(list(kind = "encoding", value = utf8[invalid][[1]]))
+    }
   }
   if (inherits(x, c("haven_labelled_spss", "labelled_spss"))) {
     code <- declared_missing(x)
@@ -462,7 +483,7 @@ unparsed_value <- function(x) {
   if (!is.character(x)) {
     return(list(kind = "type"))
   }
-  values <- trimws(x)
+  values <- trimws(enc2utf8(x))
   values <- values[!is.na(values) & nzchar(values)]
   parsed <- suppressWarnings(as.numeric(values))
   ## "NaN" parses to NaN, which a numeric column scores as missing, so only a

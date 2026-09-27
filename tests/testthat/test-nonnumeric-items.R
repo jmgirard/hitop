@@ -954,3 +954,93 @@ test_that("an old-class SPSS column declaring a blank value missing scores as th
     }
   }
 })
+
+# ---- M131: text that is not valid UTF-8 -------------------------------------
+
+# A byte string with no encoding mark. A raw byte cannot be written in a string
+# literal here, because the parser reads the file as UTF-8.
+bytes_string <- function(...) rawToChar(as.raw(c(...)))
+
+# Each value and how the message must show it: iconv(sub = "byte") writes an
+# invalid byte as "<a0>". A lone byte, a byte at the start, middle and end, and
+# two truncated multibyte sequences.
+invalid_utf8 <- list(
+  alone = c(bytes_string(0xa0), "<a0>"),
+  start = c(bytes_string(0xa0, 0x31), "<a0>1"),
+  middle = c(bytes_string(0x31, 0xa0, 0x32), "1<a0>2"),
+  end = c(bytes_string(0x31, 0xa0), "1<a0>"),
+  `truncated three-byte` = c(bytes_string(0xe2, 0x80), "<e2><80>"),
+  `truncated two-byte` = c(bytes_string(0xc3), "<c3>")
+)
+
+encoding_tip <- "iconv()"
+
+expect_encoding_refusal <- function(e, col, shown, info) {
+  expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+  if (!inherits(e, "hitop_nonnumeric_items")) return(invisible())
+  msg <- cli::ansi_strip(conditionMessage(e))
+  expect_true(grepl(col, msg, fixed = TRUE), info = info)
+  expect_true(grepl(paste0("holds \"", shown, "\", which is not valid UTF-8"),
+                    msg, fixed = TRUE), info = info)
+  expect_true(grepl(encoding_tip, msg, fixed = TRUE), info = info)
+}
+
+test_that("a character column holding text that is not valid UTF-8 is refused", {
+  skip_if_not(l10n_info()$`UTF-8`, "needs a UTF-8 session")
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    for (form in names(invalid_utf8)) {
+      value <- invalid_utf8[[form]][[1]]
+      shown <- invalid_utf8[[form]][[2]]
+      # The invalid value follows a valid one, in a plain, a haven labelled
+      # and an SPSS column, the last declaring it missing.
+      values <- rep("1", nrow(case$data))
+      values[[2]] <- value
+      columns <- list(
+        plain = values,
+        labelled = haven::labelled(values, c(Low = "1")),
+        spss = haven::labelled_spss(values, na_values = value)
+      )
+      for (type in names(columns)) {
+        info <- paste(case_label(case), "/", form, "/", type)
+        data <- case$data
+        data[[col]] <- columns[[type]]
+        expect_encoding_refusal(catch_error(run_case(case, data)), col, shown,
+                                info)
+      }
+    }
+  }
+})
+
+test_that("a bytes-marked value that is not valid UTF-8 is refused", {
+  skip_if_not(l10n_info()$`UTF-8`, "needs a UTF-8 session")
+  value <- bytes_string(0x31, 0xa0)
+  Encoding(value) <- "bytes"
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- c("1", value, rep("1", nrow(data) - 2L))
+    expect_encoding_refusal(catch_error(run_case(case, data)), col, "1<a0>",
+                            case_label(case))
+  }
+})
+
+test_that("a Latin-1-marked value is read as its text, not refused as invalid UTF-8", {
+  # "1" and byte A0 marked Latin-1 is "1" and a non-breaking space.
+  value <- bytes_string(0x31, 0xa0)
+  Encoding(value) <- "latin1"
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- c("1", value, rep("1", nrow(data) - 2L))
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    msg <- cli::ansi_strip(conditionMessage(e))
+    expect_true(grepl("holds \"1<U+00A0>\", which is not a number", msg,
+                      fixed = TRUE), info = info)
+    expect_false(grepl("UTF-8", msg, fixed = TRUE), info = info)
+  }
+})
