@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M130: `read_form_responses()` refuses a UTF-16 file after blank lines, names a UTF-32 file as UTF-32, and stops calling `a`,NUL,`b` UTF-16
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -97,6 +97,8 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
 - 2026-09-27: correction to the T1 line: T1 added 51 tests, not 60 (16 + 16 + 10 + 9).
 - 2026-09-27: T2 done. `form_is_utf16()` replaced by `form_wide_encoding()` and `form_wide_match()`; the refusal names the encoding. Reader file 213 tests, 0 failing, M129's UTF-16 tests and controls unedited. Plant (lines split on the LF byte, then read as units) turned all 8 no-mark AC1 files red, restored from the staged fix. Full suite 0 failed, 15 skipped, 21263 expectations.
 - 2026-09-27: T3 done. Details and the NEWS bullet state the AC6 facts, written against T2's code; the `every other byte` grep returns nothing; a second `document()` leaves no diff; `check()` 0 errors, 0 warnings, 0 notes.
+- claim audit: 59 claims read, 3 corrected — NEWS.md, R/read_form_responses.R, man/read_form_responses.Rd ("such a file" made explicit; NEWS and Details say a UTF-16/32 file the rule does not take still meets the byte error when it holds a NUL; `form_file_lines()` comment limited to files the rule takes). The one re-read cleared two and sharpened two wordings, applied.
+- 2026-09-27: implement complete. Reader tests 213, 0 failing; `check()` 0/0/0 after the corrections; status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote

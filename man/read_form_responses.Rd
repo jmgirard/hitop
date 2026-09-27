@@ -107,7 +107,9 @@ blank then has its trailing carriage return dropped. If it holds only
 printable ASCII characters and tabs, the file is taken as that encoding.
 A file of blank lines only in one of these encodings is also taken as
 that encoding when it holds at least one line feed. A file taken as
-UTF-32 is refused as UTF-32, not as UTF-16.
+UTF-32 is refused as UTF-32, not as UTF-16. A UTF-16 or UTF-32 file the
+rule does not take is read as UTF-8, and a NUL byte in it meets the
+byte error.
 The field
 count of a row reads \verb{#} as data and a quoted cell holding a line break
 as one cell, as the read does. A \code{submitted} stamp may carry fractional

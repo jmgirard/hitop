@@ -89,7 +89,9 @@
 #'   printable ASCII characters and tabs, the file is taken as that encoding.
 #'   A file of blank lines only in one of these encodings is also taken as
 #'   that encoding when it holds at least one line feed. A file taken as
-#'   UTF-32 is refused as UTF-32, not as UTF-16.
+#'   UTF-32 is refused as UTF-32, not as UTF-16. A UTF-16 or UTF-32 file the
+#'   rule does not take is read as UTF-8, and a NUL byte in it meets the
+#'   byte error.
 #'   The field
 #'   count of a row reads `#` as data and a quoted cell holding a line break
 #'   as one cell, as the read does. A `submitted` stamp may carry fractional
@@ -296,9 +298,10 @@ form_response_files <- function(path, call = rlang::caller_env()) {
 # on bytes, so no warning is raised on the way.
 form_file_lines <- function(file, call = rlang::caller_env()) {
   bytes <- readBin(file, "raw", file.size(file))
-  # A UTF-16 or UTF-32 file holds a NUL byte in nearly every character, so
-  # the scan below would name lines the file does not hold. It is refused
-  # once, first.
+  # A file that `form_wide_encoding()` takes as UTF-16 or UTF-32 holds a NUL
+  # byte in nearly every character, so the scan below would name lines the
+  # file does not hold. It is refused once, first. A wide file the rule does
+  # not take still reaches the scan.
   encoding <- form_wide_encoding(bytes)
   if (!is.na(encoding)) {
     cli::cli_abort(

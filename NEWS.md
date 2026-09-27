@@ -407,11 +407,14 @@
   then has its trailing carriage return dropped. If it holds only printable
   ASCII characters and tabs, the file is taken as that encoding. A file of
   blank lines only in one of these encodings is also taken as that encoding
-  when it holds at least one line feed. Such a file is refused in one error.
-  The error names the file, its encoding and no line, and asks that the file
-  be saved as UTF-8. A file taken as UTF-32 is refused as UTF-32, not as
-  UTF-16. Before, the byte error said that each line held a NUL byte. For a
-  UTF-16LE file it also named a line past the file's last. A file whose path
+  when it holds at least one line feed. A file taken as UTF-16 or UTF-32 is
+  refused in one error. The error names the file, its encoding and no line,
+  and asks that the file be saved as UTF-8. A file taken as UTF-32 is
+  refused as UTF-32, not as UTF-16. Before, the byte error said that each
+  line held a NUL byte. For a UTF-16LE file it also named a line past the
+  file's last. A UTF-16 or UTF-32 file that the rule does not take, such as
+  one whose first line holds a character outside ASCII, still gets that byte
+  error when it holds a NUL byte. A file whose path
   holds a brace, such as `b{x}.csv`, can differ from the first file in its
   item columns. It now raises `hitop_form_responses_mismatch`, with the path
   shown as written. Before, cli read the brace as markup. `b{x}.csv` and
