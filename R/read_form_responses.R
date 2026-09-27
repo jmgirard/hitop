@@ -140,7 +140,8 @@ read_form_responses <- function(path) {
         "order"
       }
     }, character(1L))
-    # One line per differing file, each with its own reason.
+    # One line per differing file, each with its own reason, and a brace a
+    # path holds shown as written.
     lines <- vapply(seq_along(how), function(i) {
       f <- files[differs][[i]]
       h <- how[[i]]
@@ -150,7 +151,7 @@ read_form_responses <- function(path) {
       c(
         "The response files do not all hold the same item columns.",
         "i" = "The first file is {.file {files[[1L]]}}.",
-        stats::setNames(lines, rep("x", length(lines))),
+        form_bullets(lines),
         "i" = "Read files from one form together, and other forms in a separate call."
       ),
       class = "hitop_form_responses_mismatch"

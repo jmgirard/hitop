@@ -48,7 +48,7 @@ A malformed or mis-encoded hitop-form file stops `read_form_responses()` with a 
 
 - [x] T1: Tests first (red), then one helper giving the first five of a list of pre-formatted lines plus the count bullet, its noun ("line", "row", "cell") passed in, returned through `form_bullets()`. `form_cell_lines()` uses it. The byte (L288-300), whitespace (L341-353), field-count (L366-379) and instrument (L464-479) refusals use it. Read bullets from `cnd$body` (M096 lesson); build fault files with the existing `raw_file()`/`bytes_of()` helpers.
 - [x] T2: Tests first (red), then the UTF-16 check at the head of `form_file_lines()`, on the raw bytes before the NUL scan and the byte-order-mark strip. Rewrite the UTF-16LE test (`tests/testthat/test-read_form_responses.R:1764`) to the new refusal. Build files with `iconv(..., toRaw = TRUE)` and a prepended mark where the case asks.
-- [ ] T3: Tests first (red), then the mismatch `lines` (L144-148) through `form_bullets()`. Write the brace-named files in a `withr::local_tempdir()`.
+- [x] T3: Tests first (red), then the mismatch `lines` (L144-148) through `form_bullets()`. Write the brace-named files in a `withr::local_tempdir()`.
 - [ ] T4: Revise the Details sentence at `R/read_form_responses.R:72-76` against observed messages (derived-claims rule), add the NEWS entry under "Improvements and fixes", run `devtools::document()`.
 - [ ] T5: `devtools::test()` and `devtools::check()` clean.
 
@@ -62,6 +62,7 @@ A malformed or mis-encoded hitop-form file stops `read_form_responses()` with a 
 - 2026-09-27: implement started on branch m129-reader-refusal-loose-ends; question gate skipped (nothing open: the UTF-16 message wording is bound by AC2).
 - 2026-09-27: T1 done: `form_first_five(lines, noun, total)` caps the byte, whitespace, field-count, instrument and cell refusals; 17 new tests, 9 red before the helper (the 6- and 7-fault cases and the alternating file); suite 0 failed.
 - 2026-09-27: T2 done: `form_is_utf16()` runs at the head of `form_file_lines()` and refuses the file once, naming no line. The old UTF-16LE test became 12 refusal tests (all red before the check) and 4 UTF-8 controls (green before and after). Suite 0 failed.
+- 2026-09-27: T3 done: the mismatch bullets pass through `form_bullets()`. Of 5 new tests, `b{x}.csv`, `b{.csv` and `b{.val x}.csv` were red before the fix. The `c}.csv` and first-file `a{x}.csv` cases passed before and after. Suite 0 failed.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

@@ -242,6 +242,46 @@ test_that("the mismatch message gives each differing file its own reason", {
   expect_false(grepl("count", line4, fixed = TRUE))
 })
 
+# A brace in a path is shown as written, and the mismatch keeps its class:
+# `a.csv` beside a differing file whose name holds a brace, and a first file
+# whose name holds one beside a differing `b.csv`.
+
+# Read `dir`, expecting the mismatch class; returns the message's bullets.
+mismatch_body <- function(dir) {
+  cnd <- rlang::catch_cnd(read_form_responses(dir), "error")
+  expect_s3_class(cnd, "hitop_form_responses_mismatch")
+  cli::ansi_strip(cnd$body)
+}
+
+for (brace_name in c("b{x}.csv", "b{.csv", "c}.csv", "b{.val x}.csv")) {
+  local({
+    name <- brace_name
+    test_that(paste("a differing file named", name, "keeps the mismatch class and is shown as written"), {
+      dir <- withr::local_tempdir()
+      form_file(dir, "a.csv", two_items())
+      f <- form_file(dir, name, c(two_items(), hitopbr_03 = 2L))
+      body <- mismatch_body(dir)
+      line <- body[grepl("differs from it in", body, fixed = TRUE)]
+      expect_length(line, 1L)
+      expect_match(line, f, fixed = TRUE)
+      expect_match(line, "count", fixed = TRUE)
+    })
+  })
+}
+
+test_that("a first file named a{x}.csv beside a differing b.csv names both paths as written", {
+  dir <- withr::local_tempdir()
+  f1 <- form_file(dir, "a{x}.csv", two_items())
+  f2 <- form_file(dir, "b.csv", c(two_items(), hitopbr_03 = 2L))
+  body <- mismatch_body(dir)
+  first <- body[grepl("The first file is", body, fixed = TRUE)]
+  line <- body[grepl("differs from it in", body, fixed = TRUE)]
+  expect_length(first, 1L)
+  expect_length(line, 1L)
+  expect_match(first, f1, fixed = TRUE)
+  expect_match(line, f2, fixed = TRUE)
+})
+
 test_that("a directory holding no .csv aborts by class", {
   dir <- withr::local_tempdir()
   writeLines("x", file.path(dir, "notes.txt"))
