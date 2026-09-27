@@ -4,14 +4,14 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M130: `read_form_responses()` refuses a UTF-16 file after blank lines, names a UTF-32 file as UTF-32, and stops calling `a`,NUL,`b` UTF-16
 
-- **Status:** planned   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
 - **Principles touched:** GP3   <!-- owner: plan · create/amend-via-gate; comma-separated IPn/GPn ids this milestone touches, or — -->
 - **Resolves:** —   <!-- owner: plan · create/amend-via-gate; comma-separated GitHub issues the scope absorbs, each `#N closes` (the PR closes it at merge) or `#N partial` (the remainder gets a candidate row), or — ; skill conduct only — no validate check parses it -->
 - **Surface tier:** user-facing — the error messages and Details of the exported reader `read_form_responses()`   <!-- owner: plan · create/amend-via-gate; user-facing | internal — <one-clause reason>; skill conduct only — no validate check parses it -->
-- **Branch/PR:** —   <!-- owner: implement (branch) / review (PR URL) · create -->
+- **Branch/PR:** m130-reader-wide-encoding-edges   <!-- owner: implement (branch) / review (PR URL) · create -->
 
 ## Goal
 <!-- owner: plan · create; a wrong goal returns to plan, never edited in place -->
@@ -37,10 +37,10 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
      insertion, removal, or reorder renumbers the labels and the Coverage
      lines together. -->
 
-- [ ] AC1: `read_form_responses()` stops on each of 16 UTF-16 files: UTF-16LE and UTF-16BE, LF and CRLF line ends, one and two blank lines before the header, each with and without its byte-order mark. Each stop is one error that carries neither `hitop_form_responses_mismatch` nor `hitop_form_responses_none`, names the file, says "is a UTF-16 file", names no line, and raises no warning. `tests/testthat/test-read_form_responses.R` asserts each file.
-- [ ] AC2: `read_form_responses()` stops on each of 16 UTF-32 files: UTF-32LE and UTF-32BE, LF and CRLF line ends, zero and one blank line before the header, each with and without its byte-order mark (FF FE 00 00, 00 00 FE FF). Each stop is one error that carries neither class, names the file, says "is a UTF-32 file", does not say "UTF-16", names no line, and raises no warning. The test file asserts each file.
-- [ ] AC3: `read_form_responses()` stops on each of 10 files of blank lines and nothing else, with no mark. Eight hold two blank lines: UTF-16LE, UTF-16BE, UTF-32LE and UTF-32BE, LF and CRLF line ends. Two hold one LF line: UTF-16LE and UTF-16BE. Each stop is the error for the file's encoding, as AC1 and AC2 describe it. The test file asserts each file.
-- [ ] AC4: `read_form_responses()` gives each of these files the error listed, and the test file asserts which error:
+- [x] AC1: `read_form_responses()` stops on each of 16 UTF-16 files: UTF-16LE and UTF-16BE, LF and CRLF line ends, one and two blank lines before the header, each with and without its byte-order mark. Each stop is one error that carries neither `hitop_form_responses_mismatch` nor `hitop_form_responses_none`, names the file, says "is a UTF-16 file", names no line, and raises no warning. `tests/testthat/test-read_form_responses.R` asserts each file.
+- [x] AC2: `read_form_responses()` stops on each of 16 UTF-32 files: UTF-32LE and UTF-32BE, LF and CRLF line ends, zero and one blank line before the header, each with and without its byte-order mark (FF FE 00 00, 00 00 FE FF). Each stop is one error that carries neither class, names the file, says "is a UTF-32 file", does not say "UTF-16", names no line, and raises no warning. The test file asserts each file.
+- [x] AC3: `read_form_responses()` stops on each of 10 files of blank lines and nothing else, with no mark. Eight hold two blank lines: UTF-16LE, UTF-16BE, UTF-32LE and UTF-32BE, LF and CRLF line ends. Two hold one LF line: UTF-16LE and UTF-16BE. Each stop is the error for the file's encoding, as AC1 and AC2 describe it. The test file asserts each file.
+- [x] AC4: `read_form_responses()` gives each of these files the error listed, and the test file asserts which error:
   - A UTF-8 file whose first line is the bytes `a`, NUL, `b` and whose second line is the header, with LF and with CRLF line ends: the NUL-byte error naming line 1.
   - A UTF-8 file with a blank first line, the header on line 2 and a NUL byte on line 3, with LF and with CRLF line ends: the NUL-byte error naming line 3.
   - A UTF-16LE file of one CR and nothing else (0D 00): the NUL-byte error naming line 1.
@@ -48,8 +48,8 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
   - The 1-byte file `a` and the 2-byte file `ab`: the lead-column error.
   - A file of only FF FE, a file of only FE FF, and the 2-byte file 0A 00: the UTF-16 error.
   - A file of only FF FE 00 00, and a file of only 00 00 FE FF: the UTF-32 error.
-- [ ] AC5: The 13 UTF-16 files the existing tests read keep the UTF-16 error naming no line. They are the eight-case `utf16_cases` matrix, the file with no final line feed, the seven-line file, the two U+010A files and the café file. The 4 UTF-8 controls keep the NUL-byte error naming lines 3, 3, 2 and 1.
-- [ ] AC6: `?read_form_responses` Details and the development-version NEWS bullet each state these facts:
+- [x] AC5: The 13 UTF-16 files the existing tests read keep the UTF-16 error naming no line. They are the eight-case `utf16_cases` matrix, the file with no final line feed, the seven-line file, the two U+010A files and the café file. The 4 UTF-8 controls keep the NUL-byte error naming lines 3, 3, 2 and 1.
+- [x] AC6: `?read_form_responses` Details and the development-version NEWS bullet each state these facts:
   - A file starting FF FE 00 00 or 00 00 FE FF is taken as UTF-32, and one starting FF FE or FE FF as UTF-16.
   - Empty lines and lines of a lone CR at the top are skipped.
   - In each encoding the lines are split on that encoding's line feed, and the first line that is not blank, its trailing CR dropped, must be printable ASCII or tab.
@@ -77,9 +77,9 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
      cites; an insertion, removal, or reorder renumbers the labels and the
      Coverage lines together. -->
 
-- [ ] T1: Tests first, in `tests/testthat/test-read_form_responses.R` after the UTF-16 block (`:1804`). Build the AC1, AC2 and AC3 matrices from raw bytes, because `iconv()` writes no mark for the LE and BE targets and `Rscript -e` strips `\r`. Add a UTF-32 refusal helper beside `utf16_refusal()` that asserts neither class and records warnings with `withCallingHandlers`. Add the AC4 files. Run the new tests against the current code: the LF blank-line, UTF-32, blank-only and `a`,NUL,`b` cases must fail, each for its stated reason.
-- [ ] T2: Replace `form_is_utf16()` as Scope states, and name the encoding in the `form_file_lines()` error. The full suite passes with the M129 UTF-16 tests and controls unedited. Plant a byte split in place of the unit split, see AC1 go red, and restore it; stage the fix with `git add` first (LESSONS M118).
-- [ ] T3: Rewrite the Details UTF-16 sentences (`R/read_form_responses.R:60-62`, `:83`) and the UTF-16 sentences of the NEWS bullet (`NEWS.md` "caps four of its line and row errors") to the AC6 facts, written from the shipped code. Run `devtools::document()` and `devtools::check()`.
+- [x] T1: Tests first, in `tests/testthat/test-read_form_responses.R` after the UTF-16 block (`:1804`). Build the AC1, AC2 and AC3 matrices from raw bytes, because `iconv()` writes no mark for the LE and BE targets and `Rscript -e` strips `\r`. Add a UTF-32 refusal helper beside `utf16_refusal()` that asserts neither class and records warnings with `withCallingHandlers`. Add the AC4 files. Run the new tests against the current code: the LF blank-line, UTF-32, blank-only and `a`,NUL,`b` cases must fail, each for its stated reason.
+- [x] T2: Replace `form_is_utf16()` as Scope states, and name the encoding in the `form_file_lines()` error. The full suite passes with the M129 UTF-16 tests and controls unedited. Plant a byte split in place of the unit split, see AC1 go red, and restore it; stage the fix with `git add` first (LESSONS M118).
+- [x] T3: Rewrite the Details UTF-16 sentences (`R/read_form_responses.R:60-62`, `:83`) and the UTF-16 sentences of the NEWS bullet (`NEWS.md` "caps four of its line and row errors") to the AC6 facts, written from the shipped code. Run `devtools::document()` and `devtools::check()`.
 
 ## Work log
 <!-- owner: any skill · append-only; one line per entry; absolute dates.
@@ -92,6 +92,15 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
 - 2026-09-27: plan gate chose a UTF-32 refusal of its own over one message naming "UTF-16 or UTF-32" because the error then says which encoding to convert from; falsified by a UTF-8 file the UTF-32 rule matches.
 - 2026-09-27: plan gate chose to refuse a blank-only UTF-16 or UTF-32 file by its encoding over keeping the NUL-byte error because that error names lines the file does not hold; falsified by a UTF-8 file of blank lines refused as UTF-16 or UTF-32.
 - 2026-09-27: plan chose reading whole code units of each encoding over keeping the NUL-every-other-byte rule with blank lines skipped because the byte rule still calls `a`,NUL,`b` and UTF-32 text UTF-16; falsified by a UTF-8 page-saved file the unit rule matches.
+- 2026-09-27: implement started on branch `m130-reader-wide-encoding-edges`; question gate skipped, nothing open (the helper is internal and Scope fixes the message).
+- 2026-09-27: T1 done. 60 new tests after the UTF-8 controls; 32 fail on the current code, each for its stated reason (LF blank-line UTF-16 gets the NUL error naming lines 2-3, UTF-32 is called UTF-16, blank-only files name NUL lines, `a`,NUL,`b` LF and 0D 00 are called UTF-16, 0A 00 gets the NUL error). The CRLF `a`,NUL,`b` file and CRLF blank-line UTF-16 files already pass today.
+- 2026-09-27: correction to the T1 line: T1 added 51 tests, not 60 (16 + 16 + 10 + 9).
+- 2026-09-27: T2 done. `form_is_utf16()` replaced by `form_wide_encoding()` and `form_wide_match()`; the refusal names the encoding. Reader file 213 tests, 0 failing, M129's UTF-16 tests and controls unedited. Plant (lines split on the LF byte, then read as units) turned all 8 no-mark AC1 files red, restored from the staged fix. Full suite 0 failed, 15 skipped, 21263 expectations.
+- 2026-09-27: T3 done. Details and the NEWS bullet state the AC6 facts, written against T2's code; the `every other byte` grep returns nothing; a second `document()` leaves no diff; `check()` 0 errors, 0 warnings, 0 notes.
+- claim audit: 59 claims read, 3 corrected — NEWS.md, R/read_form_responses.R, man/read_form_responses.Rd ("such a file" made explicit; NEWS and Details say a UTF-16/32 file the rule does not take still meets the byte error when it holds a NUL; `form_file_lines()` comment limited to files the rule takes). The one re-read cleared two and sharpened two wordings, applied.
+- 2026-09-27: implement complete. Reader tests 213, 0 failing; `check()` 0/0/0 after the corrections; status set to review.
+- 2026-09-27: review gate: R1, R4, R5 and R7 fixed on the branch, R2, R3 and R6 rejected, `check()` 0/0/0 after the fixes.
+- 2026-09-27: step-7 approval: m130-reader-wide-encoding-edges approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local; promote
@@ -100,3 +109,38 @@ A hitop-form file saved as UTF-16 or UTF-32 stops `read_form_responses()` with o
 ## Review
 <!-- owner: review · exclusive; evidence per criterion, consistency-gate
      results, review findings + triage. -->
+
+Evidence 2026-09-27, branch head `ea8f3671`, in sync with `origin/main`. Each criterion has two sources. The first is the reader test file: `testthat::test_file` ran 213 tests, 0 failed, 0 skipped, 0 errors. The diff against `main` removes no test line. The second is a probe script outside the repo. It builds each file by widening ASCII bytes by hand, without `iconv()`, and reads the error text, class and warning count.
+
+- AC1: 16 UTF-16 tests pass (`wide_refusal()` asserts file name, "is a UTF-16 file", no "Line N", neither class, no warning). Probe 16/16.
+- AC2: 16 UTF-32 tests pass, `wide_refusal()` also asserting no "UTF-16". Probe 16/16, the same assertions.
+- AC3: 10 blank-only tests pass (8 two-line, 2 one-LF). Probe 10/10.
+- AC4: the 14 files pass in the test file. Probe 14/14, with the NUL cases also checked for the text "NUL byte" and lines 1, 3, 3, 1 (`a`,NUL,`b` LF/CRLF, blank-led LF/CRLF, 0D 00).
+- AC5: the 13 M129 UTF-16 tests and the 4 UTF-8 controls pass unedited in the 213. Probe rebuilt the 4 controls: NUL error naming lines 3, 3, 2, 1.
+- AC6: read against the diff, Details (`R/read_form_responses.R:81-94`) and the NEWS bullet each state the five facts, and `man/read_form_responses.Rd` matches the roxygen text. `grep -n "every other byte" R/read_form_responses.R NEWS.md` exits 1 with no output. `devtools::check(document = TRUE)` ran `document()` and left no diff in `git status`.
+
+Consistency gate, 2026-09-27. `cairn_validate.py` exited 0, with 24 advisory warnings that predate this milestone (dangling D-ids, one references staleness). No principle changed, so `cairn_impact` was skipped. `devtools::check()` gave 0 errors, 0 warnings, 0 notes in 6m 30s. `pkgdown::check_pkgdown()` found no problems. README was not touched, and NEWS carries the change with no milestone number.
+
+Independent review, 2026-09-27, three lenses. The blame-history lens and the prior-review lens each found nothing. The prior-review lens traced M130 to M129 review R2, R3 and R6 and found each closed. The GitHub probe returned no review comments. The diff-bug lens found no AC failure and reported seven findings, most severe first:
+
+- R1: `form_wide_match()` converts the whole file to units four times for every UTF-8 file. On a 50 MB file this adds 1.9 s and about 1.19 GB peak memory. A NUL-free file cannot match any unit rule, so an early return on no NUL byte removes the cost.
+- R2: a blank-only wide file goes through the per-line R loop. A 10 MB UTF-16LE file of `0A 00` takes 2.6 s.
+- R3: a marked UTF-16LE file whose first character is U+0000 (`FF FE 00 00 61 00 0A 00`) is refused as UTF-32. Scope fixes this order.
+- R4: the test comments at `tests/testthat/test-read_form_responses.R:1806-1807` and `:1900` still describe the old every-other-byte rule.
+- R5: the AC4 NUL tests assert the line number but not the text "NUL byte". The probe above checked that text.
+- R6: the NEWS sentence "refused as UTF-32, not as UTF-16" contrasts with the unreleased M129 state. Against 0.2.0 a UTF-32 file got the byte error.
+- R7: the Details parenthetical "a byte-order mark only" at `R/read_form_responses.R:64` can read as covering FF FE alone, which gets the UTF-16 error. This predates M130.
+
+No finding shows an acceptance criterion failing, so none returns the milestone.
+
+Triage at the gate, 2026-09-27:
+
+- R1 fix now: if the file holds no NUL byte, `form_wide_encoding()` returns NA after the mark checks. On a 49 MB UTF-8 file the check took 0.17 s, against 2.21 s for the same bytes plus one NUL.
+- R2 rejected: a file of blank wide lines only is not a file the page saves, and the cost needs a 10 MB file.
+- R3 rejected: Scope sets the mark order, and no page-saved file starts with U+0000.
+- R4 fix now: the two test comments describe the unit rule.
+- R5 fix now: the five AC4 NUL tests also assert "NUL byte" on the named line. A not-UTF-8 error body fails that assertion.
+- R6 rejected: AC6 requires the fact, and the sentence states current behavior.
+- R7 fix now: Details reads "a UTF-8 byte-order mark only".
+
+After the fixes, the probe passed 60/60 again, `document()` rewrote only `man/read_form_responses.Rd` for R7, and `devtools::check()` gave 0 errors, 0 warnings, 0 notes.

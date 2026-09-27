@@ -57,13 +57,11 @@
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
 #'   need separate calls. A file that does not look like one the page saved
-#'   is an error naming the file: a UTF-16 file (one that starts with a
-#'   UTF-16 byte-order mark, or whose first line is at least two bytes long
-#'   and has a NUL byte in every other byte, as ASCII text in UTF-16 does), a
+#'   is an error naming the file: a UTF-16 or UTF-32 file (described below), a
 #'   line holding a NUL byte or a byte
 #'   sequence that is not UTF-8, a line outside a quoted cell made only of
 #'   spaces and tabs, no header row (a zero-byte file, blank
-#'   lines only, a byte-order mark only), first columns other than the five
+#'   lines only, a UTF-8 byte-order mark only), first columns other than the five
 #'   the page writes first, a column that appears twice, a header with no
 #'   response row, a response row holding fewer or more fields than the
 #'   header, an item column whose name is not a stem of lower-case letters
@@ -80,7 +78,20 @@
 #'   a NUL byte or a byte sequence that is not UTF-8, on a line of spaces and
 #'   tabs, on a row's field count and on an `instrument` cell likewise name
 #'   the first five lines or rows at fault and a count of the rest. The error
-#'   on a UTF-16 file names no line and asks that the file be saved as UTF-8.
+#'   on a UTF-16 or UTF-32 file names the encoding and no line, and asks that
+#'   the file be saved as UTF-8. A file that starts with the byte-order mark
+#'   FF FE 00 00 or 00 00 FE FF is taken as UTF-32, and one that starts with
+#'   FF FE or FE FF as UTF-16. A file with no mark is read as UTF-32 and then
+#'   as UTF-16, each little-endian and then big-endian. In each encoding the
+#'   lines are split on that encoding's line feed. Empty lines and lines of a
+#'   lone carriage return at the top are skipped. The first line that is not
+#'   blank then has its trailing carriage return dropped. If it holds only
+#'   printable ASCII characters and tabs, the file is taken as that encoding.
+#'   A file of blank lines only in one of these encodings is also taken as
+#'   that encoding when it holds at least one line feed. A file taken as
+#'   UTF-32 is refused as UTF-32, not as UTF-16. A UTF-16 or UTF-32 file the
+#'   rule does not take is read as UTF-8, and a NUL byte in it meets the
+#'   byte error.
 #'   The field
 #'   count of a row reads `#` as data and a quoted cell holding a line break
 #'   as one cell, as the read does. A `submitted` stamp may carry fractional
@@ -287,12 +298,15 @@ form_response_files <- function(path, call = rlang::caller_env()) {
 # on bytes, so no warning is raised on the way.
 form_file_lines <- function(file, call = rlang::caller_env()) {
   bytes <- readBin(file, "raw", file.size(file))
-  # A UTF-16 file holds a NUL byte in nearly every character, so the scan
-  # below would name lines the file does not hold. It is refused once, first.
-  if (form_is_utf16(bytes)) {
+  # A file that `form_wide_encoding()` takes as UTF-16 or UTF-32 holds a NUL
+  # byte in nearly every character, so the scan below would name lines the
+  # file does not hold. It is refused once, first. A wide file the rule does
+  # not take still reaches the scan.
+  encoding <- form_wide_encoding(bytes)
+  if (!is.na(encoding)) {
     cli::cli_abort(
       c(
-        "{.file {file}} is a UTF-16 file, not UTF-8.",
+        "{.file {file}} is a {encoding} file, not UTF-8.",
         "i" = "Save the file as UTF-8 and read it again."
       ),
       call = call
@@ -332,27 +346,72 @@ form_file_lines <- function(file, call = rlang::caller_env()) {
   lines
 }
 
-# Whether `bytes`, a file's raw bytes, are UTF-16: they begin with the
-# byte-order mark FF FE or FE FF, or the first line (the bytes before the
-# first line feed byte, or all of them when there is none) is at least two
-# bytes long with a NUL byte at every even or at every odd offset, counted
-# from 0, as ASCII text in UTF-16 is.
-form_is_utf16 <- function(bytes) {
-  if (length(bytes) >= 2L) {
-    head2 <- bytes[1:2]
-    if (identical(head2, as.raw(c(0xFF, 0xFE))) ||
-        identical(head2, as.raw(c(0xFE, 0xFF)))) {
-      return(TRUE)
+# The wide encoding of `bytes`, a file's raw bytes: "UTF-32", "UTF-16" or NA
+# for neither. A file that starts with the byte-order mark FF FE 00 00 or
+# 00 00 FE FF is UTF-32, and one that starts with FF FE or FE FF is UTF-16.
+# Otherwise UTF-32LE, UTF-32BE, UTF-16LE and UTF-16BE are tried in that order,
+# and the first that matches is returned (see `form_wide_match()`).
+form_wide_encoding <- function(bytes) {
+  starts_with <- function(mark) {
+    length(bytes) >= length(mark) && identical(bytes[seq_along(mark)], mark)
+  }
+  if (starts_with(as.raw(c(0xFF, 0xFE, 0x00, 0x00))) ||
+      starts_with(as.raw(c(0x00, 0x00, 0xFE, 0xFF)))) {
+    return("UTF-32")
+  }
+  if (starts_with(as.raw(c(0xFF, 0xFE))) ||
+      starts_with(as.raw(c(0xFE, 0xFF)))) {
+    return("UTF-16")
+  }
+  # With no NUL byte every unit is 257 or more, so no try can match.
+  if (!any(bytes == as.raw(0x00))) {
+    return(NA_character_)
+  }
+  tries <- list(
+    list(size = 4L, little = TRUE, name = "UTF-32"),
+    list(size = 4L, little = FALSE, name = "UTF-32"),
+    list(size = 2L, little = TRUE, name = "UTF-16"),
+    list(size = 2L, little = FALSE, name = "UTF-16")
+  )
+  for (try in tries) {
+    if (form_wide_match(bytes, try$size, try$little)) {
+      return(try$name)
     }
   }
-  lf <- match(as.raw(0x0A), bytes)
-  first <- if (is.na(lf)) bytes else bytes[seq_len(lf - 1L)]
-  n <- length(first)
-  if (n < 2L) {
+  NA_character_
+}
+
+# Whether `bytes` read as code units of `size` bytes, little-endian when
+# `little`, look like text the page's header could be. The bytes are read as
+# whole units, a trailing partial unit ignored, and split into lines on the
+# line feed unit, each line's one trailing carriage return unit dropped. A
+# line is blank when nothing is left. They match when the first line that is
+# not blank holds only printable ASCII (U+0020 to U+007E) and tab, or when
+# every line is blank and they hold at least one line feed unit.
+form_wide_match <- function(bytes, size, little) {
+  n <- length(bytes) %/% size
+  if (n == 0L) {
     return(FALSE)
   }
-  nul <- first == as.raw(0x00)
-  all(nul[seq(1L, n, by = 2L)]) || all(nul[seq(2L, n, by = 2L)])
+  weights <- 256^(seq_len(size) - 1L)
+  if (!little) {
+    weights <- rev(weights)
+  }
+  units <- colSums(matrix(as.integer(bytes[seq_len(n * size)]), nrow = size) *
+                     weights)
+  lf <- which(units == 10)
+  first <- c(1L, lf + 1L)
+  last <- c(lf - 1L, n)
+  for (k in seq_along(first)) {
+    line <- units[seq.int(first[[k]], length.out = max(0L, last[[k]] - first[[k]] + 1L))]
+    if (length(line) > 0L && line[[length(line)]] == 13) {
+      line <- line[-length(line)]
+    }
+    if (length(line) > 0L) {
+      return(all(line == 9 | (line >= 32 & line <= 126)))
+    }
+  }
+  length(lf) > 0L
 }
 
 # The field count of each of `lines`, as `count.fields()` gives it with no
