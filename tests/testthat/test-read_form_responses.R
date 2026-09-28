@@ -2569,6 +2569,27 @@ test_that("a q_ name outside the pattern is refused naming the file and column",
   expect_identical(read_form_responses(f)[[long_ok]], "x")
 })
 
+test_that("a file the page saved with one question of each type reads", {
+  # responses-hitopbr-questions.csv: the walk typed 007 for the number
+  # question `age`, chose option 2 of the choice `sex`, clicked options 3
+  # then 1 of the multi `days`, typed Hello, "world" for the text `note`,
+  # and left the text `more` empty (fixtures/README.md).
+  out <- read_form_responses(fixture("responses-hitopbr-questions.csv"))
+  answers <- c("q_age", "q_sex", "q_days", "q_note", "q_more")
+
+  expect_identical(names(out),
+                   c(result_lead, sprintf("hitopbr_%02d", 1:45), answers))
+  expect_identical(
+    unname(unlist(out[answers])),
+    c("7", "2", "1 3", "Hello, \"world\"", NA)
+  )
+  expect_true(all(vapply(out[answers], is.character, logical(1L))))
+  # The items are answered by the same pattern as responses-hitopbr.csv.
+  items <- sprintf("hitopbr_%02d", 1:45)
+  plain <- read_form_responses(fixture("responses-hitopbr.csv"))
+  expect_identical(out[items], plain[items])
+})
+
 test_that("a q_ name that appears twice meets the repeated-column refusal", {
   dir <- withr::local_tempdir()
   f <- answer_file(dir, "dup.csv", c(item_names, "q_age", "q_age"),
