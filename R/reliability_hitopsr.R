@@ -12,10 +12,10 @@
 #'   `module` is supplied, that module's items. Items must be supplied in
 #'   instrument order, or in the form's printed order under
 #'   `layout = "printed"`; duplicated entries are an error. The
-#'   ascending-name warning [score_hitopsr()] describes reads the names you
-#'   supply, so under `layout = "printed"` it also fires for original-number
-#'   names in printed order; it can be ignored there, or avoided by supplying
-#'   positions. When `items` is omitted or `NULL`, the names on the
+#'   ascending-name warning [score_hitopsr()] describes applies here too.
+#'   Under `layout = "printed"`, names whose trailing numbers equal the
+#'   module's `item_order` are in the printed order and pass with no warning.
+#'   When `items` is omitted or `NULL`, the names on the
 #'   `module`'s `columns` attribute are used, as in [score_hitopsr()]. A call
 #'   with `items` omitted is an error if no `module` is supplied, if the
 #'   module has no `columns` attribute, or under `layout = "printed"`. A

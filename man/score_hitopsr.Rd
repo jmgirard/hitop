@@ -27,10 +27,11 @@ corresponding to the HiTOP-SR items held in \code{data} — all 405, or, when
 instrument order, or in the form's printed order under
 \code{layout = "printed"}; a misordered mapping silently scores the wrong
 items, so a warning is issued when the names share a common prefix and
-trailing number but those numbers are not ascending. That warning reads
-the names you supply, so under \code{layout = "printed"} it also fires for
-original-number names in printed order; it can be ignored there, or
-avoided by supplying positions. Duplicated entries are an error.
+trailing number but those numbers are not ascending. Under
+\code{layout = "printed"}, names whose trailing numbers equal the module's
+\code{item_order} element by element are in the printed order and pass with no
+warning. Zero padding does not matter. Other names that are
+not ascending still warn. Duplicated entries are an error.
 When \code{items} is omitted or \code{NULL}, the names on the \code{module}'s \code{columns}
 attribute are used, which \code{\link[=read_module]{read_module()}} returns from a descriptor that
 \code{\link[=generate_redcap_hitopsr]{generate_redcap_hitopsr()}} or \code{\link[=generate_qualtrics_hitopsr]{generate_qualtrics_hitopsr()}} wrote. A call with \code{items} omitted is an
