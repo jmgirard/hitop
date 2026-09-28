@@ -49,7 +49,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - [x] T6: Save a file from a walk with one question of each type. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader test of AC6.
 - [x] T7: Write the README section "Ask your own questions", the questions section of the article, and the NEWS entry.
 - [x] T8: Run the full hitop-form suite locally. Its CI runs on the companion PR that `/milestone-review` opens after approval. Run hitop `check()` and `cairn_validate`.
-- [ ] T9: Widen the page's line-break set at `form.js:291` to Unicode's mandatory breaks by adding U+0085, vertical tab and form feed. Add page probes in `tests/questions.spec.js` and editor probes in `tests/link-questions.spec.js` for a text and an option label (review finding O6).
+- [x] T9: Widen the page's line-break set at `form.js:291` to Unicode's mandatory breaks by adding U+0085, vertical tab and form feed. Add page probes in `tests/questions.spec.js` and editor probes in `tests/link-questions.spec.js` for a text and an option label (review finding O6).
 - [ ] T10: If a `number` question has a `min` of 0 or more, give its input `inputmode="numeric"`, and otherwise give it none. An iPhone participant can then type a minus sign. Test both cases (review finding O1).
 - [ ] T11: If a link holds consent text and questions, the `encodeLink()` refusal names both (B1). The editor's bound refusal quotes the digits the researcher typed, not `Number()` of them (O4). Test both messages.
 
@@ -70,6 +70,8 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: claim audit fixes in hitop-form a05f17a and here. The new-table advice now names question names, not any change. The editor gains two line-separator probes (U+2028 in a text and an option). Four wording fixes. The same reader re-read the six: all correct.
 - 2026-09-28: T8 done. `devtools::check()`: 0 errors, 0 warnings, 0 notes. T8's wording changed (minor amendment): the git model opens both PRs at review after approval, so hitop-form CI for AC7 is read at `/milestone-review` step 8. Status set to review.
 - 2026-09-28: defect return 1 from review. AC1 failed: the page accepts U+0085, vertical tab and form feed in a question text or option label. Unicode counts each as a line break (finding O6). Jeff chose the fix at the gate, with O1, B1 and O4 fixed in the same round (T9 to T11 added by review send-back). Status set to in-progress.
+- 2026-09-28: implement resumed. Both branches level with `origin/main`, no question open, gate skipped.
+- 2026-09-28: T9 done in hitop-form 8248b27. The page's line-break set adds U+0085, vertical tab and form feed. 12 new probes (page and editor, text and option) failed before the fix, and a tab and no-break space stay accepted. The two question specs: 98 passed.
 
 ## Decisions
 
