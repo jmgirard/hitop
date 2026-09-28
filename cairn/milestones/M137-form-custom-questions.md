@@ -1,6 +1,6 @@
 # M137: A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M135, M136
 - **Driving RR:** —
@@ -31,7 +31,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 
 ## Coverage
 
-- AC1 → T1, T5
+- AC1 → T1, T5, T9
 - AC2 → T2
 - AC3 → T3
 - AC4 → T4
@@ -49,6 +49,9 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - [x] T6: Save a file from a walk with one question of each type. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader test of AC6.
 - [x] T7: Write the README section "Ask your own questions", the questions section of the article, and the NEWS entry.
 - [x] T8: Run the full hitop-form suite locally. Its CI runs on the companion PR that `/milestone-review` opens after approval. Run hitop `check()` and `cairn_validate`.
+- [ ] T9: Widen the page's line-break set at `form.js:291` to Unicode's mandatory breaks by adding U+0085, vertical tab and form feed. Add page probes in `tests/questions.spec.js` and editor probes in `tests/link-questions.spec.js` for a text and an option label (review finding O6).
+- [ ] T10: If a `number` question has a `min` of 0 or more, give its input `inputmode="numeric"`, and otherwise give it none. An iPhone participant can then type a minus sign. Test both cases (review finding O1).
+- [ ] T11: If a link holds consent text and questions, the `encodeLink()` refusal names both (B1). The editor's bound refusal quotes the digits the researcher typed, not `Number()` of them (O4). Test both messages.
 
 ## Work log
 
@@ -66,6 +69,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - claim audit: 152 claims read, 6 corrected — hitop-form README.md, link.html, tests/fixtures/README.md, tests/link-questions.spec.js, tests/question-screens.spec.js, hitop vignettes/articles/online-collection.Rmd
 - 2026-09-28: claim audit fixes in hitop-form a05f17a and here. The new-table advice now names question names, not any change. The editor gains two line-separator probes (U+2028 in a text and an option). Four wording fixes. The same reader re-read the six: all correct.
 - 2026-09-28: T8 done. `devtools::check()`: 0 errors, 0 warnings, 0 notes. T8's wording changed (minor amendment): the git model opens both PRs at review after approval, so hitop-form CI for AC7 is read at `/milestone-review` step 8. Status set to review.
+- 2026-09-28: defect return 1 from review. AC1 failed: the page accepts U+0085, vertical tab and form feed in a question text or option label. Unicode counts each as a line break (finding O6). Jeff chose the fix at the gate, with O1, B1 and O4 fixed in the same round (T9 to T11 added by review send-back). Status set to in-progress.
 
 ## Decisions
 
@@ -85,7 +89,7 @@ Evidence run 2026-09-28 on hitop fe523870 and hitop-form a05f17a. Both branches 
 
 Consistency gate: `cairn_validate` passes all 16 checks and exits 0, with 2 advisory warnings (dangling id tokens, references staleness) that predate this branch. No DESIGN principle changed, so `cairn_impact` was skipped. `devtools::document()` leaves no diff. `pkgdown::check_pkgdown()` finds no problems. README.Rmd and README.md are unchanged on the branch. NEWS has the entry, and no new top-level file exists.
 
-Independent review, three fresh-context lenses. [S] blame-history: no regression of a past commit or D-entry, 1 finding. [S] prior-review: no regression of a past review finding, and the GitHub comment probes on both repos are empty. [O] diff-bug: 11 findings, none shown by the reviewer to break a criterion. Proposed dispositions, most severe first, pending the gate:
+Independent review, three fresh-context lenses. [S] blame-history: no regression of a past commit or D-entry, 1 finding. [S] prior-review: no regression of a past review finding, and the GitHub comment probes on both repos are empty. [O] diff-bug: 11 findings, none shown by the reviewer to break a criterion. Dispositions, most severe first. Jeff accepted each one as proposed at the gate on 2026-09-28:
 
 - O6: the page's line-break set (CR, LF, U+2028, U+2029 at `form.js:291`) lets U+0085, vertical tab and form feed through. Unicode treats all three as line breaks, so AC1's "no line break" fails for them. Proposed: defect return, widen the set to Unicode's mandatory breaks with page and editor probes.
 - O1: every `number` input has `inputmode="numeric"` (`form.js:1428`), and the iPhone keypad for it has no minus key. A participant on an iPhone cannot type `-3` for a question with a negative `min`. Proposed: fix now. If `min` is 0 or more, the page keeps the numeric keypad, and otherwise it drops it.
