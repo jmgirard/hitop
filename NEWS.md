@@ -408,7 +408,7 @@
   now refuse a module whose `item_order` holds a fraction such as `66.5`.
   Before, if cutting the fraction off still gave a permutation, they used
   the whole number. They refuse an `item_order` that holds `Inf` or
-  `-Inf` with no base R warning. Before, two base R warnings, on integer
+  `-Inf` with no base R warning. Before, base R warnings, on integer
   coercion and on recycling, came before the error. An `item_order` of whole numbers stored as
   doubles, such as `c(66, 109)`, is accepted as before.
 

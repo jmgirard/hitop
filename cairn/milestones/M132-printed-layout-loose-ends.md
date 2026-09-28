@@ -75,6 +75,8 @@ Close the M091 review's printed-layout loose ends, first the warning that fires 
 - 2026-09-27: claim audit: 20 claims read, 3 corrected — NEWS.md
 - 2026-09-27: The three corrections: the `item_order` entry's "before" sentence now says a fraction was used only when the truncated order was still a permutation, and that `Inf` used to raise two base R warnings, not one. The remedy entry now names the one-prefix, trailing-number condition. The [O] reader cleared all of them on its one re-read. DESIGN's scoring paragraph gained a clause on the `item_order` pass and the shared permutation test.
 - 2026-09-27: T6 done. `document()` leaves no diff. `test()` gives 0 failed of 23734 expectations with 15 skipped. `check()` gives 0 errors, 0 warnings and 0 notes. It ran before the NEWS and DESIGN text edits. `cairn_validate` passes. The purled article sourced clean at T4, and the article did not change after that. Status set to review.
+- 2026-09-27: review: all 7 criteria verified with fresh evidence. The 3-lens review gave 10 findings, all from one lens. 2 were fixed at the gate and 8 rejected.
+- 2026-09-27: step-7 approval: m132-printed-layout-loose-ends approved for merge
 
 ## Decisions
 
@@ -104,3 +106,5 @@ Independent review, full three-lens fan-out (user-facing tier). The blame-histor
 8. Nit, `test-layout.R:587`. One `expect_false()` has no `info =`. Proposed: reject as style.
 9. Nit. No direct test that `item_order` is ignored under the default layout. Proposed: reject. No exported caller passes it there.
 10. Nit. The `reliability_hitopsr()` help lacks the "Zero padding does not matter" sentence, and NEWS.md:137 and :412 run past the wrap width. Proposed: reject as style.
+
+Gate triage 2026-09-27: the maintainer took every proposed disposition. Finding 1 was fixed now. The remedy at `R/util.R:170` drops the `match()` example and says that positions must point at the columns in printed order. `test-layout.R`'s AC2 test asserts that no printed-layout remedy holds "match(", which `main`'s text does. Finding 5 was fixed now: NEWS.md says "base R warnings". Findings 2, 3, 4 and 6 to 10 are rejected for the reasons above. No finding showed a criterion failing, so status did not change. After the fixes, `devtools::test()` reports 0 failed, 23725 passed and 15 skipped.

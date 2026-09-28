@@ -585,6 +585,10 @@ test_that("under layout = 'printed' other non-ascending names warn once, naming 
       expect_match(msg, "pass with no warning", fixed = TRUE,
                    info = paste(label, fn))
       expect_false(grepl("Sort them", msg, fixed = TRUE))
+      # Positions built from these same names by match() carry the same
+      # wrong mapping and silence the warning, so the remedy never offers it.
+      expect_false(grepl("match(", msg, fixed = TRUE),
+                   info = paste(label, fn))
     }
   }
 

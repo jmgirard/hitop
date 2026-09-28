@@ -167,7 +167,7 @@ warn_item_order <- function(x, call = rlang::caller_env(),
     # Under layout = "printed", sorting the names undoes the printed order
     # and scores the wrong items, so the remedy never says sort.
     remedy <- if (printed) {
-      "Under {.code layout = \"printed\"} the columns must follow the form's printed order. Names holding instrument item numbers are in that order when the numbers equal the module's {.field item_order}, and such names pass with no warning. Names holding printed positions are in that order when ascending. Otherwise supply positions in printed order (e.g. {.code match(items, names(data))}), or use {.code layout = \"instrument\"} for columns already in instrument order."
+      "Under {.code layout = \"printed\"} the columns must follow the form's printed order. Names holding instrument item numbers are in that order when the numbers equal the module's {.field item_order}, and such names pass with no warning. Names holding printed positions are in that order when ascending. Otherwise check which column holds which printed item: supply positions only when they point at the columns in the order the form printed them, or use {.code layout = \"instrument\"} for columns already in instrument order."
     } else {
       "Items must be supplied in instrument order; a misordered mapping scores the wrong items. Sort them (e.g. {.code items[order(as.integer(sub(\"\\\\D+\", \"\", items)))]}) if this is unintended."
     }
