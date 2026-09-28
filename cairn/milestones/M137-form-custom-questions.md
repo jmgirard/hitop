@@ -46,7 +46,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - [x] T3: Add `questionColumns(config)` for the trailing columns, used by `buildCsv()`, `buildRow()` and `storeSql()`. Leave `leadColumns()` unchanged. Write the values of AC3 and the row and file tests.
 - [x] T4: Extend `storeSql()` with the `text` columns. Add the SQL fixture under `tests/fixtures/`, written by rule and not captured from the builder, with its README line. Write the send tests.
 - [x] T5: Add the question editor to link.html, its submit checks through `checkQuestions()`, the `?z=` output, and `prefill()`. Write the builder tests of AC5.
-- [ ] T6: Save a file from a walk with one question of each type. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader test of AC6.
+- [x] T6: Save a file from a walk with one question of each type. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader test of AC6.
 - [ ] T7: Write the README section "Ask your own questions", the questions section of the article, and the NEWS entry.
 - [ ] T8: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
 
@@ -60,6 +60,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: T2 done in hitop-form 25037e4 (screens code in 6db09b1). tests/question-screens.spec.js QS1 to QS8: 19 passed. QS8 is the first test of the unload guard, with a click-only control.
 - 2026-09-28: T3 done in hitop-form fa81800. `questionColumns()` feeds `buildCsv()` and `buildRow()`. tests/question-columns.spec.js QC1: 6 passed, file and webhook row under shuffle off, shuffle on and prolific.
 - 2026-09-28: T4 and T5 done in hitop-form 168360e, one commit because the SQL fixture test runs through the builder. `storeSql()` takes the questions. Fixture `supabase-hitopbr-questions.sql` written by rule. QC2 reads the q_ keys from a webhook and a Supabase send (2 passed). tests/link-questions.spec.js LQ1 to LQ6: 24 passed. `encodeLink()` writes `z` for questions too, per D-079(b). A first run found hidden option and range fields still shown, because `label { display: block }` beat `hidden`, and a scoped rule fixed it. Full suite before the editor: 539 passed. Builder specs after it: 164 passed.
+- 2026-09-28: T6 done. hitop-form b088d3b captures `responses-hitopbr-questions.csv` (QC3, five questions, one left empty). The copy here is stored as LF, with a fixtures README row and a reader test of its five `q_` values. `devtools::test()`: 0 failed, 23,800 passed, 15 skipped.
 
 ## Decisions
 
