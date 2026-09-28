@@ -41,7 +41,7 @@ A study link's `participantParam` field names the address parameter holding the 
 
 ## Tasks
 
-- [ ] T1: Write `cairn/references/sona2026help.md` (the External Study Credit Granting page and the Qualtrics and SoSci Survey help pages) and `cloudresearch2026help.md` (the Connect articles "How to Integrate your Survey with Connect" and "Project Link"), quoting what each states about the parameter and the completion address, with INDEX lines. Settle from them whether Connect appends `participantId` itself; if no page says so, AC5's Connect suffix returns to the gate.
+- [x] T1: Write `cairn/references/sona2026help.md` (the External Study Credit Granting page and the Qualtrics and SoSci Survey help pages) and `cloudresearch2026help.md` (the Connect articles "How to Integrate your Survey with Connect" and "Project Link"), quoting what each states about the parameter and the completion address, with INDEX lines. Settle from them whether Connect appends `participantId` itself; if no page says so, AC5's Connect suffix returns to the gate.
 - [ ] T2: `participantParam` in `parseLink()` (form.js) and in link.html's submit check, with the refusals AC1 lists and their tests; prefill's skip of a non-string value.
 - [ ] T3: Read the named parameter in `runForm()`'s identifier choice beside `readProlific()`, the placeholder forms read as absent, the start-screen fallback; the row and file comparisons with shuffle off and on.
 - [ ] T4: The `{participant}` substitution in `finish()`, the sent screen and `showSaved()`; `checkCompleteUrl()` accepting the token in the query or fragment and refusing it in the host or path, whose `new URL()` form is `%7Bparticipant%7D`; the address tests (read the target at the held request, per the M119 lesson).
@@ -59,6 +59,7 @@ A study link's `participantParam` field names the address parameter holding the 
 - 2026-09-27: plan gate chose tests against the documented URL shapes over a live SONA run because a live run needs a SONA study set up and blocks the milestone on it; falsified by a SONA credit grant failing on an address the tests accept.
 - 2026-09-27: implement started. Branch `m133-form-recruiter-param` cut in hitop and hitop-form from their pushed default branches; the step-3 gate was skipped, nothing being open.
 - 2026-09-27: T1 notes written: `sona2026help.md` (five SONA pages) and `cloudresearch2026help.md` (two Connect pages, read in the browser pane after a plain fetch got HTTP 403), with INDEX lines. SONA removes `%SURVEY_CODE%` when the researcher views the URL, so the page sees a blank value there. No Connect page says in those words that Connect adds `participantId` to the project URL, so AC5's Connect clause goes to a mini gate, as T1 states.
+- 2026-09-27: mini gate: Jeff kept AC5's Connect clause (no suffix), on the pages' instruction to read `participantId` from the address and their after-launch capture; the start screen asks when it is missing. AC5 unchanged. T1 done.
 
 ## Decisions
 
