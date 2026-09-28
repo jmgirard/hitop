@@ -522,6 +522,25 @@ the spaces:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[3]]</span></span>
 <span><span class="co">#&gt; [1] NA</span></span></code></pre></div>
+<p>You can also write the questions in a spreadsheet. In the builder,
+“Download a template” saves a CSV file with one example question of each
+type. Its first row names the columns, in lower case. The columns
+<code>list</code>, <code>name</code>, <code>text</code> and
+<code>type</code> are required, and <code>options</code>,
+<code>required</code>, <code>min</code> and <code>max</code> are
+optional. Each further row is one question. <code>list</code> is
+<code>before</code> or <code>after</code>, and <code>type</code> is
+<code>text</code>, <code>number</code>, <code>choice</code> or
+<code>multi</code>, both in lower case. <code>options</code> holds the
+options in one cell, separated by <code>|</code>, such as
+<code>Phone|Tablet|Computer</code>. Save the file as “CSV UTF-8” and
+choose it under “Load questions from a file”. The builder reads the file
+in your browser and sends it nowhere. It refuses a file with a fault and
+names the fault. A fault in one cell is named by its row and column, or
+by its row and field number in the header row or past the last column.
+“Download these questions” saves the builder’s questions in the same
+form. The hitop-form README’s section <a href="https://github.com/jmgirard/hitop-form#write-your-questions-in-a-spreadsheet" class="external-link">Write
+your questions in a spreadsheet</a> describes each column.</p>
 <p>With a Supabase store, the builder’s SQL adds one text column per
 question. A table made before the questions were added has no column for
 them, so Supabase refuses the row, and the page then saves the file on
