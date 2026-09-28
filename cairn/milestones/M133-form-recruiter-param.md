@@ -79,6 +79,7 @@ A study link's `participantParam` field names the address parameter holding the 
 - amendment return: AC6 — "Connect asks a study to record the participant's Connect ID from a variable named `participantId`; Connect gives the study a completion redirect URL"
 - amendment return: AC7 — "L10, L11, L13, L14, L16 and the helper `buildSupabase()` change from main only in their names and comments, the Prolific checkbox replaced by the "Recruiting site" menu (checked as Prolific, clear as None) with assertions on its state, and the locator of the Prolific hint (`#prolificHint`)"
 - 2026-09-27: minor amendment: T8 added for the review-return fixes, and Coverage maps AC4, AC6 and AC7 to it. D-078 annotates D-077's Context.
+- 2026-09-27: T8 in part. hitop-form 2ac0078 makes every T8 code and test change: G16 (10), L30 (8), L31, and P11 on a SONA-shaped address. Suite 333 passed. Three plants turned their tests red: no spelling refusal (18 tests), no `aria-describedby` (L31), and the old Prolific advice (L26). hitop: the article's typed-code sentence, and the Connect note's placeholder clause corrected. The claim audit and `check()` are still to run.
 
 ## Decisions
 

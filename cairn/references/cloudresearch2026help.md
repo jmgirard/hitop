@@ -26,5 +26,5 @@ Extraction: read directly from the two pages on 2026-09-27, quoted below as read
 
 ## Open questions
 
-- Whether Connect adds `participantId` to the project URL itself. Neither page says so in those words. Both tell the researcher to capture `participantId` as an address variable and never to put a placeholder in the project URL, and the first says the capture can be added after launch, which only works if the address already carries it. The page asks for the identifier on its start screen when the address carries none — observed 2026-09-27.
+- Whether Connect adds `participantId` to the project URL itself. Neither page says so in those words. How to Integrate tells the researcher to capture `participantId` as a URL variable, and says the capture can be added after launch, which only works if the address already carries it (corrected at the M133 review: an earlier draft also said both pages forbid a placeholder in the project URL, which no quote above supports). The page asks for the identifier on its start screen when the address carries none — observed 2026-09-27.
 - Whether the completion redirect address differs per participant. The pages describe one address "we give you on Connect when setting up the study" — observed 2026-09-27.

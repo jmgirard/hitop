@@ -269,6 +269,10 @@ Here the address sits inside the study link, so a participant can read the
 key before they finish, not only at the end. SONA names its server-side
 completion URL as the alternative. The external study loads that URL from
 its own server, and the page has no server, so the page cannot use it.
+A participant does not need to read the key to try another code. If the
+address carries no survey code, for example because the participant removed
+`id` from it, the start screen asks for the identifier. The page then puts
+whatever the participant types into the completion URL.
 
 [CloudResearch Connect](https://www.cloudresearch.com/) asks a study to
 record each participant's Connect ID from a variable named `participantId`,
