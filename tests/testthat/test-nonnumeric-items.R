@@ -966,8 +966,8 @@ test_that("an old-class SPSS column declaring a blank value missing scores as th
 
 # ---- M131: text that is not valid UTF-8 -------------------------------------
 
-# A byte string with no encoding mark. A raw byte cannot be written in a string
-# literal here, because the parser reads the file as UTF-8.
+# A byte string with no encoding mark, built from raw bytes so each invalid
+# byte is explicit (a literal 0xA0 byte would make this file invalid UTF-8).
 bytes_string <- function(...) rawToChar(as.raw(c(...)))
 
 # Each value and how the message must show it: iconv(sub = "byte") writes an

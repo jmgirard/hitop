@@ -4,7 +4,7 @@
      cairn_validate's <150 over the plan-owned body. -->
 # M131: Scoring refusals show hidden characters, pass blank SPSS codes, and refuse old SPSS codes and invalid UTF-8
 
-- **Status:** in-progress   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
+- **Status:** review   <!-- owner: transitioning skill · mirror-update; cairn/ROADMAP.md is the authority -->
 - **Priority:** normal   <!-- owner: plan · create/amend-via-gate; high | normal | low -->
 - **Depends on:** —   <!-- owner: plan · create/amend-via-gate; M<xx>, M<yy> or — -->
 - **Driving RR:** —   <!-- owner: plan · create/amend-via-gate; RR<NN> whose Binding criteria bind this milestone's ACs (binding-criteria check), or — -->
@@ -87,6 +87,8 @@ The four item-column inputs M110 left open get the refusal or score D-068 and D-
 - 2026-09-27: T5 done. Each T1 to T4 test already loops its probe over `nonnumeric_cases`. So T5 adds a guard, stated apart from the list, that the list names the seven functions. A plant dropping `reliability_hitopbr` turned only that guard red. Full suite: 23466 expectations, 0 failed.
 - 2026-09-27: T6 done. `validity_pid5()` inherits the `score_pid5()` passage. The six `items` passages and the NEWS bullet state the encoding refusal, the blank-code exemption, the old class and its tip, and the mixed-value display. `devtools::document()` rewrote seven Rd files. No article names these refusals. Full suite: 23466 expectations, 0 failed.
 - 2026-09-27: T7 done. D-075 appended, annotating D-068(a) and D-069(b), (d) and (e). `devtools::check()`: 0 errors, 0 warnings, 0 notes.
+- 2026-09-27: claim audit: 37 claims read, 3 corrected — tests/testthat/test-nonnumeric-items.R, R/util.R, NEWS.md
+- 2026-09-27: the claim audit's [O] reader re-read the 3 corrections once and found all three true. Full suite: 23466 expectations, 0 failed. Status set to review.
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->

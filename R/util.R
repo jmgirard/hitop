@@ -457,8 +457,8 @@ unparsed_value <- function(x) {
   ## Text is read as UTF-8, converted from the encoding its Encoding() mark
   ## declares, so a Latin-1 value is read as its text. A value that is still
   ## not valid UTF-8 (bytes read without their encoding) is refused before any
-  ## other check, because trimws(), as.numeric() and the regexes below stop
-  ## on it with a base R error.
+  ## other check, because trimws() and as.numeric() stop on it with a base R
+  ## error, and the perl regexes in is_invisible() only warn and return FALSE.
   if (is.character(item_values(x))) {
     utf8 <- enc2utf8(item_values(x))
     invalid <- !is.na(utf8) & !validUTF8(utf8)

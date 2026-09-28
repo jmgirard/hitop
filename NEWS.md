@@ -263,8 +263,8 @@
   used to score as tiny numbers near zero. Text that is not valid UTF-8, such
   as a Latin-1 file read without its encoding, used to stop with a base R
   error. It is now refused with the same error, which shows each invalid
-  byte (`"1<a0>"`) and names `iconv()`. Text marked Latin-1 is read as its
-  text.
+  byte (`"1<a0>"`) and names `iconv()`. Text marked Latin-1, which also
+  used to stop with a base R error, is now read as its text.
   A haven labelled column of digit
   text, which used to stop with an error from haven, now scores as its plain
   text does. A refused value made only of invisible characters, such as a
