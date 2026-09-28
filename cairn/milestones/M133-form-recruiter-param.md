@@ -136,3 +136,9 @@ Independent review, pass 2 (full fan-out). The prior-review lens found no regres
 5. The "Traces to" line of `cloudresearch2026help.md` still says "one completion address per study". Proposed: fix now.
 6. The G16 header claims "one brace" coverage, but only an encoded opening brace is tested. Proposed: fix now (add `{participant%7D`).
 7. The Connect hint in link.html says the page takes the ID from `participantId`, which implies Connect adds it. Proposed: reject (it describes the page, and the claim audit kept it).
+
+Triage, 2026-09-27, chosen by Jeff before the merge chip.
+- Fixed now (hitop-form 54c6375, hitop NEWS and note): pass-2 finding 1, the page and the builder now also refuse doubled braces, a space inside the braces, and `%257B`/`%257D`, with a reworded message. G16 gains 4 cases (8 tests) and L30 gains `{{participant}}` (2 tests). A plant of the old pattern turned those 8 red. Finding 2: P11 uses AC4's query values on its own host. Finding 3: NEWS names both refusals. Finding 5: the note's "Traces to" line is corrected. Finding 6: G16 tests `{participant%7D`. Suite: 343 passed.
+- Follow-up, one candidate row in ROADMAP: pass-1 findings 3, 5b, 5d, 11 and 13, and pass-2 finding 4.
+- Rejected: pass-1 finding 8, because the form page refuses a link with both fields and the builder only repairs it. Pass-1 finding 12, because `+` is read the same way for Prolific and neither site's IDs hold one. Pass-1 finding 14, because it is earlier behavior and builder links are trimmed. Pass-2 finding 7, because the hint describes the page. Pass-1 findings 2 and 9 were settled by the AC6 and AC7 amendments. Pass-1 findings 1, 4, 5a, 5c, 6, 7 and 10 were fixed in T8.
+- After the fixes: hitop `devtools::check()` 0 errors, 0 warnings, 0 notes (4 min 17 s), `cairn_validate` all checks passed, and the hitop-form suite 343 passed at 54c6375. AC4 still holds, since P11 now uses AC4's query values.

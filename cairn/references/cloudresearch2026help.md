@@ -20,7 +20,7 @@ Extraction: read directly from the two pages on 2026-09-27, quoted below as read
 
 ## Traces to
 
-- `cairn/DECISIONS.md` D-077 — the parameter name and the one completion address per study.
+- `cairn/DECISIONS.md` D-077 and D-078 — the parameter name and the completion redirect URL Connect gives the study (corrected at the M133 review: this line said "one completion address per study", which the open question below leaves unsettled).
 - `cairn/milestones/M133-form-recruiter-param.md` AC5 and AC6 — the builder's Connect choice and the cited statements.
 - Once M133 ships: `vignettes/articles/online-collection.Rmd`, the SONA and Connect section, and the hitop-form README's Connect section.
 

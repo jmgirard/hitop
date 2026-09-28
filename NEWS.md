@@ -14,8 +14,10 @@
   `{{…}}` placeholder. No column is added. A completion URL may hold
   `{participant}` after its `?` or `#`, and the page replaces it with the
   identifier, so SONA's completion URL can carry each participant's survey
-  code. The online-collection article has a section on the SONA and
-  Connect routes.
+  code. A completion URL is refused if it holds `{participant}` in its
+  host or path, or holds a spelling the page would not fill, such as
+  `{Participant}` or `{{participant}}`. The online-collection article has a
+  section on the SONA and Connect routes.
 
 * **The instrument download pages gain an online-form strip and keep three
   cards per row.** The five download pages with a JSON export (HiTOP-SR,
