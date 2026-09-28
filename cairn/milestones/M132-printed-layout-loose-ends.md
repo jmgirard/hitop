@@ -57,7 +57,7 @@ Close the M091 review's printed-layout loose ends, first the warning that fires 
 - [x] T2: Give `warn_item_order()` (`R/util.R:142`) an `item_order` argument that it reads only under `layout = "printed"`. When the trailing integers equal `item_order`, it returns silently. `layout_items()` passes it (`R/module.R:348`). Rewrite the printed-layout remedy text (`R/util.R:158`). Rewrite the PR #105 regression test in `test-layout.R` (the "says positions, not sort" test). It now asserts the remedy on a permuted name order and keeps its instrument-layout and scoring checks. Add the AC1 and AC2 tests. Add the NEWS entry for the warning change.
 - [x] T3: In `test-layout.R`, test `layout = "printed"` through `subset` in both functions (AC4). Count warnings by class.
 - [x] T4: Update the `items` roxygen (`R/score_hitopsr.R:9`, `R/reliability_hitopsr.R:12`). In the modules article's hitop-form section, pass names and drop the positions paragraph. Run `devtools::document()`. Purl and source the article (LESSONS, M115).
-- [ ] T5: Delete `data-raw/characterize_layout/`. Git history keeps it, and the M091 archive summary names it as history.
+- [x] T5: Delete `data-raw/characterize_layout/`. Git history keeps it, and the M091 archive summary names it as history.
 - [ ] T6: Gate: `document()` with no diff, `test()`, `check()`, the purled article, and `cairn_validate`.
 
 ## Work log
@@ -71,6 +71,7 @@ Close the M091 review's printed-layout loose ends, first the warning that fires 
 - 2026-09-27: T2 done. The new AC1 and AC2 tests fail 16 expectations on the old code and pass on the new. Two unreleased NEWS entries also changed so they stop saying printed-order names warn: the remedy entry and the `read_form_responses()` entry's "by position" clause. Full suite 0 failed.
 - 2026-09-27: T3 done. One test in `test-layout.R` scores and runs reliability through `subset` under the printed layout, asserting one `hitop_deprecated_subset` warning and results identical to the `module` call.
 - 2026-09-27: T4 done. The `items` help of both functions and the article's hitop-form section now say printed-order names pass, and the article scores the fixture by name. `document()` rewrote the two Rd files. The purled article sources with 0 errors and 0 warnings.
+- 2026-09-27: T5 done. `git rm` removed `characterize.R` and `compare.R`. No file outside `cairn/` names the directory.
 
 ## Decisions
 
