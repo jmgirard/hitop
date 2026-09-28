@@ -1,13 +1,13 @@
 # M137: A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M135, M136
 - **Driving RR:** —
 - **Principles touched:** IP1, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page, its link builder, its stores and the package's article
-- **Branch/PR:** —
+- **Branch/PR:** m137-form-custom-questions, companion: /Users/jmgirard/github/hitop-form m137-form-custom-questions
 
 ## Goal
 
@@ -55,7 +55,10 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: created by /milestone-plan.
 - 2026-09-28: criteria audit ran in full mode (user-facing tier) on two fresh [O] readers. They returned 8 findings and 1 finding, all fixed before the commit. The fixes cover unknown keys, option limits, the integer range, number input rules, markup probes, Back and Next placement, unanswered values, a separate column helper, the fixture record, and labels without line breaks or `|`.
 - 2026-09-28: plan chose option positions over option labels as the stored value of a choice, because positions match the integer answers of the instruments and survive a relabeling. Falsified by researchers who reorder options between links and misread the numbers.
+- 2026-09-28: implement started. Branch m137-form-custom-questions cut in hitop and in the hitop-form companion. Gate chose headings, numbered questions, the editor with Move up and Move down, and a range line (M137-D1).
 
 ## Decisions
+
+- M137-D1 (2026-09-28, implement gate): The before screen is headed "Before you begin" with a Next button. The after screen is headed "Before you finish" with Back and Finish. Questions are numbered on their screen, a required one ends in "(required)", and a refusal names the question by its number. The link.html editor sits after the consent fields, with "Add a question", and Remove, Move up and Move down in each group. Blank lines in the options box are skipped. A `number` question with `min` or `max` shows its range under the question.
 
 ## Review
