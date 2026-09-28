@@ -305,11 +305,13 @@ and a single line break stays a line break. A tag or an entity, such as
 links. The text can hold up to 20,000 characters, and the builder refuses a
 longer one.
 
-"I do not agree" ends the session. The page sends no answer and saves no
-file, so no row reaches the store and `read_form_responses()` never sees
-the participant. The closing screen shows the builder's "Declined text", or
-"You chose not to take part. You can close this page." when that box is
-empty. A recruiting site can give a study a completion address for this
+"I do not agree" shows a closing screen with no way back to the form. The
+page sends no answer and saves no file, so no row reaches the store and
+`read_form_responses()` never sees the participant. The closing screen
+shows the builder's "Declined text". When that box is empty, it shows "You
+chose not to take part. You can close this page.", or only its first
+sentence when the link sends the participant on, as the next sentences
+describe. A recruiting site can give a study a completion address for this
 outcome, such as a Prolific completion code for participants who do not
 consent
 ([Custom completion codes](https://researcher-help.prolific.com/en/articles/445170-custom-completion-codes)).

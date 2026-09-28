@@ -1,6 +1,6 @@
 # M135: A study link can carry the researcher's consent text, which hitop-form shows before the form with an agree and a decline choice
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -61,6 +61,8 @@ A study link's `consent` field holds the researcher's consent text. The page sho
 - 2026-09-28: T4 done (hitop-form 74ae796). Consent spec C7 compares the file header, the row keys and the builder SQL with and without consent, with shuffle off and on. Two planted column changes turned them red. Full hitop-form suite: 453 passed.
 - 2026-09-28: T5 done. README section "Show consent text before the form" and the `z` link paragraphs (hitop-form 4095dde), the article's section "Consent text before the form", and the NEWS entry.
 - 2026-09-28: T6 done for its local part. hitop `devtools::check()`: 0 errors, 0 warnings, 0 notes. `cairn_validate`: all checks passed, 24 advisory warnings. The hitop-form PR opens at the review merge step (D-138), so its CI run is recorded there, as in M133 and M134. The local run of the same suite passed 453 of 453.
+- claim audit: 104 claims read, 8 corrected — NEWS.md, vignettes/articles/online-collection.Rmd, hitop-form README.md, hitop-form link.html
+- 2026-09-28: claim audit by a fresh [O] reader over the hitop diff and the hitop-form README, link.html and form.js. It found no wrong claim. The fixed decline sentence was stated without its `completeDeclined` condition in three places, and "ends the session" overstated in three. The emoji count and one stale comment were also fixed. The same reader re-read the corrections and three new README test-table rows, and all held (hitop-form 6496e1c). Status set to review.
 
 ## Decisions
 

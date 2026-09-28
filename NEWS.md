@@ -6,8 +6,8 @@
   The link builder gains a "Consent text" box. A link with text there
   carries a `consent` field, and the page shows the text as plain text on a
   screen of its own before the start screen, with an "I agree" and an "I do
-  not agree" button. "I do not agree" ends the session, and the page sends
-  no answer and saves no file. A "Declined text" box sets what that screen
+  not agree" button. "I do not agree" shows a closing screen with no way
+  back to the form, and the page sends no answer and saves no file. A "Declined text" box sets what that screen
   says. A `completeDeclined` address, from the builder's "Completion URL
   after a decline" field, sends a participant who declines to a recruiting
   site's address for that outcome. The text can hold up to 20,000
