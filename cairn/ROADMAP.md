@@ -1,25 +1,25 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-28 (80th pass, M134 done): row archived, M131 pruned, M128 lesson extended in place, no new candidate. validate green._
+_Last hygiene check: 2026-09-28 (81st pass, M135 done): row archived, M132 pruned, one candidate row for four review findings, no lesson. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M135 | A study link can carry the researcher's consent text, which hitop-form shows before the form with an agree and a decline choice | review | — | normal | milestones/M135-form-consent-screen.md |
 | M136 | read_form_responses() reads the researcher's own answer columns, named with a q_ prefix, and returns them after the item columns | planned | — | normal | milestones/M136-form-reader-custom-columns.md |
 | M137 | A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns | planned | M135, M136 | normal | milestones/M137-form-custom-questions.md |
 | M138 | The hitop-form link builder reads the researcher's questions from a spreadsheet file and writes them back as one | planned | M137 | normal | milestones/M138-form-questions-file.md |
 | M139 | read_form_responses() reads a file whose item columns span two or more instruments | planned | M136 | normal | milestones/M139-form-reader-multi-instrument.md |
 | M140 | A study link can field two or more instruments in one hitop-form session | planned | M137, M139 | normal | milestones/M140-form-multi-instrument.md |
+| M135 | A study link can carry the researcher's consent text, which hitop-form shows before the form with an agree and a decline choice | done | — | normal | milestones/archive/M135-form-consent-screen.md |
 | M134 | A link made under "Another site" reloads as that site, and the form page refuses a broken identifier before the form starts | done | — | normal | milestones/archive/M134-form-link-loose-ends.md |
 | M133 | A study link takes the participant's identifier from a named address parameter and puts it into the completion address, for SONA and CloudResearch Connect | done | — | normal | milestones/archive/M133-form-recruiter-param.md |
-| M132 | Printed-layout names that match the module's order score without a warning, and a fractional `item_order` is refused | done | — | normal | milestones/archive/M132-printed-layout-loose-ends.md |
 
 ## Candidates
 
 - hitop-form researcher content beyond M135–M140: long text answers, drop-down menus, rating grids, display logic, more than one screen per question block, a random order of instruments, `.xlsx` question files and an R writer for them, and markup or links in consent text. Also SONA's Study URL length limit, unchecked against a long link (SONA's help pages state none, searched 2026-09-28). Promote a part when a researcher asks, when SONA documents a limit, or if a researcher reports a cut-off link — added 2026-09-28, the SONA row of 2026-09-27 merged in — lineage: M133 (review), M135–M140 (plan gate)
+- hitop-form `z` link gaps, four M135 review findings. link.html awaits the `z` prefill before it adds its submit handler. A press in that gap submits the form as a GET, and the gap while the module loads is older. The refusals of a truncated `z` and of trailing bytes rest on the browser's decompressor. The suite runs Chromium only. Without `CompressionStream`, a Supabase build with consent text shows the SQL beside the error. The builder tests 2 of its own `z` refusals, and the rest are tested on the form page. Promote if a researcher reports a builder address holding its fields, if a Firefox or Safari build accepts a bad `z`, or when link.html's prefill is next edited — added 2026-09-28 — lineage: M135 (review)
 - A recruiting site's further IDs in the hitop-form row and file: CloudResearch Connect's `assignmentId` and `projectId` (and MTurk's `assignmentId` and `hitId`) as columns, which changes the reader's column contract (D-064, D-071(c)); and SONA's server-side credit grant, which needs a relay the static page cannot hold. Promote when a study must keep one of those IDs, or a SONA administrator bars the client-side completion address — added 2026-09-23, narrowed 2026-09-24 (M119) and 2026-09-27 (the named address parameter and the completion token graduated to M133) — lineage: M118, M133 (plan gate)
 - In-browser encryption of each posted row to a public key carried in the study link, so a store vendor holds ciphertext only and any store becomes usable for identifiable data regardless of vendor agreements. Needs WebCrypto in hitop-form, a decryption helper in the package (a Suggests decision, {openssl} or {sodium}, at its own gate), and key handling the researcher must get right. Promote when a study needs identifiable data in a vendor store — added 2026-09-23 — lineage: M111 (plan gate)
 - The numeric refusals of score columns in `norm_pid5()`, `plot_pid5()` and `interval_*()` (`validate_numeric_columns()`, `R/util.R:295`) carry no condition class, while M109's item-column abort is classed `hitop_nonnumeric_items`. A class would need a D-entry on D-034(c)'s terms. Promote if a caller needs to catch one of those refusals by class — added 2026-09-22 — lineage: M109 (plan gate)
