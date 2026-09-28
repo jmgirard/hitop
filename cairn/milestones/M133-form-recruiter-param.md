@@ -1,6 +1,6 @@
 # M133: A study link can take the participant's identifier from a named address parameter and put it into the completion address, so hitop-form fits SONA and CloudResearch Connect
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -47,7 +47,7 @@ A study link's `participantParam` field names the address parameter holding the 
 - [x] T4: The `{participant}` substitution in `finish()`, the sent screen and `showSaved()`; `checkCompleteUrl()` accepting the token in the query or fragment and refusing it in the host or path, whose `new URL()` form is `%7Bparticipant%7D`; the address tests (read the target at the held request, per the M119 lesson).
 - [x] T5: The "Recruiting site" choice in link.html in place of the Prolific box, the suffixes, the other-site name field, `prefill()` for the new field and its skip of a non-string value; the builder-side refusals AC1 lists; the SQL comparison; builder, prefill and unfilled-SONA tests; the Prolific builder tests moved to the new control (tests/link.spec.js drives `input[name="prolific"]` today).
 - [x] T6: README "Recruit through SONA or CloudResearch Connect"; the article section after "The Prolific route"; NEWS.
-- [ ] T7: hitop-form CI green on its PR; hitop `check()`; `cairn_validate`.
+- [x] T7: hitop-form suite green locally (its CI on the PR `/milestone-review` opens); hitop `check()`; `cairn_validate`.
 
 ## Work log
 
@@ -67,6 +67,7 @@ A study link's `participantParam` field names the address parameter holding the 
 - 2026-09-27: T6 done. hitop-form README: step 6 names the menu, step 7 the `{participant}` token, a new "Recruit through SONA or CloudResearch Connect" section with the four AC6 statements and the credit-token and server-side notes, each citing the vendor page the source notes record; the prefill, host and test-table paragraphs updated. hitop: the article's "The SONA and CloudResearch Connect routes" section and a sentence in "Who holds the data", the `read_form_responses()` help page (the Prolific box wording, and no column under another site), NEWS. `document()` rewrote one Rd; the article renders on `load_all()`.
 - 2026-09-27: T7 in part: hitop `devtools::check()` 0 errors, 0 warnings, 0 notes; `cairn_validate` all checks passed; hitop-form full suite 314 passed locally. Its CI runs when `/milestone-review` pushes the branch and opens the PR (tracking-rules git model), so the CI half of T7 and AC7 is review's.
 - 2026-09-27: claim audit: 150 claims read, 2 corrected — hitop vignettes/articles/online-collection.Rmd, NEWS.md; hitop-form README.md, link.html, tests/link.spec.js, tests/recruit.spec.js. Corrected: the SONA security sentence (the note lacked SONA's "trying other ID" sentence; the quote was added to `sona2026help.md` from the same-session read and the sentence restored) and the L27 header and test names (the not-text case does not round-trip). Also applied: the Connect statements hedged to "can pass" (the note lists Connect's appending as open), the saved-file link sentences name `completeSaved`, the recruit.spec header names P11 and P13. Re-read once by the same reader: all right.
+- 2026-09-27: implement complete, status set to review. T7's text amended (minor) to name review as the CI's place. Suite 314 passed after the audit edits; the article renders.
 
 ## Decisions
 
