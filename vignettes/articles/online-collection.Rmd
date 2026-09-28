@@ -389,6 +389,24 @@ days <- c("1 3", "2", NA)
 lapply(strsplit(days, " "), as.integer)
 ```
 
+You can also write the questions in a spreadsheet. In the builder, "Download
+a template" saves a CSV file with one example question of each type. Its
+first row names the columns, in lower case. The columns `list`, `name`,
+`text` and `type` are required, and `options`, `required`, `min` and `max`
+are optional. Each further row is one question. `list` is `before` or
+`after`, and `type` is `text`, `number`, `choice` or `multi`, both in lower
+case. `options` holds the options in one
+cell, separated by `|`, such as `Phone|Tablet|Computer`. Save the file as
+"CSV UTF-8" and choose it under "Load questions from a file". The builder
+reads the file in your browser and sends it nowhere. It refuses a file with
+a fault and names the fault. A fault in one cell is named by its row and
+column, or by its row and field number in the header row or past the last
+column. "Download these
+questions" saves the builder's questions in the same form. The hitop-form
+README's section
+[Write your questions in a spreadsheet](https://github.com/jmgirard/hitop-form#write-your-questions-in-a-spreadsheet)
+describes each column.
+
 With a Supabase store, the builder's SQL adds one text column per question.
 A table made before the questions were added has no column for them, so
 Supabase refuses the row, and the page then saves the file on the

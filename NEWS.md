@@ -18,6 +18,18 @@
   editor, and a link with questions travels as a `z` parameter. The
   online-collection article has a section on the questions.
 
+* **The hitop-form link builder reads the questions from a spreadsheet
+  file.** "Load questions from a file" reads a CSV file saved as "CSV
+  UTF-8" and puts its questions in place of the editor's. The file stays in
+  the browser. Its first row names the columns `list`, `name`, `text` and
+  `type`, and optionally `options`, `required`, `min` and `max`. Each
+  further row is one question, with its options separated by `|`. The
+  builder refuses a file with a fault and names the fault. A fault in one
+  cell is named by its row and column, or by its row and field number in the
+  header row or past the last column. "Download these questions" saves
+  the editor's questions as such a file, and "Download a template" saves one
+  with an example question of each type.
+
 * **`read_form_responses()` reads answer columns named `q_`.** A column
   after `submitted` whose name starts with `q_`, such as `q_age`, is read as
   the answer to a researcher's own question. The result places these columns
