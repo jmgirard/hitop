@@ -2,6 +2,23 @@
 
 ## New features
 
+* **hitop-form takes the participant identifier from SONA, CloudResearch
+  Connect or another recruiting site.** The link builder's "Recruiting
+  site" menu replaces the "Recruit through Prolific" box and offers None,
+  Prolific, SONA, CloudResearch Connect and Another site. A site other than
+  Prolific puts a `participantParam` field in the link, naming the address
+  parameter that carries the identifier: `id` for SONA, whose link then ends in
+  `&id=%SURVEY_CODE%`, `participantId` for Connect, or a typed name. The page
+  takes the participant identifier from that parameter, and asks on its
+  start screen when the value is missing, blank, or an unfilled `%…%` or
+  `{{…}}` placeholder. No column is added. A completion URL may hold
+  `{participant}` after its `?` or `#`, and the page replaces it with the
+  identifier, so SONA's completion URL can carry each participant's survey
+  code. A completion URL is refused if it holds `{participant}` in its
+  host or path, or holds a spelling the page would not fill, such as
+  `{Participant}` or `{{participant}}`. The online-collection article has a
+  section on the SONA and Connect routes.
+
 * **The instrument download pages gain an online-form strip and keep three
   cards per row.** The five download pages with a JSON export (HiTOP-SR,
   HiTOP-BR, PID-5, PID-5-SF and PID-5-BF) show their Word, Qualtrics and

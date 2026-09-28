@@ -8,6 +8,12 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-078 (2026-09-27): D-077's Context states two Connect claims its cited source note leaves open (annotates D-077 Context)
+
+**Context:** D-077's Context says CloudResearch Connect "passes the participant's ID as `participantId` and gives each study one completion redirect address". `cairn/references/cloudresearch2026help.md` lists both as open questions. Its pages say only that a study records the Connect ID from a variable named `participantId`, and that Connect gives the study a completion redirect URL at setup. The M133 review found the docs holding to the pages, and AC6 was amended to match.
+
+**Decision:** D-077's Context is read as the source note states it: Connect asks a study to record the participant's Connect ID from a variable named `participantId`, and gives the study a completion redirect URL. D-077's Decision and Consequences stand. The builder still names `participantId` for Connect with no suffix, as Jeff chose at the M133 T1 gate, and the page asks for the identifier when the address carries none. Chosen by Jeff at the 2026-09-27 M133 implement gate, so the decision record claims no more than its source.
+
 ### D-077 (2026-09-27): A study link's `participantParam` field takes the participant identifier from a named address parameter, and a `{participant}` token in a completion address is replaced by that identifier (annotates D-071(b)'s "the address's parameters are ignored" and D-071(d)/D-072(c): both are page behavior outside IP1)
 
 **Context:** Jeff asked on 2026-09-27 for hitop-form to fit recruiting sites common in social and clinical science, naming SONA. SONA fills `%SURVEY_CODE%` into a study URL the researcher writes, as `id` in its Qualtrics guide, and its client-side completion address must carry that code as `survey_code`. CloudResearch Connect passes the participant's ID as `participantId` and gives each study one completion redirect address (`cairn/references/sona2026help.md` and `cloudresearch2026help.md`, written at M133). D-071(b) says a link without `prolific: true` ignores the address's parameters, and `complete` today is one fixed address.

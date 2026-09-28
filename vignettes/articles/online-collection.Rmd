@@ -174,7 +174,8 @@ three be saved with the data
 ([What survey / experimental software is compatible with Prolific?](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific)).
 The page fits that in two steps at the link builder.
 
-Check "Recruit through Prolific" and leave the participant field empty.
+Choose Prolific in the "Recruiting site" menu and leave the participant
+field empty.
 The builder then prints the link with the three placeholders on its end.
 Paste that link as the study URL on Prolific's study page. When a
 participant opens it, the page takes their Prolific ID as the participant
@@ -230,6 +231,63 @@ responses <- read_form_responses(path)
 responses[, c("participant", "prolific_study", "prolific_session")]
 ```
 
+## The SONA and CloudResearch Connect routes
+
+Other recruiting sites can also pass each participant's identifier to the
+page in the study link's address, under a parameter of their own. Choose
+the site in the link builder's "Recruiting site" menu and leave the
+participant field empty. The link then names the parameter in its `participantParam` field,
+and the page takes the participant identifier from it. When the address
+carries no value there, a blank one, or a placeholder the site did not fill,
+the page asks for the identifier on its start screen. No column is added:
+the identifier is the `participant` column, so the download reads as in the
+steps above.
+
+[SONA](https://www.sona-systems.com/) replaces the text `%SURVEY_CODE%` in
+a study's Study URL with a number unique to the participant
+([Using the SURVEY CODE Feature](https://www.sona-systems.com/researcher/using-the-survey-code-feature/)),
+and its Qualtrics guide has the Study URL end in `?id=%SURVEY_CODE%`
+([Qualtrics Help Page](https://www.sona-systems.com/help/qualtrics/)). With
+SONA chosen, the builder names `id` as the parameter, and the printed link
+ends in `&id=%SURVEY_CODE%`. Paste it as the Study URL in SONA. To grant
+credit, SONA's client-side completion URL, of the form
+`https://yourschool.sona-systems.com/webstudy_credit.aspx?experiment_id=123&credit_token=…&survey_code=XXXX`,
+must be loaded with the participant's survey code in place of `XXXX`
+([External Study Credit Granting](https://www.sona-systems.com/researcher/external-study-credit-granting/)).
+Give that address in the builder's "Completion URL" field with
+`{participant}` in place of `XXXX`. The page replaces `{participant}` with
+the participant's identifier before it sends the participant there after a
+confirmed send, and before it links there after a saved file (unless the
+builder's "Completion URL after a saved file" names another address, which
+takes `{participant}` the same way).
+
+That completion URL carries a key specific to your study. SONA notes that a
+participant can read it, because their browser loads the URL, and can use
+it to try other survey codes and so grant credit to other participants
+([Security Considerations](https://www.sona-systems.com/researcher/security-considerations/)).
+Here the address sits inside the study link, so a participant can read the
+key before they finish, not only at the end. SONA names its server-side
+completion URL as the alternative. The external study loads that URL from
+its own server, and the page has no server, so the page cannot use it.
+A participant does not need to read the key to try another code. If the
+address carries no survey code, for example because the participant removed
+`id` from it, the start screen asks for the identifier. The page then puts
+whatever the participant types into the completion URL.
+
+[CloudResearch Connect](https://www.cloudresearch.com/) asks a study to
+record each participant's Connect ID from a variable named `participantId`,
+and to end either with a completion code or with the completion redirect
+URL Connect gives the study
+([How to Integrate your Survey with Connect](https://connect-researcher-help.cloudresearch.com/hc/en-us/articles/21181529476500-How-to-Integrate-your-Survey-with-Connect)).
+With Connect chosen, the builder names `participantId` as the parameter and
+adds nothing to the link. Give the link as the project URL in Connect, and
+the completion redirect URL as the completion URL. Connect's `assignmentId`
+and `projectId`, which that page says need not be collected, are not
+recorded.
+
+For another site, choose "Another site" and type the name of the parameter
+that site adds to the address.
+
 ## Who holds the data
 
 The answers go to the store the link names, and to a file on the
@@ -247,7 +305,8 @@ anyone, issue pseudonymous codes in the links you send and keep the key to
 them yourself. Under the Prolific route the code is the participant's
 Prolific ID, which identifies them to Prolific, and the page's host receives
 the three Prolific parameters, the ID among them, with each page load, as it
-receives the rest of the address.
+receives the rest of the address. Under the SONA and Connect routes the code
+is the site's own identifier, and the host receives it the same way.
 
 Whether a store may hold your study's data is a question for your
 institution, and any agreement it needs with the store's vendor, such as a
