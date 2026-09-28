@@ -153,9 +153,9 @@
   then the item columns as integers, in the order the first file (after
   sorting the paths) holds them. The scoring functions take the result
   as it is, with the item columns passed through `items` by name for a
-  full form, or by position with `layout = "printed"` for a module the
-  page showed in a shuffled order. Files whose item columns differ in
-  name, count or order stop the read with an error of class
+  full form, or by name or position with `layout = "printed"` for a
+  module the page showed in a shuffled order. Files whose item columns
+  differ in name, count or order stop the read with an error of class
   `hitop_form_responses_mismatch` naming the files; a directory holding
   no `.csv` file stops it with `hitop_form_responses_none`. The modules
   article shows the whole hand-off, from a study link to scored scales.
@@ -493,6 +493,20 @@
 
 ### Improvements and fixes
 
+- **A module’s `item_order` must hold whole numbers.**
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  under `layout = "printed"`, and
+  [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md),
+  now refuse a module whose `item_order` holds a fraction such as
+  `66.5`. Before, if cutting the fraction off still gave a permutation,
+  they used the whole number. They refuse an `item_order` that holds
+  `Inf` or `-Inf` with no base R warning. Before, base R warnings, on
+  integer coercion and on recycling, came before the error. An
+  `item_order` of whole numbers stored as doubles, such as `c(66, 109)`,
+  is accepted as before.
+
 - **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
   caps four of its line and row errors at five, refuses a UTF-16 or
   UTF-32 file once, and keeps the mismatch class when a path holds a
@@ -596,17 +610,25 @@
   endings and no CR byte.
 
 - **The misordered-items warning gives the right remedy under
-  `layout = "printed"`.** hitop-form saves item columns named by
-  instrument number in the form’s printed order. Under
+  `layout = "printed"`.** If `items` names that share a prefix and end
+  in numbers are not ascending,
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  warn. Under `layout = "printed"`, the warning no longer tells you to
+  sort them. Sorting undid the printed order and silently scored the
+  wrong items. Under the default layout the wording is unchanged.
+
+- **Names in a module’s printed order score without a warning.** Under
   `layout = "printed"`,
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
   and
   [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
-  still warn that those names are not ascending. The warning no longer
-  tells you to sort them, because sorting undid the printed order and
-  silently scored the wrong items. It now says to supply positions, or
-  `layout = "instrument"` for columns already in instrument order. Under
-  the default layout the wording is unchanged.
+  no longer warn about `items` names whose trailing numbers equal the
+  module’s `item_order`. hitop-form gives such names to the item columns
+  of a shuffled module. Before, those names warned that they were not
+  ascending. Other names that are not ascending still warn, and the
+  warning says that names in the module’s printed order pass.
 
 - **`ku_hitopsr`’s item columns held the wrong items and have been
   rebuilt.** The dataset was assembled as though the questionnaire that

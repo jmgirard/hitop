@@ -38,11 +38,10 @@ reliability_hitopsr(
   `layout = "printed"`; duplicated entries are an error. The
   ascending-name warning
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-  describes reads the names you supply, so under `layout = "printed"` it
-  also fires for original-number names in printed order; it can be
-  ignored there, or avoided by supplying positions. When `items` is
-  omitted or `NULL`, the names on the `module`'s `columns` attribute are
-  used, as in
+  describes applies here too. Under `layout = "printed"`, names whose
+  trailing numbers equal the module's `item_order` are in the printed
+  order and pass with no warning. When `items` is omitted or `NULL`, the
+  names on the `module`'s `columns` attribute are used, as in
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md).
   A call with `items` omitted is an error if no `module` is supplied, if
   the module has no `columns` attribute, or under `layout = "printed"`.

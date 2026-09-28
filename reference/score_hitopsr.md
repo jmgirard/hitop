@@ -34,12 +34,13 @@ score_hitopsr(
   instrument order, or in the form's printed order under
   `layout = "printed"`; a misordered mapping silently scores the wrong
   items, so a warning is issued when the names share a common prefix and
-  trailing number but those numbers are not ascending. That warning
-  reads the names you supply, so under `layout = "printed"` it also
-  fires for original-number names in printed order; it can be ignored
-  there, or avoided by supplying positions. Duplicated entries are an
-  error. When `items` is omitted or `NULL`, the names on the `module`'s
-  `columns` attribute are used, which
+  trailing number but those numbers are not ascending. Under
+  `layout = "printed"`, names whose trailing numbers equal the module's
+  `item_order` element by element are in the printed order and pass with
+  no warning. Zero padding does not matter. Other names that are not
+  ascending still warn. Duplicated entries are an error. When `items` is
+  omitted or `NULL`, the names on the `module`'s `columns` attribute are
+  used, which
   [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
   returns from a descriptor that
   [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
