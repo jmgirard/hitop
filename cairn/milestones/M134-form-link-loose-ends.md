@@ -1,6 +1,6 @@
 # M134: A link made under "Another site" reloads as that site, and the form page refuses a broken identifier before the form starts
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -44,7 +44,7 @@ Under "Another site" the builder refuses `id` and `participantId`, and the form 
 - [x] T3: Extend P13 (`tests/recruit.spec.js:310`) to a confirmed send, for the navigation and the sent screen's link, and to a `completeSaved` without the token. Use `https://Example.org/done?x=1` as one address (AC3).
 - [x] T4: Add one check in form.js (`isWritableIdentifier()`, which tries `encodeURIComponent()`) that `parseLink()` (form.js:104-110) and the start screen (form.js:858) both call. Add the AC4 tests in `tests/guard.spec.js` and the AC5 tests in `tests/recruit.spec.js`. Set the start-screen field through `page.evaluate`, because Playwright's `fill()` replaces a surrogate with U+FFFD. Read `.value` back before Begin (LESSONS, M128). `readProlific()` uses the same URLSearchParams reading as `readParticipantParam()`, so the `participantParam` address case stands for both.
 - [x] T5: The hitop-form README: the builder section, the SONA and Connect section and the test table. `tests/fixtures/README.md:13`: name Prolific as the recruiting site. hitop NEWS.md: one entry (AC6).
-- [ ] T6: Run the full hitop-form Playwright suite and `cairn_validate` in hitop. Before a plant is restored with `git checkout`, `git add` the fix (LESSONS, M118).
+- [x] T6: Run the full hitop-form Playwright suite and `cairn_validate` in hitop. Before a plant is restored with `git checkout`, `git add` the fix (LESSONS, M118).
 
 ## Work log
 
@@ -60,6 +60,7 @@ Under "Another site" the builder refuses `id` and `participantId`, and the form 
 - 2026-09-28: amendment (mini gate, Jeff): AC4's "Start button" became "Begin button" in both places, because the page's button is labelled Begin and no Start button exists.
 - 2026-09-28: T5 done. hitop-form README: the "Another site" paragraph, an identifier paragraph under "What the participant sees", and the link, guard and recruit rows of the test table. `tests/fixtures/README.md:13` names Prolific as the recruiting site, and `git grep -n "Recruit through Prolific"` in hitop-form returns no line. hitop: one NEWS entry under "Improvements and fixes", and one sentence in the online-collection article's "Another site" paragraph (added beyond the task, so the article states the refusal too).
 - 2026-09-28: claim audit: 60 claims read, 5 corrected — hitop-form README.md, form.js, tests/recruit.spec.js. Corrected: the Another-site sentence's cause, the U+FFFD count ("one or more"), two unsupported "paste" claims, and the P13 header and README row (two uppercase hosts, saved screen after a walk with no store). Re-read once by the same reader: all right.
+- 2026-09-28: T6 done. hitop-form full Playwright suite 364 passed (after T5). hitop `devtools::test()` no failures, 15 skips, all merge-base skips. `cairn_validate` all checks passed, 24 advisory warnings as on main. Status set to review.
 
 ## Decisions
 
