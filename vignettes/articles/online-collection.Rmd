@@ -290,6 +290,42 @@ that site adds to the address. The builder refuses `id` and
 `participantId` there, because the SONA and Connect choices write those
 names.
 
+## Consent text before the form
+
+The consent text belongs to you and your review board. The page shows the
+text you give and adds no consent wording of its own. Paste the approved
+text into the link builder's "Consent text" box. The page then shows the
+text on a screen of its own, headed "Consent to take part", before the form
+and its start screen. Under the text are an "I agree" and an "I do not
+agree" button, and "I agree" goes on to the start screen.
+
+The page reads the text as plain text. A blank line starts a new paragraph,
+and a single line break stays a line break. A tag or an entity, such as
+`<b>` or `&amp;`, shows as typed, so the text cannot carry formatting or
+links. The text can hold up to 20,000 characters, and the builder refuses a
+longer one.
+
+"I do not agree" shows a closing screen with no way back to the form. The
+page sends no answer and saves no file, so no row reaches the store and
+`read_form_responses()` never sees the participant. The closing screen
+shows the builder's "Declined text". When that box is empty, it shows "You
+chose not to take part. You can close this page.", or only its first
+sentence when the link sends the participant on, as the next sentences
+describe. A recruiting site can give a study a completion address for this
+outcome, such as a Prolific completion code for participants who do not
+consent
+([Custom completion codes](https://researcher-help.prolific.com/en/articles/445170-custom-completion-codes)).
+Give it as the builder's "Completion URL after a decline". The link carries
+it as its `completeDeclined` field, and the page sends a participant who
+declines to that address.
+
+A link with consent text travels as a `z` parameter in place of `c`, the
+same fields compressed, so a long text makes a shorter link. The rows, the
+file and the Supabase table have the same columns with consent text as
+without it. The hitop-form README's section
+[Show consent text before the form](https://github.com/jmgirard/hitop-form#show-consent-text-before-the-form)
+has the details.
+
 ## Who holds the data
 
 The answers go to the store the link names, and to a file on the
@@ -297,7 +333,8 @@ participant's device when the link names no store or the send is not
 confirmed. They go nowhere else. With a Google Sheet, Google holds the rows;
 with a Supabase table, Supabase holds them. The page's host, GitHub Pages, receives the study link with each page
 load, and the link carries the instrument and any module, the study name, the
-participant code, the store's address and, for Supabase, its key. It receives
+participant code, any consent text, the store's address and, for Supabase,
+its key. It receives
 no answers.
 
 A participant code is whatever the link or the participant supplies. A code
