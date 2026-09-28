@@ -1,13 +1,13 @@
 # M134: A link made under "Another site" reloads as that site, and the form page refuses a broken identifier before the form starts
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3, IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page and its link builder
-- **Branch/PR:** —
+- **Branch/PR:** `m134-form-link-loose-ends`; companion: /Users/jmgirard/github/hitop-form m134-form-link-loose-ends
 
 ## Goal
 
@@ -39,7 +39,7 @@ Under "Another site" the builder refuses `id` and `participantId`, and the form 
 
 ## Tasks
 
-- [ ] T1: In link.html's "Another site" branch (link.html:390-411), refuse `id` and `participantId` after the trim, before `checkParticipantParam()`. Keep the refusal out of `checkParticipantParam()`, because form.js:137 will then refuse SONA's own links. Add the AC1 tests beside L26 in `tests/link.spec.js`, plus one page open of a `participantParam: "id"` link.
+- [x] T1: In link.html's "Another site" branch (link.html:390-411), refuse `id` and `participantId` after the trim, before `checkParticipantParam()`. Keep the refusal out of `checkParticipantParam()`, because form.js:137 will then refuse SONA's own links. Add the AC1 tests beside L26 in `tests/link.spec.js`, plus one page open of a `participantParam: "id"` link.
 - [ ] T2: In L27 (`tests/link.spec.js:959`), assert the printed link's text after the `c` value for each choice (AC2).
 - [ ] T3: Extend P13 (`tests/recruit.spec.js:310`) to a confirmed send, for the navigation and the sent screen's link, and to a `completeSaved` without the token. Use `https://Example.org/done?x=1` as one address (AC3).
 - [ ] T4: Add one check in form.js (`String.prototype.isWellFormed`) that `parseLink()` (form.js:104-110) and the start screen (form.js:858) both call. Add the AC4 tests in `tests/guard.spec.js` and the AC5 tests in `tests/recruit.spec.js`. Set the start-screen field through `page.evaluate`, because Playwright's `fill()` replaces a surrogate with U+FFFD. Read `.value` back before Start (LESSONS, M128). `readProlific()` uses the same URLSearchParams reading as `readParticipantParam()`, so the `participantParam` address case stands for both.
@@ -52,6 +52,7 @@ Under "Another site" the builder refuses `id` and `participantId`, and the form 
 - 2026-09-28: criteria audit (full mode, fresh [O] reader): no principle conflict, and the three identifier sources are complete. Five findings, all fixed before the gate. AC1 gained a padded name, and AC3 the parsed `href` and `completeSaved`. AC4 and AC5 gained the wrong-order forms, pinned messages and `page.evaluate`. AC6 names the refusals NEWS states.
 - 2026-09-28: plan gate chose a builder refusal of `id` and `participantId` under "Another site" over a site field in the link. A new field changes the link format for a case a menu choice covers. Falsified by a researcher on a site other than SONA that needs `id` without the SONA ending.
 - 2026-09-28: plan gate chose to refuse an identifier with an unpaired surrogate at intake over a replacement in the completion address. A replacement lets the saved row and the completion address hold different identifiers. Falsified by a participant whose real identifier the refusal blocks.
+- 2026-09-28: T1 done (hitop-form). link.html refuses `id` and `participantId` under "Another site" after the trim, with the site's label from `SITES`. New L32 (3 tests) was red with an empty message before the fix. `tests/link.spec.js` 103 passed. The page open of an `id` link is L28, already on main, so no new open test was added.
 
 ## Decisions
 
