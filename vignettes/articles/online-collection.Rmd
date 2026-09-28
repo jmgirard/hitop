@@ -392,8 +392,9 @@ lapply(strsplit(days, " "), as.integer)
 With a Supabase store, the builder's SQL adds one text column per question.
 A table made before the questions were added has no column for them, so
 Supabase refuses the row, and the page then saves the file on the
-participant's device. Make a new table from the builder's SQL whenever the
-questions change. A link with questions travels as a `z` parameter, as a
+participant's device. The columns come from the question names alone, so
+make a new table from the builder's SQL when you add a question or change a
+name. A link with questions travels as a `z` parameter, as a
 link with consent text does. The hitop-form README's section
 [Ask your own questions](https://github.com/jmgirard/hitop-form#ask-your-own-questions)
 has the details.

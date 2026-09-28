@@ -62,6 +62,9 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: T4 and T5 done in hitop-form 168360e, one commit because the SQL fixture test runs through the builder. `storeSql()` takes the questions. Fixture `supabase-hitopbr-questions.sql` written by rule. QC2 reads the q_ keys from a webhook and a Supabase send (2 passed). tests/link-questions.spec.js LQ1 to LQ6: 24 passed. `encodeLink()` writes `z` for questions too, per D-079(b). A first run found hidden option and range fields still shown, because `label { display: block }` beat `hidden`, and a scoped rule fixed it. Full suite before the editor: 539 passed. Builder specs after it: 164 passed.
 - 2026-09-28: T6 done. hitop-form b088d3b captures `responses-hitopbr-questions.csv` (QC3, five questions, one left empty). The copy here is stored as LF, with a fixtures README row and a reader test of its five `q_` values. `devtools::test()`: 0 failed, 23,800 passed, 15 skipped.
 - 2026-09-28: T7 done. hitop-form 68049f0 adds the README section "Ask your own questions" and the questions in the builder steps, the link paragraphs, Supabase, scoring and the test table. Here, the article section "Your own questions" with a chunk that splits a multi answer, a pointer from the reading section, and a NEWS entry.
+- 2026-09-28: T8 checks: hitop-form full suite 564 passed. `cairn_validate` exits 0 with 24 advisory warnings.
+- claim audit: 152 claims read, 6 corrected — hitop-form README.md, link.html, tests/fixtures/README.md, tests/link-questions.spec.js, tests/question-screens.spec.js, hitop vignettes/articles/online-collection.Rmd
+- 2026-09-28: claim audit fixes in hitop-form a05f17a and here. The new-table advice now names question names, not any change. The editor gains two line-separator probes (U+2028 in a text and an option). Four wording fixes. The same reader re-read the six: all correct.
 
 ## Decisions
 
