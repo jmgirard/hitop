@@ -60,6 +60,7 @@ A study link's `consent` field holds the researcher's consent text. The page sho
 - 2026-09-28: T3 done (hitop-form 8735f43). Builder boxes, checks, `z` output and `z` prefill in link.html. New spec link-consent (K1-K7) passes, and link.spec passes unchanged. Five planted faults each turned their tests red.
 - 2026-09-28: T4 done (hitop-form 74ae796). Consent spec C7 compares the file header, the row keys and the builder SQL with and without consent, with shuffle off and on. Two planted column changes turned them red. Full hitop-form suite: 453 passed.
 - 2026-09-28: T5 done. README section "Show consent text before the form" and the `z` link paragraphs (hitop-form 4095dde), the article's section "Consent text before the form", and the NEWS entry.
+- 2026-09-28: T6 done for its local part. hitop `devtools::check()`: 0 errors, 0 warnings, 0 notes. `cairn_validate`: all checks passed, 24 advisory warnings. The hitop-form PR opens at the review merge step (D-138), so its CI run is recorded there, as in M133 and M134. The local run of the same suite passed 453 of 453.
 
 ## Decisions
 
