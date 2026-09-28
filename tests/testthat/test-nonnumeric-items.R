@@ -43,6 +43,15 @@ nonnumeric_cases <- c(
   })
 )
 
+test_that("the cases every refusal test loops over cover the seven functions", {
+  # Stated apart from `nonnumeric_cases`, so a function dropped from the list
+  # fails here rather than leaving every loop below silently narrower.
+  seven <- c("score_pid5", "score_hitopsr", "score_hitopbr", "reliability_pid5",
+             "reliability_hitopsr", "reliability_hitopbr", "validity_pid5")
+  covered <- unique(vapply(nonnumeric_cases, function(case) case$fn, character(1)))
+  expect_identical(sort(covered), sort(seven))
+})
+
 case_label <- function(case) {
   paste(c(case$fn, case$version), collapse = " ")
 }
@@ -690,8 +699,9 @@ test_that("a refused value made only of invisible characters is shown by its cod
     "  " = c("U+00A0", "U+2009"),
     " \v" = c("U+00A0", "U+000B")
   )
-  # One visible character, before or after the invisible one: shown as text.
-  visible <- list(" x" = "x\"", "1 " = "\"1")
+  # One visible character, before or after the invisible one: shown as text,
+  # with the invisible one written as its code point (M131).
+  visible <- list(" x" = "\"<U+00A0>x\"", "1 " = "\"1<U+00A0>\"")
   for (case in nonnumeric_cases) {
     col <- names(case$data)[[1]]
     for (value in c(names(invisible), names(visible))) {
@@ -707,9 +717,363 @@ test_that("a refused value made only of invisible characters is shown by its cod
           expect_true(grepl(point, msg, fixed = TRUE), info = info)
         }
       } else {
-        expect_false(grepl("U+00A0", msg, fixed = TRUE), info = info)
         expect_true(grepl(visible[[value]], msg, fixed = TRUE), info = info)
       }
     }
+  }
+})
+
+# ---- M131: invisible characters inside a visible value ----------------------
+
+# One character from each category is_invisible() reads: a separator, a
+# control and a format mark. as.numeric() refuses each one in every position
+# (it accepts a vertical tab at the ends, so U+000B is not used here).
+hidden_characters <- c(Z = 0xA0, Cc = 0x85, Cf = 0x200B)
+
+# The value with the character at the start, middle and end, and how the
+# message must show it.
+hidden_forms <- function(point) {
+  ch <- intToUtf8(point)
+  mark <- sprintf("<U+%04X>", point)
+  list(
+    start = c(value = paste0(ch, "1"), shown = paste0(mark, "1")),
+    middle = c(value = paste0("1", ch, "2"), shown = paste0("1", mark, "2")),
+    end = c(value = paste0("1", ch), shown = paste0("1", mark))
+  )
+}
+
+test_that("a refused value mixing visible and invisible characters shows each invisible one by its code point", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    for (category in names(hidden_characters)) {
+      forms <- hidden_forms(hidden_characters[[category]])
+      for (where in names(forms)) {
+        for (kind in c("text", "declared missing")) {
+          info <- paste(case_label(case), "/", category, where, kind)
+          value <- forms[[where]][["value"]]
+          values <- rep("1", nrow(case$data))
+          values[[2]] <- value
+          data <- case$data
+          data[[col]] <- if (kind == "text") {
+            values
+          } else {
+            haven::labelled_spss(values, na_values = value)
+          }
+          e <- catch_error(run_case(case, data))
+          expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+          if (!inherits(e, "hitop_nonnumeric_items")) next
+          msg <- cli::ansi_strip(conditionMessage(e))
+          shown <- paste0("\"", forms[[where]][["shown"]], "\"")
+          expect_true(grepl(shown, msg, fixed = TRUE), info = info)
+          expect_false(grepl(value, msg, fixed = TRUE), info = info)
+        }
+      }
+    }
+  }
+})
+
+test_that("an interior plain space in a refused value shows unchanged", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    for (kind in c("text", "declared missing")) {
+      info <- paste(case_label(case), "/", kind)
+      values <- rep("1", nrow(case$data))
+      values[[2]] <- "1 2"
+      data <- case$data
+      data[[col]] <- if (kind == "text") {
+        values
+      } else {
+        haven::labelled_spss(values, na_values = "1 2")
+      }
+      e <- catch_error(run_case(case, data))
+      expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+      if (!inherits(e, "hitop_nonnumeric_items")) next
+      msg <- cli::ansi_strip(conditionMessage(e))
+      expect_true(grepl("\"1 2\"", msg, fixed = TRUE), info = info)
+      expect_false(grepl("U+0020", msg, fixed = TRUE), info = info)
+    }
+  }
+})
+
+# ---- M131: a blank value an SPSS column declares missing -------------------
+
+# A blank cell in a character column scores as NA whether or not it is
+# declared missing, so declaring it changes nothing and is not refused.
+blank_codes <- c(empty = "", space = " ", tab = "\t")
+
+test_that("an SPSS column declaring a blank value missing scores as the undeclared column does", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    for (blank in names(blank_codes)) {
+      info <- paste(case_label(case), "/", blank)
+      values <- as.character(base[[col]])
+      values[c(2, 4)] <- blank_codes[[blank]]
+      declared <- base
+      declared[[col]] <- haven::labelled_spss(values, na_values = blank_codes[[blank]])
+      undeclared <- base
+      undeclared[[col]] <- haven::labelled_spss(values)
+      # The blank cells score as NA, so both columns score as the doubles do.
+      missing <- base
+      missing[[col]][c(2, 4)] <- NA
+      expected <- run_case(case, missing)
+      expect_identical(catch_error(run_case(case, declared)), expected, info = info)
+      expect_identical(catch_error(run_case(case, undeclared)), expected, info = info)
+    }
+  }
+})
+
+test_that("an SPSS column holding a blank and a non-blank declared code names the non-blank one", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    values <- as.character(base[[col]])
+    values[[2]] <- ""
+    values[[4]] <- "99"
+    data <- base
+    data[[col]] <- haven::labelled_spss(values, na_values = c("", "99"))
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    msg <- cli::ansi_strip(conditionMessage(e))
+    expect_true(grepl("holds \"99\", which it declares missing", msg, fixed = TRUE),
+                info = info)
+  }
+})
+
+# ---- M131: the SPSS class haven gave before version 2.0 ---------------------
+
+# haven before 2.0 built an SPSS column as structure(labelled(x, labels),
+# na_values = , na_range = , class = c("labelled_spss", "labelled")), with no
+# vctrs class (haven 1.1.2, R/labelled_spss.R,
+# https://github.com/tidyverse/haven/blob/v1.1.2/R/labelled_spss.R). Current
+# haven cannot build one, so these columns are built by hand in that shape.
+old_spss <- function(x, na_values = NULL, na_range = NULL) {
+  structure(x, labels = NULL, na_values = na_values, na_range = na_range,
+            class = c("labelled_spss", "labelled"))
+}
+
+old_spss_variants <- list(
+  `double, na_values` = function(x) {
+    x[c(2, 4)] <- c(99, 98)
+    list(column = old_spss(x, na_values = c(98, 99)), shown = "holds 99,")
+  },
+  `double, na_range` = function(x) {
+    x[c(2, 4)] <- c(99, 98)
+    list(column = old_spss(x, na_range = c(90, Inf)), shown = "holds 99,")
+  },
+  `character, na_values` = function(x) {
+    x <- as.character(x)
+    x[c(2, 4)] <- c("99", "98")
+    list(column = old_spss(x, na_values = c("98", "99")), shown = "holds \"99\",")
+  }
+)
+
+zap_tip <- "haven::zap_missing()"
+old_tip <- "old haven class"
+
+test_that("an old-class SPSS column holding a declared-missing code is refused with its own tip", {
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    for (variant in names(old_spss_variants)) {
+      info <- paste(case_label(case), "/", variant)
+      built <- old_spss_variants[[variant]](base[[col]])
+      data <- base
+      data[[col]] <- built$column
+      e <- catch_error(run_case(case, data))
+      expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+      if (!inherits(e, "hitop_nonnumeric_items")) next
+      msg <- cli::ansi_strip(conditionMessage(e))
+      expect_true(grepl(col, msg, fixed = TRUE), info = info)
+      expect_true(grepl(paste(built$shown, "which it declares missing"), msg,
+                        fixed = TRUE), info = info)
+      expect_true(grepl(old_tip, msg, fixed = TRUE), info = info)
+      expect_false(grepl(zap_tip, msg, fixed = TRUE), info = info)
+    }
+  }
+})
+
+test_that("the old-class and current-class SPSS tips each show only for their own class", {
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    other <- names(base)[[2]]
+    codes <- base[[col]]
+    codes[[2]] <- 99
+    columns <- list(
+      old = old_spss(codes, na_values = 99),
+      current = haven::labelled_spss(codes, na_values = 99)
+    )
+    for (kind in names(columns)) {
+      info <- paste(case_label(case), "/", kind)
+      data <- base
+      data[[col]] <- columns[[kind]]
+      msg <- cli::ansi_strip(conditionMessage(catch_error(run_case(case, data))))
+      expect_identical(grepl(old_tip, msg, fixed = TRUE), kind == "old", info = info)
+      expect_identical(grepl(zap_tip, msg, fixed = TRUE), kind == "current",
+                       info = info)
+    }
+    info <- paste(case_label(case), "/ both")
+    data <- base
+    data[[col]] <- columns$old
+    data[[other]] <- columns$current
+    msg <- cli::ansi_strip(conditionMessage(catch_error(run_case(case, data))))
+    expect_true(grepl(old_tip, msg, fixed = TRUE), info = info)
+    expect_true(grepl(zap_tip, msg, fixed = TRUE), info = info)
+  }
+})
+
+test_that("an old-class SPSS column with no declared code scores as its plain values do", {
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    text <- base
+    text[[col]] <- as.character(base[[col]])
+    declared <- list(
+      `double, na_values` = list(old_spss(base[[col]], na_values = 99), base),
+      `double, na_range` = list(old_spss(base[[col]], na_range = c(90, Inf)), base),
+      `character, na_values` = list(old_spss(text[[col]], na_values = "99"), text)
+    )
+    for (how in names(declared)) {
+      data <- base
+      data[[col]] <- declared[[how]][[1]]
+      expect_identical(run_case(case, data), run_case(case, declared[[how]][[2]]),
+                       info = paste(case_label(case), "/", how))
+    }
+  }
+})
+
+test_that("an old-class SPSS column declaring a blank value missing scores as the undeclared column does", {
+  for (case in nonnumeric_cases) {
+    base <- as_double_frame(case$data)
+    col <- names(base)[[1]]
+    for (blank in names(blank_codes)) {
+      info <- paste(case_label(case), "/", blank)
+      values <- as.character(base[[col]])
+      values[c(2, 4)] <- blank_codes[[blank]]
+      declared <- base
+      declared[[col]] <- old_spss(values, na_values = blank_codes[[blank]])
+      undeclared <- base
+      undeclared[[col]] <- old_spss(values)
+      # The blank cells score as NA, so both columns score as the doubles do.
+      missing <- base
+      missing[[col]][c(2, 4)] <- NA
+      expected <- run_case(case, missing)
+      expect_identical(catch_error(run_case(case, declared)), expected, info = info)
+      expect_identical(catch_error(run_case(case, undeclared)), expected, info = info)
+    }
+  }
+})
+
+# ---- M131: text that is not valid UTF-8 -------------------------------------
+
+# A byte string with no encoding mark, built from raw bytes so each invalid
+# byte is explicit (a literal 0xA0 byte would make this file invalid UTF-8).
+bytes_string <- function(...) rawToChar(as.raw(c(...)))
+
+# Each value and how the message must show it: iconv(sub = "byte") writes an
+# invalid byte as "<a0>". A lone byte, a byte at the start, middle and end, and
+# two truncated multibyte sequences.
+invalid_utf8 <- list(
+  alone = c(bytes_string(0xa0), "<a0>"),
+  start = c(bytes_string(0xa0, 0x31), "<a0>1"),
+  middle = c(bytes_string(0x31, 0xa0, 0x32), "1<a0>2"),
+  end = c(bytes_string(0x31, 0xa0), "1<a0>"),
+  `truncated three-byte` = c(bytes_string(0xe2, 0x80), "<e2><80>"),
+  `truncated two-byte` = c(bytes_string(0xc3), "<c3>")
+)
+
+encoding_tip <- "iconv()"
+
+expect_encoding_refusal <- function(e, col, shown, info) {
+  expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+  if (!inherits(e, "hitop_nonnumeric_items")) return(invisible())
+  msg <- cli::ansi_strip(conditionMessage(e))
+  expect_true(grepl(col, msg, fixed = TRUE), info = info)
+  expect_true(grepl(paste0("holds \"", shown, "\", which is not valid UTF-8"),
+                    msg, fixed = TRUE), info = info)
+  expect_true(grepl(encoding_tip, msg, fixed = TRUE), info = info)
+}
+
+test_that("a character column holding text that is not valid UTF-8 is refused", {
+  skip_if_not(l10n_info()$`UTF-8`, "needs a UTF-8 session")
+  skip_if_not_installed("haven")
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    for (form in names(invalid_utf8)) {
+      value <- invalid_utf8[[form]][[1]]
+      shown <- invalid_utf8[[form]][[2]]
+      # The invalid value follows a valid one, in a plain, a haven labelled
+      # and an SPSS column, the last declaring it missing.
+      values <- rep("1", nrow(case$data))
+      values[[2]] <- value
+      columns <- list(
+        plain = values,
+        labelled = haven::labelled(values, c(Low = "1")),
+        spss = haven::labelled_spss(values, na_values = value)
+      )
+      for (type in names(columns)) {
+        info <- paste(case_label(case), "/", form, "/", type)
+        data <- case$data
+        data[[col]] <- columns[[type]]
+        expect_encoding_refusal(catch_error(run_case(case, data)), col, shown,
+                                info)
+      }
+    }
+  }
+})
+
+test_that("a bytes-marked value that is not valid UTF-8 is refused", {
+  skip_if_not(l10n_info()$`UTF-8`, "needs a UTF-8 session")
+  value <- bytes_string(0x31, 0xa0)
+  Encoding(value) <- "bytes"
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- c("1", value, rep("1", nrow(data) - 2L))
+    expect_encoding_refusal(catch_error(run_case(case, data)), col, "1<a0>",
+                            case_label(case))
+  }
+})
+
+test_that("a value that is not valid UTF-8 shows a valid invisible character by its code point", {
+  skip_if_not(l10n_info()$`UTF-8`, "needs a UTF-8 session")
+  # A non-breaking space (bytes c2 a0), then "1", then the invalid byte a0.
+  value <- bytes_string(0xc2, 0xa0, 0x31, 0xa0)
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- c("1", value, rep("1", nrow(data) - 2L))
+    e <- catch_error(run_case(case, data))
+    expect_encoding_refusal(e, col, "<U+00A0>1<a0>", case_label(case))
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    expect_false(grepl(intToUtf8(0xA0), conditionMessage(e), fixed = TRUE),
+                 info = case_label(case))
+  }
+})
+
+test_that("a Latin-1-marked value is read as its text, not refused as invalid UTF-8", {
+  # "1" and byte A0 marked Latin-1 is "1" and a non-breaking space.
+  value <- bytes_string(0x31, 0xa0)
+  Encoding(value) <- "latin1"
+  for (case in nonnumeric_cases) {
+    info <- case_label(case)
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- c("1", value, rep("1", nrow(data) - 2L))
+    e <- catch_error(run_case(case, data))
+    expect_true(inherits(e, "hitop_nonnumeric_items"), info = info)
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    msg <- cli::ansi_strip(conditionMessage(e))
+    expect_true(grepl("holds \"1<U+00A0>\", which is not a number", msg,
+                      fixed = TRUE), info = info)
+    expect_false(grepl("UTF-8", msg, fixed = TRUE), info = info)
   }
 })

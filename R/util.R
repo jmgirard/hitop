@@ -371,13 +371,21 @@ validate_item_columns <- function(data, items, caller_items = items,
         points <- code_points(value)
         cli::format_inline("{label} is {.cls {cls}} and holds a value made only of the invisible {cli::qty(length(points))}character{?s} {points}, which is not a number.")
       } else {
+        value <- mark_invisible(value)
         cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not a number.")
       },
       missing = if (is.character(value) && nzchar(value) && is_invisible(value)) {
         points <- code_points(value)
         cli::format_inline("{label} is {.cls {cls}} and holds a value made only of the invisible {cli::qty(length(points))}character{?s} {points}, which it declares missing.")
       } else {
+        if (is.character(value)) value <- mark_invisible(value)
         cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which it declares missing.")
+      },
+      encoding = {
+        ## Each invalid byte shown as "<a0>", so the value prints at all, and
+        ## each valid invisible character as its code point.
+        value <- mark_invisible(iconv(value, "UTF-8", "UTF-8", sub = "byte"))
+        cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not valid UTF-8 text.")
       },
       cli::format_inline("{label} is {.cls {cls}}.")
     )
@@ -404,11 +412,18 @@ validate_item_columns <- function(data, items, caller_items = items,
       "Export numeric values rather than choice text, or convert each column to numbers before scoring."
     })
   }
+  if (any(kinds == "encoding")) {
+    hint <- c(hint, "i" = "Read the file again with its encoding, or convert a column with {.code iconv()}, for example {.code iconv(x, from = \"latin1\", to = \"UTF-8\")}.")
+  }
   if (any(kinds == "integer64")) {
     hint <- c(hint, "i" = "Convert an {.cls integer64} column with {.code as.numeric()} after {.code library(bit64)}.")
   }
-  if (any(kinds == "missing")) {
+  old <- vapply(first_bad[bad], function(r) isTRUE(r$old), logical(1))
+  if (any(kinds == "missing" & !old)) {
     hint <- c(hint, "i" = "Turn codes an SPSS file declares missing into {.code NA} with {.code haven::zap_missing()} before scoring.")
+  }
+  if (any(kinds == "missing" & old)) {
+    hint <- c(hint, "i" = "For a column of the old haven class {.cls labelled_spss}, set the values its {.code na_values} or {.code na_range} attribute declares to {.code NA} before scoring.")
   }
   cli::cli_abort(
     c(
@@ -424,6 +439,7 @@ validate_item_columns <- function(data, items, caller_items = items,
 # The reason an item column is refused, or NULL when it is accepted. A reason
 # is a list: `kind` "text" with the first value, after trimws(), of a character
 # column that does not parse, "missing" with the first value an SPSS column declares missing,
+# "encoding" with the first character value that is not valid UTF-8,
 # "integer64" for an integer64 column, or "type" for a column of any other
 # refused type. The parse test muffles
 # as.numeric()'s own coercion warning, which is the message this refusal
@@ -439,10 +455,26 @@ unparsed_value <- function(x) {
   if (inherits(x, "integer64")) {
     return(list(kind = "integer64"))
   }
-  if (inherits(x, "haven_labelled_spss")) {
+  ## Text is read as UTF-8, converted from the encoding its Encoding() mark
+  ## declares, so a Latin-1 value is read as its text. A value that is still
+  ## not valid UTF-8 (bytes read without their encoding) is refused before any
+  ## other check, because trimws() and as.numeric() stop on it with a base R
+  ## error, and the perl regexes in is_invisible() only warn and return FALSE.
+  if (is.character(item_values(x))) {
+    utf8 <- enc2utf8(item_values(x))
+    invalid <- !is.na(utf8) & !validUTF8(utf8)
+    if (any(invalid)) {
+      return(list(kind = "encoding", value = utf8[invalid][[1]]))
+    }
+  }
+  if (inherits(x, c("haven_labelled_spss", "labelled_spss"))) {
     code <- declared_missing(x)
     if (!is.null(code)) {
-      return(list(kind = "missing", value = code))
+      ## haven before 2.0 gave SPSS columns the class c("labelled_spss",
+      ## "labelled"), which haven::zap_missing() leaves unchanged, so that
+      ## class gets its own tip.
+      return(list(kind = "missing", value = code,
+                  old = !inherits(x, "haven_labelled_spss")))
     }
   }
   x <- item_values(x)
@@ -452,7 +484,7 @@ unparsed_value <- function(x) {
   if (!is.character(x)) {
     return(list(kind = "type"))
   }
-  values <- trimws(x)
+  values <- trimws(enc2utf8(x))
   values <- values[!is.na(values) & nzchar(values)]
   parsed <- suppressWarnings(as.numeric(values))
   ## "NaN" parses to NaN, which a numeric column scores as missing, so only a
@@ -479,8 +511,21 @@ code_points <- function(x) {
   sprintf("U+%04X", utf8ToInt(enc2utf8(x)))
 }
 
+# A string that also holds a visible character, with each character of the
+# categories is_invisible() reads written as its code point in angle brackets,
+# so "1" and a non-breaking space shows as "1<U+00A0>", not as "1 ". A plain
+# space (U+0020) is left as it is.
+mark_invisible <- function(x) {
+  chars <- strsplit(enc2utf8(x), "", fixed = TRUE)[[1]]
+  hidden <- grepl("^[\\p{Z}\\p{Cc}\\p{Cf}]$", chars, perl = TRUE) & chars != " "
+  chars[hidden] <- sprintf("<U+%04X>", vapply(chars[hidden], utf8ToInt, integer(1)))
+  paste(chars, collapse = "")
+}
+
 # The first value, in row order, that an SPSS column's `na_values` or
-# `na_range` attribute declares missing, or NULL when it holds none.
+# `na_range` attribute declares missing, or NULL when it holds none. A
+# character value that is blank after trimws() is skipped: it scores as NA
+# whether or not it is declared, so declaring it changes nothing.
 declared_missing <- function(x) {
   values <- item_values(x)
   codes <- attr(x, "na_values", exact = TRUE)
@@ -488,6 +533,9 @@ declared_missing <- function(x) {
   hit <- !is.na(values) & values %in% codes
   if (length(range) == 2L) {
     hit <- hit | (!is.na(values) & values >= range[[1]] & values <= range[[2]])
+  }
+  if (is.character(values)) {
+    hit <- hit & nzchar(trimws(values))
   }
   if (!any(hit)) {
     return(NULL)
