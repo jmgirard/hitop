@@ -1,6 +1,6 @@
 # M133: A study link can take the participant's identifier from a named address parameter and put it into the completion address, so hitop-form fits SONA and CloudResearch Connect
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -48,7 +48,7 @@ A study link's `participantParam` field names the address parameter holding the 
 - [x] T5: The "Recruiting site" choice in link.html in place of the Prolific box, the suffixes, the other-site name field, `prefill()` for the new field and its skip of a non-string value; the builder-side refusals AC1 lists; the SQL comparison; builder, prefill and unfilled-SONA tests; the Prolific builder tests moved to the new control (tests/link.spec.js drives `input[name="prolific"]` today).
 - [x] T6: README "Recruit through SONA or CloudResearch Connect"; the article section after "The Prolific route"; NEWS.
 - [x] T7: hitop-form suite green locally (its CI on the PR `/milestone-review` opens); hitop `check()`; `cairn_validate`.
-- [ ] T8: Review-return fixes. The page and the builder refuse any other spelling of the token (another letter case, a `%7B…%7D` form) by name, with tests on both sides. P11's `completeSaved` becomes a SONA-shaped address. A builder test covers the host and path refusal. L10 drops its added visibility checks and its select-and-reset, and its comments match. The Connect note's unsupported "never a placeholder" clause is fixed. The three site hints are tied to the menu by `aria-describedby`, with a test. The builder's Prolific-name refusal names the menu's Prolific choice. The README and the article say that, if `id` is missing, a participant can type any code. Suite, `check()` and `cairn_validate` re-run.
+- [x] T8: Review-return fixes. The page and the builder refuse any other spelling of the token (another letter case, a `%7B…%7D` form) by name, with tests on both sides. P11's `completeSaved` becomes a SONA-shaped address. A builder test covers the host and path refusal. L10 drops its added visibility checks and its select-and-reset, and its comments match. The Connect note's unsupported "never a placeholder" clause is fixed. The three site hints are tied to the menu by `aria-describedby`, with a test. The builder's Prolific-name refusal names the menu's Prolific choice. The README and the article say that, if `id` is missing, a participant can type any code. Suite, `check()` and `cairn_validate` re-run.
 
 ## Work log
 
@@ -80,6 +80,8 @@ A study link's `participantParam` field names the address parameter holding the 
 - amendment return: AC7 — "L10, L11, L13, L14, L16 and the helper `buildSupabase()` change from main only in their names and comments, the Prolific checkbox replaced by the "Recruiting site" menu (checked as Prolific, clear as None) with assertions on its state, and the locator of the Prolific hint (`#prolificHint`)"
 - 2026-09-27: minor amendment: T8 added for the review-return fixes, and Coverage maps AC4, AC6 and AC7 to it. D-078 annotates D-077's Context.
 - 2026-09-27: T8 in part. hitop-form 2ac0078 makes every T8 code and test change: G16 (10), L30 (8), L31, and P11 on a SONA-shaped address. Suite 333 passed. Three plants turned their tests red: no spelling refusal (18 tests), no `aria-describedby` (L31), and the old Prolific advice (L26). hitop: the article's typed-code sentence, and the Connect note's placeholder clause corrected. The claim audit and `check()` are still to run.
+- claim audit: 280 claims read, 4 corrected — hitop-form README.md, tests/guard.spec.js (and read: form.js, link.html, tests/link.spec.js, tests/recruit.spec.js, hitop NEWS.md, R/read_form_responses.R, vignettes/articles/online-collection.Rmd). Corrected in hitop-form 6db9570: the README test-table rows for G16, L30 and L31, the README's spelling-refusal sentence narrowed to letter case and `%7B`/`%7D`, the G16 header, and the G15 test name. Not changed: the Connect hint and NEWS wording, which describe what the page does.
+- 2026-09-27: T8 done, implement complete, status set to review. hitop-form suite 333 passed locally. hitop `devtools::check()` 0 errors, 0 warnings, 0 notes.
 
 ## Decisions
 
