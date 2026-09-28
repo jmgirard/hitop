@@ -118,6 +118,6 @@ Independent review, 2026-09-27. The [S] prior-review lens found no regression of
 - F2: outside a UTF-8 session, unmarked invalid bytes are refused as choice text, with no `iconv()` tip. The docs and NEWS state the UTF-8 refusal with no locale scope. Proposed: fix now. Add "in a UTF-8 session" to the docs and NEWS. The Scope already puts other locales out.
 - F3 (reproduced): the encoding message does not apply `mark_invisible()`. Bytes `c2 a0 31 a0` show a raw non-breaking space before `1<a0>`. Proposed: fix now, with a test.
 - F4: a `"bytes"`-marked value that is valid UTF-8 shows as escapes (`"x\\xc3\\xa9"`). The refusal still happens. Proposed: reject, because readers do not mark valid text as bytes and the refusal is right.
-- F5: the two blank-code tests compare two calls, so they would pass if both calls failed the same way. Proposed: fix now. Assert that the declared call returns a result equal to the column with those cells as `NA`.
+- F5: the two blank-code tests compare two calls. Two calls that fail the same way also pass them. Proposed: fix now. Assert that the declared call returns a result equal to the column with those cells as `NA`.
 - F6: an old-class SPSS factor column shows its code unquoted. Proposed: reject, because the input is contrived and the refusal is right.
 - F7: `item_values()` does not unclass the old class. It works today because base `[` and `as.numeric()` drop the class. Proposed: reject, because no failure reproduces and the parse path took that class before this branch.
