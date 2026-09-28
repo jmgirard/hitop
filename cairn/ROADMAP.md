@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-27 (76th pass, M130 done): row archived, M127 pruned, no lesson (LESSONS at its byte budget). validate green._
+_Last hygiene check: 2026-09-27 (77th pass, M131 done): row archived, M128 pruned, no lesson (LESSONS at its byte budget). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M131 | Scoring refusals show hidden characters, pass blank SPSS codes, and refuse old SPSS codes and invalid UTF-8 | review | — | normal | milestones/M131-item-column-refusal-gaps.md |
+| M131 | Scoring refusals show hidden characters, pass blank SPSS codes, and refuse old SPSS codes and invalid UTF-8 | done | — | normal | milestones/archive/M131-item-column-refusal-gaps.md |
 | M130 | `read_form_responses()` refuses a UTF-16 file after blank lines, names a UTF-32 file as UTF-32, and stops calling `a`,NUL,`b` UTF-16 | done | — | normal | milestones/archive/M130-reader-wide-encoding-edges.md |
 | M129 | `read_form_responses()` caps its line and row refusals at five, refuses a UTF-16 file once, and keeps the mismatch class when a path holds a brace | done | — | normal | milestones/archive/M129-reader-refusal-loose-ends.md |
-| M128 | hitop-form's `link.html` lists the addresses a study link filled, moves focus to its message after load, and the README names the host's view of `link.html?c=` | done | — | normal | milestones/archive/M128-link-builder-prefill-loose-ends.md |
 
 ## Candidates
 
