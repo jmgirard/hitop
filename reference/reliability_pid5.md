@@ -42,10 +42,18 @@ reliability_pid5(
   labelled column is read as its plain values. Any other column, such as
   the choice text of an online export or a factor, is an error of class
   `hitop_nonnumeric_items`. So is a 64-bit integer (`integer64`) column,
-  and an SPSS column (`haven_labelled_spss`) that holds a value it
-  declares missing; turn those codes into `NA` with
+  and, in a UTF-8 session, a column holding text that is not valid UTF-8
+  (text marked Latin-1 is read as its text); convert such text with
+  [`iconv()`](https://rdrr.io/r/base/iconv.html). So is an SPSS column
+  (`haven_labelled_spss`) that holds a value it declares missing; turn
+  those codes into `NA` with
   [`haven::zap_missing()`](https://haven.tidyverse.org/reference/zap_missing.html)
-  first.
+  first. A declared value that is blank is not refused, since blank
+  cells count as missing. The SPSS class of haven before 2.0
+  (`labelled_spss`) is refused the same way, but
+  [`haven::zap_missing()`](https://haven.tidyverse.org/reference/zap_missing.html)
+  leaves it unchanged, so set the values its `na_values` or `na_range`
+  attribute declares to `NA` first.
 
 - version:
 

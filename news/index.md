@@ -305,12 +305,27 @@
   as 99, used to score that code as an answer. Turn such codes into `NA`
   with
   [`haven::zap_missing()`](https://haven.tidyverse.org/reference/zap_missing.html)
-  before scoring. A 64-bit integer column (`integer64`) read without
-  bit64 loaded used to score as tiny numbers near zero. A haven labelled
-  column of digit text, which used to stop with an error from haven, now
-  scores as its plain text does. A refused value made only of invisible
-  characters, such as a non-breaking space, is shown by its code points
-  (`U+00A0`).
+  before scoring. A declared value that is blank is not refused, since
+  blank cells count as missing. The SPSS class of haven before 2.0
+  (`labelled_spss`), whose declared codes also used to score as answers,
+  is refused the same way.
+  [`haven::zap_missing()`](https://haven.tidyverse.org/reference/zap_missing.html)
+  leaves that class unchanged, so the error says to set the values its
+  `na_values` or `na_range` attribute declares to `NA`. A 64-bit integer
+  column (`integer64`) read without bit64 loaded used to score as tiny
+  numbers near zero. Text that is not valid UTF-8, such as a Latin-1
+  file read without its encoding, used to stop with a base R error. In a
+  UTF-8 session it is now refused with the same error, which shows each
+  invalid byte (`"1<a0>"`) and names
+  [`iconv()`](https://rdrr.io/r/base/iconv.html). Some text marked
+  Latin-1, such as `"1"` followed by a non-breaking space, also used to
+  stop with a base R error. Text marked Latin-1 is now read as its text.
+  A haven labelled column of digit text, which used to stop with an
+  error from haven, now scores as its plain text does. A refused value
+  made only of invisible characters, such as a non-breaking space, is
+  shown by its code points (`U+00A0`). An invisible character inside a
+  value with visible ones is shown the same way, so `"1"` followed by a
+  non-breaking space shows as `"1<U+00A0>"`.
 
 - **[`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
   refuses item numbers that are not JSON numbers.** In a module
