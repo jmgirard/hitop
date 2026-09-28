@@ -55,6 +55,21 @@
 #'   check that every file holds the same item columns. The cells are read as
 #'   written, with no check on their content.
 #'
+#'   A column whose name starts with `q_` is an answer column: it holds the
+#'   answer to a question the researcher added to the study, named `q_` and
+#'   then the question's name (`q_age`). A file may hold answer columns
+#'   anywhere after `submitted`, and the result places them after the item
+#'   columns. They come in the order the reader first meets them, with the
+#'   files in path order and each file read from left to right. Each is
+#'   character, read as written with no conversion, and a blank cell is `NA`.
+#'   Files that hold different answer columns read together, and a row from a
+#'   file without a column holds `NA` in it. Answer columns are not item
+#'   columns, so they do not enter the check that every file holds the same
+#'   item columns. After `q_`, a name must hold a lower-case letter and then
+#'   up to 29 lower-case letters, digits or underscores, the pattern
+#'   `^q_[a-z][a-z0-9_]{0,29}$`. A name that starts with `q_` and does not
+#'   match is an error naming the file and the column.
+#'
 #'   Every file must carry the same item columns in the same order, because
 #'   a set of files that differ cannot be one data frame: a full HiTOP-SR
 #'   beside a module, or two modules that shuffled their items differently,
@@ -66,7 +81,8 @@
 #'   lines only, a UTF-8 byte-order mark only), first columns other than the five
 #'   the page writes first, a column that appears twice, a header with no
 #'   response row, a response row holding fewer or more fields than the
-#'   header, an item column whose name is not a stem of lower-case letters
+#'   header, an answer column whose name does not match the pattern above, an
+#'   item column whose name is not a stem of lower-case letters
 #'   and digits, an underscore and the item number (`hitopbr_01`, not `foo`
 #'   or `Hitopbr_01`), item columns of more than one stem (`hitopbr_01`
 #'   beside `pid5bf_01`), an `instrument` cell that differs from the item
@@ -112,7 +128,9 @@
 #'   `prolific_study` and `prolific_session` as character, each `NA` on a row
 #'   from a file without that column and on a blank cell. The item columns
 #'   follow as integers, in the column order of the first file after sorting.
-#'   An item the participant left blank is `NA`.
+#'   An item the participant left blank is `NA`. The answer columns, when any
+#'   file holds one, come last as character, in order of first appearance,
+#'   each `NA` on a row from a file without it and on a blank cell.
 #'
 #' @seealso [score_hitopsr()], [score_hitopbr()], [score_pid5()] and
 #'   [read_module()], which score the item columns; the Collecting Responses

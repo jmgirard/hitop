@@ -137,6 +137,33 @@ order, and each file's rows in its own order. Every file must hold the same
 item columns in the same order, so read each form's files in a call of their
 own.
 
+A file can also hold answer columns, one per question you add to the
+study, each named `q_` and then the question's name, such as `q_age`.
+`read_form_responses()` accepts them anywhere after `submitted` and returns
+them after the item columns. They come in the order the reader first meets
+them, with the files in path order and each file read from left to right.
+Each answer column is character, as written, and a blank cell is `NA`. Files
+that hold different answer columns read together, and a row from a file
+without a column holds `NA` in it. The answer columns do not enter the check
+that every file holds the same item columns. After `q_`, a name must hold a
+lower-case letter and then up to 29 lower-case letters, digits or
+underscores. The reader stops with an error that names the file and the
+column when a name does not. The reader does not convert an answer, so turn
+a number answer into a number yourself:
+
+```{r}
+# The download above with an answer column added, as a sheet would hold it.
+lines <- readLines(path, warn = FALSE)
+lines[1] <- paste0(lines[1], ",q_age")
+lines[-1] <- paste0(lines[-1], c(",34", ","))
+answers_file <- tempfile(fileext = ".csv")
+writeLines(lines, answers_file)
+
+with_answers <- read_form_responses(answers_file)
+with_answers$q_age
+as.integer(with_answers$q_age)
+```
+
 ## 5. Score it
 
 Pass the item columns to the scoring function for the instrument. For the
