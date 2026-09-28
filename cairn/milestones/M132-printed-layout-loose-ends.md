@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M132: Printed-layout names that match the module's order score without a warning, and a fractional `item_order` is refused
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -58,7 +58,7 @@ Close the M091 review's printed-layout loose ends, first the warning that fires 
 - [x] T3: In `test-layout.R`, test `layout = "printed"` through `subset` in both functions (AC4). Count warnings by class.
 - [x] T4: Update the `items` roxygen (`R/score_hitopsr.R:9`, `R/reliability_hitopsr.R:12`). In the modules article's hitop-form section, pass names and drop the positions paragraph. Run `devtools::document()`. Purl and source the article (LESSONS, M115).
 - [x] T5: Delete `data-raw/characterize_layout/`. Git history keeps it, and the M091 archive summary names it as history.
-- [ ] T6: Gate: `document()` with no diff, `test()`, `check()`, the purled article, and `cairn_validate`.
+- [x] T6: Gate: `document()` with no diff, `test()`, `check()`, the purled article, and `cairn_validate`.
 
 ## Work log
 
@@ -74,6 +74,7 @@ Close the M091 review's printed-layout loose ends, first the warning that fires 
 - 2026-09-27: T5 done. `git rm` removed `characterize.R` and `compare.R`. No file outside `cairn/` names the directory.
 - 2026-09-27: claim audit: 20 claims read, 3 corrected — NEWS.md
 - 2026-09-27: The three corrections: the `item_order` entry's "before" sentence now says a fraction was used only when the truncated order was still a permutation, and that `Inf` used to raise two base R warnings, not one. The remedy entry now names the one-prefix, trailing-number condition. The [O] reader cleared all of them on its one re-read. DESIGN's scoring paragraph gained a clause on the `item_order` pass and the shared permutation test.
+- 2026-09-27: T6 done. `document()` leaves no diff. `test()` gives 0 failed of 23734 expectations with 15 skipped. `check()` gives 0 errors, 0 warnings and 0 notes. It ran before the NEWS and DESIGN text edits. `cairn_validate` passes. The purled article sourced clean at T4, and the article did not change after that. Status set to review.
 
 ## Decisions
 
