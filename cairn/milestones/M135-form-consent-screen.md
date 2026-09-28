@@ -63,6 +63,8 @@ A study link's `consent` field holds the researcher's consent text. The page sho
 - 2026-09-28: T6 done for its local part. hitop `devtools::check()`: 0 errors, 0 warnings, 0 notes. `cairn_validate`: all checks passed, 24 advisory warnings. The hitop-form PR opens at the review merge step (D-138), so its CI run is recorded there, as in M133 and M134. The local run of the same suite passed 453 of 453.
 - claim audit: 104 claims read, 8 corrected — NEWS.md, vignettes/articles/online-collection.Rmd, hitop-form README.md, hitop-form link.html
 - 2026-09-28: claim audit by a fresh [O] reader over the hitop diff and the hitop-form README, link.html and form.js. It found no wrong claim. The fixed decline sentence was stated without its `completeDeclined` condition in three places, and "ends the session" overstated in three. The emoji count and one stale comment were also fixed. The same reader re-read the corrections and three new README test-table rows, and all held (hitop-form 6496e1c). Status set to review.
+- 2026-09-28: review ran on fresh evidence. AC1-AC6 ticked. AC7 local part recorded, its hitop-form CI clause pending the companion PR. Gate triage: finding 9 fixed (hitop-form faa80c8), four findings to a candidate row, five rejected.
+- step-7 approval: m135-form-consent-screen approved for merge, with the companion /Users/jmgirard/github/hitop-form m135-form-consent-screen, companion first.
 
 ## Decisions
 
@@ -94,3 +96,5 @@ Diff-lens findings, most severe first, with the disposition proposed at the merg
 8. C6 cannot tell whether the declined screen is drawn before the page leaves, since both happen in one task. Proposed: reject, because a participant cannot see a difference, and `decline()` follows the order of `finish()`.
 9. The form.js header comment says the export fetch is the only request with no store. It leaves out the move to a completion address. Proposed: fix now.
 10. A consent text of zero-width characters only passes the blank check. Proposed: reject, because AC4 names white space, which `trim()` removes.
+
+Gate triage, chosen by Jeff on 2026-09-28: the proposal was accepted as written. Finding 9 is fixed in hitop-form faa80c8, a comment-only change. Findings 1, 3, 5 and 6 go to one new candidate row, written at the post-merge hygiene pass. Findings 2, 4, 7, 8 and 10 are rejected for the reasons above.
