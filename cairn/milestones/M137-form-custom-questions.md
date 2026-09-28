@@ -41,7 +41,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 
 ## Tasks
 
-- [ ] T1: In form.js, add `checkQuestions()` to `parseLink()` with the refusals of AC1, and export it for link.html.
+- [x] T1: In form.js, add `checkQuestions()` to `parseLink()` with the refusals of AC1, and export it for link.html.
 - [ ] T2: Add the `before` and `after` question screens to `runForm()`. Build each input with the `el()` helper and label it for screen readers. Use a text input with `inputmode="numeric"` for `number`, so the page reads what the participant typed. Add the checks and move focus to the first refused question. Carry the answers into the record in `finish()`, and count them in the `beforeunload` guard. Write the walk tests of AC2.
 - [ ] T3: Add `questionColumns(config)` for the trailing columns, used by `buildCsv()`, `buildRow()` and `storeSql()`. Leave `leadColumns()` unchanged. Write the values of AC3 and the row and file tests.
 - [ ] T4: Extend `storeSql()` with the `text` columns. Add the SQL fixture under `tests/fixtures/`, written by rule and not captured from the builder, with its README line. Write the send tests.
@@ -56,6 +56,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: criteria audit ran in full mode (user-facing tier) on two fresh [O] readers. They returned 8 findings and 1 finding, all fixed before the commit. The fixes cover unknown keys, option limits, the integer range, number input rules, markup probes, Back and Next placement, unanswered values, a separate column helper, the fixture record, and labels without line breaks or `|`.
 - 2026-09-28: plan chose option positions over option labels as the stored value of a choice, because positions match the integer answers of the instruments and survive a relabeling. Falsified by researchers who reorder options between links and misread the numbers.
 - 2026-09-28: implement started. Branch m137-form-custom-questions cut in hitop and in the hitop-form companion. Gate chose headings, numbered questions, the editor with Move up and Move down, and a range line (M137-D1).
+- 2026-09-28: T1 done in hitop-form 6db09b1. `checkQuestions()` in `parseLink()`, with a `where` argument so link.html names questions by its own numbers. tests/questions.spec.js Q1 and Q2: 59 passed. The edit tool wrote U+2028 as a literal character, which broke a regex, so the pattern is now built from code points.
 
 ## Decisions
 
