@@ -2380,3 +2380,203 @@ test_that("a seven-fault file of alternating NUL and non-UTF-8 lines names the f
     "... and 2 more lines."
   ))
 })
+
+# ---- Answer columns: the researcher's own questions, named q_ -------------
+#
+# A column after `submitted` whose name starts with `q_` holds the answer to
+# a question of the researcher's own. The result places the
+# answer columns after the item columns, as character, in order of first
+# appearance with the files in path order and each file read left to right.
+
+# Write a file of `lead` then `cols` as its header, and one row per element
+# of `rows`, each a character vector of the cells after `submitted`, already
+# quoted where the CSV needs it. Returns the path.
+answer_file <- function(dir, name, cols, rows, participant = "p001") {
+  lines <- c(
+    paste(c(lead, cols), collapse = ","),
+    vapply(seq_along(rows), function(i) {
+      paste(c("study", paste0(participant, if (length(rows) > 1L) i),
+              "hitopbr", "2026-09-20", "2026-09-20T21:20:36Z", rows[[i]]),
+            collapse = ",")
+    }, character(1L))
+  )
+  write_rows(file.path(dir, name), lines)
+}
+
+item_names <- c("hitopbr_01", "hitopbr_02")
+
+test_that("q_ columns after the item columns read as character after them", {
+  dir <- withr::local_tempdir()
+  f <- answer_file(dir, "p001.csv", c(item_names, "q_age", "q_note"),
+                   list(c("4", "1", "34", "fine")))
+
+  out <- read_form_responses(f)
+
+  expect_identical(names(out), c(result_lead, item_names, "q_age", "q_note"))
+  expect_identical(out$q_age, "34")
+  expect_identical(out$q_note, "fine")
+  expect_identical(out$hitopbr_01, 4L)
+  expect_identical(out$hitopbr_02, 1L)
+})
+
+test_that("a q_ column before the item columns reads after them", {
+  dir <- withr::local_tempdir()
+  f <- answer_file(dir, "p001.csv", c("q_age", item_names),
+                   list(c("34", "4", "1")))
+
+  out <- read_form_responses(f)
+
+  expect_identical(names(out), c(result_lead, item_names, "q_age"))
+  expect_identical(out$q_age, "34")
+  expect_identical(out$hitopbr_01, 4L)
+  expect_identical(out$hitopbr_02, 1L)
+})
+
+test_that("a q_ column between two item columns reads after them", {
+  dir <- withr::local_tempdir()
+  f <- answer_file(dir, "p001.csv", c("hitopbr_01", "q_age", "hitopbr_02"),
+                   list(c("4", "34", "1")))
+
+  out <- read_form_responses(f)
+
+  expect_identical(names(out), c(result_lead, item_names, "q_age"))
+  expect_identical(out$q_age, "34")
+  expect_identical(out$hitopbr_01, 4L)
+  expect_identical(out$hitopbr_02, 1L)
+})
+
+test_that("a q_ column between two optional lead columns reads after the items", {
+  dir <- withr::local_tempdir()
+  f <- answer_file(dir, "p001.csv",
+                   c("item_order", "q_age", "prolific_study", item_names),
+                   list(c("2 1", "34", "S1", "4", "1")))
+
+  out <- read_form_responses(f)
+
+  expect_identical(names(out), c(result_lead, item_names, "q_age"))
+  expect_identical(out$item_order, "2 1")
+  expect_identical(out$prolific_study, "S1")
+  expect_identical(out$prolific_session, NA_character_)
+  expect_identical(out$q_age, "34")
+  expect_identical(out$hitopbr_01, 4L)
+})
+
+test_that("a blank q_ cell reads as NA, row by row", {
+  dir <- withr::local_tempdir()
+  f <- answer_file(dir, "store.csv", c(item_names, "q_age"),
+                   list(c("4", "1", ""), c("2", "3", "51")))
+
+  out <- read_form_responses(f)
+
+  expect_identical(out$q_age, c(NA_character_, "51"))
+})
+
+test_that("q_ cells read as written: a formula, a leading zero, a comma and a line break", {
+  dir <- withr::local_tempdir()
+  f <- answer_file(dir, "p001.csv",
+                   c(item_names, "q_formula", "q_code", "q_comma", "q_lines"),
+                   list(c("4", "1", "=1+1", "007", "\"a, b\"",
+                          "\"first\nsecond\"")))
+
+  out <- read_form_responses(f)
+
+  expect_identical(nrow(out), 1L)
+  expect_identical(out$q_formula, "=1+1")
+  expect_identical(out$q_code, "007")
+  expect_identical(out$q_comma, "a, b")
+  expect_identical(out$q_lines, "first\nsecond")
+})
+
+test_that("q_ columns come in order of first appearance, files in path order", {
+  dir <- withr::local_tempdir()
+  answer_file(dir, "a.csv", c(item_names, "q_b", "q_a"),
+              list(c("4", "1", "b1", "a1")), participant = "pa")
+  answer_file(dir, "b.csv", c("q_c", item_names, "q_a"),
+              list(c("c2", "2", "3", "a2")), participant = "pb")
+
+  out <- read_form_responses(dir)
+
+  expect_identical(names(out),
+                   c(result_lead, item_names, "q_b", "q_a", "q_c"))
+  expect_identical(out$q_b, c("b1", NA))
+  expect_identical(out$q_a, c("a1", "a2"))
+  expect_identical(out$q_c, c(NA, "c2"))
+})
+
+test_that("files with disjoint q_ sets read together, NA where a file lacks a column", {
+  dir <- withr::local_tempdir()
+  answer_file(dir, "a.csv", c(item_names, "q_x"),
+              list(c("4", "1", "x1")), participant = "pa")
+  answer_file(dir, "b.csv", c(item_names, "q_y"),
+              list(c("2", "3", "y2")), participant = "pb")
+
+  expect_no_condition(out <- read_form_responses(dir))
+
+  expect_identical(names(out), c(result_lead, item_names, "q_x", "q_y"))
+  expect_identical(out$q_x, c("x1", NA))
+  expect_identical(out$q_y, c(NA, "y2"))
+  expect_identical(out$hitopbr_01, c(4L, 2L))
+})
+
+test_that("files with the same q_ columns in different orders read together by name", {
+  dir <- withr::local_tempdir()
+  answer_file(dir, "a.csv", c(item_names, "q_x", "q_y"),
+              list(c("4", "1", "x1", "y1")), participant = "pa")
+  answer_file(dir, "b.csv", c(item_names, "q_y", "q_x"),
+              list(c("2", "3", "y2", "x2")), participant = "pb")
+
+  expect_no_condition(out <- read_form_responses(dir))
+
+  expect_identical(names(out), c(result_lead, item_names, "q_x", "q_y"))
+  expect_identical(out$q_x, c("x1", "x2"))
+  expect_identical(out$q_y, c("y1", "y2"))
+})
+
+test_that("files whose item columns differ and whose q_ columns match abort by class", {
+  dir <- withr::local_tempdir()
+  answer_file(dir, "a.csv", c(item_names, "q_x"),
+              list(c("4", "1", "x1")), participant = "pa")
+  f2 <- answer_file(dir, "b.csv", c("hitopbr_01", "hitopbr_03", "q_x"),
+                    list(c("2", "3", "x2")), participant = "pb")
+
+  cnd <- rlang::catch_cnd(read_form_responses(dir),
+                          "hitop_form_responses_mismatch")
+  expect_s3_class(cnd, "hitop_form_responses_mismatch")
+  expect_match(conditionMessage(cnd), basename(f2), fixed = TRUE)
+  expect_match(conditionMessage(cnd), "names", fixed = TRUE)
+})
+
+test_that("a q_ name outside the pattern is refused naming the file and column", {
+  long_ok <- paste0("q_a", strrep("b", 29L))
+  long_bad <- paste0("q_a", strrep("b", 30L))
+  for (bad in c("q_Age", "q_1a", "q_", "q__a", "q_a-b", long_bad)) {
+    dir <- withr::local_tempdir()
+    f <- answer_file(dir, "bad.csv", c(item_names, bad),
+                     list(c("4", "1", "x")))
+    cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+    expect_s3_class(cnd, "rlang_error")
+    msg <- conditionMessage(cnd)
+    expect_match(msg, "bad.csv", fixed = TRUE)
+    expect_match(msg, "answer column whose name does not fit the pattern",
+                 fixed = TRUE)
+    expect_match(msg, bad, fixed = TRUE)
+  }
+
+  # The longest name the pattern allows reads.
+  dir <- withr::local_tempdir()
+  f <- answer_file(dir, "ok.csv", c(item_names, long_ok),
+                   list(c("4", "1", "x")))
+  expect_identical(read_form_responses(f)[[long_ok]], "x")
+})
+
+test_that("a q_ name that appears twice meets the repeated-column refusal", {
+  dir <- withr::local_tempdir()
+  f <- answer_file(dir, "dup.csv", c(item_names, "q_age", "q_age"),
+                   list(c("4", "1", "34", "35")))
+
+  cnd <- rlang::catch_cnd(read_form_responses(f), "error")
+  msg <- conditionMessage(cnd)
+  expect_match(msg, "dup.csv", fixed = TRUE)
+  expect_match(msg, "q_age", fixed = TRUE)
+  expect_match(msg, "more than once", fixed = TRUE)
+})

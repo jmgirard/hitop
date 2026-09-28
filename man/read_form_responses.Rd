@@ -20,7 +20,9 @@ eight columns are \code{study}, \code{participant} and \code{instrument} as char
 \code{prolific_study} and \code{prolific_session} as character, each \code{NA} on a row
 from a file without that column and on a blank cell. The item columns
 follow as integers, in the column order of the first file after sorting.
-An item the participant left blank is \code{NA}.
+An item the participant left blank is \code{NA}. The answer columns, when any
+file holds one, come last as character, in order of first appearance,
+each \code{NA} on a row from a file without it and on a blank cell.
 }
 \description{
 Reads the CSV files that the hitop-form web page saves, one file per
@@ -73,6 +75,21 @@ not read them, and they are not item columns, so neither enters the
 check that every file holds the same item columns. The cells are read as
 written, with no check on their content.
 
+A column whose name starts with \code{q_} is an answer column: it holds the
+answer to a question of the researcher's own, named \code{q_} and then the
+question's name (\code{q_age}). A file may hold answer columns
+anywhere after \code{submitted}, and the result places them after the item
+columns. They come in the order the reader first meets them, with the
+files in path order and each file read from left to right. Each is
+character, read as written with no conversion, and a blank cell is \code{NA}.
+Files that hold different answer columns read together, and a row from a
+file without a column holds \code{NA} in it. Answer columns are not item
+columns, so they do not enter the check that every file holds the same
+item columns. After \code{q_}, a name must hold a lower-case letter and then
+up to 29 lower-case letters, digits or underscores, the pattern
+\verb{^q_[a-z][a-z0-9_]\{0,29\}$}. A name that starts with \code{q_} and does not
+match is an error naming the file and the column.
+
 Every file must carry the same item columns in the same order, because
 a set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
@@ -84,7 +101,8 @@ spaces and tabs, no header row (a zero-byte file, blank
 lines only, a UTF-8 byte-order mark only), first columns other than the five
 the page writes first, a column that appears twice, a header with no
 response row, a response row holding fewer or more fields than the
-header, an item column whose name is not a stem of lower-case letters
+header, an answer column whose name does not match the pattern above, an
+item column whose name is not a stem of lower-case letters
 and digits, an underscore and the item number (\code{hitopbr_01}, not \code{foo}
 or \code{Hitopbr_01}), item columns of more than one stem (\code{hitopbr_01}
 beside \code{pid5bf_01}), an \code{instrument} cell that differs from the item
