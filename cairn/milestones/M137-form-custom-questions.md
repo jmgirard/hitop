@@ -76,6 +76,8 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: T11 done in hitop-form 43a5bbc. `encodeLink()` names consent text and questions together (B1). If a bound fails `Number.isSafeInteger`, the editor passes it on as typed, so the refusal quotes the digits (O4). Before the fix, the both-parts probe and the two long-bound probes failed with the reviewed messages. The consent-only message gains its first test. Full hitop-form suite: 584 passed. A first run had 2 flaky tests in files this branch leaves untouched (guard, recruit), and both passed on retry.
 - claim audit: 29 claims read, 2 corrected — hitop-form tests/questions.spec.js (return round, hitop-form a05f17a..43a5bbc)
 - 2026-09-28: claim audit fix in hitop-form ea117c3. The accepted probe's text now holds a no-break space, as its name says. The same reader re-read both claims: correct. `cairn_validate` exits 0. hitop files outside `cairn/` are unchanged since the clean `check()` of T8. Status set to review.
+- 2026-09-28: review pass 2 gate. Jeff accepted the proposed dispositions: R2-1, R2-2, R2-3 and R2-7 fix now, R2-6 follow-up, R2-4 and R2-5 rejected. No status change, because no criterion fails.
+- 2026-09-28: pass-2 fix-now work in hitop-form b23be7a. `encodeLink()` refuses a setup over 100,000 bytes and names its size (R2-1). The editor's min and max boxes lose `inputmode` (R2-2). An out-of-range bound is quoted as typed (R2-3). The README adds the size limit and "spaces at their ends" (R2-7). The three new tests and the changed probe failed before the fix with the reviewed behavior. Full hitop-form suite: 587 passed. R2-6 added to the question-screen candidate row.
 
 ## Decisions
 
@@ -133,3 +135,5 @@ Independent review (pass 2), three fresh-context lenses. [S] blame-history: no f
 - R2-5: a line break pasted into the editor's one-line question text is removed without notice. Proposed: reject, because a one-line input strips it in the browser (LESSONS, M128) and AC1 holds.
 - R2-8: AC1 and AC7 were unticked. Noted: this pass records AC1, and AC7 waits for step 8.
 - Seen again, triaged at pass 1: O2, O3, O9, O10 (follow-up row) and O5 (rejected).
+
+Jeff accepted each disposition as proposed at the gate on 2026-09-28. The four fix-now items landed in hitop-form b23be7a. Its full suite passed 587 tests, and each new test failed before the fix. R2-6 is in the question-screen candidate row.
