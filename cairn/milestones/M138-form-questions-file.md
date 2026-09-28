@@ -1,6 +1,6 @@
 # M138: The hitop-form link builder reads the researcher's questions from a spreadsheet file and writes them back as one
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M137
 - **Driving RR:** —
@@ -41,7 +41,7 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 - [x] T2: In link.html, add the file control, which reads the file with `File.arrayBuffer()`. Fill the editor on success, and show the refusal otherwise. Write the load, refusal and network tests.
 - [x] T3: Add the two download controls and the round-trip tests.
 - [x] T4: Write the README section "Write your questions in a spreadsheet", the article paragraph and the NEWS entry.
-- [ ] T5: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
+- [x] T5: Run the full hitop-form suite locally, hitop `check()` and `cairn_validate`. The hitop-form PR and its CI come at the merge step of /milestone-review.
 
 ## Work log
 
@@ -55,6 +55,7 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 - 2026-09-28: T4 done. The hitop-form README gains "Write your questions in a spreadsheet" and a test-table row for the new spec. The online-collection article gains a paragraph in "Your own questions", and NEWS gains an entry.
 - 2026-09-28: claim audit: 71 claims read, 8 corrected — hitop NEWS.md, vignettes/articles/online-collection.Rmd, hitop-form README.md, form.js, tests/link-questions-file.spec.js
 - 2026-09-28: the [O] reader's one re-read passed 6 of the 8 corrections. NEWS and the article still left out a cell past the last column, and the reader's own wording was applied to both. The full hitop-form suite passes locally (630 tests). cairn_validate exits 0.
+- 2026-09-28: T5 done. hitop `check()` gives 0 errors, 0 warnings and 0 notes on 37f2f6b6, and `document()` leaves no diff. Minor amendment: T5 now leaves the hitop-form PR and its CI to the merge step of review, because the git model opens a PR only after approval. Status set to review.
 
 ## Decisions
 
