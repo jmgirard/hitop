@@ -146,9 +146,12 @@ read_form_responses <- function(path) {
   parts <- lapply(files, read_form_response_file)
 
   # The item columns follow the eight lead columns of the typed part, so no
-  # optional lead column enters the comparison.
+  # optional lead column enters the comparison, and no answer column does.
   n_lead <- length(form_result_columns)
-  item_names <- lapply(parts, function(p) names(p)[-seq_len(n_lead)])
+  item_names <- lapply(parts, function(p) {
+    rest <- names(p)[-seq_len(n_lead)]
+    rest[!startsWith(rest, "q_")]
+  })
   reference <- item_names[[1L]]
   differs <- !vapply(item_names, identical, logical(1L), reference)
   if (any(differs)) {
@@ -177,6 +180,20 @@ read_form_responses <- function(path) {
       ),
       class = "hitop_form_responses_mismatch"
     )
+  }
+
+  # The answer columns of every file, in order of first appearance, the files
+  # in path order. Each part gains the ones it lacks as NA, so the parts bind.
+  answers <- unique(unlist(lapply(parts, function(p) {
+    names(p)[startsWith(names(p), "q_")]
+  })))
+  if (length(answers) > 0L) {
+    parts <- lapply(parts, function(p) {
+      for (col in setdiff(answers, names(p))) {
+        p[[col]] <- rep(NA_character_, nrow(p))
+      }
+      p[c(names(p)[!startsWith(names(p), "q_")], answers)]
+    })
   }
 
   out <- do.call(rbind, parts)
@@ -210,6 +227,12 @@ item_order_pattern <- "^[1-9][0-9]*( [1-9][0-9]*)*$"
 # The grammar of an item column's name: the instrument's file stem, an
 # underscore and the item number (`hitopbr_01`, `pid5_001`).
 item_column_pattern <- "^[a-z0-9]+_[0-9]+$"
+
+# The grammar of an answer column's name, one the researcher's own question
+# writes: `q_`, a lower-case letter and up to 29 lower-case letters, digits
+# or underscores (`q_age`). Every column after `submitted` whose name starts
+# with `q_` is an answer column and must match.
+answer_column_pattern <- "^q_[a-z][a-z0-9_]{0,29}$"
 
 # The bullets naming the cells of `values` (a named list of the item
 # columns' character cells) that fail `ok` (a list of logical vectors in the
@@ -544,7 +567,22 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   # Each item column as character with blanks as NA, then as integer. A file
   # the page saved holds one response row; a store's export holds one per
   # participant, so every check below runs down the column.
-  item_cols <- setdiff(names(raw)[-seq_len(5L)], form_optional_columns)
+  # The answer columns are read as written, so they are split off first and
+  # take no part in the item checks.
+  rest <- names(raw)[-seq_len(5L)]
+  answer_cols <- rest[startsWith(rest, "q_")]
+  fits_answer <- grepl(answer_column_pattern, answer_cols)
+  if (!all(fits_answer)) {
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds an answer column whose name does not fit the pattern.",
+        "x" = "Column{?s} {.field {answer_cols[!fits_answer]}}.",
+        "i" = "An answer column is named {.code q_}, a lower-case letter and up to 29 lower-case letters, digits or underscores, as {.code q_age}."
+      ),
+      call = call
+    )
+  }
+  item_cols <- setdiff(rest, c(form_optional_columns, answer_cols))
 
   # An item column is named by the instrument's stem, an underscore and the
   # item number, and one file holds one instrument's columns, so the
@@ -695,6 +733,12 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   if (length(item_cols) > 0L) {
     items <- as.data.frame(ints, check.names = FALSE, stringsAsFactors = FALSE)
     out <- cbind(out, items)
+  }
+  # The answer columns as character, blanks as NA, after the item columns.
+  if (length(answer_cols) > 0L) {
+    answers <- as.data.frame(lapply(raw[answer_cols], blank_to_na),
+                             check.names = FALSE, stringsAsFactors = FALSE)
+    out <- cbind(out, answers)
   }
   out
 }

@@ -1,13 +1,13 @@
 # M136: read_form_responses() reads the researcher's own answer columns, named with a q_ prefix, and returns them after the item columns
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — an exported reader's column contract, its help page and the article
-- **Branch/PR:** —
+- **Branch/PR:** m136-form-reader-custom-columns
 
 ## Goal
 
@@ -37,7 +37,7 @@
 
 ## Tasks
 
-- [ ] T1: In `R/read_form_responses.R`, add the `q_` name pattern beside `item_order_pattern`. Split the columns after the lead columns into item columns and `q_` columns before the item-name check. Bind the `q_` columns across files by name, fill `NA`, and place them last. Add the two refusals of AC3.
+- [x] T1: In `R/read_form_responses.R`, add the `q_` name pattern beside `item_order_pattern`. Split the columns after the lead columns into item columns and `q_` columns before the item-name check. Bind the `q_` columns across files by name, fill `NA`, and place them last. Add the two refusals of AC3.
 - [ ] T2: Write the tests of AC1 to AC3 in `tests/testthat/test-read_form_responses.R`. Plant the pattern refusal and show it red before trusting its green. Write the comparison script of AC4 in the scratchpad, on the main-against-branch pattern of D-011, and record its result in the work log.
 - [ ] T3: Update the roxygen help and run `devtools::document()`. Write the article paragraph and the NEWS entry.
 - [ ] T4: Run `devtools::check()` and `cairn_validate`.
@@ -48,6 +48,8 @@
 - 2026-09-28: criteria audit ran in full mode (user-facing tier) on a fresh [O] reader. It returned 4 findings, all fixed before the commit: the mismatch rule restated for files with `q_` columns, probes between item columns and for reordered `q_` sets, the duplicate refusal that exists on main, and a main-against-branch script for AC4.
 - 2026-09-28: plan chose a `q_` prefix over bare question names, because a mistyped item column must still be refused and not read as an answer. Falsified by researchers who need their own column names in the file.
 - 2026-09-28: plan chose answer columns after the item columns over columns among the lead columns, because the item columns keep starting ninth. Falsified by a caller who selects answer columns by position.
+- 2026-09-28: implement started on branch m136-form-reader-custom-columns. Question gate skipped: the plan and D-079 leave no choice open.
+- 2026-09-28: T1 done. The reader splits `q_` columns off before the item checks and refuses a `q_` name outside `answer_column_pattern`. It binds answer columns by name after the item columns.
 
 ## Decisions
 
