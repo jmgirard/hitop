@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-27 (78th pass, M132 done): row archived, M129 pruned, no lesson (LESSONS at its byte budget). validate green._
+_Last hygiene check: 2026-09-28 (79th pass, M133 done): row archived, M130 pruned, one candidate row from its review, no lesson (LESSONS at its byte budget). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M133 | A study link takes the participant's identifier from a named address parameter and puts it into the completion address, for SONA and CloudResearch Connect | review | — | normal | milestones/M133-form-recruiter-param.md |
+| M133 | A study link takes the participant's identifier from a named address parameter and puts it into the completion address, for SONA and CloudResearch Connect | done | — | normal | milestones/archive/M133-form-recruiter-param.md |
 | M132 | Printed-layout names that match the module's order score without a warning, and a fractional `item_order` is refused | done | — | normal | milestones/archive/M132-printed-layout-loose-ends.md |
 | M131 | Scoring refusals show hidden characters, pass blank SPSS codes, and refuse old SPSS codes and invalid UTF-8 | done | — | normal | milestones/archive/M131-item-column-refusal-gaps.md |
-| M130 | `read_form_responses()` refuses a UTF-16 file after blank lines, names a UTF-32 file as UTF-32, and stops calling `a`,NUL,`b` UTF-16 | done | — | normal | milestones/archive/M130-reader-wide-encoding-edges.md |
 
 ## Candidates
 
