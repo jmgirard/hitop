@@ -78,6 +78,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: claim audit fix in hitop-form ea117c3. The accepted probe's text now holds a no-break space, as its name says. The same reader re-read both claims: correct. `cairn_validate` exits 0. hitop files outside `cairn/` are unchanged since the clean `check()` of T8. Status set to review.
 - 2026-09-28: review pass 2 gate. Jeff accepted the proposed dispositions: R2-1, R2-2, R2-3 and R2-7 fix now, R2-6 follow-up, R2-4 and R2-5 rejected. No status change, because no criterion fails.
 - 2026-09-28: pass-2 fix-now work in hitop-form b23be7a. `encodeLink()` refuses a setup over 100,000 bytes and names its size (R2-1). The editor's min and max boxes lose `inputmode` (R2-2). An out-of-range bound is quoted as typed (R2-3). The README adds the size limit and "spaces at their ends" (R2-7). The three new tests and the changed probe failed before the fix with the reviewed behavior. Full hitop-form suite: 587 passed. R2-6 added to the question-screen candidate row.
+- step-7 approval: m137-form-custom-questions approved for merge, with the companion /Users/jmgirard/github/hitop-form m137-form-custom-questions first (2026-09-28).
 
 ## Decisions
 
