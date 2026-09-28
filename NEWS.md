@@ -424,8 +424,10 @@
   link builder keeps each recruiting site's names to that site.** A link
   whose participant identifier holds half of a two-part character (a lone
   UTF-16 surrogate) is refused before the form starts. A typed identifier
-  that holds one is asked for again on the start screen. Before, with a
-  completion URL in the link, the page sent or saved the answers and then
+  that holds one is asked for again on the start screen, and the link
+  builder refuses one in its participant field. The link refusal applies
+  with or without a completion URL. Before, such a link started the form,
+  and with a completion URL the page sent or saved the answers and then
   stopped before the closing screen. Under "Another site", the link builder
   refuses the address parameters `id` and `participantId`, and names SONA or
   CloudResearch Connect as the choice to use. Before, a link made that way

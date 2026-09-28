@@ -61,6 +61,8 @@ Under "Another site" the builder refuses `id` and `participantId`, and the form 
 - 2026-09-28: T5 done. hitop-form README: the "Another site" paragraph, an identifier paragraph under "What the participant sees", and the link, guard and recruit rows of the test table. `tests/fixtures/README.md:13` names Prolific as the recruiting site, and `git grep -n "Recruit through Prolific"` in hitop-form returns no line. hitop: one NEWS entry under "Improvements and fixes", and one sentence in the online-collection article's "Another site" paragraph (added beyond the task, so the article states the refusal too).
 - 2026-09-28: claim audit: 60 claims read, 5 corrected — hitop-form README.md, form.js, tests/recruit.spec.js. Corrected: the Another-site sentence's cause, the U+FFFD count ("one or more"), two unsupported "paste" claims, and the P13 header and README row (two uppercase hosts, saved screen after a walk with no store). Re-read once by the same reader: all right.
 - 2026-09-28: T6 done. hitop-form full Playwright suite 364 passed (after T5). hitop `devtools::test()` no failures, 15 skips, all merge-base skips. `cairn_validate` all checks passed, 24 advisory warnings as on main. Status set to review.
+- 2026-09-28: review: AC1-AC6 verified, consistency gate green, eight findings. Gate fixes F1, F3, F4 and F6 landed (hitop-form 3cd5687, hitop NEWS), and the full hitop-form suite gave 369 passed.
+- 2026-09-28: step-7 approval: m134-form-link-loose-ends approved for merge, with the hitop-form companion first, after the accepted fixes.
 
 ## Decisions
 
@@ -79,7 +81,7 @@ Consistency gate 2026-09-28: `cairn_validate` all checks passed, with 24 advisor
 
 Independent review: three fresh reviewers, an [O] diff reviewer, an [S] history reviewer and an [S] prior-review reviewer. The prior-review reviewer found no regression of an archived finding or a lesson, and both GitHub comment probes were empty. The findings, most severe first, with the dispositions proposed at the gate:
 
-- F1 (diff): the builder does not check its own participant field. A hand-made `c` whose `participant` holds a lone surrogate prefills the field. `utf8ToBase64url()` uses `TextEncoder`, which writes U+FFFD, so "Make the link" prints a link the form page accepts. This is the silent replacement the plan gate rejected. Verified at form.js:51. Proposed: fix now.
+- F1 (diff): the builder does not check its own participant field. A hand-made `c` whose `participant` holds a lone surrogate prefills the field. "Make the link" then prints a link with U+FFFD that the form page accepts. This is the silent replacement the plan gate rejected. The reviewer named `TextEncoder` in `utf8ToBase64url()` as the cause. The fix showed the replacement happens earlier, in `FormData`. Proposed: fix now.
 - F2 (diff): the builder refusal matches exact names, so `ID` or `participantid` under "Another site" is accepted. Proposed: reject, because another site can use such a name and the round trip stays consistent.
 - F3 (diff): NEWS describes the old failure only with a completion URL. A link with a broken identifier and no completion URL used to save a file and is now refused. Proposed: fix now, one NEWS sentence.
 - F4 (diff and history): link.html:400 reads and trims `participantParam` for SONA and Connect too. If a later edit disables the field, that read throws. Proposed: fix now, reading it only under "Another site".
@@ -87,3 +89,10 @@ Independent review: three fresh reviewers, an [O] diff reviewer, an [S] history 
 - F6 (diff): P16 does not assert the page's address after `release()`, where P8 and P13 do. Proposed: fix now, one line.
 - F7 (diff): P13 checks the saved screen only after a walk with no store, not after an unconfirmed send. Proposed: reject, because both paths call `showSaved()` and AC3 is met.
 - F8 (history): the builder refusal has no D-entry. Proposed: reject, because the plan gate's work-log line records the choice and Scope records the D-072(c) reading.
+
+Gate triage 2026-09-28 (Jeff): the dispositions above, as proposed. F2, F5, F7 and F8 are rejected for the reasons given.
+- F1 fixed: link.html reads the participant from the input element, refuses an identifier `isWritableIdentifier()` refuses, and prints no link. New L33: three refusals (lone high, lone low, low before high), each read back in the field first, and a U+1F600 control that round-trips. The three refusals were red while the check read `FormData`. The README states the builder refusal.
+- F3 fixed: the NEWS entry says the link refusal applies with or without a completion URL, and names the builder refusal. A new G17 case opens a broken identifier with no `complete` and asserts the refusal.
+- F4 fixed: link.html reads `participantParam` only under "Another site".
+- F6 fixed: P16 asserts `toHaveURL` of the filled address after the release.
+- After the fixes, the hitop-form full suite gave 369 passed (364 plus five new tests).
