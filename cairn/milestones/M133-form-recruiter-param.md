@@ -82,6 +82,8 @@ A study link's `participantParam` field names the address parameter holding the 
 - 2026-09-27: T8 in part. hitop-form 2ac0078 makes every T8 code and test change: G16 (10), L30 (8), L31, and P11 on a SONA-shaped address. Suite 333 passed. Three plants turned their tests red: no spelling refusal (18 tests), no `aria-describedby` (L31), and the old Prolific advice (L26). hitop: the article's typed-code sentence, and the Connect note's placeholder clause corrected. The claim audit and `check()` are still to run.
 - claim audit: 280 claims read, 4 corrected — hitop-form README.md, tests/guard.spec.js (and read: form.js, link.html, tests/link.spec.js, tests/recruit.spec.js, hitop NEWS.md, R/read_form_responses.R, vignettes/articles/online-collection.Rmd). Corrected in hitop-form 6db9570: the README test-table rows for G16, L30 and L31, the README's spelling-refusal sentence narrowed to letter case and `%7B`/`%7D`, the G16 header, and the G15 test name. Not changed: the Connect hint and NEWS wording, which describe what the page does.
 - 2026-09-27: T8 done, implement complete, status set to review. hitop-form suite 333 passed locally. hitop `devtools::check()` 0 errors, 0 warnings, 0 notes.
+- 2026-09-27: review pass 2 found no criterion failing. Gate fixes landed before the chip (hitop-form 54c6375, hitop 7842c2cb).
+- step-7 approval: m133-form-recruiter-param approved for merge, with the companion /Users/jmgirard/github/hitop-form m133-form-recruiter-param merged first
 
 ## Decisions
 
