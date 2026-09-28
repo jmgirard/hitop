@@ -470,41 +470,147 @@ test_that("layout = 'printed' runs warn_item_order() on the supplied items, not 
   }
 })
 
-# --- the warning's remedy under layout = "printed" ---------------------------
+# --- names in the module's printed order, and the warning's remedy -----------
 #
-# Regression: the misordered-names warning used to tell every caller to sort
-# the names. Under layout = "printed" that advice undoes the printed order and
-# silently scores the wrong items (the hitop-form fixture scored 2.6 and
-# 2.5625 against the correct 3 and 2.4375). Under that layout the remedy is
-# positions, never a sort.
+# Under layout = "printed" the caller's names follow the form's printed order.
+# Names whose trailing numbers equal the module's `item_order` are in that
+# order, so they pass with no warning. Other non-ascending names still warn,
+# and the remedy never says sort: sorting undoes the printed order and scores
+# the wrong items (the hitop-form fixture scored 2.6 and 2.5625 against the
+# correct 3 and 2.4375).
 
-test_that("under layout = 'printed' the misordered-names warning says positions, not sort", {
+# Every warning `expr` raises, muffled, as a list of conditions.
+collect_warnings <- function(expr) {
+  warnings <- list()
+  withCallingHandlers(
+    expr,
+    warning = function(w) {
+      warnings[[length(warnings) + 1L]] <<- w
+      invokeRestart("muffleWarning")
+    }
+  )
+  warnings
+}
+
+shuffled_fixture <- function() {
   data <- read_form_responses(example_file("responses-module-shuffled.csv"))
-  m <- read_module(example_file("module-shuffled.json"))
-  item_cols <- names(data)[-seq_len(8L)]
-
-  cnd <- rlang::catch_cnd(
-    score_hitopsr(data, items = item_cols, module = m, layout = "printed",
-                  append = FALSE),
-    "warning"
+  list(
+    data = data,
+    module = read_module(example_file("module-shuffled.json")),
+    item_cols = names(data)[-seq_len(8L)]
   )
-  expect_s3_class(cnd, "warning")
-  msg <- conditionMessage(cnd)
-  expect_match(msg, "ascending", fixed = TRUE)
-  expect_match(msg, "position", fixed = TRUE)
-  expect_match(msg, "printed", fixed = TRUE)
-  expect_false(grepl("Sort them", msg, fixed = TRUE))
+}
 
-  # The instrument-layout wording is unchanged: sorting is still the remedy.
-  inst <- rlang::catch_cnd(
-    score_hitopsr(data, items = item_cols, module = m, append = FALSE),
-    "warning"
+test_that("under layout = 'printed' names in the module's printed order raise no warning", {
+  fx <- shuffled_fixture()
+  m <- fx$module
+  # The fixture's zero-padded names carry the printed order: their numbers are
+  # the module's item_order, and they are not ascending.
+  numbers <- as.integer(sub("\\D+", "", fx$item_cols))
+  expect_identical(numbers, attr(m, "item_order"))
+  expect_true(is.unsorted(numbers))
+
+  scored <- NULL
+  expect_length(collect_warnings(
+    scored <- score_hitopsr(fx$data, items = fx$item_cols, module = m,
+                            layout = "printed", append = FALSE)
+  ), 0L)
+  expect_length(collect_warnings(
+    reliability_hitopsr(fx$data, items = fx$item_cols, module = m,
+                        layout = "printed", omega = FALSE)
+  ), 0L)
+  expect_identical(
+    scored,
+    score_hitopsr(fx$data, items = match(fx$item_cols, names(fx$data)),
+                  module = m, layout = "printed", append = FALSE)
   )
-  expect_match(conditionMessage(inst), "Sort them", fixed = TRUE)
-
-  # Following the printed-layout remedy gives the correct scores.
-  scored <- score_hitopsr(data, items = match(item_cols, names(data)),
-                          module = m, layout = "printed", append = FALSE)
+  # Hand-worked from the fixture's answers.
   expect_equal(scored$hsr_agoraphobia, 3)
   expect_equal(scored$hsr_distressDysphoria, 2.4375)
 })
+
+test_that("under layout = 'printed' unpadded names in the module's printed order raise no warning", {
+  m <- four_scale()
+  inst <- sim_inst(m)
+  printed <- printed_frame(inst, m)
+  names(printed) <- paste0("q_", attr(m, "item_order"))
+  expect_true(is.unsorted(attr(m, "item_order")))
+  ref <- score_hitopsr(inst, items = names(inst), module = m, append = FALSE)
+
+  out <- NULL
+  expect_length(collect_warnings(
+    out <- score_hitopsr(printed, items = names(printed), module = m,
+                         layout = "printed", append = FALSE)
+  ), 0L)
+  expect_equal(out, ref)
+  expect_length(collect_warnings(
+    reliability_hitopsr(printed, items = names(printed), module = m,
+                        layout = "printed", omega = FALSE)
+  ), 0L)
+})
+
+test_that("under layout = 'printed' other non-ascending names warn once, naming positions and not sort", {
+  fx <- shuffled_fixture()
+  m <- fx$module
+  order <- attr(m, "item_order")
+  n <- length(order)
+  set.seed(4)
+  permuted <- sample(fx$item_cols)
+  swapped <- fx$item_cols
+  swapped[c(1L, 2L)] <- swapped[c(2L, 1L)]
+  probes <- list(
+    permuted = permuted,
+    adjacent_swap = swapped,
+    reversed = paste0("q_", rev(seq_len(n)))
+  )
+  for (label in names(probes)) {
+    numbers <- as.integer(sub("\\D+", "", probes[[label]]))
+    # Each probe neither ascends nor equals the module's printed order.
+    expect_true(is.unsorted(numbers), info = label)
+    expect_false(identical(numbers, order), info = label)
+
+    data <- fx$data
+    names(data)[-seq_len(8L)] <- probes[[label]]
+    for (fn in c("score_hitopsr", "reliability_hitopsr")) {
+      args <- list(data, items = probes[[label]], module = m,
+                   layout = "printed")
+      args <- c(args, if (fn == "score_hitopsr") list(append = FALSE)
+                      else list(omega = FALSE))
+      w <- collect_warnings(do.call(fn, args))
+      expect_length(w, 1L)
+      msg <- conditionMessage(w[[1L]])
+      expect_match(msg, "ascending", fixed = TRUE, info = paste(label, fn))
+      expect_match(msg, "position", fixed = TRUE, info = paste(label, fn))
+      expect_match(msg, "item_order", fixed = TRUE, info = paste(label, fn))
+      expect_match(msg, "pass with no warning", fixed = TRUE,
+                   info = paste(label, fn))
+      expect_false(grepl("Sort them", msg, fixed = TRUE))
+    }
+  }
+
+  # Ascending names hold printed positions and raise no warning.
+  data <- fx$data
+  names(data)[-seq_len(8L)] <- paste0("q_", seq_len(n))
+  expect_length(collect_warnings(
+    score_hitopsr(data, items = paste0("q_", seq_len(n)), module = m,
+                  layout = "printed", append = FALSE)
+  ), 0L)
+  expect_length(collect_warnings(
+    reliability_hitopsr(data, items = paste0("q_", seq_len(n)), module = m,
+                        layout = "printed", omega = FALSE)
+  ), 0L)
+})
+
+test_that("under the default layout the fixture's names still warn with the sort remedy", {
+  fx <- shuffled_fixture()
+  for (fn in c("score_hitopsr", "reliability_hitopsr")) {
+    args <- list(fx$data, items = fx$item_cols, module = fx$module)
+    args <- c(args, if (fn == "score_hitopsr") list(append = FALSE)
+                    else list(omega = FALSE))
+    w <- collect_warnings(do.call(fn, args))
+    expect_length(w, 1L)
+    expect_match(conditionMessage(w[[1L]]), "ascending", fixed = TRUE)
+    expect_match(conditionMessage(w[[1L]]), "Sort them", fixed = TRUE)
+  }
+})
+

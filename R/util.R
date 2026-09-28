@@ -139,8 +139,13 @@ validate_item_uniqueness <- function(
 # integers are not in ascending order. Integer positions are left alone (an
 # out-of-order position vector can be a legitimate remap); mixed prefixes and
 # names without trailing digits are ignored (no reliable order to expect).
+#
+# Under layout = "printed" the caller's names follow the form's printed order,
+# so names carrying instrument item numbers are correct exactly when those
+# numbers equal the module's `item_order`, element by element. Such names pass
+# silently; `item_order` is read only under that layout.
 warn_item_order <- function(x, call = rlang::caller_env(),
-                            layout = "instrument") {
+                            layout = "instrument", item_order = NULL) {
   if (!is.character(x)) {
     return(invisible(NULL))
   }
@@ -152,13 +157,17 @@ warn_item_order <- function(x, call = rlang::caller_env(),
   if (length(unique(prefixes)) != 1L) {
     return(invisible(NULL))
   }
-  if (is.unsorted(as.integer(trailing))) {
-    # Under layout = "printed" the caller's names are read as supplied, so
-    # instrument-number names in the form's printed order fire this too.
-    # Sorting them there undoes the printed order and scores the wrong
-    # items; the remedy is positions.
-    remedy <- if (identical(layout, "printed")) {
-      "Under {.code layout = \"printed\"} the columns must follow the form's printed order, which instrument-number names in that order already do. Do not sort them. Supply positions instead (e.g. {.code match(items, names(data))}) to silence this warning, or use {.code layout = \"instrument\"} for columns already in instrument order."
+  numbers <- as.integer(trailing)
+  printed <- identical(layout, "printed")
+  if (printed && !is.null(item_order) &&
+      identical(numbers, as.integer(item_order))) {
+    return(invisible(NULL))
+  }
+  if (is.unsorted(numbers)) {
+    # Under layout = "printed", sorting the names undoes the printed order
+    # and scores the wrong items, so the remedy never says sort.
+    remedy <- if (printed) {
+      "Under {.code layout = \"printed\"} the columns must follow the form's printed order. Names holding instrument item numbers are in that order when the numbers equal the module's {.field item_order}, and such names pass with no warning. Names holding printed positions are in that order when ascending. Otherwise supply positions in printed order (e.g. {.code match(items, names(data))}), or use {.code layout = \"instrument\"} for columns already in instrument order."
     } else {
       "Items must be supplied in instrument order; a misordered mapping scores the wrong items. Sort them (e.g. {.code items[order(as.integer(sub(\"\\\\D+\", \"\", items)))]}) if this is unintended."
     }
