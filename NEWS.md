@@ -420,6 +420,20 @@
 
 ## Improvements and fixes
 
+* **hitop-form refuses a participant identifier it cannot write, and the
+  link builder keeps each recruiting site's names to that site.** A link
+  whose participant identifier holds half of a two-part character (a lone
+  UTF-16 surrogate) is refused before the form starts. A typed identifier
+  that holds one is asked for again on the start screen, and the link
+  builder refuses one in its participant field. The link refusal applies
+  with or without a completion URL. Before, such a link started the form,
+  and with a completion URL the page sent or saved the answers and then
+  stopped before the closing screen. Under "Another site", the link builder
+  refuses the address parameters `id` and `participantId`, and names SONA or
+  CloudResearch Connect as the choice to use. Before, a link made that way
+  opened in the builder as SONA or Connect, and a SONA rebuild added
+  `&id=%SURVEY_CODE%`.
+
 * **A module's `item_order` must hold whole numbers.** `score_hitopsr()` and
   `reliability_hitopsr()` under `layout = "printed"`, and `write_module()`,
   now refuse a module whose `item_order` holds a fraction such as `66.5`.
