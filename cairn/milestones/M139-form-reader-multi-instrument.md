@@ -1,13 +1,13 @@
 # M139: read_form_responses() reads a file whose item columns span two or more instruments
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M136
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — an exported reader's column contract, its help page and the articles
-- **Branch/PR:** —
+- **Branch/PR:** m139-form-reader-multi-instrument
 
 ## Goal
 
@@ -39,7 +39,7 @@
 
 ## Tasks
 
-- [ ] T1: At the pre-implementation gate, settle the `form_build` type of AC2 and the ` | ` separator of AC3 with Jeff, and record D-080 on the file shape. It annotates D-064, D-070(c) and D-079(c). Under the alternative, the item columns start tenth, which D-071 names as a breaking move, and the gate says so. If Jeff chooses the alternative, amend AC2 and AC5 here and AC3 and AC4 of M140 through the gate.
+- [x] T1: At the pre-implementation gate, settle the `form_build` type of AC2 and the ` | ` separator of AC3 with Jeff, and record D-080 on the file shape. It annotates D-064, D-070(c) and D-079(c). Under the alternative, the item columns start tenth, which D-071 names as a breaking move, and the gate says so. If Jeff chooses the alternative, amend AC2 and AC5 here and AC3 and AC4 of M140 through the gate.
 - [ ] T2: In `R/read_form_responses.R`, replace the one-stem rule with the grouping of AC1. Add the `instrument`, `form_build` and `item_order` rules of AC2 and AC3, and the refusals of AC4.
 - [ ] T3: Write the tests of AC1 to AC4 with fixtures written by rule in `tests/testthat/fixtures/`. Plant each refusal and show it red before trusting its green. Write the comparison script of AC5 and record its result in the work log.
 - [ ] T4: Update the roxygen help and run `devtools::document()`. Update the two articles and write the NEWS entry.
@@ -50,6 +50,7 @@
 - 2026-09-28: created by /milestone-plan. Jeff asked at the plan gate to plan several instruments in one link now.
 - 2026-09-28: criteria audit ran in full mode (user-facing tier) on a fresh [O] reader. It returned 7 findings, all fixed before the commit: the AC5 exceptions, contiguity beside `q_` columns, date parsing, the `item_order` probes, the articles that state the type, the planting step moved to T3, and the Out wording.
 - 2026-09-28: plan proposes a character `form_build` over a `Date` column plus a new lead column, because one column keeps the item columns starting ninth. The choice stays open for the pre-implementation gate (T1). Falsified by callers who compare `form_build` as a date.
+- 2026-09-28: implement started on branch m139-form-reader-multi-instrument. At the gate Jeff chose a character `form_build` for every file, with no deprecation step because the reader is not in 0.2.0, and ` | ` between `item_order` groups. T1 done: D-080 recorded. AC2, AC5 and M140 stand unamended.
 
 ## Decisions
 
