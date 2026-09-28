@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-27 (77th pass, M131 done): row archived, M128 pruned, no lesson (LESSONS at its byte budget). validate green._
+_Last hygiene check: 2026-09-27 (78th pass, M132 done): row archived, M129 pruned, no lesson (LESSONS at its byte budget). validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M132 | Printed-layout names that match the module's order score without a warning, and a fractional `item_order` is refused | review | — | normal | milestones/M132-printed-layout-loose-ends.md |
+| M132 | Printed-layout names that match the module's order score without a warning, and a fractional `item_order` is refused | done | — | normal | milestones/archive/M132-printed-layout-loose-ends.md |
 | M131 | Scoring refusals show hidden characters, pass blank SPSS codes, and refuse old SPSS codes and invalid UTF-8 | done | — | normal | milestones/archive/M131-item-column-refusal-gaps.md |
 | M130 | `read_form_responses()` refuses a UTF-16 file after blank lines, names a UTF-32 file as UTF-32, and stops calling `a`,NUL,`b` UTF-16 | done | — | normal | milestones/archive/M130-reader-wide-encoding-edges.md |
-| M129 | `read_form_responses()` caps its line and row refusals at five, refuses a UTF-16 file once, and keeps the mismatch class when a path holds a brace | done | — | normal | milestones/archive/M129-reader-refusal-loose-ends.md |
 
 ## Candidates
 
