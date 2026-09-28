@@ -43,7 +43,7 @@ Under "Another site" the builder refuses `id` and `participantId`, and the form 
 - [x] T2: In L27 (`tests/link.spec.js:959`), assert the printed link's text after the `c` value for each choice (AC2).
 - [x] T3: Extend P13 (`tests/recruit.spec.js:310`) to a confirmed send, for the navigation and the sent screen's link, and to a `completeSaved` without the token. Use `https://Example.org/done?x=1` as one address (AC3).
 - [x] T4: Add one check in form.js (`isWritableIdentifier()`, which tries `encodeURIComponent()`) that `parseLink()` (form.js:104-110) and the start screen (form.js:858) both call. Add the AC4 tests in `tests/guard.spec.js` and the AC5 tests in `tests/recruit.spec.js`. Set the start-screen field through `page.evaluate`, because Playwright's `fill()` replaces a surrogate with U+FFFD. Read `.value` back before Begin (LESSONS, M128). `readProlific()` uses the same URLSearchParams reading as `readParticipantParam()`, so the `participantParam` address case stands for both.
-- [ ] T5: The hitop-form README: the builder section, the SONA and Connect section and the test table. `tests/fixtures/README.md:13`: name Prolific as the recruiting site. hitop NEWS.md: one entry (AC6).
+- [x] T5: The hitop-form README: the builder section, the SONA and Connect section and the test table. `tests/fixtures/README.md:13`: name Prolific as the recruiting site. hitop NEWS.md: one entry (AC6).
 - [ ] T6: Run the full hitop-form Playwright suite and `cairn_validate` in hitop. Before a plant is restored with `git checkout`, `git add` the fix (LESSONS, M118).
 
 ## Work log
@@ -58,6 +58,7 @@ Under "Another site" the builder refuses `id` and `participantId`, and the form 
 - 2026-09-28: T4 done (hitop-form). `isWritableIdentifier()` tries `encodeURIComponent()`, and `parseLink()` and the start screen call it. Minor task edit: this replaces `isWellFormed`, so a browser without that method does not break, and the check refuses exactly what the fill throws on. New G17 (10 refusals, 1 control), P15 (3) and P16 (1). The 13 refusal tests were red before the fix, and the control and P16 passed. A count-only plant (as many high as low) turned exactly the 2 low-before-high cases red.
 - 2026-09-28: re-audit: AC4 (full) — nothing. The reader noted T4's "before Start", fixed as a minor task edit.
 - 2026-09-28: amendment (mini gate, Jeff): AC4's "Start button" became "Begin button" in both places, because the page's button is labelled Begin and no Start button exists.
+- 2026-09-28: T5 done. hitop-form README: the "Another site" paragraph, an identifier paragraph under "What the participant sees", and the link, guard and recruit rows of the test table. `tests/fixtures/README.md:13` names Prolific as the recruiting site, and `git grep -n "Recruit through Prolific"` in hitop-form returns no line. hitop: one NEWS entry under "Improvements and fixes", and one sentence in the online-collection article's "Another site" paragraph (added beyond the task, so the article states the refusal too).
 
 ## Decisions
 
