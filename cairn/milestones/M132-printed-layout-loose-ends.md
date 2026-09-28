@@ -72,6 +72,8 @@ Close the M091 review's printed-layout loose ends, first the warning that fires 
 - 2026-09-27: T3 done. One test in `test-layout.R` scores and runs reliability through `subset` under the printed layout, asserting one `hitop_deprecated_subset` warning and results identical to the `module` call.
 - 2026-09-27: T4 done. The `items` help of both functions and the article's hitop-form section now say printed-order names pass, and the article scores the fixture by name. `document()` rewrote the two Rd files. The purled article sources with 0 errors and 0 warnings.
 - 2026-09-27: T5 done. `git rm` removed `characterize.R` and `compare.R`. No file outside `cairn/` names the directory.
+- 2026-09-27: claim audit: 20 claims read, 3 corrected — NEWS.md
+- 2026-09-27: The three corrections: the `item_order` entry's "before" sentence now says a fraction was used only when the truncated order was still a permutation, and that `Inf` used to raise two base R warnings, not one. The remedy entry now names the one-prefix, trailing-number condition. The [O] reader cleared all of them on its one re-read. DESIGN's scoring paragraph gained a clause on the `item_order` pass and the shared permutation test.
 
 ## Decisions
 

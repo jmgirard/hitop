@@ -406,9 +406,10 @@
 * **A module's `item_order` must hold whole numbers.** `score_hitopsr()` and
   `reliability_hitopsr()` under `layout = "printed"`, and `write_module()`,
   now refuse a module whose `item_order` holds a fraction such as `66.5`.
-  Before, they cut the fraction off and used the whole number. They refuse
-  an `item_order` that holds `Inf` or `-Inf` with no base R coercion
-  warning before the error. An `item_order` of whole numbers stored as
+  Before, if cutting the fraction off still gave a permutation, they used
+  the whole number. They refuse an `item_order` that holds `Inf` or
+  `-Inf` with no base R warning. Before, two base R warnings, on integer
+  coercion and on recycling, came before the error. An `item_order` of whole numbers stored as
   doubles, such as `c(66, 109)`, is accepted as before.
 
 * **`read_form_responses()` caps four of its line and row errors at five,
@@ -501,8 +502,8 @@
   and no CR byte.
 
 * **The misordered-items warning gives the right remedy under `layout = "printed"`.**
-  If the `items` names are not ascending, `score_hitopsr()` and
-  `reliability_hitopsr()` warn. Under `layout = "printed"`, the warning no longer tells
+  If `items` names that share a prefix and end in numbers are not
+  ascending, `score_hitopsr()` and `reliability_hitopsr()` warn. Under `layout = "printed"`, the warning no longer tells
   you to sort them. Sorting undid the printed order and silently scored the
   wrong items. Under the default layout the wording is unchanged.
 
