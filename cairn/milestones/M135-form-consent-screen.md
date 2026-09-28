@@ -46,7 +46,7 @@ A study link's `consent` field holds the researcher's consent text. The page sho
 - [x] T3: In link.html, add a "Consent text" and a "Declined text" `<textarea>` and a decline address field. A one-line input strips line breaks (the M128 lesson). Add the submit checks, the `z` output, the link length as shown today, and `prefill()` from `?z=`. Write the builder tests.
 - [x] T4: Write the row, file and SQL comparisons with and without `consent`, with shuffle off and on.
 - [x] T5: Write the README section "Show consent text before the form", the consent section of the article, and the NEWS entry.
-- [ ] T6: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
+- [x] T6: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
 
 ## Work log
 
