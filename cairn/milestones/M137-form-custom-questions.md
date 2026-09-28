@@ -7,7 +7,7 @@
 - **Principles touched:** IP1, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page, its link builder, its stores and the package's article
-- **Branch/PR:** m137-form-custom-questions, companion: /Users/jmgirard/github/hitop-form m137-form-custom-questions
+- **Branch/PR:** m137-form-custom-questions, companion: /Users/jmgirard/github/hitop-form m137-form-custom-questions https://github.com/jmgirard/hitop-form/pull/16
 
 ## Goal
 
@@ -27,7 +27,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - [x] AC4: For a link with `questions`, the Supabase SQL from the builder adds one `text` column per question. These columns follow the item columns in the order of AC3. The webhook send and the Supabase send carry every `q_` key, with an unanswered question sent as `""`. Tests compare the SQL with a committed fixture byte for byte and read the `q_` keys from the recording server.
 - [x] AC5: The link.html editor adds and removes questions. For each question, it sets the list (before or after), the name, the text and the type. It also sets the options (one per line in a `<textarea>`), `required`, `min` and `max`. The builder writes a link with `questions` as `?z=`. This extends the `z` clause of M135 AC4 to a link with questions and no consent. A link loaded through `?z=` fills the editor with the same questions. Tests build a link with one question of each type, open it, and reload it through the prefill.
 - [x] AC6: One file that the page saved under a link with one question of each type is committed in hitop as a test fixture. `read_form_responses()` reads it. Each `q_` value equals the answer the walk entered, as AC3 writes it, and an unanswered question is `NA`.
-- [ ] AC7: The README section and the questions section of the article each state the four types and the value each type writes. They also state the position numbering of options and the 50-question limit. They state that a change to the order of options between links changes what the numbers mean. They state that a Supabase table made before the questions were added refuses the row, and that the page then saves the file. NEWS names the field. The hitop-form suite passes in its CI. In hitop, `devtools::check()` gives 0 errors, 0 warnings and 0 notes, and `cairn_validate` exits 0.
+- [x] AC7: The README section and the questions section of the article each state the four types and the value each type writes. They also state the position numbering of options and the 50-question limit. They state that a change to the order of options between links changes what the numbers mean. They state that a Supabase table made before the questions were added refuses the row, and that the page then saves the file. NEWS names the field. The hitop-form suite passes in its CI. In hitop, `devtools::check()` gives 0 errors, 0 warnings and 0 notes, and `cairn_validate` exits 0.
 
 ## Coverage
 
@@ -138,3 +138,5 @@ Independent review (pass 2), three fresh-context lenses. [S] blame-history: no f
 - Seen again, triaged at pass 1: O2, O3, O9, O10 (follow-up row) and O5 (rejected).
 
 Jeff accepted each disposition as proposed at the gate on 2026-09-28. The four fix-now items landed in hitop-form b23be7a. Its full suite passed 587 tests, and each new test failed before the fix. R2-6 is in the question-screen candidate row.
+
+- AC7 evidence (step 8): the hitop-form suite passed in CI on PR #16 at b23be7a ("tests", 6m13s). The PR merged on 2026-09-28. The README and article statements, `check()` and `cairn_validate` stand as recorded above.
