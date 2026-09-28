@@ -1,16 +1,15 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-28 (79th pass, M133 done): row archived, M130 pruned, one candidate row from its review, no lesson (LESSONS at its byte budget). validate green._
+_Last hygiene check: 2026-09-28 (80th pass, M134 done): row archived, M131 pruned, M128 lesson extended in place, no new candidate. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M134 | A link made under "Another site" reloads as that site, and the form page refuses a broken identifier before the form starts | review | — | normal | milestones/M134-form-link-loose-ends.md |
+| M134 | A link made under "Another site" reloads as that site, and the form page refuses a broken identifier before the form starts | done | — | normal | milestones/archive/M134-form-link-loose-ends.md |
 | M133 | A study link takes the participant's identifier from a named address parameter and puts it into the completion address, for SONA and CloudResearch Connect | done | — | normal | milestones/archive/M133-form-recruiter-param.md |
 | M132 | Printed-layout names that match the module's order score without a warning, and a fractional `item_order` is refused | done | — | normal | milestones/archive/M132-printed-layout-loose-ends.md |
-| M131 | Scoring refusals show hidden characters, pass blank SPSS codes, and refuse old SPSS codes and invalid UTF-8 | done | — | normal | milestones/archive/M131-item-column-refusal-gaps.md |
 
 ## Candidates
 
