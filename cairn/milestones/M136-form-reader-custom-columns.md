@@ -40,7 +40,7 @@
 - [x] T1: In `R/read_form_responses.R`, add the `q_` name pattern beside `item_order_pattern`. Split the columns after the lead columns into item columns and `q_` columns before the item-name check. Bind the `q_` columns across files by name, fill `NA`, and place them last. Add the two refusals of AC3.
 - [x] T2: Write the tests of AC1 to AC3 in `tests/testthat/test-read_form_responses.R`. Plant the pattern refusal and show it red before trusting its green. Write the comparison script of AC4 in the scratchpad, on the main-against-branch pattern of D-011, and record its result in the work log.
 - [x] T3: Update the roxygen help and run `devtools::document()`. Write the article paragraph and the NEWS entry.
-- [ ] T4: Run `devtools::check()` and `cairn_validate`.
+- [x] T4: Run `devtools::check()` and `cairn_validate`.
 
 ## Work log
 
@@ -52,6 +52,7 @@
 - 2026-09-28: T1 done. The reader splits `q_` columns off before the item checks and refuses a `q_` name outside `answer_column_pattern`. It binds answer columns by name after the item columns.
 - 2026-09-28: T2 done. 12 tests for AC1 to AC3 pass, and a planted `^q_` pattern turned the name-refusal test red. AC4 script: main's 213 reader tests made 249 calls, and all 249 match on main and the branch (60 results, 189 refusals). A planted blank-cell change gave 6 mismatches.
 - 2026-09-28: T3 done. Help page, article paragraph with an `as.integer()` chunk, and NEWS entry. The article rendered against the branch code prints `"34" NA` and then `34 NA`.
+- 2026-09-28: T4 done. `devtools::check()` gave 0 errors, 0 warnings and 0 notes. `cairn_validate` exits 0 with 24 advisory warnings.
 
 ## Decisions
 
