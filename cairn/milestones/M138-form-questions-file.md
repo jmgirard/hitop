@@ -89,3 +89,22 @@ Pass 2, 2026-09-28. Both branches still contain their `origin/main` (hitop 69b18
 - AC2: pass. The amended wording is checked against LF4, whose 37 probes each assert a full message and that the editor keeps its question. Each listed fault has a probe: not UTF-8 (with the "CSV UTF-8" request), empty, no question row, a missing, unknown and repeated column, and fewer and more fields. The quote probes are an unclosed quote, a quote inside an unquoted field and text after a closing quote. The value probes cover `list`, `required`, `min`, `max` and the M137 rules on name, text, type, options and bounds. The three whole-file messages name no row. Header faults name "row 1, field N" or "row 1: it has no column text". Other faults name "row R, column X", "column min has no field" or "row 2, field 9".
 - AC3: pass. LF6 asserts the byte-order mark, CR LF, the column order, one row per question and `yes`/`no`. It asserts the round trip through the editor and the link. Its questions cover each type, `required: true` and a `min` of -5. The text "Age, in "years" ñ" and the option label `Café, "au" lait` each hold a comma, a double quote and non-ASCII text. LF7 asserts the template's form and that it loads as four questions, one of each type.
 - AC4: pass again. LF5 is unchanged and passes on f9834e2.
+- AC5: open until the merge step. The README section, the article paragraph and NEWS are unchanged since pass 1 and state what pass 1 records. hitop `devtools::check()` on 845af3fc gives 0 errors, 0 warnings and 0 notes. The branch changes no file outside `cairn/` since 65dec017. `cairn_validate` exits 0. When its PR opens at the merge step, the hitop-form CI runs.
+- Gate: `devtools::document()` leaves no diff, and `pkgdown::check_pkgdown()` finds no problem. NEWS has an entry, and `cairn_validate` passes with no FAIL.
+- Reviewers: the history reviewer [S] reported no finding. The prior-review reviewer [S] reported P1. The diff reviewer [O] reported D1 to D15, ranked, and found no AC clearly failing. Its fuzz of 155,651 accepted question sets through write and read found 0 differences. Dispositions follow the gate.
+  - P1: "Download these questions" writes text raw through `csvField()`, so a question text that starts with `=` opens as a formula. This is the class of the question-screen candidate row and the M111 lesson.
+  - D1: Excel in a semicolon locale saves "CSV UTF-8" with `;`, and the refusal does not say why.
+  - D2: a blank row before the header is read as the header and refused. AC1 skips blank rows, but AC1 also says "The first row names the columns", and AC2 counts the header as row 1.
+  - D3: a UTF-16LE file with no byte-order mark decodes as UTF-8 with NUL characters, so its refusal has no "CSV UTF-8" hint.
+  - D4: a trailing blank header cell or blank cells past the last column refuse the whole file.
+  - D5: an Excel re-save can change a text such as `+1 if yes` or `1/2`, or the name `true`.
+  - D6: a choice question in a file with no `options` column is named "column options".
+  - D7: the fault reported is not always the first in the file, and a name used twice is named on its after-list row.
+  - D8: after a load, an earlier built link and error message stay on screen.
+  - D9: the README says the builder trims "spaces and line breaks", but `trim()` also removes tabs and other white space. It does not say that a closing quote ends the cell.
+  - D10: the hint, README and article do not say that `list` and `type` values are lower case, and the hint does not say column names are.
+  - D11: `#questionsErr` has an unused `tabindex`, and a screen reader does not always announce a second download refusal with the same text.
+  - D12: no size limit on the chosen file.
+  - D13: a CR-only file is one record, and its refusal does not name the line ends.
+  - D14: two quick loads can race, and the older file can win.
+  - D15: AC5 waits for the hitop-form CI.
