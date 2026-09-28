@@ -137,8 +137,8 @@ order, and each file's rows in its own order. Every file must hold the same
 item columns in the same order, so read each form's files in a call of their
 own.
 
-A file can also hold answer columns, one per question you add to the
-study, each named `q_` and then the question's name, such as `q_age`.
+A file can also hold answer columns, which hold the answers to questions of
+your own, each named `q_` and then the question's name, such as `q_age`.
 `read_form_responses()` accepts them anywhere after `submitted` and returns
 them after the item columns. They come in the order the reader first meets
 them, with the files in path order and each file read from left to right.

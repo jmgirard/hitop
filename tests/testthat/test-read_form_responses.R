@@ -2384,7 +2384,7 @@ test_that("a seven-fault file of alternating NUL and non-UTF-8 lines names the f
 # ---- Answer columns: the researcher's own questions, named q_ -------------
 #
 # A column after `submitted` whose name starts with `q_` holds the answer to
-# a question the researcher added to the study link. The result places the
+# a question of the researcher's own. The result places the
 # answer columns after the item columns, as character, in order of first
 # appearance with the files in path order and each file read left to right.
 

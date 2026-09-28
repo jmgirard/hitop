@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M136 | read_form_responses() reads the researcher's own answer columns, named with a q_ prefix, and returns them after the item columns | in-progress | — | normal | milestones/M136-form-reader-custom-columns.md |
+| M136 | read_form_responses() reads the researcher's own answer columns, named with a q_ prefix, and returns them after the item columns | review | — | normal | milestones/M136-form-reader-custom-columns.md |
 | M137 | A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns | planned | M135, M136 | normal | milestones/M137-form-custom-questions.md |
 | M138 | The hitop-form link builder reads the researcher's questions from a spreadsheet file and writes them back as one | planned | M137 | normal | milestones/M138-form-questions-file.md |
 | M139 | read_form_responses() reads a file whose item columns span two or more instruments | planned | M136 | normal | milestones/M139-form-reader-multi-instrument.md |

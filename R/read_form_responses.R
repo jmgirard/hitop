@@ -56,8 +56,8 @@
 #'   written, with no check on their content.
 #'
 #'   A column whose name starts with `q_` is an answer column: it holds the
-#'   answer to a question the researcher added to the study, named `q_` and
-#'   then the question's name (`q_age`). A file may hold answer columns
+#'   answer to a question of the researcher's own, named `q_` and then the
+#'   question's name (`q_age`). A file may hold answer columns
 #'   anywhere after `submitted`, and the result places them after the item
 #'   columns. They come in the order the reader first meets them, with the
 #'   files in path order and each file read from left to right. Each is

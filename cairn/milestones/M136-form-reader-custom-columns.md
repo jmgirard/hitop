@@ -1,6 +1,6 @@
 # M136: read_form_responses() reads the researcher's own answer columns, named with a q_ prefix, and returns them after the item columns
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -53,6 +53,8 @@
 - 2026-09-28: T2 done. 12 tests for AC1 to AC3 pass, and a planted `^q_` pattern turned the name-refusal test red. AC4 script: main's 213 reader tests made 249 calls, and all 249 match on main and the branch (60 results, 189 refusals). A planted blank-cell change gave 6 mismatches.
 - 2026-09-28: T3 done. Help page, article paragraph with an `as.integer()` chunk, and NEWS entry. The article rendered against the branch code prints `"34" NA` and then `34 NA`.
 - 2026-09-28: T4 done. `devtools::check()` gave 0 errors, 0 warnings and 0 notes. `cairn_validate` exits 0 with 24 advisory warnings.
+- 2026-09-28: claim audit: 23 claims read, 1 corrected — R/read_form_responses.R, man/read_form_responses.Rd, vignettes/articles/online-collection.Rmd, tests/testthat/test-read_form_responses.R. The corrected claim said a `q_` column answers a question added to the study link, which the page cannot do before M137. It now says a question of the researcher's own, and the reader's re-read found it holds.
+- 2026-09-28: all tasks done, and status set to review.
 
 ## Decisions
 
