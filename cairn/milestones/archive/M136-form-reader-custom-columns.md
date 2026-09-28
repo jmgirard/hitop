@@ -1,0 +1,11 @@
+# M136: read_form_responses() reads the researcher's own answer columns, named with a q_ prefix, and returns them after the item columns
+
+**Status:** done (2026-09-28, PR #147 https://github.com/jmgirard/hitop/pull/147, merged 2026-09-28T18:42:27Z)
+
+**Goal:** `read_form_responses()` accepts columns named `q_<name>` anywhere after `submitted`, returns them as text after the item columns, and leaves them out of the item-column comparison.
+
+**Outcome:** R/read_form_responses.R gains `answer_column_pattern` (`^q_[a-z][a-z0-9_]{0,29}$`). `read_form_response_file()` splits every `q_` column off after `submitted`, before the item checks. It refuses a name outside the pattern with an unclassed `cli_abort()` naming the file and the column. It then appends the answer columns after the items as character, with blanks as `NA`. `read_form_responses()` drops `q_` names from the item-column comparison, so `hitop_form_responses_mismatch` keeps its trigger. It binds answer columns by name in order of first appearance, with `NA` fill. A repeated `q_` name meets the existing repeated-column refusal. 12 new tests. Help page section, an online-collection article paragraph with an `as.integer()` chunk, and a NEWS entry. Every input main's 213 reader tests make (249 calls) reads the same on main and the branch.
+
+**Decisions:** none new. D-079 (c) governs the reader half.
+
+**Review:** one pass, three-lens fan-out, no criterion failing. The prior-review and history lenses found nothing. The diff lens found 7. Fixed at the gate (F1): item columns `q_1` of a stem `q` now meet the pattern refusal. NEWS now says only a file with no column starting `q_` reads as before. Also fixed (F7): a misplaced comment moved back. Rejected: a column reorder that `rbind` makes redundant, and a mismatch test that does not isolate the exclusion. Also rejected: the item-name message for `Q_age`, "blank" not covering spaces, and an answer-only file reading. The implement claim audit read 23 claims and narrowed one about the study link, which M137 ships. Check 0/0/0, CI 8 of 8 on #147. The CI watch hit its time limit once, and the session resumed by the record. No lesson added (LESSONS.md at 19,972 of 20,000 bytes). Nothing retired.
