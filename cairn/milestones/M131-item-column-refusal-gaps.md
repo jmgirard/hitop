@@ -112,3 +112,12 @@ Consistency gate, 2026-09-27:
 - `devtools::document()`: no diff. `pkgdown::check_pkgdown()`: no problems. README files untouched.
 - NEWS.md: the development bullet states the changes and names no milestone. The branch adds no top-level file.
 - `devtools::check()`: 0 errors, 0 warnings, 0 notes (5 min).
+
+Independent review, 2026-09-27. The [S] prior-review lens found no regression of an M109 or M110 review finding, and no PR threads exist. The [S] blame-history lens found no conflict. The one flipped M110 expectation is recorded in D-075(d). The [O] diff-bug lens found no criterion failure and seven findings. The dispositions are proposed and wait for the gate:
+- F1 (reproduced): the NEWS bullet and D-075 Context say Latin-1 text "used to stop with a base R error". On main, `"aé"` and `"a<A0>b"` marked Latin-1 were refused normally. Only values such as `"1é"` and `"1\xa0"` crashed. Proposed: fix now. Narrow NEWS, and add one annotating D-entry for the D-075 Context clause.
+- F2: outside a UTF-8 session, unmarked invalid bytes are refused as choice text, with no `iconv()` tip. The docs and NEWS state the UTF-8 refusal with no locale scope. Proposed: fix now. Add "in a UTF-8 session" to the docs and NEWS. The Scope already puts other locales out.
+- F3 (reproduced): the encoding message does not apply `mark_invisible()`. Bytes `c2 a0 31 a0` show a raw non-breaking space before `1<a0>`. Proposed: fix now, with a test.
+- F4: a `"bytes"`-marked value that is valid UTF-8 shows as escapes (`"x\\xc3\\xa9"`). The refusal still happens. Proposed: reject, because readers do not mark valid text as bytes and the refusal is right.
+- F5: the two blank-code tests compare two calls, so they would pass if both calls failed the same way. Proposed: fix now. Assert that the declared call returns a result equal to the column with those cells as `NA`.
+- F6: an old-class SPSS factor column shows its code unquoted. Proposed: reject, because the input is contrived and the refusal is right.
+- F7: `item_values()` does not unclass the old class. It works today because base `[` and `as.numeric()` drop the class. Proposed: reject, because no failure reproduces and the parse path took that class before this branch.
