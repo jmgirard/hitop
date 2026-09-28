@@ -2,14 +2,14 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M132: Printed-layout names that match the module's order score without a warning, and a fractional `item_order` is refused
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — two exported scoring functions change their warning, and three exported functions refuse new input
-- **Branch/PR:** —
+- **Branch/PR:** m132-printed-layout-loose-ends
 
 ## Goal
 
@@ -53,7 +53,7 @@ Close the M091 review's printed-layout loose ends, first the warning that fires 
 
 ## Tasks
 
-- [ ] T1: Add one internal predicate in `R/module.R`: numeric, no `NA`, all finite, each value exactly whole, length equal to the module's items, and sorted values equal to the sorted items. Call it from `layout_items()` (`R/module.R:333`) and `write_module_impl()` (`R/module_file.R:236`). The messages stay as they are. Add the AC3 probes and controls to `test-layout.R` and `test-module_file.R`. Add the NEWS entry for the refusal.
+- [x] T1: Add one internal predicate in `R/module.R`: numeric, no `NA`, all finite, each value exactly whole, length equal to the module's items, and sorted values equal to the sorted items. Call it from `layout_items()` (`R/module.R:333`) and `write_module_impl()` (`R/module_file.R:236`). The messages stay as they are. Add the AC3 probes and controls to `test-layout.R` and `test-module_file.R`. Add the NEWS entry for the refusal.
 - [ ] T2: Give `warn_item_order()` (`R/util.R:142`) an `item_order` argument that it reads only under `layout = "printed"`. When the trailing integers equal `item_order`, it returns silently. `layout_items()` passes it (`R/module.R:348`). Rewrite the printed-layout remedy text (`R/util.R:158`). Rewrite the PR #105 regression test in `test-layout.R` (the "says positions, not sort" test). It now asserts the remedy on a permuted name order and keeps its instrument-layout and scoring checks. Add the AC1 and AC2 tests. Add the NEWS entry for the warning change.
 - [ ] T3: In `test-layout.R`, test `layout = "printed"` through `subset` in both functions (AC4). Count warnings by class.
 - [ ] T4: Update the `items` roxygen (`R/score_hitopsr.R:9`, `R/reliability_hitopsr.R:12`). In the modules article's hitop-form section, pass names and drop the positions paragraph. Run `devtools::document()`. Purl and source the article (LESSONS, M115).
@@ -67,6 +67,7 @@ Close the M091 review's printed-layout loose ends, first the warning that fires 
 - 2026-09-27: plan gate chose silence on an exact `item_order` match over no check under the printed layout. Reversed `q_n … q_1` names still signal a misordered mapping. The gate also rejected an added warning for sorted columns, because a whole-form file named `q_1`…`q_405` then warns falsely. Falsified by a caller whose correct printed-order names neither ascend nor match `item_order`.
 - 2026-09-27: plan gate chose to delete `data-raw/characterize_layout/` over making it self-contained, because it was one-off M091 evidence that nothing uses. Falsified by a later layout change that needs the same merge-base comparison and cannot rebuild it from git history.
 - 2026-09-27: plan gate chose names over positions in the article's hitop-form example, because names no longer warn and are shorter to read. Falsified by a reader who scores by name and gets a warning the article did not predict.
+- 2026-09-27: T1 done. `is_item_permutation()` in `R/module.R` is called by `layout_items()` and `write_module_impl()`. The fraction and infinity tests fail on the old code, and the whole-valued double controls pass on both. Full suite 0 failed.
 
 ## Decisions
 

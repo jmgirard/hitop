@@ -403,6 +403,14 @@
 
 ## Improvements and fixes
 
+* **A module's `item_order` must hold whole numbers.** `score_hitopsr()` and
+  `reliability_hitopsr()` under `layout = "printed"`, and `write_module()`,
+  now refuse a module whose `item_order` holds a fraction such as `66.5`.
+  Before, they cut the fraction off and used the whole number. They refuse
+  an `item_order` that holds `Inf` or `-Inf` with no base R coercion
+  warning before the error. An `item_order` of whole numbers stored as
+  doubles, such as `c(66, 109)`, is accepted as before.
+
 * **`read_form_responses()` caps four of its line and row errors at five,
   refuses a UTF-16 or UTF-32 file once, and keeps the mismatch class when a
   path holds a brace.** Four errors now name the first five lines or rows at fault. When

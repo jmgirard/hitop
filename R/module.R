@@ -327,15 +327,8 @@ layout_items <- function(items, module, layout, call = rlang::caller_env()) {
     ),
     call = call
   )
-  # The same test write_module() applies before it writes `itemOrder`: numeric,
-  # complete, one entry per item, and the same multiset as the items -- which a
-  # repeated number fails, since sorting then disagrees at some position.
-  is_permutation <- is.numeric(item_order) &&
-    !anyNA(item_order) &&
-    length(item_order) == length(module$items) &&
-    all(sort(as.integer(item_order)) == sort(module$items))
   cli_assert(
-    condition = is_permutation,
+    condition = is_item_permutation(item_order, module$items),
     message = c(
       "The {.arg layout} argument is {.val printed} but the {.arg module}'s {.field item_order} is not a permutation of its items.",
       hint
@@ -347,6 +340,24 @@ layout_items <- function(items, module, layout, call = rlang::caller_env()) {
   validate_item_uniqueness(items, call = call)
   warn_item_order(items, call = call, layout = "printed")
   items[match(module$items, as.integer(item_order))]
+}
+
+# Internal Helper: is `item_order` a permutation of a module's items?
+#
+# The one test layout_items() and write_module() apply to an `item_order`
+# attribute: numeric, complete, finite, each entry exactly whole, one entry per
+# item, and the same multiset as the items -- which a repeated number fails,
+# since sorting then disagrees at some position. The finite and whole tests
+# run before any comparison, so a fraction is refused rather than truncated
+# and `Inf` never reaches an integer coercion. `items` may be double: a module
+# saved to `.rds` before item numbers were integers still carries its order.
+is_item_permutation <- function(item_order, items) {
+  is.numeric(item_order) &&
+    !anyNA(item_order) &&
+    all(is.finite(item_order)) &&
+    all(item_order == trunc(item_order)) &&
+    length(item_order) == length(items) &&
+    all(sort(item_order) == sort(items))
 }
 
 # Internal Helper: the item columns to score when `items` is missing or NULL

@@ -311,6 +311,38 @@ test_that("write_module() still refuses an item_order that is not a permutation"
   }
 })
 
+test_that("write_module() refuses an item_order holding a fraction or an infinity", {
+  withr::local_options(cli.width = 10000)
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+  order <- rev(m$items)
+  # A fraction used to be written truncated; an infinity was refused only
+  # after as.integer() warned about coercion.
+  for (bad_order in list(
+    replace(order, 1L, order[[1L]] + 0.5),
+    replace(order, 1L, order[[1L]] + 0.25),
+    replace(order, 1L, Inf),
+    replace(order, 1L, -Inf)
+  )) {
+    bad <- m
+    attr(bad, "item_order") <- bad_order
+    f <- withr::local_tempfile(fileext = ".json")
+    expect_no_warning(e <- expect_error(write_module(bad, f)))
+    expect_match(conditionMessage(e), "unusable", fixed = TRUE)
+    expect_match(conditionMessage(e), "permutation", fixed = TRUE)
+    expect_false(file.exists(f))
+  }
+})
+
+test_that("write_module() writes a whole-valued double item_order as integers", {
+  m <- hitop_module("hitopsr", scales = c("agoraphobia", "appetiteLoss"))
+  order <- as.double(rev(m$items))
+  attr(m, "item_order") <- order
+  f <- withr::local_tempfile(fileext = ".json")
+
+  expect_no_error(write_module(m, f))
+  expect_identical(attr(read_module(f), "item_order"), as.integer(order))
+})
+
 
 # AC7 ------------------------------------------------------------------------
 

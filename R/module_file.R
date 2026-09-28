@@ -229,16 +229,11 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
   # read_module() then refuses.
   item_order <- attr(module, "item_order")
   if (!is.null(item_order)) {
-    # Compared by value rather than with identical(): the module may not be one
-    # this version built. A `hitop_module` saved to `.rds` before item numbers
-    # were integers carries double `items`, and it is still a module whose
-    # `item_order` this function can write.
-    usable <- is.numeric(item_order) &&
-      !anyNA(item_order) &&
-      length(item_order) == length(module$items) &&
-      all(sort(as.integer(item_order)) == sort(module$items))
+    # The test layout_items() applies. It compares by value rather than with
+    # identical(), so a module saved to `.rds` before item numbers were
+    # integers, whose `items` are doubles, still writes its `item_order`.
     cli_assert(
-      condition = usable,
+      condition = is_item_permutation(item_order, module$items),
       message = c(
         "The {.arg module} argument has an unusable {.field item_order} \\
          attribute.",

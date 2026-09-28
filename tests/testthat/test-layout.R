@@ -338,6 +338,64 @@ test_that("layout = 'printed' refuses an item_order that is not a permutation of
   }
 })
 
+test_that("layout = 'printed' refuses an item_order holding a fraction or an infinity", {
+  m <- four_scale()
+  inst <- sim_inst(m)
+  order <- attr(m, "item_order")
+  # A fraction used to be truncated back to a valid order and scored; an
+  # infinity was refused only after as.integer() warned about coercion.
+  bad <- list(
+    half = replace(order, 1L, order[[1L]] + 0.5),
+    quarter = replace(order, 1L, order[[1L]] + 0.25),
+    inf = replace(order, 1L, Inf),
+    neg_inf = replace(order, 1L, -Inf)
+  )
+  for (label in names(bad)) {
+    broken <- m
+    attr(broken, "item_order") <- bad[[label]]
+    expect_no_warning(err <- expect_layout_abort(
+      score_hitopsr(inst, items = names(inst), module = broken, layout = "printed"),
+      "score_hitopsr", "`layout`"
+    ))
+    expect_match(conditionMessage(err), "not a permutation", info = label)
+    expect_no_warning(err <- expect_layout_abort(
+      reliability_hitopsr(inst, items = names(inst), module = broken,
+                          layout = "printed", omega = FALSE),
+      "reliability_hitopsr", "`layout`"
+    ))
+    expect_match(conditionMessage(err), "not a permutation", info = label)
+  }
+})
+
+test_that("layout = 'printed' accepts a whole-valued double item_order", {
+  m <- four_scale()
+  inst <- sim_inst(m)
+  printed <- printed_frame(inst, m)
+  pos <- seq_along(printed)
+  as_double <- m
+  attr(as_double, "item_order") <- as.double(attr(m, "item_order"))
+  expect_type(attr(as_double, "item_order"), "double")
+
+  scored <- score_hitopsr(printed, items = pos, module = as_double,
+                          layout = "printed", append = FALSE)
+  expect_identical(
+    scored,
+    score_hitopsr(printed, items = pos, module = m, layout = "printed",
+                  append = FALSE)
+  )
+  # The double order permutes the columns back to instrument order.
+  expect_equal(
+    scored,
+    score_hitopsr(inst, items = names(inst), module = m, append = FALSE)
+  )
+  expect_identical(
+    reliability_hitopsr(printed, items = pos, module = as_double,
+                        layout = "printed", omega = FALSE),
+    reliability_hitopsr(printed, items = pos, module = m,
+                        layout = "printed", omega = FALSE)
+  )
+})
+
 test_that("a layout outside the two choices aborts naming the function and both values", {
   m <- four_scale()
   inst <- sim_inst(m)
