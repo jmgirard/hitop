@@ -154,7 +154,8 @@ in the same order, so read each form’s files in a call of their own.
 
 A file can also hold answer columns, which hold the answers to questions
 of your own, each named `q_` and then the question’s name, such as
-`q_age`.
+`q_age`. The page writes them for a link with questions, as the section
+[Your own questions](#your-own-questions) describes.
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 accepts them anywhere after `submitted` and returns them after the item
 columns. They come in the order the reader first meets them, with the
@@ -404,6 +405,62 @@ the file and the Supabase table have the same columns with consent text
 as without it. The hitop-form README’s section [Show consent text before
 the
 form](https://github.com/jmgirard/hitop-form#show-consent-text-before-the-form)
+has the details.
+
+## Your own questions
+
+A study link can carry questions of your own, such as age or how the
+participant heard of the study. Add them in the link builder’s “Your own
+questions” part. Each question is asked either before the form or after
+it. The page asks the before questions on a screen of its own after any
+consent screen and ahead of the start screen. It asks the after
+questions on a screen of its own after the last page of items. The
+questions never share a screen with the items. A link holds up to 50
+questions.
+
+Each question has a name, and its answer is written in a column named
+`q_` and then the name, after the item columns.
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+returns these columns as the section on reading the file describes. A
+question has one of four types, and each writes its answer as text:
+
+- A text question writes the answer as typed.
+- A whole-number question writes the number in digits, with no leading
+  zero and a minus sign only below zero. A typed `007` is written `7`.
+- A question with one choice writes the number of the chosen option,
+  counted from 1 in the order the link lists the options.
+- A question with any number of choices writes the numbers of the chosen
+  options in ascending order, separated by single spaces, such as `1 3`.
+
+An unanswered question writes an empty cell, which the reader returns as
+`NA`. The numbers stand for positions in the link’s list of options, so
+a change to the order of the options between two links changes what the
+numbers mean. Keep the order the same in every link of a study. To turn
+a column of several choices into numbers, split it at the spaces:
+
+``` r
+
+days <- c("1 3", "2", NA)
+lapply(strsplit(days, " "), as.integer)
+#> [[1]]
+#> [1] 1 3
+#> 
+#> [[2]]
+#> [1] 2
+#> 
+#> [[3]]
+#> [1] NA
+```
+
+With a Supabase store, the builder’s SQL adds one text column per
+question. A table made before the questions were added has no column for
+them, so Supabase refuses the row, and the page then saves the file on
+the participant’s device. The columns come from the question names
+alone, so make a new table from the builder’s SQL when you add a
+question or change a name. A link with questions travels as a `z`
+parameter, as a link with consent text does. The hitop-form README’s
+section [Ask your own
+questions](https://github.com/jmgirard/hitop-form#ask-your-own-questions)
 has the details.
 
 ## Who holds the data

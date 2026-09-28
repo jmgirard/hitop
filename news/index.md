@@ -4,6 +4,24 @@
 
 ### New features
 
+- **hitop-form can ask the researcher’s own questions.** A study link’s
+  `questions` field holds a `before` list, an `after` list or both, with
+  up to 50 questions in all. The page asks the before questions on a
+  screen of its own ahead of the start screen, after any consent screen,
+  and the after questions on a screen of its own after the last page of
+  items. A question is a one-line text, a whole number with an optional
+  minimum and maximum, one choice of 2 to 20 options, or any number of
+  such choices, and it can be required. Each answer is written as text
+  in a column named `q_` and then the question’s name, after the item
+  columns, in the row, the file and the Supabase table. A choice is
+  written as the chosen option’s number, counted from 1, and several
+  choices as those numbers in ascending order, separated by spaces. An
+  unanswered question is an empty cell, which
+  [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+  reads as `NA`. The link builder gains a question editor, and a link
+  with questions travels as a `z` parameter. The online-collection
+  article has a section on the questions.
+
 - **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
   reads answer columns named `q_`.** A column after `submitted` whose
   name starts with `q_`, such as `q_age`, is read as the answer to a
