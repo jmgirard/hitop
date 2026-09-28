@@ -42,7 +42,7 @@
 - [x] T1: At the pre-implementation gate, settle the `form_build` type of AC2 and the ` | ` separator of AC3 with Jeff, and record D-080 on the file shape. It annotates D-064, D-070(c) and D-079(c). Under the alternative, the item columns start tenth, which D-071 names as a breaking move, and the gate says so. If Jeff chooses the alternative, amend AC2 and AC5 here and AC3 and AC4 of M140 through the gate.
 - [x] T2: In `R/read_form_responses.R`, replace the one-stem rule with the grouping of AC1. Add the `instrument`, `form_build` and `item_order` rules of AC2 and AC3, and the refusals of AC4.
 - [x] T3: Write the tests of AC1 to AC4 with fixtures written by rule in `tests/testthat/fixtures/`. Plant each refusal and show it red before trusting its green. Write the comparison script of AC5 and record its result in the work log.
-- [ ] T4: Update the roxygen help and run `devtools::document()`. Update the two articles and write the NEWS entry.
+- [x] T4: Update the roxygen help and run `devtools::document()`. Update the two articles and write the NEWS entry.
 - [ ] T5: Run `devtools::check()` and `cairn_validate`.
 
 ## Work log
@@ -56,6 +56,7 @@
 - 2026-09-28: T3 planting (scratch script, not committed): each of six mutations, which turn off the split, `instrument`, `form_build` parse, `form_build` count, `item_order` and group-count checks, turned 1, 15, 8, 3, 11 and 1 reader tests red.
 - 2026-09-28: T3 AC5 run: `Rscript data-raw/compare_form_reader.R main` ran 226 base tests, captured 270 inputs (73 results, 197 refusals on main), and found every other input the same. It exits 1 on two plants: base ref 448db9d0, and an empty `replaced` list.
 - 2026-09-28: AC5 exceptions, both with the branch message "holds an instrument cell that differs from the item columns' stems in file order." and the line `Response row 1: instrument "hitopbr", item columns "hitopbr pid5bf".`: test "item columns of two stems are refused naming the stems", and test "a two-stem file with an item_order of 1 1 is refused for the stems, not the cell".
+- 2026-09-28: T4 done. The help page gains a multi-instrument paragraph, the `form_build` type and the `item_order` groups. The online-collection article gains the section "Several instruments in one file", with a chunk that scores each instrument by stem, and its two-form sheet paragraph now names the `instrument` cell as the fault. The modules article states the type and the shape. NEWS gains one entry and its first reader entry now says character. Both articles render against an installed branch. `hitop-form` at d5d91ac has no `instruments` field, so the docs say the page does not write the shape yet.
 
 ## Decisions
 

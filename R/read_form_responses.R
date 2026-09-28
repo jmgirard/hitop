@@ -28,17 +28,38 @@
 #'   them, which `write_module()` writes ascending and the page requires
 #'   ascending), and writes `item_order`.
 #'
+#'   `form_build` is the build date of the instrument's export the page
+#'   showed, as `YYYY-MM-DD`. The result keeps each cell as written, so the
+#'   column is character. Convert it with `as.Date()` when you need a date
+#'   and the file holds one instrument.
+#'
+#'   **Several instruments in one file.** A file's item columns may form two
+#'   or more groups, one per instrument. The columns of each group sit side
+#'   by side and hold one stem, and no stem appears in two groups. The
+#'   optional lead columns and the answer columns may sit anywhere after
+#'   `submitted`, between two groups or inside one, and they do not split a
+#'   group. The `instrument` cell holds the stems in the order of the groups,
+#'   joined by single spaces (`hitopbr pid5bf`). The `form_build` cell holds
+#'   one date per stem, in the same order, joined by single spaces
+#'   (`2026-09-20 2026-09-18`). The result holds the item columns in file
+#'   order. Score each instrument in its own call, with its columns chosen by
+#'   stem, as `grep("^pid5bf_", names(responses), value = TRUE)` chooses the
+#'   PID-5-BF's. The hitop-form page does not yet write such a file.
+#'
 #'   `item_order` is the order the participant saw the items, as item numbers
 #'   with no leading zero, joined by single spaces with none at either end
-#'   (`hitopbr_01` is 1). The page writes it under a random order and not
+#'   (`hitopbr_01` is 1). In a file of several instruments it holds one group
+#'   per stem, in the order of the `instrument` cell, joined by a space, a bar
+#'   and a space (`2 1 | 3 1 2`), each group that instrument's item numbers
+#'   in the order shown. The page writes it under a random order and not
 #'   otherwise. A file may hold the column
 #'   anywhere after `submitted`, as a store's download may append it after the
 #'   item columns, and the result places it sixth. A file may also lack it:
 #'   its rows then hold `NA` there. Scoring does not read the column, and it is
 #'   not an item column, so it does not enter the check that every file holds
 #'   the same item columns. A cell that is not blank and does not list the
-#'   file's item numbers, each once, is an error naming the file and the
-#'   response row.
+#'   file's item numbers, each once, in one group per stem, is an error
+#'   naming the file and the response row.
 #'
 #'   `prolific_study` and `prolific_session` hold the study and session
 #'   identifiers that Prolific adds to a study link, when the file records
@@ -84,11 +105,13 @@
 #'   header, an answer column whose name does not match the pattern above, an
 #'   item column whose name is not a stem of lower-case letters
 #'   and digits, an underscore and the item number (`hitopbr_01`, not `foo`
-#'   or `Hitopbr_01`), item columns of more than one stem (`hitopbr_01`
-#'   beside `pid5bf_01`), an `instrument` cell that differs from the item
-#'   columns' stem (`pid5bf` beside `hitopbr_01`), an item value that is not
-#'   a whole number or is outside R's integer range, or a date that does not
-#'   parse. An error on a line names the lines at fault, counted from the
+#'   or `Hitopbr_01`), a stem whose columns another stem's columns split
+#'   (`hitopbr_01`, `pid5bf_01`, `hitopbr_02`), an `instrument` cell that
+#'   differs from the item columns' stems in file order (`pid5bf` beside
+#'   `hitopbr_01`, or `hitopbr` beside `hitopbr_01` and `pid5bf_01`), an
+#'   item value that is not a whole number or is outside R's integer range,
+#'   a `form_build` cell whose date count differs from the stem count, or a
+#'   date that does not parse. An error on a line names the lines at fault, counted from the
 #'   file's first line. An error on a row names the response rows at fault,
 #'   counted from the first row after the header. An error on an item value
 #'   names each cell at fault as its response row, its column and the value
@@ -123,8 +146,8 @@
 #'   can catch by name.
 #'
 #' @return A \link[tibble]{tibble} with one row per response row. The first
-#'   eight columns are `study`, `participant` and `instrument` as character,
-#'   `form_build` as `Date`, `submitted` as `POSIXct` in UTC, and `item_order`,
+#'   eight columns are `study`, `participant`, `instrument` and `form_build`
+#'   as character, `submitted` as `POSIXct` in UTC, and `item_order`,
 #'   `prolific_study` and `prolific_session` as character, each `NA` on a row
 #'   from a file without that column and on a blank cell. The item columns
 #'   follow as integers, in the column order of the first file after sorting.
