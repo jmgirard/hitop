@@ -10,8 +10,8 @@
   together, with `NA` where a file lacks a column, and the answer columns do
   not enter the check that every file holds the same item columns. A name
   that starts with `q_` and does not match `^q_[a-z][a-z0-9_]{0,29}$` is an
-  error naming the file and the column. A file without answer columns reads
-  as before.
+  error naming the file and the column. A file with no column whose name
+  starts with `q_` reads as before.
 
 * **hitop-form can show the researcher's consent text before the form.**
   The link builder gains a "Consent text" box. A link with text there

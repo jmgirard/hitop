@@ -582,9 +582,6 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     )
   }
 
-  # Each item column as character with blanks as NA, then as integer. A file
-  # the page saved holds one response row; a store's export holds one per
-  # participant, so every check below runs down the column.
   # The answer columns are read as written, so they are split off first and
   # take no part in the item checks.
   rest <- names(raw)[-seq_len(5L)]
@@ -600,6 +597,9 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
       call = call
     )
   }
+  # Each item column as character with blanks as NA, then as integer. A file
+  # the page saved holds one response row; a store's export holds one per
+  # participant, so every check below runs down the column.
   item_cols <- setdiff(rest, c(form_optional_columns, answer_cols))
 
   # An item column is named by the instrument's stem, an underscore and the

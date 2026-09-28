@@ -55,6 +55,7 @@
 - 2026-09-28: T4 done. `devtools::check()` gave 0 errors, 0 warnings and 0 notes. `cairn_validate` exits 0 with 24 advisory warnings.
 - 2026-09-28: claim audit: 23 claims read, 1 corrected — R/read_form_responses.R, man/read_form_responses.Rd, vignettes/articles/online-collection.Rmd, tests/testthat/test-read_form_responses.R. The corrected claim said a `q_` column answers a question added to the study link, which the page cannot do before M137. It now says a question of the researcher's own, and the reader's re-read found it holds.
 - 2026-09-28: all tasks done, and status set to review.
+- 2026-09-28: step-7 approval: m136-form-reader-custom-columns approved for merge, with review findings F1 and F7 fixed first.
 
 ## Decisions
 
@@ -75,3 +76,4 @@
   - F5: "a blank cell is `NA`" leaves a cell of spaces as written. Proposed: reject, the optional lead columns use the same word and rule.
   - F6: a file of `q_` columns and no item columns reads, with its `instrument` cell unchecked. Proposed: reject, a file with no item columns already reads on main.
   - F7: the comment for the item-column conversion now sits above the answer-column split. Confirmed. Proposed: fix now, move it back above the item code.
+- 2026-09-28 triage at the gate: F1 and F7 fixed now on the branch. F2 to F6 rejected for the reasons above.
