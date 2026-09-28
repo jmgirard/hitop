@@ -43,7 +43,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 
 - [x] T1: In form.js, add `checkQuestions()` to `parseLink()` with the refusals of AC1, and export it for link.html.
 - [x] T2: Add the `before` and `after` question screens to `runForm()`. Build each input with the `el()` helper and label it for screen readers. Use a text input with `inputmode="numeric"` for `number`, so the page reads what the participant typed. Add the checks and move focus to the first refused question. Carry the answers into the record in `finish()`, and count them in the `beforeunload` guard. Write the walk tests of AC2.
-- [ ] T3: Add `questionColumns(config)` for the trailing columns, used by `buildCsv()`, `buildRow()` and `storeSql()`. Leave `leadColumns()` unchanged. Write the values of AC3 and the row and file tests.
+- [x] T3: Add `questionColumns(config)` for the trailing columns, used by `buildCsv()`, `buildRow()` and `storeSql()`. Leave `leadColumns()` unchanged. Write the values of AC3 and the row and file tests.
 - [ ] T4: Extend `storeSql()` with the `text` columns. Add the SQL fixture under `tests/fixtures/`, written by rule and not captured from the builder, with its README line. Write the send tests.
 - [ ] T5: Add the question editor to link.html, its submit checks through `checkQuestions()`, the `?z=` output, and `prefill()`. Write the builder tests of AC5.
 - [ ] T6: Save a file from a walk with one question of each type. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader test of AC6.
@@ -58,6 +58,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: implement started. Branch m137-form-custom-questions cut in hitop and in the hitop-form companion. Gate chose headings, numbered questions, the editor with Move up and Move down, and a range line (M137-D1).
 - 2026-09-28: T1 done in hitop-form 6db09b1. `checkQuestions()` in `parseLink()`, with a `where` argument so link.html names questions by its own numbers. tests/questions.spec.js Q1 and Q2: 59 passed. The edit tool wrote U+2028 as a literal character, which broke a regex, so the pattern is now built from code points.
 - 2026-09-28: T2 done in hitop-form 25037e4 (screens code in 6db09b1). tests/question-screens.spec.js QS1 to QS8: 19 passed. QS8 is the first test of the unload guard, with a click-only control.
+- 2026-09-28: T3 done in hitop-form fa81800. `questionColumns()` feeds `buildCsv()` and `buildRow()`. tests/question-columns.spec.js QC1: 6 passed, file and webhook row under shuffle off, shuffle on and prolific.
 
 ## Decisions
 
