@@ -1,0 +1,61 @@
+# M137: A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns
+
+- **Status:** planned
+- **Priority:** normal
+- **Depends on:** M135, M136
+- **Driving RR:** —
+- **Principles touched:** IP1, GP3
+- **Resolves:** —
+- **Surface tier:** user-facing — the deployed form page, its link builder, its stores and the package's article
+- **Branch/PR:** —
+
+## Goal
+
+A study link's `questions` field holds the researcher's own questions. The page asks them on a screen before the start screen or after the last item page. It writes each answer in a `q_<name>` column after the item columns.
+
+## Scope
+
+**In:** In hitop-form, the work covers these parts. The `questions` link field (`before` and `after`, each a list of questions) in `parseLink()`, with its refusals. Four question types: `text` (one line), `number` (a whole number, with optional `min` and `max`), `choice` (one option) and `multi` (any number of options). A `required` flag, false by default. The two question screens and their checks. The `q_` columns in the row, the file and the Supabase SQL. A question editor in link.html, with its prefill through `?z=` from M135. A README section and Playwright tests. In hitop, the work covers a test fixture that the page saved, the questions section of the online-collection article, and NEWS. D-079 governs.
+
+**Out:** Long text answers, drop-down menus, rating grids, display logic between questions, and more than one screen per block go to a candidate row. Reading and writing the questions as a spreadsheet file goes to M138. More than one instrument in one link goes to M139 (reader) and M140 (page). Instrument content (IP1) is untouched. The questions never share a screen with the items.
+
+## Acceptance criteria
+
+- [ ] AC1: `parseLink()` accepts `questions` as an object with the key `before`, `after` or both, and no other key. Each key holds a list of 1 or more questions, with at most 50 questions in all. A question has `name`, `text` and `type`. It can also have `required`, `options`, `min` and `max`, and no other key. `name` matches `^[a-z][a-z0-9_]{0,29}$` and is unique across both lists. `text` is a string of 1 to 1,000 characters, not blank after trimming. `type` is `text`, `number`, `choice` or `multi`. `options` is required for `choice` and `multi` and refused for the other types. It is a list of 2 to 20 strings, each 1 to 200 characters, none blank and no two the same after trimming. No question text or option label holds a line break, and no option label holds `|`. The page trims each question text and option label. `min` and `max` are allowed only for `number`. Each is a whole number from -2,147,483,647 to 2,147,483,647, and `min` is not above `max`. `required` is `true` or `false`. A lone surrogate in any string is refused. A character is one UTF-16 code unit. The page refuses each fault by name and shows the question's position. Before it builds a link, link.html refuses the faults its editor can produce. Tests assert the message of each refusal on each side where it can occur.
+- [ ] AC2: The `before` questions show on one screen before the start screen. If the link has a consent screen, they show after it. This screen has no Back. The `after` questions show on one screen after the last item page. Under `after`, the last item page carries Next, and the questions screen carries Back and Finish. The page writes each question text and option label as text, so no tag or entity in them is read as markup. A `text` answer that is blank after trimming counts as no answer. A `number` answer, after trimming, is an optional minus sign and digits. The screen refuses to go on while a required question has no answer. It also refuses a `number` answer outside that form or outside `min` to `max`, and a `text` answer that holds a lone surrogate. Each refusal names the question. Tests walk each type and each refusal, with the `number` probes `abc`, `2.5`, `1e3`, `-0`, `007`, `min - 1` and `max + 1`. A question text and an option label hold `<b>x</b>` and `&amp;`, and tests assert their text and that no `b` element exists. Tests also walk a link with only `before`, a link with only `after`, and a link with both.
+- [ ] AC3: The row and the file carry one column `q_<name>` per question, after the item columns. The columns follow the order of the link, with the `before` list first. A `text` answer is written as typed. A `number` answer is the whole number in decimal digits, with no leading zero and a minus sign only below zero. So `007` is `7` and `-0` is `0`. A `choice` answer is the position of the chosen option, counted from 1. A `multi` answer is the positions of the chosen options in ascending order, joined by single spaces. An unanswered question is an empty string. In the JSON row, every `q_` value is a string. Tests assert the row and the file for each type, answered and unanswered. They include a `multi` question clicked as option 3 then option 1. The tests run with shuffle off, with shuffle on, and with `prolific: true`.
+- [ ] AC4: For a link with `questions`, the Supabase SQL from the builder adds one `text` column per question. These columns follow the item columns in the order of AC3. The webhook send and the Supabase send carry every `q_` key, with an unanswered question sent as `""`. Tests compare the SQL with a committed fixture byte for byte and read the `q_` keys from the recording server.
+- [ ] AC5: The link.html editor adds and removes questions. For each question, it sets the list (before or after), the name, the text and the type. It also sets the options (one per line in a `<textarea>`), `required`, `min` and `max`. The builder writes a link with `questions` as `?z=`. This extends the `z` clause of M135 AC4 to a link with questions and no consent. A link loaded through `?z=` fills the editor with the same questions. Tests build a link with one question of each type, open it, and reload it through the prefill.
+- [ ] AC6: One file that the page saved under a link with one question of each type is committed in hitop as a test fixture. `read_form_responses()` reads it. Each `q_` value equals the answer the walk entered, as AC3 writes it, and an unanswered question is `NA`.
+- [ ] AC7: The README section and the questions section of the article each state the four types and the value each type writes. They also state the position numbering of options and the 50-question limit. They state that a change to the order of options between links changes what the numbers mean. They state that a Supabase table made before the questions were added refuses the row, and that the page then saves the file. NEWS names the field. The hitop-form suite passes in its CI. In hitop, `devtools::check()` gives 0 errors, 0 warnings and 0 notes, and `cairn_validate` exits 0.
+
+## Coverage
+
+- AC1 → T1, T5
+- AC2 → T2
+- AC3 → T3
+- AC4 → T4
+- AC5 → T5
+- AC6 → T6
+- AC7 → T7, T8
+
+## Tasks
+
+- [ ] T1: In form.js, add `checkQuestions()` to `parseLink()` with the refusals of AC1, and export it for link.html.
+- [ ] T2: Add the `before` and `after` question screens to `runForm()`. Build each input with the `el()` helper and label it for screen readers. Use a text input with `inputmode="numeric"` for `number`, so the page reads what the participant typed. Add the checks and move focus to the first refused question. Carry the answers into the record in `finish()`, and count them in the `beforeunload` guard. Write the walk tests of AC2.
+- [ ] T3: Add `questionColumns(config)` for the trailing columns, used by `buildCsv()`, `buildRow()` and `storeSql()`. Leave `leadColumns()` unchanged. Write the values of AC3 and the row and file tests.
+- [ ] T4: Extend `storeSql()` with the `text` columns. Add the SQL fixture under `tests/fixtures/`, written by rule and not captured from the builder, with its README line. Write the send tests.
+- [ ] T5: Add the question editor to link.html, its submit checks through `checkQuestions()`, the `?z=` output, and `prefill()`. Write the builder tests of AC5.
+- [ ] T6: Save a file from a walk with one question of each type. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader test of AC6.
+- [ ] T7: Write the README section "Ask your own questions", the questions section of the article, and the NEWS entry.
+- [ ] T8: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
+
+## Work log
+
+- 2026-09-28: created by /milestone-plan.
+- 2026-09-28: criteria audit ran in full mode (user-facing tier) on two fresh [O] readers. They returned 8 findings and 1 finding, all fixed before the commit. The fixes cover unknown keys, option limits, the integer range, number input rules, markup probes, Back and Next placement, unanswered values, a separate column helper, the fixture record, and labels without line breaks or `|`.
+- 2026-09-28: plan chose option positions over option labels as the stored value of a choice, because positions match the integer answers of the instruments and survive a relabeling. Falsified by researchers who reorder options between links and misread the numbers.
+
+## Decisions
+
+## Review
