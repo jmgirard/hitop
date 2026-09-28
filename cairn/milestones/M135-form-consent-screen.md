@@ -41,7 +41,7 @@ A study link's `consent` field holds the researcher's consent text. The page sho
 
 ## Tasks
 
-- [ ] T1: In form.js, add `checkConsent()` to `parseLink()` with the refusals of AC4, and `completeDeclined` through `checkCompleteUrl()`. Add `decodeLink()`, which reads `c` or `z` with the refusals of AC5. It reads `z` through `DecompressionStream("deflate-raw")` and stops at 100,000 bytes, so `boot()` awaits it. Add `encodeLink()` for the builder. Add `z` to the names that `checkParticipantParam()` refuses.
+- [x] T1: In form.js, add `checkConsent()` to `parseLink()` with the refusals of AC4, and `completeDeclined` through `checkCompleteUrl()`. Add `decodeLink()`, which reads `c` or `z` with the refusals of AC5. It reads `z` through `DecompressionStream("deflate-raw")` and stops at 100,000 bytes, so `boot()` awaits it. Add `encodeLink()` for the builder. Add `z` to the names that `checkParticipantParam()` refuses.
 - [ ] T2: In `runForm()`, add the consent screen and the declined screen before `start()`. Build both with the `el()` helper, so every string goes through `textContent`. Move focus to the screen heading, as the start screen does. Draw the declined screen before the page goes to `completeDeclined`, as D-072(b) orders the sent screen. Write the walk and network tests of AC1 to AC3.
 - [ ] T3: In link.html, add a "Consent text" and a "Declined text" `<textarea>` and a decline address field. A one-line input strips line breaks (the M128 lesson). Add the submit checks, the `z` output, the link length as shown today, and `prefill()` from `?z=`. Write the builder tests.
 - [ ] T4: Write the row, file and SQL comparisons with and without `consent`, with shuffle off and on.
@@ -54,6 +54,8 @@ A study link's `consent` field holds the researcher's consent text. The page sho
 - 2026-09-28: criteria audit ran in full mode (user-facing tier) on two fresh [O] readers, the second over the criteria the gate changed. The first returned 8 findings and the second 7, all fixed before the commit. The fixes cover line-break rules, `innerText` probes, a no-store decline probe, no completion link on the declined screen, the `z` refusals, the inflate cap, old browsers, `participantParam` and `z`, an empty identifier in `completeDeclined`, and the NEWS wording.
 - 2026-09-28: plan gate chose a compressed `z` link over a plain `c` link with a length cap and over a hosted setup file, because consent text needs room and a hosted file can change under a running study. Falsified by a recruiting site or mail system that breaks `z` links.
 - 2026-09-28: plan gate chose agree or decline with a `completeDeclined` address over recording declines and over required tick boxes, because Prolific and other sites need a decline code and a decline record stores data about people who refused. Falsified by a review board that requires a record of declines.
+- 2026-09-28: implement started on branches `m135-form-consent-screen` in hitop and hitop-form. Question gate: Jeff chose the consent heading "Consent to take part", the heading "Thank you" on the declined screen, and the three builder fields after the completion URLs.
+- 2026-09-28: T1 done (hitop-form e8828a4). `decodeLink()`, `inflateConfig()`, `encodeLink()`, `checkConsent()` and `completeDeclined` in form.js. New specs zlink (Z1-Z5) and consent (C1-C3) pass. Seven planted faults each turned their test red. Full suite: 403 passed, 2 timeouts under full load that passed on rerun.
 
 ## Decisions
 
