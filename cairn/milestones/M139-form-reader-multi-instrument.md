@@ -40,8 +40,8 @@
 ## Tasks
 
 - [x] T1: At the pre-implementation gate, settle the `form_build` type of AC2 and the ` | ` separator of AC3 with Jeff, and record D-080 on the file shape. It annotates D-064, D-070(c) and D-079(c). Under the alternative, the item columns start tenth, which D-071 names as a breaking move, and the gate says so. If Jeff chooses the alternative, amend AC2 and AC5 here and AC3 and AC4 of M140 through the gate.
-- [ ] T2: In `R/read_form_responses.R`, replace the one-stem rule with the grouping of AC1. Add the `instrument`, `form_build` and `item_order` rules of AC2 and AC3, and the refusals of AC4.
-- [ ] T3: Write the tests of AC1 to AC4 with fixtures written by rule in `tests/testthat/fixtures/`. Plant each refusal and show it red before trusting its green. Write the comparison script of AC5 and record its result in the work log.
+- [x] T2: In `R/read_form_responses.R`, replace the one-stem rule with the grouping of AC1. Add the `instrument`, `form_build` and `item_order` rules of AC2 and AC3, and the refusals of AC4.
+- [x] T3: Write the tests of AC1 to AC4 with fixtures written by rule in `tests/testthat/fixtures/`. Plant each refusal and show it red before trusting its green. Write the comparison script of AC5 and record its result in the work log.
 - [ ] T4: Update the roxygen help and run `devtools::document()`. Update the two articles and write the NEWS entry.
 - [ ] T5: Run `devtools::check()` and `cairn_validate`.
 
@@ -51,6 +51,11 @@
 - 2026-09-28: criteria audit ran in full mode (user-facing tier) on a fresh [O] reader. It returned 7 findings, all fixed before the commit: the AC5 exceptions, contiguity beside `q_` columns, date parsing, the `item_order` probes, the articles that state the type, the planting step moved to T3, and the Out wording.
 - 2026-09-28: plan proposes a character `form_build` over a `Date` column plus a new lead column, because one column keeps the item columns starting ninth. The choice stays open for the pre-implementation gate (T1). Falsified by callers who compare `form_build` as a date.
 - 2026-09-28: implement started on branch m139-form-reader-multi-instrument. At the gate Jeff chose a character `form_build` for every file, with no deprecation step because the reader is not in 0.2.0, and ` | ` between `item_order` groups. T1 done: D-080 recorded. AC2, AC5 and M140 stand unamended.
+- 2026-09-28: T2 done. The reader groups item columns by stem, refuses a split stem, checks `instrument` against the stems in file order, reads `form_build` as one date per stem and returns it as written, and reads `item_order` as groups joined by ` | `. The one-stem refusal is gone.
+- 2026-09-28: T3 done. Five fixtures written by `data-raw/form_multi_fixtures.R`, with a fixtures README row. New tests cover AC1 to AC4. Two old tests were rewritten for the replaced refusal, and two now assert a character `form_build`. Full suite: 0 failed, 15 skipped (merge-base and pkgload skips), 24028 expectations.
+- 2026-09-28: T3 planting (scratch script, not committed): each of six mutations, which turn off the split, `instrument`, `form_build` parse, `form_build` count, `item_order` and group-count checks, turned 1, 15, 8, 3, 11 and 1 reader tests red.
+- 2026-09-28: T3 AC5 run: `Rscript data-raw/compare_form_reader.R main` ran 226 base tests, captured 270 inputs (73 results, 197 refusals on main), and found every other input the same. It exits 1 on two plants: base ref 448db9d0, and an empty `replaced` list.
+- 2026-09-28: AC5 exceptions, both with the branch message "holds an instrument cell that differs from the item columns' stems in file order." and the line `Response row 1: instrument "hitopbr", item columns "hitopbr pid5bf".`: test "item columns of two stems are refused naming the stems", and test "a two-stem file with an item_order of 1 1 is refused for the stems, not the cell".
 
 ## Decisions
 
