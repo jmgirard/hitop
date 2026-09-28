@@ -31,7 +31,9 @@ and `instrument` as character, `form_build` as `Date`, `submitted` as
 `prolific_session` as character, each `NA` on a row from a file without
 that column and on a blank cell. The item columns follow as integers, in
 the column order of the first file after sorting. An item the
-participant left blank is `NA`.
+participant left blank is `NA`. The answer columns, when any file holds
+one, come last as character, in order of first appearance, each `NA` on
+a row from a file without it and on a blank cell.
 
 ## Details
 
@@ -80,6 +82,21 @@ them, and they are not item columns, so neither enters the check that
 every file holds the same item columns. The cells are read as written,
 with no check on their content.
 
+A column whose name starts with `q_` is an answer column: it holds the
+answer to a question of the researcher's own, named `q_` and then the
+question's name (`q_age`). A file may hold answer columns anywhere after
+`submitted`, and the result places them after the item columns. They
+come in the order the reader first meets them, with the files in path
+order and each file read from left to right. Each is character, read as
+written with no conversion, and a blank cell is `NA`. Files that hold
+different answer columns read together, and a row from a file without a
+column holds `NA` in it. Answer columns are not item columns, so they do
+not enter the check that every file holds the same item columns. After
+`q_`, a name must hold a lower-case letter and then up to 29 lower-case
+letters, digits or underscores, the pattern `^q_[a-z][a-z0-9_]{0,29}$`.
+A name that starts with `q_` and does not match is an error naming the
+file and the column.
+
 Every file must carry the same item columns in the same order, because a
 set of files that differ cannot be one data frame: a full HiTOP-SR
 beside a module, or two modules that shuffled their items differently,
@@ -90,36 +107,37 @@ outside a quoted cell made only of spaces and tabs, no header row (a
 zero-byte file, blank lines only, a UTF-8 byte-order mark only), first
 columns other than the five the page writes first, a column that appears
 twice, a header with no response row, a response row holding fewer or
-more fields than the header, an item column whose name is not a stem of
-lower-case letters and digits, an underscore and the item number
-(`hitopbr_01`, not `foo` or `Hitopbr_01`), item columns of more than one
-stem (`hitopbr_01` beside `pid5bf_01`), an `instrument` cell that
-differs from the item columns' stem (`pid5bf` beside `hitopbr_01`), an
-item value that is not a whole number or is outside R's integer range,
-or a date that does not parse. An error on a line names the lines at
-fault, counted from the file's first line. An error on a row names the
-response rows at fault, counted from the first row after the header. An
-error on an item value names each cell at fault as its response row, its
-column and the value as written, the first five cells and a count of the
-rest. The errors on a NUL byte or a byte sequence that is not UTF-8, on
-a line of spaces and tabs, on a row's field count and on an `instrument`
-cell likewise name the first five lines or rows at fault and a count of
-the rest. The error on a UTF-16 or UTF-32 file names the encoding and no
-line, and asks that the file be saved as UTF-8. A file that starts with
-the byte-order mark FF FE 00 00 or 00 00 FE FF is taken as UTF-32, and
-one that starts with FF FE or FE FF as UTF-16. A file with no mark is
-read as UTF-32 and then as UTF-16, each little-endian and then
-big-endian. In each encoding the lines are split on that encoding's line
-feed. Empty lines and lines of a lone carriage return at the top are
-skipped. The first line that is not blank then has its trailing carriage
-return dropped. If it holds only printable ASCII characters and tabs,
-the file is taken as that encoding. A file of blank lines only in one of
-these encodings is also taken as that encoding when it holds at least
-one line feed. A file taken as UTF-32 is refused as UTF-32, not as
-UTF-16. A UTF-16 or UTF-32 file the rule does not take is read as UTF-8,
-and a NUL byte in it meets the byte error. The field count of a row
-reads `#` as data and a quoted cell holding a line break as one cell, as
-the read does. A `submitted` stamp may carry fractional seconds.
+more fields than the header, an answer column whose name does not match
+the pattern above, an item column whose name is not a stem of lower-case
+letters and digits, an underscore and the item number (`hitopbr_01`, not
+`foo` or `Hitopbr_01`), item columns of more than one stem (`hitopbr_01`
+beside `pid5bf_01`), an `instrument` cell that differs from the item
+columns' stem (`pid5bf` beside `hitopbr_01`), an item value that is not
+a whole number or is outside R's integer range, or a date that does not
+parse. An error on a line names the lines at fault, counted from the
+file's first line. An error on a row names the response rows at fault,
+counted from the first row after the header. An error on an item value
+names each cell at fault as its response row, its column and the value
+as written, the first five cells and a count of the rest. The errors on
+a NUL byte or a byte sequence that is not UTF-8, on a line of spaces and
+tabs, on a row's field count and on an `instrument` cell likewise name
+the first five lines or rows at fault and a count of the rest. The error
+on a UTF-16 or UTF-32 file names the encoding and no line, and asks that
+the file be saved as UTF-8. A file that starts with the byte-order mark
+FF FE 00 00 or 00 00 FE FF is taken as UTF-32, and one that starts with
+FF FE or FE FF as UTF-16. A file with no mark is read as UTF-32 and then
+as UTF-16, each little-endian and then big-endian. In each encoding the
+lines are split on that encoding's line feed. Empty lines and lines of a
+lone carriage return at the top are skipped. The first line that is not
+blank then has its trailing carriage return dropped. If it holds only
+printable ASCII characters and tabs, the file is taken as that encoding.
+A file of blank lines only in one of these encodings is also taken as
+that encoding when it holds at least one line feed. A file taken as
+UTF-32 is refused as UTF-32, not as UTF-16. A UTF-16 or UTF-32 file the
+rule does not take is read as UTF-8, and a NUL byte in it meets the byte
+error. The field count of a row reads `#` as data and a quoted cell
+holding a line break as one cell, as the read does. A `submitted` stamp
+may carry fractional seconds.
 
 **Errors.** Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class

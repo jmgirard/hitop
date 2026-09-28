@@ -252,13 +252,42 @@ hand: <code><a href="../reference/read_form_responses.html">read_form_responses(
 file in it, file by file in path order, and each file’s rows in its own
 order. Every file must hold the same item columns in the same order, so
 read each form’s files in a call of their own.</p>
+<p>A file can also hold answer columns, which hold the answers to
+questions of your own, each named <code>q_</code> and then the
+question’s name, such as <code>q_age</code>.
+<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> accepts them anywhere after
+<code>submitted</code> and returns them after the item columns. They
+come in the order the reader first meets them, with the files in path
+order and each file read from left to right. Each answer column is
+character, as written, and a blank cell is <code>NA</code>. Files that
+hold different answer columns read together, and a row from a file
+without a column holds <code>NA</code> in it. The answer columns do not
+enter the check that every file holds the same item columns. After
+<code>q_</code>, a name must hold a lower-case letter and then up to 29
+lower-case letters, digits or underscores. The reader stops with an
+error that names the file and the column when a name does not. The
+reader does not convert an answer, so turn a number answer into a number
+yourself:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># The download above with an answer column added, as a sheet would hold it.</span></span>
+<span><span class="va">lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">path</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">",q_age"</span><span class="op">)</span></span>
+<span><span class="va">lines</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">",34"</span>, <span class="st">","</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">answers_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="va">lines</span>, <span class="va">answers_file</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">with_answers</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">answers_file</span><span class="op">)</span></span>
+<span><span class="va">with_answers</span><span class="op">$</span><span class="va">q_age</span></span>
+<span><span class="co">#&gt; [1] "34" NA</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="va">with_answers</span><span class="op">$</span><span class="va">q_age</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 34 NA</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="score-it">5. Score it<a class="anchor" aria-label="anchor" href="#score-it"></a>
 </h2>
 <p>Pass the item columns to the scoring function for the instrument. For
 the HiTOP-BR that is <code><a href="../reference/score_hitopbr.html">score_hitopbr()</a></code>:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"^hitopbr_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">responses</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/score_hitopbr.html">score_hitopbr</a></span><span class="op">(</span><span class="va">responses</span>, items <span class="op">=</span> <span class="va">items</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
@@ -344,7 +373,7 @@ and a confirmed send still goes to the completion URL.</p>
 <p>The download then reads as above, with <code>prolific_study</code>
 and <code>prolific_session</code> filled. The file below is one the page
 saved under such a link, with the Prolific ID as the participant:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-hitopbr-prolific.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
 <span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="va">responses</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant"</span>, <span class="st">"prolific_study"</span>, <span class="st">"prolific_session"</span><span class="op">)</span><span class="op">]</span></span>

@@ -4,6 +4,18 @@
 
 ### New features
 
+- **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+  reads answer columns named `q_`.** A column after `submitted` whose
+  name starts with `q_`, such as `q_age`, is read as the answer to a
+  researcher’s own question. The result places these columns after the
+  item columns, as character with a blank cell as `NA`, in the order the
+  reader first meets them. Files with different answer columns read
+  together, with `NA` where a file lacks a column, and the answer
+  columns do not enter the check that every file holds the same item
+  columns. A name that starts with `q_` and does not match
+  `^q_[a-z][a-z0-9_]{0,29}$` is an error naming the file and the column.
+  A file with no column whose name starts with `q_` reads as before.
+
 - **hitop-form can show the researcher’s consent text before the form.**
   The link builder gains a “Consent text” box. A link with text there
   carries a `consent` field, and the page shows the text as plain text
