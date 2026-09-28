@@ -24,8 +24,9 @@
   the browser. Its first row names the columns `list`, `name`, `text` and
   `type`, and optionally `options`, `required`, `min` and `max`. Each
   further row is one question, with its options separated by `|`. The
-  builder refuses a file with a fault and names the fault, with its row and
-  column when the fault is in one cell. "Download these questions" saves
+  builder refuses a file with a fault and names the fault. A fault in one
+  cell is named by its row and column, or by its row and field number in the
+  header row or past the last column. "Download these questions" saves
   the editor's questions as such a file, and "Download a template" saves one
   with an example question of each type.
 

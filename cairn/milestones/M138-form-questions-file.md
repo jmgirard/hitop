@@ -53,6 +53,8 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 - 2026-09-28: T2 done. link.html gains "Load questions from a file" with its refusal and status lines. The new spec link-questions-file.spec.js (LF1 to LF5) passes 39 tests. Planted defects turned LF1, LF4 and LF5 red: untrimmed fields, and a fetch during the load.
 - 2026-09-28: T3 done. link.html gains "Download a template" and "Download these questions" (LF6 to LF8), with the refusals of M138-D1. The file, layout and link specs pass (162 tests). A planted LF line end turned LF6 and LF7 red. The phone layout has no sideways scroll at 375 px.
 - 2026-09-28: T4 done. The hitop-form README gains "Write your questions in a spreadsheet" and a test-table row for the new spec. The online-collection article gains a paragraph in "Your own questions", and NEWS gains an entry.
+- 2026-09-28: claim audit: 71 claims read, 8 corrected — hitop NEWS.md, vignettes/articles/online-collection.Rmd, hitop-form README.md, form.js, tests/link-questions-file.spec.js
+- 2026-09-28: the [O] reader's one re-read passed 6 of the 8 corrections. NEWS and the article still left out a cell past the last column, and the reader's own wording was applied to both. The full hitop-form suite passes locally (630 tests). cairn_validate exits 0.
 
 ## Decisions
 

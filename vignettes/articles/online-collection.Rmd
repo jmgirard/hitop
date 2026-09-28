@@ -398,8 +398,9 @@ further row is one question. `list` is `before` or `after`, and `type` is
 cell, separated by `|`, such as `Phone|Tablet|Computer`. Save the file as
 "CSV UTF-8" and choose it under "Load questions from a file". The builder
 reads the file in your browser and sends it nowhere. It refuses a file with
-a fault and names the fault, with its row and column when the fault is in
-one cell. "Download these
+a fault and names the fault. A fault in one cell is named by its row and
+column, or by its row and field number in the header row or past the last
+column. "Download these
 questions" saves the builder's questions in the same form. The hitop-form
 README's section
 [Write your questions in a spreadsheet](https://github.com/jmgirard/hitop-form#write-your-questions-in-a-spreadsheet)
