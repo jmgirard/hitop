@@ -7,7 +7,7 @@
 - **Principles touched:** GP3, IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page and its link builder
-- **Branch/PR:** `m134-form-link-loose-ends`; companion: /Users/jmgirard/github/hitop-form m134-form-link-loose-ends
+- **Branch/PR:** `m134-form-link-loose-ends`; companion: /Users/jmgirard/github/hitop-form m134-form-link-loose-ends https://github.com/jmgirard/hitop-form/pull/14
 
 ## Goal
 
