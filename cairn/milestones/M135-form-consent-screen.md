@@ -45,7 +45,7 @@ A study link's `consent` field holds the researcher's consent text. The page sho
 - [x] T2: In `runForm()`, add the consent screen and the declined screen before `start()`. Build both with the `el()` helper, so every string goes through `textContent`. Move focus to the screen heading, as the start screen does. Draw the declined screen before the page goes to `completeDeclined`, as D-072(b) orders the sent screen. Write the walk and network tests of AC1 to AC3.
 - [x] T3: In link.html, add a "Consent text" and a "Declined text" `<textarea>` and a decline address field. A one-line input strips line breaks (the M128 lesson). Add the submit checks, the `z` output, the link length as shown today, and `prefill()` from `?z=`. Write the builder tests.
 - [x] T4: Write the row, file and SQL comparisons with and without `consent`, with shuffle off and on.
-- [ ] T5: Write the README section "Show consent text before the form", the consent section of the article, and the NEWS entry.
+- [x] T5: Write the README section "Show consent text before the form", the consent section of the article, and the NEWS entry.
 - [ ] T6: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
 
 ## Work log
@@ -59,6 +59,7 @@ A study link's `consent` field holds the researcher's consent text. The page sho
 - 2026-09-28: T2 done (hitop-form 5650cc5). Consent and declined screens in `runForm()`. Consent spec C4-C6 pass, 45 tests in all. Five planted faults each turned their tests red. Minor amendment: Coverage now maps AC1 to T2 and T3, since AC1's builder-link walk needs the T3 boxes.
 - 2026-09-28: T3 done (hitop-form 8735f43). Builder boxes, checks, `z` output and `z` prefill in link.html. New spec link-consent (K1-K7) passes, and link.spec passes unchanged. Five planted faults each turned their tests red.
 - 2026-09-28: T4 done (hitop-form 74ae796). Consent spec C7 compares the file header, the row keys and the builder SQL with and without consent, with shuffle off and on. Two planted column changes turned them red. Full hitop-form suite: 453 passed.
+- 2026-09-28: T5 done. README section "Show consent text before the form" and the `z` link paragraphs (hitop-form 4095dde), the article's section "Consent text before the form", and the NEWS entry.
 
 ## Decisions
 
