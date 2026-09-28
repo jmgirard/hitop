@@ -40,7 +40,7 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 - [x] T1: In form.js, add `readQuestionsCsv(bytes)`, which decodes with `TextDecoder("utf-8", { fatal: true })`, parses the CSV and maps each row to a question. It passes the result through `checkQuestions()` from M137 and maps each fault to the row and column of the file. Add `writeQuestionsCsv(questions)`.
 - [x] T2: In link.html, add the file control, which reads the file with `File.arrayBuffer()`. Fill the editor on success, and show the refusal otherwise. Write the load, refusal and network tests.
 - [x] T3: Add the two download controls and the round-trip tests.
-- [ ] T4: Write the README section "Write your questions in a spreadsheet", the article paragraph and the NEWS entry.
+- [x] T4: Write the README section "Write your questions in a spreadsheet", the article paragraph and the NEWS entry.
 - [ ] T5: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
 
 ## Work log
@@ -52,6 +52,7 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 - 2026-09-28: T1 done. form.js gains `readQuestionsCsv()`, `writeQuestionsCsv()` and `QUESTION_COLUMNS`, and exports `saveFile()`. `checkQuestions()` gains a `field` option that names the field of a fault. Its default output is unchanged. The three question specs pass (125 tests).
 - 2026-09-28: T2 done. link.html gains "Load questions from a file" with its refusal and status lines. The new spec link-questions-file.spec.js (LF1 to LF5) passes 39 tests. Planted defects turned LF1, LF4 and LF5 red: untrimmed fields, and a fetch during the load.
 - 2026-09-28: T3 done. link.html gains "Download a template" and "Download these questions" (LF6 to LF8), with the refusals of M138-D1. The file, layout and link specs pass (162 tests). A planted LF line end turned LF6 and LF7 red. The phone layout has no sideways scroll at 375 px.
+- 2026-09-28: T4 done. The hitop-form README gains "Write your questions in a spreadsheet" and a test-table row for the new spec. The online-collection article gains a paragraph in "Your own questions", and NEWS gains an entry.
 
 ## Decisions
 
