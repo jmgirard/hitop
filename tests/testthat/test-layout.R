@@ -601,6 +601,37 @@ test_that("under layout = 'printed' other non-ascending names warn once, naming 
   ), 0L)
 })
 
+test_that("layout = 'printed' works through the deprecated subset argument", {
+  m <- four_scale()
+  printed <- printed_frame(sim_inst(m), m)
+  pos <- seq_along(printed)
+
+  out <- NULL
+  w <- collect_warnings(
+    out <- score_hitopsr(printed, items = pos, subset = m, layout = "printed",
+                         append = FALSE)
+  )
+  expect_length(w, 1L)
+  expect_s3_class(w[[1L]], "hitop_deprecated_subset")
+  expect_identical(
+    out,
+    score_hitopsr(printed, items = pos, module = m, layout = "printed",
+                  append = FALSE)
+  )
+
+  w <- collect_warnings(
+    out <- reliability_hitopsr(printed, items = pos, subset = m,
+                               layout = "printed", omega = FALSE)
+  )
+  expect_length(w, 1L)
+  expect_s3_class(w[[1L]], "hitop_deprecated_subset")
+  expect_identical(
+    out,
+    reliability_hitopsr(printed, items = pos, module = m, layout = "printed",
+                        omega = FALSE)
+  )
+})
+
 test_that("under the default layout the fixture's names still warn with the sort remedy", {
   fx <- shuffled_fixture()
   for (fn in c("score_hitopsr", "reliability_hitopsr")) {
