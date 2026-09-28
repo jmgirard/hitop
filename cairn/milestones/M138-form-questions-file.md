@@ -1,6 +1,6 @@
 # M138: The hitop-form link builder reads the researcher's questions from a spreadsheet file and writes them back as one
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M137
 - **Driving RR:** —
@@ -22,7 +22,7 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 ## Acceptance criteria
 
 - [x] AC1: The file is CSV as RFC 4180 describes it. It is UTF-8, with or without a byte-order mark, with CR LF or LF line ends. A quoted field can hold a comma, a double quote written twice, and a line break. The first row names the columns, in lower case and in any order. The columns `list`, `name`, `text` and `type` are required, and `options`, `required`, `min` and `max` are optional. Each further row is one question, and the questions keep the order of the file within each list. A row whose fields are all blank is skipped. `list` is `before` or `after`, and `type` is one of the four types of M137, both in lower case. `options` holds the option labels separated by `|`, each trimmed. `required` is `yes`, `no` or blank, in any letter case, and blank is `no`. `min` and `max` are blank or match `^-?[0-9]+$` after trimming. Each question then meets the rules of M137 AC1. A load replaces the questions in the editor. Tests load files that hold each of these forms and assert the questions the editor shows.
-- [ ] AC2: The builder refuses a file and names the fault. The faults are a file that is not UTF-8, an empty file, and a file with no question row. For a file that is not UTF-8, the message tells the researcher to save as "CSV UTF-8". They include a missing required column, an unknown or repeated column name, and a row whose field count differs from the header. They include an unclosed quote, a quote inside an unquoted field, and text after a closing quote. They also include a field value outside the rules of AC1 or of M137 AC1. The message names the row and the column. Rows count as records, with the header as row 1. After a refusal, the editor keeps the questions it held. Tests assert the message of each refusal.
+- [ ] AC2: The builder refuses a file and names the fault. The faults are a file that is not UTF-8, an empty file, and a file with no question row. For a file that is not UTF-8, the message tells the researcher to save as "CSV UTF-8". They include a missing required column, an unknown or repeated column name, and a row whose field count differs from the header. They include an unclosed quote, a quote inside an unquoted field, and text after a closing quote. They also include a field value outside the rules of AC1 or of M137 AC1. The message names where the fault lies. A file that is not UTF-8, an empty file and a file with no question row name no row. A fault in the header row names row 1, and the field number of the field at fault or the missing column. Any other fault this criterion lists names its row, and the column of the field at fault, the column that has no field, or the field number of a field past the last column. Rows count as records, with the header as row 1. After a refusal, the editor keeps the questions it held. Tests assert the message of a file for each fault this criterion lists.
 - [ ] AC3: "Download these questions" writes a UTF-8 file with a byte-order mark and CR LF line ends. The file has the columns in the order of AC1 and one row per question. It writes `required` as `yes` or `no`. Loading that file fills the editor with the same questions, compared after the defaults of M137. "Download a template" writes a file of the same form with one example question of each type, and loading it gives four questions. Tests run both round trips. The questions cover each type, `required: true` and a negative `min`. A text and an option label hold a comma, a double quote and non-ASCII text.
 - [x] AC4: Loading a file makes no network request. A test records the requests while it loads a file and asserts that none is made.
 - [ ] AC5: The README section and the article paragraph each state the columns and the option separator `|`. They also state the "CSV UTF-8" save choice and that the file stays in the browser. NEWS names the controls. The hitop-form suite passes in its CI. In hitop, `devtools::check()` gives 0 errors, 0 warnings and 0 notes, and `cairn_validate` exits 0.
@@ -30,8 +30,8 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 ## Coverage
 
 - AC1 → T1, T2
-- AC2 → T1, T2
-- AC3 → T3
+- AC2 → T1, T2, T6
+- AC3 → T3, T6
 - AC4 → T2
 - AC5 → T4, T5
 
@@ -42,6 +42,7 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 - [x] T3: Add the two download controls and the round-trip tests.
 - [x] T4: Write the README section "Write your questions in a spreadsheet", the article paragraph and the NEWS entry.
 - [x] T5: Run the full hitop-form suite locally, hitop `check()` and `cairn_validate`. The hitop-form PR and its CI come at the merge step of /milestone-review.
+- [x] T6: After review pass 1: give one LF6 option label a comma, a double quote and non-ASCII text together. Add LF4 probes for a quote fault in the header row and in a field past the last column. Run the full hitop-form suite again.
 
 ## Work log
 
@@ -58,10 +59,17 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 - 2026-09-28: T5 done. hitop `check()` gives 0 errors, 0 warnings and 0 notes on 37f2f6b6, and `document()` leaves no diff. Minor amendment: T5 now leaves the hitop-form PR and its CI to the merge step of review, because the git model opens a PR only after approval. Status set to review.
 - 2026-09-28: review pass 1 returned the milestone at step 3 (defect return 1). AC3 fails: no LF6 option label holds a comma, a double quote and non-ASCII text together. AC1 and AC4 pass, and AC5 waits for the hitop-form CI at the merge step. Status set to in-progress.
 - 2026-09-28: amendment return: AC2 — "The message names the row and the column." The whole-file faults have no row. Header and extra-field faults are named by field number.
+- 2026-09-28: implement resumed on m138-form-questions-file in both checkouts. Both still contain their `origin/main`.
+- 2026-09-28: re-audit: AC2 (full) — the first proposed wording failed for a name used twice, a short row and the 51-question fault. No probe covers the header or past-last-column quote faults. The reader proposed the wording adopted at the mini gate.
+- 2026-09-28: re-audit: AC2 (full) — "Any other fault" covered a failed file read and the 51-question refusal named in a no-row sentence. M138-D1 overstated trimming. Also noted: a UTF-16 file without a mark gets no "CSV UTF-8" hint. Only the first missing column is named, and a name used twice is named in list order. Jeff chose to narrow both sentences.
+- 2026-09-28: amendment return: AC2 — "The message names where the fault lies. A file that is not UTF-8, an empty file and a file with no question row name no row. A fault in the header row names row 1, and the field number of the field at fault or the missing column. Any other fault this criterion lists names its row, and the column of the field at fault, the column that has no field, or the field number of a field past the last column." The last sentence became "Tests assert the message of a file for each fault this criterion lists." This line executes the return logged at review, and it is the same return.
+- 2026-09-28: minor amendment: T6 added for the AC3 test fix and two LF4 probes. Coverage maps AC2 and AC3 to T6. The probes are a task, bound by no criterion (Jeff's choice at the mini gate).
+- 2026-09-28: T6 done in hitop-form f9834e2. The LF6 label `Café, "au" lait` holds a comma, a double quote and non-ASCII text. LF4 gains an unclosed quote in the header row and a quote in field 9 past the last column. A planted `field ${k}` turned both new probes and two header probes red on the field number. The full hitop-form suite passes locally (632 tests). The branch adds no R code since the check on 65dec017. The only new prose is the test file's header comment, so the earlier claim audit stands. Status set to review.
 
 ## Decisions
 
 - M138-D1 (2026-09-28, question gate): The reader trims every field of the file before it reads it, header cells included. A hidden space at either end of a cell then does not stop a load. "Download these questions" runs the check of "Make the link" and refuses a faulty editor with the message of that check. It also refuses an empty editor. Every file it writes therefore loads back.
+- M138-D2 (2026-09-28, AC2 amendment gate, corrects M138-D1): The reader trims every field once its quotes are read. A space outside the quotes of a quoted field is text outside them, and the file is refused as AC2 says. M138-D1's sentence that a space at either end of a cell does not stop a load holds for unquoted cells only.
 
 ## Review
 
