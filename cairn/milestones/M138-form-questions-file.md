@@ -1,13 +1,13 @@
 # M138: The hitop-form link builder reads the researcher's questions from a spreadsheet file and writes them back as one
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M137
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the link builder of the deployed form page and the package's article
-- **Branch/PR:** —
+- **Branch/PR:** m138-form-questions-file, companion: /Users/jmgirard/github/hitop-form m138-form-questions-file
 
 ## Goal
 
@@ -37,7 +37,7 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 
 ## Tasks
 
-- [ ] T1: In form.js, add `readQuestionsCsv(bytes)`, which decodes with `TextDecoder("utf-8", { fatal: true })`, parses the CSV and maps each row to a question. It passes the result through `checkQuestions()` from M137 and maps each fault to the row and column of the file. Add `writeQuestionsCsv(questions)`.
+- [x] T1: In form.js, add `readQuestionsCsv(bytes)`, which decodes with `TextDecoder("utf-8", { fatal: true })`, parses the CSV and maps each row to a question. It passes the result through `checkQuestions()` from M137 and maps each fault to the row and column of the file. Add `writeQuestionsCsv(questions)`.
 - [ ] T2: In link.html, add the file control, which reads the file with `File.arrayBuffer()`. Fill the editor on success, and show the refusal otherwise. Write the load, refusal and network tests.
 - [ ] T3: Add the two download controls and the round-trip tests.
 - [ ] T4: Write the README section "Write your questions in a spreadsheet", the article paragraph and the NEWS entry.
@@ -48,7 +48,11 @@ A researcher writes the questions of a study in a spreadsheet and saves it as a 
 - 2026-09-28: created by /milestone-plan. Jeff asked at the plan gate for the questions to come from a spreadsheet file that researchers can make.
 - 2026-09-28: criteria audit ran in full mode (user-facing tier) on a fresh [O] reader. It returned 3 findings, all fixed before the commit: the round-trip rules, the `required` value written, and the CSV grammar gaps.
 - 2026-09-28: plan chose CSV over `.xlsx`, because the page reads CSV with no library. Falsified by researchers who cannot save a spreadsheet as "CSV UTF-8".
+- 2026-09-28: implement started. Branch m138-form-questions-file cut in hitop and in the companion hitop-form. Question gate: Jeff chose to trim every cell and to refuse a download of a faulty or empty editor (M138-D1).
+- 2026-09-28: T1 done. form.js gains `readQuestionsCsv()`, `writeQuestionsCsv()` and `QUESTION_COLUMNS`, and exports `saveFile()`. `checkQuestions()` gains a `field` option that names the field of a fault. Its default output is unchanged. The three question specs pass (125 tests).
 
 ## Decisions
+
+- M138-D1 (2026-09-28, question gate): The reader trims every field of the file before it reads it, header cells included. A hidden space at either end of a cell then does not stop a load. "Download these questions" runs the check of "Make the link" and refuses a faulty editor with the message of that check. It also refuses an empty editor. Every file it writes therefore loads back.
 
 ## Review
