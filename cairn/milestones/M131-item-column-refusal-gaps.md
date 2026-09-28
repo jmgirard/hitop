@@ -109,7 +109,7 @@ Evidence gathered 2026-09-27 on branch head c9d5c146, which contains main (cde67
 - AC6: the added `items` roxygen lines are byte-identical in the six `R/score_*.R` and `R/reliability_*.R` files (same md5), and `validity_pid5()` inherits them (`man/validity_pid5.Rd` names `labelled_spss`). They name the pre-2.0 `labelled_spss` class and its set-to-`NA` tip, the blank declared value, and the refusal of text that is not valid UTF-8. The NEWS bullet states the same changes and the mixed-value display. The backing tests: blank at `:806`, old class and tip at `:876` and `:898`, UTF-8 at `:997`, Latin-1 at `:1038`, display at `:745`. `devtools::document()` made no diff.
 
 Consistency gate, 2026-09-27:
-- `cairn_validate.py`: exit 0, all checks PASS. Two advisory WARNs (dangling D-001 to D-012 tokens, and `schmukle2026.md` provenance) are older than this branch.
+- `cairn_validate.py`: exit 0, all checks PASS. Two advisory WARNs (dangling tokens for the legacy decisions in DESIGN.md, and `schmukle2026.md` provenance) are older than this branch.
 - `cairn_impact.py`: skipped. The branch changes no `DESIGN.md` principle.
 - `devtools::document()`: no diff. `pkgdown::check_pkgdown()`: no problems. README files untouched.
 - NEWS.md: the development bullet states the changes and names no milestone. The branch adds no top-level file.
@@ -129,4 +129,4 @@ Gate triage, 2026-09-27 (Jeff): fix now F1, F2, F3 and F5. Reject F4, F6 and F7 
 - F2 fixed: the six `items` passages and NEWS say "in a UTF-8 session". D-076(b) records it.
 - F3 fixed: the encoding message applies `mark_invisible()`. A new test in `test-nonnumeric-items.R` failed first on the display. After the fix it passed (65 expectations).
 - F5 fixed: both blank-code tests now compare the declared and undeclared columns to the doubles with those cells `NA` (78 expectations each).
-- After the fixes: full suite 966 tests, 23609 expectations, 0 failed. `devtools::document()` rewrote the seven Rd files for F2.
+- After the fixes: full suite 966 tests, 23609 expectations, 0 failed. `devtools::document()` rewrote the seven Rd files for F2. `devtools::check()`: 0 errors, 0 warnings, 0 notes. `cairn_validate.py`: exit 0.
