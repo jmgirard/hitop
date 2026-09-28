@@ -59,6 +59,7 @@ Under "Another site" the builder refuses `id` and `participantId`, and the form 
 - 2026-09-28: re-audit: AC4 (full) — nothing. The reader noted T4's "before Start", fixed as a minor task edit.
 - 2026-09-28: amendment (mini gate, Jeff): AC4's "Start button" became "Begin button" in both places, because the page's button is labelled Begin and no Start button exists.
 - 2026-09-28: T5 done. hitop-form README: the "Another site" paragraph, an identifier paragraph under "What the participant sees", and the link, guard and recruit rows of the test table. `tests/fixtures/README.md:13` names Prolific as the recruiting site, and `git grep -n "Recruit through Prolific"` in hitop-form returns no line. hitop: one NEWS entry under "Improvements and fixes", and one sentence in the online-collection article's "Another site" paragraph (added beyond the task, so the article states the refusal too).
+- 2026-09-28: claim audit: 60 claims read, 5 corrected — hitop-form README.md, form.js, tests/recruit.spec.js. Corrected: the Another-site sentence's cause, the U+FFFD count ("one or more"), two unsupported "paste" claims, and the P13 header and README row (two uppercase hosts, saved screen after a walk with no store). Re-read once by the same reader: all right.
 
 ## Decisions
 
