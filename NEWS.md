@@ -7,7 +7,7 @@
   site" menu replaces the "Recruit through Prolific" box and offers None,
   Prolific, SONA, CloudResearch Connect and Another site. A site other than
   Prolific puts a `participantParam` field in the link, naming the address
-  parameter the site fills: `id` for SONA, whose link then ends in
+  parameter that carries the identifier: `id` for SONA, whose link then ends in
   `&id=%SURVEY_CODE%`, `participantId` for Connect, or a typed name. The page
   takes the participant identifier from that parameter, and asks on its
   start screen when the value is missing, blank, or an unfilled `%…%` or

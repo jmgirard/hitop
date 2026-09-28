@@ -233,10 +233,10 @@ responses[, c("participant", "prolific_study", "prolific_session")]
 
 ## The SONA and CloudResearch Connect routes
 
-Other recruiting sites also put each participant's identifier into the
-study link's address, under a parameter of their own. Choose the site in the
-link builder's "Recruiting site" menu and leave the participant field
-empty. The link then names the parameter in its `participantParam` field,
+Other recruiting sites can also pass each participant's identifier to the
+page in the study link's address, under a parameter of their own. Choose
+the site in the link builder's "Recruiting site" menu and leave the
+participant field empty. The link then names the parameter in its `participantParam` field,
 and the page takes the participant identifier from it. When the address
 carries no value there, a blank one, or a placeholder the site did not fill,
 the page asks for the identifier on its start screen. No column is added:
@@ -257,10 +257,13 @@ must be loaded with the participant's survey code in place of `XXXX`
 Give that address in the builder's "Completion URL" field with
 `{participant}` in place of `XXXX`. The page replaces `{participant}` with
 the participant's identifier before it sends the participant there after a
-confirmed send, and before it links there after a saved file.
+confirmed send, and before it links there after a saved file (unless the
+builder's "Completion URL after a saved file" names another address, which
+takes `{participant}` the same way).
 
 That completion URL carries a key specific to your study. SONA notes that a
-participant can read it, and can use it to try other survey codes
+participant can read it, because their browser loads the URL, and can use
+it to try other survey codes and so grant credit to other participants
 ([Security Considerations](https://www.sona-systems.com/researcher/security-considerations/)).
 Here the address sits inside the study link, so a participant can read the
 key before they finish, not only at the end. SONA names its server-side
