@@ -50,7 +50,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - [x] T7: Write the README section "Ask your own questions", the questions section of the article, and the NEWS entry.
 - [x] T8: Run the full hitop-form suite locally. Its CI runs on the companion PR that `/milestone-review` opens after approval. Run hitop `check()` and `cairn_validate`.
 - [x] T9: Widen the page's line-break set at `form.js:291` to Unicode's mandatory breaks by adding U+0085, vertical tab and form feed. Add page probes in `tests/questions.spec.js` and editor probes in `tests/link-questions.spec.js` for a text and an option label (review finding O6).
-- [ ] T10: If a `number` question has a `min` of 0 or more, give its input `inputmode="numeric"`, and otherwise give it none. An iPhone participant can then type a minus sign. Test both cases (review finding O1).
+- [x] T10: If a `number` question has a `min` of 0 or more, give its input `inputmode="numeric"`, and otherwise give it none. An iPhone participant can then type a minus sign. Test both cases (review finding O1).
 - [ ] T11: If a link holds consent text and questions, the `encodeLink()` refusal names both (B1). The editor's bound refusal quotes the digits the researcher typed, not `Number()` of them (O4). Test both messages.
 
 ## Work log
@@ -72,6 +72,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: defect return 1 from review. AC1 failed: the page accepts U+0085, vertical tab and form feed in a question text or option label. Unicode counts each as a line break (finding O6). Jeff chose the fix at the gate, with O1, B1 and O4 fixed in the same round (T9 to T11 added by review send-back). Status set to in-progress.
 - 2026-09-28: implement resumed. Both branches level with `origin/main`, no question open, gate skipped.
 - 2026-09-28: T9 done in hitop-form 8248b27. The page's line-break set adds U+0085, vertical tab and form feed. 12 new probes (page and editor, text and option) failed before the fix, and a tab and no-break space stay accepted. The two question specs: 98 passed.
+- 2026-09-28: T10 done in hitop-form 2590d3f. If `min` is 0 or more, a `number` input has `inputmode="numeric"`, and otherwise it has none. QS9 failed before the fix on a negative `min`, a lone `max` and no bound. The screens spec: 20 passed. The README test row names the case.
 
 ## Decisions
 
