@@ -12,9 +12,11 @@
 #    namespace, so the base reader runs with its own internals.
 # 2. It extracts the base ref's tests/testthat/ with `git archive` and runs
 #    test-read_form_responses.R from it, with read_form_responses() replaced
-#    by a wrapper. The wrapper copies each input (a directory, a vector of
-#    files, or a bad argument) to its own folder, records the running test's
-#    name, and then calls the base reader, so the base tests run as they did.
+#    by a wrapper. The wrapper copies each input (a directory or a vector of
+#    files) to its own folder, keeps a bad argument as it is, and stands a
+#    missing path in that folder in for a missing file. It records the
+#    running test's name and then calls the base reader, so the base tests
+#    run as they did.
 # 3. It reads each copied input with both readers. Two results must hold
 #    identical columns, except that the working tree's `form_build` must
 #    equal format() of the base's. Two refusals must hold the same condition

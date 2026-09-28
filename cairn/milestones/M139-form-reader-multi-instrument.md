@@ -1,6 +1,6 @@
 # M139: read_form_responses() reads a file whose item columns span two or more instruments
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M136
 - **Driving RR:** —
@@ -43,7 +43,7 @@
 - [x] T2: In `R/read_form_responses.R`, replace the one-stem rule with the grouping of AC1. Add the `instrument`, `form_build` and `item_order` rules of AC2 and AC3, and the refusals of AC4.
 - [x] T3: Write the tests of AC1 to AC4 with fixtures written by rule in `tests/testthat/fixtures/`. Plant each refusal and show it red before trusting its green. Write the comparison script of AC5 and record its result in the work log.
 - [x] T4: Update the roxygen help and run `devtools::document()`. Update the two articles and write the NEWS entry.
-- [ ] T5: Run `devtools::check()` and `cairn_validate`.
+- [x] T5: Run `devtools::check()` and `cairn_validate`.
 
 ## Work log
 
@@ -57,6 +57,9 @@
 - 2026-09-28: T3 AC5 run: `Rscript data-raw/compare_form_reader.R main` ran 226 base tests, captured 270 inputs (73 results, 197 refusals on main), and found every other input the same. It exits 1 on two plants: base ref 448db9d0, and an empty `replaced` list.
 - 2026-09-28: AC5 exceptions, both with the branch message "holds an instrument cell that differs from the item columns' stems in file order." and the line `Response row 1: instrument "hitopbr", item columns "hitopbr pid5bf".`: test "item columns of two stems are refused naming the stems", and test "a two-stem file with an item_order of 1 1 is refused for the stems, not the cell".
 - 2026-09-28: T4 done. The help page gains a multi-instrument paragraph, the `form_build` type and the `item_order` groups. The online-collection article gains the section "Several instruments in one file", with a chunk that scores each instrument by stem, and its two-form sheet paragraph now names the `instrument` cell as the fault. The modules article states the type and the shape. NEWS gains one entry and its first reader entry now says character. Both articles render against an installed branch. `hitop-form` at d5d91ac has no `instruments` field, so the docs say the page does not write the shape yet.
+- 2026-09-28: T5 done. `devtools::check()`: 0 errors, 0 warnings, 0 notes. `cairn_validate` exits 0, with 24 older advisory warnings. Reader tests after the audit fixes: 0 failed, 1832 expectations.
+- 2026-09-28: claim audit: 52 claims read, 4 corrected — R/read_form_responses.R (two code comments that said the page writes several stems), tests/testthat/test-read_form_responses.R (section comment), data-raw/compare_form_reader.R (what the wrapper copies). On the one re-read, two held and two took a further wording fix.
+- 2026-09-28: status set to review.
 
 ## Decisions
 

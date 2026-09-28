@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M139 | read_form_responses() reads a file whose item columns span two or more instruments | in-progress | M136 | normal | milestones/M139-form-reader-multi-instrument.md |
+| M139 | read_form_responses() reads a file whose item columns span two or more instruments | review | M136 | normal | milestones/M139-form-reader-multi-instrument.md |
 | M140 | A study link can field two or more instruments in one hitop-form session | planned | M137, M139 | normal | milestones/M140-form-multi-instrument.md |
 | M138 | The hitop-form link builder reads the researcher's questions from a spreadsheet file and writes them back as one | done | M137 | normal | milestones/archive/M138-form-questions-file.md |
 | M137 | A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns | done | M135, M136 | normal | milestones/archive/M137-form-custom-questions.md |

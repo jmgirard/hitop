@@ -633,8 +633,8 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   item_cols <- setdiff(rest, c(form_optional_columns, answer_cols))
 
   # An item column is named by the instrument's stem, an underscore and the
-  # item number. A file holds one group of columns per instrument, in the
-  # order the page gave the instruments, so the checks below read the groups.
+  # item number. A file holds one group of columns per instrument, the groups
+  # in file order, so the checks below read the groups.
   named <- grepl(item_column_pattern, item_cols)
   if (!all(named)) {
     cli::cli_abort(
@@ -664,10 +664,10 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     )
   }
 
-  # The page writes the stems, in file order and joined by single spaces,
-  # into every `instrument` cell, so a cell that differs, blank or padded
-  # included, is a hand edit that would leave the column disagreeing with the
-  # items beside it.
+  # The page writes the stem into every `instrument` cell, and a file of
+  # several instruments holds the stems in file order, joined by single
+  # spaces. So a cell that differs, blank or padded included, is a hand edit
+  # that would leave the column disagreeing with the items beside it.
   if (length(stems) >= 1L) {
     expected <- paste(stems, collapse = " ")
     differs <- raw$instrument != expected

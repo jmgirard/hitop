@@ -2603,9 +2603,9 @@ test_that("a q_ name that appears twice meets the repeated-column refusal", {
 
 # ---- Files whose item columns span two or more instruments ----------------
 #
-# A study link that fields several instruments in one session writes one
-# group of item columns per instrument, in link order. The `instrument` cell
-# holds the stems in that order joined by single spaces, and `form_build` one
+# A file of several instruments (a shape the page does not yet write) holds
+# one group of item columns per instrument. The `instrument` cell
+# holds the stems in the order of the groups, joined by single spaces, and `form_build` one
 # date per stem in the same order. Under a random order, `item_order` holds
 # one group per stem joined by " | ". The reader returns `form_build` as
 # character for every file, holding each row's dates as written.
