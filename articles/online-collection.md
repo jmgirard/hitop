@@ -330,7 +330,9 @@ Connect’s `assignmentId` and `projectId`, which that page says need not
 be collected, are not recorded.
 
 For another site, choose “Another site” and type the name of the
-parameter that site adds to the address.
+parameter that site adds to the address. The builder refuses `id` and
+`participantId` there, because the SONA and Connect choices write those
+names.
 
 ## Who holds the data
 
