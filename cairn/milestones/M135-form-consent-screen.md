@@ -1,13 +1,13 @@
 # M135: A study link can carry the researcher's consent text, which hitop-form shows before the form with an agree and a decline choice
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP1, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page, its link builder and the package's article
-- **Branch/PR:** —
+- **Branch/PR:** `m135-form-consent-screen`; companion: /Users/jmgirard/github/hitop-form m135-form-consent-screen
 
 ## Goal
 

@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M135 | A study link can carry the researcher's consent text, which hitop-form shows before the form with an agree and a decline choice | planned | — | normal | milestones/M135-form-consent-screen.md |
+| M135 | A study link can carry the researcher's consent text, which hitop-form shows before the form with an agree and a decline choice | in-progress | — | normal | milestones/M135-form-consent-screen.md |
 | M136 | read_form_responses() reads the researcher's own answer columns, named with a q_ prefix, and returns them after the item columns | planned | — | normal | milestones/M136-form-reader-custom-columns.md |
 | M137 | A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns | planned | M135, M136 | normal | milestones/M137-form-custom-questions.md |
 | M138 | The hitop-form link builder reads the researcher's questions from a spreadsheet file and writes them back as one | planned | M137 | normal | milestones/M138-form-questions-file.md |
