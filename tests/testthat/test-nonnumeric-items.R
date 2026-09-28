@@ -816,8 +816,12 @@ test_that("an SPSS column declaring a blank value missing scores as the undeclar
       declared[[col]] <- haven::labelled_spss(values, na_values = blank_codes[[blank]])
       undeclared <- base
       undeclared[[col]] <- haven::labelled_spss(values)
-      expect_identical(catch_error(run_case(case, declared)),
-                       catch_error(run_case(case, undeclared)), info = info)
+      # The blank cells score as NA, so both columns score as the doubles do.
+      missing <- base
+      missing[[col]][c(2, 4)] <- NA
+      expected <- run_case(case, missing)
+      expect_identical(catch_error(run_case(case, declared)), expected, info = info)
+      expect_identical(catch_error(run_case(case, undeclared)), expected, info = info)
     }
   }
 })
@@ -958,8 +962,12 @@ test_that("an old-class SPSS column declaring a blank value missing scores as th
       declared[[col]] <- old_spss(values, na_values = blank_codes[[blank]])
       undeclared <- base
       undeclared[[col]] <- old_spss(values)
-      expect_identical(catch_error(run_case(case, declared)),
-                       catch_error(run_case(case, undeclared)), info = info)
+      # The blank cells score as NA, so both columns score as the doubles do.
+      missing <- base
+      missing[[col]][c(2, 4)] <- NA
+      expected <- run_case(case, missing)
+      expect_identical(catch_error(run_case(case, declared)), expected, info = info)
+      expect_identical(catch_error(run_case(case, undeclared)), expected, info = info)
     }
   }
 })
@@ -1032,6 +1040,22 @@ test_that("a bytes-marked value that is not valid UTF-8 is refused", {
     data[[col]] <- c("1", value, rep("1", nrow(data) - 2L))
     expect_encoding_refusal(catch_error(run_case(case, data)), col, "1<a0>",
                             case_label(case))
+  }
+})
+
+test_that("a value that is not valid UTF-8 shows a valid invisible character by its code point", {
+  skip_if_not(l10n_info()$`UTF-8`, "needs a UTF-8 session")
+  # A non-breaking space (bytes c2 a0), then "1", then the invalid byte a0.
+  value <- bytes_string(0xc2, 0xa0, 0x31, 0xa0)
+  for (case in nonnumeric_cases) {
+    col <- names(case$data)[[1]]
+    data <- case$data
+    data[[col]] <- c("1", value, rep("1", nrow(data) - 2L))
+    e <- catch_error(run_case(case, data))
+    expect_encoding_refusal(e, col, "<U+00A0>1<a0>", case_label(case))
+    if (!inherits(e, "hitop_nonnumeric_items")) next
+    expect_false(grepl(intToUtf8(0xA0), conditionMessage(e), fixed = TRUE),
+                 info = case_label(case))
   }
 })
 

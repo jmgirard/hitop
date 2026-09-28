@@ -90,6 +90,8 @@ The four item-column inputs M110 left open get the refusal or score D-068 and D-
 - 2026-09-27: claim audit: 37 claims read, 3 corrected — tests/testthat/test-nonnumeric-items.R, R/util.R, NEWS.md
 - 2026-09-27: the claim audit's [O] reader re-read the 3 corrections once and found all three true. Full suite: 23466 expectations, 0 failed. Status set to review.
 - 2026-09-27: review started. No PR exists, and the branch contains main. AC1 to AC6 verified, and the consistency gate passed. The prior-review and blame-history lenses found nothing. The diff-bug lens is still running (checkpoint).
+- 2026-09-27: review gate. Jeff chose to fix F1, F2, F3 and F5 and reject F4, F6 and F7. The fixes are committed, and the suite passed. The `devtools::check()` rerun is pending (checkpoint).
+- 2026-09-27: step-7 approval: m131-item-column-refusal-gaps approved for merge
 
 ## Decisions
 <!-- owner: implement / review · append-only; milestone-local. -->
@@ -121,3 +123,10 @@ Independent review, 2026-09-27. The [S] prior-review lens found no regression of
 - F5: the two blank-code tests compare two calls. Two calls that fail the same way also pass them. Proposed: fix now. Assert that the declared call returns a result equal to the column with those cells as `NA`.
 - F6: an old-class SPSS factor column shows its code unquoted. Proposed: reject, because the input is contrived and the refusal is right.
 - F7: `item_values()` does not unclass the old class. It works today because base `[` and `as.numeric()` drop the class. Proposed: reject, because no failure reproduces and the parse path took that class before this branch.
+
+Gate triage, 2026-09-27 (Jeff): fix now F1, F2, F3 and F5. Reject F4, F6 and F7 for the reasons above. Merge approved after the fixes, with no second look.
+- F1 fixed: the NEWS bullet now says some Latin-1 text crashed, with the tested example. D-076 narrows D-075's Context.
+- F2 fixed: the six `items` passages and NEWS say "in a UTF-8 session". D-076(b) records it.
+- F3 fixed: the encoding message applies `mark_invisible()`. A new test in `test-nonnumeric-items.R` failed first on the display. After the fix it passed (65 expectations).
+- F5 fixed: both blank-code tests now compare the declared and undeclared columns to the doubles with those cells `NA` (78 expectations each).
+- After the fixes: full suite 966 tests, 23609 expectations, 0 failed. `devtools::document()` rewrote the seven Rd files for F2.

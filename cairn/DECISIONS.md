@@ -8,6 +8,12 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-076 (2026-09-27): The encoding refusal is stated for a UTF-8 session, its message marks invisible characters, and D-075's Latin-1 context is narrowed (annotates D-075 Context, (a) and (d))
+
+**Context:** The M131 review found three gaps in D-075. Its Context says a value marked Latin-1 stopped with a base R error. Only some such values did, and others were refused normally. Decision (a) states the UTF-8 refusal with no locale. Outside a UTF-8 session, the same bytes are refused as text or read as Latin-1. The encoding message did not apply the code-point display of (d).
+
+**Decision:** (a) D-075's Context is read as "some values marked Latin-1 stopped with a base R error". (b) D-075(a) holds in a UTF-8 session, and the docs and NEWS say so. Other locales stay outside M131's scope, as its plan recorded. (c) D-075(d) extends to the encoding refusal: a valid invisible character in a value that is not valid UTF-8 shows as `<U+XXXX>`. Chosen by Jeff at the 2026-09-27 M131 review gate. A doc statement that fails in some locales misleads a user. One display rule for all refusal kinds keeps a hidden character from looking like a plain space.
+
 ### D-075 (2026-09-27): The item-scoring functions refuse text that is not valid UTF-8, refuse the codes of haven's pre-2.0 SPSS class, skip a blank declared code, and show invisible characters inside a value by code point (annotates D-068(a) and D-069(b), (d) and (e))
 
 **Context:** M110 left four inputs open. A value such as `"1"` and a non-breaking space was refused but printed as `"1 "`, so it looked valid. A character SPSS column that declared `""` missing was refused, although a blank cell scores as `NA` anyway. A column of the class haven gave SPSS data before version 2.0, `c("labelled_spss", "labelled")`, passed the check, so its declared codes scored as answers. Text that is not valid UTF-8 stopped with a base R error. The M131 criteria audit found that a value marked Latin-1 also stopped with a base R error.

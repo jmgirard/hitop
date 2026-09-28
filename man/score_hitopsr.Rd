@@ -42,8 +42,9 @@ numbers (blank cells and \code{NA} values count as missing, but the text
 \code{"NA"} is refused). A haven labelled column is read as its plain values.
 Any other column, such as the choice text of an online export or a
 factor, is an error of class \code{hitop_nonnumeric_items}. So is a 64-bit
-integer (\code{integer64}) column, and a column holding text that is not valid
-UTF-8 (text marked Latin-1 is read as its text); convert such text with
+integer (\code{integer64}) column, and, in a UTF-8 session, a column holding
+text that is not valid UTF-8 (text marked Latin-1 is read as its text);
+convert such text with
 \code{iconv()}. So is an SPSS column (\code{haven_labelled_spss}) that holds a
 value it declares missing; turn those codes into \code{NA} with
 \code{haven::zap_missing()} first. A declared value that is blank is not

@@ -382,8 +382,9 @@ validate_item_columns <- function(data, items, caller_items = items,
         cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which it declares missing.")
       },
       encoding = {
-        ## Each invalid byte shown as "<a0>", so the value prints at all.
-        value <- iconv(value, "UTF-8", "UTF-8", sub = "byte")
+        ## Each invalid byte shown as "<a0>", so the value prints at all, and
+        ## each valid invisible character as its code point.
+        value <- mark_invisible(iconv(value, "UTF-8", "UTF-8", sub = "byte"))
         cli::format_inline("{label} is {.cls {cls}} and holds {.val {value}}, which is not valid UTF-8 text.")
       },
       cli::format_inline("{label} is {.cls {cls}}.")
