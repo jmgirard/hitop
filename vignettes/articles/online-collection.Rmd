@@ -391,10 +391,11 @@ lapply(strsplit(days, " "), as.integer)
 
 You can also write the questions in a spreadsheet. In the builder, "Download
 a template" saves a CSV file with one example question of each type. Its
-first row names the columns. The columns `list`, `name`, `text` and `type`
-are required, and `options`, `required`, `min` and `max` are optional. Each
-further row is one question. `list` is `before` or `after`, and `type` is
-`text`, `number`, `choice` or `multi`. `options` holds the options in one
+first row names the columns, in lower case. The columns `list`, `name`,
+`text` and `type` are required, and `options`, `required`, `min` and `max`
+are optional. Each further row is one question. `list` is `before` or
+`after`, and `type` is `text`, `number`, `choice` or `multi`, both in lower
+case. `options` holds the options in one
 cell, separated by `|`, such as `Phone|Tablet|Computer`. Save the file as
 "CSV UTF-8" and choose it under "Load questions from a file". The builder
 reads the file in your browser and sends it nowhere. It refuses a file with
