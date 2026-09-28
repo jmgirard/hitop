@@ -453,10 +453,10 @@ random order, the columns are in
 the order the page showed the items, so this is `layout = "printed"` with the
 descriptor that recorded that order, as in the shuffled Word form above. (A
 file saved under the random order has its columns in instrument order, so it
-takes the default layout, as the first scoring call in this article does.) Name
-the item columns by position here rather than by name: under
-`layout = "printed"` the names carry item numbers out of instrument order, and
-naming them would trip the check that warns of a misordered mapping.
+takes the default layout, as the first scoring call in this article does.) The
+item column names carry the item numbers in the order the page showed them,
+which is the module's `item_order`, so they pass through `items` as they are,
+with no warning.
 
 ```{r}
 form_module <- read_module(
@@ -465,7 +465,7 @@ form_module <- read_module(
 item_cols <- grep("^hitopsr_", names(responses), value = TRUE)
 score_hitopsr(
   responses,
-  items = match(item_cols, names(responses)),
+  items = item_cols,
   module = form_module,
   layout = "printed",
   append = FALSE
