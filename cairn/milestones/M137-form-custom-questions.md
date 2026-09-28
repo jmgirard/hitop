@@ -1,6 +1,6 @@
 # M137: A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M135, M136
 - **Driving RR:** —
@@ -48,7 +48,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - [x] T5: Add the question editor to link.html, its submit checks through `checkQuestions()`, the `?z=` output, and `prefill()`. Write the builder tests of AC5.
 - [x] T6: Save a file from a walk with one question of each type. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader test of AC6.
 - [x] T7: Write the README section "Ask your own questions", the questions section of the article, and the NEWS entry.
-- [ ] T8: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
+- [x] T8: Run the full hitop-form suite locally. Its CI runs on the companion PR that `/milestone-review` opens after approval. Run hitop `check()` and `cairn_validate`.
 
 ## Work log
 
@@ -65,6 +65,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: T8 checks: hitop-form full suite 564 passed. `cairn_validate` exits 0 with 24 advisory warnings.
 - claim audit: 152 claims read, 6 corrected — hitop-form README.md, link.html, tests/fixtures/README.md, tests/link-questions.spec.js, tests/question-screens.spec.js, hitop vignettes/articles/online-collection.Rmd
 - 2026-09-28: claim audit fixes in hitop-form a05f17a and here. The new-table advice now names question names, not any change. The editor gains two line-separator probes (U+2028 in a text and an option). Four wording fixes. The same reader re-read the six: all correct.
+- 2026-09-28: T8 done. `devtools::check()`: 0 errors, 0 warnings, 0 notes. T8's wording changed (minor amendment): the git model opens both PRs at review after approval, so hitop-form CI for AC7 is read at `/milestone-review` step 8. Status set to review.
 
 ## Decisions
 
