@@ -1,13 +1,13 @@
 # M133: A study link can take the participant's identifier from a named address parameter and put it into the completion address, so hitop-form fits SONA and CloudResearch Connect
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3, IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page, its link builder and the package's article
-- **Branch/PR:** —
+- **Branch/PR:** `m133-form-recruiter-param`; companion: /Users/jmgirard/github/hitop-form m133-form-recruiter-param
 
 ## Goal
 
@@ -57,6 +57,8 @@ A study link's `participantParam` field names the address parameter holding the 
 - 2026-09-27: plan gate chose one "Recruiting site" menu over keeping the Prolific checkbox beside a free-text parameter field because the menu writes SONA's name and `%SURVEY_CODE%` ending for the researcher; falsified by researchers of a site outside the menu finding "another site" harder than a plain field.
 - 2026-09-27: plan gate chose the identifier alone over saving a site's further IDs as columns because neither SONA nor Connect requires them and columns change the reader's contract; falsified by a study that must keep Connect's `assignmentId` or `projectId`.
 - 2026-09-27: plan gate chose tests against the documented URL shapes over a live SONA run because a live run needs a SONA study set up and blocks the milestone on it; falsified by a SONA credit grant failing on an address the tests accept.
+- 2026-09-27: implement started. Branch `m133-form-recruiter-param` cut in hitop and hitop-form from their pushed default branches; the step-3 gate was skipped, nothing being open.
+- 2026-09-27: T1 notes written: `sona2026help.md` (five SONA pages) and `cloudresearch2026help.md` (two Connect pages, read in the browser pane after a plain fetch got HTTP 403), with INDEX lines. SONA removes `%SURVEY_CODE%` when the researcher views the URL, so the page sees a blank value there. No Connect page says in those words that Connect adds `participantId` to the project URL, so AC5's Connect clause goes to a mini gate, as T1 states.
 
 ## Decisions
 
