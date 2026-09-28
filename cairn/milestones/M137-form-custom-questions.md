@@ -1,6 +1,6 @@
 # M137: A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M135, M136
 - **Driving RR:** —
@@ -51,7 +51,7 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - [x] T8: Run the full hitop-form suite locally. Its CI runs on the companion PR that `/milestone-review` opens after approval. Run hitop `check()` and `cairn_validate`.
 - [x] T9: Widen the page's line-break set at `form.js:291` to Unicode's mandatory breaks by adding U+0085, vertical tab and form feed. Add page probes in `tests/questions.spec.js` and editor probes in `tests/link-questions.spec.js` for a text and an option label (review finding O6).
 - [x] T10: If a `number` question has a `min` of 0 or more, give its input `inputmode="numeric"`, and otherwise give it none. An iPhone participant can then type a minus sign. Test both cases (review finding O1).
-- [ ] T11: If a link holds consent text and questions, the `encodeLink()` refusal names both (B1). The editor's bound refusal quotes the digits the researcher typed, not `Number()` of them (O4). Test both messages.
+- [x] T11: If a link holds consent text and questions, the `encodeLink()` refusal names both (B1). The editor's bound refusal quotes the digits the researcher typed, not `Number()` of them (O4). Test both messages.
 
 ## Work log
 
@@ -73,6 +73,9 @@ A study link's `questions` field holds the researcher's own questions. The page 
 - 2026-09-28: implement resumed. Both branches level with `origin/main`, no question open, gate skipped.
 - 2026-09-28: T9 done in hitop-form 8248b27. The page's line-break set adds U+0085, vertical tab and form feed. 12 new probes (page and editor, text and option) failed before the fix, and a tab and no-break space stay accepted. The two question specs: 98 passed.
 - 2026-09-28: T10 done in hitop-form 2590d3f. If `min` is 0 or more, a `number` input has `inputmode="numeric"`, and otherwise it has none. QS9 failed before the fix on a negative `min`, a lone `max` and no bound. The screens spec: 20 passed. The README test row names the case.
+- 2026-09-28: T11 done in hitop-form 43a5bbc. `encodeLink()` names consent text and questions together (B1). If a bound fails `Number.isSafeInteger`, the editor passes it on as typed, so the refusal quotes the digits (O4). Before the fix, the both-parts probe and the two long-bound probes failed with the reviewed messages. The consent-only message gains its first test. Full hitop-form suite: 584 passed. A first run had 2 flaky tests in files this branch leaves untouched (guard, recruit), and both passed on retry.
+- claim audit: 29 claims read, 2 corrected — hitop-form tests/questions.spec.js (return round, hitop-form a05f17a..43a5bbc)
+- 2026-09-28: claim audit fix in hitop-form ea117c3. The accepted probe's text now holds a no-break space, as its name says. The same reader re-read both claims: correct. `cairn_validate` exits 0. hitop files outside `cairn/` are unchanged since the clean `check()` of T8. Status set to review.
 
 ## Decisions
 
