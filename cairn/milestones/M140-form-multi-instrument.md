@@ -81,6 +81,8 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - claim audit: 160 claims read, 1 corrected — hitop-form tests/network.spec.js (the walk set now names one export per instrument). The reader counted the claims as about 160 and re-read the corrected one, which passed.
 - 2026-09-28: return work complete, status review. hitop-form full suite 720 of 720. hitop `devtools::test()`: 0 failures, 24,046 passes. `cairn_validate` exits 0 (25 advisory warnings). AC1 and AC7 stay open for review.
 - 2026-09-28: second review pass in progress. AC1 to AC6 evidence recorded, AC1 ticked. AC7, `devtools::check()` and the three reviewers still pending.
+- 2026-09-28: second pass checkpoint. `devtools::check()` 0/0/0, consistency gate clean, 13 findings (G1 to G13), none an AC failure. AC7 open on hitop-form CI.
+- step-7 approval: m140-form-multi-instrument approved for merge, with the companion /Users/jmgirard/github/hitop-form m140-form-multi-instrument first, after the fix-now doc edits (G1, G2, G3, G5, G7).
 
 ## Decisions
 
@@ -158,3 +160,9 @@ Second-pass findings from 3 fresh reviewers ([O] diff-bug, [S] blame-history, [S
 - G11: W1 waits a fixed 1000 ms before it asserts that no screen shows (instruments-walk.spec.js:84).
 - G12: `instruments` beside `instrument: null` is refused as a link with both fields.
 - G13: The notice on the first start screen only (F16) still meets the intent of b0c38a3 and 21a1d1c, which put it before the first answer.
+
+Second-pass gate dispositions (2026-09-28, Jeff at the step-7 gate): fix the docs, then merge.
+
+- Fix now: G1, G2, G3 and G7 in hitop-form 3e7e8ee and in hitop's NEWS.md and article. A probe confirmed G2: `read_form_responses()` refuses rows whose `instrument` order differs from the column groups, and names the row. G5 is fixed on the ROADMAP: the Move clause moved to the `z` link row, whose trigger now names the instrument rows, and the question-screen row has a dated note. hitop-form suite after the fixes: 720 of 720. `pkgdown::check_pkgdown()`: no problems.
+- Follow-up: G4 and G6 are clauses on the `z` link gaps row.
+- Rejected: G8, because M140-D1 is milestone-local, the README states the behavior, and the archive summary names it. G9, because M139 rejected uncapped lists. G10, because the builder's wording is by design (T5). G11, because the loading text backs the wait. G12 is a consistent choice. G13 needs nothing.

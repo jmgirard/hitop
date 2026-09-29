@@ -66,14 +66,20 @@ for a random order: its rows' `item_order` then lists only the module's
 items, and `read_form_responses()` refuses the download. Nothing else in the
 download or in `read_form_responses()` tells the two apart.
 
+A link that lists several instruments is its own form here. If two links
+list the same instruments in a different order and post to one sheet, the
+columns keep the first link's order, and each row's `instrument` cell keeps
+its own. `read_form_responses()` then refuses the download and names the
+first row that differs.
+
 ## 2. Make the study link
 
 Open the page's [link builder](https://jmgirard.github.io/hitop-form/link.html).
 Choose the instrument (and, for a HiTOP-SR module, paste the descriptor
 written by `write_module()`), and name the study. For two or three
 instruments in one session, see
-[Several instruments in one session](#several-instruments-in-one-session). A link builder opened
-from a "Make a study link" button on an instrument's download page arrives
+[Several instruments in one session](#several-instruments-in-one-session).
+A link builder opened from a "Make a study link" button on an instrument's download page arrives
 with that instrument chosen, and one opened with a `c` parameter that
 carries a module arrives with the descriptor pasted in as well. Give a
 participant identifier if the
@@ -227,7 +233,8 @@ to all the instruments. The file has this shape:
   result keeps it as written, so `form_build` is character for every file.
 * Under a random order, the `item_order` cell holds one group per
   instrument, in the same order, joined by a space, a bar and a space. Each
-  group is all of that instrument's item numbers in the order shown. For
+  group is that instrument's item numbers in the order shown, or the
+  module's items for a HiTOP-SR module in the list. For
   two instruments of three and four items, a cell could be
   `2 1 3 | 4 1 3 2`. A file of one instrument has one group and no bar.
 * The answer columns of your own questions follow the last group. The
@@ -505,7 +512,7 @@ The answers go to the store the link names, and to a file on the
 participant's device when the link names no store or the send is not
 confirmed. They go nowhere else. With a Google Sheet, Google holds the rows;
 with a Supabase table, Supabase holds them. The page's host, GitHub Pages, receives the study link with each page
-load, and the link carries the instrument and any module, the study name, the
+load, and the link carries the instruments and any module, the study name, the
 participant code, any consent text, the store's address and, for Supabase,
 its key. It receives
 no answers.
