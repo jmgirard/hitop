@@ -46,10 +46,10 @@ requested. An \code{NA} score returns \code{NA} in all three.
 Converts scored HiTOP-SR columns into a regression-based true-score estimate
 and a confidence interval around it, using the development-sample mean,
 standard deviation and reliability shipped as \link{hitopsr_devstats}. This
-function converts already-scored columns and never rescores: the 76 scale
-columns \code{\link[=score_hitopsr]{score_hitopsr()}} produces are the ones it is built for. The 17
-subscale rows \link{hitopsr_devstats} also carries have no column that function
-emits, so an interval on a subscale needs a column scored by other means.
+function converts already-scored columns and never rescores. It is built for
+the 76 scale columns \code{\link[=score_hitopsr]{score_hitopsr()}} produces and for the 17 subscale
+columns that \code{score_hitopsr(include_subscales = TRUE)} produces. Each
+subscale column converts on its own subscale row of \link{hitopsr_devstats}.
 }
 \details{
 \strong{What is computed.} For a score \eqn{x} on a scale whose reference

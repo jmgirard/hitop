@@ -19,7 +19,10 @@
 #'   any other column matched. Scale
 #'   columns are expected as the prefix followed by the scale's `camelCase`
 #'   name, which is what [score_hitopsr()] writes under its own default
-#'   `prefix`. (default = `"hsr_"`)
+#'   `prefix`. Subscale columns, which [score_hitopsr()] writes under
+#'   `include_subscales = TRUE`, are expected the same way, as the prefix
+#'   followed by the subscale's `camelCase` name in [hitopsr_subscales], and
+#'   are labelled with its `Subscale` name. (default = `"hsr_"`)
 #'
 #' @return A data frame with labeled columns. If no column matched the expected
 #'   names at all, `data` is returned unchanged and a warning of class
@@ -71,8 +74,12 @@ label_hitopsr <- function(
       instrument = "HiTOP-SR"
     )
   } else if (target == "scales") {
-    # Scale columns carry the camelCase name score_hitopsr() writes.
-    expected_names <- paste0(prefix, hitopsr_scales$camelCase)
+    # Scale and subscale columns carry the camelCase name score_hitopsr()
+    # writes. No subscale stem equals a scale stem, so one lookup serves both.
+    expected_names <- paste0(
+      prefix, c(hitopsr_scales$camelCase, hitopsr_subscales$camelCase)
+    )
+    labels <- c(hitopsr_scales$Scale, hitopsr_subscales$Subscale)
     locs <- match(data_cols, expected_names)
     matched_idx <- which(!is.na(locs))
 
@@ -85,7 +92,7 @@ label_hitopsr <- function(
     }
 
     for (i in matched_idx) {
-      attr(data[[i]], "label") <- hitopsr_scales$Scale[locs[i]]
+      attr(data[[i]], "label") <- labels[locs[i]]
     }
   }
 

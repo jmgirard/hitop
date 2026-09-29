@@ -479,6 +479,29 @@ test_that("an NA score returns NA in all three columns and leaves its neighbours
   expect_identical(is.na(got$hsr_agoraphobia_hi), c(FALSE, TRUE, FALSE))
 })
 
+test_that("every subscale column score_hitopsr() produces converts on its own reference row", {
+  scored <- score_hitopsr(sim_hitopsr, items = 1:405, include_subscales = TRUE,
+                          append = FALSE)
+  cols <- paste0("hsr_", hitopsr_subscales$camelCase)
+  expect_no_warning(
+    got <- interval_hitopsr(scored, scores = cols, append = FALSE),
+    class = "hitop_interval_uncovered"
+  )
+
+  z <- qnorm(0.975)
+  for (s in hitopsr_subscales$camelCase) {
+    ref <- hitopsr_devstats[hitopsr_devstats$camelCase == s, ]
+    expect_identical(nrow(ref), 1L)
+    expect_identical(ref$type, "subscale")
+    x <- scored[[paste0("hsr_", s)]]
+    est <- ref$mean + sqrt(ref$reliability) * (x - ref$mean)
+    half <- z * ref$sd * sqrt(1 - ref$reliability)
+    expect_equal(got[[paste0("hsr_", s, "_est")]], est, info = s)
+    expect_equal(got[[paste0("hsr_", s, "_lo")]], est - half, info = s)
+    expect_equal(got[[paste0("hsr_", s, "_hi")]], est + half, info = s)
+  }
+})
+
 test_that("positions and names select the same columns", {
   scored <- data.frame(id = 1:2, hsr_agoraphobia = c(1, 2))
   expect_identical(
