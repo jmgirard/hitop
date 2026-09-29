@@ -49,7 +49,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T4: Update the `module` help of the six functions to name the class. Update the `include_subscales` and `module` help of `generate_docx_hitopsr()`, the `remap_itemdata()` comment (`R/generate_docx.R:388-391`), and the article paragraph (`vignettes/articles/modules-hitopsr.Rmd:110-113`). Change `tests/testthat/test-module-doc-prose.R:158-163` to assert the new article statement. Run `devtools::document()`, run the AC5 search and read each hit, and write the two NEWS entries.
 - [x] T5: Run `devtools::check()`. Purl the modules article and run it after `devtools::load_all()` (LESSONS, M115 and M096).
 - [x] T6: Write the test first. The AC1 message names every lacking, extra and repeated item with no cut. It prints a run of three or more items as a range ("30-34"). A probe with more than 20 lacking items shows each one named.
-- [ ] T7: Drop the NEWS Breaking sentence on `read_module()`. No AC2 to AC4 test backs it.
+- [x] T7: Drop the NEWS Breaking sentence on `read_module()`. No AC2 to AC4 test backs it.
 - [ ] T8: Fix the five review findings marked "fix now". The `unknown_scale` probe asserts on the text of the check itself. `module_unknown_scales()` ignores letter case. `module_subscales()` holds the subscale-item abort for both paths. The module help of the five other functions names the "cannot be rebuilt" refusal. The dead block of `test-module.R` goes. Then run `devtools::check()` and the purled article again.
 
 ## Work log
@@ -111,3 +111,4 @@ Independent review, three fresh-context lenses. Findings are most severe first, 
 - [S-prior]3: an odd line break in the `add_hitopsr_subscales()` comment. Recommend reject (cosmetic).
 - No conflicts: [S-blame] found none with D-066(b), D-039(c), D-034(b/c), M141 or M055/M108. [S-prior] found no PR comments, and no archived finding of M024, M043, M046, M067, M107, M108 or M141 regressed.
 - 2026-09-29: T6 done. `item_ranges()` in `R/module.R` sorts the lacking, extra and repeated items, prints runs of three or more as "a-b", and turns off the cut of 20. The unknown-scale list is not cut either. Two new tests: 48 lacking and 25 extra items each named in full, and a pair against a run of three. Before the fix they failed on the cut list. Suite 0 failed, 0 errors.
+- 2026-09-29: T7 done. The NEWS Breaking entry no longer says that `read_module()` refuses a descriptor naming a retired scale.

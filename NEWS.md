@@ -369,8 +369,7 @@
   form printed `NA` in a scoring row. A module saved before a scale was
   renamed, such as one naming Body Focus rather than Appearance Focus, is now
   refused where it scored with that scale dropped. Build the module again
-  with `hitop_module()`, using the current scale names. `read_module()`
-  refuses a descriptor that names a retired scale too. The
+  with `hitop_module()`, using the current scale names. The
   deprecated `hitop_subset()` class and a module with double `items` are
   accepted as before. `write_module()` already refused a module whose
   `items` or `nItems` differed. It now also compares `camelCase`, and its
