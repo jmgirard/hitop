@@ -28,8 +28,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] AC3: The six functions accept three kinds of module with no error, and the call itself raises no warning. The three are a module built beforehand by `hitop_module()`, one built beforehand by the deprecated `hitop_subset()`, and a `hitop_module()` build whose `items` are converted to doubles. The last kind is what a module saved before item numbers were integers holds. A test for each function shows this over two modules of different scales. `reliability_hitopsr()` runs with `omega = FALSE`, because the omega fit can warn on simulated data.
 - [x] AC4: `generate_docx_hitopsr(module = m, include_subscales = TRUE)` writes a scoring page with one row for each scale of the module and one `(Subscale)` row for each `hitopsr_subscales` row whose parent scale `m` holds. The page holds no other subscale row. All rows are sorted by printed name, read down the left column and then down the right, as on a full-instrument form with `include_subscales = TRUE`. Each subscale row lists the items and reverse marks of its subscale in the printed numbers of the form. Tests cover a module that holds two parents with subscales and a module that holds no parent, which gets no subscale row. They also cover `renumber = FALSE`, and `randomize = TRUE` with the default `renumber`, where the returned order is shown not to be ascending. The tests read the expected items from `hitopsr_subscales` and the returned `item_order`. `generate_docx_hitopsr()` refuses an `include_subscales` that is not a single `TRUE` or `FALSE`, as `score_hitopsr()` does. A test fires this refusal for `1`, `1L`, `"yes"`, `NA` and `c(TRUE, FALSE)`.
 - [x] AC5: A case-insensitive search for "subscale" in `R/`, `man/`, `vignettes/`, `tests/` and `README.Rmd` finds each passage about subscales. No passage it finds says that `include_subscales` cannot be combined with `module`, or that a subscale draws items from outside a module. The modules article and `?generate_docx_hitopsr` say that a module form adds the subscales of the scales it holds. The help page of each of the six functions names the class `hitop_module_mismatch`.
-- [ ] AC6: The development-version section of NEWS.md lists the AC1 refusal under Breaking changes. That entry says that a module saved before a scale rename, such as Body Focus to Appearance Focus, is now refused. The section lists the module subscales of the Word form (AC4) under New features. Each entry asserts only behavior that an AC2 to AC4 test enforces.
-- [x] AC7: `devtools::check()` reports 0 errors and 0 warnings. The chunks of the modules article run without error against the branch, purled and run, because check does not run `vignettes/articles/`.
+- [ ] AC6: `devtools::check()` reports 0 errors and 0 warnings. The chunks of the modules article run without error against the branch, purled and run, because check does not run `vignettes/articles/`.
 
 ## Coverage
 
@@ -38,8 +37,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - AC3 → T1, T2
 - AC4 → T3
 - AC5 → T4
-- AC6 → T4, T7, T10, T11
-- AC7 → T5, T8, T12
+- AC6 → T5, T8, T12, T15
 
 ## Tasks
 
@@ -55,6 +53,9 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T10: Write the NEWS clause ledger in a section above Review. It sets each clause of the two NEWS entries against the AC2 to AC4 test that backs it. Cut each clause with no such test, the `(R)` clause among them.
 - [x] T11: Fix the three pass-2 "fix now" findings. The NEWS Breaking entry says that `write_module()` also compares `instrument`. The Body Focus test asserts on the check's own text. `item_ranges()` prints a range only for a run of whole numbers.
 - [x] T12: Run `devtools::check()` and the purled modules article again.
+- [ ] T13: Fix the NEWS Breaking entry. "and its refusals carry the class" becomes "and these refusals now carry the class". The internal-error sentence names its condition: a lacking subscale item.
+- [ ] T14: Fix the four pass-3 "fix now" items. `item_ranges()` prints at 15 significant digits. `expect_mismatch()` asserts that `conditionCall()` names the exported function. The shuffled module-subscale test checks the printed item texts against `item_order`. The two test titles that name the unreachable wrong-instrument branch are renamed.
+- [ ] T15: Run `devtools::check()` and the purled modules article again.
 
 ## Work log
 
@@ -94,6 +95,8 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: claim audit: 19 claims read, 2 corrected — R/module.R, tests/testthat/test-module-mismatch.R. Scope: lines added since 90583b2f, the rewritten ba586169. The re-read found both corrections and the reworded guard comment true, with 0 failures in `test-module-mismatch.R`.
 - 2026-09-29: T12 done. `devtools::check()` on the tree of 3caa8519: 0 errors, 0 warnings, 0 notes. Status set to review. The claim-audit line and this line landed one commit after the status change (d6042e3d), because the first edit missed its anchor.
 - 2026-09-29: review pass 3 returned the milestone to in-progress (defect return 3). AC6 fails. The NEWS Breaking entry says that `write_module()`'s "refusals carry the class", but its attribute and class refusals carry none. No AC2 to AC4 test backs the clause ([O]2). AC1 to AC5 and AC7 and the gate pass. Thrash rule (a) fires at this third return. Rule (b) fires again on AC6: a third NEWS clause claims more than the AC2 to AC4 tests hold, after the clause ledger of T10.
+- 2026-09-29: thrash (a) gate: Jeff chose to descope AC6 over parking, escalation or a re-plan. The next round removes AC6 through the gated amendment. It fixes the three NEWS sentences ([O]1, [O]2, [O]3) and the five pass-3 "fix now" items, then re-reviews AC1 to AC5 and AC7.
+- 2026-09-29: amendment (mini gate, Jeff approved the recommended option): AC6, the rule that each NEWS clause has an AC2 to AC4 test, is removed. The universal changelog rule of tracking-rules covers what it held. AC7 is renumbered AC6 with its text unchanged, and unticked for fresh evidence. Coverage drops the old AC6 line. T13 to T15 added. No criterion wording was amended, so no re-audit reader ran. Jeff kept the flag entry's "as `score_hitopsr()` does", which `test-score_hitopsr.R:298` backs.
 
 ## Decisions
 
