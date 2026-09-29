@@ -187,7 +187,8 @@ test_that("module_engine_inputs() rejects a descriptor inconsistent with itself"
     module_engine_inputs(
       inflated, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
     ),
-    "internally inconsistent"
+    "Its nItems field",
+    class = "hitop_module_mismatch"
   )
 
   # The deflated direction too, so the check is not one-sided.
@@ -197,7 +198,8 @@ test_that("module_engine_inputs() rejects a descriptor inconsistent with itself"
     module_engine_inputs(
       shrunk, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
     ),
-    "internally inconsistent"
+    "Its nItems field",
+    class = "hitop_module_mismatch"
   )
 
   # And the count the engines receive comes from `items`, not from `nItems`.
@@ -215,6 +217,7 @@ test_that("an inflated descriptor aborts instead of silently scoring wrong items
   s$nItems <- 405L
   expect_error(
     score_hitopsr(sim_hitopsr, items = 1:405, module = s, append = FALSE),
-    "internally inconsistent"
+    "Its nItems field",
+    class = "hitop_module_mismatch"
   )
 })

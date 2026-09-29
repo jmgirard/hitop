@@ -101,11 +101,48 @@ mismatch_probes <- list(
 # `m` inside a fresh directory and returns the paths the call may write, so a
 # refusal can be shown to leave none of them behind. `descriptor` is ignored by
 # the functions that write no descriptor.
+module_items <- function(m) as.integer(m$items)
+
+generator_runner <- function(generate, ext) {
+  function(m, dir, descriptor = FALSE) {
+    f <- file.path(dir, paste0("form", ext))
+    d <- if (descriptor) file.path(dir, "module.json")
+    list(
+      run = function() generate(file = f, module = m, descriptor = d),
+      paths = c(f, d)
+    )
+  }
+}
+
 module_runners <- list(
   write_module = function(m, dir, descriptor = FALSE) {
     f <- file.path(dir, "module.json")
     list(run = function() write_module(m, f), paths = f)
-  }
+  },
+  score_hitopsr = function(m, dir, descriptor = FALSE) {
+    list(
+      run = function() {
+        score_hitopsr(sim_hitopsr, items = module_items(m), module = m)
+      },
+      paths = NULL
+    )
+  },
+  # Without omega: its fit can warn on simulated data, which is not a warning
+  # about the module.
+  reliability_hitopsr = function(m, dir, descriptor = FALSE) {
+    list(
+      run = function() {
+        reliability_hitopsr(
+          sim_hitopsr, items = module_items(m), omega = FALSE, module = m
+        )
+      },
+      paths = NULL
+    )
+  },
+  generate_docx_hitopsr = generator_runner(generate_docx_hitopsr, ".docx"),
+  generate_qualtrics_hitopsr =
+    generator_runner(generate_qualtrics_hitopsr, ".txt"),
+  generate_redcap_hitopsr = generator_runner(generate_redcap_hitopsr, ".zip")
 )
 
 expect_mismatch <- function(run, probe, info) {
@@ -180,6 +217,34 @@ test_that("every module function accepts a module built by hitop_module() or hit
           expect_true(file.exists(r$paths[[1L]]), info = info)
         }
       }
+    }
+  }
+})
+
+test_that("with subscales, scoring refuses a module lacking a parent-scale item, not as an internal error", {
+  withr::local_options(cli.width = 10000)
+  base <- probe_base()
+  lacking <- mismatch_probes[c("lacks_start", "lacks_middle", "lacks_end")]
+
+  for (fn in c("score_hitopsr", "reliability_hitopsr")) {
+    for (name in names(lacking)) {
+      m <- lacking[[name]]$edit(base)
+      run <- switch(fn,
+        score_hitopsr = function() {
+          score_hitopsr(sim_hitopsr, items = module_items(m), module = m,
+                        include_subscales = TRUE)
+        },
+        reliability_hitopsr = function() {
+          reliability_hitopsr(sim_hitopsr, items = module_items(m),
+                              omega = FALSE, module = m,
+                              include_subscales = TRUE)
+        }
+      )
+      e <- expect_mismatch(run, lacking[[name]], paste(fn, name))
+      expect_false(
+        grepl("Internal error", conditionMessage(e), fixed = TRUE),
+        info = paste(fn, name)
+      )
     }
   }
 })

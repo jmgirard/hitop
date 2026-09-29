@@ -163,6 +163,8 @@ apply_module <- function(
     ),
     call = call
   )
+  # Before any generator opens a path, so a refused module writes no file.
+  check_module_build(module, call = call)
 
   list(
     items = items[items[[item_col]] %in% module$items, , drop = FALSE],
@@ -190,8 +192,9 @@ apply_module <- function(
 # descriptor's parallel `reverse` flags.
 #
 # Invariant: every kept scale's items are fully contained in `module$items`,
-# because hitop_module() builds `items` as the union of exactly the scales it
-# keeps. The match() below therefore never yields NA for a kept scale.
+# because check_module_build() refuses any module whose `items` are not the
+# union hitop_module() builds from its scales. The match() below therefore
+# never yields NA for a kept scale.
 module_engine_inputs <- function(
   module,
   instrument,
@@ -223,22 +226,11 @@ module_engine_inputs <- function(
     call = call
   )
 
-  # `nItems` and `items` are independent fields of a plain list, so a descriptor
-  # assembled or edited by hand can disagree with itself. Taking the item count
-  # from `nItems` alone would then pass validate_items() against the wrong
-  # width and score whichever columns happened to be supplied: an inflated
-  # nItems accepts a full 405-column frame and silently scores items 1..n as
-  # the module's scales. The count is therefore derived from `items`, which is
-  # what the remap below actually indexes into, and the disagreement is an error.
-  cli_assert(
-    condition = identical(as.integer(module$nItems), length(module$items)),
-    message = c(
-      "The {.arg module} argument is internally inconsistent.",
-      x = "It reports {module$nItems} item{?s} but carries {length(module$items)}.",
-      i = "Build one with {.code hitop_module()} rather than by hand."
-    ),
-    call = call
-  )
+  # The fields of a plain list can be edited by hand. A module lacking an item
+  # of a kept scale would score that scale from the rest, and an inflated
+  # `nItems` would accept a full 405-column frame and score items 1..n as the
+  # module's scales. Both stop here, before any remap (D-081).
+  check_module_build(module, call = call)
 
   kept <- scales[scales[[scale_col]] %in% module$camelCase, , drop = FALSE]
   reverse_numbers <- items[[item_col]][items[[reverse_col]]]
@@ -321,8 +313,10 @@ add_hitopsr_subscales <- function(inputs, module, subs = hitopsr_subscales,
     kept <- parent_stem %in% module$camelCase
     subs <- subs[kept, , drop = FALSE]
     numbers <- lapply(subs$itemNumbers, function(x) match(x, module$items))
-    # Every subscale item lies in its parent scale, so a kept subscale's items
-    # are all among the module's. A keying change that broke this would
+    # Every subscale item lies in its parent scale, and check_module_build()
+    # has already refused a module lacking any item of its scales, so a kept
+    # subscale's items are all among the module's. Only a keying change that
+    # broke the first fact reaches this abort. Unchecked, it would
     # silently score the subscale from its remaining items (or as NA under
     # `missing = "complete"`), so it stops here instead.
     if (anyNA(unlist(numbers))) {
