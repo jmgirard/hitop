@@ -1,6 +1,6 @@
 # M140: A study link can field two or more instruments in one hitop-form session
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M137, M139
 - **Driving RR:** —
@@ -21,7 +21,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 
 ## Acceptance criteria
 
-- [x] AC1: `parseLink()` accepts `instruments` as a list of 2 or 3 distinct instrument names that the page knows, in the order the page gives them. It refuses by name `instruments` beside `instrument`, a list that is not an array, and a list of fewer than 2 names. It also refuses a repeated name, an unknown name, and a list that holds two of `pid5`, `pid5sf` and `pid5bf`. If the list holds no `hitopsr`, it refuses a `module`. If the list holds `hitopsr`, it checks a `module` against it. A link with `instrument` behaves as on main. Before it builds a link, link.html refuses the faults its controls can produce. Tests assert the message of each refusal on each side where it can occur.
+- [ ] AC1: `parseLink()` accepts `instruments` as a list of 2 or 3 distinct instrument names that the page knows, in the order the page gives them. It refuses by name `instruments` beside `instrument`, a list that is not an array, and a list of fewer than 2 names. It also refuses a repeated name, an unknown name, and a list that holds two of `pid5`, `pid5sf` and `pid5bf`. If the list holds no `hitopsr`, it refuses a `module`. If the list holds `hitopsr`, it checks a `module` against it. A link with `instrument` behaves as on main. Before it builds a link, link.html refuses the faults its controls can produce. Tests assert the message of each refusal on each side where it can occur.
 - [x] AC2: The page fetches every export in the list before it shows the first screen. A refusal of an export names the instrument. Each instrument has its own start screen, with its title, version line, instructions, and item and page counts, followed by its item pages. Item positions and page labels count within each instrument. If the link gives no participant identifier, the start screen of the first instrument asks for it. No later start screen asks. The notice of where the answers go shows on the first start screen only. The first item page of each instrument carries no Back. Each instrument's items start unanswered. The order of screens is the consent screen of M135, the `before` screen of M137, each instrument in link order, then the `after` screen. Tests walk links with two and with three instruments, with and without `consent` and `questions`. A test asserts that no radio is checked on the first page of a second instrument whose item numbers overlap the first's.
 - [x] AC3: The row and the file follow D-080 as M139 reads it. The `instrument` cell holds the stems in link order, joined by single spaces. The `form_build` cell holds the build date of each export in the same order, joined by single spaces. The item columns come in one group per instrument, in link order. Under shuffle, each instrument's items are shuffled among that instrument's items, and none moves to another instrument's pages. The `item_order` cell then holds one group per instrument. The `q_` columns of M137 follow the item columns. Tests answer each instrument with a different pattern. They assert the row and the file with shuffle off and on, with `prolific: true`, and with `questions`.
 - [x] AC4: For an `instruments` link, the Supabase SQL from the builder has the lead columns first. Then it has one `integer` column per item of each instrument in the order of AC3, then the `q_` columns. The webhook send and the Supabase send carry every column. Tests compare the SQL with a committed fixture written by rule, byte for byte, and read the keys from the recording server.
@@ -49,6 +49,10 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - [x] T6: Save the file of AC6 from a walk. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader and scoring test.
 - [x] T7: Write the README section "Give more than one instrument", the article section and the NEWS entry.
 - [x] T8: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
+- [ ] T9: (review F1, F2, F7) In `checkInstruments()`, refuse an entry that is not text as an unknown name, and word the PID-5 refusal for three forms. Add page tests for nested entries and three PID-5 forms. Add builder tests for each refusal an opened link can hold, and for three PID-5 rows.
+- [ ] T10: (review F8, F9, F13) Add a network test that walks a list link with no store. Add leave-page warning tests for an answered item and for answers held in an earlier instrument. Add a test that a single-instrument start screen shows no part line. Then remove the unload-guard clause from the question-screen gaps candidate row.
+- [ ] T11: (review F3, F5, F6, F11, F17) Remove the stale "does not yet write" sentences in NEWS.md and data-raw/form_multi_fixtures.R. Add the 5 new specs and the list-link network row to the hitop-form README table. Update the one-instrument wording the findings name, and rewrap the comment lines.
+- [ ] T12: (review F12) Reload the builder with a list built, and see whether the rows reset while the text fields stay. If they do, fix it and add a test.
 
 ## Work log
 
@@ -69,6 +73,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - 2026-09-28: implement complete, status review.
 - 2026-09-28: review in progress. AC1 to AC6 evidence recorded and ticked. AC7, the consistency gate and two of three reviewers still pending.
 - 2026-09-28: review checkpoint. Consistency gate clean. AC7 open on hitop-form CI. 19 findings recorded, F1 an AC1 failure confirmed with node. Awaiting the step-7 gate.
+- 2026-09-28: defect return 1. AC1 failed: `checkInstruments()` accepts a nested entry, so `["hitopbr", ["hitopbr"]]` and `["pid5", ["pid5bf"]]` are not refused by name (F1). Jeff chose to send it back at the step-7 gate. Status in-progress, with T9 to T12 added from the fix-now findings.
 
 ## Decisions
 
@@ -109,3 +114,10 @@ Findings from 3 fresh reviewers ([O] diff-bug, [S] blame-history, [S] prior-revi
 - F17: Comment and text wrapping: form.js lines 9 to 12 and 1077, the NEWS entry, and a test comment. The form.js header's import list omits the new link.html imports.
 - F18: Move up on the first row and Move down on the last are enabled and do nothing. Their aria-labels do not contain the visible text, as in the question editor.
 - F19: The hitop-form fixture README cites dd7a241, which the squash merge leaves off main. Earlier rows do the same.
+
+Gate dispositions (2026-09-28, Jeff at the step-7 gate): the milestone returns to implementation. AC1 is unticked, because F1 shows it failing.
+
+- Fix now: F1, F2 and F7 go to T9. F8, F9 and F13 go to T10. F3, F5, F6, F11 and F17 go to T11. F12 goes to T12.
+- F4: accepted again. DESIGN Known issue 12 now says that the page can field such a pair.
+- Follow-up: F10 is a dated note on the `z` link gaps candidate row. F18 joins the question-screen gaps row.
+- Rejected: F14 is harmless. No test or claim depends on the check order of F15. F16 is the plan's intent (AC2). F19 is the practice of the earlier fixture rows.
