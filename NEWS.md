@@ -364,16 +364,17 @@
   error names the
   items the module lacks or holds outside its scales, and each field that
   differs. Before, a module lacking an item of one of its scales scored that
-  scale from its other items with no warning. With `include_subscales = TRUE`
-  it stopped with an internal error that asked for a bug report, and the Word
-  form printed `NA` in a scoring row. A module saved before a scale was
+  scale from its other items with no warning, and the Word form printed `NA`
+  in a scoring row. If the lacking item was a subscale item, scoring with
+  `include_subscales = TRUE` stopped with an internal error that asked for a
+  bug report. A module saved before a scale was
   renamed, such as one naming Body Focus rather than Appearance Focus, is now
   refused where it scored with that scale dropped. Build the module again
   with `hitop_module()`, using the current scale names. The
   deprecated `hitop_subset()` class and a module with double `items` are
   accepted as before. `write_module()` already refused a module whose
   `items` or `nItems` differed. It now also compares `camelCase` and
-  `instrument`, and its refusals carry the class.
+  `instrument`, and these refusals now carry the class.
 
 * **`generate_docx_hitopsr()` takes `include_subscales` as `TRUE` or `FALSE`
   only**, as `score_hitopsr()` does. A value such as `1`, which used to add
