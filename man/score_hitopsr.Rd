@@ -14,6 +14,7 @@ score_hitopsr(
   append = TRUE,
   module = NULL,
   layout = c("instrument", "printed"),
+  include_subscales = FALSE,
   subset = NULL
 )
 }
@@ -101,6 +102,15 @@ instrument order through that attribute before scoring. A call with
 \code{layout = "printed"} and no module, a module with no \code{item_order}, or an
 \code{item_order} that is not a permutation of the module's items is an error.
 (default = \code{"instrument"})}
+
+\item{include_subscales}{A logical. If \code{TRUE}, the 17 subscales in
+\link{hitopsr_subscales} are also scored, each as the mean of its items under
+the \code{missing} rule. Their columns are named \code{prefix} plus the subscale's
+\code{camelCase} name (for example \code{hsr_cynicism}) and follow the scale
+columns, in the row order of \link{hitopsr_subscales}. Under \code{calc_se = TRUE},
+their \verb{_se} columns follow the scale \verb{_se} columns in the same order. With
+a \code{module}, only the subscales whose parent scale is in the module are
+scored. (default = \code{FALSE})}
 
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}

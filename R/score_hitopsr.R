@@ -78,6 +78,14 @@
 #'   `layout = "printed"` and no module, a module with no `item_order`, or an
 #'   `item_order` that is not a permutation of the module's items is an error.
 #'   (default = `"instrument"`)
+#' @param include_subscales A logical. If `TRUE`, the 17 subscales in
+#'   [hitopsr_subscales] are also scored, each as the mean of its items under
+#'   the `missing` rule. Their columns are named `prefix` plus the subscale's
+#'   `camelCase` name (for example `hsr_cynicism`) and follow the scale
+#'   columns, in the row order of [hitopsr_subscales]. Under `calc_se = TRUE`,
+#'   their `_se` columns follow the scale `_se` columns in the same order. With
+#'   a `module`, only the subscales whose parent scale is in the module are
+#'   scored. (default = `FALSE`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -127,6 +135,7 @@ score_hitopsr <- function(
   append = TRUE,
   module = NULL,
   layout = c("instrument", "printed"),
+  include_subscales = FALSE,
   subset = NULL
 ) {
   missing <- match.arg(missing)
@@ -134,11 +143,12 @@ score_hitopsr <- function(
   # permitted values and blames this call, where match.arg()'s blames itself.
   layout <- rlang::arg_match(layout)
   module <- resolve_module_arg(module, subset)
+  validate_flag(include_subscales, arg = "include_subscales")
   ## Resolve this instrument's data: which items reverse and the per-scale
   ## item-number lists. With a `module`, the same inputs are remapped to
   ## positions within the module's own columns; without one, item number and
   ## position coincide. Shared arg validation and the pipeline run in the engine.
-  inputs <- hitopsr_engine_inputs(module)
+  inputs <- hitopsr_engine_inputs(module, include_subscales)
   ## A missing or NULL `items` takes the module's `columns` attribute, or
   ## aborts saying to pass `items`.
   items <- module_column_items(missing(items), if (!missing(items)) items,

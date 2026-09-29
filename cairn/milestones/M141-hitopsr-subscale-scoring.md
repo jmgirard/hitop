@@ -1,13 +1,13 @@
 # M141: HiTOP-SR scoring can include the 17 subscales on request
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2, IP3, GP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — adds an argument to two exported scoring functions
-- **Branch/PR:** —
+- **Branch/PR:** m141-hitopsr-subscale-scoring
 
 ## Goal
 
@@ -41,7 +41,7 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 
 ## Tasks
 
-- [ ] T1: Transcribe the 17 subscales' item numbers into the test from `HiTOP-SR-Final.xlsx`. Cite its "HiTOP-SR items by scale" sheet in a comment. Write the AC1, AC2, AC3 and AC6 tests and the dedicated fixture first. Then add `include_subscales` to `score_hitopsr()`, validated with `validate_flag()`. Extend `hitopsr_engine_inputs()` (`R/module.R:268`) so that the full and module paths append the subscale item lists.
+- [x] T1: Transcribe the 17 subscales' item numbers into the test from `HiTOP-SR-Final.xlsx`. Cite its "HiTOP-SR items by scale" sheet in a comment. Write the AC1, AC2, AC3 and AC6 tests and the dedicated fixture first. Then add `include_subscales` to `score_hitopsr()`, validated with `validate_flag()`. Extend `hitopsr_engine_inputs()` (`R/module.R:268`) so that the full and module paths append the subscale item lists.
 - [ ] T2: Write the AC4 and AC6 tests first in `tests/testthat/test-reliability.R`. Then add `include_subscales` to `reliability_hitopsr()`, with the subscale names and stems passed to `reliability_engine()`.
 - [ ] T3: Extend `label_hitopsr()` (`R/label_hitopsr.R:73`) to label subscale columns. Add the `interval_hitopsr()` subscale test. Rewrite the `interval_hitopsr()` Description and the `label_hitopsr()` `prefix` text (AC5).
 - [ ] T4: Write roxygen for both arguments and run `document()`. Add the NEWS entry, which also says that the abbreviation `i =` for `items` no longer works (LESSONS, M043). Add the vignette call and the DESIGN signature lines. Run `check()` on the branch and on `main` and compare the notes (AC7).
@@ -54,7 +54,11 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 - 2026-09-29: plan gate chose to score the subscales whose parent scale is in a module over refusing the combination. Every subscale's items lie in its parent scale. Falsified by a keying change that puts a subscale item outside its parent scale.
 - 2026-09-29: plan chose `_se` columns for subscales under `calc_se = TRUE` over none. The engine treats every item list alike, and `calc_se` is deprecated. Falsified by a user who reports the extra columns as noise.
 - 2026-09-29: plan chose no new `type` column in `reliability_hitopsr()` output over adding one, because it changes the default return shape. Falsified by a user who cannot tell subscale rows from scale rows.
+- 2026-09-29: implement started on branch m141-hitopsr-subscale-scoring; question gate settled argument placement (M141-D1).
+- 2026-09-29: T1 done. The workbook sheet lists pool IDs, so the test places each subscale item at its HiTOP-SR number by item text; all 17 sets equal `hitopsr_subscales`. Two planted defects (no module filter, shifted item numbers) turned the new tests red. `devtools::test()` 0 failures.
 
 ## Decisions
+
+- M141-D1 (2026-09-29): `include_subscales` sits after `layout` and before the deprecated `subset` in `score_hitopsr()` and `reliability_hitopsr()`, so the deprecated argument stays last. Only a call that passes `subset` by position changes, and it then fails on the flag check. Chosen at the implement question gate over last place and a place before `module`.
 
 ## Review
