@@ -1,13 +1,13 @@
 # M140: A study link can field two or more instruments in one hitop-form session
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M137, M139
 - **Driving RR:** —
 - **Principles touched:** IP1, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page, its link builder, its stores and the package's article
-- **Branch/PR:** —
+- **Branch/PR:** m140-form-multi-instrument; companion: /Users/jmgirard/github/hitop-form m140-form-multi-instrument
 
 ## Goal
 
@@ -55,7 +55,10 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - 2026-09-28: created by /milestone-plan. Jeff asked at the plan gate to plan several instruments in one link now.
 - 2026-09-28: criteria audit ran in full mode (user-facing tier) on a fresh [O] reader. It returned 4 findings, all fixed before the commit. The fixes cover a limit of 3 instruments (two PID-5 forms are refused), answers keyed by stem, the order of screens and the shuffle scope.
 - 2026-09-28: plan chose one row with a group per instrument over one row per instrument, because one row keeps each participant in one record for every store. Falsified by a store that cannot hold the width of three instruments.
+- 2026-09-28: implement started. Branch m140-form-multi-instrument cut in hitop and in the hitop-form companion checkout. Implement gate answered (M140-D1).
 
 ## Decisions
+
+- M140-D1 (2026-09-28, implement gate): link.html's instrument choice becomes a list editor of up to three rows. Each row is a menu with Move up, Move down and Remove, and an "Add an instrument" button adds a row. One row writes `instrument`, and two or three write `instruments`. A saved file of several instruments is named by the stems joined by "-". The page's name rule already writes the space-joined `instrument` cell so. Under an `instruments` link each start screen shows "Part n of N" above the instructions. Chosen by Jeff over three fixed menus, a file name of "multi", and no part line.
 
 ## Review
