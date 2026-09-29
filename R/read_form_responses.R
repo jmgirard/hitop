@@ -44,7 +44,8 @@
 #'   (`2026-09-20 2026-09-18`). The result holds the item columns in file
 #'   order. Score each instrument in its own call, with its columns chosen by
 #'   stem, as `grep("^pid5bf_", names(responses), value = TRUE)` chooses the
-#'   PID-5-BF's. The hitop-form page does not yet write such a file.
+#'   PID-5-BF's. The hitop-form page writes such a file for a study link
+#'   whose `instruments` field lists two or three instruments.
 #'
 #'   `item_order` is the order the participant saw the items, as item numbers
 #'   with no leading zero, joined by single spaces with none at either end
