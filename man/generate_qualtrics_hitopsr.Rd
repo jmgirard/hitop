@@ -40,8 +40,9 @@ column, so renumbering would rename variables in dictionaries already in
 the field. The zero-padding is the full instrument's for the same reason:
 item 4 is \code{HSR_004} in a module file as in the complete one, never
 \code{HSR_04}. A module whose \code{items}, \code{nItems}, \code{camelCase} or \code{instrument} differ from a
-fresh \code{\link[=hitop_module]{hitop_module()}} build of its scales is refused with an error of
-class \code{hitop_module_mismatch}, before any file is written.
+fresh \code{\link[=hitop_module]{hitop_module()}} build of its scales, or whose scales cannot be
+rebuilt, is refused with an error of class \code{hitop_module_mismatch}, before
+any file is written.
 (default = \code{NULL})}
 
 \item{descriptor}{An optional path to write a module descriptor to, beside

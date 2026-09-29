@@ -69,8 +69,9 @@ generate_redcap_hitopbr <- function(
 #'   instrument's for the same reason: item 4 is `hsr_004` in a module
 #'   dictionary as in the complete one, never `hsr_04`. A module whose
 #'   `items`, `nItems`, `camelCase` or `instrument` differ from a fresh [hitop_module()]
-#'   build of its scales is refused with an error of class
-#'   `hitop_module_mismatch`, before any file is written. (default = `NULL`)
+#'   build of its scales, or whose scales cannot be rebuilt, is refused with an
+#'   error of class `hitop_module_mismatch`, before any file is written.
+#'   (default = `NULL`)
 #' @param descriptor An optional path to write a module descriptor to, beside
 #'   the instrument file. The saved file records which scales the form covers
 #'   and which instrument items they draw on, so [read_module()] hands the

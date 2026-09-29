@@ -50,8 +50,9 @@ Defaults to \code{"Times New Roman"}.}
 items of the chosen scales. With \code{include_subscales = TRUE}, the form
 adds the subscales of the scales it holds. A module whose \code{items},
 \code{nItems}, \code{camelCase} or \code{instrument} differ from a fresh \code{\link[=hitop_module]{hitop_module()}} build of its
-scales is refused with an error of class \code{hitop_module_mismatch}, before
-any file is written. (default = \code{NULL})}
+scales, or whose scales cannot be rebuilt, is refused with an error of
+class \code{hitop_module_mismatch}, before any file is written.
+(default = \code{NULL})}
 
 \item{renumber}{Logical. If \code{TRUE} (default), the printed items are numbered
 \code{1} to \code{n} down the page, so a module form does not show the full

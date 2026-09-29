@@ -168,7 +168,9 @@ module_runners <- list(
 expect_mismatch <- function(run, probe, info) {
   e <- tryCatch(run(), error = identity)
   expect_s3_class(e, "hitop_module_mismatch")
-  msg <- conditionMessage(e)
+  # The refusal's own text, without its parent's, so a probe whose parent is
+  # the hitop_module() error cannot pass on what that error says.
+  msg <- rlang::cnd_message(e, inherit = FALSE)
   for (p in probe$pattern) {
     expect_true(grepl(p, msg, fixed = TRUE), info = paste(info, "holds", p))
   }
@@ -249,6 +251,25 @@ test_that("the refusal names every lacking or extra item, however many, with run
   expect_setequal(named$items, outside)
   expect_length(named$items, length(outside))
   expect_gt(named$n_ranges, 0L)
+})
+
+test_that("the refusal names every unknown scale, whatever the instrument's letter case", {
+  withr::local_options(cli.width = 10000)
+  unknown <- paste("Not A Scale", 1:25)
+  for (instrument in c("hitopsr", "HiTOPSR")) {
+    m <- probe_base()
+    m$instrument <- instrument
+    m$scales <- c(m$scales, unknown)
+    e <- expect_error(
+      score_hitopsr(sim_hitopsr, items = module_items(m), module = m),
+      class = "hitop_module_mismatch"
+    )
+    own <- rlang::cnd_message(e, inherit = FALSE)
+    for (s in unknown) {
+      expect_true(grepl(paste0("\"", s, "\""), own, fixed = TRUE),
+                  info = paste(instrument, s))
+    }
+  }
 })
 
 test_that("a pair of consecutive items prints as two numbers, a run of three as a range", {

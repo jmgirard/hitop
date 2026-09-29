@@ -298,6 +298,7 @@ hitopsr_engine_inputs <- function(module, include_subscales = FALSE,
 # All rows when `module` is NULL; under a module, the rows whose parent scale
 # the module holds, in table order. Shared by the scoring functions and the
 # Word form so the two cannot disagree on which subscales a module carries.
+# `subs` is an argument only so that tests can pass a faulty table.
 module_subscales <- function(module, subs = hitopsr_subscales,
                              call = rlang::caller_env()) {
   if (is.null(module)) {
@@ -313,7 +314,27 @@ module_subscales <- function(module, subs = hitopsr_subscales,
       call = call
     )
   }
-  subs[parent_stem %in% module$camelCase, , drop = FALSE]
+  subs <- subs[parent_stem %in% module$camelCase, , drop = FALSE]
+  # Every subscale item lies in its parent scale, and check_module_build() has
+  # already refused a module lacking any item of its scales, so a kept
+  # subscale's items are all among the module's. In the package, only a keying
+  # change that broke the first fact reaches this abort (tests reach it through
+  # a faulty `subs`). Unchecked, scoring would silently score the subscale from
+  # its remaining items (or as NA under `missing = "complete"`), and the Word
+  # form would print NA in its row, so it stops here instead. Scoring reads
+  # `itemNumbers` and the Word form reads `itemdata`, so both are checked.
+  sub_items <- c(
+    unlist(subs$itemNumbers),
+    unlist(lapply(subs$itemdata, function(d) d$HSR))
+  )
+  if (!all(sub_items %in% module$items)) {
+    cli::cli_abort(
+      "Internal error: a HiTOP-SR subscale has an item outside its parent scale.",
+      .internal = TRUE,
+      call = call
+    )
+  }
+  subs
 }
 
 # Internal Helper: append the HiTOP-SR subscales to the engine inputs
@@ -321,7 +342,8 @@ module_subscales <- function(module, subs = hitopsr_subscales,
 # A subscale's parent is named by its display name in `hitopsr_subscales$Scale`
 # and a module holds scale stems, so the parent is matched through
 # hitopsr_scales. Under a module, item numbers become positions among the
-# module's columns, as module_engine_inputs() does for the scales. `subs` is an
+# module's columns, as module_engine_inputs() does for the scales; every item
+# is found there, because module_subscales() stops otherwise. `subs` is an
 # argument only so that tests can pass a faulty table.
 add_hitopsr_subscales <- function(inputs, module, subs = hitopsr_subscales,
                                   call = rlang::caller_env()) {
@@ -329,20 +351,6 @@ add_hitopsr_subscales <- function(inputs, module, subs = hitopsr_subscales,
   numbers <- subs$itemNumbers
   if (!is.null(module)) {
     numbers <- lapply(subs$itemNumbers, function(x) match(x, module$items))
-    # Every subscale item lies in its parent scale, and check_module_build()
-    # has already refused a module lacking any item of its scales, so a kept
-    # subscale's items are all among the module's. In the package, only a
-    # keying change that broke the first fact reaches this abort (tests reach
-    # it through a faulty `subs`). Unchecked, it would
-    # silently score the subscale from its remaining items (or as NA under
-    # `missing = "complete"`), so it stops here instead.
-    if (anyNA(unlist(numbers))) {
-      cli::cli_abort(
-        "Internal error: a HiTOP-SR subscale has an item outside its parent scale.",
-        .internal = TRUE,
-        call = call
-      )
-    }
   }
   names(numbers) <- subs$camelCase
 
@@ -627,7 +635,12 @@ module_unknown_scales <- function(module) {
   instrument <- module$instrument
   scales <- module$scales
   if (!is.character(instrument) || length(instrument) != 1L ||
-      !instrument %in% names(tables) || !is.character(scales)) {
+      !is.character(scales)) {
+    return(character())
+  }
+  # hitop_module() reads the instrument name in any letter case.
+  instrument <- tolower(instrument)
+  if (!instrument %in% names(tables)) {
     return(character())
   }
   ref <- tables[[instrument]]

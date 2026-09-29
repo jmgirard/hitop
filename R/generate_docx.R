@@ -103,8 +103,9 @@ generate_docx_hitopbr <- function(
 #'   items of the chosen scales. With `include_subscales = TRUE`, the form
 #'   adds the subscales of the scales it holds. A module whose `items`,
 #'   `nItems`, `camelCase` or `instrument` differ from a fresh [hitop_module()] build of its
-#'   scales is refused with an error of class `hitop_module_mismatch`, before
-#'   any file is written. (default = `NULL`)
+#'   scales, or whose scales cannot be rebuilt, is refused with an error of
+#'   class `hitop_module_mismatch`, before any file is written.
+#'   (default = `NULL`)
 #' @param renumber Logical. If `TRUE` (default), the printed items are numbered
 #'   `1` to `n` down the page, so a module form does not show the full
 #'   instrument's gapped numbers. Set to `FALSE` to print each item's original
@@ -272,8 +273,8 @@ generate_docx_hitopsr <- function(
     )
 
     # If requested, prepare and append the subscales. Under a module, only the
-    # subscales of the scales it holds, whose items check_module_build() has
-    # made sure are all on the form.
+    # subscales of the scales it holds; module_subscales() stops if any of
+    # their items is not on the form.
     if (include_subscales) {
       subscales_to_score <- module_subscales(module)[, c("Subscale", "itemdata")]
       subscales_to_score$itemdata <- lapply(
@@ -384,9 +385,8 @@ generate_docx_hitopsr <- function(
 # original ascending order would print as a scattered list.
 #
 # Every item a row lists is on the form, so `match()` here never yields NA:
-# check_module_build() refuses a module lacking any item of its scales, and a
-# subscale row is added only when the module holds its parent scale, which
-# holds every item of the subscale.
+# check_module_build() refuses a module lacking any item of its scales, and
+# module_subscales() stops if a kept subscale has an item the module lacks.
 remap_itemdata <- function(x, printed_of) {
   x$HSR <- printed_of(x$HSR)
   x[order(x$HSR), , drop = FALSE]

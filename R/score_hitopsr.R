@@ -69,8 +69,8 @@
 #'   only that module's scales are scored. When `NULL`, all 405 items are
 #'   expected and all 76 scales are scored. A module whose `items`, `nItems`,
 #'   `camelCase` or `instrument` differ from a fresh [hitop_module()] build of its scales,
-#'   as after an edit by hand, is refused with an error of class
-#'   `hitop_module_mismatch`. (default = `NULL`)
+#'   as after an edit by hand, or whose scales cannot be rebuilt, is refused
+#'   with an error of class `hitop_module_mismatch`. (default = `NULL`)
 #' @param layout The order the item columns are in. `"instrument"` (the
 #'   default) is ascending HiTOP-SR order, as the `generate_*_hitopsr()` forms
 #'   lay the items out. `"printed"` is the order a shuffled Word form printed

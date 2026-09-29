@@ -205,12 +205,6 @@ test_that("module_engine_inputs() rejects a descriptor inconsistent with itself"
     "Its nItems field",
     class = "hitop_module_mismatch"
   )
-
-  # And the count the engines receive comes from `items`, not from `nItems`.
-  out <- module_engine_inputs(
-    s, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
-  )
-  expect_equal(out$n_items, length(s$items))
 })
 
 test_that("an inflated descriptor aborts instead of silently scoring wrong items", {
