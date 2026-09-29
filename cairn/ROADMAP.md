@@ -1,17 +1,16 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-28 (84th pass, M138 done): row archived, M135 pruned, questions-file row added. validate green._
+_Last hygiene check: 2026-09-28 (85th pass, M139 done): row archived, M136 pruned. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M139 | read_form_responses() reads a file whose item columns span two or more instruments | review | M136 | normal | milestones/M139-form-reader-multi-instrument.md |
+| M139 | read_form_responses() reads a file whose item columns span two or more instruments | done | M136 | normal | milestones/archive/M139-form-reader-multi-instrument.md |
 | M140 | A study link can field two or more instruments in one hitop-form session | planned | M137, M139 | normal | milestones/M140-form-multi-instrument.md |
 | M138 | The hitop-form link builder reads the researcher's questions from a spreadsheet file and writes them back as one | done | M137 | normal | milestones/archive/M138-form-questions-file.md |
 | M137 | A study link can carry the researcher's own questions, which hitop-form asks before or after the form and writes as q_ columns | done | M135, M136 | normal | milestones/archive/M137-form-custom-questions.md |
-| M136 | read_form_responses() reads the researcher's own answer columns, named with a q_ prefix, and returns them after the item columns | done | — | normal | milestones/archive/M136-form-reader-custom-columns.md |
 
 ## Candidates
 

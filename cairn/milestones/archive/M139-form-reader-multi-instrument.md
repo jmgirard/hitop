@@ -1,0 +1,11 @@
+# M139: read_form_responses() reads a file whose item columns span two or more instruments
+
+**Status:** done (2026-09-28, PR #150 https://github.com/jmgirard/hitop/pull/150, merged 2026-09-29T01:36:30Z).
+
+**Goal:** `read_form_responses()` reads the file that hitop-form will write for a link that fields several instruments in one session. The file holds one group of item columns per instrument, and the lead columns name every instrument and every form build.
+
+**Outcome:** In `R/read_form_responses.R`, the refusal of item columns of more than one stem is gone. Item columns now form one contiguous group per stem, with the optional lead and `q_` columns set aside. Four new unclassed refusals name the file and row. They catch an `instrument` cell other than the stems in file order and a stem split by another stem's columns. They also catch a `form_build` date count other than the stem count, and an `item_order` cell that is not one group per stem joined by ` | `. `form_build` is character for every file, as written. The five fixtures `responses-multi-*.csv` are written by `data-raw/form_multi_fixtures.R`. `data-raw/compare_form_reader.R` runs main's reader tests through a capturing wrapper and compares the two readers on every captured input. The help page, the online-collection article (new section "Several instruments in one file"), the modules article and NEWS state the shape and the type change.
+
+**Decisions:** D-080 (file shape, character `form_build`, ` | ` separator), chosen by Jeff at the implement gate.
+
+**Review:** one pass, with the three-lens fan-out and a claim audit at implement (52 claims, 4 corrected). No criterion failed on its code. AC3 lacked a test cell holding `1|2`, and Jeff chose fix-now over a return to implement. Fixed at the gate: a stale NEWS sentence, the `1|2` test, the no-item-column count message, and a help sentence on swapped groups of equal item sets (a limit of the grammar). Also fixed: an article example and pointer, a roxygen wrap, and a weak test assertion. Rejected: an uncapped count list (like its siblings on main), the order of parse and count faults, and two behaviors unchanged from main. AC5 script: 270 inputs from 226 main tests, and only the two replaced refusals differ. CI 8 of 8. No lesson added.
