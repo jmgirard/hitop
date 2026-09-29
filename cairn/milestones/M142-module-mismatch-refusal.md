@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M142: HiTOP-SR module functions refuse a module whose items do not match its scales
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -54,7 +54,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T9: Write the probes first: an object of class `hitop_module` or `hitop_subset` that is not a list, and an empty list of the class. `check_module_build()` refuses a module that is not a list under `hitop_module_mismatch` and names the five fields a module holds.
 - [x] T10: Write the NEWS clause ledger in a section above Review. It sets each clause of the two NEWS entries against the AC2 to AC4 test that backs it. Cut each clause with no such test, the `(R)` clause among them.
 - [x] T11: Fix the three pass-2 "fix now" findings. The NEWS Breaking entry says that `write_module()` also compares `instrument`. The Body Focus test asserts on the check's own text. `item_ranges()` prints a range only for a run of whole numbers.
-- [ ] T12: Run `devtools::check()` and the purled modules article again.
+- [x] T12: Run `devtools::check()` and the purled modules article again.
 
 ## Work log
 
