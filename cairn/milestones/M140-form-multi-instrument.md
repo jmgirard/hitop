@@ -7,7 +7,7 @@
 - **Principles touched:** IP1, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the deployed form page, its link builder, its stores and the package's article
-- **Branch/PR:** m140-form-multi-instrument; companion: /Users/jmgirard/github/hitop-form m140-form-multi-instrument
+- **Branch/PR:** m140-form-multi-instrument; companion: /Users/jmgirard/github/hitop-form m140-form-multi-instrument https://github.com/jmgirard/hitop-form/pull/18
 
 ## Goal
 
@@ -27,7 +27,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - [x] AC4: For an `instruments` link, the Supabase SQL from the builder has the lead columns first. Then it has one `integer` column per item of each instrument in the order of AC3, then the `q_` columns. The webhook send and the Supabase send carry every column. Tests compare the SQL with a committed fixture written by rule, byte for byte, and read the keys from the recording server.
 - [x] AC5: link.html lets the researcher choose one instrument, as on main, or build an ordered list of two or three. A single choice writes `instrument`, and a list writes `instruments`. A link loaded through `?c=` or `?z=` fills the same choice. Tests build, open and reload a link with two and with three instruments.
 - [x] AC6: One file that the page saved under a link with three instruments, shuffle on and one question is committed in hitop as a test fixture. `read_form_responses()` reads it, and each instrument's columns, chosen by stem, score with its scoring function.
-- [ ] AC7: The README section and the article section each state the field, the order of screens, the file shape, and how to score each instrument. NEWS names the field. The hitop-form suite passes in its CI. In hitop, `devtools::check()` gives 0 errors, 0 warnings and 0 notes, and `cairn_validate` exits 0.
+- [x] AC7: The README section and the article section each state the field, the order of screens, the file shape, and how to score each instrument. NEWS names the field. The hitop-form suite passes in its CI. In hitop, `devtools::check()` gives 0 errors, 0 warnings and 0 notes, and `cairn_validate` exits 0.
 
 ## Coverage
 
@@ -142,6 +142,7 @@ Fresh runs on 2026-09-28 at hitop-form bd65327. Both branches contain origin/mai
 - AC5: tests/link-instruments.spec.js (31 tests) passed in the same run. LI1, LI2 and LI4 and the one-row prefill test assert what the first pass recorded.
 - AC6: the hitop fixture still equals hitop-form's copy with its CR bytes removed (diff empty). The hitop result is in the AC7 line.
 - AC7 (not ticked): hitop `devtools::check()` at a5ba9b01 gave 0 errors, 0 warnings and 0 notes, and its tests passed. `cairn_validate` exits 0 (25 advisory warnings). The README section and the article section still state the field, the order of screens, the file shape and scoring by stem. NEWS names the field and no longer says that the page cannot write the file. The hitop-form CI run does not exist yet, because the PR opens at step 8. The box stays open until that run is green.
+- AC7 (ticked at step 8): hitop-form PR https://github.com/jmgirard/hitop-form/pull/18 ran its `tests` job at 3e7e8ee, which passed in 7m43s. The PR merged as 236d2f1. After the fix-now edits, the README and article sections still state the field, the order of screens, the file shape and scoring by stem.
 
 Consistency gate: `devtools::document()` gave no diff. `pkgdown::check_pkgdown()` found no problems. README.Rmd is not in the diff, and no file was added outside `tests/testthat/fixtures/`. No DESIGN principle changed, so `cairn_impact` was skipped.
 
