@@ -2603,7 +2603,7 @@ test_that("a q_ name that appears twice meets the repeated-column refusal", {
 
 # ---- Files whose item columns span two or more instruments ----------------
 #
-# A file of several instruments (a shape the page does not yet write) holds
+# A file of several instruments (the page's file for an `instruments` link) holds
 # one group of item columns per instrument. The `instrument` cell
 # holds the stems in the order of the groups, joined by single spaces, and `form_build` one
 # date per stem in the same order. Under a random order, `item_order` holds

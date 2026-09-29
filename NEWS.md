@@ -2,6 +2,20 @@
 
 ## New features
 
+* **hitop-form can give two or three instruments in one session.** A study
+  link's `instruments` field lists them in order, such as
+  `["hitopbr", "pid5bf"]`, in place of `instrument`. A list holds at most one
+  form of the PID-5 and names no instrument twice, and a module descriptor
+  applies to its HiTOP-SR. The page gives each instrument in turn, each with
+  its own start screen ("Part 2 of 3") and pages. The instruments come
+  between any questions before and after the form. It saves one row with one group of item columns
+  per instrument, in the list's order, in the shape
+  `read_form_responses()` reads. Score each instrument in its own call, with
+  its columns chosen by stem. The link builder gains "Add an instrument" and
+  an ordered list of up to three rows, and its Supabase SQL holds every
+  instrument's columns. The online-collection article's section "Several
+  instruments in one session" describes the screens and the file.
+
 * **hitop-form can ask the researcher's own questions.** A study link's
   `questions` field holds a `before` list, an `after` list or both, with up
   to 50 questions in all. The page asks the before questions on a screen of

@@ -47,7 +47,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - [x] T4: Extend `storeSql()` for the groups, add the SQL fixture under `tests/fixtures/` with its README line, and write the send tests.
 - [x] T5: Add the ordered instrument list to link.html, its submit checks, and `prefill()`. Write the builder tests.
 - [x] T6: Save the file of AC6 from a walk. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader and scoring test.
-- [ ] T7: Write the README section "Give more than one instrument", the article section and the NEWS entry.
+- [x] T7: Write the README section "Give more than one instrument", the article section and the NEWS entry.
 - [ ] T8: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
 
 ## Work log
@@ -63,6 +63,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - 2026-09-28: T5 done. link.html has the instrument rows of M140-D1 and their list and module checks. Its SQL reads every export, and its prefill fills the rows from a `c` or `z` list. tests/link-instruments.spec.js has 21 tests. A plant that skipped the prefill check turned 5 red. The entry wording of `checkInstruments()` changed to "entry 2 is" so the builder can say "instrument 2". Screens checked at 760 and 375 pixels, light and dark, with no sideways scroll.
 - 2026-09-28: T4 done. `storeSql()` needed no change, because link.html passes it every plan's items in link order. Two SQL fixtures were written by rule, with their README row. tests/instruments-store.spec.js has 6 tests: the builder's SQL byte for byte, and the keys of rows posted to a webhook and to a supabase store. A plant that reversed the group order turned both SQL tests red.
 - 2026-09-28: T6 done. hitop-form dd7a241 captured `responses-multi-page-shuffled.csv` (HiTOP-BR, PID-5-BF and the whole HiTOP-SR, shuffle, `age`). Its test IR3 checks the file against its own `item_order` cell. The hitop copy is LF, with a fixtures README row. The new reader test works out each instrument's answers from the page's pattern and scores each group by stem. A plant that dropped the per-instrument shift turned it red. `devtools::test()`: 0 failures, 24,046 passes.
+- 2026-09-28: T7 done. hitop-form b6c617b adds the README section "Give more than one instrument" and a scoring example. In hitop, the online-collection section is renamed "Several instruments in one session" and states the field and the screens, with its two anchors updated. The help page and a test comment no longer say the page cannot write the file. NEWS has the entry.
 
 ## Decisions
 
