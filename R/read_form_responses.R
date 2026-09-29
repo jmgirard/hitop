@@ -28,17 +28,40 @@
 #'   them, which `write_module()` writes ascending and the page requires
 #'   ascending), and writes `item_order`.
 #'
+#'   `form_build` is the build date of the instrument's export the page
+#'   showed, as `YYYY-MM-DD`. The result keeps each cell as written, so the
+#'   column is character. Convert it with `as.Date()` when you need a date
+#'   and the file holds one instrument.
+#'
+#'   **Several instruments in one file.** A file's item columns may form two
+#'   or more groups, one per instrument. The columns of each group sit side
+#'   by side and hold one stem, and no stem appears in two groups. The
+#'   optional lead columns and the answer columns may sit anywhere after
+#'   `submitted`, between two groups or inside one, and they do not split a
+#'   group. The `instrument` cell holds the stems in the order of the groups,
+#'   joined by single spaces (`hitopbr pid5bf`). The `form_build` cell holds
+#'   one date per stem, in the same order, joined by single spaces
+#'   (`2026-09-20 2026-09-18`). The result holds the item columns in file
+#'   order. Score each instrument in its own call, with its columns chosen by
+#'   stem, as `grep("^pid5bf_", names(responses), value = TRUE)` chooses the
+#'   PID-5-BF's. The hitop-form page does not yet write such a file.
+#'
 #'   `item_order` is the order the participant saw the items, as item numbers
 #'   with no leading zero, joined by single spaces with none at either end
-#'   (`hitopbr_01` is 1). The page writes it under a random order and not
+#'   (`hitopbr_01` is 1). In a file of several instruments it holds one group
+#'   per stem, in the order of the `instrument` cell, joined by a space, a bar
+#'   and a space (`2 1 | 3 1 2`), each group that instrument's item numbers
+#'   in the order shown. The page writes it under a random order and not
 #'   otherwise. A file may hold the column
 #'   anywhere after `submitted`, as a store's download may append it after the
 #'   item columns, and the result places it sixth. A file may also lack it:
 #'   its rows then hold `NA` there. Scoring does not read the column, and it is
 #'   not an item column, so it does not enter the check that every file holds
 #'   the same item columns. A cell that is not blank and does not list the
-#'   file's item numbers, each once, is an error naming the file and the
-#'   response row.
+#'   file's item numbers, each once, in one group per stem, is an error
+#'   naming the file and the response row. A group does not name its stem,
+#'   so the reader cannot tell two groups apart when their instruments hold
+#'   the same item numbers: swapped, they read as written.
 #'
 #'   `prolific_study` and `prolific_session` hold the study and session
 #'   identifiers that Prolific adds to a study link, when the file records
@@ -84,12 +107,15 @@
 #'   header, an answer column whose name does not match the pattern above, an
 #'   item column whose name is not a stem of lower-case letters
 #'   and digits, an underscore and the item number (`hitopbr_01`, not `foo`
-#'   or `Hitopbr_01`), item columns of more than one stem (`hitopbr_01`
-#'   beside `pid5bf_01`), an `instrument` cell that differs from the item
-#'   columns' stem (`pid5bf` beside `hitopbr_01`), an item value that is not
-#'   a whole number or is outside R's integer range, or a date that does not
-#'   parse. An error on a line names the lines at fault, counted from the
-#'   file's first line. An error on a row names the response rows at fault,
+#'   or `Hitopbr_01`), a stem whose columns another stem's columns split
+#'   (`hitopbr_01`, `pid5bf_01`, `hitopbr_02`), an `instrument` cell that
+#'   differs from the item columns' stems in file order (`pid5bf` beside
+#'   `hitopbr_01`, or `hitopbr` beside `hitopbr_01` and `pid5bf_01`), an
+#'   item value that is not a whole number or is outside R's integer range,
+#'   a `form_build` cell whose date count differs from the stem count, or a
+#'   date that does not parse. An error on a line names the lines at fault,
+#'   counted from the file's first line. An error on a row names the response
+#'   rows at fault,
 #'   counted from the first row after the header. An error on an item value
 #'   names each cell at fault as its response row, its column and the value
 #'   as written, the first five cells and a count of the rest. The errors on
@@ -123,8 +149,8 @@
 #'   can catch by name.
 #'
 #' @return A \link[tibble]{tibble} with one row per response row. The first
-#'   eight columns are `study`, `participant` and `instrument` as character,
-#'   `form_build` as `Date`, `submitted` as `POSIXct` in UTC, and `item_order`,
+#'   eight columns are `study`, `participant`, `instrument` and `form_build`
+#'   as character, `submitted` as `POSIXct` in UTC, and `item_order`,
 #'   `prolific_study` and `prolific_session` as character, each `NA` on a row
 #'   from a file without that column and on a blank cell. The item columns
 #'   follow as integers, in the column order of the first file after sorting.
@@ -238,9 +264,16 @@ blank_to_na <- function(v) {
   v
 }
 
-# The grammar of a non-blank `item_order` cell: item numbers with no leading
-# zero, joined by single spaces, with no space at either end.
-item_order_pattern <- "^[1-9][0-9]*( [1-9][0-9]*)*$"
+# The grammar of a non-blank `item_order` cell: one group per stem, joined by
+# the separator, each group item numbers with no leading zero, joined by
+# single spaces, with no space at either end. A single-instrument cell holds
+# one group and so no separator.
+item_order_separator <- " | "
+item_order_pattern <- "^[1-9][0-9]*( [1-9][0-9]*)*( [|] [1-9][0-9]*( [1-9][0-9]*)*)*$"
+
+# The grammar of a `form_build` cell: one date per stem, joined by single
+# spaces, with no space at either end. Each date must also parse.
+form_build_pattern <- "^[0-9]{4}-[0-9]{2}-[0-9]{2}( [0-9]{4}-[0-9]{2}-[0-9]{2})*$"
 
 # The grammar of an item column's name: the instrument's file stem, an
 # underscore and the item number (`hitopbr_01`, `pid5_001`).
@@ -603,8 +636,8 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   item_cols <- setdiff(rest, c(form_optional_columns, answer_cols))
 
   # An item column is named by the instrument's stem, an underscore and the
-  # item number, and one file holds one instrument's columns, so the
-  # `item_order` check below reads item numbers of one stem.
+  # item number. A file holds one group of columns per instrument, the groups
+  # in file order, so the checks below read the groups.
   named <- grepl(item_column_pattern, item_cols)
   if (!all(named)) {
     cli::cli_abort(
@@ -616,31 +649,44 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
       call = call
     )
   }
-  stems <- unique(sub("_[0-9]+$", "", item_cols))
-  if (length(stems) > 1L) {
+  # The stem of each item column, and the stems in file order. A stem's
+  # columns are one run: the answer and optional lead columns are already
+  # set aside, so only another stem's column can split them.
+  col_stems <- sub("_[0-9]+$", "", item_cols)
+  stems <- unique(col_stems)
+  runs <- rle(col_stems)$values
+  split_stems <- unique(runs[duplicated(runs)])
+  if (length(split_stems) > 0L) {
     cli::cli_abort(
       c(
-        "{.file {file}} holds item columns of more than one stem.",
-        "x" = "Stems {.val {stems}}.",
-        "i" = "A file holds one instrument's items. Read files from one form together, and other forms in a separate call."
+        "{.file {file}} holds the item columns of a stem in more than one place.",
+        "x" = "Another stem's columns split the columns of {.val {split_stems}}.",
+        "i" = "A file holds each instrument's item columns side by side, one instrument after another."
       ),
       call = call
     )
   }
 
-  # The page writes the stem into every `instrument` cell, so a cell that
-  # differs from it, blank or padded included, is a hand edit that would
-  # leave the column disagreeing with the items beside it.
-  if (length(stems) == 1L) {
-    differs <- raw$instrument != stems
+  # The page writes the stem into every `instrument` cell, and a file of
+  # several instruments holds the stems in file order, joined by single
+  # spaces. So a cell that differs, blank or padded included, is a hand edit
+  # that would leave the column disagreeing with the items beside it.
+  if (length(stems) >= 1L) {
+    expected <- paste(stems, collapse = " ")
+    differs <- raw$instrument != expected
     if (any(differs)) {
       found <- vapply(utils::head(which(differs), 5L), function(r) {
         cell <- raw$instrument[[r]]
-        cli::format_inline("Response row {r}: instrument {.val {cell}}, item columns {.val {stems}}.")
+        cli::format_inline("Response row {r}: instrument {.val {cell}}, item columns {.val {expected}}.")
       }, character(1L))
+      what <- if (length(stems) == 1L) {
+        "the item columns' stem"
+      } else {
+        "the item columns' stems in file order"
+      }
       cli::cli_abort(
         c(
-          "{.file {file}} holds an {.field instrument} cell that differs from the item columns' stem.",
+          "{.file {file}} holds an {.field instrument} cell that differs from {what}.",
           form_first_five(found, "row", total = sum(differs)),
           "i" = "The row is counted from the first row after the header."
         ),
@@ -684,11 +730,19 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   })
   names(optional) <- form_optional_columns
 
-  # An `item_order` cell is blank, or the file's item numbers each once in
-  # the order shown. The item number of a column is the digits after its last
-  # underscore (`hitopbr_01` is 1).
+  # An `item_order` cell is blank, or one group per stem in the order of the
+  # `instrument` cell, joined by " | ", each group that stem's item numbers
+  # each once in the order shown. A file of one stem has one group and so no
+  # bar. The item number of a column is the digits after its last underscore
+  # (`hitopbr_01` is 1). A file with no item column has one empty group, so
+  # no cell but a blank one fits it.
   item_order <- optional$item_order
   numbers <- suppressWarnings(as.integer(sub(".*_", "", item_cols)))
+  groups <- if (length(stems) > 0L) {
+    split(numbers, factor(col_stems, levels = stems))
+  } else {
+    list(integer(0))
+  }
   order_ok <- vapply(item_order, function(cell) {
     if (is.na(cell)) {
       return(TRUE)
@@ -696,17 +750,30 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
     if (!grepl(item_order_pattern, cell)) {
       return(FALSE)
     }
-    parts <- strsplit(cell, " ", fixed = TRUE)[[1L]]
-    parts <- suppressWarnings(as.integer(parts))
-    !anyNA(parts) && !anyNA(numbers) &&
-      identical(sort(parts), sort(numbers))
+    cells <- strsplit(cell, item_order_separator, fixed = TRUE)[[1L]]
+    if (length(cells) != length(groups)) {
+      return(FALSE)
+    }
+    all(vapply(seq_along(groups), function(g) {
+      parts <- suppressWarnings(as.integer(strsplit(cells[[g]], " ", fixed = TRUE)[[1L]]))
+      !anyNA(parts) && !anyNA(groups[[g]]) &&
+        identical(sort(parts), sort(groups[[g]]))
+    }, logical(1L)))
   }, logical(1L), USE.NAMES = FALSE)
   if (!all(order_ok)) {
     rows <- which(!order_ok)
+    if (length(groups) == 1L) {
+      what <- "the file's item numbers, each once"
+      hint <- NULL
+    } else {
+      what <- "one group per stem of that stem's item numbers, each once"
+      hint <- c("i" = "The groups follow the {.field instrument} cell's order and are joined by {.val {item_order_separator}}.")
+    }
     cli::cli_abort(
       c(
-        "{.file {file}} holds an {.field item_order} value that is not the file's item numbers, each once.",
+        "{.file {file}} holds an {.field item_order} value that is not {what}.",
         "x" = "Response {cli::qty(length(rows))}row{?s} {rows}: {.val {item_order[rows]}}.",
+        hint,
         "i" = "The row is counted from the first row after the header."
       ),
       call = call
@@ -714,36 +781,62 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   }
 
   # The stamps are matched whole, so a trailing fragment cannot slip past
-  # the parser. `submitted` may carry fractional seconds, which
-  # `Date.toISOString()` writes and the page trims.
-  date_ok <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", raw$form_build)
+  # the parser. A `form_build` cell holds one date per stem, each of which
+  # must parse, and the result keeps the cell as written. `submitted` may
+  # carry fractional seconds, which `Date.toISOString()` writes and the page
+  # trims.
+  dates <- strsplit(raw$form_build, " ", fixed = TRUE)
+  date_ok <- grepl(form_build_pattern, raw$form_build) &
+    vapply(dates, function(d) !anyNA(as.Date(d, format = "%Y-%m-%d")),
+           logical(1L))
   time_ok <- grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}([.][0-9]+)?Z$",
                    raw$submitted)
-  form_build <- as.Date(ifelse(date_ok, raw$form_build, NA_character_),
-                        format = "%Y-%m-%d")
   submitted <- as.POSIXct(ifelse(time_ok, raw$submitted, NA_character_),
                           format = "%Y-%m-%dT%H:%M:%OSZ", tz = "UTC")
-  for (field in c("form_build", "submitted")) {
-    parsed <- if (field == "form_build") form_build else submitted
-    if (anyNA(parsed)) {
-      rows <- which(is.na(parsed))
-      got <- raw[[field]][rows]
-      cli::cli_abort(
-        c(
-          "{.file {file}} holds a {.field {field}} value that does not parse.",
-          "x" = "Response {cli::qty(length(rows))}row{?s} {rows}: {.val {got}}.",
-          "i" = "The row is counted from the first row after the header."
-        ),
-        call = call
-      )
+  parse_fault <- function(field, rows) {
+    got <- raw[[field]][rows]
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds a {.field {field}} value that does not parse.",
+        "x" = "Response {cli::qty(length(rows))}row{?s} {rows}: {.val {got}}.",
+        "i" = "The row is counted from the first row after the header."
+      ),
+      call = call
+    )
+  }
+  if (!all(date_ok)) {
+    parse_fault("form_build", which(!date_ok))
+  }
+  # A file with no item column still carries one date.
+  n_dates <- max(1L, length(stems))
+  counted <- lengths(dates) == n_dates
+  if (!all(counted)) {
+    rows <- which(!counted)
+    got <- raw$form_build[rows]
+    rule <- if (length(stems) == 0L) {
+      "The file holds no item column, so the cell must hold 1 date."
+    } else {
+      "The cell must hold {n_dates} date{?s}, one per stem in the order of the {.field instrument} cell, joined by single spaces."
     }
+    cli::cli_abort(
+      c(
+        "{.file {file}} holds a {.field form_build} value whose date count differs from the stem count.",
+        "x" = "Response {cli::qty(length(rows))}row{?s} {rows}: {.val {got}}.",
+        "i" = rule,
+        "i" = "The row is counted from the first row after the header."
+      ),
+      call = call
+    )
+  }
+  if (anyNA(submitted)) {
+    parse_fault("submitted", which(is.na(submitted)))
   }
 
   out <- data.frame(
     study = raw$study,
     participant = raw$participant,
     instrument = raw$instrument,
-    form_build = form_build,
+    form_build = raw$form_build,
     submitted = submitted,
     stringsAsFactors = FALSE
   )

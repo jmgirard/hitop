@@ -85,8 +85,8 @@ test_that("a directory reads every .csv, sorted, one row per file", {
   expect_type(out$study, "character")
   expect_type(out$participant, "character")
   expect_type(out$instrument, "character")
-  expect_s3_class(out$form_build, "Date")
-  expect_identical(out$form_build, as.Date(c("2026-09-20", "2026-09-20")))
+  expect_type(out$form_build, "character")
+  expect_identical(out$form_build, c("2026-09-20", "2026-09-20"))
   expect_s3_class(out$submitted, "POSIXct")
   expect_identical(attr(out$submitted, "tzone"), "UTC")
   expect_identical(
@@ -811,7 +811,7 @@ test_that("a file holding two response rows reads as two rows, in file order", {
   expect_equal(nrow(out), 2L)
   expect_identical(out$participant, c("p002", "p001"))
   expect_identical(names(out)[-seq_len(8L)], sprintf("hitopbr_%02d", 1:45))
-  expect_s3_class(out$form_build, "Date")
+  expect_type(out$form_build, "character")
   expect_s3_class(out$submitted, "POSIXct")
   expect_identical(attr(out$submitted, "tzone"), "UTC")
   expect_true(all(vapply(out[-seq_len(8L)], is.integer, logical(1L))))
@@ -1557,21 +1557,20 @@ test_that("a foo column holding text is refused for its name, not its value", {
   expect_no_match(msg, "whole number", fixed = TRUE)
 })
 
-test_that("item columns of two stems are refused naming the stems", {
+test_that("item columns of two stems beside an instrument cell of one stem are refused for the cell", {
   dir <- withr::local_tempdir()
   header <- paste(c(lead, "hitopbr_01", "pid5bf_01"), collapse = ",")
   msg <- refusal(dir, "stems.csv", good_row, header = header)
-  expect_match(msg, "more than one stem", fixed = TRUE)
-  expect_match(msg, "hitopbr", fixed = TRUE)
-  expect_match(msg, "pid5bf", fixed = TRUE)
+  expect_match(msg, "differs from the item columns' stems in file order", fixed = TRUE)
+  expect_match(msg, "item columns \"hitopbr pid5bf\"", fixed = TRUE)
 })
 
-test_that("a two-stem file with an item_order of 1 1 is refused for the stems, not the cell", {
+test_that("a two-stem file with an item_order of 1 1 is refused for the instrument cell, not the item_order cell", {
   dir <- withr::local_tempdir()
   header <- paste(c(lead, "item_order", "hitopbr_01", "pid5bf_01"), collapse = ",")
   row <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,1 1,4,1"
   msg <- refusal(dir, "stemorder.csv", row, header = header)
-  expect_match(msg, "more than one stem", fixed = TRUE)
+  expect_match(msg, "holds an instrument cell that differs from the item columns' stems in file order.", fixed = TRUE)
   expect_no_match(msg, "item_order", fixed = TRUE)
 })
 
@@ -2600,4 +2599,338 @@ test_that("a q_ name that appears twice meets the repeated-column refusal", {
   expect_match(msg, "dup.csv", fixed = TRUE)
   expect_match(msg, "q_age", fixed = TRUE)
   expect_match(msg, "more than once", fixed = TRUE)
+})
+
+# ---- Files whose item columns span two or more instruments ----------------
+#
+# A file of several instruments (a shape the page does not yet write) holds
+# one group of item columns per instrument. The `instrument` cell
+# holds the stems in the order of the groups, joined by single spaces, and `form_build` one
+# date per stem in the same order. Under a random order, `item_order` holds
+# one group per stem joined by " | ". The reader returns `form_build` as
+# character for every file, holding each row's dates as written.
+
+# The rule the multi-instrument fixtures are written by, restated here
+# independently of data-raw/form_multi_fixtures.R: each instrument's items are
+# answered by its own pattern, repeating down its own columns.
+multi_rule <- list(
+  hitopbr = list(n = 45L, names = sprintf("hitopbr_%02d", 1:45),
+                 build = "2026-09-20", pattern = c(4, 3, 2, 1)),
+  pid5bf = list(n = 25L, names = sprintf("pid5bf_%02d", 1:25),
+                build = "2026-09-18", pattern = c(0, 1, 2, 3)),
+  pid5sf = list(n = 100L, names = sprintf("pid5sf_%03d", 1:100),
+                build = "2026-09-19", pattern = c(2, 0, 3, 1))
+)
+
+# The responses of `stem` under the rule, named by item number.
+multi_responses <- function(stem) {
+  r <- multi_rule[[stem]]
+  stats::setNames(rep_len(r$pattern, r$n), seq_len(r$n))
+}
+
+# The scores each stem's columns must reach, from the shipped tables alone.
+multi_expected <- function(stem) {
+  responses <- multi_responses(stem)
+  if (stem == "hitopbr") {
+    items <- hitopbr_items
+    items$number <- items$HBR
+    expected <- table_means(responses, items, hitopbr_scales)
+    stats::setNames(expected, paste0("hbr_", hitopbr_scales$camelCase))
+  } else {
+    pid5_expected(responses, if (stem == "pid5bf") "BF" else "SF")
+  }
+}
+
+# Score the columns of `stem`, chosen by stem, with the stem's own function.
+score_stem <- function(data, stem) {
+  cols <- grep(paste0("^", stem, "_"), names(data), value = TRUE)
+  switch(stem,
+    hitopbr = score_hitopbr(data, items = cols, append = FALSE),
+    pid5bf = score_pid5(data, items = cols, version = "BF", append = FALSE),
+    pid5sf = score_pid5(data, items = cols, version = "SF", append = FALSE)
+  )
+}
+
+multi_cases <- list(
+  list(file = "responses-multi-two.csv", stems = c("hitopbr", "pid5bf"),
+       answers = character(0)),
+  list(file = "responses-multi-two-questions.csv", stems = c("hitopbr", "pid5bf"),
+       answers = c("q_age", "q_group", "q_more")),
+  list(file = "responses-multi-three.csv",
+       stems = c("hitopbr", "pid5bf", "pid5sf"), answers = character(0)),
+  list(file = "responses-multi-three-questions.csv",
+       stems = c("hitopbr", "pid5bf", "pid5sf"),
+       answers = c("q_age", "q_group", "q_more"))
+)
+
+for (case in multi_cases) {
+  test_that(paste(case$file, "reads one group per instrument and each group scores by stem"), {
+    out <- read_form_responses(fixture(case$file))
+    items <- unlist(lapply(multi_rule[case$stems], `[[`, "names"), use.names = FALSE)
+    expect_identical(names(out), c(result_lead, items, case$answers))
+    expect_identical(out$instrument, paste(case$stems, collapse = " "))
+    expect_identical(
+      out$form_build,
+      paste(vapply(multi_rule[case$stems], `[[`, "", "build"), collapse = " ")
+    )
+    expect_true(all(vapply(out[items], is.integer, logical(1L))))
+    if (length(case$answers) > 0L) {
+      expect_identical(unname(unlist(out[case$answers])), c("34", "2", NA))
+    }
+    for (stem in case$stems) {
+      cols <- multi_rule[[stem]]$names
+      expect_identical(unname(unlist(out[1L, cols])),
+                       as.integer(multi_responses(stem)))
+      scored <- score_stem(out, stem)
+      expected <- multi_expected(stem)
+      expect_identical(names(scored), names(expected))
+      expect_equal(unlist(scored[1L, ]), expected)
+    }
+  })
+}
+
+test_that("the shuffled two-instrument file reads its item_order groups as written", {
+  path <- fixture("responses-multi-two-shuffled.csv")
+  out <- read_form_responses(path)
+  cell <- strsplit(readLines(path)[2L], ",", fixed = TRUE)[[1L]][6L]
+  expect_identical(out$item_order, cell)
+  groups <- strsplit(cell, " | ", fixed = TRUE)[[1L]]
+  expect_length(groups, 2L)
+  expect_setequal(as.integer(strsplit(groups[1L], " ")[[1L]]), 1:45)
+  expect_setequal(as.integer(strsplit(groups[2L], " ")[[1L]]), 1:25)
+  expect_identical(names(out), c(result_lead, multi_rule$hitopbr$names,
+                                 multi_rule$pid5bf$names))
+})
+
+# A small two-instrument file: two HiTOP-BR items, then three PID-5-BF items.
+small_cols <- c("hitopbr_01", "hitopbr_02", "pid5bf_01", "pid5bf_02", "pid5bf_03")
+small_cells <- c("4", "1", "0", "1", "2")
+
+# Write a file of `lead` then `cols` as its header and one row per element
+# of `rows`, each the cells after `submitted`. Returns the path.
+multi_file <- function(dir, name, cols = small_cols, rows = list(small_cells),
+                       instrument = "hitopbr pid5bf",
+                       form_build = "2026-09-20 2026-09-18") {
+  if (length(instrument) == 1L) instrument <- rep(instrument, length(rows))
+  if (length(form_build) == 1L) form_build <- rep(form_build, length(rows))
+  lines <- vapply(seq_along(rows), function(i) {
+    paste(c("s", paste0("p", i), instrument[[i]], form_build[[i]],
+            "2026-09-20T21:20:36Z", rows[[i]]), collapse = ",")
+  }, character(1L))
+  write_rows(file.path(dir, name), c(paste(c(lead, cols), collapse = ","), lines))
+}
+
+placements <- list(
+  "between the two groups" =
+    c("hitopbr_01", "hitopbr_02", "q_x", "item_order", "pid5bf_01", "pid5bf_02", "pid5bf_03"),
+  "inside the first group" =
+    c("hitopbr_01", "q_x", "item_order", "hitopbr_02", "pid5bf_01", "pid5bf_02", "pid5bf_03"),
+  "inside the second group" =
+    c("hitopbr_01", "hitopbr_02", "pid5bf_01", "item_order", "pid5bf_02", "q_x", "pid5bf_03")
+)
+
+for (where in names(placements)) {
+  test_that(paste("a q_ column and an item_order column", where, "read as lead and answer columns"), {
+    dir <- withr::local_tempdir()
+    cols <- placements[[where]]
+    cells <- stats::setNames(rep("", length(cols)), cols)
+    cells[small_cols] <- small_cells
+    cells["q_x"] <- "hi"
+    cells["item_order"] <- "2 1 | 3 1 2"
+    f <- multi_file(dir, "placed.csv", cols = cols, rows = list(unname(cells)))
+    expect_no_condition(out <- read_form_responses(f))
+    expect_identical(names(out), c(result_lead, small_cols, "q_x"))
+    expect_identical(out$item_order, "2 1 | 3 1 2")
+    expect_identical(out$q_x, "hi")
+    expect_identical(unname(unlist(out[small_cols])), c(4L, 1L, 0L, 1L, 2L))
+  })
+}
+
+test_that("form_build is character for a single-instrument file and a multi-instrument file", {
+  single <- read_form_responses(fixture("responses-hitopbr.csv"))
+  expect_type(single$form_build, "character")
+  expect_identical(single$form_build, "2026-09-20")
+
+  dir <- withr::local_tempdir()
+  f <- multi_file(dir, "two.csv", rows = list(small_cells, small_cells),
+                  form_build = c("2026-09-20 2026-09-18", "2026-09-21 2026-09-18"))
+  multi <- read_form_responses(f)
+  expect_type(multi$form_build, "character")
+  expect_identical(multi$form_build, c("2026-09-20 2026-09-18", "2026-09-21 2026-09-18"))
+})
+
+test_that("multi-instrument files whose groups differ in order or count meet the mismatch class", {
+  dir <- withr::local_tempdir()
+  multi_file(dir, "a.csv")
+  multi_file(dir, "b.csv", cols = small_cols[c(3:5, 1:2)],
+             rows = list(small_cells[c(3:5, 1:2)]), instrument = "pid5bf hitopbr",
+             form_build = "2026-09-18 2026-09-20")
+  expect_error(read_form_responses(dir), class = "hitop_form_responses_mismatch")
+
+  dir <- withr::local_tempdir()
+  multi_file(dir, "a.csv")
+  form_file(dir, "b.csv", two_items())
+  cnd <- rlang::catch_cnd(read_form_responses(dir), "error")
+  expect_s3_class(cnd, "hitop_form_responses_mismatch")
+  expect_match(conditionMessage(cnd), "b.csv' differs from it in count", fixed = TRUE)
+})
+
+# The refusals of a multi-instrument file: unclassed, naming the file and,
+# for a fault in a row, the row. Returns the headline and the bullets.
+multi_refusal <- function(path) {
+  cnd <- rlang::catch_cnd(read_form_responses(path), "error")
+  expect_s3_class(cnd, "rlang_error")
+  expect_false(inherits(cnd, "hitop_form_responses_mismatch"))
+  expect_false(inherits(cnd, "hitop_form_responses_none"))
+  expect_match(conditionMessage(cnd), basename(path), fixed = TRUE)
+  list(head = cli::ansi_strip(cnd$message),
+       body = unname(cli::ansi_strip(cnd$body)))
+}
+
+item_order_row <- function(cell) c(cell, small_cells)
+
+test_that("a valid multi-instrument item_order cell reads, and a blank one reads as NA", {
+  dir <- withr::local_tempdir()
+  f <- multi_file(dir, "order.csv", cols = c("item_order", small_cols),
+                  rows = list(item_order_row("2 1 | 3 1 2"), item_order_row("")))
+  out <- read_form_responses(f)
+  expect_identical(out$item_order, c("2 1 | 3 1 2", NA))
+})
+
+bad_orders <- c(
+  "a group missing" = "3 1 2",
+  "the groups in the wrong order" = "3 1 2 | 2 1",
+  "a number from another instrument" = "1 3 | 1 2 3",
+  "a group that repeats one of its numbers" = "1 1 | 1 2 3",
+  "a group that omits one of its numbers" = "1 | 1 2 3",
+  "an unspaced bar" = "1 2|1 2 3",
+  "the unspaced separator 1|2" = "2 1|2 3 1",
+  "an empty group between two bars" = "1 2 || 1 2 3",
+  "a bar at the end" = "1 2 | 1 2 3 |"
+)
+
+for (fault in names(bad_orders)) {
+  test_that(paste("a multi-instrument item_order cell with", fault, "is refused naming the row"), {
+    dir <- withr::local_tempdir()
+    cell <- bad_orders[[fault]]
+    f <- multi_file(dir, "order.csv", cols = c("item_order", small_cols),
+                    rows = list(item_order_row("2 1 | 3 1 2"), item_order_row(cell)))
+    got <- multi_refusal(f)
+    expect_match(got$head, "holds an item_order value that is not one group per stem of that stem's item numbers, each once.", fixed = TRUE)
+    expect_identical(got$body, c(
+      sprintf("Response row 2: \"%s\".", cell),
+      "The groups follow the instrument cell's order and are joined by \" | \".",
+      "The row is counted from the first row after the header."
+    ))
+  })
+}
+
+test_that("a single-instrument item_order cell keeps its grammar: a bar is refused as before", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "ok.csv", two_items(), item_order = "2 1")
+  expect_identical(read_form_responses(f)$item_order, "2 1")
+  f <- form_file(dir, "bar.csv", two_items(), item_order = "2 | 1")
+  got <- multi_refusal(f)
+  expect_match(got$head, "holds an item_order value that is not the file's item numbers, each once.", fixed = TRUE)
+  expect_identical(got$body, c(
+    "Response row 1: \"2 | 1\".",
+    "The row is counted from the first row after the header."
+  ))
+})
+
+bad_instruments <- c(
+  "the stems in the wrong order" = "pid5bf hitopbr",
+  "one stem of two" = "hitopbr",
+  "two spaces between the stems" = "hitopbr  pid5bf",
+  "a trailing space" = "hitopbr pid5bf "
+)
+
+for (fault in names(bad_instruments)) {
+  test_that(paste("an instrument cell with", fault, "is refused naming the row"), {
+    dir <- withr::local_tempdir()
+    cell <- bad_instruments[[fault]]
+    f <- multi_file(dir, "inst.csv", rows = list(small_cells, small_cells),
+                    instrument = c("hitopbr pid5bf", cell))
+    got <- multi_refusal(f)
+    expect_match(got$head, "holds an instrument cell that differs from the item columns' stems in file order.", fixed = TRUE)
+    expect_identical(got$body, c(
+      sprintf("Response row 2: instrument \"%s\", item columns \"hitopbr pid5bf\".", cell),
+      "The row is counted from the first row after the header."
+    ))
+  })
+}
+
+test_that("a stem whose columns another stem's columns split is refused naming the stem", {
+  dir <- withr::local_tempdir()
+  cols <- c("hitopbr_01", "pid5bf_01", "pid5bf_02", "pid5bf_03", "hitopbr_02")
+  f <- multi_file(dir, "split.csv", cols = cols)
+  got <- multi_refusal(f)
+  expect_match(got$head, "holds the item columns of a stem in more than one place.", fixed = TRUE)
+  expect_identical(got$body, c(
+    "Another stem's columns split the columns of \"hitopbr\".",
+    "A file holds each instrument's item columns side by side, one instrument after another."
+  ))
+
+  # Three stems, the first and the second each split by another.
+  cols <- c("hitopbr_01", "pid5bf_01", "hitopbr_02", "pid5sf_001", "pid5bf_02")
+  f <- multi_file(dir, "split3.csv", cols = cols, rows = list(c("4", "0", "1", "2", "1")),
+                  instrument = "hitopbr pid5bf pid5sf",
+                  form_build = "2026-09-20 2026-09-18 2026-09-19")
+  got <- multi_refusal(f)
+  expect_identical(got$body[[1L]],
+                   "Another stem's columns split the columns of \"hitopbr\" and \"pid5bf\".")
+})
+
+bad_builds <- list(
+  list(fault = "one date for two stems", cell = "2026-09-20",
+       phrase = "value whose date count differs from the stem count."),
+  list(fault = "three dates for two stems", cell = "2026-09-20 2026-09-18 2026-09-19",
+       phrase = "value whose date count differs from the stem count."),
+  list(fault = "a date that does not parse", cell = "2026-09-20 2026-02-30",
+       phrase = "value that does not parse."),
+  list(fault = "two spaces between the dates", cell = "2026-09-20  2026-09-18",
+       phrase = "value that does not parse."),
+  list(fault = "a trailing space", cell = "2026-09-20 2026-09-18 ",
+       phrase = "value that does not parse.")
+)
+
+for (case in bad_builds) {
+  test_that(paste("a form_build cell with", case$fault, "is refused naming the row"), {
+    dir <- withr::local_tempdir()
+    f <- multi_file(dir, "build.csv", rows = list(small_cells, small_cells),
+                    form_build = c("2026-09-20 2026-09-18", case$cell))
+    got <- multi_refusal(f)
+    expect_match(got$head, paste("holds a form_build", case$phrase), fixed = TRUE)
+    expect_identical(got$body[[1L]], sprintf("Response row 2: \"%s\".", case$cell))
+    if (grepl("count", case$phrase)) {
+      expect_identical(got$body[-1L], c(
+        "The cell must hold 2 dates, one per stem in the order of the instrument cell, joined by single spaces.",
+        "The row is counted from the first row after the header."
+      ))
+    }
+  })
+}
+
+test_that("a file with no item column and two dates is refused for its count, naming no stem", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "noitems2.csv"), c(
+    paste(lead, collapse = ","),
+    "s,p1,anything,2026-09-20 2026-09-18,2026-09-20T21:20:36Z"
+  ))
+  got <- multi_refusal(f)
+  expect_match(got$head, "holds a form_build value whose date count differs from the stem count.", fixed = TRUE)
+  expect_identical(got$body, c(
+    "Response row 1: \"2026-09-20 2026-09-18\".",
+    "The file holds no item column, so the cell must hold 1 date.",
+    "The row is counted from the first row after the header."
+  ))
+})
+
+test_that("a single-instrument form_build cell of two dates is refused for its count", {
+  dir <- withr::local_tempdir()
+  f <- form_file(dir, "two.csv", two_items(), form_build = "2026-09-20 2026-09-18")
+  got <- multi_refusal(f)
+  expect_match(got$head, "holds a form_build value whose date count differs from the stem count.", fixed = TRUE)
+  expect_identical(got$body[[2L]],
+                   "The cell must hold 1 date, one per stem in the order of the instrument cell, joined by single spaces.")
 })
