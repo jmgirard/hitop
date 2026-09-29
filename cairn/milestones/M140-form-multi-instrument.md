@@ -68,6 +68,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - claim audit: 115 claims read, 6 corrected — hitop-form tests/instruments.spec.js, tests/link-instruments.spec.js (2), tests/instruments-row.spec.js, tests/helpers.mjs; hitop vignettes/articles/online-collection.Rmd. The same reader re-read the 6 and passed each.
 - 2026-09-28: implement complete, status review.
 - 2026-09-28: review in progress. AC1 to AC6 evidence recorded and ticked. AC7, the consistency gate and two of three reviewers still pending.
+- 2026-09-28: review checkpoint. Consistency gate clean. AC7 open on hitop-form CI. 19 findings recorded, F1 an AC1 failure confirmed with node. Awaiting the step-7 gate.
 
 ## Decisions
 
@@ -83,3 +84,28 @@ Fresh runs on 2026-09-28. Both branches contain origin/main (no merge needed). h
 - AC4: tests/instruments-store.spec.js (6 tests) passed. IS1 compares the builder's SQL byte for byte with 2 fixtures: HiTOP-BR then PID-5-BF, and PID-5-BF then HiTOP-BR with shuffle, Prolific and a question before and after. IS2 walks each link and posts to a webhook and to a supabase store on the recording server. It asserts that the keys of each posted row equal the fixture's column lines in order. The review rederived `supabase-hitopbr-pid5bf.sql` from `supabase-hitopbr.sql` by its README rule (rename the table, add the 25 `pid5bf_` lines after `hitopbr_45`). The only difference was those 26 lines.
 - AC5: tests/link-instruments.spec.js (21 tests) passed. LI1 adds, moves and removes rows up to three. LI2 asserts that one row writes `instrument` alone and two or three rows write `instruments` in row order. LI4 builds links of two and of three instruments and opens each at "Part 1 of N". It reloads each on the builder through `c` (and `z` with a question) and asserts the same rows and the same rebuilt configuration. An opened link with one instrument fills one row.
 - AC6: `tests/testthat/fixtures/responses-multi-page-shuffled.csv` equals hitop-form's `tests/fixtures/` copy with its CR bytes removed (diff empty). hitop-form saved that copy at dd7a241 under the HiTOP-BR, the PID-5-BF and the whole HiTOP-SR, with shuffle and the question `age`. IR3 in the suite run above checks it against a fresh walk's header. `test-read_form_responses.R`, run alone, gave 0 failures. Its new test reads the file and works out each instrument's answers from the `item_order` cell. It scores the HiTOP-BR, PID-5-BF and HiTOP-SR groups, each chosen by stem, against values computed from the keying tables.
+- AC7 (not ticked): The hitop-form README section "Give more than one instrument" and the article section "Several instruments in one session" were read. Each states the field, the order of screens, the file shape and scoring by stem. NEWS names the field. hitop `devtools::check()`: 0 errors, 0 warnings, 0 notes. `cairn_validate` exits 0 (24 advisory warnings). The hitop-form CI run does not exist yet, because the PR opens at step 8. The box stays open until that run is green.
+
+Consistency gate: `devtools::document()` gave no diff. README.Rmd and README.md are not in the diff. `pkgdown::check_pkgdown()` found no problems. NEWS has the entry. The one added file is under `tests/testthat/fixtures/`, so no `.Rbuildignore` entry is needed. No DESIGN principle changed, so `cairn_impact` was skipped.
+
+Findings from 3 fresh reviewers ([O] diff-bug, [S] blame-history, [S] prior-review), merged and ranked. Dispositions are logged after the gate.
+
+- F1: `checkInstruments()` (form.js:94) accepts an entry that is a nested list. The review confirmed with node that `["hitopbr", ["hitopbr"]]` and `["pid5", ["pid5bf"]]` pass. The page refuses such a link later, at the export check, with a message that does not name `instruments`. The builder's prefill loads it without a refusal. This is an AC1 failure: a repeated name and two PID-5 forms are not refused by name.
+- F2: A list of all three PID-5 forms is refused with the message "two forms of the PID-5", on the page and in the builder (confirmed with node). No test covers three.
+- F3: NEWS.md:69 (the M139 entry) still says the page does not yet write a file of several instruments. The new entry in the same section says it does.
+- F4: DESIGN Known issue 12 reopens "if the page fields such a pair". A HiTOP-SR module of items 1 to 45 or 1 to 25 beside the HiTOP-BR or the PID-5-BF, under shuffle, is such a pair. Neither the milestone nor DESIGN records this.
+- F5: data-raw/form_multi_fixtures.R:6 still says the page does not write this shape.
+- F6: The hitop-form README table of spec files lacks the 5 new specs.
+- F7: The builder's prefill refusals of an unknown name, a repeated name, a number, null, an object and an empty list are untested, and so is its three-PID-5 refusal.
+- F8: No network test walks a list link. The README network row still says "the one export fetch", while form.js now says "the export fetches".
+- F9: The unload guard was rewritten for several parts, and its one test covers a typed before-question only. The M137 candidate row's "when next edited" trigger fired.
+- F10: link.html's prefill was edited, and the M135 row's gap (the submit handler waits on the `z` prefill) is still open. That row's trigger fired.
+- F11: Single-instrument wording remains in hitop-form README ("Where the file lands", the Sheets section, "What the participant sees", "Nine example files"), link.html:95, and the article at lines 19, 71 and 98.
+- F12: A browser reload of the builder can restore the text fields and reset the instrument rows to one HiTOP-SR row (not run, inferred).
+- F13: No test asserts that a single-instrument start screen shows no "Part 1 of 1".
+- F14: `start()` now scrolls to the top on single-instrument links too.
+- F15: The builder's submit checks now refuse instrument faults before a missing study name.
+- F16: The where-answers-go notice shows on the first start screen only (as AC2 states).
+- F17: Comment and text wrapping: form.js lines 9 to 12 and 1077, the NEWS entry, and a test comment. The form.js header's import list omits the new link.html imports.
+- F18: Move up on the first row and Move down on the last are enabled and do nothing. Their aria-labels do not contain the visible text, as in the question editor.
+- F19: The hitop-form fixture README cites dd7a241, which the squash merge leaves off main. Earlier rows do the same.
