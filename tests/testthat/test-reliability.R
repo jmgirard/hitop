@@ -322,7 +322,8 @@ test_that("include_subscales = TRUE adds one row per subscale after the scale ro
   subs <- rel[-seq_len(n), ]
   expect_equal(subs$Scale, hitopsr_subscales$Subscale)
   expect_equal(subs$camelCase, hitopsr_subscales$camelCase)
-  expect_equal(subs$nItems, hitopsr_subscales$nItems)
+  # expect_identical(), not expect_equal(): nItems must stay an integer.
+  expect_identical(subs$nItems, hitopsr_subscales$nItems)
   expect_equal(subs$camelCase, names(subscale_key))
 
   # Alpha for every subscale equals calc_alpha() on the items the hardcoded
@@ -357,7 +358,8 @@ test_that("under a module, include_subscales adds the rows of its scales' subsca
 })
 
 test_that("reliability_hitopsr() refuses an include_subscales that is not TRUE or FALSE", {
-  for (bad in list(NA, "yes", c(TRUE, TRUE))) {
+  # 1 is the value that once got past an isTRUE() check.
+  for (bad in list(NA, "yes", c(TRUE, TRUE), 1)) {
     expect_error(
       reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE,
                           include_subscales = bad),

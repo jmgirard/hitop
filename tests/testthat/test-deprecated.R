@@ -289,3 +289,28 @@ test_that("adding `include_subscales` leaves `it` unambiguous even though `i` is
     score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
   )
 })
+
+test_that("a module passed by position in the old `subset` place fails the flag check", {
+  # `include_subscales` took the position `subset` held, so a module passed
+  # there reaches validate_flag(), as NEWS records. Named `module =` works.
+  m <- hitop_module("hitopsr", "mistrust")
+  dat <- sim_hitopsr[sprintf("hsr_%03d", m$items)]
+  for (f in list(score_hitopsr, reliability_hitopsr)) {
+    nm <- names(formals(f))
+    expect_identical(nm[match("subset", nm) - 1L], "include_subscales")
+  }
+  expect_error(
+    score_hitopsr(dat, seq_along(dat), c(1, 4), "hsr_", "available", FALSE,
+                  TRUE, NULL, "instrument", m),
+    "include_subscales.*must be",
+    class = "rlang_error"
+  )
+  expect_error(
+    reliability_hitopsr(dat, seq_along(dat), c(1, 4), TRUE, FALSE, NULL,
+                        "instrument", m),
+    "include_subscales.*must be",
+    class = "rlang_error"
+  )
+  expect_named(score_hitopsr(dat, seq_along(dat), module = m, append = FALSE),
+               "hsr_mistrust")
+})

@@ -8,13 +8,8 @@
   as `hsr_cynicism`, after the scale columns. `reliability_hitopsr()` adds one
   row per subscale after the scale rows. With a `module`, only the subscales
   whose parent scale is in the module are included. `label_hitopsr()` labels
-  the subscale columns, and `interval_hitopsr()` converts them. A call that
-  abbreviates `items` as `i =` now fails with an error that the argument
-  "matches multiple formal arguments", because `i` also starts
-  `include_subscales`. Write `items =` in full. A call that passes the
-  deprecated `subset` by position now fails, because `include_subscales`
-  takes that position and accepts only `TRUE` or `FALSE`. Write `module =`
-  instead.
+  the subscale columns, and `interval_hitopsr()` converts them. The new
+  argument breaks two kinds of call, listed under Breaking changes.
 
 * **hitop-form can give two or three instruments in one session.** A study
   link's `instruments` field lists them in order, such as
@@ -350,6 +345,14 @@
   notice can silence it by class.
 
 ## Breaking changes
+
+* **Two kinds of call to `score_hitopsr()` and `reliability_hitopsr()` now
+  fail.** Both come from the new `include_subscales` argument. The first kind abbreviates `items` as `i =`. It now fails with an
+  error that the argument "matches multiple formal arguments", because `i`
+  also starts `include_subscales`. Write `items =` in full. A call that passes the
+  deprecated `subset` by position now fails, because `include_subscales`
+  takes that position and accepts only `TRUE` or `FALSE`. Write `module =`
+  instead.
 
 * **Scoring refuses an item column it cannot read as numbers.**
   `score_pid5()`, `score_hitopsr()`, `score_hitopbr()`, `reliability_pid5()`,

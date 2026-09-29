@@ -294,7 +294,8 @@ test_that("under a module, include_subscales scores exactly the subscales of its
 })
 
 test_that("include_subscales must be a single TRUE or FALSE", {
-  for (bad in list(NA, "yes", c(TRUE, TRUE))) {
+  # 1 is the value that once got past an isTRUE() check.
+  for (bad in list(NA, "yes", c(TRUE, TRUE), 1)) {
     expect_error(
       score_hitopsr(sim_hitopsr, items = 1:405, include_subscales = bad),
       "include_subscales.*must be",

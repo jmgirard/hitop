@@ -70,6 +70,8 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 - 2026-09-29: T6 done. New tests cover subscales under a shuffled printed-order module, the `i =` and `it =` pins, and two keying-fault guards. A planted remap from `item_order` turned the printed-order test red in 3 places. `add_hitopsr_subscales()` now aborts on an unmatched parent name and passes `call`. Help and NEWS text updated. `devtools::test()` 1035 tests, 0 failures.
 - claim audit: 96 claims read, 2 corrected — R/module.R, tests/testthat/test-score_hitopsr.R (plus two descriptions tightened in R/score_hitopsr.R and R/reliability_hitopsr.R). Files read: NEWS.md, five R files, the vignette, helper-fixtures.R and five test files.
 - 2026-09-29: implement complete after review return 1. `devtools::check()` at e0ce94bb gave 0 errors, 0 warnings, 0 notes (the later commit changed comments and help text only). Status set to review.
+- 2026-09-29: review pass 2. All seven criteria pass on fresh evidence, and the gate is green. Five small findings were fixed at the gate, two became candidate rows, and six were rejected.
+- step-7 approval: m141-hitopsr-subscale-scoring approved for merge
 
 ## Decisions
 
@@ -138,5 +140,7 @@ Pass-2 reviewer findings. Three fresh reviewers ran: diff (O), history (S) and p
 - R2-L (O9): No subscale reliability test runs `omega = TRUE`. Recommended: reject, because the omega path treats every item list alike and is tested on scales.
 - R2-M (O10): The reliability module tests use 3 probes and check row set, not row order. Recommended: reject, because AC4 does not require order and AC3 covers the score side.
 - R2-N (S6, S7): No history conflict in the new guards or in unlabelled subscale `_se` columns. Noted.
+
+Triage at the merge gate, 2026-09-29: Jeff took every recommendation. Five were fixed now. R2-C is a NEWS Breaking changes entry. For R2-D, `test-deprecated.R` asserts the flag error for a module passed in the old `subset` place, on both functions. R2-E adds `1` to both flag tests, and R2-F uses `expect_identical` on `nItems`. R2-G removes the `rank_scales()` help clause. Follow-up: R2-A as a new candidate row, and R2-B by extending the existing Word-generator row. Rejected: R2-H to R2-M, for the reasons above. After the fixes, `document()` rewrote only `man/rank_scales.Rd`, and `devtools::test()` ran 64 files with 0 failures, 0 errors and 15 older skips. Pass-1 findings O1, O3 to O6, S3, S9 and P1 were fixed in T6. O7, O8, O9, S2, S4 and S5 reappear above as R2-B, R2-G, R2-H, R2-K, R2-C and R2-I.
 
 Consistency gate: `cairn_validate.py` exit 0 with 24 older advisory warnings. Coverage complete. `document()` gave no diff. `pkgdown::check_pkgdown()` found no problems. README untouched. No principle text changed, so `cairn_impact` was skipped.
