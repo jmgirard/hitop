@@ -4,7 +4,7 @@
 #' McDonald's omega — for the HiTOP Self-Report (405 items). Reliability is
 #' estimated on the reverse-keyed item responses for each of the scales that
 #' [score_hitopsr()] outputs and, with `include_subscales = TRUE`, for each of
-#' its 17 subscales.
+#' its 17 subscales (fewer under a `module`).
 #'
 #' @param data A data frame containing the HiTOP-SR items (numerically coded):
 #'   all 405 of them, or, when `module` is supplied, that module's items.

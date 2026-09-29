@@ -102,7 +102,7 @@ Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the HiTOP Self-Report (405 items). Reliability is
 estimated on the reverse-keyed item responses for each of the scales that
 \code{\link[=score_hitopsr]{score_hitopsr()}} outputs and, with \code{include_subscales = TRUE}, for each of
-its 17 subscales.
+its 17 subscales (fewer under a \code{module}).
 }
 \details{
 Alpha is computed by \code{\link[=calc_alpha]{calc_alpha()}} (covariance-based, pairwise

@@ -1,7 +1,7 @@
 #' Score the HiTOP-SR Instrument
 #'
 #' Create a data frame with scores on all the HiTOP-SR scales and, with
-#' `include_subscales = TRUE`, on its 17 subscales.
+#' `include_subscales = TRUE`, on its 17 subscales (fewer under a `module`).
 #'
 #' @param data A data frame containing the HiTOP-SR items (numerically coded):
 #'   all 405 of them, or, when `module` is supplied, that module's items.

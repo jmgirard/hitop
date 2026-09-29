@@ -322,8 +322,9 @@ add_hitopsr_subscales <- function(inputs, module, subs = hitopsr_subscales,
     subs <- subs[kept, , drop = FALSE]
     numbers <- lapply(subs$itemNumbers, function(x) match(x, module$items))
     # Every subscale item lies in its parent scale, so a kept subscale's items
-    # are all among the module's. A keying change that broke this would score
-    # NA columns silently, so it stops here instead.
+    # are all among the module's. A keying change that broke this would
+    # silently score the subscale from its remaining items (or as NA under
+    # `missing = "complete"`), so it stops here instead.
     if (anyNA(unlist(numbers))) {
       cli::cli_abort(
         "Internal error: a HiTOP-SR subscale has an item outside its parent scale.",

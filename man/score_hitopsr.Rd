@@ -122,7 +122,7 @@ and all original \code{data} columns (if requested).
 }
 \description{
 Create a data frame with scores on all the HiTOP-SR scales and, with
-\code{include_subscales = TRUE}, on its 17 subscales.
+\code{include_subscales = TRUE}, on its 17 subscales (fewer under a \code{module}).
 }
 \details{
 For per-scale reliability estimates (Cronbach's alpha, McDonald's

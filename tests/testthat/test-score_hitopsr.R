@@ -373,7 +373,8 @@ test_that("a subscale keying fault under a module is an internal error", {
     class = "rlang_error"
   )
 
-  # A subscale item outside its parent scale would score NA, so it stops.
+  # A subscale item outside its parent scale would be dropped from its score
+  # silently (or give NA under missing = "complete"), so it stops.
   moved <- hitopsr_subscales
   moved$itemNumbers[moved$camelCase == "cynicism"][[1]][[1]] <- 1
   expect_error(
