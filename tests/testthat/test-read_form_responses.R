@@ -1570,7 +1570,7 @@ test_that("a two-stem file with an item_order of 1 1 is refused for the instrume
   header <- paste(c(lead, "item_order", "hitopbr_01", "pid5bf_01"), collapse = ",")
   row <- "s,p1,hitopbr,2026-09-20,2026-09-20T21:20:36Z,1 1,4,1"
   msg <- refusal(dir, "stemorder.csv", row, header = header)
-  expect_match(msg, "instrument", fixed = TRUE)
+  expect_match(msg, "holds an instrument cell that differs from the item columns' stems in file order.", fixed = TRUE)
   expect_no_match(msg, "item_order", fixed = TRUE)
 })
 
@@ -2804,6 +2804,7 @@ bad_orders <- c(
   "a group that repeats one of its numbers" = "1 1 | 1 2 3",
   "a group that omits one of its numbers" = "1 | 1 2 3",
   "an unspaced bar" = "1 2|1 2 3",
+  "the unspaced separator 1|2" = "2 1|2 3 1",
   "an empty group between two bars" = "1 2 || 1 2 3",
   "a bar at the end" = "1 2 | 1 2 3 |"
 )
@@ -2909,6 +2910,21 @@ for (case in bad_builds) {
     }
   })
 }
+
+test_that("a file with no item column and two dates is refused for its count, naming no stem", {
+  dir <- withr::local_tempdir()
+  f <- write_rows(file.path(dir, "noitems2.csv"), c(
+    paste(lead, collapse = ","),
+    "s,p1,anything,2026-09-20 2026-09-18,2026-09-20T21:20:36Z"
+  ))
+  got <- multi_refusal(f)
+  expect_match(got$head, "holds a form_build value whose date count differs from the stem count.", fixed = TRUE)
+  expect_identical(got$body, c(
+    "Response row 1: \"2026-09-20 2026-09-18\".",
+    "The file holds no item column, so the cell must hold 1 date.",
+    "The row is counted from the first row after the header."
+  ))
+})
 
 test_that("a single-instrument form_build cell of two dates is refused for its count", {
   dir <- withr::local_tempdir()

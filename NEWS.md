@@ -557,9 +557,9 @@
   count the file did not have, on the file's first columns, or with base
   R's "first five rows are empty" when the file was that one line. An
   `instrument` cell that differs from the
-  item columns' stem (`pid5bf` beside `hitopbr_01`, a blank cell, a padded
+  item columns' stems (`pid5bf` beside `hitopbr_01`, a blank cell, a padded
   one) is refused before any value is checked. The message names each such
-  response row, the cell and the stem. Before, the file read with the cell
+  response row, the cell and the stems. Before, the file read with the cell
   as written. The whole-number and integer-range refusals now name each
   cell at fault on its own line, as the response row, the column and the
   value as written. The lines follow the file's row then column order, the
@@ -578,9 +578,8 @@
   (zero bytes, blank lines only, a byte-order mark only) is refused with the
   reader's own message naming the file, not base R's "no lines available in
   input". An item column whose name is not a stem, an underscore and the
-  item number (`foo`, `Hitopbr_01`) is refused naming the column, and item
-  columns of more than one stem (`hitopbr_01` beside `pid5bf_01`) are
-  refused naming the stems, before any value is checked. The four value
+  item number (`foo`, `Hitopbr_01`) is refused naming the column, before any
+  value is checked. The four value
   refusals (an item value that is not a whole number, one outside the
   integer range, a `form_build` or a `submitted` that does not parse) now
   name the response rows at fault, counted from the first row after the

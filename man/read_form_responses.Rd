@@ -79,7 +79,9 @@ its rows then hold \code{NA} there. Scoring does not read the column, and it is
 not an item column, so it does not enter the check that every file holds
 the same item columns. A cell that is not blank and does not list the
 file's item numbers, each once, in one group per stem, is an error
-naming the file and the response row.
+naming the file and the response row. A group does not name its stem,
+so the reader cannot tell two groups apart when their instruments hold
+the same item numbers: swapped, they read as written.
 
 \code{prolific_study} and \code{prolific_session} hold the study and session
 identifiers that Prolific adds to a study link, when the file records
@@ -131,8 +133,9 @@ differs from the item columns' stems in file order (\code{pid5bf} beside
 \code{hitopbr_01}, or \code{hitopbr} beside \code{hitopbr_01} and \code{pid5bf_01}), an
 item value that is not a whole number or is outside R's integer range,
 a \code{form_build} cell whose date count differs from the stem count, or a
-date that does not parse. An error on a line names the lines at fault, counted from the
-file's first line. An error on a row names the response rows at fault,
+date that does not parse. An error on a line names the lines at fault,
+counted from the file's first line. An error on a row names the response
+rows at fault,
 counted from the first row after the header. An error on an item value
 names each cell at fault as its response row, its column and the value
 as written, the first five cells and a count of the rest. The errors on

@@ -59,7 +59,9 @@
 #'   not an item column, so it does not enter the check that every file holds
 #'   the same item columns. A cell that is not blank and does not list the
 #'   file's item numbers, each once, in one group per stem, is an error
-#'   naming the file and the response row.
+#'   naming the file and the response row. A group does not name its stem,
+#'   so the reader cannot tell two groups apart when their instruments hold
+#'   the same item numbers: swapped, they read as written.
 #'
 #'   `prolific_study` and `prolific_session` hold the study and session
 #'   identifiers that Prolific adds to a study link, when the file records
@@ -111,8 +113,9 @@
 #'   `hitopbr_01`, or `hitopbr` beside `hitopbr_01` and `pid5bf_01`), an
 #'   item value that is not a whole number or is outside R's integer range,
 #'   a `form_build` cell whose date count differs from the stem count, or a
-#'   date that does not parse. An error on a line names the lines at fault, counted from the
-#'   file's first line. An error on a row names the response rows at fault,
+#'   date that does not parse. An error on a line names the lines at fault,
+#'   counted from the file's first line. An error on a row names the response
+#'   rows at fault,
 #'   counted from the first row after the header. An error on an item value
 #'   names each cell at fault as its response row, its column and the value
 #'   as written, the first five cells and a count of the rest. The errors on
@@ -810,11 +813,16 @@ read_form_response_file <- function(file, call = rlang::caller_env()) {
   if (!all(counted)) {
     rows <- which(!counted)
     got <- raw$form_build[rows]
+    rule <- if (length(stems) == 0L) {
+      "The file holds no item column, so the cell must hold 1 date."
+    } else {
+      "The cell must hold {n_dates} date{?s}, one per stem in the order of the {.field instrument} cell, joined by single spaces."
+    }
     cli::cli_abort(
       c(
         "{.file {file}} holds a {.field form_build} value whose date count differs from the stem count.",
         "x" = "Response {cli::qty(length(rows))}row{?s} {rows}: {.val {got}}.",
-        "i" = "The cell must hold {n_dates} date{?s}, one per stem in the order of the {.field instrument} cell, joined by single spaces.",
+        "i" = rule,
         "i" = "The row is counted from the first row after the header."
       ),
       call = call
