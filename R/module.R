@@ -615,7 +615,8 @@ check_module_build <- function(module, call = rlang::caller_env()) {
 #
 # Sorts the numbers and prints a run of three or more consecutive numbers as
 # "a-b"; a pair stays two numbers. The list is never cut, where cli by default
-# shows 20 elements, because a refusal must name each item it blames.
+# shows only 20 elements of a longer list and elides the middle, because a
+# refusal must name each item it blames.
 item_ranges <- function(x) {
   x <- sort(unique(x))
   run <- cumsum(c(TRUE, diff(x) != 1))

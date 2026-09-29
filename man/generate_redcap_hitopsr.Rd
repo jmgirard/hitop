@@ -37,8 +37,9 @@ dictionaries already in the field. The zero-padding is the full
 instrument's for the same reason: item 4 is \code{hsr_004} in a module
 dictionary as in the complete one, never \code{hsr_04}. A module whose
 \code{items}, \code{nItems}, \code{camelCase} or \code{instrument} differ from a fresh \code{\link[=hitop_module]{hitop_module()}}
-build of its scales, or whose scales cannot be rebuilt, is refused with an
-error of class \code{hitop_module_mismatch}, before any file is written.
+build of its scales, or that cannot be rebuilt from its \code{instrument} and
+\code{scales}, is refused with an error of class \code{hitop_module_mismatch},
+before any file is written.
 (default = \code{NULL})}
 
 \item{descriptor}{An optional path to write a module descriptor to, beside
