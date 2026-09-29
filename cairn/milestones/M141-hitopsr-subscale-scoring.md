@@ -1,6 +1,6 @@
 # M141: HiTOP-SR scoring can include the 17 subscales on request
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -27,7 +27,7 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 - [x] AC4: `reliability_hitopsr()` takes `include_subscales = FALSE`. With `TRUE`, it returns one more row per subscale after the scale rows. Under a `module`, these are the subscales that AC3 selects. Each row's `Scale` is its `hitopsr_subscales$Subscale`, and its `camelCase` and `nItems` come from the same row. For all 17 subscales, `alpha` equals `calc_alpha()` on the items that hardcoded item numbers select. With the default, it returns the scale rows only. A test in `tests/testthat/test-reliability.R` asserts each point.
 - [x] AC5: `label_hitopsr(target = "scales")` labels every subscale column with its `hitopsr_subscales$Subscale`. A test asserts this for all 17 columns in one call, under the default and a non-default `prefix`. `interval_hitopsr()` converts all 17 subscale columns from `score_hitopsr(include_subscales = TRUE)` with no `hitop_interval_uncovered` warning. A test asserts that each value comes from that subscale's `hitopsr_devstats` row. In `man/interval_hitopsr.Rd`, the Description says that `score_hitopsr(include_subscales = TRUE)` produces subscale columns, and no sentence says that subscales lack a column. The `prefix` text of `man/label_hitopsr.Rd` names subscale columns.
 - [x] AC6: Both functions refuse an `include_subscales` that is not a single `TRUE` or `FALSE`, tested with `NA`, `"yes"` and `c(TRUE, TRUE)`. The refusal is the `validate_flag()` error, and the test asserts that its message names `include_subscales`. With `append = TRUE` and `include_subscales = TRUE`, `score_hitopsr()` refuses a `data` column named as any of the 17 subscale columns with class `hitop_append_collision`. The same holds for their `_se` columns under `calc_se = TRUE`. With the default, a `data` column such as `hsr_cynicism` is not refused. Tests assert each point.
-- [ ] AC7: `NEWS.md` has a New features entry for the argument. `vignettes/hitopsr_scoring.Rmd` shows a call with `include_subscales = TRUE`. The scoring and reliability signature lines of `cairn/DESIGN.md` name the argument. `devtools::check()` reports 0 errors, 0 warnings, and no note that `main` does not also produce on the same machine.
+- [x] AC7: `NEWS.md` has a New features entry for the argument. `vignettes/hitopsr_scoring.Rmd` shows a call with `include_subscales = TRUE`. The scoring and reliability signature lines of `cairn/DESIGN.md` name the argument. `devtools::check()` reports 0 errors, 0 warnings, and no note that `main` does not also produce on the same machine.
 
 ## Coverage
 
@@ -62,6 +62,7 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 - claim audit: 41 claims read, 0 corrected — NEWS.md, R/score_hitopsr.R, R/reliability_hitopsr.R, R/interval_hitopsr.R, R/label_hitopsr.R, R/module.R, vignettes/hitopsr_scoring.Rmd, tests/testthat/helper-fixtures.R and four test files
 - 2026-09-29: implement complete, status set to review.
 - 2026-09-29: review checkpoint (partial). Evidence for AC1 to AC6 recorded, AC1 fails as written. The `check()` run and two reviewers are still pending.
+- 2026-09-29: review return 1 (defect). AC1 fails as written, because the `calc_se = TRUE` block of `test-score_hitopsr.R:182` asserts `_se` placement under `missing = "available"` only, not under both modes. AC2 to AC7 and the consistency gate pass. The next pass fixes the test and can take up the 13 findings pending triage in the Review section. Status set to in-progress.
 
 ## Decisions
 
@@ -77,3 +78,25 @@ Evidence run 2026-09-29 on branch head c256443a, which contains `origin/main`. N
 - AC4: The `test-reliability.R` subscale tests assert scale rows only by default. With `TRUE`, subscale rows follow the scale rows, with `Scale`, `camelCase` and `nItems` from `hitopsr_subscales`. All 17 `alpha` values equal `calc_alpha()` on the `subscale_key` items. Module rows equal the AC3 selection in three probes. Suite green.
 - AC5: `test-label_scales.R` labels all 17 subscale columns under `"hsr_"` and `"sr."`. `test-interval_hitopsr.R` converts all 17 with no `hitop_interval_uncovered` warning. It checks each est, lo and hi value against its `hitopsr_devstats` row. The `\description` of `man/interval_hitopsr.Rd` (lines 45 to 53) names `score_hitopsr(include_subscales = TRUE)`. No sentence there says that subscales lack a column. The `prefix` text of `man/label_hitopsr.Rd` (lines 28 to 31) names subscale columns. Suite green.
 - AC6: Both flag tests use `NA`, `"yes"` and `c(TRUE, TRUE)` and match `"include_subscales.*must be"`. The observed message is "The `include_subscales` argument must be `TRUE` or `FALSE`." The collision test covers all 17 columns and their `_se` columns. With the default, a `data$hsr_cynicism` column is kept. Suite green.
+- AC7: `NEWS.md` lines 5 to 14 hold the New features entry. `vignettes/hitopsr_scoring.Rmd` has a "Subscales" section with an `include_subscales = TRUE` call. The `cairn/DESIGN.md` signature paragraph names the argument for both functions. `devtools::check()` on the branch gave 0 errors, 0 warnings and 0 notes, so no note is unique to the branch.
+
+Consistency gate: `cairn_validate.py` exit 0, with 24 older advisory warnings. `document()` gave no diff. `pkgdown::check_pkgdown()` found no problems. README is untouched. No principle text changed, so `cairn_impact` was skipped.
+
+Gate result: FAIL on AC1. Status returns to `in-progress` (first defect return).
+
+Reviewer findings, reported before the return. The three reviewers ran in parallel with the evidence run. Triage of all but the first waits for the next merge gate.
+
+- O2 (diff reviewer), matching the AC1 evidence: the `calc_se = TRUE` block in `test-score_hitopsr.R` runs under one `missing` mode only. Disposition: floor return, fixed in the next implement pass.
+- O1: No test combines `include_subscales = TRUE` with `layout = "printed"` and an `item_order`, the one path where subscale positions pass a second remap. A probe showed the current code correct. Pending triage.
+- O3 and S9: The `score_hitopsr()` title and `@return` do not name subscale columns, and no example shows the argument. Pending triage.
+- O4: The `reliability_hitopsr()` description names scales only. Pending triage.
+- O5: Under a module, a subscale whose parent name fails to match `hitopsr_scales$Scale` is dropped with no error. All 17 match today. Pending triage.
+- O6 and S6: NEWS does not say that a call passing `subset` by position now fails on the flag check. The placement lives in M141-D1 and DESIGN only. Pending triage.
+- O7 and S1: The `generate_docx_hitopsr()` refusal message and the modules article say that a subscale can draw items from outside the module, which M141 relies on being false. `test-module-doc-prose.R` pins the article text. The existing candidate row covers the refusal. Pending triage.
+- O8: `rank_scales()` documents ties as broken in alphabetical column order, which subscale columns placed after the scales no longer follow. Pending triage.
+- O9: The flag tests assert `rlang_error` and a message, not a class specific to `validate_flag()`. Pending triage.
+- S2 and P2: Scoring keeps only in-module subscales while the Word generator refuses the combination. The plan gate chose this. Pending triage.
+- S3: No test pins that `i =` fails and `it =` still works, as `test-deprecated.R` does for `m =`. Pending triage.
+- S4: The `i =` break sits under New features, not Breaking changes, as M043 also did. Pending triage.
+- S5: Subscale `_se` columns add to the deprecated `calc_se` surface with no D-entry. Pending triage.
+- P1: The internal abort in `add_hitopsr_subscales()` has no `call =`. It is an internal-error guard. Pending triage.

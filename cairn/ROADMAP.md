@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M141 | HiTOP-SR scoring can include the 17 subscales on request | review | — | normal | milestones/M141-hitopsr-subscale-scoring.md |
+| M141 | HiTOP-SR scoring can include the 17 subscales on request | in-progress | — | normal | milestones/M141-hitopsr-subscale-scoring.md |
 | M139 | read_form_responses() reads a file whose item columns span two or more instruments | done | M136 | normal | milestones/archive/M139-form-reader-multi-instrument.md |
 | M140 | A study link can field two or more instruments in one hitop-form session | done | M137, M139 | normal | milestones/archive/M140-form-multi-instrument.md |
 | M138 | The hitop-form link builder reads the researcher's questions from a spreadsheet file and writes them back as one | done | M137 | normal | milestones/archive/M138-form-questions-file.md |
