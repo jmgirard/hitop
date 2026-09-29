@@ -41,7 +41,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 
 ## Tasks
 
-- [ ] T1: In form.js, add `checkInstruments()` to `parseLink()` with the refusals of AC1, and the `module` rule.
+- [x] T1: In form.js, add `checkInstruments()` to `parseLink()` with the refusals of AC1, and the `module` rule.
 - [ ] T2: In `boot()` and `runForm()`, fetch every export, and plan one start screen and one run of pages per instrument. Key the answers by stem and item number, since item numbers repeat across instruments. Keep the page-number labels per instrument. Write the walk tests of AC2.
 - [ ] T3: Extend `leadValues()`, `buildCsv()` and `buildRow()` for the cells and groups of AC3. Write the row and file tests.
 - [ ] T4: Extend `storeSql()` for the groups, add the SQL fixture under `tests/fixtures/` with its README line, and write the send tests.
@@ -56,6 +56,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - 2026-09-28: criteria audit ran in full mode (user-facing tier) on a fresh [O] reader. It returned 4 findings, all fixed before the commit. The fixes cover a limit of 3 instruments (two PID-5 forms are refused), answers keyed by stem, the order of screens and the shuffle scope.
 - 2026-09-28: plan chose one row with a group per instrument over one row per instrument, because one row keeps each participant in one record for every store. Falsified by a store that cannot hold the width of three instruments.
 - 2026-09-28: implement started. Branch m140-form-multi-instrument cut in hitop and in the hitop-form companion checkout. Implement gate answered (M140-D1).
+- 2026-09-28: T1 done. `checkInstruments()` and `linkStems()` in form.js, the module rule in `parseLink()`, and tests/instruments.spec.js (19 page-side refusal tests, a plant on the PID-5 rule seen red). Full suite 652 of 652.
 
 ## Decisions
 
