@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M142: HiTOP-SR module functions refuse a module whose items do not match its scales
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -55,7 +55,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T12: Run `devtools::check()` and the purled modules article again.
 - [x] T13: Fix the NEWS Breaking entry. "and its refusals carry the class" becomes "and these refusals now carry the class". The internal-error sentence names its condition: a lacking subscale item.
 - [x] T14: Fix the four pass-3 "fix now" items. `item_ranges()` prints at 15 significant digits. `expect_mismatch()` asserts that `conditionCall()` names the exported function. The shuffled module-subscale test checks the printed item texts against `item_order`. The two test titles that name the unreachable wrong-instrument branch are renamed.
-- [ ] T15: Run `devtools::check()` and the purled modules article again.
+- [x] T15: Run `devtools::check()` and the purled modules article again.
 
 ## Work log
 
@@ -99,6 +99,8 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: amendment (mini gate, Jeff approved the recommended option): AC6, the rule that each NEWS clause has an AC2 to AC4 test, is removed. The universal changelog rule of tracking-rules covers what it held. AC7 is renumbered AC6 with its text unchanged, and unticked for fresh evidence. Coverage drops the old AC6 line. T13 to T15 added. No criterion wording was amended, so no re-audit reader ran. Jeff kept the flag entry's "as `score_hitopsr()` does", which `test-score_hitopsr.R:298` backs.
 - 2026-09-29: T13 done. NEWS says that the internal error came from a lacking subscale item, and that `write_module()`'s compare refusals now carry the class. On origin/main, a module lacking item 144 (no subscale) scored with no error. Its Word form printed "5, 10, NA", so the `NA` sentence now covers any lacking item.
 - 2026-09-29: T14 done. `item_ranges()` formats at 15 significant digits, and its new test failed before the fix ("holds item 7"). `expect_mismatch()` asserts the blamed function. The generator runners now call each generator by its exported name, because a local alias was blamed as written. `expect_module_subscale_rows()` pins `item_order` to the printed item texts. Two test titles renamed. Plants: `apply_module()` blaming itself turns the blame check red, and a reversed `item_order` turns the page check red, alone in the no-parent test. Suite 0 failed, 0 errors, 15 skips.
+- 2026-09-29: claim audit: 12 claims read, 0 corrected — NEWS.md, R/module.R, tests/testthat/test-{module-mismatch,docx-numbering,module,reliability}.R. Scope: lines added since 6df5317d.
+- 2026-09-29: T15 done. `devtools::check()` on the tree of 9f032545: 0 errors, 0 warnings, 0 notes. The purled modules article runs without error after `load_all()`. Status set to review.
 
 ## Decisions
 
