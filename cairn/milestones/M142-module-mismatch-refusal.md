@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M142: HiTOP-SR module functions refuse a module whose items do not match its scales
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -50,7 +50,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T5: Run `devtools::check()`. Purl the modules article and run it after `devtools::load_all()` (LESSONS, M115 and M096).
 - [x] T6: Write the test first. The AC1 message names every lacking, extra and repeated item with no cut. It prints a run of three or more items as a range ("30-34"). A probe with more than 20 lacking items shows each one named.
 - [x] T7: Drop the NEWS Breaking sentence on `read_module()`. No AC2 to AC4 test backs it.
-- [ ] T8: Fix the five review findings marked "fix now". The `unknown_scale` probe asserts on the text of the check itself. `module_unknown_scales()` ignores letter case. `module_subscales()` holds the subscale-item abort for both paths. The module help of the five other functions names the "cannot be rebuilt" refusal. The dead block of `test-module.R` goes. Then run `devtools::check()` and the purled article again.
+- [x] T8: Fix the five review findings marked "fix now". The `unknown_scale` probe asserts on the text of the check itself. `module_unknown_scales()` ignores letter case. `module_subscales()` holds the subscale-item abort for both paths. The module help of the five other functions names the "cannot be rebuilt" refusal. The dead block of `test-module.R` goes. Then run `devtools::check()` and the purled article again.
 
 ## Work log
 
@@ -113,3 +113,6 @@ Independent review, three fresh-context lenses. Findings are most severe first, 
 - 2026-09-29: T6 done. `item_ranges()` in `R/module.R` sorts the lacking, extra and repeated items, prints runs of three or more as "a-b", and turns off the cut of 20. The unknown-scale list is not cut either. Two new tests: 48 lacking and 25 extra items each named in full, and a pair against a run of three. Before the fix they failed on the cut list. Suite 0 failed, 0 errors.
 - 2026-09-29: T7 done. The NEWS Breaking entry no longer says that `read_module()` refuses a descriptor naming a retired scale.
 - 2026-09-29: T8 done. The probes read the refusal's own text (`cnd_message(inherit = FALSE)`). `module_unknown_scales()` lowercases the instrument. `module_subscales()` holds the subscale-item abort and checks `itemNumbers` and `itemdata`. Five help pages name the "cannot be rebuilt" refusal. The dead block of `test-module.R` is gone. New tests: 25 unknown scales named under two letter cases, and an `itemdata` fault. Plants: no unknown names (62 red), a case-sensitive lookup (25 red), and an unchecked `itemdata` (1 red). Suite 0 failed, 0 errors. The purled modules article runs without error after `load_all()`.
+- 2026-09-29: claim audit: 38 claims read, 2 corrected — R/{score,reliability}_hitopsr.R, R/generate_{docx,qualtrics,redcap}.R, R/module.R, NEWS.md, tests/testthat/test-{module-mismatch,score_hitopsr,module}.R. Scope: lines added since a1190bce. The help wording now reads "cannot be rebuilt from its `instrument` and `scales`", aligned in `write_module()` too, and the `item_ranges()` comment says how cli cuts. The re-read found both true.
+- 2026-09-29: the auditor found `data-raw/HiTOP-DAT.qsf` in c82d1b54. The file appeared on disk during the session, and the T6 `git add -A` swept it in. d94cbfc7 untracks it, and it stays on disk untracked. The squash merge will not carry it.
+- 2026-09-29: T8 done. `devtools::check()` on 9296fbea: 0 errors, 0 warnings, 0 notes. Status set to review.
