@@ -509,15 +509,16 @@ is_module <- function(x) {
 # refusal carries the public class `hitop_module_mismatch`. Returns the rebuild,
 # which write_module() writes.
 check_module_build <- function(module, call = rlang::caller_env()) {
-  # An object of the class that is not a list has no fields to rebuild from,
-  # and `$` on it is a base error or, on an environment, a read of whatever it
-  # holds.
+  # An object of the class that is not a list is refused before any field is
+  # read: `$` on it is a base error or, on an environment, a read of whatever
+  # it holds.
   if (!is.list(module)) {
     cli::cli_abort(
       c(
         "The {.arg module} argument is {.obj_type_friendly {module}} of type \\
-         {.cls {typeof(module)}}, not a list, so it has no {.field instrument}, {.field scales}, \\
-         {.field items}, {.field nItems} or {.field camelCase} field.",
+         {.cls {typeof(module)}}, not a list of the fields \\
+         {.field instrument}, {.field scales}, {.field items}, \\
+         {.field nItems} and {.field camelCase}.",
         i = "Build the module with {.code hitop_module()}."
       ),
       class = "hitop_module_mismatch",

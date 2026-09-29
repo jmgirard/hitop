@@ -140,9 +140,9 @@ mismatch_probes <- list(
 # One runner per function that takes a module. A runner calls the function on
 # `m` inside a fresh directory and returns the paths the call may write, so a
 # refusal can be shown to leave none of them behind. `descriptor` is ignored by
-# the functions that write no descriptor. A probe that is not a list has no
-# `items`, so the scoring runners pass three columns, which the refusal comes
-# before.
+# the functions that write no descriptor. A probe that is not a list may have
+# no `items` to read, so the scoring runners pass three columns, which the
+# refusal comes before.
 module_items <- function(m) if (is.list(m)) as.integer(m$items) else 1:3
 
 generator_runner <- function(generate, ext) {
