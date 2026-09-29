@@ -16,8 +16,9 @@ knitr::opts_chunk$set(
 ```
 
 [hitop-form](https://jmgirard.github.io/hitop-form/) is a web page that shows
-one of this package's instruments in the browser: the HiTOP-SR or one of its
-modules, the HiTOP-BR, or the PID-5 in its full, short or brief form. The item
+one of this package's instruments in the browser, or two or three of them in
+turn: the HiTOP-SR or one of its modules, the HiTOP-BR, or the PID-5 in its
+full, short or brief form. The item
 text, response options and instructions are this package's own, read from its
 JSON export. The page needs no survey platform and no account, and it scores
 nothing. Scoring is this package's job.
@@ -69,7 +70,9 @@ download or in `read_form_responses()` tells the two apart.
 
 Open the page's [link builder](https://jmgirard.github.io/hitop-form/link.html).
 Choose the instrument (and, for a HiTOP-SR module, paste the descriptor
-written by `write_module()`), and name the study. A link builder opened
+written by `write_module()`), and name the study. For two or three
+instruments in one session, see
+[Several instruments in one session](#several-instruments-in-one-session). A link builder opened
 from a "Make a study link" button on an instrument's download page arrives
 with that instrument chosen, and one opened with a `c` parameter that
 carries a module arrives with the descriptor pasted in as well. Give a
@@ -95,7 +98,8 @@ as well; the `submitted` column identifies such a pair.
 When collection ends, open the sheet's `Responses` tab and choose File, then
 Download, then Comma Separated Values (.csv). The file has one header row and
 one row per participant, in the page's column order: `study`, `participant`,
-`instrument`, `form_build`, `submitted`, then one column per item. A link
+`instrument`, `form_build`, `submitted`, then one column per item, in one
+group per instrument when the link names several. A link
 that asks for a random order adds `item_order` after `submitted`, and its
 item columns are in the instrument's order rather than the order shown. A
 link that recruits through Prolific adds `prolific_study` and

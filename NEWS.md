@@ -8,10 +8,10 @@
   form of the PID-5 and names no instrument twice, and a module descriptor
   applies to its HiTOP-SR. The page gives each instrument in turn, each with
   its own start screen ("Part 2 of 3") and pages. The instruments come
-  between any questions before and after the form. It saves one row with one group of item columns
-  per instrument, in the list's order, in the shape
-  `read_form_responses()` reads. Score each instrument in its own call, with
-  its columns chosen by stem. The link builder gains "Add an instrument" and
+  between any questions before and after the form. It saves one row with
+  one group of item columns per instrument, in the list's order, in the
+  shape `read_form_responses()` reads. Score each instrument in its own
+  call, with its columns chosen by stem. The link builder gains "Add an instrument" and
   an ordered list of up to three rows, and its Supabase SQL holds every
   instrument's columns. The online-collection article's section "Several
   instruments in one session" describes the screens and the file.
@@ -66,8 +66,8 @@
   another stem's columns split, a `form_build` cell whose date count differs
   from the stem count, and an `item_order` cell that breaks the groups. It
   names the file, and the row for a fault in a row. Score each instrument in
-  its own call, with its columns chosen by stem. The hitop-form page does not
-  yet write such a file. **`form_build` is now character in every result**,
+  its own call, with its columns chosen by stem. **`form_build` is now
+  character in every result**,
   holding each row's dates as written, where it was a `Date` before. Use
   `as.Date()` on a single-instrument file's `form_build` when you need a
   date. A file of one instrument reads as before in every other column.

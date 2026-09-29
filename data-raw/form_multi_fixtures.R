@@ -3,8 +3,9 @@
 # Writes five files to tests/testthat/fixtures/ in the shape D-080 gives a
 # file from a study link that fields several instruments in one session: the
 # five lead columns, one group of item columns per instrument in link order,
-# then any `q_` answer columns. The page does not write this shape yet, so
-# these files are written by rule here, not saved by the page.
+# then any `q_` answer columns. These files are written by rule here, not
+# saved by the page. The one file the page saved in this shape is
+# responses-multi-page-shuffled.csv (see tests/testthat/fixtures/README.md).
 #
 # Run from the package root: Rscript data-raw/form_multi_fixtures.R
 #
