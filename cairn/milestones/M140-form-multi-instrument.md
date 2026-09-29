@@ -1,6 +1,6 @@
 # M140: A study link can field two or more instruments in one hitop-form session
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M137, M139
 - **Driving RR:** —
@@ -79,6 +79,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - 2026-09-28: T11 done. The "does not yet write" sentences left NEWS.md and data-raw/form_multi_fixtures.R. The hitop-form README table has rows for the 5 new specs, and its network row names one export fetch per instrument. Several-instrument wording was added to the README's participant, file and Sheet sections, link.html's intro and the article's lines 19, 71 and 98. The form.js header lists the new link.html imports, and 4 long comment lines and the NEWS entry were rewrapped. Full suite 720 of 720.
 - 2026-09-28: T12 done, no change. A probe spec (not committed) built three rows, typed the study and participant, checked shuffle, filled the module and set each menu. It then reloaded the builder, and in a second run went back from another page. In the suite's Chromium both times every control came back at its default, the rows as one HiTOP-SR row, so F12 does not occur there. Other browsers were not run.
 - claim audit: 160 claims read, 1 corrected — hitop-form tests/network.spec.js (the walk set now names one export per instrument). The reader counted the claims as about 160 and re-read the corrected one, which passed.
+- 2026-09-28: return work complete, status review. hitop-form full suite 720 of 720. hitop `devtools::test()`: 0 failures, 24,046 passes. `cairn_validate` exits 0 (25 advisory warnings). AC1 and AC7 stay open for review.
 
 ## Decisions
 
