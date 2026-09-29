@@ -29,8 +29,9 @@ module_format_first_version <- function() {
 #'
 #'   Before it writes, `write_module()` rebuilds the module with
 #'   [hitop_module()] from its `instrument` and `scales`. A module whose
-#'   `items` or `nItems` differ from that rebuild is refused, and nothing is
-#'   written. The file holds the rebuild's fields. [read_module()] rebuilds
+#'   `items`, `nItems` or `camelCase` differ from that rebuild, or whose
+#'   scales cannot be rebuilt, is refused with an error of class
+#'   `hitop_module_mismatch`, and nothing is written. The file holds the rebuild's fields. [read_module()] rebuilds
 #'   the module from the file's `scales`, so it returns a `hitop_module` with
 #'   integer items. This is also true for a file written
 #'   from the deprecated `hitop_subset` class, or from a module whose items
@@ -90,7 +91,9 @@ module_format_first_version <- function() {
 #'   `itemOrder` and must be a permutation of the module's items. A `columns`
 #'   attribute, where present, is written as the file's `columns`. It must be
 #'   a character vector with one distinct, non-empty name per module item.
-#'   A bad attribute is refused before the file is opened.
+#'   A bad attribute is refused before the file is opened. A module that is
+#'   not the [hitop_module()] build of its own scales is refused with an error
+#'   of class `hitop_module_mismatch`, as described above.
 #' @param file A string giving the path to write to.
 #'
 #' @return The `file` path, invisibly.

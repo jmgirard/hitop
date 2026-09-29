@@ -12,7 +12,9 @@ write_module(module, file)
 \code{itemOrder} and must be a permutation of the module's items. A \code{columns}
 attribute, where present, is written as the file's \code{columns}. It must be
 a character vector with one distinct, non-empty name per module item.
-A bad attribute is refused before the file is opened.}
+A bad attribute is refused before the file is opened. A module that is
+not the \code{\link[=hitop_module]{hitop_module()}} build of its own scales is refused with an error
+of class \code{hitop_module_mismatch}, as described above.}
 
 \item{file}{A string giving the path to write to.}
 }
@@ -32,8 +34,9 @@ than a silent preference for either side.
 
 Before it writes, \code{write_module()} rebuilds the module with
 \code{\link[=hitop_module]{hitop_module()}} from its \code{instrument} and \code{scales}. A module whose
-\code{items} or \code{nItems} differ from that rebuild is refused, and nothing is
-written. The file holds the rebuild's fields. \code{\link[=read_module]{read_module()}} rebuilds
+\code{items}, \code{nItems} or \code{camelCase} differ from that rebuild, or whose
+scales cannot be rebuilt, is refused with an error of class
+\code{hitop_module_mismatch}, and nothing is written. The file holds the rebuild's fields. \code{\link[=read_module]{read_module()}} rebuilds
 the module from the file's \code{scales}, so it returns a \code{hitop_module} with
 integer items. This is also true for a file written
 from the deprecated \code{hitop_subset} class, or from a module whose items

@@ -36,7 +36,9 @@ headed as the full 405-item instrument. (default = \code{NULL})}
 the scoring instructions table.}
 
 \item{include_subscales}{Logical. If \code{TRUE}, appends optional subscales to
-the scoring instructions table. Defaults to \code{FALSE}.}
+the scoring instructions table. With a \code{module}, the table gets the
+subscales of the scales the module holds, and no others. Defaults to
+\code{FALSE}.}
 
 \item{font_size}{Numeric value specifying the base font size in points.
 Defaults to \code{10}.}
@@ -45,8 +47,11 @@ Defaults to \code{10}.}
 Defaults to \code{"Times New Roman"}.}
 
 \item{module}{An optional \code{\link[=hitop_module]{hitop_module()}} object restricting the form to the
-items of the chosen scales. Cannot be combined with
-\code{include_subscales = TRUE}. (default = \code{NULL})}
+items of the chosen scales. With \code{include_subscales = TRUE}, the form
+adds the subscales of the scales it holds. A module whose \code{items},
+\code{nItems} or \code{camelCase} differ from a fresh \code{\link[=hitop_module]{hitop_module()}} build of its
+scales is refused with an error of class \code{hitop_module_mismatch}, before
+any file is written. (default = \code{NULL})}
 
 \item{renumber}{Logical. If \code{TRUE} (default), the printed items are numbered
 \code{1} to \code{n} down the page, so a module form does not show the full

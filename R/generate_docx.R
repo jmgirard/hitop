@@ -92,14 +92,19 @@ generate_docx_hitopbr <- function(
 #' @param include_scoring Logical. If `TRUE` (default), appends a page break and
 #'   the scoring instructions table.
 #' @param include_subscales Logical. If `TRUE`, appends optional subscales to
-#'   the scoring instructions table. Defaults to `FALSE`.
+#'   the scoring instructions table. With a `module`, the table gets the
+#'   subscales of the scales the module holds, and no others. Defaults to
+#'   `FALSE`.
 #' @param font_size Numeric value specifying the base font size in points.
 #'   Defaults to `10`.
 #' @param font_family Character string specifying the font family to be used.
 #'   Defaults to `"Times New Roman"`.
 #' @param module An optional [hitop_module()] object restricting the form to the
-#'   items of the chosen scales. Cannot be combined with
-#'   `include_subscales = TRUE`. (default = `NULL`)
+#'   items of the chosen scales. With `include_subscales = TRUE`, the form
+#'   adds the subscales of the scales it holds. A module whose `items`,
+#'   `nItems` or `camelCase` differ from a fresh [hitop_module()] build of its
+#'   scales is refused with an error of class `hitop_module_mismatch`, before
+#'   any file is written. (default = `NULL`)
 #' @param renumber Logical. If `TRUE` (default), the printed items are numbered
 #'   `1` to `n` down the page, so a module form does not show the full
 #'   instrument's gapped numbers. Set to `FALSE` to print each item's original

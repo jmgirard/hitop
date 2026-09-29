@@ -181,6 +181,20 @@ test_that("every module function refuses a module edited by hand, naming the fau
   }
 })
 
+test_that("a module saved before a scale rename is refused, not scored without the scale", {
+  # Appearance Focus was named Body Focus; a module saved under the old name
+  # carries the old display name and stem.
+  old <- hitop_module("hitopsr", scales = c("appetiteLoss", "appearanceFocus"))
+  old$scales[old$scales == "Appearance Focus"] <- "Body Focus"
+  old$camelCase[old$camelCase == "appearanceFocus"] <- "bodyFocus"
+
+  e <- expect_error(
+    score_hitopsr(sim_hitopsr, items = module_items(old), module = old),
+    class = "hitop_module_mismatch"
+  )
+  expect_true(grepl("Body Focus", conditionMessage(e), fixed = TRUE))
+})
+
 test_that("every module function accepts a module built by hitop_module() or hitop_subset(), or with double items", {
   scale_sets <- list(
     c("appetiteLoss", "dishonesty"),

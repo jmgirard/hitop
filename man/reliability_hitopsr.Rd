@@ -65,7 +65,10 @@ package). (default = \code{TRUE})}
 \code{data} and \code{items} hold only that module's item columns — in ascending
 instrument order, as the \verb{generate_*_hitopsr()} forms lay them out — and one
 row is returned per module scale. When \code{NULL}, all 405 items are expected
-and all 76 scales are estimated. (default = \code{NULL})}
+and all 76 scales are estimated. A module whose \code{items}, \code{nItems} or
+\code{camelCase} differ from a fresh \code{\link[=hitop_module]{hitop_module()}} build of its scales, as
+after an edit by hand, is refused with an error of class
+\code{hitop_module_mismatch}. (default = \code{NULL})}
 
 \item{layout}{The order the item columns are in. \code{"instrument"} (the
 default) is ascending HiTOP-SR order, as the \verb{generate_*_hitopsr()} forms
