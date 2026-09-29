@@ -42,12 +42,15 @@ Deploy one sheet and script per form. A key the header lacks is added to
 it, so a sheet that receives two forms’ rows holds the union of their
 columns. When the two forms are two instruments,
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
-refuses the download, because its item columns carry two stems
-(`hitopbr_01` beside `pid5bf_01`). When they are a HiTOP-SR module and
-the full HiTOP-SR, the columns share one stem, so the download reads as
-one data frame with the module’s rows blank on the items outside it,
-unless the module’s link asked for a random order: its rows’
-`item_order` then lists only the module’s items, and
+refuses the download. Its item columns carry two stems (`hitopbr_01`
+beside `pid5bf_01`), but each row’s `instrument` cell names one, so no
+row matches the columns. A file whose rows each hold both instruments is
+another shape, which the section [Several instruments in one
+file](#several-instruments-in-one-file) describes. When they are a
+HiTOP-SR module and the full HiTOP-SR, the columns share one stem, so
+the download reads as one data frame with the module’s rows blank on the
+items outside it, unless the module’s link asked for a random order: its
+rows’ `item_order` then lists only the module’s items, and
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 refuses the download. Nothing else in the download or in
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
@@ -119,7 +122,7 @@ responses <- read_form_responses(path)
 responses
 #> # A tibble: 2 × 53
 #>   study   participant instrument form_build submitted           item_order
-#>   <chr>   <chr>       <chr>      <date>     <dttm>              <chr>     
+#>   <chr>   <chr>       <chr>      <chr>      <dttm>              <chr>     
 #> 1 fixture =1+1        hitopbr    2026-09-20 2026-09-23 19:33:25 NA        
 #> 2 fixture 007         hitopbr    2026-09-20 2026-09-23 19:33:30 NA        
 #> # ℹ 47 more variables: prolific_study <chr>, prolific_session <chr>,
@@ -133,17 +136,20 @@ responses
 
 Each row of the file is a row of the result. The lead columns are typed:
 `participant` is character, so the codes `=1+1` and `007` come back as
-the sheet stored them; `form_build` is a date; `submitted` is a UTC
-date-time. Every item column is an integer. The sixth column,
-`item_order`, is the order the participant saw the items, as item
-numbers, when the file records one and `NA` when it does not, and
-scoring does not read it. The page records it when the study link asks
-for a random order, which the link builder’s “Show the items in a random
-order” box sets. The seventh and eighth columns, `prolific_study` and
-`prolific_session`, are the study and session identifiers Prolific
-passed to the page when the link recruits through Prolific, as [the
-Prolific route](#the-prolific-route) below describes, and `NA` when it
-does not, as here. Scoring does not read them either.
+the sheet stored them; `form_build` is character, the page’s build date
+as the file holds it, such as `"2026-09-20"`; `submitted` is a UTC
+date-time. Convert `form_build` with
+[`as.Date()`](https://rdrr.io/r/base/as.Date.html) when you need a date.
+Every item column is an integer. The sixth column, `item_order`, is the
+order the participant saw the items, as item numbers, when the file
+records one and `NA` when it does not, and scoring does not read it. The
+page records it when the study link asks for a random order, which the
+link builder’s “Show the items in a random order” box sets. The seventh
+and eighth columns, `prolific_study` and `prolific_session`, are the
+study and session identifiers Prolific passed to the page when the link
+recruits through Prolific, as [the Prolific route](#the-prolific-route)
+below describes, and `NA` when it does not, as here. Scoring does not
+read them either.
 
 A folder can hold the download beside any files participants sent by
 hand:
@@ -214,6 +220,78 @@ shows. A HiTOP-SR module scores through the descriptor the page showed,
 with `layout = "printed"`; the [Building HiTOP-SR
 Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.md)
 article walks that step.
+
+## Several instruments in one file
+
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+also reads a file whose rows hold the answers to two or more
+instruments. The page does not write such a file yet, because a study
+link gives one instrument. The file has this shape:
+
+- The item columns form one group per instrument, the columns of each
+  group side by side, and each group holds one stem. The optional lead
+  columns and the answer columns can sit anywhere after `submitted`,
+  between two groups or inside one.
+- The `instrument` cell holds the stems in the order of the groups,
+  joined by single spaces, such as `hitopbr pid5bf`.
+- The `form_build` cell holds one build date per instrument, in the same
+  order, joined by single spaces, such as `2026-09-20 2026-09-18`. The
+  result keeps it as written, so `form_build` is character for every
+  file.
+- Under a random order, the `item_order` cell holds one group per
+  instrument, in the same order, joined by a space, a bar and a space.
+  Each group is all of that instrument’s item numbers in the order
+  shown. For two instruments of three and four items, a cell could be
+  `2 1 3 | 4 1 3 2`. A file of one instrument has one group and no bar.
+
+The reader stops with an error that names the file and the row when an
+`instrument` cell differs from the stems of the groups, a `form_build`
+cell holds a date count other than the stem count or a date that does
+not parse, or an `item_order` cell breaks the groups. It stops with an
+error that names the file when another stem’s columns split the columns
+of a stem. Files whose groups differ in stems or in order do not read
+together, as for any item columns.
+
+Score each instrument in its own call, with the columns chosen by stem.
+The file below is the download above with the PID-5-BF’s 25 items added
+to each row, as a file of both instruments would hold them:
+
+``` r
+
+lines <- readLines(path, warn = FALSE)
+lines[1] <- paste0(lines[1], ",", paste(sprintf("pid5bf_%02d", 1:25), collapse = ","))
+lines[-1] <- sub(",hitopbr,2026-09-20,", ",hitopbr pid5bf,2026-09-20 2026-09-18,",
+                 lines[-1], fixed = TRUE)
+lines[-1] <- paste0(lines[-1], ",", paste(rep_len(0:3, 25), collapse = ","))
+both_file <- tempfile(fileext = ".csv")
+writeLines(lines, both_file)
+
+both <- read_form_responses(both_file)
+both[c("participant", "instrument", "form_build")]
+#> # A tibble: 2 × 3
+#>   participant instrument     form_build           
+#>   <chr>       <chr>          <chr>                
+#> 1 =1+1        hitopbr pid5bf 2026-09-20 2026-09-18
+#> 2 007         hitopbr pid5bf 2026-09-20 2026-09-18
+
+hbr_items <- grep("^hitopbr_", names(both), value = TRUE)
+bf_items <- grep("^pid5bf_", names(both), value = TRUE)
+score_hitopbr(both, items = hbr_items, append = FALSE)
+#> # A tibble: 2 × 8
+#>   hbr_antagonism hbr_detachment hbr_disinhibition hbr_internalizing
+#>            <dbl>          <dbl>             <dbl>             <dbl>
+#> 1           3.33            2.4              1.89              2.25
+#> 2           3.33            2.4              1.89              2.25
+#> # ℹ 4 more variables: hbr_somatoform <dbl>, hbr_thoughtDisorder <dbl>,
+#> #   hbr_externalizing <dbl>, hbr_pFactor <dbl>
+score_pid5(both, items = bf_items, version = "BF", append = FALSE)
+#> # A tibble: 2 × 6
+#>   pid_disinhibition pid_detachment pid_psychoticism pid_negativeAffectivity
+#>               <dbl>          <dbl>            <dbl>                   <dbl>
+#> 1               0.8            1.6                2                     1.6
+#> 2               0.8            1.6                2                     1.6
+#> # ℹ 2 more variables: pid_antagonism <dbl>, pid_total <dbl>
+```
 
 ## The Supabase route
 

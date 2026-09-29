@@ -377,7 +377,7 @@ cat(readLines(descriptor), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-09-28",
+#>   "buildDate": "2026-09-29",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],
 #>   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],
@@ -574,7 +574,7 @@ responses <- read_form_responses(path)
 responses
 #> # A tibble: 1 × 29
 #>   study   participant instrument form_build submitted           item_order
-#>   <chr>   <chr>       <chr>      <date>     <dttm>              <chr>     
+#>   <chr>   <chr>       <chr>      <chr>      <dttm>              <chr>     
 #> 1 fixture p001        hitopsr    2026-09-20 2026-09-20 21:20:44 NA        
 #> # ℹ 23 more variables: prolific_study <chr>, prolific_session <chr>,
 #> #   hitopsr_233 <int>, hitopsr_194 <int>, hitopsr_170 <int>, hitopsr_064 <int>,
@@ -586,11 +586,22 @@ responses
 ```
 
 Each row of each file is a row of the result, the lead columns typed
-(`form_build` is a date, `submitted` a UTC date-time), and every item
-column an integer. A folder of many files reads the same way, file by
-file in path order. Every file must hold the same item columns in the
-same order; a folder mixing two forms stops with an error that names the
-files that differ, so read each form’s files in a call of their own.
+(`form_build` is character, the page’s build date as the file holds it,
+and `submitted` a UTC date-time), and every item column an integer. A
+folder of many files reads the same way, file by file in path order.
+Every file must hold the same item columns in the same order; a folder
+mixing two forms stops with an error that names the files that differ,
+so read each form’s files in a call of their own.
+
+A file can also hold a module beside other instruments, one group of
+item columns per instrument. The `instrument` cell then names the stems
+in the order of the groups, joined by single spaces (`hitopsr pid5bf`),
+and `form_build` holds one date per instrument in the same order. Under
+the random order, `item_order` holds one group per instrument, joined by
+`|`. Choose the module’s columns by the `hitopsr_` stem and score them
+as below. The [Collecting Responses
+Online](https://jmgirard.github.io/hitop/articles/online-collection.html#several-instruments-in-one-file)
+article describes this file shape.
 
 Score the item columns through the module the page showed. Without the
 random order, the columns are in the order the page showed the items, so

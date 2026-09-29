@@ -531,7 +531,7 @@ responses <- read_form_responses(path)
 responses
 #> # A tibble: 1 × 228
 #>   study   participant instrument form_build submitted           item_order
-#>   <chr>   <chr>       <chr>      <date>     <dttm>              <chr>     
+#>   <chr>   <chr>       <chr>      <chr>      <dttm>              <chr>     
 #> 1 fixture p001        pid5       2026-09-20 2026-09-21 02:39:01 NA        
 #> # ℹ 222 more variables: prolific_study <chr>, prolific_session <chr>,
 #> #   pid5_001 <int>, pid5_002 <int>, pid5_003 <int>, pid5_004 <int>,

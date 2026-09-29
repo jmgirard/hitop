@@ -46,6 +46,26 @@
   `^q_[a-z][a-z0-9_]{0,29}$` is an error naming the file and the column.
   A file with no column whose name starts with `q_` reads as before.
 
+- **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+  reads a file whose item columns span two or more instruments.** The
+  item columns form one group per instrument, the columns of each group
+  side by side. The `instrument` cell holds the stems in the order of
+  the groups, joined by single spaces (`hitopbr pid5bf`), and the
+  `form_build` cell holds one build date per instrument in the same
+  order (`2026-09-20 2026-09-18`). Under a random order, `item_order`
+  holds one group of item numbers per instrument, joined by `|`. The
+  reader refuses an `instrument` cell that differs from the stems, a
+  stem whose columns another stem’s columns split, a `form_build` cell
+  whose date count differs from the stem count, and an `item_order` cell
+  that breaks the groups. It names the file, and the row for a fault in
+  a row. Score each instrument in its own call, with its columns chosen
+  by stem. The hitop-form page does not yet write such a file.
+  **`form_build` is now character in every result**, holding each row’s
+  dates as written, where it was a `Date` before. Use
+  [`as.Date()`](https://rdrr.io/r/base/as.Date.html) on a
+  single-instrument file’s `form_build` when you need a date. A file of
+  one instrument reads as before in every other column.
+
 - **hitop-form can show the researcher’s consent text before the form.**
   The link builder gains a “Consent text” box. A link with text there
   carries a `consent` field, and the page shows the text as plain text
@@ -224,14 +244,14 @@
 - **[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
   reads the files the hitop-form web page saves.** Given a directory or
   a vector of file paths, it reads each participant’s CSV file and binds
-  them into one tibble: `study`, `participant` and `instrument` as
-  character, `form_build` as a date, `submitted` as a UTC date-time,
-  then the item columns as integers, in the order the first file (after
-  sorting the paths) holds them. The scoring functions take the result
-  as it is, with the item columns passed through `items` by name for a
-  full form, or by name or position with `layout = "printed"` for a
-  module the page showed in a shuffled order. Files whose item columns
-  differ in name, count or order stop the read with an error of class
+  them into one tibble: `study`, `participant`, `instrument` and
+  `form_build` as character, `submitted` as a UTC date-time, then the
+  item columns as integers, in the order the first file (after sorting
+  the paths) holds them. The scoring functions take the result as it is,
+  with the item columns passed through `items` by name for a full form,
+  or by name or position with `layout = "printed"` for a module the page
+  showed in a shuffled order. Files whose item columns differ in name,
+  count or order stop the read with an error of class
   `hitop_form_responses_mismatch` naming the files; a directory holding
   no `.csv` file stops it with `hitop_form_responses_none`. The modules
   article shows the whole hand-off, from a study link to scored scales.
@@ -642,10 +662,10 @@
   was read as a line of one field, so the read stopped on a field count
   the file did not have, on the file’s first columns, or with base R’s
   “first five rows are empty” when the file was that one line. An
-  `instrument` cell that differs from the item columns’ stem (`pid5bf`
+  `instrument` cell that differs from the item columns’ stems (`pid5bf`
   beside `hitopbr_01`, a blank cell, a padded one) is refused before any
   value is checked. The message names each such response row, the cell
-  and the stem. Before, the file read with the cell as written. The
+  and the stems. Before, the file read with the cell as written. The
   whole-number and integer-range refusals now name each cell at fault on
   its own line, as the response row, the column and the value as
   written. The lines follow the file’s row then column order, the first
@@ -666,14 +686,13 @@
   byte-order mark only) is refused with the reader’s own message naming
   the file, not base R’s “no lines available in input”. An item column
   whose name is not a stem, an underscore and the item number (`foo`,
-  `Hitopbr_01`) is refused naming the column, and item columns of more
-  than one stem (`hitopbr_01` beside `pid5bf_01`) are refused naming the
-  stems, before any value is checked. The four value refusals (an item
-  value that is not a whole number, one outside the integer range, a
-  `form_build` or a `submitted` that does not parse) now name the
-  response rows at fault, counted from the first row after the header.
-  The hitop-form page and its link builder refuse a module descriptor
-  whose `items` are not in ascending order, naming the fault.
+  `Hitopbr_01`) is refused naming the column, before any value is
+  checked. The four value refusals (an item value that is not a whole
+  number, one outside the integer range, a `form_build` or a `submitted`
+  that does not parse) now name the response rows at fault, counted from
+  the first row after the header. The hitop-form page and its link
+  builder refuse a module descriptor whose `items` are not in ascending
+  order, naming the fault.
   [`?read_form_responses`](https://jmgirard.github.io/hitop/reference/read_form_responses.md),
   [`?write_module`](https://jmgirard.github.io/hitop/reference/write_module.md)
   and the online-collection article describe the refusals.

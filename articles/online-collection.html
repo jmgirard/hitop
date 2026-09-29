@@ -146,9 +146,12 @@ grow the header without limit or put a formula in it.</p>
 <p>Deploy one sheet and script per form. A key the header lacks is added
 to it, so a sheet that receives two forms’ rows holds the union of their
 columns. When the two forms are two instruments,
-<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> refuses the download, because its
-item columns carry two stems (<code>hitopbr_01</code> beside
-<code>pid5bf_01</code>). When they are a HiTOP-SR module and the full
+<code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> refuses the download. Its item
+columns carry two stems (<code>hitopbr_01</code> beside
+<code>pid5bf_01</code>), but each row’s <code>instrument</code> cell
+names one, so no row matches the columns. A file whose rows each hold
+both instruments is another shape, which the section <a href="#several-instruments-in-one-file">Several instruments in one
+file</a> describes. When they are a HiTOP-SR module and the full
 HiTOP-SR, the columns share one stem, so the download reads as one data
 frame with the module’s rows blank on the items outside it, unless the
 module’s link asked for a random order: its rows’
@@ -222,7 +225,7 @@ the page. The package installs it as an example, and
 <span><span class="va">responses</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 53</span></span></span>
 <span><span class="co">#&gt;   study   participant instrument form_build submitted           item_order</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> fixture =1+1        hitopbr    2026-09-20 2026-09-23 <span style="color: #949494;">19:33:25</span> <span style="color: #BB0000;">NA</span>        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> fixture 007         hitopbr    2026-09-20 2026-09-23 <span style="color: #949494;">19:33:30</span> <span style="color: #BB0000;">NA</span>        </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 47 more variables: prolific_study &lt;chr&gt;, prolific_session &lt;chr&gt;,</span></span></span>
@@ -235,18 +238,21 @@ the page. The package installs it as an example, and
 <p>Each row of the file is a row of the result. The lead columns are
 typed: <code>participant</code> is character, so the codes
 <code>=1+1</code> and <code>007</code> come back as the sheet stored
-them; <code>form_build</code> is a date; <code>submitted</code> is a UTC
-date-time. Every item column is an integer. The sixth column,
-<code>item_order</code>, is the order the participant saw the items, as
-item numbers, when the file records one and <code>NA</code> when it does
-not, and scoring does not read it. The page records it when the study
-link asks for a random order, which the link builder’s “Show the items
-in a random order” box sets. The seventh and eighth columns,
-<code>prolific_study</code> and <code>prolific_session</code>, are the
-study and session identifiers Prolific passed to the page when the link
-recruits through Prolific, as <a href="#the-prolific-route">the Prolific
-route</a> below describes, and <code>NA</code> when it does not, as
-here. Scoring does not read them either.</p>
+them; <code>form_build</code> is character, the page’s build date as the
+file holds it, such as <code>"2026-09-20"</code>; <code>submitted</code>
+is a UTC date-time. Convert <code>form_build</code> with
+<code><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date()</a></code> when you need a date. Every item column is an
+integer. The sixth column, <code>item_order</code>, is the order the
+participant saw the items, as item numbers, when the file records one
+and <code>NA</code> when it does not, and scoring does not read it. The
+page records it when the study link asks for a random order, which the
+link builder’s “Show the items in a random order” box sets. The seventh
+and eighth columns, <code>prolific_study</code> and
+<code>prolific_session</code>, are the study and session identifiers
+Prolific passed to the page when the link recruits through Prolific, as
+<a href="#the-prolific-route">the Prolific route</a> below describes,
+and <code>NA</code> when it does not, as here. Scoring does not read
+them either.</p>
 <p>A folder can hold the download beside any files participants sent by
 hand: <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads every <code>.csv</code>
 file in it, file by file in path order, and each file’s rows in its own
@@ -304,6 +310,78 @@ way, and a PID-5 form with <code><a href="../reference/score_pid5.html">score_pi
 HiTOP-SR module scores through the descriptor the page showed, with
 <code>layout = "printed"</code>; the <a href="modules-hitopsr.html">Building HiTOP-SR Modules</a> article walks
 that step.</p>
+</div>
+<div class="section level2">
+<h2 id="several-instruments-in-one-file">Several instruments in one file<a class="anchor" aria-label="anchor" href="#several-instruments-in-one-file"></a>
+</h2>
+<p><code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> also reads a file whose rows hold
+the answers to two or more instruments. The page does not write such a
+file yet, because a study link gives one instrument. The file has this
+shape:</p>
+<ul>
+<li>The item columns form one group per instrument, the columns of each
+group side by side, and each group holds one stem. The optional lead
+columns and the answer columns can sit anywhere after
+<code>submitted</code>, between two groups or inside one.</li>
+<li>The <code>instrument</code> cell holds the stems in the order of the
+groups, joined by single spaces, such as
+<code>hitopbr pid5bf</code>.</li>
+<li>The <code>form_build</code> cell holds one build date per
+instrument, in the same order, joined by single spaces, such as
+<code>2026-09-20 2026-09-18</code>. The result keeps it as written, so
+<code>form_build</code> is character for every file.</li>
+<li>Under a random order, the <code>item_order</code> cell holds one
+group per instrument, in the same order, joined by a space, a bar and a
+space. Each group is all of that instrument’s item numbers in the order
+shown. For two instruments of three and four items, a cell could be
+<code>2 1 3 | 4 1 3 2</code>. A file of one instrument has one group and
+no bar.</li>
+</ul>
+<p>The reader stops with an error that names the file and the row when
+an <code>instrument</code> cell differs from the stems of the groups, a
+<code>form_build</code> cell holds a date count other than the stem
+count or a date that does not parse, or an <code>item_order</code> cell
+breaks the groups. It stops with an error that names the file when
+another stem’s columns split the columns of a stem. Files whose groups
+differ in stems or in order do not read together, as for any item
+columns.</p>
+<p>Score each instrument in its own call, with the columns chosen by
+stem. The file below is the download above with the PID-5-BF’s 25 items
+added to each row, as a file of both instruments would hold them:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readLines.html" class="external-link">readLines</a></span><span class="op">(</span><span class="va">path</span>, warn <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="st">","</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5bf_%02d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">25</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">","</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">lines</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">",hitopbr,2026-09-20,"</span>, <span class="st">",hitopbr pid5bf,2026-09-20 2026-09-18,"</span>,</span>
+<span>                 <span class="va">lines</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">lines</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span><span class="op">]</span>, <span class="st">","</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep_len</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">25</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">","</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">both_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/writeLines.html" class="external-link">writeLines</a></span><span class="op">(</span><span class="va">lines</span>, <span class="va">both_file</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">both</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">both_file</span><span class="op">)</span></span>
+<span><span class="va">both</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant"</span>, <span class="st">"instrument"</span>, <span class="st">"form_build"</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
+<span><span class="co">#&gt;   participant instrument     form_build           </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> =1+1        hitopbr pid5bf 2026-09-20 2026-09-18</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 007         hitopbr pid5bf 2026-09-20 2026-09-18</span></span>
+<span></span>
+<span><span class="va">hbr_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"^hitopbr_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">both</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">bf_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"^pid5bf_"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">both</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/score_hitopbr.html">score_hitopbr</a></span><span class="op">(</span><span class="va">both</span>, items <span class="op">=</span> <span class="va">hbr_items</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 8</span></span></span>
+<span><span class="co">#&gt;   hbr_antagonism hbr_detachment hbr_disinhibition hbr_internalizing</span></span>
+<span><span class="co">#&gt;            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>           3.33            2.4              1.89              2.25</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>           3.33            2.4              1.89              2.25</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: hbr_somatoform &lt;dbl&gt;, hbr_thoughtDisorder &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hbr_externalizing &lt;dbl&gt;, hbr_pFactor &lt;dbl&gt;</span></span></span>
+<span><span class="fu"><a href="../reference/score_pid5.html">score_pid5</a></span><span class="op">(</span><span class="va">both</span>, items <span class="op">=</span> <span class="va">bf_items</span>, version <span class="op">=</span> <span class="st">"BF"</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 6</span></span></span>
+<span><span class="co">#&gt;   pid_disinhibition pid_detachment pid_psychoticism pid_negativeAffectivity</span></span>
+<span><span class="co">#&gt;               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>               0.8            1.6                2                     1.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>               0.8            1.6                2                     1.6</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: pid_antagonism &lt;dbl&gt;, pid_total &lt;dbl&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="the-supabase-route">The Supabase route<a class="anchor" aria-label="anchor" href="#the-supabase-route"></a>
@@ -374,7 +452,7 @@ and a confirmed send still goes to the completion URL.</p>
 <p>The download then reads as above, with <code>prolific_study</code>
 and <code>prolific_session</code> filled. The file below is one the page
 saved under such a link, with the Prolific ID as the participant:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">path</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"examples"</span>, <span class="st">"responses-hitopbr-prolific.csv"</span>, package <span class="op">=</span> <span class="st">"hitop"</span><span class="op">)</span></span>
 <span><span class="va">responses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/read_form_responses.html">read_form_responses</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span><span class="va">responses</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"participant"</span>, <span class="st">"prolific_study"</span>, <span class="st">"prolific_session"</span><span class="op">)</span><span class="op">]</span></span>
@@ -511,7 +589,7 @@ of options, so a change to the order of the options between two links
 changes what the numbers mean. Keep the order the same in every link of
 a study. To turn a column of several choices into numbers, split it at
 the spaces:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">days</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1 3"</span>, <span class="st">"2"</span>, <span class="cn">NA</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="va">days</span>, <span class="st">" "</span><span class="op">)</span>, <span class="va">as.integer</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>

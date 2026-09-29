@@ -420,7 +420,7 @@ file you can keep beside the forms you generated:</p>
 <span><span class="co">#&gt;   "format": "1.0",</span></span>
 <span><span class="co">#&gt;   "package": "hitop",</span></span>
 <span><span class="co">#&gt;   "packageVersion": "0.2.0",</span></span>
-<span><span class="co">#&gt;   "buildDate": "2026-09-28",</span></span>
+<span><span class="co">#&gt;   "buildDate": "2026-09-29",</span></span>
 <span><span class="co">#&gt;   "instrument": "hitopsr",</span></span>
 <span><span class="co">#&gt;   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],</span></span>
 <span><span class="co">#&gt;   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],</span></span>
@@ -574,7 +574,7 @@ its path:</p>
 <span><span class="va">responses</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 29</span></span></span>
 <span><span class="co">#&gt;   study   participant instrument form_build submitted           item_order</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> fixture p001        hitopsr    2026-09-20 2026-09-20 <span style="color: #949494;">21:20:44</span> <span style="color: #BB0000;">NA</span>        </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 23 more variables: prolific_study &lt;chr&gt;, prolific_session &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_233 &lt;int&gt;, hitopsr_194 &lt;int&gt;, hitopsr_170 &lt;int&gt;, hitopsr_064 &lt;int&gt;,</span></span></span>
@@ -584,12 +584,21 @@ its path:</p>
 <span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_343 &lt;int&gt;, hitopsr_066 &lt;int&gt;, hitopsr_100 &lt;int&gt;, hitopsr_386 &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   hitopsr_380 &lt;int&gt;</span></span></span></code></pre></div>
 <p>Each row of each file is a row of the result, the lead columns typed
-(<code>form_build</code> is a date, <code>submitted</code> a UTC
-date-time), and every item column an integer. A folder of many files
-reads the same way, file by file in path order. Every file must hold the
-same item columns in the same order; a folder mixing two forms stops
-with an error that names the files that differ, so read each form’s
-files in a call of their own.</p>
+(<code>form_build</code> is character, the page’s build date as the file
+holds it, and <code>submitted</code> a UTC date-time), and every item
+column an integer. A folder of many files reads the same way, file by
+file in path order. Every file must hold the same item columns in the
+same order; a folder mixing two forms stops with an error that names the
+files that differ, so read each form’s files in a call of their own.</p>
+<p>A file can also hold a module beside other instruments, one group of
+item columns per instrument. The <code>instrument</code> cell then names
+the stems in the order of the groups, joined by single spaces
+(<code>hitopsr pid5bf</code>), and <code>form_build</code> holds one
+date per instrument in the same order. Under the random order,
+<code>item_order</code> holds one group per instrument, joined by
+<code>|</code>. Choose the module’s columns by the <code>hitopsr_</code>
+stem and score them as below. The <a href="online-collection.html#several-instruments-in-one-file">Collecting
+Responses Online</a> article describes this file shape.</p>
 <p>Score the item columns through the module the page showed. Without
 the random order, the columns are in the order the page showed the
 items, so this is <code>layout = "printed"</code> with the descriptor

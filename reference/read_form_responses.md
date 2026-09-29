@@ -25,9 +25,9 @@ read_form_responses(path)
 ## Value
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
-row per response row. The first eight columns are `study`, `participant`
-and `instrument` as character, `form_build` as `Date`, `submitted` as
-`POSIXct` in UTC, and `item_order`, `prolific_study` and
+row per response row. The first eight columns are `study`,
+`participant`, `instrument` and `form_build` as character, `submitted`
+as `POSIXct` in UTC, and `item_order`, `prolific_study` and
 `prolific_session` as character, each `NA` on a row from a file without
 that column and on a blank cell. The item columns follow as integers, in
 the column order of the first file after sorting. An item the
@@ -56,16 +56,41 @@ them, which
 writes ascending and the page requires ascending), and writes
 `item_order`.
 
+`form_build` is the build date of the instrument's export the page
+showed, as `YYYY-MM-DD`. The result keeps each cell as written, so the
+column is character. Convert it with
+[`as.Date()`](https://rdrr.io/r/base/as.Date.html) when you need a date
+and the file holds one instrument.
+
+**Several instruments in one file.** A file's item columns may form two
+or more groups, one per instrument. The columns of each group sit side
+by side and hold one stem, and no stem appears in two groups. The
+optional lead columns and the answer columns may sit anywhere after
+`submitted`, between two groups or inside one, and they do not split a
+group. The `instrument` cell holds the stems in the order of the groups,
+joined by single spaces (`hitopbr pid5bf`). The `form_build` cell holds
+one date per stem, in the same order, joined by single spaces
+(`2026-09-20 2026-09-18`). The result holds the item columns in file
+order. Score each instrument in its own call, with its columns chosen by
+stem, as `grep("^pid5bf_", names(responses), value = TRUE)` chooses the
+PID-5-BF's. The hitop-form page does not yet write such a file.
+
 `item_order` is the order the participant saw the items, as item numbers
 with no leading zero, joined by single spaces with none at either end
-(`hitopbr_01` is 1). The page writes it under a random order and not
-otherwise. A file may hold the column anywhere after `submitted`, as a
-store's download may append it after the item columns, and the result
+(`hitopbr_01` is 1). In a file of several instruments it holds one group
+per stem, in the order of the `instrument` cell, joined by a space, a
+bar and a space (`2 1 | 3 1 2`), each group that instrument's item
+numbers in the order shown. The page writes it under a random order and
+not otherwise. A file may hold the column anywhere after `submitted`, as
+a store's download may append it after the item columns, and the result
 places it sixth. A file may also lack it: its rows then hold `NA` there.
 Scoring does not read the column, and it is not an item column, so it
 does not enter the check that every file holds the same item columns. A
 cell that is not blank and does not list the file's item numbers, each
-once, is an error naming the file and the response row.
+once, in one group per stem, is an error naming the file and the
+response row. A group does not name its stem, so the reader cannot tell
+two groups apart when their instruments hold the same item numbers:
+swapped, they read as written.
 
 `prolific_study` and `prolific_session` hold the study and session
 identifiers that Prolific adds to a study link, when the file records
@@ -110,34 +135,36 @@ twice, a header with no response row, a response row holding fewer or
 more fields than the header, an answer column whose name does not match
 the pattern above, an item column whose name is not a stem of lower-case
 letters and digits, an underscore and the item number (`hitopbr_01`, not
-`foo` or `Hitopbr_01`), item columns of more than one stem (`hitopbr_01`
-beside `pid5bf_01`), an `instrument` cell that differs from the item
-columns' stem (`pid5bf` beside `hitopbr_01`), an item value that is not
-a whole number or is outside R's integer range, or a date that does not
-parse. An error on a line names the lines at fault, counted from the
-file's first line. An error on a row names the response rows at fault,
-counted from the first row after the header. An error on an item value
-names each cell at fault as its response row, its column and the value
-as written, the first five cells and a count of the rest. The errors on
-a NUL byte or a byte sequence that is not UTF-8, on a line of spaces and
-tabs, on a row's field count and on an `instrument` cell likewise name
-the first five lines or rows at fault and a count of the rest. The error
-on a UTF-16 or UTF-32 file names the encoding and no line, and asks that
-the file be saved as UTF-8. A file that starts with the byte-order mark
-FF FE 00 00 or 00 00 FE FF is taken as UTF-32, and one that starts with
-FF FE or FE FF as UTF-16. A file with no mark is read as UTF-32 and then
-as UTF-16, each little-endian and then big-endian. In each encoding the
-lines are split on that encoding's line feed. Empty lines and lines of a
-lone carriage return at the top are skipped. The first line that is not
-blank then has its trailing carriage return dropped. If it holds only
-printable ASCII characters and tabs, the file is taken as that encoding.
-A file of blank lines only in one of these encodings is also taken as
-that encoding when it holds at least one line feed. A file taken as
-UTF-32 is refused as UTF-32, not as UTF-16. A UTF-16 or UTF-32 file the
-rule does not take is read as UTF-8, and a NUL byte in it meets the byte
-error. The field count of a row reads `#` as data and a quoted cell
-holding a line break as one cell, as the read does. A `submitted` stamp
-may carry fractional seconds.
+`foo` or `Hitopbr_01`), a stem whose columns another stem's columns
+split (`hitopbr_01`, `pid5bf_01`, `hitopbr_02`), an `instrument` cell
+that differs from the item columns' stems in file order (`pid5bf` beside
+`hitopbr_01`, or `hitopbr` beside `hitopbr_01` and `pid5bf_01`), an item
+value that is not a whole number or is outside R's integer range, a
+`form_build` cell whose date count differs from the stem count, or a
+date that does not parse. An error on a line names the lines at fault,
+counted from the file's first line. An error on a row names the response
+rows at fault, counted from the first row after the header. An error on
+an item value names each cell at fault as its response row, its column
+and the value as written, the first five cells and a count of the rest.
+The errors on a NUL byte or a byte sequence that is not UTF-8, on a line
+of spaces and tabs, on a row's field count and on an `instrument` cell
+likewise name the first five lines or rows at fault and a count of the
+rest. The error on a UTF-16 or UTF-32 file names the encoding and no
+line, and asks that the file be saved as UTF-8. A file that starts with
+the byte-order mark FF FE 00 00 or 00 00 FE FF is taken as UTF-32, and
+one that starts with FF FE or FE FF as UTF-16. A file with no mark is
+read as UTF-32 and then as UTF-16, each little-endian and then
+big-endian. In each encoding the lines are split on that encoding's line
+feed. Empty lines and lines of a lone carriage return at the top are
+skipped. The first line that is not blank then has its trailing carriage
+return dropped. If it holds only printable ASCII characters and tabs,
+the file is taken as that encoding. A file of blank lines only in one of
+these encodings is also taken as that encoding when it holds at least
+one line feed. A file taken as UTF-32 is refused as UTF-32, not as
+UTF-16. A UTF-16 or UTF-32 file the rule does not take is read as UTF-8,
+and a NUL byte in it meets the byte error. The field count of a row
+reads `#` as data and a quoted cell holding a line break as one cell, as
+the read does. A `submitted` stamp may carry fractional seconds.
 
 **Errors.** Files whose item columns differ from the first file's in
 name, in count or in order stop the read under the condition class
@@ -180,7 +207,7 @@ responses <- read_form_responses(dir)
 responses
 #> # A tibble: 2 × 10
 #>   study participant instrument form_build submitted           item_order
-#>   <chr> <chr>       <chr>      <date>     <dttm>              <chr>     
+#>   <chr> <chr>       <chr>      <chr>      <dttm>              <chr>     
 #> 1 demo  p001        hitopbr    2026-09-20 2026-09-20 21:20:36 NA        
 #> 2 demo  p002        hitopbr    2026-09-20 2026-09-21 09:02:11 NA        
 #> # ℹ 4 more variables: prolific_study <chr>, prolific_session <chr>,
