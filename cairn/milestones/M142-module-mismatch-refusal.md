@@ -2,7 +2,7 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M142: HiTOP-SR module functions refuse a module whose items do not match its scales
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -47,7 +47,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T2: Write the AC2 and AC3 tests for the other five functions first, with both `descriptor` modes for the generators. Then call the helper from `module_engine_inputs()` (`R/module.R:195`) and `apply_module()` (`R/module.R:146`), before any file is opened. Correct the invariant comments at `R/module.R:191-193` and in `add_hitopsr_subscales()`.
 - [x] T3: Write the AC4 tests first. Replace the refusal test at `tests/testthat/test-generate_docx.R:173-191` and the comment at `tests/testthat/test-docx-numbering.R:328-336`. Then remove the refusal at `R/generate_docx.R:230-239` and add `validate_flag(include_subscales)`. Choose the in-module subscales through one helper that `add_hitopsr_subscales()` shares.
 - [x] T4: Update the `module` help of the six functions to name the class. Update the `include_subscales` and `module` help of `generate_docx_hitopsr()`, the `remap_itemdata()` comment (`R/generate_docx.R:388-391`), and the article paragraph (`vignettes/articles/modules-hitopsr.Rmd:110-113`). Change `tests/testthat/test-module-doc-prose.R:158-163` to assert the new article statement. Run `devtools::document()`, run the AC5 search and read each hit, and write the two NEWS entries.
-- [ ] T5: Run `devtools::check()`. Purl the modules article and run it after `devtools::load_all()` (LESSONS, M115 and M096).
+- [x] T5: Run `devtools::check()`. Purl the modules article and run it after `devtools::load_all()` (LESSONS, M115 and M096).
 
 ## Work log
 
@@ -66,6 +66,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: T4 done. The help of the six functions names `hitop_module_mismatch`; the modules article and `?generate_docx_hitopsr` state the module subscale rows, and `test-module-doc-prose.R` asserts the article sentence. NEWS: one Breaking changes entry and one New features entry. Added one test beyond the plan: a module naming Body Focus is refused, because the NEWS entry names that case. AC5 search: 348 "subscale" lines; the lines naming a module or a refusal word were read, and none repeats the retired claim. Suite 0 failed, 0 errors.
 - 2026-09-29: T5: purled `modules-hitopsr.Rmd` runs without error after `load_all()`. First `devtools::check()` (before the claim-audit fixes): 0 errors, 0 warnings, 0 notes.
 - 2026-09-29: claim audit: 58 claims read, 7 corrected — NEWS.md, R/module.R, tests/testthat/test-module-mismatch.R, tests/testthat/test-module.R, tests/testthat/test-reliability.R, R/{score,reliability}_hitopsr.R, R/generate_{docx,qualtrics,redcap}.R, R/module_file.R. Pass found 4 overstated claims plus an unlisted break (`include_subscales = 1` on a full form, now its own Breaking entry). The re-read found an `instrument` in another letter case still escaping the class (M142-D1). Code fixes: `check_module_build()` now runs before the instrument assert and compares `instrument`; probes `instrument` and `instrument_case` added; two old "wrong instrument" tests re-pointed. Suite 0 failed, 0 errors.
+- 2026-09-29: T5 done. Final `devtools::check()` on 521323a6's tree: 0 errors, 0 warnings, 0 notes. Status set to review.
 
 ## Decisions
 
