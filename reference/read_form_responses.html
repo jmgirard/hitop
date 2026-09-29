@@ -145,7 +145,8 @@ one date per stem, in the same order, joined by single spaces
 (<code>2026-09-20 2026-09-18</code>). The result holds the item columns in file
 order. Score each instrument in its own call, with its columns chosen by
 stem, as <code>grep("^pid5bf_", names(responses), value = TRUE)</code> chooses the
-PID-5-BF's. The hitop-form page does not yet write such a file.</p>
+PID-5-BF's. The hitop-form page writes such a file for a study link
+whose <code>instruments</code> field lists two or three instruments.</p>
 <p><code>item_order</code> is the order the participant saw the items, as item numbers
 with no leading zero, joined by single spaces with none at either end
 (<code>hitopbr_01</code> is 1). In a file of several instruments it holds one group

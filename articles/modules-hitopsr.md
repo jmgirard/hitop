@@ -594,13 +594,14 @@ mixing two forms stops with an error that names the files that differ,
 so read each form’s files in a call of their own.
 
 A file can also hold a module beside other instruments, one group of
-item columns per instrument. The `instrument` cell then names the stems
-in the order of the groups, joined by single spaces (`hitopsr pid5bf`),
-and `form_build` holds one date per instrument in the same order. Under
-the random order, `item_order` holds one group per instrument, joined by
+item columns per instrument, as the page saves it for a study link that
+lists several instruments. The `instrument` cell then names the stems in
+the order of the groups, joined by single spaces (`hitopsr pid5bf`), and
+`form_build` holds one date per instrument in the same order. Under the
+random order, `item_order` holds one group per instrument, joined by
 `|`. Choose the module’s columns by the `hitopsr_` stem and score them
 as below. The [Collecting Responses
-Online](https://jmgirard.github.io/hitop/articles/online-collection.html#several-instruments-in-one-file)
+Online](https://jmgirard.github.io/hitop/articles/online-collection.html#several-instruments-in-one-session)
 article describes this file shape.
 
 Score the item columns through the module the page showed. Without the

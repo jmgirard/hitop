@@ -1,12 +1,12 @@
 # Collecting Responses Online with hitop-form
 
 [hitop-form](https://jmgirard.github.io/hitop-form/) is a web page that
-shows one of this package’s instruments in the browser: the HiTOP-SR or
-one of its modules, the HiTOP-BR, or the PID-5 in its full, short or
-brief form. The item text, response options and instructions are this
-package’s own, read from its JSON export. The page needs no survey
-platform and no account, and it scores nothing. Scoring is this
-package’s job.
+shows one of this package’s instruments in the browser, or two or three
+of them in turn: the HiTOP-SR or one of its modules, the HiTOP-BR, or
+the PID-5 in its full, short or brief form. The item text, response
+options and instructions are this package’s own, read from its JSON
+export. The page needs no survey platform and no account, and it scores
+nothing. Scoring is this package’s job.
 
 A study link tells the page what to show and where each participant’s
 answers go. Three destinations are offered: a file saved on the
@@ -46,7 +46,7 @@ refuses the download. Its item columns carry two stems (`hitopbr_01`
 beside `pid5bf_01`), but each row’s `instrument` cell names one, so no
 row matches the columns. A file whose rows each hold both instruments is
 another shape, which the section [Several instruments in one
-file](#several-instruments-in-one-file) describes. When they are a
+session](#several-instruments-in-one-session) describes. When they are a
 HiTOP-SR module and the full HiTOP-SR, the columns share one stem, so
 the download reads as one data frame with the module’s rows blank on the
 items outside it, unless the module’s link asked for a random order: its
@@ -56,21 +56,30 @@ refuses the download. Nothing else in the download or in
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 tells the two apart.
 
+A link that lists several instruments is its own form here. If two links
+list the same instruments in a different order and post to one sheet,
+the columns keep the first link’s order, and each row’s `instrument`
+cell keeps its own.
+[`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
+then refuses the download and names the first row that differs.
+
 ## 2. Make the study link
 
 Open the page’s [link
 builder](https://jmgirard.github.io/hitop-form/link.html). Choose the
 instrument (and, for a HiTOP-SR module, paste the descriptor written by
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)),
-and name the study. A link builder opened from a “Make a study link”
-button on an instrument’s download page arrives with that instrument
-chosen, and one opened with a `c` parameter that carries a module
-arrives with the descriptor pasted in as well. Give a participant
-identifier if the link is for one person; leave it empty for a link
-shared with many, and the page asks each participant for one before the
-form starts. Under “Send responses to”, choose “A web address” and paste
-the `/exec` URL from step 1. Press “Make the link” and send the link to
-the participants.
+and name the study. For two or three instruments in one session, see
+[Several instruments in one
+session](#several-instruments-in-one-session). A link builder opened
+from a “Make a study link” button on an instrument’s download page
+arrives with that instrument chosen, and one opened with a `c` parameter
+that carries a module arrives with the descriptor pasted in as well.
+Give a participant identifier if the link is for one person; leave it
+empty for a link shared with many, and the page asks each participant
+for one before the form starts. Under “Send responses to”, choose “A web
+address” and paste the `/exec` URL from step 1. Press “Make the link”
+and send the link to the participants.
 
 When a participant presses Finish, the page posts their answers to the
 address as one row and waits for the script to confirm. On a confirmed
@@ -90,14 +99,15 @@ When collection ends, open the sheet’s `Responses` tab and choose File,
 then Download, then Comma Separated Values (.csv). The file has one
 header row and one row per participant, in the page’s column order:
 `study`, `participant`, `instrument`, `form_build`, `submitted`, then
-one column per item. A link that asks for a random order adds
-`item_order` after `submitted`, and its item columns are in the
-instrument’s order rather than the order shown. A link that recruits
-through Prolific adds `prolific_study` and `prolific_session` after
-`submitted`, or after `item_order` when the file has it, before the item
-columns. The script builds the header from the first row it receives and
-appends a key it has not seen, so a sheet that already holds rows
-without `item_order` puts that column after the item columns.
+one column per item, in one group per instrument when the link names
+several. A link that asks for a random order adds `item_order` after
+`submitted`, and its item columns are in the instrument’s order rather
+than the order shown. A link that recruits through Prolific adds
+`prolific_study` and `prolific_session` after `submitted`, or after
+`item_order` when the file has it, before the item columns. The script
+builds the header from the first row it receives and appends a key it
+has not seen, so a sheet that already holds rows without `item_order`
+puts that column after the item columns.
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 reads it there. Start a new sheet for such a link if you want the column
 sixth.
@@ -221,12 +231,31 @@ with `layout = "printed"`; the [Building HiTOP-SR
 Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.md)
 article walks that step.
 
-## Several instruments in one file
+## Several instruments in one session
 
+A study link can give two or three instruments, one after another, in
+one session. In the link builder, press “Add an instrument” to add a
+row, up to three, and put the rows in the order the page gives them. The
+link then carries an `instruments` field, a list of the instruments’
+names such as `["hitopbr", "pid5bf"]`, in place of `instrument`. A list
+holds at most one form of the PID-5, and names no instrument twice. A
+module descriptor applies to the HiTOP-SR in the list.
+
+The page shows its screens in this order:
+
+1.  With consent text in the link, the consent screen.
+2.  With questions before the form, the “Before you begin” screen.
+3.  For each instrument in turn, its start screen and then its item
+    pages. Each start screen names its part, such as “Part 2 of 3”, and
+    the item and page numbers start again at 1.
+4.  With questions after the form, the “Before you finish” screen.
+
+Under a random order, each instrument’s items are shuffled among that
+instrument’s items only.
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
-also reads a file whose rows hold the answers to two or more
-instruments. The page does not write such a file yet, because a study
-link gives one instrument. The file has this shape:
+reads the file the page saves, and a store’s CSV download of its rows.
+Each row holds the answers to all the instruments. The file has this
+shape:
 
 - The item columns form one group per instrument, the columns of each
   group side by side, and each group holds one stem. The optional lead
@@ -240,9 +269,13 @@ link gives one instrument. The file has this shape:
   file.
 - Under a random order, the `item_order` cell holds one group per
   instrument, in the same order, joined by a space, a bar and a space.
-  Each group is all of that instrument’s item numbers in the order
-  shown. For two instruments of three and four items, a cell could be
+  Each group is that instrument’s item numbers in the order shown, or
+  the module’s items for a HiTOP-SR module in the list. For two
+  instruments of three and four items, a cell could be
   `2 1 3 | 4 1 3 2`. A file of one instrument has one group and no bar.
+- The answer columns of your own questions follow the last group. The
+  file’s name starts with the instruments’ names joined by `-`, such as
+  `hitopbr-pid5bf_Pilot-A_p001_20260920T211531Z.csv`.
 
 The reader stops with an error that names the file and the row when an
 `instrument` cell differs from the stems of the groups, a `form_build`
@@ -254,7 +287,7 @@ together, as for any item columns.
 
 Score each instrument in its own call, with the columns chosen by stem.
 The file below is the download above with the PID-5-BF’s 25 items added
-to each row, as a file of both instruments would hold them:
+to each row, as a link of both instruments writes them:
 
 ``` r
 
@@ -566,7 +599,7 @@ participant’s device when the link names no store or the send is not
 confirmed. They go nowhere else. With a Google Sheet, Google holds the
 rows; with a Supabase table, Supabase holds them. The page’s host,
 GitHub Pages, receives the study link with each page load, and the link
-carries the instrument and any module, the study name, the participant
+carries the instruments and any module, the study name, the participant
 code, any consent text, the store’s address and, for Supabase, its key.
 It receives no answers.
 
