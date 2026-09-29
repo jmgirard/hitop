@@ -164,14 +164,18 @@ test_that("module_engine_inputs() rejects a non-module and a wrong instrument", 
     "hitop_module"
   )
 
-  # Only reachable by hand-assembly: hitop_module() will not build this.
+  # Only reachable by hand-assembly: hitop_module() will not build this, so it
+  # is refused as a module its scales cannot rebuild (D-081), before the
+  # wrong-instrument check. That check cannot fail while the build compares
+  # `instrument` exactly and supports the HiTOP-SR only.
   fake <- hitop_module("hitopsr", "agoraphobia")
   fake$instrument <- "hitopbr"
   expect_error(
     module_engine_inputs(
       fake, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
     ),
-    "wrong instrument"
+    "Cannot rebuild",
+    class = "hitop_module_mismatch"
   )
 })
 

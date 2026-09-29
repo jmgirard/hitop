@@ -36,7 +36,7 @@ collected data column, so renumbering would rename variables in
 dictionaries already in the field. The zero-padding is the full
 instrument's for the same reason: item 4 is \code{hsr_004} in a module
 dictionary as in the complete one, never \code{hsr_04}. A module whose
-\code{items}, \code{nItems} or \code{camelCase} differ from a fresh \code{\link[=hitop_module]{hitop_module()}}
+\code{items}, \code{nItems}, \code{camelCase} or \code{instrument} differ from a fresh \code{\link[=hitop_module]{hitop_module()}}
 build of its scales is refused with an error of class
 \code{hitop_module_mismatch}, before any file is written. (default = \code{NULL})}
 

@@ -66,7 +66,7 @@ generate_qualtrics_hitopbr <- function(
 #'   column, so renumbering would rename variables in dictionaries already in
 #'   the field. The zero-padding is the full instrument's for the same reason:
 #'   item 4 is `HSR_004` in a module file as in the complete one, never
-#'   `HSR_04`. A module whose `items`, `nItems` or `camelCase` differ from a
+#'   `HSR_04`. A module whose `items`, `nItems`, `camelCase` or `instrument` differ from a
 #'   fresh [hitop_module()] build of its scales is refused with an error of
 #'   class `hitop_module_mismatch`, before any file is written.
 #'   (default = `NULL`)

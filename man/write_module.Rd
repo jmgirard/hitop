@@ -34,7 +34,7 @@ than a silent preference for either side.
 
 Before it writes, \code{write_module()} rebuilds the module with
 \code{\link[=hitop_module]{hitop_module()}} from its \code{instrument} and \code{scales}. A module whose
-\code{items}, \code{nItems} or \code{camelCase} differ from that rebuild, or whose
+\code{items}, \code{nItems}, \code{camelCase} or \code{instrument} differ from that rebuild, or whose
 scales cannot be rebuilt, is refused with an error of class
 \code{hitop_module_mismatch}, and nothing is written. The file holds the rebuild's fields. \code{\link[=read_module]{read_module()}} rebuilds
 the module from the file's \code{scales}, so it returns a \code{hitop_module} with

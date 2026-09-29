@@ -49,7 +49,7 @@ Defaults to \code{"Times New Roman"}.}
 \item{module}{An optional \code{\link[=hitop_module]{hitop_module()}} object restricting the form to the
 items of the chosen scales. With \code{include_subscales = TRUE}, the form
 adds the subscales of the scales it holds. A module whose \code{items},
-\code{nItems} or \code{camelCase} differ from a fresh \code{\link[=hitop_module]{hitop_module()}} build of its
+\code{nItems}, \code{camelCase} or \code{instrument} differ from a fresh \code{\link[=hitop_module]{hitop_module()}} build of its
 scales is refused with an error of class \code{hitop_module_mismatch}, before
 any file is written. (default = \code{NULL})}
 

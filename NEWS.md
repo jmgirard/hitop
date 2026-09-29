@@ -7,9 +7,7 @@
   `module`. The scoring page then lists the subscales of the scales the
   module holds, and no others, sorted by name with the scale rows. Each row
   gives the items in the form's printed numbers, with `(R)` on a
-  reverse-keyed item. The call used to stop with an error. `include_subscales`
-  must now be `TRUE` or `FALSE`, as in `score_hitopsr()`, so a value such as
-  `1` is refused.
+  reverse-keyed item. The call used to stop with an error.
 
 * **HiTOP-SR scoring can include the 17 subscales.** `score_hitopsr()` and
   `reliability_hitopsr()` take `include_subscales = FALSE`. With `TRUE`,
@@ -360,8 +358,10 @@
   `generate_qualtrics_hitopsr()`, `generate_redcap_hitopsr()` and
   `write_module()` rebuild a `module` with `hitop_module()` from its
   `instrument` and `scales`. They stop with an error of class
-  `hitop_module_mismatch` when its `items`, `nItems` or `camelCase` differ
-  from that build, or when its scales cannot be rebuilt. The error names the
+  `hitop_module_mismatch` when its `items`, `nItems`, `camelCase` or
+  `instrument` differ from that build, or when it cannot be rebuilt, as when
+  `instrument` names another instrument or a scale name is unknown. The
+  error names the
   items the module lacks or holds outside its scales, and each field that
   differs. Before, a module lacking an item of one of its scales scored that
   scale from its other items with no warning. With `include_subscales = TRUE`
@@ -369,11 +369,16 @@
   form printed `NA` in a scoring row. A module saved before a scale was
   renamed, such as one naming Body Focus rather than Appearance Focus, is now
   refused where it scored with that scale dropped. Build the module again
-  with `hitop_module()`, or read its descriptor with `read_module()`. The
+  with `hitop_module()`, using the current scale names. `read_module()`
+  refuses a descriptor that names a retired scale too. The
   deprecated `hitop_subset()` class and a module with double `items` are
   accepted as before. `write_module()` already refused a module whose
   `items` or `nItems` differed. It now also compares `camelCase`, and its
   refusals carry the class.
+
+* **`generate_docx_hitopsr()` takes `include_subscales` as `TRUE` or `FALSE`
+  only**, as `score_hitopsr()` does. A value such as `1`, which used to add
+  the subscale rows to a full-instrument form, is now refused.
 
 * **Two kinds of call to `score_hitopsr()` and `reliability_hitopsr()` now
   fail.** Both come from the new `include_subscales` argument. The first kind abbreviates `items` as `i =`. It now fails with an

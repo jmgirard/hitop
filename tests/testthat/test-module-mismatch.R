@@ -4,8 +4,9 @@
 #
 # The probes are edits a caller could make by hand to a module built from
 # Appetite Loss and Dishonesty. Dishonesty is a parent scale with subscales, so
-# the three probes that remove one of its items also reach the subscale path of
-# the scoring functions. `pattern` is text the refusal must hold; `absent` is
+# the three probes that remove one of its items are also run through the
+# scoring functions with `include_subscales = TRUE`, where the refusal must
+# come before the subscale code. `pattern` is text the refusal must hold; `absent` is
 # text it must not hold, which keeps a probe that edits one field from passing
 # on a message that blames another.
 
@@ -94,6 +95,25 @@ mismatch_probes <- list(
       m
     },
     pattern = c("Cannot rebuild", "Not A Scale"), parent = TRUE
+  ),
+  # Found by the claim audit: the scoring functions checked the instrument
+  # first, with no class, so this edit escaped the class there.
+  instrument = list(
+    edit = function(m) {
+      m$instrument <- "pid5"
+      m
+    },
+    pattern = "Cannot rebuild", absent = "wrong instrument", parent = TRUE
+  ),
+  # hitop_module() reads the instrument in any case, so this one rebuilds;
+  # found by the claim audit's re-read.
+  instrument_case = list(
+    edit = function(m) {
+      m$instrument <- "HiTOPSR"
+      m
+    },
+    pattern = "Its instrument field",
+    absent = c("wrong instrument", "Its items field", "nItems")
   )
 )
 

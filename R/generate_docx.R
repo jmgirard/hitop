@@ -102,7 +102,7 @@ generate_docx_hitopbr <- function(
 #' @param module An optional [hitop_module()] object restricting the form to the
 #'   items of the chosen scales. With `include_subscales = TRUE`, the form
 #'   adds the subscales of the scales it holds. A module whose `items`,
-#'   `nItems` or `camelCase` differ from a fresh [hitop_module()] build of its
+#'   `nItems`, `camelCase` or `instrument` differ from a fresh [hitop_module()] build of its
 #'   scales is refused with an error of class `hitop_module_mismatch`, before
 #'   any file is written. (default = `NULL`)
 #' @param renumber Logical. If `TRUE` (default), the printed items are numbered

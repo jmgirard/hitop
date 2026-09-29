@@ -29,7 +29,7 @@ module_format_first_version <- function() {
 #'
 #'   Before it writes, `write_module()` rebuilds the module with
 #'   [hitop_module()] from its `instrument` and `scales`. A module whose
-#'   `items`, `nItems` or `camelCase` differ from that rebuild, or whose
+#'   `items`, `nItems`, `camelCase` or `instrument` differ from that rebuild, or whose
 #'   scales cannot be rebuilt, is refused with an error of class
 #'   `hitop_module_mismatch`, and nothing is written. The file holds the rebuild's fields. [read_module()] rebuilds
 #'   the module from the file's `scales`, so it returns a `hitop_module` with

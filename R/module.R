@@ -215,8 +215,18 @@ module_engine_inputs <- function(
     ),
     call = call
   )
-  # Only reachable from a hand-assembled object: hitop_module() refuses to
-  # build a module for any instrument but the ones it supports.
+  # The fields of a plain list can be edited by hand. A module lacking an item
+  # of a kept scale would score that scale from the rest, and an inflated
+  # `nItems` would accept a full 405-column frame and score items 1..n as the
+  # module's scales. Both stop here, before any remap (D-081). It runs before
+  # the instrument check below, so an edited `instrument` that hitop_module()
+  # cannot build is refused under the same class as every other edit.
+  check_module_build(module, call = call)
+
+  # A module that builds for another supported instrument. check_module_build()
+  # has made `instrument` equal the build's, which is "hitopsr" while
+  # hitop_module() supports the HiTOP-SR only, so this cannot fail today; it
+  # guards the day a second instrument's module could be passed here.
   cli_assert(
     condition = identical(module$instrument, instrument),
     message = c(
@@ -225,12 +235,6 @@ module_engine_inputs <- function(
     ),
     call = call
   )
-
-  # The fields of a plain list can be edited by hand. A module lacking an item
-  # of a kept scale would score that scale from the rest, and an inflated
-  # `nItems` would accept a full 405-column frame and score items 1..n as the
-  # module's scales. Both stop here, before any remap (D-081).
-  check_module_build(module, call = call)
 
   kept <- scales[scales[[scale_col]] %in% module$camelCase, , drop = FALSE]
   reverse_numbers <- items[[item_col]][items[[reverse_col]]]
@@ -327,8 +331,9 @@ add_hitopsr_subscales <- function(inputs, module, subs = hitopsr_subscales,
     numbers <- lapply(subs$itemNumbers, function(x) match(x, module$items))
     # Every subscale item lies in its parent scale, and check_module_build()
     # has already refused a module lacking any item of its scales, so a kept
-    # subscale's items are all among the module's. Only a keying change that
-    # broke the first fact reaches this abort. Unchecked, it would
+    # subscale's items are all among the module's. In the package, only a
+    # keying change that broke the first fact reaches this abort (tests reach
+    # it through a faulty `subs`). Unchecked, it would
     # silently score the subscale from its remaining items (or as NA under
     # `missing = "complete"`), so it stops here instead.
     if (anyNA(unlist(numbers))) {
@@ -491,7 +496,7 @@ is_module <- function(x) {
 # A module is a plain list, so its fields can be edited by hand. Every function
 # that takes one rebuilds it with hitop_module() from its `instrument` and
 # `scales` and compares the fields the consumers read: `items` (by value and in
-# order), `nItems` and `camelCase` (D-081). By value, so a module saved before
+# order), `nItems` and `camelCase` (D-081), and `instrument` itself (M142-D1). By value, so a module saved before
 # item numbers were integers, whose `items` are doubles, still passes. Every
 # refusal carries the public class `hitop_module_mismatch`. Returns the rebuild,
 # which write_module() writes.
@@ -561,6 +566,13 @@ check_module_build <- function(module, call = rlang::caller_env()) {
   if (!n_ok) {
     faults <- c(faults, x = "Its nItems field is not {rebuilt$nItems}, the \\
       number of items its scales cover.")
+  }
+
+  # hitop_module() reads `instrument` in any letter case, so a rebuild can
+  # succeed for a field that still differs from the one the build writes.
+  if (!identical(module$instrument, rebuilt$instrument)) {
+    faults <- c(faults, x = "Its instrument field is not \\
+      {.val {rebuilt$instrument}}.")
   }
 
   # Compared exactly: the consumers choose scales by these names.

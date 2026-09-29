@@ -68,7 +68,7 @@ generate_redcap_hitopbr <- function(
 #'   dictionaries already in the field. The zero-padding is the full
 #'   instrument's for the same reason: item 4 is `hsr_004` in a module
 #'   dictionary as in the complete one, never `hsr_04`. A module whose
-#'   `items`, `nItems` or `camelCase` differ from a fresh [hitop_module()]
+#'   `items`, `nItems`, `camelCase` or `instrument` differ from a fresh [hitop_module()]
 #'   build of its scales is refused with an error of class
 #'   `hitop_module_mismatch`, before any file is written. (default = `NULL`)
 #' @param descriptor An optional path to write a module descriptor to, beside
