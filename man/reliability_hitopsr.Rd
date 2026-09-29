@@ -12,6 +12,7 @@ reliability_hitopsr(
   omega = TRUE,
   module = NULL,
   layout = c("instrument", "printed"),
+  include_subscales = FALSE,
   subset = NULL
 )
 }
@@ -78,11 +79,19 @@ with \code{layout = "printed"} and no module, a module with no \code{item_order}
 or an \code{item_order} that is not a permutation of the module's items is an
 error. (default = \code{"instrument"})}
 
+\item{include_subscales}{A logical. If \code{TRUE}, one row per subscale in
+\link{hitopsr_subscales} follows the scale rows, in that table's row order.
+A subscale row's \code{Scale} is the subscale's name (\code{Subscale} in
+\link{hitopsr_subscales}), and its \code{camelCase} and \code{nItems} come from the same
+row. With a \code{module}, only the subscales whose parent scale is in the
+module get a row. (default = \code{FALSE})}
+
 \item{subset}{Deprecated. The former name of \code{module}; supplying it warns.
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}
 }
 \value{
-A \link[tibble]{tibble} with one row per scale and columns \code{Scale}
+A \link[tibble]{tibble} with one row per scale (and per subscale
+under \code{include_subscales = TRUE}) and columns \code{Scale}
 (the scale's canonical display name, as the instrument's keying table spells
 it), \code{camelCase} (the stem that names the scale's column in the matching
 \verb{score_*()} output, read from the same keying-table row), \code{nItems}
