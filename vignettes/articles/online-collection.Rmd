@@ -209,8 +209,8 @@ The page shows its screens in this order:
 
 Under a random order, each instrument's items are shuffled among that
 instrument's items only. `read_form_responses()` reads the file the page
-saves, and the row a store receives, whose rows hold the answers to all the
-instruments. The file has this shape:
+saves, and a store's CSV download of its rows. Each row holds the answers
+to all the instruments. The file has this shape:
 
 * The item columns form one group per instrument, the columns of each group
   side by side, and each group holds one stem. The optional lead columns and
