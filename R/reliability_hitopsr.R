@@ -3,7 +3,8 @@
 #' Compute per-scale internal-consistency reliability — Cronbach's alpha and
 #' McDonald's omega — for the HiTOP Self-Report (405 items). Reliability is
 #' estimated on the reverse-keyed item responses for each of the scales that
-#' [score_hitopsr()] outputs.
+#' [score_hitopsr()] outputs and, with `include_subscales = TRUE`, for each of
+#' its 17 subscales (fewer under a `module`).
 #'
 #' @param data A data frame containing the HiTOP-SR items (numerically coded):
 #'   all 405 of them, or, when `module` is supplied, that module's items.
@@ -60,6 +61,12 @@
 #'   with `layout = "printed"` and no module, a module with no `item_order`,
 #'   or an `item_order` that is not a permutation of the module's items is an
 #'   error. (default = `"instrument"`)
+#' @param include_subscales A logical. If `TRUE`, one row per subscale in
+#'   [hitopsr_subscales] follows the scale rows, in that table's row order.
+#'   A subscale row's `Scale` is the subscale's name (`Subscale` in
+#'   [hitopsr_subscales]), and its `camelCase` and `nItems` come from the same
+#'   row. With a `module`, only the subscales whose parent scale is in the
+#'   module get a row. (default = `FALSE`)
 #' @param subset Deprecated. The former name of `module`; supplying it warns.
 #'   Supplying both `module` and `subset` is an error. (default = `NULL`)
 #'
@@ -69,7 +76,8 @@
 #'   non-converging CFA or an uninstalled \pkg{lavaan}) is returned as `NA`
 #'   rather than aborting the call.
 #'
-#' @return A \link[tibble]{tibble} with one row per scale and columns `Scale`
+#' @return A \link[tibble]{tibble} with one row per scale (and per subscale
+#'   under `include_subscales = TRUE`) and columns `Scale`
 #'   (the scale's canonical display name, as the instrument's keying table spells
 #'   it), `camelCase` (the stem that names the scale's column in the matching
 #'   `score_*()` output, read from the same keying-table row), `nItems`
@@ -104,15 +112,17 @@ reliability_hitopsr <- function(
   omega = TRUE,
   module = NULL,
   layout = c("instrument", "printed"),
+  include_subscales = FALSE,
   subset = NULL
 ) {
   # rlang's matcher, not match.arg(): its refusal names `layout` and both
   # permitted values and blames this call, where match.arg()'s blames itself.
   layout <- rlang::arg_match(layout)
   module <- resolve_module_arg(module, subset)
+  validate_flag(include_subscales, arg = "include_subscales")
   ## Same three instrument-resolved inputs score_hitopsr() uses, remapped to
   ## module-column positions when a `module` is supplied.
-  inputs <- hitopsr_engine_inputs(module)
+  inputs <- hitopsr_engine_inputs(module, include_subscales)
   ## A missing or NULL `items` takes the module's `columns` attribute, or
   ## aborts saying to pass `items`.
   items <- module_column_items(missing(items), if (!missing(items)) items,

@@ -183,6 +183,21 @@ test_that("label_hitopsr(target = 'scales') labels score_hitopsr()'s default out
   )
 })
 
+test_that("label_hitopsr(target = 'scales') labels all 17 subscale columns", {
+  for (prefix in c("hsr_", "sr.")) {
+    scored <- score_hitopsr(sim_hitopsr, items = 1:405, prefix = prefix,
+                            include_subscales = TRUE, append = FALSE)
+    labeled <- label_hitopsr(scored, target = "scales", prefix = prefix)
+    sub_cols <- paste0(prefix, hitopsr_subscales$camelCase)
+    expect_identical(
+      vapply(labeled[sub_cols], function(col) attr(col, "label"), character(1),
+             USE.NAMES = FALSE),
+      hitopsr_subscales$Subscale,
+      info = prefix
+    )
+  }
+})
+
 test_that("label_hitopbr() labels ku_hitopbr items 1, 10 and 45 with no prefix given", {
   labeled <- label_hitopbr(ku_hitopbr, target = "items")
   for (n in c(1, 10, 45)) {

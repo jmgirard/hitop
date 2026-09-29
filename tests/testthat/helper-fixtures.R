@@ -292,3 +292,42 @@ squashed_warning <- function(caught, i = 1L) {
 sentence_pos <- function(haystack, needle) {
   regexpr(needle, haystack, fixed = TRUE)[[1]]
 }
+
+# HiTOP-SR subscale item numbers (M141), used by test-score_hitopsr.R and
+# test-reliability.R. Transcribed from HiTOP-SR-Final.xlsx, sheet "HiTOP-SR
+# items by scale" (cairn/references/sources/). That sheet lists each subscale's
+# items by their item-pool IDs (shown after each line), not by HiTOP-SR number,
+# so each item was placed at its HiTOP-SR number by its item text. These
+# numbers are never read from hitopsr_subscales; test-score_hitopsr.R compares
+# the two.
+subscale_key <- list(
+  affectiveLability    = c(200, 204, 231),           # HiTOP_570-572
+  angryHostility       = c(26, 111, 125, 263),       # Ext_89, 193, 323, 514
+  anhedonia            = c(64, 300, 380),            # HiTOP_8, 173, 508
+  animalInsectPhobia   = c(61, 102, 323, 401, 403),  # HiTOP_181-185
+  anxiousWorry         = c(194, 224, 304),           # HiTOP_187, 190, 191
+  bloodInjectionPhobia = c(222, 232, 331),           # HiTOP_200-202
+  cynicism             = c(8, 181, 261, 352),        # Ext_79, 198, 279, 448
+  deceitfulness        = c(7, 75, 226, 377),         # Ext_303, 395, 432, 444
+  delusions            = c(91, 116, 130, 165, 223),  # HiTOP_527, 531-534
+  depressedMood        = c(11, 100, 170, 365),       # exp8, 9, 12, 14
+  hallucinations       = c(3, 51, 221, 259, 280, 385), # HiTOP_594-596, 601, 606, 608
+  irritability         = c(106, 135, 214, 270),      # exp4-7
+  lassitude            = c(233, 367, 386),           # exp17-19
+  manipulativeness     = c(14, 175, 303, 327),       # Ext_22, 38, 101, 262
+  shameGuilt           = c(20, 343, 394),            # HiTOP_333, 334, 336
+  situationalPhobias   = c(161, 173, 254, 347),      # HiTOP_339-342
+  suspiciousness       = c(21, 241, 251, 264)        # Ext_58, HiTOP_56, 661, 662
+)
+
+# The parent scale of each subscale, from the same sheet's Scale column.
+subscale_parent <- list(
+  distressDysphoria   = c("anhedonia", "anxiousWorry", "depressedMood",
+                          "lassitude", "shameGuilt"),
+  dishonesty          = c("deceitfulness", "manipulativeness"),
+  emotionality        = c("affectiveLability", "angryHostility", "irritability"),
+  mistrust            = c("cynicism", "suspiciousness"),
+  realityDistortion   = c("delusions", "hallucinations"),
+  specificPhobiaIndex = c("animalInsectPhobia", "bloodInjectionPhobia",
+                          "situationalPhobias")
+)

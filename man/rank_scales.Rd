@@ -67,8 +67,7 @@ the original data as a tibble.
 \details{
 Ranking is performed row-wise using \code{order()} on the selected
 columns. Ties are resolved by the original column order (the default
-behavior of \code{order}), which is alphabetical if using the package's
-scoring functions. Missing values are placed last by \code{order()} and
+behavior of \code{order}). Missing values are placed last by \code{order()} and
 will be included only if there are fewer than \code{top} non-missing values
 in a row.
 

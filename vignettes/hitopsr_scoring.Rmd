@@ -86,6 +86,22 @@ scores <- score_hitopsr(
 scores
 ```
 
+## Subscales
+
+Six HiTOP-SR scales have subscales, 17 in all, which the `hitopsr_subscales` table lists. Set `include_subscales = TRUE` to score them too. Each subscale column is named for the subscale, such as `hsr_cynicism`, and the subscale columns come after the 76 scale columns.
+
+```{r}
+scores <- score_hitopsr(
+  data = ku_hitopsr,
+  items = sprintf("hsr_%03d", 1:405),
+  include_subscales = TRUE,
+  append = FALSE
+)
+scores[paste0("hsr_", hitopsr_subscales$camelCase)]
+```
+
+`reliability_hitopsr()` takes the same argument and then adds one row per subscale after the scale rows.
+
 ## Simple Standard Errors (deprecated)
 
 The `calc_se` argument is **deprecated**. It, and the `_se` columns it adds, will be removed in a future release, and a call that passes `calc_se = TRUE` now warns. Use `interval_hitopsr()` instead, shown under [Confidence Intervals](#confidence-intervals) below.

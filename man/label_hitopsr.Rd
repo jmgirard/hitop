@@ -25,7 +25,10 @@ out of range, whatever its padding. That warning is raised whether or not
 any other column matched. Scale
 columns are expected as the prefix followed by the scale's \code{camelCase}
 name, which is what \code{\link[=score_hitopsr]{score_hitopsr()}} writes under its own default
-\code{prefix}. (default = \code{"hsr_"})}
+\code{prefix}. Subscale columns, which \code{\link[=score_hitopsr]{score_hitopsr()}} writes under
+\code{include_subscales = TRUE}, are expected the same way, as the prefix
+followed by the subscale's \code{camelCase} name in \link{hitopsr_subscales}, and
+are labelled with its \code{Subscale} name. (default = \code{"hsr_"})}
 }
 \value{
 A data frame with labeled columns. If no column matched the expected

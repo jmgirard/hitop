@@ -304,3 +304,67 @@ test_that("the descriptor-consistency error also blames the exported wrapper", {
     "reliability_hitopsr"
   )
 })
+
+# --- subscale reliability (M141) ---------------------------------------------
+# subscale_key and subscale_parent live in helper-fixtures.R.
+
+test_that("include_subscales = TRUE adds one row per subscale after the scale rows", {
+  base <- reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE)
+  rel <- reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE,
+                             include_subscales = TRUE)
+
+  # Default: the 76 scale rows only.
+  expect_equal(base$Scale, hitopsr_scales$Scale)
+  # With TRUE: the same scale rows, then the subscale rows in table order.
+  n <- nrow(hitopsr_scales)
+  expect_equal(nrow(rel), n + nrow(hitopsr_subscales))
+  expect_equal(rel[seq_len(n), ], base)
+  subs <- rel[-seq_len(n), ]
+  expect_equal(subs$Scale, hitopsr_subscales$Subscale)
+  expect_equal(subs$camelCase, hitopsr_subscales$camelCase)
+  # expect_identical(), not expect_equal(): nItems must stay an integer.
+  expect_identical(subs$nItems, hitopsr_subscales$nItems)
+  expect_equal(subs$camelCase, names(subscale_key))
+
+  # Alpha for every subscale equals calc_alpha() on the items the hardcoded
+  # numbers select. No subscale holds the one reverse-keyed item (HSR 310).
+  stopifnot(!310 %in% unlist(subscale_key))
+  di <- as.data.frame(lapply(sim_hitopsr[1:405], as.numeric))
+  exp_alpha <- vapply(subscale_key, function(x) calc_alpha(di[x]), numeric(1))
+  expect_equal(subs$alpha, unname(exp_alpha))
+})
+
+test_that("under a module, include_subscales adds the rows of its scales' subscales", {
+  full <- reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE,
+                              include_subscales = TRUE)
+  probes <- list(
+    list(scales = c("mistrust", "dishonesty", "agoraphobia"),
+         subs = c(subscale_parent$dishonesty, subscale_parent$mistrust)),
+    list(scales = "emotionality", subs = subscale_parent$emotionality),
+    list(scales = c("agoraphobia", "appetiteLoss"), subs = character(0))
+  )
+  for (p in probes) {
+    m <- hitop_module("hitopsr", p$scales)
+    part <- reliability_hitopsr(sim_hitopsr[m$items], items = seq_len(m$nItems),
+                                module = m, omega = FALSE,
+                                include_subscales = TRUE)
+    n <- length(m$camelCase)
+    expect_equal(part$camelCase[seq_len(n)],
+                 hitopsr_scales$camelCase[hitopsr_scales$camelCase %in% m$camelCase])
+    expect_setequal(part$camelCase[-seq_len(n)], p$subs)
+    expect_equal(part, full[match(part$camelCase, full$camelCase), ],
+                 ignore_attr = "row.names", info = toString(p$scales))
+  }
+})
+
+test_that("reliability_hitopsr() refuses an include_subscales that is not TRUE or FALSE", {
+  # 1 is the value that once got past an isTRUE() check.
+  for (bad in list(NA, "yes", c(TRUE, TRUE), 1)) {
+    expect_error(
+      reliability_hitopsr(sim_hitopsr, items = 1:405, omega = FALSE,
+                          include_subscales = bad),
+      "include_subscales.*must be",
+      class = "rlang_error"
+    )
+  }
+})

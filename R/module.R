@@ -265,26 +265,80 @@ module_engine_inputs <- function(
 # item's number is already its position among the 405 supplied columns. `call`
 # reaches the exported wrapper one frame up, so module_engine_inputs()'s aborts
 # blame score_hitopsr()/reliability_hitopsr() rather than this helper.
-hitopsr_engine_inputs <- function(module, call = rlang::caller_env()) {
+#
+# With `include_subscales = TRUE`, the rows of hitopsr_subscales follow the
+# scales in every per-scale element, in that table's row order. Under a module,
+# only the subscales whose parent scale the module holds are added.
+hitopsr_engine_inputs <- function(module, include_subscales = FALSE,
+                                  call = rlang::caller_env()) {
   if (is.null(module)) {
-    return(list(
+    inputs <- list(
       n_items = 405,
       reverse_items =
         hitopsr_items[hitopsr_items$Reverse == TRUE, "HSR", drop = TRUE],
       items_scales = hitopsr_scales$itemNumbers,
       scale_names = hitopsr_scales$Scale,
       scale_stems = hitopsr_scales$camelCase
-    ))
+    )
+  } else {
+    inputs <- module_engine_inputs(
+      module = module,
+      instrument = "hitopsr",
+      items = hitopsr_items,
+      scales = hitopsr_scales,
+      item_col = "HSR",
+      call = call
+    )
   }
 
-  module_engine_inputs(
-    module = module,
-    instrument = "hitopsr",
-    items = hitopsr_items,
-    scales = hitopsr_scales,
-    item_col = "HSR",
-    call = call
-  )
+  if (include_subscales) {
+    inputs <- add_hitopsr_subscales(inputs, module, call = call)
+  }
+  inputs
+}
+
+# Internal Helper: append the HiTOP-SR subscales to the engine inputs
+#
+# A subscale's parent is named by its display name in `hitopsr_subscales$Scale`
+# and a module holds scale stems, so the parent is matched through
+# hitopsr_scales. Under a module, item numbers become positions among the
+# module's columns, as module_engine_inputs() does for the scales. `subs` is an
+# argument only so that tests can pass a faulty table.
+add_hitopsr_subscales <- function(inputs, module, subs = hitopsr_subscales,
+                                  call = rlang::caller_env()) {
+  numbers <- subs$itemNumbers
+  if (!is.null(module)) {
+    parent_stem <- hitopsr_scales$camelCase[match(subs$Scale, hitopsr_scales$Scale)]
+    # A parent name missing from hitopsr_scales would drop its subscales from
+    # every module silently, so it stops here instead.
+    if (anyNA(parent_stem)) {
+      cli::cli_abort(
+        "Internal error: a HiTOP-SR subscale's parent scale name is not in {.code hitopsr_scales}.",
+        .internal = TRUE,
+        call = call
+      )
+    }
+    kept <- parent_stem %in% module$camelCase
+    subs <- subs[kept, , drop = FALSE]
+    numbers <- lapply(subs$itemNumbers, function(x) match(x, module$items))
+    # Every subscale item lies in its parent scale, so a kept subscale's items
+    # are all among the module's. A keying change that broke this would
+    # silently score the subscale from its remaining items (or as NA under
+    # `missing = "complete"`), so it stops here instead.
+    if (anyNA(unlist(numbers))) {
+      cli::cli_abort(
+        "Internal error: a HiTOP-SR subscale has an item outside its parent scale.",
+        .internal = TRUE,
+        call = call
+      )
+    }
+  }
+  names(numbers) <- subs$camelCase
+
+  inputs$items_scales <- c(inputs$items_scales, numbers)
+  inputs$scale_names <- c(inputs$scale_names, subs$Subscale)
+  inputs$scale_stems <- c(inputs$scale_stems, subs$camelCase)
+  inputs
 }
 
 # Internal Helper: the caller's `items` put into instrument order for `layout`

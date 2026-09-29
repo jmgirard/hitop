@@ -162,3 +162,228 @@ test_that("score_hitopsr(module=) takes column names as well as positions", {
   by_name <- score_hitopsr(dat, items = names(dat), module = s, append = FALSE)
   expect_equal(by_name, by_pos)
 })
+
+# --- subscale scoring (M141) -------------------------------------------------
+# subscale_key and subscale_parent live in helper-fixtures.R.
+
+hsr_names <- function(n) sprintf("hsr_%03d", n)
+
+# sim_hitopsr with one item of every subscale set to NA in a different row, so
+# every subscale has a missing item somewhere and the two `missing` modes
+# differ on every subscale column.
+holed_subscales <- function() {
+  dat <- sim_hitopsr
+  for (k in seq_along(subscale_key)) {
+    dat[k, subscale_key[[k]][[1]]] <- NA_integer_
+  }
+  dat
+}
+
+test_that("include_subscales = TRUE adds the 17 subscale columns after the scale columns", {
+  sub_cols <- paste0("hsr_", names(subscale_key))
+  dat <- holed_subscales()
+  for (mode in c("available", "complete")) {
+    base <- score_hitopsr(dat, items = 1:405, missing = mode, append = FALSE)
+    with_sub <- score_hitopsr(dat, items = 1:405, missing = mode,
+                              include_subscales = TRUE, append = FALSE)
+
+    # Default: no subscale column under any prefix-plus-stem name.
+    expect_false(any(sub_cols %in% names(base)), info = mode)
+    # With TRUE: the scale columns unchanged and first, then one column per
+    # subscale in hitopsr_subscales row order (alphabetical by Subscale, which
+    # subscale_key also follows).
+    expect_equal(names(with_sub), c(names(base), sub_cols), info = mode)
+    expect_equal(with_sub[names(base)], base, info = mode)
+
+    # Under calc_se, the subscale _se columns follow the scale _se columns.
+    base_se <- hush_se(score_hitopsr(dat, items = 1:405, missing = mode,
+                                     calc_se = TRUE, append = FALSE))
+    sub_se <- hush_se(score_hitopsr(dat, items = 1:405, missing = mode,
+                                    calc_se = TRUE, include_subscales = TRUE,
+                                    append = FALSE))
+    scale_cols <- paste0("hsr_", hitopsr_scales$camelCase)
+    expect_equal(
+      names(sub_se),
+      c(scale_cols, sub_cols, paste0(scale_cols, "_se"), paste0(sub_cols, "_se")),
+      info = mode
+    )
+    expect_equal(sub_se[names(base_se)], base_se, info = mode)
+  }
+})
+
+test_that("subscale scores match hand-computed values under both missing modes", {
+  # Two rows, every item 1 except the ones set here. Cynicism is items
+  # 8, 181, 261, 352 and Hallucinations 3, 51, 221, 259, 280, 385.
+  dat <- as.data.frame(matrix(1L, nrow = 2, ncol = 405))
+  names(dat) <- hsr_names(1:405)
+  dat[1, hsr_names(c(8, 181, 261, 352))] <- c(1L, 2L, 3L, 4L)
+  dat[2, hsr_names(c(8, 181, 261, 352))] <- c(4L, NA, 2L, 1L)
+  dat[1, hsr_names(c(3, 51, 221, 259, 280, 385))] <- c(1L, 2L, 1L, 2L, 1L, 2L)
+  dat[2, hsr_names(c(3, 51, 221, 259, 280, 385))] <- c(4L, 4L, 3L, 3L, 2L, 1L)
+
+  avail <- score_hitopsr(dat, items = 1:405, include_subscales = TRUE,
+                         append = FALSE)
+  compl <- score_hitopsr(dat, items = 1:405, include_subscales = TRUE,
+                         missing = "complete", append = FALSE)
+
+  # Cynicism row 1: (1 + 2 + 3 + 4) / 4 = 10 / 4 = 2.5.
+  # Row 2, available: (4 + 2 + 1) / 3 = 7 / 3. Complete: NA (item 181 missing).
+  expect_equal(avail$hsr_cynicism, c(2.5, 7 / 3))
+  expect_equal(compl$hsr_cynicism, c(2.5, NA))
+  # Hallucinations row 1: (1 + 2 + 1 + 2 + 1 + 2) / 6 = 9 / 6 = 1.5.
+  # Row 2: (4 + 4 + 3 + 3 + 2 + 1) / 6 = 17 / 6, in both modes (no NA).
+  expect_equal(avail$hsr_hallucinations, c(1.5, 17 / 6))
+  expect_equal(compl$hsr_hallucinations, c(1.5, 17 / 6))
+})
+
+test_that("all 17 subscale scores equal a recomputation from hardcoded item numbers", {
+  dat <- holed_subscales()
+  for (mode in c("available", "complete")) {
+    out <- score_hitopsr(dat, items = hsr_names(1:405), missing = mode,
+                         include_subscales = TRUE, append = FALSE)
+    for (s in names(subscale_key)) {
+      manual <- rowMeans(dat[, subscale_key[[s]]],
+                         na.rm = identical(mode, "available"))
+      expect_equal(out[[paste0("hsr_", s)]], manual, info = paste(mode, s))
+    }
+  }
+
+  # The hardcoded numbers equal the shipped table's, subscale by subscale.
+  expect_equal(hitopsr_subscales$camelCase, names(subscale_key))
+  expect_equal(
+    lapply(unname(hitopsr_subscales$itemNumbers), as.numeric),
+    lapply(unname(subscale_key), sort)
+  )
+})
+
+test_that("under a module, include_subscales scores exactly the subscales of its scales", {
+  dat <- holed_subscales()
+  full <- lapply(
+    c(available = "available", complete = "complete"),
+    function(mode) score_hitopsr(dat, items = 1:405, missing = mode,
+                                 include_subscales = TRUE, append = FALSE)
+  )
+
+  probes <- c(
+    # One module per parent scale.
+    lapply(names(subscale_parent), function(p) {
+      list(scales = p, subs = subscale_parent[[p]])
+    }),
+    list(
+      # Two parent scales plus a scale with no subscales.
+      list(scales = c("mistrust", "dishonesty", "agoraphobia"),
+           subs = c(subscale_parent$dishonesty, subscale_parent$mistrust)),
+      # No parent scale at all.
+      list(scales = c("agoraphobia", "appetiteLoss"), subs = character(0))
+    )
+  )
+
+  for (p in probes) {
+    m <- hitop_module("hitopsr", p$scales)
+    for (mode in names(full)) {
+      out <- score_hitopsr(dat[m$items], items = seq_len(m$nItems),
+                           module = m, missing = mode,
+                           include_subscales = TRUE, append = FALSE)
+      sub_cols <- setdiff(names(out), paste0("hsr_", hitopsr_scales$camelCase))
+      # sprintf(), not paste0(): paste0("hsr_", character(0)) is "hsr_".
+      expect_setequal(sub_cols, sprintf("hsr_%s", p$subs))
+      expect_equal(out[sub_cols], full[[mode]][sub_cols],
+                   info = paste(mode, toString(p$scales)))
+    }
+  }
+})
+
+test_that("include_subscales must be a single TRUE or FALSE", {
+  # 1 is the value that once got past an isTRUE() check.
+  for (bad in list(NA, "yes", c(TRUE, TRUE), 1)) {
+    expect_error(
+      score_hitopsr(sim_hitopsr, items = 1:405, include_subscales = bad),
+      "include_subscales.*must be",
+      class = "rlang_error"
+    )
+  }
+})
+
+test_that("include_subscales = TRUE refuses a data column named as a subscale column", {
+  for (s in names(subscale_key)) {
+    dat <- sim_hitopsr
+    dat[[paste0("hsr_", s)]] <- 0
+    expect_error(
+      score_hitopsr(dat, items = 1:405, include_subscales = TRUE),
+      class = "hitop_append_collision"
+    )
+    dat <- sim_hitopsr
+    dat[[paste0("hsr_", s, "_se")]] <- 0
+    expect_error(
+      score_hitopsr(dat, items = 1:405, include_subscales = TRUE,
+                    calc_se = TRUE),
+      class = "hitop_append_collision"
+    )
+  }
+
+  # With the default, a column of that name is not refused and is kept as is.
+  dat <- sim_hitopsr
+  dat$hsr_cynicism <- 0
+  out <- score_hitopsr(dat, items = 1:405)
+  expect_identical(out$hsr_cynicism, rep(0, nrow(dat)))
+})
+
+test_that("subscales score from the right items under layout = 'printed'", {
+  # Under "printed" the columns arrive in item_order, and the subscale item
+  # numbers go through a second remap. A shuffled order catches a remap that
+  # reads positions from item_order instead of the module's items.
+  dat <- holed_subscales()
+  m <- hitop_module("hitopsr", c("mistrust", "emotionality", "agoraphobia"))
+  set.seed(141)
+  attr(m, "item_order") <- sample(m$items)
+  printed <- dat[match(attr(m, "item_order"), seq_len(405))]
+  sub_cols <- sprintf("hsr_%s", c(subscale_parent$emotionality,
+                                  subscale_parent$mistrust))
+  for (mode in c("available", "complete")) {
+    full <- score_hitopsr(dat, items = 1:405, missing = mode,
+                          include_subscales = TRUE, append = FALSE)
+    out <- score_hitopsr(printed, items = seq_along(printed), module = m,
+                         layout = "printed", missing = mode,
+                         include_subscales = TRUE, append = FALSE)
+    expect_setequal(setdiff(names(out), paste0("hsr_", m$camelCase)), sub_cols)
+    expect_equal(out[sub_cols], full[sub_cols], info = mode)
+  }
+
+  rel_full <- reliability_hitopsr(dat, items = 1:405, omega = FALSE,
+                                  include_subscales = TRUE)
+  rel <- reliability_hitopsr(printed, items = seq_along(printed), module = m,
+                             layout = "printed", omega = FALSE,
+                             include_subscales = TRUE)
+  subs <- rel[rel$camelCase %in% names(subscale_key), ]
+  expect_setequal(subs$camelCase, sub("^hsr_", "", sub_cols))
+  expect_equal(subs, rel_full[match(subs$camelCase, rel_full$camelCase), ],
+               ignore_attr = "row.names")
+})
+
+test_that("a subscale keying fault under a module is an internal error", {
+  m <- hitop_module("hitopsr", "mistrust")
+  inputs <- hitopsr_engine_inputs(m)
+
+  # A parent name that no longer matches hitopsr_scales would drop the
+  # subscale silently, so it stops instead.
+  renamed <- hitopsr_subscales
+  renamed$Scale[renamed$camelCase == "cynicism"] <- "Mistrust (renamed)"
+  expect_error(
+    add_hitopsr_subscales(inputs, m, subs = renamed),
+    "parent scale name",
+    class = "rlang_error"
+  )
+
+  # A subscale item outside its parent scale would be dropped from its score
+  # silently (or give NA under missing = "complete"), so it stops.
+  moved <- hitopsr_subscales
+  moved$itemNumbers[moved$camelCase == "cynicism"][[1]][[1]] <- 1
+  expect_error(
+    add_hitopsr_subscales(inputs, m, subs = moved),
+    "outside its parent scale",
+    class = "rlang_error"
+  )
+
+  # The shipped table passes both checks.
+  expect_no_error(add_hitopsr_subscales(inputs, m))
+})
