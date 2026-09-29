@@ -326,3 +326,62 @@ test_that("include_subscales = TRUE refuses a data column named as a subscale co
   out <- score_hitopsr(dat, items = 1:405)
   expect_identical(out$hsr_cynicism, rep(0, nrow(dat)))
 })
+
+test_that("subscales score from the right items under layout = 'printed'", {
+  # Under "printed" the columns arrive in item_order, and the subscale item
+  # numbers go through a second remap. A shuffled order catches a remap that
+  # reads positions from item_order instead of the module's items.
+  dat <- holed_subscales()
+  m <- hitop_module("hitopsr", c("mistrust", "emotionality", "agoraphobia"))
+  set.seed(141)
+  attr(m, "item_order") <- sample(m$items)
+  printed <- dat[match(attr(m, "item_order"), seq_len(405))]
+  sub_cols <- sprintf("hsr_%s", c(subscale_parent$emotionality,
+                                  subscale_parent$mistrust))
+  for (mode in c("available", "complete")) {
+    full <- score_hitopsr(dat, items = 1:405, missing = mode,
+                          include_subscales = TRUE, append = FALSE)
+    out <- score_hitopsr(printed, items = seq_along(printed), module = m,
+                         layout = "printed", missing = mode,
+                         include_subscales = TRUE, append = FALSE)
+    expect_setequal(setdiff(names(out), paste0("hsr_", m$camelCase)), sub_cols)
+    expect_equal(out[sub_cols], full[sub_cols], info = mode)
+  }
+
+  rel_full <- reliability_hitopsr(dat, items = 1:405, omega = FALSE,
+                                  include_subscales = TRUE)
+  rel <- reliability_hitopsr(printed, items = seq_along(printed), module = m,
+                             layout = "printed", omega = FALSE,
+                             include_subscales = TRUE)
+  subs <- rel[rel$camelCase %in% names(subscale_key), ]
+  expect_setequal(subs$camelCase, sub("^hsr_", "", sub_cols))
+  expect_equal(subs, rel_full[match(subs$camelCase, rel_full$camelCase), ],
+               ignore_attr = "row.names")
+})
+
+test_that("a subscale keying fault under a module is an internal error", {
+  m <- hitop_module("hitopsr", "mistrust")
+  inputs <- hitopsr_engine_inputs(m)
+
+  # A parent name that no longer matches hitopsr_scales would drop the
+  # subscale silently, so it stops instead.
+  renamed <- hitopsr_subscales
+  renamed$Scale[renamed$camelCase == "cynicism"] <- "Mistrust (renamed)"
+  expect_error(
+    add_hitopsr_subscales(inputs, m, subs = renamed),
+    "parent scale name",
+    class = "rlang_error"
+  )
+
+  # A subscale item outside its parent scale would score NA, so it stops.
+  moved <- hitopsr_subscales
+  moved$itemNumbers[moved$camelCase == "cynicism"][[1]][[1]] <- 1
+  expect_error(
+    add_hitopsr_subscales(inputs, m, subs = moved),
+    "outside its parent scale",
+    class = "rlang_error"
+  )
+
+  # The shipped table passes both checks.
+  expect_no_error(add_hitopsr_subscales(inputs, m))
+})

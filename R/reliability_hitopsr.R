@@ -3,7 +3,8 @@
 #' Compute per-scale internal-consistency reliability — Cronbach's alpha and
 #' McDonald's omega — for the HiTOP Self-Report (405 items). Reliability is
 #' estimated on the reverse-keyed item responses for each of the scales that
-#' [score_hitopsr()] outputs.
+#' [score_hitopsr()] outputs and, with `include_subscales = TRUE`, for each of
+#' its 17 subscales.
 #'
 #' @param data A data frame containing the HiTOP-SR items (numerically coded):
 #'   all 405 of them, or, when `module` is supplied, that module's items.

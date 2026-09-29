@@ -46,7 +46,7 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 - [x] T3: Extend `label_hitopsr()` (`R/label_hitopsr.R:73`) to label subscale columns. Add the `interval_hitopsr()` subscale test. Rewrite the `interval_hitopsr()` Description and the `label_hitopsr()` `prefix` text (AC5).
 - [x] T4: Write roxygen for both arguments and run `document()`. Add the NEWS entry, which also says that the abbreviation `i =` for `items` no longer works (LESSONS, M043). Add the vignette call and the DESIGN signature lines. Run `check()` on the branch and on `main` and compare the notes (AC7).
 - [x] T5: Move the `calc_se = TRUE` block of the AC1 test inside the `missing` mode loop, so `_se` placement is asserted under both modes (review return 1).
-- [ ] T6: Review findings taken at the implement gate. Add a subscale test under a module with `layout = "printed"` and a shuffled `item_order` (O1). Name subscale columns in the `score_hitopsr()` title, `@return` and examples, and in the `reliability_hitopsr()` description (O3, O4, S9). Add a NEWS note that passing `subset` by position now fails (O6). Add a test that `i =` fails and `it =` works (S3). If a parent name does not match, make `add_hitopsr_subscales()` abort with `call` (O5, P1).
+- [x] T6: Review findings taken at the implement gate. Add a subscale test under a module with `layout = "printed"` and a shuffled `item_order` (O1). Name subscale columns in the `score_hitopsr()` title, `@return` and examples, and in the `reliability_hitopsr()` description (O3, O4, S9). Add a NEWS note that passing `subset` by position now fails (O6). Add a test that `i =` fails and `it =` works (S3). If a parent name does not match, make `add_hitopsr_subscales()` abort with `call` (O5, P1).
 
 ## Work log
 
@@ -67,6 +67,7 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 - 2026-09-29: review return 1 (defect). AC1 fails as written, because the `calc_se = TRUE` block of `test-score_hitopsr.R:182` asserts `_se` placement under `missing = "available"` only, not under both modes. AC2 to AC7 and the consistency gate pass. The next pass fixes the test and can take up the 13 findings pending triage in the Review section. Status set to in-progress.
 - 2026-09-29: implement resumed. Gate chose the AC1 fix plus the small in-scope findings over the AC1 fix alone. T5 and T6 added (minor amendment, no criterion changed).
 - 2026-09-29: T5 done. The `calc_se` block of the AC1 test now runs inside the `missing` mode loop. The `score_hitopsr` test file passes.
+- 2026-09-29: T6 done. New tests cover subscales under a shuffled printed-order module, the `i =` and `it =` pins, and two keying-fault guards. A planted remap from `item_order` turned the printed-order test red in 3 places. `add_hitopsr_subscales()` now aborts on an unmatched parent name and passes `call`. Help and NEWS text updated. `devtools::test()` 1035 tests, 0 failures.
 
 ## Decisions
 

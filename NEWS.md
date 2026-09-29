@@ -11,7 +11,10 @@
   the subscale columns, and `interval_hitopsr()` converts them. A call that
   abbreviates `items` as `i =` now fails with an error that the argument
   "matches multiple formal arguments", because `i` also starts
-  `include_subscales`. Write `items =` in full.
+  `include_subscales`. Write `items =` in full. A call that passes the
+  deprecated `subset` by position now fails, because `include_subscales`
+  takes that position and accepts only `TRUE` or `FALSE`. Write `module =`
+  instead.
 
 * **hitop-form can give two or three instruments in one session.** A study
   link's `instruments` field lists them in order, such as

@@ -1,6 +1,7 @@
 #' Score the HiTOP-SR Instrument
 #'
-#' Create a data frame with scores on all the HiTOP-SR scales.
+#' Create a data frame with scores on all the HiTOP-SR scales and, with
+#' `include_subscales = TRUE`, on its 17 subscales.
 #'
 #' @param data A data frame containing the HiTOP-SR items (numerically coded):
 #'   all 405 of them, or, when `module` is supplied, that module's items.
@@ -102,12 +103,17 @@
 #'   An item column that cannot be read as numbers (see `items`) is an error
 #'   of class `hitop_nonnumeric_items`, raised before the collision check.
 #'
-#' @return A \link[tibble]{tibble} containing all scale scores and standard
-#'   errors (if requested) and all original `data` columns (if requested).
+#' @return A \link[tibble]{tibble} containing all scale scores, subscale scores
+#'   (if requested with `include_subscales`), standard errors (if requested)
+#'   and all original `data` columns (if requested).
 #'
 #' @examples
 #' # Score all HiTOP-SR scales from the simulated data
 #' score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
+#'
+#' # Score the 17 subscales too; their columns follow the 76 scale columns
+#' score_hitopsr(sim_hitopsr, items = 1:405, include_subscales = TRUE,
+#'               append = FALSE)
 #'
 #' # Score data collected with a two-scale module. Select the item columns
 #' # by name: `m$items` holds original HiTOP-SR numbers, which are column

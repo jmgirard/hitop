@@ -116,11 +116,13 @@ scored. (default = \code{FALSE})}
 Supplying both \code{module} and \code{subset} is an error. (default = \code{NULL})}
 }
 \value{
-A \link[tibble]{tibble} containing all scale scores and standard
-errors (if requested) and all original \code{data} columns (if requested).
+A \link[tibble]{tibble} containing all scale scores, subscale scores
+(if requested with \code{include_subscales}), standard errors (if requested)
+and all original \code{data} columns (if requested).
 }
 \description{
-Create a data frame with scores on all the HiTOP-SR scales.
+Create a data frame with scores on all the HiTOP-SR scales and, with
+\code{include_subscales = TRUE}, on its 17 subscales.
 }
 \details{
 For per-scale reliability estimates (Cronbach's alpha, McDonald's
@@ -139,6 +141,10 @@ of class \code{hitop_nonnumeric_items}, raised before the collision check.
 \examples{
 # Score all HiTOP-SR scales from the simulated data
 score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
+
+# Score the 17 subscales too; their columns follow the 76 scale columns
+score_hitopsr(sim_hitopsr, items = 1:405, include_subscales = TRUE,
+              append = FALSE)
 
 # Score data collected with a two-scale module. Select the item columns
 # by name: `m$items` holds original HiTOP-SR numbers, which are column

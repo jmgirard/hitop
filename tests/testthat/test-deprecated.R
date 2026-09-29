@@ -269,3 +269,23 @@ test_that("adding `module` leaves `mo` unambiguous even though `m` is not", {
   expect_equal(nm[startsWith(nm, "mo")], "module")
   expect_equal(nm[startsWith(nm, "mi")], "missing")
 })
+
+test_that("adding `include_subscales` leaves `it` unambiguous even though `i` is not", {
+  # Adding `include_subscales` made the abbreviation `i =` ambiguous with
+  # `items =`. `it` still resolves, and NEWS records the break; this pins both
+  # halves on both functions so neither changes unnoticed.
+  for (f in list(score_hitopsr, reliability_hitopsr)) {
+    nm <- names(formals(f))
+    expect_equal(sum(startsWith(nm, "i")), 2L)
+    expect_equal(nm[startsWith(nm, "it")], "items")
+    expect_equal(nm[startsWith(nm, "in")], "include_subscales")
+  }
+  expect_error(score_hitopsr(sim_hitopsr, i = 1:405),
+               "matches multiple formal arguments")
+  expect_error(reliability_hitopsr(sim_hitopsr, i = 1:405, omega = FALSE),
+               "matches multiple formal arguments")
+  expect_identical(
+    score_hitopsr(sim_hitopsr, it = 1:405, append = FALSE),
+    score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
+  )
+})
