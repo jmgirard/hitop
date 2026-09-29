@@ -142,3 +142,19 @@ Fresh runs on 2026-09-28 at hitop-form bd65327. Both branches contain origin/mai
 - AC7 (not ticked): hitop `devtools::check()` at a5ba9b01 gave 0 errors, 0 warnings and 0 notes, and its tests passed. `cairn_validate` exits 0 (25 advisory warnings). The README section and the article section still state the field, the order of screens, the file shape and scoring by stem. NEWS names the field and no longer says that the page cannot write the file. The hitop-form CI run does not exist yet, because the PR opens at step 8. The box stays open until that run is green.
 
 Consistency gate: `devtools::document()` gave no diff. `pkgdown::check_pkgdown()` found no problems. README.Rmd is not in the diff, and no file was added outside `tests/testthat/fixtures/`. No DESIGN principle changed, so `cairn_impact` was skipped.
+
+Second-pass findings from 3 fresh reviewers ([O] diff-bug, [S] blame-history, [S] prior-review), merged and ranked. The reviewers found F1, F2, F7, F8, F9 and F13 closed, and no acceptance criterion failing. Both PR-comment probes were empty.
+
+- G1: The article's `item_order` bullet (online-collection.Rmd:229) says each group is all of that instrument's item numbers. Under a list with a HiTOP-SR module, that group holds only the module's items. The page writes that now, and the reader accepts it.
+- G2: The rule "Deploy one sheet and script per form" is not stated for list links. Two links that list the same instruments in different orders and post to one sheet give rows whose `instrument` cell disagrees with the column groups. The README Sheet section and the article do not say so.
+- G3: F11 wording leftovers. The article at line 508 and the hitop-form README at lines 18, 128 and 149 name "the instrument" as one. So do playwright.config.js:5 ("one JSON file") and link.html:787 ("the export fetch").
+- G4: T12 probed F12 in Chromium only, and no test, README note or candidate row records that limit.
+- G5: The question-screen gaps row did not get a note that its trigger fired, although M140 edited the question-screen navigation. The Move up and Move down clause sits under a trigger that a builder edit does not fire.
+- G6: `parseLink()` accepts an array in the single `instrument` field (form.js:707), and the export check refuses it later without naming the field. The same code is on main.
+- G7: F17 rewrap incomplete. NEWS.md:14 is 87 characters and NEWS.md:67 is a short orphan line. form.js:14, README.md:441, the article near line 74 and the network.spec.js header have ragged lines. The link.html:635 comment reads "A field of another type than its control takes / is skipped".
+- G8: The part line, the file name of a list and the notice on the first start screen rest on the milestone-local M140-D1 only, with no D-entry.
+- G9: `checkInstruments()` quotes a refused entry in full, so a nested entry in a long `z` link fills the message.
+- G10: The builder words one fault two ways: "instrument 2" and menu names at build, "entry 2" and stems for an opened link.
+- G11: W1 waits a fixed 1000 ms before it asserts that no screen shows (instruments-walk.spec.js:84).
+- G12: `instruments` beside `instrument: null` is refused as a link with both fields.
+- G13: The notice on the first start screen only (F16) still meets the intent of b0c38a3 and 21a1d1c, which put it before the first answer.
