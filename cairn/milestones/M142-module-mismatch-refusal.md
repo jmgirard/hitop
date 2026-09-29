@@ -52,7 +52,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T7: Drop the NEWS Breaking sentence on `read_module()`. No AC2 to AC4 test backs it.
 - [x] T8: Fix the five review findings marked "fix now". The `unknown_scale` probe asserts on the text of the check itself. `module_unknown_scales()` ignores letter case. `module_subscales()` holds the subscale-item abort for both paths. The module help of the five other functions names the "cannot be rebuilt" refusal. The dead block of `test-module.R` goes. Then run `devtools::check()` and the purled article again.
 - [x] T9: Write the probes first: an object of class `hitop_module` or `hitop_subset` that is not a list, and an empty list of the class. `check_module_build()` refuses a module that is not a list under `hitop_module_mismatch` and names the five fields it lacks.
-- [ ] T10: Write the NEWS clause ledger in a section above Review. It sets each clause of the two NEWS entries against the AC2 to AC4 test that backs it. Cut each clause with no such test, the `(R)` clause among them.
+- [x] T10: Write the NEWS clause ledger in a section above Review. It sets each clause of the two NEWS entries against the AC2 to AC4 test that backs it. Cut each clause with no such test, the `(R)` clause among them.
 - [x] T11: Fix the three pass-2 "fix now" findings. The NEWS Breaking entry says that `write_module()` also compares `instrument`. The Body Focus test asserts on the check's own text. `item_ranges()` prints a range only for a run of whole numbers.
 - [ ] T12: Run `devtools::check()` and the purled modules article again.
 
@@ -89,10 +89,39 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: branch rewritten with `git filter-branch --index-filter` over origin/main..HEAD, removing `data-raw/HiTOP-DAT.qsf` from each commit. The final tree is unchanged. Commits up to a1190bce keep their hashes. New hashes: c82d1b54→5748537e, d1e0c035→438ee5a1, 948850dc→1a84ef8f, d94cbfc7→88ee3390, 9296fbea→a697c946, ba586169→90583b2f, ed3a0f25→cb6387eb, a08b280e→1fc95ac1, 7c3583cf→7408aa09. The auto-mode classifier refused the deletion of the local `refs/original` backup ref and the `.git/info/exclude` edit, so both wait for Jeff.
 - 2026-09-29: T9 done. `check_module_build()` refuses a module that is not a list under `hitop_module_mismatch` and names the five fields. Four probes join the six-function matrix: a character and an integer object of the two classes, an environment, and an empty list. Before the fix, the first two stopped with a base `$` error and the environment passed. Suite 0 failed, 0 errors.
 - 2026-09-29: T11 done. NEWS says that `write_module()` also compares `instrument`. The Body Focus test reads the check's own text. Plant: with no unknown-scale names, the new assertion fails and the old one still passed. `item_ranges()` ranges whole numbers only. Its new test failed before the fix on "1.5-3.5". Suite 0 failed, 0 errors.
+- 2026-09-29: T10 done. The NEWS clause ledger holds 21 clauses of the Breaking, New features and flag entries. One clause had no test and is cut: "with `(R)` on a reverse-keyed item". "Each row" now reads "Each subscale row", the rows the AC4 tests read. Six clauses are history, each with the test of the behavior that replaces it. Branch-added help and article text holds no `(R)` claim. Suite 0 failed, 0 errors.
 
 ## Decisions
 
 - M142-D1 (2026-09-29): `check_module_build()` also compares `instrument` with the build. `hitop_module()` reads an instrument name in any letter case, so a module whose `instrument` reads "HiTOPSR" rebuilt cleanly and then met the unclassed wrong-instrument refusal in the scoring functions, while the generators accepted it. Comparing the field puts every such module under `hitop_module_mismatch`, as AC1 promises for a module that does not match its build. It widens D-081(a)'s field list by one field, found by the claim audit; the class and the rollout stand.
+
+## NEWS clause ledger
+
+Written at T10 for AC6. Each clause of the two NEWS entries, and of the `include_subscales` flag entry, is set against the AC2 to AC4 test that backs it. "mm" is `tests/testthat/test-module-mismatch.R`, "dn" is `test-docx-numbering.R`, and "gd" is `test-generate_docx.R`. A history clause states the behavior on main that the branch changes. It asserts no current behavior, and the row names the test of the behavior that replaces it.
+
+| # | Entry | Clause | Backing test |
+|---|---|---|---|
+| 1 | Breaking | The six functions rebuild a `module` from its `instrument` and `scales` and stop with class `hitop_module_mismatch` when `items`, `nItems`, `camelCase` or `instrument` differ from the build | mm "every module function refuses a module edited by hand": item, `n_items`, `camel_case` and `instrument_case` probes over all six functions |
+| 2 | Breaking | ...or when it cannot be rebuilt, as when `instrument` names another instrument or a scale name is unknown | mm, same test: `instrument` and `unknown_scale` probes |
+| 3 | Breaking | The error names the items the module lacks or holds outside its scales | mm, same test: `lacks_*` and `extra` patterns. Also mm "the refusal names every lacking or extra item" |
+| 4 | Breaking | ...and each field that differs | mm, same test: "Its <field> field" patterns, with `absent` text for the other fields |
+| 5 | Breaking | Before, a lacking module scored the scale from its other items with no warning | History. Now refused: row 1 |
+| 6 | Breaking | With `include_subscales = TRUE` it stopped with an internal error | History. Now: mm "with subscales, scoring refuses a module lacking a parent-scale item, not as an internal error" |
+| 7 | Breaking | ...and the Word form printed `NA` in a scoring row | History. Now refused: row 1, `generate_docx_hitopsr` runner |
+| 8 | Breaking | A module naming Body Focus is now refused | mm "a module saved before a scale rename is refused", on the check's own text |
+| 9 | Breaking | ...where it scored with that scale dropped | History. Now refused: row 8 |
+| 10 | Breaking | Build the module again with `hitop_module()`, using the current scale names | Advice. mm "every module function accepts a module built by hitop_module()..." |
+| 11 | Breaking | The `hitop_subset()` class and double `items` are accepted as before | mm, same accept test: `hitop_subset` and `doubles` kinds, no error and no warning |
+| 12 | Breaking | `write_module()` already refused a module whose `items` or `nItems` differed | History. Now: row 1, `write_module` runner |
+| 13 | Breaking | It now also compares `camelCase` and `instrument`, and its refusals carry the class | mm "every module function refuses...": `camel_case` and `instrument_case` probes, `write_module` runner |
+| 14 | New features | `generate_docx_hitopsr()` accepts `include_subscales = TRUE` with a `module` | dn "a module form lists the subscales of the scales it holds" |
+| 15 | New features | The page lists the subscales of the scales the module holds, and no others | dn, same test, and dn "a module form holding no parent scale lists no subscale row" |
+| 16 | New features | ...sorted by name with the scale rows | dn, the same two tests and the two below: row names equal the sorted scale and subscale names |
+| 17 | New features | Each subscale row gives its items in the form's printed numbers | dn "module subscale rows follow a shuffled, renumbered form" and "...keep the original numbers under renumber = FALSE" |
+| 18 | New features | ~~with `(R)` on a reverse-keyed item~~ | None: no `hitopsr_subscales` item is reverse-keyed. Cut at T10 |
+| 19 | New features | The call used to stop with an error | History. Now: row 14 |
+| 20 | Flag | `generate_docx_hitopsr()` takes `include_subscales` as `TRUE` or `FALSE` only, as `score_hitopsr()` does | gd "generate_docx_hitopsr() takes include_subscales as TRUE or FALSE only": `1`, `1L`, `"yes"`, `NA`, `c(TRUE, FALSE)` |
+| 21 | Flag | A value such as `1`, which used to add the subscale rows to a full-instrument form, is now refused | gd, same test, with `module = NULL`. "Used to add" is history |
 
 ## Review
 

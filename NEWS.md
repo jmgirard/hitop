@@ -5,9 +5,9 @@
 * **A Word module form can carry subscale scoring rows.**
   `generate_docx_hitopsr()` accepts `include_subscales = TRUE` with a
   `module`. The scoring page then lists the subscales of the scales the
-  module holds, and no others, sorted by name with the scale rows. Each row
-  gives the items in the form's printed numbers, with `(R)` on a
-  reverse-keyed item. The call used to stop with an error.
+  module holds, and no others, sorted by name with the scale rows. Each
+  subscale row gives its items in the form's printed numbers. The call used
+  to stop with an error.
 
 * **HiTOP-SR scoring can include the 17 subscales.** `score_hitopsr()` and
   `reliability_hitopsr()` take `include_subscales = FALSE`. With `TRUE`,
