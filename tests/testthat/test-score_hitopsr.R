@@ -194,19 +194,21 @@ test_that("include_subscales = TRUE adds the 17 subscale columns after the scale
     # subscale_key also follows).
     expect_equal(names(with_sub), c(names(base), sub_cols), info = mode)
     expect_equal(with_sub[names(base)], base, info = mode)
-  }
 
-  # Under calc_se, the subscale _se columns follow the scale _se columns.
-  base_se <- hush_se(score_hitopsr(dat, items = 1:405, calc_se = TRUE,
-                                   append = FALSE))
-  sub_se <- hush_se(score_hitopsr(dat, items = 1:405, calc_se = TRUE,
-                                  include_subscales = TRUE, append = FALSE))
-  scale_cols <- paste0("hsr_", hitopsr_scales$camelCase)
-  expect_equal(
-    names(sub_se),
-    c(scale_cols, sub_cols, paste0(scale_cols, "_se"), paste0(sub_cols, "_se"))
-  )
-  expect_equal(sub_se[names(base_se)], base_se)
+    # Under calc_se, the subscale _se columns follow the scale _se columns.
+    base_se <- hush_se(score_hitopsr(dat, items = 1:405, missing = mode,
+                                     calc_se = TRUE, append = FALSE))
+    sub_se <- hush_se(score_hitopsr(dat, items = 1:405, missing = mode,
+                                    calc_se = TRUE, include_subscales = TRUE,
+                                    append = FALSE))
+    scale_cols <- paste0("hsr_", hitopsr_scales$camelCase)
+    expect_equal(
+      names(sub_se),
+      c(scale_cols, sub_cols, paste0(scale_cols, "_se"), paste0(sub_cols, "_se")),
+      info = mode
+    )
+    expect_equal(sub_se[names(base_se)], base_se, info = mode)
+  }
 })
 
 test_that("subscale scores match hand-computed values under both missing modes", {
