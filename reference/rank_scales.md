@@ -88,8 +88,7 @@ whose values are the comma-separated ranked scale names, one per row of
 Ranking is performed row-wise using
 [`order()`](https://rdrr.io/r/base/order.html) on the selected columns.
 Ties are resolved by the original column order (the default behavior of
-`order`), which is alphabetical if using the package's scoring
-functions. Missing values are placed last by
+`order`). Missing values are placed last by
 [`order()`](https://rdrr.io/r/base/order.html) and will be included only
 if there are fewer than `top` non-missing values in a row.
 

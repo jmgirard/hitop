@@ -5,7 +5,9 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Score the HiTOP-SR Instrument — score_hitopsr"><meta name="description" content="Create a data frame with scores on all the HiTOP-SR scales."><meta property="og:description" content="Create a data frame with scores on all the HiTOP-SR scales."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Score the HiTOP-SR Instrument — score_hitopsr"><meta name="description" content="Create a data frame with scores on all the HiTOP-SR scales and, with
+include_subscales = TRUE, on its 17 subscales (fewer under a module)."><meta property="og:description" content="Create a data frame with scores on all the HiTOP-SR scales and, with
+include_subscales = TRUE, on its 17 subscales (fewer under a module)."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -71,7 +73,8 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>Create a data frame with scores on all the HiTOP-SR scales.</p>
+    <p>Create a data frame with scores on all the HiTOP-SR scales and, with
+<code>include_subscales = TRUE</code>, on its 17 subscales (fewer under a <code>module</code>).</p>
     </div>
 
     <div class="section level2">
@@ -86,6 +89,7 @@
 <span>  append <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  module <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  layout <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"instrument"</span>, <span class="st">"printed"</span><span class="op">)</span>,</span>
+<span>  include_subscales <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  subset <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -196,6 +200,17 @@ instrument order through that attribute before scoring. A call with
 (default = <code>"instrument"</code>)</p></dd>
 
 
+<dt id="arg-include-subscales">include_subscales<a class="anchor" aria-label="anchor" href="#arg-include-subscales"></a></dt>
+<dd><p>A logical. If <code>TRUE</code>, the 17 subscales in
+<a href="hitopsr_subscales.html">hitopsr_subscales</a> are also scored, each as the mean of its items under
+the <code>missing</code> rule. Their columns are named <code>prefix</code> plus the subscale's
+<code>camelCase</code> name (for example <code>hsr_cynicism</code>) and follow the scale
+columns, in the row order of <a href="hitopsr_subscales.html">hitopsr_subscales</a>. Under <code>calc_se = TRUE</code>,
+their <code>_se</code> columns follow the scale <code>_se</code> columns in the same order. With
+a <code>module</code>, only the subscales whose parent scale is in the module are
+scored. (default = <code>FALSE</code>)</p></dd>
+
+
 <dt id="arg-subset">subset<a class="anchor" aria-label="anchor" href="#arg-subset"></a></dt>
 <dd><p>Deprecated. The former name of <code>module</code>; supplying it warns.
 Supplying both <code>module</code> and <code>subset</code> is an error. (default = <code>NULL</code>)</p></dd>
@@ -203,8 +218,9 @@ Supplying both <code>module</code> and <code>subset</code> is an error. (default
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> containing all scale scores and standard
-errors (if requested) and all original <code>data</code> columns (if requested).</p>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a> containing all scale scores, subscale scores
+(if requested with <code>include_subscales</code>), standard errors (if requested)
+and all original <code>data</code> columns (if requested).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -239,6 +255,30 @@ of class <code>hitop_nonnumeric_items</code>, raised before the collision check.
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>             2.4                   2                    3               2.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 90 more rows</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 72 more variables: hsr_bingeEating &lt;dbl&gt;, hsr_bodilyDistress &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_bodyDissatisfaction &lt;dbl&gt;, hsr_callousness &lt;dbl&gt;, hsr_checking &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_cleaning &lt;dbl&gt;, hsr_cognitiveProblems &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_conversionSymptoms &lt;dbl&gt;, hsr_counting &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_dietaryRestraint &lt;dbl&gt;, hsr_difficultiesReachingOrgasm &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_diseaseConviction &lt;dbl&gt;, hsr_dishonesty &lt;dbl&gt;, …</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Score the 17 subscales too; their columns follow the 76 scale columns</span></span></span>
+<span class="r-in"><span><span class="fu">score_hitopsr</span><span class="op">(</span><span class="va">sim_hitopsr</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">405</span>, include_subscales <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>              append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 93</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>             2.8                   2.75                 2.8             2.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>             2.6                   2.75                 2.8             3   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>             2.4                   2.75                 2.4             2.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>             2.4                   2.38                 3.4             2   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>             2.6                   2.5                  1.8             2   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>             2.4                   3.12                 2.2             2.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>             2.6                   2.38                 2.4             2.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>             3                     2.38                 3.2             2.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>             2.4                   2.38                 2.2             1.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>             2.4                   2                    3               2.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 90 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 89 more variables: hsr_bingeEating &lt;dbl&gt;, hsr_bodilyDistress &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_bodyDissatisfaction &lt;dbl&gt;, hsr_callousness &lt;dbl&gt;, hsr_checking &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_cleaning &lt;dbl&gt;, hsr_cognitiveProblems &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   hsr_conversionSymptoms &lt;dbl&gt;, hsr_counting &lt;dbl&gt;,</span></span>

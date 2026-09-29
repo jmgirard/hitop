@@ -1,6 +1,8 @@
 # Score the HiTOP-SR Instrument
 
-Create a data frame with scores on all the HiTOP-SR scales.
+Create a data frame with scores on all the HiTOP-SR scales and, with
+`include_subscales = TRUE`, on its 17 subscales (fewer under a
+`module`).
 
 ## Usage
 
@@ -15,6 +17,7 @@ score_hitopsr(
   append = TRUE,
   module = NULL,
   layout = c("instrument", "printed"),
+  include_subscales = FALSE,
   subset = NULL
 )
 ```
@@ -137,6 +140,19 @@ score_hitopsr(
   a permutation of the module's items is an error. (default =
   `"instrument"`)
 
+- include_subscales:
+
+  A logical. If `TRUE`, the 17 subscales in
+  [hitopsr_subscales](https://jmgirard.github.io/hitop/reference/hitopsr_subscales.md)
+  are also scored, each as the mean of its items under the `missing`
+  rule. Their columns are named `prefix` plus the subscale's `camelCase`
+  name (for example `hsr_cynicism`) and follow the scale columns, in the
+  row order of
+  [hitopsr_subscales](https://jmgirard.github.io/hitop/reference/hitopsr_subscales.md).
+  Under `calc_se = TRUE`, their `_se` columns follow the scale `_se`
+  columns in the same order. With a `module`, only the subscales whose
+  parent scale is in the module are scored. (default = `FALSE`)
+
 - subset:
 
   Deprecated. The former name of `module`; supplying it warns. Supplying
@@ -145,8 +161,9 @@ score_hitopsr(
 ## Value
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html)
-containing all scale scores and standard errors (if requested) and all
-original `data` columns (if requested).
+containing all scale scores, subscale scores (if requested with
+`include_subscales`), standard errors (if requested) and all original
+`data` columns (if requested).
 
 ## Details
 
@@ -184,6 +201,30 @@ score_hitopsr(sim_hitopsr, items = 1:405, append = FALSE)
 #> 10             2.4                   2                    3               2.33
 #> # ℹ 90 more rows
 #> # ℹ 72 more variables: hsr_bingeEating <dbl>, hsr_bodilyDistress <dbl>,
+#> #   hsr_bodyDissatisfaction <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
+#> #   hsr_cleaning <dbl>, hsr_cognitiveProblems <dbl>,
+#> #   hsr_conversionSymptoms <dbl>, hsr_counting <dbl>,
+#> #   hsr_dietaryRestraint <dbl>, hsr_difficultiesReachingOrgasm <dbl>,
+#> #   hsr_diseaseConviction <dbl>, hsr_dishonesty <dbl>, …
+
+# Score the 17 subscales too; their columns follow the 76 scale columns
+score_hitopsr(sim_hitopsr, items = 1:405, include_subscales = TRUE,
+              append = FALSE)
+#> # A tibble: 100 × 93
+#>    hsr_agoraphobia hsr_antisocialBehavior hsr_appearanceFocus hsr_appetiteLoss
+#>              <dbl>                  <dbl>               <dbl>            <dbl>
+#>  1             2.8                   2.75                 2.8             2.67
+#>  2             2.6                   2.75                 2.8             3   
+#>  3             2.4                   2.75                 2.4             2.67
+#>  4             2.4                   2.38                 3.4             2   
+#>  5             2.6                   2.5                  1.8             2   
+#>  6             2.4                   3.12                 2.2             2.67
+#>  7             2.6                   2.38                 2.4             2.33
+#>  8             3                     2.38                 3.2             2.67
+#>  9             2.4                   2.38                 2.2             1.67
+#> 10             2.4                   2                    3               2.33
+#> # ℹ 90 more rows
+#> # ℹ 89 more variables: hsr_bingeEating <dbl>, hsr_bodilyDistress <dbl>,
 #> #   hsr_bodyDissatisfaction <dbl>, hsr_callousness <dbl>, hsr_checking <dbl>,
 #> #   hsr_cleaning <dbl>, hsr_cognitiveProblems <dbl>,
 #> #   hsr_conversionSymptoms <dbl>, hsr_counting <dbl>,

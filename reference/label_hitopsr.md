@@ -37,7 +37,12 @@ label_hitopsr(data, target = c("items", "scales"), prefix = "hsr_")
   matched. Scale columns are expected as the prefix followed by the
   scale's `camelCase` name, which is what
   [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-  writes under its own default `prefix`. (default = `"hsr_"`)
+  writes under its own default `prefix`. Subscale columns, which
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  writes under `include_subscales = TRUE`, are expected the same way, as
+  the prefix followed by the subscale's `camelCase` name in
+  [hitopsr_subscales](https://jmgirard.github.io/hitop/reference/hitopsr_subscales.md),
+  and are labelled with its `Subscale` name. (default = `"hsr_"`)
 
 ## Value
 

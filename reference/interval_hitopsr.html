@@ -8,16 +8,16 @@
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Confidence intervals for HiTOP-SR scale scores — interval_hitopsr"><meta name="description" content="Converts scored HiTOP-SR columns into a regression-based true-score estimate
 and a confidence interval around it, using the development-sample mean,
 standard deviation and reliability shipped as hitopsr_devstats. This
-function converts already-scored columns and never rescores: the 76 scale
-columns score_hitopsr() produces are the ones it is built for. The 17
-subscale rows hitopsr_devstats also carries have no column that function
-emits, so an interval on a subscale needs a column scored by other means."><meta property="og:description" content="Converts scored HiTOP-SR columns into a regression-based true-score estimate
+function converts already-scored columns and never rescores. It is built for
+the 76 scale columns score_hitopsr() produces and for the 17 subscale
+columns that score_hitopsr(include_subscales = TRUE) produces. Each
+subscale column converts on its own subscale row of hitopsr_devstats."><meta property="og:description" content="Converts scored HiTOP-SR columns into a regression-based true-score estimate
 and a confidence interval around it, using the development-sample mean,
 standard deviation and reliability shipped as hitopsr_devstats. This
-function converts already-scored columns and never rescores: the 76 scale
-columns score_hitopsr() produces are the ones it is built for. The 17
-subscale rows hitopsr_devstats also carries have no column that function
-emits, so an interval on a subscale needs a column scored by other means."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
+function converts already-scored columns and never rescores. It is built for
+the 76 scale columns score_hitopsr() produces and for the 17 subscale
+columns that score_hitopsr(include_subscales = TRUE) produces. Each
+subscale column converts on its own subscale row of hitopsr_devstats."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -86,10 +86,10 @@ emits, so an interval on a subscale needs a column scored by other means."><meta
     <p>Converts scored HiTOP-SR columns into a regression-based true-score estimate
 and a confidence interval around it, using the development-sample mean,
 standard deviation and reliability shipped as <a href="hitopsr_devstats.html">hitopsr_devstats</a>. This
-function converts already-scored columns and never rescores: the 76 scale
-columns <code><a href="score_hitopsr.html">score_hitopsr()</a></code> produces are the ones it is built for. The 17
-subscale rows <a href="hitopsr_devstats.html">hitopsr_devstats</a> also carries have no column that function
-emits, so an interval on a subscale needs a column scored by other means.</p>
+function converts already-scored columns and never rescores. It is built for
+the 76 scale columns <code><a href="score_hitopsr.html">score_hitopsr()</a></code> produces and for the 17 subscale
+columns that <code>score_hitopsr(include_subscales = TRUE)</code> produces. Each
+subscale column converts on its own subscale row of <a href="hitopsr_devstats.html">hitopsr_devstats</a>.</p>
     </div>
 
     <div class="section level2">

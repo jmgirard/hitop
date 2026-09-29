@@ -300,6 +300,44 @@ even turn it off (e.g., setting it to <code>""</code>) using the
 <span><span class="co">#&gt; <span style="color: #949494;">#   hitop_difficultiesReachingOrgasm &lt;dbl&gt;, hitop_diseaseConviction &lt;dbl&gt;, …</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
+<h2 id="subscales">Subscales<a class="anchor" aria-label="anchor" href="#subscales"></a>
+</h2>
+<p>Six HiTOP-SR scales have subscales, 17 in all, which the
+<code>hitopsr_subscales</code> table lists. Set
+<code>include_subscales = TRUE</code> to score them too. Each subscale
+column is named for the subscale, such as <code>hsr_cynicism</code>, and
+the subscale columns come after the 76 scale columns.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
+<span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
+<span>  include_subscales <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  append <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">scores</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"hsr_"</span>, <span class="va">hitopsr_subscales</span><span class="op">$</span><span class="va">camelCase</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 411 × 17</span></span></span>
+<span><span class="co">#&gt;    hsr_affectiveLability hsr_angryHostility hsr_anhedonia hsr_animalInsectPhobia</span></span>
+<span><span class="co">#&gt;                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>                  1                  1             1                       1.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>                  1.67               1             1                       1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>                  3.67               1.5           1.67                    2.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>                  1                  1.5           1                       1.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>                  2                  2             1.67                    1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>                  1.67               1.25          1                       1.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>                  1                  1             1                       1.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>                  2.67               1.75          2                       1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>                  1                  1.25          1.33                    1.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>                  1                  1.5           1                       1  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 401 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 13 more variables: hsr_anxiousWorry &lt;dbl&gt;, hsr_bloodInjectionPhobia &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_cynicism &lt;dbl&gt;, hsr_deceitfulness &lt;dbl&gt;, hsr_delusions &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_depressedMood &lt;dbl&gt;, hsr_hallucinations &lt;dbl&gt;, hsr_irritability &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_lassitude &lt;dbl&gt;, hsr_manipulativeness &lt;dbl&gt;, hsr_shameGuilt &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   hsr_situationalPhobias &lt;dbl&gt;, hsr_suspiciousness &lt;dbl&gt;</span></span></span></code></pre></div>
+<p><code><a href="../reference/reliability_hitopsr.html">reliability_hitopsr()</a></code> takes the same argument and then
+adds one row per subscale after the scale rows.</p>
+</div>
+<div class="section level2">
 <h2 id="simple-standard-errors-deprecated">Simple Standard Errors (deprecated)<a class="anchor" aria-label="anchor" href="#simple-standard-errors-deprecated"></a>
 </h2>
 <p>The <code>calc_se</code> argument is <strong>deprecated</strong>. It,
@@ -335,7 +373,7 @@ output (<code>camelCase</code>), the number of items
 computes both <code>alpha</code> and <code>omega</code>; for the latter,
 we will need the <strong>lavaan</strong> package installed (set
 <code>omega = FALSE</code> to skip it).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/reliability_hitopsr.html">reliability_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
 <span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span></span>
@@ -363,7 +401,7 @@ range rather than a single number. <code><a href="../reference/interval_hitopsr.
 returns three columns per scale: <code>_est</code>, an estimate of the
 respondent’s true score, and <code>_lo</code> and <code>_hi</code>, the
 bounds of a confidence interval around it.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scored</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">ku_hitopsr</span>,</span>
 <span>  items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"hsr_%03d"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">405</span><span class="op">)</span>,</span>
@@ -401,7 +439,7 @@ score so the two can be read against each other.</p>
 group’s standard deviation, so it is the same for every respondent on a
 given scale and it narrows as reliability rises. Widen or narrow the
 interval with <code>level</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/interval_hitopsr.html">interval_hitopsr</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">scored</span>,</span>
 <span>  scores <span class="op">=</span> <span class="st">"hsr_agoraphobia"</span>,</span>
@@ -428,7 +466,7 @@ interval with <code>level</code>:</p>
 <p>The mean, standard deviation and reliability behind every number
 above are shipped as <code>hitopsr_devstats</code>, transcribed from
 Table 1 of the HiTOP-SR introduction paper.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">hitopsr_devstats</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 93 × 8</span></span></span>
 <span><span class="co">#&gt;    Scale          camelCase type  nItems reliability reliabilityType  mean    sd</span></span>
@@ -496,7 +534,7 @@ via two approaches.</p>
 Ext_432), use <code>method = "original"</code>. The function scans your
 data frame columns, matches them against the package’s built-in item
 database, and renames them to standard names.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setup a mock dataset with older legacy column names</span></span>
 <span><span class="va">legacy_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  HiTOP_659 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,</span>
@@ -525,7 +563,7 @@ database, and renames them to standard names.</p>
 tracked the exact question prompts presented to your participants, use
 <code>method = "text"</code>. Provide a vector of your current column
 names alongside a matching vector of literal item text strings.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Setup a mock dataset with completely custom column names</span></span>
 <span><span class="va">custom_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  q_party <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>,</span>
@@ -586,7 +624,7 @@ through the package’s Qualtrics export is named <code>HSR_001</code> to
 number must be zero-padded to three digits: columns carrying the prefix
 and a number without the leading zeros are not labelled, and the
 function warns and names them.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"sim_hitopsr"</span><span class="op">)</span></span>
 <span><span class="va">labelled_items</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/label_hitopsr.html">label_hitopsr</a></span><span class="op">(</span><span class="va">sim_hitopsr</span>, target <span class="op">=</span> <span class="st">"items"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">labelled_items</span><span class="op">$</span><span class="va">hsr_001</span>, <span class="st">"label"</span><span class="op">)</span></span>
@@ -596,7 +634,7 @@ function warns and names them.</p>
 one the scoring function put on its output columns. Both functions
 default to <code>"hsr_"</code>, so a scored frame built with default
 settings labels with none given:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/score_hitopsr.html">score_hitopsr</a></span><span class="op">(</span><span class="va">sim_hitopsr</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">405</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">labelled_scales</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/label_hitopsr.html">label_hitopsr</a></span><span class="op">(</span><span class="va">sim_scores</span>, target <span class="op">=</span> <span class="st">"scales"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">labelled_scales</span><span class="op">$</span><span class="va">hsr_agoraphobia</span>, <span class="st">"label"</span><span class="op">)</span></span>

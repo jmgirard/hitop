@@ -4,13 +4,13 @@ Converts scored HiTOP-SR columns into a regression-based true-score
 estimate and a confidence interval around it, using the
 development-sample mean, standard deviation and reliability shipped as
 [hitopsr_devstats](https://jmgirard.github.io/hitop/reference/hitopsr_devstats.md).
-This function converts already-scored columns and never rescores: the 76
-scale columns
+This function converts already-scored columns and never rescores. It is
+built for the 76 scale columns
 [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-produces are the ones it is built for. The 17 subscale rows
-[hitopsr_devstats](https://jmgirard.github.io/hitop/reference/hitopsr_devstats.md)
-also carries have no column that function emits, so an interval on a
-subscale needs a column scored by other means.
+produces and for the 17 subscale columns that
+`score_hitopsr(include_subscales = TRUE)` produces. Each subscale column
+converts on its own subscale row of
+[hitopsr_devstats](https://jmgirard.github.io/hitop/reference/hitopsr_devstats.md).
 
 ## Usage
 

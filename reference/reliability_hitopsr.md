@@ -5,7 +5,8 @@ and McDonald's omega — for the HiTOP Self-Report (405 items).
 Reliability is estimated on the reverse-keyed item responses for each of
 the scales that
 [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
-outputs.
+outputs and, with `include_subscales = TRUE`, for each of its 17
+subscales (fewer under a `module`).
 
 ## Usage
 
@@ -18,6 +19,7 @@ reliability_hitopsr(
   omega = TRUE,
   module = NULL,
   layout = c("instrument", "printed"),
+  include_subscales = FALSE,
   subset = NULL
 )
 ```
@@ -108,6 +110,17 @@ reliability_hitopsr(
   is not a permutation of the module's items is an error. (default =
   `"instrument"`)
 
+- include_subscales:
+
+  A logical. If `TRUE`, one row per subscale in
+  [hitopsr_subscales](https://jmgirard.github.io/hitop/reference/hitopsr_subscales.md)
+  follows the scale rows, in that table's row order. A subscale row's
+  `Scale` is the subscale's name (`Subscale` in
+  [hitopsr_subscales](https://jmgirard.github.io/hitop/reference/hitopsr_subscales.md)),
+  and its `camelCase` and `nItems` come from the same row. With a
+  `module`, only the subscales whose parent scale is in the module get a
+  row. (default = `FALSE`)
+
 - subset:
 
   Deprecated. The former name of `module`; supplying it warns. Supplying
@@ -116,11 +129,12 @@ reliability_hitopsr(
 ## Value
 
 A [tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
-row per scale and columns `Scale` (the scale's canonical display name,
-as the instrument's keying table spells it), `camelCase` (the stem that
-names the scale's column in the matching `score_*()` output, read from
-the same keying-table row), `nItems` (integer), and (when requested)
-`alpha` and `omega`.
+row per scale (and per subscale under `include_subscales = TRUE`) and
+columns `Scale` (the scale's canonical display name, as the instrument's
+keying table spells it), `camelCase` (the stem that names the scale's
+column in the matching `score_*()` output, read from the same
+keying-table row), `nItems` (integer), and (when requested) `alpha` and
+`omega`.
 
 ## Details
 

@@ -109,7 +109,10 @@ out of range, whatever its padding. That warning is raised whether or not
 any other column matched. Scale
 columns are expected as the prefix followed by the scale's <code>camelCase</code>
 name, which is what <code><a href="score_hitopsr.html">score_hitopsr()</a></code> writes under its own default
-<code>prefix</code>. (default = <code>"hsr_"</code>)</p></dd>
+<code>prefix</code>. Subscale columns, which <code><a href="score_hitopsr.html">score_hitopsr()</a></code> writes under
+<code>include_subscales = TRUE</code>, are expected the same way, as the prefix
+followed by the subscale's <code>camelCase</code> name in <a href="hitopsr_subscales.html">hitopsr_subscales</a>, and
+are labelled with its <code>Subscale</code> name. (default = <code>"hsr_"</code>)</p></dd>
 
 </dl></div>
     <div class="section level2">

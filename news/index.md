@@ -4,6 +4,23 @@
 
 ### New features
 
+- **HiTOP-SR scoring can include the 17 subscales.**
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  take `include_subscales = FALSE`. With `TRUE`,
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  adds one column per subscale in `hitopsr_subscales`, such as
+  `hsr_cynicism`, after the scale columns.
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  adds one row per subscale after the scale rows. With a `module`, only
+  the subscales whose parent scale is in the module are included.
+  [`label_hitopsr()`](https://jmgirard.github.io/hitop/reference/label_hitopsr.md)
+  labels the subscale columns, and
+  [`interval_hitopsr()`](https://jmgirard.github.io/hitop/reference/interval_hitopsr.md)
+  converts them. The new argument breaks two kinds of call, listed under
+  Breaking changes.
+
 - **hitop-form can give two or three instruments in one session.** A
   study link’s `instruments` field lists them in order, such as
   `["hitopbr", "pid5bf"]`, in place of `instrument`. A list holds at
@@ -389,6 +406,18 @@
   class.
 
 ### Breaking changes
+
+- **Two kinds of call to
+  [`score_hitopsr()`](https://jmgirard.github.io/hitop/reference/score_hitopsr.md)
+  and
+  [`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+  now fail.** Both come from the new `include_subscales` argument. The
+  first kind abbreviates `items` as `i =`. It now fails with an error
+  that the argument “matches multiple formal arguments”, because `i`
+  also starts `include_subscales`. Write `items =` in full. A call that
+  passes the deprecated `subset` by position now fails, because
+  `include_subscales` takes that position and accepts only `TRUE` or
+  `FALSE`. Write `module =` instead.
 
 - **Scoring refuses an item column it cannot read as numbers.**
   [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md),

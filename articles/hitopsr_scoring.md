@@ -207,6 +207,48 @@ scores
 #> #   hitop_difficultiesReachingOrgasm <dbl>, hitop_diseaseConviction <dbl>, …
 ```
 
+## Subscales
+
+Six HiTOP-SR scales have subscales, 17 in all, which the
+`hitopsr_subscales` table lists. Set `include_subscales = TRUE` to score
+them too. Each subscale column is named for the subscale, such as
+`hsr_cynicism`, and the subscale columns come after the 76 scale
+columns.
+
+``` r
+
+scores <- score_hitopsr(
+  data = ku_hitopsr,
+  items = sprintf("hsr_%03d", 1:405),
+  include_subscales = TRUE,
+  append = FALSE
+)
+scores[paste0("hsr_", hitopsr_subscales$camelCase)]
+#> # A tibble: 411 × 17
+#>    hsr_affectiveLability hsr_angryHostility hsr_anhedonia hsr_animalInsectPhobia
+#>                    <dbl>              <dbl>         <dbl>                  <dbl>
+#>  1                  1                  1             1                       1.2
+#>  2                  1.67               1             1                       1  
+#>  3                  3.67               1.5           1.67                    2.2
+#>  4                  1                  1.5           1                       1.2
+#>  5                  2                  2             1.67                    1  
+#>  6                  1.67               1.25          1                       1.4
+#>  7                  1                  1             1                       1.2
+#>  8                  2.67               1.75          2                       1  
+#>  9                  1                  1.25          1.33                    1.4
+#> 10                  1                  1.5           1                       1  
+#> # ℹ 401 more rows
+#> # ℹ 13 more variables: hsr_anxiousWorry <dbl>, hsr_bloodInjectionPhobia <dbl>,
+#> #   hsr_cynicism <dbl>, hsr_deceitfulness <dbl>, hsr_delusions <dbl>,
+#> #   hsr_depressedMood <dbl>, hsr_hallucinations <dbl>, hsr_irritability <dbl>,
+#> #   hsr_lassitude <dbl>, hsr_manipulativeness <dbl>, hsr_shameGuilt <dbl>,
+#> #   hsr_situationalPhobias <dbl>, hsr_suspiciousness <dbl>
+```
+
+[`reliability_hitopsr()`](https://jmgirard.github.io/hitop/reference/reliability_hitopsr.md)
+takes the same argument and then adds one row per subscale after the
+scale rows.
+
 ## Simple Standard Errors (deprecated)
 
 The `calc_se` argument is **deprecated**. It, and the `_se` columns it
