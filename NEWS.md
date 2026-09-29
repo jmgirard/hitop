@@ -2,6 +2,17 @@
 
 ## New features
 
+* **HiTOP-SR scoring can include the 17 subscales.** `score_hitopsr()` and
+  `reliability_hitopsr()` take `include_subscales = FALSE`. With `TRUE`,
+  `score_hitopsr()` adds one column per subscale in `hitopsr_subscales`, such
+  as `hsr_cynicism`, after the scale columns. `reliability_hitopsr()` adds one
+  row per subscale after the scale rows. With a `module`, only the subscales
+  whose parent scale is in the module are included. `label_hitopsr()` labels
+  the subscale columns, and `interval_hitopsr()` converts them. A call that
+  abbreviates `items` as `i =` now fails with an error that the argument
+  "matches multiple formal arguments", because `i` also starts
+  `include_subscales`. Write `items =` in full.
+
 * **hitop-form can give two or three instruments in one session.** A study
   link's `instruments` field lists them in order, such as
   `["hitopbr", "pid5bf"]`, in place of `instrument`. A list holds at most one
