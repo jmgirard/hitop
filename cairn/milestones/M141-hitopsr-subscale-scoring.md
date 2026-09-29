@@ -1,6 +1,6 @@
 # M141: HiTOP-SR scoring can include the 17 subscales on request
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -69,6 +69,7 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 - 2026-09-29: T5 done. The `calc_se` block of the AC1 test now runs inside the `missing` mode loop. The `score_hitopsr` test file passes.
 - 2026-09-29: T6 done. New tests cover subscales under a shuffled printed-order module, the `i =` and `it =` pins, and two keying-fault guards. A planted remap from `item_order` turned the printed-order test red in 3 places. `add_hitopsr_subscales()` now aborts on an unmatched parent name and passes `call`. Help and NEWS text updated. `devtools::test()` 1035 tests, 0 failures.
 - claim audit: 96 claims read, 2 corrected — R/module.R, tests/testthat/test-score_hitopsr.R (plus two descriptions tightened in R/score_hitopsr.R and R/reliability_hitopsr.R). Files read: NEWS.md, five R files, the vignette, helper-fixtures.R and five test files.
+- 2026-09-29: implement complete after review return 1. `devtools::check()` at e0ce94bb gave 0 errors, 0 warnings, 0 notes (the later commit changed comments and help text only). Status set to review.
 
 ## Decisions
 
