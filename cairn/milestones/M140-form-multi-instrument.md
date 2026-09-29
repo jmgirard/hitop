@@ -139,3 +139,6 @@ Fresh runs on 2026-09-28 at hitop-form bd65327. Both branches contain origin/mai
 - AC4: tests/instruments-store.spec.js (6 tests) passed in the same run. The two SQL fixtures are unchanged since the first pass.
 - AC5: tests/link-instruments.spec.js (31 tests) passed in the same run. LI1, LI2 and LI4 and the one-row prefill test assert what the first pass recorded.
 - AC6: the hitop fixture still equals hitop-form's copy with its CR bytes removed (diff empty). The hitop result is in the AC7 line.
+- AC7 (not ticked): hitop `devtools::check()` at a5ba9b01 gave 0 errors, 0 warnings and 0 notes, and its tests passed. `cairn_validate` exits 0 (25 advisory warnings). The README section and the article section still state the field, the order of screens, the file shape and scoring by stem. NEWS names the field and no longer says that the page cannot write the file. The hitop-form CI run does not exist yet, because the PR opens at step 8. The box stays open until that run is green.
+
+Consistency gate: `devtools::document()` gave no diff. `pkgdown::check_pkgdown()` found no problems. README.Rmd is not in the diff, and no file was added outside `tests/testthat/fixtures/`. No DESIGN principle changed, so `cairn_impact` was skipped.
