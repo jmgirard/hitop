@@ -80,6 +80,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: T8 done. `devtools::check()` on 9296fbea: 0 errors, 0 warnings, 0 notes. Status set to review.
 - 2026-09-29: the six lines above were written under `## Review` by a shell append (c82d1b54 to ba586169). They were moved here unchanged at review pass 2.
 - 2026-09-29: review pass 2 returned the milestone to in-progress (defect return 2). AC1 fails: a non-list object of class `hitop_module` crashes with a base error, not `hitop_module_mismatch` ([O]2). AC6 fails: the NEWS clause on `(R)` marks has no AC2 to AC4 test, because no subscale item is reverse-keyed ([O]3). AC2, AC3, AC4, AC5, AC7 and the gate pass. Thrash rule (b) fires on AC6: its second failure is a NEWS clause backed by a test outside AC2 to AC4, as in return 1. The plan gate recorded no alternative for AC6.
+- 2026-09-29: thrash (b) gate: Jeff chose a return with a clause ledger over escalation. The next round writes a table of every NEWS clause of the two entries, each against the AC2 to AC4 test that backs it, and cuts any clause with no test. Jeff also chose to rewrite the branch from c82d1b54 without `data-raw/HiTOP-DAT.qsf` and to list the file in `.git/info/exclude`, before any push.
 
 ## Decisions
 
