@@ -170,25 +170,22 @@ test_that("the module DOCX scoring table lists only the module's scales", {
   expect_false(grepl("Appetite Loss", xml, fixed = TRUE))
 })
 
-test_that("generate_docx_hitopsr() rejects module + include_subscales", {
-  s <- hitop_module("hitopsr", "Agoraphobia")
+test_that("generate_docx_hitopsr() takes include_subscales as TRUE or FALSE only", {
+  s <- hitop_module("hitopsr", "Dishonesty")
   f <- withr::local_tempfile(fileext = ".docx")
-  expect_error(
-    generate_docx_hitopsr(file = f, module = s, include_subscales = TRUE),
-    "cannot be combined"
-  )
-  # Truthy non-TRUE values must not slip past the guard: the code that adds
-  # the subscale rows tests plain truthiness, so the guard must too.
-  for (truthy in list(1, 1L)) {
-    expect_error(
-      generate_docx_hitopsr(file = f, module = s, include_subscales = truthy),
-      "cannot be combined"
-    )
+  # The code that adds the subscale rows tests plain truthiness, so a truthy
+  # non-TRUE value is refused rather than read as TRUE, as score_hitopsr()
+  # refuses it. With or without a module, and before any file is written.
+  for (module in list(NULL, s)) {
+    for (bad in list(1, 1L, "yes", NA, c(TRUE, FALSE))) {
+      expect_error(
+        generate_docx_hitopsr(file = f, module = module, include_subscales = bad),
+        "The `include_subscales` argument must be `TRUE` or `FALSE`",
+        fixed = TRUE
+      )
+      expect_false(file.exists(f))
+    }
   }
-  # A value R cannot read as a logical errors either way, never silently.
-  expect_error(
-    generate_docx_hitopsr(file = f, module = s, include_subscales = "yes")
-  )
 })
 
 test_that("generate_docx_hitopsr() rejects a non-hitop_module module", {

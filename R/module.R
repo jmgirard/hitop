@@ -289,6 +289,29 @@ hitopsr_engine_inputs <- function(module, include_subscales = FALSE,
   inputs
 }
 
+# Internal Helper: the rows of the HiTOP-SR subscale table a module holds
+#
+# All rows when `module` is NULL; under a module, the rows whose parent scale
+# the module holds, in table order. Shared by the scoring functions and the
+# Word form so the two cannot disagree on which subscales a module carries.
+module_subscales <- function(module, subs = hitopsr_subscales,
+                             call = rlang::caller_env()) {
+  if (is.null(module)) {
+    return(subs)
+  }
+  parent_stem <- hitopsr_scales$camelCase[match(subs$Scale, hitopsr_scales$Scale)]
+  # A parent name missing from hitopsr_scales would drop its subscales from
+  # every module silently, so it stops here instead.
+  if (anyNA(parent_stem)) {
+    cli::cli_abort(
+      "Internal error: a HiTOP-SR subscale's parent scale name is not in {.code hitopsr_scales}.",
+      .internal = TRUE,
+      call = call
+    )
+  }
+  subs[parent_stem %in% module$camelCase, , drop = FALSE]
+}
+
 # Internal Helper: append the HiTOP-SR subscales to the engine inputs
 #
 # A subscale's parent is named by its display name in `hitopsr_subscales$Scale`
@@ -298,20 +321,9 @@ hitopsr_engine_inputs <- function(module, include_subscales = FALSE,
 # argument only so that tests can pass a faulty table.
 add_hitopsr_subscales <- function(inputs, module, subs = hitopsr_subscales,
                                   call = rlang::caller_env()) {
+  subs <- module_subscales(module, subs, call = call)
   numbers <- subs$itemNumbers
   if (!is.null(module)) {
-    parent_stem <- hitopsr_scales$camelCase[match(subs$Scale, hitopsr_scales$Scale)]
-    # A parent name missing from hitopsr_scales would drop its subscales from
-    # every module silently, so it stops here instead.
-    if (anyNA(parent_stem)) {
-      cli::cli_abort(
-        "Internal error: a HiTOP-SR subscale's parent scale name is not in {.code hitopsr_scales}.",
-        .internal = TRUE,
-        call = call
-      )
-    }
-    kept <- parent_stem %in% module$camelCase
-    subs <- subs[kept, , drop = FALSE]
     numbers <- lapply(subs$itemNumbers, function(x) match(x, module$items))
     # Every subscale item lies in its parent scale, and check_module_build()
     # has already refused a module lacking any item of its scales, so a kept

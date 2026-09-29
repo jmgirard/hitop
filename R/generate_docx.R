@@ -218,6 +218,7 @@ generate_docx_hitopsr <- function(
   validate_descriptor_target(descriptor, file)
   validate_flag(renumber, "renumber")
   validate_flag(randomize, "randomize")
+  validate_flag(include_subscales, "include_subscales")
 
   # Resolved AFTER resolve_module_arg(), so a caller still passing the
   # deprecated `subset =` gets the module header too. The sentinel is what
@@ -225,17 +226,6 @@ generate_docx_hitopsr <- function(
   # caller's header moves without asking (D-037).
   if (is.null(title)) {
     title <- if (is.null(module)) "HiTOP-SR (v1.0)" else "HiTOP-SR Module (v1.0)"
-  }
-
-  # Truthiness must match the consumer below (`if (include_subscales)`), or a
-  # truthy non-TRUE value slips the guard and still adds the subscale rows.
-  if (!is.null(module) && include_subscales) {
-    cli::cli_abort(c(
-      "{.arg include_subscales} cannot be combined with {.arg module}.",
-      i = "A subscale may draw items from scales outside the module, so its
-           scoring row would list items the form does not contain.",
-      i = "Set {.code include_subscales = FALSE} to generate the module form."
-    ))
   }
 
   reduced <- apply_module(hitopsr_items, hitopsr_scales, module, "HSR")
@@ -276,9 +266,11 @@ generate_docx_hitopsr <- function(
       printed_of = printed_of
     )
 
-    # If requested, prepare and append the subscales
+    # If requested, prepare and append the subscales. Under a module, only the
+    # subscales of the scales it holds, whose items check_module_build() has
+    # made sure are all on the form.
     if (include_subscales) {
-      subscales_to_score <- hitopsr_subscales[, c("Subscale", "itemdata")]
+      subscales_to_score <- module_subscales(module)[, c("Subscale", "itemdata")]
       subscales_to_score$itemdata <- lapply(
         subscales_to_score$itemdata,
         remap_itemdata,
@@ -386,9 +378,10 @@ generate_docx_hitopsr <- function(
 # table. Rows are re-sorted by their PRINTED number: on a shuffled form the
 # original ascending order would print as a scattered list.
 #
-# A subscale may draw items from outside a module, which is why
-# `include_subscales` and `module` cannot be combined; with `module = NULL`
-# every item is present, so `match()` here never yields NA.
+# Every item a row lists is on the form, so `match()` here never yields NA:
+# check_module_build() refuses a module lacking any item of its scales, and a
+# subscale row is added only when the module holds its parent scale, which
+# holds every item of the subscale.
 remap_itemdata <- function(x, printed_of) {
   x$HSR <- printed_of(x$HSR)
   x[order(x$HSR), , drop = FALSE]
