@@ -2647,7 +2647,8 @@ score_stem <- function(data, stem) {
   switch(stem,
     hitopbr = score_hitopbr(data, items = cols, append = FALSE),
     pid5bf = score_pid5(data, items = cols, version = "BF", append = FALSE),
-    pid5sf = score_pid5(data, items = cols, version = "SF", append = FALSE)
+    pid5sf = score_pid5(data, items = cols, version = "SF", append = FALSE),
+    hitopsr = score_hitopsr(data, items = cols, append = FALSE)
   )
 }
 
@@ -2700,6 +2701,61 @@ test_that("the shuffled two-instrument file reads its item_order groups as writt
   expect_setequal(as.integer(strsplit(groups[2L], " ")[[1L]]), 1:25)
   expect_identical(names(out), c(result_lead, multi_rule$hitopbr$names,
                                  multi_rule$pid5bf$names))
+})
+
+# responses-multi-page-shuffled.csv is a file the page saved, not one written
+# by rule: the HiTOP-BR, the PID-5-BF and the whole HiTOP-SR, in that order,
+# under a random order and one question (`age`, typed 30). The page answered
+# the instrument at place k (counted from 0) with the option at index
+# ((7 * position) %% 4 + k) %% 4, counted from 0, where position is the place
+# the item was shown at within its instrument. The option values are 1 to 4
+# on the HiTOP forms and 0 to 3 on the PID-5-BF.
+test_that("the page-saved three-instrument file reads, and each instrument scores by stem", {
+  path <- fixture("responses-multi-page-shuffled.csv")
+  out <- read_form_responses(path)
+  stems <- c("hitopbr", "pid5bf", "hitopsr")
+  cols <- list(
+    hitopbr = sprintf("hitopbr_%02d", 1:45),
+    pid5bf = sprintf("pid5bf_%02d", 1:25),
+    hitopsr = sprintf("hitopsr_%03d", 1:405)
+  )
+  values <- list(hitopbr = 1:4, pid5bf = 0:3, hitopsr = 1:4)
+  expect_identical(names(out), c(result_lead, unlist(cols, use.names = FALSE), "q_age"))
+  expect_identical(out$instrument, "hitopbr pid5bf hitopsr")
+  expect_match(out$form_build, "^[0-9]{4}-[0-9]{2}-[0-9]{2}( [0-9]{4}-[0-9]{2}-[0-9]{2}){2}$")
+  expect_identical(out$participant, "p001")
+  expect_identical(out$q_age, "30")
+  # The item_order cell, read without the package's reader.
+  raw <- strsplit(readLines(path), ",", fixed = TRUE)
+  cell <- raw[[2L]][match("item_order", raw[[1L]])]
+  expect_identical(out$item_order, cell)
+  groups <- lapply(strsplit(cell, " | ", fixed = TRUE)[[1L]],
+                   function(g) as.integer(strsplit(g, " ", fixed = TRUE)[[1L]]))
+  expect_length(groups, 3L)
+  for (k in seq_along(stems)) {
+    stem <- stems[[k]]
+    n <- length(cols[[stem]])
+    expect_identical(sort(groups[[k]]), seq_len(n))
+    position <- match(seq_len(n), groups[[k]])
+    responses <- stats::setNames(
+      values[[stem]][((7L * position) %% 4L + (k - 1L)) %% 4L + 1L],
+      seq_len(n)
+    )
+    expect_identical(unname(unlist(out[1L, cols[[stem]]])), as.integer(responses))
+    scored <- score_stem(out, stem)
+    expected <- switch(stem,
+      pid5bf = pid5_expected(responses, "BF"),
+      {
+        items <- if (stem == "hitopbr") hitopbr_items else hitopsr_items
+        items$number <- items[[if (stem == "hitopbr") "HBR" else "HSR"]]
+        scales <- if (stem == "hitopbr") hitopbr_scales else hitopsr_scales
+        stats::setNames(table_means(responses, items, scales),
+                        paste0(if (stem == "hitopbr") "hbr_" else "hsr_", scales$camelCase))
+      }
+    )
+    expect_identical(names(scored), names(expected))
+    expect_equal(unlist(scored[1L, ]), expected)
+  }
 })
 
 # A small two-instrument file: two HiTOP-BR items, then three PID-5-BF items.
