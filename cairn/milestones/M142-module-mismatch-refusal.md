@@ -53,7 +53,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T8: Fix the five review findings marked "fix now". The `unknown_scale` probe asserts on the text of the check itself. `module_unknown_scales()` ignores letter case. `module_subscales()` holds the subscale-item abort for both paths. The module help of the five other functions names the "cannot be rebuilt" refusal. The dead block of `test-module.R` goes. Then run `devtools::check()` and the purled article again.
 - [x] T9: Write the probes first: an object of class `hitop_module` or `hitop_subset` that is not a list, and an empty list of the class. `check_module_build()` refuses a module that is not a list under `hitop_module_mismatch` and names the five fields it lacks.
 - [ ] T10: Write the NEWS clause ledger in a section above Review. It sets each clause of the two NEWS entries against the AC2 to AC4 test that backs it. Cut each clause with no such test, the `(R)` clause among them.
-- [ ] T11: Fix the three pass-2 "fix now" findings. The NEWS Breaking entry says that `write_module()` also compares `instrument`. The Body Focus test asserts on the check's own text. `item_ranges()` prints a range only for a run of whole numbers.
+- [x] T11: Fix the three pass-2 "fix now" findings. The NEWS Breaking entry says that `write_module()` also compares `instrument`. The Body Focus test asserts on the check's own text. `item_ranges()` prints a range only for a run of whole numbers.
 - [ ] T12: Run `devtools::check()` and the purled modules article again.
 
 ## Work log
@@ -88,6 +88,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: resume after return 2. Question gate: Jeff chose to fix the three pass-2 "fix now" findings in this round, and to hold the NEWS clause ledger in a milestone-file section above Review. Minor amendment: T9 to T12 added, Coverage updated.
 - 2026-09-29: branch rewritten with `git filter-branch --index-filter` over origin/main..HEAD, removing `data-raw/HiTOP-DAT.qsf` from each commit. The final tree is unchanged. Commits up to a1190bce keep their hashes. New hashes: c82d1b54→5748537e, d1e0c035→438ee5a1, 948850dc→1a84ef8f, d94cbfc7→88ee3390, 9296fbea→a697c946, ba586169→90583b2f, ed3a0f25→cb6387eb, a08b280e→1fc95ac1, 7c3583cf→7408aa09. The auto-mode classifier refused the deletion of the local `refs/original` backup ref and the `.git/info/exclude` edit, so both wait for Jeff.
 - 2026-09-29: T9 done. `check_module_build()` refuses a module that is not a list under `hitop_module_mismatch` and names the five fields. Four probes join the six-function matrix: a character and an integer object of the two classes, an environment, and an empty list. Before the fix, the first two stopped with a base `$` error and the environment passed. Suite 0 failed, 0 errors.
+- 2026-09-29: T11 done. NEWS says that `write_module()` also compares `instrument`. The Body Focus test reads the check's own text. Plant: with no unknown-scale names, the new assertion fails and the old one still passed. `item_ranges()` ranges whole numbers only. Its new test failed before the fix on "1.5-3.5". Suite 0 failed, 0 errors.
 
 ## Decisions
 

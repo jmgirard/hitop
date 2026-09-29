@@ -306,6 +306,16 @@ test_that("a pair of consecutive items prints as two numbers, a run of three as 
                     class = "hitop_module_mismatch")
   expect_match(conditionMessage(e), "holds items 400, 401, and 403-405 outside",
                fixed = TRUE)
+
+  # Numbers one apart that are not whole numbers are not a run of items, so
+  # each is named.
+  m <- base
+  m$items <- sort(c(m$items, c(1.5, 2.5, 3.5)))
+  m$nItems <- length(m$items)
+  e <- expect_error(write_module(m, withr::local_tempfile(fileext = ".json")),
+                    class = "hitop_module_mismatch")
+  expect_match(conditionMessage(e), "holds items 1.5, 2.5, and 3.5 outside",
+               fixed = TRUE)
 })
 
 test_that("a module saved before a scale rename is refused, not scored without the scale", {
@@ -319,7 +329,10 @@ test_that("a module saved before a scale rename is refused, not scored without t
     score_hitopsr(sim_hitopsr, items = module_items(old), module = old),
     class = "hitop_module_mismatch"
   )
-  expect_true(grepl("Body Focus", conditionMessage(e), fixed = TRUE))
+  # The check's own text, so the parent hitop_module() error, which also names
+  # the scale, cannot pass it.
+  own <- rlang::cnd_message(e, inherit = FALSE)
+  expect_true(grepl("\"Body Focus\"", own, fixed = TRUE))
 })
 
 test_that("every module function accepts a module built by hitop_module() or hitop_subset(), or with double items", {

@@ -628,13 +628,15 @@ check_module_build <- function(module, call = rlang::caller_env()) {
 
 # Internal Helper: item numbers as a cli list that names every one
 #
-# Sorts the numbers and prints a run of three or more consecutive numbers as
-# "a-b"; a pair stays two numbers. The list is never cut, where cli by default
-# shows only 20 elements of a longer list and elides the middle, because a
-# refusal must name each item it blames.
+# Sorts the numbers and prints a run of three or more consecutive whole numbers
+# as "a-b"; a pair stays two numbers, and a number that is not whole is never
+# part of a run. The list is never cut, where cli by default shows only 20
+# elements of a longer list and elides the middle, because a refusal must name
+# each item it blames.
 item_ranges <- function(x) {
   x <- sort(unique(x))
-  run <- cumsum(c(TRUE, diff(x) != 1))
+  whole <- x == round(x)
+  run <- cumsum(c(TRUE, diff(x) != 1 | !whole[-1L] | !whole[-length(x)]))
   shown <- unlist(lapply(split(x, run), function(r) {
     r <- format(r, trim = TRUE, scientific = FALSE, drop0trailing = TRUE)
     if (length(r) >= 3L) paste0(r[[1L]], "-", r[[length(r)]]) else r

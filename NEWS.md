@@ -372,8 +372,8 @@
   with `hitop_module()`, using the current scale names. The
   deprecated `hitop_subset()` class and a module with double `items` are
   accepted as before. `write_module()` already refused a module whose
-  `items` or `nItems` differed. It now also compares `camelCase`, and its
-  refusals carry the class.
+  `items` or `nItems` differed. It now also compares `camelCase` and
+  `instrument`, and its refusals carry the class.
 
 * **`generate_docx_hitopsr()` takes `include_subscales` as `TRUE` or `FALSE`
   only**, as `score_hitopsr()` does. A value such as `1`, which used to add
