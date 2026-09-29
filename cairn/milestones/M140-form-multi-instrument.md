@@ -45,7 +45,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - [x] T2: In `boot()` and `runForm()`, fetch every export, and plan one start screen and one run of pages per instrument. Key the answers by stem and item number, since item numbers repeat across instruments. Keep the page-number labels per instrument. Write the walk tests of AC2.
 - [x] T3: Extend `leadValues()`, `buildCsv()` and `buildRow()` for the cells and groups of AC3. Write the row and file tests.
 - [ ] T4: Extend `storeSql()` for the groups, add the SQL fixture under `tests/fixtures/` with its README line, and write the send tests.
-- [ ] T5: Add the ordered instrument list to link.html, its submit checks, and `prefill()`. Write the builder tests.
+- [x] T5: Add the ordered instrument list to link.html, its submit checks, and `prefill()`. Write the builder tests.
 - [ ] T6: Save the file of AC6 from a walk. Commit it under `tests/testthat/fixtures/` in hitop, with a row in `tests/testthat/fixtures/README.md` that names the hitop-form commit and the command. Write the reader and scoring test.
 - [ ] T7: Write the README section "Give more than one instrument", the article section and the NEWS entry.
 - [ ] T8: Get hitop-form CI green on its PR. Run hitop `check()` and `cairn_validate`.
@@ -60,6 +60,7 @@ A study link's `instruments` field lists two or more instruments. The page gives
 - 2026-09-28: T2 done. `fetchExports()`, `planStems()` and a part per instrument in `runForm()`, with its own answers, start screen ("Part n of N") and pages. The row and file builders take one group per part, so T3's cells are in the same commit. tests/instruments-walk.spec.js has 10 tests. A plant of one shared answer map turned W4 red on its own assertion. Full suite 661 of 662. One question-screens test hit its 15-second wait under 6 workers. It then passed 5 of 5 alone and 60 of 60 with its spec.
 - 2026-09-28: T3 done. tests/instruments-row.spec.js has 10 tests: file and webhook row for two instruments under 4 modes, and three instruments under shuffle. Plants of a "; " group separator (4 red) and a comma-joined `form_build` (10 red) were seen red.
 - 2026-09-28: minor amendment, T5 moves before T4. T4's SQL test compares the builder's SQL, and the builder takes a list only after T5.
+- 2026-09-28: T5 done. link.html has the instrument rows of M140-D1, its list and module checks, the SQL over every export, and the prefill of a `c` or `z` list. tests/link-instruments.spec.js has 21 tests. A plant that skipped the prefill check turned 5 red. The entry wording of `checkInstruments()` changed to "entry 2 is" so the builder can say "instrument 2". Screens checked at 760 and 375 pixels, light and dark, with no sideways scroll.
 
 ## Decisions
 
