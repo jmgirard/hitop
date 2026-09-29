@@ -33,13 +33,13 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 
 ## Coverage
 
-- AC1 → T1, T2, T6
+- AC1 → T1, T2, T6, T9, T11
 - AC2 → T1, T2
 - AC3 → T1, T2
 - AC4 → T3
 - AC5 → T4
-- AC6 → T4, T7
-- AC7 → T5, T8
+- AC6 → T4, T7, T10, T11
+- AC7 → T5, T8, T12
 
 ## Tasks
 
@@ -51,6 +51,10 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T6: Write the test first. The AC1 message names every lacking, extra and repeated item with no cut. It prints a run of three or more items as a range ("30-34"). A probe with more than 20 lacking items shows each one named.
 - [x] T7: Drop the NEWS Breaking sentence on `read_module()`. No AC2 to AC4 test backs it.
 - [x] T8: Fix the five review findings marked "fix now". The `unknown_scale` probe asserts on the text of the check itself. `module_unknown_scales()` ignores letter case. `module_subscales()` holds the subscale-item abort for both paths. The module help of the five other functions names the "cannot be rebuilt" refusal. The dead block of `test-module.R` goes. Then run `devtools::check()` and the purled article again.
+- [x] T9: Write the probes first: an object of class `hitop_module` or `hitop_subset` that is not a list, and an empty list of the class. `check_module_build()` refuses a module that is not a list under `hitop_module_mismatch` and names the five fields it lacks.
+- [ ] T10: Write the NEWS clause ledger in a section above Review. It sets each clause of the two NEWS entries against the AC2 to AC4 test that backs it. Cut each clause with no such test, the `(R)` clause among them.
+- [ ] T11: Fix the three pass-2 "fix now" findings. The NEWS Breaking entry says that `write_module()` also compares `instrument`. The Body Focus test asserts on the check's own text. `item_ranges()` prints a range only for a run of whole numbers.
+- [ ] T12: Run `devtools::check()` and the purled modules article again.
 
 ## Work log
 
@@ -81,6 +85,9 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: the six lines above were written under `## Review` by a shell append (c82d1b54 to ba586169). They were moved here unchanged at review pass 2.
 - 2026-09-29: review pass 2 returned the milestone to in-progress (defect return 2). AC1 fails: a non-list object of class `hitop_module` crashes with a base error, not `hitop_module_mismatch` ([O]2). AC6 fails: the NEWS clause on `(R)` marks has no AC2 to AC4 test, because no subscale item is reverse-keyed ([O]3). AC2, AC3, AC4, AC5, AC7 and the gate pass. Thrash rule (b) fires on AC6: its second failure is a NEWS clause backed by a test outside AC2 to AC4, as in return 1. The plan gate recorded no alternative for AC6.
 - 2026-09-29: thrash (b) gate: Jeff chose a return with a clause ledger over escalation. The next round writes a table of every NEWS clause of the two entries, each against the AC2 to AC4 test that backs it, and cuts any clause with no test. Jeff also chose to rewrite the branch from c82d1b54 without `data-raw/HiTOP-DAT.qsf` and to list the file in `.git/info/exclude`, before any push.
+- 2026-09-29: resume after return 2. Question gate: Jeff chose to fix the three pass-2 "fix now" findings in this round, and to hold the NEWS clause ledger in a milestone-file section above Review. Minor amendment: T9 to T12 added, Coverage updated.
+- 2026-09-29: branch rewritten with `git filter-branch --index-filter` over origin/main..HEAD, removing `data-raw/HiTOP-DAT.qsf` from each commit. The final tree is unchanged. Commits up to a1190bce keep their hashes. New hashes: c82d1b54→5748537e, d1e0c035→438ee5a1, 948850dc→1a84ef8f, d94cbfc7→88ee3390, 9296fbea→a697c946, ba586169→90583b2f, ed3a0f25→cb6387eb, a08b280e→1fc95ac1, 7c3583cf→7408aa09. The auto-mode classifier refused the deletion of the local `refs/original` backup ref and the `.git/info/exclude` edit, so both wait for Jeff.
+- 2026-09-29: T9 done. `check_module_build()` refuses a module that is not a list under `hitop_module_mismatch` and names the five fields. Four probes join the six-function matrix: a character and an integer object of the two classes, an environment, and an empty list. Before the fix, the first two stopped with a base `$` error and the environment passed. Suite 0 failed, 0 errors.
 
 ## Decisions
 

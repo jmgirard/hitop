@@ -114,14 +114,36 @@ mismatch_probes <- list(
     },
     pattern = "Its instrument field",
     absent = c("wrong instrument", "Its items field", "nItems")
+  ),
+  # An object of the class that is not a list has no fields to rebuild from;
+  # found by review pass 2, where it stopped with a base `$` error.
+  not_a_list = list(
+    edit = function(m) structure("a", class = "hitop_module"),
+    pattern = c("not a list", "instrument", "scales", "items", "nItems",
+                "camelCase"),
+    absent = "Cannot rebuild"
+  ),
+  not_a_list_subset = list(
+    edit = function(m) structure(1:3, class = "hitop_subset"),
+    pattern = "not a list", absent = "Cannot rebuild"
+  ),
+  environment = list(
+    edit = function(m) structure(list2env(unclass(m)), class = "hitop_module"),
+    pattern = "not a list", absent = "Cannot rebuild"
+  ),
+  no_fields = list(
+    edit = function(m) structure(list(), class = "hitop_module"),
+    pattern = "Cannot rebuild", absent = "not a list", parent = TRUE
   )
 )
 
 # One runner per function that takes a module. A runner calls the function on
 # `m` inside a fresh directory and returns the paths the call may write, so a
 # refusal can be shown to leave none of them behind. `descriptor` is ignored by
-# the functions that write no descriptor.
-module_items <- function(m) as.integer(m$items)
+# the functions that write no descriptor. A probe that is not a list has no
+# `items`, so the scoring runners pass three columns, which the refusal comes
+# before.
+module_items <- function(m) if (is.list(m)) as.integer(m$items) else 1:3
 
 generator_runner <- function(generate, ext) {
   function(m, dir, descriptor = FALSE) {
