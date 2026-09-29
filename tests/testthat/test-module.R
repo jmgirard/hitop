@@ -156,7 +156,7 @@ test_that("module_engine_inputs() covers every module column exactly once", {
   expect_equal(pos, seq_len(s$nItems))
 })
 
-test_that("module_engine_inputs() rejects a non-module and a wrong instrument", {
+test_that("module_engine_inputs() rejects a non-module, and a module of another instrument as one it cannot rebuild", {
   expect_error(
     module_engine_inputs(
       list(items = 1), "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"

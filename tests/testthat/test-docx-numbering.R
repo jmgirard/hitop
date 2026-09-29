@@ -392,8 +392,15 @@ expect_module_subscale_rows <- function(m, parents, renumber = TRUE,
     file = f, module = m, include_subscales = TRUE,
     renumber = renumber, randomize = randomize
   ))
+  # The expected cells below are read through the returned order, so first pin
+  # that order to this page: reading the item texts back through it must
+  # reproduce the printed items.
+  order <- attr(out, "item_order")
+  items <- expected_rows(m)
+  expect_equal(items$Text[match(order, items$HSR)], docx_item_rows(f)$text)
+
   printed <- column_order(docx_scoring_rows(f))
-  want <- expected_subscale_cells(parents, attr(out, "item_order"), renumber)
+  want <- expected_subscale_cells(parents, order, renumber)
 
   # One row per scale and per subscale of a held parent, and no other row,
   # sorted by name as the full form sorts them.

@@ -235,7 +235,7 @@ test_that("reliability_hitopsr(module=) gives the full run's alpha for its scale
   expect_equal(part, full[match(part$Scale, full$Scale), ], ignore_attr = "row.names")
 })
 
-test_that("the module argument's three error paths blame the exported wrapper", {
+test_that("a non-module, an unbuildable module and a wrong item count each blame the exported wrapper", {
   s <- hitop_module("hitopsr", "agoraphobia")
   dat <- sim_hitopsr[s$items]
 

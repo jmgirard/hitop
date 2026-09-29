@@ -145,12 +145,16 @@ mismatch_probes <- list(
 # refusal comes before.
 module_items <- function(m) if (is.list(m)) as.integer(m$items) else 1:3
 
-generator_runner <- function(generate, ext) {
+# The generator is called by its exported name, not through a local alias, so
+# the call a refusal blames reads as the caller wrote it.
+generator_runner <- function(name, ext) {
   function(m, dir, descriptor = FALSE) {
     f <- file.path(dir, paste0("form", ext))
     d <- if (descriptor) file.path(dir, "module.json")
     list(
-      run = function() generate(file = f, module = m, descriptor = d),
+      run = function() {
+        eval(rlang::call2(name, file = f, module = m, descriptor = d))
+      },
       paths = c(f, d)
     )
   }
@@ -181,15 +185,22 @@ module_runners <- list(
       paths = NULL
     )
   },
-  generate_docx_hitopsr = generator_runner(generate_docx_hitopsr, ".docx"),
+  generate_docx_hitopsr = generator_runner("generate_docx_hitopsr", ".docx"),
   generate_qualtrics_hitopsr =
-    generator_runner(generate_qualtrics_hitopsr, ".txt"),
-  generate_redcap_hitopsr = generator_runner(generate_redcap_hitopsr, ".zip")
+    generator_runner("generate_qualtrics_hitopsr", ".txt"),
+  generate_redcap_hitopsr =
+    generator_runner("generate_redcap_hitopsr", ".zip")
 )
 
-expect_mismatch <- function(run, probe, info) {
+expect_mismatch <- function(run, probe, info, fn) {
   e <- tryCatch(run(), error = identity)
   expect_s3_class(e, "hitop_module_mismatch")
+  # The refusal blames the exported function the caller called, not a helper.
+  call <- if (inherits(e, "condition")) conditionCall(e)
+  expect_identical(
+    if (is.call(call)) rlang::call_name(call) else NA_character_, fn,
+    info = paste(info, "blames")
+  )
   # The refusal's own text, without its parent's, so a probe whose parent is
   # the hitop_module() error cannot pass on what that error says.
   msg <- rlang::cnd_message(e, inherit = FALSE)
@@ -216,7 +227,7 @@ test_that("every module function refuses a module edited by hand, naming the fau
         dir <- withr::local_tempdir()
         r <- module_runners[[fn]](probe$edit(base), dir, descriptor = desc)
         info <- paste(fn, name, if (desc) "with descriptor" else "")
-        expect_mismatch(r$run, probe, info)
+        expect_mismatch(r$run, probe, info, fn)
         for (p in r$paths) {
           expect_false(file.exists(p), info = paste(info, "wrote", p))
         }
@@ -316,6 +327,16 @@ test_that("a pair of consecutive items prints as two numbers, a run of three as 
                     class = "hitop_module_mismatch")
   expect_match(conditionMessage(e), "holds items 1.5, 2.5, and 3.5 outside",
                fixed = TRUE)
+
+  # An item a hair off a whole number is named as it is, not rounded to the
+  # item it replaced, which would read as lacking and holding the same item.
+  m <- base
+  m$items[m$items == 7L] <- 7 + 1e-9
+  e <- expect_error(write_module(m, withr::local_tempfile(fileext = ".json")),
+                    class = "hitop_module_mismatch")
+  expect_match(conditionMessage(e), "holds item 7.000000001 outside",
+               fixed = TRUE)
+  expect_match(conditionMessage(e), "lacks item 7,", fixed = TRUE)
 })
 
 test_that("a module saved before a scale rename is refused, not scored without the scale", {
@@ -394,7 +415,7 @@ test_that("with subscales, scoring refuses a module lacking a parent-scale item,
                               include_subscales = TRUE)
         }
       )
-      e <- expect_mismatch(run, lacking[[name]], paste(fn, name))
+      e <- expect_mismatch(run, lacking[[name]], paste(fn, name), fn)
       expect_false(
         grepl("Internal error", conditionMessage(e), fixed = TRUE),
         info = paste(fn, name)
