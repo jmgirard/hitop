@@ -201,6 +201,70 @@ test_that("every module function refuses a module edited by hand, naming the fau
   }
 })
 
+# The item numbers one bullet of the refusal names, with each "a-b" range
+# expanded, read from the text "<lead> item(s) <list><tail>".
+named_items <- function(msg, lead, tail) {
+  line <- regmatches(msg, regexpr(paste0(lead, " items? .*?", tail), msg))
+  list_text <- sub(paste0("^", lead, " items? "), "", sub(paste0(tail, "$"), "", line))
+  tokens <- strsplit(list_text, ",? and |, ")[[1]]
+  ranges <- grepl("-", tokens, fixed = TRUE)
+  expanded <- lapply(tokens, function(t) {
+    ends <- as.numeric(strsplit(t, "-", fixed = TRUE)[[1]])
+    if (length(ends) == 2L) seq(ends[[1]], ends[[2]]) else ends
+  })
+  list(items = unlist(expanded), n_ranges = sum(ranges))
+}
+
+test_that("the refusal names every lacking or extra item, however many, with runs as ranges", {
+  withr::local_options(cli.width = 10000)
+  # Ten scales cover 51 items, so a module cut to three lacks 48, more than
+  # the 20 a cli list shows before it cuts.
+  full <- hitop_module("hitopsr", scales = hitopsr_scales$camelCase[1:10])
+  cut <- full
+  cut$items <- full$items[1:3]
+  cut$nItems <- 3L
+  lacking <- setdiff(full$items, cut$items)
+  expect_gt(length(lacking), 20L)
+
+  e <- expect_error(
+    score_hitopsr(sim_hitopsr, items = module_items(cut), module = cut),
+    class = "hitop_module_mismatch"
+  )
+  msg <- conditionMessage(e)
+  expect_false(grepl("…", msg, fixed = TRUE))
+  named <- named_items(msg, "lacks", ", which its scales cover")
+  expect_setequal(named$items, lacking)
+  expect_length(named$items, length(lacking))
+  # Some lacking items are consecutive, so the list holds at least one range.
+  expect_gt(named$n_ranges, 0L)
+
+  # The extra items the same way: 25 items no scale of the module covers.
+  outside <- setdiff(seq_len(405L), full$items)[1:25]
+  padded <- full
+  padded$items <- sort(c(full$items, outside))
+  padded$nItems <- length(padded$items)
+  e <- expect_error(write_module(padded, withr::local_tempfile(fileext = ".json")),
+                    class = "hitop_module_mismatch")
+  named <- named_items(conditionMessage(e), "holds", " outside its scales")
+  expect_setequal(named$items, outside)
+  expect_length(named$items, length(outside))
+  expect_gt(named$n_ranges, 0L)
+})
+
+test_that("a pair of consecutive items prints as two numbers, a run of three as a range", {
+  withr::local_options(cli.width = 10000)
+  base <- probe_base()
+  # Extra items 400 and 401 are a pair and 403 to 405 a run of three. No scale
+  # of the base module covers any of them.
+  m <- base
+  m$items <- sort(c(m$items, c(400L, 401L, 403L, 404L, 405L)))
+  m$nItems <- length(m$items)
+  e <- expect_error(write_module(m, withr::local_tempfile(fileext = ".json")),
+                    class = "hitop_module_mismatch")
+  expect_match(conditionMessage(e), "holds items 400, 401, and 403-405 outside",
+               fixed = TRUE)
+})
+
 test_that("a module saved before a scale rename is refused, not scored without the scale", {
   # Appearance Focus was named Body Focus; a module saved under the old name
   # carries the old display name and stem.

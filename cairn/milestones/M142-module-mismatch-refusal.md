@@ -33,13 +33,13 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 
 ## Coverage
 
-- AC1 → T1, T2
+- AC1 → T1, T2, T6
 - AC2 → T1, T2
 - AC3 → T1, T2
 - AC4 → T3
 - AC5 → T4
-- AC6 → T4
-- AC7 → T5
+- AC6 → T4, T7
+- AC7 → T5, T8
 
 ## Tasks
 
@@ -48,6 +48,9 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - [x] T3: Write the AC4 tests first. Replace the refusal test at `tests/testthat/test-generate_docx.R:173-191` and the comment at `tests/testthat/test-docx-numbering.R:328-336`. Then remove the refusal at `R/generate_docx.R:230-239` and add `validate_flag(include_subscales)`. Choose the in-module subscales through one helper that `add_hitopsr_subscales()` shares.
 - [x] T4: Update the `module` help of the six functions to name the class. Update the `include_subscales` and `module` help of `generate_docx_hitopsr()`, the `remap_itemdata()` comment (`R/generate_docx.R:388-391`), and the article paragraph (`vignettes/articles/modules-hitopsr.Rmd:110-113`). Change `tests/testthat/test-module-doc-prose.R:158-163` to assert the new article statement. Run `devtools::document()`, run the AC5 search and read each hit, and write the two NEWS entries.
 - [x] T5: Run `devtools::check()`. Purl the modules article and run it after `devtools::load_all()` (LESSONS, M115 and M096).
+- [x] T6: Write the test first. The AC1 message names every lacking, extra and repeated item with no cut. It prints a run of three or more items as a range ("30-34"). A probe with more than 20 lacking items shows each one named.
+- [ ] T7: Drop the NEWS Breaking sentence on `read_module()`. No AC2 to AC4 test backs it.
+- [ ] T8: Fix the five review findings marked "fix now". The `unknown_scale` probe asserts on the text of the check itself. `module_unknown_scales()` ignores letter case. `module_subscales()` holds the subscale-item abort for both paths. The module help of the five other functions names the "cannot be rebuilt" refusal. The dead block of `test-module.R` goes. Then run `devtools::check()` and the purled article again.
 
 ## Work log
 
@@ -68,6 +71,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: claim audit: 58 claims read, 7 corrected — NEWS.md, R/module.R, tests/testthat/test-module-mismatch.R, tests/testthat/test-module.R, tests/testthat/test-reliability.R, R/{score,reliability}_hitopsr.R, R/generate_{docx,qualtrics,redcap}.R, R/module_file.R. Pass found 4 overstated claims plus an unlisted break (`include_subscales = 1` on a full form, now its own Breaking entry). The re-read found an `instrument` in another letter case still escaping the class (M142-D1). Code fixes: `check_module_build()` now runs before the instrument assert and compares `instrument`; probes `instrument` and `instrument_case` added; two old "wrong instrument" tests re-pointed. Suite 0 failed, 0 errors.
 - 2026-09-29: T5 done. Final `devtools::check()` on 521323a6's tree: 0 errors, 0 warnings, 0 notes. Status set to review.
 - 2026-09-29: review pass 1 returned the milestone to in-progress (defect return 1). AC1 fails: cli cuts a list of more than 20 lacking or extra items, so the message does not name them all. AC6 fails: the NEWS Breaking entry's `read_module()` sentence is backed by no AC2 to AC4 test. AC2, AC3, AC4, AC5, AC7 and the gate pass. Thirteen further findings wait for triage at the next review gate (Review section).
+- 2026-09-29: resume after return 1. Question gate: Jeff chose number ranges over a full list (AC1), a dropped `read_module()` NEWS sentence over a new test (AC6), and a fix of the five "fix now" findings now. Minor amendment: T6, T7 and T8 added, Coverage updated.
 
 ## Decisions
 
@@ -106,3 +110,4 @@ Independent review, three fresh-context lenses. Findings are most severe first, 
 - [O]10: the AC2 loop repeats the non-generator probes with `descriptor = TRUE`. Recommend reject (harmless).
 - [S-prior]3: an odd line break in the `add_hitopsr_subscales()` comment. Recommend reject (cosmetic).
 - No conflicts: [S-blame] found none with D-066(b), D-039(c), D-034(b/c), M141 or M055/M108. [S-prior] found no PR comments, and no archived finding of M024, M043, M046, M067, M107, M108 or M141 regressed.
+- 2026-09-29: T6 done. `item_ranges()` in `R/module.R` sorts the lacking, extra and repeated items, prints runs of three or more as "a-b", and turns off the cut of 20. The unknown-scale list is not cut either. Two new tests: 48 lacking and 25 extra items each named in full, and a pair against a run of three. Before the fix they failed on the cut list. Suite 0 failed, 0 errors.

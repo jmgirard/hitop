@@ -504,7 +504,10 @@ check_module_build <- function(module, call = rlang::caller_env()) {
   rebuilt <- rlang::try_fetch(
     hitop_module(instrument = module$instrument, scales = module$scales),
     error = function(cnd) {
-      unknown <- module_unknown_scales(module)
+      unknown <- cli::cli_vec(
+        module_unknown_scales(module),
+        style = list("vec-trunc" = Inf)
+      )
       cli::cli_abort(
         c(
           "Cannot rebuild the {.arg module} argument from its \\
@@ -543,17 +546,22 @@ check_module_build <- function(module, call = rlang::caller_env()) {
         faults <- c(faults, x = "Its items field holds a missing value.")
       }
       if (length(lacking) > 0L) {
+        lacking_shown <- item_ranges(lacking)
         faults <- c(faults, x = "Its items field lacks \\
-          {cli::qty(length(lacking))}item{?s} {lacking}, which its scales \\
-          cover.")
+          {cli::qty(length(lacking))}item{?s} {lacking_shown}, which its \\
+          scales cover.")
       }
       if (length(extra) > 0L) {
+        extra_shown <- item_ranges(extra)
         faults <- c(faults, x = "Its items field holds \\
-          {cli::qty(length(extra))}item{?s} {extra} outside its scales.")
+          {cli::qty(length(extra))}item{?s} {extra_shown} outside its \\
+          scales.")
       }
       if (length(repeated) > 0L) {
+        repeated_shown <- item_ranges(repeated)
         faults <- c(faults, x = "Its items field holds \\
-          {cli::qty(length(repeated))}item{?s} {repeated} more than once.")
+          {cli::qty(length(repeated))}item{?s} {repeated_shown} more than \\
+          once.")
       }
     }
   }
@@ -593,6 +601,21 @@ check_module_build <- function(module, call = rlang::caller_env()) {
     )
   }
   rebuilt
+}
+
+# Internal Helper: item numbers as a cli list that names every one
+#
+# Sorts the numbers and prints a run of three or more consecutive numbers as
+# "a-b"; a pair stays two numbers. The list is never cut, where cli by default
+# shows 20 elements, because a refusal must name each item it blames.
+item_ranges <- function(x) {
+  x <- sort(unique(x))
+  run <- cumsum(c(TRUE, diff(x) != 1))
+  shown <- unlist(lapply(split(x, run), function(r) {
+    r <- format(r, trim = TRUE, scientific = FALSE, drop0trailing = TRUE)
+    if (length(r) >= 3L) paste0(r[[1L]], "-", r[[length(r)]]) else r
+  }), use.names = FALSE)
+  cli::cli_vec(shown, style = list("vec-trunc" = Inf))
 }
 
 # Internal Helper: the names in a module's `scales` its instrument lacks
