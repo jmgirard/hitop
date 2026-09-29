@@ -1,6 +1,6 @@
 # M141: HiTOP-SR scoring can include the 17 subscales on request
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -44,7 +44,7 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 - [x] T1: Transcribe the 17 subscales' item numbers into the test from `HiTOP-SR-Final.xlsx`. Cite its "HiTOP-SR items by scale" sheet in a comment. Write the AC1, AC2, AC3 and AC6 tests and the dedicated fixture first. Then add `include_subscales` to `score_hitopsr()`, validated with `validate_flag()`. Extend `hitopsr_engine_inputs()` (`R/module.R:268`) so that the full and module paths append the subscale item lists.
 - [x] T2: Write the AC4 and AC6 tests first in `tests/testthat/test-reliability.R`. Then add `include_subscales` to `reliability_hitopsr()`, with the subscale names and stems passed to `reliability_engine()`.
 - [x] T3: Extend `label_hitopsr()` (`R/label_hitopsr.R:73`) to label subscale columns. Add the `interval_hitopsr()` subscale test. Rewrite the `interval_hitopsr()` Description and the `label_hitopsr()` `prefix` text (AC5).
-- [ ] T4: Write roxygen for both arguments and run `document()`. Add the NEWS entry, which also says that the abbreviation `i =` for `items` no longer works (LESSONS, M043). Add the vignette call and the DESIGN signature lines. Run `check()` on the branch and on `main` and compare the notes (AC7).
+- [x] T4: Write roxygen for both arguments and run `document()`. Add the NEWS entry, which also says that the abbreviation `i =` for `items` no longer works (LESSONS, M043). Add the vignette call and the DESIGN signature lines. Run `check()` on the branch and on `main` and compare the notes (AC7).
 
 ## Work log
 
@@ -58,6 +58,9 @@ A researcher can get HiTOP-SR subscale scores and subscale reliabilities by sett
 - 2026-09-29: T1 done. The workbook sheet lists pool IDs, so the test places each subscale item at its HiTOP-SR number by item text; all 17 sets equal `hitopsr_subscales`. Two planted defects (no module filter, shifted item numbers) turned the new tests red. `devtools::test()` 0 failures.
 - 2026-09-29: T2 done. `reliability_hitopsr()` takes `include_subscales`. The subscale key moved to `helper-fixtures.R` so both test files share it. `devtools::test()` 0 failures.
 - 2026-09-29: T3 done. `label_hitopsr()` labels subscale columns, and its new test failed before the change. The `interval_hitopsr()` subscale test passed with no code change. Both help texts are rewritten. `devtools::test()` 0 failures.
+- 2026-09-29: T4 done. NEWS entry, vignette "Subscales" section and DESIGN signature line added. `i =` was observed to fail on both functions and `it =` still works. `devtools::check()` gave 0 errors, 0 warnings, 0 notes on the branch and on `main`.
+- claim audit: 41 claims read, 0 corrected — NEWS.md, R/score_hitopsr.R, R/reliability_hitopsr.R, R/interval_hitopsr.R, R/label_hitopsr.R, R/module.R, vignettes/hitopsr_scoring.Rmd, tests/testthat/helper-fixtures.R and four test files
+- 2026-09-29: implement complete, status set to review.
 
 ## Decisions
 
