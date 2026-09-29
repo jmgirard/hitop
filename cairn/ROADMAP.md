@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M142 | HiTOP-SR module functions refuse a module whose items do not match its scales | planned | — | normal | milestones/M142-module-mismatch-refusal.md |
+| M142 | HiTOP-SR module functions refuse a module whose items do not match its scales | in-progress | — | normal | milestones/M142-module-mismatch-refusal.md |
 | M141 | HiTOP-SR scoring can include the 17 subscales on request | done | — | normal | milestones/archive/M141-hitopsr-subscale-scoring.md |
 | M139 | read_form_responses() reads a file whose item columns span two or more instruments | done | M136 | normal | milestones/archive/M139-form-reader-multi-instrument.md |
 | M140 | A study link can field two or more instruments in one hitop-form session | done | M137, M139 | normal | milestones/archive/M140-form-multi-instrument.md |

@@ -480,6 +480,120 @@ is_module <- function(x) {
   inherits(x, c("hitop_module", "hitop_subset"))
 }
 
+# Internal Helper: refuse a module that is not the build of its own scales
+#
+# A module is a plain list, so its fields can be edited by hand. Every function
+# that takes one rebuilds it with hitop_module() from its `instrument` and
+# `scales` and compares the fields the consumers read: `items` (by value and in
+# order), `nItems` and `camelCase` (D-081). By value, so a module saved before
+# item numbers were integers, whose `items` are doubles, still passes. Every
+# refusal carries the public class `hitop_module_mismatch`. Returns the rebuild,
+# which write_module() writes.
+check_module_build <- function(module, call = rlang::caller_env()) {
+  rebuilt <- rlang::try_fetch(
+    hitop_module(instrument = module$instrument, scales = module$scales),
+    error = function(cnd) {
+      unknown <- module_unknown_scales(module)
+      cli::cli_abort(
+        c(
+          "Cannot rebuild the {.arg module} argument from its \\
+           {.field instrument} and {.field scales}.",
+          if (length(unknown) > 0L) {
+            c(x = "Its scales field names {cli::qty(length(unknown))}{?an/} unknown \\
+                   scale{?s}: {.val {unknown}}.")
+          },
+          i = "Build the module with {.code hitop_module()}."
+        ),
+        parent = cnd,
+        class = "hitop_module_mismatch",
+        call = call
+      )
+    }
+  )
+
+  faults <- character()
+  items <- module$items
+  numeric_items <- is.numeric(items)
+  items_ok <- numeric_items &&
+    length(items) == length(rebuilt$items) &&
+    !anyNA(items) &&
+    all(items == rebuilt$items)
+  if (!items_ok) {
+    faults <- c(faults, x = "Its items field is not the {rebuilt$nItems} item \\
+      number{?s} its scales cover, in ascending order.")
+    if (!numeric_items) {
+      faults <- c(faults, x = "Its items field is not a vector of numbers.")
+    } else {
+      present <- items[!is.na(items)]
+      lacking <- setdiff(rebuilt$items, present)
+      extra <- setdiff(present, rebuilt$items)
+      repeated <- unique(present[duplicated(present)])
+      if (anyNA(items)) {
+        faults <- c(faults, x = "Its items field holds a missing value.")
+      }
+      if (length(lacking) > 0L) {
+        faults <- c(faults, x = "Its items field lacks \\
+          {cli::qty(length(lacking))}item{?s} {lacking}, which its scales \\
+          cover.")
+      }
+      if (length(extra) > 0L) {
+        faults <- c(faults, x = "Its items field holds \\
+          {cli::qty(length(extra))}item{?s} {extra} outside its scales.")
+      }
+      if (length(repeated) > 0L) {
+        faults <- c(faults, x = "Its items field holds \\
+          {cli::qty(length(repeated))}item{?s} {repeated} more than once.")
+      }
+    }
+  }
+
+  n_items <- module$nItems
+  n_ok <- is.numeric(n_items) &&
+    length(n_items) == 1L &&
+    !is.na(n_items) &&
+    n_items == rebuilt$nItems
+  if (!n_ok) {
+    faults <- c(faults, x = "Its nItems field is not {rebuilt$nItems}, the \\
+      number of items its scales cover.")
+  }
+
+  # Compared exactly: the consumers choose scales by these names.
+  if (!identical(module$camelCase, rebuilt$camelCase)) {
+    faults <- c(faults, x = "Its camelCase field is not \\
+      {.val {rebuilt$camelCase}}, the names of its scales.")
+  }
+
+  if (length(faults) > 0L) {
+    cli::cli_abort(
+      c(
+        "The {.arg module} argument does not match its {.field scales}.",
+        faults,
+        i = "Build the module with {.code hitop_module()}."
+      ),
+      class = "hitop_module_mismatch",
+      call = call
+    )
+  }
+  rebuilt
+}
+
+# Internal Helper: the names in a module's `scales` its instrument lacks
+#
+# Only for the refusal message above; empty when the instrument itself is not
+# one the module API supports, since then no scale table can be consulted.
+module_unknown_scales <- function(module) {
+  tables <- module_scale_tables()
+  instrument <- module$instrument
+  scales <- module$scales
+  if (!is.character(instrument) || length(instrument) != 1L ||
+      !instrument %in% names(tables) || !is.character(scales)) {
+    return(character())
+  }
+  ref <- tables[[instrument]]
+  known <- c(tolower(ref$Scale), tolower(ref$camelCase))
+  unique(scales[!is.na(scales) & !tolower(scales) %in% known])
+}
+
 # Internal Helper: the scale table backing each instrument the module API supports
 #
 # The single source of the supported set. validate_module_instrument() derives

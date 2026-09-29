@@ -2,14 +2,14 @@
      section ownership". A phase skill never rewrites another phase's section. -->
 # M142: HiTOP-SR module functions refuse a module whose items do not match its scales
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP2, GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — six exported functions refuse a new input, and the Word form gains subscale rows
-- **Branch/PR:** —
+- **Branch/PR:** m142-module-mismatch-refusal
 
 ## Goal
 
@@ -43,7 +43,7 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 
 ## Tasks
 
-- [ ] T1: Write the AC2 probe tests and the AC3 accept tests for `write_module()` first. Then move its rebuild comparison (`R/module_file.R:154-200`) into one helper in `R/module.R`. The helper adds the `camelCase` comparison, the item naming and the class that AC1 states. `write_module()` calls the helper before it opens the path. Keep the "Cannot rebuild" test at `tests/testthat/test-module_file.R:657` passing or move it to the new class.
+- [x] T1: Write the AC2 probe tests and the AC3 accept tests for `write_module()` first. Then move its rebuild comparison (`R/module_file.R:154-200`) into one helper in `R/module.R`. The helper adds the `camelCase` comparison, the item naming and the class that AC1 states. `write_module()` calls the helper before it opens the path. Keep the "Cannot rebuild" test at `tests/testthat/test-module_file.R:657` passing or move it to the new class.
 - [ ] T2: Write the AC2 and AC3 tests for the other five functions first, with both `descriptor` modes for the generators. Then call the helper from `module_engine_inputs()` (`R/module.R:195`) and `apply_module()` (`R/module.R:146`), before any file is opened. Correct the invariant comments at `R/module.R:191-193` and in `add_hitopsr_subscales()`.
 - [ ] T3: Write the AC4 tests first. Replace the refusal test at `tests/testthat/test-generate_docx.R:173-191` and the comment at `tests/testthat/test-docx-numbering.R:328-336`. Then remove the refusal at `R/generate_docx.R:230-239` and add `validate_flag(include_subscales)`. Choose the in-module subscales through one helper that `add_hitopsr_subscales()` shares.
 - [ ] T4: Update the `module` help of the six functions to name the class. Update the `include_subscales` and `module` help of `generate_docx_hitopsr()`, the `remap_itemdata()` comment (`R/generate_docx.R:388-391`), and the article paragraph (`vignettes/articles/modules-hitopsr.Rmd:110-113`). Change `tests/testthat/test-module-doc-prose.R:158-163` to assert the new article statement. Run `devtools::document()`, run the AC5 search and read each hit, and write the two NEWS entries.
@@ -57,6 +57,8 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: plan gate chose to compare `camelCase` too over `items` and `nItems` only, because the consumers choose scales by `camelCase`; falsified by a consumer that selects scales by another field.
 - 2026-09-29: plan gate chose the public class `hitop_module_mismatch` over an unclassed refusal like the one in `write_module()`; falsified by no caller ever catching it and the class costing a rename.
 - 2026-09-29: plan gate chose an immediate refusal under Breaking changes over a one-release warning, because the old behavior gave wrong scores (pre-1.0 waiver, D-081); falsified by a user report of a study that relied on scoring an edited module.
+- 2026-09-29: implement started on m142-module-mismatch-refusal. Question gate skipped: the plan left no implementation choice open.
+- 2026-09-29: T1 done. `check_module_build()` in `R/module.R` holds the rebuild comparison, adds `camelCase` and the class, and names lacking, extra and repeated items and unknown scales. `write_module()` calls it. New `test-module-mismatch.R` runs the 11 probes and 3 accepted kinds over `write_module()`. Suite 0 failed, 0 errors.
 
 ## Decisions
 
