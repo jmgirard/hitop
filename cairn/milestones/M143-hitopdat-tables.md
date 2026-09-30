@@ -77,6 +77,7 @@ The package ships the 382 HiTOP-DAT items, their answer options, their scales an
 - re-audit: AC3 (full) — 9 findings on the draft "authors' IDAS-II item key" wording: MeasureItem mapping, text-match scope and rule, key versus Table 1 precedence, General Depression count, crosswalk names, T6 plants, "published" for a sent key, a blocked-or-split stop, and the test-file sentence as an instrument property.
 - re-audit: AC4 (full) — 2 findings: the new key needs identifying fields (URL or sender, sha256, date received), and Scope and T1 still name Watson et al. (2012) as the IDAS-II key.
 - 2026-09-29: T2 done. `data-raw/hitopdat_info.R` builds 382 items and 13 answer sets from the file. IDAS-II item 99 is the one allowed grade defect. Item text collapses the file's hard wraps to spaces. CAT-PD item 194 takes "someone" from the IPIP key where the file cuts it to "someon". `devtools::test()` passes (0 failed).
+- 2026-09-29: T3 in part. The script builds `hitopdat_scales` (57 rows) from the file's score categories, with names from the manual's 57 definitions (pp. 21-26), and writes the file's memberships to `data-raw/hitopdat_scale_items.csv`. The 33 CAT-PD facets equal the IPIP key in items and reverse keys, and the five totals hold their measure's items. The 18 IDAS-II counts equal Watson et al. (2012, Table 1). IDAS-II membership waits for the authors' key.
 
 ## Decisions
 

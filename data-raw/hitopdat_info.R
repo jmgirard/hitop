@@ -219,6 +219,38 @@ if (file.exists(qsf_path)) {
 
   readr::write_csv(items, "data-raw/hitopdat_items.csv")
   readr::write_csv(choices, "data-raw/hitopdat_choices.csv")
+
+  ## The file's scale memberships: one row per item a scoring category grades.
+  ## A category grading the labels in falling order reverses the item. The
+  ## "Skipped" counters, and the categories the file grades but does not define
+  ## (two on every CAPE item), are left out.
+  scoring <- elements[[which(kinds == "SCO")]]$Payload
+  categories <- data.frame(
+    ID = vapply(scoring$ScoringCategories, `[[`, "", "ID"),
+    Category = vapply(scoring$ScoringCategories, `[[`, "", "Name")
+  )
+  categories <- categories[!grepl("skipped", categories$Category,
+                                  ignore.case = TRUE), ]
+  memberships <- do.call(rbind, lapply(seq_along(item_rows), function(i) {
+    row <- item_rows[[i]]
+    ids <- row$answer_ids[row$labels != "Skip"]
+    do.call(rbind, lapply(seq_len(nrow(categories)), function(k) {
+      s <- vapply(ids, function(a) {
+        g <- row$grades[[a]][[categories$ID[k]]]
+        if (is.null(g)) NA_integer_ else as.integer(g)
+      }, 1L, USE.NAMES = FALSE)
+      if (length(unique(s[!is.na(s)])) < 2) return(NULL)
+      data.frame(
+        Category = categories$Category[k],
+        Item = i,
+        Reverse = is.unsorted(s, na.rm = TRUE)
+      )
+    }))
+  }))
+  memberships <- memberships[
+    order(match(memberships$Category, categories$Category), memberships$Item),
+  ]
+  readr::write_csv(memberships, "data-raw/hitopdat_scale_items.csv")
 }
 
 ## Item and response values are read as integers, never guessed and coerced
@@ -242,5 +274,121 @@ hitopdat_choices <- readr::read_csv(
   )
 )
 usethis::use_data(hitopdat_choices, overwrite = TRUE)
+
+## HiTOP-DAT Scales
+## One row per scale the file scores. The file's own category names and their
+## memberships are in `data-raw/hitopdat_scale_items.csv`. `Scale` is the name of
+## the matching scale definition in the DAT manual (2021, pp. 21-26), and the
+## crosswalk below maps each file category to it. The file's spellings that
+## differ are listed in cairn/SOURCES.md, "HiTOP-DAT".
+dat_scale_names <- c(
+  "WHODAS" = "WHODAS",
+  "IDAS - General Depression" = "General Depression",
+  "IDAS - Dysphoria" = "Dysphoria",
+  "IDAS - Lassitude" = "Lassitude",
+  "IDAS - Insomnia" = "Insomnia",
+  "IDAS - Sucidality" = "Suicidality",
+  "IDAS - Appetite Loss" = "Appetite Loss",
+  "IDAS - Appetite Gain" = "Appetite Gain",
+  "IDAS - Well-Being" = "Well-Being",
+  "IDAS - Ill Temper" = "Ill Temper",
+  "IDAS - Mania" = "Mania",
+  "IDAS - Euphoria" = "Euphoria",
+  "IDAS - Panic" = "Panic",
+  "IDAS - Social Anxiety" = "Social Anxiety",
+  "IDAS - Claustraphobia" = "Claustrophobia",
+  "IDAS - Traumatic Intrusions" = "Traumatic Intrusions",
+  "IDAS - Traumatic Avoidance" = "Traumatic Avoidance",
+  "IDAS - Checking" = "Checking",
+  "IDAS - Ordering" = "Ordering",
+  "IDAS - Cleaning" = "Cleaning",
+  "AUDIT" = "Alcohol Use",
+  "DUDIT" = "Drug Use",
+  "CAPE - Positive" = "Positive Symptoms",
+  "CAT - Affective Liability" = "Affective Lability",
+  "CAT - Anger" = "Anger",
+  "CAT - Anhedonia" = "Anhedonia",
+  "CAT - Anxiousness" = "Anxiousness",
+  "CAT - Callousness" = "Callousness",
+  "CAT - Cognitive Problems" = "Cognitive Problems",
+  "CAT - Depressiveness" = "Depressiveness",
+  "CAT - Domineering" = "Domineering",
+  "CAT - Emotional Detachment" = "Emotional Detachment",
+  "CAT - Exhibitionism" = "Exhibitionism",
+  "CAT - Fantasy Proneness" = "Fantasy Proneness",
+  "CAT - Grandiosity" = "Grandiosity",
+  "CAT - Health Anxiety" = "Health Anxiety",
+  "CAT - Hostile Aggression" = "Hostile Aggression",
+  "CAT - Irresponsibility" = "Irresponsibility",
+  "CAT - Manipulativeness" = "Manipulativeness",
+  "CAT - Mistrust" = "Mistrust",
+  "CAT - Non-Perserverance" = "Non-Perseverance",
+  "CAT - Non-Planfulness" = "Non-Premeditation",
+  "CAT - Norm Violation" = "Norm Violation",
+  "CAT - Peculiarity" = "Peculiarity",
+  "CAT - Perfectionism" = "Perfectionism",
+  "CAT - Relationship Insecurity" = "Relationship Insecurity",
+  "CAT - Rigidity" = "Rigidity",
+  "CAT - Risk Taking" = "Risk Taking",
+  "CAT - Romantic Disinterest" = "Romantic Disinterest",
+  "CAT - Rudeness" = "Rudeness",
+  "CAT - Self-Harm" = "Self-Harm",
+  "CAT - Social Withdrawal" = "Social Withdrawal",
+  "CAT - Submissiveness" = "Submissiveness",
+  "CAT - Unusual Beliefs" = "Unusual Beliefs",
+  "CAT - Unusual Experiences" = "Unusual Experiences",
+  "CAT - Workaholism" = "Workaholism",
+  "PHQ" = "Physical Symptoms"
+)
+
+dat_memberships <- readr::read_csv(
+  "data-raw/hitopdat_scale_items.csv",
+  col_types = readr::cols(
+    Category = readr::col_character(),
+    Item = readr::col_integer(),
+    Reverse = readr::col_logical()
+  )
+)
+stopifnot(
+  "a file category has no manual name" =
+    setequal(unique(dat_memberships$Category), names(dat_scale_names))
+)
+
+## Where the file differs from a published key, the table follows the key.
+## Each difference is listed in cairn/SOURCES.md, "HiTOP-DAT", and
+## tests/testthat/test-keying-hitopdat.R checks the table against each key.
+
+## Scales in battery order of their measure, then in the file's category order.
+dat_measure_of <- function(category) {
+  prefix <- sub(" - .*", "", category)
+  unname(c(
+    "WHODAS" = "WHODAS", "IDAS" = "IDAS-II", "AUDIT" = "AUDIT",
+    "DUDIT" = "DUDIT", "CAPE" = "CAPE", "CAT" = "CAT-PD", "PHQ" = "PHQ-15"
+  )[prefix])
+}
+dat_categories <- unique(dat_memberships$Category)
+dat_measure_order <- unique(hitopdat_items$Measure)
+dat_categories <- dat_categories[order(
+  match(dat_measure_of(dat_categories), dat_measure_order),
+  seq_along(dat_categories)
+)]
+
+hitopdat_scales <- tibble::tibble(
+  Measure = dat_measure_of(dat_categories),
+  Scale = unname(dat_scale_names[dat_categories]),
+  camelCase = snakecase::to_any_case(Scale, case = "lower_camel"),
+  itemNumbers = lapply(dat_categories, function(k) {
+    dat_memberships$Item[dat_memberships$Category == k]
+  }),
+  reverseNumbers = lapply(dat_categories, function(k) {
+    dat_memberships$Item[dat_memberships$Category == k &
+                           dat_memberships$Reverse]
+  })
+)
+hitopdat_scales$nItems <- lengths(hitopdat_scales$itemNumbers)
+names(hitopdat_scales$itemNumbers) <- hitopdat_scales$camelCase
+names(hitopdat_scales$reverseNumbers) <- hitopdat_scales$camelCase
+stopifnot(!anyDuplicated(hitopdat_scales$camelCase))
+usethis::use_data(hitopdat_scales, overwrite = TRUE)
 
 ## hitopdat_instructions (administration text) is internal data — see data-raw/sysdata.R
