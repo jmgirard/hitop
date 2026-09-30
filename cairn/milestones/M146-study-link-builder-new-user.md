@@ -60,7 +60,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
   - an anchored Supabase focus pattern, the same trim in the summary and the build, and a result region that a field change hides
   - README hint links that open a new tab
   - the README refusal-focus claim, the Supabase next-step sentence with no site, "HiTOP" in the tab title, and the Google Sheet wording in `modules-hitopsr.Rmd`
-- [ ] T11: Add the NEWS.md entry for the menu names, the reworked Study Link Builder and the article names.
+- [x] T11: Add the NEWS.md entry for the menu names, the reworked Study Link Builder and the article names.
 - [ ] T12: Fix the quote in DESIGN Known issue 11. Add a candidate row for old names outside the scope, and add the test-reach gaps to the `z` link gaps row.
 
 ## Work log
@@ -92,6 +92,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: T10 done. Eight hints and two refusals say "the online form" where they meant the participant's page. The `z` refusals say "does not unpack" and "unpacks to more than". The Supabase focus pattern reads only the message's opening. The consent and declined boxes count any value in the summary.
 - 2026-09-30: T10, continued. A field change hides the built link. Links in the intro, the hints and the SQL block open a new tab. The Supabase-only next step is two sentences. The tab title is "HiTOP Study Link Builder". The README names the page and qualifies the focus claim, and `modules-hitopsr.Rmd` fixes the Google Sheet sentence.
 - 2026-09-30: T10 tests. The new tests (2 focus probes, a whitespace summary, the stale-link and title test, and new-tab links) and the updated sentence, unpack and refusal assertions were run first: 14 failed. After the fix, the full hitop-form suite passed 770 tests. `modules-hitopsr` builds.
+- 2026-09-30: T11 done. NEWS.md opens New features with the Study Link Builder entry. It covers the required parts first, the five sections and their summaries, refusal focus, disabled buttons, the result region, shorter hints, the menu names and the article names.
 
 ## Decisions
 
