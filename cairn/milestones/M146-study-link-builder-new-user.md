@@ -118,7 +118,6 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - claim audit: 35 claims read, 1 corrected — hitop-form tests/link.spec.js
 - 2026-09-30: the corrected claim was two L19 comments, which said the intro names the required parts. They now say it asks for them, and the reader's re-read found both hold. The audit covered the return-2 lines in hitop-form, because hitop has no code change since the pass-2 `check()`.
 - 2026-09-30: T13 to T16 done, and status set to review. hitop code is unchanged since pass 2, where `devtools::check()` gave 0 errors, 0 warnings and 0 notes.
-
 - 2026-09-30: review pass 3. AC1 to AC6 met, and AC4 now passes. AC7 is met locally, and its CI part waits for the push. The 19 reviewer findings are untriaged, for the step-7 gate.
 
 ## Decisions
