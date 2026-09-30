@@ -50,7 +50,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] T2: Set the disabled state of Move up, Move down and Remove in `renumber()` (lines 292-369) and in the question groups (lines 433-509). Update it after every change to the rows. Make each accessible name begin with the visible text.
 - [x] T3: Build the "Your study link" region (lines 213-227, 1041-1069). It holds the heading, the scrolling box, "Copy the link" beside the box, the SQL block and the next-step sentence. Focus moves to the heading.
 - [x] T4: Rewrite the intro, step list, labels, hints, placeholders and refusal texts in `link.html` under the D-083 names and the word limits. Do the same for the `form.js` messages that the page shows. Move the cut detail into `README.md` sections, and link each shortened hint to its section.
-- [ ] T5: Write the Playwright tests for AC1 to AC5 in a new spec file. Update the existing specs that assert old text. Run the suite locally and on the PR.
+- [x] T5: Write the Playwright tests for AC1 to AC5 in a new spec file. Update the existing specs that assert old text. Run the suite locally and on the PR.
 - [ ] T6: In hitop, apply the D-083 names to the two articles, `README.Rmd` and the `_pkgdown.yml` menu. Rebuild `README.md` and build both articles. Run `check()` and `check_pkgdown()`.
 - [ ] T7: Run the AC6 greps, and classify each remaining hit in the Review section. Take before and after screenshots at 375px and 1280px, with the sections closed and open, for Jeff's look at the merge gate.
 
@@ -65,6 +65,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-29: T2 done. Move up and Move down are disabled at the ends, Remove on a single instrument row, and names read "Move up instrument 2". If the pressed move button becomes disabled, focus moves to the other one. Two AC3 tests added, and two planted defects turned both red. Full suite: 744 passed.
 - 2026-09-29: T3 done. After a build, a "Your study link" region shows the link in a scrolling box. "Copy the link" sits beside it, and one next-step sentence sits below it. Focus moves to its heading. Sixteen AC4 tests added (5 sites by 3 destinations, and one long `z` link). Three planted defects (no focus, no box height, one sentence for all) each turned tests red. Full suite: 760 passed.
 - 2026-09-29: T4 done. Hints, intro and refusals in `link.html` and the messages in `form.js` take the D-083 names. The steps list is gone, and cut detail moved to new README sections that the hints link to. Two AC5 tests added (word limits and retired terms, and README anchors). Five planted defects turned them red. A Sonnet subagent updated the old message strings in 9 test files, and its diff was checked here. Full suite: 762 passed.
+- 2026-09-29: T5 done. `tests/link-sections.spec.js` (42 tests, AC1 to AC5) grew with T1 to T4, and the old specs were updated. The local suite passed with 762. The PR's CI run comes at review, once `/milestone-review` opens the PR.
 
 ## Decisions
 
