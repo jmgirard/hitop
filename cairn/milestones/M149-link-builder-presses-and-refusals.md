@@ -54,7 +54,7 @@ On the Study Link Builder, an early press, an edit during a file read and a refu
 - [x] T4: Add the string check at `form.js:707`, before any fetch. Write the AC5 test in `tests/instruments.spec.js` with a request listener on the export host.
 - [x] T5: Give `checkInstruments` refusals the index of the row at fault (`form.js:99-101`), the later row for a repeat or a second PID-5 form. Focus that row's menu at `link.html:1025`. Update the refusal-focus sentence at hitop-form `README.md:33-36`.
 - [x] T6: Cut `QUESTION_CONTROLS` (`link.html:814`) to the five fields the editor can fault, with no `qList` fallback. Write the AC6 test as one table in `tests/link-sections.spec.js`, one entry per case. Record the grep's list in the work log for review to re-run.
-- [ ] T7: Update the README test-table rows of the spec files this milestone changes. Run the full suite locally and on the PR.
+- [x] T7: Update the README test-table rows of the spec files this milestone changes. Run the full suite locally and on the PR.
 - [ ] T8: Add the hitop NEWS.md entry. Run `devtools::check()`.
 
 ## Work log
@@ -73,3 +73,4 @@ On the Study Link Builder, an early press, an edit during a file read and a refu
 - 2026-09-30: T5 done (hitop-form). `checkInstruments` sets `index` on the error for an unknown entry, the later of a repeat and the second PID-5 form. The builder focuses that row's menu, and the README's focus sentence names it. The S12 test in T6 fires these cases. Full suite 793 passed.
 - 2026-09-30: T6 done (hitop-form). `QUESTION_CONTROLS` holds name, text, options, min and max, and `e.control` is set only for a mapped field. S12 in `tests/link-sections.spec.js` has 36 case entries and one coverage test. The coverage test failed before the map change, on qType and qRequired. With the T5 focus planted back to row 1, all four row cases failed on focus. Full suite 830 passed.
 - 2026-09-30: T6 grep for review to re-run: `grep -n "refuseAt(" link.html | grep -v "function refuseAt"` lists 23 calls, at lines 1063, 1069, 1078, 1091, 1120, 1124, 1136, 1146, 1152, 1169, 1173, 1179, 1185, 1194, 1205, 1214, 1221, 1227, 1256, 1268, 1272, 1284 and 1290 of hitop-form `link.html` at this commit. S12's coverage test reads the same list from the page.
+- 2026-09-30: T7 done locally (hitop-form). README test-table rows updated for `link.spec.js`, `link-sections.spec.js`, `link-module-file.spec.js` and `instruments.spec.js`. Full suite 830 passed. The PR's CI run belongs to `/milestone-review`, which opens the PRs.
