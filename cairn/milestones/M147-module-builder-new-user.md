@@ -30,7 +30,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 - [x] AC3: In step 2, choose each of the four formats in turn, with its settings closed. The visible text between the format cards and the download button holds at most 60 words. Closed settings summary lines count. A mouse click on each control that changes the step leaves the new step's heading with a computed `outline-style` of `none`. A keyboard press on the same control shows a focus outline. Smoke-test steps assert both facts for each control.
 - [x] AC4: Each format has one name. Its card title, its download button and its build status all use that name. For Word, Qualtrics and REDCap, the zip file's README.txt title uses it too. Each control that changes the step holds the name of its target step, as the step bar shows that name. A smoke-test step reads these places against one table.
 - [x] AC5: Save the module file from the Online form card. A panel headed "Next: make the study link" then shows a button. The button's address opens the Study Link Builder, and its `c` value decodes to the saved file's module. A change to the scale selection or the format removes the panel. A smoke-test step asserts each fact. On the Study Link Builder, the researcher can choose the module file or paste its text. A hitop-form test chooses `tests/fixtures/module-plain.json` as a file. It asserts that the built link equals the link built from the pasted text.
-- [ ] AC6: `node tests/prose.mjs --text` writes every string a visitor can read. That output holds none of the D-083 retired terms, apart from R output shown in the "Technical details" log and literal URLs. In `README.md`, the section on using the page comes first. A "For developers" heading follows and holds the verification notes and test records.
+- [ ] AC6: `node tests/prose.mjs --text <file>` exits 0. The passage text it writes under each `## ` id line holds none of the D-083 retired terms, outside `${…}` template holes, backticked tokens in `log` passages, and literal `http(s)://` URLs. `Using the page` is the first `##` section of `README.md`. The next `##` section is `For developers`, and its `###` sections include `Verification notes` and `Tests and repository layout`.
 - [ ] AC7: The hitop-builder smoke test and `npm run prose` pass locally and on the PR's CI. `npm run plants` passes locally, and each new smoke assertion has a plant that turns it red. The hitop-form suite passes locally and on its PR's CI.
 
 ## Coverage
@@ -40,8 +40,8 @@ A researcher who opens the Module Builder for the first time reads a short start
 - AC3 → T3, T7
 - AC4 → T4, T7, T11, T14
 - AC5 → T5, T6, T7, T9, T12, T15
-- AC6 → T4, T8, T11, T13
-- AC7 → T6, T7, T8, T9, T11, T12, T13, T14, T15
+- AC6 → T4, T8, T11, T13, T17
+- AC7 → T6, T7, T8, T9, T11, T12, T13, T14, T15, T17
 
 ## Tasks
 
@@ -61,6 +61,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 - [x] T14: Pass 2 findings in hitop-builder. Record every status change in A28. Fix the Online note's file-name claim. Name the downloads in the lede. Assert and plant the "No scales match" live region. Make the `${...} parameter` pattern able to hit. Count panel headings in A17. Put back the shuffle note's "If". Recompute the test budget. State the known counts as numbers. Bring the Definition button to 24px. Fix the stale comments and README nits.
 - [x] T15: Pass 2 findings in hitop-form `link.html`. After a change to the box, clear the file status. Keep only the latest file read, add the "sends nowhere" hint, and rewrap README line 101.
 - [x] T16: Pass 2 findings in hitop. Correct the NEWS entry, and name the file choice in `online-collection.Rmd` and `modules-hitopsr.Rmd`.
+- [ ] T17: AC6 amendment follow-on in hitop-builder. The `README.md` row for `tests/prose.mjs` and the first line of `prose.mjs` claim that it lists every string a visitor can read. Narrow both to what it reads, and run the smoke test and prose.
 
 ## Work log
 
@@ -100,6 +101,10 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: implement complete after the second review return. hitop-builder smoke passed (2 tests) on 3b9e7b6, `npm run prose` clean (95 of 95 text nodes, 184 passages), `npm run plants` OK (47 of 47) on 54fef49. hitop-form passed 776 tests. No hitop R code changed. Status set to review.
 - 2026-09-30: amendment return: AC6 — "`node tests/prose.mjs --text` writes the text of every body text node outside the script, style and log. It also writes every string at the script writer sites its ledger lists. It leaves out only the scale names and definitions the package supplies and the statuses "Ready." and "Ready. <format> chosen.". If a body text node is missing from its output, or the source's writer-site count differs from the ledger's, the run exits 1."
 - 2026-09-30: review pass 3 stopped at AC6 and set status to in-progress for the AC6 amendment alone. A rendered-page read found two kinds of text missing from the `--text` output: the package's scale names and definitions, and the two "Ready." statuses. `prose.mjs` excludes both on purpose since 2026-09-11. This is the first amendment return on AC6. The defect-return count stays at 2.
+- 2026-09-30: implement resumed for the AC6 amendment.
+- re-audit: AC6 (full) — first reader, on the clause in the amendment-return line: four sentences false as written. The `descriptor = desc_path` echo is R code, not R output. "Only exclusions" omits the list clear and template values. "Every writer site" is wider than the three-pattern count. "Exits 1 if missing" is a substring check. It proposed binding only the passages `--text <file>` writes, and found the README row and the prose.mjs header still claim every string a visitor reads.
+- re-audit: AC6 (full) — second reader, on the first reader's wording: met on hitop-builder 3b9e7b6, no IP or D-entry blocks it, bounded, and it narrows AC6. It had five low findings. The checker is not pinned, and the backtick exemption is wider than what prose.mjs strips. "Literal URLs" and the id lines are undefined, and "follows" and "holds" are loose. This is the second re-audit line on AC6, so the wording went to Jeff.
+- 2026-09-30: AC6 amended at Jeff's gate, executing the pass-3 amendment return above. Jeff chose the second reader's wording with its findings B to E applied. Finding A, a pin of prose.mjs to one commit, was left out. A fix-now edit at review breaks such a pin. The adopted text differs from the clause the amendment-return line proposed, and no second amendment-return line is written. Minor amendment: T17 added for the stale "every string a visitor reads" claims, at Jeff's choice, and the Coverage lines follow it.
 
 ## Decisions
 
