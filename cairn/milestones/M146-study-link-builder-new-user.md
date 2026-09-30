@@ -119,6 +119,8 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: the corrected claim was two L19 comments, which said the intro names the required parts. They now say it asks for them, and the reader's re-read found both hold. The audit covered the return-2 lines in hitop-form, because hitop has no code change since the pass-2 `check()`.
 - 2026-09-30: T13 to T16 done, and status set to review. hitop code is unchanged since pass 2, where `devtools::check()` gave 0 errors, 0 warnings and 0 notes.
 
+- 2026-09-30: review pass 3. AC1 to AC6 met, and AC4 now passes. AC7 is met locally, and its CI part waits for the push. The 19 reviewer findings are untriaged, for the step-7 gate.
+
 ## Decisions
 
 ## Review
@@ -264,3 +266,39 @@ Pass 3, 2026-09-30. Both branches were level with `origin/main` after a fetch, s
   - `modules-hitopsr.Rmd` 9 lines: `descriptor` argument names and R code.
   - `online-collection.Rmd`, `README.Rmd` and `_pkgdown.yml`: 0.
   - The menu reads "Module Builder" (`_pkgdown.yml:39`) and "Study Link Builder" (`_pkgdown.yml:41`). Met.
+
+- AC7, local parts only:
+  - The Playwright suite passes, 771 of 771.
+  - `devtools::check()` gives 0 errors, 0 warnings and 0 notes. A background run wrote no output, and the foreground re-run gave this result.
+  - `pkgdown::check_pkgdown()` finds no problems.
+  - The download-pages navbar test passes, 93 expectations.
+  - `build_readme()` leaves `README.md` unchanged.
+  - Both articles build with `build_article()` against the branch installed in a scratch library.
+  - Not yet run: the PR's CI in hitop-form, which starts only after the step-8 push. AC7 stays unticked until it passes.
+
+**Consistency gate.**
+- `cairn_validate` passes. Its warnings are advisory: 16 tasks over the sizing tripwire, and old dangling D-ids.
+- `document()` leaves no diff.
+- NEWS.md opens New features with the Study Link Builder entry.
+- No principle changed, so `cairn_impact` was skipped.
+
+**Findings.** Three fresh reviewers ran: an Opus diff reviewer, a Sonnet history reviewer and a Sonnet prior-review reviewer. Both GitHub probes for inline PR comments returned none, and the archives hold no `## Review` findings on these files. None found a criterion failing. They found the fixes for pass-2 findings 1 to 3, 6, 9, 11, 14, 15, 18, 19 and 23 in code. The findings are merged and ranked most severe first. "Seen" means this session read the code and found the defect.
+1. Pass-2 finding 10 is half fixed, though the work log records it fixed. The instruments hint (`link.html:114`) and the SQL hint (`link.html:247`) lost the column facts: one group of item columns per instrument in list order, and an `item_order` column and two Prolific columns when chosen. Nothing on the page says that a changed choice needs a new table. A researcher who runs the SQL "once", then ticks the random order or adds a question, gets every row refused and every participant falls back to a downloaded file. Only `README.md:411-413` states the rule. (Seen)
+2. A stale build ends in silence (`link.html:1180-1200`). If a field changes during the export fetch, the page shows no link, no message, and moves no focus. A screen-reader user hears nothing.
+3. The SONA hint (`link.html:168`) no longer says the survey code becomes the participant identifier. "For completion" does not name the Completion URL field, which sits in another closed section.
+4. The destination hint says a Supabase table "gets one JSON row per participant" (`link.html:124`), but the table holds one column per item. S9 asserts this wording. (Seen)
+5. The decline-URL hint dropped that `{participant}` goes after the `?` or `#`, and "code" from the Prolific no-consent completion URL. The build refuses the token elsewhere, and its refusal explains.
+6. The saved-file URL hint dropped its two triggers (no destination, or a send not confirmed). The completion hint lost "For Prolific, the completion URL shown on the study's page". The module hint lost that, with several instruments, the module applies to the HiTOP-SR among them.
+7. S7's `expectedNext()` (`tests/link-sections.spec.js:422-430`) still copies `nextStep()` branch for branch. Only the sentence count is independent of the code, and it misses two sentences joined by ";".
+8. The T14 guard's stale-after-encode branch and its fetch-fails-while-stale branch are untested, and so is a typed edit during the wait. The T14 test reaches the real network through `route.continue()`.
+9. `showHeld()` and `labelText()` still run outside the prefill try/catch. The history reviewer argues that T14's own setup-order crash is new evidence against the pass-1 finding 19 and pass-2 finding 13 rejections.
+10. The intro, the table hint and a prefill refusal still call the builder "this page" (`link.html:106`, `146`, `844`). It is no retired pattern. "Decline URL" and the field "Completion URL after a decline" name one field two ways.
+11. The intro no longer says that an opened edit link sends the Supabase key to the host. Only README lines 219 to 236 say it.
+12. On the participant page, the `checkStore` prefix no longer says the fault is in the study link, and `link.html:1164` matches that prefix as literal text. M148 owns that page's text.
+13. The "unpack" wording changes messages participants see (`form.js:204`, `210`). The pass-1 gate accepted it under finding 9. A note only.
+14. `const sql` in `nextStep()` (`link.html:1225`) hides the page's `sql` textarea.
+15. D-074 still records the old menu labels, and no entry annotates it. D-083(c) covers the menu.
+16. The README test-table row for `tests/link-sections.spec.js` does not name the return-2 tests (S9, the stale-result tests).
+17. The top-bar "← hitop package documentation" link, a back arrow, now opens a new tab. Cosmetic.
+18. The articles do not mention the closed sections or "Your study link". This is pass-2 finding 16, already filed.
+19. In a browser that does not fire `change` before an Enter submit, the heading focus could fire `change` and hide the link just shown. Chromium fires it first. Unverified.
