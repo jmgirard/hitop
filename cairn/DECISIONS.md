@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-084 (2026-09-30): D-083's names reach `vignettes/pid5_scoring.Rmd`, `vignettes/articles/overview.Rmd` and the download pages' strip that `vignettes/articles/_download-helpers.R` renders (annotates D-083(c); notes that D-083(a) replaced the menu labels D-074 records)
+
+**Context:** D-083(c) lists the files where the names apply. Three more files show the builders or the online form to readers and keep retired names. `pid5_scoring.Rmd` says "link builder" and "store", and `overview.Rmd` says "store". The strip that `_download-helpers.R` puts on the download pages says "form page", and its button says "Make a study link". D-074's Context records the menu labels "Make a study link" and "Build a HiTOP-SR Module", which D-083(a) replaced.
+
+**Decision:** (a) D-083(a) and (b) apply to the user-facing text of these three files, with the exempt kinds of D-083(c). In `_download-helpers.R`, a string literal that renders as page text is page text, not R code. The visible text of a link is not a URL. (b) The menu labels in D-074 are history. The current labels are "Module Builder" and "Study Link Builder", from D-083(a). Chosen by Jeff at the 2026-09-30 plan gate of M149, M150 and M151. Rejected: leaving the three files for later, because M150 edits `pid5_scoring.Rmd` and the "User-facing names" candidate row names that edit as its promotion trigger.
+
+**Consequences:** M150 applies the names to the three files, and a test asserts the strip's text. The "User-facing names" row keeps only the clash of "module" with the HiTOP-HSUM's name. The evidence that reopens (a) is a reader who follows an older tutorial and cannot find "Make a study link".
+
 ### D-083 (2026-09-29): The web pages and the tutorials use one set of names for the two builders, the online form and the module file
 
 **Context:** A walk through the Module Builder and the Study Link Builder as a new user found the same things under many names. The `.json` file that `write_module()` writes is a "descriptor", a "module descriptor", a "scoring file", "the .json file" and a "module". The link page is "Make a study link", the "link builder", the "study link builder", "this builder" and "this page". Its hints also use terms of the link format, such as "c parameter", "?z=" and "compressed". They use terms of the transport too, such as "store" and "endpoint".
