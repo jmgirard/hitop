@@ -120,6 +120,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: T13 to T16 done, and status set to review. hitop code is unchanged since pass 2, where `devtools::check()` gave 0 errors, 0 warnings and 0 notes.
 - 2026-09-30: review pass 3. AC1 to AC6 met, and AC4 now passes. AC7 is met locally, and its CI part waits for the push. The 19 reviewer findings are untriaged, for the step-7 gate.
 - 2026-09-30: step-7 gate, pass 3: Jeff chose fixes for findings 1, 2 and 4 and approved the merge after them. The fixes landed in hitop-form 3a70b81, with 771 tests passing, so approval is asked again before the push.
+- step-7 approval: m146-study-link-builder-new-user approved for merge, with the hitop-form companion first (2026-09-30, after the fix-now re-ask)
 
 ## Decisions
 
