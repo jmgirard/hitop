@@ -1,15 +1,14 @@
 # Roadmap
 
-_Last hygiene check: 2026-09-29 (87th pass, M141 done): row archived, M138 pruned, two wide rows compressed. validate green._
+_Last hygiene check: 2026-09-29 (88th pass, M142 done): row archived, M139 pruned, modularization row annotated. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M142 | HiTOP-SR module functions refuse a module whose items do not match its scales | review | — | normal | milestones/M142-module-mismatch-refusal.md |
+| M142 | HiTOP-SR module functions refuse a module whose items do not match its scales | done | — | normal | milestones/archive/M142-module-mismatch-refusal.md |
 | M141 | HiTOP-SR scoring can include the 17 subscales on request | done | — | normal | milestones/archive/M141-hitopsr-subscale-scoring.md |
-| M139 | read_form_responses() reads a file whose item columns span two or more instruments | done | M136 | normal | milestones/archive/M139-form-reader-multi-instrument.md |
 | M140 | A study link can field two or more instruments in one hitop-form session | done | M137, M139 | normal | milestones/archive/M140-form-multi-instrument.md |
 
 ## Candidates
@@ -54,4 +53,4 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 - Multi-language download UI: the six download pages label each button by language, all English today, and `hitop_artifacts` has no language column. When translations arrive, one page-level language menu above the download cards switches every card's buttons (chosen 2026-09-27 over per-card language rows). A translation is instrument text under IP1, so it needs a cited source and maintainer sign-off first. Promote when a first translation is sourced and signed off — added 2026-07-17, narrowed 2026-09-27 (plan gate: no translation exists, so no milestone) — lineage: M021
 - Score subset-collected HiTOP-SR data with no descriptor in hand, by working out from the column names which scales are fully present — needs its own decisions about partial coverage and name matching; useful for data that arrived from elsewhere. Promote if a researcher is blocked scoring a short form they did not generate — added 2026-08-01 — lineage: M037
 - "Module" now names two things: a chosen set of scales (`hitop_module()`, M043) and the HiTOP-HSUM, whose Society name is the Harmful Substance Use *Module*. No user-facing text conflates them today, but the collision bites when modularization reaches other instruments, since "an HSUM module" would be ambiguous. IP1 bars renaming the Society's instrument, so any fix is on this package's side. Promote when modularization extends beyond the HiTOP-SR, or if a user reports the ambiguity — added 2026-08-21 — lineage: M043
-- Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M024 — annotated 2026-08-21: M043 renames this family to "modules" and deliberately precedes this row so the generalization inherits one vocabulary — annotated 2026-08-26 (M057 review): two latent traps to clear when a second instrument arrives, in `validate_module_instrument()`'s supported-set derivation and `scale_definitions()`'s `ref$Subscale` read; neither is reachable while both maps hold exactly `hitopsr`
+- Generalize modularization to BR/PID-5: extend the subset-descriptor + subset generation/scoring to HiTOP-BR (overlapping scales, e.g. p-Factor spans all items) and PID-5 (facets partition, domains derive from facets) — added 2026-07-17 — lineage: M024 — annotated 2026-08-21: M043 renames this family to "modules" and deliberately precedes this row so the generalization inherits one vocabulary — annotated 2026-08-26 (M057 review): two latent traps to clear when a second instrument arrives, in `validate_module_instrument()`'s supported-set derivation and `scale_definitions()`'s `ref$Subscale` read; neither is reachable while both maps hold exactly `hitopsr` — annotated 2026-09-29 (M142 review): the wrong-instrument refusal in `module_engine_inputs()` can no longer run, because `check_module_build()` compares `instrument` first, and it has no test
