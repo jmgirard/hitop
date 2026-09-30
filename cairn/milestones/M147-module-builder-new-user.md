@@ -45,7 +45,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 
 ## Tasks
 
-- [ ] T1: Shorten the header text (`index.html` lines 443-455). Move the host sentence and the Log section (lines 685-688) into a closed "Technical details" `<details>`. Open it on a failure, and reword the failure statuses (lines 1594, 1665-1671, 1904) to name it.
+- [x] T1: Shorten the header text (`index.html` lines 443-455). Move the host sentence and the Log section (lines 685-688) into a closed "Technical details" `<details>`. Open it on a failure, and reword the failure statuses (lines 1594, 1665-1671, 1904) to name it.
 - [ ] T2: In the picker (lines 1052-1266), add the item-count text to each checkbox's accessible name. Replace the hover popup (lines 1099-1160) with a definition button. Show "No scales match" for an empty filter.
 - [ ] T3: Cut the step-2 notices (lines 502-505, 589-664) to the 60-word limit. Move the zip file detail into the README.txt that `bundleReadme()` writes. Stop the mouse-click outline on the step heading (line 380, `showStep` at line 1037). Keep the keyboard focus outline.
 - [ ] T4: Set one name per format in `FORMATS` and use it on the card, the button, the status (line 1434) and `bundleReadme()` (lines 1323-1373). Name each step control by its target step (lines 472-501, 680). Apply the D-083 names to every string that `tests/prose.mjs` lists.
@@ -59,6 +59,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-29: created by /milestone-plan, with M146 and M148. The criteria audit ran in full mode with M146's reader, and each M147 finding was repaired as suggested. The Online form has no settings and no README.txt. The step bar is hidden during the load, so AC1 counts from the `<h1>` instead. The log's failure statuses now point to "Technical details". AC4 names one target per step control. Plants run locally, because CI does not run them.
 - 2026-09-30: M146 review pass 2, finding 7, filed here at Jeff's gate. The Study Link Builder intro no longer links the Module Builder. The module route sits only in the closed "Item order and HiTOP-SR module" section. The plan gate for this milestone's hand-off reads it.
 - 2026-09-30: implement started. Branch `m147-module-builder-new-user` cut in hitop, hitop-builder and hitop-form. Implement gate: Jeff took the recommended option on all four questions (M147-D1).
+- 2026-09-30: T1 done (hitop-builder 1st commit). Header is 39 words. Every failure goes through a new `showFailure()`, which opens "Technical details" and adds a sentence that names it. No visitor setting can make a build fail, so the smoke step for AC1 drives a load failure. The build failure uses the same function. Smoke test green.
 
 ## Decisions
 
