@@ -1,6 +1,6 @@
 # M147: Module Builder: short start, labelled picker, clear hand-off
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -69,9 +69,53 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: T8 and T4 done (hitop-builder 7th commit). README.md starts with "Using the page", and "For developers" follows with "How it works", "Verification notes" and "Tests and repository layout". Every dated check moved to the verification notes. The new names are used throughout, so `npm run prose` reports no retired name in 176 passages. Before and after screenshots at 375px and 1280px (4 page states each) are in hitop-builder's gitignored `playwright-report/m147/`.
 - 2026-09-30: claim audit: 240 claims read, 9 corrected, hitop-builder README.md, index.html, tests/smoke.spec.js, tests/plants.mjs (hitop-builder commits da853e2 and 3ea9636). The hitop diff adds nothing outside `cairn/`, so the reader read both companion diffs instead. Corrected: the study link's address carries the module to GitHub Pages; the load takes about twenty seconds each for R and the package; the module file does not score by itself; the Word and Qualtrics README.txt differences; the hand-off control is a link drawn as a button; A24 drives the first row only; three stale comments. The re-read found all nine hold, plus one wording nit (the tally control is a button drawn as a link), fixed in 3ea9636.
 - 2026-09-30: implement complete. hitop-builder full local run passed (4 tests), `npm run prose` clean, `npm run plants` OK (39 of 39). hitop-form passed 773 tests locally. No hitop R code changed. Status set to review.
+- 2026-09-30: review pass 1 returned the milestone to in-progress (defect return 1). What failed: AC1, because no smoke step asserts that a build failure opens "Technical details". AC2, because the smoke test holds `<n>` to the package on 2 rows and does not pin 76 rows. It also drives the Definition button on the first row only. AC5, because A15 and A18 count anchors and cannot see a panel left behind. The consistency gate, because NEWS.md has no entry. The page itself met AC1, AC2 and AC5 in a one-off check. Findings and proposed dispositions are in the Review section.
 
 ## Decisions
 
 - M147-D1 (2026-09-30, implement gate): The four formats are named "Word form", "Qualtrics file", "REDCap dictionary" and "Online form". The card's second line keeps the file type. The steps keep the names "Choose scales" and "Choose a format and download". The Continue button reads "Next: Choose a format and download", and the Back button and the tally link read "Back: Choose scales". A "Definition" button on each scale row shows the definition as a line under the row, and a second press hides it. The row's count reads "<n> items". The hand-off button opens the Study Link Builder in a new tab. Chosen by Jeff. Rejected: bare system names, because a sentence needs a noun after them. Rejected: "Download" as the second step's name, because it does not say that a format is chosen there. Rejected: a floating popup, which needs script placement and a scroll handler. Rejected: the same tab, where the page loads R again and loses the ticks.
 
 ## Review
+
+### Pass 1 (2026-09-30): returned to in-progress
+
+All three branches were level with their `origin/main`, so no merge was needed. A one-off Playwright script drove the local page. It tested the page facts that the smoke test covers only in part. The script was not committed.
+
+- AC1: not met. The smoke test passed: 40 header words while loading (A20). "Technical details" is closed while loading and at "Ready." (A20, A21), and a refused `webr.mjs` opens it and names it (A22). The one-off script forced a Word build failure by making `URL.createObjectURL` throw. The section went from closed to open, and the status read "The Word form build failed. The log under "Technical details" below says more." So the page meets the fact, but no smoke step asserts the build-failure fact the criterion names.
+- AC2: not met. A23, A24 and A25 passed. The one-off script found 76 rows and 76 package scales. Each checkbox name equals the name plus the local hitop 0.2.0 `itemNumbers` count, with 0 mismatches. On all 76 rows, a click and Enter open the definition, a second click and Space close it, and a hover opens none. The smoke test holds `<n>` to the package count on 2 rows only and does not pin 76 rows. It drives the button by click and keyboard on the first row only.
+- [x] AC3: smoke passed. Step 2 counts are 48 (Word), 44 (Qualtrics), 45 (REDCap) and 41 (Online) words, all with settings closed (A26). All five step controls give `outline-style: none` after a mouse click and a shown outline after Enter (A27).
+- [x] AC4: smoke passed A28. All four formats' card, button and status match the table, as do the Word, Qualtrics and REDCap README.txt titles. The step bar reads the two step names, and each of the five step controls holds its target's name.
+- AC5: not met. A13, A14, A15, A18, A19 and A29 passed. A14 decodes `c` to the saved file's module. hitop-form MF1 and MF2 passed. But A15 and A18 count the Study Link Builder anchors, and `readLinkState()` finds panels only through a surviving anchor. If a removal deletes only the anchor, the "Next: make the study link" panel stays and both steps still pass. So no smoke step asserts that the panel goes.
+- [x] AC6: the `--text` flag takes an output path. `node tests/prose.mjs --text <file>` wrote 158 passages and exited 0, reporting "retired names: none in 176 passages". A separate grep of D-083's twelve patterns over that output found one hit. It is the R call `descriptor = desc_path` in a log line, which is R output in the log. Two `descriptor` hits in `README.md` are R argument code spans. `README.md` opens with "Using the page", and "For developers" holds "Verification notes" and "Tests and repository layout".
+- AC7: not complete. Local smoke passed (2 tests) and `npm run prose` exited 0. The hitop-form suite passed locally (773 tests). No PR exists yet, so the CI parts wait for the merge gate. The first plant run shared the machine with the R check and the one-off script, and its unplanted copy went red on A16 and A28. A second run alone passed the unplanted copy. It was stopped after that, because the return was already certain.
+
+Consistency gate: `cairn_validate` exit 0 (24 advisory warnings, none new). No principle text changed, so `cairn_impact` was skipped. `devtools::document()` left no diff and `pkgdown::check_pkgdown()` found no problems. `devtools::check()` gave 0 errors, 0 warnings and 0 notes. No new top-level files. **Failed: NEWS.md has no entry for the Module Builder changes.** M146 pass 1 was returned for the same gap.
+
+Review findings from the three-lens fan-out. All are logged here, and none is triaged yet. Jeff triages them at the next gate.
+
+- Diff-bug 1: the REDCap download's inner-zip warning left the page (T3). README.txt still says to upload the inner zip, but under the new names "this zip file" can read as the outer download. Proposed: fix now.
+- Diff-bug 2: A15 and A18 cannot see a panel left behind without its anchor. Return reason under AC5.
+- Diff-bug 3: no smoke step for a build failure. Return reason under AC1.
+- Diff-bug 4: a throw after R starts (for example `library(hitop)`) reports "R did not start." The wording is older than M147. Proposed: follow-up.
+- Diff-bug 5 and blame 3: in `link.html`, a press of "Make the link" during the file read builds a link from the old box text. The later fill does not count as a field change. Proposed: fix now.
+- Diff-bug 6 and blame 2: a chosen module file is not announced, and the file control shows "No file chosen" again at once. The questions loader beside it announces "Loaded n questions". Proposed: fix now.
+- Diff-bug 7: A23 holds `<n>` to the package on 2 rows and does not pin 76 rows. Return reason under AC2.
+- Diff-bug 8: A21 does not read whether "Technical details" is rendered. Proposed: fix now (one field).
+- Diff-bug 9: A27's keyboard half cannot go red on the page's CSS, and only Chromium runs. Proposed: follow-up, with Known issue 13.
+- Diff-bug 10: some sub-claims have no plant (the A24 hover, the A23 known counts, the A28 card, button and README title parts). Proposed: fix now for the A28 README title and the hover.
+- Diff-bug 11 and blame 7: "No scales match the filter." is not announced. Proposed: fix now.
+- Diff-bug 12: `prose.mjs --compare` exits 0 over a retired-name hit. Proposed: fix now (one line).
+- Diff-bug 13: the checkbox name has no text space between the name and the count. It is older than M147, and Chromium reads it correctly. Proposed: reject, older than M147 and not seen to fail.
+- Diff-bug 14: 76 Definition buttons add 76 tab stops. Proposed: reject, the M147-D1 design.
+- Diff-bug 15: the "Choose at least one scale" hint sits below the button, outside the counted words. Proposed: noted, recorded in the T3 work-log line.
+- Diff-bug 16: the hand-off "button" is a link drawn as a button. Proposed: reject, a link is the right role for opening a page.
+- Diff-bug 17: a later successful build does not close "Technical details". Proposed: reject, not a criterion.
+- Diff-bug 18 and blame 8, prior-review 5: stale comments ("beside the tally", "scoring file", "bundle"). Proposed: fix now.
+- Blame 1: the Online form's file name and name-collision note has no home, because the Online form has no README.txt. Proposed: fix now.
+- Blame 4 and prior-review 2: the heading ring now depends on the browser's `:focus-visible` rule. The README states it in general terms from Chromium alone. Proposed: fix now (narrow the README sentence to Chromium).
+- Blame 5: the page no longer says the format cards are off during a build. Proposed: noted, the README says it.
+- Blame 6: the host list is now inside the closed section. Proposed: reject, the plan's AC1.
+- Prior-review 1: no NEWS entry. Return reason (consistency gate).
+- Prior-review 3: the same as diff-bug 5.
+- Prior-review 4: two hitop-form README lines are 82 characters wide. Proposed: fix now.
+- Prior-review 6: no plant for A24's hover clause. The same as diff-bug 10.
