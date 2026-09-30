@@ -54,7 +54,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 - [x] T7: Add the smoke-test steps for AC1 to AC5 and a plant for each one. Update the `tests/prose.mjs` ledger. Run the smoke test, prose and plants locally, and the smoke test and prose on the PR.
 - [x] T8: Reorder `README.md` into a use section and a "For developers" section. Take before and after screenshots at 375px and 1280px for Jeff's look at the merge gate.
 - [ ] T9: Review return. Add three smoke steps. A build failure that the test forces opens "Technical details" (AC1). The Definition button's click, keyboard and hover checks run on every row (AC2). Panel removal is read apart from the anchor (AC5). A21 also reads whether the section is rendered. Add a plant for each.
-- [ ] T10: Add a hitop NEWS.md entry for the Module Builder changes.
+- [x] T10: Add a hitop NEWS.md entry for the Module Builder changes.
 - [ ] T11: Review findings in hitop-builder. Restore the REDCap inner-zip warning and give the Online form's file-name note a home. Announce "No scales match". Make `prose.mjs --compare` keep the retired-name exit. Fix the stale comments and labels. Narrow the README focus sentence to Chromium. Add plants for A24's hover and A28's README title.
 - [ ] T12: Review findings in hitop-form `link.html`. Close the gap where "Make the link" runs during the file read, announce the chosen file, and rewrap the two long README lines.
 
@@ -78,6 +78,8 @@ A researcher who opens the Module Builder for the first time reads a short start
 - re-audit: AC2 (full) — first reader, on the text "The test checks every listed scale for that form, and checks n against the package on two named scales": the sentence bound the test, not the page. The closing sentence claimed more than the test checks, the button was opened on one row only, and "against the package" overstated hand-listed counts.
 - re-audit: AC2 (full) — second reader, on the fixed text: the per-scale definition clause widened, because the page shows buttons only when every scale has a definition. The test clause lacked that condition, "the button on every row" read as presence only, and both known counts have one digit.
 - 2026-09-30: AC2 amended at Jeff's gate after the second re-audit (the stop for AC2). "The test checks all 76 scales" left, because hitop-builder pins no scale count. The smoke test now covers the name form and the button's behavior on every row, and n on two named scales. Review reads n on every row. Minor amendment: T9 to T12 added, and the Coverage lines follow them.
+- 2026-09-30: T9 and T11 checkpoint (hitop-builder commits 3cbb14c and a99e999, not ticked until the plant run). New A30 forces a build failure by making `URL.createObjectURL` throw. A24 drives all 76 rows, and A15, A16 and A18 count panel headings apart from the link. A21 reads the section on show. Plants am to ar added. The page has a REDCap line again, and step 2 now holds 55 words for REDCap and 56 for the Online form. Smoke green (2 tests), prose clean (177 passages).
+- 2026-09-30: T10 done. hitop NEWS.md has a Module Builder entry under New features.
 
 ## Decisions
 
