@@ -223,3 +223,32 @@ All three branches were level with their `origin/main`, and no PR exists, so no 
 - AC4: met. Smoke passed A28 on all four formats' card, button, build status and README.txt title, and on the five step controls.
 - AC5: met. Smoke passed A13 to A19 and A29, including A14's decode of `c` to the saved module and A15, A16 and A18's panel-heading counts. hitop-form `tests/link-module-file.spec.js` passed all 5 tests on 8745f5f. MF1 chooses `tests/fixtures/module-plain.json` as a file and asserts that its link equals the link built from the pasted text.
 - AC6: met. `node tests/prose.mjs --text <file>` exited 0 on 08272a8 and wrote 166 passages. A separate script split that output at each `## ` id line and read D-083's twelve patterns in each passage's text. It set aside `${…}` holes, backticked tokens in `log` passages and `http(s)://` URLs, and found no hit. Without those exemptions the same text holds one `descriptor`, inside the backticked R-call echo in `log@845`. `README.md`'s first `##` section is `Using the page` (line 15). The next is `For developers` (line 399), whose `###` sections include `Verification notes` (line 441) and `Tests and repository layout` (line 482).
+
+Consistency gate so far: `cairn_validate` exit 0, with 25 advisory warnings and no FAIL. No principle text changed, so `cairn_impact` was skipped. No new top-level file. NEWS.md has the Module Builder entry.
+
+Review findings from the three-lens fan-out. D is the diff-bug lens, B the blame-history lens, P the prior-review lens. Each carries a proposed disposition for Jeff's triage at the gate.
+
+- D1 and P1: hitop-builder README.md:106-107 still says the Online note warns that "saves from different scales share a file name". Pass 2 fixed that wording on the page only. Proposed: fix now.
+- D4: the README.txt naming paragraph (index.html:1400-1404, README.md:197-199) says "Two builds that differ only in which scales were ticked share a name". A build of every scale has its own name. Proposed: fix now.
+- P8: the lede says the page downloads R and the package, but no visible text names "Technical details". Pass 2 accepted that pointer as fix now. Proposed: fix now within the 50-word header.
+- D2: the T8 screenshots in `playwright-report/m147/` predate visible changes in a99e999, 54fef49 and 3b9e7b6. Proposed: fix now (retake them before the gate).
+- D5: the NEWS entry states the mouse-click focus change for every browser, and the builder README narrows it to Chromium. Proposed: fix now.
+- D6: the prose.mjs header and README row say that a body text node in no passage makes the run exit 1. The check is a substring test over the body passages. Proposed: fix now (say the text appears in no body passage).
+- P3: the body-text check has no floor, so an empty parse reports "all 0 text nodes" and exits 0. Proposed: fix now (exit 1 on zero nodes).
+- D12, B7, B11 and P5: wrap nits in modules-hitopsr.Rmd:418 (104 characters), builder README.md lines 54-55, 61 and 207, index.html:683 and prose.mjs:18, and "bundle" in a prose.mjs:25 comment. Proposed: fix now.
+- D3 and P4: A28 reads the Word status (smoke.spec.js:862) and the Online status (:682) once after the click. A fast build can give a false red, never a false green. Proposed: follow-up, into the Module Builder test reach row.
+- D10: the A28 observers are never disconnected, and the match takes any status that names the format. Plant `at` goes red today. Proposed: follow-up, with D3.
+- P2: A20 waits on the exact "Starting R in your browser…" text before its soft read of it (the M127 lesson). A plant on that text costs a 60-second timeout. Proposed: follow-up, with D3.
+- B9: `prose.mjs --ref <old ref>` now exits 1 by construction, because the new checks run on the old text. No caller uses it. Proposed: follow-up, with D3.
+- D9: in link.html, a box edit during a pending file read is overwritten at the end of the read, with no word. Proposed: follow-up, into the Study Link Builder follow-ups row.
+- B6: hitop-form form.js:1047 (unchanged) still says "Paste the file", beside the new file choice. Proposed: follow-up, into the Study Link Builder follow-ups row.
+- B4: a failure opens "Technical details" at the page foot and does not move the view or focus. The status says "below". Proposed: follow-up, into the Module Builder test reach row.
+- D7: the playwright.config.js comment says the first test took 30s locally. Proposed: reject, this pass measured 29.1s and 31.3s.
+- D11: `HOLE_PARAMETER` cannot see a `+`-joined parameter name. Proposed: reject, D-083 names only the `${…}` form.
+- D13: vignettes/pid5_scoring.Rmd:200 says "link builder". Proposed: reject, outside the diff and already in the user-facing names candidate row.
+- B2: the file-name note for the three zip formats moved from the page to README.txt. Proposed: reject, T3 planned the move.
+- B3: the hand-off link carries the module in its address to GitHub Pages, and only README.md says so. Proposed: reject, the old link did the same and the module holds no personal data.
+- B5: the version line sits inside the closed "Technical details". Proposed: reject, AC1's plan.
+- B8: the step-2 hint lost the sentence on default settings. Proposed: reject, T3's word cut, and the closed summary lines remain.
+- P9: the T14 work-log line says 12 minutes. Proposed: reject, the later claim-audit line records the return to 10 minutes.
+- D8, B1, B10, P6 and P7: repeats of items already triaged (the budget note, Known issue 13, M147-D2 and pass 1 rejects). Proposed: noted.
