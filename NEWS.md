@@ -598,9 +598,10 @@
   Before, a press or Enter in a field sent the form as a plain web request
   while a compressed link was unpacked or before the page's script loaded.
   The page then reloaded with its fields in the address. An edit typed into the "Module file" box while
-  a chosen file is read now wins, and the file's text is dropped. A chosen
-  instrument export is refused with a message that names the Module Builder
-  and `write_module()`. A refusal of the instruments list moves focus to the
+  a chosen file is read now wins, and the file's text is dropped. The
+  refusal of an instrument export, pasted or chosen as a file, now says to
+  use the file that the Module Builder or `write_module()` saved. Before,
+  it said to paste it. A refusal of the instruments list moves focus to the
   instrument at fault, the second of a repeated instrument or the second
   PID-5 form. When a setup step after the opened link is read fails, the
   page shows its "could not be read" refusal with an empty form that still

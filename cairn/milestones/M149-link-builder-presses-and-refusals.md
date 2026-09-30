@@ -1,6 +1,6 @@
 # M149: Study Link Builder: early presses, file reads and refusals
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -75,3 +75,5 @@ On the Study Link Builder, an early press, an edit during a file read and a refu
 - 2026-09-30: T6 grep for review to re-run: `grep -n "refuseAt(" link.html | grep -v "function refuseAt"` lists 23 calls, at lines 1063, 1069, 1078, 1091, 1120, 1124, 1136, 1146, 1152, 1169, 1173, 1179, 1185, 1194, 1205, 1214, 1221, 1227, 1256, 1268, 1272, 1284 and 1290 of hitop-form `link.html` at this commit. S12's coverage test reads the same list from the page.
 - 2026-09-30: T7 done locally (hitop-form). README test-table rows updated for `link.spec.js`, `link-sections.spec.js`, `link-module-file.spec.js` and `instruments.spec.js`. Full suite 830 passed. The PR's CI run belongs to `/milestone-review`, which opens the PRs.
 - 2026-09-30: T8 done. NEWS.md entry at the top of "Improvements and fixes". `devtools::check()` gave 0 errors, 0 warnings, 0 notes.
+- 2026-09-30: claim audit: 60 claims read, 4 corrected — hitop `NEWS.md`, hitop-form `README.md`, `form.js`, `link.html`, `tests/link.spec.js`, `tests/link-module-file.spec.js`, `tests/instruments.spec.js`, `tests/link-sections.spec.js`. The four were the NEWS export-refusal sentence, the README's S12 question fields, the README and header wording of S10, and the link.html Firefox comment. The reader re-read all four and found them true. `link-sections.spec.js` and `link.spec.js` then passed 204.
+- 2026-09-30: open concern for review: with no link opened, a throw in the setup steps would now show "The study link you opened could not be read". No criterion covers that case.
