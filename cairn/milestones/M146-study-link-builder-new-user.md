@@ -61,7 +61,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
   - README hint links that open a new tab
   - the README refusal-focus claim, the Supabase next-step sentence with no site, "HiTOP" in the tab title, and the Google Sheet wording in `modules-hitopsr.Rmd`
 - [x] T11: Add the NEWS.md entry for the menu names, the reworked Study Link Builder and the article names.
-- [ ] T12: Fix the quote in DESIGN Known issue 11. Add a candidate row for old names outside the scope, and add the test-reach gaps to the `z` link gaps row.
+- [x] T12: Fix the quote in DESIGN Known issue 11. Add a candidate row for old names outside the scope, and add the test-reach gaps to the `z` link gaps row.
 
 ## Work log
 
@@ -93,6 +93,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: T10, continued. A field change hides the built link. Links in the intro, the hints and the SQL block open a new tab. The Supabase-only next step is two sentences. The tab title is "HiTOP Study Link Builder". The README names the page and qualifies the focus claim, and `modules-hitopsr.Rmd` fixes the Google Sheet sentence.
 - 2026-09-30: T10 tests. The new tests (2 focus probes, a whitespace summary, the stale-link and title test, and new-tab links) and the updated sentence, unpack and refusal assertions were run first: 14 failed. After the fix, the full hitop-form suite passed 770 tests. `modules-hitopsr` builds.
 - 2026-09-30: T11 done. NEWS.md opens New features with the Study Link Builder entry. It covers the required parts first, the five sections and their summaries, refusal focus, disabled buttons, the result region, shorter hints, the menu names and the article names.
+- 2026-09-30: T12 done. DESIGN Known issue 11 quotes the hint as "HiTOP-SR only." (corrected M146). ROADMAP is at its 59-line cap, so the old names outside scope joined the "Module" naming row, now "User-facing names". The `z` link row gained the test-reach gaps and the instruments focus, and lost the SQL-beside-error gap that T3 closed. ROADMAP is 23,940 bytes.
 
 ## Decisions
 
