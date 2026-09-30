@@ -19,7 +19,7 @@ scale_row <- function(scale) {
 }
 
 # ---- Source: HiTOP-DAT manual (Jonas et al., 2021), "Scale definitions",  ----
-# ---- pp. 21-26: the 57 definitions in the order the manual prints them.  ----
+# ---- pp. 20-25: the 57 definitions in the order the manual prints them.  ----
 
 manual_scales <- c(
   "WHODAS" = "WHODAS",

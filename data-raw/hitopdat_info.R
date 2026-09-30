@@ -278,7 +278,7 @@ usethis::use_data(hitopdat_choices, overwrite = TRUE)
 ## HiTOP-DAT Scales
 ## One row per scale the file scores. The file's own category names and their
 ## memberships are in `data-raw/hitopdat_scale_items.csv`. `Scale` is the name of
-## the matching scale definition in the DAT manual (2021, pp. 21-26), and the
+## the matching scale definition in the DAT manual (2021, pp. 20-25), and the
 ## crosswalk below maps each file category to it. The file's spellings that
 ## differ are listed in cairn/SOURCES.md, "HiTOP-DAT".
 dat_scale_names <- c(
