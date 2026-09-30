@@ -51,8 +51,8 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] T3: Build the "Your study link" region (lines 213-227, 1041-1069). It holds the heading, the scrolling box, "Copy the link" beside the box, the SQL block and the next-step sentence. Focus moves to the heading.
 - [x] T4: Rewrite the intro, step list, labels, hints, placeholders and refusal texts in `link.html` under the D-083 names and the word limits. Do the same for the `form.js` messages that the page shows. Move the cut detail into `README.md` sections, and link each shortened hint to its section.
 - [x] T5: Write the Playwright tests for AC1 to AC5 in a new spec file. Update the existing specs that assert old text. Run the suite locally and on the PR.
-- [ ] T6: In hitop, apply the D-083 names to the two articles, `README.Rmd` and the `_pkgdown.yml` menu. Rebuild `README.md` and build both articles. Run `check()` and `check_pkgdown()`.
-- [ ] T7: Run the AC6 greps, and classify each remaining hit in the Review section. Take before and after screenshots at 375px and 1280px, with the sections closed and open, for Jeff's look at the merge gate.
+- [x] T6: In hitop, apply the D-083 names to the two articles, `README.Rmd` and the `_pkgdown.yml` menu. Rebuild `README.md` and build both articles. Run `check()` and `check_pkgdown()`.
+- [x] T7: Run the AC6 greps, and classify each remaining hit in a work-log ledger for review to re-run. Take before and after screenshots at 375px and 1280px, with the sections closed and open, for Jeff's look at the merge gate.
 
 ## Work log
 
@@ -66,6 +66,10 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-29: T3 done. After a build, a "Your study link" region shows the link in a scrolling box. "Copy the link" sits beside it, and one next-step sentence sits below it. Focus moves to its heading. Sixteen AC4 tests added (5 sites by 3 destinations, and one long `z` link). Three planted defects (no focus, no box height, one sentence for all) each turned tests red. Full suite: 760 passed.
 - 2026-09-29: T4 done. Hints, intro and refusals in `link.html` and the messages in `form.js` take the D-083 names. The steps list is gone, and cut detail moved to new README sections that the hints link to. Two AC5 tests added (word limits and retired terms, and README anchors). Five planted defects turned them red. A Sonnet subagent updated the old message strings in 9 test files, and its diff was checked here. Full suite: 762 passed.
 - 2026-09-29: T5 done. `tests/link-sections.spec.js` (42 tests, AC1 to AC5) grew with T1 to T4, and the old specs were updated. The local suite passed with 762. The PR's CI run comes at review, once `/milestone-review` opens the PR.
+- 2026-09-29: T6 done. A Sonnet subagent renamed the retired terms in the two articles (46 prose sites), and its diff was checked here. The Instruments menu now reads "Module Builder" and "Study Link Builder", with the navbar test updated first and seen red. `check()`: 0 errors, 0 warnings, 0 notes. `check_pkgdown()` passes, both articles build, and `README.md` equals a fresh build.
+- 2026-09-29: T7 wording amended (minor): the grep ledger goes in the work log, because the Review section is review's alone.
+- 2026-09-29: T7 grep ledger. `link.html` 33 lines: 20 comments, 13 code identifiers (`store` names and variables, `storeSql`). `form.js` 69 lines: 33 comments, 36 code identifiers (`store`, `checkStore`, `STORE_KINDS`, the `'no-store'` fetch option). hitop-form `README.md` 6 lines: 5 URL examples (`link.html?c=…`, `link.html?z=…`) and the file name `instruments-store.spec.js`. `modules-hitopsr.Rmd` 9 lines: 3 `descriptor` argument names and 6 R code lines. `online-collection.Rmd`, `README.Rmd` and `_pkgdown.yml`: none.
+- 2026-09-29: T7 screenshots in hitop-form `playwright-report/m146-screens/` (ignored by git). They show the page before at 375px and 1280px, and after with sections closed, open and after a Prolific build at both widths. The shots showed disabled buttons looking enabled, so a disabled style was added. Full suite after it: 761 of 762 passed. N7 in `network.spec.js` timed out under full-suite load and passed 5 of 5 alone.
 
 ## Decisions
 
