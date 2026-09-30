@@ -1,6 +1,6 @@
 # M147: Module Builder: short start, labelled picker, clear hand-off
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -67,6 +67,8 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: T6 done (hitop-form 1st commit). "Choose the module file" sits under the "Module file" box. It fills the box with the file's text, rewrites the section summary, and empties itself. `heldLabels()` skips file inputs. New `tests/link-module-file.spec.js`: MF1 is AC5's same-link test, and MF2 covers the summary and a second choice. Two plants, the missing summary rewrite and the missing reset, each turned MF2 red. The full suite passed locally, 773 tests. README gains a sentence and a test row. The PR's CI run is at review.
 - 2026-09-30: T7 done (hitop-builder 6th commit). The smoke spec gains A20 to A29 and a second test, which refuses `webr.mjs` for A22. A20 holds the `webr.mjs` request to read the loading state. A28 adds a Qualtrics and a REDCap build to read their statuses and README.txt titles. Twelve new plants (aa to al), and plants m, p, r to z moved to the new text. `npm run plants`: unplanted passed, 39 of 39 plants red, all 29 assertions covered. The full local run passed with 4 tests. Measured: 40 header words while loading; step 2 at 48, 44, 45 and 41 words for Word, Qualtrics, REDCap and Online.
 - 2026-09-30: T8 and T4 done (hitop-builder 7th commit). README.md starts with "Using the page", and "For developers" follows with "How it works", "Verification notes" and "Tests and repository layout". Every dated check moved to the verification notes. The new names are used throughout, so `npm run prose` reports no retired name in 176 passages. Before and after screenshots at 375px and 1280px (4 page states each) are in hitop-builder's gitignored `playwright-report/m147/`.
+- 2026-09-30: claim audit: 240 claims read, 9 corrected, hitop-builder README.md, index.html, tests/smoke.spec.js, tests/plants.mjs (hitop-builder commits da853e2 and 3ea9636). The hitop diff adds nothing outside `cairn/`, so the reader read both companion diffs instead. Corrected: the study link's address carries the module to GitHub Pages; the load takes about twenty seconds each for R and the package; the module file does not score by itself; the Word and Qualtrics README.txt differences; the hand-off control is a link drawn as a button; A24 drives the first row only; three stale comments. The re-read found all nine hold, plus one wording nit (the tally control is a button drawn as a link), fixed in 3ea9636.
+- 2026-09-30: implement complete. hitop-builder full local run passed (4 tests), `npm run prose` clean, `npm run plants` OK (39 of 39). hitop-form passed 773 tests locally. No hitop R code changed. Status set to review.
 
 ## Decisions
 
