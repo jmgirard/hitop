@@ -31,7 +31,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] AC3: This criterion covers the instrument rows and the question groups. "Move up" is disabled on the first row, and "Move down" is disabled on the last row. On a single instrument row, all three buttons are disabled. The accessible name of each button begins with its visible text. A Playwright test asserts the state at each position for 1, 2 and 3 instrument rows. It does the same for 1, 2 and 3 question groups. It asserts the state again after a move, a removal, a prefill from a study link, and a questions file load.
 - [x] AC4: After a successful build, a region headed "Your study link" shows the link in a box that scrolls. A "Copy the link" button sits beside the box. Below it, one next-step sentence fits the choices made. With a recruiting site, the sentence says to paste the link into that site's study page. With a Supabase table, it says to run the SQL first. Otherwise it says to open the link once to test it, and then to give it to each participant. Focus moves to the region's heading. A Playwright test asserts each part for each recruiting-site option and each where-responses-go option. It also builds a `z` link over 5,000 characters, and asserts that the box stays under 16rem high.
 - [x] AC5: A Playwright test opens every optional section and adds one question of each type. It then chooses each recruiting-site option and each where-responses-go option in turn, and makes one Supabase build. In each of these states, it checks every `.hint` and `.site-hint` element in the page, shown or not. Each holds at most 40 words. The intro is all text between the `<h1>` and the first form part. It holds at most 60 words. The page's text, its `placeholder` values and its `aria-label` values hold none of the D-083 retired terms. The text of a built link is exempt. The test counts words by splitting on whitespace.
-- [ ] AC6: A case-insensitive grep runs for each D-083 retired-term pattern. In hitop-form it reads `link.html`, `form.js` and `README.md`. In hitop it reads the two articles, `README.Rmd` and `_pkgdown.yml`. Each remaining hit is one of these: a code identifier, a comment, R code, an R function or argument name, or a literal URL or URL example. The Instruments menu names the two pages "Module Builder" and "Study Link Builder".
+- [x] AC6: A case-insensitive grep runs for each D-083 retired-term pattern. In hitop-form it reads `link.html`, `form.js` and `README.md`. In hitop it reads the two articles, `README.Rmd` and `_pkgdown.yml`. Each remaining hit is one of these: a code identifier, a comment, R code, an R function or argument name, or a literal URL or URL example. The Instruments menu names the two pages "Module Builder" and "Study Link Builder".
 - [ ] AC7: The hitop-form Playwright suite passes locally and on its PR's CI. In hitop, `devtools::check()` gives 0 errors and 0 warnings, and `pkgdown::check_pkgdown()` passes. Both articles build with `pkgdown::build_article()`. The navbar test passes. `README.md` equals a fresh `devtools::build_readme()`.
 
 ## Coverage
@@ -170,3 +170,19 @@ Pass 1, 2026-09-29 to 2026-09-30. Both branches were level with `origin/main`, s
 24. With Supabase and no site, the sentence reads "before you open the link once to test it, and then give it…".
 25. `modules-hitopsr.Rmd` (~409) calls a Google Sheet a web address.
 26. "The builder" is still used as shorthand in the articles and the README.
+
+Pass 2, 2026-09-30. Both branches were level with `origin/main` after a fetch, so no merge was needed.
+
+**Evidence.** The full hitop-form suite ran once: 769 of 770 passed, in 3.8 minutes. The one failure, `tests/instruments-row.spec.js:212`, was a 10-second connect timeout on the fetch of an instrument export from GitHub (`tests/helpers.mjs:30`). That spec is not in the diff. Run alone three times, it passed 33 of 33. All 50 tests in `tests/link-sections.spec.js` passed.
+- AC1: S1 asserts the part order and five closed sections that read "Not used". S2 asserts the label lists. S3 makes one refusal per section, and the Supabase focus probes pass too. S4 finds no overflow at 375px and 1280px. All passed. Met.
+- AC2: S5 runs one test per optional field, with `z` links for consent and questions. It passed, and the no-field test passed. Met.
+- AC3: S6 passed for instrument rows and question groups. It covers 1 to 3 rows, a move, a removal, a prefill and a questions file load. Met.
+- AC4: the S7 tests over 5 sites by 3 destinations passed. The long `z` link test passed. Met.
+- AC5: S8 checks word limits and retired terms over the site, destination and Supabase states. It passed, and the README heading test passed. Met.
+- AC6: the 12 D-083 patterns were re-run with `perl`.
+  - `link.html` 33 lines: comments and code identifiers (`name="store"`, `store` variables, `storeSql`).
+  - `form.js` 69 lines: comments and code identifiers (`store`, `checkStore`, `STORE_KINDS`, the `'no-store'` fetch option).
+  - hitop-form `README.md` 5 lines: all URL examples (`link.html?c=…`, `link.html?z=…`).
+  - `modules-hitopsr.Rmd` 9 lines: 3 `descriptor` argument names and 6 R code lines.
+  - `online-collection.Rmd`, `README.Rmd` and `_pkgdown.yml`: 0.
+  - The menu reads "Module Builder" and "Study Link Builder". Met.
