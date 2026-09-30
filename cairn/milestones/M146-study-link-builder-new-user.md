@@ -64,7 +64,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] T12: Fix the quote in DESIGN Known issue 11. Add a candidate row for old names outside the scope, and add the test-reach gaps to the `z` link gaps row.
 - [x] T13: Make the next step with Supabase and no site one sentence. Make S7 check the sentence count by its own rule, not by a copy of the page's text.
 - [x] T14: If a field changes while a build waits, the build does not show its link and SQL. Test it with an edit during a slowed export fetch.
-- [ ] T15: Put back the hint facts of pass-2 findings 3, 4, 6, 9, 10 and 11, each asserted by S9 and each hint within 40 words.
+- [x] T15: Put back the hint facts of pass-2 findings 3, 4, 6, 9, 10 and 11, each asserted by S9 and each hint within 40 words.
 - [ ] T16: Make the small fixes of pass-2 findings 14, 15, 18, 19 and 23. File findings 7, 12, 13, 16, 17, 21, 24 and 25 in their rows.
 
 ## Work log
@@ -109,6 +109,9 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: tasks T13 to T16 added (minor amendment), and Coverage updated (AC4 → T13, AC5 → T15).
 - 2026-09-30: T13 done. With Supabase and no site, the next step is one sentence: "Run the SQL below once in your Supabase project's SQL editor, then open the link once to test it and give it to each participant." S7 now also counts sentence ends in the page's text, and that count gives two on the old text. The Supabase test failed before the fix, and all 16 S7 tests pass after it.
 - 2026-09-30: T14 done. `hideResult()` counts each call, and `build()` ends with nothing shown if the count moved during the export fetch or the link encoding. A typed edit was already covered, because the focus move to the heading fires its `change`. A menu change was not. The new test changes the recruiting site during a held fetch, and it failed before the fix. The first fix declared the count after setup had called `hideResult()`, which stopped the page's script. The count now sits beside `result`. Five builder specs pass, 234 tests.
+- 2026-09-30: T15 done. The intro says the page keeps and sends nothing you type, and it drops "with your choices" to stay within 60 words. The destination hint names an Apps Script web app and one JSON row. The table hint says a Supabase build downloads each instrument from the hitop site.
+- 2026-09-30: T15, continued. The options hint says blank lines are skipped. The decline URL hint says `{participant}` is empty unless the link or a site gives it. The shuffle and Prolific hints say "the responses". The SONA hint names `id=%SURVEY_CODE%`, and the completion hint names the arrival screen.
+- 2026-09-30: T15 tests. S9 asserts each fact, and it failed on the old page. Three old assertions in `link.spec.js` take the new text. Four builder specs pass, 214 tests, with S8's word limits among them.
 
 ## Decisions
 
