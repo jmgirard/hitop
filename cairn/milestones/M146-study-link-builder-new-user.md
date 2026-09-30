@@ -48,7 +48,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 
 - [x] T1: In `link.html` (fields at lines 105-213), move participant, recruiting site and module into their sections. Put the completion and decline addresses with their fields. Wrap each optional section in `<details>`, with a summary that updates on input. If `prefill()` (lines 646-781) gives a field a value, open the field's section. In the build handler (lines 790-1040), open the section and focus the field for a refused optional field.
 - [x] T2: Set the disabled state of Move up, Move down and Remove in `renumber()` (lines 292-369) and in the question groups (lines 433-509). Update it after every change to the rows. Make each accessible name begin with the visible text.
-- [ ] T3: Build the "Your study link" region (lines 213-227, 1041-1069). It holds the heading, the scrolling box, "Copy the link" beside the box, the SQL block and the next-step sentence. Focus moves to the heading.
+- [x] T3: Build the "Your study link" region (lines 213-227, 1041-1069). It holds the heading, the scrolling box, "Copy the link" beside the box, the SQL block and the next-step sentence. Focus moves to the heading.
 - [ ] T4: Rewrite the intro, step list, labels, hints, placeholders and refusal texts in `link.html` under the D-083 names and the word limits. Do the same for the `form.js` messages that the page shows. Move the cut detail into `README.md` sections, and link each shortened hint to its section.
 - [ ] T5: Write the Playwright tests for AC1 to AC5 in a new spec file. Update the existing specs that assert old text. Run the suite locally and on the PR.
 - [ ] T6: In hitop, apply the D-083 names to the two articles, `README.Rmd` and the `_pkgdown.yml` menu. Rebuild `README.md` and build both articles. Run `check()` and `check_pkgdown()`.
@@ -63,6 +63,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-29: implement started. Branches cut in hitop and hitop-form. Question gate: the questions section's summary lists each question's legend ("Question 1, Question 2"), as AC1 reads, with no amendment. Hitop-form baseline: 720 passed.
 - 2026-09-29: T1 done in hitop-form. The page has a required block and five closed sections with live summaries. Prefill opens a filled section, and a field refusal opens its section and focuses the field. New `tests/link-sections.spec.js` (22 tests) covers AC1 and AC2. Four planted defects turned 20 of them red. Old link specs open every section through a new `openBuilderSections()` helper. Full suite: 736 of 742 passed, and 6 timeouts at one moment passed on re-run.
 - 2026-09-29: T2 done. Move up and Move down are disabled at the ends, Remove on a single instrument row, and names read "Move up instrument 2". If the pressed move button becomes disabled, focus moves to the other one. Two AC3 tests added, and two planted defects turned both red. Full suite: 744 passed.
+- 2026-09-29: T3 done. After a build, a "Your study link" region shows the link in a scrolling box. "Copy the link" sits beside it, and one next-step sentence sits below it. Focus moves to its heading. Sixteen AC4 tests added (5 sites by 3 destinations, and one long `z` link). Three planted defects (no focus, no box height, one sentence for all) each turned tests red. Full suite: 760 passed.
 
 ## Decisions
 
