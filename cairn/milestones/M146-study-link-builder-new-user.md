@@ -1,6 +1,6 @@
 # M146: Study Link Builder: required choices first, optional ones folded away
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -29,7 +29,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] AC1: Open `link.html` with no address parameters. The top-level parts come in this order: instruments, study name, where responses go, the five optional sections, and the "Make the link" button. The optional sections are "Participants and recruiting site", "Item order and HiTOP-SR module", "Consent", "When the participant finishes" and "Your own questions". Each is a closed `<details>` element. Its summary line reads "Not used", or it lists the visible labels of its fields that hold a value, joined by ", ". The test makes one refusal in each optional section. Each time, "Make the link" opens that section and moves focus to the refused field. The page is checked at 375px and at 1280px wide with every section open. No element is wider than the page. A Playwright test asserts each fact.
 - [x] AC2: Open `link.html` with a study link that sets one optional field. The section that holds the field opens, and its summary lists that field's label. The other optional sections stay closed. A Playwright test runs this once for each optional field alone. It uses a `z` link for the consent fields and the questions. A link that sets no optional field leaves every optional section closed.
 - [x] AC3: This criterion covers the instrument rows and the question groups. "Move up" is disabled on the first row, and "Move down" is disabled on the last row. On a single instrument row, all three buttons are disabled. The accessible name of each button begins with its visible text. A Playwright test asserts the state at each position for 1, 2 and 3 instrument rows. It does the same for 1, 2 and 3 question groups. It asserts the state again after a move, a removal, a prefill from a study link, and a questions file load.
-- [x] AC4: After a successful build, a region headed "Your study link" shows the link in a box that scrolls. A "Copy the link" button sits beside the box. Below it, one next-step sentence fits the choices made. With a recruiting site, the sentence says to paste the link into that site's study page. With a Supabase table, it says to run the SQL first. Otherwise it says to open the link once to test it, and then to give it to each participant. Focus moves to the region's heading. A Playwright test asserts each part for each recruiting-site option and each where-responses-go option. It also builds a `z` link over 5,000 characters, and asserts that the box stays under 16rem high.
+- [ ] AC4: After a successful build, a region headed "Your study link" shows the link in a box that scrolls. A "Copy the link" button sits beside the box. Below it, one next-step sentence fits the choices made. With a recruiting site, the sentence says to paste the link into that site's study page. With a Supabase table, it says to run the SQL first. Otherwise it says to open the link once to test it, and then to give it to each participant. Focus moves to the region's heading. A Playwright test asserts each part for each recruiting-site option and each where-responses-go option. It also builds a `z` link over 5,000 characters, and asserts that the box stays under 16rem high.
 - [x] AC5: A Playwright test opens every optional section and adds one question of each type. It then chooses each recruiting-site option and each where-responses-go option in turn, and makes one Supabase build. In each of these states, it checks every `.hint` and `.site-hint` element in the page, shown or not. Each holds at most 40 words. The intro is all text between the `<h1>` and the first form part. It holds at most 60 words. The page's text, its `placeholder` values and its `aria-label` values hold none of the D-083 retired terms. The text of a built link is exempt. The test counts words by splitting on whitespace.
 - [x] AC6: A case-insensitive grep runs for each D-083 retired-term pattern. In hitop-form it reads `link.html`, `form.js` and `README.md`. In hitop it reads the two articles, `README.Rmd` and `_pkgdown.yml`. Each remaining hit is one of these: a code identifier, a comment, R code, an R function or argument name, or a literal URL or URL example. The Instruments menu names the two pages "Module Builder" and "Study Link Builder".
 - [ ] AC7: The hitop-form Playwright suite passes locally and on its PR's CI. In hitop, `devtools::check()` gives 0 errors and 0 warnings, and `pkgdown::check_pkgdown()` passes. Both articles build with `pkgdown::build_article()`. The navbar test passes. `README.md` equals a fresh `devtools::build_readme()`.
@@ -97,6 +97,8 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - claim audit: 80 claims read, 2 corrected — hitop-form link.html, NEWS.md
 - 2026-09-30: the audit found that Add, Move and Remove left a built link on screen. Both renumber functions now hide it. The stale-link test covers the six presses, and it failed with the call removed. The NEWS entry now says the articles use "Study Link Builder", since neither names the Module Builder. The SONA hint says "Paste the link" again, still at 40 words. Full hitop-form suite: 770 passed.
 - 2026-09-30: T8 to T12 done, and status set to review. `devtools::check()` gives 0 errors, 0 warnings and 0 notes, and `check_pkgdown()` finds no problems. The hitop-form suite passed 770 tests.
+- 2026-09-30: review pass 2 returned the milestone to in-progress, defect return 2. AC4 fails: with Supabase and no site, `nextStep()` gives two sentences where AC4 promises one, and S7 copies them. AC1 to AC3, AC5 and AC6 are met, and AC7 is met locally. The 25 findings in the Review section are untriaged, for the implement question gate.
+- 2026-09-30: for that gate, finding 5 (a prefilled intro over 60 words) falls outside AC5's named states. It is a possible AC5 amendment, not a defect. A third defect return makes descope or park the recommended option.
 
 ## Decisions
 
@@ -177,7 +179,7 @@ Pass 2, 2026-09-30. Both branches were level with `origin/main` after a fetch, s
 - AC1: S1 asserts the part order and five closed sections that read "Not used". S2 asserts the label lists. S3 makes one refusal per section, and the Supabase focus probes pass too. S4 finds no overflow at 375px and 1280px. All passed. Met.
 - AC2: S5 runs one test per optional field, with `z` links for consent and questions. It passed, and the no-field test passed. Met.
 - AC3: S6 passed for instrument rows and question groups. It covers 1 to 3 rows, a move, a removal, a prefill and a questions file load. Met.
-- AC4: the S7 tests over 5 sites by 3 destinations passed. The long `z` link test passed. Met.
+- AC4: the S7 tests over 5 sites by 3 destinations passed. The long `z` link test passed. **AC4 fails as written** (corrected in pass 2, after the diff reviewer's finding). With Supabase and no recruiting site, `nextStep()` returns two sentences (`link.html:1211`), and AC4 promises one next-step sentence. S7 passes because `expectedNext()` copies the same two sentences (`tests/link-sections.spec.js:426`).
 - AC5: S8 checks word limits and retired terms over the site, destination and Supabase states. It passed, and the README heading test passed. Met.
 - AC6: the 12 D-083 patterns were re-run with `perl`.
   - `link.html` 33 lines: comments and code identifiers (`name="store"`, `store` variables, `storeSql`).
@@ -186,3 +188,44 @@ Pass 2, 2026-09-30. Both branches were level with `origin/main` after a fetch, s
   - `modules-hitopsr.Rmd` 9 lines: 3 `descriptor` argument names and 6 R code lines.
   - `online-collection.Rmd`, `README.Rmd` and `_pkgdown.yml`: 0.
   - The menu reads "Module Builder" and "Study Link Builder". Met.
+- AC7, local parts only:
+  - The Playwright suite passes, with the one network timeout above.
+  - `devtools::check()` gives 0 errors, 0 warnings and 0 notes, in 7.6 minutes.
+  - `pkgdown::check_pkgdown()` finds no problems.
+  - The download-pages navbar test passes.
+  - `build_readme()` leaves `README.md` unchanged.
+  - Both articles build with `build_article()` against the branch installed in a scratch library.
+  - Not yet run: the PR's CI, which starts only after the step-8 push.
+
+**Consistency gate.**
+- `cairn_validate` passes, with only advisory warnings.
+- `document()` leaves no diff.
+- NEWS.md opens New features with the Study Link Builder entry.
+- No principle changed, so `cairn_impact` was skipped.
+
+**Findings.** Three fresh reviewers ran: an Opus diff reviewer, a Sonnet history reviewer and a Sonnet prior-review reviewer. Both GitHub probes for inline PR comments returned none. The findings are merged and ranked most severe first. "Seen" means this session read the code and found the defect. The reviewers found the T8 rename in code. They also found the fixes for pass-1 findings 1, 2, 4, 5, 8 to 12, 15 to 17, and 23 to 25.
+1. AC4 fails: with Supabase and no site, the next step is two sentences, and S7 copies them (see AC4 above). The README "Your study link" section also says one sentence. (Seen)
+2. A Supabase build waits on the export fetch. An edit made during that wait hides the result. The build then shows the link and SQL for the old values (`link.html:1168` to `1200`). The T10 test covers only edits after a build. (Seen)
+3. The options hint lost "Blank lines are skipped". The pass-1 rejection of finding 20 said the README states the rule, but `README.md:313` states it for consent text only. (Seen)
+4. The destination hint says "a Google Sheet's web app" (`link.html:124`), the error T10 fixed in `modules-hitopsr.Rmd`. The old "one JSON row" rule is gone. (Seen)
+5. On a prefilled page, the text between `<h1>` and the form holds 61 words before the notice's list items (`link.html:105` to `110`). AC5's named states do not include a prefilled page. (Seen)
+6. The decline-URL hint says "`{participant}` works here too". But with no identifier on the page yet, `decline()` fills it with nothing (`form.js:1658` to `1662`).
+7. The intro no longer links the Module Builder. The module route sits only in the closed "Item order and HiTOP-SR module" section.
+8. Participant-facing `form.js` strings in `decodeLink` and `sendResponses` were reworded, though `link.html` never shows them. This is pass-1 finding 3. The history reviewer disputes its rejection for these strings only. (Seen)
+9. The intro dropped "sends none of what you type anywhere" and the sentence that a Supabase build downloads each instrument from the hitop site.
+10. Four hints lost table and column-order facts (shuffle, Prolific, instruments, SQL). Two say "the file" where a row or table also holds the data.
+11. The SONA hint lost the `id=%SURVEY_CODE%` sentence. The completion URL hint lost "once the sent screen is drawn".
+12. Pressing "Make the link" before prefill ends still submits a native GET. The `z` link gaps row names an edit to the prefill or build handler as the time to fix it.
+13. `showHeld()` and `labelText()` run outside the prefill try/catch. This is pass-1 finding 19, rejected as speculative.
+14. The ROADMAP question-gaps row still says a questions file load leaves an old built link on screen, which T10 fixed.
+15. hitop-form `README.md:28` still says "three required parts", and a comment in `tests/link.spec.js` says the same.
+16. The articles do not say that the participant, module, consent and questions fields sit in closed sections, or name "Your study link".
+17. `modules-hitopsr.Rmd` (about line 405) lists the forms the online form shows without the PID-5 forms. The line predates the branch, but the branch rewrote it.
+18. The S3 empty-key probe's pattern has an unanchored second branch (`tests/link-sections.spec.js:244`).
+19. The "hitop package documentation" link opens in the same tab (`link.html:103`).
+20. In the Prolific hint, "it reads the filled ones" can read as the Prolific option.
+21. The first-row Move up guard is no longer driven by a click. This is pass-1 finding 21.
+22. The README anchor `#make-a-study-link` is gone. No link in either repo uses it.
+23. The README test row for `link-consent.spec.js` says "decompress" (`README.md:885`).
+24. The old specs open every section through `openBuilderSections()`, so their refusals and prefills never run with sections closed.
+25. `showHeld()` clones each held label, textarea value included, on every keystroke.
