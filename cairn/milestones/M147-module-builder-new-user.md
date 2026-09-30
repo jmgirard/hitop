@@ -26,7 +26,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 ## Acceptance criteria
 
 - [ ] AC1: The page text between the `<h1>` and the status line holds at most 50 words. The host list and the R log sit in one `<details>` element named "Technical details". It is closed during the load and after the page is ready. A load or build failure opens it, and the failure status points to it by name. A smoke-test step asserts these facts. It holds the loading state by delaying the webR request.
-- [ ] AC2: In the scale picker, each scale checkbox's accessible name ends with "<n> items", where n is the scale's item count. The test checks all 76 scales. The installed package gives each scale a definition. Each scale then has a visible button that opens its definition by click and by keyboard, with no hover. A filter that matches no scale shows "No scales match". Smoke-test steps assert each fact.
+- [ ] AC2: In the scale picker, each scale checkbox's accessible name ends with "<n> items", where n is the scale's item count. When the package the page loads gives every scale a definition, each scale's row has a visible button that opens its definition by click and by keyboard, with no hover. A filter that matches no scale shows "No scales match". Smoke-test steps assert the name form on every listed scale, n on two named scales, the button's click, keyboard and hover behavior on every row, and the empty-filter line. Review reads n on every row against the package the page loads.
 - [ ] AC3: In step 2, choose each of the four formats in turn, with its settings closed. The visible text between the format cards and the download button holds at most 60 words. Closed settings summary lines count. A mouse click on each control that changes the step leaves the new step's heading with a computed `outline-style` of `none`. A keyboard press on the same control shows a focus outline. Smoke-test steps assert both facts for each control.
 - [ ] AC4: Each format has one name. Its card title, its download button and its build status all use that name. For Word, Qualtrics and REDCap, the zip file's README.txt title uses it too. Each control that changes the step holds the name of its target step, as the step bar shows that name. A smoke-test step reads these places against one table.
 - [ ] AC5: Save the module file from the Online form card. A panel headed "Next: make the study link" then shows a button. The button's address opens the Study Link Builder, and its `c` value decodes to the saved file's module. A change to the scale selection or the format removes the panel. A smoke-test step asserts each fact. On the Study Link Builder, the researcher can choose the module file or paste its text. A hitop-form test chooses `tests/fixtures/module-plain.json` as a file. It asserts that the built link equals the link built from the pasted text.
@@ -35,13 +35,13 @@ A researcher who opens the Module Builder for the first time reads a short start
 
 ## Coverage
 
-- AC1 → T1, T7
-- AC2 → T2, T7
+- AC1 → T1, T7, T9
+- AC2 → T2, T7, T9
 - AC3 → T3, T7
-- AC4 → T4, T7
-- AC5 → T5, T6, T7
-- AC6 → T4, T8
-- AC7 → T6, T7, T8
+- AC4 → T4, T7, T11
+- AC5 → T5, T6, T7, T9, T12
+- AC6 → T4, T8, T11
+- AC7 → T6, T7, T8, T9, T11, T12
 
 ## Tasks
 
@@ -53,6 +53,10 @@ A researcher who opens the Module Builder for the first time reads a short start
 - [x] T6: In hitop-form `link.html`, add a file choice beside the module text box that fills it from a chosen file. Add the hitop-form test for AC5, and run that suite locally and on its PR.
 - [x] T7: Add the smoke-test steps for AC1 to AC5 and a plant for each one. Update the `tests/prose.mjs` ledger. Run the smoke test, prose and plants locally, and the smoke test and prose on the PR.
 - [x] T8: Reorder `README.md` into a use section and a "For developers" section. Take before and after screenshots at 375px and 1280px for Jeff's look at the merge gate.
+- [ ] T9: Review return. Add three smoke steps. A build failure that the test forces opens "Technical details" (AC1). The Definition button's click, keyboard and hover checks run on every row (AC2). Panel removal is read apart from the anchor (AC5). A21 also reads whether the section is rendered. Add a plant for each.
+- [ ] T10: Add a hitop NEWS.md entry for the Module Builder changes.
+- [ ] T11: Review findings in hitop-builder. Restore the REDCap inner-zip warning and give the Online form's file-name note a home. Announce "No scales match". Make `prose.mjs --compare` keep the retired-name exit. Fix the stale comments and labels. Narrow the README focus sentence to Chromium. Add plants for A24's hover and A28's README title.
+- [ ] T12: Review findings in hitop-form `link.html`. Close the gap where "Make the link" runs during the file read, announce the chosen file, and rewrap the two long README lines.
 
 ## Work log
 
@@ -70,6 +74,10 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: claim audit: 240 claims read, 9 corrected, hitop-builder README.md, index.html, tests/smoke.spec.js, tests/plants.mjs (hitop-builder commits da853e2 and 3ea9636). The hitop diff adds nothing outside `cairn/`, so the reader read both companion diffs instead. Corrected: the study link's address carries the module to GitHub Pages; the load takes about twenty seconds each for R and the package; the module file does not score by itself; the Word and Qualtrics README.txt differences; the hand-off control is a link drawn as a button; A24 drives the first row only; three stale comments. The re-read found all nine hold, plus one wording nit (the tally control is a button drawn as a link), fixed in 3ea9636.
 - 2026-09-30: implement complete. hitop-builder full local run passed (4 tests), `npm run prose` clean, `npm run plants` OK (39 of 39). hitop-form passed 773 tests locally. No hitop R code changed. Status set to review.
 - 2026-09-30: review pass 1 returned the milestone to in-progress (defect return 1). What failed: AC1, because no smoke step asserts that a build failure opens "Technical details". AC2, because the smoke test holds `<n>` to the package on 2 rows and does not pin 76 rows. It also drives the Definition button on the first row only. AC5, because A15 and A18 count anchors and cannot see a panel left behind. The consistency gate, because NEWS.md has no entry. The page itself met AC1, AC2 and AC5 in a one-off check. Findings and proposed dispositions are in the Review section.
+- 2026-09-30: implement resumed after review pass 1. Gate: Jeff chose to narrow AC2 and to fix the return reasons plus every finding proposed as fix-now. The two proposed follow-ups wait for triage at the merge gate.
+- re-audit: AC2 (full) — first reader, on the text "The test checks every listed scale for that form, and checks n against the package on two named scales": the sentence bound the test, not the page. The closing sentence claimed more than the test checks, the button was opened on one row only, and "against the package" overstated hand-listed counts.
+- re-audit: AC2 (full) — second reader, on the fixed text: the per-scale definition clause widened, because the page shows buttons only when every scale has a definition. The test clause lacked that condition, "the button on every row" read as presence only, and both known counts have one digit.
+- 2026-09-30: AC2 amended at Jeff's gate after the second re-audit (the stop for AC2). "The test checks all 76 scales" left, because hitop-builder pins no scale count. The smoke test now covers the name form and the button's behavior on every row, and n on two named scales. Review reads n on every row. Minor amendment: T9 to T12 added, and the Coverage lines follow them.
 
 ## Decisions
 
