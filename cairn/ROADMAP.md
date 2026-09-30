@@ -11,7 +11,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
 | M146 | Study Link Builder: required choices first, optional ones folded away | done | — | normal | milestones/archive/M146-study-link-builder-new-user.md |
-| M147 | Module Builder: short start, labelled picker, clear hand-off | planned | M146 | normal | milestones/M147-module-builder-new-user.md |
+| M147 | Module Builder: short start, labelled picker, clear hand-off | review | M146 | normal | milestones/M147-module-builder-new-user.md |
 | M148 | Online form: text for participants, progress, and a way on from errors | planned | M146 | normal | milestones/M148-form-page-new-participant.md |
 | M142 | HiTOP-SR module functions refuse a module whose items do not match its scales | done | — | normal | milestones/archive/M142-module-mismatch-refusal.md |
 | M141 | HiTOP-SR scoring can include the 17 subscales on request | done | — | normal | milestones/archive/M141-hitopsr-subscale-scoring.md |
