@@ -1,6 +1,6 @@
 # M146: Study Link Builder: required choices first, optional ones folded away
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -96,6 +96,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: T12 done. DESIGN Known issue 11 quotes the hint as "HiTOP-SR only." (corrected M146). ROADMAP is at its 59-line cap, so the old names outside scope joined the "Module" naming row, now "User-facing names". The `z` link row gained the test-reach gaps and the instruments focus, and lost the SQL-beside-error gap that T3 closed. ROADMAP is 23,940 bytes.
 - claim audit: 80 claims read, 2 corrected — hitop-form link.html, NEWS.md
 - 2026-09-30: the audit found that Add, Move and Remove left a built link on screen. Both renumber functions now hide it. The stale-link test covers the six presses, and it failed with the call removed. The NEWS entry now says the articles use "Study Link Builder", since neither names the Module Builder. The SONA hint says "Paste the link" again, still at 40 words. Full hitop-form suite: 770 passed.
+- 2026-09-30: T8 to T12 done, and status set to review. `devtools::check()` gives 0 errors, 0 warnings and 0 notes, and `check_pkgdown()` finds no problems. The hitop-form suite passed 770 tests.
 
 ## Decisions
 
