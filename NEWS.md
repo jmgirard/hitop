@@ -14,9 +14,9 @@
   link" button and one next step for the choices made. The hints are
   shorter, and they link to the hitop-form README for detail. The site's
   Instruments menu names the two pages "Module Builder" and "Study Link
-  Builder". The online-collection and HiTOP-SR modules articles use those
-  names, and call the `.json` file that `write_module()` writes the module
-  file.
+  Builder". The online-collection and HiTOP-SR modules articles use the
+  name "Study Link Builder", and call the `.json` file that `write_module()`
+  writes the module file.
 
 * **A Word module form can carry subscale scoring rows.**
   `generate_docx_hitopsr()` accepts `include_subscales = TRUE` with a
