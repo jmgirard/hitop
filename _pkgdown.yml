@@ -147,6 +147,9 @@ reference:
   - hitopbr_scales
   - hitophsum_items
   - hitophsum_choices
+  - hitopdat_items
+  - hitopdat_choices
+  - hitopdat_scales
   - pid_items
   - pid_scales
   - pid_domains

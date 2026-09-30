@@ -358,6 +358,83 @@
 #' hitophsum_choices
 "hitophsum_choices"
 
+#' HiTOP-DAT Item Data
+#'
+#' The items of the HiTOP-DAT (HiTOP Digital Assessment and Tracker), a battery
+#' of seven measures: the WHODAS (12 items), the IDAS-II (99), the AUDIT (10),
+#' the DUDIT (11), the positive items of the CAPE (20), the CAT-PD static form
+#' (216) and the PHQ-15 (14). The battery numbers run from 1 to 382
+#' in the order the battery gives the measures, which is the order listed here.
+#'
+#' The item text is taken from the battery's Qualtrics file, with its markup
+#' removed. The file moves the PHQ-15's item 4 (menstrual problems) out of the
+#' battery, so the PHQ-15 has 14 items here and its own numbers skip 4. The
+#' battery gives only the CAPE's positive items, and they keep their CAPE
+#' numbers (2 to 42, with gaps). The battery has no scoring function in this
+#' package yet.
+#'
+#' @format A \link[tibble]{tibble} with 382 rows and 5 columns:
+#' \describe{
+#'   \item{Item}{The item's number in the battery, 1 to 382 (integer)}
+#'   \item{Measure}{The measure the item belongs to}
+#'   \item{MeasureItem}{The item's number in its own measure (integer)}
+#'   \item{Text}{Item text}
+#'   \item{Choice_Set}{Name of the item's answer set (see [hitopdat_choices])}
+#' }
+#' @seealso [hitopdat_choices], [hitopdat_scales]
+#' @examples
+#' hitopdat_items
+"hitopdat_items"
+
+#' HiTOP-DAT Answer Sets
+#'
+#' The answer sets referenced by `hitopdat_items$Choice_Set`, one row per
+#' answer. `Value` is the value the battery's Qualtrics file gives the answer
+#' when it scores an item in the forward direction. The file also offers a
+#' "Skip" answer on every item, which is not included.
+#'
+#' @format A \link[tibble]{tibble} with 58 rows and 3 columns:
+#' \describe{
+#'   \item{Choice_Set}{Name of the answer set}
+#'   \item{Value}{Coded response value (integer)}
+#'   \item{Label}{Response label displayed to respondents}
+#' }
+#' @seealso [hitopdat_items]
+#' @examples
+#' hitopdat_choices
+"hitopdat_choices"
+
+#' HiTOP-DAT Scale Data
+#'
+#' The scales the HiTOP-DAT scores, one row per scale: the 19 IDAS-II scales,
+#' the 33 CAT-PD facets, and one total each for the WHODAS, AUDIT, DUDIT, CAPE
+#' positive items and PHQ-15. `Scale` is the name the HiTOP-DAT manual (2021)
+#' gives the scale. Item numbers are battery numbers, as in
+#' `hitopdat_items$Item`.
+#'
+#' Scale membership and reverse keying come from the scoring of the battery's
+#' Qualtrics file. The CAT-PD facets are checked against the IPIP CAT-PD-SF
+#' v1.1 key. An item can be reversed in one scale and not in another: the
+#' IDAS-II's General Depression reverses two Well-Being items that Well-Being
+#' scores forward.
+#'
+#' @format A \link[tibble]{tibble} with 57 rows and 6 columns:
+#' \describe{
+#'   \item{Measure}{The measure the scale belongs to, as in
+#'     `hitopdat_items$Measure`}
+#'   \item{Scale}{Name of the scale}
+#'   \item{camelCase}{The name of the scale converted to camel case}
+#'   \item{itemNumbers}{A list column containing one integer item-number vector
+#'     per scale}
+#'   \item{reverseNumbers}{A list column containing, per scale, the integer
+#'     numbers of the items that scale reverses (empty when it reverses none)}
+#'   \item{nItems}{The number of items in the scale (integer)}
+#' }
+#' @seealso [hitopdat_items]
+#' @examples
+#' hitopdat_scales
+"hitopdat_scales"
+
 #' Distribution Artifact Manifest
 #'
 #' Version manifest for the prebuilt instrument artifacts. They ship in the

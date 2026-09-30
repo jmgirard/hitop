@@ -2,6 +2,13 @@
 
 ## New features
 
+* **The HiTOP-DAT battery ships as three datasets.** `hitopdat_items` holds
+  its 382 items, one row per item, with the measure, the item's number in its
+  own measure, the text and the answer set. `hitopdat_choices` holds the
+  labels and values of each answer set. `hitopdat_scales` holds the 57 scales
+  the battery scores, with each scale's items and the items it reverses. The
+  battery has no scoring or export function yet.
+
 * **A Word module form can carry subscale scoring rows.**
   `generate_docx_hitopsr()` accepts `include_subscales = TRUE` with a
   `module`. The scoring page then lists the subscales of the scales the
