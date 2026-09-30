@@ -78,6 +78,7 @@ On the Study Link Builder, an early press, an edit during a file read and a refu
 - 2026-09-30: claim audit: 60 claims read, 4 corrected — hitop `NEWS.md`, hitop-form `README.md`, `form.js`, `link.html`, `tests/link.spec.js`, `tests/link-module-file.spec.js`, `tests/instruments.spec.js`, `tests/link-sections.spec.js`. The four were the NEWS export-refusal sentence, the README's S12 question fields, the README and header wording of S10, and the link.html Firefox comment. The reader re-read all four and found them true. `link-sections.spec.js` and `link.spec.js` then passed 204.
 - 2026-09-30: open concern for review: with no link opened, a throw in the setup steps would now show "The study link you opened could not be read". No criterion covers that case.
 - 2026-09-30: review started (first pass, no PR yet). Both default branches unmoved since the branches were cut.
+- step-7 approval: m149-link-builder-presses approved for merge, the hitop-form companion first, after the fixes for R1, R2 and R9.
 
 ## Review
 
@@ -108,3 +109,9 @@ Reviewers: diff-bug (Opus) with 12 findings, blame-history (Sonnet) with 6, and 
 - R11 (diff-bug 10): the early-press check waits a fixed 500 ms. A slow runner gives a false pass, never a false fail, and L34 failed before the fix. Proposed: reject.
 - R12 (diff-bug 11): the T6 work-log line numbers are one lower than at HEAD. Proposed: reject, since the AC6 evidence above records the shift.
 - R13 (blame 2, blame 5): NEWS.md says "compressed", and a typed edit drops a file read with no note. NEWS.md is outside D-083's scope, and AC2 chose the drop. Proposed: reject.
+
+Gate triage (2026-09-30, Jeff): each proposed disposition accepted. R1, R2 and R9 fixed now, R3 to R8 to one candidate row, R10 to R13 rejected.
+
+- R1 fix, hitop-form `a7886ed`: S11 now opens a link with SONA, a web address and consent text, and throws when the open loop opens the consent section. At that point the participants section is open, a fact the test asserts. The hints are checked by their `hidden` flag, and the menu is checked for no `aria-describedby`. The test passes on the page. Six scratch copies each went red: the whole reset cut, the hint loop cut, the `aria-describedby` removal cut, the summary loop cut, only `section.open = false` cut, and `webhookFields` taken out of the hint loop. `tests/link-sections.spec.js` passed 91 of 91.
+- R2 fix, hitop-form `a7886ed`: the README row says "the four fields of where responses go". A grep of the README for `\bstores?\b` finds 0 hits.
+- R9 fix: the NEWS.md line is rewrapped to the entry's width.

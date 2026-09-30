@@ -597,8 +597,9 @@
   disabled until the page has read the study link it was opened with.
   Before, a press or Enter in a field sent the form as a plain web request
   while a compressed link was unpacked or before the page's script loaded.
-  The page then reloaded with its fields in the address. An edit typed into the "Module file" box while
-  a chosen file is read now wins, and the file's text is dropped. The
+  The page then reloaded with its fields in the address. An edit typed
+  into the "Module file" box while a chosen file is read now wins, and the
+  file's text is dropped. The
   refusal of an instrument export, pasted or chosen as a file, now says to
   use the file that the Module Builder or `write_module()` saved. Before,
   it said to paste it. A refusal of the instruments list moves focus to the
