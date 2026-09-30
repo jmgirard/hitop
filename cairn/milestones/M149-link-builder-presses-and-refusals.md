@@ -1,13 +1,13 @@
 # M149: Study Link Builder: early presses, file reads and refusals
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the researcher page that makes study links, and one refusal on the online form
-- **Branch/PR:** —
+- **Branch/PR:** m149-link-builder-presses, companion: /Users/jmgirard/github/hitop-form m149-link-builder-presses
 
 ## Goal
 
@@ -53,7 +53,7 @@ On the Study Link Builder, an early press, an edit during a file read and a refu
 - [ ] T3: Rewrite `labelText()` (`link.html:507-511`) to read label text with no copy. Move the post-prefill steps (`:966-970`) into the `try` at `:952`. Make the `catch` hide the site hints and destination blocks, reset the summaries and close the sections. Rename the `nextStep()` local `sql` (`:1279`) to a name that no top-level `const`, `let` or `function` in the script uses. Write the AC3 and AC4 tests.
 - [ ] T4: Add the string check at `form.js:707`, before any fetch. Write the AC5 test in `tests/instruments.spec.js` with a request listener on the export host.
 - [ ] T5: Give `checkInstruments` refusals the index of the row at fault (`form.js:99-101`), the later row for a repeat or a second PID-5 form. Focus that row's menu at `link.html:1025`. Update the refusal-focus sentence at hitop-form `README.md:33-36`.
-- [ ] T6: Write the AC6 test as one table in `tests/link-sections.spec.js`, one entry per case. Record the grep's list in the work log for review to re-run.
+- [ ] T6: Cut `QUESTION_CONTROLS` (`link.html:814`) to the five fields the editor can fault, with no `qList` fallback. Write the AC6 test as one table in `tests/link-sections.spec.js`, one entry per case. Record the grep's list in the work log for review to re-run.
 - [ ] T7: Update the README test-table rows of the spec files this milestone changes. Run the full suite locally and on the PR.
 - [ ] T8: Add the hitop NEWS.md entry. Run `devtools::check()`.
 
@@ -62,3 +62,6 @@ On the Study Link Builder, an early press, an edit during a file read and a refu
 - 2026-09-30: created by /milestone-plan from the "Study Link Builder follow-ups" row, with M150 and M151.
 - 2026-09-30: plan chose a button disabled in the markup until the prefill ends over an early classic script that cancels submits. A cancelled press gives no sign, and a disabled button also blocks the Enter submit. Falsified by a report that the page looks broken during a slow `z` load.
 - 2026-09-30: the criteria audit ran in full mode with a fresh Opus reader. It returned 13 findings, and each was repaired as suggested. AC1 adds the throw outcome and `autocomplete="off"`. AC3 names the fields it types into and greps for other copy methods. The throw test became AC4 and checks a clean page and a working build. AC5 adds the array probes. AC6 fires each run-time control and closes the sections first. The rename check moved from a criterion to T3, which keeps the count at seven. Four task line numbers were corrected.
+- 2026-09-30: implement started. Branches `m149-link-builder-presses` in hitop and hitop-form, cut from the pushed `main` of each.
+- 2026-09-30: gate: `checkInstruments` puts the row's index on the thrown error as `index`, and its `bad(why)` callback is unchanged. The instrument-type refusal reads "The study link's instrument field must be text, and it is …". The export refusal says "Use the file that the Module Builder or write_module() saved."
+- 2026-09-30: gate: the question refusal's control map keeps only the five fields the editor can fault (name, text, options, min, max). Required, type and the `qList` fallback go, and a fault with no mapped field focuses the message. Sub-task added to T6.

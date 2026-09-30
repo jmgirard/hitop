@@ -13,7 +13,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M146 | Study Link Builder: required choices first, optional ones folded away | done | — | normal | milestones/archive/M146-study-link-builder-new-user.md |
 | M147 | Module Builder: short start, labelled picker, clear hand-off | done | M146 | normal | milestones/archive/M147-module-builder-new-user.md |
 | M148 | Online form: text for participants, progress, and a way on from errors | planned | M146 | normal | milestones/M148-form-page-new-participant.md |
-| M149 | Study Link Builder: early presses, file reads and refusals | planned | — | high | milestones/M149-link-builder-presses-and-refusals.md |
+| M149 | Study Link Builder: early presses, file reads and refusals | in-progress | — | high | milestones/M149-link-builder-presses-and-refusals.md |
 | M150 | Study Link Builder: hint facts, names and tutorials | planned | M149 | high | milestones/M150-link-builder-hint-facts.md |
 | M151 | Study Link Builder test reach | planned | M149 | normal | milestones/M151-link-builder-test-reach.md |
 | M142 | HiTOP-SR module functions refuse a module whose items do not match its scales | done | — | normal | milestones/archive/M142-module-mismatch-refusal.md |
