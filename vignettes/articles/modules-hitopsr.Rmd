@@ -406,8 +406,9 @@ The Word, Qualtrics and REDCap files above each need a platform of their own.
 needs none: an online form that shows a HiTOP-SR module (or the full HiTOP-SR
 or HiTOP-BR) in the browser. A study link tells it where each participant's
 answers go: a file saved on the participant's own device, which they send to
-you, or a web address or Supabase table the link names, such as a Google
-Sheet, which you download as one CSV file. The
+you, or a web address or Supabase table the link names. A Google Sheet's
+script is one such web address, and you download the sheet as one CSV file.
+The
 [Collecting Responses Online](online-collection.html) article walks the
 Google Sheet route end to end, from deploying the sheet's script to scoring.
 

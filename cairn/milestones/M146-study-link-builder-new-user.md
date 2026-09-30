@@ -55,7 +55,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] T7: Run the AC6 greps, and classify each remaining hit in a work-log ledger for review to re-run. Take before and after screenshots at 375px and 1280px, with the sections closed and open, for Jeff's look at the merge gate.
 - [x] T8: Rename hitop-form `tests/instruments-store.spec.js` to `tests/instruments-supabase.spec.js`, and update the README row and every other reference.
 - [x] T9: Put back the facts the rewrite dropped, each asserted by a test. They are the host note in the intro, and the SONA token and `XXXX` sentence. They are also the declined-text, decline-URL and saved-file URL rules, and the Prolific URL-parameters caveat.
-- [ ] T10: Make the smaller fixes chosen at the return gate:
+- [x] T10: Make the smaller fixes chosen at the return gate:
   - "the online form" where a hint means the participant's page, "unpack" in the builder-shown refusals, and the README opening name
   - an anchored Supabase focus pattern, the same trim in the summary and the build, and a result region that a field change hides
   - README hint links that open a new tab
@@ -89,6 +89,9 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: tasks T8 to T12 added (minor amendment), and Coverage updated (AC6 → T8, AC7 → T11).
 - 2026-09-30: T8 done. The spec is now `tests/instruments-supabase.spec.js`, and the README row and `tests/fixtures/README.md` name it. Its 6 tests pass. The AC6 grep over hitop-form `README.md` now finds 5 lines, all URL examples.
 - 2026-09-30: T9 done. The intro says an opened study link puts its setup in GitHub Pages' logs, and links the README section on it. The Prolific, SONA, declined-text, decline-URL and saved-file URL hints have their facts back, each within 40 words. New test S9 asserts each fact, and it failed on the old text first. The SONA hint is at 40 words. The two builder specs pass, 154 tests.
+- 2026-09-30: T10 done. Eight hints and two refusals say "the online form" where they meant the participant's page. The `z` refusals say "does not unpack" and "unpacks to more than". The Supabase focus pattern reads only the message's opening. The consent and declined boxes count any value in the summary.
+- 2026-09-30: T10, continued. A field change hides the built link. Links in the intro, the hints and the SQL block open a new tab. The Supabase-only next step is two sentences. The tab title is "HiTOP Study Link Builder". The README names the page and qualifies the focus claim, and `modules-hitopsr.Rmd` fixes the Google Sheet sentence.
+- 2026-09-30: T10 tests. The new tests (2 focus probes, a whitespace summary, the stale-link and title test, and new-tab links) and the updated sentence, unpack and refusal assertions were run first: 14 failed. After the fix, the full hitop-form suite passed 770 tests. `modules-hitopsr` builds.
 
 ## Decisions
 
