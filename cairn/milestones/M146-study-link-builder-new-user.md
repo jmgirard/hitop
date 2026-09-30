@@ -54,7 +54,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] T6: In hitop, apply the D-083 names to the two articles, `README.Rmd` and the `_pkgdown.yml` menu. Rebuild `README.md` and build both articles. Run `check()` and `check_pkgdown()`.
 - [x] T7: Run the AC6 greps, and classify each remaining hit in a work-log ledger for review to re-run. Take before and after screenshots at 375px and 1280px, with the sections closed and open, for Jeff's look at the merge gate.
 - [x] T8: Rename hitop-form `tests/instruments-store.spec.js` to `tests/instruments-supabase.spec.js`, and update the README row and every other reference.
-- [ ] T9: Put back the facts the rewrite dropped, each asserted by a test. They are the host note in the intro, and the SONA token and `XXXX` sentence. They are also the declined-text, decline-URL and saved-file URL rules, and the Prolific URL-parameters caveat.
+- [x] T9: Put back the facts the rewrite dropped, each asserted by a test. They are the host note in the intro, and the SONA token and `XXXX` sentence. They are also the declined-text, decline-URL and saved-file URL rules, and the Prolific URL-parameters caveat.
 - [ ] T10: Make the smaller fixes chosen at the return gate:
   - "the online form" where a hint means the participant's page, "unpack" in the builder-shown refusals, and the README opening name
   - an anchored Supabase focus pattern, the same trim in the summary and the build, and a result region that a field change hides
@@ -88,6 +88,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: question gate, rejections continued. Findings 19, 21, 22 and 26 are speculative or cosmetic. The rest of finding 20: the section grouping carries "Optional", and the README states the blank-line rule.
 - 2026-09-30: tasks T8 to T12 added (minor amendment), and Coverage updated (AC6 → T8, AC7 → T11).
 - 2026-09-30: T8 done. The spec is now `tests/instruments-supabase.spec.js`, and the README row and `tests/fixtures/README.md` name it. Its 6 tests pass. The AC6 grep over hitop-form `README.md` now finds 5 lines, all URL examples.
+- 2026-09-30: T9 done. The intro says an opened study link puts its setup in GitHub Pages' logs, and links the README section on it. The Prolific, SONA, declined-text, decline-URL and saved-file URL hints have their facts back, each within 40 words. New test S9 asserts each fact, and it failed on the old text first. The SONA hint is at 40 words. The two builder specs pass, 154 tests.
 
 ## Decisions
 
