@@ -41,8 +41,8 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - AC3 → T2, T5
 - AC4 → T3, T5
 - AC5 → T4, T5
-- AC6 → T4, T6, T7
-- AC7 → T5, T6, T7
+- AC6 → T4, T6, T7, T8
+- AC7 → T5, T6, T7, T11
 
 ## Tasks
 
@@ -53,6 +53,15 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] T5: Write the Playwright tests for AC1 to AC5 in a new spec file. Update the existing specs that assert old text. Run the suite locally and on the PR.
 - [x] T6: In hitop, apply the D-083 names to the two articles, `README.Rmd` and the `_pkgdown.yml` menu. Rebuild `README.md` and build both articles. Run `check()` and `check_pkgdown()`.
 - [x] T7: Run the AC6 greps, and classify each remaining hit in a work-log ledger for review to re-run. Take before and after screenshots at 375px and 1280px, with the sections closed and open, for Jeff's look at the merge gate.
+- [ ] T8: Rename hitop-form `tests/instruments-store.spec.js` to `tests/instruments-supabase.spec.js`, and update the README row and every other reference.
+- [ ] T9: Put back the facts the rewrite dropped, each asserted by a test. They are the host note in the intro, and the SONA token and `XXXX` sentence. They are also the declined-text, decline-URL and saved-file URL rules, and the Prolific URL-parameters caveat.
+- [ ] T10: Make the smaller fixes chosen at the return gate:
+  - "the online form" where a hint means the participant's page, "unpack" in the builder-shown refusals, and the README opening name
+  - an anchored Supabase focus pattern, the same trim in the summary and the build, and a result region that a field change hides
+  - README hint links that open a new tab
+  - the README refusal-focus claim, the Supabase next-step sentence with no site, "HiTOP" in the tab title, and the Google Sheet wording in `modules-hitopsr.Rmd`
+- [ ] T11: Add the NEWS.md entry for the menu names, the reworked Study Link Builder and the article names.
+- [ ] T12: Fix the quote in DESIGN Known issue 11. Add a candidate row for old names outside the scope, and add the test-reach gaps to the `z` link gaps row.
 
 ## Work log
 
@@ -73,6 +82,11 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - claim audit: 175 claims read, 4 corrected — hitop-form link.html, hitop-form README.md, vignettes/articles/online-collection.Rmd
 - 2026-09-29: the audit also found that a Supabase refusal quoting a URL with "table" or "key" in it focused the wrong field. Fixed test-first (4 tests, 2 red before the fix). Full suite: 766 passed. Doubtful items left for review: an instruments refusal focuses the first menu, not the row at fault, and "Copy the link" hides without `navigator.clipboard`.
 - 2026-09-30: review pass 1 returned the milestone to in-progress, defect return 1. The consistency gate failed because NEWS.md has no entry for this milestone. AC6 failed because hitop-form `README.md:892` keeps "store" in the file name `tests/instruments-store.spec.js`, which is none of AC6's five kinds. The repair is to rename the file, or to amend AC6 through the gate. AC1 to AC5 are met. AC7 is met locally, and its PR CI part waits for the push. The 26 reviewer findings in the Review section are untriaged, for the implement question gate.
+- 2026-09-30: implement resumed. Question gate (Jeff chose each recommended option): AC6 is repaired by renaming the spec file (T8), with no amendment. Findings 1, 2 and 4 to 6 are restored (T9).
+- 2026-09-30: question gate, continued. Findings 8 to 12, 16, 17, 23 to 25, the title part of 20 and the README opening name are fixed (T10, T12). Finding 7 gets a candidate row. Findings 14 and 18 join the `z` link gaps row.
+- 2026-09-30: question gate, rejections. Finding 3: a revert of the online-form messages puts retired terms back into `form.js` strings and fails AC6, and M148 reviews that page's text. Finding 13: the site is https-only, and the copy fallback is the same as on main.
+- 2026-09-30: question gate, rejections continued. Findings 19, 21, 22 and 26 are speculative or cosmetic. The rest of finding 20: the section grouping carries "Optional", and the README states the blank-line rule.
+- 2026-09-30: tasks T8 to T12 added (minor amendment), and Coverage updated (AC6 → T8, AC7 → T11).
 
 ## Decisions
 
