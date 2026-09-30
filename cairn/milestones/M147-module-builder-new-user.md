@@ -1,6 +1,6 @@
 # M147: Module Builder: short start, labelled picker, clear hand-off
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -25,11 +25,11 @@ A researcher who opens the Module Builder for the first time reads a short start
 
 ## Acceptance criteria
 
-- [ ] AC1: The page text between the `<h1>` and the status line holds at most 50 words. The host list and the R log sit in one `<details>` element named "Technical details". It is closed during the load and after the page is ready. A load or build failure opens it, and the failure status points to it by name. A smoke-test step asserts these facts. It holds the loading state by delaying the webR request.
-- [ ] AC2: In the scale picker, each scale checkbox's accessible name ends with "<n> items", where n is the scale's item count. When the package the page loads gives every scale a definition, each scale's row has a visible button that opens its definition by click and by keyboard, with no hover. A filter that matches no scale shows "No scales match". Smoke-test steps assert the name form on every listed scale, n on two named scales, the button's click, keyboard and hover behavior on every row, and the empty-filter line. Review reads n on every row against the package the page loads.
-- [ ] AC3: In step 2, choose each of the four formats in turn, with its settings closed. The visible text between the format cards and the download button holds at most 60 words. Closed settings summary lines count. A mouse click on each control that changes the step leaves the new step's heading with a computed `outline-style` of `none`. A keyboard press on the same control shows a focus outline. Smoke-test steps assert both facts for each control.
-- [ ] AC4: Each format has one name. Its card title, its download button and its build status all use that name. For Word, Qualtrics and REDCap, the zip file's README.txt title uses it too. Each control that changes the step holds the name of its target step, as the step bar shows that name. A smoke-test step reads these places against one table.
-- [ ] AC5: Save the module file from the Online form card. A panel headed "Next: make the study link" then shows a button. The button's address opens the Study Link Builder, and its `c` value decodes to the saved file's module. A change to the scale selection or the format removes the panel. A smoke-test step asserts each fact. On the Study Link Builder, the researcher can choose the module file or paste its text. A hitop-form test chooses `tests/fixtures/module-plain.json` as a file. It asserts that the built link equals the link built from the pasted text.
+- [x] AC1: The page text between the `<h1>` and the status line holds at most 50 words. The host list and the R log sit in one `<details>` element named "Technical details". It is closed during the load and after the page is ready. A load or build failure opens it, and the failure status points to it by name. A smoke-test step asserts these facts. It holds the loading state by delaying the webR request.
+- [x] AC2: In the scale picker, each scale checkbox's accessible name ends with "<n> items", where n is the scale's item count. When the package the page loads gives every scale a definition, each scale's row has a visible button that opens its definition by click and by keyboard, with no hover. A filter that matches no scale shows "No scales match". Smoke-test steps assert the name form on every listed scale, n on two named scales, the button's click, keyboard and hover behavior on every row, and the empty-filter line. Review reads n on every row against the package the page loads.
+- [x] AC3: In step 2, choose each of the four formats in turn, with its settings closed. The visible text between the format cards and the download button holds at most 60 words. Closed settings summary lines count. A mouse click on each control that changes the step leaves the new step's heading with a computed `outline-style` of `none`. A keyboard press on the same control shows a focus outline. Smoke-test steps assert both facts for each control.
+- [x] AC4: Each format has one name. Its card title, its download button and its build status all use that name. For Word, Qualtrics and REDCap, the zip file's README.txt title uses it too. Each control that changes the step holds the name of its target step, as the step bar shows that name. A smoke-test step reads these places against one table.
+- [x] AC5: Save the module file from the Online form card. A panel headed "Next: make the study link" then shows a button. The button's address opens the Study Link Builder, and its `c` value decodes to the saved file's module. A change to the scale selection or the format removes the panel. A smoke-test step asserts each fact. On the Study Link Builder, the researcher can choose the module file or paste its text. A hitop-form test chooses `tests/fixtures/module-plain.json` as a file. It asserts that the built link equals the link built from the pasted text.
 - [ ] AC6: `node tests/prose.mjs --text` writes every string a visitor can read. That output holds none of the D-083 retired terms, apart from R output shown in the "Technical details" log and literal URLs. In `README.md`, the section on using the page comes first. A "For developers" heading follows and holds the verification notes and test records.
 - [ ] AC7: The hitop-builder smoke test and `npm run prose` pass locally and on the PR's CI. `npm run plants` passes locally, and each new smoke assertion has a plant that turns it red. The hitop-form suite passes locally and on its PR's CI.
 
@@ -84,6 +84,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: T12 done (hitop-form commit 9de0f45). The file fill calls `hideResult()`, and a status line names the file read. New MF3 holds `Blob.prototype.text` to make a link during the read. Two hand plants each turned their test red: the missing `hideResult()` call (MF3) and the missing status line (MF2). Full hitop-form suite: 774 passed.
 - claim audit: 61 claims read, 6 corrected — hitop NEWS.md, hitop-builder index.html, tests/smoke.spec.js (hitop-builder commit 5fb4f7c). The reader read the lines this pass added: hitop-builder since 3ea9636, hitop-form since 48c4e36, and the NEWS entry. It found 3 doubtful claims and 3 older comments made false by the new live region. The re-read found all six hold.
 - 2026-09-30: implement complete after the review return. hitop-builder smoke passed (2 tests), `npm run prose` clean (177 passages), `npm run plants` OK (45 of 45). hitop-form passed 774 tests. No hitop R code changed. Status set to review.
+- 2026-09-30: review pass 2 returned the milestone to in-progress (defect return 2). What failed: AC6, because `node tests/prose.mjs --text` leaves out text that follows an inline or void element. Missing are the new "Open the Study Link Builder" link and the step-2 option labels. AC7 is also incomplete: the plants stopped after d, and no CI ran. AC1 to AC5 met. The next defect return is the third, which makes descope or park the recommended option.
 
 ## Decisions
 
@@ -133,3 +134,47 @@ Review findings from the three-lens fan-out. All are logged here, and none is tr
 - Prior-review 3: the same as diff-bug 5.
 - Prior-review 4: two hitop-form README lines are 82 characters wide. Proposed: fix now.
 - Prior-review 6: no plant for A24's hover clause. The same as diff-bug 10.
+
+### Pass 2 (2026-09-30): returned to in-progress
+
+All three branches were level with their `origin/main`, so no merge was needed. Two one-off Playwright scripts in the session scratchpad read the page. Neither was committed.
+
+- AC1: met. Local smoke passed (2 tests). A20 read 40 header words while loading, and "Technical details" closed and on show. A21 read it closed and on show at "Ready.". A22 (refused `webr.mjs`) and A30 (a build failure forced by making `URL.createObjectURL` throw) each found it open and named in the status.
+- AC2: met. Smoke passed A23, A24 and A25. The page loads hitop 0.2.0 from r-universe, built from commit 958134f0. No file under `data/`, `data-raw/` or `R/sysdata.rda` changed between that commit and `origin/main`. The review read ran a one-off script over the page. It found 76 rows and 76 package scales. Each checkbox name equals the row's name plus `lengths(hitopsr_scales$itemNumbers)` from the local 0.2.0 install, with 0 mismatches and no scale missing.
+- AC3: met. Smoke passed A26 at 48 (Word), 44 (Qualtrics), 55 (REDCap) and 56 (Online form) words, and passed A27.
+- AC4: met. Smoke passed A28.
+- AC5: met. Smoke passed A13 to A19 and A29. hitop-form `tests/link-module-file.spec.js` passed MF1, MF2 and MF3 (3 tests).
+- AC6: not met. `npm run prose` exited 0, reporting "retired names: none in 177 passages". `node tests/prose.mjs --text <file>` wrote 159 passages and exited 0. A grep of D-083's twelve patterns over that output found one hit, the R call `descriptor = desc_path` in a log line, which is exempt. `README.md` opens with "Using the page", and "For developers" holds "Verification notes" and "Tests and repository layout". But the output does not hold every string a visitor can read. `index.html` shows "Open the Study Link Builder" (line 690). Step 2 shows "Number the items 1 to n", "Keep the HiTOP-SR's own item numbers", "Shuffle the printed item order" and "Mark every item as required". The `--text` output holds none of these. The "US Letter" radio label (line 566) is also missing. The one "US Letter" in the output comes from the script string at line 1049. The parser drops text that follows an inline or void element inside a block. The label gap is older than M147. The panel link is new M147 text.
+- AC7: not complete. Local smoke passed (2 tests) and `npm run prose` exited 0. The plant run passed the unplanted copy, and plants a to d went red. Plant a reddened A1, b A7, c A1, and d A28, A4, A5 and A6. It was then stopped, because the AC6 return was certain. The full hitop-form suite did not run this pass. No PR exists, so the CI parts wait.
+
+Consistency gate: `cairn_validate` exit 0, with 25 advisory warnings and no FAIL. No principle text changed, so `cairn_impact` was skipped. NEWS.md now has a Module Builder entry. The R checks (`document()`, `check_pkgdown()`, `check()`) did not run this pass, because no R file changed since pass 1 and the return came first.
+
+Review findings from the three-lens fan-out. D is the diff-bug lens, B the blame-history lens, P the prior-review lens. Each carries a proposed disposition. Jeff triages them at the next gate.
+
+- D1: `prose.mjs --text` leaves out visitor text after an inline or void element. Return reason under AC6. Proposed: fix now, with a check that every rendered text node of the page reaches the output.
+- P1: A28 reads the Qualtrics and REDCap status once, right after the click, with no hold on the worker. The M105 archive records a Qualtrics build that ended before an unheld read, and the pass 1 unplanted copy went red on A28. Proposed: fix now (record each status change from before the click).
+- D9, B2 and P2: the Online note says "Saves from different scales share a file name". A save of every scale is `hitopsr-online.json` and a selection is `hitopsr-online-module.json`. Proposed: fix now ("different selections of scales").
+- B3 and D21: the lede says "Everything runs in this browser" and names no hosts, and "Technical details" repeats the sentence. Proposed: fix now (say in the lede that R and the package are downloaded, pointing to "Technical details", within 50 words).
+- D7, B8 and P8: in `link.html`, the "Read the module file" status stays after the box is edited or emptied. The new control also has no "sends nowhere" hint like the questions loader. Proposed: fix now.
+- D8 and B8: two quick file choices can finish out of order. Proposed: fix now (keep only the latest read).
+- D14, B7 and P5: no smoke step asserts that "No scales match" sits in a live region. README.md lines 52-59 claim that a screen reader announces it and reads the name and count together, measured in Chromium only. Proposed: fix now (an assertion and a plant for the region, and narrow the README to what is tested).
+- D3: the D-083 pattern `${...} parameter` can never hit, because `namesText()` strips template holes first. Proposed: fix now.
+- P7: A17 still counts anchors only, while A15, A16 and A18 now count panel headings too. Proposed: fix now.
+- P6: the shuffle note lost its "If", so "In R, read the module file" reads as needed for every shuffled form. Proposed: fix now.
+- D2: the `playwright.config.js` comment sizes the 10-minute budget on two waits, but the first test now holds 9 builds and 76 rows. Proposed: fix now (recompute the budget and the comment).
+- D10: the NEWS entry says the panel "opens" the Study Link Builder, and it presents the REDCap line as new. It omits the step-control names and the focus change, and it has an orphan line. Proposed: fix now.
+- D12: `KNOWN_COUNTS` derives the second count from the item lists. Proposed: fix now (state 5 and 3 as literals).
+- D4, D5, D6 and D18: three stale comments ("one announcing region", "only the questionnaire paragraph differs", "the button's href"). Two plant labels still say "scoring file". Proposed: fix now.
+- D11: README.md lines 201-206 say "three places" and list four. D20: orphan wraps at hitop-builder README.md:8 and hitop-form README.md:101. Proposed: fix now.
+- D15: the Definition button renders about 23px tall. Proposed: fix now (measure it and bring it to 24px).
+- P10: `online-collection.Rmd` and `modules-hitopsr.Rmd` say only "paste the module file". Proposed: fix now (name the file choice).
+- D13, B5 and P4: A27's keyboard half cannot go red on the page's CSS, and the heading ring rests on Chromium's `:focus-visible` rule. Proposed: follow-up, as at pass 1 (Known issue 13).
+- D14 rest: no plant for A23's known counts or A28's card and button parts, and no hitop-form test of the `moduleFileErr` path. Proposed: follow-up, into the Module Builder test reach row.
+- D19: "R did not start." after a throw past R's start. Proposed: follow-up, as at pass 1.
+- B4 and P3: the page no longer says the format cards are off during a build. M104's plan gate chose to say it on the page and in README.md. Pass 1 logged it as noted. Proposed: noted, README.md keeps it, and Jeff decides whether M104's choice stands.
+- B1: the claim is that the log does not scroll to its end when a failure opens "Technical details". Proposed: reject. A one-off script forced a Word build failure after a full load. Then `#log` read scrollTop 442 of 696 with 254 visible, so its last line "FAILED: forced" was in view.
+- B6: A24 holds the hover 150 ms on rows 2 to 76, under the old popup's 300 ms delay. Proposed: reject. Every row uses one handler, and plant aq's delayed opener goes red on row 1.
+- B9: the Definition button has no hover fill. Proposed: reject, cosmetic. `KNOWN_COUNTS` in a repo that holds no instrument content: noted, it follows `ONLINE_ITEMS`. The scheduled smoke run drives the deployed page, so A20 to A30 fail there until Pages deploys the merge: noted, read at the merge step.
+- D16: "Next: make the study link" is lower case after the colon. Proposed: reject, AC5 sets that heading.
+- D17: an open definition leaves blank space beside rows in other columns. Proposed: reject, cosmetic.
+- P9: no `ste_lint` record. Proposed: reject, not a criterion and not run since M12x.
