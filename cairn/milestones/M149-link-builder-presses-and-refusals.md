@@ -48,7 +48,7 @@ On the Study Link Builder, an early press, an edit during a file read and a refu
 
 ## Tasks
 
-- [ ] T1: Put `disabled` and `autocomplete="off"` on "Make the link" (`link.html:241`). Remove `disabled` after the prefill's `try` and `catch` (`:952-965`). Write the AC1 test: delay `DecompressionStream` output for a `z` link, and hold the `form.js` route.
+- [x] T1: Put `disabled` and `autocomplete="off"` on "Make the link" (`link.html:241`). Remove `disabled` after the prefill's `try` and `catch` (`:952-965`). Write the AC1 test: delay `DecompressionStream` output for a `z` link, and hold the `form.js` route.
 - [ ] T2: In the module textarea's `input` listener (`link.html:657-660`), bump `moduleReads` so a pending read drops its text (`:661-679`). Reword `form.js:1047`. Write the AC2 tests in `tests/link-module-file.spec.js`, the `moduleFileErr` path (`:675`) among them.
 - [ ] T3: Rewrite `labelText()` (`link.html:507-511`) to read label text with no copy. Move the post-prefill steps (`:966-970`) into the `try` at `:952`. Make the `catch` hide the site hints and destination blocks, reset the summaries and close the sections. Rename the `nextStep()` local `sql` (`:1279`) to a name that no top-level `const`, `let` or `function` in the script uses. Write the AC3 and AC4 tests.
 - [ ] T4: Add the string check at `form.js:707`, before any fetch. Write the AC5 test in `tests/instruments.spec.js` with a request listener on the export host.
@@ -65,3 +65,4 @@ On the Study Link Builder, an early press, an edit during a file read and a refu
 - 2026-09-30: implement started. Branches `m149-link-builder-presses` in hitop and hitop-form, cut from the pushed `main` of each.
 - 2026-09-30: gate: `checkInstruments` puts the row's index on the thrown error as `index`, and its `bad(why)` callback is unchanged. The instrument-type refusal reads "The study link's instrument field must be text, and it is …". The export refusal says "Use the file that the Module Builder or write_module() saved."
 - 2026-09-30: gate: the question refusal's control map keeps only the five fields the editor can fault (name, text, options, min, max). Required, type and the `qList` fallback go, and a fault with no mapped field focuses the message. Sub-task added to T6.
+- 2026-09-30: T1 done (hitop-form). The button is disabled in the markup and enabled after the prefill's try/catch. L34 in `tests/link.spec.js` failed before the fix: in each hold state the press sent the form as an HTML GET. Full suite 782 passed.
