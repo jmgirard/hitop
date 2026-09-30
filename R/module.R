@@ -639,8 +639,9 @@ item_ranges <- function(x) {
   whole <- x == round(x)
   run <- cumsum(c(TRUE, diff(x) != 1 | !whole[-1L] | !whole[-length(x)]))
   shown <- unlist(lapply(split(x, run), function(r) {
-    # 15 significant digits, not the default 7, so a number a hair off a whole
-    # number is not printed as that whole number.
+    # 15 significant digits, not the default 7, so 7 + 1e-9 prints as
+    # "7.000000001", not "7". An offset past the 15th digit is still lost:
+    # 66 + 1e-14 prints as "66".
     r <- format(r, digits = 15, trim = TRUE, scientific = FALSE,
                 drop0trailing = TRUE)
     if (length(r) >= 3L) paste0(r[[1L]], "-", r[[length(r)]]) else r

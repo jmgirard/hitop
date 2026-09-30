@@ -101,6 +101,8 @@ Every HiTOP-SR function that takes a module accepts only a module whose items ar
 - 2026-09-29: T14 done. `item_ranges()` formats at 15 significant digits, and its new test failed before the fix ("holds item 7"). `expect_mismatch()` asserts the blamed function. The generator runners now call each generator by its exported name, because a local alias was blamed as written. `expect_module_subscale_rows()` pins `item_order` to the printed item texts. Two test titles renamed. Plants: `apply_module()` blaming itself turns the blame check red, and a reversed `item_order` turns the page check red, alone in the no-parent test. Suite 0 failed, 0 errors, 15 skips.
 - 2026-09-29: claim audit: 12 claims read, 0 corrected — NEWS.md, R/module.R, tests/testthat/test-{module-mismatch,docx-numbering,module,reliability}.R. Scope: lines added since 6df5317d.
 - 2026-09-29: T15 done. `devtools::check()` on the tree of 9f032545: 0 errors, 0 warnings, 0 notes. The purled modules article runs without error after `load_all()`. Status set to review.
+- 2026-09-29: review pass 4 on 7b21da98: AC1 to AC6 pass, gate green, no finding returns the milestone. Three text fixes landed at the gate ([O]1, [O]2, [O]4).
+- 2026-09-29: step-7 approval: m142-module-mismatch-refusal approved for merge
 
 ## Decisions
 
