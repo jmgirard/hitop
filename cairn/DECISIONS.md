@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-082 (2026-09-29): An IDAS-II item key that its authors send directly is an admissible keying source for `hitopdat_scales`, with Jeff's sign-off recorded in SOURCES.md (applies IP1; follows D-048's admission of an unpublished development workbook)
+
+**Context:** M143 keys the HiTOP-DAT's IDAS-II scales. The DAT manual cites Watson et al. (2012) for the IDAS-II. That paper prints the non-overlapping scales' names and item counts but no item numbers or reverse keys. The IDAS-II item key reaches users from its authors, not in print. IP1 names the authorities as the "APA key, cited publication, or Society sanction", and a key sent by email is none of these by name.
+
+**Decision:** An IDAS-II item key that its authors post or send is admitted as the source for IDAS-II membership and reverse keys, once Jeff signs off on it. SOURCES.md records the URL or sender, the sha256, the date read or received, and Jeff's sign-off with its date, and `cairn/references/` holds its source note. Watson et al. (2012) stays the source for the item counts of the scales its Table 1 lists. General Depression's count is checked against the key alone. Chosen by Jeff at the 2026-09-29 M143 amendment gate. Rejected: requiring a public URL or a print source, which keeps M143 blocked on a key the authors hand out privately. Rejected: keying the IDAS-II from the Qualtrics file with only the counts checked, which leaves membership unverified.
+
+**Consequences:** M143 is blocked until the key is on the shelf. A disagreement between the key and Table 1 on a count stops implementation for a gated amendment. The evidence that would reopen this: a published IDAS-II key, in print or at a public URL, that differs from the key the authors sent.
+
 ### D-081 (2026-09-29): Every function that takes a HiTOP-SR module refuses one that does not match a fresh build of its scales, under the public class `hitop_module_mismatch` (annotates D-066(b); applies D-034(c))
 
 **Context:** A module is a plain list, so a caller can edit its `items` by hand. `score_hitopsr()` then scores a scale from the items that remain, with no warning. With `include_subscales = TRUE`, it stops with an internal error that blames the package. `generate_docx_hitopsr()` prints "NA" in a scoring row. Only `write_module()` checks a module against a rebuild (D-066(b)), and its refusal has no class. The consumers choose scales by `camelCase`, which that check does not compare.
