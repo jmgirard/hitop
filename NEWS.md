@@ -26,7 +26,8 @@
   definition by click or keyboard, in place of the popup that opened on
   hover. A filter that matches no scale says so. Each format has one name,
   "Word form", "Qualtrics file", "REDCap dictionary" or "Online form", on
-  its card, its download button, its build status and its `README.txt`.
+  its card, its download button and its build status. The three zip file
+  formats also use it in the `README.txt` title.
   For REDCap, the page says to upload the inner `-upload.zip` file. After
   an Online form save, a "Next: make the study link" panel opens the Study
   Link Builder with the module filled in. In the Study Link Builder, you

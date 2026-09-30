@@ -1,6 +1,6 @@
 # M147: Module Builder: short start, labelled picker, clear hand-off
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -82,6 +82,8 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: T10 done. hitop NEWS.md has a Module Builder entry under New features.
 - 2026-09-30: T9 and T11 done. `npm run plants` passed alone: the unplanted copy passed, 45 of 45 plants went red, and all 30 assertions were covered. Plant am also reddens A9, A10 and A17, because the panels it leaves pile up.
 - 2026-09-30: T12 done (hitop-form commit 9de0f45). The file fill calls `hideResult()`, and a status line names the file read. New MF3 holds `Blob.prototype.text` to make a link during the read. Two hand plants each turned their test red: the missing `hideResult()` call (MF3) and the missing status line (MF2). Full hitop-form suite: 774 passed.
+- claim audit: 61 claims read, 6 corrected — hitop NEWS.md, hitop-builder index.html, tests/smoke.spec.js (hitop-builder commit 5fb4f7c). The reader read the lines this pass added: hitop-builder since 3ea9636, hitop-form since 48c4e36, and the NEWS entry. It found 3 doubtful claims and 3 older comments made false by the new live region. The re-read found all six hold.
+- 2026-09-30: implement complete after the review return. hitop-builder smoke passed (2 tests), `npm run prose` clean (177 passages), `npm run plants` OK (45 of 45). hitop-form passed 774 tests. No hitop R code changed. Status set to review.
 
 ## Decisions
 
