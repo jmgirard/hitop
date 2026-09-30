@@ -7,7 +7,7 @@
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the researcher page that makes study links, and one refusal on the online form
-- **Branch/PR:** m149-link-builder-presses, companion: /Users/jmgirard/github/hitop-form m149-link-builder-presses
+- **Branch/PR:** m149-link-builder-presses, companion: /Users/jmgirard/github/hitop-form m149-link-builder-presses https://github.com/jmgirard/hitop-form/pull/21
 
 ## Goal
 
@@ -34,7 +34,7 @@ On the Study Link Builder, an early press, an edit during a file read and a refu
   - For a call that passes a control chosen at run time, the test fires one case per control it can pass. For the question call, a grep of the question check lists each control it assigns to `e.control`, and one case has no control. For the store call, they are the four store fields.
   - For the instruments call, the control is the menu of the row at fault. The test fires a repeated instrument and a second PID-5 form, each at row 2 and at row 3.
   - The fired calls include the fetch failure, the encode failure and the four stale-build refusals. The fetch and the encode are made to fail by a route and an init-script patch.
-- [ ] AC7: The hitop-form Playwright suite passes locally and on its PR's CI. In hitop, NEWS.md has an entry for the builder changes, and `devtools::check()` gives 0 errors and 0 warnings.
+- [x] AC7: The hitop-form Playwright suite passes locally and on its PR's CI. In hitop, NEWS.md has an entry for the builder changes, and `devtools::check()` gives 0 errors and 0 warnings.
 
 ## Coverage
 
@@ -91,6 +91,7 @@ Evidence run 2026-09-30 on hitop-form `37661a8` and hitop `b95e2faf`. Full hitop
 - AC5: `parseLink()` in `form.js` refuses an `instrument` that is present and not a string, before the name lookup. I3 in `tests/instruments.spec.js` opens six links, with `["hitopbr"]`, `[["pid5"]]`, `null`, `1`, `true` and `{}`. Each refusal reads "The study link's instrument field must be text, and it is …". A request listener on the export host records no request. The work log records that I3 failed on all six before the fix, and that a scratch probe saw `["hitopbr"]` request its export. All six passed in the full run.
 - AC6: a fresh `grep -n "refuseAt(" link.html | grep -v "function refuseAt"` lists 23 calls, at lines 1064 to 1291. They are the 23 calls the T6 work-log line lists, each one line later after the claim-audit commit. The S12 coverage test reads the same list from the page. It maps each of its 36 cases to one line and misses no line. The instrument cases fire a repeat and a second PID-5 form at rows 2 and 3, and focus the menu of that row. The question cases fire each of the five controls in `QUESTION_CONTROLS`. A 51-question link has no control and focuses the message. The coverage test checks that the one `e.control =` line names no control of its own. The store cases fire the four store fields. The fetch failure is made by a route abort and the encode failure by an init script that deletes `CompressionStream`. The four stale-build refusals are also fired. Each case closes every section before the press, and then checks the message, the focus and which section is open. S12 passed 37 of 37 in a separate run and in the full run.
 - AC7 (local half, box not ticked): the full hitop-form suite passed 830 of 830. NEWS.md has the entry at the top of "Improvements and fixes". `devtools::check()` gave 0 errors, 0 warnings and 0 notes in 6 min 49 s. The PR's CI half waits for step 8, where the PR opens, and the box is ticked only on green CI.
+- AC7 (CI half): hitop-form PR #21 at `a7886ed`, run 36791613792, check `tests` passed in 7 min 7 s with 829 passed and 1 flaky. The flaky test is `tests/send.spec.js:426`, a Supabase send, which failed once and passed on retry. The milestone does not touch that file.
 
 Consistency gate: `cairn_validate.py` exit 0, with 24 old advisory warnings. No principle text changed, so `cairn_impact` is skipped. `devtools::document()` leaves no diff, `pkgdown::check_pkgdown()` finds no problems, and README.Rmd is unchanged. NEWS.md names no milestone.
 
@@ -112,6 +113,6 @@ Reviewers: diff-bug (Opus) with 12 findings, blame-history (Sonnet) with 6, and 
 
 Gate triage (2026-09-30, Jeff): each proposed disposition accepted. R1, R2 and R9 fixed now, R3 to R8 to one candidate row, R10 to R13 rejected.
 
-- R1 fix, hitop-form `a7886ed`: S11 now opens a link with SONA, a web address and consent text, and throws when the open loop opens the consent section. At that point the participants section is open, a fact the test asserts. The hints are checked by their `hidden` flag, and the menu is checked for no `aria-describedby`. The test passes on the page. Six scratch copies each went red: the whole reset cut, the hint loop cut, the `aria-describedby` removal cut, the summary loop cut, only `section.open = false` cut, and `webhookFields` taken out of the hint loop. `tests/link-sections.spec.js` passed 91 of 91.
+- R1 fix, hitop-form `a7886ed`: S11 now opens a link with SONA, a web address and consent text. The planted throw comes as the open loop opens the consent section. At that point the participants section is open, a fact the test asserts. The hints are checked by their `hidden` flag, and the menu is checked for no `aria-describedby`. The test passes on the page. Six scratch copies each went red. They cut the whole reset, the hint loop, the `aria-describedby` removal, the summary loop, only `section.open = false`, and `webhookFields` from the hint loop. `tests/link-sections.spec.js` passed 91 of 91.
 - R2 fix, hitop-form `a7886ed`: the README row says "the four fields of where responses go". A grep of the README for `\bstores?\b` finds 0 hits.
 - R9 fix: the NEWS.md line is rewrapped to the entry's width.
