@@ -53,10 +53,10 @@ A researcher who opens the Module Builder for the first time reads a short start
 - [x] T6: In hitop-form `link.html`, add a file choice beside the module text box that fills it from a chosen file. Add the hitop-form test for AC5, and run that suite locally and on its PR.
 - [x] T7: Add the smoke-test steps for AC1 to AC5 and a plant for each one. Update the `tests/prose.mjs` ledger. Run the smoke test, prose and plants locally, and the smoke test and prose on the PR.
 - [x] T8: Reorder `README.md` into a use section and a "For developers" section. Take before and after screenshots at 375px and 1280px for Jeff's look at the merge gate.
-- [ ] T9: Review return. Add three smoke steps. A build failure that the test forces opens "Technical details" (AC1). The Definition button's click, keyboard and hover checks run on every row (AC2). Panel removal is read apart from the anchor (AC5). A21 also reads whether the section is rendered. Add a plant for each.
+- [x] T9: Review return. Add three smoke steps. A build failure that the test forces opens "Technical details" (AC1). The Definition button's click, keyboard and hover checks run on every row (AC2). Panel removal is read apart from the anchor (AC5). A21 also reads whether the section is rendered. Add a plant for each.
 - [x] T10: Add a hitop NEWS.md entry for the Module Builder changes.
-- [ ] T11: Review findings in hitop-builder. Restore the REDCap inner-zip warning and give the Online form's file-name note a home. Announce "No scales match". Make `prose.mjs --compare` keep the retired-name exit. Fix the stale comments and labels. Narrow the README focus sentence to Chromium. Add plants for A24's hover and A28's README title.
-- [ ] T12: Review findings in hitop-form `link.html`. Close the gap where "Make the link" runs during the file read, announce the chosen file, and rewrap the two long README lines.
+- [x] T11: Review findings in hitop-builder. Restore the REDCap inner-zip warning and give the Online form's file-name note a home. Announce "No scales match". Make `prose.mjs --compare` keep the retired-name exit. Fix the stale comments and labels. Narrow the README focus sentence to Chromium. Add plants for A24's hover and A28's README title.
+- [x] T12: Review findings in hitop-form `link.html`. Close the gap where "Make the link" runs during the file read, announce the chosen file, and rewrap the two long README lines.
 
 ## Work log
 
@@ -80,6 +80,8 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: AC2 amended at Jeff's gate after the second re-audit (the stop for AC2). "The test checks all 76 scales" left, because hitop-builder pins no scale count. The smoke test now covers the name form and the button's behavior on every row, and n on two named scales. Review reads n on every row. Minor amendment: T9 to T12 added, and the Coverage lines follow them.
 - 2026-09-30: T9 and T11 checkpoint (hitop-builder commits 3cbb14c and a99e999, not ticked until the plant run). New A30 forces a build failure by making `URL.createObjectURL` throw. A24 drives all 76 rows, and A15, A16 and A18 count panel headings apart from the link. A21 reads the section on show. Plants am to ar added. The page has a REDCap line again, and step 2 now holds 55 words for REDCap and 56 for the Online form. Smoke green (2 tests), prose clean (177 passages).
 - 2026-09-30: T10 done. hitop NEWS.md has a Module Builder entry under New features.
+- 2026-09-30: T9 and T11 done. `npm run plants` passed alone: the unplanted copy passed, 45 of 45 plants went red, and all 30 assertions were covered. Plant am also reddens A9, A10 and A17, because the panels it leaves pile up.
+- 2026-09-30: T12 done (hitop-form commit 9de0f45). The file fill calls `hideResult()`, and a status line names the file read. New MF3 holds `Blob.prototype.text` to make a link during the read. Two hand plants each turned their test red: the missing `hideResult()` call (MF3) and the missing status line (MF2). Full hitop-form suite: 774 passed.
 
 ## Decisions
 
