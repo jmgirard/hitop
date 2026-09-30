@@ -35,13 +35,13 @@ A researcher who opens the Module Builder for the first time reads a short start
 
 ## Coverage
 
-- AC1 → T1, T7, T9
-- AC2 → T2, T7, T9
+- AC1 → T1, T7, T9, T14
+- AC2 → T2, T7, T9, T14
 - AC3 → T3, T7
-- AC4 → T4, T7, T11
-- AC5 → T5, T6, T7, T9, T12
-- AC6 → T4, T8, T11
-- AC7 → T6, T7, T8, T9, T11, T12
+- AC4 → T4, T7, T11, T14
+- AC5 → T5, T6, T7, T9, T12, T15
+- AC6 → T4, T8, T11, T13
+- AC7 → T6, T7, T8, T9, T11, T12, T13, T14, T15
 
 ## Tasks
 
@@ -57,6 +57,10 @@ A researcher who opens the Module Builder for the first time reads a short start
 - [x] T10: Add a hitop NEWS.md entry for the Module Builder changes.
 - [x] T11: Review findings in hitop-builder. Restore the REDCap inner-zip warning and give the Online form's file-name note a home. Announce "No scales match". Make `prose.mjs --compare` keep the retired-name exit. Fix the stale comments and labels. Narrow the README focus sentence to Chromium. Add plants for A24's hover and A28's README title.
 - [x] T12: Review findings in hitop-form `link.html`. Close the gap where "Make the link" runs during the file read, announce the chosen file, and rewrap the two long README lines.
+- [ ] T13: Second review return (AC6). Make `tests/prose.mjs` keep text that follows an inline or void element. If a text node of the page body, outside the script, style and log, is missing from its output, make it exit 1. Add plants for both.
+- [ ] T14: Pass 2 findings in hitop-builder. Record every status change in A28. Fix the Online note's file-name claim. Name the downloads in the lede. Assert and plant the "No scales match" live region. Make the `${...} parameter` pattern able to hit. Count panel headings in A17. Put back the shuffle note's "If". Recompute the test budget. State the known counts as numbers. Bring the Definition button to 24px. Fix the stale comments and README nits.
+- [ ] T15: Pass 2 findings in hitop-form `link.html`. After a change to the box, clear the file status. Keep only the latest file read, add the "sends nowhere" hint, and rewrap README line 101.
+- [ ] T16: Pass 2 findings in hitop. Correct the NEWS entry, and name the file choice in `online-collection.Rmd` and `modules-hitopsr.Rmd`.
 
 ## Work log
 
@@ -85,10 +89,12 @@ A researcher who opens the Module Builder for the first time reads a short start
 - claim audit: 61 claims read, 6 corrected — hitop NEWS.md, hitop-builder index.html, tests/smoke.spec.js (hitop-builder commit 5fb4f7c). The reader read the lines this pass added: hitop-builder since 3ea9636, hitop-form since 48c4e36, and the NEWS entry. It found 3 doubtful claims and 3 older comments made false by the new live region. The re-read found all six hold.
 - 2026-09-30: implement complete after the review return. hitop-builder smoke passed (2 tests), `npm run prose` clean (177 passages), `npm run plants` OK (45 of 45). hitop-form passed 774 tests. No hitop R code changed. Status set to review.
 - 2026-09-30: review pass 2 returned the milestone to in-progress (defect return 2). What failed: AC6, because `node tests/prose.mjs --text` leaves out text that follows an inline or void element. Missing are the new "Open the Study Link Builder" link and the step-2 option labels. AC7 is also incomplete: the plants stopped after d, and no CI ran. AC1 to AC5 met. The next defect return is the third, which makes descope or park the recommended option.
+- 2026-09-30: implement resumed after review pass 2. Gate: Jeff accepted every proposed disposition, a parser fix plus a self-check for AC6, and README-only for the cards note (M147-D2). The follow-ups are filed at review's hygiene pass. Minor amendment: T13 to T16 added, and the Coverage lines follow them.
 
 ## Decisions
 
 - M147-D1 (2026-09-30, implement gate): The four formats are named "Word form", "Qualtrics file", "REDCap dictionary" and "Online form". The card's second line keeps the file type. The steps keep the names "Choose scales" and "Choose a format and download". The Continue button reads "Next: Choose a format and download", and the Back button and the tally link read "Back: Choose scales". A "Definition" button on each scale row shows the definition as a line under the row, and a second press hides it. The row's count reads "<n> items". The hand-off button opens the Study Link Builder in a new tab. Chosen by Jeff. Rejected: bare system names, because a sentence needs a noun after them. Rejected: "Download" as the second step's name, because it does not say that a format is chosen there. Rejected: a floating popup, which needs script placement and a scroll handler. Rejected: the same tab, where the page loads R again and loses the ticks.
+- M147-D2 (2026-09-30, pass 2 triage gate): The sentence that the format cards are off during a build stays in README.md only. It replaces M104's choice to say it on the page too. The cards look grey during a build, and step 2 has no room within its 60 words. Chosen by Jeff. Rejected: the sentence back on the page, which needs cuts to every format's note.
 
 ## Review
 
