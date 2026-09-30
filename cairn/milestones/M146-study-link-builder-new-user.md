@@ -62,7 +62,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
   - the README refusal-focus claim, the Supabase next-step sentence with no site, "HiTOP" in the tab title, and the Google Sheet wording in `modules-hitopsr.Rmd`
 - [x] T11: Add the NEWS.md entry for the menu names, the reworked Study Link Builder and the article names.
 - [x] T12: Fix the quote in DESIGN Known issue 11. Add a candidate row for old names outside the scope, and add the test-reach gaps to the `z` link gaps row.
-- [ ] T13: Make the next step with Supabase and no site one sentence. Make S7 check the sentence count by its own rule, not by a copy of the page's text.
+- [x] T13: Make the next step with Supabase and no site one sentence. Make S7 check the sentence count by its own rule, not by a copy of the page's text.
 - [ ] T14: If a field changes while a build waits, the build does not show its link and SQL. Test it with an edit during a slowed export fetch.
 - [ ] T15: Put back the hint facts of pass-2 findings 3, 4, 6, 9, 10 and 11, each asserted by S9 and each hint within 40 words.
 - [ ] T16: Make the small fixes of pass-2 findings 14, 15, 18, 19 and 23. File findings 7, 12, 13, 16, 17, 21, 24 and 25 in their rows.
@@ -107,6 +107,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: question gate, continued. AC5 stays as written, and finding 5 is rejected: the notice lists the addresses to check, and no word limit can bound it. Finding 7 goes to M147. Findings 12, 13, 21, 24 and 25 join the `z` link gaps row. Findings 16 and 17 get a follow-up row.
 - 2026-09-30: question gate, rejections. Finding 8 keeps the pass-1 rejection of finding 3. Finding 20 is wording that reads correctly in context, and finding 22 names an anchor that no link uses.
 - 2026-09-30: tasks T13 to T16 added (minor amendment), and Coverage updated (AC4 → T13, AC5 → T15).
+- 2026-09-30: T13 done. With Supabase and no site, the next step is one sentence: "Run the SQL below once in your Supabase project's SQL editor, then open the link once to test it and give it to each participant." S7 now also counts sentence ends in the page's text, and that count gives two on the old text. The Supabase test failed before the fix, and all 16 S7 tests pass after it.
 
 ## Decisions
 
