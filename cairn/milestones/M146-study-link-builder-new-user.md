@@ -1,6 +1,6 @@
 # M146: Study Link Builder: required choices first, optional ones folded away
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -70,6 +70,8 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-29: T7 wording amended (minor): the grep ledger goes in the work log, because the Review section is review's alone.
 - 2026-09-29: T7 grep ledger. `link.html` 33 lines: 20 comments, 13 code identifiers (`store` names and variables, `storeSql`). `form.js` 69 lines: 33 comments, 36 code identifiers (`store`, `checkStore`, `STORE_KINDS`, the `'no-store'` fetch option). hitop-form `README.md` 6 lines: 5 URL examples (`link.html?c=…`, `link.html?z=…`) and the file name `instruments-store.spec.js`. `modules-hitopsr.Rmd` 9 lines: 3 `descriptor` argument names and 6 R code lines. `online-collection.Rmd`, `README.Rmd` and `_pkgdown.yml`: none.
 - 2026-09-29: T7 screenshots in hitop-form `playwright-report/m146-screens/` (ignored by git). They show the page before at 375px and 1280px, and after with sections closed, open and after a Prolific build at both widths. The shots showed disabled buttons looking enabled, so a disabled style was added. Full suite after it: 761 of 762 passed. N7 in `network.spec.js` timed out under full-suite load and passed 5 of 5 alone.
+- claim audit: 175 claims read, 4 corrected — hitop-form link.html, hitop-form README.md, vignettes/articles/online-collection.Rmd
+- 2026-09-29: the audit also found that a Supabase refusal quoting a URL with "table" or "key" in it focused the wrong field. Fixed test-first (4 tests, 2 red before the fix). Full suite: 766 passed. Doubtful items left for review: an instruments refusal focuses the first menu, not the row at fault, and "Copy the link" hides without `navigator.clipboard`.
 
 ## Decisions
 

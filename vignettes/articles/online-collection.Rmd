@@ -85,8 +85,9 @@ with a module in its address, it arrives with the module file pasted in as
 well. Give a
 participant identifier if the
 link is for one person; leave it empty for a link shared with many, and the
-page asks each participant for one before the form starts. Under "Send
-responses to", choose "A web address" and paste the `/exec` URL from step 1.
+page asks each participant for one before the form starts. Under "Where
+responses go", choose "A web address" and paste the `/exec` URL from step 1
+into the "Web address" field.
 Press "Make the link" and send the link to the participants.
 
 When a participant presses Finish, the page posts their answers to the
