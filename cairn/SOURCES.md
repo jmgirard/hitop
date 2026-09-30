@@ -576,7 +576,7 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
 - **DAT-3: CAPE-Negative points at missing categories.** The "CAPE - Negative" and
   "CAPE - Negative pct complete" fields read categories `SC_9yT5N61EpLWOHA1` and
   `SC_2twVHgmxnX87Nsx`, which the file does not define. The battery has no negative
-  CAPE items.
+  CAPE items, and the trash block holds none either (checked 2026-09-29).
 - **DAT-4: CAPE items graded into undefined categories.** Each of the 20 CAPE items
   is graded into `SC_02gyF0VanSUJdiJ` and `SC_eRmZgjWMMEFwFeZ` as well as "CAPE -
   Positive". Neither is defined.
@@ -601,6 +601,16 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   published scoring rule has not been read against these values.
 - **DAT-12: Instruction emphasis.** The IDAS-II instruction underlines "THE PAST TWO
   WEEKS" in bold. The plain text keeps the capitals and drops the emphasis.
+- **DAT-13: The file emails results to a clinic.** Two triggers send the client's
+  name, MRN, critical-item answers and T scores to a UNT clinic address. One fires
+  on CAT-PD Self Harm or IDAS Suicidality T of 65 or more, or either scale fully
+  skipped (subject "HiTOP-SR Critical Items"). The other fires at the end. A copy
+  imported unchanged sends its results to that address. The colleague who shared
+  the file was told on 2026-09-29.
+- **DAT-14: The results email.** It pipes Self-Harm's T score and percent
+  complete as `CAT-PD%20Self Harm`, with a literal space where every other field
+  uses `%20`. Nobody tested this in Qualtrics. It never shows the five CAT-PD domain
+  scores or CAPE-Negative, and Disconstraint has no percent-complete field.
 
 ## Open questions (need source adjudication)
 

@@ -88,6 +88,7 @@ The package ships the 382 HiTOP-DAT items, their answer options, their scales an
 - re-audit: AC3 (full) — second reader: 5 clear fixes (crosswalk scope, "each equality above", sha256 citations, an IDAS-II numbering check, 3 more plants) and 3 judgment calls (a D-entry for the sent key, text-rule strictness, stop clauses in an AC), all disposed at the gate.
 - re-audit: AC4 (full) — second reader: add Jeff's sign-off and its date to the key's fields. Applied.
 - 2026-09-29: blocked on the authors' IDAS-II item key. Jeff is getting it. Remaining work: T1's key note, the IDAS-II membership and text tests and plants in T3 and T6, SOURCES DAT-1, and the final T7 runs.
+- 2026-09-29: side work outside M143 scope, tracked in the HiTOP-DAT candidate row. A draft Titanium form and a Qualtrics formula table are in `devel/hitopdat_titanium.R` and `devel/hitopdat_formulas.R`. A check of the file's trash, triggers and results email added DAT-13 and DAT-14 and extended DAT-3. The Titanium work waits on the colleague's reply.
 
 ## Decisions
 
