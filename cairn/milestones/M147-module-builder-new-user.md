@@ -1,6 +1,6 @@
 # M147: Module Builder: short start, labelled picker, clear hand-off
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -58,8 +58,8 @@ A researcher who opens the Module Builder for the first time reads a short start
 - [x] T11: Review findings in hitop-builder. Restore the REDCap inner-zip warning and give the Online form's file-name note a home. Announce "No scales match". Make `prose.mjs --compare` keep the retired-name exit. Fix the stale comments and labels. Narrow the README focus sentence to Chromium. Add plants for A24's hover and A28's README title.
 - [x] T12: Review findings in hitop-form `link.html`. Close the gap where "Make the link" runs during the file read, announce the chosen file, and rewrap the two long README lines.
 - [x] T13: Second review return (AC6). Make `tests/prose.mjs` keep text that follows an inline or void element. If a text node of the page body, outside the script, style and log, is missing from its output, make it exit 1. Add plants for both.
-- [ ] T14: Pass 2 findings in hitop-builder. Record every status change in A28. Fix the Online note's file-name claim. Name the downloads in the lede. Assert and plant the "No scales match" live region. Make the `${...} parameter` pattern able to hit. Count panel headings in A17. Put back the shuffle note's "If". Recompute the test budget. State the known counts as numbers. Bring the Definition button to 24px. Fix the stale comments and README nits.
-- [ ] T15: Pass 2 findings in hitop-form `link.html`. After a change to the box, clear the file status. Keep only the latest file read, add the "sends nowhere" hint, and rewrap README line 101.
+- [x] T14: Pass 2 findings in hitop-builder. Record every status change in A28. Fix the Online note's file-name claim. Name the downloads in the lede. Assert and plant the "No scales match" live region. Make the `${...} parameter` pattern able to hit. Count panel headings in A17. Put back the shuffle note's "If". Recompute the test budget. State the known counts as numbers. Bring the Definition button to 24px. Fix the stale comments and README nits.
+- [x] T15: Pass 2 findings in hitop-form `link.html`. After a change to the box, clear the file status. Keep only the latest file read, add the "sends nowhere" hint, and rewrap README line 101.
 - [x] T16: Pass 2 findings in hitop. Correct the NEWS entry, and name the file choice in `online-collection.Rmd` and `modules-hitopsr.Rmd`.
 
 ## Work log
@@ -94,6 +94,10 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: T14 checkpoint (hitop-builder commit 54fef49, not ticked until the plant run). Correction to the T13 line: its commit is 6779705, amended from 8f466dd. Smoke passed (2 tests): 48 header words while loading, and step 2 at 48, 44, 55 and 59 words. The Definition buttons measure 24px on all 76 rows, against 23.7px before. A28 keeps each status its builds write, through an observer set before the press. A25 reads the `role="status"` wrapper, and A17 counts panel headings. New plants as (the line outside a status region) and at (Qualtrics and REDCap statuses without the name). A planted `${format} parameter` status exits 1 on the new check and 0 on the old one. The per-test budget is 12 minutes.
 - 2026-09-30: T15 checkpoint (hitop-form commit 0d0a43c, not ticked until the full suite). New MF4 and MF5 failed before the fix, MF4 on the kept status and MF5 on the box after the held read. All five module-file tests pass after it.
 - 2026-09-30: T16 done. The NEWS entry names the step buttons, the focus change and the link in the panel, and it drops the REDCap line. `online-collection.Rmd` and `modules-hitopsr.Rmd` say the module file can be chosen as a file.
+- 2026-09-30: T14 done. `npm run plants` ran alone on 54fef49. The unplanted copy passed, all 47 plants went red, and every assertion was covered. Plant am also reddens A17 now. Plant as reddens A25, and plant at reddens A28.
+- claim audit: 56 claims read, 4 corrected — hitop-builder playwright.config.js and index.html, hitop-form tests/link-module-file.spec.js (hitop-builder 3b9e7b6, hitop-form 8745f5f). Corrected: the budget comment counts 17 waits (68 minutes), and the timeout goes back to 10 minutes, because 12 twice left the 25-minute job no room. The Online note names two saves that each skip some scales. MF5 waits for the held read, and with the page's guard removed by hand it fails at the box check. The re-read found all four hold. It notes that a second test stalling twice in CI can pass the 5 minutes left.
+- 2026-09-30: T15 done. The full hitop-form suite passed, 776 tests. A first full run had 4 timeouts in consent, send and save specs, which passed alone and in a second full run.
+- 2026-09-30: implement complete after the second review return. hitop-builder smoke passed (2 tests) on 3b9e7b6, `npm run prose` clean (95 of 95 text nodes, 184 passages), `npm run plants` OK (47 of 47) on 54fef49. hitop-form passed 776 tests. No hitop R code changed. Status set to review.
 
 ## Decisions
 
