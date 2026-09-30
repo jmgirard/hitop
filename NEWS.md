@@ -27,11 +27,14 @@
   hover. A filter that matches no scale says so. Each format has one name,
   "Word form", "Qualtrics file", "REDCap dictionary" or "Online form", on
   its card, its download button and its build status. The three zip file
-  formats also use it in the `README.txt` title.
-  For REDCap, the page says to upload the inner `-upload.zip` file. After
-  an Online form save, a "Next: make the study link" panel opens the Study
-  Link Builder with the module filled in. In the Study Link Builder, you
-  can choose the module file as a file as well as paste its text.
+  formats also use it in the `README.txt` title. The step buttons name the
+  step they lead to, "Next: Choose a format and download" and "Back: Choose
+  scales". A mouse click on one no longer draws a focus ring on the new
+  step's heading, and a key press still does. After an Online form save, a
+  "Next: make the study link" panel holds a link that opens the Study Link
+  Builder in a new tab, with the module filled in. In the Study Link
+  Builder, you can choose the module file as a file as well as paste its
+  text.
 
 * **A Word module form can carry subscale scoring rows.**
   `generate_docx_hitopsr()` accepts `include_subscales = TRUE` with a

@@ -75,8 +75,8 @@ first row that differs.
 ## 2. Make the study link
 
 Open the [Study Link Builder](https://jmgirard.github.io/hitop-form/link.html).
-Choose the instrument (and, for a HiTOP-SR module, paste the module file
-written by `write_module()`), and name the study. For two or three
+Choose the instrument (and, for a HiTOP-SR module, paste or choose the
+module file written by `write_module()`), and name the study. For two or three
 instruments in one session, see
 [Several instruments in one session](#several-instruments-in-one-session).
 The Study Link Builder, opened from a "Make a study link" button on an

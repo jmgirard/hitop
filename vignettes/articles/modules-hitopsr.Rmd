@@ -414,8 +414,8 @@ Google Sheet route end to end, from deploying the sheet's script to scoring.
 
 The online form reads the same module file `write_module()` writes. Open the
 [Study Link Builder](https://jmgirard.github.io/hitop-form/link.html), paste
-the module file in, name the study, choose where the responses go, and it gives
-you one link to send to participants. A module file from a shuffled Word form
+the module file in or choose it as a file, name the study, choose where the
+responses go, and it gives you one link to send to participants. A module file from a shuffled Word form
 carries that form's order, and the online form shows the items in it. The
 Study Link Builder's "Show the items in a random order" box asks for a new
 order per participant instead; the module file's order is then not followed.
