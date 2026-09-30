@@ -1,13 +1,13 @@
 # M146: Study Link Builder: required choices first, optional ones folded away
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3, IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — the researcher page that makes study links, and the package tutorials that describe it
-- **Branch/PR:** —
+- **Branch/PR:** m146-study-link-builder-new-user, companion: /Users/jmgirard/github/hitop-form m146-study-link-builder-new-user
 
 ## Goal
 
@@ -46,7 +46,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 
 ## Tasks
 
-- [ ] T1: In `link.html` (fields at lines 105-213), move participant, recruiting site and module into their sections. Put the completion and decline addresses with their fields. Wrap each optional section in `<details>`, with a summary that updates on input. If `prefill()` (lines 646-781) gives a field a value, open the field's section. In the build handler (lines 790-1040), open the section and focus the field for a refused optional field.
+- [x] T1: In `link.html` (fields at lines 105-213), move participant, recruiting site and module into their sections. Put the completion and decline addresses with their fields. Wrap each optional section in `<details>`, with a summary that updates on input. If `prefill()` (lines 646-781) gives a field a value, open the field's section. In the build handler (lines 790-1040), open the section and focus the field for a refused optional field.
 - [ ] T2: Set the disabled state of Move up, Move down and Remove in `renumber()` (lines 292-369) and in the question groups (lines 433-509). Update it after every change to the rows. Make each accessible name begin with the visible text.
 - [ ] T3: Build the "Your study link" region (lines 213-227, 1041-1069). It holds the heading, the scrolling box, "Copy the link" beside the box, the SQL block and the next-step sentence. Focus moves to the heading.
 - [ ] T4: Rewrite the intro, step list, labels, hints, placeholders and refusal texts in `link.html` under the D-083 names and the word limits. Do the same for the `form.js` messages that the page shows. Move the cut detail into `README.md` sections, and link each shortened hint to its section.
@@ -60,6 +60,8 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-29: plan gate chose two linked pages with a better hand-off (M147) over a scale list inside the Study Link Builder. That list needs scale membership in the JSON export, a format change under D-063. Falsified by researchers who still paste or lose the module file after M147 ships.
 - 2026-09-29: plan gate chose two linked pages over one merged page, for M125's reasons. With one page, every link waits on the R load, and the other four instruments move into a HiTOP-SR page. Falsified by a report that the pages still read as disjointed after M146 and M147.
 - 2026-09-29: plan gate chose automated checks, screenshots and Jeff's look at the merge gate over a fresh new-user walkthrough at review. Falsified by a new-user problem that Jeff finds after merge and that the checks passed.
+- 2026-09-29: implement started. Branches cut in hitop and hitop-form. Question gate: the questions section's summary lists each question's legend ("Question 1, Question 2"), as AC1 reads, with no amendment. Hitop-form baseline: 720 passed.
+- 2026-09-29: T1 done in hitop-form. The page has a required block and five closed sections with live summaries. Prefill opens a filled section, and a field refusal opens its section and focuses the field. New `tests/link-sections.spec.js` (22 tests) covers AC1 and AC2. Four planted defects turned 20 of them red. Old link specs open every section through a new `openBuilderSections()` helper. Full suite: 736 of 742 passed, and 6 timeouts at one moment passed on re-run.
 
 ## Decisions
 
