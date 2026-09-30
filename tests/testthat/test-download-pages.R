@@ -152,18 +152,19 @@ test_that("each page's rendered chunk links every file in its manifest rows and 
   }
 })
 
-test_that("the Instruments menu reaches the link builder right after the module builder", {
+test_that("the Instruments menu names the Study Link Builder right after the Module Builder", {
   config <- testthat::test_path("..", "..", "_pkgdown.yml")
   skip_if(!file.exists(config), "_pkgdown.yml not available")
   skip_if_not_installed("yaml")
   menu <- yaml::read_yaml(config)$navbar$components$downloads$menu
   texts <- vapply(menu, function(e) if (is.null(e$text)) "" else e$text, "")
-  i <- which(texts == "Build a HiTOP-SR Module")
+  i <- which(texts == "Module Builder")
   expect_length(i, 1)
-  # A module-builder entry that closes the menu has nothing after it; an
+  expect_equal(menu[[i[1]]]$href, "https://jmgirard.github.io/hitop-builder/")
+  # A Module Builder entry that closes the menu has nothing after it; an
   # empty entry then fails the two expectations below instead of erroring.
   following <- if (length(i) == 1 && i < length(menu)) menu[[i + 1]] else list()
-  expect_equal(following$text, "Make a study link")
+  expect_equal(following$text, "Study Link Builder")
   expect_equal(
     following$href,
     "https://jmgirard.github.io/hitop-form/link.html"

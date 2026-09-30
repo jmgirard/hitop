@@ -2,6 +2,22 @@
 
 ## New features
 
+* **The hitop-form Study Link Builder shows its required choices first.**
+  The page shows the instruments, the study name and where responses go
+  first. Five optional sections follow, each closed until you open it:
+  "Participants and recruiting site", "Item order and HiTOP-SR module",
+  "Consent", "When the participant finishes" and "Your own questions". A
+  section's summary reads "Not used" or lists its fields that hold a value.
+  When the page refuses a field, it opens the field's section and moves
+  focus to the field. Move and Remove buttons are disabled where they do
+  nothing. The built link appears under "Your study link", with a "Copy the
+  link" button and one next step for the choices made. The hints are
+  shorter, and they link to the hitop-form README for detail. The site's
+  Instruments menu names the two pages "Module Builder" and "Study Link
+  Builder". The online-collection and HiTOP-SR modules articles use the
+  name "Study Link Builder", and call the `.json` file that `write_module()`
+  writes the module file.
+
 * **A Word module form can carry subscale scoring rows.**
   `generate_docx_hitopsr()` accepts `include_subscales = TRUE` with a
   `module`. The scoring page then lists the subscales of the scales the
