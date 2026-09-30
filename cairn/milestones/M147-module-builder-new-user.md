@@ -47,7 +47,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 
 - [x] T1: Shorten the header text (`index.html` lines 443-455). Move the host sentence and the Log section (lines 685-688) into a closed "Technical details" `<details>`. Open it on a failure, and reword the failure statuses (lines 1594, 1665-1671, 1904) to name it.
 - [x] T2: In the picker (lines 1052-1266), add the item-count text to each checkbox's accessible name. Replace the hover popup (lines 1099-1160) with a definition button. Show "No scales match" for an empty filter.
-- [ ] T3: Cut the step-2 notices (lines 502-505, 589-664) to the 60-word limit. Move the zip file detail into the README.txt that `bundleReadme()` writes. Stop the mouse-click outline on the step heading (line 380, `showStep` at line 1037). Keep the keyboard focus outline.
+- [x] T3: Cut the step-2 notices (lines 502-505, 589-664) to the 60-word limit. Move the zip file detail into the README.txt that `bundleReadme()` writes. Stop the mouse-click outline on the step heading (line 380, `showStep` at line 1037). Keep the keyboard focus outline.
 - [ ] T4: Set one name per format in `FORMATS` and use it on the card, the button, the status (line 1434) and `bundleReadme()` (lines 1323-1373). Name each step control by its target step (lines 472-501, 680). Apply the D-083 names to every string that `tests/prose.mjs` lists.
 - [ ] T5: Replace the one-line link under the button (lines 676-678, 1373-1380, 1482) with the "Next: make the study link" panel.
 - [ ] T6: In hitop-form `link.html`, add a file choice beside the module text box that fills it from a chosen file. Add the hitop-form test for AC5, and run that suite locally and on its PR.
@@ -61,6 +61,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: implement started. Branch `m147-module-builder-new-user` cut in hitop, hitop-builder and hitop-form. Implement gate: Jeff took the recommended option on all four questions (M147-D1).
 - 2026-09-30: T1 done (hitop-builder 1st commit). Header is 39 words. Every failure goes through a new `showFailure()`, which opens "Technical details" and adds a sentence that names it. No visitor setting can make a build fail, so the smoke step for AC1 drives a load failure. The build failure uses the same function. Smoke test green.
 - 2026-09-30: T2 done (hitop-builder 2nd commit). Correction to the T1 line: the header is 40 words, not 39. Each row is a `.row` with the label and a "Definition" button outside it. The definition is a hidden `<p>` under the row, still named by the checkbox's `aria-describedby`. The hover, Escape and scroll handlers are gone. The smallest scale has 3 items, so the count always reads "items". An empty filter hides the list and shows "No scales match the filter." Prose ledger 21 sites, smoke green.
+- 2026-09-30: T3 done (hitop-builder 3rd commit). One zip note and one Online form note replace the two notices and two hints. A "Choose at least one scale" hint sits under the button, outside the counted span. README.txt gains the naming paragraph, and its title line takes the format name now (AC4's README part). The heading ring moved from `:focus` to `:focus-visible`. Smoke green. The word counts and the focus rule are measured in T7.
 
 ## Decisions
 
