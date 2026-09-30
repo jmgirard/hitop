@@ -112,6 +112,8 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: T15 done. The intro says the page keeps and sends nothing you type, and it drops "with your choices" to stay within 60 words. The destination hint names an Apps Script web app and one JSON row. The table hint says a Supabase build downloads each instrument from the hitop site.
 - 2026-09-30: T15, continued. The options hint says blank lines are skipped. The decline URL hint says `{participant}` is empty unless the link or a site gives it. The shuffle and Prolific hints say "the responses". The SONA hint names `id=%SURVEY_CODE%`, and the completion hint names the arrival screen.
 - 2026-09-30: T15 tests. S9 asserts each fact, and it failed on the old page. Three old assertions in `link.spec.js` take the new text. Four builder specs pass, 214 tests, with S8's word limits among them.
+- 2026-09-30: T16 changes made, not yet ticked. The README and two test comments drop "three" from "required parts". The S3 empty-key pattern is anchored. The top-bar link opens a new tab, tested, and that test failed on the old page. A README row says "unpack". The ROADMAP question-gaps row loses the fixed load gap.
+- 2026-09-30: T16 filing. The `z` link gaps row takes findings 12, 13, 16, 17, 21, 24 and 25, with a label-less control as a promote trigger. M147's work log takes finding 7. The modularization row is compressed, so ROADMAP stays at 23,984 bytes. The full suite and the claim audit are running.
 
 ## Decisions
 
