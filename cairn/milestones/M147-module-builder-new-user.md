@@ -108,6 +108,8 @@ A researcher who opens the Module Builder for the first time reads a short start
 - 2026-09-30: T17 done (hitop-builder 8c4ff34). The `prose.mjs` header and its README.md row no longer claim every string a visitor reads. Smoke passed (2 tests), and `npm run prose` found no retired name in 184 passages.
 - claim audit: 18 claims read, 5 corrected — hitop-builder README.md and tests/prose.mjs (hitop-builder efbbd4d and 08272a8). The five overstated the script text, left out the README.txt passages, and read an incomplete exclusion list as complete. The re-read found 6 of 7 touched claims hold. The seventh missed literalsIn()'s one-character filter, which 08272a8 names after a check of `prose.mjs:360`, with no second pass.
 - 2026-09-30: implement complete after the AC6 amendment. hitop-builder smoke passed (2 tests) on 8c4ff34, and later commits change only comments and README.md. `npm run prose` is clean on 08272a8. No hitop R code and no hitop-form file changed. Status set to review.
+- 2026-09-30: review pass 4 found AC1 to AC6 met and AC7's local parts met. Jeff accepted every proposed finding disposition, and the fix-now items landed in hitop-builder bfa8d35 and hitop 7935dc10.
+- step-7 approval: m147-module-builder-new-user approved for merge, with the companions /Users/jmgirard/github/hitop-builder and /Users/jmgirard/github/hitop-form merged first.
 
 ## Decisions
 
@@ -254,3 +256,5 @@ Review findings from the three-lens fan-out. D is the diff-bug lens, B the blame
 - B8: the step-2 hint lost the sentence on default settings. Proposed: reject, T3's word cut, and the closed summary lines remain.
 - P9: the T14 work-log line says 12 minutes. Proposed: reject, the later claim-audit line records the return to 10 minutes.
 - D8, B1, B10, P6 and P7: repeats of items already triaged (the budget note, Known issue 13, M147-D2 and pass 1 rejects). Proposed: noted.
+
+Triage at the gate (2026-09-30): Jeff accepted every proposed disposition. The fix-now items landed in hitop-builder bfa8d35 and hitop 7935dc10. The lede now reads "It downloads R and the hitop package, named under Technical details, then runs here.", and the header holds 49 words. The prose body check exits 1 on a body with no text node. A hand plant of an empty body made the fixed check exit 1, and the old check reported "all 0 text nodes" and exited 0. After the fixes, smoke passed (2 tests), `npm run prose` exited 0, and the hitop-form module-file tests passed (5). The eight "after" screenshots in hitop-builder's `playwright-report/m147/` were retaken on bfa8d35. The follow-ups go to the two candidate rows at hygiene.
