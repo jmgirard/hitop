@@ -29,8 +29,10 @@ module_format_first_version <- function() {
 #'
 #'   Before it writes, `write_module()` rebuilds the module with
 #'   [hitop_module()] from its `instrument` and `scales`. A module whose
-#'   `items` or `nItems` differ from that rebuild is refused, and nothing is
-#'   written. The file holds the rebuild's fields. [read_module()] rebuilds
+#'   `items`, `nItems`, `camelCase` or `instrument` differ from that rebuild, or
+#'   that cannot be rebuilt from its `instrument` and `scales`, is refused with
+#'   an error of class
+#'   `hitop_module_mismatch`, and nothing is written. The file holds the rebuild's fields. [read_module()] rebuilds
 #'   the module from the file's `scales`, so it returns a `hitop_module` with
 #'   integer items. This is also true for a file written
 #'   from the deprecated `hitop_subset` class, or from a module whose items
@@ -90,7 +92,9 @@ module_format_first_version <- function() {
 #'   `itemOrder` and must be a permutation of the module's items. A `columns`
 #'   attribute, where present, is written as the file's `columns`. It must be
 #'   a character vector with one distinct, non-empty name per module item.
-#'   A bad attribute is refused before the file is opened.
+#'   A bad attribute is refused before the file is opened. A module that is
+#'   not the [hitop_module()] build of its own scales is refused with an error
+#'   of class `hitop_module_mismatch`, as described above.
 #' @param file A string giving the path to write to.
 #'
 #' @return The `file` path, invisibly.
@@ -151,59 +155,12 @@ write_module_impl <- function(module, file, call = rlang::caller_env()) {
     call = call
   )
 
-  # The module is rebuilt from its `instrument` and `scales`, the two fields
-  # read_module() rebuilds from, and its `items` and `nItems` must match the
-  # rebuild. A module changed by hand would otherwise write a file that
-  # read_module() refuses, or one whose recorded items are not the rebuild's.
-  # Everything here runs before the path is opened, so
-  # a refusal leaves the path as it was.
-  rebuilt <- rlang::try_fetch(
-    hitop_module(instrument = module$instrument, scales = module$scales),
-    error = function(cnd) {
-      cli::cli_abort(
-        c(
-          "Cannot rebuild the {.arg module} argument from its \\
-           {.field instrument} and {.field scales}.",
-          i = "Build the module with {.code hitop_module()}."
-        ),
-        parent = cnd,
-        call = call
-      )
-    }
-  )
-  # Compared by value, so a module whose `items` are doubles equal to the
-  # rebuild's, as one saved before item numbers were integers carries, is
-  # still written. Order counts: the rebuild's order is the one written.
-  items <- module$items
-  items_ok <- is.numeric(items) &&
-    length(items) == length(rebuilt$items) &&
-    !anyNA(items) &&
-    all(items == rebuilt$items)
-  cli_assert(
-    condition = items_ok,
-    message = c(
-      "The {.arg module} argument does not match its {.field scales}.",
-      x = "Its items field is not the {rebuilt$nItems} item number{?s} \\
-           its scales cover, in ascending order.",
-      i = "Build the module with {.code hitop_module()}."
-    ),
-    call = call
-  )
-  n_items <- module$nItems
-  n_ok <- is.numeric(n_items) &&
-    length(n_items) == 1L &&
-    !is.na(n_items) &&
-    n_items == rebuilt$nItems
-  cli_assert(
-    condition = n_ok,
-    message = c(
-      "The {.arg module} argument does not match its {.field scales}.",
-      x = "Its nItems field is not {rebuilt$nItems}, the number of items \\
-           its scales cover.",
-      i = "Build the module with {.code hitop_module()}."
-    ),
-    call = call
-  )
+  # The module must be the build of its `instrument` and `scales`, the two
+  # fields read_module() rebuilds from. A module changed by hand would
+  # otherwise write a file that read_module() refuses, or one whose recorded
+  # items are not the rebuild's. Everything here runs before the path is
+  # opened, so a refusal leaves the path as it was.
+  rebuilt <- check_module_build(module, call = call)
 
   # `unbox()` on every scalar, with `auto_unbox = FALSE`, so that `scales` and
   # `items` stay JSON arrays even for a module holding one of either. Under

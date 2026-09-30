@@ -156,7 +156,7 @@ test_that("module_engine_inputs() covers every module column exactly once", {
   expect_equal(pos, seq_len(s$nItems))
 })
 
-test_that("module_engine_inputs() rejects a non-module and a wrong instrument", {
+test_that("module_engine_inputs() rejects a non-module, and a module of another instrument as one it cannot rebuild", {
   expect_error(
     module_engine_inputs(
       list(items = 1), "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
@@ -164,14 +164,18 @@ test_that("module_engine_inputs() rejects a non-module and a wrong instrument", 
     "hitop_module"
   )
 
-  # Only reachable by hand-assembly: hitop_module() will not build this.
+  # Only reachable by hand-assembly: hitop_module() will not build this, so it
+  # is refused as a module its scales cannot rebuild (D-081), before the
+  # wrong-instrument check. That check cannot fail while the build compares
+  # `instrument` exactly and supports the HiTOP-SR only.
   fake <- hitop_module("hitopsr", "agoraphobia")
   fake$instrument <- "hitopbr"
   expect_error(
     module_engine_inputs(
       fake, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
     ),
-    "wrong instrument"
+    "Cannot rebuild",
+    class = "hitop_module_mismatch"
   )
 })
 
@@ -187,7 +191,8 @@ test_that("module_engine_inputs() rejects a descriptor inconsistent with itself"
     module_engine_inputs(
       inflated, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
     ),
-    "internally inconsistent"
+    "Its nItems field",
+    class = "hitop_module_mismatch"
   )
 
   # The deflated direction too, so the check is not one-sided.
@@ -197,14 +202,9 @@ test_that("module_engine_inputs() rejects a descriptor inconsistent with itself"
     module_engine_inputs(
       shrunk, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
     ),
-    "internally inconsistent"
+    "Its nItems field",
+    class = "hitop_module_mismatch"
   )
-
-  # And the count the engines receive comes from `items`, not from `nItems`.
-  out <- module_engine_inputs(
-    s, "hitopsr", hitopsr_items, hitopsr_scales, item_col = "HSR"
-  )
-  expect_equal(out$n_items, length(s$items))
 })
 
 test_that("an inflated descriptor aborts instead of silently scoring wrong items", {
@@ -215,6 +215,7 @@ test_that("an inflated descriptor aborts instead of silently scoring wrong items
   s$nItems <- 405L
   expect_error(
     score_hitopsr(sim_hitopsr, items = 1:405, module = s, append = FALSE),
-    "internally inconsistent"
+    "Its nItems field",
+    class = "hitop_module_mismatch"
   )
 })

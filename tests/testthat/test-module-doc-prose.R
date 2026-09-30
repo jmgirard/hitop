@@ -17,8 +17,9 @@
 #     the precondition (printed order, column 1 = item 1) stays stated;
 #   * all three generators announce the descriptor's path on the console, which
 #     no `descriptor` help text mentioned;
-#   * `include_subscales = TRUE` with `module` is an error, which the article
-#     never mentioned.
+#   * `include_subscales = TRUE` with `module` adds the subscales of the scales
+#     the module holds (M142 lifted the refusal the article used to describe);
+#     the rows themselves are pinned in test-docx-numbering.R.
 
 # --- slicing helpers ------------------------------------------------------
 #
@@ -153,11 +154,18 @@ test_that("every generator's descriptor help text names the console message", {
   }
 })
 
-# --- the refused combination ----------------------------------------------
+# --- subscales on a module form ---------------------------------------------
 
-test_that("the article names the include_subscales and module conflict", {
-  section <- article_section("Generating the Instrument")
+test_that("the article says a module form adds the subscales of its scales", {
+  section <- squash(article_section("Generating the Instrument"))
 
   expect_match(section, "include_subscales = TRUE", fixed = TRUE)
-  expect_match(section, "refuses", fixed = TRUE)
+  expect_match(
+    section,
+    "a module form adds to its scoring page the subscales of the scales it holds",
+    fixed = TRUE
+  )
+  # The retired claim, in both of the forms it took.
+  expect_no_match(section, "cannot be combined", fixed = TRUE)
+  expect_no_match(section, "outside the module", fixed = TRUE)
 })

@@ -67,7 +67,12 @@ generate_redcap_hitopbr <- function(
 #'   collected data column, so renumbering would rename variables in
 #'   dictionaries already in the field. The zero-padding is the full
 #'   instrument's for the same reason: item 4 is `hsr_004` in a module
-#'   dictionary as in the complete one, never `hsr_04`. (default = `NULL`)
+#'   dictionary as in the complete one, never `hsr_04`. A module whose
+#'   `items`, `nItems`, `camelCase` or `instrument` differ from a fresh [hitop_module()]
+#'   build of its scales, or that cannot be rebuilt from its `instrument` and
+#'   `scales`, is refused with an error of class `hitop_module_mismatch`,
+#'   before any file is written.
+#'   (default = `NULL`)
 #' @param descriptor An optional path to write a module descriptor to, beside
 #'   the instrument file. The saved file records which scales the form covers
 #'   and which instrument items they draw on, so [read_module()] hands the

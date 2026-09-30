@@ -384,6 +384,18 @@ test_that("a subscale keying fault under a module is an internal error", {
     class = "rlang_error"
   )
 
+  # The Word form reads `itemdata` through module_subscales(), so a fault in
+  # that column stops there too.
+  moved_data <- hitopsr_subscales
+  row <- which(moved_data$camelCase == "cynicism")
+  moved_data$itemdata[[row]]$HSR[[1]] <- 1L
+  expect_error(
+    module_subscales(m, subs = moved_data),
+    "outside its parent scale",
+    class = "rlang_error"
+  )
+
   # The shipped table passes both checks.
   expect_no_error(add_hitopsr_subscales(inputs, m))
+  expect_no_error(module_subscales(m))
 })

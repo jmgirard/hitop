@@ -235,7 +235,7 @@ test_that("reliability_hitopsr(module=) gives the full run's alpha for its scale
   expect_equal(part, full[match(part$Scale, full$Scale), ], ignore_attr = "row.names")
 })
 
-test_that("the module argument's three error paths blame the exported wrapper", {
+test_that("a non-module, an unbuildable module and a wrong item count each blame the exported wrapper", {
   s <- hitop_module("hitopsr", "agoraphobia")
   dat <- sim_hitopsr[s$items]
 
@@ -255,12 +255,13 @@ test_that("the module argument's three error paths blame the exported wrapper", 
   expect_match(bad$msg, "hitop_module")
 
   # (2) a hand-assembled descriptor naming another instrument; hitop_module()
-  #     itself will not build one, so only hand-assembly reaches this branch.
+  #     itself will not build one, so it is refused as a module its scales
+  #     cannot rebuild.
   foreign <- s
   foreign$instrument <- "hitopbr"
   bad2 <- blamed(score_hitopsr(dat, items = seq_len(s$nItems), module = foreign))
   expect_equal(bad2$fn, "score_hitopsr")
-  expect_match(bad2$msg, "wrong instrument")
+  expect_match(bad2$msg, "Cannot rebuild")
 
   # (3) the existing length check, now re-pointed at the module's item count:
   #     the full 405 columns are the wrong input for a 5-item short form.

@@ -327,12 +327,12 @@ test_that("renumber and randomize reject non-flag values", {
 
 # ---- Subscale rows follow the same printed-order map -----------------------
 #
-# `include_subscales` cannot be combined with `module`, so this path is
-# reachable only on the full instrument -- where renumbering is the identity
-# and only `randomize` moves anything. The subscale rows are built from
-# `hitopsr_subscales`, a different table from the one the scale rows come
-# from, so they are the one place the printed-order map could be applied to
-# one table and not the other.
+# The subscale rows are built from `hitopsr_subscales`, a different table from
+# the one the scale rows come from, so they are the one place the printed-order
+# map could be applied to one table and not the other. On the full instrument
+# renumbering is the identity and only `randomize` moves anything; a module
+# form moves the numbers under `renumber` too, and carries only the subscales
+# of the scales it holds.
 
 test_that("shuffling remaps the subscale scoring rows too", {
   skip_if_no_docx()
@@ -360,4 +360,91 @@ test_that("shuffling remaps the subscale scoring rows too", {
     # And the row is sorted by printed number, not left in original order.
     expect_equal(got, sort(got))
   }
+})
+
+# The Items cell a subscale row should print, read from hitopsr_subscales and
+# the form's returned order: each item's printed number, sorted, with (R) on a
+# reverse-keyed item.
+expected_subscale_cells <- function(parents, item_order, renumber) {
+  subs <- hitopsr_subscales[hitopsr_subscales$Scale %in% parents, ]
+  cells <- vapply(subs$itemdata, function(d) {
+    printed <- if (renumber) match(d$HSR, item_order) else d$HSR
+    o <- order(printed)
+    paste0(printed[o], ifelse(d$Reverse[o], "(R)", ""), collapse = ", ")
+  }, character(1))
+  stats::setNames(cells, paste0(subs$Subscale, rep(" (Subscale)", nrow(subs))))
+}
+
+# docx_scoring_rows() reads the two-column table across each table row: left
+# row 1, right row 1, left row 2, and so on. The form fills the left column
+# first, so the rows go back into printed order as every odd cell, then every
+# even one.
+column_order <- function(rows) {
+  k <- nrow(rows)
+  rows[c(seq(1L, k, by = 2L), seq(2L, k, by = 2L))[seq_len(k)], , drop = FALSE]
+}
+
+expect_module_subscale_rows <- function(m, parents, renumber = TRUE,
+                                        randomize = FALSE, seed = 5) {
+  f <- withr::local_tempfile(fileext = ".docx")
+  withr::local_seed(seed)
+  out <- suppressMessages(generate_docx_hitopsr(
+    file = f, module = m, include_subscales = TRUE,
+    renumber = renumber, randomize = randomize
+  ))
+  # The expected cells below are read through the returned order, so first pin
+  # that order to this page: reading the item texts back through it must
+  # reproduce the printed items.
+  order <- attr(out, "item_order")
+  items <- expected_rows(m)
+  expect_equal(items$Text[match(order, items$HSR)], docx_item_rows(f)$text)
+
+  printed <- column_order(docx_scoring_rows(f))
+  want <- expected_subscale_cells(parents, order, renumber)
+
+  # One row per scale and per subscale of a held parent, and no other row,
+  # sorted by name as the full form sorts them.
+  names_all <- c(m$scales, names(want))
+  expect_identical(printed$scale, names_all[order(names_all)])
+
+  is_sub <- printed$scale %in% names(want)
+  expect_identical(
+    stats::setNames(printed$items[is_sub], printed$scale[is_sub]),
+    want[printed$scale[is_sub]]
+  )
+  invisible(out)
+}
+
+test_that("a module form lists the subscales of the scales it holds", {
+  skip_if_no_docx()
+  sub_m <- hitop_module(
+    "hitopsr", c("appetiteLoss", "dishonesty", "mistrust")
+  )
+  expect_module_subscale_rows(sub_m, c("Dishonesty", "Mistrust"))
+})
+
+test_that("a module form holding no parent scale lists no subscale row", {
+  skip_if_no_docx()
+  no_parent <- hitop_module("hitopsr", c("agoraphobia", "appetiteLoss"))
+  expect_module_subscale_rows(no_parent, character(0))
+})
+
+test_that("module subscale rows keep the original numbers under renumber = FALSE", {
+  skip_if_no_docx()
+  sub_m <- hitop_module("hitopsr", c("appetiteLoss", "dishonesty", "mistrust"))
+  expect_module_subscale_rows(
+    sub_m, c("Dishonesty", "Mistrust"), renumber = FALSE
+  )
+})
+
+test_that("module subscale rows follow a shuffled, renumbered form", {
+  skip_if_no_docx()
+  sub_m <- hitop_module("hitopsr", c("appetiteLoss", "dishonesty", "mistrust"))
+  out <- expect_module_subscale_rows(
+    sub_m, c("Dishonesty", "Mistrust"), randomize = TRUE
+  )
+  # The expected cells come from the returned order, so a shuffle that did
+  # nothing would pass above; show that this seed moved the items.
+  order <- attr(out, "item_order")
+  expect_false(identical(order, sort(order)))
 })

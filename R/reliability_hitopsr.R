@@ -49,7 +49,11 @@
 #'   `data` and `items` hold only that module's item columns — in ascending
 #'   instrument order, as the `generate_*_hitopsr()` forms lay them out — and one
 #'   row is returned per module scale. When `NULL`, all 405 items are expected
-#'   and all 76 scales are estimated. (default = `NULL`)
+#'   and all 76 scales are estimated. A module whose `items`, `nItems`,
+#'   `camelCase` or `instrument` differ from a fresh [hitop_module()] build of its scales, as
+#'   after an edit by hand, or that cannot be rebuilt from its `instrument` and
+#'   `scales`, is refused with an error of class `hitop_module_mismatch`.
+#'   (default = `NULL`)
 #' @param layout The order the item columns are in. `"instrument"` (the
 #'   default) is ascending HiTOP-SR order, as the `generate_*_hitopsr()` forms
 #'   lay the items out. `"printed"` is the order a shuffled Word form printed

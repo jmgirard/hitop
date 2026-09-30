@@ -89,7 +89,11 @@ be added to the end of the \code{data} input. (default = \code{TRUE})}
 \code{data} and \code{items} hold only that module's item columns — in ascending
 instrument order, as the \verb{generate_*_hitopsr()} forms lay them out — and
 only that module's scales are scored. When \code{NULL}, all 405 items are
-expected and all 76 scales are scored. (default = \code{NULL})}
+expected and all 76 scales are scored. A module whose \code{items}, \code{nItems},
+\code{camelCase} or \code{instrument} differ from a fresh \code{\link[=hitop_module]{hitop_module()}} build of its scales,
+as after an edit by hand, or that cannot be rebuilt from its \code{instrument}
+and \code{scales}, is refused with an error of class \code{hitop_module_mismatch}.
+(default = \code{NULL})}
 
 \item{layout}{The order the item columns are in. \code{"instrument"} (the
 default) is ascending HiTOP-SR order, as the \verb{generate_*_hitopsr()} forms
