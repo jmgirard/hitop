@@ -1,6 +1,6 @@
 # M147: Module Builder: short start, labelled picker, clear hand-off
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -61,7 +61,7 @@ A researcher who opens the Module Builder for the first time reads a short start
 - [x] T14: Pass 2 findings in hitop-builder. Record every status change in A28. Fix the Online note's file-name claim. Name the downloads in the lede. Assert and plant the "No scales match" live region. Make the `${...} parameter` pattern able to hit. Count panel headings in A17. Put back the shuffle note's "If". Recompute the test budget. State the known counts as numbers. Bring the Definition button to 24px. Fix the stale comments and README nits.
 - [x] T15: Pass 2 findings in hitop-form `link.html`. After a change to the box, clear the file status. Keep only the latest file read, add the "sends nowhere" hint, and rewrap README line 101.
 - [x] T16: Pass 2 findings in hitop. Correct the NEWS entry, and name the file choice in `online-collection.Rmd` and `modules-hitopsr.Rmd`.
-- [ ] T17: AC6 amendment follow-on in hitop-builder. The `README.md` row for `tests/prose.mjs` and the first line of `prose.mjs` claim that it lists every string a visitor can read. Narrow both to what it reads, and run the smoke test and prose.
+- [x] T17: AC6 amendment follow-on in hitop-builder. The `README.md` row for `tests/prose.mjs` and the first line of `prose.mjs` claim that it lists every string a visitor can read. Narrow both to what it reads, and run the smoke test and prose.
 
 ## Work log
 
@@ -105,6 +105,9 @@ A researcher who opens the Module Builder for the first time reads a short start
 - re-audit: AC6 (full) — first reader, on the clause in the amendment-return line: four sentences false as written. The `descriptor = desc_path` echo is R code, not R output. "Only exclusions" omits the list clear and template values. "Every writer site" is wider than the three-pattern count. "Exits 1 if missing" is a substring check. It proposed binding only the passages `--text <file>` writes, and found the README row and the prose.mjs header still claim every string a visitor reads.
 - re-audit: AC6 (full) — second reader, on the first reader's wording: met on hitop-builder 3b9e7b6, no IP or D-entry blocks it, bounded, and it narrows AC6. It had five low findings. The checker is not pinned, and the backtick exemption is wider than what prose.mjs strips. "Literal URLs" and the id lines are undefined, and "follows" and "holds" are loose. This is the second re-audit line on AC6, so the wording went to Jeff.
 - 2026-09-30: AC6 amended at Jeff's gate, executing the pass-3 amendment return above. Jeff chose the second reader's wording with its findings B to E applied. Finding A, a pin of prose.mjs to one commit, was left out. A fix-now edit at review breaks such a pin. The adopted text differs from the clause the amendment-return line proposed, and no second amendment-return line is written. Minor amendment: T17 added for the stale "every string a visitor reads" claims, at Jeff's choice, and the Coverage lines follow it.
+- 2026-09-30: T17 done (hitop-builder 8c4ff34). The `prose.mjs` header and its README.md row no longer claim every string a visitor reads. Smoke passed (2 tests), and `npm run prose` found no retired name in 184 passages.
+- claim audit: 18 claims read, 5 corrected — hitop-builder README.md and tests/prose.mjs (hitop-builder efbbd4d and 08272a8). The five overstated the script text, left out the README.txt passages, and read an incomplete exclusion list as complete. The re-read found 6 of 7 touched claims hold. The seventh missed literalsIn()'s one-character filter, which 08272a8 names after a check of `prose.mjs:360`, with no second pass.
+- 2026-09-30: implement complete after the AC6 amendment. hitop-builder smoke passed (2 tests) on 8c4ff34, and later commits change only comments and README.md. `npm run prose` is clean on 08272a8. No hitop R code and no hitop-form file changed. Status set to review.
 
 ## Decisions
 
