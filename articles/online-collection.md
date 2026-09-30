@@ -67,7 +67,8 @@ then refuses the download and names the first row that differs.
 
 Open the [Study Link
 Builder](https://jmgirard.github.io/hitop-form/link.html). Choose the
-instrument (and, for a HiTOP-SR module, paste the module file written by
+instrument (and, for a HiTOP-SR module, paste or choose the module file
+written by
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)),
 and name the study. For two or three instruments in one session, see
 [Several instruments in one

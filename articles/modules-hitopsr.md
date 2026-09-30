@@ -540,12 +540,12 @@ The online form reads the same module file
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
 writes. Open the [Study Link
 Builder](https://jmgirard.github.io/hitop-form/link.html), paste the
-module file in, name the study, choose where the responses go, and it
-gives you one link to send to participants. A module file from a
-shuffled Word form carries that form’s order, and the online form shows
-the items in it. The Study Link Builder’s “Show the items in a random
-order” box asks for a new order per participant instead; the module
-file’s order is then not followed.
+module file in or choose it as a file, name the study, choose where the
+responses go, and it gives you one link to send to participants. A
+module file from a shuffled Word form carries that form’s order, and the
+online form shows the items in it. The Study Link Builder’s “Show the
+items in a random order” box asks for a new order per participant
+instead; the module file’s order is then not followed.
 
 Whichever route the answers take, the CSV file has five lead columns
 (`study`, `participant`, `instrument`, `form_build`, `submitted`) and
