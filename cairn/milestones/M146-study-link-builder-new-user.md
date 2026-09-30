@@ -1,6 +1,6 @@
 # M146: Study Link Builder: required choices first, optional ones folded away
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -65,7 +65,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] T13: Make the next step with Supabase and no site one sentence. Make S7 check the sentence count by its own rule, not by a copy of the page's text.
 - [x] T14: If a field changes while a build waits, the build does not show its link and SQL. Test it with an edit during a slowed export fetch.
 - [x] T15: Put back the hint facts of pass-2 findings 3, 4, 6, 9, 10 and 11, each asserted by S9 and each hint within 40 words.
-- [ ] T16: Make the small fixes of pass-2 findings 14, 15, 18, 19 and 23. File findings 7, 12, 13, 16, 17, 21, 24 and 25 in their rows.
+- [x] T16: Make the small fixes of pass-2 findings 14, 15, 18, 19 and 23. File findings 7, 12, 13, 16, 17, 21, 24 and 25 in their rows.
 
 ## Work log
 
@@ -114,6 +114,10 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: T15 tests. S9 asserts each fact, and it failed on the old page. Three old assertions in `link.spec.js` take the new text. Four builder specs pass, 214 tests, with S8's word limits among them.
 - 2026-09-30: T16 changes made, not yet ticked. The README and two test comments drop "three" from "required parts". The S3 empty-key pattern is anchored. The top-bar link opens a new tab, tested, and that test failed on the old page. A README row says "unpack". The ROADMAP question-gaps row loses the fixed load gap.
 - 2026-09-30: T16 filing. The `z` link gaps row takes findings 12, 13, 16, 17, 21, 24 and 25, with a label-less control as a promote trigger. M147's work log takes finding 7. The modularization row is compressed, so ROADMAP stays at 23,984 bytes. The full suite and the claim audit are running.
+- 2026-09-30: T16 done. The full hitop-form suite passed 771 of 771.
+- claim audit: 35 claims read, 1 corrected — hitop-form tests/link.spec.js
+- 2026-09-30: the corrected claim was two L19 comments, which said the intro names the required parts. They now say it asks for them, and the reader's re-read found both hold. The audit covered the return-2 lines in hitop-form, because hitop has no code change since the pass-2 `check()`.
+- 2026-09-30: T13 to T16 done, and status set to review. hitop code is unchanged since pass 2, where `devtools::check()` gave 0 errors, 0 warnings and 0 notes.
 
 ## Decisions
 
