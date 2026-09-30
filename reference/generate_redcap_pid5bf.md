@@ -41,5 +41,5 @@ Step-by-step import instructions for Qualtrics and REDCap:
 ``` r
 # Write a PID-5-BF REDCap instrument ZIP to a temporary location
 generate_redcap_pid5bf(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmpxOgiwU/file19ea75aadc40.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpSiMtQo/file1b44438b23ab.zip
 ```

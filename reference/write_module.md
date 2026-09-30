@@ -16,9 +16,11 @@ an error rather than a silent preference for either side.
 
 Before it writes, `write_module()` rebuilds the module with
 [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
-from its `instrument` and `scales`. A module whose `items` or `nItems`
-differ from that rebuild is refused, and nothing is written. The file
-holds the rebuild's fields.
+from its `instrument` and `scales`. A module whose `items`, `nItems`,
+`camelCase` or `instrument` differ from that rebuild, or that cannot be
+rebuilt from its `instrument` and `scales`, is refused with an error of
+class `hitop_module_mismatch`, and nothing is written. The file holds
+the rebuild's fields.
 [`read_module()`](https://jmgirard.github.io/hitop/reference/read_module.md)
 rebuilds the module from the file's `scales`, so it returns a
 `hitop_module` with integer items. This is also true for a file written
@@ -42,7 +44,10 @@ write_module(module, file)
   `columns` attribute, where present, is written as the file's
   `columns`. It must be a character vector with one distinct, non-empty
   name per module item. A bad attribute is refused before the file is
-  opened.
+  opened. A module that is not the
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  build of its own scales is refused with an error of class
+  `hitop_module_mismatch`, as described above.
 
 - file:
 
@@ -153,7 +158,7 @@ cat(readLines(f), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-09-29",
+#>   "buildDate": "2026-09-30",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Appetite Loss"],
 #>   "items": [66, 109, 118, 144, 202, 260, 291, 389],

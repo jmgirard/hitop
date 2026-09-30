@@ -164,7 +164,11 @@ package). (default = <code>TRUE</code>)</p></dd>
 <code>data</code> and <code>items</code> hold only that module's item columns — in ascending
 instrument order, as the <code>generate_*_hitopsr()</code> forms lay them out — and one
 row is returned per module scale. When <code>NULL</code>, all 405 items are expected
-and all 76 scales are estimated. (default = <code>NULL</code>)</p></dd>
+and all 76 scales are estimated. A module whose <code>items</code>, <code>nItems</code>,
+<code>camelCase</code> or <code>instrument</code> differ from a fresh <code><a href="hitop_module.html">hitop_module()</a></code> build of its scales, as
+after an edit by hand, or that cannot be rebuilt from its <code>instrument</code> and
+<code>scales</code>, is refused with an error of class <code>hitop_module_mismatch</code>.
+(default = <code>NULL</code>)</p></dd>
 
 
 <dt id="arg-layout">layout<a class="anchor" aria-label="anchor" href="#arg-layout"></a></dt>

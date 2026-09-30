@@ -121,7 +121,12 @@ score_hitopsr(
   `items` hold only that module's item columns — in ascending instrument
   order, as the `generate_*_hitopsr()` forms lay them out — and only
   that module's scales are scored. When `NULL`, all 405 items are
-  expected and all 76 scales are scored. (default = `NULL`)
+  expected and all 76 scales are scored. A module whose `items`,
+  `nItems`, `camelCase` or `instrument` differ from a fresh
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  build of its scales, as after an edit by hand, or that cannot be
+  rebuilt from its `instrument` and `scales`, is refused with an error
+  of class `hitop_module_mismatch`. (default = `NULL`)
 
 - layout:
 

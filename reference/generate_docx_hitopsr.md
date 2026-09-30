@@ -52,7 +52,8 @@ generate_docx_hitopsr(
 - include_subscales:
 
   Logical. If `TRUE`, appends optional subscales to the scoring
-  instructions table. Defaults to `FALSE`.
+  instructions table. With a `module`, the table gets the subscales of
+  the scales the module holds, and no others. Defaults to `FALSE`.
 
 - font_size:
 
@@ -68,8 +69,15 @@ generate_docx_hitopsr(
 
   An optional
   [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
-  object restricting the form to the items of the chosen scales. Cannot
-  be combined with `include_subscales = TRUE`. (default = `NULL`)
+  object restricting the form to the items of the chosen scales. With
+  `include_subscales = TRUE`, the form adds the subscales of the scales
+  it holds. A module whose `items`, `nItems`, `camelCase` or
+  `instrument` differ from a fresh
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  build of its scales, or that cannot be rebuilt from its `instrument`
+  and `scales`, is refused with an error of class
+  `hitop_module_mismatch`, before any file is written. (default =
+  `NULL`)
 
 - renumber:
 
@@ -161,14 +169,14 @@ for the descriptor file.
 # \donttest{
 # Write a HiTOP-SR paper form to a temporary Word document
 generate_docx_hitopsr(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmpxOgiwU/file19ea3030a752.docx
+#> ✔ Document successfully created at /tmp/RtmpSiMtQo/file1b44210be2a1.docx
 
 # A module containing only two scales, printed as items 1 to 8
 generate_docx_hitopsr(
   file = tempfile(fileext = ".docx"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Document successfully created at /tmp/RtmpxOgiwU/file19ea6a3bcaf5.docx
+#> ✔ Document successfully created at /tmp/RtmpSiMtQo/file1b444eda6f82.docx
 
 # The same module keeping the full instrument's own item numbers
 generate_docx_hitopsr(
@@ -176,7 +184,7 @@ generate_docx_hitopsr(
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
   renumber = FALSE
 )
-#> ✔ Document successfully created at /tmp/RtmpxOgiwU/file19ea69ede170.docx
+#> ✔ Document successfully created at /tmp/RtmpSiMtQo/file1b446d28284b.docx
 
 # A shuffled form; the scoring page carries the crosswalk back
 set.seed(1)
@@ -185,7 +193,7 @@ out <- generate_docx_hitopsr(
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss")),
   randomize = TRUE
 )
-#> ✔ Document successfully created at /tmp/RtmpxOgiwU/file19ea5aeaf1b7.docx
+#> ✔ Document successfully created at /tmp/RtmpSiMtQo/file1b44511de93.docx
 attr(out, "item_order")
 #> [1]  66 144 389 109 260 118 291 202
 
@@ -199,8 +207,8 @@ generate_docx_hitopsr(
   randomize = TRUE,
   descriptor = f
 )
-#> ✔ Document successfully created at /tmp/RtmpxOgiwU/file19ea31f33d99.docx
-#> ✔ Module descriptor successfully written to /tmp/RtmpxOgiwU/file19ea5dcc11b2.json
+#> ✔ Document successfully created at /tmp/RtmpSiMtQo/file1b44665a406a.docx
+#> ✔ Module descriptor successfully written to /tmp/RtmpSiMtQo/file1b4429e74117.json
 attr(read_module(f), "item_order")
 #> [1] 109 118 291  66 202 144 389 260
 # }

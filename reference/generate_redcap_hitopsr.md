@@ -53,7 +53,13 @@ generate_redcap_hitopsr(
   a collected data column, so renumbering would rename variables in
   dictionaries already in the field. The zero-padding is the full
   instrument's for the same reason: item 4 is `hsr_004` in a module
-  dictionary as in the complete one, never `hsr_04`. (default = `NULL`)
+  dictionary as in the complete one, never `hsr_04`. A module whose
+  `items`, `nItems`, `camelCase` or `instrument` differ from a fresh
+  [`hitop_module()`](https://jmgirard.github.io/hitop/reference/hitop_module.md)
+  build of its scales, or that cannot be rebuilt from its `instrument`
+  and `scales`, is refused with an error of class
+  `hitop_module_mismatch`, before any file is written. (default =
+  `NULL`)
 
 - descriptor:
 
@@ -109,12 +115,12 @@ for the descriptor file.
 ``` r
 # Write a HiTOP-SR REDCap instrument ZIP to a temporary location
 generate_redcap_hitopsr(file = tempfile(fileext = ".zip"))
-#> ✔ Instrument successfully zipped to /tmp/RtmpxOgiwU/file19ea3edc8052.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpSiMtQo/file1b44ad1e2c7.zip
 
 # A two-scale module, original numbering preserved (unlike the Word form)
 generate_redcap_hitopsr(
   file = tempfile(fileext = ".zip"),
   module = hitop_module("hitopsr", c("Agoraphobia", "Appetite Loss"))
 )
-#> ✔ Instrument successfully zipped to /tmp/RtmpxOgiwU/file19ea1fd08238.zip
+#> ✔ Instrument successfully zipped to /tmp/RtmpSiMtQo/file1b442cd4a1d9.zip
 ```

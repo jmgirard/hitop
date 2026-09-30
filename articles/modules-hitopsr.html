@@ -224,11 +224,10 @@ already in the field.</p>
 form <code>HiTOP-SR (v1.0)</code>. Pass <code>title =</code> to print
 something else — a study name, say — and that string is used verbatim on
 either kind of form.</p>
-<p>One combination the Word generator refuses is
-<code>include_subscales = TRUE</code> together with <code>module</code>:
-a subscale can draw items from scales outside the module, so its scoring
-row would list items the form does not contain. The call aborts rather
-than print a row that cannot be scored.</p>
+<p>With <code>include_subscales = TRUE</code>, a module form adds to its
+scoring page the subscales of the scales it holds, and no others. Every
+item of a subscale is an item of its parent scale, so each subscale row
+lists only items the form contains.</p>
 <p><code><a href="../reference/generate_docx_hitopsr.html">generate_docx_hitopsr()</a></code> also takes
 <code>randomize = TRUE</code>, which prints the items in a random order.
 A renumbered module form — the default — is still numbered
@@ -420,7 +419,7 @@ file you can keep beside the forms you generated:</p>
 <span><span class="co">#&gt;   "format": "1.0",</span></span>
 <span><span class="co">#&gt;   "package": "hitop",</span></span>
 <span><span class="co">#&gt;   "packageVersion": "0.2.0",</span></span>
-<span><span class="co">#&gt;   "buildDate": "2026-09-29",</span></span>
+<span><span class="co">#&gt;   "buildDate": "2026-09-30",</span></span>
 <span><span class="co">#&gt;   "instrument": "hitopsr",</span></span>
 <span><span class="co">#&gt;   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],</span></span>
 <span><span class="co">#&gt;   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],</span></span>

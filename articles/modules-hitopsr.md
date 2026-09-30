@@ -140,10 +140,10 @@ full-instrument form `HiTOP-SR (v1.0)`. Pass `title =` to print
 something else — a study name, say — and that string is used verbatim on
 either kind of form.
 
-One combination the Word generator refuses is `include_subscales = TRUE`
-together with `module`: a subscale can draw items from scales outside
-the module, so its scoring row would list items the form does not
-contain. The call aborts rather than print a row that cannot be scored.
+With `include_subscales = TRUE`, a module form adds to its scoring page
+the subscales of the scales it holds, and no others. Every item of a
+subscale is an item of its parent scale, so each subscale row lists only
+items the form contains.
 
 [`generate_docx_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_docx_hitopsr.md)
 also takes `randomize = TRUE`, which prints the items in a random order.
@@ -377,7 +377,7 @@ cat(readLines(descriptor), sep = "\n")
 #>   "format": "1.0",
 #>   "package": "hitop",
 #>   "packageVersion": "0.2.0",
-#>   "buildDate": "2026-09-29",
+#>   "buildDate": "2026-09-30",
 #>   "instrument": "hitopsr",
 #>   "scales": ["Agoraphobia", "Antisocial Behavior", "Appetite Loss", "Romantic Disinterest"],
 #>   "items": [42, 66, 68, 109, 118, 144, 152, 156, 167, 185, 187, 202, 239, 260, 268, 274, 291, 310, 338, 389, 390],
