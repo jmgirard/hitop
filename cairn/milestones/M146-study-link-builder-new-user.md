@@ -53,7 +53,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] T5: Write the Playwright tests for AC1 to AC5 in a new spec file. Update the existing specs that assert old text. Run the suite locally and on the PR.
 - [x] T6: In hitop, apply the D-083 names to the two articles, `README.Rmd` and the `_pkgdown.yml` menu. Rebuild `README.md` and build both articles. Run `check()` and `check_pkgdown()`.
 - [x] T7: Run the AC6 greps, and classify each remaining hit in a work-log ledger for review to re-run. Take before and after screenshots at 375px and 1280px, with the sections closed and open, for Jeff's look at the merge gate.
-- [ ] T8: Rename hitop-form `tests/instruments-store.spec.js` to `tests/instruments-supabase.spec.js`, and update the README row and every other reference.
+- [x] T8: Rename hitop-form `tests/instruments-store.spec.js` to `tests/instruments-supabase.spec.js`, and update the README row and every other reference.
 - [ ] T9: Put back the facts the rewrite dropped, each asserted by a test. They are the host note in the intro, and the SONA token and `XXXX` sentence. They are also the declined-text, decline-URL and saved-file URL rules, and the Prolific URL-parameters caveat.
 - [ ] T10: Make the smaller fixes chosen at the return gate:
   - "the online form" where a hint means the participant's page, "unpack" in the builder-shown refusals, and the README opening name
@@ -87,6 +87,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: question gate, rejections. Finding 3: a revert of the online-form messages puts retired terms back into `form.js` strings and fails AC6, and M148 reviews that page's text. Finding 13: the site is https-only, and the copy fallback is the same as on main.
 - 2026-09-30: question gate, rejections continued. Findings 19, 21, 22 and 26 are speculative or cosmetic. The rest of finding 20: the section grouping carries "Optional", and the README states the blank-line rule.
 - 2026-09-30: tasks T8 to T12 added (minor amendment), and Coverage updated (AC6 → T8, AC7 → T11).
+- 2026-09-30: T8 done. The spec is now `tests/instruments-supabase.spec.js`, and the README row and `tests/fixtures/README.md` name it. Its 6 tests pass. The AC6 grep over hitop-form `README.md` now finds 5 lines, all URL examples.
 
 ## Decisions
 
