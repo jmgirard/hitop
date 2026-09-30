@@ -119,6 +119,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - 2026-09-30: the corrected claim was two L19 comments, which said the intro names the required parts. They now say it asks for them, and the reader's re-read found both hold. The audit covered the return-2 lines in hitop-form, because hitop has no code change since the pass-2 `check()`.
 - 2026-09-30: T13 to T16 done, and status set to review. hitop code is unchanged since pass 2, where `devtools::check()` gave 0 errors, 0 warnings and 0 notes.
 - 2026-09-30: review pass 3. AC1 to AC6 met, and AC4 now passes. AC7 is met locally, and its CI part waits for the push. The 19 reviewer findings are untriaged, for the step-7 gate.
+- 2026-09-30: step-7 gate, pass 3: Jeff chose fixes for findings 1, 2 and 4 and approved the merge after them. The fixes landed in hitop-form 3a70b81, with 771 tests passing, so approval is asked again before the push.
 
 ## Decisions
 
@@ -301,3 +302,13 @@ Pass 3, 2026-09-30. Both branches were level with `origin/main` after a fetch, s
 17. The top-bar "← hitop package documentation" link, a back arrow, now opens a new tab. Cosmetic.
 18. The articles do not mention the closed sections or "Your study link". This is pass-2 finding 16, already filed.
 19. In a browser that does not fire `change` before an Enter submit, the heading focus could fire `change` and hide the link just shown. Chromium fires it first. Unverified.
+
+**Triage at the step-7 gate** (Jeff chose the recommended option).
+- Fix now: 1, 2 and 4, in hitop-form 3a70b81.
+  - The SQL hint says the table has a column per item and question, and to make a new table after changing instruments, module, random order, Prolific or questions.
+  - The instruments hint says the responses hold their item columns in the list's order.
+  - The destination hint tells a web address's JSON row from a Supabase table's row of item columns, at 40 words.
+  - A build stopped by a field change says "A field changed while the link was being made. Press "Make the link" again." and focuses that message. The README says so too.
+  - S9 and the stale-build test failed on the old page, and pass after the fix. The full suite passed 771 of 771.
+- Follow-up: 3, 5 to 11, 14, 16 and 19 go to the `z` link gaps row, under the post-merge disposition chip that row now needs. 12 and 13 go to M148's work log, as that page's text. 15 goes to the "User-facing names" row.
+- No action: 17 is cosmetic, and 18 is filed already (pass-2 finding 16).
