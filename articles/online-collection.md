@@ -12,9 +12,9 @@ A study link tells the page what to show and where each participant’s
 answers go. Three destinations are offered: a file saved on the
 participant’s own device, a web address that accepts one row per
 participant, or a table in a Supabase project. This article walks the
-web-address route end to end with a Google Sheet as the store: a small
-script bound to the sheet receives one row per participant, you download
-the sheet as a CSV file, and
+web-address route end to end with a Google Sheet as the destination: a
+small script bound to the sheet receives one row per participant, you
+download the sheet as a CSV file, and
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 reads that file for the scoring functions. The steps are in the order
 you take them.
@@ -65,21 +65,21 @@ then refuses the download and names the first row that differs.
 
 ## 2. Make the study link
 
-Open the page’s [link
-builder](https://jmgirard.github.io/hitop-form/link.html). Choose the
-instrument (and, for a HiTOP-SR module, paste the descriptor written by
+Open the [Study Link
+Builder](https://jmgirard.github.io/hitop-form/link.html). Choose the
+instrument (and, for a HiTOP-SR module, paste the module file written by
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)),
 and name the study. For two or three instruments in one session, see
 [Several instruments in one
-session](#several-instruments-in-one-session). A link builder opened
-from a “Make a study link” button on an instrument’s download page
-arrives with that instrument chosen, and one opened with a `c` parameter
-that carries a module arrives with the descriptor pasted in as well.
-Give a participant identifier if the link is for one person; leave it
-empty for a link shared with many, and the page asks each participant
-for one before the form starts. Under “Send responses to”, choose “A web
-address” and paste the `/exec` URL from step 1. Press “Make the link”
-and send the link to the participants.
+session](#several-instruments-in-one-session). The Study Link Builder,
+opened from a “Make a study link” button on an instrument’s download
+page, arrives with that instrument chosen. When opened with a module in
+its address, it arrives with the module file pasted in as well. Give a
+participant identifier if the link is for one person; leave it empty for
+a link shared with many, and the page asks each participant for one
+before the form starts. Under “Where responses go”, choose “A web
+address” and paste the `/exec` URL from step 1 into the “Web address”
+field. Press “Make the link” and send the link to the participants.
 
 When a participant presses Finish, the page posts their answers to the
 address as one row and waits for the script to confirm. On a confirmed
@@ -154,12 +154,12 @@ Every item column is an integer. The sixth column, `item_order`, is the
 order the participant saw the items, as item numbers, when the file
 records one and `NA` when it does not, and scoring does not read it. The
 page records it when the study link asks for a random order, which the
-link builder’s “Show the items in a random order” box sets. The seventh
-and eighth columns, `prolific_study` and `prolific_session`, are the
-study and session identifiers Prolific passed to the page when the link
-recruits through Prolific, as [the Prolific route](#the-prolific-route)
-below describes, and `NA` when it does not, as here. Scoring does not
-read them either.
+Study Link Builder’s “Show the items in a random order” box sets. The
+seventh and eighth columns, `prolific_study` and `prolific_session`, are
+the study and session identifiers Prolific passed to the page when the
+link recruits through Prolific, as [the Prolific
+route](#the-prolific-route) below describes, and `NA` when it does not,
+as here. Scoring does not read them either.
 
 A folder can hold the download beside any files participants sent by
 hand:
@@ -226,20 +226,20 @@ the same way, and a PID-5 form with
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
 and the matching `version`, as
 [`vignette("pid5_scoring")`](https://jmgirard.github.io/hitop/articles/pid5_scoring.md)
-shows. A HiTOP-SR module scores through the descriptor the page showed,
-with `layout = "printed"`; the [Building HiTOP-SR
+shows. A HiTOP-SR module scores through the module file the online form
+showed, with `layout = "printed"`; the [Building HiTOP-SR
 Modules](https://jmgirard.github.io/hitop/articles/modules-hitopsr.md)
 article walks that step.
 
 ## Several instruments in one session
 
 A study link can give two or three instruments, one after another, in
-one session. In the link builder, press “Add an instrument” to add a
-row, up to three, and put the rows in the order the page gives them. The
-link then carries an `instruments` field, a list of the instruments’
+one session. In the Study Link Builder, press “Add an instrument” to add
+a row, up to three, and put the rows in the order the page gives them.
+The link then carries an `instruments` field, a list of the instruments’
 names such as `["hitopbr", "pid5bf"]`, in place of `instrument`. A list
 holds at most one form of the PID-5, and names no instrument twice. A
-module descriptor applies to the HiTOP-SR in the list.
+module file applies to the HiTOP-SR in the list.
 
 The page shows its screens in this order:
 
@@ -253,9 +253,9 @@ The page shows its screens in this order:
 Under a random order, each instrument’s items are shuffled among that
 instrument’s items only.
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
-reads the file the page saves, and a store’s CSV download of its rows.
-Each row holds the answers to all the instruments. The file has this
-shape:
+reads the file the page saves, and the CSV download of the sheet’s or
+table’s rows. Each row holds the answers to all the instruments. The
+file has this shape:
 
 - The item columns form one group per instrument, the columns of each
   group side by side, and each group holds one stem. The optional lead
@@ -329,7 +329,7 @@ score_pid5(both, items = bf_items, version = "BF", append = FALSE)
 ## The Supabase route
 
 The page can insert each row into a table in a Supabase project instead.
-The link builder shows the SQL that creates the table, and the
+The Study Link Builder shows the SQL that creates the table, and the
 hitop-form README under [Send responses to
 Supabase](https://github.com/jmgirard/hitop-form#send-responses-to-supabase)
 walks the setup. The table’s CSV export from the dashboard’s Table
@@ -349,7 +349,7 @@ states under the study’s `external_study_url` field, and it asks that
 all three be saved with the data ([What survey / experimental software
 is compatible with
 Prolific?](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific)).
-The page fits that in two steps at the link builder.
+The page fits that in two steps at the Study Link Builder.
 
 Choose Prolific in the “Recruiting site” menu and leave the participant
 field empty. The builder then prints the link with the three
@@ -383,10 +383,11 @@ screen, with a link to that address in place of “You can close this
 page.”, and then sends the participant there, which is the return
 Prolific recommends ([Data
 collection](https://researcher-help.prolific.com/en/articles/445127-data-collection)).
-After a saved file, because the link names no store or the send was not
-confirmed, the page shows the file name first, then the instructions and
-the “Save the file” button, and then a link to that address, so the
-participant sees the file’s name and can save it again before leaving.
+After a saved file, because the link names no web address or Supabase
+table or the send was not confirmed, the page shows the file name first,
+then the instructions and the “Save the file” button, and then a link to
+that address, so the participant sees the file’s name and can save it
+again before leaving.
 
 A study can hold more than one completion code, each for its own outcome
 ([Custom completion
@@ -418,13 +419,13 @@ responses[, c("participant", "prolific_study", "prolific_session")]
 
 Other recruiting sites can also pass each participant’s identifier to
 the page in the study link’s address, under a parameter of their own.
-Choose the site in the link builder’s “Recruiting site” menu and leave
-the participant field empty. The link then names the parameter in its
-`participantParam` field, and the page takes the participant identifier
-from it. When the address carries no value there, a blank one, or a
-placeholder the site did not fill, the page asks for the identifier on
-its start screen. No column is added: the identifier is the
-`participant` column, so the download reads as in the steps above.
+Choose the site in the Study Link Builder’s “Recruiting site” menu and
+leave the participant field empty. The link then names the parameter in
+its `participantParam` field, and the page takes the participant
+identifier from it. When the address carries no value there, a blank
+one, or a placeholder the site did not fill, the page asks for the
+identifier on its start screen. No column is added: the identifier is
+the `participant` column, so the download reads as in the steps above.
 
 [SONA](https://www.sona-systems.com/) replaces the text `%SURVEY_CODE%`
 in a study’s Study URL with a number unique to the participant ([Using
@@ -482,11 +483,11 @@ names.
 
 The consent text belongs to you and your review board. The page shows
 the text you give and adds no consent wording of its own. Paste the
-approved text into the link builder’s “Consent text” box. The page then
-shows the text on a screen of its own, headed “Consent to take part”,
-before the form and its start screen. Under the text are an “I agree”
-and an “I do not agree” button, and “I agree” goes on to the start
-screen.
+approved text into the Study Link Builder’s “Consent text” box. The page
+then shows the text on a screen of its own, headed “Consent to take
+part”, before the form and its start screen. Under the text are an “I
+agree” and an “I do not agree” button, and “I agree” goes on to the
+start screen.
 
 The page reads the text as plain text. A blank line starts a new
 paragraph, and a single line break stays a line break. A tag or an
@@ -495,8 +496,8 @@ carry formatting or links. The text can hold up to 20,000 characters,
 and the builder refuses a longer one.
 
 “I do not agree” shows a closing screen with no way back to the form.
-The page sends no answer and saves no file, so no row reaches the store
-and
+The page sends no answer and saves no file, so no row reaches the
+destination and
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 never sees the participant. The closing screen shows the builder’s
 “Declined text”. When that box is empty, it shows “You chose not to take
@@ -510,22 +511,21 @@ Give it as the builder’s “Completion URL after a decline”. The link
 carries it as its `completeDeclined` field, and the page sends a
 participant who declines to that address.
 
-A link with consent text travels as a `z` parameter in place of `c`, the
-same fields compressed, so a long text makes a shorter link. The rows,
-the file and the Supabase table have the same columns with consent text
-as without it. The hitop-form README’s section [Show consent text before
-the
+A link with consent text carries the same fields packed, so a long text
+makes a shorter link. The rows, the file and the Supabase table have the
+same columns with consent text as without it. The hitop-form README’s
+section [Show consent text before the
 form](https://github.com/jmgirard/hitop-form#show-consent-text-before-the-form)
 has the details.
 
 ## Your own questions
 
 A study link can carry questions of your own, such as age or how the
-participant heard of the study. Add them in the link builder’s “Your own
-questions” part. Each question is asked either before the form or after
-it. The page asks the before questions on a screen of its own after any
-consent screen and ahead of the start screen. It asks the after
-questions on a screen of its own after the last page of items. The
+participant heard of the study. Add them in the Study Link Builder’s
+“Your own questions” part. Each question is asked either before the form
+or after it. The page asks the before questions on a screen of its own
+after any consent screen and ahead of the start screen. It asks the
+after questions on a screen of its own after the last page of items. The
 questions never share a screen with the items. A link holds up to 50
 questions.
 
@@ -581,27 +581,27 @@ builder’s questions in the same form. The hitop-form README’s section
 spreadsheet](https://github.com/jmgirard/hitop-form#write-your-questions-in-a-spreadsheet)
 describes each column.
 
-With a Supabase store, the builder’s SQL adds one text column per
+With a Supabase table, the builder’s SQL adds one text column per
 question. A table made before the questions were added has no column for
 them, so Supabase refuses the row, and the page then saves the file on
 the participant’s device. The columns come from the question names
 alone, so make a new table from the builder’s SQL when you add a
-question or change a name. A link with questions travels as a `z`
-parameter, as a link with consent text does. The hitop-form README’s
+question or change a name. A link with questions carries its fields
+packed, as a link with consent text does. The hitop-form README’s
 section [Ask your own
 questions](https://github.com/jmgirard/hitop-form#ask-your-own-questions)
 has the details.
 
 ## Who holds the data
 
-The answers go to the store the link names, and to a file on the
-participant’s device when the link names no store or the send is not
-confirmed. They go nowhere else. With a Google Sheet, Google holds the
-rows; with a Supabase table, Supabase holds them. The page’s host,
-GitHub Pages, receives the study link with each page load, and the link
-carries the instruments and any module, the study name, the participant
-code, any consent text, the store’s address and, for Supabase, its key.
-It receives no answers.
+The answers go to the web address or Supabase table the link names, and
+to a file on the participant’s device when the link names neither or the
+send is not confirmed. They go nowhere else. With a Google Sheet, Google
+holds the rows; with a Supabase table, Supabase holds them. The page’s
+host, GitHub Pages, receives the study link with each page load, and the
+link carries the instruments and any module, the study name, the
+participant code, any consent text, the web address and, for Supabase,
+its key. It receives no answers.
 
 A participant code is whatever the link or the participant supplies. A
 code you put in the link reaches the page’s host with the link, and a
@@ -614,8 +614,8 @@ them, with each page load, as it receives the rest of the address. Under
 the SONA and Connect routes the code is the site’s own identifier, and
 the host receives it the same way.
 
-Whether a store may hold your study’s data is a question for your
-institution, and any agreement it needs with the store’s vendor, such as
-a business associate agreement or a data processing agreement, is the
+Whether a service may hold your study’s data is a question for your
+institution, and any agreement it needs with the service’s vendor, such
+as a business associate agreement or a data processing agreement, is the
 institution’s to make. This article describes where the rows go; it does
-not say which store is suitable for which study.
+not say which destination is suitable for which study.

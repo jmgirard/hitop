@@ -114,9 +114,9 @@ four_scale$items
 ```
 
 Note that `$items` holds the **original** HiTOP-SR item numbers. That is
-true of the descriptor whatever a generator later prints: item 42 of the
-full instrument is item 42 here, which is what lets data collected with
-a module be scored against the full instrument’s key.
+true of the module file whatever a generator later prints: item 42 of
+the full instrument is item 42 here, which is what lets data collected
+with a module be scored against the full instrument’s key.
 
 ## Generating the Instrument
 
@@ -167,7 +167,7 @@ form has its columns in the order the form printed: the first column
 holds the answer to the paper’s item 1, the second the answer to item 2,
 and so on. Score such columns with `layout = "printed"` and a module
 that carries the printed order on its `item_order` attribute, which is
-what the descriptor saved with `descriptor =` below gives you. The
+what the module file saved with `descriptor =` below gives you. The
 function then puts the columns back into instrument order itself.
 Scoring printed-order columns under the default layout returns wrong
 scale scores with no error raised, and scoring columns already in
@@ -398,9 +398,9 @@ generate_docx_hitopsr(
 )
 ```
 
-A call that passes no `module` writes a descriptor naming every scale,
+A call that passes no `module` writes a module file naming every scale,
 so a full administration is described too. And on a shuffled Word form
-the descriptor also records the printed order, which is the one thing a
+the module file also records the printed order, which is the one thing a
 whole-instrument form gives you nowhere else — no crosswalk is printed
 for one:
 
@@ -455,7 +455,7 @@ reloaded
 
 What comes back is not simply what the file said. The file records scale
 *names*; the items and their reverse-keying flags are rebuilt from this
-package’s own tables, so a descriptor can never introduce a scoring key
+package’s own tables, so a module file can never introduce a scoring key
 of its own. The `items` the file records are checked against that
 rebuild, and a disagreement stops with an error rather than scoring
 quietly — which is what you want if the file was written by an older
@@ -476,7 +476,7 @@ identical(
 
 ### Scoring a REDCap or Qualtrics export without naming the columns
 
-A descriptor written by
+A module file written by
 [`generate_redcap_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_redcap_hitopsr.md)
 or
 [`generate_qualtrics_hitopsr()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_hitopsr.md)
@@ -520,45 +520,45 @@ so there are numbers to score. Pass `items` for data whose columns carry
 other names, such as a Qualtrics export made with “Use internal IDs in
 header”, or a question renamed after import. A supplied `items` is
 always used. A module with no `columns`, such as one read from a Word
-form’s descriptor, still needs `items`.
+form’s module file, still needs `items`.
 
 ## Collecting Responses Online with hitop-form
 
 The Word, Qualtrics and REDCap files above each need a platform of their
 own. [hitop-form](https://jmgirard.github.io/hitop-form/) is a third
-route that needs none: a web page that shows a HiTOP-SR module (or the
-full HiTOP-SR or HiTOP-BR) in the browser. A study link tells it where
-each participant’s answers go: a file saved on the participant’s own
-device, which they send to you, or a store you name in the link, such as
-a Google Sheet or a Supabase table, which you download as one CSV file.
-The [Collecting Responses
+route that needs none: an online form that shows a HiTOP-SR module (or
+the full HiTOP-SR or HiTOP-BR) in the browser. A study link tells it
+where each participant’s answers go: a file saved on the participant’s
+own device, which they send to you, or a web address or Supabase table
+the link names. A Google Sheet’s script is one such web address, and you
+download the sheet as one CSV file. The [Collecting Responses
 Online](https://jmgirard.github.io/hitop/articles/online-collection.md)
 article walks the Google Sheet route end to end, from deploying the
 sheet’s script to scoring.
 
-The page reads the same descriptor
+The online form reads the same module file
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
-writes. Open the page’s [link
-builder](https://jmgirard.github.io/hitop-form/link.html), paste the
-descriptor in, name the study, choose where the responses go, and it
-gives you one link to send to participants. A descriptor from a shuffled
-Word form carries that form’s order, and the page shows the items in it.
-The builder’s “Show the items in a random order” box asks for a new
-order per participant instead; the descriptor’s order is then not
-followed.
+writes. Open the [Study Link
+Builder](https://jmgirard.github.io/hitop-form/link.html), paste the
+module file in, name the study, choose where the responses go, and it
+gives you one link to send to participants. A module file from a
+shuffled Word form carries that form’s order, and the online form shows
+the items in it. The Study Link Builder’s “Show the items in a random
+order” box asks for a new order per participant instead; the module
+file’s order is then not followed.
 
 Whichever route the answers take, the CSV file has five lead columns
 (`study`, `participant`, `instrument`, `form_build`, `submitted`) and
 then one column per item, named by the instrument’s file stem and the
 item number and in the order the page showed them. Under the random
 order, a sixth lead column, `item_order`, records the order shown, and
-the item columns are in the order the descriptor’s `items` field lists
+the item columns are in the order the module file’s `items` field lists
 them, which
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
 writes ascending. A link that recruits through Prolific adds two more
 lead columns, `prolific_study` and `prolific_session`. A file the page
-saved holds one participant’s row; a store’s download holds one row per
-participant.
+saved holds one participant’s row; a download from the destination holds
+one row per participant.
 
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 reads those files. Give it the folder the files are in, or a vector of
@@ -606,7 +606,7 @@ article describes this file shape.
 
 Score the item columns through the module the page showed. Without the
 random order, the columns are in the order the page showed the items, so
-this is `layout = "printed"` with the descriptor that recorded that
+this is `layout = "printed"` with the module file that recorded that
 order, as in the shuffled Word form above. (A file saved under the
 random order has its columns in instrument order, so it takes the
 default layout, as the first scoring call in this article does.) The
