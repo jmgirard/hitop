@@ -1,6 +1,6 @@
 # M147: Module Builder: short start, labelled picker, clear hand-off
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -98,6 +98,8 @@ A researcher who opens the Module Builder for the first time reads a short start
 - claim audit: 56 claims read, 4 corrected — hitop-builder playwright.config.js and index.html, hitop-form tests/link-module-file.spec.js (hitop-builder 3b9e7b6, hitop-form 8745f5f). Corrected: the budget comment counts 17 waits (68 minutes), and the timeout goes back to 10 minutes, because 12 twice left the 25-minute job no room. The Online note names two saves that each skip some scales. MF5 waits for the held read, and with the page's guard removed by hand it fails at the box check. The re-read found all four hold. It notes that a second test stalling twice in CI can pass the 5 minutes left.
 - 2026-09-30: T15 done. The full hitop-form suite passed, 776 tests. A first full run had 4 timeouts in consent, send and save specs, which passed alone and in a second full run.
 - 2026-09-30: implement complete after the second review return. hitop-builder smoke passed (2 tests) on 3b9e7b6, `npm run prose` clean (95 of 95 text nodes, 184 passages), `npm run plants` OK (47 of 47) on 54fef49. hitop-form passed 776 tests. No hitop R code changed. Status set to review.
+- 2026-09-30: amendment return: AC6 — "`node tests/prose.mjs --text` writes the text of every body text node outside the script, style and log. It also writes every string at the script writer sites its ledger lists. It leaves out only the scale names and definitions the package supplies and the statuses "Ready." and "Ready. <format> chosen.". If a body text node is missing from its output, or the source's writer-site count differs from the ledger's, the run exits 1."
+- 2026-09-30: review pass 3 stopped at AC6 and set status to in-progress for the AC6 amendment alone. A rendered-page read found two kinds of text missing from the `--text` output: the package's scale names and definitions, and the two "Ready." statuses. `prose.mjs` excludes both on purpose since 2026-09-11. This is the first amendment return on AC6. The defect-return count stays at 2.
 
 ## Decisions
 
@@ -192,3 +194,13 @@ Review findings from the three-lens fan-out. D is the diff-bug lens, B the blame
 - D16: "Next: make the study link" is lower case after the colon. Proposed: reject, AC5 sets that heading.
 - D17: an open definition leaves blank space beside rows in other columns. Proposed: reject, cosmetic.
 - P9: no `ste_lint` record. Proposed: reject, not a criterion and not run since M12x.
+
+### Pass 3 (2026-09-30): amendment return on AC6
+
+All three branches were level with their `origin/main`, and no PR exists, so no merge was needed. A one-off Playwright script in the session scratchpad read the rendered page. It was not committed.
+
+- AC1 to AC5: the local smoke test passed (2 tests) on hitop-builder 3b9e7b6. It read 48 header words while loading, and step 2 at 48 (Word), 44 (Qualtrics), 55 (REDCap) and 59 (Online form) words. The plant run, the hitop-form suite and the lens fan-out did not run, because the AC6 return came first.
+- AC6: not met as written. `npm run prose` exited 0: all 95 body text nodes in a passage, 184 passages, no retired name. `node tests/prose.mjs --text <file>` wrote 166 passages and exited 0. The six strings pass 2 found missing are now in the output. A grep of D-083's twelve patterns over it found one hit, `descriptor = desc_path` in a log line, which is R output in the log. `README.md` opens with "Using the page", and "For developers" holds "Verification notes" and "Tests and repository layout". The one-off script loaded the page and collected 249 visible strings over 11 states. The states were step 1, a definition open, and a filter with no match. They were also step 2 with no scale, each format with settings closed and open, and the page after an Online form save. Two kinds are not in the `--text` output. The first is the 76 scale names and definitions the package supplies. The second is the status "Ready. <format> chosen." (index.html line 1914), with "Ready." itself. `prose.mjs` excludes both on purpose, in its header and its `PINNED` list. Both exclusions date from hitop-builder commit 1987f4a (2026-09-11), before AC6 was written. Every other visible string matches the output or one of its template passages. So "writes every string a visitor can read" fails, and the work does what the plan meant. The procedure's exclusions are fixed by hand, so the repair narrows the promise (amendment return).
+- AC7: not complete. Local smoke passed and `npm run prose` exited 0. The plant run and the hitop-form suite wait for the re-review, and the CI parts wait for the merge gate.
+
+Consistency gate: not run, because the AC6 return came first.
