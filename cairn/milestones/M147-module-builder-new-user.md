@@ -1,13 +1,13 @@
 # M147: Module Builder: short start, labelled picker, clear hand-off
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
 - **Principles touched:** GP3, IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — the web page that builds HiTOP-SR modules and its hand-off to the Study Link Builder
-- **Branch/PR:** —
+- **Branch/PR:** m147-module-builder-new-user, companion: /Users/jmgirard/github/hitop-builder m147-module-builder-new-user, companion: /Users/jmgirard/github/hitop-form m147-module-builder-new-user
 
 ## Goal
 
@@ -58,7 +58,10 @@ A researcher who opens the Module Builder for the first time reads a short start
 
 - 2026-09-29: created by /milestone-plan, with M146 and M148. The criteria audit ran in full mode with M146's reader, and each M147 finding was repaired as suggested. The Online form has no settings and no README.txt. The step bar is hidden during the load, so AC1 counts from the `<h1>` instead. The log's failure statuses now point to "Technical details". AC4 names one target per step control. Plants run locally, because CI does not run them.
 - 2026-09-30: M146 review pass 2, finding 7, filed here at Jeff's gate. The Study Link Builder intro no longer links the Module Builder. The module route sits only in the closed "Item order and HiTOP-SR module" section. The plan gate for this milestone's hand-off reads it.
+- 2026-09-30: implement started. Branch `m147-module-builder-new-user` cut in hitop, hitop-builder and hitop-form. Implement gate: Jeff took the recommended option on all four questions (M147-D1).
 
 ## Decisions
+
+- M147-D1 (2026-09-30, implement gate): The four formats are named "Word form", "Qualtrics file", "REDCap dictionary" and "Online form". The card's second line keeps the file type. The steps keep the names "Choose scales" and "Choose a format and download". The Continue button reads "Next: Choose a format and download", and the Back button and the tally link read "Back: Choose scales". A "Definition" button on each scale row shows the definition as a line under the row, and a second press hides it. The row's count reads "<n> items". The hand-off button opens the Study Link Builder in a new tab. Chosen by Jeff. Rejected: bare system names, because a sentence needs a noun after them. Rejected: "Download" as the second step's name, because it does not say that a format is chosen there. Rejected: a floating popup, which needs script placement and a scroll handler. Rejected: the same tab, where the page loads R again and loses the ticks.
 
 ## Review
