@@ -7,7 +7,7 @@
 - **Principles touched:** GP3, IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — the researcher page that makes study links, and the package tutorials that describe it
-- **Branch/PR:** m146-study-link-builder-new-user, companion: /Users/jmgirard/github/hitop-form m146-study-link-builder-new-user
+- **Branch/PR:** m146-study-link-builder-new-user, companion: /Users/jmgirard/github/hitop-form m146-study-link-builder-new-user https://github.com/jmgirard/hitop-form/pull/19
 
 ## Goal
 
@@ -32,7 +32,7 @@ A researcher who opens the Study Link Builder for the first time sees the requir
 - [x] AC4: After a successful build, a region headed "Your study link" shows the link in a box that scrolls. A "Copy the link" button sits beside the box. Below it, one next-step sentence fits the choices made. With a recruiting site, the sentence says to paste the link into that site's study page. With a Supabase table, it says to run the SQL first. Otherwise it says to open the link once to test it, and then to give it to each participant. Focus moves to the region's heading. A Playwright test asserts each part for each recruiting-site option and each where-responses-go option. It also builds a `z` link over 5,000 characters, and asserts that the box stays under 16rem high.
 - [x] AC5: A Playwright test opens every optional section and adds one question of each type. It then chooses each recruiting-site option and each where-responses-go option in turn, and makes one Supabase build. In each of these states, it checks every `.hint` and `.site-hint` element in the page, shown or not. Each holds at most 40 words. The intro is all text between the `<h1>` and the first form part. It holds at most 60 words. The page's text, its `placeholder` values and its `aria-label` values hold none of the D-083 retired terms. The text of a built link is exempt. The test counts words by splitting on whitespace.
 - [x] AC6: A case-insensitive grep runs for each D-083 retired-term pattern. In hitop-form it reads `link.html`, `form.js` and `README.md`. In hitop it reads the two articles, `README.Rmd` and `_pkgdown.yml`. Each remaining hit is one of these: a code identifier, a comment, R code, an R function or argument name, or a literal URL or URL example. The Instruments menu names the two pages "Module Builder" and "Study Link Builder".
-- [ ] AC7: The hitop-form Playwright suite passes locally and on its PR's CI. In hitop, `devtools::check()` gives 0 errors and 0 warnings, and `pkgdown::check_pkgdown()` passes. Both articles build with `pkgdown::build_article()`. The navbar test passes. `README.md` equals a fresh `devtools::build_readme()`.
+- [x] AC7: The hitop-form Playwright suite passes locally and on its PR's CI. In hitop, `devtools::check()` gives 0 errors and 0 warnings, and `pkgdown::check_pkgdown()` passes. Both articles build with `pkgdown::build_article()`. The navbar test passes. `README.md` equals a fresh `devtools::build_readme()`.
 
 ## Coverage
 
@@ -313,3 +313,4 @@ Pass 3, 2026-09-30. Both branches were level with `origin/main` after a fetch, s
   - S9 and the stale-build test failed on the old page, and pass after the fix. The full suite passed 771 of 771.
 - Follow-up: 3, 5 to 11, 14, 16 and 19 go to the `z` link gaps row, under the post-merge disposition chip that row now needs. 12 and 13 go to M148's work log, as that page's text. 15 goes to the "User-facing names" row.
 - No action: 17 is cosmetic, and 18 is filed already (pass-2 finding 16).
+- AC7, CI part: the `tests` check on hitop-form PR #19 (https://github.com/jmgirard/hitop-form/pull/19) passed in 7m2s, on the head that carries the fixes. With the local parts above, AC7 is met.
