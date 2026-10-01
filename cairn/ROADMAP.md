@@ -10,7 +10,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M143 | HiTOP-DAT item, answer and scale tables | planned | — | normal | milestones/M143-hitopdat-tables.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
-| M148 | Online form: text for participants, progress, and a way on from errors | review | M146 | normal | milestones/M148-form-page-new-participant.md |
+| M148 | Online form: text for participants, progress, and a way on from errors | in-progress | M146 | normal | milestones/M148-form-page-new-participant.md |
 | M149 | Study Link Builder: early presses, file reads and refusals | done | — | high | milestones/archive/M149-link-builder-presses-and-refusals.md |
 | M150 | Study Link Builder: hint facts, names and tutorials | done | M149 | high | milestones/archive/M150-link-builder-hint-facts.md |
 | M151 | Study Link Builder test reach | done | M149 | normal | milestones/archive/M151-link-builder-test-reach.md |
