@@ -1,6 +1,6 @@
 # M148: Online form: text for participants, progress, and a way on from errors
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -24,7 +24,7 @@ A participant who opens a study link for the first time reads text written for t
 
 ## Acceptance criteria
 
-- [x] AC1: A grep lists each call of `showError` in `form.js`, apart from its definition. A Playwright test fires at least one refusal through each call. Each time, the screen shows the heading and one sentence that tells the participant what to do. A connection failure says to check the connection and reload. A browser that cannot read the link says to open it in another browser. Any other refusal says to contact the study team. The refusal's own text sits inside a closed `<details>` named "Details for the study team". Outside that element's body, no other text shows.
+- [ ] AC1: A grep lists each call of `showError` in `form.js`, apart from its definition. A Playwright test fires at least one refusal through each call. Each time, the screen shows the heading and one sentence that tells the participant what to do. A connection failure says to check the connection and reload. A browser that cannot read the link says to open it in another browser. Any other refusal says to contact the study team. The refusal's own text sits inside a closed `<details>` named "Details for the study team". Outside that element's body, no other text shows.
 - [x] AC2: The page's own text is all shown text apart from the researcher's consent text, question text, study name and file name. A Playwright test makes three walks. The first link has consent text, questions before and after, two instruments and no store, and it ends on the saved-file screen. The second link has a web-address store and a `complete` address, and it ends on the sent screen. The third link has a `completeSaved` address and a store that answers HTTP 500, and it ends on the saved-file screen. On every screen, the page's own text holds no build date, no package version, no host name and no HTTP status. It holds no match of the patterns `\bstores?\b`, `\bendpoint\b`, `\bjson\b`, `\bdescriptor\b` and `\bmodule\b`, case-insensitive. The build date and package version appear in a `<footer>` inside a closed `<details>`, on every screen after the instruments load. A two-instrument link shows one line for each instrument there.
 - [x] AC3: The identifier screen shows a hint under the "Participant identifier" label, tied to the input by `aria-describedby`. The input has `autocapitalize="off"`, `autocorrect="off"` and `spellcheck="false"`. The Enter key runs the same checks as the "Begin" button. An empty value shows the same alert, and a filled value starts the form. A Playwright test asserts each fact.
 - [x] AC4: An item page shows "Page p of n" above the items and beside the Next or Finish button. Here n counts the pages of that instrument. With two or more instruments, it also shows "Part k of m" in both places. A press of Next or Finish with missed items puts the text "Please answer this item" inside each missed item. The page scrolls to the first missed item. A message directly above that item states how many items are missed. At 375px wide, each response option's clickable area is at least 44px high. A Playwright test asserts each fact on the first and the last page of each part. It uses a HiTOP-BR link and a PID-5-BF plus HiTOP-BR link, and it probes one missed item and three.
@@ -34,12 +34,12 @@ A participant who opens a study link for the first time reads text written for t
 
 ## Coverage
 
-- AC1 → T1, T6
+- AC1 → T1, T6, T8
 - AC2 → T2, T6
-- AC3 → T3, T6
-- AC4 → T4, T6
+- AC3 → T3, T6, T10
+- AC4 → T4, T6, T9, T10
 - AC5 → T4, T6
-- AC6 → T5, T6
+- AC6 → T5, T6, T9
 - AC7 → T6, T7
 
 ## Tasks
@@ -51,6 +51,9 @@ A participant who opens a study link for the first time reads text written for t
 - [x] T5: Add the decline confirmation (lines 1640-1675). Add the sending line (lines 1940-1941). Reword the saved-file screens (lines 1929-1936, 1969-1973, 1996-2022).
 - [x] T6: Write the Playwright tests for AC1 to AC6. Update the existing specs that assert old text. Update the hitop-form README, hitop NEWS and the online-collection article where they describe the changed screens.
 - [x] T7: Run the suite locally and on the PR. Take before and after screenshots of each screen at 375px for Jeff's look at the merge gate.
+- [ ] T8 (review R1): Make `canInflate()` also check that `new DecompressionStream('deflate-raw')` works, so a browser without `deflate-raw` gets the browser sentence. Add a P1 test with a constructor that throws on `deflate-raw`.
+- [ ] T9 (review R2 to R4): Change the failed-send lead to say that the page got no confirmation, and keep the heading. Make sure that the article agrees. Draw `p.sending` empty on the last page and write its text at the send. Rewrite the missed count on each answer. Add a test for each change.
+- [ ] T10 (review R5 to R8): In P4, leave the middle item blank in the one-missed probe. Make the identifier hint fit a recruiter participant. Change "responses were sent" at `online-collection.Rmd:99` and in the `send.spec.js` comment. Change the NEWS host sentence to "outside that section".
 
 ## Work log
 
@@ -68,6 +71,8 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-09-30: T7 done locally. Suite: 875 of 875. Twelve screens at 375 px, from hitop-form `main` and from the branch, are in the session scratchpad under `shots/` (24 PNGs, made by `shots.mjs` there). The run on the PR's CI waits for /milestone-review, which opens the PR after approval (D-138).
 - 2026-09-30: claim audit: 135 claims read, 6 corrected — hitop NEWS.md, online-collection.Rmd; hitop-form README.md, form.js, index.html, tests/guard, walk, send and save specs
 - 2026-09-30: the G1 test in `guard.spec.js` now reads the version line inside the closed study-team section, a fix the audit's finding 2 led to. `guard.spec.js` and `link-sections.spec.js` passed 239 of 239. Status set to review.
+- 2026-09-30: /milestone-review: AC1 to AC6 verified on fresh runs (875 of 875), and the gate checks are clean. Review R1 shows AC1 failing: on Chrome and Edge 80 to 102, a `z` link gets "contact the study team", not the browser sentence. Defect return 1 of this milestone. AC1 unticked.
+- 2026-09-30: step-7 gate: Jeff chose "Send back to fix". The proposed dispositions in the Review section stand. T8 to T10 hold the fix-now work (review send-back), and Coverage maps them. The six follow-ups go to a candidate row at the post-merge hygiene pass. Status set to in-progress.
 
 ## Decisions
 
@@ -110,3 +115,5 @@ Independent review: three fresh reviewers (Opus diff, Sonnet blame-history, Sonn
 - R17 (diff 9): the HTTP pattern checks only 500. Proposed: reject, because the walks produce only 500.
 - R18 (diff 11): the error screen focuses the heading and also holds an alert. Proposed: reject, because the old error screen did the same.
 - R19 (blame 7): `.progress` is now a test hook only. Proposed: reject, because nothing a participant sees changes.
+
+Gate 2026-09-30: Jeff chose "Send back to fix". The dispositions above are final. R1 to R8 go to T8 to T10, and R9 to R14 go to a follow-up row. R15 to R19 are rejected for the reasons given. AC1 is unticked until R1 is fixed and verified again.
