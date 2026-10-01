@@ -4,9 +4,10 @@
 
 * **The hitop-form online form speaks to the participant.** An error screen
   gives one sentence: check the connection and reload, open the link in
-  another browser, or contact the study team. The technical reason, the
-  build date and the package version sit in a closed "Details for the study
-  team" section at the foot of every screen. No screen shows a host name,
+  another browser, or contact the study team. Each screen ends with a closed
+  "Details for the study team" section. It holds the technical reason on an
+  error or failed-send screen, and the build date and package version on
+  every screen after the instrument files load. No screen shows a host name,
   and a completion link reads "Continue to the next step of the study". The
   identifier field has a hint, asks a phone keyboard not to correct it, and
   starts the form on Enter. Each item page shows its page, and its part
