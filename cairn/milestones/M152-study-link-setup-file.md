@@ -140,7 +140,7 @@ Consistency gate: `cairn_validate.py` exited 0 with no FAIL. Its advisories are 
 
 Pass 2 reviewer findings. Three lenses ran: diff-bug (DB), blame-history (BH) and prior-review (PR). PR found no human review threads, so it read the archive Review sections and LESSONS. No finding shows a criterion failing. They are merged across lenses, most severe first, each with the disposition proposed at the gate. Of the pass-1 fixes, 2, 6, 7, 10, 14, 18 and 19 hold (DB). Fixes 1, 3, 4 and 9 hold only in part, and items 1 to 4 and 6 below give the gaps.
 
-1. The builder gives no public-file warning. The Supabase key hint says the key goes into every study link and GitHub Pages' logs, which is false for "In a file I host" (`link.html` 147, 251). DB1, PR2, BH4. Proposed: fix now.
+1. The builder gives no public-file warning. The Supabase key hint says the key goes into every study link and GitHub Pages' logs. For "In a file I host" that is false (`link.html` 147, 251). DB1, PR2, BH4. Proposed: fix now.
 2. The intro says the builder "keeps and sends nothing you type", and that opening a link puts its setup in Pages' logs (`link.html` 110). The builder fetches the typed address and an opened link's address. A setup link puts only the address and fingerprint in the logs. This is the page half of pass-1 finding 9. DB5, PR3, BH4. Proposed: fix now.
 3. A refused "Make the link" press hides the changed-file offer, and only a reload brings it back (`link.html` 1193, from T11). DB2. Proposed: fix now.
 4. "Fill in the form from the current file" leaves the module-file and questions-file status lines. It does not bump `moduleReads`, so a module file read still running can overwrite the fill (`link.html` 1141). BH1. Proposed: fix now.
@@ -149,19 +149,19 @@ Pass 2 reviewer findings. Three lenses ran: diff-bug (DB), blame-history (BH) an
 7. The `connection` kind and the `NEXT_STEP` comment fit a host that blocks other sites badly. PR4, BH5. Already in the row (pass-1 finding 8).
 8. The new `resetForm()` lines and the `fillFromCurrent` catch have no test. PR5, BH9. Already in the row (pass-1 finding 11).
 9. The fieldset sits between the closed sections and "Make the link", S1 ignores it, and the README still says "then Make the link". BH6. Already in the row (pass-1 finding 17).
-10. "Download the setup file" does nothing when pressed during an opened link's fetch, because its handler is attached after the await. BH3. Proposed: follow-up.
+10. During an opened link's fetch, a press of "Download the setup file" does nothing, because its handler is attached after the await. BH3. Proposed: follow-up.
 11. The README test-table row for `link-sections.spec.js` still says S12 fires "four" stale refusals. DB4. Proposed: fix now.
-12. `checkSetupAddress()` accepts a private-repository raw address carrying `?token=`, which puts the token in the link and fails when it expires. DB6. Proposed: follow-up.
+12. `checkSetupAddress()` accepts a private-repository raw address with `?token=`. The token then goes into the link, and the link stops working after the token expires. DB6. Proposed: follow-up.
 13. The stale message after a failed setup fetch focuses the address field, where every other stale path focuses the alert. DB7. Proposed: follow-up.
 14. The T12 ROADMAP trim dropped lineage notes, such as "(the facet half graduated to M033)". DB8, BH9. Proposed: reject, because git holds them and ROADMAP is at 23,938 of 24,000 bytes.
 15. The "Hosted setup file gaps" row leaves out finding 17 and the `NEXT_STEP` half of finding 8. DB9. Proposed: fix now.
 16. N10 and SF1 fetch the live export. PR9. Already in the row (pass-1 finding 16).
-17. The README says the file's host does not get the online form's address, but a cross-site fetch still sends an `Origin` header naming the online form's host. BH9. Proposed: fix now.
+17. The README says the file's host does not get the online form's address. But a cross-site fetch still sends an `Origin` header with the online form's host. BH9. Proposed: fix now.
 18. `fillFromFile()` lists `hosted.address` and not the field's held value. PR8, BH9. Proposed: reject, because `checkSetupAddress()` returns `u.href`, so no value differs.
 19. README line 237 is not wrapped. PR6. Proposed: fix now.
 20. The article does not name the "Address of the setup file" field. PR7. Proposed: fix now.
 21. No test covers the builder's refusal of an opened setup link without `crypto.subtle`. DB11. Proposed: follow-up.
 22. The absence checks on `'**/setup.json'` show no request matching that glob first. PR10. Proposed: follow-up.
 23. A non-2xx answer leaves `res.body` uncancelled. DB10. Proposed: follow-up.
-24. An engine whose `JSON.parse` recurses would report a deep file as not JSON. DB12. Proposed: reject, because V8 parses iteratively and no such engine was shown.
+24. An engine whose `JSON.parse` recurses can report a deep file as not JSON. DB12. Proposed: reject, because V8 parses iteratively and no such engine was shown.
 25. Links already sent with a `setup` or `sha256` parameter now fail, and NEWS names only `participantParam`. BH8. Proposed: reject as intended (D-086(c)).
