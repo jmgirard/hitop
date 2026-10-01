@@ -535,9 +535,10 @@ and press "Make the link". The builder fetches the file. If the file
 matches the form, the builder makes the link.
 
 The link names the file in `setup` and its fingerprint in `sha256`. The
-online form fetches the file for each participant. If the file changed
-after the link was made, the online form refuses it. So an edited file
-needs a new link:
+online form fetches the file for each participant. If the setup in the
+file changed after the link was made, the online form refuses it. A change
+of spaces or line endings alone is not refused. So a file whose setup was
+edited needs a new link:
 download the file again, replace the hosted copy and make the link again.
 The file's host sees each participant's request for the file. The hitop-form
 README's section

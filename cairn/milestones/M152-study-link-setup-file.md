@@ -1,6 +1,6 @@
 # M152: Hosted setup files for study links
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -70,6 +70,9 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: T4, T5 and T6 done. `tests/link-setupfile.spec.js` holds 29 tests (LF1 to LF8). S8 now reads the "In a file I host" state and the offer, and S12 fires 8 new refusals. `RETIRED` and `retiredIn()` moved to `tests/helpers.mjs`. Two plants went red: the match check dropped, and the address written unencoded. The offer's text is written at the moment the offer shows, which keeps the intro at 60 words. The fingerprint keeps key order. If a hand-written file has its keys in another order, it does not match the builder's form.
 - 2026-10-01: T7 done. README gains "Keep the setup in a file you host" and a paragraph each in "Edit a study link" and "What the page's host sees". It also names `setup` and `sha256` as refused parameter names and gains test-table rows. The retired-term scan read 80 added README lines and 50 new `form.js` strings. Its two hits are the `'no-store'` fetch option, a code literal D-083(c) exempts. Full hitop-form suite: 940 passed.
 - 2026-10-01: T8 done. `online-collection.Rmd` gains "Keep the setup in a file you host", and NEWS gains one entry. The retired-term scan of the article's 22 added lines found nothing. `pkgdown::build_article("articles/online-collection")` failed against the installed hitop 0.2.0 in the "Several instruments" chunk, which the installed copy predates. Against the branch installed to a scratch library, it rendered without error. `devtools::check()`: 0 errors, 0 warnings, 0 notes. The two PRs open at `/milestone-review`'s merge step, after approval.
+- 2026-10-01: claim audit: 150 claims read, 6 corrected — hitop-form tests/link-setupfile.spec.js (two LF6 cases added), README.md, link.html, and hitop NEWS.md, vignettes/articles/online-collection.Rmd
+- 2026-10-01: the audit's re-read found one correction still overstated (the download's checks). The README now says a missing module item shows at "Make the link" only under a Supabase table. Builder specs: 139 passed. The article renders against the branch package.
+- 2026-10-01: implement complete. Status set to review.
 
 ## Decisions
 
