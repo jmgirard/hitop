@@ -1,8 +1,8 @@
 # watson2011idas — the IDAS-II items and scale key: item numbers, text, membership and reverse keys
 
 **Provenance.** Ingested 2026-10-01 by M143 from
-`cairn/references/sources/IDAS-II (Items + Scoring).doc` (gitignored), received by Jeff
-on 2026-10-01 and put on the shelf that day. sha256
+`cairn/references/sources/IDAS-II (Items + Scoring).doc` (gitignored), sent to Jeff by a
+HiTOP-DAT user, received on 2026-10-01 and put on the shelf that day. sha256
 `dc77c5feee5563465612e30302fc3fdab9fefbd257979fdce34d7721c4e256dc`. Jeff signed it off
 on 2026-10-01 as the IDAS-II authors' item key that D-082 admits.
 Pagination: the document prints no page numbers. Anchors are the item numbers 1 to 99

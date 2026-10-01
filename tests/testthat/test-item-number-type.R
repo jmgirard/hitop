@@ -64,19 +64,20 @@ test_that("the sweep runs over the shipped datasets, keying and response data in
     all(c(
       "pid_items", "pid_scales",
       "hitopsr_items", "hitopsr_scales", "hitopsr_subscales",
-      "hitopbr_items", "hitopbr_scales", "hitophsum_items"
+      "hitopbr_items", "hitopbr_scales", "hitophsum_items",
+      "hitopdat_items", "hitopdat_scales"
     ) %in% index)
   )
   # The datasets that carry response values: the three of collected answers,
-  # the five simulated ones, and the choice set whose `Value` is a response
-  # value. Named here so an index that stops listing one of them fails, rather
+  # the five simulated ones, and the two choice sets whose `Value` is a
+  # response value. Named here so an index that stops listing one of them fails, rather
   # than the sweep quietly running over a smaller domain and still reporting
   # nothing.
   expect_true(
     all(c(
       "ku_hitopsr", "ku_hitopbr", "ku_pid5sf",
       "sim_hitopsr", "sim_hitopbr", "sim_pid5", "sim_pid5sf", "sim_pid5bf",
-      "hitophsum_choices"
+      "hitophsum_choices", "hitopdat_choices"
     ) %in% index)
   )
 })

@@ -2,10 +2,13 @@
 ## Source: the HiTOP-DAT Qualtrics file `data-raw/HiTOP-DAT.qsf`, shared with the
 ## maintainer and not committed (provenance, sha256 and how to obtain it:
 ## cairn/SOURCES.md, "HiTOP-DAT"). When the file is present, this script reads
-## it and rewrites `data-raw/hitopdat_items.csv`, `data-raw/hitopdat_choices.csv`
-## and `data-raw/hitopdat_scale_items.csv`. When it is absent, the committed CSVs are
-## used as they are, so the datasets still rebuild from a fresh clone.
-## Needs {jsonlite} (an Import) to read the file.
+## it and rewrites `data-raw/hitopdat_items.csv`,
+## `data-raw/hitopdat_choices.csv` and `data-raw/hitopdat_scale_items.csv`. When
+## it is absent, the committed CSVs are used as they are, so the datasets still
+## rebuild from a fresh clone. Needs {jsonlite} (an Import) to read the file.
+
+## Base R has `%||%` only from 4.4, and DESCRIPTION allows R 4.1.
+`%||%` <- function(x, y) if (is.null(x)) y else x
 
 qsf_path <- "data-raw/HiTOP-DAT.qsf"
 
@@ -47,8 +50,8 @@ dat_sets <- list(
 )
 
 ## Plain text from the file's HTML: tags removed, the file's two entities
-## (`&nbsp;`, `&quot;`) and `&amp;` decoded, line and list breaks kept as "\n", other runs of spaces made
-## one space.
+## (`&nbsp;`, `&quot;`) and `&amp;` decoded, line and list breaks kept as "\n",
+## other runs of spaces made one space.
 dat_plain <- function(x) {
   x <- gsub("<br\\s*/?>|</div>|</p>|</li>", "\n", x, ignore.case = TRUE)
   x <- gsub("<[^>]+>", "", x)
@@ -133,7 +136,8 @@ if (file.exists(qsf_path)) {
   ## falling order reverses the item. The item's forward values are the rising
   ## sequence, or the falling one turned round when no category is forward.
   ## Categories that grade none of the labels (the "Skipped" counters grade
-  ## only "Skip"), or give them all one grade, carry no values. A label with no grade in any category is NA.
+  ## only "Skip"), or give them all one grade, carry no values. A label with no
+  ## grade in any category is NA.
   forward_values <- function(row) {
     keep <- row$labels != "Skip"
     ids <- row$answer_ids[keep]

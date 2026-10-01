@@ -538,8 +538,8 @@ Table 1's printed counts now agree with row for row.
   of the 18 non-overlapping IDAS-II scales (Table 1, p. 406). It prints no item
   key.
 - **The IDAS-II key.** Watson (2011), *IDAS-II* items and scoring key,
-  `IDAS-II (Items + Scoring).doc`, sha256 `dc77c5fe…`, received by Jeff on
-  2026-10-01 and signed off by him that day as the authors' key (D-082):
+  `IDAS-II (Items + Scoring).doc`, sha256 `dc77c5fe…`, sent to Jeff by a
+  HiTOP-DAT user and received on 2026-10-01, and signed off by him that day as the authors' key (D-082):
   [references/watson2011idas.md](references/watson2011idas.md). It checks the 19
   IDAS-II scales' items and reverse keys and the 99 IDAS-II item numbers and texts.
 
@@ -562,7 +562,7 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
 
 1. **CAT-PD item 194.** The file cuts the item to "I love the feeling of being
    intimately close with someon". The package uses "someone", the IPIP key's word
-   (SF 194).
+   (SF 194). Jeff signed off on this wording on 2026-10-01.
 2. **Item line breaks.** The file wraps 12 AUDIT and DUDIT items with line breaks
    mid-question. Item text joins them with spaces. Instruction text keeps its
    breaks, which separate list lines.
@@ -599,6 +599,8 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
 - **DAT-9: The file's spellings.** Its categories spell "Sucidality",
   "Claustraphobia", "Affective Liability" and "Non-Perserverance", and a Skipped
   counter spells "Traumatic Instrusions". The package uses the manual's spellings.
+  The DUDIT instruction spells "DMT (dimethyltrypamine)" for dimethyltryptamine;
+  `hitopdat_instructions` keeps the file's text.
 - **DAT-10: Non-Premeditation.** The manual says Non-Premeditation (p. 23) where
   the IPIP key and the file say Non-Planfulness. The package uses the manual's name.
   The manual's "Self-Harm" is IPIP's "Self Harm".
