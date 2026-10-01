@@ -2,6 +2,17 @@
 
 ## New features
 
+* **A hitop-form study link is no longer limited to 50 questions.** A link
+  holds as many questions as fit in the 100,000 bytes of setup that the
+  online form reads. A link without consent text or questions is now held
+  to the same 100,000 bytes, and the online form refuses a larger one and
+  names its size. With a Supabase table, the Study Link Builder refuses a
+  setup whose table would have more than 1,600 columns, PostgreSQL's limit,
+  and names the count. If a link is longer than 8,000 characters, the
+  builder shows a warning under it. The warning says that some sites and
+  mail programs cut long links, and that you can keep the setup in a file
+  you host.
+
 * **A hitop-form study link can name a setup file you host.** Under "Where
   the setup is kept", the Study Link Builder offers "In the study link", the
   default, and "In a file I host". The second shows "Download the setup
@@ -100,8 +111,8 @@
   "Several instruments in one session" describes the screens and the file.
 
 * **hitop-form can ask the researcher's own questions.** A study link's
-  `questions` field holds a `before` list, an `after` list or both, with up
-  to 50 questions in all. The page asks the before questions on a screen of
+  `questions` field holds a `before` list, an `after` list or both. The
+  page asks the before questions on a screen of
   its own ahead of the start screen, after any consent screen, and the after
   questions on a screen of its own after the last page of items. A question
   is a one-line text, a whole number with an optional minimum and maximum,
