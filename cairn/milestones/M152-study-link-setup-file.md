@@ -87,6 +87,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: the audit's re-read found all six held, but one new README sentence was too broad, and it now names GitHub's code search. Setup-file specs: 61 passed. hitop `devtools::test()`: 0 failures. The article renders against the branch package.
 - 2026-10-01: implement complete after review pass 1. Status set to review.
 - 2026-10-01: review pass 2 gate (Jeff): fix the 9 proposed fix-now findings on the branch, then ask again to merge. Checkpoint: all 9 written, with three new LF7 tests whose plants went red. The full suite has not yet run on them.
+- 2026-10-01: gate fixes complete. The first full run failed the hint cap: the key hint was 41 words, and the intro went over 60. The key hint now says "opened on either page", and the intro drops its sending clause. Full hitop-form suite: 951 passed.
 
 ## Decisions
 
@@ -166,3 +167,17 @@ Pass 2 reviewer findings. Three lenses ran: diff-bug (DB), blame-history (BH) an
 23. A non-2xx answer leaves `res.body` uncancelled. DB10. Proposed: follow-up.
 24. An engine whose `JSON.parse` recurses can report a deep file as not JSON. DB12. Proposed: reject, because V8 parses iteratively and no such engine was shown.
 25. Links already sent with a `setup` or `sha256` parameter now fail, and NEWS names only `participantParam`. BH8. Proposed: reject as intended (D-086(c)).
+
+Gate triage (Jeff, 2026-10-01): every proposed disposition stands. Fix now: 1 to 4, 11, 15, 17, 19 and 20. Follow-up to the "Hosted setup file gaps" row: 6, 10, 12, 13 and 21 to 23. Items 5, 7 to 9 and 16 were already in that row. Rejected: 14, 18, 24 and 25, for the reasons given.
+
+Fix-now evidence:
+- 1: The setup-file hint says "Anyone can then read where responses go." The key hint says the key goes into every study link or setup file. S9 asserts both phrases.
+- 2: The intro drops "and sends nothing you type", and it says an opened link puts its setup, or its setup file's address, in the logs. The address field's hint already says the builder fetches the file. S9 asserts the new sentence and the absence of "sends nothing". The intro stays within its 60-word cap.
+- 3: The offer stays until `build()` shows a link, and `build()` then hides it. A new LF7 test refuses an empty address, then sees the offer and presses it. Planting the old hide back turned it red at the offer's visibility.
+- 4: `fillFromCurrent()` bumps `moduleReads` and empties the module-file and questions-file messages. A new LF7 test holds a module file read open across the press. Each plant went red: without the bump the late read wrote "Read the module file late.json.", and without the clearing "Loaded 1 question from q.csv." stayed.
+- 11, 19: The README test-table row says S12 fires six stale refusals, two across the setup-file fetch. The `link-setupfile.spec.js` row names the two new tests, and line 237 is wrapped.
+- 17: The README says the browser sends an `Origin` header naming the online form's site, but not its path or parameters. A probe on the setup fetch observed `Origin: http://127.0.0.1:51332` and no `Referer`.
+- 20: The article says to give the address under "Address of the setup file", and it renders against the branch.
+- 15: The row lists pass-1 findings 5, 8, 11 to 13 and 15 to 17, and pass-2 findings 6, 10, 12, 13 and 21 to 23. It names finding 17 and the stale `NEXT_STEP` comment. ROADMAP: 23,938 bytes.
+
+After the fixes, the full hitop-form Playwright suite gave 951 passed. The retired-term scan of the working tree gave the same 7 exempt hits and none from the new text.
