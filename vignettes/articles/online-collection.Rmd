@@ -82,8 +82,8 @@ For a HiTOP-SR module, open the "Item order and HiTOP-SR module" section, and
 paste or choose the module file written by `write_module()`. For two or three
 instruments in one session, see
 [Several instruments in one session](#several-instruments-in-one-session).
-The Study Link Builder, opened from a "Make a study link" button on an
-instrument's download page, arrives with that instrument chosen. When opened
+The Study Link Builder, opened from the "Open the Study Link Builder" button on
+an instrument's download page, arrives with that instrument chosen. When opened
 with a module in its address, it arrives with the module file pasted in as
 well. In the "Participants and recruiting site" section, give a participant
 identifier if the link is for one person. Leave it empty for a link shared
