@@ -96,7 +96,7 @@ the link" button. Send it to the participants.
 
 When a participant presses Finish, the page posts their answers to the
 address as one row and waits for the script to confirm. On a confirmed send
-the page says the responses were sent to the study team, and saves nothing.
+the page says the answers were sent to the study team, and saves nothing.
 When the send is not confirmed, because of an error, a lost connection, or no
 answer within the page's limit, the page saves a CSV file on the
 participant's device and names it, so the participant can send it to you by
