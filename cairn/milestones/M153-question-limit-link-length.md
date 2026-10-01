@@ -1,6 +1,6 @@
 # M153: Questions limited by size, and a long-link warning
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** M152
 - **Driving RR:** —
@@ -59,7 +59,41 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - 2026-10-01: T6 done. NEWS gains a bullet on the removed limit, the `c` limit, the column refusal and the long-link warning. The unreleased questions entry loses "up to 50 questions". The installed hitop predated the multi-instrument reader, so the article failed at its two-instrument chunk. After `devtools::install()` of the branch, `pkgdown::build_article()` rendered. `devtools::check()`: 0 errors, 0 warnings, 0 notes. Playwright: 961 passed. The companion PR waits for review, which opens PRs after approval (tracking rules).
 - 2026-10-01: claim audit: 46 claims read, 4 corrected — hitop-form tests/link.spec.js, link.html, README.md; hitop NEWS.md, vignettes/articles/online-collection.Rmd. L37 now pads the parameter name at run time, the hint states the byte limit alone, the long-answer sentence says "can be kept outside", and the column wording names the link, since "Download the setup file" has no column check. The reader's re-read found all 4 hold. Playwright after the fixes: 961 passed.
 - 2026-10-01: implement done, status review. Article re-rendered after the audit fixes.
+- 2026-10-01: review pass 1 stopped at the consistency gate, status in-progress (defect return 1). `cairn_validate` FAIL `references index<->disk`: `rfc9110.md` and `postgresql2026limits.md` provenance names no ingested date ("Read 2026-10-01", not "Ingested 2026-10-01"). The reviewers also measured GitHub Pages refusing the form's address over about 8,200 characters (HTTP 414), recorded in Review. The fix for that is a design decision for the implement question gate.
 
 ## Decisions
 
 ## Review
+
+Pass 1, 2026-10-01. Both branches were current with `origin/main`. The pass stopped at the consistency gate. The criterion boxes stay unticked, because the gate failed and the re-review runs every criterion again.
+
+Evidence gathered before the stop:
+
+- AC1: `QUESTIONS_MAX` is in no file of hitop-form. `checkQuestions()` reads list lengths only to refuse an empty list. The full Playwright suite passed locally (961 of 961). It includes Q2, which sends 51 and 200 questions through `parseLink()`, and the editor and file tests at 51 and 200. It also includes Z6 and LQ5's `c` test at 100,000 and 100,001 bytes. The `encodeLink()` message matches AC1's text.
+- AC2: LQ7 and the S12 probe passed. `storeSql()` builds its columns from `storeColumns()`, and the refusal counts the same list.
+- AC3: both L37 tests and the clearing test passed. The warning text matches AC3's text.
+- AC4: a paragraph search of 21 files and 851 paragraphs found 2 hits. One is the README test table, which says 51 and 200 questions are accepted. The other is the HiTOP-HSUM page's 650 items. Neither states a limit on the number of questions. The README and the article's questions sections state the 100,000-byte limit, the 1,600-column limit and the row-size limit.
+- AC5: NEWS has the entry. Playwright passed locally. `devtools::check()` gave 0 errors, 0 warnings and 0 notes. `pkgdown::build_article()` was not run in this pass.
+
+Consistency gate: `cairn_validate` exited 1 with FAIL `references index<->disk`. The provenance of `rfc9110.md` and `postgresql2026limits.md` says "Read 2026-10-01", and the check needs an ingested date. `document()` left no diff. `pkgdown::check_pkgdown()` found no problems. README.Rmd did not change.
+
+This session and the diff-bug reviewer each measured the host. GitHub Pages hosts the online form, and it returns HTTP 414 for a request line over about 8,192 bytes. With `https://jmgirard.github.io/hitop-form/?c=`, a payload of 8,171 characters loads and one of 8,187 is refused. At 70,000 characters the connection drops.
+
+Findings from the three reviewers, most severe first. None is triaged yet. The re-review gate triages them.
+
+1. (diff-bug 1, prior-review 1 and 2) The form's host refuses a link over about 8,200 characters. So a link the builder makes under the 100,000-byte limit can fail to open for every participant. The warning blames "some sites and mail programs", and README, NEWS and the article say a link holds what fits in 100,000 bytes. Repair is a design choice. Three examples: a refusal at the host limit, a warning that names the host, or a setup carried after `#`. A browser does not send the part after `#` to the server.
+2. (diff-bug 2, prior-review 1) Z6 and LQ5's `c` test open a `?c=` of about 133,000 characters. The scheduled and manual CI runs use the deployed page, so these 3 tests fail there. `tests/serve.mjs` raises the local header limit to 256 KiB, which hides what the host does. LESSONS.md (M125) records that a page host refuses long request lines.
+3. (diff-bug 3, blame 1, prior-review 3) `link.html:934` reads an opened `c` link with `decodeConfig()`, with no 100,000-byte check. `decodeLink()` refuses the same link, so the builder and the form disagree.
+4. (diff-bug 4) "Download the setup file" has no column check, and it measures indented JSON while `encodeLink()` measures compact JSON.
+5. (blame 2) A questions CSV of any size now builds one editor group per row. The 50-question cap was the only bound on that load.
+6. (diff-bug 5, prior-review 5) `#long` has no live-region role, so a screen reader does not announce the warning.
+7. (diff-bug 6, prior-review 4) The line above the warning shows "(8001 characters)", and the warning shows "8,001".
+8. (blame 3) A comment in `readQuestions()` and a `group !== undefined` guard still describe a fault with no question, which the editor can no longer make.
+9. (diff-bug 9, prior-review 2) To find both lengths, L37 needs a base address whose length fits its mod-4 rule. It holds for the local server and for GitHub Pages.
+10. (diff-bug 8) The prose says a row must fit in 8,192 bytes, which is the page size. The usable space is a little less, and the pressure comes from the 18-byte pointers of many text columns.
+11. (blame 6) For a link that is already a `setup=` link, the warning also suggests a hosted file. Such a link is short, so this is unlikely.
+12. (prior-review 6) New article sentences call the online form "the page", which the open wording candidate row covers.
+13. (blame 4) S12's probe of a refusal with no question control is gone. The column and fetch probes still cover a refusal with no focus.
+14. (blame 7) No D-entry records the removed limit or the two new refusals.
+15. (diff-bug 7) A `z` refusal adds "Shorten the consent text or the questions." after AC1's quoted sentence.
+16. (diff-bug 10) The T5 work-log line quotes a hint that the claim audit later changed.
