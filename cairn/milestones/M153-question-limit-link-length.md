@@ -1,6 +1,6 @@
 # M153: Questions limited by size, and a long-link warning
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** M152
 - **Driving RR:** —
@@ -72,6 +72,8 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - 2026-10-01: amendment at Jeff's selection, a widening after a defect return. AC6 is added. Scope's In line names the refusal and its source note. T7 and T8 are added, and AC5 maps to T8 too. Jeff chose the AC6 wording that counts each Prolific placeholder as 24 characters.
 - 2026-10-01: T7 done. link.html gains `HOST_PATH_MAX` (8,192) and `PROLIFIC_ID_LENGTH` (24) and refuses a longer link after it is written. A setup-file link's refusal ends after "accepts.". L38 builds 8,192 and 8,193 with no site, SONA and Prolific, and LF9 does so with a setup file, with and without Prolific. Three plants each turned tests red: the ending dropped from the count (L38 and LF9 Prolific), Prolific counted as written (LF9 Prolific), and the limit at 8,191 (all three). LQ5's 100,000-byte `c` test now expects the length refusal. L37's shorter-link test pads 6,000, and S12 fires the new refusal. Source note `fastly2026limits.md` added, and `prolific2026help.md` records the assumed ID lengths. The LF9 block was appended with a shell heredoc. Playwright: 966 passed.
 - 2026-10-01: T8 done. README, the article and NEWS state the refusal at 8,192 characters after the host name. They say that a setup holds what fits in 100,000 bytes, and that a link carrying its setup must also fit the host. The row-size wording says one page of 8,192 bytes, and that a shorter answer stays whole in the row. Five README test rows are updated. AC4 search over 21 paths and 852 paragraphs: the same 2 hits, neither a limit on the number of questions. Playwright 966 passed. `pkgdown::build_article()` rendered. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
+- claim audit: 104 claims read, 4 corrected — hitop-form README.md, link.html, tests/link.spec.js, tests/link-setupfile.spec.js, tests/link-sections.spec.js. The Prolific count now names 24 as the participant ID's length, with the other two assumed. The L38 row says a site is tried only where it can reach a length. The questions hint reads "As many as the setup's size allows." The S12 header names the host refusal. The reader's re-read found all 4 hold. A fifth point, that the warning advises a hosted file even for a setup-file link, is AC3's fixed text and stays review finding 11. Playwright after the fixes: 966 passed.
+- 2026-10-01: implement done, status review.
 
 ## Decisions
 
