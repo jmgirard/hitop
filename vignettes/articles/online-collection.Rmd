@@ -87,7 +87,8 @@ an instrument's download page, arrives with that instrument chosen. When opened
 with a module in its address, it arrives with the module file pasted in as
 well. In the "Participants and recruiting site" section, give a participant
 identifier if the link is for one person. Leave it empty for a link shared
-with many, and the page asks each participant for one before the form starts.
+with many, and the online form asks each participant for one before the form
+starts.
 Under "Where responses go", choose "A web address" and paste the `/exec` URL
 from step 1 into the "Web address" field.
 Press "Make the link". The link shows under "Your study link", beside a "Copy

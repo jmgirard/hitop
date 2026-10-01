@@ -1,6 +1,6 @@
 # M150: Study Link Builder: hint facts, names and tutorials
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** M149
 - **Driving RR:** —
@@ -54,7 +54,7 @@ The Study Link Builder's hints give back the facts that M146 cut, and the packag
 - [x] T3: Run the AC3 search, and record each hit and its class in the work log for review to re-run. Name the section for each field a hit sends the reader to, and describe the closed sections and "Your study link". Fix the form list at `modules-hitopsr.Rmd:405-407`. Build the articles.
 - [x] T4: Clear every hit that is not exempt. Start from `pid5_scoring.Rmd:198`, `:200` (the link text) and `:202`, `overview.Rmd:69`, and the strip strings at `_download-helpers.R:179-189`. Add the strip assertions to `tests/testthat/test-download-pages.R`, which today checks only the `href`, the article link and the JSON button (`:88-118`). Record the AC4 searches and each hit's class in the work log.
 - [x] T5: Name the S9 hint-fact tests and the stale-build tests in the README row for `tests/link-sections.spec.js` (M146 review). Run the full suite locally and on the PR.
-- [ ] T6: Add the NEWS.md entry. Run `devtools::check()` and `pkgdown::check_pkgdown()`, and build the changed articles.
+- [x] T6: Add the NEWS.md entry. Run `devtools::check()` and `pkgdown::check_pkgdown()`, and build the changed articles.
 
 ## Work log
 
@@ -73,3 +73,6 @@ The Study Link Builder's hints give back the facts that M146 cut, and the packag
 - 2026-09-30: T4 AC4 search, `rg -n -i -P` per D-083(b) pattern over `pid5_scoring.Rmd` and `overview.Rmd`. Before: `\bstores?\b` at `overview.Rmd:69` and `pid5_scoring.Rmd:198`, `:202`, and `(?<!study )\blink builder\b` at `pid5_scoring.Rmd:200`. All four were prose and are cleared. After: 0 hits for every pattern, so no exempt hit remains.
 - 2026-09-30: T4 done. The strip says "online form" and "Study Link Builder", and its button reads "Open the Study Link Builder". `online-collection.Rmd:85` names the new button, which moves every T3 offset after @4300 by 12. A new test in `test-download-pages.R` checks the five strips: the button text, "online form" with no other page name, and only the `?c=` of the button's `href` among the retired terms. Its four assertions each failed against the old strip. The four changed pages and `download-pid5` build.
 - 2026-09-30: T5 done. The hitop-form README row for `tests/link-sections.spec.js` names the S9 hint facts and the two stale-build tests, and the `tests/link.spec.js` row names L35. The full hitop-form suite passes locally, 831 of 831. The PR run waits for the PR, which `/milestone-review` opens.
+- 2026-09-30: T6 done. NEWS.md has the entry under "Improvements and fixes". `devtools::check()` gave 0 errors, 0 warnings and 0 notes. `pkgdown::check_pkgdown()` found no problems, and `devtools::document()` left no diff. The changed articles build.
+- 2026-09-30: claim audit: 72 claims read, 3 corrected — NEWS.md, vignettes/articles/online-collection.Rmd, tests/testthat/test-download-pages.R
+- 2026-09-30: the three corrections. The NEWS entry no longer says the overview names the Study Link Builder. "The page" that asks for an identifier became "the online form". The test comment says the retired-term list applies to the strip. The same Opus reader re-read all three and confirmed them. The strip tests pass after them, and `online-collection` builds again.

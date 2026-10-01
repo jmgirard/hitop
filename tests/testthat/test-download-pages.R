@@ -118,8 +118,8 @@ test_that("the five form-backed pages render one online strip and the HSUM page 
   }
 })
 
-# The retired terms the web pages and tutorials no longer use, as
-# case-insensitive PCRE patterns, the last two fixed strings.
+# The retired terms the online strip must not use, as case-insensitive
+# PCRE patterns, the last two fixed strings.
 RETIRED_TERMS <- c(
   "\\bdescriptor\\b", "\\bscoring file\\b", "\\bbundle\\b", "\\bendpoint\\b",
   "\\bstores?\\b", "\\bcompressed\\b", "\\b(hitop-form )?form page\\b",
