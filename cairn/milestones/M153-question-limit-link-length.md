@@ -15,7 +15,7 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 
 ## Scope
 
-**In:** hitop-form companion work. Remove `QUESTIONS_MAX`, apply the 100,000-byte limit to `c` setups too, refuse a Supabase table over PostgreSQL's column limit, and show a link-length warning. README, the hitop article's questions section, NEWS, and source notes for RFC 9110 and the PostgreSQL limits.
+**In:** hitop-form companion work. Remove `QUESTIONS_MAX`, apply the 100,000-byte limit to `c` setups too, refuse a Supabase table over PostgreSQL's column limit, show a link-length warning, and refuse a link longer than the online form's host accepts. README, the hitop article's questions section, NEWS, and source notes for RFC 9110, the PostgreSQL limits and the host's URL limit.
 
 **Out:**
 - SONA's own Study URL limit stays in the hitop-form researcher-content candidate row until SONA documents one.
@@ -28,6 +28,7 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - [ ] AC3: When the finished link is longer than 8,000 characters, the result region shows "This link is N characters long. Some sites and mail programs cut long links. You can keep the setup in a file you host instead." At 8,000 characters or fewer it shows nothing. 8,000 is the minimum URI length RFC 9110 (section 4.1) recommends that senders and recipients support. Tests pad the study name and the participant-parameter name at run time to build links of exactly 8,000 and 8,001 characters.
 - [ ] AC4: A case-insensitive search of each paragraph holding `question` and `50`, `51` or `fifty`, in hitop-form's README.md, link.html, index.html and form.js and in hitop's `vignettes/`, finds none that states a limit on the number of questions. hitop's NEWS.md keeps its released entries as history. The README and the hitop article's questions sections state the 100,000-byte limit, the Supabase column limit and that PostgreSQL also limits a row's size.
 - [ ] AC5: hitop's NEWS.md says the 50-question limit is gone and names the link-length warning. hitop-form's Playwright suite passes. In hitop, `devtools::check()` reports 0 errors and 0 warnings, and `pkgdown::build_article("articles/online-collection")` renders without error.
+- [ ] AC6: link.html refuses a link whose path and query are longer than 8,192 characters, counting each Prolific placeholder as the 24-character ID Prolific puts in its place. The refusal reads `This link is N characters long, longer than the online form's host accepts. Choose "In a file I host" under "Where the setup is kept".`, N being the length of the link as written, and for a link to a setup file it ends after "accepts.". `#result` stays hidden. A source note in `cairn/references/` traces 8,192 to Fastly's URL size limit and a 2026-10-01 measurement of GitHub Pages. A setup whose link counts 8,192 characters builds, and one that counts 8,193 is refused.
 
 ## Coverage
 
@@ -35,7 +36,8 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - AC2 → T3
 - AC3 → T4
 - AC4 → T5
-- AC5 → T2, T3, T4, T6
+- AC5 → T2, T3, T4, T6, T8
+- AC6 → T7
 
 ## Tasks
 
@@ -45,6 +47,8 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - [x] T4: Add the link-length warning to the result region, with the padded-length tests. Write a hitop source note on RFC 9110 section 4.1.
 - [x] T5: Update the link.html hint, the README's questions section and test rows, and the hitop article. Run AC4's paragraph search and read each hit.
 - [x] T6: hitop NEWS line, `pkgdown::build_article()`, `devtools::check()`, and the companion PR.
+- [ ] T7: Add the host-length refusal to `link.html`'s build. Tests build both boundary lengths with no site ending and with SONA's, so each length is reachable on either server, and a Prolific case. Plants that drop the site ending from the count and that move the limit to 8,191 each turn a test red. Write the source note `fastly2026limits.md`, and record in `prolific2026help.md` that the study and session IDs are assumed to be 24 characters.
+- [ ] T8: State the refusal in README, the article and NEWS, and correct their claim that a link holds what fits in 100,000 bytes. Fix the row-size wording (review finding 10). Re-run AC4's search, the Playwright suite, `devtools::check()` and `pkgdown::build_article()`.
 
 ## Work log
 
@@ -65,6 +69,7 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - 2026-10-01: source notes `rfc9110.md` and `postgresql2026limits.md` name their ingested date, and `cairn_validate` passes. Z6 opens its long `c` links through `gotoLong()`, which answers the request in the browser. serve.mjs is back to Node's default limit, and with the route removed the local server refuses the link. On the deployed page the 100,000-byte test passes, and the 100,001 refusal waits for this branch's deploy.
 - re-audit: AC6 (full) — Prolific fills each placeholder with an ID of 24 characters. So a Prolific link that counts 8,192 as written is longer at the host and gets the 414. The test, Fastly and measurement clauses describe evidence, not link.html. This is AC6's second line, so the wording goes to Jeff.
 - 2026-10-01: review findings 3, 6, 7 and 8 fixed. link.html refuses to fill from an opened `c` over 100,000 bytes, naming its size. `#long` is a status, and the line beside "Open the link" writes the length with a comma. The `readQuestions()` comment no longer describes a fault the editor cannot make. A test covers each code change, and a plant turned each test red.
+- 2026-10-01: amendment at Jeff's selection, a widening after a defect return. AC6 is added. Scope's In line names the refusal and its source note. T7 and T8 are added, and AC5 maps to T8 too. Jeff chose the AC6 wording that counts each Prolific placeholder as 24 characters.
 
 ## Decisions
 
