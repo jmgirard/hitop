@@ -77,6 +77,7 @@ The Study Link Builder's hints give back the facts that M146 cut, and the packag
 - 2026-09-30: claim audit: 72 claims read, 3 corrected — NEWS.md, vignettes/articles/online-collection.Rmd, tests/testthat/test-download-pages.R
 - 2026-09-30: the three corrections. The NEWS entry no longer says the overview names the Study Link Builder. "The page" that asks for an identifier became "the online form". The test comment says the retired-term list applies to the strip. The same Opus reader re-read all three and confirmed them. The strip tests pass after them, and `online-collection` builds again.
 - 2026-09-30: review started. No PR exists for the branch in either repo. Both branches already hold their pushed `main`, so step 1 merged nothing.
+- 2026-09-30: step-7 approval: m150-link-builder-hint-facts approved for merge, with the hitop-form companion branch first and six gate fixes.
 
 ## Review
 
@@ -103,3 +104,5 @@ The Study Link Builder's hints give back the facts that M146 cut, and the packag
 - F14 (history 8): the sentences that `online-collection.Rmd` gained leave long lines in wrapped prose. Recommended: reject, because it is source formatting only.
 - F15 (history 7): the strip no longer names hitop-form, and the test forbids it. Recommended: reject, because D-084 chose it.
 - F16 (diff 11): AC5's CI half is open. Noted: step 8 waits on it.
+- Gate triage: Jeff took the recommended dispositions. F1, F2, F3, F6 (`pid5_scoring.Rmd`), F7 and F12 (`info`) were fixed. F4 went to the M148 work log, and F6 (`online-collection.Rmd`) became a candidate row. F5, F8 to F11, F12 (skip), F13, F14 and F15 were rejected for the reasons above.
+- Fixes: the decline hint says "Any `{participant}` goes after its `?` or `#`" (39 words). The saved-file hint says "when responses go to a file or a send is not confirmed. The saved-file screen links here." (39 words). The module hint opens "HiTOP-SR only. With several instruments, it applies to the HiTOP-SR among them." (40 words), and L3 asserts `/^HiTOP-SR only\. With several instruments/`. Known issue 11's quote is true again. `online-collection.Rmd:415-418` names the "Recruiting site" menu, its section and the "Address parameter" field. After the fixes, hitop-form passed 831 of 831 and hitop gave 0 failures. `online-collection` and `pid5_scoring` built, and no retired term is on an added line.

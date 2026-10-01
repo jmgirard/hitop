@@ -153,7 +153,10 @@ test_that("the online strip names the Study Link Builder and the online form", {
     # names no page any other way.
     text <- gsub("<[^>]*>", " ", strip)
     expect_match(text, "online form", fixed = TRUE, info = basename(page))
-    expect_no_match(text, "hitop-form|\\bpage\\b", perl = TRUE, ignore.case = TRUE)
+    expect_no_match(
+      text, "hitop-form|\\bpage\\b", perl = TRUE, ignore.case = TRUE,
+      info = basename(page)
+    )
 
     # The retired terms: only the `?c=` in the button's link.
     hits <- unlist(lapply(RETIRED_TERMS, function(p) {

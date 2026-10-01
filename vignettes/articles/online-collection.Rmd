@@ -412,8 +412,10 @@ the participant finishes" section. Connect's `assignmentId`
 and `projectId`, which that page says need not be collected, are not
 recorded.
 
-For another site, choose "Another site" and type the name of the parameter
-that site adds to the address. The builder refuses `id` and
+For another site, choose "Another site" in the "Recruiting site" menu of the
+"Participants and recruiting site" section. Then type the name of the
+parameter that site adds to the address in the "Address parameter" field
+below the menu. The builder refuses `id` and
 `participantId` there, because the SONA and Connect choices write those
 names.
 
