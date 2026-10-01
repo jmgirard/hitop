@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** internal — hitop-form's Playwright specs and test helpers, which no user runs
-- **Branch/PR:** m151-link-builder-test-reach · companion: /Users/jmgirard/github/hitop-form m151-link-builder-test-reach
+- **Branch/PR:** m151-link-builder-test-reach · companion: /Users/jmgirard/github/hitop-form m151-link-builder-test-reach https://github.com/jmgirard/hitop-form/pull/23
 
 ## Goal
 
@@ -35,7 +35,7 @@ The Study Link Builder's tests state their expectations apart from the page's co
   - text that is not JSON
   - JSON that holds no form
 - [x] AC6: A grep for `openBuilderSections` in `tests/` returns no hit. The specs that `git grep -l openBuilderSections a2d74e3 -- tests/` lists open each optional section they use by a click on its summary, through one helper.
-- [ ] AC7: The hitop-form Playwright suite passes locally and on its PR's CI.
+- [x] AC7: The hitop-form Playwright suite passes locally and on its PR's CI.
 
 ## Coverage
 
@@ -146,3 +146,4 @@ Triage at the gate, 2026-09-30. The user chose the recommended triage.
 - Fixed now, in hitop-form `7604936`. G1: the 100,000-byte test waits for group 9's prefilled text before `openSectionOf`. G3: the `setBox()` comment says the write fires no input event. F4: the `fetchExport` comment and the README paragraph on the weekly run name `link-sections.spec.js` as the spec that uses the copies. F8: `readmeSlugs()` takes indented fences and closes a fence only on the same character at the same or greater length. A new test covers the three cases, and it failed with the old rule put back. The full suite passed 846 of 846.
 - Follow-up: F2, F3, F9, F19, F20, F22 and G2 were absorbed into the M149 candidate row, now "Study Link Builder edge cases and test gaps (M149, M151 reviews)". A separate row put `ROADMAP.md` at 60 lines and 24,383 bytes, over its caps.
 - Rejected. F5: the count's job under AC1 is the sentence rule, and the exact text check covers the page. F6: `main` read the same hints, so no coverage was lost. F7: a reordered `NEXT` fails, it does not pass. F10: AC6 names one helper for the nine specs only. F11: the comment at `:84-90` covers the listener. F12: the workflow's target is not a host root. F13: AC7 stays unticked until the PR's CI is green. F14: the reviewer found the copies byte-identical. F15: the cost is two page launches. F16: AC5 does not ask for section state, and M149's S11 tests the reset. F17: no route aborts a stray today. F18: the failure names the missing export. F21: the README sentence counts example response files, and the export copies are not ones. F23: DESIGN Known issue 13 records it. G4: `main` opened every section, and `link-sections.spec.js` tests `refuseAt`. G5: AC6 is about the sections a test writes, and a prefill opens K4's. G6: the work log is append-only, and this Review section states the full reach. G7: documentation only, and the README row describes what the tests check.
+- AC7: pass. The suite passed locally, 846 of 846 at `7604936`. On hitop-form PR #23 (https://github.com/jmgirard/hitop-form/pull/23), the `tests` check passed with 846 of 846, and the PR was squash-merged on 2026-10-01.
