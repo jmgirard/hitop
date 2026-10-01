@@ -207,3 +207,17 @@ Independent review (pass 3): three fresh reviewers (Opus diff, Sonnet blame-hist
 - U15 (blame 7): NEWS does not mention the start screen's new fallback sentence. Proposed: fix now.
 - U16 (blame 2, diff 6): the identifier and question screens' empty alerts are still `display: none`. The pattern predates M148. Proposed: follow-up.
 - U17 (prior 6): the diff adds participant text that says "this page" (M150 note). Proposed: follow-up, with the M150 note.
+
+Gate 2026-10-01: Jeff chose "Fix, then ask again". The dispositions above are final. U1 to U15 are fixed on the branches before the push, and the merge is asked again after a fresh run. U16, U17 and S10's Safari case go to follow-up rows at the post-merge pass.
+
+Fix-now work (hitop-form `17e0d59`, hitop `0d6aee06`):
+- U1, U4: a press empties the alert, moves it, scrolls to it, and writes the count two frames later, counted at write time. A later press or answer cancels a pending write.
+- U2: `expectMissed` logs the alert's place and text against a frame counter. It requires two or more frames between the empty move and the text. A write at once and a write after one frame each failed both P4 tests on that check.
+- U12: a scroll only for two or more missed items failed both P4 tests at the one-missed press (`screens.spec.js:621`). No probe change was needed.
+- U3: the Enter handler reads `isComposing` only. The new P3 test sends a composing Enter (no start), then an Enter with keyCode 229 (start). It failed on the 229 guard. A plant with no `isComposing` check failed it on the composing Enter.
+- U5, U10: `finish()` takes the nav's last button by index and writes the sending line only when it exists.
+- U6: the selector is `[role="alert"].missed-count:empty`.
+- U7 to U9, U11, U13 to U15: README, `form.js` comments, the `link.html` decline hint, the P4 message and NEWS are corrected and wrapped.
+- The earlier T12 plants (a write on every answer, no unmark, no drawn alert) each failed both P4 tests again.
+
+Fresh evidence after the fixes, on `17e0d59`: the full suite passed 879 of 879. AC3: all P3 tests passed, including the new Enter test. AC4: both P4 tests passed with the frame check. AC7's local half holds on this head.
