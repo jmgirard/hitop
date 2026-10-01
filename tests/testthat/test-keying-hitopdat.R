@@ -404,6 +404,175 @@ test_that("the 18 non-overlapping IDAS-II scales hold each IDAS-II item once", {
   expect_length(members, 99)
 })
 
+# ---- Source: IDAS-II scoring key (Watson, 2011), "IDAS-II (Items + Scoring).doc",   ----
+# ---- sha256 dc77c5fe (cairn/SOURCES.md), under "Composition of the IDAS-II scales". ----
+# ---- Starred (reverse-keyed) items are `reverse`. Numbers are the key's 1 to 99.     ----
+
+watson_idas_scales <- list(
+  "General Depression" = list(forward = c(1L, 2L, 5L, 6L, 8L, 9L, 11L, 13L, 21L, 26L, 30L, 31L, 40L, 48L, 51L, 52L, 57L, 61L), reverse = c(27L, 64L)),
+  "Dysphoria" = list(forward = c(2L, 5L, 8L, 9L, 21L, 31L, 40L, 48L, 57L, 61L), reverse = integer()),
+  "Lassitude" = list(forward = c(6L, 29L, 30L, 43L, 54L, 55L), reverse = integer()),
+  "Insomnia" = list(forward = c(4L, 11L, 17L, 25L, 36L, 51L), reverse = integer()),
+  "Suicidality" = list(forward = c(13L, 22L, 33L, 38L, 46L, 52L), reverse = integer()),
+  "Appetite Loss" = list(forward = c(1L, 26L, 60L), reverse = integer()),
+  "Appetite Gain" = list(forward = c(19L, 24L, 63L), reverse = integer()),
+  "Well-Being" = list(forward = c(3L, 10L, 23L, 27L, 50L, 53L, 59L, 64L), reverse = integer()),
+  "Ill Temper" = list(forward = c(12L, 35L, 37L, 44L, 62L), reverse = integer()),
+  "Mania" = list(forward = c(67L, 71L, 77L, 83L, 87L), reverse = integer()),
+  "Euphoria" = list(forward = c(72L, 78L, 88L, 92L, 97L), reverse = integer()),
+  "Panic" = list(forward = c(7L, 16L, 32L, 39L, 45L, 49L, 56L, 58L), reverse = integer()),
+  "Social Anxiety" = list(forward = c(15L, 18L, 20L, 41L, 47L, 99L), reverse = integer()),
+  "Claustrophobia" = list(forward = c(74L, 80L, 84L, 90L, 94L), reverse = integer()),
+  "Traumatic Intrusions" = list(forward = c(14L, 28L, 34L, 42L), reverse = integer()),
+  "Traumatic Avoidance" = list(forward = c(73L, 79L, 89L, 93L), reverse = integer()),
+  "Checking" = list(forward = c(68L, 75L, 81L), reverse = integer()),
+  "Ordering" = list(forward = c(65L, 69L, 82L, 85L, 95L), reverse = integer()),
+  "Cleaning" = list(forward = c(66L, 70L, 76L, 86L, 91L, 96L, 98L), reverse = integer())
+)
+
+# The key's item text, 1 to 99 in order, as printed: each item is followed by its
+# scale in parentheses, and some items carry a doubled space before it.
+watson_idas_text <- c(
+  "I did not have much of an appetite (Appetite Loss)",
+  "I had little interest in my usual hobbies and activities (Dysphoria)",
+  "I felt optimistic (Well-Being)",
+  "I slept less than usual (Insomnia)",
+  "I felt fidgety, restless (Dysphoria)",
+  "I felt exhausted (Lassitude)",
+  "I felt a pain in my chest (Panic)",
+  "I felt depressed (Dysphoria)",
+  "I had trouble making up my mind (Dysphoria)",
+  "I was proud of myself (Well-Being)",
+  "I had trouble falling asleep (Insomnia)",
+  "I was furious (Ill Temper)",
+  "I had thoughts of suicide (Suicidality)",
+  "I had disturbing thoughts of something bad that happened to me (Traumatic Intrusions)",
+  "I felt self-conscious knowing that others were watching me (Social Anxiety)",
+  "I felt dizzy or lightheaded (Panic)",
+  "I woke up early and could not get back to sleep (Insomnia)",
+  "I was worried about embarrassing myself socially (Social Anxiety)",
+  "I thought a lot about food (Appetite Gain)",
+  "I became anxious in a crowded public setting (Social Anxiety)",
+  "I blamed myself for things (Dysphoria)",
+  "I cut or burned myself on purpose (Suicidality)",
+  "I felt that I had accomplished a lot (Well-Being)",
+  "I ate when I wasn't hungry (Appetite Gain)",
+  "I woke up much earlier than usual (Insomnia)",
+  "I felt like eating less than usual (Appetite Loss)",
+  "I looked forward to things with enjoyment (Well-Being)",
+  "I had nightmares that reminded me of something bad that happened (Traumatic Intrusions)",
+  "I slept more than usual (Lassitude)",
+  "It took a lot of effort for me to get going (Lassitude)",
+  "I felt inadequate (Dysphoria)",
+  "I was trembling or shaking (Panic)",
+  "I thought that the world would be better off without me (Suicidality)",
+  "I had memories of something scary that happened (Traumatic Intrusions)",
+  "I felt like breaking things (Ill Temper)",
+  "I woke up frequently during the night (Insomnia)",
+  "I felt enraged  (Ill Temper)",
+  "I hurt myself purposely (Suicidality)",
+  "I felt faint  (Panic)",
+  "I felt discouraged about things  (Dysphoria)",
+  "I found it difficult to make eye contact with people (Social Anxiety)",
+  "I got upset thinking about something bad that happened (Traumatic Intrusions)",
+  "I had trouble waking up in the morning  (Lassitude)",
+  "I lost my temper and yelled at people (Ill Temper)",
+  "My heart was racing or pounding  (Panic)",
+  "I thought about my own death  (Suicidality)",
+  "I found it difficult to talk with people I did not know well (Social Anxiety)",
+  "I found myself worrying all the time (Dysphoria)",
+  "I had a very dry mouth  (Panic)",
+  "I felt hopeful about the future (Well-Being)",
+  "I slept very poorly (Insomnia)",
+  "I thought about hurting myself  (Suicidality)",
+  "I felt that I had a lot to look forward to (Well-Being)",
+  "I felt much worse in the morning than later in the day (Lassitude)",
+  "I felt drowsy, sleepy  (Lassitude)",
+  "I was short of breath (Panic)",
+  "I talked more slowly than usual (Dysphoria)",
+  "I felt like I was choking (Panic)",
+  "I felt like I had a lot of interesting things to do (Well-Being)",
+  "I did not feel much like eating  (Appetite Loss)",
+  "I had trouble concentrating  (Dysphoria)",
+  "Little things made me mad (Ill Temper)",
+  "I ate more than usual  (Appetite Gain)",
+  "I felt like I had a lot of energy (Well-Being)",
+  "I rearranged things so that they were in a certain order (Ordering)",
+  "I washed my hands excessively (Cleaning)",
+  "I kept racing from one activity to the next (Mania)",
+  "I checked things over and over again (Checking)",
+  "I felt the urge to rearrange things so that they were “just right” (Ordering)",
+  "I worried a lot about germs (Cleaning)",
+  "I spoke so rapidly that others could not understand me  (Mania)",
+  "I felt elated for no special reason (Euphoria)",
+  "I tried not to think about bad things from my past (Traumatic Avoidance)",
+  "I avoided small spaces (Claustrophobia)",
+  "I found myself checking things, even though I knew it wasn’t necessary  (Checking)",
+  "I avoided handling dirty things (Cleaning)",
+  "It felt like my mind was moving “a mile a minute” (Mania)",
+  "I felt like I was “on top of the world”  (Euphoria)",
+  "I avoided situations that bring up bad memories (Traumatic Avoidance)",
+  "I was afraid of getting trapped in a crowd (Claustrophobia)",
+  "I felt the urge to check to make sure I had done something  (Checking)",
+  "I followed the same, fixed order in performing everyday tasks  (Ordering)",
+  "My thoughts jumped rapidly from one idea to another (Mania)",
+  "I felt anxious in small spaces (Claustrophobia)",
+  "I felt compelled to follow certain rituals (Ordering)",
+  "I had difficulty touching something that was dirty (Cleaning)",
+  "My thoughts were moving so quickly it was hard to keep up  (Mania)",
+  "I had so much energy it was hard for me to sit still (Euphoria)",
+  "I tried to ignore upsetting memories (Traumatic Avoidance)",
+  "I was afraid of tunnels  (Claustrophobia)",
+  "I had to clean myself because I felt contaminated (Cleaning)",
+  "I felt that I could do things that other people couldn’t  (Euphoria)",
+  "I avoided talking about bad experiences from my past (Traumatic Avoidance)",
+  "I avoided tight, enclosed spaces (Claustrophobia)",
+  "I had little rituals or habits that took up a lot of my time (Ordering)",
+  "I avoided using public restrooms  (Cleaning)",
+  "I had much more energy than usual  (Euphoria)",
+  "I used an object (such as a towel) so I could avoid touching something directly (Cleaning)",
+  "I was anxious about talking in public (Social Anxiety)"
+)
+
+test_that("the IDAS-II key is transcribed whole", {
+  expect_length(watson_idas_scales, 19)
+  depression <- watson_idas_scales[["General Depression"]]
+  expect_length(c(depression$forward, depression$reverse), 20)
+  others <- watson_idas_scales[names(watson_idas_scales) != "General Depression"]
+  numbers <- unlist(lapply(others, unlist), use.names = FALSE)
+  expect_setequal(numbers, 1:99)
+  expect_length(numbers, 99)
+  expect_length(watson_idas_text, 99)
+  # Each printed item names its scale in parentheses; that scale lists it.
+  tags <- sub("^.*\\(([^()]+)\\)$", "\\1", watson_idas_text)
+  for (i in 1:99) {
+    expect_true(i %in% unlist(watson_idas_scales[[tags[i]]]), info = i)
+  }
+})
+
+test_that("each IDAS-II scale's items and reverse keys equal the IDAS-II key", {
+  scales <- hitopdat_scales$Scale[hitopdat_scales$Measure == "IDAS-II"]
+  expect_setequal(vapply(scales, key_name, ""), names(watson_idas_scales))
+  for (s in scales) {
+    key <- watson_idas_scales[[key_name(s)]]
+    row <- scale_row(s)
+    expect_setequal(
+      row$itemNumbers[[1]],
+      battery_numbers("IDAS-II", c(key$forward, key$reverse))
+    )
+    expect_setequal(row$reverseNumbers[[1]], battery_numbers("IDAS-II", key$reverse))
+    expect_identical(row$nItems, length(c(key$forward, key$reverse)))
+  }
+})
+
+test_that("the IDAS-II key's text matches the item text at each IDAS-II number", {
+  # The battery prints each key item without its scale tag and without the
+  # doubled space some items carry before that tag. Nothing else changes.
+  expected <- gsub("\\s+", " ", sub("\\s*\\([^()]+\\)$", "", watson_idas_text))
+  items <- hitopdat_items$Text[battery_numbers("IDAS-II", 1:99)]
+  expect_identical(items, expected)
+})
+
 # ---- The five totals: each holds every item of its measure, none reversed. ----
 # ---- Battery ranges from the battery's flow order (test-data-hitopdat.R). ----
 
