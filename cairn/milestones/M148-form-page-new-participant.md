@@ -54,7 +54,7 @@ A participant who opens a study link for the first time reads text written for t
 - [x] T8 (review R1): Make `canInflate()` also check that `new DecompressionStream('deflate-raw')` works, so a browser without `deflate-raw` gets the browser sentence. Add a P1 test with a constructor that throws on `deflate-raw`.
 - [x] T9 (review R2 to R4): Change the failed-send lead to say that the page got no confirmation, and keep the heading. Make sure that the article agrees. Draw `p.sending` empty on the last page and write its text at the send. Rewrite the missed count on each answer. Add a test for each change.
 - [x] T10 (review R5 to R8): In P4, leave the middle item blank in the one-missed probe. Make the identifier hint fit a recruiter participant. Change "responses were sent" at `online-collection.Rmd:99` and in the `send.spec.js` comment. Change the NEWS host sentence to "outside that section".
-- [ ] T11 (review S2): Make the start screen say that an unconfirmed send saves the answers as a file. Update README line 554 and `render.spec.js` lines 19 and 169 to match.
+- [x] T11 (review S2): Make the start screen say that an unconfirmed send saves the answers as a file. Update README line 554 and `render.spec.js` lines 19 and 169 to match.
 - [ ] T12 (review S3, S5): Draw the missed count (role alert) empty, and write only a changed number to it. Add a test that an answer removes its own mark before the next press.
 - [ ] T13 (review S4, S6 to S10): Remove "store" from README lines 608 and 924. Fix the `send.spec.js` header and the consent-screen comment. Say in NEWS that the marks show after Next or Finish. Find the sending line by its class in `finish()`. Skip an Enter with keyCode 229.
 
@@ -85,6 +85,11 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-10-01: /milestone-review pass 2: AC1 to AC6 verified on fresh runs (878 of 878), and the gate checks are clean. Review S1 shows AC1's browser clause failing on Chrome and Edge 80 to 92 for a `c` link (`Object.hasOwn`).
 - 2026-10-01: amendment return: AC1 — "A browser that cannot unpack a `z` link says to open it in another browser."
 - 2026-10-01: step-7 gate: Jeff chose "Narrow AC1, fix". AC1 amended (review send-back) and unticked. T11 to T13 hold S2 to S10, and Coverage maps them. S11 to S13 go to candidate rows at the post-merge hygiene pass. Defect returns 1, amendment returns 1 (AC1). Status set to in-progress.
+- 2026-10-01: /milestone-implement resumed. Both branches are level with `origin/main`.
+- 2026-10-01: re-audit: AC1 (full) — two unbounded clauses. "A browser" also covers browsers that cannot parse `form.js` (`??`), which stay on "Loading". "A connection failure" also covers a body cut off after the headers, which gets the contact sentence. It also found "Each time" tied to the test, not the page. It proposed narrower wording.
+- 2026-10-01: AC1 mini gate: Jeff adopted the audit's narrower wording. It keys the clauses to an export fetch that gets no response and to a `z` link in a browser without `deflate-raw`. Not yet written, pending its own fresh reader.
+- 2026-10-01: re-audit: AC1 (full) — three clauses still reach refusals that are not shown. A list with one HTTP 500 and one fetch with no response shows the 500's contact sentence. A link with both `c` and `z` in a browser without `DecompressionStream` shows the contact sentence. Browsers too old to parse `form.js` show no refusal. It proposed clauses keyed to "the shown refusal". Second line for AC1, so further wording goes to Jeff.
+- 2026-10-01: T11 done (hitop-form `bf97d8c`). The start screen's fallback sentence now opens "If the page gets no confirmation that they arrived". The R6 test failed on the old text first. README line 554 and the R6 comment match. `render`, `screens`, `send` and `save` specs: 106 passed.
 
 ## Decisions
 
