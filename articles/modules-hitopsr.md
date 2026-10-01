@@ -526,12 +526,13 @@ form’s module file, still needs `items`.
 
 The Word, Qualtrics and REDCap files above each need a platform of their
 own. [hitop-form](https://jmgirard.github.io/hitop-form/) is a third
-route that needs none: an online form that shows a HiTOP-SR module (or
-the full HiTOP-SR or HiTOP-BR) in the browser. A study link tells it
-where each participant’s answers go: a file saved on the participant’s
-own device, which they send to you, or a web address or Supabase table
-the link names. A Google Sheet’s script is one such web address, and you
-download the sheet as one CSV file. The [Collecting Responses
+route that needs none: an online form that shows a HiTOP-SR module in
+the browser, or any of five forms in full: the PID-5, PID-5-SF,
+PID-5-BF, HiTOP-SR and HiTOP-BR. A study link tells it where each
+participant’s answers go: a file saved on the participant’s own device,
+which they send to you, or a web address or Supabase table the link
+names. A Google Sheet’s script is one such web address, and you download
+the sheet as one CSV file. The [Collecting Responses
 Online](https://jmgirard.github.io/hitop/articles/online-collection.md)
 article walks the Google Sheet route end to end, from deploying the
 sheet’s script to scoring.
@@ -539,13 +540,15 @@ sheet’s script to scoring.
 The online form reads the same module file
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
 writes. Open the [Study Link
-Builder](https://jmgirard.github.io/hitop-form/link.html), paste the
-module file in or choose it as a file, name the study, choose where the
-responses go, and it gives you one link to send to participants. A
-module file from a shuffled Word form carries that form’s order, and the
-online form shows the items in it. The Study Link Builder’s “Show the
-items in a random order” box asks for a new order per participant
-instead; the module file’s order is then not followed.
+Builder](https://jmgirard.github.io/hitop-form/link.html) and choose the
+HiTOP-SR. Open its closed “Item order and HiTOP-SR module” section, and
+paste the module file in or choose it as a file. Name the study, choose
+where the responses go, and press “Make the link”. The link shows under
+“Your study link”, ready to send to participants. A module file from a
+shuffled Word form carries that form’s order, and the online form shows
+the items in it. The “Show the items in a random order” box, in the same
+section, asks for a new order per participant instead; the module file’s
+order is then not followed.
 
 Whichever route the answers take, the CSV file has five lead columns
 (`study`, `participant`, `instrument`, `form_build`, `submitted`) and

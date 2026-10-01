@@ -50,7 +50,8 @@ respondents answer only a small subset of items.
 3.  **Collect responses**. Paper and survey-platform responses arrive as
     your own data; an online form [sends each participant's
     responses](https://jmgirard.github.io/hitop/articles/online-collection.html#make-the-study-link)
-    to the store named in the study link, or saves them as a file.
+    to the web address or Supabase table named in the study link, or
+    saves them as a file.
 4.  **Read and score** the data in R:
     [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
     reads an online form's file or table, and the

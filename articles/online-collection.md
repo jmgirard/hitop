@@ -66,21 +66,26 @@ then refuses the download and names the first row that differs.
 ## 2. Make the study link
 
 Open the [Study Link
-Builder](https://jmgirard.github.io/hitop-form/link.html). Choose the
-instrument (and, for a HiTOP-SR module, paste or choose the module file
-written by
-[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)),
-and name the study. For two or three instruments in one session, see
-[Several instruments in one
-session](#several-instruments-in-one-session). The Study Link Builder,
-opened from a “Make a study link” button on an instrument’s download
-page, arrives with that instrument chosen. When opened with a module in
-its address, it arrives with the module file pasted in as well. Give a
-participant identifier if the link is for one person; leave it empty for
-a link shared with many, and the page asks each participant for one
-before the form starts. Under “Where responses go”, choose “A web
-address” and paste the `/exec` URL from step 1 into the “Web address”
-field. Press “Make the link” and send the link to the participants.
+Builder](https://jmgirard.github.io/hitop-form/link.html). Its required
+parts come first: the instruments, the study name and where responses
+go. The optional parts sit below them in five closed sections. Press a
+section’s name to open it. Choose the instrument and name the study. For
+a HiTOP-SR module, open the “Item order and HiTOP-SR module” section,
+and paste or choose the module file written by
+[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md).
+For two or three instruments in one session, see [Several instruments in
+one session](#several-instruments-in-one-session). The Study Link
+Builder, opened from the “Open the Study Link Builder” button on an
+instrument’s download page, arrives with that instrument chosen. When
+opened with a module in its address, it arrives with the module file
+pasted in as well. In the “Participants and recruiting site” section,
+give a participant identifier if the link is for one person. Leave it
+empty for a link shared with many, and the online form asks each
+participant for one before the form starts. Under “Where responses go”,
+choose “A web address” and paste the `/exec` URL from step 1 into the
+“Web address” field. Press “Make the link”. The link shows under “Your
+study link”, beside a “Copy the link” button. Send it to the
+participants.
 
 When a participant presses Finish, the page posts their answers to the
 address as one row and waits for the script to confirm. On a confirmed
@@ -155,12 +160,13 @@ Every item column is an integer. The sixth column, `item_order`, is the
 order the participant saw the items, as item numbers, when the file
 records one and `NA` when it does not, and scoring does not read it. The
 page records it when the study link asks for a random order, which the
-Study Link Builder’s “Show the items in a random order” box sets. The
-seventh and eighth columns, `prolific_study` and `prolific_session`, are
-the study and session identifiers Prolific passed to the page when the
-link recruits through Prolific, as [the Prolific
-route](#the-prolific-route) below describes, and `NA` when it does not,
-as here. Scoring does not read them either.
+“Show the items in a random order” box sets, in the Study Link Builder’s
+“Item order and HiTOP-SR module” section. The seventh and eighth
+columns, `prolific_study` and `prolific_session`, are the study and
+session identifiers Prolific passed to the page when the link recruits
+through Prolific, as [the Prolific route](#the-prolific-route) below
+describes, and `NA` when it does not, as here. Scoring does not read
+them either.
 
 A folder can hold the download beside any files participants sent by
 hand:
@@ -352,17 +358,17 @@ is compatible with
 Prolific?](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific)).
 The page fits that in two steps at the Study Link Builder.
 
-Choose Prolific in the “Recruiting site” menu and leave the participant
-field empty. The builder then prints the link with the three
-placeholders on its end. Paste that link as the study URL on Prolific’s
-study page. When a participant opens it, the page takes their Prolific
-ID as the participant identifier and asks for none, and it writes the
-study and submission IDs into `prolific_study` and `prolific_session`,
-after `submitted` (and after `item_order` under the random order). A
-Supabase table for such a link takes the two columns too, and the
-builder’s SQL adds them. When you preview the study on Prolific, the
-preview passes a 24-character ID in place of the placeholder
-([Previewing your
+In the “Participants and recruiting site” section, choose Prolific in
+the “Recruiting site” menu and leave the participant field empty. The
+builder then prints the link with the three placeholders on its end.
+Paste that link as the study URL on Prolific’s study page. When a
+participant opens it, the page takes their Prolific ID as the
+participant identifier and asks for none, and it writes the study and
+submission IDs into `prolific_study` and `prolific_session`, after
+`submitted` (and after `item_order` under the random order). A Supabase
+table for such a link takes the two columns too, and the builder’s SQL
+adds them. When you preview the study on Prolific, the preview passes a
+24-character ID in place of the placeholder ([Previewing your
 study](https://researcher-help.prolific.com/en/articles/445131-previewing-your-study)),
 so the preview walks the form as a participant would; a link opened with
 the placeholders still in it, as the builder’s “Open the link” does,
@@ -379,10 +385,10 @@ Give the completion URL from the study’s page on Prolific, of the form
 `https://app.prolific.com/submissions/complete?cc=…` ([the compatibility
 article](https://researcher-help.prolific.com/en/articles/445178-what-survey-experimental-software-is-compatible-with-prolific),
 under “Returning Participants to Prolific”), in the builder’s
-“Completion URL” field. After a confirmed send the page shows the sent
-screen, with a link to that address in place of “You can close this
-page.”, and then sends the participant there, which is the return
-Prolific recommends ([Data
+“Completion URL” field, in its “When the participant finishes” section.
+After a confirmed send the page shows the sent screen, with a link to
+that address in place of “You can close this page.”, and then sends the
+participant there, which is the return Prolific recommends ([Data
 collection](https://researcher-help.prolific.com/en/articles/445127-data-collection)).
 After a saved file, because the link names no web address or Supabase
 table or the send was not confirmed, the page shows the file name first,
@@ -397,9 +403,9 @@ and each code has its own `?cc=` address, as [the API
 reference](https://docs.prolific.com/api-reference/studies/the-study-object)
 states under `completion_codes`. To give a saved file its own code, put
 that code’s address in the builder’s “Completion URL after a saved file”
-field, beside the completion URL. The saved-file screens then link to it
-in place of the completion URL, and a confirmed send still goes to the
-completion URL.
+field, below the completion URL in the “When the participant finishes”
+section. The saved-file screens then link to it in place of the
+completion URL, and a confirmed send still goes to the completion URL.
 
 The download then reads as above, with `prolific_study` and
 `prolific_session` filled. The file below is one the page saved under
@@ -419,14 +425,15 @@ responses[, c("participant", "prolific_study", "prolific_session")]
 ## The SONA and CloudResearch Connect routes
 
 Other recruiting sites can also pass each participant’s identifier to
-the page in the study link’s address, under a parameter of their own.
-Choose the site in the Study Link Builder’s “Recruiting site” menu and
-leave the participant field empty. The link then names the parameter in
-its `participantParam` field, and the page takes the participant
-identifier from it. When the address carries no value there, a blank
-one, or a placeholder the site did not fill, the page asks for the
-identifier on its start screen. No column is added: the identifier is
-the `participant` column, so the download reads as in the steps above.
+the page in the study link’s address, under a parameter of their own. In
+the Study Link Builder’s “Participants and recruiting site” section,
+choose the site in the “Recruiting site” menu and leave the participant
+field empty. The link then names the parameter in its `participantParam`
+field, and the page takes the participant identifier from it. When the
+address carries no value there, a blank one, or a placeholder the site
+did not fill, the page asks for the identifier on its start screen. No
+column is added: the identifier is the `participant` column, so the
+download reads as in the steps above.
 
 [SONA](https://www.sona-systems.com/) replaces the text `%SURVEY_CODE%`
 in a study’s Study URL with a number unique to the participant ([Using
@@ -441,12 +448,13 @@ SONA. To grant credit, SONA’s client-side completion URL, of the form
 must be loaded with the participant’s survey code in place of `XXXX`
 ([External Study Credit
 Granting](https://www.sona-systems.com/researcher/external-study-credit-granting/)).
-Give that address in the builder’s “Completion URL” field with
-`{participant}` in place of `XXXX`. The page replaces `{participant}`
-with the participant’s identifier before it sends the participant there
-after a confirmed send, and before it links there after a saved file
-(unless the builder’s “Completion URL after a saved file” names another
-address, which takes `{participant}` the same way).
+Give that address in the builder’s “Completion URL” field, in the “When
+the participant finishes” section, with `{participant}` in place of
+`XXXX`. The page replaces `{participant}` with the participant’s
+identifier before it sends the participant there after a confirmed send,
+and before it links there after a saved file (unless the builder’s
+“Completion URL after a saved file” names another address, which takes
+`{participant}` the same way).
 
 That completion URL carries a key specific to your study. SONA notes
 that a participant can read it, because their browser loads the URL, and
@@ -471,24 +479,26 @@ Survey with
 Connect](https://connect-researcher-help.cloudresearch.com/hc/en-us/articles/21181529476500-How-to-Integrate-your-Survey-with-Connect)).
 With Connect chosen, the builder names `participantId` as the parameter
 and adds nothing to the link. Give the link as the project URL in
-Connect, and the completion redirect URL as the completion URL.
-Connect’s `assignmentId` and `projectId`, which that page says need not
-be collected, are not recorded.
+Connect, and the completion redirect URL as the builder’s “Completion
+URL”, in the “When the participant finishes” section. Connect’s
+`assignmentId` and `projectId`, which that page says need not be
+collected, are not recorded.
 
-For another site, choose “Another site” and type the name of the
-parameter that site adds to the address. The builder refuses `id` and
-`participantId` there, because the SONA and Connect choices write those
-names.
+For another site, choose “Another site” in the “Recruiting site” menu of
+the “Participants and recruiting site” section. Then type the name of
+the parameter that site adds to the address in the “Address parameter”
+field below the menu. The builder refuses `id` and `participantId`
+there, because the SONA and Connect choices write those names.
 
 ## Consent text before the form
 
 The consent text belongs to you and your review board. The page shows
 the text you give and adds no consent wording of its own. Paste the
-approved text into the Study Link Builder’s “Consent text” box. The page
-then shows the text on a screen of its own, headed “Consent to take
-part”, before the form and its start screen. Under the text are an “I
-agree” and an “I do not agree” button, and “I agree” goes on to the
-start screen.
+approved text into the “Consent text” box, in the Study Link Builder’s
+“Consent” section. The page then shows the text on a screen of its own,
+headed “Consent to take part”, before the form and its start screen.
+Under the text are an “I agree” and an “I do not agree” button, and “I
+agree” goes on to the start screen.
 
 The page reads the text as plain text. A blank line starts a new
 paragraph, and a single line break stays a line break. A tag or an
@@ -508,9 +518,9 @@ recruiting site can give a study a completion address for this outcome,
 such as a Prolific completion code for participants who do not consent
 ([Custom completion
 codes](https://researcher-help.prolific.com/en/articles/445170-custom-completion-codes)).
-Give it as the builder’s “Completion URL after a decline”. The link
-carries it as its `completeDeclined` field, and the page sends a
-participant who declines to that address.
+Give it as the builder’s “Completion URL after a decline”, in the
+“Consent” section. The link carries it as its `completeDeclined` field,
+and the page sends a participant who declines to that address.
 
 A link with consent text carries the same fields packed, so a long text
 makes a shorter link. The rows, the file and the Supabase table have the
@@ -572,13 +582,13 @@ type. Its first row names the columns, in lower case. The columns
 question. `list` is `before` or `after`, and `type` is `text`, `number`,
 `choice` or `multi`, both in lower case. `options` holds the options in
 one cell, separated by `|`, such as `Phone|Tablet|Computer`. Save the
-file as “CSV UTF-8” and choose it under “Load questions from a file”.
-The builder reads the file in your browser and sends it nowhere. It
-refuses a file with a fault and names the fault. A fault in one cell is
-named by its row and column, or by its row and field number in the
-header row or past the last column. “Download these questions” saves the
-builder’s questions in the same form. The hitop-form README’s section
-[Write your questions in a
+file as “CSV UTF-8” and choose it under “Load questions from a file”, in
+the builder’s “Your own questions” section. The builder reads the file
+in your browser and sends it nowhere. It refuses a file with a fault and
+names the fault. A fault in one cell is named by its row and column, or
+by its row and field number in the header row or past the last column.
+“Download these questions” saves the builder’s questions in the same
+form. The hitop-form README’s section [Write your questions in a
 spreadsheet](https://github.com/jmgirard/hitop-form#write-your-questions-in-a-spreadsheet)
 describes each column.
 
