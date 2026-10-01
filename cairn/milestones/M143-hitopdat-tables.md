@@ -109,6 +109,7 @@ The package ships the 382 HiTOP-DAT items, their answer options, their scales an
 - 2026-10-01: restated from plan commit `948f19d2`, which the merge replaced: plan chose the IDAS-II scoring key (Watson, 2011) over Watson et al. (2012) as the IDAS-II oracle, because the article prints no item-level key; falsified by a later published IDAS-II key that differs from the 2011 document. Plan chose the IPIP wording for CAT-PD item 194 over the file's cut-off text, signed off by Jeff on 2026-10-01; falsified by the DAT team stating that the battery uses a different wording.
 - 2026-10-01: review fixes applied. SOURCES.md and `watson2011idas.md` name the key's sender as a HiTOP-DAT user; SOURCES records Jeff's item-194 sign-off and the DUDIT "dimethyltrypamine" spelling under DAT-9; D-085's page range corrected to pp. 20-25 (a citation slip in an entry written the same day); D-082's missing blank line restored; `hitopdat_info.R` defines its own `%||%` and three comment lines are rewrapped (rebuild unchanged); the dataset sweep test names the three DAT tables. Follow-ups added to the HiTOP-DAT and release candidate rows. `devtools::test()` passes (0 failed), `check_pkgdown()` clean; `devtools::check()` running.
 - 2026-10-01: fixes verified; status back to review for the re-check of AC4 and AC6.
+- step-7 approval: m143-hitopdat-tables approved for merge
 
 ## Decisions
 
