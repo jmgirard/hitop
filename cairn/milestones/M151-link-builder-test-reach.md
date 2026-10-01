@@ -34,7 +34,7 @@ The Study Link Builder's tests state their expectations apart from the page's co
   - bytes that are not UTF-8
   - text that is not JSON
   - JSON that holds no form
-- [ ] AC6: A grep for `openBuilderSections` in `tests/` returns no hit. The specs that `git grep -l openBuilderSections a2d74e3 -- tests/` lists open each optional section they use by a click on its summary, through one helper.
+- [x] AC6: A grep for `openBuilderSections` in `tests/` returns no hit. The specs that `git grep -l openBuilderSections a2d74e3 -- tests/` lists open each optional section they use by a click on its summary, through one helper.
 - [ ] AC7: The hitop-form Playwright suite passes locally and on its PR's CI.
 
 ## Coverage
@@ -123,3 +123,18 @@ Independent review: three fresh reviewers (Opus diff-bug, Sonnet blame-history, 
 - F21 (prior-review): `README.md:640` says "Eleven example files", and two export copies were added. Those copies are not example response files.
 - F22 (orchestrator): N7 in `network.spec.js` fails at random, also on `main` (see AC7).
 - F23 (blame): `BAD_Z` case 1 runs in Chromium only. DESIGN Known issue 13 already records this.
+
+Pass 2, 2026-09-30, after T8. Both branches were current with their `main`. The full hitop-form suite passed 845 of 845 at `7e10236`. Since pass 1, only `setBox()` in `link-consent.spec.js` changed, so the AC1-AC5 evidence above stands on this run.
+
+- AC6: pass. A grep for `openBuilderSections` in `tests/` returns no hit. `setBox()` now calls `openSectionOf` before its write, which covers `make()`, K1, K2, K3, the nine K5 probes and the 20,000-character test. The T8 plant failed 13 of 17 tests in that spec. All three pass-2 reviewers checked each write in the nine specs against the five sections of `link.html`. Each write follows an `openSectionOf` call for its section, or a `c` or `z` load whose prefill opens it. Only F6's hint reads touch a closed section.
+- Consistency gate: `cairn_validate.py` exit 0, with advisory warnings only. In hitop, `devtools::document()` made no change, `pkgdown::check_pkgdown()` found no problems, and `devtools::check()` gave 0 errors, 0 warnings, 0 notes.
+
+Pass-2 findings, most severe first. Each lens found F1 closed and no F2-F23 entry wrong.
+
+- G1 (Opus): at `link-questions.spec.js:297-298`, `openSectionOf` runs straight after a `z` load. The `z` prefill opens Questions after an async unpack (`link.html:875`, `:976`). `openSectionOf` can read `open` as false, the prefill then opens the section, and the click closes it. The test then fails at random. Line 207 waits for 51 groups first, so it is safe.
+- G2 (Opus, prior-review): the `openSectionOf` calls after a prefill at `link.spec.js:1090` and `link-questions.spec.js:207` and `:298` hide a prefill that does not open its section. S5 in `link-sections.spec.js` covers that case.
+- G3 (blame, prior-review): `setBox()` writes `.value` and fires no `input` event, so the Consent summary still reads "Not used". The new comment says the section opens "as a researcher opens it", which claims more than the test does.
+- G4 (blame): the K5 probes now open Consent before the refusal, so they cannot catch a `refuseAt` that does not open it. `main` opened every section, so this is not new, and `link-sections.spec.js` covers it.
+- G5 (blame): K4 reads prefilled values with Consent opened by the prefill, not by a click. `toHaveValue` reads a closed field.
+- G6 (blame): the T8 work-log line names `make()` and K2, and the plant also reached the K5 probes and the 20,000-character test.
+- G7 (prior-review): the header of `link-consent.spec.js` and its README row do not say that the spec opens its sections.
