@@ -43,7 +43,7 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - [x] T2: Replace the 51-question tests in `questions.spec.js`, `link-questions.spec.js` and `link-questions-file.spec.js`, and add the `c` size tests.
 - [x] T3: Add the Supabase column check to `link.html`'s build, with tests. Write a hitop source note on PostgreSQL's Appendix K limits.
 - [x] T4: Add the link-length warning to the result region, with the padded-length tests. Write a hitop source note on RFC 9110 section 4.1.
-- [ ] T5: Update the link.html hint, the README's questions section and test rows, and the hitop article. Run AC4's paragraph search and read each hit.
+- [x] T5: Update the link.html hint, the README's questions section and test rows, and the hitop article. Run AC4's paragraph search and read each hit.
 - [ ] T6: hitop NEWS line, `pkgdown::build_article()`, `devtools::check()`, and the companion PR.
 
 ## Work log
@@ -55,6 +55,7 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - 2026-10-01: T1+T2 done. `QUESTIONS_MAX` and its count check removed. `encodeLink()` checks the size of every setup, with the "Shorten" sentence only for consent text or questions. `decodeLink()` refuses a `c` over 100,000 decoded bytes. The 51-question refusals became 51 and 200 accepted in questions, link-questions and link-questions-file specs. S12's no-question probe removed: the editor has no such fault now. Z6 and an LQ5 test cover `c` at 100,000 and 100,001 bytes. The test page server takes headers up to 256 KiB, since Node refuses a request line over 16 KiB. A plant that disabled both checks turned 3 tests red. Full suite 954 passed, 1 layout failure (pid5 legend) that passed on a rerun of its spec.
 - 2026-10-01: T3 done. form.js gains `POSTGRES_COLUMNS_MAX` (1,600) and `storeColumns()`, which `storeSql()` now uses. link.html refuses a Supabase table over the limit, naming the count, after the export fetch. LQ7 builds 1,600 columns (its SQL counted) and refuses 1,601. S12 fires the new refusal. Plants at 1,601 and 1,599 each turned the matching tests red. Source note `postgresql2026limits.md` added. 157 passed in the three affected specs.
 - 2026-10-01: T4 done. If the link passes `LINK_WARN_LENGTH` (8,000), link.html shows `#long` in the result region. Each build clears it. L37 pads the study name, with a 64-character participant parameter, to exact lengths of 8,000 and 8,001. It also checks that a shorter link clears the warning. Plants at 7,999, at 8,001 and with no clearing each turned one test red. Source note `rfc9110.md` added. The L37 block was appended with a shell heredoc, not the Edit tool.
+- 2026-10-01: T5 done. The link.html hint reads "No limit but the 100,000-byte setup." (40 words, the page's limit). The README's questions section and the article's state the 100,000-byte limit, the 1,600-column limit and the row-size limit. The README's study-link section names the long-link warning and the `c` refusal, its Supabase steps point to the column limit, and 7 test rows are updated. The article's setup-file section names the warning. AC4 search over 22 paths and 851 paragraphs: 2 hits, none a limit on the number of questions. The same search finds the old sentence in main's README, link.html and article.
 
 ## Decisions
 
