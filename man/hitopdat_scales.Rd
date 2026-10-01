@@ -31,7 +31,8 @@ gives the scale. Item numbers are battery numbers, as in
 \details{
 Scale membership and reverse keying come from the scoring of the battery's
 Qualtrics file. The CAT-PD facets are checked against the IPIP CAT-PD-SF
-v1.1 key. An item can be reversed in one scale and not in another: the
+v1.1 key, and the IDAS-II scales against the IDAS-II scoring key (Watson,
+2011). An item can be reversed in one scale and not in another: the
 IDAS-II's General Depression reverses two Well-Being items that Well-Being
 scores forward.
 }
@@ -41,4 +42,4 @@ hitopdat_scales
 \seealso{
 \link{hitopdat_items}
 }
-\keyword{datasets}
+\keyword{internal}

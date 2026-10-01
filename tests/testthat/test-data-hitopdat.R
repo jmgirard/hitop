@@ -171,3 +171,24 @@ test_that("each measure's instruction text is the file's, without markup", {
   expect_identical(start[names(expected)], expected)
   expect_false(any(grepl("<|&[a-z]+;", start[!is.na(start)])))
 })
+
+test_that("the three tables' help pages are marked internal", {
+  # The tables are not announced yet: each help page carries the internal
+  # keyword, so the help index and the pkgdown reference index leave it out.
+  # The source man/ pages are read under devtools; an installed copy's Rd
+  # database under R CMD check, where man/ is not beside the tests.
+  pages <- c("hitopdat_items.Rd", "hitopdat_choices.Rd", "hitopdat_scales.Rd")
+  man_dir <- test_path("..", "..", "man")
+  rd <- if (dir.exists(man_dir)) {
+    stats::setNames(lapply(file.path(man_dir, pages), tools::parse_Rd), pages)
+  } else {
+    tools::Rd_db("hitop")[pages]
+  }
+  for (page in pages) {
+    keywords <- unlist(lapply(
+      rd[[page]][vapply(rd[[page]], attr, "", "Rd_tag") == "\\keyword"],
+      as.character
+    ))
+    expect_true("internal" %in% keywords, info = page)
+  }
+})

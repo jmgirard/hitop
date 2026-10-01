@@ -382,6 +382,7 @@
 #'   \item{Choice_Set}{Name of the item's answer set (see [hitopdat_choices])}
 #' }
 #' @seealso [hitopdat_choices], [hitopdat_scales]
+#' @keywords internal
 #' @examples
 #' hitopdat_items
 "hitopdat_items"
@@ -400,6 +401,7 @@
 #'   \item{Label}{Response label displayed to respondents}
 #' }
 #' @seealso [hitopdat_items]
+#' @keywords internal
 #' @examples
 #' hitopdat_choices
 "hitopdat_choices"
@@ -414,7 +416,8 @@
 #'
 #' Scale membership and reverse keying come from the scoring of the battery's
 #' Qualtrics file. The CAT-PD facets are checked against the IPIP CAT-PD-SF
-#' v1.1 key. An item can be reversed in one scale and not in another: the
+#' v1.1 key, and the IDAS-II scales against the IDAS-II scoring key (Watson,
+#' 2011). An item can be reversed in one scale and not in another: the
 #' IDAS-II's General Depression reverses two Well-Being items that Well-Being
 #' scores forward.
 #'
@@ -431,6 +434,7 @@
 #'   \item{nItems}{The number of items in the scale (integer)}
 #' }
 #' @seealso [hitopdat_items]
+#' @keywords internal
 #' @examples
 #' hitopdat_scales
 "hitopdat_scales"

@@ -27,4 +27,4 @@ hitopdat_choices
 \seealso{
 \link{hitopdat_items}
 }
-\keyword{datasets}
+\keyword{internal}
