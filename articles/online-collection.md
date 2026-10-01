@@ -89,7 +89,7 @@ participants.
 
 When a participant presses Finish, the page posts their answers to the
 address as one row and waits for the script to confirm. On a confirmed
-send the page says the responses were sent to the study team, and saves
+send the page says the answers were sent to the study team, and saves
 nothing. When the send is not confirmed, because of an error, a lost
 connection, or no answer within the page’s limit, the page saves a CSV
 file on the participant’s device and names it, so the participant can
@@ -253,8 +253,8 @@ The page shows its screens in this order:
 1.  With consent text in the link, the consent screen.
 2.  With questions before the form, the “Before you begin” screen.
 3.  For each instrument in turn, its start screen and then its item
-    pages. Each start screen names its part, such as “Part 2 of 3”, and
-    the item and page numbers start again at 1.
+    pages. Each start screen and each item page names its part, such as
+    “Part 2 of 3”, and the item and page numbers start again at 1.
 4.  With questions after the form, the “Before you finish” screen.
 
 Under a random order, each instrument’s items are shuffled among that
@@ -506,9 +506,10 @@ entity, such as `<b>` or `&amp;`, shows as typed, so the text cannot
 carry formatting or links. The text can hold up to 20,000 characters,
 and the builder refuses a longer one.
 
-“I do not agree” shows a closing screen with no way back to the form.
-The page sends no answer and saves no file, so no row reaches the
-destination and
+“I do not agree” first asks the participant to confirm, with “Yes, I do
+not agree” and “Go back”. After “Yes, I do not agree”, the page shows a
+closing screen with no way back to the form. The page sends no answer
+and saves no file, so no row reaches the destination and
 [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
 never sees the participant. The closing screen shows the builder’s
 “Declined text”. When that box is empty, it shows “You chose not to take
