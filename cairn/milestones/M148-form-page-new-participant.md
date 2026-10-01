@@ -56,7 +56,7 @@ A participant who opens a study link for the first time reads text written for t
 - [x] T10 (review R5 to R8): In P4, leave the middle item blank in the one-missed probe. Make the identifier hint fit a recruiter participant. Change "responses were sent" at `online-collection.Rmd:99` and in the `send.spec.js` comment. Change the NEWS host sentence to "outside that section".
 - [x] T11 (review S2): Make the start screen say that an unconfirmed send saves the answers as a file. Update README line 554 and `render.spec.js` lines 19 and 169 to match.
 - [x] T12 (review S3, S5): Draw the missed count (role alert) empty, and write only a changed number to it. Add a test that an answer removes its own mark before the next press.
-- [ ] T13 (review S4, S6 to S10): Remove "store" from README lines 608 and 924. Fix the `send.spec.js` header and the consent-screen comment. Say in NEWS that the marks show after Next or Finish. Find the sending line by its class in `finish()`. Skip an Enter with keyCode 229.
+- [x] T13 (review S4, S6 to S10): Remove "store" from README lines 608 and 924. Fix the `send.spec.js` header and the consent-screen comment. Say in NEWS that the marks show after Next or Finish. Find the sending line by its class in `finish()`. Skip an Enter with keyCode 229.
 
 ## Work log
 
@@ -92,6 +92,7 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-10-01: T11 done (hitop-form `bf97d8c`). The start screen's fallback sentence now opens "If the page gets no confirmation that they arrived". The R6 test failed on the old text first. README line 554 and the R6 comment match. `render`, `screens`, `send` and `save` specs: 106 passed.
 - 2026-10-01: AC1 final wording: Jeff chose the second reader's text, which keys each clause to the shown refusal, and AC1 now holds it. Three cases go to a follow-up row at the post-merge pass. They are a list mixing HTTP 500 with a dropped fetch, a `c` plus `z` link on an old browser, and a cut-off body. Browsers that cannot parse `form.js` go to a Known issue line there.
 - 2026-10-01: T12 done. Each item page draws `p.missed-count` (role alert) empty above the items. A press empties it, moves it above the first missed item, and writes the count in the next frame. An answer writes it only for a new number. P4 now checks the drawn alert, each answer's own mark, and no write for an unchanged number. Three plants each failed both P4 tests on their own assert: a write on every answer, no unmark, and no drawn alert. README updated. Full suite: 878 passed.
+- 2026-10-01: T13 done (hitop-form `d401c64`). The identifier field ignores an Enter with keyCode 229. A new P3 test sends that keydown, then one with keyCode 13. It failed before the fix with 15 items shown, and passed after. `finish()` finds `p.sending` by class. The README has no "store" left. The consent comment and the `send.spec.js` header match the code. NEWS says the marks show after "Next" or "Finish". Full suite: 879 passed.
 
 ## Decisions
 

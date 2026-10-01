@@ -13,9 +13,9 @@
   identifier field has a hint, asks a phone keyboard not to correct it, and
   starts the form on Enter. Each item page shows its page, and its part
   under a list, above the items and beside "Next" or "Finish". A closed
-  "Instructions" section repeats the instructions. A blank item is marked
-  "Please answer this item", with a count of blank items above the first,
-  and each option is at least 44 px high. "I do not agree" asks once to
+  "Instructions" section repeats the instructions. After a press of "Next"
+  or "Finish", each blank item is marked "Please answer this item", with a
+  count of blank items above the first. Each option is at least 44 px high. "I do not agree" asks once to
   confirm. A send shows "Sending your answers. Please keep this page open.".
   An unconfirmed send's screen is headed "Your answers were not sent". It
   says that no confirmation came that the answers reached the study team.
