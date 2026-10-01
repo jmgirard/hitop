@@ -1,6 +1,6 @@
 # M153: Questions limited by size, and a long-link warning
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** M152
 - **Driving RR:** —
@@ -58,6 +58,7 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - 2026-10-01: T5 done. The link.html hint reads "No limit but the 100,000-byte setup." (40 words, the page's limit). The README's questions section and the article's state the 100,000-byte limit, the 1,600-column limit and the row-size limit. The README's study-link section names the long-link warning and the `c` refusal, its Supabase steps point to the column limit, and 7 test rows are updated. The article's setup-file section names the warning. AC4 search over 22 paths and 851 paragraphs: 2 hits, none a limit on the number of questions. The same search finds the old sentence in main's README, link.html and article.
 - 2026-10-01: T6 done. NEWS gains a bullet on the removed limit, the `c` limit, the column refusal and the long-link warning. The unreleased questions entry loses "up to 50 questions". The installed hitop predated the multi-instrument reader, so the article failed at its two-instrument chunk. After `devtools::install()` of the branch, `pkgdown::build_article()` rendered. `devtools::check()`: 0 errors, 0 warnings, 0 notes. Playwright: 961 passed. The companion PR waits for review, which opens PRs after approval (tracking rules).
 - 2026-10-01: claim audit: 46 claims read, 4 corrected — hitop-form tests/link.spec.js, link.html, README.md; hitop NEWS.md, vignettes/articles/online-collection.Rmd. L37 now pads the parameter name at run time, the hint states the byte limit alone, the long-answer sentence says "can be kept outside", and the column wording names the link, since "Download the setup file" has no column check. The reader's re-read found all 4 hold. Playwright after the fixes: 961 passed.
+- 2026-10-01: implement done, status review. Article re-rendered after the audit fixes.
 
 ## Decisions
 
