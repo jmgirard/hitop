@@ -1,6 +1,6 @@
 # Roadmap
 
-_Last hygiene check: 2026-10-01 (92nd pass, M150 done): row archived, M146 row pruned, tutorial "the page" row added, M148 work-log note. validate green._
+_Last hygiene check: 2026-10-01 (93rd pass, M151 done): row archived, M147 row pruned, M151 follow-ups in the Study Link Builder row. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
@@ -10,11 +10,10 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M143 | HiTOP-DAT item, answer and scale tables | planned | — | normal | milestones/M143-hitopdat-tables.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
-| M147 | Module Builder: short start, labelled picker, clear hand-off | done | M146 | normal | milestones/archive/M147-module-builder-new-user.md |
 | M148 | Online form: text for participants, progress, and a way on from errors | planned | M146 | normal | milestones/M148-form-page-new-participant.md |
 | M149 | Study Link Builder: early presses, file reads and refusals | done | — | high | milestones/archive/M149-link-builder-presses-and-refusals.md |
 | M150 | Study Link Builder: hint facts, names and tutorials | done | M149 | high | milestones/archive/M150-link-builder-hint-facts.md |
-| M151 | Study Link Builder test reach | review | M149 | normal | milestones/M151-link-builder-test-reach.md |
+| M151 | Study Link Builder test reach | done | M149 | normal | milestones/archive/M151-link-builder-test-reach.md |
 
 ## Candidates
 
