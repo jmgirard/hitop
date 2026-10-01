@@ -1,13 +1,13 @@
 # M148: Online form: text for participants, progress, and a way on from errors
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
 - **Principles touched:** GP3, IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — the page participants fill in from a study link
-- **Branch/PR:** —
+- **Branch/PR:** m148-form-page-new-participant, companion: /Users/jmgirard/github/hitop-form m148-form-page-new-participant
 
 ## Goal
 
@@ -49,7 +49,7 @@ A participant who opens a study link for the first time reads text written for t
 - [ ] T3: Add the identifier hint and input attributes (lines 1583-1628), and start the form on Enter.
 - [ ] T4: On the item pages (lines 1843-1893), add the progress lines, the "Instructions" section and the missed-item messages. Enlarge the option target (`index.html` lines 101-109).
 - [ ] T5: Add the decline confirmation (lines 1640-1675). Add the sending line (lines 1940-1941). Reword the saved-file screens (lines 1929-1936, 1969-1973, 1996-2022).
-- [ ] T6: Write the Playwright tests for AC1 to AC6. Update the existing specs that assert old text.
+- [ ] T6: Write the Playwright tests for AC1 to AC6. Update the existing specs that assert old text. Update the hitop-form README, hitop NEWS and the online-collection article where they describe the changed screens.
 - [ ] T7: Run the suite locally and on the PR. Take before and after screenshots of each screen at 375px for Jeff's look at the merge gate.
 
 ## Work log
@@ -58,7 +58,12 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-09-29: the criteria audit ran in full mode with a fresh [O] reader. It returned 18 findings, and each was repaired as suggested. A refusal the participant can fix (connection, browser) now says what to do, not only "contact the study team". The walks set `complete` and `completeSaved` and fail with HTTP 500. The word scan covers the page's own text with word-boundary patterns. The page gets a `<footer>`, which does not exist today. AC4 says "Next or Finish" and probes one and three missed items. AC5 compares with the fetched export, not with the start screen.
 - 2026-09-30: M146 review pass 3 filed two notes on this page's text. The `checkStore` prefix "Where responses go could not be used:" no longer says the fault is in the study link, and `link.html` matches that prefix as literal text to pick the focused field. The `z` refusals now say "unpack" (`form.js:204`, `210`), which participants also see.
 - 2026-09-30: M150 review filed one note on this page's text. An unknown instrument is worded three ways. `checkInstruments` (`form.js:105`) says "an instrument the online form does not know". `parseLink` (`form.js:719`) says "an instrument this page does not know". The builder (`link.html:909`) says "the Study Link Builder does not offer". The "this page" text left at `form.js:260`, `:675`, `:1610` and `:1945` shows on the online form too.
+- 2026-09-30: /milestone-implement started. Branch `m148-form-page-new-participant` cut in hitop and in the hitop-form companion. Question gate: Jeff took the three recommendations (D1 to D3). T6 now also names the README, NEWS and article updates (minor amendment). The task line numbers in `form.js` predate M149 to M151, and the code is read fresh.
 
 ## Decisions
+
+- D1 (2026-09-30, question gate): every screen after the instruments load ends with one closed `<details>` named "Details for the study team". It holds the version lines in a `<footer>`. On an error or failed-send screen, the refusal or the send's fault comes first in it. An error screen before the instruments load holds the refusal alone.
+- D2 (2026-09-30, question gate): "I do not agree" keeps the consent text on screen and replaces the two buttons with a question, "Yes, I do not agree" and "Go back". Focus moves to the question.
+- D3 (2026-09-30, question gate): a link to a completion address reads "Continue to the next step of the study", in place of the address's host name.
 
 ## Review
