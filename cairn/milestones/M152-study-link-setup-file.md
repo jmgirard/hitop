@@ -1,13 +1,13 @@
 # M152: Hosted setup files for study links
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — a new study-link form the online form and the Study Link Builder read
-- **Branch/PR:** —
+- **Branch/PR:** m152-study-link-setup-file; companion: /Users/jmgirard/github/hitop-form m152-study-link-setup-file
 
 ## Goal
 
