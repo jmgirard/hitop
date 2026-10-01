@@ -185,3 +185,25 @@ Fresh run 2026-10-01, hitop-form branch head `f8e5420`, hitop branch head `82ed5
 - AC5: All five P5 tests passed. On page 1 and page n of each instrument, a closed `details.reminder` named "Instructions" holds the export's `instructions.start` before the first item.
 - AC6: All six P6 tests passed. They cover the decline question and "Go back" with no request or file. They cover the confirming press and `completeDeclined`. They also cover the sending line drawn empty and then filled. For an HTTP 500 and for a failed connection, the screen shows the "Your answers were not sent" heading and the file sentence. It shows no HTTP detail outside the closed section.
 - AC7 (local half): the full suite passed 879 of 879 on `f8e5420`. The CI half waits for the hitop-form PR, which opens only after the merge approval. The box stays unticked until that run is green.
+
+Consistency gate (pass 3): `cairn_validate.py` passed (exit 0, 25 advisory warnings). The one new warning is the split tripwire for 13 tasks. No principle changed, so `cairn_impact` did not run. `devtools::document()` made no diff. `pkgdown::check_pkgdown()` found no problems. README.Rmd is unchanged. NEWS.md has one entry. No new top-level files. `devtools::check()` gave 0 errors, 0 warnings and 0 notes (6.8 min).
+
+Independent review (pass 3): three fresh reviewers (Opus diff, Sonnet blame-history, Sonnet prior reviews). The PR-comment probes found no threads. The prior-review reviewer found S2 to S10 each fixed as dispositioned. No finding shows an AC failing in its test's domain. Findings, ranked, with the proposed disposition:
+
+- U1 (diff 1, prior 4): the count's text is written in `requestAnimationFrame`, which runs before the same frame's layout. The diff reviewer's accessibility-tree probe saw the alert moved and filled in one update, the case S3 meant to avoid. The `form.js` comment and README claim a separation that does not happen. Proposed: fix now. Write the text two frames after the move, and correct the comment and README.
+- U2 (diff 2): no test checks that the alert is empty for a frame before its text. A plant that writes at once passes P4. Proposed: fix now, with a frame-counting test and plants for a write at once and after one frame.
+- U3 (blame 1, diff 3): the keyCode 229 guard (S10) can also drop Enter on Android keyboards that report 229 for Enter. Begin still works. Proposed: fix now. Go back to the `isComposing` check alone, drop the 229 test, and file S10's Safari case as a follow-up for a real-device check.
+- U4 (diff 5): the delayed write uses the count from the press. An answer before the frame leaves a stale number. Proposed: fix now, by counting at write time (with U1).
+- U5 (diff 4, blame 8): `root.querySelector('p.sending').textContent` throws if a later `finish()` caller draws no line, after the buttons are disabled. No current path. Proposed: fix now, with a null check.
+- U6 (blame 3, diff 8): `.missed-count:empty` beats `[role="alert"]:empty` only by source order. P4 catches a reorder. Proposed: fix now, with a more specific selector.
+- U7 (blame 5, diff 7): README line 590 and `form.js:1961` say the count "goes", but the element stays, empty. Proposed: fix now.
+- U8 (prior 1): the `form.js` header comment says "I do not agree" shows a closing screen, without the D2 question. Proposed: fix now.
+- U9 (prior 2): the `completeLink` comment says no screen shows a host name, without "outside that section" (R8). Proposed: fix now.
+- U10 (prior 3): `finish()` takes `[...nav.querySelectorAll('button')].at(-1)`. Proposed: fix now, with `nav.querySelector('.forward button')`.
+- U11 (prior 5): the Study Link Builder hint says the decline address is where "I do not agree" leads. After D2 it is "Yes, I do not agree". Proposed: fix now in `link.html`.
+- U12 (prior 7): the one-missed probe follows answers that scroll the page, so on a short page its scroll assert may be vacuous. Proposed: fix now. Rerun a no-scroll plant after U1, and change the probe if the plant passes.
+- U13 (blame 9): the P4 message "the empty alert is hidden" sits beside the claim that the alert stays in the accessibility tree. Proposed: fix now, renaming it "takes no room".
+- U14 (blame 6, diff 9): lines in README (592, 615) and NEWS (18) run past the wrap width. Proposed: fix now.
+- U15 (blame 7): NEWS does not mention the start screen's new fallback sentence. Proposed: fix now.
+- U16 (blame 2, diff 6): the identifier and question screens' empty alerts are still `display: none`. The pattern predates M148. Proposed: follow-up.
+- U17 (prior 6): the diff adds participant text that says "this page" (M150 note). Proposed: follow-up, with the M150 note.
