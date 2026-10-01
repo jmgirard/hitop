@@ -592,6 +592,26 @@
 
 ## Improvements and fixes
 
+* **The hitop-form Study Link Builder ignores presses until it has read an
+  opened link, and several of its refusals change.** "Make the link" is
+  disabled until the page has read the study link it was opened with.
+  Before, a press or Enter in a field sent the form as a plain web request
+  while a compressed link was unpacked or before the page's script loaded.
+  The page then reloaded with its fields in the address. An edit typed
+  into the "Module file" box while a chosen file is read now wins, and the
+  file's text is dropped. The
+  refusal of an instrument export, pasted or chosen as a file, now says to
+  use the file that the Module Builder or `write_module()` saved. Before,
+  it said to paste it. A refusal of the instruments list moves focus to the
+  instrument at fault, the second of a repeated instrument or the second
+  PID-5 form. When a setup step after the opened link is read fails, the
+  page shows its "could not be read" refusal with an empty form that still
+  makes a link. Before, the page stopped with no message. The section
+  summaries are drawn without copying page elements on each keystroke. The
+  online form refuses a link whose `instrument` field is not text, naming
+  the field. Before, a link with `instrument` set to `["hitopbr"]` or
+  `[["pid5"]]` fetched that instrument.
+
 * **hitop-form refuses a participant identifier it cannot write, and the
   link builder keeps each recruiting site's names to that site.** A link
   whose participant identifier holds half of a two-part character (a lone
