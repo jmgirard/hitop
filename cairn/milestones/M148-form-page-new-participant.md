@@ -137,3 +137,21 @@ Fresh run 2026-10-01, hitop-form branch head `0882c11`, hitop branch head `52faf
 - AC7 (local half): the full suite passed 878 of 878 on `0882c11`, as stated above. The CI half waits for the hitop-form PR, which opens only after the merge approval. The box stays unticked until that run is green.
 
 Consistency gate (pass 2): `cairn_validate.py` passed (exit 0, 24 advisory warnings, none new). No principle changed, so `cairn_impact` did not run. `devtools::document()` made no diff. `pkgdown::check_pkgdown()` found no problems. README.Rmd is unchanged. NEWS.md has one entry for the change. No new top-level files. `devtools::check()` gave 0 errors, 0 warnings and 0 notes (5.1 min).
+
+Independent review (pass 2): three fresh reviewers (Opus diff, Sonnet blame-history, Sonnet prior reviews). The PR-comment probes found no threads in either repo. The prior-review reviewer found R1 to R8 each fixed as dispositioned. Findings, ranked, with the proposed disposition for the gate:
+
+- S1 (diff 1, AC1): `parseLink` calls `Object.hasOwn` (`form.js:728`), and `checkInstruments` calls `.at()` (`form.js:113`). Chrome and Edge 80 to 92 lack both. A scratchpad probe deleted `Object.hasOwn` and opened a `c` link. The page said "Please contact the study team", with the fault "Object.hasOwn is not a function". AC1's browser sentence fails for that class. The code predates M148. Proposed: amendment return. The amended browser clause names the `z` link that the browser cannot unpack, which is the case P1 tests and the README states.
+- S2 (diff 4, prior 1): the start screen says "If they cannot be sent, they are saved as one file on this device instead." (`form.js:1695`). `main` said "If the send cannot be confirmed". README line 554 and `render.spec.js` lines 19 and 169 repeat it. This is R2's wording fault on another screen. Proposed: fix now.
+- S3 (diff 3, prior 3, blame 2): the missed count (role alert) is inserted with its text. Each answer rewrites it, even with no change in the number, so a screen reader can re-read it on every choice. M122 drew status lines empty first. Proposed: fix now. Draw the alert empty, and write a new number only.
+- S4 (diff 2): README line 608 says "the row can still be in the store". D-083(b) retires "store" in that README. Line 924 lists the words too. Proposed: fix now.
+- S5 (diff 5): no test checks that an answer removes its own mark before the next press. A copy without `unmark(node)` passes P4, because the next press unmarks every item. Proposed: fix now, with a test.
+- S6 (blame 5): the `send.spec.js` header comment still says the screen "says the answers could not be sent". Proposed: fix now.
+- S7 (diff 9): NEWS does not say that the marks show after Next or Finish. Proposed: fix now.
+- S8 (prior 4): the consent-screen comment (`form.js:1722`) says the screen holds only the text and the buttons, but `foot()` now adds the study-team section. Proposed: fix now.
+- S9 (blame 7, prior 5): `finish()` writes the sending text to `nav.previousElementSibling` (`form.js:2105`). It is correct today, but any node put between them gets the text. Proposed: fix now, with a class lookup.
+- S10 (diff 8): the Enter handler checks only `isComposing`. Safari sends an IME-commit Enter with `isComposing` false and keyCode 229. Proposed: fix now, by also skipping keyCode 229.
+- S11 (diff 6, blame 4, prior 2): `encodeLink` (`form.js:174`) checks only that `CompressionStream` exists. On Chrome and Edge 80 to 102, the Study Link Builder throws a raw TypeError. This is R1's class on the builder side, outside M148. Proposed: follow-up, in the Study Link Builder row.
+- S12 (diff 7): after the first missed item is answered, the count stays above it. Proposed: follow-up.
+- S13 (blame 1): the old refusal named the item numbers, and the new marks and count do not. Focus still moves to the first missed item. AC4 set this wording. Proposed: follow-up.
+- S14 (blame 3): the contact sentence says "show them the details below", and the section is closed. Its summary "Details for the study team" shows. Proposed: reject, because D1 chose the closed section and the summary names it.
+- S15 (blame 6): `unmark` removes the whole `aria-describedby`. Today the fieldset has no other description. Proposed: reject, because nothing is lost today.
