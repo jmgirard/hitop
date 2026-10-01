@@ -49,7 +49,7 @@ The Study Link Builder's tests state their expectations apart from the page's co
 
 ## Tasks
 
-- [ ] T1: Replace `expectedNext()` (`tests/link-sections.spec.js:423-433`) and its tables from `:414` with a literal table, and widen the sentence count. Make the anchor parser (`:616-617`) skip fences, with its plant test.
+- [x] T1: Replace `expectedNext()` (`tests/link-sections.spec.js:423-433`) and its tables from `:414` with a literal table, and widen the sentence count. Make the anchor parser (`:616-617`) skip fences, with its plant test.
 - [ ] T2: Add the request listener to the spec's `beforeEach`, and fulfil the export route from local copies (the `exportJson` shape of `openForm` at `tests/helpers.mjs:215-224`). Commit the copies under `tests/fixtures/exports/` with a fixtures README row. Plant a route that calls `route.continue()` and see the test fail.
 - [ ] T3: Extend `expectRegion` (`:445-465`) and the long-link test (`:500-523`) to the four states.
 - [ ] T4: Add the Connect entry to the one-field table (about `:288`). Write the Move guard test for the guards at `link.html:389`, `394`, `602` and `607`.
@@ -65,6 +65,7 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - 2026-09-30: amendment (gate): AC2 reworded at the user's choice. The old text was impossible to pass, because a route that answers an export request from a local copy still emits a request to jmgirard.github.io. T2 gained the copies and a plant.
 - re-audit: AC2 (reduced) — the first rewording counted a proxy domain, and under FORM_TARGET the target shares the exports' host. It was narrowed to the listener's two events and a base-URL prefix.
 - re-audit: AC2 (reduced) — nothing.
+- 2026-09-30: T1 done. `NEXT` holds the 15 sentences in full, and a test checks it has each pair once. The count takes `;`. `readmeSlugs()` skips fences, and its plant test went red with the skip removed.
 
 ## Decisions
 
