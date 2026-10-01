@@ -86,6 +86,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: claim audit: 56 claims read, 6 corrected — hitop-form README.md, link.html, tests/setupfile.spec.js, tests/link-setupfile.spec.js
 - 2026-10-01: the audit's re-read found all six held, but one new README sentence was too broad, and it now names GitHub's code search. Setup-file specs: 61 passed. hitop `devtools::test()`: 0 failures. The article renders against the branch package.
 - 2026-10-01: implement complete after review pass 1. Status set to review.
+- 2026-10-01: review pass 2 gate (Jeff): fix the 9 proposed fix-now findings on the branch, then ask again to merge. Checkpoint: all 9 written, with three new LF7 tests whose plants went red. The full suite has not yet run on them.
 
 ## Decisions
 
