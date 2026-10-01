@@ -38,7 +38,6 @@ scale holds or which it reverses, because it prints no item numbers.
 
 ## Open questions
 
-- The IDAS-II item key (which items each scale holds, and which General Depression
-  reverses) is not on the shelf. Jeff is getting the authors' key. Until then the
-  `hitopdat_scales` IDAS-II memberships follow the Qualtrics file, checked only by the
-  counts above — observed 2026-09-29.
+- Resolved 2026-10-01: the IDAS-II item key is now on the shelf as Watson (2011),
+  [watson2011idas.md](watson2011idas.md). Its 18 non-overlapping counts equal Table 1
+  — observed 2026-10-01.

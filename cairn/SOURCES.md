@@ -515,7 +515,7 @@ Table 1's printed counts now agree with row for row.
 
 `hitopdat_items`, `hitopdat_choices`, `hitopdat_scales` and the internal
 `hitopdat_instructions` are built by `data-raw/hitopdat_info.R` and
-`data-raw/sysdata.R`. Four sources:
+`data-raw/sysdata.R`. Five sources:
 
 - **The file.** `data-raw/HiTOP-DAT.qsf`, a Qualtrics export titled "HiTOP-DAT -
   to share" (last modified in Qualtrics 2026-09-29), received by Jeff on
@@ -537,6 +537,11 @@ Table 1's printed counts now agree with row for row.
   [references/watson2012.md](references/watson2012.md). It checks the item counts
   of the 18 non-overlapping IDAS-II scales (Table 1, p. 406). It prints no item
   key.
+- **The IDAS-II key.** Watson (2011), *IDAS-II* items and scoring key,
+  `IDAS-II (Items + Scoring).doc`, sha256 `dc77c5fe…`, received by Jeff on
+  2026-10-01 and signed off by him that day as the authors' key (D-082):
+  [references/watson2011idas.md](references/watson2011idas.md). It checks the 19
+  IDAS-II scales' items and reverse keys and the 99 IDAS-II item numbers and texts.
 
 Machine-checked in `tests/testthat/test-keying-hitopdat.R` (scales, against the
 sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions).
@@ -548,7 +553,8 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
 | 33 CAT-PD facets | IPIP key, items and reverse keys | ✅ All 33 equal |
 | 216 CAT-PD item texts | IPIP key text | ✅ Equal under the first-person rule the test states, after the fix to item 194 (departure 1 below) |
 | 18 non-overlapping IDAS-II scales | Watson et al. (2012) Table 1, item counts | ✅ All 18 equal |
-| 19 IDAS-II scales, membership and reverse keys | an IDAS-II item key | ⚠️ Not checked, no key on the shelf (DAT-1) |
+| 19 IDAS-II scales, membership and reverse keys | Watson (2011) key | ✅ All 19 equal, General Depression reversing 27 and 64 |
+| 99 IDAS-II item numbers and texts | Watson (2011) key text | ✅ Equal after dropping the key's scale tags and doubled spaces |
 | WHODAS, AUDIT, DUDIT, CAPE positive, PHQ-15 totals | each measure's items in the battery | ✅ Each holds all its measure's items, none reversed |
 | 57 category names | the manual's 57 definitions | ✅ One-to-one after the crosswalk in `data-raw/hitopdat_info.R` (DAT-9, DAT-10) |
 
@@ -565,11 +571,10 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
 
 ### Open questions (DAT-n)
 
-- **DAT-1: IDAS-II membership is unchecked.** Watson et al. (2012) gives counts but
-  no item key. The manual cites Watson et al. (2007, 2012) for the IDAS (p. 12) and
-  names no item key. The 19 IDAS-II rows follow the
-  file, including General Depression's reversal of Well-Being items 27 and 64. Jeff
-  is getting the authors' key.
+- **DAT-1 [RESOLVED 2026-10-01]: IDAS-II membership.** Watson et al. (2012) gives
+  counts but no item key. Watson's (2011) key, on the shelf since 2026-10-01,
+  matches the file on all 19 scales, including General Depression's reversal of
+  Well-Being items 27 and 64.
 - **DAT-2: Well-Being prorates by 5.** The file's "IDAS Well-Being Prorated" field
   is the category's `Score` times 5 divided by its `Items`, but the scale has 8
   items.
@@ -585,9 +590,10 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   answer set like the other 98 items.
 - **DAT-6: The PHQ-15 menstrual item is out.** The file moves PHQ-15 item 4
   ("Menstrual cramps or other problems with your periods (women only)?") to its
-  trash block. The battery has 14 PHQ-15 items.
+  trash block. The battery has 14 PHQ-15 items. Taken as deliberate (working fact
+  W2 below).
 - **DAT-7: 382 items, not 405.** The Society's HiTOP-DAT page says the battery
-  has 405 items (read 2026-09-29). The file has 382.
+  has 405 items. The file has 382. Taken as correct (working fact W1 below).
 - **DAT-8: The AUDIT standard-drink picture.** The file shows a graphic titled
   "Standard drink" above the AUDIT. No dataset holds it.
 - **DAT-9: The file's spellings.** Its categories spell "Sucidality",
@@ -611,6 +617,23 @@ sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions
   complete as `CAT-PD%20Self Harm`, with a literal space where every other field
   uses `%20`. Nobody tested this in Qualtrics. It never shows the five CAT-PD domain
   scores or CAPE-Negative, and Disconstraint has no percent-complete field.
+
+### Working facts (need confirmation)
+
+The tables build on these points. They come from an email to Jeff from a HiTOP-DAT
+user (2026-10-01). Each needs confirmation by the Society or a publication.
+
+- **W1: The battery has 382 items.** The Society page,
+  <https://www.hitop-system.org/hitop-digital-assessment-and-tracker-hitop-dat>
+  (read 2026-10-01), says 405. It lists 16 WHODAS items where the file has 12, and
+  14 CAPE negative items that the battery leaves out. It lists 15 PHQ-15 items, and
+  7 Mistrust and 9 Non-Perseverance items where IPIP has 6 each. Those differences
+  sum to 23, which is 405 minus 382.
+- **W2: PHQ-15 item 4 is out on purpose.** The battery leaves out the item on
+  menstrual periods.
+- **W3: The battery uses only the CAPE positive factor.** The manual says the same
+  (p. 12): the CAT-PD and the IDAS cover the CAPE's other factors.
+- **W4: Who built the Qualtrics file is not known.**
 
 ## Open questions (need source adjudication)
 
