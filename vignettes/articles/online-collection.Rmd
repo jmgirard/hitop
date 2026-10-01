@@ -537,8 +537,8 @@ matches the form, the builder makes the link.
 The link names the file in `setup` and its fingerprint in `sha256`. The
 online form fetches the file for each participant. If the setup in the
 file changed after the link was made, the online form refuses it. A change
-of spaces or line endings alone is not refused. So a file whose setup was
-edited needs a new link:
+of spaces or line endings between the values alone is not refused. So a
+file whose setup was edited needs a new link:
 download the file again, replace the hosted copy and make the link again.
 The file's host sees each participant's request for the file. The hitop-form
 README's section
@@ -555,6 +555,11 @@ load, and the link carries the instruments and any module, the study name, the
 participant code, any consent text, the web address and, for Supabase,
 its key. It receives
 no answers.
+
+A link that names a setup file carries the file's address and fingerprint
+in place of the setup. The file's host receives each participant's request
+for the file. Anyone can read a file in a public repository, so the file
+shows where responses go, a Supabase key included, to anyone who finds it.
 
 A participant code is whatever the link or the participant supplies. A code
 you put in the link reaches the page's host with the link, and a code the

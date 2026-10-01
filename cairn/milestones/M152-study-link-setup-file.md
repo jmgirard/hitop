@@ -40,8 +40,8 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - AC3 → T3
 - AC4 → T4, T6
 - AC5 → T5, T6
-- AC6 → T7, T8
-- AC7 → T2, T3, T6, T8
+- AC6 → T7, T8, T9
+- AC7 → T2, T3, T6, T8, T10, T11
 
 ## Tasks
 
@@ -53,6 +53,10 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - [x] T6: Builder tests for AC4 and AC5 in a new `tests/link-setupfile.spec.js`. Extend S8's retired-term walk in `link-sections.spec.js` to the new states, and S12 to the new refusals.
 - [x] T7: README section and "What the page's host sees". Scan the new README text and `form.js` messages with D-083(b)'s patterns.
 - [x] T8: hitop article section and NEWS line. Run `pkgdown::build_article("articles/online-collection")` and `devtools::check()`. Open the companion PR with the hitop PR.
+- [x] T9: Review pass 1 text fixes (findings 1, 6, 7, 9, 10, 14, 18, 19). Write "Ingested" in the source note's provenance. Warn that a public setup file shows where responses go. Correct the white-space claim. Say to wait out the cache before sending a new link. Name the builder's fetch of an opened link. Add the read-by-other-sites hint to the prefill refusal. Update the article's "Who holds the data" and the `form.js` header. Tidy NEWS and "the page".
+- [ ] T10: Review finding 2. The setup fetch stops after a time limit, in the online form and the builder, with a refusal and tests.
+- [ ] T11: Review findings 3 and 4. "Make the link" hides the changed-file offer. A file too deeply nested to fingerprint gets a named refusal. Tests for both.
+- [ ] T12: A candidate row "Hosted setup file gaps" for findings 5, 8, 11 to 13 and 15 to 17. Finding 20 is rejected as intended (D-086(c)).
 
 ## Work log
 
@@ -74,6 +78,8 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: the audit's re-read found one correction still overstated (the download's checks). The README now says a missing module item shows at "Make the link" only under a Supabase table. Builder specs: 139 passed. The article renders against the branch package.
 - 2026-10-01: implement complete. Status set to review.
 - 2026-10-01: review returned, defect return 1. The consistency gate failed: `cairn_validate.py` FAIL `references index<->disk`, because `cairn/references/github2026rawheaders.md` names no ingested date. AC1 to AC7 passed on fresh evidence. 20 reviewer findings are in the Review section, untriaged. Status set to in-progress.
+- 2026-10-01: implement resumed. Gate (Jeff): fix the text findings, a setup-fetch time limit, and the builder state findings now, as T9 to T11. The rest goes to a new candidate row (T12). Tasks added, Coverage extended for AC6 and AC7.
+- 2026-10-01: T9 done. The source note says "Ingested", and `cairn_validate` has no FAIL. README, article, NEWS and the `form.js` header gain the public-file warning, the white-space correction, the wait before sending a new link and the builder's own request. The builder's refusal of an opened link whose fetch throws gains the read-by-other-sites hint, and LF8 asserts it. Retired-term scan of the added text: 0 hits. Builder specs: 139 passed.
 
 ## Decisions
 

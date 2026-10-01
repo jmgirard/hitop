@@ -1,6 +1,6 @@
 # github2026rawheaders: the response headers GitHub sends with a raw file
 
-**Provenance.** First-hand record, made 2026-10-01 at M152 with `curl -sI`. The two files read were `https://raw.githubusercontent.com/jmgirard/hitop-form/main/README.md` and `https://raw.githubusercontent.com/jmgirard/hitop/main/.claude/launch.json`. The README was read with and without an `Origin: https://jmgirard.github.io` request header. No file is on the shelf.
+**Provenance.** First-hand record. Ingested 2026-10-01 at M152 with `curl -sI`. The two files read were `https://raw.githubusercontent.com/jmgirard/hitop-form/main/README.md` and `https://raw.githubusercontent.com/jmgirard/hitop/main/.claude/launch.json`. The README was read with and without an `Origin: https://jmgirard.github.io` request header. No file is on the shelf.
 Pagination: none.
 Extraction: the header values below are copied from the responses as received on 2026-10-01 (observed 2026-10-01). GitHub documents none of them, so a re-check means running the same `curl -sI` again.
 
