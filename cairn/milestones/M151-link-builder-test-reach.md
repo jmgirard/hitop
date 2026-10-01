@@ -1,6 +1,6 @@
 # M151: Study Link Builder test reach
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M149
 - **Driving RR:** —
@@ -44,8 +44,8 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - AC3 → T3, T7
 - AC4 → T4, T7
 - AC5 → T5, T7
-- AC6 → T6, T7
-- AC7 → T7
+- AC6 → T6, T7, T8
+- AC7 → T7, T8
 
 ## Tasks
 
@@ -56,6 +56,7 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - [x] T5: Write the six `z` refusal tests, in the style of the `BAD_C` table (`tests/link.spec.js:665-690`).
 - [x] T6: Replace `openBuilderSections()` (`tests/helpers.mjs:139-149`) with a helper that opens the section of a named field, and move its nine calling specs to it. A Sonnet subagent can do the move, and its diff is checked here.
 - [x] T7: Update the README test-table rows of the changed specs. Run the full suite locally and on the PR.
+- [x] T8: In `tests/link-consent.spec.js`, open the Consent section through `openSectionOf` before a test writes `consentText` or `declinedText`. Plant a Consent summary that does not open, and see the spec fail. Run the full suite.
 
 ## Work log
 
@@ -75,6 +76,9 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - claim audit: not owed — internal tier
 - 2026-09-30: status review.
 - 2026-09-30: review return 1 (defect). AC6 failed: `link-consent.spec.js` sets `consentText` and `declinedText` by `evaluate()` in `make()` and K2 and never opens the Consent section. AC1-AC5 passed with evidence. AC7 has local evidence only. F2-F23 wait for triage at the next gate. Status in-progress.
+- 2026-09-30: implement resumed. Minor amendment: T8 added for the AC6 return, and the Coverage lines for AC6 and AC7 name it.
+- 2026-09-30: T8 done. `setBox()` in `link-consent.spec.js` calls `openSectionOf` before it writes, which covers `make()` and K2. A plant of `onclick="return false"` on the Consent summary failed 13 of 17 tests at the open check in `openSectionOf`. The spec passed 17 of 17, and the full suite passed 845 of 845.
+- 2026-09-30: status review.
 
 ## Decisions
 
