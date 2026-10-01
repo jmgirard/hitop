@@ -1,13 +1,13 @@
 # Roadmap
 
-_Last hygiene check: 2026-10-01 (95th pass, M143 done): archived; 3 done rows, 1 lesson pruned; HiTOP-DAT row cut. validate green._
+_Last hygiene check: 2026-10-01 (96th pass, M152 done): archived; no lesson added. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M152 | Hosted setup files for study links | review | — | high | milestones/M152-study-link-setup-file.md |
+| M152 | Hosted setup files for study links | done | — | high | milestones/archive/M152-study-link-setup-file.md |
 | M153 | Questions limited by size, and a long-link warning | planned | M152 | high | milestones/M153-question-limit-link-length.md |
 | M154 | "HiTOP-SR module" as an instrument choice | planned | M152 | high | milestones/M154-study-link-module-choice.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
