@@ -612,6 +612,29 @@
   the field. Before, a link with `instrument` set to `["hitopbr"]` or
   `[["pid5"]]` fetched that instrument.
 
+* **The hitop-form Study Link Builder's hints give back facts that the
+  shorter hints dropped, and the tutorials name its sections.** The SONA
+  hint says that each participant's survey code becomes their identifier,
+  and names the "Completion URL" field for SONA's completion address. The
+  hint of "Completion URL after a decline" says to put `{participant}` after
+  the address's `?` or `#`. The hint of "Completion URL after a saved file"
+  says that a file is saved when the link has no place for responses or a
+  send is not confirmed. The "Completion URL" hint gives Prolific's
+  completion URL on the study's page. The "Module file" hint says that with
+  several instruments the module applies to the HiTOP-SR among them. The
+  "Publishable key" hint says that opening a study link on the Study Link
+  Builder or the online form puts the key in GitHub Pages' logs. The page
+  calls itself the Study Link Builder in place of "this page". Four
+  refusals that it shares with the online form name the online form. The
+  online-collection, HiTOP-SR modules and PID-5 scoring articles name the
+  closed section that holds each field they tell you to fill in. They also
+  say that the link shows under "Your study link". The HiTOP-SR modules article
+  lists the five forms that the online form gives. The PID-5 scoring
+  article and the online strip on the five download pages use the names
+  "Study Link Builder" and "online form". The overview page names the web
+  address or Supabase table in place of "store". The strip's
+  button reads "Open the Study Link Builder".
+
 * **hitop-form refuses a participant identifier it cannot write, and the
   link builder keeps each recruiting site's names to that site.** A link
   whose participant identifier holds half of a two-part character (a lone
