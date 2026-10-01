@@ -7,7 +7,7 @@
 - **Principles touched:** GP3, IP1
 - **Resolves:** —
 - **Surface tier:** user-facing — the page participants fill in from a study link
-- **Branch/PR:** m148-form-page-new-participant, companion: /Users/jmgirard/github/hitop-form m148-form-page-new-participant
+- **Branch/PR:** m148-form-page-new-participant, companion: /Users/jmgirard/github/hitop-form m148-form-page-new-participant https://github.com/jmgirard/hitop-form/pull/24
 
 ## Goal
 
@@ -30,7 +30,7 @@ A participant who opens a study link for the first time reads text written for t
 - [x] AC4: An item page shows "Page p of n" above the items and beside the Next or Finish button. Here n counts the pages of that instrument. With two or more instruments, it also shows "Part k of m" in both places. A press of Next or Finish with missed items puts the text "Please answer this item" inside each missed item. The page scrolls to the first missed item. A message directly above that item states how many items are missed. At 375px wide, each response option's clickable area is at least 44px high. A Playwright test asserts each fact on the first and the last page of each part. It uses a HiTOP-BR link and a PID-5-BF plus HiTOP-BR link, and it probes one missed item and three.
 - [x] AC5: An item page holds a closed `<details>` named "Instructions". Its body text equals the instrument's `instructions.start` in the export the test fetches. A Playwright test checks the first and the last page of each of the five instruments.
 - [x] AC6: The first press of "I do not agree" shows a confirmation with "Yes, I do not agree" and "Go back". "Go back" redraws the consent screen with both buttons, sends no request and saves no file. "Yes, I do not agree" reaches the declined screen. If the link gives a `completeDeclined` address, the page then goes there. While a send runs, the screen says "Sending your answers. Please keep this page open." After a send fails, the saved-file screen is headed "Your answers were not sent". It says that the file holds the participant's answers. It shows no HTTP detail outside the closed "Details for the study team" element. A Playwright test asserts each fact, for a send that answers HTTP 500 and for a connection failure.
-- [ ] AC7: The hitop-form Playwright suite passes locally and on its PR's CI.
+- [x] AC7: The hitop-form Playwright suite passes locally and on its PR's CI.
 
 ## Coverage
 
@@ -223,3 +223,4 @@ Fix-now work (hitop-form `17e0d59`, hitop `0d6aee06`):
 - The earlier T12 plants (a write on every answer, no unmark, no drawn alert) each failed both P4 tests again.
 
 Fresh evidence after the fixes, on `17e0d59`: the full suite passed 879 of 879. AC3: all P3 tests passed, including the new Enter test. AC4: both P4 tests passed with the frame check. AC7's local half holds on this head.
+- AC7 (CI half): hitop-form PR https://github.com/jmgirard/hitop-form/pull/24 ran its `tests` check on `17e0d59`, and it passed in 7m53s. With the local 879 of 879, AC7 holds.
