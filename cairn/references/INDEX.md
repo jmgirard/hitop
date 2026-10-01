@@ -19,3 +19,4 @@
 - [watson2012.md](watson2012.md) — Watson et al. (2012), the IDAS-II paper: Table 1's item counts for the 18 non-overlapping scales, and the absence of an item key.
 - [github2026rawheaders.md](github2026rawheaders.md) — First-hand `curl -sI` of GitHub raw-file addresses (2026-10-01): `access-control-allow-origin: *` and `cache-control: max-age=300`, behind the hitop-form README's hosted setup file section.
 - [cloudresearch2026help.md](cloudresearch2026help.md) — CloudResearch Connect's researcher help (read 2026-09-27): the `participantId` parameter, the optional `assignmentId` and `projectId`, and the completion code or redirect, behind hitop-form's Connect builder choice.
+- [postgresql2026limits.md](postgresql2026limits.md) — PostgreSQL 18 documentation, Appendix K (read 2026-10-01): 1,600 columns per table and a row that must fit in one 8,192-byte page, behind hitop-form's Supabase column check.
