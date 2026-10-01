@@ -52,7 +52,7 @@ A participant who opens a study link for the first time reads text written for t
 - [x] T6: Write the Playwright tests for AC1 to AC6. Update the existing specs that assert old text. Update the hitop-form README, hitop NEWS and the online-collection article where they describe the changed screens.
 - [x] T7: Run the suite locally and on the PR. Take before and after screenshots of each screen at 375px for Jeff's look at the merge gate.
 - [x] T8 (review R1): Make `canInflate()` also check that `new DecompressionStream('deflate-raw')` works, so a browser without `deflate-raw` gets the browser sentence. Add a P1 test with a constructor that throws on `deflate-raw`.
-- [ ] T9 (review R2 to R4): Change the failed-send lead to say that the page got no confirmation, and keep the heading. Make sure that the article agrees. Draw `p.sending` empty on the last page and write its text at the send. Rewrite the missed count on each answer. Add a test for each change.
+- [x] T9 (review R2 to R4): Change the failed-send lead to say that the page got no confirmation, and keep the heading. Make sure that the article agrees. Draw `p.sending` empty on the last page and write its text at the send. Rewrite the missed count on each answer. Add a test for each change.
 - [ ] T10 (review R5 to R8): In P4, leave the middle item blank in the one-missed probe. Make the identifier hint fit a recruiter participant. Change "responses were sent" at `online-collection.Rmd:99` and in the `send.spec.js` comment. Change the NEWS host sentence to "outside that section".
 
 ## Work log
@@ -75,6 +75,7 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-09-30: step-7 gate: Jeff chose "Send back to fix". The proposed dispositions in the Review section stand. T8 to T10 hold the fix-now work (review send-back), and Coverage maps them. The six follow-ups go to a candidate row at the post-merge hygiene pass. Status set to in-progress.
 - 2026-09-30: /milestone-implement resumed. Both branches are level with `origin/main`. Nothing was open for a question gate.
 - 2026-09-30: T8 done. `canInflate()` now builds a `deflate-raw` `DecompressionStream` in a `try`. A new P1 test replaces the constructor with one that throws for `deflate-raw`. Before the fix it failed on the contact sentence, and after it passed with the browser sentence. The README states both browser cases. `screens`, `zlink`, `link` and `link-sections` specs: 266 passed.
+- 2026-09-30: T9 done. The failed-send lead now reads "This page got no confirmation that your answers reached the study team.", and the heading stays. The article already says "not confirmed". `sendingLine()` draws an empty `p.sending` (role status) above Finish on the last item page and on "Before you finish" when the link has a store, and `finish()` fills it. Each answer to a marked item rewrites the count. Three new tests and new asserts in P4 and P6. Plants of the old insert-with-text line and of a stale count failed 5 tests, each on its own assert. Six specs: 124 passed. README updated.
 
 ## Decisions
 
