@@ -20,3 +20,4 @@
 - [github2026rawheaders.md](github2026rawheaders.md) — First-hand `curl -sI` of GitHub raw-file addresses (2026-10-01): `access-control-allow-origin: *` and `cache-control: max-age=300`, behind the hitop-form README's hosted setup file section.
 - [cloudresearch2026help.md](cloudresearch2026help.md) — CloudResearch Connect's researcher help (read 2026-09-27): the `participantId` parameter, the optional `assignmentId` and `projectId`, and the completion code or redirect, behind hitop-form's Connect builder choice.
 - [postgresql2026limits.md](postgresql2026limits.md) — PostgreSQL 18 documentation, Appendix K (read 2026-10-01): 1,600 columns per table and a row that must fit in one 8,192-byte page, behind hitop-form's Supabase column check.
+- [rfc9110.md](rfc9110.md) — RFC 9110, *HTTP Semantics*, section 4.1 (read 2026-10-01): senders and recipients are asked to support URIs of at least 8,000 octets, behind the Study Link Builder's long-link warning.
