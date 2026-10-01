@@ -51,7 +51,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - [x] T4: In `link.html`, add the fieldset, the download (`saveFile()` gains a type argument), the address checks, the fetch check and the link written by `URLSearchParams`, with the interrupted-build message across the fetch.
 - [x] T5: In `link.html`, fill from a `setup` link, with the mismatch offer and its button.
 - [x] T6: Builder tests for AC4 and AC5 in a new `tests/link-setupfile.spec.js`. Extend S8's retired-term walk in `link-sections.spec.js` to the new states, and S12 to the new refusals.
-- [ ] T7: README section and "What the page's host sees". Scan the new README text and `form.js` messages with D-083(b)'s patterns.
+- [x] T7: README section and "What the page's host sees". Scan the new README text and `form.js` messages with D-083(b)'s patterns.
 - [ ] T8: hitop article section and NEWS line. Run `pkgdown::build_article("articles/online-collection")` and `devtools::check()`. Open the companion PR with the hitop PR.
 
 ## Work log
@@ -67,7 +67,8 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: T2 done. `tests/setupfile.spec.js` holds 23 tests (SF1 to SF4), with `setupFingerprint()`, `serveSetup()` and `setupQuery()` in `tests/helpers.mjs`. Four plants went red: a pretty-printed fingerprint, a size check at 100,000, the referrer option dropped, and the browser check dropped. Full hitop-form suite: 902 passed.
 - 2026-10-01: T3 done. N10 in `tests/network.spec.js` counts requests per address on a setup-file walk. A planted second fetch of the file turned it red (count 2).
 - 2026-10-01: checkpoint, T4 and T5 code written in `link.html`, not yet ticked. `build()` now reads the form through `readForm()`, which the download shares. Three `link-sections.spec.js` tests stay red until T6 (S12 must fire the new refusals) and T7 (the README heading the new hint links to). Added to T6: extend S12 to the new refusals.
-- 2026-10-01: T4, T5 and T6 done. `tests/link-setupfile.spec.js` holds 29 tests (LF1 to LF8). S8 now reads the "In a file I host" state and the offer, and S12 fires 8 new refusals. `RETIRED` and `retiredIn()` moved to `tests/helpers.mjs`. Two plants went red: the match check dropped, and the address written unencoded. The offer's text is written only when shown, so the intro stays at 60 words. The fingerprint keeps key order, so a hand-written file in another order does not match the builder's form.
+- 2026-10-01: T4, T5 and T6 done. `tests/link-setupfile.spec.js` holds 29 tests (LF1 to LF8). S8 now reads the "In a file I host" state and the offer, and S12 fires 8 new refusals. `RETIRED` and `retiredIn()` moved to `tests/helpers.mjs`. Two plants went red: the match check dropped, and the address written unencoded. The offer's text is written at the moment the offer shows, which keeps the intro at 60 words. The fingerprint keeps key order. If a hand-written file has its keys in another order, it does not match the builder's form.
+- 2026-10-01: T7 done. README gains "Keep the setup in a file you host" and a paragraph each in "Edit a study link" and "What the page's host sees". It also names `setup` and `sha256` as refused parameter names and gains test-table rows. The retired-term scan read 80 added README lines and 50 new `form.js` strings. Its two hits are the `'no-store'` fetch option, a code literal D-083(c) exempts. Full hitop-form suite: 940 passed.
 
 ## Decisions
 
