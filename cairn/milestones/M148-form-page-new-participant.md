@@ -1,6 +1,6 @@
 # M148: Online form: text for participants, progress, and a way on from errors
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -77,6 +77,8 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-09-30: T8 done. `canInflate()` now builds a `deflate-raw` `DecompressionStream` in a `try`. A new P1 test replaces the constructor with one that throws for `deflate-raw`. Before the fix it failed on the contact sentence, and after it passed with the browser sentence. The README states both browser cases. `screens`, `zlink`, `link` and `link-sections` specs: 266 passed.
 - 2026-09-30: T9 done. The failed-send lead now reads "This page got no confirmation that your answers reached the study team.", and the heading stays. The article already says "not confirmed". `sendingLine()` draws an empty `p.sending` (role status) above Finish on the last item page and on "Before you finish" when the link has a store, and `finish()` fills it. Each answer to a marked item rewrites the count. Three new tests and new asserts in P4 and P6. Plants of the old insert-with-text line and of a stale count failed 5 tests, each on its own assert. Six specs: 124 passed. README updated.
 - 2026-09-30: T10 done. The one-missed probe in P4 now leaves the middle item blank. A plant that scrolled only for two or more missed items failed both P4 tests on "the first missed item is in view". The hint reads "Type your participant identifier exactly as you received it." The article and the `send.spec.js` comment say "answers". NEWS says "Outside that section" and names the unconfirmed-send lead. Full hitop-form suite: 878 passed. No R code changed.
+- 2026-09-30: claim audit: 59 claims read, 10 corrected — hitop-form README.md, form.js, tests/screens.spec.js (scope: lines added since the first audit, hitop-form `995346f..HEAD` and hitop `94dfd960..HEAD`)
+- 2026-09-30: after the audit fixes, `screens.spec.js` and `link-sections.spec.js` passed 132 of 132. Status set to review.
 
 ## Decisions
 
