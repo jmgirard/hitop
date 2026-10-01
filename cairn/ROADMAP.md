@@ -7,7 +7,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M143 | HiTOP-DAT item, answer and scale tables | in-progress | — | normal | milestones/M143-hitopdat-tables.md |
+| M143 | HiTOP-DAT item, answer and scale tables | review | — | normal | milestones/M143-hitopdat-tables.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
 | M148 | Online form: text for participants, progress, and a way on from errors | done | M146 | normal | milestones/archive/M148-form-page-new-participant.md |
