@@ -53,7 +53,7 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - [x] T2: Add the request listener to the spec's `beforeEach`, and fulfil the export route from local copies (the `exportJson` shape of `openForm` at `tests/helpers.mjs:215-224`). Commit the copies under `tests/fixtures/exports/` with a fixtures README row. Plant a route that calls `route.continue()` and see the test fail.
 - [x] T3: Extend `expectRegion` (`:445-465`) and the long-link test (`:500-523`) to the four states.
 - [x] T4: Add the Connect entry to the one-field table (about `:288`). Write the Move guard test for the guards at `link.html:389`, `394`, `602` and `607`.
-- [ ] T5: Write the six `z` refusal tests, in the style of the `BAD_C` table (`tests/link.spec.js:665-690`).
+- [x] T5: Write the six `z` refusal tests, in the style of the `BAD_C` table (`tests/link.spec.js:665-690`).
 - [ ] T6: Replace `openBuilderSections()` (`tests/helpers.mjs:139-149`) with a helper that opens the section of a named field, and move its nine calling specs to it. A Sonnet subagent can do the move, and its diff is checked here.
 - [ ] T7: Update the README test-table rows of the changed specs. Run the full suite locally and on the PR.
 
@@ -69,6 +69,7 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - 2026-09-30: T2 done. The spec's routes mark what they fulfill or abort, and `afterEach` fails on any other off-target request. The two exports are copies from hitop `318629fe`. Two plants went red, each naming the export URL: a `route.continue()` in `holdExports`, and no export route. The spec passed, 93 of 93.
 - 2026-09-30: T3 done. The long-link test became four: a short `c` link and a long `z` link at 375px and 1280px. Two plants in `link.html` went red: a `.link-row` set to `display: block` and an `#out` with no `max-height`.
 - 2026-09-30: T4 done. `ONE_FIELD` has a Connect entry (`participantId`) that also checks the menu reads `connect`. The forced-press test covers instrument rows and question groups. Removing each of the four `if` guards in `link.html` failed that guard's test.
+- 2026-09-30: T5 done. L36 in `link.spec.js` fires the six refusals as `BAD_Z` and compares `builderValues()` with a load with no link. A planted fill of the first instrument row before the refusal failed it.
 
 ## Decisions
 
