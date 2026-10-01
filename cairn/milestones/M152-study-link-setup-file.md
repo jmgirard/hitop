@@ -47,7 +47,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 
 - [x] T1: In `form.js`, add `setupFingerprint()` (`crypto.subtle.digest`) and `fetchSetup()`, the `setup`/`sha256` branch of `decodeLink()` with AC2's refusals, and `setup` and `sha256` in `checkParticipantParam()`. Read a GitHub raw file's `Access-Control-Allow-Origin` and `Cache-Control` headers with `curl -I` and write a hitop source note on them.
 - [x] T2: Add `tests/setupfile.spec.js` with a Node fingerprint helper in `tests/helpers.mjs`: AC1's walk and refusal, and one test per AC2 fault.
-- [ ] T3: Add the hosted-file walk to `tests/network.spec.js`, counting requests per address.
+- [x] T3: Add the hosted-file walk to `tests/network.spec.js`, counting requests per address.
 - [ ] T4: In `link.html`, add the fieldset, the download (`saveFile()` gains a type argument), the address checks, the fetch check and the link written by `URLSearchParams`, with the interrupted-build message across the fetch.
 - [ ] T5: In `link.html`, fill from a `setup` link, with the mismatch offer and its button.
 - [ ] T6: Builder tests for AC4 and AC5 in a new `tests/link-setupfile.spec.js`. Extend S8's retired-term walk in `link-sections.spec.js` to the new states.
@@ -65,6 +65,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: implement started on `m152-study-link-setup-file` in hitop and hitop-form. Gate: "Download the setup file" runs the form checks only and fetches no instrument files (Jeff).
 - 2026-10-01: T1 done. `form.js` gains `fetchSetup()`, `setupFingerprint()`, `checkSetupAddress()`, `canFingerprint()` and the `setup`/`sha256` branch of `decodeLink()`. `checkParticipantParam()` refuses both names, and `saveFile()` takes a type. Source note `references/github2026rawheaders.md`: raw files send `access-control-allow-origin: *` and `cache-control: max-age=300`.
 - 2026-10-01: T2 done. `tests/setupfile.spec.js` holds 23 tests (SF1 to SF4), with `setupFingerprint()`, `serveSetup()` and `setupQuery()` in `tests/helpers.mjs`. Four plants went red: a pretty-printed fingerprint, a size check at 100,000, the referrer option dropped, and the browser check dropped. Full hitop-form suite: 902 passed.
+- 2026-10-01: T3 done. N10 in `tests/network.spec.js` counts requests per address on a setup-file walk. A planted second fetch of the file turned it red (count 2).
 
 ## Decisions
 
