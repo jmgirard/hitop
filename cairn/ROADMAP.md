@@ -14,7 +14,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M148 | Online form: text for participants, progress, and a way on from errors | planned | M146 | normal | milestones/M148-form-page-new-participant.md |
 | M149 | Study Link Builder: early presses, file reads and refusals | done | — | high | milestones/archive/M149-link-builder-presses-and-refusals.md |
 | M150 | Study Link Builder: hint facts, names and tutorials | done | M149 | high | milestones/archive/M150-link-builder-hint-facts.md |
-| M151 | Study Link Builder test reach | planned | M149 | normal | milestones/M151-link-builder-test-reach.md |
+| M151 | Study Link Builder test reach | in-progress | M149 | normal | milestones/M151-link-builder-test-reach.md |
 
 ## Candidates
 
