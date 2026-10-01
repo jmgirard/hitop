@@ -1,6 +1,6 @@
 # M148: Online form: text for participants, progress, and a way on from errors
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M146
 - **Driving RR:** —
@@ -93,6 +93,8 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-10-01: AC1 final wording: Jeff chose the second reader's text, which keys each clause to the shown refusal, and AC1 now holds it. Three cases go to a follow-up row at the post-merge pass. They are a list mixing HTTP 500 with a dropped fetch, a `c` plus `z` link on an old browser, and a cut-off body. Browsers that cannot parse `form.js` go to a Known issue line there.
 - 2026-10-01: T12 done. Each item page draws `p.missed-count` (role alert) empty above the items. A press empties it, moves it above the first missed item, and writes the count in the next frame. An answer writes it only for a new number. P4 now checks the drawn alert, each answer's own mark, and no write for an unchanged number. Three plants each failed both P4 tests on their own assert: a write on every answer, no unmark, and no drawn alert. README updated. Full suite: 878 passed.
 - 2026-10-01: T13 done (hitop-form `d401c64`). The identifier field ignores an Enter with keyCode 229. A new P3 test sends that keydown, then one with keyCode 13. It failed before the fix with 15 items shown, and passed after. `finish()` finds `p.sending` by class. The README has no "store" left. The consent comment and the `send.spec.js` header match the code. NEWS says the marks show after "Next" or "Finish". Full suite: 879 passed.
+- 2026-10-01: claim audit: 42 claims read, 3 corrected — hitop-form README.md, form.js (scope: lines added since the second audit, hitop-form `0882c11..d401c64` and hitop `52fafb03..5d15c02e`)
+- 2026-10-01: the audit also noted that `[role="alert"]:empty { display: none; }` took the empty count out of the accessibility tree. `.missed-count:empty` now keeps it as a block with no padding, border or margin. P4 checks `display: block` and height 0, and it failed on `display: none` before the CSS. In that run one other test failed on `toBeVisible`, and it passed on the rerun. Full suite: 879 passed (hitop-form `f8e5420`). No R code changed. Status set to review.
 
 ## Decisions
 
