@@ -79,6 +79,8 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - 2026-09-30: implement resumed. Minor amendment: T8 added for the AC6 return, and the Coverage lines for AC6 and AC7 name it.
 - 2026-09-30: T8 done. `setBox()` in `link-consent.spec.js` calls `openSectionOf` before it writes, which covers `make()` and K2. A plant of `onclick="return false"` on the Consent summary failed 13 of 17 tests at the open check in `openSectionOf`. The spec passed 17 of 17, and the full suite passed 845 of 845.
 - 2026-09-30: status review.
+- 2026-09-30: review pass 2 passed AC1-AC6. Gate triage: G1, G3, F4 and F8 fixed in hitop-form `7604936`, seven findings to a candidate row, 18 rejected.
+- step-7 approval: m151-link-builder-test-reach approved for merge
 
 ## Decisions
 
@@ -138,3 +140,9 @@ Pass-2 findings, most severe first. Each lens found F1 closed and no F2-F23 entr
 - G5 (blame): K4 reads prefilled values with Consent opened by the prefill, not by a click. `toHaveValue` reads a closed field.
 - G6 (blame): the T8 work-log line names `make()` and K2, and the plant also reached the K5 probes and the 20,000-character test.
 - G7 (prior-review): the header of `link-consent.spec.js` and its README row do not say that the spec opens its sections.
+
+Triage at the gate, 2026-09-30. The user chose the recommended triage.
+
+- Fixed now, in hitop-form `7604936`. G1: the 100,000-byte test waits for group 9's prefilled text before `openSectionOf`. G3: the `setBox()` comment says the write fires no input event. F4: the `fetchExport` comment and the README paragraph on the weekly run name `link-sections.spec.js` as the spec that uses the copies. F8: `readmeSlugs()` takes indented fences and closes a fence only on the same character at the same or greater length. A new test covers the three cases, and it failed with the old rule put back. The full suite passed 846 of 846.
+- Follow-up, as the ROADMAP candidate row "Study Link Builder test follow-ups (M151 review)": F2, F3, F9, F19, F20, F22 and G2.
+- Rejected. F5: the count's job under AC1 is the sentence rule, and the exact text check covers the page. F6: `main` read the same hints, so no coverage was lost. F7: a reordered `NEXT` fails, it does not pass. F10: AC6 names one helper for the nine specs only. F11: the comment at `:84-90` covers the listener. F12: the workflow's target is not a host root. F13: AC7 stays unticked until the PR's CI is green. F14: the reviewer found the copies byte-identical. F15: the cost is two page launches. F16: AC5 does not ask for section state, and M149's S11 tests the reset. F17: no route aborts a stray today. F18: the failure names the missing export. F21: the README sentence counts example response files, and the export copies are not ones. F23: DESIGN Known issue 13 records it. G4: `main` opened every section, and `link-sections.spec.js` tests `refuseAt`. G5: AC6 is about the sections a test writes, and a prefill opens K4's. G6: the work log is append-only, and this Review section states the full reach. G7: documentation only, and the README row describes what the tests check.
