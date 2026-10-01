@@ -7,7 +7,7 @@
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the researcher page's hints and the package tutorials that describe it
-- **Branch/PR:** m150-link-builder-hint-facts, companion: /Users/jmgirard/github/hitop-form m150-link-builder-hint-facts
+- **Branch/PR:** m150-link-builder-hint-facts, companion: /Users/jmgirard/github/hitop-form m150-link-builder-hint-facts https://github.com/jmgirard/hitop-form/pull/22
 
 ## Goal
 
@@ -37,7 +37,7 @@ The Study Link Builder's hints give back the facts that M146 cut, and the packag
 - [x] AC2: A case-insensitive grep for `this page` runs over `link.html`, and over the bodies of the `form.js` functions that `link.html` imports (`link.html:262-265`). In `link.html`, each remaining hit is a code comment, or quotes the online form's own screen text. In the imported functions, each hit now says "the online form". At `a2d74e3` these hits are `form.js:101`, `:881`, `:1050` and `:1135`. A Playwright test fires each reworded message on the builder and asserts the new text. For `:881` it first adds an option to the destination menu.
 - [x] AC3: Three tutorials are searched: `vignettes/articles/online-collection.Rmd`, `vignettes/articles/modules-hitopsr.Rmd` and `vignettes/pid5_scoring.Rmd`. Each is searched with its line breaks joined into spaces, case-insensitively, for each field label inside `details.optional` in the markup of `link.html`. For the "Participant" label, the search terms are `participant field` and `"Participant"`. Each hit that tells the reader to fill in, choose or tick that field on the Study Link Builder names the section that holds it. `online-collection.Rmd` says that the optional parts sit in closed sections, and that the finished link shows under "Your study link". The sentence at `modules-hitopsr.Rmd:405-407` names PID-5, PID-5-SF, PID-5-BF, HiTOP-SR and HiTOP-BR.
 - [x] AC4: A case-insensitive PCRE search (`rg -i -P`) runs for each D-083(b) pattern over `vignettes/pid5_scoring.Rmd` and `vignettes/articles/overview.Rmd`. Each remaining hit sits in R code, a comment, a code identifier or a URL. A link's visible text is not a URL. The five download pages that call `online_strip()` are each `vignettes/articles/download-*.Rmd` except `download-hitophsum.Rmd`. On each, the strip's button text contains "Study Link Builder". The strip's text contains "online form" and names the participant page no other way. The same search over the rendered strip finds only the `?c=` in the button's `href`. A test in `tests/testthat/test-download-pages.R` asserts these three facts on each of the five pages.
-- [ ] AC5: The hitop-form Playwright suite passes locally and on its PR's CI. In hitop, NEWS.md has an entry for the hints and the tutorials. `devtools::check()` gives 0 errors and 0 warnings, `pkgdown::check_pkgdown()` passes, and each changed article builds with `pkgdown::build_article()`.
+- [x] AC5: The hitop-form Playwright suite passes locally and on its PR's CI. In hitop, NEWS.md has an entry for the hints and the tutorials. `devtools::check()` gives 0 errors and 0 warnings, `pkgdown::check_pkgdown()` passes, and each changed article builds with `pkgdown::build_article()`.
 
 ## Coverage
 
@@ -106,3 +106,4 @@ The Study Link Builder's hints give back the facts that M146 cut, and the packag
 - F16 (diff 11): AC5's CI half is open. Noted: step 8 waits on it.
 - Gate triage: Jeff took the recommended dispositions. F1, F2, F3, F6 (`pid5_scoring.Rmd`), F7 and F12 (`info`) were fixed. F4 went to the M148 work log, and F6 (`online-collection.Rmd`) became a candidate row. F5, F8 to F11, F12 (skip), F13, F14 and F15 were rejected for the reasons above.
 - Fixes: the decline hint says "Any `{participant}` goes after its `?` or `#`" (39 words). The saved-file hint says "when responses go to a file or a send is not confirmed. The saved-file screen links here." (39 words). The module hint opens "HiTOP-SR only. With several instruments, it applies to the HiTOP-SR among them." (40 words), and L3 asserts `/^HiTOP-SR only\. With several instruments/`. Known issue 11's quote is true again. `online-collection.Rmd:415-418` names the "Recruiting site" menu, its section and the "Address parameter" field. After the fixes, hitop-form passed 831 of 831 and hitop gave 0 failures. `online-collection` and `pid5_scoring` built, and no retired term is on an added line.
+- AC5 (CI half): hitop-form PR #22 at `954e9a0`, run 36799003398. Its `tests` check passed in 7 min 39 s, with 831 of 831 passed. The PR was squash-merged at 2026-10-01T01:08:43Z.
