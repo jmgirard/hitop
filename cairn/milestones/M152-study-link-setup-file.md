@@ -88,6 +88,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: implement complete after review pass 1. Status set to review.
 - 2026-10-01: review pass 2 gate (Jeff): fix the 9 proposed fix-now findings on the branch, then ask again to merge. Checkpoint: all 9 written, with three new LF7 tests whose plants went red. The full suite has not yet run on them.
 - 2026-10-01: gate fixes complete. The first full run failed the hint cap: the key hint was 41 words, and the intro went over 60. The key hint now says "opened on either page", and the intro drops its sending clause. Full hitop-form suite: 951 passed.
+- 2026-10-01: step-7 approval: m152-study-link-setup-file approved for merge, with the companion hitop-form m152-study-link-setup-file, companion first.
 
 ## Decisions
 
