@@ -1,6 +1,6 @@
 # M151: Study Link Builder test reach
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M149
 - **Driving RR:** —
@@ -23,11 +23,11 @@ The Study Link Builder's tests state their expectations apart from the page's co
 
 ## Acceptance criteria
 
-- [ ] AC1: In `tests/link-sections.spec.js`, the next-step test compares `#next` with a table in the spec. The table holds the full expected text for each of the 15 pairs of recruiting site and destination. The spec holds no function that builds that text. Its sentence count counts `.`, `;`, `!` and `?` ends. The README anchor check skips lines inside fenced code blocks: a test gives it a README text with a `# x` line inside a fence and asserts that no `x` anchor results.
-- [ ] AC2: The `beforeEach` of `tests/link-sections.spec.js` adds a listener to the page's `requestfinished` and `requestfailed` events. The listener records each request whose URL does not start with the test target's base URL and that no route of the test fulfilled or aborted. An `afterEach` fails the test when that record is not empty. The spec passes with the listener in place. No route in the spec calls `route.continue()`, and the export routes fulfill from files under `tests/fixtures/exports/`.
-- [ ] AC3: The result-region test builds a short link and a `z` link over 5,000 characters, each at 375px and at 1280px wide. In each of the four states, "Copy the link" sits to the right of the box, and the box is under 16rem high. For the long link, the box's `scrollHeight` exceeds its `clientHeight`.
-- [ ] AC4: The one-field table in `tests/link-sections.spec.js` has a CloudResearch Connect entry. For instrument rows and question groups, a test removes `disabled` from the first Move up and the last Move down, and clicks each. The order does not change, and focus moves to the other move button of that row.
-- [ ] AC5: A builder test fires six refusals through a `z` link on `link.html`. For each, it asserts the message. It also asserts that the values of `f.elements`, the instrument rows and the question list equal a snapshot from a load with no link. The six refusals are these:
+- [x] AC1: In `tests/link-sections.spec.js`, the next-step test compares `#next` with a table in the spec. The table holds the full expected text for each of the 15 pairs of recruiting site and destination. The spec holds no function that builds that text. Its sentence count counts `.`, `;`, `!` and `?` ends. The README anchor check skips lines inside fenced code blocks: a test gives it a README text with a `# x` line inside a fence and asserts that no `x` anchor results.
+- [x] AC2: The `beforeEach` of `tests/link-sections.spec.js` adds a listener to the page's `requestfinished` and `requestfailed` events. The listener records each request whose URL does not start with the test target's base URL and that no route of the test fulfilled or aborted. An `afterEach` fails the test when that record is not empty. The spec passes with the listener in place. No route in the spec calls `route.continue()`, and the export routes fulfill from files under `tests/fixtures/exports/`.
+- [x] AC3: The result-region test builds a short link and a `z` link over 5,000 characters, each at 375px and at 1280px wide. In each of the four states, "Copy the link" sits to the right of the box, and the box is under 16rem high. For the long link, the box's `scrollHeight` exceeds its `clientHeight`.
+- [x] AC4: The one-field table in `tests/link-sections.spec.js` has a CloudResearch Connect entry. For instrument rows and question groups, a test removes `disabled` from the first Move up and the last Move down, and clicks each. The order does not change, and focus moves to the other move button of that row.
+- [x] AC5: A builder test fires six refusals through a `z` link on `link.html`. For each, it asserts the message. It also asserts that the values of `f.elements`, the instrument rows and the question list equal a snapshot from a load with no link. The six refusals are these:
   - a browser with no `DecompressionStream`
   - text that is not base64url
   - a stream that unpacks to more than 100,000 bytes
@@ -74,7 +74,48 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - 2026-09-30: T7 done. The README rows of `link.spec.js` and `link-sections.spec.js` name the new cases. The full suite passed locally, 845 of 845 (M150 had 831). The PR's CI run belongs to `/milestone-review`, which opens the PR.
 - claim audit: not owed — internal tier
 - 2026-09-30: status review.
+- 2026-09-30: review return 1 (defect). AC6 failed: `link-consent.spec.js` sets `consentText` and `declinedText` by `evaluate()` in `make()` and K2 and never opens the Consent section. AC1-AC5 passed with evidence. AC7 has local evidence only. F2-F23 wait for triage at the next gate. Status in-progress.
 
 ## Decisions
 
 - D1 (2026-09-30): The spec's export copies are committed files under `tests/fixtures/exports/`, copied from hitop's `pkgdown/assets/downloads/`, rather than fetched once per run. The spec then needs no network. The copies can fall behind the site, and the fixtures README names the source commit.
+
+## Review
+
+Pass 1, 2026-09-30. Both branches were current with their `main`. Full hitop-form suite at the branch head: run 1 passed 844 of 845, with N7 in `network.spec.js` timed out. Run 2 passed 845 of 845.
+
+- AC1: pass. `NEXT` in `link-sections.spec.js` holds the 15 sentences as literals, and S7 compares `#next` with each by `toHaveText`. No function in the spec builds the text (`expectedNext` and `SITE_TEXT` are gone). The count regex is `/[.;!?](\s|$)/g`. `readmeSlugs()` toggles on fence lines, and the test "a "#" line inside a fenced code block gives no README anchor" passed in run 2.
+- AC2: pass. The `beforeEach` (`link-sections.spec.js:110-119`) adds one listener to `requestfinished` and `requestfailed`. It records a request whose URL does not start with `base()` and that is not in `answered`, the set that `fulfillExport` and `abortRequest` fill. The `afterEach` expects that record to be empty. The spec has four `page.route` calls and no `route.continue()`. Every export route ends in `fulfillExport`, which reads `tests/fixtures/exports/<name>`, or in `abortRequest`. The spec passed in run 2.
+- AC3: pass. The loop at `link-sections.spec.js:631-662` runs four tests: a short `c` link and a `z` link over 5,000 characters, at 375px and at 1280px. Each calls `expectRegion`, which asserts that the copy button's left edge is at or past the box's right edge. Each asserts a box height under 16rem. The long cases assert `scrollHeight > clientHeight`. All four passed in run 2.
+- AC4: pass. `ONE_FIELD` (`link-sections.spec.js:365`) has the entry "participantParam of CloudResearch Connect". Two forced-press tests (`:516-531`) cover instrument rows and question rows. Each sets `disabled = false` on Move up of row 1 and Move down of row 3, and clicks each. They assert the order is unchanged and focus is on the row's other move button. Both passed in run 2.
+- AC5: pass. `BAD_Z` in `link.spec.js:767-779` lists the six refusals that AC5 names. Test L36 loads `link.html` with no link, takes `builderValues()`, then loads each bad `z` link. It asserts the full message and that `builderValues()` equals the first snapshot. `builderValues()` reads the values of `f.elements`, the instrument-row menus and the question names. All six passed in run 2.
+- AC6: fail. A grep for `openBuilderSections` in `tests/` returns no hit, and `git grep -l` at `a2d74e3` lists `helpers.mjs` and nine specs. `link-consent.spec.js` uses the Consent section but never opens it. Its `make()` (`:53-54`) and K2 (`:99`) set `consentText` and `declinedText` through `setBox()`. That helper is an `evaluate()`, which writes a hidden field. No call opens `secConsent`. K1, K2, the 20,000-character test and the refused probes therefore run with that section closed. The other eight specs open each section they write: `link-module-file` and `link-questions-file` in `openBuilder`, `link-questions` before each `#addQuestion` use, and `network.spec.js` uses no section.
+- AC7: not yet met. The suite passed locally in run 2, 845 of 845. The PR's CI run has not happened. N7 fails at random: 1 of 15 repeats on the branch, and 3 of 30 on an export of `main`, so the flake is older than this milestone.
+
+Consistency gate: `cairn_validate.py` exit 0, with advisory warnings only. In hitop, `devtools::document()` made no change, `pkgdown::check_pkgdown()` found no problems, and `devtools::check()` gave 0 errors, 0 warnings, 0 notes. The hitop branch changes only `cairn/` files, so no NEWS entry and no README rebuild are owed.
+
+Independent review: three fresh reviewers (Opus diff-bug, Sonnet blame-history, Sonnet prior-review). The prior-review probes found no GitHub review comments in either repo. Findings, most severe first, merged across lenses. F1 is the return. The others wait for triage at the next gate.
+
+- F1 (Opus): `link-consent.spec.js` writes the Consent fields without opening the section. This is the AC6 failure above.
+- F2 (Opus): at the time of `afterEach`, the listener has not seen a request still in flight. It also does not see requests from other pages in the context. The README row claims more than this.
+- F3 (Opus): `fulfillExport` marks a request only after `await readFile`, so a request cancelled in that gap is recorded as a stray. This is a risk of a false red.
+- F4 (Opus, blame, prior-review): the weekly run against the deployed page now gives `link-sections.spec.js` the committed copies, not the live exports. The comment at `helpers.mjs:28` ("not from a copy that could drift") and the README sentence on the weekly run were not updated. D1 accepts the drift but does not state this effect.
+- F5 (Opus): the sentence count runs after an exact `toHaveText`, so it can only fail on the `NEXT` literal, not on the page.
+- F6 (Opus): `link.spec.js:459-461`, `553-556`, `804` and `997` read hints inside closed sections. `main` read the same text, so no coverage was lost.
+- F7 (Opus, prior-review): the four region tests take their sentence as `NEXT[0][2]`, by position.
+- F8 (Opus, prior-review): `readmeSlugs()` misses indented fences, such as `README.md:672`. It also lets a `~~~` line close a backtick fence. The current README does not trigger either case.
+- F9 (Opus): only the Connect entry of `ONE_FIELD` checks the site menu's value. The SONA and other-site entries do not.
+- F10 (Opus, blame): two section-opening helpers now exist, `openSectionOf` and the spec's own `openSection`.
+- F11 (Opus): the S1-S12 header of `link-sections.spec.js` does not name the request rule or the fence rule.
+- F12 (Opus): the exemption is the prefix `startsWith(base())`. For a target at a host root, every export URL matches it. The workflow's target is not a host root.
+- F13 (Opus): T7 is ticked, but its "and on the PR" half has not run.
+- F14 (Opus): the fixtures README says the copies matched the site byte for byte, with no recorded command. The reviewer found them byte-identical to hitop `318629fe` and `main`.
+- F15 (Opus): the `beforeEach` opens a page for the two tests that need none.
+- F16 (blame): the `BAD_Z` snapshot does not read section open state or summary text. AC5 does not ask for them.
+- F17 (blame): any route-handled request is exempt from the listener, also one a future route aborts on purpose.
+- F18 (blame): a PID-5 export has no copy. A future PID-5 test in this spec fails, and it needs a new copy file first.
+- F19 (prior-review): S4 still checks overflow in one site and destination state, and S1 still ignores unknown children. These items were in the follow-ups row but not in M151's scope.
+- F20 (prior-review): the other specs still fetch the live exports, which caused past network flakes.
+- F21 (prior-review): `README.md:640` says "Eleven example files", and two export copies were added. Those copies are not example response files.
+- F22 (orchestrator): N7 in `network.spec.js` fails at random, also on `main` (see AC7).
+- F23 (blame): `BAD_Z` case 1 runs in Chromium only. DESIGN Known issue 13 already records this.
