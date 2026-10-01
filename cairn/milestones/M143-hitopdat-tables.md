@@ -1,6 +1,6 @@
 # M143: HiTOP-DAT item, answer and scale tables
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -89,6 +89,8 @@ The package ships the 382 HiTOP-DAT items, their answer options, their scales an
 - re-audit: AC4 (full) — second reader: add Jeff's sign-off and its date to the key's fields. Applied.
 - 2026-09-29: blocked on the authors' IDAS-II item key. Jeff is getting it. Remaining work: T1's key note, the IDAS-II membership and text tests and plants in T3 and T6, SOURCES DAT-1, and the final T7 runs.
 - 2026-09-29: side work outside M143 scope, tracked in the HiTOP-DAT candidate row. A draft Titanium form and a Qualtrics formula table are in `devel/hitopdat_titanium.R` and `devel/hitopdat_formulas.R`. A check of the file's trash, triggers and results email added DAT-13 and DAT-14 and extended DAT-3. The Titanium work waits on the colleague's reply.
+- 2026-10-01: resumed. The blocker cleared: Jeff shelved `IDAS-II (Items + Scoring).doc` (sha256 `dc77c5fe…`, headed "© David Watson, 2011"), which the DAT clinic contact sent. It prints the 99 items with their numbers and a scale composition page. Merged `main` into the branch (M146 to M151 and the 2026-10-01 plan commit `948f19d2`).
+- 2026-10-01: correction: plan commit `948f19d2` on `main` amended this file without seeing this branch, which was never pushed. That commit's milestone text is replaced by this branch's text in the merge. Its D-085 (manual names) stands and matches T3 as built. Its other content (the email's working facts, item 194 in the defect list, the Watson 2011 key) is carried at the amendment gate below.
 
 ## Decisions
 

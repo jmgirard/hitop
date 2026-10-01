@@ -8,6 +8,59 @@
   labels and values of each answer set. `hitopdat_scales` holds the 57 scales
   the battery scores, with each scale's items and the items it reverses. The
   battery has no scoring or export function yet.
+* **The hitop-form online form speaks to the participant.** An error screen
+  gives one sentence: check the connection and reload, open the link in
+  another browser, or contact the study team. Each screen ends with a closed
+  "Details for the study team" section. It holds the technical reason on an
+  error or failed-send screen, and the build date and package version on
+  every screen after the instrument files load. Outside that section, no
+  screen shows a host name, and a completion link reads "Continue to the
+  next step of the study". With a send address, the start screen says that
+  an unconfirmed send saves the answers as a file. The identifier
+  field has a hint, asks a phone keyboard not to correct it, and starts the
+  form on Enter. Each item page shows its page, and its part under a list,
+  above the items and beside "Next" or "Finish". A closed "Instructions"
+  section repeats the instructions. After a press of "Next" or "Finish",
+  each blank item is marked "Please answer this item", with a count of
+  blank items above the first. Each option is at least 44 px high. "I do
+  not agree" asks once to confirm. A send shows "Sending your answers.
+  Please keep this page open.". An unconfirmed send's screen is headed
+  "Your answers were not sent". It says that no confirmation came that the
+  answers reached the study team.
+
+* **The hitop-form Study Link Builder shows its required choices first.**
+  The page shows the instruments, the study name and where responses go
+  first. Five optional sections follow, each closed until you open it:
+  "Participants and recruiting site", "Item order and HiTOP-SR module",
+  "Consent", "When the participant finishes" and "Your own questions". A
+  section's summary reads "Not used" or lists its fields that hold a value.
+  When the page refuses a field, it opens the field's section and moves
+  focus to the field. Move and Remove buttons are disabled where they do
+  nothing. The built link appears under "Your study link", with a "Copy the
+  link" button and one next step for the choices made. The hints are
+  shorter, and they link to the hitop-form README for detail. The site's
+  Instruments menu names the two pages "Module Builder" and "Study Link
+  Builder". The online-collection and HiTOP-SR modules articles use the
+  name "Study Link Builder", and call the `.json` file that `write_module()`
+  writes the module file.
+
+* **The hitop-builder Module Builder starts short and leads to the Study
+  Link Builder.** The page's opening text is short. The list of hosts it
+  loads from and R's log sit in a closed "Technical details" section, which
+  a failed load or build opens. Each scale's checkbox name ends with its
+  item count. A "Definition" button on each row opens the scale's
+  definition by click or keyboard, in place of the popup that opened on
+  hover. A filter that matches no scale says so. Each format has one name,
+  "Word form", "Qualtrics file", "REDCap dictionary" or "Online form", on
+  its card, its download button and its build status. The three zip file
+  formats also use it in the `README.txt` title. The step buttons name the
+  step they lead to, "Next: Choose a format and download" and "Back: Choose
+  scales". In Chromium, a mouse click on one no longer draws a focus ring on
+  the new step's heading, and a key press still does. After an Online form
+  save, a "Next: make the study link" panel holds a link that opens the
+  Study Link Builder in a new tab, with the module filled in. In the Study
+  Link Builder, you can choose the module file as a file as well as paste
+  its text.
 
 * **A Word module form can carry subscale scoring rows.**
   `generate_docx_hitopsr()` accepts `include_subscales = TRUE` with a
@@ -564,6 +617,49 @@
   has been rebuilt with the corrected item lists.
 
 ## Improvements and fixes
+
+* **The hitop-form Study Link Builder ignores presses until it has read an
+  opened link, and several of its refusals change.** "Make the link" is
+  disabled until the page has read the study link it was opened with.
+  Before, a press or Enter in a field sent the form as a plain web request
+  while a compressed link was unpacked or before the page's script loaded.
+  The page then reloaded with its fields in the address. An edit typed
+  into the "Module file" box while a chosen file is read now wins, and the
+  file's text is dropped. The
+  refusal of an instrument export, pasted or chosen as a file, now says to
+  use the file that the Module Builder or `write_module()` saved. Before,
+  it said to paste it. A refusal of the instruments list moves focus to the
+  instrument at fault, the second of a repeated instrument or the second
+  PID-5 form. When a setup step after the opened link is read fails, the
+  page shows its "could not be read" refusal with an empty form that still
+  makes a link. Before, the page stopped with no message. The section
+  summaries are drawn without copying page elements on each keystroke. The
+  online form refuses a link whose `instrument` field is not text, naming
+  the field. Before, a link with `instrument` set to `["hitopbr"]` or
+  `[["pid5"]]` fetched that instrument.
+
+* **The hitop-form Study Link Builder's hints give back facts that the
+  shorter hints dropped, and the tutorials name its sections.** The SONA
+  hint says that each participant's survey code becomes their identifier,
+  and names the "Completion URL" field for SONA's completion address. The
+  hint of "Completion URL after a decline" says to put `{participant}` after
+  the address's `?` or `#`. The hint of "Completion URL after a saved file"
+  says that a file is saved when the link has no place for responses or a
+  send is not confirmed. The "Completion URL" hint gives Prolific's
+  completion URL on the study's page. The "Module file" hint says that with
+  several instruments the module applies to the HiTOP-SR among them. The
+  "Publishable key" hint says that opening a study link on the Study Link
+  Builder or the online form puts the key in GitHub Pages' logs. The page
+  calls itself the Study Link Builder in place of "this page". Four
+  refusals that it shares with the online form name the online form. The
+  online-collection, HiTOP-SR modules and PID-5 scoring articles name the
+  closed section that holds each field they tell you to fill in. They also
+  say that the link shows under "Your study link". The HiTOP-SR modules article
+  lists the five forms that the online form gives. The PID-5 scoring
+  article and the online strip on the five download pages use the names
+  "Study Link Builder" and "online form". The overview page names the web
+  address or Supabase table in place of "store". The strip's
+  button reads "Open the Study Link Builder".
 
 * **hitop-form refuses a participant identifier it cannot write, and the
   link builder keeps each recruiting site's names to that site.** A link

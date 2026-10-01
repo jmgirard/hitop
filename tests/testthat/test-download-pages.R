@@ -118,6 +118,56 @@ test_that("the five form-backed pages render one online strip and the HSUM page 
   }
 })
 
+# The retired terms the online strip must not use, as case-insensitive
+# PCRE patterns, the last two fixed strings.
+RETIRED_TERMS <- c(
+  "\\bdescriptor\\b", "\\bscoring file\\b", "\\bbundle\\b", "\\bendpoint\\b",
+  "\\bstores?\\b", "\\bcompressed\\b", "\\b(hitop-form )?form page\\b",
+  "(?<!study )\\blink builder\\b", "\\b[cz] parameter\\b",
+  "\\$\\{[^}]*\\} parameter", "\\?c=", "\\?z="
+)
+
+test_that("the online strip names the Study Link Builder and the online form", {
+  skip_if(!dir.exists(articles_dir()), "vignettes/articles not available")
+  skip_if_not_installed("knitr")
+  pages <- download_pages()
+  pages <- pages[page_stem(pages) != "hitophsum"]
+  expect_length(pages, 5)
+  for (page in pages) {
+    fences <- render_downloads_chunk(page)
+    strip <- fences[startsWith(fences, '<section class="hitop-online"')]
+    expect_length(strip, 1)
+
+    # The button that opens the builder says so.
+    button <- regmatches(
+      strip,
+      gregexpr('<a href="[^"]*link\\.html[^"]*"[^>]*>([^<]*)</a>', strip)
+    )[[1]]
+    expect_length(button, 1)
+    expect_match(
+      sub("^.*>([^<]*)</a>$", "\\1", button), "Study Link Builder",
+      fixed = TRUE, info = basename(page)
+    )
+
+    # The visible text calls the participant page the online form, and
+    # names no page any other way.
+    text <- gsub("<[^>]*>", " ", strip)
+    expect_match(text, "online form", fixed = TRUE, info = basename(page))
+    expect_no_match(
+      text, "hitop-form|\\bpage\\b", perl = TRUE, ignore.case = TRUE,
+      info = basename(page)
+    )
+
+    # The retired terms: only the `?c=` in the button's link.
+    hits <- unlist(lapply(RETIRED_TERMS, function(p) {
+      m <- gregexpr(p, strip, perl = TRUE, ignore.case = TRUE)[[1]]
+      if (m[1] == -1) integer(0) else as.integer(m)
+    }))
+    href_c <- regexpr("link\\.html\\?c=", strip) + nchar("link.html")
+    expect_equal(hits, as.integer(href_c), info = basename(page))
+  }
+})
+
 test_that("online_strip() refuses a stem that does not match its JSON link", {
   skip_if(!dir.exists(articles_dir()), "vignettes/articles not available")
   env <- new.env()
@@ -152,18 +202,19 @@ test_that("each page's rendered chunk links every file in its manifest rows and 
   }
 })
 
-test_that("the Instruments menu reaches the link builder right after the module builder", {
+test_that("the Instruments menu names the Study Link Builder right after the Module Builder", {
   config <- testthat::test_path("..", "..", "_pkgdown.yml")
   skip_if(!file.exists(config), "_pkgdown.yml not available")
   skip_if_not_installed("yaml")
   menu <- yaml::read_yaml(config)$navbar$components$downloads$menu
   texts <- vapply(menu, function(e) if (is.null(e$text)) "" else e$text, "")
-  i <- which(texts == "Build a HiTOP-SR Module")
+  i <- which(texts == "Module Builder")
   expect_length(i, 1)
-  # A module-builder entry that closes the menu has nothing after it; an
+  expect_equal(menu[[i[1]]]$href, "https://jmgirard.github.io/hitop-builder/")
+  # A Module Builder entry that closes the menu has nothing after it; an
   # empty entry then fails the two expectations below instead of erroring.
   following <- if (length(i) == 1 && i < length(menu)) menu[[i + 1]] else list()
-  expect_equal(following$text, "Make a study link")
+  expect_equal(following$text, "Study Link Builder")
   expect_equal(
     following$href,
     "https://jmgirard.github.io/hitop-form/link.html"
