@@ -1,6 +1,6 @@
 # postgresql2026limits: PostgreSQL's limits on a table's columns and a row's size
 
-**Provenance.** Read 2026-10-01 at M153 from `https://www.postgresql.org/docs/current/limits.html`, which served the PostgreSQL 18 documentation. No file is on the shelf.
+**Provenance.** Ingested 2026-10-01 at M153 from `https://www.postgresql.org/docs/current/limits.html`, which served the PostgreSQL 18 documentation. No file is on the shelf.
 Pagination: none. The page is one HTML page, cited by its appendix and table.
 Extraction: the values below were copied from the page text on 2026-10-01 (observed 2026-10-01). A re-check reads the same page again.
 
