@@ -7,7 +7,7 @@
 - **Principles touched:** IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — a new study-link form the online form and the Study Link Builder read
-- **Branch/PR:** m152-study-link-setup-file; companion: /Users/jmgirard/github/hitop-form m152-study-link-setup-file
+- **Branch/PR:** m152-study-link-setup-file; companion: /Users/jmgirard/github/hitop-form m152-study-link-setup-file https://github.com/jmgirard/hitop-form/pull/25
 
 ## Goal
 
