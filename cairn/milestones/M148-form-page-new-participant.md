@@ -215,7 +215,7 @@ Fix-now work (hitop-form `17e0d59`, hitop `0d6aee06`):
 - U2: `expectMissed` logs the alert's place and text against a frame counter. It requires two or more frames between the empty move and the text. A write at once and a write after one frame each failed both P4 tests on that check.
 - U12: a scroll only for two or more missed items failed both P4 tests at the one-missed press (`screens.spec.js:621`). No probe change was needed.
 - U3: the Enter handler reads `isComposing` only. The new P3 test sends a composing Enter (no start), then an Enter with keyCode 229 (start). It failed on the 229 guard. A plant with no `isComposing` check failed it on the composing Enter.
-- U5, U10: `finish()` takes the nav's last button by index and writes the sending line only when it exists.
+- U5, U10: `finish()` takes the nav's last button by index and skips a sending line that is not on the screen.
 - U6: the selector is `[role="alert"].missed-count:empty`.
 - U7 to U9, U11, U13 to U15: README, `form.js` comments, the `link.html` decline hint, the P4 message and NEWS are corrected and wrapped.
 - The earlier T12 plants (a write on every answer, no unmark, no drawn alert) each failed both P4 tests again.
