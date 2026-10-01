@@ -50,7 +50,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - [x] T3: Add the hosted-file walk to `tests/network.spec.js`, counting requests per address.
 - [ ] T4: In `link.html`, add the fieldset, the download (`saveFile()` gains a type argument), the address checks, the fetch check and the link written by `URLSearchParams`, with the interrupted-build message across the fetch.
 - [ ] T5: In `link.html`, fill from a `setup` link, with the mismatch offer and its button.
-- [ ] T6: Builder tests for AC4 and AC5 in a new `tests/link-setupfile.spec.js`. Extend S8's retired-term walk in `link-sections.spec.js` to the new states.
+- [ ] T6: Builder tests for AC4 and AC5 in a new `tests/link-setupfile.spec.js`. Extend S8's retired-term walk in `link-sections.spec.js` to the new states, and S12 to the new refusals.
 - [ ] T7: README section and "What the page's host sees". Scan the new README text and `form.js` messages with D-083(b)'s patterns.
 - [ ] T8: hitop article section and NEWS line. Run `pkgdown::build_article("articles/online-collection")` and `devtools::check()`. Open the companion PR with the hitop PR.
 
@@ -66,6 +66,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: T1 done. `form.js` gains `fetchSetup()`, `setupFingerprint()`, `checkSetupAddress()`, `canFingerprint()` and the `setup`/`sha256` branch of `decodeLink()`. `checkParticipantParam()` refuses both names, and `saveFile()` takes a type. Source note `references/github2026rawheaders.md`: raw files send `access-control-allow-origin: *` and `cache-control: max-age=300`.
 - 2026-10-01: T2 done. `tests/setupfile.spec.js` holds 23 tests (SF1 to SF4), with `setupFingerprint()`, `serveSetup()` and `setupQuery()` in `tests/helpers.mjs`. Four plants went red: a pretty-printed fingerprint, a size check at 100,000, the referrer option dropped, and the browser check dropped. Full hitop-form suite: 902 passed.
 - 2026-10-01: T3 done. N10 in `tests/network.spec.js` counts requests per address on a setup-file walk. A planted second fetch of the file turned it red (count 2).
+- 2026-10-01: checkpoint, T4 and T5 code written in `link.html`, not yet ticked. `build()` now reads the form through `readForm()`, which the download shares. Three `link-sections.spec.js` tests stay red until T6 (S12 must fire the new refusals) and T7 (the README heading the new hint links to). Added to T6: extend S12 to the new refusals.
 
 ## Decisions
 
