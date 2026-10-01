@@ -511,6 +511,132 @@ invariant in `tests/testthat/test-interval_hitopbr.R` asserts every shipped
 `hitopbr_devstats$nItems` against `lengths(hitopbr_scales$itemNumbers)`, which
 Table 1's printed counts now agree with row for row.
 
+## HiTOP-DAT provenance (2026-09-29, M143)
+
+`hitopdat_items`, `hitopdat_choices`, `hitopdat_scales` and the internal
+`hitopdat_instructions` are built by `data-raw/hitopdat_info.R` and
+`data-raw/sysdata.R`. Five sources:
+
+- **The file.** `data-raw/HiTOP-DAT.qsf`, a Qualtrics export titled "HiTOP-DAT -
+  to share" (last modified in Qualtrics 2026-09-29), received by Jeff on
+  2026-09-29. sha256
+  `8edbec74b557575f7956addaad3e96ab5058c38cc75aacccdd63ef69feeb1c3d`. It is not
+  committed: `.git/info/exclude` lists it. To rebuild from it, ask the maintainer
+  for a copy and put it at that path. Without it, the script rebuilds the datasets
+  from the committed `data-raw/hitopdat_items.csv`, `hitopdat_choices.csv` and
+  `hitopdat_scale_items.csv`. The file supplies the item text, the answer labels
+  and values, the instruction text and the scale memberships.
+- **The manual.** Jonas et al. (2021), *HiTOP-DAT Manual*, sha256 `0f770c4f…`:
+  [references/jonas2021dat.md](references/jonas2021dat.md). It supplies the 57
+  scale names (pp. 20-25).
+- **The IPIP key.** IPIP CAT-PD-SF v1.1 key,
+  <https://ipip.ori.org/newCAT-PD-SFv1.1Keys.htm>, read 2026-09-29:
+  [references/ipip2015catpdsf.md](references/ipip2015catpdsf.md). It checks the 33
+  CAT-PD facets and the 216 CAT-PD item texts.
+- **Watson et al. (2012).** *Assessment, 19*(4), 399-420:
+  [references/watson2012.md](references/watson2012.md). It checks the item counts
+  of the 18 non-overlapping IDAS-II scales (Table 1, p. 406). It prints no item
+  key.
+- **The IDAS-II key.** Watson (2011), *IDAS-II* items and scoring key,
+  `IDAS-II (Items + Scoring).doc`, sha256 `dc77c5fe…`, sent to Jeff by a
+  HiTOP-DAT user and received on 2026-10-01, and signed off by him that day as the authors' key (D-082):
+  [references/watson2011idas.md](references/watson2011idas.md). It checks the 19
+  IDAS-II scales' items and reverse keys and the 99 IDAS-II item numbers and texts.
+
+Machine-checked in `tests/testthat/test-keying-hitopdat.R` (scales, against the
+sources) and `tests/testthat/test-data-hitopdat.R` (items, answers, instructions).
+
+### The file's 57 score categories against the keys and the manual
+
+| Categories | Checked against | Result |
+|---|---|---|
+| 33 CAT-PD facets | IPIP key, items and reverse keys | ✅ All 33 equal |
+| 216 CAT-PD item texts | IPIP key text | ✅ Equal under the first-person rule the test states, after the fix to item 194 (departure 1 below) |
+| 18 non-overlapping IDAS-II scales | Watson et al. (2012) Table 1, item counts | ✅ All 18 equal |
+| 19 IDAS-II scales, membership and reverse keys | Watson (2011) key | ✅ All 19 equal, General Depression reversing 27 and 64 |
+| 99 IDAS-II item numbers and texts | Watson (2011) key text | ✅ Equal after dropping the key's scale tags and doubled spaces |
+| WHODAS, AUDIT, DUDIT, CAPE positive, PHQ-15 totals | each measure's items in the battery | ✅ Each holds all its measure's items, none reversed |
+| 57 category names | the manual's 57 definitions | ✅ One-to-one after the crosswalk in `data-raw/hitopdat_info.R` (DAT-9, DAT-10) |
+
+### Where the package departs from the file
+
+1. **CAT-PD item 194.** The file cuts the item to "I love the feeling of being
+   intimately close with someon". The package uses "someone", the IPIP key's word
+   (SF 194). Jeff signed off on this wording on 2026-10-01.
+2. **Item line breaks.** The file wraps 12 AUDIT and DUDIT items with line breaks
+   mid-question. Item text joins them with spaces. Instruction text keeps its
+   breaks, which separate list lines.
+3. **Scale names** follow the manual, not the file's category names (DAT-9).
+4. **"Skip"** is an answer on every item in the file. No answer set holds it.
+
+### Open questions (DAT-n)
+
+- **DAT-1 [RESOLVED 2026-10-01]: IDAS-II membership.** Watson et al. (2012) gives
+  counts but no item key. Watson's (2011) key, on the shelf since 2026-10-01,
+  matches the file on all 19 scales, including General Depression's reversal of
+  Well-Being items 27 and 64.
+- **DAT-2: Well-Being prorates by 5.** The file's "IDAS Well-Being Prorated" field
+  is the category's `Score` times 5 divided by its `Items`, but the scale has 8
+  items.
+- **DAT-3: CAPE-Negative points at missing categories.** The "CAPE - Negative" and
+  "CAPE - Negative pct complete" fields read categories `SC_9yT5N61EpLWOHA1` and
+  `SC_2twVHgmxnX87Nsx`, which the file does not define. The battery has no negative
+  CAPE items, and the trash block holds none either (checked 2026-09-29).
+- **DAT-4: CAPE items graded into undefined categories.** Each of the 20 CAPE items
+  is graded into `SC_02gyF0VanSUJdiJ` and `SC_eRmZgjWMMEFwFeZ` as well as "CAPE -
+  Positive". Neither is defined.
+- **DAT-5: IDAS-II item 99's grades.** The file grades "Skip" as 6 in Social
+  Anxiety and leaves "Extremely" ungraded. The package gives item 99 the `idas`
+  answer set like the other 98 items.
+- **DAT-6: The PHQ-15 menstrual item is out.** The file moves PHQ-15 item 4
+  ("Menstrual cramps or other problems with your periods (women only)?") to its
+  trash block. The battery has 14 PHQ-15 items. Taken as deliberate (working fact
+  W2 below).
+- **DAT-7: 382 items, not 405.** The Society's HiTOP-DAT page says the battery
+  has 405 items. The file has 382. Taken as correct (working fact W1 below).
+- **DAT-8: The AUDIT standard-drink picture.** The file shows a graphic titled
+  "Standard drink" above the AUDIT. No dataset holds it.
+- **DAT-9: The file's spellings.** Its categories spell "Sucidality",
+  "Claustraphobia", "Affective Liability" and "Non-Perserverance", and a Skipped
+  counter spells "Traumatic Instrusions". The package uses the manual's spellings.
+  The DUDIT instruction spells "DMT (dimethyltrypamine)" for dimethyltryptamine;
+  `hitopdat_instructions` keeps the file's text.
+- **DAT-10: Non-Premeditation.** The manual says Non-Premeditation (p. 23) where
+  the IPIP key and the file say Non-Planfulness. The package uses the manual's name.
+  The manual's "Self-Harm" is IPIP's "Self Harm".
+- **DAT-11: Answer values are the file's grades.** `hitopdat_choices$Value` is the
+  value the file gives each label in a forward-scored category. Each measure's
+  published scoring rule has not been read against these values.
+- **DAT-12: Instruction emphasis.** The IDAS-II instruction underlines "THE PAST TWO
+  WEEKS" in bold. The plain text keeps the capitals and drops the emphasis.
+- **DAT-13: The file emails results to a clinic.** Two triggers send the client's
+  name, MRN, critical-item answers and T scores to a UNT clinic address. One fires
+  on CAT-PD Self Harm or IDAS Suicidality T of 65 or more, or either scale fully
+  skipped (subject "HiTOP-SR Critical Items"). The other fires at the end. A copy
+  imported unchanged sends its results to that address. The colleague who shared
+  the file was told on 2026-09-29.
+- **DAT-14: The results email.** It pipes Self-Harm's T score and percent
+  complete as `CAT-PD%20Self Harm`, with a literal space where every other field
+  uses `%20`. Nobody tested this in Qualtrics. It never shows the five CAT-PD domain
+  scores or CAPE-Negative, and Disconstraint has no percent-complete field.
+
+### Working facts (need confirmation)
+
+The tables build on these points. They come from an email to Jeff from a HiTOP-DAT
+user (2026-10-01). Each needs confirmation by the Society or a publication.
+
+- **W1: The battery has 382 items.** The Society page,
+  <https://www.hitop-system.org/hitop-digital-assessment-and-tracker-hitop-dat>
+  (read 2026-10-01), says 405. It lists 16 WHODAS items where the file has 12, and
+  14 CAPE negative items that the battery leaves out. It lists 15 PHQ-15 items, and
+  7 Mistrust and 9 Non-Perseverance items where IPIP has 6 each. Those differences
+  sum to 23, which is 405 minus 382.
+- **W2: PHQ-15 item 4 is out on purpose.** The battery leaves out the item on
+  menstrual periods.
+- **W3: The battery uses only the CAPE positive factor.** The manual says the same
+  (p. 12): the CAT-PD and the IDAS cover the CAPE's other factors.
+- **W4: Who built the Qualtrics file is not known.**
+
 ## Open questions (need source adjudication)
 
 OQ-1 is encoded as a `skip()`-ed test in `test-keying.R` so the suite stays green

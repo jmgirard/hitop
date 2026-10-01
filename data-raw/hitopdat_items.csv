@@ -1,0 +1,383 @@
+Item,Measure,MeasureItem,Text,Choice_Set
+1,WHODAS,1,Standing for long periods such as 30 minutes.,whodas
+2,WHODAS,2,Taking care of your household responsibilities.,whodas
+3,WHODAS,3,"Learning a new task, for example, learning how to get to a new place.",whodas
+4,WHODAS,4,"How much of a problem did you have joining in community activities (for example, festivities, religious, or other activities) in the same way as anyone else can?",whodas
+5,WHODAS,5,How much have you been emotionally affected by your health problems?,whodas
+6,WHODAS,6,Concentrating on doing something for ten minutes.,whodas
+7,WHODAS,7,"Walking a long distance, such as half a mile.",whodas
+8,WHODAS,8,Washing your whole body.,whodas
+9,WHODAS,9,Getting dressed.,whodas
+10,WHODAS,10,Dealing with people you do not know.,whodas
+11,WHODAS,11,Maintaining a friendship.,whodas
+12,WHODAS,12,Your day to day work.,whodas
+13,IDAS-II,1,I did not have much of an appetite,idas
+14,IDAS-II,2,I had little interest in my usual hobbies and activities,idas
+15,IDAS-II,3,I felt optimistic,idas
+16,IDAS-II,4,I slept less than usual,idas
+17,IDAS-II,5,"I felt fidgety, restless",idas
+18,IDAS-II,6,I felt exhausted,idas
+19,IDAS-II,7,I felt a pain in my chest,idas
+20,IDAS-II,8,I felt depressed,idas
+21,IDAS-II,9,I had trouble making up my mind,idas
+22,IDAS-II,10,I was proud of myself,idas
+23,IDAS-II,11,I had trouble falling asleep,idas
+24,IDAS-II,12,I was furious,idas
+25,IDAS-II,13,I had thoughts of suicide,idas
+26,IDAS-II,14,I had disturbing thoughts of something bad that happened to me,idas
+27,IDAS-II,15,I felt self-conscious knowing that others were watching me,idas
+28,IDAS-II,16,I felt dizzy or lightheaded,idas
+29,IDAS-II,17,I woke up early and could not get back to sleep,idas
+30,IDAS-II,18,I was worried about embarrassing myself socially,idas
+31,IDAS-II,19,I thought a lot about food,idas
+32,IDAS-II,20,I became anxious in a crowded public setting,idas
+33,IDAS-II,21,I blamed myself for things,idas
+34,IDAS-II,22,I cut or burned myself on purpose,idas
+35,IDAS-II,23,I felt that I had accomplished a lot,idas
+36,IDAS-II,24,I ate when I wasn't hungry,idas
+37,IDAS-II,25,I woke up much earlier than usual,idas
+38,IDAS-II,26,I felt like eating less than usual,idas
+39,IDAS-II,27,I looked forward to things with enjoyment,idas
+40,IDAS-II,28,I had nightmares that reminded me of something bad that happened,idas
+41,IDAS-II,29,I slept more than usual,idas
+42,IDAS-II,30,It took a lot of effort for me to get going,idas
+43,IDAS-II,31,I felt inadequate,idas
+44,IDAS-II,32,I was trembling or shaking,idas
+45,IDAS-II,33,I thought that the world would be better off without me,idas
+46,IDAS-II,34,I had memories of something scary that happened,idas
+47,IDAS-II,35,I felt like breaking things,idas
+48,IDAS-II,36,I woke up frequently during the night,idas
+49,IDAS-II,37,I felt enraged,idas
+50,IDAS-II,38,I hurt myself purposely,idas
+51,IDAS-II,39,I felt faint,idas
+52,IDAS-II,40,I felt discouraged about things,idas
+53,IDAS-II,41,I found it difficult to make eye contact with people,idas
+54,IDAS-II,42,I got upset thinking about something bad that happened,idas
+55,IDAS-II,43,I had trouble waking up in the morning,idas
+56,IDAS-II,44,I lost my temper and yelled at people,idas
+57,IDAS-II,45,My heart was racing or pounding,idas
+58,IDAS-II,46,I thought about my own death,idas
+59,IDAS-II,47,I found it difficult to talk with people I did not know well,idas
+60,IDAS-II,48,I found myself worrying all the time,idas
+61,IDAS-II,49,I had a very dry mouth,idas
+62,IDAS-II,50,I felt hopeful about the future,idas
+63,IDAS-II,51,I slept very poorly,idas
+64,IDAS-II,52,I thought about hurting myself,idas
+65,IDAS-II,53,I felt that I had a lot to look forward to,idas
+66,IDAS-II,54,I felt much worse in the morning than later in the day,idas
+67,IDAS-II,55,"I felt drowsy, sleepy",idas
+68,IDAS-II,56,I was short of breath,idas
+69,IDAS-II,57,I talked more slowly than usual,idas
+70,IDAS-II,58,I felt like I was choking,idas
+71,IDAS-II,59,I felt like I had a lot of interesting things to do,idas
+72,IDAS-II,60,I did not feel much like eating,idas
+73,IDAS-II,61,I had trouble concentrating,idas
+74,IDAS-II,62,Little things made me mad,idas
+75,IDAS-II,63,I ate more than usual,idas
+76,IDAS-II,64,I felt like I had a lot of energy,idas
+77,IDAS-II,65,I rearranged things so that they were in a certain order,idas
+78,IDAS-II,66,I washed my hands excessively,idas
+79,IDAS-II,67,I kept racing from one activity to the next,idas
+80,IDAS-II,68,I checked things over and over again,idas
+81,IDAS-II,69,I felt the urge to rearrange things so that they were “just right”,idas
+82,IDAS-II,70,I worried a lot about germs,idas
+83,IDAS-II,71,I spoke so rapidly that others could not understand me,idas
+84,IDAS-II,72,I felt elated for no special reason,idas
+85,IDAS-II,73,I tried not to think about bad things from my past,idas
+86,IDAS-II,74,I avoided small spaces,idas
+87,IDAS-II,75,"I found myself checking things, even though I knew it wasn’t necessary",idas
+88,IDAS-II,76,I avoided handling dirty things,idas
+89,IDAS-II,77,It felt like my mind was moving “a mile a minute”,idas
+90,IDAS-II,78,I felt like I was “on top of the world”,idas
+91,IDAS-II,79,I avoided situations that bring up bad memories,idas
+92,IDAS-II,80,I was afraid of getting trapped in a crowd,idas
+93,IDAS-II,81,I felt the urge to check to make sure I had done something,idas
+94,IDAS-II,82,"I followed the same, fixed order in performing everyday tasks",idas
+95,IDAS-II,83,My thoughts jumped rapidly from one idea to another,idas
+96,IDAS-II,84,I felt anxious in small spaces,idas
+97,IDAS-II,85,I felt compelled to follow certain rituals,idas
+98,IDAS-II,86,I had difficulty touching something that was dirty,idas
+99,IDAS-II,87,My thoughts were moving so quickly it was hard to keep up,idas
+100,IDAS-II,88,I had so much energy it was hard for me to sit still,idas
+101,IDAS-II,89,I tried to ignore upsetting memories,idas
+102,IDAS-II,90,I was afraid of tunnels,idas
+103,IDAS-II,91,I had to clean myself because I felt contaminated,idas
+104,IDAS-II,92,I felt that I could do things that other people couldn’t,idas
+105,IDAS-II,93,I avoided talking about bad experiences from my past,idas
+106,IDAS-II,94,"I avoided tight, enclosed spaces",idas
+107,IDAS-II,95,I had little rituals or habits that took up a lot of my time,idas
+108,IDAS-II,96,I avoided using public restrooms,idas
+109,IDAS-II,97,I had much more energy than usual,idas
+110,IDAS-II,98,I used an object (such as a towel) so I could avoid touching something directly,idas
+111,IDAS-II,99,I was anxious about talking in public,idas
+112,AUDIT,1,How often do you have a drink containing alcohol?,audit_freq
+113,AUDIT,2,How many drinks containing alcohol do you have on a typical day when you are drinking?,audit_drinks
+114,AUDIT,3,How often do you have 6 or more drinks on one occasion?,audit_often
+115,AUDIT,4,How often during the last year have you found that you were not able to stop drinking daily once you had started?,audit_often
+116,AUDIT,5,How often during the last year have you failed to do what was normally expected of you because of drinking?,audit_often
+117,AUDIT,6,How often during the last year have you needed a first drink in the morning to get yourself going after a heavy drinking session?,audit_often
+118,AUDIT,7,How often during the last year have you had a feeling of guilt or remorse after drinking?,audit_often
+119,AUDIT,8,How often during the last year have you been unable to remember what happened the night before because of your drinking?,audit_often
+120,AUDIT,9,Have you or someone else been injured because of your drinking?,audit_harm
+121,AUDIT,10,"Has a relative, friend, doctor, or other health care worker been concerned about your drinking or suggested you cut down?",audit_harm
+122,DUDIT,1,How often do you have drugs other than alcohol?,dudit_freq
+123,DUDIT,2,Do you use more than one drug on the same occasion?,dudit_freq
+124,DUDIT,3,How many times do you take drugs on a typical day when you use drugs?,dudit_times
+125,DUDIT,4,How often are you influenced heavily by drugs?,dudit_often
+126,DUDIT,5,"Over the past year, have you felt that your longing for drugs was so strong that you could not resist it?",dudit_often
+127,DUDIT,6,"Has it happened, over the past year, that you have not been able to stop taking drugs once you started?",dudit_often
+128,DUDIT,7,How often over the past year have you taken drugs and then neglected to do something you should have done?,dudit_often
+129,DUDIT,8,How often over the past year have you needed to take a drug the morning after heavy drug use the day before?,dudit_often
+130,DUDIT,9,How often over the past year have you had guilt feelings or a bad conscience because you used drugs?,dudit_often
+131,DUDIT,10,Have you or anyone else been hurt (mentally or physically) because you used drugs?,dudit_harm
+132,DUDIT,11,"Has a relative or a friend, a doctor or a nurse, or anyone else, been worried about your drug use or said to you that you should stop using drugs?",dudit_harm
+133,CAPE,2,Do you ever feel as if people seem to drop hints about you or say things with a double meaning?,cape
+134,CAPE,5,Do you ever feel as if things in magazines or on TV were written especially for you?,cape
+135,CAPE,6,Do you ever feel as if some people are not what they seem to be?,cape
+136,CAPE,7,Do you ever feel as if you are being persecuted in some way?,cape
+137,CAPE,10,Do you ever feel as if there is a conspiracy against you?,cape
+138,CAPE,11,Do you ever feel as if you are destined to be someone very important?,cape
+139,CAPE,13,Do you ever feel that you are a very special or unusual person?,cape
+140,CAPE,15,Do you ever think that people can communicate telepathically?,cape
+141,CAPE,17,Do you ever feel as if electrical devices such as computers can influence the way you think?,cape
+142,CAPE,20,"Do you believe in the power of witchcraft, voodoo or the occult?",cape
+143,CAPE,22,Do you ever feel that people look at you oddly because of your appearance?,cape
+144,CAPE,24,Do you ever feel as if the thoughts in your head are being taken away from you?,cape
+145,CAPE,26,Do you ever feel as if the thoughts in your head are not your own?,cape
+146,CAPE,28,Have your thoughts ever been so vivid that you were worried other people would hear them?,cape
+147,CAPE,30,Do you ever hear your own thoughts being echoed back to you?,cape
+148,CAPE,31,Do you ever feel as if you are under the control of some force or power other than yourself?,cape
+149,CAPE,33,Do you ever hear voices when you are alone?,cape
+150,CAPE,34,Do you ever hear voices talking to each other when you are alone?,cape
+151,CAPE,41,"Do you ever feel as if a double has taken the place of a family member, friend or acquaintance?",cape
+152,CAPE,42,"Do you ever see objects, people or animals that other people cannot see?",cape
+153,CAT-PD,1,I have frequent mood swings,catpd
+154,CAT-PD,2,I feel like people often are out to get something from me,catpd
+155,CAT-PD,3,I love to be the center of attention,catpd
+156,CAT-PD,4,I am easily controlled by others in my life,catpd
+157,CAT-PD,5,I care about others,catpd
+158,CAT-PD,6,I sometimes get lost in my daydreams,catpd
+159,CAT-PD,7,I have urges to cut myself,catpd
+160,CAT-PD,8,I deserve special treatment from others,catpd
+161,CAT-PD,9,I frequently get things mixed up in my head,catpd
+162,CAT-PD,10,I feel my anxiety overwhelms me,catpd
+163,CAT-PD,11,I feel at times that I have left my body and am somehow outside my physical self,catpd
+164,CAT-PD,12,I boss people around,catpd
+165,CAT-PD,13,I expect nothing less than perfection,catpd
+166,CAT-PD,14,I get angry easily,catpd
+167,CAT-PD,15,I am a strange person,catpd
+168,CAT-PD,16,I find nothing excites me,catpd
+169,CAT-PD,17,I am often out for revenge,catpd
+170,CAT-PD,18,I work too much,catpd
+171,CAT-PD,19,I have difficulty expressing my feelings,catpd
+172,CAT-PD,20,I take advantage of others,catpd
+173,CAT-PD,21,I believe I have supernatural powers,catpd
+174,CAT-PD,22,I worry a lot about catching a serious illness,catpd
+175,CAT-PD,23,I have always been a rule-breaker,catpd
+176,CAT-PD,24,I enjoy going to social gatherings,catpd
+177,CAT-PD,25,I insult people,catpd
+178,CAT-PD,26,I do not like reading or hearing opinions that go against my way of thinking,catpd
+179,CAT-PD,27,I love dangerous situations,catpd
+180,CAT-PD,28,I am always worried that my partner is going to leave me,catpd
+181,CAT-PD,29,I quickly lose interest in the tasks I start,catpd
+182,CAT-PD,30,I don't think much about sex,catpd
+183,CAT-PD,31,I neglect my duties,catpd
+184,CAT-PD,32,I tend to feel very hopeless,catpd
+185,CAT-PD,33,I do things without thinking of the consequences,catpd
+186,CAT-PD,34,I lose control over my behavior when I'm emotional,catpd
+187,CAT-PD,35,I feel that others are out to get me,catpd
+188,CAT-PD,36,I like to stand out in a crowd,catpd
+189,CAT-PD,37,I let others take advantage of me,catpd
+190,CAT-PD,38,I am not a caring person,catpd
+191,CAT-PD,39,I sometimes have fantasies that are overwhelming,catpd
+192,CAT-PD,40,I have thoughts of injuring myself,catpd
+193,CAT-PD,41,I should get special privileges,catpd
+194,CAT-PD,42,I often feel like my thoughts make no sense,catpd
+195,CAT-PD,43,I am nervous or tense most of the time,catpd
+196,CAT-PD,44,I see strange figures or visions when nothing is really there,catpd
+197,CAT-PD,45,I like having authority over others,catpd
+198,CAT-PD,46,I don't consider a task finished until it's perfect,catpd
+199,CAT-PD,47,I often feel overwhelmed with rage,catpd
+200,CAT-PD,48,I am odd,catpd
+201,CAT-PD,49,I feel that nothing seems to make me feel good,catpd
+202,CAT-PD,50,I am excited to inflict pain on others,catpd
+203,CAT-PD,51,"I am a workaholic, with little time for fun or pleasure",catpd
+204,CAT-PD,52,I think it's best to keep my emotions to myself,catpd
+205,CAT-PD,53,I cheat to get ahead,catpd
+206,CAT-PD,54,I can see into the future,catpd
+207,CAT-PD,55,I am prone to complain about my health,catpd
+208,CAT-PD,56,I get in trouble with the law,catpd
+209,CAT-PD,57,I feel comfortable around people,catpd
+210,CAT-PD,58,I ridicule people,catpd
+211,CAT-PD,59,I find it difficult to consider as valid opinions that differ from my own,catpd
+212,CAT-PD,60,I like to do frightening things,catpd
+213,CAT-PD,61,I am usually convinced that my friends and romantic partners will betray me,catpd
+214,CAT-PD,62,I have difficulty keeping my attention on a task,catpd
+215,CAT-PD,63,I have little desire for sex or romance,catpd
+216,CAT-PD,64,I follow through with my plans,catpd
+217,CAT-PD,65,I am sad most of the time,catpd
+218,CAT-PD,66,I act without planning,catpd
+219,CAT-PD,67,I have unpredictable emotions and moods,catpd
+220,CAT-PD,68,"I believe that, sooner or later, people always let you down",catpd
+221,CAT-PD,69,I am likely to show off if I get the chance,catpd
+222,CAT-PD,70,I let myself be pushed around,catpd
+223,CAT-PD,71,I am a cold-hearted person,catpd
+224,CAT-PD,72,I sometimes find myself in a trance-like state without trying,catpd
+225,CAT-PD,73,I feel that cutting myself helps me feel better,catpd
+226,CAT-PD,74,I believe that I am better than others,catpd
+227,CAT-PD,75,I often space out and lose track of what's going on,catpd
+228,CAT-PD,76,I panic easily,catpd
+229,CAT-PD,77,I hear voices talking about me when nobody is really there,catpd
+230,CAT-PD,78,I insist that others do things my way,catpd
+231,CAT-PD,79,I am not happy until all the details are taken care of,catpd
+232,CAT-PD,80,I get irritated easily,catpd
+233,CAT-PD,81,I have been told that my behavior often is bizarre,catpd
+234,CAT-PD,82,I am not a joyful person,catpd
+235,CAT-PD,83,I get even with others,catpd
+236,CAT-PD,84,I have noticed that I put my work ahead of too many other things,catpd
+237,CAT-PD,85,I am open about my feelings,catpd
+238,CAT-PD,86,I like to trick people into doing things for me,catpd
+239,CAT-PD,87,I am able to read the minds of others,catpd
+240,CAT-PD,88,I often am concerned about diseases I might have,catpd
+241,CAT-PD,89,I am a law-abiding citizen,catpd
+242,CAT-PD,90,I keep to myself even when I'm around other people,catpd
+243,CAT-PD,91,I say inappropriate things,catpd
+244,CAT-PD,92,I have been told that I am rigid and inflexible,catpd
+245,CAT-PD,93,I get a thrill out of doing things that might kill me,catpd
+246,CAT-PD,94,I get jealous easily,catpd
+247,CAT-PD,95,I am easily distracted,catpd
+248,CAT-PD,96,I could easily live without having sex,catpd
+249,CAT-PD,97,I keep my appointments,catpd
+250,CAT-PD,98,I generally focus on the negative side of things,catpd
+251,CAT-PD,99,I jump into things without thinking,catpd
+252,CAT-PD,100,I overreact to every little thing in life,catpd
+253,CAT-PD,101,I suspect hidden motives in others,catpd
+254,CAT-PD,102,I use my looks to get what I want,catpd
+255,CAT-PD,103,I prefer that others make the major decisions in my life,catpd
+256,CAT-PD,104,I have fixed opinions,catpd
+257,CAT-PD,105,I do not care how my actions affect others,catpd
+258,CAT-PD,106,I feel like my imagination can run wild,catpd
+259,CAT-PD,107,I frequently have thoughts about killing myself,catpd
+260,CAT-PD,108,I don't think I should have to wait in lines like others,catpd
+261,CAT-PD,109,I often have disorganized thoughts,catpd
+262,CAT-PD,110,I feel that my worry and anxiety is out of control,catpd
+263,CAT-PD,111,I have had the feeling that I might not be human,catpd
+264,CAT-PD,112,I make demands on others,catpd
+265,CAT-PD,113,I set high standards for myself and others,catpd
+266,CAT-PD,114,I have a violent temper,catpd
+267,CAT-PD,115,I am considered to be kind of eccentric,catpd
+268,CAT-PD,116,I have trouble getting interested in things,catpd
+269,CAT-PD,117,I hurt people,catpd
+270,CAT-PD,118,I work longer hours than most people,catpd
+271,CAT-PD,119,I am not good at describing the emotions I feel throughout the day,catpd
+272,CAT-PD,120,I deceive people,catpd
+273,CAT-PD,121,I have the power to cast spells on others,catpd
+274,CAT-PD,122,I am afraid that my life will be cut short by illness,catpd
+275,CAT-PD,123,I respect authority,catpd
+276,CAT-PD,124,I rarely enjoy being with people,catpd
+277,CAT-PD,125,I shoot my mouth off,catpd
+278,CAT-PD,126,I am often accused of being narrow-minded,catpd
+279,CAT-PD,127,I would do anything to get an adrenaline rush,catpd
+280,CAT-PD,128,I usually believe that my friends will abandon me,catpd
+281,CAT-PD,129,I quit tasks as soon as I get bored,catpd
+282,CAT-PD,130,I enjoy sexual experiences intensely,catpd
+283,CAT-PD,131,I am a very reliable person,catpd
+284,CAT-PD,132,I dislike myself,catpd
+285,CAT-PD,133,I am a firm believer in thinking things through,catpd
+286,CAT-PD,134,I know how to cope,catpd
+287,CAT-PD,135,I believe that people are basically honest and good,catpd
+288,CAT-PD,136,I enjoy flirting with complete strangers,catpd
+289,CAT-PD,137,I let myself be directed by others,catpd
+290,CAT-PD,138,I can't be bothered with others’ needs,catpd
+291,CAT-PD,139,I am sometimes so preoccupied with my own thoughts I don't realize others are trying to speak to me,catpd
+292,CAT-PD,140,I have written a suicide note,catpd
+293,CAT-PD,141,I feel that others are beneath me,catpd
+294,CAT-PD,142,I am easily disoriented,catpd
+295,CAT-PD,143,I am generally a fearful person,catpd
+296,CAT-PD,144,I have had the feeling that I was someone else,catpd
+297,CAT-PD,145,I have a strong need for power,catpd
+298,CAT-PD,146,I demand perfection in others,catpd
+299,CAT-PD,147,I am not easily annoyed,catpd
+300,CAT-PD,148,I would describe myself as a normal person,catpd
+301,CAT-PD,149,I have a lot of fun,catpd
+302,CAT-PD,150,I will spread false rumors as a way to hurt others,catpd
+303,CAT-PD,151,I work so hard that my relationships have suffered,catpd
+304,CAT-PD,152,I have difficulty showing affection,catpd
+305,CAT-PD,153,I have exploited others for my own gain,catpd
+306,CAT-PD,154,I can control objects with my mind,catpd
+307,CAT-PD,155,I have medical problems that my doctors don't understand,catpd
+308,CAT-PD,156,I have a rebellious side that gets me into trouble,catpd
+309,CAT-PD,157,I do not feel close to people,catpd
+310,CAT-PD,158,I have a mouth that gets me into trouble,catpd
+311,CAT-PD,159,I am convinced that my way is the best way,catpd
+312,CAT-PD,160,I prefer safety over risk,catpd
+313,CAT-PD,161,I am paralyzed by a fear of rejection,catpd
+314,CAT-PD,162,I finish what I start,catpd
+315,CAT-PD,163,I see little need for romance in my life,catpd
+316,CAT-PD,164,I avoid responsibilities,catpd
+317,CAT-PD,165,I look at the bright side of life,catpd
+318,CAT-PD,166,I make careful choices,catpd
+319,CAT-PD,167,I can remain cool-headed when stressed out,catpd
+320,CAT-PD,168,I am pretty trusting of others' motives,catpd
+321,CAT-PD,169,I don't enjoy being in the spotlight,catpd
+322,CAT-PD,170,I need others to help run my life,catpd
+323,CAT-PD,171,I believe strongly that the world would be a much better place if I had my way,catpd
+324,CAT-PD,172,I am not a sympathetic person,catpd
+325,CAT-PD,173,I sometimes have extremely vivid pictures in my head,catpd
+326,CAT-PD,174,I believe that I am always right,catpd
+327,CAT-PD,175,I easily lose my train of thought,catpd
+328,CAT-PD,176,I am easily startled,catpd
+329,CAT-PD,177,I sometimes think the TV is talking directly to me,catpd
+330,CAT-PD,178,I am known as a controlling person,catpd
+331,CAT-PD,179,I strive in every way possible to be flawless,catpd
+332,CAT-PD,180,I don't let little things anger me,catpd
+333,CAT-PD,181,I am an energetic person,catpd
+334,CAT-PD,182,I am ready to hit someone when I get angry,catpd
+335,CAT-PD,183,I push myself very hard to succeed,catpd
+336,CAT-PD,184,I am able to describe my feelings easily,catpd
+337,CAT-PD,185,I am an honest person,catpd
+338,CAT-PD,186,I use magic to ward off bad thoughts about me,catpd
+339,CAT-PD,187,I worry about my health,catpd
+340,CAT-PD,188,I got in trouble a lot at school,catpd
+341,CAT-PD,189,I find it difficult to approach others,catpd
+342,CAT-PD,190,I have a reputation for asking inappropriate questions,catpd
+343,CAT-PD,191,I am inflexible when I think I'm right,catpd
+344,CAT-PD,192,I am secure in my relationships,catpd
+345,CAT-PD,193,I am quick to quit when the going gets tough,catpd
+346,CAT-PD,194,I love the feeling of being intimately close with someone,catpd
+347,CAT-PD,195,I cannot be counted on to get things done,catpd
+348,CAT-PD,196,I rarely feel depressed,catpd
+349,CAT-PD,197,I prefer to 'live in the moment' rather than plan things out,catpd
+350,CAT-PD,198,I am indifferent to the feelings of others,catpd
+351,CAT-PD,199,I treat people as inferiors,catpd
+352,CAT-PD,200,I have a good memory for things I've done throughout the day,catpd
+353,CAT-PD,201,I rarely worry,catpd
+354,CAT-PD,202,I like to start fights,catpd
+355,CAT-PD,203,I am emotionally reserved,catpd
+356,CAT-PD,204,I can predict the outcome of events,catpd
+357,CAT-PD,205,I think that I am in good medical condition,catpd
+358,CAT-PD,206,I have done many things for which I could have been (or was) arrested,catpd
+359,CAT-PD,207,I find it difficult to compromise in policy debates,catpd
+360,CAT-PD,208,I generally trust my partners to be faithful to me,catpd
+361,CAT-PD,209,I am not a dependable person,catpd
+362,CAT-PD,210,I formulate ideas clearly,catpd
+363,CAT-PD,211,I enjoy a good brawl,catpd
+364,CAT-PD,212,I believe that most questions have one right answer,catpd
+365,CAT-PD,213,I have intentionally done myself physical harm,catpd
+366,CAT-PD,214,I am known for saying offensive things,catpd
+367,CAT-PD,215,"I feel as if my body, or a part of it, has disappeared",catpd
+368,CAT-PD,216,I have no will to live,catpd
+369,PHQ-15,1,Stomach pain?,phq15
+370,PHQ-15,2,Back pain?,phq15
+371,PHQ-15,3,"Pain in your arms, legs, or joints (knees, hips, etc.)?",phq15
+372,PHQ-15,5,Headaches?,phq15
+373,PHQ-15,6,Chest pain?,phq15
+374,PHQ-15,7,Dizziness?,phq15
+375,PHQ-15,8,Fainting spells?,phq15
+376,PHQ-15,9,Feeling your heart pound or race?,phq15
+377,PHQ-15,10,Shortness of breath?,phq15
+378,PHQ-15,11,Pain or problems during sexual intercourse?,phq15
+379,PHQ-15,12,"Constipation, loose bowels, or diarrhea?",phq15
+380,PHQ-15,13,"Nausea, gas, or indigestion?",phq15
+381,PHQ-15,14,Feeling tired or having low energy?,phq15
+382,PHQ-15,15,Trouble sleeping?,phq15

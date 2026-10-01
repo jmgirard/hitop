@@ -1,0 +1,403 @@
+Category,Item,Reverse
+PHQ,369,FALSE
+PHQ,370,FALSE
+PHQ,371,FALSE
+PHQ,372,FALSE
+PHQ,373,FALSE
+PHQ,374,FALSE
+PHQ,375,FALSE
+PHQ,376,FALSE
+PHQ,377,FALSE
+PHQ,378,FALSE
+PHQ,379,FALSE
+PHQ,380,FALSE
+PHQ,381,FALSE
+PHQ,382,FALSE
+IDAS - General Depression,13,FALSE
+IDAS - General Depression,14,FALSE
+IDAS - General Depression,17,FALSE
+IDAS - General Depression,18,FALSE
+IDAS - General Depression,20,FALSE
+IDAS - General Depression,21,FALSE
+IDAS - General Depression,23,FALSE
+IDAS - General Depression,25,FALSE
+IDAS - General Depression,33,FALSE
+IDAS - General Depression,38,FALSE
+IDAS - General Depression,39,TRUE
+IDAS - General Depression,42,FALSE
+IDAS - General Depression,43,FALSE
+IDAS - General Depression,52,FALSE
+IDAS - General Depression,60,FALSE
+IDAS - General Depression,63,FALSE
+IDAS - General Depression,64,FALSE
+IDAS - General Depression,69,FALSE
+IDAS - General Depression,73,FALSE
+IDAS - General Depression,76,TRUE
+IDAS - Dysphoria,14,FALSE
+IDAS - Dysphoria,17,FALSE
+IDAS - Dysphoria,20,FALSE
+IDAS - Dysphoria,21,FALSE
+IDAS - Dysphoria,33,FALSE
+IDAS - Dysphoria,43,FALSE
+IDAS - Dysphoria,52,FALSE
+IDAS - Dysphoria,60,FALSE
+IDAS - Dysphoria,69,FALSE
+IDAS - Dysphoria,73,FALSE
+IDAS - Lassitude,18,FALSE
+IDAS - Lassitude,41,FALSE
+IDAS - Lassitude,42,FALSE
+IDAS - Lassitude,55,FALSE
+IDAS - Lassitude,66,FALSE
+IDAS - Lassitude,67,FALSE
+IDAS - Insomnia,16,FALSE
+IDAS - Insomnia,23,FALSE
+IDAS - Insomnia,29,FALSE
+IDAS - Insomnia,37,FALSE
+IDAS - Insomnia,48,FALSE
+IDAS - Insomnia,63,FALSE
+IDAS - Sucidality,25,FALSE
+IDAS - Sucidality,34,FALSE
+IDAS - Sucidality,45,FALSE
+IDAS - Sucidality,50,FALSE
+IDAS - Sucidality,58,FALSE
+IDAS - Sucidality,64,FALSE
+IDAS - Appetite Loss,13,FALSE
+IDAS - Appetite Loss,38,FALSE
+IDAS - Appetite Loss,72,FALSE
+IDAS - Appetite Gain,31,FALSE
+IDAS - Appetite Gain,36,FALSE
+IDAS - Appetite Gain,75,FALSE
+IDAS - Well-Being,15,FALSE
+IDAS - Well-Being,22,FALSE
+IDAS - Well-Being,35,FALSE
+IDAS - Well-Being,39,FALSE
+IDAS - Well-Being,62,FALSE
+IDAS - Well-Being,65,FALSE
+IDAS - Well-Being,71,FALSE
+IDAS - Well-Being,76,FALSE
+IDAS - Ill Temper,24,FALSE
+IDAS - Ill Temper,47,FALSE
+IDAS - Ill Temper,49,FALSE
+IDAS - Ill Temper,56,FALSE
+IDAS - Ill Temper,74,FALSE
+IDAS - Mania,79,FALSE
+IDAS - Mania,83,FALSE
+IDAS - Mania,89,FALSE
+IDAS - Mania,95,FALSE
+IDAS - Mania,99,FALSE
+IDAS - Euphoria,84,FALSE
+IDAS - Euphoria,90,FALSE
+IDAS - Euphoria,100,FALSE
+IDAS - Euphoria,104,FALSE
+IDAS - Euphoria,109,FALSE
+IDAS - Panic,19,FALSE
+IDAS - Panic,28,FALSE
+IDAS - Panic,44,FALSE
+IDAS - Panic,51,FALSE
+IDAS - Panic,57,FALSE
+IDAS - Panic,61,FALSE
+IDAS - Panic,68,FALSE
+IDAS - Panic,70,FALSE
+IDAS - Social Anxiety,27,FALSE
+IDAS - Social Anxiety,30,FALSE
+IDAS - Social Anxiety,32,FALSE
+IDAS - Social Anxiety,53,FALSE
+IDAS - Social Anxiety,59,FALSE
+IDAS - Social Anxiety,111,FALSE
+IDAS - Claustraphobia,86,FALSE
+IDAS - Claustraphobia,92,FALSE
+IDAS - Claustraphobia,96,FALSE
+IDAS - Claustraphobia,102,FALSE
+IDAS - Claustraphobia,106,FALSE
+IDAS - Traumatic Intrusions,26,FALSE
+IDAS - Traumatic Intrusions,40,FALSE
+IDAS - Traumatic Intrusions,46,FALSE
+IDAS - Traumatic Intrusions,54,FALSE
+IDAS - Traumatic Avoidance,85,FALSE
+IDAS - Traumatic Avoidance,91,FALSE
+IDAS - Traumatic Avoidance,101,FALSE
+IDAS - Traumatic Avoidance,105,FALSE
+IDAS - Checking,80,FALSE
+IDAS - Checking,87,FALSE
+IDAS - Checking,93,FALSE
+IDAS - Ordering,77,FALSE
+IDAS - Ordering,81,FALSE
+IDAS - Ordering,94,FALSE
+IDAS - Ordering,97,FALSE
+IDAS - Ordering,107,FALSE
+IDAS - Cleaning,78,FALSE
+IDAS - Cleaning,82,FALSE
+IDAS - Cleaning,88,FALSE
+IDAS - Cleaning,98,FALSE
+IDAS - Cleaning,103,FALSE
+IDAS - Cleaning,108,FALSE
+IDAS - Cleaning,110,FALSE
+CAT - Affective Liability,153,FALSE
+CAT - Affective Liability,186,FALSE
+CAT - Affective Liability,219,FALSE
+CAT - Affective Liability,252,FALSE
+CAT - Affective Liability,286,TRUE
+CAT - Affective Liability,319,TRUE
+CAT - Anger,166,FALSE
+CAT - Anger,199,FALSE
+CAT - Anger,232,FALSE
+CAT - Anger,266,FALSE
+CAT - Anger,299,TRUE
+CAT - Anger,332,TRUE
+CAT - Anhedonia,168,FALSE
+CAT - Anhedonia,201,FALSE
+CAT - Anhedonia,234,FALSE
+CAT - Anhedonia,268,FALSE
+CAT - Anhedonia,301,TRUE
+CAT - Anhedonia,333,TRUE
+CAT - Anxiousness,162,FALSE
+CAT - Anxiousness,195,FALSE
+CAT - Anxiousness,228,FALSE
+CAT - Anxiousness,262,FALSE
+CAT - Anxiousness,295,FALSE
+CAT - Anxiousness,328,FALSE
+CAT - Anxiousness,353,TRUE
+CAT - Callousness,157,TRUE
+CAT - Callousness,190,FALSE
+CAT - Callousness,223,FALSE
+CAT - Callousness,257,FALSE
+CAT - Callousness,290,FALSE
+CAT - Callousness,324,FALSE
+CAT - Callousness,350,FALSE
+CAT - Cognitive Problems,161,FALSE
+CAT - Cognitive Problems,194,FALSE
+CAT - Cognitive Problems,227,FALSE
+CAT - Cognitive Problems,261,FALSE
+CAT - Cognitive Problems,294,FALSE
+CAT - Cognitive Problems,327,FALSE
+CAT - Cognitive Problems,352,TRUE
+CAT - Cognitive Problems,362,TRUE
+CAT - Depressiveness,184,FALSE
+CAT - Depressiveness,217,FALSE
+CAT - Depressiveness,250,FALSE
+CAT - Depressiveness,284,FALSE
+CAT - Depressiveness,317,TRUE
+CAT - Depressiveness,348,TRUE
+CAT - Domineering,164,FALSE
+CAT - Domineering,197,FALSE
+CAT - Domineering,230,FALSE
+CAT - Domineering,264,FALSE
+CAT - Domineering,297,FALSE
+CAT - Domineering,330,FALSE
+CAT - Emotional Detachment,171,FALSE
+CAT - Emotional Detachment,204,FALSE
+CAT - Emotional Detachment,237,TRUE
+CAT - Emotional Detachment,271,FALSE
+CAT - Emotional Detachment,304,FALSE
+CAT - Emotional Detachment,336,TRUE
+CAT - Emotional Detachment,355,FALSE
+CAT - Exhibitionism,155,FALSE
+CAT - Exhibitionism,188,FALSE
+CAT - Exhibitionism,221,FALSE
+CAT - Exhibitionism,254,FALSE
+CAT - Exhibitionism,288,FALSE
+CAT - Exhibitionism,321,TRUE
+CAT - Fantasy Proneness,158,FALSE
+CAT - Fantasy Proneness,191,FALSE
+CAT - Fantasy Proneness,224,FALSE
+CAT - Fantasy Proneness,258,FALSE
+CAT - Fantasy Proneness,291,FALSE
+CAT - Fantasy Proneness,325,FALSE
+CAT - Grandiosity,160,FALSE
+CAT - Grandiosity,193,FALSE
+CAT - Grandiosity,226,FALSE
+CAT - Grandiosity,260,FALSE
+CAT - Grandiosity,293,FALSE
+CAT - Grandiosity,326,FALSE
+CAT - Grandiosity,351,FALSE
+CAT - Health Anxiety,174,FALSE
+CAT - Health Anxiety,207,FALSE
+CAT - Health Anxiety,240,FALSE
+CAT - Health Anxiety,274,FALSE
+CAT - Health Anxiety,307,FALSE
+CAT - Health Anxiety,339,FALSE
+CAT - Health Anxiety,357,TRUE
+CAT - Hostile Aggression,169,FALSE
+CAT - Hostile Aggression,202,FALSE
+CAT - Hostile Aggression,235,FALSE
+CAT - Hostile Aggression,269,FALSE
+CAT - Hostile Aggression,302,FALSE
+CAT - Hostile Aggression,334,FALSE
+CAT - Hostile Aggression,354,FALSE
+CAT - Hostile Aggression,363,FALSE
+CAT - Irresponsibility,183,FALSE
+CAT - Irresponsibility,216,TRUE
+CAT - Irresponsibility,249,TRUE
+CAT - Irresponsibility,283,TRUE
+CAT - Irresponsibility,316,FALSE
+CAT - Irresponsibility,347,FALSE
+CAT - Irresponsibility,361,FALSE
+CAT - Manipulativeness,172,FALSE
+CAT - Manipulativeness,205,FALSE
+CAT - Manipulativeness,238,FALSE
+CAT - Manipulativeness,272,FALSE
+CAT - Manipulativeness,305,FALSE
+CAT - Manipulativeness,337,TRUE
+CAT - Mistrust,154,FALSE
+CAT - Mistrust,187,FALSE
+CAT - Mistrust,220,FALSE
+CAT - Mistrust,253,FALSE
+CAT - Mistrust,287,TRUE
+CAT - Mistrust,320,TRUE
+CAT - Non-Perserverance,181,FALSE
+CAT - Non-Perserverance,214,FALSE
+CAT - Non-Perserverance,247,FALSE
+CAT - Non-Perserverance,281,FALSE
+CAT - Non-Perserverance,314,TRUE
+CAT - Non-Perserverance,345,FALSE
+CAT - Non-Planfulness,185,FALSE
+CAT - Non-Planfulness,218,FALSE
+CAT - Non-Planfulness,251,FALSE
+CAT - Non-Planfulness,285,TRUE
+CAT - Non-Planfulness,318,TRUE
+CAT - Non-Planfulness,349,FALSE
+CAT - Norm Violation,175,FALSE
+CAT - Norm Violation,208,FALSE
+CAT - Norm Violation,241,TRUE
+CAT - Norm Violation,275,TRUE
+CAT - Norm Violation,308,FALSE
+CAT - Norm Violation,340,FALSE
+CAT - Norm Violation,358,FALSE
+CAT - Peculiarity,167,FALSE
+CAT - Peculiarity,200,FALSE
+CAT - Peculiarity,233,FALSE
+CAT - Peculiarity,267,FALSE
+CAT - Peculiarity,300,TRUE
+CAT - Perfectionism,165,FALSE
+CAT - Perfectionism,198,FALSE
+CAT - Perfectionism,231,FALSE
+CAT - Perfectionism,265,FALSE
+CAT - Perfectionism,298,FALSE
+CAT - Perfectionism,331,FALSE
+CAT - Relationship Insecurity,180,FALSE
+CAT - Relationship Insecurity,213,FALSE
+CAT - Relationship Insecurity,246,FALSE
+CAT - Relationship Insecurity,280,FALSE
+CAT - Relationship Insecurity,313,FALSE
+CAT - Relationship Insecurity,344,TRUE
+CAT - Relationship Insecurity,360,TRUE
+CAT - Rigidity,178,FALSE
+CAT - Rigidity,211,FALSE
+CAT - Rigidity,244,FALSE
+CAT - Rigidity,256,FALSE
+CAT - Rigidity,278,FALSE
+CAT - Rigidity,311,FALSE
+CAT - Rigidity,323,FALSE
+CAT - Rigidity,343,FALSE
+CAT - Rigidity,359,FALSE
+CAT - Rigidity,364,FALSE
+CAT - Risk Taking,179,FALSE
+CAT - Risk Taking,212,FALSE
+CAT - Risk Taking,245,FALSE
+CAT - Risk Taking,279,FALSE
+CAT - Risk Taking,312,TRUE
+CAT - Romantic Disinterest,182,FALSE
+CAT - Romantic Disinterest,215,FALSE
+CAT - Romantic Disinterest,248,FALSE
+CAT - Romantic Disinterest,282,TRUE
+CAT - Romantic Disinterest,315,FALSE
+CAT - Romantic Disinterest,346,TRUE
+CAT - Rudeness,177,FALSE
+CAT - Rudeness,210,FALSE
+CAT - Rudeness,243,FALSE
+CAT - Rudeness,277,FALSE
+CAT - Rudeness,310,FALSE
+CAT - Rudeness,342,FALSE
+CAT - Rudeness,366,FALSE
+CAT - Self-Harm,159,FALSE
+CAT - Self-Harm,192,FALSE
+CAT - Self-Harm,225,FALSE
+CAT - Self-Harm,259,FALSE
+CAT - Self-Harm,292,FALSE
+CAT - Self-Harm,365,FALSE
+CAT - Self-Harm,368,FALSE
+CAT - Social Withdrawal,176,TRUE
+CAT - Social Withdrawal,209,TRUE
+CAT - Social Withdrawal,242,FALSE
+CAT - Social Withdrawal,276,FALSE
+CAT - Social Withdrawal,309,FALSE
+CAT - Social Withdrawal,341,FALSE
+CAT - Submissiveness,156,FALSE
+CAT - Submissiveness,189,FALSE
+CAT - Submissiveness,222,FALSE
+CAT - Submissiveness,255,FALSE
+CAT - Submissiveness,289,FALSE
+CAT - Submissiveness,322,FALSE
+CAT - Unusual Beliefs,173,FALSE
+CAT - Unusual Beliefs,206,FALSE
+CAT - Unusual Beliefs,239,FALSE
+CAT - Unusual Beliefs,273,FALSE
+CAT - Unusual Beliefs,306,FALSE
+CAT - Unusual Beliefs,338,FALSE
+CAT - Unusual Beliefs,356,FALSE
+CAT - Unusual Experiences,163,FALSE
+CAT - Unusual Experiences,196,FALSE
+CAT - Unusual Experiences,229,FALSE
+CAT - Unusual Experiences,263,FALSE
+CAT - Unusual Experiences,296,FALSE
+CAT - Unusual Experiences,329,FALSE
+CAT - Unusual Experiences,367,FALSE
+CAT - Workaholism,170,FALSE
+CAT - Workaholism,203,FALSE
+CAT - Workaholism,236,FALSE
+CAT - Workaholism,270,FALSE
+CAT - Workaholism,303,FALSE
+CAT - Workaholism,335,FALSE
+AUDIT,112,FALSE
+AUDIT,113,FALSE
+AUDIT,114,FALSE
+AUDIT,115,FALSE
+AUDIT,116,FALSE
+AUDIT,117,FALSE
+AUDIT,118,FALSE
+AUDIT,119,FALSE
+AUDIT,120,FALSE
+AUDIT,121,FALSE
+DUDIT,122,FALSE
+DUDIT,123,FALSE
+DUDIT,124,FALSE
+DUDIT,125,FALSE
+DUDIT,126,FALSE
+DUDIT,127,FALSE
+DUDIT,128,FALSE
+DUDIT,129,FALSE
+DUDIT,130,FALSE
+DUDIT,131,FALSE
+DUDIT,132,FALSE
+CAPE - Positive,133,FALSE
+CAPE - Positive,134,FALSE
+CAPE - Positive,135,FALSE
+CAPE - Positive,136,FALSE
+CAPE - Positive,137,FALSE
+CAPE - Positive,138,FALSE
+CAPE - Positive,139,FALSE
+CAPE - Positive,140,FALSE
+CAPE - Positive,141,FALSE
+CAPE - Positive,142,FALSE
+CAPE - Positive,143,FALSE
+CAPE - Positive,144,FALSE
+CAPE - Positive,145,FALSE
+CAPE - Positive,146,FALSE
+CAPE - Positive,147,FALSE
+CAPE - Positive,148,FALSE
+CAPE - Positive,149,FALSE
+CAPE - Positive,150,FALSE
+CAPE - Positive,151,FALSE
+CAPE - Positive,152,FALSE
+WHODAS,1,FALSE
+WHODAS,2,FALSE
+WHODAS,3,FALSE
+WHODAS,4,FALSE
+WHODAS,5,FALSE
+WHODAS,6,FALSE
+WHODAS,7,FALSE
+WHODAS,8,FALSE
+WHODAS,9,FALSE
+WHODAS,10,FALSE
+WHODAS,11,FALSE
+WHODAS,12,FALSE
