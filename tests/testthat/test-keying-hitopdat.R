@@ -20,6 +20,10 @@ scale_row <- function(scale) {
 
 # ---- Source: HiTOP-DAT manual (Jonas et al., 2021), "Scale definitions",  ----
 # ---- pp. 20-25: the 57 definitions in the order the manual prints them.  ----
+# The manual tags each definition but three with its measure in parentheses,
+# writing "PHQ" for the PHQ-15. WHODAS is its own measure. Ill Temper (p. 21)
+# and Norm Violation (p. 24) carry no tag; their measures come from the IDAS-II
+# key and the IPIP key, listed below.
 
 manual_scales <- c(
   "WHODAS" = "WHODAS",
@@ -57,7 +61,7 @@ test_that("the scale names are the manual's definitions, in both directions", {
   expect_false(anyDuplicated(hitopdat_scales$Scale) > 0)
 })
 
-test_that("each scale belongs to the measure the manual names for it", {
+test_that("each scale belongs to the measure the manual or its key names", {
   measures <- stats::setNames(hitopdat_scales$Measure, hitopdat_scales$Scale)
   expect_identical(measures[names(manual_scales)], manual_scales)
 })

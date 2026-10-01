@@ -1,6 +1,6 @@
 # M143: HiTOP-DAT item, answer and scale tables
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -103,6 +103,8 @@ The package ships the 382 HiTOP-DAT items, their answer options, their scales an
 - 2026-10-01: T5 redone. The three help pages carry `@keywords internal`, the NEWS entry and the `_pkgdown.yml` lines are gone, and DESIGN.md marks the DAT as not yet announced. `?hitopdat_scales` now names the IDAS-II key. A new test checks the internal keyword on each page and went red with the keyword deleted from one. `devtools::test()` passes (0 failed), `pkgdown::check_pkgdown()` finds no problems.
 - 2026-10-01: T3 and T6 done. `test-keying-hitopdat.R` transcribes Watson's key (19 compositions and the 99 item texts) and checks each IDAS-II scale's items, reverse keys and `nItems`, and each item's text at its IDAS-II number after dropping the scale tag and collapsing spaces. The file already equals the key, so the build script is unchanged, and the key's counts equal Table 1, so neither T3 stop rule fired. Eight plants each turned a test red (an IDAS-II member, a reverse key, a Table 1 `nItems`, a renamed scale, an item text, a General Depression member and `nItems`, item 27's reversal, two swapped `MeasureItem` values), and the unplanted run stayed green. `devtools::test()` passes (0 failed).
 - 2026-10-01: T1 and T7 done. Source note `watson2011idas.md` with its INDEX line. SOURCES.md "HiTOP-DAT" gains the IDAS-II key as a fifth source, two checked rows, DAT-1 resolved, and working facts W1 to W4. W1 cites the Society page (read 2026-10-01), whose 16 WHODAS, 14 CAPE negative, 15 PHQ-15, 7 Mistrust and 9 Non-Perseverance items account for the 23-item gap. `watson2012.md`'s open question is closed. A search for `hitopdat` in NEWS.md, README.Rmd, DESCRIPTION, `vignettes/`, `pkgdown/`, `inst/` and `_pkgdown.yml` finds nothing. `devtools::document()` makes no change, `pkgdown::check_pkgdown()` finds no problems, and `devtools::check()` reports 0 errors, 0 warnings, 0 notes.
+- claim audit: 70 claims read, 7 corrected — data-raw/hitopdat_info.R, R/data.R, man/hitopdat_items.Rd, tests/testthat/test-keying-hitopdat.R
+- 2026-10-01: all tasks done. The claim audit's re-read found the Skipped-counter comment and the manual-tag comment still loose; both reworded as the reader proposed, and one help line rewrapped. `devtools::test()` passes (0 failed). Status set to review.
 
 ## Decisions
 

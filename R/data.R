@@ -367,8 +367,10 @@
 #' in the order the battery gives the measures, which is the order listed here.
 #'
 #' The item text is taken from the battery's Qualtrics file, with its markup
-#' removed. The file moves the PHQ-15's item 4 (menstrual problems) out of the
-#' battery, so the PHQ-15 has 14 items here and its own numbers skip 4. The
+#' removed and line breaks within an item made spaces. CAT-PD item 194, cut
+#' short in the file, is completed from the IPIP key. The file moves the
+#' PHQ-15's item 4 (menstrual problems) out of the battery, so the PHQ-15 has
+#' 14 items here and its own numbers skip 4. The
 #' battery gives only the CAPE's positive items, and they keep their CAPE
 #' numbers (2 to 42, with gaps). The battery has no scoring function in this
 #' package yet.
