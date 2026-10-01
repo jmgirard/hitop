@@ -2,6 +2,17 @@
 
 ## New features
 
+* **A hitop-form study link can name a setup file you host.** Under "Where
+  the setup is kept", the Study Link Builder offers "In the study link", the
+  default, and "In a file I host". The second saves the setup as
+  `setup.json` for you to host, for example in a public GitHub repository.
+  It then makes a short link whose `setup` parameter names the file's
+  address and whose `sha256` parameter holds its fingerprint. The online
+  form fetches the file. If the file changed after the link was made, the
+  online form refuses it. Opened on the builder, such a link fills the form
+  from the file. A
+  link's `participantParam` can no longer be `setup` or `sha256`.
+
 * **The hitop-form online form speaks to the participant.** An error screen
   gives one sentence: check the connection and reload, open the link in
   another browser, or contact the study team. Each screen ends with a closed
