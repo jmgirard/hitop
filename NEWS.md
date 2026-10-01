@@ -2,6 +2,21 @@
 
 ## New features
 
+* **The hitop-form online form speaks to the participant.** An error screen
+  gives one sentence: check the connection and reload, open the link in
+  another browser, or contact the study team. The technical reason, the
+  build date and the package version sit in a closed "Details for the study
+  team" section at the foot of every screen. No screen shows a host name,
+  and a completion link reads "Continue to the next step of the study". The
+  identifier field has a hint, asks a phone keyboard not to correct it, and
+  starts the form on Enter. Each item page shows its page, and its part
+  under a list, above the items and beside "Next" or "Finish". A closed
+  "Instructions" section repeats the instructions. A blank item is marked
+  "Please answer this item", with a count of blank items above the first,
+  and each option is at least 44 px high. "I do not agree" asks once to
+  confirm. A send shows "Sending your answers. Please keep this page open.",
+  and a failed send's screen is headed "Your answers were not sent".
+
 * **The hitop-form Study Link Builder shows its required choices first.**
   The page shows the instruments, the study name and where responses go
   first. Five optional sections follow, each closed until you open it:

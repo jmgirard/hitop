@@ -49,7 +49,7 @@ A participant who opens a study link for the first time reads text written for t
 - [x] T3: Add the identifier hint and input attributes (lines 1583-1628), and start the form on Enter.
 - [x] T4: On the item pages (lines 1843-1893), add the progress lines, the "Instructions" section and the missed-item messages. Enlarge the option target (`index.html` lines 101-109).
 - [x] T5: Add the decline confirmation (lines 1640-1675). Add the sending line (lines 1940-1941). Reword the saved-file screens (lines 1929-1936, 1969-1973, 1996-2022).
-- [ ] T6: Write the Playwright tests for AC1 to AC6. Update the existing specs that assert old text. Update the hitop-form README, hitop NEWS and the online-collection article where they describe the changed screens.
+- [x] T6: Write the Playwright tests for AC1 to AC6. Update the existing specs that assert old text. Update the hitop-form README, hitop NEWS and the online-collection article where they describe the changed screens.
 - [ ] T7: Run the suite locally and on the PR. Take before and after screenshots of each screen at 375px for Jeff's look at the merge gate.
 
 ## Work log
@@ -64,6 +64,7 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-09-30: T3 done. The identifier field is a `div.field` with a `label for`, a `#participant-hint` paragraph and the input, which carries `aria-describedby`, `autocapitalize`, `autocorrect` and `spellcheck` off. Enter in the input calls Begin's own handler. P3 checks each fact, Enter and Begin side by side, and a plant that ignored Enter failed the three Enter tests. Suite: 864 of 864.
 - 2026-09-30: T4 done. An item page shows `p.where` ("Part k of m · Page p of n") above a closed `details.reminder` and the items. The nav holds `div.forward` with the same line beside the button, so a wrapped row keeps them together. `finish()` now takes the nav's last button. A press with items missed marks each with `p.missed` and `aria-describedby`, and puts `p.missed-count` (role alert) directly above the first. Option labels have `min-height: 44px`. P4 and P5 cover AC4 and AC5. A no-scroll plant and a no-min-height plant (34px) each failed P4. `walk.spec.js` and `layout.spec.js` assert the new marks. Full run: 869 passed, and 2 page loads timed out (`consent.spec.js` and `question-screens.spec.js`, h1 and Begin never shown). Those two specs then passed 71 of 71.
 - 2026-09-30: T5 done. "I do not agree" calls `confirmDecline()`, which swaps the buttons for a `.confirm` group (D2). A send adds `p.sending` (role status) above the nav. The failed-send screen is headed "Your answers were not sent", and its trail opens "This file holds your answers." The sent and no-store screens say "answers" for "responses", and twelve specs follow the new text. P6 covers AC6. A plant of the old one-press decline failed both decline tests. Suite: 875 of 875.
+- 2026-09-30: T6 done. The tests for AC1 to AC6 landed with T1 to T5 as P1 to P6 in `tests/screens.spec.js`. The hitop-form README describes the changed screens and lists the new spec in its test table. hitop NEWS has one entry. The online-collection article covers the decline question and the part line on item pages. No R code changed, so `devtools::test()` was not run. `link-sections.spec.js`, which reads the README's headings, passed 100 of 100.
 
 ## Decisions
 
