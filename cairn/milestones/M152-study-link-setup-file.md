@@ -1,6 +1,6 @@
 # M152: Hosted setup files for study links
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -83,6 +83,9 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: T10 done. `fetchSetup()` aborts after `SETUP_TIMEOUT_MS` (30,000, the send limit), with fault `timeout`. The online form shows it as kind `connection`. Three tests advance the page's clock: one in the online form, and two in the builder, for an opened link and for "Make the link". A planted 60-second limit turned all three red at the refusal. README lists the fault. Setup-file, network and builder specs: 175 passed.
 - 2026-10-01: T11 done. `build()` hides the changed-file offer. In Chromium, the deepest file that fits in 100,000 bytes parses and fingerprints, so finding 4 does not occur there. `fetchSetup()` still refuses a file that `JSON.stringify()` cannot write, as fault `depth`, for browsers with a lower limit. Its three tests make `JSON.stringify()` throw. Before the fix, those tests showed the raw RangeError text and the builder's generic refusal, and the offer test failed. Full hitop-form suite: 949 passed.
 - 2026-10-01: T12 done. ROADMAP gains "Hosted setup file gaps", which points at this Review section. To keep ROADMAP under 24,000 bytes, 16 date notes left older rows, and no item left. Finding 3's typed-during-prefill half goes to the row, since T11 fixed only the offer half. ROADMAP: 58 lines, 23,938 bytes.
+- 2026-10-01: claim audit: 56 claims read, 6 corrected — hitop-form README.md, link.html, tests/setupfile.spec.js, tests/link-setupfile.spec.js
+- 2026-10-01: the audit's re-read found all six held, but one new README sentence was too broad, and it now names GitHub's code search. Setup-file specs: 61 passed. hitop `devtools::test()`: 0 failures. The article renders against the branch package.
+- 2026-10-01: implement complete after review pass 1. Status set to review.
 
 ## Decisions
 
