@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-085 (2026-10-01): HiTOP-DAT scale names follow the DAT manual, not each measure's own key (an exception to D-018's rule that a scale's name comes from its development source)
+
+**Context:** M143 names the 57 HiTOP-DAT scales. D-018 takes a scale's name from its development source, not from a secondary text. The DAT manual (2021) renames some scales of the measures it bundles. For example, it says Non-Premeditation where the IPIP CAT-PD-SF v1.1 key says Non-Planfulness. A criteria audit at the 2026-10-01 amendment of M143 found that the plan departed from D-018 with no entry.
+
+**Decision:** `hitopdat_scales$Scale` takes each name from the manual's "Scale definitions" section (pp. 20-26). The battery is the manual's own instrument, so its names are the battery's names. SOURCES.md records each key name beside the manual name, and a test crosswalk maps one to the other. D-018 still governs every other instrument. Chosen by Jeff at the 2026-10-01 plan gate of M143. Rejected: names from the IPIP and IDAS-II keys with the manual names as aliases, because users of the DAT read its reports and manual under the manual's names.
+
+**Consequences:** M143 to M145 show the manual's names on every surface. The evidence that reopens this is a DAT user who looks for a scale under its key name and cannot find it.
+
 ### D-084 (2026-09-30): D-083's names reach `vignettes/pid5_scoring.Rmd`, `vignettes/articles/overview.Rmd` and the download pages' strip that `vignettes/articles/_download-helpers.R` renders (annotates D-083(c); notes that D-083(a) replaced the menu labels D-074 records)
 
 **Context:** D-083(c) lists the files where the names apply. Three more files show the builders or the online form to readers and keep retired names. `pid5_scoring.Rmd` says "link builder" and "store", and `overview.Rmd` says "store". The strip that `_download-helpers.R` puts on the download pages says "form page", and its button says "Make a study link". D-074's Context records the menu labels "Make a study link" and "Build a HiTOP-SR Module", which D-083(a) replaced.
