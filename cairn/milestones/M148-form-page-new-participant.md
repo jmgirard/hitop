@@ -44,7 +44,7 @@ A participant who opens a study link for the first time reads text written for t
 
 ## Tasks
 
-- [ ] T1: Rebuild `showError()` (`form.js` lines 1473-1478) with a participant sentence and a closed study-team section. List the `showError(` call sites for the Review section.
+- [x] T1: Rebuild `showError()` (`form.js` lines 1473-1478) with a participant sentence and a closed study-team section. List the `showError(` call sites for the Review section.
 - [ ] T2: Move the version line (`versionLine()`, lines 1494-1499, used at lines 1615, 1963 and 2019) into a closed `<details>` in the footer. Remove host names and HTTP detail from the start, sent and saved-file text (lines 1611, 1971).
 - [ ] T3: Add the identifier hint and input attributes (lines 1583-1628), and start the form on Enter.
 - [ ] T4: On the item pages (lines 1843-1893), add the progress lines, the "Instructions" section and the missed-item messages. Enlarge the option target (`index.html` lines 101-109).
@@ -59,6 +59,7 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-09-30: M146 review pass 3 filed two notes on this page's text. The `checkStore` prefix "Where responses go could not be used:" no longer says the fault is in the study link, and `link.html` matches that prefix as literal text to pick the focused field. The `z` refusals now say "unpack" (`form.js:204`, `210`), which participants also see.
 - 2026-09-30: M150 review filed one note on this page's text. An unknown instrument is worded three ways. `checkInstruments` (`form.js:105`) says "an instrument the online form does not know". `parseLink` (`form.js:719`) says "an instrument this page does not know". The builder (`link.html:909`) says "the Study Link Builder does not offer". The "this page" text left at `form.js:260`, `:675`, `:1610` and `:1945` shows on the online form too.
 - 2026-09-30: /milestone-implement started. Branch `m148-form-page-new-participant` cut in hitop and in the hitop-form companion. Question gate: Jeff took the three recommendations (D1 to D3). T6 now also names the README, NEWS and article updates (minor amendment). The task line numbers in `form.js` predate M149 to M151, and the code is read fresh.
+- 2026-09-30: T1 done. `showError()` takes the refusal and picks the sentence by its `kind`: `connection` (an export fetch that fails), `browser` (no `DecompressionStream`), or the study-team sentence. The refusal sits in `details.study-team .fault`. The three calls are in `boot()`: after `parseLink`, after `fetchExports`, and after `planStems`, which also passes the version footer. The new `tests/screens.spec.js` P1 lists the calls and fires six refusals through them. Eight specs read the refusal through the new `refusalText()` helper. Suite: 853 of 853.
 
 ## Decisions
 
