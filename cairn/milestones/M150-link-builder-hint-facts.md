@@ -1,13 +1,13 @@
 # M150: Study Link Builder: hint facts, names and tutorials
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** M149
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the researcher page's hints and the package tutorials that describe it
-- **Branch/PR:** —
+- **Branch/PR:** m150-link-builder-hint-facts, companion: /Users/jmgirard/github/hitop-form m150-link-builder-hint-facts
 
 ## Goal
 
@@ -49,7 +49,7 @@ The Study Link Builder's hints give back the facts that M146 cut, and the packag
 
 ## Tasks
 
-- [ ] T1: Rewrite the six hints with the facts, each within 40 words. They are at `link.html:168`, `206`, `217`, `213` and `180`, and the key hint at `:142`. The prior wording at hitop-form `236d2f1` and README sections 130-152, 102-104 and 219-236 give the facts. Extend the S9 facts test, and reword its old phrases where a hint changes.
+- [x] T1: Rewrite the six hints with the facts, each within 40 words. They are at `link.html:168`, `206`, `217`, `213` and `180`, and the key hint at `:142`. The prior wording at hitop-form `236d2f1` and README sections 130-152, 102-104 and 219-236 give the facts. Extend the S9 facts test, and reword its old phrases where a hint changes.
 - [ ] T2: Reword the intro (`link.html:106`), the table-name hint (`:146`) and the prefill refusal (`:893`). The intro has 2 words of room: by the test's count it is at 58 of 60. Reword the four `form.js` messages. Update the existing specs that assert the old text.
 - [ ] T3: Run the AC3 search, and record each hit and its class in the work log for review to re-run. Name the section for each field a hit sends the reader to, and describe the closed sections and "Your study link". Fix the form list at `modules-hitopsr.Rmd:405-407`. Build the articles.
 - [ ] T4: Clear every hit that is not exempt. Start from `pid5_scoring.Rmd:198`, `:200` (the link text) and `:202`, `overview.Rmd:69`, and the strip strings at `_download-helpers.R:179-189`. Add the strip assertions to `tests/testthat/test-download-pages.R`, which today checks only the `href`, the article link and the JSON button (`:88-118`). Record the AC4 searches and each hit's class in the work log.
@@ -63,3 +63,5 @@ The Study Link Builder's hints give back the facts that M146 cut, and the packag
 - 2026-09-30: the criteria audit ran in full mode with a fresh Opus reader. It returned 10 findings, and each was repaired as suggested. AC1 states the word limit over the markup, not over a test's walk, and lets the S9 phrases change. AC2 greps the imported `form.js` functions: `:1135` joins, and `:671` leaves for M148. AC3 joins line breaks and searches without quotes. The intro count is 58, not 47, and two task line numbers were corrected.
 - 2026-09-30: plan gate split the row into M149 to M151 and took the old names in three files into M150 (D-084). AC4 is new, and it went back to a fresh Opus reader in full mode. It returned 10 findings, and each was repaired as suggested. The search is PCRE, and it reads the strip as rendered on its five pages. Link text is not a URL, and a test asserts the strip.
 - 2026-09-30: plan gate kept the 40-word hint limit over a 50-word limit, because short hints were the aim of M146. Falsified by a hint that cannot hold its fact in 40 words without losing a second fact.
+- 2026-09-30: implement started on branch `m150-link-builder-hint-facts` in hitop and in hitop-form, both cut from their pushed `main`. The question gate was skipped: the plan left no choice open.
+- 2026-09-30: T1 done. The six hints hold their facts within 40 words, and S9 asserts each by a phrase. The SONA, decline, saved-file, completion and module hints changed their old S9 and L-test phrases, which were reworded in `link-sections.spec.js` and `link.spec.js`. The two specs pass, 204 of 204.
