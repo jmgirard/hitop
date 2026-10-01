@@ -55,7 +55,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - [x] T8: hitop article section and NEWS line. Run `pkgdown::build_article("articles/online-collection")` and `devtools::check()`. Open the companion PR with the hitop PR.
 - [x] T9: Review pass 1 text fixes (findings 1, 6, 7, 9, 10, 14, 18, 19). Write "Ingested" in the source note's provenance. Warn that a public setup file shows where responses go. Correct the white-space claim. Say to wait out the cache before sending a new link. Name the builder's fetch of an opened link. Add the read-by-other-sites hint to the prefill refusal. Update the article's "Who holds the data" and the `form.js` header. Tidy NEWS and "the page".
 - [x] T10: Review finding 2. The setup fetch stops after a time limit, in the online form and the builder, with a refusal and tests.
-- [ ] T11: Review findings 3 and 4. "Make the link" hides the changed-file offer. A file too deeply nested to fingerprint gets a named refusal. Tests for both.
+- [x] T11: Review findings 3 and 4. "Make the link" hides the changed-file offer. A file too deeply nested to fingerprint gets a named refusal. Tests for both.
 - [ ] T12: A candidate row "Hosted setup file gaps" for findings 5, 8, 11 to 13 and 15 to 17. Finding 20 is rejected as intended (D-086(c)).
 
 ## Work log
@@ -81,6 +81,7 @@ A researcher can keep a study's setup in a JSON file they host, and a short stud
 - 2026-10-01: implement resumed. Gate (Jeff): fix the text findings, a setup-fetch time limit, and the builder state findings now, as T9 to T11. The rest goes to a new candidate row (T12). Tasks added, Coverage extended for AC6 and AC7.
 - 2026-10-01: T9 done. The source note says "Ingested", and `cairn_validate` has no FAIL. README, article, NEWS and the `form.js` header gain the public-file warning, the white-space correction, the wait before sending a new link and the builder's own request. The builder's refusal of an opened link whose fetch throws gains the read-by-other-sites hint, and LF8 asserts it. Retired-term scan of the added text: 0 hits. Builder specs: 139 passed.
 - 2026-10-01: T10 done. `fetchSetup()` aborts after `SETUP_TIMEOUT_MS` (30,000, the send limit), with fault `timeout`. The online form shows it as kind `connection`. Three tests advance the page's clock: one in the online form, and two in the builder, for an opened link and for "Make the link". A planted 60-second limit turned all three red at the refusal. README lists the fault. Setup-file, network and builder specs: 175 passed.
+- 2026-10-01: T11 done. `build()` hides the changed-file offer. In Chromium, the deepest file that fits in 100,000 bytes parses and fingerprints, so finding 4 does not occur there. `fetchSetup()` still refuses a file that `JSON.stringify()` cannot write, as fault `depth`, for browsers with a lower limit. Its three tests make `JSON.stringify()` throw. Before the fix, those tests showed the raw RangeError text and the builder's generic refusal, and the offer test failed. Full hitop-form suite: 949 passed.
 
 ## Decisions
 
