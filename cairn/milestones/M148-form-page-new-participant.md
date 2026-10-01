@@ -194,14 +194,14 @@ Independent review (pass 3): three fresh reviewers (Opus diff, Sonnet blame-hist
 - U2 (diff 2): no test checks that the alert is empty for a frame before its text. A plant that writes at once passes P4. Proposed: fix now, with a frame-counting test and plants for a write at once and after one frame.
 - U3 (blame 1, diff 3): the keyCode 229 guard (S10) can also drop Enter on Android keyboards that report 229 for Enter. Begin still works. Proposed: fix now. Go back to the `isComposing` check alone, drop the 229 test, and file S10's Safari case as a follow-up for a real-device check.
 - U4 (diff 5): the delayed write uses the count from the press. An answer before the frame leaves a stale number. Proposed: fix now, by counting at write time (with U1).
-- U5 (diff 4, blame 8): `root.querySelector('p.sending').textContent` throws if a later `finish()` caller draws no line, after the buttons are disabled. No current path. Proposed: fix now, with a null check.
+- U5 (diff 4, blame 8): With no sending line on the screen, `root.querySelector('p.sending').textContent` throws after the buttons are disabled. No current path. Proposed: fix now, with a null check.
 - U6 (blame 3, diff 8): `.missed-count:empty` beats `[role="alert"]:empty` only by source order. P4 catches a reorder. Proposed: fix now, with a more specific selector.
 - U7 (blame 5, diff 7): README line 590 and `form.js:1961` say the count "goes", but the element stays, empty. Proposed: fix now.
 - U8 (prior 1): the `form.js` header comment says "I do not agree" shows a closing screen, without the D2 question. Proposed: fix now.
 - U9 (prior 2): the `completeLink` comment says no screen shows a host name, without "outside that section" (R8). Proposed: fix now.
 - U10 (prior 3): `finish()` takes `[...nav.querySelectorAll('button')].at(-1)`. Proposed: fix now, with `nav.querySelector('.forward button')`.
 - U11 (prior 5): the Study Link Builder hint says the decline address is where "I do not agree" leads. After D2 it is "Yes, I do not agree". Proposed: fix now in `link.html`.
-- U12 (prior 7): the one-missed probe follows answers that scroll the page, so on a short page its scroll assert may be vacuous. Proposed: fix now. Rerun a no-scroll plant after U1, and change the probe if the plant passes.
+- U12 (prior 7): the one-missed probe follows answers that scroll the page, so on a short page its scroll assert can be vacuous. Proposed: fix now. Rerun a no-scroll plant after U1. If the plant passes, change the probe.
 - U13 (blame 9): the P4 message "the empty alert is hidden" sits beside the claim that the alert stays in the accessibility tree. Proposed: fix now, renaming it "takes no room".
 - U14 (blame 6, diff 9): lines in README (592, 615) and NEWS (18) run past the wrap width. Proposed: fix now.
 - U15 (blame 7): NEWS does not mention the start screen's new fallback sentence. Proposed: fix now.
