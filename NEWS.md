@@ -6,9 +6,9 @@
   holds as many questions as fit in the 100,000 bytes of setup that the
   online form reads. A link without consent text or questions is now held
   to the same 100,000 bytes, and the online form refuses a larger one and
-  names its size. With a Supabase table, the Study Link Builder refuses a
-  setup whose table would have more than 1,600 columns, PostgreSQL's limit,
-  and names the count. If a link is longer than 8,000 characters, the
+  names its size. With a Supabase table, the Study Link Builder makes no
+  link for a table of more than 1,600 columns, PostgreSQL's limit, and
+  names the count. If a link is longer than 8,000 characters, the
   builder shows a warning under it. The warning says that some sites and
   mail programs cut long links, and that you can keep the setup in a file
   you host.

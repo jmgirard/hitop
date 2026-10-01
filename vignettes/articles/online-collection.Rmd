@@ -471,12 +471,13 @@ share a screen with the items.
 
 The number of questions has no limit of its own. The page reads at most
 100,000 bytes of setup, so the builder refuses a link whose setup is larger
-and names its size. With a Supabase table, the builder also refuses a setup
-whose table would have more than 1,600 columns, the most a PostgreSQL table
-can have. PostgreSQL also limits the size of one row, which must fit in
-8,192 bytes. A long text answer is kept outside the row, and 18 bytes of it
-stay in the row. So a table with many questions can refuse a row of long
-answers, and the page then saves the file on the participant's device.
+and names its size. With a Supabase table, the builder also refuses to make
+a link for a setup whose table would have more than 1,600 columns, the most
+a PostgreSQL table can have. PostgreSQL also limits the size of one row,
+which must fit in 8,192 bytes. A text answer that is long enough can be kept
+outside the row, and 18 bytes of it then stay in the row. So a table with
+many questions can refuse a row of long answers, and the page then saves
+the file on the participant's device.
 
 Each question has a name, and its answer is written in a column named `q_`
 and then the name, after the item columns. `read_form_responses()` returns
