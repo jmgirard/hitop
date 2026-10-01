@@ -1,6 +1,6 @@
 # M151: Study Link Builder test reach
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** M149
 - **Driving RR:** —
@@ -55,7 +55,7 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - [x] T4: Add the Connect entry to the one-field table (about `:288`). Write the Move guard test for the guards at `link.html:389`, `394`, `602` and `607`.
 - [x] T5: Write the six `z` refusal tests, in the style of the `BAD_C` table (`tests/link.spec.js:665-690`).
 - [x] T6: Replace `openBuilderSections()` (`tests/helpers.mjs:139-149`) with a helper that opens the section of a named field, and move its nine calling specs to it. A Sonnet subagent can do the move, and its diff is checked here.
-- [ ] T7: Update the README test-table rows of the changed specs. Run the full suite locally and on the PR.
+- [x] T7: Update the README test-table rows of the changed specs. Run the full suite locally and on the PR.
 
 ## Work log
 
@@ -71,6 +71,9 @@ The Study Link Builder's tests state their expectations apart from the page's co
 - 2026-09-30: T4 done. `ONE_FIELD` has a Connect entry (`participantId`) that also checks the menu reads `connect`. The forced-press test covers instrument rows and question groups. Removing each of the four `if` guards in `link.html` failed that guard's test.
 - 2026-09-30: T5 done. L36 in `link.spec.js` fires the six refusals as `BAD_Z` and compares `builderValues()` with a load with no link. A planted fill of the first instrument row before the refusal failed it.
 - 2026-09-30: T6 done. `openSectionOf(page, control)` in `helpers.mjs` opens the section that holds a field name or selector, by a click on its summary. A Sonnet subagent moved the nine specs, 48 calls in eight of them; `network.spec.js` needed none. The diff removed no `expect`. The nine specs passed, 326 of 326. A grep for `openBuilderSections` in `tests/` finds nothing.
+- 2026-09-30: T7 done. The README rows of `link.spec.js` and `link-sections.spec.js` name the new cases. The full suite passed locally, 845 of 845 (M150 had 831). The PR's CI run belongs to `/milestone-review`, which opens the PR.
+- claim audit: not owed — internal tier
+- 2026-09-30: status review.
 
 ## Decisions
 
