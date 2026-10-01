@@ -51,7 +51,7 @@ A participant who opens a study link for the first time reads text written for t
 - [x] T5: Add the decline confirmation (lines 1640-1675). Add the sending line (lines 1940-1941). Reword the saved-file screens (lines 1929-1936, 1969-1973, 1996-2022).
 - [x] T6: Write the Playwright tests for AC1 to AC6. Update the existing specs that assert old text. Update the hitop-form README, hitop NEWS and the online-collection article where they describe the changed screens.
 - [x] T7: Run the suite locally and on the PR. Take before and after screenshots of each screen at 375px for Jeff's look at the merge gate.
-- [ ] T8 (review R1): Make `canInflate()` also check that `new DecompressionStream('deflate-raw')` works, so a browser without `deflate-raw` gets the browser sentence. Add a P1 test with a constructor that throws on `deflate-raw`.
+- [x] T8 (review R1): Make `canInflate()` also check that `new DecompressionStream('deflate-raw')` works, so a browser without `deflate-raw` gets the browser sentence. Add a P1 test with a constructor that throws on `deflate-raw`.
 - [ ] T9 (review R2 to R4): Change the failed-send lead to say that the page got no confirmation, and keep the heading. Make sure that the article agrees. Draw `p.sending` empty on the last page and write its text at the send. Rewrite the missed count on each answer. Add a test for each change.
 - [ ] T10 (review R5 to R8): In P4, leave the middle item blank in the one-missed probe. Make the identifier hint fit a recruiter participant. Change "responses were sent" at `online-collection.Rmd:99` and in the `send.spec.js` comment. Change the NEWS host sentence to "outside that section".
 
@@ -73,6 +73,8 @@ A participant who opens a study link for the first time reads text written for t
 - 2026-09-30: the G1 test in `guard.spec.js` now reads the version line inside the closed study-team section, a fix the audit's finding 2 led to. `guard.spec.js` and `link-sections.spec.js` passed 239 of 239. Status set to review.
 - 2026-09-30: /milestone-review: AC1 to AC6 verified on fresh runs (875 of 875), and the gate checks are clean. Review R1 shows AC1 failing: on Chrome and Edge 80 to 102, a `z` link gets "contact the study team", not the browser sentence. Defect return 1 of this milestone. AC1 unticked.
 - 2026-09-30: step-7 gate: Jeff chose "Send back to fix". The proposed dispositions in the Review section stand. T8 to T10 hold the fix-now work (review send-back), and Coverage maps them. The six follow-ups go to a candidate row at the post-merge hygiene pass. Status set to in-progress.
+- 2026-09-30: /milestone-implement resumed. Both branches are level with `origin/main`. Nothing was open for a question gate.
+- 2026-09-30: T8 done. `canInflate()` now builds a `deflate-raw` `DecompressionStream` in a `try`. A new P1 test replaces the constructor with one that throws for `deflate-raw`. Before the fix it failed on the contact sentence, and after it passed with the browser sentence. The README states both browser cases. `screens`, `zlink`, `link` and `link-sections` specs: 266 passed.
 
 ## Decisions
 
