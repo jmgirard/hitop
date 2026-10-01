@@ -1,13 +1,13 @@
 # M153: Questions limited by size, and a long-link warning
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** M152
 - **Driving RR:** —
 - **Principles touched:** IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — changes what a study link may hold and what the Study Link Builder shows
-- **Branch/PR:** —
+- **Branch/PR:** m153-question-limit-link-length; companion: /Users/jmgirard/github/hitop-form m153-question-limit-link-length
 
 ## Goal
 
@@ -39,8 +39,8 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 
 ## Tasks
 
-- [ ] T1: In `form.js`, remove `QUESTIONS_MAX` from `checkQuestions()`, and add the `c` size checks to `encodeLink()` and `decodeLink()`.
-- [ ] T2: Replace the 51-question tests in `questions.spec.js`, `link-questions.spec.js` and `link-questions-file.spec.js`, and add the `c` size tests.
+- [x] T1: In `form.js`, remove `QUESTIONS_MAX` from `checkQuestions()`, and add the `c` size checks to `encodeLink()` and `decodeLink()`.
+- [x] T2: Replace the 51-question tests in `questions.spec.js`, `link-questions.spec.js` and `link-questions-file.spec.js`, and add the `c` size tests.
 - [ ] T3: Add the Supabase column check to `link.html`'s build, with tests. Write a hitop source note on PostgreSQL's Appendix K limits.
 - [ ] T4: Add the link-length warning to the result region, with the padded-length tests. Write a hitop source note on RFC 9110 section 4.1.
 - [ ] T5: Update the link.html hint, the README's questions section and test rows, and the hitop article. Run AC4's paragraph search and read each hit.
@@ -51,6 +51,8 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - 2026-10-01: created by /milestone-plan with M152 and M154. The 50-question cap came from M137's plan with no recorded reason; the measured limit is the 100,000-byte setup. Audits are recorded in M152's work log.
 - 2026-10-01: plan chose a warning at 8,000 characters, the length RFC 9110 recommends supporting, over a 2,000-character warning, which has no current standard behind it. Falsified by a recruiting site or mail program that cuts links shorter than 8,000 characters.
 - 2026-10-01: plan chose a 100,000-byte limit on `c` setups, to match `z` and hosted files, over leaving `c` unlimited. Falsified by a researcher whose `c` link over 100,000 bytes worked before.
+- 2026-10-01: implement started. Branch m153-question-limit-link-length in hitop and in the hitop-form companion. Question gate skipped: nothing open. The test page address is 23 characters, so a `c` link of 8,000 and of 8,001 characters is reachable.
+- 2026-10-01: T1+T2 done. `QUESTIONS_MAX` and its count check removed. `encodeLink()` checks the size of every setup, with the "Shorten" sentence only for consent text or questions. `decodeLink()` refuses a `c` over 100,000 decoded bytes. The 51-question refusals became 51 and 200 accepted in questions, link-questions and link-questions-file specs. S12's no-question probe removed: the editor has no such fault now. Z6 and an LQ5 test cover `c` at 100,000 and 100,001 bytes. The test page server takes headers up to 256 KiB, since Node refuses a request line over 16 KiB. A plant that disabled both checks turned 3 tests red. Full suite 954 passed, 1 layout failure (pid5 legend) that passed on a rerun of its spec.
 
 ## Decisions
 
