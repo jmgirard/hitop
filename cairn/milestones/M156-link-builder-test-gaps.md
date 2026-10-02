@@ -33,7 +33,7 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - [x] AC3: `openSectionOf()` in `tests/helpers.mjs` takes an option that fails the test when the section is closed. The search `git grep -n "openSectionOf" tests/` lists the calls. Each listed call that follows a `c`, `z` or setup-file load in the same test uses that option or follows an assertion of the section's state. A setup-file prefill test asserts which sections are open.
 - [x] AC4: With `FORM_TARGET` empty, no page in the full suite requests `EXPORT_BASE` unanswered. A context-level check in the shared test fixture fails a test on such a request, and the full suite passes with it. The search `git grep "from '@playwright/test'" tests/*.spec.js` finds no spec that bypasses the fixture. The search `git grep -n "fetch(" tests/` finds no Node-side fetch of an export outside the `FORM_TARGET` branch of `fetchExport()`. `tests/fixtures/exports/` holds copies of the five exports. With `FORM_TARGET` set, the exports are fetched live, and a test fails when a copy differs from its live file.
 - [x] AC5: The search `git grep -n "states.at(-1)" tests/` lists the tests that read a page state beside a request. Each listed test reads the page state and the request from one ordered source, or waits for the page state it asserts. N7 passes 100 of 100 runs under `--repeat-each=100`.
-- [ ] AC6: The README test-table rows of the changed specs say what each now checks. The full hitop-form suite passes locally and on its PR's CI.
+- [x] AC6: The README test-table rows of the changed specs say what each now checks. The full hitop-form suite passes locally and on its PR's CI.
 
 ## Coverage
 
@@ -151,3 +151,4 @@ Findings, pass 3. Opus diff reviewer (D), Sonnet blame-history (B), Sonnet prior
 - B6: S4 is one test over 15 pairs per width, one diff per failure. Reject: the plan called for the loop, and the diff names each pair.
 - P2: the `states.left` poll is a hard wait before a soft read (LESSONS M127). Reject: it fails in 15 seconds, and the navigate-first plant failed N7 5 of 5.
 - Gate decision: the triage above as proposed. Fix-now items landed in hitop-form `de4717b`. Plants: `SITES` without `other` failed S4 at both widths on "the site menu's options". A temporary spec that held the HiTOP-BR export 20 seconds passed through `begin()` in 21.3 s, and failed at 15 s on the Begin wait with the old cap. Both plants were removed. Full suite at `de4717b`: 1028 passed, 5 skipped. D4 and B3 joined the fixture-reach candidate row.
+- AC6, pass 3 result: PASSES. hitop-form PR https://github.com/jmgirard/hitop-form/pull/29 at `de4717b`: its `tests` check passed in 7m50s, and it merged as `b02084c`. With the local suite above and the rows read above, both halves hold.
