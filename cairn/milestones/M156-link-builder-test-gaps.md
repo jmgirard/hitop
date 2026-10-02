@@ -1,6 +1,6 @@
 # M156: Study Link Builder test gaps
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** M155
 - **Driving RR:** —
@@ -79,6 +79,7 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - 2026-10-02: claim audit: not owed — internal tier.
 - 2026-10-02: implement done again, status `review`.
 - 2026-10-02: review pass 2 started. No PR exists for either branch. AC1 to AC5 and the gate passed again, and AC6's local half passed. Three reviewers spawned over the hitop-form diff.
+- 2026-10-02: review return 2 (defect, step 7 gate): AC6 fails as written. The `send.spec.js` row says the sent screen is "read while the one navigation request is held", but `observeUntilLeave()` records only up to the `navigate` event. Thrash trigger (b) fired, as AC6 failed twice from a README row that did not follow its spec's change. The user chose the return over escalation. Fix: correct the send row and the `observeUntilLeave` comment (D1, D6), the `openSectionOf` `wasOpen` comment (D5) and the workflow and config comments (B5). Then a fresh reader checks every changed spec's row against its diff. D2 and D4 went to a new candidate row. Status `in-progress`.
 
 ## Review
 
