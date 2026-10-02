@@ -1,6 +1,6 @@
 # M155: Study Link Builder: silent failures and module rows
 
-- **Status:** review
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -48,13 +48,13 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 
 ## Coverage
 
-- AC1 → T1, T8
-- AC2 → T2, T8
-- AC3 → T3, T8
-- AC4 → T4, T8
+- AC1 → T1, T8, T9
+- AC2 → T2, T8, T11, T12
+- AC3 → T3, T8, T11
+- AC4 → T4, T8, T10
 - AC5 → T5, T8
 - AC6 → T6, T7, T8
-- AC7 → T8
+- AC7 → T8, T13
 
 ## Tasks
 
@@ -66,6 +66,11 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - [x] T6: In `addModuleFields()` (about `:478-526`), return the alert, status and read counter, or a reset function. `renumberInstruments()` (about `:379-391`) names the four module controls with the row number. The menu's `change` handler (about `:426-428`) empties the alert and status and drops a running read when the row leaves the module. Tests go in `tests/link-instruments.spec.js`.
 - [x] T7: Add the two sentences of AC6(c) and (d). The first goes in the clash test (about `:1433-1439`) as its two-module-row case, and the second in the Instruments hint at about `:121`. Update `README.md:70-72` and the tests that read the old texts.
 - [x] T8: Update the README module section and test-table rows. In DESIGN Known issue 15, say that the Study Link Builder now shows AC2's message on a browser that cannot parse `form.js`. Add the hitop NEWS entry. Run the full hitop-form suite locally and on the PR. Run `devtools::check()` in hitop.
+- [ ] T9 (review R1): `armOnAddress()` in `tests/helpers.mjs` arms on the first statement of `prefill()`, the `opened.has('setup')` call at about `link.html:1002`. S13 and the LF7 offer test still fail with T1's guard removed.
+- [ ] T10 (review R2): in `fill()`, the module box's write also refuses on an error named `InternalError`, which Firefox throws for deep recursion. DESIGN Known issue 13 says that no test runs this refusal in Firefox.
+- [ ] T11 (review R3, R4): the README and NEWS text "does not load or does not run" names only what the ready flag covers: a `form.js` that does not load or cannot be read. DESIGN Known issue 15 adds two gaps. Browsers that parse `form.js` but lack `replaceChildren()` fail with no message. Browsers without `inert` take typing during a setup-file fetch.
+- [ ] T12 (review R5, R6): `#loadFail` gets `tabindex="-1"`. When the script shows it, the script also focuses it. L39 asserts the focus. The normal-load test asserts that the `noscript` element is in the page before it asserts the message is hidden.
+- [ ] T13 (review R8, R12): rename L18's ninth `BAD_C` entry and correct the L20 comment to say what they now check. Rewrap NEWS.md's long line and remove README.md's stray line break before "Change the row back". Run the full hitop-form suite and `devtools::check()`.
 
 ## Work log
 
@@ -91,6 +96,7 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - claim audit: 52 claims read, 5 corrected — hitop NEWS.md, hitop-form README.md (the two-module refusal is the repeat message plus a sentence, the held form covers only typing during the wait, the summaries skip hints and fields, the L41 and LF11 rows say what those tests check, the S13 row drops "always"). The same reader re-read the 5 and found each correct.
 - 2026-10-01: T8 done. `devtools::check()`: 0 errors, 0 warnings, 0 notes. Full hitop-form suite: 1026 passed. The suite's run on the hitop-form PR's CI comes at `/milestone-review`. Status set to review.
 - 2026-10-01: review started. Both repos contain `origin/main`, so no merge was needed. No PR exists for either branch.
+- 2026-10-01: review return 1 (defect). AC1 fails as written: the test's plant arms before `prefill()` is called. At the merge gate the user sent it back with the fix-now findings as T9 to T13. The user kept the hint "Choose one to three.". Status set to in-progress.
 
 ## Review
 
@@ -125,3 +131,5 @@ Independent review: three fresh readers (Opus diff, Sonnet blame history, Sonnet
 - R15 (diff): L40's wait marker is set by `canInflate()`'s probe, before the real unpack. Proposed: reject. `expectHeldInput()` asserts `aria-busy`, which only the hold sets.
 - R16 (prior): a setup fetch can hold the form for up to 30 seconds. Proposed: noted. The plan named this as the evidence that would reverse the `inert` choice.
 - R17 (prior, blame): the clash message's two-module logic and L18's new expected refusal match M154 and the AC4 amendment. Proposed: noted.
+
+Gate, 2026-10-01: the user sent M155 back and accepted every proposed disposition. Fix now: R1 (T9), R2 (T10), R3 and R4 (T11), R5 and R6 (T12), R8 and R12 (T13). Follow-up: R7, R9 and R11 in the new ROADMAP candidate row "Study Link Builder failure-path gaps". Rejected: R13, R14 and R15, for the reasons above. Noted: R16 and R17. R10: the user kept "Choose one to three.".
