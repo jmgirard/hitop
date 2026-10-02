@@ -610,8 +610,20 @@ participant heard of the study. Add them in the Study Link Builder’s
 or after it. The page asks the before questions on a screen of its own
 after any consent screen and ahead of the start screen. It asks the
 after questions on a screen of its own after the last page of items. The
-questions never share a screen with the items. A link holds up to 50
-questions.</p>
+questions never share a screen with the items.</p>
+<p>The number of questions has no limit of its own. The page reads at
+most 100,000 bytes of setup, so the builder refuses a setup that is
+larger and names its size. A link that carries its setup must also fit
+in the 8,192 characters that the online form’s host accepts. A setup too
+large for that goes in a file you host, as the section below describes.
+With a Supabase table, the builder also refuses to make a link for a
+setup whose table would have more than 1,600 columns, the most a
+PostgreSQL table can have. PostgreSQL also limits the size of one row,
+which must fit in one page of 8,192 bytes. A text answer that is long
+enough can be kept outside the row, and 18 bytes of it then stay in the
+row. A shorter answer stays whole in the row. So a table with many text
+questions can refuse a row of long answers, and the page then saves the
+file on the participant’s device.</p>
 <p>Each question has a name, and its answer is written in a column named
 <code>q_</code> and then the name, after the item columns.
 <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> returns these columns as the section
@@ -680,11 +692,15 @@ your own questions</a> has the details.</p>
 </h2>
 <p>A study link carries its whole setup by default. Consent text, many
 questions or a module make it long, and some sites and mail programs cut
-long links. For a short link, open the Study Link Builder’s “Where the
-setup is kept” choice and pick “In a file I host”. Press “Download the
-setup file” to save <code>setup.json</code>, and put it in a public
-GitHub repository. Under “Address of the setup file”, give the file’s
-raw-file address, such as
+long links. If a link is longer than 8,000 characters, the builder says
+so under the link. RFC 9110 recommends that senders and recipients of
+web addresses support at least that length. GitHub Pages hosts the
+online form and refuses a link with more than 8,192 characters after the
+host name, so the builder makes no such link. For a short link, open the
+Study Link Builder’s “Where the setup is kept” choice and pick “In a
+file I host”. Press “Download the setup file” to save
+<code>setup.json</code>, and put it in a public GitHub repository. Under
+“Address of the setup file”, give the file’s raw-file address, such as
 <code>https://raw.githubusercontent.com/your-name/your-study/main/setup.json</code>.
 Then press “Make the link”. The builder fetches the file. If the file
 matches the form, the builder makes the link.</p>

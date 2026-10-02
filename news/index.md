@@ -4,6 +4,20 @@
 
 ### New features
 
+- **A hitop-form study link is no longer limited to 50 questions.** A
+  setup holds as many questions as fit in the 100,000 bytes that the
+  online form reads. A link without consent text or questions is now
+  held to the same 100,000 bytes, and the online form refuses a larger
+  one and names its size. With a Supabase table, the Study Link Builder
+  makes no link for a table of more than 1,600 columns, PostgreSQL’s
+  limit, and names the count. If a link is longer than 8,000 characters,
+  the builder shows a warning under it. The warning says that some sites
+  and mail programs cut long links, and that you can keep the setup in a
+  file you host. The builder makes no link with more than 8,192
+  characters after the host name, which GitHub Pages, the online form’s
+  host, refuses. For a link that carries its setup, it says to choose
+  “In a file I host”.
+
 - **A hitop-form study link can name a setup file you host.** Under
   “Where the setup is kept”, the Study Link Builder offers “In the study
   link”, the default, and “In a file I host”. The second shows “Download
@@ -117,18 +131,18 @@
   instruments in one session” describes the screens and the file.
 
 - **hitop-form can ask the researcher’s own questions.** A study link’s
-  `questions` field holds a `before` list, an `after` list or both, with
-  up to 50 questions in all. The page asks the before questions on a
-  screen of its own ahead of the start screen, after any consent screen,
-  and the after questions on a screen of its own after the last page of
-  items. A question is a one-line text, a whole number with an optional
-  minimum and maximum, one choice of 2 to 20 options, or any number of
-  such choices, and it can be required. Each answer is written as text
-  in a column named `q_` and then the question’s name, after the item
-  columns, in the row, the file and the Supabase table. A choice is
-  written as the chosen option’s number, counted from 1, and several
-  choices as those numbers in ascending order, separated by spaces. An
-  unanswered question is an empty cell, which
+  `questions` field holds a `before` list, an `after` list or both. The
+  page asks the before questions on a screen of its own ahead of the
+  start screen, after any consent screen, and the after questions on a
+  screen of its own after the last page of items. A question is a
+  one-line text, a whole number with an optional minimum and maximum,
+  one choice of 2 to 20 options, or any number of such choices, and it
+  can be required. Each answer is written as text in a column named `q_`
+  and then the question’s name, after the item columns, in the row, the
+  file and the Supabase table. A choice is written as the chosen
+  option’s number, counted from 1, and several choices as those numbers
+  in ascending order, separated by spaces. An unanswered question is an
+  empty cell, which
   [`read_form_responses()`](https://jmgirard.github.io/hitop/reference/read_form_responses.md)
   reads as `NA`. The link builder gains a question editor, and a link
   with questions travels as a `z` parameter. The online-collection
