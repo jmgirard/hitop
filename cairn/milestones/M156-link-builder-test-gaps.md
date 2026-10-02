@@ -1,6 +1,6 @@
 # M156: Study Link Builder test gaps
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** M155
 - **Driving RR:** —
@@ -75,6 +75,9 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - 2026-10-02: implement done, status `review`. The hitop branch changes only `cairn/`, so no R check is owed.
 - 2026-10-02: review started. Both branches contain their `origin/main`. No PR exists for either branch.
 - 2026-10-02: review return 1 (defect, step 3): AC6 fails as written. T3 added two checks that the README rows do not state. `link.spec.js` checks that a `c` selecting a site leaves the participants section open. `link-questions.spec.js` checks that a `z` leaves the questions section open. Fix: add those checks to the two rows. AC1 to AC5 evidence is recorded in Review. Status `in-progress`.
+- 2026-10-02: implement resumed for return 1. Both branches still contain their `origin/main`. The `link.spec.js` row now says a `c` that selects a site leaves the menu's section open and one that selects none leaves it closed. The `link-questions.spec.js` row now says a `z` link that holds questions leaves the questions section open. Both read from L27 and the two `wasOpen: true` calls. Full suite: 1028 passed, 5 skipped.
+- 2026-10-02: claim audit: not owed — internal tier.
+- 2026-10-02: implement done again, status `review`.
 
 ## Review
 
