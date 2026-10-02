@@ -1,6 +1,6 @@
 # M156: Study Link Builder test gaps
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** M155
 - **Driving RR:** —
@@ -52,7 +52,7 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - [x] T4: Commit copies of the PID-5, PID-5-SF and PID-5-BF exports beside the two in `tests/fixtures/exports/`. Make `fetchExport()` read the copy unless `FORM_TARGET` is set. Add a shared fixture for when `FORM_TARGET` is empty. It routes `EXPORT_BASE` on every context to the copies, and fails on an unanswered request. A Sonnet subagent moves the specs' imports to it, and its diff is read here.
 - [x] T5: Add the copy-against-live test that runs only with `FORM_TARGET` set. Update the `fetchExport` comment and the README paragraph on the weekly run.
 - [x] T6: Find the race in N7 with a repeat run that logs `states` on failure. Fix N7 and the other tests that the AC5 search lists. Run N7 under `--repeat-each=100`, and put that command in the README beside N7's row.
-- [ ] T7: Update the README test-table rows. Run the full suite locally and on the PR.
+- [x] T7: Update the README test-table rows. Run the full suite locally and on the PR.
 
 ## Work log
 
@@ -70,3 +70,6 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - 2026-10-02: T5 done. `tests/exports.spec.js` E1 runs only with `FORM_TARGET` set, through `fetchExport(…, { text: true })`. A one-byte drift in a copy failed it. The README, fixtures README, workflow and config comments now describe copies on PR runs. Full suite: 1028 passed, 5 skipped (E1).
 - 2026-10-02: T6 finding. N7 failed 2 of 100 before the fix, both in the Finish click. The click waited on the held navigation for 15 seconds. The state read was not the failure seen.
 - 2026-10-02: T6 done. `observeUntilLeave()` reports each change and the `navigate` event through one exposed function. The six tests the AC5 search lists use it. The tests that hold a navigation press Finish with `noWaitAfter`. A plant that navigated before drawing the sent screen failed N7 5 of 5. N7: 100 of 100. The six: 20 runs each, 480 passed. Full suite: 1028 passed, 5 skipped.
+- 2026-10-02: T7 done locally. README rows for `link-sections`, `link-setupfile`, `network` and `exports` updated. With `FORM_TARGET` set to the deployed page: 1028 passed and 5 failed on `net::ERR_TIMED_OUT` loading the page, and those 5 passed on rerun. The PR's CI run falls to `/milestone-review`.
+- 2026-10-02: claim audit: not owed — internal tier.
+- 2026-10-02: implement done, status `review`. The hitop branch changes only `cairn/`, so no R check is owed.
