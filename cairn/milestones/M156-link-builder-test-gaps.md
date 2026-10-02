@@ -127,3 +127,24 @@ Pass 3 (2026-10-02, after return 2). Since pass 2 the hitop-form branch gained `
 - AC4: the import search finds no spec. The `fetch(` search finds `helpers.mjs:41` in the `FORM_TARGET` branch, `:441` (`route.fetch` of the page) and the `setupfile.spec.js:67` comment. The five copies exist.
 - AC5: the AC5 search lists the same 6 test lines and one comment line in `helpers.mjs:725`. N7 under `--repeat-each=100`: 100 passed.
 - AC6: the `send.spec.js` row now says the sent screen is read as the page starts the one navigation, before its request. That matches `observeUntilLeave()`, which records nothing after the `navigate` event (`helpers.mjs:717-748`). The README paragraph names the manual run beside the weekly one, as `tests.yml` sets `FORM_TARGET` on both. The other changed rows are as pass 2 read them. Local suite green (AC1 line). PR CI is read at the merge step.
+- Gate: `cairn_validate` passed. `document()` left no diff. `check_pkgdown()` found no problems. `devtools::check()`: 0 errors, 0 warnings, 0 notes. The hitop diff is `cairn/` only, so README.Rmd, NEWS and `.Rbuildignore` owe nothing.
+
+Findings, pass 3. Opus diff reviewer (D), Sonnet blame-history (B), Sonnet prior-review (P). None shows a criterion failing. Proposed triage, decided at the gate:
+- D3, P1: the branch-added comments at `consent.spec.js:214-216` and `recruit.spec.js:224-226` say the last state is "the document at the navigation request", and the assertion messages at `consent.spec.js:288`, `recruit.spec.js:247`, `:344`, `:418` and `send.spec.js:462` say "at the request". The read is at the `navigate` event, before the request. Fix now.
+- D2: `begin()` now waits for Begin with `expect(press).toBeVisible()`, capped at the 15-second expect timeout (`helpers.mjs:515`). On `origin/main` the bare click waited up to the 2-minute test timeout, so a slow live load on the weekly run can now fail. Fix now: no timeout on that wait, so the test timeout bounds it as before.
+- D1: `guard.spec.js:68` ("copies of the live export"), the G title at `:596` ("the live export is accepted") and `instruments-walk.spec.js:72` ("as the live site serves them") say "live" where PR runs now read the committed copy. Fix now.
+- D5: S4's `toHaveLength(SITES.length * KINDS.length)` at `link-sections.spec.js:381` cannot fail. Fix now: assert that `SITES` and `KINDS` equal the values of the page's `site` and `storeKind` menus.
+- D6: `tests/fixtures/README.md` says the fixture "answers every export request", but `begin()` takes the route off. Fix now.
+- D8: `link.spec.js:167` imports `exportUrl`, no longer used. Fix now.
+- B7: the `playwright.config.js` comment ties the CI retry to the weekly run, but it applies to every CI run. Fix now.
+- D4, B3: a second page in `link-sections.spec.js` gets the copies only through the context route, which is off with `FORM_TARGET` set. `stopExportCopies()` acts on the whole context. No test opens a second page or reloads after `begin()`. Follow-up: absorb into the fixture-reach candidate row.
+- B1: E1 skips rather than fails on a scheduled run with `FORM_TARGET` empty. Reject: every other spec throws in `useTarget()` then, so the run goes red.
+- B2: the `navigate` event fires for a download or a hash change. Reject: pass 2's P2, and no caller saves a file before its held navigation.
+- B4: copies on PR runs, drift caught only by E1. Reject: the planned change.
+- B5: `wasOpen: false` at `link.spec.js:1148` is only as good as the earlier waits. Reject: D found that the `c` prefill finishes before the load event.
+- D7: a request between unroute and route in `startExportCopies()` goes unanswered. Reject: `openForm()` calls it before `goto`, with nothing in flight.
+- D9: a second `observeUntilLeave()` on one page throws "already registered". Reject: no test calls it twice, and the throw names the cause.
+- D10, B8: long lines in the `walkAll` and T15 comments. Reject: nits.
+- D11: a missing copy is reported twice in `link-sections.spec.js`. Reject: noise only on a failing run, as pass 2's B6.
+- B6: S4 is one test over 15 pairs per width, one diff per failure. Reject: the plan called for the loop, and the diff names each pair.
+- P2: the `states.left` poll is a hard wait before a soft read (LESSONS M127). Reject: it fails in 15 seconds, and the navigate-first plant failed N7 5 of 5.
