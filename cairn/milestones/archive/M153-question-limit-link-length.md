@@ -1,0 +1,11 @@
+# M153: Questions limited by size, and a long-link warning
+
+**Status:** done (2026-10-02, PR #162 https://github.com/jmgirard/hitop/pull/162; companion hitop-form PR #26 https://github.com/jmgirard/hitop-form/pull/26)
+
+**Goal:** A study link can hold as many of the researcher's own questions as fit in the 100,000-byte setup, and the Study Link Builder warns when a link grows long enough that some sites may cut it.
+
+**Outcome:** In hitop-form `form.js`, `QUESTIONS_MAX` and its count check are gone. `encodeLink()` refuses any setup over `MAX_LINK_BYTES` (100,000), and `decodeLink()` refuses a `c` over 100,000 decoded bytes. `storeColumns()` feeds `storeSql()`, and `POSTGRES_COLUMNS_MAX` (1,600) backs the builder's Supabase column refusal. `link.html` refuses an opened `c` over 100,000 bytes. It shows `#long`, a status, over `LINK_WARN_LENGTH` (8,000). It refuses a link whose path and query pass `HOST_PATH_MAX` (8,192), counting each Prolific placeholder as `PROLIFIC_ID_LENGTH` (24). For a link that carries its setup, the refusal points to "In a file I host". Tests: Q2, LQ5, LQ7, L37, L38, LF9, Z6, S12, and `gotoLong()`, which answers long addresses in the browser. The test server keeps Node's default limit (966 tests). README, NEWS and the online-collection article state the limits. Source notes: `rfc9110.md`, `postgresql2026limits.md`, `fastly2026limits.md`, and a `prolific2026help.md` update.
+
+**Decisions:** D-087 (written at the review gate). Milestone-local: none.
+
+**Review:** Two passes, each a three-lens fan-out. Pass 1 returned the milestone once at the consistency gate: two source notes named no ingested date. It also measured GitHub Pages refusing a link over 8,192 characters with HTTP 414. Jeff chose a refusal at that length, added as AC6 with T7 and T8, and findings 3, 6, 7, 8 and 10 were fixed. Pass 2 found AC1 to AC6 passing and recorded 18 findings, none a criterion failing. P8 was fixed at the gate with D-087. P1, P3 to P5 and P9 opened the "Study link length-check gaps" row, and P2 joined the "Hosted setup file gaps" row. Five were noted and six rejected with reasons. PR #162 had no review comments. CI passed: hitop-form #26 and all 8 checks of hitop #162. The first CI wait timed out, and the resume merged on green.
