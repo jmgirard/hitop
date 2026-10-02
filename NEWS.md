@@ -650,19 +650,20 @@
 ## Improvements and fixes
 
 * **The hitop-form Study Link Builder says what went wrong where it was
-  silent, and its module rows say more.** If `form.js` does not load or
-  does not run, the page says that the Study Link Builder did not start. It
-  asks you to reload, or to open it in a current version of Chrome, Edge,
-  Firefox or Safari. With JavaScript off, the page asks you to turn it on.
-  A failure while the page fills the form from an opened link now always
-  ends with a message and an enabled "Make the link". Before, a second
-  failure while the form was emptied left no message and the button
-  disabled. A refusal that names its fault stays in place, and a failure on
-  a page opened with no link says that the builder did not start
-  correctly. While an opened link unpacks or its setup file is fetched, the
-  form takes no typing or presses, so the fill does not replace what you
-  type during the wait. An opened link whose module is nested too deeply to show in the
-  "Module file" box is refused by name, with no field filled. Before, the
+  silent, and its module rows say more.** If `form.js` does not load, or
+  the browser cannot read it, the page says that the Study Link Builder did
+  not start. It asks you to reload, or to open it in a current version of
+  Chrome, Edge, Firefox or Safari. With JavaScript off, the page asks you
+  to turn it on. A failure while the page fills the form from an opened
+  link now always ends with a message and an enabled "Make the link".
+  Before, a second failure while the form was emptied left no message and
+  the button disabled. A refusal that names its fault stays in place, and a
+  failure on a page opened with no link says that the builder did not
+  start correctly. In a browser that supports `inert`, the form takes no
+  typing or presses while an opened link unpacks or its setup file is
+  fetched. So the fill does not replace what you type during the wait. An
+  opened link whose module is nested too deeply to show in the "Module
+  file" box is refused by name, with no field filled. Before, the
   refusal said only that the link "could not be read". Screen readers name
   each module row's box, file control, message and status for the row's
   number, as in "Module file for instrument 2". When you set a module row
