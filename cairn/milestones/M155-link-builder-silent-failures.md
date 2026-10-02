@@ -1,6 +1,6 @@
 # M155: Study Link Builder: silent failures and module rows
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -65,7 +65,7 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - [x] T5: Rewrite `labelText()` (about `:620-627`) as a walk over child nodes at every depth that skips a `.hint`, `input`, `select` or `textarea`, with no `cloneNode`. The test goes in `tests/link-sections.spec.js`.
 - [x] T6: In `addModuleFields()` (about `:478-526`), return the alert, status and read counter, or a reset function. `renumberInstruments()` (about `:379-391`) names the four module controls with the row number. The menu's `change` handler (about `:426-428`) empties the alert and status and drops a running read when the row leaves the module. Tests go in `tests/link-instruments.spec.js`.
 - [x] T7: Add the two sentences of AC6(c) and (d). The first goes in the clash test (about `:1433-1439`) as its two-module-row case, and the second in the Instruments hint at about `:121`. Update `README.md:70-72` and the tests that read the old texts.
-- [ ] T8: Update the README module section and test-table rows. In DESIGN Known issue 15, say that the Study Link Builder now shows AC2's message on a browser that cannot parse `form.js`. Add the hitop NEWS entry. Run the full hitop-form suite locally and on the PR. Run `devtools::check()` in hitop.
+- [x] T8: Update the README module section and test-table rows. In DESIGN Known issue 15, say that the Study Link Builder now shows AC2's message on a browser that cannot parse `form.js`. Add the hitop NEWS entry. Run the full hitop-form suite locally and on the PR. Run `devtools::check()` in hitop.
 
 ## Work log
 
@@ -89,3 +89,4 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - 2026-10-01: AC4 amended at a mini gate. The user chose the recommended text: "module object", "when it would otherwise fill the form from it", and a probe 20,000 deep in place of 6,000. Reason: in Chromium 141, the module box's write first throws at about 6,150 levels. "Object" came from the second re-audit, which was the stop, so the user approved it unaudited. T4 ticked.
 - 2026-10-01: T8 docs landed, not ticked. hitop-form README: the module section, "Edit a study link", "The Study Link Builder", and the rows for `link.spec.js`, `link-sections.spec.js`, `link-setupfile.spec.js` and `link-instruments.spec.js`. hitop: a NEWS entry and DESIGN Known issue 15. `devtools::check()` and the claim audit are running.
 - claim audit: 52 claims read, 5 corrected — hitop NEWS.md, hitop-form README.md (the two-module refusal is the repeat message plus a sentence, the held form covers only typing during the wait, the summaries skip hints and fields, the L41 and LF11 rows say what those tests check, the S13 row drops "always"). The same reader re-read the 5 and found each correct.
+- 2026-10-01: T8 done. `devtools::check()`: 0 errors, 0 warnings, 0 notes. Full hitop-form suite: 1026 passed. The suite's run on the hitop-form PR's CI comes at `/milestone-review`. Status set to review.
