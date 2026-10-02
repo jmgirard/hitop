@@ -80,6 +80,7 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - 2026-10-02: implement done again, status `review`.
 - 2026-10-02: review pass 2 started. No PR exists for either branch. AC1 to AC5 and the gate passed again, and AC6's local half passed. Three reviewers spawned over the hitop-form diff.
 - 2026-10-02: review return 2 (defect, step 7 gate): AC6 fails as written. The `send.spec.js` row says the sent screen is "read while the one navigation request is held", but `observeUntilLeave()` records only up to the `navigate` event. Thrash trigger (b) fired, as AC6 failed twice from a README row that did not follow its spec's change. The user chose the return over escalation. Fix: correct the send row and the `observeUntilLeave` comment (D1, D6), the `openSectionOf` `wasOpen` comment (D5) and the workflow and config comments (B5). Then a fresh reader checks every changed spec's row against its diff. D2 and D4 went to a new candidate row. Status `in-progress`.
+- 2026-10-02: implement resumed for return 2. Both branches still contain their `origin/main`. hitop-form `f00abac`: the `send.spec.js` row, its T15 and T20 comments and the `observeUntilLeave` comment now say the sent screen is read as the navigation starts, before its request, and a later redraw is not seen. The `openSectionOf` comment says a closed section passes `wasOpen: false` at once. The workflow, config and `helpers.mjs` comments name `link-sections.spec.js` as answering exports from the copies on every run.
 
 ## Review
 
