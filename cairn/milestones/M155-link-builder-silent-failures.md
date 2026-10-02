@@ -1,6 +1,6 @@
 # M155: Study Link Builder: silent failures and module rows
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
@@ -70,7 +70,7 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - [x] T10 (review R2): in `fill()`, the module box's write also refuses on an error named `InternalError`, which Firefox throws for deep recursion. DESIGN Known issue 13 says that no test runs this refusal in Firefox.
 - [x] T11 (review R3, R4): the README and NEWS text "does not load or does not run" names only what the ready flag covers: a `form.js` that does not load or cannot be read. DESIGN Known issue 15 adds two gaps. Browsers that parse `form.js` but lack `replaceChildren()` fail with no message. Browsers without `inert` take typing during a setup-file fetch.
 - [x] T12 (review R5, R6): `#loadFail` gets `tabindex="-1"`. When the script shows it, the script also focuses it. L39 asserts the focus. The normal-load test asserts that the `noscript` element is in the page before it asserts the message is hidden.
-- [ ] T13 (review R8, R12): rename L18's ninth `BAD_C` entry and correct the L20 comment to say what they now check. Rewrap NEWS.md's long line and remove README.md's stray line break before "Change the row back". Run the full hitop-form suite and `devtools::check()`.
+- [x] T13 (review R8, R12): rename L18's ninth `BAD_C` entry and correct the L20 comment to say what they now check. Rewrap NEWS.md's long line and remove README.md's stray line break before "Change the row back". Run the full hitop-form suite and `devtools::check()`.
 
 ## Work log
 
@@ -101,6 +101,9 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - 2026-10-01: T10 done. `fill()` also refuses on an error named `InternalError`. MDN's "too much recursion" page names it as Firefox's error. Playwright's Firefox did not start in the sandbox, so L42 (2 tests) plants it in Chromium. The `InternalError` case failed before the fix with "could not be read", and a planted `TypeError` still gets that message. Known issue 13 and the README row say so. `link.spec.js` and `link-setupfile.spec.js`: 177 passed.
 - 2026-10-01: T11 done. README and NEWS now say "does not load, or the browser cannot read it". The hold claims start "In a browser that supports `inert`". Known issue 15 adds the `replaceChildren()` and `inert` gaps, with versions from MDN's compatibility data 8.1.4. NEWS's long line was rewrapped here, ahead of T13.
 - 2026-10-01: T12 done. `#loadFail` has `tabindex="-1"`. When the load script shows it, the script also focuses it. L39's two failure tests assert the focus, and both failed before the fix. The normal-load test asserts one `noscript` element holding the message, then that it is hidden. With the `noscript` line removed from `link.html`, it fails. L39: 4 passed.
+- 2026-10-01: T13 done. L18's ninth `BAD_C` entry is named "in a link that also holds a completion URL", and the L20 comment says "even one the link holds". The README row matches. NEWS was rewrapped in T11, and README's stray break is gone. Full hitop-form suite: 1028 passed. `devtools::check()`: 0 errors, 0 warnings, 0 notes.
+- claim audit: 29 claims read, 3 corrected — tests/helpers.mjs, tests/link.spec.js, README.md (the arming point is `prefill()`'s first call, the L42 comment and README row credit `InternalError` to MDN, and a vacuous `getByText(NO_SCRIPT)` check was removed). The same reader re-read the corrections and found each correct. Full suite after them: 1028 passed.
+- 2026-10-01: T9 to T13 done. Status set to review.
 
 ## Review
 
