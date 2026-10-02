@@ -58,6 +58,8 @@ A researcher who wants a HiTOP-SR module chooses "HiTOP-SR module" in the instru
 - 2026-10-01: AC4 search over 101 files of hitop-form, hitop-builder and hitop `vignettes/`, whitespace normalized: 0 hits. The pre-edit `online-collection.Rmd` holds the phrase, so the search can find it. `devtools::check()`: 0 errors, 0 warnings, 0 notes. T1 to T6 ticked. The companion PRs open at review's merge step, as the git model says.
 - claim audit: 95 claims read, 3 corrected — hitop-form README.md, hitop-form link.html
 - 2026-10-01: the claim audit (fresh Opus reader, all three repos' added lines) found `fill()` writing the module box before the study and completion URL, so the two BAD_C "throw after … is filled" tests reached no filled field. hitop-form `aea58f0` moves the fill back to main's place and rewords two README claims. The same reader re-read all three as true. Suite 1000 of 1000. Status set to review.
+- 2026-10-01: review gate fixes landed (F1, F2 and F9, F6, F10), hitop-form `4b83a7f` and hitop NEWS.md. hitop-form suite 1001 of 1001.
+- step-7 approval: m154-study-link-module-choice approved for merge, with the companions hitop-form and hitop-builder m154-study-link-module-choice merged first (2026-10-01).
 
 ## Decisions
 
@@ -87,3 +89,4 @@ Review run 2026-10-01. All three branches were level with their `main` after a f
   - F12 (blame 6): after a row's menu switches away and back, its read error and status still show. The old box had the same gap. Proposed: follow-up in the edge-cases row.
   - F13 (prior 3): the ROADMAP edge-cases row still says "M154 reworks the prefill". Proposed: fix at the post-merge hygiene pass.
   - F14 (prior 4): three added lines in the READMEs and `online-collection.Rmd` run past 90 characters. Proposed: reject as a wrap nit.
+- Gate triage 2026-10-01: Jeff accepted every proposed disposition. The fix-now work landed in hitop-form `4b83a7f` and in hitop's NEWS.md. F1: the setup-file race test now builds a link while the read waits and checks that the link stays shown. With the `!row.isConnected` guard removed, it failed at that last check. F6: a `c` with `instrument: "hitopsr-module"` is refused as an instrument the builder does not offer. With the old menu check planted, that test failed with no refusal. F10: the prefill comment says that a `module` of any type sets the module row. F2 and F9: the two unreleased NEWS entries name "Item order" and drop the removed hint sentence. The new entry names the empty-box and two-module-row refusals. hitop-form's full suite then passed 1001 of 1001. F3, F5, F7, F8 and F12 go to candidate rows at hygiene, and F13 is fixed there. F4, F11 and F14 are rejected for the reasons given.

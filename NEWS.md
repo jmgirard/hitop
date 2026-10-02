@@ -8,9 +8,10 @@
   module file" in that row. The optional section that held them is now
   "Item order", with only "Show the items in a random order". The link is
   the same as before: the module row writes `hitopsr` with the module file.
-  A list cannot hold both a HiTOP-SR row and a module row. An opened link
-  with a module fills a module row, and one with a module and no HiTOP-SR
-  is refused.
+  A list cannot hold both a HiTOP-SR row and a module row, or two module
+  rows. "Make the link" refuses a module row whose box is empty. An opened
+  link with a module fills a module row, and one with a module and no
+  HiTOP-SR is refused.
 
 * **A hitop-form study link is no longer limited to 50 questions.** A
   setup holds as many questions as fit in the 100,000 bytes that the online
@@ -61,7 +62,7 @@
 * **The hitop-form Study Link Builder shows its required choices first.**
   The page shows the instruments, the study name and where responses go
   first. Five optional sections follow, each closed until you open it:
-  "Participants and recruiting site", "Item order and HiTOP-SR module",
+  "Participants and recruiting site", "Item order",
   "Consent", "When the participant finishes" and "Your own questions". A
   section's summary reads "Not used" or lists its fields that hold a value.
   When the page refuses a field, it opens the field's section and moves
@@ -676,8 +677,7 @@
   the address's `?` or `#`. The hint of "Completion URL after a saved file"
   says that a file is saved when the link has no place for responses or a
   send is not confirmed. The "Completion URL" hint gives Prolific's
-  completion URL on the study's page. The "Module file" hint says that with
-  several instruments the module applies to the HiTOP-SR among them. The
+  completion URL on the study's page. The
   "Publishable key" hint says that opening a study link on the Study Link
   Builder or the online form puts the key in GitHub Pages' logs. The page
   calls itself the Study Link Builder in place of "this page". Four
