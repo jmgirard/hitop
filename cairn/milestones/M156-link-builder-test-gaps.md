@@ -97,3 +97,20 @@ Pass 2 (2026-10-02, after return 1). Since pass 1 the hitop-form branch changed 
 - AC5: the AC5 search lists the same 6 test lines and one comment line in `helpers.mjs:721`. N7 under `--repeat-each=100`: 100 passed.
 - AC6: the `link.spec.js` row now says a `c` that selects a site leaves the menu's section open. A `c` that selects none leaves it closed. L27's `wasOpen: c.site !== ''` asserts both. The `link-questions.spec.js` row now says a `z` link that holds questions leaves the questions section open, which `:212` and `:308` assert. The rows for `link-sections`, `link-setupfile`, `network` and `exports` are as pass 1 read them. Local suite green (AC1 line). PR CI is read at the merge step.
 - Gate: `cairn_validate` passed (24 advisory warnings, none new). `document()` left no diff. `check_pkgdown()` found no problems. `devtools::check()`: 0 errors, 0 warnings, 0 notes. The hitop diff is `cairn/` only, so README.Rmd, NEWS and `.Rbuildignore` owe nothing.
+- AC6, pass 2 result: FAILS. `send.spec.js` changed how it reads the sent screen, but its row still says the screen is "read while the one navigation request is held". `observeUntilLeave()` stops recording at the `navigate` event, before the request. A redraw after `location.assign()` while the request is held goes unseen. On `origin/main` the last observer report at the held request saw it. The helper comment's "`states.at(-1)` is then the document at the request" has the same fault. Found by the Opus diff reviewer (findings 1 and 6), read against `helpers.mjs:713-742` here.
+
+Findings, pass 2. Opus diff reviewer (D), Sonnet blame-history (B), Sonnet prior-review (P). Proposed triage, decided at the gate:
+- D1, D6: AC6 failure above. Return.
+- D2, B1, P3: until `begin()`, the export-copies route makes Playwright answer a CORS preflight itself. If a future store test clicks Begin directly, it checks a faked preflight. No current test sends that way. Follow-up.
+- D4: L39 (`link.spec.js:1512`) makes its own context outside the fixture, and the import search cannot see it. JavaScript is off there, so no export request is made today. Follow-up.
+- D5, P1: `wasOpen: false` passes at once on a section that a later async prefill opens. Both current uses wait first. The `openSectionOf` comment says it "waits for that state". Fix with the return.
+- B5: the workflow and config comments say weekly runs fetch the exports live, but `link-sections.spec.js` routes them to the copies even then. Fix with the return.
+- B3: LESSONS M119 still teaches the last-report read this branch replaces. Correct at hygiene.
+- D3: a possible race between the context `request` event and a route's mark at teardown. Reject: unproven, and N7 passed 100 of 100 runs with the suite green twice.
+- D7: `toBe(true)` on a copy match prints no diff, E1 opens a browser context, the fixtures README splits its table. Reject: nits.
+- B2: "drawn once, whole" made weaker. Reject: on `origin/main` the observer also reported once per task, so a same-task partial draw was hidden there too.
+- B4: an export request after `begin()` reaches the site. Reject: the fixture fails it by name, as planned.
+- B6: W1 reports an extra unanswered request when it fails before `release()`. Reject: noise only on a failing run.
+- B7, B8, B9, B10, P4: S1's strictness, `noWaitAfter`, the context listener, comment-only workflow edits, copies on PR runs. Reject: changes the plan called for.
+- P2: the `navigate` event also fires for a download link. Reject: no observed test downloads, and the suite runs only in Chromium.
+- P5: `send.spec.js` is not rerun under repeat in CI. Reject: the six state-reading tests passed 20 runs each locally.
