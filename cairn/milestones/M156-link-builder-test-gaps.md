@@ -84,6 +84,7 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - 2026-10-02: fresh Opus reader checked every changed spec's README row against its diff. It found no row that needs a fix. It flagged the recruit P8 comment, still at the held request, and three helper and README wording slips. hitop-form `d576a65` fixes those four. It leaves N7's dated 100-of-100 clause in the network row, which T6 asked for. Full suite at `d576a65`: 1028 passed, 5 skipped.
 - 2026-10-02: claim audit: not owed — internal tier.
 - 2026-10-02: implement done again, status `review`.
+- 2026-10-02: review pass 3 started. No PR exists for either branch. AC1 to AC5 and AC6's local half passed. Three reviewers spawned over the hitop-form diff. The R check is running.
 
 ## Review
 
