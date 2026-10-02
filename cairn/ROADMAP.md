@@ -12,7 +12,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 | M155 | Study Link Builder: silent failures and module rows | done | — | high | milestones/archive/M155-link-builder-silent-failures.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
-| M156 | Study Link Builder test gaps | review | M155 | high | milestones/M156-link-builder-test-gaps.md |
+| M156 | Study Link Builder test gaps | in-progress | M155 | high | milestones/M156-link-builder-test-gaps.md |
 
 ## Candidates
 
