@@ -2,6 +2,16 @@
 
 ## New features
 
+* **"HiTOP-SR module" is an instrument choice in the Study Link Builder.**
+  Each instrument row offers "HiTOP-SR module (scales you choose)" after
+  the HiTOP-SR. A row set to it shows the "Module file" box and "Choose the
+  module file" in that row. The optional section that held them is now
+  "Item order", with only "Show the items in a random order". The link is
+  the same as before: the module row writes `hitopsr` with the module file.
+  A list cannot hold both a HiTOP-SR row and a module row. An opened link
+  with a module fills a module row, and one with a module and no HiTOP-SR
+  is refused.
+
 * **A hitop-form study link is no longer limited to 50 questions.** A
   setup holds as many questions as fit in the 100,000 bytes that the online
   form reads. A link without consent text or questions is now held to the

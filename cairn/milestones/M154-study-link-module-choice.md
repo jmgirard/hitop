@@ -53,6 +53,7 @@ A researcher who wants a HiTOP-SR module chooses "HiTOP-SR module" in the instru
 - 2026-10-01: implement started. Branches cut in hitop, hitop-form and hitop-builder. Gate: Jeff chose the entry text "HiTOP-SR module (scales you choose)", a README subsection "A HiTOP-SR module", and a repeat refusal that adds "A HiTOP-SR module is the HiTOP-SR, so a list holds one or the other." when one row of the pair is a module row.
 - 2026-10-01: AC2 oracle taken from hitop-form `2af14f0` (git archive, the old builder driven by Playwright) for the three setups, study names "module alone", "module second" (rows HiTOP-BR, HiTOP-SR) and "module shuffled", each with `tests/fixtures/module-plain.json` pasted.
 - 2026-10-01: T1 to T3 code checkpointed in hitop-form `28161c6`. The suite ran 930 of 966 passing, and the 36 failures are the old module-section tests that T4 rewrites, so T1 to T3 stay unticked until T4.
+- 2026-10-01: T4 delegated to a Sonnet subagent (rewrite the 36 tests, add the AC1 to AC3 tests). T5 docs written meanwhile: hitop-form README (new "A HiTOP-SR module" subsection, "Item order"), hitop-builder README `c1cd0ea`, both hitop articles (`modules-hitopsr.Rmd` also named the old section), Known issue 11. T6 NEWS line written. Both articles render with `pkgdown::build_article()`.
 
 ## Decisions
 
