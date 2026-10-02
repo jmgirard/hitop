@@ -9,7 +9,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 |---|---|---|---|---|---|
 | M152 | Hosted setup files for study links | done | — | high | milestones/archive/M152-study-link-setup-file.md |
 | M153 | Questions limited by size, and a long-link warning | done | M152 | high | milestones/archive/M153-question-limit-link-length.md |
-| M154 | "HiTOP-SR module" as an instrument choice | planned | M152 | high | milestones/M154-study-link-module-choice.md |
+| M154 | "HiTOP-SR module" as an instrument choice | review | M152 | high | milestones/M154-study-link-module-choice.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
 
