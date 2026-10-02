@@ -4,6 +4,17 @@
 
 ### New features
 
+- **“HiTOP-SR module” is an instrument choice in the Study Link
+  Builder.** Each instrument row offers “HiTOP-SR module (scales you
+  choose)” after the HiTOP-SR. A row set to it shows the “Module file”
+  box and “Choose the module file” in that row. The optional section
+  that held them is now “Item order”, with only “Show the items in a
+  random order”. The link is the same as before: the module row writes
+  `hitopsr` with the module file. A list cannot hold both a HiTOP-SR row
+  and a module row, or two module rows. “Make the link” refuses a module
+  row whose box is empty. An opened link with a module fills a module
+  row, and one with a module and no HiTOP-SR is refused.
+
 - **A hitop-form study link is no longer limited to 50 questions.** A
   setup holds as many questions as fit in the 100,000 bytes that the
   online form reads. A link without consent text or questions is now
@@ -56,18 +67,18 @@
 - **The hitop-form Study Link Builder shows its required choices
   first.** The page shows the instruments, the study name and where
   responses go first. Five optional sections follow, each closed until
-  you open it: “Participants and recruiting site”, “Item order and
-  HiTOP-SR module”, “Consent”, “When the participant finishes” and “Your
-  own questions”. A section’s summary reads “Not used” or lists its
-  fields that hold a value. When the page refuses a field, it opens the
-  field’s section and moves focus to the field. Move and Remove buttons
-  are disabled where they do nothing. The built link appears under “Your
-  study link”, with a “Copy the link” button and one next step for the
-  choices made. The hints are shorter, and they link to the hitop-form
-  README for detail. The site’s Instruments menu names the two pages
-  “Module Builder” and “Study Link Builder”. The online-collection and
-  HiTOP-SR modules articles use the name “Study Link Builder”, and call
-  the `.json` file that
+  you open it: “Participants and recruiting site”, “Item order”,
+  “Consent”, “When the participant finishes” and “Your own questions”. A
+  section’s summary reads “Not used” or lists its fields that hold a
+  value. When the page refuses a field, it opens the field’s section and
+  moves focus to the field. Move and Remove buttons are disabled where
+  they do nothing. The built link appears under “Your study link”, with
+  a “Copy the link” button and one next step for the choices made. The
+  hints are shorter, and they link to the hitop-form README for detail.
+  The site’s Instruments menu names the two pages “Module Builder” and
+  “Study Link Builder”. The online-collection and HiTOP-SR modules
+  articles use the name “Study Link Builder”, and call the `.json` file
+  that
   [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
   writes the module file.
 
@@ -797,16 +808,14 @@
   “Completion URL after a saved file” says that a file is saved when the
   link has no place for responses or a send is not confirmed. The
   “Completion URL” hint gives Prolific’s completion URL on the study’s
-  page. The “Module file” hint says that with several instruments the
-  module applies to the HiTOP-SR among them. The “Publishable key” hint
-  says that opening a study link on the Study Link Builder or the online
-  form puts the key in GitHub Pages’ logs. The page calls itself the
-  Study Link Builder in place of “this page”. Four refusals that it
-  shares with the online form name the online form. The
-  online-collection, HiTOP-SR modules and PID-5 scoring articles name
-  the closed section that holds each field they tell you to fill in.
-  They also say that the link shows under “Your study link”. The
-  HiTOP-SR modules article lists the five forms that the online form
+  page. The “Publishable key” hint says that opening a study link on the
+  Study Link Builder or the online form puts the key in GitHub Pages’
+  logs. The page calls itself the Study Link Builder in place of “this
+  page”. Four refusals that it shares with the online form name the
+  online form. The online-collection, HiTOP-SR modules and PID-5 scoring
+  articles name the closed section that holds each field they tell you
+  to fill in. They also say that the link shows under “Your study link”.
+  The HiTOP-SR modules article lists the five forms that the online form
   gives. The PID-5 scoring article and the online strip on the five
   download pages use the names “Study Link Builder” and “online form”.
   The overview page names the web address or Supabase table in place of

@@ -70,22 +70,22 @@ Builder](https://jmgirard.github.io/hitop-form/link.html). Its required
 parts come first: the instruments, the study name and where responses
 go. The optional parts sit below them in five closed sections. Press a
 section’s name to open it. Choose the instrument and name the study. For
-a HiTOP-SR module, open the “Item order and HiTOP-SR module” section,
-and paste or choose the module file written by
-[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md).
-For two or three instruments in one session, see [Several instruments in
-one session](#several-instruments-in-one-session). The Study Link
-Builder, opened from the “Open the Study Link Builder” button on an
-instrument’s download page, arrives with that instrument chosen. When
-opened with a module in its address, it arrives with the module file
-pasted in as well. In the “Participants and recruiting site” section,
-give a participant identifier if the link is for one person. Leave it
-empty for a link shared with many, and the online form asks each
-participant for one before the form starts. Under “Where responses go”,
-choose “A web address” and paste the `/exec` URL from step 1 into the
-“Web address” field. Press “Make the link”. The link shows under “Your
-study link”, beside a “Copy the link” button. Send it to the
-participants.
+a HiTOP-SR module, choose “HiTOP-SR module (scales you choose)” as the
+instrument. Then paste or choose the module file written by
+[`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
+in that row. For two or three instruments in one session, see [Several
+instruments in one session](#several-instruments-in-one-session). The
+Study Link Builder, opened from the “Open the Study Link Builder” button
+on an instrument’s download page, arrives with that instrument chosen.
+When opened with a module in its address, it arrives with a “HiTOP-SR
+module” row that holds the module file. In the “Participants and
+recruiting site” section, give a participant identifier if the link is
+for one person. Leave it empty for a link shared with many, and the
+online form asks each participant for one before the form starts. Under
+“Where responses go”, choose “A web address” and paste the `/exec` URL
+from step 1 into the “Web address” field. Press “Make the link”. The
+link shows under “Your study link”, beside a “Copy the link” button.
+Send it to the participants.
 
 When a participant presses Finish, the page posts their answers to the
 address as one row and waits for the script to confirm. On a confirmed
@@ -161,12 +161,11 @@ order the participant saw the items, as item numbers, when the file
 records one and `NA` when it does not, and scoring does not read it. The
 page records it when the study link asks for a random order, which the
 “Show the items in a random order” box sets, in the Study Link Builder’s
-“Item order and HiTOP-SR module” section. The seventh and eighth
-columns, `prolific_study` and `prolific_session`, are the study and
-session identifiers Prolific passed to the page when the link recruits
-through Prolific, as [the Prolific route](#the-prolific-route) below
-describes, and `NA` when it does not, as here. Scoring does not read
-them either.
+“Item order” section. The seventh and eighth columns, `prolific_study`
+and `prolific_session`, are the study and session identifiers Prolific
+passed to the page when the link recruits through Prolific, as [the
+Prolific route](#the-prolific-route) below describes, and `NA` when it
+does not, as here. Scoring does not read them either.
 
 A folder can hold the download beside any files participants sent by
 hand:
@@ -246,7 +245,8 @@ a row, up to three, and put the rows in the order the page gives them.
 The link then carries an `instruments` field, a list of the instruments’
 names such as `["hitopbr", "pid5bf"]`, in place of `instrument`. A list
 holds at most one form of the PID-5, and names no instrument twice. A
-module file applies to the HiTOP-SR in the list.
+“HiTOP-SR module” row is the HiTOP-SR with its module file, so a list
+holds it or a HiTOP-SR row, not both.
 
 The page shows its screens in this order:
 

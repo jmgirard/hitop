@@ -173,14 +173,14 @@ the first row that differs.</p>
 Builder</a>. Its required parts come first: the instruments, the study
 name and where responses go. The optional parts sit below them in five
 closed sections. Press a section’s name to open it. Choose the
-instrument and name the study. For a HiTOP-SR module, open the “Item
-order and HiTOP-SR module” section, and paste or choose the module file
-written by <code><a href="../reference/write_module.html">write_module()</a></code>. For two or three instruments in
-one session, see <a href="#several-instruments-in-one-session">Several
-instruments in one session</a>. The Study Link Builder, opened from the
-“Open the Study Link Builder” button on an instrument’s download page,
-arrives with that instrument chosen. When opened with a module in its
-address, it arrives with the module file pasted in as well. In the
+instrument and name the study. For a HiTOP-SR module, choose “HiTOP-SR
+module (scales you choose)” as the instrument. Then paste or choose the
+module file written by <code><a href="../reference/write_module.html">write_module()</a></code> in that row. For two
+or three instruments in one session, see <a href="#several-instruments-in-one-session">Several instruments in one
+session</a>. The Study Link Builder, opened from the “Open the Study
+Link Builder” button on an instrument’s download page, arrives with that
+instrument chosen. When opened with a module in its address, it arrives
+with a “HiTOP-SR module” row that holds the module file. In the
 “Participants and recruiting site” section, give a participant
 identifier if the link is for one person. Leave it empty for a link
 shared with many, and the online form asks each participant for one
@@ -260,12 +260,12 @@ participant saw the items, as item numbers, when the file records one
 and <code>NA</code> when it does not, and scoring does not read it. The
 page records it when the study link asks for a random order, which the
 “Show the items in a random order” box sets, in the Study Link Builder’s
-“Item order and HiTOP-SR module” section. The seventh and eighth
-columns, <code>prolific_study</code> and <code>prolific_session</code>,
-are the study and session identifiers Prolific passed to the page when
-the link recruits through Prolific, as <a href="#the-prolific-route">the
-Prolific route</a> below describes, and <code>NA</code> when it does
-not, as here. Scoring does not read them either.</p>
+“Item order” section. The seventh and eighth columns,
+<code>prolific_study</code> and <code>prolific_session</code>, are the
+study and session identifiers Prolific passed to the page when the link
+recruits through Prolific, as <a href="#the-prolific-route">the Prolific
+route</a> below describes, and <code>NA</code> when it does not, as
+here. Scoring does not read them either.</p>
 <p>A folder can hold the download beside any files participants sent by
 hand: <code><a href="../reference/read_form_responses.html">read_form_responses()</a></code> reads every <code>.csv</code>
 file in it, file by file in path order, and each file’s rows in its own
@@ -333,8 +333,9 @@ a row, up to three, and put the rows in the order the page gives them.
 The link then carries an <code>instruments</code> field, a list of the
 instruments’ names such as <code>["hitopbr", "pid5bf"]</code>, in place
 of <code>instrument</code>. A list holds at most one form of the PID-5,
-and names no instrument twice. A module file applies to the HiTOP-SR in
-the list.</p>
+and names no instrument twice. A “HiTOP-SR module” row is the HiTOP-SR
+with its module file, so a list holds it or a HiTOP-SR row, not
+both.</p>
 <p>The page shows its screens in this order:</p>
 <ol style="list-style-type: decimal">
 <li>With consent text in the link, the consent screen.</li>

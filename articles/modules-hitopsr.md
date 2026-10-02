@@ -540,15 +540,15 @@ sheet’s script to scoring.
 The online form reads the same module file
 [`write_module()`](https://jmgirard.github.io/hitop/reference/write_module.md)
 writes. Open the [Study Link
-Builder](https://jmgirard.github.io/hitop-form/link.html) and choose the
-HiTOP-SR. Open its closed “Item order and HiTOP-SR module” section, and
+Builder](https://jmgirard.github.io/hitop-form/link.html) and choose
+“HiTOP-SR module (scales you choose)” as the instrument. In that row,
 paste the module file in or choose it as a file. Name the study, choose
 where the responses go, and press “Make the link”. The link shows under
 “Your study link”, ready to send to participants. A module file from a
 shuffled Word form carries that form’s order, and the online form shows
-the items in it. The “Show the items in a random order” box, in the same
-section, asks for a new order per participant instead; the module file’s
-order is then not followed.
+the items in it. The “Show the items in a random order” box, in the
+closed “Item order” section, asks for a new order per participant
+instead; the module file’s order is then not followed.
 
 Whichever route the answers take, the CSV file has five lead columns
 (`study`, `participant`, `instrument`, `form_build`, `submitted`) and
