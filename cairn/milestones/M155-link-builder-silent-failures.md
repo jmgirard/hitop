@@ -7,7 +7,7 @@
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the Study Link Builder page that researchers use
-- **Branch/PR:** m155-link-builder-silent-failures; companion: /Users/jmgirard/github/hitop-form m155-link-builder-silent-failures
+- **Branch/PR:** m155-link-builder-silent-failures; companion: /Users/jmgirard/github/hitop-form m155-link-builder-silent-failures https://github.com/jmgirard/hitop-form/pull/28
 
 ## Goal
 
@@ -44,7 +44,7 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
   - (b) A module row's menu can change to another instrument. Then the row's alert and status are emptied, and a file read still running drops its text. A test holds a read, switches away and back, and releases the read. Alert, status and box are then empty.
   - (c) Two module rows are refused with the repeat message and this added sentence: "A list holds one HiTOP-SR module."
   - (d) The Instruments hint holds this sentence: "At most one HiTOP-SR, whole or as a module."
-- [ ] AC7: hitop-form's README names the new behavior in its module section and its test-table rows. hitop's NEWS.md has an entry. The full hitop-form suite passes locally and on its PR's CI. `devtools::check()` in hitop gives 0 errors, 0 warnings and 0 notes.
+- [x] AC7: hitop-form's README names the new behavior in its module section and its test-table rows. hitop's NEWS.md has an entry. The full hitop-form suite passes locally and on its PR's CI. `devtools::check()` in hitop gives 0 errors, 0 warnings and 0 notes.
 
 ## Coverage
 
@@ -106,6 +106,7 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - 2026-10-01: T9 to T13 done. Status set to review.
 - 2026-10-01: second review pass. No PR exists for either branch, and both contain `origin/main`. AC1 to AC6 ticked against fresh evidence. AC7 waits on the hitop-form PR's CI. Three fresh readers reported 20 findings (N1 to N20), and none shows a criterion failing.
 - step-7 approval: m155-link-builder-silent-failures approved for merge, with the companion /Users/jmgirard/github/hitop-form m155-link-builder-silent-failures merged first. N1 to N3 fixed on the branches before the push.
+- 2026-10-02: hitop-form PR #28's first CI run failed: Node 20 could not stringify L41's and LF11's deep fixture. The fixture is now written as text with the same bytes, a test-only fix taken under the approval. The second run passed, and PR #28 was merged. AC7 ticked.
 
 ## Review
 
@@ -154,6 +155,7 @@ Evidence run 2026-10-01 on hitop `09471aec` and hitop-form `30b5087`. Both branc
 - AC5 evidence: S14's 6 tests passed in the suite: a hint, a menu and a box, each 2 and 3 levels inside a section label, each left out of the summary. S10 also passed.
 - AC6 evidence: these tests passed in the suite. For (a), LI10 checks the eight names of two module rows, then checks them again after a move. For (b), the first LI11 test asserts an emptied alert and status. The second holds a read, switches away and back, releases the read, and asserts an empty alert, status and box. For (c), S12's two-module-row entry and LI8's probe with two plain HiTOP-SR rows passed. For (d), S9 asserts the hint sentence, and `link.html:126` holds it.
 - AC7: pending its CI clause. The README module section and the rows for the four link specs name the new behavior. hitop NEWS.md has the entry. The full hitop-form suite passed locally (1028). `devtools::check()` gave 0 errors, 0 warnings and 0 notes in 5.6 minutes. The hitop-form PR's CI runs at the merge step, and the box is ticked only when it passes.
+- AC7 evidence: the first CI run on hitop-form PR #28 failed in L41 and LF11. Node 20 on the runner threw `RangeError` stringifying the 20,000-deep fixture, and the local Node 26 does not. `deepModuleText()` now writes the same JSON text directly. A local check found the text and its fingerprint the same as before, and Node 20 threw on the old build. The full suite then passed locally (1028) and on the PR's second CI run (1028 passed in 8.4 minutes, run 36966449332). PR #28 was merged 2026-10-02.
 
 Consistency gate: `cairn_validate.py` passed with 25 advisory warnings that predate this branch. No principle changed, so `cairn_impact` was skipped. `devtools::check()` ran `document()` and left no diff. `pkgdown::check_pkgdown()` passed in the first pass, and this branch adds no export. README.Rmd and README.md were not touched. NEWS.md has the entry. No new top-level files.
 
