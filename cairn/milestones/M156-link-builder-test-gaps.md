@@ -85,6 +85,8 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - 2026-10-02: claim audit: not owed — internal tier.
 - 2026-10-02: implement done again, status `review`.
 - 2026-10-02: review pass 3 started. No PR exists for either branch. AC1 to AC5 and AC6's local half passed. Three reviewers spawned over the hitop-form diff. The R check is running.
+- 2026-10-02: review pass 3 gate: no finding showed a criterion failing. Seven fix-now findings landed in hitop-form `de4717b`, D4 and B3 went to the fixture-reach candidate row, and 11 were rejected.
+- 2026-10-02: step-7 approval: m156-link-builder-test-gaps approved for merge, with the companion /Users/jmgirard/github/hitop-form m156-link-builder-test-gaps merged first, after the fix-now items.
 
 ## Review
 
@@ -148,3 +150,4 @@ Findings, pass 3. Opus diff reviewer (D), Sonnet blame-history (B), Sonnet prior
 - D11: a missing copy is reported twice in `link-sections.spec.js`. Reject: noise only on a failing run, as pass 2's B6.
 - B6: S4 is one test over 15 pairs per width, one diff per failure. Reject: the plan called for the loop, and the diff names each pair.
 - P2: the `states.left` poll is a hard wait before a soft read (LESSONS M127). Reject: it fails in 15 seconds, and the navigate-first plant failed N7 5 of 5.
+- Gate decision: the triage above as proposed. Fix-now items landed in hitop-form `de4717b`. Plants: `SITES` without `other` failed S4 at both widths on "the site menu's options". A temporary spec that held the HiTOP-BR export 20 seconds passed through `begin()` in 21.3 s, and failed at 15 s on the Begin wait with the old cap. Both plants were removed. Full suite at `de4717b`: 1028 passed, 5 skipped. D4 and B3 joined the fixture-reach candidate row.
