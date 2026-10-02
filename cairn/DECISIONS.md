@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-087 (2026-10-01): A study link holds as many questions as fit in its 100,000-byte setup, and the Study Link Builder refuses a Supabase table over PostgreSQL's column limit and a link longer than the online form's host accepts (annotates D-086(d) and D-079(b): the link that carries its whole setup stays the default, within the host's limit)
+
+**Context:** M137 capped a link at 50 questions with no recorded reason. The bound the online form enforces is the 100,000 bytes of setup it reads. M153's first review found that GitHub Pages, the online form's host, refuses a longer path and query with HTTP 414 (`cairn/references/fastly2026limits.md`).
+
+**Decision:** (a) A link sets no limit on the number of questions. A `c` setup takes the 100,000-byte limit that `z` and a setup file have. (b) With a Supabase table, the builder refuses a setup whose table would have more than 1,600 columns, PostgreSQL's limit. (c) The builder warns under a link longer than 8,000 characters, the length RFC 9110 recommends supporting. (d) The builder refuses a link whose path and query are longer than 8,192 characters, counting each Prolific placeholder as 24 characters. For a link that carries its setup, the refusal points to "In a file I host". D-086(d)'s default stands within that limit. Jeff chose (a) to (c) at the 2026-10-01 plan gate and (d) at M153's 2026-10-01 implement gate, over a warning that names the host. Rejected: a warning at 2,000 characters, which no current standard backs.
+
+**Consequences:** M153 ships (a) to (d). A setup too long for the host goes in a setup file. Evidence that reopens (a): a researcher whose `c` link over 100,000 bytes worked before. Evidence that reopens (c): a recruiting site or mail program that cuts links shorter than 8,000 characters. Evidence that reopens (d): a host change, or a measurement of the host that differs from 8,192.
+
 ### D-086 (2026-10-01): A study link can name a hosted setup file and its fingerprint in place of carrying the setup (annotates D-079(b), which names `c` and `z` as the two ways a link carries its setup, and D-077, which lists the names a `participantParam` may not take)
 
 **Context:** Jeff asked on 2026-10-01 for a way to keep a study's setup outside the link, for long setups and for his own studies kept on GitHub. A link that carries consent text, many questions or a module grows long, and some sites and mail programs cut long links. The setup today travels only in the link, as `c` or `z` (D-079(b)).
