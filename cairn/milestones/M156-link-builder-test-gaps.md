@@ -119,3 +119,10 @@ Findings, pass 2. Opus diff reviewer (D), Sonnet blame-history (B), Sonnet prior
 - B7, B8, B9, B10, P4: S1's strictness, `noWaitAfter`, the context listener, comment-only workflow edits, copies on PR runs. Reject: changes the plan called for.
 - P2: the `navigate` event also fires for a download link. Reject: no observed test downloads, and the suite runs only in Chromium.
 - P5: `send.spec.js` is not rerun under repeat in CI. Reject: the six state-reading tests passed 20 runs each locally.
+
+Pass 3 (2026-10-02, after return 2). Since pass 2 the hitop-form branch gained `f00abac` and `d576a65`. Every line they change in `tests/`, `playwright.config.js` and the workflow is a comment, and the rest is `README.md`. `origin/main` did not move in either repo, and no PR exists.
+- AC1, AC2: no code line changed since the pass-1 plants. Full suite at `d576a65` with `FORM_TARGET` empty: 1028 passed, 5 skipped (E1). The 12 `ONE_FIELD` entries carry `site`.
+- AC3: the AC3 search lists 61 lines: 52 calls, 8 imports and the definition. The four `wasOpen` calls are the same four (`link.spec.js:1148`, `link-questions.spec.js:212` and `:308`, `link-setupfile.spec.js:430`).
+- AC4: the import search finds no spec. The `fetch(` search finds `helpers.mjs:41` in the `FORM_TARGET` branch, `:441` (`route.fetch` of the page) and the `setupfile.spec.js:67` comment. The five copies exist.
+- AC5: the AC5 search lists the same 6 test lines and one comment line in `helpers.mjs:725`. N7 under `--repeat-each=100`: 100 passed.
+- AC6: the `send.spec.js` row now says the sent screen is read as the page starts the one navigation, before its request. That matches `observeUntilLeave()`, which records nothing after the `navigate` event (`helpers.mjs:717-748`). The README paragraph names the manual run beside the weekly one, as `tests.yml` sets `FORM_TARGET` on both. The other changed rows are as pass 2 read them. Local suite green (AC1 line). PR CI is read at the merge step.
