@@ -105,6 +105,7 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - claim audit: 29 claims read, 3 corrected — tests/helpers.mjs, tests/link.spec.js, README.md (the arming point is `prefill()`'s first call, the L42 comment and README row credit `InternalError` to MDN, and a vacuous `getByText(NO_SCRIPT)` check was removed). The same reader re-read the corrections and found each correct. Full suite after them: 1028 passed.
 - 2026-10-01: T9 to T13 done. Status set to review.
 - 2026-10-01: second review pass. No PR exists for either branch, and both contain `origin/main`. AC1 to AC6 ticked against fresh evidence. AC7 waits on the hitop-form PR's CI. Three fresh readers reported 20 findings (N1 to N20), and none shows a criterion failing.
+- step-7 approval: m155-link-builder-silent-failures approved for merge, with the companion /Users/jmgirard/github/hitop-form m155-link-builder-silent-failures merged first. N1 to N3 fixed on the branches before the push.
 
 ## Review
 
@@ -178,3 +179,5 @@ Independent review: three fresh readers (Opus diff, Sonnet blame history, Sonnet
 - N18 (diff): AC7's CI clause is open. Proposed: noted. It closes at the merge step.
 - N19 (blame): `reportThrow()` now keeps a named refusal, and L18 expects the deep-module refusal. Proposed: noted. AC1(c) and the AC4 amendment ask for this.
 - N20 (blame): R11's `aria-label` check is in the row. Proposed: noted.
+
+Gate, 2026-10-01: the user approved the merge with every proposed disposition. Fixed before the push: N1 (Known issue 15 rewritten around the top-level-await floor), N2 ("always" removed from NEWS) and N3 (the L18 comments rewrapped, `link.spec.js` 152 passed). Follow-up: N4 and N5 stay in the "Study Link Builder failure-path gaps" row. N8 is fixed at hygiene. Rejected: N6, N7, N10 and N15, for the reasons above. Noted: N9, N11 to N14 and N16 to N20.

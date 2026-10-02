@@ -655,7 +655,7 @@
   not start. It asks you to reload, or to open it in a current version of
   Chrome, Edge, Firefox or Safari. With JavaScript off, the page asks you
   to turn it on. A failure while the page fills the form from an opened
-  link now always ends with a message and an enabled "Make the link".
+  link now ends with a message and an enabled "Make the link".
   Before, a second failure while the form was emptied left no message and
   the button disabled. A refusal that names its fault stays in place, and a
   failure on a page opened with no link says that the builder did not
