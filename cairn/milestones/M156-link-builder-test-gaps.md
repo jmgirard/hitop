@@ -1,13 +1,13 @@
 # M156: Study Link Builder test gaps
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** M155
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** internal — hitop-form's Playwright specs, helpers, fixtures and test workflow, which no user runs
-- **Branch/PR:** —
+- **Branch/PR:** m156-link-builder-test-gaps, companion: /Users/jmgirard/github/hitop-form m156-link-builder-test-gaps
 
 ## Goal
 
@@ -46,7 +46,7 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 
 ## Tasks
 
-- [ ] T1: Move the stray listener to the `context` fixture's `request` event, as `network.spec.js:64` does, and judge in `afterEach`. In `fulfillExport`, mark before `readFile` and unmark in its `catch`. Mark before the holds at about `:915` and `:1170`. Plant a second-page request, a held request, and a cancel during the read. See each give the result AC1 states.
+- [x] T1: Move the stray listener to the `context` fixture's `request` event, as `network.spec.js:64` does, and judge in `afterEach`. In `fulfillExport`, mark before `readFile` and unmark in its `catch`. Mark before the holds at about `:915` and `:1170`. Plant a second-page request, a held request, and a cancel during the read. See each give the result AC1 states.
 - [ ] T2: Add `site` to the `ONE_FIELD` entries (about `:374-379`). Make S1's map name an unknown child (about `:180-187`). Loop S4 (about `:348-369`) over the site and destination tables. Plant a wrong site and an extra child, and see each go red.
 - [ ] T3: Add the option to `openSectionOf()` (`tests/helpers.mjs:207-213`). Use it at each call that the AC3 search finds after a prefill. At planning time these are `link.spec.js:1129` and `link-questions.spec.js:211` and `:304`. Add the section-state check to the setup-file prefill test (`link-setupfile.spec.js:279-296`).
 - [ ] T4: Commit copies of the PID-5, PID-5-SF and PID-5-BF exports beside the two in `tests/fixtures/exports/`. Make `fetchExport()` read the copy unless `FORM_TARGET` is set. Add a shared fixture for when `FORM_TARGET` is empty. It routes `EXPORT_BASE` on every context to the copies, and fails on an unanswered request. A Sonnet subagent moves the specs' imports to it, and its diff is read here.
@@ -60,3 +60,5 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - 2026-10-01: criteria audit, reduced mode, fresh Opus reader. AC4 claimed Node-side requests that the fixture check cannot see, and was narrowed to page requests plus a search. A second audit added the search for specs that bypass the shared fixture. AC1 to AC3, AC5 and AC6 returned no finding.
 - 2026-10-01: plan gate chose committed copies of all five exports on PR and push runs, with live fetches and a copy-against-live test on the weekly run, over live fetches everywhere. Live fetches make a run fail on a network fault, and copies alone never see a new export. Falsified by a drifted copy that the weekly run misses, or a red PR run caused by a stale copy.
 - 2026-10-01: plan chose a stray check on the context's `request` event, judged in `afterEach`, over waiting for in-flight requests to settle, as `network.spec.js:64` already does. Falsified by a stray request that starts after `afterEach` reads the record.
+- 2026-10-02: implement started. Branches cut in hitop and hitop-form. Baseline hitop-form suite: 1028 passed. Question gate chose one shared mark helper for every route that answers an export, one ordered page channel for N7's state and its navigation, and `helpers.mjs` as the shared fixture's home.
+- 2026-10-02: T1 done. `markAnswered()`, `isAnswered()` and `fulfillExport()` moved to `helpers.mjs`, and the stray record is the context's `request` event, judged in `afterEach`. Plants: a second-page request and a held request each failed by name, an export cancelled during its hold passed with the mark first and failed with the mark after the hold. `network.spec.js:64` is a page listener, not a context one. Spec: 122 passed.
