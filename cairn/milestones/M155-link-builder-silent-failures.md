@@ -66,7 +66,7 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - [x] T6: In `addModuleFields()` (about `:478-526`), return the alert, status and read counter, or a reset function. `renumberInstruments()` (about `:379-391`) names the four module controls with the row number. The menu's `change` handler (about `:426-428`) empties the alert and status and drops a running read when the row leaves the module. Tests go in `tests/link-instruments.spec.js`.
 - [x] T7: Add the two sentences of AC6(c) and (d). The first goes in the clash test (about `:1433-1439`) as its two-module-row case, and the second in the Instruments hint at about `:121`. Update `README.md:70-72` and the tests that read the old texts.
 - [x] T8: Update the README module section and test-table rows. In DESIGN Known issue 15, say that the Study Link Builder now shows AC2's message on a browser that cannot parse `form.js`. Add the hitop NEWS entry. Run the full hitop-form suite locally and on the PR. Run `devtools::check()` in hitop.
-- [ ] T9 (review R1): `armOnAddress()` in `tests/helpers.mjs` arms on the first statement of `prefill()`, the `opened.has('setup')` call at about `link.html:1002`. S13 and the LF7 offer test still fail with T1's guard removed.
+- [x] T9 (review R1): `armOnAddress()` in `tests/helpers.mjs` arms on the first statement of `prefill()`, the `opened.has('setup')` call at about `link.html:1002`. S13 and the LF7 offer test still fail with T1's guard removed.
 - [ ] T10 (review R2): in `fill()`, the module box's write also refuses on an error named `InternalError`, which Firefox throws for deep recursion. DESIGN Known issue 13 says that no test runs this refusal in Firefox.
 - [ ] T11 (review R3, R4): the README and NEWS text "does not load or does not run" names only what the ready flag covers: a `form.js` that does not load or cannot be read. DESIGN Known issue 15 adds two gaps. Browsers that parse `form.js` but lack `replaceChildren()` fail with no message. Browsers without `inert` take typing during a setup-file fetch.
 - [ ] T12 (review R5, R6): `#loadFail` gets `tabindex="-1"`. When the script shows it, the script also focuses it. L39 asserts the focus. The normal-load test asserts that the `noscript` element is in the page before it asserts the message is hidden.
@@ -97,6 +97,7 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - 2026-10-01: T8 done. `devtools::check()`: 0 errors, 0 warnings, 0 notes. Full hitop-form suite: 1026 passed. The suite's run on the hitop-form PR's CI comes at `/milestone-review`. Status set to review.
 - 2026-10-01: review started. Both repos contain `origin/main`, so no merge was needed. No PR exists for either branch.
 - 2026-10-01: review return 1 (defect). AC1 fails as written: the test's plant arms before `prefill()` is called. At the merge gate the user sent it back with the fix-now findings as T9 to T13. The user kept the hint "Choose one to three.". Status set to in-progress.
+- 2026-10-01: implement resumed for T9 to T13, with no question gate because nothing is open. T9 done. The arm in `armOnAddress()` is now `prefill()`'s first call, `opened.has('setup')`. The 6 AC1 tests pass. With the pre-T1 `catch` put back, all 6 fail: 5 on the message and 1 on the disabled button.
 
 ## Review
 
