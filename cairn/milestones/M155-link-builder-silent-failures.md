@@ -1,13 +1,13 @@
 # M155: Study Link Builder: silent failures and module rows
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** —
 - **Driving RR:** —
 - **Principles touched:** GP3
 - **Resolves:** —
 - **Surface tier:** user-facing — the Study Link Builder page that researchers use
-- **Branch/PR:** —
+- **Branch/PR:** m155-link-builder-silent-failures; companion: /Users/jmgirard/github/hitop-form m155-link-builder-silent-failures
 
 ## Goal
 
@@ -58,7 +58,7 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 
 ## Tasks
 
-- [ ] T1: In `link.html`, give two `catch` blocks an inner guard that writes `#err` directly: the prefill's (about `:1200-1203`) and `fillFromCurrent()`'s (about `:1222-1225`). Enable "Make the link" (about `:1236`) whatever the prefill path did. Write "could not be read" only when `#err` is empty and the address holds `c`, `z`, `setup` or `sha256`. With no link, write AC1(b)'s message. Each plant patches a named DOM method and arms only after the prefill starts, so no earlier call throws. Tests go in `tests/link-sections.spec.js` beside S11, and (d) in `tests/link-setupfile.spec.js`.
+- [x] T1: In `link.html`, give two `catch` blocks an inner guard that writes `#err` directly: the prefill's (about `:1200-1203`) and `fillFromCurrent()`'s (about `:1222-1225`). Enable "Make the link" (about `:1236`) whatever the prefill path did. Write "could not be read" only when `#err` is empty and the address holds `c`, `z`, `setup` or `sha256`. With no link, write AC1(b)'s message. Each plant patches a named DOM method and arms only after the prefill starts, so no earlier call throws. Tests go in `tests/link-sections.spec.js` beside S11, and (d) in `tests/link-setupfile.spec.js`.
 - [ ] T2: Add a `<noscript>` message and a hidden load-failure message near the top of `<main>`. Set a ready flag as the module script's first statement after its imports. A small plain script shows the message on `load` when the flag is unset. Tests: a 404 route for `form.js`, a route that serves it with a syntax error, and a context with `javaScriptEnabled: false`.
 - [ ] T3: Make the form `inert` and `aria-busy` while `prefill()` waits on `inflateConfig()` or `openSetupFile()` (about `:940` and `:961`). Clear both in a `finally`. Tests hold the `z` unpack as L34 does, and hold the setup fetch as `link-setupfile.spec.js` does. An inert target makes Playwright wait, so the tests press with `force: true` and type by keyboard, as `pressEarly` does (`tests/link.spec.js:1245-1251`).
 - [ ] T4: In `fill()`, put the indented `JSON.stringify(config.module, null, 2)` (about `:1143`) in a `try`. On a `RangeError`, refuse with AC4's message. Tests go in `tests/link.spec.js` and `tests/link-setupfile.spec.js`.
@@ -76,3 +76,5 @@ The Study Link Builder gives a researcher a message and a usable form at each lo
 - 2026-10-01: plan chose an `inert` form during the prefill's waits over dropping the prefill when the researcher types, because a dropped prefill loses the opened link. Falsified by a report that a slow setup-file fetch leaves the form unusable too long.
 - 2026-10-01: plan chose a refusal at the module box's write over a depth check in `form.js` `decodeLink()`, because the builder does not call `decodeLink()` and only the indented write fails in Chromium. Falsified by a deep `c` or `z` that throws elsewhere in the builder.
 - 2026-10-01: plan gate chose two milestones (this one and M156) over one, because 13 criteria pass the size limit. Gate also fixed the six message texts and took the two items lost from the candidate row and the hosted setup row's typed-during-fetch clause.
+- 2026-10-01: implement started on `m155-link-builder-silent-failures` in hitop and hitop-form. Question gate: the four module controls are named "… for instrument N", and the form stays shown under the load-failure message.
+- 2026-10-01: T1 done. `reportThrow()` guards `resetForm()`, keeps a named refusal, and writes "could not be read" or the did-not-start message. Tests: S13 (5) in `link-sections.spec.js`, one LF7 test in `link-setupfile.spec.js`, and the shared `armOnAddress()` plant arm. All 6 failed before the fix. hitop-form suite: 1007 passed.
