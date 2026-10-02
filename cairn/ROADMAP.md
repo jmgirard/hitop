@@ -1,18 +1,17 @@
 # Roadmap
 
-_Last hygiene check: 2026-10-02 (99th pass, M155 done): archived, M152 row pruned, failure-path and setup-file rows corrected, M125 lesson extended. validate green._
+_Last hygiene check: 2026-10-02 (100th pass, M156 done): archived, M153 row pruned, fixture-reach row extended, M119 lesson corrected. validate green._
 _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117). Release 0.2.0 prepared 2026-08-29; tag and GitHub release pending._
 
 ## Milestones
 
 | ID | Title | Status | Depends on | Priority | File/Archive |
 |---|---|---|---|---|---|
-| M153 | Questions limited by size, and a long-link warning | done | M152 | high | milestones/archive/M153-question-limit-link-length.md |
 | M154 | "HiTOP-SR module" as an instrument choice | done | M152 | high | milestones/archive/M154-study-link-module-choice.md |
 | M155 | Study Link Builder: silent failures and module rows | done | — | high | milestones/archive/M155-link-builder-silent-failures.md |
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
-| M156 | Study Link Builder test gaps | review | M155 | high | milestones/M156-link-builder-test-gaps.md |
+| M156 | Study Link Builder test gaps | done | M155 | high | milestones/archive/M156-link-builder-test-gaps.md |
 
 ## Candidates
 
