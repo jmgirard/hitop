@@ -78,6 +78,7 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - 2026-10-02: implement resumed for return 1. Both branches still contain their `origin/main`. The `link.spec.js` row now says a `c` that selects a site leaves the menu's section open and one that selects none leaves it closed. The `link-questions.spec.js` row now says a `z` link that holds questions leaves the questions section open. Both read from L27 and the two `wasOpen: true` calls. Full suite: 1028 passed, 5 skipped.
 - 2026-10-02: claim audit: not owed — internal tier.
 - 2026-10-02: implement done again, status `review`.
+- 2026-10-02: review pass 2 started. No PR exists for either branch. AC1 to AC5 and the gate passed again, and AC6's local half passed. Three reviewers spawned over the hitop-form diff.
 
 ## Review
 
@@ -88,3 +89,11 @@ hitop-form's tests catch the stray requests, closed sections and wrong site choi
 - AC5: the AC5 search lists 6 lines in `consent`, `network`, `recruit` (3) and `send`. Each test reads its states through `observeUntilLeave()`, directly or through a spec helper. N7 under `--repeat-each=100`: 100 passed.
 - AC6: FAILS. Local suite green (AC4 line). The branch changes rows for `link-sections`, `link-setupfile`, `network` and `exports`. The `link.spec.js` row says "the site a `c` selects and its round trip" and not that its section is open. The `link-questions.spec.js` row does not mention the open questions section after a `z`. Those are the checks T3 added. PR CI not reached.
 - Gate: `cairn_validate` passed (24 advisory warnings, none new). `document()` left no diff. `check_pkgdown()` found no problems. README.Rmd and NEWS are untouched, as the hitop diff is `cairn/` only. `devtools::check()` and the independent review were not run because review stopped at AC6.
+
+Pass 2 (2026-10-02, after return 1). Since pass 1 the hitop-form branch changed only `README.md` (`f2a98b8`), and `origin/main` did not move in either repo.
+- AC1, AC2: no test file changed since the pass-1 plants. Full suite at `f2a98b8` with `FORM_TARGET` empty: 1028 passed, 5 skipped (E1). The 12 `ONE_FIELD` entries still carry `site` (`link-sections.spec.js:390-407`).
+- AC3: the four `wasOpen` calls are the same four, at the same lines. LF5 is unchanged.
+- AC4: the import search finds no spec. The `fetch(` search adds `setupfile.spec.js:67` to pass 1's list, a comment and not a fetch. The five copies exist.
+- AC5: the AC5 search lists the same 6 test lines and one comment line in `helpers.mjs:721`. N7 under `--repeat-each=100`: 100 passed.
+- AC6: the `link.spec.js` row now says a `c` that selects a site leaves the menu's section open. A `c` that selects none leaves it closed. L27's `wasOpen: c.site !== ''` asserts both. The `link-questions.spec.js` row now says a `z` link that holds questions leaves the questions section open, which `:212` and `:308` assert. The rows for `link-sections`, `link-setupfile`, `network` and `exports` are as pass 1 read them. Local suite green (AC1 line). PR CI is read at the merge step.
+- Gate: `cairn_validate` passed (24 advisory warnings, none new). `document()` left no diff. `check_pkgdown()` found no problems. `devtools::check()`: 0 errors, 0 warnings, 0 notes. The hitop diff is `cairn/` only, so README.Rmd, NEWS and `.Rbuildignore` owe nothing.
