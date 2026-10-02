@@ -76,6 +76,7 @@ A study link can hold as many of the researcher's own questions as fit in the 10
 - 2026-10-01: implement done, status review.
 - 2026-10-01: review pass 2 checkpoint, half done. AC1-AC4 and AC6 verified and ticked. AC5 waits on `devtools::check()`, and the diff-bug reviewer is still running.
 - 2026-10-01: review pass 2 pre-gate checkpoint. All six criteria ticked against pass-2 evidence, the consistency gate passed, and 18 reviewer findings are recorded for triage. None shows a criterion failing. Defect returns so far: 1.
+- step-7 approval: m153-question-limit-link-length approved for merge, with the companion /Users/jmgirard/github/hitop-form m153-question-limit-link-length, companion first. D-087 written for P8.
 
 ## Decisions
 
@@ -146,3 +147,5 @@ Pass 2 findings, from the three reviewers, most severe first. Each was read agai
 - P17. (blame 7) The 100,000-byte `c` tests answer the long address in the browser, so they test no real host.
 - P18. (diff-bug, pass 1 finding 10) README, the article and form.js:1292 still say a row must fit in one page of 8,192 bytes. The usable space is a little less.
 - Pass 1 findings 13, 15 and 16 stand as recorded.
+
+Pass 2 triage, Jeff at the merge gate, 2026-10-01. Follow-up: P1, P3, P4, P5 and P9 go to a new high-priority candidate row, and P2 joins the "Hosted setup file gaps" row. Fix now: P8, D-087 written on the branch. Noted: P7 clears when main deploys, P10 is in the question-gaps row, P15 is in the "the page" row, P16 fails with a message, and P17 follows the M125 lesson. Rejected: P6 is AC6's chosen wording, P11 is stated in the README, P12 is outside the hosted form, P13 is refused by `decodeLink()`, P14 is harmless, and P18 is precise enough for a researcher. Pass 1 findings 13, 15 and 16 are rejected: other probes cover 13, AC1's sentence starts 15's message, and 16 is history.
