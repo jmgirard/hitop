@@ -7,7 +7,7 @@
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** internal — hitop-form's Playwright specs, helpers, fixtures and test workflow, which no user runs
-- **Branch/PR:** m156-link-builder-test-gaps, companion: /Users/jmgirard/github/hitop-form m156-link-builder-test-gaps
+- **Branch/PR:** m156-link-builder-test-gaps, companion: /Users/jmgirard/github/hitop-form m156-link-builder-test-gaps https://github.com/jmgirard/hitop-form/pull/29
 
 ## Goal
 
