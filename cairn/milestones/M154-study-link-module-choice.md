@@ -1,13 +1,13 @@
 # M154: "HiTOP-SR module" as an instrument choice
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** high
 - **Depends on:** M152
 - **Driving RR:** —
 - **Principles touched:** —
 - **Resolves:** —
 - **Surface tier:** user-facing — changes how researchers choose a HiTOP-SR module in the Study Link Builder
-- **Branch/PR:** —
+- **Branch/PR:** m154-study-link-module-choice; companion: /Users/jmgirard/github/hitop-form m154-study-link-module-choice; companion: /Users/jmgirard/github/hitop-builder m154-study-link-module-choice
 
 ## Goal
 
@@ -50,6 +50,9 @@ A researcher who wants a HiTOP-SR module chooses "HiTOP-SR module" in the instru
 
 - 2026-10-01: created by /milestone-plan with M152 and M153. Jeff found choosing HiTOP-SR and then giving the module in a separate section awkward. Audits are recorded in M152's work log.
 - 2026-10-01: plan chose "HiTOP-SR module" as its own list entry over a "Use a module" box inside the HiTOP-SR row, because Jeff asked for a separate choice. Falsified by researchers who look for the module under HiTOP-SR and miss the entry.
+- 2026-10-01: implement started. Branches cut in hitop, hitop-form and hitop-builder. Gate: Jeff chose the entry text "HiTOP-SR module (scales you choose)", a README subsection "A HiTOP-SR module", and a repeat refusal that adds "A HiTOP-SR module is the HiTOP-SR, so a list holds one or the other." when one row of the pair is a module row.
+- 2026-10-01: AC2 oracle taken from hitop-form `2af14f0` (git archive, the old builder driven by Playwright) for the three setups, study names "module alone", "module second" (rows HiTOP-BR, HiTOP-SR) and "module shuffled", each with `tests/fixtures/module-plain.json` pasted.
+- 2026-10-01: T1 to T3 code checkpointed in hitop-form `28161c6`. The suite ran 930 of 966 passing, and the 36 failures are the old module-section tests that T4 rewrites, so T1 to T3 stay unticked until T4.
 
 ## Decisions
 
