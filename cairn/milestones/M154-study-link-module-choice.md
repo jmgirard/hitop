@@ -1,6 +1,6 @@
 # M154: "HiTOP-SR module" as an instrument choice
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** high
 - **Depends on:** M152
 - **Driving RR:** —
@@ -56,6 +56,8 @@ A researcher who wants a HiTOP-SR module chooses "HiTOP-SR module" in the instru
 - 2026-10-01: T4 delegated to a Sonnet subagent (rewrite the 36 tests, add the AC1 to AC3 tests). T5 docs written meanwhile: hitop-form README (new "A HiTOP-SR module" subsection, "Item order"), hitop-builder README `c1cd0ea`, both hitop articles (`modules-hitopsr.Rmd` also named the old section), Known issue 11. T6 NEWS line written. Both articles render with `pkgdown::build_article()`.
 - 2026-10-01: Sonnet subagent's T4 diff reviewed and committed with the README test rows in hitop-form `4c3c0e8`. It rewrote tests in five spec files (`link-setupfile.spec.js` too) and added LI6 to LI9 and MF8. It saw 34 failures at its start, not 36: `consent.spec.js` held no module test, so its failure in the first run was a flake. It made the oracle and refusal tests red with one changed character, and restored them. My own full run: 1000 of 1000 pass.
 - 2026-10-01: AC4 search over 101 files of hitop-form, hitop-builder and hitop `vignettes/`, whitespace normalized: 0 hits. The pre-edit `online-collection.Rmd` holds the phrase, so the search can find it. `devtools::check()`: 0 errors, 0 warnings, 0 notes. T1 to T6 ticked. The companion PRs open at review's merge step, as the git model says.
+- claim audit: 95 claims read, 3 corrected — hitop-form README.md, hitop-form link.html
+- 2026-10-01: the claim audit (fresh Opus reader, all three repos' added lines) found `fill()` writing the module box before the study and completion URL, so the two BAD_C "throw after … is filled" tests reached no filled field. hitop-form `aea58f0` moves the fill back to main's place and rewords two README claims. The same reader re-read all three as true. Suite 1000 of 1000. Status set to review.
 
 ## Decisions
 
