@@ -661,16 +661,17 @@
   a page opened with no link says that the builder did not start
   correctly. While an opened link unpacks or its setup file is fetched, the
   form takes no typing or presses, so the fill does not replace what you
-  typed. An opened link whose module is nested too deeply to show in the
+  type during the wait. An opened link whose module is nested too deeply to show in the
   "Module file" box is refused by name, with no field filled. Before, the
   refusal said only that the link "could not be read". Screen readers name
   each module row's box, file control, message and status for the row's
   number, as in "Module file for instrument 2". When you set a module row
   to another instrument, its message and the line that names a file are
-  cleared, and a file still being read is dropped. Two module rows are refused with "A
-  list holds one HiTOP-SR module." The Instruments hint says "At most one
-  HiTOP-SR, whole or as a module." Section summaries leave out a hint or a
-  control at any depth inside a field's label.
+  cleared, and a file still being read is dropped. Two module rows are
+  refused as a repeated instrument, with the added sentence "A list holds
+  one HiTOP-SR module." The Instruments hint says "At most one HiTOP-SR,
+  whole or as a module." Section summaries leave out a hint, a field, a
+  menu or a box at any depth inside a field's label.
 
 * **The hitop-form Study Link Builder ignores presses until it has read an
   opened link, and several of its refusals change.** "Make the link" is
