@@ -39,12 +39,12 @@ A researcher who wants a HiTOP-SR module chooses "HiTOP-SR module" in the instru
 
 ## Tasks
 
-- [ ] T1: In `link.html`, add "HiTOP-SR module" to `OFFERED`, move the module box and file control into the row, rename the section, and make "Add an instrument" skip both HiTOP-SR entries.
-- [ ] T2: Write `instrument`/`instruments` and `module` from a module row, with the repeated-instrument and empty-box refusals. Take the three expected queries from `main` at `2af14f0` before changing the build.
-- [ ] T3: Fill a module row from `c`, `z` and `setup` links, and refuse a module beside no HiTOP-SR.
-- [ ] T4: Rewrite the module tests (`link-module-file.spec.js`, `link-sections.spec.js`, `link.spec.js`, `link-instruments.spec.js`), add the in-row hint to S8's walk, and add the AC2 and AC3 tests.
-- [ ] T5: Update hitop-form's README, hitop-builder's README (lines 244 to 245 and the anchor), the hitop article and Known issue 11. Run AC4's search.
-- [ ] T6: hitop NEWS line, `pkgdown::build_article()`, `devtools::check()`, and the companion PRs.
+- [x] T1: In `link.html`, add "HiTOP-SR module" to `OFFERED`, move the module box and file control into the row, rename the section, and make "Add an instrument" skip both HiTOP-SR entries.
+- [x] T2: Write `instrument`/`instruments` and `module` from a module row, with the repeated-instrument and empty-box refusals. Take the three expected queries from `main` at `2af14f0` before changing the build.
+- [x] T3: Fill a module row from `c`, `z` and `setup` links, and refuse a module beside no HiTOP-SR.
+- [x] T4: Rewrite the module tests (`link-module-file.spec.js`, `link-sections.spec.js`, `link.spec.js`, `link-instruments.spec.js`), add the in-row hint to S8's walk, and add the AC2 and AC3 tests.
+- [x] T5: Update hitop-form's README, hitop-builder's README (lines 244 to 245 and the anchor), the hitop article and Known issue 11. Run AC4's search.
+- [x] T6: hitop NEWS line, `pkgdown::build_article()`, `devtools::check()`, and the companion PRs.
 
 ## Work log
 
@@ -54,6 +54,8 @@ A researcher who wants a HiTOP-SR module chooses "HiTOP-SR module" in the instru
 - 2026-10-01: AC2 oracle taken from hitop-form `2af14f0` (git archive, the old builder driven by Playwright) for the three setups, study names "module alone", "module second" (rows HiTOP-BR, HiTOP-SR) and "module shuffled", each with `tests/fixtures/module-plain.json` pasted.
 - 2026-10-01: T1 to T3 code checkpointed in hitop-form `28161c6`. The suite ran 930 of 966 passing, and the 36 failures are the old module-section tests that T4 rewrites, so T1 to T3 stay unticked until T4.
 - 2026-10-01: T4 delegated to a Sonnet subagent (rewrite the 36 tests, add the AC1 to AC3 tests). T5 docs written meanwhile: hitop-form README (new "A HiTOP-SR module" subsection, "Item order"), hitop-builder README `c1cd0ea`, both hitop articles (`modules-hitopsr.Rmd` also named the old section), Known issue 11. T6 NEWS line written. Both articles render with `pkgdown::build_article()`.
+- 2026-10-01: Sonnet subagent's T4 diff reviewed and committed with the README test rows in hitop-form `4c3c0e8`. It rewrote tests in five spec files (`link-setupfile.spec.js` too) and added LI6 to LI9 and MF8. It saw 34 failures at its start, not 36: `consent.spec.js` held no module test, so its failure in the first run was a flake. It made the oracle and refusal tests red with one changed character, and restored them. My own full run: 1000 of 1000 pass.
+- 2026-10-01: AC4 search over 101 files of hitop-form, hitop-builder and hitop `vignettes/`, whitespace normalized: 0 hits. The pre-edit `online-collection.Rmd` holds the phrase, so the search can find it. `devtools::check()`: 0 errors, 0 warnings, 0 notes. T1 to T6 ticked. The companion PRs open at review's merge step, as the git model says.
 
 ## Decisions
 
