@@ -1,13 +1,13 @@
 # M158: PID5BF+M Word, Qualtrics and REDCap forms
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M157
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2
 - **Resolves:** —
 - **Surface tier:** user-facing — three new exported generators and their downloads
-- **Branch/PR:** —
+- **Branch/PR:** m158-pid5bfpm-forms
 
 ## Goal
 
@@ -51,6 +51,9 @@ Researchers can build and download PID5BF+M paper forms, a Qualtrics import file
 - 2026-10-03: plan chose to take item text from the `pid_items` rows that the BF+M key names over typing a new English item list. The key maps each BF+M item to a PID-5 item. Falsified by an English BF+M source whose item wording differs from the APA PID-5 text.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 4 clear fixes and 1 judgment finding, all applied. AC1 binds a stored instruction object and the scoring table. AC2 separates REDCap names (D-055) from uppercase Qualtrics IDs. AC3 counts four files and exempts the page from the online-strip test.
 - 2026-10-03: note from M157's RR06. `make_scoring_table()` sorts rows by `Scale` alphabetically and prints one item list per row, so it cannot show the BF+M domain map by itself. AC1's scoring table needs a planned domain presentation, such as a second table or a sentence. D-088 fixes the names, the item-mean scale and `pid_bfpm_domains`.
+
+- 2026-10-03: implement started on branch `m158-pid5bfpm-forms`, cut from main at `226e78ba` after M157 merged. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit.
+- 2026-10-03: T1 search: no English BF+M instructions are on the shelf. Bach et al. (2020) prints none. Kerber et al. (2022) and its supplement print none for the BF+M. The FU Berlin sheet's German instructions are a sentence-by-sentence translation of the stored APA PID-5 `pid_instructions$start`. Its labels "Trifft überhaupt nicht zu" to "Trifft genau zu" sit on the same 0 to 3 values as the APA labels. T1 stops at its tripwire gate.
 
 ## Decisions
 
