@@ -183,6 +183,34 @@ test_that("reliability_*() return a per-scale tibble with the requested columns"
   expect_equal(rel_bf$nItems[rel_bf$Scale == "Total"], 25L)
 })
 
+test_that("reliability_pid5(BFPM) returns 18 facet rows, then 6 domain rows", {
+  x <- fx_pid5bfpm()
+  rel <- reliability_pid5(x, items = 1:36, version = "BFPM", omega = FALSE)
+
+  # Names typed from the key sheet's order (D-088(b), (c)).
+  expect_identical(rel$Scale, c(
+    "Emotional Lability", "Anxiousness", "Separation Insecurity",
+    "Withdrawal", "Anhedonia", "Intimacy Avoidance",
+    "Manipulativeness", "Deceitfulness", "Grandiosity",
+    "Irresponsibility", "Impulsivity", "Distractibility",
+    "Perfectionism", "Rigidity", "Orderliness",
+    "Unusual Beliefs & Experiences", "Eccentricity", "Perceptual Dysregulation",
+    "Negative affectivity", "Detachment", "Antagonism",
+    "Disinhibition", "Anankastia", "Psychoticism"
+  ))
+  expect_identical(rel$camelCase[19:24], c(
+    "negativeAffectivity", "detachment", "antagonism",
+    "disinhibition", "anankastia", "psychoticism"
+  ))
+  expect_identical(rel$nItems, c(rep(2L, 18), rep(6L, 6)))
+
+  # Each row's alpha is over the items the key sheet gives it: the Perfectionism
+  # pair (6, 18) and the six Anankastia items (6, 18, 12, 24, 30, 36).
+  di <- as.data.frame(lapply(x, as.numeric))
+  expect_equal(rel$alpha[13], calc_alpha(di[c(6, 18)]))
+  expect_equal(rel$alpha[23], calc_alpha(di[c(6, 18, 12, 24, 30, 36)]))
+})
+
 test_that("reliability_pid5(BFPM) fits no 2-item omega and raises no warning", {
   skip_if_not_installed("lavaan")
   # Each domain's 6 items share one factor, so the 6 domain models fit cleanly

@@ -145,6 +145,61 @@ fx_pid5bf <- function() {
 # Validity expectations for fx_pid5bf(): only PNA is defined for the BF.
 #   R1 0, R2 0, R3 0, R4 5/25 = 0.2
 
+# ---- PID5BF+M (36 items) ----------------------------------------------------
+#
+# BF+M-relative numbering (1:36). No reverse-keyed items. Facet = mean of its 2
+# items; domain = mean of its 3 facet scores (Bach et al., 2020, p. 181; D-088).
+# Facet -> BF+M item pairs, transcribed from the FU Berlin key sheet, p. 2
+# (verified in test-keying.R), with each pair's (first, second) R3 values:
+#   Negative affectivity: EL (1,19)=(0,1)  ANX (7,25)=(1,2)  SEP (13,31)=(3,3)
+#   Detachment:           WD (4,22)=(0,0)  ANH (10,28)=(2,1) INT (16,34)=(2,2)
+#   Antagonism:           MAN (2,20)=(1,1) DEC (8,26)=(3,2)  GRA (14,32)=(0,1)
+#   Disinhibition:        IRR (3,21)=(2,3) IMP (9,27)=(0,2)  DIST (15,33)=(3,0)
+#   Anankastia:           PERF (6,18)=(3,1) RIG (12,24)=(1,0) ORD (30,36)=(2,0)
+#   Psychoticism:         UB (5,23)=(1,3)  ECC (11,29)=(0,3) PD (17,35)=(3,3)
+#
+# Rows:
+#   R1  all items = 0 -> every facet and domain = 0 (no reverse-keying)
+#   R2  all items = 3 -> every facet and domain = 3
+#   R3  the pattern above. Facets: EL 0.5, ANX 1.5, SEP 3, WD 0, ANH 1.5,
+#       INT 2, MAN 1, DEC 2.5, GRA 0.5, IRR 2.5, IMP 1, DIST 1.5, PERF 2,
+#       RIG 0.5, ORD 1, UB 2, ECC 1.5, PD 3. Domains:
+#         negativeAffectivity (0.5 + 1.5 + 3)/3 = 5/3
+#         detachment          (0 + 1.5 + 2)/3   = 7/6
+#         antagonism          (1 + 2.5 + 0.5)/3 = 4/3
+#         disinhibition       (2.5 + 1 + 1.5)/3 = 5/3
+#         anankastia          (2 + 0.5 + 1)/3   = 7/6
+#         psychoticism        (2 + 1.5 + 3)/3   = 13/6
+#   R4  R3 with item 1 (EL first, 0) NA.
+#       "available": EL = 1 (item 19 alone); negativeAffectivity =
+#         (1 + 1.5 + 3)/3 = 11/6. The mean of its 5 answered items would be
+#         (1 + 1 + 2 + 3 + 3)/5 = 2, so this row tells the two rules apart.
+#       "apa" and "complete": EL is NA (1 of 2 items = 50% missing, over the
+#         APA 25%), so negativeAffectivity is NA. Every other scale = R3.
+#   R5  R3 with items 12 (RIG first, 1) and 29 (ECC second, 3) NA.
+#       "available": RIG = 0 (item 24), anankastia = (2 + 0 + 1)/3 = 1;
+#         ECC = 0 (item 11), psychoticism = (2 + 0 + 3)/3 = 5/3 (5-item mean
+#         would be (1 + 3 + 0 + 3 + 3)/5 = 2).
+#       "apa" and "complete": RIG, ECC, anankastia and psychoticism are NA.
+#       Every other scale = R3.
+fx_pid5bfpm <- function() {
+  r3 <- c(
+    0L, 1L, 2L, 0L, 1L, 3L, 1L, 3L, 0L, 2L, 0L, 1L,   # items 1-12
+    3L, 0L, 3L, 2L, 3L, 1L, 1L, 1L, 3L, 0L, 3L, 0L,   # items 13-24
+    2L, 2L, 2L, 1L, 3L, 2L, 3L, 1L, 0L, 2L, 3L, 0L    # items 25-36
+  )
+  df <- as.data.frame(matrix(NA_integer_, nrow = 5, ncol = 36))
+  names(df) <- sprintf("pid5bfpm_%02d", seq_len(36))
+  df[1, ] <- 0L
+  df[2, ] <- 3L
+  df[3, ] <- r3
+  df[4, ] <- r3
+  df[4, 1] <- NA_integer_
+  df[5, ] <- r3
+  df[5, c(12, 29)] <- NA_integer_
+  df
+}
+
 # ---- HiTOP-SR (405 items) ---------------------------------------------------
 #
 # Hand-computed fixture for score_hitopsr() (milestone M005). Item range is the

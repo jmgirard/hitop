@@ -56,7 +56,7 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
   - The missing-data rule. The key sheet states no proration rule.
 
   Then thread the version through `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()`. If `score_engine()` cannot express the chosen metric, teach it the metric. `reliability_pid5()` adds the 6 domain rows from `pid_bfpm_domains`. `label_pid5(target = "scales")` reads that table for BFPM. The reliability engine reports omega as `NA` for a scale with fewer than 3 items (D-088(f)), with a test that BFPM reliability emits no warning.
-- [ ] T4: Write the hand-computed fixture tests (AC2, AC4). Write the characterization script (AC3) and run it at the merge base before the version code lands.
+- [x] T4: Write the hand-computed fixture tests (AC2, AC4). Write the characterization script (AC3) and run it at the merge base before the version code lands.
 - [ ] T5: Update the help page, the vignette section and NEWS. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
@@ -76,6 +76,8 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 - 2026-10-03: T3 done. `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` take `"BFPM"`. `score_engine()` needed no change, because its `domain_map` path already scores a domain as the mean of its facet means. The reliability engine skips omega for a scale under 3 items. Its no-warning test passes with the guard and fails on a lavaan warning without it.
 - 2026-10-03: T3 choices: `validity_pid5()` gets its own `version` doc, because it inherited `score_pid5()`'s, which now lists BFPM. The `version` lookups use `if`/`else` rather than a `switch()` fall-through, which `test-warning-classes.R`'s body walker cannot read.
 - 2026-10-03: T4 started early: `data-raw/characterize_bfpm.R` ran at the merge base `75a93d1b` (a scratch worktree) before the T3 code, and captured 80 calls.
+- 2026-10-03: T4 done. `fx_pid5bfpm()` has 5 respondents with hand-worked values. Tests cover all 24 columns under the three `missing` modes, a key-pair recomputation, reliability rows, rename and label. Oracles O-008 to O-010 are in `cairn/ORACLES.md`. A rotated domain map failed 30 score assertions, and `pid_domains` in place of `pid_bfpm_domains` failed the label test on Anankastia.
+- 2026-10-03: AC3 run: `characterize_bfpm.R` at the branch head gave 80 of 80 calls `identical()` to the merge-base run. A planted omega threshold of 6 items made it report the 8 omega calls, and the restored code passed.
 
 ## Decisions
 

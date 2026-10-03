@@ -336,3 +336,50 @@ test_that("label_pid5(target = 'items') pluralizes each sentence by its own colu
     }
   }
 })
+
+# ---- PID5BF+M ---------------------------------------------------------------
+
+test_that("label_pid5(version = 'BFPM') labels its 36 items with their PID-5 text", {
+  labeled <- label_pid5(fx_pid5bfpm(), target = "items", version = "BFPM")
+  # BF+M item 6 is PID-5 item 123 (key sheet, p. 2), text typed as `pid_items`
+  # holds it.
+  expect_identical(
+    attr(labeled$pid5bfpm_06, "label"),
+    paste(
+      "Even though it drives other people crazy, I insist on absolute",
+      "perfection in everything I do"
+    )
+  )
+  for (nm in names(labeled)) {
+    number <- as.integer(sub("^pid5bfpm_", "", nm))
+    expect_identical(
+      attr(labeled[[nm]], "label"),
+      pid_items$Text[match(number, pid_items$BFPM)],
+      info = nm
+    )
+  }
+  expect_equal(ncol(labeled), 36L)
+})
+
+test_that("label_pid5(version = 'BFPM') names its 18 facets and 6 domains", {
+  scored <- score_pid5(fx_pid5bfpm(), items = 1:36, version = "BFPM", append = FALSE)
+  labeled <- label_pid5(scored, target = "scales", version = "BFPM")
+  # An unlabelled column reads as NA, so a missed scale fails on its value.
+  label_of <- function(col) {
+    l <- attr(col, "label")
+    if (is.null(l)) NA_character_ else l
+  }
+  expect_identical(
+    unname(vapply(labeled, label_of, character(1))),
+    c(
+      "Emotional Lability", "Anxiousness", "Separation Insecurity",
+      "Withdrawal", "Anhedonia", "Intimacy Avoidance",
+      "Manipulativeness", "Deceitfulness", "Grandiosity",
+      "Irresponsibility", "Impulsivity", "Distractibility",
+      "Perfectionism", "Rigidity", "Orderliness",
+      "Unusual Beliefs & Experiences", "Eccentricity", "Perceptual Dysregulation",
+      "Negative affectivity", "Detachment", "Antagonism",
+      "Disinhibition", "Anankastia", "Psychoticism"
+    )
+  )
+})
