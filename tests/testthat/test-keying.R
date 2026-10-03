@@ -253,3 +253,113 @@ test_that("pid_domains is 5 domains x 3 primary facets with valid, distinct stem
   expect_equal(length(unlist(pid_domains$facetStems)), 15L)
   expect_equal(length(unique(unlist(pid_domains$facetStems))), 15L)
 })
+
+# ---- Source: FU Berlin PID5BF+M key sheet (Kerber, 2020), p. 2 ---------------
+# "PID5BF+ M Kodierschema" (cairn/references/fuberlin2020pid5bfpm.md). Typed in
+# from the sheet's table, not from data-raw/pid_bfpm_key.csv or `pid_items`.
+# Each facet lists its BF+M item pair and the PID-5 items in the same order: the
+# first BF+M number of a pair is the first PID-5 number. Facets and domains are
+# in the sheet's order. Names are the package's printed names (D-088(b)); the
+# references page gives the sheet's German name and Bach et al.'s English name
+# for each.
+bfpm_key_sheet <- list(
+  "Negative affectivity" = list(
+    "Emotional Lability"            = list(bfpm = c(1, 19),  pid5 = c(62, 122)),
+    "Anxiousness"                   = list(bfpm = c(7, 25),  pid5 = c(109, 110)),
+    "Separation Insecurity"         = list(bfpm = c(13, 31), pid5 = c(50, 64))
+  ),
+  "Detachment" = list(
+    "Withdrawal"                    = list(bfpm = c(4, 22),  pid5 = c(82, 136)),
+    "Anhedonia"                     = list(bfpm = c(10, 28), pid5 = c(23, 189)),
+    "Intimacy Avoidance"            = list(bfpm = c(16, 34), pid5 = c(89, 108))
+  ),
+  "Antagonism" = list(
+    "Manipulativeness"              = list(bfpm = c(2, 20),  pid5 = c(162, 219)),
+    "Deceitfulness"                 = list(bfpm = c(8, 26),  pid5 = c(126, 218)),
+    "Grandiosity"                   = list(bfpm = c(14, 32), pid5 = c(187, 197))
+  ),
+  "Disinhibition" = list(
+    "Irresponsibility"              = list(bfpm = c(3, 21),  pid5 = c(129, 160)),
+    "Impulsivity"                   = list(bfpm = c(9, 27),  pid5 = c(4, 17)),
+    "Distractibility"               = list(bfpm = c(15, 33), pid5 = c(6, 132))
+  ),
+  "Anankastia" = list(
+    "Perfectionism"                 = list(bfpm = c(6, 18),  pid5 = c(123, 176)),
+    "Rigidity"                      = list(bfpm = c(12, 24), pid5 = c(140, 220)),
+    "Orderliness"                   = list(bfpm = c(30, 36), pid5 = c(34, 115))
+  ),
+  "Psychoticism" = list(
+    "Unusual Beliefs & Experiences" = list(bfpm = c(5, 23),  pid5 = c(194, 209)),
+    "Eccentricity"                  = list(bfpm = c(11, 29), pid5 = c(25, 185)),
+    "Perceptual Dysregulation"      = list(bfpm = c(17, 35), pid5 = c(44, 77))
+  )
+)
+bfpm_sheet_facets <- unlist(
+  lapply(bfpm_key_sheet, function(d) d),
+  recursive = FALSE,
+  use.names = FALSE
+)
+names(bfpm_sheet_facets) <- unlist(lapply(bfpm_key_sheet, names), use.names = FALSE)
+
+test_that("pid_items$BFPM puts each BF+M number on the PID-5 row the key sheet names", {
+  bfpm <- unlist(lapply(bfpm_sheet_facets, `[[`, "bfpm"), use.names = FALSE)
+  pid5 <- unlist(lapply(bfpm_sheet_facets, `[[`, "pid5"), use.names = FALSE)
+  expect_true(is.integer(pid_items$BFPM))
+  expect_setequal(pid_items$FULL[!is.na(pid_items$BFPM)], pid5)
+  expect_identical(
+    pid_items$BFPM[match(pid5, pid_items$FULL)],
+    as.integer(bfpm)
+  )
+  expect_setequal(pid_items$BFPM[!is.na(pid_items$BFPM)], 1:36)
+  # The sheet reverses no item.
+  expect_false(any(pid_items$Reverse[!is.na(pid_items$BFPM)]))
+})
+
+test_that("pid_scales$BFPM holds the key sheet's 18 facets, pairs and order", {
+  tbl <- pid_scales[["BFPM"]]
+  expect_identical(tbl$Facet, names(bfpm_sheet_facets))
+  expect_identical(
+    unname(tbl$itemNumbers),
+    lapply(unname(bfpm_sheet_facets), function(f) as.integer(f$bfpm))
+  )
+  expect_identical(tbl$nItems, rep(2L, 18))
+  expect_identical(names(tbl$itemNumbers), tbl$camelCase)
+  # D-088(b): new stems for the three anankastia facets only.
+  expect_identical(
+    tbl$camelCase[13:15],
+    c("perfectionism", "rigidity", "orderliness")
+  )
+})
+
+test_that("pid_bfpm_domains holds the key sheet's 6 domains of 3 facets each", {
+  expect_identical(pid_bfpm_domains$Domain, names(bfpm_key_sheet))
+  expect_identical(
+    pid_bfpm_domains$primaryFacets,
+    unname(lapply(bfpm_key_sheet, names))
+  )
+  expect_identical(
+    pid_bfpm_domains$camelCase,
+    c("negativeAffectivity", "detachment", "antagonism", "disinhibition",
+      "anankastia", "psychoticism")
+  )
+  # Each facet stem names a pid_scales$BFPM row, so score_pid5()'s domain map
+  # reads real facet columns, and each facet is in one domain only.
+  stems <- unlist(pid_bfpm_domains$facetStems)
+  expect_identical(stems, pid_scales[["BFPM"]]$camelCase)
+  # The five shared domains keep their pid_domains names and stems.
+  shared <- match(pid_domains$Domain, pid_bfpm_domains$Domain)
+  expect_false(anyNA(shared))
+  expect_identical(pid_bfpm_domains$camelCase[shared], pid_domains$camelCase)
+})
+
+test_that("BF+M facets shared with the PID-5 are subsets of the same PID-5 facet", {
+  for (f in names(bfpm_sheet_facets)) {
+    pid5_facet <- pid_items$Facet[match(bfpm_sheet_facets[[f]]$pid5, pid_items$FULL)]
+    expected <- if (f %in% c("Perfectionism", "Rigidity", "Orderliness")) {
+      "Rigid Perfectionism"
+    } else {
+      f
+    }
+    expect_identical(pid5_facet, rep(expected, 2), info = f)
+  }
+})

@@ -314,7 +314,9 @@ test_that("every expectation inside a loop names its iteration on failure", {
 # excluded by the same fact that makes it abort, not by naming "BF" here.
 profile_cases <- function() {
   out <- list()
-  for (version in names(pid_scales)) {
+  # The versions plot_pid5() takes, not every `pid_scales` element: the
+  # PID5BF+M has scoring but no norms or plot.
+  for (version in eval(formals(plot_pid5)$version)) {
     levels <- if ("Facet" %in% names(pid_scales[[version]])) {
       c("domain", "facet")
     } else {

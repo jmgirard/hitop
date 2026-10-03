@@ -2,15 +2,18 @@
 #'
 #' Information about the items in different versions of the PID-5.
 #'
-#' @format A \link[tibble]{tibble} with 220 rows and 15 columns:
+#' @format A \link[tibble]{tibble} with 220 rows and 16 columns:
 #' \describe{
 #'   \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form (integer)}
+#'   \item{BFPM}{Item number on the PID5BF+M, the 36-item modified brief form (integer). Its keying is in `pid_scales$BFPM` and [pid_bfpm_domains]}
 #'   \item{Reverse}{Whether the item needs to be reverse scored}
 #'   \item{INC,INCS}{Item number on the response inconsistency scale full and short forms (integer)}
 #'   \item{ORS,ORSS}{Item number on the overreporting scale full and short forms (integer)}
 #'   \item{PRD,PRDS}{Item number on the positive impression management response distortion scale full and short forms (integer)}
 #'   \item{SDTD,SDTDS}{Item number on the social desirability-total denial scale full and short forms (integer)}
-#'   \item{Facet}{Name of the facet}
+#'   \item{Facet}{Name of the PID-5 facet. The PID5BF+M regroups six of the
+#'   Rigid Perfectionism items into its three anankastia facets, which are
+#'   held only in `pid_scales$BFPM`}
 #'   \item{Domain}{Name of the domain}
 #'   \item{Text}{Item text, copyright APA}
 #' }
@@ -25,14 +28,16 @@
 #' by `reliability_pid5()` and by the printed scoring table in
 #' `generate_docx_pid5*()`, so adding or removing a row changes all three.
 #'
-#' @format A named \link{list} of length 3 (elements `FULL`, `SF`, and `BF`),
-#'   one per PID-5 version. Each element is a \link[tibble]{tibble} with one row
-#'   per scale and 5 columns:
+#' @format A named \link{list} of length 4 (elements `FULL`, `SF`, `BF`, and
+#'   `BFPM`), one per PID-5 version. Each element is a \link[tibble]{tibble}
+#'   with one row per scale and 5 columns:
 #' \describe{
 #'   \item{Facet (named `Domain` in the BF element)}{Name of the scale: the
-#'   facet for the FULL and SF versions, the domain for the BF version. The BF
-#'   element carries a sixth row, `Total`, which is not a domain but the whole
-#'   25-item form scored as one scale (see [score_pid5()])}
+#'   facet for the FULL, SF, and BFPM versions, the domain for the BF version.
+#'   The BF element carries a sixth row, `Total`, which is not a domain but the
+#'   whole 25-item form scored as one scale (see [score_pid5()]). The BFPM
+#'   element holds the 18 facets of the PID5BF+M, 2 items each, grouped by
+#'   domain in the order of its key; its domains are in [pid_bfpm_domains]}
 #'   \item{itemdata}{A list column containing one item-data tibble per scale; its item-number column is an integer}
 #'   \item{nItems}{The number of items in the scale (integer)}
 #'   \item{itemNumbers}{A list column containing one integer item-number vector per scale}
@@ -59,6 +64,36 @@
 #' @examples
 #' pid_domains
 "pid_domains"
+
+#' PID5BF+M Domain Data
+#'
+#' The map from each of the 6 domains of the PID5BF+M (the 36-item modified
+#' brief form of the PID-5) to its 3 facets, used to compute the domain scores
+#' of `score_pid5(version = "BFPM")` and the domain rows of
+#' `reliability_pid5(version = "BFPM")`. Each domain score is the mean of its 3
+#' facet scores (Bach et al., 2020). The rows are in the order of the form's
+#' key, with Anankastia fifth.
+#'
+#' @format A \link[tibble]{tibble} with 6 rows and 4 columns, the columns of
+#'   [pid_domains]:
+#' \describe{
+#'   \item{Domain}{Name of the domain. The five domains the form shares with
+#'   the PID-5 are spelled as in [pid_domains]}
+#'   \item{camelCase}{The domain name in camel case (the score-output column stem)}
+#'   \item{primaryFacets}{A list column of the 3 facet names per domain, as
+#'   `pid_scales$BFPM$Facet` spells them}
+#'   \item{facetStems}{A list column of those 3 facet names in camel case (the facet score-output column stems)}
+#' }
+#' @source Bach, B., Kerber, A., Aluja, A., Bastiaens, T., Keeley, J. W.,
+#'   Claes, L., Fossati, A., Gutierrez, F., Oliveira, S. E. S., Pires, R.,
+#'   Riegel, K. D., Rolland, J.-P., Roskam, I., Sellbom, M., Somma, A.,
+#'   Spanemberg, L., Strus, W., Thimm, J. C., Wright, A. G. C., & Zimmermann, J.
+#'   (2020). International assessment of DSM-5 and ICD-11 personality disorder
+#'   traits: Toward a common nosology in DSM-5.1. *Psychopathology, 53*(3-4),
+#'   179-188. \doi{10.1159/000507589}
+#' @examples
+#' pid_bfpm_domains
+"pid_bfpm_domains"
 
 #' Personality Inventory for DSM-5 Normative Tables
 #'

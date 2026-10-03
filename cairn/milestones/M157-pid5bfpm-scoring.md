@@ -47,7 +47,7 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 ## Tasks
 
 - [x] T1: Write the references page for the key sheet: extracted table, scoring rule, provenance. If Jeff uploads Bach et al. (2020), check the key against it and record the result. Add the SOURCES.md row.
-- [ ] T2: Add the BF+M column and the `pid_scales` entry in `data-raw/pid_info.R`, and regenerate the data. Build both from a key CSV with its own facet and domain labels, in the key sheet's domain-grouped order. Add `pid_bfpm_domains` (D-088(c)) and its docs. Write the keying test (AC1). Keying content needs Jeff's sign-off before merge.
+- [x] T2: Add the BF+M column and the `pid_scales` entry in `data-raw/pid_info.R`, and regenerate the data. Build both from a key CSV with its own facet and domain labels, in the key sheet's domain-grouped order. Add `pid_bfpm_domains` (D-088(c)) and its docs. Write the keying test (AC1). Keying content needs Jeff's sign-off before merge.
 - [ ] T3: Pre-implementation gate (settled by RR06 and D-088), then code. The gate's questions (RB tripwire: irreversible-api):
   - The version string, and the item-name stem for `rename_pid5_items()` and the M158 exports.
   - The output column names, including `anankastia`.
@@ -70,6 +70,9 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 - 2026-10-03: minor amendment: T2 now runs after the T3 gate, because the `pid_items` column name is the version string that the gate settles.
 - 2026-10-03: T3 gate posed with the agent's five recommendations. Jeff chose escalation. Blocked on RB06 (`cairn/reviews/archive/RB06-pid5bfpm-api.md`). The brief commit lands on the milestone branch, not main, because a status edit on main conflicts with the branch's ROADMAP row.
 - 2026-10-03: RR06 ingested (Fable subagent). It accepts the five gate recommendations and adds a domain-grouped row order, omega `NA` under 3 items, and no total score. Promoted as D-088. Triage is in Decisions. Minor amendment: T2 and T3 name the new work. Status back to in-progress.
+- 2026-10-03: T2 done. `data-raw/pid_bfpm_key.csv` feeds `pid_items$BFPM` (after `BF`), `pid_scales$BFPM` and the new `pid_bfpm_domains`. The regenerated FULL, SF and BF elements and `pid_domains` are `identical()` to the old files, and every old `pid_items` column is unchanged. AC1's keying test failed on two planted key errors (a swapped pair, a facet moved to another domain) and passes on the real key.
+- 2026-10-03: T2 choice: `tibble::add_column()` keeps readr's class and `spec` on `pid_items`. The spec stays the record of `pid_items.csv` and does not list BFPM.
+- 2026-10-03: T2 found that `test-plot_pid5.R` built its cases from `names(pid_scales)`, which RR06 missed. The cases now come from `plot_pid5()`'s own `version` choices.
 
 ## Decisions
 
