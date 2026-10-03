@@ -2,13 +2,19 @@
 #'
 #' Compute per-scale internal-consistency reliability — Cronbach's alpha and
 #' McDonald's omega — for the Personality Inventory for DSM-5: full version
-#' (PID-5, 220 items), short form (PID-5-SF, 100 items), or brief form (PID-5-BF,
-#' 25 items). Reliability is estimated on the reverse-keyed item responses, at
-#' the facet level for FULL/SF and the domain level for BF (the same scales
-#' [score_pid5()] outputs, before FULL/SF domain aggregation). The BF version
-#' also returns a `Total` row covering all 25 items; note that this scale spans
-#' five heterogeneous domains, so its internal consistency is not comparable to
-#' a domain's and is reported without further interpretation.
+#' (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
+#' 25 items), or modified brief form (PID5BF+M, 36 items). Reliability is
+#' estimated on the reverse-keyed item responses, at the facet level for FULL/SF
+#' and the domain level for BF (the same scales [score_pid5()] outputs, before
+#' FULL/SF domain aggregation). The BF version also returns a `Total` row
+#' covering all 25 items; note that this scale spans five heterogeneous domains,
+#' so its internal consistency is not comparable to a domain's and is reported
+#' without further interpretation.
+#'
+#' The BFPM version returns both levels: its 18 two-item facets, then its 6
+#' domains, each estimated over the 6 items of its 3 facets (the map is in
+#' [pid_bfpm_domains]). Omega is `NA` for every facet, because a one-factor
+#' model of 2 items is not identified; alpha is reported for all 24 rows.
 #'
 #' @param data A data frame containing (at least) all the PID items (numerically
 #'   scored and in order).
@@ -31,7 +37,8 @@
 #'   `haven::zap_missing()` leaves it unchanged, so set the values its
 #'   `na_values` or `na_range` attribute declares to `NA` first.
 #' @param version A string indicating the version of the PID to score: "FULL",
-#'   "SF", or "BF". Will be automatically capitalized. (default = `"FULL"`)
+#'   "SF", "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
+#'   capitalized. (default = `"FULL"`)
 #' @param srange An optional numeric vector specifying the minimum and maximum
 #'   values of the items, used for reverse-coding. (default = `c(0, 3)`)
 #' @param alpha Optional logical; if `TRUE`, include a column of Cronbach's alpha
@@ -44,7 +51,8 @@
 #'   deletion) and omega by [calc_omega()] (one-factor lavaan CFA, FIML). A scale
 #'   whose estimate cannot be computed (e.g. too few items or, for omega, a
 #'   non-converging CFA or an uninstalled \pkg{lavaan}) is returned as `NA`
-#'   rather than aborting the call.
+#'   rather than aborting the call. Omega needs at least 3 items: for a scale
+#'   with fewer, no model is fitted and omega is `NA`.
 #'
 #' @return A \link[tibble]{tibble} with one row per scale and columns `Scale`
 #'   (the scale's canonical display name, as the instrument's keying table spells
@@ -60,18 +68,19 @@
 reliability_pid5 <- function(
   data,
   items,
-  version = c("FULL", "SF", "BF"),
+  version = c("FULL", "SF", "BF", "BFPM"),
   srange = c(0, 3),
   alpha = TRUE,
   omega = TRUE
 ) {
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM"))
   n_items <- switch(
     version,
     "FULL" = 220,
     "SF" = 100,
     "BF" = 25,
+    "BFPM" = 36,
     cli::cli_abort("Invalid `version` argument")
   )
 
@@ -86,6 +95,22 @@ reliability_pid5 <- function(
   } else {
     pid_scales[[version]]$Facet
   }
+  scale_stems <- pid_scales[[version]]$camelCase
+
+  ## BFPM adds its 6 domain rows after its 18 facets (D-088(c)). Each domain's
+  ## items are the items of its 3 facets, built here from `pid_bfpm_domains`
+  ## rather than stored, so `pid_scales$BFPM` holds facets only and
+  ## score_pid5() never scores a domain from its items.
+  if (version == "BFPM") {
+    domain_items <- lapply(
+      pid_bfpm_domains$facetStems,
+      function(f) unlist(items_scales[f], use.names = FALSE)
+    )
+    names(domain_items) <- pid_bfpm_domains$camelCase
+    items_scales <- c(items_scales, domain_items)
+    scale_names <- c(scale_names, pid_bfpm_domains$Domain)
+    scale_stems <- c(scale_stems, pid_bfpm_domains$camelCase)
+  }
 
   reliability_engine(
     data = data,
@@ -94,7 +119,7 @@ reliability_pid5 <- function(
     reverse_items = reverse_items,
     items_scales = items_scales,
     scale_names = scale_names,
-    scale_stems = pid_scales[[version]]$camelCase,
+    scale_stems = scale_stems,
     srange = srange,
     alpha = alpha,
     omega = omega

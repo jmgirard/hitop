@@ -183,6 +183,31 @@ test_that("reliability_*() return a per-scale tibble with the requested columns"
   expect_equal(rel_bf$nItems[rel_bf$Scale == "Total"], 25L)
 })
 
+test_that("reliability_pid5(BFPM) fits no 2-item omega and raises no warning", {
+  skip_if_not_installed("lavaan")
+  # Each domain's 6 items share one factor, so the 6 domain models fit cleanly
+  # and any warning would come from a 2-item facet model.
+  set.seed(157)
+  n <- 300
+  domain_of_item <- integer(36)
+  for (d in seq_len(nrow(pid_bfpm_domains))) {
+    facet_items <- unlist(pid_scales$BFPM$itemNumbers[pid_bfpm_domains$facetStems[[d]]])
+    domain_of_item[facet_items] <- d
+  }
+  latent <- matrix(stats::rnorm(n * 6), n, 6)
+  raw <- latent[, domain_of_item] + matrix(stats::rnorm(n * 36, sd = 0.7), n, 36)
+  dat <- as.data.frame(matrix(pmin(3, pmax(0, round(1.5 + raw))), n, 36))
+  names(dat) <- sprintf("pid5bfpm_%02d", 1:36)
+
+  expect_no_warning(
+    rel <- reliability_pid5(dat, items = names(dat), version = "BFPM")
+  )
+  expect_identical(rel$nItems, c(rep(2L, 18), rep(6L, 6)))
+  expect_true(all(is.na(rel$omega[1:18])))
+  expect_false(anyNA(rel$omega[19:24]))
+  expect_false(anyNA(rel$alpha))
+})
+
 test_that("reliability alpha is NA-safe on a zero-variance scale (no abort)", {
   const <- as.data.frame(matrix(2L, nrow = 10, ncol = 45))
   names(const) <- paste0("HBR_", seq_len(45))

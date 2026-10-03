@@ -6,7 +6,7 @@
 \usage{
 rename_pid5_items(
   data,
-  version = c("FULL", "SF", "BF"),
+  version = c("FULL", "SF", "BF", "BFPM"),
   method = c("number", "text"),
   item_cols = NULL,
   item_text = NULL,
@@ -18,15 +18,15 @@ rename_pid5_items(
 \item{data}{A data frame containing the PID-5 items.}
 
 \item{version}{A string specifying the PID-5 form the items belong to:
-\code{"FULL"} (220 items), \code{"SF"} (100 items), or \code{"BF"} (25 items). Matched
-case-insensitively. (default = \code{"FULL"})}
+\code{"FULL"} (220 items), \code{"SF"} (100 items), \code{"BF"} (25 items), or \code{"BFPM"}
+(the 36-item PID5BF+M). Matched case-insensitively. (default = \code{"FULL"})}
 
 \item{method}{A string specifying the matching method: \code{"number"} to rename
 columns spelled \code{from_prefix} followed by an item number, or \code{"text"} to
 match against the literal item prompt text in \code{pid_items$Text}.
 (default = \code{"number"})
 
-The three forms number their items independently, so \code{"number"} reads the
+The forms number their items independently, so \code{"number"} reads the
 digits as an item number of the form named by \code{version}: under
 \code{version = "SF"}, \code{pid_7} is short-form item 7, not the full-form item the
 short form numbers 7. Data labelled by full-form item numbers must be
@@ -46,8 +46,8 @@ to match the exports. (default = \code{"pid_"})}
 
 \item{prefix}{A string pasted literally before each standardized item
 number, which is zero-padded to the width of the form's largest item
-number. \code{NULL} resolves to the form's own stem: \code{"pid5_"}, \code{"pid5sf_"} or
-\code{"pid5bf_"}. (default = \code{NULL})}
+number. \code{NULL} resolves to the form's own stem: \code{"pid5_"}, \code{"pid5sf_"},
+\code{"pid5bf_"} or \code{"pid5bfpm_"}. (default = \code{NULL})}
 }
 \value{
 A data frame with renamed column names for the matched PID-5 items.
@@ -71,7 +71,8 @@ matching either on the item number carried in the current column name or on
 the literal item prompt text. The standard names are the ones the package's
 REDCap and Qualtrics exports write and the shipped datasets carry:
 \code{pid5_001} to \code{pid5_220} for the full form, \code{pid5sf_001} to \code{pid5sf_100} for
-the short form, and \code{pid5bf_01} to \code{pid5bf_25} for the brief form.
+the short form, and \code{pid5bf_01} to \code{pid5bf_25} for the brief form. The
+PID5BF+M names, \code{pid5bfpm_01} to \code{pid5bfpm_36}, follow the same pattern.
 }
 \examples{
 # Rename columns named as this package's datasets were before the rename

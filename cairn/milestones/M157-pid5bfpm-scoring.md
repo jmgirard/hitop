@@ -48,7 +48,7 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 
 - [x] T1: Write the references page for the key sheet: extracted table, scoring rule, provenance. If Jeff uploads Bach et al. (2020), check the key against it and record the result. Add the SOURCES.md row.
 - [x] T2: Add the BF+M column and the `pid_scales` entry in `data-raw/pid_info.R`, and regenerate the data. Build both from a key CSV with its own facet and domain labels, in the key sheet's domain-grouped order. Add `pid_bfpm_domains` (D-088(c)) and its docs. Write the keying test (AC1). Keying content needs Jeff's sign-off before merge.
-- [ ] T3: Pre-implementation gate (settled by RR06 and D-088), then code. The gate's questions (RB tripwire: irreversible-api):
+- [x] T3: Pre-implementation gate (settled by RR06 and D-088), then code. The gate's questions (RB tripwire: irreversible-api):
   - The version string, and the item-name stem for `rename_pid5_items()` and the M158 exports.
   - The output column names, including `anankastia`.
   - Where the facet-to-domain map lives, since `pid_domains` holds only the 5 FULL and SF domains.
@@ -73,6 +73,9 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 - 2026-10-03: T2 done. `data-raw/pid_bfpm_key.csv` feeds `pid_items$BFPM` (after `BF`), `pid_scales$BFPM` and the new `pid_bfpm_domains`. The regenerated FULL, SF and BF elements and `pid_domains` are `identical()` to the old files, and every old `pid_items` column is unchanged. AC1's keying test failed on two planted key errors (a swapped pair, a facet moved to another domain) and passes on the real key.
 - 2026-10-03: T2 choice: `tibble::add_column()` keeps readr's class and `spec` on `pid_items`. The spec stays the record of `pid_items.csv` and does not list BFPM.
 - 2026-10-03: T2 found that `test-plot_pid5.R` built its cases from `names(pid_scales)`, which RR06 missed. The cases now come from `plot_pid5()`'s own `version` choices.
+- 2026-10-03: T3 done. `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` take `"BFPM"`. `score_engine()` needed no change, because its `domain_map` path already scores a domain as the mean of its facet means. The reliability engine skips omega for a scale under 3 items. Its no-warning test passes with the guard and fails on a lavaan warning without it.
+- 2026-10-03: T3 choices: `validity_pid5()` gets its own `version` doc, because it inherited `score_pid5()`'s, which now lists BFPM. The `version` lookups use `if`/`else` rather than a `switch()` fall-through, which `test-warning-classes.R`'s body walker cannot read.
+- 2026-10-03: T4 started early: `data-raw/characterize_bfpm.R` ran at the merge base `75a93d1b` (a scratch worktree) before the T3 code, and captured 80 calls.
 
 ## Decisions
 

@@ -39,7 +39,8 @@ before 2.0 (\code{labelled_spss}) is refused the same way, but
 \code{na_values} or \code{na_range} attribute declares to \code{NA} first.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
-"SF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}
+"SF", or "BF". Will be automatically capitalized. The PID5BF+M has no
+validity scales. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}

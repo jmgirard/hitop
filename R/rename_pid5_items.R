@@ -5,18 +5,19 @@
 #' the literal item prompt text. The standard names are the ones the package's
 #' REDCap and Qualtrics exports write and the shipped datasets carry:
 #' `pid5_001` to `pid5_220` for the full form, `pid5sf_001` to `pid5sf_100` for
-#' the short form, and `pid5bf_01` to `pid5bf_25` for the brief form.
+#' the short form, and `pid5bf_01` to `pid5bf_25` for the brief form. The
+#' PID5BF+M names, `pid5bfpm_01` to `pid5bfpm_36`, follow the same pattern.
 #'
 #' @param data A data frame containing the PID-5 items.
 #' @param version A string specifying the PID-5 form the items belong to:
-#'   `"FULL"` (220 items), `"SF"` (100 items), or `"BF"` (25 items). Matched
-#'   case-insensitively. (default = `"FULL"`)
+#'   `"FULL"` (220 items), `"SF"` (100 items), `"BF"` (25 items), or `"BFPM"`
+#'   (the 36-item PID5BF+M). Matched case-insensitively. (default = `"FULL"`)
 #' @param method A string specifying the matching method: `"number"` to rename
 #'   columns spelled `from_prefix` followed by an item number, or `"text"` to
 #'   match against the literal item prompt text in `pid_items$Text`.
 #'   (default = `"number"`)
 #'
-#'   The three forms number their items independently, so `"number"` reads the
+#'   The forms number their items independently, so `"number"` reads the
 #'   digits as an item number of the form named by `version`: under
 #'   `version = "SF"`, `pid_7` is short-form item 7, not the full-form item the
 #'   short form numbers 7. Data labelled by full-form item numbers must be
@@ -32,8 +33,8 @@
 #'   to match the exports. (default = `"pid_"`)
 #' @param prefix A string pasted literally before each standardized item
 #'   number, which is zero-padded to the width of the form's largest item
-#'   number. `NULL` resolves to the form's own stem: `"pid5_"`, `"pid5sf_"` or
-#'   `"pid5bf_"`. (default = `NULL`)
+#'   number. `NULL` resolves to the form's own stem: `"pid5_"`, `"pid5sf_"`,
+#'   `"pid5bf_"` or `"pid5bfpm_"`. (default = `NULL`)
 #'
 #' @return A data frame with renamed column names for the matched PID-5 items.
 #'   Columns that could not be matched keep their names. Under
@@ -58,7 +59,7 @@
 #' @export
 rename_pid5_items <- function(
   data,
-  version = c("FULL", "SF", "BF"),
+  version = c("FULL", "SF", "BF", "BFPM"),
   method = c("number", "text"),
   item_cols = NULL,
   item_text = NULL,
@@ -74,7 +75,7 @@ rename_pid5_items <- function(
 
   ## Resolve the version, as `score_pid5()` does
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM"))
 
   ## Resolve this form's rows, its output stem and its padding width
   form <- pid_items[!is.na(pid_items[[version]]), ]
@@ -86,14 +87,16 @@ rename_pid5_items <- function(
       version,
       "FULL" = "pid5_",
       "SF" = "pid5sf_",
-      "BF" = "pid5bf_"
+      "BF" = "pid5bf_",
+      "BFPM" = "pid5bfpm_"
     )
   }
   label <- switch(
     version,
     "FULL" = "PID-5",
     "SF" = "PID-5-SF",
-    "BF" = "PID-5-BF"
+    "BF" = "PID-5-BF",
+    "BFPM" = "PID5BF+M"
   )
 
   ## Track matched standard item numbers for the final summary warning
