@@ -8,11 +8,12 @@
 #
 # Item range is c(0, 3). On the full form, 16 items are reverse-keyed
 # (reverse(x) = 3 - x): 7,30,35,58,87,90,96,97,98,131,142,155,164,177,210,215.
-# The SF and BF contain NO reverse-keyed items (see test-keying.R).
+# The SF, BF and BFPM contain NO reverse-keyed items (see test-keying.R).
 #
-# score_pid5() outputs 25 facets for FULL/SF and 5 domains for BF; it does NOT
-# output FULL/SF domains (that feature + its domain->facet oracle is M007). So
-# these fixtures cover FULL/SF facets, BF domains, and all validity scales only.
+# These fixtures were written for FULL/SF facets, BF domains and all validity
+# scales (M002). The FULL/SF domain expectations came later (M007) and live in
+# test-score_pid5.R. fx_pid5bfpm() covers the PID5BF+M's facets and domains,
+# with its own header below.
 
 # ---- Full PID-5 (220 items) -------------------------------------------------
 #
@@ -182,6 +183,15 @@ fx_pid5bf <- function() {
 #         would be (1 + 3 + 0 + 3 + 3)/5 = 2).
 #       "apa" and "complete": RIG, ECC, anankastia and psychoticism are NA.
 #       Every other scale = R3.
+# The PID-5 item number at each BF+M position 1 to 36, typed from the key sheet,
+# p. 2 (cairn/references/fuberlin2020pid5bfpm.md), so tests can reach an item's
+# text through `pid_items$FULL` rather than through `pid_items$BFPM`.
+bfpm_pid5_numbers <- c(
+   62, 162, 129,  82, 194, 123, 109, 126,   4,  23,  25, 140,  # BF+M 1-12
+   50, 187,   6,  89,  44, 176, 122, 219, 160, 136, 209, 220,  # BF+M 13-24
+  110, 218,  17, 189, 185,  34,  64, 197, 132, 108,  77, 115   # BF+M 25-36
+)
+
 fx_pid5bfpm <- function() {
   r3 <- c(
     0L, 1L, 2L, 0L, 1L, 3L, 1L, 3L, 0L, 2L, 0L, 1L,   # items 1-12

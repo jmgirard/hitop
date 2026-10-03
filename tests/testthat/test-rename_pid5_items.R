@@ -330,6 +330,21 @@ test_that("version = 'BFPM' renames the 36 items to pid5bfpm_01 to pid5bfpm_36",
   expect_identical(colnames(res), c(sprintf("pid5bfpm_%02d", 1:36), "pid_37"))
 })
 
+test_that("version = 'BFPM' matches all 36 item texts, in any column order", {
+  # Each text reached through its typed PID-5 number, not through
+  # `pid_items$BFPM`. The columns are given in reverse BF+M order.
+  bfpm <- 36:1
+  texts <- pid_items$Text[match(bfpm_pid5_numbers[bfpm], pid_items$FULL)]
+  cols <- paste0("q", seq_along(bfpm))
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = 36, dimnames = list(NULL, cols)))
+  expect_silent(
+    res <- rename_pid5_items(
+      df, version = "BFPM", method = "text", item_cols = cols, item_text = texts
+    )
+  )
+  expect_identical(colnames(res), sprintf("pid5bfpm_%02d", bfpm))
+})
+
 test_that("version = 'BFPM' matches item text to the BF+M number", {
   # BF+M item 6 is PID-5 item 123 (key sheet, p. 2); its text as `pid_items`
   # holds it, typed here.

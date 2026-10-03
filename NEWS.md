@@ -7,8 +7,8 @@
   2 items each and 6 domains, Anankastia among them, as item means on the 0
   to 3 scale. Each domain is the mean of its 3 facets. The form's own key
   sums the items, so its values are twice these on complete data. Under the
-  default `missing = "apa"`, any missing item makes its facet `NA`, the same
-  output as `missing = "complete"`. `reliability_pid5()`,
+  default `missing = "apa"`, any missing item makes its facet `NA`. With
+  whole-number responses this is the same output as `missing = "complete"`. `reliability_pid5()`,
   `rename_pid5_items()` and `label_pid5()` also take `version = "BFPM"`. Its
   item columns are `pid5bfpm_01` to `pid5bfpm_36`. `reliability_pid5()`
   returns the 18 facets and then the 6 domains. The keying is in a new
@@ -465,6 +465,13 @@
   notice can silence it by class.
 
 ## Breaking changes
+
+* **`version = "B"` no longer means the PID-5-BF.** The PID-5 functions
+  match `version` without regard to case and accept a unique abbreviation.
+  `"B"` used to abbreviate `"BF"` only. It now also abbreviates `"BFPM"`, so
+  `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and
+  `label_pid5()` refuse it. Write `"BF"`. An abbreviation such as `"BFP"`
+  selects the PID5BF+M.
 
 * **A HiTOP-SR module edited by hand is refused.** `score_hitopsr()`,
   `reliability_hitopsr()`, `generate_docx_hitopsr()`,

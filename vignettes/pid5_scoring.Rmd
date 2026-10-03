@@ -219,13 +219,13 @@ These are item means on the 0 to 3 scale, as for the other forms. The form's pub
 head(2 * bfpm_scores$pid_anankastia)
 ```
 
-No missing-data rule is published for the PID5BF+M. Under the default `missing = "apa"`, any missing item makes its facet `NA`, and an `NA` facet makes its domain `NA`, which is the same output as `missing = "complete"`. With `missing = "available"`, a facet can come from one item and a domain from one or two facets.
+No missing-data rule is published for the PID5BF+M. Under the default `missing = "apa"`, any missing item makes its facet `NA`, and an `NA` facet makes its domain `NA`. With whole-number responses that is the same output as `missing = "complete"`. With `missing = "available"`, a facet can come from one item and a domain from one or two facets.
 
 `reliability_pid5()` returns the 18 facets and then the 6 domains. Omega is `NA` for every 2-item facet, because a one-factor model of 2 items is not identified. These simulated responses are random, so the estimates here are poor: some domain omegas also fail and come back `NA`, and the chunk hides the warnings these fits raise.
 
 ```{r bfpm-reliability}
 #| warning: false
-reliability_pid5(sim_bfpm, items = 1:36, version = "BFPM")
+print(reliability_pid5(sim_bfpm, items = 1:36, version = "BFPM"), n = 24)
 ```
 
 `rename_pid5_items()` and `label_pid5()` also take `version = "BFPM"`. The PID5BF+M has no validity scales, and the package has no norms or profile plot for it.

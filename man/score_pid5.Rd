@@ -109,28 +109,6 @@ proration rule; use \code{missing = "available"} or \code{missing = "complete"} 
 the traditional \code{rowMeans()} behaviors. For per-scale reliability estimates
 (Cronbach's alpha, McDonald's omega), use \code{\link[=reliability_pid5]{reliability_pid5()}}.
 
-\subsection{The PID-5-BF total score}{
-
-\code{version = "BF"} returns a \code{total} column after its 5 domains. Markon et al.
-(2024, p. 23) define it as the item-level mean over \strong{all 25 items}, not
-the mean of the 5 domain means: the total "can be computed by averaging the
-overall score by the total number of items in the measure (i.e., 25)". With
-five equal-sized domains the two definitions coincide on complete data and
-differ only when items are missing, where the published rule above governs.
-
-The total is scored like any other scale, so \code{missing} applies to it at the
-25-item level. Under \code{missing = "apa"} that means it is \code{NA} when more than
-a quarter of the 25 items are unanswered (7 or more) and prorated otherwise,
-independently of the domains. Because a 5-item domain is dropped at 2
-unanswered items while the total tolerates 6, \strong{a total can be reported
-alongside one or more \code{NA} domains} (at most 3 of the 5; blanking all five
-requires 10 unanswered items, which blanks the total as well). This is the
-published rule applied as written, not an oversight.
-
-The FULL, SF and BFPM versions have no total score: the PID-5 book defines
-one only for the brief form, and the PID5BF+M sources define none.
-}
-
 \subsection{The PID5BF+M}{
 
 \code{version = "BFPM"} scores the PID5BF+M of Bach et al. (2020), a 36-item
@@ -153,9 +131,32 @@ sums for a domain. On complete data, the key's facet sum is
 No missing-data rule is published for this form. Under the default
 \code{missing = "apa"}, the 25\% rule applied to a 2-item facet means that any
 missing item makes the facet \code{NA}, and an \code{NA} facet makes its domain
-\code{NA}. So \code{"apa"} gives the same output as \code{"complete"} here. Under
-\code{missing = "available"}, a facet can be scored from one item and a domain
-from one or two of its facets.
+\code{NA}. So with whole-number responses \code{"apa"} gives the same output as
+\code{"complete"} here. (The APA rule rounds each scale's sum, so responses
+with decimals can differ.) Under \code{missing = "available"}, a facet can be
+scored from one item and a domain from one or two of its facets.
+}
+
+\subsection{The PID-5-BF total score}{
+
+\code{version = "BF"} returns a \code{total} column after its 5 domains. Markon et al.
+(2024, p. 23) define it as the item-level mean over \strong{all 25 items}, not
+the mean of the 5 domain means: the total "can be computed by averaging the
+overall score by the total number of items in the measure (i.e., 25)". With
+five equal-sized domains the two definitions coincide on complete data and
+differ only when items are missing, where the published rule above governs.
+
+The total is scored like any other scale, so \code{missing} applies to it at the
+25-item level. Under \code{missing = "apa"} that means it is \code{NA} when more than
+a quarter of the 25 items are unanswered (7 or more) and prorated otherwise,
+independently of the domains. Because a 5-item domain is dropped at 2
+unanswered items while the total tolerates 6, \strong{a total can be reported
+alongside one or more \code{NA} domains} (at most 3 of the 5; blanking all five
+requires 10 unanswered items, which blanks the total as well). This is the
+published rule applied as written, not an oversight.
+
+The FULL, SF and BFPM versions have no total score: the PID-5 book defines
+one only for the brief form, and the PID5BF+M sources define none.
 
 \strong{Errors.} With \code{append = TRUE}, a column of \code{data} whose name this call
 would also produce is an error rather than an overwrite or a duplicated
@@ -181,6 +182,14 @@ score_pid5(sim_pid5sf, items = sprintf("pid5sf_\%03d", 1:100), version = "SF",
 # replace it with.
 score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
            append = FALSE)
+
+# PID5BF+M (18 facets + 6 domains). No BF+M dataset ships, but every BF+M
+# item is a PID-5 item, so take its 36 items from the full-form data in
+# BF+M order.
+bfpm_rows <- pid_items[!is.na(pid_items$BFPM), ]
+bfpm_rows <- bfpm_rows[order(bfpm_rows$BFPM), ]
+sim_bfpm <- sim_pid5[sprintf("pid5_\%03d", bfpm_rows$FULL)]
+score_pid5(sim_bfpm, items = 1:36, version = "BFPM", append = FALSE)
 
 }
 \references{

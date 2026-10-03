@@ -24,6 +24,11 @@ Spanemberg, L., Strus, W., Thimm, J. C., Wright, A. G. C., & Zimmermann, J.
 (2020). International assessment of DSM-5 and ICD-11 personality disorder
 traits: Toward a common nosology in DSM-5.1. \emph{Psychopathology, 53}(3-4),
 179-188. \doi{10.1159/000507589}
+
+The keying itself is transcribed from the form's coding scheme: Kerber,
+A. (2020). \emph{Persönlichkeitsinventar für DSM-5 und ICD-11: Kurzform
+Modifiziert (PID5BF+ M)} [Questionnaire and coding scheme, German].
+Freie Universität Berlin, p. 2.
 }
 \usage{
 pid_bfpm_domains

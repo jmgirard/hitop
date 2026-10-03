@@ -204,11 +204,17 @@ test_that("reliability_pid5(BFPM) returns 18 facet rows, then 6 domain rows", {
   ))
   expect_identical(rel$nItems, c(rep(2L, 18), rep(6L, 6)))
 
-  # Each row's alpha is over the items the key sheet gives it: the Perfectionism
-  # pair (6, 18) and the six Anankastia items (6, 18, 12, 24, 30, 36).
+  # Each row's alpha is over the items the key sheet gives it, typed here in
+  # the rows' order: 18 BF+M pairs, then each domain's 3 pairs.
+  pairs <- list(
+    c(1, 19), c(7, 25), c(13, 31), c(4, 22), c(10, 28), c(16, 34),
+    c(2, 20), c(8, 26), c(14, 32), c(3, 21), c(9, 27), c(15, 33),
+    c(6, 18), c(12, 24), c(30, 36), c(5, 23), c(11, 29), c(17, 35)
+  )
+  domains <- lapply(0:5, function(d) unlist(pairs[d * 3 + 1:3]))
   di <- as.data.frame(lapply(x, as.numeric))
-  expect_equal(rel$alpha[13], calc_alpha(di[c(6, 18)]))
-  expect_equal(rel$alpha[23], calc_alpha(di[c(6, 18, 12, 24, 30, 36)]))
+  expected <- vapply(c(pairs, domains), function(i) calc_alpha(di[i]), numeric(1))
+  expect_equal(rel$alpha, expected)
 })
 
 test_that("reliability_pid5(BFPM) fits no 2-item omega and raises no warning", {

@@ -626,6 +626,36 @@ test_that("BFPM 'apa' gives the same output as 'complete' on 2-item facets", {
   )
 })
 
+test_that("BFPM standard errors follow the facet and domain rules", {
+  x <- fx_pid5bfpm()
+  d <- hush_se(score_pid5(x, items = 1:36, version = "BFPM",
+                          missing = "available", calc_se = TRUE, append = FALSE))
+  # R3: Emotional Lability items (1, 19) = (0, 1): sd 0.7071 / sqrt(2) = 0.5.
+  expect_equal(d$pid_emotionalLability_se[3], 0.5)
+  # R3: negativeAffectivity facets 0.5, 1.5, 3 (mean 5/3): squared deviations
+  # 49/36 + 1/36 + 64/36 = 114/36, variance 57/36, so SE = sqrt(57/36) / sqrt(3).
+  expect_equal(d$pid_negativeAffectivity_se[3], sqrt(57 / 36) / sqrt(3))
+  # R3: anankastia facets 2, 0.5, 1 (mean 7/6): squared deviations
+  # 25/36 + 16/36 + 1/36 = 42/36, variance 21/36, so SE = sqrt(21/36) / sqrt(3).
+  expect_equal(d$pid_anankastia_se[3], sqrt(21 / 36) / sqrt(3))
+  # R4: Emotional Lability from item 19 alone has a score but no SE.
+  expect_equal(d$pid_emotionalLability[4], 1)
+  expect_true(is.na(d$pid_emotionalLability_se[4]))
+})
+
+test_that("version abbreviations: 'B' is ambiguous and 'BFP' selects BFPM", {
+  x <- fx_pid5bfpm()
+  expect_error(
+    score_pid5(x, items = 1:36, version = "B"),
+    "should be one of",
+    fixed = TRUE
+  )
+  expect_identical(
+    score_pid5(x, items = 1:36, version = "bfp", append = FALSE),
+    score_pid5(x, items = 1:36, version = "BFPM", append = FALSE)
+  )
+})
+
 test_that("BFPM refuses a data frame with the wrong number of items", {
   x <- fx_pid5bfpm()
   expect_error(
