@@ -9,7 +9,7 @@ _Pre-migration history: `cairn/legacy/` and git log (M001–M017; next ID M117).
 |---|---|---|---|---|---|
 | M144 | HiTOP-DAT Word forms and REDCap dictionary | planned | M143 | normal | milestones/M144-hitopdat-word-redcap.md |
 | M145 | HiTOP-DAT Qualtrics import file | planned | M143, M144 | normal | milestones/M145-hitopdat-qualtrics.md |
-| M157 | PID5BF+M keying and scoring | blocked | — | normal | milestones/M157-pid5bfpm-scoring.md |
+| M157 | PID5BF+M keying and scoring | in-progress | — | normal | milestones/M157-pid5bfpm-scoring.md |
 | M158 | PID5BF+M forms | planned | M157 | normal | milestones/M158-pid5bfpm-forms.md |
 | M159 | PID-5 informant form keying and scoring | planned | M157 | normal | milestones/M159-pid5irf-scoring.md |
 | M160 | PID-5 informant forms | planned | M159 | normal | milestones/M160-pid5irf-forms.md |

@@ -1,6 +1,6 @@
 # M157: PID5BF+M keying and scoring
 
-- **Status:** blocked
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -47,15 +47,15 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 ## Tasks
 
 - [x] T1: Write the references page for the key sheet: extracted table, scoring rule, provenance. If Jeff uploads Bach et al. (2020), check the key against it and record the result. Add the SOURCES.md row.
-- [ ] T2: Add the BF+M column and the `pid_scales` entry in `data-raw/pid_info.R`, and regenerate the data. Write the keying test (AC1). Keying content needs Jeff's sign-off before merge.
-- [ ] T3: Pre-implementation gate, then code. Settle these questions (RB tripwire: irreversible-api):
+- [ ] T2: Add the BF+M column and the `pid_scales` entry in `data-raw/pid_info.R`, and regenerate the data. Build both from a key CSV with its own facet and domain labels, in the key sheet's domain-grouped order. Add `pid_bfpm_domains` (D-088(c)) and its docs. Write the keying test (AC1). Keying content needs Jeff's sign-off before merge.
+- [ ] T3: Pre-implementation gate (settled by RR06 and D-088), then code. The gate's questions (RB tripwire: irreversible-api):
   - The version string, and the item-name stem for `rename_pid5_items()` and the M158 exports.
   - The output column names, including `anankastia`.
   - Where the facet-to-domain map lives, since `pid_domains` holds only the 5 FULL and SF domains.
   - The scoring metric. The key sheet sums each facet's 2 items and averages the 3 facet sums for a domain. The package reports item means elsewhere.
   - The missing-data rule. The key sheet states no proration rule.
 
-  Then thread the version through `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()`. If `score_engine()` cannot express the chosen metric, teach it the metric.
+  Then thread the version through `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()`. If `score_engine()` cannot express the chosen metric, teach it the metric. `reliability_pid5()` adds the 6 domain rows from `pid_bfpm_domains`. `label_pid5(target = "scales")` reads that table for BFPM. The reliability engine reports omega as `NA` for a scale with fewer than 3 items (D-088(f)), with a test that BFPM reliability emits no warning.
 - [ ] T4: Write the hand-computed fixture tests (AC2, AC4). Write the characterization script (AC3) and run it at the merge base before the version code lands.
 - [ ] T5: Update the help page, the vignette section and NEWS. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
@@ -68,8 +68,11 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 - 2026-10-03: implement started on branch `m157-pid5bfpm-scoring`. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit.
 - 2026-10-03: T1 done. Pages `references/fuberlin2020pid5bfpm.md` and `references/bach2020.md`, and a `BFPM` row in SOURCES.md. Bach et al. (2020) was already on the shelf as `bach2020a.pdf`. Its p. 181 confirms the 6 anankastia PID-5 items (123, 176, 140, 220, 34, 115) and the domain rule. Its Appendix A, the full key, is not on the shelf. All 36 key-sheet PID-5 numbers match the German item at their BF+M position in pair order.
 - 2026-10-03: minor amendment: T2 now runs after the T3 gate, because the `pid_items` column name is the version string that the gate settles.
-- 2026-10-03: T3 gate posed with the agent's five recommendations. Jeff chose escalation. Blocked on RB06 (`cairn/reviews/RB06-pid5bfpm-api.md`). The brief commit lands on the milestone branch, not main, because a status edit on main conflicts with the branch's ROADMAP row.
+- 2026-10-03: T3 gate posed with the agent's five recommendations. Jeff chose escalation. Blocked on RB06 (`cairn/reviews/archive/RB06-pid5bfpm-api.md`). The brief commit lands on the milestone branch, not main, because a status edit on main conflicts with the branch's ROADMAP row.
+- 2026-10-03: RR06 ingested (Fable subagent). It accepts the five gate recommendations and adds a domain-grouped row order, omega `NA` under 3 items, and no total score. Promoted as D-088. Triage is in Decisions. Minor amendment: T2 and T3 name the new work. Status back to in-progress.
 
 ## Decisions
+
+- 2026-10-03 (RR06, triage): recommendations 1 to 6 and 8 applied as D-088 (a) to (e) and (g). Recommendation 7 applied as D-088(f), with the omega guard in the reliability engine rather than in `calc_omega()`. `calc_omega()` is exported, and a guard there changes its result for a direct 2-item call. No shipped scale has fewer than 3 items, so the engine guard changes no existing output. Recommendation 9 (the rejected alternatives) is recorded in D-088. Recommendation 10: the `calc_se` note on 1-item facets goes into the help text in T5, and the scoring-table note goes to M158's work log.
 
 ## Review
