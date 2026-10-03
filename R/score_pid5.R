@@ -1,8 +1,9 @@
 #' Score the Personality Inventory for DSM-5
 #'
 #' Calculate scale scores on the Personality Inventory for DSM-5: full version
-#' (PID-5, 220 items), short form version (PID-5-SF, 100 items), or brief form
-#' version (PID-5-BF, 25 items) from item-level data.
+#' (PID-5, 220 items), short form version (PID-5-SF, 100 items), brief form
+#' version (PID-5-BF, 25 items), or modified brief form (PID5BF+M, 36 items;
+#' Bach et al., 2020) from item-level data.
 #'
 #' @param data A data frame containing (at least) all the PID items (numerically
 #'   scored and in order).
@@ -38,7 +39,8 @@
 #'   scoring key: a facet or domain-item scale with more than 25% of its items
 #'   unanswered is set to `NA`, and otherwise the raw score is prorated to the
 #'   full item count and rounded to the nearest whole number before averaging (a
-#'   FULL/SF domain is `NA` if any one of its three contributing facets is `NA`).
+#'   FULL, SF or BFPM domain is `NA` if any one of its three contributing facets
+#'   is `NA`).
 #'   `"available"` averages whatever items are present (`rowMeans(na.rm = TRUE)`).
 #'   `"complete"` returns `NA` for any scale with a missing item
 #'   (`rowMeans(na.rm = FALSE)`). With no missing items the three agree. (default
@@ -50,13 +52,16 @@
 #'   no replacement for it on this instrument; for measurement precision see
 #'   [reliability_pid5()]. What it does while it lasts:
 #'   an optional logical indicating whether to calculate a
-#'   standard error for each scale score. For the 25 facets, and for the brief
+#'   standard error for each scale score. For the facets, and for the brief
 #'   form's domains and total, this is the SD of the items the respondent
 #'   actually answered divided by the square root of how many of those items
-#'   they answered. The FULL and SF domain scores are means of three facet
-#'   scores rather than of items, so their standard errors are taken one level
-#'   up: the SD of the three contributing facet scores divided by the square
-#'   root of 3. Standard errors are `NA` wherever their scale score is `NA`.
+#'   they answered. The FULL, SF and BFPM domain scores are means of three
+#'   facet scores rather than of items, so their standard errors are taken one
+#'   level up: the SD of the three contributing facet scores divided by the
+#'   square root of 3. Standard errors are `NA` wherever their scale score is
+#'   `NA`. A BFPM facet scored from one answered item under
+#'   `missing = "available"` has a score but an `NA` standard error, because
+#'   the SD of one value is undefined.
 #'   Each one summarizes how much a respondent's answers varied within a scale.
 #'   It is not a standard error of measurement — no reliability estimate enters
 #'   it — so it does not give a confidence interval for a respondent's true
@@ -93,8 +98,34 @@
 #'   requires 10 unanswered items, which blanks the total as well). This is the
 #'   published rule applied as written, not an oversight.
 #'
-#'   The FULL and SF versions have no total score: the PID-5 book defines one
-#'   only for the brief form.
+#'   The FULL, SF and BFPM versions have no total score: the PID-5 book defines
+#'   one only for the brief form, and the PID5BF+M sources define none.
+#'
+#' @details ## The PID5BF+M
+#'
+#'   `version = "BFPM"` scores the PID5BF+M of Bach et al. (2020), a 36-item
+#'   form with 6 domains: the 5 PID-5 trait domains and Anankastia. Every item
+#'   is a PID-5 item, and none is reverse-keyed. The output
+#'   is 18 facets of 2 items each, then 6 domains, in the order of the form's
+#'   key: Negative affectivity, Detachment, Antagonism, Disinhibition,
+#'   Anankastia and Psychoticism. Each domain score is the mean of its 3 facet
+#'   scores (the map is stored in [pid_bfpm_domains]). The 15 facets the form
+#'   shares with the PID-5 keep their PID-5 column names. The three Anankastia
+#'   facets are `perfectionism`, `rigidity` and `orderliness`. All six of their
+#'   items are PID-5 Rigid Perfectionism items, but these facets are not parts
+#'   of `rigidPerfectionism`, which this version does not score.
+#'
+#'   Scores are item means on the 0 to 3 scale, as for the other versions. The
+#'   form's published key sums the 2 items of a facet and averages the facet
+#'   sums for a domain. On complete data, the key's facet sum is
+#'   `2 * pid_<facet>` and its domain score is `2 * pid_<domain>`.
+#'
+#'   No missing-data rule is published for this form. Under the default
+#'   `missing = "apa"`, the 25% rule applied to a 2-item facet means that any
+#'   missing item makes the facet `NA`, and an `NA` facet makes its domain
+#'   `NA`. So `"apa"` gives the same output as `"complete"` here. Under
+#'   `missing = "available"`, a facet can be scored from one item and a domain
+#'   from one or two of its facets.
 #'
 #'   **Errors.** With `append = TRUE`, a column of `data` whose name this call
 #'   would also produce is an error rather than an overwrite or a duplicated
@@ -130,6 +161,14 @@
 #'   items: An item response theory investigation of the personality inventory
 #'   for DSM-5. *Psychological Assessment, 27*(4), 1195–1210.
 #'   \doi{10.1037/pas0000120}
+#'
+#' @references Bach, B., Kerber, A., Aluja, A., Bastiaens, T., Keeley, J. W.,
+#'   Claes, L., Fossati, A., Gutierrez, F., Oliveira, S. E. S., Pires, R.,
+#'   Riegel, K. D., Rolland, J.-P., Roskam, I., Sellbom, M., Somma, A.,
+#'   Spanemberg, L., Strus, W., Thimm, J. C., Wright, A. G. C., & Zimmermann, J.
+#'   (2020). International assessment of DSM-5 and ICD-11 personality disorder
+#'   traits: Toward a common nosology in DSM-5.1. *Psychopathology, 53*(3-4),
+#'   179-188. \doi{10.1159/000507589} The source of the PID5BF+M.
 #'
 #' @examples
 #' # Score the full PID-5 (25 facets + 5 domains) from the simulated data

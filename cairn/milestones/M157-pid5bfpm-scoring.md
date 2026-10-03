@@ -78,6 +78,7 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 - 2026-10-03: T4 started early: `data-raw/characterize_bfpm.R` ran at the merge base `75a93d1b` (a scratch worktree) before the T3 code, and captured 80 calls.
 - 2026-10-03: T4 done. `fx_pid5bfpm()` has 5 respondents with hand-worked values. Tests cover all 24 columns under the three `missing` modes, a key-pair recomputation, reliability rows, rename and label. Oracles O-008 to O-010 are in `cairn/ORACLES.md`. A rotated domain map failed 30 score assertions, and `pid_domains` in place of `pid_bfpm_domains` failed the label test on Anankastia.
 - 2026-10-03: AC3 run: `characterize_bfpm.R` at the branch head gave 80 of 80 calls `identical()` to the merge-base run. A planted omega threshold of 6 items made it report the 8 omega calls, and the restored code passed.
+- 2026-10-03: T5 in progress (checkpoint). Help pages, the vignette section, NEWS, README roadmap rows, and the DESIGN.md and CLAUDE.md form lists are written. `pkgdown::check_pkgdown()` passes. `devtools::check()` is running, and `build_readme()` waits for it.
 
 ## Decisions
 

@@ -193,6 +193,43 @@ plot_pid5(normed[1, ], version = "FULL", metric = "percentile")
 
 The result is an ordinary ggplot object, so you can restyle it with any ggplot2 layer — `+ ggplot2::labs(title = ...)`, a different theme, and so on.
 
+## The PID5BF+M
+
+The PID5BF+M (Bach et al., 2020, [doi:10.1159/000507589](https://doi.org/10.1159/000507589)) is a 36-item form with 18 facets of 2 items each and 6 domains: the 5 PID-5 trait domains and Anankastia. Every item is a PID-5 item, and no item is reverse-keyed. The `pid_items$BFPM` column gives each item's number on this form. The package names its item columns `pid5bfpm_01` to `pid5bfpm_36`.
+
+The package has no simulated BF+M dataset. To have something to score, we take the 36 BF+M items from `sim_pid5` in BF+M order and rename them.
+
+```{r bfpm-data}
+bfpm_rows <- pid_items[!is.na(pid_items$BFPM), ]
+bfpm_rows <- bfpm_rows[order(bfpm_rows$BFPM), ]
+sim_bfpm <- sim_pid5[sprintf("pid5_%03d", bfpm_rows$FULL)]
+names(sim_bfpm) <- sprintf("pid5bfpm_%02d", bfpm_rows$BFPM)
+```
+
+`score_pid5()` with `version = "BFPM"` returns the 18 facets, then the 6 domains, in the order of the form's key. Each facet is the mean of its 2 items, and each domain is the mean of its 3 facets. The map from domains to facets is in `pid_bfpm_domains`.
+
+```{r bfpm-score}
+bfpm_scores <- score_pid5(sim_bfpm, items = 1:36, version = "BFPM", append = FALSE)
+bfpm_scores
+```
+
+These are item means on the 0 to 3 scale, as for the other forms. The form's published key sums the 2 items of a facet and averages the facet sums for a domain. On complete data, its values are twice the package's:
+
+```{r bfpm-sums}
+head(2 * bfpm_scores$pid_anankastia)
+```
+
+No missing-data rule is published for the PID5BF+M. Under the default `missing = "apa"`, any missing item makes its facet `NA`, and an `NA` facet makes its domain `NA`, which is the same output as `missing = "complete"`. With `missing = "available"`, a facet can come from one item and a domain from one or two facets.
+
+`reliability_pid5()` returns the 18 facets and then the 6 domains. Omega is `NA` for the 2-item facets, because a one-factor model of 2 items is not identified.
+
+```{r bfpm-reliability}
+#| warning: false
+reliability_pid5(sim_bfpm, items = 1:36, version = "BFPM")
+```
+
+`rename_pid5_items()` and `label_pid5()` also take `version = "BFPM"`. The PID5BF+M has no validity scales, and the package has no norms or profile plot for it.
+
 ## Collecting Responses Online with hitop-form
 
 [hitop-form](https://jmgirard.github.io/hitop-form/) is an online form that shows the PID-5, the PID-5-SF or the PID-5-BF in the browser. It needs no survey platform. The item text, response options and instructions come from this package's JSON export of the form. A study link tells the online form where each participant's answers go: a file saved on the participant's own device, which they send to you, or a web address or Supabase table the link names. A Google Sheet's script is one such web address. You download the sheet or the table as one CSV file. The [Collecting Responses Online](https://jmgirard.github.io/hitop/articles/online-collection.html) article walks the Google Sheet route end to end.
