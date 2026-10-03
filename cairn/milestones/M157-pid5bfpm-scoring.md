@@ -1,6 +1,6 @@
 # M157: PID5BF+M keying and scoring
 
-- **Status:** in-progress
+- **Status:** blocked
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -68,6 +68,7 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 - 2026-10-03: implement started on branch `m157-pid5bfpm-scoring`. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit.
 - 2026-10-03: T1 done. Pages `references/fuberlin2020pid5bfpm.md` and `references/bach2020.md`, and a `BFPM` row in SOURCES.md. Bach et al. (2020) was already on the shelf as `bach2020a.pdf`. Its p. 181 confirms the 6 anankastia PID-5 items (123, 176, 140, 220, 34, 115) and the domain rule. Its Appendix A, the full key, is not on the shelf. All 36 key-sheet PID-5 numbers match the German item at their BF+M position in pair order.
 - 2026-10-03: minor amendment: T2 now runs after the T3 gate, because the `pid_items` column name is the version string that the gate settles.
+- 2026-10-03: T3 gate posed with the agent's five recommendations. Jeff chose escalation. Blocked on RB06 (`cairn/reviews/RB06-pid5bfpm-api.md`). The brief commit lands on the milestone branch, not main, because a status edit on main conflicts with the branch's ROADMAP row.
 
 ## Decisions
 
