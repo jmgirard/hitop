@@ -24,9 +24,9 @@ clinical workflows and individual practitioner needs.
 
 - **Scoring & Utilities:** Automated scoring algorithms and
   data-cleaning functions for multiple instrument variants, including
-  the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF), the
-  HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report (HiTOP-BR), and
-  the HiTOP Harmful Substance Use Module (HiTOP-HSUM).
+  the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF,
+  PID5BF+M), the HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report
+  (HiTOP-BR), and the HiTOP Harmful Substance Use Module (HiTOP-HSUM).
 - **Instrument Downloads:** Direct access to downloadable assessment
   resources, including standard paper forms, as well as ready-to-import
   configuration files for popular data collection platforms like
@@ -56,15 +56,15 @@ pak::pak("jmgirard/hitop")
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
-  - [ ] PID-5-BFP (36) - *todo*
+  - [x] PID5BF+M (36)
 - [ ] Add Scoring Functions
   - [x] HiTOP-SR (405)
   - [x] HiTOP-BR (45)
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
+  - [x] PID5BF+M (36)
   - [ ] HiTOP-HSUM (650) - *waiting for feedback*
-  - [ ] PID-5-BFP (36) - *todo*
 - [x] Add Validity Functions
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
@@ -74,16 +74,16 @@ pak::pak("jmgirard/hitop")
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
+  - [x] PID5BF+M (36)
   - [ ] HiTOP-HSUM (650) - *waiting for feedback*
-  - [ ] PID-5-BFP (36) - *todo*
 - [ ] Add Scoring Tutorials
   - [x] HiTOP-SR (405)
   - [x] HiTOP-BR (45)
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
+  - [x] PID5BF+M (36)
   - [ ] HiTOP-HSUM (650) - *waiting for feedback*
-  - [ ] PID-5-BFP (36) - *todo*
 - [ ] Add Instrument Export Functions
   - [x] HiTOP-SR (405)
   - [x] HiTOP-BR (45)
@@ -91,7 +91,7 @@ pak::pak("jmgirard/hitop")
   - [x] PID-5 (220)
   - [x] PID-5-SF (100)
   - [x] PID-5-BF (25)
-  - [ ] PID-5-BFP (36) - *todo*
+  - [ ] PID5BF+M (36) - *todo*
 
 ### Phase 2
 

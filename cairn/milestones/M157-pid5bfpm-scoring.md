@@ -57,7 +57,7 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 
   Then thread the version through `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and `label_pid5()`. If `score_engine()` cannot express the chosen metric, teach it the metric. `reliability_pid5()` adds the 6 domain rows from `pid_bfpm_domains`. `label_pid5(target = "scales")` reads that table for BFPM. The reliability engine reports omega as `NA` for a scale with fewer than 3 items (D-088(f)), with a test that BFPM reliability emits no warning.
 - [x] T4: Write the hand-computed fixture tests (AC2, AC4). Write the characterization script (AC3) and run it at the merge base before the version code lands.
-- [ ] T5: Update the help page, the vignette section and NEWS. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
+- [x] T5: Update the help page, the vignette section and NEWS. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
 
@@ -79,6 +79,7 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 - 2026-10-03: T4 done. `fx_pid5bfpm()` has 5 respondents with hand-worked values. Tests cover all 24 columns under the three `missing` modes, a key-pair recomputation, reliability rows, rename and label. Oracles O-008 to O-010 are in `cairn/ORACLES.md`. A rotated domain map failed 30 score assertions, and `pid_domains` in place of `pid_bfpm_domains` failed the label test on Anankastia.
 - 2026-10-03: AC3 run: `characterize_bfpm.R` at the branch head gave 80 of 80 calls `identical()` to the merge-base run. A planted omega threshold of 6 items made it report the 8 omega calls, and the restored code passed.
 - 2026-10-03: T5 in progress (checkpoint). Help pages, the vignette section, NEWS, README roadmap rows, and the DESIGN.md and CLAUDE.md form lists are written. `pkgdown::check_pkgdown()` passes. `devtools::check()` is running, and `build_readme()` waits for it.
+- 2026-10-03: T5 done. `devtools::check()` gave 0 errors, 0 warnings and 0 notes, with the vignette rebuilt. `build_readme()` changed only the PID5BF+M rows. Four help-page statements were run on `fx_pid5bfpm()` before they were written. They are the factor of 2, the `"apa"` rule, the domain from one facet and the one-item `NA` standard error.
 
 ## Decisions
 
