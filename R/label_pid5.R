@@ -17,8 +17,8 @@
 #' @param prefix A string specifying the prefix used on the column names.
 #'   `NULL` resolves to the default for the given `target` and `version`: under
 #'   `target = "items"`, the form's own stem (`"pid5_"`, `"pid5sf_"`,
-#'   `"pid5bf_"` or `"pid5bfpm_"`), the pattern the shipped datasets and the
-#'   package's REDCap export use; under `target = "scales"`, `"pid_"`, which is what
+#'   `"pid5bf_"` or `"pid5bfpm_"`); for the full, short and brief forms this is
+#'   the pattern the shipped datasets and the package's REDCap export use; under `target = "scales"`, `"pid_"`, which is what
 #'   [score_pid5()] writes under its own default `prefix`. (default = `NULL`)
 #'
 #'   Item columns are expected as the prefix followed by the item number

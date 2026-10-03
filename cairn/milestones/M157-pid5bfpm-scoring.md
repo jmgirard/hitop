@@ -1,6 +1,6 @@
 # M157: PID5BF+M keying and scoring
 
-- **Status:** in-progress
+- **Status:** review
 - **Priority:** normal
 - **Depends on:** —
 - **Driving RR:** —
@@ -80,6 +80,8 @@ Researchers can score the 36-item PID5BF+M (Bach et al., 2020) with `score_pid5(
 - 2026-10-03: AC3 run: `characterize_bfpm.R` at the branch head gave 80 of 80 calls `identical()` to the merge-base run. A planted omega threshold of 6 items made it report the 8 omega calls, and the restored code passed.
 - 2026-10-03: T5 in progress (checkpoint). Help pages, the vignette section, NEWS, README roadmap rows, and the DESIGN.md and CLAUDE.md form lists are written. `pkgdown::check_pkgdown()` passes. `devtools::check()` is running, and `build_readme()` waits for it.
 - 2026-10-03: T5 done. `devtools::check()` gave 0 errors, 0 warnings and 0 notes, with the vignette rebuilt. `build_readme()` changed only the PID5BF+M rows. Four help-page statements were run on `fx_pid5bfpm()` before they were written. They are the factor of 2, the `"apa"` rule, the domain from one facet and the one-item `NA` standard error.
+- 2026-10-03: claim audit: 95 claims read, 3 corrected — R/label_pid5.R, R/data.R, vignettes/pid5_scoring.Rmd
+- 2026-10-03: The claim audit's one re-read cleared the label and data fixes. It also corrected the vignette's warning source to these fits, not lavaan alone. Status is now review.
 
 ## Decisions
 

@@ -29,8 +29,8 @@ text attached to an item column and which scale columns are recognized.
 \item{prefix}{A string specifying the prefix used on the column names.
 \code{NULL} resolves to the default for the given \code{target} and \code{version}: under
 \code{target = "items"}, the form's own stem (\code{"pid5_"}, \code{"pid5sf_"},
-\code{"pid5bf_"} or \code{"pid5bfpm_"}), the pattern the shipped datasets and the
-package's REDCap export use; under \code{target = "scales"}, \code{"pid_"}, which is what
+\code{"pid5bf_"} or \code{"pid5bfpm_"}); for the full, short and brief forms this is
+the pattern the shipped datasets and the package's REDCap export use; under \code{target = "scales"}, \code{"pid_"}, which is what
 \code{\link[=score_pid5]{score_pid5()}} writes under its own default \code{prefix}. (default = \code{NULL})
 
 Item columns are expected as the prefix followed by the item number

@@ -12,8 +12,8 @@
 #'   \item{PRD,PRDS}{Item number on the positive impression management response distortion scale full and short forms (integer)}
 #'   \item{SDTD,SDTDS}{Item number on the social desirability-total denial scale full and short forms (integer)}
 #'   \item{Facet}{Name of the PID-5 facet. The PID5BF+M regroups six of the
-#'   Rigid Perfectionism items into its three anankastia facets, which are
-#'   held only in `pid_scales$BFPM`}
+#'   Rigid Perfectionism items into its three anankastia facets, whose item
+#'   membership is held only in `pid_scales$BFPM`}
 #'   \item{Domain}{Name of the domain}
 #'   \item{Text}{Item text, copyright APA}
 #' }
