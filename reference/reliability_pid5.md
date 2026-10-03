@@ -2,10 +2,10 @@
 
 Compute per-scale internal-consistency reliability — Cronbach's alpha
 and McDonald's omega — for the Personality Inventory for DSM-5: full
-version (PID-5, 220 items), short form (PID-5-SF, 100 items), or brief
-form (PID-5-BF, 25 items). Reliability is estimated on the reverse-keyed
-item responses, at the facet level for FULL/SF and the domain level for
-BF (the same scales
+version (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form
+(PID-5-BF, 25 items), or modified brief form (PID5BF+M, 36 items).
+Reliability is estimated on the reverse-keyed item responses, at the
+facet level for FULL/SF and the domain level for BF (the same scales
 [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
 outputs, before FULL/SF domain aggregation). The BF version also returns
 a `Total` row covering all 25 items; note that this scale spans five
@@ -18,7 +18,7 @@ a domain's and is reported without further interpretation.
 reliability_pid5(
   data,
   items,
-  version = c("FULL", "SF", "BF"),
+  version = c("FULL", "SF", "BF", "BFPM"),
   srange = c(0, 3),
   alpha = TRUE,
   omega = TRUE
@@ -57,8 +57,9 @@ reliability_pid5(
 
 - version:
 
-  A string indicating the version of the PID to score: "FULL", "SF", or
-  "BF". Will be automatically capitalized. (default = `"FULL"`)
+  A string indicating the version of the PID to score: "FULL", "SF",
+  "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
+  capitalized. (default = `"FULL"`)
 
 - srange:
 
@@ -87,6 +88,12 @@ the same keying-table row), `nItems` (integer), and (when requested)
 
 ## Details
 
+The BFPM version returns both levels: its 18 two-item facets, then its 6
+domains, each estimated over the 6 items of its 3 facets (the map is in
+[pid_bfpm_domains](https://jmgirard.github.io/hitop/reference/pid_bfpm_domains.md)).
+Omega is `NA` for every facet, because a one-factor model of 2 items is
+not identified; alpha is reported for all 24 rows.
+
 Alpha is computed by
 [`calc_alpha()`](https://jmgirard.github.io/hitop/reference/calc_alpha.md)
 (covariance-based, pairwise deletion) and omega by
@@ -94,6 +101,8 @@ Alpha is computed by
 (one-factor lavaan CFA, FIML). A scale whose estimate cannot be computed
 (e.g. too few items or, for omega, a non-converging CFA or an
 uninstalled lavaan) is returned as `NA` rather than aborting the call.
+Omega needs at least 3 items: for a scale with fewer, no model is fitted
+and omega is `NA`.
 
 ## Examples
 

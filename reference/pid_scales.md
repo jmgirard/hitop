@@ -16,17 +16,21 @@ pid_scales
 
 ## Format
 
-A named [list](https://rdrr.io/r/base/list.html) of length 3 (elements
-`FULL`, `SF`, and `BF`), one per PID-5 version. Each element is a
-[tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
+A named [list](https://rdrr.io/r/base/list.html) of length 4 (elements
+`FULL`, `SF`, `BF`, and `BFPM`), one per PID-5 version. Each element is
+a [tibble](https://tibble.tidyverse.org/reference/tibble.html) with one
 row per scale and 5 columns:
 
 - Facet (named `Domain` in the BF element):
 
-  Name of the scale: the facet for the FULL and SF versions, the domain
-  for the BF version. The BF element carries a sixth row, `Total`, which
-  is not a domain but the whole 25-item form scored as one scale (see
-  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md))
+  Name of the scale: the facet for the FULL, SF, and BFPM versions, the
+  domain for the BF version. The BF element carries a sixth row,
+  `Total`, which is not a domain but the whole 25-item form scored as
+  one scale (see
+  [`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)).
+  The BFPM element holds the 18 facets of the PID5BF+M, 2 items each,
+  grouped by domain in the order of its key; its domains are in
+  [pid_bfpm_domains](https://jmgirard.github.io/hitop/reference/pid_bfpm_domains.md)
 
 - itemdata:
 

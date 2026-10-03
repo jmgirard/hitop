@@ -82,7 +82,7 @@ columns, making them readable by data viewers and reporting packages.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">label_pid5</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  target <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"items"</span>, <span class="st">"scales"</span><span class="op">)</span>,</span>
-<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span><span class="op">)</span>,</span>
+<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span>, <span class="st">"BFPM"</span><span class="op">)</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -103,8 +103,9 @@ columns. (default = <code>"items"</code>)</p></dd>
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
 <dd><p>A string specifying the PID-5 form the columns belong to:
-<code>"FULL"</code> (220 items), <code>"SF"</code> (100 items), or <code>"BF"</code> (25 items). Matched
-case-insensitively. The three forms number their items independently and
+<code>"FULL"</code> (220 items), <code>"SF"</code> (100 items), <code>"BF"</code> (25 items), or <code>"BFPM"</code>
+(the 36-item PID5BF+M). Matched case-insensitively. The forms number their
+items independently and
 score different sets of scales, so the form named here decides both the
 text attached to an item column and which scale columns are recognized.
 (default = <code>"FULL"</code>)</p></dd>
@@ -113,9 +114,9 @@ text attached to an item column and which scale columns are recognized.
 <dt id="arg-prefix">prefix<a class="anchor" aria-label="anchor" href="#arg-prefix"></a></dt>
 <dd><p>A string specifying the prefix used on the column names.
 <code>NULL</code> resolves to the default for the given <code>target</code> and <code>version</code>: under
-<code>target = "items"</code>, the form's own stem (<code>"pid5_"</code>, <code>"pid5sf_"</code> or
-<code>"pid5bf_"</code>), the pattern the shipped datasets and the package's REDCap
-export use; under <code>target = "scales"</code>, <code>"pid_"</code>, which is what
+<code>target = "items"</code>, the form's own stem (<code>"pid5_"</code>, <code>"pid5sf_"</code>,
+<code>"pid5bf_"</code> or <code>"pid5bfpm_"</code>); for the full, short and brief forms this is
+the pattern the shipped datasets and the package's REDCap export use; under <code>target = "scales"</code>, <code>"pid_"</code>, which is what
 <code><a href="score_pid5.html">score_pid5()</a></code> writes under its own default <code>prefix</code>. (default = <code>NULL</code>)</p>
 <p>Item columns are expected as the prefix followed by the item number
 zero-padded to the width of the form's largest item number (<code>pid5_001</code> to

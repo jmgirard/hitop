@@ -10,12 +10,14 @@ matching either on the item number carried in the current column name or on
 the literal item prompt text. The standard names are the ones the package's
 REDCap and Qualtrics exports write and the shipped datasets carry:
 pid5_001 to pid5_220 for the full form, pid5sf_001 to pid5sf_100 for
-the short form, and pid5bf_01 to pid5bf_25 for the brief form."><meta property="og:description" content="Rename data frame columns to the standard PID-5 item names of one form,
+the short form, and pid5bf_01 to pid5bf_25 for the brief form. The
+PID5BF+M names, pid5bfpm_01 to pid5bfpm_36, follow the same pattern."><meta property="og:description" content="Rename data frame columns to the standard PID-5 item names of one form,
 matching either on the item number carried in the current column name or on
 the literal item prompt text. The standard names are the ones the package's
 REDCap and Qualtrics exports write and the shipped datasets carry:
 pid5_001 to pid5_220 for the full form, pid5sf_001 to pid5sf_100 for
-the short form, and pid5bf_01 to pid5bf_25 for the brief form."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
+the short form, and pid5bf_01 to pid5bf_25 for the brief form. The
+PID5BF+M names, pid5bfpm_01 to pid5bfpm_36, follow the same pattern."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -86,14 +88,15 @@ matching either on the item number carried in the current column name or on
 the literal item prompt text. The standard names are the ones the package's
 REDCap and Qualtrics exports write and the shipped datasets carry:
 <code>pid5_001</code> to <code>pid5_220</code> for the full form, <code>pid5sf_001</code> to <code>pid5sf_100</code> for
-the short form, and <code>pid5bf_01</code> to <code>pid5bf_25</code> for the brief form.</p>
+the short form, and <code>pid5bf_01</code> to <code>pid5bf_25</code> for the brief form. The
+PID5BF+M names, <code>pid5bfpm_01</code> to <code>pid5bfpm_36</code>, follow the same pattern.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rename_pid5_items</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span><span class="op">)</span>,</span>
+<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span>, <span class="st">"BFPM"</span><span class="op">)</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"number"</span>, <span class="st">"text"</span><span class="op">)</span>,</span>
 <span>  item_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  item_text <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -112,8 +115,8 @@ the short form, and <code>pid5bf_01</code> to <code>pid5bf_25</code> for the bri
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
 <dd><p>A string specifying the PID-5 form the items belong to:
-<code>"FULL"</code> (220 items), <code>"SF"</code> (100 items), or <code>"BF"</code> (25 items). Matched
-case-insensitively. (default = <code>"FULL"</code>)</p></dd>
+<code>"FULL"</code> (220 items), <code>"SF"</code> (100 items), <code>"BF"</code> (25 items), or <code>"BFPM"</code>
+(the 36-item PID5BF+M). Matched case-insensitively. (default = <code>"FULL"</code>)</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
@@ -121,7 +124,7 @@ case-insensitively. (default = <code>"FULL"</code>)</p></dd>
 columns spelled <code>from_prefix</code> followed by an item number, or <code>"text"</code> to
 match against the literal item prompt text in <code>pid_items$Text</code>.
 (default = <code>"number"</code>)</p>
-<p>The three forms number their items independently, so <code>"number"</code> reads the
+<p>The forms number their items independently, so <code>"number"</code> reads the
 digits as an item number of the form named by <code>version</code>: under
 <code>version = "SF"</code>, <code>pid_7</code> is short-form item 7, not the full-form item the
 short form numbers 7. Data labelled by full-form item numbers must be
@@ -149,8 +152,8 @@ to match the exports. (default = <code>"pid_"</code>)</p></dd>
 <dt id="arg-prefix">prefix<a class="anchor" aria-label="anchor" href="#arg-prefix"></a></dt>
 <dd><p>A string pasted literally before each standardized item
 number, which is zero-padded to the width of the form's largest item
-number. <code>NULL</code> resolves to the form's own stem: <code>"pid5_"</code>, <code>"pid5sf_"</code> or
-<code>"pid5bf_"</code>. (default = <code>NULL</code>)</p></dd>
+number. <code>NULL</code> resolves to the form's own stem: <code>"pid5_"</code>, <code>"pid5sf_"</code>,
+<code>"pid5bf_"</code> or <code>"pid5bfpm_"</code>. (default = <code>NULL</code>)</p></dd>
 
 </dl></div>
     <div class="section level2">

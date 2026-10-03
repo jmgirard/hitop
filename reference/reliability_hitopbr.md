@@ -76,8 +76,9 @@ Alpha is computed by
 (one-factor lavaan CFA, FIML). A scale whose estimate cannot be computed
 (e.g. too few items or, for omega, a non-converging CFA or an
 uninstalled lavaan) is returned as `NA` rather than aborting the call.
-The overlapping `externalizing` and `pFactor` scales are included
-alongside the six base spectra.
+Omega needs at least 3 items: for a scale with fewer, no model is fitted
+and omega is `NA`. The overlapping `externalizing` and `pFactor` scales
+are included alongside the six base spectra.
 
 ## Examples
 

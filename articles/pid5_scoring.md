@@ -488,6 +488,120 @@ The result is an ordinary ggplot object, so you can restyle it with any
 ggplot2 layer — `+ ggplot2::labs(title = ...)`, a different theme, and
 so on.
 
+## The PID5BF+M
+
+The PID5BF+M (Bach et al., 2020,
+[doi:10.1159/000507589](https://doi.org/10.1159/000507589)) is a 36-item
+form with 18 facets of 2 items each and 6 domains: the 5 PID-5 trait
+domains and Anankastia. Every item is a PID-5 item, and no item is
+reverse-keyed. The `pid_items$BFPM` column gives each item’s number on
+this form. The package names its item columns `pid5bfpm_01` to
+`pid5bfpm_36`.
+
+The package has no simulated BF+M dataset. To have something to score,
+we take the 36 BF+M items from `sim_pid5` in BF+M order and rename them.
+
+``` r
+
+bfpm_rows <- pid_items[!is.na(pid_items$BFPM), ]
+bfpm_rows <- bfpm_rows[order(bfpm_rows$BFPM), ]
+sim_bfpm <- sim_pid5[sprintf("pid5_%03d", bfpm_rows$FULL)]
+names(sim_bfpm) <- sprintf("pid5bfpm_%02d", bfpm_rows$BFPM)
+```
+
+[`score_pid5()`](https://jmgirard.github.io/hitop/reference/score_pid5.md)
+with `version = "BFPM"` returns the 18 facets, then the 6 domains, in
+the order of the form’s key. Each facet is the mean of its 2 items, and
+each domain is the mean of its 3 facets. The map from domains to facets
+is in `pid_bfpm_domains`.
+
+``` r
+
+bfpm_scores <- score_pid5(sim_bfpm, items = 1:36, version = "BFPM", append = FALSE)
+bfpm_scores
+#> # A tibble: 100 × 24
+#>    pid_emotionalLability pid_anxiousness pid_separationInsecurity pid_withdrawal
+#>                    <dbl>           <dbl>                    <dbl>          <dbl>
+#>  1                   1.5             1.5                      1.5            2  
+#>  2                   2               0.5                      0              2.5
+#>  3                   1.5             0                        2              1  
+#>  4                   1               1                        0.5            2  
+#>  5                   1               0.5                      1.5            0.5
+#>  6                   1.5             1.5                      2              0.5
+#>  7                   2               1.5                      1              1  
+#>  8                   2.5             1.5                      1              1  
+#>  9                   2               1.5                      3              1.5
+#> 10                   1.5             1                        2              2  
+#> # ℹ 90 more rows
+#> # ℹ 20 more variables: pid_anhedonia <dbl>, pid_intimacyAvoidance <dbl>,
+#> #   pid_manipulativeness <dbl>, pid_deceitfulness <dbl>, pid_grandiosity <dbl>,
+#> #   pid_irresponsibility <dbl>, pid_impulsivity <dbl>,
+#> #   pid_distractibility <dbl>, pid_perfectionism <dbl>, pid_rigidity <dbl>,
+#> #   pid_orderliness <dbl>, pid_unusualBeliefsExperiences <dbl>,
+#> #   pid_eccentricity <dbl>, pid_perceptualDysregulation <dbl>, …
+```
+
+These are item means on the 0 to 3 scale, as for the other forms. The
+form’s published key sums the 2 items of a facet and averages the facet
+sums for a domain. On complete data, its values are twice the package’s:
+
+``` r
+
+head(2 * bfpm_scores$pid_anankastia)
+#> [1] 2.000000 4.000000 4.000000 3.666667 3.000000 3.666667
+```
+
+No missing-data rule is published for the PID5BF+M. Under the default
+`missing = "apa"`, any missing item makes its facet `NA`, and an `NA`
+facet makes its domain `NA`. With whole-number responses that is the
+same output as `missing = "complete"`. With `missing = "available"`, a
+facet can come from one item and a domain from one or two facets.
+
+[`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md)
+returns the 18 facets and then the 6 domains. Omega is `NA` for every
+2-item facet, because a one-factor model of 2 items is not identified.
+These simulated responses are random, so the estimates here are poor:
+some domain omegas also fail and come back `NA`, and the chunk hides the
+warnings these fits raise.
+
+``` r
+
+print(reliability_pid5(sim_bfpm, items = 1:36, version = "BFPM"), n = 24)
+#> # A tibble: 24 × 5
+#>    Scale                         camelCase              nItems    alpha    omega
+#>    <chr>                         <chr>                   <int>    <dbl>    <dbl>
+#>  1 Emotional Lability            emotionalLability           2 -2.06e-1 NA      
+#>  2 Anxiousness                   anxiousness                 2  2.70e-2 NA      
+#>  3 Separation Insecurity         separationInsecurity        2  7.94e-2 NA      
+#>  4 Withdrawal                    withdrawal                  2 -7.60e-2 NA      
+#>  5 Anhedonia                     anhedonia                   2 -1.88e-1 NA      
+#>  6 Intimacy Avoidance            intimacyAvoidance           2 -1.18e-1 NA      
+#>  7 Manipulativeness              manipulativeness            2 -7.03e-1 NA      
+#>  8 Deceitfulness                 deceitfulness               2  8.93e-2 NA      
+#>  9 Grandiosity                   grandiosity                 2 -6.30e-2 NA      
+#> 10 Irresponsibility              irresponsibility            2 -1.26e-1 NA      
+#> 11 Impulsivity                   impulsivity                 2  2.67e-1 NA      
+#> 12 Distractibility               distractibility             2  2.87e-2 NA      
+#> 13 Perfectionism                 perfectionism               2 -2.44e-2 NA      
+#> 14 Rigidity                      rigidity                    2  2.92e-2 NA      
+#> 15 Orderliness                   orderliness                 2  2.49e-2 NA      
+#> 16 Unusual Beliefs & Experiences unusualBeliefsExperie…      2  4.72e-2 NA      
+#> 17 Eccentricity                  eccentricity                2  2.17e-1 NA      
+#> 18 Perceptual Dysregulation      perceptualDysregulati…      2 -3.79e-2 NA      
+#> 19 Negative affectivity          negativeAffectivity         6 -1.30e-1 NA      
+#> 20 Detachment                    detachment                  6 -1.89e-1 NA      
+#> 21 Antagonism                    antagonism                  6 -1.37e-1  5.01e-4
+#> 22 Disinhibition                 disinhibition               6 -1.12e-2 NA      
+#> 23 Anankastia                    anankastia                  6 -3.37e-4  3.67e-2
+#> 24 Psychoticism                  psychoticism                6 -2.64e-1  2.41e-2
+```
+
+[`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
+and
+[`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+also take `version = "BFPM"`. The PID5BF+M has no validity scales, and
+the package has no norms or profile plot for it.
+
 ## Collecting Responses Online with hitop-form
 
 [hitop-form](https://jmgirard.github.io/hitop-form/) is an online form

@@ -1,8 +1,9 @@
 # Score the Personality Inventory for DSM-5
 
 Calculate scale scores on the Personality Inventory for DSM-5: full
-version (PID-5, 220 items), short form version (PID-5-SF, 100 items), or
-brief form version (PID-5-BF, 25 items) from item-level data.
+version (PID-5, 220 items), short form version (PID-5-SF, 100 items),
+brief form version (PID-5-BF, 25 items), or modified brief form
+(PID5BF+M, 36 items; Bach et al., 2020) from item-level data.
 
 ## Usage
 
@@ -10,7 +11,7 @@ brief form version (PID-5-BF, 25 items) from item-level data.
 score_pid5(
   data,
   items,
-  version = c("FULL", "SF", "BF"),
+  version = c("FULL", "SF", "BF", "BFPM"),
   srange = c(0, 3),
   prefix = "pid_",
   missing = c("apa", "available", "complete"),
@@ -54,8 +55,9 @@ score_pid5(
 
 - version:
 
-  A string indicating the version of the PID to score: "FULL", "SF", or
-  "BF". Will be automatically capitalized. (default = `"FULL"`)
+  A string indicating the version of the PID to score: "FULL", "SF",
+  "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
+  capitalized. (default = `"FULL"`)
 
 - srange:
 
@@ -74,11 +76,12 @@ score_pid5(
   APA scoring key: a facet or domain-item scale with more than 25% of
   its items unanswered is set to `NA`, and otherwise the raw score is
   prorated to the full item count and rounded to the nearest whole
-  number before averaging (a FULL/SF domain is `NA` if any one of its
-  three contributing facets is `NA`). `"available"` averages whatever
-  items are present (`rowMeans(na.rm = TRUE)`). `"complete"` returns
-  `NA` for any scale with a missing item (`rowMeans(na.rm = FALSE)`).
-  With no missing items the three agree. (default = `"apa"`)
+  number before averaging (a FULL, SF or BFPM domain is `NA` if any one
+  of its three contributing facets is `NA`). `"available"` averages
+  whatever items are present (`rowMeans(na.rm = TRUE)`). `"complete"`
+  returns `NA` for any scale with a missing item
+  (`rowMeans(na.rm = FALSE)`). With no missing items the three agree.
+  (default = `"apa"`)
 
 - calc_se:
 
@@ -90,18 +93,20 @@ score_pid5(
   precision see
   [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md).
   What it does while it lasts: an optional logical indicating whether to
-  calculate a standard error for each scale score. For the 25 facets,
-  and for the brief form's domains and total, this is the SD of the
-  items the respondent actually answered divided by the square root of
-  how many of those items they answered. The FULL and SF domain scores
+  calculate a standard error for each scale score. For the facets, and
+  for the brief form's domains and total, this is the SD of the items
+  the respondent actually answered divided by the square root of how
+  many of those items they answered. The FULL, SF and BFPM domain scores
   are means of three facet scores rather than of items, so their
   standard errors are taken one level up: the SD of the three
   contributing facet scores divided by the square root of 3. Standard
-  errors are `NA` wherever their scale score is `NA`. Each one
-  summarizes how much a respondent's answers varied within a scale. It
-  is not a standard error of measurement — no reliability estimate
-  enters it — so it does not give a confidence interval for a
-  respondent's true score; for measurement precision see
+  errors are `NA` wherever their scale score is `NA`. A BFPM facet
+  scored from one answered item under `missing = "available"` has a
+  score but an `NA` standard error, because the SD of one value is
+  undefined. Each one summarizes how much a respondent's answers varied
+  within a scale. It is not a standard error of measurement — no
+  reliability estimate enters it — so it does not give a confidence
+  interval for a respondent's true score; for measurement precision see
   [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md).
   (default = `FALSE`)
 
@@ -131,6 +136,35 @@ per-scale reliability estimates (Cronbach's alpha, McDonald's omega),
 use
 [`reliability_pid5()`](https://jmgirard.github.io/hitop/reference/reliability_pid5.md).
 
+### The PID5BF+M
+
+`version = "BFPM"` scores the PID5BF+M of Bach et al. (2020), a 36-item
+form with 6 domains: the 5 PID-5 trait domains and Anankastia. Every
+item is a PID-5 item, and none is reverse-keyed. The output is 18 facets
+of 2 items each, then 6 domains, in the order of the form's key:
+Negative affectivity, Detachment, Antagonism, Disinhibition, Anankastia
+and Psychoticism. Each domain score is the mean of its 3 facet scores
+(the map is stored in
+[pid_bfpm_domains](https://jmgirard.github.io/hitop/reference/pid_bfpm_domains.md)).
+The 15 facets the form shares with the PID-5 keep their PID-5 column
+names. The three Anankastia facets are `perfectionism`, `rigidity` and
+`orderliness`. All six of their items are PID-5 Rigid Perfectionism
+items, but these facets are not parts of `rigidPerfectionism`, which
+this version does not score.
+
+Scores are item means on the 0 to 3 scale, as for the other versions.
+The form's published key sums the 2 items of a facet and averages the
+facet sums for a domain. On complete data, the key's facet sum is
+`2 * pid_<facet>` and its domain score is `2 * pid_<domain>`.
+
+No missing-data rule is published for this form. Under the default
+`missing = "apa"`, the 25% rule applied to a 2-item facet means that any
+missing item makes the facet `NA`, and an `NA` facet makes its domain
+`NA`. So with whole-number responses `"apa"` gives the same output as
+`"complete"` here. (The APA rule rounds each scale's sum, so responses
+with decimals can differ.) Under `missing = "available"`, a facet can be
+scored from one item and a domain from one or two of its facets.
+
 ### The PID-5-BF total score
 
 `version = "BF"` returns a `total` column after its 5 domains. Markon et
@@ -151,8 +185,9 @@ the 5; blanking all five requires 10 unanswered items, which blanks the
 total as well). This is the published rule applied as written, not an
 oversight.
 
-The FULL and SF versions have no total score: the PID-5 book defines one
-only for the brief form.
+The FULL, SF and BFPM versions have no total score: the PID-5 book
+defines one only for the brief form, and the PID5BF+M sources define
+none.
 
 **Errors.** With `append = TRUE`, a column of `data` whose name this
 call would also produce is an error rather than an overwrite or a
@@ -189,6 +224,15 @@ personality disorder trait model can be measured with a reduced set of
 items: An item response theory investigation of the personality
 inventory for DSM-5. *Psychological Assessment, 27*(4), 1195–1210.
 [doi:10.1037/pas0000120](https://doi.org/10.1037/pas0000120)
+
+Bach, B., Kerber, A., Aluja, A., Bastiaens, T., Keeley, J. W., Claes,
+L., Fossati, A., Gutierrez, F., Oliveira, S. E. S., Pires, R., Riegel,
+K. D., Rolland, J.-P., Roskam, I., Sellbom, M., Somma, A., Spanemberg,
+L., Strus, W., Thimm, J. C., Wright, A. G. C., & Zimmermann, J. (2020).
+International assessment of DSM-5 and ICD-11 personality disorder
+traits: Toward a common nosology in DSM-5.1. *Psychopathology, 53*(3-4),
+179-188. [doi:10.1159/000507589](https://doi.org/10.1159/000507589) The
+source of the PID5BF+M.
 
 ## Examples
 
@@ -267,4 +311,32 @@ score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
 #> #   pid_disinhibition_se <dbl>, pid_detachment_se <dbl>,
 #> #   pid_psychoticism_se <dbl>, pid_negativeAffectivity_se <dbl>,
 #> #   pid_antagonism_se <dbl>, pid_total_se <dbl>
+
+# PID5BF+M (18 facets + 6 domains). No BF+M dataset ships, but every BF+M
+# item is a PID-5 item, so take its 36 items from the full-form data in
+# BF+M order.
+bfpm_rows <- pid_items[!is.na(pid_items$BFPM), ]
+bfpm_rows <- bfpm_rows[order(bfpm_rows$BFPM), ]
+sim_bfpm <- sim_pid5[sprintf("pid5_%03d", bfpm_rows$FULL)]
+score_pid5(sim_bfpm, items = 1:36, version = "BFPM", append = FALSE)
+#> # A tibble: 100 × 24
+#>    pid_emotionalLability pid_anxiousness pid_separationInsecurity pid_withdrawal
+#>                    <dbl>           <dbl>                    <dbl>          <dbl>
+#>  1                   1.5             1.5                      1.5            2  
+#>  2                   2               0.5                      0              2.5
+#>  3                   1.5             0                        2              1  
+#>  4                   1               1                        0.5            2  
+#>  5                   1               0.5                      1.5            0.5
+#>  6                   1.5             1.5                      2              0.5
+#>  7                   2               1.5                      1              1  
+#>  8                   2.5             1.5                      1              1  
+#>  9                   2               1.5                      3              1.5
+#> 10                   1.5             1                        2              2  
+#> # ℹ 90 more rows
+#> # ℹ 20 more variables: pid_anhedonia <dbl>, pid_intimacyAvoidance <dbl>,
+#> #   pid_manipulativeness <dbl>, pid_deceitfulness <dbl>, pid_grandiosity <dbl>,
+#> #   pid_irresponsibility <dbl>, pid_impulsivity <dbl>,
+#> #   pid_distractibility <dbl>, pid_perfectionism <dbl>, pid_rigidity <dbl>,
+#> #   pid_orderliness <dbl>, pid_unusualBeliefsExperiences <dbl>,
+#> #   pid_eccentricity <dbl>, pid_perceptualDysregulation <dbl>, …
 ```

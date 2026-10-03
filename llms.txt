@@ -11,9 +11,9 @@ to support clinical workflows and individual practitioner needs.
 
 - **Scoring & Utilities:** Automated scoring algorithms and
   data-cleaning functions for multiple instrument variants, including
-  the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF), the
-  HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report (HiTOP-BR), and
-  the HiTOP Harmful Substance Use Module (HiTOP-HSUM).
+  the Personality Inventory for DSM-5 (PID-5, PID-5-SF, PID-5-BF,
+  PID5BF+M), the HiTOP Self-Report (HiTOP-SR), the HiTOP Brief Report
+  (HiTOP-BR), and the HiTOP Harmful Substance Use Module (HiTOP-HSUM).
 - **Instrument Downloads:** Direct access to downloadable assessment
   resources, including standard paper forms, as well as ready-to-import
   configuration files for popular data collection platforms like
@@ -51,7 +51,7 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-PID-5-BFP (36) - *todo*
+PID5BF+M (36)
 
 Add Scoring Functions
 
@@ -65,9 +65,9 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-HSUM (650) - *waiting for feedback*
+PID5BF+M (36)
 
-PID-5-BFP (36) - *todo*
+HiTOP-HSUM (650) - *waiting for feedback*
 
 Add Validity Functions
 
@@ -87,9 +87,9 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-HSUM (650) - *waiting for feedback*
+PID5BF+M (36)
 
-PID-5-BFP (36) - *todo*
+HiTOP-HSUM (650) - *waiting for feedback*
 
 Add Scoring Tutorials
 
@@ -103,9 +103,9 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-HiTOP-HSUM (650) - *waiting for feedback*
+PID5BF+M (36)
 
-PID-5-BFP (36) - *todo*
+HiTOP-HSUM (650) - *waiting for feedback*
 
 Add Instrument Export Functions
 
@@ -121,7 +121,7 @@ PID-5-SF (100)
 
 PID-5-BF (25)
 
-PID-5-BFP (36) - *todo*
+PID5BF+M (36) - *todo*
 
 ### Phase 2
 
@@ -306,6 +306,8 @@ community norm.
   : Personality Inventory for DSM-5 Scale Data
 - [`pid_domains`](https://jmgirard.github.io/hitop/reference/pid_domains.md)
   : Personality Inventory for DSM-5 Domain Data
+- [`pid_bfpm_domains`](https://jmgirard.github.io/hitop/reference/pid_bfpm_domains.md)
+  : PID5BF+M Domain Data
 - [`pid_norms`](https://jmgirard.github.io/hitop/reference/pid_norms.md)
   : Personality Inventory for DSM-5 Normative Tables
 - [`hitop_artifacts`](https://jmgirard.github.io/hitop/reference/hitop_artifacts.md)

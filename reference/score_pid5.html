@@ -6,10 +6,12 @@
     }
   };
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Score the Personality Inventory for DSM-5 — score_pid5"><meta name="description" content="Calculate scale scores on the Personality Inventory for DSM-5: full version
-(PID-5, 220 items), short form version (PID-5-SF, 100 items), or brief form
-version (PID-5-BF, 25 items) from item-level data."><meta property="og:description" content="Calculate scale scores on the Personality Inventory for DSM-5: full version
-(PID-5, 220 items), short form version (PID-5-SF, 100 items), or brief form
-version (PID-5-BF, 25 items) from item-level data."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
+(PID-5, 220 items), short form version (PID-5-SF, 100 items), brief form
+version (PID-5-BF, 25 items), or modified brief form (PID5BF+M, 36 items;
+Bach et al., 2020) from item-level data."><meta property="og:description" content="Calculate scale scores on the Personality Inventory for DSM-5: full version
+(PID-5, 220 items), short form version (PID-5-SF, 100 items), brief form
+version (PID-5-BF, 25 items), or modified brief form (PID5BF+M, 36 items;
+Bach et al., 2020) from item-level data."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -76,8 +78,9 @@ version (PID-5-BF, 25 items) from item-level data."><meta property="og:image" co
 
     <div class="ref-description section level2">
     <p>Calculate scale scores on the Personality Inventory for DSM-5: full version
-(PID-5, 220 items), short form version (PID-5-SF, 100 items), or brief form
-version (PID-5-BF, 25 items) from item-level data.</p>
+(PID-5, 220 items), short form version (PID-5-SF, 100 items), brief form
+version (PID-5-BF, 25 items), or modified brief form (PID5BF+M, 36 items;
+Bach et al., 2020) from item-level data.</p>
     </div>
 
     <div class="section level2">
@@ -85,7 +88,7 @@ version (PID-5-BF, 25 items) from item-level data.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">score_pid5</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">items</span>,</span>
-<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span><span class="op">)</span>,</span>
+<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span>, <span class="st">"BFPM"</span><span class="op">)</span>,</span>
 <span>  srange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  prefix <span class="op">=</span> <span class="st">"pid_"</span>,</span>
 <span>  missing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apa"</span>, <span class="st">"available"</span>, <span class="st">"complete"</span><span class="op">)</span>,</span>
@@ -128,7 +131,8 @@ before 2.0 (<code>labelled_spss</code>) is refused the same way, but
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
 <dd><p>A string indicating the version of the PID to score: "FULL",
-"SF", or "BF". Will be automatically capitalized. (default = <code>"FULL"</code>)</p></dd>
+"SF", "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
+capitalized. (default = <code>"FULL"</code>)</p></dd>
 
 
 <dt id="arg-srange">srange<a class="anchor" aria-label="anchor" href="#arg-srange"></a></dt>
@@ -147,7 +151,8 @@ computing scale scores. <code>"apa"</code> (the default) follows the published A
 scoring key: a facet or domain-item scale with more than 25% of its items
 unanswered is set to <code>NA</code>, and otherwise the raw score is prorated to the
 full item count and rounded to the nearest whole number before averaging (a
-FULL/SF domain is <code>NA</code> if any one of its three contributing facets is <code>NA</code>).
+FULL, SF or BFPM domain is <code>NA</code> if any one of its three contributing facets
+is <code>NA</code>).
 <code>"available"</code> averages whatever items are present (<code>rowMeans(na.rm = TRUE)</code>).
 <code>"complete"</code> returns <code>NA</code> for any scale with a missing item
 (<code>rowMeans(na.rm = FALSE)</code>). With no missing items the three agree. (default
@@ -162,13 +167,16 @@ silence it by name. This package has no interval function for the PID-5, so ther
 no replacement for it on this instrument; for measurement precision see
 <code><a href="reliability_pid5.html">reliability_pid5()</a></code>. What it does while it lasts:
 an optional logical indicating whether to calculate a
-standard error for each scale score. For the 25 facets, and for the brief
+standard error for each scale score. For the facets, and for the brief
 form's domains and total, this is the SD of the items the respondent
 actually answered divided by the square root of how many of those items
-they answered. The FULL and SF domain scores are means of three facet
-scores rather than of items, so their standard errors are taken one level
-up: the SD of the three contributing facet scores divided by the square
-root of 3. Standard errors are <code>NA</code> wherever their scale score is <code>NA</code>.
+they answered. The FULL, SF and BFPM domain scores are means of three
+facet scores rather than of items, so their standard errors are taken one
+level up: the SD of the three contributing facet scores divided by the
+square root of 3. Standard errors are <code>NA</code> wherever their scale score is
+<code>NA</code>. A BFPM facet scored from one answered item under
+<code>missing = "available"</code> has a score but an <code>NA</code> standard error, because
+the SD of one value is undefined.
 Each one summarizes how much a respondent's answers varied within a scale.
 It is not a standard error of measurement — no reliability estimate enters
 it — so it does not give a confidence interval for a respondent's true
@@ -198,6 +206,34 @@ proration rule; use <code>missing = "available"</code> or <code>missing = "compl
 the traditional <code><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowMeans()</a></code> behaviors. For per-scale reliability estimates
 (Cronbach's alpha, McDonald's omega), use <code><a href="reliability_pid5.html">reliability_pid5()</a></code>.</p>
 <div class="section">
+<h3 id="the-pid-bf-m">The PID5BF+M<a class="anchor" aria-label="anchor" href="#the-pid-bf-m"></a></h3>
+
+
+<p><code>version = "BFPM"</code> scores the PID5BF+M of Bach et al. (2020), a 36-item
+form with 6 domains: the 5 PID-5 trait domains and Anankastia. Every item
+is a PID-5 item, and none is reverse-keyed. The output
+is 18 facets of 2 items each, then 6 domains, in the order of the form's
+key: Negative affectivity, Detachment, Antagonism, Disinhibition,
+Anankastia and Psychoticism. Each domain score is the mean of its 3 facet
+scores (the map is stored in <a href="pid_bfpm_domains.html">pid_bfpm_domains</a>). The 15 facets the form
+shares with the PID-5 keep their PID-5 column names. The three Anankastia
+facets are <code>perfectionism</code>, <code>rigidity</code> and <code>orderliness</code>. All six of their
+items are PID-5 Rigid Perfectionism items, but these facets are not parts
+of <code>rigidPerfectionism</code>, which this version does not score.</p>
+<p>Scores are item means on the 0 to 3 scale, as for the other versions. The
+form's published key sums the 2 items of a facet and averages the facet
+sums for a domain. On complete data, the key's facet sum is
+<code>2 * pid_&lt;facet&gt;</code> and its domain score is <code>2 * pid_&lt;domain&gt;</code>.</p>
+<p>No missing-data rule is published for this form. Under the default
+<code>missing = "apa"</code>, the 25% rule applied to a 2-item facet means that any
+missing item makes the facet <code>NA</code>, and an <code>NA</code> facet makes its domain
+<code>NA</code>. So with whole-number responses <code>"apa"</code> gives the same output as
+<code>"complete"</code> here. (The APA rule rounds each scale's sum, so responses
+with decimals can differ.) Under <code>missing = "available"</code>, a facet can be
+scored from one item and a domain from one or two of its facets.</p>
+</div>
+
+<div class="section">
 <h3 id="the-pid-bf-total-score">The PID-5-BF total score<a class="anchor" aria-label="anchor" href="#the-pid-bf-total-score"></a></h3>
 
 
@@ -215,8 +251,8 @@ unanswered items while the total tolerates 6, <strong>a total can be reported
 alongside one or more <code>NA</code> domains</strong> (at most 3 of the 5; blanking all five
 requires 10 unanswered items, which blanks the total as well). This is the
 published rule applied as written, not an oversight.</p>
-<p>The FULL and SF versions have no total score: the PID-5 book defines one
-only for the brief form.</p>
+<p>The FULL, SF and BFPM versions have no total score: the PID-5 book defines
+one only for the brief form, and the PID5BF+M sources define none.</p>
 <p><strong>Errors.</strong> With <code>append = TRUE</code>, a column of <code>data</code> whose name this call
 would also produce is an error rather than an overwrite or a duplicated
 column: the message names every colliding column. Re-run with
@@ -249,6 +285,14 @@ personality disorder trait model can be measured with a reduced set of
 items: An item response theory investigation of the personality inventory
 for DSM-5. <em>Psychological Assessment, 27</em>(4), 1195–1210.
 <a href="https://doi.org/10.1037/pas0000120" class="external-link">doi:10.1037/pas0000120</a></p>
+<p>Bach, B., Kerber, A., Aluja, A., Bastiaens, T., Keeley, J. W.,
+Claes, L., Fossati, A., Gutierrez, F., Oliveira, S. E. S., Pires, R.,
+Riegel, K. D., Rolland, J.-P., Roskam, I., Sellbom, M., Somma, A.,
+Spanemberg, L., Strus, W., Thimm, J. C., Wright, A. G. C., &amp; Zimmermann, J.
+(2020). International assessment of DSM-5 and ICD-11 personality disorder
+traits: Toward a common nosology in DSM-5.1. <em>Psychopathology, 53</em>(3-4),
+179-188. <a href="https://doi.org/10.1159/000507589" class="external-link">doi:10.1159/000507589</a>
+ The source of the PID5BF+M.</p>
     </div>
 
     <div class="section level2">
@@ -327,6 +371,34 @@ for DSM-5. <em>Psychological Assessment, 27</em>(4), 1195–1210.
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_disinhibition_se &lt;dbl&gt;, pid_detachment_se &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_psychoticism_se &lt;dbl&gt;, pid_negativeAffectivity_se &lt;dbl&gt;,</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_antagonism_se &lt;dbl&gt;, pid_total_se &lt;dbl&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># PID5BF+M (18 facets + 6 domains). No BF+M dataset ships, but every BF+M</span></span></span>
+<span class="r-in"><span><span class="co"># item is a PID-5 item, so take its 36 items from the full-form data in</span></span></span>
+<span class="r-in"><span><span class="co"># BF+M order.</span></span></span>
+<span class="r-in"><span><span class="va">bfpm_rows</span> <span class="op">&lt;-</span> <span class="va">pid_items</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">pid_items</span><span class="op">$</span><span class="va">BFPM</span><span class="op">)</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">bfpm_rows</span> <span class="op">&lt;-</span> <span class="va">bfpm_rows</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">bfpm_rows</span><span class="op">$</span><span class="va">BFPM</span><span class="op">)</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">sim_bfpm</span> <span class="op">&lt;-</span> <span class="va">sim_pid5</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"pid5_%03d"</span>, <span class="va">bfpm_rows</span><span class="op">$</span><span class="va">FULL</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="fu">score_pid5</span><span class="op">(</span><span class="va">sim_bfpm</span>, items <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">36</span>, version <span class="op">=</span> <span class="st">"BFPM"</span>, append <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 100 × 24</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    pid_emotionalLability pid_anxiousness pid_separationInsecurity pid_withdrawal</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span>                   1.5             1.5                      1.5            2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span>                   2               0.5                      0              2.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span>                   1.5             0                        2              1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span>                   1               1                        0.5            2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span>                   1               0.5                      1.5            0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span>                   1.5             1.5                      2              0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span>                   2               1.5                      1              1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span>                   2.5             1.5                      1              1  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span>                   2               1.5                      3              1.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span>                   1.5             1                        2              2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 90 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 20 more variables: pid_anhedonia &lt;dbl&gt;, pid_intimacyAvoidance &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_manipulativeness &lt;dbl&gt;, pid_deceitfulness &lt;dbl&gt;, pid_grandiosity &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_irresponsibility &lt;dbl&gt;, pid_impulsivity &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_distractibility &lt;dbl&gt;, pid_perfectionism &lt;dbl&gt;, pid_rigidity &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_orderliness &lt;dbl&gt;, pid_unusualBeliefsExperiences &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   pid_eccentricity &lt;dbl&gt;, pid_perceptualDysregulation &lt;dbl&gt;, …</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

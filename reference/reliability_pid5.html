@@ -7,21 +7,23 @@
   };
 </script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet"><meta property="og:title" content="Estimate PID-5 scale reliability — reliability_pid5"><meta name="description" content="Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the Personality Inventory for DSM-5: full version
-(PID-5, 220 items), short form (PID-5-SF, 100 items), or brief form (PID-5-BF,
-25 items). Reliability is estimated on the reverse-keyed item responses, at
-the facet level for FULL/SF and the domain level for BF (the same scales
-score_pid5() outputs, before FULL/SF domain aggregation). The BF version
-also returns a Total row covering all 25 items; note that this scale spans
-five heterogeneous domains, so its internal consistency is not comparable to
-a domain's and is reported without further interpretation."><meta property="og:description" content="Compute per-scale internal-consistency reliability — Cronbach's alpha and
+(PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
+25 items), or modified brief form (PID5BF+M, 36 items). Reliability is
+estimated on the reverse-keyed item responses, at the facet level for FULL/SF
+and the domain level for BF (the same scales score_pid5() outputs, before
+FULL/SF domain aggregation). The BF version also returns a Total row
+covering all 25 items; note that this scale spans five heterogeneous domains,
+so its internal consistency is not comparable to a domain's and is reported
+without further interpretation."><meta property="og:description" content="Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the Personality Inventory for DSM-5: full version
-(PID-5, 220 items), short form (PID-5-SF, 100 items), or brief form (PID-5-BF,
-25 items). Reliability is estimated on the reverse-keyed item responses, at
-the facet level for FULL/SF and the domain level for BF (the same scales
-score_pid5() outputs, before FULL/SF domain aggregation). The BF version
-also returns a Total row covering all 25 items; note that this scale spans
-five heterogeneous domains, so its internal consistency is not comparable to
-a domain's and is reported without further interpretation."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
+(PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
+25 items), or modified brief form (PID5BF+M, 36 items). Reliability is
+estimated on the reverse-keyed item responses, at the facet level for FULL/SF
+and the domain level for BF (the same scales score_pid5() outputs, before
+FULL/SF domain aggregation). The BF version also returns a Total row
+covering all 25 items; note that this scale spans five heterogeneous domains,
+so its internal consistency is not comparable to a domain's and is reported
+without further interpretation."><meta property="og:image" content="https://jmgirard.github.io/hitop/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -89,13 +91,14 @@ a domain's and is reported without further interpretation."><meta property="og:i
     <div class="ref-description section level2">
     <p>Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the Personality Inventory for DSM-5: full version
-(PID-5, 220 items), short form (PID-5-SF, 100 items), or brief form (PID-5-BF,
-25 items). Reliability is estimated on the reverse-keyed item responses, at
-the facet level for FULL/SF and the domain level for BF (the same scales
-<code><a href="score_pid5.html">score_pid5()</a></code> outputs, before FULL/SF domain aggregation). The BF version
-also returns a <code>Total</code> row covering all 25 items; note that this scale spans
-five heterogeneous domains, so its internal consistency is not comparable to
-a domain's and is reported without further interpretation.</p>
+(PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
+25 items), or modified brief form (PID5BF+M, 36 items). Reliability is
+estimated on the reverse-keyed item responses, at the facet level for FULL/SF
+and the domain level for BF (the same scales <code><a href="score_pid5.html">score_pid5()</a></code> outputs, before
+FULL/SF domain aggregation). The BF version also returns a <code>Total</code> row
+covering all 25 items; note that this scale spans five heterogeneous domains,
+so its internal consistency is not comparable to a domain's and is reported
+without further interpretation.</p>
     </div>
 
     <div class="section level2">
@@ -103,7 +106,7 @@ a domain's and is reported without further interpretation.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">reliability_pid5</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">items</span>,</span>
-<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span><span class="op">)</span>,</span>
+<span>  version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"FULL"</span>, <span class="st">"SF"</span>, <span class="st">"BF"</span>, <span class="st">"BFPM"</span><span class="op">)</span>,</span>
 <span>  srange <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  omega <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -142,7 +145,8 @@ before 2.0 (<code>labelled_spss</code>) is refused the same way, but
 
 <dt id="arg-version">version<a class="anchor" aria-label="anchor" href="#arg-version"></a></dt>
 <dd><p>A string indicating the version of the PID to score: "FULL",
-"SF", or "BF". Will be automatically capitalized. (default = <code>"FULL"</code>)</p></dd>
+"SF", "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
+capitalized. (default = <code>"FULL"</code>)</p></dd>
 
 
 <dt id="arg-srange">srange<a class="anchor" aria-label="anchor" href="#arg-srange"></a></dt>
@@ -171,11 +175,16 @@ it), <code>camelCase</code> (the stem that names the scale's column in the match
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Alpha is computed by <code><a href="calc_alpha.html">calc_alpha()</a></code> (covariance-based, pairwise
+    <p>The BFPM version returns both levels: its 18 two-item facets, then its 6
+domains, each estimated over the 6 items of its 3 facets (the map is in
+<a href="pid_bfpm_domains.html">pid_bfpm_domains</a>). Omega is <code>NA</code> for every facet, because a one-factor
+model of 2 items is not identified; alpha is reported for all 24 rows.</p>
+<p>Alpha is computed by <code><a href="calc_alpha.html">calc_alpha()</a></code> (covariance-based, pairwise
 deletion) and omega by <code><a href="calc_omega.html">calc_omega()</a></code> (one-factor lavaan CFA, FIML). A scale
 whose estimate cannot be computed (e.g. too few items or, for omega, a
 non-converging CFA or an uninstalled <span class="pkg">lavaan</span>) is returned as <code>NA</code>
-rather than aborting the call.</p>
+rather than aborting the call. Omega needs at least 3 items: for a scale
+with fewer, no model is fitted and omega is <code>NA</code>.</p>
     </div>
 
     <div class="section level2">
