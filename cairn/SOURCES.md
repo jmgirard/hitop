@@ -48,6 +48,7 @@ status, so the table has an *external* oracle. Verified item-by-item on
 | BF reverse-keying (none) | APA PID-5-BF Adult | Domain Scoring table (no reverse marks) | ✅ Design confirmed (see note) |
 | BF `total` (25 items, item-level mean) | Markon et al. (2024) | Ch. 3, p. 23 | ✅ Rule stated verbatim (see note) |
 | `BFPM` (36 items, 18 facets × 2, 6 domains × 3 facets, no reverse keying) | FU Berlin PID5BF+M key sheet (Kerber, 2020), Bach et al. (2020) | sheet p. 2, paper p. 181 | ✅ Sheet table transcribed and matched to the item text (2026-10-03, M157). The paper confirms the 6 anankastia items and the domain rule. Its Appendix A is not on the shelf. See [fuberlin2020pid5bfpm](references/fuberlin2020pid5bfpm.md), [bach2020](references/bach2020.md) |
+| `BFPM` form instructions and 0–3 response labels (English) | APA PID-5 instructions and labels as stored in `pid_instructions`; FU Berlin PID5BF+M sheet (Kerber, 2020) | sheet p. 1 | ✅ Maintainer sign-off 2026-10-03 (M158). No English BF+M form text is on the shelf. Bach et al. (2020) and Kerber et al. (2022, with supplement) print none. The German sheet's instructions translate `pid_instructions$start` sentence by sentence, and its four labels sit on the same 0–3 values. The BF+M forms reuse `pid_instructions`, as the BF forms do. |
 
 ## Sources
 

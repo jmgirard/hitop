@@ -38,7 +38,7 @@ Researchers can build and download PID5BF+M paper forms, a Qualtrics import file
 
 ## Tasks
 
-- [ ] T1: Settle the English instructions and response labels for the form. When Jeff uploads Bach et al. (2020) or Johannes Zimmermann's materials, take them from there. If neither source gives English text, put the APA PID-5 text to Jeff at the pre-implementation gate. Store the result in `R/sysdata.rda` through `data-raw/`, as a new object or a reuse of `pid_instructions`. Record the source in SOURCES.md. (RB tripwire: ip-touching)
+- [x] T1: Settle the English instructions and response labels for the form. When Jeff uploads Bach et al. (2020) or Johannes Zimmermann's materials, take them from there. If neither source gives English text, put the APA PID-5 text to Jeff at the pre-implementation gate. Store the result in `R/sysdata.rda` through `data-raw/`, as a new object or a reuse of `pid_instructions`. Record the source in SOURCES.md. (RB tripwire: ip-touching)
 - [ ] T2: Add the BF+M Word generator in `R/generate_docx.R`, following `generate_docx_pid5bf()`.
 - [ ] T3: Add the Qualtrics and REDCap generators, following the BF ones.
 - [ ] T4: Write the parse-back tests (AC1, AC2) in the D-010 style.
@@ -54,6 +54,7 @@ Researchers can build and download PID5BF+M paper forms, a Qualtrics import file
 
 - 2026-10-03: implement started on branch `m158-pid5bfpm-forms`, cut from main at `226e78ba` after M157 merged. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit.
 - 2026-10-03: T1 search: no English BF+M instructions are on the shelf. Bach et al. (2020) prints none. Kerber et al. (2022) and its supplement print none for the BF+M. The FU Berlin sheet's German instructions are a sentence-by-sentence translation of the stored APA PID-5 `pid_instructions$start`. Its labels "Trifft überhaupt nicht zu" to "Trifft genau zu" sit on the same 0 to 3 values as the APA labels. T1 stops at its tripwire gate.
+- 2026-10-03: T1 done. Jeff chose to reuse the APA PID-5 `pid_instructions` (instructions and 0 to 3 labels) for the BF+M forms over escalation, waiting, or stopping. The tripwire escalation was offered and not taken. This is IP1 sign-off for the form text. No `R/sysdata.rda` change is needed, and SOURCES.md has a new row.
 
 ## Decisions
 
