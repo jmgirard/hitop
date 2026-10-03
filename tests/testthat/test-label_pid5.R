@@ -336,3 +336,78 @@ test_that("label_pid5(target = 'items') pluralizes each sentence by its own colu
     }
   }
 })
+
+# ---- PID5BF+M ---------------------------------------------------------------
+
+test_that("label_pid5(version = 'BFPM') labels its 36 items with their PID-5 text", {
+  labeled <- label_pid5(fx_pid5bfpm(), target = "items", version = "BFPM")
+  # BF+M item 6 is PID-5 item 123 (key sheet, p. 2), text typed as `pid_items`
+  # holds it.
+  expect_identical(
+    attr(labeled$pid5bfpm_06, "label"),
+    paste(
+      "Even though it drives other people crazy, I insist on absolute",
+      "perfection in everything I do"
+    )
+  )
+  # Each expected text is reached through the typed PID-5 number, not through
+  # `pid_items$BFPM`, the lookup under test.
+  for (nm in names(labeled)) {
+    number <- as.integer(sub("^pid5bfpm_", "", nm))
+    expect_identical(
+      attr(labeled[[nm]], "label"),
+      pid_items$Text[match(bfpm_pid5_numbers[number], pid_items$FULL)],
+      info = nm
+    )
+  }
+  expect_equal(ncol(labeled), 36L)
+})
+
+test_that("label_pid5(version = 'BFPM') reports unpadded and out-of-range item columns", {
+  df <- data.frame(pid5bfpm_06 = 1, pid5bfpm_6 = 1, pid5bfpm_37 = 1)
+  caught <- collect_warnings(label_pid5(df, target = "items", version = "BFPM"))
+  labeled <- caught$value
+  expect_false(is.null(attr(labeled$pid5bfpm_06, "label")))
+  expect_null(attr(labeled$pid5bfpm_6, "label"))
+  expect_null(attr(labeled$pid5bfpm_37, "label"))
+  expect_length(caught$warnings, 1L)
+  expect_s3_class(caught$warnings[[1]], "hitop_unpadded_items")
+  text <- warning_text(caught)
+  expect_true(grepl("pid5bfpm_6", text, fixed = TRUE))
+  expect_true(grepl("pid5bfpm_37", text, fixed = TRUE))
+  expect_true(grepl("PID5BF+M", text, fixed = TRUE))
+})
+
+test_that("validity_pid5(), norm_pid5() and plot_pid5() refuse version = 'BFPM'", {
+  x <- fx_pid5bfpm()
+  for (fn in list(
+    function() validity_pid5(x, items = 1:36, version = "BFPM"),
+    function() norm_pid5(x, version = "BFPM"),
+    function() plot_pid5(x, version = "BFPM")
+  )) {
+    expect_error(fn(), 'should be one of "FULL", "SF", "BF"', fixed = TRUE)
+  }
+})
+
+test_that("label_pid5(version = 'BFPM') names its 18 facets and 6 domains", {
+  scored <- score_pid5(fx_pid5bfpm(), items = 1:36, version = "BFPM", append = FALSE)
+  labeled <- label_pid5(scored, target = "scales", version = "BFPM")
+  # An unlabelled column reads as NA, so a missed scale fails on its value.
+  label_of <- function(col) {
+    l <- attr(col, "label")
+    if (is.null(l)) NA_character_ else l
+  }
+  expect_identical(
+    unname(vapply(labeled, label_of, character(1))),
+    c(
+      "Emotional Lability", "Anxiousness", "Separation Insecurity",
+      "Withdrawal", "Anhedonia", "Intimacy Avoidance",
+      "Manipulativeness", "Deceitfulness", "Grandiosity",
+      "Irresponsibility", "Impulsivity", "Distractibility",
+      "Perfectionism", "Rigidity", "Orderliness",
+      "Unusual Beliefs & Experiences", "Eccentricity", "Perceptual Dysregulation",
+      "Negative affectivity", "Detachment", "Antagonism",
+      "Disinhibition", "Anankastia", "Psychoticism"
+    )
+  )
+})

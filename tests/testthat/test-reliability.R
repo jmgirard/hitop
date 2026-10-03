@@ -183,6 +183,65 @@ test_that("reliability_*() return a per-scale tibble with the requested columns"
   expect_equal(rel_bf$nItems[rel_bf$Scale == "Total"], 25L)
 })
 
+test_that("reliability_pid5(BFPM) returns 18 facet rows, then 6 domain rows", {
+  x <- fx_pid5bfpm()
+  rel <- reliability_pid5(x, items = 1:36, version = "BFPM", omega = FALSE)
+
+  # Names typed from the key sheet's order (D-088(b), (c)).
+  expect_identical(rel$Scale, c(
+    "Emotional Lability", "Anxiousness", "Separation Insecurity",
+    "Withdrawal", "Anhedonia", "Intimacy Avoidance",
+    "Manipulativeness", "Deceitfulness", "Grandiosity",
+    "Irresponsibility", "Impulsivity", "Distractibility",
+    "Perfectionism", "Rigidity", "Orderliness",
+    "Unusual Beliefs & Experiences", "Eccentricity", "Perceptual Dysregulation",
+    "Negative affectivity", "Detachment", "Antagonism",
+    "Disinhibition", "Anankastia", "Psychoticism"
+  ))
+  expect_identical(rel$camelCase[19:24], c(
+    "negativeAffectivity", "detachment", "antagonism",
+    "disinhibition", "anankastia", "psychoticism"
+  ))
+  expect_identical(rel$nItems, c(rep(2L, 18), rep(6L, 6)))
+
+  # Each row's alpha is over the items the key sheet gives it, typed here in
+  # the rows' order: 18 BF+M pairs, then each domain's 3 pairs.
+  pairs <- list(
+    c(1, 19), c(7, 25), c(13, 31), c(4, 22), c(10, 28), c(16, 34),
+    c(2, 20), c(8, 26), c(14, 32), c(3, 21), c(9, 27), c(15, 33),
+    c(6, 18), c(12, 24), c(30, 36), c(5, 23), c(11, 29), c(17, 35)
+  )
+  domains <- lapply(0:5, function(d) unlist(pairs[d * 3 + 1:3]))
+  di <- as.data.frame(lapply(x, as.numeric))
+  expected <- vapply(c(pairs, domains), function(i) calc_alpha(di[i]), numeric(1))
+  expect_equal(rel$alpha, expected)
+})
+
+test_that("reliability_pid5(BFPM) fits no 2-item omega and raises no warning", {
+  skip_if_not_installed("lavaan")
+  # Each domain's 6 items share one factor, so the 6 domain models fit cleanly
+  # and any warning would come from a 2-item facet model.
+  set.seed(157)
+  n <- 300
+  domain_of_item <- integer(36)
+  for (d in seq_len(nrow(pid_bfpm_domains))) {
+    facet_items <- unlist(pid_scales$BFPM$itemNumbers[pid_bfpm_domains$facetStems[[d]]])
+    domain_of_item[facet_items] <- d
+  }
+  latent <- matrix(stats::rnorm(n * 6), n, 6)
+  raw <- latent[, domain_of_item] + matrix(stats::rnorm(n * 36, sd = 0.7), n, 36)
+  dat <- as.data.frame(matrix(pmin(3, pmax(0, round(1.5 + raw))), n, 36))
+  names(dat) <- sprintf("pid5bfpm_%02d", 1:36)
+
+  expect_no_warning(
+    rel <- reliability_pid5(dat, items = names(dat), version = "BFPM")
+  )
+  expect_identical(rel$nItems, c(rep(2L, 18), rep(6L, 6)))
+  expect_true(all(is.na(rel$omega[1:18])))
+  expect_false(anyNA(rel$omega[19:24]))
+  expect_false(anyNA(rel$alpha))
+})
+
 test_that("reliability alpha is NA-safe on a zero-variance scale (no abort)", {
   const <- as.data.frame(matrix(2L, nrow = 10, ncol = 45))
   names(const) <- paste0("HBR_", seq_len(45))

@@ -47,6 +47,7 @@ status, so the table has an *external* oracle. Verified item-by-item on
 | `Domain` → BF items (5 domains × 5) | APA PID-5-BF Adult | Personality Trait Domain Scoring table | ✅ Exact match (5/5) |
 | BF reverse-keying (none) | APA PID-5-BF Adult | Domain Scoring table (no reverse marks) | ✅ Design confirmed (see note) |
 | BF `total` (25 items, item-level mean) | Markon et al. (2024) | Ch. 3, p. 23 | ✅ Rule stated verbatim (see note) |
+| `BFPM` (36 items, 18 facets × 2, 6 domains × 3 facets, no reverse keying) | FU Berlin PID5BF+M key sheet (Kerber, 2020), Bach et al. (2020) | sheet p. 2, paper p. 181 | ✅ Sheet table transcribed and matched to the item text (2026-10-03, M157). The paper confirms the 6 anankastia items and the domain rule. Its Appendix A is not on the shelf. See [fuberlin2020pid5bfpm](references/fuberlin2020pid5bfpm.md), [bach2020](references/bach2020.md) |
 
 ## Sources
 

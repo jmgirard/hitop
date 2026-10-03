@@ -5,15 +5,18 @@
 \alias{pid_items}
 \title{Personality Inventory for DSM-5 Item Data}
 \format{
-A \link[tibble]{tibble} with 220 rows and 15 columns:
+A \link[tibble]{tibble} with 220 rows and 16 columns:
 \describe{
 \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form (integer)}
+\item{BFPM}{Item number on the PID5BF+M, the 36-item modified brief form (integer). Its keying is in \code{pid_scales$BFPM} and \link{pid_bfpm_domains}}
 \item{Reverse}{Whether the item needs to be reverse scored}
 \item{INC,INCS}{Item number on the response inconsistency scale full and short forms (integer)}
 \item{ORS,ORSS}{Item number on the overreporting scale full and short forms (integer)}
 \item{PRD,PRDS}{Item number on the positive impression management response distortion scale full and short forms (integer)}
 \item{SDTD,SDTDS}{Item number on the social desirability-total denial scale full and short forms (integer)}
-\item{Facet}{Name of the facet}
+\item{Facet}{Name of the PID-5 facet. The PID5BF+M regroups six of the
+Rigid Perfectionism items into its three anankastia facets, whose item
+membership is held only in \code{pid_scales$BFPM}}
 \item{Domain}{Name of the domain}
 \item{Text}{Item text, copyright APA}
 }

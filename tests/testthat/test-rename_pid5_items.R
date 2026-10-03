@@ -308,3 +308,66 @@ test_that("rename_pid5_items warns when fewer than all items are renamed", {
   ))
   expect_silent(rename_pid5_items(full_bf, version = "BF"))
 })
+
+# PID5BF+M ---------------------------------------------------------------------
+
+test_that("version = 'BFPM' renames the 36 items to pid5bfpm_01 to pid5bfpm_36", {
+  df <- as.data.frame(matrix(
+    0,
+    nrow = 2,
+    ncol = 36,
+    dimnames = list(NULL, paste0("pid_", 1:36))
+  ))
+  expect_silent(res <- rename_pid5_items(df, version = "BFPM"))
+  expect_identical(colnames(res), sprintf("pid5bfpm_%02d", 1:36))
+
+  # A number past the form's 36 names no BF+M item.
+  df$pid_37 <- 0
+  expect_warning(
+    res <- rename_pid5_items(df, version = "bfpm"),
+    class = "hitop_unmatched_items"
+  )
+  expect_identical(colnames(res), c(sprintf("pid5bfpm_%02d", 1:36), "pid_37"))
+})
+
+test_that("version = 'BFPM' matches all 36 item texts, in any column order", {
+  # Each text reached through its typed PID-5 number, not through
+  # `pid_items$BFPM`. The columns are given in reverse BF+M order.
+  bfpm <- 36:1
+  texts <- pid_items$Text[match(bfpm_pid5_numbers[bfpm], pid_items$FULL)]
+  cols <- paste0("q", seq_along(bfpm))
+  df <- as.data.frame(matrix(0, nrow = 1, ncol = 36, dimnames = list(NULL, cols)))
+  expect_silent(
+    res <- rename_pid5_items(
+      df, version = "BFPM", method = "text", item_cols = cols, item_text = texts
+    )
+  )
+  expect_identical(colnames(res), sprintf("pid5bfpm_%02d", bfpm))
+})
+
+test_that("version = 'BFPM' matches item text to the BF+M number", {
+  # BF+M item 6 is PID-5 item 123 (key sheet, p. 2); its text as `pid_items`
+  # holds it, typed here.
+  df <- data.frame(q1 = 1, q2 = 2)
+  caught <- collect_warnings(
+    rename_pid5_items(
+      df,
+      version = "BFPM",
+      method = "text",
+      item_cols = "q2",
+      item_text = paste(
+        "Even though it drives other people crazy, I insist on absolute",
+        "perfection in everything I do"
+      )
+    )
+  )
+  expect_identical(colnames(caught$value), c("q1", "pid5bfpm_06"))
+  # One of 36 renamed: the completeness report names the form.
+  expect_length(caught$warnings, 1L)
+  expect_s3_class(caught$warnings[[1]], "hitop_incomplete_rename")
+  expect_match(
+    warning_text(caught),
+    "Only 1 out of 36 PID5BF+M items",
+    fixed = TRUE
+  )
+})

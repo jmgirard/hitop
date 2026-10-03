@@ -50,6 +50,7 @@ Researchers can build and download PID5BF+M paper forms, a Qualtrics import file
 - 2026-10-03: created by /milestone-plan, together with M157 and M159–M161.
 - 2026-10-03: plan chose to take item text from the `pid_items` rows that the BF+M key names over typing a new English item list. The key maps each BF+M item to a PID-5 item. Falsified by an English BF+M source whose item wording differs from the APA PID-5 text.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 4 clear fixes and 1 judgment finding, all applied. AC1 binds a stored instruction object and the scoring table. AC2 separates REDCap names (D-055) from uppercase Qualtrics IDs. AC3 counts four files and exempts the page from the online-strip test.
+- 2026-10-03: note from M157's RR06. `make_scoring_table()` sorts rows by `Scale` alphabetically and prints one item list per row, so it cannot show the BF+M domain map by itself. AC1's scoring table needs a planned domain presentation, such as a second table or a sentence. D-088 fixes the names, the item-mean scale and `pid_bfpm_domains`.
 
 ## Decisions
 

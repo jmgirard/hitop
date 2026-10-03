@@ -78,7 +78,8 @@
 #'   deletion) and omega by [calc_omega()] (one-factor lavaan CFA, FIML). A scale
 #'   whose estimate cannot be computed (e.g. too few items or, for omega, a
 #'   non-converging CFA or an uninstalled \pkg{lavaan}) is returned as `NA`
-#'   rather than aborting the call.
+#'   rather than aborting the call. Omega needs at least 3 items: for a scale
+#'   with fewer, no model is fitted and omega is `NA`.
 #'
 #' @return A \link[tibble]{tibble} with one row per scale (and per subscale
 #'   under `include_subscales = TRUE`) and columns `Scale`

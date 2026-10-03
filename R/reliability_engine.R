@@ -112,6 +112,11 @@ reliability_engine <- function(
     out$omega <- vapply(
       items_scales,
       function(idx) {
+        ## A one-factor model on fewer than 3 items is not identified: lavaan
+        ## warns and any pair of loadings fits a 2-item scale equally well, so
+        ## its omega is not an estimate (D-088(f)). calc_omega() itself still
+        ## runs on 2 items when called directly.
+        if (length(idx) < 3L) return(NA_real_)
         df_sub <- as.data.frame(data_items[, idx, drop = FALSE])
         tryCatch(calc_omega(df_sub), error = function(e) NA_real_)
       },

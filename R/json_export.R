@@ -6,7 +6,7 @@
 # `spec` is a list with `stem`, `items` (a keying table with a `Text` column),
 # `number_col` (the column of `items` that numbers this form) and
 # `instructions` (a `*_instructions` object). One table can carry more than
-# one form: `pid_items` numbers the FULL, SF and BF forms in three columns,
+# one form: `pid_items` numbers the FULL, SF, BF and BFPM forms in four columns,
 # each NA on the rows its form omits. The writer keeps the rows where
 # `number_col` is not NA, in ascending order of it.
 #

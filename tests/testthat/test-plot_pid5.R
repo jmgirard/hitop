@@ -307,14 +307,17 @@ test_that("every expectation inside a loop names its iteration on failure", {
 # ---- label-side axis padding ----------------------------------------------
 
 # Every (version, level, metric) combination `plot_pid5()` accepts, enumerated
-# from `pid_scales` rather than hand-listed. Which levels a version offers is
+# from the function's own `version` choices rather than hand-listed (not from
+# `names(pid_scales)`, which also holds BFPM). Which levels a version offers is
 # read off its scales table: the forms that score facets name them in a `Facet`
 # column, and the brief form -- which has no facet scores to plot -- names
 # domains instead. So the two brief-form facet cases `plot_pid5()` aborts are
 # excluded by the same fact that makes it abort, not by naming "BF" here.
 profile_cases <- function() {
   out <- list()
-  for (version in names(pid_scales)) {
+  # The versions plot_pid5() takes, not every `pid_scales` element: the
+  # PID5BF+M has scoring but no norms or plot.
+  for (version in eval(formals(plot_pid5)$version)) {
     levels <- if ("Facet" %in% names(pid_scales[[version]])) {
       c("domain", "facet")
     } else {

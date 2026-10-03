@@ -2,6 +2,28 @@
 
 ## New features
 
+* **`score_pid5()` scores the PID5BF+M.** `version = "BFPM"` scores the
+  36-item modified brief form of Bach et al. (2020). It returns 18 facets of
+  2 items each and 6 domains, Anankastia among them, as item means on the 0
+  to 3 scale. Each domain is the mean of its 3 facets. The form's own key
+  sums the items, so its values are twice these on complete data. Under the
+  default `missing = "apa"`, any missing item makes its facet `NA`. With
+  whole-number responses this is the same output as `missing = "complete"`. `reliability_pid5()`,
+  `rename_pid5_items()` and `label_pid5()` also take `version = "BFPM"`. Its
+  item columns are `pid5bfpm_01` to `pid5bfpm_36`. `reliability_pid5()`
+  returns the 18 facets and then the 6 domains. The keying is in a new
+  `pid_items$BFPM` column and a new `pid_scales$BFPM` element. A new
+  dataset, `pid_bfpm_domains`, maps each domain to its 3 facets.
+  `pid_items` now has 16 columns, and `pid_scales` has 4 elements.
+  `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take the new
+  version.
+
+* **The `reliability_*()` functions report omega as `NA` for a scale with
+  fewer than 3 items.** A one-factor model of 2 items is not identified, so
+  no model is fitted. No PID-5, HiTOP-SR or HiTOP-BR scale had fewer than 3
+  items before the PID5BF+M, so no earlier result changes. `calc_omega()`
+  itself is unchanged.
+
 * **"HiTOP-SR module" is an instrument choice in the Study Link Builder.**
   Each instrument row offers "HiTOP-SR module (scales you choose)" after
   the HiTOP-SR. A row set to it shows the "Module file" box and "Choose the
@@ -443,6 +465,13 @@
   notice can silence it by class.
 
 ## Breaking changes
+
+* **`version = "B"` no longer means the PID-5-BF.** The PID-5 functions
+  match `version` without regard to case and accept a unique abbreviation.
+  `"B"` used to abbreviate `"BF"` only. It now also abbreviates `"BFPM"`, so
+  `score_pid5()`, `reliability_pid5()`, `rename_pid5_items()` and
+  `label_pid5()` refuse it. Write `"BF"`. An abbreviation such as `"BFP"`
+  selects the PID5BF+M.
 
 * **A HiTOP-SR module edited by hand is refused.** `score_hitopsr()`,
   `reliability_hitopsr()`, `generate_docx_hitopsr()`,

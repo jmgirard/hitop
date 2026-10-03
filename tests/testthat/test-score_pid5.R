@@ -510,3 +510,157 @@ test_that("BF total standard error is the SEM over its answered items", {
   expect_true(is.na(dy$pid_total[[4]]))
   expect_true(is.na(dy$pid_total_se[[4]]))
 })
+
+# ---- PID5BF+M (36 items) ----------------------------------------------------
+# Expected values are worked out by hand in helper-fixtures.R (fx_pid5bfpm) and
+# typed here, rows R1 to R5. Column order is the key sheet's: 18 facets grouped
+# by domain, then the 6 domains (D-088(c)).
+
+bfpm_available <- list(
+  emotionalLability         = c(0, 3, 0.5, 1,   0.5),
+  anxiousness               = c(0, 3, 1.5, 1.5, 1.5),
+  separationInsecurity      = c(0, 3, 3,   3,   3),
+  withdrawal                = c(0, 3, 0,   0,   0),
+  anhedonia                 = c(0, 3, 1.5, 1.5, 1.5),
+  intimacyAvoidance         = c(0, 3, 2,   2,   2),
+  manipulativeness          = c(0, 3, 1,   1,   1),
+  deceitfulness             = c(0, 3, 2.5, 2.5, 2.5),
+  grandiosity               = c(0, 3, 0.5, 0.5, 0.5),
+  irresponsibility          = c(0, 3, 2.5, 2.5, 2.5),
+  impulsivity               = c(0, 3, 1,   1,   1),
+  distractibility           = c(0, 3, 1.5, 1.5, 1.5),
+  perfectionism             = c(0, 3, 2,   2,   2),
+  rigidity                  = c(0, 3, 0.5, 0.5, 0),
+  orderliness               = c(0, 3, 1,   1,   1),
+  unusualBeliefsExperiences = c(0, 3, 2,   2,   2),
+  eccentricity              = c(0, 3, 1.5, 1.5, 0),
+  perceptualDysregulation   = c(0, 3, 3,   3,   3),
+  negativeAffectivity       = c(0, 3, 5 / 3,  11 / 6, 5 / 3),
+  detachment                = c(0, 3, 7 / 6,  7 / 6,  7 / 6),
+  antagonism                = c(0, 3, 4 / 3,  4 / 3,  4 / 3),
+  disinhibition             = c(0, 3, 5 / 3,  5 / 3,  5 / 3),
+  anankastia                = c(0, 3, 7 / 6,  7 / 6,  1),
+  psychoticism              = c(0, 3, 13 / 6, 13 / 6, 5 / 3)
+)
+
+# Under "apa" and "complete" a facet with 1 of its 2 items missing is NA, and
+# so is its domain. Only these cells differ from "available".
+bfpm_apa <- bfpm_available
+bfpm_apa$emotionalLability   <- c(0, 3, 0.5,    NA,     0.5)
+bfpm_apa$negativeAffectivity <- c(0, 3, 5 / 3,  NA,     5 / 3)
+bfpm_apa$rigidity            <- c(0, 3, 0.5,    0.5,    NA)
+bfpm_apa$eccentricity        <- c(0, 3, 1.5,    1.5,    NA)
+bfpm_apa$anankastia          <- c(0, 3, 7 / 6,  7 / 6,  NA)
+bfpm_apa$psychoticism        <- c(0, 3, 13 / 6, 13 / 6, NA)
+
+test_that("BFPM output is 18 facets then 6 domains, in the key's order", {
+  f <- score_pid5(fx_pid5bfpm(), items = 1:36, version = "BFPM", append = FALSE)
+  expect_identical(names(f), paste0("pid_", names(bfpm_available)))
+})
+
+test_that("BFPM scores match hand-computed values under each missing mode", {
+  x <- fx_pid5bfpm()
+  expected <- list(available = bfpm_available, apa = bfpm_apa, complete = bfpm_apa)
+  for (mode in names(expected)) {
+    f <- score_pid5(x, items = 1:36, version = "BFPM", missing = mode, append = FALSE)
+    for (nm in names(expected[[mode]])) {
+      expect_equal(
+        f[[paste0("pid_", nm)]],
+        expected[[mode]][[nm]],
+        info = paste(mode, nm)
+      )
+    }
+  }
+})
+
+test_that("BFPM version is matched case-insensitively", {
+  x <- fx_pid5bfpm()
+  expect_identical(
+    score_pid5(x, items = 1:36, version = "bfpm", append = FALSE),
+    score_pid5(x, items = 1:36, version = "BFPM", append = FALSE)
+  )
+})
+
+test_that("BFPM independent recomputation from the key sheet's item pairs", {
+  # Deliberately dumb recomputation with BF+M item pairs copied from the key
+  # sheet, p. 2: facet = mean of its 2 items, domain = mean of its 3 facets.
+  x <- fx_pid5bfpm()
+  pairs <- list(
+    emotionalLability = c(1, 19), anxiousness = c(7, 25),
+    separationInsecurity = c(13, 31), withdrawal = c(4, 22),
+    anhedonia = c(10, 28), intimacyAvoidance = c(16, 34),
+    manipulativeness = c(2, 20), deceitfulness = c(8, 26),
+    grandiosity = c(14, 32), irresponsibility = c(3, 21),
+    impulsivity = c(9, 27), distractibility = c(15, 33),
+    perfectionism = c(6, 18), rigidity = c(12, 24), orderliness = c(30, 36),
+    unusualBeliefsExperiences = c(5, 23), eccentricity = c(11, 29),
+    perceptualDysregulation = c(17, 35)
+  )
+  domains <- list(
+    negativeAffectivity = c("emotionalLability", "anxiousness", "separationInsecurity"),
+    detachment = c("withdrawal", "anhedonia", "intimacyAvoidance"),
+    antagonism = c("manipulativeness", "deceitfulness", "grandiosity"),
+    disinhibition = c("irresponsibility", "impulsivity", "distractibility"),
+    anankastia = c("perfectionism", "rigidity", "orderliness"),
+    psychoticism = c("unusualBeliefsExperiences", "eccentricity", "perceptualDysregulation")
+  )
+  for (mode in c("available", "complete")) {
+    narm <- mode == "available"
+    facet <- lapply(pairs, function(p) rowMeans(x[, p], na.rm = narm))
+    domain <- lapply(domains, function(d) rowMeans(as.data.frame(facet[d]), na.rm = narm))
+    pkg <- score_pid5(x, items = 1:36, version = "BFPM", missing = mode, append = FALSE)
+    for (nm in names(facet)) {
+      expect_equal(pkg[[paste0("pid_", nm)]], facet[[nm]], info = paste(mode, nm))
+    }
+    for (nm in names(domain)) {
+      expect_equal(pkg[[paste0("pid_", nm)]], domain[[nm]], info = paste(mode, nm))
+    }
+  }
+})
+
+test_that("BFPM 'apa' gives the same output as 'complete' on 2-item facets", {
+  x <- fx_pid5bfpm()
+  expect_identical(
+    score_pid5(x, items = 1:36, version = "BFPM", missing = "apa", append = FALSE),
+    score_pid5(x, items = 1:36, version = "BFPM", missing = "complete", append = FALSE)
+  )
+})
+
+test_that("BFPM standard errors follow the facet and domain rules", {
+  x <- fx_pid5bfpm()
+  d <- hush_se(score_pid5(x, items = 1:36, version = "BFPM",
+                          missing = "available", calc_se = TRUE, append = FALSE))
+  # R3: Emotional Lability items (1, 19) = (0, 1): sd 0.7071 / sqrt(2) = 0.5.
+  expect_equal(d$pid_emotionalLability_se[3], 0.5)
+  # R3: negativeAffectivity facets 0.5, 1.5, 3 (mean 5/3): squared deviations
+  # 49/36 + 1/36 + 64/36 = 114/36, variance 57/36, so SE = sqrt(57/36) / sqrt(3).
+  expect_equal(d$pid_negativeAffectivity_se[3], sqrt(57 / 36) / sqrt(3))
+  # R3: anankastia facets 2, 0.5, 1 (mean 7/6): squared deviations
+  # 25/36 + 16/36 + 1/36 = 42/36, variance 21/36, so SE = sqrt(21/36) / sqrt(3).
+  expect_equal(d$pid_anankastia_se[3], sqrt(21 / 36) / sqrt(3))
+  # R4: Emotional Lability from item 19 alone has a score but no SE.
+  expect_equal(d$pid_emotionalLability[4], 1)
+  expect_true(is.na(d$pid_emotionalLability_se[4]))
+})
+
+test_that("version abbreviations: 'B' is ambiguous and 'BFP' selects BFPM", {
+  x <- fx_pid5bfpm()
+  expect_error(
+    score_pid5(x, items = 1:36, version = "B"),
+    "should be one of",
+    fixed = TRUE
+  )
+  expect_identical(
+    score_pid5(x, items = 1:36, version = "bfp", append = FALSE),
+    score_pid5(x, items = 1:36, version = "BFPM", append = FALSE)
+  )
+})
+
+test_that("BFPM refuses a data frame with the wrong number of items", {
+  x <- fx_pid5bfpm()
+  expect_error(
+    score_pid5(x, items = 1:35, version = "BFPM"),
+    "Expected 36 items but got 35",
+    fixed = TRUE
+  )
+})

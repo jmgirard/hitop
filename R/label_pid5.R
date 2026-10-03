@@ -8,16 +8,17 @@
 #'   columns with questionnaire text, or `"scales"` to label computed scale
 #'   columns. (default = `"items"`)
 #' @param version A string specifying the PID-5 form the columns belong to:
-#'   `"FULL"` (220 items), `"SF"` (100 items), or `"BF"` (25 items). Matched
-#'   case-insensitively. The three forms number their items independently and
+#'   `"FULL"` (220 items), `"SF"` (100 items), `"BF"` (25 items), or `"BFPM"`
+#'   (the 36-item PID5BF+M). Matched case-insensitively. The forms number their
+#'   items independently and
 #'   score different sets of scales, so the form named here decides both the
 #'   text attached to an item column and which scale columns are recognized.
 #'   (default = `"FULL"`)
 #' @param prefix A string specifying the prefix used on the column names.
 #'   `NULL` resolves to the default for the given `target` and `version`: under
-#'   `target = "items"`, the form's own stem (`"pid5_"`, `"pid5sf_"` or
-#'   `"pid5bf_"`), the pattern the shipped datasets and the package's REDCap
-#'   export use; under `target = "scales"`, `"pid_"`, which is what
+#'   `target = "items"`, the form's own stem (`"pid5_"`, `"pid5sf_"`,
+#'   `"pid5bf_"` or `"pid5bfpm_"`); for the full, short and brief forms this is
+#'   the pattern the shipped datasets and the package's REDCap export use; under `target = "scales"`, `"pid_"`, which is what
 #'   [score_pid5()] writes under its own default `prefix`. (default = `NULL`)
 #'
 #'   Item columns are expected as the prefix followed by the item number
@@ -50,7 +51,7 @@
 label_pid5 <- function(
   data,
   target = c("items", "scales"),
-  version = c("FULL", "SF", "BF"),
+  version = c("FULL", "SF", "BF", "BFPM"),
   prefix = NULL
 ) {
   target <- match.arg(target)
@@ -61,7 +62,7 @@ label_pid5 <- function(
 
   ## Resolve the version, as `score_pid5()` does
   version <- toupper(version)
-  version <- match.arg(version, choices = c("FULL", "SF", "BF"))
+  version <- match.arg(version, choices = c("FULL", "SF", "BF", "BFPM"))
 
   data_cols <- colnames(data)
 
@@ -71,7 +72,8 @@ label_pid5 <- function(
         version,
         "FULL" = "pid5_",
         "SF" = "pid5sf_",
-        "BF" = "pid5bf_"
+        "BF" = "pid5bf_",
+        "BFPM" = "pid5bfpm_"
       )
     }
 
@@ -105,21 +107,31 @@ label_pid5 <- function(
         version,
         "FULL" = "PID-5",
         "SF" = "PID-5-SF",
-        "BF" = "PID-5-BF"
+        "BF" = "PID-5-BF",
+        "BFPM" = "PID5BF+M"
       )
     )
   } else if (target == "scales") {
     if (is.null(prefix)) prefix <- "pid_"
 
     ## The FULL and SF forms score 25 facets from `pid_scales[[version]]` and 5
-    ## domains from `pid_domains`; the BF form scores its 5 domains and a total
-    ## directly, all six carried by `pid_scales$BF`.
+    ## domains from `pid_domains`; the BFPM form scores 18 facets from
+    ## `pid_scales$BFPM` and 6 domains from `pid_bfpm_domains`; the BF form
+    ## scores its 5 domains and a total directly, all six carried by
+    ## `pid_scales$BF`.
     tbl <- pid_scales[[version]]
     stems <- tbl$camelCase
     names_out <- if (version == "BF") tbl$Domain else tbl$Facet
-    if (version != "BF") {
-      stems <- c(stems, pid_domains$camelCase)
-      names_out <- c(names_out, pid_domains$Domain)
+    domains <- if (version %in% c("FULL", "SF")) {
+      pid_domains
+    } else if (version == "BFPM") {
+      pid_bfpm_domains
+    } else {
+      NULL
+    }
+    if (!is.null(domains)) {
+      stems <- c(stems, domains$camelCase)
+      names_out <- c(names_out, domains$Domain)
     }
 
     expected_names <- paste0(prefix, stems)

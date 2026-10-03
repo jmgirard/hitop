@@ -7,7 +7,7 @@
 score_pid5(
   data,
   items,
-  version = c("FULL", "SF", "BF"),
+  version = c("FULL", "SF", "BF", "BFPM"),
   srange = c(0, 3),
   prefix = "pid_",
   missing = c("apa", "available", "complete"),
@@ -41,7 +41,8 @@ before 2.0 (\code{labelled_spss}) is refused the same way, but
 \code{na_values} or \code{na_range} attribute declares to \code{NA} first.}
 
 \item{version}{A string indicating the version of the PID to score: "FULL",
-"SF", or "BF". Will be automatically capitalized. (default = \code{"FULL"})}
+"SF", "BF", or "BFPM" (the 36-item PID5BF+M). Will be automatically
+capitalized. (default = \code{"FULL"})}
 
 \item{srange}{An optional numeric vector specifying the minimum and maximum
 values of the items, used for reverse-coding. (default = \code{c(0, 3)})}
@@ -54,7 +55,8 @@ computing scale scores. \code{"apa"} (the default) follows the published APA
 scoring key: a facet or domain-item scale with more than 25\% of its items
 unanswered is set to \code{NA}, and otherwise the raw score is prorated to the
 full item count and rounded to the nearest whole number before averaging (a
-FULL/SF domain is \code{NA} if any one of its three contributing facets is \code{NA}).
+FULL, SF or BFPM domain is \code{NA} if any one of its three contributing facets
+is \code{NA}).
 \code{"available"} averages whatever items are present (\code{rowMeans(na.rm = TRUE)}).
 \code{"complete"} returns \code{NA} for any scale with a missing item
 (\code{rowMeans(na.rm = FALSE)}). With no missing items the three agree. (default
@@ -67,13 +69,16 @@ silence it by name. This package has no interval function for the PID-5, so ther
 no replacement for it on this instrument; for measurement precision see
 \code{\link[=reliability_pid5]{reliability_pid5()}}. What it does while it lasts:
 an optional logical indicating whether to calculate a
-standard error for each scale score. For the 25 facets, and for the brief
+standard error for each scale score. For the facets, and for the brief
 form's domains and total, this is the SD of the items the respondent
 actually answered divided by the square root of how many of those items
-they answered. The FULL and SF domain scores are means of three facet
-scores rather than of items, so their standard errors are taken one level
-up: the SD of the three contributing facet scores divided by the square
-root of 3. Standard errors are \code{NA} wherever their scale score is \code{NA}.
+they answered. The FULL, SF and BFPM domain scores are means of three
+facet scores rather than of items, so their standard errors are taken one
+level up: the SD of the three contributing facet scores divided by the
+square root of 3. Standard errors are \code{NA} wherever their scale score is
+\code{NA}. A BFPM facet scored from one answered item under
+\code{missing = "available"} has a score but an \code{NA} standard error, because
+the SD of one value is undefined.
 Each one summarizes how much a respondent's answers varied within a scale.
 It is not a standard error of measurement — no reliability estimate enters
 it — so it does not give a confidence interval for a respondent's true
@@ -89,8 +94,9 @@ errors (if requested) and all original \code{data} columns (if requested)
 }
 \description{
 Calculate scale scores on the Personality Inventory for DSM-5: full version
-(PID-5, 220 items), short form version (PID-5-SF, 100 items), or brief form
-version (PID-5-BF, 25 items) from item-level data.
+(PID-5, 220 items), short form version (PID-5-SF, 100 items), brief form
+version (PID-5-BF, 25 items), or modified brief form (PID5BF+M, 36 items;
+Bach et al., 2020) from item-level data.
 }
 \details{
 For the FULL and SF versions, the output includes the 25 facet
@@ -102,6 +108,34 @@ default (\code{missing = "apa"}) all versions apply the APA missing-data and
 proration rule; use \code{missing = "available"} or \code{missing = "complete"} for
 the traditional \code{rowMeans()} behaviors. For per-scale reliability estimates
 (Cronbach's alpha, McDonald's omega), use \code{\link[=reliability_pid5]{reliability_pid5()}}.
+
+\subsection{The PID5BF+M}{
+
+\code{version = "BFPM"} scores the PID5BF+M of Bach et al. (2020), a 36-item
+form with 6 domains: the 5 PID-5 trait domains and Anankastia. Every item
+is a PID-5 item, and none is reverse-keyed. The output
+is 18 facets of 2 items each, then 6 domains, in the order of the form's
+key: Negative affectivity, Detachment, Antagonism, Disinhibition,
+Anankastia and Psychoticism. Each domain score is the mean of its 3 facet
+scores (the map is stored in \link{pid_bfpm_domains}). The 15 facets the form
+shares with the PID-5 keep their PID-5 column names. The three Anankastia
+facets are \code{perfectionism}, \code{rigidity} and \code{orderliness}. All six of their
+items are PID-5 Rigid Perfectionism items, but these facets are not parts
+of \code{rigidPerfectionism}, which this version does not score.
+
+Scores are item means on the 0 to 3 scale, as for the other versions. The
+form's published key sums the 2 items of a facet and averages the facet
+sums for a domain. On complete data, the key's facet sum is
+\verb{2 * pid_<facet>} and its domain score is \verb{2 * pid_<domain>}.
+
+No missing-data rule is published for this form. Under the default
+\code{missing = "apa"}, the 25\% rule applied to a 2-item facet means that any
+missing item makes the facet \code{NA}, and an \code{NA} facet makes its domain
+\code{NA}. So with whole-number responses \code{"apa"} gives the same output as
+\code{"complete"} here. (The APA rule rounds each scale's sum, so responses
+with decimals can differ.) Under \code{missing = "available"}, a facet can be
+scored from one item and a domain from one or two of its facets.
+}
 
 \subsection{The PID-5-BF total score}{
 
@@ -121,8 +155,8 @@ alongside one or more \code{NA} domains} (at most 3 of the 5; blanking all five
 requires 10 unanswered items, which blanks the total as well). This is the
 published rule applied as written, not an oversight.
 
-The FULL and SF versions have no total score: the PID-5 book defines one
-only for the brief form.
+The FULL, SF and BFPM versions have no total score: the PID-5 book defines
+one only for the brief form, and the PID5BF+M sources define none.
 
 \strong{Errors.} With \code{append = TRUE}, a column of \code{data} whose name this call
 would also produce is an error rather than an overwrite or a duplicated
@@ -149,6 +183,14 @@ score_pid5(sim_pid5sf, items = sprintf("pid5sf_\%03d", 1:100), version = "SF",
 score_pid5(sim_pid5bf, items = 1:25, version = "BF", calc_se = TRUE,
            append = FALSE)
 
+# PID5BF+M (18 facets + 6 domains). No BF+M dataset ships, but every BF+M
+# item is a PID-5 item, so take its 36 items from the full-form data in
+# BF+M order.
+bfpm_rows <- pid_items[!is.na(pid_items$BFPM), ]
+bfpm_rows <- bfpm_rows[order(bfpm_rows$BFPM), ]
+sim_bfpm <- sim_pid5[sprintf("pid5_\%03d", bfpm_rows$FULL)]
+score_pid5(sim_bfpm, items = 1:36, version = "BFPM", append = FALSE)
+
 }
 \references{
 Krueger, R. F., Derringer, J., Markon, K. E., Watson, D., &
@@ -173,4 +215,12 @@ personality disorder trait model can be measured with a reduced set of
 items: An item response theory investigation of the personality inventory
 for DSM-5. \emph{Psychological Assessment, 27}(4), 1195–1210.
 \doi{10.1037/pas0000120}
+
+Bach, B., Kerber, A., Aluja, A., Bastiaens, T., Keeley, J. W.,
+Claes, L., Fossati, A., Gutierrez, F., Oliveira, S. E. S., Pires, R.,
+Riegel, K. D., Rolland, J.-P., Roskam, I., Sellbom, M., Somma, A.,
+Spanemberg, L., Strus, W., Thimm, J. C., Wright, A. G. C., & Zimmermann, J.
+(2020). International assessment of DSM-5 and ICD-11 personality disorder
+traits: Toward a common nosology in DSM-5.1. \emph{Psychopathology, 53}(3-4),
+179-188. \doi{10.1159/000507589} The source of the PID5BF+M.
 }
