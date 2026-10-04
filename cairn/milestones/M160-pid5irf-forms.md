@@ -57,6 +57,7 @@ Researchers can build and download PID-5 IRF paper forms, a Qualtrics import fil
 - 2026-10-04: the corrections: the download page's customization sentence names what the generators take; the Society-footer test loops over FULL, SF, BF and BF+M; one test comment reworded and another backed by a rename assertion; the stem quoted with its ellipsis in three help pages; the response-options source comment; and a stale `check_pid_irf_text.R` comment. `test-generate-pid5irf.R` 498 passes, 0 failures. Re-read by the same reader pending.
 - 2026-10-04: the same reader re-read all 7 corrected claims once and found each accurate, with the test file passing. Its two notes on the check-script comment (check order, line length) were fixed.
 - 2026-10-04: implement done. Status set to `review`.
+- 2026-10-04: step-7 approval: m160-pid5irf-forms approved for merge. The approval also signs off the IRF form text (IP1) as the Decisions entry states.
 
 ## Decisions
 
