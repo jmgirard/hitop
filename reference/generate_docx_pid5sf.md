@@ -48,6 +48,6 @@ generate_docx_pid5sf(
 # \donttest{
 # Write a PID-5-SF paper form to a temporary Word document
 generate_docx_pid5sf(file = tempfile(fileext = ".docx"))
-#> ✔ Document successfully created at /tmp/RtmppWeB9M/file1b257306d474.docx
+#> ✔ Document successfully created at /tmp/Rtmp326wTs/file1b0629e4a6cf.docx
 # }
 ```
