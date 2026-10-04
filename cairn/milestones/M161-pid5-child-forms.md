@@ -1,13 +1,13 @@
 # M161: PID-5 child forms (ages 11 to 17)
 
-- **Status:** planned
+- **Status:** in-progress
 - **Priority:** normal
 - **Depends on:** M158
 - **Driving RR:** —
 - **Principles touched:** IP1, IP2, IP3
 - **Resolves:** —
 - **Surface tier:** user-facing — new exported form generators, downloads and scoring documentation
-- **Branch/PR:** —
+- **Branch/PR:** m161-pid5-child-forms
 
 ## Goal
 
@@ -56,6 +56,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - 2026-10-03: created by /milestone-plan, together with M157 to M160. It depends on M158 so that the generator changes do not collide.
 - 2026-10-03: plan chose to score the child forms with the existing FULL and BF versions over a new child version. The first text check found the same items and reverse list. Falsified by any difference in T1's comparison.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 3 clear fixes and 3 judgment findings, all applied. AC1 compares against the package tables, reads "whether", and states the match rule. AC3 narrows to shipped adult artifacts and stops conflicting with AC4's page-count edits. The T2 gate adds the child item-name stems.
+- 2026-10-04: implement started on branch `m161-pid5-child-forms`, cut from main at `0b9bc3db` after M160 merged. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit. M160's `pid_irf_form()`, `page_header` and `footer_notice` patterns are available to the child generators.
 
 ## Decisions
 
