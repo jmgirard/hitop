@@ -46,9 +46,9 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 
 - [x] T1: Write the `data-raw/` comparison script and the references page (AC1). A first check on 2026-10-03 found all 220 adult texts and all 25 BF texts in the child PDFs (letters-only match, order not checked). The child reverse list equals the adult list.
 - [x] T2: Pre-implementation gate (RB tripwire: irreversible-api). Choose between new child generator functions and an argument on the existing PID-5 generators. Also choose the child item-name stems for Qualtrics and REDCap. Those stems decide whether `rename_pid5_items()` is needed before FULL or BF scoring. Then add the child instructions to `R/sysdata.rda` through `data-raw/`.
-- [ ] T3: Build the child Word, Qualtrics and REDCap generators.
-- [ ] T4: Write the parse-back tests (AC2) and run the existing generator and artifact tests unchanged (AC3).
-- [ ] T5: Add the artifact rows, build the artifacts, stage the pkgdown copies and write the download pages. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the pages from the online-strip test.
+- [x] T3: Build the child Word, Qualtrics and REDCap generators.
+- [x] T4: Write the parse-back tests (AC2) and run the existing generator and artifact tests unchanged (AC3).
+- [x] T5: Add the artifact rows, build the artifacts, stage the pkgdown copies and write the download pages. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the pages from the online-strip test.
 - [ ] T6: Update the help pages, vignette, NEWS and reference index. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
@@ -60,6 +60,7 @@ Researchers can build, download and score the APA PID-5 child forms for ages 11 
 - 2026-10-04: T1 done. `data-raw/check_pid_child_text.R` finds no difference in the 220 + 25 texts, the reverse list, 25 facets, 5 domains or 5 BF domains, and goes red on 7 planted defect kinds. Page `cairn/references/apa2013pid5child.md`. The child instructions differ from `pid_instructions$start` only in the full form's label and its quotes around "right" and "wrong".
 - 2026-10-04: T2 gate (RB tripwire: irreversible-api) posed as one chip with the escalation offer. Jeff chose new child functions and the adult item names, recorded as M161-D1. `pid_child_instructions` (FULL and BF: start, notice, options) enters `R/sysdata.rda` via `data-raw/sysdata.R`. The check script gains a sixth check on it, which passes and goes red on 3 planted defects. Suite: 27632 pass, 1 fail, `test-vignette-export-coverage.R`, caused by T3's new exports reaching `NAMESPACE` mid-run. It clears when T5 links them.
 - 2026-10-04: T3 and T4 checkpoint, boxes left open until T5 makes the suite green. Six generators share `pid_child_form()` and `build_docx_pid5_child()`. Default titles are "PID-5 (Full), Child Age 11–17" and "PID-5-BF, Child Age 11–17". Qualtrics blocks are "PID-5 Child" and "PID-5-BF Child", and REDCap forms are `pid5child_questionnaire` and `pid5bfchild_questionnaire`. `test-generate-pid5child.R` passes, 6 tests. Planting adult instructions or two swapped items fails 3 of them.
+- 2026-10-04: T5 done, T3 and T4 boxes ticked. `data-raw/artifacts.R` built the 8 child files, and the manifest gained 8 rows, all child files. All 52 earlier rows are unchanged and no shipped adult file changed. Pages `download-pid5child.Rmd` and `download-pid5bfchild.Rmd` and two Instruments menu entries were added. Page counts went from 8 to 10, and the strip exemption gained `pid5child` and `pid5bfchild`. Three manifest-coverage tests failed on the 4 new online exports, as their comments say they will. Fix: `test-export-padding-width.R` counts 15 to 19 and `test-response-value-no-move.R` gains 4 builders. These are not generator tests under AC3, and no expectation about an adult export changed. The full suite then had 27823 pass and 3 fail, all 3 in those files. The rerun of those files and the page tests passes.
 
 ## Decisions
 
