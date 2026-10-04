@@ -285,6 +285,43 @@ generate_qualtrics_pid5bf <- function(
   )
 }
 
+#' Generate a Qualtrics Import File for the PID5BF+M
+#'
+#' The 36 items of the modified brief form of the PID-5 (PID5BF+M), in BF+M
+#' order with their PID-5 text, and the instructions and response options of
+#' the other PID-5 forms. Score the export with
+#' `score_pid5(version = "BFPM")`.
+#'
+#' @inheritParams generate_qualtrics_pid5
+#'
+#' @examples
+#' # Write a PID5BF+M Qualtrics import file to a temporary location
+#' generate_qualtrics_pid5bfpm(file = tempfile(fileext = ".txt"))
+#'
+#' @export
+generate_qualtrics_pid5bfpm <- function(
+  file = "pid5bfpm_qualtrics.txt",
+  block_name = "PID5BF+M",
+  id_prefix = "PID5BFPM",
+  include_instructions = TRUE,
+  breaks = 15
+) {
+  items <- pid_items[!is.na(pid_items$BFPM), ]
+  items <- items[order(items$BFPM), ]
+  items <- items[, c("BFPM", setdiff(names(items), "BFPM"))]
+
+  build_qualtrics_txt(
+    items = items,
+    max_n = max(pid_items$BFPM, na.rm = TRUE),
+    instructions = pid_instructions,
+    file = file,
+    block_name = block_name,
+    id_prefix = id_prefix,
+    include_instructions = include_instructions,
+    breaks = breaks
+  )
+}
+
 # Internal Helper: the item questions' `[[ID:]]` values
 #
 # One place for the IDs build_qualtrics_txt() writes, so the HiTOP-SR

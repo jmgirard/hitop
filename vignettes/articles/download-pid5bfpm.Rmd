@@ -1,0 +1,97 @@
+---
+title: "PID5BF+M Instrument"
+output: rmarkdown::html_vignette
+toc: false
+vignette: >
+  %\VignetteIndexEntry{PID5BF+M Instrument}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Welcome to the resources page for the modified brief form of the Personality Inventory for DSM-5 (PID5BF+M; Bach et al., 2020). This questionnaire contains 36 items. It scores 18 facets of 2 items each and 6 domains, each the average of 3 facet scores. The items take their wording from the PID-5, and the forms use the PID-5 instructions and response options. Here you can download ready-to-use versions of the instrument or use the `hitop` R package to customize, score, and analyze your data.
+
+```{r setup, include=FALSE}
+source("_download-helpers.R")
+```
+
+```{=html}
+<h3 class="mt-4 mb-3">Ready-to-Use Downloads</h3>
+<p class="text-muted">Choose the format that best fits your immediate research needs.</p>
+```
+
+```{r downloads, echo=FALSE, results='asis'}
+download_cards("PID5BF+M", list(
+  dl_card(
+    "📄", "Printable Document",
+    "Use these Microsoft Word documents for printing, paper administration, or sending to the IRB.",
+    dl_link("English (A4 Paper)", "../downloads/pid5bfpm_A4.docx"),
+    dl_link("English (US Paper)", "../downloads/pid5bfpm_US.docx")
+  ),
+  dl_card(
+    "📊", "Qualtrics Import",
+    "Use this specially formatted text file to easily import the instrument directly into your Qualtrics surveys.",
+    dl_link("English (TXT File)", "../downloads/pid5bfpm_qualtrics.txt"),
+    ref_link("Import Instructions", "../articles/import-instructions.html#qualtrics-txt")
+  ),
+  dl_card(
+    "🏥", "REDCap Import",
+    "Use this compressed archive file to import the instrument as a new instrument in your REDCap project.",
+    dl_link("English (ZIP File)", "../downloads/pid5bfpm_redcap.zip"),
+    ref_link("Import Instructions", "../articles/import-instructions.html#redcap-zip")
+  )
+))
+```
+
+```{=html}
+<hr class="mt-5 mb-4">
+
+<h3 class="mb-3">Explore the R Package Features</h3>
+<p class="text-muted">The <code>hitop</code> package provides a toolkit for working with the PID5BF+M. If you are comfortable using R, you can use these functions in your workflow.</p>
+
+<div class="row mt-4">
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">📋 Instrument Information</h5>
+        <p class="card-text">Access the item dictionary, the facet keys and the facet-to-domain map directly from the package namespace.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/pid_items.html" class="btn btn-sm btn-outline-secondary">Items</a>
+          <a href="../reference/pid_scales.html" class="btn btn-sm btn-outline-secondary">Facets</a>
+          <a href="../reference/pid_bfpm_domains.html" class="btn btn-sm btn-outline-secondary">Domains</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🛠️ Custom File Generation</h5>
+        <p class="card-text">Need to change the formatting, adapt the instructions, or translate the text? Build customized DOCX, Qualtrics, and REDCap files programmatically.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/generate_docx_pid5bfpm.html" class="btn btn-sm btn-outline-secondary">Printable</a>
+          <a href="../reference/generate_qualtrics_pid5bfpm.html" class="btn btn-sm btn-outline-secondary">Qualtrics</a>
+          <a href="../reference/generate_redcap_pid5bfpm.html" class="btn btn-sm btn-outline-secondary">REDCap</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 mb-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">🧮 Scoring & Reliability</h5>
+        <p class="card-text">Score the facets and domains with <code>version = "BFPM"</code>, or compute alpha and omega for each facet and domain. Omega is <code>NA</code> for the 2-item facets.</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="../reference/score_pid5.html" class="btn btn-sm btn-outline-secondary">Score PID5BF+M</a>
+          <a href="../reference/reliability_pid5.html" class="btn btn-sm btn-outline-secondary">Reliability</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+```{r versions, echo=FALSE, results='asis'}
+versions_section("PID5BF+M")
+```

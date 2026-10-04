@@ -18,6 +18,18 @@
   `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take the new
   version.
 
+* **New PID5BF+M forms.** `generate_docx_pid5bfpm()`,
+  `generate_qualtrics_pid5bfpm()` and `generate_redcap_pid5bfpm()` write the
+  36 items in BF+M order with their PID-5 text, and the PID-5 instructions
+  and 0 to 3 response options. The Word scoring page lists the 2 items of
+  each of the 18 facets, then a second table names the 3 facets that each
+  of the 6 domains averages. The Qualtrics question IDs are `PID5BFPM_01` to
+  `PID5BFPM_36`. The REDCap fields are `pid5bfpm_01` to `pid5bfpm_36`, the
+  names `rename_pid5_items()` and `label_pid5()` use with
+  `version = "BFPM"`. Ready-made Word (US and A4),
+  Qualtrics and REDCap files are on a new PID5BF+M download page. The online
+  form does not offer the PID5BF+M.
+
 * **The `reliability_*()` functions report omega as `NA` for a scale with
   fewer than 3 items.** A one-factor model of 2 items is not identified, so
   no model is fitted. No PID-5, HiTOP-SR or HiTOP-BR scale had fewer than 3

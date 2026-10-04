@@ -81,7 +81,7 @@ test_that("download-page links point at the staged site copies", {
   skip_if(!dir.exists(articles), "vignettes/articles not available")
   m <- latest_manifest()
   pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
-  expect_length(pages, 6)
+  expect_length(pages, 7)
 
   linked <- character(0)
   for (page in pages) {
@@ -169,7 +169,7 @@ test_that("download pages link the centralized import-instructions article", {
   }
 
   pages <- list.files(articles, pattern = "^download-.*\\.Rmd$", full.names = TRUE)
-  expect_length(pages, 6)
+  expect_length(pages, 7)
   for (page in pages) {
     text <- paste(readLines(page, warn = FALSE), collapse = "\n")
     # REDCap card links the article's REDCap section.
@@ -207,7 +207,7 @@ test_that("a source checkout stages the pkgdown download copies", {
   # back to the two installed copies. They have to: under `R CMD check` the
   # suite runs from a built tarball where `.Rbuildignore` has removed
   # `pkgdown/` entirely. That tolerance also meant a renamed or deleted
-  # directory left both of them green in a checkout, where the 29 staged
+  # directory left both of them green in a checkout, where the 33 staged
   # files are tracked and are the copies the site serves (D-033). This is the
   # floor they lean on: in a checkout the directory is there, or the suite
   # fails.

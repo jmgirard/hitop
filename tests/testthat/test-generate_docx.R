@@ -54,7 +54,7 @@ test_that("an invalid papersize is rejected by match.arg", {
   )
 })
 
-# ---- Smoke coverage: all 6 DOCX generators ----------------------------------
+# ---- Smoke coverage: all 7 DOCX generators ----------------------------------
 
 test_that("all DOCX generators produce a non-empty document with their own text", {
   skip_if_no_docx()
@@ -64,6 +64,7 @@ test_that("all DOCX generators produce a non-empty document with their own text"
     list(fn = generate_docx_pid5,    text = first_clean_text(pid_items$Text[!is.na(pid_items$FULL)])),
     list(fn = generate_docx_pid5sf,  text = first_clean_text(pid_items$Text[!is.na(pid_items$SF)])),
     list(fn = generate_docx_pid5bf,  text = first_clean_text(pid_items$Text[!is.na(pid_items$BF)])),
+    list(fn = generate_docx_pid5bfpm, text = first_clean_text(pid_items$Text[!is.na(pid_items$BFPM)])),
     # HSUM DOCX is a curated overview, not an item table; assert a stable phrase.
     list(fn = generate_docx_hitophsum, text = "In what forms did you use nicotine")
   )
@@ -252,7 +253,12 @@ test_that("include_scoring = FALSE still omits the BF scoring table entirely", {
 
 test_that("the PID legend prints two options per line, in printed order", {
   skip_if_no_docx()
-  for (gen in list(generate_docx_pid5, generate_docx_pid5sf, generate_docx_pid5bf)) {
+  for (gen in list(
+    generate_docx_pid5,
+    generate_docx_pid5sf,
+    generate_docx_pid5bf,
+    generate_docx_pid5bfpm
+  )) {
     f <- withr::local_tempfile(fileext = ".docx")
     suppressMessages(gen(file = f))
     lines <- docx_legend_lines(f)
