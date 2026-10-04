@@ -37,10 +37,10 @@ Researchers can build and download PID-5 IRF paper forms, a Qualtrics import fil
 
 ## Tasks
 
-- [ ] T1: Add the IRF Word generator in `R/generate_docx.R`, following `generate_docx_pid5()`. The footer carries the APA notice that the key prints.
-- [ ] T2: Add the Qualtrics and REDCap generators, following the FULL ones.
-- [ ] T3: Write the parse-back tests (AC1, AC2) in the D-010 style.
-- [ ] T4: Add the rows to `data-raw/artifacts.R`, build the artifacts and stage the pkgdown copies. Write the download page and add it to the navbar. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the page from the online-strip test.
+- [x] T1: Add the IRF Word generator in `R/generate_docx.R`, following `generate_docx_pid5()`. The footer carries the APA notice that the key prints.
+- [x] T2: Add the Qualtrics and REDCap generators, following the FULL ones.
+- [x] T3: Write the parse-back tests (AC1, AC2) in the D-010 style.
+- [x] T4: Add the rows to `data-raw/artifacts.R`, build the artifacts and stage the pkgdown copies. Write the download page and add it to the navbar. Update the page counts in `test-artifacts.R` and `test-download-pages.R`, and exempt the page from the online-strip test.
 - [ ] T5: Add NEWS and reference rows. Run `devtools::document()`, `devtools::test()`, `devtools::check()` and `pkgdown::check_pkgdown()`.
 
 ## Work log
@@ -48,6 +48,10 @@ Researchers can build and download PID-5 IRF paper forms, a Qualtrics import fil
 - 2026-10-03: created by /milestone-plan, together with M157 to M159 and M161.
 - 2026-10-03: criteria audit (full mode, fresh Opus reader) returned 3 clear fixes and 1 judgment finding, all applied. AC1 binds the scoring table to IRF numbers and the footer notice. AC2 separates REDCap names from Qualtrics IDs. AC3 counts four files and exempts the page from the online-strip test.
 - 2026-10-04: implement started on branch `m160-pid5irf-forms`, cut from main at `79b9c052` after M159 merged. The untracked `devel/hitopdat_*` files predate the branch and stay out of every commit. Read with D-089, D-090 and the M159 review's deferred note: the generators read `pid_items$Text`, so the IRF ones must use `TextIRF` (row "PID-5 norms not yet shipped").
+- 2026-10-04: implement choices: a shared `pid_irf_form()` gives all three generators the 218 IRF rows with `Text` replaced by `TextIRF`. The instruction text is `pid_irf_instructions` start, prompt and stem joined, and items print as stored, with no leading ellipsis. The Word scoring page mirrors the FULL form's (facets only, no domain table). The default title is "PID-5-IRF (Informant Form)".
+- 2026-10-04: implement choice: the APA footer notice is a new `notice` element of `pid_irf_instructions` (sysdata), taken from the form, and `check_pid_irf_text.R` now matches it to the PDF (PASS). `build_docx_footer()` and `build_hitop_doc()` gained a `notice`/`footer_notice` argument; NULL keeps the Society line, so the other forms do not change. The other sysdata objects are identical.
+- 2026-10-04: T1 to T3 done. `generate_docx_pid5irf()`, `generate_qualtrics_pid5irf()` and `generate_redcap_pid5irf()` added. `test-generate-pid5irf.R` (7 tests, 491 expectations) parses all three back against `pid_items`, `pid_irf_instructions` and the key tables typed in `helper-fixtures.R`. Planted self-report text, the Society footer and FULL scoring numbers each failed their test. The generators joined the shared smoke lists, the legend lock and the Qualtrics ID-width loop (LESSONS M158).
+- 2026-10-04: T4 done. `data-raw/artifacts.R` built the four files under instrument "PID-5-IRF" (manifest 48 to 52 rows) and staged 37 download copies. New page `download-pid5irf.Rmd` without an online strip, navbar entry "PID-5 Informant Form (IRF)". Page counts 7 to 8 in `test-artifacts.R` and `test-download-pages.R`, `pid5irf` added to `no_strip_stems`, manifest-generator counts 13 to 15 in `test-export-padding-width.R`, and two builders in `test-response-value-no-move.R`. T1 to T4 ticked: full suite 27592 passes, 0 failures.
 
 ## Decisions
 

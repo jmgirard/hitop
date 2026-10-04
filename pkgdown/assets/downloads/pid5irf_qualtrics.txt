@@ -1,0 +1,2870 @@
+[[AdvancedFormat]]
+
+[[Block:PID-5-IRF]]
+
+[[Question:DB]]
+[[ID:start_instructions]]
+This is a list of things different people might say about others. We are interested in how you would describe the person you are rating. There are no right or wrong answers. So you can describe him/her as honestly as possible, we will keep your responses confidential. We'd like you to take your time and read each statement carefully, selecting the response that best describes him/her. Please rate how true or false each of the following statements are of the person you are rating. He or she…
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_001]]
+doesn't get as much pleasure out of things as others seem to
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_002]]
+believes people are out to get them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_003]]
+is reckless
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_004]]
+acts totally on impulse
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_005]]
+often has unusual ideas
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_006]]
+loses track of conversations because other things catch their attention
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_007]]
+avoids risky situations
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_008]]
+can be a "cold fish" when it comes to their emotions
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_009]]
+changes what they do depending on what others want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_010]]
+prefers not to get too close to people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_011]]
+often gets into physical fights
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_012]]
+dreads being without someone to love them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_013]]
+is rude and unfriendly
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_014]]
+does things to make sure people notice them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_015]]
+usually does what others think they should do
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_016]]
+usually does things on impulse without thinking about what might happen as a result
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_017]]
+can't stop making rash decisions even though they know better
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_018]]
+changes in emotion for no good reason
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_019]]
+really doesn't care if they make other people suffer
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_020]]
+keeps to themselves
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_021]]
+often says things that are odd or strange
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_022]]
+always does things on the spur of the moment
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_023]]
+is not very interested in anything
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_024]]
+behaves in a weird way
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_025]]
+thinks about things in a really strange way
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_026]]
+almost never enjoys life
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_027]]
+often feels like nothing they do really matters
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_028]]
+snaps at people over little things that irritate them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_029]]
+can't concentrate on anything
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_030]]
+is an energetic person
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_031]]
+is irresponsible
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_032]]
+can be mean
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_033]]
+has thoughts that often go off in odd or unusual directions
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_034]]
+spends too much time making sure things are exactly in place
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_035]]
+avoids risky sports and activities
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_036]]
+seems to have trouble telling the difference between dreams and waking life
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_037]]
+talks about weird sensations (like feeling that parts of their body feel like they're dead or not really them)
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_038]]
+is easily angered
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_039]]
+has no limits when it comes to doing dangerous things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_040]]
+thinks they are just more important than other people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_041]]
+makes up stories about things that happened that are totally untrue
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_042]]
+claims strange problems with memory that are difficult to explain
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_043]]
+does things just to make people admire them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_044]]
+reports seeing weird things (like ordinary objects changing shapes)
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_045]]
+doesn't have very long-lasting emotional reactions to things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_046]]
+finds it hard to stop an activity, even when it's time to do so
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_047]]
+is not good at planning ahead
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_048]]
+does a lot of things that others consider risky
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_049]]
+focuses too much on minor details
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_050]]
+worries a lot about being alone
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_051]]
+has missed out on things because they were busy trying to get something they were doing exactly right
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_052]]
+often has thoughts that don't make sense
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_053]]
+often makes up things about themselves to help them get what they want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_054]]
+is not really bothered to see other people get hurt
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_055]]
+often says really weird things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_056]]
+often flatters people in order to get something
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_057]]
+would rather be in a bad relationship than be alone
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_058]]
+usually thinks before they act
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_059]]
+often talks about seeing vivid images (like dreams spilling into waking life)
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_060]]
+keeps approaching things the same way, even when it isn't working
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_061]]
+is very dissatisfied with themselves
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_062]]
+has much stronger emotional reactions than almost everyone else
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_063]]
+does what other people tell them to do
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_064]]
+can't stand being left alone, even for a few hours
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_065]]
+thinks too highly of themselves
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_066]]
+sees the future as really hopeless
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_067]]
+likes to take risks
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_068]]
+can't achieve goals because other things capture their attention
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_069]]
+doesn't let something being risky stop them from doing it
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_070]]
+is quite odd or unusual
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_071]]
+has strange and unpredictable thoughts
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_072]]
+doesn't care about other people's feelings
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_073]]
+disregards others to get what they want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_074]]
+loves getting the attention of other people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_075]]
+goes out of their way to avoid any kind of group activity
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_076]]
+can be sneaky if it means getting what they want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_077]]
+often seems to see things as unfamiliar or strange
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_078]]
+finds it hard to shift from one activity to another
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_079]]
+worries a lot about terrible things that might happen
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_080]]
+has trouble changing how they are doing something even if what they are doing isn't going well
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_081]]
+thinks the world would be better off if they were dead
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_082]]
+keeps their distance from people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_083]]
+often can't seem to control what they think about
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_084]]
+doesn't get emotional
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_085]]
+resents being told what to do, even by people in charge
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_086]]
+often seems ashamed about little things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_087]]
+avoids anything that might be even a little bit dangerous
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_088]]
+has trouble pursuing specific goals even for short periods of time
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_089]]
+prefers to keep romance out of their life
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_090]]
+would never harm another person
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_091]]
+doesn't show emotions strongly
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_092]]
+has a very short temper
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_093]]
+often worries that something bad will happen due to mistakes they made in the past
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_094]]
+thinks they have unusual abilities (like sometimes knowing exactly what someone is thinking)
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_095]]
+is very nervous about the future
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_096]]
+enjoys being in love
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_097]]
+prefers to play it safe rather than take unnecessary chances
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_098]]
+sometimes hears things that aren't really there
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_099]]
+gets fixated on certain things and can't stop
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_100]]
+is difficult to read emotionally
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_101]]
+is a highly emotional person
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_102]]
+worries about others taking advantage of them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_103]]
+often feels like a failure
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_104]]
+finds it simply not acceptable if they do not do something absolutely perfectly
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_105]]
+often has unusual experiences, such as sensing the presence of someone who isn't actually there
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_106]]
+is good at making people do what they want them to do
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_107]]
+breaks off relationships if they start to get close
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_108]]
+is always worrying about something
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_109]]
+worries about almost everything
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_110]]
+likes standing out in a crowd
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_111]]
+doesn't mind a little risk now and then
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_112]]
+often displays bold behavior that grabs peoples' attention
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_113]]
+thinks they are better than almost everyone else
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_114]]
+has a need to have everything all arranged
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_115]]
+always makes sure they get back at people who wrong them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_116]]
+is always on his/her guard for someone trying to trick or harm them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_117]]
+has trouble keeping their mind focused on what needs to be done
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_118]]
+talks about suicide a lot
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_119]]
+is just not very interested in having sexual relationships
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_120]]
+gets stuck on things a lot
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_121]]
+gets emotional easily, often for very little reason
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_122]]
+insists on absolute perfection in everything they do even though it drives other people crazy
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_123]]
+almost never feels happy about their day-to-day activities
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_124]]
+finds sweet-talking others helps them get what they want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_125]]
+sometimes exaggerates or lies about themselves to get ahead
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_126]]
+fears being alone in life more than anything else
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_127]]
+gets stuck on one way of doing things, even when it's clear it won't work
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_128]]
+is often pretty careless with their own and others' things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_129]]
+is a very anxious person
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_130]]
+thinks people are basically trustworthy
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_131]]
+is easily distracted
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_132]]
+often thinks they are being mistreated
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_133]]
+doesn't hesitate to cheat if it gets them ahead
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_134]]
+checks things several times to make sure they are perfect
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_135]]
+doesn't like spending time with others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_136]]
+feels compelled to go on with things even when it makes little sense to do so
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_137]]
+has emotions that can change from moment to moment
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_138]]
+has seen things that weren't really there
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_139]]
+believes it is important that things are done in a certain way
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_140]]
+always expects the worst to happen
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_141]]
+tries to tell the truth even when it's hard
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_142]]
+believes that some people can move things with their minds
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_143]]
+can't focus on things for very long
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_144]]
+steers clear of romantic relationships
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_145]]
+is not interested in making friends
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_146]]
+says as little as possible when dealing with people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_147]]
+thinks they are useless as a person
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_148]]
+will do just about anything to keep someone from abandoning them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_149]]
+thinks they can influence people by literally sending their thoughts to them
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_150]]
+thinks that life looks pretty bleak
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_151]]
+thinks about things in odd ways that don't make sense to most people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_152]]
+doesn't care if their actions hurt others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_153]]
+sometimes thinks their thoughts are being "controlled" by someone else
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_154]]
+really lives life to the fullest
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_155]]
+seems to make promises that they don't intend to keep
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_156]]
+does not seem to feel good about anything
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_157]]
+gets irritated easily by all sorts of things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_158]]
+does what they want regardless of how unsafe it might be
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_159]]
+often forgets to pay their bills
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_160]]
+doesn't like to get too close to people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_161]]
+is good at conning people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_162]]
+finds everything pointless
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_163]]
+never takes risks
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_164]]
+gets emotional over every little thing
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_165]]
+believes it is no big deal if they hurt other peoples' feelings
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_166]]
+never shows emotions to others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_167]]
+often feels just miserable
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_168]]
+feels worthless as a person
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_169]]
+is usually pretty hostile
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_170]]
+has skipped town to avoid responsibilities
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_171]]
+has a number of odd quirks or habits
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_172]]
+likes being a person who gets noticed
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_173]]
+is always fearful or on edge about bad things that might happen
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_174]]
+never wants to be alone
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_175]]
+keeps trying to make things perfect, even when they have gotten them as good as they're likely to get
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_176]]
+mentions that they will commit suicide sooner or later
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_177]]
+exaggerates their own achievements
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_178]]
+can certainly turn on the charm if they need to get their way
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_179]]
+has unpredictable emotions
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_180]]
+doesn't deal with people unless they have to
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_181]]
+doesn't care about other peoples' problems
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_182]]
+doesn't react much to things that seem to make others emotional
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_183]]
+has several habits that are eccentric or strange
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_184]]
+avoids social events
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_185]]
+thinks they deserve special treatment
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_186]]
+is really angry when people insult them in even a minor way
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_187]]
+rarely gets enthusiastic about anything
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_188]]
+suspects that their friends betray them a lot
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_189]]
+craves attention
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_190]]
+sometimes thinks someone else is removing thoughts from their head
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_191]]
+has periods in which they feel disconnected from the world or from themselves
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_192]]
+often makes unusual connections between things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_193]]
+doesn't think about getting hurt when they are doing things that might be dangerous
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_194]]
+simply won't put up with things being out of their proper places
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_195]]
+often "looks down" on others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_196]]
+sometimes hits people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_197]]
+gets pulled off-task by even minor distractions
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_198]]
+enjoys making people in control look stupid
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_199]]
+just skips appointments or meetings if they are not in the mood
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_200]]
+tries to do what others want them to do
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_201]]
+prefers being alone to having a close romantic partner
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_202]]
+is very impulsive
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_203]]
+often has thoughts that make sense to them but that other people say are strange
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_204]]
+uses people to get what they want
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_205]]
+doesn't feel guilty about things they have done that have hurt other people
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_206]]
+is not friendly most of the time
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_207]]
+talks about really weird experiences that are difficult for them to explain
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_208]]
+follows through on commitments
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_209]]
+likes to draw attention to themselves
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_210]]
+feels guilty much of the time
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[PageBreak]]
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_211]]
+often "zones out" for periods of time
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_212]]
+lies easily
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_213]]
+hates to take chances
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_214]]
+can be nasty and short with others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_215]]
+talks about feeling like things are unreal, or more real than usual
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_216]]
+will stretch the truth if it's to their advantage
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_217]]
+finds it is easy to take advantage of others
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
+[[Question:MC:SingleAnswer]]
+[[ID:PID5IRF_218]]
+has a strict way of doing things
+[[AdvancedChoices]]
+[[Choice:0]]
+Very False or Often False
+[[Choice:1]]
+Sometimes or Somewhat False
+[[Choice:2]]
+Sometimes or Somewhat True
+[[Choice:3]]
+Very True or Often True
+
