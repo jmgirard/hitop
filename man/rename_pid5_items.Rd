@@ -83,3 +83,11 @@ df <- data.frame(pid_1 = c(0, 1), pid_2 = c(2, 3), age = c(30, 40))
 names(suppressWarnings(rename_pid5_items(df, version = "FULL")))
 
 }
+\references{
+Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
+(2013). \emph{The Personality Inventory for DSM-5—Informant Form
+(PID-5-IRF)—Adult}. American Psychiatric Association. The source of the
+informant wording that \code{version = "IRF"} matches under
+\code{method = "text"}. See also Markon et al. (2013), \emph{Assessment, 20}(3),
+370-383. \doi{10.1177/1073191113486513}
+}

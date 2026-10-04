@@ -714,7 +714,8 @@ round_half_up <- function(x) {
 # PID-5 scoring key: if more than 25% of a scale's items are unanswered, the
 # score is not used (NA); otherwise the raw score is prorated to the full item
 # count and rounded to the nearest whole number before averaging. With no missing
-# items this reduces to the plain item mean.
+# items this reduces to the plain item mean. The PID-5-IRF key prints "round up
+# to the nearest whole number"; it is read as this same rule (D-090).
 apa_mean <- function(mat) {
   n <- ncol(mat)
   apply(mat, MARGIN = 1, FUN = function(x) {

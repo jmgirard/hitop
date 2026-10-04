@@ -44,6 +44,13 @@
 #'   report still names every prefixed item column it found. Both classes may
 #'   be caught or suppressed by callers.
 #'
+#' @references Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
+#'   (2013). *The Personality Inventory for DSM-5—Informant Form
+#'   (PID-5-IRF)—Adult*. American Psychiatric Association. The source of the
+#'   informant wording that `version = "IRF"` labels items with. See also
+#'   Markon et al. (2013), *Assessment, 20*(3), 370-383.
+#'   \doi{10.1177/1073191113486513}
+#'
 #' @examples
 #' # Attach item text as a `label` attribute to the raw item columns
 #' labeled <- label_pid5(sim_pid5bf, target = "items", version = "BF")

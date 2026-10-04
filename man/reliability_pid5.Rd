@@ -61,10 +61,13 @@ it), \code{camelCase} (the stem that names the scale's column in the matching
 Compute per-scale internal-consistency reliability — Cronbach's alpha and
 McDonald's omega — for the Personality Inventory for DSM-5: full version
 (PID-5, 220 items), short form (PID-5-SF, 100 items), brief form (PID-5-BF,
-25 items), or modified brief form (PID5BF+M, 36 items). Reliability is
-estimated on the reverse-keyed item responses, at the facet level for FULL/SF
-and the domain level for BF (the same scales \code{\link[=score_pid5]{score_pid5()}} outputs, before
-FULL/SF domain aggregation). The BF version also returns a \code{Total} row
+25 items), modified brief form (PID5BF+M, 36 items), or Informant Form
+(PID-5-IRF, 218 items; Markon et al., 2013). Reliability is
+estimated on the reverse-keyed item responses, at the facet level for
+FULL/SF/IRF and the domain level for BF (the same scales \code{\link[=score_pid5]{score_pid5()}}
+outputs, before FULL/SF/IRF domain aggregation). The IRF facets are the full
+form's 25, numbered by informant item and reverse-keyed as the APA IRF key's
+Facet Table marks (see \code{\link[=score_pid5]{score_pid5()}}). The BF version also returns a \code{Total} row
 covering all 25 items; note that this scale spans five heterogeneous domains,
 so its internal consistency is not comparable to a domain's and is reported
 without further interpretation.
@@ -86,4 +89,12 @@ with fewer, no model is fitted and omega is \code{NA}.
 # Facet-level reliability for the full PID-5 (alpha only)
 reliability_pid5(sim_pid5, items = 1:220, version = "FULL", omega = FALSE)
 
+}
+\references{
+Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
+(2013). The development and psychometric properties of an informant-report
+form of the Personality Inventory for DSM-5 (PID-5). \emph{Assessment, 20}(3),
+370-383. \doi{10.1177/1073191113486513} The scoring key for
+\code{version = "IRF"} is the APA's \emph{The Personality Inventory for
+DSM-5—Informant Form (PID-5-IRF)—Adult} (2013).
 }

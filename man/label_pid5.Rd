@@ -67,3 +67,11 @@ labeled <- label_pid5(sim_pid5bf, target = "items", version = "BF")
 attr(labeled$pid5bf_01, "label")
 
 }
+\references{
+Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
+(2013). \emph{The Personality Inventory for DSM-5—Informant Form
+(PID-5-IRF)—Adult}. American Psychiatric Association. The source of the
+informant wording that \code{version = "IRF"} labels items with. See also
+Markon et al. (2013), \emph{Assessment, 20}(3), 370-383.
+\doi{10.1177/1073191113486513}
+}

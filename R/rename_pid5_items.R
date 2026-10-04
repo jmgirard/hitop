@@ -54,6 +54,13 @@
 #'   method, if some but not all of the form's items were renamed, the
 #'   completeness report is `hitop_incomplete_rename`.
 #'
+#' @references Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F.
+#'   (2013). *The Personality Inventory for DSM-5—Informant Form
+#'   (PID-5-IRF)—Adult*. American Psychiatric Association. The source of the
+#'   informant wording that `version = "IRF"` matches under
+#'   `method = "text"`. See also Markon et al. (2013), *Assessment, 20*(3),
+#'   370-383. \doi{10.1177/1073191113486513}
+#'
 #' @examples
 #' # Rename columns named as this package's datasets were before the rename
 #' df <- data.frame(pid_1 = c(0, 1), pid_2 = c(2, 3), age = c(30, 40))

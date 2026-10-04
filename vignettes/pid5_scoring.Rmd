@@ -230,6 +230,29 @@ print(reliability_pid5(sim_bfpm, items = 1:36, version = "BFPM"), n = 24)
 
 `rename_pid5_items()` and `label_pid5()` also take `version = "BFPM"`. The PID5BF+M has no validity scales, and the package has no norms or profile plot for it.
 
+## The PID-5 Informant Form
+
+The PID-5 Informant Form (PID-5-IRF; Markon et al., 2013, [doi:10.1177/1073191113486513](https://doi.org/10.1177/1073191113486513)) is the APA's 218-item form on which someone who knows the person, such as a partner or relative, rates them. It has the full form's 25 facets and 5 domains. It has no counterpart to self-report items 96 and 177, so its Anxiousness and Suspiciousness facets each have one item fewer. The `pid_items$IRF` column gives each informant item's number, `pid_items$TextIRF` its wording (each item completes the stem "He or she..."), and the package names its item columns `pid5irf_001` to `pid5irf_218`.
+
+The package has no simulated informant dataset. For illustration, we take the 218 self-report items that the informant items map to from `sim_pid5` and rename them.
+
+```{r irf-data}
+irf_rows <- pid_items[!is.na(pid_items$IRF), ]
+sim_irf <- sim_pid5[sprintf("pid5_%03d", irf_rows$FULL)]
+names(sim_irf) <- sprintf("pid5irf_%03d", irf_rows$IRF)
+```
+
+`score_pid5()` with `version = "IRF"` returns the same 25 facets and 5 domains as the full form, under the same column names, so informant and self-report scores of the same person line up column by column.
+
+```{r irf-score}
+irf_scores <- score_pid5(sim_irf, items = 1:218, version = "IRF", append = FALSE)
+irf_scores
+```
+
+Scoring follows the APA informant key (Markon et al., 2013), with two readings that `?score_pid5` explains. Fourteen items are reverse-scored, the ones the key's Facet Table marks R; the key's Step 1 list also names items 98 and 176, which are not reversed. And the key says to "round up" a fractional prorated raw score; the package applies the nearest-whole-number rule of the other APA PID-5 keys, so informant and self-report facets prorate the same way.
+
+`reliability_pid5()`, `rename_pid5_items()` and `label_pid5()` also take `version = "IRF"`, and `label_pid5()` labels items with the informant wording. No validity scales or norms for the informant form are on the package's source shelf, so `validity_pid5()`, `norm_pid5()` and `plot_pid5()` do not take it.
+
 ## Collecting Responses Online with hitop-form
 
 [hitop-form](https://jmgirard.github.io/hitop-form/) is an online form that shows the PID-5, the PID-5-SF or the PID-5-BF in the browser. It needs no survey platform. The item text, response options and instructions come from this package's JSON export of the form. A study link tells the online form where each participant's answers go: a file saved on the participant's own device, which they send to you, or a web address or Supabase table the link names. A Google Sheet's script is one such web address. You download the sheet or the table as one CSV file. The [Collecting Responses Online](https://jmgirard.github.io/hitop/articles/online-collection.html) article walks the Google Sheet route end to end.
