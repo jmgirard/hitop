@@ -25,7 +25,8 @@
   each of the 18 facets, then a second table names the 3 facets that each
   of the 6 domains averages. The Qualtrics question IDs are `PID5BFPM_01` to
   `PID5BFPM_36`. The REDCap fields are `pid5bfpm_01` to `pid5bfpm_36`, the
-  names `score_pid5(version = "BFPM")` reads. Ready-made Word (US and A4),
+  names `rename_pid5_items()` and `label_pid5()` use with
+  `version = "BFPM"`. Ready-made Word (US and A4),
   Qualtrics and REDCap files are on a new PID5BF+M download page. The online
   form does not offer the PID5BF+M.
 

@@ -180,7 +180,8 @@ test_that("the BF+M REDCap dictionary holds the 36 BF+M items in BF+M order", {
   choices <- paste(opts$value, opts$label, sep = ", ", collapse = " | ")
   expect_true(all(items[["Choices, Calculations, OR Slider Labels"]] == choices))
 
-  # The field names are the ones score_pid5(version = "BFPM") reads.
+  # The 36 field names score without error when passed to
+  # score_pid5(version = "BFPM") as `items`.
   df <- as.data.frame(
     matrix(0L, nrow = 1L, ncol = 36L, dimnames = list(NULL, items[["Variable / Field Name"]]))
   )

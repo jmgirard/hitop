@@ -24,7 +24,8 @@ generate_redcap_pid5bfpm(
 The 36 items of the modified brief form of the PID-5 (PID5BF+M), in BF+M
 order with their PID-5 text, and the instructions and response options of
 the other PID-5 forms. The item fields are \code{pid5bfpm_01} to \code{pid5bfpm_36},
-the names \code{score_pid5(version = "BFPM")} and \code{\link[=rename_pid5_items]{rename_pid5_items()}} use.
+the names \code{\link[=rename_pid5_items]{rename_pid5_items()}} and \code{\link[=label_pid5]{label_pid5()}} use with
+\code{version = "BFPM"}. Score them with \code{score_pid5(version = "BFPM")}.
 }
 \examples{
 # Write a PID5BF+M REDCap instrument ZIP to a temporary location
