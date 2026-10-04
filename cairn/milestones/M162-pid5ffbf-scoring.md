@@ -118,6 +118,7 @@ Researchers can score the 100-item PID-5 Forensic Faceted Brief Form (PID-5-FFBF
 - 2026-10-04: claim audit: 45 claims read, 7 corrected — NEWS.md, R/norm_pid5.R, R/score_pid5.R, vignettes/pid5_scoring.Rmd, cairn/DESIGN.md, cairn/SOURCES.md (the SF-norming warning now says only the two forensic domains are reported as not covered; prorated facets also move domain values; `pid_ffbf_items` has its own DESIGN description; the reverse-key source row names what each source says). Re-read pending.
 - 2026-10-04: T8 done. The same reader re-read the 7 corrected claims: all hold. Suite green. Status set to review.
 - 2026-10-04: review pass 3 settled 22 findings: 18 fix now (16 distinct, fixed in b958cdc1, and 2 duplicates of them), 2 follow-up (one issue, on the "PID-5 norms not yet shipped" row), 2 rejected. No finding showed a criterion failing, so no return.
+- 2026-10-04: step-7 approval: m162-pid5ffbf-scoring approved for merge. Jeff also signed off the FFBF keying (facet map, reverse items 12 and 26, the two forensic domains) at this chip.
 
 ## Decisions
 
