@@ -251,11 +251,44 @@ docx_scoring_rows <- function(file) {
   )
   if (length(hdr) == 0L) return(empty)
   body <- txt[seq_len(length(txt) - max(hdr)) + max(hdr)]
+  # The PID5BF+M form follows the scale table with a domain table headed
+  # "Domain"; its cells belong to docx_domain_rows(), so the scale rows end
+  # there. No scale is named "Domain".
+  domain_hdr <- match("Domain", body)
+  if (!is.na(domain_hdr)) body <- body[seq_len(domain_hdr - 1L)]
   n <- 2L * (length(body) %/% 2L)
   if (n == 0L) return(empty)
   data.frame(
     scale = body[seq(1L, n, by = 2L)],
     items = body[seq(2L, n, by = 2L)],
+    stringsAsFactors = FALSE
+  )
+}
+
+# Extract the domain table's (domain, facets) pairs from a .docx.
+#
+# make_domain_table() writes a two-column table headed "Domain" and "Average
+# of these facet scores" after the scale table, so the cells after that
+# header alternate domain name and comma-joined facet names to the end of the
+# document. Returns a data.frame(domain, facets) with zero rows when a
+# document has no domain table.
+docx_domain_rows <- function(file) {
+  xml <- read_docx_xml(file)
+  runs <- regmatches(xml, gregexpr("<w:t[^>]*>[^<]*</w:t>", xml))[[1]]
+  txt <- unescape_xml(gsub("<[^>]+>", "", runs))
+  hdr <- which(txt == "Average of these facet scores")
+  if (length(hdr) == 0L) {
+    return(data.frame(
+      domain = character(0),
+      facets = character(0),
+      stringsAsFactors = FALSE
+    ))
+  }
+  body <- txt[seq_len(length(txt) - hdr[[1]]) + hdr[[1]]]
+  n <- 2L * (length(body) %/% 2L)
+  data.frame(
+    domain = body[seq(1L, n, by = 2L)],
+    facets = body[seq(2L, n, by = 2L)],
     stringsAsFactors = FALSE
   )
 }

@@ -561,6 +561,48 @@ make_scoring_table <- function(
     flextable::set_table_properties(layout = "fixed", align = "left")
 }
 
+# Internal Helper: the domain table of a form whose domains are means of facet
+# scores (the PID5BF+M). One row per domain, in the order of `domains_df`, with
+# the facets it averages; make_scoring_table() cannot show this, because it
+# sorts its rows by name and lists item numbers.
+make_domain_table <- function(
+  domains_df,
+  printable_w,
+  font_size,
+  font_family
+) {
+  domain_data <- data.frame(
+    Domain = domains_df$Domain,
+    Facets = vapply(
+      domains_df$primaryFacets,
+      paste,
+      character(1),
+      collapse = ", "
+    ),
+    stringsAsFactors = FALSE
+  )
+
+  domain_col_width <- 1.75
+  std_border <- officer::fp_border(color = "black", width = 1.5)
+
+  domain_data |>
+    flextable::flextable() |>
+    flextable::set_header_labels(
+      Domain = "Domain",
+      Facets = "Average of these facet scores"
+    ) |>
+    flextable::align(align = "left", part = "all") |>
+    flextable::valign(valign = "top", part = "body") |>
+    flextable::padding(padding = 3, part = "all") |>
+    flextable::fontsize(size = max(6, font_size - 1), part = "all") |>
+    flextable::font(fontname = font_family, part = "all") |>
+    flextable::width(j = "Domain", width = domain_col_width) |>
+    flextable::width(j = "Facets", width = printable_w - domain_col_width) |>
+    flextable::hline_top(part = "header", border = std_border) |>
+    flextable::hline_bottom(part = "header", border = std_border) |>
+    flextable::set_table_properties(layout = "fixed", align = "left")
+}
+
 # Internal Helper: Assemble the actual Word Document
 build_hitop_doc <- function(
   file,
@@ -573,7 +615,8 @@ build_hitop_doc <- function(
   dims,
   font_size,
   font_family,
-  crosswalk_msg = NULL
+  crosswalk_msg = NULL,
+  table_3 = NULL
 ) {
   inst_prop <- officer::fp_text(
     font.size = font_size,
@@ -648,6 +691,13 @@ build_hitop_doc <- function(
   if (scoring_page) {
     my_doc <- my_doc |>
       flextable::body_add_flextable(value = table_2)
+    # A second scoring table (the PID5BF+M domains), after a blank paragraph so
+    # the two tables do not merge.
+    if (!is.null(table_3)) {
+      my_doc <- my_doc |>
+        officer::body_add_fpar(officer::fpar(fp_p = inst_par_prop)) |>
+        flextable::body_add_flextable(value = table_3)
+    }
   }
 
   my_doc <- my_doc |>
@@ -1400,5 +1450,97 @@ generate_docx_pid5bf <- function(
     dims,
     font_size,
     font_family
+  )
+}
+
+#' Generate a Word Document for the PID5BF+M
+#'
+#' Write the 36-item modified brief form of the PID-5 (PID5BF+M; Bach et al.,
+#' 2020) as a paper form. The items are numbered 1 to 36 in BF+M order, with
+#' their PID-5 text, and the instructions and response options are those of
+#' the other PID-5 forms. The scoring page lists the 2 items of each of the
+#' 18 facets, then the 3 facets each of the 6 domains averages, as
+#' [score_pid5()] scores them with `version = "BFPM"`.
+#'
+#' @inheritParams generate_docx_pid5
+#'
+#' @references Bach, B., Kerber, A., Aluja, A., Bastiaens, T., Keeley, J. W.,
+#'   Claes, L., Fossati, A., Gutierrez, F., Oliveira, S. E. S., Pires, R.,
+#'   Riegel, K. D., Rolland, J.-P., Roskam, I., Sellbom, M., Somma, A.,
+#'   Spanemberg, L., Strus, W., Thimm, J. C., Wright, A. G. C., & Zimmermann, J.
+#'   (2020). International assessment of DSM-5 and ICD-11 personality disorder
+#'   traits: Toward a common nosology in DSM-5.1. *Psychopathology, 53*(3-4),
+#'   179-188. \doi{10.1159/000507589}
+#'
+#' @examples
+#' \donttest{
+#' # Write a PID5BF+M paper form to a temporary Word document
+#' generate_docx_pid5bfpm(file = tempfile(fileext = ".docx"))
+#' }
+#'
+#' @export
+generate_docx_pid5bfpm <- function(
+  file = "pid5bfpm.docx",
+  papersize = c("us", "a4"),
+  title = "PID5BF+M",
+  include_scoring = TRUE,
+  font_size = 10,
+  font_family = "Times New Roman"
+) {
+  papersize <- match.arg(papersize)
+  dims <- get_page_dims(papersize)
+
+  items <- pid_items[!is.na(pid_items$BFPM), ]
+  items <- items[order(items$BFPM), ]
+
+  t1 <- make_items_table(
+    items,
+    "BFPM",
+    pid_instructions$options,
+    dims$pw,
+    font_size,
+    font_family,
+    opts_per_line = 2
+  )
+
+  t2 <- NULL
+  t3 <- NULL
+  if (include_scoring) {
+    scales_to_score <- pid_scales$BFPM
+    names(scales_to_score)[names(scales_to_score) == "Facet"] <- "Scale"
+
+    t2 <- make_scoring_table(
+      scales_to_score,
+      "BFPM",
+      dims$pw,
+      font_size,
+      font_family
+    )
+    t3 <- make_domain_table(
+      pid_bfpm_domains,
+      dims$pw,
+      font_size,
+      font_family
+    )
+  }
+
+  scoring_msg <- paste(
+    "Average the responses for the following item numbers to score each facet.",
+    "Then average the three facet scores listed for each domain in the second table to score that domain.",
+    "Reverse-scored items are indicated with (R)."
+  )
+
+  build_hitop_doc(
+    file,
+    title,
+    pid_instructions$start,
+    scoring_msg,
+    t1,
+    t2,
+    include_scoring,
+    dims,
+    font_size,
+    font_family,
+    table_3 = t3
   )
 }

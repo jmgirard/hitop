@@ -289,6 +289,45 @@ generate_redcap_pid5bf <- function(
   )
 }
 
+#' Generate a REDCap Instrument ZIP File for the PID5BF+M
+#'
+#' The 36 items of the modified brief form of the PID-5 (PID5BF+M), in BF+M
+#' order with their PID-5 text, and the instructions and response options of
+#' the other PID-5 forms. The item fields are `pid5bfpm_01` to `pid5bfpm_36`,
+#' the names `score_pid5(version = "BFPM")` and [rename_pid5_items()] use.
+#'
+#' @inheritParams generate_redcap_pid5
+#'
+#' @seealso Step-by-step import instructions for Qualtrics and REDCap:
+#'   \url{https://jmgirard.github.io/hitop/articles/import-instructions.html}
+#'
+#' @examples
+#' # Write a PID5BF+M REDCap instrument ZIP to a temporary location
+#' generate_redcap_pid5bfpm(file = tempfile(fileext = ".zip"))
+#'
+#' @export
+generate_redcap_pid5bfpm <- function(
+  file = "pid5bfpm_redcap.zip",
+  form_name = "pid5bfpm_questionnaire",
+  required = TRUE,
+  breaks = 15
+) {
+  items <- pid_items[!is.na(pid_items$BFPM), ]
+  items <- items[order(items$BFPM), ]
+  items <- items[, c("BFPM", setdiff(names(items), "BFPM"))]
+
+  build_redcap_zip(
+    items = items,
+    max_n = max(pid_items$BFPM, na.rm = TRUE),
+    instructions = pid_instructions,
+    file = file,
+    instrument = "PID5BFPM",
+    form_name = form_name,
+    required = required,
+    breaks = breaks
+  )
+}
+
 # Internal Helper: the dictionary's item field names
 #
 # One place for the names build_redcap_zip() writes, so the HiTOP-SR generator
