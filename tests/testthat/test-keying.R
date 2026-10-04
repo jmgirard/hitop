@@ -352,6 +352,102 @@ test_that("pid_bfpm_domains holds the key sheet's 6 domains of 3 facets each", {
   expect_identical(pid_bfpm_domains$camelCase[shared], pid_domains$camelCase)
 })
 
+# ---- Source: APA PID-5 Informant Form (Markon et al., 2013), p. 8 ----
+#
+# Typed from the key's Facet Table and Domain Table
+# (cairn/references/apa2013pid5irf.md), never from data-raw/pid_irf_items.csv.
+# The reverse list is the Facet Table's R marks, which D-089(c) chose over
+# Step 1's list (Step 1 adds 98 and 176). All 218 item texts are checked
+# against the PDF by data-raw/check_pid_irf_text.R, which needs the shelf copy.
+
+irf_reverse <- c(7, 30, 35, 58, 87, 90, 96, 97, 130, 141, 154, 163, 208, 213)
+irf_facets <- list(
+  "Anhedonia" = c(1, 23, 26, 30, 123, 154, 156, 187),
+  "Anxiousness" = c(79, 93, 95, 108, 109, 129, 140, 173),
+  "Attention Seeking" = c(14, 43, 74, 110, 112, 172, 189, 209),
+  "Callousness" = c(11, 13, 19, 54, 72, 73, 90, 152, 165, 181, 196, 198, 205, 206),
+  "Deceitfulness" = c(41, 53, 56, 76, 125, 133, 141, 204, 212, 216),
+  "Depressivity" = c(27, 61, 66, 81, 86, 103, 118, 147, 150, 162, 167, 168, 176, 210),
+  "Distractibility" = c(6, 29, 47, 68, 88, 117, 131, 143, 197),
+  "Eccentricity" = c(5, 21, 24, 25, 33, 52, 55, 70, 71, 151, 171, 183, 203),
+  "Emotional Lability" = c(18, 62, 101, 121, 137, 164, 179),
+  "Grandiosity" = c(40, 65, 113, 177, 185, 195),
+  "Hostility" = c(28, 32, 38, 85, 92, 115, 157, 169, 186, 214),
+  "Impulsivity" = c(4, 16, 17, 22, 58, 202),
+  "Intimacy Avoidance" = c(89, 96, 107, 119, 144, 201),
+  "Irresponsibility" = c(31, 128, 155, 159, 170, 199, 208),
+  "Manipulativeness" = c(106, 124, 161, 178, 217),
+  "Perceptual Dysregulation" = c(36, 37, 42, 44, 59, 77, 83, 153, 190, 191, 211, 215),
+  "Perseveration" = c(46, 51, 60, 78, 80, 99, 120, 127, 136),
+  "Restricted Affectivity" = c(8, 45, 84, 91, 100, 166, 182),
+  "Rigid Perfectionism" = c(34, 49, 104, 114, 122, 134, 139, 175, 194, 218),
+  "Risk Taking" = c(3, 7, 35, 39, 48, 67, 69, 87, 97, 111, 158, 163, 193, 213),
+  "Separation Insecurity" = c(12, 50, 57, 64, 126, 148, 174),
+  "Submissiveness" = c(9, 15, 63, 200),
+  "Suspiciousness" = c(2, 102, 116, 130, 132, 188),
+  "Unusual Beliefs & Experiences" = c(94, 98, 105, 138, 142, 149, 192, 207),
+  "Withdrawal" = c(10, 20, 75, 82, 135, 145, 146, 160, 180, 184)
+)
+# The key prints "Negative Affect"; the package keeps "Negative affectivity"
+# (D-089(d)), so the domains are matched by their primary facets.
+irf_domains <- list(
+  c("Emotional Lability", "Anxiousness", "Separation Insecurity"),
+  c("Withdrawal", "Anhedonia", "Intimacy Avoidance"),
+  c("Manipulativeness", "Deceitfulness", "Grandiosity"),
+  c("Irresponsibility", "Impulsivity", "Distractibility"),
+  c("Unusual Beliefs & Experiences", "Eccentricity", "Perceptual Dysregulation")
+)
+
+test_that("pid_items$IRF numbers the 218 informant items 1 to 218 in APA order", {
+  expect_true(is.integer(pid_items$IRF))
+  irf_rows <- pid_items[!is.na(pid_items$IRF), ]
+  expect_identical(irf_rows$IRF, 1:218)
+  # The IRF has no counterpart to self-report items 96 and 177.
+  expect_identical(pid_items$FULL[is.na(pid_items$IRF)], c(96L, 177L))
+  expect_false(anyNA(irf_rows$TextIRF))
+  expect_true(all(is.na(pid_items$TextIRF[is.na(pid_items$IRF)])))
+  # Text anchors typed from the form (pp. 2 and 7), normalized as D-089(b) says.
+  irf_text <- function(n) irf_rows$TextIRF[irf_rows$IRF == n]
+  expect_identical(
+    irf_text(1),
+    "doesn't get as much pleasure out of things as others seem to"
+  )
+  expect_identical(irf_text(98), "sometimes hears things that aren't really there")
+  expect_identical(
+    irf_text(176),
+    "mentions that they will commit suicide sooner or later"
+  )
+  expect_identical(irf_text(218), "has a strict way of doing things")
+})
+
+test_that("IRF reverse-keyed items are the 14 R marks of the key's Facet Table", {
+  expect_setequal(pid_items$IRF[pid_items$Reverse & !is.na(pid_items$IRF)], irf_reverse)
+  # Step 1's extra two items are not reversed (D-089(c)).
+  expect_false(any(pid_items$Reverse[pid_items$IRF %in% c(98, 176)]))
+})
+
+test_that("IRF facet -> item membership matches the key's Facet Table", {
+  expect_length(irf_facets, 25)
+  expect_setequal(unlist(irf_facets), 1:218)
+  for (f in names(irf_facets)) {
+    expect_setequal(pid_items$IRF[pid_items$Facet == f & !is.na(pid_items$IRF)], irf_facets[[f]])
+  }
+  tbl <- pid_scales[["IRF"]]
+  expect_setequal(tbl$Facet, names(irf_facets))
+  for (i in seq_len(nrow(tbl))) {
+    expect_setequal(tbl$itemNumbers[[i]], irf_facets[[tbl$Facet[i]]])
+  }
+  expect_identical(tbl$nItems, lengths(irf_facets[tbl$Facet], use.names = FALSE))
+  # Same facets and stems as the full form, so the domain map carries over.
+  expect_identical(tbl$camelCase, pid_scales[["FULL"]]$camelCase)
+  expect_identical(names(tbl$itemNumbers), tbl$camelCase)
+})
+
+test_that("IRF domains match the key's Domain Table through pid_domains", {
+  expect_identical(pid_domains$primaryFacets, irf_domains)
+  expect_true(all(unlist(pid_domains$facetStems) %in% pid_scales[["IRF"]]$camelCase))
+})
+
 test_that("BF+M facets shared with the PID-5 are subsets of the same PID-5 facet", {
   for (f in names(bfpm_sheet_facets)) {
     pid5_facet <- pid_items$Facet[match(bfpm_sheet_facets[[f]]$pid5, pid_items$FULL)]

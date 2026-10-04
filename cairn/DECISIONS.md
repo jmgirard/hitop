@@ -8,6 +8,14 @@
 > migration (2026-07-16), and remain valid citations. To avoid ID collisions,
 > new entries here continue the numbering at **D-013**.
 
+### D-089 (2026-10-03): The PID-5 Informant Form enters the PID-5 family as `version = "IRF"`, stored as two new `pid_items` columns, reverse-keyed by the key's Facet Table (applies GP1, GP2 and GP3 to a fifth PID-5 form; extends D-055's one-stem-per-form rule; settles OQ-4 in SOURCES.md)
+
+**Context:** M159 adds the 218-item PID-5 Informant Form (Markon et al., 2013). It has no counterpart to self-report items 96 and 177, so IRF item n is self-report item n, n + 1 or n + 2, and each pair shares its facet. The APA key prints two reverse lists: Step 1 names 16 items, and the Facet Table marks 14. Items 98 and 176 are on Step 1 only, and neither is worded in reverse. The self-report reverse flags, mapped across, give the 14.
+
+**Decision:** (a) The version string and `pid_items` column are `"IRF"`. Item columns are `pid5irf_001` to `pid5irf_218`, and M160's Qualtrics IDs are `PID5IRF_001` to `PID5IRF_218`. (b) `pid_items` gains `IRF`, the informant item number (`NA` on self-report rows 96 and 177), and `TextIRF`, the informant item text without the "He or she…" stem. The IRF rows share `Facet`, `Domain` and `Reverse` with their self-report rows. (c) The reverse-keyed items are the Facet Table's 14 R marks. The package reads Step 1's 98 and 176 as a printing error in the key. (d) The domains are the five of `pid_domains`, as the key's Domain Table prints the same primary facets. The package keeps its printed name "Negative affectivity" where the IRF key prints "Negative Affect". Jeff chose (a) to (c) at M159's T2 gate. The tripwire escalation was offered and not taken. Rejected: Step 1's 16, a separate exported `pid_irf_items` table (every PID-5 function would need a second lookup path), and `"INF"` (not an APA name).
+
+**Consequences:** `pid_items` gains two columns and `pid_scales` a fifth element, both documented-shape changes that NEWS records. The other versions do not change. A shared `Reverse` column holds only while the two forms agree on keying. Evidence that reopens (c): an APA erratum or a published IRF key that reverses 98 or 176.
+
 ### D-088 (2026-10-03): The PID5BF+M enters the PID-5 family as `version = "BFPM"`, on the item-mean scale, with its facet-to-domain map in a new exported table `pid_bfpm_domains` (applies GP1, GP2 and GP3 to a fourth PID-5 form; extends D-055's one-stem-per-form rule; from RR06)
 
 **Context:** M157 adds the 36-item PID5BF+M (Bach et al., 2020). It has 18 two-item facets and 6 domains. Its key sheet sums the items within a facet, averages facet sums for a domain, and gives no missing-data rule. The names and the scale become public once released. Jeff sent the gate to an independent review (RB06/RR06, `cairn/reviews/archive/`).

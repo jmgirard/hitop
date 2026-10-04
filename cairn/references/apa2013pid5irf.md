@@ -109,4 +109,4 @@ of its 3 facet averages and is not computed if any of the 3 cannot be computed.
 
 ## Open questions
 
-- Which reverse list governs, Step 1's 16 items or the Facet Table's 14 R marks. Recorded as OQ-4 in `cairn/SOURCES.md` — observed 2026-10-03.
+- Which reverse list governs, Step 1's 16 items or the Facet Table's 14 R marks. Resolved 2026-10-03 for the 14 by maintainer sign-off (D-089, OQ-4 in `cairn/SOURCES.md`) — observed 2026-10-03.

@@ -5,10 +5,15 @@
 \alias{pid_items}
 \title{Personality Inventory for DSM-5 Item Data}
 \format{
-A \link[tibble]{tibble} with 220 rows and 16 columns:
+A \link[tibble]{tibble} with 220 rows and 18 columns:
 \describe{
 \item{FULL, SF, BF}{Item number on the full PID-5, PID-5 faceted short form, and PID-5 brief form (integer)}
 \item{BFPM}{Item number on the PID5BF+M, the 36-item modified brief form (integer). Its keying is in \code{pid_scales$BFPM} and \link{pid_bfpm_domains}}
+\item{IRF}{Item number on the PID-5 Informant Form, the 218-item
+informant-report form (integer). It is \code{NA} on self-report items 96 and
+177, which the informant form does not have, so IRF item n is self-report
+item n, n + 1 or n + 2. Each informant item shares its row's facet and
+reverse keying}
 \item{Reverse}{Whether the item needs to be reverse scored}
 \item{INC,INCS}{Item number on the response inconsistency scale full and short forms (integer)}
 \item{ORS,ORSS}{Item number on the overreporting scale full and short forms (integer)}
@@ -19,7 +24,14 @@ Rigid Perfectionism items into its three anankastia facets, whose item
 membership is held only in \code{pid_scales$BFPM}}
 \item{Domain}{Name of the domain}
 \item{Text}{Item text, copyright APA}
+\item{TextIRF}{Informant Form item text, copyright APA. Each item
+completes the stem "He or she..."; the stem is not stored}
 }
+}
+\source{
+Markon, K. E., Quilty, L. C., Bagby, R. M., & Krueger, R. F. (2013).
+\emph{The Personality Inventory for DSM-5—Informant Form (PID-5-IRF)—Adult}.
+American Psychiatric Association.
 }
 \usage{
 pid_items

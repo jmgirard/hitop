@@ -50,7 +50,7 @@ status, so the table has an *external* oracle. Verified item-by-item on
 | `BFPM` (36 items, 18 facets × 2, 6 domains × 3 facets, no reverse keying) | FU Berlin PID5BF+M key sheet (Kerber, 2020), Bach et al. (2020) | sheet p. 2, paper p. 181 | ✅ Sheet table transcribed and matched to the item text (2026-10-03, M157). The paper confirms the 6 anankastia items and the domain rule. Its Appendix A is not on the shelf. See [fuberlin2020pid5bfpm](references/fuberlin2020pid5bfpm.md), [bach2020](references/bach2020.md) |
 | `BFPM` form instructions and 0–3 response labels (English) | APA PID-5 instructions and labels as stored in `pid_instructions`; FU Berlin PID5BF+M sheet (Kerber, 2020) | sheet p. 1 | ✅ Maintainer sign-off 2026-10-03 (M158). No English BF+M form text is on the shelf. Bach et al. (2020) and Kerber et al. (2022, with supplement) print none. The German sheet's instructions translate `pid_instructions$start` sentence by sentence, and its four labels sit on the same 0–3 values. The BF+M forms reuse `pid_instructions`, as the BF forms do. |
 | IRF item text (218 items) and `Facet` → items (25 facets) | APA PID-5 Informant Form (Markon et al., 2013) | pp. 2–7 form, p. 8 Facet Table | ✅ `data-raw/check_pid_irf_text.R` matches all 218 texts and 25 facets (2026-10-03, M159). Each IRF item shares its facet with the self-report item it maps to. See [apa2013pid5irf](references/apa2013pid5irf.md) |
-| IRF reverse-keying | APA PID-5 Informant Form | p. 8 Step 1 and Facet Table, p. 9 | ⚠️ The key prints two lists that disagree on items 98 and 176 — **OQ-4** |
+| IRF reverse-keying | APA PID-5 Informant Form | p. 8 Step 1 and Facet Table, p. 9 | ✅ The Facet Table's 14 R marks, by maintainer sign-off 2026-10-03 (M159, D-089). Step 1's extra 98 and 176 are read as a printing error. **OQ-4 resolved** |
 
 ## Sources
 
@@ -682,7 +682,10 @@ is expected. The Correction supersedes that: 38–92 *does* transfer and was sim
 omitted inadvertently, so the OSF spreadsheet's 42/92 entry is best read as a
 labeling error in that deposited file, not the reason for the exclusion.
 
-### OQ-4: Which IRF reverse list governs, Step 1's 16 items or the Facet Table's 14?
+### OQ-4 [RESOLVED 2026-10-03]: Which IRF reverse list governs, Step 1's 16 items or the Facet Table's 14?
+
+**Resolution:** the Facet Table's 14. Jeff chose it at M159's T2 gate (D-089). The
+evidence that follows is what the choice rested on.
 
 The APA PID-5 Informant Form key (p. 8) lists 16 items to reverse in Step 1 and
 repeats them on p. 9: 7, 30, 35, 58, 87, 90, 96, 97, 98, 130, 141, 154, 163, 176,
@@ -692,8 +695,7 @@ Experiences) and item 176 is "mentions that they will commit suicide sooner or
 later" (Depressivity). Neither is worded in the reverse direction of its facet.
 The self-report reverse flags, carried across the IRF-to-self-report item mapping,
 give the 14 R-marked items, and self-report items 98 and 177 are reverse-keyed. So
-the Step 1 list reads as the self-report list partly renumbered. Open until the
-maintainer chooses at M159's T2 gate. Details: [apa2013pid5irf](references/apa2013pid5irf.md).
+the Step 1 list reads as the self-report list partly renumbered. Details: [apa2013pid5irf](references/apa2013pid5irf.md).
 
 ### OQ-3: The HiTOP-SR introduction paper prints the NSSI scale's name three ways
 

@@ -5,16 +5,19 @@
 \alias{pid_scales}
 \title{Personality Inventory for DSM-5 Scale Data}
 \format{
-A named \link{list} of length 4 (elements \code{FULL}, \code{SF}, \code{BF}, and
-\code{BFPM}), one per PID-5 version. Each element is a \link[tibble]{tibble}
-with one row per scale and 5 columns:
+A named \link{list} of length 5 (elements \code{FULL}, \code{SF}, \code{BF},
+\code{BFPM}, and \code{IRF}), one per PID-5 version. Each element is a
+\link[tibble]{tibble} with one row per scale and 5 columns:
 \describe{
 \item{Facet (named \code{Domain} in the BF element)}{Name of the scale: the
-facet for the FULL, SF, and BFPM versions, the domain for the BF version.
-The BF element carries a sixth row, \code{Total}, which is not a domain but the
-whole 25-item form scored as one scale (see \code{\link[=score_pid5]{score_pid5()}}). The BFPM
-element holds the 18 facets of the PID5BF+M, 2 items each, grouped by
-domain in the order of its key; its domains are in \link{pid_bfpm_domains}}
+facet for the FULL, SF, BFPM, and IRF versions, the domain for the BF
+version. The BF element carries a sixth row, \code{Total}, which is not a
+domain but the whole 25-item form scored as one scale (see
+\code{\link[=score_pid5]{score_pid5()}}). The BFPM element holds the 18 facets of the PID5BF+M, 2
+items each, grouped by domain in the order of its key; its domains are in
+\link{pid_bfpm_domains}. The IRF element holds the 25 facets of the Informant
+Form in the FULL element's order, numbered by informant item, with the
+informant text in \code{itemdata}}
 \item{itemdata}{A list column containing one item-data tibble per scale; its item-number column is an integer}
 \item{nItems}{The number of items in the scale (integer)}
 \item{itemNumbers}{A list column containing one integer item-number vector per scale}
