@@ -14,6 +14,8 @@
   Instrument](https://jmgirard.github.io/hitop/articles/download-pid5bf.md):
 - [PID5BF+M
   Instrument](https://jmgirard.github.io/hitop/articles/download-pid5bfpm.md):
+- [PID-5 Informant Form
+  Instrument](https://jmgirard.github.io/hitop/articles/download-pid5irf.md):
 - [PID-5-SF
   Instrument](https://jmgirard.github.io/hitop/articles/download-pid5sf.md):
 - [Scoring the

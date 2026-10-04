@@ -80,6 +80,26 @@
   and REDCap files are on a new PID5BF+M download page. The online form
   does not offer the PID5BF+M.
 
+- **New PID-5 Informant Form forms.**
+  [`generate_docx_pid5irf()`](https://jmgirard.github.io/hitop/reference/generate_docx_pid5irf.md),
+  [`generate_qualtrics_pid5irf()`](https://jmgirard.github.io/hitop/reference/generate_qualtrics_pid5irf.md)
+  and
+  [`generate_redcap_pid5irf()`](https://jmgirard.github.io/hitop/reference/generate_redcap_pid5irf.md)
+  write the 218 items in the form’s order with the informant wording,
+  the form’s instructions ending in its rating prompt and the stem “He
+  or she…”, and its 0 to 3 response options. The Word scoring page lists
+  each facet’s informant item numbers with (R) on the 14 reverse-scored
+  items, and the Word footer carries the APA copyright and permission
+  notice the form prints. The Qualtrics question IDs are `PID5IRF_001`
+  to `PID5IRF_218`. The REDCap fields are `pid5irf_001` to
+  `pid5irf_218`, the names
+  [`rename_pid5_items()`](https://jmgirard.github.io/hitop/reference/rename_pid5_items.md)
+  and
+  [`label_pid5()`](https://jmgirard.github.io/hitop/reference/label_pid5.md)
+  use with `version = "IRF"`. Ready-made Word (US and A4), Qualtrics and
+  REDCap files are on a new PID-5 Informant Form download page. The
+  online form does not offer the informant form.
+
 - **The `reliability_*()` functions report omega as `NA` for a scale
   with fewer than 3 items.** A one-factor model of 2 items is not
   identified, so no model is fitted. No PID-5, HiTOP-SR or HiTOP-BR

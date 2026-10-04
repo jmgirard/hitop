@@ -44,7 +44,8 @@ respondents answer only a small subset of items.
 2.  **Choose a route** on that page: a printable Word form, a [Qualtrics
     or REDCap
     import](https://jmgirard.github.io/hitop/articles/import-instructions.md),
-    or, on every page but the HiTOP-HSUM's, an [online
+    or, on the HiTOP-SR, HiTOP-BR, PID-5, PID-5-SF and PID-5-BF pages,
+    an [online
     form](https://jmgirard.github.io/hitop/articles/online-collection.md)
     opened from a study link.
 3.  **Collect responses**. Paper and survey-platform responses arrive as
